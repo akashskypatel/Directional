@@ -3605,3 +3605,8 @@ tutorial/output/horsers-param-full-seamless.obj
 tutorial/output/horsers-param-rot-seamless.obj
 tutorial/output/index-prescription.rawfield
 tutorial/output/polyvector.rawfield
+**/build/
+**/install/
+**/*.egg-info/
+**/__pycache__/
+**/dist/

@@ -11,6 +11,7 @@ endif()
 
 option(DIRECTIONAL_VIEWER "Directional Viewer" ON)
 option(USE_GMP "Enable GMP support if found" ON)
+set(DIRECTIONAL_TUTORIALS "ALL" CACHE STRING "Semicolon-separated tutorial directories to build, or ALL")
 
 message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
@@ -97,29 +98,78 @@ if(USE_GMP)
 endif()
 
 # ===== Chapters =====
+set(DIRECTIONAL_ALL_TUTORIALS
+  101_GlyphRendering
+  102_DiscreteTangentBundles
+  103_StreamlineTracing
+  104_FaceVertexEdgeData
+  105_Sparsity
+  106_PrincipalDirections
+  201_PrincipalMatching
+  202_Sampling
+  203_Combing
+  301_PowerFields
+  302_PolyVectors
+  303_GinzburgLandau
+  304_IntegrableFields
+  401_IndexPrescription
+  501_SeamlessIntegration
+  502_DifferentOrders
+  503_SeamsSingsRounding
+  504_LinearReductions
+  505_Meshing
+  601_FaceBasedFEM
+  602_DiscreteExteriorCalculus
+  603_HodgeDecomposition
+  604_HodgeBoundary
+  605_HarmonicFields
+  701_SubdivisionFields
+)
+
+if(DIRECTIONAL_TUTORIALS STREQUAL "ALL")
+  set(DIRECTIONAL_SELECTED_TUTORIALS ${DIRECTIONAL_ALL_TUTORIALS})
+else()
+  string(REPLACE "," ";" DIRECTIONAL_TUTORIAL_REQUESTS "${DIRECTIONAL_TUTORIALS}")
+  set(DIRECTIONAL_SELECTED_TUTORIALS)
+  foreach(DIRECTIONAL_TUTORIAL_REQUEST IN LISTS DIRECTIONAL_TUTORIAL_REQUESTS)
+    set(DIRECTIONAL_RESOLVED_TUTORIAL "")
+    list(FIND DIRECTIONAL_ALL_TUTORIALS "${DIRECTIONAL_TUTORIAL_REQUEST}" DIRECTIONAL_TUTORIAL_INDEX)
+    if(NOT DIRECTIONAL_TUTORIAL_INDEX EQUAL -1)
+      set(DIRECTIONAL_RESOLVED_TUTORIAL "${DIRECTIONAL_TUTORIAL_REQUEST}")
+    elseif(DIRECTIONAL_TUTORIAL_REQUEST MATCHES "^[0-9]+$")
+      foreach(DIRECTIONAL_CANDIDATE IN LISTS DIRECTIONAL_ALL_TUTORIALS)
+        if(DIRECTIONAL_CANDIDATE MATCHES "^${DIRECTIONAL_TUTORIAL_REQUEST}_")
+          if(DIRECTIONAL_RESOLVED_TUTORIAL)
+            message(FATAL_ERROR
+              "Tutorial prefix '${DIRECTIONAL_TUTORIAL_REQUEST}' is ambiguous. "
+              "Use one of the full names: ${DIRECTIONAL_ALL_TUTORIALS}"
+            )
+          endif()
+          set(DIRECTIONAL_RESOLVED_TUTORIAL "${DIRECTIONAL_CANDIDATE}")
+        endif()
+      endforeach()
+    endif()
+
+    if(NOT DIRECTIONAL_RESOLVED_TUTORIAL)
+      message(FATAL_ERROR
+        "Unknown tutorial '${DIRECTIONAL_TUTORIAL_REQUEST}'. "
+        "Use a numeric prefix like 501 or a full name from: ${DIRECTIONAL_ALL_TUTORIALS}"
+      )
+    endif()
+
+    list(APPEND DIRECTIONAL_SELECTED_TUTORIALS "${DIRECTIONAL_RESOLVED_TUTORIAL}")
+  endforeach()
+
+  list(REMOVE_DUPLICATES DIRECTIONAL_SELECTED_TUTORIALS)
+  if(NOT DIRECTIONAL_SELECTED_TUTORIALS)
+    message(FATAL_ERROR "No tutorials selected.")
+  endif()
+endif()
+
+message(STATUS "Directional tutorials selected: ${DIRECTIONAL_SELECTED_TUTORIALS}")
+
 if(DIRECTIONAL_VIEWER)
-  add_subdirectory("101_GlyphRendering")
-  add_subdirectory("102_DiscreteTangentBundles")
-  add_subdirectory("103_StreamlineTracing")
-  add_subdirectory("104_FaceVertexEdgeData")
-  add_subdirectory("105_Sparsity")
-  add_subdirectory("106_PrincipalDirections")
-  add_subdirectory("201_PrincipalMatching")
-  add_subdirectory("202_Sampling")
-  add_subdirectory("203_Combing")
-  add_subdirectory("301_PowerFields")
-  add_subdirectory("302_PolyVectors")
-  add_subdirectory("303_GinzburgLandau")
-  add_subdirectory("304_IntegrableFields")
-  add_subdirectory("401_IndexPrescription")
-  add_subdirectory("501_SeamlessIntegration")
-  add_subdirectory("502_DifferentOrders")
-  add_subdirectory("503_SeamsSingsRounding")
-  add_subdirectory("504_LinearReductions")
-  add_subdirectory("505_Meshing")
-  add_subdirectory("601_FaceBasedFEM")
-  add_subdirectory("602_DiscreteExteriorCalculus")
-  add_subdirectory("603_HodgeDecomposition")
-  add_subdirectory("604_HodgeBoundary")
-  add_subdirectory("605_HarmonicFields")
+  foreach(DIRECTIONAL_TUTORIAL_DIR IN LISTS DIRECTIONAL_SELECTED_TUTORIALS)
+    add_subdirectory("${DIRECTIONAL_TUTORIAL_DIR}")
+  endforeach()
 endif()

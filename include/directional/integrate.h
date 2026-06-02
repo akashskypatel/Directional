@@ -8,7 +8,7 @@
 #ifndef DIRECTIONAL_INTEGRATE_H
 #define DIRECTIONAL_INTEGRATE_H
 
-#include <eigen3/Eigen/src/Core/Matrix.h>
+#include <Eigen/src/Core/Matrix.h>
 #include <iostream>
 #include <fstream>
 #include <queue>
@@ -419,6 +419,16 @@ inline bool integrate(const directional::CartesianField& field,
     return success;
     
     
+}
+
+inline bool integrate(const directional::CartesianField& field,
+                      IntegrationData& intData,
+                      const directional::TriMesh& meshCut,
+                      Eigen::MatrixXd& NFunction,
+                      Eigen::MatrixXd& NCornerFunctions)
+{
+    Eigen::VectorXd residual;
+    return integrate(field, intData, meshCut, NFunction, NCornerFunctions, residual);
 }
 
 }
