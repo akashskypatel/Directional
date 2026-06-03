@@ -3610,3 +3610,5 @@ tutorial/output/polyvector.rawfield
 **/*.egg-info/
 **/__pycache__/
 **/dist/
+*.pyd
+vcpkg_installed/

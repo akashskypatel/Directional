@@ -5,3 +5,12 @@
 [submodule "external/polyscope"]
 	path = external/polyscope
 	url = https://github.com/nmwsharp/polyscope.git
+[submodule "external/libigl"]
+	path = external/libigl
+	url = git@github.com:libigl/libigl.git
+[submodule "external/implot"]
+	path = external/implot
+	url = git@github.com:epezent/implot.git
+[submodule "external/vcpkg"]
+	path = external/vcpkg
+	url = https://github.com/microsoft/vcpkg.git

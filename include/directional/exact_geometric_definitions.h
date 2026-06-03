@@ -339,8 +339,8 @@ namespace directional{
             ENumber pVecv1 = lp1.pVec.cross(lp1.direction);
             assert("pVecv1 shouldn't be zero! " && pVecv1!=ENumber(0));
             ENumber overlapIso = p012vec.cross(lp1.direction) / pVecv1;
-            if (overlapIso.den==1){
-                iso1Overlap = overlapIso.num.convert();
+            if (overlapIso.den()==EInt(1)){
+                iso1Overlap = overlapIso.num().convert();
                 return ((iso1Overlap >= 0 && iso1Overlap <= lp1.numLines) ? 2 : 0);  //only an overlap if integer and within range of lp1
             } else return 0;  //not an integer; no overlap for certain
         }

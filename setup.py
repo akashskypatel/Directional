@@ -35,6 +35,10 @@ def _safe_build_name(value: str) -> str:
     return "".join(ch if ch.isalnum() or ch in ("-", "_") else "-" for ch in value)
 
 
+def _as_cmake_bool(value: bool) -> str:
+    return "ON" if value else "OFF"
+
+
 def _configure_and_build(build_dir: Path, configure_args: list[str], build_target: str | None = None) -> Path:
     build_dir.mkdir(parents=True, exist_ok=True)
     _run(["cmake", "-S", str(ROOT), "-B", str(build_dir), *configure_args])
@@ -56,17 +60,30 @@ class BuildStandalone(Command):
     user_options = [
         ("build-dir=", None, "Build directory"),
         ("install-dir=", None, "Install directory"),
+        ("use-gmp", None, "Enable GMP support if found"),
+        ("no-use-gmp", None, "Disable GMP support"),
+        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
+        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
     ]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.install_dir = None
+        self.use_gmp = True
+        self.no_use_gmp = False
+        self.auto_install_gmp = True
+        self.no_auto_install_gmp = False
 
     def finalize_options(self) -> None:
         if self.build_dir is None:
             self.build_dir = str(_build_dir("standalone"))
         if self.install_dir is None:
             self.install_dir = str(Path(self.build_dir) / "install")
+        if self.no_use_gmp:
+            self.use_gmp = False
+        if self.no_auto_install_gmp:
+            self.auto_install_gmp = False
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
@@ -76,6 +93,8 @@ class BuildStandalone(Command):
             [
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=OFF",
+                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
+                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
             ],
         )
         _configure_and_build(build_dir, configure_args, build_target="directional")
@@ -87,17 +106,30 @@ class BuildTutorials(Command):
     user_options = [
         ("build-dir=", None, "Build directory"),
         ("tutorial=", None, "Tutorial prefix like 501 or full directory name; comma-separated lists are supported"),
+        ("use-gmp", None, "Enable GMP support if found"),
+        ("no-use-gmp", None, "Disable GMP support"),
+        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
+        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
     ]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.tutorial = None
+        self.use_gmp = True
+        self.no_use_gmp = False
+        self.auto_install_gmp = True
+        self.no_auto_install_gmp = False
 
     def finalize_options(self) -> None:
         if self.tutorial is not None:
             self.tutorial = self.tutorial.strip()
             if not self.tutorial:
                 self.tutorial = None
+        if self.no_use_gmp:
+            self.use_gmp = False
+        if self.no_auto_install_gmp:
+            self.auto_install_gmp = False
         if self.build_dir is None:
             if self.tutorial is None:
                 self.build_dir = str(_build_dir("tutorials"))
@@ -114,12 +146,36 @@ class BuildTutorials(Command):
                 "-DBUILD_TUTORIALS=ON",
                 "-DBUILD_PYTHON=OFF",
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
+                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
+                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
             ],
         )
         _configure_and_build(build_dir, configure_args)
 
 
 class CMakeBuildExt(build_ext):
+    user_options = build_ext.user_options + [
+        ("use-gmp", None, "Enable GMP support if found"),
+        ("no-use-gmp", None, "Disable GMP support"),
+        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
+        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+    ]
+    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+
+    def initialize_options(self) -> None:
+        super().initialize_options()
+        self.use_gmp = True
+        self.no_use_gmp = False
+        self.auto_install_gmp = True
+        self.no_auto_install_gmp = False
+
+    def finalize_options(self) -> None:
+        super().finalize_options()
+        if self.no_use_gmp:
+            self.use_gmp = False
+        if self.no_auto_install_gmp:
+            self.auto_install_gmp = False
+
     def build_extension(self, ext: Extension) -> None:
         if not isinstance(ext, CMakeExtension):
             super().build_extension(ext)
@@ -145,6 +201,8 @@ class CMakeBuildExt(build_ext):
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=ON",
                 f"-Dpybind11_DIR={pybind11_dir}",
+                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
+                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
             ],
         )
 
