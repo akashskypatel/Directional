@@ -39,6 +39,18 @@ def _as_cmake_bool(value: bool) -> str:
     return "ON" if value else "OFF"
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    value = raw.strip().lower()
+    if value in {"1", "on", "true", "yes"}:
+        return True
+    if value in {"0", "off", "false", "no"}:
+        return False
+    raise RuntimeError(f"Invalid boolean value for {name}: {raw!r}")
+
+
 def _configure_and_build(build_dir: Path, configure_args: list[str], build_target: str | None = None) -> Path:
     build_dir.mkdir(parents=True, exist_ok=True)
     _run(["cmake", "-S", str(ROOT), "-B", str(build_dir), *configure_args])
@@ -70,9 +82,9 @@ class BuildStandalone(Command):
     def initialize_options(self) -> None:
         self.build_dir = None
         self.install_dir = None
-        self.use_gmp = True
+        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
         self.no_use_gmp = False
-        self.auto_install_gmp = True
+        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
 
     def finalize_options(self) -> None:
@@ -116,9 +128,9 @@ class BuildTutorials(Command):
     def initialize_options(self) -> None:
         self.build_dir = None
         self.tutorial = None
-        self.use_gmp = True
+        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
         self.no_use_gmp = False
-        self.auto_install_gmp = True
+        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
 
     def finalize_options(self) -> None:
@@ -164,9 +176,9 @@ class CMakeBuildExt(build_ext):
 
     def initialize_options(self) -> None:
         super().initialize_options()
-        self.use_gmp = True
+        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
         self.no_use_gmp = False
-        self.auto_install_gmp = True
+        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
 
     def finalize_options(self) -> None:

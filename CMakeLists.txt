@@ -49,16 +49,16 @@ function(_directional_find_gmp)
     "C:/Program Files/GMP/lib"
   )
 
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg")
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed")
     list(APPEND _directional_gmp_include_hints
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/include"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/gmp_x64-windows/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/include/gmp"
     )
     list(APPEND _directional_gmp_library_hints
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/lib"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/debug/lib"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/gmp_x64-windows/lib"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/gmp_x64-windows/debug/lib"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/lib"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/debug/lib"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/bin"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/debug/bin"
     )
   endif()
 
@@ -87,13 +87,21 @@ function(_directional_try_autoinstall_gmp)
       set(_directional_vcpkg_root "$ENV{VCPKG_ROOT}")
     elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg")
       set(_directional_vcpkg_root "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg")
+    else()
+      message(STATUS "Downloading vcpkg...")
+      include(FetchContent)
+      FetchContent_Declare(
+        vcpkg
+        GIT_REPOSITORY https://github.com/Microsoft/vcpkg.git
+      )
+      FetchContent_MakeAvailable(vcpkg)
+      set(_directional_vcpkg_root "${vcpkg_SOURCE_DIR}")
     endif()
 
     if(_directional_vcpkg_root)
       set(_directional_vcpkg_exe "${_directional_vcpkg_root}/vcpkg.exe")
       if(NOT EXISTS "${_directional_vcpkg_exe}")
-        set(_directional_vcpkg_exe "${_directional_vcpkg_root}/vcpkg")
-      elseif(NOT EXISTS "${_directional_vcpkg_exe}")
+        message(STATUS "No vcpkg executable found, trying to bootstrap...")
         # run bootstrap-vcpkg.bat
         execute_process(
           COMMAND ${_directional_vcpkg_root}/bootstrap-vcpkg.bat
@@ -101,7 +109,13 @@ function(_directional_try_autoinstall_gmp)
           RESULT_VARIABLE _directional_vcpkg_result
         )
         if(_directional_vcpkg_result EQUAL 0)
-          set(_directional_vcpkg_exe "${_directional_vcpkg_root}/vcpkg")
+          message(STATUS "vcpkg bootstrapped successfully")
+          set(_directional_vcpkg_exe "${_directional_vcpkg_root}/vcpkg.exe")
+          if(NOT EXISTS "${_directional_vcpkg_exe}")
+            message(FATAL_ERROR "Failed to bootstrap vcpkg")
+            set(USE_GMP OFF PARENT_SCOPE)
+            return()
+          endif()
         else()
           message(WARNING "Failed to bootstrap vcpkg")
           set(USE_GMP OFF PARENT_SCOPE)

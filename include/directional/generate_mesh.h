@@ -578,10 +578,10 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
             
             vector<EInt> isoValues;
             EInt q, r;
-            div_mod(minFuncs[funcIter].num(), minFuncs[funcIter].den(), q, r);
-            EInt minIsoValue = q + (minFuncs[funcIter].num() < EInt(0) ? EInt(-1) : EInt(0));
-            div_mod(maxFuncs[funcIter].num(), maxFuncs[funcIter].den(), q, r);
-            EInt maxIsoValue = q + (maxFuncs[funcIter].num() < EInt(0) ? EInt(0) : EInt(1));
+            div_mod(enumber_num(minFuncs[funcIter]), enumber_den(minFuncs[funcIter]), q, r);
+            EInt minIsoValue = q + (enumber_num(minFuncs[funcIter]) < EInt(0) ? EInt(-1) : EInt(0));
+            div_mod(enumber_num(maxFuncs[funcIter]), enumber_den(maxFuncs[funcIter]), q, r);
+            EInt maxIsoValue = q + (enumber_num(maxFuncs[funcIter]) < EInt(0) ? EInt(0) : EInt(1));
             for (EInt isoValue = minIsoValue; isoValue <= maxIsoValue; isoValue=isoValue+EInt(1))
                 isoValues.push_back(isoValue);
             

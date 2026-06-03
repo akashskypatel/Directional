@@ -112,4 +112,12 @@ public:
     const mpq_class& raw() const { return value; }
 };
 
+inline EInt enumber_num(const ENumber& value) {
+    return value.num();
+}
+
+inline EInt enumber_den(const ENumber& value) {
+    return value.den();
+}
+
 #endif

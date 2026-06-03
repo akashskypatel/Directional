@@ -5,7 +5,8 @@ requires = [
   "cmake>=4.0",
   "pybind11>=2.12",
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "directional_build_backend"
+backend-path = ["."]
 
 [project]
 name = "directional"

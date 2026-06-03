@@ -240,5 +240,13 @@ public:
      }*/
 };
 
+inline EInt enumber_num(const ENumber& value) {
+    return value.num;
+}
+
+inline EInt enumber_den(const ENumber& value) {
+    return value.den;
+}
+
 
 #endif

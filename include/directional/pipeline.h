@@ -68,7 +68,11 @@ inline Eigen::MatrixXd make_raw_cross_field(
   for (int face = 0; face < mesh.F.rows(); ++face) {
     const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
     const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face), normal, normalizeDirections);
-    const Eigen::RowVector3d pd2 = project_tangent(secondaryDirections.row(face), normal, normalizeDirections);
+    Eigen::RowVector3d pd2 = project_tangent(secondaryDirections.row(face), normal, normalizeDirections);
+
+    if (pd1.cross(pd2).dot(normal) < 0.0) {
+      pd2 = -pd2;
+    }
 
     rawField.block(face, 0, 1, 3) = pd1;
     rawField.block(face, 3, 1, 3) = pd2;
@@ -91,12 +95,8 @@ inline Eigen::MatrixXd orthogonal_complement(
     const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
     const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face), normal, normalizeDirections);
     Eigen::RowVector3d pd2 = normal.cross(pd1);
-    const double norm = pd2.norm();
-    if (norm <= 1e-12) {
-      throw std::runtime_error("Failed to derive a secondary tangent direction from the primary direction.");
-    }
     if (normalizeDirections) {
-      pd2 /= norm;
+      pd2.normalize();
     }
     secondary.row(face) = pd2;
   }
@@ -108,6 +108,9 @@ inline RemeshResult remesh_from_raw_cross_field(
     const Eigen::MatrixXi& faces,
     const Eigen::MatrixXd& rawCrossField,
     const RemeshOptions& options = {}) {
+  if (options.featureAlign) {
+    throw std::runtime_error("featureAlign is not supported by the headless Directional pipeline yet.");
+  }
   if (rawCrossField.rows() != faces.rows() || rawCrossField.cols() != 12) {
     throw std::runtime_error("rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
   }
