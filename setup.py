@@ -222,6 +222,17 @@ class CMakeBuildExt(build_ext):
         target_pkg_dir = extdir
         shutil.copy2(package_src, target_pkg_dir / "__init__.py")
 
+        # Copy runtime DLL dependencies beside the extension module so Python can load them.
+        runtime_bin_dir = install_dir / "bin"
+        if runtime_bin_dir.exists():
+            for dll_path in runtime_bin_dir.glob("*.dll"):
+                shutil.copy2(dll_path, target_pkg_dir / dll_path.name)
+
+        vcpkg_gmp_bin_dir = ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin"
+        if vcpkg_gmp_bin_dir.exists():
+            for dll_path in vcpkg_gmp_bin_dir.glob("*.dll"):
+                shutil.copy2(dll_path, target_pkg_dir / dll_path.name)
+
 
 setup(
     name="directional",

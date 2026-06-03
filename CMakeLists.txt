@@ -199,6 +199,9 @@ if(BUILD_PYTHON)
     python/src/bindings.cpp
   )
   target_link_libraries(_directional PRIVATE Directional::directional)
+  if(USE_GMP AND GMP_LIBRARIES)
+    target_link_libraries(_directional PRIVATE ${GMP_LIBRARIES})
+  endif()
   target_compile_features(_directional PRIVATE cxx_std_20)
 
   install(
