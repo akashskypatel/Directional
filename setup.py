@@ -61,6 +61,19 @@ def _configure_and_build(build_dir: Path, configure_args: list[str], build_targe
     return build_dir
 
 
+def _copy_runtime_dlls(target_dir: Path, directories: list[Path]) -> None:
+    seen: set[Path] = set()
+    for directory in directories:
+        if not directory.exists():
+            continue
+        for dll_path in directory.glob("*.dll"):
+            resolved = dll_path.resolve()
+            if resolved in seen:
+                continue
+            seen.add(resolved)
+            shutil.copy2(dll_path, target_dir / dll_path.name)
+
+
 class CMakeExtension(Extension):
     def __init__(self, name: str, sourcedir: str = ".") -> None:
         super().__init__(name, sources=[])
@@ -236,14 +249,14 @@ class CMakeBuildExt(build_ext):
 
         # Copy runtime DLL dependencies beside the extension module so Python can load them.
         runtime_bin_dir = install_dir / "bin"
-        if runtime_bin_dir.exists():
-            for dll_path in runtime_bin_dir.glob("*.dll"):
-                shutil.copy2(dll_path, target_pkg_dir / dll_path.name)
-
-        vcpkg_gmp_bin_dir = ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin"
-        if vcpkg_gmp_bin_dir.exists():
-            for dll_path in vcpkg_gmp_bin_dir.glob("*.dll"):
-                shutil.copy2(dll_path, target_pkg_dir / dll_path.name)
+        runtime_dirs = [
+            runtime_bin_dir,
+            ROOT / "vcpkg_installed" / "x64-windows" / "bin",
+            ROOT / "vcpkg_installed" / "x64-windows" / "debug" / "bin",
+            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
+            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
+        ]
+        _copy_runtime_dlls(target_pkg_dir, runtime_dirs)
 
 
 setup(
@@ -252,6 +265,8 @@ setup(
     description="Directional field processing library with standalone, tutorial, and Python wheel builds",
     packages=find_packages(where="python"),
     package_dir={"": "python"},
+    package_data={"directional": ["*.dll", "*.dylib", "*.so"]},
+    include_package_data=True,
     ext_modules=[CMakeExtension("directional._directional", sourcedir=".")],
     cmdclass={
         "build_standalone": BuildStandalone,

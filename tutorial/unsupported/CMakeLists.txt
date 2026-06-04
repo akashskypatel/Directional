@@ -3,3 +3,4 @@ project(503_HexagonalParameterization)
 
 add_executable(${PROJECT_NAME}_bin main.cpp)
 target_link_libraries(${PROJECT_NAME}_bin igl::core igl::opengl_glfw igl::png tutorials)
+directional_finalize_tutorial_target(${PROJECT_NAME}_bin)

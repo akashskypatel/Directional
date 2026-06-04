@@ -178,6 +178,44 @@ function(_directional_try_autoinstall_gmp)
   endif()
 endfunction()
 
+function(_directional_collect_gmp_runtime_files out_var)
+  set(_runtime_candidates)
+
+  if(WIN32)
+    if(GMP_LIBRARIES)
+      get_filename_component(_gmp_library_dir "${GMP_LIBRARIES}" DIRECTORY)
+      list(APPEND _runtime_candidates
+        "${_gmp_library_dir}"
+        "${_gmp_library_dir}/../bin"
+        "${_gmp_library_dir}/../debug/bin"
+      )
+    endif()
+
+    list(APPEND _runtime_candidates
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/bin"
+      "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg_installed/x64-windows/debug/bin"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/gmp_x64-windows/bin"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/bin"
+    )
+
+    set(_runtime_files)
+    foreach(_candidate_dir IN LISTS _runtime_candidates)
+      if(EXISTS "${_candidate_dir}")
+        file(GLOB _candidate_files
+          "${_candidate_dir}/gmp*.dll"
+          "${_candidate_dir}/gmpxx*.dll"
+        )
+        list(APPEND _runtime_files ${_candidate_files})
+      endif()
+    endforeach()
+
+    list(REMOVE_DUPLICATES _runtime_files)
+    set(${out_var} "${_runtime_files}" PARENT_SCOPE)
+  else()
+    set(${out_var} "" PARENT_SCOPE)
+  endif()
+endfunction()
+
 if(USE_GMP)
   message(STATUS "Attempting to find GMP for Directional core...")
 
@@ -195,6 +233,7 @@ if(USE_GMP)
     target_compile_definitions(directional PUBLIC USE_GMP USE_GMP_ENABLED)
     target_include_directories(directional PUBLIC $<BUILD_INTERFACE:${GMP_INCLUDE_DIR}>)
     target_link_libraries(directional PRIVATE ${GMP_LIBRARIES})
+    _directional_collect_gmp_runtime_files(DIRECTIONAL_GMP_RUNTIME_FILES)
   else()
     message(WARNING "GMP not found for Directional core. Continuing without USE_GMP.")
     set(USE_GMP OFF CACHE BOOL "Enable GMP support if found" FORCE)
@@ -228,6 +267,13 @@ if(BUILD_PYTHON)
     FILES ${CMAKE_CURRENT_SOURCE_DIR}/python/directional/__init__.py
     DESTINATION directional
   )
+
+  if(USE_GMP AND DIRECTIONAL_GMP_RUNTIME_FILES)
+    install(
+      FILES ${DIRECTIONAL_GMP_RUNTIME_FILES}
+      DESTINATION directional
+    )
+  endif()
 endif()
 
 install(
@@ -237,6 +283,13 @@ install(
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+
+if(USE_GMP AND DIRECTIONAL_GMP_RUNTIME_FILES)
+  install(
+    FILES ${DIRECTIONAL_GMP_RUNTIME_FILES}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
+endif()
 
 install(
   DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/

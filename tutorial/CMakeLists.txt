@@ -36,8 +36,28 @@ file(MAKE_DIRECTORY "${TUTORIAL_DATA_PATH}")
 file(MAKE_DIRECTORY "${TUTORIAL_OUTPUT_PATH}")
 
 # Set runtime output dir and create
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
-file(MAKE_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+function(directional_finalize_tutorial_target target_name)
+  set(_tutorial_output_dir "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/$<CONFIG>")
+  set_target_properties(${target_name} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${_tutorial_output_dir}"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Debug"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/Release"
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/RelWithDebInfo"
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/MinSizeRel"
+  )
+
+  if(WIN32 AND DIRECTIONAL_GMP_RUNTIME_FILES)
+    add_custom_command(
+      TARGET ${target_name}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target_name}>"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${DIRECTIONAL_GMP_RUNTIME_FILES}
+        "$<TARGET_FILE_DIR:${target_name}>"
+      VERBATIM
+    )
+  endif()
+endfunction()
 
 # Interface library for tutorial targets
 add_library(tutorials INTERFACE)

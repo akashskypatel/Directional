@@ -15,3 +15,5 @@ if(USE_GMP AND GMP_LIBRARIES)
     target_include_directories(${PROJECT_NAME}_bin PUBLIC ${GMP_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME}_bin PUBLIC ${GMP_LIBRARIES})
 endif()
+
+directional_finalize_tutorial_target(${PROJECT_NAME}_bin)

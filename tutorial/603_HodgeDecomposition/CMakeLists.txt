@@ -3,3 +3,4 @@ project(603_HodgeDecomposition)
 
 add_executable(${PROJECT_NAME}_bin main.cpp)
 target_link_libraries(${PROJECT_NAME}_bin PUBLIC tutorials polyscope)
+directional_finalize_tutorial_target(${PROJECT_NAME}_bin)

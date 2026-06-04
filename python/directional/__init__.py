@@ -11,12 +11,19 @@ def _configure_windows_dll_search() -> None:
 
     package_dir = Path(__file__).resolve().parent
     repo_root = package_dir.parents[1]
+    cwd = Path.cwd()
     candidate_dirs = [
         package_dir,
         repo_root / "build" / "temp.win-amd64-cpython-313" / "Release" / "directional._directional" / "install" / "bin",
         repo_root / "build" / "standalone" / "Release",
+        repo_root / "vcpkg_installed" / "x64-windows" / "bin",
         repo_root / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
         repo_root / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
+        cwd / "third_party" / "Directional" / "build" / "temp.win-amd64-cpython-313" / "Release" / "directional._directional" / "install" / "bin",
+        cwd / "third_party" / "Directional" / "build" / "standalone" / "Release",
+        cwd / "third_party" / "Directional" / "vcpkg_installed" / "x64-windows" / "bin",
+        cwd / "third_party" / "Directional" / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
+        cwd / "third_party" / "Directional" / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
     ]
 
     seen: set[str] = set()
