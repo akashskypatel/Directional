@@ -136,21 +136,6 @@ public:
         return edgeQuantity;
     }
     
-    inline polyscope::SurfaceHalfedgeScalarQuantity* set_surface_halfedge_data(const Eigen::VectorXd& halfedgeData,
-                                                                       const std::string name="",
-                                                                       const int meshNum=0)
-    {
-        std::string dataName;
-        if (name.empty())
-            dataName = "Halfedge data " + std::to_string(meshNum);
-        else
-            dataName = name;
-        polyscope::SurfaceHalfedgeScalarQuantity* halfedgeQuantity = psSurfaceMeshList[meshNum]->addHalfedgeScalarQuantity(dataName, halfedgeData);
-        halfedgeQuantity->setMapRange(std::pair<double, double>(halfedgeData.minCoeff(), halfedgeData.maxCoeff()));
-        halfedgeQuantity->setEnabled(true);
-        return halfedgeQuantity;
-    }
-
     
     inline void set_cartesian_field(const CartesianField& _field,
                                     const std::string name="",

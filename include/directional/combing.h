@@ -31,25 +31,23 @@ inline void combing(const directional::CartesianField& rawField,
                     directional::CartesianField& combedField,
                     const Eigen::MatrixXi& _spaceIsCut=Eigen::MatrixXi())
 {
-    // intField means intrinsic field
-
     using namespace Eigen;
     combedField.init(*(rawField.tb), fieldTypeEnum::RAW_FIELD, rawField.N);
-    Eigen::MatrixXi spaceIsCut(rawField.intField.rows(),3); // every edge of every space
+    Eigen::MatrixXi spaceIsCut(rawField.intField.rows(),3);
     if (_spaceIsCut.rows()==0)
         spaceIsCut.setZero();
     else
         spaceIsCut=_spaceIsCut;
     
-    VectorXi spaceTurns(rawField.intField.rows()); // matching for every space
+    VectorXi spaceTurns(rawField.intField.rows());
     
     //flood-filling through the matching to comb field
     
     //dual tree to find combing routes
     VectorXi visitedSpaces=VectorXi::Constant(rawField.intField.rows(),1,0);
-    std::queue<std::pair<int,int> > spaceMatchingQueue; // pairs of (space, matching)
+    std::queue<std::pair<int,int> > spaceMatchingQueue;
     spaceMatchingQueue.push(std::pair<int,int>(0,0));
-    MatrixXd combedIntField(combedField.intField.rows(), combedField.intField.cols()); // #T x 2N
+    MatrixXd combedIntField(combedField.intField.rows(), combedField.intField.cols());
     do{
         std::pair<int,int> currSpaceMatching=spaceMatchingQueue.front();
         spaceMatchingQueue.pop();
@@ -58,18 +56,16 @@ inline void combing(const directional::CartesianField& rawField,
         visitedSpaces(currSpaceMatching.first)=1;
         
         //combing field to start from the matching index
-        // block(i,j,p,q) is a block of size (p,q) starting at (i,j)
-        // Basically we set v_i := v_{(i+m)%N}
-        combedIntField.block(currSpaceMatching.first, 0, 1, 2*(rawField.N-currSpaceMatching.second)) = rawField.intField.block(currSpaceMatching.first, 2*currSpaceMatching.second, 1, 2*(rawField.N-currSpaceMatching.second));
-        combedIntField.block(currSpaceMatching.first, 2*(rawField.N-currSpaceMatching.second), 1, 2*currSpaceMatching.second) = rawField.intField.block(currSpaceMatching.first, 0, 1, 2*currSpaceMatching.second);
+        combedIntField.block(currSpaceMatching.first, 0, 1, 2*(rawField.N-currSpaceMatching.second))=rawField.intField.block(currSpaceMatching.first, 2*currSpaceMatching.second, 1, 2*(rawField.N-currSpaceMatching.second));
+        combedIntField.block(currSpaceMatching.first, 2*(rawField.N-currSpaceMatching.second), 1, 2*currSpaceMatching.second)=rawField.intField.block(currSpaceMatching.first, 0, 1, 2*currSpaceMatching.second);
         
         spaceTurns(currSpaceMatching.first)=currSpaceMatching.second;
         
-        for (int i = 0; i < 3; i++) { // for every neighboring space
-            int nextMatching = rawField.matching(rawField.tb->oneRing(currSpaceMatching.first,i)); // raw matching
-            int nextFace = rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0)==currSpaceMatching.first ? rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),1) : rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0);
-            nextMatching *= (rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0)==currSpaceMatching.first ? 1.0 : -1.0);
-            nextMatching = (nextMatching+currSpaceMatching.second+1000*rawField.N)%rawField.N;  //killing negatives
+        for (int i=0;i<3;i++){
+            int nextMatching=(rawField.matching(rawField.tb->oneRing(currSpaceMatching.first,i)));
+            int nextFace=(rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0)==currSpaceMatching.first ? rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),1) : rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0));
+            nextMatching*=(rawField.tb->adjSpaces(rawField.tb->oneRing(currSpaceMatching.first,i),0)==currSpaceMatching.first ? 1.0 : -1.0);
+            nextMatching=(nextMatching+currSpaceMatching.second+1000*rawField.N)%rawField.N;  //killing negatives
             assert("combing(): NextMatching is out of bounds! " && (nextMatching>=0 && nextMatching<rawField.N));
             if ((nextFace!=-1)&&(!visitedSpaces(nextFace))&&(!spaceIsCut(currSpaceMatching.first,i)))
                 spaceMatchingQueue.push(std::pair<int,int>(nextFace, nextMatching));

@@ -37,14 +37,14 @@ struct RemeshResult {
   Eigen::MatrixXd cutCornerFunctions;
 };
 
-inline Eigen::RowVector3d project_tangent(
-    const Eigen::RowVector3d& vector,
-    const Eigen::RowVector3d& normal,
-    const bool normalize) {
+inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
+                                          const Eigen::RowVector3d &normal,
+                                          const bool normalize) {
   Eigen::RowVector3d tangent = vector - vector.dot(normal) * normal;
   const double norm = tangent.norm();
   if (norm <= 1e-12) {
-    throw std::runtime_error("Directional pipeline received a degenerate tangent direction.");
+    throw std::runtime_error(
+        "Directional pipeline received a degenerate tangent direction.");
   }
   if (normalize) {
     tangent /= norm;
@@ -52,27 +52,27 @@ inline Eigen::RowVector3d project_tangent(
   return tangent;
 }
 
-inline Eigen::MatrixXd make_raw_cross_field(
-    const TriMesh& mesh,
-    const Eigen::MatrixXd& primaryDirections,
-    const Eigen::MatrixXd& secondaryDirections,
-    const bool normalizeDirections) {
-  if (primaryDirections.rows() != mesh.F.rows() || primaryDirections.cols() != 3) {
+inline Eigen::MatrixXd
+make_raw_cross_field(const TriMesh &mesh,
+                     const Eigen::MatrixXd &primaryDirections,
+                     const Eigen::MatrixXd &secondaryDirections,
+                     const bool normalizeDirections) {
+  if (primaryDirections.rows() != mesh.F.rows() ||
+      primaryDirections.cols() != 3) {
     throw std::runtime_error("primaryDirections must have shape (#F, 3).");
   }
-  if (secondaryDirections.rows() != mesh.F.rows() || secondaryDirections.cols() != 3) {
+  if (secondaryDirections.rows() != mesh.F.rows() ||
+      secondaryDirections.cols() != 3) {
     throw std::runtime_error("secondaryDirections must have shape (#F, 3).");
   }
 
   Eigen::MatrixXd rawField(mesh.F.rows(), 12);
   for (int face = 0; face < mesh.F.rows(); ++face) {
     const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
-    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face), normal, normalizeDirections);
-    Eigen::RowVector3d pd2 = project_tangent(secondaryDirections.row(face), normal, normalizeDirections);
-
-    if (pd1.cross(pd2).dot(normal) < 0.0) {
-      pd2 = -pd2;
-    }
+    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face),
+                                                   normal, normalizeDirections);
+    const Eigen::RowVector3d pd2 = project_tangent(
+        secondaryDirections.row(face), normal, normalizeDirections);
 
     rawField.block(face, 0, 1, 3) = pd1;
     rawField.block(face, 3, 1, 3) = pd2;
@@ -82,18 +82,20 @@ inline Eigen::MatrixXd make_raw_cross_field(
   return rawField;
 }
 
-inline Eigen::MatrixXd orthogonal_complement(
-    const TriMesh& mesh,
-    const Eigen::MatrixXd& primaryDirections,
-    const bool normalizeDirections) {
-  if (primaryDirections.rows() != mesh.F.rows() || primaryDirections.cols() != 3) {
+inline Eigen::MatrixXd
+orthogonal_complement(const TriMesh &mesh,
+                      const Eigen::MatrixXd &primaryDirections,
+                      const bool normalizeDirections) {
+  if (primaryDirections.rows() != mesh.F.rows() ||
+      primaryDirections.cols() != 3) {
     throw std::runtime_error("primaryDirections must have shape (#F, 3).");
   }
 
   Eigen::MatrixXd secondary(mesh.F.rows(), 3);
   for (int face = 0; face < mesh.F.rows(); ++face) {
     const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
-    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face), normal, normalizeDirections);
+    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face),
+                                                   normal, normalizeDirections);
     Eigen::RowVector3d pd2 = normal.cross(pd1);
     if (normalizeDirections) {
       pd2.normalize();
@@ -103,20 +105,19 @@ inline Eigen::MatrixXd orthogonal_complement(
   return secondary;
 }
 
-inline RemeshResult remesh_from_raw_cross_field(
-    const Eigen::MatrixXd& vertices,
-    const Eigen::MatrixXi& faces,
-    const Eigen::MatrixXd& rawCrossField,
-    const RemeshOptions& options = {}) {
+inline RemeshResult
+remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
+                                 const Eigen::MatrixXd &rawCrossField,
+                                 const RemeshOptions &options = {}) {
   if (options.featureAlign) {
-    throw std::runtime_error("featureAlign is not supported by the headless Directional pipeline yet.");
+    throw std::runtime_error("featureAlign is not supported by the headless "
+                             "Directional pipeline yet.");
   }
-  if (rawCrossField.rows() != faces.rows() || rawCrossField.cols() != 12) {
-    throw std::runtime_error("rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
+  if (rawCrossField.rows() != meshWhole.F.rows() ||
+      rawCrossField.cols() != 12) {
+    throw std::runtime_error(
+        "rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
   }
-
-  TriMesh meshWhole;
-  meshWhole.set_mesh(vertices, faces);
 
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
@@ -130,7 +131,7 @@ inline RemeshResult remesh_from_raw_cross_field(
   integration.lengthRatio = options.lengthRatio;
   integration.integralSeamless = options.integralSeamless;
   integration.roundSeams = options.roundSeams;
-  integration.featureAlign = options.featureAlign;
+  // integration.featureAlign = options.featureAlign;
   integration.verbose = options.verbose;
 
   TriMesh meshCut;
@@ -139,7 +140,8 @@ inline RemeshResult remesh_from_raw_cross_field(
 
   Eigen::MatrixXd cutFunctions;
   Eigen::MatrixXd cutCornerFunctions;
-  integrate(combedField, integration, meshCut, cutFunctions, cutCornerFunctions);
+  integrate(combedField, integration, meshCut, cutFunctions,
+            cutCornerFunctions);
 
   MesherData mesherData;
   mesherData.verbose = options.verbose;
@@ -150,35 +152,48 @@ inline RemeshResult remesh_from_raw_cross_field(
   result.cutFaces = meshCut.F;
   result.cutFunctions = cutFunctions;
   result.cutCornerFunctions = cutCornerFunctions;
-  result.success = mesher(meshWhole, mesherData, result.vertices, result.degrees, result.faces);
+  result.success = mesher(meshWhole, mesherData, result.vertices,
+                          result.degrees, result.faces);
   return result;
 }
 
-inline RemeshResult remesh_from_cross_field(
-    const Eigen::MatrixXd& vertices,
-    const Eigen::MatrixXi& faces,
-    const Eigen::MatrixXd& primaryDirections,
-    const Eigen::MatrixXd& secondaryDirections,
-    const RemeshOptions& options = {}) {
+inline RemeshResult remesh_from_raw_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options = {}) {
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
-  const Eigen::MatrixXd rawField = make_raw_cross_field(
-      meshWhole, primaryDirections, secondaryDirections, options.normalizeDirections);
-  return remesh_from_raw_cross_field(vertices, faces, rawField, options);
+  return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
 }
 
-inline RemeshResult remesh_from_cross_field(
-    const Eigen::MatrixXd& vertices,
-    const Eigen::MatrixXi& faces,
-    const Eigen::MatrixXd& primaryDirections,
-    const RemeshOptions& options = {}) {
+inline RemeshResult
+remesh_from_cross_field(const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces,
+                        const Eigen::MatrixXd &primaryDirections,
+                        const Eigen::MatrixXd &secondaryDirections,
+                        const RemeshOptions &options = {}) {
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
-  const Eigen::MatrixXd secondaryDirections =
-      orthogonal_complement(meshWhole, primaryDirections, options.normalizeDirections);
-  return remesh_from_cross_field(vertices, faces, primaryDirections, secondaryDirections, options);
+  const Eigen::MatrixXd rawField =
+      make_raw_cross_field(meshWhole, primaryDirections, secondaryDirections,
+                           options.normalizeDirections);
+  return remesh_from_raw_cross_field_impl(meshWhole, rawField, options);
 }
 
-}  // namespace directional::pipeline
+inline RemeshResult
+remesh_from_cross_field(const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces,
+                        const Eigen::MatrixXd &primaryDirections,
+                        const RemeshOptions &options = {}) {
+  TriMesh meshWhole;
+  meshWhole.set_mesh(vertices, faces);
+  const Eigen::MatrixXd secondaryDirections = orthogonal_complement(
+      meshWhole, primaryDirections, options.normalizeDirections);
+  const Eigen::MatrixXd rawField =
+      make_raw_cross_field(meshWhole, primaryDirections, secondaryDirections,
+                           options.normalizeDirections);
+  return remesh_from_raw_cross_field_impl(meshWhole, rawField, options);
+}
+
+} // namespace directional::pipeline
 
 #endif

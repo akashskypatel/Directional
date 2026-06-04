@@ -37,7 +37,7 @@ public:
     Eigen::MatrixXi EF, FE, EV,TT, EFi, VE, VF;
     Eigen::MatrixXd FEs;
     Eigen::VectorXi innerEdges, boundEdges, vertexValence;  //vertexValence is #(outgoing edges) (if boundary, then #faces+1 = vertexvalence)
-    Eigen::VectorXi isBoundaryVertex, isBoundaryEdge, isFeatureEdge, isMasterFeatureEdge;
+    Eigen::VectorXi isBoundaryVertex, isBoundaryEdge;
     
     //DCEL quantities
     typedef DCEL<int,int,int,int> TriMeshDCEL;
@@ -307,67 +307,10 @@ public:
             }while(hebegin!=heiterate);
         }
         
-        isFeatureEdge=Eigen::VectorXi::Zero(EV.rows());
-        isMasterFeatureEdge=Eigen::VectorXi::Zero(EV.rows());   
+   
+        
     }
-    void inline set_feature_edges(const Eigen::MatrixXi& fId_edgLocId){
-      isFeatureEdge=Eigen::VectorXi::Zero(EV.rows());
-      // std::cout << "check edges in trimesh" << std::endl;
-      for(int iF=0; iF<fId_edgLocId.rows(); iF++){
-        int fId = fId_edgLocId(iF, 0);
-        int iV0 = fId_edgLocId(iF, 1);
-        int iV1 = fId_edgLocId(iF, 2);
-        int iE = -1;
-        for(int iEloc=0; iEloc<FE.cols(); iEloc++){
-          bool m00 = (iV0 == EV(FE(fId, iEloc), 0));
-          bool m01 = (iV0 == EV(FE(fId, iEloc), 1));
-          bool m10 = (iV1 == EV(FE(fId, iEloc), 0));
-          bool m11 = (iV1 == EV(FE(fId, iEloc), 1));
-          if((m00 && m11) || (m01 && m10)){
-            iE = FE(fId, iEloc);
-            break;
-          }
-        }
-        if(iE == -1){
-          std::cout << "unable to find feature edge in mesh" << std::endl;
-          exit(0);
-        }
-        isFeatureEdge[iE] = 1;
-        // int locEdgId = fId_edgLocId(iF, 1);
-        // isFeatureEdge[HE(FH(fId, locEdgId))] = 1;
-        // std::cout << EV(HE(FH(fId, locEdgId)), 0) << " " << EV(HE(FH(fId, locEdgId)), 1) << std::endl;
-        // std::cout << F(fId, 0) << " " << F(fId, 1) << " " << F(fId, 2) << std::endl;
-      }
-    }
-    void inline set_master_feature_edges(const Eigen::MatrixXi& fId_edgLocId){
-      isMasterFeatureEdge=Eigen::VectorXi::Zero(EV.rows());
-      // std::cout << "check edges in trimesh" << std::endl;
-      for(int iF=0; iF<fId_edgLocId.rows(); iF++){
-        int fId = fId_edgLocId(iF, 0);
-        int iV0 = fId_edgLocId(iF, 1);
-        int iV1 = fId_edgLocId(iF, 2);
-        int iE = -1;
-        for(int iEloc=0; iEloc<FE.cols(); iEloc++){
-          bool m00 = (iV0 == EV(FE(fId, iEloc), 0));
-          bool m01 = (iV0 == EV(FE(fId, iEloc), 1));
-          bool m10 = (iV1 == EV(FE(fId, iEloc), 0));
-          bool m11 = (iV1 == EV(FE(fId, iEloc), 1));
-          if((m00 && m11) || (m01 && m10)){
-            iE = FE(fId, iEloc);
-            break;
-          }
-        }
-        if(iE == -1){
-          std::cout << "unable to find feature edge in mesh" << std::endl;
-          exit(0);
-        }
-        isMasterFeatureEdge[iE] = 1;
-        // int locEdgId = fId_edgLocId(iF, 1);
-        // isFeatureEdge[HE(FH(fId, locEdgId))] = 1;
-        // std::cout << EV(HE(FH(fId, locEdgId)), 0) << " " << EV(HE(FH(fId, locEdgId)), 1) << std::endl;
-        // std::cout << F(fId, 0) << " " << F(fId, 1) << " " << F(fId, 2) << std::endl;
-      }
-    }
+    
 };
 
 }
