@@ -47,11 +47,11 @@ bool mesher(const directional::TriMesh& origMesh,
     functionMesher.init();
     
     if (mData.verbose)
-        std::cout<<"Generating mesh"<<std::endl;
+        std::cout<< "[Directional::mesher()]: "<<"Generating mesh"<<std::endl;
     
     functionMesher.generate_mesh();
     if (mData.verbose)
-        std::cout<<"Done generating!"<<std::endl;
+        std::cout<< "[Directional::mesher()]: "<<"Done generating!"<<std::endl;
     
     
     Eigen::VectorXi genInnerEdges,genTF;
@@ -60,22 +60,22 @@ bool mesher(const directional::TriMesh& origMesh,
     
     bool success;
     if (mData.verbose){
-        std::cout<<"Cleaning Mesh"<<std::endl;
+        std::cout<< "[Directional::mesher()]: "<<"Cleaning Mesh"<<std::endl;
         auto start = std::chrono::high_resolution_clock::now();
         success = functionMesher.simplify_mesh();
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-        std::cout<<"Mesh simplification time: "<< duration.count()/1e+6 << " seconds" << std::endl;
+        std::cout<< "[Directional::mesher()]: "<<"Mesh simplification time: "<< duration.count()/1e+6 << " seconds" << std::endl;
     }else{
         success = functionMesher.simplify_mesh();
     }
     
     if (success){
         if (mData.verbose)
-            std::cout<<"Cleaning succeeded!"<<std::endl;
+            std::cout<< "[Directional::mesher()]: "<<"Cleaning succeeded!"<<std::endl;
         
         functionMesher.to_polygonal(VOutput,DOutput, FOutput);
-    } else if (mData.verbose) std::cout<<"Cleaning failed!"<<std::endl;
+    } else if (mData.verbose) std::cout<< "[Directional::mesher()]: "<<"Cleaning failed!"<<std::endl;
     
     return success;
     

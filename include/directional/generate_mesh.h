@@ -599,9 +599,8 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
       auto end = std::chrono::high_resolution_clock::now();
       auto duration =
           std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-      std::cout << "Triangle " << findex << " exactNFunction:" << std::endl;
-      std::cout << "Execution time: " << duration.count() / 1e+6 << " seconds"
-                << std::endl;
+      std::cout<< "[Directional::NFunctionMesher::generate_mesh()]: " << "Triangle " << findex << " exactNFunction:" << std::endl;
+      std::cout<< "[Directional::NFunctionMesher::generate_mesh()]: " << "Execution time: " << duration.count() / 1e+6 << " seconds" << std::endl;
       start = std::chrono::high_resolution_clock::now();
     }
 

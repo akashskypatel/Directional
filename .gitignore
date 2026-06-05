@@ -3612,3 +3612,4 @@ tutorial/output/polyvector.rawfield
 **/dist/
 *.pyd
 vcpkg_installed/
+.agents/

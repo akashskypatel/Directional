@@ -10,6 +10,7 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <chrono>
 #include <utility>
 #include <Eigen/Sparse>
 #include <Eigen/Dense>
@@ -163,11 +164,11 @@ public:
         
         for (int i=0;i<Set1.size();i++)
             if ((!Set1Connect[i])&&(verbose))
-                std::cout<<"Relative Vertex "<<i<<" in Set1 is unmatched!"<<std::endl;
+                std::cout<< "[Directional::NFunctionMesher::FindVertexMatch()]: "<<"Relative Vertex "<<i<<" in Set1 is unmatched!"<<std::endl;
         
         for (int i=0;i<Set2.size();i++)
             if ((!Set2Connect[i])&&(verbose))
-                std::cout<<"Relative Vertex "<<i<<" in Set2 is unmatched!"<<std::endl;
+                std::cout<< "[Directional::NFunctionMesher::FindVertexMatch()]: "<<"Relative Vertex "<<i<<" in Set2 is unmatched!"<<std::endl;
         
         /*if (NumConnected!=Set1.size()+Set2.size())
          int kaka=9;*/
@@ -175,8 +176,8 @@ public:
         if (verbose){
             for (int i=0;i<Result.size();i++){
                 if (squaredDistance(Set1[Result[i].first],Set2[Result[i].second])>ENumber(0)){
-                    std::cout<<"("<<Result[i].first<<","<<Result[i].second<<") with dist "<<squaredDistance(Set1[Result[i].first],Set2[Result[i].second]).to_double()<<std::endl;
-                    std::cout<<"Distance is abnormally not zero!"<<std::endl;
+                    std::cout<< "[Directional::NFunctionMesher::FindVertexMatch()]: "<<"("<<Result[i].first<<","<<Result[i].second<<") with dist "<<squaredDistance(Set1[Result[i].first],Set2[Result[i].second]).to_double()<<std::endl;
+                    std::cout<< "[Directional::NFunctionMesher::FindVertexMatch()]: "<<"Distance is abnormally not zero!"<<std::endl;
                 }
             }
         }
@@ -191,17 +192,51 @@ public:
         
         using namespace std;
         using namespace Eigen;
+        using Clock = std::chrono::high_resolution_clock;
+
+        const auto simplifyStart = Clock::now();
+        auto phaseStart = simplifyStart;
+        const auto logPhase = [&](const char* label) {
+            if (!mData.verbose)
+                return;
+            const auto now = Clock::now();
+            const auto phaseSeconds =
+                std::chrono::duration_cast<std::chrono::microseconds>(now - phaseStart).count() / 1e+6;
+            const auto totalSeconds =
+                std::chrono::duration_cast<std::chrono::microseconds>(now - simplifyStart).count() / 1e+6;
+            std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label
+                      << " completed in " << phaseSeconds
+                      << " s (total " << totalSeconds << " s)" << std::endl;
+            phaseStart = now;
+        };
+        const auto shouldLogProgress = [&](int index, int total) {
+            if (!mData.verbose || total <= 0)
+                return false;
+            if (index == 0 || index + 1 == total)
+                return true;
+            const int step = std::max(1, total / 10);
+            return ((index + 1) % step) == 0;
+        };
+        const auto logProgress = [&](const char* label, int index, int total) {
+            if (!shouldLogProgress(index, total))
+                return;
+            std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label << ": "
+                      << (index + 1) << "/" << total << std::endl;
+        };
         
         if (!genDcel.check_consistency(mData.verbose, false, false, false))
             return false;
+        logPhase("Initial consistency check");
         
         int MaxOrigHE=-3276700.0;
         for (int i=0;i<genDcel.halfedges.size();i++)
             MaxOrigHE=std::max(MaxOrigHE, genDcel.halfedges[i].data.origHalfedge);
+        logPhase("Original halfedge range scan");
         
         vector<bool> visitedOrig(MaxOrigHE+1);
         for (int i=0;i<MaxOrigHE+1;i++) visitedOrig[i]=false;
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("boundary seed scan", i, static_cast<int>(genDcel.halfedges.size()));
             if (genDcel.halfedges[i].data.origHalfedge<0)
                 continue;
             if (visitedOrig[genDcel.halfedges[i].data.origHalfedge])
@@ -211,10 +246,17 @@ public:
             int heiterate = hebegin;
             do{
                 visitedOrig[genDcel.halfedges[heiterate].data.origHalfedge]=true;
-                genDcel.walk_boundary(heiterate);
+                if (!genDcel.walk_boundary(heiterate, mData.verbose, "[Directional::DCEL] walk_boundary()")) {
+                    if (mData.verbose) {
+                        std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: boundary seed walk failed for seed "
+                                  << i << " at halfedge " << heiterate << std::endl;
+                    }
+                    break;
+                }
             }while (heiterate!=hebegin);
             
         }
+        logPhase("Boundary visitation sweep");
         
         vector< vector<int> > BoundEdgeCollect1(MaxOrigHE+1);
         vector< vector<int> > BoundEdgeCollect2(MaxOrigHE+1);
@@ -222,6 +264,7 @@ public:
         for (int i=0;i<genDcel.halfedges.size();i++) Marked[i]=false;
         //finding out vertex correspondence along twin edges of the original mesh by walking on boundaries
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("boundary strip collection", i, static_cast<int>(genDcel.halfedges.size()));
             if ((genDcel.halfedges[i].data.origHalfedge<0)||(Marked[i]))
                 continue;
             
@@ -229,8 +272,15 @@ public:
             int PrevOrig;
             int CurrEdge=i;
             do{
-                PrevOrig=genDcel.halfedges[CurrEdge].data.origHalfedge;
+                PrevOrig = genDcel.halfedges[CurrEdge].data.origHalfedge;
                 genDcel.walk_boundary(CurrEdge);
+                // if (!genDcel.walk_boundary(CurrEdge, mData.verbose, "[Directional::DCEL] walk_boundary()")) {
+                //     if (mData.verbose) {
+                //         std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: boundary strip seed walk failed for seed "
+                //                   << i << " at halfedge " << CurrEdge << std::endl;
+                //     }
+                //     break;
+                // }
             }while(PrevOrig==genDcel.halfedges[CurrEdge].data.origHalfedge);
             
             //filling out strips of boundary with the respective attached original halfedges
@@ -238,8 +288,16 @@ public:
             vector<pair<int,int> > CurrEdgeCollect;
             do{
                 CurrEdgeCollect.push_back(pair<int, int> (genDcel.halfedges[CurrEdge].data.origHalfedge, CurrEdge));
-                Marked[CurrEdge]=true;
+                Marked[CurrEdge] = true;
                 genDcel.walk_boundary(CurrEdge);
+                // if (!genDcel.walk_boundary(CurrEdge, mData.verbose, "[Directional::DCEL] walk_boundary()")) {
+                //     if (mData.verbose) {
+                //         std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: boundary strip collection failed for seed "
+                //                   << i << " after " << CurrEdgeCollect.size()
+                //                   << " steps" << std::endl;
+                //     }
+                //     break;
+                // }
             }while (CurrEdge!=BeginEdge);
             
             PrevOrig=-1000;
@@ -255,10 +313,12 @@ public:
                 PrevOrig=CurrEdgeCollect[j].first;
             }
         }
+        logPhase("Boundary strip collection");
         
         //editing the edges into two vector lists per associated original edge
         vector< vector<int> > VertexSets1(MaxOrigHE+1), VertexSets2(MaxOrigHE+1);
         for (int i=0;i<MaxOrigHE+1;i++){
+            logProgress("vertex set build", i, MaxOrigHE + 1);
             for (int j=0;j<BoundEdgeCollect1[i].size();j++)
                 VertexSets1[i].push_back(genDcel.halfedges[BoundEdgeCollect1[i][j]].vertex);
             
@@ -273,10 +333,12 @@ public:
             
             std::reverse(VertexSets2[i].begin(),VertexSets2[i].end());
         }
+        logPhase("Boundary vertex set build");
         
         //finding out vertex matches
         vector<pair<int, int> > VertexMatches;
         for (int i=0;i<MaxOrigHE+1;i++){
+            logProgress("vertex match build", i, MaxOrigHE + 1);
             vector<EVector3> PointSet1(VertexSets1[i].size());
             vector<EVector3> PointSet2(VertexSets2[i].size());
             for (int j=0;j<PointSet1.size();j++)
@@ -296,6 +358,7 @@ public:
             
             VertexMatches.insert(VertexMatches.end(), CurrMatches.begin(), CurrMatches.end() );
         }
+        logPhase("Vertex match build");
         
         //finding connected components, and uniting every component into a random single vertex in it (it comes out the last mentioned)
         /*Graph MatchGraph;
@@ -309,14 +372,17 @@ public:
             MaxDist=std::max(MaxDist, (genDcel.vertices[VertexMatches[i].first].data.coords-genDcel.vertices[VertexMatches[i].second].data.coords).squaredNorm());
         
         if (mData.verbose)
-            std::cout<<"Max matching distance: "<<MaxDist<<endl;
+            std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "<<"Max matching distance: "<<MaxDist<<endl;
+        logPhase("Vertex match distance scan");
         
         //vector<int> Transvertices(vertices.size());
         TransVertices.resize(genDcel.vertices.size());
         int NumNewVertices = connectedComponents(VertexMatches, TransVertices);
+        logPhase("Connected components");
         
         if (!genDcel.check_consistency(mData.verbose, false, false, false))
             return false;
+        logPhase("Post-components consistency check");
         
         vector<bool> transClaimed(NumNewVertices);
         for (int i=0;i<NumNewVertices;i++)
@@ -324,6 +390,7 @@ public:
         //unifying all vertices into the TransVertices
         vector<FunctionDCEL::Vertex> NewVertices(NumNewVertices);
         for (int i=0;i<genDcel.vertices.size();i++){  //redundant, but not terrible
+            logProgress("vertex representative rebuild", i, static_cast<int>(genDcel.vertices.size()));
             if (!genDcel.vertices[i].valid)
                 continue;
             FunctionDCEL::Vertex NewVertex=genDcel.vertices[i];
@@ -337,21 +404,27 @@ public:
                 NewVertices[i].valid=false;  //this vertex is dead to begin with
         
         genDcel.vertices=NewVertices;
+        logPhase("Vertex representative rebuild");
         
+        std::vector<int> preRemapOrigin(genDcel.halfedges.size(), -1);
+        std::vector<int> preRemapTarget(genDcel.halfedges.size(), -1);
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("halfedge vertex remap", i, static_cast<int>(genDcel.halfedges.size()));
             if (!genDcel.halfedges[i].valid)
                 continue;
             genDcel.halfedges[i].vertex=TransVertices[genDcel.halfedges[i].vertex];
             genDcel.vertices[genDcel.halfedges[i].vertex].halfedge=i;
         }
-        
+        logPhase("Halfedge vertex remap");
         
         if (!genDcel.check_consistency(mData.verbose, true, false, false))
             return false;
+        logPhase("Post-remap consistency check");
         
         //twinning up halfedges
         set<FunctionDCEL::TwinFinder> Twinning;
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("halfedge twinning", i, static_cast<int>(genDcel.halfedges.size()));
             if ((genDcel.halfedges[i].twin>=0)||(!genDcel.halfedges[i].valid))
                 continue;
             
@@ -381,6 +454,7 @@ public:
                 Twinning.insert(FunctionDCEL::TwinFinder(i,genDcel.halfedges[i].vertex,genDcel.halfedges[genDcel.halfedges[i].next].vertex));
             }
         }
+        logPhase("Halfedge twinning");
         
         //check if there are any non-twinned edge which shouldn't be in a closed mesh
         /*if (verbose){
@@ -393,6 +467,7 @@ public:
         
         if (!genDcel.check_consistency(mData.verbose, true, true, true))
             return false;
+        logPhase("Post-twinning consistency check");
         
         //removing triangle components
         
@@ -400,10 +475,12 @@ public:
         std::vector<bool> isPureTriangle(genDcel.vertices.size());
         std::vector<bool> isBoundary(genDcel.vertices.size());
         for (int i=0;i<genDcel.vertices.size();i++){
+            logProgress("triangle component init", i, static_cast<int>(genDcel.vertices.size()));
             isPureTriangle[i]=true;
             isBoundary[i]=false;
         }
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("triangle component classify", i, static_cast<int>(genDcel.halfedges.size()));
             if ((genDcel.halfedges[i].data.isFunction)&&(genDcel.halfedges[i].valid)){
                 isPureTriangle[genDcel.halfedges[i].vertex]=isPureTriangle[genDcel.halfedges[genDcel.halfedges[i].next].vertex]=false;  //adjacent to at least one hex edge
             }
@@ -418,9 +495,11 @@ public:
             isEar[i] = (genDcel.halfedges[genDcel.vertices[i].halfedge].twin==-1)&&(genDcel.halfedges[genDcel.halfedges[genDcel.vertices[i].halfedge].prev].twin==-1);
             if (isEar[i]) isPureTriangle[i]=false;
         }
+        logPhase("Triangle component classification");
         
         //realigning halfedges in hex vertices to only follow other hex edges
         for (int i=0;i<genDcel.vertices.size();i++){
+            logProgress("hex halfedge realignment", i, static_cast<int>(genDcel.vertices.size()));
             if ((isPureTriangle[i])||(!genDcel.vertices[i].valid))
                 continue;
             
@@ -456,6 +535,7 @@ public:
                 genDcel.vertices[genDcel.halfedges[hexHEorder[0]].vertex].halfedge=hexHEorder[0];
             }
         }
+        logPhase("Hex halfedge realignment");
         
         //invalidating all triangle vertices and edges
         for (int i=0;i<genDcel.vertices.size();i++)
@@ -465,11 +545,13 @@ public:
         for (int i=0;i<genDcel.halfedges.size();i++)
             if ((!genDcel.halfedges[i].data.isFunction)&&(genDcel.halfedges[i].twin!=-1))
                 genDcel.halfedges[i].valid=genDcel.edges[genDcel.halfedges[i].edge].valid = false;
+        logPhase("Triangle invalidation");
         
         //realigning faces
         VectorXi visitedHE=VectorXi::Zero(genDcel.halfedges.size());
         VectorXi usedFace=VectorXi::Zero(genDcel.faces.size());
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("face realignment", i, static_cast<int>(genDcel.halfedges.size()));
             if ((!genDcel.halfedges[i].valid)||(visitedHE[i]!=0))
                 continue;
             
@@ -483,18 +565,21 @@ public:
             do{
                 infinityCounter++;
                 if (infinityCounter>genDcel.halfedges.size()){
-                    std::cout<<"Infinity loop in realigning faces on halfedge "<<i<<std::endl;
+                    std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "<<"Infinity loop in realigning faces on halfedge "<<i<<std::endl;
                     return false;
                 }
                 genDcel.halfedges[heiterate].face=currFace;
+                visitedHE[heiterate]=1;
                 heiterate=genDcel.halfedges[heiterate].next;
             }while (heiterate!=hebegin);
         }
+        logPhase("Face realignment");
         
         int countThree=0;
         for (int i=0;i<genDcel.faces.size();i++)
             if (!usedFace[i])
                 genDcel.faces[i].valid=false;
+        logPhase("Unused face invalidation");
         
         
         //killing perfect ear faces (not doing corners atm)
@@ -504,6 +589,7 @@ public:
             Valences[i]=0;
         
         for (int i=0;i<genDcel.halfedges.size();i++){
+            logProgress("valence counting", i, static_cast<int>(genDcel.halfedges.size()));
             if (genDcel.halfedges[i].valid){
                 Valences[genDcel.halfedges[i].vertex]++;
                 //Valences[Halfedges[Halfedges[i].next].vertex]++;
@@ -550,37 +636,50 @@ public:
                 //return false;
             }
         }
+        logPhase("Valence counting and ear pruning");
         
         //need to realign all vertices pointing
         for (int i=0;i<genDcel.halfedges.size();i++)
             if (genDcel.halfedges[i].valid)
                 genDcel.vertices[genDcel.halfedges[i].vertex].halfedge=i;
+        logPhase("Vertex halfedge pointer refresh");
         
         
         if (!genDcel.check_consistency(mData.verbose, true, true, true))
             return false;
+        logPhase("Post-pruning consistency check");
         
         for (int i=0;i<Valences.size();i++)
             if ((genDcel.vertices[i].valid)&&(Valences[i]<2))
                 genDcel.vertices[i].valid=false;
         
+        int unifyCount = 0;
         for (int i=0;i<genDcel.vertices.size();i++){
+            logProgress("low-valence edge unification", i, static_cast<int>(genDcel.vertices.size()));
             if ((genDcel.vertices[i].valid)&&(Valences[i]<=2)&&(!isEar[i])) {
                 genDcel.unify_edges(genDcel.vertices[i].halfedge);
+                unifyCount++;
                 /*if (!genDcel.check_consistency(verbose, true, true, true))
                  return false;*/
             }
         }
+        if (mData.verbose)
+            std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: Low-valence edge unification finished after "
+                      << unifyCount << " operations" << std::endl;
+        logPhase("Low-valence edge unification");
         
         if (!genDcel.check_consistency(mData.verbose, true, true, true))
             return false;
+        logPhase("Post-unification consistency check");
         
         //remove non-valid components
         genDcel.clean_mesh();
+        logPhase("DCEL clean_mesh");
         
         //checking if mesh is valid
         if (!genDcel.check_consistency(mData.verbose, true, true, true))
             return false;
+        logPhase("Final consistency check");
         
         return true;
         

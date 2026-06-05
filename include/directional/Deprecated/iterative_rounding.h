@@ -27,7 +27,7 @@ namespace directional{
 
 template<typename T> void printElement(T t, const int& width)
 {
-  std::cout << std::right << std::setw(width) << std::setfill(' ') << t;
+  std::cout << "[Directional::iterative_rounding()]: " << std::right << std::setw(width) << std::setfill(' ') << t;
 }
 
 

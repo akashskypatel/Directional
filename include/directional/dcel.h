@@ -11,6 +11,7 @@
 #include <Eigen/Core>
 #include <vector>
 #include <deque>
+#include <iostream>
 
 
 namespace directional
@@ -86,13 +87,44 @@ public:
         
     };
     
-    void walk_boundary(int &CurrHalfedge) {
+    bool walk_boundary(int &CurrHalfedge, const bool verbose=false, const char* context="[Directional::DCEL] walk_boundary()") {
+        if (CurrHalfedge < 0 || CurrHalfedge >= halfedges.size())
+            return false;
+        const int startHalfedge = CurrHalfedge;
+        const int safetyLimit = std::max(16, static_cast<int>(halfedges.size()) * 4);
+        int steps = 0;
         do {
             CurrHalfedge = halfedges[CurrHalfedge].next;
+            steps++;
+            if (verbose && steps % 10000 == 0) {
+                std::cout << "[Directional::DCEL::walk_boundary()]: " << context << ": step " << steps
+                          << ", current halfedge " << CurrHalfedge
+                          << ", next " << halfedges[CurrHalfedge].next
+                          << ", twin " << halfedges[CurrHalfedge].twin
+                          << std::endl;
+            }
             if (halfedges[CurrHalfedge].twin < 0)
                 break;  //next boundary over a 2-valence vertex
             CurrHalfedge = halfedges[CurrHalfedge].twin;
+            if (CurrHalfedge == startHalfedge) {
+                if (verbose) {
+                    std::cout << "[Directional::DCEL::walk_boundary()]: " << context
+                              << ": detected closed interior cycle at halfedge "
+                              << startHalfedge << " after " << steps
+                              << " steps; no boundary halfedge was reached"
+                              << std::endl;
+                }
+                return false;
+            }
+            if (steps >= safetyLimit) {
+                if (verbose) {
+                    std::cout << "[Directional::DCEL::walk_boundary()]: " << context << ": exceeded safety limit at halfedge "
+                              << startHalfedge << std::endl;
+                }
+                return false;
+            }
         } while (halfedges[CurrHalfedge].twin >= 0);
+        return true;
     }
     
     void stitch_twins() {
@@ -122,13 +154,13 @@ public:
                 continue;
             
             if (vertices[i].halfedge == -1) {
-                if (verbose) std::cout << "Valid Vertex " << i << " points to non-valid value -1 " << std::endl;
+                if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Vertex " << i << " points to non-valid value -1 " << std::endl;
                 return false;
             }
             
             if (!halfedges[vertices[i].halfedge].valid) {
                 if (verbose)
-                    std::cout << "Valid Vertex " << i << " points to non-valid halfedge "
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Vertex " << i << " points to non-valid halfedge "
                     << vertices[i].halfedge << std::endl;
                 return false;
             }
@@ -136,7 +168,7 @@ public:
             
             if (halfedges[vertices[i].halfedge].vertex != i) {
                 if (verbose)
-                    std::cout << "Adjacent Halfedge " << vertices[i].halfedge << " of vertex " << i
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Adjacent Halfedge " << vertices[i].halfedge << " of vertex " << i
                     << "does not point back" << std::endl;
                 return false;
             }
@@ -150,32 +182,32 @@ public:
             
             if (halfedges[i].next == -1) {
                 if (verbose)
-                    std::cout << "Valid Halfedge " << i << "points to next non-valid value -1" << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to next non-valid value -1" << std::endl;
                 return false;
             }
             
             if (halfedges[i].prev == -1) {
                 if (verbose)
-                    std::cout << "Valid Halfedge " << i << "points to prev non-valid value -1" << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to prev non-valid value -1" << std::endl;
                 return false;
             }
             
             
             if (halfedges[i].vertex == -1) {
                 if (verbose)
-                    std::cout << "Valid Halfedge " << i << "points to Origin non-valid value -1" << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to Origin non-valid value -1" << std::endl;
                 return false;
             }
             
             if (halfedges[i].face == -1) {
                 if (verbose)
-                    std::cout << "Valid Halfedge " << i << "points to face non-valid value -1" << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to face non-valid value -1" << std::endl;
                 return false;
             }
             
             if (halfedges[halfedges[i].next].prev != i) {
                 if (verbose)
-                    std::cout << "Halfedge " << i << "next is " << halfedges[i].next
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "next is " << halfedges[i].next
                     << " which doesn't point back as prev" << std::endl;
                 return false;
             }
@@ -183,35 +215,35 @@ public:
             
             if (halfedges[halfedges[i].prev].next != i) {
                 if (verbose)
-                    std::cout << "Halfedge " << i << "prev is " << halfedges[i].prev
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "prev is " << halfedges[i].prev
                     << " which doesn't point back as next" << std::endl;
                 return false;
             }
             
             if (!vertices[halfedges[i].vertex].valid) {
                 if (verbose)
-                    std::cout << "The Origin of halfedges " << i << ", vertex " << halfedges[i].vertex
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The Origin of halfedges " << i << ", vertex " << halfedges[i].vertex
                     << " is not valid" << std::endl;
                 return false;
             }
             
             if (!faces[halfedges[i].face].valid) {
                 if (verbose)
-                    std::cout << "The face of halfedges " << i << ", face " << halfedges[i].face
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The face of halfedges " << i << ", face " << halfedges[i].face
                     << " is not valid" << std::endl;
                 return false;
             }
             
             if (!edges[halfedges[i].edge].valid) {
                 if (verbose)
-                    std::cout << "The edge of halfedges " << i << ", edge " << halfedges[i].edge
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The edge of halfedges " << i << ", edge " << halfedges[i].edge
                     << " is not valid" << std::endl;
                 return false;
             }
             
             if (halfedges[halfedges[i].next].vertex == halfedges[i].vertex) {  //a degenerate edge{
                 if (verbose)
-                    std::cout << "Halfedge " << i << " with twin" << halfedges[i].twin
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << " with twin" << halfedges[i].twin
                     << " is degenerate with vertex " << halfedges[i].vertex << std::endl;
                 return false;
             }
@@ -219,14 +251,14 @@ public:
             if (halfedges[i].twin >= 0) {
                 if (halfedges[halfedges[i].twin].twin != i) {
                     if (verbose)
-                        std::cout << "Halfedge " << i << "twin is " << halfedges[i].twin
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "twin is " << halfedges[i].twin
                         << " which doesn't point back" << std::endl;
                     return false;
                 }
                 
                 if (!halfedges[halfedges[i].twin].valid) {
                     if (verbose)
-                        std::cout << "halfedge " << i << " is twin with invalid halfedge" << halfedges[i].twin
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " is twin with invalid halfedge" << halfedges[i].twin
                         << std::endl;
                     return false;
                 }
@@ -234,20 +266,20 @@ public:
             
             if (!halfedges[halfedges[i].next].valid) {
                 if (verbose)
-                    std::cout << "halfedge " << i << " has next invalid halfedge" << halfedges[i].next << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " has next invalid halfedge" << halfedges[i].next << std::endl;
                 return false;
             }
             
             if (!halfedges[halfedges[i].prev].valid) {
                 if (verbose)
-                    std::cout << "halfedge " << i << " has prev invalid halfedge" << halfedges[i].prev << std::endl;
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " has prev invalid halfedge" << halfedges[i].prev << std::endl;
                 return false;
             }
             
             //if (Halfedges[i].isFunction) {  //checking that it is not left alone
             if (halfedges[i].prev == halfedges[i].twin) {
                 if (verbose)
-                    std::cout << "Hex halfedge " << i << " has Halfedge " << halfedges[i].prev
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Hex halfedge " << i << " has Halfedge " << halfedges[i].prev
                     << " and both prev and twin" << std::endl;
                 return false;
             }
@@ -255,7 +287,7 @@ public:
             
             if (halfedges[i].next == halfedges[i].twin) {
                 if (verbose)
-                    std::cout << "Hex halfedge " << i << " has Halfedge " << halfedges[i].next
+                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Hex halfedge " << i << " has Halfedge " << halfedges[i].next
                     << " and both next and twin" << std::endl;
                 return false;
             }
@@ -268,16 +300,16 @@ public:
                 continue;
             
             if (halfedges[edges[i].halfedge].edge!=i){
-                std::cout<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" but not back."<<std::endl;
+                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" but not back."<<std::endl;
                 return false;
             }
             
             if (!halfedges[edges[i].halfedge].valid){
-                std::cout<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" which is not valid."<<std::endl;
+                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" which is not valid."<<std::endl;
                 return false;
             }
             if ((halfedges[edges[i].halfedge].twin!=-1)&&(halfedges[halfedges[edges[i].halfedge].twin].edge!=i)){
-                std::cout<<"Edge "<<i<<" with halfedge "<<edges[i].halfedge<<" points to twin halfedge "<<halfedges[edges[i].halfedge].twin<<" which does not share the same edge."<<std::endl;
+                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" with halfedge "<<edges[i].halfedge<<" points to twin halfedge "<<halfedges[edges[i].halfedge].twin<<" which does not share the same edge."<<std::endl;
                 return false;
             }
         }
@@ -298,7 +330,7 @@ public:
             do {
                 if (verticesinFace[i].find(halfedges[heiterate].vertex) != verticesinFace[i].end())
                     if (verbose)
-                        std::cout << "Warning: Vertex " << halfedges[heiterate].vertex
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Warning: Vertex " << halfedges[heiterate].vertex
                         << " appears more than once in face " << i << std::endl;
                 
                 verticesinFace[i].insert(halfedges[heiterate].vertex);
@@ -309,7 +341,7 @@ public:
                 
                 if (halfedges[heiterate].face != i) {
                     if (verbose)
-                        std::cout << "Face " << i << " has halfedge " << heiterate << " that does not point back"
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << i << " has halfedge " << heiterate << " that does not point back"
                         << std::endl;
                     return false;
                 }
@@ -317,7 +349,7 @@ public:
                 heiterate = halfedges[heiterate].next;
                 NumEdges++;
                 if (NumEdges > halfedges.size()) {
-                    if (verbose) std::cout << "Infinity loop!" << std::endl;
+                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop!" << std::endl;
                     return false;
                 }
                 
@@ -347,7 +379,7 @@ public:
                 continue;
             int currFace = halfedges[i].face;
             if (halfedgesinFace[currFace].find(i) == halfedgesinFace[currFace].end()) {
-                if (verbose) std::cout << "Halfedge " << i << " is floating in face " << currFace << std::endl;
+                if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << " is floating in face " << currFace << std::endl;
                 return false;
             }
         }
@@ -362,11 +394,11 @@ public:
                                                                                    TwinFinder(i, halfedges[i].vertex, halfedges[halfedges[i].next].vertex));
                 if (HESetIterator != HESet.end()) {
                     if (verbose)
-                        std::cout << "Warning: the halfedge (" << halfedges[i].vertex << ","
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Warning: the halfedge (" << halfedges[i].vertex << ","
                         << halfedges[halfedges[i].next].vertex << ") appears at least twice in the mesh"
                         << std::endl;
                     if (verbose)
-                        std::cout << "for instance halfedges " << i << " and " << HESetIterator->index << std::endl;
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "for instance halfedges " << i << " and " << HESetIterator->index << std::endl;
                     return false;
                     //return false;
                 } else {
@@ -395,13 +427,13 @@ public:
                     
                     if (halfedges[i].twin == -1) {
                         if (verbose)
-                            std::cout << "Halfedge " << i << "has no twin although halfedge "
+                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "has no twin although halfedge "
                             << HESetIterator->index << " can be a twin" << std::endl;
                         return false;
                     }
                     if (halfedges[HESetIterator->index].twin == -1) {
                         if (verbose)
-                            std::cout << "Halfedge " << HESetIterator->index << "has no twin although halfedge "
+                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << HESetIterator->index << "has no twin although halfedge "
                             << i << " can be a twin" << std::endl;
                         return false;
                     }
@@ -435,7 +467,7 @@ public:
                 } while (heiterate != hebegin);
                 if (pureBoundary) {
                     if (verbose)
-                        std::cout << "Face " << halfedges[i].face << " is a pure boundary face!" << std::endl;
+                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << halfedges[i].face << " is a pure boundary face!" << std::endl;
                     return false;
                 }
             }
@@ -468,16 +500,16 @@ public:
                     heiterate = halfedges[heiterate].next;
                     numEdges++;
                     if (numEdges > halfedges.size()) {
-                        if (verbose) std::cout << "Infinity loop in face " << i << "!" << std::endl;
+                        if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop in face " << i << "!" << std::endl;
                         return false;
                     }
                 } while (heiterate != hebegin);
                 if (countThree < 3) {
-                    if (verbose) std::cout << "Face " << i << " is a latent valence 2 face!" << std::endl;
-                    if (verbose) std::cout << "Its vertices are " << std::endl;
+                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << i << " is a latent valence 2 face!" << std::endl;
+                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Its vertices are " << std::endl;
                     do {
                         if (verbose)
-                            std::cout << "Vertex " << halfedges[heiterate].vertex << " halfedge " << heiterate
+                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Vertex " << halfedges[heiterate].vertex << " halfedge " << heiterate
                             << " valence " << Valences[halfedges[heiterate].vertex] << std::endl;
                         
                         if (Valences[halfedges[heiterate].vertex] > 2)
@@ -485,7 +517,7 @@ public:
                         heiterate = halfedges[heiterate].next;
                         numEdges++;
                         if (numEdges > halfedges.size()) {
-                            if (verbose) std::cout << "Infinity loop in face " << i << "!" << std::endl;
+                            if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop in face " << i << "!" << std::endl;
                             return false;
                         }
                     } while (heiterate != hebegin);
@@ -495,7 +527,7 @@ public:
             }
         }
         
-        if (verbose) std::cout << "DCEL::check_consistency(): Mesh is clear according to given checks" << std::endl;
+        if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: Mesh is clear according to given checks" << std::endl;
         return true;  //most likely the mesh is solid
         
     }

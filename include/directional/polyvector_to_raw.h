@@ -78,7 +78,7 @@ inline void polynomial_eval(const Eigen::RowVectorXcd &coeffs,
         polyValue += coeffs(i) * z;
         z *= evalPoint;
     }
-    std::cout << "z: " << z << std::endl;
+    std::cout << "[Directional::polynomial_eval()]: " << "z: " << z << std::endl;
     polyValue += z;  //the biggest and unit power
 }
 

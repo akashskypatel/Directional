@@ -2,6 +2,8 @@
 #define DIRECTIONAL_PIPELINE_H
 
 #include <cmath>
+#include <chrono>
+#include <iostream>
 #include <stdexcept>
 
 #include <Eigen/Core>
@@ -109,6 +111,27 @@ inline RemeshResult
 remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                  const Eigen::MatrixXd &rawCrossField,
                                  const RemeshOptions &options = {}) {
+  using Clock = std::chrono::high_resolution_clock;
+  const auto pipelineStart = Clock::now();
+  auto phaseStart = pipelineStart;
+  const auto log_phase = [&](const char *label) {
+    if (!options.verbose)
+      return;
+    const auto now = Clock::now();
+    const auto phaseSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(now - phaseStart)
+            .count() /
+        1e+6;
+    const auto totalSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(now - pipelineStart)
+            .count() /
+        1e+6;
+    std::cout << "[Directional::pipeline::remesh_from_raw_cross_field_impl()]: " << label << " completed in "
+              << phaseSeconds << " s (total " << totalSeconds << " s)"
+              << std::endl;
+    phaseStart = now;
+  };
+
   if (options.featureAlign) {
     throw std::runtime_error("featureAlign is not supported by the headless "
                              "Directional pipeline yet.");
@@ -121,11 +144,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
+  log_phase("PCFaceTangentBundle::init");
 
   CartesianField rawField;
   rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, 4);
   rawField.set_extrinsic_field(rawCrossField);
+  log_phase("CartesianField::init + set_extrinsic_field");
   principal_matching(rawField);
+  log_phase("principal_matching");
 
   IntegrationData integration(4);
   integration.lengthRatio = options.lengthRatio;
@@ -137,15 +163,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   TriMesh meshCut;
   CartesianField combedField;
   setup_integration(rawField, integration, meshCut, combedField);
+  log_phase("setup_integration");
 
   Eigen::MatrixXd cutFunctions;
   Eigen::MatrixXd cutCornerFunctions;
   integrate(combedField, integration, meshCut, cutFunctions,
             cutCornerFunctions);
+  log_phase("integrate");
 
   MesherData mesherData;
   mesherData.verbose = options.verbose;
   setup_mesher(meshCut, integration, mesherData);
+  log_phase("setup_mesher");
 
   RemeshResult result;
   result.cutVertices = meshCut.V;
@@ -154,6 +183,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   result.cutCornerFunctions = cutCornerFunctions;
   result.success = mesher(meshWhole, mesherData, result.vertices,
                           result.degrees, result.faces);
+  log_phase("mesher");
   return result;
 }
 

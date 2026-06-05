@@ -39,7 +39,7 @@ IGL_INLINE void circumcircle(const Eigen::MatrixXd& V,
       double radius2 = (circumcenter.row(i) - V.row(F(i,1))).squaredNorm();
       double radius3 = (circumcenter.row(i) - V.row(F(i,2))).squaredNorm();
       
-      std::cout<<"radii1,2,3: "<<radius1<<" "<<radius2<<" "<<radius3<<std::endl;
+      std::cout<< "[Directional::circumcircle()]: "<<"radii1,2,3: "<<radius1<<" "<<radius2<<" "<<radius3<<std::endl;
       
       circumradius(i) =  (circumcenter.row(i) - V.row(F(i,0))).norm();
     }

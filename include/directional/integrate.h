@@ -20,6 +20,7 @@
 #include <fstream>
 #include <iostream>
 #include <queue>
+#include <chrono>
 #include <vector>
 
 namespace directional {
@@ -45,6 +46,40 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 {
   using namespace Eigen;
   using namespace std;
+  using Clock = std::chrono::high_resolution_clock;
+
+  const auto integrateStart = Clock::now();
+  auto phaseStart = integrateStart;
+  const auto log_phase = [&](const char *label) {
+    if (!intData.verbose)
+      return;
+    const auto now = Clock::now();
+    const auto phaseSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(now - phaseStart)
+            .count() /
+        1e+6;
+    const auto totalSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(now - integrateStart)
+            .count() /
+        1e+6;
+    cout << "[Directional::integrate] " << label << " completed in "
+         << phaseSeconds << " s (total " << totalSeconds << " s)" << endl;
+    phaseStart = now;
+  };
+  const auto should_log_progress = [&](int index, int total) {
+    if (!intData.verbose || total <= 0)
+      return false;
+    if (index == 0 || index + 1 == total)
+      return true;
+    const int step = std::max(1, total / 10);
+    return ((index + 1) % step) == 0;
+  };
+  const auto log_progress = [&](const char *label, int index, int total) {
+    if (!should_log_progress(index, total))
+      return;
+    cout << "[Directional::integrate] " << label << ": " << (index + 1) << "/"
+         << total << endl;
+  };
 
   assert(field.tb->discTangType() == discTangTypeEnum::FACE_SPACES &&
          "Integrate() only works with face-based fields");
@@ -67,6 +102,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
   rawField.array() /= avgGradNorm;
   paramLength /= avgGradNorm;
+  log_phase("Field normalization");
 
   int numVars = intData.linRedMat.cols();
   // constructing face differentials
@@ -75,6 +111,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   vector<Triplet<double>> M1Triplets;
   VectorXd gamma(3 * intData.N * meshWhole.F.rows());
   for (int i = 0; i < meshCut.F.rows(); i++) {
+    log_progress("differential assembly", i, meshCut.F.rows());
     for (int j = 0; j < 3; j++) {
       for (int k = 0; k < intData.N; k++) {
         d0Triplets.emplace_back(3 * intData.N * i + intData.N * j + k,
@@ -99,6 +136,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
                           3 * intData.N * meshWhole.F.rows());
   M1.setFromTriplets(M1Triplets.begin(), M1Triplets.end());
   SparseMatrix<double> d0T = d0.transpose();
+  log_phase("Differential matrix assembly");
 
   // creating face vector mass matrix
   std::vector<Triplet<double>> MxTri;
@@ -114,6 +152,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   SparseMatrix<double> Mx(3 * intData.N * meshCut.F.rows(),
                           3 * intData.N * meshCut.F.rows());
   Mx.setFromTriplets(MxTri.begin(), MxTri.end());
+  log_phase("Face mass matrix assembly");
 
   // The variables that should be fixed in the end
   VectorXi fixedMask(numVars);
@@ -179,10 +218,13 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     Cfull.resize(CRank, Cfull.cols());
     Cfull.setFromTriplets(CTriplets.begin(), CTriplets.end());
   }
+  log_phase("Constraint reduction");
   SparseMatrix<double> var2AllMat;
   VectorXd fullx(numVars);
   fullx.setZero();
-  for (int intIter = 0; intIter < fixedMask.sum(); intIter++) {
+  const int totalIterations = fixedMask.sum();
+  for (int intIter = 0; intIter < totalIterations; intIter++) {
+    log_progress("rounding iteration", intIter, totalIterations);
     // the non-fixed variables to all variables
     var2AllMat.resize(numVars, numVars - alreadyFixed.sum());
     int varCounter = 0;
@@ -258,6 +300,12 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       return false;
     }
     x = lusolver.solve(b);
+    if (intData.verbose) {
+      cout << "[Directional::integrate] solved reduced system iteration "
+           << (intIter + 1) << "/" << totalIterations << " with size A="
+           << A.rows() << "x" << A.cols() << ", constraints=" << Cpart.rows()
+           << endl;
+    }
 
     fullx = var2AllMat * x.head(numVars - alreadyFixed.sum()) + fixedValues;
 
@@ -304,6 +352,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
     xprev.tail(Cpart.rows()) = x.tail(Cpart.rows());
   }
+  log_phase("Iterative seamless solve");
 
   // the results are packets of N functions for each vertex, and need to be
   // allocated for corners
@@ -322,11 +371,13 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     for (int j = 0; j < 3; j++)
       NCornerFunctions.block(i, intData.N * j, 1, intData.N) =
           NFunction.row(meshCut.F(i, j));
+  log_phase("Corner allocation pass 1");
 
   SparseMatrix<double> G;
   // MatrixXd FN;
   // igl::per_face_normals(cutV, meshCut, FN);
   branched_gradient(meshCut, intData.N, G);
+  log_phase("branched_gradient");
   // cout<<"cutF.rows(): "<<cutF.rows()<<endl;
   SparseMatrix<double> Gd = G * intData.vertexTrans2CutMat * intData.linRedMat *
                             intData.singIntSpanMat * intData.intSpanMat;
@@ -372,6 +423,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     for (int j = 0; j < 3; j++)
       NCornerFunctions.block(i, intData.N * j, 1, intData.N) =
           NFunction.row(meshCut.F(i, j)).array();
+  log_phase("Final corner allocation");
 
   return success;
 }

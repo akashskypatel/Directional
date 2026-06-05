@@ -481,7 +481,7 @@ std::vector<ENumber> line_segment_intersection(const Line2 &line,
     result[0] = ENumber(0);
     result[1] =
         ENumber(1); // This is wrong! should have been the line parameters
-    std::cout << "Entire segment is contained in line" << std::endl;
+    std::cout << "[Directional::line_segment_intersection()]: " << "Entire segment is contained in line" << std::endl;
     return result;
   } else { //(intersectType==1)
     if ((t2 >= ENumber(0)) && (t2 <= ENumber(1))) {
@@ -566,7 +566,7 @@ void linepencil_triangle_intersection(
     int lpResult =
         linepencil_intersection(lp, triEdgePencil, t00, I2dt, iso1Overlap);
     if (lpResult == 2) { // overlap of iso1Overlap isovalue with the segment
-      std::cout << "line triangle overlap!!!" << std::endl;
+      std::cout<< "[Directional::linepencil_triangle_intersection()]: " << "line triangle overlap!!!" << std::endl;
       intEdges[iso1Overlap.convert()] = true;
       // updating only the params of this line, not those of the others who stay
       // open

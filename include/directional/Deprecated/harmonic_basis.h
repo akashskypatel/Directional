@@ -118,11 +118,11 @@ namespace directional
       VectorXd harmFieldVec = candidateFieldVec-Gv*exactFunc;
       harmFieldVec=harmFieldVec/harmFieldVec.norm()*10.0;
       
-      std::cout<<"harmFieldVec.norm(): "<<harmFieldVec.norm()<<std::endl;
+      std::cout<< "[Directional::harmonic_basis()]: "<<"harmFieldVec.norm(): "<<harmFieldVec.norm()<<std::endl;
       
       //sanity check:
-      std::cout<<"(D*harmFieldVec).lpNorm<Infinity>(): "<<(D*harmFieldVec).lpNorm<Infinity>()<<std::endl;
-      std::cout<<"(C*harmFieldVec).lpNorm<Infinity>(): "<<(C*harmFieldVec).lpNorm<Infinity>()<<std::endl;
+      std::cout<< "[Directional::harmonic_basis()]: "<<"(D*harmFieldVec).lpNorm<Infinity>(): "<<(D*harmFieldVec).lpNorm<Infinity>()<<std::endl;
+      std::cout<< "[Directional::harmonic_basis()]: "<<"(C*harmFieldVec).lpNorm<Infinity>(): "<<(C*harmFieldVec).lpNorm<Infinity>()<<std::endl;
       
       harmFields.push_back(Eigen::MatrixXd(F.rows(),3));
       for (int i=0;i<F.rows();i++)

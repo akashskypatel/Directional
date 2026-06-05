@@ -146,7 +146,7 @@ namespace directional
         directional::curl_matching(coarseFieldAltered, curlNorm);
 
 
-        std::cout<<"coarseFieldAltered.matching: "<<coarseFieldAltered.matching<<std::endl;
+        std::cout<<"[Directional::subdivide_field()]: "<<"coarseFieldAltered.matching: "<<coarseFieldAltered.matching<<std::endl;
 
         Eigen::MatrixXd VFine, extFieldFine;
         Eigen::MatrixXi FFine;
