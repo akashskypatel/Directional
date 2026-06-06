@@ -130,6 +130,7 @@ inline bool cuda_allocate(T **ptr, std::size_t count,
   return true;
 }
 
+
 template <typename T>
 inline bool cuda_copy_htod(T *dst, const T *src, std::size_t count,
                             LinearSolveDiagnostics *diagnostics,
@@ -217,6 +218,7 @@ inline bool solve_on_cpu(const Eigen::SparseMatrix<double> &A,
 }
 
 #if defined(DIRECTIONAL_ENABLE_CUDA)
+
 template <typename T> struct CudaFreer {
   void operator()(T *ptr) const {
     if (ptr != nullptr) {
@@ -241,6 +243,264 @@ struct CusparseMatDescrDeleter {
   }
 };
 
+/// Persistent CUDA sparse solver that keeps matrix data resident on GPU
+/// across multiple solve calls. Reuses symbolic analysis when sparsity
+/// pattern is unchanged.
+struct CudaSolver {
+  // CSR matrix structure
+  int rows = 0;
+  int cols = 0;
+  int nnz = 0;
+
+  // Device pointers (owned)
+  std::unique_ptr<int[], CudaFreer<int>> dRowPtr;
+  std::unique_ptr<int[], CudaFreer<int>> dColInd;
+  std::unique_ptr<double[], CudaFreer<double>> dVals;
+
+  // cuSOLVER / cuSPARSE handles
+  std::unique_ptr<cusolverSpContext, CusolverSpHandleDeleter> handle;
+  std::unique_ptr<cusparseMatDescr, CusparseMatDescrDeleter> descr;
+
+  // Symbolic analysis state
+  bool analyzed = false;
+  int lastRows = -1;
+  int lastCols = -1;
+  int lastNnz = -1;
+  std::size_t lastRowPtrHash = 0;
+  std::size_t lastColIndHash = 0;
+
+  CudaSolver() = default;
+  CudaSolver(const CudaSolver &) = delete;
+  CudaSolver &operator=(const CudaSolver &) = delete;
+  CudaSolver(CudaSolver &&) = default;
+  CudaSolver &operator=(CudaSolver &&) = default;
+
+  ~CudaSolver() = default;
+
+  /// Reset all GPU resources and analysis state
+  void reset() {
+    dRowPtr.reset();
+    dColInd.reset();
+    dVals.reset();
+    handle.reset();
+    descr.reset();
+    analyzed = false;
+    rows = cols = nnz = 0;
+    lastRows = lastCols = lastNnz = -1;
+    lastRowPtrHash = lastColIndHash = 0;
+  }
+
+  /// Compute hash of CSR structure for pattern change detection
+  static std::size_t hash_csr_structure(const int *rowPtr, const int *colInd, int rows, int nnz) {
+    std::size_t h1 = 0, h2 = 0;
+    for (int i = 0; i <= rows; ++i) {
+      h1 = h1 * 31 + static_cast<std::size_t>(rowPtr[i]);
+    }
+    for (int i = 0; i < nnz; ++i) {
+      h2 = h2 * 31 + static_cast<std::size_t>(colInd[i]);
+    }
+    return h1 * 31 + h2;
+  }
+
+  /// Initialize or re-initialize GPU-resident CSR data and handles.
+  /// Returns true on success, false on allocation failure.
+  bool init(int rows_, int cols_, int nnz_,
+            const int *hRowPtr, const int *hColInd, const double *hVals,
+            bool verbose = false,
+            LinearSolveDiagnostics *diagnostics = nullptr) {
+    if (rows_ <= 0 || cols_ <= 0 || nnz_ <= 0) {
+      if (diagnostics) diagnostics->message = "Invalid matrix dimensions";
+      return false;
+    }
+
+    // Check if we can reuse existing allocation
+    if (analyzed && rows_ == rows && cols_ == cols && nnz_ == nnz) {
+      // Same shape: check if pattern is identical
+      std::size_t rowPtrHash = hash_csr_structure(hRowPtr, hColInd, rows_, nnz_);
+      if (rowPtrHash == lastRowPtrHash && rowPtrHash == lastColIndHash) {
+        // Pattern unchanged - only update values
+        if (verbose) {
+          std::cout << "[Directional::CudaSolver] Pattern unchanged, updating values only\n";
+        }
+        if (!cuda_copy_htod(dVals.get(), hVals, static_cast<std::size_t>(nnz_),
+                            diagnostics, "csrVal", verbose)) {
+          return false;
+        }
+        return true;
+      }
+    }
+
+    // Pattern changed or first time: full re-initialization
+    reset();
+
+    rows = rows_;
+    cols = cols_;
+    nnz = nnz_;
+
+    // Allocate device memory for CSR data
+    int *dRowPtrRaw = nullptr;
+    int *dColIndRaw = nullptr;
+    double *dValsRaw = nullptr;
+
+    if (!cuda_allocate(&dRowPtrRaw, static_cast<std::size_t>(rows + 1), diagnostics,
+                       "csrRowPtr", verbose) ||
+        !cuda_allocate(&dColIndRaw, static_cast<std::size_t>(nnz), diagnostics,
+                       "csrColInd", verbose) ||
+        !cuda_allocate(&dValsRaw, static_cast<std::size_t>(nnz), diagnostics,
+                       "csrVal", verbose)) {
+      cudaFree(dRowPtrRaw);
+      cudaFree(dColIndRaw);
+      cudaFree(dValsRaw);
+      if (diagnostics) diagnostics->message = "CUDA device allocation failed";
+      return false;
+    }
+
+    dRowPtr.reset(dRowPtrRaw);
+    dColInd.reset(dColIndRaw);
+    dVals.reset(dValsRaw);
+
+    if (!cuda_copy_htod(dRowPtr.get(), hRowPtr, static_cast<std::size_t>(rows + 1),
+                        diagnostics, "csrRowPtr", verbose) ||
+        !cuda_copy_htod(dColInd.get(), hColInd, static_cast<std::size_t>(nnz),
+                        diagnostics, "csrColInd", verbose) ||
+        !cuda_copy_htod(dVals.get(), hVals, static_cast<std::size_t>(nnz),
+                        diagnostics, "csrVal", verbose)) {
+      if (diagnostics) diagnostics->message = "CUDA host-to-device copy failed";
+      return false;
+    }
+
+    // Create cuSOLVER handle
+    cusolverSpHandle_t rawHandle = nullptr;
+    const cusolverStatus_t handleStatus = cusolverSpCreate(&rawHandle);
+    if (handleStatus != CUSOLVER_STATUS_SUCCESS) {
+      if (diagnostics) {
+        diagnostics->message = "CUDA solver initialization failed: " +
+                               std::string(cusolver_status_to_string(handleStatus));
+      }
+      return false;
+    }
+    handle.reset(rawHandle);
+
+    // Create cuSPARSE descriptor
+    cusparseMatDescr_t rawDescr = nullptr;
+    const cusparseStatus_t descrStatus = cusparseCreateMatDescr(&rawDescr);
+    if (descrStatus != CUSPARSE_STATUS_SUCCESS) {
+      if (diagnostics) {
+        diagnostics->message = "CUDA sparse descriptor creation failed: " +
+                               std::string(cusparse_status_to_string(descrStatus));
+      }
+      return false;
+    }
+    descr.reset(rawDescr);
+    cusparseSetMatType(descr.get(), CUSPARSE_MATRIX_TYPE_GENERAL);
+    cusparseSetMatIndexBase(descr.get(), CUSPARSE_INDEX_BASE_ZERO);
+
+    // Record pattern hash for future reuse
+    lastRowPtrHash = hash_csr_structure(hRowPtr, hColInd, rows_, nnz_);
+    lastColIndHash = lastRowPtrHash;  // Same hash for both in this implementation
+    lastRows = rows_;
+    lastCols = cols_;
+    lastNnz = nnz_;
+
+    analyzed = true;
+
+    if (verbose) {
+      std::cout << "[Directional::CudaSolver] Initialized: rows=" << rows
+                << ", cols=" << cols << ", nnz=" << nnz << std::endl;
+    }
+    return true;
+  }
+
+  /// Solve A*x = b using the pre-initialized matrix.
+  /// Returns true on success.
+  bool solve(const double *hB, int bSize, double *hX,
+             const LinearSolveOptions &options,
+             LinearSolveDiagnostics *diagnostics) {
+    if (!analyzed || !handle || !descr) {
+      if (diagnostics) diagnostics->message = "CudaSolver not initialized";
+      return false;
+    }
+    if (bSize != rows) {
+      if (diagnostics) diagnostics->message = "RHS size mismatch";
+      return false;
+    }
+
+    // Device RHS and solution buffers
+    std::unique_ptr<double[], CudaFreer<double>> dB;
+    std::unique_ptr<double[], CudaFreer<double>> dX;
+
+    double *dBRaw = nullptr;
+    double *dXRaw = nullptr;
+
+    if (!cuda_allocate(&dBRaw, static_cast<std::size_t>(rows), diagnostics, "rhs", options.verbose) ||
+        !cuda_allocate(&dXRaw, static_cast<std::size_t>(rows), diagnostics, "solution", options.verbose)) {
+      cudaFree(dBRaw);
+      cudaFree(dXRaw);
+      if (diagnostics) diagnostics->message = "CUDA RHS/solution allocation failed";
+      return false;
+    }
+
+    dB.reset(dBRaw);
+    dX.reset(dXRaw);
+
+    if (!cuda_copy_htod(dB.get(), hB, static_cast<std::size_t>(rows),
+                        diagnostics, "rhs", options.verbose)) {
+      if (diagnostics) diagnostics->message = "CUDA RHS copy failed";
+      return false;
+    }
+
+    int singularity = -1;
+    constexpr double tolerance = 1e-12;
+    constexpr int reorder = 0;
+
+    const cusolverStatus_t solveStatus = cusolverSpDcsrlsvqr(
+        handle.get(), rows, nnz, descr.get(),
+        dVals.get(), dRowPtr.get(), dColInd.get(),
+        dB.get(), tolerance, reorder, dX.get(), &singularity);
+
+    if (options.verbose) {
+      const cudaError_t postSolveCudaError = cudaGetLastError();
+      std::cout << "[Directional::CudaSolver] Solve status: "
+                << cusolver_status_to_string(solveStatus)
+                << ", cuda_last_error=" << cuda_error_to_string(postSolveCudaError)
+                << ", singularity=" << singularity << std::endl;
+    }
+
+    if (solveStatus != CUSOLVER_STATUS_SUCCESS) {
+      std::ostringstream reason;
+      reason << "CUDA sparse QR failed: " << cusolver_status_to_string(solveStatus);
+      if (singularity >= 0) {
+        reason << ", singularity=" << singularity;
+      }
+      reason << ", cuda_last_error=" << cuda_error_to_string(cudaGetLastError());
+      if (diagnostics) diagnostics->message = reason.str();
+      return false;
+    }
+
+    if (singularity >= 0) {
+      std::ostringstream message;
+      message << "CUDA sparse QR reported singularity at row " << singularity;
+      if (diagnostics) diagnostics->message = message.str();
+      return false;
+    }
+
+    if (!cuda_copy_dtoh(hX, dX.get(), static_cast<std::size_t>(rows),
+                        diagnostics, "solution", options.verbose)) {
+      if (diagnostics) diagnostics->message = "CUDA solution copy failed";
+      return false;
+    }
+
+    if (diagnostics) {
+      diagnostics->usedCuda = true;
+      diagnostics->usedFallback = false;
+      diagnostics->message = "Solved with persistent CUDA sparse QR.";
+    }
+    return true;
+  }
+};
+
+/// Backward-compatible one-shot solve (creates temporary CudaSolver internally).
+/// Kept for existing callers that don't want persistent state.
 inline bool solve_on_cuda_sparse(const Eigen::SparseMatrix<double> &A,
                                  const Eigen::VectorXd &b,
                                  const LinearSolveOptions &options,
@@ -294,173 +554,22 @@ inline bool solve_on_cuda_sparse(const Eigen::SparseMatrix<double> &A,
               << ", avg_row_nnz=" << avgRowNNZ << std::endl;
   }
 
-  cusolverSpHandle_t rawHandle = nullptr;
-  const cusolverStatus_t handleStatus = cusolverSpCreate(&rawHandle);
-  if (handleStatus != CUSOLVER_STATUS_SUCCESS) {
-    std::ostringstream reason;
-    reason << "CUDA solver initialization failed: "
-           << cusolver_status_to_string(handleStatus);
-    if (options.verbose) {
-      std::cout << "[Directional::integrate] CUDA solver handle creation failed: "
-                << cusolver_status_to_string(handleStatus) << std::endl;
-    }
-    if (diagnostics != nullptr) {
-      diagnostics->message = reason.str();
-    }
-    return solve_on_cpu(A, b, x, diagnostics, reason.str() + "; fell back to CPU.");
-  }
-  std::unique_ptr<cusolverSpContext, CusolverSpHandleDeleter> handle(rawHandle);
-
-  cusparseMatDescr_t rawDescr = nullptr;
-  const cusparseStatus_t descrStatus = cusparseCreateMatDescr(&rawDescr);
-  if (descrStatus != CUSPARSE_STATUS_SUCCESS) {
-    std::ostringstream reason;
-    reason << "CUDA sparse descriptor creation failed: "
-           << cusparse_status_to_string(descrStatus);
-    if (options.verbose) {
-      std::cout << "[Directional::integrate] CUDA sparse descriptor creation failed: "
-                << cusparse_status_to_string(descrStatus) << std::endl;
-    }
-    if (diagnostics != nullptr) {
-      diagnostics->message = reason.str();
-    }
-    return solve_on_cpu(
-        A, b, x, diagnostics, reason.str() + "; fell back to CPU.");
-  }
-  std::unique_ptr<cusparseMatDescr, CusparseMatDescrDeleter> descr(rawDescr);
-  cusparseSetMatType(descr.get(), CUSPARSE_MATRIX_TYPE_GENERAL);
-  cusparseSetMatIndexBase(descr.get(), CUSPARSE_INDEX_BASE_ZERO);
-
-  int *dRowPtr = nullptr;
-  int *dColInd = nullptr;
-  double *dVals = nullptr;
-  double *dB = nullptr;
-  double *dX = nullptr;
-
-  if (!cuda_allocate(&dRowPtr, static_cast<std::size_t>(rows + 1), diagnostics,
-                     "csrRowPtr", options.verbose) ||
-      !cuda_allocate(&dColInd, static_cast<std::size_t>(nnz), diagnostics,
-                     "csrColInd", options.verbose) ||
-      !cuda_allocate(&dVals, static_cast<std::size_t>(nnz), diagnostics,
-                     "csrVal", options.verbose) ||
-      !cuda_allocate(&dB, static_cast<std::size_t>(rows), diagnostics, "rhs",
-                     options.verbose) ||
-      !cuda_allocate(&dX, static_cast<std::size_t>(rows), diagnostics,
-                     "solution", options.verbose)) {
-    cudaFree(dRowPtr);
-    cudaFree(dColInd);
-    cudaFree(dVals);
-      cudaFree(dB);
-      cudaFree(dX);
+  CudaSolver solver;
+  if (!solver.init(rows, cols, nnz,
+                   csrA.outerIndexPtr(), csrA.innerIndexPtr(), csrA.valuePtr(),
+                   options.verbose, diagnostics)) {
     return solve_on_cpu(A, b, x, diagnostics,
-                        "CUDA device allocation failed; fell back to CPU.");
-  }
-
-  if (!cuda_copy_htod(dRowPtr, csrA.outerIndexPtr(),
-                      static_cast<std::size_t>(rows + 1), diagnostics,
-                      "csrRowPtr", options.verbose) ||
-      !cuda_copy_htod(dColInd, csrA.innerIndexPtr(),
-                      static_cast<std::size_t>(nnz), diagnostics,
-                      "csrColInd", options.verbose) ||
-      !cuda_copy_htod(dVals, csrA.valuePtr(), static_cast<std::size_t>(nnz),
-                      diagnostics, "csrVal", options.verbose) ||
-      !cuda_copy_htod(dB, b.data(), static_cast<std::size_t>(rows),
-                      diagnostics, "rhs", options.verbose)) {
-    cudaFree(dRowPtr);
-    cudaFree(dColInd);
-    cudaFree(dVals);
-      cudaFree(dB);
-      cudaFree(dX);
-    return solve_on_cpu(A, b, x, diagnostics,
-                        "CUDA host-to-device copy failed; fell back to CPU.");
+                        solver.analyzed ? "CUDA solver init failed; fell back to CPU."
+                                        : "CUDA solver allocation failed; fell back to CPU.");
   }
 
   x.resize(rows);
-  int singularity = -1;
-  constexpr double tolerance = 1e-12;
-  constexpr int reorder = 0;
-  const cusolverStatus_t solveStatus = cusolverSpDcsrlsvqr(
-      rawHandle, rows, nnz, descr.get(), dVals, dRowPtr, dColInd, dB,
-      tolerance, reorder, dX, &singularity);
-
-  if (options.verbose) {
-    const cudaError_t postSolveCudaError = cudaGetLastError();
-    std::cout << "[Directional::integrate] CUDA sparse QR post-call status: "
-              << cusolver_status_to_string(solveStatus)
-              << ", cuda_last_error="
-              << cuda_error_to_string(postSolveCudaError)
-              << ", singularity=" << singularity << std::endl;
-  }
-
-  if (solveStatus != CUSOLVER_STATUS_SUCCESS) {
-    std::ostringstream reason;
-    reason << "CUDA sparse QR failed: "
-           << cusolver_status_to_string(solveStatus);
-    if (singularity >= 0) {
-      reason << ", singularity=" << singularity;
-    }
-    reason << ", cuda_last_error=" << cuda_error_to_string(cudaGetLastError());
-    if (options.verbose) {
-      std::cout << "[Directional::integrate] CUDA sparse QR execution failed. "
-                << "Inspect the post-call status, singularity, and matrix stats "
-                << "above for the failure mode." << std::endl;
-    }
-    if (diagnostics != nullptr) {
-      diagnostics->message = reason.str();
-    }
-    cudaFree(dRowPtr);
-    cudaFree(dColInd);
-    cudaFree(dVals);
-    cudaFree(dB);
-    cudaFree(dX);
+  if (!solver.solve(b.data(), rows, x.data(), options, diagnostics)) {
     return solve_on_cpu(A, b, x, diagnostics,
-                        reason.str() + "; fell back to CPU.");
+                        diagnostics ? diagnostics->message + "; fell back to CPU."
+                                    : "CUDA solve failed; fell back to CPU.");
   }
 
-  if (options.verbose) {
-    std::cout << "[Directional::integrate] CUDA sparse QR singularity index="
-              << singularity << std::endl;
-  }
-  if (singularity >= 0) {
-    std::ostringstream message;
-    message << "CUDA sparse QR reported singularity at row " << singularity
-            << "; fell back to CPU.";
-    cudaFree(dRowPtr);
-    cudaFree(dColInd);
-    cudaFree(dVals);
-    cudaFree(dB);
-    cudaFree(dX);
-    return solve_on_cpu(A, b, x, diagnostics, message.str());
-  }
-
-  if (!cuda_copy_dtoh(x.data(), dX, static_cast<std::size_t>(rows),
-                      diagnostics, "solution", options.verbose)) {
-    cudaFree(dRowPtr);
-    cudaFree(dColInd);
-    cudaFree(dVals);
-    cudaFree(dB);
-    cudaFree(dX);
-    return solve_on_cpu(
-        A, b, x, diagnostics,
-        "CUDA device-to-host copy failed; fell back to CPU.");
-  }
-
-  cudaFree(dRowPtr);
-  cudaFree(dColInd);
-  cudaFree(dVals);
-  cudaFree(dB);
-  cudaFree(dX);
-
-  if (options.verbose) {
-    std::cout << "[Directional::integrate] CUDA sparse QR device resources released"
-              << std::endl;
-  }
-
-  if (diagnostics != nullptr) {
-    diagnostics->usedCuda = true;
-    diagnostics->usedFallback = false;
-    diagnostics->message = "Solved reduced system with CUDA sparse QR.";
-  }
   if (options.verbose) {
     std::cout << "[Directional::integrate] CUDA sparse QR solve succeeded for "
               << rows << "x" << cols << " reduced system with " << nnz

@@ -332,19 +332,58 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       bpart(k) = bfull(PIndices(k));
     b.segment(EtE.rows(), Cpart.rows()) = bpart;
 
+    // Persistent CUDA solver: reuse handle, GPU memory, and symbolic analysis
+    // across iterations. The CudaSolver class handles pattern-change detection
+    // internally and reinitializes only when the sparsity pattern differs.
+#if defined(DIRECTIONAL_ENABLE_CUDA)
+    static detail::CudaSolver persistentCudaSolver;
+    static bool cudaSolverFirstUse = true;
+    if (intData.enableCudaSolver && cudaSolverFirstUse) {
+      persistentCudaSolver.reset();
+      cudaSolverFirstUse = false;
+    }
+#endif
+
     LinearSolveOptions solveOptions;
     solveOptions.preferCuda = intData.enableCudaSolver;
     solveOptions.verbose = intData.verbose;
     LinearSolveDiagnostics solveDiagnostics;
     const auto solveStart = Clock::now();
-    if (!solve_sparse_linear_system(A, b, solveOptions, x, &solveDiagnostics)) {
-      if (intData.verbose) {
-        cout << "[Directional::integrate] Reduced system solve failed";
-        if (!solveDiagnostics.message.empty())
-          cout << ": " << solveDiagnostics.message;
-        cout << endl;
+
+    bool solveSuccess = false;
+#if defined(DIRECTIONAL_ENABLE_CUDA)
+    if (intData.enableCudaSolver) {
+      // Convert A to CSR format for the persistent solver
+      Eigen::SparseMatrix<double, Eigen::RowMajor, int> csrA = A;
+      csrA.makeCompressed();
+      const int rows = static_cast<int>(csrA.rows());
+      const int cols = static_cast<int>(csrA.cols());
+      const int nnz = static_cast<int>(csrA.nonZeros());
+
+      // Initialize or re-use the persistent solver.
+      // init() will reuse the handle/descriptor and only reallocate
+      // device memory if the sparsity pattern has changed.
+      if (persistentCudaSolver.init(rows, cols, nnz,
+                                    csrA.outerIndexPtr(), csrA.innerIndexPtr(), csrA.valuePtr(),
+                                    intData.verbose, &solveDiagnostics)) {
+        x.resize(rows);
+        if (persistentCudaSolver.solve(b.data(), rows, x.data(), solveOptions, &solveDiagnostics)) {
+          solveSuccess = true;
+        }
       }
-      return false;
+    }
+#endif
+    if (!solveSuccess) {
+      // Fallback to CPU or one-shot CUDA solver
+      if (!solve_sparse_linear_system(A, b, solveOptions, x, &solveDiagnostics)) {
+        if (intData.verbose) {
+          cout << "[Directional::integrate] Reduced system solve failed";
+          if (!solveDiagnostics.message.empty())
+            cout << ": " << solveDiagnostics.message;
+          cout << endl;
+        }
+        return false;
+      }
     }
     if (intData.verbose) {
       cout << "[Directional::integrate] solved reduced system iteration "
