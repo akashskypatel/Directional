@@ -56,8 +56,9 @@ struct IntegrationData
     bool integralSeamless;                              // Whether to do full translational seamless.
     bool roundSeams;                                    // Whether to round seams or round singularities
     bool verbose;                                       // Output the integration log.
+    bool enableCudaSolver;                              // Try the optional CUDA-backed reduced linear solve.
     
-    IntegrationData(int _N):lengthRatio(0.02), integralSeamless(false), roundSeams(true), verbose(false){
+    IntegrationData(int _N):lengthRatio(0.02), integralSeamless(false), roundSeams(true), verbose(false), enableCudaSolver(true){
         N=_N;
         n=(N%2==0 ? N/2 : N);
         if (N%2==0)

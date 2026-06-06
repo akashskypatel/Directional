@@ -26,6 +26,7 @@ struct RemeshOptions {
   bool featureAlign = false;
   bool verbose = false;
   bool normalizeDirections = true;
+  bool cudaSolver = true;
 };
 
 struct RemeshResult {
@@ -159,6 +160,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.roundSeams = options.roundSeams;
   // integration.featureAlign = options.featureAlign;
   integration.verbose = options.verbose;
+  integration.enableCudaSolver = options.cudaSolver;
 
   TriMesh meshCut;
   CartesianField combedField;

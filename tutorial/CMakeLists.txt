@@ -117,6 +117,11 @@ if(USE_GMP)
     add_compile_definitions(USE_GMP_ENABLED)
 endif()
 
+if(DIRECTIONAL_ENABLE_CUDA AND CUDAToolkit_FOUND)
+    add_compile_definitions(DIRECTIONAL_ENABLE_CUDA)
+    target_link_libraries(tutorials INTERFACE CUDA::cudart CUDA::cusolver CUDA::cusparse)
+endif()
+
 # ===== Chapters =====
 set(DIRECTIONAL_ALL_TUTORIALS
   101_GlyphRendering

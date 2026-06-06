@@ -743,20 +743,6 @@ public:
                       << " s (total " << totalSeconds << " s)" << std::endl;
             phaseStart = now;
         };
-        const auto shouldLogProgress = [&](int index, int total) {
-            if (!mData.verbose || total <= 0)
-                return false;
-            if (index == 0 || index + 1 == total)
-                return true;
-            const int step = std::max(1, total / 10);
-            return ((index + 1) % step) == 0;
-        };
-        const auto logProgress = [&](const char* label, int index, int total) {
-            if (!shouldLogProgress(index, total))
-                return;
-            std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label << ": "
-                      << (index + 1) << "/" << total << std::endl;
-        };
         
         if (!run_initial_consistency_check())
             return false;

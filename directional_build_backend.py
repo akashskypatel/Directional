@@ -40,6 +40,15 @@ def _apply_directional_settings(config_settings: dict[str, object] | None) -> It
         "DIRECTIONAL_AUTO_INSTALL_GMP": _normalize_bool(
             _get_setting(config_settings, "auto-install-gmp", "directional.auto-install-gmp")
         ),
+        "DIRECTIONAL_ENABLE_CUDA": _normalize_bool(
+            _get_setting(
+                config_settings,
+                "enable-cuda",
+                "directional.enable-cuda",
+                "enable-cude",
+                "directional.enable-cude",
+            )
+        ),
     }
     previous: dict[str, str | None] = {key: os.environ.get(key) for key in mappings}
     try:

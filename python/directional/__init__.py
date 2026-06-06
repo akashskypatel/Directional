@@ -37,11 +37,18 @@ def _configure_windows_dll_search() -> None:
 
 _configure_windows_dll_search()
 
-from ._directional import RemeshOptions, RemeshResult, remesh_from_cross_field, remesh_from_raw_cross_field
+from ._directional import (
+    RemeshOptions,
+    RemeshResult,
+    cuda_solver_available,
+    remesh_from_cross_field,
+    remesh_from_raw_cross_field,
+)
 
 __all__ = [
     "RemeshOptions",
     "RemeshResult",
+    "cuda_solver_available",
     "remesh_from_cross_field",
     "remesh_from_raw_cross_field",
 ]

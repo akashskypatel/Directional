@@ -15,7 +15,8 @@ PYBIND11_MODULE(_directional, m) {
       .def_readwrite("round_seams", &directional::pipeline::RemeshOptions::roundSeams)
       .def_readwrite("feature_align", &directional::pipeline::RemeshOptions::featureAlign)
       .def_readwrite("verbose", &directional::pipeline::RemeshOptions::verbose)
-      .def_readwrite("normalize_directions", &directional::pipeline::RemeshOptions::normalizeDirections);
+      .def_readwrite("normalize_directions", &directional::pipeline::RemeshOptions::normalizeDirections)
+      .def_readwrite("cuda_solver", &directional::pipeline::RemeshOptions::cudaSolver);
 
   py::class_<directional::pipeline::RemeshResult>(m, "RemeshResult")
       .def(py::init<>())
@@ -27,6 +28,11 @@ PYBIND11_MODULE(_directional, m) {
       .def_readwrite("cut_faces", &directional::pipeline::RemeshResult::cutFaces)
       .def_readwrite("cut_functions", &directional::pipeline::RemeshResult::cutFunctions)
       .def_readwrite("cut_corner_functions", &directional::pipeline::RemeshResult::cutCornerFunctions);
+
+  m.def(
+      "cuda_solver_available",
+      &directional::cuda_solver_available,
+      "Return whether Directional was built with the optional CUDA-backed integration solver.");
 
   m.def(
       "remesh_from_raw_cross_field",

@@ -22,6 +22,7 @@ Key build toggles:
 - `BUILD_SHARED_LIBS=ON|OFF`
 - `USE_GMP=ON|OFF`
 - `DIRECTIONAL_AUTO_INSTALL_GMP=ON|OFF`
+- `DIRECTIONAL_ENABLE_CUDA=ON|OFF` default `ON`
 
 ## Prerequisites
 
@@ -57,12 +58,15 @@ Common GMP flags for all CMake examples:
 ```powershell
 -DUSE_GMP=ON|OFF
 -DDIRECTIONAL_AUTO_INSTALL_GMP=ON|OFF
+-DDIRECTIONAL_ENABLE_CUDA=ON|OFF
 ```
 
 Examples:
 
 - GMP enabled: `-DUSE_GMP=ON -DDIRECTIONAL_AUTO_INSTALL_GMP=ON`
 - non-GMP build: `-DUSE_GMP=OFF -DDIRECTIONAL_AUTO_INSTALL_GMP=OFF`
+- CUDA-enabled integration solver: enabled by default, or force with `-DDIRECTIONAL_ENABLE_CUDA=ON`
+- CPU-only integration solver: `-DDIRECTIONAL_ENABLE_CUDA=OFF`
 
 ### 1. Build and install the standalone library
 
@@ -189,6 +193,11 @@ Supported GMP flags:
 - `--no-use-gmp`
 - `--auto-install-gmp`
 - `--no-auto-install-gmp`
+- `--enable-cuda`
+- `--enable-cude` (alias)
+- `--disable-cuda`
+
+CUDA is enabled by default for `setup.py` and `pip` builds. Use `--disable-cuda`, `-Cenable-cuda=0`, or `DIRECTIONAL_ENABLE_CUDA=0` to force a CPU-only build.
 
 ### 1. Build the standalone shared library
 
@@ -206,6 +215,7 @@ Examples:
 ```powershell
 python setup.py standalone --use-gmp --auto-install-gmp
 python setup.py standalone --no-use-gmp --no-auto-install-gmp
+python setup.py standalone --use-gmp --enable-cuda
 ```
 
 ### 2. Build the tutorial suite
@@ -253,6 +263,7 @@ python setup.py bdist_wheel
 ```powershell
 python setup.py build_ext --no-use-gmp bdist_wheel
 python setup.py build_ext --use-gmp --auto-install-gmp bdist_wheel
+python setup.py build_ext --use-gmp --enable-cuda bdist_wheel
 ```
 
 Wheel output:
@@ -283,6 +294,8 @@ Supported keys:
 
 - `-Cuse-gmp=1|0`
 - `-Cauto-install-gmp=1|0`
+- `-Cenable-cuda=1|0`
+- `-Cenable-cude=1|0`
 
 Examples:
 
@@ -290,12 +303,14 @@ Examples:
 python -m pip install . --no-build-isolation -Cuse-gmp=1 -Cauto-install-gmp=1
 python -m pip install . --no-build-isolation -Cuse-gmp=0 -Cauto-install-gmp=0
 python -m pip wheel . --no-deps --no-build-isolation -Cuse-gmp=0 -Cauto-install-gmp=0
+python -m pip install . --no-build-isolation -Cuse-gmp=1 -Cenable-cuda=1
 ```
 
 Namespaced aliases are also accepted if you prefer explicit keys:
 
 ```powershell
 python -m pip install . --no-build-isolation -Cdirectional.use-gmp=0 -Cdirectional.auto-install-gmp=0
+python -m pip install . --no-build-isolation -Cdirectional.use-gmp=1 -Cdirectional.enable-cuda=1
 ```
 
 Environment-variable fallback also works:
@@ -303,6 +318,7 @@ Environment-variable fallback also works:
 ```powershell
 $env:DIRECTIONAL_USE_GMP = "0"
 $env:DIRECTIONAL_AUTO_INSTALL_GMP = "0"
+$env:DIRECTIONAL_ENABLE_CUDA = "0"
 python -m pip install . --no-build-isolation
 ```
 
@@ -312,6 +328,7 @@ The wheel exposes a small headless remeshing API:
 
 - `directional.RemeshOptions`
 - `directional.RemeshResult`
+- `directional.cuda_solver_available()`
 - `directional.remesh_from_cross_field(...)`
 - `directional.remesh_from_raw_cross_field(...)`
 
@@ -331,9 +348,14 @@ F = np.array([[0, 1, 2]], dtype=np.int32)
 PD1 = np.array([[1.0, 0.0, 0.0]], dtype=np.float64)
 
 opts = directional.RemeshOptions()
+opts.cuda_solver = directional.cuda_solver_available()
 result = directional.remesh_from_cross_field(V, F, PD1, opts)
 print(result.success)
 ```
+
+`RemeshOptions.cuda_solver` is a runtime opt-in. The build must also be configured with `DIRECTIONAL_ENABLE_CUDA=ON` or the Python/package aliases above. The current CUDA path accelerates the reduced linear solve in `integrate()` and falls back to the existing CPU `SparseLU` path when CUDA is unavailable, the system is too large for the initial dense GPU solve, or the GPU solve fails.
+
+CUDA is enabled by default and CUDA runtime/headers will be linked automatically if available, otherwise the build will fallback to the Eigen CPU path.
 
 ## Recommended Workflows
 

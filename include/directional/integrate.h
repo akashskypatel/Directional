@@ -14,6 +14,7 @@
 #include <directional/PCFaceTangentBundle.h>
 #include <directional/TriMesh.h>
 #include <directional/branched_gradient.h>
+#include <directional/cuda_solver.h>
 #include <directional/principal_matching.h>
 #include <directional/setup_integration.h>
 #include <directional/tree.h>
@@ -80,6 +81,44 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     cout << "[Directional::integrate] " << label << ": " << (index + 1) << "/"
          << total << endl;
   };
+  const auto log_iteration_timing =
+      [&](int intIter, int totalIterations,
+          const std::chrono::high_resolution_clock::time_point &iterationStart,
+          const std::chrono::high_resolution_clock::time_point &solveStart,
+          const char *backend, const LinearSolveDiagnostics &solveDiagnostics,
+          const SparseMatrix<double> &A, int constraintRows) {
+        if (!intData.verbose)
+          return;
+        const auto now = Clock::now();
+        const auto iterationSeconds =
+            std::chrono::duration_cast<std::chrono::microseconds>(now - iterationStart)
+                .count() /
+            1e+6;
+        const auto solveSeconds =
+            std::chrono::duration_cast<std::chrono::microseconds>(now - solveStart)
+                .count() /
+            1e+6;
+        cout << "[Directional::integrate] iteration timing " << (intIter + 1)
+             << "/" << totalIterations << ": total=" << iterationSeconds
+             << " s, solve=" << solveSeconds << " s, backend=" << backend
+             << ", A=" << A.rows() << "x" << A.cols()
+             << ", constraints=" << constraintRows;
+        if (!solveDiagnostics.message.empty()) {
+          cout << ", note=" << solveDiagnostics.message;
+        }
+        cout << endl;
+      };
+  if (intData.verbose) {
+    cout << "[Directional::integrate] Solver configuration: cuda_build="
+         << (cuda_solver_available() ? "enabled" : "disabled")
+         << ", cuda_requested="
+         << (intData.enableCudaSolver ? "true" : "false") << endl;
+    if (!intData.enableCudaSolver) {
+      cout << "[Directional::integrate] CUDA solve is not requested for this run; "
+              "set IntegrationData.enableCudaSolver=true to opt in."
+           << endl;
+    }
+  }
 
   assert(field.tb->discTangType() == discTangTypeEnum::FACE_SPACES &&
          "Integrate() only works with face-based fields");
@@ -224,6 +263,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   fullx.setZero();
   const int totalIterations = fixedMask.sum();
   for (int intIter = 0; intIter < totalIterations; intIter++) {
+    const auto iterationStart = Clock::now();
     log_progress("rounding iteration", intIter, totalIterations);
     // the non-fixed variables to all variables
     var2AllMat.resize(numVars, numVars - alreadyFixed.sum());
@@ -292,20 +332,34 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       bpart(k) = bfull(PIndices(k));
     b.segment(EtE.rows(), Cpart.rows()) = bpart;
 
-    SparseLU<SparseMatrix<double>> lusolver;
-    lusolver.compute(A);
-    if (lusolver.info() != Success) {
-      if (intData.verbose)
-        cout << "LU decomposition failed!" << endl;
+    LinearSolveOptions solveOptions;
+    solveOptions.preferCuda = intData.enableCudaSolver;
+    solveOptions.verbose = intData.verbose;
+    LinearSolveDiagnostics solveDiagnostics;
+    const auto solveStart = Clock::now();
+    if (!solve_sparse_linear_system(A, b, solveOptions, x, &solveDiagnostics)) {
+      if (intData.verbose) {
+        cout << "[Directional::integrate] Reduced system solve failed";
+        if (!solveDiagnostics.message.empty())
+          cout << ": " << solveDiagnostics.message;
+        cout << endl;
+      }
       return false;
     }
-    x = lusolver.solve(b);
     if (intData.verbose) {
       cout << "[Directional::integrate] solved reduced system iteration "
            << (intIter + 1) << "/" << totalIterations << " with size A="
            << A.rows() << "x" << A.cols() << ", constraints=" << Cpart.rows()
+           << ", backend="
+           << (solveDiagnostics.usedCuda ? "cuda" : "cpu")
            << endl;
+      if (!solveDiagnostics.message.empty()) {
+        cout << "[Directional::integrate] " << solveDiagnostics.message << endl;
+      }
     }
+    log_iteration_timing(intIter, totalIterations, iterationStart, solveStart,
+                         solveDiagnostics.usedCuda ? "cuda" : "cpu",
+                         solveDiagnostics, A, Cpart.rows());
 
     fullx = var2AllMat * x.head(numVars - alreadyFixed.sum()) + fixedValues;
 

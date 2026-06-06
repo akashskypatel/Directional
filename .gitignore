@@ -3613,3 +3613,8 @@ tutorial/output/polyvector.rawfield
 *.pyd
 vcpkg_installed/
 .agents/
+**/output/
+.claude/
+.gitnexusignore
+AGENTS.md
+CLAUDE.md

@@ -89,8 +89,11 @@ class BuildStandalone(Command):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-cuda", None, "Enable the optional CUDA-backed integration solver"),
+        ("enable-cude", None, "Alias for --enable-cuda"),
+        ("disable-cuda", None, "Disable the optional CUDA-backed integration solver"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-cuda", "enable-cude", "disable-cuda"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
@@ -99,6 +102,9 @@ class BuildStandalone(Command):
         self.no_use_gmp = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
+        self.enable_cuda = _env_bool("DIRECTIONAL_ENABLE_CUDA", True)
+        self.enable_cude = False
+        self.disable_cuda = False
 
     def finalize_options(self) -> None:
         if self.build_dir is None:
@@ -109,6 +115,10 @@ class BuildStandalone(Command):
             self.use_gmp = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
+        if self.enable_cude:
+            self.enable_cuda = True
+        if self.disable_cuda:
+            self.enable_cuda = False
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
@@ -120,6 +130,7 @@ class BuildStandalone(Command):
                 "-DBUILD_PYTHON=OFF",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_CUDA={_as_cmake_bool(bool(self.enable_cuda))}",
             ],
         )
         _configure_and_build(build_dir, configure_args, build_target="directional")
@@ -135,8 +146,11 @@ class BuildTutorials(Command):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-cuda", None, "Enable the optional CUDA-backed integration solver"),
+        ("enable-cude", None, "Alias for --enable-cuda"),
+        ("disable-cuda", None, "Disable the optional CUDA-backed integration solver"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-cuda", "enable-cude", "disable-cuda"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
@@ -145,6 +159,9 @@ class BuildTutorials(Command):
         self.no_use_gmp = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
+        self.enable_cuda = _env_bool("DIRECTIONAL_ENABLE_CUDA", True)
+        self.enable_cude = False
+        self.disable_cuda = False
 
     def finalize_options(self) -> None:
         if self.tutorial is not None:
@@ -155,6 +172,10 @@ class BuildTutorials(Command):
             self.use_gmp = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
+        if self.enable_cude:
+            self.enable_cuda = True
+        if self.disable_cuda:
+            self.enable_cuda = False
         if self.build_dir is None:
             if self.tutorial is None:
                 self.build_dir = str(_build_dir("tutorials"))
@@ -173,6 +194,7 @@ class BuildTutorials(Command):
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_CUDA={_as_cmake_bool(bool(self.enable_cuda))}",
             ],
         )
         _configure_and_build(build_dir, configure_args)
@@ -184,8 +206,11 @@ class CMakeBuildExt(build_ext):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-cuda", None, "Enable the optional CUDA-backed integration solver"),
+        ("enable-cude", None, "Alias for --enable-cuda"),
+        ("disable-cuda", None, "Disable the optional CUDA-backed integration solver"),
     ]
-    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-cuda", "enable-cude", "disable-cuda"]
 
     def initialize_options(self) -> None:
         super().initialize_options()
@@ -193,6 +218,9 @@ class CMakeBuildExt(build_ext):
         self.no_use_gmp = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
+        self.enable_cuda = _env_bool("DIRECTIONAL_ENABLE_CUDA", True)
+        self.enable_cude = False
+        self.disable_cuda = False
 
     def finalize_options(self) -> None:
         super().finalize_options()
@@ -200,6 +228,10 @@ class CMakeBuildExt(build_ext):
             self.use_gmp = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
+        if self.enable_cude:
+            self.enable_cuda = True
+        if self.disable_cuda:
+            self.enable_cuda = False
 
     def build_extension(self, ext: Extension) -> None:
         if not isinstance(ext, CMakeExtension):
@@ -228,6 +260,7 @@ class CMakeBuildExt(build_ext):
                 f"-Dpybind11_DIR={pybind11_dir}",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_CUDA={_as_cmake_bool(bool(self.enable_cuda))}",
             ],
         )
 

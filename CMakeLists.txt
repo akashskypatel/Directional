@@ -10,6 +10,7 @@ option(BUILD_PYTHON "Build Python bindings" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(USE_GMP "Enable GMP support if found" ON)
 option(DIRECTIONAL_AUTO_INSTALL_GMP "Attempt to auto-install GMP when missing on supported platforms" ON)
+option(DIRECTIONAL_ENABLE_CUDA "Enable the optional CUDA-backed integration solver" ON)
 
 add_library(directional SHARED
   src/directional_core.cpp
@@ -29,6 +30,22 @@ target_include_directories(directional
 )
 
 target_compile_features(directional PUBLIC cxx_std_20)
+
+if(DIRECTIONAL_ENABLE_CUDA)
+  find_package(CUDAToolkit QUIET)
+  if(CUDAToolkit_FOUND)
+    message(STATUS "CUDA toolkit found for optional Directional integration solver:")
+    message(STATUS "  Include: ${CUDAToolkit_INCLUDE_DIRS}")
+    if(DEFINED CUDAToolkit_BIN_DIR)
+      message(STATUS "  Bin: ${CUDAToolkit_BIN_DIR}")
+    endif()
+    target_compile_definitions(directional PUBLIC DIRECTIONAL_ENABLE_CUDA)
+    target_link_libraries(directional PRIVATE CUDA::cudart CUDA::cusolver CUDA::cublas)
+  else()
+    message(WARNING "DIRECTIONAL_ENABLE_CUDA was requested, but CUDAToolkit was not found. Continuing without CUDA support.")
+    set(DIRECTIONAL_ENABLE_CUDA OFF CACHE BOOL "Enable the optional CUDA-backed integration solver" FORCE)
+  endif()
+endif()
 
 function(_directional_find_gmp)
   set(_directional_gmp_include_hints
@@ -216,6 +233,39 @@ function(_directional_collect_gmp_runtime_files out_var)
   endif()
 endfunction()
 
+function(_directional_collect_cuda_runtime_files out_var)
+  if(NOT WIN32 OR NOT DIRECTIONAL_ENABLE_CUDA OR NOT CUDAToolkit_FOUND)
+    set(${out_var} "" PARENT_SCOPE)
+    return()
+  endif()
+
+  set(_runtime_files)
+  set(_runtime_dirs)
+  if(DEFINED CUDAToolkit_BIN_DIR)
+    list(APPEND _runtime_dirs "${CUDAToolkit_BIN_DIR}")
+  endif()
+  if(DEFINED CUDAToolkit_LIBRARY_DIR)
+    list(APPEND _runtime_dirs "${CUDAToolkit_LIBRARY_DIR}")
+  endif()
+
+  foreach(_candidate_dir IN LISTS _runtime_dirs)
+    if(EXISTS "${_candidate_dir}")
+      file(GLOB _candidate_files
+        "${_candidate_dir}/cudart*.dll"
+        "${_candidate_dir}/cusolver*.dll"
+        "${_candidate_dir}/cusparse*.dll"
+        "${_candidate_dir}/cublas*.dll"
+        "${_candidate_dir}/cublasLt*.dll"
+        "${_candidate_dir}/nvJitLink*.dll"
+      )
+      list(APPEND _runtime_files ${_candidate_files})
+    endif()
+  endforeach()
+
+  list(REMOVE_DUPLICATES _runtime_files)
+  set(${out_var} "${_runtime_files}" PARENT_SCOPE)
+endfunction()
+
 if(USE_GMP)
   message(STATUS "Attempting to find GMP for Directional core...")
 
@@ -238,6 +288,10 @@ if(USE_GMP)
     message(WARNING "GMP not found for Directional core. Continuing without USE_GMP.")
     set(USE_GMP OFF CACHE BOOL "Enable GMP support if found" FORCE)
   endif()
+endif()
+
+if(DIRECTIONAL_ENABLE_CUDA AND CUDAToolkit_FOUND)
+  _directional_collect_cuda_runtime_files(DIRECTIONAL_CUDA_RUNTIME_FILES)
 endif()
 
 if(BUILD_TUTORIALS)
@@ -274,6 +328,12 @@ if(BUILD_PYTHON)
       DESTINATION directional
     )
   endif()
+  if(DIRECTIONAL_ENABLE_CUDA AND DIRECTIONAL_CUDA_RUNTIME_FILES)
+    install(
+      FILES ${DIRECTIONAL_CUDA_RUNTIME_FILES}
+      DESTINATION directional
+    )
+  endif()
 endif()
 
 install(
@@ -287,6 +347,13 @@ install(
 if(USE_GMP AND DIRECTIONAL_GMP_RUNTIME_FILES)
   install(
     FILES ${DIRECTIONAL_GMP_RUNTIME_FILES}
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
+endif()
+
+if(DIRECTIONAL_ENABLE_CUDA AND DIRECTIONAL_CUDA_RUNTIME_FILES)
+  install(
+    FILES ${DIRECTIONAL_CUDA_RUNTIME_FILES}
     DESTINATION ${CMAKE_INSTALL_BINDIR}
   )
 endif()
