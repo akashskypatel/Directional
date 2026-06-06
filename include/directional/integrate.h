@@ -23,6 +23,10 @@
 #include <chrono>
 #include <vector>
 
+#ifdef USE_SUITESPARSE_ENABLED
+#include <Eigen/UmfPackSupport>
+#endif
+
 namespace directional {
 
 // Integrates an N-directional fields into an N-function by solving the seamless
@@ -292,7 +296,11 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       bpart(k) = bfull(PIndices(k));
     b.segment(EtE.rows(), Cpart.rows()) = bpart;
 
+#ifdef USE_SUITESPARSE_ENABLED
+    UmfPackLU<SparseMatrix<double>> lusolver;
+#else
     SparseLU<SparseMatrix<double>> lusolver;
+#endif
     lusolver.compute(A);
     if (lusolver.info() != Success) {
       if (intData.verbose)

@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(Directional_tutorials)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -11,6 +14,8 @@ endif()
 
 option(DIRECTIONAL_VIEWER "Directional Viewer" ON)
 option(USE_GMP "Enable GMP support if found" ON)
+option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support if found" ON)
+
 set(DIRECTIONAL_TUTORIALS "ALL" CACHE STRING "Semicolon-separated tutorial directories to build, or ALL")
 
 message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
@@ -19,6 +24,11 @@ message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 set(DIRECTIONAL_ROOT "${CMAKE_CURRENT_LIST_DIR}/../")
 set(DIRECTIONAL_SOURCE_DIR "${DIRECTIONAL_ROOT}/include")
 set(DIRECTIONAL_EXTERNAL "${DIRECTIONAL_ROOT}/external")
+list(APPEND CMAKE_MODULE_PATH "${DIRECTIONAL_ROOT}/cmake")
+include(DirectionalDependencyConfig)
+include(DirectionalVcpkg)
+include(DirectionalDependencies)
+include(DirectionalRuntime)
 
 message(STATUS "DIRECTIONAL_ROOT: ${DIRECTIONAL_ROOT}")
 
@@ -46,16 +56,29 @@ function(directional_finalize_tutorial_target target_name)
     RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/MinSizeRel"
   )
 
-  if(WIN32 AND DIRECTIONAL_GMP_RUNTIME_FILES)
-    add_custom_command(
-      TARGET ${target_name}
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target_name}>"
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${DIRECTIONAL_GMP_RUNTIME_FILES}
-        "$<TARGET_FILE_DIR:${target_name}>"
-      VERBATIM
-    )
+  if(WIN32)
+    if(DIRECTIONAL_GMP_RUNTIME_FILES)
+      add_custom_command(
+        TARGET ${target_name}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target_name}>"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          ${DIRECTIONAL_GMP_RUNTIME_FILES}
+          "$<TARGET_FILE_DIR:${target_name}>"
+        VERBATIM
+      )
+    endif()
+    if(DIRECTIONAL_SUITESPARSE_RUNTIME_FILES)
+      add_custom_command(
+        TARGET ${target_name}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target_name}>"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          ${DIRECTIONAL_SUITESPARSE_RUNTIME_FILES}
+          "$<TARGET_FILE_DIR:${target_name}>"
+        VERBATIM
+      )
+    endif()
   endif()
 endfunction()
 
@@ -76,45 +99,58 @@ target_include_directories(tutorials INTERFACE
     ${POLYSCOPE_SOURCE_DIR}/deps/glm
 )
 
-# ===== GMP Handling (Cross-platform) =====
+# Reuse the top-level dependency discovery so tutorial builds match the wheel/standalone builds.
 if(USE_GMP)
     message(STATUS "Attempting to find GMP...")
-
-    find_path(GMP_INCLUDE_DIR
-        NAMES gmp.h
-        HINTS
-            $ENV{GMP_DIR}/include
-            ${CMAKE_PREFIX_PATH}/include
-            /usr/include
-            /usr/local/include
-            "C:/Program Files/GMP/include"
-    )
-
-    find_library(GMP_LIBRARIES
-        NAMES gmp libgmp
-        HINTS
-            $ENV{GMP_DIR}/lib
-            ${CMAKE_PREFIX_PATH}/lib
-            /usr/lib
-            /usr/local/lib
-            "C:/Program Files/GMP/lib"
-    )
+    _directional_find_gmp()
+    if(NOT (GMP_INCLUDE_DIR AND GMP_LIBRARIES))
+        _directional_try_autoinstall_gmp()
+        _directional_find_gmp()
+    endif()
 
     if(GMP_INCLUDE_DIR AND GMP_LIBRARIES)
         message(STATUS "GMP found:")
         message(STATUS "  Include: ${GMP_INCLUDE_DIR}")
         message(STATUS "  Library: ${GMP_LIBRARIES}")
-        add_compile_definitions(USE_GMP)
-        include_directories(${GMP_INCLUDE_DIR})
-        link_libraries(${GMP_LIBRARIES})
+        target_compile_definitions(tutorials INTERFACE USE_GMP USE_GMP_ENABLED)
+        target_include_directories(tutorials INTERFACE ${GMP_INCLUDE_DIR})
+        target_link_libraries(tutorials INTERFACE ${GMP_LIBRARIES})
+        _directional_collect_gmp_runtime_files(DIRECTIONAL_GMP_RUNTIME_FILES)
     else()
         message(WARNING "GMP not found. Disabling USE_GMP.")
         set(USE_GMP OFF CACHE BOOL "Enable GMP support if found" FORCE)
     endif()
 endif()
 
-if(USE_GMP)
-    add_compile_definitions(USE_GMP_ENABLED)
+if(DIRECTIONAL_ENABLE_SUITESPARSE)
+    message(STATUS "Attempting to find SuiteSparse...")
+    _directional_find_suitesparse()
+    set(_directional_suitesparse_umfpack_libraries ${SUITESPARSE_LIBRARIES})
+    list(FILTER _directional_suitesparse_umfpack_libraries INCLUDE REGEX "umfpack\\.lib$")
+    list(LENGTH _directional_suitesparse_umfpack_libraries _directional_suitesparse_umfpack_count)
+    if(NOT (SUITESPARSE_INCLUDE_DIR AND SUITESPARSE_UMFPACK_INCLUDE_DIR AND _directional_suitesparse_umfpack_count GREATER 0))
+        _directional_try_autoinstall_suitesparse()
+        _directional_find_suitesparse()
+        set(_directional_suitesparse_umfpack_libraries ${SUITESPARSE_LIBRARIES})
+        list(FILTER _directional_suitesparse_umfpack_libraries INCLUDE REGEX "umfpack\\.lib$")
+        list(LENGTH _directional_suitesparse_umfpack_libraries _directional_suitesparse_umfpack_count)
+    endif()
+
+    if(SUITESPARSE_INCLUDE_DIR AND SUITESPARSE_UMFPACK_INCLUDE_DIR AND _directional_suitesparse_umfpack_count GREATER 0)
+        message(STATUS "SuiteSparse found:")
+        message(STATUS "  Include: ${SUITESPARSE_INCLUDE_DIR}")
+        message(STATUS "  Library: ${SUITESPARSE_LIBRARIES}")
+        target_compile_definitions(tutorials INTERFACE USE_SUITESPARSE USE_SUITESPARSE_ENABLED)
+        target_include_directories(tutorials INTERFACE
+            ${SUITESPARSE_INCLUDE_DIR}
+            ${SUITESPARSE_INCLUDE_DIR}/suitesparse
+        )
+        target_link_libraries(tutorials INTERFACE ${SUITESPARSE_LIBRARIES})
+        _directional_collect_suitesparse_runtime_files(DIRECTIONAL_SUITESPARSE_RUNTIME_FILES)
+    else()
+        message(WARNING "SuiteSparse not found. Disabling DIRECTIONAL_ENABLE_SUITESPARSE.")
+        set(DIRECTIONAL_ENABLE_SUITESPARSE OFF CACHE BOOL "Enable SuiteSparse support if found" FORCE)
+    endif()
 endif()
 
 # ===== Chapters =====

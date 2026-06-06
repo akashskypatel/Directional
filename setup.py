@@ -11,10 +11,124 @@ from setuptools.command.build_ext import build_ext
 
 
 ROOT = Path(__file__).resolve().parent
+WINDOWS_VS_CMAKE_CANDIDATES = (
+    Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"),
+)
+WINDOWS_VS_NINJA_CANDIDATES = (
+    Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"),
+)
+WINDOWS_VCPKG_TRIPLETS = ("x64-windows", "xw")
+
+
+def _first_existing_path(candidates: tuple[Path, ...]) -> Path | None:
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _windows_cmake_executable() -> Path | None:
+    override = os.environ.get("DIRECTIONAL_CMAKE_EXECUTABLE") or os.environ.get("CMAKE_COMMAND")
+    if override:
+        candidate = Path(override)
+        if candidate.exists():
+            return candidate
+    return _first_existing_path(WINDOWS_VS_CMAKE_CANDIDATES)
+
+
+def _windows_ninja_executable() -> Path | None:
+    override = os.environ.get("CMAKE_MAKE_PROGRAM")
+    if override:
+        candidate = Path(override)
+        if candidate.exists():
+            return candidate
+    return _first_existing_path(WINDOWS_VS_NINJA_CANDIDATES)
+
+
+def _cmake_executable() -> str:
+    if sys.platform == "win32":
+        candidate = _windows_cmake_executable()
+        if candidate is not None:
+            return str(candidate)
+    return "cmake"
+
+
+def _find_vcpkg_tool_dir(tool_name: str) -> Path | None:
+    for candidate in ROOT.glob(f"build/**/downloads/tools/*/{tool_name}"):
+        return candidate.parent
+    return None
+
+
+def _is_conflicting_cmake_path(entry: str, cmake_parent: str) -> bool:
+    entry_lower = entry.lower()
+    if entry_lower == cmake_parent:
+        return False
+    if "site-packages\\cmake\\data\\bin" in entry_lower:
+        return True
+    return ".venv" in entry_lower and entry_lower.endswith("\\scripts") and (Path(entry) / "cmake.exe").exists()
+
+
+def _runtime_dll_dirs(build_temp: Path, install_dir: Path, installed_pkg_dir: Path) -> list[Path]:
+    runtime_dirs = [installed_pkg_dir, install_dir / "bin"]
+    for triplet in WINDOWS_VCPKG_TRIPLETS:
+        runtime_dirs.extend(
+            [
+                build_temp / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
+                build_temp / "_deps" / "vcpkg-src" / "installed" / triplet / "debug" / "bin",
+                ROOT / "vcpkg_installed" / triplet / "bin",
+                ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
+            ]
+        )
+    runtime_dirs.extend(
+        [
+            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
+            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
+        ]
+    )
+    return runtime_dirs
+
+
+def _build_env(env: dict[str, str] | None = None) -> dict[str, str]:
+    merged = os.environ.copy()
+    if env:
+        merged.update(env)
+    if sys.platform == "win32":
+        cmake_exe = _cmake_executable()
+        cmake_parent = str(Path(cmake_exe).resolve().parent).lower() if Path(cmake_exe).exists() else ""
+        path_entries = [
+            entry
+            for entry in merged.get("PATH", "").split(os.pathsep)
+            if entry
+            and not (
+                "pip-build-env" in entry.lower()
+                and entry.lower().endswith("\\overlay\\scripts")
+            )
+            and not _is_conflicting_cmake_path(entry, cmake_parent)
+        ]
+        prepend: list[str] = []
+        windows_cmake = _windows_cmake_executable()
+        if windows_cmake is not None:
+            prepend.append(str(windows_cmake.parent))
+        ninja_exe = _windows_ninja_executable()
+        if ninja_exe is not None:
+            prepend.append(str(ninja_exe.parent))
+        seven_zip_dir = _find_vcpkg_tool_dir("7z.exe")
+        if seven_zip_dir is not None:
+            prepend.append(str(seven_zip_dir))
+        merged["PATH"] = os.pathsep.join([*prepend, *path_entries])
+        merged["CMAKE_COMMAND"] = cmake_exe
+        if ninja_exe is not None:
+            merged.setdefault("CMAKE_MAKE_PROGRAM", str(ninja_exe))
+        if seven_zip_dir is not None:
+            merged.setdefault("VCPKG_FORCE_SYSTEM_BINARIES", "1")
+    return merged
 
 
 def _run(cmd: list[str], cwd: Path | None = None, env: dict[str, str] | None = None) -> None:
-    subprocess.run(cmd, cwd=str(cwd or ROOT), env=env, check=True)
+    resolved_cmd = list(cmd)
+    if resolved_cmd and resolved_cmd[0] == "cmake":
+        resolved_cmd[0] = _cmake_executable()
+    subprocess.run(resolved_cmd, cwd=str(cwd or ROOT), env=_build_env(env), check=True)
 
 
 def _cmake_args(prefix: Path, extra: list[str] | None = None) -> list[str]:
@@ -62,16 +176,42 @@ def _configure_and_build(build_dir: Path, configure_args: list[str], build_targe
 
 
 def _copy_runtime_dlls(target_dir: Path, directories: list[Path]) -> None:
-    seen: set[Path] = set()
+    seen_names: set[str] = set()
     for directory in directories:
         if not directory.exists():
             continue
         for dll_path in directory.glob("*.dll"):
-            resolved = dll_path.resolve()
-            if resolved in seen:
+            dll_name = dll_path.name.lower()
+            if dll_name in seen_names:
                 continue
-            seen.add(resolved)
+            seen_names.add(dll_name)
             shutil.copy2(dll_path, target_dir / dll_path.name)
+
+
+def _copy_runtime_dlls_to_targets(target_dirs: list[Path], source_dirs: list[Path]) -> None:
+    for target_dir in target_dirs:
+        target_dir.mkdir(parents=True, exist_ok=True)
+        _copy_runtime_dlls(target_dir, source_dirs)
+
+
+def _tutorial_runtime_dll_dirs(build_dir: Path) -> list[Path]:
+    runtime_dirs: list[Path] = [build_dir / "Release", build_dir / "Debug", build_dir / "RelWithDebInfo", build_dir / "MinSizeRel"]
+    for triplet in WINDOWS_VCPKG_TRIPLETS:
+        runtime_dirs.extend(
+            [
+                build_dir / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
+                build_dir / "_deps" / "vcpkg-src" / "installed" / triplet / "debug" / "bin",
+                ROOT / "vcpkg_installed" / triplet / "bin",
+                ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
+            ]
+        )
+    runtime_dirs.extend(
+        [
+            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
+            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
+        ]
+    )
+    return runtime_dirs
 
 
 class CMakeExtension(Extension):
@@ -89,14 +229,18 @@ class BuildStandalone(Command):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-suitesparse", None, "Enable SuiteSparse support"),
+        ("disable-suitesparse", None, "Disable SuiteSparse support"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.install_dir = None
         self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
         self.no_use_gmp = False
+        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
+        self.disable_suitesparse = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
 
@@ -107,6 +251,8 @@ class BuildStandalone(Command):
             self.install_dir = str(Path(self.build_dir) / "install")
         if self.no_use_gmp:
             self.use_gmp = False
+        if self.disable_suitesparse:
+            self.enable_suitesparse = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
 
@@ -120,6 +266,7 @@ class BuildStandalone(Command):
                 "-DBUILD_PYTHON=OFF",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
             ],
         )
         _configure_and_build(build_dir, configure_args, build_target="directional")
@@ -135,8 +282,10 @@ class BuildTutorials(Command):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-suitesparse", None, "Enable SuiteSparse support"),
+        ("disable-suitesparse", None, "Disable SuiteSparse support"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
@@ -145,6 +294,8 @@ class BuildTutorials(Command):
         self.no_use_gmp = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
+        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
+        self.disable_suitesparse = False
 
     def finalize_options(self) -> None:
         if self.tutorial is not None:
@@ -155,6 +306,8 @@ class BuildTutorials(Command):
             self.use_gmp = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
+        if self.disable_suitesparse:
+            self.enable_suitesparse = False
         if self.build_dir is None:
             if self.tutorial is None:
                 self.build_dir = str(_build_dir("tutorials"))
@@ -173,9 +326,12 @@ class BuildTutorials(Command):
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
             ],
         )
         _configure_and_build(build_dir, configure_args)
+        tutorial_exe_dirs = sorted({path.parent for path in build_dir.glob("**/*.exe")})
+        _copy_runtime_dlls_to_targets(tutorial_exe_dirs, _tutorial_runtime_dll_dirs(build_dir))
 
 
 class CMakeBuildExt(build_ext):
@@ -184,8 +340,10 @@ class CMakeBuildExt(build_ext):
         ("no-use-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
+        ("enable-suitesparse", None, "Enable SuiteSparse support"),
+        ("disable-suitesparse", None, "Disable SuiteSparse support"),
     ]
-    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp"]
+    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
 
     def initialize_options(self) -> None:
         super().initialize_options()
@@ -193,6 +351,8 @@ class CMakeBuildExt(build_ext):
         self.no_use_gmp = False
         self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
         self.no_auto_install_gmp = False
+        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
+        self.disable_suitesparse = False
 
     def finalize_options(self) -> None:
         super().finalize_options()
@@ -200,6 +360,8 @@ class CMakeBuildExt(build_ext):
             self.use_gmp = False
         if self.no_auto_install_gmp:
             self.auto_install_gmp = False
+        if self.disable_suitesparse:
+            self.enable_suitesparse = False
 
     def build_extension(self, ext: Extension) -> None:
         if not isinstance(ext, CMakeExtension):
@@ -228,6 +390,7 @@ class CMakeBuildExt(build_ext):
                 f"-Dpybind11_DIR={pybind11_dir}",
                 f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
                 f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
             ],
         )
 
@@ -248,15 +411,7 @@ class CMakeBuildExt(build_ext):
         shutil.copy2(package_src, target_pkg_dir / "__init__.py")
 
         # Copy runtime DLL dependencies beside the extension module so Python can load them.
-        runtime_bin_dir = install_dir / "bin"
-        runtime_dirs = [
-            runtime_bin_dir,
-            ROOT / "vcpkg_installed" / "x64-windows" / "bin",
-            ROOT / "vcpkg_installed" / "x64-windows" / "debug" / "bin",
-            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
-            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
-        ]
-        _copy_runtime_dlls(target_pkg_dir, runtime_dirs)
+        _copy_runtime_dlls(target_pkg_dir, _runtime_dll_dirs(build_temp, install_dir, installed_pkg_dir))
 
 
 setup(
