@@ -14,7 +14,6 @@ def _configure_windows_dll_search() -> None:
     cwd = Path.cwd()
     candidate_dirs = [
         package_dir,
-        repo_root / "build" / "temp.win-amd64-cpython-313" / "Release" / "directional._directional" / "install" / "bin",
         repo_root / "build" / "standalone" / "Release",
         repo_root / "vcpkg_installed" / "x64-windows" / "bin",
         repo_root / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
@@ -25,6 +24,9 @@ def _configure_windows_dll_search() -> None:
         cwd / "third_party" / "Directional" / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
         cwd / "third_party" / "Directional" / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
     ]
+
+    for temp_dir in (repo_root / "build").glob("temp.win-amd64-cpython-*"):
+        candidate_dirs.append(temp_dir / "Release" / "directional._directional" / "install" / "bin")
 
     seen: set[str] = set()
     for directory in candidate_dirs:
