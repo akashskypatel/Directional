@@ -2040,47 +2040,53 @@ public:
         return true;
     }
 
-    bool try_unify_edges(const int heindex, const bool verbose = false) {
-      const auto oldVertices = vertices;
-      const auto oldHalfedges = halfedges;
-      const auto oldEdges = edges;
-      const auto oldFaces = faces;
-
-      const auto rollback = [&]() {
-        vertices = oldVertices;
-        halfedges = oldHalfedges;
-        edges = oldEdges;
-        faces = oldFaces;
-      };
-
-      const auto fail = [&](const char *message, const int index = -1) {
+    /**
+     * Perform one low-valence edge unification directly on the live DCEL.
+     *
+     * This function does not create its own rollback snapshot. The caller must
+     * provide transaction safety when:
+     *
+     *     rebuildGlobalRepresentatives == false
+     *     runGlobalConsistencyCheck == false
+     *
+     * The optimized low-valence batch in NFunctionMesher does this by backing
+     * up the complete DCEL once before processing all candidate vertices.
+     *
+     * When called through try_unify_edges(), both global operations are enabled
+     * and the wrapper restores the original DCEL if this function fails.
+     */
+    bool unify_edges_in_place(const int heindex, const bool verbose = false,
+                              const bool rebuildGlobalRepresentatives = true,
+                              const bool runGlobalConsistencyCheck = true) {
+      const auto fail = [&](const char *message, const int index = -1) -> bool {
         if (verbose) {
-          std::cerr << "[Directional::DCEL::"
-                       "try_unify_edges()]: "
+          std::cerr << "[Directional::DCEL::unify_edges_in_place()]: "
                     << message;
 
-          if (index >= 0)
+          if (index >= 0) {
             std::cerr << " (index " << index << ")";
+          }
 
           std::cerr << '\n';
         }
 
-        rollback();
         return false;
       };
 
+      /*
+       * ------------------------------------------------------------
+       * Phase 1: validate the complete local neighborhood before
+       * changing anything.
+       * ------------------------------------------------------------
+       */
       if (!valid_halfedge(heindex)) {
         return fail("invalid target halfedge", heindex);
       }
 
       const int prev = halfedges[heindex].prev;
-
       const int next = halfedges[heindex].next;
-
       const int face = halfedges[heindex].face;
-
       const int twin = halfedges[heindex].twin;
-
       const int killedVertex = halfedges[heindex].vertex;
 
       if (!valid_halfedge(prev)) {
@@ -2134,6 +2140,9 @@ public:
         return fail("cannot remove an edge from a triangle face", face);
       }
 
+      /*
+       * Values used only when the edge has an opposite face.
+       */
       int twinNext = -1;
       int twinSuccessor = -1;
       int twinFace = -1;
@@ -2183,33 +2192,71 @@ public:
           return fail("twin-side removal overlaps primary neighborhood",
                       twinNext);
         }
+
+        /*
+         * For the degree-two low-valence case, twinNext is the second
+         * outgoing halfedge of killedVertex.
+         */
+        if (halfedges[twinNext].vertex != killedVertex) {
+          return fail("twin-next does not originate at killed vertex",
+                      twinNext);
+        }
       }
 
       /*
-       * Phase 1: primary face.
+       * The representative of killedVertex must be one of the locally
+       * removed or redirected halfedges.
        *
-       * Merge killedVertex into replacementVertex and remove prev.
+       * This replaces the expensive full scan over every halfedge.
+       */
+      const int killedRepresentative = vertices[killedVertex].halfedge;
+
+      if (killedRepresentative != heindex && killedRepresentative != twinNext) {
+        return fail("killed vertex representative lies outside "
+                    "the unification neighborhood",
+                    killedRepresentative);
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * Phase 2: mutate the primary face.
+       *
+       * heindex changes origin from killedVertex to replacementVertex.
+       * prev is removed from the primary face cycle.
+       * ------------------------------------------------------------
        */
       halfedges[heindex].vertex = replacementVertex;
 
       halfedges[prevPrev].next = heindex;
-
       halfedges[heindex].prev = prevPrev;
 
-      if (faces[face].halfedge == prev)
+      if (faces[face].halfedge == prev) {
         faces[face].halfedge = heindex;
+      }
+
+      /*
+       * Locally repair the replacement vertex representative before
+       * retiring prev.
+       *
+       * This replaces a global representative rebuild after every
+       * unification.
+       */
+      if (vertices[replacementVertex].halfedge == prev ||
+          !valid_halfedge(vertices[replacementVertex].halfedge)) {
+        vertices[replacementVertex].halfedge = heindex;
+      }
 
       if (!retire_halfedge(prev, verbose)) {
-        rollback();
         return false;
       }
 
       /*
-       * Phase 2: opposite face, matching original behavior.
+       * ------------------------------------------------------------
+       * Phase 3: mutate the opposite face.
+       * ------------------------------------------------------------
        */
       if (twin >= 0) {
         halfedges[twin].next = twinSuccessor;
-
         halfedges[twinSuccessor].prev = twin;
 
         if (faces[twinFace].halfedge == twinNext) {
@@ -2217,34 +2264,98 @@ public:
         }
 
         if (!retire_halfedge(twinNext, verbose)) {
-          rollback();
           return false;
         }
       }
 
       /*
-       * The removed vertex must no longer be referenced by
-       * any surviving outgoing halfedge.
+       * ------------------------------------------------------------
+       * Phase 4: retire killedVertex.
+       *
+       * No global halfedge scan is performed here.
+       *
+       * For the optimized batch path, the caller guarantees that this is
+       * a low-valence candidate and performs one full consistency check
+       * after the complete batch.
+       *
+       * For standalone use, try_unify_edges() enables a full consistency
+       * check before committing.
+       * ------------------------------------------------------------
        */
-      for (int he = 0; he < static_cast<int>(halfedges.size()); ++he) {
-        if (!halfedges[he].valid)
-          continue;
+      vertices[killedVertex].halfedge = -1;
+      vertices[killedVertex].valid = false;
 
-        if (halfedges[he].vertex == killedVertex) {
-          return fail("surviving halfedge still references killed vertex", he);
+      /*
+       * Ensure the replacement vertex has a valid local representative.
+       */
+      if (!valid_halfedge(vertices[replacementVertex].halfedge) ||
+          halfedges[vertices[replacementVertex].halfedge].vertex !=
+              replacementVertex) {
+        vertices[replacementVertex].halfedge = heindex;
+      }
+
+      /*
+       * Optional global representative repair.
+       *
+       * Disabled by the optimized bulk path and run once after the entire
+       * batch in NFunctionMesher.
+       */
+      if (rebuildGlobalRepresentatives) {
+        if (!rebuild_representative_halfedges(verbose, true)) {
+          return false;
         }
       }
 
-      vertices[killedVertex].valid = false;
-      vertices[killedVertex].halfedge = -1;
-
-      if (!rebuild_representative_halfedges(verbose, true)) {
-        rollback();
-        return false;
+      /*
+       * Optional full DCEL consistency validation.
+       *
+       * Disabled by the optimized bulk path and run once after the entire
+       * batch in NFunctionMesher.
+       */
+      if (runGlobalConsistencyCheck) {
+        if (!check_consistency(verbose, true, true, false)) {
+          return false;
+        }
       }
 
-      if (!check_consistency(verbose, true, true, false)) {
+      return true;
+    }
+
+    /**
+     * Transaction-safe standalone edge unification.
+     *
+     * This wrapper preserves the previous behavior:
+     *
+     * - complete DCEL rollback on failure;
+     * - global representative rebuild;
+     * - full consistency validation.
+     *
+     * The optimized NFunctionMesher batch does not call this function. It
+     * calls unify_edges_in_place() after creating one backup for the entire
+     * low-valence phase.
+     */
+    bool try_unify_edges(const int heindex, const bool verbose = false) {
+      const auto oldVertices = vertices;
+      const auto oldHalfedges = halfedges;
+      const auto oldEdges = edges;
+      const auto oldFaces = faces;
+
+      const auto rollback = [&]() {
+        vertices = oldVertices;
+        halfedges = oldHalfedges;
+        edges = oldEdges;
+        faces = oldFaces;
+      };
+
+      if (!unify_edges_in_place(heindex, verbose, true, true)) {
         rollback();
+
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::try_unify_edges()]: "
+                    << "transaction rolled back"
+                    << " (halfedge " << heindex << ")\n";
+        }
+
         return false;
       }
 

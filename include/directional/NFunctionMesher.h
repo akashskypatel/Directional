@@ -18,9 +18,9 @@
 #include <queue>
 #include <set>
 #include <stdexcept>
+#include <unordered_map>
 #include <utility>
 #include <vector>
-
 
 namespace directional {
 
@@ -125,10 +125,35 @@ public:
     return (a - b).max_abs().to_double();
   }
 
+  class VertexCoordinateView {
+  public:
+    VertexCoordinateView(const FunctionDCEL &dcel,
+                         const std::vector<int> &vertexIndices)
+        : dcel_(&dcel), vertexIndices_(&vertexIndices) {}
+
+    std::size_t size() const noexcept { return vertexIndices_->size(); }
+
+    bool empty() const noexcept { return vertexIndices_->empty(); }
+
+    const EVector3 &operator[](const std::size_t index) const {
+      const int vertex = (*vertexIndices_)[index];
+
+      return dcel_->vertices[vertex].data.eCoords;
+    }
+
+    int vertex_index(const std::size_t index) const {
+      return (*vertexIndices_)[index];
+    }
+
+  private:
+    const FunctionDCEL *dcel_;
+    const std::vector<int> *vertexIndices_;
+  };
+
+  template <typename PointSet1, typename PointSet2>
   std::vector<std::pair<int, int>>
-  FindVertexMatchGreedyExact(const bool verbose,
-                             const std::vector<EVector3> &Set1,
-                             const std::vector<EVector3> &Set2) {
+  FindVertexMatchGreedyExact(const bool verbose, const PointSet1 &Set1,
+                             const PointSet2 &Set2) {
     using Clock = std::chrono::steady_clock;
     const auto startTime = Clock::now();
     const std::size_t pointCount = Set1.size();
@@ -233,10 +258,10 @@ public:
     std::vector<std::pair<int, int>> matches;
   };
 
-  BandedMatchResult FindVertexMatchBanded(const bool verbose,
-                                          const std::vector<EVector3> &Set1,
-                                          const std::vector<EVector3> &Set2,
-                                          const std::size_t band) {
+  template <typename PointSet1, typename PointSet2>
+  BandedMatchResult
+  FindVertexMatchBanded(const bool verbose, const PointSet1 &Set1,
+                        const PointSet2 &Set2, const std::size_t band) {
     using Clock = std::chrono::steady_clock;
     const auto startTime = Clock::now();
     const std::size_t n = Set1.size();
@@ -386,9 +411,10 @@ public:
     return output;
   }
 
-  std::vector<std::pair<int, int>>
-  FindVertexMatch(const bool verbose, const std::vector<EVector3> &Set1,
-                  const std::vector<EVector3> &Set2) {
+  template <typename PointSet1, typename PointSet2>
+  std::vector<std::pair<int, int>> FindVertexMatch(const bool verbose,
+                                                   const PointSet1 &Set1,
+                                                   const PointSet2 &Set2) {
     if (Set1.size() != Set2.size()) {
       throw std::invalid_argument(
           "Directional::NFunctionMesher::FindVertexMatch(): "
@@ -661,7 +687,6 @@ public:
   bool next_boundary_halfedge(const int current, int &next_boundary,
                               const char *context) const {
     const int halfedge_count = static_cast<int>(genDcel.halfedges.size());
-
 
     if (!genDcel.valid_halfedge(current)) {
       if (mData.verbose) {
@@ -978,38 +1003,150 @@ public:
 
   bool build_vertex_matches(SimplifyScratch &scratch) {
     scratch.vertexMatches.clear();
-    for (int i = 0; i < scratch.maxOrigHE + 1; i++) {
+
+    /*
+     * Reserve based only on paired strips. One-sided strips cannot
+     * generate matches.
+     */
+    std::size_t estimatedMatchCount = 0;
+
+    for (int i = 0; i <= scratch.maxOrigHE; ++i) {
+      const auto &set1 = scratch.vertexSets1[i];
+      const auto &set2 = scratch.vertexSets2[i];
+
+      if (!set1.empty() && !set2.empty()) {
+        estimatedMatchCount += std::max(set1.size(), set2.size());
+      }
+    }
+
+    scratch.vertexMatches.reserve(estimatedMatchCount);
+
+    for (int i = 0; i <= scratch.maxOrigHE; ++i) {
       log_progress("vertex match build", i, scratch.maxOrigHE + 1);
-      std::vector<EVector3> PointSet1(scratch.vertexSets1[i].size());
-      std::vector<EVector3> PointSet2(scratch.vertexSets2[i].size());
-      for (int j = 0; j < PointSet1.size(); j++)
-        PointSet1[j] = genDcel.vertices[scratch.vertexSets1[i][j]].data.eCoords;
 
-      for (int j = 0; j < PointSet2.size(); j++)
-        PointSet2[j] = genDcel.vertices[scratch.vertexSets2[i][j]].data.eCoords;
+      const auto &vertexSet1 = scratch.vertexSets1[i];
 
-      std::vector<std::pair<int, int>> CurrMatches;
-      if ((!PointSet1.empty()) && (!PointSet2.empty())) {
-        try {
-          CurrMatches = FindVertexMatch(mData.verbose, PointSet1, PointSet2);
-        } catch (const std::exception &error) {
+      const auto &vertexSet2 = scratch.vertexSets2[i];
+
+      /*
+       * A match requires two corresponding strips.
+       *
+       * Both empty:
+       *   this original halfedge produced no boundary strip.
+       *
+       * One empty:
+       *   this is an external/open boundary with no opposite side to
+       *   identify. Leave its vertices independent.
+       */
+      if (vertexSet1.empty() || vertexSet2.empty()) {
+        if (mData.verbose && vertexSet1.empty() != vertexSet2.empty()) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "build_vertex_matches()]: "
+                    << "skipping one-sided boundary strip for "
+                       "original halfedge "
+                    << i << "; strip sizes " << vertexSet1.size() << " and "
+                    << vertexSet2.size() << '\n';
+        }
+
+        continue;
+      }
+
+      /*
+       * The current matching implementation requires equal-size strips.
+       * This is still a real inconsistency because both sides exist but
+       * have different sampling counts.
+       */
+      if (vertexSet1.size() != vertexSet2.size()) {
+        if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::"
-                       "build_vertex_matches()]: failed for original "
-                       "halfedge "
-                    << i << " with strip sizes " << PointSet1.size() << " and "
-                    << PointSet2.size() << ": " << error.what() << std::endl;
+                       "build_vertex_matches()]: "
+                    << "mismatched paired strip sizes for original halfedge "
+                    << i << ": " << vertexSet1.size() << " versus "
+                    << vertexSet2.size() << '\n';
+        }
+
+        return false;
+      }
+
+      /*
+       * Validate vertex IDs before exposing their coordinates through
+       * VertexCoordinateView.
+       */
+      for (const int vertex : vertexSet1) {
+        if (!genDcel.valid_vertex(vertex)) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "build_vertex_matches()]: "
+                      << "first strip contains invalid vertex " << vertex
+                      << " for original halfedge " << i << '\n';
+          }
+
           return false;
         }
       }
 
-      for (int j = 0; j < CurrMatches.size(); j++) {
-        CurrMatches[j].first = scratch.vertexSets1[i][CurrMatches[j].first];
-        CurrMatches[j].second = scratch.vertexSets2[i][CurrMatches[j].second];
+      for (const int vertex : vertexSet2) {
+        if (!genDcel.valid_vertex(vertex)) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "build_vertex_matches()]: "
+                      << "second strip contains invalid vertex " << vertex
+                      << " for original halfedge " << i << '\n';
+          }
+
+          return false;
+        }
       }
 
-      scratch.vertexMatches.insert(scratch.vertexMatches.end(),
-                                   CurrMatches.begin(), CurrMatches.end());
+      /*
+       * No EVector3 arrays are allocated or copied. These lightweight
+       * views read exact coordinates directly from the DCEL vertices.
+       */
+      const VertexCoordinateView pointSet1(genDcel, vertexSet1);
+
+      const VertexCoordinateView pointSet2(genDcel, vertexSet2);
+
+      std::vector<std::pair<int, int>> currentMatches;
+
+      try {
+        currentMatches = FindVertexMatch(mData.verbose, pointSet1, pointSet2);
+
+      } catch (const std::exception &error) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "build_vertex_matches()]: "
+                  << "matching failed for original halfedge " << i
+                  << " with strip sizes " << pointSet1.size() << " and "
+                  << pointSet2.size() << ": " << error.what() << '\n';
+
+        return false;
+      }
+
+      for (const auto &match : currentMatches) {
+        const int firstLocal = match.first;
+
+        const int secondLocal = match.second;
+
+        if (firstLocal < 0 ||
+            firstLocal >= static_cast<int>(vertexSet1.size()) ||
+            secondLocal < 0 ||
+            secondLocal >= static_cast<int>(vertexSet2.size())) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "build_vertex_matches()]: "
+                      << "matcher returned an out-of-range local index "
+                      << "for original halfedge " << i << ": (" << firstLocal
+                      << ", " << secondLocal << ")\n";
+          }
+
+          return false;
+        }
+
+        scratch.vertexMatches.emplace_back(
+            vertexSet1[static_cast<std::size_t>(firstLocal)],
+            vertexSet2[static_cast<std::size_t>(secondLocal)]);
+      }
     }
+
     return true;
   }
 
@@ -1169,89 +1306,383 @@ public:
   }
 
   int retwin_halfedges() {
+    int preservedTwinPairs = 0;
+    int staleTwinPairsCleared = 0;
     int twinPairsCreated = 0;
 
-    std::set<FunctionDCEL::TwinFinder> twinning;
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
-    for (int i = 0; i < static_cast<int>(genDcel.halfedges.size()); ++i) {
-      log_progress("halfedge twinning", i,
-                   static_cast<int>(genDcel.halfedges.size()));
+    const auto fail = [&](const char *message, const int index = -1) -> int {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "retwin_halfedges()]: "
+                  << message;
 
-      if (!genDcel.halfedges[i].valid || genDcel.halfedges[i].twin >= 0) {
+        if (index >= 0) {
+          std::cerr << " (index " << index << ")";
+        }
+
+        std::cerr << '\n';
+      }
+
+      return -1;
+    };
+
+    const auto endpoints = [&](const int halfedge, int &source,
+                               int &target) -> bool {
+      if (!genDcel.valid_halfedge(halfedge)) {
+        return false;
+      }
+
+      const int next = genDcel.halfedges[halfedge].next;
+
+      if (!genDcel.valid_halfedge(next)) {
+        return false;
+      }
+
+      source = genDcel.halfedges[halfedge].vertex;
+
+      target = genDcel.halfedges[next].vertex;
+
+      if (!genDcel.valid_vertex(source) || !genDcel.valid_vertex(target)) {
+        return false;
+      }
+
+      if (source == target) {
+        return false;
+      }
+
+      return true;
+    };
+
+    const auto directedEdgeKey = [](const int source,
+                                    const int target) -> std::uint64_t {
+      const std::uint64_t sourceBits =
+          static_cast<std::uint64_t>(static_cast<std::uint32_t>(source));
+
+      const std::uint64_t targetBits =
+          static_cast<std::uint64_t>(static_cast<std::uint32_t>(target));
+
+      return (sourceBits << 32U) | targetBits;
+    };
+
+    /*
+     * ------------------------------------------------------------
+     * Phase 1: validate existing twin pairs after vertex remapping.
+     *
+     * Keep pairs whose endpoint directions are still opposite.
+     * Clear stale pairs symmetrically so they can be rebuilt below.
+     * ------------------------------------------------------------
+     */
+    std::vector<unsigned char> existingTwinVisited(
+        static_cast<std::size_t>(halfedgeCount), static_cast<unsigned char>(0));
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid) {
         continue;
       }
 
-      const int next = genDcel.halfedges[i].next;
-
-      if (!genDcel.valid_halfedge(next)) {
-        if (mData.verbose) {
-          std::cerr << "[Directional::NFunctionMesher::"
-                       "retwin_halfedges()]: invalid next for halfedge "
-                    << i << '\n';
-        }
-
-        return -1;
+      if (existingTwinVisited[he]) {
+        continue;
       }
 
-      const int source = genDcel.halfedges[i].vertex;
+      const int twin = genDcel.halfedges[he].twin;
 
-      const int target = genDcel.halfedges[next].vertex;
+      if (twin == -1) {
+        continue;
+      }
 
-      const auto reverse =
-          twinning.find(FunctionDCEL::TwinFinder(0, target, source));
+      if (twin < -1) {
+        return fail("halfedge has invalid negative twin", he);
+      }
 
-      if (reverse != twinning.end()) {
-        const int other = reverse->index;
+      if (!genDcel.valid_halfedge(twin)) {
+        return fail("halfedge references invalid twin", he);
+      }
 
-        if (!genDcel.valid_halfedge(other) ||
-            genDcel.halfedges[other].twin >= 0) {
+      if (twin == he) {
+        return fail("halfedge is twinned with itself", he);
+      }
+
+      /*
+       * Mark both now so the pair is handled once.
+       */
+      existingTwinVisited[he] = static_cast<unsigned char>(1);
+
+      existingTwinVisited[twin] = static_cast<unsigned char>(1);
+
+      const bool mutual = genDcel.halfedges[twin].twin == he;
+
+      int source = -1;
+      int target = -1;
+      int twinSource = -1;
+      int twinTarget = -1;
+
+      if (!endpoints(he, source, target)) {
+        return fail("failed to determine halfedge endpoints", he);
+      }
+
+      if (!endpoints(twin, twinSource, twinTarget)) {
+        return fail("failed to determine twin endpoints", twin);
+      }
+
+      const bool reversedEndpoints =
+          source == twinTarget && target == twinSource;
+
+      if (mutual && reversedEndpoints) {
+        /*
+         * This pair is still geometrically and topologically valid.
+         */
+        ++preservedTwinPairs;
+        continue;
+      }
+
+      /*
+       * Clear both directions if either side still references the other.
+       *
+       * A non-mutual stale relationship must not survive into the hash
+       * rebuild.
+       */
+      if (genDcel.halfedges[he].twin == twin) {
+        genDcel.halfedges[he].twin = -1;
+      }
+
+      if (genDcel.halfedges[twin].twin == he) {
+        genDcel.halfedges[twin].twin = -1;
+      }
+
+      /*
+       * If the relationship was non-mutual, clear the current halfedge
+       * regardless. Its referenced counterpart will be independently
+       * validated when encountered.
+       */
+      if (!mutual) {
+        genDcel.halfedges[he].twin = -1;
+      }
+
+      ++staleTwinPairsCleared;
+    }
+
+    /*
+     * A stale non-mutual relationship may point to another halfedge
+     * that still carries an unrelated twin. Perform a final cleanup:
+     * every remaining twin must now be mutual and endpoint-reversed.
+     */
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid) {
+        continue;
+      }
+
+      const int twin = genDcel.halfedges[he].twin;
+
+      if (twin < 0) {
+        continue;
+      }
+
+      if (!genDcel.valid_halfedge(twin) || genDcel.halfedges[twin].twin != he) {
+        genDcel.halfedges[he].twin = -1;
+        continue;
+      }
+
+      int source = -1;
+      int target = -1;
+      int twinSource = -1;
+      int twinTarget = -1;
+
+      if (!endpoints(he, source, target) ||
+          !endpoints(twin, twinSource, twinTarget)) {
+        return fail("failed to validate surviving twin endpoints", he);
+      }
+
+      if (source != twinTarget || target != twinSource) {
+        genDcel.halfedges[he].twin = -1;
+
+        if (genDcel.halfedges[twin].twin == he) {
+          genDcel.halfedges[twin].twin = -1;
+        }
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * Phase 2: hash all currently unmatched directed halfedges.
+     * ------------------------------------------------------------
+     */
+    std::unordered_map<std::uint64_t, int> pendingTwins;
+
+    pendingTwins.reserve(genDcel.halfedges.size());
+
+    pendingTwins.max_load_factor(0.7f);
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      log_progress("halfedge twinning", he, halfedgeCount);
+
+      if (!genDcel.halfedges[he].valid) {
+        continue;
+      }
+
+      /*
+       * Correct existing pairs survived Phase 1 and need no work.
+       */
+      if (genDcel.halfedges[he].twin >= 0) {
+        continue;
+      }
+
+      int source = -1;
+      int target = -1;
+
+      if (!endpoints(he, source, target)) {
+        return fail("invalid endpoints for unmatched halfedge", he);
+      }
+
+      const std::uint64_t reverseKey = directedEdgeKey(target, source);
+
+      const auto reverse = pendingTwins.find(reverseKey);
+
+      if (reverse == pendingTwins.end()) {
+        const std::uint64_t forwardKey = directedEdgeKey(source, target);
+
+        const auto insertion = pendingTwins.emplace(forwardKey, he);
+
+        /*
+         * Two unmatched halfedges with identical direction indicate
+         * duplicate or non-manifold topology. Silently keeping one would
+         * leave the other incorrectly classified as a boundary.
+         */
+        if (!insertion.second) {
           if (mData.verbose) {
             std::cerr << "[Directional::NFunctionMesher::"
-                         "retwin_halfedges()]: invalid candidate twin "
-                      << other << " for halfedge " << i << '\n';
+                         "retwin_halfedges()]: "
+                      << "duplicate unmatched directed edge " << source
+                      << " -> " << target << " at halfedges "
+                      << insertion.first->second << " and " << he << '\n';
           }
 
           return -1;
         }
 
-        genDcel.halfedges[other].twin = i;
-        genDcel.halfedges[i].twin = other;
+        continue;
+      }
 
-        const int discardedEdge = genDcel.halfedges[other].edge;
+      const int other = reverse->second;
 
-        const int survivingEdge = genDcel.halfedges[i].edge;
+      if (!genDcel.valid_halfedge(other)) {
+        return fail("hash table contains invalid halfedge", other);
+      }
 
-        if (!genDcel.valid_edge(discardedEdge) ||
-            !genDcel.valid_edge(survivingEdge)) {
-          return -1;
-        }
+      if (genDcel.halfedges[other].twin >= 0) {
+        return fail("hash candidate is already twinned", other);
+      }
 
-        genDcel.edges[discardedEdge].valid = false;
-        genDcel.edges[discardedEdge].halfedge = -1;
+      int otherSource = -1;
+      int otherTarget = -1;
 
-        genDcel.halfedges[other].edge = survivingEdge;
+      if (!endpoints(other, otherSource, otherTarget)) {
+        return fail("invalid hash candidate endpoints", other);
+      }
 
-        genDcel.edges[survivingEdge].halfedge = i;
+      if (otherSource != target || otherTarget != source) {
+        return fail("hash candidate endpoint mismatch", other);
+      }
 
-        if (genDcel.halfedges[i].data.isFunction ||
-            genDcel.halfedges[other].data.isFunction) {
-          genDcel.halfedges[i].data.isFunction = true;
-          genDcel.halfedges[other].data.isFunction = true;
-        }
+      /*
+       * ----------------------------------------------------------
+       * Create mutual twin relationship.
+       * ----------------------------------------------------------
+       */
+      genDcel.halfedges[other].twin = he;
+      genDcel.halfedges[he].twin = other;
 
-        twinning.erase(reverse);
-        ++twinPairsCreated;
-      } else {
-        twinning.insert(FunctionDCEL::TwinFinder(i, source, target));
+      const int otherEdge = genDcel.halfedges[other].edge;
+
+      const int currentEdge = genDcel.halfedges[he].edge;
+
+      if (!genDcel.valid_edge(otherEdge)) {
+        return fail("candidate twin references invalid edge", otherEdge);
+      }
+
+      if (!genDcel.valid_edge(currentEdge)) {
+        return fail("current halfedge references invalid edge", currentEdge);
+      }
+
+      if (otherEdge != currentEdge) {
+        /*
+         * Preserve the current implementation's ownership rule:
+         *
+         * currentEdge survives;
+         * otherEdge is retired;
+         * both halfedges point at currentEdge.
+         */
+        genDcel.edges[otherEdge].valid = false;
+        genDcel.edges[otherEdge].halfedge = -1;
+
+        genDcel.halfedges[other].edge = currentEdge;
+      }
+
+      genDcel.edges[currentEdge].valid = true;
+      genDcel.edges[currentEdge].halfedge = he;
+
+      if (genDcel.halfedges[he].data.isFunction ||
+          genDcel.halfedges[other].data.isFunction) {
+        genDcel.halfedges[he].data.isFunction = true;
+        genDcel.halfedges[other].data.isFunction = true;
+      }
+
+      pendingTwins.erase(reverse);
+      ++twinPairsCreated;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     * Phase 3: validate all resulting twin relationships.
+     * ------------------------------------------------------------
+     */
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid) {
+        continue;
+      }
+
+      const int twin = genDcel.halfedges[he].twin;
+
+      if (twin == -1) {
+        continue;
+      }
+
+      if (!genDcel.valid_halfedge(twin)) {
+        return fail("resulting twin is invalid", he);
+      }
+
+      if (genDcel.halfedges[twin].twin != he) {
+        return fail("resulting twin relationship is not mutual", he);
+      }
+
+      int source = -1;
+      int target = -1;
+      int twinSource = -1;
+      int twinTarget = -1;
+
+      if (!endpoints(he, source, target) ||
+          !endpoints(twin, twinSource, twinTarget)) {
+        return fail("failed to validate final twin endpoints", he);
+      }
+
+      if (source != twinTarget || target != twinSource) {
+        return fail("final twin endpoints are not reversed", he);
+      }
+
+      if (genDcel.halfedges[he].edge != genDcel.halfedges[twin].edge) {
+        return fail("final twin pair references different edges", he);
       }
     }
 
     if (mData.verbose) {
       std::cout << "[Directional::NFunctionMesher::"
-                   "retwin_halfedges()]: created "
+                   "retwin_halfedges()]: preserved "
+                << preservedTwinPairs << " existing twin pairs, cleared "
+                << staleTwinPairsCleared << " stale pairs, created "
                 << twinPairsCreated
-                << " twin pairs; unmatched boundary halfedges: "
-                << twinning.size() << '\n';
+                << " new twin pairs; unmatched boundary halfedges: "
+                << pendingTwins.size() << '\n';
     }
 
     return twinPairsCreated;
@@ -1639,7 +2070,8 @@ public:
 
         const int twin = genDcel.halfedges[current].twin;
 
-        if (!genDcel.valid_halfedge(current) || !genDcel.valid_halfedge(successor)) {
+        if (!genDcel.valid_halfedge(current) ||
+            !genDcel.valid_halfedge(successor)) {
           return fail(i,
                       "invalid retained halfedge before "
                       "rewiring",
@@ -2358,12 +2790,17 @@ public:
      * Phase 5: rebuild every edge from the halfedges that actually
      * survived the complete removal set.
      *
-     * This replaces the previous per-removed-halfedge edge invalidation,
-     * which could invalidate an edge still referenced by another valid
-     * halfedge.
+     * A manifold edge has at most two valid halfedge users, so fixed
+     * storage avoids one vector allocation per edge.
      * ------------------------------------------------------------------
      */
-    std::vector<std::vector<int>> survivingHalfedgesByEdge(
+    struct EdgeSurvivors {
+      int first = -1;
+      int second = -1;
+      std::uint8_t count = 0;
+    };
+
+    std::vector<EdgeSurvivors> survivingHalfedgesByEdge(
         static_cast<std::size_t>(edgeCount));
 
     for (int he = 0; he < halfedgeCount; ++he) {
@@ -2374,16 +2811,25 @@ public:
       const int edge = genDcel.halfedges[he].edge;
 
       if (!validEdgeIndex(edge)) {
-        return fail("surviving halfedge references an "
-                    "out-of-range edge",
-                    he);
+        return fail("surviving halfedge references an out-of-range edge", he);
       }
 
-      survivingHalfedgesByEdge[edge].push_back(he);
+      EdgeSurvivors &entry =
+          survivingHalfedgesByEdge[static_cast<std::size_t>(edge)];
+
+      if (entry.count == 0) {
+        entry.first = he;
+        entry.count = 1;
+      } else if (entry.count == 1) {
+        entry.second = he;
+        entry.count = 2;
+      } else {
+        return fail("edge has more than two surviving halfedges", edge);
+      }
     }
 
     /*
-     * Clear all edge states first. Surviving edge records are explicitly
+     * Clear all edge records first. Surviving edges are explicitly
      * reactivated below.
      */
     for (int edge = 0; edge < edgeCount; ++edge) {
@@ -2392,35 +2838,45 @@ public:
     }
 
     for (int edge = 0; edge < edgeCount; ++edge) {
-      auto &survivors = survivingHalfedgesByEdge[edge];
+      const EdgeSurvivors &entry =
+          survivingHalfedgesByEdge[static_cast<std::size_t>(edge)];
 
-      if (survivors.empty()) {
+      if (entry.count == 0) {
         continue;
       }
 
-      if (survivors.size() == 1) {
-        const int he = survivors[0];
+      if (entry.count == 1) {
+        const int he = entry.first;
 
         if (!validHalfedge(he)) {
           return fail("edge rebuild found an invalid sole survivor", edge);
+        }
+
+        if (genDcel.halfedges[he].edge != edge) {
+          return fail("sole surviving halfedge references a different edge",
+                      edge);
         }
 
         genDcel.edges[edge].valid = true;
         genDcel.edges[edge].halfedge = he;
 
         /*
-         * A single surviving side is necessarily a boundary side.
+         * One surviving side means this is now a boundary edge.
          */
         genDcel.halfedges[he].twin = -1;
         continue;
       }
 
-      if (survivors.size() == 2) {
-        const int first = survivors[0];
-        const int second = survivors[1];
+      if (entry.count == 2) {
+        const int first = entry.first;
+        const int second = entry.second;
 
         if (!validHalfedge(first) || !validHalfedge(second)) {
           return fail("edge rebuild found an invalid two-sided survivor", edge);
+        }
+
+        if (first == second) {
+          return fail("edge rebuild recorded the same halfedge twice", edge);
         }
 
         if (genDcel.halfedges[first].edge != edge ||
@@ -2441,7 +2897,11 @@ public:
         continue;
       }
 
-      return fail("edge has more than two surviving halfedges", edge);
+      /*
+       * The population loop above rejects count > 2, so reaching this
+       * branch means the fixed-storage invariant was corrupted.
+       */
+      return fail("edge survivor count is outside the supported range", edge);
     }
 
     /*
@@ -2538,9 +2998,10 @@ public:
         continue;
       }
 
-      const auto &survivors = survivingHalfedgesByEdge[edge];
+      const EdgeSurvivors &entry =
+          survivingHalfedgesByEdge[static_cast<std::size_t>(edge)];
 
-      if (survivors.empty() || survivors.size() > 2) {
+      if (entry.count == 0 || entry.count > 2) {
         return fail("valid rebuilt edge has an invalid survivor count", edge);
       }
 
@@ -2551,27 +3012,46 @@ public:
       }
 
       if (genDcel.halfedges[representative].edge != edge) {
-        return fail("rebuilt edge representative points to "
-                    "a different edge",
+        return fail("rebuilt edge representative points to a different edge",
                     edge);
       }
 
-      if (survivors.size() == 1) {
-        if (genDcel.halfedges[representative].twin != -1) {
-          return fail("single-sided rebuilt edge is not marked "
-                      "as a boundary",
-                      edge);
+      if (entry.count == 1) {
+        if (representative != entry.first) {
+          return fail(
+              "single-sided edge representative does not match survivor", edge);
         }
-      } else {
-        const int first = survivors[0];
-        const int second = survivors[1];
 
-        if (genDcel.halfedges[first].twin != second ||
-            genDcel.halfedges[second].twin != first) {
-          return fail("two-sided rebuilt edge does not contain "
-                      "mutual twins",
+        if (genDcel.halfedges[entry.first].twin != -1) {
+          return fail("single-sided rebuilt edge is not marked as a boundary",
                       edge);
         }
+
+        continue;
+      }
+
+      const int first = entry.first;
+      const int second = entry.second;
+
+      if (!validHalfedge(first) || !validHalfedge(second)) {
+        return fail("two-sided rebuilt edge contains an invalid survivor",
+                    edge);
+      }
+
+      if (representative != first && representative != second) {
+        return fail("two-sided edge representative is not one of its survivors",
+                    edge);
+      }
+
+      if (genDcel.halfedges[first].edge != edge ||
+          genDcel.halfedges[second].edge != edge) {
+        return fail("two-sided rebuilt edge has inconsistent ownership", edge);
+      }
+
+      if (genDcel.halfedges[first].twin != second ||
+          genDcel.halfedges[second].twin != first) {
+        return fail("two-sided rebuilt edge does not contain mutual twins",
+                    edge);
       }
     }
 
@@ -2768,72 +3248,30 @@ public:
                                   int &unifyCount) {
     unifyCount = 0;
 
-    /*
-     * Quality-preserving compatibility mode.
-     *
-     * Use the immutable post-pruning valence and ear snapshots.
-     * Refreshing these values during unification changes the collapse
-     * schedule and creates chains of merged faces, which caused the
-     * pentagon/hexagon regression.
-     */
+    const int vertexCount = static_cast<int>(genDcel.vertices.size());
+
     if (scratch.valences.size() != genDcel.vertices.size() ||
         scratch.isEar.size() != genDcel.vertices.size()) {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
                      "unify_low_valence_vertices()]: "
-                  << "scratch cache size does not match vertex count"
-                  << std::endl;
+                  << "scratch cache size does not match vertex count\n";
       }
+
       return false;
     }
 
-    /*
-     * Representative halfedges may have changed during prior pruning,
-     * so refresh them once before beginning the fixed vertex sweep.
-     */
     if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
       return false;
     }
 
-    const int vertexCount = static_cast<int>(genDcel.vertices.size());
-
-    int snapshotDegreeTwo = 0;
-    int snapshotEars = 0;
-    int snapshotEligible = 0;
-
-    for (int vertex = 0; vertex < vertexCount; ++vertex) {
-      if (!genDcel.valid_vertex(vertex))
-        continue;
-
-      if (scratch.valences[vertex] == 2)
-        ++snapshotDegreeTwo;
-
-      if (scratch.isEar[vertex])
-        ++snapshotEars;
-
-      if (scratch.valences[vertex] <= 2 && !scratch.isEar[vertex]) {
-        ++snapshotEligible;
-      }
-    }
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::"
-                   "unify_low_valence_vertices()]: "
-                << "snapshot degree-two=" << snapshotDegreeTwo
-                << ", ears=" << snapshotEars
-                << ", eligible=" << snapshotEligible << std::endl;
-    }
-
     /*
-     * One fixed, index-ordered pass.
-     *
-     * This intentionally matches Pass 2 semantics. No cache refresh is
-     * performed inside the loop, and newly-created low-valence vertices
-     * are not introduced into the decision set.
+     * Build the immutable Pass-2-compatible candidate list once.
      */
-    for (int vertex = 0; vertex < vertexCount; ++vertex) {
-      log_progress("low-valence edge unification", vertex, vertexCount);
+    std::vector<int> eligibleVertices;
+    eligibleVertices.reserve(static_cast<std::size_t>(vertexCount));
 
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
       if (!genDcel.valid_vertex(vertex))
         continue;
 
@@ -2843,41 +3281,122 @@ public:
       if (scratch.isEar[vertex])
         continue;
 
+      eligibleVertices.push_back(vertex);
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "unify_low_valence_vertices()]: "
+                << "eligible=" << eligibleVertices.size() << '\n';
+    }
+
+    /*
+     * One transaction for the entire phase instead of one complete
+     * DCEL copy per operation.
+     */
+    const FunctionDCEL backupDcel = genDcel;
+
+    const auto rollback = [&]() { genDcel = backupDcel; };
+
+    for (std::size_t candidateIndex = 0;
+         candidateIndex < eligibleVertices.size(); ++candidateIndex) {
+      const int vertex = eligibleVertices[candidateIndex];
+
+      log_progress("low-valence edge unification",
+                   static_cast<int>(candidateIndex),
+                   static_cast<int>(eligibleVertices.size()));
+
+      /*
+       * A previous operation may have already removed this candidate.
+       * Preserve fixed-snapshot semantics by skipping it rather than
+       * introducing new candidates.
+       */
+      if (!genDcel.valid_vertex(vertex))
+        continue;
+
       const int halfedge = genDcel.vertices[vertex].halfedge;
 
       if (!genDcel.valid_halfedge(halfedge)) {
+        rollback();
+
         if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::"
                        "unify_low_valence_vertices()]: "
                     << "vertex has no valid outgoing halfedge " << vertex
-                    << std::endl;
+                    << '\n';
         }
+
         return false;
       }
 
-      const std::size_t validBefore =
-          std::count_if(genDcel.vertices.begin(), genDcel.vertices.end(),
-                        [](const auto &entry) { return entry.valid; });
-
-      if (!genDcel.try_unify_edges(halfedge, mData.verbose)) {
+      /*
+       * Fast batch operation:
+       * - no whole-DCEL backup;
+       * - no global representative rebuild;
+       * - no global consistency check.
+       *
+       * The function must still perform all local topology
+       * validation before mutation.
+       */
+      if (!genDcel.unify_edges_in_place(halfedge, mData.verbose, false,
+                                        false)) {
+        rollback();
         return false;
       }
 
-      const std::size_t validAfter =
-          std::count_if(genDcel.vertices.begin(), genDcel.vertices.end(),
-                        [](const auto &entry) { return entry.valid; });
+      /*
+       * A successful low-valence operation must retire its selected
+       * vertex. This replaces two full count_if() scans.
+       */
+      if (genDcel.valid_vertex(vertex)) {
+        rollback();
 
-      if (validAfter >= validBefore) {
         if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::"
                        "unify_low_valence_vertices()]: "
-                    << "unification did not reduce valid vertex count"
-                    << std::endl;
+                    << "unification did not retire vertex " << vertex << '\n';
         }
+
         return false;
       }
 
       ++unifyCount;
+
+#ifndef NDEBUG
+      /*
+       * Periodic debug validation without paying the full cost for
+       * every operation.
+       */
+      constexpr int validationInterval = 256;
+
+      if ((unifyCount % validationInterval) == 0) {
+        if (!genDcel.rebuild_representative_halfedges(mData.verbose, true) ||
+            !genDcel.check_consistency(mData.verbose, true, true, false)) {
+          rollback();
+          return false;
+        }
+      }
+#endif
+    }
+
+    /*
+     * One global repair and one strict validation for the completed
+     * transaction.
+     */
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      rollback();
+      return false;
+    }
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      rollback();
+      return false;
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "unify_low_valence_vertices()]: "
+                << "completed " << unifyCount << " operations\n";
     }
 
     return true;
@@ -3138,12 +3657,7 @@ public:
       return false;
     }
 
-    if (!genDcel.check_consistency(
-            mData.verbose,
-            true,   // repeated directed halfedges
-            false,  // twin gaps: intentionally deferred
-            false)) // pure-boundary test: intentionally deferred
-    {
+    if (!genDcel.check_consistency(mData.verbose, true, false, false)) {
       return false;
     }
 
@@ -3208,23 +3722,12 @@ public:
       return false;
     }
 
-    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
-      return false;
-    }
-
-    if (!genDcel.check_consistency(mData.verbose, true, true, false)) {
-      return false;
-    }
-
-    if (mData.verbose)
+    if (mData.verbose) {
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
-                   "Low-valence edge unification finished after "
-                << unifyCount << " operations" << std::endl;
-    logPhase("Low-valence edge unification");
-
-    if (!genDcel.check_consistency(mData.verbose, true, true, true))
-      return false;
-    logPhase("Post-unification consistency check");
+                << "Low-valence edge unification finished after " << unifyCount
+                << " operations" << std::endl;
+    }
+    logPhase("Low-valence edge unification and validation");
 
     // remove non-valid components
     if (!finalize_clean_mesh())
