@@ -94,6 +94,63 @@ inline void print_arrangement_timings(
             << prefix << "  measured total:" << timings.total() << " s\n";
 }
 
+struct LineClippingTimings {
+  std::size_t calls = 0;
+  std::size_t pencilsProcessed = 0;
+  std::size_t activePencils = 0;
+  std::size_t candidateLines = 0;
+  std::size_t acceptedSegments = 0;
+
+  double bounds = 0.0;
+  double edgeIntersections = 0.0;
+  double exactComparisons = 0.0;
+  double segmentConstruction = 0.0;
+  double metadataConstruction = 0.0;
+  double pencilIntersections = 0.0;
+  double total = 0.0;
+};
+
+inline LineClippingTimings &line_clipping_timings_accumulator() {
+  static LineClippingTimings timings;
+  return timings;
+}
+
+inline void reset_line_clipping_timings() {
+  line_clipping_timings_accumulator() =
+      LineClippingTimings{};
+}
+
+inline void print_line_clipping_timings(
+    const LineClippingTimings &timings) {
+  std::cout
+      << "[Directional::NFunctionMesher::arrange_on_triangle()]: "
+         "line clipping timing summary\n"
+      << "  calls:                 "
+      << timings.calls << '\n'
+      << "  pencils processed:     "
+      << timings.pencilsProcessed << '\n'
+      << "  active pencils:        "
+      << timings.activePencils << '\n'
+      << "  candidate lines:       "
+      << timings.candidateLines << '\n'
+      << "  accepted segments:     "
+      << timings.acceptedSegments << '\n'
+      << "  bounds/setup:          "
+      << timings.bounds << " s\n"
+      << "  triangle intersections:"
+      << timings.edgeIntersections << " s\n"
+      << "  exact comparisons:     "
+      << timings.exactComparisons << " s\n"
+      << "  segment construction:  "
+      << timings.segmentConstruction << " s\n"
+      << "  metadata construction: "
+      << timings.metadataConstruction << " s\n"
+      << "  pencil intersections:  "
+      << timings.pencilIntersections << " s\n"
+      << "  total clipping:        "
+      << timings.total << " s\n";
+}
+
 // arranging a line set on a triangle
 // triangle is represented by a 3x2 matrix of (CCW) coordinates
 // lines are Nx4 matrices of (origin, direction).
@@ -106,102 +163,315 @@ void NFunctionMesher::arrange_on_triangle(
     const std::vector<LinePencil> &linePencils,
     const std::vector<int> &linePencilData, std::vector<EVector2> &V,
     FunctionDCEL &triDcel) {
-
   using namespace std;
   using namespace Eigen;
 
-  ArrangementTimings &timings = arrangement_timings_accumulator();
-  ++timings.calls;
-  const auto lineClipStart = std::chrono::high_resolution_clock::now();
+  using Clock = std::chrono::high_resolution_clock;
+
+  LineClippingTimings &clipTimings = line_clipping_timings_accumulator();
+
+  ArrangementTimings &arrangementTimings = arrangement_timings_accumulator();
+
+  ++clipTimings.calls;
+  clipTimings.pencilsProcessed += linePencils.size();
+
+  const auto totalStart = Clock::now();
+
+  /*
+   * ------------------------------------------------------------
+   * Phase 1: setup and capacity estimation.
+   * ------------------------------------------------------------
+   */
+  auto phaseStart = Clock::now();
+
+  if (triangle.size() != 3) {
+    throw std::invalid_argument(
+        "arrange_on_triangle(): triangle must contain exactly "
+        "three vertices");
+  }
+
+  if (triangleData.size() != 3) {
+    throw std::invalid_argument(
+        "arrange_on_triangle(): triangleData must contain "
+        "exactly three entries");
+  }
+
+  if (linePencilData.size() != linePencils.size()) {
+    throw std::invalid_argument(
+        "arrange_on_triangle(): linePencilData size does not "
+        "match linePencils size");
+  }
 
   V = triangle;
 
-  std::vector<SegmentData> inData; // the lines that are inside
-  std::vector<Segment2>
-      inSegments; // parameters of the line segments inside the triangle
+  std::size_t maximumSegmentCount = 3;
 
-  // Pushing in triangle segments
-  for (int i = 0; i < 3; i++) {
+  for (const LinePencil &pencil : linePencils) {
+    if (pencil.numLines < 0) {
+      throw std::runtime_error(
+          "arrange_on_triangle(): line pencil has a negative "
+          "line count");
+    }
+
+    const std::size_t lineCount = static_cast<std::size_t>(pencil.numLines);
+
+    if (lineCount >
+        std::numeric_limits<std::size_t>::max() - maximumSegmentCount) {
+      throw std::overflow_error(
+          "arrange_on_triangle(): segment capacity overflow");
+    }
+
+    maximumSegmentCount += lineCount;
+
+    clipTimings.candidateLines += lineCount;
+  }
+
+  std::vector<SegmentData> inData;
+  std::vector<Segment2> inSegments;
+
+  inData.reserve(maximumSegmentCount);
+
+  inSegments.reserve(maximumSegmentCount);
+
+  /*
+   * uint8_t avoids std::vector<bool>'s proxy-reference behavior.
+   */
+  std::vector<std::uint8_t> isPencilActive(linePencils.size(), std::uint8_t{0});
+
+  clipTimings.bounds += arrangement_seconds_since(phaseStart);
+
+  /*
+   * ------------------------------------------------------------
+   * Phase 2: insert the three triangle boundary segments.
+   * ------------------------------------------------------------
+   */
+  phaseStart = Clock::now();
+
+  for (int edge = 0; edge < 3; ++edge) {
     SegmentData newData;
+
     newData.isFunction = false;
-    newData.origHalfedge = triangleData[i].first;
+    newData.origHalfedge = triangleData[static_cast<std::size_t>(edge)].first;
+
     newData.origNFunctionIndex = -1;
     newData.lineInPencil = -1;
+
     newData.intParams.insert(ENumber(0));
+
     newData.intParams.insert(ENumber(1));
-    inData.push_back(newData); // no data
-    inSegments.push_back(Segment2(triangle[i], triangle[(i + 1) % 3]));
+
+    inData.push_back(std::move(newData));
   }
 
-  vector<bool> isPencilActive(
-      linePencils
-          .size()); // used to check if linepencil even intersects the triangle,
-                    // so as to bother with computing intersections
-  for (int i = 0; i < linePencils.size(); i++) {
-    // checking for intersections with the triangle
-    std::vector<ENumber> inParams, outParams; // the parameters of intersection
-    std::vector<bool> intEdges, intFaces;
-    std::vector<std::vector<ENumber>> triParams;
-    linepencil_triangle_intersection(linePencils[i], triangle, intEdges,
-                                     intFaces, inParams, outParams, triParams);
+  clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
 
-    // updating triangle data
-    for (int j = 0; j < 3; j++)
-      inData[j].intParams.insert(triParams[j].begin(), triParams[j].end());
+  phaseStart = Clock::now();
 
-    isPencilActive[i] = false;
-    for (int j = 0; j < linePencils[i].numLines; j++) {
-      if (!intEdges[j] && !intFaces[j])
-        continue; // no (non-measure-zero) intersection of that line with the
-                  // triangle
+  for (int edge = 0; edge < 3; ++edge) {
+    inSegments.emplace_back(triangle[static_cast<std::size_t>(edge)],
+                            triangle[static_cast<std::size_t>((edge + 1) % 3)]);
+  }
 
-      isPencilActive[i] = true;
+  clipTimings.segmentConstruction += arrangement_seconds_since(phaseStart);
+
+  /*
+   * ------------------------------------------------------------
+   * Phase 3: clip every line pencil against the triangle.
+   * ------------------------------------------------------------
+   */
+  for (std::size_t pencilIndex = 0; pencilIndex < linePencils.size();
+       ++pencilIndex) {
+    const LinePencil &pencil = linePencils[pencilIndex];
+
+    std::vector<ENumber> inParams;
+    std::vector<ENumber> outParams;
+    std::vector<bool> intEdges;
+    std::vector<bool> intFaces;
+    std::vector<std::vector<ENumber>> triangleParameters;
+
+    /*
+     * This call contains the geometric clipping work. Exact
+     * comparisons internal to the helper cannot be separated here
+     * without instrumenting that helper itself.
+     */
+    phaseStart = Clock::now();
+
+    linepencil_triangle_intersection(pencil, triangle, intEdges, intFaces,
+                                     inParams, outParams, triangleParameters);
+
+    clipTimings.edgeIntersections += arrangement_seconds_since(phaseStart);
+
+    const std::size_t lineCount = static_cast<std::size_t>(pencil.numLines);
+
+    if (intEdges.size() < lineCount || intFaces.size() < lineCount ||
+        inParams.size() < lineCount || outParams.size() < lineCount) {
+      throw std::runtime_error("arrange_on_triangle(): triangle intersection "
+                               "returned undersized line-result arrays");
+    }
+
+    if (triangleParameters.size() != 3) {
+      throw std::runtime_error("arrange_on_triangle(): triangle intersection "
+                               "returned an invalid triangle-parameter count");
+    }
+
+    /*
+     * Add intersections lying on each source triangle edge.
+     */
+    phaseStart = Clock::now();
+
+    for (int edge = 0; edge < 3; ++edge) {
+      const auto &parameters =
+          triangleParameters[static_cast<std::size_t>(edge)];
+
+      inData[static_cast<std::size_t>(edge)].intParams.insert(
+          parameters.begin(), parameters.end());
+    }
+
+    clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
+
+    bool pencilActive = false;
+
+    for (std::size_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
+      /*
+       * These are Boolean result checks, not exact arithmetic.
+       * Do not charge them to exactComparisons.
+       */
+      if (!intEdges[lineIndex] && !intFaces[lineIndex]) {
+        continue;
+      }
+
+      pencilActive = true;
+      ++clipTimings.acceptedSegments;
+
+      /*
+       * Build metadata independently from geometric segment
+       * construction so the costs are visible separately.
+       */
+      phaseStart = Clock::now();
 
       SegmentData newData;
+
       newData.isFunction = true;
-      newData.origNFunctionIndex = i;
-      newData.lineInPencil = j;
-      newData.origNFunctionIndex = linePencilData[i];
-      inData.push_back(newData);
-      inData[inData.size() - 1].intParams.insert(inParams[j]);
-      inData[inData.size() - 1].intParams.insert(outParams[j]);
-      EVector2 segSource = linePencils[i].p0 +
-                           linePencils[i].pVec * ENumber(j, 1) +
-                           linePencils[i].direction * inParams[j];
-      EVector2 segTarget = linePencils[i].p0 +
-                           linePencils[i].pVec * ENumber(j, 1) +
-                           linePencils[i].direction * outParams[j];
-      inSegments.push_back(Segment2(segSource, segTarget));
+      newData.origHalfedge = -1;
+
+      /*
+       * The original code assigned this twice:
+       *
+       *   newData.origNFunctionIndex = i;
+       *   newData.origNFunctionIndex = linePencilData[i];
+       *
+       * Only the second assignment had any effect.
+       */
+      newData.origNFunctionIndex = linePencilData[pencilIndex];
+
+      newData.lineInPencil = static_cast<int>(lineIndex);
+
+      newData.intParams.insert(inParams[lineIndex]);
+
+      newData.intParams.insert(outParams[lineIndex]);
+
+      inData.push_back(std::move(newData));
+
+      clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
+
+      phaseStart = Clock::now();
+
+      const ENumber lineOffset(static_cast<long long>(lineIndex), 1);
+
+      const EVector2 basePoint = pencil.p0 + pencil.pVec * lineOffset;
+
+      const EVector2 segmentSource =
+          basePoint + pencil.direction * inParams[lineIndex];
+
+      const EVector2 segmentTarget =
+          basePoint + pencil.direction * outParams[lineIndex];
+
+      inSegments.emplace_back(segmentSource, segmentTarget);
+
+      clipTimings.segmentConstruction += arrangement_seconds_since(phaseStart);
+    }
+
+    if (pencilActive) {
+      isPencilActive[pencilIndex] = std::uint8_t{1};
+
+      ++clipTimings.activePencils;
     }
   }
 
-  // preemptively creating intersections between all active line pencils
-  Matrix<ENumber, Eigen::Dynamic, 2> I2dts(
-      2 * linePencils.size() * linePencils.size(),
-      2); // It's double the information, but N is usually quite small so it's
-          // negligble and easier indexing.
-  Matrix<ENumber, Eigen::Dynamic, 1> t00s(
-      2 * linePencils.size() * linePencils.size(), 1);
-  for (int i = 0; i < linePencils.size(); i++) {
-    if (!isPencilActive[i])
+  /*
+   * ------------------------------------------------------------
+   * Phase 4: precompute intersections between active line pencils.
+   * ------------------------------------------------------------
+   */
+  phaseStart = Clock::now();
+
+  const std::size_t pencilCount = linePencils.size();
+
+  if (pencilCount > std::numeric_limits<std::size_t>::max() /
+                        std::max<std::size_t>(pencilCount, std::size_t{1}) /
+                        std::size_t{2}) {
+    throw std::overflow_error(
+        "arrange_on_triangle(): pencil-intersection matrix "
+        "size overflow");
+  }
+
+  const std::size_t intersectionRowCount =
+      std::size_t{2} * pencilCount * pencilCount;
+
+  if (intersectionRowCount >
+      static_cast<std::size_t>(std::numeric_limits<Eigen::Index>::max())) {
+    throw std::overflow_error(
+        "arrange_on_triangle(): pencil-intersection matrix "
+        "exceeds Eigen index range");
+  }
+
+  Matrix<ENumber, Dynamic, 2> I2dts(
+      static_cast<Eigen::Index>(intersectionRowCount), 2);
+
+  Matrix<ENumber, Dynamic, 1> t00s(
+      static_cast<Eigen::Index>(intersectionRowCount), 1);
+
+  for (std::size_t first = 0; first < pencilCount; ++first) {
+    if (!isPencilActive[first]) {
       continue;
-    for (int j = i + 1; j < linePencils.size(); j++) {
-      if (!isPencilActive[j])
-        continue;
+    }
 
-      // parameters for generating intersections with all other line pencils
-      Matrix<ENumber, 2, 2> I2dt;
-      Matrix<ENumber, 2, 1> t00;
-      EInt iso1Overlap; // will not be used since line pencils of parametric
-                        // lines are not supposed to overlap
-      linepencil_intersection(linePencils[i], linePencils[j], t00, I2dt,
-                              iso1Overlap);
-      I2dts.block(2 * j + 2 * linePencils.size() * i, 0, 2, 2) = I2dt;
-      t00s.segment(2 * j + 2 * linePencils.size() * i, 2) = t00;
+    for (std::size_t second = first + 1; second < pencilCount; ++second) {
+      if (!isPencilActive[second]) {
+        continue;
+      }
+
+      Matrix<ENumber, 2, 2> intersectionDelta;
+
+      Matrix<ENumber, 2, 1> intersectionOrigin;
+
+      EInt overlapIndex;
+
+      linepencil_intersection(linePencils[first], linePencils[second],
+                              intersectionOrigin, intersectionDelta,
+                              overlapIndex);
+
+      const std::size_t row =
+          std::size_t{2} * second + std::size_t{2} * pencilCount * first;
+
+      I2dts.block(static_cast<Eigen::Index>(row), 0, 2, 2) = intersectionDelta;
+
+      t00s.segment(static_cast<Eigen::Index>(row), 2) = intersectionOrigin;
     }
   }
 
-  timings.lineClip += arrangement_seconds_since(lineClipStart);
+  clipTimings.pencilIntersections += arrangement_seconds_since(phaseStart);
+
+  /*
+   * This total intentionally covers only clipping/precomputation.
+   * segment_arrangement() remains timed by ArrangementTimings.
+   */
+  const double clippingTotal = arrangement_seconds_since(totalStart);
+
+  clipTimings.total += clippingTotal;
+
+  arrangementTimings.lineClip += clippingTotal;
+
   segment_arrangement(inSegments, inData, I2dts, t00s, V, triDcel);
 }
 
@@ -926,7 +1196,7 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
   const EVector2 canonicalE20({ENumber(0), ENumber(-1)});
 
   const double coordinateTolerance = 1.0 / static_cast<double>(resolution);
-
+  reset_line_clipping_timings();
   for (int findex = 0; findex < origMesh.F.rows(); ++findex) {
     const char *triangleStage = "triangle initialization";
     try {
@@ -1203,6 +1473,8 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
               << " seconds\n";
 
     print_arrangement_timings(arrangement_timings_accumulator());
+    print_line_clipping_timings(line_clipping_timings_accumulator());
+    print_linepencil_triangle_timings(linepencil_triangle_timings_accumulator());
   }
 }
 

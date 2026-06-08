@@ -12,9 +12,17 @@
 #include <Eigen/Sparse>
 #include <algorithm>
 #include <cassert>
+#include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <deque>
+#include <iostream>
+#include <limits>
 #include <math.h>
 #include <queue>
 #include <set>
+#include <stdexcept>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -27,6 +35,11 @@
 // This header file concentrates geometric operations on vectors, segments,
 // lines, and arrangement in exact rational numbers.
 namespace directional {
+
+#ifndef DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+#define DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING 1
+#endif
+
 
 template <size_t Size> class EVector {
 public:
@@ -59,7 +72,7 @@ public:
     return newVec;
   }
 
-  EVector<Size> operator*(const ENumber s) const {
+  EVector<Size> operator*(const ENumber &s) const {
     EVector<Size> newVec;
     for (int i = 0; i < Size; i++)
       newVec.data[i] = data[i] * s;
@@ -86,10 +99,7 @@ public:
     data.insert(data.end(), args.begin(), args.end());
   }
 
-  EVector operator=(const EVector<Size> &evec) {
-    data = evec.data;
-    return *this;
-  }
+  EVector &operator=(const EVector<Size> &evec) = default;
 
   Eigen::RowVectorXd to_double() const {
     Eigen::RowVectorXd doubleVec(Size);
@@ -155,18 +165,14 @@ public:
     target = _target;
   }
 
-  Segment2 operator=(const Segment2 &seg2) {
-    source = seg2.source;
-    target = seg2.target;
-    return *this;
-  }
+  Segment2 &operator=(const Segment2 &seg2) = default;
 
   Segment2() {}
 
   friend std::ostream &operator<<(std::ostream &os, const Segment2 &seg);
 };
 
-std::ostream &operator<<(std::ostream &os, const Segment2 &seg) {
+inline std::ostream &operator<<(std::ostream &os, const Segment2 &seg) {
   os << "Segment2(" << seg.source << "->" << seg.target << ")";
   return os;
 }
@@ -188,7 +194,7 @@ public:
   }
 };
 
-std::ostream &operator<<(std::ostream &os, const Line2 &line) {
+inline std::ostream &operator<<(std::ostream &os, const Line2 &line) {
   os << "Line2(" << line.point << " + " << line.direction << ")";
   return os;
 }
@@ -204,7 +210,7 @@ struct LinePencil {
   }
 };
 
-ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2) {
+inline ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2) {
   ENumber sd(0);
   // assert("vectors are of different dimensions!" && v1.size()==v2.size());
   for (int i = 0; i < 3; i++)
@@ -214,7 +220,7 @@ ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2) {
 }
 
 // produces y = M*x
-void exactSparseMult(const Eigen::SparseMatrix<int> M,
+inline void exactSparseMult(const Eigen::SparseMatrix<int> &M,
                      const std::vector<ENumber> &x, std::vector<ENumber> &y) {
   y.resize(M.rows());
 
@@ -234,7 +240,7 @@ void exactSparseMult(const Eigen::SparseMatrix<int> M,
     }
 }
 
-void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
+inline void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
                     const std::vector<ENumber> &x, std::vector<ENumber> &y) {
   y.resize(nM.rows());
   for (int i = 0; i < y.size(); i++)
@@ -246,7 +252,7 @@ void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
 
 // This assumes components is already resized to the correct |v|
 // not very efficient but probably not terrible
-int connectedComponents(const std::vector<std::pair<int, int>> &matches,
+inline int connectedComponents(const std::vector<std::pair<int, int>> &matches,
                         std::vector<int> &components) {
   for (int i = 0; i < components.size(); i++)
     components[i] = -1;
@@ -285,7 +291,7 @@ int connectedComponents(const std::vector<std::pair<int, int>> &matches,
   return numComponents;
 }
 
-int line_line_intersection(const Line2 &line1, const Line2 &line2, ENumber &t1,
+inline int line_line_intersection(const Line2 &line1, const Line2 &line2, ENumber &t1,
                            ENumber &t2) {
   // std::cout<<"Computing intersection between line: "<<line1<<" and line
   // "<<line2<<std::endl;
@@ -328,67 +334,320 @@ int line_line_intersection(const Line2 &line1, const Line2 &line2, ENumber &t1,
 // for iso1 and iso2 in the respective line pencil ranges
 // result = 2 is only acceptable if |lp2| = 1, not handling parallel full line
 // pencils (shouldn't be unless the parameterization is degenerate).
+struct LinePencilIntersectionTimings {
+  std::size_t genericCalls = 0;
+  std::size_t singleLineCalls = 0;
+  std::size_t parallelCases = 0;
+  std::size_t overlapCases = 0;
+  std::size_t nonParallelCases = 0;
+
+  double determinant = 0.0;
+  double parallelClassification = 0.0;
+  double baseParameters = 0.0;
+  double stepParameters = 0.0;
+  double outputWrite = 0.0;
+  double total = 0.0;
+};
+
+inline LinePencilIntersectionTimings &
+linepencil_intersection_timings_accumulator() {
+  static LinePencilIntersectionTimings timings;
+  return timings;
+}
+
+inline void reset_linepencil_intersection_timings() {
+  linepencil_intersection_timings_accumulator() =
+      LinePencilIntersectionTimings{};
+}
+
+inline double exact_geometry_seconds_since(
+    const std::chrono::high_resolution_clock::time_point &start) {
+  return std::chrono::duration<double>(
+             std::chrono::high_resolution_clock::now() - start)
+      .count();
+}
+
+inline void print_linepencil_intersection_timings(
+    const LinePencilIntersectionTimings &timings) {
+  std::cout
+      << "[Directional::linepencil_intersection()]: timing summary\n"
+      << "  generic calls:          " << timings.genericCalls << '\n'
+      << "  single-line calls:      " << timings.singleLineCalls << '\n'
+      << "  parallel cases:         " << timings.parallelCases << '\n'
+      << "  overlap cases:          " << timings.overlapCases << '\n'
+      << "  non-parallel cases:     " << timings.nonParallelCases << '\n'
+      << "  determinant:            " << timings.determinant << " s\n"
+      << "  parallel classification:" << timings.parallelClassification
+      << " s\n"
+      << "  base parameters:        " << timings.baseParameters << " s\n"
+      << "  step parameters:        " << timings.stepParameters << " s\n"
+      << "  output write:           " << timings.outputWrite << " s\n"
+      << "  total:                  " << timings.total << " s\n";
+}
+
+/*
+ * Scalar implementation of line-pencil intersection.
+ *
+ * Compared with the former Eigen-expression implementation, this version:
+ * - computes the determinant once;
+ * - computes one reciprocal and multiplies by it, avoiding six divisions;
+ * - avoids temporary EVector/Eigen expressions in the hot path;
+ * - uses runtime validation instead of release-disabled assertions.
+ */
 inline int linepencil_intersection(
     const LinePencil &lp1, const LinePencil &lp2,
     Eigen::Matrix<ENumber, 2, 1> &t00,
-    Eigen::Matrix<ENumber, 2, 2> &I2dt, // t of lines is I2dt*[I1;I2]+t00
-    EInt &iso1Overlap) { // overlap line in lp1 matching that of lp2. ignored
-                         // unless result==2
+    Eigen::Matrix<ENumber, 2, 2> &I2dt,
+    EInt &iso1Overlap) {
+  using Clock = std::chrono::high_resolution_clock;
 
-  // std::cout<<"Line pencil intersection between "<<std::endl;
-  // std::cout<<"lp1 numLines: "<<lp1.numLines<<" p0: "<<lp1.p0<<" direction:
-  // "<<lp1.direction<<" pVec: "<<lp1.pVec<<std::endl; std::cout<<"lp2 numLines:
-  // "<<lp2.numLines<<" p0: "<<lp2.p0<<" direction: "<<lp2.direction<<" pVec:
-  // "<<lp2.pVec<<std::endl;
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  LinePencilIntersectionTimings &timings =
+      linepencil_intersection_timings_accumulator();
+  ++timings.genericCalls;
+  const auto totalStart = Clock::now();
+  auto phaseStart = totalStart;
+#endif
 
-  ENumber v1v2 = lp1.direction.cross(lp2.direction);
-  if (v1v2 ==
-      ENumber(
-          0)) { // the two pencils are parallel; looking which line overlaps lp2
-    assert("linepencil_intersection: parallel line pencils must have |lp2|=1; "
-           "parameterization must be degenerate! " &&
-           lp2.numLines == 1);
-    EVector2 p012vec = lp2.p0 - lp1.p0;
-    ENumber pVecv1 = lp1.pVec.cross(lp1.direction);
-    assert("pVecv1 shouldn't be zero! " && pVecv1 != ENumber(0));
-    ENumber overlapIso = p012vec.cross(lp1.direction) / pVecv1;
+  const ENumber determinant =
+      lp1.direction[0] * lp2.direction[1] -
+      lp1.direction[1] * lp2.direction[0];
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.determinant += exact_geometry_seconds_since(phaseStart);
+#endif
+
+  if (determinant == ENumber(0)) {
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+    ++timings.parallelCases;
+    phaseStart = Clock::now();
+#endif
+
+    if (lp2.numLines != 1) {
+      throw std::invalid_argument(
+          "linepencil_intersection(): parallel second pencil must contain "
+          "exactly one line");
+    }
+
+    const ENumber deltaX = lp2.p0[0] - lp1.p0[0];
+    const ENumber deltaY = lp2.p0[1] - lp1.p0[1];
+    const ENumber spacingCrossDirection =
+        lp1.pVec[0] * lp1.direction[1] -
+        lp1.pVec[1] * lp1.direction[0];
+
+    if (spacingCrossDirection == ENumber(0)) {
+      throw std::runtime_error(
+          "linepencil_intersection(): degenerate first-pencil spacing");
+    }
+
+    const ENumber overlapIso =
+        (deltaX * lp1.direction[1] -
+         deltaY * lp1.direction[0]) /
+        spacingCrossDirection;
+
+    int result = 0;
     if (enumber_den(overlapIso) == EInt(1)) {
-      iso1Overlap = enumber_num(overlapIso).convert();
-      return ((iso1Overlap >= 0 && iso1Overlap <= lp1.numLines)
-                  ? 2
-                  : 0); // only an overlap if integer and within range of lp1
-    } else
-      return 0; // not an integer; no overlap for certain
+      iso1Overlap = enumber_num(overlapIso);
+      const long long overlapIndex = iso1Overlap.convert();
+      if (overlapIndex >= 0 &&
+          overlapIndex < static_cast<long long>(lp1.numLines)) {
+        result = 2;
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+        ++timings.overlapCases;
+#endif
+      }
+    }
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+    timings.parallelClassification +=
+        exact_geometry_seconds_since(phaseStart);
+    timings.total += exact_geometry_seconds_since(totalStart);
+#endif
+    return result;
   }
 
-  // line pencils are next not overlapping; finding grid parameters
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  ++timings.nonParallelCases;
+  phaseStart = Clock::now();
+#endif
 
-  // p00 is the intersection of both min isovalues
-  EVector2 p012 = lp2.p0 - lp1.p0;
-  t00 << p012.cross(lp2.direction) / v1v2, p012.cross(lp1.direction) / v1v2;
-  // EVector2 diff = (lp1.p0 + t00(0) * lp1.direction) - (lp2.p0 + t00(1) *
-  // lp2.direction); assert("line_pencil original point intersection is wrong!"
-  // && diff == EVector2()); computing the dts
-  I2dt << -lp1.pVec.cross(lp2.direction), lp2.pVec.cross(lp2.direction),
-      -lp1.pVec.cross(lp1.direction), lp2.pVec.cross(lp1.direction);
-  I2dt.array() /= v1v2;
-  // tests (expensive):
-  // Eigen::Matrix<ENumber, 2,1> ITest; ITest<<ENumber(3),ENumber(2);
-  // Eigen::Matrix<ENumber, 2,1> gridPointtValues = t00 + I2dt*ITest;
-  // EVector2 pLine1 = (lp1.p0 + lp1.pVec*(ITest(0))+ gridPointtValues(0) *
-  // lp1.direction); EVector2 pLine2 = (lp2.p0 + lp2.pVec*(ITest(1))+
-  // gridPointtValues(1) * lp2.direction); diff = pLine1 - pLine2;
-  // assert("line_pencil dts computation is wrong!" && diff == EVector2());
+  const ENumber inverseDeterminant = ENumber(1) / determinant;
+  const ENumber deltaX = lp2.p0[0] - lp1.p0[0];
+  const ENumber deltaY = lp2.p0[1] - lp1.p0[1];
 
-  // std::cout<<"t00: "<<t00(0).to_double()<<",
-  // "<<t00(1).to_double()<<std::endl; std::cout<<"I2dt:
-  // "<<I2dt(0,0).to_double()<<", "<<I2dt(0,1).to_double()<<",
-  // "<<I2dt(1,0).to_double()<<", "<<I2dt(1,1).to_double()<<std::endl;
-  // std::cout<<"iso1Overlap "<<iso1Overlap<<std::endl;
+  const ENumber t00First =
+      (deltaX * lp2.direction[1] -
+       deltaY * lp2.direction[0]) *
+      inverseDeterminant;
+
+  const ENumber t00Second =
+      (deltaX * lp1.direction[1] -
+       deltaY * lp1.direction[0]) *
+      inverseDeterminant;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.baseParameters += exact_geometry_seconds_since(phaseStart);
+  phaseStart = Clock::now();
+#endif
+
+  const ENumber step00 =
+      -(lp1.pVec[0] * lp2.direction[1] -
+        lp1.pVec[1] * lp2.direction[0]) *
+      inverseDeterminant;
+
+  const ENumber step01 =
+      (lp2.pVec[0] * lp2.direction[1] -
+       lp2.pVec[1] * lp2.direction[0]) *
+      inverseDeterminant;
+
+  const ENumber step10 =
+      -(lp1.pVec[0] * lp1.direction[1] -
+        lp1.pVec[1] * lp1.direction[0]) *
+      inverseDeterminant;
+
+  const ENumber step11 =
+      (lp2.pVec[0] * lp1.direction[1] -
+       lp2.pVec[1] * lp1.direction[0]) *
+      inverseDeterminant;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.stepParameters += exact_geometry_seconds_since(phaseStart);
+  phaseStart = Clock::now();
+#endif
+
+  t00(0) = t00First;
+  t00(1) = t00Second;
+  I2dt(0, 0) = step00;
+  I2dt(0, 1) = step01;
+  I2dt(1, 0) = step10;
+  I2dt(1, 1) = step11;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.outputWrite += exact_geometry_seconds_since(phaseStart);
+  timings.total += exact_geometry_seconds_since(totalStart);
+#endif
+
   return 1;
 }
 
-std::vector<std::pair<ENumber, ENumber>>
+/*
+ * Specialized hot-path intersection between a line pencil and one line.
+ * Only the first affine column is needed by triangle clipping, so this avoids
+ * constructing a temporary LinePencil and avoids computing two unused values.
+ */
+inline int linepencil_single_line_intersection(
+    const LinePencil &pencil,
+    const EVector2 &linePoint,
+    const EVector2 &lineDirection,
+    ENumber &lineParameter0,
+    ENumber &edgeParameter0,
+    ENumber &lineParameterStep,
+    ENumber &edgeParameterStep,
+    EInt &overlapLine) {
+  using Clock = std::chrono::high_resolution_clock;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  LinePencilIntersectionTimings &timings =
+      linepencil_intersection_timings_accumulator();
+  ++timings.singleLineCalls;
+  const auto totalStart = Clock::now();
+  auto phaseStart = totalStart;
+#endif
+
+  const ENumber determinant =
+      pencil.direction[0] * lineDirection[1] -
+      pencil.direction[1] * lineDirection[0];
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.determinant += exact_geometry_seconds_since(phaseStart);
+#endif
+
+  if (determinant == ENumber(0)) {
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+    ++timings.parallelCases;
+    phaseStart = Clock::now();
+#endif
+
+    const ENumber spacingCrossDirection =
+        pencil.pVec[0] * pencil.direction[1] -
+        pencil.pVec[1] * pencil.direction[0];
+
+    if (spacingCrossDirection == ENumber(0)) {
+      throw std::runtime_error(
+          "linepencil_single_line_intersection(): degenerate pencil spacing");
+    }
+
+    const ENumber deltaX = linePoint[0] - pencil.p0[0];
+    const ENumber deltaY = linePoint[1] - pencil.p0[1];
+    const ENumber overlapIso =
+        (deltaX * pencil.direction[1] -
+         deltaY * pencil.direction[0]) /
+        spacingCrossDirection;
+
+    int result = 0;
+    if (enumber_den(overlapIso) == EInt(1)) {
+      overlapLine = enumber_num(overlapIso);
+      const long long overlapIndex = overlapLine.convert();
+      if (overlapIndex >= 0 &&
+          overlapIndex < static_cast<long long>(pencil.numLines)) {
+        result = 2;
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+        ++timings.overlapCases;
+#endif
+      }
+    }
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+    timings.parallelClassification +=
+        exact_geometry_seconds_since(phaseStart);
+    timings.total += exact_geometry_seconds_since(totalStart);
+#endif
+    return result;
+  }
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  ++timings.nonParallelCases;
+  phaseStart = Clock::now();
+#endif
+
+  const ENumber inverseDeterminant = ENumber(1) / determinant;
+  const ENumber deltaX = linePoint[0] - pencil.p0[0];
+  const ENumber deltaY = linePoint[1] - pencil.p0[1];
+
+  lineParameter0 =
+      (deltaX * lineDirection[1] -
+       deltaY * lineDirection[0]) *
+      inverseDeterminant;
+
+  edgeParameter0 =
+      (deltaX * pencil.direction[1] -
+       deltaY * pencil.direction[0]) *
+      inverseDeterminant;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.baseParameters += exact_geometry_seconds_since(phaseStart);
+  phaseStart = Clock::now();
+#endif
+
+  lineParameterStep =
+      -(pencil.pVec[0] * lineDirection[1] -
+        pencil.pVec[1] * lineDirection[0]) *
+      inverseDeterminant;
+
+  edgeParameterStep =
+      -(pencil.pVec[0] * pencil.direction[1] -
+        pencil.pVec[1] * pencil.direction[0]) *
+      inverseDeterminant;
+
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+  timings.stepParameters += exact_geometry_seconds_since(phaseStart);
+  timings.total += exact_geometry_seconds_since(totalStart);
+#endif
+
+  return 1;
+}
+
+inline std::vector<std::pair<ENumber, ENumber>>
 segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2) {
 
   ENumber t1, t2;
@@ -464,7 +723,7 @@ segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2) {
   }
 }
 
-std::vector<ENumber> line_segment_intersection(const Line2 &line,
+inline std::vector<ENumber> line_segment_intersection(const Line2 &line,
                                                const Segment2 &segment) {
 
   // std::cout<<"Computing intersection between line :"<<line<<" and segment
@@ -496,8 +755,8 @@ std::vector<ENumber> line_segment_intersection(const Line2 &line,
   }
 }
 
-void line_triangle_intersection(const Line2 &line,
-                                const std::vector<EVector2> triangle,
+inline void line_triangle_intersection(const Line2 &line,
+                                const std::vector<EVector2> &triangle,
                                 bool &intEdge, bool &intFace, ENumber &inParam,
                                 ENumber &outParam) {
 
@@ -533,112 +792,298 @@ void line_triangle_intersection(const Line2 &line,
    std::cout<<"Line doesn't intersect triangle"<<std::endl;*/
 }
 
-void linepencil_triangle_intersection(
-    const LinePencil &lp, const std::vector<EVector2> triangle,
-    std::vector<bool> &intEdges, std::vector<bool> &intFaces,
-    std::vector<ENumber> &inParams, std::vector<ENumber> &outParams,
-    std::vector<std::vector<ENumber>> &triParams) {
+struct LinePencilTriangleTimings {
+  std::size_t calls = 0;
+  std::size_t triangleEdgesProcessed = 0;
+  std::size_t candidateLines = 0;
+  std::size_t acceptedEdgeHits = 0;
+  std::size_t overlapCases = 0;
 
-  using namespace std;
-  inParams.resize(lp.numLines);
-  outParams.resize(lp.numLines);
-  intEdges.resize(lp.numLines);
-  intFaces.resize(lp.numLines);
-  for (int i = 0; i < inParams.size(); i++) {
-    inParams[i] = ENumber(3276700);
-    outParams[i] = ENumber(-3276700);
-    intEdges[i] = intFaces[i] = false;
+  double outputInitialization = 0.0;
+  double edgePencilSetup = 0.0;
+  double pencilIntersection = 0.0;
+  double overlapHandling = 0.0;
+  double affineLineSweep = 0.0;
+  double finalClassification = 0.0;
+  double total = 0.0;
+};
+
+inline LinePencilTriangleTimings &
+linepencil_triangle_timings_accumulator() {
+  static LinePencilTriangleTimings timings;
+  return timings;
+}
+
+inline void reset_linepencil_triangle_timings() {
+  linepencil_triangle_timings_accumulator() =
+      LinePencilTriangleTimings{};
+}
+
+inline double linepencil_triangle_seconds_since(
+    const std::chrono::high_resolution_clock::time_point &start) {
+  return std::chrono::duration<double>(
+             std::chrono::high_resolution_clock::now() - start)
+      .count();
+}
+
+inline void print_linepencil_triangle_timings(
+    const LinePencilTriangleTimings &timings) {
+  std::cout
+      << "[Directional::linepencil_triangle_intersection()]: "
+         "timing summary\n"
+      << "  calls:                 " << timings.calls << '\n'
+      << "  triangle edges:        "
+      << timings.triangleEdgesProcessed << '\n'
+      << "  candidate lines:       " << timings.candidateLines << '\n'
+      << "  accepted edge hits:    " << timings.acceptedEdgeHits << '\n'
+      << "  overlap cases:         " << timings.overlapCases << '\n'
+      << "  output initialization: " << timings.outputInitialization
+      << " s\n"
+      << "  edge-pencil setup:     " << timings.edgePencilSetup << " s\n"
+      << "  pencil intersection:   " << timings.pencilIntersection
+      << " s\n"
+      << "  overlap handling:      " << timings.overlapHandling << " s\n"
+      << "  affine line sweep:     " << timings.affineLineSweep << " s\n"
+      << "  final classification:  " << timings.finalClassification
+      << " s\n"
+      << "  total:                 " << timings.total << " s\n";
+}
+
+/*
+ * Intersect every line in a pencil with a CCW triangle.
+ *
+ * Optimizations relative to the original implementation:
+ *
+ * 1. The triangle is passed by const reference instead of copied.
+ * 2. Dynamic Eigen matrices containing all per-line parameter pairs are
+ *    eliminated.
+ * 3. Per-line parameters are generated with an affine recurrence:
+ *
+ *      t(j + 1) = t(j) + dt
+ *
+ *    rather than constructing ENumber(j) and multiplying for every line.
+ * 4. The triangle-edge parameter interval is known exactly to be [0, 1],
+ *    because each temporary edge pencil uses the edge's source as p0 and the
+ *    edge vector as its direction. Two exact point_param() divisions per edge
+ *    are therefore removed.
+ * 5. Output buffers are initialized in bulk and reused by callers when their
+ *    capacity is retained.
+ */
+inline void linepencil_triangle_intersection(
+    const LinePencil &lp,
+    const std::vector<EVector2> &triangle,
+    std::vector<bool> &intEdges,
+    std::vector<bool> &intFaces,
+    std::vector<ENumber> &inParams,
+    std::vector<ENumber> &outParams,
+    std::vector<std::vector<ENumber>> &triParams) {
+  using Clock = std::chrono::high_resolution_clock;
+
+  LinePencilTriangleTimings &timings =
+      linepencil_triangle_timings_accumulator();
+
+  ++timings.calls;
+
+  const auto totalStart = Clock::now();
+
+  if (triangle.size() != 3) {
+    throw std::invalid_argument(
+        "linepencil_triangle_intersection(): triangle must contain "
+        "exactly three vertices");
   }
 
-  directional::EVector2 p00, pVec1, pVec2;
-  ENumber t1p00, t2p00, dt1, dt2;
+  if (lp.numLines < 0) {
+    throw std::invalid_argument(
+        "linepencil_triangle_intersection(): negative line count");
+  }
+
+  const std::size_t lineCount =
+      static_cast<std::size_t>(lp.numLines);
+
+  timings.candidateLines += lineCount;
+
+  const ENumber positiveSentinel(3276700);
+  const ENumber negativeSentinel(-3276700);
+  const ENumber zero(0);
+  const ENumber one(1);
+
+  auto phaseStart = Clock::now();
+
+  inParams.assign(lineCount, positiveSentinel);
+  outParams.assign(lineCount, negativeSentinel);
+  intEdges.assign(lineCount, false);
+  intFaces.assign(lineCount, false);
+
+  triParams.clear();
   triParams.resize(3);
-  for (int i = 0; i < 3; i++) {
-    LinePencil triEdgePencil;
-    triEdgePencil.numLines = 1;
-    triEdgePencil.p0 = triangle[i];
-    triEdgePencil.direction = triangle[(i + 1) % 3] - triangle[i];
-    triEdgePencil.pVec[0] = -triEdgePencil.direction[1];
-    triEdgePencil.pVec[1] = triEdgePencil.direction[0];
-    Eigen::Matrix<ENumber, 2, 1> t00;
-    Eigen::Matrix<ENumber, 2, 2> I2dt;
-    EInt iso1Overlap;
-    int lpResult =
-        linepencil_intersection(lp, triEdgePencil, t00, I2dt, iso1Overlap);
-    if (lpResult == 2) { // overlap of iso1Overlap isovalue with the segment
-      std::cout<< "[Directional::linepencil_triangle_intersection()]: " << "line triangle overlap!!!" << std::endl;
-      intEdges[iso1Overlap.convert()] = true;
-      // updating only the params of this line, not those of the others who stay
-      // open
-      ENumber tSource = lp.line(iso1Overlap.convert()).point_param(triangle[i]);
-      ENumber tTarget =
-          lp.line(iso1Overlap.convert()).point_param(triangle[(i + 1) % 3]);
-      if (tSource < tTarget) {
-        inParams[iso1Overlap.convert()] = tSource;
-        outParams[iso1Overlap.convert()] = tTarget;
+
+  for (auto &parameters : triParams) {
+    parameters.clear();
+    parameters.reserve(lineCount);
+  }
+
+  timings.outputInitialization +=
+      linepencil_triangle_seconds_since(phaseStart);
+
+  for (int edgeIndex = 0; edgeIndex < 3; ++edgeIndex) {
+    ++timings.triangleEdgesProcessed;
+
+    phaseStart = Clock::now();
+
+    const EVector2 &edgeSource =
+        triangle[static_cast<std::size_t>(edgeIndex)];
+
+    const EVector2 &edgeTarget =
+        triangle[static_cast<std::size_t>((edgeIndex + 1) % 3)];
+
+    const EVector2 edgeDirection =
+        edgeTarget - edgeSource;
+
+    /*
+     * The specialized helper needs only the edge source/direction and the
+     * first affine parameter column used by the line sweep.
+     */
+    ENumber lineParameter;
+    ENumber edgeParameter;
+    ENumber lineParameterStep;
+    ENumber edgeParameterStep;
+    EInt overlappingIsoValue;
+
+    timings.edgePencilSetup +=
+        linepencil_triangle_seconds_since(phaseStart);
+
+    phaseStart = Clock::now();
+
+    const int intersectionType =
+        linepencil_single_line_intersection(
+            lp,
+            edgeSource,
+            edgeDirection,
+            lineParameter,
+            edgeParameter,
+            lineParameterStep,
+            edgeParameterStep,
+            overlappingIsoValue);
+
+    timings.pencilIntersection +=
+        linepencil_triangle_seconds_since(phaseStart);
+
+    if (intersectionType == 2) {
+      phaseStart = Clock::now();
+      ++timings.overlapCases;
+
+      const long long overlapLineValue =
+          overlappingIsoValue.convert();
+
+      if (overlapLineValue < 0 ||
+          overlapLineValue >= static_cast<long long>(lineCount)) {
+        throw std::runtime_error(
+            "linepencil_triangle_intersection(): overlapping line index "
+            "is outside the pencil");
+      }
+
+      const std::size_t overlapLine =
+          static_cast<std::size_t>(overlapLineValue);
+
+      intEdges[overlapLine] = true;
+
+      /*
+       * The overlap is rare, so retain the exact projection path here.
+       * Construct the line once instead of calling lp.line() twice.
+       */
+      const Line2 overlapGeometry =
+          lp.line(static_cast<int>(overlapLine));
+
+      const ENumber sourceParameter =
+          overlapGeometry.point_param(edgeSource);
+
+      const ENumber targetParameter =
+          overlapGeometry.point_param(edgeTarget);
+
+      if (sourceParameter < targetParameter) {
+        inParams[overlapLine] = sourceParameter;
+        outParams[overlapLine] = targetParameter;
       } else {
-        inParams[iso1Overlap.convert()] = tTarget;
-        outParams[iso1Overlap.convert()] = tSource;
+        inParams[overlapLine] = targetParameter;
+        outParams[overlapLine] = sourceParameter;
       }
-      triParams[i].push_back(ENumber(0));
-      triParams[i].push_back(ENumber(1));
-      // if (tsource==tTarget)  //intersecting the triangle edge only by a
-      // vertex; ignored
-      //     intFace[iso1Overlap]=intEdge[iso1Overlap]=false;
+
+      triParams[static_cast<std::size_t>(edgeIndex)].push_back(zero);
+      triParams[static_cast<std::size_t>(edgeIndex)].push_back(one);
+
+      timings.overlapHandling +=
+          linepencil_triangle_seconds_since(phaseStart);
+
+      continue;
     }
-    if (lpResult == 1) { // intersecting the triangle edge non-trivially
-      // TODO: here
-      // generating the intersection t pairs for all lines
-      Eigen::Matrix<ENumber, 2, Eigen::Dynamic> IPairs(2, lp.numLines);
-      Eigen::Matrix<ENumber, 2, Eigen::Dynamic> tPairs(2, lp.numLines);
-      // cout<<"tPairs: "<<endl;
-      for (int j = 0; j < lp.numLines; j++) {
-        // Eigen::Matrix<ENumber, 2, 1> currI; currI<<ENumber(j,0.0),
-        // ENumber(0);
-        tPairs.col(j) =
-            t00 + I2dt.col(0) * ENumber(j); //*currI;  //can be replaced by a
-                                            // simple extraction from the matrix
-        // cout<<tPairs(0,j).to_double()<<", "<<tPairs(1,j).to_double()<<endl;
-        // testing:
-        // Line2 l1 = lp.line(j);
-        // Line2 l2 = triEdgePencil.line(0);
-        // ENumber t1, t2;
-        // line_line_intersection(l1, l2, t1, t2);
-        // cout<<"t1: "<<t1.to_double()<<" t2: "<<t2.to_double()<<endl;
-      }
-      ENumber tTriSource = triEdgePencil.line(0).point_param(triangle[i]);
-      ENumber tTriTarget =
-          triEdgePencil.line(0).point_param(triangle[(i + 1) % 3]);
-      // cout<<"Intersecting edge " <<i<<endl;
-      // cout<<"tTriSource: "<<tTriSource.to_double()<<endl;
-      // cout<<"tTriTarget: "<<tTriTarget.to_double()<<endl;
-      for (int j = 0; j < lp.numLines; j++) {
-        if ((tPairs(1, j) >= tTriSource) && (tPairs(1, j) <= tTriTarget)) {
-          triParams[i].push_back(tPairs(1, j));
-          if (tPairs(0, j) > outParams[j])
-            outParams[j] = tPairs(0, j);
-          if (tPairs(0, j) < inParams[j])
-            inParams[j] = tPairs(0, j);
+
+    if (intersectionType != 1) {
+      continue;
+    }
+
+    phaseStart = Clock::now();
+
+    /*
+     * For a fixed edge pencil line index 0:
+     *
+     *   [line parameter, edge parameter]^T
+     *       = t00 + I2dt.col(0) * lineIndex
+     *
+     * Generate that affine sequence incrementally. This removes one exact
+     * integer construction and four exact multiplications per line.
+     */
+    auto &edgeParameters =
+        triParams[static_cast<std::size_t>(edgeIndex)];
+
+    for (std::size_t lineIndex = 0;
+         lineIndex < lineCount;
+         ++lineIndex) {
+      if (edgeParameter >= zero && edgeParameter <= one) {
+        ++timings.acceptedEdgeHits;
+
+        edgeParameters.push_back(edgeParameter);
+
+        if (lineParameter > outParams[lineIndex]) {
+          outParams[lineIndex] = lineParameter;
+        }
+
+        if (lineParameter < inParams[lineIndex]) {
+          inParams[lineIndex] = lineParameter;
         }
       }
+
+      /* ENumber does not consistently expose compound assignment. */
+      lineParameter = lineParameter + lineParameterStep;
+      edgeParameter = edgeParameter + edgeParameterStep;
+    }
+
+    timings.affineLineSweep +=
+        linepencil_triangle_seconds_since(phaseStart);
+  }
+
+  phaseStart = Clock::now();
+
+  for (std::size_t lineIndex = 0;
+       lineIndex < lineCount;
+       ++lineIndex) {
+    if (!intEdges[lineIndex] &&
+        inParams[lineIndex] != outParams[lineIndex] &&
+        inParams[lineIndex] != positiveSentinel &&
+        outParams[lineIndex] != negativeSentinel) {
+      intFaces[lineIndex] = true;
     }
   }
 
-  // for (int i=0;i<lp.numLines;i++)
-  //     assert("didn't find an entry and exit points" &&
-  //     inParams[i]!=ENumber(3276700) && outParams[i]!=ENumber(-3276700));
-  // Setting everything that has nontrivial inParams->outParams and not intEdge
-  // to intFaces = true
-  for (int i = 0; i < lp.numLines; i++)
-    if ((!intEdges[i]) && (inParams[i] != outParams[i]) &&
-        (inParams[i] != ENumber(3276700)) &&
-        (outParams[i] != ENumber(-3276700)))
-      intFaces[i] = true;
+  timings.finalClassification +=
+      linepencil_triangle_seconds_since(phaseStart);
+
+  timings.total +=
+      linepencil_triangle_seconds_since(totalStart);
 }
 
 // according to this:
 // https://math.stackexchange.com/questions/1450498/rational-ordering-of-vectors
-ENumber slope_function(const EVector2 &vec) {
+inline ENumber slope_function(const EVector2 &vec) {
   // predicates might be expensive, so precomputing
   bool x0 = vec[0] > ENumber(0);
   bool y0 = vec[1] > ENumber(0);
@@ -664,7 +1109,7 @@ ENumber slope_function(const EVector2 &vec) {
   }
 }
 
-double slope_function_double(const Eigen::RowVector2d &vec) {
+inline double slope_function_double(const Eigen::RowVector2d &vec) {
   // predicates might be expensive, so precomputing
   bool x0 = vec[0] > 0.0;
   bool y0 = vec[1] > 0.0;
@@ -690,7 +1135,7 @@ double slope_function_double(const Eigen::RowVector2d &vec) {
   }
 }
 
-double signed_face_area(const std::vector<EVector2> &faceVectors) {
+inline double signed_face_area(const std::vector<EVector2> &faceVectors) {
   Eigen::RowVector2d currVertex =
       Eigen::RowVector2d::Zero(); // currVertex[0]=currVertex[1]=ENumber(0);
   double sfa = 0.0;
@@ -704,13 +1149,13 @@ double signed_face_area(const std::vector<EVector2> &faceVectors) {
   return sfa;
 }
 
-ENumber triangle_area(const std::vector<EVector2> &tri) {
+inline ENumber triangle_area(const std::vector<EVector2> &tri) {
   EVector2 e12 = tri[1] - tri[0];
   EVector2 e13 = tri[2] - tri[0];
   return (e12[0] * e13[1] - e13[0] * e12[1]) / ENumber(2);
 }
 
-void div_mod(const EInt a, const EInt b, EInt &q, EInt &r) {
+inline void div_mod(const EInt a, const EInt b, EInt &q, EInt &r) {
   // mpz_tdiv_qr(q.get_mpz_t(),r.get_mpz_t(),a,b);
   q = a / b;
   r = a - b * q;
