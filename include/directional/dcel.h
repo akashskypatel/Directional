@@ -90,48 +90,147 @@ public:
             
             return false;
         }
-        
-        
     };
-    
-    bool walk_boundary(int &CurrHalfedge, const bool verbose=false, const char* context="[Directional::DCEL] walk_boundary()") {
-        if (CurrHalfedge < 0 || CurrHalfedge >= halfedges.size())
-            return false;
-        const int startHalfedge = CurrHalfedge;
-        const int safetyLimit = std::max(16, static_cast<int>(halfedges.size()) * 4);
-        int steps = 0;
-        do {
-            CurrHalfedge = halfedges[CurrHalfedge].next;
-            steps++;
-            if (verbose && steps % 10000 == 0) {
-                std::cout << "[Directional::DCEL::walk_boundary()]: " << context << ": step " << steps
-                          << ", current halfedge " << CurrHalfedge
-                          << ", next " << halfedges[CurrHalfedge].next
-                          << ", twin " << halfedges[CurrHalfedge].twin
-                          << std::endl;
-            }
-            if (halfedges[CurrHalfedge].twin < 0)
-                break;  //next boundary over a 2-valence vertex
-            CurrHalfedge = halfedges[CurrHalfedge].twin;
-            if (CurrHalfedge == startHalfedge) {
-                if (verbose) {
-                    std::cout << "[Directional::DCEL::walk_boundary()]: " << context
-                              << ": detected closed interior cycle at halfedge "
-                              << startHalfedge << " after " << steps
-                              << " steps; no boundary halfedge was reached"
-                              << std::endl;
-                }
-                return false;
-            }
-            if (steps >= safetyLimit) {
-                if (verbose) {
-                    std::cout << "[Directional::DCEL::walk_boundary()]: " << context << ": exceeded safety limit at halfedge "
-                              << startHalfedge << std::endl;
-                }
-                return false;
-            }
-        } while (halfedges[CurrHalfedge].twin >= 0);
-        return true;
+
+    bool valid_vertex_index(const int index) const {
+      return index >= 0 && index < static_cast<int>(vertices.size());
+    }
+
+    bool valid_halfedge_index(const int index) const {
+      return index >= 0 && index < static_cast<int>(halfedges.size());
+    }
+
+    bool valid_edge_index(const int index) const {
+      return index >= 0 && index < static_cast<int>(edges.size());
+    }
+
+    bool valid_face_index(const int index) const {
+      return index >= 0 && index < static_cast<int>(faces.size());
+    }
+
+    bool valid_halfedge(const int index) const {
+      return valid_halfedge_index(index) && halfedges[index].valid;
+    }
+
+    bool walk_boundary(
+        int &currentHalfedge, const bool verbose = false,
+        const char *context = "[Directional::DCEL::walk_boundary()]") {
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+
+      const auto fail = [&](const char *message, const int index = -1) -> bool {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::walk_boundary()]: " << context
+                    << ": " << message;
+
+          if (index >= 0) {
+            std::cerr << " (halfedge " << index << ")";
+          }
+
+          std::cerr << '\n';
+        }
+
+        return false;
+      };
+
+      if (halfedgeCount == 0) {
+        return fail("DCEL contains no halfedges");
+      }
+
+      if (!valid_halfedge(currentHalfedge)) {
+        return fail("invalid starting halfedge", currentHalfedge);
+      }
+
+      /*
+       * Preserve the caller's index on failure.
+       */
+      const int originalHalfedge = currentHalfedge;
+      int cursor = currentHalfedge;
+
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      /*
+       * At most one new halfedge may be visited per iteration.
+       * Therefore halfedgeCount iterations are sufficient to
+       * either reach a boundary or prove that traversal is cyclic.
+       */
+      for (int step = 0; step < halfedgeCount; ++step) {
+
+        if (!valid_halfedge(cursor)) {
+          currentHalfedge = originalHalfedge;
+          return fail("walk reached an invalid halfedge", cursor);
+        }
+
+        if (visited[cursor]) {
+          currentHalfedge = originalHalfedge;
+
+          if (cursor == originalHalfedge) {
+            return fail("walk returned to its starting halfedge "
+                        "without reaching a boundary",
+                        cursor);
+          }
+
+          return fail("walk entered a non-start cycle", cursor);
+        }
+
+        visited[cursor] = 1;
+
+        const int next = halfedges[cursor].next;
+
+        if (!valid_halfedge_index(next)) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge has an out-of-range next link", cursor);
+        }
+
+        if (!halfedges[next].valid) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge next link points to an invalid "
+                      "halfedge",
+                      cursor);
+        }
+
+        cursor = next;
+
+        /*
+         * The next halfedge is itself on the boundary.
+         */
+        const int twin = halfedges[cursor].twin;
+
+        if (twin == -1) {
+          currentHalfedge = cursor;
+          return true;
+        }
+
+        if (twin < -1) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge has an invalid negative twin", cursor);
+        }
+
+        if (!valid_halfedge_index(twin)) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge has an out-of-range twin", cursor);
+        }
+
+        if (!halfedges[twin].valid) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge twin points to an invalid "
+                      "halfedge",
+                      cursor);
+        }
+
+        if (halfedges[twin].twin != cursor) {
+          currentHalfedge = originalHalfedge;
+          return fail("halfedge twin relation is not mutual", cursor);
+        }
+
+        cursor = twin;
+      }
+
+      currentHalfedge = originalHalfedge;
+
+      return fail("walk exceeded the halfedge traversal bound",
+                  originalHalfedge);
     }
 
     bool stitch_twins(const bool verbose = false,
@@ -147,14 +246,6 @@ public:
       const int halfedgeCount = static_cast<int>(halfedges.size());
 
       const int vertexCount = static_cast<int>(vertices.size());
-
-      const auto validHalfedge = [&](const int he) {
-        return he >= 0 && he < halfedgeCount && halfedges[he].valid;
-      };
-
-      const auto validVertex = [&](const int v) {
-        return v >= 0 && v < vertexCount && vertices[v].valid;
-      };
 
       const auto fail = [&](const std::string &message, const int he = -1) {
         if (verbose) {
@@ -200,16 +291,16 @@ public:
 
         const int next = halfedges[i].next;
 
-        if (!validHalfedge(next))
+        if (!valid_halfedge(next))
           return fail("invalid next link", i);
 
         const int source = halfedges[i].origin;
         const int target = halfedges[next].origin;
 
-        if (!validVertex(source))
+        if (!valid_vertex_index(source))
           return fail("invalid source/origin vertex", i);
 
-        if (!validVertex(target))
+        if (!valid_vertex_index(target))
           return fail("invalid target vertex from next halfedge", i);
 
         if (source == target)
@@ -223,7 +314,7 @@ public:
         if (reverseIt != unmatched.end()) {
           const int twin = reverseIt->second;
 
-          if (!validHalfedge(twin))
+          if (!valid_halfedge(twin))
             return fail("stored reverse halfedge is invalid", i);
 
           halfedges[i].twin = twin;
@@ -260,7 +351,7 @@ public:
         if (twin < 0)
           continue;
 
-        if (!validHalfedge(twin))
+        if (!valid_halfedge(twin))
           return fail("invalid generated twin", i);
 
         if (halfedges[twin].twin != i)
@@ -269,7 +360,7 @@ public:
         const int iNext = halfedges[i].next;
         const int tNext = halfedges[twin].next;
 
-        if (!validHalfedge(iNext) || !validHalfedge(tNext)) {
+        if (!valid_halfedge(iNext) || !valid_halfedge(tNext)) {
           return fail("invalid next link while validating generated twin", i);
         }
 
@@ -296,22 +387,6 @@ public:
       const int edgeCount = static_cast<int>(edges.size());
       const int faceCount = static_cast<int>(faces.size());
 
-      const auto validVertexIndex = [&](const int index) {
-        return index >= 0 && index < vertexCount;
-      };
-
-      const auto validHalfedgeIndex = [&](const int index) {
-        return index >= 0 && index < halfedgeCount;
-      };
-
-      const auto validEdgeIndex = [&](const int index) {
-        return index >= 0 && index < edgeCount;
-      };
-
-      const auto validFaceIndex = [&](const int index) {
-        return index >= 0 && index < faceCount;
-      };
-
       const auto fail = [&](const std::string &message, const int index = -1) {
         if (verbose) {
           std::cerr << "[Directional::DCEL::check_consistency()]: " << message;
@@ -332,7 +407,7 @@ public:
        * current halfedge have been validated.
        */
       const auto walkFace = [&](const int faceIndex, auto &&callback) -> bool {
-        if (!validFaceIndex(faceIndex))
+        if (!valid_face_index(faceIndex))
           return fail("invalid face index", faceIndex);
 
         if (!faces[faceIndex].valid)
@@ -340,7 +415,7 @@ public:
 
         const int start = faces[faceIndex].halfedge;
 
-        if (!validHalfedgeIndex(start))
+        if (!valid_halfedge_index(start))
           return fail("face references out-of-range halfedge", start);
 
         if (!halfedges[start].valid)
@@ -352,7 +427,7 @@ public:
         int current = start;
 
         for (int step = 0; step < halfedgeCount; ++step) {
-          if (!validHalfedgeIndex(current))
+          if (!valid_halfedge_index(current))
             return fail("face walk reached out-of-range halfedge", current);
 
           if (!halfedges[current].valid)
@@ -377,7 +452,7 @@ public:
 
           const int next = halfedges[current].next;
 
-          if (!validHalfedgeIndex(next))
+          if (!valid_halfedge_index(next))
             return fail("face walk encountered invalid next index", next);
 
           current = next;
@@ -399,7 +474,7 @@ public:
 
         const int he = vertices[i].halfedge;
 
-        if (!validHalfedgeIndex(he))
+        if (!valid_halfedge_index(he))
           return fail("valid vertex references out-of-range halfedge", i);
 
         if (!halfedges[he].valid)
@@ -425,19 +500,19 @@ public:
         const int edge = halfedges[i].edge;
 
         // Validate every index before dereferencing it.
-        if (!validHalfedgeIndex(next))
+        if (!valid_halfedge_index(next))
           return fail("halfedge has out-of-range next", i);
 
-        if (!validHalfedgeIndex(prev))
+        if (!valid_halfedge_index(prev))
           return fail("halfedge has out-of-range prev", i);
 
-        if (!validVertexIndex(vertex))
+        if (!valid_vertex_index(vertex))
           return fail("halfedge has out-of-range origin vertex", i);
 
-        if (!validFaceIndex(face))
+        if (!valid_face_index(face))
           return fail("halfedge has out-of-range face", i);
 
-        if (!validEdgeIndex(edge))
+        if (!valid_edge_index(edge))
           return fail("halfedge has out-of-range edge", i);
 
         if (!halfedges[next].valid)
@@ -468,7 +543,7 @@ public:
           return fail("halfedge has an invalid negative twin value", i);
 
         if (twin >= 0) {
-          if (!validHalfedgeIndex(twin))
+          if (!valid_halfedge_index(twin))
             return fail("halfedge has out-of-range twin", i);
 
           if (!halfedges[twin].valid)
@@ -478,10 +553,6 @@ public:
             return fail("halfedge twin does not point back", i);
 
           const int twinNext = halfedges[twin].next;
-
-          if (!validHalfedgeIndex(twinNext) || !halfedges[twinNext].valid) {
-            return fail("twin has invalid next halfedge", twin);
-          }
 
           const int source = vertex;
           const int target = halfedges[next].vertex;
@@ -512,7 +583,7 @@ public:
 
         const int he = edges[i].halfedge;
 
-        if (!validHalfedgeIndex(he))
+        if (!valid_halfedge_index(he))
           return fail("edge references out-of-range halfedge", i);
 
         if (!halfedges[he].valid)
@@ -524,7 +595,7 @@ public:
         const int twin = halfedges[he].twin;
 
         if (twin >= 0) {
-          if (!validHalfedgeIndex(twin))
+          if (!valid_halfedge_index(twin))
             return fail("edge halfedge has invalid twin", i);
 
           if (!halfedges[twin].valid)
@@ -554,7 +625,7 @@ public:
         const bool walkSucceeded = walkFace(faceIndex, [&](const int he) {
           const int vertex = halfedges[he].vertex;
 
-          if (!validVertexIndex(vertex))
+          if (!valid_vertex_index(vertex))
             return;
 
           if (verbose && verticesInFace[faceIndex].count(vertex) != 0) {
@@ -580,7 +651,7 @@ public:
 
         const int face = halfedges[i].face;
 
-        if (!validFaceIndex(face))
+        if (!valid_face_index(face))
           return fail("halfedge references invalid face while checking "
                       "floating halfedges",
                       i);
@@ -604,7 +675,7 @@ public:
 
           // Already validated above, but do not rely on that
           // ordering if this block is later moved.
-          if (!validHalfedgeIndex(next) || !halfedges[next].valid) {
+          if (!valid_halfedge_index(next) || !halfedges[next].valid) {
             return fail("invalid next while checking repeated edges", i);
           }
 
@@ -645,7 +716,7 @@ public:
 
           const int next = halfedges[i].next;
 
-          if (!validHalfedgeIndex(next) || !halfedges[next].valid) {
+          if (!valid_halfedge_index(next) || !halfedges[next].valid) {
             return fail("invalid next while checking twin gaps", i);
           }
 
@@ -1252,22 +1323,6 @@ public:
 
       const int edgeCount = static_cast<int>(edges.size());
 
-      const auto validVertexIndex = [&](const int v) {
-        return v >= 0 && v < vertexCount && vertices[v].valid;
-      };
-
-      const auto validHalfedgeIndex = [&](const int he) {
-        return he >= 0 && he < halfedgeCount && halfedges[he].valid;
-      };
-
-      const auto validFaceIndex = [&](const int f) {
-        return f >= 0 && f < faceCount && faces[f].valid;
-      };
-
-      const auto validEdgeIndex = [&](const int e) {
-        return e >= 0 && e < edgeCount && edges[e].valid;
-      };
-
       const auto logFail = [&](const char *message, const int id = -1) {
         if (verbose) {
           std::cerr << "[Directional::DCEL::RemoveVertex()]: " << message;
@@ -1279,14 +1334,14 @@ public:
         }
       };
 
-      if (!validVertexIndex(vindex)) {
+      if (!valid_vertex_index(vindex)) {
         logFail("invalid vertex index", vindex);
         return false;
       }
 
       const int heBegin = vertices[vindex].halfedge;
 
-      if (!validHalfedgeIndex(heBegin)) {
+      if (!valid_halfedge_index(heBegin)) {
         logFail("vertex references invalid halfedge", heBegin);
         return false;
       }
@@ -1298,7 +1353,7 @@ public:
 
       const int remainingFace = halfedges[heBegin].face;
 
-      if (!validFaceIndex(remainingFace)) {
+      if (!valid_face_index(remainingFace)) {
         logFail("incident halfedge references invalid remaining face",
                 remainingFace);
         return false;
@@ -1320,7 +1375,7 @@ public:
       int he = heBegin;
 
       for (int steps = 0; steps < halfedgeCount; ++steps) {
-        if (!validHalfedgeIndex(he)) {
+        if (!valid_halfedge_index(he)) {
           logFail("invalid halfedge while walking vertex fan", he);
           return false;
         }
@@ -1344,12 +1399,12 @@ public:
         const int next = halfedges[he].next;
         const int twin = halfedges[he].twin;
 
-        if (!validHalfedgeIndex(prev)) {
+        if (!valid_halfedge_index(prev)) {
           logFail("fan halfedge has invalid prev", he);
           return false;
         }
 
-        if (!validHalfedgeIndex(next)) {
+        if (!valid_halfedge_index(next)) {
           logFail("fan halfedge has invalid next", he);
           return false;
         }
@@ -1364,7 +1419,7 @@ public:
           return false;
         }
 
-        if (!validHalfedgeIndex(twin)) {
+        if (!valid_halfedge_index(twin)) {
           logFail("fan halfedge has invalid twin", he);
           return false;
         }
@@ -1376,7 +1431,7 @@ public:
 
         const int prevAcross = halfedges[twin].prev;
 
-        if (!validHalfedgeIndex(prevAcross)) {
+        if (!valid_halfedge_index(prevAcross)) {
           logFail("twin halfedge has invalid prev", twin);
           return false;
         }
@@ -1384,12 +1439,12 @@ public:
         const int nextFace = halfedges[next].face;
         const int prevFace = halfedges[prevAcross].face;
 
-        if (!validFaceIndex(nextFace)) {
+        if (!valid_face_index(nextFace)) {
           logFail("next edge references invalid face", nextFace);
           return false;
         }
 
-        if (!validFaceIndex(prevFace)) {
+        if (!valid_face_index(prevFace)) {
           logFail("previous-across edge references invalid face", prevFace);
           return false;
         }
@@ -1397,12 +1452,12 @@ public:
         const int outgoingEdge = halfedges[he].edge;
         const int twinEdge = halfedges[twin].edge;
 
-        if (!validEdgeIndex(outgoingEdge)) {
+        if (!valid_edge_index(outgoingEdge)) {
           logFail("outgoing halfedge references invalid edge", outgoingEdge);
           return false;
         }
 
-        if (!validEdgeIndex(twinEdge)) {
+        if (!valid_edge_index(twinEdge)) {
           logFail("twin halfedge references invalid edge", twinEdge);
           return false;
         }
@@ -1419,7 +1474,7 @@ public:
           return false;
         }
 
-        if (!validHalfedgeIndex(nextAroundVertex)) {
+        if (!valid_halfedge_index(nextAroundVertex)) {
           logFail("next fan halfedge is invalid", nextAroundVertex);
           return false;
         }
@@ -1442,7 +1497,7 @@ public:
 
       const int newRemainingFaceHalfedge = halfedges[heBegin].next;
 
-      if (!validHalfedgeIndex(newRemainingFaceHalfedge)) {
+      if (!valid_halfedge_index(newRemainingFaceHalfedge)) {
         logFail("new remaining face halfedge is invalid",
                 newRemainingFaceHalfedge);
         return false;
@@ -1506,7 +1561,7 @@ public:
        */
       int current = faces[remainingFace].halfedge;
 
-      if (!validHalfedgeIndex(current)) {
+      if (!valid_halfedge_index(current)) {
         rollback();
         logFail("merged face references invalid halfedge after commit",
                 current);
@@ -1517,7 +1572,7 @@ public:
           static_cast<std::size_t>(halfedgeCount), 0);
 
       for (int steps = 0; steps < halfedgeCount; ++steps) {
-        if (!validHalfedgeIndex(current)) {
+        if (!valid_halfedge_index(current)) {
           rollback();
           logFail("merged face walk reached invalid halfedge", current);
           return false;
@@ -1536,7 +1591,7 @@ public:
 
         const int origin = halfedges[current].vertex;
 
-        if (!validVertexIndex(origin)) {
+        if (!valid_vertex_index(origin)) {
           rollback();
           logFail("merged face contains invalid origin vertex", origin);
           return false;
@@ -1550,7 +1605,7 @@ public:
 
         const int next = halfedges[current].next;
 
-        if (!validHalfedgeIndex(next)) {
+        if (!valid_halfedge_index(next)) {
           rollback();
           logFail("merged face halfedge has invalid next", current);
           return false;
