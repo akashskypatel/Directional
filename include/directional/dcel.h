@@ -1072,6 +1072,65 @@ public:
       return true;
     }
 
+    bool check_compact_storage(const bool verbose = false) const {
+      const auto fail = [&](const char *message, const int index = -1) -> bool {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::check_compact_storage()]: "
+                    << message;
+
+          if (index >= 0) {
+            std::cerr << " (index " << index << ")";
+          }
+
+          std::cerr << '\n';
+        }
+
+        return false;
+      };
+
+      for (int index = 0; index < static_cast<int>(vertices.size()); ++index) {
+        if (!vertices[index].valid) {
+          return fail("invalid vertex remains", index);
+        }
+
+        if (vertices[index].ID != index) {
+          return fail("vertex ID does not equal storage index", index);
+        }
+      }
+
+      for (int index = 0; index < static_cast<int>(halfedges.size()); ++index) {
+        if (!halfedges[index].valid) {
+          return fail("invalid halfedge remains", index);
+        }
+
+        if (halfedges[index].ID != index) {
+          return fail("halfedge ID does not equal storage index", index);
+        }
+      }
+
+      for (int index = 0; index < static_cast<int>(edges.size()); ++index) {
+        if (!edges[index].valid) {
+          return fail("invalid edge remains", index);
+        }
+
+        if (edges[index].ID != index) {
+          return fail("edge ID does not equal storage index", index);
+        }
+      }
+
+      for (int index = 0; index < static_cast<int>(faces.size()); ++index) {
+        if (!faces[index].valid) {
+          return fail("invalid face remains", index);
+        }
+
+        if (faces[index].ID != index) {
+          return fail("face ID does not equal storage index", index);
+        }
+      }
+
+      return true;
+    }
+
     bool check_consistency(const bool verbose,
                            const bool checkHalfedgeRepetition = true,
                            const bool checkTwinGaps = true,
@@ -1479,93 +1538,387 @@ public:
       return true;
     }
 
-    //Only used after having checked for consistency!
-    void clean_mesh() {
-        
-        //Cleaning nonvalid vertices
-        std::vector<int> transVertices(vertices.size());
-        std::vector<Vertex> newVertices;  //TODO: from here
-        //std::vector <Vertex> NewVertices;
-        int counter=0;
-        for (int i = 0; i < vertices.size(); i++) {
-            if (!vertices[i].valid)
-                continue;
-            
-            newVertices.push_back(vertices[i]);
-            newVertices[newVertices.size()-1].ID = newVertices.size()-1;
-            transVertices[i]=newVertices.size()-1;
+    // Only used after having checked for consistency!
+    /**
+     * Compact the DCEL by removing invalid entities and remapping every
+     * surviving reference.
+     *
+     * The operation is transactional:
+     *
+     *   1. Validate the current DCEL.
+     *   2. Build old-to-new translation tables initialized to -1.
+     *   3. Construct a separate compacted DCEL.
+     *   4. Remap and validate every surviving reference.
+     *   5. Run a strict consistency check on the compacted DCEL.
+     *   6. Commit with vector swaps only after every check succeeds.
+     *
+     * On failure the original DCEL remains unchanged.
+     */
+    bool clean_mesh(const bool verbose = false) {
+      const int oldVertexCount = static_cast<int>(vertices.size());
+      const int oldHalfedgeCount = static_cast<int>(halfedges.size());
+      const int oldEdgeCount = static_cast<int>(edges.size());
+      const int oldFaceCount = static_cast<int>(faces.size());
+
+      const auto fail = [&](const std::string &message,
+                            const int index = -1) -> bool {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::clean_mesh()]: " << message;
+
+          if (index >= 0) {
+            std::cerr << " (index " << index << ")";
+          }
+
+          std::cerr << '\n';
         }
-        
-        vertices=newVertices;
-        //updating references to these vertices
-        for (int i=0;i<halfedges.size();i++){
-            halfedges[i].vertex=transVertices[halfedges[i].vertex];
+
+        return false;
+      };
+
+      /*
+       * The current topology must be fully valid before compaction.
+       *
+       * Compaction is not a repair operation. It only removes records that
+       * have already been marked invalid and updates surviving indices.
+       */
+      if (!check_consistency(verbose,
+                             true,  // repeated directed halfedges
+                             true,  // reverse-edge twin gaps
+                             true)) // pure-boundary faces
+      {
+        return fail("pre-compaction consistency check failed");
+      }
+
+      /*
+       * Translation arrays use -1 as the unmapped sentinel.
+       *
+       * This is important: zero is a valid compacted index and must never
+       * serve as an implicit fallback.
+       */
+      std::vector<int> vertexMap(static_cast<std::size_t>(oldVertexCount), -1);
+
+      std::vector<int> halfedgeMap(static_cast<std::size_t>(oldHalfedgeCount),
+                                   -1);
+
+      std::vector<int> edgeMap(static_cast<std::size_t>(oldEdgeCount), -1);
+
+      std::vector<int> faceMap(static_cast<std::size_t>(oldFaceCount), -1);
+
+      int newVertexCount = 0;
+      int newHalfedgeCount = 0;
+      int newEdgeCount = 0;
+      int newFaceCount = 0;
+
+      for (int oldIndex = 0; oldIndex < oldVertexCount; ++oldIndex) {
+        if (vertices[oldIndex].valid) {
+          vertexMap[oldIndex] = newVertexCount++;
         }
-        
-        //Cleaning nonvalid faces
-        std::vector<int> transFaces(faces.size());
-        std::vector<Face> newFaces;
-        for (int i = 0; i < faces.size(); i++) {
-            if (!faces[i].valid)
-                continue;
-            
-            newFaces.push_back(faces[i]);
-            newFaces[newFaces.size()-1].ID = newFaces.size()-1;
-            transFaces[i]=newFaces.size()-1;
+      }
+
+      for (int oldIndex = 0; oldIndex < oldHalfedgeCount; ++oldIndex) {
+        if (halfedges[oldIndex].valid) {
+          halfedgeMap[oldIndex] = newHalfedgeCount++;
         }
-        faces = newFaces;
-        for (int i = 0; i < halfedges.size(); i++)
-            halfedges[i].face = transFaces[halfedges[i].face];
-        
-        //Cleaning nonvalid halfedges
-        std::vector <Halfedge> newHalfedges;
-        std::vector<int> transHalfedges(halfedges.size());
-        for (int i = 0; i < halfedges.size(); i++) {
-            if (!halfedges[i].valid)
-                continue;
-            
-            Halfedge NewHalfedge = halfedges[i];
-            NewHalfedge.ID = newHalfedges.size();
-            newHalfedges.push_back(NewHalfedge);
-            transHalfedges[i] = NewHalfedge.ID;
+      }
+
+      for (int oldIndex = 0; oldIndex < oldEdgeCount; ++oldIndex) {
+        if (edges[oldIndex].valid) {
+          edgeMap[oldIndex] = newEdgeCount++;
         }
-        
-        halfedges = newHalfedges;
-        for (int i = 0; i < faces.size(); i++)
-            faces[i].halfedge = transHalfedges[faces[i].halfedge];
-        
-        for (int i = 0; i < vertices.size(); i++)
-            vertices[i].halfedge = transHalfedges[vertices[i].halfedge];
-        
-        for (int i = 0; i < edges.size(); i++)
-            edges[i].halfedge = transHalfedges[edges[i].halfedge];
-        
-        for (int i = 0; i < halfedges.size(); i++) {
-            if (halfedges[i].twin != -1)
-                halfedges[i].twin = transHalfedges[halfedges[i].twin];
-            halfedges[i].next = transHalfedges[halfedges[i].next];
-            halfedges[i].prev = transHalfedges[halfedges[i].prev];
+      }
+
+      for (int oldIndex = 0; oldIndex < oldFaceCount; ++oldIndex) {
+        if (faces[oldIndex].valid) {
+          faceMap[oldIndex] = newFaceCount++;
         }
-        
-        //cleaing non-valid edges
-        std::vector<int> transEdges(edges.size());
-        std::vector<Edge> newEdges;
-        for (int i = 0; i < edges.size(); i++) {
-            if (!edges[i].valid)
-                continue;
-            
-            newEdges.push_back(edges[i]);
-            newEdges[newEdges.size()-1].ID = newEdges.size()-1;
-            transEdges[i]=newEdges.size()-1;
+      }
+
+      /*
+       * Build a separate candidate DCEL. The live topology is not changed
+       * until this candidate has passed strict validation.
+       */
+      DCEL compacted;
+
+      compacted.vertices.reserve(static_cast<std::size_t>(newVertexCount));
+
+      compacted.halfedges.reserve(static_cast<std::size_t>(newHalfedgeCount));
+
+      compacted.edges.reserve(static_cast<std::size_t>(newEdgeCount));
+
+      compacted.faces.reserve(static_cast<std::size_t>(newFaceCount));
+
+      /*
+       * Copy surviving records first. References are remapped in a separate
+       * phase so that all translation tables are already complete.
+       */
+      for (int oldIndex = 0; oldIndex < oldVertexCount; ++oldIndex) {
+        if (vertexMap[oldIndex] < 0) {
+          continue;
         }
-        
-        edges=newEdges;
-        //updating references to these vertices
-        for (int i=0;i<halfedges.size();i++){
-            halfedges[i].edge=transEdges[halfedges[i].edge];
+
+        Vertex vertex = vertices[oldIndex];
+        vertex.ID = vertexMap[oldIndex];
+        vertex.valid = true;
+
+        compacted.vertices.push_back(std::move(vertex));
+      }
+
+      for (int oldIndex = 0; oldIndex < oldHalfedgeCount; ++oldIndex) {
+        if (halfedgeMap[oldIndex] < 0) {
+          continue;
         }
+
+        Halfedge halfedge = halfedges[oldIndex];
+        halfedge.ID = halfedgeMap[oldIndex];
+        halfedge.valid = true;
+
+        compacted.halfedges.push_back(std::move(halfedge));
+      }
+
+      for (int oldIndex = 0; oldIndex < oldEdgeCount; ++oldIndex) {
+        if (edgeMap[oldIndex] < 0) {
+          continue;
+        }
+
+        Edge edge = edges[oldIndex];
+        edge.ID = edgeMap[oldIndex];
+        edge.valid = true;
+
+        compacted.edges.push_back(std::move(edge));
+      }
+
+      for (int oldIndex = 0; oldIndex < oldFaceCount; ++oldIndex) {
+        if (faceMap[oldIndex] < 0) {
+          continue;
+        }
+
+        Face face = faces[oldIndex];
+        face.ID = faceMap[oldIndex];
+        face.valid = true;
+
+        compacted.faces.push_back(std::move(face));
+      }
+
+      const auto mappedVertex = [&](const int oldIndex, const char *context,
+                                    const int owner) -> int {
+        if (!valid_vertex_index(oldIndex) || vertexMap[oldIndex] < 0) {
+          if (verbose) {
+            std::cerr << "[Directional::DCEL::clean_mesh()]: " << context
+                      << " references an invalid or removed vertex " << oldIndex
+                      << " (owner " << owner << ")\n";
+          }
+
+          return -1;
+        }
+
+        return vertexMap[oldIndex];
+      };
+
+      const auto mappedHalfedge = [&](const int oldIndex, const char *context,
+                                      const int owner) -> int {
+        if (!valid_halfedge_index(oldIndex) || halfedgeMap[oldIndex] < 0) {
+          if (verbose) {
+            std::cerr << "[Directional::DCEL::clean_mesh()]: " << context
+                      << " references an invalid or removed halfedge "
+                      << oldIndex << " (owner " << owner << ")\n";
+          }
+
+          return -1;
+        }
+
+        return halfedgeMap[oldIndex];
+      };
+
+      const auto mappedEdge = [&](const int oldIndex, const char *context,
+                                  const int owner) -> int {
+        if (!valid_edge_index(oldIndex) || edgeMap[oldIndex] < 0) {
+          if (verbose) {
+            std::cerr << "[Directional::DCEL::clean_mesh()]: " << context
+                      << " references an invalid or removed edge " << oldIndex
+                      << " (owner " << owner << ")\n";
+          }
+
+          return -1;
+        }
+
+        return edgeMap[oldIndex];
+      };
+
+      const auto mappedFace = [&](const int oldIndex, const char *context,
+                                  const int owner) -> int {
+        if (!valid_face_index(oldIndex) || faceMap[oldIndex] < 0) {
+          if (verbose) {
+            std::cerr << "[Directional::DCEL::clean_mesh()]: " << context
+                      << " references an invalid or removed face " << oldIndex
+                      << " (owner " << owner << ")\n";
+          }
+
+          return -1;
+        }
+
+        return faceMap[oldIndex];
+      };
+
+      /*
+       * Remap vertex representatives.
+       */
+      for (int oldIndex = 0; oldIndex < oldVertexCount; ++oldIndex) {
+        const int newIndex = vertexMap[oldIndex];
+
+        if (newIndex < 0) {
+          continue;
+        }
+
+        const int newHalfedge = mappedHalfedge(
+            vertices[oldIndex].halfedge, "vertex representative", oldIndex);
+
+        if (newHalfedge < 0) {
+          return false;
+        }
+
+        compacted.vertices[newIndex].halfedge = newHalfedge;
+      }
+
+      /*
+       * Remap face representatives.
+       */
+      for (int oldIndex = 0; oldIndex < oldFaceCount; ++oldIndex) {
+        const int newIndex = faceMap[oldIndex];
+
+        if (newIndex < 0) {
+          continue;
+        }
+
+        const int newHalfedge = mappedHalfedge(faces[oldIndex].halfedge,
+                                               "face representative", oldIndex);
+
+        if (newHalfedge < 0) {
+          return false;
+        }
+
+        compacted.faces[newIndex].halfedge = newHalfedge;
+      }
+
+      /*
+       * Remap edge representatives.
+       */
+      for (int oldIndex = 0; oldIndex < oldEdgeCount; ++oldIndex) {
+        const int newIndex = edgeMap[oldIndex];
+
+        if (newIndex < 0) {
+          continue;
+        }
+
+        const int newHalfedge = mappedHalfedge(edges[oldIndex].halfedge,
+                                               "edge representative", oldIndex);
+
+        if (newHalfedge < 0) {
+          return false;
+        }
+
+        compacted.edges[newIndex].halfedge = newHalfedge;
+      }
+
+      /*
+       * Remap every surviving halfedge reference.
+       */
+      for (int oldIndex = 0; oldIndex < oldHalfedgeCount; ++oldIndex) {
+        const int newIndex = halfedgeMap[oldIndex];
+
+        if (newIndex < 0) {
+          continue;
+        }
+
+        const Halfedge &oldHalfedge = halfedges[oldIndex];
+        Halfedge &newHalfedge = compacted.halfedges[newIndex];
+
+        const int vertex =
+            mappedVertex(oldHalfedge.vertex, "halfedge origin", oldIndex);
+
+        const int face =
+            mappedFace(oldHalfedge.face, "halfedge face", oldIndex);
+
+        const int edge =
+            mappedEdge(oldHalfedge.edge, "halfedge edge", oldIndex);
+
+        const int next =
+            mappedHalfedge(oldHalfedge.next, "halfedge next", oldIndex);
+
+        const int prev =
+            mappedHalfedge(oldHalfedge.prev, "halfedge prev", oldIndex);
+
+        if (vertex < 0 || face < 0 || edge < 0 || next < 0 || prev < 0) {
+          return false;
+        }
+
+        int twin = -1;
+
+        if (oldHalfedge.twin >= 0) {
+          twin = mappedHalfedge(oldHalfedge.twin, "halfedge twin", oldIndex);
+
+          if (twin < 0) {
+            return false;
+          }
+        } else if (oldHalfedge.twin != -1) {
+          return fail("surviving halfedge has invalid negative twin", oldIndex);
+        }
+
+        newHalfedge.vertex = vertex;
+        newHalfedge.face = face;
+        newHalfedge.edge = edge;
+        newHalfedge.next = next;
+        newHalfedge.prev = prev;
+        newHalfedge.twin = twin;
+      }
+
+      /*
+       * Rebuild representatives from the compacted halfedges instead of
+       * trusting that copied representative choices remain ideal.
+       *
+       * false means that an isolated valid vertex is treated as an error,
+       * not silently invalidated after the translation maps were finalized.
+       */
+      if (!compacted.rebuild_representative_halfedges(verbose, false)) {
+        return fail("failed to rebuild compacted representative "
+                    "halfedges");
+      }
+
+      /*
+       * Validate IDs and validity flags explicitly. check_consistency()
+       * verifies topology, but IDs are an additional storage invariant.
+       */
+      if (!compacted.check_compact_storage(verbose)) {
+        return fail("candidate storage is not compact");
+      }
+
+      /*
+       * Strict post-compaction validation occurs before commit.
+       */
+      if (!compacted.check_consistency(verbose, true, true, true)) {
+        return fail("compacted candidate failed consistency check");
+      }
+
+      /*
+       * Commit. Vector swaps are effectively non-throwing for standard
+       * allocators and leave no partially compacted live DCEL.
+       */
+      vertices.swap(compacted.vertices);
+      halfedges.swap(compacted.halfedges);
+      edges.swap(compacted.edges);
+      faces.swap(compacted.faces);
+
+      if (verbose) {
+        std::cout << "[Directional::DCEL::clean_mesh()]: "
+                  << "vertices " << oldVertexCount << " -> " << vertices.size()
+                  << ", halfedges " << oldHalfedgeCount << " -> "
+                  << halfedges.size() << ", edges " << oldEdgeCount << " -> "
+                  << edges.size() << ", faces " << oldFaceCount << " -> "
+                  << faces.size() << '\n';
+      }
+
+      return true;
     }
-    
+
     void ComputeTwins() {
         //twinning up edges
         std::set <TwinFinder> Twinning;

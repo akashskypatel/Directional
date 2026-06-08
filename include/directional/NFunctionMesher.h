@@ -9,6 +9,7 @@
 #include <Eigen/Sparse>
 #include <algorithm>
 #include <chrono>
+#include <cstdint>
 #include <directional/dcel.h>
 #include <directional/exact_geometric_definitions.h>
 #include <directional/setup_mesher.h>
@@ -110,6 +111,281 @@ public:
     }
   };
 
+  static constexpr std::size_t kVertexMatchWarnPairs = 100'000;
+  static constexpr std::size_t kVertexMatchGreedyPairLimit = 250'000;
+  static constexpr std::size_t kVertexMatchMaxDpCells = 20'000'000;
+  static constexpr std::size_t kVertexMatchInitialBand = 64;
+  static constexpr std::size_t kVertexMatchMaxBand = 4096;
+
+  static bool exact_point_equal(const EVector3 &a, const EVector3 &b) {
+    return (a - b).max_abs() == ENumber(0);
+  }
+
+  static double vertex_match_cost(const EVector3 &a, const EVector3 &b) {
+    return (a - b).max_abs().to_double();
+  }
+
+  std::vector<std::pair<int, int>>
+  FindVertexMatchGreedyExact(const bool verbose,
+                             const std::vector<EVector3> &Set1,
+                             const std::vector<EVector3> &Set2) {
+    using Clock = std::chrono::steady_clock;
+    const auto startTime = Clock::now();
+    const std::size_t pointCount = Set1.size();
+    const std::size_t candidatePairCount = pointCount * pointCount;
+
+    if (candidatePairCount >= kVertexMatchWarnPairs) {
+      std::cerr << "[Directional::NFunctionMesher::"
+                   "FindVertexMatchGreedyExact()]: generating "
+                << candidatePairCount << " exact candidate pairs from "
+                << pointCount << " x " << pointCount << " boundary vertices"
+                << std::endl;
+    }
+
+    std::set<PointPair> PairSet;
+    for (std::size_t i = 0; i < pointCount; ++i) {
+      for (std::size_t j = 0; j < pointCount; ++j) {
+        PairSet.insert(PointPair(static_cast<int>(i), static_cast<int>(j),
+                                 Set1[i] - Set2[j]));
+      }
+
+      if (verbose && pointCount >= 1000) {
+        const std::size_t step = std::max<std::size_t>(1, pointCount / 10);
+        if (i == 0 || i + 1 == pointCount || (i + 1) % step == 0) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "FindVertexMatchGreedyExact()]: candidate rows "
+                    << (i + 1) << "/" << pointCount << std::endl;
+        }
+      }
+    }
+
+    std::vector<bool> Set1Connect(pointCount, false);
+    std::vector<bool> Set2Connect(pointCount, false);
+    std::vector<std::pair<int, int>> Result;
+    Result.reserve(pointCount);
+
+    Result.emplace_back(0, 0);
+    Set1Connect[0] = true;
+    Set2Connect[0] = true;
+
+    if (pointCount > 1) {
+      const int last = static_cast<int>(pointCount - 1);
+      Result.emplace_back(last, last);
+      Set1Connect[last] = true;
+      Set2Connect[last] = true;
+    }
+
+    std::size_t processed = 0;
+    const std::size_t progressStep =
+        std::max<std::size_t>(1, candidatePairCount / 10);
+
+    for (const PointPair &currentPair : PairSet) {
+      ++processed;
+      if (verbose && candidatePairCount >= kVertexMatchWarnPairs &&
+          (processed == 1 || processed == candidatePairCount ||
+           processed % progressStep == 0)) {
+        std::cout << "[Directional::NFunctionMesher::"
+                     "FindVertexMatchGreedyExact()]: candidates "
+                  << processed << "/" << candidatePairCount << std::endl;
+      }
+
+      if (Set1Connect[currentPair.Index1] && Set2Connect[currentPair.Index2])
+        continue;
+
+      bool foundConflict = false;
+      for (const auto &match : Result) {
+        const bool crossesForward = match.first > currentPair.Index1 &&
+                                    match.second < currentPair.Index2;
+        const bool crossesBackward = match.first < currentPair.Index1 &&
+                                     match.second > currentPair.Index2;
+        if (crossesForward || crossesBackward) {
+          foundConflict = true;
+          break;
+        }
+      }
+
+      if (foundConflict)
+        continue;
+
+      Result.emplace_back(currentPair.Index1, currentPair.Index2);
+      Set1Connect[currentPair.Index1] = true;
+      Set2Connect[currentPair.Index2] = true;
+    }
+
+    if (verbose) {
+      const double seconds =
+          std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                                startTime)
+              .count() /
+          1e6;
+      std::cout << "[Directional::NFunctionMesher::"
+                   "FindVertexMatchGreedyExact()]: completed in "
+                << seconds << " s" << std::endl;
+    }
+
+    return Result;
+  }
+
+  struct BandedMatchResult {
+    bool success = false;
+    bool touchedBandBoundary = false;
+    std::size_t visitedCells = 0;
+    std::vector<std::pair<int, int>> matches;
+  };
+
+  BandedMatchResult FindVertexMatchBanded(const bool verbose,
+                                          const std::vector<EVector3> &Set1,
+                                          const std::vector<EVector3> &Set2,
+                                          const std::size_t band) {
+    using Clock = std::chrono::steady_clock;
+    const auto startTime = Clock::now();
+    const std::size_t n = Set1.size();
+    const double infinity = std::numeric_limits<double>::infinity();
+
+    BandedMatchResult output;
+    if (n == 0) {
+      output.success = true;
+      return output;
+    }
+
+    struct PredRow {
+      std::size_t begin = 0;
+      std::vector<std::uint8_t> direction;
+    };
+
+    // 1 = diagonal, 2 = up, 3 = left, 4 = start.
+    std::vector<PredRow> predecessors(n);
+    std::vector<double> previousCosts;
+    std::size_t previousBegin = 0;
+
+    const std::size_t rowWidth = std::min<std::size_t>(n, 2 * band + 1);
+    if (rowWidth != 0 && n > kVertexMatchMaxDpCells / rowWidth) {
+      return output;
+    }
+    const std::size_t estimatedCells = n * rowWidth;
+    if (estimatedCells > kVertexMatchMaxDpCells) {
+      return output;
+    }
+
+    for (std::size_t i = 0; i < n; ++i) {
+      const std::size_t begin = i > band ? i - band : 0;
+      const std::size_t end = std::min<std::size_t>(n - 1, i + band);
+      const std::size_t width = end - begin + 1;
+
+      predecessors[i].begin = begin;
+      predecessors[i].direction.assign(width, 0);
+      std::vector<double> currentCosts(width, infinity);
+
+      for (std::size_t j = begin; j <= end; ++j) {
+        ++output.visitedCells;
+        const std::size_t local = j - begin;
+        const double localCost = vertex_match_cost(Set1[i], Set2[j]);
+
+        if (i == 0 && j == 0) {
+          currentCosts[local] = localCost;
+          predecessors[i].direction[local] = 4;
+          continue;
+        }
+
+        double best = infinity;
+        std::uint8_t direction = 0;
+
+        // Prefer diagonal on ties, then up, then left. This minimizes
+        // unnecessary one-to-many matches when costs are equal.
+        if (i > 0 && j > 0 && j - 1 >= previousBegin &&
+            j - 1 < previousBegin + previousCosts.size()) {
+          best = previousCosts[j - 1 - previousBegin];
+          direction = 1;
+        }
+
+        if (i > 0 && j >= previousBegin &&
+            j < previousBegin + previousCosts.size()) {
+          const double candidate = previousCosts[j - previousBegin];
+          if (candidate < best) {
+            best = candidate;
+            direction = 2;
+          }
+        }
+
+        if (j > begin && currentCosts[local - 1] < best) {
+          best = currentCosts[local - 1];
+          direction = 3;
+        }
+
+        if (direction != 0 && std::isfinite(best)) {
+          currentCosts[local] = best + localCost;
+          predecessors[i].direction[local] = direction;
+        }
+      }
+
+      previousCosts.swap(currentCosts);
+      previousBegin = begin;
+
+      if (verbose && n >= 1000) {
+        const std::size_t step = std::max<std::size_t>(1, n / 10);
+        if (i == 0 || i + 1 == n || (i + 1) % step == 0) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "FindVertexMatchBanded()]: rows "
+                    << (i + 1) << "/" << n << ", band " << band << std::endl;
+        }
+      }
+    }
+
+    if (n - 1 < previousBegin ||
+        n - 1 >= previousBegin + previousCosts.size() ||
+        !std::isfinite(previousCosts[n - 1 - previousBegin])) {
+      return output;
+    }
+
+    std::size_t i = n - 1;
+    std::size_t j = n - 1;
+    output.matches.reserve(2 * n);
+
+    while (true) {
+      output.matches.emplace_back(static_cast<int>(i), static_cast<int>(j));
+      if (band > 0 && (i > j ? i - j : j - i) == band)
+        output.touchedBandBoundary = true;
+
+      const PredRow &row = predecessors[i];
+      if (j < row.begin || j >= row.begin + row.direction.size()) {
+        output.matches.clear();
+        return output;
+      }
+
+      const std::uint8_t direction = row.direction[j - row.begin];
+      if (direction == 4)
+        break;
+      if (direction == 1) {
+        --i;
+        --j;
+      } else if (direction == 2) {
+        --i;
+      } else if (direction == 3) {
+        --j;
+      } else {
+        output.matches.clear();
+        return output;
+      }
+    }
+
+    std::reverse(output.matches.begin(), output.matches.end());
+    output.success = true;
+
+    if (verbose) {
+      const double seconds =
+          std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                                startTime)
+              .count() /
+          1e6;
+      std::cout << "[Directional::NFunctionMesher::"
+                   "FindVertexMatchBanded()]: visited "
+                << output.visitedCells << " cells with band " << band << " in "
+                << seconds << " s" << std::endl;
+    }
+
+    return output;
+  }
+
   std::vector<std::pair<int, int>>
   FindVertexMatch(const bool verbose, const std::vector<EVector3> &Set1,
                   const std::vector<EVector3> &Set2) {
@@ -119,161 +395,89 @@ public:
           "the two point sets must have equal sizes");
     }
 
-    // An empty strip is valid and has no vertex correspondences.
-    if (Set1.empty()) {
-      if (verbose) {
-        std::cout << "[Directional::NFunctionMesher::FindVertexMatch()]: "
-                  << "both point sets are empty; returning no matches"
-                  << std::endl;
-      }
-
+    if (Set1.empty())
       return {};
-    }
 
     const std::size_t pointCount = Set1.size();
 
-    /*
-     * Build candidate pairs only after validating both inputs.
-     */
-    std::set<PointPair> PairSet;
+    // Most paired boundary strips already have the same ordered sampling.
+    // Detect that common case in linear time and avoid any candidate search.
+    bool identityMatch = true;
+    for (std::size_t i = 0; i < pointCount; ++i) {
+      if (!exact_point_equal(Set1[i], Set2[i])) {
+        identityMatch = false;
+        break;
+      }
+    }
 
-    constexpr std::size_t warnPairCount = 1'000'000;
-    constexpr std::size_t severePairCount = 10'000'000;
+    if (identityMatch) {
+      std::vector<std::pair<int, int>> result;
+      result.reserve(pointCount);
+      for (std::size_t i = 0; i < pointCount; ++i)
+        result.emplace_back(static_cast<int>(i), static_cast<int>(i));
 
-    const bool wouldOverflow =
-        pointCount != 0 &&
-        pointCount > std::numeric_limits<std::size_t>::max() / pointCount;
+      return result;
+    }
 
-    if (wouldOverflow) {
+    if (pointCount > 0 &&
+        pointCount > std::numeric_limits<std::size_t>::max() / pointCount) {
       throw std::overflow_error(
           "Directional::NFunctionMesher::FindVertexMatch(): "
           "candidate pair count overflows size_t");
     }
 
     const std::size_t candidatePairCount = pointCount * pointCount;
+    if (candidatePairCount <= kVertexMatchGreedyPairLimit)
+      return FindVertexMatchGreedyExact(verbose, Set1, Set2);
 
-    if (verbose && candidatePairCount >= warnPairCount) {
+    std::cerr << "[Directional::NFunctionMesher::FindVertexMatch()]: "
+              << "switching from exact all-pairs matching to bounded "
+                 "order-preserving matching for "
+              << pointCount << " vertices (" << candidatePairCount
+              << " all-pairs candidates avoided)" << std::endl;
+
+    const std::size_t maxBand =
+        std::min<std::size_t>(pointCount - 1, kVertexMatchMaxBand);
+    std::size_t band = std::min<std::size_t>(
+        maxBand,
+        std::max<std::size_t>(kVertexMatchInitialBand, pointCount / 100));
+
+    while (true) {
+      const std::size_t rowWidth =
+          std::min<std::size_t>(pointCount, 2 * band + 1);
+      if (rowWidth != 0 && pointCount > kVertexMatchMaxDpCells / rowWidth) {
+        throw std::runtime_error(
+            "Directional::NFunctionMesher::FindVertexMatch(): "
+            "bounded matching would overflow or exceed the configured DP "
+            "work budget");
+      }
+      const std::size_t estimatedCells = pointCount * rowWidth;
+      if (estimatedCells > kVertexMatchMaxDpCells) {
+        throw std::runtime_error(
+            "Directional::NFunctionMesher::FindVertexMatch(): "
+            "bounded matching would exceed the configured DP work budget");
+      }
+
+      BandedMatchResult result =
+          FindVertexMatchBanded(verbose, Set1, Set2, band);
+      if (!result.success) {
+        throw std::runtime_error(
+            "Directional::NFunctionMesher::FindVertexMatch(): "
+            "bounded order-preserving matching failed");
+      }
+
+      if (!result.touchedBandBoundary || band == maxBand)
+        return result.matches;
+
+      const std::size_t nextBand = std::min<std::size_t>(maxBand, 2 * band);
+      if (nextBand == band)
+        return result.matches;
+
       std::cerr << "[Directional::NFunctionMesher::FindVertexMatch()]: "
-                << "warning: generating " << candidatePairCount
-                << " candidate pairs from " << pointCount << " x " << pointCount
-                << " boundary vertices. "
-                << "This is O(n^2) and may appear hung." << std::endl;
+                << "optimal path touched band boundary; retrying with band "
+                << nextBand << std::endl;
+      band = nextBand;
     }
-
-    if (verbose && candidatePairCount >= severePairCount) {
-      std::cerr << "[Directional::NFunctionMesher::FindVertexMatch()]: "
-                << "severe warning: this allocation/sort may be very slow or "
-                   "memory-heavy."
-                << std::endl;
-    }
-
-    for (std::size_t i = 0; i < pointCount; ++i) {
-      for (std::size_t j = 0; j < pointCount; ++j) {
-        PairSet.insert(PointPair(static_cast<int>(i), static_cast<int>(j),
-                                 Set1[i] - Set2[j]));
-      }
-    }
-
-    std::vector<bool> Set1Connect(pointCount, false);
-    std::vector<bool> Set2Connect(pointCount, false);
-
-    std::vector<std::pair<int, int>> Result;
-    Result.reserve(pointCount);
-
-    /*
-     * Categorically match both ends.
-     *
-     * For a one-point strip, the first and last endpoints are the
-     * same and must only be inserted once.
-     */
-    Result.emplace_back(0, 0);
-    Set1Connect[0] = true;
-    Set2Connect[0] = true;
-
-    if (pointCount > 1) {
-      const int last = static_cast<int>(pointCount - 1);
-
-      Result.emplace_back(last, last);
-      Set1Connect[last] = true;
-      Set2Connect[last] = true;
-    }
-
-    /*
-     * Add legal connections greedily in ascending squared-distance
-     * order while preserving monotonic ordering along both strips.
-     */
-    for (const PointPair &currentPair : PairSet) {
-      /*
-       * If both points are already represented, this pair adds
-       * nothing. One-to-many mappings remain allowed by the
-       * original algorithm.
-       */
-      if (Set1Connect[currentPair.Index1] && Set2Connect[currentPair.Index2]) {
-        continue;
-      }
-
-      bool foundConflict = false;
-
-      for (const auto &match : Result) {
-        const bool crossesForward = match.first > currentPair.Index1 &&
-                                    match.second < currentPair.Index2;
-
-        const bool crossesBackward = match.first < currentPair.Index1 &&
-                                     match.second > currentPair.Index2;
-
-        if (crossesForward || crossesBackward) {
-          foundConflict = true;
-          break;
-        }
-      }
-
-      if (foundConflict) {
-        continue;
-      }
-
-      Result.emplace_back(currentPair.Index1, currentPair.Index2);
-
-      Set1Connect[currentPair.Index1] = true;
-      Set2Connect[currentPair.Index2] = true;
-    }
-
-    if (verbose) {
-      for (std::size_t i = 0; i < pointCount; ++i) {
-        if (!Set1Connect[i]) {
-          std::cout << "[Directional::NFunctionMesher::"
-                       "FindVertexMatch()]: "
-                    << "Relative Vertex " << i << " in Set1 is unmatched!"
-                    << std::endl;
-        }
-      }
-
-      for (std::size_t i = 0; i < pointCount; ++i) {
-        if (!Set2Connect[i]) {
-          std::cout << "[Directional::NFunctionMesher::"
-                       "FindVertexMatch()]: "
-                    << "Relative Vertex " << i << " in Set2 is unmatched!"
-                    << std::endl;
-        }
-      }
-
-      for (const auto &match : Result) {
-        const ENumber distance =
-            squaredDistance(Set1[match.first], Set2[match.second]);
-
-        if (distance > ENumber(0)) {
-          std::cout << "[Directional::NFunctionMesher::"
-                       "FindVertexMatch()]: "
-                    << "(" << match.first << "," << match.second
-                    << ") with dist " << distance.to_double() << std::endl;
-
-          std::cout << "[Directional::NFunctionMesher::"
-                       "FindVertexMatch()]: "
-                    << "Distance is abnormally not zero!" << std::endl;
-        }
-      }
-    }
-
-    return Result;
   }
 
   struct SimplifyScratch {
@@ -772,7 +976,7 @@ public:
     }
   }
 
-  void build_vertex_matches(SimplifyScratch &scratch) {
+  bool build_vertex_matches(SimplifyScratch &scratch) {
     scratch.vertexMatches.clear();
     for (int i = 0; i < scratch.maxOrigHE + 1; i++) {
       log_progress("vertex match build", i, scratch.maxOrigHE + 1);
@@ -785,8 +989,18 @@ public:
         PointSet2[j] = genDcel.vertices[scratch.vertexSets2[i][j]].data.eCoords;
 
       std::vector<std::pair<int, int>> CurrMatches;
-      if ((!PointSet1.empty()) && (!PointSet2.empty()))
-        CurrMatches = FindVertexMatch(mData.verbose, PointSet1, PointSet2);
+      if ((!PointSet1.empty()) && (!PointSet2.empty())) {
+        try {
+          CurrMatches = FindVertexMatch(mData.verbose, PointSet1, PointSet2);
+        } catch (const std::exception &error) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "build_vertex_matches()]: failed for original "
+                       "halfedge "
+                    << i << " with strip sizes " << PointSet1.size() << " and "
+                    << PointSet2.size() << ": " << error.what() << std::endl;
+          return false;
+        }
+      }
 
       for (int j = 0; j < CurrMatches.size(); j++) {
         CurrMatches[j].first = scratch.vertexSets1[i][CurrMatches[j].first];
@@ -796,6 +1010,7 @@ public:
       scratch.vertexMatches.insert(scratch.vertexMatches.end(),
                                    CurrMatches.begin(), CurrMatches.end());
     }
+    return true;
   }
 
   double scan_vertex_match_distance(const SimplifyScratch &scratch) const {
@@ -1717,8 +1932,11 @@ public:
 
   bool prune_low_quality_faces_and_count_valence(SimplifyScratch &scratch) {
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
+
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+
     const int edgeCount = static_cast<int>(genDcel.edges.size());
+
     const int faceCount = static_cast<int>(genDcel.faces.size());
 
     /*
@@ -1738,8 +1956,9 @@ public:
                      "prune_low_quality_faces_and_count_valence()]: "
                   << message;
 
-        if (index >= 0)
+        if (index >= 0) {
           std::cerr << " (index " << index << ")";
+        }
 
         std::cerr << std::endl;
       }
@@ -1782,19 +2001,21 @@ public:
     /*
      * Safely collect one complete face cycle.
      *
-     * This does not mutate the DCEL.
+     * This function performs no topology mutation.
      */
     const auto collectFaceCycle = [&](const int faceIndex,
                                       std::vector<int> &cycle) -> bool {
       cycle.clear();
 
-      if (!validFace(faceIndex))
+      if (!validFace(faceIndex)) {
         return false;
+      }
 
       const int start = genDcel.faces[faceIndex].halfedge;
 
-      if (!validHalfedge(start))
+      if (!validHalfedge(start)) {
         return false;
+      }
 
       std::vector<unsigned char> visited(
           static_cast<std::size_t>(halfedgeCount),
@@ -1803,80 +2024,85 @@ public:
       int current = start;
 
       for (int step = 0; step < halfedgeCount; ++step) {
-        if (!validHalfedge(current))
+        if (!validHalfedge(current)) {
           return false;
+        }
 
         if (visited[current]) {
           /*
-           * Returning to the original halfedge is valid.
-           * Any other repetition is a malformed subcycle.
+           * Returning to the original halfedge is valid. Repeating any
+           * other halfedge indicates a malformed subcycle.
            */
           return current == start && !cycle.empty();
         }
 
         const auto &halfedge = genDcel.halfedges[current];
 
-        if (halfedge.face != faceIndex)
+        if (halfedge.face != faceIndex) {
           return false;
+        }
 
-        visited[current] = 1;
+        visited[current] = static_cast<unsigned char>(1);
+
         cycle.push_back(current);
 
         const int next = halfedge.next;
 
-        if (!validHalfedge(next))
+        if (!validHalfedge(next)) {
           return false;
+        }
 
-        if (genDcel.halfedges[next].prev != current)
+        if (genDcel.halfedges[next].prev != current) {
           return false;
+        }
 
         current = next;
 
-        if (current == start)
+        if (current == start) {
           return true;
+        }
       }
 
       return false;
     };
 
     /*
-     * Count valence using the original pre-pruning topology.
+     * Compute valence from the current topology.
      *
-     * This preserves the original face-quality decision rule:
-     * a face is retained when it contains at least three corners whose
-     * vertices have valence greater than two.
+     * On a boundary halfedge, count the target vertex in addition to the
+     * origin vertex. This preserves the behavior of the original code.
      */
     const auto computeCurrentValences =
         [&](std::vector<int> &valences) -> bool {
       valences.assign(static_cast<std::size_t>(vertexCount), 0);
 
       for (int he = 0; he < halfedgeCount; ++he) {
-        if (!genDcel.halfedges[he].valid)
+        if (!genDcel.halfedges[he].valid) {
           continue;
+        }
 
         const auto &halfedge = genDcel.halfedges[he];
 
         const int origin = halfedge.vertex;
 
-        if (!validVertex(origin))
+        if (!validVertex(origin)) {
           return false;
+        }
 
         ++valences[origin];
 
-        /*
-         * On a boundary edge, also count the target vertex. This
-         * preserves the behavior of the original implementation.
-         */
         if (halfedge.twin < 0) {
           const int next = halfedge.next;
 
-          if (!validHalfedge(next))
+          if (!validHalfedge(next)) {
             return false;
+          }
 
           const int target = genDcel.halfedges[next].vertex;
 
-          if (!validVertex(target))
+          if (!validVertex(target)) {
             return false;
+          }
 
           ++valences[target];
         }
@@ -1898,16 +2124,17 @@ public:
 
     /*
      * ------------------------------------------------------------------
-     * Phase 2: safely collect every valid face cycle and decide which
-     * faces must be removed.
+     * Phase 2: collect every valid face cycle and decide which faces
+     * should be removed.
      *
-     * No topology is mutated during this phase.
+     * No topology is changed during this phase.
      * ------------------------------------------------------------------
      */
     std::vector<int> facesToRemove;
     std::vector<std::vector<int>> removalCycles;
 
     facesToRemove.reserve(static_cast<std::size_t>(faceCount));
+
     removalCycles.reserve(static_cast<std::size_t>(faceCount));
 
     std::vector<unsigned char> halfedgeScheduledForRemoval(
@@ -1918,8 +2145,9 @@ public:
     for (int face = 0; face < faceCount; ++face) {
       log_progress("low-quality face scan", face, faceCount);
 
-      if (!genDcel.faces[face].valid)
+      if (!genDcel.faces[face].valid) {
         continue;
+      }
 
       if (!collectFaceCycle(face, cycle)) {
         return fail("failed to collect a valid closed face cycle", face);
@@ -1938,23 +2166,29 @@ public:
           return fail("face cycle references an invalid vertex", he);
         }
 
-        if (prePruneValences[vertex] > 2)
+        if (prePruneValences[vertex] > 2) {
           ++highValenceCornerCount;
+        }
       }
 
-      if (highValenceCornerCount >= 3)
+      /*
+       * Preserve faces containing at least three high-valence corners.
+       */
+      if (highValenceCornerCount >= 3) {
         continue;
+      }
 
       /*
-       * A valid halfedge must not appear in two different face cycles.
+       * A valid halfedge must not occur in more than one face cycle.
        */
       for (const int he : cycle) {
         if (halfedgeScheduledForRemoval[he]) {
-          return fail("halfedge occurs in more than one face-removal cycle",
+          return fail("halfedge occurs in more than one "
+                      "face-removal cycle",
                       he);
         }
 
-        halfedgeScheduledForRemoval[he] = 1;
+        halfedgeScheduledForRemoval[he] = static_cast<unsigned char>(1);
       }
 
       facesToRemove.push_back(face);
@@ -1963,8 +2197,7 @@ public:
 
     /*
      * ------------------------------------------------------------------
-     * Phase 3: validate all edge and twin relations before changing any
-     * topology.
+     * Phase 3: validate all scheduled removals before changing topology.
      * ------------------------------------------------------------------
      */
     for (std::size_t removalIndex = 0; removalIndex < removalCycles.size();
@@ -1996,12 +2229,14 @@ public:
         }
 
         if (genDcel.halfedges[halfedge.prev].next != he) {
-          return fail("scheduled halfedge prev.next relation is inconsistent",
+          return fail("scheduled halfedge prev.next relation "
+                      "is inconsistent",
                       he);
         }
 
         if (genDcel.halfedges[halfedge.next].prev != he) {
-          return fail("scheduled halfedge next.prev relation is inconsistent",
+          return fail("scheduled halfedge next.prev relation "
+                      "is inconsistent",
                       he);
         }
 
@@ -2036,52 +2271,82 @@ public:
     }
 
     /*
+     * Optional pre-mutation edge ownership validation.
+     *
+     * Every manifold edge may have at most two valid halfedge users.
+     */
+    {
+      std::vector<int> validUsersPerEdge(static_cast<std::size_t>(edgeCount),
+                                         0);
+
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!genDcel.halfedges[he].valid) {
+          continue;
+        }
+
+        const int edge = genDcel.halfedges[he].edge;
+
+        if (!validEdgeIndex(edge)) {
+          return fail("valid halfedge references an out-of-range edge", he);
+        }
+
+        ++validUsersPerEdge[edge];
+
+        if (validUsersPerEdge[edge] > 2) {
+          return fail("edge is referenced by more than two "
+                      "valid halfedges before pruning",
+                      edge);
+        }
+      }
+    }
+
+    /*
      * ------------------------------------------------------------------
-     * Phase 4: commit all removals.
+     * Phase 4: invalidate all scheduled faces and halfedges.
      *
-     * For every removed halfedge:
-     *
-     *  - if its twin survives, the surviving twin becomes a boundary
-     *    halfedge and remains the representative of the edge;
-     *
-     *  - if its twin is also removed, or no twin exists, the edge becomes
-     *    invalid.
+     * Edge records are intentionally not invalidated here. Their final
+     * status is rebuilt globally from the complete surviving halfedge set
+     * in Phase 5.
      * ------------------------------------------------------------------
      */
     for (std::size_t removalIndex = 0; removalIndex < removalCycles.size();
          ++removalIndex) {
       const int face = facesToRemove[removalIndex];
 
+      if (!validFace(face)) {
+        return fail("scheduled removal face became invalid during commit",
+                    face);
+      }
+
       for (const int he : removalCycles[removalIndex]) {
-        auto &halfedge = genDcel.halfedges[he];
-
-        const int twin = halfedge.twin;
-        const int edge = halfedge.edge;
-
-        const bool twinExists = twin >= 0;
-
-        const bool twinWillBeRemoved =
-            twinExists && halfedgeScheduledForRemoval[twin] != 0;
-
-        if (twinExists && !twinWillBeRemoved) {
-          /*
-           * The neighboring face survives. Convert its twin to a
-           * boundary halfedge.
-           */
-          genDcel.halfedges[twin].twin = -1;
-
-          genDcel.edges[edge].valid = true;
-          genDcel.edges[edge].halfedge = twin;
-        } else {
-          /*
-           * Neither side survives.
-           */
-          genDcel.edges[edge].valid = false;
-          genDcel.edges[edge].halfedge = -1;
+        if (!validHalfedge(he)) {
+          return fail("scheduled removal halfedge became invalid "
+                      "during commit",
+                      he);
         }
 
-        halfedge.twin = -1;
-        halfedge.valid = false;
+        const int twin = genDcel.halfedges[he].twin;
+
+        /*
+         * If the opposite side survives, convert it to a boundary
+         * halfedge. Its edge representative is rebuilt later.
+         */
+        if (twin >= 0 && !halfedgeScheduledForRemoval[twin]) {
+          if (!validHalfedge(twin)) {
+            return fail("removed halfedge has an invalid surviving twin", he);
+          }
+
+          if (genDcel.halfedges[twin].twin != he) {
+            return fail("removed halfedge has a non-mutual "
+                        "surviving twin",
+                        he);
+          }
+
+          genDcel.halfedges[twin].twin = -1;
+        }
+
+        genDcel.halfedges[he].twin = -1;
+        genDcel.halfedges[he].valid = false;
       }
 
       genDcel.faces[face].valid = false;
@@ -2090,22 +2355,117 @@ public:
 
     /*
      * ------------------------------------------------------------------
-     * Phase 5: rebuild representative pointers using only surviving
-     * halfedges.
+     * Phase 5: rebuild every edge from the halfedges that actually
+     * survived the complete removal set.
+     *
+     * This replaces the previous per-removed-halfedge edge invalidation,
+     * which could invalidate an edge still referenced by another valid
+     * halfedge.
      * ------------------------------------------------------------------
      */
-    for (auto &vertex : genDcel.vertices)
-      vertex.halfedge = -1;
-
-    for (auto &edge : genDcel.edges)
-      edge.halfedge = -1;
-
-    for (auto &face : genDcel.faces)
-      face.halfedge = -1;
+    std::vector<std::vector<int>> survivingHalfedgesByEdge(
+        static_cast<std::size_t>(edgeCount));
 
     for (int he = 0; he < halfedgeCount; ++he) {
-      if (!genDcel.halfedges[he].valid)
+      if (!genDcel.halfedges[he].valid) {
         continue;
+      }
+
+      const int edge = genDcel.halfedges[he].edge;
+
+      if (!validEdgeIndex(edge)) {
+        return fail("surviving halfedge references an "
+                    "out-of-range edge",
+                    he);
+      }
+
+      survivingHalfedgesByEdge[edge].push_back(he);
+    }
+
+    /*
+     * Clear all edge states first. Surviving edge records are explicitly
+     * reactivated below.
+     */
+    for (int edge = 0; edge < edgeCount; ++edge) {
+      genDcel.edges[edge].valid = false;
+      genDcel.edges[edge].halfedge = -1;
+    }
+
+    for (int edge = 0; edge < edgeCount; ++edge) {
+      auto &survivors = survivingHalfedgesByEdge[edge];
+
+      if (survivors.empty()) {
+        continue;
+      }
+
+      if (survivors.size() == 1) {
+        const int he = survivors[0];
+
+        if (!validHalfedge(he)) {
+          return fail("edge rebuild found an invalid sole survivor", edge);
+        }
+
+        genDcel.edges[edge].valid = true;
+        genDcel.edges[edge].halfedge = he;
+
+        /*
+         * A single surviving side is necessarily a boundary side.
+         */
+        genDcel.halfedges[he].twin = -1;
+        continue;
+      }
+
+      if (survivors.size() == 2) {
+        const int first = survivors[0];
+        const int second = survivors[1];
+
+        if (!validHalfedge(first) || !validHalfedge(second)) {
+          return fail("edge rebuild found an invalid two-sided survivor", edge);
+        }
+
+        if (genDcel.halfedges[first].edge != edge ||
+            genDcel.halfedges[second].edge != edge) {
+          return fail("surviving halfedge edge ownership is inconsistent",
+                      edge);
+        }
+
+        if (genDcel.halfedges[first].twin != second ||
+            genDcel.halfedges[second].twin != first) {
+          return fail("two surviving halfedges sharing an edge "
+                      "are not mutual twins",
+                      edge);
+        }
+
+        genDcel.edges[edge].valid = true;
+        genDcel.edges[edge].halfedge = first;
+        continue;
+      }
+
+      return fail("edge has more than two surviving halfedges", edge);
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 6: rebuild vertex, edge, and face representative pointers
+     * from valid surviving halfedges.
+     * ------------------------------------------------------------------
+     */
+    for (auto &vertex : genDcel.vertices) {
+      vertex.halfedge = -1;
+    }
+
+    for (auto &edge : genDcel.edges) {
+      edge.halfedge = -1;
+    }
+
+    for (auto &face : genDcel.faces) {
+      face.halfedge = -1;
+    }
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid) {
+        continue;
+      }
 
       const auto &halfedge = genDcel.halfedges[he];
 
@@ -2125,30 +2485,36 @@ public:
         return fail("surviving halfedge references an invalid face", he);
       }
 
-      if (genDcel.vertices[vertex].halfedge < 0)
+      if (genDcel.vertices[vertex].halfedge < 0) {
         genDcel.vertices[vertex].halfedge = he;
+      }
 
-      if (genDcel.edges[edge].halfedge < 0)
+      if (genDcel.edges[edge].halfedge < 0) {
         genDcel.edges[edge].halfedge = he;
+      }
 
-      if (genDcel.faces[face].halfedge < 0)
+      if (genDcel.faces[face].halfedge < 0) {
         genDcel.faces[face].halfedge = he;
+      }
     }
 
     /*
-     * Vertices with no remaining incident halfedge are isolated and should
-     * no longer remain active.
+     * Vertices with no surviving incident halfedge are isolated and
+     * should no longer remain active.
      */
     for (int vertex = 0; vertex < vertexCount; ++vertex) {
-      if (!genDcel.vertices[vertex].valid)
+      if (!genDcel.vertices[vertex].valid) {
         continue;
+      }
 
-      if (genDcel.vertices[vertex].halfedge < 0)
+      if (genDcel.vertices[vertex].halfedge < 0) {
         genDcel.vertices[vertex].valid = false;
+      }
     }
 
     /*
-     * A surviving edge or face must have a representative halfedge.
+     * Every surviving edge and face must have a representative
+     * halfedge.
      */
     for (int edge = 0; edge < edgeCount; ++edge) {
       if (genDcel.edges[edge].valid && genDcel.edges[edge].halfedge < 0) {
@@ -2164,10 +2530,57 @@ public:
 
     /*
      * ------------------------------------------------------------------
-     * Phase 6: recompute valences from the post-pruning topology.
+     * Phase 7: validate rebuilt edge ownership.
+     * ------------------------------------------------------------------
+     */
+    for (int edge = 0; edge < edgeCount; ++edge) {
+      if (!genDcel.edges[edge].valid) {
+        continue;
+      }
+
+      const auto &survivors = survivingHalfedgesByEdge[edge];
+
+      if (survivors.empty() || survivors.size() > 2) {
+        return fail("valid rebuilt edge has an invalid survivor count", edge);
+      }
+
+      const int representative = genDcel.edges[edge].halfedge;
+
+      if (!validHalfedge(representative)) {
+        return fail("valid rebuilt edge has an invalid representative", edge);
+      }
+
+      if (genDcel.halfedges[representative].edge != edge) {
+        return fail("rebuilt edge representative points to "
+                    "a different edge",
+                    edge);
+      }
+
+      if (survivors.size() == 1) {
+        if (genDcel.halfedges[representative].twin != -1) {
+          return fail("single-sided rebuilt edge is not marked "
+                      "as a boundary",
+                      edge);
+        }
+      } else {
+        const int first = survivors[0];
+        const int second = survivors[1];
+
+        if (genDcel.halfedges[first].twin != second ||
+            genDcel.halfedges[second].twin != first) {
+          return fail("two-sided rebuilt edge does not contain "
+                      "mutual twins",
+                      edge);
+        }
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 8: recompute valences from the post-pruning topology.
      *
-     * This avoids handing stale pre-pruning values to the later
-     * low-valence unification pass.
+     * This prevents stale pre-pruning values from being passed into the
+     * low-valence unification stage.
      * ------------------------------------------------------------------
      */
     if (!computeCurrentValences(scratch.valences)) {
@@ -2175,8 +2588,8 @@ public:
     }
 
     /*
-     * Final topology validation. If anything is inconsistent, restore the
-     * complete pre-function DCEL.
+     * Final topology validation. Any failure restores the complete
+     * pre-function DCEL.
      */
     if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
       return fail("post-pruning DCEL consistency check failed");
@@ -2471,8 +2884,161 @@ public:
   }
 
   bool finalize_clean_mesh() {
-    genDcel.clean_mesh();
-    return genDcel.check_consistency(mData.verbose, true, true, true);
+    const auto fail = [&](const char *message) -> bool {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "finalize_clean_mesh()]: "
+                  << message << '\n';
+      }
+
+      return false;
+    };
+
+    /*
+     * Snapshot pre-compaction sizes for monotonicity validation.
+     */
+    const std::size_t oldVertexCount = genDcel.vertices.size();
+    const std::size_t oldHalfedgeCount = genDcel.halfedges.size();
+    const std::size_t oldEdgeCount = genDcel.edges.size();
+    const std::size_t oldFaceCount = genDcel.faces.size();
+
+    const std::size_t expectedVertexCount = static_cast<std::size_t>(
+        std::count_if(genDcel.vertices.begin(), genDcel.vertices.end(),
+                      [](const auto &entry) { return entry.valid; }));
+
+    const std::size_t expectedHalfedgeCount = static_cast<std::size_t>(
+        std::count_if(genDcel.halfedges.begin(), genDcel.halfedges.end(),
+                      [](const auto &entry) { return entry.valid; }));
+
+    const std::size_t expectedEdgeCount = static_cast<std::size_t>(
+        std::count_if(genDcel.edges.begin(), genDcel.edges.end(),
+                      [](const auto &entry) { return entry.valid; }));
+
+    const std::size_t expectedFaceCount = static_cast<std::size_t>(
+        std::count_if(genDcel.faces.begin(), genDcel.faces.end(),
+                      [](const auto &entry) { return entry.valid; }));
+
+    /*
+     * Finalization must begin from a fully consistent state.
+     */
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return fail("pre-clean consistency check failed");
+    }
+
+    if (!genDcel.clean_mesh(mData.verbose)) {
+      return fail("transactional DCEL compaction failed");
+    }
+
+    /*
+     * Compaction must preserve exactly the valid entities that existed
+     * before the operation.
+     */
+    if (genDcel.vertices.size() != expectedVertexCount) {
+      return fail("compacted vertex count does not match valid "
+                  "pre-clean vertex count");
+    }
+
+    if (genDcel.halfedges.size() != expectedHalfedgeCount) {
+      return fail("compacted halfedge count does not match valid "
+                  "pre-clean halfedge count");
+    }
+
+    if (genDcel.edges.size() != expectedEdgeCount) {
+      return fail("compacted edge count does not match valid "
+                  "pre-clean edge count");
+    }
+
+    if (genDcel.faces.size() != expectedFaceCount) {
+      return fail("compacted face count does not match valid "
+                  "pre-clean face count");
+    }
+
+    /*
+     * Compaction can only preserve or reduce container sizes.
+     */
+    if (genDcel.vertices.size() > oldVertexCount ||
+        genDcel.halfedges.size() > oldHalfedgeCount ||
+        genDcel.edges.size() > oldEdgeCount ||
+        genDcel.faces.size() > oldFaceCount) {
+      return fail("compaction unexpectedly increased an entity count");
+    }
+
+    /*
+     * No invalid records may remain after compaction.
+     */
+    if (!std::all_of(genDcel.vertices.begin(), genDcel.vertices.end(),
+                     [](const auto &entry) { return entry.valid; })) {
+      return fail("invalid vertex survived compaction");
+    }
+
+    if (!std::all_of(genDcel.halfedges.begin(), genDcel.halfedges.end(),
+                     [](const auto &entry) { return entry.valid; })) {
+      return fail("invalid halfedge survived compaction");
+    }
+
+    if (!std::all_of(genDcel.edges.begin(), genDcel.edges.end(),
+                     [](const auto &entry) { return entry.valid; })) {
+      return fail("invalid edge survived compaction");
+    }
+
+    if (!std::all_of(genDcel.faces.begin(), genDcel.faces.end(),
+                     [](const auto &entry) { return entry.valid; })) {
+      return fail("invalid face survived compaction");
+    }
+
+    /*
+     * Verify dense IDs after compaction.
+     */
+    for (int index = 0; index < static_cast<int>(genDcel.vertices.size());
+         ++index) {
+      if (genDcel.vertices[index].ID != index) {
+        return fail("vertex IDs are not dense after compaction");
+      }
+    }
+
+    for (int index = 0; index < static_cast<int>(genDcel.halfedges.size());
+         ++index) {
+      if (genDcel.halfedges[index].ID != index) {
+        return fail("halfedge IDs are not dense after compaction");
+      }
+    }
+
+    for (int index = 0; index < static_cast<int>(genDcel.edges.size());
+         ++index) {
+      if (genDcel.edges[index].ID != index) {
+        return fail("edge IDs are not dense after compaction");
+      }
+    }
+
+    for (int index = 0; index < static_cast<int>(genDcel.faces.size());
+         ++index) {
+      if (genDcel.faces[index].ID != index) {
+        return fail("face IDs are not dense after compaction");
+      }
+    }
+
+    /*
+     * Final independent topology validation.
+     *
+     * clean_mesh() already validates its candidate before commit. Keeping
+     * this second check verifies the committed object itself and protects
+     * against future changes to clean_mesh().
+     */
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return fail("post-clean consistency check failed");
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "finalize_clean_mesh()]: "
+                << "compaction validated successfully: "
+                << genDcel.vertices.size() << " vertices, "
+                << genDcel.halfedges.size() << " halfedges, "
+                << genDcel.edges.size() << " edges, " << genDcel.faces.size()
+                << " faces\n";
+    }
+
+    return true;
   }
 
   bool simplify_mesh() {
@@ -2538,7 +3104,8 @@ public:
     build_boundary_vertex_sets(scratch);
     logPhase("Boundary vertex set build");
 
-    build_vertex_matches(scratch);
+    if (!build_vertex_matches(scratch))
+      return false;
     logPhase("Vertex match build");
 
     // finding connected components, and uniting every component into a random
