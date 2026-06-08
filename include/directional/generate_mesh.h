@@ -851,7 +851,9 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
     }
 
     // aggregating to the general DCEL
-    genDcel.aggregate_dcel(localArrDcel);
+    if (!genDcel.aggregate_dcel(localArrDcel)) {
+      throw std::runtime_error("Failed to aggregate DCEL");
+    }
   }
   assert(genDcel.check_consistency(true, false, false, false) &&
          "NFunctionMeshes::generate_mesh(): DCEL not consistent!");

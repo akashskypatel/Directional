@@ -12,7 +12,14 @@
 #include <vector>
 #include <deque>
 #include <iostream>
-
+#include <map>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <deque>
+#include <iostream>
+#include <limits>
 
 namespace directional
 {
@@ -126,412 +133,581 @@ public:
         } while (halfedges[CurrHalfedge].twin >= 0);
         return true;
     }
-    
-    void stitch_twins() {
-        //twinning up edges
-        std::set <TwinFinder> Twinning;
-        for (int i = 0; i < halfedges.size(); i++) {
-            if (halfedges[i].twin >= 0)
-                continue;
-            
-            typename std::set<TwinFinder>::iterator Twinit = Twinning.find(
-                                                                           TwinFinder(0, halfedges[halfedges[i].next].vertex, halfedges[i].vertex));
-            if (Twinit != Twinning.end()) {
-                halfedges[Twinit->index].twin = i;
-                halfedges[i].twin = Twinit->index;
-                Twinning.erase(*Twinit);
-            } else {
-                Twinning.insert(TwinFinder(i, halfedges[i].origin, halfedges[halfedges[i].next].origin));
-            }
+
+    bool stitch_twins(const bool verbose = false,
+                      const bool clearExistingTwins = true) {
+      /*
+       * Rebuild twin links from directed halfedge endpoints.
+       *
+       * Boundary halfedges are left with twin == -1.
+       * Interior halfedges are paired only when the exact reverse directed
+       * edge is found. Invalid topology is reported instead of being
+       * dereferenced blindly.
+       */
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+
+      const int vertexCount = static_cast<int>(vertices.size());
+
+      const auto validHalfedge = [&](const int he) {
+        return he >= 0 && he < halfedgeCount && halfedges[he].valid;
+      };
+
+      const auto validVertex = [&](const int v) {
+        return v >= 0 && v < vertexCount && vertices[v].valid;
+      };
+
+      const auto fail = [&](const std::string &message, const int he = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::stitch_twins()]: " << message;
+
+          if (he >= 0)
+            std::cerr << " at halfedge " << he;
+
+          std::cerr << std::endl;
         }
+
+        return false;
+      };
+
+      /*
+       * Existing twin links are often stale after topology edits.
+       * Rebuilding from scratch is safer than trying to preserve them.
+       */
+      if (clearExistingTwins) {
+        for (int i = 0; i < halfedgeCount; ++i) {
+          if (halfedges[i].valid)
+            halfedges[i].twin = -1;
+        }
+      }
+
+      /*
+       * Stores unmatched directed edges:
+       *
+       *     key = (source, target)
+       *     value = halfedge index
+       *
+       * When we see the reverse key, we stitch the pair.
+       */
+      std::map<std::pair<int, int>, int> unmatched;
+
+      for (int i = 0; i < halfedgeCount; ++i) {
+        if (!halfedges[i].valid)
+          continue;
+
+        if (!clearExistingTwins && halfedges[i].twin >= 0) {
+          continue;
+        }
+
+        const int next = halfedges[i].next;
+
+        if (!validHalfedge(next))
+          return fail("invalid next link", i);
+
+        const int source = halfedges[i].origin;
+        const int target = halfedges[next].origin;
+
+        if (!validVertex(source))
+          return fail("invalid source/origin vertex", i);
+
+        if (!validVertex(target))
+          return fail("invalid target vertex from next halfedge", i);
+
+        if (source == target)
+          return fail("degenerate directed edge with identical endpoints", i);
+
+        const std::pair<int, int> key(source, target);
+        const std::pair<int, int> reverseKey(target, source);
+
+        auto reverseIt = unmatched.find(reverseKey);
+
+        if (reverseIt != unmatched.end()) {
+          const int twin = reverseIt->second;
+
+          if (!validHalfedge(twin))
+            return fail("stored reverse halfedge is invalid", i);
+
+          halfedges[i].twin = twin;
+          halfedges[twin].twin = i;
+
+          unmatched.erase(reverseIt);
+          continue;
+        }
+
+        /*
+         * A duplicate directed edge means two faces use the same
+         * orientation along the same edge. That is not a valid
+         * orientable two-manifold DCEL relation for twin stitching.
+         */
+        if (unmatched.find(key) != unmatched.end()) {
+          return fail("duplicate directed edge; non-manifold or inconsistent "
+                      "orientation",
+                      i);
+        }
+
+        unmatched.emplace(key, i);
+      }
+
+      /*
+       * Validate all generated twin links. Unmatched entries in the map
+       * are boundary halfedges and intentionally remain twin == -1.
+       */
+      for (int i = 0; i < halfedgeCount; ++i) {
+        if (!halfedges[i].valid)
+          continue;
+
+        const int twin = halfedges[i].twin;
+
+        if (twin < 0)
+          continue;
+
+        if (!validHalfedge(twin))
+          return fail("invalid generated twin", i);
+
+        if (halfedges[twin].twin != i)
+          return fail("generated twin link is not mutual", i);
+
+        const int iNext = halfedges[i].next;
+        const int tNext = halfedges[twin].next;
+
+        if (!validHalfedge(iNext) || !validHalfedge(tNext)) {
+          return fail("invalid next link while validating generated twin", i);
+        }
+
+        const int iSource = halfedges[i].origin;
+        const int iTarget = halfedges[iNext].origin;
+
+        const int tSource = halfedges[twin].origin;
+        const int tTarget = halfedges[tNext].origin;
+
+        if (iSource != tTarget || iTarget != tSource) {
+          return fail("generated twin endpoints are not reversed", i);
+        }
+      }
+
+      return true;
     }
-    
-    bool check_consistency(const bool verbose, const bool checkHalfedgeRepetition=true, const bool CheckTwinGaps=true,
-                           const bool checkPureBoundary=true) {
-        
-        for (int i = 0; i < vertices.size(); i++) {
-            if (!vertices[i].valid)
-                continue;
-            
-            if (vertices[i].halfedge == -1) {
-                if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Vertex " << i << " points to non-valid value -1 " << std::endl;
-                return false;
-            }
-            
-            if (!halfedges[vertices[i].halfedge].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Vertex " << i << " points to non-valid halfedge "
-                    << vertices[i].halfedge << std::endl;
-                return false;
-            }
-            
-            
-            if (halfedges[vertices[i].halfedge].vertex != i) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Adjacent Halfedge " << vertices[i].halfedge << " of vertex " << i
-                    << "does not point back" << std::endl;
-                return false;
-            }
-            
+
+    bool check_consistency(const bool verbose,
+                           const bool checkHalfedgeRepetition = true,
+                           const bool checkTwinGaps = true,
+                           const bool checkPureBoundary = true) {
+      const int vertexCount = static_cast<int>(vertices.size());
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+      const int edgeCount = static_cast<int>(edges.size());
+      const int faceCount = static_cast<int>(faces.size());
+
+      const auto validVertexIndex = [&](const int index) {
+        return index >= 0 && index < vertexCount;
+      };
+
+      const auto validHalfedgeIndex = [&](const int index) {
+        return index >= 0 && index < halfedgeCount;
+      };
+
+      const auto validEdgeIndex = [&](const int index) {
+        return index >= 0 && index < edgeCount;
+      };
+
+      const auto validFaceIndex = [&](const int index) {
+        return index >= 0 && index < faceCount;
+      };
+
+      const auto fail = [&](const std::string &message, const int index = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::check_consistency()]: " << message;
+
+          if (index >= 0)
+            std::cerr << " " << index;
+
+          std::cerr << '\n';
         }
-        
-        for (int i = 0; i < halfedges.size(); i++) {
-            if (!halfedges[i].valid)
-                continue;
-            
-            
-            if (halfedges[i].next == -1) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to next non-valid value -1" << std::endl;
-                return false;
-            }
-            
-            if (halfedges[i].prev == -1) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to prev non-valid value -1" << std::endl;
-                return false;
-            }
-            
-            
-            if (halfedges[i].vertex == -1) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to Origin non-valid value -1" << std::endl;
-                return false;
-            }
-            
-            if (halfedges[i].face == -1) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Valid Halfedge " << i << "points to face non-valid value -1" << std::endl;
-                return false;
-            }
-            
-            if (halfedges[halfedges[i].next].prev != i) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "next is " << halfedges[i].next
-                    << " which doesn't point back as prev" << std::endl;
-                return false;
-            }
-            
-            
-            if (halfedges[halfedges[i].prev].next != i) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "prev is " << halfedges[i].prev
-                    << " which doesn't point back as next" << std::endl;
-                return false;
-            }
-            
-            if (!vertices[halfedges[i].vertex].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The Origin of halfedges " << i << ", vertex " << halfedges[i].vertex
-                    << " is not valid" << std::endl;
-                return false;
-            }
-            
-            if (!faces[halfedges[i].face].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The face of halfedges " << i << ", face " << halfedges[i].face
-                    << " is not valid" << std::endl;
-                return false;
-            }
-            
-            if (!edges[halfedges[i].edge].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "The edge of halfedges " << i << ", edge " << halfedges[i].edge
-                    << " is not valid" << std::endl;
-                return false;
-            }
-            
-            if (halfedges[halfedges[i].next].vertex == halfedges[i].vertex) {  //a degenerate edge{
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << " with twin" << halfedges[i].twin
-                    << " is degenerate with vertex " << halfedges[i].vertex << std::endl;
-                return false;
-            }
-            
-            if (halfedges[i].twin >= 0) {
-                if (halfedges[halfedges[i].twin].twin != i) {
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "twin is " << halfedges[i].twin
-                        << " which doesn't point back" << std::endl;
-                    return false;
-                }
-                
-                if (!halfedges[halfedges[i].twin].valid) {
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " is twin with invalid halfedge" << halfedges[i].twin
-                        << std::endl;
-                    return false;
-                }
-            }
-            
-            if (!halfedges[halfedges[i].next].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " has next invalid halfedge" << halfedges[i].next << std::endl;
-                return false;
-            }
-            
-            if (!halfedges[halfedges[i].prev].valid) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "halfedge " << i << " has prev invalid halfedge" << halfedges[i].prev << std::endl;
-                return false;
-            }
-            
-            //if (Halfedges[i].isFunction) {  //checking that it is not left alone
-            if (halfedges[i].prev == halfedges[i].twin) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Hex halfedge " << i << " has Halfedge " << halfedges[i].prev
-                    << " and both prev and twin" << std::endl;
-                return false;
-            }
-            
-            
-            if (halfedges[i].next == halfedges[i].twin) {
-                if (verbose)
-                    std::cout << "[Directional::DCEL::check_consistency()]: " << "Hex halfedge " << i << " has Halfedge " << halfedges[i].next
-                    << " and both next and twin" << std::endl;
-                return false;
-            }
-            //}
+
+        return false;
+      };
+
+      /*
+       * Safely walk one face cycle.
+       *
+       * The callback is invoked only after all references for the
+       * current halfedge have been validated.
+       */
+      const auto walkFace = [&](const int faceIndex, auto &&callback) -> bool {
+        if (!validFaceIndex(faceIndex))
+          return fail("invalid face index", faceIndex);
+
+        if (!faces[faceIndex].valid)
+          return fail("attempted to walk invalid face", faceIndex);
+
+        const int start = faces[faceIndex].halfedge;
+
+        if (!validHalfedgeIndex(start))
+          return fail("face references out-of-range halfedge", start);
+
+        if (!halfedges[start].valid)
+          return fail("face references invalid halfedge", start);
+
+        std::vector<unsigned char> visited(
+            static_cast<std::size_t>(halfedgeCount), 0);
+
+        int current = start;
+
+        for (int step = 0; step < halfedgeCount; ++step) {
+          if (!validHalfedgeIndex(current))
+            return fail("face walk reached out-of-range halfedge", current);
+
+          if (!halfedges[current].valid)
+            return fail("face walk reached invalid halfedge", current);
+
+          if (visited[current]) {
+            if (current == start)
+              return true;
+
+            return fail("face walk entered a cycle that does not "
+                        "return to its starting halfedge",
+                        current);
+          }
+
+          visited[current] = 1;
+
+          if (halfedges[current].face != faceIndex)
+            return fail("halfedge in face cycle points to another face",
+                        current);
+
+          callback(current);
+
+          const int next = halfedges[current].next;
+
+          if (!validHalfedgeIndex(next))
+            return fail("face walk encountered invalid next index", next);
+
+          current = next;
+
+          if (current == start)
+            return true;
         }
-        
-        //checking edges
-        for (int i=0;i<edges.size();i++){
-            if (!edges[i].valid)
-                continue;
-            
-            if (halfedges[edges[i].halfedge].edge!=i){
-                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" but not back."<<std::endl;
-                return false;
-            }
-            
-            if (!halfedges[edges[i].halfedge].valid){
-                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" points to halfedge "<<edges[i].halfedge<<" which is not valid."<<std::endl;
-                return false;
-            }
-            if ((halfedges[edges[i].halfedge].twin!=-1)&&(halfedges[halfedges[edges[i].halfedge].twin].edge!=i)){
-                std::cout<<"[Directional::DCEL::check_consistency()]: "<<"Edge "<<i<<" with halfedge "<<edges[i].halfedge<<" points to twin halfedge "<<halfedges[edges[i].halfedge].twin<<" which does not share the same edge."<<std::endl;
-                return false;
-            }
+
+        return fail("face walk exceeded the halfedge safety bound", faceIndex);
+      };
+
+      // ---------------------------------------------------------
+      // 1. Validate vertices.
+      // ---------------------------------------------------------
+
+      for (int i = 0; i < vertexCount; ++i) {
+        if (!vertices[i].valid)
+          continue;
+
+        const int he = vertices[i].halfedge;
+
+        if (!validHalfedgeIndex(he))
+          return fail("valid vertex references out-of-range halfedge", i);
+
+        if (!halfedges[he].valid)
+          return fail("valid vertex references invalid halfedge", i);
+
+        if (halfedges[he].vertex != i)
+          return fail("vertex incident halfedge does not point back", i);
+      }
+
+      // ---------------------------------------------------------
+      // 2. Validate halfedges.
+      // ---------------------------------------------------------
+
+      for (int i = 0; i < halfedgeCount; ++i) {
+        if (!halfedges[i].valid)
+          continue;
+
+        const int next = halfedges[i].next;
+        const int prev = halfedges[i].prev;
+        const int twin = halfedges[i].twin;
+        const int vertex = halfedges[i].vertex;
+        const int face = halfedges[i].face;
+        const int edge = halfedges[i].edge;
+
+        // Validate every index before dereferencing it.
+        if (!validHalfedgeIndex(next))
+          return fail("halfedge has out-of-range next", i);
+
+        if (!validHalfedgeIndex(prev))
+          return fail("halfedge has out-of-range prev", i);
+
+        if (!validVertexIndex(vertex))
+          return fail("halfedge has out-of-range origin vertex", i);
+
+        if (!validFaceIndex(face))
+          return fail("halfedge has out-of-range face", i);
+
+        if (!validEdgeIndex(edge))
+          return fail("halfedge has out-of-range edge", i);
+
+        if (!halfedges[next].valid)
+          return fail("halfedge next points to invalid halfedge", i);
+
+        if (!halfedges[prev].valid)
+          return fail("halfedge prev points to invalid halfedge", i);
+
+        if (!vertices[vertex].valid)
+          return fail("halfedge origin vertex is invalid", i);
+
+        if (!faces[face].valid)
+          return fail("halfedge face is invalid", i);
+
+        if (!edges[edge].valid)
+          return fail("halfedge edge is invalid", i);
+
+        if (halfedges[next].prev != i)
+          return fail("halfedge next does not point back through prev", i);
+
+        if (halfedges[prev].next != i)
+          return fail("halfedge prev does not point back through next", i);
+
+        if (halfedges[next].vertex == vertex)
+          return fail("halfedge is geometrically degenerate", i);
+
+        if (twin < -1)
+          return fail("halfedge has an invalid negative twin value", i);
+
+        if (twin >= 0) {
+          if (!validHalfedgeIndex(twin))
+            return fail("halfedge has out-of-range twin", i);
+
+          if (!halfedges[twin].valid)
+            return fail("halfedge twin is invalid", i);
+
+          if (halfedges[twin].twin != i)
+            return fail("halfedge twin does not point back", i);
+
+          const int twinNext = halfedges[twin].next;
+
+          if (!validHalfedgeIndex(twinNext) || !halfedges[twinNext].valid) {
+            return fail("twin has invalid next halfedge", twin);
+          }
+
+          const int source = vertex;
+          const int target = halfedges[next].vertex;
+
+          const int twinSource = halfedges[twin].vertex;
+
+          const int twinTarget = halfedges[twinNext].vertex;
+
+          if (source != twinTarget || target != twinSource) {
+            return fail("twin halfedges do not have reversed endpoints", i);
+          }
         }
-        
-        std::vector <std::set<int>> halfedgesinFace(faces.size());
-        std::vector <std::set<int>> verticesinFace(faces.size());
-        for (int i = 0; i < faces.size(); i++) {
-            if (!faces[i].valid)
-                continue;
-            
-            //if (faces[i].NumVertices<3)  //we never allow this
-            //  return false;
-            int hebegin = faces[i].halfedge;
-            int heiterate = hebegin;
-            int NumEdges = 0;
-            int actualNumVertices = 0;
-            
-            do {
-                if (verticesinFace[i].find(halfedges[heiterate].vertex) != verticesinFace[i].end())
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Warning: Vertex " << halfedges[heiterate].vertex
-                        << " appears more than once in face " << i << std::endl;
-                
-                verticesinFace[i].insert(halfedges[heiterate].vertex);
-                halfedgesinFace[i].insert(heiterate);
-                actualNumVertices++;
-                if (!halfedges[heiterate].valid)
-                    return false;
-                
-                if (halfedges[heiterate].face != i) {
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << i << " has halfedge " << heiterate << " that does not point back"
-                        << std::endl;
-                    return false;
-                }
-                
-                heiterate = halfedges[heiterate].next;
-                NumEdges++;
-                if (NumEdges > halfedges.size()) {
-                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop!" << std::endl;
-                    return false;
-                }
-                
-                
-            } while (heiterate != hebegin);
-            
-            /*if (actualNumVertices!=faces[i].NumVertices){
-             DebugLog<<"faces "<<i<<" lists "<<faces[i].NumVertices<<" vertices but has a chain of "<<actualNumVertices<<endl;
-             return false;
-             }
-             
-             for (int j=0;j<faces[i].NumVertices;j++){
-             if (faces[i].Vertices[j]<0){
-             DebugLog<<"faces "<<i<<".vertices "<<j<<"is undefined"<<endl;
-             return false;
-             }
-             if (!Vertices[faces[i].Vertices[j]].Valid){
-             DebugLog<<"faces "<<i<<".vertices "<<j<<"is not valid"<<endl;
-             return false;
-             }
-             }*/
+
+        if (prev == twin && twin >= 0)
+          return fail("halfedge prev and twin are identical", i);
+
+        if (next == twin && twin >= 0)
+          return fail("halfedge next and twin are identical", i);
+      }
+
+      // ---------------------------------------------------------
+      // 3. Validate edges.
+      // ---------------------------------------------------------
+
+      for (int i = 0; i < edgeCount; ++i) {
+        if (!edges[i].valid)
+          continue;
+
+        const int he = edges[i].halfedge;
+
+        if (!validHalfedgeIndex(he))
+          return fail("edge references out-of-range halfedge", i);
+
+        if (!halfedges[he].valid)
+          return fail("edge references invalid halfedge", i);
+
+        if (halfedges[he].edge != i)
+          return fail("edge halfedge does not point back", i);
+
+        const int twin = halfedges[he].twin;
+
+        if (twin >= 0) {
+          if (!validHalfedgeIndex(twin))
+            return fail("edge halfedge has invalid twin", i);
+
+          if (!halfedges[twin].valid)
+            return fail("edge halfedge twin is invalid", i);
+
+          if (halfedges[twin].edge != i)
+            return fail("both halfedges of an edge do not share "
+                        "the same edge record",
+                        i);
         }
-        
-        //checking if all halfedges that relate to a face are part of its recognized chain (so no floaters)
-        for (int i = 0; i < halfedges.size(); i++) {
-            if (!halfedges[i].valid)
-                continue;
-            int currFace = halfedges[i].face;
-            if (halfedgesinFace[currFace].find(i) == halfedgesinFace[currFace].end()) {
-                if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << " is floating in face " << currFace << std::endl;
-                return false;
+      }
+
+      // ---------------------------------------------------------
+      // 4. Validate face cycles and collect membership.
+      // ---------------------------------------------------------
+
+      std::vector<std::set<int>> halfedgesInFace(
+          static_cast<std::size_t>(faceCount));
+
+      std::vector<std::set<int>> verticesInFace(
+          static_cast<std::size_t>(faceCount));
+
+      for (int faceIndex = 0; faceIndex < faceCount; ++faceIndex) {
+        if (!faces[faceIndex].valid)
+          continue;
+
+        const bool walkSucceeded = walkFace(faceIndex, [&](const int he) {
+          const int vertex = halfedges[he].vertex;
+
+          if (!validVertexIndex(vertex))
+            return;
+
+          if (verbose && verticesInFace[faceIndex].count(vertex) != 0) {
+            std::cerr << "[Directional::DCEL::"
+                         "check_consistency()]: "
+                      << "vertex " << vertex
+                      << " appears more than once in face " << faceIndex
+                      << '\n';
+          }
+
+          verticesInFace[faceIndex].insert(vertex);
+          halfedgesInFace[faceIndex].insert(he);
+        });
+
+        if (!walkSucceeded)
+          return false;
+      }
+
+      // Every valid halfedge must be in its face's actual cycle.
+      for (int i = 0; i < halfedgeCount; ++i) {
+        if (!halfedges[i].valid)
+          continue;
+
+        const int face = halfedges[i].face;
+
+        if (!validFaceIndex(face))
+          return fail("halfedge references invalid face while checking "
+                      "floating halfedges",
+                      i);
+
+        if (halfedgesInFace[face].count(i) == 0)
+          return fail("halfedge is floating outside its face cycle", i);
+      }
+
+      // ---------------------------------------------------------
+      // 5. Detect repeated directed halfedges.
+      // ---------------------------------------------------------
+
+      if (checkHalfedgeRepetition) {
+        std::map<std::pair<int, int>, int> directedEdges;
+
+        for (int i = 0; i < halfedgeCount; ++i) {
+          if (!halfedges[i].valid)
+            continue;
+
+          const int next = halfedges[i].next;
+
+          // Already validated above, but do not rely on that
+          // ordering if this block is later moved.
+          if (!validHalfedgeIndex(next) || !halfedges[next].valid) {
+            return fail("invalid next while checking repeated edges", i);
+          }
+
+          const int source = halfedges[i].vertex;
+
+          const int target = halfedges[next].vertex;
+
+          const auto key = std::make_pair(source, target);
+
+          const auto existing = directedEdges.find(key);
+
+          if (existing != directedEdges.end()) {
+            if (verbose) {
+              std::cerr << "[Directional::DCEL::"
+                           "check_consistency()]: "
+                        << "directed edge (" << source << ", " << target
+                        << ") appears in halfedges " << existing->second
+                        << " and " << i << '\n';
             }
+
+            return false;
+          }
+
+          directedEdges.emplace(key, i);
         }
-        
-        //check if mesh is a manifold: every halfedge appears only once
-        if (checkHalfedgeRepetition) {
-            std::set <TwinFinder> HESet;
-            for (int i = 0; i < halfedges.size(); i++) {
-                if (!halfedges[i].valid)
-                    continue;
-                typename std::set<TwinFinder>::iterator HESetIterator = HESet.find(
-                                                                                   TwinFinder(i, halfedges[i].vertex, halfedges[halfedges[i].next].vertex));
-                if (HESetIterator != HESet.end()) {
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Warning: the halfedge (" << halfedges[i].vertex << ","
-                        << halfedges[halfedges[i].next].vertex << ") appears at least twice in the mesh"
-                        << std::endl;
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "for instance halfedges " << i << " and " << HESetIterator->index << std::endl;
-                    return false;
-                    //return false;
-                } else {
-                    HESet.insert(TwinFinder(i, halfedges[i].vertex, halfedges[halfedges[i].next].vertex));
-                    //if (verbose) std::cout<<"inserting halfedge "<<i<<" which is "<<Halfedges[i].vertex<<", "<<Halfedges[halfedge[i].next].vertex<<endl;
-                }
+      }
+
+      // ---------------------------------------------------------
+      // 6. Detect reverse-edge twin gaps.
+      // ---------------------------------------------------------
+
+      if (checkTwinGaps) {
+        std::map<std::pair<int, int>, int> unmatched;
+
+        for (int i = 0; i < halfedgeCount; ++i) {
+          if (!halfedges[i].valid)
+            continue;
+
+          const int next = halfedges[i].next;
+
+          if (!validHalfedgeIndex(next) || !halfedges[next].valid) {
+            return fail("invalid next while checking twin gaps", i);
+          }
+
+          const int source = halfedges[i].vertex;
+
+          const int target = halfedges[next].vertex;
+
+          const auto reverseKey = std::make_pair(target, source);
+
+          const auto reverse = unmatched.find(reverseKey);
+
+          if (reverse != unmatched.end()) {
+            const int other = reverse->second;
+
+            if (halfedges[i].twin != other || halfedges[other].twin != i) {
+              if (verbose) {
+                std::cerr << "[Directional::DCEL::"
+                             "check_consistency()]: "
+                          << "halfedges " << i << " and " << other
+                          << " have reversed endpoints but are "
+                             "not mutual twins\n";
+              }
+
+              return false;
             }
+
+            unmatched.erase(reverse);
+          } else {
+            unmatched.emplace(std::make_pair(source, target), i);
+          }
         }
-        
-        if (CheckTwinGaps) {
-            std::set <TwinFinder> HESet;
-            //checking if there is a gap: two halfedges that share the same opposite vertices but do not have twins
-            for (int i = 0; i < halfedges.size(); i++) {
-                if (!halfedges[i].valid)
-                    continue;
-                
-                typename std::set<TwinFinder>::iterator HESetIterator = HESet.find(
-                                                                                   TwinFinder(i, halfedges[i].vertex, halfedges[halfedges[i].next].vertex));
-                if (HESetIterator == HESet.end()) {
-                    HESet.insert(TwinFinder(i, halfedges[i].vertex, halfedges[halfedges[i].next].vertex));
-                    continue;
-                }
-                
-                HESetIterator = HESet.find(TwinFinder(i, halfedges[halfedges[i].next].vertex, halfedges[i].vertex));
-                if (HESetIterator != HESet.end()) {
-                    
-                    if (halfedges[i].twin == -1) {
-                        if (verbose)
-                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << i << "has no twin although halfedge "
-                            << HESetIterator->index << " can be a twin" << std::endl;
-                        return false;
-                    }
-                    if (halfedges[HESetIterator->index].twin == -1) {
-                        if (verbose)
-                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Halfedge " << HESetIterator->index << "has no twin although halfedge "
-                            << i << " can be a twin" << std::endl;
-                        return false;
-                    }
-                }
-            }
+      }
+
+      // ---------------------------------------------------------
+      // 7. Optional pure-boundary face test.
+      // ---------------------------------------------------------
+
+      if (checkPureBoundary) {
+        for (int faceIndex = 0; faceIndex < faceCount; ++faceIndex) {
+          if (!faces[faceIndex].valid)
+            continue;
+
+          bool hasInteriorEdge = false;
+
+          const bool walkSucceeded = walkFace(faceIndex, [&](const int he) {
+            // Twin index zero is valid.
+            if (halfedges[he].twin >= 0)
+              hasInteriorEdge = true;
+          });
+
+          if (!walkSucceeded)
+            return false;
+
+          if (!hasInteriorEdge)
+            return fail("face is composed entirely of boundary edges",
+                        faceIndex);
         }
-        
-        //checking if there are pure boundary faces (there shouldn't be)
-        if (checkPureBoundary) {
-            for (int i = 0; i < halfedges.size(); i++) {
-                if (!halfedges[i].valid)
-                    continue;
-                
-                //Is this necessary?
-                /*if ((halfedge[i].twin < 0) && (Halfedges[i].isFunction))
-                 if (verbose)
-                 std::cout << "WARNING: Halfedge " << i << " is a hex edge without twin!" << std::endl;
-                 */
-                if (halfedges[i].twin > 0)
-                    continue;
-                
-                bool pureBoundary = true;
-                int hebegin = i;
-                int heiterate = hebegin;
-                do {
-                    if (halfedges[heiterate].twin > 0) {
-                        pureBoundary = false;
-                        break;
-                    }
-                    heiterate = halfedges[heiterate].next;
-                } while (heiterate != hebegin);
-                if (pureBoundary) {
-                    if (verbose)
-                        std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << halfedges[i].face << " is a pure boundary face!" << std::endl;
-                    return false;
-                }
-            }
-            
-            //checking for latent valence 2 faces
-            std::vector<int> Valences(vertices.size());
-            for (int i = 0; i < vertices.size(); i++)
-                Valences[i] = 0;
-            
-            for (int i = 0; i < halfedges.size(); i++) {
-                if (halfedges[i].valid) {
-                    Valences[halfedges[i].vertex]++;
-                    //Valences[Halfedges[halfedge[i].next].vertex]++;
-                    if (halfedges[i].twin < 0)  //should account for the target as well
-                        Valences[halfedges[halfedges[i].next].vertex]++;
-                }
-            }
-            
-            int countThree;
-            for (int i = 0; i < faces.size(); i++) {
-                if (!faces[i].valid)
-                    continue;
-                countThree = 0;
-                int hebegin = faces[i].halfedge;
-                int heiterate = hebegin;
-                int numEdges = 0;
-                do {
-                    if (Valences[halfedges[heiterate].vertex] > 2)
-                        countThree++;
-                    heiterate = halfedges[heiterate].next;
-                    numEdges++;
-                    if (numEdges > halfedges.size()) {
-                        if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop in face " << i << "!" << std::endl;
-                        return false;
-                    }
-                } while (heiterate != hebegin);
-                if (countThree < 3) {
-                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Face " << i << " is a latent valence 2 face!" << std::endl;
-                    if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Its vertices are " << std::endl;
-                    do {
-                        if (verbose)
-                            std::cout << "[Directional::DCEL::check_consistency()]: " << "Vertex " << halfedges[heiterate].vertex << " halfedge " << heiterate
-                            << " valence " << Valences[halfedges[heiterate].vertex] << std::endl;
-                        
-                        if (Valences[halfedges[heiterate].vertex] > 2)
-                            countThree++;
-                        heiterate = halfedges[heiterate].next;
-                        numEdges++;
-                        if (numEdges > halfedges.size()) {
-                            if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: " << "Infinity loop in face " << i << "!" << std::endl;
-                            return false;
-                        }
-                    } while (heiterate != hebegin);
-                    
-                    //return false;
-                }
-            }
-        }
-        
-        if (verbose) std::cout << "[Directional::DCEL::check_consistency()]: Mesh is clear according to given checks" << std::endl;
-        return true;  //most likely the mesh is solid
-        
+      }
+
+      return true;
     }
-    
+
     //Only used after having checked for consistency!
     void clean_mesh() {
         
@@ -778,107 +954,619 @@ public:
             //faces[halfedges[halfedges[heindex].twin].face].NumVertices--;
         }
     }
-    
-    
-    void aggregate_dcel(const DCEL<VertexData, HalfedgeData, EdgeData, FaceData>& aggDcel)
-    {
-        //TODO: aggregate new elements and reindex where necessary
-        int currVOffset = vertices.size();
-        int currHEOffset = halfedges.size();
-        int currEOffset = edges.size();
-        int currFOffset = faces.size();
-        for (int i=0;i<aggDcel.vertices.size();i++){
-            vertices.push_back(aggDcel.vertices[i]);
-            vertices[vertices.size()-1].ID += currVOffset;
-            vertices[vertices.size()-1].halfedge += currHEOffset;
+
+    bool aggregate_dcel(
+        const DCEL<VertexData, HalfedgeData, EdgeData, FaceData> &source,
+        const bool verbose = false) {
+      /*
+       * Append `source` into this DCEL while rebasing all core topology
+       * indices. The destination is unchanged if validation or allocation
+       * fails before the final swaps.
+       */
+
+      const auto fail = [&](const std::string &message) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::aggregate_dcel()]: " << message
+                    << '\n';
         }
-        
-        for (int i=0;i<aggDcel.halfedges.size();i++){
-            halfedges.push_back(aggDcel.halfedges[i]);
-            halfedges[halfedges.size()-1].ID += currHEOffset;
-            halfedges[halfedges.size()-1].vertex += currVOffset;
-            halfedges[halfedges.size()-1].next += currHEOffset;
-            halfedges[halfedges.size()-1].prev += currHEOffset;
-            if (halfedges[halfedges.size()-1].twin!=-1)
-                halfedges[halfedges.size()-1].twin+= currHEOffset;
-            halfedges[halfedges.size()-1].face += currFOffset;
-            halfedges[halfedges.size()-1].edge += currEOffset;
+
+        return false;
+      };
+
+      /*
+       * Self-aggregation is unsafe with the original implementation:
+       *
+       *     aggregate_dcel(*this)
+       *
+       * would append to the same vectors whose size controls the source
+       * loops, potentially causing unbounded growth.
+       */
+      if (this == &source) {
+        return fail("source and destination are the same DCEL; "
+                    "self-aggregation is not supported");
+      }
+
+      constexpr std::size_t maxIntIndex =
+          static_cast<std::size_t>(std::numeric_limits<int>::max());
+
+      const std::size_t dstVertexCount = vertices.size();
+      const std::size_t dstHalfedgeCount = halfedges.size();
+      const std::size_t dstEdgeCount = edges.size();
+      const std::size_t dstFaceCount = faces.size();
+
+      const std::size_t srcVertexCount = source.vertices.size();
+      const std::size_t srcHalfedgeCount = source.halfedges.size();
+      const std::size_t srcEdgeCount = source.edges.size();
+      const std::size_t srcFaceCount = source.faces.size();
+
+      const auto additionFits = [](const std::size_t lhs,
+                                   const std::size_t rhs) {
+        return rhs <= std::numeric_limits<std::size_t>::max() - lhs;
+      };
+
+      if (!additionFits(dstVertexCount, srcVertexCount) ||
+          !additionFits(dstHalfedgeCount, srcHalfedgeCount) ||
+          !additionFits(dstEdgeCount, srcEdgeCount) ||
+          !additionFits(dstFaceCount, srcFaceCount)) {
+        return fail("container-size overflow while aggregating");
+      }
+
+      const std::size_t finalVertexCount = dstVertexCount + srcVertexCount;
+
+      const std::size_t finalHalfedgeCount =
+          dstHalfedgeCount + srcHalfedgeCount;
+
+      const std::size_t finalEdgeCount = dstEdgeCount + srcEdgeCount;
+
+      const std::size_t finalFaceCount = dstFaceCount + srcFaceCount;
+
+      /*
+       * All topology references are stored as int.
+       */
+      if (finalVertexCount > maxIntIndex || finalHalfedgeCount > maxIntIndex ||
+          finalEdgeCount > maxIntIndex || finalFaceCount > maxIntIndex) {
+        return fail(
+            "aggregated DCEL exceeds the range of int topology indices");
+      }
+
+      const int vertexOffset = static_cast<int>(dstVertexCount);
+
+      const int halfedgeOffset = static_cast<int>(dstHalfedgeCount);
+
+      const int edgeOffset = static_cast<int>(dstEdgeCount);
+
+      const int faceOffset = static_cast<int>(dstFaceCount);
+
+      /*
+       * Validate a source-local index.
+       *
+       * -1 is the only accepted sentinel.
+       */
+      const auto validOptionalIndex = [](const int value,
+                                         const std::size_t sourceCount) {
+        if (value == -1)
+          return true;
+
+        if (value < -1)
+          return false;
+
+        return static_cast<std::size_t>(value) < sourceCount;
+      };
+
+      /*
+       * Preserve -1 and rebase only nonnegative values.
+       */
+      const auto rebaseIndex = [](const int value, const int offset) {
+        return value == -1 ? -1 : value + offset;
+      };
+
+      // ---------------------------------------------------------
+      // Validate all source topology before modifying anything.
+      // ---------------------------------------------------------
+
+      for (std::size_t i = 0; i < srcVertexCount; ++i) {
+        const Vertex &vertex = source.vertices[i];
+
+        if (!validOptionalIndex(vertex.halfedge, srcHalfedgeCount)) {
+          return fail("source vertex " + std::to_string(i) +
+                      " has invalid halfedge index " +
+                      std::to_string(vertex.halfedge));
         }
-        
-        for (int i=0;i<aggDcel.edges.size();i++){
-            edges.push_back(aggDcel.edges[i]);
-            edges[edges.size()-1].ID += currEOffset;
-            edges[edges.size()-1].halfedge += currHEOffset;
+      }
+
+      for (std::size_t i = 0; i < srcHalfedgeCount; ++i) {
+        const Halfedge &halfedge = source.halfedges[i];
+
+        if (!validOptionalIndex(halfedge.vertex, srcVertexCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid vertex index " +
+                      std::to_string(halfedge.vertex));
         }
-        for (int i=0;i<aggDcel.faces.size();i++){
-            faces.push_back(aggDcel.faces[i]);
-            faces[faces.size()-1].ID += currFOffset;
-            faces[faces.size()-1].halfedge += currHEOffset;
+
+        if (!validOptionalIndex(halfedge.next, srcHalfedgeCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid next index " +
+                      std::to_string(halfedge.next));
         }
+
+        if (!validOptionalIndex(halfedge.prev, srcHalfedgeCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid prev index " +
+                      std::to_string(halfedge.prev));
+        }
+
+        if (!validOptionalIndex(halfedge.twin, srcHalfedgeCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid twin index " +
+                      std::to_string(halfedge.twin));
+        }
+
+        if (!validOptionalIndex(halfedge.face, srcFaceCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid face index " +
+                      std::to_string(halfedge.face));
+        }
+
+        if (!validOptionalIndex(halfedge.edge, srcEdgeCount)) {
+          return fail("source halfedge " + std::to_string(i) +
+                      " has invalid edge index " +
+                      std::to_string(halfedge.edge));
+        }
+      }
+
+      for (std::size_t i = 0; i < srcEdgeCount; ++i) {
+        const Edge &edge = source.edges[i];
+
+        if (!validOptionalIndex(edge.halfedge, srcHalfedgeCount)) {
+          return fail("source edge " + std::to_string(i) +
+                      " has invalid halfedge index " +
+                      std::to_string(edge.halfedge));
+        }
+      }
+
+      for (std::size_t i = 0; i < srcFaceCount; ++i) {
+        const Face &face = source.faces[i];
+
+        if (!validOptionalIndex(face.halfedge, srcHalfedgeCount)) {
+          return fail("source face " + std::to_string(i) +
+                      " has invalid halfedge index " +
+                      std::to_string(face.halfedge));
+        }
+      }
+
+      // ---------------------------------------------------------
+      // Build complete replacement vectors.
+      //
+      // The existing destination remains unchanged until swap().
+      // ---------------------------------------------------------
+
+      try {
+        auto newVertices = vertices;
+        auto newHalfedges = halfedges;
+        auto newEdges = edges;
+        auto newFaces = faces;
+
+        newVertices.reserve(finalVertexCount);
+        newHalfedges.reserve(finalHalfedgeCount);
+        newEdges.reserve(finalEdgeCount);
+        newFaces.reserve(finalFaceCount);
+
+        for (std::size_t i = 0; i < srcVertexCount; ++i) {
+          Vertex vertex = source.vertices[i];
+
+          /*
+           * Assign the real final index rather than doing:
+           *
+           *     vertex.ID += vertexOffset;
+           *
+           * Source IDs may be stale, -1, or non-contiguous.
+           */
+          vertex.ID = vertexOffset + static_cast<int>(i);
+
+          vertex.halfedge = rebaseIndex(vertex.halfedge, halfedgeOffset);
+
+          newVertices.push_back(std::move(vertex));
+        }
+
+        for (std::size_t i = 0; i < srcHalfedgeCount; ++i) {
+          Halfedge halfedge = source.halfedges[i];
+
+          halfedge.ID = halfedgeOffset + static_cast<int>(i);
+
+          halfedge.vertex = rebaseIndex(halfedge.vertex, vertexOffset);
+
+          halfedge.next = rebaseIndex(halfedge.next, halfedgeOffset);
+
+          halfedge.prev = rebaseIndex(halfedge.prev, halfedgeOffset);
+
+          halfedge.twin = rebaseIndex(halfedge.twin, halfedgeOffset);
+
+          halfedge.face = rebaseIndex(halfedge.face, faceOffset);
+
+          halfedge.edge = rebaseIndex(halfedge.edge, edgeOffset);
+
+          newHalfedges.push_back(std::move(halfedge));
+        }
+
+        for (std::size_t i = 0; i < srcEdgeCount; ++i) {
+          Edge edge = source.edges[i];
+
+          edge.ID = edgeOffset + static_cast<int>(i);
+
+          edge.halfedge = rebaseIndex(edge.halfedge, halfedgeOffset);
+
+          newEdges.push_back(std::move(edge));
+        }
+
+        for (std::size_t i = 0; i < srcFaceCount; ++i) {
+          Face face = source.faces[i];
+
+          face.ID = faceOffset + static_cast<int>(i);
+
+          face.halfedge = rebaseIndex(face.halfedge, halfedgeOffset);
+
+          newFaces.push_back(std::move(face));
+        }
+
+        /*
+         * Commit atomically at the vector level.
+         */
+        vertices.swap(newVertices);
+        halfedges.swap(newHalfedges);
+        edges.swap(newEdges);
+        faces.swap(newFaces);
+      } catch (const std::exception &exception) {
+        return fail(std::string("failed while constructing aggregated DCEL: ") +
+                    exception.what());
+      }
+
+      return true;
     }
-    
-    void RemoveVertex(int vindex, std::deque<int> &removeVertexQueue) {
-        int hebegin = vertices[vindex].halfedge;
-        int heiterate = hebegin;
-        do {
-            if (heiterate == -1) {  //boundary vertex
-                return;
-            }
-            heiterate = halfedges[halfedges[heiterate].prev].twin;
-        } while (heiterate != hebegin);
-        
-        vertices[vindex].valid = false;
-        
-        int remainingFace = halfedges[hebegin].face;
-        
-        
-        faces[remainingFace].halfedge = halfedges[hebegin].next;
-        heiterate = hebegin;
-        int infinityCounter = 0;
-        do {
-            
-            int NextEdge = halfedges[heiterate].next;
-            int PrevEdge = halfedges[halfedges[heiterate].twin].prev;
-            
-            halfedges[NextEdge].prev = PrevEdge;
-            halfedges[PrevEdge].next = NextEdge;
-            if (halfedges[NextEdge].face != remainingFace)
-                faces[halfedges[NextEdge].face].valid = false;
-            
-            if (halfedges[PrevEdge].face != remainingFace)
-                faces[halfedges[PrevEdge].face].valid = false;
-            
-            
-            halfedges[PrevEdge].face = halfedges[NextEdge].face = remainingFace;
-            halfedges[heiterate].valid = false;
-            halfedges[halfedges[heiterate].twin].valid = false;
-            heiterate = halfedges[halfedges[heiterate].prev].twin;
-            infinityCounter++;
-            if (infinityCounter > halfedges.size())
-                return;
-            
-        } while (heiterate != hebegin);
-        
-        //cleaning new face
-        hebegin = faces[remainingFace].halfedge;
-        //faces[remainingFace].Numvertices=0;
-        heiterate = hebegin;
-        infinityCounter = 0;
-        do {
-            //faces[remainingFace].Numvertices++;
-            halfedges[heiterate].face = remainingFace;
-            vertices[halfedges[heiterate].Origin].halfedge = heiterate;
-            removeVertexQueue.push_front(halfedges[heiterate].Origin);
-            infinityCounter++;
-            if (infinityCounter > halfedges.size())
-                return;
-            
-            heiterate = halfedges[heiterate].next;
-        } while (heiterate != hebegin);
+
+    bool RemoveVertex(const int vindex, std::deque<int> &removeVertexQueue,
+                      const bool verbose = false) {
+      /*
+       * Transactional vertex removal.
+       *
+       * Returns:
+       *   true  = vertex was removed successfully
+       *   false = vertex was not removed; DCEL is left unchanged
+       */
+
+      struct RemovalOp {
+        int outgoing;   // halfedge starting at removed vertex
+        int twin;       // opposite halfedge
+        int nextEdge;   // outgoing.next
+        int prevAcross; // outgoing.twin.prev
+        int nextFace;
+        int prevFace;
+        int outgoingEdge;
+        int twinEdge;
+      };
+
+      const int vertexCount = static_cast<int>(vertices.size());
+
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+
+      const int faceCount = static_cast<int>(faces.size());
+
+      const int edgeCount = static_cast<int>(edges.size());
+
+      const auto validVertexIndex = [&](const int v) {
+        return v >= 0 && v < vertexCount && vertices[v].valid;
+      };
+
+      const auto validHalfedgeIndex = [&](const int he) {
+        return he >= 0 && he < halfedgeCount && halfedges[he].valid;
+      };
+
+      const auto validFaceIndex = [&](const int f) {
+        return f >= 0 && f < faceCount && faces[f].valid;
+      };
+
+      const auto validEdgeIndex = [&](const int e) {
+        return e >= 0 && e < edgeCount && edges[e].valid;
+      };
+
+      const auto logFail = [&](const char *message, const int id = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::RemoveVertex()]: " << message;
+
+          if (id >= 0)
+            std::cerr << " " << id;
+
+          std::cerr << '\n';
+        }
+      };
+
+      if (!validVertexIndex(vindex)) {
+        logFail("invalid vertex index", vindex);
+        return false;
+      }
+
+      const int heBegin = vertices[vindex].halfedge;
+
+      if (!validHalfedgeIndex(heBegin)) {
+        logFail("vertex references invalid halfedge", heBegin);
+        return false;
+      }
+
+      if (halfedges[heBegin].vertex != vindex) {
+        logFail("vertex incident halfedge has different origin", heBegin);
+        return false;
+      }
+
+      const int remainingFace = halfedges[heBegin].face;
+
+      if (!validFaceIndex(remainingFace)) {
+        logFail("incident halfedge references invalid remaining face",
+                remainingFace);
+        return false;
+      }
+
+      /*
+       * Phase 1: collect the complete closed one-ring around the vertex.
+       *
+       * Original traversal:
+       *     he = halfedges[halfedges[he].prev].twin;
+       *
+       * This only works for an interior vertex. If a twin is -1, the
+       * vertex is on a boundary and should not be removed by this routine.
+       */
+      std::vector<RemovalOp> ops;
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount), 0);
+
+      int he = heBegin;
+
+      for (int steps = 0; steps < halfedgeCount; ++steps) {
+        if (!validHalfedgeIndex(he)) {
+          logFail("invalid halfedge while walking vertex fan", he);
+          return false;
+        }
+
+        if (visited[he]) {
+          if (he == heBegin)
+            break;
+
+          logFail("vertex fan walk entered a non-start cycle", he);
+          return false;
+        }
+
+        visited[he] = 1;
+
+        if (halfedges[he].vertex != vindex) {
+          logFail("fan halfedge does not originate at target vertex", he);
+          return false;
+        }
+
+        const int prev = halfedges[he].prev;
+        const int next = halfedges[he].next;
+        const int twin = halfedges[he].twin;
+
+        if (!validHalfedgeIndex(prev)) {
+          logFail("fan halfedge has invalid prev", he);
+          return false;
+        }
+
+        if (!validHalfedgeIndex(next)) {
+          logFail("fan halfedge has invalid next", he);
+          return false;
+        }
+
+        /*
+         * Boundary vertex. Original code returned here, but only because
+         * it had not mutated anything yet. Keep that behavior as a safe
+         * no-op.
+         */
+        if (twin < 0) {
+          logFail("vertex is on boundary; removal skipped", vindex);
+          return false;
+        }
+
+        if (!validHalfedgeIndex(twin)) {
+          logFail("fan halfedge has invalid twin", he);
+          return false;
+        }
+
+        if (halfedges[twin].twin != he) {
+          logFail("fan halfedge twin is not mutual", he);
+          return false;
+        }
+
+        const int prevAcross = halfedges[twin].prev;
+
+        if (!validHalfedgeIndex(prevAcross)) {
+          logFail("twin halfedge has invalid prev", twin);
+          return false;
+        }
+
+        const int nextFace = halfedges[next].face;
+        const int prevFace = halfedges[prevAcross].face;
+
+        if (!validFaceIndex(nextFace)) {
+          logFail("next edge references invalid face", nextFace);
+          return false;
+        }
+
+        if (!validFaceIndex(prevFace)) {
+          logFail("previous-across edge references invalid face", prevFace);
+          return false;
+        }
+
+        const int outgoingEdge = halfedges[he].edge;
+        const int twinEdge = halfedges[twin].edge;
+
+        if (!validEdgeIndex(outgoingEdge)) {
+          logFail("outgoing halfedge references invalid edge", outgoingEdge);
+          return false;
+        }
+
+        if (!validEdgeIndex(twinEdge)) {
+          logFail("twin halfedge references invalid edge", twinEdge);
+          return false;
+        }
+
+        ops.push_back(RemovalOp{he, twin, next, prevAcross, nextFace, prevFace,
+                                outgoingEdge, twinEdge});
+
+        const int nextAroundVertex = halfedges[prev].twin;
+
+        if (nextAroundVertex < 0) {
+          logFail(
+              "vertex fan reached boundary while expecting closed interior fan",
+              he);
+          return false;
+        }
+
+        if (!validHalfedgeIndex(nextAroundVertex)) {
+          logFail("next fan halfedge is invalid", nextAroundVertex);
+          return false;
+        }
+
+        he = nextAroundVertex;
+
+        if (he == heBegin)
+          break;
+      }
+
+      if (ops.empty()) {
+        logFail("no removable fan halfedges collected", vindex);
+        return false;
+      }
+
+      if (he != heBegin) {
+        logFail("vertex fan did not close within traversal bound", vindex);
+        return false;
+      }
+
+      const int newRemainingFaceHalfedge = halfedges[heBegin].next;
+
+      if (!validHalfedgeIndex(newRemainingFaceHalfedge)) {
+        logFail("new remaining face halfedge is invalid",
+                newRemainingFaceHalfedge);
+        return false;
+      }
+
+      /*
+       * Phase 2: snapshot. Anything after this point can rollback.
+       *
+       * This is intentionally simple. RemoveVertex is a topology-editing
+       * operation, not a hot inner numeric kernel.
+       */
+      const auto oldVertices = vertices;
+      const auto oldHalfedges = halfedges;
+      const auto oldFaces = faces;
+      const auto oldEdges = edges;
+      const auto oldQueue = removeVertexQueue;
+
+      const auto rollback = [&]() {
+        vertices = oldVertices;
+        halfedges = oldHalfedges;
+        faces = oldFaces;
+        edges = oldEdges;
+        removeVertexQueue = oldQueue;
+      };
+
+      /*
+       * Phase 3: commit rewiring.
+       */
+
+      vertices[vindex].valid = false;
+
+      faces[remainingFace].halfedge = newRemainingFaceHalfedge;
+
+      for (const RemovalOp &op : ops) {
+        halfedges[op.nextEdge].prev = op.prevAcross;
+
+        halfedges[op.prevAcross].next = op.nextEdge;
+
+        if (op.nextFace != remainingFace)
+          faces[op.nextFace].valid = false;
+
+        if (op.prevFace != remainingFace)
+          faces[op.prevFace].valid = false;
+
+        halfedges[op.nextEdge].face = remainingFace;
+
+        halfedges[op.prevAcross].face = remainingFace;
+
+        halfedges[op.outgoing].valid = false;
+        halfedges[op.twin].valid = false;
+
+        edges[op.outgoingEdge].valid = false;
+        edges[op.twinEdge].valid = false;
+      }
+
+      /*
+       * Phase 4: clean the merged face.
+       *
+       * This is now bounded and rollback-protected. If the new face cycle
+       * is broken, the original DCEL is restored.
+       */
+      int current = faces[remainingFace].halfedge;
+
+      if (!validHalfedgeIndex(current)) {
+        rollback();
+        logFail("merged face references invalid halfedge after commit",
+                current);
+        return false;
+      }
+
+      std::vector<unsigned char> faceVisited(
+          static_cast<std::size_t>(halfedgeCount), 0);
+
+      for (int steps = 0; steps < halfedgeCount; ++steps) {
+        if (!validHalfedgeIndex(current)) {
+          rollback();
+          logFail("merged face walk reached invalid halfedge", current);
+          return false;
+        }
+
+        if (faceVisited[current]) {
+          if (current == faces[remainingFace].halfedge)
+            return true;
+
+          rollback();
+          logFail("merged face walk entered non-start cycle", current);
+          return false;
+        }
+
+        faceVisited[current] = 1;
+
+        const int origin = halfedges[current].vertex;
+
+        if (!validVertexIndex(origin)) {
+          rollback();
+          logFail("merged face contains invalid origin vertex", origin);
+          return false;
+        }
+
+        halfedges[current].face = remainingFace;
+
+        vertices[origin].halfedge = current;
+
+        removeVertexQueue.push_front(origin);
+
+        const int next = halfedges[current].next;
+
+        if (!validHalfedgeIndex(next)) {
+          rollback();
+          logFail("merged face halfedge has invalid next", current);
+          return false;
+        }
+
+        current = next;
+
+        if (current == faces[remainingFace].halfedge)
+          return true;
+      }
+
+      rollback();
+      logFail("merged face walk exceeded traversal bound", remainingFace);
+      return false;
     }
-    
-    
-    
+
     //Initializing DCEL from faces, assuming this is a triangle mesh
     void init(const Eigen::MatrixXd& V,
               const Eigen::MatrixXi& F){
