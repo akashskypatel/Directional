@@ -329,14 +329,6 @@ public:
   bool visit_boundary_seeds(SimplifyScratch &scratch) {
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
-    const auto validHalfedgeIndex = [&](const int index) -> bool {
-      return index >= 0 && index < halfedgeCount;
-    };
-
-    const auto validHalfedge = [&](const int index) -> bool {
-      return validHalfedgeIndex(index) && genDcel.halfedges[index].valid;
-    };
-
     const auto validOrig = [&](const int orig) -> bool {
       return orig >= 0 && orig <= scratch.maxOrigHE;
     };
@@ -373,7 +365,7 @@ public:
 
       log_progress("boundary seed scan", seed, halfedgeCount);
 
-      if (!validHalfedge(seed)) {
+      if (!genDcel.valid_halfedge(seed)) {
         continue;
       }
 
@@ -402,7 +394,7 @@ public:
 
       for (int step = 0; step < halfedgeCount; ++step) {
 
-        if (!validHalfedge(current)) {
+        if (!genDcel.valid_halfedge(current)) {
           return fail("boundary traversal reached an invalid "
                       "halfedge",
                       seed, current);
@@ -423,13 +415,12 @@ public:
 
         const int orig = genDcel.halfedges[current].data.origHalfedge;
 
-        if (!validOrig(orig)) {
-          return fail("boundary traversal encountered an "
-                      "invalid original-halfedge ID",
-                      seed, current);
-        }
+        if (orig >= 0) {
+          if (orig > scratch.maxOrigHE)
+            return false;
 
-        scratch.visitedOrig[orig] = true;
+          scratch.visitedOrig[orig] = true;
+        }
 
         int nextBoundary = current;
 
@@ -438,7 +429,7 @@ public:
           return fail("DCEL boundary walk failed", seed, current);
         }
 
-        if (!validHalfedge(nextBoundary)) {
+        if (!genDcel.valid_halfedge(nextBoundary)) {
           return fail("boundary walk returned an invalid "
                       "halfedge",
                       seed, nextBoundary);
@@ -467,11 +458,8 @@ public:
                               const char *context) const {
     const int halfedge_count = static_cast<int>(genDcel.halfedges.size());
 
-    const auto valid_halfedge = [&](const int he) {
-      return he >= 0 && he < halfedge_count && genDcel.halfedges[he].valid;
-    };
 
-    if (!valid_halfedge(current)) {
+    if (!genDcel.valid_halfedge(current)) {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::" << context
                   << "]: invalid starting halfedge " << current << '\n';
@@ -494,7 +482,7 @@ public:
     // A valid vertex fan cannot require more than the total number of
     // halfedges. This bound guarantees termination even for corrupt DCELs.
     for (int steps = 0; steps < halfedge_count; ++steps) {
-      if (!valid_halfedge(cursor)) {
+      if (!genDcel.valid_halfedge(cursor)) {
         if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::" << context
                     << "]: invalid fan halfedge " << cursor << '\n';
@@ -503,7 +491,7 @@ public:
       }
 
       const int next = genDcel.halfedges[cursor].next;
-      if (!valid_halfedge(next)) {
+      if (!genDcel.valid_halfedge(next)) {
         if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::" << context
                     << "]: halfedge " << cursor << " has invalid next " << next
@@ -521,7 +509,7 @@ public:
         return true;
       }
 
-      if (!valid_halfedge(twin)) {
+      if (!genDcel.valid_halfedge(twin)) {
         if (mData.verbose) {
           std::cerr << "[Directional::NFunctionMesher::" << context
                     << "]: halfedge " << cursor << " has invalid twin " << twin
@@ -870,136 +858,194 @@ public:
     }
   }
 
-  void prune_remap_created_degenerates(const std::vector<int> &preRemapOrigin,
+  bool prune_remap_created_degenerates(const std::vector<int> &preRemapOrigin,
                                        const std::vector<int> &preRemapTarget) {
     int prunedCount = 0;
     int detailedLogs = 0;
-    for (int i = 0; i < genDcel.halfedges.size(); i++) {
-      if (!genDcel.halfedges[i].valid)
-        continue;
-      const int next = genDcel.halfedges[i].next;
-      if (next < 0 || !genDcel.halfedges[next].valid)
-        continue;
-      if (genDcel.halfedges[i].vertex != genDcel.halfedges[next].vertex)
-        continue;
 
-      if (mData.verbose && detailedLogs < 8) {
-        std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: pruning "
-                     "remap-created degenerate halfedge "
-                  << i
-                  << " origHalfedge=" << genDcel.halfedges[i].data.origHalfedge
-                  << " face=" << genDcel.halfedges[i].face
-                  << " edge=" << genDcel.halfedges[i].edge
-                  << " twin=" << genDcel.halfedges[i].twin << " before=("
-                  << preRemapOrigin[i] << " -> " << preRemapTarget[i] << ")"
-                  << " after=(" << genDcel.halfedges[i].vertex << " -> "
-                  << genDcel.halfedges[next].vertex << ")"
-                  << " reps=("
-                  << (preRemapOrigin[i] >= 0 ? TransVertices[preRemapOrigin[i]]
-                                             : -1)
-                  << ", "
-                  << (preRemapTarget[i] >= 0 ? TransVertices[preRemapTarget[i]]
-                                             : -1)
-                  << ")" << std::endl;
-        detailedLogs++;
+    /*
+     * Removing one degenerate may expose another, so repeat
+     * until a complete pass makes no change.
+     *
+     * Each successful removal strictly reduces the number of
+     * valid halfedges, which guarantees termination.
+     */
+    for (;;) {
+      bool changed = false;
+
+      const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!genDcel.valid_halfedge(he))
+          continue;
+
+        const int next = genDcel.halfedges[he].next;
+
+        if (!genDcel.valid_halfedge(next))
+          return false;
+
+        if (genDcel.halfedges[he].vertex != genDcel.halfedges[next].vertex) {
+          continue;
+        }
+
+        if (mData.verbose && detailedLogs < 8) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "prune_remap_created_degenerates()]: "
+                    << "removing degenerate halfedge " << he << " origHalfedge="
+                    << genDcel.halfedges[he].data.origHalfedge
+                    << " face=" << genDcel.halfedges[he].face
+                    << " edge=" << genDcel.halfedges[he].edge
+                    << " twin=" << genDcel.halfedges[he].twin << " before=("
+                    << preRemapOrigin[he] << " -> " << preRemapTarget[he]
+                    << ") after=(" << genDcel.halfedges[he].vertex << " -> "
+                    << genDcel.halfedges[next].vertex << ")" << std::endl;
+
+          ++detailedLogs;
+        }
+
+        const std::size_t validBefore =
+            std::count_if(genDcel.halfedges.begin(), genDcel.halfedges.end(),
+                          [](const auto &halfedge) { return halfedge.valid; });
+
+        if (!genDcel.remove_degenerate_edge(he, mData.verbose)) {
+          return false;
+        }
+
+        const std::size_t validAfter =
+            std::count_if(genDcel.halfedges.begin(), genDcel.halfedges.end(),
+                          [](const auto &halfedge) { return halfedge.valid; });
+
+        if (validAfter >= validBefore) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "prune_remap_created_degenerates()]: "
+                      << "successful removal did not reduce "
+                         "valid halfedge count"
+                      << std::endl;
+          }
+
+          return false;
+        }
+
+        ++prunedCount;
+        changed = true;
+
+        /*
+         * Topology changed; restart from index zero.
+         */
+        break;
       }
 
-      const int twin = genDcel.halfedges[i].twin;
-      if (twin >= 0)
-        genDcel.halfedges[twin].twin = -1;
-      if (genDcel.halfedges[i].edge >= 0)
-        genDcel.edges[genDcel.halfedges[i].edge].valid = false;
-      genDcel.halfedges[i].twin = -1;
-      genDcel.halfedges[i].valid = false;
-      prunedCount++;
+      if (!changed)
+        break;
     }
 
-    if (mData.verbose)
-      std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: pruned "
-                   "remap-created degenerate halfedges: "
-                << prunedCount << std::endl;
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return false;
+    }
 
-    int invalidatedVertices = 0;
-    for (int i = 0; i < genDcel.vertices.size(); i++)
-      genDcel.vertices[i].halfedge = -1;
-    for (int i = 0; i < genDcel.halfedges.size(); i++) {
-      if (!genDcel.halfedges[i].valid)
-        continue;
-      const int vertex = genDcel.halfedges[i].vertex;
-      if (vertex >= 0 && genDcel.vertices[vertex].valid &&
-          genDcel.vertices[vertex].halfedge < 0)
-        genDcel.vertices[vertex].halfedge = i;
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "prune_remap_created_degenerates()]: "
+                << "removed degenerate edges: " << prunedCount << std::endl;
     }
-    for (int i = 0; i < genDcel.vertices.size(); i++) {
-      if (!genDcel.vertices[i].valid)
-        continue;
-      if (genDcel.vertices[i].halfedge >= 0)
-        continue;
-      genDcel.vertices[i].valid = false;
-      invalidatedVertices++;
-    }
-    if (mData.verbose && invalidatedVertices > 0)
-      std::cout
-          << "[Directional::NFunctionMesher::simplify_mesh()]: invalidated "
-             "vertices without valid halfedges after remap prune: "
-          << invalidatedVertices << std::endl;
+
+    return true;
   }
 
-  void retwin_halfedges() {
-    std::set<FunctionDCEL::TwinFinder> Twinning;
-    for (int i = 0; i < genDcel.halfedges.size(); i++) {
+  int retwin_halfedges() {
+    int twinPairsCreated = 0;
+
+    std::set<FunctionDCEL::TwinFinder> twinning;
+
+    for (int i = 0; i < static_cast<int>(genDcel.halfedges.size()); ++i) {
       log_progress("halfedge twinning", i,
                    static_cast<int>(genDcel.halfedges.size()));
-      if ((genDcel.halfedges[i].twin >= 0) || (!genDcel.halfedges[i].valid))
+
+      if (!genDcel.halfedges[i].valid || genDcel.halfedges[i].twin >= 0) {
         continue;
+      }
 
-      std::set<FunctionDCEL::TwinFinder>::iterator Twinit =
-          Twinning.find(FunctionDCEL::TwinFinder(
-              0, genDcel.halfedges[genDcel.halfedges[i].next].vertex,
-              genDcel.halfedges[i].vertex));
-      if (Twinit != Twinning.end()) {
-        if ((genDcel.halfedges[Twinit->index].twin != -1) && (mData.verbose))
-          std::cout << "warning: halfedge " << Twinit->index
-                    << " is already twinned to halfedge "
-                    << genDcel.halfedges[Twinit->index].twin << std::endl;
-        if ((genDcel.halfedges[i].twin != -1) && (mData.verbose))
-          std::cout << "warning: halfedge " << i
-                    << " is already twinned to halfedge "
-                    << genDcel.halfedges[Twinit->index].twin << std::endl;
-        genDcel.halfedges[Twinit->index].twin = i;
-        genDcel.halfedges[i].twin = Twinit->index;
+      const int next = genDcel.halfedges[i].next;
 
-        genDcel.edges[genDcel.halfedges[Twinit->index].edge].valid = false;
-        genDcel.halfedges[Twinit->index].edge = genDcel.halfedges[i].edge;
-
-        if (genDcel.halfedges[i].data.isFunction) {
-          genDcel.halfedges[Twinit->index].data.isFunction = true;
-        } else if (genDcel.halfedges[Twinit->index].data.isFunction) {
-          genDcel.halfedges[i].data.isFunction = true;
+      if (!genDcel.valid_halfedge(next)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "retwin_halfedges()]: invalid next for halfedge "
+                    << i << '\n';
         }
-        Twinning.erase(*Twinit);
+
+        return -1;
+      }
+
+      const int source = genDcel.halfedges[i].vertex;
+
+      const int target = genDcel.halfedges[next].vertex;
+
+      const auto reverse =
+          twinning.find(FunctionDCEL::TwinFinder(0, target, source));
+
+      if (reverse != twinning.end()) {
+        const int other = reverse->index;
+
+        if (!genDcel.valid_halfedge(other) ||
+            genDcel.halfedges[other].twin >= 0) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "retwin_halfedges()]: invalid candidate twin "
+                      << other << " for halfedge " << i << '\n';
+          }
+
+          return -1;
+        }
+
+        genDcel.halfedges[other].twin = i;
+        genDcel.halfedges[i].twin = other;
+
+        const int discardedEdge = genDcel.halfedges[other].edge;
+
+        const int survivingEdge = genDcel.halfedges[i].edge;
+
+        if (!genDcel.valid_edge(discardedEdge) ||
+            !genDcel.valid_edge(survivingEdge)) {
+          return -1;
+        }
+
+        genDcel.edges[discardedEdge].valid = false;
+        genDcel.edges[discardedEdge].halfedge = -1;
+
+        genDcel.halfedges[other].edge = survivingEdge;
+
+        genDcel.edges[survivingEdge].halfedge = i;
+
+        if (genDcel.halfedges[i].data.isFunction ||
+            genDcel.halfedges[other].data.isFunction) {
+          genDcel.halfedges[i].data.isFunction = true;
+          genDcel.halfedges[other].data.isFunction = true;
+        }
+
+        twinning.erase(reverse);
+        ++twinPairsCreated;
       } else {
-        Twinning.insert(FunctionDCEL::TwinFinder(
-            i, genDcel.halfedges[i].vertex,
-            genDcel.halfedges[genDcel.halfedges[i].next].vertex));
+        twinning.insert(FunctionDCEL::TwinFinder(i, source, target));
       }
     }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "retwin_halfedges()]: created "
+                << twinPairsCreated
+                << " twin pairs; unmatched boundary halfedges: "
+                << twinning.size() << '\n';
+    }
+
+    return twinPairsCreated;
   }
 
   bool classify_triangle_regions(SimplifyScratch &scratch) {
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
 
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
-
-    const auto validVertex = [&](const int vertex) {
-      return vertex >= 0 && vertex < vertexCount &&
-             genDcel.vertices[vertex].valid;
-    };
-
-    const auto validHalfedge = [&](const int halfedge) {
-      return halfedge >= 0 && halfedge < halfedgeCount &&
-             genDcel.halfedges[halfedge].valid;
-    };
 
     const auto fail = [&](const char *message, const int index = -1) {
       if (mData.verbose) {
@@ -1049,20 +1095,20 @@ public:
 
       const int origin = he.vertex;
 
-      if (!validVertex(origin)) {
+      if (!genDcel.valid_vertex_index(origin)) {
         return fail("valid halfedge references invalid origin vertex",
                     halfedge);
       }
 
       const int next = he.next;
 
-      if (!validHalfedge(next)) {
+      if (!genDcel.valid_halfedge_index(next)) {
         return fail("valid halfedge has invalid next link", halfedge);
       }
 
       const int target = genDcel.halfedges[next].vertex;
 
-      if (!validVertex(target)) {
+      if (!genDcel.valid_vertex_index(target)) {
         return fail("valid halfedge references invalid target vertex",
                     halfedge);
       }
@@ -1084,7 +1130,7 @@ public:
         scratch.isPureTriangle[origin] = false;
       } else if (he.twin < -1) {
         return fail("halfedge has invalid negative twin sentinel", halfedge);
-      } else if (!validHalfedge(he.twin)) {
+      } else if (!genDcel.valid_halfedge(he.twin)) {
         return fail("halfedge has invalid twin", halfedge);
       }
     }
@@ -1106,7 +1152,7 @@ public:
 
       const int incident = genDcel.vertices[vertex].halfedge;
 
-      if (!validHalfedge(incident)) {
+      if (!genDcel.valid_halfedge(incident)) {
         return fail("valid vertex references invalid incident halfedge",
                     vertex);
       }
@@ -1117,7 +1163,7 @@ public:
 
       const int prev = genDcel.halfedges[incident].prev;
 
-      if (!validHalfedge(prev)) {
+      if (!genDcel.valid_halfedge_index(prev)) {
         return fail("incident halfedge has invalid prev link", incident);
       }
 
@@ -1133,11 +1179,11 @@ public:
         return fail("previous halfedge has invalid twin sentinel", prev);
       }
 
-      if (incidentTwin >= 0 && !validHalfedge(incidentTwin)) {
+      if (incidentTwin >= 0 && !genDcel.valid_halfedge(incidentTwin)) {
         return fail("incident halfedge has invalid twin", incident);
       }
 
-      if (prevTwin >= 0 && !validHalfedge(prevTwin)) {
+      if (prevTwin >= 0 && !genDcel.valid_halfedge(prevTwin)) {
         return fail("previous halfedge has invalid twin", prev);
       }
 
@@ -1158,10 +1204,6 @@ public:
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
-
-    const auto validHalfedge = [&](const int he) {
-      return he >= 0 && he < halfedgeCount && genDcel.halfedges[he].valid;
-    };
 
     const auto fail = [&](const int vertex, const char *message,
                           const int he = -1) {
@@ -1200,7 +1242,7 @@ public:
 
       int heBegin = genDcel.vertices[i].halfedge;
 
-      if (!validHalfedge(heBegin)) {
+      if (!genDcel.valid_halfedge(heBegin)) {
         return fail(i, "invalid incident halfedge", heBegin);
       }
 
@@ -1216,7 +1258,7 @@ public:
         bool foundBoundaryStart = false;
 
         for (int steps = 0; steps < halfedgeCount; ++steps) {
-          if (!validHalfedge(heBegin)) {
+          if (!genDcel.valid_halfedge(heBegin)) {
             return fail(i,
                         "invalid halfedge during backward "
                         "fan walk",
@@ -1231,7 +1273,7 @@ public:
 
           const int prev = genDcel.halfedges[heBegin].prev;
 
-          if (!validHalfedge(prev)) {
+          if (!genDcel.valid_halfedge_index(prev)) {
             return fail(i,
                         "invalid prev link during backward "
                         "fan walk",
@@ -1245,7 +1287,7 @@ public:
             break;
           }
 
-          if (!validHalfedge(twin)) {
+          if (!genDcel.valid_halfedge(twin)) {
             return fail(i,
                         "invalid twin during backward "
                         "fan walk",
@@ -1276,7 +1318,7 @@ public:
       bool reachedBoundaryEnd = false;
 
       for (int steps = 0; steps < halfedgeCount; ++steps) {
-        if (!validHalfedge(he)) {
+        if (!genDcel.valid_halfedge(he)) {
           return fail(i,
                       "invalid halfedge during forward "
                       "fan walk",
@@ -1316,7 +1358,7 @@ public:
           break;
         }
 
-        if (!validHalfedge(twin)) {
+        if (!genDcel.valid_halfedge(twin)) {
           return fail(i,
                       "invalid twin during forward "
                       "fan walk",
@@ -1325,7 +1367,7 @@ public:
 
         const int next = genDcel.halfedges[twin].next;
 
-        if (!validHalfedge(next)) {
+        if (!genDcel.valid_halfedge_index(next)) {
           return fail(i,
                       "invalid next link during forward "
                       "fan walk",
@@ -1382,14 +1424,14 @@ public:
 
         const int twin = genDcel.halfedges[current].twin;
 
-        if (!validHalfedge(current) || !validHalfedge(successor)) {
+        if (!genDcel.valid_halfedge(current) || !genDcel.valid_halfedge(successor)) {
           return fail(i,
                       "invalid retained halfedge before "
                       "rewiring",
                       current);
         }
 
-        if (!validHalfedge(twin)) {
+        if (!genDcel.valid_halfedge(twin)) {
           return fail(i,
                       "retained nonterminal halfedge has "
                       "no valid twin",
@@ -1402,7 +1444,7 @@ public:
       if (scratch.isBoundary[i]) {
         boundaryPrev = genDcel.halfedges[heBegin].prev;
 
-        if (!validHalfedge(boundaryPrev)) {
+        if (!genDcel.valid_halfedge(boundaryPrev)) {
           return fail(i,
                       "invalid boundary predecessor "
                       "before rewiring",
@@ -1481,18 +1523,6 @@ public:
 
     const int faceCount = static_cast<int>(genDcel.faces.size());
 
-    const auto validHalfedgeIndex = [&](const int index) -> bool {
-      return index >= 0 && index < halfedgeCount;
-    };
-
-    const auto validHalfedge = [&](const int index) -> bool {
-      return validHalfedgeIndex(index) && genDcel.halfedges[index].valid;
-    };
-
-    const auto validFaceIndex = [&](const int index) -> bool {
-      return index >= 0 && index < faceCount;
-    };
-
     const auto fail = [&](const char *message, const int index = -1) -> bool {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::" << context
@@ -1513,11 +1543,11 @@ public:
       return fail("DCEL contains no halfedges");
     }
 
-    if (!validHalfedge(startHalfedge)) {
+    if (!genDcel.valid_halfedge(startHalfedge)) {
       return fail("invalid starting halfedge", startHalfedge);
     }
 
-    if (expectedFace >= 0 && !validFaceIndex(expectedFace)) {
+    if (expectedFace >= 0 && !genDcel.valid_face_index(expectedFace)) {
       return fail("expected face is out of range", expectedFace);
     }
 
@@ -1528,7 +1558,7 @@ public:
 
     for (int step = 0; step < halfedgeCount; ++step) {
 
-      if (!validHalfedgeIndex(current)) {
+      if (!genDcel.valid_halfedge_index(current)) {
         return fail("face walk reached an out-of-range "
                     "halfedge",
                     current);
@@ -1561,7 +1591,7 @@ public:
 
       const int next = genDcel.halfedges[current].next;
 
-      if (!validHalfedgeIndex(next)) {
+      if (!genDcel.valid_halfedge_index(next)) {
         return fail("face walk encountered an out-of-range "
                     "next link",
                     next);
@@ -1588,10 +1618,6 @@ public:
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
     const int faceCount = static_cast<int>(genDcel.faces.size());
-
-    const auto validFaceIndex = [&](const int index) -> bool {
-      return index >= 0 && index < faceCount;
-    };
 
     const auto fail = [&](const char *message, const int index = -1) -> bool {
       if (mData.verbose) {
@@ -1627,7 +1653,7 @@ public:
 
       const int currentFace = genDcel.halfedges[seed].face;
 
-      if (!validFaceIndex(currentFace)) {
+      if (!genDcel.valid_face_index(currentFace)) {
         return fail("valid halfedge references an "
                     "out-of-range face",
                     seed);
@@ -1691,12 +1717,35 @@ public:
 
   bool prune_low_quality_faces_and_count_valence(SimplifyScratch &scratch) {
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
-
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
-
     const int edgeCount = static_cast<int>(genDcel.edges.size());
-
     const int faceCount = static_cast<int>(genDcel.faces.size());
+
+    /*
+     * Preserve the complete DCEL so that any failure during mutation can
+     * restore the exact topology that existed before this function.
+     */
+    const FunctionDCEL backupDcel = genDcel;
+
+    const auto rollback = [&]() { genDcel = backupDcel; };
+
+    const auto fail = [&](const std::string &message,
+                          const int index = -1) -> bool {
+      rollback();
+
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "prune_low_quality_faces_and_count_valence()]: "
+                  << message;
+
+        if (index >= 0)
+          std::cerr << " (index " << index << ")";
+
+        std::cerr << std::endl;
+      }
+
+      return false;
+    };
 
     const auto validVertexIndex = [&](const int index) -> bool {
       return index >= 0 && index < vertexCount;
@@ -1704,10 +1753,6 @@ public:
 
     const auto validHalfedgeIndex = [&](const int index) -> bool {
       return index >= 0 && index < halfedgeCount;
-    };
-
-    const auto validHalfedge = [&](const int index) -> bool {
-      return validHalfedgeIndex(index) && genDcel.halfedges[index].valid;
     };
 
     const auto validEdgeIndex = [&](const int index) -> bool {
@@ -1718,16 +1763,447 @@ public:
       return index >= 0 && index < faceCount;
     };
 
-    const auto fail = [&](const char *message, const int index = -1) -> bool {
+    const auto validVertex = [&](const int index) -> bool {
+      return validVertexIndex(index) && genDcel.vertices[index].valid;
+    };
+
+    const auto validHalfedge = [&](const int index) -> bool {
+      return validHalfedgeIndex(index) && genDcel.halfedges[index].valid;
+    };
+
+    const auto validEdge = [&](const int index) -> bool {
+      return validEdgeIndex(index) && genDcel.edges[index].valid;
+    };
+
+    const auto validFace = [&](const int index) -> bool {
+      return validFaceIndex(index) && genDcel.faces[index].valid;
+    };
+
+    /*
+     * Safely collect one complete face cycle.
+     *
+     * This does not mutate the DCEL.
+     */
+    const auto collectFaceCycle = [&](const int faceIndex,
+                                      std::vector<int> &cycle) -> bool {
+      cycle.clear();
+
+      if (!validFace(faceIndex))
+        return false;
+
+      const int start = genDcel.faces[faceIndex].halfedge;
+
+      if (!validHalfedge(start))
+        return false;
+
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      int current = start;
+
+      for (int step = 0; step < halfedgeCount; ++step) {
+        if (!validHalfedge(current))
+          return false;
+
+        if (visited[current]) {
+          /*
+           * Returning to the original halfedge is valid.
+           * Any other repetition is a malformed subcycle.
+           */
+          return current == start && !cycle.empty();
+        }
+
+        const auto &halfedge = genDcel.halfedges[current];
+
+        if (halfedge.face != faceIndex)
+          return false;
+
+        visited[current] = 1;
+        cycle.push_back(current);
+
+        const int next = halfedge.next;
+
+        if (!validHalfedge(next))
+          return false;
+
+        if (genDcel.halfedges[next].prev != current)
+          return false;
+
+        current = next;
+
+        if (current == start)
+          return true;
+      }
+
+      return false;
+    };
+
+    /*
+     * Count valence using the original pre-pruning topology.
+     *
+     * This preserves the original face-quality decision rule:
+     * a face is retained when it contains at least three corners whose
+     * vertices have valence greater than two.
+     */
+    const auto computeCurrentValences =
+        [&](std::vector<int> &valences) -> bool {
+      valences.assign(static_cast<std::size_t>(vertexCount), 0);
+
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!genDcel.halfedges[he].valid)
+          continue;
+
+        const auto &halfedge = genDcel.halfedges[he];
+
+        const int origin = halfedge.vertex;
+
+        if (!validVertex(origin))
+          return false;
+
+        ++valences[origin];
+
+        /*
+         * On a boundary edge, also count the target vertex. This
+         * preserves the behavior of the original implementation.
+         */
+        if (halfedge.twin < 0) {
+          const int next = halfedge.next;
+
+          if (!validHalfedge(next))
+            return false;
+
+          const int target = genDcel.halfedges[next].vertex;
+
+          if (!validVertex(target))
+            return false;
+
+          ++valences[target];
+        }
+      }
+
+      return true;
+    };
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 1: calculate pre-pruning valences.
+     * ------------------------------------------------------------------
+     */
+    std::vector<int> prePruneValences;
+
+    if (!computeCurrentValences(prePruneValences)) {
+      return fail("failed to compute valid pre-pruning vertex valences");
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 2: safely collect every valid face cycle and decide which
+     * faces must be removed.
+     *
+     * No topology is mutated during this phase.
+     * ------------------------------------------------------------------
+     */
+    std::vector<int> facesToRemove;
+    std::vector<std::vector<int>> removalCycles;
+
+    facesToRemove.reserve(static_cast<std::size_t>(faceCount));
+    removalCycles.reserve(static_cast<std::size_t>(faceCount));
+
+    std::vector<unsigned char> halfedgeScheduledForRemoval(
+        static_cast<std::size_t>(halfedgeCount), static_cast<unsigned char>(0));
+
+    std::vector<int> cycle;
+
+    for (int face = 0; face < faceCount; ++face) {
+      log_progress("low-quality face scan", face, faceCount);
+
+      if (!genDcel.faces[face].valid)
+        continue;
+
+      if (!collectFaceCycle(face, cycle)) {
+        return fail("failed to collect a valid closed face cycle", face);
+      }
+
+      if (cycle.size() < 3) {
+        return fail("valid face contains fewer than three halfedges", face);
+      }
+
+      int highValenceCornerCount = 0;
+
+      for (const int he : cycle) {
+        const int vertex = genDcel.halfedges[he].vertex;
+
+        if (!validVertex(vertex)) {
+          return fail("face cycle references an invalid vertex", he);
+        }
+
+        if (prePruneValences[vertex] > 2)
+          ++highValenceCornerCount;
+      }
+
+      if (highValenceCornerCount >= 3)
+        continue;
+
+      /*
+       * A valid halfedge must not appear in two different face cycles.
+       */
+      for (const int he : cycle) {
+        if (halfedgeScheduledForRemoval[he]) {
+          return fail("halfedge occurs in more than one face-removal cycle",
+                      he);
+        }
+
+        halfedgeScheduledForRemoval[he] = 1;
+      }
+
+      facesToRemove.push_back(face);
+      removalCycles.push_back(cycle);
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 3: validate all edge and twin relations before changing any
+     * topology.
+     * ------------------------------------------------------------------
+     */
+    for (std::size_t removalIndex = 0; removalIndex < removalCycles.size();
+         ++removalIndex) {
+      const int face = facesToRemove[removalIndex];
+
+      if (!validFace(face)) {
+        return fail("scheduled removal face became invalid before mutation",
+                    face);
+      }
+
+      for (const int he : removalCycles[removalIndex]) {
+        if (!validHalfedge(he)) {
+          return fail("scheduled removal contains an invalid halfedge", he);
+        }
+
+        const auto &halfedge = genDcel.halfedges[he];
+
+        if (halfedge.face != face) {
+          return fail("scheduled halfedge references the wrong face", he);
+        }
+
+        if (!validHalfedge(halfedge.prev)) {
+          return fail("scheduled halfedge has an invalid prev link", he);
+        }
+
+        if (!validHalfedge(halfedge.next)) {
+          return fail("scheduled halfedge has an invalid next link", he);
+        }
+
+        if (genDcel.halfedges[halfedge.prev].next != he) {
+          return fail("scheduled halfedge prev.next relation is inconsistent",
+                      he);
+        }
+
+        if (genDcel.halfedges[halfedge.next].prev != he) {
+          return fail("scheduled halfedge next.prev relation is inconsistent",
+                      he);
+        }
+
+        if (!validEdge(halfedge.edge)) {
+          return fail("scheduled halfedge references an invalid edge", he);
+        }
+
+        if (!validVertex(halfedge.vertex)) {
+          return fail("scheduled halfedge references an invalid vertex", he);
+        }
+
+        const int twin = halfedge.twin;
+
+        if (twin < -1) {
+          return fail("scheduled halfedge has an invalid negative twin", he);
+        }
+
+        if (twin >= 0) {
+          if (!validHalfedge(twin)) {
+            return fail("scheduled halfedge references an invalid twin", he);
+          }
+
+          if (genDcel.halfedges[twin].twin != he) {
+            return fail("scheduled halfedge twin relation is not mutual", he);
+          }
+
+          if (genDcel.halfedges[twin].edge != halfedge.edge) {
+            return fail("twin halfedges reference different edges", he);
+          }
+        }
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 4: commit all removals.
+     *
+     * For every removed halfedge:
+     *
+     *  - if its twin survives, the surviving twin becomes a boundary
+     *    halfedge and remains the representative of the edge;
+     *
+     *  - if its twin is also removed, or no twin exists, the edge becomes
+     *    invalid.
+     * ------------------------------------------------------------------
+     */
+    for (std::size_t removalIndex = 0; removalIndex < removalCycles.size();
+         ++removalIndex) {
+      const int face = facesToRemove[removalIndex];
+
+      for (const int he : removalCycles[removalIndex]) {
+        auto &halfedge = genDcel.halfedges[he];
+
+        const int twin = halfedge.twin;
+        const int edge = halfedge.edge;
+
+        const bool twinExists = twin >= 0;
+
+        const bool twinWillBeRemoved =
+            twinExists && halfedgeScheduledForRemoval[twin] != 0;
+
+        if (twinExists && !twinWillBeRemoved) {
+          /*
+           * The neighboring face survives. Convert its twin to a
+           * boundary halfedge.
+           */
+          genDcel.halfedges[twin].twin = -1;
+
+          genDcel.edges[edge].valid = true;
+          genDcel.edges[edge].halfedge = twin;
+        } else {
+          /*
+           * Neither side survives.
+           */
+          genDcel.edges[edge].valid = false;
+          genDcel.edges[edge].halfedge = -1;
+        }
+
+        halfedge.twin = -1;
+        halfedge.valid = false;
+      }
+
+      genDcel.faces[face].valid = false;
+      genDcel.faces[face].halfedge = -1;
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 5: rebuild representative pointers using only surviving
+     * halfedges.
+     * ------------------------------------------------------------------
+     */
+    for (auto &vertex : genDcel.vertices)
+      vertex.halfedge = -1;
+
+    for (auto &edge : genDcel.edges)
+      edge.halfedge = -1;
+
+    for (auto &face : genDcel.faces)
+      face.halfedge = -1;
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid)
+        continue;
+
+      const auto &halfedge = genDcel.halfedges[he];
+
+      const int vertex = halfedge.vertex;
+      const int edge = halfedge.edge;
+      const int face = halfedge.face;
+
+      if (!validVertexIndex(vertex) || !genDcel.vertices[vertex].valid) {
+        return fail("surviving halfedge references an invalid vertex", he);
+      }
+
+      if (!validEdgeIndex(edge) || !genDcel.edges[edge].valid) {
+        return fail("surviving halfedge references an invalid edge", he);
+      }
+
+      if (!validFaceIndex(face) || !genDcel.faces[face].valid) {
+        return fail("surviving halfedge references an invalid face", he);
+      }
+
+      if (genDcel.vertices[vertex].halfedge < 0)
+        genDcel.vertices[vertex].halfedge = he;
+
+      if (genDcel.edges[edge].halfedge < 0)
+        genDcel.edges[edge].halfedge = he;
+
+      if (genDcel.faces[face].halfedge < 0)
+        genDcel.faces[face].halfedge = he;
+    }
+
+    /*
+     * Vertices with no remaining incident halfedge are isolated and should
+     * no longer remain active.
+     */
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      if (!genDcel.vertices[vertex].valid)
+        continue;
+
+      if (genDcel.vertices[vertex].halfedge < 0)
+        genDcel.vertices[vertex].valid = false;
+    }
+
+    /*
+     * A surviving edge or face must have a representative halfedge.
+     */
+    for (int edge = 0; edge < edgeCount; ++edge) {
+      if (genDcel.edges[edge].valid && genDcel.edges[edge].halfedge < 0) {
+        return fail("surviving edge has no representative halfedge", edge);
+      }
+    }
+
+    for (int face = 0; face < faceCount; ++face) {
+      if (genDcel.faces[face].valid && genDcel.faces[face].halfedge < 0) {
+        return fail("surviving face has no representative halfedge", face);
+      }
+    }
+
+    /*
+     * ------------------------------------------------------------------
+     * Phase 6: recompute valences from the post-pruning topology.
+     *
+     * This avoids handing stale pre-pruning values to the later
+     * low-valence unification pass.
+     * ------------------------------------------------------------------
+     */
+    if (!computeCurrentValences(scratch.valences)) {
+      return fail("failed to compute post-pruning vertex valences");
+    }
+
+    /*
+     * Final topology validation. If anything is inconsistent, restore the
+     * complete pre-function DCEL.
+     */
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return fail("post-pruning DCEL consistency check failed");
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "prune_low_quality_faces_and_count_valence()]: "
+                << "removed " << facesToRemove.size() << " low-quality faces"
+                << std::endl;
+    }
+
+    return true;
+  }
+
+  bool refresh_low_valence_cache(SimplifyScratch &scratch) {
+    const int vertexCount = static_cast<int>(genDcel.vertices.size());
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+
+    const auto fail = [&](const char *message, const int index = -1) {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
-                     "prune_low_quality_faces_and_"
-                     "count_valence()]: "
+                     "refresh_low_valence_cache()]: "
                   << message;
 
-        if (index >= 0) {
+        if (index >= 0)
           std::cerr << " (index " << index << ")";
-        }
 
         std::cerr << '\n';
       }
@@ -1736,303 +2212,262 @@ public:
     };
 
     /*
-     * ----------------------------------------------------
-     * Phase A: calculate the same pre-pruning valences as
-     * the original implementation, but validate every
-     * reference before dereferencing it.
-     * ----------------------------------------------------
+     * Every topology mutation may invalidate or replace representative
+     * halfedges. Rebuild those pointers before deriving cached state.
      */
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return false;
+    }
+
     scratch.valences.assign(static_cast<std::size_t>(vertexCount), 0);
+    scratch.isBoundary.assign(static_cast<std::size_t>(vertexCount), false);
+    scratch.isEar.assign(static_cast<std::size_t>(vertexCount), false);
 
+    /*
+     * Recompute valence using the same convention already used by
+     * prune_low_quality_faces_and_count_valence():
+     *
+     * - each valid halfedge contributes to its origin;
+     * - a boundary halfedge also contributes to its target.
+     */
     for (int he = 0; he < halfedgeCount; ++he) {
-
-      log_progress("valence counting", he, halfedgeCount);
-
-      if (!genDcel.halfedges[he].valid) {
+      if (!genDcel.halfedges[he].valid)
         continue;
-      }
 
-      const int origin = genDcel.halfedges[he].vertex;
+      const auto &halfedge = genDcel.halfedges[he];
+      const int origin = halfedge.vertex;
 
-      if (!validVertexIndex(origin)) {
-        return fail("halfedge has an out-of-range origin "
-                    "vertex",
-                    he);
-      }
-
-      if (!genDcel.vertices[origin].valid) {
-        return fail("valid halfedge references an invalid "
-                    "origin vertex",
-                    he);
+      if (!genDcel.valid_vertex(origin)) {
+        return fail("valid halfedge references invalid origin vertex", he);
       }
 
       ++scratch.valences[origin];
 
-      if (genDcel.halfedges[he].twin < 0) {
-        const int next = genDcel.halfedges[he].next;
+      if (halfedge.twin == -1) {
+        scratch.isBoundary[origin] = true;
 
-        if (!validHalfedge(next)) {
-          return fail("boundary halfedge has an invalid "
-                      "next link",
-                      he);
+        const int next = halfedge.next;
+
+        if (!genDcel.valid_halfedge(next)) {
+          return fail("boundary halfedge has invalid next", he);
         }
 
         const int target = genDcel.halfedges[next].vertex;
 
-        if (!validVertexIndex(target)) {
-          return fail("boundary halfedge target vertex is "
-                      "out of range",
-                      he);
-        }
-
-        if (!genDcel.vertices[target].valid) {
-          return fail("boundary halfedge targets an invalid "
-                      "vertex",
-                      he);
+        if (!genDcel.valid_vertex(target)) {
+          return fail("boundary halfedge references invalid target vertex", he);
         }
 
         ++scratch.valences[target];
+        scratch.isBoundary[target] = true;
+
+      } else if (halfedge.twin < -1) {
+        return fail("halfedge has invalid negative twin sentinel", he);
+
+      } else if (!genDcel.valid_halfedge(halfedge.twin)) {
+        return fail("halfedge references invalid twin", he);
       }
     }
 
     /*
-     * Snapshot the cycles of faces that will be removed.
-     * No topology is mutated while cycles are being
-     * collected and validated.
+     * Recompute ears from all outgoing halfedges. This avoids making ear
+     * classification depend on the arbitrary representative halfedge selected
+     * by rebuild_representative_halfedges().
      */
-    std::vector<std::vector<int>> facesToRemove;
-    facesToRemove.reserve(static_cast<std::size_t>(faceCount));
-
-    std::vector<int> cycle;
-
-    for (int face = 0; face < faceCount; ++face) {
-
-      if (!genDcel.faces[face].valid) {
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid)
         continue;
+
+      const auto &halfedge = genDcel.halfedges[he];
+      const int vertex = halfedge.vertex;
+
+      if (!genDcel.valid_vertex(vertex)) {
+        return fail("valid halfedge references invalid vertex during ear scan",
+                    he);
       }
 
-      if (!validFaceIndex(face)) {
-        return fail("face index is out of range", face);
-      }
-
-      const int start = genDcel.faces[face].halfedge;
-
-      if (!collect_face_cycle(start, cycle,
-                              "prune_low_quality_faces_and_"
-                              "count_valence",
-                              face)) {
-        return false;
-      }
-
-      int highValenceCornerCount = 0;
-
-      for (const int he : cycle) {
-        const int vertex = genDcel.halfedges[he].vertex;
-
-        if (!validVertexIndex(vertex)) {
-          return fail("face cycle references an "
-                      "out-of-range vertex",
-                      he);
-        }
-
-        if (scratch.valences[vertex] > 2) {
-          ++highValenceCornerCount;
-        }
-      }
-
-      if (highValenceCornerCount < 3) {
-        facesToRemove.push_back(cycle);
-      }
-    }
-
-    /*
-     * ----------------------------------------------------
-     * Phase B: validate every reference required by the
-     * original removal logic before mutating anything.
-     * ----------------------------------------------------
-     */
-    struct RemovalRecord {
-      int halfedge;
-      int twin;
-      int edge;
-      int prev;
-      int vertex;
-    };
-
-    std::vector<std::vector<RemovalRecord>> removalRecords;
-
-    removalRecords.reserve(facesToRemove.size());
-
-    for (const auto &faceCycle : facesToRemove) {
-      std::vector<RemovalRecord> records;
-      records.reserve(faceCycle.size());
-
-      for (const int he : faceCycle) {
-        if (!validHalfedge(he)) {
-          return fail("face selected for pruning contains "
-                      "an invalid halfedge",
-                      he);
-        }
-
-        const auto &halfedge = genDcel.halfedges[he];
-
-        const int twin = halfedge.twin;
-        const int edge = halfedge.edge;
-        const int prev = halfedge.prev;
-        const int vertex = halfedge.vertex;
-
-        if (!validEdgeIndex(edge)) {
-          return fail("halfedge selected for pruning has "
-                      "an out-of-range edge",
-                      he);
-        }
-
-        if (!genDcel.edges[edge].valid) {
-          return fail("halfedge selected for pruning "
-                      "references an invalid edge",
-                      he);
-        }
-
-        if (!validHalfedge(prev)) {
-          return fail("halfedge selected for pruning has "
-                      "an invalid prev link",
-                      he);
-        }
-
-        if (!validVertexIndex(vertex)) {
-          return fail("halfedge selected for pruning has "
-                      "an out-of-range vertex",
-                      he);
-        }
-
-        if (twin < -1) {
-          return fail("halfedge selected for pruning has "
-                      "an invalid negative twin",
-                      he);
-        }
-
-        if (twin >= 0) {
-          if (!validHalfedgeIndex(twin)) {
-            return fail("halfedge selected for pruning "
-                        "has an out-of-range twin",
-                        he);
-          }
-
-          /*
-           * An invalid twin is allowed by the old
-           * removal branch only as an indication
-           * that both edge sides are being removed.
-           * It must still be index-valid.
-           */
-        }
-
-        records.push_back(RemovalRecord{he, twin, edge, prev, vertex});
-      }
-
-      removalRecords.push_back(std::move(records));
-    }
-
-    /*
-     * ----------------------------------------------------
-     * Phase C: commit removals.
-     *
-     * This preserves the existing invalidation semantics.
-     * The records prevent dereferencing links after their
-     * corresponding halfedges have already been invalidated.
-     * ----------------------------------------------------
-     */
-    for (std::size_t removalIndex = 0; removalIndex < removalRecords.size();
-         ++removalIndex) {
-
-      const auto &records = removalRecords[removalIndex];
-
-      if (records.empty()) {
+      if (halfedge.twin != -1)
         continue;
+
+      const int prev = halfedge.prev;
+
+      if (!genDcel.valid_halfedge(prev)) {
+        return fail("boundary halfedge has invalid prev during ear scan", he);
       }
 
-      const int face = genDcel.halfedges[records.front().halfedge].face;
+      const int prevTwin = genDcel.halfedges[prev].twin;
 
-      if (!validFaceIndex(face)) {
-        return fail("pruned cycle references an invalid face", face);
+      if (prevTwin == -1) {
+        scratch.isEar[vertex] = true;
+        scratch.isBoundary[vertex] = true;
+
+      } else if (prevTwin < -1) {
+        return fail("previous halfedge has invalid twin sentinel", prev);
+
+      } else if (!genDcel.valid_halfedge(prevTwin)) {
+        return fail("previous halfedge references invalid twin", prev);
       }
-
-      for (const RemovalRecord &record : records) {
-
-        auto &halfedge = genDcel.halfedges[record.halfedge];
-
-        /*
-         * The same halfedge must not occur in two
-         * removal cycles.
-         */
-        if (!halfedge.valid) {
-          return fail("halfedge occurs in more than one "
-                      "pruned face cycle",
-                      record.halfedge);
-        }
-
-        if (record.twin >= 0) {
-          auto &twinHalfedge = genDcel.halfedges[record.twin];
-
-          if (!twinHalfedge.valid) {
-            genDcel.edges[record.edge].valid = false;
-            genDcel.edges[record.edge].halfedge = -1;
-          } else {
-            genDcel.edges[record.edge].halfedge = record.twin;
-
-            twinHalfedge.twin = -1;
-          }
-        } else {
-          genDcel.edges[record.edge].valid = false;
-          genDcel.edges[record.edge].halfedge = -1;
-        }
-
-        /*
-         * Preserve the original isolated-boundary
-         * vertex test, using validated snapshot
-         * references.
-         */
-        if (record.twin == -1) {
-          const int previousTwin = genDcel.halfedges[record.prev].twin;
-
-          if (previousTwin == -1) {
-            genDcel.vertices[record.vertex].valid = false;
-            genDcel.vertices[record.vertex].halfedge = -1;
-          }
-        }
-
-        halfedge.valid = false;
-      }
-
-      genDcel.faces[face].valid = false;
-      genDcel.faces[face].halfedge = -1;
     }
 
     return true;
   }
 
-  void refresh_vertex_halfedge_pointers() {
-    for (int i = 0; i < genDcel.halfedges.size(); i++)
-      if (genDcel.halfedges[i].valid)
-        genDcel.vertices[genDcel.halfedges[i].vertex].halfedge = i;
-  }
+  bool recompute_current_valences(SimplifyScratch &scratch) {
+    const int vertexCount = static_cast<int>(genDcel.vertices.size());
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
-  int unify_low_valence_vertices(const SimplifyScratch &scratch) {
-    for (int i = 0; i < scratch.valences.size(); i++)
-      if ((genDcel.vertices[i].valid) && (scratch.valences[i] < 2))
-        genDcel.vertices[i].valid = false;
+    scratch.valences.assign(static_cast<std::size_t>(vertexCount), 0);
 
-    int unifyCount = 0;
-    for (int i = 0; i < genDcel.vertices.size(); i++) {
-      log_progress("low-valence edge unification", i,
-                   static_cast<int>(genDcel.vertices.size()));
-      if ((genDcel.vertices[i].valid) && (scratch.valences[i] <= 2) &&
-          (!scratch.isEar[i])) {
-        genDcel.unify_edges(genDcel.vertices[i].halfedge);
-        unifyCount++;
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid)
+        continue;
+
+      const auto &halfedge = genDcel.halfedges[he];
+      const int origin = halfedge.vertex;
+
+      if (!genDcel.valid_vertex(origin))
+        return false;
+
+      ++scratch.valences[origin];
+
+      if (halfedge.twin == -1) {
+        const int next = halfedge.next;
+
+        if (!genDcel.valid_halfedge(next))
+          return false;
+
+        const int target = genDcel.halfedges[next].vertex;
+
+        if (!genDcel.valid_vertex(target))
+          return false;
+
+        ++scratch.valences[target];
+
+      } else if (halfedge.twin < -1 || !genDcel.valid_halfedge(halfedge.twin)) {
+        return false;
       }
     }
 
-    return unifyCount;
+    return true;
+  }
+
+  bool unify_low_valence_vertices(const SimplifyScratch &scratch,
+                                  int &unifyCount) {
+    unifyCount = 0;
+
+    /*
+     * Quality-preserving compatibility mode.
+     *
+     * Use the immutable post-pruning valence and ear snapshots.
+     * Refreshing these values during unification changes the collapse
+     * schedule and creates chains of merged faces, which caused the
+     * pentagon/hexagon regression.
+     */
+    if (scratch.valences.size() != genDcel.vertices.size() ||
+        scratch.isEar.size() != genDcel.vertices.size()) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "scratch cache size does not match vertex count"
+                  << std::endl;
+      }
+      return false;
+    }
+
+    /*
+     * Representative halfedges may have changed during prior pruning,
+     * so refresh them once before beginning the fixed vertex sweep.
+     */
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return false;
+    }
+
+    const int vertexCount = static_cast<int>(genDcel.vertices.size());
+
+    int snapshotDegreeTwo = 0;
+    int snapshotEars = 0;
+    int snapshotEligible = 0;
+
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      if (!genDcel.valid_vertex(vertex))
+        continue;
+
+      if (scratch.valences[vertex] == 2)
+        ++snapshotDegreeTwo;
+
+      if (scratch.isEar[vertex])
+        ++snapshotEars;
+
+      if (scratch.valences[vertex] <= 2 && !scratch.isEar[vertex]) {
+        ++snapshotEligible;
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "unify_low_valence_vertices()]: "
+                << "snapshot degree-two=" << snapshotDegreeTwo
+                << ", ears=" << snapshotEars
+                << ", eligible=" << snapshotEligible << std::endl;
+    }
+
+    /*
+     * One fixed, index-ordered pass.
+     *
+     * This intentionally matches Pass 2 semantics. No cache refresh is
+     * performed inside the loop, and newly-created low-valence vertices
+     * are not introduced into the decision set.
+     */
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      log_progress("low-valence edge unification", vertex, vertexCount);
+
+      if (!genDcel.valid_vertex(vertex))
+        continue;
+
+      if (scratch.valences[vertex] > 2)
+        continue;
+
+      if (scratch.isEar[vertex])
+        continue;
+
+      const int halfedge = genDcel.vertices[vertex].halfedge;
+
+      if (!genDcel.valid_halfedge(halfedge)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "vertex has no valid outgoing halfedge " << vertex
+                    << std::endl;
+        }
+        return false;
+      }
+
+      const std::size_t validBefore =
+          std::count_if(genDcel.vertices.begin(), genDcel.vertices.end(),
+                        [](const auto &entry) { return entry.valid; });
+
+      if (!genDcel.try_unify_edges(halfedge, mData.verbose)) {
+        return false;
+      }
+
+      const std::size_t validAfter =
+          std::count_if(genDcel.vertices.begin(), genDcel.vertices.end(),
+                        [](const auto &entry) { return entry.valid; });
+
+      if (validAfter >= validBefore) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "unification did not reduce valid vertex count"
+                    << std::endl;
+        }
+        return false;
+      }
+
+      ++unifyCount;
+    }
+
+    return true;
   }
 
   bool finalize_clean_mesh() {
@@ -2132,14 +2567,34 @@ public:
     remap_halfedge_vertices(preRemapOrigin, preRemapTarget);
     logPhase("Halfedge vertex remap");
 
-    prune_remap_created_degenerates(preRemapOrigin, preRemapTarget);
-    logPhase("Remap-created degenerate halfedge pruning");
-
-    if (!genDcel.check_consistency(mData.verbose, true, false, false))
+    if (!prune_remap_created_degenerates(preRemapOrigin, preRemapTarget)) {
       return false;
-    logPhase("Post-remap consistency check");
+    }
 
-    retwin_halfedges();
+    if (!genDcel.check_consistency(
+            mData.verbose,
+            true,   // repeated directed halfedges
+            false,  // twin gaps: intentionally deferred
+            false)) // pure-boundary test: intentionally deferred
+    {
+      return false;
+    }
+
+    logPhase("Post-remap pre-twinning consistency check");
+
+    const int retwinned = retwin_halfedges();
+
+    if (retwinned < 0) {
+      return false;
+    }
+
+    logPhase("Halfedge twinning");
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return false;
+    }
+
+    logPhase("Post-twinning consistency check");
     logPhase("Halfedge twinning");
 
     // check if there are any non-twinned edge which shouldn't be in a closed
@@ -2173,17 +2628,27 @@ public:
 
     if (!prune_low_quality_faces_and_count_valence(scratch))
       return false;
-    logPhase("Valence counting and ear pruning");
 
-    // need to realign all vertices pointing
-    refresh_vertex_halfedge_pointers();
-    logPhase("Vertex halfedge pointer refresh");
+    logPhase("Low-quality face pruning");
 
     if (!genDcel.check_consistency(mData.verbose, true, true, true))
       return false;
     logPhase("Post-pruning consistency check");
 
-    int unifyCount = unify_low_valence_vertices(scratch);
+    int unifyCount = 0;
+
+    if (!unify_low_valence_vertices(scratch, unifyCount)) {
+      return false;
+    }
+
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return false;
+    }
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, false)) {
+      return false;
+    }
+
     if (mData.verbose)
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
                    "Low-valence edge unification finished after "

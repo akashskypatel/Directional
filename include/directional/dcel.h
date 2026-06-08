@@ -16,6 +16,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <algorithm>
 #include <utility>
 #include <deque>
 #include <iostream>
@@ -108,8 +109,701 @@ public:
       return index >= 0 && index < static_cast<int>(faces.size());
     }
 
+    bool valid_vertex(const int index) const {
+      return valid_vertex_index(index) && vertices[index].valid;
+    }
+
     bool valid_halfedge(const int index) const {
       return valid_halfedge_index(index) && halfedges[index].valid;
+    }
+
+    bool valid_edge(const int index) const {
+      return valid_edge_index(index) && edges[index].valid;
+    }
+
+    bool valid_face(const int index) const {
+      return valid_face_index(index) && faces[index].valid;
+    }
+
+    bool rebuild_representative_halfedges(
+        const bool verbose = false,
+        const bool invalidateIsolatedVertices = true) {
+      const int vertexCount = static_cast<int>(vertices.size());
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+      const int edgeCount = static_cast<int>(edges.size());
+      const int faceCount = static_cast<int>(faces.size());
+
+      const auto fail = [&](const char *message, const int index = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::"
+                       "rebuild_representative_halfedges()]: "
+                    << message;
+
+          if (index >= 0)
+            std::cerr << " (index " << index << ")";
+
+          std::cerr << '\n';
+        }
+
+        return false;
+      };
+
+      for (Vertex &vertex : vertices)
+        vertex.halfedge = -1;
+
+      for (Edge &edge : edges)
+        edge.halfedge = -1;
+
+      for (Face &face : faces)
+        face.halfedge = -1;
+
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!halfedges[he].valid)
+          continue;
+
+        const int vertex = halfedges[he].vertex;
+        const int edge = halfedges[he].edge;
+        const int face = halfedges[he].face;
+
+        if (!valid_vertex(vertex)) {
+          return fail("valid halfedge references invalid vertex", he);
+        }
+
+        if (!valid_edge(edge)) {
+          return fail("valid halfedge references invalid edge", he);
+        }
+
+        if (!valid_face(face)) {
+          return fail("valid halfedge references invalid face", he);
+        }
+
+        if (vertices[vertex].halfedge < 0)
+          vertices[vertex].halfedge = he;
+
+        if (edges[edge].halfedge < 0)
+          edges[edge].halfedge = he;
+
+        if (faces[face].halfedge < 0)
+          faces[face].halfedge = he;
+      }
+
+      for (int vertex = 0; vertex < vertexCount; ++vertex) {
+        if (!vertices[vertex].valid)
+          continue;
+
+        if (vertices[vertex].halfedge >= 0)
+          continue;
+
+        if (invalidateIsolatedVertices) {
+          vertices[vertex].valid = false;
+          continue;
+        }
+
+        return fail("valid vertex has no valid outgoing halfedge", vertex);
+      }
+
+      for (int edge = 0; edge < edgeCount; ++edge) {
+        if (!edges[edge].valid)
+          continue;
+
+        if (edges[edge].halfedge < 0) {
+          return fail("valid edge has no valid representative halfedge", edge);
+        }
+      }
+
+      for (int face = 0; face < faceCount; ++face) {
+        if (!faces[face].valid)
+          continue;
+
+        if (faces[face].halfedge < 0) {
+          return fail("valid face has no valid representative halfedge", face);
+        }
+      }
+
+      return true;
+    }
+
+    bool collect_face_cycle(const int faceIndex, std::vector<int> &cycle,
+                            const bool verbose = false) const {
+      cycle.clear();
+
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+
+      const auto fail = [&](const char *message, const int index = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::collect_face_cycle()]: " << message;
+
+          if (index >= 0)
+            std::cerr << " (index " << index << ")";
+
+          std::cerr << '\n';
+        }
+
+        cycle.clear();
+        return false;
+      };
+
+      if (!valid_face(faceIndex)) {
+        return fail("invalid face", faceIndex);
+      }
+
+      const int start = faces[faceIndex].halfedge;
+
+      if (!valid_halfedge(start)) {
+        return fail("face references invalid starting halfedge", start);
+      }
+
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      int current = start;
+
+      for (int step = 0; step < halfedgeCount; ++step) {
+        if (!valid_halfedge(current)) {
+          return fail("face walk reached invalid halfedge", current);
+        }
+
+        if (visited[current]) {
+          if (current == start)
+            return !cycle.empty();
+
+          return fail("face walk entered non-start cycle", current);
+        }
+
+        if (halfedges[current].face != faceIndex) {
+          return fail("face cycle contains halfedge owned by another face",
+                      current);
+        }
+
+        visited[current] = 1;
+        cycle.push_back(current);
+
+        const int next = halfedges[current].next;
+
+        if (!valid_halfedge(next)) {
+          return fail("face cycle has invalid next link", current);
+        }
+
+        if (halfedges[next].prev != current) {
+          return fail("next.prev does not point back", next);
+        }
+
+        current = next;
+
+        if (current == start) {
+          return true;
+        }
+      }
+
+      return fail("face cycle exceeded traversal bound", start);
+    }
+
+    bool retire_halfedge(const int halfedgeIndex, const bool verbose = false) {
+      const auto fail = [&](const char *message, const int index = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::retire_halfedge()]: " << message;
+
+          if (index >= 0)
+            std::cerr << " (index " << index << ")";
+
+          std::cerr << '\n';
+        }
+
+        return false;
+      };
+
+      if (!valid_halfedge(halfedgeIndex)) {
+        return fail("cannot retire invalid halfedge", halfedgeIndex);
+      }
+
+      Halfedge &halfedge = halfedges[halfedgeIndex];
+
+      const int twin = halfedge.twin;
+      const int edge = halfedge.edge;
+
+      if (!valid_edge(edge)) {
+        return fail("halfedge references invalid edge", halfedgeIndex);
+      }
+
+      if (twin < -1) {
+        return fail("halfedge has invalid negative twin", halfedgeIndex);
+      }
+
+      if (twin >= 0) {
+        if (!valid_halfedge(twin)) {
+          return fail("halfedge references invalid twin", halfedgeIndex);
+        }
+
+        if (halfedges[twin].twin != halfedgeIndex) {
+          return fail("halfedge twin relation is not mutual", halfedgeIndex);
+        }
+
+        halfedges[twin].twin = -1;
+
+        edges[edge].valid = true;
+        edges[edge].halfedge = twin;
+      } else {
+        edges[edge].valid = false;
+        edges[edge].halfedge = -1;
+      }
+
+      halfedge.twin = -1;
+      halfedge.valid = false;
+
+      return true;
+    }
+
+    bool remove_degenerate_edge(const int halfedgeIndex,
+                                const bool verbose = false) {
+      /*
+       * One transaction covers both sides of the degenerate edge.
+       * No intermediate consistency check is performed while only one
+       * side has been removed.
+       */
+      const auto oldVertices = vertices;
+      const auto oldHalfedges = halfedges;
+      const auto oldEdges = edges;
+      const auto oldFaces = faces;
+
+      const auto rollback = [&]() {
+        vertices = oldVertices;
+        halfedges = oldHalfedges;
+        edges = oldEdges;
+        faces = oldFaces;
+      };
+
+      const auto fail = [&](const char *message, const int index = -1) -> bool {
+        rollback();
+
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::"
+                       "remove_degenerate_edge()]: "
+                    << message;
+
+          if (index >= 0) {
+            std::cerr << " (index " << index << ")";
+          }
+
+          std::cerr << '\n';
+        }
+
+        return false;
+      };
+
+      const int halfedgeCount = static_cast<int>(halfedges.size());
+
+      const int edgeCount = static_cast<int>(edges.size());
+
+      /*
+       * Describes what must happen to one incident face.
+       *
+       * If removeWholeFace is true, every halfedge in cycle is removed.
+       * Otherwise only targetHalfedge is spliced from the face cycle.
+       */
+      struct SideAction {
+        int targetHalfedge = -1;
+        int face = -1;
+        bool removeWholeFace = false;
+        std::vector<int> cycle;
+      };
+
+      /*
+       * ------------------------------------------------------------
+       * 1. Validate the requested degenerate halfedge.
+       * ------------------------------------------------------------
+       */
+      if (!valid_halfedge(halfedgeIndex)) {
+        return fail("invalid input halfedge", halfedgeIndex);
+      }
+
+      const int primaryNext = halfedges[halfedgeIndex].next;
+
+      if (!valid_halfedge(primaryNext)) {
+        return fail("input halfedge has an invalid next link", halfedgeIndex);
+      }
+
+      /*
+       * In this DCEL representation, halfedge.vertex is the origin and
+       * halfedge.next.vertex is the target. Equal vertices imply a
+       * zero-length edge.
+       */
+      if (halfedges[halfedgeIndex].vertex != halfedges[primaryNext].vertex) {
+        return fail("input halfedge is not geometrically degenerate",
+                    halfedgeIndex);
+      }
+
+      const int originalTwin = halfedges[halfedgeIndex].twin;
+
+      const int originalEdge = halfedges[halfedgeIndex].edge;
+
+      if (!valid_edge(originalEdge)) {
+        return fail("input halfedge references an invalid edge", halfedgeIndex);
+      }
+
+      if (originalTwin < -1) {
+        return fail("input halfedge has an invalid negative twin",
+                    halfedgeIndex);
+      }
+
+      if (originalTwin >= 0) {
+        if (!valid_halfedge(originalTwin)) {
+          return fail("input halfedge references an invalid twin",
+                      originalTwin);
+        }
+
+        if (halfedges[originalTwin].twin != halfedgeIndex) {
+          return fail("input twin relation is not mutual", halfedgeIndex);
+        }
+
+        if (halfedges[originalTwin].edge != originalEdge) {
+          return fail("input halfedge and twin reference different edges",
+                      halfedgeIndex);
+        }
+
+        const int twinNext = halfedges[originalTwin].next;
+
+        if (!valid_halfedge(twinNext)) {
+          return fail("twin halfedge has an invalid next link", originalTwin);
+        }
+
+        /*
+         * A true zero-length edge must be degenerate on both sides.
+         */
+        if (halfedges[originalTwin].vertex != halfedges[twinNext].vertex) {
+          return fail("twin halfedge is not geometrically degenerate",
+                      originalTwin);
+        }
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 2. Build and validate the action for each incident side.
+       * ------------------------------------------------------------
+       */
+      std::vector<SideAction> actions;
+      actions.reserve(originalTwin >= 0 ? 2u : 1u);
+
+      const auto prepareSide = [&](const int targetHalfedge) -> bool {
+        if (!valid_halfedge(targetHalfedge)) {
+          return false;
+        }
+
+        SideAction action;
+        action.targetHalfedge = targetHalfedge;
+        action.face = halfedges[targetHalfedge].face;
+
+        if (!valid_face(action.face)) {
+          return false;
+        }
+
+        if (!collect_face_cycle(action.face, action.cycle, verbose)) {
+          return false;
+        }
+
+        if (action.cycle.size() < 3) {
+          return false;
+        }
+
+        const auto targetIterator =
+            std::find(action.cycle.begin(), action.cycle.end(), targetHalfedge);
+
+        if (targetIterator == action.cycle.end()) {
+          return false;
+        }
+
+        if (std::count(action.cycle.begin(), action.cycle.end(),
+                       targetHalfedge) != 1) {
+          return false;
+        }
+
+        const int prev = halfedges[targetHalfedge].prev;
+
+        const int next = halfedges[targetHalfedge].next;
+
+        if (!valid_halfedge(prev) || !valid_halfedge(next)) {
+          return false;
+        }
+
+        if (halfedges[prev].next != targetHalfedge) {
+          return false;
+        }
+
+        if (halfedges[next].prev != targetHalfedge) {
+          return false;
+        }
+
+        if (halfedges[prev].face != action.face ||
+            halfedges[next].face != action.face) {
+          return false;
+        }
+
+        /*
+         * Confirm that this specific halfedge is zero-length.
+         */
+        if (halfedges[targetHalfedge].vertex != halfedges[next].vertex) {
+          return false;
+        }
+
+        /*
+         * Removing one halfedge from a triangle would leave a
+         * two-halfedge face, so remove the entire triangle instead.
+         */
+        action.removeWholeFace = action.cycle.size() <= 3;
+
+        actions.push_back(std::move(action));
+        return true;
+      };
+
+      if (!prepareSide(halfedgeIndex)) {
+        return fail("failed to validate the primary incident face",
+                    halfedgeIndex);
+      }
+
+      if (originalTwin >= 0) {
+        if (!prepareSide(originalTwin)) {
+          return fail("failed to validate the twin incident face",
+                      originalTwin);
+        }
+
+        /*
+         * A twin pair should not ordinarily belong to the same face.
+         * Supporting that topology would require a separate collapse
+         * operation.
+         */
+        if (actions.size() == 2 && actions[0].face == actions[1].face) {
+          return fail("degenerate twin halfedges belong to the same face",
+                      actions[0].face);
+        }
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 3. Build the complete halfedge-removal set.
+       *
+       * This is done before mutation so edge/twin repair decisions can
+       * account for both incident sides and any triangle faces removed
+       * in their entirety.
+       * ------------------------------------------------------------
+       */
+      std::vector<unsigned char> removeHalfedge(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      std::vector<unsigned char> removeFace(faces.size(),
+                                            static_cast<unsigned char>(0));
+
+      for (const SideAction &action : actions) {
+        if (action.removeWholeFace) {
+          removeFace[action.face] = 1;
+
+          for (const int he : action.cycle) {
+            if (!valid_halfedge(he)) {
+              return fail("triangle-removal cycle contains an invalid halfedge",
+                          he);
+            }
+
+            removeHalfedge[he] = 1;
+          }
+        } else {
+          removeHalfedge[action.targetHalfedge] = 1;
+        }
+      }
+
+      /*
+       * Validate every halfedge that will be removed, including unrelated
+       * edges belonging to an incident triangle that must be deleted.
+       */
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!removeHalfedge[he]) {
+          continue;
+        }
+
+        if (!valid_halfedge(he)) {
+          return fail("removal set contains an invalid halfedge", he);
+        }
+
+        const int edge = halfedges[he].edge;
+
+        const int twin = halfedges[he].twin;
+
+        if (!valid_edge(edge)) {
+          return fail("removal halfedge references an invalid edge", he);
+        }
+
+        if (twin < -1) {
+          return fail("removal halfedge has an invalid negative twin", he);
+        }
+
+        if (twin >= 0) {
+          if (!valid_halfedge(twin)) {
+            return fail("removal halfedge references an invalid twin", he);
+          }
+
+          if (halfedges[twin].twin != he) {
+            return fail("removal halfedge twin relation is not mutual", he);
+          }
+
+          if (halfedges[twin].edge != edge) {
+            return fail("removal twin references a different edge", he);
+          }
+        }
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 4. Splice degenerate halfedges from surviving polygon faces.
+       *
+       * Do this before invalidating any halfedge. Both sides remain
+       * available during validation and rewiring.
+       * ------------------------------------------------------------
+       */
+      for (const SideAction &action : actions) {
+        if (action.removeWholeFace) {
+          continue;
+        }
+
+        const int target = action.targetHalfedge;
+
+        const int prev = halfedges[target].prev;
+
+        const int next = halfedges[target].next;
+
+        /*
+         * The side was already validated, but recheck before committing
+         * because another action may share nearby topology.
+         */
+        if (!valid_halfedge(target) || !valid_halfedge(prev) ||
+            !valid_halfedge(next)) {
+          return fail("splice neighborhood became invalid before mutation",
+                      target);
+        }
+
+        if (halfedges[prev].next != target || halfedges[next].prev != target) {
+          return fail("splice neighborhood changed before mutation", target);
+        }
+
+        if (halfedges[target].vertex != halfedges[next].vertex) {
+          return fail("splice target is no longer geometrically degenerate",
+                      target);
+        }
+
+        halfedges[prev].next = next;
+        halfedges[next].prev = prev;
+
+        if (faces[action.face].halfedge == target) {
+          faces[action.face].halfedge = next;
+        }
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 5. Invalidate whole faces.
+       * ------------------------------------------------------------
+       */
+      for (int face = 0; face < static_cast<int>(faces.size()); ++face) {
+        if (!removeFace[face]) {
+          continue;
+        }
+
+        if (!valid_face(face)) {
+          return fail("face scheduled for removal became invalid", face);
+        }
+
+        faces[face].valid = false;
+        faces[face].halfedge = -1;
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 6. Repair edge and twin records in one batch.
+       *
+       * Each edge is processed once. If exactly one side survives, that
+       * halfedge becomes a boundary halfedge. If neither side survives,
+       * the edge record is invalidated.
+       * ------------------------------------------------------------
+       */
+      std::vector<unsigned char> processedEdge(
+          static_cast<std::size_t>(edgeCount), static_cast<unsigned char>(0));
+
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!removeHalfedge[he]) {
+          continue;
+        }
+
+        const int edge = halfedges[he].edge;
+
+        if (!valid_edge_index(edge)) {
+          return fail("removed halfedge has an out-of-range edge", he);
+        }
+
+        if (processedEdge[edge]) {
+          continue;
+        }
+
+        processedEdge[edge] = 1;
+
+        const int twin = halfedges[he].twin;
+
+        int survivingHalfedge = -1;
+
+        if (twin >= 0 && !removeHalfedge[twin]) {
+          survivingHalfedge = twin;
+        }
+
+        if (survivingHalfedge >= 0) {
+          if (!valid_halfedge(survivingHalfedge)) {
+            return fail("surviving twin is invalid", survivingHalfedge);
+          }
+
+          halfedges[survivingHalfedge].twin = -1;
+
+          edges[edge].valid = true;
+          edges[edge].halfedge = survivingHalfedge;
+        } else {
+          edges[edge].valid = false;
+          edges[edge].halfedge = -1;
+        }
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 7. Invalidate all scheduled halfedges.
+       * ------------------------------------------------------------
+       */
+      for (int he = 0; he < halfedgeCount; ++he) {
+        if (!removeHalfedge[he]) {
+          continue;
+        }
+
+        halfedges[he].twin = -1;
+        halfedges[he].valid = false;
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 8. Rebuild representative pointers once, after both sides and
+       * all incident triangle faces have been fully processed.
+       * ------------------------------------------------------------
+       */
+      if (!rebuild_representative_halfedges(verbose, true)) {
+        return fail("failed to rebuild representative halfedges");
+      }
+
+      /*
+       * ------------------------------------------------------------
+       * 9. Validate only the final state.
+       *
+       * This is the key difference from the previous implementation:
+       * no consistency check occurs after processing only one side of
+       * an interior degenerate edge.
+       * ------------------------------------------------------------
+       */
+      if (!check_consistency(verbose, true, true, false)) {
+        return fail("final DCEL consistency check failed");
+      }
+
+      return true;
     }
 
     bool walk_boundary(
@@ -554,6 +1248,12 @@ public:
 
           const int twinNext = halfedges[twin].next;
 
+          if (!valid_halfedge_index(twinNext))
+            return fail("twin halfedge has out-of-range next", twin);
+
+          if (!halfedges[twinNext].valid)
+            return fail("twin halfedge next is invalid", twin);
+
           const int source = vertex;
           const int target = halfedges[next].vertex;
 
@@ -985,45 +1685,224 @@ public:
          } while (heiterate != hebegin);*/
         
         return true;
-        
-        
     }
-    
-    void unify_edges(int heindex) {
-        //if (halfedges[heindex].twin<0)
-        //  return;
-        //adjusting source
-        
-        //std::cout<<"Unifying halfedge "<<halfedges[heindex].prev<<" into halfedge "<<heindex<<" killing edge "<<halfedges[halfedges[heindex].prev].edge<<std::endl;
-        vertices[halfedges[heindex].vertex].valid = false;
-        halfedges[heindex].vertex = halfedges[halfedges[heindex].prev].vertex;
-        //if (halfedges[heindex].data.prescribedAngle < 0.0)
-        //    halfedges[heindex].data.prescribedAngle = halfedges[halfedges[heindex].prev].data.prescribedAngle;
-        vertices[halfedges[heindex].vertex].halfedge = heindex;
-        
-        faces[halfedges[heindex].face].halfedge = halfedges[heindex].next;
-        //faces[halfedges[heindex].face].NumVertices--;
-        
-        
-        
-        //adjusting halfedges
-        halfedges[halfedges[heindex].prev].valid = false;
-        edges[halfedges[halfedges[heindex].prev].edge].valid = false;
-        halfedges[heindex].prev = halfedges[halfedges[heindex].prev].prev;
-        halfedges[halfedges[heindex].prev].next = heindex;
-        
-        //adjusting twin, if exists
-        if (halfedges[heindex].twin >= 0) {
-            //if (halfedges[halfedges[heindex].twin].data.prescribedAngle < 0.0)
-            //    halfedges[halfedges[heindex].twin].data.prescribedAngle = halfedges[halfedges[halfedges[heindex].twin].next].data.prescribedAngle;
-            //std::cout<<"Unifying halfedge "<<halfedges[halfedges[heindex].twin].next<<" into halfedge "<<halfedges[heindex].twin<<" killing edge "<<halfedges[halfedges[halfedges[heindex].twin].next].edge<<std::endl;
-            halfedges[halfedges[halfedges[heindex].twin].next].valid = false;
-            edges[halfedges[halfedges[halfedges[heindex].twin].next].edge].valid = false;
-            halfedges[halfedges[heindex].twin].next = halfedges[halfedges[halfedges[heindex].twin].next].next;
-            halfedges[halfedges[halfedges[heindex].twin].next].prev = halfedges[heindex].twin;
-            faces[halfedges[halfedges[heindex].twin].face].halfedge = halfedges[halfedges[heindex].twin].next;
-            //faces[halfedges[halfedges[heindex].twin].face].NumVertices--;
+
+    bool try_unify_edges(const int heindex, const bool verbose = false) {
+      const auto oldVertices = vertices;
+      const auto oldHalfedges = halfedges;
+      const auto oldEdges = edges;
+      const auto oldFaces = faces;
+
+      const auto rollback = [&]() {
+        vertices = oldVertices;
+        halfedges = oldHalfedges;
+        edges = oldEdges;
+        faces = oldFaces;
+      };
+
+      const auto fail = [&](const char *message, const int index = -1) {
+        if (verbose) {
+          std::cerr << "[Directional::DCEL::"
+                       "try_unify_edges()]: "
+                    << message;
+
+          if (index >= 0)
+            std::cerr << " (index " << index << ")";
+
+          std::cerr << '\n';
         }
+
+        rollback();
+        return false;
+      };
+
+      if (!valid_halfedge(heindex)) {
+        return fail("invalid target halfedge", heindex);
+      }
+
+      const int prev = halfedges[heindex].prev;
+
+      const int next = halfedges[heindex].next;
+
+      const int face = halfedges[heindex].face;
+
+      const int twin = halfedges[heindex].twin;
+
+      const int killedVertex = halfedges[heindex].vertex;
+
+      if (!valid_halfedge(prev)) {
+        return fail("target halfedge has invalid prev", prev);
+      }
+
+      if (!valid_halfedge(next)) {
+        return fail("target halfedge has invalid next", next);
+      }
+
+      if (!valid_face(face)) {
+        return fail("target halfedge has invalid face", face);
+      }
+
+      if (!valid_vertex(killedVertex)) {
+        return fail("target halfedge has invalid origin vertex", killedVertex);
+      }
+
+      if (halfedges[prev].next != heindex || halfedges[next].prev != heindex) {
+        return fail("target halfedge neighborhood is inconsistent", heindex);
+      }
+
+      const int prevPrev = halfedges[prev].prev;
+
+      if (!valid_halfedge(prevPrev)) {
+        return fail("previous halfedge has invalid prev", prevPrev);
+      }
+
+      if (halfedges[prevPrev].next != prev) {
+        return fail("previous chain is inconsistent", prevPrev);
+      }
+
+      const int replacementVertex = halfedges[prev].vertex;
+
+      if (!valid_vertex(replacementVertex)) {
+        return fail("replacement vertex is invalid", replacementVertex);
+      }
+
+      if (replacementVertex == killedVertex) {
+        return fail("unification would preserve a degenerate vertex",
+                    killedVertex);
+      }
+
+      std::vector<int> primaryCycle;
+
+      if (!collect_face_cycle(face, primaryCycle, verbose)) {
+        return false;
+      }
+
+      if (primaryCycle.size() <= 3) {
+        return fail("cannot remove an edge from a triangle face", face);
+      }
+
+      int twinNext = -1;
+      int twinSuccessor = -1;
+      int twinFace = -1;
+
+      if (twin >= 0) {
+        if (!valid_halfedge(twin)) {
+          return fail("target halfedge has invalid twin", twin);
+        }
+
+        if (halfedges[twin].twin != heindex) {
+          return fail("target twin relation is not mutual", heindex);
+        }
+
+        twinNext = halfedges[twin].next;
+        twinFace = halfedges[twin].face;
+
+        if (!valid_halfedge(twinNext)) {
+          return fail("twin halfedge has invalid next", twinNext);
+        }
+
+        twinSuccessor = halfedges[twinNext].next;
+
+        if (!valid_halfedge(twinSuccessor)) {
+          return fail("twin-next has invalid successor", twinSuccessor);
+        }
+
+        if (halfedges[twinSuccessor].prev != twinNext) {
+          return fail("twin-side next/prev chain is inconsistent", twinNext);
+        }
+
+        if (!valid_face(twinFace)) {
+          return fail("twin halfedge references invalid face", twinFace);
+        }
+
+        std::vector<int> twinCycle;
+
+        if (!collect_face_cycle(twinFace, twinCycle, verbose)) {
+          return false;
+        }
+
+        if (twinCycle.size() <= 3) {
+          return fail("cannot remove an edge from twin triangle face",
+                      twinFace);
+        }
+
+        if (twinNext == heindex || twinNext == prev || twinNext == twin) {
+          return fail("twin-side removal overlaps primary neighborhood",
+                      twinNext);
+        }
+      }
+
+      /*
+       * Phase 1: primary face.
+       *
+       * Merge killedVertex into replacementVertex and remove prev.
+       */
+      halfedges[heindex].vertex = replacementVertex;
+
+      halfedges[prevPrev].next = heindex;
+
+      halfedges[heindex].prev = prevPrev;
+
+      if (faces[face].halfedge == prev)
+        faces[face].halfedge = heindex;
+
+      if (!retire_halfedge(prev, verbose)) {
+        rollback();
+        return false;
+      }
+
+      /*
+       * Phase 2: opposite face, matching original behavior.
+       */
+      if (twin >= 0) {
+        halfedges[twin].next = twinSuccessor;
+
+        halfedges[twinSuccessor].prev = twin;
+
+        if (faces[twinFace].halfedge == twinNext) {
+          faces[twinFace].halfedge = twin;
+        }
+
+        if (!retire_halfedge(twinNext, verbose)) {
+          rollback();
+          return false;
+        }
+      }
+
+      /*
+       * The removed vertex must no longer be referenced by
+       * any surviving outgoing halfedge.
+       */
+      for (int he = 0; he < static_cast<int>(halfedges.size()); ++he) {
+        if (!halfedges[he].valid)
+          continue;
+
+        if (halfedges[he].vertex == killedVertex) {
+          return fail("surviving halfedge still references killed vertex", he);
+        }
+      }
+
+      vertices[killedVertex].valid = false;
+      vertices[killedVertex].halfedge = -1;
+
+      if (!rebuild_representative_halfedges(verbose, true)) {
+        rollback();
+        return false;
+      }
+
+      if (!check_consistency(verbose, true, true, false)) {
+        rollback();
+        return false;
+      }
+
+      return true;
+    }
+
+    void unify_edges(const int heindex) {
+      if (!try_unify_edges(heindex, false)) {
+        throw std::runtime_error(
+            "DCEL::unify_edges(): topology-safe unification failed");
+      }
     }
 
     bool aggregate_dcel(
