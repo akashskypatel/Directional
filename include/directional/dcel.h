@@ -1554,7 +1554,8 @@ public:
      *
      * On failure the original DCEL remains unchanged.
      */
-    bool clean_mesh(const bool verbose = false) {
+    bool clean_mesh(const bool verbose = false,
+                    const bool checkPureBoundaryFaces = true) {
       const int oldVertexCount = static_cast<int>(vertices.size());
       const int oldHalfedgeCount = static_cast<int>(halfedges.size());
       const int oldEdgeCount = static_cast<int>(edges.size());
@@ -1581,11 +1582,7 @@ public:
        * Compaction is not a repair operation. It only removes records that
        * have already been marked invalid and updates surviving indices.
        */
-      if (!check_consistency(verbose,
-                             true,  // repeated directed halfedges
-                             true,  // reverse-edge twin gaps
-                             true)) // pure-boundary faces
-      {
+      if (!check_consistency(verbose, true, true, checkPureBoundaryFaces)) {
         return fail("pre-compaction consistency check failed");
       }
 
@@ -1894,7 +1891,8 @@ public:
       /*
        * Strict post-compaction validation occurs before commit.
        */
-      if (!compacted.check_consistency(verbose, true, true, true)) {
+      if (!compacted.check_consistency(verbose, true, true,
+                                       checkPureBoundaryFaces)) {
         return fail("compacted candidate failed consistency check");
       }
 
@@ -1907,14 +1905,14 @@ public:
       edges.swap(compacted.edges);
       faces.swap(compacted.faces);
 
-      if (verbose) {
-        std::cout << "[Directional::DCEL::clean_mesh()]: "
-                  << "vertices " << oldVertexCount << " -> " << vertices.size()
-                  << ", halfedges " << oldHalfedgeCount << " -> "
-                  << halfedges.size() << ", edges " << oldEdgeCount << " -> "
-                  << edges.size() << ", faces " << oldFaceCount << " -> "
-                  << faces.size() << '\n';
-      }
+      // if (verbose) {
+      //   std::cout << "[Directional::DCEL::clean_mesh()]: "
+      //             << "vertices " << oldVertexCount << " -> " << vertices.size()
+      //             << ", halfedges " << oldHalfedgeCount << " -> "
+      //             << halfedges.size() << ", edges " << oldEdgeCount << " -> "
+      //             << edges.size() << ", faces " << oldFaceCount << " -> "
+      //             << faces.size() << '\n';
+      // }
 
       return true;
     }
@@ -2369,16 +2367,9 @@ public:
       }
     }
 
-    bool aggregate_dcel(
-        const DCEL<VertexData, HalfedgeData, EdgeData, FaceData> &source,
-        const bool verbose = false) {
-      /*
-       * Append `source` into this DCEL while rebasing all core topology
-       * indices. The destination is unchanged if validation or allocation
-       * fails before the final swaps.
-       */
-
-      const auto fail = [&](const std::string &message) {
+    bool aggregate_dcel(const DCEL &source, const bool verbose = false,
+                        const bool validateSource = true) {
+      const auto fail = [&](const std::string &message) -> bool {
         if (verbose) {
           std::cerr << "[Directional::DCEL::aggregate_dcel()]: " << message
                     << '\n';
@@ -2387,14 +2378,6 @@ public:
         return false;
       };
 
-      /*
-       * Self-aggregation is unsafe with the original implementation:
-       *
-       *     aggregate_dcel(*this)
-       *
-       * would append to the same vectors whose size controls the source
-       * loops, potentially causing unbounded growth.
-       */
       if (this == &source) {
         return fail("source and destination are the same DCEL; "
                     "self-aggregation is not supported");
@@ -2404,17 +2387,23 @@ public:
           static_cast<std::size_t>(std::numeric_limits<int>::max());
 
       const std::size_t dstVertexCount = vertices.size();
+
       const std::size_t dstHalfedgeCount = halfedges.size();
+
       const std::size_t dstEdgeCount = edges.size();
+
       const std::size_t dstFaceCount = faces.size();
 
       const std::size_t srcVertexCount = source.vertices.size();
+
       const std::size_t srcHalfedgeCount = source.halfedges.size();
+
       const std::size_t srcEdgeCount = source.edges.size();
+
       const std::size_t srcFaceCount = source.faces.size();
 
       const auto additionFits = [](const std::size_t lhs,
-                                   const std::size_t rhs) {
+                                   const std::size_t rhs) noexcept {
         return rhs <= std::numeric_limits<std::size_t>::max() - lhs;
       };
 
@@ -2435,12 +2424,14 @@ public:
       const std::size_t finalFaceCount = dstFaceCount + srcFaceCount;
 
       /*
-       * All topology references are stored as int.
+       * Indices range from zero through count - 1. A count of
+       * INT_MAX + 1 would still produce INT_MAX as the final index, but
+       * keeping count <= INT_MAX is simpler and consistent with the rest
+       * of the codebase.
        */
       if (finalVertexCount > maxIntIndex || finalHalfedgeCount > maxIntIndex ||
           finalEdgeCount > maxIntIndex || finalFaceCount > maxIntIndex) {
-        return fail(
-            "aggregated DCEL exceeds the range of int topology indices");
+        return fail("aggregated DCEL exceeds int topology-index range");
       }
 
       const int vertexOffset = static_cast<int>(dstVertexCount);
@@ -2451,139 +2442,185 @@ public:
 
       const int faceOffset = static_cast<int>(dstFaceCount);
 
-      /*
-       * Validate a source-local index.
-       *
-       * -1 is the only accepted sentinel.
-       */
-      const auto validOptionalIndex = [](const int value,
-                                         const std::size_t sourceCount) {
-        if (value == -1)
-          return true;
+      const auto validOptionalIndex =
+          [](const int value, const std::size_t sourceCount) noexcept {
+            if (value == -1) {
+              return true;
+            }
 
-        if (value < -1)
-          return false;
+            if (value < -1) {
+              return false;
+            }
 
-        return static_cast<std::size_t>(value) < sourceCount;
+            return static_cast<std::size_t>(value) < sourceCount;
+          };
+
+      const auto rebaseIndex = [](const int value, const int offset) noexcept {
+        return value < 0 ? -1 : value + offset;
       };
 
       /*
-       * Preserve -1 and rebase only nonnegative values.
+       * Validate source-local references before modifying destination
+       * sizes. Since local triangle DCELs are small, this validation is
+       * inexpensive compared with global aggregation.
        */
-      const auto rebaseIndex = [](const int value, const int offset) {
-        return value == -1 ? -1 : value + offset;
-      };
-
-      // ---------------------------------------------------------
-      // Validate all source topology before modifying anything.
-      // ---------------------------------------------------------
-
-      for (std::size_t i = 0; i < srcVertexCount; ++i) {
-        const Vertex &vertex = source.vertices[i];
-
-        if (!validOptionalIndex(vertex.halfedge, srcHalfedgeCount)) {
-          return fail("source vertex " + std::to_string(i) +
-                      " has invalid halfedge index " +
-                      std::to_string(vertex.halfedge));
-        }
-      }
-
-      for (std::size_t i = 0; i < srcHalfedgeCount; ++i) {
-        const Halfedge &halfedge = source.halfedges[i];
-
-        if (!validOptionalIndex(halfedge.vertex, srcVertexCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid vertex index " +
-                      std::to_string(halfedge.vertex));
-        }
-
-        if (!validOptionalIndex(halfedge.next, srcHalfedgeCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid next index " +
-                      std::to_string(halfedge.next));
-        }
-
-        if (!validOptionalIndex(halfedge.prev, srcHalfedgeCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid prev index " +
-                      std::to_string(halfedge.prev));
-        }
-
-        if (!validOptionalIndex(halfedge.twin, srcHalfedgeCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid twin index " +
-                      std::to_string(halfedge.twin));
-        }
-
-        if (!validOptionalIndex(halfedge.face, srcFaceCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid face index " +
-                      std::to_string(halfedge.face));
-        }
-
-        if (!validOptionalIndex(halfedge.edge, srcEdgeCount)) {
-          return fail("source halfedge " + std::to_string(i) +
-                      " has invalid edge index " +
-                      std::to_string(halfedge.edge));
-        }
-      }
-
-      for (std::size_t i = 0; i < srcEdgeCount; ++i) {
-        const Edge &edge = source.edges[i];
-
-        if (!validOptionalIndex(edge.halfedge, srcHalfedgeCount)) {
-          return fail("source edge " + std::to_string(i) +
-                      " has invalid halfedge index " +
-                      std::to_string(edge.halfedge));
-        }
-      }
-
-      for (std::size_t i = 0; i < srcFaceCount; ++i) {
-        const Face &face = source.faces[i];
-
-        if (!validOptionalIndex(face.halfedge, srcHalfedgeCount)) {
-          return fail("source face " + std::to_string(i) +
-                      " has invalid halfedge index " +
-                      std::to_string(face.halfedge));
-        }
-      }
-
-      // ---------------------------------------------------------
-      // Build complete replacement vectors.
-      //
-      // The existing destination remains unchanged until swap().
-      // ---------------------------------------------------------
-
-      try {
-        auto newVertices = vertices;
-        auto newHalfedges = halfedges;
-        auto newEdges = edges;
-        auto newFaces = faces;
-
-        newVertices.reserve(finalVertexCount);
-        newHalfedges.reserve(finalHalfedgeCount);
-        newEdges.reserve(finalEdgeCount);
-        newFaces.reserve(finalFaceCount);
-
+      if (validateSource) {
         for (std::size_t i = 0; i < srcVertexCount; ++i) {
-          Vertex vertex = source.vertices[i];
+          const Vertex &vertex = source.vertices[i];
 
-          /*
-           * Assign the real final index rather than doing:
-           *
-           *     vertex.ID += vertexOffset;
-           *
-           * Source IDs may be stale, -1, or non-contiguous.
-           */
-          vertex.ID = vertexOffset + static_cast<int>(i);
-
-          vertex.halfedge = rebaseIndex(vertex.halfedge, halfedgeOffset);
-
-          newVertices.push_back(std::move(vertex));
+          if (!validOptionalIndex(vertex.halfedge, srcHalfedgeCount)) {
+            return fail("source vertex " + std::to_string(i) +
+                        " has invalid halfedge index " +
+                        std::to_string(vertex.halfedge));
+          }
         }
 
         for (std::size_t i = 0; i < srcHalfedgeCount; ++i) {
-          Halfedge halfedge = source.halfedges[i];
+          const Halfedge &halfedge = source.halfedges[i];
+
+          if (!validOptionalIndex(halfedge.vertex, srcVertexCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid vertex index " +
+                        std::to_string(halfedge.vertex));
+          }
+
+          if (!validOptionalIndex(halfedge.next, srcHalfedgeCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid next index " +
+                        std::to_string(halfedge.next));
+          }
+
+          if (!validOptionalIndex(halfedge.prev, srcHalfedgeCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid prev index " +
+                        std::to_string(halfedge.prev));
+          }
+
+          if (!validOptionalIndex(halfedge.twin, srcHalfedgeCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid twin index " +
+                        std::to_string(halfedge.twin));
+          }
+
+          if (!validOptionalIndex(halfedge.face, srcFaceCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid face index " +
+                        std::to_string(halfedge.face));
+          }
+
+          if (!validOptionalIndex(halfedge.edge, srcEdgeCount)) {
+            return fail("source halfedge " + std::to_string(i) +
+                        " has invalid edge index " +
+                        std::to_string(halfedge.edge));
+          }
+        }
+
+        for (std::size_t i = 0; i < srcEdgeCount; ++i) {
+          const Edge &edge = source.edges[i];
+
+          if (!validOptionalIndex(edge.halfedge, srcHalfedgeCount)) {
+            return fail("source edge " + std::to_string(i) +
+                        " has invalid halfedge index " +
+                        std::to_string(edge.halfedge));
+          }
+        }
+
+        for (std::size_t i = 0; i < srcFaceCount; ++i) {
+          const Face &face = source.faces[i];
+
+          if (!validOptionalIndex(face.halfedge, srcHalfedgeCount)) {
+            return fail("source face " + std::to_string(i) +
+                        " has invalid halfedge index " +
+                        std::to_string(face.halfedge));
+          }
+        }
+      }
+
+      /*
+       * Grow capacity geometrically instead of reserving the exact final
+       * size on every triangle. Exact reserve(finalCount) can cause one
+       * complete reallocation per aggregation call.
+       */
+      const auto geometricCapacity =
+          [](const std::size_t currentCapacity,
+             const std::size_t requiredSize) -> std::size_t {
+        if (requiredSize <= currentCapacity) {
+          return currentCapacity;
+        }
+
+        std::size_t grown =
+            currentCapacity == 0 ? std::size_t{8} : currentCapacity;
+
+        while (grown < requiredSize) {
+          if (grown > std::numeric_limits<std::size_t>::max() / 2) {
+            return requiredSize;
+          }
+
+          grown *= 2;
+        }
+
+        return grown;
+      };
+
+      /*
+       * Reserve all capacities before changing logical sizes. A successful
+       * reserve may change capacity, but never topology or entity counts.
+       */
+      try {
+        if (finalVertexCount > vertices.capacity()) {
+          vertices.reserve(
+              geometricCapacity(vertices.capacity(), finalVertexCount));
+        }
+
+        if (finalHalfedgeCount > halfedges.capacity()) {
+          halfedges.reserve(
+              geometricCapacity(halfedges.capacity(), finalHalfedgeCount));
+        }
+
+        if (finalEdgeCount > edges.capacity()) {
+          edges.reserve(geometricCapacity(edges.capacity(), finalEdgeCount));
+        }
+
+        if (finalFaceCount > faces.capacity()) {
+          faces.reserve(geometricCapacity(faces.capacity(), finalFaceCount));
+        }
+      } catch (const std::exception &exception) {
+        return fail(std::string("failed to reserve aggregation capacity: ") +
+                    exception.what());
+      }
+
+      /*
+       * Rollback restores logical sizes if copying any source entity
+       * throws. Existing destination entities are never modified.
+       */
+      const auto rollback = [&]() noexcept {
+        vertices.resize(dstVertexCount);
+        halfedges.resize(dstHalfedgeCount);
+        edges.resize(dstEdgeCount);
+        faces.resize(dstFaceCount);
+      };
+
+      try {
+        /*
+         * Append vertices.
+         */
+        for (std::size_t i = 0; i < srcVertexCount; ++i) {
+          vertices.push_back(source.vertices[i]);
+
+          Vertex &vertex = vertices.back();
+
+          vertex.ID = vertexOffset + static_cast<int>(i);
+
+          vertex.halfedge = rebaseIndex(vertex.halfedge, halfedgeOffset);
+        }
+
+        /*
+         * Append halfedges.
+         */
+        for (std::size_t i = 0; i < srcHalfedgeCount; ++i) {
+          halfedges.push_back(source.halfedges[i]);
+
+          Halfedge &halfedge = halfedges.back();
 
           halfedge.ID = halfedgeOffset + static_cast<int>(i);
 
@@ -2598,40 +2635,42 @@ public:
           halfedge.face = rebaseIndex(halfedge.face, faceOffset);
 
           halfedge.edge = rebaseIndex(halfedge.edge, edgeOffset);
-
-          newHalfedges.push_back(std::move(halfedge));
         }
 
+        /*
+         * Append edges.
+         */
         for (std::size_t i = 0; i < srcEdgeCount; ++i) {
-          Edge edge = source.edges[i];
+          edges.push_back(source.edges[i]);
+
+          Edge &edge = edges.back();
 
           edge.ID = edgeOffset + static_cast<int>(i);
 
           edge.halfedge = rebaseIndex(edge.halfedge, halfedgeOffset);
-
-          newEdges.push_back(std::move(edge));
         }
 
+        /*
+         * Append faces.
+         */
         for (std::size_t i = 0; i < srcFaceCount; ++i) {
-          Face face = source.faces[i];
+          faces.push_back(source.faces[i]);
+
+          Face &face = faces.back();
 
           face.ID = faceOffset + static_cast<int>(i);
 
           face.halfedge = rebaseIndex(face.halfedge, halfedgeOffset);
-
-          newFaces.push_back(std::move(face));
         }
-
-        /*
-         * Commit atomically at the vector level.
-         */
-        vertices.swap(newVertices);
-        halfedges.swap(newHalfedges);
-        edges.swap(newEdges);
-        faces.swap(newFaces);
       } catch (const std::exception &exception) {
-        return fail(std::string("failed while constructing aggregated DCEL: ") +
+        rollback();
+
+        return fail(std::string("failed while appending source DCEL: ") +
                     exception.what());
+      } catch (...) {
+        rollback();
+
+        return fail("unknown failure while appending source DCEL");
       }
 
       return true;

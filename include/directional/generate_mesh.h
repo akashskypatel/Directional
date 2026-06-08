@@ -11,18 +11,88 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <algorithm>
+#include <array>
+#include <chrono>
+#include <cmath>
+#include <cstdint>
 #include <directional/NFunctionMesher.h>
 #include <directional/dcel.h>
 #include <directional/exact_geometric_definitions.h>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <limits>
 #include <math.h>
 #include <queue>
 #include <set>
+#include <stdexcept>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
 // #include <operators/io_stream.hpp>
 
 namespace directional {
+
+struct ArrangementTimings {
+  double linePencilBuild = 0.0;
+  double lineClip = 0.0;
+  double intersections = 0.0;
+  double edgeBuild = 0.0;
+  double vertexMerge = 0.0;
+  double edgeMerge = 0.0;
+  double dcelBuild = 0.0;
+  double radialSort = 0.0;
+  double faceBuild = 0.0;
+  double outerFace = 0.0;
+  double project3D = 0.0;
+  double aggregate = 0.0;
+  std::size_t calls = 0;
+
+  double total() const {
+    return linePencilBuild + lineClip + intersections + edgeBuild +
+           vertexMerge + edgeMerge + dcelBuild + radialSort + faceBuild +
+           outerFace + project3D + aggregate;
+  }
+};
+
+inline ArrangementTimings &arrangement_timings_accumulator() {
+  static thread_local ArrangementTimings timings;
+  return timings;
+}
+
+inline void reset_arrangement_timings() {
+  arrangement_timings_accumulator() = ArrangementTimings{};
+}
+
+inline double arrangement_seconds_since(
+    const std::chrono::high_resolution_clock::time_point &start) {
+  return std::chrono::duration<double>(
+             std::chrono::high_resolution_clock::now() - start)
+      .count();
+}
+
+inline void print_arrangement_timings(
+    const ArrangementTimings &timings,
+    const char *prefix = "[Directional::NFunctionMesher::generate_mesh()]: ") {
+  std::cout << prefix << "arrangement timing summary over " << timings.calls
+            << " triangles\n"
+            << prefix << "  line pencils:  " << timings.linePencilBuild
+            << " s\n"
+            << prefix << "  line clipping: " << timings.lineClip << " s\n"
+            << prefix << "  intersections: " << timings.intersections << " s\n"
+            << prefix << "  edge build:    " << timings.edgeBuild << " s\n"
+            << prefix << "  vertex merge:  " << timings.vertexMerge << " s\n"
+            << prefix << "  edge merge:    " << timings.edgeMerge << " s\n"
+            << prefix << "  DCEL build:    " << timings.dcelBuild << " s\n"
+            << prefix << "  radial sort:   " << timings.radialSort << " s\n"
+            << prefix << "  face build:    " << timings.faceBuild << " s\n"
+            << prefix << "  outer face:    " << timings.outerFace << " s\n"
+            << prefix << "  3D projection: " << timings.project3D << " s\n"
+            << prefix << "  aggregation:   " << timings.aggregate << " s\n"
+            << prefix << "  measured total:" << timings.total() << " s\n";
+}
 
 // arranging a line set on a triangle
 // triangle is represented by a 3x2 matrix of (CCW) coordinates
@@ -39,6 +109,11 @@ void NFunctionMesher::arrange_on_triangle(
 
   using namespace std;
   using namespace Eigen;
+
+  ArrangementTimings &timings = arrangement_timings_accumulator();
+  ++timings.calls;
+  const auto lineClipStart = std::chrono::high_resolution_clock::now();
+
   V = triangle;
 
   std::vector<SegmentData> inData; // the lines that are inside
@@ -126,14 +201,18 @@ void NFunctionMesher::arrange_on_triangle(
     }
   }
 
+  timings.lineClip += arrangement_seconds_since(lineClipStart);
   segment_arrangement(inSegments, inData, I2dts, t00s, V, triDcel);
 }
 
 void NFunctionMesher::segment_arrangement(
     const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
-    const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> I2dts,
-    const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> t00s,
+    const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
+    const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
     std::vector<EVector2> &V, FunctionDCEL &triDcel) {
+
+  ArrangementTimings &timings = arrangement_timings_accumulator();
+  auto phaseStart = std::chrono::high_resolution_clock::now();
 
   // First creating a graph of segment intersection
 
@@ -254,6 +333,9 @@ void NFunctionMesher::segment_arrangement(
     }
   }
 
+  timings.intersections += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
+
   // Creating the arrangement edges
   std::vector<std::pair<int, int>> arrEdges;
   std::vector<std::vector<SegmentData>> edgeData;
@@ -275,6 +357,9 @@ void NFunctionMesher::segment_arrangement(
     }
     // std::cout<<std::endl;
   }
+
+  timings.edgeBuild += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
 
   // unifying vertices with the same coordinates (necessary because some
   // segments may intersect at the same point and segment overlaps
@@ -310,38 +395,115 @@ void NFunctionMesher::segment_arrangement(
     arrEdges[i] = std::pair<int, int>(uniqueVertexMap[arrEdges[i].first],
                                       uniqueVertexMap[arrEdges[i].second]);
 
+  timings.vertexMerge += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
+
   // std::cout<<"Edges after unifying vertices "<<std::endl;
-
-  // unifying edges with the same vertices (aggregating data) or degenerated
-  Eigen::VectorXi isDeadEdge = Eigen::VectorXi::Constant(arrEdges.size(), 0);
-  for (int i = 0; i < arrEdges.size(); i++) {
-    // std::cout<<"("<<arrEdges[i].first<<",
-    // "<<arrEdges[i].second<<")"<<std::endl;
-    if (arrEdges[i].first == arrEdges[i].second)
-      isDeadEdge[i] = 1;
-    for (int j = i + 1; j < arrEdges.size(); j++) {
-      if (((arrEdges[i].first == arrEdges[j].first) &&
-           (arrEdges[i].second == arrEdges[j].second)) ||
-          ((arrEdges[i].first == arrEdges[j].first) &&
-           (arrEdges[i].second == arrEdges[j].second))) {
-        isDeadEdge(j) = 1;
-        edgeData[i].insert(edgeData[i].end(), edgeData[j].begin(),
-                           edgeData[j].end());
-      }
-    }
+  /*
+// unifying edges with the same vertices (aggregating data) or degenerated
+Eigen::VectorXi isDeadEdge = Eigen::VectorXi::Constant(arrEdges.size(), 0);
+for (int i = 0; i < arrEdges.size(); i++) {
+// std::cout<<"("<<arrEdges[i].first<<",
+// "<<arrEdges[i].second<<")"<<std::endl;
+if (arrEdges[i].first == arrEdges[i].second)
+  isDeadEdge[i] = 1;
+for (int j = i + 1; j < arrEdges.size(); j++) {
+  if (((arrEdges[i].first == arrEdges[j].first) &&
+       (arrEdges[i].second == arrEdges[j].second)) ||
+      ((arrEdges[i].first == arrEdges[j].first) &&
+       (arrEdges[i].second == arrEdges[j].second))) {
+    isDeadEdge(j) = 1;
+    edgeData[i].insert(edgeData[i].end(), edgeData[j].begin(),
+                       edgeData[j].end());
   }
-  // cleaning dead edges
-  std::vector<std::pair<int, int>> newArrEdges;
-  std::vector<std::vector<SegmentData>> newEdgeData;
-  for (int i = 0; i < arrEdges.size(); i++) {
-    if (isDeadEdge[i])
+}
+}
+// cleaning dead edges
+std::vector<std::pair<int, int>> newArrEdges;
+std::vector<std::vector<SegmentData>> newEdgeData;
+for (int i = 0; i < arrEdges.size(); i++) {
+if (isDeadEdge[i])
+  continue;
+newArrEdges.push_back(arrEdges[i]);
+newEdgeData.push_back(edgeData[i]);
+}
+arrEdges = newArrEdges;
+edgeData = newEdgeData;
+  */
+  /*
+   * Unify duplicate undirected edges in expected O(E).
+   *
+   * Canonical edge key:
+   *
+   *     min(v0,v1), max(v0,v1)
+   *
+   * Degenerate edges are discarded.
+   */
+  const auto directedEdgeKey = [](const int first,
+                                  const int second) -> std::uint64_t {
+    return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(first))
+            << 32U) |
+           static_cast<std::uint64_t>(static_cast<std::uint32_t>(second));
+  };
+
+  std::unordered_map<std::uint64_t, int> uniqueEdgeIndex;
+
+  uniqueEdgeIndex.reserve(arrEdges.size());
+  uniqueEdgeIndex.max_load_factor(0.7f);
+
+  std::vector<std::pair<int, int>> uniqueArrEdges;
+
+  std::vector<std::vector<SegmentData>> uniqueEdgeData;
+
+  uniqueArrEdges.reserve(arrEdges.size());
+  uniqueEdgeData.reserve(edgeData.size());
+
+  for (std::size_t edgeIndex = 0; edgeIndex < arrEdges.size(); ++edgeIndex) {
+    const int first = arrEdges[edgeIndex].first;
+
+    const int second = arrEdges[edgeIndex].second;
+
+    /*
+     * Discard zero-length topology after vertex unification.
+     */
+    if (first == second) {
       continue;
-    newArrEdges.push_back(arrEdges[i]);
-    newEdgeData.push_back(edgeData[i]);
-  }
-  arrEdges = newArrEdges;
-  edgeData = newEdgeData;
+    }
 
+    const std::uint64_t key = directedEdgeKey(first, second);
+
+    const auto existing = uniqueEdgeIndex.find(key);
+
+    if (existing == uniqueEdgeIndex.end()) {
+      const int newIndex = static_cast<int>(uniqueArrEdges.size());
+
+      uniqueEdgeIndex.emplace(key, newIndex);
+
+      uniqueArrEdges.emplace_back(first, second);
+
+      uniqueEdgeData.push_back(std::move(edgeData[edgeIndex]));
+
+      continue;
+    }
+
+    /*
+     * Merge metadata into the first edge using this undirected pair.
+     */
+    std::vector<SegmentData> &destination =
+        uniqueEdgeData[static_cast<std::size_t>(existing->second)];
+
+    std::vector<SegmentData> &source = edgeData[edgeIndex];
+
+    destination.insert(destination.end(),
+                       std::make_move_iterator(source.begin()),
+                       std::make_move_iterator(source.end()));
+  }
+
+  arrEdges = std::move(uniqueArrEdges);
+  edgeData = std::move(uniqueEdgeData);
+
+  timings.edgeMerge += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
   // Generating the DCEL
   triDcel.vertices.resize(arrVertices.size());
   triDcel.edges.resize(arrEdges.size());
@@ -387,16 +549,47 @@ void NFunctionMesher::segment_arrangement(
     // arrVertices[arrEdges[i].first]; slopeVec[i] = slope_function(edgeVec);
   }
 
+  timings.dcelBuild += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
+
+  /*
+   * Build vertex-to-edge incidence once in O(E).
+   *
+   * bool:
+   *   true  -> vertex is arrEdges[edge].first
+   *   false -> vertex is arrEdges[edge].second
+   */
+  std::vector<std::vector<std::pair<int, bool>>> adjacentEdges(
+      arrVertices.size());
+
+  for (int edge = 0; edge < static_cast<int>(arrEdges.size()); ++edge) {
+    const int first = arrEdges[edge].first;
+
+    const int second = arrEdges[edge].second;
+
+    if (first < 0 || first >= static_cast<int>(arrVertices.size()) ||
+        second < 0 || second >= static_cast<int>(arrVertices.size())) {
+      throw std::runtime_error(
+          "segment_arrangement(): edge endpoint out of range");
+    }
+
+    adjacentEdges[static_cast<std::size_t>(first)].emplace_back(edge, true);
+
+    adjacentEdges[static_cast<std::size_t>(second)].emplace_back(edge, false);
+  }
+
   // Orienting segments around each vertex by CCW order
   double tolerance = 1e-7;
-  for (int i = 0; i < arrVertices.size(); i++) {
-    std::vector<std::pair<int, bool>> adjArrEdges; // second is direction
-    for (int j = 0; j < arrEdges.size(); j++) {
-      if (arrEdges[j].first == i)
-        adjArrEdges.push_back(std::pair<int, bool>(j, true));
-      if (arrEdges[j].second == i)
-        adjArrEdges.push_back(std::pair<int, bool>(j, false));
-    } // not very efficient but probably not that bad
+  for (int i = 0; i < static_cast<int>(arrVertices.size()); ++i) {
+    const auto &adjArrEdges = adjacentEdges[static_cast<std::size_t>(i)];
+
+    if (adjArrEdges.empty()) {
+      /*
+       * This should not normally occur, but do not dereference an empty
+       * ordering container below.
+       */
+      continue;
+    }
 
     /*std::cout<<"Orienting vertex "<<i<<std::endl;
      for (int k=0;k<adjArrEdges.size();k++)
@@ -405,72 +598,102 @@ void NFunctionMesher::segment_arrangement(
 
     // doing the lazy thing first, since this is very unlikely to fail unless
     // parameterization is very degenerate
-    std::set<std::pair<double, int>> dCCWSegments;
-    // using this slope function:
-    // https://math.stackexchange.com/questions/1450498/rational-ordering-of-vectors
-    for (int j = 0; j < adjArrEdges.size(); j++) {
+    std::vector<std::pair<double, int>> dCCWSegments;
+
+    dCCWSegments.reserve(adjArrEdges.size());
+
+    for (int j = 0; j < static_cast<int>(adjArrEdges.size()); ++j) {
+      const int edge = adjArrEdges[j].first;
+
       Eigen::RowVector2d edgeVec =
-          arrVertices[arrEdges[adjArrEdges[j].first].second].to_double() -
-          arrVertices[arrEdges[adjArrEdges[j].first].first].to_double();
-      edgeVec = (adjArrEdges[j].second ? edgeVec : -edgeVec);
-      double slopeFunc = slope_function_double(edgeVec);
-      // std::cout<<"slope: "<<slopeFunc.get_d()<<" for edgeVec
-      // "<<edgeVec<<std::endl;
-      dCCWSegments.insert(std::pair<double, int>(slopeFunc, j));
+          arrVertices[arrEdges[edge].second].to_double() -
+          arrVertices[arrEdges[edge].first].to_double();
+
+      if (!adjArrEdges[j].second) {
+        edgeVec = -edgeVec;
+      }
+
+      dCCWSegments.emplace_back(slope_function_double(edgeVec), j);
     }
+
+    std::sort(dCCWSegments.begin(), dCCWSegments.end(),
+              [](const auto &left, const auto &right) {
+                if (left.first != right.first) {
+                  return left.first < right.first;
+                }
+
+                return left.second < right.second;
+              });
     // if two slopes are too close together, we use exact numbers
     bool tooClose = false;
-    auto first = dCCWSegments.begin();
-    auto prev = first;
 
-    for (auto it = std::next(first); it != dCCWSegments.end(); ++it) {
-      if (std::abs(prev->first - it->first) < tolerance) {
-        // std::cout<<"prev->first: "<<prev->first<<std::endl;
-        // std::cout<<"it->first: "<<it->first<<std::endl;
-        // std::cout<<"std::abs(prev->first - it->first):
-        // "<<std::abs(prev->first - it->first)<<std::endl;
+    for (std::size_t index = 1; index < dCCWSegments.size(); ++index) {
+      if (std::abs(dCCWSegments[index - 1].first - dCCWSegments[index].first) <
+          tolerance) {
         tooClose = true;
         break;
       }
-      prev = it;
     }
 
-    // Cyclic check: last element vs first element
-    if ((prev->first < 7.0 + tolerance) && (prev->first > 7.0 - tolerance) &&
-        (first->first > -1.0 - tolerance) &&
-        (first->first < -1.0 + tolerance)) {
-      // std::cout<<"prev->first: "<<prev->first<<std::endl;
-      // std::cout<<"first->first: "<<first->first<<std::endl;
-      tooClose = true;
+    if (!tooClose && dCCWSegments.size() > 1) {
+      const double firstSlope = dCCWSegments.front().first;
+
+      const double lastSlope = dCCWSegments.back().first;
+
+      if (lastSlope < 7.0 + tolerance && lastSlope > 7.0 - tolerance &&
+          firstSlope > -1.0 - tolerance && firstSlope < -1.0 + tolerance) {
+        tooClose = true;
+      }
     }
 
     std::vector<int> edgeOrder;
+    edgeOrder.reserve(adjArrEdges.size());
+
     if (!tooClose) {
-      for (auto it = dCCWSegments.begin(); it != dCCWSegments.end(); ++it)
-        edgeOrder.push_back(it->second);
+      for (const auto &entry : dCCWSegments) {
+        edgeOrder.push_back(entry.second);
+      }
     } else {
       // doing everything in exact numbers
       // std::cout<<"resorting to slope_function() in exact numbers"<<std::endl;
-      std::set<std::pair<ENumber, int>> CCWSegments;
-      // using this slope function:
-      // https://math.stackexchange.com/questions/1450498/rational-ordering-of-vectors
-      for (int j = 0; j < adjArrEdges.size(); j++) {
-        EVector2 edgeVec = arrVertices[arrEdges[adjArrEdges[j].first].second] -
-                           arrVertices[arrEdges[adjArrEdges[j].first].first];
-        edgeVec = (adjArrEdges[j].second ? edgeVec : -edgeVec);
-        ENumber slopeFunc = slope_function(edgeVec);
-        // std::cout<<"slope: "<<slopeFunc.get_d()<<" for edgeVec
-        // "<<edgeVec<<std::endl;
-        CCWSegments.insert(std::pair<ENumber, int>(slopeFunc, j));
+      std::vector<std::pair<ENumber, int>> exactCCWSegments;
+
+      exactCCWSegments.reserve(adjArrEdges.size());
+
+      for (int j = 0; j < static_cast<int>(adjArrEdges.size()); ++j) {
+        const int edge = adjArrEdges[j].first;
+
+        EVector2 edgeVec = arrVertices[arrEdges[edge].second] -
+                           arrVertices[arrEdges[edge].first];
+
+        if (!adjArrEdges[j].second) {
+          edgeVec = -edgeVec;
+        }
+
+        exactCCWSegments.emplace_back(slope_function(edgeVec), j);
       }
-      for (auto it = CCWSegments.begin(); it != CCWSegments.end(); ++it)
-        edgeOrder.push_back(it->second);
+      std::sort(exactCCWSegments.begin(), exactCCWSegments.end(),
+                [](const auto &left, const auto &right) {
+                  if (left.first < right.first) {
+                    return true;
+                  }
+
+                  if (right.first < left.first) {
+                    return false;
+                  }
+
+                  return left.second < right.second;
+                });
+
+      for (const auto &entry : exactCCWSegments) {
+        edgeOrder.push_back(entry.second);
+      }
     }
 
     // std::cout<<"Ordering of edges"<<std::endl;
-    /*for (std::set<std::pair<ENumber, int>>::iterator si = CCWSegments.begin();
-     si!=CCWSegments.end();si++) std::cout<<si->second<<",";
-     std::cout<<std::endl;*/
+    /*for (std::set<std::pair<ENumber, int>>::iterator si =
+     CCWSegments.begin(); si!=CCWSegments.end();si++)
+     std::cout<<si->second<<","; std::cout<<std::endl;*/
 
     int currHE = -1;
     for (int s = 0; s < edgeOrder.size(); s++) {
@@ -504,6 +727,9 @@ void NFunctionMesher::segment_arrangement(
     }
   }
 
+  timings.radialSort += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
+
   // generating faces (at this stage, there is also an outer face)
   int currFace = 0;
   for (int i = 0; i < triDcel.halfedges.size(); i++) {
@@ -522,64 +748,162 @@ void NFunctionMesher::segment_arrangement(
       triDcel.halfedges[currHE].face = newFace.ID;
       currHE = triDcel.halfedges[currHE].next;
       counter++;
-      assert(counter < 10000 && "NFUnctionMeshes::generate_mesh(): something "
-                                "wrong with the generated faces");
+      if (counter >= static_cast<int>(triDcel.halfedges.size()) + 1) {
+        throw std::runtime_error("segment_arrangement(): "
+                                 "face traversal did not close");
+      }
     } while (currHE != beginHE);
     // std::cout<<std::endl;
     triDcel.faces.push_back(newFace);
   }
   int numFaces = currFace;
 
-  // EXPENSIVE! comment out after being sure
-  assert(triDcel.check_consistency(false, true, true, false) &&
-         "DCEL not consistent!");
+  constexpr bool checkLocalPureBoundaryFaces = false;
+
+  if (!triDcel.check_consistency(mData.verbose, true, true,
+                                 checkLocalPureBoundaryFaces)) {
+    throw std::runtime_error(
+        "segment_arrangement(): "
+        "local DCEL is inconsistent before outer-face removal");
+  }
+
+  timings.faceBuild += arrangement_seconds_since(phaseStart);
+  phaseStart = std::chrono::high_resolution_clock::now();
 
   // Removing the outer face and deleting all associated halfedges
   // identifying it by the only polygon with negative signed area (expensive?)
   int outerFace = -1;
   double minSfa = 32767.0;
-  for (int f = 0; f < numFaces; f++) {
+  for (int f = 0; f < numFaces; ++f) {
+    if (!triDcel.faces[f].valid) {
+      continue;
+    }
+
     std::vector<EVector2> faceVectors;
-    int beginHE = triDcel.faces[f].halfedge;
+
+    const int beginHE = triDcel.faces[f].halfedge;
+
+    if (!triDcel.valid_halfedge(beginHE)) {
+      throw std::runtime_error("segment_arrangement(): "
+                               "face has invalid representative halfedge");
+    }
+
     int currHE = beginHE;
-    do {
-      faceVectors.push_back(
-          V[triDcel.halfedges[triDcel.halfedges[currHE].next].vertex] -
-          V[triDcel.halfedges[currHE].vertex]);
-      currHE = triDcel.halfedges[currHE].next;
-    } while (currHE != beginHE);
-    double sfa = signed_face_area(faceVectors);
-    if (sfa < minSfa)
+    bool closed = false;
+
+    for (int step = 0; step < static_cast<int>(triDcel.halfedges.size());
+         ++step) {
+      if (!triDcel.valid_halfedge(currHE)) {
+        throw std::runtime_error("segment_arrangement(): "
+                                 "invalid halfedge during outer-face scan");
+      }
+
+      const int next = triDcel.halfedges[currHE].next;
+
+      if (!triDcel.valid_halfedge(next)) {
+        throw std::runtime_error(
+            "segment_arrangement(): "
+            "invalid next halfedge during outer-face scan");
+      }
+
+      faceVectors.push_back(V[triDcel.halfedges[next].vertex] -
+                            V[triDcel.halfedges[currHE].vertex]);
+
+      currHE = next;
+
+      if (currHE == beginHE) {
+        closed = true;
+        break;
+      }
+    }
+
+    if (!closed) {
+      throw std::runtime_error(
+          "segment_arrangement(): "
+          "face traversal did not close during outer-face scan");
+    }
+
+    const double sfa = signed_face_area(faceVectors);
+
+    if (sfa < minSfa) {
       minSfa = sfa;
+    }
+
     if (sfa < -100.0 * tolerance) {
       outerFace = f;
       break;
     }
   }
-  assert(outerFace != -1 &&
-         "NFunctionMeshes::generate_mesh(): Didn't find outer face!");
+  if (outerFace < 0) {
+    throw std::runtime_error(
+        "segment_arrangement(): failed to identify outer face");
+  }
 
   // invalidating outer face
   triDcel.faces[outerFace].valid = false;
-  for (int i = 0; i < triDcel.halfedges.size(); i++) {
-    if (triDcel.halfedges[i].face != outerFace)
-      continue;
+  triDcel.faces[outerFace].halfedge = -1;
 
-    triDcel.halfedges[i].valid = false;
-    triDcel.halfedges[triDcel.halfedges[i].twin].twin = -1;
-    triDcel.edges[triDcel.halfedges[i].edge].halfedge =
-        triDcel.halfedges[i].twin;
-    triDcel.vertices[triDcel.halfedges[i].vertex].halfedge =
-        triDcel.halfedges[triDcel.halfedges[i].twin].next;
-    // dcel.VH( dcel.HV( dcel.nextH(i)))= dcel.twinH(i);
-    // dcel.VH( dcel.HV(i))= dcel.nextH( dcel.twinH(i));
+  for (int i = 0; i < static_cast<int>(triDcel.halfedges.size()); ++i) {
+    auto &halfedge = triDcel.halfedges[i];
+
+    if (!halfedge.valid || halfedge.face != outerFace) {
+      continue;
+    }
+
+    const int twin = halfedge.twin;
+    const int edge = halfedge.edge;
+    const int vertex = halfedge.vertex;
+
+    if (twin >= 0) {
+      if (!triDcel.valid_halfedge(twin)) {
+        throw std::runtime_error("segment_arrangement(): "
+                                 "outer-face halfedge has invalid twin");
+      }
+
+      triDcel.halfedges[twin].twin = -1;
+
+      if (triDcel.valid_edge(edge)) {
+        triDcel.edges[edge].halfedge = twin;
+      }
+
+      if (triDcel.valid_vertex(vertex)) {
+        const int twinNext = triDcel.halfedges[twin].next;
+
+        if (!triDcel.valid_halfedge(twinNext)) {
+          throw std::runtime_error("segment_arrangement(): "
+                                   "surviving twin has invalid next");
+        }
+
+        triDcel.vertices[vertex].halfedge = twinNext;
+      }
+    } else {
+      if (triDcel.valid_edge(edge)) {
+        triDcel.edges[edge].valid = false;
+        triDcel.edges[edge].halfedge = -1;
+      }
+
+      if (triDcel.valid_vertex(vertex) &&
+          triDcel.vertices[vertex].halfedge == i) {
+        triDcel.vertices[vertex].halfedge = -1;
+      }
+    }
+
+    halfedge.twin = -1;
+    halfedge.valid = false;
   }
 
   // removing dead edges
-  triDcel.clean_mesh();
-  // EXPENSIVE! comment out after being sure
-  assert(triDcel.check_consistency(false, true, true, false) &&
-         "DCEL not consistent!");
+  if (!triDcel.clean_mesh(mData.verbose, false)) {
+    throw std::runtime_error(
+        "segment_arrangement(): local DCEL cleanup failed");
+  }
+
+  if (!triDcel.check_consistency(mData.verbose, true, true, false)) {
+    throw std::runtime_error("segment_arrangement(): "
+                             "local DCEL is inconsistent after cleanup");
+  }
+
+  timings.outerFace += arrangement_seconds_since(phaseStart);
 }
 
 // The top mesh generation function
@@ -588,275 +912,298 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
   using namespace std;
   using namespace Eigen;
 
-  // Looping over all triangles, and arranging parametric lines for each
-  auto start = std::chrono::high_resolution_clock::now();
-  for (int findex = 0; findex < origMesh.F.rows(); findex++) {
+  reset_arrangement_timings();
 
-    // building small face overlays of one triangle and a few roughly
-    // surrounding hexes to retrieve the structure in the face
-    vector<ENumber> triExactNFunction = exactNFunction[findex];
-    if ((findex % 1000 == 0) && (mData.verbose)) {
-      auto end = std::chrono::high_resolution_clock::now();
-      auto duration =
-          std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-      std::cout<< "[Directional::NFunctionMesher::generate_mesh()]: " << "Triangle " << findex << " exactNFunction:" << std::endl;
-      std::cout<< "[Directional::NFunctionMesher::generate_mesh()]: " << "Execution time: " << duration.count() / 1e+6 << " seconds" << std::endl;
-      start = std::chrono::high_resolution_clock::now();
-    }
+  const auto generationStart = std::chrono::high_resolution_clock::now();
+  auto intervalStart = generationStart;
 
-    vector<ENumber> minFuncs(mData.N);
-    vector<ENumber> maxFuncs(mData.N);
-    for (int k = 0; k < mData.N; k++) {
-      minFuncs[k] = ENumber(327600);
-      maxFuncs[k] = ENumber(-327600);
-    }
+  const std::vector<EVector2> canonicalTriangle2D = {
+      EVector2({ENumber(0), ENumber(0)}), EVector2({ENumber(1), ENumber(0)}),
+      EVector2({ENumber(0), ENumber(1)})};
 
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < mData.N; j++) {
-        if (triExactNFunction[mData.N * i + j] > maxFuncs[j])
-          maxFuncs[j] = triExactNFunction[mData.N * i + j];
-        if (triExactNFunction[mData.N * i + j] < minFuncs[j])
-          minFuncs[j] = triExactNFunction[mData.N * i + j];
+  const EVector2 canonicalE01({ENumber(1), ENumber(0)});
+  const EVector2 canonicalE12({ENumber(-1), ENumber(1)});
+  const EVector2 canonicalE20({ENumber(0), ENumber(-1)});
+
+  const double coordinateTolerance = 1.0 / static_cast<double>(resolution);
+
+  for (int findex = 0; findex < origMesh.F.rows(); ++findex) {
+    const char *triangleStage = "triangle initialization";
+    try {
+      auto trianglePhaseStart = std::chrono::high_resolution_clock::now();
+
+      if (mData.verbose && findex > 0 && (findex % 1000 == 0)) {
+        const double intervalSeconds = arrangement_seconds_since(intervalStart);
+
+        std::cout
+            << "[Directional::NFunctionMesher::generate_mesh()]: Triangle "
+            << findex
+            << " completed; previous 1000 triangles: " << intervalSeconds
+            << " seconds\n";
+
+        print_arrangement_timings(arrangement_timings_accumulator());
+        intervalStart = std::chrono::high_resolution_clock::now();
       }
-    }
 
-    // building the one-triangle arrangement
-    std::vector<EVector2> ETriPoints2D(3);
-    std::vector<EVector3> ETriPoints3D(3);
-    ETriPoints2D[0][0] = ENumber(0);
-    ETriPoints2D[0][1] = ENumber(0);
-    ETriPoints2D[1][0] = ENumber(1);
-    ETriPoints2D[1][1] = ENumber(0);
-    ETriPoints2D[2][0] = ENumber(0);
-    ETriPoints2D[2][1] = ENumber(1);
+      const std::vector<ENumber> &triExactNFunction = exactNFunction[findex];
 
-    for (int i = 0; i < 3; i++) {
-      RowVector3d position = origMesh.V.row(origMesh.F(findex, i));
-      double tol = 1.0 / (double)resolution;
-      ENumber x = ENumber(position(0), tol);
-      ENumber y = ENumber(position(1), tol);
-      ENumber z = ENumber(position(2), tol);
+      std::vector<ENumber> minFuncs(mData.N);
+      std::vector<ENumber> maxFuncs(mData.N);
 
-      EVector3 xyz;
-      xyz[0] = x;
-      xyz[1] = y;
-      xyz[2] = z;
-      ETriPoints3D[i] = xyz;
-    }
-
-    int DomEdge;
-    std::vector<std::pair<int, bool>> triangleData;
-    triangleData.resize(3); // of the triangles, to be put into arrangement data
-    int eiterate = origMesh.dcel.faces[findex].halfedge;
-    for (int i = 0; i < 3; i++) {
-      if ((origMesh.dcel.halfedges[eiterate].twin < 0) ||
-          (origMesh.dcel.halfedges[eiterate].twin > eiterate))
-        triangleData[i].first = eiterate;
-      else
-        triangleData[i].first = origMesh.dcel.halfedges[eiterate].twin;
-
-      triangleData[i].second =
-          (origMesh.dcel.halfedges[eiterate].twin < 0); // is it a boundary
-
-      eiterate = origMesh.dcel.halfedges[eiterate].next;
-    }
-
-    // Generating the parametric lines for the canonical triangle
-    vector<LinePencil> linePencils;
-    vector<int> linePencilData;
-    vector<EVector2> isoDirections(mData.N);
-    for (int funcIter = 0; funcIter < mData.N; funcIter++) {
-
-      vector<EInt> isoValues;
-      EInt q, r;
-      div_mod(enumber_num(minFuncs[funcIter]), enumber_den(minFuncs[funcIter]),
-              q, r);
-      EInt minIsoValue =
-          q + (enumber_num(minFuncs[funcIter]) < EInt(0) ? EInt(-1) : EInt(0));
-      div_mod(enumber_num(maxFuncs[funcIter]), enumber_den(maxFuncs[funcIter]),
-              q, r);
-      EInt maxIsoValue =
-          q + (enumber_num(maxFuncs[funcIter]) < EInt(0) ? EInt(0) : EInt(1));
-      for (EInt isoValue = minIsoValue; isoValue <= maxIsoValue;
-           isoValue = isoValue + EInt(1))
-        isoValues.push_back(isoValue);
-
-      /*std::cout<<"minFuncs[funcIter]:
-       "<<minFuncs[funcIter].to_double()<<std::endl;
-       std::cout<<"maxFuncs[funcIter]:
-       "<<maxFuncs[funcIter].to_double()<<std::endl; std::cout<<"minIsoValue:
-       "<<minIsoValue.to_string()<<std::endl; std::cout<<"maxIsoValue:
-       "<<maxIsoValue.to_string()<<std::endl;*/
-
-      // computing gradient of function in plane
-      EVector2 e01 = ETriPoints2D[1] - ETriPoints2D[0];
-      EVector2 e12 = ETriPoints2D[2] - ETriPoints2D[1];
-      EVector2 e20 = ETriPoints2D[0] - ETriPoints2D[2];
-
-      // a and b values of lines
-      EVector2 gradVector = triExactNFunction[2 * mData.N + funcIter] *
-                                EVector2({-e01[1], e01[0]}) +
-                            triExactNFunction[0 * mData.N + funcIter] *
-                                EVector2({-e12[1], e12[0]}) +
-                            triExactNFunction[1 * mData.N + funcIter] *
-                                EVector2({-e20[1], e20[0]});
-
-      isoDirections[funcIter] = gradVector;
-
-      // Number avgFuncValue =
-      // (funcValues[0](funcIter)+funcValues[1](funcIter)+funcValues[2](funcIter))/3.0;
-      // TODO: find c = z1*u+z2 of ax+by+c(u) ad then use it to generate all
-      // values between floor and ceil.
-
-      // pinv of [a 1;b 1;c 1] is [           2*a - b - c,           2*b - a -
-      // c,           2*c - b - a] [ b^2 - a*b + c^2 - a*c, a^2 - b*a + c^2 -
-      // b*c, a^2 - c*a + b^2 - c*b]/(2*a^2 - 2*a*b - 2*a*c + 2*b^2 - 2*b*c +
-      // 2*c^2)
-
-      ENumber a = triExactNFunction[0 * mData.N + funcIter];
-      ENumber b = triExactNFunction[1 * mData.N + funcIter];
-      ENumber c = triExactNFunction[2 * mData.N + funcIter];
-      if ((a == b) && (b == c))
-        continue; // that means a degenerate function on the triangle
-
-      // cout<<"a,b,c:
-      // "<<a.to_double()<<","<<b.to_double()<<","<<c.to_double()<<endl;
-
-      ENumber rhs[3];
-      rhs[0] = -gradVector[0] * ETriPoints2D[0][0] -
-               gradVector[1] * ETriPoints2D[0][1];
-      rhs[1] = -gradVector[0] * ETriPoints2D[1][0] -
-               gradVector[1] * ETriPoints2D[1][1];
-      rhs[2] = -gradVector[0] * ETriPoints2D[2][0] -
-               gradVector[1] * ETriPoints2D[2][1];
-
-      ENumber invM[2][3];
-      invM[0][0] = ENumber(2) * a - b - c;
-      invM[0][1] = ENumber(2) * b - a - c;
-      invM[0][2] = ENumber(2) * c - b - a;
-      invM[1][0] = b * b - a * b + c * c - a * c;
-      invM[1][1] = a * a - b * a + c * c - b * c;
-      invM[1][2] = a * a - c * a + b * b - c * b;
-      for (int row = 0; row < 2; row++)
-        for (int col = 0; col < 3; col++)
-          invM[row][col] /=
-              (ENumber(2) * (a * a - a * b - a * c + b * b - b * c + c * c));
-
-      ENumber x[2];
-      x[0] = invM[0][0] * rhs[0] + invM[0][1] * rhs[1] + invM[0][2] * rhs[2];
-      x[1] = invM[1][0] * rhs[0] + invM[1][1] * rhs[1] + invM[1][2] * rhs[2];
-
-      // generating all lines
-      LinePencil lp;
-      lp.direction[0] = -gradVector[1];
-      lp.direction[1] = gradVector[0];
-      // lp.pVec = gradVector;  //that means not orthogonal!
-      if (gradVector[1] != ENumber(0)) {
-        lp.p0[0] = ENumber(0);
-        lp.p0[1] = -(x[0] * isoValues[0] + x[1]) / gradVector[1];
-        lp.pVec[0] = ENumber(0);
-        lp.pVec[1] = -x[0] / gradVector[1];
-      } else {
-        lp.p0[1] = ENumber(0);
-        lp.p0[0] = -(x[0] * isoValues[0] + x[1]) / gradVector[0];
-        lp.pVec[1] = ENumber(0);
-        lp.pVec[0] = -x[0] / gradVector[0];
+      for (int function = 0; function < mData.N; ++function) {
+        minFuncs[function] = ENumber(327600);
+        maxFuncs[function] = ENumber(-327600);
       }
-      lp.numLines = isoValues.size();
-      // lp.minIsoValue = isoValues[0];
-      // lp.maxIsoValue = isoValues[isoValues.size()-1];
-      linePencils.push_back(lp);
-      linePencilData.push_back(funcIter);
-      /*for (int isoIndex = 0; isoIndex < isoValues.size(); isoIndex++) {
-       ENumber currc = x[0]* isoValues[isoIndex] + x[1];
-       EVector2 lineVector;
 
-       EVector2 linePoint;
-       if (gradVector[1] != ENumber(0)) {
-       linePoint[0] = ENumber(0);
-       linePoint[1] = -currc / gradVector[1];
-       } else {
-       linePoint[1] = ENumber(0);
-       linePoint[0] = -currc / gradVector[0];
-       }
+      for (int corner = 0; corner < 3; ++corner) {
+        for (int function = 0; function < mData.N; ++function) {
+          const ENumber &value = triExactNFunction[mData.N * corner + function];
 
-       paramLines.push_back(Line2(linePoint, lineVector));
-       lineData.push_back(funcIter);
-       }*/
-    }
+          if (value > maxFuncs[function]) {
+            maxFuncs[function] = value;
+          }
 
-    FunctionDCEL localArrDcel;
-    vector<EVector2> localV;
-    if (findex == 633)
-      int kaka = 8;
-    arrange_on_triangle(ETriPoints2D, triangleData, linePencils, linePencilData,
-                        localV, localArrDcel);
-
-    // vector<EVector3> ELocalV3D(localV.size());
-    //  MatrixXd localV3D(localV.size(), 3);
-    // converting the vertices to 3D
-    for (int i = 0; i < localV.size(); i++) {
-      // checking if this is an original vertex
-      // std::cout<<"Converting vertex "<<i<<" to 3D "<<std::endl;
-      bool isOrigTriangle = false;
-      for (int j = 0; j < 3; j++) {
-        if (localV[i] == ETriPoints2D[j]) {
-          localArrDcel.vertices[i].data.eCoords = ETriPoints3D[j];
-          isOrigTriangle = true;
+          if (value < minFuncs[function]) {
+            minFuncs[function] = value;
+          }
         }
       }
 
-      /*if (isOrigTriangle)
-       continue;    //this is probably not needed but covered by barycentric
-       coordinates but w/e*/
+      std::array<EVector3, 3> trianglePoints3D;
 
-      // finding out barycentric coordinates
-      ENumber baryValues[3];
-      ENumber sum(0);
-      for (int j = 0; j < 3; j++) {
-        // ETriangle2D t(vi->point(), ETriPoints2D[(i + 1) % 3], ETriPoints2D[(i
-        // + 2) % 3]);
-        vector<EVector2> inTri(3);
-        inTri[0] = localV[i];
-        inTri[1] = ETriPoints2D[(j + 1) % 3];
-        inTri[2] = ETriPoints2D[(j + 2) % 3];
+      for (int corner = 0; corner < 3; ++corner) {
+        const RowVector3d position = origMesh.V.row(origMesh.F(findex, corner));
 
-        baryValues[j] = triangle_area(inTri);
-        sum += baryValues[j];
+        trianglePoints3D[corner] =
+            EVector3({ENumber(position(0), coordinateTolerance),
+                      ENumber(position(1), coordinateTolerance),
+                      ENumber(position(2), coordinateTolerance)});
       }
-      for (int j = 0; j < 3; j++)
-        baryValues[j] /= sum;
 
-      // std::cout<<"baryValues vertex "<< baryValues[0].get_d()<<","<<
-      // baryValues[1].get_d()<<","<< baryValues[2].get_d()<<std::endl;
+      std::vector<std::pair<int, bool>> triangleData(3);
+      int currentHalfedge = origMesh.dcel.faces[findex].halfedge;
 
-      localArrDcel.vertices[i].data.eCoords =
-          EVector3({ENumber(0), ENumber(0), ENumber(0)});
-      for (int j = 0; j < 3; j++) {
-        // std::cout<<"ETriPoints3D["<<j<<"]: "<<ETriPoints3D[j]<<std::endl;
-        localArrDcel.vertices[i].data.eCoords =
-            localArrDcel.vertices[i].data.eCoords +
-            ETriPoints3D[j] * baryValues[j];
+      for (int corner = 0; corner < 3; ++corner) {
+        const int twin = origMesh.dcel.halfedges[currentHalfedge].twin;
+
+        triangleData[corner].first =
+            twin < 0 || twin > currentHalfedge ? currentHalfedge : twin;
+
+        triangleData[corner].second = twin < 0;
+        currentHalfedge = origMesh.dcel.halfedges[currentHalfedge].next;
       }
-      // localArrDcel.vertices[i].data.eCoords = EVector3({localV[i][0],
-      // localV[i][1], 0});
+      const auto linePencilStart = std::chrono::high_resolution_clock::now();
+      std::vector<LinePencil> linePencils;
+      std::vector<int> linePencilData;
+      linePencils.reserve(mData.N);
+      linePencilData.reserve(mData.N);
 
-      // std::cout<<"localArrDcel.vertices[i].data.eCoords:
-      // "<<localArrDcel.vertices[i].data.eCoords<<std::endl;
+      for (int function = 0; function < mData.N; ++function) {
+        EInt quotient;
+        EInt remainder;
 
-      localArrDcel.vertices[i].data.coords
-          << localArrDcel.vertices[i].data.eCoords[0].to_double(),
-          localArrDcel.vertices[i].data.eCoords[1].to_double(),
-          localArrDcel.vertices[i].data.eCoords[2].to_double();
-    }
+        div_mod(enumber_num(minFuncs[function]),
+                enumber_den(minFuncs[function]), quotient, remainder);
 
-    // aggregating to the general DCEL
-    if (!genDcel.aggregate_dcel(localArrDcel)) {
-      throw std::runtime_error("Failed to aggregate DCEL");
+        const EInt minIsoValue =
+            quotient +
+            (enumber_num(minFuncs[function]) < EInt(0) ? EInt(-1) : EInt(0));
+
+        div_mod(enumber_num(maxFuncs[function]),
+                enumber_den(maxFuncs[function]), quotient, remainder);
+
+        const EInt maxIsoValue =
+            quotient +
+            (enumber_num(maxFuncs[function]) < EInt(0) ? EInt(0) : EInt(1));
+
+        const EInt isoCountExact = maxIsoValue - minIsoValue + EInt(1);
+
+        const long long isoCount = isoCountExact.convert();
+
+        if (isoCount <= 0) {
+          continue;
+        }
+
+        if (isoCount >
+            static_cast<long long>(std::numeric_limits<int>::max())) {
+          throw std::overflow_error(
+              "generate_mesh(): iso-line count exceeds int range");
+        }
+
+        const EVector2 gradVector =
+            triExactNFunction[2 * mData.N + function] *
+                EVector2({-canonicalE01[1], canonicalE01[0]}) +
+            triExactNFunction[0 * mData.N + function] *
+                EVector2({-canonicalE12[1], canonicalE12[0]}) +
+            triExactNFunction[1 * mData.N + function] *
+                EVector2({-canonicalE20[1], canonicalE20[0]});
+
+        const ENumber &a = triExactNFunction[0 * mData.N + function];
+        const ENumber &b = triExactNFunction[1 * mData.N + function];
+        const ENumber &c = triExactNFunction[2 * mData.N + function];
+
+        if (a == b && b == c) {
+          continue;
+        }
+
+        ENumber rhs[3];
+        rhs[0] = ENumber(0);
+        rhs[1] = -gradVector[0];
+        rhs[2] = -gradVector[1];
+
+        ENumber inverseMatrix[2][3];
+        inverseMatrix[0][0] = ENumber(2) * a - b - c;
+        inverseMatrix[0][1] = ENumber(2) * b - a - c;
+        inverseMatrix[0][2] = ENumber(2) * c - b - a;
+        inverseMatrix[1][0] = b * b - a * b + c * c - a * c;
+        inverseMatrix[1][1] = a * a - b * a + c * c - b * c;
+        inverseMatrix[1][2] = a * a - c * a + b * b - c * b;
+
+        const ENumber denominator =
+            ENumber(2) * (a * a - a * b - a * c + b * b - b * c + c * c);
+
+        if (denominator == ENumber(0)) {
+          continue;
+        }
+
+        const ENumber inverseDenominator = ENumber(1) / denominator;
+
+        for (int row = 0; row < 2; ++row) {
+          for (int column = 0; column < 3; ++column) {
+            inverseMatrix[row][column] =
+                inverseMatrix[row][column] * inverseDenominator;
+          }
+        }
+
+        ENumber solution[2];
+        solution[0] = inverseMatrix[0][0] * rhs[0] +
+                      inverseMatrix[0][1] * rhs[1] +
+                      inverseMatrix[0][2] * rhs[2];
+        solution[1] = inverseMatrix[1][0] * rhs[0] +
+                      inverseMatrix[1][1] * rhs[1] +
+                      inverseMatrix[1][2] * rhs[2];
+
+        LinePencil linePencil;
+        linePencil.direction[0] = -gradVector[1];
+        linePencil.direction[1] = gradVector[0];
+
+        if (gradVector[1] != ENumber(0)) {
+          linePencil.p0[0] = ENumber(0);
+          linePencil.p0[1] =
+              -(solution[0] * minIsoValue + solution[1]) / gradVector[1];
+          linePencil.pVec[0] = ENumber(0);
+          linePencil.pVec[1] = -solution[0] / gradVector[1];
+        } else {
+          if (gradVector[0] == ENumber(0)) {
+            continue;
+          }
+
+          linePencil.p0[1] = ENumber(0);
+          linePencil.p0[0] =
+              -(solution[0] * minIsoValue + solution[1]) / gradVector[0];
+          linePencil.pVec[1] = ENumber(0);
+          linePencil.pVec[0] = -solution[0] / gradVector[0];
+        }
+
+        linePencil.numLines = static_cast<int>(isoCount);
+        linePencils.push_back(std::move(linePencil));
+        linePencilData.push_back(function);
+      }
+
+      FunctionDCEL localArrangement;
+      std::vector<EVector2> localVertices2D;
+
+      arrangement_timings_accumulator().linePencilBuild +=
+          arrangement_seconds_since(trianglePhaseStart);
+
+      triangleStage = "triangle arrangement";
+
+      arrange_on_triangle(canonicalTriangle2D, triangleData, linePencils,
+                          linePencilData, localVertices2D, localArrangement);
+
+      trianglePhaseStart = std::chrono::high_resolution_clock::now();
+
+      if (localArrangement.vertices.size() != localVertices2D.size()) {
+        throw std::runtime_error(
+            "generate_mesh(): local vertex/DCEL size mismatch");
+      }
+      triangleStage = "3D projection";
+      for (std::size_t vertexIndex = 0; vertexIndex < localVertices2D.size();
+           ++vertexIndex) {
+        const ENumber &u = localVertices2D[vertexIndex][0];
+        const ENumber &v = localVertices2D[vertexIndex][1];
+        const ENumber w0 = ENumber(1) - u - v;
+
+        const EVector3 point3D = trianglePoints3D[0] * w0 +
+                                 trianglePoints3D[1] * u +
+                                 trianglePoints3D[2] * v;
+
+        auto &vertex = localArrangement.vertices[vertexIndex];
+        vertex.data.eCoords = point3D;
+        vertex.data.coords << point3D[0].to_double(), point3D[1].to_double(),
+            point3D[2].to_double();
+      }
+
+      arrangement_timings_accumulator().project3D +=
+          arrangement_seconds_since(trianglePhaseStart);
+      trianglePhaseStart = std::chrono::high_resolution_clock::now();
+
+      /*
+       * Approximate global arrangement capacity.
+       *
+       * The values are estimates, not correctness requirements. The vectors
+       * will still grow geometrically if the estimates are exceeded.
+       */
+      const std::size_t triangleCount =
+          static_cast<std::size_t>(origMesh.F.rows());
+
+      genDcel.vertices.reserve(std::max(genDcel.vertices.capacity(),
+                                        triangleCount * std::size_t{8}));
+
+      genDcel.halfedges.reserve(std::max(genDcel.halfedges.capacity(),
+                                         triangleCount * std::size_t{16}));
+
+      genDcel.edges.reserve(
+          std::max(genDcel.edges.capacity(), triangleCount * std::size_t{8}));
+
+      genDcel.faces.reserve(
+          std::max(genDcel.faces.capacity(), triangleCount * std::size_t{4}));
+
+      if (!genDcel.aggregate_dcel(localArrangement, mData.verbose, false)) {
+        throw std::runtime_error("Failed to aggregate DCEL");
+      }
+
+      arrangement_timings_accumulator().aggregate +=
+          arrangement_seconds_since(trianglePhaseStart);
+    } catch (const std::exception &error) {
+      std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
+                << "triangle " << findex << " failed during " << triangleStage
+                << ": " << error.what() << '\n';
+
+      throw;
+    } catch (...) {
+      std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
+                << "triangle " << findex << " failed during " << triangleStage
+                << " with an unknown exception\n";
+
+      throw;
     }
   }
-  assert(genDcel.check_consistency(true, false, false, false) &&
-         "NFunctionMeshes::generate_mesh(): DCEL not consistent!");
+
+  if (!genDcel.check_consistency(mData.verbose, false, false, false)) {
+    throw std::runtime_error(
+        "NFunctionMesher::generate_mesh(): generated DCEL is inconsistent");
+  }
+
+  if (mData.verbose) {
+    const double totalSeconds = arrangement_seconds_since(generationStart);
+
+    std::cout << "[Directional::NFunctionMesher::generate_mesh()]: completed "
+              << origMesh.F.rows() << " triangles in " << totalSeconds
+              << " seconds\n";
+
+    print_arrangement_timings(arrangement_timings_accumulator());
+  }
 }
 
 } // namespace directional

@@ -63,12 +63,11 @@ public:
                       const std::vector<int> &linePencilData,
                       std::vector<EVector2> &V, FunctionDCEL &triDcel);
 
-  void
-  segment_arrangement(const std::vector<Segment2> &segments,
-                      const std::vector<SegmentData> &data,
-                      const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> I2dts,
-                      const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> t00s,
-                      std::vector<EVector2> &V, FunctionDCEL &triDcel);
+void segment_arrangement(
+    const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
+    const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
+    const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
+    std::vector<EVector2> &V, FunctionDCEL &triDcel);
 
   void generate_mesh(const unsigned long Resolution);
 
@@ -1039,14 +1038,14 @@ public:
        *   identify. Leave its vertices independent.
        */
       if (vertexSet1.empty() || vertexSet2.empty()) {
-        if (mData.verbose && vertexSet1.empty() != vertexSet2.empty()) {
-          std::cout << "[Directional::NFunctionMesher::"
-                       "build_vertex_matches()]: "
-                    << "skipping one-sided boundary strip for "
-                       "original halfedge "
-                    << i << "; strip sizes " << vertexSet1.size() << " and "
-                    << vertexSet2.size() << '\n';
-        }
+        // if (mData.verbose && vertexSet1.empty() != vertexSet2.empty()) {
+        //   std::cout << "[Directional::NFunctionMesher::"
+        //                "build_vertex_matches()]: "
+        //             << "skipping one-sided boundary strip for "
+        //                "original halfedge "
+        //             << i << "; strip sizes " << vertexSet1.size() << " and "
+        //             << vertexSet2.size() << '\n';
+        // }
 
         continue;
       }
