@@ -19,7 +19,9 @@
 #include <directional/tree.h>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <queue>
+#include <stdexcept>
 #include <chrono>
 #include <vector>
 
@@ -226,56 +228,136 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   SparseMatrix<double> var2AllMat;
   VectorXd fullx(numVars);
   fullx.setZero();
-  const int totalIterations = fixedMask.sum();
-  for (int intIter = 0; intIter < totalIterations; intIter++) {
-    log_progress("rounding iteration", intIter, totalIterations);
-    // the non-fixed variables to all variables
-    var2AllMat.resize(numVars, numVars - alreadyFixed.sum());
+
+  /*
+   * Track every reduced variable that has actually been fixed by the
+   * iterative mixed-integer solve. The previous fixed-count for-loop could
+   * terminate immediately after fixing the last variable, without performing
+   * the final continuous re-solve that incorporates that last integer value.
+   *
+   * This loop instead follows the required sequence:
+   *
+   *   solve current reduced system
+   *   -> if all requested variables are fixed, finish
+   *   -> choose one unresolved integer variable
+   *   -> fix it to its nearest integer
+   *   -> solve again
+   */
+  std::vector<unsigned char> integerVariableWasFixed(
+      static_cast<std::size_t>(numVars), static_cast<unsigned char>(0));
+
+  for (int i = 0; i < numVars; ++i) {
+    if (alreadyFixed(i)) {
+      integerVariableWasFixed[static_cast<std::size_t>(i)] = 1;
+    }
+  }
+
+  const auto count_requested_fixed_variables = [&]() -> int {
+    int count = 0;
+    for (int i = 0; i < numVars; ++i) {
+      if (fixedMask(i)) {
+        ++count;
+      }
+    }
+    return count;
+  };
+
+  const auto count_completed_fixed_variables = [&]() -> int {
+    int count = 0;
+    for (int i = 0; i < numVars; ++i) {
+      if (fixedMask(i) && alreadyFixed(i)) {
+        ++count;
+      }
+    }
+    return count;
+  };
+
+  int solveIteration = 0;
+  const int maximumSolveIterations = numVars + 2;
+
+  while (true) {
+    if (solveIteration >= maximumSolveIterations) {
+      if (intData.verbose) {
+        std::cerr
+            << "[Directional::integrate] exceeded the maximum number of "
+               "mixed-integer solve iterations ("
+            << maximumSolveIterations << ")\n";
+      }
+      return false;
+    }
+
+    const int requestedFixedCount = count_requested_fixed_variables();
+    const int completedFixedCount = count_completed_fixed_variables();
+
+    if (intData.verbose) {
+      std::cout << "[Directional::integrate] rounding solve: "
+                << (solveIteration + 1) << " (fixed "
+                << completedFixedCount << "/" << requestedFixedCount
+                << " requested variables)" << std::endl;
+    }
+
+    const int freeVariableCount = numVars - alreadyFixed.sum();
+    if (freeVariableCount < 0) {
+      throw std::runtime_error(
+          "integrate(): alreadyFixed contains more entries than numVars");
+    }
+
+    // Map the current free variables into the complete reduced vector.
+    var2AllMat.resize(numVars, freeVariableCount);
     int varCounter = 0;
     vector<Triplet<double>> var2AllTriplets;
-    for (int i = 0; i < numVars; i++) {
+    var2AllTriplets.reserve(static_cast<std::size_t>(freeVariableCount));
+
+    for (int i = 0; i < numVars; ++i) {
       if (!alreadyFixed(i)) {
-        // for (int j=0;j<intData.d;j++)
         var2AllTriplets.emplace_back(i, varCounter++, 1.0);
       }
     }
-    var2AllMat.setFromTriplets(var2AllTriplets.begin(), var2AllTriplets.end());
+
+    if (varCounter != freeVariableCount) {
+      throw std::runtime_error(
+          "integrate(): free-variable map size is inconsistent");
+    }
+
+    var2AllMat.setFromTriplets(var2AllTriplets.begin(),
+                               var2AllTriplets.end());
 
     SparseMatrix<double> Epart = Efull * var2AllMat;
     VectorXd torhs = -Efull * fixedValues;
     SparseMatrix<double> EtE = Epart.transpose() * M1 * Epart;
     SparseMatrix<double> Cpart = Cfull * var2AllMat;
 
-    // reducing rank on Cpart
+    // Reduce the rank of the current constraint matrix.
     int CpartRank = 0;
     VectorXi PIndices(0);
     if (Cpart.rows() != 0) {
       qrsolver.compute(Cpart.transpose());
       CpartRank = qrsolver.rank();
-
-      // creating sliced permutation matrix
       PIndices = qrsolver.colsPermutation().indices();
 
       vector<Triplet<double>> CPartTriplets;
-
       for (int k = 0; k < Cpart.outerSize(); ++k) {
         for (SparseMatrix<double>::InnerIterator it(Cpart, k); it; ++it) {
-          for (int j = 0; j < CpartRank; j++)
-            if (it.row() == PIndices(j))
+          for (int j = 0; j < CpartRank; ++j) {
+            if (it.row() == PIndices(j)) {
               CPartTriplets.emplace_back(j, it.col(), it.value());
+            }
+          }
         }
       }
 
       Cpart.resize(CpartRank, Cpart.cols());
       Cpart.setFromTriplets(CPartTriplets.begin(), CPartTriplets.end());
     }
+
     SparseMatrix<double> A(EtE.rows() + Cpart.rows(),
                            EtE.rows() + Cpart.rows());
 
     vector<Triplet<double>> ATriplets;
     for (int k = 0; k < EtE.outerSize(); ++k) {
-      for (SparseMatrix<double>::InnerIterator it(EtE, k); it; ++it)
-        ATriplets.push_back(Triplet<double>(it.row(), it.col(), it.value()));
+      for (SparseMatrix<double>::InnerIterator it(EtE, k); it; ++it) {
+        ATriplets.emplace_back(it.row(), it.col(), it.value());
+      }
     }
 
     for (int k = 0; k < Cpart.outerSize(); ++k) {
@@ -287,13 +369,15 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
     A.setFromTriplets(ATriplets.begin(), ATriplets.end());
 
-    // Right-hand side with fixed values
     VectorXd b = VectorXd::Zero(EtE.rows() + Cpart.rows());
-    b.segment(0, EtE.rows()) = Epart.transpose() * M1 * (gamma + torhs);
+    b.segment(0, EtE.rows()) =
+        Epart.transpose() * M1 * (gamma + torhs);
+
     VectorXd bfull = -Cfull * fixedValues;
     VectorXd bpart(CpartRank);
-    for (int k = 0; k < CpartRank; k++)
+    for (int k = 0; k < CpartRank; ++k) {
       bpart(k) = bfull(PIndices(k));
+    }
     b.segment(EtE.rows(), Cpart.rows()) = bpart;
 
 #ifdef USE_SUITESPARSE_ENABLED
@@ -301,64 +385,183 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 #else
     SparseLU<SparseMatrix<double>> lusolver;
 #endif
+
     lusolver.compute(A);
     if (lusolver.info() != Success) {
-      if (intData.verbose)
-        cout << "LU decomposition failed!" << endl;
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] LU decomposition failed at "
+                  << "rounding solve " << (solveIteration + 1) << std::endl;
+      }
       return false;
     }
+
     x = lusolver.solve(b);
-    if (intData.verbose) {
-      cout << "[Directional::integrate] solved reduced system iteration "
-           << (intIter + 1) << "/" << totalIterations << " with size A="
-           << A.rows() << "x" << A.cols() << ", constraints=" << Cpart.rows()
-           << endl;
+    if (lusolver.info() != Success) {
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] LU solve failed at rounding "
+                  << "solve " << (solveIteration + 1) << std::endl;
+      }
+      return false;
     }
 
-    fullx = var2AllMat * x.head(numVars - alreadyFixed.sum()) + fixedValues;
+    if (x.size() < freeVariableCount) {
+      throw std::runtime_error(
+          "integrate(): reduced solution is smaller than the free-variable "
+          "count");
+    }
 
-    if ((alreadyFixed - fixedMask).sum() == 0)
+    fullx = var2AllMat * x.head(freeVariableCount) + fixedValues;
+
+    if (intData.verbose) {
+      std::cout << "[Directional::integrate] solved reduced system iteration "
+                << (solveIteration + 1) << " with size A=" << A.rows() << "x"
+                << A.cols() << ", constraints=" << Cpart.rows()
+                << std::endl;
+    }
+
+    ++solveIteration;
+
+    /*
+     * If every currently requested variable was already fixed before this
+     * solve, fullx is now the required final continuous solution under all
+     * integer constraints.
+     */
+    if (count_completed_fixed_variables() ==
+        count_requested_fixed_variables()) {
+      if ((!intData.roundSeams) && (!roundedSingularities) &&
+          intData.integralSeamless) {
+        /*
+         * Singularities were rounded first. Now request all seam variables
+         * and continue; the next solve will include them as they are fixed.
+         */
+        for (int i = 0; i < intData.integerVars.size(); ++i) {
+          for (int j = 0; j < intData.n; ++j) {
+            const int index = intData.n * intData.integerVars(i) + j;
+            if (index < 0 || index >= numVars) {
+              throw std::runtime_error(
+                  "integrate(): expanded seam integer index is out of range");
+            }
+            fixedMask(index) = 1;
+          }
+        }
+        roundedSingularities = true;
+
+        if (count_completed_fixed_variables() !=
+            count_requested_fixed_variables()) {
+          continue;
+        }
+      }
+
       break;
+    }
 
     double minIntDiff = std::numeric_limits<double>::max();
     int minIntDiffIndex = -1;
-    for (int i = 0; i < numVars; i++) {
-      if ((fixedMask(i)) && (!alreadyFixed(i))) {
-        double currIntDiff = 0;
-        double func = fullx(i); // fullx.segment(intData.d*i,intData.d);
-        // for (int j=0;j<intData.d;j++)
-        currIntDiff += std::fabs(func - std::round(func));
-        if (currIntDiff < minIntDiff) {
-          minIntDiff = currIntDiff;
+
+    for (int i = 0; i < numVars; ++i) {
+      if (fixedMask(i) && !alreadyFixed(i)) {
+        const double value = fullx(i);
+        const double currentDifference =
+            std::abs(value - std::round(value));
+
+        if (currentDifference < minIntDiff) {
+          minIntDiff = currentDifference;
           minIntDiffIndex = i;
         }
       }
     }
 
-    if (minIntDiffIndex != -1) {
-      alreadyFixed(minIntDiffIndex) = 1;
-      double func = fullx(minIntDiffIndex);
-      double funcInteger = std::round(func);
-      fixedValues(minIntDiffIndex) = /*pinvSymm*projMat**/ funcInteger;
-    }
-    // in case all singularities are rounded in the rounding-singularities mode,
-    // but there are left unrounded seams (like topological handles).
-    if ((alreadyFixed.sum() == fixedMask.sum()) &&
-        (!intData.roundSeams) & (!roundedSingularities) &&
-        (intData.integralSeamless)) {
-      for (int i = 0; i < intData.integerVars.size(); i++)
-        for (int j = 0; j < intData.n; j++)
-          fixedMask(intData.n * intData.integerVars(i) + j) = 1;
-      roundedSingularities = true;
+    if (minIntDiffIndex < 0) {
+      if (intData.verbose) {
+        std::cerr
+            << "[Directional::integrate] no unresolved requested integer "
+               "variable could be selected\n";
+      }
+      return false;
     }
 
-    xprev.resize(x.rows() - 1);
-    varCounter = 0;
-    for (int i = 0; i < numVars; i++)
-      if (!alreadyFixed(i))
-        xprev(varCounter++) = fullx(i);
+    const double preRoundValue = fullx(minIntDiffIndex);
+    const double roundedValue = std::round(preRoundValue);
 
-    xprev.tail(Cpart.rows()) = x.tail(Cpart.rows());
+    alreadyFixed(minIntDiffIndex) = 1;
+    fixedValues(minIntDiffIndex) = roundedValue;
+    integerVariableWasFixed[static_cast<std::size_t>(minIntDiffIndex)] = 1;
+
+    if (intData.verbose) {
+      std::cout << "[Directional::integrate] fixed integer variable "
+                << minIntDiffIndex << " from " << preRoundValue << " to "
+                << roundedValue << " (residual " << minIntDiff << ")"
+                << std::endl;
+    }
+  }
+
+  // Validate the reduced integer variables that integration actually owns.
+  std::size_t unresolvedReducedIntegerCount = 0;
+  std::size_t neverFixedReducedIntegerCount = 0;
+  double maximumReducedIntegerResidual = 0.0;
+  int maximumReducedIntegerResidualIndex = -1;
+
+  for (int i = 0; i < intData.integerVars.size(); ++i) {
+    for (int j = 0; j < intData.n; ++j) {
+      const int variableIndex = intData.n * intData.integerVars(i) + j;
+      if (variableIndex < 0 || variableIndex >= numVars) {
+        throw std::runtime_error(
+            "integrate(): final expanded integer-variable index is out of "
+            "range");
+      }
+
+      const double value = fullx(variableIndex);
+      const double nearestInteger = std::round(value);
+      const double residual = std::abs(value - nearestInteger);
+
+      if (residual > 1.0e-8) {
+        ++unresolvedReducedIntegerCount;
+        if (intData.verbose && unresolvedReducedIntegerCount <= 30) {
+          std::cerr << "[Directional::integrate] unresolved reduced integer "
+                    << "variable=" << variableIndex << " value=" << value
+                    << " nearestInteger=" << nearestInteger
+                    << " residual=" << residual << '\n';
+        }
+      }
+
+      if (!integerVariableWasFixed[static_cast<std::size_t>(variableIndex)] &&
+          !alreadyFixed(variableIndex)) {
+        ++neverFixedReducedIntegerCount;
+        if (intData.verbose && neverFixedReducedIntegerCount <= 30) {
+          std::cerr << "[Directional::integrate] reduced integer variable was "
+                    << "never fixed: " << variableIndex << " finalValue="
+                    << value << '\n';
+        }
+      }
+
+      if (residual > maximumReducedIntegerResidual) {
+        maximumReducedIntegerResidual = residual;
+        maximumReducedIntegerResidualIndex = variableIndex;
+      }
+    }
+  }
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] final reduced integer validation\n"
+              << "  solve iterations: " << solveIteration << '\n'
+              << "  expanded reduced integer count: "
+              << intData.integerVars.size() * intData.n << '\n'
+              << "  unresolved count: " << unresolvedReducedIntegerCount
+              << '\n'
+              << "  never-fixed count: " << neverFixedReducedIntegerCount
+              << '\n'
+              << "  maximum residual: " << maximumReducedIntegerResidual
+              << '\n'
+              << "  maximum residual variable: "
+              << maximumReducedIntegerResidualIndex << std::endl;
+  }
+
+  if (unresolvedReducedIntegerCount != 0) {
+    if (intData.verbose) {
+      std::cerr << "[Directional::integrate] final reduced solution still "
+                   "contains unresolved integer variables\n";
+    }
+    return false;
   }
   log_phase("Iterative seamless solve");
 

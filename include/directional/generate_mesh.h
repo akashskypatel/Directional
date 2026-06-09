@@ -76,6 +76,7 @@ inline double arrangement_seconds_since(
 inline void print_arrangement_timings(
     const ArrangementTimings &timings,
     const char *prefix = "[Directional::NFunctionMesher::generate_mesh()]: ") {
+#ifdef defined(LOG_TIMING)
   std::cout << prefix << "arrangement timing summary over " << timings.calls
             << " triangles\n"
             << prefix << "  line pencils:  " << timings.linePencilBuild
@@ -92,6 +93,7 @@ inline void print_arrangement_timings(
             << prefix << "  3D projection: " << timings.project3D << " s\n"
             << prefix << "  aggregation:   " << timings.aggregate << " s\n"
             << prefix << "  measured total:" << timings.total() << " s\n";
+#endif
 }
 
 struct LineClippingTimings {
@@ -116,39 +118,30 @@ inline LineClippingTimings &line_clipping_timings_accumulator() {
 }
 
 inline void reset_line_clipping_timings() {
-  line_clipping_timings_accumulator() =
-      LineClippingTimings{};
+  line_clipping_timings_accumulator() = LineClippingTimings{};
 }
 
-inline void print_line_clipping_timings(
-    const LineClippingTimings &timings) {
-  std::cout
-      << "[Directional::NFunctionMesher::arrange_on_triangle()]: "
-         "line clipping timing summary\n"
-      << "  calls:                 "
-      << timings.calls << '\n'
-      << "  pencils processed:     "
-      << timings.pencilsProcessed << '\n'
-      << "  active pencils:        "
-      << timings.activePencils << '\n'
-      << "  candidate lines:       "
-      << timings.candidateLines << '\n'
-      << "  accepted segments:     "
-      << timings.acceptedSegments << '\n'
-      << "  bounds/setup:          "
-      << timings.bounds << " s\n"
-      << "  triangle intersections:"
-      << timings.edgeIntersections << " s\n"
-      << "  exact comparisons:     "
-      << timings.exactComparisons << " s\n"
-      << "  segment construction:  "
-      << timings.segmentConstruction << " s\n"
-      << "  metadata construction: "
-      << timings.metadataConstruction << " s\n"
-      << "  pencil intersections:  "
-      << timings.pencilIntersections << " s\n"
-      << "  total clipping:        "
-      << timings.total << " s\n";
+inline void print_line_clipping_timings(const LineClippingTimings &timings) {
+#ifdef defined(LOG_TIMING)
+  std::cout << "[Directional::NFunctionMesher::arrange_on_triangle()]: "
+               "line clipping timing summary\n"
+            << "  calls:                 " << timings.calls << '\n'
+            << "  pencils processed:     " << timings.pencilsProcessed << '\n'
+            << "  active pencils:        " << timings.activePencils << '\n'
+            << "  candidate lines:       " << timings.candidateLines << '\n'
+            << "  accepted segments:     " << timings.acceptedSegments << '\n'
+            << "  bounds/setup:          " << timings.bounds << " s\n"
+            << "  triangle intersections:" << timings.edgeIntersections
+            << " s\n"
+            << "  exact comparisons:     " << timings.exactComparisons << " s\n"
+            << "  segment construction:  " << timings.segmentConstruction
+            << " s\n"
+            << "  metadata construction: " << timings.metadataConstruction
+            << " s\n"
+            << "  pencil intersections:  " << timings.pencilIntersections
+            << " s\n"
+            << "  total clipping:        " << timings.total << " s\n";
+#endif
 }
 
 // arranging a line set on a triangle
@@ -162,7 +155,7 @@ void NFunctionMesher::arrange_on_triangle(
     const std::vector<std::pair<int, bool>> &triangleData,
     const std::vector<LinePencil> &linePencils,
     const std::vector<int> &linePencilData, std::vector<EVector2> &V,
-    FunctionDCEL &triDcel) {
+    FunctionDCEL &triDcel, const int triangleIndex) {
   using namespace std;
   using namespace Eigen;
 
@@ -172,6 +165,7 @@ void NFunctionMesher::arrange_on_triangle(
 
   ArrangementTimings &arrangementTimings = arrangement_timings_accumulator();
 
+  ++arrangementTimings.calls;
   ++clipTimings.calls;
   clipTimings.pencilsProcessed += linePencils.size();
 
@@ -254,10 +248,10 @@ void NFunctionMesher::arrange_on_triangle(
     newData.origHalfedge = triangleData[static_cast<std::size_t>(edge)].first;
 
     newData.origNFunctionIndex = -1;
+    newData.localPencilIndex = -1;
     newData.lineInPencil = -1;
 
     newData.intParams.insert(ENumber(0));
-
     newData.intParams.insert(ENumber(1));
 
     inData.push_back(std::move(newData));
@@ -273,6 +267,9 @@ void NFunctionMesher::arrange_on_triangle(
   }
 
   clipTimings.segmentConstruction += arrangement_seconds_since(phaseStart);
+
+  const std::array<int, 3> originalHalfedges = {
+      triangleData[0].first, triangleData[1].first, triangleData[2].first};
 
   /*
    * ------------------------------------------------------------
@@ -296,8 +293,10 @@ void NFunctionMesher::arrange_on_triangle(
      */
     phaseStart = Clock::now();
 
-    linepencil_triangle_intersection(pencil, triangle, intEdges, intFaces,
-                                     inParams, outParams, triangleParameters);
+    linepencil_triangle_intersection(
+        pencil, triangle, intEdges, intFaces, inParams, outParams,
+        triangleParameters, triangleIndex, static_cast<int>(pencilIndex),
+        linePencilData[pencilIndex], &originalHalfedges);
 
     clipTimings.edgeIntersections += arrangement_seconds_since(phaseStart);
 
@@ -323,8 +322,48 @@ void NFunctionMesher::arrange_on_triangle(
       const auto &parameters =
           triangleParameters[static_cast<std::size_t>(edge)];
 
-      inData[static_cast<std::size_t>(edge)].intParams.insert(
-          parameters.begin(), parameters.end());
+      SegmentData &boundaryData = inData[static_cast<std::size_t>(edge)];
+
+      const int originalHalfedge = boundaryData.origHalfedge;
+
+      /*
+       * triangleData[edge].second records the local orientation relative
+       * to the original halfedge. Preserve both the local and canonical
+       * parameters in the diagnostic.
+       */
+      const bool orientationMatchesCanonical =
+    triangleData[static_cast<std::size_t>(edge)].second;
+
+      for (const ENumber &localParameter : parameters) {
+        boundaryData.intParams.insert(localParameter);
+
+        if (originalHalfedge == 21772) {
+          const ENumber canonicalParameter = orientationMatchesCanonical
+                                                 ? localParameter
+                                                 : ENumber(1) - localParameter;
+
+          const EVector2 edgeDirection =
+              inSegments[static_cast<std::size_t>(edge)].target -
+              inSegments[static_cast<std::size_t>(edge)].source;
+
+          const EVector2 localPoint =
+              inSegments[static_cast<std::size_t>(edge)].source +
+              edgeDirection * localParameter;
+
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "arrange_on_triangle()]: "
+                    << "triangle=" << triangleIndex
+                    << " originalHalfedge=" << originalHalfedge
+                    << " localEdge=" << edge << " orientationMatchesCanonical="
+                    << orientationMatchesCanonical
+                    << " localPencil=" << pencilIndex
+                    << " originalFunction=" << linePencilData[pencilIndex]
+                    << " localParameter=" << localParameter.to_double()
+                    << " canonicalParameter=" << canonicalParameter.to_double()
+                    << " localPoint=(" << localPoint[0].to_double() << ", "
+                    << localPoint[1].to_double() << ")\n";
+        }
+      }
     }
 
     clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
@@ -363,6 +402,8 @@ void NFunctionMesher::arrange_on_triangle(
        * Only the second assignment had any effect.
        */
       newData.origNFunctionIndex = linePencilData[pencilIndex];
+
+      newData.localPencilIndex = static_cast<int>(pencilIndex);
 
       newData.lineInPencil = static_cast<int>(lineIndex);
 
@@ -431,32 +472,77 @@ void NFunctionMesher::arrange_on_triangle(
   Matrix<ENumber, Dynamic, 1> t00s(
       static_cast<Eigen::Index>(intersectionRowCount), 1);
 
-  for (std::size_t first = 0; first < pencilCount; ++first) {
-    if (!isPencilActive[first]) {
+  /*
+   * A value of 1 means the pencil pair has a nonparallel affine
+   * point-intersection grid stored in I2dts/t00s.
+   */
+  std::vector<std::uint8_t> pencilPairHasPointIntersections(
+      linePencils.size() * linePencils.size(), std::uint8_t{0});
+  I2dts.setZero();
+  t00s.setZero();
+
+  for (std::size_t i = 0; i < linePencils.size(); ++i) {
+    if (!isPencilActive[i]) {
       continue;
     }
 
-    for (std::size_t second = first + 1; second < pencilCount; ++second) {
-      if (!isPencilActive[second]) {
+    for (std::size_t j = i + 1; j < linePencils.size(); ++j) {
+      if (!isPencilActive[j]) {
         continue;
       }
 
-      Matrix<ENumber, 2, 2> intersectionDelta;
+      Eigen::Matrix<ENumber, 2, 2> I2dt;
+      Eigen::Matrix<ENumber, 2, 1> t00;
+      EInt iso1Overlap;
 
-      Matrix<ENumber, 2, 1> intersectionOrigin;
+      const int intersectionType = linepencil_intersection(
+          linePencils[i], linePencils[j], t00, I2dt, iso1Overlap);
 
-      EInt overlapIndex;
+      /*
+       * Only result 1 represents a grid of isolated intersections.
+       *
+       * result 0: parallel/disjoint
+       * result 2: overlapping line, not an isolated point grid
+       */
+      if (intersectionType != 1) {
+        continue;
+      }
 
-      linepencil_intersection(linePencils[first], linePencils[second],
-                              intersectionOrigin, intersectionDelta,
-                              overlapIndex);
+      const std::size_t forwardPair = i * linePencils.size() + j;
 
-      const std::size_t row =
-          std::size_t{2} * second + std::size_t{2} * pencilCount * first;
+      pencilPairHasPointIntersections[forwardPair] = std::uint8_t{1};
 
-      I2dts.block(static_cast<Eigen::Index>(row), 0, 2, 2) = intersectionDelta;
+      const Eigen::Index forwardRow =
+          static_cast<Eigen::Index>(2 * j + 2 * linePencils.size() * i);
 
-      t00s.segment(static_cast<Eigen::Index>(row), 2) = intersectionOrigin;
+      I2dts.block(forwardRow, 0, 2, 2) = I2dt;
+      t00s.segment(forwardRow, 2) = t00;
+
+      /*
+       * Build the reverse mapping explicitly because swapping pencil order
+       * swaps the two parameter rows and the two isovalue columns.
+       */
+      Eigen::Matrix<ENumber, 2, 2> reverseI2dt;
+      Eigen::Matrix<ENumber, 2, 1> reverseT00;
+
+      reverseT00(0) = t00(1);
+      reverseT00(1) = t00(0);
+
+      reverseI2dt(0, 0) = I2dt(1, 1);
+      reverseI2dt(0, 1) = I2dt(1, 0);
+      reverseI2dt(1, 0) = I2dt(0, 1);
+      reverseI2dt(1, 1) = I2dt(0, 0);
+
+      const std::size_t reversePair = j * linePencils.size() + i;
+
+      pencilPairHasPointIntersections[reversePair] = std::uint8_t{1};
+
+      const Eigen::Index reverseRow =
+          static_cast<Eigen::Index>(2 * i + 2 * linePencils.size() * j);
+
+      I2dts.block(reverseRow, 0, 2, 2) = reverseI2dt;
+
+      t00s.segment(reverseRow, 2) = reverseT00;
     }
   }
 
@@ -472,13 +558,15 @@ void NFunctionMesher::arrange_on_triangle(
 
   arrangementTimings.lineClip += clippingTotal;
 
-  segment_arrangement(inSegments, inData, I2dts, t00s, V, triDcel);
+  segment_arrangement(inSegments, inData, I2dts, t00s,
+                      pencilPairHasPointIntersections, V, triDcel);
 }
 
 void NFunctionMesher::segment_arrangement(
     const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
+    const std::vector<std::uint8_t> &pencilPairHasPointIntersections,
     std::vector<EVector2> &V, FunctionDCEL &triDcel) {
 
   ArrangementTimings &timings = arrangement_timings_accumulator();
@@ -490,7 +578,28 @@ void NFunctionMesher::segment_arrangement(
   std::vector<EVector2> arrVertices;
   std::vector<std::set<std::pair<ENumber, int>>> SV(
       segments.size()); // set of coordinates of intersection per segment
-  int linePencilSize = sqrt(I2dts.rows() / 2); // should be integer naturally
+  const std::size_t pairTableSize = pencilPairHasPointIntersections.size();
+
+  const int linePencilSize =
+      static_cast<int>(std::sqrt(static_cast<double>(pairTableSize)));
+
+  if (linePencilSize < 0 || static_cast<std::size_t>(linePencilSize) *
+                                    static_cast<std::size_t>(linePencilSize) !=
+                                pairTableSize) {
+    throw std::runtime_error(
+        "segment_arrangement(): pencil-pair table is not square");
+  }
+
+  const Eigen::Index expectedIntersectionRows =
+      static_cast<Eigen::Index>(2) * static_cast<Eigen::Index>(linePencilSize) *
+      static_cast<Eigen::Index>(linePencilSize);
+
+  if (I2dts.rows() != expectedIntersectionRows || I2dts.cols() != 2 ||
+      t00s.rows() != expectedIntersectionRows || t00s.cols() != 1) {
+    throw std::runtime_error(
+        "segment_arrangement(): precomputed pencil-intersection "
+        "matrix dimensions do not match the pair table");
+  }
   std::vector<ENumber> tScales(segments.size());
   std::vector<EVector2> segDirections(segments.size());
 
@@ -518,88 +627,191 @@ void NFunctionMesher::segment_arrangement(
     }
   }
 
-  // new intersections which are all
-  for (int i = 3; i < segments.size();
-       i++) { // starting from non-triangle segments
-    for (int j = i + 1; j < segments.size(); j++) {
-      if ((data[i].origNFunctionIndex == data[j].origNFunctionIndex) &&
-          (data[i].isFunction) && (data[j].isFunction))
-        continue; // don't try to intersect from the same line pencil
+  // Intersections between non-triangle function segments.
+  for (int i = 3; i < static_cast<int>(segments.size()); ++i) {
+    if (!data[i].isFunction) {
+      continue;
+    }
 
-      Eigen::Matrix<ENumber, 2, 2> I2dt =
-          I2dts.block(data[i].origNFunctionIndex * 2 * linePencilSize +
-                          2 * data[j].origNFunctionIndex,
-                      0, 2, 2);
-      Eigen::Matrix<ENumber, 2, 1> t00 =
-          t00s.segment(data[i].origNFunctionIndex * 2 * linePencilSize +
-                           2 * data[j].origNFunctionIndex,
-                       2);
-      Eigen::Matrix<ENumber, 2, 1> currI;
-      currI << ENumber(data[i].lineInPencil, 0.0),
-          ENumber(data[j].lineInPencil, 0.0);
-      Eigen::Matrix<ENumber, 2, 1> t1t2 = I2dt * currI + t00;
-      // t1t2<<I2dt(0,0)*currI(0)+I2dt(0,1)*currI(1) +
-      // t00(0),I2dt(1,0)*currI(0)+I2dt(1,1)*currI(1) + t00(1);
-      if ((t1t2(0) < *data[i].intParams.begin()) ||
-          (t1t2(0) > *data[i].intParams.rbegin()) ||
-          (t1t2(1) < *data[j].intParams.begin()) ||
-          (t1t2(1) > *data[j].intParams.rbegin())) // intersecting beyond the
-                                                   // segment (and the triangle)
+    if (data[i].localPencilIndex < 0 ||
+        data[i].localPencilIndex >= linePencilSize) {
+      throw std::runtime_error(
+          "segment_arrangement(): function segment has invalid "
+          "localPencilIndex");
+    }
+
+    if (data[i].lineInPencil < 0) {
+      throw std::runtime_error(
+          "segment_arrangement(): function segment has invalid "
+          "lineInPencil");
+    }
+
+    for (int j = i + 1; j < static_cast<int>(segments.size()); ++j) {
+      if (!data[j].isFunction) {
         continue;
+      }
 
-      ENumber t1 = (t1t2(0) - *data[i].intParams.begin()) * tScales[i];
-      ENumber t2 = (t1t2(1) - *data[j].intParams.begin()) * tScales[j];
-      // std::vector<std::pair<ENumber, ENumber>> result =
-      // segment_segment_intersection(segments[i], segments[j]);
+      if (data[j].localPencilIndex < 0 ||
+          data[j].localPencilIndex >= linePencilSize) {
+        throw std::runtime_error(
+            "segment_arrangement(): function segment has invalid "
+            "localPencilIndex");
+      }
 
-      // EXPENSIVE TEST
-      EVector2 p1 = segments[i].source + segDirections[i] * t1;
-      // EVector2 p2 = segments[j].source * (ENumber(1) - t2) +
-      // segments[j].target * t2;
+      if (data[j].lineInPencil < 0) {
+        throw std::runtime_error(
+            "segment_arrangement(): function segment has invalid "
+            "lineInPencil");
+      }
 
-      // assert("Both segment intersection points should be the same! " &&
-      // p1==p2);
+      const int firstPencil = data[i].localPencilIndex;
 
-      // if (result.empty())  //no intersection
-      //     continue;  //that means the segments intersect away from the
-      //     triangle.
+      const int secondPencil = data[j].localPencilIndex;
 
-      // for (int r=0;r<result.size();r++){
-      arrVertices.push_back(p1);
-      // std::cout<<"New arrangement vertex at
-      // "<<arrVertices[arrVertices.size()-1]<<std::endl; std::cout<<"On
-      // segments "<<segments[i].source<<"->"<<segments[i].target<<" and
-      // "<<segments[j].source<<"->"<<segments[j].target<<std::endl;
-      /*VS.push_back(std::vector<int>());
-       VS[arrVertices.size() - 1].push_back(i);
-       VS[arrVertices.size() - 1].push_back(j);*/
-      SV[i].insert(std::pair<ENumber, int>(t1, arrVertices.size() - 1));
-      SV[j].insert(std::pair<ENumber, int>(t2, arrVertices.size() - 1));
+      /*
+       * Members of the same local pencil are parallel and cannot create
+       * isolated point intersections.
+       */
+      if (firstPencil == secondPencil) {
+        continue;
+      }
 
-      //}
-      /*if (result.size) {  //pointwise intersection
-       // TODO: figure out what happens if more than two lines at the same spot
-       arrVertices.push_back(segments[i].first * (1 - t1) + segments[i].second *
-       t1); VS[arrVertices.size() - 1].push_back(i); VS[arrVertices.size() -
-       1].push_back(j); SV[i].insert(std::pair<ENumber, int>(t1,
-       arrVertices.size() - 1)); SV[j].insert(std::pair<ENumber, int>(t2,
-       arrVertices.size() - 1));
-       }
+      const std::size_t pairIndex =
+          static_cast<std::size_t>(firstPencil) *
+              static_cast<std::size_t>(linePencilSize) +
+          static_cast<std::size_t>(secondPencil);
 
-       //Should make this aware of the double and put both into the edge data
-       if (result==2) {  //subsegment; now entering two vertices, and letting
-       the edges be entered later arrVertices.push_back(segments[i].first *
-       (ENumber(1) - t1) + segments[i].second * t1);
-       arrVertices.push_back(segments[j].first * (ENumber(1) - t2) +
-       segments[j].second * t2); VS[arrVertices.size() - 2].push_back(i);
-       VS[arrVertices.size() - 1].push_back(j);
-       VS[arrVertices.size() - 2].push_back(i);
-       VS[arrVertices.size() - 1].push_back(j);
-       SV[i].insert(std::pair<ENumber, int>(t1, arrVertices.size() - 2));
-       SV[j].insert(std::pair<ENumber, int>(t1, arrVertices.size() - 1));
-       SV[i].insert(std::pair<ENumber, int>(t2, arrVertices.size() - 2));
-       SV[j].insert(std::pair<ENumber, int>(t2, arrVertices.size() - 1));
-       }*/
+      if (pairIndex >= pencilPairHasPointIntersections.size()) {
+        throw std::runtime_error(
+            "segment_arrangement(): pencil-pair index out of range");
+      }
+
+      /*
+       * No affine point-intersection grid exists for this pencil pair.
+       *
+       * This normally means the supporting pencil directions are parallel.
+       * The clipped segments may still be:
+       *
+       *   1. disjoint;
+       *   2. touching at one endpoint;
+       *   3. collinear and overlapping over a nonzero interval.
+       *
+       * Handle those cases directly using the exact clipped segments.
+       */
+      if (!pencilPairHasPointIntersections[pairIndex]) {
+        const auto overlapIntersections =
+            segment_segment_intersection(segments[static_cast<std::size_t>(i)],
+                                         segments[static_cast<std::size_t>(j)]);
+
+        for (const auto &intersection : overlapIntersections) {
+          const ENumber &t1 = intersection.first;
+
+          const ENumber &t2 = intersection.second;
+
+          /*
+           * segment_segment_intersection() returns parameters in each
+           * Segment2's normalized [0,1] parameterization.
+           */
+          if (t1 < ENumber(0) || t1 > ENumber(1) || t2 < ENumber(0) ||
+              t2 > ENumber(1)) {
+            throw std::runtime_error(
+                "segment_arrangement(): parallel-segment intersection "
+                "returned an out-of-range parameter");
+          }
+
+          const EVector2 point1 =
+              segments[static_cast<std::size_t>(i)].source +
+              segDirections[static_cast<std::size_t>(i)] * t1;
+
+          const EVector2 point2 =
+              segments[static_cast<std::size_t>(j)].source +
+              segDirections[static_cast<std::size_t>(j)] * t2;
+
+          /*
+           * This is exact arithmetic. Both parameterizations must identify
+           * exactly the same geometric point.
+           */
+          if (point1 != point2) {
+            throw std::runtime_error(
+                "segment_arrangement(): parallel-segment intersection "
+                "produced inconsistent exact points");
+          }
+
+          arrVertices.push_back(point1);
+
+          const int vertexIndex = static_cast<int>(arrVertices.size()) - 1;
+
+          /*
+           * Split both segments at the shared point. For a collinear
+           * overlap, the helper returns both overlap endpoints, ensuring
+           * both chains receive identical subdivisions.
+           */
+          SV[static_cast<std::size_t>(i)].insert(
+              std::make_pair(t1, vertexIndex));
+
+          SV[static_cast<std::size_t>(j)].insert(
+              std::make_pair(t2, vertexIndex));
+        }
+
+        continue;
+      }
+
+      const Eigen::Index matrixRow = static_cast<Eigen::Index>(
+          2 * secondPencil + 2 * linePencilSize * firstPencil);
+
+      if (matrixRow < 0 || matrixRow + 1 >= I2dts.rows() ||
+          matrixRow + 1 >= t00s.rows()) {
+        throw std::runtime_error(
+            "segment_arrangement(): precomputed pencil-intersection "
+            "row is out of range");
+      }
+
+      const ENumber firstLine(static_cast<long long>(data[i].lineInPencil), 1);
+
+      const ENumber secondLine(static_cast<long long>(data[j].lineInPencil), 1);
+
+      /*
+       * Scalar form avoids temporary Eigen matrices and guarantees that
+       * the lookup uses local pencil indices rather than persistent
+       * origNFunctionIndex metadata.
+       */
+      const ENumber firstParameter = t00s(matrixRow) +
+                                     I2dts(matrixRow, 0) * firstLine +
+                                     I2dts(matrixRow, 1) * secondLine;
+
+      const ENumber secondParameter = t00s(matrixRow + 1) +
+                                      I2dts(matrixRow + 1, 0) * firstLine +
+                                      I2dts(matrixRow + 1, 1) * secondLine;
+
+      const ENumber &firstMin = *data[i].intParams.begin();
+
+      const ENumber &firstMax = *data[i].intParams.rbegin();
+
+      const ENumber &secondMin = *data[j].intParams.begin();
+
+      const ENumber &secondMax = *data[j].intParams.rbegin();
+
+      if (firstParameter < firstMin || firstParameter > firstMax ||
+          secondParameter < secondMin || secondParameter > secondMax) {
+        continue;
+      }
+
+      const ENumber t1 =
+          (firstParameter - firstMin) * tScales[static_cast<std::size_t>(i)];
+
+      const ENumber t2 =
+          (secondParameter - secondMin) * tScales[static_cast<std::size_t>(j)];
+
+      const EVector2 point = segments[static_cast<std::size_t>(i)].source +
+                             segDirections[static_cast<std::size_t>(i)] * t1;
+
+      arrVertices.push_back(point);
+
+      const int vertexIndex = static_cast<int>(arrVertices.size()) - 1;
+
+      SV[static_cast<std::size_t>(i)].insert(std::make_pair(t1, vertexIndex));
+
+      SV[static_cast<std::size_t>(j)].insert(std::make_pair(t2, vertexIndex));
     }
   }
 
@@ -701,19 +913,22 @@ arrEdges = newArrEdges;
 edgeData = newEdgeData;
   */
   /*
-   * Unify duplicate undirected edges in expected O(E).
+   * Merge duplicate topological edges in expected O(E).
    *
-   * Canonical edge key:
-   *
-   *     min(v0,v1), max(v0,v1)
-   *
-   * Degenerate edges are discarded.
+   * An arrangement edge is undirected. Its stored orientation is taken
+   * from the first occurrence, while all metadata from duplicate and
+   * reverse-oriented occurrences is merged into that edge.
    */
-  const auto directedEdgeKey = [](const int first,
-                                  const int second) -> std::uint64_t {
-    return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(first))
-            << 32U) |
-           static_cast<std::uint64_t>(static_cast<std::uint32_t>(second));
+  const auto undirectedEdgeKey =
+      [](const int first, const int second) noexcept -> std::uint64_t {
+    const std::uint32_t low =
+        static_cast<std::uint32_t>(std::min(first, second));
+
+    const std::uint32_t high =
+        static_cast<std::uint32_t>(std::max(first, second));
+
+    return (static_cast<std::uint64_t>(low) << 32U) |
+           static_cast<std::uint64_t>(high);
   };
 
   std::unordered_map<std::uint64_t, int> uniqueEdgeIndex;
@@ -727,6 +942,7 @@ edgeData = newEdgeData;
 
   uniqueArrEdges.reserve(arrEdges.size());
   uniqueEdgeData.reserve(edgeData.size());
+  std::size_t mergedDuplicateEdges = 0;
 
   for (std::size_t edgeIndex = 0; edgeIndex < arrEdges.size(); ++edgeIndex) {
     const int first = arrEdges[edgeIndex].first;
@@ -734,13 +950,22 @@ edgeData = newEdgeData;
     const int second = arrEdges[edgeIndex].second;
 
     /*
-     * Discard zero-length topology after vertex unification.
+     * Vertex merging can collapse an arrangement segment. Do not create
+     * a DCEL edge for a zero-length topological edge.
      */
     if (first == second) {
       continue;
     }
 
-    const std::uint64_t key = directedEdgeKey(first, second);
+    if (first < 0 || second < 0 ||
+        first >= static_cast<int>(arrVertices.size()) ||
+        second >= static_cast<int>(arrVertices.size())) {
+      throw std::runtime_error(
+          "segment_arrangement(): arrangement edge endpoint "
+          "is out of range during edge merge");
+    }
+
+    const std::uint64_t key = undirectedEdgeKey(first, second);
 
     const auto existing = uniqueEdgeIndex.find(key);
 
@@ -749,24 +974,40 @@ edgeData = newEdgeData;
 
       uniqueEdgeIndex.emplace(key, newIndex);
 
+      /*
+       * Preserve the orientation of the first occurrence.
+       */
       uniqueArrEdges.emplace_back(first, second);
 
       uniqueEdgeData.push_back(std::move(edgeData[edgeIndex]));
 
       continue;
     }
+    ++mergedDuplicateEdges;
 
-    /*
-     * Merge metadata into the first edge using this undirected pair.
-     */
+    const int destinationIndex = existing->second;
+
+    if (destinationIndex < 0 ||
+        destinationIndex >= static_cast<int>(uniqueEdgeData.size())) {
+      throw std::runtime_error("segment_arrangement(): invalid duplicate-edge "
+                               "destination index");
+    }
+
     std::vector<SegmentData> &destination =
-        uniqueEdgeData[static_cast<std::size_t>(existing->second)];
+        uniqueEdgeData[static_cast<std::size_t>(destinationIndex)];
 
     std::vector<SegmentData> &source = edgeData[edgeIndex];
 
     destination.insert(destination.end(),
                        std::make_move_iterator(source.begin()),
                        std::make_move_iterator(source.end()));
+  }
+
+  if (mData.verbose && mergedDuplicateEdges > 0) {
+    std::cout << "[Directional::NFunctionMesher::"
+                 "segment_arrangement()]: merged "
+              << mergedDuplicateEdges
+              << " duplicate or reverse-oriented arrangement edges\n";
   }
 
   arrEdges = std::move(uniqueArrEdges);
@@ -1254,13 +1495,115 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
       int currentHalfedge = origMesh.dcel.faces[findex].halfedge;
 
       for (int corner = 0; corner < 3; ++corner) {
+        if (!origMesh.dcel.valid_halfedge(currentHalfedge)) {
+          throw std::runtime_error(
+              "generate_mesh(): face contains an invalid halfedge");
+        }
+
         const int twin = origMesh.dcel.halfedges[currentHalfedge].twin;
 
-        triangleData[corner].first =
-            twin < 0 || twin > currentHalfedge ? currentHalfedge : twin;
+        /*
+         * Give both incident triangle sides the same canonical source-edge ID.
+         *
+         * For an interior edge, use the smaller halfedge index.
+         * For a boundary edge, the current halfedge is the canonical side.
+         */
+        const int canonicalHalfedge =
+            twin < 0 ? currentHalfedge : std::min(currentHalfedge, twin);
 
-        triangleData[corner].second = twin < 0;
+        /*
+         * True means the local triangle-edge direction agrees with the
+         * canonical halfedge direction.
+         *
+         * The previous implementation used `twin < 0`, which only detected
+         * boundary edges and incorrectly marked both sides of every interior
+         * edge as reversed.
+         */
+        const bool orientationMatchesCanonical =
+            currentHalfedge == canonicalHalfedge;
+
+        triangleData[static_cast<std::size_t>(corner)] = {
+            canonicalHalfedge, orientationMatchesCanonical};
+
         currentHalfedge = origMesh.dcel.halfedges[currentHalfedge].next;
+      }
+      /*
+       * Diagnose exact integrated function values on both sides of the known
+       * mismatched canonical source edge.
+       */
+      for (int localEdge = 0; localEdge < 3; ++localEdge) {
+        const auto &edgeData =
+            triangleData[static_cast<std::size_t>(localEdge)];
+
+        if (edgeData.first != 21772) {
+          continue;
+        }
+
+        const int localStartCorner = localEdge;
+
+        const int localEndCorner = (localEdge + 1) % 3;
+
+        const bool orientationMatchesCanonical = edgeData.second;
+
+        std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
+                  << "edge-function values"
+                  << " triangle=" << findex << " localEdge=" << localEdge
+                  << " canonicalHalfedge=" << edgeData.first
+                  << " orientationMatchesCanonical="
+                  << orientationMatchesCanonical << '\n';
+
+        for (int function = 0; function < mData.N; ++function) {
+          const ENumber &localStart =
+              triExactNFunction[static_cast<std::size_t>(
+                  localStartCorner * mData.N + function)];
+
+          const ENumber &localEnd = triExactNFunction[static_cast<std::size_t>(
+              localEndCorner * mData.N + function)];
+
+          /*
+           * Reorder endpoint values so both incident triangles are printed
+           * in the direction of canonical halfedge 21772.
+           */
+          const ENumber &canonicalStart =
+              orientationMatchesCanonical ? localStart : localEnd;
+
+          const ENumber &canonicalEnd =
+              orientationMatchesCanonical ? localEnd : localStart;
+
+          std::cerr << "  function=" << function
+                    << " localStart=" << localStart.to_double()
+                    << " localEnd=" << localEnd.to_double()
+                    << " canonicalStart=" << canonicalStart.to_double()
+                    << " canonicalEnd=" << canonicalEnd.to_double()
+                    << " delta=" << (canonicalEnd - canonicalStart).to_double()
+                    << '\n';
+          const double startDouble = canonicalStart.to_double();
+
+          const double endDouble = canonicalEnd.to_double();
+
+          const double intervalMin = std::min(startDouble, endDouble);
+
+          const double intervalMax = std::max(startDouble, endDouble);
+
+          std::cerr << " interval=[" << intervalMin << ", " << intervalMax
+                    << "] integers=";
+
+          const long long firstInteger =
+              static_cast<long long>(std::ceil(intervalMin));
+
+          const long long lastInteger =
+              static_cast<long long>(std::floor(intervalMax));
+
+          if (firstInteger > lastInteger) {
+            std::cerr << "none";
+          } else {
+            for (long long iso = firstInteger; iso <= lastInteger; ++iso) {
+              std::cerr << iso << ' ';
+            }
+          }
+
+          std::cerr << '\n';
+        }
       }
       const auto linePencilStart = std::chrono::high_resolution_clock::now();
       std::vector<LinePencil> linePencils;
@@ -1384,12 +1727,36 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
       std::vector<EVector2> localVertices2D;
 
       arrangement_timings_accumulator().linePencilBuild +=
-          arrangement_seconds_since(trianglePhaseStart);
+          arrangement_seconds_since(linePencilStart);
 
       triangleStage = "triangle arrangement";
 
+      if (triangleData[0].first == 21772 || triangleData[1].first == 21772 ||
+          triangleData[2].first == 21772) {
+        int diagnosticHalfedge = origMesh.dcel.faces[findex].halfedge;
+
+        for (int corner = 0; corner < 3; ++corner) {
+          const int twin = origMesh.dcel.halfedges[diagnosticHalfedge].twin;
+
+          const int canonical = twin < 0 ? diagnosticHalfedge
+                                         : std::min(diagnosticHalfedge, twin);
+
+          if (canonical == 21772) {
+            std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
+                      << "triangle=" << findex
+                      << " localHalfedge=" << diagnosticHalfedge
+                      << " twin=" << twin << " canonicalHalfedge=" << canonical
+                      << " orientationMatchesCanonical="
+                      << (diagnosticHalfedge == canonical) << '\n';
+          }
+
+          diagnosticHalfedge = origMesh.dcel.halfedges[diagnosticHalfedge].next;
+        }
+      }
+
       arrange_on_triangle(canonicalTriangle2D, triangleData, linePencils,
-                          linePencilData, localVertices2D, localArrangement);
+                          linePencilData, localVertices2D, localArrangement,
+                          findex);
 
       trianglePhaseStart = std::chrono::high_resolution_clock::now();
 
@@ -1474,7 +1841,8 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
 
     print_arrangement_timings(arrangement_timings_accumulator());
     print_line_clipping_timings(line_clipping_timings_accumulator());
-    print_linepencil_triangle_timings(linepencil_triangle_timings_accumulator());
+    print_linepencil_triangle_timings(
+        linepencil_triangle_timings_accumulator());
   }
 }
 

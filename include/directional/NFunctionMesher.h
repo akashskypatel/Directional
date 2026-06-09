@@ -9,6 +9,7 @@
 #include <Eigen/Sparse>
 #include <algorithm>
 #include <chrono>
+#include <cstddef>
 #include <cstdint>
 #include <directional/dcel.h>
 #include <directional/exact_geometric_definitions.h>
@@ -21,6 +22,10 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <array>
+#include <cmath>
+#include <iostream>
+#include <deque>
 
 namespace directional {
 
@@ -30,17 +35,16 @@ public:
   const MesherData &mData;
 
   struct SegmentData {
-    bool isFunction;
-    int origHalfedge;
-    int origNFunctionIndex; // the original parameteric function assoicated with
-                            // this edge
-    int lineInPencil;
+    bool isFunction = false;
+    int origNFunctionIndex = -1;
+    int localPencilIndex = -1;
+    int lineInPencil = -1;
+    int origHalfedge = -1;
     std::set<ENumber> intParams;
-    // double prescribedAngle;  //the actual prescribed angle
 
     SegmentData()
-        : isFunction(false), origHalfedge(-1), origNFunctionIndex(-1),
-          lineInPencil(-1), intParams() {} // prescribedAngle(-1.0){}
+        : isFunction(false), origNFunctionIndex(-1), localPencilIndex(-1),
+          lineInPencil(-1), origHalfedge(-1), intParams() {}
   };
 
   struct VData {
@@ -61,13 +65,16 @@ public:
                       const std::vector<std::pair<int, bool>> &triangleData,
                       const std::vector<LinePencil> &linePencils,
                       const std::vector<int> &linePencilData,
-                      std::vector<EVector2> &V, FunctionDCEL &triDcel);
+                      std::vector<EVector2> &V, FunctionDCEL &triDcel,
+                      const int triangleIndex);
 
-void segment_arrangement(
-    const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
-    const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
-    const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
-    std::vector<EVector2> &V, FunctionDCEL &triDcel);
+  void segment_arrangement(
+      const std::vector<Segment2> &segments,
+      const std::vector<SegmentData> &data,
+      const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
+      const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
+      const std::vector<std::uint8_t> &pencilPairHasPointIntersections,
+      std::vector<EVector2> &V, FunctionDCEL &triDcel);
 
   void generate_mesh(const unsigned long Resolution);
 
@@ -965,6 +972,43 @@ void segment_arrangement(
 
     for (int i = 0; i < scratch.maxOrigHE + 1; i++) {
       log_progress("vertex set build", i, scratch.maxOrigHE + 1);
+      if (mData.verbose && i == 21772) {
+        const auto printHalfedgeStrip = [&](const char *label,
+                                            const std::vector<int> &strip) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "build_boundary_vertex_sets()]: "
+                    << label << " for origHalfedge " << i << '\n';
+
+          for (std::size_t position = 0; position < strip.size(); ++position) {
+            const int he = strip[position];
+
+            if (!genDcel.valid_halfedge(he)) {
+              std::cerr << "  [" << position << "] halfedge " << he
+                        << " INVALID\n";
+              continue;
+            }
+
+            const auto &halfedge = genDcel.halfedges[he];
+
+            const int next = halfedge.next;
+
+            std::cerr << "  [" << position << "] he=" << he
+                      << " vertex=" << halfedge.vertex << " target="
+                      << (genDcel.valid_halfedge(next)
+                              ? genDcel.halfedges[next].vertex
+                              : -1)
+                      << " face=" << halfedge.face << " edge=" << halfedge.edge
+                      << " twin=" << halfedge.twin
+                      << " origHalfedge=" << halfedge.data.origHalfedge
+                      << " origNFunctionIndex="
+                      << halfedge.data.origNFunctionIndex << '\n';
+          }
+        };
+
+        printHalfedgeStrip("side 1", scratch.boundEdgeCollect1[i]);
+
+        printHalfedgeStrip("side 2", scratch.boundEdgeCollect2[i]);
+      }
       for (int j = 0; j < scratch.boundEdgeCollect1[i].size(); j++)
         scratch.vertexSets1[i].push_back(
             genDcel.halfedges[scratch.boundEdgeCollect1[i][j]].vertex);
@@ -998,6 +1042,359 @@ void segment_arrangement(
       std::reverse(scratch.vertexSets2[i].begin(),
                    scratch.vertexSets2[i].end());
     }
+  }
+
+  static int dominant_exact_axis(const EVector3 &start,
+                                 const EVector3 &end) {
+    int axis = 0;
+    ENumber largest = (end[0] - start[0]).abs();
+
+    for (int candidate = 1; candidate < 3; ++candidate) {
+      const ENumber magnitude =
+          (end[static_cast<std::size_t>(candidate)] -
+           start[static_cast<std::size_t>(candidate)])
+              .abs();
+
+      if (magnitude > largest) {
+        largest = magnitude;
+        axis = candidate;
+      }
+    }
+
+    return axis;
+  }
+
+  static bool exact_point_strictly_inside_segment(
+      const EVector3 &point, const EVector3 &start, const EVector3 &end,
+      ENumber *parameter = nullptr) {
+    if (exact_point_equal(start, end))
+      return false;
+
+    const int axis = dominant_exact_axis(start, end);
+    const ENumber denominator = end[axis] - start[axis];
+
+    if (denominator == ENumber(0))
+      return false;
+
+    const ENumber t = (point[axis] - start[axis]) / denominator;
+
+    if (t <= ENumber(0) || t >= ENumber(1))
+      return false;
+
+    const EVector3 reconstructed = start + (end - start) * t;
+
+    if (!exact_point_equal(reconstructed, point))
+      return false;
+
+    if (parameter)
+      *parameter = t;
+
+    return true;
+  }
+
+  bool split_boundary_halfedge_at_exact_point(const int halfedgeIndex,
+                                               const EVector3 &point,
+                                               int &newHalfedgeIndex) {
+    newHalfedgeIndex = -1;
+
+    if (!genDcel.valid_halfedge(halfedgeIndex)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: invalid "
+                     "halfedge "
+                  << halfedgeIndex << '\n';
+      }
+      return false;
+    }
+
+    const FunctionDCEL::Halfedge originalHalfedge =
+        genDcel.halfedges[halfedgeIndex];
+
+    if (originalHalfedge.twin != -1) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: halfedge "
+                  << halfedgeIndex << " is not a boundary halfedge\n";
+      }
+      return false;
+    }
+
+    if (!genDcel.valid_halfedge(originalHalfedge.next) ||
+        !genDcel.valid_face(originalHalfedge.face) ||
+        !genDcel.valid_edge(originalHalfedge.edge) ||
+        !genDcel.valid_vertex(originalHalfedge.vertex)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: invalid "
+                     "local topology at halfedge "
+                  << halfedgeIndex << '\n';
+      }
+      return false;
+    }
+
+    const int oldNext = originalHalfedge.next;
+    const int targetVertex = genDcel.halfedges[oldNext].vertex;
+
+    if (!genDcel.valid_vertex(targetVertex)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: invalid "
+                     "target vertex at halfedge "
+                  << halfedgeIndex << '\n';
+      }
+      return false;
+    }
+
+    const EVector3 &start =
+        genDcel.vertices[originalHalfedge.vertex].data.eCoords;
+    const EVector3 &end = genDcel.vertices[targetVertex].data.eCoords;
+
+    if (exact_point_equal(point, start) || exact_point_equal(point, end))
+      return true;
+
+    if (!exact_point_strictly_inside_segment(point, start, end)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: requested "
+                     "point is not strictly inside halfedge "
+                  << halfedgeIndex << '\n';
+      }
+      return false;
+    }
+
+    if (genDcel.vertices.size() >=
+            static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
+        genDcel.halfedges.size() >=
+            static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
+        genDcel.edges.size() >=
+            static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "split_boundary_halfedge_at_exact_point()]: topology "
+                     "index range exhausted\n";
+      }
+      return false;
+    }
+
+    const int newVertexIndex = static_cast<int>(genDcel.vertices.size());
+    newHalfedgeIndex = static_cast<int>(genDcel.halfedges.size());
+    const int newEdgeIndex = static_cast<int>(genDcel.edges.size());
+
+    FunctionDCEL::Vertex newVertex;
+    newVertex.ID = newVertexIndex;
+    newVertex.valid = true;
+    newVertex.halfedge = newHalfedgeIndex;
+    newVertex.data.eCoords = point;
+    newVertex.data.coords << point[0].to_double(), point[1].to_double(),
+        point[2].to_double();
+
+    FunctionDCEL::Halfedge newHalfedge = originalHalfedge;
+    newHalfedge.ID = newHalfedgeIndex;
+    newHalfedge.valid = true;
+    newHalfedge.vertex = newVertexIndex;
+    newHalfedge.prev = halfedgeIndex;
+    newHalfedge.next = oldNext;
+    newHalfedge.twin = -1;
+    newHalfedge.edge = newEdgeIndex;
+
+    FunctionDCEL::Edge newEdge = genDcel.edges[originalHalfedge.edge];
+    newEdge.ID = newEdgeIndex;
+    newEdge.valid = true;
+    newEdge.halfedge = newHalfedgeIndex;
+
+    try {
+      genDcel.vertices.push_back(std::move(newVertex));
+      genDcel.edges.push_back(std::move(newEdge));
+      genDcel.halfedges.push_back(std::move(newHalfedge));
+    } catch (...) {
+      newHalfedgeIndex = -1;
+      throw;
+    }
+
+    genDcel.halfedges[halfedgeIndex].next = newHalfedgeIndex;
+    genDcel.halfedges[oldNext].prev = newHalfedgeIndex;
+    genDcel.edges[originalHalfedge.edge].halfedge = halfedgeIndex;
+
+    return true;
+  }
+
+  bool split_boundary_strip_at_exact_point(std::vector<int> &halfedgeStrip,
+                                           const EVector3 &point,
+                                           int &splitCount) {
+    for (std::size_t position = 0; position < halfedgeStrip.size();
+         ++position) {
+      const int halfedgeIndex = halfedgeStrip[position];
+
+      if (!genDcel.valid_halfedge(halfedgeIndex))
+        return false;
+
+      const int next = genDcel.halfedges[halfedgeIndex].next;
+      if (!genDcel.valid_halfedge(next))
+        return false;
+
+      const int startVertex = genDcel.halfedges[halfedgeIndex].vertex;
+      const int endVertex = genDcel.halfedges[next].vertex;
+
+      if (!genDcel.valid_vertex(startVertex) ||
+          !genDcel.valid_vertex(endVertex))
+        return false;
+
+      const EVector3 &start = genDcel.vertices[startVertex].data.eCoords;
+      const EVector3 &end = genDcel.vertices[endVertex].data.eCoords;
+
+      if (exact_point_equal(point, start) || exact_point_equal(point, end))
+        return true;
+
+      if (!exact_point_strictly_inside_segment(point, start, end))
+        continue;
+
+      int newHalfedge = -1;
+      if (!split_boundary_halfedge_at_exact_point(halfedgeIndex, point,
+                                                  newHalfedge))
+        return false;
+
+      if (newHalfedge < 0)
+        return false;
+
+      halfedgeStrip.insert(halfedgeStrip.begin() +
+                               static_cast<std::ptrdiff_t>(position + 1),
+                           newHalfedge);
+      ++splitCount;
+      return true;
+    }
+
+    return false;
+  }
+
+  bool strip_contains_exact_point(const std::vector<int> &vertexStrip,
+                                  const EVector3 &point) const {
+    for (const int vertex : vertexStrip) {
+      if (!genDcel.valid_vertex(vertex))
+        return false;
+
+      if (exact_point_equal(genDcel.vertices[vertex].data.eCoords, point))
+        return true;
+    }
+
+    return false;
+  }
+
+  bool synchronize_boundary_strip_subdivisions(SimplifyScratch &scratch,
+                                                int &splitCount) {
+    splitCount = 0;
+
+    if (scratch.maxOrigHE < 0)
+      return true;
+
+    const FunctionDCEL backup = genDcel;
+
+    const auto rollback = [&]() { genDcel = backup; };
+
+    const auto fail = [&](const char *message, const int originalHalfedge) {
+      rollback();
+
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "synchronize_boundary_strip_subdivisions()]: "
+                  << message;
+
+        if (originalHalfedge >= 0)
+          std::cerr << " (original halfedge " << originalHalfedge << ')';
+
+        std::cerr << '\n';
+      }
+
+      return false;
+    };
+
+    try {
+      for (int originalHalfedge = 0;
+           originalHalfedge <= scratch.maxOrigHE; ++originalHalfedge) {
+        const auto &vertices1 = scratch.vertexSets1[originalHalfedge];
+        const auto &vertices2 = scratch.vertexSets2[originalHalfedge];
+
+        if (vertices1.empty() || vertices2.empty())
+          continue;
+
+        std::vector<EVector3> missingFromFirst;
+        std::vector<EVector3> missingFromSecond;
+
+        missingFromFirst.reserve(vertices2.size());
+        missingFromSecond.reserve(vertices1.size());
+
+        for (const int vertex : vertices2) {
+          if (!genDcel.valid_vertex(vertex))
+            return fail("second strip contains an invalid vertex",
+                        originalHalfedge);
+
+          const EVector3 &point = genDcel.vertices[vertex].data.eCoords;
+          if (!strip_contains_exact_point(vertices1, point))
+            missingFromFirst.push_back(point);
+        }
+
+        for (const int vertex : vertices1) {
+          if (!genDcel.valid_vertex(vertex))
+            return fail("first strip contains an invalid vertex",
+                        originalHalfedge);
+
+          const EVector3 &point = genDcel.vertices[vertex].data.eCoords;
+          if (!strip_contains_exact_point(vertices2, point))
+            missingFromSecond.push_back(point);
+        }
+
+        if (missingFromFirst.empty() && missingFromSecond.empty())
+          continue;
+
+        std::vector<int> firstHalfedges =
+            scratch.boundEdgeCollect1[originalHalfedge];
+        std::vector<int> secondHalfedges =
+            scratch.boundEdgeCollect2[originalHalfedge];
+
+        for (const EVector3 &point : missingFromFirst) {
+          if (!split_boundary_strip_at_exact_point(firstHalfedges, point,
+                                                   splitCount))
+            return fail("failed to split the first boundary strip",
+                        originalHalfedge);
+        }
+
+        for (const EVector3 &point : missingFromSecond) {
+          if (!split_boundary_strip_at_exact_point(secondHalfedges, point,
+                                                   splitCount))
+            return fail("failed to split the second boundary strip",
+                        originalHalfedge);
+        }
+      }
+    } catch (const std::exception &error) {
+      rollback();
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "synchronize_boundary_strip_subdivisions()]: "
+                  << error.what() << '\n';
+      }
+      return false;
+    } catch (...) {
+      rollback();
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "synchronize_boundary_strip_subdivisions()]: unknown "
+                     "failure\n";
+      }
+      return false;
+    }
+
+    if (splitCount == 0)
+      return true;
+
+    if (!genDcel.check_consistency(mData.verbose, true, false, false))
+      return fail("post-synchronization consistency check failed", -1);
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "synchronize_boundary_strip_subdivisions()]: inserted "
+                << splitCount << " shared-edge split vertices\n";
+    }
+
+    return true;
   }
 
   bool build_vertex_matches(SimplifyScratch &scratch) {
@@ -1038,14 +1435,14 @@ void segment_arrangement(
        *   identify. Leave its vertices independent.
        */
       if (vertexSet1.empty() || vertexSet2.empty()) {
-        // if (mData.verbose && vertexSet1.empty() != vertexSet2.empty()) {
-        //   std::cout << "[Directional::NFunctionMesher::"
-        //                "build_vertex_matches()]: "
-        //             << "skipping one-sided boundary strip for "
-        //                "original halfedge "
-        //             << i << "; strip sizes " << vertexSet1.size() << " and "
-        //             << vertexSet2.size() << '\n';
-        // }
+        if (mData.verbose && vertexSet1.empty() != vertexSet2.empty()) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "build_vertex_matches()]: "
+                    << "skipping one-sided boundary strip for "
+                       "original halfedge "
+                    << i << "; strip sizes " << vertexSet1.size() << " and "
+                    << vertexSet2.size() << '\n';
+        }
 
         continue;
       }
@@ -1056,12 +1453,126 @@ void segment_arrangement(
        * have different sampling counts.
        */
       if (vertexSet1.size() != vertexSet2.size()) {
-        if (mData.verbose) {
-          std::cerr << "[Directional::NFunctionMesher::"
-                       "build_vertex_matches()]: "
-                    << "mismatched paired strip sizes for original halfedge "
-                    << i << ": " << vertexSet1.size() << " versus "
-                    << vertexSet2.size() << '\n';
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "build_vertex_matches()]: "
+                  << "mismatched paired strip sizes for original halfedge " << i
+                  << ": " << vertexSet1.size() << " versus "
+                  << vertexSet2.size() << '\n';
+
+        const auto printStrip = [&](const char *label,
+                                    const std::vector<int> &strip) {
+          std::cerr << "  " << label << ":\n";
+
+          for (std::size_t position = 0; position < strip.size(); ++position) {
+            const int vertex = strip[position];
+
+            if (!genDcel.valid_vertex(vertex)) {
+              std::cerr << "    [" << position << "] vertex " << vertex
+                        << " INVALID\n";
+              continue;
+            }
+
+            const auto &exact = genDcel.vertices[vertex].data.eCoords;
+
+            const auto &approx = genDcel.vertices[vertex].data.coords;
+
+            const double exactX = exact[0].to_double();
+
+            const double exactY = exact[1].to_double();
+
+            const double exactZ = exact[2].to_double();
+
+            const double errorX = approx[0] - exactX;
+
+            const double errorY = approx[1] - exactY;
+
+            const double errorZ = approx[2] - exactZ;
+
+            const double errorSquared =
+                errorX * errorX + errorY * errorY + errorZ * errorZ;
+
+            std::cerr << "    [" << position << "] vertex " << vertex
+                      << " exact-as-double=(" << exactX << ", " << exactY
+                      << ", " << exactZ << ")"
+                      << " stored-double=(" << approx[0] << ", " << approx[1]
+                      << ", " << approx[2] << ")"
+                      << " error2=" << errorSquared << '\n';
+          }
+        };
+
+        printStrip("side 1", vertexSet1);
+        printStrip("side 2", vertexSet2);
+
+        /*
+         * Report exact ordered correspondences without changing topology.
+         */
+        std::size_t first = 0;
+        std::size_t second = 0;
+
+        while (first < vertexSet1.size() && second < vertexSet2.size()) {
+          const auto &point1 = genDcel.vertices[vertexSet1[first]].data.eCoords;
+
+          const auto &point2 =
+              genDcel.vertices[vertexSet2[second]].data.eCoords;
+
+          if (exact_point_equal(point1, point2)) {
+            std::cerr << "    exact match: side1[" << first << "] <-> side2["
+                      << second << "]\n";
+
+            ++first;
+            ++second;
+            continue;
+          }
+
+          bool skipFirst = false;
+          bool skipSecond = false;
+
+          if (first + 1 < vertexSet1.size()) {
+            const auto &next1 =
+                genDcel.vertices[vertexSet1[first + 1]].data.eCoords;
+
+            skipFirst = exact_point_equal(next1, point2);
+          }
+
+          if (second + 1 < vertexSet2.size()) {
+            const auto &next2 =
+                genDcel.vertices[vertexSet2[second + 1]].data.eCoords;
+
+            skipSecond = exact_point_equal(point1, next2);
+          }
+
+          if (skipFirst && !skipSecond) {
+            std::cerr << "    unmatched side1[" << first << "] vertex "
+                      << vertexSet1[first] << '\n';
+
+            ++first;
+            continue;
+          }
+
+          if (skipSecond && !skipFirst) {
+            std::cerr << "    unmatched side2[" << second << "] vertex "
+                      << vertexSet2[second] << '\n';
+
+            ++second;
+            continue;
+          }
+
+          std::cerr << "    correspondence diverges at side1[" << first
+                    << "] and side2[" << second << "]\n";
+
+          break;
+        }
+
+        while (first < vertexSet1.size()) {
+          std::cerr << "    trailing unmatched side1[" << first << "] vertex "
+                    << vertexSet1[first] << '\n';
+          ++first;
+        }
+
+        while (second < vertexSet2.size()) {
+          std::cerr << "    trailing unmatched side2[" << second << "] vertex "
+                    << vertexSet2[second] << '\n';
+          ++second;
         }
 
         return false;
@@ -1845,20 +2356,410 @@ void segment_arrangement(
     return true;
   }
 
+  bool prune_dangling_interior_function_edges() {
+    const int vertexCount = static_cast<int>(genDcel.vertices.size());
+
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+
+    if (vertexCount == 0 || halfedgeCount == 0) {
+      return true;
+    }
+
+    /*
+     * Function degree counts outgoing function halfedges at each vertex.
+     *
+     * A valid interior function skeleton should not contain degree-one
+     * vertices. Such a vertex is a dangling leaf and cannot participate in
+     * the cyclic rewiring performed by realign_hex_halfedges().
+     */
+    std::vector<int> functionDegree(static_cast<std::size_t>(vertexCount), 0);
+
+    std::vector<unsigned char> isBoundaryVertex(
+        static_cast<std::size_t>(vertexCount), static_cast<unsigned char>(0));
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.valid_halfedge(he)) {
+        continue;
+      }
+
+      const auto &halfedge = genDcel.halfedges[static_cast<std::size_t>(he)];
+
+      const int origin = halfedge.vertex;
+
+      if (origin < 0 || origin >= vertexCount) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "prune_dangling_interior_function_edges()]: "
+                    << "halfedge " << he << " has invalid origin vertex "
+                    << origin << '\n';
+        }
+
+        return false;
+      }
+
+      if (halfedge.twin == -1) {
+        isBoundaryVertex[static_cast<std::size_t>(origin)] =
+            static_cast<unsigned char>(1);
+      }
+
+      if (halfedge.data.isFunction) {
+        ++functionDegree[static_cast<std::size_t>(origin)];
+      }
+    }
+
+    std::deque<int> pendingVertices;
+
+    std::vector<unsigned char> queued(static_cast<std::size_t>(vertexCount),
+                                      static_cast<unsigned char>(0));
+
+    const auto queueIfDangling = [&](const int vertex) {
+      if (vertex < 0 || vertex >= vertexCount) {
+        return;
+      }
+
+      if (!genDcel.vertices[static_cast<std::size_t>(vertex)].valid) {
+        return;
+      }
+
+      if (isBoundaryVertex[static_cast<std::size_t>(vertex)] != 0) {
+        return;
+      }
+
+      if (functionDegree[static_cast<std::size_t>(vertex)] != 1) {
+        return;
+      }
+
+      if (queued[static_cast<std::size_t>(vertex)] != 0) {
+        return;
+      }
+
+      queued[static_cast<std::size_t>(vertex)] = static_cast<unsigned char>(1);
+
+      pendingVertices.push_back(vertex);
+    };
+
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      queueIfDangling(vertex);
+    }
+
+    std::size_t removedEdges = 0;
+    std::size_t processedLeaves = 0;
+
+    while (!pendingVertices.empty()) {
+      const int vertex = pendingVertices.front();
+
+      pendingVertices.pop_front();
+
+      queued[static_cast<std::size_t>(vertex)] = static_cast<unsigned char>(0);
+
+      if (!genDcel.vertices[static_cast<std::size_t>(vertex)].valid) {
+        continue;
+      }
+
+      if (isBoundaryVertex[static_cast<std::size_t>(vertex)] != 0) {
+        continue;
+      }
+
+      if (functionDegree[static_cast<std::size_t>(vertex)] != 1) {
+        continue;
+      }
+
+      ++processedLeaves;
+
+      int danglingHalfedge = -1;
+
+      /*
+       * Find the one remaining outgoing function halfedge.
+       *
+       * A linear scan is acceptable for diagnostics but unnecessarily
+       * expensive globally. Walk the local fan instead.
+       */
+      const int fanStart =
+          genDcel.vertices[static_cast<std::size_t>(vertex)].halfedge;
+
+      if (!genDcel.valid_halfedge(fanStart)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "prune_dangling_interior_function_edges()]: "
+                    << "vertex " << vertex << " has invalid incident halfedge "
+                    << fanStart << '\n';
+        }
+
+        return false;
+      }
+
+      int current = fanStart;
+
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      for (int steps = 0; steps < halfedgeCount; ++steps) {
+        if (!genDcel.valid_halfedge(current)) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "prune_dangling_interior_function_edges()]: "
+                      << "invalid halfedge " << current
+                      << " while walking fan of vertex " << vertex << '\n';
+          }
+
+          return false;
+        }
+
+        if (visited[static_cast<std::size_t>(current)] != 0) {
+          if (current != fanStart) {
+            if (mData.verbose) {
+              std::cerr << "[Directional::NFunctionMesher::"
+                           "prune_dangling_interior_function_edges()]: "
+                        << "fan of vertex " << vertex
+                        << " entered a non-start cycle at halfedge " << current
+                        << '\n';
+            }
+
+            return false;
+          }
+
+          break;
+        }
+
+        visited[static_cast<std::size_t>(current)] =
+            static_cast<unsigned char>(1);
+
+        const auto &halfedge =
+            genDcel.halfedges[static_cast<std::size_t>(current)];
+
+        if (halfedge.vertex != vertex) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "prune_dangling_interior_function_edges()]: "
+                      << "fan walk for vertex " << vertex
+                      << " reached halfedge " << current << " with origin "
+                      << halfedge.vertex << '\n';
+          }
+
+          return false;
+        }
+
+        if (halfedge.data.isFunction) {
+          if (danglingHalfedge != -1) {
+            /*
+             * The cached degree is inconsistent with the actual fan.
+             */
+            if (mData.verbose) {
+              std::cerr << "[Directional::NFunctionMesher::"
+                           "prune_dangling_interior_function_edges()]: "
+                        << "vertex " << vertex
+                        << " was recorded with function degree one but fan "
+                           "contains multiple function halfedges: "
+                        << danglingHalfedge << " and " << current << '\n';
+            }
+
+            return false;
+          }
+
+          danglingHalfedge = current;
+        }
+
+        const int twin = halfedge.twin;
+
+        if (twin == -1) {
+          /*
+           * This should have marked the vertex as boundary.
+           */
+          isBoundaryVertex[static_cast<std::size_t>(vertex)] =
+              static_cast<unsigned char>(1);
+
+          danglingHalfedge = -1;
+          break;
+        }
+
+        if (!genDcel.valid_halfedge(twin)) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "prune_dangling_interior_function_edges()]: "
+                      << "halfedge " << current << " has invalid twin " << twin
+                      << '\n';
+          }
+
+          return false;
+        }
+
+        const int nextAroundVertex =
+            genDcel.halfedges[static_cast<std::size_t>(twin)].next;
+
+        if (!genDcel.valid_halfedge_index(nextAroundVertex)) {
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "prune_dangling_interior_function_edges()]: "
+                      << "invalid twin-next " << nextAroundVertex
+                      << " while walking vertex " << vertex << '\n';
+          }
+
+          return false;
+        }
+
+        current = nextAroundVertex;
+
+        if (current == fanStart) {
+          break;
+        }
+      }
+
+      if (danglingHalfedge < 0) {
+        continue;
+      }
+
+      auto &halfedge =
+          genDcel.halfedges[static_cast<std::size_t>(danglingHalfedge)];
+
+      const int twin = halfedge.twin;
+
+      if (!genDcel.valid_halfedge(twin)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "prune_dangling_interior_function_edges()]: "
+                    << "dangling function halfedge " << danglingHalfedge
+                    << " has invalid twin " << twin << '\n';
+        }
+
+        return false;
+      }
+
+      auto &twinHalfedge = genDcel.halfedges[static_cast<std::size_t>(twin)];
+
+      const int oppositeVertex = twinHalfedge.vertex;
+
+      if (oppositeVertex < 0 || oppositeVertex >= vertexCount) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "prune_dangling_interior_function_edges()]: "
+                    << "twin " << twin << " has invalid origin vertex "
+                    << oppositeVertex << '\n';
+        }
+
+        return false;
+      }
+
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "prune_dangling_interior_function_edges()]: "
+                  << "removing dangling function edge"
+                  << " halfedge=" << danglingHalfedge << " twin=" << twin
+                  << " leafVertex=" << vertex
+                  << " oppositeVertex=" << oppositeVertex
+                  << " function=" << halfedge.data.origNFunctionIndex
+                  << " leafDegree="
+                  << functionDegree[static_cast<std::size_t>(vertex)]
+                  << " oppositeDegree="
+                  << functionDegree[static_cast<std::size_t>(oppositeVertex)]
+                  << '\n';
+      }
+
+      /*
+       * Preserve the DCEL edge and all geometric topology. Only remove it
+       * from the retained function skeleton.
+       */
+      if (halfedge.data.isFunction) {
+        halfedge.data.isFunction = false;
+
+        --functionDegree[static_cast<std::size_t>(vertex)];
+      }
+
+      if (twinHalfedge.data.isFunction) {
+        twinHalfedge.data.isFunction = false;
+
+        --functionDegree[static_cast<std::size_t>(oppositeVertex)];
+      }
+
+      if (functionDegree[static_cast<std::size_t>(vertex)] < 0 ||
+          functionDegree[static_cast<std::size_t>(oppositeVertex)] < 0) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "prune_dangling_interior_function_edges()]: "
+                    << "function degree became negative while pruning edge "
+                    << danglingHalfedge << '\n';
+        }
+
+        return false;
+      }
+
+      ++removedEdges;
+
+      /*
+       * Removing one leaf can expose another leaf at the opposite endpoint.
+       * Queue both endpoints, allowing the process to peel an entire
+       * dangling chain.
+       */
+      queueIfDangling(vertex);
+      queueIfDangling(oppositeVertex);
+    }
+
+    /*
+     * Verify that no interior degree-one function vertices remain.
+     */
+    std::size_t remainingInteriorLeaves = 0;
+
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      if (!genDcel.vertices[static_cast<std::size_t>(vertex)].valid) {
+        continue;
+      }
+
+      if (isBoundaryVertex[static_cast<std::size_t>(vertex)] != 0) {
+        continue;
+      }
+
+      if (functionDegree[static_cast<std::size_t>(vertex)] == 1) {
+        ++remainingInteriorLeaves;
+
+        if (mData.verbose && remainingInteriorLeaves <= 20) {
+          std::cerr
+              << "[Directional::NFunctionMesher::"
+                 "prune_dangling_interior_function_edges()]: "
+              << "remaining interior function leaf"
+              << " vertex=" << vertex << " storedHalfedge="
+              << genDcel.vertices[static_cast<std::size_t>(vertex)].halfedge
+              << '\n';
+        }
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "prune_dangling_interior_function_edges()]: "
+                << "summary\n"
+                << "  initial queued/processed leaves: " << processedLeaves
+                << '\n'
+                << "  removed dangling function edges: " << removedEdges << '\n'
+                << "  remaining interior leaves: " << remainingInteriorLeaves
+                << '\n';
+    }
+
+    return remainingInteriorLeaves == 0;
+  }
+
   bool realign_hex_halfedges(const SimplifyScratch &scratch) {
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
 
+    /*
+     * Set to -1 to disable unconditional diagnostics for one vertex.
+     *
+     * The detailed fan dump is always emitted when an invalid singleton
+     * interior fan is encountered, regardless of this value.
+     */
+    constexpr int diagnosticVertex = 576;
+
     const auto fail = [&](const int vertex, const char *message,
                           const int he = -1) {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
-                     "realign_hex_halfedges]: vertex "
+                     "realign_hex_halfedges()]: vertex "
                   << vertex << ": " << message;
 
-        if (he >= 0)
+        if (he >= 0) {
           std::cerr << " (halfedge " << he << ")";
+        }
 
         std::cerr << '\n';
       }
@@ -1866,13 +2767,142 @@ void segment_arrangement(
       return false;
     };
 
+    const auto shouldLogVertex = [&](const int vertex) {
+      return mData.verbose &&
+             (diagnosticVertex < 0 || vertex == diagnosticVertex);
+    };
+
+    const auto printHalfedge = [&](const char *prefix, const int he) {
+      std::cerr << prefix << " he=" << he;
+
+      if (!genDcel.valid_halfedge_index(he)) {
+        std::cerr << " indexValid=false\n";
+        return;
+      }
+
+      const auto &halfedge = genDcel.halfedges[static_cast<std::size_t>(he)];
+
+      std::cerr << " valid=" << halfedge.valid << " vertex=" << halfedge.vertex
+                << " face=" << halfedge.face << " edge=" << halfedge.edge
+                << " twin=" << halfedge.twin << " next=" << halfedge.next
+                << " prev=" << halfedge.prev
+                << " isFunction=" << halfedge.data.isFunction
+                << " origHalfedge=" << halfedge.data.origHalfedge
+                << " origNFunctionIndex=" << halfedge.data.origNFunctionIndex
+                << '\n';
+    };
+
+    /*
+     * Dump the original fan using the same twin->next traversal employed
+     * by the function. This helper never mutates topology.
+     */
+    const auto dumpFan = [&](const int vertex, const int fanStart,
+                             const char *reason) {
+      if (!mData.verbose) {
+        return;
+      }
+
+      std::cerr
+          << "[Directional::NFunctionMesher::"
+             "realign_hex_halfedges()]: fan diagnostic"
+          << " vertex=" << vertex << " reason=\"" << reason << "\""
+          << " classifiedBoundary="
+          << (vertex >= 0 &&
+                      vertex < static_cast<int>(scratch.isBoundary.size())
+                  ? scratch.isBoundary[static_cast<std::size_t>(vertex)]
+                  : false)
+          << " classifiedPureTriangle="
+          << (vertex >= 0 &&
+                      vertex < static_cast<int>(scratch.isPureTriangle.size())
+                  ? scratch.isPureTriangle[static_cast<std::size_t>(vertex)]
+                  : false)
+          << " storedHalfedge="
+          << (vertex >= 0 && vertex < vertexCount
+                  ? genDcel.vertices[static_cast<std::size_t>(vertex)].halfedge
+                  : -1)
+          << " requestedStart=" << fanStart << '\n';
+
+      if (!genDcel.valid_halfedge(fanStart)) {
+        printHalfedge("  invalid fan start:", fanStart);
+        return;
+      }
+
+      std::vector<unsigned char> dumpVisited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      int current = fanStart;
+
+      for (int steps = 0; steps < halfedgeCount; ++steps) {
+        if (!genDcel.valid_halfedge_index(current)) {
+          printHalfedge("  invalid current:", current);
+          break;
+        }
+
+        if (dumpVisited[static_cast<std::size_t>(current)] != 0) {
+          std::cerr << "  traversal revisited halfedge " << current
+                    << (current == fanStart ? " (closed at start)"
+                                            : " (non-start cycle)")
+                    << '\n';
+          break;
+        }
+
+        dumpVisited[static_cast<std::size_t>(current)] = 1;
+
+        printHalfedge("  fan member:", current);
+
+        const auto &halfedge =
+            genDcel.halfedges[static_cast<std::size_t>(current)];
+
+        if (!halfedge.valid) {
+          std::cerr << "  traversal stopped: halfedge record is invalid\n";
+          break;
+        }
+
+        if (halfedge.vertex != vertex) {
+          std::cerr << "  traversal stopped: origin vertex changed from "
+                    << vertex << " to " << halfedge.vertex << '\n';
+          break;
+        }
+
+        if (halfedge.twin == -1) {
+          std::cerr << "  traversal stopped: reached boundary halfedge\n";
+          break;
+        }
+
+        if (!genDcel.valid_halfedge(halfedge.twin)) {
+          std::cerr << "  traversal stopped: invalid twin " << halfedge.twin
+                    << '\n';
+          break;
+        }
+
+        const int nextAroundVertex =
+            genDcel.halfedges[static_cast<std::size_t>(halfedge.twin)].next;
+
+        if (!genDcel.valid_halfedge_index(nextAroundVertex)) {
+          std::cerr << "  traversal stopped: invalid twin->next "
+                    << nextAroundVertex << '\n';
+          break;
+        }
+
+        current = nextAroundVertex;
+
+        if (current == fanStart) {
+          std::cerr << "  traversal closed at the starting halfedge\n";
+          break;
+        }
+      }
+    };
+
     if (scratch.isPureTriangle.size() != genDcel.vertices.size() ||
         scratch.isBoundary.size() != genDcel.vertices.size()) {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
-                     "realign_hex_halfedges]: "
-                     "classification arrays do not match "
-                     "vertex count\n";
+                     "realign_hex_halfedges()]: "
+                  << "classification arrays do not match vertex count"
+                  << " isPureTriangle=" << scratch.isPureTriangle.size()
+                  << " isBoundary=" << scratch.isBoundary.size()
+                  << " vertices=" << genDcel.vertices.size() << '\n';
       }
 
       return false;
@@ -1881,51 +2911,102 @@ void segment_arrangement(
     for (int i = 0; i < vertexCount; ++i) {
       log_progress("hex halfedge realignment", i, vertexCount);
 
-      if (scratch.isPureTriangle[i] || !genDcel.vertices[i].valid) {
+      if (!genDcel.vertices[static_cast<std::size_t>(i)].valid) {
+        if (shouldLogVertex(i)) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "realign_hex_halfedges()]: "
+                    << "skipping diagnostic vertex " << i
+                    << ": vertex is invalid\n";
+        }
+
         continue;
       }
 
-      int heBegin = genDcel.vertices[i].halfedge;
+      if (scratch.isPureTriangle[static_cast<std::size_t>(i)]) {
+        if (shouldLogVertex(i)) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "realign_hex_halfedges()]: "
+                    << "skipping diagnostic vertex " << i
+                    << ": classified as pure triangle\n";
+        }
+
+        continue;
+      }
+
+      const bool logThisVertex = shouldLogVertex(i);
+
+      int heBegin = genDcel.vertices[static_cast<std::size_t>(i)].halfedge;
+
+      if (logThisVertex) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "realign_hex_halfedges()]: "
+                  << "begin vertex=" << i << " boundary="
+                  << scratch.isBoundary[static_cast<std::size_t>(i)]
+                  << " pureTriangle="
+                  << scratch.isPureTriangle[static_cast<std::size_t>(i)]
+                  << " storedHalfedge=" << heBegin << '\n';
+
+        dumpFan(i, heBegin, "fan before boundary-start normalization");
+      }
 
       if (!genDcel.valid_halfedge(heBegin)) {
+        dumpFan(i, heBegin, "invalid incident halfedge");
+
         return fail(i, "invalid incident halfedge", heBegin);
       }
 
       /*
-       * For a boundary vertex, rotate backward around
-       * the fan until the preceding edge is a boundary
-       * halfedge.
+       * For a boundary vertex, rotate backward around the fan until the
+       * preceding edge is a boundary halfedge. This establishes the first
+       * halfedge of the open fan.
        */
-      if (scratch.isBoundary[i]) {
-        std::vector<unsigned char> visited(
-            static_cast<std::size_t>(halfedgeCount), 0);
+      if (scratch.isBoundary[static_cast<std::size_t>(i)]) {
+        std::vector<unsigned char> backwardVisited(
+            static_cast<std::size_t>(halfedgeCount),
+            static_cast<unsigned char>(0));
 
         bool foundBoundaryStart = false;
 
         for (int steps = 0; steps < halfedgeCount; ++steps) {
           if (!genDcel.valid_halfedge(heBegin)) {
-            return fail(i,
-                        "invalid halfedge during backward "
-                        "fan walk",
+            dumpFan(i, genDcel.vertices[static_cast<std::size_t>(i)].halfedge,
+                    "invalid halfedge during backward fan walk");
+
+            return fail(i, "invalid halfedge during backward fan walk",
                         heBegin);
           }
 
-          if (visited[heBegin]) {
+          if (backwardVisited[static_cast<std::size_t>(heBegin)] != 0) {
+            dumpFan(i, genDcel.vertices[static_cast<std::size_t>(i)].halfedge,
+                    "backward fan walk entered a cycle");
+
             return fail(i, "backward fan walk entered a cycle", heBegin);
           }
 
-          visited[heBegin] = 1;
+          backwardVisited[static_cast<std::size_t>(heBegin)] = 1;
 
-          const int prev = genDcel.halfedges[heBegin].prev;
+          const int prev =
+              genDcel.halfedges[static_cast<std::size_t>(heBegin)].prev;
 
-          if (!genDcel.valid_halfedge_index(prev)) {
-            return fail(i,
-                        "invalid prev link during backward "
-                        "fan walk",
-                        prev);
+          if (logThisVertex) {
+            std::cerr << "  backward step=" << steps << " current=" << heBegin
+                      << " prev=" << prev << '\n';
           }
 
-          const int twin = genDcel.halfedges[prev].twin;
+          if (!genDcel.valid_halfedge_index(prev)) {
+            dumpFan(i, genDcel.vertices[static_cast<std::size_t>(i)].halfedge,
+                    "invalid prev during backward fan walk");
+
+            return fail(i, "invalid prev link during backward fan walk", prev);
+          }
+
+          const int twin =
+              genDcel.halfedges[static_cast<std::size_t>(prev)].twin;
+
+          if (logThisVertex) {
+            std::cerr << "    prevTwin=" << twin
+                      << (twin == -1 ? " boundary-start-found" : "") << '\n';
+          }
 
           if (twin == -1) {
             foundBoundaryStart = true;
@@ -1933,30 +3014,37 @@ void segment_arrangement(
           }
 
           if (!genDcel.valid_halfedge(twin)) {
-            return fail(i,
-                        "invalid twin during backward "
-                        "fan walk",
-                        twin);
+            dumpFan(i, genDcel.vertices[static_cast<std::size_t>(i)].halfedge,
+                    "invalid twin during backward fan walk");
+
+            return fail(i, "invalid twin during backward fan walk", twin);
           }
 
           heBegin = twin;
         }
 
         if (!foundBoundaryStart) {
-          return fail(i, "could not locate a boundary start "
-                         "within the traversal bound");
+          dumpFan(i, genDcel.vertices[static_cast<std::size_t>(i)].halfedge,
+                  "boundary start not found");
+
+          return fail(i, "could not locate a boundary start within the "
+                         "traversal bound");
+        }
+
+        if (logThisVertex) {
+          std::cerr << "  normalized boundary fan start=" << heBegin << '\n';
         }
       }
 
       /*
-       * Collect retained halfedges without modifying
-       * topology. The mutation phase runs only after
-       * this traversal fully succeeds.
+       * Collect retained halfedges without modifying topology.
        */
       std::vector<int> hexHEOrder;
+      hexHEOrder.reserve(8);
 
-      std::vector<unsigned char> visited(
-          static_cast<std::size_t>(halfedgeCount), 0);
+      std::vector<unsigned char> forwardVisited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
 
       int he = heBegin;
       bool fanClosed = false;
@@ -1964,184 +3052,395 @@ void segment_arrangement(
 
       for (int steps = 0; steps < halfedgeCount; ++steps) {
         if (!genDcel.valid_halfedge(he)) {
-          return fail(i,
-                      "invalid halfedge during forward "
-                      "fan walk",
-                      he);
+          dumpFan(i, heBegin, "invalid halfedge during forward fan walk");
+
+          return fail(i, "invalid halfedge during forward fan walk", he);
         }
 
-        if (visited[he]) {
+        if (forwardVisited[static_cast<std::size_t>(he)] != 0) {
           if (he == heBegin) {
             fanClosed = true;
+
+            if (logThisVertex) {
+              std::cerr << "  forward fan closed by revisit at start\n";
+            }
+
             break;
           }
 
+          dumpFan(i, heBegin, "forward fan walk entered a non-start cycle");
+
+          return fail(i, "forward fan walk entered a non-start cycle", he);
+        }
+
+        forwardVisited[static_cast<std::size_t>(he)] = 1;
+
+        const auto &halfedge = genDcel.halfedges[static_cast<std::size_t>(he)];
+
+        if (halfedge.vertex != i) {
+          dumpFan(i, heBegin, "fan walk reached different origin vertex");
+
           return fail(i,
-                      "forward fan walk entered a "
-                      "non-start cycle",
+                      "fan walk reached a halfedge with a different "
+                      "origin vertex",
                       he);
         }
 
-        visited[he] = 1;
+        const bool isFunction = halfedge.data.isFunction;
 
-        if (genDcel.halfedges[he].vertex != i) {
-          return fail(i,
-                      "fan walk reached a halfedge with "
-                      "a different origin vertex",
-                      he);
+        const bool isBoundaryHalfedge = halfedge.twin == -1;
+
+        const bool retain = isFunction || isBoundaryHalfedge;
+
+        if (logThisVertex) {
+          std::cerr << "  forward step=" << steps << " he=" << he
+                    << " retain=" << retain << " reason=";
+
+          if (isFunction) {
+            std::cerr << "function";
+          } else if (isBoundaryHalfedge) {
+            std::cerr << "boundary-terminal";
+          } else {
+            std::cerr << "non-function-interior";
+          }
+
+          std::cerr << " twin=" << halfedge.twin << " face=" << halfedge.face
+                    << " edge=" << halfedge.edge << " next=" << halfedge.next
+                    << " prev=" << halfedge.prev
+                    << " origHalfedge=" << halfedge.data.origHalfedge
+                    << " origNFunctionIndex="
+                    << halfedge.data.origNFunctionIndex << '\n';
         }
 
-        if (genDcel.halfedges[he].data.isFunction ||
-            genDcel.halfedges[he].twin == -1) {
+        if (retain) {
           hexHEOrder.push_back(he);
         }
 
-        const int twin = genDcel.halfedges[he].twin;
+        const int twin = halfedge.twin;
 
         if (twin == -1) {
           reachedBoundaryEnd = true;
+
+          if (logThisVertex) {
+            std::cerr << "  forward fan reached boundary terminal at he=" << he
+                      << '\n';
+          }
+
           break;
         }
 
         if (!genDcel.valid_halfedge(twin)) {
-          return fail(i,
-                      "invalid twin during forward "
-                      "fan walk",
-                      twin);
+          dumpFan(i, heBegin, "invalid twin during forward fan walk");
+
+          return fail(i, "invalid twin during forward fan walk", twin);
         }
 
-        const int next = genDcel.halfedges[twin].next;
+        const int next = genDcel.halfedges[static_cast<std::size_t>(twin)].next;
 
         if (!genDcel.valid_halfedge_index(next)) {
-          return fail(i,
-                      "invalid next link during forward "
-                      "fan walk",
-                      next);
+          dumpFan(i, heBegin, "invalid twin-next during forward fan walk");
+
+          return fail(i, "invalid next link during forward fan walk", next);
         }
 
         he = next;
 
         if (he == heBegin) {
           fanClosed = true;
+
+          if (logThisVertex) {
+            std::cerr << "  forward fan closed at starting halfedge\n";
+          }
+
           break;
         }
       }
 
-      if (scratch.isBoundary[i]) {
+      if (logThisVertex) {
+        std::cerr << "  fan traversal summary:"
+                  << " fanClosed=" << fanClosed
+                  << " reachedBoundaryEnd=" << reachedBoundaryEnd
+                  << " retainedCount=" << hexHEOrder.size() << " retained=[";
+
+        for (std::size_t retainedIndex = 0; retainedIndex < hexHEOrder.size();
+             ++retainedIndex) {
+          if (retainedIndex != 0) {
+            std::cerr << ", ";
+          }
+
+          std::cerr << hexHEOrder[retainedIndex];
+        }
+
+        std::cerr << "]\n";
+      }
+
+      if (scratch.isBoundary[static_cast<std::size_t>(i)]) {
         if (!reachedBoundaryEnd) {
-          return fail(i, "boundary fan did not terminate at "
-                         "a boundary halfedge");
+          dumpFan(i, heBegin, "boundary fan failed to reach boundary end");
+
+          return fail(i, "boundary fan did not terminate at a boundary "
+                         "halfedge");
         }
       } else if (!fanClosed) {
-        return fail(i, "interior fan did not close within the "
-                       "traversal bound");
+        dumpFan(i, heBegin, "interior fan failed to close");
+
+        return fail(i, "interior fan did not close within the traversal bound");
       }
 
       if (hexHEOrder.empty()) {
-        return fail(i, "fan contains no retained function or "
-                       "boundary halfedges");
+        dumpFan(i, heBegin, "fan has no retained halfedges");
+
+        return fail(i, "fan contains no retained function or boundary "
+                       "halfedges");
       }
 
       /*
-       * A boundary fan forms an open chain. Its last
-       * retained halfedge has no twin and must not be
-       * used as the left side of a rewiring pair.
+       * Never rewire a singleton interior fan. For a cyclic fan this
+       * would make:
        *
-       * An interior fan is cyclic, so every retained
-       * halfedge participates.
+       *   successor == current
+       *
+       * and subsequently:
+       *
+       *   halfedges[current].prev == halfedges[current].twin
+       *
+       * producing a degenerate two-halfedge cycle.
        */
-      const int linkCount = scratch.isBoundary[i]
+      if (!scratch.isBoundary[static_cast<std::size_t>(i)] &&
+          hexHEOrder.size() < 2) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "realign_hex_halfedges()]: "
+                  << "singleton interior fan diagnostic"
+                  << " vertex=" << i << " retainedCount=" << hexHEOrder.size()
+                  << " retainedHalfedge=" << hexHEOrder.front()
+                  << " storedHalfedge="
+                  << genDcel.vertices[static_cast<std::size_t>(i)].halfedge
+                  << " boundaryClassification="
+                  << scratch.isBoundary[static_cast<std::size_t>(i)]
+                  << " pureTriangleClassification="
+                  << scratch.isPureTriangle[static_cast<std::size_t>(i)]
+                  << '\n';
+
+        dumpFan(i, heBegin,
+                "interior fan contains fewer than two retained "
+                "halfedges");
+
+        return fail(i,
+                    "interior fan contains fewer than two retained "
+                    "halfedges",
+                    hexHEOrder.front());
+      }
+
+      /*
+       * A boundary fan forms an open chain. Its final retained halfedge
+       * has no twin and therefore is not used as the left side of a
+       * rewiring pair.
+       */
+      const int linkCount = scratch.isBoundary[static_cast<std::size_t>(i)]
                                 ? static_cast<int>(hexHEOrder.size()) - 1
                                 : static_cast<int>(hexHEOrder.size());
 
       if (linkCount < 0) {
+        dumpFan(i, heBegin, "negative link count");
+
         return fail(i, "invalid retained halfedge count");
       }
 
       /*
-       * Validate all references needed by the commit
-       * phase before changing any topology.
+       * Validate all references before committing any mutation.
        */
       for (int j = 0; j < linkCount; ++j) {
-        const int current = hexHEOrder[j];
+        const int current = hexHEOrder[static_cast<std::size_t>(j)];
 
-        const int successor = hexHEOrder[(j + 1) % hexHEOrder.size()];
+        const int successor = hexHEOrder[static_cast<std::size_t>(
+            (j + 1) % static_cast<int>(hexHEOrder.size()))];
 
-        const int twin = genDcel.halfedges[current].twin;
+        if (!genDcel.valid_halfedge(current)) {
+          dumpFan(i, heBegin,
+                  "invalid current retained halfedge before rewiring");
 
-        if (!genDcel.valid_halfedge(current) ||
-            !genDcel.valid_halfedge(successor)) {
-          return fail(i,
-                      "invalid retained halfedge before "
-                      "rewiring",
+          return fail(i, "invalid retained halfedge before rewiring", current);
+        }
+
+        if (!genDcel.valid_halfedge(successor)) {
+          dumpFan(i, heBegin,
+                  "invalid successor retained halfedge before rewiring");
+
+          return fail(i, "invalid retained successor before rewiring",
+                      successor);
+        }
+
+        const int twin =
+            genDcel.halfedges[static_cast<std::size_t>(current)].twin;
+
+        if (!genDcel.valid_halfedge(twin)) {
+          dumpFan(i, heBegin,
+                  "retained nonterminal halfedge has no valid twin");
+
+          return fail(i, "retained nonterminal halfedge has no valid twin",
                       current);
         }
 
-        if (!genDcel.valid_halfedge(twin)) {
-          return fail(i,
-                      "retained nonterminal halfedge has "
-                      "no valid twin",
+        if (current == successor) {
+          dumpFan(i, heBegin,
+                  "rewiring pair has identical current and successor");
+
+          return fail(i, "rewiring pair has identical current and successor",
                       current);
+        }
+
+        if (twin == successor) {
+          dumpFan(i, heBegin, "rewiring would set successor prev to itself");
+
+          return fail(i, "retained successor is identical to current twin",
+                      current);
+        }
+
+        if (logThisVertex) {
+          std::cerr << "  validated rewire pair j=" << j
+                    << " current=" << current << " currentTwin=" << twin
+                    << " successor=" << successor << '\n';
         }
       }
 
       int boundaryPrev = -1;
 
-      if (scratch.isBoundary[i]) {
-        boundaryPrev = genDcel.halfedges[heBegin].prev;
+      if (scratch.isBoundary[static_cast<std::size_t>(i)]) {
+        boundaryPrev =
+            genDcel.halfedges[static_cast<std::size_t>(heBegin)].prev;
 
         if (!genDcel.valid_halfedge(boundaryPrev)) {
-          return fail(i,
-                      "invalid boundary predecessor "
-                      "before rewiring",
+          dumpFan(i, heBegin, "invalid boundary predecessor before rewiring");
+
+          return fail(i, "invalid boundary predecessor before rewiring",
                       boundaryPrev);
+        }
+
+        if (logThisVertex) {
+          std::cerr << "  boundary predecessor=" << boundaryPrev << '\n';
         }
       }
 
       /*
-       * Commit rewiring only after all traversals and
-       * references have been validated.
+       * Commit rewiring only after full validation.
        */
       for (int j = 0; j < linkCount; ++j) {
-        const int current = hexHEOrder[j];
+        const int current = hexHEOrder[static_cast<std::size_t>(j)];
 
-        const int successor = hexHEOrder[(j + 1) % hexHEOrder.size()];
+        const int successor = hexHEOrder[static_cast<std::size_t>(
+            (j + 1) % static_cast<int>(hexHEOrder.size()))];
 
-        const int twin = genDcel.halfedges[current].twin;
+        const int twin =
+            genDcel.halfedges[static_cast<std::size_t>(current)].twin;
 
-        genDcel.halfedges[successor].prev = twin;
+        if (logThisVertex) {
+          std::cerr << "  committing rewire:"
+                    << " halfedges[" << successor << "].prev=" << twin
+                    << " halfedges[" << twin << "].next=" << successor << '\n';
+        }
 
-        genDcel.halfedges[twin].next = successor;
+        genDcel.halfedges[static_cast<std::size_t>(successor)].prev = twin;
 
-        const int origin = genDcel.halfedges[current].vertex;
+        genDcel.halfedges[static_cast<std::size_t>(twin)].next = successor;
+
+        const int origin =
+            genDcel.halfedges[static_cast<std::size_t>(current)].vertex;
 
         if (origin < 0 || origin >= vertexCount) {
-          return fail(i,
-                      "retained halfedge has invalid "
-                      "origin vertex",
+          /*
+           * This should have been impossible after fan validation, but
+           * retain the guard. Note that topology has been partially
+           * committed at this point; this condition indicates severe
+           * pre-existing corruption.
+           */
+          return fail(i, "retained halfedge has invalid origin vertex",
                       current);
         }
 
-        genDcel.vertices[origin].halfedge = current;
+        genDcel.vertices[static_cast<std::size_t>(origin)].halfedge = current;
       }
 
-      if (scratch.isBoundary[i]) {
+      if (scratch.isBoundary[static_cast<std::size_t>(i)]) {
         const int first = hexHEOrder.front();
 
-        genDcel.halfedges[first].prev = boundaryPrev;
+        if (logThisVertex) {
+          std::cerr << "  committing boundary closure:"
+                    << " halfedges[" << first << "].prev=" << boundaryPrev
+                    << " halfedges[" << boundaryPrev << "].next=" << first
+                    << '\n';
+        }
 
-        genDcel.halfedges[boundaryPrev].next = first;
+        genDcel.halfedges[static_cast<std::size_t>(first)].prev = boundaryPrev;
 
-        const int origin = genDcel.halfedges[first].vertex;
+        genDcel.halfedges[static_cast<std::size_t>(boundaryPrev)].next = first;
+
+        const int origin =
+            genDcel.halfedges[static_cast<std::size_t>(first)].vertex;
 
         if (origin < 0 || origin >= vertexCount) {
-          return fail(i,
-                      "first retained boundary halfedge "
-                      "has invalid origin",
+          return fail(i, "first retained boundary halfedge has invalid origin",
                       first);
         }
 
-        genDcel.vertices[origin].halfedge = first;
+        genDcel.vertices[static_cast<std::size_t>(origin)].halfedge = first;
+      }
+
+      /*
+       * Verify the exact links changed for this fan.
+       */
+      for (int j = 0; j < linkCount; ++j) {
+        const int current = hexHEOrder[static_cast<std::size_t>(j)];
+
+        const int successor = hexHEOrder[static_cast<std::size_t>(
+            (j + 1) % static_cast<int>(hexHEOrder.size()))];
+
+        const int twin =
+            genDcel.halfedges[static_cast<std::size_t>(current)].twin;
+
+        if (genDcel.halfedges[static_cast<std::size_t>(successor)].prev !=
+            twin) {
+          dumpFan(i, hexHEOrder.front(),
+                  "post-commit successor-prev verification failed");
+
+          return fail(i,
+                      "post-commit successor prev does not equal current twin",
+                      successor);
+        }
+
+        if (genDcel.halfedges[static_cast<std::size_t>(twin)].next !=
+            successor) {
+          dumpFan(i, hexHEOrder.front(),
+                  "post-commit twin-next verification failed");
+
+          return fail(i,
+                      "post-commit current twin next does not equal successor",
+                      twin);
+        }
+
+        if (genDcel.halfedges[static_cast<std::size_t>(successor)].prev ==
+            successor) {
+          return fail(i, "post-commit successor prev points to itself",
+                      successor);
+        }
+
+        if (genDcel.halfedges[static_cast<std::size_t>(successor)].prev ==
+            genDcel.halfedges[static_cast<std::size_t>(successor)].twin) {
+          /*
+           * This may be legitimate only in a degenerate two-edge cycle,
+           * which this phase must never create.
+           */
+          dumpFan(i, hexHEOrder.front(),
+                  "post-commit successor prev equals successor twin");
+
+          return fail(i, "post-commit halfedge prev and twin are identical",
+                      successor);
+        }
+      }
+
+      if (logThisVertex) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "realign_hex_halfedges()]: "
+                  << "completed diagnostic vertex " << i << " successfully\n";
       }
     }
 
@@ -3387,15 +4686,106 @@ void segment_arrangement(
       return false;
     }
 
-    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
-      rollback();
+    /*
+     * Vertex unification changes halfedge endpoints. Even when each local
+     * operation updates its immediate neighborhood, a remote halfedge can
+     * become the reverse-oriented counterpart of another halfedge.
+     *
+     * Rebuild twin relationships globally before final validation.
+     */
+    const int finalRetwinned = retwin_halfedges();
+
+    if (finalRetwinned < 0) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "final halfedge retwinning failed\n";
+      }
+
       return false;
     }
 
     if (mData.verbose) {
       std::cout << "[Directional::NFunctionMesher::"
                    "unify_low_valence_vertices()]: "
-                << "completed " << unifyCount << " operations\n";
+                << "final retwinning created " << finalRetwinned
+                << " twin pairs\n";
+    }
+
+    /*
+     * Unifications may also create zero-length topological edges. Remove
+     * those before requiring full twin consistency.
+     */
+    std::vector<int> postUnifyOrigin(genDcel.halfedges.size(), -1);
+
+    std::vector<int> postUnifyTarget(genDcel.halfedges.size(), -1);
+
+    for (int he = 0; he < static_cast<int>(genDcel.halfedges.size()); ++he) {
+      if (!genDcel.valid_halfedge(he)) {
+        continue;
+      }
+
+      const int next = genDcel.halfedges[static_cast<std::size_t>(he)].next;
+
+      if (!genDcel.valid_halfedge(next)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "halfedge " << he << " has invalid next " << next
+                    << " during finalization\n";
+        }
+
+        return false;
+      }
+
+      postUnifyOrigin[static_cast<std::size_t>(he)] =
+          genDcel.halfedges[static_cast<std::size_t>(he)].vertex;
+
+      postUnifyTarget[static_cast<std::size_t>(he)] =
+          genDcel.halfedges[static_cast<std::size_t>(next)].vertex;
+    }
+
+    if (!prune_remap_created_degenerates(postUnifyOrigin, postUnifyTarget)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "post-unification degenerate pruning failed\n";
+      }
+
+      return false;
+    }
+
+    /*
+     * Degenerate pruning can invalidate edge records, so retwin once more
+     * against the final valid topology.
+     */
+    const int postPruneRetwinned = retwin_halfedges();
+
+    if (postPruneRetwinned < 0) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "post-pruning retwinning failed\n";
+      }
+
+      return false;
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "unify_low_valence_vertices()]: "
+                << "post-pruning retwinning created " << postPruneRetwinned
+                << " twin pairs\n";
+    }
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "final post-unification consistency check failed\n";
+      }
+
+      return false;
     }
 
     return true;
@@ -3603,64 +4993,96 @@ void segment_arrangement(
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label
                 << ": " << (index + 1) << "/" << total << std::endl;
     };
-
-    if (!run_initial_consistency_check())
+    if (!run_initial_consistency_check()) {
       return false;
+    }
     logPhase("Initial consistency check");
 
     scan_original_halfedge_range(scratch);
     logPhase("Original halfedge range scan");
 
-    if (!visit_boundary_seeds(scratch))
+    if (!visit_boundary_seeds(scratch)) {
       return false;
+    }
     logPhase("Boundary visitation sweep");
 
-    if (!collect_boundary_strips(scratch))
+    if (!collect_boundary_strips(scratch)) {
       return false;
+    }
     logPhase("Boundary strip collection");
 
     build_boundary_vertex_sets(scratch);
     logPhase("Boundary vertex set build");
 
-    if (!build_vertex_matches(scratch))
+    if (!build_vertex_matches(scratch)) {
       return false;
+    }
     logPhase("Vertex match build");
 
-    // finding connected components, and uniting every component into a random
-    // single vertex in it (it comes out the last mentioned)
-    /*Graph MatchGraph;
-     for (int i=0;i<vertices.size();i++)
-     add_vertex(MatchGraph);
-     for (int i=0;i<VertexMatches.size();i++)
-     add_edge(VertexMatches[i].first, VertexMatches[i].second, MatchGraph);*/
-
+    /*
+     * Find connected components of matched vertices and assign one
+     * representative to every component.
+     */
     scan_vertex_match_distance(scratch);
     logPhase("Vertex match distance scan");
 
-    int NumNewVertices = compute_vertex_representatives(scratch);
+    const int NumNewVertices = compute_vertex_representatives(scratch);
     logPhase("Connected components");
 
-    if (!genDcel.check_consistency(mData.verbose, false, false, false))
+    if (!genDcel.check_consistency(mData.verbose, false, false, false)) {
       return false;
+    }
     logPhase("Post-components consistency check");
 
     rebuild_vertex_table(NumNewVertices);
     logPhase("Vertex representative rebuild");
 
     std::vector<int> preRemapOrigin(genDcel.halfedges.size(), -1);
+
     std::vector<int> preRemapTarget(genDcel.halfedges.size(), -1);
+
     remap_halfedge_vertices(preRemapOrigin, preRemapTarget);
     logPhase("Halfedge vertex remap");
 
     if (!prune_remap_created_degenerates(preRemapOrigin, preRemapTarget)) {
       return false;
     }
+    logPhase("Remap-created degenerate pruning");
 
     if (!genDcel.check_consistency(mData.verbose, true, false, false)) {
       return false;
     }
-
     logPhase("Post-remap pre-twinning consistency check");
+
+    const auto printHalfedgeEndpoints = [&](const int he) {
+      if (!genDcel.valid_halfedge(he)) {
+        std::cerr << "  halfedge " << he << " is invalid\n";
+        return;
+      }
+
+      const auto &halfedge = genDcel.halfedges[static_cast<std::size_t>(he)];
+
+      const int next = halfedge.next;
+
+      const int target =
+          genDcel.valid_halfedge(next)
+              ? genDcel.halfedges[static_cast<std::size_t>(next)].vertex
+              : -1;
+
+      std::cerr << "  he=" << he << " endpoints=(" << halfedge.vertex << ", "
+                << target << ") twin=" << halfedge.twin
+                << " edge=" << halfedge.edge << " face=" << halfedge.face
+                << " valid=" << halfedge.valid << '\n';
+    };
+
+    if (mData.verbose) {
+      std::cerr << "[Directional::NFunctionMesher::"
+                   "unify_low_valence_vertices()]: "
+                << "pre-final-retwin diagnostic\n";
+
+      printHalfedgeEndpoints(9325);
+      printHalfedgeEndpoints(7704);
+    }
 
     const int retwinned = retwin_halfedges();
 
@@ -3668,51 +5090,86 @@ void segment_arrangement(
       return false;
     }
 
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                << "retwinned " << retwinned << " halfedge pairs\n";
+    }
     logPhase("Halfedge twinning");
 
+    /*
+     * Twinning must be complete and consistent before inspecting the
+     * function skeleton. The dangling-edge pruning pass relies on valid
+     * twin relationships to update both directions of each function edge.
+     */
     if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
       return false;
     }
-
-    logPhase("Post-twinning consistency check");
-    logPhase("Halfedge twinning");
-
-    // check if there are any non-twinned edge which shouldn't be in a closed
-    // mesh
-    /*if (verbose){
-     for (int i=0;i<Halfedges.size();i++){
-     if (Halfedges[i].twin==-1)
-     std::cout<<"Halfedge "<<i<<" does not have a twin!"<<std::endl;
-     }
-     }*/
-
-    if (!genDcel.check_consistency(mData.verbose, true, true, true))
-      return false;
     logPhase("Post-twinning consistency check");
 
-    if (!classify_triangle_regions(scratch))
+    /*
+     * Remove interior degree-one leaves from the retained function
+     * skeleton before triangle-region classification.
+     *
+     * This only clears SegmentData::isFunction on both halfedges of a
+     * dangling edge. It does not remove geometric DCEL edges or mutate
+     * face topology.
+     *
+     * Running it before classify_triangle_regions() ensures
+     * scratch.isPureTriangle and related classification results are based
+     * on the cleaned function skeleton.
+     */
+    if (!prune_dangling_interior_function_edges()) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                  << "dangling interior function-edge pruning failed\n";
+      }
+
       return false;
+    }
+    logPhase("Dangling function-edge pruning");
+
+    /*
+     * Clearing function metadata should not change core topology, but run
+     * a consistency check here to catch any unexpected mutation before
+     * classification.
+     */
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                  << "consistency check failed after dangling function-edge "
+                     "pruning\n";
+      }
+
+      return false;
+    }
+    logPhase("Post-dangling-pruning consistency check");
+
+    if (!classify_triangle_regions(scratch)) {
+      return false;
+    }
     logPhase("Triangle component classification");
 
-    if (!realign_hex_halfedges(scratch))
+    if (!realign_hex_halfedges(scratch)) {
       return false;
+    }
     logPhase("Hex halfedge realignment");
 
     invalidate_triangle_regions(scratch);
     logPhase("Triangle invalidation");
 
-    if (!realign_faces())
+    if (!realign_faces()) {
       return false;
+    }
     logPhase("Face realignment");
-    logPhase("Unused face invalidation");
 
-    if (!prune_low_quality_faces_and_count_valence(scratch))
+    if (!prune_low_quality_faces_and_count_valence(scratch)) {
       return false;
-
+    }
     logPhase("Low-quality face pruning");
 
-    if (!genDcel.check_consistency(mData.verbose, true, true, true))
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
       return false;
+    }
     logPhase("Post-pruning consistency check");
 
     int unifyCount = 0;
@@ -3724,13 +5181,17 @@ void segment_arrangement(
     if (mData.verbose) {
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
                 << "Low-valence edge unification finished after " << unifyCount
-                << " operations" << std::endl;
+                << " operations\n";
     }
     logPhase("Low-valence edge unification and validation");
 
-    // remove non-valid components
-    if (!finalize_clean_mesh())
+    /*
+     * Remove invalidated topology and perform the final consistency
+     * validation.
+     */
+    if (!finalize_clean_mesh()) {
       return false;
+    }
     logPhase("DCEL clean_mesh");
     logPhase("Final consistency check");
 
@@ -3755,70 +5216,927 @@ void segment_arrangement(
    const Eigen::SparseMatrix<int>& exactVertexToCornerMat,
    const Eigen::VectorXi& integerVars,
    const unsigned long resolution=1e7)*/
-  void init(const unsigned long resolution = 1e7) {
-
+  void init(const unsigned long resolution = 10000000UL) {
     using namespace std;
     using namespace Eigen;
 
-    // computing exact rational corner values by quantizing the free variables d
-    // and then manually performing the sparse matrix multiplication
-    vector<ENumber> exactVertexNFunction(mData.vertexNFunction.size());
-    double tol = 1.0 / (double)resolution;
-    for (int i = 0; i < mData.vertexNFunction.size(); i++) {
-      // exactVertexNFunction[i]=ENumber((long long)round((long
-      // double)(mData.vertexNFunction(i)*resolution)),(long long)resolution);
-      exactVertexNFunction[i] = ENumber(mData.vertexNFunction(i), tol);
+    constexpr int diagnosticCanonicalHalfedge = 715;
 
-      /*if (abs(exactVertexNFunction[i].to_double() -
-       mData.vertexNFunction(i))>2.0/(double)resolution) { cout <<
-       "exactVertexNFunction[i].to_double(): " <<
-       exactVertexNFunction[i].to_double() << endl; cout << "vertexNFunction(i):
-       " << mData.vertexNFunction(i) << endl; cout << "(long
-       double)(vertexNFunction(i)*resolution): " << (long
-       double)(mData.vertexNFunction(i) * resolution) << endl;
-       }*/
+    // ============================================================
+    // 1. Validate input dimensions
+    // ============================================================
+
+    if (resolution == 0UL) {
+      throw std::invalid_argument(
+          "NFunctionMesher::init(): resolution must be nonzero");
     }
 
-    for (int i = 0; i < mData.integerVars.size(); i++) {
-      exactVertexNFunction[mData.integerVars(i)] =
-          ENumber((long)round(mData.vertexNFunction(mData.integerVars(i))));
-      // cout<<"rounding diff of integer var "<<mData.integerVars(i)<<" is
-      // "<<exactVertexNFunction[mData.integerVars(i)].to_double()-mData.vertexNFunction(mData.integerVars(i))<<endl;
+    if (mData.N <= 0) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): function count N must be positive");
     }
 
-    VectorXd cutNFunctionVec = mData.orig2CutMat * mData.vertexNFunction;
-    vector<ENumber> exactCutNFunctionVec;
+    const Eigen::Index sourceVariableCount = mData.vertexNFunction.size();
+
+    if (sourceVariableCount <= 0) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): vertexNFunction is empty");
+    }
+
+    if (mData.orig2CutMat.cols() != sourceVariableCount) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): orig2CutMat column count does not "
+          "match vertexNFunction size");
+    }
+
+    if (mData.exactOrig2CutMat.cols() != sourceVariableCount) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): exactOrig2CutMat column count does "
+          "not match vertexNFunction size");
+    }
+
+    if (mData.orig2CutMat.rows() != mData.exactOrig2CutMat.rows()) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): floating and exact cut matrices "
+          "have different row counts");
+    }
+
+    if (mData.orig2CutMat.rows() % mData.N != 0) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): cut-function row count is not "
+          "divisible by N");
+    }
+
+    const int faceCount = origMesh.F.rows();
+
+    if (mData.cutF.rows() != faceCount || mData.cutF.cols() != 3) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): cutF does not match the original "
+          "triangle count");
+    }
+
+    if (origMesh.dcel.faces.size() < static_cast<std::size_t>(faceCount)) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): original DCEL has fewer faces "
+          "than origMesh.F");
+    }
+
+    const double tolerance = 1.0 / static_cast<double>(resolution);
+
+    if (!std::isfinite(tolerance) || tolerance <= 0.0) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): invalid rationalization tolerance");
+    }
+
+    // ============================================================
+    // 2. Verify floating and exact cut matrices are equivalent
+    // ============================================================
+
+    double maximumMatrixDifference = 0.0;
+    int maximumMatrixDifferenceRow = -1;
+    int maximumMatrixDifferenceColumn = -1;
+    double maximumFloatCoefficient = 0.0;
+    int maximumExactCoefficient = 0;
+
+    std::size_t floatingNonzeroCount = 0;
+    std::size_t exactNonzeroCount = 0;
+    std::size_t floatingOnlyNonzeroCount = 0;
+    std::size_t exactOnlyNonzeroCount = 0;
+
+    for (int outer = 0; outer < mData.orig2CutMat.outerSize(); ++outer) {
+      for (Eigen::SparseMatrix<double>::InnerIterator entry(mData.orig2CutMat,
+                                                            outer);
+           entry; ++entry) {
+        ++floatingNonzeroCount;
+
+        const int row = static_cast<int>(entry.row());
+
+        const int column = static_cast<int>(entry.col());
+
+        const int exactCoefficient = mData.exactOrig2CutMat.coeff(row, column);
+
+        if (entry.value() != 0.0 && exactCoefficient == 0) {
+          ++floatingOnlyNonzeroCount;
+        }
+
+        const double difference =
+            std::abs(entry.value() - static_cast<double>(exactCoefficient));
+
+        if (difference > maximumMatrixDifference) {
+          maximumMatrixDifference = difference;
+
+          maximumMatrixDifferenceRow = row;
+
+          maximumMatrixDifferenceColumn = column;
+
+          maximumFloatCoefficient = entry.value();
+
+          maximumExactCoefficient = exactCoefficient;
+        }
+      }
+    }
+
+    for (int outer = 0; outer < mData.exactOrig2CutMat.outerSize(); ++outer) {
+      for (Eigen::SparseMatrix<int>::InnerIterator entry(mData.exactOrig2CutMat,
+                                                         outer);
+           entry; ++entry) {
+        ++exactNonzeroCount;
+
+        const int row = static_cast<int>(entry.row());
+
+        const int column = static_cast<int>(entry.col());
+
+        const double floatingCoefficient = mData.orig2CutMat.coeff(row, column);
+
+        if (entry.value() != 0 && floatingCoefficient == 0.0) {
+          ++exactOnlyNonzeroCount;
+        }
+
+        const double difference =
+            std::abs(floatingCoefficient - static_cast<double>(entry.value()));
+
+        if (difference > maximumMatrixDifference) {
+          maximumMatrixDifference = difference;
+
+          maximumMatrixDifferenceRow = row;
+
+          maximumMatrixDifferenceColumn = column;
+
+          maximumFloatCoefficient = floatingCoefficient;
+
+          maximumExactCoefficient = entry.value();
+        }
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "cut-matrix diagnostic\n"
+                << "  dimensions: " << mData.orig2CutMat.rows() << " x "
+                << mData.orig2CutMat.cols() << '\n'
+                << "  floating nonzeros: " << floatingNonzeroCount << '\n'
+                << "  exact nonzeros: " << exactNonzeroCount << '\n'
+                << "  floating-only nonzeros: " << floatingOnlyNonzeroCount
+                << '\n'
+                << "  exact-only nonzeros: " << exactOnlyNonzeroCount << '\n'
+                << "  maximum coefficient difference: "
+                << maximumMatrixDifference << '\n'
+                << "  maximum difference location: row="
+                << maximumMatrixDifferenceRow
+                << " column=" << maximumMatrixDifferenceColumn << '\n'
+                << "  floating coefficient: " << maximumFloatCoefficient << '\n'
+                << "  exact coefficient: " << maximumExactCoefficient << '\n';
+    }
+
+    if (maximumMatrixDifference != 0.0 || floatingOnlyNonzeroCount != 0 ||
+        exactOnlyNonzeroCount != 0) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): floating and exact cut matrices "
+          "do not encode the same transformation");
+    }
+
+    // ============================================================
+    // 3. Inspect integer variables without modifying the solution
+    // ============================================================
+
+    double maximumIntegerResidual = 0.0;
+    int maximumIntegerResidualIndex = -1;
+    double maximumIntegerValue = 0.0;
+    double maximumIntegerNearestValue = 0.0;
+
+    std::size_t integerVariableCount = 0;
+    std::size_t integerVariablesAboveTolerance = 0;
+    std::size_t duplicateIntegerVariableEntries = 0;
+
+    std::vector<unsigned char> integerVariableSeen(
+        static_cast<std::size_t>(sourceVariableCount),
+        static_cast<unsigned char>(0));
+
+    for (int entryIndex = 0; entryIndex < mData.integerVars.size();
+         ++entryIndex) {
+      const int variableIndex = mData.integerVars(entryIndex);
+
+      if (variableIndex < 0 || variableIndex >= sourceVariableCount) {
+        throw std::runtime_error(
+            "NFunctionMesher::init(): integer variable index is "
+            "out of range");
+      }
+
+      unsigned char &seen =
+          integerVariableSeen[static_cast<std::size_t>(variableIndex)];
+
+      if (seen != 0) {
+        ++duplicateIntegerVariableEntries;
+        continue;
+      }
+
+      seen = 1;
+      ++integerVariableCount;
+
+      const double value = mData.vertexNFunction(variableIndex);
+
+      if (!std::isfinite(value)) {
+        throw std::runtime_error(
+            "NFunctionMesher::init(): integer variable contains a "
+            "non-finite value");
+      }
+
+      const double nearestInteger = std::round(value);
+
+      const double residual = std::abs(value - nearestInteger);
+
+      if (residual > tolerance) {
+        ++integerVariablesAboveTolerance;
+      }
+
+      if (residual > maximumIntegerResidual) {
+        maximumIntegerResidual = residual;
+
+        maximumIntegerResidualIndex = variableIndex;
+
+        maximumIntegerValue = value;
+
+        maximumIntegerNearestValue = nearestInteger;
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "final integer-variable diagnostic\n"
+                << "  unique integer variables: " << integerVariableCount
+                << '\n'
+                << "  duplicate integerVars entries: "
+                << duplicateIntegerVariableEntries << '\n'
+                << "  residuals above rationalization tolerance: "
+                << integerVariablesAboveTolerance << '\n'
+                << "  maximum final integer-variable residual: "
+                << maximumIntegerResidual << '\n'
+                << "  maximum residual variable index: "
+                << maximumIntegerResidualIndex << '\n'
+                << "  solved value: " << maximumIntegerValue << '\n'
+                << "  nearest integer: " << maximumIntegerNearestValue << '\n';
+    }
+
+    if (maximumIntegerResidual > 0.25) {
+      std::cerr << "[Directional::NFunctionMesher::init()]: "
+                << "WARNING: final integer-variable residual is large ("
+                << maximumIntegerResidual << " at variable "
+                << maximumIntegerResidualIndex
+                << "). Values are preserved exactly as supplied; no "
+                   "post-solve rounding is applied.\n";
+    }
+
+    // ============================================================
+    // 4. Rationalize the final solved vector uniformly
+    // ============================================================
+
+    Eigen::VectorXd quantizedVertexNFunction(sourceVariableCount);
+
+    std::vector<ENumber> exactVertexNFunction(
+        static_cast<std::size_t>(sourceVariableCount));
+
+    double maximumSourceRationalizationError = 0.0;
+    int maximumSourceRationalizationIndex = -1;
+    double maximumSourceOriginalValue = 0.0;
+    double maximumSourceExactValue = 0.0;
+
+    long double sourceSquaredError = 0.0L;
+
+    for (Eigen::Index variableIndex = 0; variableIndex < sourceVariableCount;
+         ++variableIndex) {
+      const double originalValue = mData.vertexNFunction(variableIndex);
+
+      if (!std::isfinite(originalValue)) {
+        throw std::runtime_error(
+            "NFunctionMesher::init(): vertexNFunction contains a "
+            "non-finite value");
+      }
+
+      const ENumber exactValue(originalValue, tolerance);
+
+      const double rationalizedValue = exactValue.to_double();
+
+      if (!std::isfinite(rationalizedValue)) {
+        throw std::runtime_error(
+            "NFunctionMesher::init(): rationalization produced a "
+            "non-finite value");
+      }
+
+      exactVertexNFunction[static_cast<std::size_t>(variableIndex)] =
+          exactValue;
+
+      quantizedVertexNFunction(variableIndex) = rationalizedValue;
+
+      const double error = std::abs(rationalizedValue - originalValue);
+
+      sourceSquaredError +=
+          static_cast<long double>(error) * static_cast<long double>(error);
+
+      if (error > maximumSourceRationalizationError) {
+        maximumSourceRationalizationError = error;
+
+        maximumSourceRationalizationIndex = static_cast<int>(variableIndex);
+
+        maximumSourceOriginalValue = originalValue;
+
+        maximumSourceExactValue = rationalizedValue;
+      }
+    }
+
+    const double sourceRmsError =
+        sourceVariableCount > 0
+            ? std::sqrt(static_cast<double>(
+                  sourceSquaredError /
+                  static_cast<long double>(sourceVariableCount)))
+            : 0.0;
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "source rationalization diagnostic\n"
+                << "  tolerance: " << tolerance << '\n'
+                << "  maximum error: " << maximumSourceRationalizationError
+                << '\n'
+                << "  maximum error index: "
+                << maximumSourceRationalizationIndex << '\n'
+                << "  original value: " << maximumSourceOriginalValue << '\n'
+                << "  exact-as-double value: " << maximumSourceExactValue
+                << '\n'
+                << "  RMS error: " << sourceRmsError << '\n';
+    }
+
+    if (maximumSourceRationalizationError > 2.0 * tolerance) {
+      std::cerr << "[Directional::NFunctionMesher::init()]: "
+                << "WARNING: source rationalization error "
+                << maximumSourceRationalizationError
+                << " exceeds twice the requested tolerance " << tolerance
+                << '\n';
+    }
+
+    // ============================================================
+    // 5. Apply equivalent floating and exact cut transformations
+    // ============================================================
+
+    const Eigen::VectorXd cutNFunctionVec =
+        mData.orig2CutMat * quantizedVertexNFunction;
+
+    std::vector<ENumber> exactCutNFunctionVec;
+
     exactSparseMult(mData.exactOrig2CutMat, exactVertexNFunction,
                     exactCutNFunctionVec);
 
-    // sanity check - comparing exact to double
-    double maxError2 = -32767000.0;
-    for (int i = 0; i < exactCutNFunctionVec.size(); i++) {
-      double fromExact = exactCutNFunctionVec[i].to_double();
-      if (abs(fromExact - cutNFunctionVec[i]) > maxError2) {
-        maxError2 = abs(fromExact - cutNFunctionVec[i]);
-        // cout<<"i, fromExact, cutNFunctionVec[i]:
-        // "<<i<<","<<fromExact<<","<<cutNFunctionVec[i]<<endl;
+    if (exactCutNFunctionVec.size() !=
+        static_cast<std::size_t>(cutNFunctionVec.size())) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): exact cut-function result has "
+          "an unexpected size");
+    }
+
+    if (cutNFunctionVec.size() != mData.orig2CutMat.rows()) {
+      throw std::runtime_error(
+          "NFunctionMesher::init(): floating cut-function result has "
+          "an unexpected size");
+    }
+
+    double maximumCutError = 0.0;
+    int maximumCutErrorIndex = -1;
+    double maximumCutExactValue = 0.0;
+    double maximumCutDoubleValue = 0.0;
+
+    long double cutSquaredError = 0.0L;
+
+    for (Eigen::Index index = 0; index < cutNFunctionVec.size(); ++index) {
+      const double exactValue =
+          exactCutNFunctionVec[static_cast<std::size_t>(index)].to_double();
+
+      const double floatingValue = cutNFunctionVec(index);
+
+      if (!std::isfinite(exactValue) || !std::isfinite(floatingValue)) {
+        throw std::runtime_error(
+            "NFunctionMesher::init(): cut-function transformation "
+            "produced a non-finite value");
+      }
+
+      const double error = std::abs(exactValue - floatingValue);
+
+      cutSquaredError +=
+          static_cast<long double>(error) * static_cast<long double>(error);
+
+      if (error > maximumCutError) {
+        maximumCutError = error;
+
+        maximumCutErrorIndex = static_cast<int>(index);
+
+        maximumCutExactValue = exactValue;
+
+        maximumCutDoubleValue = floatingValue;
       }
     }
 
-    if (mData.verbose)
-      cout << "double from exact in halfedges maxError2: " << maxError2 << endl;
+    const double cutRmsError =
+        cutNFunctionVec.size() > 0
+            ? std::sqrt(static_cast<double>(
+                  cutSquaredError /
+                  static_cast<long double>(cutNFunctionVec.size())))
+            : 0.0;
 
-    exactNFunction.resize(origMesh.F.size());
-    NFunction.resize(origMesh.F.size(), 3 * mData.N);
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "floating/exact cut-function diagnostic\n"
+                << "  maximum error: " << maximumCutError << '\n'
+                << "  maximum error index: " << maximumCutErrorIndex << '\n'
+                << "  exact value: " << maximumCutExactValue << '\n'
+                << "  floating value: " << maximumCutDoubleValue << '\n'
+                << "  RMS error: " << cutRmsError << '\n';
 
-    for (int i = 0; i < origMesh.F.rows(); i++) {
-      exactNFunction[i].resize(3 * mData.N);
-      for (int j = 0; j < 3; j++) {
-        // Halfedges[FH(i,j)].exactNFunction.resize(N);
-        NFunction.block(i, mData.N * j, 1, mData.N) =
-            cutNFunctionVec.segment(mData.N * mData.cutF(i, j), mData.N)
-                .transpose();
-        for (int k = 0; k < mData.N; k++)
-          exactNFunction[i][j * mData.N + k] =
-              exactCutNFunctionVec[mData.N * mData.cutF(i, j) + k];
+      if (maximumCutErrorIndex >= 0) {
+        const int cutCorner = maximumCutErrorIndex / mData.N;
+
+        const int function = maximumCutErrorIndex % mData.N;
+
+        std::cout << "  cutCorner: " << cutCorner << '\n'
+                  << "  function: " << function << '\n';
       }
+    }
+
+    const double expectedCutError = std::max(
+        1.0e-10,
+        32.0 * std::numeric_limits<double>::epsilon() *
+            std::max(1.0, quantizedVertexNFunction.cwiseAbs().maxCoeff()));
+
+    if (maximumCutError > expectedCutError) {
+      std::cerr << "[Directional::NFunctionMesher::init()]: "
+                << "WARNING: floating and exact cut transformations "
+                << "disagree by " << maximumCutError
+                << " (expected approximately <= " << expectedCutError << ")\n";
+    }
+
+    // ============================================================
+    // 6. Validate cutF indices
+    // ============================================================
+
+    const int cutVertexCount =
+        static_cast<int>(cutNFunctionVec.size() / mData.N);
+
+    int minimumCutVertex = std::numeric_limits<int>::max();
+
+    int maximumCutVertex = -1;
+
+    std::vector<unsigned char> cutVertexUsed(
+        static_cast<std::size_t>(cutVertexCount),
+        static_cast<unsigned char>(0));
+
+    std::size_t usedCutVertexCount = 0;
+
+    for (int face = 0; face < faceCount; ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        const int cutVertex = mData.cutF(face, corner);
+
+        if (cutVertex < 0 || cutVertex >= cutVertexCount) {
+          throw std::runtime_error(
+              "NFunctionMesher::init(): cutF contains an out-of-range "
+              "cut-vertex index");
+        }
+
+        minimumCutVertex = std::min(minimumCutVertex, cutVertex);
+
+        maximumCutVertex = std::max(maximumCutVertex, cutVertex);
+
+        unsigned char &used =
+            cutVertexUsed[static_cast<std::size_t>(cutVertex)];
+
+        if (used == 0) {
+          used = 1;
+          ++usedCutVertexCount;
+        }
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "cut-corner indexing diagnostic\n"
+                << "  cut vertex count: " << cutVertexCount << '\n'
+                << "  used cut vertices: " << usedCutVertexCount << '\n'
+                << "  minimum cutF index: " << minimumCutVertex << '\n'
+                << "  maximum cutF index: " << maximumCutVertex << '\n';
+    }
+
+    // ============================================================
+    // 7. Populate per-face floating and exact functions
+    // ============================================================
+
+    exactNFunction.clear();
+
+    exactNFunction.resize(static_cast<std::size_t>(faceCount));
+
+    NFunction.resize(faceCount, 3 * mData.N);
+
+    for (int face = 0; face < faceCount; ++face) {
+      std::vector<ENumber> &faceExactFunction =
+          exactNFunction[static_cast<std::size_t>(face)];
+
+      faceExactFunction.resize(static_cast<std::size_t>(3 * mData.N));
+
+      for (int corner = 0; corner < 3; ++corner) {
+        const int cutVertex = mData.cutF(face, corner);
+
+        const Eigen::Index sourceOffset = static_cast<Eigen::Index>(mData.N) *
+                                          static_cast<Eigen::Index>(cutVertex);
+
+        if (sourceOffset < 0 ||
+            sourceOffset + mData.N > cutNFunctionVec.size()) {
+          throw std::runtime_error(
+              "NFunctionMesher::init(): cut-function lookup is "
+              "out of range");
+        }
+
+        NFunction.block(face, mData.N * corner, 1, mData.N) =
+            cutNFunctionVec.segment(sourceOffset, mData.N).transpose();
+
+        for (int function = 0; function < mData.N; ++function) {
+          const std::size_t faceFunctionIndex =
+              static_cast<std::size_t>(corner * mData.N + function);
+
+          const std::size_t cutFunctionIndex =
+              static_cast<std::size_t>(sourceOffset + function);
+
+          faceExactFunction[faceFunctionIndex] =
+              exactCutNFunctionVec[cutFunctionIndex];
+        }
+      }
+    }
+
+    // ============================================================
+    // 8. Verify stored per-face values
+    // ============================================================
+
+    double maximumStoredFaceError = 0.0;
+    int maximumStoredFace = -1;
+    int maximumStoredCorner = -1;
+    int maximumStoredFunction = -1;
+    double maximumStoredExactValue = 0.0;
+    double maximumStoredFloatingValue = 0.0;
+
+    for (int face = 0; face < faceCount; ++face) {
+      const std::vector<ENumber> &faceExactFunction =
+          exactNFunction[static_cast<std::size_t>(face)];
+
+      for (int corner = 0; corner < 3; ++corner) {
+        for (int function = 0; function < mData.N; ++function) {
+          const int localIndex = corner * mData.N + function;
+
+          const double exactValue =
+              faceExactFunction[static_cast<std::size_t>(localIndex)]
+                  .to_double();
+
+          const double floatingValue = NFunction(face, localIndex);
+
+          const double error = std::abs(exactValue - floatingValue);
+
+          if (error > maximumStoredFaceError) {
+            maximumStoredFaceError = error;
+
+            maximumStoredFace = face;
+
+            maximumStoredCorner = corner;
+
+            maximumStoredFunction = function;
+
+            maximumStoredExactValue = exactValue;
+
+            maximumStoredFloatingValue = floatingValue;
+          }
+        }
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::init()]: "
+                << "stored face-function diagnostic\n"
+                << "  maximum error: " << maximumStoredFaceError << '\n'
+                << "  face: " << maximumStoredFace << '\n'
+                << "  corner: " << maximumStoredCorner << '\n'
+                << "  function: " << maximumStoredFunction << '\n'
+                << "  exact: " << maximumStoredExactValue << '\n'
+                << "  floating: " << maximumStoredFloatingValue << '\n';
+    }
+
+    // ============================================================
+    // 9. Transport-aware global seam validation
+    // ============================================================
+
+    if (mData.N != 2) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::init()]: "
+                  << "skipping quarter-turn seam validation because N="
+                  << mData.N
+                  << "; validator currently expects exactly two functions\n";
+      }
+
+      return;
+    }
+
+    using ExactUV = std::array<ENumber, 2>;
+
+    const auto rotateParameterPair = [](const ExactUV &value,
+                                        const int rotation) -> ExactUV {
+      const ENumber zero(0);
+
+      const ENumber &u = value[0];
+
+      const ENumber &v = value[1];
+
+      switch ((rotation % 4 + 4) % 4) {
+      case 0:
+        return {u, v};
+
+      case 1:
+        return {zero - v, u};
+
+      case 2:
+        return {zero - u, zero - v};
+
+      case 3:
+        return {v, zero - u};
+
+      default:
+        throw std::runtime_error(
+            "NFunctionMesher::init(): invalid seam rotation");
+      }
+    };
+
+    const auto findLocalEdge = [&](const int faceIndex,
+                                   const int searchedHalfedge) -> int {
+      if (faceIndex < 0 || faceIndex >= faceCount) {
+        return -1;
+      }
+
+      int currentHalfedge =
+          origMesh.dcel.faces[static_cast<std::size_t>(faceIndex)].halfedge;
+
+      for (int corner = 0; corner < 3; ++corner) {
+        if (currentHalfedge == searchedHalfedge) {
+          return corner;
+        }
+
+        if (!origMesh.dcel.valid_halfedge(currentHalfedge)) {
+          return -1;
+        }
+
+        currentHalfedge = origMesh.dcel.halfedges[currentHalfedge].next;
+      }
+
+      return -1;
+    };
+
+    struct SeamCandidate {
+      int rotation = -1;
+
+      double endpointMismatch = std::numeric_limits<double>::infinity();
+
+      double integerResidual = std::numeric_limits<double>::infinity();
+
+      double startOffsetU = 0.0;
+      double startOffsetV = 0.0;
+      double endOffsetU = 0.0;
+      double endOffsetV = 0.0;
+    };
+
+    const double seamTolerance = std::max(1.0e-9, 8.0 * tolerance);
+
+    std::size_t checkedInteriorEdges = 0;
+    std::size_t validTransportCount = 0;
+    std::size_t invalidTransportCount = 0;
+
+    double maximumBestEndpointMismatch = 0.0;
+    int maximumMismatchHalfedge = -1;
+    int maximumMismatchTwin = -1;
+    int maximumMismatchRotation = -1;
+
+    double maximumBestIntegerResidual = 0.0;
+    int maximumResidualHalfedge = -1;
+    int maximumResidualTwin = -1;
+    int maximumResidualRotation = -1;
+
+    for (int halfedgeIndex = 0;
+         halfedgeIndex < static_cast<int>(origMesh.dcel.halfedges.size());
+         ++halfedgeIndex) {
+      if (!origMesh.dcel.valid_halfedge(halfedgeIndex)) {
+        continue;
+      }
+
+      const auto &halfedge = origMesh.dcel.halfedges[halfedgeIndex];
+
+      const int twin = halfedge.twin;
+
+      if (twin < 0 || !origMesh.dcel.valid_halfedge(twin)) {
+        continue;
+      }
+
+      if (halfedgeIndex > twin) {
+        continue;
+      }
+
+      const int firstFace = halfedge.face;
+
+      const int secondFace = origMesh.dcel.halfedges[twin].face;
+
+      if (firstFace < 0 || secondFace < 0 || firstFace >= faceCount ||
+          secondFace >= faceCount) {
+        continue;
+      }
+
+      const int firstLocalEdge = findLocalEdge(firstFace, halfedgeIndex);
+
+      const int secondLocalEdge = findLocalEdge(secondFace, twin);
+
+      if (firstLocalEdge < 0 || secondLocalEdge < 0) {
+        throw std::runtime_error("NFunctionMesher::init(): failed to locate an "
+                                 "interior halfedge in its incident face");
+      }
+
+      ++checkedInteriorEdges;
+
+      const int firstStartCorner = firstLocalEdge;
+
+      const int firstEndCorner = (firstLocalEdge + 1) % 3;
+
+      /*
+       * The twin has opposite edge direction, so reverse its corner order.
+       */
+      const int secondStartCorner = (secondLocalEdge + 1) % 3;
+
+      const int secondEndCorner = secondLocalEdge;
+
+      const ExactUV firstStart = {
+          exactNFunction[static_cast<std::size_t>(firstFace)]
+                        [static_cast<std::size_t>(firstStartCorner * mData.N)],
+          exactNFunction[static_cast<std::size_t>(firstFace)]
+                        [static_cast<std::size_t>(firstStartCorner * mData.N +
+                                                  1)]};
+
+      const ExactUV firstEnd = {
+          exactNFunction[static_cast<std::size_t>(firstFace)]
+                        [static_cast<std::size_t>(firstEndCorner * mData.N)],
+          exactNFunction[static_cast<std::size_t>(firstFace)]
+                        [static_cast<std::size_t>(firstEndCorner * mData.N +
+                                                  1)]};
+
+      const ExactUV secondStart = {
+          exactNFunction[static_cast<std::size_t>(secondFace)]
+                        [static_cast<std::size_t>(secondStartCorner * mData.N)],
+          exactNFunction[static_cast<std::size_t>(secondFace)]
+                        [static_cast<std::size_t>(secondStartCorner * mData.N +
+                                                  1)]};
+
+      const ExactUV secondEnd = {
+          exactNFunction[static_cast<std::size_t>(secondFace)]
+                        [static_cast<std::size_t>(secondEndCorner * mData.N)],
+          exactNFunction[static_cast<std::size_t>(secondFace)]
+                        [static_cast<std::size_t>(secondEndCorner * mData.N +
+                                                  1)]};
+
+      SeamCandidate bestCandidate;
+
+      for (int rotation = 0; rotation < 4; ++rotation) {
+        const ExactUV transportedStart =
+            rotateParameterPair(secondStart, rotation);
+
+        const ExactUV transportedEnd = rotateParameterPair(secondEnd, rotation);
+
+        const ENumber exactStartOffsetU = transportedStart[0] - firstStart[0];
+
+        const ENumber exactStartOffsetV = transportedStart[1] - firstStart[1];
+
+        const ENumber exactEndOffsetU = transportedEnd[0] - firstEnd[0];
+
+        const ENumber exactEndOffsetV = transportedEnd[1] - firstEnd[1];
+
+        const double startOffsetU = exactStartOffsetU.to_double();
+
+        const double startOffsetV = exactStartOffsetV.to_double();
+
+        const double endOffsetU = exactEndOffsetU.to_double();
+
+        const double endOffsetV = exactEndOffsetV.to_double();
+
+        const double endpointMismatch =
+            std::max(std::abs(startOffsetU - endOffsetU),
+                     std::abs(startOffsetV - endOffsetV));
+
+        const double integerResidual =
+            std::max(std::abs(startOffsetU - std::round(startOffsetU)),
+                     std::abs(startOffsetV - std::round(startOffsetV)));
+
+        if (halfedgeIndex == diagnosticCanonicalHalfedge && mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::init()]: "
+                    << "diagnostic seam transport"
+                    << " halfedge=" << halfedgeIndex << " twin=" << twin
+                    << " rotation=" << rotation
+                    << " endpointMismatch=" << endpointMismatch
+                    << " integerResidual=" << integerResidual
+                    << " startOffset=(" << startOffsetU << ", " << startOffsetV
+                    << ") endOffset=(" << endOffsetU << ", " << endOffsetV
+                    << ")\n";
+        }
+
+        const bool betterEndpointMatch =
+            endpointMismatch < bestCandidate.endpointMismatch;
+
+        const bool equivalentEndpointMatch =
+            std::abs(endpointMismatch - bestCandidate.endpointMismatch) <=
+            std::numeric_limits<double>::epsilon() *
+                std::max(1.0, std::max(endpointMismatch,
+                                       bestCandidate.endpointMismatch));
+
+        const bool betterIntegerResidual =
+            integerResidual < bestCandidate.integerResidual;
+
+        if (betterEndpointMatch ||
+            (equivalentEndpointMatch && betterIntegerResidual)) {
+          bestCandidate.rotation = rotation;
+
+          bestCandidate.endpointMismatch = endpointMismatch;
+
+          bestCandidate.integerResidual = integerResidual;
+
+          bestCandidate.startOffsetU = startOffsetU;
+
+          bestCandidate.startOffsetV = startOffsetV;
+
+          bestCandidate.endOffsetU = endOffsetU;
+
+          bestCandidate.endOffsetV = endOffsetV;
+        }
+      }
+
+      if (bestCandidate.endpointMismatch > maximumBestEndpointMismatch) {
+        maximumBestEndpointMismatch = bestCandidate.endpointMismatch;
+
+        maximumMismatchHalfedge = halfedgeIndex;
+
+        maximumMismatchTwin = twin;
+
+        maximumMismatchRotation = bestCandidate.rotation;
+      }
+
+      if (bestCandidate.integerResidual > maximumBestIntegerResidual) {
+        maximumBestIntegerResidual = bestCandidate.integerResidual;
+
+        maximumResidualHalfedge = halfedgeIndex;
+
+        maximumResidualTwin = twin;
+
+        maximumResidualRotation = bestCandidate.rotation;
+      }
+
+      const bool constantTranslation =
+          bestCandidate.endpointMismatch <= seamTolerance;
+
+      const bool integerTranslation =
+          bestCandidate.integerResidual <= seamTolerance;
+
+      if (constantTranslation && integerTranslation) {
+        ++validTransportCount;
+        continue;
+      }
+
+      ++invalidTransportCount;
+
+      if (mData.verbose && invalidTransportCount <= 30) {
+        std::cerr << "[Directional::NFunctionMesher::init()]: "
+                  << "invalid transported seam"
+                  << " halfedge=" << halfedgeIndex << " twin=" << twin
+                  << " firstFace=" << firstFace << " secondFace=" << secondFace
+                  << " bestRotation=" << bestCandidate.rotation
+                  << " endpointMismatch=" << bestCandidate.endpointMismatch
+                  << " integerResidual=" << bestCandidate.integerResidual
+                  << " startOffset=(" << bestCandidate.startOffsetU << ", "
+                  << bestCandidate.startOffsetV << ") endOffset=("
+                  << bestCandidate.endOffsetU << ", "
+                  << bestCandidate.endOffsetV << ")\n";
+      }
+    }
+
+    if (mData.verbose) {
+      std::cout
+          << "[Directional::NFunctionMesher::init()]: "
+          << "transport-aware global seam diagnostic\n"
+          << "  checked interior edges: " << checkedInteriorEdges << '\n'
+          << "  valid transported seams: " << validTransportCount << '\n'
+          << "  invalid transported seams: " << invalidTransportCount << '\n'
+          << "  seam tolerance: " << seamTolerance << '\n'
+          << "  maximum best endpoint mismatch: " << maximumBestEndpointMismatch
+          << '\n'
+          << "  maximum mismatch halfedge/twin: " << maximumMismatchHalfedge
+          << " / " << maximumMismatchTwin << '\n'
+          << "  selected rotation at maximum mismatch: "
+          << maximumMismatchRotation << '\n'
+          << "  maximum best integer residual: " << maximumBestIntegerResidual
+          << '\n'
+          << "  maximum residual halfedge/twin: " << maximumResidualHalfedge
+          << " / " << maximumResidualTwin << '\n'
+          << "  selected rotation at maximum residual: "
+          << maximumResidualRotation << '\n';
     }
   }
 

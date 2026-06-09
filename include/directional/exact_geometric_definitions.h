@@ -25,6 +25,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <array>
 
 #ifdef USE_GMP_ENABLED
 #include <directional/ENumber_GMP.h>
@@ -369,6 +370,7 @@ inline double exact_geometry_seconds_since(
 
 inline void print_linepencil_intersection_timings(
     const LinePencilIntersectionTimings &timings) {
+#ifdef defined(LOG_TIMING)
   std::cout
       << "[Directional::linepencil_intersection()]: timing summary\n"
       << "  generic calls:          " << timings.genericCalls << '\n'
@@ -383,6 +385,7 @@ inline void print_linepencil_intersection_timings(
       << "  step parameters:        " << timings.stepParameters << " s\n"
       << "  output write:           " << timings.outputWrite << " s\n"
       << "  total:                  " << timings.total << " s\n";
+#endif
 }
 
 /*
@@ -409,6 +412,14 @@ inline int linepencil_intersection(
   auto phaseStart = totalStart;
 #endif
 
+  /*
+  * Always initialize outputs. Parallel pencil pairs do not produce an
+  * affine point-intersection grid, and callers must not observe stale data.
+  */
+  t00.setZero();
+  I2dt.setZero();
+  iso1Overlap = EInt(0);
+
   const ENumber determinant =
       lp1.direction[0] * lp2.direction[1] -
       lp1.direction[1] * lp2.direction[0];
@@ -423,10 +434,22 @@ inline int linepencil_intersection(
     phaseStart = Clock::now();
 #endif
 
+    /*
+     * Two complete parallel pencils have no isolated point intersections.
+     *
+     * The original code asserted that lp2 contained one line, but that
+     * condition is not guaranteed for general integrated fields. Return 0
+     * and let the caller skip intersections between this pencil pair.
+     */
     if (lp2.numLines != 1) {
-      throw std::invalid_argument(
-          "linepencil_intersection(): parallel second pencil must contain "
-          "exactly one line");
+#if DIRECTIONAL_ENABLE_EXACT_GEOMETRY_TIMING
+      timings.parallelClassification +=
+          exact_geometry_seconds_since(phaseStart);
+
+      timings.total += exact_geometry_seconds_since(totalStart);
+#endif
+
+      return 0;
     }
 
     const ENumber deltaX = lp2.p0[0] - lp1.p0[0];
@@ -826,27 +849,28 @@ inline double linepencil_triangle_seconds_since(
       .count();
 }
 
-inline void print_linepencil_triangle_timings(
-    const LinePencilTriangleTimings &timings) {
-  std::cout
-      << "[Directional::linepencil_triangle_intersection()]: "
-         "timing summary\n"
-      << "  calls:                 " << timings.calls << '\n'
-      << "  triangle edges:        "
-      << timings.triangleEdgesProcessed << '\n'
-      << "  candidate lines:       " << timings.candidateLines << '\n'
-      << "  accepted edge hits:    " << timings.acceptedEdgeHits << '\n'
-      << "  overlap cases:         " << timings.overlapCases << '\n'
-      << "  output initialization: " << timings.outputInitialization
-      << " s\n"
-      << "  edge-pencil setup:     " << timings.edgePencilSetup << " s\n"
-      << "  pencil intersection:   " << timings.pencilIntersection
-      << " s\n"
-      << "  overlap handling:      " << timings.overlapHandling << " s\n"
-      << "  affine line sweep:     " << timings.affineLineSweep << " s\n"
-      << "  final classification:  " << timings.finalClassification
-      << " s\n"
-      << "  total:                 " << timings.total << " s\n";
+inline void
+print_linepencil_triangle_timings(const LinePencilTriangleTimings &timings) {
+#ifdef defined(LOG_TIMING)
+  std::cout << "[Directional::linepencil_triangle_intersection()]: "
+               "timing summary\n"
+            << "  calls:                 " << timings.calls << '\n'
+            << "  triangle edges:        " << timings.triangleEdgesProcessed
+            << '\n'
+            << "  candidate lines:       " << timings.candidateLines << '\n'
+            << "  accepted edge hits:    " << timings.acceptedEdgeHits << '\n'
+            << "  overlap cases:         " << timings.overlapCases << '\n'
+            << "  output initialization: " << timings.outputInitialization
+            << " s\n"
+            << "  edge-pencil setup:     " << timings.edgePencilSetup << " s\n"
+            << "  pencil intersection:   " << timings.pencilIntersection
+            << " s\n"
+            << "  overlap handling:      " << timings.overlapHandling << " s\n"
+            << "  affine line sweep:     " << timings.affineLineSweep << " s\n"
+            << "  final classification:  " << timings.finalClassification
+            << " s\n"
+            << "  total:                 " << timings.total << " s\n";
+#endif
 }
 
 /*
@@ -876,7 +900,11 @@ inline void linepencil_triangle_intersection(
     std::vector<bool> &intFaces,
     std::vector<ENumber> &inParams,
     std::vector<ENumber> &outParams,
-    std::vector<std::vector<ENumber>> &triParams) {
+    std::vector<std::vector<ENumber>> &triParams,
+    const int triangleIndex = -1,
+    const int localPencilIndex = -1,
+    const int originalFunctionIndex = -1,
+    const std::array<int, 3> *originalHalfedges = nullptr) {
   using Clock = std::chrono::high_resolution_clock;
 
   LinePencilTriangleTimings &timings =
@@ -1035,13 +1063,41 @@ inline void linepencil_triangle_intersection(
     auto &edgeParameters =
         triParams[static_cast<std::size_t>(edgeIndex)];
 
-    for (std::size_t lineIndex = 0;
-         lineIndex < lineCount;
-         ++lineIndex) {
+    for (std::size_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
       if (edgeParameter >= zero && edgeParameter <= one) {
         ++timings.acceptedEdgeHits;
 
         edgeParameters.push_back(edgeParameter);
+
+        /*
+         * Diagnostic for the known mismatched source edge.
+         *
+         * This is the correct location because edgeParameter is the exact
+         * parameter along triangle edge edgeIndex for this specific pencil
+         * line.
+         */
+        if (originalHalfedges != nullptr) {
+          const int originalHalfedge =
+              (*originalHalfedges)[static_cast<std::size_t>(edgeIndex)];
+
+          if (originalHalfedge == 21772) {
+            const EVector2 localPoint =
+                edgeSource + edgeDirection * edgeParameter;
+
+            std::cerr << "[Directional::"
+                         "linepencil_triangle_intersection()]: "
+                      << "triangle=" << triangleIndex
+                      << " originalHalfedge=" << originalHalfedge
+                      << " localEdge=" << edgeIndex
+                      << " localPencil=" << localPencilIndex
+                      << " originalFunction=" << originalFunctionIndex
+                      << " lineInPencil=" << lineIndex
+                      << " edgeParameter=" << edgeParameter.to_double()
+                      << " lineParameter=" << lineParameter.to_double()
+                      << " localPoint=(" << localPoint[0].to_double() << ", "
+                      << localPoint[1].to_double() << ")\n";
+          }
+        }
 
         if (lineParameter > outParams[lineIndex]) {
           outParams[lineIndex] = lineParameter;
@@ -1052,8 +1108,12 @@ inline void linepencil_triangle_intersection(
         }
       }
 
-      /* ENumber does not consistently expose compound assignment. */
+      /*
+       * Advance to the next line in the pencil only after logging the
+       * current line's exact parameters.
+       */
       lineParameter = lineParameter + lineParameterStep;
+
       edgeParameter = edgeParameter + edgeParameterStep;
     }
 
