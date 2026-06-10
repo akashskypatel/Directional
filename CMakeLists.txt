@@ -16,7 +16,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(DIRECTIONAL_ENABLE_GMP "Enable GMP support if found" ON)
 option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support if found" ON)
 option(DIRECTIONAL_ENABLE_METIS_SUITESPARSE
-       "Enable METIS support in SuiteSparse" ON)
+       "Enable METIS support in SuiteSparse" OFF)
 
 set(DIRECTIONAL_SUITESPARSE_METIS_GIT_TAG
     "v7.5.1-1"
@@ -70,14 +70,27 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
   endif()
 
   if(SUITESPARSE_TARGETS)
+    target_compile_definitions(
+      directional
+      INTERFACE DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
+                USE_SUITESPARSE_ENABLED SUITESPARSE_ENABLED ENABLE_SUITESPARSE)
+    if(DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
+      target_compile_definitions(
+        directional
+        INTERFACE 
+        DIRECTIONAL_UMFPACK_ORDERING=UMFPACK_ORDERING_BEST
+        DIRECTIONAL_SUITESPARSE_HAS_METIS 
+        USE_SUITESPARSE_METIS 
+        USE_METIS 
+        ENABLE_SUITESPARSE_METIS 
+        ENABLE_METIS 
+        SUITESPARSE_METIS_ENABLED 
+        METIS_ENABLED)
+    endif()
     foreach(_target IN LISTS SUITESPARSE_TARGETS)
       if(TARGET ${_target})
         message(
           STATUS "SuiteSparse target found for Directional core: ${_target}")
-
-        target_compile_definitions(directional
-                                   PUBLIC DIRECTIONAL_ENABLE_SUITESPARSE)
-
         target_link_libraries(directional PUBLIC ${_target})
       endif()
     endforeach()
@@ -100,7 +113,8 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(STATUS "GMP found for Directional core")
 
     target_compile_definitions(
-      directional PUBLIC DIRECTIONAL_ENABLE_GMP DIRECTIONAL_ENABLE_GMP_ENABLED)
+      directional INTERFACE DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
+                          GMP_ENABLED ENABLE_GMP)
 
     target_link_libraries(directional PUBLIC GMP::GMP)
 

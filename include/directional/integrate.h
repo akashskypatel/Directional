@@ -9,6 +9,9 @@
 #define DIRECTIONAL_INTEGRATE_H
 
 #include <Eigen/Core>
+#include <algorithm>
+#include <array>
+#include <chrono>
 #include <cmath>
 #include <directional/CartesianField.h>
 #include <directional/PCFaceTangentBundle.h>
@@ -22,11 +25,33 @@
 #include <limits>
 #include <queue>
 #include <stdexcept>
-#include <chrono>
+#include <type_traits>
 #include <vector>
 
 #ifdef USE_SUITESPARSE_ENABLED
-#include <Eigen/UmfPackSupport>
+#if __has_include(<umfpack.h>)
+#include <umfpack.h>
+#elif __has_include(<suitesparse/umfpack.h>)
+#include <suitesparse/umfpack.h>
+#else
+#error "USE_SUITESPARSE_ENABLED is defined, but umfpack.h was not found"
+#endif
+#else
+#include <Eigen/SparseLU>
+#endif
+
+#ifdef USE_SUITESPARSE_ENABLED
+#ifndef DIRECTIONAL_UMFPACK_ORDERING
+#define DIRECTIONAL_UMFPACK_ORDERING UMFPACK_ORDERING_AMD
+#endif
+
+#ifndef DIRECTIONAL_UMFPACK_STRATEGY
+#define DIRECTIONAL_UMFPACK_STRATEGY UMFPACK_STRATEGY_SYMMETRIC
+#endif
+
+#ifndef DIRECTIONAL_UMFPACK_SCALE
+#define DIRECTIONAL_UMFPACK_SCALE UMFPACK_SCALE_SUM
+#endif
 #endif
 
 namespace directional {
@@ -65,7 +90,8 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
             .count() /
         1e+6;
     const auto totalSeconds =
-        std::chrono::duration_cast<std::chrono::microseconds>(now - integrateStart)
+        std::chrono::duration_cast<std::chrono::microseconds>(now -
+                                                              integrateStart)
             .count() /
         1e+6;
     cout << "[Directional::integrate] " << label << " completed in "
@@ -85,6 +111,111 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       return;
     cout << "[Directional::integrate] " << label << ": " << (index + 1) << "/"
          << total << endl;
+  };
+
+  const auto seconds_since = [](const Clock::time_point &start) -> double {
+    return std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                                 start)
+               .count() /
+           1.0e6;
+  };
+
+  struct IterativeSolveTimings {
+    double fullEnergyPrecompute = 0.0;
+    double freeVariableMap = 0.0;
+    double reducedOperatorExtraction = 0.0;
+    double constraintRankReduction = 0.0;
+    double kktMatrixAssembly = 0.0;
+    double rhsAssembly = 0.0;
+    double symbolicAnalysis = 0.0;
+    double numericFactorization = 0.0;
+    double backSubstitution = 0.0;
+    double fullSolutionReconstruction = 0.0;
+    double integerCandidateSelection = 0.0;
+
+    std::size_t iterations = 0;
+    std::size_t factorizationFailures = 0;
+    std::size_t solveFailures = 0;
+
+#ifdef USE_SUITESPARSE_ENABLED
+    double umfpackTotalFlops = 0.0;
+    double umfpackMaximumLNonzeros = 0.0;
+    double umfpackMaximumUNonzeros = 0.0;
+    double umfpackMaximumPeakMemory = 0.0;
+#endif
+
+    Eigen::Index maximumSystemRows = 0;
+    Eigen::Index maximumSystemNonZeros = 0;
+    Eigen::Index maximumConstraintRows = 0;
+    Eigen::Index maximumFreeVariables = 0;
+  };
+
+  IterativeSolveTimings iterativeTimings;
+
+  const auto print_iterative_timing_summary = [&]() {
+    if (!intData.verbose)
+      return;
+
+    const double measuredTotal = iterativeTimings.fullEnergyPrecompute +
+                                 iterativeTimings.freeVariableMap +
+                                 iterativeTimings.reducedOperatorExtraction +
+                                 iterativeTimings.constraintRankReduction +
+                                 iterativeTimings.kktMatrixAssembly +
+                                 iterativeTimings.rhsAssembly +
+                                 iterativeTimings.symbolicAnalysis +
+                                 iterativeTimings.numericFactorization +
+                                 iterativeTimings.backSubstitution +
+                                 iterativeTimings.fullSolutionReconstruction +
+                                 iterativeTimings.integerCandidateSelection;
+
+    std::cout << "[Directional::integrate] iterative solve timing summary\n"
+              << "  iterations:                    "
+              << iterativeTimings.iterations << '\n'
+              << "  full energy precompute:        "
+              << iterativeTimings.fullEnergyPrecompute << " s\n"
+              << "  free-variable map:             "
+              << iterativeTimings.freeVariableMap << " s\n"
+              << "  reduced operator extraction:   "
+              << iterativeTimings.reducedOperatorExtraction << " s\n"
+              << "  constraint rank reduction:     "
+              << iterativeTimings.constraintRankReduction << " s\n"
+              << "  KKT matrix assembly:           "
+              << iterativeTimings.kktMatrixAssembly << " s\n"
+              << "  RHS assembly:                  "
+              << iterativeTimings.rhsAssembly << " s\n"
+              << "  symbolic analysis:             "
+              << iterativeTimings.symbolicAnalysis << " s\n"
+              << "  numeric factorization:          "
+              << iterativeTimings.numericFactorization << " s\n"
+              << "  back substitution:             "
+              << iterativeTimings.backSubstitution << " s\n"
+              << "  full-solution reconstruction:  "
+              << iterativeTimings.fullSolutionReconstruction << " s\n"
+              << "  integer candidate selection:   "
+              << iterativeTimings.integerCandidateSelection << " s\n"
+              << "  measured iterative total:      " << measuredTotal << " s\n"
+              << "  factorization failures:        "
+              << iterativeTimings.factorizationFailures << '\n'
+              << "  solve failures:                "
+              << iterativeTimings.solveFailures << '\n'
+#ifdef USE_SUITESPARSE_ENABLED
+              << "  UMFPACK total estimated flops: "
+              << iterativeTimings.umfpackTotalFlops << '\n'
+              << "  UMFPACK maximum L nonzeros:     "
+              << iterativeTimings.umfpackMaximumLNonzeros << '\n'
+              << "  UMFPACK maximum U nonzeros:     "
+              << iterativeTimings.umfpackMaximumUNonzeros << '\n'
+              << "  UMFPACK maximum peak memory:    "
+              << iterativeTimings.umfpackMaximumPeakMemory << '\n'
+#endif
+              << "  maximum free variables:        "
+              << iterativeTimings.maximumFreeVariables << '\n'
+              << "  maximum constraint rows:       "
+              << iterativeTimings.maximumConstraintRows << '\n'
+              << "  maximum system rows:           "
+              << iterativeTimings.maximumSystemRows << '\n'
+              << "  maximum system nonzeros:       "
+              << iterativeTimings.maximumSystemNonZeros << '\n';
   };
 
   assert(field.tb->discTangType() == discTangTypeEnum::FACE_SPACES &&
@@ -225,6 +356,50 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     Cfull.setFromTriplets(CTriplets.begin(), CTriplets.end());
   }
   log_phase("Constraint reduction");
+
+  /*
+   * Precompute the full quadratic energy once:
+   *
+   *   H = E^T M E
+   *   q = E^T M gamma
+   *
+   * The previous implementation rebuilt
+   *
+   *   Epart = E * P
+   *   EtE   = Epart^T M Epart
+   *
+   * on every mixed-integer solve. Since P only selects the currently free
+   * variables, each reduced system can instead be extracted directly from H.
+   *
+   * The reduced right-hand side is:
+   *
+   *   q_free - (H * fixedValues)_free
+   */
+  const auto fullEnergyPrecomputeStart = Clock::now();
+
+  SparseMatrix<double> fullEnergy = Efull.transpose() * M1 * Efull;
+
+  fullEnergy.makeCompressed();
+
+  const VectorXd fullEnergyRhs = Efull.transpose() * M1 * gamma;
+
+  iterativeTimings.fullEnergyPrecompute +=
+      seconds_since(fullEnergyPrecomputeStart);
+
+  if (fullEnergy.rows() != numVars || fullEnergy.cols() != numVars ||
+      fullEnergyRhs.size() != numVars) {
+    throw std::runtime_error(
+        "integrate(): precomputed full energy has inconsistent dimensions");
+  }
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] full energy precompute"
+              << " time=" << iterativeTimings.fullEnergyPrecompute
+              << " s rows=" << fullEnergy.rows()
+              << " cols=" << fullEnergy.cols()
+              << " nnz=" << fullEnergy.nonZeros() << '\n';
+  }
+
   SparseMatrix<double> var2AllMat;
   VectorXd fullx(numVars);
   fullx.setZero();
@@ -275,13 +450,32 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   int solveIteration = 0;
   const int maximumSolveIterations = numVars + 2;
 
+  /*
+   * Conservative batched rounding:
+   *
+   * - Always fix the single closest unresolved integer variable.
+   * - Fix up to three additional variables only when their residual is both
+   *   absolutely small and close to the best residual in this solve.
+   *
+   * This reduces expensive sparse factorizations while avoiding aggressive
+   * rounding of ambiguous variables.
+   */
+  constexpr int maximumRoundingBatchSize = 8;
+  constexpr double maximumAdditionalBatchResidual = 0.12;
+  constexpr double relativeBatchResidualFactor = 1.5;
+  constexpr double minimumRelativeBatchWindow = 1.0e-12;
+
+  std::size_t totalVariablesFixedByBatching = 0;
+  int maximumObservedBatchSize = 0;
+  std::array<std::size_t, maximumRoundingBatchSize + 1>
+      roundingBatchHistogram{};
+
   while (true) {
     if (solveIteration >= maximumSolveIterations) {
       if (intData.verbose) {
-        std::cerr
-            << "[Directional::integrate] exceeded the maximum number of "
-               "mixed-integer solve iterations ("
-            << maximumSolveIterations << ")\n";
+        std::cerr << "[Directional::integrate] exceeded the maximum number of "
+                     "mixed-integer solve iterations ("
+                  << maximumSolveIterations << ")\n";
       }
       return false;
     }
@@ -291,9 +485,9 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
     if (intData.verbose) {
       std::cout << "[Directional::integrate] rounding solve: "
-                << (solveIteration + 1) << " (fixed "
-                << completedFixedCount << "/" << requestedFixedCount
-                << " requested variables)" << std::endl;
+                << (solveIteration + 1) << " (fixed " << completedFixedCount
+                << "/" << requestedFixedCount << " requested variables)"
+                << std::endl;
     }
 
     const int freeVariableCount = numVars - alreadyFixed.sum();
@@ -302,16 +496,33 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
           "integrate(): alreadyFixed contains more entries than numVars");
     }
 
+    const auto freeVariableMapStart = Clock::now();
+
     // Map the current free variables into the complete reduced vector.
     var2AllMat.resize(numVars, freeVariableCount);
+
+    std::vector<int> freeToFull(static_cast<std::size_t>(freeVariableCount),
+                                -1);
+
+    std::vector<int> fullToFree(static_cast<std::size_t>(numVars), -1);
+
     int varCounter = 0;
+
     vector<Triplet<double>> var2AllTriplets;
     var2AllTriplets.reserve(static_cast<std::size_t>(freeVariableCount));
 
     for (int i = 0; i < numVars; ++i) {
-      if (!alreadyFixed(i)) {
-        var2AllTriplets.emplace_back(i, varCounter++, 1.0);
+      if (alreadyFixed(i)) {
+        continue;
       }
+
+      freeToFull[static_cast<std::size_t>(varCounter)] = i;
+
+      fullToFree[static_cast<std::size_t>(i)] = varCounter;
+
+      var2AllTriplets.emplace_back(i, varCounter, 1.0);
+
+      ++varCounter;
     }
 
     if (varCounter != freeVariableCount) {
@@ -319,13 +530,78 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
           "integrate(): free-variable map size is inconsistent");
     }
 
-    var2AllMat.setFromTriplets(var2AllTriplets.begin(),
-                               var2AllTriplets.end());
+    var2AllMat.setFromTriplets(var2AllTriplets.begin(), var2AllTriplets.end());
 
-    SparseMatrix<double> Epart = Efull * var2AllMat;
-    VectorXd torhs = -Efull * fixedValues;
-    SparseMatrix<double> EtE = Epart.transpose() * M1 * Epart;
-    SparseMatrix<double> Cpart = Cfull * var2AllMat;
+    iterativeTimings.freeVariableMap += seconds_since(freeVariableMapStart);
+
+    iterativeTimings.maximumFreeVariables =
+        std::max(iterativeTimings.maximumFreeVariables,
+                 static_cast<Eigen::Index>(freeVariableCount));
+
+    const auto reducedOperatorStart = Clock::now();
+
+    /*
+     * Extract H_ff directly from the precomputed full energy matrix.
+     * fullEnergy is column-major, so each free full column can be scanned
+     * once and retained rows are translated through fullToFree.
+     */
+    std::vector<Triplet<double>> reducedEnergyTriplets;
+    reducedEnergyTriplets.reserve(static_cast<std::size_t>(
+        std::max<Eigen::Index>(freeVariableCount, fullEnergy.nonZeros())));
+
+    for (int freeColumn = 0; freeColumn < freeVariableCount; ++freeColumn) {
+      const int fullColumn = freeToFull[static_cast<std::size_t>(freeColumn)];
+
+      for (SparseMatrix<double>::InnerIterator entry(fullEnergy, fullColumn);
+           entry; ++entry) {
+        const int fullRow = static_cast<int>(entry.row());
+
+        const int freeRow = fullToFree[static_cast<std::size_t>(fullRow)];
+
+        if (freeRow < 0) {
+          continue;
+        }
+
+        reducedEnergyTriplets.emplace_back(freeRow, freeColumn, entry.value());
+      }
+    }
+
+    SparseMatrix<double> EtE(freeVariableCount, freeVariableCount);
+
+    EtE.setFromTriplets(reducedEnergyTriplets.begin(),
+                        reducedEnergyTriplets.end());
+
+    EtE.makeCompressed();
+
+    /*
+     * Cpart is only a column selection from Cfull. Build it directly
+     * rather than multiplying by the selector matrix.
+     */
+    std::vector<Triplet<double>> reducedConstraintTriplets;
+    reducedConstraintTriplets.reserve(
+        static_cast<std::size_t>(Cfull.nonZeros()));
+
+    for (int freeColumn = 0; freeColumn < freeVariableCount; ++freeColumn) {
+      const int fullColumn = freeToFull[static_cast<std::size_t>(freeColumn)];
+
+      for (SparseMatrix<double>::InnerIterator entry(Cfull, fullColumn); entry;
+           ++entry) {
+        reducedConstraintTriplets.emplace_back(entry.row(), freeColumn,
+                                               entry.value());
+      }
+    }
+
+    SparseMatrix<double> Cpart(Cfull.rows(), freeVariableCount);
+
+    Cpart.setFromTriplets(reducedConstraintTriplets.begin(),
+                          reducedConstraintTriplets.end());
+
+    Cpart.makeCompressed();
+
+    iterativeTimings.reducedOperatorExtraction +=
+        seconds_since(reducedOperatorStart);
+
+    const auto constraintReductionStart = Clock::now();
 
     // Reduce the rank of the current constraint matrix.
     int CpartRank = 0;
@@ -350,6 +626,15 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       Cpart.setFromTriplets(CPartTriplets.begin(), CPartTriplets.end());
     }
 
+    iterativeTimings.constraintRankReduction +=
+        seconds_since(constraintReductionStart);
+
+    iterativeTimings.maximumConstraintRows =
+        std::max(iterativeTimings.maximumConstraintRows,
+                 static_cast<Eigen::Index>(Cpart.rows()));
+
+    const auto kktAssemblyStart = Clock::now();
+
     SparseMatrix<double> A(EtE.rows() + Cpart.rows(),
                            EtE.rows() + Cpart.rows());
 
@@ -369,9 +654,26 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
     A.setFromTriplets(ATriplets.begin(), ATriplets.end());
 
+    iterativeTimings.kktMatrixAssembly += seconds_since(kktAssemblyStart);
+
+    iterativeTimings.maximumSystemRows =
+        std::max(iterativeTimings.maximumSystemRows, A.rows());
+
+    iterativeTimings.maximumSystemNonZeros =
+        std::max(iterativeTimings.maximumSystemNonZeros, A.nonZeros());
+
+    const auto rhsAssemblyStart = Clock::now();
+
     VectorXd b = VectorXd::Zero(EtE.rows() + Cpart.rows());
-    b.segment(0, EtE.rows()) =
-        Epart.transpose() * M1 * (gamma + torhs);
+
+    const VectorXd fullFixedContribution = fullEnergy * fixedValues;
+
+    for (int freeIndex = 0; freeIndex < freeVariableCount; ++freeIndex) {
+      const int fullIndex = freeToFull[static_cast<std::size_t>(freeIndex)];
+
+      b(freeIndex) =
+          fullEnergyRhs(fullIndex) - fullFixedContribution(fullIndex);
+    }
 
     VectorXd bfull = -Cfull * fixedValues;
     VectorXd bpart(CpartRank);
@@ -380,29 +682,298 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     }
     b.segment(EtE.rows(), Cpart.rows()) = bpart;
 
+    iterativeTimings.rhsAssembly += seconds_since(rhsAssemblyStart);
+
 #ifdef USE_SUITESPARSE_ENABLED
-    UmfPackLU<SparseMatrix<double>> lusolver;
+    /*
+     * Native UMFPACK path.
+     *
+     * Eigen's UmfPackLU wrapper does not expose UMFPACK's strategy,
+     * ordering, scaling, or factorization statistics. The KKT matrix is
+     * structurally symmetric but numerically indefinite, so retain UMFPACK's
+     * robust LU factorization while requesting the configured strategy and
+     * ordering. When DIRECTIONAL_SUITESPARSE_HAS_METIS is defined, the default
+     * ordering request is UMFPACK_ORDERING_METIS; otherwise it remains AMD.
+     */
+    A.makeCompressed();
+
+    if (A.rows() != A.cols()) {
+      throw std::runtime_error(
+          "integrate(): UMFPACK system matrix must be square");
+    }
+
+    if (A.rows() > static_cast<Eigen::Index>(std::numeric_limits<int>::max())) {
+      throw std::runtime_error(
+          "integrate(): UMFPACK di interface cannot represent matrix size");
+    }
+
+    static_assert(
+        std::is_same_v<typename SparseMatrix<double>::StorageIndex, int>,
+        "Native umfpack_di_* calls require Eigen sparse indices to be int");
+
+    std::array<double, UMFPACK_CONTROL> umfpackControl{};
+    std::array<double, UMFPACK_INFO> umfpackInfo{};
+
+    umfpack_di_defaults(umfpackControl.data());
+
+    umfpackControl[UMFPACK_PRL] = intData.verbose ? 1.0 : 0.0;
+
+    /*
+     * These must be assigned before umfpack_di_symbolic().
+     * The symbolic phase performs the ordering; changing ORDERING after
+     * symbolic analysis has no effect on the selected ordering.
+     */
+    umfpackControl[UMFPACK_STRATEGY] = DIRECTIONAL_UMFPACK_STRATEGY;
+
+    umfpackControl[UMFPACK_ORDERING] = DIRECTIONAL_UMFPACK_ORDERING;
+
+    umfpackControl[UMFPACK_SCALE] = DIRECTIONAL_UMFPACK_SCALE;
+
+    /*
+     * Retain iterative refinement. It is inexpensive relative to the
+     * factorization and provides additional robustness for indefinite KKT
+     * systems.
+     */
+    umfpackControl[UMFPACK_IRSTEP] = 2.0;
+
+    void *umfpackSymbolic = nullptr;
+    void *umfpackNumeric = nullptr;
+
+    const int systemSize = static_cast<int>(A.rows());
+
+    const int *columnPointers = A.outerIndexPtr();
+
+    const int *rowIndices = A.innerIndexPtr();
+
+    const double *values = A.valuePtr();
+
+    const auto symbolicAnalysisStart = Clock::now();
+
+    const int requestedUmfpackOrdering =
+        static_cast<int>(umfpackControl[UMFPACK_ORDERING]);
+
+    const int requestedUmfpackStrategy =
+        static_cast<int>(umfpackControl[UMFPACK_STRATEGY]);
+
+    int symbolicStatus = umfpack_di_symbolic(
+        systemSize, systemSize, columnPointers, rowIndices, values,
+        &umfpackSymbolic, umfpackControl.data(), umfpackInfo.data());
+
+    int usedUmfpackOrdering =
+        static_cast<int>(umfpackInfo[UMFPACK_ORDERING_USED]);
+
+    int usedUmfpackStrategy =
+        static_cast<int>(umfpackInfo[UMFPACK_STRATEGY_USED]);
+
+    if (intData.verbose) {
+      std::cout << "[Directional::integrate] UMFPACK ordering"
+                << " requested=" << requestedUmfpackOrdering
+                << " used=" << usedUmfpackOrdering
+                << " requestedStrategy=" << requestedUmfpackStrategy
+                << " usedStrategy=" << usedUmfpackStrategy
+                << " status=" << symbolicStatus
+                << '\n';
+    }
+
+    /*
+     * If METIS fails during symbolic analysis, retry the same system with AMD.
+     * This preserves the existing robust behavior while proving whether the
+     * current UMFPACK binary can actually execute METIS ordering.
+     */
+    if (requestedUmfpackOrdering == UMFPACK_ORDERING_METIS &&
+        (symbolicStatus != UMFPACK_OK || umfpackSymbolic == nullptr)) {
+      if (umfpackSymbolic != nullptr) {
+        umfpack_di_free_symbolic(&umfpackSymbolic);
+      }
+
+      if (intData.verbose) {
+        std::cerr
+            << "[Directional::integrate] WARNING: "
+            << "UMFPACK METIS symbolic analysis failed at rounding solve "
+            << (solveIteration + 1)
+            << " with status " << symbolicStatus
+            << "; retrying with UMFPACK_ORDERING_AMD\n";
+      }
+
+      umfpackControl[UMFPACK_ORDERING] = UMFPACK_ORDERING_AMD;
+
+      std::fill(
+          umfpackInfo.begin(),
+          umfpackInfo.end(),
+          0.0);
+
+      symbolicStatus = umfpack_di_symbolic(
+          systemSize, systemSize, columnPointers, rowIndices, values,
+          &umfpackSymbolic, umfpackControl.data(), umfpackInfo.data());
+
+      usedUmfpackOrdering =
+          static_cast<int>(umfpackInfo[UMFPACK_ORDERING_USED]);
+
+      usedUmfpackStrategy =
+          static_cast<int>(umfpackInfo[UMFPACK_STRATEGY_USED]);
+
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] UMFPACK ordering retry"
+                  << " requested=" << UMFPACK_ORDERING_AMD
+                  << " used=" << usedUmfpackOrdering
+                  << " requestedStrategy=" << requestedUmfpackStrategy
+                  << " usedStrategy=" << usedUmfpackStrategy
+                  << " status=" << symbolicStatus
+                  << '\n';
+      }
+    }
+
+    if (requestedUmfpackOrdering == UMFPACK_ORDERING_METIS &&
+        symbolicStatus == UMFPACK_OK &&
+        usedUmfpackOrdering != UMFPACK_ORDERING_METIS) {
+      std::cerr << "[Directional::integrate] WARNING: "
+                << "METIS ordering was requested before symbolic analysis, "
+                << "but UMFPACK used ordering " << usedUmfpackOrdering
+                << ". This UMFPACK build likely lacks usable METIS support, "
+                << "or UMFPACK rejected METIS for this matrix.\n";
+    }
+
+    iterativeTimings.symbolicAnalysis += seconds_since(symbolicAnalysisStart);
+
+    if (symbolicStatus != UMFPACK_OK || umfpackSymbolic == nullptr) {
+      ++iterativeTimings.factorizationFailures;
+
+      if (umfpackSymbolic != nullptr) {
+        umfpack_di_free_symbolic(&umfpackSymbolic);
+      }
+
+      if (intData.verbose) {
+        std::cerr
+            << "[Directional::integrate] UMFPACK symbolic analysis failed at "
+            << "rounding solve " << (solveIteration + 1) << " with status "
+            << symbolicStatus << '\n';
+      }
+
+      return false;
+    }
+
+    const auto numericFactorizationStart = Clock::now();
+
+    const int numericStatus = umfpack_di_numeric(
+        columnPointers, rowIndices, values, umfpackSymbolic, &umfpackNumeric,
+        umfpackControl.data(), umfpackInfo.data());
+
+    iterativeTimings.numericFactorization +=
+        seconds_since(numericFactorizationStart);
+
+    /*
+     * Numeric no longer needs Symbolic after construction.
+     */
+    umfpack_di_free_symbolic(&umfpackSymbolic);
+
+    if (numericStatus != UMFPACK_OK || umfpackNumeric == nullptr) {
+      ++iterativeTimings.factorizationFailures;
+
+      if (umfpackNumeric != nullptr) {
+        umfpack_di_free_numeric(&umfpackNumeric);
+      }
+
+      if (intData.verbose) {
+        std::cerr << "[Directional::integrate] UMFPACK numeric factorization "
+                  << "failed at rounding solve " << (solveIteration + 1)
+                  << " with status " << numericStatus << '\n';
+      }
+
+      return false;
+    }
+
+    iterativeTimings.umfpackTotalFlops += umfpackInfo[UMFPACK_FLOPS];
+
+    iterativeTimings.umfpackMaximumLNonzeros = std::max(
+        iterativeTimings.umfpackMaximumLNonzeros, umfpackInfo[UMFPACK_LNZ]);
+
+    iterativeTimings.umfpackMaximumUNonzeros = std::max(
+        iterativeTimings.umfpackMaximumUNonzeros, umfpackInfo[UMFPACK_UNZ]);
+
+    iterativeTimings.umfpackMaximumPeakMemory =
+        std::max(iterativeTimings.umfpackMaximumPeakMemory,
+                 umfpackInfo[UMFPACK_PEAK_MEMORY]);
+
+    const auto backSubstitutionStart = Clock::now();
+
+    x.resize(systemSize);
+
+    const int solveStatus = umfpack_di_solve(
+        UMFPACK_A, columnPointers, rowIndices, values, x.data(), b.data(),
+        umfpackNumeric, umfpackControl.data(), umfpackInfo.data());
+
+    iterativeTimings.backSubstitution += seconds_since(backSubstitutionStart);
+
+    umfpack_di_free_numeric(&umfpackNumeric);
+
+    if (solveStatus != UMFPACK_OK) {
+      ++iterativeTimings.solveFailures;
+
+      if (intData.verbose) {
+        std::cerr
+            << "[Directional::integrate] UMFPACK solve failed at rounding "
+            << "solve " << (solveIteration + 1) << " with status "
+            << solveStatus << '\n';
+      }
+
+      return false;
+    }
 #else
     SparseLU<SparseMatrix<double>> lusolver;
-#endif
 
-    lusolver.compute(A);
+    const auto symbolicAnalysisStart = Clock::now();
+
+    lusolver.analyzePattern(A);
+
+    iterativeTimings.symbolicAnalysis += seconds_since(symbolicAnalysisStart);
+
     if (lusolver.info() != Success) {
+      ++iterativeTimings.factorizationFailures;
+
       if (intData.verbose) {
-        std::cout << "[Directional::integrate] LU decomposition failed at "
+        std::cout << "[Directional::integrate] symbolic analysis failed at "
                   << "rounding solve " << (solveIteration + 1) << std::endl;
       }
+
       return false;
     }
 
-    x = lusolver.solve(b);
+    const auto numericFactorizationStart = Clock::now();
+
+    lusolver.factorize(A);
+
+    iterativeTimings.numericFactorization +=
+        seconds_since(numericFactorizationStart);
+
     if (lusolver.info() != Success) {
+      ++iterativeTimings.factorizationFailures;
+
       if (intData.verbose) {
-        std::cout << "[Directional::integrate] LU solve failed at rounding "
-                  << "solve " << (solveIteration + 1) << std::endl;
+        std::cout << "[Directional::integrate] numeric factorization failed at "
+                  << "rounding solve " << (solveIteration + 1) << std::endl;
       }
+
       return false;
     }
+
+    const auto backSubstitutionStart = Clock::now();
+
+    x = lusolver.solve(b);
+
+    iterativeTimings.backSubstitution += seconds_since(backSubstitutionStart);
+
+    if (lusolver.info() != Success) {
+      ++iterativeTimings.solveFailures;
+
+      if (intData.verbose) {
+        std::cout
+            << "[Directional::integrate] LU solve failed at rounding solve "
+            << (solveIteration + 1) << std::endl;
+      }
+
+      return false;
+    }
+#endif
 
     if (x.size() < freeVariableCount) {
       throw std::runtime_error(
@@ -410,13 +981,31 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
           "count");
     }
 
+    const auto reconstructionStart = Clock::now();
+
     fullx = var2AllMat * x.head(freeVariableCount) + fixedValues;
+
+    iterativeTimings.fullSolutionReconstruction +=
+        seconds_since(reconstructionStart);
+
+    ++iterativeTimings.iterations;
 
     if (intData.verbose) {
       std::cout << "[Directional::integrate] solved reduced system iteration "
                 << (solveIteration + 1) << " with size A=" << A.rows() << "x"
-                << A.cols() << ", constraints=" << Cpart.rows()
-                << std::endl;
+                << A.cols() << ", constraints=" << Cpart.rows() << std::endl;
+
+      if (solveIteration == 0 || ((solveIteration + 1) % 25) == 0) {
+        std::cout << "[Directional::integrate] iteration timing checkpoint"
+                  << " iteration=" << (solveIteration + 1)
+                  << " freeVars=" << freeVariableCount << " rows=" << A.rows()
+                  << " nnz=" << A.nonZeros()
+                  << " cumulativeSymbolic=" << iterativeTimings.symbolicAnalysis
+                  << " cumulativeNumeric="
+                  << iterativeTimings.numericFactorization
+                  << " cumulativeSolve=" << iterativeTimings.backSubstitution
+                  << '\n';
+      }
     }
 
     ++solveIteration;
@@ -455,43 +1044,134 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
       break;
     }
 
-    double minIntDiff = std::numeric_limits<double>::max();
-    int minIntDiffIndex = -1;
+    const auto candidateSelectionStart = Clock::now();
+
+    struct IntegerCandidate {
+      int index = -1;
+      double value = 0.0;
+      double roundedValue = 0.0;
+      double residual = std::numeric_limits<double>::infinity();
+    };
+
+    std::vector<IntegerCandidate> candidates;
+    candidates.reserve(static_cast<std::size_t>(
+        std::max(0, requestedFixedCount - completedFixedCount)));
 
     for (int i = 0; i < numVars; ++i) {
-      if (fixedMask(i) && !alreadyFixed(i)) {
-        const double value = fullx(i);
-        const double currentDifference =
-            std::abs(value - std::round(value));
-
-        if (currentDifference < minIntDiff) {
-          minIntDiff = currentDifference;
-          minIntDiffIndex = i;
-        }
+      if (!fixedMask(i) || alreadyFixed(i)) {
+        continue;
       }
+
+      const double value = fullx(i);
+
+      if (!std::isfinite(value)) {
+        throw std::runtime_error(
+            "integrate(): unresolved integer candidate is non-finite");
+      }
+
+      const double roundedValue = std::round(value);
+
+      candidates.push_back(IntegerCandidate{i, value, roundedValue,
+                                            std::abs(value - roundedValue)});
     }
 
-    if (minIntDiffIndex < 0) {
+    std::sort(candidates.begin(), candidates.end(),
+              [](const IntegerCandidate &lhs, const IntegerCandidate &rhs) {
+                if (lhs.residual != rhs.residual) {
+                  return lhs.residual < rhs.residual;
+                }
+
+                return lhs.index < rhs.index;
+              });
+
+    iterativeTimings.integerCandidateSelection +=
+        seconds_since(candidateSelectionStart);
+
+    if (candidates.empty()) {
       if (intData.verbose) {
-        std::cerr
-            << "[Directional::integrate] no unresolved requested integer "
-               "variable could be selected\n";
+        std::cerr << "[Directional::integrate] no unresolved requested integer "
+                     "variable could be selected\n";
       }
+
       return false;
     }
 
-    const double preRoundValue = fullx(minIntDiffIndex);
-    const double roundedValue = std::round(preRoundValue);
+    const double bestResidual = candidates.front().residual;
 
-    alreadyFixed(minIntDiffIndex) = 1;
-    fixedValues(minIntDiffIndex) = roundedValue;
-    integerVariableWasFixed[static_cast<std::size_t>(minIntDiffIndex)] = 1;
+    // const double additionalResidualLimit =
+    //     std::min(
+    //         maximumAdditionalBatchResidual,
+    //         std::max(
+    //             minimumRelativeBatchWindow,
+    //             relativeBatchResidualFactor * bestResidual));
+    const double additionalResidualLimit = std::min(0.10, bestResidual + 0.025);
 
-    if (intData.verbose) {
-      std::cout << "[Directional::integrate] fixed integer variable "
-                << minIntDiffIndex << " from " << preRoundValue << " to "
-                << roundedValue << " (residual " << minIntDiff << ")"
-                << std::endl;
+    int batchSize = 0;
+
+    for (const IntegerCandidate &candidate : candidates) {
+      if (batchSize >= maximumRoundingBatchSize) {
+        break;
+      }
+
+      /*
+       * Always accept the best candidate. Additional candidates must be
+       * confidently close to an integer and near the best residual.
+       */
+      if (batchSize > 0 && candidate.residual > additionalResidualLimit) {
+        break;
+      }
+
+      alreadyFixed(candidate.index) = 1;
+      fixedValues(candidate.index) = candidate.roundedValue;
+
+      integerVariableWasFixed[static_cast<std::size_t>(candidate.index)] = 1;
+
+      ++batchSize;
+
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] fixed integer variable "
+                  << candidate.index << " from " << candidate.value << " to "
+                  << candidate.roundedValue << " (residual "
+                  << candidate.residual << ", batch position " << batchSize
+                  << "/" << maximumRoundingBatchSize << ")" << std::endl;
+      }
+    }
+
+    if (batchSize <= 0) {
+      throw std::runtime_error(
+          "integrate(): candidate selection produced an empty rounding batch");
+    }
+
+    if (batchSize > maximumRoundingBatchSize) {
+      throw std::runtime_error(
+          "integrate(): rounding batch exceeded configured maximum");
+    }
+
+    ++roundingBatchHistogram[static_cast<std::size_t>(batchSize)];
+
+    totalVariablesFixedByBatching += static_cast<std::size_t>(batchSize);
+
+    maximumObservedBatchSize = std::max(maximumObservedBatchSize, batchSize);
+  }
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] batched rounding summary\n"
+              << "  total variables fixed:          "
+              << totalVariablesFixedByBatching << '\n'
+              << "  maximum observed batch size:    "
+              << maximumObservedBatchSize << '\n'
+              << "  configured maximum batch size:  "
+              << maximumRoundingBatchSize << '\n'
+              << "  additional residual cap:        "
+              << maximumAdditionalBatchResidual << '\n'
+              << "  relative residual factor:       "
+              << relativeBatchResidualFactor << '\n'
+              << "  batch-size histogram:\n";
+
+    for (int size = 1; size <= maximumRoundingBatchSize; ++size) {
+      std::cout << "    size " << size << ": "
+                << roundingBatchHistogram[static_cast<std::size_t>(size)]
+                << '\n';
     }
   }
 
@@ -529,8 +1209,8 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
         ++neverFixedReducedIntegerCount;
         if (intData.verbose && neverFixedReducedIntegerCount <= 30) {
           std::cerr << "[Directional::integrate] reduced integer variable was "
-                    << "never fixed: " << variableIndex << " finalValue="
-                    << value << '\n';
+                    << "never fixed: " << variableIndex
+                    << " finalValue=" << value << '\n';
         }
       }
 
@@ -546,12 +1226,10 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
               << "  solve iterations: " << solveIteration << '\n'
               << "  expanded reduced integer count: "
               << intData.integerVars.size() * intData.n << '\n'
-              << "  unresolved count: " << unresolvedReducedIntegerCount
-              << '\n'
+              << "  unresolved count: " << unresolvedReducedIntegerCount << '\n'
               << "  never-fixed count: " << neverFixedReducedIntegerCount
               << '\n'
-              << "  maximum residual: " << maximumReducedIntegerResidual
-              << '\n'
+              << "  maximum residual: " << maximumReducedIntegerResidual << '\n'
               << "  maximum residual variable: "
               << maximumReducedIntegerResidualIndex << std::endl;
   }
@@ -563,31 +1241,63 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     }
     return false;
   }
+
+  print_iterative_timing_summary();
   log_phase("Iterative seamless solve");
 
   // the results are packets of N functions for each vertex, and need to be
   // allocated for corners
+  const auto firstFunctionExpansionStart = Clock::now();
+
   VectorXd NFunctionVec = intData.vertexTrans2CutMat * intData.linRedMat *
                           intData.singIntSpanMat * intData.intSpanMat * fullx;
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] first function expansion: "
+              << seconds_since(firstFunctionExpansionStart) << " s\n";
+  }
+
+  const auto firstVertexCopyStart = Clock::now();
   NFunction.resize(meshCut.V.rows(), intData.N);
   for (int i = 0; i < NFunction.rows(); i++)
     NFunction.row(i)
         << NFunctionVec.segment(intData.N * i, intData.N).transpose();
 
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] first vertex-function copy: "
+              << seconds_since(firstVertexCopyStart) << " s\n";
+  }
+
   // nFunction = fullx;
 
   // allocating per corner
+  const auto firstCornerAllocationStart = Clock::now();
+
   NCornerFunctions.resize(meshWhole.F.rows(), intData.N * 3);
   for (int i = 0; i < meshWhole.F.rows(); i++)
     for (int j = 0; j < 3; j++)
       NCornerFunctions.block(i, intData.N * j, 1, intData.N) =
           NFunction.row(meshCut.F(i, j));
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] first corner allocation detail: "
+              << seconds_since(firstCornerAllocationStart) << " s\n";
+  }
+
   log_phase("Corner allocation pass 1");
 
   SparseMatrix<double> G;
   // MatrixXd FN;
   // igl::per_face_normals(cutV, meshCut, FN);
+  const auto branchedGradientStart = Clock::now();
+
   branched_gradient(meshCut, intData.N, G);
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] branched_gradient detail: "
+              << seconds_since(branchedGradientStart) << " s, rows=" << G.rows()
+              << ", cols=" << G.cols() << ", nnz=" << G.nonZeros() << '\n';
+  }
   log_phase("branched_gradient");
   // cout<<"cutF.rows(): "<<cutF.rows()<<endl;
   SparseMatrix<double> Gd = G * intData.vertexTrans2CutMat * intData.linRedMat *
@@ -615,12 +1325,27 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
   // the results are packets of N functions for each vertex, and need to be
   // allocated for corners
+  const auto finalFunctionExpansionStart = Clock::now();
+
   NFunctionVec = intData.vertexTrans2CutMat * intData.linRedMat *
                  intData.singIntSpanMat * intData.intSpanMat * fullx;
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] final function expansion: "
+              << seconds_since(finalFunctionExpansionStart) << " s\n";
+  }
+
+  const auto finalVertexCopyStart = Clock::now();
+
   NFunction.resize(meshCut.V.rows(), intData.N);
   for (int i = 0; i < NFunction.rows(); i++)
     NFunction.row(i)
         << NFunctionVec.segment(intData.N * i, intData.N).transpose();
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] final vertex-function copy: "
+              << seconds_since(finalVertexCopyStart) << " s\n";
+  }
 
   intData.nVertexFunction = fullx;
 
@@ -629,11 +1354,19 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   // cout<<"paramFuncsd: "<<paramFuncsd<<endl;
 
   // allocating per corner
+  const auto finalCornerAllocationStart = Clock::now();
+
   NCornerFunctions.resize(meshWhole.F.rows(), intData.N * 3);
   for (int i = 0; i < meshWhole.F.rows(); i++)
     for (int j = 0; j < 3; j++)
       NCornerFunctions.block(i, intData.N * j, 1, intData.N) =
           NFunction.row(meshCut.F(i, j)).array();
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] final corner allocation detail: "
+              << seconds_since(finalCornerAllocationStart) << " s\n";
+  }
+
   log_phase("Final corner allocation");
 
   return success;

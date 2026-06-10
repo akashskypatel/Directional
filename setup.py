@@ -284,7 +284,7 @@ class BuildStandalone(Command):
         self.disable_gmp = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
         self.disable_metis_suitesparse = False
 
     def finalize_options(self) -> None:
@@ -338,7 +338,7 @@ class BuildTutorials(Command):
         self.tutorial = None
         self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
         self.disable_gmp = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
         self.disable_metis_suitesparse = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
@@ -398,7 +398,7 @@ class CMakeBuildExt(build_ext):
         self.disable_gmp = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
         self.disable_metis_suitesparse = False
 
     def finalize_options(self) -> None:
