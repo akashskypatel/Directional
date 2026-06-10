@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.21)
 project(202_Sampling)
 
 add_executable(${PROJECT_NAME}_bin main.cpp)

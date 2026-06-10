@@ -17,7 +17,6 @@ WINDOWS_VS_CMAKE_CANDIDATES = (
 WINDOWS_VS_NINJA_CANDIDATES = (
     Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"),
 )
-WINDOWS_VCPKG_TRIPLETS = ("x64-windows", "xw")
 
 
 def _first_existing_path(candidates: tuple[Path, ...]) -> Path | None:
@@ -68,9 +67,15 @@ def _is_conflicting_cmake_path(entry: str, cmake_parent: str) -> bool:
     return ".venv" in entry_lower and entry_lower.endswith("\\scripts") and (Path(entry) / "cmake.exe").exists()
 
 
-def _runtime_dll_dirs(build_temp: Path, install_dir: Path, installed_pkg_dir: Path) -> list[Path]:
+def _runtime_dll_dirs(self, build_temp: Path, install_dir: Path, installed_pkg_dir: Path) -> list[Path]:
     runtime_dirs = [installed_pkg_dir, install_dir / "bin"]
-    for triplet in WINDOWS_VCPKG_TRIPLETS:
+    if self.enable_gmp or (self.enable_suitesparse and self.disable_metis_suitesparse):
+        vcpkg_triplets = ["x64-windows", "xw"]
+    elif self.enable_suitesparse and self.disable_metis_suitesparse:
+        vcpkg_triplets = ["xw"]
+    else:
+        vcpkg_triplets = []
+    for triplet in vcpkg_triplets:
         runtime_dirs.extend(
             [
                 build_temp / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
@@ -79,12 +84,13 @@ def _runtime_dll_dirs(build_temp: Path, install_dir: Path, installed_pkg_dir: Pa
                 ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
             ]
         )
-    runtime_dirs.extend(
-        [
-            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
-            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
-        ]
-    )
+        runtime_dirs.extend(
+            [
+                ROOT / "external" / "vcpkg" / "packages" / f"gmp_{triplet}" / "bin",
+                ROOT / "external" / "vcpkg" / "installed" / triplet / "bin",
+            ]
+        )
+    
     return runtime_dirs
 
 
@@ -124,11 +130,38 @@ def _build_env(env: dict[str, str] | None = None) -> dict[str, str]:
     return merged
 
 
-def _run(cmd: list[str], cwd: Path | None = None, env: dict[str, str] | None = None) -> None:
+def _run(
+    cmd: list[str],
+    cwd: Path | None = None,
+    env: dict[str, str] | None = None,
+) -> None:
     resolved_cmd = list(cmd)
+
     if resolved_cmd and resolved_cmd[0] == "cmake":
         resolved_cmd[0] = _cmake_executable()
-    subprocess.run(resolved_cmd, cwd=str(cwd or ROOT), env=_build_env(env), check=True)
+
+    process = subprocess.Popen(
+        resolved_cmd,
+        cwd=str(cwd or ROOT),
+        env=_build_env(env),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        bufsize=1,
+    )
+
+    assert process.stdout is not None
+
+    with open("CONOUT$", "w", encoding="utf-8", errors="replace") as terminal:
+        for line in process.stdout:
+            terminal.write(line)
+            terminal.flush()
+
+    return_code = process.wait()
+    if return_code != 0:
+        raise subprocess.CalledProcessError(return_code, resolved_cmd)
 
 
 def _cmake_args(prefix: Path, extra: list[str] | None = None) -> list[str]:
@@ -194,9 +227,15 @@ def _copy_runtime_dlls_to_targets(target_dirs: list[Path], source_dirs: list[Pat
         _copy_runtime_dlls(target_dir, source_dirs)
 
 
-def _tutorial_runtime_dll_dirs(build_dir: Path) -> list[Path]:
+def _tutorial_runtime_dll_dirs(self, build_dir: Path) -> list[Path]:
     runtime_dirs: list[Path] = [build_dir / "Release", build_dir / "Debug", build_dir / "RelWithDebInfo", build_dir / "MinSizeRel"]
-    for triplet in WINDOWS_VCPKG_TRIPLETS:
+    if self.enable_gmp or (self.enable_suitesparse and self.disable_metis_suitesparse):
+        vcpkg_triplets = ["x64-windows", "xw"]
+    elif self.enable_suitesparse and self.disable_metis_suitesparse:
+        vcpkg_triplets = ["xw"]
+    else:
+        vcpkg_triplets = []
+    for triplet in vcpkg_triplets:
         runtime_dirs.extend(
             [
                 build_dir / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
@@ -205,12 +244,12 @@ def _tutorial_runtime_dll_dirs(build_dir: Path) -> list[Path]:
                 ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
             ]
         )
-    runtime_dirs.extend(
-        [
-            ROOT / "external" / "vcpkg" / "packages" / "gmp_x64-windows" / "bin",
-            ROOT / "external" / "vcpkg" / "installed" / "x64-windows" / "bin",
-        ]
-    )
+        runtime_dirs.extend(
+            [
+                ROOT / "external" / "vcpkg" / "packages" / f"gmp_{triplet}" / "bin",
+                ROOT / "external" / "vcpkg" / "installed" / triplet / "bin",
+            ]
+        )
     return runtime_dirs
 
 
@@ -225,36 +264,38 @@ class BuildStandalone(Command):
     user_options = [
         ("build-dir=", None, "Build directory"),
         ("install-dir=", None, "Install directory"),
-        ("use-gmp", None, "Enable GMP support if found"),
-        ("no-use-gmp", None, "Disable GMP support"),
+        ("enable-gmp", None, "Enable GMP support if found"),
+        ("disable-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
         ("enable-suitesparse", None, "Enable SuiteSparse support"),
         ("disable-suitesparse", None, "Disable SuiteSparse support"),
+        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
+        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
+    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.install_dir = None
-        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
-        self.no_use_gmp = False
+        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
+        self.disable_gmp = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
-        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
-        self.no_auto_install_gmp = False
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.disable_metis_suitesparse = False
 
     def finalize_options(self) -> None:
         if self.build_dir is None:
             self.build_dir = str(_build_dir("standalone"))
         if self.install_dir is None:
             self.install_dir = str(Path(self.build_dir) / "install")
-        if self.no_use_gmp:
-            self.use_gmp = False
+        if self.disable_gmp:
+            self.enable_gmp = False
         if self.disable_suitesparse:
             self.enable_suitesparse = False
-        if self.no_auto_install_gmp:
-            self.auto_install_gmp = False
+        if self.disable_metis_suitesparse:
+            self.enable_metis_suitesparse = False
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
@@ -264,9 +305,10 @@ class BuildStandalone(Command):
             [
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=OFF",
-                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
-                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
+                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
+                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
         _configure_and_build(build_dir, configure_args, build_target="directional")
@@ -278,22 +320,24 @@ class BuildTutorials(Command):
     user_options = [
         ("build-dir=", None, "Build directory"),
         ("tutorial=", None, "Tutorial prefix like 501 or full directory name; comma-separated lists are supported"),
-        ("use-gmp", None, "Enable GMP support if found"),
-        ("no-use-gmp", None, "Disable GMP support"),
+        ("enable-gmp", None, "Enable GMP support if found"),
+        ("disable-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
         ("enable-suitesparse", None, "Enable SuiteSparse support"),
         ("disable-suitesparse", None, "Disable SuiteSparse support"),
+        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
+        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
     ]
-    boolean_options = ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
+    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.tutorial = None
-        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
-        self.no_use_gmp = False
-        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
-        self.no_auto_install_gmp = False
+        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
+        self.disable_gmp = False
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.disable_metis_suitesparse = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
 
@@ -302,12 +346,12 @@ class BuildTutorials(Command):
             self.tutorial = self.tutorial.strip()
             if not self.tutorial:
                 self.tutorial = None
-        if self.no_use_gmp:
-            self.use_gmp = False
-        if self.no_auto_install_gmp:
-            self.auto_install_gmp = False
+        if self.disable_gmp:
+            self.enable_gmp = False
         if self.disable_suitesparse:
             self.enable_suitesparse = False
+        if self.disable_metis_suitesparse:
+            self.enable_metis_suitesparse = False
         if self.build_dir is None:
             if self.tutorial is None:
                 self.build_dir = str(_build_dir("tutorials"))
@@ -323,45 +367,48 @@ class BuildTutorials(Command):
                 "-DBUILD_SHARED_LIBS=OFF",
                 "-DBUILD_TUTORIALS=ON",
                 "-DBUILD_PYTHON=OFF",
+                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
-                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
-                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
+                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
         _configure_and_build(build_dir, configure_args)
         tutorial_exe_dirs = sorted({path.parent for path in build_dir.glob("**/*.exe")})
-        _copy_runtime_dlls_to_targets(tutorial_exe_dirs, _tutorial_runtime_dll_dirs(build_dir))
+        _copy_runtime_dlls_to_targets(tutorial_exe_dirs, _tutorial_runtime_dll_dirs(self, build_dir))
 
 
 class CMakeBuildExt(build_ext):
     user_options = build_ext.user_options + [
-        ("use-gmp", None, "Enable GMP support if found"),
-        ("no-use-gmp", None, "Disable GMP support"),
+        ("enable-gmp", None, "Enable GMP support if found"),
+        ("disable-gmp", None, "Disable GMP support"),
         ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
         ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
         ("enable-suitesparse", None, "Enable SuiteSparse support"),
         ("disable-suitesparse", None, "Disable SuiteSparse support"),
+        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
+        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
     ]
-    boolean_options = build_ext.boolean_options + ["use-gmp", "no-use-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse"]
+    boolean_options = build_ext.boolean_options + ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
 
     def initialize_options(self) -> None:
         super().initialize_options()
-        self.use_gmp = _env_bool("DIRECTIONAL_USE_GMP", True)
-        self.no_use_gmp = False
-        self.auto_install_gmp = _env_bool("DIRECTIONAL_AUTO_INSTALL_GMP", True)
-        self.no_auto_install_gmp = False
+        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
+        self.disable_gmp = False
         self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
         self.disable_suitesparse = False
+        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", True)
+        self.disable_metis_suitesparse = False
 
     def finalize_options(self) -> None:
         super().finalize_options()
-        if self.no_use_gmp:
-            self.use_gmp = False
-        if self.no_auto_install_gmp:
-            self.auto_install_gmp = False
+        if self.disable_gmp:
+            self.enable_gmp = False
         if self.disable_suitesparse:
             self.enable_suitesparse = False
+        if self.disable_metis_suitesparse:
+            self.enable_metis_suitesparse = False
 
     def build_extension(self, ext: Extension) -> None:
         if not isinstance(ext, CMakeExtension):
@@ -387,10 +434,11 @@ class CMakeBuildExt(build_ext):
             [
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=ON",
+                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-Dpybind11_DIR={pybind11_dir}",
-                f"-DUSE_GMP={_as_cmake_bool(bool(self.use_gmp))}",
-                f"-DDIRECTIONAL_AUTO_INSTALL_GMP={_as_cmake_bool(bool(self.auto_install_gmp))}",
+                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
+                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
 
@@ -411,7 +459,7 @@ class CMakeBuildExt(build_ext):
         shutil.copy2(package_src, target_pkg_dir / "__init__.py")
 
         # Copy runtime DLL dependencies beside the extension module so Python can load them.
-        _copy_runtime_dlls(target_pkg_dir, _runtime_dll_dirs(build_temp, install_dir, installed_pkg_dir))
+        _copy_runtime_dlls(target_pkg_dir, _runtime_dll_dirs(self, build_temp, install_dir, installed_pkg_dir))
 
 
 setup(

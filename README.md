@@ -20,8 +20,7 @@ Key build toggles:
 - `BUILD_TUTORIALS=ON|OFF`
 - `BUILD_PYTHON=ON|OFF`
 - `BUILD_SHARED_LIBS=ON|OFF`
-- `USE_GMP=ON|OFF`
-- `DIRECTIONAL_AUTO_INSTALL_GMP=ON|OFF`
+- `DIRECTIONAL_ENABLE_GMP=ON|OFF`
 
 ## Prerequisites
 
@@ -55,14 +54,13 @@ python -m pip install -r requirements.txt
 Common GMP flags for all CMake examples:
 
 ```powershell
--DUSE_GMP=ON|OFF
--DDIRECTIONAL_AUTO_INSTALL_GMP=ON|OFF
+-DDIRECTIONAL_ENABLE_GMP=ON|OFF
 ```
 
 Examples:
 
-- GMP enabled: `-DUSE_GMP=ON -DDIRECTIONAL_AUTO_INSTALL_GMP=ON`
-- non-GMP build: `-DUSE_GMP=OFF -DDIRECTIONAL_AUTO_INSTALL_GMP=OFF`
+- GMP enabled: `-DDIRECTIONAL_ENABLE_GMP=ON`
+- non-GMP build: `-DDIRECTIONAL_ENABLE_GMP=OFF`
 
 ### 1. Build and install the standalone library
 
@@ -74,8 +72,7 @@ cmake -S . -B build\standalone `
   -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install `
   -DBUILD_TUTORIALS=OFF `
   -DBUILD_PYTHON=OFF `
-  -DUSE_GMP=ON `
-  -DDIRECTIONAL_AUTO_INSTALL_GMP=ON
+  -DDIRECTIONAL_ENABLE_GMP=ON `
 
 cmake --build build\standalone --config Release --target directional
 cmake --install build\standalone --config Release
@@ -110,8 +107,7 @@ cmake -S . -B build\tutorials `
   -DBUILD_SHARED_LIBS=OFF `
   -DBUILD_TUTORIALS=ON `
   -DBUILD_PYTHON=OFF `
-  -DUSE_GMP=ON `
-  -DDIRECTIONAL_AUTO_INSTALL_GMP=ON
+  -DDIRECTIONAL_ENABLE_GMP=ON `
 
 cmake --build build\tutorials --config Release
 ```
@@ -131,8 +127,7 @@ cmake -S . -B build\tutorials-single `
   -DBUILD_TUTORIALS=ON `
   -DBUILD_PYTHON=OFF `
   -DDIRECTIONAL_TUTORIALS=501 `
-  -DUSE_GMP=ON `
-  -DDIRECTIONAL_AUTO_INSTALL_GMP=ON
+  -DDIRECTIONAL_ENABLE_GMP=ON `
 
 cmake --build build\tutorials-single --config Release
 ```
@@ -163,8 +158,7 @@ cmake -S . -B build\python `
   -DBUILD_TUTORIALS=OFF `
   -DBUILD_PYTHON=ON `
   -Dpybind11_DIR="C:\path\reported\by\pybind11\cmakedir" `
-  -DUSE_GMP=ON `
-  -DDIRECTIONAL_AUTO_INSTALL_GMP=ON
+  -DDIRECTIONAL_ENABLE_GMP=ON `
 
 cmake --build build\python --config Release --target _directional
 cmake --install build\python --config Release
@@ -185,8 +179,8 @@ That folder will contain:
 
 Supported GMP flags:
 
-- `--use-gmp`
-- `--no-use-gmp`
+- `--enable-gmp`
+- `--disable-gmp`
 - `--auto-install-gmp`
 - `--no-auto-install-gmp`
 
@@ -204,8 +198,8 @@ Default output locations:
 Examples:
 
 ```powershell
-python setup.py standalone --use-gmp --auto-install-gmp
-python setup.py standalone --no-use-gmp --no-auto-install-gmp
+python setup.py standalone --enable-gmp --auto-install-gmp
+python setup.py standalone --disable-gmp --no-auto-install-gmp
 ```
 
 ### 2. Build the tutorial suite
@@ -237,7 +231,7 @@ python setup.py tutorials --tutorial=501,505
 With explicit GMP selection:
 
 ```powershell
-python setup.py tutorials --tutorial=501 --no-use-gmp --no-auto-install-gmp
+python setup.py tutorials --tutorial=501 --disable-gmp --no-auto-install-gmp
 ```
 
 When `--tutorial` is provided, `setup.py` uses a tutorial-specific build directory by default so single-target builds do not reuse the full-suite build tree. Full names like `501_SeamlessIntegration` still work if you want exact naming.
@@ -251,8 +245,8 @@ python setup.py bdist_wheel
 `bdist_wheel` goes through `build_ext`, so GMP flags must be passed to `build_ext` in the same invocation:
 
 ```powershell
-python setup.py build_ext --no-use-gmp bdist_wheel
-python setup.py build_ext --use-gmp --auto-install-gmp bdist_wheel
+python setup.py build_ext --disable-gmp bdist_wheel
+python setup.py build_ext --enable-gmp --auto-install-gmp bdist_wheel
 ```
 
 Wheel output:
@@ -281,28 +275,27 @@ python -m pip install --force-reinstall dist\directional-0.1.0-cp313-cp313-win_a
 
 Supported keys:
 
-- `-Cuse-gmp=1|0`
+- `-Cenable-gmp=1|0`
 - `-Cauto-install-gmp=1|0`
 
 Examples:
 
 ```powershell
-python -m pip install . --no-build-isolation -Cuse-gmp=1 -Cauto-install-gmp=1
-python -m pip install . --no-build-isolation -Cuse-gmp=0 -Cauto-install-gmp=0
-python -m pip wheel . --no-deps --no-build-isolation -Cuse-gmp=0 -Cauto-install-gmp=0
+python -m pip install . --no-build-isolation -Cenable-gmp=1 -Cauto-install-gmp=1
+python -m pip install . --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
+python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
 ```
 
 Namespaced aliases are also accepted if you prefer explicit keys:
 
 ```powershell
-python -m pip install . --no-build-isolation -Cdirectional.use-gmp=0 -Cdirectional.auto-install-gmp=0
+python -m pip install . --no-build-isolation -Cdirectional.enable-gmp=0 -Cdirectional.auto-install-gmp=0
 ```
 
 Environment-variable fallback also works:
 
 ```powershell
-$env:DIRECTIONAL_USE_GMP = "0"
-$env:DIRECTIONAL_AUTO_INSTALL_GMP = "0"
+$env:DIRECTIONAL_DIRECTIONAL_ENABLE_GMP = "0"
 python -m pip install . --no-build-isolation
 ```
 
@@ -367,8 +360,8 @@ The following commands were verified in this fork:
 ```powershell
 python setup.py standalone
 python setup.py tutorials
-python setup.py build_ext --no-use-gmp bdist_wheel
-python -m pip wheel . --no-deps --no-build-isolation -Cuse-gmp=0 -Cauto-install-gmp=0
+python setup.py build_ext --disable-gmp bdist_wheel
+python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
 ```
 
 And for pure CMake:

@@ -1,93 +1,110 @@
-function(_directional_collect_windows_runtime_files out_var)
+function(_directional_find_file out_var)
   set(options)
   set(one_value_args)
-  set(multi_value_args CANDIDATES PATTERNS)
-  cmake_parse_arguments(PARSE_ARGV 1 _runtime "${options}" "${one_value_args}" "${multi_value_args}")
+  set(multi_value_args PATTERNS DIRECTORIES)
+  cmake_parse_arguments(ARG "${options}" "${one_value_args}"
+                        "${multi_value_args}" ${ARGN})
 
-  set(_runtime_files)
-  foreach(_candidate_dir IN LISTS _runtime_CANDIDATES)
-    if(EXISTS "${_candidate_dir}")
-      set(_candidate_patterns)
-      foreach(_pattern IN LISTS _runtime_PATTERNS)
-        list(APPEND _candidate_patterns "${_candidate_dir}/${_pattern}")
-      endforeach()
-      file(GLOB _candidate_files ${_candidate_patterns})
-      list(APPEND _runtime_files ${_candidate_files})
+  set(_matches)
+
+  foreach(_dir IN LISTS ARG_DIRECTORIES)
+    if(NOT IS_DIRECTORY "${_dir}")
+      continue()
     endif()
+
+    foreach(_pattern IN LISTS ARG_PATTERNS)
+      file(
+        GLOB_RECURSE _found
+        LIST_DIRECTORIES FALSE
+        "${_dir}/${_pattern}")
+      list(APPEND _matches ${_found})
+    endforeach()
   endforeach()
 
-  list(REMOVE_DUPLICATES _runtime_files)
-  set(${out_var} "${_runtime_files}" PARENT_SCOPE)
-endfunction()
+  list(REMOVE_DUPLICATES _matches)
+  list(LENGTH _matches _count)
 
-function(_directional_collect_suitesparse_runtime_files out_var)
-  set(_runtime_candidates)
-
-  if(WIN32)
-    if(SUITESPARSE_LIBRARIES)
-      get_filename_component(_suitesparse_library_dir "${SUITESPARSE_LIBRARIES}" DIRECTORY)
-      list(APPEND _runtime_candidates
-        "${_suitesparse_library_dir}"
-        "${_suitesparse_library_dir}/../bin"
-        "${_suitesparse_library_dir}/../debug/bin"
-      )
-    endif()
-
-    _directional_append_vcpkg_paths(_runtime_candidates "bin" "debug/bin")
-    list(APPEND _runtime_candidates
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/suitesparse_x64-windows/bin"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/bin"
+  if(_count EQUAL 0)
+    set(${out_var}
+        "${out_var}-NOTFOUND"
+        PARENT_SCOPE)
+    message(
+      WARNING
+        "No matching file matching patterns ${ARG_PATTERNS}\nfound in directories: ${ARG_DIRECTORIES}"
     )
-
-    _directional_collect_windows_runtime_files(${out_var}
-      CANDIDATES ${_runtime_candidates}
-      PATTERNS
-        "amd*.dll"
-        "btf*.dll"
-        "camd*.dll"
-        "ccolamd*.dll"
-        "cholmod*.dll"
-        "colamd*.dll"
-        "klu*.dll"
-        "ldl*.dll"
-        "metis*.dll"
-        "openblas*.dll"
-        "spqr*.dll"
-        "SuiteSparse*.dll"
-        "suitesparseconfig*.dll"
-        "umfpack*.dll"
-    )
+  elseif(_count EQUAL 1)
+    list(GET _matches 0 _selected)
+    set(${out_var}
+        "${_selected}"
+        PARENT_SCOPE)
   else()
-    set(${out_var} "" PARENT_SCOPE)
+    list(GET _matches 0 _selected)
+    set(${out_var}
+        "${_selected}"
+        PARENT_SCOPE)
+    message(DEBUG "Multiple files matched for patterns ${ARG_PATTERNS}:\n"
+            "  ${_matches}\n" "Selecting the first one: ${_selected}")
   endif()
 endfunction()
 
-function(_directional_collect_gmp_runtime_files out_var)
-  set(_runtime_candidates)
+function(_directional_find_directory out_var)
+  set(options)
+  set(one_value_args)
+  set(multi_value_args PATTERNS DIRECTORIES)
+  cmake_parse_arguments(ARG "${options}" "${one_value_args}"
+                        "${multi_value_args}" ${ARGN})
 
-  if(WIN32)
-    if(GMP_LIBRARIES)
-      get_filename_component(_gmp_library_dir "${GMP_LIBRARIES}" DIRECTORY)
-      list(APPEND _runtime_candidates
-        "${_gmp_library_dir}"
-        "${_gmp_library_dir}/../bin"
-        "${_gmp_library_dir}/../debug/bin"
-      )
+  set(_all_found_dirs "")
+  set(_final_matches "")
+
+  foreach(_dir IN LISTS ARG_DIRECTORIES)
+    if(NOT IS_DIRECTORY "${_dir}")
+      continue()
     endif()
 
-    _directional_append_vcpkg_paths(_runtime_candidates "bin" "debug/bin")
-    list(APPEND _runtime_candidates
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/packages/gmp_x64-windows/bin"
-      "${CMAKE_CURRENT_SOURCE_DIR}/external/vcpkg/installed/x64-windows/bin"
-    )
+    file(
+      GLOB_RECURSE _current_scan
+      LIST_DIRECTORIES TRUE
+      "${_dir}/*")
+    list(APPEND _all_found_dirs ${_current_scan})
+  endforeach()
 
-    _directional_collect_windows_runtime_files(${out_var}
-      CANDIDATES ${_runtime_candidates}
-      PATTERNS
-        "gmp*.dll"
-        "gmpxx*.dll"
+  foreach(_item IN LISTS _all_found_dirs)
+    if(IS_DIRECTORY "${_item}")
+
+      foreach(_pattern IN LISTS ARG_PATTERNS)
+        string(REGEX REPLACE "([.+?^$\(\)\[\]{}|\\-])" "\\\\\\1" _safe_pattern
+                             "${_pattern}")
+        string(REGEX REPLACE "\\*" "[^/]*" _regex_pattern "${_safe_pattern}")
+        if(_item MATCHES "/${_regex_pattern}$")
+          list(APPEND _final_matches "${_item}")
+          break()
+        endif()
+      endforeach()
+
+    endif()
+  endforeach()
+
+  list(REMOVE_DUPLICATES _final_matches)
+  list(LENGTH _final_matches _count)
+
+  if(_count EQUAL 0)
+    set(${out_var}
+        "${out_var}-NOTFOUND"
+        PARENT_SCOPE)
+    message(
+      WARNING
+        "No directory matching patterns ${ARG_PATTERNS}\nfound in directories: ${ARG_DIRECTORIES}"
     )
   else()
-    set(${out_var} "" PARENT_SCOPE)
+    list(GET _final_matches 0 _selected)
+    set(${out_var}
+        "${_selected}"
+        PARENT_SCOPE)
+
+    if(_count GREATER 1)
+      message(DEBUG "Multiple directories matched for ${out_var}:\n"
+              "  ${_final_matches}\n" "Selecting the first one: ${_selected}")
+    endif()
   endif()
 endfunction()

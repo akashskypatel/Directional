@@ -34,14 +34,14 @@ def _normalize_bool(value: object) -> str | None:
 @contextlib.contextmanager
 def _apply_directional_settings(config_settings: dict[str, object] | None) -> Iterator[None]:
     mappings = {
-        "DIRECTIONAL_USE_GMP": _normalize_bool(
+        "DIRECTIONAL_DIRECTIONAL_ENABLE_GMP": _normalize_bool(
             _get_setting(config_settings, "use-gmp", "directional.use-gmp")
-        ),
-        "DIRECTIONAL_AUTO_INSTALL_GMP": _normalize_bool(
-            _get_setting(config_settings, "auto-install-gmp", "directional.auto-install-gmp")
         ),
         "DIRECTIONAL_ENABLE_SUITESPARSE": _normalize_bool(
             _get_setting(config_settings, "enable-suitesparse", "directional.enable-suitesparse")
+        ),
+        "DIRECTIONAL_ENABLE_METIS_SUITESPARSE": _normalize_bool(
+            _get_setting(config_settings, "enable-metis-suitesparse", "directional.enable-metis-suitesparse")
         ),
     }
     previous: dict[str, str | None] = {key: os.environ.get(key) for key in mappings}
