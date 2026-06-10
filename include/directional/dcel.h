@@ -9,18 +9,17 @@
 #define DIRECTIONAL_DCEL_H
 
 #include <Eigen/Core>
-#include <vector>
+
+#include <algorithm>
 #include <deque>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
-#include <algorithm>
 #include <utility>
-#include <deque>
-#include <iostream>
-#include <limits>
+#include <vector>
 
 namespace directional
 {
@@ -1538,7 +1537,6 @@ public:
       return true;
     }
 
-    // Only used after having checked for consistency!
     /**
      * Compact the DCEL by removing invalid entities and remapping every
      * surviving reference.
@@ -1905,15 +1903,6 @@ public:
       edges.swap(compacted.edges);
       faces.swap(compacted.faces);
 
-      // if (verbose) {
-      //   std::cout << "[Directional::DCEL::clean_mesh()]: "
-      //             << "vertices " << oldVertexCount << " -> " << vertices.size()
-      //             << ", halfedges " << oldHalfedgeCount << " -> "
-      //             << halfedges.size() << ", edges " << oldEdgeCount << " -> "
-      //             << edges.size() << ", faces " << oldFaceCount << " -> "
-      //             << faces.size() << '\n';
-      // }
-
       return true;
     }
 
@@ -1937,105 +1926,76 @@ public:
     }
     
     bool JoinFace(const int heindex) {
-        if (halfedges[heindex].twin < 0)
-            return true;  //there is no joining of boundary faces
-        
-        int Face1 = halfedges[heindex].face;
-        int Face2 = halfedges[halfedges[heindex].twin].face;
-        
-        /*int hebegin = faces[Face1].halfedge;
-         int heiterate = hebegin;
-         do {
-         heiterate = halfedges[heiterate].next;
-         } while (heiterate != hebegin);
-         
-         hebegin = faces[Face1].halfedge;
-         heiterate = hebegin;
-         do {
-         heiterate = halfedges[heiterate].next;
-         } while (heiterate != hebegin);*/
-        
-        //check if spike edge
-        if ((halfedges[heindex].prev == halfedges[heindex].twin) ||
-            (halfedges[heindex].next == halfedges[heindex].twin)) {
-            
-            
-            int CloseEdge = heindex;
-            if (halfedges[heindex].prev == halfedges[heindex].twin)
-                CloseEdge = halfedges[heindex].twin;
-            
-            halfedges[CloseEdge].valid = halfedges[halfedges[CloseEdge].twin].valid = edges[halfedges[CloseEdge].edge] = false;
-            
-            vertices[halfedges[CloseEdge].vertex].halfedge = halfedges[halfedges[CloseEdge].twin].next;
-            faces[Face1].halfedge = halfedges[CloseEdge].prev;
-            
-            halfedges[halfedges[CloseEdge].prev].next = halfedges[halfedges[CloseEdge].twin].next;
-            halfedges[halfedges[halfedges[CloseEdge].twin].next].prev = halfedges[CloseEdge].prev;
-            
-            vertices[halfedges[halfedges[CloseEdge].twin].vertex].valid = false;
-            //faces[Face1].Numvertices-=2;  //although one vertex should appear twice
-            
-            
-            int hebegin = faces[Face1].halfedge;
-            int heiterate = hebegin;
-            do {
-                
-                heiterate = halfedges[heiterate].next;
-            } while (heiterate != hebegin);
-            
-            hebegin = faces[Face1].halfedge;
-            heiterate = hebegin;
-            do {
-                heiterate = halfedges[heiterate].next;
-            } while (heiterate != hebegin);
-            
-            
-            return true;
-        }
-        
-        if (Face1 == Face2)
-            return false;  //we don't remove non-spike edges with the same faces to not disconnect a chain
-        
-        /*int hebegin = faces[Face2].halfedge;
-         int heiterate = hebegin;
-         do {
-         heiterate = halfedges[heiterate].next;
-         } while (heiterate != hebegin);*/
-        
-        faces[Face1].halfedge = halfedges[heindex].next;
-        faces[Face2].valid = false;
-        
-        //faces[Face2].halfedge=halfedges[halfedges[heindex].twin].next;
-        
-        halfedges[heindex].valid = halfedges[halfedges[heindex].twin].valid = false;
-        
-        halfedges[halfedges[heindex].next].prev = halfedges[halfedges[heindex].twin].prev;
-        halfedges[halfedges[halfedges[heindex].twin].prev].next = halfedges[heindex].next;
-        
-        halfedges[halfedges[halfedges[heindex].twin].next].prev = halfedges[heindex].prev;
-        halfedges[halfedges[heindex].prev].next = halfedges[halfedges[heindex].twin].next;
-        
-        vertices[halfedges[heindex].vertex].halfedge = halfedges[halfedges[heindex].twin].next;
-        vertices[halfedges[halfedges[heindex].next].vertex].halfedge = halfedges[heindex].next;
-        
-        //all other floating halfedges should renounce this one
-        for (int i = 0; i < halfedges.size(); i++)
-            if (halfedges[i].face == Face2)
-                halfedges[i].face = Face1;
-        
-        //faces[Face1].NumVertices+=faces[Face2].NumVertices-2;
-        
-        //DebugLog<<"Official number of vertices: "<<faces[Face1].NumVertices;
-        
-        /*hebegin = faces[Face1].halfedge;
-         heiterate = hebegin;
-         int currVertex = 0;
-         do {
-         //faces[Face1].Vertices[currVertex++]=halfedges[heiterate].vertex;
-         heiterate = halfedges[heiterate].next;
-         } while (heiterate != hebegin);*/
-        
+      const int twin = halfedges[heindex].twin;
+
+      if (twin < 0) {
         return true;
+      }
+
+      const int face1 = halfedges[heindex].face;
+      const int face2 = halfedges[twin].face;
+
+      /*
+       * Spike edge: remove both halfedges and the vertex collapsed by the
+       * spike, but keep the remaining face.
+       */
+      if (halfedges[heindex].prev == twin || halfedges[heindex].next == twin) {
+        int closeEdge = heindex;
+
+        if (halfedges[heindex].prev == twin) {
+          closeEdge = twin;
+        }
+
+        const int closeTwin = halfedges[closeEdge].twin;
+
+        halfedges[closeEdge].valid = false;
+        halfedges[closeTwin].valid = false;
+        edges[halfedges[closeEdge].edge].valid = false;
+
+        vertices[halfedges[closeEdge].vertex].halfedge =
+            halfedges[closeTwin].next;
+
+        faces[face1].halfedge = halfedges[closeEdge].prev;
+
+        halfedges[halfedges[closeEdge].prev].next = halfedges[closeTwin].next;
+        halfedges[halfedges[closeTwin].next].prev = halfedges[closeEdge].prev;
+
+        vertices[halfedges[closeTwin].vertex].valid = false;
+
+        return true;
+      }
+
+      /*
+       * Do not remove non-spike edges whose two sides belong to the same face:
+       * that can disconnect a chain.
+       */
+      if (face1 == face2) {
+        return false;
+      }
+
+      faces[face1].halfedge = halfedges[heindex].next;
+      faces[face2].valid = false;
+
+      halfedges[heindex].valid = false;
+      halfedges[twin].valid = false;
+
+      halfedges[halfedges[heindex].next].prev = halfedges[twin].prev;
+      halfedges[halfedges[twin].prev].next = halfedges[heindex].next;
+
+      halfedges[halfedges[twin].next].prev = halfedges[heindex].prev;
+      halfedges[halfedges[heindex].prev].next = halfedges[twin].next;
+
+      vertices[halfedges[heindex].vertex].halfedge = halfedges[twin].next;
+      vertices[halfedges[halfedges[heindex].next].vertex].halfedge =
+          halfedges[heindex].next;
+
+      for (int i = 0; i < static_cast<int>(halfedges.size()); ++i) {
+        if (halfedges[i].face == face2) {
+          halfedges[i].face = face1;
+        }
+      }
+
+      return true;
     }
 
     /**

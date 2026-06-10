@@ -7,25 +7,26 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+
 #include <algorithm>
+#include <array>
 #include <chrono>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <directional/dcel.h>
-#include <directional/exact_geometric_definitions.h>
-#include <directional/setup_mesher.h>
+#include <deque>
+#include <iostream>
 #include <limits>
-#include <math.h>
 #include <queue>
 #include <set>
 #include <stdexcept>
 #include <unordered_map>
 #include <utility>
 #include <vector>
-#include <array>
-#include <cmath>
-#include <iostream>
-#include <deque>
+
+#include <directional/dcel.h>
+#include <directional/exact_geometric_definitions.h>
+#include <directional/setup_mesher.h>
 
 namespace directional {
 
@@ -2742,14 +2743,6 @@ public:
 
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
 
-    /*
-     * Set to -1 to disable unconditional diagnostics for one vertex.
-     *
-     * The detailed fan dump is always emitted when an invalid singleton
-     * interior fan is encountered, regardless of this value.
-     */
-    constexpr int diagnosticVertex = 576;
-
     const auto fail = [&](const int vertex, const char *message,
                           const int he = -1) {
       if (mData.verbose) {
@@ -2767,9 +2760,12 @@ public:
       return false;
     };
 
-    const auto shouldLogVertex = [&](const int vertex) {
-      return mData.verbose &&
-             (diagnosticVertex < 0 || vertex == diagnosticVertex);
+    /*
+     * Per-vertex fan tracing is disabled in the cleaned production path.
+     * Failure paths still call dumpFan() when mData.verbose is enabled.
+     */
+    const auto shouldLogVertex = [](const int) {
+      return false;
     };
 
     const auto printHalfedge = [&](const char *prefix, const int he) {
@@ -2915,7 +2911,7 @@ public:
         if (shouldLogVertex(i)) {
           std::cerr << "[Directional::NFunctionMesher::"
                        "realign_hex_halfedges()]: "
-                    << "skipping diagnostic vertex " << i
+                    << "skipping vertex " << i
                     << ": vertex is invalid\n";
         }
 
@@ -2926,7 +2922,7 @@ public:
         if (shouldLogVertex(i)) {
           std::cerr << "[Directional::NFunctionMesher::"
                        "realign_hex_halfedges()]: "
-                    << "skipping diagnostic vertex " << i
+                    << "skipping vertex " << i
                     << ": classified as pure triangle\n";
         }
 
@@ -3208,19 +3204,6 @@ public:
        */
       if (!scratch.isBoundary[static_cast<std::size_t>(i)] &&
           hexHEOrder.size() < 2) {
-        std::cerr << "[Directional::NFunctionMesher::"
-                     "realign_hex_halfedges()]: "
-                  << "singleton interior fan diagnostic"
-                  << " vertex=" << i << " retainedCount=" << hexHEOrder.size()
-                  << " retainedHalfedge=" << hexHEOrder.front()
-                  << " storedHalfedge="
-                  << genDcel.vertices[static_cast<std::size_t>(i)].halfedge
-                  << " boundaryClassification="
-                  << scratch.isBoundary[static_cast<std::size_t>(i)]
-                  << " pureTriangleClassification="
-                  << scratch.isPureTriangle[static_cast<std::size_t>(i)]
-                  << '\n';
-
         dumpFan(i, heBegin,
                 "interior fan contains fewer than two retained "
                 "halfedges");
@@ -3440,7 +3423,7 @@ public:
       if (logThisVertex) {
         std::cerr << "[Directional::NFunctionMesher::"
                      "realign_hex_halfedges()]: "
-                  << "completed diagnostic vertex " << i << " successfully\n";
+                  << "completed vertex " << i << " successfully\n";
       }
     }
 
@@ -5054,36 +5037,6 @@ public:
     }
     logPhase("Post-remap pre-twinning consistency check");
 
-    const auto printHalfedgeEndpoints = [&](const int he) {
-      if (!genDcel.valid_halfedge(he)) {
-        std::cerr << "  halfedge " << he << " is invalid\n";
-        return;
-      }
-
-      const auto &halfedge = genDcel.halfedges[static_cast<std::size_t>(he)];
-
-      const int next = halfedge.next;
-
-      const int target =
-          genDcel.valid_halfedge(next)
-              ? genDcel.halfedges[static_cast<std::size_t>(next)].vertex
-              : -1;
-
-      std::cerr << "  he=" << he << " endpoints=(" << halfedge.vertex << ", "
-                << target << ") twin=" << halfedge.twin
-                << " edge=" << halfedge.edge << " face=" << halfedge.face
-                << " valid=" << halfedge.valid << '\n';
-    };
-
-    if (mData.verbose) {
-      std::cerr << "[Directional::NFunctionMesher::"
-                   "unify_low_valence_vertices()]: "
-                << "pre-final-retwin diagnostic\n";
-
-      printHalfedgeEndpoints(9325);
-      printHalfedgeEndpoints(7704);
-    }
-
     const int retwinned = retwin_halfedges();
 
     if (retwinned < 0) {
@@ -5219,8 +5172,6 @@ public:
   void init(const unsigned long resolution = 10000000UL) {
     using namespace std;
     using namespace Eigen;
-
-    constexpr int diagnosticCanonicalHalfedge = 715;
 
     // ============================================================
     // 1. Validate input dimensions
@@ -5369,25 +5320,6 @@ public:
       }
     }
 
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "cut-matrix diagnostic\n"
-                << "  dimensions: " << mData.orig2CutMat.rows() << " x "
-                << mData.orig2CutMat.cols() << '\n'
-                << "  floating nonzeros: " << floatingNonzeroCount << '\n'
-                << "  exact nonzeros: " << exactNonzeroCount << '\n'
-                << "  floating-only nonzeros: " << floatingOnlyNonzeroCount
-                << '\n'
-                << "  exact-only nonzeros: " << exactOnlyNonzeroCount << '\n'
-                << "  maximum coefficient difference: "
-                << maximumMatrixDifference << '\n'
-                << "  maximum difference location: row="
-                << maximumMatrixDifferenceRow
-                << " column=" << maximumMatrixDifferenceColumn << '\n'
-                << "  floating coefficient: " << maximumFloatCoefficient << '\n'
-                << "  exact coefficient: " << maximumExactCoefficient << '\n';
-    }
-
     if (maximumMatrixDifference != 0.0 || floatingOnlyNonzeroCount != 0 ||
         exactOnlyNonzeroCount != 0) {
       throw std::runtime_error(
@@ -5458,23 +5390,6 @@ public:
 
         maximumIntegerNearestValue = nearestInteger;
       }
-    }
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "final integer-variable diagnostic\n"
-                << "  unique integer variables: " << integerVariableCount
-                << '\n'
-                << "  duplicate integerVars entries: "
-                << duplicateIntegerVariableEntries << '\n'
-                << "  residuals above rationalization tolerance: "
-                << integerVariablesAboveTolerance << '\n'
-                << "  maximum final integer-variable residual: "
-                << maximumIntegerResidual << '\n'
-                << "  maximum residual variable index: "
-                << maximumIntegerResidualIndex << '\n'
-                << "  solved value: " << maximumIntegerValue << '\n'
-                << "  nearest integer: " << maximumIntegerNearestValue << '\n';
     }
 
     if (maximumIntegerResidual > 0.25) {
@@ -5549,20 +5464,6 @@ public:
                   sourceSquaredError /
                   static_cast<long double>(sourceVariableCount)))
             : 0.0;
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "source rationalization diagnostic\n"
-                << "  tolerance: " << tolerance << '\n'
-                << "  maximum error: " << maximumSourceRationalizationError
-                << '\n'
-                << "  maximum error index: "
-                << maximumSourceRationalizationIndex << '\n'
-                << "  original value: " << maximumSourceOriginalValue << '\n'
-                << "  exact-as-double value: " << maximumSourceExactValue
-                << '\n'
-                << "  RMS error: " << sourceRmsError << '\n';
-    }
 
     if (maximumSourceRationalizationError > 2.0 * tolerance) {
       std::cerr << "[Directional::NFunctionMesher::init()]: "
@@ -5639,25 +5540,6 @@ public:
                   static_cast<long double>(cutNFunctionVec.size())))
             : 0.0;
 
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "floating/exact cut-function diagnostic\n"
-                << "  maximum error: " << maximumCutError << '\n'
-                << "  maximum error index: " << maximumCutErrorIndex << '\n'
-                << "  exact value: " << maximumCutExactValue << '\n'
-                << "  floating value: " << maximumCutDoubleValue << '\n'
-                << "  RMS error: " << cutRmsError << '\n';
-
-      if (maximumCutErrorIndex >= 0) {
-        const int cutCorner = maximumCutErrorIndex / mData.N;
-
-        const int function = maximumCutErrorIndex % mData.N;
-
-        std::cout << "  cutCorner: " << cutCorner << '\n'
-                  << "  function: " << function << '\n';
-      }
-    }
-
     const double expectedCutError = std::max(
         1.0e-10,
         32.0 * std::numeric_limits<double>::epsilon() *
@@ -5709,15 +5591,6 @@ public:
           ++usedCutVertexCount;
         }
       }
-    }
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "cut-corner indexing diagnostic\n"
-                << "  cut vertex count: " << cutVertexCount << '\n'
-                << "  used cut vertices: " << usedCutVertexCount << '\n'
-                << "  minimum cutF index: " << minimumCutVertex << '\n'
-                << "  maximum cutF index: " << maximumCutVertex << '\n';
     }
 
     // ============================================================
@@ -5807,17 +5680,6 @@ public:
           }
         }
       }
-    }
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::init()]: "
-                << "stored face-function diagnostic\n"
-                << "  maximum error: " << maximumStoredFaceError << '\n'
-                << "  face: " << maximumStoredFace << '\n'
-                << "  corner: " << maximumStoredCorner << '\n'
-                << "  function: " << maximumStoredFunction << '\n'
-                << "  exact: " << maximumStoredExactValue << '\n'
-                << "  floating: " << maximumStoredFloatingValue << '\n';
     }
 
     // ============================================================
@@ -6027,18 +5889,6 @@ public:
             std::max(std::abs(startOffsetU - std::round(startOffsetU)),
                      std::abs(startOffsetV - std::round(startOffsetV)));
 
-        if (halfedgeIndex == diagnosticCanonicalHalfedge && mData.verbose) {
-          std::cerr << "[Directional::NFunctionMesher::init()]: "
-                    << "diagnostic seam transport"
-                    << " halfedge=" << halfedgeIndex << " twin=" << twin
-                    << " rotation=" << rotation
-                    << " endpointMismatch=" << endpointMismatch
-                    << " integerResidual=" << integerResidual
-                    << " startOffset=(" << startOffsetU << ", " << startOffsetV
-                    << ") endOffset=(" << endOffsetU << ", " << endOffsetV
-                    << ")\n";
-        }
-
         const bool betterEndpointMatch =
             endpointMismatch < bestCandidate.endpointMismatch;
 
@@ -6117,27 +5967,6 @@ public:
       }
     }
 
-    if (mData.verbose) {
-      std::cout
-          << "[Directional::NFunctionMesher::init()]: "
-          << "transport-aware global seam diagnostic\n"
-          << "  checked interior edges: " << checkedInteriorEdges << '\n'
-          << "  valid transported seams: " << validTransportCount << '\n'
-          << "  invalid transported seams: " << invalidTransportCount << '\n'
-          << "  seam tolerance: " << seamTolerance << '\n'
-          << "  maximum best endpoint mismatch: " << maximumBestEndpointMismatch
-          << '\n'
-          << "  maximum mismatch halfedge/twin: " << maximumMismatchHalfedge
-          << " / " << maximumMismatchTwin << '\n'
-          << "  selected rotation at maximum mismatch: "
-          << maximumMismatchRotation << '\n'
-          << "  maximum best integer residual: " << maximumBestIntegerResidual
-          << '\n'
-          << "  maximum residual halfedge/twin: " << maximumResidualHalfedge
-          << " / " << maximumResidualTwin << '\n'
-          << "  selected rotation at maximum residual: "
-          << maximumResidualRotation << '\n';
-    }
   }
 
   // corner angles is per vertex in each F

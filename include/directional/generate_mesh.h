@@ -12,18 +12,15 @@
 #include <Eigen/Sparse>
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <directional/NFunctionMesher.h>
 #include <directional/dcel.h>
 #include <directional/exact_geometric_definitions.h>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <math.h>
 #include <queue>
 #include <set>
 #include <stdexcept>
@@ -31,118 +28,7 @@
 #include <utility>
 #include <vector>
 
-// #include <operators/io_stream.hpp>
-
 namespace directional {
-
-struct ArrangementTimings {
-  double linePencilBuild = 0.0;
-  double lineClip = 0.0;
-  double intersections = 0.0;
-  double edgeBuild = 0.0;
-  double vertexMerge = 0.0;
-  double edgeMerge = 0.0;
-  double dcelBuild = 0.0;
-  double radialSort = 0.0;
-  double faceBuild = 0.0;
-  double outerFace = 0.0;
-  double project3D = 0.0;
-  double aggregate = 0.0;
-  std::size_t calls = 0;
-
-  double total() const {
-    return linePencilBuild + lineClip + intersections + edgeBuild +
-           vertexMerge + edgeMerge + dcelBuild + radialSort + faceBuild +
-           outerFace + project3D + aggregate;
-  }
-};
-
-inline ArrangementTimings &arrangement_timings_accumulator() {
-  static thread_local ArrangementTimings timings;
-  return timings;
-}
-
-inline void reset_arrangement_timings() {
-  arrangement_timings_accumulator() = ArrangementTimings{};
-}
-
-inline double arrangement_seconds_since(
-    const std::chrono::high_resolution_clock::time_point &start) {
-  return std::chrono::duration<double>(
-             std::chrono::high_resolution_clock::now() - start)
-      .count();
-}
-
-inline void print_arrangement_timings(
-    const ArrangementTimings &timings,
-    const char *prefix = "[Directional::NFunctionMesher::generate_mesh()]: ") {
-#ifdef defined(LOG_TIMING)
-  std::cout << prefix << "arrangement timing summary over " << timings.calls
-            << " triangles\n"
-            << prefix << "  line pencils:  " << timings.linePencilBuild
-            << " s\n"
-            << prefix << "  line clipping: " << timings.lineClip << " s\n"
-            << prefix << "  intersections: " << timings.intersections << " s\n"
-            << prefix << "  edge build:    " << timings.edgeBuild << " s\n"
-            << prefix << "  vertex merge:  " << timings.vertexMerge << " s\n"
-            << prefix << "  edge merge:    " << timings.edgeMerge << " s\n"
-            << prefix << "  DCEL build:    " << timings.dcelBuild << " s\n"
-            << prefix << "  radial sort:   " << timings.radialSort << " s\n"
-            << prefix << "  face build:    " << timings.faceBuild << " s\n"
-            << prefix << "  outer face:    " << timings.outerFace << " s\n"
-            << prefix << "  3D projection: " << timings.project3D << " s\n"
-            << prefix << "  aggregation:   " << timings.aggregate << " s\n"
-            << prefix << "  measured total:" << timings.total() << " s\n";
-#endif
-}
-
-struct LineClippingTimings {
-  std::size_t calls = 0;
-  std::size_t pencilsProcessed = 0;
-  std::size_t activePencils = 0;
-  std::size_t candidateLines = 0;
-  std::size_t acceptedSegments = 0;
-
-  double bounds = 0.0;
-  double edgeIntersections = 0.0;
-  double exactComparisons = 0.0;
-  double segmentConstruction = 0.0;
-  double metadataConstruction = 0.0;
-  double pencilIntersections = 0.0;
-  double total = 0.0;
-};
-
-inline LineClippingTimings &line_clipping_timings_accumulator() {
-  static LineClippingTimings timings;
-  return timings;
-}
-
-inline void reset_line_clipping_timings() {
-  line_clipping_timings_accumulator() = LineClippingTimings{};
-}
-
-inline void print_line_clipping_timings(const LineClippingTimings &timings) {
-#ifdef defined(LOG_TIMING)
-  std::cout << "[Directional::NFunctionMesher::arrange_on_triangle()]: "
-               "line clipping timing summary\n"
-            << "  calls:                 " << timings.calls << '\n'
-            << "  pencils processed:     " << timings.pencilsProcessed << '\n'
-            << "  active pencils:        " << timings.activePencils << '\n'
-            << "  candidate lines:       " << timings.candidateLines << '\n'
-            << "  accepted segments:     " << timings.acceptedSegments << '\n'
-            << "  bounds/setup:          " << timings.bounds << " s\n"
-            << "  triangle intersections:" << timings.edgeIntersections
-            << " s\n"
-            << "  exact comparisons:     " << timings.exactComparisons << " s\n"
-            << "  segment construction:  " << timings.segmentConstruction
-            << " s\n"
-            << "  metadata construction: " << timings.metadataConstruction
-            << " s\n"
-            << "  pencil intersections:  " << timings.pencilIntersections
-            << " s\n"
-            << "  total clipping:        " << timings.total << " s\n";
-#endif
-}
 
 // arranging a line set on a triangle
 // triangle is represented by a 3x2 matrix of (CCW) coordinates
@@ -158,25 +44,6 @@ void NFunctionMesher::arrange_on_triangle(
     FunctionDCEL &triDcel, const int triangleIndex) {
   using namespace std;
   using namespace Eigen;
-
-  using Clock = std::chrono::high_resolution_clock;
-
-  LineClippingTimings &clipTimings = line_clipping_timings_accumulator();
-
-  ArrangementTimings &arrangementTimings = arrangement_timings_accumulator();
-
-  ++arrangementTimings.calls;
-  ++clipTimings.calls;
-  clipTimings.pencilsProcessed += linePencils.size();
-
-  const auto totalStart = Clock::now();
-
-  /*
-   * ------------------------------------------------------------
-   * Phase 1: setup and capacity estimation.
-   * ------------------------------------------------------------
-   */
-  auto phaseStart = Clock::now();
 
   if (triangle.size() != 3) {
     throw std::invalid_argument(
@@ -217,7 +84,6 @@ void NFunctionMesher::arrange_on_triangle(
 
     maximumSegmentCount += lineCount;
 
-    clipTimings.candidateLines += lineCount;
   }
 
   std::vector<SegmentData> inData;
@@ -232,14 +98,11 @@ void NFunctionMesher::arrange_on_triangle(
    */
   std::vector<std::uint8_t> isPencilActive(linePencils.size(), std::uint8_t{0});
 
-  clipTimings.bounds += arrangement_seconds_since(phaseStart);
-
   /*
    * ------------------------------------------------------------
    * Phase 2: insert the three triangle boundary segments.
    * ------------------------------------------------------------
    */
-  phaseStart = Clock::now();
 
   for (int edge = 0; edge < 3; ++edge) {
     SegmentData newData;
@@ -257,16 +120,10 @@ void NFunctionMesher::arrange_on_triangle(
     inData.push_back(std::move(newData));
   }
 
-  clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
-
-  phaseStart = Clock::now();
-
   for (int edge = 0; edge < 3; ++edge) {
     inSegments.emplace_back(triangle[static_cast<std::size_t>(edge)],
                             triangle[static_cast<std::size_t>((edge + 1) % 3)]);
   }
-
-  clipTimings.segmentConstruction += arrangement_seconds_since(phaseStart);
 
   const std::array<int, 3> originalHalfedges = {
       triangleData[0].first, triangleData[1].first, triangleData[2].first};
@@ -291,14 +148,11 @@ void NFunctionMesher::arrange_on_triangle(
      * comparisons internal to the helper cannot be separated here
      * without instrumenting that helper itself.
      */
-    phaseStart = Clock::now();
 
     linepencil_triangle_intersection(
         pencil, triangle, intEdges, intFaces, inParams, outParams,
         triangleParameters, triangleIndex, static_cast<int>(pencilIndex),
         linePencilData[pencilIndex], &originalHalfedges);
-
-    clipTimings.edgeIntersections += arrangement_seconds_since(phaseStart);
 
     const std::size_t lineCount = static_cast<std::size_t>(pencil.numLines);
 
@@ -316,7 +170,6 @@ void NFunctionMesher::arrange_on_triangle(
     /*
      * Add intersections lying on each source triangle edge.
      */
-    phaseStart = Clock::now();
 
     for (int edge = 0; edge < 3; ++edge) {
       const auto &parameters =
@@ -326,47 +179,11 @@ void NFunctionMesher::arrange_on_triangle(
 
       const int originalHalfedge = boundaryData.origHalfedge;
 
-      /*
-       * triangleData[edge].second records the local orientation relative
-       * to the original halfedge. Preserve both the local and canonical
-       * parameters in the diagnostic.
-       */
-      const bool orientationMatchesCanonical =
-    triangleData[static_cast<std::size_t>(edge)].second;
-
       for (const ENumber &localParameter : parameters) {
         boundaryData.intParams.insert(localParameter);
 
-        if (originalHalfedge == 21772) {
-          const ENumber canonicalParameter = orientationMatchesCanonical
-                                                 ? localParameter
-                                                 : ENumber(1) - localParameter;
-
-          const EVector2 edgeDirection =
-              inSegments[static_cast<std::size_t>(edge)].target -
-              inSegments[static_cast<std::size_t>(edge)].source;
-
-          const EVector2 localPoint =
-              inSegments[static_cast<std::size_t>(edge)].source +
-              edgeDirection * localParameter;
-
-          std::cerr << "[Directional::NFunctionMesher::"
-                       "arrange_on_triangle()]: "
-                    << "triangle=" << triangleIndex
-                    << " originalHalfedge=" << originalHalfedge
-                    << " localEdge=" << edge << " orientationMatchesCanonical="
-                    << orientationMatchesCanonical
-                    << " localPencil=" << pencilIndex
-                    << " originalFunction=" << linePencilData[pencilIndex]
-                    << " localParameter=" << localParameter.to_double()
-                    << " canonicalParameter=" << canonicalParameter.to_double()
-                    << " localPoint=(" << localPoint[0].to_double() << ", "
-                    << localPoint[1].to_double() << ")\n";
-        }
       }
     }
-
-    clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
 
     bool pencilActive = false;
 
@@ -380,13 +197,11 @@ void NFunctionMesher::arrange_on_triangle(
       }
 
       pencilActive = true;
-      ++clipTimings.acceptedSegments;
 
       /*
        * Build metadata independently from geometric segment
        * construction so the costs are visible separately.
        */
-      phaseStart = Clock::now();
 
       SegmentData newData;
 
@@ -413,10 +228,6 @@ void NFunctionMesher::arrange_on_triangle(
 
       inData.push_back(std::move(newData));
 
-      clipTimings.metadataConstruction += arrangement_seconds_since(phaseStart);
-
-      phaseStart = Clock::now();
-
       const ENumber lineOffset(static_cast<long long>(lineIndex), 1);
 
       const EVector2 basePoint = pencil.p0 + pencil.pVec * lineOffset;
@@ -429,13 +240,11 @@ void NFunctionMesher::arrange_on_triangle(
 
       inSegments.emplace_back(segmentSource, segmentTarget);
 
-      clipTimings.segmentConstruction += arrangement_seconds_since(phaseStart);
     }
 
     if (pencilActive) {
       isPencilActive[pencilIndex] = std::uint8_t{1};
 
-      ++clipTimings.activePencils;
     }
   }
 
@@ -444,7 +253,6 @@ void NFunctionMesher::arrange_on_triangle(
    * Phase 4: precompute intersections between active line pencils.
    * ------------------------------------------------------------
    */
-  phaseStart = Clock::now();
 
   const std::size_t pencilCount = linePencils.size();
 
@@ -546,18 +354,6 @@ void NFunctionMesher::arrange_on_triangle(
     }
   }
 
-  clipTimings.pencilIntersections += arrangement_seconds_since(phaseStart);
-
-  /*
-   * This total intentionally covers only clipping/precomputation.
-   * segment_arrangement() remains timed by ArrangementTimings.
-   */
-  const double clippingTotal = arrangement_seconds_since(totalStart);
-
-  clipTimings.total += clippingTotal;
-
-  arrangementTimings.lineClip += clippingTotal;
-
   segment_arrangement(inSegments, inData, I2dts, t00s,
                       pencilPairHasPointIntersections, V, triDcel);
 }
@@ -568,9 +364,6 @@ void NFunctionMesher::segment_arrangement(
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
     const std::vector<std::uint8_t> &pencilPairHasPointIntersections,
     std::vector<EVector2> &V, FunctionDCEL &triDcel) {
-
-  ArrangementTimings &timings = arrangement_timings_accumulator();
-  auto phaseStart = std::chrono::high_resolution_clock::now();
 
   // First creating a graph of segment intersection
 
@@ -609,7 +402,6 @@ void NFunctionMesher::segment_arrangement(
     tScales[i] =
         ENumber(1) / (*data[i].intParams.rbegin() - *data[i].intParams.begin());
     segDirections[i] = segments[i].target - segments[i].source;
-    // std::cout<<"triangle edge"<<i<<std::endl;
     for (ENumber intParam : data[i].intParams) {
       ENumber t = (intParam - *data[i].intParams.begin()) * tScales[i];
       arrVertices.push_back(segments[i].source + segDirections[i] * t);
@@ -621,8 +413,6 @@ void NFunctionMesher::segment_arrangement(
       //     arrVertices.push_back(segments[i].source * (ENumber(1) - intParam)
       //     + segments[i].target * intParam);
       SV[i].insert(std::pair<ENumber, int>(t, arrVertices.size() - 1));
-      // std::cout<<"New arrangement vertex at
-      // "<<arrVertices[arrVertices.size()-1]<<std::endl; std::cout<<"On segment
       // "<<segments[i].source<<"->"<<segments[i].target<<std::endl;
     }
   }
@@ -815,33 +605,23 @@ void NFunctionMesher::segment_arrangement(
     }
   }
 
-  timings.intersections += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
-
   // Creating the arrangement edges
   std::vector<std::pair<int, int>> arrEdges;
   std::vector<std::vector<SegmentData>> edgeData;
   for (int i = 0; i < SV.size(); i++) {
-    // std::cout<<"Enumerating segment i"<<std::endl;
     for (std::set<std::pair<ENumber, int>>::iterator si = SV[i].begin();
          si != SV[i].end(); si++) {
-      // std::cout<<si->first.to_double()<<",";
       std::set<std::pair<ENumber, int>>::iterator nextsi = si;
       nextsi++;
       if (nextsi != SV[i].end()) {
         arrEdges.push_back(std::pair<int, int>(si->second, nextsi->second));
-        // std::cout<<"Creating an edge ("<<si->second<<",
         // "<<nextsi->second<<")"<<std::endl;
         std::vector<SegmentData> newEdgeData(1);
         newEdgeData[0] = data[i];
         edgeData.push_back(newEdgeData);
       }
     }
-    // std::cout<<std::endl;
   }
-
-  timings.edgeBuild += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
 
   // unifying vertices with the same coordinates (necessary because some
   // segments may intersect at the same point and segment overlaps
@@ -877,15 +657,10 @@ void NFunctionMesher::segment_arrangement(
     arrEdges[i] = std::pair<int, int>(uniqueVertexMap[arrEdges[i].first],
                                       uniqueVertexMap[arrEdges[i].second]);
 
-  timings.vertexMerge += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
-
-  // std::cout<<"Edges after unifying vertices "<<std::endl;
   /*
 // unifying edges with the same vertices (aggregating data) or degenerated
 Eigen::VectorXi isDeadEdge = Eigen::VectorXi::Constant(arrEdges.size(), 0);
 for (int i = 0; i < arrEdges.size(); i++) {
-// std::cout<<"("<<arrEdges[i].first<<",
 // "<<arrEdges[i].second<<")"<<std::endl;
 if (arrEdges[i].first == arrEdges[i].second)
   isDeadEdge[i] = 1;
@@ -1003,18 +778,9 @@ edgeData = newEdgeData;
                        std::make_move_iterator(source.end()));
   }
 
-  if (mData.verbose && mergedDuplicateEdges > 0) {
-    std::cout << "[Directional::NFunctionMesher::"
-                 "segment_arrangement()]: merged "
-              << mergedDuplicateEdges
-              << " duplicate or reverse-oriented arrangement edges\n";
-  }
-
   arrEdges = std::move(uniqueArrEdges);
   edgeData = std::move(uniqueEdgeData);
 
-  timings.edgeMerge += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
   // Generating the DCEL
   triDcel.vertices.resize(arrVertices.size());
   triDcel.edges.resize(arrEdges.size());
@@ -1060,9 +826,6 @@ edgeData = newEdgeData;
     // arrVertices[arrEdges[i].first]; slopeVec[i] = slope_function(edgeVec);
   }
 
-  timings.dcelBuild += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
-
   /*
    * Build vertex-to-edge incidence once in O(E).
    *
@@ -1101,11 +864,6 @@ edgeData = newEdgeData;
        */
       continue;
     }
-
-    /*std::cout<<"Orienting vertex "<<i<<std::endl;
-     for (int k=0;k<adjArrEdges.size();k++)
-     std::cout<<"Adjacent edge "<<adjArrEdges[k].first<<" with vertices
-     "<<arrEdges[adjArrEdges[k].first].first<<","<<arrEdges[adjArrEdges[k].first].second<<std::endl;*/
 
     // doing the lazy thing first, since this is very unlikely to fail unless
     // parameterization is very degenerate
@@ -1166,7 +924,6 @@ edgeData = newEdgeData;
       }
     } else {
       // doing everything in exact numbers
-      // std::cout<<"resorting to slope_function() in exact numbers"<<std::endl;
       std::vector<std::pair<ENumber, int>> exactCCWSegments;
 
       exactCCWSegments.reserve(adjArrEdges.size());
@@ -1201,11 +958,6 @@ edgeData = newEdgeData;
       }
     }
 
-    // std::cout<<"Ordering of edges"<<std::endl;
-    /*for (std::set<std::pair<ENumber, int>>::iterator si =
-     CCWSegments.begin(); si!=CCWSegments.end();si++)
-     std::cout<<si->second<<","; std::cout<<std::endl;*/
-
     int currHE = -1;
     for (int s = 0; s < edgeOrder.size(); s++) {
       bool outgoing = adjArrEdges[edgeOrder[s]].second;
@@ -1238,9 +990,6 @@ edgeData = newEdgeData;
     }
   }
 
-  timings.radialSort += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
-
   // generating faces (at this stage, there is also an outer face)
   int currFace = 0;
   for (int i = 0; i < triDcel.halfedges.size(); i++) {
@@ -1255,7 +1004,6 @@ edgeData = newEdgeData;
     int currHE = beginHE;
     int counter = 0;
     do {
-      // std::cout<<currHE<<",";
       triDcel.halfedges[currHE].face = newFace.ID;
       currHE = triDcel.halfedges[currHE].next;
       counter++;
@@ -1264,7 +1012,6 @@ edgeData = newEdgeData;
                                  "face traversal did not close");
       }
     } while (currHE != beginHE);
-    // std::cout<<std::endl;
     triDcel.faces.push_back(newFace);
   }
   int numFaces = currFace;
@@ -1277,9 +1024,6 @@ edgeData = newEdgeData;
         "segment_arrangement(): "
         "local DCEL is inconsistent before outer-face removal");
   }
-
-  timings.faceBuild += arrangement_seconds_since(phaseStart);
-  phaseStart = std::chrono::high_resolution_clock::now();
 
   // Removing the outer face and deleting all associated halfedges
   // identifying it by the only polygon with negative signed area (expensive?)
@@ -1414,7 +1158,6 @@ edgeData = newEdgeData;
                              "local DCEL is inconsistent after cleanup");
   }
 
-  timings.outerFace += arrangement_seconds_since(phaseStart);
 }
 
 // The top mesh generation function
@@ -1422,11 +1165,6 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
 
   using namespace std;
   using namespace Eigen;
-
-  reset_arrangement_timings();
-
-  const auto generationStart = std::chrono::high_resolution_clock::now();
-  auto intervalStart = generationStart;
 
   const std::vector<EVector2> canonicalTriangle2D = {
       EVector2({ENumber(0), ENumber(0)}), EVector2({ENumber(1), ENumber(0)}),
@@ -1437,24 +1175,9 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
   const EVector2 canonicalE20({ENumber(0), ENumber(-1)});
 
   const double coordinateTolerance = 1.0 / static_cast<double>(resolution);
-  reset_line_clipping_timings();
   for (int findex = 0; findex < origMesh.F.rows(); ++findex) {
     const char *triangleStage = "triangle initialization";
     try {
-      auto trianglePhaseStart = std::chrono::high_resolution_clock::now();
-
-      if (mData.verbose && findex > 0 && (findex % 1000 == 0)) {
-        const double intervalSeconds = arrangement_seconds_since(intervalStart);
-
-        std::cout
-            << "[Directional::NFunctionMesher::generate_mesh()]: Triangle "
-            << findex
-            << " completed; previous 1000 triangles: " << intervalSeconds
-            << " seconds\n";
-
-        print_arrangement_timings(arrangement_timings_accumulator());
-        intervalStart = std::chrono::high_resolution_clock::now();
-      }
 
       const std::vector<ENumber> &triExactNFunction = exactNFunction[findex];
 
@@ -1527,85 +1250,6 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
 
         currentHalfedge = origMesh.dcel.halfedges[currentHalfedge].next;
       }
-      /*
-       * Diagnose exact integrated function values on both sides of the known
-       * mismatched canonical source edge.
-       */
-      for (int localEdge = 0; localEdge < 3; ++localEdge) {
-        const auto &edgeData =
-            triangleData[static_cast<std::size_t>(localEdge)];
-
-        if (edgeData.first != 21772) {
-          continue;
-        }
-
-        const int localStartCorner = localEdge;
-
-        const int localEndCorner = (localEdge + 1) % 3;
-
-        const bool orientationMatchesCanonical = edgeData.second;
-
-        std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
-                  << "edge-function values"
-                  << " triangle=" << findex << " localEdge=" << localEdge
-                  << " canonicalHalfedge=" << edgeData.first
-                  << " orientationMatchesCanonical="
-                  << orientationMatchesCanonical << '\n';
-
-        for (int function = 0; function < mData.N; ++function) {
-          const ENumber &localStart =
-              triExactNFunction[static_cast<std::size_t>(
-                  localStartCorner * mData.N + function)];
-
-          const ENumber &localEnd = triExactNFunction[static_cast<std::size_t>(
-              localEndCorner * mData.N + function)];
-
-          /*
-           * Reorder endpoint values so both incident triangles are printed
-           * in the direction of canonical halfedge 21772.
-           */
-          const ENumber &canonicalStart =
-              orientationMatchesCanonical ? localStart : localEnd;
-
-          const ENumber &canonicalEnd =
-              orientationMatchesCanonical ? localEnd : localStart;
-
-          std::cerr << "  function=" << function
-                    << " localStart=" << localStart.to_double()
-                    << " localEnd=" << localEnd.to_double()
-                    << " canonicalStart=" << canonicalStart.to_double()
-                    << " canonicalEnd=" << canonicalEnd.to_double()
-                    << " delta=" << (canonicalEnd - canonicalStart).to_double()
-                    << '\n';
-          const double startDouble = canonicalStart.to_double();
-
-          const double endDouble = canonicalEnd.to_double();
-
-          const double intervalMin = std::min(startDouble, endDouble);
-
-          const double intervalMax = std::max(startDouble, endDouble);
-
-          std::cerr << " interval=[" << intervalMin << ", " << intervalMax
-                    << "] integers=";
-
-          const long long firstInteger =
-              static_cast<long long>(std::ceil(intervalMin));
-
-          const long long lastInteger =
-              static_cast<long long>(std::floor(intervalMax));
-
-          if (firstInteger > lastInteger) {
-            std::cerr << "none";
-          } else {
-            for (long long iso = firstInteger; iso <= lastInteger; ++iso) {
-              std::cerr << iso << ' ';
-            }
-          }
-
-          std::cerr << '\n';
-        }
-      }
-      const auto linePencilStart = std::chrono::high_resolution_clock::now();
       std::vector<LinePencil> linePencils;
       std::vector<int> linePencilData;
       linePencils.reserve(mData.N);
@@ -1726,39 +1370,11 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
       FunctionDCEL localArrangement;
       std::vector<EVector2> localVertices2D;
 
-      arrangement_timings_accumulator().linePencilBuild +=
-          arrangement_seconds_since(linePencilStart);
-
       triangleStage = "triangle arrangement";
-
-      if (triangleData[0].first == 21772 || triangleData[1].first == 21772 ||
-          triangleData[2].first == 21772) {
-        int diagnosticHalfedge = origMesh.dcel.faces[findex].halfedge;
-
-        for (int corner = 0; corner < 3; ++corner) {
-          const int twin = origMesh.dcel.halfedges[diagnosticHalfedge].twin;
-
-          const int canonical = twin < 0 ? diagnosticHalfedge
-                                         : std::min(diagnosticHalfedge, twin);
-
-          if (canonical == 21772) {
-            std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
-                      << "triangle=" << findex
-                      << " localHalfedge=" << diagnosticHalfedge
-                      << " twin=" << twin << " canonicalHalfedge=" << canonical
-                      << " orientationMatchesCanonical="
-                      << (diagnosticHalfedge == canonical) << '\n';
-          }
-
-          diagnosticHalfedge = origMesh.dcel.halfedges[diagnosticHalfedge].next;
-        }
-      }
 
       arrange_on_triangle(canonicalTriangle2D, triangleData, linePencils,
                           linePencilData, localVertices2D, localArrangement,
                           findex);
-
-      trianglePhaseStart = std::chrono::high_resolution_clock::now();
 
       if (localArrangement.vertices.size() != localVertices2D.size()) {
         throw std::runtime_error(
@@ -1780,10 +1396,6 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
         vertex.data.coords << point3D[0].to_double(), point3D[1].to_double(),
             point3D[2].to_double();
       }
-
-      arrangement_timings_accumulator().project3D +=
-          arrangement_seconds_since(trianglePhaseStart);
-      trianglePhaseStart = std::chrono::high_resolution_clock::now();
 
       /*
        * Approximate global arrangement capacity.
@@ -1810,8 +1422,6 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
         throw std::runtime_error("Failed to aggregate DCEL");
       }
 
-      arrangement_timings_accumulator().aggregate +=
-          arrangement_seconds_since(trianglePhaseStart);
     } catch (const std::exception &error) {
       std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
                 << "triangle " << findex << " failed during " << triangleStage
@@ -1832,18 +1442,6 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
         "NFunctionMesher::generate_mesh(): generated DCEL is inconsistent");
   }
 
-  if (mData.verbose) {
-    const double totalSeconds = arrangement_seconds_since(generationStart);
-
-    std::cout << "[Directional::NFunctionMesher::generate_mesh()]: completed "
-              << origMesh.F.rows() << " triangles in " << totalSeconds
-              << " seconds\n";
-
-    print_arrangement_timings(arrangement_timings_accumulator());
-    print_line_clipping_timings(line_clipping_timings_accumulator());
-    print_linepencil_triangle_timings(
-        linepencil_triangle_timings_accumulator());
-  }
 }
 
 } // namespace directional
