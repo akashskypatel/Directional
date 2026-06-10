@@ -204,6 +204,8 @@ def _configure_and_build(build_dir: Path, configure_args: list[str], build_targe
     build_cmd = ["cmake", "--build", str(build_dir), "--config", "Release"]
     if build_target:
         build_cmd.extend(["--target", build_target])
+    else:
+        build_cmd.extend(["--target", "install"])
     _run(build_cmd)
     return build_dir
 
@@ -375,8 +377,6 @@ class BuildTutorials(Command):
             ],
         )
         _configure_and_build(build_dir, configure_args)
-        tutorial_exe_dirs = sorted({path.parent for path in build_dir.glob("**/*.exe")})
-        _copy_runtime_dlls_to_targets(tutorial_exe_dirs, _tutorial_runtime_dll_dirs(self, build_dir))
 
 
 class CMakeBuildExt(build_ext):
@@ -458,7 +458,6 @@ class CMakeBuildExt(build_ext):
         target_pkg_dir = extdir
         shutil.copy2(package_src, target_pkg_dir / "__init__.py")
 
-        # Copy runtime DLL dependencies beside the extension module so Python can load them.
         _copy_runtime_dlls(target_pkg_dir, _runtime_dll_dirs(self, build_temp, install_dir, installed_pkg_dir))
 
 

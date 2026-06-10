@@ -148,6 +148,14 @@ install(
 if(WIN32)
   install(FILES $<TARGET_RUNTIME_DLLS:directional>
           DESTINATION "${CMAKE_INSTALL_BINDIR}")
+  if(DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
+    foreach(_excluded IN LISTS _directional_tutorials_exclude)
+      get_target_property(_runtime_dll SuiteSparse::${_excluded} SUITESPARSE_RUNTIME_DLL)
+      if(_runtime_dll)
+        install(FILES "${_runtime_dll}" DESTINATION "${CMAKE_INSTALL_BINDIR}")
+      endif()
+    endforeach()
+  endif()
 endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
