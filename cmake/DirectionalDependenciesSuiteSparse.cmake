@@ -18,7 +18,10 @@ function(_directional_find_suitesparse)
       lib/cmake
       lib64/cmake)
   else()
-    find_package(SuiteSparse CONFIG QUIET)
+    include(FindSuiteSparse)
+    find_package(SuiteSparse REQUIRED)
+    message(STATUS "Found SuiteSparse: ${SuiteSparse_FOUND}")
+    return()
   endif()
 
   if(SuiteSparse_FOUND AND TARGET SuiteSparse::umfpack)

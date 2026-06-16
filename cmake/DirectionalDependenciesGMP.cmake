@@ -1,4 +1,9 @@
 function(_directional_find_gmp)
+  if(NOT MSVC)
+    include(FindGMP)
+    find_package(GMP REQUIRED)
+    return()
+  endif()
   if(TARGET GMP::GMP)
     get_target_property(_existing_gmp_includes GMP::GMP
                         INTERFACE_INCLUDE_DIRECTORIES)

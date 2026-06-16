@@ -69,7 +69,7 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
     endif()
   endif()
 
-  if(SUITESPARSE_TARGETS)
+  if(SUITESPARSE_TARGETS OR SuiteSparse_FOUND)
     target_compile_definitions(
       directional
       INTERFACE DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
@@ -95,7 +95,8 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
       endif()
     endforeach()
   else()
-    message(FATAL_ERROR "SuiteSparse not found for Directional core.")
+    message(FATAL_ERROR "SuiteSparse not found for Directional core."
+    "Please install SuiteSparse or disable DIRECTIONAL_ENABLE_SUITESPARSE.")
   endif()
 endif()
 
@@ -123,6 +124,7 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(
       WARNING
         "GMP not found for Directional core. Continuing without DIRECTIONAL_ENABLE_GMP."
+        "Please install GMP and try again."
     )
 
     set(DIRECTIONAL_ENABLE_GMP
