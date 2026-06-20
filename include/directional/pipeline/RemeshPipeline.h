@@ -14,7 +14,7 @@
 #include <directional/core/CartesianField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/core/TriMesh.h>
-#include <directional/integration/integrate.h>
+#include <directional/integration/Integrate.h>
 #include <directional/meshing/Mesher.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/integration/IntegrationData.h>
