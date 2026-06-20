@@ -75,6 +75,7 @@ function(_directional_find_gmp)
       message(STATUS "GMP runtime library found: ${GMP_RUNTIME_LIBRARY}")
     else()
       message(WARNING "GMP runtime library not found")
+      return()
     endif()
 
     _directional_find_file(
@@ -91,6 +92,7 @@ function(_directional_find_gmp)
       message(STATUS "GMPXX runtime library found: ${GMPXX_RUNTIME_LIBRARY}")
     else()
       message(WARNING "GMPXX runtime library not found")
+      return()
     endif()
   endif()
 
