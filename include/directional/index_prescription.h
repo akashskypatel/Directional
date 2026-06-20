@@ -12,7 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <numbers>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 #include <directional/rotation_to_raw.h>
 
 

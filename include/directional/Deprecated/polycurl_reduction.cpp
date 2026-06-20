@@ -8,10 +8,10 @@
 
 
 #include <iostream>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 #include <directional/polycurl_reduction.h>
 #include <directional/field_local_global_conversions.h>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 #include <directional/sort.h>
 #include <directional/sort_vectors_ccw.h>
 #include <directional/sparse.h>

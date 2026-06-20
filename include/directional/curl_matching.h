@@ -12,9 +12,9 @@
 #include <vector>
 #include <cmath>
 #include <Eigen/Core>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/effort_to_indices.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/FieldMatching.h>
 
 namespace directional
 {

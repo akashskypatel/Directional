@@ -7,9 +7,9 @@
 #ifndef DIRECTIONAL_SUBDIVIDE_FIELD_H
 #define DIRECTIONAL_SUBDIVIDE_FIELD_H
 #include <Eigen/Eigen>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 #include <directional/IntrinsicFaceTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 #include <directional/SubdivisionInternal/build_directional_subdivision_operators.h>
 #include <directional/SubdivisionInternal/shm_edge_topology.h>
 #include <directional/SubdivisionInternal/shm_halfcurl_coefficients.h>

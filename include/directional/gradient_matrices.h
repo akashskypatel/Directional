@@ -11,9 +11,9 @@
 #include <iostream>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
-#include <directional/TriMesh.h>
-#include <directional/sparse_diagonal.h>
-#include <directional/single_to_N_matrix.h>
+#include <directional/core/TriMesh.h>
+#include <directional/util/EigenSparseUtils.h>
+#include <directional/util/EigenSparseUtils.h>
 #include <directional/extrinsic_intrinsic_matrices.h>
 
 

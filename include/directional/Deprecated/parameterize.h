@@ -22,9 +22,9 @@
 #include <igl/min_quad_with_fixed.h>
 #include <igl/matlab_format.h>
 #include <igl/bounding_box_diagonal.h>
-#include <directional/tree.h>
+#include <directional/util/GraphUtils.h>
 #include <directional/representative_to_raw.h>
-#include <directional/principal_matching.h>
+#include <directional/fields/FieldMatching.h>
 #include <directional/setup_parameterization.h>
 
 

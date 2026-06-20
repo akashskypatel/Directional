@@ -11,8 +11,8 @@
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
 #include <directional/IntrinsicFaceTangentBundle.h>
 
 namespace directional {

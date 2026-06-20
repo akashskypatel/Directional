@@ -9,8 +9,8 @@
 #define DIRECTIONAL_DIV_MATRICES_H
 
 #include <Eigen/Sparse>
-#include <directional/TriMesh.h>
-#include <directional/single_to_N_matrix.h>
+#include <directional/core/TriMesh.h>
+#include <directional/util/EigenSparseUtils.h>
 #include <directional/mass_matrices.h>
 #include <directional/gradient_matrices.h>
 #include <directional/mass_matrices.h>

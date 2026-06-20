@@ -13,7 +13,7 @@
 #include <set>
 #include <queue>
 #include <Eigen/Core>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 
 namespace directional
 {

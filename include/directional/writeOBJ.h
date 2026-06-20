@@ -11,7 +11,7 @@
 #include <Eigen/Core>
 #include <string>
 #include <vector>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 
 namespace directional
 {

@@ -9,8 +9,8 @@
 #define DIRECTIONAL_SCALAR_FUNCTION_H
 
 #include <eigen/sparse>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
 
 namespace directional{
 

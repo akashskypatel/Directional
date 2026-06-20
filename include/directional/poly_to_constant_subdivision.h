@@ -12,7 +12,7 @@
 #include <Eigen/Core>
 #include <vector>
 #include <directional/pointwise_vectors.h>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 
 
 namespace directional{

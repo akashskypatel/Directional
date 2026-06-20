@@ -10,8 +10,8 @@
 
 #include <eigen/sparse>
 #include <directional/ScalarFunction2D.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
 #include <directional/gradient_matrix.h>
 
 namespace directional{

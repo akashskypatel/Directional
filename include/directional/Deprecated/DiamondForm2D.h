@@ -10,8 +10,8 @@
 
 #include <eigen/sparse>
 #include <directional/VolumeForm2D.h>
-#include <directional/TriMesh.h>
-#include <directional/sparse_diagonal.h>
+#include <directional/core/TriMesh.h>
+#include <directional/util/EigenSparseUtils.h>
 
 namespace directional{
 

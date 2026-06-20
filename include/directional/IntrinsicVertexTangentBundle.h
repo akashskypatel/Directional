@@ -12,9 +12,9 @@
 #include <numbers>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
-#include <directional/sparse_diagonal.h>
-#include <directional/dual_cycles.h>
-#include <directional/TriMesh.h>
+#include <directional/util/EigenSparseUtils.h>
+#include <directional/geometry/MeshTopology.h>
+#include <directional/core/TriMesh.h>
 #include <directional/raw_to_polyvector.h>
 #include <directional/polyvector_to_raw.h>
 

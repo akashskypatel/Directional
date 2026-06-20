@@ -9,7 +9,7 @@
 #define DIRECTIONAL_DISCRETE_EXTERIOR_CALCULUS_H
 
 #include <Eigen/Sparse>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 #include <directional/mass_matrices.h>
 
 

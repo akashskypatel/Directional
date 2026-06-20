@@ -12,8 +12,8 @@
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
 #include <directional/polyvector_field.h>
-#include <directional/TangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TangentBundle.h>
+#include <directional/core/CartesianField.h>
 
 
 namespace directional

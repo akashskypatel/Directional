@@ -14,12 +14,12 @@
 #include <map>
 #include <random>
 #include <Eigen/Geometry>
-#include <directional/matrix_slice.h>
+#include <directional/util/EigenIndexUtils.h>
 #include <directional/sparse_identity.h>
-#include <directional/TriMesh.h>
-#include <directional/principal_matching.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/FieldMatching.h>
 #include <directional/streamlines.h>
-#include <directional/PCFaceTangentBundle.h>
+#include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/IntrinsicVertexTangentBundle.h>
 
 

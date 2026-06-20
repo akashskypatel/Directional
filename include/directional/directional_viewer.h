@@ -13,9 +13,9 @@
 #include <polyscope/curve_network.h>
 #include <polyscope/point_cloud.h>
 #include <directional/streamlines.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/matrix_slice.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/util/EigenIndexUtils.h>
 #include <directional/branched_isolines.h>
 #include <directional/sparse_identity.h>
 

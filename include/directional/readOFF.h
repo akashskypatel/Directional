@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <cassert>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 
 namespace directional
 {

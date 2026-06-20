@@ -12,8 +12,8 @@
 #include <Eigen/Core>
 #include <vector>
 //#include <igl/inline.h>
-#include <directional/CartesianField.h>
-#include <directional/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
 
 
 namespace directional

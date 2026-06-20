@@ -12,14 +12,14 @@
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
 #include <iostream>
-#include <directional/TangentBundle.h>
+#include <directional/core/TangentBundle.h>
 #include <directional/IntrinsicVertexTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 #include <directional/polyvector_to_raw.h>
 #include <directional/raw_to_polyvector.h>
 #include <directional/project_curl.h>
-#include <directional/principal_matching.h>
-#include <directional/sparse_diagonal.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/util/EigenSparseUtils.h>
 #include <directional/PolyVectorData.h>
 
 namespace directional{

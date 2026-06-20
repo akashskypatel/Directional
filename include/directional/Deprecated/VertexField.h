@@ -13,9 +13,9 @@
 #include <Eigen/Sparse>
 #include <igl/boundary_loop.h>
 #include <igl/doublearea.h>
-#include <directional/dual_cycles.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
+#include <directional/geometry/MeshTopology.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
 
 namespace directional{
 

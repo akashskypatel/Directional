@@ -14,8 +14,8 @@
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
 #include <Eigen/Eigenvalues>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
 
 
 namespace directional {

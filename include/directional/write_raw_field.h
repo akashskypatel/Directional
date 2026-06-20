@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 
 namespace directional
 {

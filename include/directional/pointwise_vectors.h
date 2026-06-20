@@ -11,7 +11,7 @@
 
 #include <Eigen/Core>
 #include <vector>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 #include <directional/polyvector_to_raw.h>
 #include <directional/barycentric_coordinates.h>
 

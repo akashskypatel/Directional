@@ -17,10 +17,10 @@
 #include <igl/local_basis.h>
 #include <igl/triangle_triangle_adjacency.h>
 #include <igl/edge_topology.h>
-#include <directional/tree.h>
+#include <directional/util/GraphUtils.h>
 #include <directional/representative_to_raw.h>
-#include <directional/principal_matching.h>
-#include <directional/dcel.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/core/DCEL.h>
 
 namespace directional
   {

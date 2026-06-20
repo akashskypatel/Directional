@@ -13,7 +13,7 @@
 #include <vector>
 #include <cmath>
 #include <complex>
-#include <directional/TriMesh.h>
+#include <directional/core/TriMesh.h>
 
 namespace directional
   {

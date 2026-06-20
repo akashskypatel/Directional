@@ -18,7 +18,7 @@
 #include <igl/edge_topology.h>
 #include <directional/FEM_masses.h>
 #include <directional/FEM_suite.h>
-#include <directional/dual_cycles.h>
+#include <directional/geometry/MeshTopology.h>
 #include <igl/euler_characteristic.h>
 #include <igl/per_face_normals.h>
 #include <igl/boundary_loop.h>

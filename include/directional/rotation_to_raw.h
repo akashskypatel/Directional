@@ -9,7 +9,7 @@
 #define DIRECTIONAL_ROTATION_TO_RAW_H
 
 #include <numbers>
-#include <directional/CartesianField.h>
+#include <directional/core/CartesianField.h>
 
 namespace directional
 {

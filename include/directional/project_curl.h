@@ -12,8 +12,8 @@
 #include <Eigen/Core>
 #include <vector>
 #include <set>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
 #include <directional/curl_matrices.h>
 #include <directional/sparse_block.h>
 #include <directional/extrinsic_intrinsic_matrices.h>

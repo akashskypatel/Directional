@@ -9,8 +9,8 @@
 #define DIRECTIONAL_POWER_TO_RAW_H
 
 #include <numbers>
-#include <directional/TangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/core/TangentBundle.h>
+#include <directional/core/CartesianField.h>
 
 namespace directional
 {
