@@ -1,4 +1,4 @@
-#include <directional/pipeline.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
 #ifdef _WIN32
 #define DIRECTIONAL_EXPORT __declspec(dllexport)

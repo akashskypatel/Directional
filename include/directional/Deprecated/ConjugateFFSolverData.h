@@ -13,7 +13,7 @@
 #include <Eigen/Sparse>
 #include <iostream>
 #include <directional/barycentric_subdivision.h>
-#include <directional/shape_operator.h>
+#include <directional/geometry/Curvature.h>
 
 
 using namespace std;

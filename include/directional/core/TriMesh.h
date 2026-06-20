@@ -14,7 +14,7 @@
 #include <cassert>
 #include <directional/core/DCEL.h>
 #include <directional/geometry/Curvature.h>
-#include <directional/shape_operator.h>
+#include <directional/geometry/Curvature.h>
 #include <iostream>
 #include <set>
 #include <vector>
