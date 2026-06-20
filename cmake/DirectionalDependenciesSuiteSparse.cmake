@@ -17,7 +17,7 @@ function(_directional_find_suitesparse)
       cmake/suitesparse
       lib/cmake
       lib64/cmake)
-  else()
+  elseif(NOT MSVC)
     include(FindSuiteSparse)
     find_package(SuiteSparse REQUIRED)
     message(STATUS "Found SuiteSparse: ${SuiteSparse_FOUND}")
@@ -101,7 +101,8 @@ function(_directional_find_suitesparse)
       if(SUITESPARSE_OPENBLAS_INCLUDE MATCHES
          "SUITESPARSE_OPENBLAS_INCLUDE-NOTFOUND$" 
          OR SUITESPARSE_OPENBLAS_DLL MATCHES "SUITESPARSE_OPENBLAS_DLL-NOTFOUND$")
-        message(FATAL_ERROR "SuiteSparse::openblas libraries or include directory not found")
+        message(WARNING "SuiteSparse::openblas libraries or include directory not found")
+        return()
       endif()
       set_target_properties(
         SuiteSparse::openblas
@@ -157,7 +158,8 @@ function(_directional_find_suitesparse)
       if(SUITESPARSE_SUITESPARSECONFIG_INCLUDE MATCHES
          "SUITESPARSE_SUITESPARSECONFIG_INCLUDE-NOTFOUND$" 
          OR SUITESPARSE_SUITESPARSECONFIG_DLL MATCHES "SUITESPARSE_SUITESPARSECONFIG_DLL-NOTFOUND$")
-        message(FATAL_ERROR "SuiteSparse::suitesparseconfig libraries or include directory not found")
+        message(WARNING "SuiteSparse::suitesparseconfig libraries or include directory not found")
+        return()
       endif()
       set_target_properties(
         SuiteSparse::suitesparseconfig
@@ -244,7 +246,8 @@ function(_directional_find_suitesparse)
       if(SUITESPARSE_${_component}_INCLUDE MATCHES
          "SUITESPARSE_${_component}_INCLUDE-NOTFOUND$" 
          OR SUITESPARSE_${_component}_DLL MATCHES "SUITESPARSE_${_component}_DLL-NOTFOUND$")
-        message(FATAL_ERROR "SuiteSparse::${_component} libraries or include directory not found")
+        message(WARNING "SuiteSparse::${_component} libraries or include directory not found")
+        continue()
       endif()
       if(NOT TARGET SuiteSparse::${_component})
         if(${_component} IN_LIST _directional_tutorials_exclude)
