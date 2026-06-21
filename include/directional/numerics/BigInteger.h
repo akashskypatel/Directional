@@ -5,6 +5,8 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_NUMERICS_BIG_INTEGER_H
 #define DIRECTIONAL_NUMERICS_BIG_INTEGER_H
 
@@ -15,13 +17,25 @@
 #include <string>
 #include <vector>
 
-
 // This header file implements a "home-made" Big Integer type, which is only
 // needed in case GMP is not installed. Note: this is slow-ish.
 
+/**
+ * @file BigInteger.h
+ * @brief Minimal arbitrary-precision integer implementation.
+ *
+ * Provides an integer type used by exact rational arithmetic when GMP is unavailable. The implementation supports signed arithmetic, division, comparisons, and conversion helpers needed by exact geometry routines.
+ */
+
+/**
+ * @brief Signed arbitrary-precision integer fallback used by exact arithmetic.
+ *
+ * Stores base-10 digits in a vector and implements the subset of arithmetic
+ * needed by the exact rational backend. Prefer the GMP backend when available.
+ */
 class BigInteger {
 private:
-  static const long long BASE = 1e9;
+  static constexpr long long BASE = 1000000000LL;
   static const int DIGITS = 9;
   static const int CONVERTIBLE_SIZE =
       2; // maximum amount of digits in an integer that can be safely
@@ -35,7 +49,9 @@ private:
     while (!digits.empty() && digits.back() == 0) {
       digits.pop_back();
       whileTest++;
-      assert(whileTest < 10000 && "trim(): while running too long! ");
+      if (whileTest >= 10000) {
+        throw std::runtime_error("trim(): while running too long! ");
+      }
     }
     if (digits.empty()) {
       digits.push_back(0);
@@ -66,10 +82,11 @@ public:
   }
 
   long long convert() const {
-    assert((digits.size() <= CONVERTIBLE_SIZE) &&
-           "integer is not of a convertible size!");
-    long long result = 0.0;
-    for (int i = digits.size() - 1; i >= 0; i--)
+    if (digits.size() > CONVERTIBLE_SIZE) {
+      throw std::runtime_error("integer is not of a convertible size!");
+    }
+    long long result = 0;
+    for (int i = static_cast<int>(digits.size()) - 1; i >= 0; i--)
       result = result * BASE + digits[i];
 
     return (negative ? -result : result);
@@ -90,7 +107,7 @@ public:
       return *this - (-other);
     }
 
-    BigInteger result; // TODO: reserve
+    BigInteger result;
     result.negative = negative;
 
     long long carry = 0;
@@ -131,7 +148,7 @@ public:
       return -(other - *this);
     }
 
-    BigInteger result; // TODO: reserve
+    BigInteger result;
     result.negative = negative;
 
     long long borrow = 0;
@@ -219,7 +236,7 @@ public:
       long long quotient = convertThis / convertOther;
       mod = BigInteger(
           convertThis -
-          convertOther * quotient); // TODO: is this corret and not overflowing?
+          convertOther * quotient);
       return quotient;
     }
 
@@ -256,7 +273,9 @@ public:
         right = mid - 1;
       }
       whileTest++;
-      assert("operator/: while running too long! " && whileTest < 10000);
+      if (whileTest >= 10000) {
+        throw std::runtime_error("operator/: while running too long! ");
+      }
     }
 
     return (this->negative != other.negative ? -quotient : quotient);
@@ -281,7 +300,6 @@ public:
       return convertThis / convertOther;
     }
 
-    // TODO: leading zeros
 
     BigInteger dividend = this->abs();
     BigInteger divisor = other.abs();
@@ -290,7 +308,7 @@ public:
     quotient.digits.resize(dividend.digits.size());
     BigInteger current;
     BigInteger mod;
-    for (int i = dividend.digits.size() - 1; i >= 0; i--) {
+    for (int i = static_cast<int>(dividend.digits.size()) - 1; i >= 0; i--) {
       current.digits.insert(current.digits.begin(), dividend.digits[i]);
       quotient.digits[i] = current.single_digit_division(
           divisor, mod); // updates current as the modulo
@@ -381,7 +399,9 @@ BigInteger gcd(BigInteger a, BigInteger b) {
     b = a % b;
     a = temp;
     whileTest++;
-    assert(whileTest < 10000 && "gcd(): while running too long! ");
+    if (whileTest >= 10000) {
+      throw std::runtime_error("gcd(): while running too long! ");
+    }
   }
   return a;
 }

@@ -1,16 +1,32 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #ifndef DIRECTIONAL_FIELDS_FIELD_COMBING_H
 #define DIRECTIONAL_FIELDS_FIELD_COMBING_H
 
-#include <Eigen/Core>
 #include <cmath>
-#include <directional/core/CartesianField.h>
-#include <directional/fields/FieldMatching.h>
-#include <directional/util/GraphUtils.h>
 #include <queue>
 #include <vector>
 
+#include <Eigen/Core>
+
+#include <directional/core/CartesianField.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/util/GraphUtils.h>
+
+
+/**
+ * @file FieldCombing.h
+ * @brief Field combing utilities for raw Cartesian fields.
+ *
+ * Contains the combing routine that propagates vector ordering across tangent-space adjacencies using a spanning tree and the field matching information.
+ */
 
 namespace directional {
 
@@ -79,13 +95,14 @@ inline void combing(const directional::CartesianField &rawField,
       nextMatching *= (rawField.tb->adjSpaces(
                            rawField.tb->oneRing(currSpaceMatching.first, i),
                            0) == currSpaceMatching.first
-                           ? 1.0
-                           : -1.0);
+                           ? 1
+                           : -1);
       nextMatching =
           (nextMatching + currSpaceMatching.second + 1000 * rawField.N) %
           rawField.N; // killing negatives
-      assert("combing(): NextMatching is out of bounds! " &&
-             (nextMatching >= 0 && nextMatching < rawField.N));
+      if (nextMatching < 0 || nextMatching >= rawField.N) {
+        throw std::runtime_error("combing(): nextMatching is out of bounds");
+      }
       if ((nextFace != -1) && (!visitedSpaces(nextFace)) &&
           (!spaceIsCut(currSpaceMatching.first, i)))
         spaceMatchingQueue.push(std::pair<int, int>(nextFace, nextMatching));
@@ -107,7 +124,7 @@ inline void combing(const directional::CartesianField &rawField,
                                 rawField.N;
   }
 
-  // TODO: only update effort.
+  // Recompute matching and effort to keep the combed field self-consistent.
   principal_matching(combedField);
 }
 

@@ -1,14 +1,15 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #ifndef DIRECTIONAL_MESHING_SETUP_MESHER_H
 #define DIRECTIONAL_MESHING_SETUP_MESHER_H
 
-#include <Eigen/Sparse>
-#include <directional/core/TriMesh.h>
-#include <directional/geometry/MeshTopology.h>
-#include <directional/integration/IntegrationData.h>
-#include <directional/integration/SetupIntegration.h>
-#include <directional/meshing/MesherData.h>
 #include <fstream>
 #include <iosfwd>
 #include <iostream>
@@ -16,12 +17,33 @@
 #include <set>
 #include <vector>
 
+#include <Eigen/Sparse>
+
+#include <directional/core/TriMesh.h>
+#include <directional/geometry/MeshTopology.h>
+#include <directional/integration/IntegrationData.h>
+#include <directional/integration/SetupIntegration.h>
+#include <directional/meshing/MesherData.h>
+
+
+/**
+ * @file SetupMesher.h
+ * @brief Mesher setup routine.
+ *
+ * Transfers cut-mesh and integration data into a MesherData instance and prepares the structures consumed by NFunctionMesher.
+ */
+
 namespace directional {
 
-/// @brief setups the meshing data from the (in-house) integration data
-/// @param meshCut Cut mesh
-/// @param intData IntegrationData object from the integrator
-/// @param mesherData MesherData object suitable to pass to the mesher
+/**
+ * @brief Converts integration output into mesher input data.
+ * @param meshCut Cut mesh used by the integration stage.
+ * @param intData Integration state produced by setup/integrate.
+ * @param mesherData Output structure consumed by @ref mesher or @ref NFunctionMesher.
+ *
+ * Handles sign-symmetry reduction, exact integer transfer matrices, and the
+ * per-vertex N-function layout expected by the meshing stage.
+ */
 void setup_mesher(const directional::TriMesh &meshCut,
                   const IntegrationData &intData, MesherData &mesherData) {
 
@@ -36,7 +58,7 @@ void setup_mesher(const directional::TriMesh &meshCut,
       intData.vertexTrans2CutMatInteger * intData.linRedMatInteger *
       intData.singIntSpanMatInteger * intData.intSpanMatInteger;
 
-  // cuttting the matrices from sign symmetrry
+  // Reduce duplicated sign-symmetric packets when N is even.
   if (signSymmetry) {
     mesherData.N = intData.N / 2;
     // cutting the latter N/2 from each N packet.
@@ -45,22 +67,22 @@ void setup_mesher(const directional::TriMesh &meshCut,
     for (int k = 0; k < orig2CutMatFull.outerSize(); ++k) {
       for (Eigen::SparseMatrix<double>::InnerIterator it(orig2CutMatFull, k);
            it; ++it) {
-        int relativeRow = it.row() % intData.N;
+        int relativeRow = static_cast<int>(it.row() % intData.N);
         if (relativeRow < intData.N / 2)
-          orig2CutTriplets.push_back(
-              Eigen::Triplet<double>((it.row() - relativeRow) / 2 + relativeRow,
-                                     it.col(), it.value()));
+          orig2CutTriplets.push_back(Eigen::Triplet<double>(
+              static_cast<int>((it.row() - relativeRow) / 2 + relativeRow),
+              static_cast<int>(it.col()), it.value()));
       }
     }
 
     for (int k = 0; k < exactOrig2CutMatFull.outerSize(); ++k) {
       for (Eigen::SparseMatrix<int>::InnerIterator it(exactOrig2CutMatFull, k);
            it; ++it) {
-        int relativeRow = it.row() % intData.N;
+        int relativeRow = static_cast<int>(it.row() % intData.N);
         if (relativeRow < intData.N / 2)
-          exactorig2CutTriplets.push_back(
-              Eigen::Triplet<int>((it.row() - relativeRow) / 2 + relativeRow,
-                                  it.col(), it.value()));
+          exactorig2CutTriplets.push_back(Eigen::Triplet<int>(
+              static_cast<int>((it.row() - relativeRow) / 2 + relativeRow),
+              static_cast<int>(it.col()), it.value()));
       }
     }
 

@@ -5,106 +5,149 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_TANGENT_BUNDLE_H
 #define DIRECTIONAL_TANGENT_BUNDLE_H
 
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
 #include <cassert>
-#include <directional/core/TriMesh.h>
 #include <iostream>
 
+#include <Eigen/Geometry>
+#include <Eigen/Sparse>
 
-/***
- This is the interface class for discrete tangent bundles, represented as a
- graph G_TB of nodes (tangent spaces) and edges (adjacency relations). This
- represents a d-dimensional tangent bundle. Further structure is cycles around
- which holonomy is measured, and curvature is defined, and consequently
- one-rings of all edges around a single node. The Tangent Bundle is "intrinsic"
- in the sense that the information required for designing fields does not
- require any embedding. The class includes variables that include embedding
- information like sources and normals (assuming the bundle is at most
- 1-codimensional). They are however only used for input/output to the intrinsic
- variables.
- ***/
+#include <directional/core/TriMesh.h>
+
+
+
+
+/**
+ * @file TangentBundle.h
+ * @brief Base tangent-bundle abstraction for discrete tangent spaces.
+ *
+ * Stores tangent spaces, adjacency, connection data, mass matrices, local cycles, and basis cycles. Derived classes implement the source-specific geometry needed to project vectors between intrinsic and extrinsic coordinates.
+ */
 
 namespace directional {
 
+/** @brief Concrete tangent-bundle discretization kind. */
 enum class discTangTypeEnum { BASE_CLASS, FACE_SPACES, VERTEX_SPACES };
+
+/** @brief Boundary condition type used when building curl constraints. */
 enum class boundCondTypeEnum { DIRICHLET, NEUMANN };
 
+/**
+ * @brief Interface for discrete tangent bundles.
+ *
+ * A tangent bundle is represented as a graph whose nodes are tangent spaces and
+ * whose edges are adjacency relations. It stores the connection, cycles, masses,
+ * and optional embedding data needed by field matching, integration, and
+ * visualization.
+ */
 class TangentBundle {
 public:
-  // In case some methods are only defined for specific tangent bundles
+  /**
+   * @brief Returns the concrete tangent-bundle discretization.
+   * @return The bundle kind; base class returns BASE_CLASS.
+   */
   virtual discTangTypeEnum discTangType() const {
     return discTangTypeEnum::BASE_CLASS;
   }
 
-  // indicates if the tangent bundle has a meaningful embedding
+  /** @brief Returns whether this bundle can project between intrinsic and extrinsic coordinates. */
   virtual bool hasEmbedding() const { return false; }
 
-  int intDimension; // Intrinsic dimension of the tangent spaces
-  int numSpaces;    // The number of tangent spaces
+  /// Intrinsic dimension of each tangent space.
+  int intDimension = 0;
 
-  // combinatorics and topology
-  Eigen::Matrix<int, Eigen::Dynamic, 2>
-      adjSpaces; // Adjacent tangent spaces (edges of the tangent bundle graph).
-                 // This includes boundaries! one side will be "-1" when this is
-                 // the case. Also see "innerAdjacencies"
-  Eigen::MatrixXi
-      oneRing; //(Ordered) tangent spaces adjacent around each tangent space
-  Eigen::VectorXi
-      innerAdjacencies; // Indices into adjSpaces that are not boundary
-  Eigen::SparseMatrix<double> cycles; // Adjaceny matrix of cycles
-  Eigen::VectorXd cycleCurvatures;    // Curvature of cycles.
-  Eigen::VectorXi local2Cycle; // Map between local cycles and general cycles
+  /// Number of tangent spaces in the bundle graph.
+  int numSpaces = 0;
 
-  // Geometry
-  // the connection between adjacent tangent space. That is, a field is parallel
-  // between adjaspaces(i,0) and adjSpaces(i,1) when
-  // complex(intField.row(adjSpaceS(i,0))*connection(i))=complex(intField.row(adjSpaceS(i,1))
-  Eigen::VectorXcd connection; // #V, Metric connection between adjacent spaces
-  Eigen::SparseMatrix<double> connectionMass; // The mass matrix of connections,
-                                              // of size #adjSpaces x #adjSpaces
-  Eigen::SparseMatrix<double>
-      tangentSpaceMass; // The inner-product mass for vectors in tangent spaces,
-                        // of size #V (self masses) + #E (adjSpaces masses;
-                        // optional, usually for high-order fields)
+  /// Adjacent tangent-space pairs; boundary rows use -1 on the missing side.
+  Eigen::Matrix<int, Eigen::Dynamic, 2> adjSpaces;
+
+  /// Ordered tangent-space one-rings around each tangent space.
+  Eigen::MatrixXi oneRing;
+
+  /// Row indices in @ref adjSpaces that refer to interior adjacencies.
+  Eigen::VectorXi innerAdjacencies;
+
+  /// Cycle-edge incidence matrix used for holonomy and singularity analysis.
+  Eigen::SparseMatrix<double> cycles;
+
+  /// Integrated curvature associated with each cycle.
+  Eigen::VectorXd cycleCurvatures;
+
+  /// Mapping from local cycles to the global cycle list.
+  Eigen::VectorXi local2Cycle;
+
+  /// Complex metric connection between adjacent tangent spaces.
+  Eigen::VectorXcd connection;
+
+  /// Mass matrix over tangent-bundle adjacencies.
+  Eigen::SparseMatrix<double> connectionMass;
+
+  /// Inner-product mass matrix over tangent-space vector values.
+  Eigen::SparseMatrix<double> tangentSpaceMass;
+
+  /// Inverse of @ref tangentSpaceMass when assembled by a concrete bundle.
   Eigen::SparseMatrix<double> invTangentSpaceMass;
-  double avgAdjLength; // The average distance between adjacent spaces
 
-  // Extrinsic components
-  Eigen::MatrixXd sources; // the source point of the extrinsic vectors
-  Eigen::MatrixXd
-      normals; // the normals to the tangent spaces (assuming 1-codimension)
-  Eigen::MatrixXd cycleSources; // source point of cycles
-  Eigen::MatrixXd cycleNormals; // normals to cycles
+  /// Average geometric length across tangent-space adjacencies.
+  double avgAdjLength = 0.0;
 
-  TangentBundle() {}
-  ~TangentBundle() {}
+  /// Source point for each embedded tangent space.
+  Eigen::MatrixXd sources;
 
-  // projecting an arbitrary set of extrinsic vectors (e.g. coming from
-  // user-prescribed constraints) into intrinsic vectors.
+  /// Normal for each embedded tangent space.
+  Eigen::MatrixXd normals;
+
+  /// Source point associated with each cycle.
+  Eigen::MatrixXd cycleSources;
+
+  /// Normal associated with each cycle.
+  Eigen::MatrixXd cycleNormals;
+
+  /// Constructs an empty tangent bundle.
+  TangentBundle() = default;
+  virtual ~TangentBundle() = default;
+
+  /**
+   * @brief Projects ambient vectors into local tangent-space coordinates.
+   * @param sourceIndices Tangent-space indices for each row, or an empty vector
+   *        when the implementation can infer all rows.
+   * @param extField Ambient vector values, usually with xyz blocks.
+   * @return Intrinsic two-dimensional coordinates in local tangent bases.
+   * @throws std::logic_error in the base class because no embedding exists.
+   */
   Eigen::MatrixXd virtual inline project_to_intrinsic(
-      const Eigen::VectorXi &tangentSpaces,
-      const Eigen::MatrixXd &extDirectionals) const {
-    assert(false && "The base class does not have an embedding");
-    return Eigen::MatrixXd();
+      const Eigen::VectorXi &, const Eigen::MatrixXd &) const {
+    throw std::logic_error("TangentBundle::project_to_intrinsic(): base "
+                           "tangent bundle has no embedding");
   }
 
-  // projecting extrinsic to intrinsic
+  /**
+   * @brief Projects intrinsic tangent coordinates into ambient coordinates.
+   * @param sourceIndices Tangent-space indices for each row, or empty for all rows.
+   * @param intField Intrinsic coordinates in local tangent bases.
+   * @return Ambient xyz vector values.
+   * @throws std::logic_error in the base class because no embedding exists.
+   */
   Eigen::MatrixXd virtual inline project_to_extrinsic(
-      const Eigen::VectorXi &tangentSpaces,
-      const Eigen::MatrixXd &extDirectionals) const {
-    assert(false && "The base class does not have an embedding");
-    return Eigen::MatrixXd();
+      const Eigen::VectorXi &, const Eigen::MatrixXd &) const {
+    throw std::logic_error("TangentBundle::project_to_extrinsic(): base "
+                           "tangent bundle has no embedding");
   }
 
-  // interpolating field from nodes in palces specified by barycentric
-  // coordinates. The interpolator needs to interpret them.
-  void virtual inline interpolate(const Eigen::MatrixXi &elemIndices,
-                                  const Eigen::MatrixXd &baryCoords,
-                                  const Eigen::MatrixXd &intDirectionals,
+  /**
+   * @brief Interpolates field values at positions described by barycentric data.
+   *
+   * Concrete bundles define how interpolation elements and coordinates are
+   * interpreted. The base implementation returns empty matrices.
+   */
+  void virtual inline interpolate(const Eigen::MatrixXi &,
+                                  const Eigen::MatrixXd &,
+                                  const Eigen::MatrixXd &,
                                   Eigen::MatrixXd &interpSources,
                                   Eigen::MatrixXd &interpNormals,
                                   Eigen::MatrixXd &interpField) const {
@@ -113,9 +156,16 @@ public:
     interpField = Eigen::MatrixXd();
   }
 
+  /**
+   * @brief Builds a sparse curl matrix for scalar functions on this bundle.
+   * @param boundaryCondition Boundary behavior requested by the caller.
+   * @param constrainedCycles Optional cycle ids constrained by the caller.
+   * @param localCyclesOnly Whether to assemble only local cycle constraints.
+   * @return Sparse curl matrix; base implementation returns an empty matrix.
+   */
   Eigen::SparseMatrix<double> virtual inline curl_matrix(
-      const boundCondTypeEnum boundCondType, const Eigen::VectorXi &matching,
-      const bool intrinsic = false) const {
+      const boundCondTypeEnum, const Eigen::VectorXi &,
+      const bool = false) const {
     return Eigen::SparseMatrix<double>();
   }
 };

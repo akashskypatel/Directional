@@ -1,28 +1,42 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
 
 #pragma once
 
 #ifndef DIRECTIONAL_FIELDS_FIELD_MATCHING_H
 #define DIRECTIONAL_FIELDS_FIELD_MATCHING_H
 
-#include <Eigen/Core>
 #include <cmath>
-#include <directional/core/TangentBundle.h>
-#include <directional/fields/FieldMatching.h>
 #include <numbers>
 #include <vector>
 
+#include <Eigen/Core>
+
+#include <directional/core/TangentBundle.h>
+#include <directional/fields/FieldMatching.h>
+
+
+/**
+ * @file FieldMatching.h
+ * @brief Matching and singularity utilities for N-direction fields.
+ *
+ * Computes edge-wise rotational matching, transport effort, and singularity indices for fields defined on tangent bundles.
+ */
+
 namespace directional {
-// Computes cycle-based indices from adjaced-space efforts of a directional
-// field. Note: input is effort (sum of rotation angles), and not individual
-// rotation angles Input:
-//  basisCycles:    #c by #iE (inner edges of the mesh) the oriented basis
-//  cycles around which the indices are measured effort:         #iE the effort
-//  (sum of rotation angles) of matched vectors across the dual edge. Equal to
-//  N*rotation angles for N-RoSy fields. cycleCurvature: #c the cycle curvature
-//  (for instance, from directional::dual_cycles) N:              The degree of
-//  the field
-// Output:
-//  indices:     #c the index of the cycle x N (always an integer).
+/**
+ * @brief Converts transported field effort into integer cycle indices.
+ * @param basisCycles Oriented cycle-edge incidence matrix over interior adjacencies.
+ * @param effort Transport effort per interior adjacency, expressed as summed rotations.
+ * @param cycleCurvature Curvature associated with each measured cycle.
+ * @param N Field degree.
+ * @param indices Output cycle indices multiplied by @p N.
+ * @throws std::runtime_error if numerical values are not close to integers.
+ */
 inline void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
                               const Eigen::VectorXd &effort,
                               const Eigen::VectorXd &cycleCurvature,
@@ -35,16 +49,18 @@ inline void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
 
   indices.conservativeResize(dIndices.size());
   for (int i = 0; i < indices.size(); i++) {
-    assert(fabs(std::round(dIndices(i)) - dIndices(i)) < 1e-6 &&
-           "Indices are not naturally integer!");
-    indices(i) = std::round(dIndices(i));
+    if (fabs(std::round(dIndices(i)) - dIndices(i)) >= 1e-6) {
+      throw std::runtime_error("Indices are not naturally integer!");
+    }
+    indices(i) = static_cast<int>(std::round(dIndices(i)));
   }
 }
 
-// version that accepts a cartesian field object and operates on it as input and
-// output.
+/**
+ * @brief Computes singularity cycle ids and indices in-place for a field.
+ * @param field Cartesian field with populated matching effort and tangent-bundle cycles.
+ */
 inline void effort_to_indices(directional::CartesianField &field) {
-  // field.effort = Eigen::VectorXd::Zero(field.adjSpaces.rows());
   Eigen::VectorXd effortInner(field.tb->innerAdjacencies.size());
   for (int i = 0; i < field.tb->innerAdjacencies.size(); i++)
     effortInner(i) = field.effort(field.tb->innerAdjacencies(i));
@@ -73,14 +89,14 @@ inline void effort_to_indices(directional::CartesianField &field) {
   }
   field.set_singularities(singCycles, singIndices);
 }
-/// @brief Takes a field in raw form and computes both the principal effort and
-/// the consequent principal matching on every edge
-/// @note Important: if the Raw field in not CCW ordered, the result is
-/// meaningless
-///       The input and output are both a RAW_FIELD type cartesian field, in
-///       which the matching, effort, and singularities are set.
-/// @param field The field to compute the matching for
-/// @param isSingularities Whether to compute singularities
+/**
+ * @brief Computes principal rotational matching and transport effort for a raw field.
+ * @param field Raw Cartesian field to update with matching, effort, and optionally singularities.
+ * @param isSingularities When true, derives singularity indices after matching.
+ *
+ * The raw directions in each tangent space must be ordered counter-clockwise;
+ * otherwise the rotational offsets are not meaningful.
+ */
 inline void principal_matching(directional::CartesianField &field,
                                const bool isSingularities = true) {
 
@@ -142,9 +158,9 @@ inline void principal_matching(directional::CartesianField &field,
       currEffort += arg(vecjgc / transvecjfc);
     }
 
-    field.matching(i) =
+    field.matching(i) = static_cast<int>(
         indexMinFromZero -
-        round((currEffort - field.effort(i)) / (2.0 * std::numbers::pi));
+        std::round((currEffort - field.effort(i)) / (2.0 * std::numbers::pi)));
   }
 
   // Getting final singularities and their indices

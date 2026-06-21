@@ -1,22 +1,19 @@
 // This file is part of Directional, a library for directional field processing.
-// Copyright (C) 2024 Amir Vaxman <avaxman@gmail.com>
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public License
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_MESHING_GENERATE_MESH_H
 #define DIRECTIONAL_MESHING_GENERATE_MESH_H
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
-#include <directional/core/DCEL.h>
-#include <directional/numerics/ExactGeometry.h>
-#include <directional/meshing/NFunctionMesher.h>
 #include <functional>
 #include <iostream>
 #include <iterator>
@@ -28,6 +25,20 @@
 #include <utility>
 #include <vector>
 
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
+#include <directional/core/DCEL.h>
+#include <directional/meshing/NFunctionMesher.h>
+#include <directional/numerics/ExactGeometry.h>
+
+
+/**
+ * @file GenerateMesh.h
+ * @brief Mesh generation implementation for integrated N-functions.
+ *
+ * Contains the implementation steps that trace integer isolines, arrange segments inside triangles, simplify the arrangement, and emit the final remeshed output.
+ */
 
 namespace directional {
 
@@ -177,8 +188,6 @@ void NFunctionMesher::arrange_on_triangle(
 
       SegmentData &boundaryData = inData[static_cast<std::size_t>(edge)];
 
-      const int originalHalfedge = boundaryData.origHalfedge;
-
       for (const ENumber &localParameter : parameters) {
         boundaryData.intParams.insert(localParameter);
       }
@@ -227,7 +236,7 @@ void NFunctionMesher::arrange_on_triangle(
 
       inData.push_back(std::move(newData));
 
-      const ENumber lineOffset(static_cast<long long>(lineIndex), 1);
+      const ENumber lineOffset(static_cast<int>(lineIndex));
 
       const EVector2 basePoint = pencil.p0 + pencil.pVec * lineOffset;
 
@@ -409,7 +418,13 @@ void NFunctionMesher::segment_arrangement(
       // else  //triangle segment
       //     arrVertices.push_back(segments[i].source * (ENumber(1) - intParam)
       //     + segments[i].target * intParam);
-      SV[i].insert(std::pair<ENumber, int>(t, arrVertices.size() - 1));
+      if (arrVertices.size() >
+          static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+        throw std::overflow_error(
+            "segment_arrangement(): too many arrangement vertices");
+      }
+      const int vertexIndex = static_cast<int>(arrVertices.size()) - 1;
+      SV[static_cast<std::size_t>(i)].insert(std::make_pair(t, vertexIndex));
       // "<<segments[i].source<<"->"<<segments[i].target<<std::endl;
     }
   }
@@ -553,9 +568,9 @@ void NFunctionMesher::segment_arrangement(
             "row is out of range");
       }
 
-      const ENumber firstLine(static_cast<long long>(data[i].lineInPencil), 1);
+      const ENumber firstLine(data[i].lineInPencil);
 
-      const ENumber secondLine(static_cast<long long>(data[j].lineInPencil), 1);
+      const ENumber secondLine(data[j].lineInPencil);
 
       /*
        * Scalar form avoids temporary Eigen matrices and guarantees that
@@ -955,7 +970,6 @@ edgeData = newEdgeData;
       }
     }
 
-    int currHE = -1;
     for (int s = 0; s < edgeOrder.size(); s++) {
       bool outgoing = adjArrEdges[edgeOrder[s]].second;
       int outCurrHE =
@@ -1389,8 +1403,9 @@ void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
 
         auto &vertex = localArrangement.vertices[vertexIndex];
         vertex.data.eCoords = point3D;
-        vertex.data.coords << point3D[0].to_double(), point3D[1].to_double(),
-            point3D[2].to_double();
+        vertex.data.coords << static_cast<double>(point3D[0].to_double()),
+            static_cast<double>(point3D[1].to_double()),
+            static_cast<double>(point3D[2].to_double());
       }
 
       /*

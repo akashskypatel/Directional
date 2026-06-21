@@ -1,5 +1,5 @@
 // This file is part of Directional, a library for directional field processing.
-// Copyright (C) 2016 Amir Vaxman <avaxman@gmail.com>
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public License
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
@@ -10,9 +10,18 @@
 #ifndef DIRECTIONAL_UTIL_GRAPH_UTILS_H
 #define DIRECTIONAL_UTIL_GRAPH_UTILS_H
 
-#include <Eigen/Core>
 #include <queue>
 #include <vector>
+
+#include <Eigen/Core>
+
+
+/**
+ * @file GraphUtils.h
+ * @brief Graph traversal helpers.
+ *
+ * Contains a breadth-first spanning-tree construction routine for edge-list graphs.
+ */
 
 namespace directional {
 

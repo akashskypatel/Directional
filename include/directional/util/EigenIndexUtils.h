@@ -1,5 +1,4 @@
 // This file is part of Directional, a library for directional field processing.
-//
 // Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public License
@@ -11,9 +10,18 @@
 #ifndef DIRECTIONAL_UTIL_EIGEN_INDEX_UTILS_H
 #define DIRECTIONAL_UTIL_EIGEN_INDEX_UTILS_H
 
-#include <Eigen/Core>
 #include <set>
 #include <vector>
+
+#include <Eigen/Core>
+
+
+/**
+ * @file EigenIndexUtils.h
+ * @brief Small Eigen indexing helpers.
+ *
+ * Contains utility routines for vector set difference and indexed matrix slicing used by the geometry and integration code.
+ */
 
 namespace directional {
 

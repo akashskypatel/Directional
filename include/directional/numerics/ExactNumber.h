@@ -1,21 +1,45 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #ifndef DIRECTIONAL_NUMERICS_EXACT_NUMBER_H
 #define DIRECTIONAL_NUMERICS_EXACT_NUMBER_H
 
 #include <Eigen/Dense>
+
 #include <directional/numerics/BigInteger.h>
+
+/**
+ * @file ExactNumber.h
+ * @brief Header-only exact rational number fallback.
+ *
+ * Defines the ENumber rational type over the fallback BigInteger backend for builds that do not use GMP.
+ */
 
 typedef BigInteger EInt;
 
-/// @brief This class provides a "home-made" exact rational number type, using
-/// the other home-made Big integer type, which together can autonomously
-/// function if GMP is not installed in the system. Warning: it's slow-ish, so
-/// GMP is recommended.
+/**
+ * @brief Exact rational number implemented on the fallback BigInteger type.
+ *
+ * ENumber keeps a signed numerator and positive denominator, simplifying values
+ * when requested. It is intended as a portability fallback when GMP is not
+ * available; GMP-backed ENumber is preferred for performance-sensitive builds.
+ */
 class ENumber {
 public:
-  EInt num, den;
-  bool simple; // whether number is simplified
+  /// Rational numerator.
+  EInt num;
+
+  /// Positive rational denominator.
+  EInt den;
+
+  /// Whether the fraction is known to be simplified.
+  bool simple = false;
 
   /// @brief Default constructor
   ENumber() {
@@ -23,14 +47,14 @@ public:
     den = 1;
   }
 
-  /// @brief Constructor from double with tolerance
-  /*ENumber(const double number, const double resolution=10e-9){
-   simple=true;
-   }*/
 
-  ~ENumber() {}
+  ~ENumber() = default;
 
-  // Computed a continuous fraction approximation to a given tolerance>0
+  /**
+   * @brief Approximates a double as a rational within a tolerance.
+   * @param x Floating-point value to approximate.
+   * @param tol Absolute approximation tolerance.
+   */
   ENumber(double x, double tol) {
     long long prevNum(0), prevDen(1), currNum(1), currDen(0);
     double fraction = x;
@@ -68,16 +92,19 @@ public:
 
       fraction = 1.0 / remainder;
     }
-    // std::cout<<"x: "<<x<<std::endl;
-    // std::cout<<"approximation: "<<to_double()<<std::endl;
-    // std::cout<<"num: "<<num.to_string()<<std::endl;
-    // std::cout<<"den: "<<den.to_string()<<std::endl;
   }
 
-  /// @brief Constructor from numerator and denominator
+  /**
+   * @brief Constructs a rational from numerator and denominator.
+   * @param _num Numerator.
+   * @param _den Denominator; must be nonzero.
+   * @param toSimplify Whether to simplify immediately.
+   */
   ENumber(const EInt _num, const EInt _den, const bool toSimplify = true)
       : num(_num), den(_den), simple(true) {
-    assert("ENumber(): denominator is zero!" && den != 0);
+    if (den == 0) {
+      throw std::runtime_error("ENumber(): denominator is zero!");
+    }
     if (toSimplify)
       simplify();
     if (den < 0) {
@@ -86,13 +113,13 @@ public:
     }
   }
 
-  /// @brief Constructor from numerator (denominator is 1)
+  /// Constructs an integer-valued rational with denominator one.
   ENumber(const EInt _num) {
     num = _num;
     den = 1;
   }
 
-  /// @brief Simplify the fraction
+  /// Reduces the fraction and normalizes the denominator sign.
   void simplify() {
     if (num == 0) {
       den = 1;
@@ -162,7 +189,9 @@ public:
 
   /// @brief Division operator
   ENumber operator/(const ENumber &b2) const {
-    assert("ENumber division by zero!" && b2.num != 0);
+    if (b2.num == 0) {
+      throw std::runtime_error("ENumber division by zero!");
+    }
     // reductions
     if (b2 == ENumber(1))
       return *this;

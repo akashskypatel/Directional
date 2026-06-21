@@ -5,11 +5,11 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_NUMERICS_EXACT_GEOMETRY_H
 #define DIRECTIONAL_NUMERICS_EXACT_GEOMETRY_H
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -22,6 +22,8 @@
 #include <utility>
 #include <vector>
 
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
 
 #ifdef USE_GMP_ENABLED
 #include <directional/numerics/ENumberGMP.h>
@@ -31,6 +33,14 @@
 
 // This header file concentrates geometric operations on vectors, segments,
 // lines, and arrangement in exact rational numbers.
+
+/**
+ * @file ExactGeometry.h
+ * @brief Exact two-dimensional geometry predicates and constructions.
+ *
+ * Provides exact vectors, segments, lines, line pencils, intersections, area computations, and helper routines used by the N-function mesher to avoid floating-point robustness failures.
+ */
+
 namespace directional {
 
 template <size_t Size> class EVector {
@@ -96,7 +106,7 @@ public:
   Eigen::RowVectorXd to_double() const {
     Eigen::RowVectorXd doubleVec(Size);
     for (int i = 0; i < Size; i++)
-      doubleVec(i) = data[i].to_double();
+      doubleVec(i) = static_cast<double>(data[i].to_double());
     return doubleVec;
   }
 
@@ -149,6 +159,7 @@ std::ostream &operator<<(std::ostream &os, const EVector<Size> &evec) {
 typedef EVector<2> EVector2;
 typedef EVector<3> EVector3;
 
+/** @brief Exact 2D segment represented by two endpoints. */
 struct Segment2 {
 public:
   EVector2 source, target;
@@ -169,6 +180,7 @@ inline std::ostream &operator<<(std::ostream &os, const Segment2 &seg) {
   return os;
 }
 
+/** @brief Exact implicit 2D line with integer/rational coefficients. */
 struct Line2 {
 public:
   EVector2 point, direction;
@@ -191,6 +203,7 @@ inline std::ostream &operator<<(std::ostream &os, const Line2 &line) {
   return os;
 }
 
+/** @brief Family of parallel or related exact lines generated from a base line. */
 struct LinePencil {
   int numLines;
   EVector2 direction; // the mutual direction along the line
@@ -266,8 +279,12 @@ inline int connectedComponents(const std::vector<std::pair<int, int>> &matches,
       if (components[VV[nextVertex][i]] == -1) {
         components[VV[nextVertex][i]] = components[nextVertex];
         nextVertexQueue.push_front(VV[nextVertex][i]);
-      } else
-        assert(components[VV[nextVertex][i]] == components[nextVertex]);
+      } else {
+        if (components[VV[nextVertex][i]] != components[nextVertex]) {
+          throw std::runtime_error(
+              "connectedComponents(): components mismatch!");
+        }
+      }
     }
   }
   return numComponents;
@@ -523,6 +540,7 @@ segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2) {
       return std::vector<std::pair<ENumber, ENumber>>(); // no intersection
     }
   }
+  return std::vector<std::pair<ENumber, ENumber>>();
 }
 
 inline std::vector<ENumber> line_segment_intersection(const Line2 &line,

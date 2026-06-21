@@ -5,6 +5,8 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_NUMERICS_ENUMBER_GMP_HEADER_FILE
 #define DIRECTIONAL_NUMERICS_ENUMBER_GMP_HEADER_FILE
 
@@ -13,6 +15,14 @@
 // This is a wrapper around GMP that allows to seemlessly use the ENumber and
 // EInt (big integer) number types when GMP is installed.
 
+/**
+ * @file ENumberGMP.h
+ * @brief Exact rational number backend using GMP.
+ *
+ * Wraps GMP integer and rational operations behind the EInt and ENumber types used by exact geometry. This header is selected when the GMP backend is enabled.
+ */
+
+/** @brief RAII wrapper around mpz_class-style integer operations used by ENumber. */
 class EInt {
 public:
   mpz_class value;
@@ -77,6 +87,7 @@ inline EInt gcd(EInt a, EInt b) {
   return EInt(g);
 }
 
+/** @brief Exact rational number implemented with GMP-backed numerator and denominator. */
 class ENumber {
 public:
   mpq_class value;

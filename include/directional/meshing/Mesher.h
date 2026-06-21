@@ -1,5 +1,5 @@
 // This file is part of Directional, a library for directional field processing.
-// Copyright (C) 2021 Amir Vaxman <avaxman@gmail.com>
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public License
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
@@ -10,14 +10,7 @@
 #ifndef DIRECTIONAL_MESHING_MESHER_H
 #define DIRECTIONAL_MESHING_MESHER_H
 
-#include <Eigen/Sparse>
 #include <chrono>
-#include <directional/core/TriMesh.h>
-#include <directional/meshing/GenerateMesh.h>
-#include <directional/geometry/MeshTopology.h>
-#include <directional/meshing/MesherData.h>
-#include <directional/meshing/NFunctionMesher.h>
-#include <directional/meshing/SetupMesher.h>
 #include <fstream>
 #include <iosfwd>
 #include <iostream>
@@ -25,24 +18,40 @@
 #include <set>
 #include <vector>
 
+#include <Eigen/Sparse>
+
+#include <directional/core/TriMesh.h>
+#include <directional/geometry/MeshTopology.h>
+#include <directional/meshing/GenerateMesh.h>
+#include <directional/meshing/MesherData.h>
+#include <directional/meshing/NFunctionMesher.h>
+#include <directional/meshing/SetupMesher.h>
+
+
+
+/**
+ * @file Mesher.h
+ * @brief Abstract mesher interface.
+ *
+ * Defines the small common interface for meshing backends that consume prepared meshing data and generate output geometry.
+ */
+
 namespace directional {
 
-// Generates a mesh in (V,D,F) format from the integer isolines of a seamless
-// N-function (such as the one computed from the Directional integrator). The
-// mesh is polygonal, not necessarily triangular. Inputs:
-//   origMesh:     the original whole mesh
-//   mData:      a MesherData object that is pre-filled with the N-function data
-//   (should be generated from the integrator with setup_mesher)
-// Outputs:
-//   VOutput:      all vertex coordinates of the output polygonal mesh
-//   DOutput:     |FOutput| vector of face valences
-//   FOutput:      |FOutput| x |max(DOutput)| vertex indices of the face
-//   polygons, indexed into VOutput.
+/**
+ * @brief Generates a polygonal mesh from integrated integer isolines.
+ * @param origMesh Original uncut source mesh.
+ * @param mData Meshing data prepared by @ref setup_mesher.
+ * @param VOutput Output generated vertex positions.
+ * @param DOutput Output face degrees/valences.
+ * @param FOutput Output polygon vertex indices, padded to max degree.
+ * @return True when simplification and output assembly succeed.
+ */
 bool mesher(const directional::TriMesh &origMesh, const MesherData &mData,
             Eigen::MatrixXd &VOutput, Eigen::VectorXi &DOutput,
             Eigen::MatrixXi &FOutput) {
 
-  NFunctionMesher functionMesher(origMesh, mData); // TMesh, FMesh;
+  NFunctionMesher functionMesher(origMesh, mData);
   functionMesher.init();
 
   if (mData.verbose)

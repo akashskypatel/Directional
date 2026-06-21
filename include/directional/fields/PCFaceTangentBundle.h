@@ -5,16 +5,20 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_FIELDS_PIECWISE_CONSTANT_FACE_TANGENT_BUNDLE_H
 #define DIRECTIONAL_FIELDS_PIECWISE_CONSTANT_FACE_TANGENT_BUNDLE_H
 
+#include <iostream>
+
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
+
 #include <directional/core/TangentBundle.h>
 #include <directional/core/TriMesh.h>
 #include <directional/geometry/MeshTopology.h>
 #include <directional/util/EigenSparseUtils.h>
-#include <iostream>
 
 /***
  This class represents piecewise-constant face-based tangent bundles, where
@@ -23,8 +27,23 @@
  around vertices, with curvature being discrete angle defect.
  ***/
 
+
+/**
+ * @file PCFaceTangentBundle.h
+ * @brief Piecewise-constant face tangent bundle implementation.
+ *
+ * Defines a tangent bundle whose sources are mesh faces. It constructs per-face tangent bases, face adjacencies, connection rotations, local cycles, and mass matrices from a TriMesh.
+ */
+
 namespace directional {
 
+/**
+ * @brief Face-based piecewise-constant tangent bundle.
+ *
+ * Each triangle face contributes one tangent space located at its barycenter.
+ * Adjacencies follow dual edges, and local bases are taken from the TriMesh face
+ * frames.
+ */
 class PCFaceTangentBundle : public TangentBundle {
 public:
   const TriMesh *mesh;
@@ -37,12 +56,12 @@ public:
   bool hasEmbedding() const { return true; }
 
   PCFaceTangentBundle() {}
-  ~PCFaceTangentBundle() {}
+  ~PCFaceTangentBundle() override = default;
 
   void inline init(const TriMesh &_mesh) {
 
     intDimension = 2;
-    numSpaces = _mesh.F.rows();
+    numSpaces = static_cast<int>(_mesh.F.rows());
     avgAdjLength = _mesh.avgEdgeLength;
     typedef std::complex<double> Complex;
     mesh = &_mesh;
@@ -73,16 +92,10 @@ public:
       connection(i) = eg / ef;
     }
 
-    // TODO: cycles, cycleCurvature
     directional::dual_cycles(*mesh, cycles, cycleCurvatures, local2Cycle,
                              innerAdjacencies);
 
-    // drawing from mesh geometry
-
-    /************masses****************/
-
-    // mass are face areas
-    // igl::doublearea(mesh->V,mesh->F,tangentSpaceMass);
+    // Face area is the natural mass for piecewise-constant face fields.
 
     tangentSpaceMass = directional::sparse_diagonal(mesh->faceAreas);
     Eigen::VectorXd invFaceAreas = mesh->faceAreas.array().inverse();
@@ -111,9 +124,12 @@ public:
   Eigen::MatrixXd virtual inline project_to_intrinsic(
       const Eigen::VectorXi &tangentSpaces,
       const Eigen::MatrixXd &extDirectionals) const {
-    assert(tangentSpaces.rows() == extDirectionals.rows());
+    if (tangentSpaces.rows() != extDirectionals.rows()) {
+      throw std::runtime_error("tangentSpaces and extDirectionals must have "
+                               "the same number of rows");
+    }
 
-    int N = extDirectionals.cols() / 3;
+    int N = static_cast<int>(extDirectionals.cols() / 3);
     Eigen::MatrixXd intDirectionals(tangentSpaces.rows(), 2 * N);
 
     for (int i = 0; i < tangentSpaces.rows(); i++)
@@ -134,16 +150,19 @@ public:
       const Eigen::VectorXi &tangentSpaces,
       const Eigen::MatrixXd &intDirectionals) const {
 
-    assert(tangentSpaces.rows() == intDirectionals.rows() ||
-           tangentSpaces.rows() == 0);
+    if (tangentSpaces.rows() != intDirectionals.rows() &&
+        tangentSpaces.rows() != 0) {
+      throw std::runtime_error("tangentSpaces and intDirectionals must have "
+                               "the same number of rows");
+    }
     Eigen::VectorXi actualTangentSpaces;
     if (tangentSpaces.rows() == 0)
       actualTangentSpaces =
-          Eigen::VectorXi::LinSpaced(sources.rows(), 0, sources.rows() - 1);
+          Eigen::VectorXi::LinSpaced(static_cast<int>(sources.rows()), 0,
+                                     static_cast<int>(sources.rows() - 1));
     else
       actualTangentSpaces = tangentSpaces;
 
-    int N = intDirectionals.cols() / 2;
     Eigen::MatrixXd extDirectionals(actualTangentSpaces.rows(), 3);
 
     extDirectionals.conservativeResize(intDirectionals.rows(),
@@ -164,10 +183,13 @@ public:
                           Eigen::MatrixXd &interpNormals,
                           Eigen::MatrixXd &interpField) const {
 
-    assert(elemIndices.rows() == baryCoords.rows());
-    assert(baryCoords.rows() == intDirectionals.rows());
+    if (elemIndices.rows() != baryCoords.rows() ||
+        baryCoords.rows() != intDirectionals.rows()) {
+      throw std::runtime_error("elemIndices, baryCoords, and intDirectionals "
+                               "must have the same number of rows");
+    }
 
-    int N = intDirectionals.cols() / 2;
+    int N = static_cast<int>(intDirectionals.cols() / 2);
     interpSources = Eigen::MatrixXd::Zero(elemIndices.rows(), 3);
     interpNormals = Eigen::MatrixXd::Zero(elemIndices.rows(), 3);
     interpField = Eigen::MatrixXd::Zero(elemIndices.rows(), 3 * N);

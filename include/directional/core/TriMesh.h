@@ -5,48 +5,73 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #ifndef DIRECTIONAL_CORE_TRIMESH_H
 #define DIRECTIONAL_CORE_TRIMESH_H
 
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
 #include <cassert>
-#include <directional/core/DCEL.h>
-#include <directional/geometry/Curvature.h>
-#include <directional/geometry/Curvature.h>
 #include <iostream>
 #include <set>
 #include <vector>
 
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
+#include <Eigen/Sparse>
 
-/***
- This class stores a general-purpose triangle mesh. The triangle mesh can be
- used to implement a tangent bundle in several ways (for instance, face- or
- vertex-based bundles).
- ***/
+#include <directional/core/DCEL.h>
+#include <directional/geometry/Curvature.h>
+
+
+
+
+/**
+ * @file TriMesh.h
+ * @brief Triangle mesh wrapper built on the Directional DCEL.
+ *
+ * Owns vertex and face matrices, edge/halfedge topology, and convenience accessors for halfedge traversal. This is the mesh representation used by field construction, integration, cutting, and meshing routines.
+ */
 
 namespace directional {
 
+/**
+ * @brief Triangle mesh geometry, topology, and derived differential quantities.
+ *
+ * The mesh stores raw vertex/face matrices plus derived edge topology, halfedge
+ * connectivity, tangent bases, normals, areas, curvature estimates, and boundary
+ * metadata. Call @ref set_mesh to initialize all derived data consistently.
+ */
 class TriMesh {
 public:
-  // Basic quantities
+  /// Vertex positions as a #V-by-3 matrix.
   Eigen::MatrixXd V;
+
+  /// Triangle indices as a #F-by-3 matrix.
   Eigen::MatrixXi F;
 
-  // combinatorial quantities
+  /// Edge-face, face-edge, edge-vertex, face-neighbor, edge-side, vertex-edge, and vertex-face adjacency tables.
   Eigen::MatrixXi EF, FE, EV, TT, EFi, VE, VF;
+
+  /// Per-face edge lengths.
   Eigen::MatrixXd FEs;
-  Eigen::VectorXi innerEdges, boundEdges,
-      vertexValence; // vertexValence is #(outgoing edges) (if boundary, then
-                     // #faces+1 = vertexvalence)
+
+  /// Interior edge ids, boundary edge ids, and outgoing vertex valences.
+  Eigen::VectorXi innerEdges, boundEdges, vertexValence;
+
+  /// Boundary flags for vertices and edges.
   Eigen::VectorXi isBoundaryVertex, isBoundaryEdge;
 
-  // DCEL quantities
+  /// DCEL specialization used by triangle meshes without custom payloads.
   typedef DCEL<int, int, int, int> TriMeshDCEL;
+
+  /// Halfedge connectivity backing topology traversal helpers.
   TriMeshDCEL dcel;
 
-  // Functions that interface comfortably into the DCEL
+  /** @name DCEL traversal helpers
+   *  Lightweight accessors for representative halfedges, twins, next/previous
+   *  halfedges, and incident vertex/face/edge ids.
+   */
+  /// @{
   inline int VH(const int index) const { return dcel.vertices[index].halfedge; }
   inline int twinH(const int index) const { return dcel.halfedges[index].twin; }
   inline int nextH(const int index) const { return dcel.halfedges[index].next; }
@@ -68,33 +93,55 @@ public:
     return he;
   }
 
-  // Geometric quantities
+  /// @}
+
+  /// Per-face unit normals.
   Eigen::MatrixXd faceNormals;
+  /// Per-face areas.
   Eigen::VectorXd faceAreas;
+  /// Per-vertex area-weighted normals.
   Eigen::MatrixXd vertexNormals;
-  Eigen::MatrixXd FBx, FBy; // local basis vectors per face
-  Eigen::MatrixXd VBx, VBy; // local basis vectors per vertex
+  /// Local tangent basis vectors per face.
+  Eigen::MatrixXd FBx, FBy;
+
+  /// Local tangent basis vectors per vertex.
+  Eigen::MatrixXd VBx, VBy;
+
+  /// Per-face barycenters.
   Eigen::MatrixXd barycenters;
+
+  /// Per-edge midpoint positions.
   Eigen::MatrixXd midEdges;
+
+  /// Per-vertex Gaussian curvature values.
   Eigen::VectorXd GaussianCurvature;
   std::vector<Eigen::Matrix2d> Sv, Sf;
   Eigen::MatrixXd minFacePrincipalDirections, minVertexPrincipalDirections;
   Eigen::MatrixXd maxFacePrincipalDirections, maxVertexPrincipalDirections;
   Eigen::MatrixXd facePrincipalCurvatures, vertexPrincipalCurvatures;
 
-  // Measures of the scale of a mesh
-  double avgEdgeLength;
-  Eigen::RowVector3d minBox, maxBox; // bounding box
+  /// Average edge length, used as a scale parameter by downstream algorithms.
+  double avgEdgeLength = 0.0;
 
-  // Topological quantities
-  int eulerChar;
-  int numGenerators;
+  /// Axis-aligned bounding-box corners.
+  Eigen::RowVector3d minBox, maxBox;
+
+  /// Euler characteristic of the mesh.
+  int eulerChar = 0;
+
+  /// Number of topological generators inferred from Euler characteristic and boundaries.
+  int numGenerators = 0;
+
+  /// Boundary loops represented as ordered vertex ids.
   std::vector<std::vector<int>> boundaryLoops;
 
-  TriMesh() {}
-  ~TriMesh() {}
+  TriMesh() = default;
+  ~TriMesh() = default;
 
-  // computing a full HE structure
+  /**
+   * @brief Builds edge, face, vertex, and halfedge adjacency tables.
+   * @param verbose When true, prints detailed DCEL consistency failures.
+   */
   void inline compute_edge_quantities(const bool verbose = false) {
 
     struct ComparePairs {
@@ -110,9 +157,10 @@ public:
 
     // This is done in the polyscope compatible fashion
     dcel.init(V, F);
-    bool consistency = dcel.check_consistency(verbose, true, true, true);
-    assert(consistency &&
-           "compute_edge_quantities(): Something is wrong with the DCEL!!");
+    if (!dcel.check_consistency(verbose, true, true, true)) {
+      throw std::runtime_error(
+          "compute_edge_quantities(): DCEL consistency check failed");
+    }
     EV.resize(dcel.edges.size(), 2);
     EF = Eigen::MatrixXi::Constant(dcel.edges.size(), 2, -1);
     EFi = Eigen::MatrixXi::Constant(dcel.edges.size(), 2, -1);
@@ -298,8 +346,9 @@ public:
 
     compute_geometric_quantities();
 
-    eulerChar = V.rows() - EV.rows() + F.rows();
-    numGenerators = (2 - eulerChar) / 2 - boundaryLoops.size();
+    eulerChar = static_cast<int>(V.rows() - EV.rows() + F.rows());
+    numGenerators = static_cast<int>((2 - eulerChar) / 2 -
+                                     static_cast<int>(boundaryLoops.size()));
     minBox = V.colwise().minCoeff();
     maxBox = V.colwise().maxCoeff();
 
@@ -320,7 +369,6 @@ public:
         while (dcel.halfedges[hebegin].twin != -1)
           hebegin = dcel.halfedges[dcel.halfedges[hebegin].twin].next;
 
-      // TODO: this rest inside the init function
       // resetting dcel pointer for future reference
       dcel.vertices[i].halfedge = hebegin;
       int heiterate = hebegin;

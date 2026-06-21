@@ -1,12 +1,14 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
-// Created by Amir Vaxman on 20.04.24.
-//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
+#pragma once
 
 #ifndef DIRECTIONAL_MESHING_N_FUNCTION_MESHER
 #define DIRECTIONAL_MESHING_N_FUNCTION_MESHER
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 
 #include <algorithm>
 #include <array>
@@ -24,18 +26,37 @@
 #include <utility>
 #include <vector>
 
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
 #include <directional/core/DCEL.h>
-#include <directional/numerics/ExactGeometry.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
+#include <directional/numerics/ExactGeometry.h>
+
+
+/**
+ * @file NFunctionMesher.h
+ * @brief Mesher implementation for integrated N-functions.
+ *
+ * Defines the data structures and algorithms used to convert an integrated N-function into explicit polygonal output by constructing and simplifying per-triangle segment arrangements.
+ */
 
 namespace directional {
 
+/**
+ * @brief Converts an integrated N-function into explicit mesh geometry.
+ *
+ * The mesher traces integer isolines inside each triangle, builds exact segment
+ * arrangements, simplifies redundant geometry, and emits a polygonal mesh with
+ * vertex degrees and source mappings.
+ */
 class NFunctionMesher {
 public:
   const TriMesh &origMesh;
   const MesherData &mData;
 
+  /** @brief Metadata attached to an exact arrangement segment. */
   struct SegmentData {
     bool isFunction = false;
     int origNFunctionIndex = -1;
@@ -49,6 +70,7 @@ public:
           lineInPencil(-1), origHalfedge(-1), intParams() {}
   };
 
+  /** @brief Payload stored on function-DCEL vertices. */
   struct VData {
     Eigen::RowVector3d coords;
     EVector3 eCoords;
@@ -84,12 +106,9 @@ public:
   std::vector<int> InStrip;
   std::vector<std::set<int>> VertexChains;
 
-  struct MergeData {
-    const bool operator()(const int &v1, const int &v2) const { return v1; }
-  };
-
   void TestUnmatchedTwins();
 
+  /** @brief Pair of matched point ids used during seam and band matching. */
   struct PointPair {
     int Index1, Index2;
     ENumber Distance;
@@ -130,9 +149,10 @@ public:
   }
 
   static double vertex_match_cost(const EVector3 &a, const EVector3 &b) {
-    return (a - b).max_abs().to_double();
+    return static_cast<double>((a - b).max_abs().to_double());
   }
 
+  /** @brief Lightweight accessor that exposes a vertex coordinate set through a uniform interface. */
   class VertexCoordinateView {
   public:
     VertexCoordinateView(const FunctionDCEL &dcel,
@@ -259,6 +279,7 @@ public:
     return Result;
   }
 
+  /** @brief Result buffers for band-limited point matching. */
   struct BandedMatchResult {
     bool success = false;
     bool touchedBandBoundary = false;
@@ -281,7 +302,8 @@ public:
       return output;
     }
 
-    struct PredRow {
+    /** @brief Predecessor row used by dynamic-programming band matching. */
+  struct PredRow {
       std::size_t begin = 0;
       std::vector<std::uint8_t> direction;
     };
@@ -514,6 +536,7 @@ public:
     }
   }
 
+  /** @brief Reusable workspace for arrangement simplification. */
   struct SimplifyScratch {
     int maxOrigHE = -1;
     std::vector<bool> visitedOrig;
@@ -1185,8 +1208,9 @@ public:
     newVertex.valid = true;
     newVertex.halfedge = newHalfedgeIndex;
     newVertex.data.eCoords = point;
-    newVertex.data.coords << point[0].to_double(), point[1].to_double(),
-        point[2].to_double();
+    newVertex.data.coords << static_cast<double>(point[0].to_double()),
+        static_cast<double>(point[1].to_double()),
+        static_cast<double>(point[2].to_double());
 
     FunctionDCEL::Halfedge newHalfedge = originalHalfedge;
     newHalfedge.ID = newHalfedgeIndex;
@@ -1476,11 +1500,11 @@ public:
 
             const auto &approx = genDcel.vertices[vertex].data.coords;
 
-            const double exactX = exact[0].to_double();
+            const double exactX = static_cast<double>(exact[0].to_double());
 
-            const double exactY = exact[1].to_double();
+            const double exactY = static_cast<double>(exact[1].to_double());
 
-            const double exactZ = exact[2].to_double();
+            const double exactZ = static_cast<double>(exact[2].to_double());
 
             const double errorX = approx[0] - exactX;
 
@@ -3445,8 +3469,6 @@ public:
 
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
 
-    const int faceCount = static_cast<int>(genDcel.faces.size());
-
     const auto fail = [&](const char *message, const int index = -1) -> bool {
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::" << context
@@ -4071,6 +4093,7 @@ public:
      * storage avoids one vector allocation per edge.
      * ------------------------------------------------------------------
      */
+    /** @brief Tracks surviving edges after local simplification. */
     struct EdgeSurvivors {
       int first = -1;
       int second = -1;
@@ -5214,7 +5237,7 @@ public:
           "divisible by N");
     }
 
-    const int faceCount = origMesh.F.rows();
+    const int faceCount = static_cast<int>(origMesh.F.rows());
 
     if (mData.cutF.rows() != faceCount || mData.cutF.cols() != 3) {
       throw std::runtime_error(
@@ -5425,7 +5448,8 @@ public:
 
       const ENumber exactValue(originalValue, tolerance);
 
-      const double rationalizedValue = exactValue.to_double();
+      const double rationalizedValue =
+          static_cast<double>(exactValue.to_double());
 
       if (!std::isfinite(rationalizedValue)) {
         throw std::runtime_error(
@@ -5454,7 +5478,7 @@ public:
       }
     }
 
-    const double sourceRmsError =
+    [[maybe_unused]] const double sourceRmsError =
         sourceVariableCount > 0
             ? std::sqrt(static_cast<double>(
                   sourceSquaredError /
@@ -5502,8 +5526,8 @@ public:
     long double cutSquaredError = 0.0L;
 
     for (Eigen::Index index = 0; index < cutNFunctionVec.size(); ++index) {
-      const double exactValue =
-          exactCutNFunctionVec[static_cast<std::size_t>(index)].to_double();
+      const double exactValue = static_cast<double>(
+          exactCutNFunctionVec[static_cast<std::size_t>(index)].to_double());
 
       const double floatingValue = cutNFunctionVec(index);
 
@@ -5529,7 +5553,7 @@ public:
       }
     }
 
-    const double cutRmsError =
+    [[maybe_unused]] const double cutRmsError =
         cutNFunctionVec.size() > 0
             ? std::sqrt(static_cast<double>(
                   cutSquaredError /
@@ -5653,9 +5677,9 @@ public:
         for (int function = 0; function < mData.N; ++function) {
           const int localIndex = corner * mData.N + function;
 
-          const double exactValue =
+          const double exactValue = static_cast<double>(
               faceExactFunction[static_cast<std::size_t>(localIndex)]
-                  .to_double();
+                  .to_double());
 
           const double floatingValue = NFunction(face, localIndex);
 
@@ -5746,6 +5770,7 @@ public:
       return -1;
     };
 
+    /** @brief Candidate seam connection considered during generated mesh stitching. */
     struct SeamCandidate {
       int rotation = -1;
 
@@ -5869,13 +5894,17 @@ public:
 
         const ENumber exactEndOffsetV = transportedEnd[1] - firstEnd[1];
 
-        const double startOffsetU = exactStartOffsetU.to_double();
+        const double startOffsetU =
+            static_cast<double>(exactStartOffsetU.to_double());
 
-        const double startOffsetV = exactStartOffsetV.to_double();
+        const double startOffsetV =
+            static_cast<double>(exactStartOffsetV.to_double());
 
-        const double endOffsetU = exactEndOffsetU.to_double();
+        const double endOffsetU =
+            static_cast<double>(exactEndOffsetU.to_double());
 
-        const double endOffsetV = exactEndOffsetV.to_double();
+        const double endOffsetV =
+            static_cast<double>(exactEndOffsetV.to_double());
 
         const double endpointMismatch =
             std::max(std::abs(startOffsetU - endOffsetU),

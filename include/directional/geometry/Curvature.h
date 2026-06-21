@@ -1,13 +1,28 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #ifndef DIRECTIONAL_GEOMETRY_CURVATURE_H
 #define DIRECTIONAL_GEOMETRY_CURVATURE_H
 
-#include <Eigen/Core>
 #include <numbers>
 #include <set>
 #include <unordered_map>
 
+#include <Eigen/Core>
+
+
+/**
+ * @file Curvature.h
+ * @brief Curvature estimators for triangle meshes.
+ *
+ * Declares Gaussian curvature and shape-operator routines used to derive discrete curvature information from mesh vertices, edges, faces, and normals.
+ */
 
 namespace directional {
 

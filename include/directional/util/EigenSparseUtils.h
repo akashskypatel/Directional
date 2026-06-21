@@ -1,5 +1,4 @@
 // This file is part of Directional, a library for directional field processing.
-//
 // Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
 //
 // This Source Code Form is subject to the terms of the Mozilla Public License
@@ -10,9 +9,19 @@
 
 #ifndef DIRECTIONAL_EIGEN_SPARSE_UTILS_H
 #define DIRECTIONAL_EIGEN_SPARSE_UTILS_H
+
+#include <vector>
+
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-#include <vector>
+
+
+/**
+ * @file EigenSparseUtils.h
+ * @brief Sparse Eigen helper routines.
+ *
+ * Contains helpers for Kronecker-style field matrices and block diagonal sparse matrices.
+ */
 
 namespace directional {
 
@@ -97,7 +106,6 @@ sparse_diagonal(const std::vector<Eigen::SparseMatrix<Scalar>> &diagValues,
   }
 
   diagMatrix.setFromTriplets(diagMatTris.begin(), diagMatTris.end());
-  // return diagMatrix;
 }
 
 } // namespace directional

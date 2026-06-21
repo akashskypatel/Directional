@@ -1,49 +1,105 @@
+// This file is part of Directional, a library for directional field processing.
+// Copyright (C) 2025 Amir Vaxman <avaxman@gmail.com>
+//
+// This Source Code Form is subject to the terms of the Mozilla Public License
+// v. 2.0. If a copy of the MPL was not distributed with this file, You can
+// obtain one at http://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #ifndef DIRECTIONAL_PIPELINE_REMESH_PIPELINE_H
 #define DIRECTIONAL_PIPELINE_REMESH_PIPELINE_H
 
-
-#include <cmath>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
+
 
 #include <Eigen/Core>
 
 #include <directional/core/CartesianField.h>
-#include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/core/TriMesh.h>
-#include <directional/integration/Integrate.h>
-#include <directional/meshing/Mesher.h>
 #include <directional/fields/FieldMatching.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/integration/Integrate.h>
 #include <directional/integration/IntegrationData.h>
 #include <directional/integration/SetupIntegration.h>
+#include <directional/meshing/Mesher.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
 
+
+
+/**
+ * @file RemeshPipeline.h
+ * @brief High-level remeshing pipeline API.
+ *
+ * Exposes convenience functions that convert mesh vertices, faces, and cross-field directions into a remeshed output by running tangent-bundle construction, matching, combing, integration, and meshing.
+ */
+
 namespace directional::pipeline {
 
+/**
+ * @brief User-tunable parameters for the high-level remeshing pipeline.
+ */
 struct RemeshOptions {
+  /// Target edge-length ratio passed to integration/meshing.
   double lengthRatio = 0.02;
+
+  /// Whether integration should enforce integral seamlessness.
   bool integralSeamless = true;
+
+  /// Whether seam values should be rounded during integration.
   bool roundSeams = false;
+
+  /// Reserved for future feature-aligned pipeline support.
   bool featureAlign = false;
+
+  /// Emits per-stage timing logs when true.
   bool verbose = false;
+
+  /// Normalizes supplied direction vectors after tangent projection.
   bool normalizeDirections = true;
 };
 
+/**
+ * @brief Geometry and diagnostic outputs produced by the remeshing pipeline.
+ */
 struct RemeshResult {
+  /// True when the final mesher emitted a valid output mesh.
   bool success = false;
+
+  /// Generated output vertex positions.
   Eigen::MatrixXd vertices;
+
+  /// Degree/valence metadata for generated vertices.
   Eigen::VectorXi degrees;
+
+  /// Generated output faces.
   Eigen::MatrixXi faces;
+
+  /// Vertices of the cut source mesh used for integration.
   Eigen::MatrixXd cutVertices;
+
+  /// Faces of the cut source mesh used for integration.
   Eigen::MatrixXi cutFaces;
+
+  /// Integrated N-function values on the cut mesh.
   Eigen::MatrixXd cutFunctions;
+
+  /// Integrated N-function values at cut-mesh corners.
   Eigen::MatrixXd cutCornerFunctions;
 };
 
+/**
+ * @brief Projects a vector onto a face tangent plane.
+ * @param vector Ambient vector to project.
+ * @param normal Unit face normal.
+ * @param normalize Whether to return a unit-length tangent vector.
+ * @return Tangent-plane component of @p vector.
+ * @throws std::runtime_error if the projected vector is degenerate.
+ */
 inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
                                           const Eigen::RowVector3d &normal,
                                           const bool normalize) {
@@ -59,6 +115,14 @@ inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
   return tangent;
 }
 
+/**
+ * @brief Builds an ordered raw 4-RoSy field from two tangent direction families.
+ * @param mesh Source mesh with face normals already computed.
+ * @param primaryDirections One ambient direction per face.
+ * @param secondaryDirections Orthogonal or user-specified second direction per face.
+ * @param normalizeDirections Whether tangent-projected directions are normalized.
+ * @return #F-by-12 raw field ordered as +primary, +secondary, -primary, -secondary.
+ */
 inline Eigen::MatrixXd
 make_raw_cross_field(const TriMesh &mesh,
                      const Eigen::MatrixXd &primaryDirections,
@@ -89,6 +153,13 @@ make_raw_cross_field(const TriMesh &mesh,
   return rawField;
 }
 
+/**
+ * @brief Derives a second cross-field direction by crossing face normals with primary directions.
+ * @param mesh Source mesh with face normals already computed.
+ * @param primaryDirections One ambient direction per face.
+ * @param normalizeDirections Whether projected directions are normalized.
+ * @return #F-by-3 matrix of secondary tangent directions.
+ */
 inline Eigen::MatrixXd
 orthogonal_complement(const TriMesh &mesh,
                       const Eigen::MatrixXd &primaryDirections,
@@ -112,6 +183,13 @@ orthogonal_complement(const TriMesh &mesh,
   return secondary;
 }
 
+/**
+ * @brief Runs the full remeshing pipeline on an initialized TriMesh and raw cross field.
+ * @param meshWhole Initialized source mesh.
+ * @param rawCrossField #F-by-12 raw 4-RoSy field.
+ * @param options Pipeline options.
+ * @return Remeshing result with generated mesh and cut-mesh diagnostics.
+ */
 inline RemeshResult
 remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                  const Eigen::MatrixXd &rawCrossField,
@@ -128,12 +206,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             .count() /
         1e+6;
     const auto totalSeconds =
-        std::chrono::duration_cast<std::chrono::microseconds>(now - pipelineStart)
+        std::chrono::duration_cast<std::chrono::microseconds>(now -
+                                                              pipelineStart)
             .count() /
         1e+6;
-    std::cout << "[Directional::pipeline::remesh_from_raw_cross_field_impl()]: " << label << " completed in "
-              << phaseSeconds << " s (total " << totalSeconds << " s)"
-              << std::endl;
+    std::cout << "[Directional::pipeline::remesh_from_raw_cross_field_impl()]: "
+              << label << " completed in " << phaseSeconds << " s (total "
+              << totalSeconds << " s)" << std::endl;
     phaseStart = now;
   };
 
@@ -162,7 +241,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.lengthRatio = options.lengthRatio;
   integration.integralSeamless = options.integralSeamless;
   integration.roundSeams = options.roundSeams;
-  // integration.featureAlign = options.featureAlign;
   integration.verbose = options.verbose;
 
   TriMesh meshCut;
@@ -192,6 +270,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   return result;
 }
 
+/**
+ * @brief Runs remeshing from raw mesh matrices and a raw 4-RoSy cross field.
+ * @param vertices Source vertex positions.
+ * @param faces Source triangle indices.
+ * @param rawCrossField #F-by-12 raw field.
+ * @param options Pipeline options.
+ * @return Remeshing result.
+ */
 inline RemeshResult remesh_from_raw_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options = {}) {
@@ -200,6 +286,15 @@ inline RemeshResult remesh_from_raw_cross_field(
   return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
 }
 
+/**
+ * @brief Runs remeshing from two direction families per face.
+ * @param vertices Source vertex positions.
+ * @param faces Source triangle indices.
+ * @param primaryDirections Primary ambient/tangent direction per face.
+ * @param secondaryDirections Secondary ambient/tangent direction per face.
+ * @param options Pipeline options.
+ * @return Remeshing result.
+ */
 inline RemeshResult
 remesh_from_cross_field(const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces,
@@ -214,6 +309,18 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
   return remesh_from_raw_cross_field_impl(meshWhole, rawField, options);
 }
 
+/**
+ * @brief Runs remeshing from one direction family per face.
+ *
+ * The secondary direction is generated as the tangent-plane orthogonal
+ * complement of the supplied primary direction.
+ *
+ * @param vertices Source vertex positions.
+ * @param faces Source triangle indices.
+ * @param primaryDirections Primary ambient/tangent direction per face.
+ * @param options Pipeline options.
+ * @return Remeshing result.
+ */
 inline RemeshResult
 remesh_from_cross_field(const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces,
@@ -230,6 +337,5 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
 }
 
 } // namespace directional::pipeline
-
 
 #endif // DIRECTIONAL_PIPELINE_REMESH_PIPELINE_H
