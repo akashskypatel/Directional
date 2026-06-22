@@ -13,6 +13,8 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/util/Progress.h>
+
 
 /**
  * @file MesherData.h
@@ -55,6 +57,9 @@ struct MesherData {
 
   /// Emits meshing progress logs when true.
   bool verbose;
+
+  /// Optional progress callback invoked by meshing stages.
+  ProgressCallback progress;
 
   MesherData() : exactResolution(10e-9), verbose(false) {}
   ~MesherData() = default;

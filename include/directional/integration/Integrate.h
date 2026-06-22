@@ -94,7 +94,10 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
   const auto integrateStart = Clock::now();
   auto phaseStart = integrateStart;
+  std::size_t progressStage = 0;
+  constexpr std::size_t progressStageCount = 8;
   const auto log_phase = [&](const char *label) {
+    report_progress(intData.progress, ++progressStage, progressStageCount, label);
     if (!intData.verbose)
       return;
     const auto now = Clock::now();

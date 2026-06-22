@@ -24,6 +24,7 @@
 #include <directional/core/CartesianField.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/util/Progress.h>
 #include <directional/core/TriMesh.h>
 
 /**
@@ -50,6 +51,9 @@ struct CrossFieldOptions {
 
   /// Compute edge matching, transport effort, and singularities.
   bool computeMatching = true;
+
+  /// Optional progress callback invoked by extraction stages.
+  ProgressCallback progress;
 };
 
 /**
@@ -321,14 +325,20 @@ extract_cross_field(const TriMesh &mesh,
         "Cross-field extraction requires triangular faces.");
   }
 
+  report_progress(options.progress, 1, 4, "Initializing tangent bundle");
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(mesh);
 
+  report_progress(options.progress, 2, 4, "Solving cross-field power system");
   const Eigen::VectorXcd power =
       solve_power_field(tangentBundle, options.normalizeDirections);
+  report_progress(options.progress, 3, 4, "Constructing cross-field directions");
   CartesianField rawField =
       make_raw_field(tangentBundle, power, options.normalizeDirections);
 
+  report_progress(options.progress, 4, 4,
+                  options.computeMatching ? "Computing field matching"
+                                          : "Finalizing cross field");
   if (options.computeMatching) {
     principal_matching(rawField);
   }

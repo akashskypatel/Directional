@@ -143,6 +143,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
   add_library(
     directional_cli_backend STATIC
     src/cli/CliBackend.cpp
+    src/cli/ProgressDisplay.cpp
     src/cli/Main.cpp
     src/cli/Usage.cpp
     src/cli/InfoCommand.cpp

@@ -2,6 +2,7 @@
 #include "CrossFieldOutput.h"
 #include "FieldConversion.h"
 #include "MeshIO.h"
+#include "ProgressDisplay.h"
 
 #include <filesystem>
 #include <iostream>
@@ -62,15 +63,12 @@ int run_cross_field(const int argc, char **argv) {
         "--singularities cannot be combined with --no-matching.");
   }
 
-  if (verbose) {
-    std::cout << "Loading mesh: " << inputPath.string() << '\n';
-  }
+  constexpr std::size_t progressTotal = 7;
+  ProgressDisplay progress(std::cout, !verbose);
+  progress.update(1, progressTotal, "Loading input mesh");
   const MeshData mesh = load_mesh(inputPath);
 
-  if (verbose) {
-    std::cout << "Extracting a degree-4 cross field on " << mesh.faces.rows()
-              << " faces.\n";
-  }
+  options.progress = progress.range(2, 5, progressTotal);
   const fields::CrossFieldResult result =
       fields::extract_cross_field(mesh.vertices, mesh.faces, options);
 
@@ -79,6 +77,7 @@ int run_cross_field(const int argc, char **argv) {
   field.primary = result.primaryDirections;
   field.secondary = result.secondaryDirections;
   field.raw = result.rawField;
+  progress.update(6, progressTotal, "Writing cross-field output");
   write_field(outputPath, infer_field_format(outputPath, outputFormat), field);
 
   if (singularitiesPath.has_value()) {
@@ -92,6 +91,9 @@ int run_cross_field(const int argc, char **argv) {
         result.secondaryDirections, result.matching, result.effort,
         result.singularCycles, result.singularIndices);
   }
+
+  progress.update(7, progressTotal, "Finalizing cross-field pipeline");
+  progress.finish();
 
   std::cout << "Extracted " << result.degree << "-RoSy cross field on "
             << result.rawField.rows() << " faces";

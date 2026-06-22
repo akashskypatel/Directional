@@ -28,6 +28,7 @@
 #include <directional/meshing/Mesher.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
+#include <directional/util/Progress.h>
 
 /**
  * @file RemeshPipeline.h
@@ -59,6 +60,9 @@ struct RemeshOptions {
 
   /// Normalizes supplied direction vectors after tangent projection.
   bool normalizeDirections = true;
+
+  /// Optional progress callback invoked by remeshing stages.
+  ProgressCallback progress;
 };
 
 /**
@@ -184,14 +188,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         "rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
   }
 
+  report_progress(options.progress, 1, 8, "Initializing tangent bundle");
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
   log_phase("PCFaceTangentBundle::init");
 
+  report_progress(options.progress, 2, 8, "Preparing raw cross field");
   CartesianField rawField;
   rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, 4);
   rawField.set_extrinsic_field(rawCrossField);
   log_phase("CartesianField::init + set_extrinsic_field");
+  report_progress(options.progress, 3, 8, "Computing field matching");
   principal_matching(rawField);
   log_phase("principal_matching");
 
@@ -201,17 +208,20 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.roundSeams = options.roundSeams;
   integration.verbose = options.verbose;
 
+  report_progress(options.progress, 4, 8, "Setting up integration");
   TriMesh meshCut;
   CartesianField combedField;
   setup_integration(rawField, integration, meshCut, combedField);
   log_phase("setup_integration");
 
+  report_progress(options.progress, 5, 8, "Solving field integration");
   Eigen::MatrixXd cutFunctions;
   Eigen::MatrixXd cutCornerFunctions;
   integrate(combedField, integration, meshCut, cutFunctions,
             cutCornerFunctions);
   log_phase("integrate");
 
+  report_progress(options.progress, 6, 8, "Preparing mesher");
   MesherData mesherData;
   mesherData.verbose = options.verbose;
   setup_mesher(meshCut, integration, mesherData);
@@ -227,9 +237,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   result.cutFaces = meshCut.F;
   result.cutFunctions = cutFunctions;
   result.cutCornerFunctions = cutCornerFunctions;
+  report_progress(options.progress, 7, 8, "Generating output mesh");
   result.success = mesher(meshWhole, mesherData, result.vertices,
                           result.degrees, result.faces);
   log_phase("mesher");
+  report_progress(options.progress, 8, 8, "Finalizing remesh result");
   return result;
 }
 
@@ -315,14 +327,22 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
 
+  report_progress(options.progress, 1, 9, "Extracting source cross field");
   fields::CrossFieldOptions crossFieldOptions;
   crossFieldOptions.normalizeDirections = options.normalizeDirections;
   crossFieldOptions.computeMatching = false;
   const fields::CrossFieldResult crossField =
       fields::extract_cross_field(meshWhole, crossFieldOptions);
 
+  RemeshOptions remeshOptions = options;
+  remeshOptions.progress =
+      [callback = options.progress](const std::size_t current,
+                                    const std::size_t,
+                                    const std::string_view task) {
+        report_progress(callback, current + 1, 9, task);
+      };
   return remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
-                                           options);
+                                           remeshOptions);
 }
 
 } // namespace directional::pipeline

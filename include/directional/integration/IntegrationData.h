@@ -14,6 +14,8 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/util/Progress.h>
+
 
 /**
  * @file IntegrationData.h
@@ -104,6 +106,9 @@ struct IntegrationData {
 
   /// Emits solver logs when true.
   bool verbose;
+
+  /// Optional progress callback invoked by integration solver stages.
+  ProgressCallback progress;
 
   IntegrationData(int _N)
       : lengthRatio(0.02), integralSeamless(false), roundSeams(true),

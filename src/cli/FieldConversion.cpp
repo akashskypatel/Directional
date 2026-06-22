@@ -1,4 +1,5 @@
 #include "FieldConversion.h"
+#include "ProgressDisplay.h"
 
 #include <algorithm>
 #include <cctype>
@@ -260,6 +261,9 @@ int run_convert_field(int argc, char **argv) {
     else if (option == "--degree" && ++i < argc) degree = std::stoi(argv[i]);
     else throw std::runtime_error("Unknown convert-field option: " + option);
   }
+  constexpr std::size_t progressTotal = 4;
+  ProgressDisplay progress(std::cout);
+  progress.update(1, progressTotal, "Inspecting field formats");
   const FieldFormat sourceFormat = infer_field_format(input, inputFormat);
   const FieldFormat targetFormat = infer_field_format(output, outputFormat);
   if (sourceFormat == targetFormat) {
@@ -269,11 +273,16 @@ int run_convert_field(int argc, char **argv) {
           "Input and output paths are identical for same-format conversion.");
     }
     ensure_parent(output);
+    progress.update(2, progressTotal, "Copying field data");
     std::filesystem::copy_file(
         input, output, std::filesystem::copy_options::overwrite_existing);
+    progress.update(4, progressTotal, "Finalizing field conversion");
+    progress.finish();
     std::cout << "Wrote " << output.string() << '\n';
     return 0;
   }
+  progress.update(2, progressTotal,
+                  meshPath ? "Loading mesh and field data" : "Loading field data");
   std::optional<MeshData> mesh;
   if (meshPath) mesh = load_mesh(*meshPath);
   FieldData field = read_field(input, sourceFormat, mesh ? &*mesh : nullptr);
@@ -287,7 +296,10 @@ int run_convert_field(int argc, char **argv) {
   if (targetFormat == FieldFormat::Rosy && field.secondary.rows() > 0) {
     std::cerr << "WARNING: lossy conversion: output .rosy keeps only alpha.\n";
   }
+  progress.update(3, progressTotal, "Writing converted field");
   write_field(output, targetFormat, field);
+  progress.update(4, progressTotal, "Finalizing field conversion");
+  progress.finish();
   std::cout << "Wrote " << output.string() << '\n';
   return 0;
 }

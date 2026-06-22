@@ -5,6 +5,7 @@
 #include "MatrixIO.h"
 #include "MeshIO.h"
 #include "RemeshOutput.h"
+#include "ProgressDisplay.h"
 
 #include <cmath>
 #include <filesystem>
@@ -131,16 +132,14 @@ int run_remesh(const int argc, char **argv) {
         "--secondary-directions requires --primary-directions.");
   }
 
-  if (options.verbose) {
-    std::cout << "Loading mesh: " << inputPath.string() << '\n';
-  }
+  constexpr std::size_t progressTotal = 11;
+  ProgressDisplay progress(std::cout, !options.verbose);
+  progress.update(1, progressTotal, "Loading input mesh");
   const MeshData mesh = load_mesh(inputPath);
+  options.progress = progress.range(2, 9, progressTotal);
 
   pipeline::RemeshResult result;
   if (fieldPath.has_value()) {
-    if (options.verbose) {
-      std::cout << "Using field: " << fieldPath->string() << '\n';
-    }
     const FieldFormat format = infer_field_format(*fieldPath, fieldFormat);
     const FieldData field = read_field(*fieldPath, format, &mesh);
     if (field.primary.rows() != mesh.faces.rows() ||
@@ -157,9 +156,6 @@ int run_remesh(const int argc, char **argv) {
           mesh.vertices, mesh.faces, field.primary, field.secondary, options);
     }
   } else if (rawFieldPath.has_value()) {
-    if (options.verbose) {
-      std::cout << "Using raw cross field: " << rawFieldPath->string() << '\n';
-    }
     const RawFieldData rawField = read_raw_field(*rawFieldPath);
     if (rawField.degree != 4) {
       throw std::runtime_error(
@@ -187,9 +183,6 @@ int run_remesh(const int argc, char **argv) {
           mesh.vertices, mesh.faces, primary, options);
     }
   } else {
-    if (options.verbose) {
-      std::cout << "No field supplied; extracting a degree-4 cross field.\n";
-    }
     result = pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
   }
 
@@ -198,6 +191,7 @@ int run_remesh(const int argc, char **argv) {
         "Remeshing failed while simplifying or assembling the output mesh.");
   }
 
+  progress.update(10, progressTotal, "Writing remeshed output");
   write_remeshed_mesh(outputPath, result.vertices, result.degrees,
                       result.faces);
 
@@ -209,6 +203,9 @@ int run_remesh(const int argc, char **argv) {
         result.crossFieldEffort, result.crossFieldSingularCycles,
         result.crossFieldSingularIndices);
   }
+
+  progress.update(11, progressTotal, "Finalizing remesh pipeline");
+  progress.finish();
 
   std::cout << "Remeshed " << mesh.faces.rows() << " source triangles into "
             << result.faces.rows() << " polygons.\n";
