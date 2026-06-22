@@ -48,7 +48,7 @@ namespace directional {
 // line data is an integer associated with data on the line that gets inherited
 // to the halfedges output is the DCEL of the result Outer face is deleted in
 // post-process
-void NFunctionMesher::arrange_on_triangle(
+inline void NFunctionMesher::arrange_on_triangle(
     const std::vector<EVector2> &triangle,
     const std::vector<std::pair<int, bool>> &triangleData,
     const std::vector<LinePencil> &linePencils,
@@ -364,7 +364,7 @@ void NFunctionMesher::arrange_on_triangle(
                       pencilPairHasPointIntersections, V, triDcel);
 }
 
-void NFunctionMesher::segment_arrangement(
+inline void NFunctionMesher::segment_arrangement(
     const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
@@ -1171,7 +1171,7 @@ edgeData = newEdgeData;
 }
 
 // The top mesh generation function
-void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
+inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
 
   using namespace std;
   using namespace Eigen;

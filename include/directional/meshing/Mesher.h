@@ -47,7 +47,7 @@ namespace directional {
  * @param FOutput Output polygon vertex indices, padded to max degree.
  * @return True when simplification and output assembly succeed.
  */
-bool mesher(const directional::TriMesh &origMesh, const MesherData &mData,
+inline bool mesher(const directional::TriMesh &origMesh, const MesherData &mData,
             Eigen::MatrixXd &VOutput, Eigen::VectorXi &DOutput,
             Eigen::MatrixXi &FOutput) {
 

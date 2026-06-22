@@ -1,14 +1,121 @@
 #include <pybind11/eigen.h>
+#include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include "../../src/cli/CliBackend.h"
+
+#include <filesystem>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 #include <directional/fields/CrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
 namespace py = pybind11;
 
+namespace {
+
+bool is_native_mesh_path(const std::filesystem::path &path) {
+  const std::string extension = path.extension().string();
+  return extension == ".obj" || extension == ".OBJ" ||
+         extension == ".off" || extension == ".OFF";
+}
+
+py::object load_trimesh(const std::filesystem::path &path) {
+  py::module_ trimesh = py::module_::import("trimesh");
+  py::object mesh = trimesh.attr("load")(path.string(), py::arg("process") = false);
+  if (py::isinstance(mesh, trimesh.attr("Scene"))) {
+    mesh = mesh.attr("dump")(py::arg("concatenate") = true);
+  }
+  if (!py::isinstance(mesh, trimesh.attr("Trimesh"))) {
+    throw std::runtime_error(path.string() +
+                             " did not load as a triangle mesh through trimesh.");
+  }
+  return mesh;
+}
+
+void export_trimesh(const py::object &mesh, const std::filesystem::path &path) {
+  if (!path.parent_path().empty()) {
+    std::filesystem::create_directories(path.parent_path());
+  }
+  mesh.attr("export")(path.string());
+}
+
+int run_python_cli(std::vector<std::string> arguments) {
+  py::module_ tempfile = py::module_::import("tempfile");
+  py::object temporaryDirectory = tempfile.attr("TemporaryDirectory")();
+  const std::filesystem::path temporaryRoot =
+      py::cast<std::string>(temporaryDirectory.attr("name"));
+
+  std::filesystem::path requestedOutput;
+  std::filesystem::path adaptedOutput;
+  bool convertOutput = false;
+
+  auto adapt_input = [&](const std::size_t index, const std::string &name) {
+    if (index >= arguments.size()) {
+      return;
+    }
+    const std::filesystem::path source = arguments[index];
+    if (is_native_mesh_path(source)) {
+      return;
+    }
+    const std::filesystem::path converted = temporaryRoot / (name + ".obj");
+    export_trimesh(load_trimesh(source), converted);
+    arguments[index] = converted.string();
+  };
+
+  if (!arguments.empty()) {
+    const std::string &command = arguments.front();
+    if (command == "cross-field") {
+      adapt_input(1, "cross-field-input");
+    } else if (command == "remesh") {
+      adapt_input(1, "remesh-input");
+      if (arguments.size() > 2) {
+        requestedOutput = arguments[2];
+        if (!is_native_mesh_path(requestedOutput)) {
+          adaptedOutput = temporaryRoot / "remesh-output.obj";
+          arguments[2] = adaptedOutput.string();
+          convertOutput = true;
+        }
+      }
+    } else if (command == "convert-field") {
+      for (std::size_t i = 1; i + 1 < arguments.size(); ++i) {
+        if (arguments[i] == "--mesh") {
+          adapt_input(i + 1, "field-conversion-mesh");
+          break;
+        }
+      }
+    }
+  }
+
+  int status = 0;
+  {
+    py::scoped_ostream_redirect stdoutRedirect(
+        std::cout, py::module_::import("sys").attr("stdout"));
+    py::scoped_estream_redirect stderrRedirect(
+        std::cerr, py::module_::import("sys").attr("stderr"));
+    status = directional::cli::run_cli(arguments);
+  }
+
+  if (status == 0 && convertOutput) {
+    export_trimesh(load_trimesh(adaptedOutput), requestedOutput);
+  }
+  temporaryDirectory.attr("cleanup")();
+  return status;
+}
+
+} // namespace
+
 PYBIND11_MODULE(_directional, module) {
   module.doc() =
       "Python bindings for Directional cross-field extraction and remeshing.";
+
+  module.def("run_cli", &run_python_cli, py::arg("arguments"),
+             "Run the shared native CLI backend. Non-OBJ/OFF mesh paths are "
+             "adapted through trimesh for the Python entry point.");
 
   py::class_<directional::fields::CrossFieldOptions>(module,
                                                       "CrossFieldOptions")

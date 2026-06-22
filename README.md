@@ -13,17 +13,18 @@ Optionally, you can include this library in your source by simply cloning this r
 
 ## What This Repository Builds
 
-The top-level build supports three modes:
+The top-level build supports two modes:
 
 1. `directional` standalone shared library
-2. tutorial executables
-3. Python package / wheel exposing the headless remeshing API
+2. Python package / wheel exposing the headless remeshing API
+3. Native CLI executable
 
 Key build toggles:
 
 - `BUILD_PYTHON=ON|OFF`
 - `BUILD_SHARED_LIBS=ON|OFF`
 - `DIRECTIONAL_ENABLE_GMP=ON|OFF`
+- `DIRECTIONAL_ENABLE_SUITESPARSE=ON|OFF`
 
 ## Prerequisites
 
@@ -35,8 +36,8 @@ Key build toggles:
 
 ### Dependencies
 
-- **GMP**: optional, for exact arithmetic, otherwise uses built-in (less performant) exact arithmetic. If using MSVC toolchain , GMP will be automatically downloaded and built if enabled. Linux and macOS users need to install GMP manually.
-- **SuiteSparse**: optional, for sparse solvers, otherwise uses Eigen. If using MSVC toolchain , SuiteSparse will be automatically downloaded and built if enabled. Linux and macOS users need to install SuiteSparse manually.
+- **GMP**: optional, for exact arithmetic, otherwise uses built-in (less performant) exact arithmetic. If MSVC toolchain is detected, GMP will be automatically downloaded and built if enabled. MinGW, Linux and macOS users need to install GMP manually.
+- **SuiteSparse**: optional, for sparse solvers, otherwise uses Eigen. If MSVC toolchain is detected, SuiteSparse will be automatically downloaded and built if enabled. MinGW, Linux and macOS users need to install SuiteSparse manually.
 - **Eigen**: required, included as submodule
 
 ### Python build prerequisites
@@ -72,6 +73,8 @@ Examples:
 
 - GMP enabled: `-DDIRECTIONAL_ENABLE_GMP=ON`
 - non-GMP build: `-DDIRECTIONAL_ENABLE_GMP=OFF`
+- SuiteSparse enabled: `-DDIRECTIONAL_ENABLE_SUITESPARSE=ON`
+- non-SuiteSparse build: `-DDIRECTIONAL_ENABLE_SUITESPARSE=OFF`
 
 ### 1. Build and install the standalone library
 
@@ -177,8 +180,11 @@ Supported GMP flags:
 
 - `--enable-gmp`
 - `--disable-gmp`
-- `--auto-install-gmp`
-- `--no-auto-install-gmp`
+
+Supported SuiteSparse flags:
+
+- `--enable-suitesparse`
+- `--disable-suitesparse`
 
 ### 1. Build the standalone shared library
 
@@ -194,8 +200,10 @@ Default output locations:
 Examples:
 
 ```powershell
-python setup.py standalone --enable-gmp --auto-install-gmp
-python setup.py standalone --disable-gmp --no-auto-install-gmp
+python setup.py standalone --enable-gmp
+python setup.py standalone --disable-gmp
+python setup.py standalone --enable-suitesparse
+python setup.py standalone --disable-suitesparse
 ```
 
 ### 2. Build a Python wheel
@@ -208,7 +216,7 @@ python setup.py bdist_wheel
 
 ```powershell
 python setup.py build_ext --disable-gmp bdist_wheel
-python setup.py build_ext --enable-gmp --auto-install-gmp bdist_wheel
+python setup.py build_ext --enable-gmp bdist_wheel
 ```
 
 Wheel output:
@@ -233,25 +241,31 @@ python -m pip install --force-reinstall dist\directional-0.1.0-cp313-cp313-win_a
 
 ## Python `pip` Build
 
-`pip` and other PEP 517 frontends can control the same GMP toggles through `--config-settings`.
+`pip` and other PEP 517 frontends can control the same GMP and SuiteSparse toggles through `--config-settings`.
 
 Supported keys:
 
 - `-Cenable-gmp=1|0`
-- `-Cauto-install-gmp=1|0`
+- `-Cenable-suitesparse=1|0`
 
-Examples:
+### Basic pip install
 
 ```powershell
-python -m pip install . --no-build-isolation -Cenable-gmp=1 -Cauto-install-gmp=1
-python -m pip install . --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
-python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
+python -m pip install .
+```
+
+### Custom Installation Examples
+
+```powershell
+python -m pip install . --no-build-isolation -Cenable-gmp=1 -Cenable-suitesparse=1
+python -m pip install . --no-build-isolation -Cenable-gmp=0 -Cenable-suitesparse=0
+python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cenable-suitesparse=0
 ```
 
 Namespaced aliases are also accepted if you prefer explicit keys:
 
 ```powershell
-python -m pip install . --no-build-isolation -Cdirectional.enable-gmp=0 -Cdirectional.auto-install-gmp=0
+python -m pip install . --no-build-isolation -Cdirectional.enable-gmp=0 -Cdirectional.enable-suitesparse=0
 ```
 
 Environment-variable fallback also works:

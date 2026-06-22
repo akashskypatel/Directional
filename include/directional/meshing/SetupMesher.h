@@ -44,8 +44,8 @@ namespace directional {
  * Handles sign-symmetry reduction, exact integer transfer matrices, and the
  * per-vertex N-function layout expected by the meshing stage.
  */
-void setup_mesher(const directional::TriMesh &meshCut,
-                  const IntegrationData &intData, MesherData &mesherData) {
+inline void setup_mesher(const directional::TriMesh &meshCut,
+                         const IntegrationData &intData, MesherData &mesherData) {
 
   mesherData.cutV = meshCut.V;
   mesherData.cutF = meshCut.F;

@@ -139,9 +139,10 @@ if(BUILD_TUTORIALS)
   add_subdirectory(tutorial)
 endif()
 
-if(DIRECTIONAL_BUILD_CLI)
-  add_executable(
-    directional_cli
+if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
+  add_library(
+    directional_cli_backend STATIC
+    src/cli/CliBackend.cpp
     src/cli/Main.cpp
     src/cli/Usage.cpp
     src/cli/InfoCommand.cpp
@@ -152,11 +153,12 @@ if(DIRECTIONAL_BUILD_CLI)
     src/cli/CrossFieldCommand.cpp
     src/cli/RemeshOutput.cpp
     src/cli/RemeshCommand.cpp)
-  add_executable(Directional::directional_cli ALIAS directional_cli)
-  set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
-  target_link_libraries(directional_cli PRIVATE Directional::directional)
-  target_compile_features(directional_cli PRIVATE cxx_std_20)
-  target_compile_definitions(directional_cli PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
+  add_library(Directional::directional_cli_backend ALIAS directional_cli_backend)
+  set_target_properties(directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  target_link_libraries(directional_cli_backend PUBLIC Directional::directional)
+  target_compile_features(directional_cli_backend PUBLIC cxx_std_20)
+  target_compile_definitions(
+    directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
 
   # Keep MSVC's expanded COFF section limit scoped to the two translation
   # units that instantiate Directional's template-heavy field and pipeline APIs.
@@ -168,12 +170,22 @@ if(DIRECTIONAL_BUILD_CLI)
   endif()
 endif()
 
+if(DIRECTIONAL_BUILD_CLI)
+  add_executable(directional_cli src/cli/Main.cpp)
+  add_executable(Directional::directional_cli ALIAS directional_cli)
+  set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
+  target_link_libraries(directional_cli PRIVATE Directional::directional_cli_backend)
+  target_compile_features(directional_cli PRIVATE cxx_std_20)
+endif()
+
 if(BUILD_PYTHON)
   find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
   find_package(pybind11 CONFIG REQUIRED)
 
   pybind11_add_module(_directional MODULE python/src/bindings.cpp)
-  target_link_libraries(_directional PRIVATE Directional::directional)
+  target_link_libraries(
+    _directional PRIVATE Directional::directional
+                         Directional::directional_cli_backend)
   target_compile_features(_directional PRIVATE cxx_std_20)
 
   install(
@@ -191,10 +203,6 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-if(DIRECTIONAL_BUILD_CLI)
-  install(TARGETS directional_cli RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-endif()
 
 if(WIN32)
   install(FILES $<TARGET_RUNTIME_DLLS:directional>

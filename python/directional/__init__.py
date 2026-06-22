@@ -91,28 +91,6 @@ try:
 except ImportError as exc:
     _NATIVE_IMPORT_ERROR = exc
 
-from .field_conversion import (
-    FIELD_FORMATS,
-    FIELD_SUFFIXES,
-    convert_crossfield_to_crossfield,
-    convert_crossfield_to_rawfield,
-    convert_crossfield_to_rosy,
-    convert_field,
-    convert_rawfield_to_crossfield,
-    convert_rawfield_to_rawfield,
-    convert_rawfield_to_rosy,
-    convert_rosy_to_crossfield,
-    convert_rosy_to_rawfield,
-    convert_rosy_to_rosy,
-    infer_input_format,
-    is_field_artifact_path,
-    load_crossfield_vec,
-    load_rawfield,
-    load_rosy,
-    write_crossfield_vec,
-    write_rawfield,
-    write_rosy_from_alpha,
-)
 
 
 def __getattr__(name: str) -> Any:
@@ -134,24 +112,4 @@ __all__ = [
     "remesh_from_cross_field",
     "remesh_from_mesh",
     "remesh_from_raw_cross_field",
-    "FIELD_FORMATS",
-    "FIELD_SUFFIXES",
-    "convert_crossfield_to_crossfield",
-    "convert_crossfield_to_rawfield",
-    "convert_crossfield_to_rosy",
-    "convert_field",
-    "convert_rawfield_to_crossfield",
-    "convert_rawfield_to_rawfield",
-    "convert_rawfield_to_rosy",
-    "convert_rosy_to_crossfield",
-    "convert_rosy_to_rawfield",
-    "convert_rosy_to_rosy",
-    "infer_input_format",
-    "is_field_artifact_path",
-    "load_crossfield_vec",
-    "load_rawfield",
-    "load_rosy",
-    "write_crossfield_vec",
-    "write_rawfield",
-    "write_rosy_from_alpha",
 ]
