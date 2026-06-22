@@ -5,11 +5,19 @@
 
 #include <algorithm>
 #include <cctype>
+#include <map>
 #include <stdexcept>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace directional::cli {
 namespace {
+
+struct QuadMesh {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+};
 
 std::filesystem::path sidecar(const std::filesystem::path &prefix,
                               const char *suffix) {
@@ -24,23 +32,141 @@ std::string lowercase(std::string value) {
   return value;
 }
 
+QuadMesh quadrangulate_polygons(const Eigen::MatrixXd &vertices,
+                                const Eigen::VectorXi &degrees,
+                                const Eigen::MatrixXi &faces) {
+  if (vertices.cols() != 3) {
+    throw std::runtime_error(
+        "Remeshing output vertices must have shape (#V, 3).");
+  }
+  if (degrees.size() != faces.rows()) {
+    throw std::runtime_error(
+        "Remeshing output requires one polygon degree per face row.");
+  }
+
+  std::vector<Eigen::RowVector3d> outputVertices;
+  outputVertices.reserve(
+      static_cast<std::size_t>(vertices.rows() + faces.rows()));
+
+  for (Eigen::Index vertex = 0; vertex < vertices.rows(); ++vertex) {
+    outputVertices.push_back(vertices.row(vertex));
+  }
+
+  std::vector<Eigen::RowVector4i> outputFaces;
+  std::map<std::pair<int, int>, int> edgeMidpoints;
+
+  for (Eigen::Index face = 0; face < faces.rows(); ++face) {
+    const int degree = degrees(face);
+    if (degree < 3 || degree > faces.cols()) {
+      throw std::runtime_error("Invalid polygon degree in remeshing output.");
+    }
+
+    Eigen::RowVector3d center = Eigen::RowVector3d::Zero();
+    std::vector<int> polygon(static_cast<std::size_t>(degree));
+
+    for (int corner = 0; corner < degree; ++corner) {
+      const int index = faces(face, corner);
+      if (index < 0 || index >= vertices.rows()) {
+        throw std::runtime_error("Invalid vertex index in remeshing output.");
+      }
+
+      if (std::find(polygon.begin(), polygon.begin() + corner, index) !=
+          polygon.begin() + corner) {
+        throw std::runtime_error("Degenerate polygon in remeshing output.");
+      }
+
+      polygon[static_cast<std::size_t>(corner)] = index;
+      center += vertices.row(index);
+    }
+
+    center /= static_cast<double>(degree);
+    const int centerIndex = static_cast<int>(outputVertices.size());
+    outputVertices.push_back(center);
+
+    std::vector<int> midpointIndices(static_cast<std::size_t>(degree));
+
+    for (int corner = 0; corner < degree; ++corner) {
+      const int first = polygon[static_cast<std::size_t>(corner)];
+      const int second =
+          polygon[static_cast<std::size_t>((corner + 1) % degree)];
+      const std::pair<int, int> edge{
+          std::min(first, second),
+          std::max(first, second),
+      };
+
+      const auto existing = edgeMidpoints.find(edge);
+      if (existing != edgeMidpoints.end()) {
+        midpointIndices[static_cast<std::size_t>(corner)] = existing->second;
+        continue;
+      }
+
+      const int midpointIndex = static_cast<int>(outputVertices.size());
+      outputVertices.push_back(
+          0.5 * (vertices.row(first) + vertices.row(second)));
+      edgeMidpoints.emplace(edge, midpointIndex);
+      midpointIndices[static_cast<std::size_t>(corner)] = midpointIndex;
+    }
+
+    for (int corner = 0; corner < degree; ++corner) {
+      const int previous = (corner + degree - 1) % degree;
+      Eigen::RowVector4i quad;
+      quad << polygon[static_cast<std::size_t>(corner)],
+          midpointIndices[static_cast<std::size_t>(corner)], centerIndex,
+          midpointIndices[static_cast<std::size_t>(previous)];
+      outputFaces.push_back(quad);
+    }
+  }
+
+  if (outputFaces.empty()) {
+    throw std::runtime_error("Remeshing output contains no polygons.");
+  }
+
+  QuadMesh result;
+  result.vertices.resize(static_cast<Eigen::Index>(outputVertices.size()), 3);
+  result.faces.resize(static_cast<Eigen::Index>(outputFaces.size()), 4);
+
+  for (Eigen::Index vertex = 0; vertex < result.vertices.rows(); ++vertex) {
+    result.vertices.row(vertex) =
+        outputVertices[static_cast<std::size_t>(vertex)];
+  }
+  for (Eigen::Index face = 0; face < result.faces.rows(); ++face) {
+    result.faces.row(face) = outputFaces[static_cast<std::size_t>(face)];
+  }
+
+  return result;
+}
+
 } // namespace
 
 void write_remeshed_mesh(const std::filesystem::path &path,
-                         const Eigen::MatrixXd &vertices,
-                         const Eigen::VectorXi &degrees,
-                         const Eigen::MatrixXi &faces) {
+                          const Eigen::MatrixXd &vertices,
+                          const Eigen::VectorXi &degrees,
+                          const Eigen::MatrixXi &faces) {
   const std::string extension = lowercase(path.extension().string());
+  if (extension != ".obj" && extension != ".off") {
+    throw std::runtime_error(
+        "Native remeshing output must use the .obj or .off extension.");
+  }
+
+  const QuadMesh quadMesh =
+      quadrangulate_polygons(vertices, degrees, faces);
+  const Eigen::VectorXi quadDegrees =
+      Eigen::VectorXi::Constant(quadMesh.faces.rows(), 4);
+
   if (extension == ".off") {
-    write_polygonal_off(path, vertices, degrees, faces);
+    write_polygonal_off(
+        path,
+        quadMesh.vertices,
+        quadDegrees,
+        quadMesh.faces);
     return;
   }
-  if (extension == ".obj") {
-    write_polygonal_obj(path, vertices, degrees, faces);
-    return;
-  }
-  throw std::runtime_error(
-      "Native remeshing output must use the .obj or .off extension.");
+
+  write_polygonal_obj(
+      path,
+      quadMesh.vertices,
+      quadDegrees,
+      quadMesh.faces);
 }
 
 void write_remesh_diagnostics(
@@ -69,15 +195,18 @@ void write_remesh_diagnostics(
   }
 
   write_dmat(sidecar(prefix, ".cut_functions.dmat"), cutFunctions);
-  write_dmat(sidecar(prefix, ".cut_corner_functions.dmat"),
-             cutCornerFunctions);
+  write_dmat(
+      sidecar(prefix, ".cut_corner_functions.dmat"),
+      cutCornerFunctions);
   write_raw_field(sidecar(prefix, ".cross_field.txt"), 4, rawCrossField);
   write_dmat(sidecar(prefix, ".matching.dmat"), crossFieldMatching);
   write_dmat(sidecar(prefix, ".effort.dmat"), crossFieldEffort);
-  write_dmat(sidecar(prefix, ".singular_cycles.dmat"),
-             crossFieldSingularCycles);
-  write_dmat(sidecar(prefix, ".singular_indices.dmat"),
-             crossFieldSingularIndices);
+  write_dmat(
+      sidecar(prefix, ".singular_cycles.dmat"),
+      crossFieldSingularCycles);
+  write_dmat(
+      sidecar(prefix, ".singular_indices.dmat"),
+      crossFieldSingularIndices);
 }
 
 } // namespace directional::cli
