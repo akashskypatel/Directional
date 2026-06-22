@@ -30,6 +30,10 @@ int main(int argc, char **argv) {
       return directional::cli::run_cross_field(argc, argv);
     }
 
+    if (command == "convert-field") {
+      return directional::cli::run_convert_field(argc, argv);
+    }
+
     if (command == "remesh") {
       return directional::cli::run_remesh(argc, argv);
     }

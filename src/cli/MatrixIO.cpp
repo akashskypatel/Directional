@@ -143,4 +143,61 @@ void write_triangle_off(const std::filesystem::path &path,
                       Eigen::VectorXi::Constant(faces.rows(), 3), faces);
 }
 
+void write_polygonal_obj(const std::filesystem::path &path,
+                         const Eigen::MatrixXd &vertices,
+                         const Eigen::VectorXi &degrees,
+                         const Eigen::MatrixXi &faces) {
+  if (vertices.cols() != 3) {
+    throw std::runtime_error("OBJ output vertices must have shape (#V, 3).");
+  }
+  if (degrees.size() != faces.rows()) {
+    throw std::runtime_error(
+        "OBJ output requires one polygon degree per face row.");
+  }
+
+  ensure_parent_directory(path);
+  std::ofstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open OBJ output: " + path.string());
+  }
+
+  stream.flags(std::ios::scientific);
+  stream.precision(std::numeric_limits<double>::digits10 + 1);
+  for (Eigen::Index vertex = 0; vertex < vertices.rows(); ++vertex) {
+    stream << "v " << vertices(vertex, 0) << ' ' << vertices(vertex, 1)
+           << ' ' << vertices(vertex, 2) << '\n';
+  }
+
+  for (Eigen::Index face = 0; face < faces.rows(); ++face) {
+    const int degree = degrees(face);
+    if (degree < 3 || degree > faces.cols()) {
+      throw std::runtime_error("Invalid polygon degree in remeshing output.");
+    }
+    stream << 'f';
+    for (int corner = 0; corner < degree; ++corner) {
+      const int index = faces(face, corner);
+      if (index < 0 || index >= vertices.rows()) {
+        throw std::runtime_error("Invalid vertex index in remeshing output.");
+      }
+      stream << ' ' << index + 1;
+    }
+    stream << '\n';
+  }
+
+  stream.close();
+  if (stream.fail()) {
+    throw std::runtime_error("Failed to write OBJ output: " + path.string());
+  }
+}
+
+void write_triangle_obj(const std::filesystem::path &path,
+                        const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces) {
+  if (faces.cols() != 3) {
+    throw std::runtime_error("Triangle OBJ output faces must have shape (#F, 3).");
+  }
+  write_polygonal_obj(path, vertices,
+                      Eigen::VectorXi::Constant(faces.rows(), 3), faces);
+}
+
 } // namespace directional::cli

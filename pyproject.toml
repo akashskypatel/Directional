@@ -19,6 +19,7 @@ authors = [
 ]
 dependencies = [
   "numpy>=1.23",
+  "trimesh>=4.0",
 ]
 
 [project.scripts]

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <string>
 
 #include <Eigen/Core>
 
@@ -13,6 +14,7 @@ void write_remeshed_mesh(const std::filesystem::path &path,
 
 void write_remesh_diagnostics(
     const std::filesystem::path &prefix,
+    const std::string &meshExtension,
     const Eigen::VectorXi &degrees,
     const Eigen::MatrixXd &cutVertices,
     const Eigen::MatrixXi &cutFaces,

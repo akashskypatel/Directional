@@ -26,4 +26,13 @@ void write_triangle_off(const std::filesystem::path &path,
                         const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces);
 
+void write_polygonal_obj(const std::filesystem::path &path,
+                         const Eigen::MatrixXd &vertices,
+                         const Eigen::VectorXi &degrees,
+                         const Eigen::MatrixXi &faces);
+
+void write_triangle_obj(const std::filesystem::path &path,
+                        const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces);
+
 } // namespace directional::cli

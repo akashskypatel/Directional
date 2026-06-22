@@ -1,6 +1,7 @@
 #include "CliCommands.h"
 
 #include "CrossFieldOutput.h"
+#include "FieldConversion.h"
 #include "MatrixIO.h"
 #include "MeshIO.h"
 #include "RemeshOutput.h"
@@ -42,11 +43,13 @@ void validate_direction_matrix(const Eigen::MatrixXd &matrix,
 int run_remesh(const int argc, char **argv) {
   if (argc < 4) {
     throw std::runtime_error(
-        "remesh requires an input mesh and output .off path.");
+        "remesh requires an input mesh and output .obj or .off path.");
   }
 
   const std::filesystem::path inputPath = argv[2];
   const std::filesystem::path outputPath = argv[3];
+  std::optional<std::filesystem::path> fieldPath;
+  std::string fieldFormat = "auto";
   std::optional<std::filesystem::path> rawFieldPath;
   std::optional<std::filesystem::path> primaryDirectionsPath;
   std::optional<std::filesystem::path> secondaryDirectionsPath;
@@ -55,7 +58,17 @@ int run_remesh(const int argc, char **argv) {
 
   for (int argument = 4; argument < argc; ++argument) {
     const std::string option = argv[argument];
-    if (option == "--raw-field") {
+    if (option == "--field") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--field requires an input path.");
+      }
+      fieldPath = std::filesystem::path(argv[argument]);
+    } else if (option == "--field-format") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--field-format requires a value.");
+      }
+      fieldFormat = argv[argument];
+    } else if (option == "--raw-field") {
       if (++argument >= argc) {
         throw std::runtime_error("--raw-field requires an input path.");
       }
@@ -82,8 +95,6 @@ int run_remesh(const int argc, char **argv) {
       options.integralSeamless = false;
     } else if (option == "--round-seams") {
       options.roundSeams = true;
-    // } else if (option == "--feature-align") {
-    //   options.featureAlign = true;
     } else if (option == "--no-normalize-directions" ||
                option == "--no-normalize") {
       options.normalizeDirections = false;
@@ -100,6 +111,12 @@ int run_remesh(const int argc, char **argv) {
     }
   }
 
+  if (fieldPath.has_value() &&
+      (rawFieldPath.has_value() || primaryDirectionsPath.has_value() ||
+       secondaryDirectionsPath.has_value())) {
+    throw std::runtime_error(
+        "--field cannot be combined with legacy field input options.");
+  }
   if (rawFieldPath.has_value() && primaryDirectionsPath.has_value()) {
     throw std::runtime_error(
         "--raw-field and --primary-directions are mutually exclusive.");
@@ -120,7 +137,26 @@ int run_remesh(const int argc, char **argv) {
   const MeshData mesh = load_mesh(inputPath);
 
   pipeline::RemeshResult result;
-  if (rawFieldPath.has_value()) {
+  if (fieldPath.has_value()) {
+    if (options.verbose) {
+      std::cout << "Using field: " << fieldPath->string() << '\n';
+    }
+    const FieldFormat format = infer_field_format(*fieldPath, fieldFormat);
+    const FieldData field = read_field(*fieldPath, format, &mesh);
+    if (field.primary.rows() != mesh.faces.rows() ||
+        field.secondary.rows() != mesh.faces.rows()) {
+      throw std::runtime_error(
+          "Field row count must match the mesh face count.");
+    }
+    if (format == FieldFormat::RawField && field.degree == 4 &&
+        field.raw.cols() == 12) {
+      result = pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, field.raw, options);
+    } else {
+      result = pipeline::remesh_from_cross_field(
+          mesh.vertices, mesh.faces, field.primary, field.secondary, options);
+    }
+  } else if (rawFieldPath.has_value()) {
     if (options.verbose) {
       std::cout << "Using raw cross field: " << rawFieldPath->string() << '\n';
     }
@@ -167,7 +203,7 @@ int run_remesh(const int argc, char **argv) {
 
   if (diagnosticsPrefix.has_value()) {
     write_remesh_diagnostics(
-        *diagnosticsPrefix, result.degrees, result.cutVertices,
+        *diagnosticsPrefix, outputPath.extension().string(), result.degrees, result.cutVertices,
         result.cutFaces, result.cutFunctions, result.cutCornerFunctions,
         result.rawCrossField, result.crossFieldMatching,
         result.crossFieldEffort, result.crossFieldSingularCycles,

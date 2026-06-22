@@ -4,10 +4,22 @@ import argparse
 import sys
 from importlib import metadata
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import numpy as np
+import trimesh
 
+from .field_conversion import (
+    FIELD_FORMATS,
+    convert_field,
+    infer_input_format,
+    load_crossfield_vec,
+    load_rawfield,
+    load_rosy,
+    write_crossfield_vec,
+    write_rawfield,
+    write_rosy_from_alpha,
+)
 
 _NATIVE_NAMES = (
     "CrossFieldOptions",
@@ -32,7 +44,7 @@ def _load_native_module() -> Any:
     except ImportError as exc:
         raise RuntimeError(
             "The directional native extension could not be imported. "
-            "Build/install the package before running cross-field or remeshing commands."
+            "Build or install the package before running this command."
         ) from exc
 
     missing = [name for name in _NATIVE_NAMES if not hasattr(native, name)]
@@ -41,267 +53,180 @@ def _load_native_module() -> Any:
             "The directional native extension is incomplete. "
             f"Missing symbols: {', '.join(missing)}"
         )
-
     return native
 
 
-def _load_native_api() -> tuple[type[Any], Any, Any]:
-    """Return the original remeshing API tuple for backward compatibility."""
-    native = _load_native_module()
-    return (
-        native.RemeshOptions,
-        native.remesh_from_cross_field,
-        native.remesh_from_raw_cross_field,
-    )
-
-
-def _load_cross_field_api() -> tuple[type[Any], Any, Any]:
-    native = _load_native_module()
-    return (
-        native.CrossFieldOptions,
-        native.extract_cross_field,
-        native.remesh_from_mesh,
-    )
-
-
-def _load_input(path: Path) -> dict[str, np.ndarray]:
-    if path.suffix.lower() != ".npz":
-        raise ValueError("Input must be a .npz file.")
-
+def _load_npz(path: Path) -> dict[str, np.ndarray]:
     with np.load(path) as data:
         return {key: data[key] for key in data.files}
 
 
-def _content_lines(path: Path) -> Iterable[str]:
-    with path.open("r", encoding="utf-8-sig") as stream:
-        for raw_line in stream:
-            line = raw_line.partition("#")[0].strip()
-            if line:
-                yield line
-
-
-def _load_obj(path: Path) -> dict[str, np.ndarray]:
-    vertices: list[tuple[float, float, float]] = []
-    faces: list[tuple[int, int, int]] = []
-
-    for line_number, line in enumerate(_content_lines(path), start=1):
-        parts = line.split()
-        if not parts:
-            continue
-
-        if parts[0] == "v":
-            if len(parts) < 4:
-                raise ValueError(f"OBJ vertex on line {line_number} has fewer than 3 coordinates.")
-            vertices.append((float(parts[1]), float(parts[2]), float(parts[3])))
-            continue
-
-        if parts[0] != "f":
-            continue
-
-        if len(parts) != 4:
-            raise ValueError(
-                f"OBJ face on line {line_number} is not triangular; "
-                "triangulate the mesh before processing."
-            )
-
-        face: list[int] = []
-        for token in parts[1:]:
-            vertex_token = token.split("/", 1)[0]
-            if not vertex_token:
-                raise ValueError(f"OBJ face on line {line_number} has an invalid vertex index.")
-
-            index = int(vertex_token)
-            if index == 0:
-                raise ValueError(f"OBJ face on line {line_number} uses invalid index 0.")
-            if index < 0:
-                index = len(vertices) + index
-            else:
-                index -= 1
-
-            if index < 0 or index >= len(vertices):
-                raise ValueError(f"OBJ face on line {line_number} references an invalid vertex.")
-            face.append(index)
-
-        faces.append((face[0], face[1], face[2]))
-
-    return _validated_mesh_arrays(vertices, faces, path)
-
-
-def _load_off(path: Path) -> dict[str, np.ndarray]:
-    lines = iter(_content_lines(path))
-    try:
-        header = next(lines).split()
-    except StopIteration as exc:
-        raise ValueError("OFF input is empty.") from exc
-
-    if header[0] != "OFF":
-        raise ValueError("OFF input must begin with the OFF header.")
-
-    if len(header) >= 4:
-        counts = header[1:4]
-    else:
-        try:
-            counts = next(lines).split()
-        except StopIteration as exc:
-            raise ValueError("OFF input is missing vertex and face counts.") from exc
-
-    if len(counts) < 2:
-        raise ValueError("OFF input has an invalid counts line.")
-
-    vertex_count = int(counts[0])
-    face_count = int(counts[1])
-    vertices: list[tuple[float, float, float]] = []
-    faces: list[tuple[int, int, int]] = []
-
-    for vertex_index in range(vertex_count):
-        try:
-            values = next(lines).split()
-        except StopIteration as exc:
-            raise ValueError("OFF input ended while reading vertices.") from exc
-        if len(values) < 3:
-            raise ValueError(f"OFF vertex {vertex_index} has fewer than 3 coordinates.")
-        vertices.append((float(values[0]), float(values[1]), float(values[2])))
-
-    for face_index in range(face_count):
-        try:
-            values = next(lines).split()
-        except StopIteration as exc:
-            raise ValueError("OFF input ended while reading faces.") from exc
-        if len(values) < 4 or int(values[0]) != 3:
-            raise ValueError(
-                f"OFF face {face_index} is not triangular; "
-                "triangulate the mesh before processing."
-            )
-        faces.append((int(values[1]), int(values[2]), int(values[3])))
-
-    return _validated_mesh_arrays(vertices, faces, path)
-
-
-def _validated_mesh_arrays(
-    vertices: Any,
-    faces: Any,
-    source: Path,
-) -> dict[str, np.ndarray]:
-    vertex_array = np.asarray(vertices, dtype=np.float64)
-    face_array = np.asarray(faces, dtype=np.int32)
-
+def _validated_mesh_arrays(vertices: Any, faces: Any, source: Path) -> dict[str, np.ndarray]:
+    vertex_array = np.ascontiguousarray(vertices, dtype=np.float64)
+    face_array = np.ascontiguousarray(faces, dtype=np.int32)
     if vertex_array.ndim != 2 or vertex_array.shape[1] != 3:
-        raise ValueError(f"{source} must contain a non-empty #V x 3 vertex array.")
+        raise ValueError(f"{source} must contain a #V x 3 vertex array.")
     if face_array.ndim != 2 or face_array.shape[1] != 3:
-        raise ValueError(f"{source} must contain a non-empty #F x 3 triangle array.")
+        raise ValueError(f"{source} must contain a triangular #F x 3 face array.")
     if vertex_array.shape[0] == 0 or face_array.shape[0] == 0:
         raise ValueError(f"{source} must contain at least one vertex and one triangle.")
     if not np.isfinite(vertex_array).all():
         raise ValueError(f"{source} contains non-finite vertex coordinates.")
     if np.any(face_array < 0) or np.any(face_array >= vertex_array.shape[0]):
         raise ValueError(f"{source} contains a face index outside the vertex array.")
-
     return {"vertices": vertex_array, "faces": face_array}
 
 
-def _load_mesh_input(path: Path) -> dict[str, np.ndarray]:
-    suffix = path.suffix.lower()
-    if suffix == ".npz":
-        data = _load_input(path)
-        mesh = _validated_mesh_arrays(
-            _require_array(data, "vertices"),
-            _require_array(data, "faces"),
-            path,
+def _trimesh_geometry(path: Path) -> trimesh.Trimesh:
+    loaded = trimesh.load(path, process=False)
+    if isinstance(loaded, trimesh.Scene):
+        geometries = tuple(
+            geometry for geometry in loaded.geometry.values()
+            if isinstance(geometry, trimesh.Trimesh)
         )
-        data["vertices"] = mesh["vertices"]
-        data["faces"] = mesh["faces"]
-        return data
-    if suffix == ".obj":
-        return _load_obj(path)
-    if suffix == ".off":
-        return _load_off(path)
-    raise ValueError("Input mesh must be an .npz, .obj, or .off file.")
+        if not geometries:
+            raise ValueError(f"{path} contains no mesh geometry.")
+        loaded = trimesh.util.concatenate(geometries)
+    if not isinstance(loaded, trimesh.Trimesh):
+        raise ValueError(f"{path} did not load as a triangle mesh.")
+    return loaded
 
 
-def _require_array(data: dict[str, np.ndarray], key: str) -> np.ndarray:
-    if key not in data:
-        raise ValueError(f"Input .npz is missing required array: {key}")
-    return data[key]
+def _load_mesh_input(path: Path) -> tuple[dict[str, np.ndarray], trimesh.Trimesh | None]:
+    if path.suffix.lower() == ".npz":
+        data = _load_npz(path)
+        if "vertices" not in data or "faces" not in data:
+            raise ValueError("Input .npz must contain vertices and faces arrays.")
+        mesh_data = _validated_mesh_arrays(data["vertices"], data["faces"], path)
+        data.update(mesh_data)
+        return data, None
+
+    mesh = _trimesh_geometry(path)
+    return _validated_mesh_arrays(mesh.vertices, mesh.faces, path), mesh
 
 
-def _optional_array(data: dict[str, np.ndarray], key: str) -> np.ndarray | None:
-    return data.get(key)
-
-
-def _require_npz_output(path: Path) -> None:
-    if path.suffix.lower() != ".npz":
-        raise ValueError("Output must use the .npz extension.")
-
-
-def _make_options(args: argparse.Namespace) -> Any:
-    RemeshOptions, _, _ = _load_native_api()
-    options = RemeshOptions()
+def _make_remesh_options(args: argparse.Namespace) -> Any:
+    native = _load_native_module()
+    options = native.RemeshOptions()
     options.lengthRatio = args.length_ratio
     options.integralSeamless = not args.no_integral_seamless
     options.roundSeams = args.round_seams
-    # options.featureAlign = args.feature_align
     options.verbose = args.verbose
     options.normalizeDirections = not args.no_normalize_directions
     return options
 
 
 def _make_cross_field_options(args: argparse.Namespace) -> Any:
-    CrossFieldOptions, _, _ = _load_cross_field_api()
-    options = CrossFieldOptions()
+    native = _load_native_module()
+    options = native.CrossFieldOptions()
     options.normalizeDirections = not args.no_normalize_directions
     options.computeMatching = not args.no_matching
     return options
 
 
-def _result_array(result: Any, *names: str) -> np.ndarray | None:
-    for name in names:
-        if hasattr(result, name):
-            return getattr(result, name)
-    return None
+def _infer_output_format(path: Path, requested: str) -> str:
+    if requested != "auto":
+        return requested
+    suffix = path.suffix.lower()
+    if suffix == ".rawfield":
+        return "rawfield"
+    if suffix == ".rosy":
+        return "rosy"
+    if suffix in {".vec", ".txt"}:
+        return "crossfield"
+    raise ValueError(f"Cannot infer field format from output extension: {suffix or '<none>'}")
 
 
-def _result_payload(result: Any) -> dict[str, Any]:
-    payload: dict[str, Any] = {
-        "success": np.array(bool(getattr(result, "success", False))),
-    }
-    fields = {
-        "vertices": ("vertices",),
-        "degrees": ("degrees",),
-        "faces": ("faces",),
-        "cut_vertices": ("cutVertices", "cut_vertices"),
-        "cut_faces": ("cutFaces", "cut_faces"),
-        "cut_functions": ("cutFunctions", "cut_functions"),
-        "cut_corner_functions": ("cutCornerFunctions", "cut_corner_functions"),
-        "raw_cross_field": ("rawCrossField", "raw_cross_field"),
-        "cross_field_matching": ("crossFieldMatching", "cross_field_matching"),
-        "cross_field_effort": ("crossFieldEffort", "cross_field_effort"),
-        "cross_field_singular_cycles": (
-            "crossFieldSingularCycles",
-            "cross_field_singular_cycles",
-        ),
-        "cross_field_singular_indices": (
-            "crossFieldSingularIndices",
-            "cross_field_singular_indices",
-        ),
-    }
-    for output_name, candidate_names in fields.items():
-        value = _result_array(result, *candidate_names)
-        if value is not None:
-            payload[output_name] = value
-    return payload
+def _write_field_result(path: Path, output_format: str, result: Any) -> None:
+    fmt = _infer_output_format(path, output_format)
+    if fmt == "crossfield":
+        write_crossfield_vec(result.primaryDirections, result.secondaryDirections, path)
+    elif fmt == "rosy":
+        write_rosy_from_alpha(result.primaryDirections, path)
+    elif fmt == "rawfield":
+        write_rawfield(result.rawField, path, degree=int(result.degree))
+    else:
+        raise ValueError(f"Unsupported field output format: {fmt}")
 
 
-def _cross_field_payload(result: Any) -> dict[str, Any]:
-    return {
-        "degree": np.array(int(result.degree), dtype=np.int32),
-        "raw_cross_field": result.rawField,
-        "primary_directions": result.primaryDirections,
-        "secondary_directions": result.secondaryDirections,
-        "matching": result.matching,
-        "effort": result.effort,
-        "singular_cycles": result.singularCycles,
-        "singular_indices": result.singularIndices,
-    }
+def _orthogonal_beta(alpha: np.ndarray, normals: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    projected = alpha - np.sum(alpha * normals, axis=1, keepdims=True) * normals
+    lengths = np.linalg.norm(projected, axis=1, keepdims=True)
+    if np.any(lengths < 1e-12):
+        raise ValueError("Cannot reconstruct beta from a near-zero tangent projection.")
+    projected = projected / lengths
+    beta = np.cross(normals, projected)
+    beta_lengths = np.linalg.norm(beta, axis=1, keepdims=True)
+    if np.any(beta_lengths < 1e-12):
+        raise ValueError("Cannot reconstruct beta from mesh face normals.")
+    return projected, beta / beta_lengths
+
+
+def _load_field_for_mesh(path: Path, requested_format: str, mesh: trimesh.Trimesh) -> tuple[np.ndarray | None, np.ndarray, np.ndarray]:
+    fmt = infer_input_format(path, requested_format)
+    face_count = len(mesh.faces)
+    if fmt == "crossfield":
+        primary, secondary = load_crossfield_vec(path)
+        raw = None
+    elif fmt == "rawfield":
+        raw = load_rawfield(path)
+        if raw.ndim != 2 or raw.shape[1] < 3 or raw.shape[1] % 3 != 0:
+            raise ValueError("Rawfield data must contain 3 * degree columns.")
+        primary = raw[:, 0:3]
+        if raw.shape[1] >= 6:
+            secondary = raw[:, 3:6]
+        else:
+            primary, secondary = _orthogonal_beta(primary, np.asarray(mesh.face_normals))
+    elif fmt == "rosy":
+        primary = load_rosy(path)
+        primary, secondary = _orthogonal_beta(primary, np.asarray(mesh.face_normals))
+        raw = None
+    else:
+        raise ValueError(f"Unsupported field format: {fmt}")
+
+    primary = np.ascontiguousarray(primary, dtype=np.float64)
+    secondary = np.ascontiguousarray(secondary, dtype=np.float64)
+    if primary.shape != (face_count, 3) or secondary.shape != (face_count, 3):
+        raise ValueError(
+            f"Field row count must match mesh face count ({face_count}); got "
+            f"{primary.shape[0]} and {secondary.shape[0]}."
+        )
+    if raw is not None:
+        raw = np.ascontiguousarray(raw, dtype=np.float64)
+    return raw, primary, secondary
+
+
+def _triangulate_polygons(degrees: Any, faces: Any) -> np.ndarray:
+    degree_array = np.asarray(degrees, dtype=np.int64).reshape(-1)
+    face_array = np.asarray(faces, dtype=np.int64)
+    if face_array.ndim != 2 or degree_array.shape[0] != face_array.shape[0]:
+        raise ValueError("Native remesh output contains inconsistent polygon arrays.")
+    triangles: list[tuple[int, int, int]] = []
+    for row, degree_value in zip(face_array, degree_array, strict=True):
+        degree = int(degree_value)
+        if degree < 3 or degree > row.shape[0]:
+            raise ValueError("Native remesh output contains an invalid polygon degree.")
+        first = int(row[0])
+        for corner in range(1, degree - 1):
+            triangles.append((first, int(row[corner]), int(row[corner + 1])))
+    if not triangles:
+        raise ValueError("Native remesh output contains no polygons.")
+    return np.asarray(triangles, dtype=np.int64)
+
+
+def _write_mesh(path: Path, vertices: Any, degrees: Any, faces: Any) -> None:
+    if not path.suffix:
+        raise ValueError("Mesh output requires a file extension supported by Trimesh.")
+    mesh = trimesh.Trimesh(
+        vertices=np.asarray(vertices, dtype=np.float64),
+        faces=_triangulate_polygons(degrees, faces),
+        process=False,
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        mesh.export(path)
+    except Exception as exc:
+        raise ValueError(f"Trimesh cannot export mesh format '{path.suffix.lower()}'.") from exc
 
 
 def _cmd_info(_args: argparse.Namespace) -> int:
@@ -315,109 +240,118 @@ def _cmd_info(_args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_convert_field(args: argparse.Namespace) -> int:
+    output = convert_field(
+        args.input,
+        args.output,
+        input_format=infer_input_format(args.input, args.input_format),
+        output_format=args.output_format,
+        mesh_path=args.mesh,
+        degree=args.degree,
+    )
+    print(f"Wrote {output}")
+    return 0
+
+
 def _cmd_cross_field(args: argparse.Namespace) -> int:
-    _require_npz_output(args.output)
-    _, extract_cross_field, _ = _load_cross_field_api()
-    data = _load_mesh_input(args.input)
-    options = _make_cross_field_options(args)
-
-    result = extract_cross_field(data["vertices"], data["faces"], options)
-
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(args.output, **_cross_field_payload(result))
+    native = _load_native_module()
+    data, _mesh = _load_mesh_input(args.input)
+    result = native.extract_cross_field(
+        data["vertices"], data["faces"], _make_cross_field_options(args)
+    )
+    _write_field_result(args.output, args.output_format, result)
     if args.verbose:
         print(f"Wrote {args.output}")
     return 0
 
 
 def _cmd_remesh(args: argparse.Namespace) -> int:
-    _require_npz_output(args.output)
-    _, remesh_from_cross_field, remesh_from_raw_cross_field = _load_native_api()
-    data = _load_mesh_input(args.input)
+    native = _load_native_module()
+    data, mesh = _load_mesh_input(args.input)
     vertices = data["vertices"]
     faces = data["faces"]
-    options = _make_options(args)
+    options = _make_remesh_options(args)
 
-    raw_cross_field = _optional_array(data, "raw_cross_field")
-    primary_directions = _optional_array(data, "primary_directions")
-    secondary_directions = _optional_array(data, "secondary_directions")
-
-    if raw_cross_field is not None:
-        result = remesh_from_raw_cross_field(vertices, faces, raw_cross_field, options)
-    elif primary_directions is not None and secondary_directions is not None:
-        result = remesh_from_cross_field(
-            vertices,
-            faces,
-            primary_directions,
-            secondary_directions,
-            options,
-        )
-    elif primary_directions is not None:
-        result = remesh_from_cross_field(vertices, faces, primary_directions, options)
+    if args.field is not None:
+        if mesh is None:
+            mesh = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
+        raw, primary, secondary = _load_field_for_mesh(args.field, args.field_format, mesh)
+        if raw is not None and raw.shape[1] == 12:
+            result = native.remesh_from_raw_cross_field(vertices, faces, raw, options)
+        else:
+            result = native.remesh_from_cross_field(vertices, faces, primary, secondary, options)
     else:
-        _, _, remesh_from_mesh = _load_cross_field_api()
-        result = remesh_from_mesh(vertices, faces, options)
+        raw_cross_field = data.get("raw_cross_field")
+        primary_directions = data.get("primary_directions")
+        secondary_directions = data.get("secondary_directions")
+        if raw_cross_field is not None:
+            result = native.remesh_from_raw_cross_field(vertices, faces, raw_cross_field, options)
+        elif primary_directions is not None and secondary_directions is not None:
+            result = native.remesh_from_cross_field(
+                vertices, faces, primary_directions, secondary_directions, options
+            )
+        elif primary_directions is not None:
+            result = native.remesh_from_cross_field(vertices, faces, primary_directions, options)
+        else:
+            result = native.remesh_from_mesh(vertices, faces, options)
 
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(args.output, **_result_payload(result))
+    if not bool(result.success):
+        raise RuntimeError("Remeshing failed.")
+    _write_mesh(args.output, result.vertices, result.degrees, result.faces)
     if args.verbose:
         print(f"Wrote {args.output}")
     return 0
 
 
+def _add_field_format_argument(parser: argparse.ArgumentParser, name: str, default: str) -> None:
+    parser.add_argument(name, choices=("auto", *sorted(FIELD_FORMATS)), default=default)
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="directional",
-        description="Command line tools for Directional cross-field extraction and remeshing.",
+        description="Directional cross-field extraction, conversion, and remeshing tools.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    info_parser = subparsers.add_parser(
-        "info",
-        help="Show package and native extension status.",
-    )
+    info_parser = subparsers.add_parser("info", help="Show package and native extension status.")
     info_parser.set_defaults(func=_cmd_info)
 
-    cross_field_parser = subparsers.add_parser(
-        "cross-field",
-        help="Extract a face-based N=4 cross field from an NPZ, OBJ, or OFF mesh.",
+    convert_parser = subparsers.add_parser(
+        "convert-field", help="Convert between crossfield, rosy, and rawfield files."
     )
-    cross_field_parser.add_argument(
-        "input",
-        type=Path,
-        help="Input .npz, triangular .obj, or triangular .off mesh.",
+    convert_parser.add_argument("input", type=Path)
+    convert_parser.add_argument("output", type=Path, nargs="?")
+    _add_field_format_argument(convert_parser, "--input-format", "auto")
+    _add_field_format_argument(convert_parser, "--output-format", "crossfield")
+    convert_parser.add_argument("--mesh", type=Path)
+    convert_parser.add_argument("--degree", type=int, choices=(2, 4), default=4)
+    convert_parser.set_defaults(func=_cmd_convert_field)
+
+    cross_parser = subparsers.add_parser(
+        "cross-field", help="Extract a face-based degree-4 cross field from a mesh."
     )
-    cross_field_parser.add_argument(
-        "output",
-        type=Path,
-        help="Output .npz containing field directions and diagnostics.",
-    )
-    cross_field_parser.add_argument("--no-normalize-directions", action="store_true")
-    cross_field_parser.add_argument("--no-matching", action="store_true")
-    cross_field_parser.add_argument("--verbose", action="store_true")
-    cross_field_parser.set_defaults(func=_cmd_cross_field)
+    cross_parser.add_argument("input", type=Path)
+    cross_parser.add_argument("output", type=Path)
+    _add_field_format_argument(cross_parser, "--output-format", "auto")
+    cross_parser.add_argument("--no-normalize-directions", action="store_true")
+    cross_parser.add_argument("--no-matching", action="store_true")
+    cross_parser.add_argument("--verbose", action="store_true")
+    cross_parser.set_defaults(func=_cmd_cross_field)
 
     remesh_parser = subparsers.add_parser(
-        "remesh",
-        help=(
-            "Run remeshing from an NPZ, OBJ, or OFF mesh. "
-            "A cross field is extracted automatically when the input does not provide one."
-        ),
+        "remesh", help="Remesh a mesh, optionally using a supplied field file."
     )
-    remesh_parser.add_argument(
-        "input",
-        type=Path,
-        help="Input .npz, triangular .obj, or triangular .off mesh.",
-    )
-    remesh_parser.add_argument("output", type=Path, help="Output .npz file.")
+    remesh_parser.add_argument("input", type=Path)
+    remesh_parser.add_argument("output", type=Path)
+    remesh_parser.add_argument("--field", type=Path)
+    _add_field_format_argument(remesh_parser, "--field-format", "auto")
     remesh_parser.add_argument("--length-ratio", type=float, default=0.02)
     remesh_parser.add_argument("--no-integral-seamless", action="store_true")
     remesh_parser.add_argument("--round-seams", action="store_true")
-    # remesh_parser.add_argument("--feature-align", action="store_true")
     remesh_parser.add_argument("--no-normalize-directions", action="store_true")
     remesh_parser.add_argument("--verbose", action="store_true")
     remesh_parser.set_defaults(func=_cmd_remesh)
-
     return parser
 
 

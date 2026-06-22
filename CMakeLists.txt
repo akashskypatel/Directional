@@ -148,6 +148,7 @@ if(DIRECTIONAL_BUILD_CLI)
     src/cli/MeshIO.cpp
     src/cli/MatrixIO.cpp
     src/cli/CrossFieldOutput.cpp
+    src/cli/FieldConversion.cpp
     src/cli/CrossFieldCommand.cpp
     src/cli/RemeshOutput.cpp
     src/cli/RemeshCommand.cpp)

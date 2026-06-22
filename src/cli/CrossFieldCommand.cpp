@@ -1,5 +1,6 @@
 #include "CliCommands.h"
 #include "CrossFieldOutput.h"
+#include "FieldConversion.h"
 #include "MeshIO.h"
 
 #include <filesystem>
@@ -15,11 +16,12 @@ namespace directional::cli {
 int run_cross_field(const int argc, char **argv) {
   if (argc < 4) {
     throw std::runtime_error(
-        "cross-field requires an input mesh and output .rawfield path.");
+        "cross-field requires an input mesh and output field path.");
   }
 
   const std::filesystem::path inputPath = argv[2];
   const std::filesystem::path outputPath = argv[3];
+  std::string outputFormat = "auto";
   std::optional<std::filesystem::path> singularitiesPath;
   std::optional<std::filesystem::path> diagnosticsPrefix;
   bool verbose = false;
@@ -32,6 +34,11 @@ int run_cross_field(const int argc, char **argv) {
       options.normalizeDirections = false;
     } else if (option == "--no-matching") {
       options.computeMatching = false;
+    } else if (option == "--output-format") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--output-format requires a value.");
+      }
+      outputFormat = argv[argument];
     } else if (option == "--verbose") {
       verbose = true;
     } else if (option == "--singularities") {
@@ -67,7 +74,12 @@ int run_cross_field(const int argc, char **argv) {
   const fields::CrossFieldResult result =
       fields::extract_cross_field(mesh.vertices, mesh.faces, options);
 
-  write_raw_field(outputPath, result.degree, result.rawField);
+  FieldData field;
+  field.degree = result.degree;
+  field.primary = result.primaryDirections;
+  field.secondary = result.secondaryDirections;
+  field.raw = result.rawField;
+  write_field(outputPath, infer_field_format(outputPath, outputFormat), field);
 
   if (singularitiesPath.has_value()) {
     write_singularities_file(*singularitiesPath, result.degree,
