@@ -41,8 +41,7 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE OR DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
 endif()
 
 add_library(directional SHARED
-  src/core/Library.cpp
-  src/fields/CrossField.cpp)
+  src/core/Library.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(directional PROPERTIES OUTPUT_NAME directional
