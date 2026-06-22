@@ -9,7 +9,7 @@
 #define DIRECTIONAL_RAW_TO_POLYVECTOR_H
 
 #include <directional/core/CartesianField.h>
-#include <directional/polyvector_to_raw.h>
+#include <directional/fields/PolyVectorToRaw.h>
 
 namespace directional{
 

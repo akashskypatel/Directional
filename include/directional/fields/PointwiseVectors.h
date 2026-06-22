@@ -12,8 +12,8 @@
 #include <Eigen/Core>
 #include <vector>
 #include <directional/core/TriMesh.h>
-#include <directional/polyvector_to_raw.h>
-#include <directional/barycentric_coordinates.h>
+#include <directional/fields/PolyVectorToRaw.h>
+#include <directional/geometry/BarycentricCoordinates.h>
 
 
 namespace directional{

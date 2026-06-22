@@ -15,8 +15,8 @@
 #include <directional/util/EigenSparseUtils.h>
 #include <directional/geometry/MeshTopology.h>
 #include <directional/core/TriMesh.h>
-#include <directional/raw_to_polyvector.h>
-#include <directional/polyvector_to_raw.h>
+#include <directional/fields/RawToPolyVector.h>
+#include <directional/fields/PolyVectorToRaw.h>
 
 /***
  This class implements intrinsic vertex-based fields (defined intrinsically on the curved corners of a 1-ring), where the connection is on edges between neighboring vertices,

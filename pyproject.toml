@@ -17,3 +17,14 @@ requires-python = ">=3.10"
 authors = [
   { name = "Akash Patel" }
 ]
+dependencies = [
+  "numpy>=1.23",
+]
+
+[project.scripts]
+directional = "directional.cli:main"
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8",
+]

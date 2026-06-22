@@ -12,7 +12,7 @@
 #include <iostream>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
-#include <directional/sparse_block.h>
+#include <directional/util/SparseBlock.h>
 
 /***
  This is the interface class for cochain complexes, which are a sequence of commutative groups related by operators such

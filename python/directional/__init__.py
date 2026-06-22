@@ -39,7 +39,27 @@ def _configure_windows_dll_search() -> None:
 
 _configure_windows_dll_search()
 
-from ._directional import RemeshOptions, RemeshResult, remesh_from_cross_field, remesh_from_raw_cross_field
+_NATIVE_IMPORT_ERROR: ImportError | None = None
+
+try:
+    from ._directional import (
+        RemeshOptions,
+        RemeshResult,
+        remesh_from_cross_field,
+        remesh_from_raw_cross_field,
+    )
+except ImportError as exc:
+    _NATIVE_IMPORT_ERROR = exc
+
+
+def __getattr__(name: str):
+    if name in __all__ and _NATIVE_IMPORT_ERROR is not None:
+        raise ImportError(
+            "The directional native extension is not available. "
+            "Build/install the package before using the Python API."
+        ) from _NATIVE_IMPORT_ERROR
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 __all__ = [
     "RemeshOptions",

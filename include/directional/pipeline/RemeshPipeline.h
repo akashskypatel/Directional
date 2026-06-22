@@ -15,11 +15,11 @@
 #include <iostream>
 #include <stdexcept>
 
-
 #include <Eigen/Core>
 
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
+#include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/Integrate.h>
@@ -28,8 +28,6 @@
 #include <directional/meshing/Mesher.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
-
-
 
 /**
  * @file RemeshPipeline.h
@@ -90,97 +88,57 @@ struct RemeshResult {
 
   /// Integrated N-function values at cut-mesh corners.
   Eigen::MatrixXd cutCornerFunctions;
+
+  /// Ordered #F-by-12 cross field consumed by integration.
+  Eigen::MatrixXd rawCrossField;
+
+  /// Principal rotational matching across source-mesh edges.
+  Eigen::VectorXi crossFieldMatching;
+
+  /// Parallel-transport deviation across source-mesh edges.
+  Eigen::VectorXd crossFieldEffort;
+
+  /// Source-mesh local cycles containing cross-field singularities.
+  Eigen::VectorXi crossFieldSingularCycles;
+
+  /// Integer singularity numerators; actual indices are divided by four.
+  Eigen::VectorXi crossFieldSingularIndices;
 };
 
 /**
- * @brief Projects a vector onto a face tangent plane.
- * @param vector Ambient vector to project.
- * @param normal Unit face normal.
- * @param normalize Whether to return a unit-length tangent vector.
- * @return Tangent-plane component of @p vector.
- * @throws std::runtime_error if the projected vector is degenerate.
+ * @brief Compatibility wrapper for tangent projection.
+ * @see directional::fields::project_tangent
  */
 inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
                                           const Eigen::RowVector3d &normal,
                                           const bool normalize) {
-  Eigen::RowVector3d tangent = vector - vector.dot(normal) * normal;
-  const double norm = tangent.norm();
-  if (norm <= 1e-12) {
-    throw std::runtime_error(
-        "Directional pipeline received a degenerate tangent direction.");
-  }
-  if (normalize) {
-    tangent /= norm;
-  }
-  return tangent;
+  return fields::project_tangent(vector, normal, normalize);
 }
 
 /**
- * @brief Builds an ordered raw 4-RoSy field from two tangent direction families.
- * @param mesh Source mesh with face normals already computed.
- * @param primaryDirections One ambient direction per face.
- * @param secondaryDirections Orthogonal or user-specified second direction per face.
- * @param normalizeDirections Whether tangent-projected directions are normalized.
- * @return #F-by-12 raw field ordered as +primary, +secondary, -primary, -secondary.
+ * @brief Compatibility wrapper for constructing a raw 4-RoSy field.
+ * @see directional::fields::make_raw_cross_field
  */
 inline Eigen::MatrixXd
 make_raw_cross_field(const TriMesh &mesh,
                      const Eigen::MatrixXd &primaryDirections,
                      const Eigen::MatrixXd &secondaryDirections,
                      const bool normalizeDirections) {
-  if (primaryDirections.rows() != mesh.F.rows() ||
-      primaryDirections.cols() != 3) {
-    throw std::runtime_error("primaryDirections must have shape (#F, 3).");
-  }
-  if (secondaryDirections.rows() != mesh.F.rows() ||
-      secondaryDirections.cols() != 3) {
-    throw std::runtime_error("secondaryDirections must have shape (#F, 3).");
-  }
-
-  Eigen::MatrixXd rawField(mesh.F.rows(), 12);
-  for (int face = 0; face < mesh.F.rows(); ++face) {
-    const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
-    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face),
-                                                   normal, normalizeDirections);
-    const Eigen::RowVector3d pd2 = project_tangent(
-        secondaryDirections.row(face), normal, normalizeDirections);
-
-    rawField.block(face, 0, 1, 3) = pd1;
-    rawField.block(face, 3, 1, 3) = pd2;
-    rawField.block(face, 6, 1, 3) = -pd1;
-    rawField.block(face, 9, 1, 3) = -pd2;
-  }
-  return rawField;
+  return fields::make_raw_cross_field(mesh, primaryDirections,
+                                      secondaryDirections,
+                                      normalizeDirections);
 }
 
 /**
- * @brief Derives a second cross-field direction by crossing face normals with primary directions.
- * @param mesh Source mesh with face normals already computed.
- * @param primaryDirections One ambient direction per face.
- * @param normalizeDirections Whether projected directions are normalized.
- * @return #F-by-3 matrix of secondary tangent directions.
+ * @brief Compatibility wrapper for constructing the second cross axis.
+ * @see directional::fields::orthogonal_complement
  */
 inline Eigen::MatrixXd
 orthogonal_complement(const TriMesh &mesh,
                       const Eigen::MatrixXd &primaryDirections,
                       const bool normalizeDirections) {
-  if (primaryDirections.rows() != mesh.F.rows() ||
-      primaryDirections.cols() != 3) {
-    throw std::runtime_error("primaryDirections must have shape (#F, 3).");
-  }
-
-  Eigen::MatrixXd secondary(mesh.F.rows(), 3);
-  for (int face = 0; face < mesh.F.rows(); ++face) {
-    const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
-    const Eigen::RowVector3d pd1 = project_tangent(primaryDirections.row(face),
-                                                   normal, normalizeDirections);
-    Eigen::RowVector3d pd2 = normal.cross(pd1);
-    if (normalizeDirections) {
-      pd2.normalize();
-    }
-    secondary.row(face) = pd2;
-  }
-  return secondary;
+  return fields::orthogonal_complement(mesh, primaryDirections,
+                                       normalizeDirections);
 }
 
 /**
@@ -260,6 +218,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   log_phase("setup_mesher");
 
   RemeshResult result;
+  result.rawCrossField = rawField.extField;
+  result.crossFieldMatching = rawField.matching;
+  result.crossFieldEffort = rawField.effort;
+  result.crossFieldSingularCycles = rawField.singLocalCycles;
+  result.crossFieldSingularIndices = rawField.singIndices;
   result.cutVertices = meshCut.V;
   result.cutFaces = meshCut.F;
   result.cutFunctions = cutFunctions;
@@ -304,8 +267,9 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
   const Eigen::MatrixXd rawField =
-      make_raw_cross_field(meshWhole, primaryDirections, secondaryDirections,
-                           options.normalizeDirections);
+      fields::make_raw_cross_field(meshWhole, primaryDirections,
+                                   secondaryDirections,
+                                   options.normalizeDirections);
   return remesh_from_raw_cross_field_impl(meshWhole, rawField, options);
 }
 
@@ -328,12 +292,37 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
                         const RemeshOptions &options = {}) {
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
-  const Eigen::MatrixXd secondaryDirections = orthogonal_complement(
+  const Eigen::MatrixXd secondaryDirections = fields::orthogonal_complement(
       meshWhole, primaryDirections, options.normalizeDirections);
   const Eigen::MatrixXd rawField =
-      make_raw_cross_field(meshWhole, primaryDirections, secondaryDirections,
-                           options.normalizeDirections);
+      fields::make_raw_cross_field(meshWhole, primaryDirections,
+                                   secondaryDirections,
+                                   options.normalizeDirections);
   return remesh_from_raw_cross_field_impl(meshWhole, rawField, options);
+}
+
+/**
+ * @brief Extracts a smooth 4-RoSy cross field and runs the full remeshing pipeline.
+ * @param vertices Source vertex positions.
+ * @param faces Source triangle indices.
+ * @param options Remeshing and direction-normalization options.
+ * @return Remeshing result including the automatically extracted raw cross field.
+ */
+inline RemeshResult
+remesh_from_mesh(const Eigen::MatrixXd &vertices,
+                 const Eigen::MatrixXi &faces,
+                 const RemeshOptions &options = {}) {
+  TriMesh meshWhole;
+  meshWhole.set_mesh(vertices, faces);
+
+  fields::CrossFieldOptions crossFieldOptions;
+  crossFieldOptions.normalizeDirections = options.normalizeDirections;
+  crossFieldOptions.computeMatching = false;
+  const fields::CrossFieldResult crossField =
+      fields::extract_cross_field(meshWhole, crossFieldOptions);
+
+  return remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
+                                           options);
 }
 
 } // namespace directional::pipeline

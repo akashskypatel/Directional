@@ -16,8 +16,7 @@
 
 #include <Eigen/Core>
 
-#include <directional/core/TangentBundle.h>
-#include <directional/fields/FieldMatching.h>
+#include <directional/core/CartesianField.h>
 
 
 /**

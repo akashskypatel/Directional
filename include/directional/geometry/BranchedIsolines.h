@@ -14,7 +14,7 @@
 #include <Eigen/Sparse>
 #include <array>
 #include <vector>
-#include <directional/isolines.h>
+#include <directional/geometry/Isolines.h>
 
 namespace directional{
 

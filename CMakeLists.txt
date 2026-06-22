@@ -12,6 +12,7 @@ include(CMakePackageConfigHelpers)
 
 option(BUILD_TUTORIALS "Build Directional tutorials" OFF)
 option(BUILD_PYTHON "Build Python bindings" OFF)
+option(DIRECTIONAL_BUILD_CLI "Build the optional native command line executable" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(DIRECTIONAL_ENABLE_GMP "Enable GMP support if found" ON)
 option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support if found" ON)
@@ -39,7 +40,7 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE OR DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
   include(DirectionalDependenciesSuiteSparse)
 endif()
 
-add_library(directional SHARED src/directional_core.cpp)
+add_library(directional SHARED src/core/Library.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(directional PROPERTIES OUTPUT_NAME directional
@@ -137,6 +138,15 @@ if(BUILD_TUTORIALS)
   add_subdirectory(tutorial)
 endif()
 
+if(DIRECTIONAL_BUILD_CLI)
+  add_executable(directional_cli src/cli/Main.cpp)
+  add_executable(Directional::directional_cli ALIAS directional_cli)
+  set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
+  target_link_libraries(directional_cli PRIVATE Directional::directional)
+  target_compile_features(directional_cli PRIVATE cxx_std_20)
+  target_compile_definitions(directional_cli PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
+endif()
+
 if(BUILD_PYTHON)
   find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
   find_package(pybind11 CONFIG REQUIRED)
@@ -160,6 +170,10 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+if(DIRECTIONAL_BUILD_CLI)
+  install(TARGETS directional_cli RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
 
 if(WIN32)
   install(FILES $<TARGET_RUNTIME_DLLS:directional>

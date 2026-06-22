@@ -15,6 +15,7 @@
 #include <directional/core/TriMesh.h>
 #include <directional/core/CartesianField.h>
 #include <directional/fields/FieldMatching.h>
+#include <directional/fields/PCFaceTangentBundle.h>
 
 namespace directional
 {

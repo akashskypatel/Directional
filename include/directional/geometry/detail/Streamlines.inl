@@ -6,8 +6,8 @@
 // v. 2.0. If a copy of the MPL was not distributed with this file, You can
 // obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef DIRECTIONAL_STREAMLINES_HEADER_FILE
-#define DIRECTIONAL_STREAMLINES_HEADER_FILE
+#ifndef DIRECTIONAL_GEOMETRY_DETAIL_STREAMLINES_INL
+#define DIRECTIONAL_GEOMETRY_DETAIL_STREAMLINES_INL
 
 #include <iostream>
 #include <iomanip>
@@ -15,12 +15,11 @@
 #include <random>
 #include <Eigen/Geometry>
 #include <directional/util/EigenIndexUtils.h>
-#include <directional/sparse_identity.h>
+#include <directional/util/SparseIdentity.h>
 #include <directional/core/TriMesh.h>
 #include <directional/fields/FieldMatching.h>
-#include <directional/streamlines.h>
 #include <directional/fields/PCFaceTangentBundle.h>
-#include <directional/IntrinsicVertexTangentBundle.h>
+#include <directional/fields/IntrinsicVertexTangentBundle.h>
 
 
 namespace directional {

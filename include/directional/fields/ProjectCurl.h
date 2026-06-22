@@ -14,9 +14,9 @@
 #include <set>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/core/CartesianField.h>
-#include <directional/curl_matrices.h>
-#include <directional/sparse_block.h>
-#include <directional/extrinsic_intrinsic_matrices.h>
+#include <directional/operators/CurlMatrices.h>
+#include <directional/util/SparseBlock.h>
+#include <directional/operators/ExtrinsicIntrinsicMatrices.h>
 
 namespace directional {
 

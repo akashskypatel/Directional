@@ -17,7 +17,7 @@ WINDOWS_VS_CMAKE_CANDIDATES = (
 WINDOWS_VS_NINJA_CANDIDATES = (
     Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"),
 )
-
+ARGS = []
 
 def _first_existing_path(candidates: tuple[Path, ...]) -> Path | None:
     for candidate in candidates:
@@ -135,6 +135,7 @@ def _run(
     cwd: Path | None = None,
     env: dict[str, str] | None = None,
 ) -> None:
+    print(f"Running: {' '.join(cmd)}")
     resolved_cmd = list(cmd)
 
     if resolved_cmd and resolved_cmd[0] == "cmake":
@@ -274,8 +275,10 @@ class BuildStandalone(Command):
         ("disable-suitesparse", None, "Disable SuiteSparse support"),
         ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
         ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
+        ("build-cli", None, "Build the optional native directional cli executable"),
+        ("no-build-cli", None, "Do not build the optional native directional cli executable"),
     ]
-    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
+    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse", "build-cli", "no-build-cli"]
 
     def initialize_options(self) -> None:
         self.build_dir = None
@@ -286,6 +289,8 @@ class BuildStandalone(Command):
         self.disable_suitesparse = False
         self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
         self.disable_metis_suitesparse = False
+        self.build_cli = _env_bool("DIRECTIONAL_BUILD_CLI", False)
+        self.no_build_cli = False
 
     def finalize_options(self) -> None:
         if self.build_dir is None:
@@ -298,6 +303,8 @@ class BuildStandalone(Command):
             self.enable_suitesparse = False
         if self.disable_metis_suitesparse:
             self.enable_metis_suitesparse = False
+        if self.no_build_cli:
+            self.build_cli = False
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
@@ -307,13 +314,13 @@ class BuildStandalone(Command):
             [
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=OFF",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
                 f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
+                f"-DDIRECTIONAL_BUILD_CLI={_as_cmake_bool(bool(self.build_cli))}",
             ],
         )
-        _configure_and_build(build_dir, configure_args, build_target="directional")
+        _configure_and_build(build_dir, configure_args, build_target="directional_cli" if self.build_cli else "directional")
         _run(["cmake", "--install", str(build_dir), "--config", "Release"])
 
 
@@ -369,7 +376,6 @@ class BuildTutorials(Command):
                 "-DBUILD_SHARED_LIBS=OFF",
                 "-DBUILD_TUTORIALS=ON",
                 "-DBUILD_PYTHON=OFF",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
                 f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
@@ -400,6 +406,8 @@ class CMakeBuildExt(build_ext):
         self.disable_suitesparse = False
         self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
         self.disable_metis_suitesparse = False
+        self.build_cli = _env_bool("DIRECTIONAL_BUILD_CLI", False)
+        self.no_build_cli = False
 
     def finalize_options(self) -> None:
         super().finalize_options()
@@ -434,7 +442,6 @@ class CMakeBuildExt(build_ext):
             [
                 "-DBUILD_TUTORIALS=OFF",
                 "-DBUILD_PYTHON=ON",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-Dpybind11_DIR={pybind11_dir}",
                 f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
                 f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
@@ -470,6 +477,11 @@ setup(
     package_data={"directional": ["*.dll", "*.dylib", "*.so"]},
     include_package_data=True,
     ext_modules=[CMakeExtension("directional._directional", sourcedir=".")],
+    entry_points={
+        "console_scripts": [
+            "directional=directional.cli:main",
+        ],
+    },
     cmdclass={
         "build_standalone": BuildStandalone,
         "standalone": BuildStandalone,

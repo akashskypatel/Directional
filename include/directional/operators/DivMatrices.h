@@ -11,9 +11,9 @@
 #include <Eigen/Sparse>
 #include <directional/core/TriMesh.h>
 #include <directional/util/EigenSparseUtils.h>
-#include <directional/mass_matrices.h>
-#include <directional/gradient_matrices.h>
-#include <directional/mass_matrices.h>
+#include <directional/operators/MassMatrices.h>
+#include <directional/operators/GradientMatrices.h>
+#include <directional/operators/MassMatrices.h>
 
 namespace directional {
 

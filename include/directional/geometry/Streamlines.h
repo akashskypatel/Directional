@@ -91,6 +91,6 @@ namespace directional
                                    const double dTime);
 }
 
-#include "streamlines.cpp"
+#include <directional/geometry/detail/Streamlines.inl>
 
 #endif

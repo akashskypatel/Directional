@@ -14,7 +14,7 @@
 #include <directional/core/TriMesh.h>
 #include <directional/util/EigenSparseUtils.h>
 #include <directional/util/EigenSparseUtils.h>
-#include <directional/extrinsic_intrinsic_matrices.h>
+#include <directional/operators/ExtrinsicIntrinsicMatrices.h>
 
 
 namespace directional{

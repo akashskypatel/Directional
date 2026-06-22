@@ -11,7 +11,7 @@
 #include <iostream>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
-#include <directional/polyvector_field.h>
+#include <directional/fields/PolyVectorField.h>
 #include <directional/core/TangentBundle.h>
 #include <directional/core/CartesianField.h>
 

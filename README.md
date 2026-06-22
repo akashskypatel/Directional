@@ -1,11 +1,22 @@
-# Directional
+# DirectionalReMesher
 
-Directional is a directional-field processing library used here as a standalone C++ package and as a Python extension module.
+DirectionalReMesher is a spin-off ReMesher pipeline from [Directional](https://github.com/avaxman/Directional), which is a directional-field processing library that provides a standalone C++ drop-in interface library. 
 
-This fork now supports two build workflows:
+DirectionalReMesher is a C++ implementation of the ReMesher algorithm from the paper ["Directional Field Synthesis, Design, and Processing" by A. Vaxman et al](https://cims.nyu.edu/gcl/papers/DirectionalFieldsSTAR-2016.pdf). It provides a practical implementation of the cross-field aligned quad remeshing with major improvements for robustness and performance compared to the original implementation. 
+
+This fork supports two build workflows:
 
 - pure CMake for native C++ consumers
 - Python packaging builds via `setup.py` and `pip`
+
+## Source organization
+
+Public C++ headers are organized by responsibility under `include/directional`:
+`core`, `fields`, `geometry`, `operators`, `integration`, `meshing`, `numerics`,
+`pipeline`, `io`, `util`, and optional `visualization`. The former flat include
+paths remain available as compatibility forwarding headers. See
+[`docs/source-layout.md`](docs/source-layout.md) for module boundaries and include
+migration examples.
 
 ## What This Repository Builds
 
@@ -17,7 +28,6 @@ The top-level build supports three modes:
 
 Key build toggles:
 
-- `BUILD_TUTORIALS=ON|OFF`
 - `BUILD_PYTHON=ON|OFF`
 - `BUILD_SHARED_LIBS=ON|OFF`
 - `DIRECTIONAL_ENABLE_GMP=ON|OFF`
@@ -29,6 +39,12 @@ Key build toggles:
 - CMake 3.15+
 - A C++20-capable compiler
 - Python is only required if you are building the Python bindings or using `setup.py`
+
+### Dependencies
+
+- **GMP**: optional, for exact arithmetic, otherwise uses built-in (less performant) exact arithmetic. If using MSVC toolchain , GMP will be automatically downloaded and built if enabled. Linux and macOS users need to install GMP manually.
+- **SuiteSparse**: optional, for sparse solvers, otherwise uses Eigen. If using MSVC toolchain , SuiteSparse will be automatically downloaded and built if enabled. Linux and macOS users need to install SuiteSparse manually.
+- **Eigen**: required, included as submodule
 
 ### Python build prerequisites
 
@@ -70,7 +86,6 @@ This is the native C++ path if you want a reusable installed package.
 cmake -S . -B build\standalone `
   -DCMAKE_BUILD_TYPE=Release `
   -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install `
-  -DBUILD_TUTORIALS=OFF `
   -DBUILD_PYTHON=OFF `
   -DDIRECTIONAL_ENABLE_GMP=ON `
 
@@ -85,6 +100,35 @@ Artifacts:
 - installed headers under `build\standalone\install\include`
 - CMake package files under `build\standalone\install\lib\cmake\Directional`
 
+### Optional native CLI executable
+
+The native executable is intentionally opt-in so it does not collide with the Python `directional` console script. Enable it with `DIRECTIONAL_BUILD_CLI=ON`:
+
+```powershell
+cmake -S . -B build\standalone-cli `
+  -DCMAKE_BUILD_TYPE=Release `
+  -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone-cli\install `
+  -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_BUILD_CLI=ON `
+  -DDIRECTIONAL_ENABLE_GMP=ON
+
+cmake --build build\standalone-cli --config Release --target directional_cli
+cmake --install build\standalone-cli --config Release
+```
+
+The installed native command is:
+
+```powershell
+directional info
+directional --help
+```
+
+`setup.py standalone` can also build it:
+
+```powershell
+python setup.py standalone --build-cli
+```
+
 ### 2. Consume the installed library from another CMake project
 
 ```cmake
@@ -98,47 +142,7 @@ If Directional is installed in a nonstandard location, point CMake at it:
 cmake -S . -B build -DCMAKE_PREFIX_PATH=D:\path\to\Directional\build\standalone\install
 ```
 
-### 3. Build the tutorials with pure CMake
-
-```powershell
-cmake -S . -B build\tutorials `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX=%CD%\build\tutorials\install `
-  -DBUILD_SHARED_LIBS=OFF `
-  -DBUILD_TUTORIALS=ON `
-  -DBUILD_PYTHON=OFF `
-  -DDIRECTIONAL_ENABLE_GMP=ON `
-
-cmake --build build\tutorials --config Release
-```
-
-Tutorial binaries are written under:
-
-- `tutorial\bin\Release\`
-
-`BUILD_SHARED_LIBS=OFF` is the recommended tutorial setting in this fork because it avoids Windows link issues in the bundled viewer stack.
-
-To build only specific tutorials, pass `DIRECTIONAL_TUTORIALS` as a semicolon-separated or comma-separated list of tutorial prefixes or full directory names:
-
-```powershell
-cmake -S . -B build\tutorials-single `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DBUILD_SHARED_LIBS=OFF `
-  -DBUILD_TUTORIALS=ON `
-  -DBUILD_PYTHON=OFF `
-  -DDIRECTIONAL_TUTORIALS=501 `
-  -DDIRECTIONAL_ENABLE_GMP=ON `
-
-cmake --build build\tutorials-single --config Release
-```
-
-Example for multiple tutorials:
-
-```powershell
-cmake -S . -B build\tutorials-pair -DBUILD_SHARED_LIBS=OFF -DBUILD_TUTORIALS=ON -DBUILD_PYTHON=OFF -DDIRECTIONAL_TUTORIALS=501,505
-```
-
-### 4. Build the Python extension with pure CMake
+### 3. Build the Python extension with pure CMake
 
 This path is useful if you want CMake to produce the Python module directly instead of going through `setup.py`.
 
@@ -155,7 +159,6 @@ Then configure:
 cmake -S . -B build\python `
   -DCMAKE_BUILD_TYPE=Release `
   -DCMAKE_INSTALL_PREFIX=%CD%\build\python\install `
-  -DBUILD_TUTORIALS=OFF `
   -DBUILD_PYTHON=ON `
   -Dpybind11_DIR="C:\path\reported\by\pybind11\cmakedir" `
   -DDIRECTIONAL_ENABLE_GMP=ON `
@@ -202,41 +205,7 @@ python setup.py standalone --enable-gmp --auto-install-gmp
 python setup.py standalone --disable-gmp --no-auto-install-gmp
 ```
 
-### 2. Build the tutorial suite
-
-```powershell
-python setup.py tutorials
-```
-
-Default output location:
-
-- build tree: `build\tutorials\`
-
-Tutorial executables are emitted into:
-
-- `tutorial\bin\Release\`
-
-To build only specific tutorials:
-
-```powershell
-python setup.py tutorials --tutorial=501
-```
-
-Or multiple tutorials:
-
-```powershell
-python setup.py tutorials --tutorial=501,505
-```
-
-With explicit GMP selection:
-
-```powershell
-python setup.py tutorials --tutorial=501 --disable-gmp --no-auto-install-gmp
-```
-
-When `--tutorial` is provided, `setup.py` uses a tutorial-specific build directory by default so single-target builds do not reuse the full-suite build tree. Full names like `501_SeamlessIntegration` still work if you want exact naming.
-
-### 3. Build a Python wheel
+### 2. Build a Python wheel
 
 ```powershell
 python setup.py bdist_wheel
@@ -257,7 +226,7 @@ Example verified in this repo:
 
 - `dist\directional-0.1.0-cp313-cp313-win_amd64.whl`
 
-### 4. Install the built wheel
+### 3. Install the built wheel
 
 ```powershell
 python -m pip install dist\directional-0.1.0-cp313-cp313-win_amd64.whl
@@ -271,7 +240,7 @@ python -m pip install --force-reinstall dist\directional-0.1.0-cp313-cp313-win_a
 
 ## Python `pip` Build
 
-`pip` and other PEP 517 frontends can now control the same GMP toggles through `--config-settings`.
+`pip` and other PEP 517 frontends can control the same GMP toggles through `--config-settings`.
 
 Supported keys:
 
@@ -298,6 +267,32 @@ Environment-variable fallback also works:
 $env:DIRECTIONAL_DIRECTIONAL_ENABLE_GMP = "0"
 python -m pip install . --no-build-isolation
 ```
+
+## Command Line Interface
+
+Installing the Python package also installs a `directional` command. The same entry point is available with `python -m directional`.
+
+Show package and native extension status:
+
+```powershell
+directional info
+python -m directional info
+```
+
+Run the headless remeshing pipeline from a compressed NumPy input file:
+
+```powershell
+directional remesh input.npz output.npz --length-ratio 0.02 --verbose
+```
+
+The input `.npz` file must contain:
+
+- `vertices`: `#V x 3` float array
+- `faces`: `#F x 3` integer array
+- either `raw_cross_field`: `#F x 12` float array, or `primary_directions`: `#F x 3` float array
+- optional `secondary_directions`: `#F x 3` float array when using explicit primary and secondary directions
+
+The output `.npz` file contains `success`, `vertices`, `faces`, `degrees`, and any cut-mesh arrays exposed by the native result object.
 
 ## Python API
 
@@ -359,7 +354,6 @@ The following commands were verified in this fork:
 
 ```powershell
 python setup.py standalone
-python setup.py tutorials
 python setup.py build_ext --disable-gmp bdist_wheel
 python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
 ```
@@ -367,10 +361,20 @@ python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-insta
 And for pure CMake:
 
 ```powershell
-cmake -S . -B build\standalone -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install -DBUILD_TUTORIALS=OFF -DBUILD_PYTHON=OFF
+cmake -S . -B build\standalone -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install -DBUILD_PYTHON=OFF
 cmake --build build\standalone --config Release --target directional
 cmake --install build\standalone --config Release
 ```
+## Tests
+
+Install test dependencies and run the lightweight unit suite with:
+
+```powershell
+python -m pip install -e .[test] --no-build-isolation
+python -m pytest
+```
+
+The included tests cover the Python CLI's error handling and `.npz` output behavior with a fake native backend, plus the optional native CLI CMake/source wiring. They do not require building the native extension.
 
 ## Citation
 

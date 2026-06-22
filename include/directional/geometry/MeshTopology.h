@@ -17,6 +17,8 @@
 
 #include <Eigen/Core>
 
+#include <directional/core/TriMesh.h>
+
 #include <directional/util/EigenIndexUtils.h>
 #include <directional/util/GraphUtils.h>
 

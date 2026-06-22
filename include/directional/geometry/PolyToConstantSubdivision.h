@@ -11,7 +11,7 @@
 
 #include <Eigen/Core>
 #include <vector>
-#include <directional/pointwise_vectors.h>
+#include <directional/fields/PointwiseVectors.h>
 #include <directional/core/TriMesh.h>
 
 

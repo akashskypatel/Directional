@@ -6,6 +6,6 @@
 #define DIRECTIONAL_EXPORT
 #endif
 
-extern "C" DIRECTIONAL_EXPORT const char* directional_build_info() {
+extern "C" DIRECTIONAL_EXPORT const char *directional_build_info() {
   return "Directional shared library core";
 }

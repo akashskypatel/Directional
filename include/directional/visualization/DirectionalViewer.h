@@ -12,12 +12,12 @@
 #include <polyscope/surface_mesh.h>
 #include <polyscope/curve_network.h>
 #include <polyscope/point_cloud.h>
-#include <directional/streamlines.h>
+#include <directional/geometry/Streamlines.h>
 #include <directional/core/TriMesh.h>
 #include <directional/core/CartesianField.h>
 #include <directional/util/EigenIndexUtils.h>
-#include <directional/branched_isolines.h>
-#include <directional/sparse_identity.h>
+#include <directional/geometry/BranchedIsolines.h>
+#include <directional/util/SparseIdentity.h>
 
 /***
  This class implements the Directional viewer, as an extension and wrapper around polyscope.

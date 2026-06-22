@@ -28,7 +28,7 @@ namespace directional
 //   N:         The degree of the field
 // Return:
 //   Whether or not the file was written successfully
-bool IGL_INLINE read_matching(const std::string &fileName,
+inline bool read_matching(const std::string &fileName,
                               Eigen::VectorXi& matching,
                               Eigen::MatrixXi& EF,
                               Eigen::MatrixXi& EV,

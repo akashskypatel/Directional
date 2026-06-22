@@ -13,7 +13,7 @@
 #include <cmath>
 #include <numbers>
 #include <directional/core/CartesianField.h>
-#include <directional/rotation_to_raw.h>
+#include <directional/fields/RotationToRaw.h>
 
 
 namespace directional

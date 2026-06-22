@@ -10,7 +10,7 @@
 
 #include <Eigen/Sparse>
 #include <directional/core/TriMesh.h>
-#include <directional/mass_matrices.h>
+#include <directional/operators/MassMatrices.h>
 
 
 namespace directional {

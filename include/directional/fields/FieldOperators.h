@@ -15,6 +15,8 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/core/TriMesh.h>
+
 
 /**
  * @file FieldOperators.h

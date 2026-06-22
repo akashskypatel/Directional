@@ -11,6 +11,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
+#include <directional/core/TangentBundle.h>
+
 namespace directional
 {
 
