@@ -1,11 +1,11 @@
-#include <directional/CartesianField.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/TriMesh.h>
-#include <directional/directional_viewer.h>
-#include <directional/read_raw_field.h>
-#include <directional/power_field.h>
-#include <directional/power_to_raw.h>
-#include <directional/readOBJ.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/TriMesh.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/io/ReadRawField.h>
+#include <directional/fields/PowerField.h>
+#include <directional/fields/PowerToRaw.h>
+#include <directional/io/ReadOBJ.h>
 
 int N=2;
 directional::TriMesh mesh;

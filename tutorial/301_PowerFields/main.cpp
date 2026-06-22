@@ -1,14 +1,14 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/TriMesh.h>
-#include <directional/readOBJ.h>
-#include <directional/IntrinsicVertexTangentBundle.h>
-#include <directional/CartesianField.h>
-#include <directional/power_field.h>
-#include <directional/power_to_raw.h>
-#include <directional/principal_matching.h>
-#include <directional/write_raw_field.h>
-#include <directional/directional_viewer.h>
+#include <directional/core/TriMesh.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/fields/IntrinsicVertexTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/PowerField.h>
+#include <directional/fields/PowerToRaw.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/io/WriteRawField.h>
+#include <directional/visualization/DirectionalViewer.h>
 
 directional::TriMesh mesh;
 directional::IntrinsicVertexTangentBundle vtb;

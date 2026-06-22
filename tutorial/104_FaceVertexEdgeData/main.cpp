@@ -1,11 +1,11 @@
 #include <math.h>
-#include <directional/readOFF.h>
-#include <directional/directional_viewer.h>
-#include <directional/read_raw_field.h>
-#include <directional/principal_matching.h>
-#include <directional/TriMesh.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/io/ReadRawField.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
 
 int N;
 directional::TriMesh mesh;

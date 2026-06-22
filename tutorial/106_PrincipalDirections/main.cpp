@@ -1,8 +1,9 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOFF.h>
-#include <directional/directional_viewer.h>
-#include <directional/IntrinsicVertexTangentBundle.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/fields/IntrinsicVertexTangentBundle.h>
+#include <directional/core/TriMesh.h>
 
 
 directional::TriMesh mesh;

@@ -1,12 +1,12 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOFF.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/directional_viewer.h>
-#include <directional/discrete_exterior_calculus.h>
-#include <directional/cochain_complex.h>
-#include <directional/mass_matrices.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/operators/DiscreteExteriorCalculus.h>
+#include <directional/operators/CochainComplex.h>
+#include <directional/operators/MassMatrices.h>
 
 directional::TriMesh mesh;
 Eigen::VectorXd z0, z1, z2, z1Exact, z1Coexact, z1Harmonic;
