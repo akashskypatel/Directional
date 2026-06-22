@@ -146,20 +146,23 @@ if(DIRECTIONAL_BUILD_CLI)
     src/cli/Usage.cpp
     src/cli/InfoCommand.cpp
     src/cli/MeshIO.cpp
+    src/cli/MatrixIO.cpp
     src/cli/CrossFieldOutput.cpp
-    src/cli/CrossFieldCommand.cpp)
+    src/cli/CrossFieldCommand.cpp
+    src/cli/RemeshOutput.cpp
+    src/cli/RemeshCommand.cpp)
   add_executable(Directional::directional_cli ALIAS directional_cli)
   set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
   target_link_libraries(directional_cli PRIVATE Directional::directional)
   target_compile_features(directional_cli PRIVATE cxx_std_20)
   target_compile_definitions(directional_cli PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
 
-  # CrossFieldCommand.cpp is the only CLI translation unit that includes the
-  # template-heavy field implementation. Keep MSVC's expanded COFF section
-  # limit scoped to that source instead of applying /bigobj to the entire CLI.
+  # Keep MSVC's expanded COFF section limit scoped to the two translation
+  # units that instantiate Directional's template-heavy field and pipeline APIs.
   if(MSVC)
     set_source_files_properties(
       src/cli/CrossFieldCommand.cpp
+      src/cli/RemeshCommand.cpp
       PROPERTIES COMPILE_OPTIONS "/bigobj")
   endif()
 endif()
@@ -202,6 +205,14 @@ if(WIN32)
         install(FILES "${_runtime_dll}" DESTINATION "${CMAKE_INSTALL_BINDIR}")
       endif()
     endforeach()
+  endif()
+  if(DIRECTIONAL_BUILD_CLI)
+    install(FILES $<TARGET_RUNTIME_DLLS:directional_cli>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+  endif()
+  if(BUILD_PYTHON)
+    install(FILES $<TARGET_RUNTIME_DLLS:_directional>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
 endif()
 

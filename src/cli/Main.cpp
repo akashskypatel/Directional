@@ -30,6 +30,10 @@ int main(int argc, char **argv) {
       return directional::cli::run_cross_field(argc, argv);
     }
 
+    if (command == "remesh") {
+      return directional::cli::run_remesh(argc, argv);
+    }
+
     std::cerr << "directional-cli: unknown command: " << command << '\n';
     std::cerr << "Run `directional --help` for usage.\n";
     return 2;

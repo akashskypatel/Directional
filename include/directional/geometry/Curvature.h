@@ -74,7 +74,7 @@ build_adjacency(const Eigen::MatrixXi &EV) {
 /// @param VBy #V by 3 boundary tangent vector y.
 /// @param vertexNormals #V by 3 vertex normals.
 /// @param Sv #V shape operators.
-void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
+inline void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
                     const Eigen::MatrixXd &VBx, const Eigen::MatrixXd &VBy,
                     const Eigen::MatrixXd &vertexNormals,
                     std::vector<Eigen::Matrix2d> &Sv) {
