@@ -9,14 +9,7 @@ This fork supports two build workflows:
 - pure CMake for native C++ consumers
 - Python packaging builds via `setup.py` and `pip`
 
-## Source organization
-
-Public C++ headers are organized by responsibility under `include/directional`:
-`core`, `fields`, `geometry`, `operators`, `integration`, `meshing`, `numerics`,
-`pipeline`, `io`, `util`, and optional `visualization`. The former flat include
-paths remain available as compatibility forwarding headers. See
-[`docs/source-layout.md`](docs/source-layout.md) for module boundaries and include
-migration examples.
+Optionally, you can include this library in your source by simply cloning this repository as a submodule or copying the source files directly into your project and including the headers in your source code.
 
 ## What This Repository Builds
 
@@ -67,10 +60,12 @@ python -m pip install -r requirements.txt
 
 ## Pure CMake Build
 
-Common GMP flags for all CMake examples:
+Common flags for all CMake examples:
 
 ```powershell
 -DDIRECTIONAL_ENABLE_GMP=ON|OFF
+-DDIRECTIONAL_BUILD_CLI=ON|OFF
+-DDIRECTIONAL_ENABLE_SUITESPARSE=ON|OFF
 ```
 
 Examples:
@@ -88,6 +83,7 @@ cmake -S . -B build\standalone `
   -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install `
   -DBUILD_PYTHON=OFF `
   -DDIRECTIONAL_ENABLE_GMP=ON `
+  -DDIRECTIONAL_ENABLE_SUITESPARSE=ON
 
 cmake --build build\standalone --config Release --target directional
 cmake --install build\standalone --config Release
@@ -105,15 +101,11 @@ Artifacts:
 The native executable is intentionally opt-in so it does not collide with the Python `directional` console script. Enable it with `DIRECTIONAL_BUILD_CLI=ON`:
 
 ```powershell
-cmake -S . -B build\standalone-cli `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone-cli\install `
-  -DBUILD_PYTHON=OFF `
-  -DDIRECTIONAL_BUILD_CLI=ON `
-  -DDIRECTIONAL_ENABLE_GMP=ON
+cmake -S . -B build/native-cli -DDIRECTIONAL_BUILD_CLI=ON -DBUILD_PYTHON=OFF -DCMAKE_INSTALL_PREFIX=build/native-cli-release
 
-cmake --build build\standalone-cli --config Release --target directional_cli
-cmake --install build\standalone-cli --config Release
+cmake --build build/native-cli --target directional_cli --config Release
+
+cmake --install build/native-cli
 ```
 
 The installed native command is:
@@ -162,6 +154,7 @@ cmake -S . -B build\python `
   -DBUILD_PYTHON=ON `
   -Dpybind11_DIR="C:\path\reported\by\pybind11\cmakedir" `
   -DDIRECTIONAL_ENABLE_GMP=ON `
+  -DDIRECTIONAL_ENABLE_SUITESPARSE=ON
 
 cmake --build build\python --config Release --target _directional
 cmake --install build\python --config Release
@@ -375,6 +368,26 @@ python -m pytest
 ```
 
 The included tests cover the Python CLI's error handling and `.npz` output behavior with a fake native backend, plus the optional native CLI CMake/source wiring. They do not require building the native extension.
+
+## Tutorials
+
+To build tutorials with pure cmake, run the following command:
+
+To build only specific tutorials, pass DIRECTIONAL_TUTORIALS as a semicolon-separated or comma-separated list of tutorial prefixes or full directory names. Not providing this option will build all tutorials: `-DDDIRECTIONAL_TUTORIALS="501"|"501,502"|"203_Combing"`
+
+```powershell
+cmake -S . -B build\tutorials -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%CD%\build\tutorials\install -DBUILD_PYTHON=OFF -DBUILD_TUTORIALS=ON
+cmake --build build\tutorials --config Release --target directional_tutorials
+cmake --install build\tutorials --config Release
+```
+
+To build tutorials with setup.py, run the following command:
+
+To build only specific tutorials, pass DIRECTIONAL_TUTORIALS as a semicolon-separated or comma-separated list of tutorial prefixes or full directory names. Not providing this option will build all tutorials: `--tutorial="501"|"501,502"|"203_Combing"`
+
+```powershell
+python setup.py tutorials
+```
 
 ## Citation
 
