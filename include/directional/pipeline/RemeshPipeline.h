@@ -174,10 +174,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     phaseStart = now;
   };
 
-  if (options.featureAlign) {
-    throw std::runtime_error("featureAlign is not supported by the headless "
-                             "Directional pipeline yet.");
-  }
+  // if (options.featureAlign) {
+  //   throw std::runtime_error("featureAlign is not supported by the headless "
+  //                            "Directional pipeline yet.");
+  // }
   if (rawCrossField.rows() != meshWhole.F.rows() ||
       rawCrossField.cols() != 12) {
     throw std::runtime_error(

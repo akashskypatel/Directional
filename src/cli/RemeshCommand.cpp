@@ -82,8 +82,8 @@ int run_remesh(const int argc, char **argv) {
       options.integralSeamless = false;
     } else if (option == "--round-seams") {
       options.roundSeams = true;
-    } else if (option == "--feature-align") {
-      options.featureAlign = true;
+    // } else if (option == "--feature-align") {
+    //   options.featureAlign = true;
     } else if (option == "--no-normalize-directions" ||
                option == "--no-normalize") {
       options.normalizeDirections = false;

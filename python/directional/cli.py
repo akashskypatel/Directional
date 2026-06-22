@@ -239,7 +239,7 @@ def _make_options(args: argparse.Namespace) -> Any:
     options.lengthRatio = args.length_ratio
     options.integralSeamless = not args.no_integral_seamless
     options.roundSeams = args.round_seams
-    options.featureAlign = args.feature_align
+    # options.featureAlign = args.feature_align
     options.verbose = args.verbose
     options.normalizeDirections = not args.no_normalize_directions
     return options
@@ -413,7 +413,7 @@ def _build_parser() -> argparse.ArgumentParser:
     remesh_parser.add_argument("--length-ratio", type=float, default=0.02)
     remesh_parser.add_argument("--no-integral-seamless", action="store_true")
     remesh_parser.add_argument("--round-seams", action="store_true")
-    remesh_parser.add_argument("--feature-align", action="store_true")
+    # remesh_parser.add_argument("--feature-align", action="store_true")
     remesh_parser.add_argument("--no-normalize-directions", action="store_true")
     remesh_parser.add_argument("--verbose", action="store_true")
     remesh_parser.set_defaults(func=_cmd_remesh)

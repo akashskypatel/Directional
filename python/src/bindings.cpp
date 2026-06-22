@@ -60,8 +60,8 @@ PYBIND11_MODULE(_directional, module) {
           &directional::pipeline::RemeshOptions::integralSeamless)
       .def_readwrite("roundSeams",
                      &directional::pipeline::RemeshOptions::roundSeams)
-      .def_readwrite("featureAlign",
-                     &directional::pipeline::RemeshOptions::featureAlign)
+    //   .def_readwrite("featureAlign",
+    //                  &directional::pipeline::RemeshOptions::featureAlign)
       .def_readwrite("verbose",
                      &directional::pipeline::RemeshOptions::verbose)
       .def_readwrite(
