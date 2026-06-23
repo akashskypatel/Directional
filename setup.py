@@ -400,11 +400,7 @@ class BuildTutorials(Command):
         _finalize_feature_options(self)
 
         if self.build_dir is None:
-            suffix = (
-                "tutorials"
-                if self.tutorial is None
-                else f"tutorials-{_safe_build_name(self.tutorial)}"
-            )
+            suffix = "tutorials"
             self.build_dir = str(_build_dir(suffix))
 
     def run(self) -> None:
