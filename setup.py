@@ -425,6 +425,7 @@ class BuildTutorials(Command):
 
         _configure(build_dir, configure_args)
         _build(build_dir)
+        _install(build_dir)
 
 
 class CMakeBuildExt(build_ext):

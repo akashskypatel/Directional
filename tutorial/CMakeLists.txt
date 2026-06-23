@@ -52,25 +52,48 @@ file(MAKE_DIRECTORY "${TUTORIAL_DATA_PATH}")
 file(MAKE_DIRECTORY "${TUTORIAL_OUTPUT_PATH}")
 
 add_library(directional_tutorial_common INTERFACE)
+
 target_link_libraries(
   directional_tutorial_common
-  INTERFACE Directional::directional polyscope)
+  INTERFACE
+    Directional::directional
+    polyscope)
+
 target_include_directories(
   directional_tutorial_common
-  INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
+  INTERFACE
+    "${DIRECTIONAL_ROOT}/include"
+    "${DIRECTIONAL_ROOT}/external/eigen"
+    "${CMAKE_CURRENT_SOURCE_DIR}")
+
 target_compile_definitions(
   directional_tutorial_common
   INTERFACE
     TUTORIAL_DATA_PATH="${TUTORIAL_DATA_PATH}"
     TUTORIAL_OUTPUT_PATH="${TUTORIAL_OUTPUT_PATH}"
     GLM_ENABLE_EXPERIMENTAL)
-target_compile_features(directional_tutorial_common INTERFACE cxx_std_20)
+
+target_compile_features(
+  directional_tutorial_common
+  INTERFACE
+    cxx_std_20)
 
 function(directional_add_tutorial tutorial_name)
   add_executable(${tutorial_name} main.cpp ${ARGN})
-  target_link_libraries(${tutorial_name} PRIVATE directional_tutorial_common)
 
-  set(_tutorial_output_dir "${CMAKE_BINARY_DIR}/install/bin")
+  target_link_libraries(
+    ${tutorial_name}
+    PRIVATE
+      directional_tutorial_common)
+
+  target_compile_features(
+    ${tutorial_name}
+    PRIVATE
+      cxx_std_20)
+
+  set(_tutorial_output_dir
+      "${CMAKE_BINARY_DIR}/install/${CMAKE_INSTALL_BINDIR}")
+
   set_target_properties(
     ${tutorial_name}
     PROPERTIES
@@ -80,6 +103,35 @@ function(directional_add_tutorial tutorial_name)
       RUNTIME_OUTPUT_DIRECTORY_RELEASE "${_tutorial_output_dir}"
       RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${_tutorial_output_dir}"
       RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${_tutorial_output_dir}")
+
+  if(WIN32)
+    # Copy DLLs represented by linked CMake targets immediately after build.
+    add_custom_command(
+      TARGET ${tutorial_name}
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:${tutorial_name}>
+        $<TARGET_FILE_DIR:${tutorial_name}>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+
+    # PARDISO uses additional oneMKL DLLs loaded dynamically by mkl_rt.
+    if(DIRECTIONAL_ENABLE_PARDISO
+       AND COMMAND _directional_copy_pardiso_runtime_to_target)
+      _directional_copy_pardiso_runtime_to_target(${tutorial_name})
+    endif()
+  endif()
+
+  install(
+    TARGETS ${tutorial_name}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+  if(WIN32)
+    install(
+      FILES $<TARGET_RUNTIME_DLLS:${tutorial_name}>
+      DESTINATION ${CMAKE_INSTALL_BINDIR})
+  endif()
 endfunction()
 
 set(DIRECTIONAL_ALL_TUTORIALS

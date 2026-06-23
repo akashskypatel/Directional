@@ -15,6 +15,9 @@
 // #include <igl/inline.h>
 #include <directional/core/CartesianField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/fields/IntrinsicVertexTangentBundle.h>
+#include <directional/util/SparseIdentity.h>
+#include <directional/fields/FieldMatching.h>
 
 namespace directional {
 #define SL_VERTEX 0
@@ -226,15 +229,15 @@ inline bool segment_segment_intersection(const Eigen::RowVector2d &p,
 // tracing the field' streamlines, and creates the initial /state/ for the
 // tracing. Input:
 //   field            Cartesian field to be traced.
-//   seedLocations    indices into F of the seeds for streaming. Can be
+//   seedFaces    indices into F of the seeds for streaming. Can be
 //   Eigen::VectorXi() for automatic generation. ringDistance     Samples are
-//   generated automatically in case seedLocations.size()=0 according to
+//   generated automatically in case seedFaces.size()=0 according to
 //   exclusion of two seeds < ringDistance faces apart.
 // Output:
 //   data          struct containing topology information of the mesh and field
 //   state         struct containing the state of the tracing
 inline void streamlines_init(const directional::CartesianField &field,
-                             const Eigen::VectorXi &seedLocations,
+                             const Eigen::VectorXi &seedFaces,
                              const double distRatio, StreamlineData &data,
                              StreamlineState &state) {
   using namespace Eigen;
@@ -556,7 +559,5 @@ inline void streamlines_next(const StreamlineData &data, StreamlineState &state,
   state.currTime += dTime;
 }
 } // namespace directional
-
-#include <directional/geometry/detail/Streamlines.inl>
 
 #endif
