@@ -19,6 +19,7 @@
 #include <limits>
 #include <queue>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -30,6 +31,9 @@
 #include <directional/fields/FieldOperators.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/IntegrationData.h>
+#include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/integration/solvers/CuDssSolver.h>
+#include <directional/integration/solvers/PardisoSolver.h>
 #include <directional/integration/SetupIntegration.h>
 #include <directional/util/GraphUtils.h>
 
@@ -94,10 +98,7 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
 
   const auto integrateStart = Clock::now();
   auto phaseStart = integrateStart;
-  std::size_t progressStage = 0;
-  constexpr std::size_t progressStageCount = 8;
   const auto log_phase = [&](const char *label) {
-    report_progress(intData.progress, ++progressStage, progressStageCount, label);
     if (!intData.verbose)
       return;
     const auto now = Clock::now();
@@ -128,6 +129,9 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
     cout << "[Directional::integrate] " << label << ": " << (index + 1) << "/"
          << total << endl;
   };
+
+  report_progress(intData.progress, 1, 100,
+                  "Preparing field integration system");
 
   const auto seconds_since = [](const Clock::time_point &start) -> double {
     return std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
@@ -310,6 +314,8 @@ struct IterativeSolveTimings {
   M1.setFromTriplets(M1Triplets.begin(), M1Triplets.end());
   SparseMatrix<double> d0T = d0.transpose();
   log_phase("Differential matrix assembly");
+  report_progress(intData.progress, 10, 100,
+                  "Assembling integration differential operators");
 
   // creating face vector mass matrix
   std::vector<Triplet<double>> MxTri;
@@ -484,6 +490,24 @@ struct IterativeSolveTimings {
   };
 
   int solveIteration = 0;
+
+  const IntegrationLinearSolver effectiveLinearSolver =
+      intData.linearSolver == IntegrationLinearSolver::Default
+          ? resolve_default_integration_linear_solver()
+          : intData.linearSolver;
+
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] linear solver backend: "
+              << integration_linear_solver_name(effectiveLinearSolver)
+              << '\n';
+  }
+
+#ifdef DIRECTIONAL_HAS_PARDISO
+  detail::PardisoIntegrationSolver pardisoSolver;
+#endif
+#ifdef DIRECTIONAL_HAS_CUDSS
+  detail::CuDssIntegrationSolver cuDssSolver;
+#endif
   const int maximumSolveIterations = numVars + 2;
 
   /*
@@ -505,6 +529,9 @@ struct IterativeSolveTimings {
   std::array<std::size_t, maximumRoundingBatchSize + 1>
       roundingBatchHistogram{};
 
+  report_progress(intData.progress, 20, 100,
+                  "Starting mixed-integer rounding solves");
+
   while (true) {
     if (solveIteration >= maximumSolveIterations) {
       if (intData.verbose) {
@@ -517,6 +544,19 @@ struct IterativeSolveTimings {
 
     const int requestedFixedCount = count_requested_fixed_variables();
     const int completedFixedCount = count_completed_fixed_variables();
+
+    if (intData.progress) {
+      const int safeRequestedFixedCount = std::max(requestedFixedCount, 1);
+      const std::size_t roundingProgress = static_cast<std::size_t>(
+          20 + 70 * completedFixedCount / safeRequestedFixedCount);
+      const std::string roundingTask =
+          "Solving integer integration (" +
+          std::to_string(completedFixedCount) + "/" +
+          std::to_string(requestedFixedCount) + " variables fixed)";
+      report_progress(intData.progress,
+                      std::min<std::size_t>(roundingProgress, 90), 100,
+                      roundingTask);
+    }
 
     if (intData.verbose) {
       std::cout << "[Directional::integrate] rounding solve: "
@@ -724,6 +764,44 @@ struct IterativeSolveTimings {
 
     iterativeTimings.rhsAssembly += seconds_since(rhsAssemblyStart);
 
+    bool solvedWithOptionalBackend = false;
+    bool optionalBackendSucceeded = false;
+    IntegrationSolverTimings optionalTimings;
+
+    switch (effectiveLinearSolver) {
+    case IntegrationLinearSolver::Pardiso:
+#ifdef DIRECTIONAL_HAS_PARDISO
+      solvedWithOptionalBackend = true;
+      optionalBackendSucceeded = pardisoSolver.solve(
+          A, b, x, optionalTimings, intData.verbose);
+#else
+      throw std::runtime_error(
+          "integrate(): PARDISO was selected but Directional was built without DIRECTIONAL_ENABLE_PARDISO");
+#endif
+      break;
+    case IntegrationLinearSolver::CuDss:
+#ifdef DIRECTIONAL_HAS_CUDSS
+      solvedWithOptionalBackend = true;
+      optionalBackendSucceeded = cuDssSolver.solve(
+          A, b, x, optionalTimings, intData.verbose);
+#else
+      throw std::runtime_error(
+          "integrate(): cuDSS was selected but Directional was built without DIRECTIONAL_ENABLE_CUDSS");
+#endif
+      break;
+    default:
+      break;
+    }
+
+    if (solvedWithOptionalBackend) {
+      iterativeTimings.symbolicAnalysis += optionalTimings.analysis;
+      iterativeTimings.numericFactorization += optionalTimings.factorization;
+      iterativeTimings.backSubstitution += optionalTimings.solve;
+      if (!optionalBackendSucceeded) {
+        ++iterativeTimings.factorizationFailures;
+        return false;
+      }
+    } else {
 #ifdef USE_SUITESPARSE_ENABLED
     /*
      * Native UMFPACK path.
@@ -1007,6 +1085,7 @@ struct IterativeSolveTimings {
       return false;
     }
 #endif
+    }
 
     if (x.size() < freeVariableCount) {
       throw std::runtime_error(
@@ -1255,6 +1334,9 @@ struct IntegerCandidate {
     }
   }
 
+  report_progress(intData.progress, 92, 100,
+                  "Validating integrated integer variables");
+
   if (intData.verbose) {
     std::cout << "[Directional::integrate] final reduced integer validation\n"
               << "  solve iterations: " << solveIteration << '\n'
@@ -1278,6 +1360,8 @@ struct IntegerCandidate {
 
   print_iterative_timing_summary();
   log_phase("Iterative seamless solve");
+  report_progress(intData.progress, 95, 100,
+                  "Expanding integrated vertex functions");
 
   // the results are packets of N functions for each vertex, and need to be
   // allocated for corners
@@ -1323,6 +1407,8 @@ struct IntegerCandidate {
   SparseMatrix<double> G;
   // MatrixXd FN;
   // igl::per_face_normals(cutV, meshCut, FN);
+  report_progress(intData.progress, 97, 100,
+                  "Computing branched integration gradients");
   const auto branchedGradientStart = Clock::now();
 
   branched_gradient(meshCut, intData.N, G);
@@ -1359,6 +1445,8 @@ struct IntegerCandidate {
 
   // the results are packets of N functions for each vertex, and need to be
   // allocated for corners
+  report_progress(intData.progress, 99, 100,
+                  "Finalizing integrated parameterization");
   const auto finalFunctionExpansionStart = Clock::now();
 
   NFunctionVec = intData.vertexTrans2CutMat * intData.linRedMat *
@@ -1402,6 +1490,8 @@ struct IntegerCandidate {
   }
 
   log_phase("Final corner allocation");
+  report_progress(intData.progress, 100, 100,
+                  "Field integration complete");
 
   return success;
 }

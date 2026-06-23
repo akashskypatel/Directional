@@ -19,19 +19,3 @@ set(_directional_suitesparse_components
     ldl
     umfpack
     openblas)
-set(_directional_suitesparse_metis_components
-    spqr
-    blas
-    lapack
-    quadmath
-    gfortran
-    libgcc_s_sjlj)
-
-if(DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
-  set(_directional_tutorials_exclude
-      quadmath
-      gfortran
-      libgcc_s_sjlj)
-else()
-  set(_directional_tutorials_exclude)
-endif()

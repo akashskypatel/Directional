@@ -1185,7 +1185,13 @@ inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7)
   const EVector2 canonicalE20({ENumber(0), ENumber(-1)});
 
   const double coordinateTolerance = 1.0 / static_cast<double>(resolution);
-  for (int findex = 0; findex < origMesh.F.rows(); ++findex) {
+  const int faceCount = origMesh.F.rows();
+  const int progressInterval = faceCount > 100 ? faceCount / 100 : 1;
+
+  report_progress(mData.progress, 10, 100,
+                  "Generating per-triangle mesh arrangements");
+
+  for (int findex = 0; findex < faceCount; ++findex) {
     const char *triangleStage = "triangle initialization";
     try {
 
@@ -1433,6 +1439,21 @@ inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7)
         throw std::runtime_error("Failed to aggregate DCEL");
       }
 
+      const int completedFaces = findex + 1;
+      if (completedFaces == faceCount ||
+          completedFaces % progressInterval == 0) {
+        const std::size_t mappedProgress =
+            std::size_t{10} +
+            static_cast<std::size_t>(completedFaces) * std::size_t{68} /
+                static_cast<std::size_t>(faceCount);
+
+        report_progress(
+            mData.progress, mappedProgress, std::size_t{100},
+            "Generating mesh triangles (" +
+                std::to_string(completedFaces) + "/" +
+                std::to_string(faceCount) + ")");
+      }
+
     } catch (const std::exception &error) {
       std::cerr << "[Directional::NFunctionMesher::generate_mesh()]: "
                 << "triangle " << findex << " failed during " << triangleStage
@@ -1447,6 +1468,9 @@ inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7)
       throw;
     }
   }
+
+  report_progress(mData.progress, 80, 100,
+                  "Validating generated mesh topology");
 
   if (!genDcel.check_consistency(mData.verbose, false, false, false)) {
     throw std::runtime_error(

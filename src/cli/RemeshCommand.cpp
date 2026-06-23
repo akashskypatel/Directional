@@ -132,11 +132,11 @@ int run_remesh(const int argc, char **argv) {
         "--secondary-directions requires --primary-directions.");
   }
 
-  constexpr std::size_t progressTotal = 11;
+  constexpr std::size_t progressTotal = 100;
   ProgressDisplay progress(std::cout, !options.verbose);
-  progress.update(1, progressTotal, "Loading input mesh");
+  progress.update(2, progressTotal, "Loading input mesh");
   const MeshData mesh = load_mesh(inputPath);
-  options.progress = progress.range(2, 9, progressTotal);
+  options.progress = progress.range(5, 90, progressTotal);
 
   pipeline::RemeshResult result;
   if (fieldPath.has_value()) {
@@ -191,7 +191,7 @@ int run_remesh(const int argc, char **argv) {
         "Remeshing failed while simplifying or assembling the output mesh.");
   }
 
-  progress.update(10, progressTotal, "Writing remeshed output");
+  progress.update(95, progressTotal, "Writing remeshed output");
   write_remeshed_mesh(outputPath, result.vertices, result.degrees,
                       result.faces);
 
@@ -204,7 +204,7 @@ int run_remesh(const int argc, char **argv) {
         result.crossFieldSingularIndices);
   }
 
-  progress.update(11, progressTotal, "Finalizing remesh pipeline");
+  progress.update(100, progressTotal, "Finalizing remesh pipeline");
   progress.finish();
 
   std::cout << "Remeshed " << mesh.faces.rows() << " source triangles into "

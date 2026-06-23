@@ -14,8 +14,8 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/integration/IntegrationLinearSolver.h>
 #include <directional/util/Progress.h>
-
 
 /**
  * @file IntegrationData.h
@@ -104,6 +104,12 @@ struct IntegrationData {
   /// Rounds seam or singularity variables during integration.
   bool roundSeams;
 
+  /// Sparse direct backend used by iterative integer integration.
+  IntegrationLinearSolver linearSolver;
+
+  /// Numerical-stability controls used when @ref linearSolver selects cuDSS.
+  CuDssSolverOptions cuDssSolverOptions;
+
   /// Emits solver logs when true.
   bool verbose;
 
@@ -112,7 +118,7 @@ struct IntegrationData {
 
   IntegrationData(int _N)
       : lengthRatio(0.02), integralSeamless(false), roundSeams(true),
-        verbose(false) {
+        linearSolver(IntegrationLinearSolver::Default), verbose(false) {
     N = _N;
     n = (N % 2 == 0 ? N / 2 : N);
     if (N % 2 == 0)

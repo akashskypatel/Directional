@@ -188,17 +188,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         "rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
   }
 
-  report_progress(options.progress, 1, 8, "Initializing tangent bundle");
+  report_progress(options.progress, 5, 100, "Initializing tangent bundle");
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
   log_phase("PCFaceTangentBundle::init");
 
-  report_progress(options.progress, 2, 8, "Preparing raw cross field");
+  report_progress(options.progress, 10, 100, "Preparing raw cross field");
   CartesianField rawField;
   rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, 4);
   rawField.set_extrinsic_field(rawCrossField);
   log_phase("CartesianField::init + set_extrinsic_field");
-  report_progress(options.progress, 3, 8, "Computing field matching");
+  report_progress(options.progress, 15, 100, "Computing field matching");
   principal_matching(rawField);
   log_phase("principal_matching");
 
@@ -208,22 +208,58 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.roundSeams = options.roundSeams;
   integration.verbose = options.verbose;
 
-  report_progress(options.progress, 4, 8, "Setting up integration");
+  report_progress(options.progress, 20, 100, "Setting up integration");
   TriMesh meshCut;
   CartesianField combedField;
   setup_integration(rawField, integration, meshCut, combedField);
   log_phase("setup_integration");
 
-  report_progress(options.progress, 5, 8, "Solving field integration");
+  report_progress(options.progress, 21, 100, "Solving field integration");
+  if (!options.verbose && options.progress) {
+    integration.progress =
+        [callback = options.progress](const std::size_t current,
+                                      const std::size_t total,
+                                      const std::string_view task) {
+          constexpr std::size_t first = 21;
+          constexpr std::size_t last = 75;
+          const std::size_t safeTotal = std::max<std::size_t>(total, 1);
+          const std::size_t safeCurrent =
+              std::min(std::max<std::size_t>(current, 1), safeTotal);
+          const std::size_t mapped =
+              safeTotal == 1
+                  ? last
+                  : first + (safeCurrent - 1) * (last - first) /
+                                (safeTotal - 1);
+          report_progress(callback, mapped, 100, task);
+        };
+  }
   Eigen::MatrixXd cutFunctions;
   Eigen::MatrixXd cutCornerFunctions;
-  integrate(combedField, integration, meshCut, cutFunctions,
-            cutCornerFunctions);
+  if (!integrate(combedField, integration, meshCut, cutFunctions,
+                 cutCornerFunctions)) {
+    throw std::runtime_error(
+        "Field integration failed; the mesher cannot continue.");
+  }
   log_phase("integrate");
 
-  report_progress(options.progress, 6, 8, "Preparing mesher");
+  report_progress(options.progress, 80, 100, "Preparing mesher");
   MesherData mesherData;
   mesherData.verbose = options.verbose;
+  if (!options.verbose && options.progress) {
+    mesherData.progress =
+        [callback = options.progress](const std::size_t current,
+                                      const std::size_t total,
+                                      const std::string_view task) {
+          constexpr std::size_t first = 81;
+          constexpr std::size_t last = 99;
+          const std::size_t safeTotal = std::max<std::size_t>(total, 1);
+          const std::size_t safeCurrent =
+              std::min(current, safeTotal);
+          const std::size_t mapped =
+              first + safeCurrent * (last - first) / safeTotal;
+          report_progress(callback, mapped, 100, task);
+        };
+  }
   setup_mesher(meshCut, integration, mesherData);
   log_phase("setup_mesher");
 
@@ -237,11 +273,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   result.cutFaces = meshCut.F;
   result.cutFunctions = cutFunctions;
   result.cutCornerFunctions = cutCornerFunctions;
-  report_progress(options.progress, 7, 8, "Generating output mesh");
+  report_progress(options.progress, 81, 100, "Generating output mesh");
   result.success = mesher(meshWhole, mesherData, result.vertices,
                           result.degrees, result.faces);
   log_phase("mesher");
-  report_progress(options.progress, 8, 8, "Finalizing remesh result");
+  report_progress(options.progress, 100, 100, "Finalizing remesh result");
   return result;
 }
 
@@ -327,7 +363,7 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
 
-  report_progress(options.progress, 1, 9, "Extracting source cross field");
+  report_progress(options.progress, 10, 110, "Extracting source cross field");
   fields::CrossFieldOptions crossFieldOptions;
   crossFieldOptions.normalizeDirections = options.normalizeDirections;
   crossFieldOptions.computeMatching = false;
@@ -337,9 +373,15 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
   RemeshOptions remeshOptions = options;
   remeshOptions.progress =
       [callback = options.progress](const std::size_t current,
-                                    const std::size_t,
+                                    const std::size_t total,
                                     const std::string_view task) {
-        report_progress(callback, current + 1, 9, task);
+        const std::size_t safeTotal = std::max<std::size_t>(total, 1);
+        const std::size_t safeCurrent =
+            std::min(std::max<std::size_t>(current, 1), safeTotal);
+        const std::size_t mapped =
+            10 + safeCurrent * 100 / safeTotal;
+        report_progress(callback, std::min<std::size_t>(mapped, 110), 110,
+                        task);
       };
   return remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
                                            remeshOptions);

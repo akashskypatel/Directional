@@ -4995,31 +4995,43 @@ public:
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label
                 << ": " << (index + 1) << "/" << total << std::endl;
     };
+    const auto reportSimplifyProgress =
+        [&](const std::size_t completed, const char *task) {
+          report_progress(mData.progress, completed, std::size_t{100}, task);
+        };
+
+    reportSimplifyProgress(82, "Checking generated mesh consistency");
     if (!run_initial_consistency_check()) {
       return false;
     }
     logPhase("Initial consistency check");
+    reportSimplifyProgress(83, "Scanning original halfedge range");
 
     scan_original_halfedge_range(scratch);
     logPhase("Original halfedge range scan");
+    reportSimplifyProgress(84, "Visiting mesh boundary seeds");
 
     if (!visit_boundary_seeds(scratch)) {
       return false;
     }
     logPhase("Boundary visitation sweep");
+    reportSimplifyProgress(85, "Collecting boundary strips");
 
     if (!collect_boundary_strips(scratch)) {
       return false;
     }
     logPhase("Boundary strip collection");
+    reportSimplifyProgress(86, "Building boundary vertex sets");
 
     build_boundary_vertex_sets(scratch);
     logPhase("Boundary vertex set build");
+    reportSimplifyProgress(87, "Matching boundary vertices");
 
     if (!build_vertex_matches(scratch)) {
       return false;
     }
     logPhase("Vertex match build");
+    reportSimplifyProgress(88, "Computing vertex representatives");
 
     /*
      * Find connected components of matched vertices and assign one
@@ -5030,6 +5042,7 @@ public:
 
     const int NumNewVertices = compute_vertex_representatives(scratch);
     logPhase("Connected components");
+    reportSimplifyProgress(89, "Rebuilding simplified vertex topology");
 
     if (!genDcel.check_consistency(mData.verbose, false, false, false)) {
       return false;
@@ -5045,6 +5058,7 @@ public:
 
     remap_halfedge_vertices(preRemapOrigin, preRemapTarget);
     logPhase("Halfedge vertex remap");
+    reportSimplifyProgress(90, "Pruning remap-created degenerates");
 
     if (!prune_remap_created_degenerates(preRemapOrigin, preRemapTarget)) {
       return false;
@@ -5055,6 +5069,7 @@ public:
       return false;
     }
     logPhase("Post-remap pre-twinning consistency check");
+    reportSimplifyProgress(91, "Retwinning simplified halfedges");
 
     const int retwinned = retwin_halfedges();
 
@@ -5077,6 +5092,7 @@ public:
       return false;
     }
     logPhase("Post-twinning consistency check");
+    reportSimplifyProgress(92, "Pruning dangling function edges");
 
     /*
      * Remove interior degree-one leaves from the retained function
@@ -5115,6 +5131,7 @@ public:
       return false;
     }
     logPhase("Post-dangling-pruning consistency check");
+    reportSimplifyProgress(93, "Classifying and realigning mesh regions");
 
     if (!classify_triangle_regions(scratch)) {
       return false;
@@ -5133,6 +5150,7 @@ public:
       return false;
     }
     logPhase("Face realignment");
+    reportSimplifyProgress(94, "Pruning low-quality generated faces");
 
     if (!prune_low_quality_faces_and_count_valence(scratch)) {
       return false;
@@ -5143,6 +5161,7 @@ public:
       return false;
     }
     logPhase("Post-pruning consistency check");
+    reportSimplifyProgress(94, "Unifying low-valence mesh vertices");
 
     int unifyCount = 0;
 
@@ -5156,6 +5175,7 @@ public:
                 << " operations\n";
     }
     logPhase("Low-valence edge unification and validation");
+    reportSimplifyProgress(95, "Finalizing simplified mesh topology");
 
     /*
      * Remove invalidated topology and perform the final consistency
