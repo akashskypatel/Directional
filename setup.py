@@ -272,11 +272,11 @@ def _initialize_feature_options(command: object) -> None:
         "DIRECTIONAL_ENABLE_GMP", True, "DIRECTIONAL_DIRECTIONAL_ENABLE_GMP"
     )
     command.disable_gmp = False
-    command.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
+    command.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", False)
     command.disable_suitesparse = False
     command.enable_pardiso = _env_bool("DIRECTIONAL_ENABLE_PARDISO", True)
     command.disable_pardiso = False
-    command.enable_cudss = _env_bool("DIRECTIONAL_ENABLE_CUDSS", True)
+    command.enable_cudss = _env_bool("DIRECTIONAL_ENABLE_CUDSS", False)
     command.disable_cudss = False
     command.build_cli = _env_bool("DIRECTIONAL_BUILD_CLI", False)
     command.no_build_cli = False

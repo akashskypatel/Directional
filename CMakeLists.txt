@@ -15,9 +15,9 @@ option(BUILD_PYTHON "Build Python bindings" OFF)
 option(DIRECTIONAL_BUILD_CLI "Build the optional native command line executable" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(DIRECTIONAL_ENABLE_GMP "Enable GMP support. Will be auto-installed on MSVC if not found" ON)
-option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support. Will be auto-installed on MSVC if not found" ON)
+option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support. Will be auto-installed on MSVC if not found" OFF)
 option(DIRECTIONAL_ENABLE_PARDISO1
-       "Enable Intel oneMKL PARDISO integration solver. Will be auto-installed on MSVC if not found" OFF)
+       "Enable Intel oneMKL PARDISO integration solver. Will be auto-installed on MSVC if not found" ON)
 option(DIRECTIONAL_ENABLE_CUDSS
        "Enable NVIDIA cuDSS integration solver if found" OFF)
 set(CUDSS_ROOT "" CACHE PATH "Root directory of an NVIDIA cuDSS installation")
