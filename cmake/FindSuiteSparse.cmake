@@ -477,7 +477,7 @@ endif (TARGET SuiteSparse::config)
 # Check whether cholmod was compiled with METIS support. The check can be
 # performed only after the main components have been set up.
 if (TARGET SuiteSparse::cholmod)
-  if(DIRECTIONAL_ENABLE_METIS_SUITESPARSE)
+  if(ENABLE_METIS_SUITESPARSE)
     # NOTE If SuiteSparse was compiled as a static library we'll need to link
     # against METIS already during the check. Otherwise, the check can fail due to
     # undefined references even though SuiteSparse was compiled with METIS.

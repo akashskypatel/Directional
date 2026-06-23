@@ -4,30 +4,99 @@ import os
 import shutil
 import subprocess
 import sys
+import warnings
+from dataclasses import dataclass
 from pathlib import Path
 
-from setuptools import Command, Extension, setup, find_packages
+from setuptools import Command, Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
 
 
 ROOT = Path(__file__).resolve().parent
 WINDOWS_VS_CMAKE_CANDIDATES = (
-    Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"),
+    Path(
+        r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+    ),
 )
 WINDOWS_VS_NINJA_CANDIDATES = (
-    Path(r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"),
+    Path(
+        r"C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe"
+    ),
 )
+
+COMMON_FEATURE_USER_OPTIONS = [
+    ("enable-gmp", None, "Enable GMP support if found"),
+    ("disable-gmp", None, "Disable GMP support"),
+    ("enable-suitesparse", None, "Enable SuiteSparse integration solver"),
+    ("disable-suitesparse", None, "Disable SuiteSparse integration solver"),
+    ("enable-pardiso", None, "Enable Intel oneMKL PARDISO integration solver"),
+    ("disable-pardiso", None, "Disable Intel oneMKL PARDISO integration solver"),
+    ("enable-cudss", None, "Enable NVIDIA cuDSS integration solver"),
+    ("disable-cudss", None, "Disable NVIDIA cuDSS integration solver"),
+]
+CLI_USER_OPTIONS = [
+    ("build-cli", None, "Build the optional native directional CLI executable"),
+    ("no-build-cli", None, "Do not build the optional native directional CLI executable"),
+]
+FEATURE_USER_OPTIONS = [*COMMON_FEATURE_USER_OPTIONS, *CLI_USER_OPTIONS]
+COMMON_FEATURE_BOOLEAN_OPTIONS = [option[0] for option in COMMON_FEATURE_USER_OPTIONS]
+FEATURE_BOOLEAN_OPTIONS = [option[0] for option in FEATURE_USER_OPTIONS]
+
+
+
+@dataclass
+class BuildFeatures:
+    enable_gmp: bool
+    enable_suitesparse: bool
+    enable_pardiso: bool
+    enable_cudss: bool
+    build_cli: bool
+
+    def resolve_solver_backend(self) -> None:
+        requested = [
+            name
+            for name, enabled in (
+                ("PARDISO", self.enable_pardiso),
+                ("CUDSS", self.enable_cudss),
+                ("SUITESPARSE", self.enable_suitesparse),
+            )
+            if enabled
+        ]
+        if len(requested) <= 1:
+            return
+
+        selected = requested[0]
+        warnings.warn(
+            "Multiple integration solver backends were requested: "
+            f"{', '.join(requested)}. Only {selected} will be enabled. "
+            "Selection priority is PARDISO, CUDSS, SUITESPARSE.",
+            RuntimeWarning,
+            stacklevel=3,
+        )
+
+        self.enable_pardiso = selected == "PARDISO"
+        self.enable_cudss = selected == "CUDSS"
+        self.enable_suitesparse = selected == "SUITESPARSE"
+
+    def cmake_args(self, *, build_python: bool) -> list[str]:
+        return [
+            f"-DBUILD_PYTHON={_as_cmake_bool(build_python)}",
+            f"-DDIRECTIONAL_BUILD_CLI={_as_cmake_bool(self.build_cli)}",
+            f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(self.enable_gmp)}",
+            f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(self.enable_suitesparse)}",
+            f"-DDIRECTIONAL_ENABLE_PARDISO={_as_cmake_bool(self.enable_pardiso)}",
+            f"-DDIRECTIONAL_ENABLE_CUDSS={_as_cmake_bool(self.enable_cudss)}",
+        ]
 
 
 def _first_existing_path(candidates: tuple[Path, ...]) -> Path | None:
-    for candidate in candidates:
-        if candidate.exists():
-            return candidate
-    return None
+    return next((candidate for candidate in candidates if candidate.exists()), None)
 
 
 def _windows_cmake_executable() -> Path | None:
-    override = os.environ.get("DIRECTIONAL_CMAKE_EXECUTABLE") or os.environ.get("CMAKE_COMMAND")
+    override = os.environ.get("DIRECTIONAL_CMAKE_EXECUTABLE") or os.environ.get(
+        "CMAKE_COMMAND"
+    )
     if override:
         candidate = Path(override)
         if candidate.exists():
@@ -64,69 +133,53 @@ def _is_conflicting_cmake_path(entry: str, cmake_parent: str) -> bool:
         return False
     if "site-packages\\cmake\\data\\bin" in entry_lower:
         return True
-    return ".venv" in entry_lower and entry_lower.endswith("\\scripts") and (Path(entry) / "cmake.exe").exists()
-
-
-def _runtime_dll_dirs(self, build_temp: Path, install_dir: Path, installed_pkg_dir: Path) -> list[Path]:
-    runtime_dirs = [installed_pkg_dir, install_dir / "bin"]
-    if self.enable_gmp or (self.enable_suitesparse and self.disable_metis_suitesparse):
-        vcpkg_triplets = ["x64-windows", "xw"]
-    elif self.enable_suitesparse and self.disable_metis_suitesparse:
-        vcpkg_triplets = ["xw"]
-    else:
-        vcpkg_triplets = []
-    for triplet in vcpkg_triplets:
-        runtime_dirs.extend(
-            [
-                build_temp / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
-                build_temp / "_deps" / "vcpkg-src" / "installed" / triplet / "debug" / "bin",
-                ROOT / "vcpkg_installed" / triplet / "bin",
-                ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
-            ]
-        )
-        runtime_dirs.extend(
-            [
-                ROOT / "external" / "vcpkg" / "packages" / f"gmp_{triplet}" / "bin",
-                ROOT / "external" / "vcpkg" / "installed" / triplet / "bin",
-            ]
-        )
-    
-    return runtime_dirs
+    return (
+        ".venv" in entry_lower
+        and entry_lower.endswith("\\scripts")
+        and (Path(entry) / "cmake.exe").exists()
+    )
 
 
 def _build_env(env: dict[str, str] | None = None) -> dict[str, str]:
     merged = os.environ.copy()
     if env:
         merged.update(env)
-    if sys.platform == "win32":
-        cmake_exe = _cmake_executable()
-        cmake_parent = str(Path(cmake_exe).resolve().parent).lower() if Path(cmake_exe).exists() else ""
-        path_entries = [
-            entry
-            for entry in merged.get("PATH", "").split(os.pathsep)
-            if entry
-            and not (
-                "pip-build-env" in entry.lower()
-                and entry.lower().endswith("\\overlay\\scripts")
-            )
-            and not _is_conflicting_cmake_path(entry, cmake_parent)
-        ]
-        prepend: list[str] = []
-        windows_cmake = _windows_cmake_executable()
-        if windows_cmake is not None:
-            prepend.append(str(windows_cmake.parent))
-        ninja_exe = _windows_ninja_executable()
-        if ninja_exe is not None:
-            prepend.append(str(ninja_exe.parent))
-        seven_zip_dir = _find_vcpkg_tool_dir("7z.exe")
-        if seven_zip_dir is not None:
-            prepend.append(str(seven_zip_dir))
-        merged["PATH"] = os.pathsep.join([*prepend, *path_entries])
-        merged["CMAKE_COMMAND"] = cmake_exe
-        if ninja_exe is not None:
-            merged.setdefault("CMAKE_MAKE_PROGRAM", str(ninja_exe))
-        if seven_zip_dir is not None:
-            merged.setdefault("VCPKG_FORCE_SYSTEM_BINARIES", "1")
+    if sys.platform != "win32":
+        return merged
+
+    cmake_exe = _cmake_executable()
+    cmake_path = Path(cmake_exe)
+    cmake_parent = (
+        str(cmake_path.resolve().parent).lower() if cmake_path.exists() else ""
+    )
+    path_entries = [
+        entry
+        for entry in merged.get("PATH", "").split(os.pathsep)
+        if entry
+        and not (
+            "pip-build-env" in entry.lower()
+            and entry.lower().endswith("\\overlay\\scripts")
+        )
+        and not _is_conflicting_cmake_path(entry, cmake_parent)
+    ]
+
+    prepend: list[str] = []
+    windows_cmake = _windows_cmake_executable()
+    if windows_cmake is not None:
+        prepend.append(str(windows_cmake.parent))
+    ninja_exe = _windows_ninja_executable()
+    if ninja_exe is not None:
+        prepend.append(str(ninja_exe.parent))
+    seven_zip_dir = _find_vcpkg_tool_dir("7z.exe")
+    if seven_zip_dir is not None:
+        prepend.append(str(seven_zip_dir))
+
+    merged["PATH"] = os.pathsep.join([*prepend, *path_entries])
+    merged["CMAKE_COMMAND"] = cmake_exe
+    if ninja_exe is not None:
+        merged.setdefault("CMAKE_MAKE_PROGRAM", str(ninja_exe))
+    if seven_zip_dir is not None:
+        merged.setdefault("VCPKG_FORCE_SYSTEM_BINARIES", "1")
     return merged
 
 
@@ -136,10 +189,10 @@ def _run(
     env: dict[str, str] | None = None,
 ) -> None:
     resolved_cmd = list(cmd)
-
     if resolved_cmd and resolved_cmd[0] == "cmake":
         resolved_cmd[0] = _cmake_executable()
 
+    print(f"Running: {' '.join(resolved_cmd)}")
     process = subprocess.Popen(
         resolved_cmd,
         cwd=str(cwd or ROOT),
@@ -151,13 +204,23 @@ def _run(
         errors="replace",
         bufsize=1,
     )
-
     assert process.stdout is not None
 
-    with open("CONOUT$", "w", encoding="utf-8", errors="replace") as terminal:
+    if sys.platform == "win32":
+        try:
+            output = open("CONOUT$", "w", encoding="utf-8", errors="replace")
+        except OSError:
+            output = sys.stdout
+    else:
+        output = sys.stdout
+
+    try:
         for line in process.stdout:
-            terminal.write(line)
-            terminal.flush()
+            output.write(line)
+            output.flush()
+    finally:
+        if output is not sys.stdout:
+            output.close()
 
     return_code = process.wait()
     if return_code != 0:
@@ -179,15 +242,21 @@ def _build_dir(name: str) -> Path:
 
 
 def _safe_build_name(value: str) -> str:
-    return "".join(ch if ch.isalnum() or ch in ("-", "_") else "-" for ch in value)
+    return "".join(
+        character if character.isalnum() or character in {"-", "_"} else "-"
+        for character in value
+    )
 
 
 def _as_cmake_bool(value: bool) -> str:
     return "ON" if value else "OFF"
 
 
-def _env_bool(name: str, default: bool) -> bool:
-    raw = os.environ.get(name)
+def _env_bool(name: str, default: bool, *aliases: str) -> bool:
+    raw = next(
+        (os.environ[key] for key in (name, *aliases) if key in os.environ),
+        None,
+    )
     if raw is None:
         return default
     value = raw.strip().lower()
@@ -198,61 +267,65 @@ def _env_bool(name: str, default: bool) -> bool:
     raise RuntimeError(f"Invalid boolean value for {name}: {raw!r}")
 
 
-def _configure_and_build(build_dir: Path, configure_args: list[str], build_target: str | None = None) -> Path:
+def _initialize_feature_options(command: object) -> None:
+    command.enable_gmp = _env_bool(
+        "DIRECTIONAL_ENABLE_GMP", True, "DIRECTIONAL_DIRECTIONAL_ENABLE_GMP"
+    )
+    command.disable_gmp = False
+    command.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", False)
+    command.disable_suitesparse = False
+    command.enable_pardiso = _env_bool("DIRECTIONAL_ENABLE_PARDISO", True)
+    command.disable_pardiso = False
+    command.enable_cudss = _env_bool("DIRECTIONAL_ENABLE_CUDSS", False)
+    command.disable_cudss = False
+    command.build_cli = _env_bool("DIRECTIONAL_BUILD_CLI", False)
+    command.no_build_cli = False
+
+
+def _finalize_feature_options(command: object) -> BuildFeatures:
+    features = BuildFeatures(
+        enable_gmp=bool(command.enable_gmp and not command.disable_gmp),
+        enable_suitesparse=bool(
+            command.enable_suitesparse and not command.disable_suitesparse
+        ),
+        enable_pardiso=bool(command.enable_pardiso and not command.disable_pardiso),
+        enable_cudss=bool(command.enable_cudss and not command.disable_cudss),
+        build_cli=bool(command.build_cli and not command.no_build_cli),
+    )
+    features.resolve_solver_backend()
+
+    command.enable_gmp = features.enable_gmp
+    command.enable_suitesparse = features.enable_suitesparse
+    command.enable_pardiso = features.enable_pardiso
+    command.enable_cudss = features.enable_cudss
+    command.build_cli = features.build_cli
+    return features
+
+
+def _features_from_command(command: object) -> BuildFeatures:
+    return BuildFeatures(
+        enable_gmp=bool(command.enable_gmp),
+        enable_suitesparse=bool(command.enable_suitesparse),
+        enable_pardiso=bool(command.enable_pardiso),
+        enable_cudss=bool(command.enable_cudss),
+        build_cli=bool(command.build_cli),
+    )
+
+
+def _configure(build_dir: Path, configure_args: list[str]) -> None:
     build_dir.mkdir(parents=True, exist_ok=True)
     _run(["cmake", "-S", str(ROOT), "-B", str(build_dir), *configure_args])
-    build_cmd = ["cmake", "--build", str(build_dir), "--config", "Release"]
-    if build_target:
-        build_cmd.extend(["--target", build_target])
-    else:
-        build_cmd.extend(["--target", "install"])
-    _run(build_cmd)
-    return build_dir
 
 
-def _copy_runtime_dlls(target_dir: Path, directories: list[Path]) -> None:
-    seen_names: set[str] = set()
-    for directory in directories:
-        if not directory.exists():
-            continue
-        for dll_path in directory.glob("*.dll"):
-            dll_name = dll_path.name.lower()
-            if dll_name in seen_names:
-                continue
-            seen_names.add(dll_name)
-            shutil.copy2(dll_path, target_dir / dll_path.name)
+def _build(build_dir: Path, *targets: str) -> None:
+    command = ["cmake", "--build", str(build_dir), "--config", "Release"]
+    if targets:
+        command.extend(["--target", *targets])
+    _run(command)
 
 
-def _copy_runtime_dlls_to_targets(target_dirs: list[Path], source_dirs: list[Path]) -> None:
-    for target_dir in target_dirs:
-        target_dir.mkdir(parents=True, exist_ok=True)
-        _copy_runtime_dlls(target_dir, source_dirs)
-
-
-def _tutorial_runtime_dll_dirs(self, build_dir: Path) -> list[Path]:
-    runtime_dirs: list[Path] = [build_dir / "Release", build_dir / "Debug", build_dir / "RelWithDebInfo", build_dir / "MinSizeRel"]
-    if self.enable_gmp or (self.enable_suitesparse and self.disable_metis_suitesparse):
-        vcpkg_triplets = ["x64-windows", "xw"]
-    elif self.enable_suitesparse and self.disable_metis_suitesparse:
-        vcpkg_triplets = ["xw"]
-    else:
-        vcpkg_triplets = []
-    for triplet in vcpkg_triplets:
-        runtime_dirs.extend(
-            [
-                build_dir / "_deps" / "vcpkg-src" / "installed" / triplet / "bin",
-                build_dir / "_deps" / "vcpkg-src" / "installed" / triplet / "debug" / "bin",
-                ROOT / "vcpkg_installed" / triplet / "bin",
-                ROOT / "vcpkg_installed" / triplet / "debug" / "bin",
-            ]
-        )
-        runtime_dirs.extend(
-            [
-                ROOT / "external" / "vcpkg" / "packages" / f"gmp_{triplet}" / "bin",
-                ROOT / "external" / "vcpkg" / "installed" / triplet / "bin",
-            ]
-        )
-    return runtime_dirs
+def _install(build_dir: Path) -> None:
+    _run(["cmake", "--install", str(build_dir), "--config", "Release"])
 
 
 class CMakeExtension(Extension):
@@ -262,153 +335,106 @@ class CMakeExtension(Extension):
 
 
 class BuildStandalone(Command):
-    description = "Build and install the standalone Directional shared library"
+    description = "Build and install the standalone Directional library and optional native CLI"
     user_options = [
         ("build-dir=", None, "Build directory"),
         ("install-dir=", None, "Install directory"),
-        ("enable-gmp", None, "Enable GMP support if found"),
-        ("disable-gmp", None, "Disable GMP support"),
-        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
-        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
-        ("enable-suitesparse", None, "Enable SuiteSparse support"),
-        ("disable-suitesparse", None, "Disable SuiteSparse support"),
-        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
-        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
+        *FEATURE_USER_OPTIONS,
     ]
-    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
+    boolean_options = FEATURE_BOOLEAN_OPTIONS
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.install_dir = None
-        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
-        self.disable_gmp = False
-        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
-        self.disable_suitesparse = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
-        self.disable_metis_suitesparse = False
+        _initialize_feature_options(self)
 
     def finalize_options(self) -> None:
         if self.build_dir is None:
             self.build_dir = str(_build_dir("standalone"))
         if self.install_dir is None:
             self.install_dir = str(Path(self.build_dir) / "install")
-        if self.disable_gmp:
-            self.enable_gmp = False
-        if self.disable_suitesparse:
-            self.enable_suitesparse = False
-        if self.disable_metis_suitesparse:
-            self.enable_metis_suitesparse = False
+        _finalize_feature_options(self)
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
         install_dir = Path(self.install_dir)
+        features = _features_from_command(self)
         configure_args = _cmake_args(
             install_dir,
             [
+                *features.cmake_args(build_python=False),
                 "-DBUILD_TUTORIALS=OFF",
-                "-DBUILD_PYTHON=OFF",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
-                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
-                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
-                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
-        _configure_and_build(build_dir, configure_args, build_target="directional")
-        _run(["cmake", "--install", str(build_dir), "--config", "Release"])
+        _configure(build_dir, configure_args)
+        _build(build_dir, "directional_cli" if features.build_cli else "directional")
+        _install(build_dir)
 
 
 class BuildTutorials(Command):
     description = "Build the Directional tutorial suite or a selected tutorial subset"
     user_options = [
         ("build-dir=", None, "Build directory"),
-        ("tutorial=", None, "Tutorial prefix like 501 or full directory name; comma-separated lists are supported"),
-        ("enable-gmp", None, "Enable GMP support if found"),
-        ("disable-gmp", None, "Disable GMP support"),
-        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
-        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
-        ("enable-suitesparse", None, "Enable SuiteSparse support"),
-        ("disable-suitesparse", None, "Disable SuiteSparse support"),
-        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
-        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
+        (
+            "tutorial=",
+            None,
+            "Tutorial prefix or full directory name; comma-separated selections are supported",
+        ),
+        *COMMON_FEATURE_USER_OPTIONS,
     ]
-    boolean_options = ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
+    boolean_options = COMMON_FEATURE_BOOLEAN_OPTIONS
 
     def initialize_options(self) -> None:
         self.build_dir = None
         self.tutorial = None
-        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
-        self.disable_gmp = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
-        self.disable_metis_suitesparse = False
-        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
-        self.disable_suitesparse = False
+        _initialize_feature_options(self)
 
     def finalize_options(self) -> None:
         if self.tutorial is not None:
-            self.tutorial = self.tutorial.strip()
-            if not self.tutorial:
-                self.tutorial = None
-        if self.disable_gmp:
-            self.enable_gmp = False
-        if self.disable_suitesparse:
-            self.enable_suitesparse = False
-        if self.disable_metis_suitesparse:
-            self.enable_metis_suitesparse = False
+            self.tutorial = self.tutorial.strip() or None
+
+        # Tutorials never package the native CLI, so keep this command focused
+        # on tutorial executables while reusing the common backend resolver.
+        self.build_cli = False
+        self.no_build_cli = True
+        _finalize_feature_options(self)
+
         if self.build_dir is None:
-            if self.tutorial is None:
-                self.build_dir = str(_build_dir("tutorials"))
-            else:
-                self.build_dir = str(_build_dir(f"tutorials-{_safe_build_name(self.tutorial)}"))
+            suffix = "tutorials"
+            self.build_dir = str(_build_dir(suffix))
 
     def run(self) -> None:
         build_dir = Path(self.build_dir)
+        features = _features_from_command(self)
         selected_tutorials = self.tutorial or "ALL"
+
         configure_args = _cmake_args(
             build_dir / "install",
             [
+                *features.cmake_args(build_python=False),
                 "-DBUILD_SHARED_LIBS=OFF",
                 "-DBUILD_TUTORIALS=ON",
-                "-DBUILD_PYTHON=OFF",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
+                "-DDIRECTIONAL_BUILD_CLI=OFF",
                 f"-DDIRECTIONAL_TUTORIALS={selected_tutorials}",
-                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
-                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
-                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
-        _configure_and_build(build_dir, configure_args)
+
+        _configure(build_dir, configure_args)
+        _build(build_dir)
+        _install(build_dir)
 
 
 class CMakeBuildExt(build_ext):
-    user_options = build_ext.user_options + [
-        ("enable-gmp", None, "Enable GMP support if found"),
-        ("disable-gmp", None, "Disable GMP support"),
-        ("auto-install-gmp", None, "Attempt to auto-install GMP on supported platforms"),
-        ("no-auto-install-gmp", None, "Disable GMP auto-install attempts"),
-        ("enable-suitesparse", None, "Enable SuiteSparse support"),
-        ("disable-suitesparse", None, "Disable SuiteSparse support"),
-        ("enable-metis-suitesparse", None, "Enable METIS support in SuiteSparse"),
-        ("disable-metis-suitesparse", None, "Disable METIS support in SuiteSparse"),
-    ]
-    boolean_options = build_ext.boolean_options + ["enable-gmp", "disable-gmp", "auto-install-gmp", "no-auto-install-gmp", "enable-suitesparse", "disable-suitesparse", "enable-metis-suitesparse", "disable-metis-suitesparse"]
+    user_options = [*build_ext.user_options, *FEATURE_USER_OPTIONS]
+    boolean_options = [*build_ext.boolean_options, *FEATURE_BOOLEAN_OPTIONS]
 
     def initialize_options(self) -> None:
         super().initialize_options()
-        self.enable_gmp = _env_bool("DIRECTIONAL_DIRECTIONAL_ENABLE_GMP", True)
-        self.disable_gmp = False
-        self.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", True)
-        self.disable_suitesparse = False
-        self.enable_metis_suitesparse = _env_bool("DIRECTIONAL_ENABLE_METIS_SUITESPARSE", False)
-        self.disable_metis_suitesparse = False
+        _initialize_feature_options(self)
 
     def finalize_options(self) -> None:
         super().finalize_options()
-        if self.disable_gmp:
-            self.enable_gmp = False
-        if self.disable_suitesparse:
-            self.enable_suitesparse = False
-        if self.disable_metis_suitesparse:
-            self.enable_metis_suitesparse = False
+        _finalize_feature_options(self)
 
     def build_extension(self, ext: Extension) -> None:
         if not isinstance(ext, CMakeExtension):
@@ -427,23 +453,26 @@ class CMakeBuildExt(build_ext):
                 text=True,
             ).strip()
         except subprocess.CalledProcessError as exc:
-            raise RuntimeError("pybind11 is required to build the Python extension") from exc
+            raise RuntimeError(
+                "pybind11 is required to build the Python extension"
+            ) from exc
 
+        features = _features_from_command(self)
         configure_args = _cmake_args(
             install_dir,
             [
+                *features.cmake_args(build_python=True),
                 "-DBUILD_TUTORIALS=OFF",
-                "-DBUILD_PYTHON=ON",
-                "-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE",
                 f"-Dpybind11_DIR={pybind11_dir}",
-                f"-DDIRECTIONAL_ENABLE_GMP={_as_cmake_bool(bool(self.enable_gmp))}",
-                f"-DDIRECTIONAL_ENABLE_SUITESPARSE={_as_cmake_bool(bool(self.enable_suitesparse))}",
-                f"-DDIRECTIONAL_ENABLE_METIS_SUITESPARSE={_as_cmake_bool(bool(self.enable_metis_suitesparse))}",
             ],
         )
 
-        _configure_and_build(build_temp, configure_args, build_target="_directional")
-        _run(["cmake", "--install", str(build_temp), "--config", "Release"])
+        _configure(build_temp, configure_args)
+        targets = ["_directional"]
+        if features.build_cli:
+            targets.append("directional_cli")
+        _build(build_temp, *targets)
+        _install(build_temp)
 
         installed_pkg_dir = install_dir / "directional"
         built_module = next(installed_pkg_dir.glob("_directional*.pyd"), None)
@@ -453,23 +482,34 @@ class CMakeBuildExt(build_ext):
             raise RuntimeError("Built Python module not found after CMake install")
 
         shutil.copy2(built_module, ext_fullpath)
+        shutil.copy2(
+            ROOT / "python" / "directional" / "__init__.py",
+            extdir / "__init__.py",
+        )
 
-        package_src = ROOT / "python" / "directional" / "__init__.py"
-        target_pkg_dir = extdir
-        shutil.copy2(package_src, target_pkg_dir / "__init__.py")
-
-        _copy_runtime_dlls(target_pkg_dir, _runtime_dll_dirs(self, build_temp, install_dir, installed_pkg_dir))
+        if features.build_cli:
+            installed_bin_dir = install_dir / "bin"
+            if not installed_bin_dir.is_dir():
+                raise RuntimeError(
+                    "Native CLI was requested, but CMake did not install a bin directory"
+                )
+            packaged_bin_dir = extdir / "bin"
+            packaged_bin_dir.mkdir(parents=True, exist_ok=True)
+            for runtime_file in installed_bin_dir.iterdir():
+                if runtime_file.is_file():
+                    shutil.copy2(runtime_file, packaged_bin_dir / runtime_file.name)
 
 
 setup(
     name="directional",
     version="0.1.0",
-    description="Directional field processing library with standalone, tutorial, and Python wheel builds",
+    description="Directional field processing library with standalone, tutorial, native CLI, and Python wheel builds",
     packages=find_packages(where="python"),
     package_dir={"": "python"},
-    package_data={"directional": ["*.dll", "*.dylib", "*.so"]},
+    package_data={"directional": ["*.dll", "*.dylib", "*.so", "bin/*"]},
     include_package_data=True,
     ext_modules=[CMakeExtension("directional._directional", sourcedir=".")],
+    entry_points={"console_scripts": ["directional=directional.cli:main"]},
     cmdclass={
         "build_standalone": BuildStandalone,
         "standalone": BuildStandalone,

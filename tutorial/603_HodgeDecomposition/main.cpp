@@ -1,15 +1,15 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOFF.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/directional_viewer.h>
-#include <directional/cochain_complex.h>
-#include <directional/gradient_matrices.h>
-#include <directional/curl_matrices.h>
-#include <directional/mass_matrices.h>
-#include <directional/extrinsic_intrinsic_matrices.h>
-#include <directional/PCFaceTangentBundle.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/operators/CochainComplex.h>
+#include <directional/operators/GradientMatrices.h>
+#include <directional/operators/CurlMatrices.h>
+#include <directional/operators/MassMatrices.h>
+#include <directional/operators/ExtrinsicIntrinsicMatrices.h>
+#include <directional/fields/PCFaceTangentBundle.h>
 
 directional::TriMesh mesh;
 directional::PCFaceTangentBundle ftb;

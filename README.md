@@ -7,324 +7,497 @@ This fork now supports two build workflows:
 - pure CMake for native C++ consumers
 - Python packaging builds via `setup.py` and `pip`
 
-## What This Repository Builds
+## Build outputs
 
-The top-level build supports three modes:
+The top-level project can build:
 
-1. `directional` standalone shared library
-2. tutorial executables
-3. Python package / wheel exposing the headless remeshing API
+1. `directional` — shared C++ library
+2. `_directional` — Python extension module
+3. `directional_cli` — optional native executable installed as `directional`
+4. `directional_cli_backend` — shared C++ command implementation used by both CLIs
 
-Key build toggles:
+The Python console script and native executable intentionally expose the same commands and option parsing through the C++ CLI backend.
 
-- `BUILD_TUTORIALS=ON|OFF`
-- `BUILD_PYTHON=ON|OFF`
-- `BUILD_SHARED_LIBS=ON|OFF`
-- `DIRECTIONAL_ENABLE_GMP=ON|OFF`
+## Requirements
 
-## Prerequisites
+### Native build
 
-### Native build prerequisites
+- CMake 3.21 or newer
+- C++20-capable compiler
+- Git submodules initialized, including Eigen
+- Python only when building Python bindings or invoking `setup.py`
 
-- CMake 3.15+
-- A C++20-capable compiler
-- Python is only required if you are building the Python bindings or using `setup.py`
+### Python build
 
-### Python build prerequisites
-
-- Python 3.13 was verified in this repo
-- `setuptools`
-- `wheel`
-- `pybind11`
-
-Install the Python-side build requirements with:
+Python 3.13 is verified in this repository. Install the build dependencies with:
 
 ```powershell
 python -m pip install setuptools wheel pybind11
 ```
 
-If you want the docs/site Python dependencies instead:
+For PEP 517 builds, install any additional requirements declared by the project build configuration or disable build isolation when the active environment already contains them.
+
+## Dependencies
+
+### Eigen
+
+Eigen is required and included as a repository submodule.
 
 ```powershell
-python -m pip install -r requirements.txt
+git submodule update --init --recursive
 ```
 
-## Pure CMake Build
+### GMP
 
-Common GMP flags for all CMake examples:
+GMP is optional and enables the preferred exact-arithmetic implementation.
+
+- CMake option: `DIRECTIONAL_ENABLE_GMP`
+- Default: `ON`
+- MSVC builds can auto-install it when it is not already available
+- Other platforms should provide GMP and GMPXX through the system or toolchain
+
+When GMP cannot be found, CMake emits a warning and continues without GMP.
+
+### Integration solver backends
+
+DirectionalReMesher supports three optional integration solver backends:
+
+- Intel oneMKL PARDISO
+- NVIDIA cuDSS
+- SuiteSparse / UMFPACK
+
+Only one backend is enabled in a build. If more than one is requested, both CMake and `setup.py` emit a warning and select the first available request in this fixed order:
+
+```text
+PARDISO > CUDSS > SUITESPARSE
+```
+
+Relevant CMake options:
+
+```text
+DIRECTIONAL_ENABLE_PARDISO=ON|OFF
+DIRECTIONAL_ENABLE_CUDSS=ON|OFF
+DIRECTIONAL_ENABLE_SUITESPARSE=ON|OFF
+CUDSS_ROOT=<path>
+```
+
+CMake defaults are:
+
+```text
+PARDISO=OFF
+CUDSS=OFF
+SUITESPARSE=ON
+```
+
+The current `setup.py` defaults request all three backends and therefore resolve to PARDISO unless overridden.
+
+#### PARDISO
+
+PARDISO uses Intel oneMKL and is the highest-priority backend. On supported MSVC builds, the dependency logic can install oneMKL automatically. Required runtime modules are copied beside the native library, native CLI, and Python extension during build and install.
+
+#### cuDSS
+
+cuDSS requires an NVIDIA cuDSS installation and the imported CMake target `CUDSS::cudss`. Set `CUDSS_ROOT` when automatic discovery is insufficient.
+
+Example:
 
 ```powershell
--DDIRECTIONAL_ENABLE_GMP=ON|OFF
+cmake -S . -B build\cudss `
+  -DDIRECTIONAL_ENABLE_PARDISO=OFF `
+  -DDIRECTIONAL_ENABLE_CUDSS=ON `
+  -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF `
+  -DCUDSS_ROOT="C:\Program Files\NVIDIA cuDSS\v0.8"
 ```
 
-Examples:
+#### SuiteSparse
 
-- GMP enabled: `-DDIRECTIONAL_ENABLE_GMP=ON`
-- non-GMP build: `-DDIRECTIONAL_ENABLE_GMP=OFF`
+SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install it when necessary. Other platforms should provide a usable SuiteSparse package or CMake configuration.
 
-### 1. Build and install the standalone library
+## CMake options
 
-This is the native C++ path if you want a reusable installed package.
+| Option | Default | Purpose |
+|---|---:|---|
+| `BUILD_PYTHON` | `OFF` | Build the Python extension |
+| `DIRECTIONAL_BUILD_CLI` | `OFF` | Build the native CLI executable |
+| `DIRECTIONAL_ENABLE_GMP` | `ON` | Enable GMP exact arithmetic |
+| `DIRECTIONAL_ENABLE_SUITESPARSE` | `ON` | Request SuiteSparse |
+| `DIRECTIONAL_ENABLE_PARDISO` | `OFF` | Request Intel oneMKL PARDISO |
+| `DIRECTIONAL_ENABLE_CUDSS` | `OFF` | Request NVIDIA cuDSS |
+| `CUDSS_ROOT` | empty | cuDSS installation root |
+| `CMAKE_INSTALL_PREFIX` | platform default | Installation destination |
+
+## Native CMake builds
+
+### Shared library with SuiteSparse
 
 ```powershell
 cmake -S . -B build\standalone `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install `
-  -DBUILD_TUTORIALS=OFF `
+  -DCMAKE_INSTALL_PREFIX="$PWD\build\standalone\install" `
   -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_BUILD_CLI=OFF `
   -DDIRECTIONAL_ENABLE_GMP=ON `
+  -DDIRECTIONAL_ENABLE_PARDISO=OFF `
+  -DDIRECTIONAL_ENABLE_CUDSS=OFF `
+  -DDIRECTIONAL_ENABLE_SUITESPARSE=ON
 
 cmake --build build\standalone --config Release --target directional
 cmake --install build\standalone --config Release
 ```
 
-Artifacts:
+### Shared library with PARDISO
 
-- shared library under `build\standalone\Release\` during build
-- installed library under `build\standalone\install\bin` and `build\standalone\install\lib`
-- installed headers under `build\standalone\install\include`
-- CMake package files under `build\standalone\install\lib\cmake\Directional`
+```powershell
+cmake -S . -B build\pardiso `
+  -DCMAKE_INSTALL_PREFIX="$PWD\build\pardiso\install" `
+  -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_ENABLE_PARDISO=ON `
+  -DDIRECTIONAL_ENABLE_CUDSS=OFF `
+  -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
 
-### 2. Consume the installed library from another CMake project
+cmake --build build\pardiso --config Release --target directional
+cmake --install build\pardiso --config Release
+```
+
+### Native CLI
+
+```powershell
+cmake -S . -B build\native-cli `
+  -DCMAKE_INSTALL_PREFIX="$PWD\build\native-cli-release" `
+  -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_BUILD_CLI=ON `
+  -DDIRECTIONAL_ENABLE_PARDISO=ON
+
+cmake --build build\native-cli --config Release --target directional_cli
+cmake --install build\native-cli --config Release
+```
+
+The installed executable is normally:
+
+```text
+<install-prefix>/bin/directional.exe
+```
+
+Run:
+
+```powershell
+directional --help
+directional info
+```
+
+### Python extension through CMake
+
+```powershell
+python -m pip install pybind11
+$pybind11Dir = python -m pybind11 --cmakedir
+
+cmake -S . -B build\python `
+  -DCMAKE_INSTALL_PREFIX="$PWD\build\python\install" `
+  -DBUILD_PYTHON=ON `
+  -DDIRECTIONAL_BUILD_CLI=OFF `
+  -Dpybind11_DIR="$pybind11Dir" `
+  -DDIRECTIONAL_ENABLE_PARDISO=ON
+
+cmake --build build\python --config Release --target _directional
+cmake --install build\python --config Release
+```
+
+The extension and Python package files are installed beneath:
+
+```text
+build/python/install/directional/
+```
+
+### Consume the installed C++ package
 
 ```cmake
 find_package(Directional CONFIG REQUIRED)
 target_link_libraries(your_target PRIVATE Directional::directional)
 ```
 
-If Directional is installed in a nonstandard location, point CMake at it:
+For a nonstandard installation prefix:
 
 ```powershell
-cmake -S . -B build -DCMAKE_PREFIX_PATH=D:\path\to\Directional\build\standalone\install
+cmake -S . -B build `
+  -DCMAKE_PREFIX_PATH="D:\path\to\DirectionalReMesher\build\standalone\install"
 ```
 
-### 3. Build the tutorials with pure CMake
+## `setup.py` builds
 
-```powershell
-cmake -S . -B build\tutorials `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX=%CD%\build\tutorials\install `
-  -DBUILD_SHARED_LIBS=OFF `
-  -DBUILD_TUTORIALS=ON `
-  -DBUILD_PYTHON=OFF `
-  -DDIRECTIONAL_ENABLE_GMP=ON `
+`setup.py` forwards build features to CMake and uses the same solver-selection priority.
 
-cmake --build build\tutorials --config Release
+### Feature flags
+
+```text
+--enable-gmp / --disable-gmp
+--enable-suitesparse / --disable-suitesparse
+--enable-pardiso / --disable-pardiso
+--enable-cudss / --disable-cudss
+--build-cli / --no-build-cli
 ```
 
-Tutorial binaries are written under:
-
-- `tutorial\bin\Release\`
-
-`BUILD_SHARED_LIBS=OFF` is the recommended tutorial setting in this fork because it avoids Windows link issues in the bundled viewer stack.
-
-To build only specific tutorials, pass `DIRECTIONAL_TUTORIALS` as a semicolon-separated or comma-separated list of tutorial prefixes or full directory names:
-
-```powershell
-cmake -S . -B build\tutorials-single `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DBUILD_SHARED_LIBS=OFF `
-  -DBUILD_TUTORIALS=ON `
-  -DBUILD_PYTHON=OFF `
-  -DDIRECTIONAL_TUTORIALS=501 `
-  -DDIRECTIONAL_ENABLE_GMP=ON `
-
-cmake --build build\tutorials-single --config Release
-```
-
-Example for multiple tutorials:
-
-```powershell
-cmake -S . -B build\tutorials-pair -DBUILD_SHARED_LIBS=OFF -DBUILD_TUTORIALS=ON -DBUILD_PYTHON=OFF -DDIRECTIONAL_TUTORIALS=501,505
-```
-
-### 4. Build the Python extension with pure CMake
-
-This path is useful if you want CMake to produce the Python module directly instead of going through `setup.py`.
-
-First, make sure `pybind11` is installed and discoverable:
-
-```powershell
-python -m pip install pybind11
-python -m pybind11 --cmakedir
-```
-
-Then configure:
-
-```powershell
-cmake -S . -B build\python `
-  -DCMAKE_BUILD_TYPE=Release `
-  -DCMAKE_INSTALL_PREFIX=%CD%\build\python\install `
-  -DBUILD_TUTORIALS=OFF `
-  -DBUILD_PYTHON=ON `
-  -Dpybind11_DIR="C:\path\reported\by\pybind11\cmakedir" `
-  -DDIRECTIONAL_ENABLE_GMP=ON `
-
-cmake --build build\python --config Release --target _directional
-cmake --install build\python --config Release
-```
-
-Artifacts are installed under:
-
-- `build\python\install\directional\`
-
-That folder will contain:
-
-- `_directional*.pyd` or `_directional*.so`
-- `__init__.py`
-
-## Python `setup.py` Build
-
-`setup.py` wraps the CMake build so you do not have to pass the common configuration manually.
-
-Supported GMP flags:
-
-- `--enable-gmp`
-- `--disable-gmp`
-- `--auto-install-gmp`
-- `--no-auto-install-gmp`
-
-### 1. Build the standalone shared library
+### Standalone library
 
 ```powershell
 python setup.py standalone
 ```
 
-Default output locations:
+Default paths:
 
-- build tree: `build\standalone\`
-- install tree: `build\standalone\install\`
-
-Examples:
-
-```powershell
-python setup.py standalone --enable-gmp --auto-install-gmp
-python setup.py standalone --disable-gmp --no-auto-install-gmp
+```text
+build tree:   build/standalone/
+install tree: build/standalone/install/
 ```
 
-### 2. Build the tutorial suite
+Build the library and native CLI together:
 
 ```powershell
-python setup.py tutorials
+python setup.py standalone --build-cli
 ```
 
-Default output location:
-
-- build tree: `build\tutorials\`
-
-Tutorial executables are emitted into:
-
-- `tutorial\bin\Release\`
-
-To build only specific tutorials:
+Select a solver explicitly:
 
 ```powershell
-python setup.py tutorials --tutorial=501
+python setup.py standalone `
+  --enable-pardiso `
+  --disable-cudss `
+  --disable-suitesparse `
+  --build-cli
 ```
 
-Or multiple tutorials:
+### Python extension and wheel
+
+Build the extension:
 
 ```powershell
-python setup.py tutorials --tutorial=501,505
+python setup.py build_ext
 ```
 
-With explicit GMP selection:
-
-```powershell
-python setup.py tutorials --tutorial=501 --disable-gmp --no-auto-install-gmp
-```
-
-When `--tutorial` is provided, `setup.py` uses a tutorial-specific build directory by default so single-target builds do not reuse the full-suite build tree. Full names like `501_SeamlessIntegration` still work if you want exact naming.
-
-### 3. Build a Python wheel
+Build a wheel:
 
 ```powershell
 python setup.py bdist_wheel
 ```
 
-`bdist_wheel` goes through `build_ext`, so GMP flags must be passed to `build_ext` in the same invocation:
+Pass feature flags through `build_ext` when creating a wheel:
 
 ```powershell
-python setup.py build_ext --disable-gmp bdist_wheel
-python setup.py build_ext --enable-gmp --auto-install-gmp bdist_wheel
+python setup.py build_ext `
+  --enable-pardiso `
+  --disable-cudss `
+  --disable-suitesparse `
+  bdist_wheel
 ```
 
-Wheel output:
-
-- `dist\directional-<version>-<python>-<abi>-<platform>.whl`
-
-Example verified in this repo:
-
-- `dist\directional-0.1.0-cp313-cp313-win_amd64.whl`
-
-### 4. Install the built wheel
+Build and package the native executable with the wheel:
 
 ```powershell
-python -m pip install dist\directional-0.1.0-cp313-cp313-win_amd64.whl
+python setup.py build_ext --build-cli bdist_wheel
 ```
 
-Or reinstall during local iteration:
+When enabled, the installed native CLI and its runtime dependency closure are packaged beneath:
 
-```powershell
-python -m pip install --force-reinstall dist\directional-0.1.0-cp313-cp313-win_amd64.whl
+```text
+directional/bin/
 ```
 
-## Python `pip` Build
+The Python console script remains available as `directional` and forwards commands to the same C++ backend through the extension module.
 
-`pip` and other PEP 517 frontends can now control the same GMP toggles through `--config-settings`.
+## PEP 517 and `pip`
 
-Supported keys:
+The custom build backend accepts short and namespaced configuration keys.
 
-- `-Cenable-gmp=1|0`
-- `-Cauto-install-gmp=1|0`
+| Short key | Namespaced key | Environment variable |
+|---|---|---|
+| `enable-gmp` | `directional.enable-gmp` | `DIRECTIONAL_ENABLE_GMP` |
+| `enable-suitesparse` | `directional.enable-suitesparse` | `DIRECTIONAL_ENABLE_SUITESPARSE` |
+| `enable-pardiso` | `directional.enable-pardiso` | `DIRECTIONAL_ENABLE_PARDISO` |
+| `enable-cudss` | `directional.enable-cudss` | `DIRECTIONAL_ENABLE_CUDSS` |
+| `build-cli` | `directional.build-cli` | `DIRECTIONAL_BUILD_CLI` |
 
-Examples:
+Boolean values accept:
 
-```powershell
-python -m pip install . --no-build-isolation -Cenable-gmp=1 -Cauto-install-gmp=1
-python -m pip install . --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
-python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
+```text
+1, 0, on, off, true, false, yes, no
 ```
 
-Namespaced aliases are also accepted if you prefer explicit keys:
+### Basic install
 
 ```powershell
-python -m pip install . --no-build-isolation -Cdirectional.enable-gmp=0 -Cdirectional.auto-install-gmp=0
-```
-
-Environment-variable fallback also works:
-
-```powershell
-$env:DIRECTIONAL_DIRECTIONAL_ENABLE_GMP = "0"
 python -m pip install . --no-build-isolation
 ```
 
+### Build a PARDISO wheel
+
+```powershell
+python -m pip wheel . `
+  --no-deps `
+  --no-build-isolation `
+  -Cdirectional.enable-pardiso=true `
+  -Cdirectional.enable-cudss=false `
+  -Cdirectional.enable-suitesparse=false
+```
+
+### Build a wheel containing the native CLI
+
+```powershell
+python -m pip wheel . `
+  --no-deps `
+  --no-build-isolation `
+  -Cdirectional.build-cli=true
+```
+
+### Environment-variable configuration
+
+```powershell
+$env:DIRECTIONAL_ENABLE_GMP = "1"
+$env:DIRECTIONAL_ENABLE_PARDISO = "1"
+$env:DIRECTIONAL_ENABLE_CUDSS = "0"
+$env:DIRECTIONAL_ENABLE_SUITESPARSE = "0"
+$env:DIRECTIONAL_BUILD_CLI = "1"
+
+python -m pip wheel . --no-build-isolation
+```
+
+The legacy GMP environment variable `DIRECTIONAL_DIRECTIONAL_ENABLE_GMP` remains accepted as an alias.
+
+## Command-line interface
+
+Both the Python command and native executable support the same command set:
+
+```text
+directional info
+directional cross-field <input.obj|input.off> <output-field> [options]
+directional convert-field <input-field> <output-field> [options]
+directional remesh <input.obj|input.off> <output.obj|output.off> [options]
+directional --version
+directional --help
+```
+
+The Python module form is also supported:
+
+```powershell
+python -m directional --help
+```
+
+### Field formats
+
+| Format | Extensions | Description |
+|---|---|---|
+| `crossfield` | `.vec`, `.txt` | Alpha and beta vectors; six values per row |
+| `rosy` | `.rosy` | Count/degree header followed by one alpha vector per face |
+| `rawfield` | `.rawfield` | Degree/count header followed by `3 × degree` values per face |
+
+### Extract a cross field
+
+```powershell
+directional cross-field input.obj output.rosy `
+  --output-format rosy `
+  --singularities output.sings
+```
+
+Options:
+
+```text
+--output-format <auto|crossfield|rosy|rawfield>
+--no-normalize-directions
+--no-normalize
+--no-matching
+--singularities <path>
+--diagnostics-prefix <prefix>
+--verbose
+```
+
+### Convert a field
+
+```powershell
+directional convert-field input.rosy output.txt `
+  --input-format rosy `
+  --output-format crossfield `
+  --mesh input.obj
+```
+
+Options:
+
+```text
+--input-format <auto|crossfield|rosy|rawfield>
+--output-format <auto|crossfield|rosy|rawfield>
+--mesh <input.obj|input.off>
+--degree <2|4>
+```
+
+The mesh is required when conversion must reconstruct beta directions from face normals.
+
+### Remesh
+
+Compute a cross field automatically and remesh:
+
+```powershell
+directional remesh input.obj output.obj --length-ratio 0.02
+```
+
+Use an existing field:
+
+```powershell
+directional remesh input.obj output.off `
+  --field input.rosy `
+  --field-format rosy `
+  --length-ratio 0.02
+```
+
+Options:
+
+```text
+--field <path>
+--field-format <auto|crossfield|rosy|rawfield>
+--raw-field <path>
+--primary-directions <path>
+--secondary-directions <path>
+--length-ratio <value>
+--no-integral-seamless
+--round-seams
+--no-normalize-directions
+--diagnostics-prefix <prefix>
+--verbose
+```
+
+Without `--verbose`, long-running remeshing stages use in-place top-level progress reporting. With `--verbose`, detailed phase timing and solver diagnostics are printed as regular log lines.
+
 ## Python API
 
-The wheel exposes a small headless remeshing API:
+The extension exposes the headless remeshing API, including:
 
-- `directional.RemeshOptions`
-- `directional.RemeshResult`
-- `directional.remesh_from_cross_field(...)`
-- `directional.remesh_from_raw_cross_field(...)`
+```text
+directional.RemeshOptions
+directional.RemeshResult
+directional.remesh_from_cross_field(...)
+directional.remesh_from_raw_cross_field(...)
+```
 
-Example:
+Minimal example:
 
 ```python
 import numpy as np
 import directional
 
-V = np.array([
-    [0.0, 0.0, 0.0],
-    [1.0, 0.0, 0.0],
-    [0.0, 1.0, 0.0],
-], dtype=np.float64)
+vertices = np.array(
+    [
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+    ],
+    dtype=np.float64,
+)
+faces = np.array([[0, 1, 2]], dtype=np.int32)
+primary_directions = np.array([[1.0, 0.0, 0.0]], dtype=np.float64)
 
-F = np.array([[0, 1, 2]], dtype=np.int32)
-PD1 = np.array([[1.0, 0.0, 0.0]], dtype=np.float64)
+options = directional.RemeshOptions()
+result = directional.remesh_from_cross_field(
+    vertices,
+    faces,
+    primary_directions,
+    options,
+)
 
-opts = directional.RemeshOptions()
-result = directional.remesh_from_cross_field(V, F, PD1, opts)
 print(result.success)
 ```
 
@@ -353,36 +526,130 @@ Use `pip` when:
 - The Python wheel is platform-specific because it contains a compiled extension module.
 - Tutorial and Python builds depend on the same top-level CMake project; `setup.py` is only a wrapper over that build.
 
-## Verified Commands
+## Tutorials
 
-The following commands were verified in this fork:
+Build all tutorials:
 
 ```powershell
-python setup.py standalone
 python setup.py tutorials
-python setup.py build_ext --disable-gmp bdist_wheel
-python -m pip wheel . --no-deps --no-build-isolation -Cenable-gmp=0 -Cauto-install-gmp=0
 ```
 
-And for pure CMake:
+Build a selected tutorial:
 
 ```powershell
-cmake -S . -B build\standalone -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%CD%\build\standalone\install -DBUILD_TUTORIALS=OFF -DBUILD_PYTHON=OFF
-cmake --build build\standalone --config Release --target directional
-cmake --install build\standalone --config Release
+python setup.py tutorials --tutorial=501
 ```
+
+Build several selected tutorials:
+
+```powershell
+python setup.py tutorials --tutorial=501,502,601
+```
+
+Custom build directory:
+
+```powershell
+python setup.py tutorials `
+  --tutorial=501 `
+  --build-dir=build\tutorial-501
+```
+
+Solver options are also supported:
+
+```powershell
+python setup.py tutorials `
+  --enable-pardiso `
+  --disable-cudss `
+  --disable-suitesparse
+```
+
+### Tutorial CMake parameters
+
+The tutorial command configures:
+
+```text
+BUILD_SHARED_LIBS=OFF
+BUILD_TUTORIALS=ON
+BUILD_PYTHON=OFF
+DIRECTIONAL_BUILD_CLI=OFF
+DIRECTIONAL_TUTORIALS=<selection or ALL>
+```
+
+## Tests
+
+Install test dependencies and run the Python tests:
+
+```powershell
+python -m pip install -e .[test] --no-build-isolation
+python -m pytest
+```
+
+For native validation, configure and build the desired CMake targets, then run any CTest targets included by the current source tree:
+
+```powershell
+ctest --test-dir build\standalone -C Release --output-on-failure
+```
+
+## Installation layout
+
+A native install typically contains:
+
+```text
+bin/                       directional executable and runtime DLLs
+lib/                       directional import/static artifacts
+include/                   Directional and Eigen headers
+lib/cmake/Directional/     exported CMake package
+```
+
+A Python install contains:
+
+```text
+directional/
+  __init__.py
+  _directional*.pyd|so
+  bin/                     optional native CLI and runtime files
+```
+
+## Recommended workflows
+
+Use direct CMake when:
+
+- embedding DirectionalReMesher into another C++ project
+- producing an installed `find_package`-compatible package
+- controlling dependency discovery and runtime deployment directly
+
+Use `setup.py` when:
+
+- iterating locally on the Python extension
+- building the standalone library through a Python command
+- building the optional native CLI alongside the extension
+
+Use PEP 517 / `pip` when:
+
+- producing standard wheels
+- integrating with build automation
+- controlling solver and CLI options through `--config-settings`
+
+## Notes
+
+- Only one integration solver backend is compiled into a build.
+- The selection priority is always PARDISO, then cuDSS, then SuiteSparse.
+- The C++ package exports `Directional::directional`.
+- Python wheels are platform-specific because they contain a compiled extension.
+- PARDISO builds deploy the oneMKL runtime modules needed by `mkl_rt` beside installed binaries.
+- The native CLI and Python CLI share the same C++ implementation; command behavior should remain consistent between them.
 
 ## Citation
 
-Original source: https://github.com/avaxman/Directional
+Original source: [avaxman/Directional](https://github.com/avaxman/Directional)
 
-This project is based on the Directional library by Amir Vaxman and others. If you use this library in your research, please cite the original work:
+If you use this project in research, cite the original Directional work:
 
 ```bibtex
 @misc{Directional,
-author       = {Amir Vaxman and others},
-title        = {Directional: A library for Directional Field Synthesis, Design, and Processing},
-doi          = {10.5281/zenodo.3338174},
-url          = {https://doi.org/10.5281/zenodo.3338174}
+  author = {Amir Vaxman and others},
+  title = {Directional: A library for Directional Field Synthesis, Design, and Processing},
+  doi = {10.5281/zenodo.3338174},
+  url = {https://doi.org/10.5281/zenodo.3338174}
 }
 ```

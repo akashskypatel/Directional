@@ -1,14 +1,14 @@
 #include <numbers>
-#include <directional/readOBJ.h>
-#include <directional/readDMAT.h>
-#include <directional/TriMesh.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
-#include <directional/principal_matching.h>
-#include <directional/index_prescription.h>
-#include <directional/power_field.h>
-#include <directional/directional_viewer.h>
-#include <directional/power_to_raw.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/io/ReadDMAT.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/fields/IndexPrescription.h>
+#include <directional/fields/PowerField.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/fields/PowerToRaw.h>
 
 directional::TriMesh mesh;
 directional::PCFaceTangentBundle ftb;

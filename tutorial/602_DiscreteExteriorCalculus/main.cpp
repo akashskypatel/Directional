@@ -1,13 +1,12 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOBJ.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/directional_viewer.h>
-#include <directional/discrete_exterior_calculus.h>
-//#include <directional/poly_to_constant_subdivision.h>
-#include <directional/cochain_complex.h>
-#include <directional/mass_matrices.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/operators/DiscreteExteriorCalculus.h>
+#include <directional/operators/CochainComplex.h>
+#include <directional/operators/MassMatrices.h>
 
 
 directional::TriMesh mesh;

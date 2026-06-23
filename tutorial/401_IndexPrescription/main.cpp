@@ -1,15 +1,15 @@
 #include <iostream>
 #include <numbers>
 #include <Eigen/Core>
-#include <directional/readOBJ.h>
-#include <directional/TriMesh.h>
-#include <directional/CartesianField.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/index_prescription.h>
-#include <directional/rotation_to_raw.h>
-#include <directional/write_raw_field.h>
-#include <directional/read_singularities.h>
-#include <directional/directional_viewer.h>
+#include <directional/io/ReadOBJ.h>
+#include <directional/core/TriMesh.h>
+#include <directional/core/CartesianField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/fields/IndexPrescription.h>
+#include <directional/fields/RotationToRaw.h>
+#include <directional/io/WriteRawField.h>
+#include <directional/io/ReadSingularities.h>
+#include <directional/visualization/DirectionalViewer.h>
 
 
 directional::TriMesh mesh;

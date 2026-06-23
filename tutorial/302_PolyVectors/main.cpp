@@ -1,15 +1,16 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOFF.h>
-#include <directional/write_raw_field.h>
-#include <directional/polyvector_to_raw.h>
-#include <directional/raw_to_polyvector.h>
-#include <directional/polyvector_field.h>
-#include <directional/principal_matching.h>
-#include <directional/write_raw_field.h>
-#include <directional/directional_viewer.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/io/WriteRawField.h>
+#include <directional/fields/PolyVectorToRaw.h>
+#include <directional/fields/RawToPolyVector.h>
+#include <directional/fields/PolyVectorField.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/io/WriteRawField.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/core/TriMesh.h>
 
 Eigen::VectorXi constFaces;
 directional::TriMesh mesh;

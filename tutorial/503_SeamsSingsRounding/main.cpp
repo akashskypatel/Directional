@@ -1,18 +1,19 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/readOFF.h>
-#include <directional/TriMesh.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
-#include <directional/read_raw_field.h>
-#include <directional/write_raw_field.h>
-#include <directional/curl_matching.h>
-#include <directional/combing.h>
-#include <directional/setup_integration.h>
-#include <directional/integrate.h>
-#include <directional/branched_isolines.h>
-#include <directional/directional_viewer.h>
-#include <directional/cut_mesh_with_singularities.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/io/ReadRawField.h>
+#include <directional/io/WriteRawField.h>
+#include <directional/fields/CurlMatching.h>
+#include <directional/fields/FieldCombing.h>
+#include <directional/integration/SetupIntegration.h>
+#include <directional/integration/Integrate.h>
+#include <directional/geometry/BranchedIsolines.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/geometry/CutMesh.h>
+#include <directional/integration/IntegrationData.h>
 
 
 int N;

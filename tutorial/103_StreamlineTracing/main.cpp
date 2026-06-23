@@ -1,11 +1,11 @@
-#include <directional/readOFF.h>
-#include <directional/streamlines.h>
-#include <directional/power_field.h>
-#include <directional/power_to_raw.h>
-#include <directional/directional_viewer.h>
-#include <directional/TriMesh.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/geometry/Streamlines.h>
+#include <directional/fields/PowerField.h>
+#include <directional/fields/PowerToRaw.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
 
 directional::TriMesh mesh;
 directional::PCFaceTangentBundle ftb;

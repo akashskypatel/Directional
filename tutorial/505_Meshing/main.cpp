@@ -1,18 +1,19 @@
 #include <iostream>
 #include <Eigen/Core>
-#include <directional/TriMesh.h>
-#include <directional/PCFaceTangentBundle.h>
-#include <directional/CartesianField.h>
-#include <directional/readOFF.h>
-#include <directional/read_raw_field.h>
-#include <directional/curl_matching.h>
-#include <directional/combing.h>
-#include <directional/setup_integration.h>
-#include <directional/integrate.h>
-#include <directional/setup_mesher.h>
-#include <directional/mesher.h>
-#include <directional/directional_viewer.h>
-#include "polygonal_write_OFF.h"
+#include <directional/core/TriMesh.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/core/CartesianField.h>
+#include <directional/io/ReadOFF.h>
+#include <directional/io/ReadRawField.h>
+#include <directional/fields/CurlMatching.h>
+#include <directional/fields/FieldCombing.h>
+#include <directional/integration/SetupIntegration.h>
+#include <directional/integration/Integrate.h>
+#include <directional/meshing/SetupMesher.h>
+#include <directional/meshing/Mesher.h>
+#include <directional/visualization/DirectionalViewer.h>
+#include <directional/io/PolygonalWriteOFF.h>
+#include <directional/integration/IntegrationData.h>
 
 #define NUM_N 3
 

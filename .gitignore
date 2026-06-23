@@ -3621,3 +3621,6 @@ CLAUDE.md
 data/
 tutorial/
 .deps/*
+.polyscope.ini
+imgui.ini
+output/

@@ -14,6 +14,8 @@ mkdocs-material>=8.5,<10
 mkdocs-macros-plugin>=0.7,<2
 pymdown-extensions>=9,<11
 Pygments>=2.11,<3
+numpy>=1.23
+trimesh>=4.0
 
 # Optional tools mentioned in docs/website.md can be installed separately:
 #   python -m pip install linkchecker
