@@ -531,25 +531,25 @@ Use `pip` when:
 Build all tutorials:
 
 ```powershell
-python setup_refactored_updated.py tutorials
+python setup.py tutorials
 ```
 
 Build a selected tutorial:
 
 ```powershell
-python setup_refactored_updated.py tutorials --tutorial=501
+python setup.py tutorials --tutorial=501
 ```
 
 Build several selected tutorials:
 
 ```powershell
-python setup_refactored_updated.py tutorials --tutorial=501,502,601
+python setup.py tutorials --tutorial=501,502,601
 ```
 
 Custom build directory:
 
 ```powershell
-python setup_refactored_updated.py tutorials `
+python setup.py tutorials `
   --tutorial=501 `
   --build-dir=build\tutorial-501
 ```
@@ -557,7 +557,7 @@ python setup_refactored_updated.py tutorials `
 Solver options are also supported:
 
 ```powershell
-python setup_refactored_updated.py tutorials `
+python setup.py tutorials `
   --enable-pardiso `
   --disable-cudss `
   --disable-suitesparse
