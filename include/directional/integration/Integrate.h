@@ -1288,74 +1288,84 @@ struct IntegerCandidate {
     }
   }
 
-  // Validate the reduced integer variables that integration actually owns.
-  std::size_t unresolvedReducedIntegerCount = 0;
-  std::size_t neverFixedReducedIntegerCount = 0;
-  double maximumReducedIntegerResidual = 0.0;
-  int maximumReducedIntegerResidualIndex = -1;
+  /*
+   * Reduced seam variables are integer constraints only for integrally
+   * seamless integration. A rotationally/permutationally seamless solve
+   * intentionally leaves these variables continuous, so validating every
+   * entry in integerVars here would reject an otherwise valid solution.
+   */
+  if (intData.integralSeamless) {
+    std::size_t unresolvedReducedIntegerCount = 0;
+    std::size_t neverFixedReducedIntegerCount = 0;
+    double maximumReducedIntegerResidual = 0.0;
+    int maximumReducedIntegerResidualIndex = -1;
 
-  for (int i = 0; i < intData.integerVars.size(); ++i) {
-    for (int j = 0; j < intData.n; ++j) {
-      const int variableIndex = intData.n * intData.integerVars(i) + j;
-      if (variableIndex < 0 || variableIndex >= numVars) {
-        throw std::runtime_error(
-            "integrate(): final expanded integer-variable index is out of "
-            "range");
-      }
-
-      const double value = fullx(variableIndex);
-      const double nearestInteger = std::round(value);
-      const double residual = std::abs(value - nearestInteger);
-
-      if (residual > 1.0e-8) {
-        ++unresolvedReducedIntegerCount;
-        if (intData.verbose && unresolvedReducedIntegerCount <= 30) {
-          std::cerr << "[Directional::integrate] unresolved reduced integer "
-                    << "variable=" << variableIndex << " value=" << value
-                    << " nearestInteger=" << nearestInteger
-                    << " residual=" << residual << '\n';
+    for (int i = 0; i < intData.integerVars.size(); ++i) {
+      for (int j = 0; j < intData.n; ++j) {
+        const int variableIndex = intData.n * intData.integerVars(i) + j;
+        if (variableIndex < 0 || variableIndex >= numVars) {
+          throw std::runtime_error(
+              "integrate(): final expanded integer-variable index is out of "
+              "range");
         }
-      }
 
-      if (!integerVariableWasFixed[static_cast<std::size_t>(variableIndex)] &&
-          !alreadyFixed(variableIndex)) {
-        ++neverFixedReducedIntegerCount;
-        if (intData.verbose && neverFixedReducedIntegerCount <= 30) {
-          std::cerr << "[Directional::integrate] reduced integer variable was "
-                    << "never fixed: " << variableIndex
-                    << " finalValue=" << value << '\n';
+        const double value = fullx(variableIndex);
+        const double nearestInteger = std::round(value);
+        const double residual = std::abs(value - nearestInteger);
+
+        if (residual > 1.0e-8) {
+          ++unresolvedReducedIntegerCount;
+          if (intData.verbose && unresolvedReducedIntegerCount <= 30) {
+            std::cerr << "[Directional::integrate] unresolved reduced integer "
+                      << "variable=" << variableIndex << " value=" << value
+                      << " nearestInteger=" << nearestInteger
+                      << " residual=" << residual << '\n';
+          }
         }
-      }
 
-      if (residual > maximumReducedIntegerResidual) {
-        maximumReducedIntegerResidual = residual;
-        maximumReducedIntegerResidualIndex = variableIndex;
+        if (!integerVariableWasFixed[static_cast<std::size_t>(variableIndex)] &&
+            !alreadyFixed(variableIndex)) {
+          ++neverFixedReducedIntegerCount;
+          if (intData.verbose && neverFixedReducedIntegerCount <= 30) {
+            std::cerr
+                << "[Directional::integrate] reduced integer variable was "
+                << "never fixed: " << variableIndex << " finalValue=" << value
+                << '\n';
+          }
+        }
+
+        if (residual > maximumReducedIntegerResidual) {
+          maximumReducedIntegerResidual = residual;
+          maximumReducedIntegerResidualIndex = variableIndex;
+        }
       }
     }
-  }
 
-  report_progress(intData.progress, 92, 100,
-                  "Validating integrated integer variables");
+    report_progress(intData.progress, 92, 100,
+                    "Validating integrated integer variables");
 
-  if (intData.verbose) {
-    std::cout << "[Directional::integrate] final reduced integer validation\n"
-              << "  solve iterations: " << solveIteration << '\n'
-              << "  expanded reduced integer count: "
-              << intData.integerVars.size() * intData.n << '\n'
-              << "  unresolved count: " << unresolvedReducedIntegerCount << '\n'
-              << "  never-fixed count: " << neverFixedReducedIntegerCount
-              << '\n'
-              << "  maximum residual: " << maximumReducedIntegerResidual << '\n'
-              << "  maximum residual variable: "
-              << maximumReducedIntegerResidualIndex << std::endl;
-  }
-
-  if (unresolvedReducedIntegerCount != 0) {
     if (intData.verbose) {
-      std::cerr << "[Directional::integrate] final reduced solution still "
-                   "contains unresolved integer variables\n";
+      std::cout << "[Directional::integrate] final reduced integer validation\n"
+                << "  solve iterations: " << solveIteration << '\n'
+                << "  expanded reduced integer count: "
+                << intData.integerVars.size() * intData.n << '\n'
+                << "  unresolved count: " << unresolvedReducedIntegerCount
+                << '\n'
+                << "  never-fixed count: " << neverFixedReducedIntegerCount
+                << '\n'
+                << "  maximum residual: " << maximumReducedIntegerResidual
+                << '\n'
+                << "  maximum residual variable: "
+                << maximumReducedIntegerResidualIndex << std::endl;
     }
-    return false;
+
+    if (unresolvedReducedIntegerCount != 0) {
+      if (intData.verbose) {
+        std::cerr << "[Directional::integrate] final reduced solution still "
+                     "contains unresolved integer variables\n";
+      }
+      return false;
+    }
   }
 
   print_iterative_timing_summary();
