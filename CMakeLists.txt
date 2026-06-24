@@ -13,6 +13,8 @@ include(CMakePackageConfigHelpers)
 option(BUILD_TUTORIALS "Build Directional tutorials" OFF)
 option(BUILD_PYTHON "Build Python bindings" OFF)
 option(DIRECTIONAL_BUILD_CLI "Build the optional native command line executable" OFF)
+option(DIRECTIONAL_BUILD_GUI "Build the optional Polyscope desktop UI" OFF)
+option(DIRECTIONAL_BUILD_TESTS "Build Directional unit tests" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(DIRECTIONAL_ENABLE_GMP "Enable GMP support. Will be auto-installed on MSVC if not found" ON)
 option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support. Will be auto-installed on MSVC if not found" OFF)
@@ -188,34 +190,67 @@ if(BUILD_TUTORIALS)
   add_subdirectory(tutorial)
 endif()
 
-if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
+if(DIRECTIONAL_BUILD_TESTS)
+  enable_testing()
+  set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
+
+  add_executable(
+    directional_phase1_tests
+    tests/RegularizedCurvaturePhase1Tests.cpp)
+  target_link_libraries(
+    directional_phase1_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_phase1_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_phase1_tests PRIVATE /bigobj)
+  endif()
+
+  include(GoogleTest)
+  gtest_discover_tests(directional_phase1_tests)
+endif()
+
+if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
   add_library(
-    directional_cli_backend STATIC
-    src/cli/CliBackend.cpp
+    directional_cli_io STATIC
     src/cli/ProgressDisplay.cpp
-    src/cli/Usage.cpp
-    src/cli/InfoCommand.cpp
     src/cli/MeshIO.cpp
     src/cli/MatrixIO.cpp
     src/cli/CrossFieldOutput.cpp
     src/cli/FieldConversion.cpp
-    src/cli/CrossFieldCommand.cpp
-    src/cli/RemeshOutput.cpp
-    src/cli/RemeshCommand.cpp)
-  add_library(Directional::directional_cli_backend ALIAS directional_cli_backend)
-  set_target_properties(directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  target_link_libraries(directional_cli_backend PUBLIC Directional::directional)
-  target_compile_features(directional_cli_backend PUBLIC cxx_std_20)
-  target_compile_definitions(
-    directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
+    src/cli/RemeshOutput.cpp)
+  add_library(Directional::directional_cli_io ALIAS directional_cli_io)
+  set_target_properties(directional_cli_io PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  target_link_libraries(directional_cli_io PUBLIC Directional::directional)
+  target_compile_features(directional_cli_io PUBLIC cxx_std_20)
 
-  # Keep MSVC's expanded COFF section limit scoped to the two translation
-  # units that instantiate Directional's template-heavy field and pipeline APIs.
-  if(MSVC)
-    set_source_files_properties(
+  if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
+    add_library(
+      directional_cli_backend STATIC
+      src/cli/CliBackend.cpp
+      src/cli/Usage.cpp
+      src/cli/InfoCommand.cpp
       src/cli/CrossFieldCommand.cpp
-      src/cli/RemeshCommand.cpp
-      PROPERTIES COMPILE_OPTIONS "/bigobj")
+      src/cli/RemeshCommand.cpp)
+    add_library(Directional::directional_cli_backend ALIAS directional_cli_backend)
+    set_target_properties(directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    target_link_libraries(
+      directional_cli_backend
+      PUBLIC
+        Directional::directional_cli_io)
+    target_compile_features(directional_cli_backend PUBLIC cxx_std_20)
+    target_compile_definitions(
+      directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
+
+    # Keep MSVC's expanded COFF section limit scoped to the two translation
+    # units that instantiate Directional's template-heavy field and pipeline APIs.
+    if(MSVC)
+      set_source_files_properties(
+        src/cli/CrossFieldCommand.cpp
+        src/cli/RemeshCommand.cpp
+        PROPERTIES COMPILE_OPTIONS "/bigobj")
+    endif()
   endif()
 endif()
 
@@ -232,6 +267,64 @@ if(DIRECTIONAL_BUILD_CLI)
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(directional_cli)
   endif()
+endif()
+
+if(DIRECTIONAL_BUILD_GUI)
+  if(NOT TARGET polyscope)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/polyscope/CMakeLists.txt")
+      set(_directional_saved_build_shared_libs "${BUILD_SHARED_LIBS}")
+      set(BUILD_SHARED_LIBS OFF)
+      add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/polyscope"
+                     "${CMAKE_BINARY_DIR}/polyscope")
+
+      set(BUILD_SHARED_LIBS "${_directional_saved_build_shared_libs}")
+      unset(_directional_saved_build_shared_libs)
+    else()
+      find_package(polyscope CONFIG REQUIRED)
+    endif()
+  endif()
+
+  if(TARGET imgui)
+    add_dependencies(polyscope imgui)
+  endif()
+
+  add_executable(
+    directional_gui
+    src/gui/Main.cpp
+    src/gui/GuiBackend.cpp
+    src/gui/GuiField.cpp
+    src/gui/GuiRemesh.cpp)
+  add_executable(Directional::directional_gui ALIAS directional_gui)
+  set_target_properties(directional_gui PROPERTIES OUTPUT_NAME directional-ui)
+  target_link_libraries(
+    directional_gui
+    PRIVATE
+      Directional::directional_cli_io
+      polyscope)
+  target_include_directories(
+    directional_gui
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/cli")
+  target_compile_features(directional_gui PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_gui PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    add_custom_command(
+      TARGET directional_gui
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_gui>
+        $<TARGET_FILE_DIR:directional_gui>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+  if(DIRECTIONAL_ENABLE_PARDISO)
+    _directional_copy_pardiso_runtime_to_target(directional_gui)
+  endif()
+
+  install(TARGETS directional_gui RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 if(BUILD_PYTHON)
@@ -283,6 +376,10 @@ if(WIN32)
           DESTINATION "${CMAKE_INSTALL_BINDIR}")
   if(DIRECTIONAL_BUILD_CLI)
     install(FILES $<TARGET_RUNTIME_DLLS:directional_cli>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+  endif()
+  if(DIRECTIONAL_BUILD_GUI)
+    install(FILES $<TARGET_RUNTIME_DLLS:directional_gui>
             DESTINATION "${CMAKE_INSTALL_BINDIR}")
   endif()
   if(BUILD_PYTHON)

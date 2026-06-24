@@ -14,11 +14,6 @@
 namespace directional::cli {
 namespace {
 
-struct QuadMesh {
-  Eigen::MatrixXd vertices;
-  Eigen::MatrixXi faces;
-};
-
 std::filesystem::path sidecar(const std::filesystem::path &prefix,
                               const char *suffix) {
   return std::filesystem::path(prefix.string() + suffix);
@@ -32,9 +27,10 @@ std::string lowercase(std::string value) {
   return value;
 }
 
-QuadMesh quadrangulate_polygons(const Eigen::MatrixXd &vertices,
-                                const Eigen::VectorXi &degrees,
-                                const Eigen::MatrixXi &faces) {
+QuadMeshData quadrangulate_remeshed_mesh_impl(
+    const Eigen::MatrixXd &vertices,
+    const Eigen::VectorXi &degrees,
+    const Eigen::MatrixXi &faces) {
   if (vertices.cols() != 3) {
     throw std::runtime_error(
         "Remeshing output vertices must have shape (#V, 3).");
@@ -121,7 +117,7 @@ QuadMesh quadrangulate_polygons(const Eigen::MatrixXd &vertices,
     throw std::runtime_error("Remeshing output contains no polygons.");
   }
 
-  QuadMesh result;
+  QuadMeshData result;
   result.vertices.resize(static_cast<Eigen::Index>(outputVertices.size()), 3);
   result.faces.resize(static_cast<Eigen::Index>(outputFaces.size()), 4);
 
@@ -138,6 +134,13 @@ QuadMesh quadrangulate_polygons(const Eigen::MatrixXd &vertices,
 
 } // namespace
 
+QuadMeshData quadrangulate_remeshed_mesh(
+    const Eigen::MatrixXd &vertices,
+    const Eigen::VectorXi &degrees,
+    const Eigen::MatrixXi &faces) {
+  return quadrangulate_remeshed_mesh_impl(vertices, degrees, faces);
+}
+
 void write_remeshed_mesh(const std::filesystem::path &path,
                           const Eigen::MatrixXd &vertices,
                           const Eigen::VectorXi &degrees,
@@ -148,8 +151,8 @@ void write_remeshed_mesh(const std::filesystem::path &path,
         "Native remeshing output must use the .obj or .off extension.");
   }
 
-  const QuadMesh quadMesh =
-      quadrangulate_polygons(vertices, degrees, faces);
+  const QuadMeshData quadMesh =
+      quadrangulate_remeshed_mesh(vertices, degrees, faces);
   const Eigen::VectorXi quadDegrees =
       Eigen::VectorXi::Constant(quadMesh.faces.rows(), 4);
 

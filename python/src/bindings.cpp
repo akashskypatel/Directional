@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <directional/fields/CrossField.h>
+#include <directional/fields/RegularizedCurvatureCrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
 namespace py = pybind11;
@@ -157,6 +158,143 @@ PYBIND11_MODULE(_directional, module) {
       py::arg("vertices"), py::arg("faces"),
       py::arg("options") = directional::fields::CrossFieldOptions{},
       "Extract a smooth face-based 4-RoSy cross field from a triangle mesh.");
+
+  py::class_<directional::RegularizedProxyMeshOptions>(
+      module, "RegularizedProxyMeshOptions")
+      .def(py::init<>())
+      .def_readwrite("fidelityWeight",
+                     &directional::RegularizedProxyMeshOptions::fidelityWeight)
+      .def_readwrite("smoothnessWeight",
+                     &directional::RegularizedProxyMeshOptions::smoothnessWeight)
+      .def_readwrite("preserveBoundary",
+                     &directional::RegularizedProxyMeshOptions::preserveBoundary)
+      .def_readwrite(
+          "clampNegativeCotangents",
+          &directional::RegularizedProxyMeshOptions::clampNegativeCotangents)
+      .def_readwrite("fixedVertices",
+                     &directional::RegularizedProxyMeshOptions::fixedVertices);
+
+  py::class_<directional::FaceCurvatureOptions>(module,
+                                                 "FaceCurvatureOptions")
+      .def(py::init<>())
+      .def_readwrite("smoothingIterations",
+                     &directional::FaceCurvatureOptions::smoothingIterations)
+      .def_readwrite("preserveSharpFeatures",
+                     &directional::FaceCurvatureOptions::preserveSharpFeatures)
+      .def_readwrite(
+          "sharpFeatureAngleDegrees",
+          &directional::FaceCurvatureOptions::sharpFeatureAngleDegrees)
+      .def_readwrite("minimumRelativeArea",
+                     &directional::FaceCurvatureOptions::minimumRelativeArea)
+      .def_readwrite(
+          "minimumSingularValueRatio",
+          &directional::FaceCurvatureOptions::minimumSingularValueRatio)
+      .def_readwrite("magnitudeGateScale",
+                     &directional::FaceCurvatureOptions::magnitudeGateScale)
+      .def_readwrite("residualDecay",
+                     &directional::FaceCurvatureOptions::residualDecay);
+
+  py::class_<directional::FaceCurvatureResult>(module,
+                                                "FaceCurvatureResult")
+      .def_readonly("principalDirectionsMin",
+                    &directional::FaceCurvatureResult::principalDirectionsMin)
+      .def_readonly("principalDirectionsMax",
+                    &directional::FaceCurvatureResult::principalDirectionsMax)
+      .def_readonly("principalCurvatures",
+                    &directional::FaceCurvatureResult::principalCurvatures)
+      .def_readonly("fitResiduals",
+                    &directional::FaceCurvatureResult::fitResiduals)
+      .def_readonly("fitQuality",
+                    &directional::FaceCurvatureResult::fitQuality)
+      .def_readonly("confidence",
+                    &directional::FaceCurvatureResult::confidence)
+      .def_readonly("valid", &directional::FaceCurvatureResult::valid);
+
+  py::class_<directional::fields::RegularizedCurvatureCrossFieldOptions>(
+      module, "RegularizedCurvatureCrossFieldOptions")
+      .def(py::init<>())
+      .def_readwrite(
+          "proxy",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::proxy)
+      .def_readwrite(
+          "curvature",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::curvature)
+      .def_readwrite(
+          "fieldSmoothnessWeight",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              fieldSmoothnessWeight)
+      .def_readwrite(
+          "curvatureAlignmentWeight",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              curvatureAlignmentWeight)
+      .def_readwrite(
+          "confidenceExponent",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              confidenceExponent)
+      .def_readwrite(
+          "minimumConfidence",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              minimumConfidence)
+      .def_readwrite(
+          "normalizeDirections",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              normalizeDirections)
+      .def_readwrite(
+          "computeMatching",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              computeMatching);
+
+  py::class_<directional::fields::RegularizedCurvatureCrossFieldResult>(
+      module, "RegularizedCurvatureCrossFieldResult")
+      .def_readonly(
+          "field",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::field)
+      .def_readonly(
+          "proxyVertices",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              proxyVertices)
+      .def_readonly(
+          "proxyDisplacement",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              proxyDisplacement)
+      .def_readonly(
+          "proxyCurvature",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              proxyCurvature)
+      .def_readonly(
+          "constrainedFaces",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              constrainedFaces)
+      .def_readonly(
+          "constraintDirections",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              constraintDirections)
+      .def_readonly(
+          "alignmentWeights",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              alignmentWeights)
+      .def_readonly(
+          "smoothnessEnergy",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              smoothnessEnergy)
+      .def_readonly(
+          "alignmentEnergy",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              alignmentEnergy);
+
+  module.def(
+      "extract_regularized_curvature_cross_field",
+      [](const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+         const directional::fields::RegularizedCurvatureCrossFieldOptions
+             &options) {
+        return directional::fields::extract_regularized_curvature_cross_field(
+            vertices, faces, options);
+      },
+      py::arg("vertices"), py::arg("faces"),
+      py::arg("options") =
+          directional::fields::RegularizedCurvatureCrossFieldOptions{},
+      "Extract a smooth 4-RoSy field aligned to curvature of a regularized "
+      "same-topology proxy mesh.");
 
   py::class_<directional::pipeline::RemeshOptions>(module, "RemeshOptions")
       .def(py::init<>())

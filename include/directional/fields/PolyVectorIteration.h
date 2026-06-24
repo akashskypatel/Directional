@@ -8,10 +8,16 @@
 #ifndef DIRECTIONAL_POLYVECTOR_ITERATION_FUNCTIONS_H
 #define DIRECTIONAL_POLYVECTOR_ITERATION_FUNCTIONS_H
 
+#include <cassert>
+#include <cmath>
+#include <functional>
+#include <stdexcept>
+#include <iostream>
+
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
-#include <iostream>
+
 #include <directional/core/TangentBundle.h>
 #include <directional/fields/IntrinsicVertexTangentBundle.h>
 #include <directional/core/CartesianField.h>
@@ -32,7 +38,7 @@ typedef std::function<bool(const CartesianField&, const PolyVectorData&)>       
 
 
 //Normalizes the field to have unit length on all its vectors
-CartesianField hard_normalization(const CartesianField& pvField, const PolyVectorData& pvData){
+inline CartesianField hard_normalization(const CartesianField& pvField, const PolyVectorData& pvData){
     CartesianField rawField, normPvField;
     polyvector_to_raw(pvField, rawField, pvData.N%2==0, true);
     directional::raw_to_polyvector(rawField, normPvField);
@@ -40,7 +46,7 @@ CartesianField hard_normalization(const CartesianField& pvField, const PolyVecto
 }
 
 //Projects the field into the nearest RoSy field
-CartesianField hard_rosy(const CartesianField& pvField, const PolyVectorData& pvData){
+inline CartesianField hard_rosy(const CartesianField& pvField, const PolyVectorData& pvData){
     Eigen::MatrixXcd rosyField = pvField.get_complex_intrinsic_field();
     rosyField.block(0,1,rosyField.rows(), rosyField.cols()-1).setZero();
     rosyField.col(0) = rosyField.col(0).array() / rosyField.col(0).array().abs();
@@ -51,7 +57,7 @@ CartesianField hard_rosy(const CartesianField& pvField, const PolyVectorData& pv
 
 
 //A single implicit step (with the pvData state coefficients) that makes the current field more RoSy.
-CartesianField soft_rosy(const CartesianField& pvField, const PolyVectorData& pvData){
+inline CartesianField soft_rosy(const CartesianField& pvField, const PolyVectorData& pvData){
     Eigen::MatrixXcd rosyField = pvField.get_complex_intrinsic_field();
     rosyField.block(0,1,rosyField.rows(), rosyField.cols()-1).setZero();
     rosyField.col(0) = rosyField.col(0).array() / rosyField.col(0).array().abs();
@@ -63,7 +69,7 @@ CartesianField soft_rosy(const CartesianField& pvField, const PolyVectorData& pv
 }
 
 //Projects the field onto the nearest curl-free field.
-CartesianField curl_projection(const CartesianField& pvField, const PolyVectorData& pvData){
+inline CartesianField curl_projection(const CartesianField& pvField, const PolyVectorData& pvData){
     assert(pvData.tb->discTangType()==directional::discTangTypeEnum::FACE_SPACES && "Projecting curl only works for face-based fields for now!");
     CartesianField rawField, curlFreeFieldRaw, curlFreeFieldPv;
     polyvector_to_raw(pvField, rawField, pvData.N%2==0);
@@ -74,7 +80,7 @@ CartesianField curl_projection(const CartesianField& pvField, const PolyVectorDa
 }
 
 //Projects a vector on a quadric (used for the conjugacy projection)
-Eigen::RowVectorXd project_on_quadric(const Eigen::RowVectorXd& y0, const Eigen::MatrixXd& H){
+inline Eigen::RowVectorXd project_on_quadric(const Eigen::RowVectorXd& y0, const Eigen::MatrixXd& H){
     // Step 1: Perform eigen-decomposition of H (since it's symmetric)
     Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigensolver(0.5*(H+H.transpose()));
     assert(eigensolver.info() == Eigen::Success && "directional:project_on_quadric(): Eigen decomposition failed!");
@@ -118,13 +124,13 @@ Eigen::RowVectorXd project_on_quadric(const Eigen::RowVectorXd& y0, const Eigen:
 }
 
 //This is a "no termination" function which is the case by default
-bool default_termination(const CartesianField& pvField, const PolyVectorData& pvData){
+inline bool default_termination(const CartesianField& pvField, const PolyVectorData& pvData){
     return false;
 }
 
 
 //Projecting a 2^2 Rosy field to a conjugate field
-CartesianField conjugate(const CartesianField& pvField, const PolyVectorData& pvData){
+inline CartesianField conjugate(const CartesianField& pvField, const PolyVectorData& pvData){
     assert(pvField.N==4 && pvData.signSymmetry && pvField.tb->discTangType()==discTangTypeEnum::VERTEX_SPACES&& "directional::conjugate(): This method only works on symmetric 2^2 fields on vertices!");
     
     CartesianField rawField, conjugatePvField;
@@ -165,7 +171,7 @@ CartesianField conjugate(const CartesianField& pvField, const PolyVectorData& pv
     return conjugatePvField;
 }
 
-bool conjugate_termination(const CartesianField& pvField, const PolyVectorData& pvData){
+inline bool conjugate_termination(const CartesianField& pvField, const PolyVectorData& pvData){
     assert(pvField.N==4 && pvData.signSymmetry && pvField.tb->discTangType()==discTangTypeEnum::VERTEX_SPACES&& "directional::conjugate_termination(): This method only works on symmetric 2^2 fields on vertices!");
     static double tolerance = 1e-2;
     CartesianField rawField, conjugatePvField;

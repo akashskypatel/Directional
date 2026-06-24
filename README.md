@@ -462,6 +462,83 @@ Options:
 
 Without `--verbose`, long-running remeshing stages use in-place top-level progress reporting. With `--verbose`, detailed phase timing and solver diagnostics are printed as regular log lines.
 
+## Polyscope desktop UI
+
+The optional `directional-ui` executable provides a native C++ interface for the
+field-extraction and quad-remeshing pipeline.
+
+### Features
+
+- Load an OBJ or OFF triangular mesh.
+- Calculate a smooth power field or regularized-curvature field.
+- Automatically calculate a field and quad-remesh the loaded mesh.
+- Load a RawField, CrossField, or RoSy field and quad-remesh with it.
+- Visualize the input triangle mesh, four cross-field branches, and output quads.
+- Save fields through the existing field-conversion implementation.
+- Save pure quad meshes as OBJ or OFF.
+- Run field extraction and remeshing asynchronously so the viewer remains responsive.
+
+### Build
+
+```powershell
+cmake -S . -B build\gui `
+  -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_BUILD_CLI=OFF `
+  -DDIRECTIONAL_BUILD_GUI=ON `
+  -DDIRECTIONAL_ENABLE_PARDISO=ON
+
+cmake --build build\gui --config Release --target directional_gui
+```
+
+### Build with setup.py
+
+Build and install only the desktop UI:
+
+```powershell
+python setup.py build_gui --enable-pardiso
+```
+
+The executable and runtime dependencies are installed beneath:
+
+```text
+build/gui/install/bin/
+```
+
+Build the standalone library, CLI, and UI together:
+
+```powershell
+python setup.py build_standalone `
+  --build-cli `
+  --build-gui `
+  --enable-pardiso
+```
+
+Build a Python wheel which also packages the native UI under
+`directional/bin/`:
+
+```powershell
+python setup.py build_ext --build-gui bdist_wheel
+```
+
+The equivalent PEP 517 setting is:
+
+```powershell
+python -m pip wheel . `
+  --no-deps `
+  --no-build-isolation `
+  -Cdirectional.build-gui=true
+```
+
+Run:
+
+```powershell
+build\gui\Release\directional-ui.exe
+build\gui\Release\directional-ui.exe path\to\mesh.obj
+```
+
+The UI uses path entry fields rather than a native file-dialog dependency.
+Paths may be absolute or relative to the current working directory.
+
 ## Python API
 
 The extension exposes the headless remeshing API, including:

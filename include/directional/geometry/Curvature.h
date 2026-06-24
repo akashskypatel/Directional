@@ -15,7 +15,7 @@
 #include <unordered_map>
 
 #include <Eigen/Core>
-
+#include <Eigen/QR>
 
 /**
  * @file Curvature.h
@@ -54,7 +54,7 @@ inline void gaussian_curvature(const Eigen::MatrixXd &V,
 /// @brief Builds adjacency map from edge-vertex pairs.
 /// @param EV #E by 2 edge-vertex pairs.
 /// @return Adjacency map.
-static std::unordered_map<int, std::set<int>>
+inline std::unordered_map<int, std::set<int>>
 build_adjacency(const Eigen::MatrixXi &EV) {
   std::unordered_map<int, std::set<int>> adj;
   for (int i = 0; i < EV.rows(); ++i) {

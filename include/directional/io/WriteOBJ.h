@@ -26,7 +26,7 @@ mtlFileName:  name of MTL file that associates with the texture
 textureName:  texture name inside the MTL file.
 ***/
 
-bool writeOBJ(const std::string& fileName,
+inline bool writeOBJ(const std::string& fileName,
               const directional::TriMesh& mesh,
               const Eigen::MatrixXd& TC,
               const Eigen::MatrixXi& FTC,

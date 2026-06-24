@@ -166,7 +166,7 @@ public:
     EFi = Eigen::MatrixXi::Constant(dcel.edges.size(), 2, -1);
     FE.resize(F.rows(), 3);
     FEs.resize(F.rows(), 3);
-    TT.resize(F.rows(), 3);
+    TT = Eigen::MatrixXi::Constant(F.rows(), 3, -1);
     for (int i = 0; i < dcel.edges.size(); i++) {
       EV.row(i) << dcel.halfedges[dcel.edges[i].halfedge].vertex,
           dcel.halfedges[dcel.halfedges[dcel.edges[i].halfedge].next].vertex;
@@ -199,8 +199,8 @@ public:
 
     // gathering all boundary halfedges
     std::vector<int> innerEdgesList, boundEdgesList, boundHalfedgesList;
-    isBoundaryVertex = Eigen::VectorXi::Zero(V.size());
-    isBoundaryEdge = Eigen::VectorXi::Zero(EV.size());
+    isBoundaryVertex = Eigen::VectorXi::Zero(V.rows());
+    isBoundaryEdge = Eigen::VectorXi::Zero(EV.rows());
     for (int i = 0; i < dcel.edges.size(); i++) {
       if (dcel.halfedges[dcel.edges[i].halfedge].twin == -1) {
         boundEdgesList.push_back(i);

@@ -388,7 +388,7 @@ public:
   }
 };
 
-BigInteger gcd(BigInteger a, BigInteger b) {
+inline BigInteger gcd(BigInteger a, BigInteger b) {
   int whileTest = 0;
   if (b > a)
     std::swap(a, b);

@@ -7,6 +7,17 @@
 
 namespace directional::cli {
 
+struct QuadMeshData {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+};
+
+/** Convert the mesher's variable-degree polygons to a pure quad mesh. */
+QuadMeshData quadrangulate_remeshed_mesh(
+    const Eigen::MatrixXd &vertices,
+    const Eigen::VectorXi &degrees,
+    const Eigen::MatrixXi &faces);
+
 void write_remeshed_mesh(const std::filesystem::path &path,
                          const Eigen::MatrixXd &vertices,
                          const Eigen::VectorXi &degrees,
