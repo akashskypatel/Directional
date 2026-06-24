@@ -34,13 +34,11 @@ COMMON_FEATURE_USER_OPTIONS = [
     ("enable-cudss", None, "Enable NVIDIA cuDSS integration solver"),
     ("disable-cudss", None, "Disable NVIDIA cuDSS integration solver"),
 ]
-NATIVE_APP_USER_OPTIONS = [
-    ("build-cli", None, "Build the optional native directional CLI executable"),
-    ("no-build-cli", None, "Do not build the optional native directional CLI executable"),
+GUI_BUILD_USER_OPTIONS = [
     ("build-gui", None, "Build the optional Polyscope desktop UI executable"),
     ("no-build-gui", None, "Do not build the optional Polyscope desktop UI executable"),
 ]
-FEATURE_USER_OPTIONS = [*COMMON_FEATURE_USER_OPTIONS, *NATIVE_APP_USER_OPTIONS]
+FEATURE_USER_OPTIONS = [*COMMON_FEATURE_USER_OPTIONS, *GUI_BUILD_USER_OPTIONS]
 COMMON_FEATURE_BOOLEAN_OPTIONS = [option[0] for option in COMMON_FEATURE_USER_OPTIONS]
 FEATURE_BOOLEAN_OPTIONS = [option[0] for option in FEATURE_USER_OPTIONS]
 
@@ -346,7 +344,7 @@ class CMakeExtension(Extension):
 class BuildStandalone(Command):
     description = (
         "Build and install the standalone Directional library with optional "
-        "native CLI and Polyscope UI"
+        "Polyscope UI"
     )
     user_options = [
         ("build-dir=", None, "Build directory"),
@@ -365,6 +363,11 @@ class BuildStandalone(Command):
             self.build_dir = str(_build_dir("standalone"))
         if self.install_dir is None:
             self.install_dir = str(Path(self.build_dir) / "install")
+
+        # The native CLI has its own build_cli command. Never make it an
+        # implicit side effect of the standalone library build.
+        self.build_cli = False
+        self.no_build_cli = True
         _finalize_feature_options(self)
 
     def run(self) -> None:
@@ -380,11 +383,53 @@ class BuildStandalone(Command):
         )
         _configure(build_dir, configure_args)
         targets = ["directional"]
-        if features.build_cli:
-            targets.append("directional_cli")
         if features.build_gui:
             targets.append("directional_gui")
         _build(build_dir, *targets)
+        _install(build_dir)
+
+
+class BuildCli(Command):
+    description = "Build and install the native Directional CLI executable"
+    user_options = [
+        ("build-dir=", None, "Build directory"),
+        ("install-dir=", None, "Install directory"),
+        *COMMON_FEATURE_USER_OPTIONS,
+    ]
+    boolean_options = COMMON_FEATURE_BOOLEAN_OPTIONS
+
+    def initialize_options(self) -> None:
+        self.build_dir = None
+        self.install_dir = None
+        _initialize_feature_options(self)
+
+    def finalize_options(self) -> None:
+        if self.build_dir is None:
+            self.build_dir = str(_build_dir("cli"))
+        if self.install_dir is None:
+            self.install_dir = str(Path(self.build_dir) / "install")
+
+        self.build_cli = True
+        self.no_build_cli = False
+        self.build_gui = False
+        self.no_build_gui = True
+        _finalize_feature_options(self)
+
+    def run(self) -> None:
+        build_dir = Path(self.build_dir)
+        install_dir = Path(self.install_dir)
+        features = _features_from_command(self)
+        configure_args = _cmake_args(
+            install_dir,
+            [
+                *features.cmake_args(build_python=False),
+                "-DBUILD_TUTORIALS=OFF",
+                "-DDIRECTIONAL_BUILD_CLI=ON",
+                "-DDIRECTIONAL_BUILD_GUI=OFF",
+            ],
+        )
+        _configure(build_dir, configure_args)
+        _build(build_dir, "directional_cli")
         _install(build_dir)
 
 
@@ -498,6 +543,11 @@ class CMakeBuildExt(build_ext):
 
     def finalize_options(self) -> None:
         super().finalize_options()
+
+        # The native executable is intentionally built only by build_cli.
+        # The console_scripts entry point remains part of the Python package.
+        self.build_cli = False
+        self.no_build_cli = True
         _finalize_feature_options(self)
 
     def build_extension(self, ext: Extension) -> None:
@@ -533,8 +583,6 @@ class CMakeBuildExt(build_ext):
 
         _configure(build_temp, configure_args)
         targets = ["_directional"]
-        if features.build_cli:
-            targets.append("directional_cli")
         if features.build_gui:
             targets.append("directional_gui")
         _build(build_temp, *targets)
@@ -553,17 +601,12 @@ class CMakeBuildExt(build_ext):
             extdir / "__init__.py",
         )
 
-        if features.build_cli or features.build_gui:
+        if features.build_gui:
             installed_bin_dir = install_dir / "bin"
             if not installed_bin_dir.is_dir():
-                requested = []
-                if features.build_cli:
-                    requested.append("native CLI")
-                if features.build_gui:
-                    requested.append("Polyscope UI")
                 raise RuntimeError(
-                    f"Requested {' and '.join(requested)}, but CMake did not "
-                    "install a bin directory"
+                    "Requested the Polyscope UI, but CMake did not install a "
+                    "bin directory"
                 )
             packaged_bin_dir = extdir / "bin"
             packaged_bin_dir.mkdir(parents=True, exist_ok=True)
@@ -588,11 +631,14 @@ setup(
     cmdclass={
         "build_standalone": BuildStandalone,
         "standalone": BuildStandalone,
+        "build_cli": BuildCli,
+        "cli": BuildCli,
         "build_tutorials": BuildTutorials,
         "tutorials": BuildTutorials,
         "build_gui": BuildGui,
         "gui": BuildGui,
         "build_ext": CMakeBuildExt,
+        "ext": CMakeBuildExt,
     },
     zip_safe=False,
 )
