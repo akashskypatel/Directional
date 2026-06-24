@@ -12,7 +12,7 @@ struct QuadMeshData {
   Eigen::MatrixXi faces;
 };
 
-/** Convert the mesher's variable-degree polygons to a pure quad mesh. */
+/** Preserve pure quad meshes; otherwise convert all polygons to quads. */
 QuadMeshData quadrangulate_remeshed_mesh(
     const Eigen::MatrixXd &vertices,
     const Eigen::VectorXi &degrees,

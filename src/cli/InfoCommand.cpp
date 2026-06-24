@@ -3,7 +3,7 @@
 #include <ostream>
 
 #ifndef DIRECTIONAL_VERSION
-#define DIRECTIONAL_VERSION "0.1.0"
+#define DIRECTIONAL_VERSION "0.0.0"
 #endif
 
 extern "C" const char *directional_build_info();

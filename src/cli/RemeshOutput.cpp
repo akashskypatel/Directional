@@ -40,6 +40,9 @@ QuadMeshData quadrangulate_remeshed_mesh_impl(
         "Remeshing output requires one polygon degree per face row.");
   }
 
+  const bool alreadyPureQuadMesh =
+      degrees.size() > 0 && (degrees.array() == 4).all();
+
   std::vector<Eigen::RowVector3d> outputVertices;
   outputVertices.reserve(
       static_cast<std::size_t>(vertices.rows() + faces.rows()));
@@ -73,6 +76,13 @@ QuadMeshData quadrangulate_remeshed_mesh_impl(
 
       polygon[static_cast<std::size_t>(corner)] = index;
       center += vertices.row(index);
+    }
+
+    if (alreadyPureQuadMesh) {
+      Eigen::RowVector4i quad;
+      quad << polygon[0], polygon[1], polygon[2], polygon[3];
+      outputFaces.push_back(quad);
+      continue;
     }
 
     center /= static_cast<double>(degree);

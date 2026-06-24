@@ -4,7 +4,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(
   Directional
-  VERSION 0.1.0
+  VERSION 1.0.0
   LANGUAGES CXX)
 
 include(GNUInstallDirs)
@@ -91,7 +91,7 @@ add_library(Directional::directional ALIAS directional)
 
 set_target_properties(directional PROPERTIES OUTPUT_NAME directional
                                              WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
+target_compile_definitions(directional INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
 target_include_directories(
   directional
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -224,7 +224,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
   set_target_properties(directional_cli_io PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(directional_cli_io PUBLIC Directional::directional)
   target_compile_features(directional_cli_io PUBLIC cxx_std_20)
-
+  target_compile_definitions(directional_cli_io INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
   if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
     add_library(
       directional_cli_backend STATIC
@@ -241,7 +241,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
         Directional::directional_cli_io)
     target_compile_features(directional_cli_backend PUBLIC cxx_std_20)
     target_compile_definitions(
-      directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${PROJECT_VERSION}")
+      directional_cli_backend PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
 
     # Keep MSVC's expanded COFF section limit scoped to the two translation
     # units that instantiate Directional's template-heavy field and pipeline APIs.
@@ -264,6 +264,7 @@ if(DIRECTIONAL_BUILD_CLI)
   set_target_properties(directional_cli PROPERTIES OUTPUT_NAME directional)
   target_link_libraries(directional_cli PRIVATE Directional::directional_cli_backend)
   target_compile_features(directional_cli PRIVATE cxx_std_20)
+  target_compile_definitions(directional_cli PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(directional_cli)
   endif()
@@ -288,24 +289,73 @@ if(DIRECTIONAL_BUILD_GUI)
     add_dependencies(polyscope imgui)
   endif()
 
-  add_executable(
-    directional_gui
-    src/gui/Main.cpp
-    src/gui/GuiBackend.cpp
-    src/gui/GuiField.cpp
-    src/gui/GuiRemesh.cpp)
+  set(_directional_gui_sources
+      src/gui/Main.cpp
+      src/gui/FilePicker.cpp
+      src/gui/GuiBackend.cpp
+      src/gui/GuiField.cpp
+      src/gui/GuiRemesh.cpp)
+
+  if(WIN32)
+    list(APPEND _directional_gui_sources src/gui/FileDialogWindows.cpp)
+  elseif(APPLE)
+    enable_language(OBJCXX)
+    list(APPEND _directional_gui_sources src/gui/FileDialogMac.mm)
+  elseif(UNIX)
+    list(APPEND _directional_gui_sources src/gui/FileDialogLinux.cpp)
+  endif()
+
+  add_executable(directional_gui ${_directional_gui_sources})
+  unset(_directional_gui_sources)
   add_executable(Directional::directional_gui ALIAS directional_gui)
   set_target_properties(directional_gui PROPERTIES OUTPUT_NAME directional-ui)
+  target_compile_definitions(directional_gui PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   target_link_libraries(
     directional_gui
     PRIVATE
       Directional::directional_cli_io
       polyscope)
+
+  if(WIN32)
+    target_link_libraries(directional_gui PRIVATE ole32 shell32 uuid)
+  elseif(APPLE)
+    find_library(DIRECTIONAL_APPKIT_FRAMEWORK AppKit REQUIRED)
+    find_library(DIRECTIONAL_UTTYPE_FRAMEWORK UniformTypeIdentifiers REQUIRED)
+    target_link_libraries(
+      directional_gui
+      PRIVATE
+        ${DIRECTIONAL_APPKIT_FRAMEWORK}
+        ${DIRECTIONAL_UTTYPE_FRAMEWORK})
+  elseif(UNIX)
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+      pkg_check_modules(DIRECTIONAL_GIO QUIET IMPORTED_TARGET gio-2.0)
+    endif()
+
+    if(TARGET PkgConfig::DIRECTIONAL_GIO)
+      target_compile_definitions(
+        directional_gui PRIVATE DIRECTIONAL_GUI_HAS_GIO=1)
+      target_link_libraries(
+        directional_gui PRIVATE PkgConfig::DIRECTIONAL_GIO)
+    else()
+      message(WARNING
+        "GIO/GDBus was not found. directional-ui will use its ImGui file "
+        "picker instead of the XDG Desktop Portal on Linux.")
+    endif()
+  endif()
   target_include_directories(
     directional_gui
     PRIVATE
       "${CMAKE_CURRENT_SOURCE_DIR}/src/cli")
   target_compile_features(directional_gui PRIVATE cxx_std_20)
+  if(APPLE)
+    set_target_properties(
+      directional_gui
+      PROPERTIES
+        OBJCXX_STANDARD 20
+        OBJCXX_STANDARD_REQUIRED YES
+        OBJCXX_EXTENSIONS NO)
+  endif()
   if(MSVC)
     target_compile_options(directional_gui PRIVATE /bigobj)
   endif()
@@ -336,6 +386,7 @@ if(BUILD_PYTHON)
     _directional PRIVATE Directional::directional
                          Directional::directional_cli_backend)
   target_compile_features(_directional PRIVATE cxx_std_20)
+  target_compile_definitions(_directional INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(_directional)
   endif()
@@ -415,7 +466,7 @@ configure_package_config_file(
 
 write_basic_package_version_file(
   ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
+  VERSION ${CMAKE_PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfig.cmake

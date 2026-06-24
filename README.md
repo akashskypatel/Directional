@@ -469,7 +469,7 @@ field-extraction and quad-remeshing pipeline.
 
 ### Features
 
-- Load an OBJ or OFF triangular mesh.
+- Load an OBJ or OFF triangular mesh using the platform-native file dialog.
 - Calculate a smooth power field or regularized-curvature field.
 - Automatically calculate a field and quad-remesh the loaded mesh.
 - Load a RawField, CrossField, or RoSy field and quad-remesh with it.
@@ -536,8 +536,20 @@ build\gui\Release\directional-ui.exe
 build\gui\Release\directional-ui.exe path\to\mesh.obj
 ```
 
-The UI uses path entry fields rather than a native file-dialog dependency.
-Paths may be absolute or relative to the current working directory.
+The **Browse...** buttons use the operating system's native file dialog:
+
+- Windows: `IFileOpenDialog`
+- macOS: `NSOpenPanel`
+- Linux: XDG Desktop Portal through GIO/GDBus
+
+On Linux, install the GIO development package when building the GUI (for
+example, `libglib2.0-dev` on Debian/Ubuntu or `glib2-devel` on Fedora). The
+runtime also needs `xdg-desktop-portal` and a portal backend provided by the
+desktop environment. If GIO or the portal service is unavailable, the UI
+automatically opens the dependency-free ImGui file picker instead.
+
+Path entry fields remain editable and may contain absolute paths or paths
+relative to the current working directory.
 
 ## Python API
 

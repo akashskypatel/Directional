@@ -1,3 +1,5 @@
+#include "FileDialog.h"
+#include "FilePicker.h"
 #include "GuiBackend.h"
 
 #include <algorithm>
@@ -15,6 +17,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include <imgui.h>
 #include <polyscope/point_cloud.h>
@@ -26,6 +29,8 @@ namespace {
 constexpr const char *kInputMeshName = "Input mesh";
 constexpr const char *kFieldGlyphName = "Cross field";
 constexpr const char *kQuadMeshName = "Quad remesh";
+
+enum class FilePickerTarget { None, Mesh, Field };
 
 struct ProgressState {
   std::atomic<std::size_t> current{0};
@@ -61,8 +66,7 @@ struct TaskResult {
 std::filesystem::path default_sibling_path(const std::filesystem::path &input,
                                            const std::string &suffix,
                                            const std::string &extension) {
-  return input.parent_path() /
-         (input.stem().string() + suffix + extension);
+  return input.parent_path() / (input.stem().string() + suffix + extension);
 }
 
 void copy_path_to_buffer(const std::filesystem::path &path,
@@ -82,14 +86,21 @@ std::filesystem::path path_from_buffer(const std::array<char, 1024> &buffer,
   return path;
 }
 
+template <typename DrawFunction>
+void draw_labeled_full_width_control(const char *label,
+                                     DrawFunction &&drawFunction) {
+  ImGui::TextUnformatted(label);
+  ImGui::SetNextItemWidth(-1.0F);
+  std::forward<DrawFunction>(drawFunction)();
+}
+
 Eigen::MatrixXd face_centers(const directional::gui::MeshData &mesh) {
   Eigen::MatrixXd centers(mesh.faces.rows(), 3);
   for (Eigen::Index face = 0; face < mesh.faces.rows(); ++face) {
-    centers.row(face) =
-        (mesh.vertices.row(mesh.faces(face, 0)) +
-         mesh.vertices.row(mesh.faces(face, 1)) +
-         mesh.vertices.row(mesh.faces(face, 2))) /
-        3.0;
+    centers.row(face) = (mesh.vertices.row(mesh.faces(face, 0)) +
+                         mesh.vertices.row(mesh.faces(face, 1)) +
+                         mesh.vertices.row(mesh.faces(face, 2))) /
+                        3.0;
   }
   return centers;
 }
@@ -149,6 +160,9 @@ private:
   std::array<char, 1024> fieldOutputPath_{};
   std::array<char, 1024> remeshOutputPath_{};
 
+  directional::gui::FilePicker filePicker_;
+  FilePickerTarget filePickerTarget_ = FilePickerTarget::None;
+
   int fieldMethod_ = 1;
   int fieldInputFormat_ = 0;
   int fieldOutputFormat_ = 0;
@@ -159,8 +173,7 @@ private:
   directional::gui::RemeshOptions remeshOptions_;
 
   std::future<TaskResult> task_;
-  std::shared_ptr<ProgressState> progress_ =
-      std::make_shared<ProgressState>();
+  std::shared_ptr<ProgressState> progress_ = std::make_shared<ProgressState>();
   std::string status_ = "Load an OBJ or OFF triangle mesh.";
   std::string error_;
   std::string fieldLabel_;
@@ -173,8 +186,7 @@ private:
 
   bool busy() const {
     return task_.valid() &&
-           task_.wait_for(std::chrono::seconds(0)) !=
-               std::future_status::ready;
+           task_.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
   }
 
   void set_status(std::string message) {
@@ -260,10 +272,9 @@ private:
     cloud->setPointRadius(0.0);
     for (int branch = 0; branch < 4; ++branch) {
       cloud
-          ->addVectorQuantity(
-              "Branch " + std::to_string(branch),
-              sampledVectors[branch] * scale,
-              polyscope::VectorType::AMBIENT)
+          ->addVectorQuantity("Branch " + std::to_string(branch),
+                              sampledVectors[branch] * scale,
+                              polyscope::VectorType::AMBIENT)
           ->setEnabled(true);
     }
   }
@@ -312,8 +323,7 @@ private:
     const auto progress = progress_;
     progress_->update(0, 100, "Starting field calculation");
 
-    task_ = std::async(std::launch::async,
-                       [mesh, options, progress]() {
+    task_ = std::async(std::launch::async, [mesh, options, progress]() {
       TaskResult result;
       try {
         result.field = directional::gui::calculate_field(
@@ -340,41 +350,37 @@ private:
   void launch_auto_remesh() {
     require_mesh();
     const directional::gui::MeshData mesh = *mesh_;
-    const directional::gui::FieldOptions fieldOptions =
-        current_field_options();
+    const directional::gui::FieldOptions fieldOptions = current_field_options();
     const directional::gui::RemeshOptions remeshOptions = remeshOptions_;
     const auto progress = progress_;
     progress_->update(0, 100, "Starting automatic remesh");
 
-    task_ = std::async(
-        std::launch::async,
-        [mesh, fieldOptions, remeshOptions, progress]() {
-          TaskResult result;
-          try {
-            directional::gui::AutoRemeshResult remesh =
-                directional::gui::auto_remesh(
-                    mesh, fieldOptions, remeshOptions,
-                    [progress](const std::size_t current,
-                               const std::size_t total,
-                               const std::string_view task) {
-                      progress->update(current, total, task);
-                    });
-            result.field = std::move(remesh.field);
-            result.quadMesh = std::move(remesh.quadMesh);
-            result.hasField = true;
-            result.hasQuadMesh = true;
-            result.fieldLabel =
-                fieldOptions.method == directional::gui::FieldMethod::Smooth
-                    ? "Auto-calculated smooth power field"
-                    : "Auto-calculated regularized-curvature field";
-            result.message =
-                result.fieldLabel + " and generated a quad mesh.";
-          } catch (const std::exception &error) {
-            result.error = error.what();
-          }
-          progress->update(100, 100, "Automatic remesh finished");
-          return result;
-        });
+    task_ = std::async(std::launch::async, [mesh, fieldOptions, remeshOptions,
+                                            progress]() {
+      TaskResult result;
+      try {
+        directional::gui::AutoRemeshResult remesh =
+            directional::gui::auto_remesh(
+                mesh, fieldOptions, remeshOptions,
+                [progress](const std::size_t current, const std::size_t total,
+                           const std::string_view task) {
+                  progress->update(current, total, task);
+                });
+        result.field = std::move(remesh.field);
+        result.quadMesh = std::move(remesh.quadMesh);
+        result.hasField = true;
+        result.hasQuadMesh = true;
+        result.fieldLabel =
+            fieldOptions.method == directional::gui::FieldMethod::Smooth
+                ? "Auto-calculated smooth power field"
+                : "Auto-calculated regularized-curvature field";
+        result.message = result.fieldLabel + " and generated a quad mesh.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Automatic remesh finished");
+      return result;
+    });
     set_status("Auto-calculating field and remeshing...");
   }
 
@@ -392,8 +398,7 @@ private:
   void launch_remesh_loaded_field() {
     require_mesh();
     if (!field_.has_value()) {
-      throw std::runtime_error(
-          "Load an input field before remeshing with it.");
+      throw std::runtime_error("Load an input field before remeshing with it.");
     }
 
     const directional::gui::MeshData mesh = *mesh_;
@@ -402,32 +407,29 @@ private:
     const auto progress = progress_;
     progress_->update(0, 100, "Starting field-guided remesh");
 
-    task_ = std::async(
-        std::launch::async, [mesh, field, options, progress]() {
-          TaskResult result;
-          try {
-            result.quadMesh = directional::gui::remesh_with_field(
-                mesh, field, options,
-                [progress](const std::size_t current,
-                           const std::size_t total,
-                           const std::string_view task) {
-                  progress->update(current, total, task);
-                });
-            result.hasQuadMesh = true;
-            result.message = "Generated a quad mesh from the loaded field.";
-          } catch (const std::exception &error) {
-            result.error = error.what();
-          }
-          progress->update(100, 100, "Field-guided remesh finished");
-          return result;
-        });
+    task_ = std::async(std::launch::async, [mesh, field, options, progress]() {
+      TaskResult result;
+      try {
+        result.quadMesh = directional::gui::remesh_with_field(
+            mesh, field, options,
+            [progress](const std::size_t current, const std::size_t total,
+                       const std::string_view task) {
+              progress->update(current, total, task);
+            });
+        result.hasQuadMesh = true;
+        result.message = "Generated a quad mesh from the loaded field.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Field-guided remesh finished");
+      return result;
+    });
     set_status("Remeshing with the loaded field...");
   }
 
   void process_completed_task() {
     if (!task_.valid() ||
-        task_.wait_for(std::chrono::seconds(0)) !=
-            std::future_status::ready) {
+        task_.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
       return;
     }
 
@@ -476,8 +478,7 @@ private:
     }
   }
 
-  static directional::gui::FieldFormat selected_field_format(
-      const int index) {
+  static directional::gui::FieldFormat selected_field_format(const int index) {
     switch (index) {
     case 1:
       return directional::gui::FieldFormat::RawField;
@@ -498,18 +499,92 @@ private:
     }
   }
 
+  void apply_selected_file(const FilePickerTarget target,
+                           const std::filesystem::path &path) {
+    if (target == FilePickerTarget::Mesh) {
+      copy_path_to_buffer(path, meshPath_);
+      set_status("Selected input mesh: " + path.string() + ".");
+    } else if (target == FilePickerTarget::Field) {
+      copy_path_to_buffer(path, fieldInputPath_);
+      set_status("Selected input field: " + path.string() + ".");
+    }
+  }
+
+  void open_fallback_picker(const FilePickerTarget target,
+                            const std::string &title,
+                            const std::filesystem::path &initialPath,
+                            std::vector<std::string> extensions,
+                            const std::string &nativeError) {
+    filePickerTarget_ = target;
+    filePicker_.open(title, initialPath, std::move(extensions));
+    status_ = nativeError.empty()
+                  ? "Using the built-in file picker."
+                  : nativeError + " Using the built-in file picker instead.";
+    error_.clear();
+  }
+
+  void open_mesh_picker() {
+    const std::filesystem::path initialPath(meshPath_.data());
+    const directional::gui::FileDialogResult result =
+        directional::gui::open_native_file_dialog(
+            {"Select input mesh",
+             initialPath,
+             {{"Mesh files", {"*.obj", "*.off"}}}});
+
+    if (result.selected()) {
+      apply_selected_file(FilePickerTarget::Mesh, result.path);
+    } else if (result.status != directional::gui::FileDialogStatus::Cancelled) {
+      open_fallback_picker(FilePickerTarget::Mesh, "Select input mesh",
+                           initialPath, {".obj", ".off"}, result.message);
+    }
+  }
+
+  void open_field_picker() {
+    const std::filesystem::path initialPath(fieldInputPath_.data());
+    const directional::gui::FileDialogResult result =
+        directional::gui::open_native_file_dialog(
+            {"Select input field",
+             initialPath,
+             {{"Directional field files",
+               {"*.rawfield", "*.rosy", "*.vec", "*.txt"}}}});
+
+    if (result.selected()) {
+      apply_selected_file(FilePickerTarget::Field, result.path);
+    } else if (result.status != directional::gui::FileDialogStatus::Cancelled) {
+      open_fallback_picker(FilePickerTarget::Field, "Select input field",
+                           initialPath, {".rawfield", ".rosy", ".vec", ".txt"},
+                           result.message);
+    }
+  }
+
+  void process_file_picker() {
+    const std::optional<std::filesystem::path> selected = filePicker_.draw();
+    if (selected.has_value()) {
+      apply_selected_file(filePickerTarget_, *selected);
+      filePickerTarget_ = FilePickerTarget::None;
+    } else if (!filePicker_.active()) {
+      filePickerTarget_ = FilePickerTarget::None;
+    }
+  }
+
   void draw_ui() {
     process_completed_task();
     const bool isBusy = busy();
 
-    ImGui::PushItemWidth(-1.0F);
     ImGui::TextUnformatted("Directional Quad Remesher");
     ImGui::Separator();
 
     if (ImGui::CollapsingHeader("1. Input mesh",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
+      const float browseWidth = ImGui::CalcTextSize("Browse...").x +
+                                2.0F * ImGui::GetStyle().FramePadding.x;
+      ImGui::SetNextItemWidth(-browseWidth - ImGui::GetStyle().ItemSpacing.x);
       ImGui::InputText("##mesh_path", meshPath_.data(), meshPath_.size());
+      ImGui::SameLine();
       ImGui::BeginDisabled(isBusy);
+      if (ImGui::Button("Browse...##mesh")) {
+        open_mesh_picker();
+      }
       if (ImGui::Button("Load mesh")) {
         guarded_action([this] { load_mesh(); });
       }
@@ -524,36 +599,68 @@ private:
 
     if (ImGui::CollapsingHeader("2. Calculate field",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
-      const char *methods[] = {"Smooth power field",
-                               "Regularized curvature"};
-      ImGui::Combo("Field method", &fieldMethod_, methods, 2);
+      const char *methods[] = {"Smooth power field", "Regularized curvature"};
+      draw_labeled_full_width_control("Field method", [this, &methods] {
+        ImGui::Combo("##field_method", &fieldMethod_, methods, 2);
+      });
 
       if (ImGui::TreeNode("Field options")) {
         ImGui::Checkbox("Normalize directions",
                         &fieldOptions_.normalizeDirections);
         if (fieldMethod_ == 1) {
-          ImGui::InputDouble("Proxy fidelity",
-                             &fieldOptions_.proxyFidelityWeight, 0.05, 0.5,
-                             "%.6g");
-          ImGui::InputDouble("Proxy smoothness",
-                             &fieldOptions_.proxySmoothnessWeight, 0.001,
-                             0.01, "%.6g");
-          ImGui::Checkbox("Preserve boundary",
-                          &fieldOptions_.preserveBoundary);
-          ImGui::InputDouble("Field smoothness",
-                             &fieldOptions_.fieldSmoothnessWeight, 0.1, 1.0,
-                             "%.6g");
-          ImGui::InputDouble("Curvature alignment",
-                             &fieldOptions_.curvatureAlignmentWeight, 0.1,
-                             1.0, "%.6g");
-          ImGui::InputDouble("Minimum confidence",
-                             &fieldOptions_.minimumConfidence, 0.001, 0.01,
-                             "%.6g");
-          ImGui::InputDouble("Confidence exponent",
-                             &fieldOptions_.confidenceExponent, 0.1, 1.0,
-                             "%.6g");
-          ImGui::InputInt("Curvature smoothing iterations",
-                          &fieldOptions_.curvatureSmoothingIterations);
+          draw_labeled_full_width_control(
+              "Proxy fidelity weight (>= 0; typical: 0.1 to 10)", [this] {
+                ImGui::InputDouble("##proxy_fidelity",
+                                   &fieldOptions_.proxyFidelityWeight, 0.05,
+                                   0.5, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Proxy smoothness weight (>= 0; typical: 0.001 to 0.1)", [this] {
+                ImGui::InputDouble("##proxy_smoothness",
+                                   &fieldOptions_.proxySmoothnessWeight, 0.001,
+                                   0.01, "%.6g");
+              });
+
+          ImGui::Checkbox(
+              "Preserve boundary (align the proxy field to boundary edges)",
+              &fieldOptions_.preserveBoundary);
+
+          draw_labeled_full_width_control(
+              "Field smoothness weight (>= 0; typical: 0.1 to 10)", [this] {
+                ImGui::InputDouble("##field_smoothness",
+                                   &fieldOptions_.fieldSmoothnessWeight, 0.1,
+                                   1.0, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Curvature alignment weight (>= 0; typical: 0.1 to 10)", [this] {
+                ImGui::InputDouble("##curvature_alignment",
+                                   &fieldOptions_.curvatureAlignmentWeight, 0.1,
+                                   1.0, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Minimum curvature confidence (0 to 1; typical: 0.001 to 0.1)",
+              [this] {
+                ImGui::InputDouble("##minimum_confidence",
+                                   &fieldOptions_.minimumConfidence, 0.001,
+                                   0.01, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Confidence exponent (> 0; typical: 1 to 4)", [this] {
+                ImGui::InputDouble("##confidence_exponent",
+                                   &fieldOptions_.confidenceExponent, 0.1, 1.0,
+                                   "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Curvature smoothing iterations (>= 0; typical: 0 to 20)",
+              [this] {
+                ImGui::InputInt("##curvature_smoothing_iterations",
+                                &fieldOptions_.curvatureSmoothingIterations);
+              });
         }
         ImGui::TreePop();
       }
@@ -568,10 +675,17 @@ private:
       }
       ImGui::EndDisabled();
 
-      ImGui::InputInt("Field display stride", &fieldSampleStride_);
+      draw_labeled_full_width_control(
+          "Field display stride (>= 1; show one glyph every N faces)", [this] {
+            ImGui::InputInt("##field_display_stride", &fieldSampleStride_);
+          });
       fieldSampleStride_ = std::max(fieldSampleStride_, 1);
-      ImGui::SliderFloat("Glyph length", &glyphLengthRatio_, 0.05F, 1.0F,
-                         "%.2f x average edge");
+
+      draw_labeled_full_width_control(
+          "Glyph length (0.05 to 1.0 x average edge length)", [this] {
+            ImGui::SliderFloat("##glyph_length", &glyphLengthRatio_, 0.05F,
+                               1.0F, "%.2f x average edge");
+          });
       ImGui::BeginDisabled(isBusy || !field_.has_value());
       if (ImGui::Button("Refresh field display")) {
         guarded_action([this] { visualize_field(); });
@@ -581,10 +695,21 @@ private:
 
     if (ImGui::CollapsingHeader("3. Remesh using input field",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
+      const float browseWidth = ImGui::CalcTextSize("Browse...").x +
+                                2.0F * ImGui::GetStyle().FramePadding.x;
+      ImGui::SetNextItemWidth(-browseWidth - ImGui::GetStyle().ItemSpacing.x);
       ImGui::InputText("##field_input_path", fieldInputPath_.data(),
                        fieldInputPath_.size());
+      ImGui::SameLine();
+      ImGui::BeginDisabled(isBusy);
+      if (ImGui::Button("Browse...##field")) {
+        open_field_picker();
+      }
+      ImGui::EndDisabled();
       const char *formats[] = {"Auto", "RawField", "CrossField", "RoSy"};
-      ImGui::Combo("Input field format", &fieldInputFormat_, formats, 4);
+      draw_labeled_full_width_control("Input field format", [this, &formats] {
+        ImGui::Combo("##input_field_format", &fieldInputFormat_, formats, 4);
+      });
       ImGui::BeginDisabled(isBusy || !mesh_.has_value());
       if (ImGui::Button("Load field")) {
         guarded_action([this] { load_field(); });
@@ -604,20 +729,34 @@ private:
 
     if (ImGui::CollapsingHeader("Remesh options",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
-      ImGui::InputDouble("Length ratio", &remeshOptions_.lengthRatio, 0.001,
-                         0.01, "%.6g");
-      ImGui::Checkbox("Integral seamless",
-                      &remeshOptions_.integralSeamless);
-      ImGui::Checkbox("Round seams", &remeshOptions_.roundSeams);
-      ImGui::Checkbox("Verbose backend logging", &remeshOptions_.verbose);
+      draw_labeled_full_width_control(
+          "Target edge-length ratio (> 0; typical: 0.005 to 0.1)", [this] {
+            ImGui::InputDouble("##length_ratio", &remeshOptions_.lengthRatio,
+                               0.001, 0.01, "%.6g");
+          });
+
+      ImGui::Checkbox(
+          "Integral seamless (integer-compatible seamless parameterization)",
+          &remeshOptions_.integralSeamless);
+
+      ImGui::Checkbox(
+          "Round seams (round seam translations to nearby integer offsets)",
+          &remeshOptions_.roundSeams);
+
+      ImGui::Checkbox(
+          "Verbose (print detailed remeshing progress and diagnostics)",
+          &remeshOptions_.verbose);
     }
 
     if (ImGui::CollapsingHeader("Save outputs")) {
       ImGui::TextUnformatted("Field output");
+      ImGui::SetNextItemWidth(-1.0F);
       ImGui::InputText("##field_output_path", fieldOutputPath_.data(),
                        fieldOutputPath_.size());
       const char *formats[] = {"Auto", "RawField", "CrossField", "RoSy"};
-      ImGui::Combo("Output field format", &fieldOutputFormat_, formats, 4);
+      draw_labeled_full_width_control("Output field format", [this, &formats] {
+        ImGui::Combo("##output_field_format", &fieldOutputFormat_, formats, 4);
+      });
       ImGui::BeginDisabled(isBusy || !field_.has_value());
       if (ImGui::Button("Save field")) {
         guarded_action([this] { save_field(); });
@@ -626,6 +765,7 @@ private:
 
       ImGui::Spacing();
       ImGui::TextUnformatted("Quad mesh output (.obj or .off)");
+      ImGui::SetNextItemWidth(-1.0F);
       ImGui::InputText("##remesh_output_path", remeshOutputPath_.data(),
                        remeshOutputPath_.size());
       ImGui::BeginDisabled(isBusy || !quadMesh_.has_value());
@@ -644,8 +784,7 @@ private:
           static_cast<float>(current) / static_cast<float>(total);
       const std::string task = progress_->task_copy();
       ImGui::Separator();
-      ImGui::ProgressBar(std::clamp(fraction, 0.0F, 1.0F),
-                         ImVec2(-1.0F, 0.0F));
+      ImGui::ProgressBar(std::clamp(fraction, 0.0F, 1.0F), ImVec2(-1.0F, 0.0F));
       ImGui::TextWrapped("%s", task.c_str());
     }
 
@@ -657,7 +796,7 @@ private:
       ImGui::TextWrapped("%s", status_.c_str());
     }
 
-    ImGui::PopItemWidth();
+    process_file_picker();
   }
 };
 
