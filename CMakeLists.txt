@@ -18,7 +18,7 @@ option(DIRECTIONAL_BUILD_TESTS "Build Directional unit tests" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(DIRECTIONAL_ENABLE_GMP "Enable GMP support. Will be auto-installed on MSVC if not found" ON)
 option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support. Will be auto-installed on MSVC if not found" OFF)
-option(DIRECTIONAL_ENABLE_PARDISO1
+option(DIRECTIONAL_ENABLE_PARDISO
        "Enable Intel oneMKL PARDISO integration solver. Will be auto-installed on MSVC if not found" ON)
 option(DIRECTIONAL_ENABLE_CUDSS
        "Enable NVIDIA cuDSS integration solver if found" OFF)
