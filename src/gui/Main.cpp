@@ -221,9 +221,21 @@ private:
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       polyscope::removeSurfaceMesh(kInputMeshName);
     }
-    polyscope::registerSurfaceMesh(kInputMeshName, mesh_->vertices,
-                                   mesh_->faces)
-        ->setSurfaceColor({0.72F, 0.75F, 0.80F});
+    auto *inputMesh = polyscope::registerSurfaceMesh(
+        kInputMeshName, mesh_->vertices, mesh_->faces);
+    if (inputMesh == nullptr) {
+      throw std::runtime_error("Failed to register the input mesh viewer.");
+    }
+
+    // Polyscope persists structure state by name. The previous input mesh is
+    // disabled when a quad remesh is shown, so a replacement registered with
+    // the same name can inherit that disabled state. Reset the inherited
+    // display state before framing the newly loaded mesh.
+    inputMesh->resetTransform();
+    inputMesh->centerBoundingBox();
+    inputMesh->setSurfaceColor({0.72F, 0.75F, 0.80F});
+    inputMesh->setTransparency(1.0F);
+    inputMesh->setEnabled(true);
 
     fieldSampleStride_ =
         std::max(1, static_cast<int>(mesh_->faces.rows() / 5000));
@@ -234,6 +246,7 @@ private:
     set_status("Loaded " + std::to_string(mesh_->vertices.rows()) +
                " vertices and " + std::to_string(mesh_->faces.rows()) +
                " triangles.");
+    polyscope::view::resetCameraToHomeView();
   }
 
   void visualize_field() {
