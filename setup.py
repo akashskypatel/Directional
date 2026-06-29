@@ -269,24 +269,87 @@ def _env_bool(name: str, default: bool, *aliases: str) -> bool:
     raise RuntimeError(f"Invalid boolean value for {name}: {raw!r}")
 
 
+def _env_bool_enabled(name: str) -> bool:
+    return name in os.environ and _env_bool(name, False)
+
+
+def _cli_option_was_passed(option_name: str) -> bool:
+    normalized_name = option_name.replace("_", "-")
+    for arg in sys.argv[1:]:
+        if not arg.startswith("--"):
+            continue
+        arg_name = arg[2:].split("=", 1)[0].replace("_", "-")
+        if arg_name == normalized_name:
+            return True
+    return False
+
+
+SOLVER_OPTION_SPECS = (
+    ("PARDISO", "enable_pardiso", "disable_pardiso", "enable-pardiso"),
+    ("CUDSS", "enable_cudss", "disable_cudss", "enable-cudss"),
+    (
+        "SUITESPARSE",
+        "enable_suitesparse",
+        "disable_suitesparse",
+        "enable-suitesparse",
+    ),
+)
+
+
 def _initialize_feature_options(command: object) -> None:
     command.enable_gmp = _env_bool(
         "DIRECTIONAL_ENABLE_GMP", True, "DIRECTIONAL_DIRECTIONAL_ENABLE_GMP"
     )
     command.disable_gmp = False
+
+    explicit_non_pardiso_solver = (
+        _env_bool_enabled("DIRECTIONAL_ENABLE_CUDSS")
+        or _env_bool_enabled("DIRECTIONAL_ENABLE_SUITESPARSE")
+    )
     command.enable_suitesparse = _env_bool("DIRECTIONAL_ENABLE_SUITESPARSE", False)
     command.disable_suitesparse = False
-    command.enable_pardiso = _env_bool("DIRECTIONAL_ENABLE_PARDISO", True)
+    command.enable_pardiso = _env_bool(
+        "DIRECTIONAL_ENABLE_PARDISO", not explicit_non_pardiso_solver
+    )
     command.disable_pardiso = False
     command.enable_cudss = _env_bool("DIRECTIONAL_ENABLE_CUDSS", False)
     command.disable_cudss = False
+
     command.build_cli = _env_bool("DIRECTIONAL_BUILD_CLI", False)
     command.no_build_cli = False
     command.build_gui = _env_bool("DIRECTIONAL_BUILD_GUI", False)
     command.no_build_gui = False
 
 
+def _apply_explicit_solver_selection(command: object) -> None:
+    explicitly_enabled = [
+        spec
+        for spec in SOLVER_OPTION_SPECS
+        if _cli_option_was_passed(spec[3]) and not bool(getattr(command, spec[2]))
+    ]
+    if not explicitly_enabled:
+        return
+
+    selected = explicitly_enabled[0]
+    if len(explicitly_enabled) > 1:
+        warnings.warn(
+            "Multiple integration solver backends were explicitly requested: "
+            f"{', '.join(spec[0] for spec in explicitly_enabled)}. "
+            f"Only {selected[0]} will be enabled. "
+            "Selection priority is PARDISO, CUDSS, SUITESPARSE.",
+            RuntimeWarning,
+            stacklevel=3,
+        )
+
+    selected_enable_attr = selected[1]
+    for _, enable_attr, disable_attr, _ in SOLVER_OPTION_SPECS:
+        setattr(command, enable_attr, enable_attr == selected_enable_attr)
+        setattr(command, disable_attr, False)
+
+
 def _finalize_feature_options(command: object) -> BuildFeatures:
+    _apply_explicit_solver_selection(command)
+
     features = BuildFeatures(
         enable_gmp=bool(command.enable_gmp and not command.disable_gmp),
         enable_suitesparse=bool(

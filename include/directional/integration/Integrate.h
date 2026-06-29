@@ -783,7 +783,7 @@ struct IterativeSolveTimings {
 #ifdef DIRECTIONAL_HAS_CUDSS
       solvedWithOptionalBackend = true;
       optionalBackendSucceeded = cuDssSolver.solve(
-          A, b, x, optionalTimings, intData.verbose);
+          A, b, x, optionalTimings, intData.cuDssSolverOptions, intData.verbose);
 #else
       throw std::runtime_error(
           "integrate(): cuDSS was selected but Directional was built without DIRECTIONAL_ENABLE_CUDSS");

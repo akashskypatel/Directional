@@ -4544,6 +4544,373 @@ public:
     return true;
   }
 
+
+  int prune_non_simple_faces_after_unification() {
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+    const int edgeCount = static_cast<int>(genDcel.edges.size());
+    const int faceCount = static_cast<int>(genDcel.faces.size());
+
+    const auto fail = [&](const char *message, const int index = -1) -> int {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "prune_non_simple_faces_after_unification()]: "
+                  << message;
+
+        if (index >= 0) {
+          std::cerr << " (index " << index << ")";
+        }
+
+        std::cerr << '\n';
+      }
+
+      return -1;
+    };
+
+    const auto collectFaceCycle = [&](const int face,
+                                      std::vector<int> &cycle) -> bool {
+      cycle.clear();
+
+      if (!genDcel.valid_face(face)) {
+        return false;
+      }
+
+      const int start = genDcel.faces[face].halfedge;
+
+      if (!genDcel.valid_halfedge(start)) {
+        return false;
+      }
+
+      std::vector<unsigned char> visited(
+          static_cast<std::size_t>(halfedgeCount),
+          static_cast<unsigned char>(0));
+
+      int current = start;
+
+      for (int step = 0; step < halfedgeCount; ++step) {
+        if (!genDcel.valid_halfedge(current)) {
+          return false;
+        }
+
+        if (visited[static_cast<std::size_t>(current)]) {
+          return current == start && !cycle.empty();
+        }
+
+        const auto &halfedge = genDcel.halfedges[current];
+
+        if (halfedge.face != face) {
+          return false;
+        }
+
+        if (!genDcel.valid_halfedge(halfedge.next) ||
+            !genDcel.valid_halfedge(halfedge.prev)) {
+          return false;
+        }
+
+        if (genDcel.halfedges[halfedge.next].prev != current ||
+            genDcel.halfedges[halfedge.prev].next != current) {
+          return false;
+        }
+
+        visited[static_cast<std::size_t>(current)] =
+            static_cast<unsigned char>(1);
+        cycle.push_back(current);
+
+        current = halfedge.next;
+
+        if (current == start) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    std::vector<int> facesToRemove;
+    std::vector<std::vector<int>> removalCycles;
+    std::vector<unsigned char> faceScheduled(
+        static_cast<std::size_t>(faceCount), static_cast<unsigned char>(0));
+    std::vector<int> cycle;
+
+    facesToRemove.reserve(static_cast<std::size_t>(faceCount));
+    removalCycles.reserve(static_cast<std::size_t>(faceCount));
+
+    const auto scheduleFace = [&](const int face,
+                                  const std::vector<int> &faceCycle) -> bool {
+      if (!genDcel.valid_face_index(face)) {
+        return false;
+      }
+
+      if (faceScheduled[static_cast<std::size_t>(face)]) {
+        return true;
+      }
+
+      faceScheduled[static_cast<std::size_t>(face)] =
+          static_cast<unsigned char>(1);
+      facesToRemove.push_back(face);
+      removalCycles.push_back(faceCycle);
+      return true;
+    };
+
+    for (int face = 0; face < faceCount; ++face) {
+      if (!genDcel.faces[face].valid) {
+        continue;
+      }
+
+      if (!collectFaceCycle(face, cycle)) {
+        return fail("failed to collect face cycle", face);
+      }
+
+      bool removeFace = cycle.size() < 3;
+      bool hasInteriorTwin = false;
+
+      std::set<int> verticesInFace;
+
+      for (const int he : cycle) {
+        const auto &halfedge = genDcel.halfedges[he];
+
+        if (!genDcel.valid_vertex(halfedge.vertex)) {
+          return fail("face cycle references invalid vertex", he);
+        }
+
+        if (!verticesInFace.insert(halfedge.vertex).second) {
+          removeFace = true;
+        }
+
+        const int twin = halfedge.twin;
+
+        if (twin < -1) {
+          return fail("halfedge has invalid negative twin", he);
+        }
+
+        if (twin >= 0) {
+          if (!genDcel.valid_halfedge(twin)) {
+            return fail("halfedge references invalid twin", he);
+          }
+
+          if (genDcel.halfedges[twin].twin != he) {
+            return fail("halfedge twin is not mutual", he);
+          }
+
+          hasInteriorTwin = true;
+
+          if (twin == halfedge.next || twin == halfedge.prev ||
+              genDcel.halfedges[twin].face == face) {
+            removeFace = true;
+          }
+        }
+      }
+
+      if (!hasInteriorTwin) {
+        removeFace = true;
+      }
+
+      if (!removeFace) {
+        continue;
+      }
+
+      if (!scheduleFace(face, cycle)) {
+        return fail("failed to schedule non-simple face", face);
+      }
+    }
+
+    /*
+     * Low-valence vertex unification can also create two surviving halfedges
+     * with the same directed endpoint pair. That is a global non-manifold
+     * condition rather than a property of a single face, so the local
+     * per-face scan above cannot catch it. Remove both incident faces here,
+     * before the final strict check rejects the duplicate directed edge.
+     */
+    struct DirectedEdgeKey {
+      int origin = -1;
+      int target = -1;
+
+      bool operator==(const DirectedEdgeKey &other) const {
+        return origin == other.origin && target == other.target;
+      }
+    };
+
+    struct DirectedEdgeKeyHash {
+      std::size_t operator()(const DirectedEdgeKey &key) const {
+        const std::uint64_t packed =
+            (static_cast<std::uint64_t>(static_cast<std::uint32_t>(key.origin))
+             << 32U) ^
+            static_cast<std::uint32_t>(key.target);
+        return static_cast<std::size_t>(packed ^ (packed >> 33U));
+      }
+    };
+
+    std::unordered_map<DirectedEdgeKey, int, DirectedEdgeKeyHash>
+        directedEdgeOwner;
+    directedEdgeOwner.reserve(static_cast<std::size_t>(halfedgeCount));
+
+    std::vector<int> ownerCycle;
+
+    for (int face = 0; face < faceCount; ++face) {
+      if (!genDcel.faces[face].valid ||
+          faceScheduled[static_cast<std::size_t>(face)]) {
+        continue;
+      }
+
+      if (!collectFaceCycle(face, cycle)) {
+        return fail("failed to collect face cycle for directed edge scan",
+                    face);
+      }
+
+      bool currentFaceScheduled = false;
+
+      for (const int he : cycle) {
+        const auto &halfedge = genDcel.halfedges[he];
+
+        if (!genDcel.valid_vertex(halfedge.vertex) ||
+            !genDcel.valid_halfedge(halfedge.next)) {
+          return fail("invalid halfedge during directed edge scan", he);
+        }
+
+        const int target =
+            genDcel.halfedges[static_cast<std::size_t>(halfedge.next)].vertex;
+
+        if (!genDcel.valid_vertex(target)) {
+          return fail("invalid target during directed edge scan", he);
+        }
+
+        const DirectedEdgeKey key{halfedge.vertex, target};
+        const auto [ownerIt, inserted] = directedEdgeOwner.emplace(key, he);
+
+        if (inserted) {
+          continue;
+        }
+
+        const int ownerHalfedge = ownerIt->second;
+
+        if (!genDcel.valid_halfedge(ownerHalfedge)) {
+          ownerIt->second = he;
+          continue;
+        }
+
+        const int ownerFace = genDcel.halfedges[ownerHalfedge].face;
+
+        if (!genDcel.valid_face(ownerFace)) {
+          ownerIt->second = he;
+          continue;
+        }
+
+        if (ownerFace == face) {
+          if (!scheduleFace(face, cycle)) {
+            return fail("failed to schedule duplicate-directed-edge face",
+                        face);
+          }
+
+          currentFaceScheduled = true;
+          break;
+        }
+
+        if (!faceScheduled[static_cast<std::size_t>(ownerFace)]) {
+          if (!collectFaceCycle(ownerFace, ownerCycle)) {
+            return fail("failed to collect owner duplicate-edge face",
+                        ownerFace);
+          }
+
+          if (!scheduleFace(ownerFace, ownerCycle)) {
+            return fail("failed to schedule owner duplicate-edge face",
+                        ownerFace);
+          }
+        }
+
+        if (!scheduleFace(face, cycle)) {
+          return fail("failed to schedule duplicate-directed-edge face", face);
+        }
+
+        currentFaceScheduled = true;
+        break;
+      }
+
+      if (currentFaceScheduled) {
+        continue;
+      }
+    }
+
+    if (facesToRemove.empty()) {
+      return 0;
+    }
+
+    std::vector<unsigned char> removeHalfedge(
+        static_cast<std::size_t>(halfedgeCount), static_cast<unsigned char>(0));
+
+    for (const auto &faceCycle : removalCycles) {
+      for (const int he : faceCycle) {
+        if (!genDcel.valid_halfedge(he)) {
+          return fail("scheduled face contains invalid halfedge", he);
+        }
+
+        removeHalfedge[static_cast<std::size_t>(he)] =
+            static_cast<unsigned char>(1);
+      }
+    }
+
+    for (const auto &faceCycle : removalCycles) {
+      for (const int he : faceCycle) {
+        const int twin = genDcel.halfedges[he].twin;
+
+        if (twin >= 0 && !removeHalfedge[static_cast<std::size_t>(twin)]) {
+          if (!genDcel.valid_halfedge(twin)) {
+            return fail("removed halfedge has invalid surviving twin", he);
+          }
+
+          if (genDcel.halfedges[twin].twin != he) {
+            return fail("removed halfedge has non-mutual surviving twin", he);
+          }
+
+          genDcel.halfedges[twin].twin = -1;
+        }
+
+        genDcel.halfedges[he].twin = -1;
+        genDcel.halfedges[he].valid = false;
+      }
+    }
+
+    for (const int face : facesToRemove) {
+      if (!genDcel.valid_face_index(face)) {
+        return fail("scheduled face index became invalid", face);
+      }
+
+      genDcel.faces[face].valid = false;
+      genDcel.faces[face].halfedge = -1;
+    }
+
+    for (int edge = 0; edge < edgeCount; ++edge) {
+      genDcel.edges[edge].valid = false;
+      genDcel.edges[edge].halfedge = -1;
+    }
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.halfedges[he].valid) {
+        continue;
+      }
+
+      const int edge = genDcel.halfedges[he].edge;
+
+      if (!genDcel.valid_edge_index(edge)) {
+        return fail("surviving halfedge references out-of-range edge", he);
+      }
+
+      genDcel.edges[edge].valid = true;
+      genDcel.edges[edge].halfedge = he;
+    }
+
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return fail("failed to rebuild representatives after face pruning");
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "prune_non_simple_faces_after_unification()]: removed "
+                << facesToRemove.size()
+                << " non-simple post-unification faces\n";
+    }
+
+    return static_cast<int>(facesToRemove.size());
+  }
+
   bool unify_low_valence_vertices(const SimplifyScratch &scratch,
                                   int &unifyCount) {
     unifyCount = 0;
@@ -4598,6 +4965,38 @@ public:
 
     const auto rollback = [&]() { genDcel = backupDcel; };
 
+    /*
+     * Track outgoing halfedges per vertex for the complete batch. A count-only
+     * cache is not enough: after earlier unifications, a later candidate can
+     * still have the expected low valence while its representative/twin pair is
+     * no longer the complete set of halfedges that originate at that vertex.
+     * Retiring such a vertex leaves a remote halfedge with an invalid endpoint,
+     * which later makes retwin_halfedges() fail.
+     *
+     * The vectors are updated lazily. Before each candidate, stale entries are
+     * filtered by checking that the halfedge is still valid and still has the
+     * candidate as its origin.
+     */
+    std::vector<std::vector<int>> outgoingHalfedges(
+        static_cast<std::size_t>(vertexCount));
+
+    for (int halfedgeIndex = 0;
+         halfedgeIndex < static_cast<int>(genDcel.halfedges.size());
+         ++halfedgeIndex) {
+      if (!genDcel.valid_halfedge(halfedgeIndex))
+        continue;
+
+      const int origin = genDcel.halfedges[halfedgeIndex].vertex;
+
+      if (!genDcel.valid_vertex(origin)) {
+        rollback();
+        return false;
+      }
+
+      outgoingHalfedges[static_cast<std::size_t>(origin)].push_back(
+          halfedgeIndex);
+    }
+
     for (std::size_t candidateIndex = 0;
          candidateIndex < eligibleVertices.size(); ++candidateIndex) {
       const int vertex = eligibleVertices[candidateIndex];
@@ -4627,6 +5026,76 @@ public:
         }
 
         return false;
+      }
+
+      const int prev = genDcel.halfedges[halfedge].prev;
+      const int twin = genDcel.halfedges[halfedge].twin;
+      const int twinNext =
+          twin >= 0 && genDcel.valid_halfedge(twin)
+              ? genDcel.halfedges[static_cast<std::size_t>(twin)].next
+              : -1;
+      const int replacementVertex =
+          genDcel.valid_halfedge(prev)
+              ? genDcel.halfedges[static_cast<std::size_t>(prev)].vertex
+              : -1;
+
+      if (!genDcel.valid_vertex(replacementVertex)) {
+        rollback();
+
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "candidate " << vertex
+                    << " has invalid replacement vertex\n";
+        }
+
+        return false;
+      }
+
+      const int expectedOutgoingCount = twin >= 0 ? 2 : 1;
+
+      std::vector<int> localOutgoing;
+
+      auto &cachedOutgoing =
+          outgoingHalfedges[static_cast<std::size_t>(vertex)];
+
+      for (const int outgoing : cachedOutgoing) {
+        if (genDcel.valid_halfedge(outgoing) &&
+            genDcel.halfedges[static_cast<std::size_t>(outgoing)].vertex ==
+                vertex) {
+          localOutgoing.push_back(outgoing);
+        }
+      }
+
+      cachedOutgoing = localOutgoing;
+
+      const bool hasHalfedge =
+          std::find(localOutgoing.begin(), localOutgoing.end(), halfedge) !=
+          localOutgoing.end();
+      const bool hasTwinNext =
+          twin < 0 ||
+          std::find(localOutgoing.begin(), localOutgoing.end(), twinNext) !=
+              localOutgoing.end();
+
+      if (static_cast<int>(localOutgoing.size()) != expectedOutgoingCount ||
+          !hasHalfedge || !hasTwinNext) {
+        if (mData.verbose) {
+          std::cout << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "skipping vertex " << vertex << " with "
+                    << localOutgoing.size()
+                    << " current outgoing halfedges; local operation expects "
+                    << expectedOutgoingCount << " and owns only halfedge "
+                    << halfedge;
+
+          if (twin >= 0) {
+            std::cout << " plus twin-next " << twinNext;
+          }
+
+          std::cout << '\n';
+        }
+
+        continue;
       }
 
       /*
@@ -4660,6 +5129,10 @@ public:
         return false;
       }
 
+      cachedOutgoing.clear();
+      outgoingHalfedges[static_cast<std::size_t>(replacementVertex)].push_back(
+          halfedge);
+
       ++unifyCount;
 
 #ifndef NDEBUG
@@ -4680,8 +5153,7 @@ public:
     }
 
     /*
-     * One global repair and one strict validation for the completed
-     * transaction.
+     * One global representative repair for the completed transaction.
      */
     if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
       rollback();
@@ -4689,34 +5161,12 @@ public:
     }
 
     /*
-     * Vertex unification changes halfedge endpoints. Even when each local
-     * operation updates its immediate neighborhood, a remote halfedge can
-     * become the reverse-oriented counterpart of another halfedge.
+     * Unifications may create zero-length topological edges by making a
+     * halfedge and its next halfedge originate at the same vertex.
      *
-     * Rebuild twin relationships globally before final validation.
-     */
-    const int finalRetwinned = retwin_halfedges();
-
-    if (finalRetwinned < 0) {
-      if (mData.verbose) {
-        std::cerr << "[Directional::NFunctionMesher::"
-                     "unify_low_valence_vertices()]: "
-                  << "final halfedge retwinning failed\n";
-      }
-
-      return false;
-    }
-
-    if (mData.verbose) {
-      std::cout << "[Directional::NFunctionMesher::"
-                   "unify_low_valence_vertices()]: "
-                << "final retwinning created " << finalRetwinned
-                << " twin pairs\n";
-    }
-
-    /*
-     * Unifications may also create zero-length topological edges. Remove
-     * those before requiring full twin consistency.
+     * Prune these before retwinning. retwin_halfedges() intentionally rejects
+     * source == target endpoints, so running it first makes repair impossible
+     * for exactly the degenerate edges this phase can create.
      */
     std::vector<int> postUnifyOrigin(genDcel.halfedges.size(), -1);
 
@@ -4748,6 +5198,8 @@ public:
     }
 
     if (!prune_remap_created_degenerates(postUnifyOrigin, postUnifyTarget)) {
+      rollback();
+
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
                      "unify_low_valence_vertices()]: "
@@ -4758,16 +5210,22 @@ public:
     }
 
     /*
-     * Degenerate pruning can invalidate edge records, so retwin once more
-     * against the final valid topology.
+     * Vertex unification changes halfedge endpoints. Even when each local
+     * operation updates its immediate neighborhood, a remote halfedge can
+     * become the reverse-oriented counterpart of another halfedge.
+     *
+     * Rebuild twin relationships globally after degenerate cleanup, then run
+     * the strict consistency check below.
      */
-    const int postPruneRetwinned = retwin_halfedges();
+    const int finalRetwinned = retwin_halfedges();
 
-    if (postPruneRetwinned < 0) {
+    if (finalRetwinned < 0) {
+      rollback();
+
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
                      "unify_low_valence_vertices()]: "
-                  << "post-pruning retwinning failed\n";
+                  << "final halfedge retwinning failed\n";
       }
 
       return false;
@@ -4776,11 +5234,79 @@ public:
     if (mData.verbose) {
       std::cout << "[Directional::NFunctionMesher::"
                    "unify_low_valence_vertices()]: "
-                << "post-pruning retwinning created " << postPruneRetwinned
+                << "final retwinning created " << finalRetwinned
                 << " twin pairs\n";
     }
 
+    /*
+     * Removing non-simple faces can make adjacent surviving faces become
+     * boundary-only. Retwinning can also expose duplicate directed edges that
+     * were hidden by invalidated neighbors. Iterate until the cleanup reaches a
+     * fixed point before running the strict final consistency check.
+     */
+    const int initialFaceCount = static_cast<int>(genDcel.faces.size());
+    int totalPrunedNonSimpleFaces = 0;
+
+    for (;;) {
+      const int prunedNonSimpleFaces =
+          prune_non_simple_faces_after_unification();
+
+      if (prunedNonSimpleFaces < 0) {
+        rollback();
+
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "post-unification non-simple face pruning failed\n";
+        }
+
+        return false;
+      }
+
+      if (prunedNonSimpleFaces == 0) {
+        break;
+      }
+
+      totalPrunedNonSimpleFaces += prunedNonSimpleFaces;
+
+      if (totalPrunedNonSimpleFaces > initialFaceCount) {
+        rollback();
+
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "post-unification face pruning did not converge\n";
+        }
+
+        return false;
+      }
+
+      const int postFacePruneRetwinned = retwin_halfedges();
+
+      if (postFacePruneRetwinned < 0) {
+        rollback();
+
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "unify_low_valence_vertices()]: "
+                    << "post-face-pruning retwinning failed\n";
+        }
+
+        return false;
+      }
+
+      if (mData.verbose) {
+        std::cout << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << "post-face-pruning pass removed "
+                  << prunedNonSimpleFaces << " faces and retwinning created "
+                  << postFacePruneRetwinned << " twin pairs\n";
+      }
+    }
+
     if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      rollback();
+
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
                      "unify_low_valence_vertices()]: "
