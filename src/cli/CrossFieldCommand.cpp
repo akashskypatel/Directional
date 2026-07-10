@@ -86,7 +86,9 @@ int run_cross_field(const int argc, char **argv) {
       smoothOptions.normalizeDirections = false;
       regularizedOptions.normalizeDirections = false;
     } else if (option == "--no-matching") {
+      smoothOptions.combDirections = false;
       smoothOptions.computeMatching = false;
+      regularizedOptions.combDirections = false;
       regularizedOptions.computeMatching = false;
     } else if (option == "--output-format") {
       outputFormat = require_value(option);

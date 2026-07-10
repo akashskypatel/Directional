@@ -12,38 +12,71 @@ include(CMakePackageConfigHelpers)
 
 option(BUILD_TUTORIALS "Build Directional tutorials" OFF)
 option(BUILD_PYTHON "Build Python bindings" OFF)
-option(DIRECTIONAL_BUILD_CLI "Build the optional native command line executable" OFF)
-option(DIRECTIONAL_BUILD_GUI "Build the optional Polyscope desktop UI" OFF)
+option(DIRECTIONAL_BUILD_CLI
+       "Build the optional native command line executable" OFF)
+option(DIRECTIONAL_BUILD_GUI
+       "Build the optional Polyscope desktop UI" OFF)
 option(DIRECTIONAL_BUILD_TESTS "Build Directional unit tests" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(DIRECTIONAL_ENABLE_GMP "Enable GMP support. Will be auto-installed on MSVC if not found" ON)
-option(DIRECTIONAL_ENABLE_SUITESPARSE "Enable SuiteSparse support. Will be auto-installed on MSVC if not found" OFF)
-option(DIRECTIONAL_ENABLE_PARDISO
-       "Enable Intel oneMKL PARDISO integration solver. Will be auto-installed on MSVC if not found" ON)
-option(DIRECTIONAL_ENABLE_CUDSS
-       "Enable NVIDIA cuDSS integration solver if found" OFF)
-set(CUDSS_ROOT "" CACHE PATH "Root directory of an NVIDIA cuDSS installation")
+option(
+  DIRECTIONAL_ENABLE_GMP
+  "Enable GMP support. Will be auto-installed on MSVC if not found"
+  ON)
 
-# Only one integration solver backend can be compiled into Directional. Resolve
-# ambiguous requests deterministically before loading any backend dependencies.
+set(_directional_pardiso_default OFF)
+if(WIN32 AND MSVC)
+  set(_directional_pardiso_default ON)
+endif()
+
+option(
+  DIRECTIONAL_ENABLE_PARDISO
+  "Enable Intel oneMKL PARDISO integration solver"
+  ${_directional_pardiso_default})
+option(
+  DIRECTIONAL_ENABLE_CUDSS
+  "Enable NVIDIA cuDSS integration solver"
+  OFF)
+option(
+  DIRECTIONAL_ENABLE_SUITESPARSE
+  "Enable SuiteSparse UMFPACK integration solver"
+  OFF)
+
+unset(_directional_pardiso_default)
+
+set(CUDSS_ROOT
+    ""
+    CACHE PATH "Root directory of an NVIDIA cuDSS installation")
+
+# Only one optional integration solver backend is selected. Eigen SparseLU
+# remains the baseline fallback when SuiteSparse is not compiled.
 set(_directional_requested_solver_backends "")
+
 if(DIRECTIONAL_ENABLE_PARDISO)
   list(APPEND _directional_requested_solver_backends "PARDISO")
 endif()
+
 if(DIRECTIONAL_ENABLE_CUDSS)
   list(APPEND _directional_requested_solver_backends "CUDSS")
 endif()
+
 if(DIRECTIONAL_ENABLE_SUITESPARSE)
   list(APPEND _directional_requested_solver_backends "SUITESPARSE")
 endif()
 
-list(LENGTH _directional_requested_solver_backends
-     _directional_requested_solver_backend_count)
+list(
+  LENGTH _directional_requested_solver_backends
+  _directional_requested_solver_backend_count)
+
 if(_directional_requested_solver_backend_count GREATER 1)
-  list(GET _directional_requested_solver_backends 0
-       _directional_selected_solver_backend)
-  string(JOIN ", " _directional_requested_solver_backend_list
-         ${_directional_requested_solver_backends})
+  list(
+    GET _directional_requested_solver_backends 0
+    _directional_selected_solver_backend)
+
+  string(
+    JOIN ", "
+    _directional_requested_solver_backend_list
+    ${_directional_requested_solver_backends})
+
   message(
     WARNING
       "Multiple integration solver backends were requested: "
@@ -51,22 +84,28 @@ if(_directional_requested_solver_backend_count GREATER 1)
       "${_directional_selected_solver_backend} will be enabled. "
       "Selection priority is PARDISO, CUDSS, SUITESPARSE.")
 
-  set(DIRECTIONAL_ENABLE_PARDISO OFF CACHE BOOL
-      "Enable Intel oneMKL PARDISO integration solver" FORCE)
-  set(DIRECTIONAL_ENABLE_CUDSS OFF CACHE BOOL
-      "Enable NVIDIA cuDSS integration solver" FORCE)
-  set(DIRECTIONAL_ENABLE_SUITESPARSE OFF CACHE BOOL
-      "Enable SuiteSparse integration solver" FORCE)
+  set(
+    DIRECTIONAL_ENABLE_PARDISO OFF
+    CACHE BOOL "Enable Intel oneMKL PARDISO integration solver" FORCE)
+  set(
+    DIRECTIONAL_ENABLE_CUDSS OFF
+    CACHE BOOL "Enable NVIDIA cuDSS integration solver" FORCE)
+  set(
+    DIRECTIONAL_ENABLE_SUITESPARSE OFF
+    CACHE BOOL "Enable SuiteSparse UMFPACK integration solver" FORCE)
 
   if(_directional_selected_solver_backend STREQUAL "PARDISO")
-    set(DIRECTIONAL_ENABLE_PARDISO ON CACHE BOOL
-        "Enable Intel oneMKL PARDISO integration solver" FORCE)
+    set(
+      DIRECTIONAL_ENABLE_PARDISO ON
+      CACHE BOOL "Enable Intel oneMKL PARDISO integration solver" FORCE)
   elseif(_directional_selected_solver_backend STREQUAL "CUDSS")
-    set(DIRECTIONAL_ENABLE_CUDSS ON CACHE BOOL
-        "Enable NVIDIA cuDSS integration solver" FORCE)
-  else()
-    set(DIRECTIONAL_ENABLE_SUITESPARSE ON CACHE BOOL
-        "Enable SuiteSparse integration solver" FORCE)
+    set(
+      DIRECTIONAL_ENABLE_CUDSS ON
+      CACHE BOOL "Enable NVIDIA cuDSS integration solver" FORCE)
+  elseif(_directional_selected_solver_backend STREQUAL "SUITESPARSE")
+    set(
+      DIRECTIONAL_ENABLE_SUITESPARSE ON
+      CACHE BOOL "Enable SuiteSparse UMFPACK integration solver" FORCE)
   endif()
 endif()
 

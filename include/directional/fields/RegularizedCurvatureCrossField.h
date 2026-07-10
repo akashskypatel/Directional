@@ -24,7 +24,6 @@
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
 #include <directional/fields/CrossField.h>
-#include <directional/fields/FieldMatching.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/geometry/FaceCurvature.h>
 #include <directional/geometry/RegularizedProxyMesh.h>
@@ -54,7 +53,13 @@ struct RegularizedCurvatureCrossFieldOptions {
   /// Normalize all extracted raw cross directions.
   bool normalizeDirections = true;
 
-  /// Compute principal matching and singularity diagnostics.
+  /// Reorder the four branches so branch indices are locally coherent.
+  /// Non-trivial topology still requires seams where a global ordering is
+  /// impossible.
+  bool combDirections = true;
+
+  /// Return principal matching and singularity diagnostics.
+  /// Matching is still computed internally when combDirections is true.
   bool computeMatching = true;
 
   /// Optional progress callback.
@@ -276,21 +281,6 @@ inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
   return rawField;
 }
 
-inline CrossFieldResult make_cross_field_result(const CartesianField &rawField,
-                                                const bool computeMatching) {
-  CrossFieldResult result;
-  result.rawField = rawField.extField;
-  result.primaryDirections = rawField.extField.leftCols<3>();
-  result.secondaryDirections = rawField.extField.middleCols<3>(3);
-  if (computeMatching) {
-    result.matching = rawField.matching;
-    result.effort = rawField.effort;
-    result.singularCycles = rawField.singLocalCycles;
-    result.singularIndices = rawField.singIndices;
-  }
-  return result;
-}
-
 } // namespace regularized_cross_field_detail
 
 /**
@@ -397,6 +387,7 @@ extract_regularized_curvature_cross_field(
                     "Solving smooth fallback cross field");
     CrossFieldOptions fallbackOptions;
     fallbackOptions.normalizeDirections = options.normalizeDirections;
+    fallbackOptions.combDirections = options.combDirections;
     fallbackOptions.computeMatching = options.computeMatching;
     const CrossFieldResult fallback = extract_cross_field(mesh, fallbackOptions);
 
@@ -426,15 +417,16 @@ extract_regularized_curvature_cross_field(
   rawField = regularized_cross_field_detail::make_raw_field(
       tangentBundle, power, options.normalizeDirections);
 
-  report_progress(options.progress, 7, stageCount,
-                  options.computeMatching ? "Computing field matching"
-                                          : "Finalizing cross field");
-  if (options.computeMatching) {
-    principal_matching(rawField);
-  }
+  report_progress(
+      options.progress, 7, stageCount,
+      options.combDirections
+          ? "Combing cross-field branches"
+          : (options.computeMatching ? "Computing field matching"
+                                     : "Finalizing cross field"));
 
   RegularizedCurvatureCrossFieldResult result;
-  result.field = make_cross_field_result(rawField, options.computeMatching);
+  result.field = finalize_cross_field_result(
+      rawField, options.combDirections, options.computeMatching);
   result.proxyVertices = proxyResult.vertices;
   result.proxyDisplacement = proxyResult.displacement;
   result.proxyCurvature = std::move(curvature);

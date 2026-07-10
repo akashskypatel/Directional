@@ -15,6 +15,7 @@ FieldData calculate_field(const MeshData &mesh, const FieldOptions &options,
   if (options.method == FieldMethod::Smooth) {
     fields::CrossFieldOptions extraction;
     extraction.normalizeDirections = options.normalizeDirections;
+    extraction.combDirections = true;
     extraction.computeMatching = false;
     extraction.progress = std::move(progress);
     field = fields::extract_cross_field(mesh.vertices, mesh.faces, extraction);
@@ -30,6 +31,7 @@ FieldData calculate_field(const MeshData &mesh, const FieldOptions &options,
     extraction.curvature.smoothingIterations =
         options.curvatureSmoothingIterations;
     extraction.normalizeDirections = options.normalizeDirections;
+    extraction.combDirections = true;
     extraction.computeMatching = false;
     extraction.progress = std::move(progress);
     field = fields::extract_regularized_curvature_cross_field(

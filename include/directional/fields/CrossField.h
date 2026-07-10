@@ -22,6 +22,7 @@
 #include <Eigen/SparseCholesky>
 
 #include <directional/core/CartesianField.h>
+#include <directional/fields/FieldCombing.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/util/Progress.h>
@@ -49,7 +50,13 @@ struct CrossFieldOptions {
   /// Normalize every extracted direction to unit length.
   bool normalizeDirections = true;
 
-  /// Compute edge matching, transport effort, and singularities.
+  /// Reorder the four branches so branch indices are locally coherent.
+  /// Non-trivial topology still requires seams where a global ordering is
+  /// impossible.
+  bool combDirections = true;
+
+  /// Return edge matching, transport effort, and singularity diagnostics.
+  /// Matching is still computed internally when combDirections is true.
   bool computeMatching = true;
 
   /// Optional progress callback invoked by extraction stages.
@@ -84,6 +91,44 @@ struct CrossFieldResult {
   /// Integer singularity numerators; actual indices are singularIndices / 4.
   Eigen::VectorXi singularIndices;
 };
+
+/**
+ * @brief Finalizes a raw cross field for output.
+ *
+ * A degree-4 power field represents an unordered cross. Extracting a fourth
+ * root independently in every face can therefore cyclically relabel the four
+ * branches by multiples of ninety degrees. Combing propagates a coherent
+ * branch ordering over a spanning tree. Residual non-identity matchings are
+ * unavoidable across seams induced by singularities and surface topology.
+ */
+inline CrossFieldResult
+finalize_cross_field_result(CartesianField &rawField,
+                            const bool combDirections,
+                            const bool includeDiagnostics) {
+  CartesianField combedField;
+  CartesianField *outputField = &rawField;
+
+  if (combDirections || includeDiagnostics) {
+    principal_matching(rawField);
+  }
+  if (combDirections) {
+    combing(rawField, combedField);
+    outputField = &combedField;
+  }
+
+  CrossFieldResult result;
+  result.rawField = outputField->extField;
+  result.primaryDirections = outputField->extField.leftCols<3>();
+  result.secondaryDirections = outputField->extField.middleCols<3>(3);
+
+  if (includeDiagnostics) {
+    result.matching = outputField->matching;
+    result.effort = outputField->effort;
+    result.singularCycles = outputField->singLocalCycles;
+    result.singularIndices = outputField->singIndices;
+  }
+  return result;
+}
 
 /**
  * @brief Projects an ambient vector onto a face tangent plane.
@@ -336,26 +381,15 @@ extract_cross_field(const TriMesh &mesh,
   CartesianField rawField =
       make_raw_field(tangentBundle, power, options.normalizeDirections);
 
-  report_progress(options.progress, 4, 4,
-                  options.computeMatching ? "Computing field matching"
-                                          : "Finalizing cross field");
-  if (options.computeMatching) {
-    principal_matching(rawField);
-  }
+  report_progress(
+      options.progress, 4, 4,
+      options.combDirections
+          ? "Combing cross-field branches"
+          : (options.computeMatching ? "Computing field matching"
+                                     : "Finalizing cross field"));
 
-  CrossFieldResult result;
-  result.rawField = rawField.extField;
-  result.primaryDirections = rawField.extField.leftCols<3>();
-  result.secondaryDirections = rawField.extField.middleCols<3>(3);
-
-  if (options.computeMatching) {
-    result.matching = rawField.matching;
-    result.effort = rawField.effort;
-    result.singularCycles = rawField.singLocalCycles;
-    result.singularIndices = rawField.singIndices;
-  }
-
-  return result;
+  return finalize_cross_field_result(
+      rawField, options.combDirections, options.computeMatching);
 }
 
 /**

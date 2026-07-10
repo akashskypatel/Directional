@@ -12,6 +12,7 @@
 #include <filesystem>
 #include <future>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -21,6 +22,8 @@
 #include <utility>
 #include <vector>
 
+#include <Eigen/Geometry>
+#include <glm/gtc/matrix_inverse.hpp>
 #include <imgui.h>
 
 #include <directional/fields/CompareCrossFields.h>
@@ -28,6 +31,7 @@
 #include <polyscope/point_cloud.h>
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
+#include <polyscope/view.h>
 
 namespace {
 
@@ -107,15 +111,42 @@ void draw_labeled_full_width_control(const char *label,
   std::forward<DrawFunction>(drawFunction)();
 }
 
-Eigen::MatrixXd face_centers(const directional::gui::MeshData &mesh) {
-  Eigen::MatrixXd centers(mesh.faces.rows(), 3);
+struct FaceGeometry {
+  Eigen::MatrixXd centers;
+  Eigen::MatrixXd normals;
+};
+
+FaceGeometry face_geometry(const directional::gui::MeshData &mesh) {
+  FaceGeometry geometry{Eigen::MatrixXd(mesh.faces.rows(), 3),
+                        Eigen::MatrixXd::Zero(mesh.faces.rows(), 3)};
   for (Eigen::Index face = 0; face < mesh.faces.rows(); ++face) {
-    centers.row(face) = (mesh.vertices.row(mesh.faces(face, 0)) +
-                         mesh.vertices.row(mesh.faces(face, 1)) +
-                         mesh.vertices.row(mesh.faces(face, 2))) /
-                        3.0;
+    const Eigen::Vector3d first =
+        mesh.vertices.row(mesh.faces(face, 0)).transpose();
+    const Eigen::Vector3d second =
+        mesh.vertices.row(mesh.faces(face, 1)).transpose();
+    const Eigen::Vector3d third =
+        mesh.vertices.row(mesh.faces(face, 2)).transpose();
+    geometry.centers.row(face) = ((first + second + third) / 3.0).transpose();
+
+    Eigen::Vector3d normal = (second - first).cross(third - first);
+    const double normalLength = normal.norm();
+    if (normalLength > std::numeric_limits<double>::epsilon()) {
+      geometry.normals.row(face) = (normal / normalLength).transpose();
+    }
   }
-  return centers;
+  return geometry;
+}
+
+bool matrix_nearly_equal(const glm::mat4 &first, const glm::mat4 &second) {
+  constexpr float tolerance = 1e-6F;
+  for (int column = 0; column < 4; ++column) {
+    for (int row = 0; row < 4; ++row) {
+      if (std::abs(first[column][row] - second[column][row]) > tolerance) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 double average_edge_length(const directional::gui::MeshData &mesh) {
@@ -188,6 +219,11 @@ private:
   int fieldOutputFormat_ = 0;
   int fieldSampleStride_ = 1;
   float glyphLengthRatio_ = 0.35F;
+  float glyphSurfaceOffsetRatio_ = 0.04F;
+  Eigen::MatrixXd fieldGlyphCenters_;
+  Eigen::MatrixXd fieldGlyphNormals_;
+  double fieldGlyphSurfaceOffset_ = 0.0;
+  std::optional<Eigen::Vector3d> lastFieldGlyphCameraPosition_;
   float comparisonHeatmapMaxDegrees_ = 45.0F;
   double comparisonHighErrorThresholdDegrees_ = 20.0;
   bool comparisonRemoveGlobalPhase_ = true;
@@ -240,6 +276,10 @@ private:
     fieldComparison_.reset();
     quadMesh_.reset();
     fieldLabel_.clear();
+    fieldGlyphCenters_.resize(0, 3);
+    fieldGlyphNormals_.resize(0, 3);
+    fieldGlyphSurfaceOffset_ = 0.0;
+    lastFieldGlyphCameraPosition_.reset();
     if (polyscope::hasPointCloud(kFieldGlyphName)) {
       polyscope::removePointCloud(kFieldGlyphName);
     }
@@ -302,6 +342,63 @@ private:
                " triangles.");
   }
 
+  void update_field_glyph_positions(const bool force = false) {
+    if (fieldGlyphCenters_.rows() == 0 ||
+        !polyscope::hasPointCloud(kFieldGlyphName) ||
+        !polyscope::hasSurfaceMesh(kInputMeshName)) {
+      return;
+    }
+
+    auto *cloud = polyscope::getPointCloud(kFieldGlyphName);
+    auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
+    const glm::mat4 meshTransform = inputMesh->getTransform();
+
+    // The point cloud is registered after the mesh and would otherwise receive
+    // its own auto-centering transform. Reuse the mesh transform so that face
+    // centers and vectors remain in exactly the same coordinate frame.
+    const bool transformChanged =
+        !matrix_nearly_equal(cloud->getTransform(), meshTransform);
+    if (transformChanged) {
+      cloud->setTransform(meshTransform);
+    }
+
+    const glm::vec3 cameraWorld = polyscope::view::getCameraWorldPosition();
+    glm::vec4 cameraObject =
+        glm::inverse(meshTransform) * glm::vec4(cameraWorld, 1.0F);
+    if (std::abs(cameraObject.w) > std::numeric_limits<float>::epsilon()) {
+      cameraObject /= cameraObject.w;
+    }
+    const Eigen::Vector3d camera(cameraObject.x, cameraObject.y,
+                                 cameraObject.z);
+
+    const double positionTolerance =
+        std::max(fieldGlyphSurfaceOffset_ * 1e-4, 1e-12);
+    if (!force && !transformChanged &&
+        lastFieldGlyphCameraPosition_.has_value() &&
+        (camera - *lastFieldGlyphCameraPosition_).squaredNorm() <=
+            positionTolerance * positionTolerance) {
+      return;
+    }
+
+    Eigen::MatrixXd displayCenters = fieldGlyphCenters_;
+    for (Eigen::Index sample = 0; sample < displayCenters.rows(); ++sample) {
+      const Eigen::Vector3d normal =
+          fieldGlyphNormals_.row(sample).transpose();
+      if (normal.squaredNorm() == 0.0) {
+        continue;
+      }
+
+      const Eigen::Vector3d center =
+          fieldGlyphCenters_.row(sample).transpose();
+      const double side = normal.dot(camera - center) >= 0.0 ? 1.0 : -1.0;
+      displayCenters.row(sample) =
+          (center + side * fieldGlyphSurfaceOffset_ * normal).transpose();
+    }
+
+    cloud->updatePointPositions(displayCenters);
+    lastFieldGlyphCameraPosition_ = camera;
+  }
+
   void visualize_field() {
     if (!mesh_.has_value() || !field_.has_value()) {
       return;
@@ -315,15 +412,17 @@ private:
     const int stride = std::max(fieldSampleStride_, 1);
     const Eigen::Index sampleCount =
         (mesh_->faces.rows() + stride - 1) / stride;
-    const Eigen::MatrixXd centers = face_centers(*mesh_);
+    const FaceGeometry geometry = face_geometry(*mesh_);
     Eigen::MatrixXd sampledCenters(sampleCount, 3);
+    Eigen::MatrixXd sampledNormals(sampleCount, 3);
     std::array<Eigen::MatrixXd, 4> sampledVectors{
         Eigen::MatrixXd(sampleCount, 3), Eigen::MatrixXd(sampleCount, 3),
         Eigen::MatrixXd(sampleCount, 3), Eigen::MatrixXd(sampleCount, 3)};
 
     Eigen::Index sample = 0;
     for (Eigen::Index face = 0; face < mesh_->faces.rows(); face += stride) {
-      sampledCenters.row(sample) = centers.row(face);
+      sampledCenters.row(sample) = geometry.centers.row(face);
+      sampledNormals.row(sample) = geometry.normals.row(face);
       for (int branch = 0; branch < 4; ++branch) {
         sampledVectors[branch].row(sample) =
             field_->raw.block(face, 3 * branch, 1, 3);
@@ -331,18 +430,33 @@ private:
       ++sample;
     }
 
+    const double averageEdgeLength = average_edge_length(*mesh_);
     const double scale =
-        static_cast<double>(glyphLengthRatio_) * average_edge_length(*mesh_);
+        static_cast<double>(glyphLengthRatio_) * averageEdgeLength;
+    const double vectorRadius = std::max(scale * 0.025, 1e-12);
+    fieldGlyphSurfaceOffset_ =
+        static_cast<double>(glyphSurfaceOffsetRatio_) * averageEdgeLength;
+    fieldGlyphCenters_ = sampledCenters;
+    fieldGlyphNormals_ = sampledNormals;
+    lastFieldGlyphCameraPosition_.reset();
+
     auto *cloud =
         polyscope::registerPointCloud(kFieldGlyphName, sampledCenters);
     cloud->setPointRadius(0.0);
+    if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+      cloud->setTransform(
+          polyscope::getSurfaceMesh(kInputMeshName)->getTransform());
+    }
     for (int branch = 0; branch < 4; ++branch) {
       cloud
           ->addVectorQuantity("Branch " + std::to_string(branch),
                               sampledVectors[branch] * scale,
                               polyscope::VectorType::AMBIENT)
+          ->setVectorRadius(vectorRadius, false)
           ->setEnabled(true);
     }
+
+    update_field_glyph_positions(true);
   }
 
   void visualize_quad_mesh() {
@@ -775,6 +889,7 @@ void save_quad_mesh() {
 
   void draw_ui() {
     process_completed_task();
+    update_field_glyph_positions();
     const bool isBusy = busy();
 
     ImGui::TextUnformatted("Directional Quad Remesher");
@@ -931,6 +1046,12 @@ void save_quad_mesh() {
           "Glyph length (0.05 to 1.0 x average edge length)", [this] {
             ImGui::SliderFloat("##glyph_length", &glyphLengthRatio_, 0.05F,
                                1.0F, "%.2f x average edge");
+          });
+      draw_labeled_full_width_control(
+          "Glyph surface offset (0 to 0.2 x average edge length)", [this] {
+            ImGui::SliderFloat("##glyph_surface_offset",
+                               &glyphSurfaceOffsetRatio_, 0.0F, 0.2F,
+                               "%.3f x average edge");
           });
       ImGui::BeginDisabled(isBusy || !field_.has_value());
       if (ImGui::Button("Refresh field display")) {

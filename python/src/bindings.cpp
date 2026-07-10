@@ -124,6 +124,8 @@ PYBIND11_MODULE(_directional, module) {
       .def_readwrite(
           "normalizeDirections",
           &directional::fields::CrossFieldOptions::normalizeDirections)
+      .def_readwrite("combDirections",
+                     &directional::fields::CrossFieldOptions::combDirections)
       .def_readwrite("computeMatching",
                      &directional::fields::CrossFieldOptions::computeMatching);
 
@@ -239,6 +241,10 @@ PYBIND11_MODULE(_directional, module) {
           "normalizeDirections",
           &directional::fields::RegularizedCurvatureCrossFieldOptions::
               normalizeDirections)
+      .def_readwrite(
+          "combDirections",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              combDirections)
       .def_readwrite(
           "computeMatching",
           &directional::fields::RegularizedCurvatureCrossFieldOptions::
