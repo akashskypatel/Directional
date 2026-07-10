@@ -91,7 +91,7 @@ add_library(Directional::directional ALIAS directional)
 
 set_target_properties(directional PROPERTIES OUTPUT_NAME directional
                                              WINDOWS_EXPORT_ALL_SYMBOLS ON)
-target_compile_definitions(directional INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
+target_compile_definitions(directional INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
 target_include_directories(
   directional
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -224,7 +224,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
   set_target_properties(directional_cli_io PROPERTIES POSITION_INDEPENDENT_CODE ON)
   target_link_libraries(directional_cli_io PUBLIC Directional::directional)
   target_compile_features(directional_cli_io PUBLIC cxx_std_20)
-  target_compile_definitions(directional_cli_io INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
+  target_compile_definitions(directional_cli_io INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON)
     add_library(
       directional_cli_backend STATIC
@@ -232,6 +232,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
       src/cli/Usage.cpp
       src/cli/InfoCommand.cpp
       src/cli/CrossFieldCommand.cpp
+      src/cli/SimplifyCommand.cpp
       src/cli/RemeshCommand.cpp)
     add_library(Directional::directional_cli_backend ALIAS directional_cli_backend)
     set_target_properties(directional_cli_backend PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -248,6 +249,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
     if(MSVC)
       set_source_files_properties(
         src/cli/CrossFieldCommand.cpp
+        src/cli/SimplifyCommand.cpp
         src/cli/RemeshCommand.cpp
         PROPERTIES COMPILE_OPTIONS "/bigobj")
     endif()
@@ -293,6 +295,8 @@ if(DIRECTIONAL_BUILD_GUI)
       src/gui/Main.cpp
       src/gui/FilePicker.cpp
       src/gui/GuiBackend.cpp
+      src/gui/GuiSimplify.cpp
+      src/gui/SessionLog.cpp
       src/gui/GuiField.cpp
       src/gui/GuiRemesh.cpp)
 
@@ -386,7 +390,7 @@ if(BUILD_PYTHON)
     _directional PRIVATE Directional::directional
                          Directional::directional_cli_backend)
   target_compile_features(_directional PRIVATE cxx_std_20)
-  target_compile_definitions(_directional INTERFACE DIRECTIONAL_VERSION="\"${CMAKE_PROJECT_VERSION}\"")
+  target_compile_definitions(_directional INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(DIRECTIONAL_ENABLE_PARDISO)
     _directional_copy_pardiso_runtime_to_target(_directional)
   endif()

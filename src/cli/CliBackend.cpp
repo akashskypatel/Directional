@@ -33,6 +33,12 @@ int dispatch(const int argc, char **argv) {
   if (command == "convert-field") {
     return run_convert_field(argc, argv);
   }
+  if (command == "compare-fields") {
+    return run_compare_fields(argc, argv);
+  }
+  if (command == "simplify") {
+    return run_simplify(argc, argv);
+  }
   if (command == "remesh") {
     return run_remesh(argc, argv);
   }

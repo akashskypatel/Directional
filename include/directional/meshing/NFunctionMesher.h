@@ -32,6 +32,7 @@
 #include <directional/core/DCEL.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
+#include <directional/meshing/TriFlowSimplificationDCEL.h>
 #include <directional/numerics/ExactGeometry.h>
 
 
@@ -4545,6 +4546,650 @@ public:
   }
 
 
+
+  int count_valid_boundary_halfedges() const {
+    int boundaryHalfedges = 0;
+
+    for (const auto &halfedge : genDcel.halfedges) {
+      if (halfedge.valid && halfedge.twin == -1) {
+        ++boundaryHalfedges;
+      }
+    }
+
+    return boundaryHalfedges;
+  }
+
+  int count_valid_face_components() const {
+    const int faceCount = static_cast<int>(genDcel.faces.size());
+    std::vector<unsigned char> visited(static_cast<std::size_t>(faceCount),
+                                       static_cast<unsigned char>(0));
+
+    int components = 0;
+
+    for (int seedFace = 0; seedFace < faceCount; ++seedFace) {
+      if (!genDcel.valid_face(seedFace) ||
+          visited[static_cast<std::size_t>(seedFace)]) {
+        continue;
+      }
+
+      ++components;
+      std::queue<int> pending;
+      pending.push(seedFace);
+      visited[static_cast<std::size_t>(seedFace)] =
+          static_cast<unsigned char>(1);
+
+      while (!pending.empty()) {
+        const int face = pending.front();
+        pending.pop();
+
+        if (!genDcel.valid_face(face)) {
+          continue;
+        }
+
+        const int start = genDcel.faces[static_cast<std::size_t>(face)].halfedge;
+
+        if (!genDcel.valid_halfedge(start)) {
+          continue;
+        }
+
+        int current = start;
+        int guard = 0;
+        const int halfedgeLimit =
+            static_cast<int>(genDcel.halfedges.size()) + 1;
+
+        do {
+          if (!genDcel.valid_halfedge(current)) {
+            break;
+          }
+
+          const auto &halfedge =
+              genDcel.halfedges[static_cast<std::size_t>(current)];
+          const int twin = halfedge.twin;
+
+          if (genDcel.valid_halfedge(twin)) {
+            const int adjacentFace =
+                genDcel.halfedges[static_cast<std::size_t>(twin)].face;
+
+            if (genDcel.valid_face(adjacentFace) &&
+                !visited[static_cast<std::size_t>(adjacentFace)]) {
+              visited[static_cast<std::size_t>(adjacentFace)] =
+                  static_cast<unsigned char>(1);
+              pending.push(adjacentFace);
+            }
+          }
+
+          current = halfedge.next;
+          ++guard;
+        } while (current != start && guard <= halfedgeLimit);
+      }
+    }
+
+    return components;
+  }
+
+  bool prune_extra_valid_face_components(const int targetComponentCount,
+                                         const char *context) {
+    if (targetComponentCount <= 0) {
+      return true;
+    }
+
+    const int faceCount = static_cast<int>(genDcel.faces.size());
+    std::vector<unsigned char> visited(static_cast<std::size_t>(faceCount),
+                                       static_cast<unsigned char>(0));
+    std::vector<std::vector<int>> components;
+
+    for (int seedFace = 0; seedFace < faceCount; ++seedFace) {
+      if (!genDcel.valid_face(seedFace) ||
+          visited[static_cast<std::size_t>(seedFace)]) {
+        continue;
+      }
+
+      std::vector<int> component;
+      std::queue<int> pending;
+      pending.push(seedFace);
+      visited[static_cast<std::size_t>(seedFace)] =
+          static_cast<unsigned char>(1);
+
+      while (!pending.empty()) {
+        const int face = pending.front();
+        pending.pop();
+
+        if (!genDcel.valid_face(face)) {
+          continue;
+        }
+
+        component.push_back(face);
+
+        const int start = genDcel.faces[static_cast<std::size_t>(face)].halfedge;
+        if (!genDcel.valid_halfedge(start)) {
+          continue;
+        }
+
+        int current = start;
+        int guard = 0;
+        const int halfedgeLimit =
+            static_cast<int>(genDcel.halfedges.size()) + 1;
+
+        do {
+          if (!genDcel.valid_halfedge(current)) {
+            break;
+          }
+
+          const auto &halfedge =
+              genDcel.halfedges[static_cast<std::size_t>(current)];
+          const int twin = halfedge.twin;
+
+          if (genDcel.valid_halfedge(twin)) {
+            const int adjacentFace =
+                genDcel.halfedges[static_cast<std::size_t>(twin)].face;
+
+            if (genDcel.valid_face(adjacentFace) &&
+                !visited[static_cast<std::size_t>(adjacentFace)]) {
+              visited[static_cast<std::size_t>(adjacentFace)] =
+                  static_cast<unsigned char>(1);
+              pending.push(adjacentFace);
+            }
+          }
+
+          current = halfedge.next;
+          ++guard;
+        } while (current != start && guard <= halfedgeLimit);
+      }
+
+      if (!component.empty()) {
+        components.push_back(std::move(component));
+      }
+    }
+
+    if (static_cast<int>(components.size()) <= targetComponentCount) {
+      return true;
+    }
+
+    std::sort(components.begin(), components.end(),
+              [](const std::vector<int> &lhs, const std::vector<int> &rhs) {
+                return lhs.size() > rhs.size();
+              });
+
+    std::vector<unsigned char> removeFace(
+        static_cast<std::size_t>(faceCount), static_cast<unsigned char>(0));
+
+    int removedComponents = 0;
+    int removedFaces = 0;
+
+    for (std::size_t componentIndex =
+             static_cast<std::size_t>(targetComponentCount);
+         componentIndex < components.size(); ++componentIndex) {
+      ++removedComponents;
+      for (const int face : components[componentIndex]) {
+        if (genDcel.valid_face(face)) {
+          removeFace[static_cast<std::size_t>(face)] =
+              static_cast<unsigned char>(1);
+          ++removedFaces;
+        }
+      }
+    }
+
+    if (removedFaces == 0) {
+      return true;
+    }
+
+    const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
+    std::vector<unsigned char> removeHalfedge(
+        static_cast<std::size_t>(halfedgeCount), static_cast<unsigned char>(0));
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.valid_halfedge(he)) {
+        continue;
+      }
+
+      const int face = genDcel.halfedges[static_cast<std::size_t>(he)].face;
+      if (face >= 0 && face < faceCount &&
+          removeFace[static_cast<std::size_t>(face)]) {
+        removeHalfedge[static_cast<std::size_t>(he)] =
+            static_cast<unsigned char>(1);
+      }
+    }
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!removeHalfedge[static_cast<std::size_t>(he)]) {
+        continue;
+      }
+
+      const int twin = genDcel.halfedges[static_cast<std::size_t>(he)].twin;
+      if (genDcel.valid_halfedge(twin) &&
+          !removeHalfedge[static_cast<std::size_t>(twin)]) {
+        genDcel.halfedges[static_cast<std::size_t>(twin)].twin = -1;
+      }
+
+      genDcel.halfedges[static_cast<std::size_t>(he)].valid = false;
+      genDcel.halfedges[static_cast<std::size_t>(he)].twin = -1;
+    }
+
+    for (int face = 0; face < faceCount; ++face) {
+      if (removeFace[static_cast<std::size_t>(face)]) {
+        genDcel.faces[static_cast<std::size_t>(face)].valid = false;
+        genDcel.faces[static_cast<std::size_t>(face)].halfedge = -1;
+      }
+    }
+
+    for (auto &edge : genDcel.edges) {
+      edge.valid = false;
+      edge.halfedge = -1;
+    }
+
+    for (int he = 0; he < halfedgeCount; ++he) {
+      if (!genDcel.valid_halfedge(he)) {
+        continue;
+      }
+
+      const int edge = genDcel.halfedges[static_cast<std::size_t>(he)].edge;
+      if (genDcel.valid_edge_index(edge)) {
+        genDcel.edges[static_cast<std::size_t>(edge)].valid = true;
+        genDcel.edges[static_cast<std::size_t>(edge)].halfedge = he;
+      }
+    }
+
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "prune_extra_valid_face_components()]: "
+                  << "representative rebuild failed";
+        if (context != nullptr && context[0] != '\0') {
+          std::cerr << " after " << context;
+        }
+        std::cerr << '\n';
+      }
+      return false;
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "prune_extra_valid_face_components()]: removed "
+                << removedComponents << " detached components containing "
+                << removedFaces << " faces";
+      if (context != nullptr && context[0] != '\0') {
+        std::cout << " after " << context;
+      }
+      std::cout << '\n';
+    }
+
+    return true;
+  }
+
+  bool fill_generated_boundary_holes(const char *context) {
+    const int originalHalfedgeCount =
+        static_cast<int>(genDcel.halfedges.size());
+
+    std::vector<unsigned char> visited(
+        static_cast<std::size_t>(originalHalfedgeCount),
+        static_cast<unsigned char>(0));
+
+    int filledLoops = 0;
+    int filledHalfedges = 0;
+
+    const auto fail = [&](const char *message, const int index = -1) -> bool {
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "fill_generated_boundary_holes()]: "
+                  << message;
+
+        if (index >= 0) {
+          std::cerr << " (index " << index << ")";
+        }
+
+        if (context != nullptr && context[0] != '\0') {
+          std::cerr << " during " << context;
+        }
+
+        std::cerr << '\n';
+      }
+
+      return false;
+    };
+
+    const auto halfedgeTarget = [&](const int halfedge,
+                                    int &target) -> bool {
+      if (!genDcel.valid_halfedge(halfedge)) {
+        return false;
+      }
+
+      const int next = genDcel.halfedges[static_cast<std::size_t>(halfedge)].next;
+
+      if (!genDcel.valid_halfedge(next)) {
+        return false;
+      }
+
+      target = genDcel.halfedges[static_cast<std::size_t>(next)].vertex;
+      return genDcel.valid_vertex(target);
+    };
+
+    const auto fillSimpleBoundaryCycle =
+        [&](const std::vector<int> &boundaryCycle) -> bool {
+      const std::size_t degree = boundaryCycle.size();
+
+      if (degree < 3) {
+        return fail("boundary fill cycle has fewer than three halfedges",
+                    degree == 0 ? -1 : boundaryCycle.front());
+      }
+
+      /*
+       * Validate that the collected boundary halfedges form one vertex-
+       * contiguous simple cycle. The decomposition step below guarantees no
+       * repeated vertices for normal cases, but this validation keeps the
+       * mutation below transactional and easy to audit.
+       */
+      for (std::size_t i = 0; i < degree; ++i) {
+        const int boundary = boundaryCycle[i];
+
+        if (!genDcel.valid_halfedge(boundary)) {
+          return fail("boundary fill cycle references an invalid halfedge",
+                      boundary);
+        }
+
+        const auto &boundaryHalfedge =
+            genDcel.halfedges[static_cast<std::size_t>(boundary)];
+
+        if (boundaryHalfedge.twin != -1) {
+          return fail("boundary fill cycle references a non-boundary halfedge",
+                      boundary);
+        }
+
+        const int origin = boundaryHalfedge.vertex;
+        int target = -1;
+
+        if (!genDcel.valid_vertex(origin) ||
+            !halfedgeTarget(boundary, target)) {
+          return fail("boundary fill cycle has invalid endpoints", boundary);
+        }
+
+        if (origin == target) {
+          return fail("boundary fill cycle contains a zero-length edge",
+                      boundary);
+        }
+
+        const int nextBoundary =
+            boundaryCycle[static_cast<std::size_t>((i + 1) % degree)];
+        const int nextOrigin =
+            genDcel.halfedges[static_cast<std::size_t>(nextBoundary)].vertex;
+
+        if (target != nextOrigin) {
+          return fail("boundary fill cycle is not vertex-contiguous",
+                      boundary);
+        }
+      }
+
+      const int newFace = static_cast<int>(genDcel.faces.size());
+      genDcel.faces.emplace_back();
+      genDcel.faces[static_cast<std::size_t>(newFace)].ID = newFace;
+      genDcel.faces[static_cast<std::size_t>(newFace)].valid = true;
+      genDcel.faces[static_cast<std::size_t>(newFace)].data = false;
+
+      std::vector<int> fillHalfedges(degree, -1);
+
+      for (std::size_t i = 0; i < degree; ++i) {
+        const int boundary = boundaryCycle[i];
+
+        const int origin =
+            genDcel.halfedges[static_cast<std::size_t>(boundary)].vertex;
+
+        int target = -1;
+        if (!halfedgeTarget(boundary, target)) {
+          return fail("boundary fill cycle has invalid target", boundary);
+        }
+
+        const int fill = static_cast<int>(genDcel.halfedges.size());
+        genDcel.halfedges.emplace_back();
+
+        auto &fillHalfedge = genDcel.halfedges.back();
+        fillHalfedge.ID = fill;
+        fillHalfedge.valid = true;
+
+        /*
+         * The new halfedge is the opposite-oriented twin of the boundary
+         * halfedge, so it starts at the boundary target and ends at the
+         * boundary origin.
+         */
+        fillHalfedge.vertex = target;
+        fillHalfedge.face = newFace;
+        fillHalfedge.edge =
+            genDcel.halfedges[static_cast<std::size_t>(boundary)].edge;
+        fillHalfedge.twin = boundary;
+        fillHalfedge.data =
+            genDcel.halfedges[static_cast<std::size_t>(boundary)].data;
+
+        genDcel.halfedges[static_cast<std::size_t>(boundary)].twin = fill;
+
+        /*
+         * Keep the edge representative valid for later consistency checks and
+         * compaction. Boundary edges can legitimately have used the original
+         * halfedge as their representative.
+         */
+        const int edge = fillHalfedge.edge;
+        if (edge >= 0 && edge < static_cast<int>(genDcel.edges.size()) &&
+            genDcel.edges[static_cast<std::size_t>(edge)].valid) {
+          genDcel.edges[static_cast<std::size_t>(edge)].halfedge = boundary;
+        }
+
+        (void)origin;
+        fillHalfedges[i] = fill;
+      }
+
+      /*
+       * The fill cycle runs in the reverse order of the boundary cycle because
+       * every fill halfedge is the twin of its boundary halfedge. Connecting by
+       * cyclic order instead of endpoint lookup is essential for bow-tie /
+       * repeated-vertex boundary walks, where endpoint lookup is ambiguous.
+       */
+      for (std::size_t i = 0; i < degree; ++i) {
+        const int fill = fillHalfedges[i];
+        const int nextFill =
+            fillHalfedges[static_cast<std::size_t>((i + degree - 1) % degree)];
+        const int prevFill =
+            fillHalfedges[static_cast<std::size_t>((i + 1) % degree)];
+
+        genDcel.halfedges[static_cast<std::size_t>(fill)].next = nextFill;
+        genDcel.halfedges[static_cast<std::size_t>(fill)].prev = prevFill;
+      }
+
+      genDcel.faces[static_cast<std::size_t>(newFace)].halfedge =
+          fillHalfedges.front();
+
+      ++filledLoops;
+      filledHalfedges += static_cast<int>(degree);
+      return true;
+    };
+
+    const auto decomposeBoundaryWalk =
+        [&](const std::vector<int> &boundaryWalk,
+            std::vector<std::vector<int>> &simpleCycles) -> bool {
+      simpleCycles.clear();
+
+      if (boundaryWalk.size() < 3) {
+        return fail("boundary loop has fewer than three halfedges",
+                    boundaryWalk.empty() ? -1 : boundaryWalk.front());
+      }
+
+      std::vector<int> pathHalfedges;
+      std::vector<int> pathVertices;
+      std::unordered_map<int, std::size_t> vertexPosition;
+
+      pathHalfedges.reserve(boundaryWalk.size());
+      pathVertices.reserve(boundaryWalk.size() + 1U);
+      vertexPosition.reserve(boundaryWalk.size() + 1U);
+
+      for (const int boundary : boundaryWalk) {
+        if (!genDcel.valid_halfedge(boundary)) {
+          return fail("boundary decomposition reached an invalid halfedge",
+                      boundary);
+        }
+
+        const int origin =
+            genDcel.halfedges[static_cast<std::size_t>(boundary)].vertex;
+
+        int target = -1;
+        if (!genDcel.valid_vertex(origin) ||
+            !halfedgeTarget(boundary, target)) {
+          return fail("boundary decomposition found invalid endpoints",
+                      boundary);
+        }
+
+        if (pathVertices.empty()) {
+          pathVertices.push_back(origin);
+          vertexPosition.emplace(origin, 0U);
+        } else if (pathVertices.back() != origin) {
+          return fail("boundary walk is not vertex-contiguous", boundary);
+        }
+
+        pathHalfedges.push_back(boundary);
+
+        const auto existing = vertexPosition.find(target);
+        if (existing == vertexPosition.end()) {
+          pathVertices.push_back(target);
+          vertexPosition.emplace(target, pathVertices.size() - 1U);
+          continue;
+        }
+
+        const std::size_t cycleBegin = existing->second;
+        if (cycleBegin >= pathHalfedges.size()) {
+          return fail("boundary decomposition found an invalid repeat vertex",
+                      boundary);
+        }
+
+        std::vector<int> cycle(pathHalfedges.begin() +
+                                   static_cast<std::ptrdiff_t>(cycleBegin),
+                               pathHalfedges.end());
+
+        if (cycle.size() < 3) {
+          return fail("boundary decomposition produced a degenerate cycle",
+                      boundary);
+        }
+
+        simpleCycles.push_back(std::move(cycle));
+
+        /*
+         * Remove the closed sub-cycle from the active path. Vertices after the
+         * repeated vertex belonged only to that sub-cycle; the repeated vertex
+         * remains as the end of the current open path.
+         */
+        for (std::size_t i = cycleBegin + 1U; i < pathVertices.size(); ++i) {
+          vertexPosition.erase(pathVertices[i]);
+        }
+
+        pathVertices.resize(cycleBegin + 1U);
+        pathHalfedges.resize(cycleBegin);
+      }
+
+      if (!pathHalfedges.empty()) {
+        return fail("boundary decomposition left an open path",
+                    pathHalfedges.back());
+      }
+
+      if (simpleCycles.empty()) {
+        return fail("boundary decomposition produced no fill cycles",
+                    boundaryWalk.front());
+      }
+
+      return true;
+    };
+
+    for (int seed = 0; seed < originalHalfedgeCount; ++seed) {
+      if (!genDcel.valid_halfedge(seed) ||
+          genDcel.halfedges[static_cast<std::size_t>(seed)].twin != -1 ||
+          visited[static_cast<std::size_t>(seed)]) {
+        continue;
+      }
+
+      std::vector<int> boundaryLoop;
+      int current = seed;
+      bool closed = false;
+
+      for (int step = 0; step <= originalHalfedgeCount; ++step) {
+        if (!genDcel.valid_halfedge(current)) {
+          return fail("boundary loop reached an invalid halfedge", current);
+        }
+
+        if (current < 0 || current >= originalHalfedgeCount) {
+          return fail("boundary loop reached a newly-created halfedge",
+                      current);
+        }
+
+        if (genDcel.halfedges[static_cast<std::size_t>(current)].twin != -1) {
+          return fail("boundary loop reached a non-boundary halfedge",
+                      current);
+        }
+
+        if (visited[static_cast<std::size_t>(current)]) {
+          return fail("boundary loop merged into an already visited "
+                      "boundary component",
+                      current);
+        }
+
+        visited[static_cast<std::size_t>(current)] =
+            static_cast<unsigned char>(1);
+        boundaryLoop.push_back(current);
+
+        int nextBoundary = -1;
+        if (!next_boundary_halfedge(current, nextBoundary,
+                                    "fill_generated_boundary_holes")) {
+          return fail("failed to advance along boundary loop", current);
+        }
+
+        if (nextBoundary == seed) {
+          closed = true;
+          break;
+        }
+
+        current = nextBoundary;
+      }
+
+      if (!closed) {
+        return fail("boundary loop did not close", seed);
+      }
+
+      std::vector<std::vector<int>> simpleCycles;
+      if (!decomposeBoundaryWalk(boundaryLoop, simpleCycles)) {
+        return false;
+      }
+
+      for (const auto &cycle : simpleCycles) {
+        if (!fillSimpleBoundaryCycle(cycle)) {
+          return false;
+        }
+      }
+    }
+
+    if (filledLoops == 0) {
+      return true;
+    }
+
+    if (!genDcel.rebuild_representative_halfedges(mData.verbose, true)) {
+      return fail("representative rebuild failed after boundary fill");
+    }
+
+    if (count_valid_boundary_halfedges() != 0) {
+      return fail("boundary fill left boundary halfedges");
+    }
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return fail("consistency check failed after boundary fill");
+    }
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "fill_generated_boundary_holes()]: filled "
+                << filledLoops << " boundary loops using " << filledHalfedges
+                << " halfedges";
+
+      if (context != nullptr && context[0] != '\0') {
+        std::cout << " after " << context;
+      }
+
+      std::cout << '\n';
+    }
+
+    return true;
+  }
+
   int prune_non_simple_faces_after_unification() {
     const int halfedgeCount = static_cast<int>(genDcel.halfedges.size());
     const int edgeCount = static_cast<int>(genDcel.edges.size());
@@ -4912,7 +5557,8 @@ public:
   }
 
   bool unify_low_valence_vertices(const SimplifyScratch &scratch,
-                                  int &unifyCount) {
+                                  int &unifyCount,
+                                  const bool preserveClosedGeneratedSurface) {
     unifyCount = 0;
 
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
@@ -4962,8 +5608,25 @@ public:
      * DCEL copy per operation.
      */
     const FunctionDCEL backupDcel = genDcel;
+    const int initialValidFaceComponents =
+        preserveClosedGeneratedSurface ? count_valid_face_components() : -1;
 
     const auto rollback = [&]() { genDcel = backupDcel; };
+
+    const auto rollbackLowValencePhase = [&](const char *reason) -> bool {
+      rollback();
+      unifyCount = 0;
+
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "unify_low_valence_vertices()]: "
+                  << reason
+                  << "; rolled back low-valence unification to preserve "
+                     "generated mesh topology\n";
+      }
+
+      return true;
+    };
 
     /*
      * Track outgoing halfedges per vertex for the complete batch. A count-only
@@ -5239,6 +5902,14 @@ public:
     }
 
     /*
+     * Do not reject immediately if final retwinning exposes temporary
+     * boundaries. Post-unification non-simple-face pruning and boundary
+     * filling may still produce a compact closed arrangement. Rejecting here
+     * forces a rollback to the pre-cleanup high-degree arrangement, which is
+     * what creates fan-like polygonal output.
+     */
+
+    /*
      * Removing non-simple faces can make adjacent surviving faces become
      * boundary-only. Retwinning can also expose duplicate directed edges that
      * were hidden by invalidated neighbors. Iterate until the cleanup reaches a
@@ -5301,6 +5972,51 @@ public:
                   << "post-face-pruning pass removed "
                   << prunedNonSimpleFaces << " faces and retwinning created "
                   << postFacePruneRetwinned << " twin pairs\n";
+      }
+
+      if (preserveClosedGeneratedSurface &&
+          count_valid_boundary_halfedges() != 0) {
+        if (!fill_generated_boundary_holes("post-unification face pruning")) {
+          return rollbackLowValencePhase(
+              "post-unification face pruning opened a previously closed "
+              "generated surface and boundary fill failed");
+        }
+      }
+    }
+
+    if (preserveClosedGeneratedSurface &&
+        count_valid_boundary_halfedges() != 0) {
+      if (!fill_generated_boundary_holes("low-valence cleanup")) {
+        return rollbackLowValencePhase(
+            "low-valence cleanup would leave boundary halfedges on a "
+            "previously closed generated surface and boundary fill failed");
+      }
+    }
+
+    if (preserveClosedGeneratedSurface && initialValidFaceComponents > 0) {
+      const int finalValidFaceComponents = count_valid_face_components();
+
+      if (finalValidFaceComponents > initialValidFaceComponents) {
+        if (!prune_extra_valid_face_components(
+                initialValidFaceComponents, "low-valence cleanup")) {
+          return rollbackLowValencePhase(
+              "low-valence cleanup split a previously connected generated "
+              "surface and detached-component pruning failed");
+        }
+
+        if (count_valid_boundary_halfedges() != 0 &&
+            !fill_generated_boundary_holes(
+                "detached-component pruning after low-valence cleanup")) {
+          return rollbackLowValencePhase(
+              "detached-component pruning left boundary halfedges");
+        }
+
+        const int repairedValidFaceComponents = count_valid_face_components();
+        if (repairedValidFaceComponents > initialValidFaceComponents) {
+          return rollbackLowValencePhase(
+              "low-valence cleanup still split a previously connected "
+              "generated surface after detached-component pruning");
+        }
       }
     }
 
@@ -5678,21 +6394,76 @@ public:
     logPhase("Face realignment");
     reportSimplifyProgress(94, "Pruning low-quality generated faces");
 
+    /*
+     * The generated arrangement should stay closed when it is closed before
+     * local cleanup. Some thin regions can make pruning/unification delete
+     * faces which only serve to repair non-simple intermediate topology. If
+     * that creates boundary halfedges, prefer the conservative pre-cleanup
+     * arrangement over an output mesh with holes.
+     */
+    const FunctionDCEL topologyCleanupBackupDcel = genDcel;
+    const bool preserveClosedTopologyCleanup =
+        count_valid_boundary_halfedges() == 0;
+
+    bool skipLowValenceCleanup = false;
+
+    const auto rollbackTopologyCleanup = [&](const char *reason) {
+      genDcel = topologyCleanupBackupDcel;
+      skipLowValenceCleanup = true;
+
+      if (mData.verbose) {
+        std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                  << reason
+                  << "; rolled back generated-arrangement cleanup to "
+                     "preserve closed topology\n";
+      }
+    };
+
     if (!prune_low_quality_faces_and_count_valence(scratch)) {
       return false;
     }
     logPhase("Low-quality face pruning");
 
+    /*
+     * Low-quality face pruning can temporarily expose boundary halfedges which
+     * are repaired by the subsequent low-valence cleanup/retwinning phase. Do
+     * not roll back here, or the output keeps the pre-cleanup arrangement and
+     * the final quad conversion turns large polygon/triangle regions into a
+     * fan-like all-quad mesh. Closedness is enforced after low-valence cleanup
+     * instead, where newly opened holes can be filled or the phase can be
+     * rolled back.
+     */
+
     if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
       return false;
     }
     logPhase("Post-pruning consistency check");
-    reportSimplifyProgress(94, "Unifying low-valence mesh vertices");
 
     int unifyCount = 0;
 
-    if (!unify_low_valence_vertices(scratch, unifyCount)) {
-      return false;
+    if (!skipLowValenceCleanup) {
+      reportSimplifyProgress(94, "Unifying low-valence mesh vertices");
+
+      if (!unify_low_valence_vertices(scratch, unifyCount,
+                                      preserveClosedTopologyCleanup)) {
+        return false;
+      }
+
+      if (preserveClosedTopologyCleanup &&
+          count_valid_boundary_halfedges() != 0) {
+        if (unifyCount <= 0) {
+          rollbackTopologyCleanup(
+              "low-valence cleanup was rejected and low-quality pruning left "
+              "boundary halfedges on a previously closed generated surface");
+          unifyCount = 0;
+        } else if (!fill_generated_boundary_holes(
+                       "accepted generated-arrangement cleanup")) {
+          rollbackTopologyCleanup(
+              "accepted low-valence cleanup left boundary halfedges on a "
+              "previously closed generated surface and boundary fill failed");
+          unifyCount = 0;
+        }
+      }
     }
 
     if (mData.verbose) {
@@ -5711,9 +6482,55 @@ public:
       return false;
     }
     logPhase("DCEL clean_mesh");
+
+    if (mData.simplificationBackend == MesherSimplificationBackend::TriFlowDCEL) {
+      reportSimplifyProgress(96, "Running experimental TriFlow DCEL simplification");
+      if (!run_triflow_dcel_simplification()) {
+        return false;
+      }
+      logPhase("Experimental TriFlow DCEL simplification");
+    }
+
     logPhase("Final consistency check");
 
     return true;
+  }
+
+  bool run_triflow_dcel_simplification() {
+    TriFlowSimplificationDCELOptions options;
+    options.targetVertexCount = -1;
+    options.targetVertexRatio = std::clamp(mData.triFlowDcelTargetVertexRatio,
+                                           1e-6, 1.0);
+    options.targetFaceCount = -1;
+    options.targetFaceRatio = std::clamp(mData.triFlowDcelTargetFaceRatio,
+                                         1e-6, 1.0);
+    options.topologyWeight = std::max(0.0, mData.triFlowDcelTopologyWeight);
+    options.preserveBoundary = true;
+    options.preserveFunctionEdges = mData.triFlowDcelPreserveFunctionEdges;
+    options.preserveOriginalBoundaryEdges =
+        mData.triFlowDcelPreserveOriginalBoundaryEdges;
+    options.rejectFaceFlips = true;
+    options.requireConsistentTwins = true;
+    options.validateAfterEachCollapse = false;
+    options.compactAfter = true;
+    options.verbose = mData.verbose;
+
+    const TriFlowSimplificationDCELResult result =
+        tri_flow_simplify_dcel(genDcel, options);
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "run_triflow_dcel_simplification()]: "
+                << "success=" << result.success
+                << " vertices " << result.initialValidVertices << " -> "
+                << result.finalValidVertices << ", faces "
+                << result.initialValidFaces << " -> "
+                << result.finalValidFaces << ", collapsedEdges="
+                << result.collapsedEdges << ", rejectedCandidates="
+                << result.rejectedCandidates << std::endl;
+    }
+
+    return result.success;
   }
 
   void RemoveDegree2Faces();
@@ -6544,32 +7361,153 @@ public:
                     Eigen::MatrixXi &generatedF) {
     generatedV.resize(genDcel.vertices.size(), 3);
 
-    generatedD.resize(genDcel.faces.size());
-
     for (int i = 0; i < genDcel.vertices.size(); i++)
       generatedV.row(i) = genDcel.vertices[i].data.coords;
 
-    for (int i = 0; i < genDcel.faces.size(); i++) {
-      int hebegin = genDcel.faces[i].halfedge;
-      // reseting to first vertex
-      int vCount = 0;
+    std::vector<std::vector<int>> polygons;
+    polygons.reserve(static_cast<std::size_t>(genDcel.faces.size()));
+
+    int splitNonSimpleFaces = 0;
+    int droppedDegenerateFaces = 0;
+
+    const auto appendIfSimple = [&](const std::vector<int> &candidate) {
+      std::vector<int> polygon;
+      polygon.reserve(candidate.size());
+
+      for (const int vertex : candidate) {
+        if (!polygon.empty() && polygon.back() == vertex) {
+          continue;
+        }
+
+        polygon.push_back(vertex);
+      }
+
+      if (polygon.size() > 1U && polygon.front() == polygon.back()) {
+        polygon.pop_back();
+      }
+
+      if (polygon.size() < 3U) {
+        ++droppedDegenerateFaces;
+        return;
+      }
+
+      std::set<int> uniqueVertices(polygon.begin(), polygon.end());
+      if (uniqueVertices.size() != polygon.size()) {
+        ++droppedDegenerateFaces;
+        return;
+      }
+
+      polygons.push_back(std::move(polygon));
+    };
+
+    const auto appendFaceCycle = [&](const std::vector<int> &cycle) {
+      std::deque<std::vector<int>> pending;
+      pending.push_back(cycle);
+
+      while (!pending.empty()) {
+        std::vector<int> polygon = std::move(pending.front());
+        pending.pop_front();
+
+        if (polygon.size() < 3U) {
+          ++droppedDegenerateFaces;
+          continue;
+        }
+
+        bool split = false;
+        std::unordered_map<int, int> firstVertexPosition;
+        firstVertexPosition.reserve(polygon.size());
+
+        for (int i = 0; i < static_cast<int>(polygon.size()); ++i) {
+          const int vertex = polygon[static_cast<std::size_t>(i)];
+          const auto [it, inserted] = firstVertexPosition.emplace(vertex, i);
+
+          if (inserted) {
+            continue;
+          }
+
+          const int first = it->second;
+          std::vector<int> innerLoop(
+              polygon.begin() + first, polygon.begin() + i);
+
+          std::vector<int> outerLoop;
+          outerLoop.reserve(polygon.size() - innerLoop.size() + 1U);
+          outerLoop.insert(outerLoop.end(), polygon.begin(),
+                           polygon.begin() + first + 1);
+          outerLoop.insert(outerLoop.end(), polygon.begin() + i + 1,
+                           polygon.end());
+
+          if (innerLoop.size() >= 3U) {
+            pending.push_back(std::move(innerLoop));
+          } else {
+            ++droppedDegenerateFaces;
+          }
+
+          if (outerLoop.size() >= 3U && outerLoop.size() < polygon.size()) {
+            pending.push_back(std::move(outerLoop));
+          } else if (outerLoop.size() >= 3U) {
+            appendIfSimple(outerLoop);
+          } else {
+            ++droppedDegenerateFaces;
+          }
+
+          ++splitNonSimpleFaces;
+          split = true;
+          break;
+        }
+
+        if (!split) {
+          appendIfSimple(polygon);
+        }
+      }
+    };
+
+    for (int face = 0; face < genDcel.faces.size(); face++) {
+      const int hebegin = genDcel.faces[face].halfedge;
       int heiterate = hebegin;
+      std::vector<int> cycle;
+
       do {
-        vCount++;
+        cycle.push_back(genDcel.halfedges[heiterate].vertex);
         heiterate = genDcel.halfedges[heiterate].next;
       } while (heiterate != hebegin);
-      generatedD(i) = vCount;
+
+      appendFaceCycle(cycle);
     }
 
-    generatedF.resize(genDcel.faces.size(), generatedD.maxCoeff());
-    for (int i = 0; i < genDcel.faces.size(); i++) {
-      int hebegin = genDcel.faces[i].halfedge;
-      int vCount = 0;
-      int heiterate = hebegin;
-      do {
-        generatedF(i, vCount++) = genDcel.halfedges[heiterate].vertex;
-        heiterate = genDcel.halfedges[heiterate].next;
-      } while (heiterate != hebegin);
+    if (polygons.empty()) {
+      generatedD.resize(0);
+      generatedF.resize(0, 0);
+      return;
+    }
+
+    generatedD.resize(static_cast<Eigen::Index>(polygons.size()));
+
+    int maxDegree = 0;
+    for (Eigen::Index i = 0; i < generatedD.size(); ++i) {
+      const int degree =
+          static_cast<int>(polygons[static_cast<std::size_t>(i)].size());
+      generatedD(i) = degree;
+      maxDegree = std::max(maxDegree, degree);
+    }
+
+    generatedF.resize(static_cast<Eigen::Index>(polygons.size()), maxDegree);
+    generatedF.setConstant(-1);
+
+    for (Eigen::Index face = 0; face < generatedD.size(); ++face) {
+      const auto &polygon = polygons[static_cast<std::size_t>(face)];
+
+      for (int corner = 0; corner < generatedD(face); ++corner) {
+        generatedF(face, corner) = polygon[static_cast<std::size_t>(corner)];
+      }
+    }
+
+    if (mData.verbose && (splitNonSimpleFaces > 0 ||
+                          droppedDegenerateFaces > 0)) {
+      std::cerr << "[Directional::NFunctionMesher::to_polygonal()]: "
+                << "split " << splitNonSimpleFaces
+                << " non-simple generated faces and dropped "
+                << droppedDegenerateFaces
+                << " degenerate subfaces before polygonal output\n";
     }
   }
 

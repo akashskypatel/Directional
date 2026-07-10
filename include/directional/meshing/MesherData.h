@@ -24,6 +24,16 @@
  */
 
 namespace directional {
+
+/** @brief Generated-DCEL simplification backend used by NFunctionMesher. */
+enum class MesherSimplificationBackend {
+  /** Existing Directional generated-arrangement cleanup. */
+  Directional,
+
+  /** Experimental TriFlow-style constrained QEM pass on the generated DCEL. */
+  TriFlowDCEL
+};
+
 /**
  * @brief Inputs and outputs shared by meshing setup and concrete meshers.
  *
@@ -61,7 +71,31 @@ struct MesherData {
   /// Optional progress callback invoked by meshing stages.
   ProgressCallback progress;
 
-  MesherData() : exactResolution(10e-9), verbose(false) {}
+  /// Optional generated-DCEL simplification backend.
+  MesherSimplificationBackend simplificationBackend;
+
+  /// Target vertex ratio for the experimental TriFlow DCEL backend.
+  double triFlowDcelTargetVertexRatio;
+
+  /// Target face ratio for the experimental TriFlow DCEL backend.
+  double triFlowDcelTargetFaceRatio;
+
+  /// Positional target weight for the experimental TriFlow DCEL backend.
+  double triFlowDcelTopologyWeight;
+
+  /// Preserve function-isoline edges in the experimental TriFlow DCEL backend.
+  bool triFlowDcelPreserveFunctionEdges;
+
+  /// Preserve original seam/boundary edges in the experimental TriFlow DCEL backend.
+  bool triFlowDcelPreserveOriginalBoundaryEdges;
+
+  MesherData()
+      : exactResolution(10e-9), verbose(false),
+        simplificationBackend(MesherSimplificationBackend::Directional),
+        triFlowDcelTargetVertexRatio(0.95),
+        triFlowDcelTargetFaceRatio(0.95), triFlowDcelTopologyWeight(0.1),
+        triFlowDcelPreserveFunctionEdges(true),
+        triFlowDcelPreserveOriginalBoundaryEdges(true) {}
   ~MesherData() = default;
 };
 

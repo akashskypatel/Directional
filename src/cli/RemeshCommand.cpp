@@ -96,6 +96,23 @@ int run_remesh(const int argc, char **argv) {
       options.integralSeamless = false;
     } else if (option == "--round-seams") {
       options.roundSeams = true;
+    } else if (option == "--simplification-backend") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--simplification-backend requires directional or triflow-dcel.");
+      }
+      const std::string backend = argv[argument];
+      if (backend == "directional") {
+        options.useTriFlowDcelSimplification = false;
+      } else if (backend == "triflow-dcel") {
+        options.useTriFlowDcelSimplification = true;
+      } else {
+        throw std::runtime_error(
+            "--simplification-backend requires directional or triflow-dcel.");
+      }
+    } else if (option == "--experimental-triflow-dcel-simplify" ||
+               option == "--use-triflow-dcel-simplification") {
+      options.useTriFlowDcelSimplification = true;
     } else if (option == "--no-normalize-directions" ||
                option == "--no-normalize") {
       options.normalizeDirections = false;

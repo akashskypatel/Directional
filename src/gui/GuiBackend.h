@@ -32,6 +32,50 @@ struct QuadMeshData {
   Eigen::MatrixXi faces;
 };
 
+struct MeshSimplificationOptions {
+  int targetFaceCount = 6000;
+  double targetFaceRatio = 0.5;
+
+  Eigen::MatrixXd vertexNvf;
+  Eigen::MatrixXd vertexTargets;
+
+  double rootThreshold = -1.0;
+  int voxelResolution = 512;
+  double topologyWeight = 0.1;
+  double rootRelaxationThreshold = 0.0;
+  bool preserveBoundary = true;
+  bool rejectFaceFlips = true;
+  bool verbose = false;
+};
+
+struct MeshSimplificationData {
+  MeshData mesh;
+  Eigen::VectorXi rootLabels;
+  int rootCount = 0;
+  int collapsedEdges = 0;
+};
+
+struct FieldComparisonData {
+  Eigen::VectorXd faceDeviationDegrees;
+  double globalPhaseDegrees = 0.0;
+  double meanDegrees = 0.0;
+  double medianDegrees = 0.0;
+  double p95Degrees = 0.0;
+  double p99Degrees = 0.0;
+  double areaWeightedMeanDegrees = 0.0;
+  double highErrorAreaFraction = 0.0;
+  Eigen::Index highErrorFaceCount = 0;
+  int highErrorComponentCount = 0;
+
+  bool hasShapeOperatorAlignment = false;
+  double firstShapeAlignmentMeanDegrees = 0.0;
+  double firstShapeAlignmentP95Degrees = 0.0;
+  double firstShapeAlignmentEnergy = 0.0;
+  double secondShapeAlignmentMeanDegrees = 0.0;
+  double secondShapeAlignmentP95Degrees = 0.0;
+  double secondShapeAlignmentEnergy = 0.0;
+};
+
 struct FieldOptions {
   FieldMethod method = FieldMethod::RegularizedCurvature;
   bool normalizeDirections = true;
@@ -50,6 +94,7 @@ struct RemeshOptions {
   double lengthRatio = 0.02;
   bool integralSeamless = true;
   bool roundSeams = false;
+  bool useTriFlowDcelSimplification = false;
   bool verbose = false;
 };
 
@@ -66,6 +111,21 @@ FieldData load_field(const std::filesystem::path &path, FieldFormat format,
 void save_field(const std::filesystem::path &path, FieldFormat format,
                 const FieldData &field);
 
+FieldComparisonData compare_fields(const MeshData &mesh,
+                                   const FieldData &first,
+                                   const FieldData &second,
+                                   double highErrorThresholdDegrees = 20.0,
+                                   bool removeGlobalPhase = true,
+                                   bool computeShapeOperatorAlignment = false);
+
+void show_field_deviation_heatmap(const char *meshName,
+                                  const FieldComparisonData &comparison,
+                                  double maximumDegrees = 45.0);
+
+MeshSimplificationData simplify_mesh(
+    const MeshData &mesh, const MeshSimplificationOptions &options,
+    ProgressCallback progress = {});
+
 FieldData calculate_field(const MeshData &mesh, const FieldOptions &options,
                           ProgressCallback progress = {});
 
@@ -77,7 +137,7 @@ AutoRemeshResult auto_remesh(const MeshData &mesh,
 QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
                                const RemeshOptions &options,
                                ProgressCallback progress = {});
-
+void save_mesh(const std::filesystem::path &path, const MeshData &mesh);
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh);
 

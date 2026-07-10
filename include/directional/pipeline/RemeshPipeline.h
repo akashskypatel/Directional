@@ -61,6 +61,9 @@ struct RemeshOptions {
   /// Normalizes supplied direction vectors after tangent projection.
   bool normalizeDirections = true;
 
+  /// Enables the experimental TriFlow-style generated-DCEL simplification pass.
+  bool useTriFlowDcelSimplification = false;
+
   /// Optional progress callback invoked by remeshing stages.
   ProgressCallback progress;
 };
@@ -245,6 +248,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   report_progress(options.progress, 80, 100, "Preparing mesher");
   MesherData mesherData;
   mesherData.verbose = options.verbose;
+  mesherData.simplificationBackend =
+      options.useTriFlowDcelSimplification
+          ? MesherSimplificationBackend::TriFlowDCEL
+          : MesherSimplificationBackend::Directional;
   if (!options.verbose && options.progress) {
     mesherData.progress =
         [callback = options.progress](const std::size_t current,

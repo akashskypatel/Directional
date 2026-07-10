@@ -176,9 +176,15 @@ FieldData read_rosy(const std::filesystem::path &path,
 
 FieldFormat parse_field_format(const std::string &value) {
   const std::string format = lowercase(value);
-  if (format == "crossfield") return FieldFormat::CrossField;
+  if (format == "crossfield" || format == "cross-field" ||
+      format == "neurcross" || format == "neuralcross" ||
+      format == "txt6") {
+    return FieldFormat::CrossField;
+  }
   if (format == "rosy") return FieldFormat::Rosy;
-  if (format == "rawfield") return FieldFormat::RawField;
+  if (format == "rawfield" || format == "raw-field") {
+    return FieldFormat::RawField;
+  }
   throw std::runtime_error("Unsupported field format: " + value);
 }
 
@@ -192,7 +198,10 @@ FieldFormat infer_field_format(const std::filesystem::path &path,
   if (requested != "auto") return parse_field_format(requested);
   if (extension == ".rawfield") return FieldFormat::RawField;
   if (extension == ".rosy") return FieldFormat::Rosy;
-  if (extension == ".vec" || extension == ".txt") return FieldFormat::CrossField;
+  if (extension == ".vec" || extension == ".txt" ||
+      extension == ".neurcross" || extension == ".ncfield") {
+    return FieldFormat::CrossField;
+  }
   throw std::runtime_error("Cannot infer field format from extension: " + extension);
 }
 
@@ -207,9 +216,26 @@ std::filesystem::path infer_field_output_path(const std::filesystem::path &input
 
 FieldData read_field(const std::filesystem::path &path, FieldFormat format,
                      const MeshData *mesh) {
-  if (format == FieldFormat::CrossField) return read_crossfield(path);
-  if (format == FieldFormat::Rosy) return read_rosy(path, mesh);
-  return read_rawfield(path, mesh);
+  if (format == FieldFormat::CrossField) {
+    return read_crossfield(path);
+  }
+  if (format == FieldFormat::Rosy) {
+    return read_rosy(path, mesh);
+  }
+
+  try {
+    return read_rawfield(path, mesh);
+  } catch (const std::exception &rawfieldError) {
+    try {
+      FieldData fallback = read_crossfield(path);
+      std::cerr << "WARNING: input '" << path.string()
+                << "' was requested as rawfield but looks like a 6-column "
+                   "NeurCross/crossfield file; loaded it as crossfield instead.\n";
+      return fallback;
+    } catch (const std::exception &) {
+      throw std::runtime_error(rawfieldError.what());
+    }
+  }
 }
 
 void write_field(const std::filesystem::path &path, FieldFormat format,

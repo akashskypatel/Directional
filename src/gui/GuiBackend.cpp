@@ -32,6 +32,20 @@ cli::FieldData to_cli_field(const FieldData &field) {
   return result;
 }
 
+bool has_raw_cross_field(const FieldData &field,
+                         const Eigen::Index faceCount) {
+  return field.raw.rows() == faceCount && field.raw.cols() == 12 &&
+         field.raw.array().isFinite().all();
+}
+
+bool has_axis_cross_field(const FieldData &field,
+                          const Eigen::Index faceCount) {
+  return field.primary.rows() == faceCount && field.primary.cols() == 3 &&
+         field.secondary.rows() == faceCount && field.secondary.cols() == 3 &&
+         field.primary.array().isFinite().all() &&
+         field.secondary.array().isFinite().all();
+}
+
 cli::FieldFormat to_cli_format(const FieldFormat format,
                                const std::filesystem::path &path) {
   switch (format) {
@@ -106,7 +120,21 @@ AutoRemeshResult auto_remesh(const MeshData &mesh,
       map_progress(std::move(progress), 20, 100));
   return {std::move(field), std::move(quadMesh)};
 }
+void save_mesh(const std::filesystem::path &path, const MeshData &mesh) {
+  const std::string extension = lowercase(path.extension().string());
 
+  if (extension == ".obj") {
+    cli::write_triangle_obj(path, mesh.vertices, mesh.faces);
+    return;
+  }
+
+  if (extension == ".off") {
+    cli::write_triangle_off(path, mesh.vertices, mesh.faces);
+    return;
+  }
+
+  throw std::runtime_error("Mesh output must use .obj or .off.");
+}
 void save_quad_mesh(const std::filesystem::path &path,
                     const QuadMeshData &mesh) {
   const std::string extension = lowercase(path.extension().string());
@@ -128,13 +156,28 @@ void validate_field(const FieldData &field, const Eigen::Index faceCount) {
     throw std::runtime_error(
         "The remeshing UI requires a degree-4 cross field.");
   }
-  if (field.raw.rows() != faceCount || field.raw.cols() != 12) {
-    throw std::runtime_error(
-        "The field must contain one 12-value raw cross per mesh face.");
+  if (has_raw_cross_field(field, faceCount) ||
+      has_axis_cross_field(field, faceCount)) {
+    return;
   }
-  if (!field.raw.array().isFinite().all()) {
-    throw std::runtime_error("The field contains non-finite values.");
+
+  const bool rawShapeLooksRelevant = field.raw.rows() == faceCount ||
+                                     field.raw.cols() == 6 ||
+                                     field.raw.cols() == 12;
+  if (rawShapeLooksRelevant && field.raw.size() != 0 &&
+      !field.raw.array().isFinite().all()) {
+    throw std::runtime_error("The field contains non-finite raw values.");
   }
+  if ((field.primary.size() != 0 || field.secondary.size() != 0) &&
+      (!field.primary.array().isFinite().all() ||
+       !field.secondary.array().isFinite().all())) {
+    throw std::runtime_error("The field contains non-finite axis values.");
+  }
+
+  throw std::runtime_error(
+      "The field must contain either one 12-value raw cross per mesh face "
+      "or two 3D cross axes per mesh face. NeurCross .txt files should be "
+      "loaded as CrossField / NeurCross, not as raw 12-column fields.");
 }
 
 void validate_options(const FieldOptions &fieldOptions,

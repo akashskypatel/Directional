@@ -1,6 +1,8 @@
 #include "FileDialog.h"
 #include "FilePicker.h"
 #include "GuiBackend.h"
+#include "CompareFieldsCommand.h"
+#include "SessionLog.h"
 
 #include <algorithm>
 #include <array>
@@ -20,6 +22,9 @@
 #include <vector>
 
 #include <imgui.h>
+
+#include <directional/fields/CompareCrossFields.h>
+
 #include <polyscope/point_cloud.h>
 #include <polyscope/polyscope.h>
 #include <polyscope/surface_mesh.h>
@@ -29,8 +34,9 @@ namespace {
 constexpr const char *kInputMeshName = "Input mesh";
 constexpr const char *kFieldGlyphName = "Cross field";
 constexpr const char *kQuadMeshName = "Quad remesh";
+constexpr const char *kDeviationHeatmapName = "Cross-field deviation (degrees)";
 
-enum class FilePickerTarget { None, Mesh, Field };
+enum class FilePickerTarget { None, Mesh, Field, CompareField };
 
 struct ProgressState {
   std::atomic<std::size_t> current{0};
@@ -54,10 +60,17 @@ struct ProgressState {
 };
 
 struct TaskResult {
+  bool hasMesh = false;
   bool hasField = false;
   bool hasQuadMesh = false;
+  bool hasComparison = false;
+  directional::gui::MeshData mesh;
   directional::gui::FieldData field;
   directional::gui::QuadMeshData quadMesh;
+  directional::gui::FieldComparisonData comparison;
+  int simplificationSourceFaceCount = 0;
+  int simplificationRootCount = 0;
+  int simplificationCollapsedEdges = 0;
   std::string fieldLabel;
   std::string message;
   std::string error;
@@ -122,8 +135,9 @@ double average_edge_length(const directional::gui::MeshData &mesh) {
 
 class DirectionalUi {
 public:
-  explicit DirectionalUi(
-      const std::optional<std::filesystem::path> &startupMesh) {
+  DirectionalUi(const std::optional<std::filesystem::path> &startupMesh,
+                directional::gui::SessionLog &sessionLog)
+      : sessionLog_(sessionLog) {
     meshPath_.fill('\0');
     fieldInputPath_.fill('\0');
     fieldOutputPath_.fill('\0');
@@ -151,12 +165,17 @@ public:
 private:
   static inline DirectionalUi *instance_ = nullptr;
 
+  directional::gui::SessionLog &sessionLog_;
+
   std::optional<directional::gui::MeshData> mesh_;
   std::optional<directional::gui::FieldData> field_;
+  std::optional<directional::gui::FieldData> referenceField_;
+  std::optional<directional::gui::FieldComparisonData> fieldComparison_;
   std::optional<directional::gui::QuadMeshData> quadMesh_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
+  std::array<char, 1024> compareFieldInputPath_{};
   std::array<char, 1024> fieldOutputPath_{};
   std::array<char, 1024> remeshOutputPath_{};
 
@@ -165,10 +184,16 @@ private:
 
   int fieldMethod_ = 1;
   int fieldInputFormat_ = 0;
+  int compareFieldInputFormat_ = 0;
   int fieldOutputFormat_ = 0;
   int fieldSampleStride_ = 1;
   float glyphLengthRatio_ = 0.35F;
+  float comparisonHeatmapMaxDegrees_ = 45.0F;
+  double comparisonHighErrorThresholdDegrees_ = 20.0;
+  bool comparisonRemoveGlobalPhase_ = true;
+  bool comparisonShapeOperatorAlignment_ = false;
 
+  directional::gui::MeshSimplificationOptions simplificationOptions_;
   directional::gui::FieldOptions fieldOptions_;
   directional::gui::RemeshOptions remeshOptions_;
 
@@ -196,8 +221,23 @@ private:
 
   void set_error(std::string message) { error_ = std::move(message); }
 
+  void enable_verbose_session_log_if_needed(const bool verbose) {
+    if (!verbose) {
+      return;
+    }
+
+    const bool wasEnabled = sessionLog_.is_enabled();
+    sessionLog_.enable();
+    if (!wasEnabled) {
+      std::cout << "[directional-ui] verbose session log: "
+                << sessionLog_.path().string() << '\n';
+    }
+  }
+
   void clear_field_and_remesh() {
     field_.reset();
+    referenceField_.reset();
+    fieldComparison_.reset();
     quadMesh_.reset();
     fieldLabel_.clear();
     if (polyscope::hasPointCloud(kFieldGlyphName)) {
@@ -206,16 +246,14 @@ private:
     if (polyscope::hasSurfaceMesh(kQuadMeshName)) {
       polyscope::removeSurfaceMesh(kQuadMeshName);
     }
+    if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+      polyscope::getSurfaceMesh(kInputMeshName)
+          ->removeQuantity(kDeviationHeatmapName, false);
+    }
   }
 
-  void load_mesh() {
-    const std::filesystem::path path =
-        path_from_buffer(meshPath_, "Input mesh");
-    directional::gui::MeshData loaded = directional::gui::load_mesh(path);
-    if (loaded.faces.cols() != 3) {
-      throw std::runtime_error("The input mesh must be triangular.");
-    }
-
+  void replace_input_mesh(directional::gui::MeshData loaded,
+                          const bool resetCamera) {
     mesh_ = std::move(loaded);
     clear_field_and_remesh();
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
@@ -239,14 +277,29 @@ private:
 
     fieldSampleStride_ =
         std::max(1, static_cast<int>(mesh_->faces.rows() / 5000));
+    if (resetCamera) {
+      polyscope::view::resetCameraToHomeView();
+    }
+  }
+
+  void load_mesh() {
+    const std::filesystem::path path =
+        path_from_buffer(meshPath_, "Input mesh");
+    directional::gui::MeshData loaded = directional::gui::load_mesh(path);
+    if (loaded.faces.cols() != 3) {
+      throw std::runtime_error("The input mesh must be triangular.");
+    }
+
+    const Eigen::Index vertexCount = loaded.vertices.rows();
+    const Eigen::Index faceCount = loaded.faces.rows();
+    replace_input_mesh(std::move(loaded), true);
     copy_path_to_buffer(default_sibling_path(path, "_field", ".rawfield"),
                         fieldOutputPath_);
     copy_path_to_buffer(default_sibling_path(path, "_quad", ".obj"),
                         remeshOutputPath_);
-    set_status("Loaded " + std::to_string(mesh_->vertices.rows()) +
-               " vertices and " + std::to_string(mesh_->faces.rows()) +
+    set_status("Loaded " + std::to_string(vertexCount) +
+               " vertices and " + std::to_string(faceCount) +
                " triangles.");
-    polyscope::view::resetCameraToHomeView();
   }
 
   void visualize_field() {
@@ -329,6 +382,47 @@ private:
                              : "regularized-curvature field";
   }
 
+  void launch_simplify_mesh() {
+    require_mesh();
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::MeshSimplificationOptions options =
+        simplificationOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
+    const auto progress = progress_;
+    progress_->update(0, 100, "Starting TriFlow simplification");
+
+    task_ = std::async(std::launch::async, [mesh, options, progress]() {
+      TaskResult result;
+      try {
+        directional::gui::MeshSimplificationData simplified =
+            directional::gui::simplify_mesh(
+                mesh, options,
+                [progress](const std::size_t current, const std::size_t total,
+                           const std::string_view task) {
+                  progress->update(current, total, task);
+                });
+        result.mesh = std::move(simplified.mesh);
+        result.hasMesh = true;
+        result.simplificationSourceFaceCount =
+            static_cast<int>(mesh.faces.rows());
+        result.simplificationRootCount = simplified.rootCount;
+        result.simplificationCollapsedEdges = simplified.collapsedEdges;
+        result.message =
+            "Simplified input mesh from " +
+            std::to_string(result.simplificationSourceFaceCount) +
+            " to " + std::to_string(result.mesh.faces.rows()) +
+            " triangles using " +
+            std::to_string(result.simplificationCollapsedEdges) +
+            " edge collapses.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "TriFlow simplification finished");
+      return result;
+    });
+    set_status("Simplifying input mesh with TriFlow constrained QEM...");
+  }
+
   void launch_calculate_field() {
     require_mesh();
     const directional::gui::MeshData mesh = *mesh_;
@@ -365,6 +459,7 @@ private:
     const directional::gui::MeshData mesh = *mesh_;
     const directional::gui::FieldOptions fieldOptions = current_field_options();
     const directional::gui::RemeshOptions remeshOptions = remeshOptions_;
+    enable_verbose_session_log_if_needed(remeshOptions.verbose);
     const auto progress = progress_;
     progress_->update(0, 100, "Starting automatic remesh");
 
@@ -403,9 +498,62 @@ private:
         path_from_buffer(fieldInputPath_, "Input field");
     field_ = directional::gui::load_field(
         path, selected_field_format(fieldInputFormat_), *mesh_);
+    fieldComparison_.reset();
+    if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+      polyscope::getSurfaceMesh(kInputMeshName)
+          ->removeQuantity(kDeviationHeatmapName, false);
+    }
     fieldLabel_ = "Loaded field: " + path.filename().string();
     visualize_field();
     set_status(fieldLabel_ + ".");
+  }
+
+  void load_compare_field() {
+    require_mesh();
+    const std::filesystem::path path =
+        path_from_buffer(compareFieldInputPath_, "Reference field");
+    referenceField_ = directional::gui::load_field(
+        path, selected_field_format(compareFieldInputFormat_), *mesh_);
+    set_status("Loaded comparison reference field: " + path.filename().string() +
+               ".");
+  }
+
+  void launch_compare_fields() {
+    require_mesh();
+    if (!field_.has_value()) {
+      throw std::runtime_error("Calculate or load a field before comparing it.");
+    }
+    if (!referenceField_.has_value()) {
+      throw std::runtime_error("Load a reference field before comparing.");
+    }
+
+    const directional::gui::MeshData mesh = *mesh_;
+    const directional::gui::FieldData field = *field_;
+    const directional::gui::FieldData reference = *referenceField_;
+    const double highErrorThreshold = comparisonHighErrorThresholdDegrees_;
+    const bool removeGlobalPhase = comparisonRemoveGlobalPhase_;
+    const bool shapeOperatorAlignment = comparisonShapeOperatorAlignment_;
+    const auto progress = progress_;
+    progress_->update(0, 100, "Starting field comparison");
+
+    task_ = std::async(std::launch::async, [mesh, field, reference,
+                                            highErrorThreshold,
+                                            removeGlobalPhase,
+                                            shapeOperatorAlignment, progress]() {
+      TaskResult result;
+      try {
+        result.comparison = directional::gui::compare_fields(
+            mesh, field, reference, highErrorThreshold, removeGlobalPhase,
+            shapeOperatorAlignment);
+        result.hasComparison = true;
+        result.message = "Compared current field to reference field.";
+      } catch (const std::exception &error) {
+        result.error = error.what();
+      }
+      progress->update(100, 100, "Field comparison finished");
+      return result;
+    });
+    set_status("Comparing current field to reference field...");
   }
 
   void launch_remesh_loaded_field() {
@@ -417,6 +565,7 @@ private:
     const directional::gui::MeshData mesh = *mesh_;
     const directional::gui::FieldData field = *field_;
     const directional::gui::RemeshOptions options = remeshOptions_;
+    enable_verbose_session_log_if_needed(options.verbose);
     const auto progress = progress_;
     progress_->update(0, 100, "Starting field-guided remesh");
 
@@ -451,14 +600,27 @@ private:
       set_error(result.error);
       return;
     }
+    if (result.hasMesh) {
+      replace_input_mesh(std::move(result.mesh), false);
+    }
     if (result.hasField) {
       field_ = std::move(result.field);
+      fieldComparison_.reset();
+      if (polyscope::hasSurfaceMesh(kInputMeshName)) {
+        polyscope::getSurfaceMesh(kInputMeshName)
+            ->removeQuantity(kDeviationHeatmapName, false);
+      }
       fieldLabel_ = std::move(result.fieldLabel);
       visualize_field();
     }
     if (result.hasQuadMesh) {
       quadMesh_ = std::move(result.quadMesh);
       visualize_quad_mesh();
+    }
+    if (result.hasComparison) {
+      fieldComparison_ = std::move(result.comparison);
+      directional::gui::show_field_deviation_heatmap(
+          kInputMeshName, *fieldComparison_, comparisonHeatmapMaxDegrees_);
     }
     set_status(std::move(result.message));
   }
@@ -475,15 +637,24 @@ private:
     set_status("Wrote field to " + path.string() + ".");
   }
 
-  void save_quad_mesh() {
-    if (!quadMesh_.has_value()) {
-      throw std::runtime_error("There is no remeshed output to save.");
-    }
-    const std::filesystem::path path =
-        path_from_buffer(remeshOutputPath_, "Remesh output");
+void save_quad_mesh() {
+  const std::filesystem::path path =
+      path_from_buffer(remeshOutputPath_, "Mesh output");
+
+  if (quadMesh_.has_value()) {
     directional::gui::save_quad_mesh(path, *quadMesh_);
     set_status("Wrote quad mesh to " + path.string() + ".");
+    return;
   }
+
+  if (mesh_.has_value()) {
+    directional::gui::save_mesh(path, *mesh_);
+    set_status("Wrote mesh to " + path.string() + ".");
+    return;
+  }
+
+  throw std::runtime_error("There is no mesh to save.");
+}
 
   void require_mesh() const {
     if (!mesh_.has_value()) {
@@ -520,6 +691,9 @@ private:
     } else if (target == FilePickerTarget::Field) {
       copy_path_to_buffer(path, fieldInputPath_);
       set_status("Selected input field: " + path.string() + ".");
+    } else if (target == FilePickerTarget::CompareField) {
+      copy_path_to_buffer(path, compareFieldInputPath_);
+      set_status("Selected comparison reference field: " + path.string() + ".");
     }
   }
 
@@ -570,6 +744,25 @@ private:
     }
   }
 
+  void open_compare_field_picker() {
+    const std::filesystem::path initialPath(compareFieldInputPath_.data());
+    const directional::gui::FileDialogResult result =
+        directional::gui::open_native_file_dialog(
+            {"Select comparison reference field",
+             initialPath,
+             {{"Directional field files",
+               {"*.rawfield", "*.rosy", "*.vec", "*.txt"}}}});
+
+    if (result.selected()) {
+      apply_selected_file(FilePickerTarget::CompareField, result.path);
+    } else if (result.status != directional::gui::FileDialogStatus::Cancelled) {
+      open_fallback_picker(FilePickerTarget::CompareField,
+                           "Select comparison reference field", initialPath,
+                           {".rawfield", ".rosy", ".vec", ".txt"},
+                           result.message);
+    }
+  }
+
   void process_file_picker() {
     const std::optional<std::filesystem::path> selected = filePicker_.draw();
     if (selected.has_value()) {
@@ -610,7 +803,47 @@ private:
       }
     }
 
-    if (ImGui::CollapsingHeader("2. Calculate field",
+    if (ImGui::CollapsingHeader("2. TriFlow simplify input",
+                                ImGuiTreeNodeFlags_DefaultOpen)) {
+      draw_labeled_full_width_control(
+          "Target triangle count (>= 4; 0 uses target ratio)", [this] {
+            ImGui::InputInt("##simplification_target_faces",
+                            &simplificationOptions_.targetFaceCount);
+          });
+      simplificationOptions_.targetFaceCount =
+          std::max(0, simplificationOptions_.targetFaceCount);
+
+      draw_labeled_full_width_control(
+          "Target face ratio (0 to 1; used when target count is 0)", [this] {
+            ImGui::InputDouble("##simplification_target_ratio",
+                               &simplificationOptions_.targetFaceRatio, 0.05,
+                               0.10, "%.6g");
+          });
+      simplificationOptions_.targetFaceRatio =
+          std::clamp(simplificationOptions_.targetFaceRatio, 1e-6, 1.0);
+
+      ImGui::Checkbox(
+          "Preserve boundary (avoid collapsing initial boundary into interior)",
+          &simplificationOptions_.preserveBoundary);
+      ImGui::Checkbox(
+          "Reject face flips (skip collapses that invert adjacent normals)",
+          &simplificationOptions_.rejectFaceFlips);
+      ImGui::Checkbox(
+          "Verbose simplification logging",
+          &simplificationOptions_.verbose);
+      if (sessionLog_.is_enabled()) {
+        ImGui::TextWrapped("Verbose log: %s",
+                           sessionLog_.path().string().c_str());
+      }
+
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value());
+      if (ImGui::Button("Simplify input mesh")) {
+        guarded_action([this] { launch_simplify_mesh(); });
+      }
+      ImGui::EndDisabled();
+    }
+
+    if (ImGui::CollapsingHeader("3. Calculate field",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
       const char *methods[] = {"Smooth power field", "Regularized curvature"};
       draw_labeled_full_width_control("Field method", [this, &methods] {
@@ -706,7 +939,7 @@ private:
       ImGui::EndDisabled();
     }
 
-    if (ImGui::CollapsingHeader("3. Remesh using input field",
+    if (ImGui::CollapsingHeader("4. Remesh using input field",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
       const float browseWidth = ImGui::CalcTextSize("Browse...").x +
                                 2.0F * ImGui::GetStyle().FramePadding.x;
@@ -719,7 +952,7 @@ private:
         open_field_picker();
       }
       ImGui::EndDisabled();
-      const char *formats[] = {"Auto", "RawField", "CrossField", "RoSy"};
+      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
       draw_labeled_full_width_control("Input field format", [this, &formats] {
         ImGui::Combo("##input_field_format", &fieldInputFormat_, formats, 4);
       });
@@ -740,6 +973,99 @@ private:
       }
     }
 
+    if (ImGui::CollapsingHeader("5. Compare fields")) {
+      const float browseWidth = ImGui::CalcTextSize("Browse...").x +
+                                2.0F * ImGui::GetStyle().FramePadding.x;
+      ImGui::SetNextItemWidth(-browseWidth - ImGui::GetStyle().ItemSpacing.x);
+      ImGui::InputText("##compare_field_input_path",
+                       compareFieldInputPath_.data(),
+                       compareFieldInputPath_.size());
+      ImGui::SameLine();
+      ImGui::BeginDisabled(isBusy);
+      if (ImGui::Button("Browse...##compare_field")) {
+        open_compare_field_picker();
+      }
+      ImGui::EndDisabled();
+
+      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
+      draw_labeled_full_width_control("Reference field format",
+                                      [this, &formats] {
+                                        ImGui::Combo(
+                                            "##compare_field_format",
+                                            &compareFieldInputFormat_, formats,
+                                            4);
+                                      });
+
+      ImGui::Checkbox("Remove best global 4-RoSy phase",
+                      &comparisonRemoveGlobalPhase_);
+      ImGui::Checkbox("Also score against proxy shape operator",
+                      &comparisonShapeOperatorAlignment_);
+
+      draw_labeled_full_width_control(
+          "High-error threshold in degrees", [this] {
+            ImGui::InputDouble("##comparison_high_error_threshold",
+                               &comparisonHighErrorThresholdDegrees_, 1.0,
+                               5.0, "%.6g");
+          });
+      comparisonHighErrorThresholdDegrees_ =
+          std::max(0.0, comparisonHighErrorThresholdDegrees_);
+
+      draw_labeled_full_width_control(
+          "Heatmap maximum degrees", [this] {
+            ImGui::SliderFloat("##comparison_heatmap_max",
+                               &comparisonHeatmapMaxDegrees_, 1.0F, 45.0F,
+                               "%.1f deg");
+          });
+
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value());
+      if (ImGui::Button("Load reference field")) {
+        guarded_action([this] { load_compare_field(); });
+      }
+      ImGui::SameLine();
+      ImGui::BeginDisabled(!field_.has_value() || !referenceField_.has_value());
+      if (ImGui::Button("Compare current field")) {
+        guarded_action([this] { launch_compare_fields(); });
+      }
+      ImGui::EndDisabled();
+      ImGui::EndDisabled();
+
+      if (fieldComparison_.has_value()) {
+        ImGui::Text("Mean: %.3f deg, median: %.3f deg",
+                    fieldComparison_->meanDegrees,
+                    fieldComparison_->medianDegrees);
+        ImGui::Text("Area-weighted mean: %.3f deg, p95: %.3f deg, p99: %.3f deg",
+                    fieldComparison_->areaWeightedMeanDegrees,
+                    fieldComparison_->p95Degrees,
+                    fieldComparison_->p99Degrees);
+        ImGui::Text("> %.3f deg: %lld faces, %.2f%% area, %d components",
+                    comparisonHighErrorThresholdDegrees_,
+                    static_cast<long long>(
+                        fieldComparison_->highErrorFaceCount),
+                    100.0 * fieldComparison_->highErrorAreaFraction,
+                    fieldComparison_->highErrorComponentCount);
+        ImGui::Text("Global phase: %.3f deg",
+                    fieldComparison_->globalPhaseDegrees);
+        if (fieldComparison_->hasShapeOperatorAlignment) {
+          ImGui::Text("Shape alignment first: mean %.3f deg, p95 %.3f deg, energy %.6g",
+                      fieldComparison_->firstShapeAlignmentMeanDegrees,
+                      fieldComparison_->firstShapeAlignmentP95Degrees,
+                      fieldComparison_->firstShapeAlignmentEnergy);
+          ImGui::Text("Shape alignment second: mean %.3f deg, p95 %.3f deg, energy %.6g",
+                      fieldComparison_->secondShapeAlignmentMeanDegrees,
+                      fieldComparison_->secondShapeAlignmentP95Degrees,
+                      fieldComparison_->secondShapeAlignmentEnergy);
+        }
+        ImGui::BeginDisabled(!mesh_.has_value());
+        if (ImGui::Button("Refresh deviation heatmap")) {
+          guarded_action([this] {
+            directional::gui::show_field_deviation_heatmap(
+                kInputMeshName, *fieldComparison_, comparisonHeatmapMaxDegrees_);
+          });
+        }
+        ImGui::EndDisabled();
+      }
+    }
+
     if (ImGui::CollapsingHeader("Remesh options",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
       draw_labeled_full_width_control(
@@ -757,8 +1083,21 @@ private:
           &remeshOptions_.roundSeams);
 
       ImGui::Checkbox(
+          "Experimental TriFlow DCEL simplification",
+          &remeshOptions_.useTriFlowDcelSimplification);
+      if (remeshOptions_.useTriFlowDcelSimplification) {
+        ImGui::TextWrapped(
+            "Runs a conservative TriFlow-style QEM pass directly on the "
+            "generated DCEL after the standard arrangement cleanup.");
+      }
+
+      ImGui::Checkbox(
           "Verbose (print detailed remeshing progress and diagnostics)",
           &remeshOptions_.verbose);
+      if (sessionLog_.is_enabled()) {
+        ImGui::TextWrapped("Verbose log: %s",
+                           sessionLog_.path().string().c_str());
+      }
     }
 
     if (ImGui::CollapsingHeader("Save outputs")) {
@@ -766,7 +1105,7 @@ private:
       ImGui::SetNextItemWidth(-1.0F);
       ImGui::InputText("##field_output_path", fieldOutputPath_.data(),
                        fieldOutputPath_.size());
-      const char *formats[] = {"Auto", "RawField", "CrossField", "RoSy"};
+      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
       draw_labeled_full_width_control("Output field format", [this, &formats] {
         ImGui::Combo("##output_field_format", &fieldOutputFormat_, formats, 4);
       });
@@ -777,12 +1116,15 @@ private:
       ImGui::EndDisabled();
 
       ImGui::Spacing();
-      ImGui::TextUnformatted("Quad mesh output (.obj or .off)");
+      ImGui::TextUnformatted("Mesh output (.obj or .off)");
       ImGui::SetNextItemWidth(-1.0F);
       ImGui::InputText("##remesh_output_path", remeshOutputPath_.data(),
-                       remeshOutputPath_.size());
-      ImGui::BeginDisabled(isBusy || !quadMesh_.has_value());
-      if (ImGui::Button("Save quad mesh")) {
+                      remeshOutputPath_.size());
+
+      ImGui::BeginDisabled(isBusy ||
+                          (!quadMesh_.has_value() && !mesh_.has_value()));
+      if (ImGui::Button(quadMesh_.has_value() ? "Save quad mesh"
+                                              : "Save current mesh")) {
         guarded_action([this] { save_quad_mesh(); });
       }
       ImGui::EndDisabled();
@@ -822,7 +1164,8 @@ int main(int argc, char **argv) {
       startupMesh = std::filesystem::path(argv[1]);
     }
 
-    DirectionalUi app(startupMesh);
+    directional::gui::SessionLog sessionLog;
+    DirectionalUi app(startupMesh, sessionLog);
     app.initialize();
     app.show();
     return 0;
