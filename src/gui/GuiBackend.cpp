@@ -193,10 +193,17 @@ void validate_options(const FieldOptions &fieldOptions,
       fieldOptions.proxyFidelityWeight <= 0.0 ||
       !std::isfinite(fieldOptions.proxySmoothnessWeight) ||
       fieldOptions.proxySmoothnessWeight < 0.0 ||
+      !std::isfinite(fieldOptions.sharpFeatureAngleDegrees) ||
+      fieldOptions.sharpFeatureAngleDegrees <= 0.0 ||
+      fieldOptions.sharpFeatureAngleDegrees >= 180.0 ||
       !std::isfinite(fieldOptions.fieldSmoothnessWeight) ||
       fieldOptions.fieldSmoothnessWeight <= 0.0 ||
       !std::isfinite(fieldOptions.curvatureAlignmentWeight) ||
-      fieldOptions.curvatureAlignmentWeight <= 0.0 ||
+      fieldOptions.curvatureAlignmentWeight < 0.0 ||
+      !std::isfinite(fieldOptions.boundaryAlignmentWeight) ||
+      fieldOptions.boundaryAlignmentWeight < 0.0 ||
+      !std::isfinite(fieldOptions.sharpFeatureAlignmentWeight) ||
+      fieldOptions.sharpFeatureAlignmentWeight < 0.0 ||
       !std::isfinite(fieldOptions.minimumConfidence) ||
       fieldOptions.minimumConfidence < 0.0 ||
       !std::isfinite(fieldOptions.confidenceExponent) ||

@@ -11,6 +11,7 @@
 #define DIRECTIONAL_GEOMETRY_FACE_CURVATURE_H
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <limits>
 #include <numbers>
@@ -31,6 +32,10 @@ namespace directional {
 struct FaceCurvatureOptions {
   /// Number of transport-aware one-ring tensor smoothing passes.
   int smoothingIterations = 1;
+
+  /// Estimate normal differences with face-corner normals that do not blend
+  /// across sharp features.
+  bool useFeatureAwareCornerNormals = true;
 
   /// Prevent tensor smoothing across edges whose dihedral exceeds this angle.
   bool preserveSharpFeatures = true;
@@ -201,6 +206,62 @@ inline void validate_inputs(const Eigen::MatrixXd &vertices,
   }
 }
 
+
+inline std::vector<std::array<Eigen::Vector3d, 3>>
+build_face_corner_normals(const Eigen::MatrixXi &faces,
+                          const Eigen::MatrixXd &faceNormals,
+                          const Eigen::VectorXd &faceAreas,
+                          const Eigen::MatrixXd &vertexNormals,
+                          const FaceCurvatureOptions &options) {
+  const int vertexCount = vertexNormals.rows();
+  std::vector<std::vector<int>> incidentFaces(
+      static_cast<std::size_t>(vertexCount));
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      incidentFaces[static_cast<std::size_t>(faces(face, corner))]
+          .push_back(face);
+    }
+  }
+
+  std::vector<std::array<Eigen::Vector3d, 3>> cornerNormals(
+      static_cast<std::size_t>(faces.rows()));
+  const double sharpCosine =
+      std::cos(options.sharpFeatureAngleDegrees *
+               std::numbers::pi / 180.0);
+
+  for (int face = 0; face < faces.rows(); ++face) {
+    const Eigen::Vector3d targetNormal =
+        faceNormals.row(face).transpose().normalized();
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      Eigen::Vector3d average = Eigen::Vector3d::Zero();
+      if (options.useFeatureAwareCornerNormals) {
+        for (const int neighbor :
+             incidentFaces[static_cast<std::size_t>(vertex)]) {
+          const Eigen::Vector3d neighborNormal =
+              faceNormals.row(neighbor).transpose();
+          if (!finite_vector(neighborNormal) ||
+              neighborNormal.squaredNorm() <= 1e-30 ||
+              targetNormal.dot(neighborNormal.normalized()) < sharpCosine) {
+            continue;
+          }
+          average += std::max(faceAreas(neighbor), 1e-30) *
+                     neighborNormal.normalized();
+        }
+      } else {
+        average = vertexNormals.row(vertex).transpose();
+      }
+
+      if (!finite_vector(average) || average.squaredNorm() <= 1e-30) {
+        average = targetNormal;
+      }
+      cornerNormals[static_cast<std::size_t>(face)]
+                   [static_cast<std::size_t>(corner)] = average.normalized();
+    }
+  }
+  return cornerNormals;
+}
+
 inline void decompose_shape_operators(
     const Eigen::MatrixXd &faceBasisX, const Eigen::MatrixXd &faceBasisY,
     const double averageEdgeLength, const FaceCurvatureOptions &options,
@@ -305,9 +366,11 @@ inline FaceCurvatureResult estimate_face_curvature(
     throw std::invalid_argument("smoothingIterations must be non-negative.");
   }
   if (options.minimumSingularValueRatio <= 0.0 ||
-      options.minimumSingularValueRatio >= 1.0) {
+      options.minimumSingularValueRatio >= 1.0 ||
+      options.sharpFeatureAngleDegrees <= 0.0 ||
+      options.sharpFeatureAngleDegrees >= 180.0) {
     throw std::invalid_argument(
-        "minimumSingularValueRatio must lie in (0, 1).");
+        "minimumSingularValueRatio and sharpFeatureAngleDegrees are invalid.");
   }
 
   const int faceCount = faces.rows();
@@ -315,6 +378,9 @@ inline FaceCurvatureResult estimate_face_curvature(
   const double minimumArea =
       options.minimumRelativeArea * edgeLength * edgeLength;
   const double nan = std::numeric_limits<double>::quiet_NaN();
+
+  const auto cornerNormals = build_face_corner_normals(
+      faces, faceNormals, faceAreas, vertexNormals, options);
 
   FaceCurvatureResult result;
   result.shapeOperators.assign(faceCount, Eigen::Matrix2d::Constant(nan));
@@ -343,8 +409,10 @@ inline FaceCurvatureResult estimate_face_curvature(
       const Eigen::Vector3d edge =
           (vertices.row(vertexB) - vertices.row(vertexA)).transpose();
       const Eigen::Vector3d normalDifference =
-          (vertexNormals.row(vertexB) - vertexNormals.row(vertexA))
-              .transpose();
+          cornerNormals[static_cast<std::size_t>(face)]
+                       [static_cast<std::size_t>(cornerB)] -
+          cornerNormals[static_cast<std::size_t>(face)]
+                       [static_cast<std::size_t>(cornerA)];
 
       if (!finite_vector(edge) || !finite_vector(normalDifference)) {
         finite = false;

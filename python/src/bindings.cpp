@@ -171,6 +171,12 @@ PYBIND11_MODULE(_directional, module) {
       .def_readwrite("preserveBoundary",
                      &directional::RegularizedProxyMeshOptions::preserveBoundary)
       .def_readwrite(
+          "preserveSharpFeatures",
+          &directional::RegularizedProxyMeshOptions::preserveSharpFeatures)
+      .def_readwrite(
+          "sharpFeatureAngleDegrees",
+          &directional::RegularizedProxyMeshOptions::sharpFeatureAngleDegrees)
+      .def_readwrite(
           "clampNegativeCotangents",
           &directional::RegularizedProxyMeshOptions::clampNegativeCotangents)
       .def_readwrite("fixedVertices",
@@ -181,6 +187,9 @@ PYBIND11_MODULE(_directional, module) {
       .def(py::init<>())
       .def_readwrite("smoothingIterations",
                      &directional::FaceCurvatureOptions::smoothingIterations)
+      .def_readwrite(
+          "useFeatureAwareCornerNormals",
+          &directional::FaceCurvatureOptions::useFeatureAwareCornerNormals)
       .def_readwrite("preserveSharpFeatures",
                      &directional::FaceCurvatureOptions::preserveSharpFeatures)
       .def_readwrite(
@@ -212,6 +221,16 @@ PYBIND11_MODULE(_directional, module) {
                     &directional::FaceCurvatureResult::confidence)
       .def_readonly("valid", &directional::FaceCurvatureResult::valid);
 
+  py::enum_<directional::fields::RegularizedCrossFieldConstraintType>(
+      module, "RegularizedCrossFieldConstraintType")
+      .value("Curvature",
+             directional::fields::RegularizedCrossFieldConstraintType::Curvature)
+      .value("Boundary",
+             directional::fields::RegularizedCrossFieldConstraintType::Boundary)
+      .value(
+          "SharpFeature",
+          directional::fields::RegularizedCrossFieldConstraintType::SharpFeature);
+
   py::class_<directional::fields::RegularizedCurvatureCrossFieldOptions>(
       module, "RegularizedCurvatureCrossFieldOptions")
       .def(py::init<>())
@@ -229,6 +248,14 @@ PYBIND11_MODULE(_directional, module) {
           "curvatureAlignmentWeight",
           &directional::fields::RegularizedCurvatureCrossFieldOptions::
               curvatureAlignmentWeight)
+      .def_readwrite(
+          "boundaryAlignmentWeight",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              boundaryAlignmentWeight)
+      .def_readwrite(
+          "sharpFeatureAlignmentWeight",
+          &directional::fields::RegularizedCurvatureCrossFieldOptions::
+              sharpFeatureAlignmentWeight)
       .def_readwrite(
           "confidenceExponent",
           &directional::fields::RegularizedCurvatureCrossFieldOptions::
@@ -280,13 +307,29 @@ PYBIND11_MODULE(_directional, module) {
           &directional::fields::RegularizedCurvatureCrossFieldResult::
               alignmentWeights)
       .def_readonly(
+          "constraintTypes",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              constraintTypes)
+      .def_readonly(
           "smoothnessEnergy",
           &directional::fields::RegularizedCurvatureCrossFieldResult::
               smoothnessEnergy)
       .def_readonly(
           "alignmentEnergy",
           &directional::fields::RegularizedCurvatureCrossFieldResult::
-              alignmentEnergy);
+              alignmentEnergy)
+      .def_readonly(
+          "curvatureAlignmentEnergy",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              curvatureAlignmentEnergy)
+      .def_readonly(
+          "boundaryAlignmentEnergy",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              boundaryAlignmentEnergy)
+      .def_readonly(
+          "sharpFeatureAlignmentEnergy",
+          &directional::fields::RegularizedCurvatureCrossFieldResult::
+              sharpFeatureAlignmentEnergy);
 
   module.def(
       "extract_regularized_curvature_cross_field",

@@ -24,6 +24,23 @@ MeshFixture make_plane() {
   return mesh;
 }
 
+MeshFixture make_folded_plate() {
+  MeshFixture mesh;
+  mesh.vertices.resize(6, 3);
+  mesh.vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0,
+      1.0, 0.0, 1.0,
+      0.0, 0.0, 1.0;
+  mesh.faces.resize(4, 3);
+  mesh.faces << 0, 1, 2,
+      0, 2, 3,
+      1, 0, 5,
+      1, 5, 4;
+  return mesh;
+}
+
 MeshFixture make_open_cylinder(const int segments = 24,
                                const int rings = 5,
                                const double radius = 2.0,
@@ -117,6 +134,33 @@ TEST(FaceCurvaturePhase1, CylinderRecoversPrincipalCurvatures) {
   EXPECT_GT(result.confidence.mean(), 0.5);
 }
 
+TEST(FaceCurvaturePhase1, FeatureAwareNormalsRejectFalseCreaseCurvature) {
+  const MeshFixture input = make_folded_plate();
+  directional::TriMesh mesh;
+  mesh.set_mesh(input.vertices, input.faces);
+
+  directional::FaceCurvatureOptions featureAware;
+  featureAware.smoothingIterations = 0;
+  featureAware.sharpFeatureAngleDegrees = 60.0;
+  featureAware.useFeatureAwareCornerNormals = true;
+  const directional::FaceCurvatureResult split =
+      directional::estimate_face_curvature(
+          mesh.V, mesh.F, mesh.FBx, mesh.FBy, mesh.faceNormals,
+          mesh.faceAreas, mesh.TT, mesh.vertexNormals, featureAware);
+
+  directional::FaceCurvatureOptions blended = featureAware;
+  blended.useFeatureAwareCornerNormals = false;
+  const directional::FaceCurvatureResult unsplit =
+      directional::estimate_face_curvature(
+          mesh.V, mesh.F, mesh.FBx, mesh.FBy, mesh.faceNormals,
+          mesh.faceAreas, mesh.TT, mesh.vertexNormals, blended);
+
+  ASSERT_EQ(split.valid.sum(), mesh.F.rows());
+  ASSERT_EQ(unsplit.valid.sum(), mesh.F.rows());
+  EXPECT_LT(split.principalCurvatures.cwiseAbs().maxCoeff(), 1e-10);
+  EXPECT_GT(unsplit.principalCurvatures.cwiseAbs().maxCoeff(), 0.1);
+}
+
 TEST(FaceCurvaturePhase1, NormalTransportPreservesIsotropicTensor) {
   const Eigen::Vector3d sourceNormal(0.0, 0.0, 1.0);
   const Eigen::Vector3d targetNormal =
@@ -161,4 +205,30 @@ TEST(RegularizedCurvatureFieldPhase1, ProducesAlignedCylinderField) {
   EXPECT_TRUE(result.field.rawField.array().isFinite().all());
   EXPECT_TRUE(std::isfinite(result.smoothnessEnergy));
   EXPECT_TRUE(std::isfinite(result.alignmentEnergy));
+}
+
+TEST(RegularizedCurvatureFieldPhase1, SharpEdgesProvideFieldConstraints) {
+  const MeshFixture input = make_folded_plate();
+  directional::fields::RegularizedCurvatureCrossFieldOptions options;
+  options.proxy.smoothnessWeight = 0.0;
+  options.curvatureAlignmentWeight = 0.0;
+  options.boundaryAlignmentWeight = 0.0;
+  options.sharpFeatureAlignmentWeight = 1.0;
+  options.curvature.sharpFeatureAngleDegrees = 60.0;
+  options.computeMatching = false;
+
+  const auto result =
+      directional::fields::extract_regularized_curvature_cross_field(
+          input.vertices, input.faces, options);
+
+  ASSERT_EQ(result.constrainedFaces.size(), 2);
+  ASSERT_EQ(result.constraintTypes.size(), 2);
+  for (int index = 0; index < result.constraintTypes.size(); ++index) {
+    EXPECT_EQ(
+        result.constraintTypes(index),
+        static_cast<int>(directional::fields::
+                             RegularizedCrossFieldConstraintType::SharpFeature));
+  }
+  EXPECT_TRUE(result.field.rawField.array().isFinite().all());
+  EXPECT_GT(result.sharpFeatureAlignmentEnergy, 0.0);
 }

@@ -7,6 +7,8 @@
 
 #include <Eigen/Core>
 
+#include <directional/fields/CompareCrossFields.h>
+
 namespace directional::gui {
 
 enum class FieldMethod { Smooth, RegularizedCurvature };
@@ -56,6 +58,7 @@ struct MeshSimplificationData {
 };
 
 struct FieldComparisonData {
+  fields::CrossFieldComparisonResult details;
   Eigen::VectorXd faceDeviationDegrees;
   double globalPhaseDegrees = 0.0;
   double meanDegrees = 0.0;
@@ -63,9 +66,17 @@ struct FieldComparisonData {
   double p95Degrees = 0.0;
   double p99Degrees = 0.0;
   double areaWeightedMeanDegrees = 0.0;
+  double areaWeightedRmsDegrees = 0.0;
+  double q4WeightedMeanError = 0.0;
   double highErrorAreaFraction = 0.0;
   Eigen::Index highErrorFaceCount = 0;
   int highErrorComponentCount = 0;
+
+  Eigen::Index candidateSingularityCount = 0;
+  Eigen::Index referenceSingularityCount = 0;
+  Eigen::Index singularityMismatchVertexCount = 0;
+  double singularityMismatchAreaFraction = 0.0;
+  bool hasTopologyDiagnostics = false;
 
   bool hasShapeOperatorAlignment = false;
   double firstShapeAlignmentMeanDegrees = 0.0;
@@ -83,8 +94,13 @@ struct FieldOptions {
   double proxyFidelityWeight = 1.0;
   double proxySmoothnessWeight = 0.01;
   bool preserveBoundary = true;
+  bool preserveSharpFeatures = true;
+  double sharpFeatureAngleDegrees = 60.0;
+  bool useFeatureAwareCornerNormals = true;
   double fieldSmoothnessWeight = 1.0;
   double curvatureAlignmentWeight = 1.0;
+  double boundaryAlignmentWeight = 1.0;
+  double sharpFeatureAlignmentWeight = 1.0;
   double minimumConfidence = 1e-3;
   double confidenceExponent = 2.0;
   int curvatureSmoothingIterations = 1;

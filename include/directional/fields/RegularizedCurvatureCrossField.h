@@ -10,6 +10,8 @@
 #ifndef DIRECTIONAL_FIELDS_REGULARIZED_CURVATURE_CROSS_FIELD_H
 #define DIRECTIONAL_FIELDS_REGULARIZED_CURVATURE_CROSS_FIELD_H
 
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <complex>
 #include <numbers>
@@ -32,6 +34,15 @@
 namespace directional::fields {
 
 /**
+ * @brief Source of an alignment constraint used by the regularized solver.
+ */
+enum class RegularizedCrossFieldConstraintType : int {
+  Curvature = 0,
+  Boundary = 1,
+  SharpFeature = 2,
+};
+
+/**
  * @brief Options for the Phase-1 regularized-curvature cross-field pipeline.
  */
 struct RegularizedCurvatureCrossFieldOptions {
@@ -44,7 +55,13 @@ struct RegularizedCurvatureCrossFieldOptions {
   /// Relative coefficient of confidence-weighted curvature alignment.
   double curvatureAlignmentWeight = 1.0;
 
-  /// Confidence exponent applied before constructing alignment weights.
+  /// Relative coefficient of boundary-edge alignment.
+  double boundaryAlignmentWeight = 1.0;
+
+  /// Relative coefficient of sharp-feature-edge alignment.
+  double sharpFeatureAlignmentWeight = 1.0;
+
+  /// Confidence exponent applied before constructing curvature weights.
   double confidenceExponent = 2.0;
 
   /// Ignore curvature targets below this confidence.
@@ -67,7 +84,8 @@ struct RegularizedCurvatureCrossFieldOptions {
 };
 
 /**
- * @brief Field result plus optimized proxy and curvature diagnostics.
+ * @brief Field result plus optimized proxy, curvature, and constraint
+ *        diagnostics.
  */
 struct RegularizedCurvatureCrossFieldResult {
   CrossFieldResult field;
@@ -77,8 +95,12 @@ struct RegularizedCurvatureCrossFieldResult {
   Eigen::VectorXi constrainedFaces;
   Eigen::MatrixXd constraintDirections;
   Eigen::VectorXd alignmentWeights;
+  Eigen::VectorXi constraintTypes;
   double smoothnessEnergy = 0.0;
   double alignmentEnergy = 0.0;
+  double curvatureAlignmentEnergy = 0.0;
+  double boundaryAlignmentEnergy = 0.0;
+  double sharpFeatureAlignmentEnergy = 0.0;
 };
 
 namespace regularized_cross_field_detail {
@@ -86,6 +108,58 @@ namespace regularized_cross_field_detail {
 using Complex = std::complex<double>;
 using ComplexSparseMatrix = Eigen::SparseMatrix<Complex>;
 using ComplexTriplet = Eigen::Triplet<Complex>;
+
+struct AlignmentConstraint {
+  int face = -1;
+  Eigen::Vector3d direction = Eigen::Vector3d::Zero();
+  double confidence = 1.0;
+  double mass = 1.0;
+  RegularizedCrossFieldConstraintType type =
+      RegularizedCrossFieldConstraintType::Curvature;
+};
+
+struct AlignmentEnergyBreakdown {
+  double curvature = 0.0;
+  double boundary = 0.0;
+  double sharpFeature = 0.0;
+
+  [[nodiscard]] double total() const {
+    return curvature + boundary + sharpFeature;
+  }
+};
+
+inline std::size_t constraint_type_index(
+    const RegularizedCrossFieldConstraintType type) {
+  return static_cast<std::size_t>(static_cast<int>(type));
+}
+
+inline double constraint_group_weight(
+    const RegularizedCurvatureCrossFieldOptions &options,
+    const RegularizedCrossFieldConstraintType type) {
+  switch (type) {
+  case RegularizedCrossFieldConstraintType::Curvature:
+    return options.curvatureAlignmentWeight;
+  case RegularizedCrossFieldConstraintType::Boundary:
+    return options.boundaryAlignmentWeight;
+  case RegularizedCrossFieldConstraintType::SharpFeature:
+    return options.sharpFeatureAlignmentWeight;
+  }
+  return 0.0;
+}
+
+inline double &constraint_group_energy(
+    AlignmentEnergyBreakdown &energy,
+    const RegularizedCrossFieldConstraintType type) {
+  switch (type) {
+  case RegularizedCrossFieldConstraintType::Curvature:
+    return energy.curvature;
+  case RegularizedCrossFieldConstraintType::Boundary:
+    return energy.boundary;
+  case RegularizedCrossFieldConstraintType::SharpFeature:
+    return energy.sharpFeature;
+  }
+  return energy.curvature;
+}
 
 inline Eigen::Vector3d transport_proxy_direction_to_original(
     const Eigen::Vector3d &direction,
@@ -102,6 +176,34 @@ inline Eigen::Vector3d transport_proxy_direction_to_original(
   return transported / norm;
 }
 
+inline Eigen::Vector3d projected_edge_direction(const TriMesh &mesh,
+                                                const int edge,
+                                                const int face) {
+  Eigen::Vector3d direction =
+      (mesh.V.row(mesh.EV(edge, 1)) - mesh.V.row(mesh.EV(edge, 0)))
+          .transpose();
+  const Eigen::Vector3d normal = mesh.faceNormals.row(face).transpose();
+  direction -= direction.dot(normal) * normal;
+  const double norm = direction.norm();
+  if (!(norm > 1e-12) || !direction.array().isFinite().all()) {
+    return Eigen::Vector3d::Zero();
+  }
+  return direction / norm;
+}
+
+inline bool is_sharp_edge(const TriMesh &mesh, const int edge,
+                          const double thresholdDegrees) {
+  const int firstFace = mesh.EF(edge, 0);
+  const int secondFace = mesh.EF(edge, 1);
+  if (firstFace < 0 || secondFace < 0) {
+    return false;
+  }
+  const double thresholdCosine =
+      std::cos(thresholdDegrees * std::numbers::pi / 180.0);
+  return mesh.faceNormals.row(firstFace).dot(
+             mesh.faceNormals.row(secondFace)) < thresholdCosine;
+}
+
 inline Complex degree_four_target(const TriMesh &mesh, const int face,
                                   const Eigen::Vector3d &direction) {
   Complex intrinsic(direction.dot(mesh.FBx.row(face).transpose()),
@@ -109,7 +211,7 @@ inline Complex degree_four_target(const TriMesh &mesh, const int face,
   const double magnitude = std::abs(intrinsic);
   if (!(magnitude > 1e-14) || !std::isfinite(magnitude)) {
     throw std::runtime_error(
-        "A curvature constraint could not be projected into its face basis.");
+        "An alignment constraint could not be projected into its face basis.");
   }
   intrinsic /= magnitude;
   return std::pow(intrinsic, kCrossFieldDegree);
@@ -117,13 +219,11 @@ inline Complex degree_four_target(const TriMesh &mesh, const int face,
 
 inline Eigen::VectorXcd solve_aligned_power_field(
     const TriMesh &mesh, const PCFaceTangentBundle &tangentBundle,
-    const Eigen::VectorXi &constrainedFaces,
-    const Eigen::MatrixXd &constraintDirections,
-    const Eigen::VectorXd &confidenceWeights,
+    const std::vector<AlignmentConstraint> &constraints,
     const RegularizedCurvatureCrossFieldOptions &options,
-    double &smoothnessEnergy, double &alignmentEnergy) {
+    double &smoothnessEnergy, AlignmentEnergyBreakdown &alignmentEnergy) {
   const int faceCount = tangentBundle.numSpaces;
-  if (constrainedFaces.size() == 0) {
+  if (constraints.empty()) {
     throw std::invalid_argument(
         "solve_aligned_power_field requires at least one constraint.");
   }
@@ -135,17 +235,21 @@ inline Eigen::VectorXcd solve_aligned_power_field(
   }
   totalSmoothMass = std::max(totalSmoothMass, 1e-30);
 
-  double totalConstraintMass = 0.0;
-  for (int index = 0; index < constrainedFaces.size(); ++index) {
-    const int face = constrainedFaces(index);
-    totalConstraintMass +=
-        tangentBundle.tangentSpaceMass.coeff(face, face);
+  std::array<double, 3> totalConstraintMass = {0.0, 0.0, 0.0};
+  for (const AlignmentConstraint &constraint : constraints) {
+    if (constraint_group_weight(options, constraint.type) <= 0.0) {
+      continue;
+    }
+    totalConstraintMass[constraint_type_index(constraint.type)] +=
+        constraint.mass;
   }
-  totalConstraintMass = std::max(totalConstraintMass, 1e-30);
+  for (double &mass : totalConstraintMass) {
+    mass = std::max(mass, 1e-30);
+  }
 
   std::vector<ComplexTriplet> triplets;
   triplets.reserve(static_cast<std::size_t>(
-      4 * tangentBundle.innerAdjacencies.size() + constrainedFaces.size()));
+      4 * tangentBundle.innerAdjacencies.size() + constraints.size()));
   Eigen::VectorXcd rhs = Eigen::VectorXcd::Zero(faceCount);
 
   int innerEdge = 0;
@@ -172,17 +276,20 @@ inline Eigen::VectorXcd solve_aligned_power_field(
     ++innerEdge;
   }
 
-  for (int index = 0; index < constrainedFaces.size(); ++index) {
-    const int face = constrainedFaces(index);
-    const double faceMass =
-        tangentBundle.tangentSpaceMass.coeff(face, face);
-    const double weight = options.curvatureAlignmentWeight *
-                          confidenceWeights(index) * faceMass /
-                          totalConstraintMass;
-    const Complex target = degree_four_target(
-        mesh, face, constraintDirections.row(index).transpose());
-    triplets.emplace_back(face, face, weight);
-    rhs(face) += weight * target;
+  for (const AlignmentConstraint &constraint : constraints) {
+    const double groupWeight = constraint_group_weight(options, constraint.type);
+    if (groupWeight <= 0.0) {
+      continue;
+    }
+    const double normalizedMass =
+        constraint.mass /
+        totalConstraintMass[constraint_type_index(constraint.type)];
+    const double weight =
+        groupWeight * constraint.confidence * normalizedMass;
+    const Complex target =
+        degree_four_target(mesh, constraint.face, constraint.direction);
+    triplets.emplace_back(constraint.face, constraint.face, weight);
+    rhs(constraint.face) += weight * target;
   }
 
   ComplexSparseMatrix system(faceCount, faceCount);
@@ -220,18 +327,25 @@ inline Eigen::VectorXcd solve_aligned_power_field(
   }
   smoothnessEnergy *= options.fieldSmoothnessWeight / totalSmoothMass;
 
-  alignmentEnergy = 0.0;
-  for (int index = 0; index < constrainedFaces.size(); ++index) {
-    const int face = constrainedFaces(index);
-    const double faceMass =
-        tangentBundle.tangentSpaceMass.coeff(face, face);
-    const Complex target = degree_four_target(
-        mesh, face, constraintDirections.row(index).transpose());
-    alignmentEnergy +=
-        confidenceWeights(index) * faceMass * std::norm(power(face) - target);
+  alignmentEnergy = {};
+  for (const AlignmentConstraint &constraint : constraints) {
+    const double groupWeight = constraint_group_weight(options, constraint.type);
+    if (groupWeight <= 0.0) {
+      continue;
+    }
+    const Complex target =
+        degree_four_target(mesh, constraint.face, constraint.direction);
+    constraint_group_energy(alignmentEnergy, constraint.type) +=
+        constraint.confidence * constraint.mass *
+        std::norm(power(constraint.face) - target);
   }
-  alignmentEnergy *=
-      options.curvatureAlignmentWeight / totalConstraintMass;
+  for (const auto type : {RegularizedCrossFieldConstraintType::Curvature,
+                          RegularizedCrossFieldConstraintType::Boundary,
+                          RegularizedCrossFieldConstraintType::SharpFeature}) {
+    double &energy = constraint_group_energy(alignmentEnergy, type);
+    energy *= constraint_group_weight(options, type) /
+              totalConstraintMass[constraint_type_index(type)];
+  }
 
   if (options.normalizeDirections) {
     for (int face = 0; face < power.size(); ++face) {
@@ -284,13 +398,8 @@ inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
 } // namespace regularized_cross_field_detail
 
 /**
- * @brief Computes a smooth 4-RoSy field aligned to principal curvature of a
- *        fidelity-preserving regularized proxy mesh.
- *
- * This Phase-1 implementation is deliberately two-stage: first optimize a
- * same-topology proxy surface, then solve a transported degree-4 power field
- * with confidence-weighted soft curvature targets. The field does not feed
- * back into proxy optimization in this phase.
+ * @brief Computes a smooth 4-RoSy field aligned to curvature, boundary edges,
+ *        and sharp feature edges of a fidelity-preserving regularized proxy.
  */
 inline RegularizedCurvatureCrossFieldResult
 extract_regularized_curvature_cross_field(
@@ -304,7 +413,9 @@ extract_regularized_curvature_cross_field(
         "triangular mesh.");
   }
   if (!(options.fieldSmoothnessWeight > 0.0) ||
-      !(options.curvatureAlignmentWeight >= 0.0) ||
+      options.curvatureAlignmentWeight < 0.0 ||
+      options.boundaryAlignmentWeight < 0.0 ||
+      options.sharpFeatureAlignmentWeight < 0.0 ||
       options.confidenceExponent <= 0.0 ||
       options.minimumConfidence < 0.0 || options.minimumConfidence > 1.0) {
     throw std::invalid_argument(
@@ -313,7 +424,7 @@ extract_regularized_curvature_cross_field(
 
   constexpr std::size_t stageCount = 7;
   report_progress(options.progress, 1, stageCount,
-                  "Optimizing regularized proxy mesh");
+                  "Optimizing feature-preserving proxy mesh");
   const RegularizedProxyMeshResult proxyResult = regularize_proxy_mesh(
       mesh.V, mesh.F, mesh.EV, mesh.isBoundaryVertex, options.proxy);
 
@@ -323,54 +434,100 @@ extract_regularized_curvature_cross_field(
   proxyMesh.set_mesh(proxyResult.vertices, mesh.F);
 
   report_progress(options.progress, 3, stageCount,
-                  "Estimating proxy principal curvature");
+                  "Estimating feature-aware proxy curvature");
   FaceCurvatureResult curvature = estimate_face_curvature(
       proxyMesh.V, proxyMesh.F, proxyMesh.FBx, proxyMesh.FBy,
       proxyMesh.faceNormals, proxyMesh.faceAreas, proxyMesh.TT,
       proxyMesh.vertexNormals, options.curvature);
 
-  std::vector<int> constrainedFaceList;
-  std::vector<Eigen::Vector3d> directionList;
-  std::vector<double> confidenceWeightList;
-  constrainedFaceList.reserve(static_cast<std::size_t>(mesh.F.rows()));
-  directionList.reserve(static_cast<std::size_t>(mesh.F.rows()));
-  confidenceWeightList.reserve(static_cast<std::size_t>(mesh.F.rows()));
+  std::vector<AlignmentConstraint> constraints;
+  constraints.reserve(static_cast<std::size_t>(mesh.F.rows() +
+                                                2 * mesh.EV.rows()));
 
-  for (int face = 0; face < mesh.F.rows(); ++face) {
-    if (curvature.valid(face) == 0 ||
-        curvature.confidence(face) < options.minimumConfidence) {
-      continue;
+  if (options.curvatureAlignmentWeight > 0.0) {
+    for (int face = 0; face < mesh.F.rows(); ++face) {
+      if (curvature.valid(face) == 0 ||
+          curvature.confidence(face) < options.minimumConfidence) {
+        continue;
+      }
+
+      const Eigen::Vector3d target = transport_proxy_direction_to_original(
+          curvature.principalDirectionsMax.row(face).transpose(),
+          proxyMesh.faceNormals.row(face).transpose(),
+          mesh.faceNormals.row(face).transpose());
+      if (target.squaredNorm() <= 1e-20) {
+        continue;
+      }
+
+      const double confidence =
+          std::pow(curvature.confidence(face), options.confidenceExponent);
+      if (!(confidence > 0.0) || !std::isfinite(confidence)) {
+        continue;
+      }
+
+      constraints.push_back({face, target, confidence,
+                             std::max(mesh.faceAreas(face), 1e-30),
+                             RegularizedCrossFieldConstraintType::Curvature});
     }
-
-    const Eigen::Vector3d target = transport_proxy_direction_to_original(
-        curvature.principalDirectionsMax.row(face).transpose(),
-        proxyMesh.faceNormals.row(face).transpose(),
-        mesh.faceNormals.row(face).transpose());
-    if (target.squaredNorm() <= 1e-20) {
-      continue;
-    }
-
-    const double confidenceWeight =
-        std::pow(curvature.confidence(face), options.confidenceExponent);
-    if (!(confidenceWeight > 0.0) || !std::isfinite(confidenceWeight)) {
-      continue;
-    }
-
-    constrainedFaceList.push_back(face);
-    directionList.push_back(target);
-    confidenceWeightList.push_back(confidenceWeight);
   }
 
-  Eigen::VectorXi constrainedFaces(constrainedFaceList.size());
-  Eigen::MatrixXd constraintDirections(directionList.size(), 3);
-  Eigen::VectorXd confidenceWeights(confidenceWeightList.size());
-  Eigen::VectorXd alignmentWeights(confidenceWeightList.size());
-  for (std::size_t index = 0; index < constrainedFaceList.size(); ++index) {
-    constrainedFaces(static_cast<int>(index)) = constrainedFaceList[index];
-    constraintDirections.row(static_cast<int>(index)) = directionList[index];
-    confidenceWeights(static_cast<int>(index)) = confidenceWeightList[index];
+  if (options.boundaryAlignmentWeight > 0.0) {
+    for (int index = 0; index < mesh.boundEdges.size(); ++index) {
+      const int edge = mesh.boundEdges(index);
+      const int face = mesh.EF(edge, 0);
+      if (face < 0) {
+        continue;
+      }
+      const Eigen::Vector3d direction =
+          projected_edge_direction(mesh, edge, face);
+      if (direction.squaredNorm() <= 1e-20) {
+        continue;
+      }
+      const double length =
+          (mesh.V.row(mesh.EV(edge, 1)) - mesh.V.row(mesh.EV(edge, 0)))
+              .norm();
+      constraints.push_back({face, direction, 1.0, std::max(length, 1e-30),
+                             RegularizedCrossFieldConstraintType::Boundary});
+    }
+  }
+
+  if (options.sharpFeatureAlignmentWeight > 0.0) {
+    for (int index = 0; index < mesh.innerEdges.size(); ++index) {
+      const int edge = mesh.innerEdges(index);
+      if (!is_sharp_edge(mesh, edge,
+                         options.curvature.sharpFeatureAngleDegrees)) {
+        continue;
+      }
+      const double length =
+          (mesh.V.row(mesh.EV(edge, 1)) - mesh.V.row(mesh.EV(edge, 0)))
+              .norm();
+      for (int side = 0; side < 2; ++side) {
+        const int face = mesh.EF(edge, side);
+        const Eigen::Vector3d direction =
+            projected_edge_direction(mesh, edge, face);
+        if (direction.squaredNorm() <= 1e-20) {
+          continue;
+        }
+        constraints.push_back(
+            {face, direction, 1.0, std::max(length, 1e-30),
+             RegularizedCrossFieldConstraintType::SharpFeature});
+      }
+    }
+  }
+
+  Eigen::VectorXi constrainedFaces(constraints.size());
+  Eigen::MatrixXd constraintDirections(constraints.size(), 3);
+  Eigen::VectorXd alignmentWeights(constraints.size());
+  Eigen::VectorXi constraintTypes(constraints.size());
+  for (std::size_t index = 0; index < constraints.size(); ++index) {
+    const AlignmentConstraint &constraint = constraints[index];
+    constrainedFaces(static_cast<int>(index)) = constraint.face;
+    constraintDirections.row(static_cast<int>(index)) = constraint.direction;
     alignmentWeights(static_cast<int>(index)) =
-        options.curvatureAlignmentWeight * confidenceWeightList[index];
+        constraint_group_weight(options, constraint.type) *
+        constraint.confidence;
+    constraintTypes(static_cast<int>(index)) =
+        static_cast<int>(constraint.type);
   }
 
   report_progress(options.progress, 4, stageCount,
@@ -378,11 +535,15 @@ extract_regularized_curvature_cross_field(
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(mesh);
 
-  CartesianField rawField;
+  const bool hasActiveConstraint = std::any_of(
+      constraints.begin(), constraints.end(),
+      [&](const AlignmentConstraint &constraint) {
+        return constraint_group_weight(options, constraint.type) > 0.0;
+      });
+
   double smoothnessEnergy = 0.0;
-  double alignmentEnergy = 0.0;
-  if (constrainedFaces.size() == 0 ||
-      options.curvatureAlignmentWeight == 0.0) {
+  AlignmentEnergyBreakdown alignmentEnergy;
+  if (!hasActiveConstraint) {
     report_progress(options.progress, 5, stageCount,
                     "Solving smooth fallback cross field");
     CrossFieldOptions fallbackOptions;
@@ -399,23 +560,25 @@ extract_regularized_curvature_cross_field(
     result.constrainedFaces = std::move(constrainedFaces);
     result.constraintDirections = std::move(constraintDirections);
     result.alignmentWeights = std::move(alignmentWeights);
+    result.constraintTypes = std::move(constraintTypes);
     report_progress(options.progress, 6, stageCount,
-                    "No reliable curvature constraints found");
+                    "No active alignment constraints found");
     report_progress(options.progress, 7, stageCount,
                     "Finalizing cross field");
     return result;
   }
 
   report_progress(options.progress, 5, stageCount,
-                  "Solving smooth curvature-aligned power field");
+                  "Solving feature-aware aligned power field");
   const Eigen::VectorXcd power = solve_aligned_power_field(
-      mesh, tangentBundle, constrainedFaces, constraintDirections,
-      confidenceWeights, options, smoothnessEnergy, alignmentEnergy);
+      mesh, tangentBundle, constraints, options, smoothnessEnergy,
+      alignmentEnergy);
 
   report_progress(options.progress, 6, stageCount,
                   "Constructing raw cross directions");
-  rawField = regularized_cross_field_detail::make_raw_field(
-      tangentBundle, power, options.normalizeDirections);
+  CartesianField rawField =
+      regularized_cross_field_detail::make_raw_field(
+          tangentBundle, power, options.normalizeDirections);
 
   report_progress(
       options.progress, 7, stageCount,
@@ -433,8 +596,12 @@ extract_regularized_curvature_cross_field(
   result.constrainedFaces = std::move(constrainedFaces);
   result.constraintDirections = std::move(constraintDirections);
   result.alignmentWeights = std::move(alignmentWeights);
+  result.constraintTypes = std::move(constraintTypes);
   result.smoothnessEnergy = smoothnessEnergy;
-  result.alignmentEnergy = alignmentEnergy;
+  result.curvatureAlignmentEnergy = alignmentEnergy.curvature;
+  result.boundaryAlignmentEnergy = alignmentEnergy.boundary;
+  result.sharpFeatureAlignmentEnergy = alignmentEnergy.sharpFeature;
+  result.alignmentEnergy = alignmentEnergy.total();
   return result;
 }
 

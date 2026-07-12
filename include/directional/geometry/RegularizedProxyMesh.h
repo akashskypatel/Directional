@@ -12,7 +12,10 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <numbers>
 #include <stdexcept>
+#include <unordered_map>
 #include <vector>
 
 #include <Eigen/Core>
@@ -33,6 +36,12 @@ struct RegularizedProxyMeshOptions {
 
   /// Keep all boundary vertices fixed at their input positions.
   bool preserveBoundary = true;
+
+  /// Keep vertices incident to sharp dihedral edges fixed.
+  bool preserveSharpFeatures = true;
+
+  /// Dihedral threshold in degrees used when preserveSharpFeatures is enabled.
+  double sharpFeatureAngleDegrees = 60.0;
 
   /// Clamp negative cotangent edge weights to zero for a robust SPD system.
   bool clampNegativeCotangents = true;
@@ -90,10 +99,12 @@ inline void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
         "Proxy regularization edge/boundary dimensions are inconsistent.");
   }
   if (!(options.fidelityWeight > 0.0) ||
-      options.smoothnessWeight < 0.0) {
+      options.smoothnessWeight < 0.0 ||
+      options.sharpFeatureAngleDegrees <= 0.0 ||
+      options.sharpFeatureAngleDegrees >= 180.0) {
     throw std::invalid_argument(
-        "Proxy fidelityWeight must be positive and smoothnessWeight must be "
-        "non-negative.");
+        "Proxy weights must be valid and sharpFeatureAngleDegrees must lie "
+        "in (0, 180).");
   }
 }
 
@@ -209,6 +220,79 @@ inline RegularizedProxyMeshResult regularize_proxy_mesh(
       }
     }
   }
+
+  if (options.preserveSharpFeatures) {
+    struct EdgeKeyHash {
+      std::size_t operator()(const std::uint64_t key) const noexcept {
+        return std::hash<std::uint64_t>{}(key);
+      }
+    };
+    const auto edge_key = [](const int first, const int second) {
+      const std::uint32_t low = static_cast<std::uint32_t>(
+          std::min(first, second));
+      const std::uint32_t high = static_cast<std::uint32_t>(
+          std::max(first, second));
+      return (static_cast<std::uint64_t>(low) << 32U) | high;
+    };
+
+    std::unordered_map<std::uint64_t, int, EdgeKeyHash> edgeLookup;
+    edgeLookup.reserve(static_cast<std::size_t>(2 * edges.rows()));
+    for (int edge = 0; edge < edges.rows(); ++edge) {
+      edgeLookup.emplace(edge_key(edges(edge, 0), edges(edge, 1)), edge);
+    }
+
+    Eigen::MatrixXi incidentFaces =
+        Eigen::MatrixXi::Constant(edges.rows(), 2, -1);
+    for (int face = 0; face < faces.rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        const int first = faces(face, corner);
+        const int second = faces(face, (corner + 1) % 3);
+        const auto found = edgeLookup.find(edge_key(first, second));
+        if (found == edgeLookup.end()) {
+          continue;
+        }
+        const int edge = found->second;
+        if (incidentFaces(edge, 0) < 0) {
+          incidentFaces(edge, 0) = face;
+        } else if (incidentFaces(edge, 1) < 0) {
+          incidentFaces(edge, 1) = face;
+        }
+      }
+    }
+
+    Eigen::MatrixXd faceNormals(faces.rows(), 3);
+    for (int face = 0; face < faces.rows(); ++face) {
+      const Eigen::Vector3d first =
+          vertices.row(faces(face, 1)).transpose() -
+          vertices.row(faces(face, 0)).transpose();
+      const Eigen::Vector3d second =
+          vertices.row(faces(face, 2)).transpose() -
+          vertices.row(faces(face, 0)).transpose();
+      const Eigen::Vector3d normal = first.cross(second);
+      if (normal.squaredNorm() > 1e-30) {
+        faceNormals.row(face) = normal.normalized().transpose();
+      } else {
+        faceNormals.row(face).setZero();
+      }
+    }
+
+    const double sharpCosine =
+        std::cos(options.sharpFeatureAngleDegrees *
+                 std::numbers::pi / 180.0);
+    for (int edge = 0; edge < edges.rows(); ++edge) {
+      const int firstFace = incidentFaces(edge, 0);
+      const int secondFace = incidentFaces(edge, 1);
+      if (firstFace < 0 || secondFace < 0) {
+        continue;
+      }
+      if (faceNormals.row(firstFace).dot(faceNormals.row(secondFace)) <
+          sharpCosine) {
+        fixedMask(edges(edge, 0)) = 1;
+        fixedMask(edges(edge, 1)) = 1;
+      }
+    }
+  }
+
   for (int index = 0; index < options.fixedVertices.size(); ++index) {
     const int vertex = options.fixedVertices(index);
     if (vertex < 0 || vertex >= vertexCount) {

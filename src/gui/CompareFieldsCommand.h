@@ -55,6 +55,7 @@ inline FieldComparisonData compare_fields(const MeshData &mesh, const FieldData 
                                    secondRaw, options);
 
   FieldComparisonData result;
+  result.details = comparison;
   result.faceDeviationDegrees = comparison.faceDeviationDegrees;
   result.globalPhaseDegrees = comparison.globalPhaseDegrees;
   result.meanDegrees = comparison.faceDeviationStats.mean;
@@ -62,9 +63,21 @@ inline FieldComparisonData compare_fields(const MeshData &mesh, const FieldData 
   result.p95Degrees = comparison.faceDeviationStats.p95;
   result.p99Degrees = comparison.faceDeviationStats.p99;
   result.areaWeightedMeanDegrees = comparison.faceDeviationStats.weightedMean;
+  result.areaWeightedRmsDegrees = comparison.faceDeviationStats.weightedRms;
+  result.q4WeightedMeanError =
+      comparison.q4SquaredChordalErrorStats.weightedMean;
   result.highErrorAreaFraction = comparison.highErrorComponents.areaFraction;
   result.highErrorFaceCount = comparison.highErrorComponents.faceCount;
   result.highErrorComponentCount = comparison.highErrorComponents.componentCount;
+  result.candidateSingularityCount =
+      comparison.topology.first.singularVertices.size();
+  result.referenceSingularityCount =
+      comparison.topology.second.singularVertices.size();
+  result.singularityMismatchVertexCount =
+      comparison.topology.mismatchedVertexCount;
+  result.singularityMismatchAreaFraction =
+      comparison.topology.mismatchedVertexAreaFraction;
+  result.hasTopologyDiagnostics = comparison.topology.available;
   if (comparison.hasShapeOperatorAlignment) {
     result.hasShapeOperatorAlignment = true;
     result.firstShapeAlignmentMeanDegrees =

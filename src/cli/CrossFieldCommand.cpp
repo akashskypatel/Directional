@@ -106,11 +106,22 @@ int run_cross_field(const int argc, char **argv) {
           parse_double_option(option, require_value(option));
     } else if (option == "--no-preserve-boundary") {
       regularizedOptions.proxy.preserveBoundary = false;
+    } else if (option == "--no-preserve-sharp-features") {
+      regularizedOptions.proxy.preserveSharpFeatures = false;
+      regularizedOptions.curvature.preserveSharpFeatures = false;
+    } else if (option == "--no-feature-aware-corner-normals") {
+      regularizedOptions.curvature.useFeatureAwareCornerNormals = false;
     } else if (option == "--field-smoothness") {
       regularizedOptions.fieldSmoothnessWeight =
           parse_double_option(option, require_value(option));
     } else if (option == "--curvature-alignment") {
       regularizedOptions.curvatureAlignmentWeight =
+          parse_double_option(option, require_value(option));
+    } else if (option == "--boundary-alignment") {
+      regularizedOptions.boundaryAlignmentWeight =
+          parse_double_option(option, require_value(option));
+    } else if (option == "--sharp-feature-alignment") {
+      regularizedOptions.sharpFeatureAlignmentWeight =
           parse_double_option(option, require_value(option));
     } else if (option == "--curvature-min-confidence") {
       regularizedOptions.minimumConfidence =
@@ -122,8 +133,9 @@ int run_cross_field(const int argc, char **argv) {
       regularizedOptions.curvature.smoothingIterations =
           parse_integer_option(option, require_value(option));
     } else if (option == "--curvature-sharp-angle") {
-      regularizedOptions.curvature.sharpFeatureAngleDegrees =
-          parse_double_option(option, require_value(option));
+      const double angle = parse_double_option(option, require_value(option));
+      regularizedOptions.proxy.sharpFeatureAngleDegrees = angle;
+      regularizedOptions.curvature.sharpFeatureAngleDegrees = angle;
     } else if (option == "--smooth-curvature-across-features") {
       regularizedOptions.curvature.preserveSharpFeatures = false;
     } else {
@@ -195,6 +207,9 @@ int run_cross_field(const int argc, char **argv) {
       write_dmat(diagnostic_path(*diagnosticsPrefix,
                                  "_alignment_weights.dmat"),
                  regularizedResult->alignmentWeights);
+      write_dmat(diagnostic_path(*diagnosticsPrefix,
+                                 "_constraint_types.dmat"),
+                 regularizedResult->constraintTypes);
     }
   }
 
@@ -205,11 +220,15 @@ int run_cross_field(const int argc, char **argv) {
             << result.rawField.rows() << " faces using " << method;
   if (regularizedResult.has_value()) {
     std::cout << " with " << regularizedResult->constrainedFaces.size()
-              << " curvature constraints"
+              << " alignment constraints"
               << " (smoothness energy "
               << regularizedResult->smoothnessEnergy
-              << ", alignment energy "
-              << regularizedResult->alignmentEnergy << ')';
+              << ", curvature alignment "
+              << regularizedResult->curvatureAlignmentEnergy
+              << ", boundary alignment "
+              << regularizedResult->boundaryAlignmentEnergy
+              << ", sharp-feature alignment "
+              << regularizedResult->sharpFeatureAlignmentEnergy << ')';
   }
   if (smoothOptions.computeMatching) {
     std::cout << " and " << result.singularIndices.size()

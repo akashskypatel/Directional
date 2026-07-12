@@ -36,11 +36,12 @@
 namespace {
 
 constexpr const char *kInputMeshName = "Input mesh";
-constexpr const char *kFieldGlyphName = "Cross field";
+constexpr const char *kCalculatedFieldGlyphName = "Calculated field";
+constexpr const char *kUploadedFieldGlyphName = "Uploaded field";
 constexpr const char *kQuadMeshName = "Quad remesh";
 constexpr const char *kDeviationHeatmapName = "Cross-field deviation (degrees)";
 
-enum class FilePickerTarget { None, Mesh, Field, CompareField };
+enum class FilePickerTarget { None, Mesh, Field };
 
 struct ProgressState {
   std::atomic<std::size_t> current{0};
@@ -63,6 +64,17 @@ struct ProgressState {
   }
 };
 
+struct ComparisonReportContext {
+  directional::gui::FieldOptions candidateOptions;
+  std::string meshPath;
+  std::string referencePath;
+  std::string candidateLabel;
+  std::string referenceLabel;
+  std::string referenceFormat;
+  bool removeGlobalPhase = true;
+  bool shapeOperatorAlignment = false;
+};
+
 struct TaskResult {
   bool hasMesh = false;
   bool hasField = false;
@@ -70,8 +82,10 @@ struct TaskResult {
   bool hasComparison = false;
   directional::gui::MeshData mesh;
   directional::gui::FieldData field;
+  std::optional<directional::gui::FieldOptions> fieldOptions;
   directional::gui::QuadMeshData quadMesh;
   directional::gui::FieldComparisonData comparison;
+  std::optional<ComparisonReportContext> comparisonContext;
   int simplificationSourceFaceCount = 0;
   int simplificationRootCount = 0;
   int simplificationCollapsedEdges = 0;
@@ -114,6 +128,13 @@ void draw_labeled_full_width_control(const char *label,
 struct FaceGeometry {
   Eigen::MatrixXd centers;
   Eigen::MatrixXd normals;
+};
+
+struct FieldGlyphState {
+  Eigen::MatrixXd centers;
+  Eigen::MatrixXd normals;
+  double surfaceOffset = 0.0;
+  std::optional<Eigen::Vector3d> lastCameraPosition;
 };
 
 FaceGeometry face_geometry(const directional::gui::MeshData &mesh) {
@@ -172,6 +193,7 @@ public:
     meshPath_.fill('\0');
     fieldInputPath_.fill('\0');
     fieldOutputPath_.fill('\0');
+    comparisonReportPath_.fill('\0');
     remeshOutputPath_.fill('\0');
     if (startupMesh.has_value()) {
       copy_path_to_buffer(*startupMesh, meshPath_);
@@ -199,15 +221,17 @@ private:
   directional::gui::SessionLog &sessionLog_;
 
   std::optional<directional::gui::MeshData> mesh_;
-  std::optional<directional::gui::FieldData> field_;
-  std::optional<directional::gui::FieldData> referenceField_;
+  std::optional<directional::gui::FieldData> calculatedField_;
+  std::optional<directional::gui::FieldOptions> calculatedFieldOptions_;
+  std::optional<directional::gui::FieldData> uploadedField_;
   std::optional<directional::gui::FieldComparisonData> fieldComparison_;
+  std::optional<ComparisonReportContext> comparisonContext_;
   std::optional<directional::gui::QuadMeshData> quadMesh_;
 
   std::array<char, 1024> meshPath_{};
   std::array<char, 1024> fieldInputPath_{};
-  std::array<char, 1024> compareFieldInputPath_{};
   std::array<char, 1024> fieldOutputPath_{};
+  std::array<char, 1024> comparisonReportPath_{};
   std::array<char, 1024> remeshOutputPath_{};
 
   directional::gui::FilePicker filePicker_;
@@ -215,15 +239,13 @@ private:
 
   int fieldMethod_ = 1;
   int fieldInputFormat_ = 0;
-  int compareFieldInputFormat_ = 0;
   int fieldOutputFormat_ = 0;
+  int fieldOutputSource_ = 0;
   int fieldSampleStride_ = 1;
   float glyphLengthRatio_ = 0.35F;
   float glyphSurfaceOffsetRatio_ = 0.04F;
-  Eigen::MatrixXd fieldGlyphCenters_;
-  Eigen::MatrixXd fieldGlyphNormals_;
-  double fieldGlyphSurfaceOffset_ = 0.0;
-  std::optional<Eigen::Vector3d> lastFieldGlyphCameraPosition_;
+  FieldGlyphState calculatedFieldGlyph_;
+  FieldGlyphState uploadedFieldGlyph_;
   float comparisonHeatmapMaxDegrees_ = 45.0F;
   double comparisonHighErrorThresholdDegrees_ = 20.0;
   bool comparisonRemoveGlobalPhase_ = true;
@@ -237,7 +259,8 @@ private:
   std::shared_ptr<ProgressState> progress_ = std::make_shared<ProgressState>();
   std::string status_ = "Load an OBJ or OFF triangle mesh.";
   std::string error_;
-  std::string fieldLabel_;
+  std::string calculatedFieldLabel_;
+  std::string uploadedFieldLabel_;
 
   static void callback_trampoline() {
     if (instance_ != nullptr) {
@@ -271,17 +294,21 @@ private:
   }
 
   void clear_field_and_remesh() {
-    field_.reset();
-    referenceField_.reset();
+    calculatedField_.reset();
+    calculatedFieldOptions_.reset();
+    uploadedField_.reset();
     fieldComparison_.reset();
+    comparisonContext_.reset();
     quadMesh_.reset();
-    fieldLabel_.clear();
-    fieldGlyphCenters_.resize(0, 3);
-    fieldGlyphNormals_.resize(0, 3);
-    fieldGlyphSurfaceOffset_ = 0.0;
-    lastFieldGlyphCameraPosition_.reset();
-    if (polyscope::hasPointCloud(kFieldGlyphName)) {
-      polyscope::removePointCloud(kFieldGlyphName);
+    calculatedFieldLabel_.clear();
+    uploadedFieldLabel_.clear();
+    calculatedFieldGlyph_ = {};
+    uploadedFieldGlyph_ = {};
+    if (polyscope::hasPointCloud(kCalculatedFieldGlyphName)) {
+      polyscope::removePointCloud(kCalculatedFieldGlyphName);
+    }
+    if (polyscope::hasPointCloud(kUploadedFieldGlyphName)) {
+      polyscope::removePointCloud(kUploadedFieldGlyphName);
     }
     if (polyscope::hasSurfaceMesh(kQuadMeshName)) {
       polyscope::removeSurfaceMesh(kQuadMeshName);
@@ -335,6 +362,9 @@ private:
     replace_input_mesh(std::move(loaded), true);
     copy_path_to_buffer(default_sibling_path(path, "_field", ".rawfield"),
                         fieldOutputPath_);
+    copy_path_to_buffer(
+        default_sibling_path(path, "_field_comparison", ".fieldcmp.json"),
+        comparisonReportPath_);
     copy_path_to_buffer(default_sibling_path(path, "_quad", ".obj"),
                         remeshOutputPath_);
     set_status("Loaded " + std::to_string(vertexCount) +
@@ -342,20 +372,21 @@ private:
                " triangles.");
   }
 
-  void update_field_glyph_positions(const bool force = false) {
-    if (fieldGlyphCenters_.rows() == 0 ||
-        !polyscope::hasPointCloud(kFieldGlyphName) ||
+  void update_field_glyph_positions(const char *glyphName,
+                                    FieldGlyphState &glyphState,
+                                    const bool force = false) {
+    if (glyphState.centers.rows() == 0 ||
+        !polyscope::hasPointCloud(glyphName) ||
         !polyscope::hasSurfaceMesh(kInputMeshName)) {
       return;
     }
 
-    auto *cloud = polyscope::getPointCloud(kFieldGlyphName);
+    auto *cloud = polyscope::getPointCloud(glyphName);
     auto *inputMesh = polyscope::getSurfaceMesh(kInputMeshName);
     const glm::mat4 meshTransform = inputMesh->getTransform();
 
-    // The point cloud is registered after the mesh and would otherwise receive
-    // its own auto-centering transform. Reuse the mesh transform so that face
-    // centers and vectors remain in exactly the same coordinate frame.
+    // Reuse the mesh transform so that face centers and vectors remain in
+    // exactly the same coordinate frame as the input surface.
     const bool transformChanged =
         !matrix_nearly_equal(cloud->getTransform(), meshTransform);
     if (transformChanged) {
@@ -372,41 +403,45 @@ private:
                                  cameraObject.z);
 
     const double positionTolerance =
-        std::max(fieldGlyphSurfaceOffset_ * 1e-4, 1e-12);
+        std::max(glyphState.surfaceOffset * 1e-4, 1e-12);
     if (!force && !transformChanged &&
-        lastFieldGlyphCameraPosition_.has_value() &&
-        (camera - *lastFieldGlyphCameraPosition_).squaredNorm() <=
+        glyphState.lastCameraPosition.has_value() &&
+        (camera - *glyphState.lastCameraPosition).squaredNorm() <=
             positionTolerance * positionTolerance) {
       return;
     }
 
-    Eigen::MatrixXd displayCenters = fieldGlyphCenters_;
+    Eigen::MatrixXd displayCenters = glyphState.centers;
     for (Eigen::Index sample = 0; sample < displayCenters.rows(); ++sample) {
       const Eigen::Vector3d normal =
-          fieldGlyphNormals_.row(sample).transpose();
+          glyphState.normals.row(sample).transpose();
       if (normal.squaredNorm() == 0.0) {
         continue;
       }
 
       const Eigen::Vector3d center =
-          fieldGlyphCenters_.row(sample).transpose();
+          glyphState.centers.row(sample).transpose();
       const double side = normal.dot(camera - center) >= 0.0 ? 1.0 : -1.0;
       displayCenters.row(sample) =
-          (center + side * fieldGlyphSurfaceOffset_ * normal).transpose();
+          (center + side * glyphState.surfaceOffset * normal).transpose();
     }
 
     cloud->updatePointPositions(displayCenters);
-    lastFieldGlyphCameraPosition_ = camera;
+    glyphState.lastCameraPosition = camera;
   }
 
-  void visualize_field() {
-    if (!mesh_.has_value() || !field_.has_value()) {
+  void visualize_field(
+      const directional::gui::FieldData &field, const char *glyphName,
+      FieldGlyphState &glyphState,
+      const std::array<glm::vec3, 4> &branchColors,
+      const double radiusMultiplier, const double offsetMultiplier) {
+    if (!mesh_.has_value()) {
       return;
     }
-    directional::gui::validate_field(*field_, mesh_->faces.rows());
+    directional::gui::validate_field(field, mesh_->faces.rows());
 
-    if (polyscope::hasPointCloud(kFieldGlyphName)) {
-      polyscope::removePointCloud(kFieldGlyphName);
+    if (polyscope::hasPointCloud(glyphName)) {
+      polyscope::removePointCloud(glyphName);
     }
 
     const int stride = std::max(fieldSampleStride_, 1);
@@ -425,7 +460,7 @@ private:
       sampledNormals.row(sample) = geometry.normals.row(face);
       for (int branch = 0; branch < 4; ++branch) {
         sampledVectors[branch].row(sample) =
-            field_->raw.block(face, 3 * branch, 1, 3);
+            field.raw.block(face, 3 * branch, 1, 3);
       }
       ++sample;
     }
@@ -433,15 +468,16 @@ private:
     const double averageEdgeLength = average_edge_length(*mesh_);
     const double scale =
         static_cast<double>(glyphLengthRatio_) * averageEdgeLength;
-    const double vectorRadius = std::max(scale * 0.025, 1e-12);
-    fieldGlyphSurfaceOffset_ =
-        static_cast<double>(glyphSurfaceOffsetRatio_) * averageEdgeLength;
-    fieldGlyphCenters_ = sampledCenters;
-    fieldGlyphNormals_ = sampledNormals;
-    lastFieldGlyphCameraPosition_.reset();
+    const double vectorRadius =
+        std::max(scale * radiusMultiplier, 1e-12);
+    glyphState.surfaceOffset =
+        static_cast<double>(glyphSurfaceOffsetRatio_) * averageEdgeLength *
+        offsetMultiplier;
+    glyphState.centers = sampledCenters;
+    glyphState.normals = sampledNormals;
+    glyphState.lastCameraPosition.reset();
 
-    auto *cloud =
-        polyscope::registerPointCloud(kFieldGlyphName, sampledCenters);
+    auto *cloud = polyscope::registerPointCloud(glyphName, sampledCenters);
     cloud->setPointRadius(0.0);
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       cloud->setTransform(
@@ -452,11 +488,56 @@ private:
           ->addVectorQuantity("Branch " + std::to_string(branch),
                               sampledVectors[branch] * scale,
                               polyscope::VectorType::AMBIENT)
+          ->setVectorColor(branchColors[branch])
           ->setVectorRadius(vectorRadius, false)
           ->setEnabled(true);
     }
 
-    update_field_glyph_positions(true);
+    update_field_glyph_positions(glyphName, glyphState, true);
+  }
+
+  void visualize_calculated_field() {
+    if (!calculatedField_.has_value()) {
+      return;
+    }
+    static const std::array<glm::vec3, 4> branchColors{
+        {{0.10F, 0.55F, 1.00F},
+         {0.00F, 0.80F, 0.80F},
+         {0.35F, 0.75F, 1.00F},
+         {0.45F, 0.35F, 0.95F}}};
+    visualize_field(*calculatedField_, kCalculatedFieldGlyphName,
+                    calculatedFieldGlyph_, branchColors, 0.030, 1.0);
+  }
+
+  void visualize_uploaded_field() {
+    if (!uploadedField_.has_value()) {
+      return;
+    }
+    static const std::array<glm::vec3, 4> branchColors{
+        {{1.00F, 0.45F, 0.15F},
+         {1.00F, 0.70F, 0.10F},
+         {0.90F, 0.20F, 0.20F},
+         {1.00F, 0.35F, 0.65F}}};
+    // Use thinner, slightly more elevated glyphs so coincident calculated and
+    // uploaded directions remain simultaneously visible.
+    visualize_field(*uploadedField_, kUploadedFieldGlyphName,
+                    uploadedFieldGlyph_, branchColors, 0.018, 1.5);
+  }
+
+  void visualize_fields() {
+    if (calculatedField_.has_value()) {
+      visualize_calculated_field();
+    } else if (polyscope::hasPointCloud(kCalculatedFieldGlyphName)) {
+      polyscope::removePointCloud(kCalculatedFieldGlyphName);
+      calculatedFieldGlyph_ = {};
+    }
+
+    if (uploadedField_.has_value()) {
+      visualize_uploaded_field();
+    } else if (polyscope::hasPointCloud(kUploadedFieldGlyphName)) {
+      polyscope::removePointCloud(kUploadedFieldGlyphName);
+      uploadedFieldGlyph_ = {};
+    }
   }
 
   void visualize_quad_mesh() {
@@ -554,6 +635,7 @@ private:
               progress->update(current, total, task);
             });
         result.hasField = true;
+        result.fieldOptions = options;
         result.fieldLabel =
             options.method == directional::gui::FieldMethod::Smooth
                 ? "Calculated smooth power field"
@@ -591,6 +673,7 @@ private:
         result.field = std::move(remesh.field);
         result.quadMesh = std::move(remesh.quadMesh);
         result.hasField = true;
+        result.fieldOptions = fieldOptions;
         result.hasQuadMesh = true;
         result.fieldLabel =
             fieldOptions.method == directional::gui::FieldMethod::Smooth
@@ -606,78 +689,82 @@ private:
     set_status("Auto-calculating field and remeshing...");
   }
 
-  void load_field() {
+  void load_uploaded_field() {
     require_mesh();
     const std::filesystem::path path =
-        path_from_buffer(fieldInputPath_, "Input field");
-    field_ = directional::gui::load_field(
+        path_from_buffer(fieldInputPath_, "Uploaded field");
+    uploadedField_ = directional::gui::load_field(
         path, selected_field_format(fieldInputFormat_), *mesh_);
     fieldComparison_.reset();
+    comparisonContext_.reset();
     if (polyscope::hasSurfaceMesh(kInputMeshName)) {
       polyscope::getSurfaceMesh(kInputMeshName)
           ->removeQuantity(kDeviationHeatmapName, false);
     }
-    fieldLabel_ = "Loaded field: " + path.filename().string();
-    visualize_field();
-    set_status(fieldLabel_ + ".");
-  }
-
-  void load_compare_field() {
-    require_mesh();
-    const std::filesystem::path path =
-        path_from_buffer(compareFieldInputPath_, "Reference field");
-    referenceField_ = directional::gui::load_field(
-        path, selected_field_format(compareFieldInputFormat_), *mesh_);
-    set_status("Loaded comparison reference field: " + path.filename().string() +
-               ".");
+    uploadedFieldLabel_ = "Uploaded field: " + path.filename().string();
+    visualize_uploaded_field();
+    set_status(uploadedFieldLabel_ + ".");
   }
 
   void launch_compare_fields() {
     require_mesh();
-    if (!field_.has_value()) {
-      throw std::runtime_error("Calculate or load a field before comparing it.");
+    if (!calculatedField_.has_value()) {
+      throw std::runtime_error("Calculate a field before comparing it.");
     }
-    if (!referenceField_.has_value()) {
-      throw std::runtime_error("Load a reference field before comparing.");
+    if (!uploadedField_.has_value()) {
+      throw std::runtime_error("Load an uploaded field before comparing.");
     }
 
     const directional::gui::MeshData mesh = *mesh_;
-    const directional::gui::FieldData field = *field_;
-    const directional::gui::FieldData reference = *referenceField_;
+    const directional::gui::FieldData field = *calculatedField_;
+    const directional::gui::FieldData reference = *uploadedField_;
     const double highErrorThreshold = comparisonHighErrorThresholdDegrees_;
     const bool removeGlobalPhase = comparisonRemoveGlobalPhase_;
     const bool shapeOperatorAlignment = comparisonShapeOperatorAlignment_;
+    ComparisonReportContext reportContext;
+    reportContext.candidateOptions =
+        calculatedFieldOptions_.value_or(current_field_options());
+    reportContext.meshPath = std::filesystem::path(meshPath_.data()).string();
+    reportContext.referencePath =
+        std::filesystem::path(fieldInputPath_.data()).string();
+    reportContext.candidateLabel = calculatedFieldLabel_;
+    reportContext.referenceLabel = uploadedFieldLabel_;
+    reportContext.referenceFormat = selected_field_format_label(fieldInputFormat_);
+    reportContext.removeGlobalPhase = removeGlobalPhase;
+    reportContext.shapeOperatorAlignment = shapeOperatorAlignment;
     const auto progress = progress_;
     progress_->update(0, 100, "Starting field comparison");
 
     task_ = std::async(std::launch::async, [mesh, field, reference,
                                             highErrorThreshold,
                                             removeGlobalPhase,
-                                            shapeOperatorAlignment, progress]() {
+                                            shapeOperatorAlignment,
+                                            reportContext, progress]() {
       TaskResult result;
       try {
         result.comparison = directional::gui::compare_fields(
             mesh, field, reference, highErrorThreshold, removeGlobalPhase,
             shapeOperatorAlignment);
         result.hasComparison = true;
-        result.message = "Compared current field to reference field.";
+        result.comparisonContext = reportContext;
+        result.message = "Compared the calculated field to the uploaded field.";
       } catch (const std::exception &error) {
         result.error = error.what();
       }
       progress->update(100, 100, "Field comparison finished");
       return result;
     });
-    set_status("Comparing current field to reference field...");
+    set_status("Comparing the calculated field to the uploaded field...");
   }
 
   void launch_remesh_loaded_field() {
     require_mesh();
-    if (!field_.has_value()) {
-      throw std::runtime_error("Load an input field before remeshing with it.");
+    if (!uploadedField_.has_value()) {
+      throw std::runtime_error("Load an uploaded field before remeshing with it.");
     }
 
     const directional::gui::MeshData mesh = *mesh_;
-    const directional::gui::FieldData field = *field_;
+    const directional::gui::FieldData field = *uploadedField_;
     const directional::gui::RemeshOptions options = remeshOptions_;
     enable_verbose_session_log_if_needed(options.verbose);
     const auto progress = progress_;
@@ -693,14 +780,14 @@ private:
               progress->update(current, total, task);
             });
         result.hasQuadMesh = true;
-        result.message = "Generated a quad mesh from the loaded field.";
+        result.message = "Generated a quad mesh from the uploaded field.";
       } catch (const std::exception &error) {
         result.error = error.what();
       }
       progress->update(100, 100, "Field-guided remesh finished");
       return result;
     });
-    set_status("Remeshing with the loaded field...");
+    set_status("Remeshing with the uploaded field...");
   }
 
   void process_completed_task() {
@@ -718,14 +805,16 @@ private:
       replace_input_mesh(std::move(result.mesh), false);
     }
     if (result.hasField) {
-      field_ = std::move(result.field);
+      calculatedField_ = std::move(result.field);
+      calculatedFieldOptions_ = std::move(result.fieldOptions);
       fieldComparison_.reset();
+      comparisonContext_.reset();
       if (polyscope::hasSurfaceMesh(kInputMeshName)) {
         polyscope::getSurfaceMesh(kInputMeshName)
             ->removeQuantity(kDeviationHeatmapName, false);
       }
-      fieldLabel_ = std::move(result.fieldLabel);
-      visualize_field();
+      calculatedFieldLabel_ = std::move(result.fieldLabel);
+      visualize_calculated_field();
     }
     if (result.hasQuadMesh) {
       quadMesh_ = std::move(result.quadMesh);
@@ -733,22 +822,96 @@ private:
     }
     if (result.hasComparison) {
       fieldComparison_ = std::move(result.comparison);
+      comparisonContext_ = std::move(result.comparisonContext);
       directional::gui::show_field_deviation_heatmap(
           kInputMeshName, *fieldComparison_, comparisonHeatmapMaxDegrees_);
     }
     set_status(std::move(result.message));
   }
 
-  void save_field() {
-    if (!field_.has_value()) {
-      throw std::runtime_error(
-          "There is no calculated or loaded field to save.");
+  const directional::gui::FieldData &selected_output_field() const {
+    if (fieldOutputSource_ == 1) {
+      if (!uploadedField_.has_value()) {
+        throw std::runtime_error("There is no uploaded field to save.");
+      }
+      return *uploadedField_;
     }
+
+    if (!calculatedField_.has_value()) {
+      throw std::runtime_error("There is no calculated field to save.");
+    }
+    return *calculatedField_;
+  }
+
+  void save_field() {
     const std::filesystem::path path =
         path_from_buffer(fieldOutputPath_, "Field output");
     directional::gui::save_field(
-        path, selected_field_format(fieldOutputFormat_), *field_);
+        path, selected_field_format(fieldOutputFormat_),
+        selected_output_field());
     set_status("Wrote field to " + path.string() + ".");
+  }
+
+  void save_comparison_report() {
+    require_mesh();
+    if (!fieldComparison_.has_value() || !comparisonContext_.has_value()) {
+      throw std::runtime_error("Run a field comparison before saving a report.");
+    }
+
+    const std::filesystem::path path =
+        path_from_buffer(comparisonReportPath_, "Comparison report");
+    const ComparisonReportContext &context = *comparisonContext_;
+    directional::fields::CrossFieldComparisonReportMetadata metadata;
+    metadata.meshPath = context.meshPath;
+    metadata.referencePath = context.referencePath;
+    metadata.candidateLabel = context.candidateLabel;
+    metadata.referenceLabel = context.referenceLabel;
+    metadata.referenceFormat = context.referenceFormat;
+    metadata.removeGlobalPhase = context.removeGlobalPhase;
+    metadata.shapeOperatorAlignment = context.shapeOperatorAlignment;
+    metadata.candidateStringParameters["method"] =
+        context.candidateOptions.method ==
+                directional::gui::FieldMethod::RegularizedCurvature
+            ? "regularized_curvature"
+            : "smooth_power";
+    metadata.candidateBooleanParameters["normalize_directions"] =
+        context.candidateOptions.normalizeDirections;
+    metadata.candidateBooleanParameters["preserve_boundary"] =
+        context.candidateOptions.preserveBoundary;
+    metadata.candidateBooleanParameters["preserve_sharp_features"] =
+        context.candidateOptions.preserveSharpFeatures;
+    metadata.candidateBooleanParameters["feature_aware_corner_normals"] =
+        context.candidateOptions.useFeatureAwareCornerNormals;
+    metadata.candidateNumericParameters["proxy_fidelity_weight"] =
+        context.candidateOptions.proxyFidelityWeight;
+    metadata.candidateNumericParameters["proxy_smoothness_weight"] =
+        context.candidateOptions.proxySmoothnessWeight;
+    metadata.candidateNumericParameters["field_smoothness_weight"] =
+        context.candidateOptions.fieldSmoothnessWeight;
+    metadata.candidateNumericParameters["curvature_alignment_weight"] =
+        context.candidateOptions.curvatureAlignmentWeight;
+    metadata.candidateNumericParameters["boundary_alignment_weight"] =
+        context.candidateOptions.boundaryAlignmentWeight;
+    metadata.candidateNumericParameters["sharp_feature_alignment_weight"] =
+        context.candidateOptions.sharpFeatureAlignmentWeight;
+    metadata.candidateNumericParameters["sharp_feature_angle_degrees"] =
+        context.candidateOptions.sharpFeatureAngleDegrees;
+    metadata.candidateNumericParameters["minimum_confidence"] =
+        context.candidateOptions.minimumConfidence;
+    metadata.candidateNumericParameters["confidence_exponent"] =
+        context.candidateOptions.confidenceExponent;
+    metadata.candidateNumericParameters["curvature_smoothing_iterations"] =
+        static_cast<double>(
+            context.candidateOptions.curvatureSmoothingIterations);
+
+    const directional::fields::CrossFieldComparisonReportPaths paths =
+        directional::fields::write_cross_field_comparison_report(
+            path, mesh_->vertices, mesh_->faces,
+            fieldComparison_->details, metadata,
+            static_cast<double>(comparisonHeatmapMaxDegrees_));
+    copy_path_to_buffer(paths.json, comparisonReportPath_);
+    set_status("Wrote comparison report bundle: " + paths.json.string() +
+               ".");
   }
 
 void save_quad_mesh() {
@@ -789,6 +952,19 @@ void save_quad_mesh() {
     }
   }
 
+  static std::string selected_field_format_label(const int index) {
+    switch (index) {
+    case 1:
+      return "rawfield";
+    case 2:
+      return "crossfield_neurcross";
+    case 3:
+      return "rosy";
+    default:
+      return "auto";
+    }
+  }
+
   template <typename Function> void guarded_action(Function &&function) {
     try {
       function();
@@ -804,10 +980,7 @@ void save_quad_mesh() {
       set_status("Selected input mesh: " + path.string() + ".");
     } else if (target == FilePickerTarget::Field) {
       copy_path_to_buffer(path, fieldInputPath_);
-      set_status("Selected input field: " + path.string() + ".");
-    } else if (target == FilePickerTarget::CompareField) {
-      copy_path_to_buffer(path, compareFieldInputPath_);
-      set_status("Selected comparison reference field: " + path.string() + ".");
+      set_status("Selected uploaded field: " + path.string() + ".");
     }
   }
 
@@ -844,7 +1017,7 @@ void save_quad_mesh() {
     const std::filesystem::path initialPath(fieldInputPath_.data());
     const directional::gui::FileDialogResult result =
         directional::gui::open_native_file_dialog(
-            {"Select input field",
+            {"Select uploaded field",
              initialPath,
              {{"Directional field files",
                {"*.rawfield", "*.rosy", "*.vec", "*.txt"}}}});
@@ -852,30 +1025,12 @@ void save_quad_mesh() {
     if (result.selected()) {
       apply_selected_file(FilePickerTarget::Field, result.path);
     } else if (result.status != directional::gui::FileDialogStatus::Cancelled) {
-      open_fallback_picker(FilePickerTarget::Field, "Select input field",
+      open_fallback_picker(FilePickerTarget::Field, "Select uploaded field",
                            initialPath, {".rawfield", ".rosy", ".vec", ".txt"},
                            result.message);
     }
   }
 
-  void open_compare_field_picker() {
-    const std::filesystem::path initialPath(compareFieldInputPath_.data());
-    const directional::gui::FileDialogResult result =
-        directional::gui::open_native_file_dialog(
-            {"Select comparison reference field",
-             initialPath,
-             {{"Directional field files",
-               {"*.rawfield", "*.rosy", "*.vec", "*.txt"}}}});
-
-    if (result.selected()) {
-      apply_selected_file(FilePickerTarget::CompareField, result.path);
-    } else if (result.status != directional::gui::FileDialogStatus::Cancelled) {
-      open_fallback_picker(FilePickerTarget::CompareField,
-                           "Select comparison reference field", initialPath,
-                           {".rawfield", ".rosy", ".vec", ".txt"},
-                           result.message);
-    }
-  }
 
   void process_file_picker() {
     const std::optional<std::filesystem::path> selected = filePicker_.draw();
@@ -889,7 +1044,10 @@ void save_quad_mesh() {
 
   void draw_ui() {
     process_completed_task();
-    update_field_glyph_positions();
+    update_field_glyph_positions(kCalculatedFieldGlyphName,
+                                 calculatedFieldGlyph_);
+    update_field_glyph_positions(kUploadedFieldGlyphName,
+                                 uploadedFieldGlyph_);
     const bool isBusy = busy();
 
     ImGui::TextUnformatted("Directional Quad Remesher");
@@ -984,11 +1142,24 @@ void save_quad_mesh() {
               });
 
           ImGui::Checkbox(
-              "Preserve boundary (align the proxy field to boundary edges)",
+              "Preserve boundary vertices in proxy mesh",
               &fieldOptions_.preserveBoundary);
+          ImGui::Checkbox(
+              "Preserve sharp-feature vertices in proxy mesh",
+              &fieldOptions_.preserveSharpFeatures);
+          ImGui::Checkbox(
+              "Use feature-aware corner normals for curvature",
+              &fieldOptions_.useFeatureAwareCornerNormals);
 
           draw_labeled_full_width_control(
-              "Field smoothness weight (>= 0; typical: 0.1 to 10)", [this] {
+              "Sharp-feature angle (degrees; typical: 30 to 80)", [this] {
+                ImGui::InputDouble("##sharp_feature_angle",
+                                   &fieldOptions_.sharpFeatureAngleDegrees,
+                                   1.0, 5.0, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Field smoothness weight (> 0; typical: 0.1 to 10)", [this] {
                 ImGui::InputDouble("##field_smoothness",
                                    &fieldOptions_.fieldSmoothnessWeight, 0.1,
                                    1.0, "%.6g");
@@ -999,6 +1170,22 @@ void save_quad_mesh() {
                 ImGui::InputDouble("##curvature_alignment",
                                    &fieldOptions_.curvatureAlignmentWeight, 0.1,
                                    1.0, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Boundary alignment weight (>= 0; typical: 0.1 to 10)", [this] {
+                ImGui::InputDouble("##boundary_alignment",
+                                   &fieldOptions_.boundaryAlignmentWeight, 0.1,
+                                   1.0, "%.6g");
+              });
+
+          draw_labeled_full_width_control(
+              "Sharp-feature alignment weight (>= 0; typical: 0.1 to 10)",
+              [this] {
+                ImGui::InputDouble(
+                    "##sharp_feature_alignment",
+                    &fieldOptions_.sharpFeatureAlignmentWeight, 0.1, 1.0,
+                    "%.6g");
               });
 
           draw_labeled_full_width_control(
@@ -1053,14 +1240,21 @@ void save_quad_mesh() {
                                &glyphSurfaceOffsetRatio_, 0.0F, 0.2F,
                                "%.3f x average edge");
           });
-      ImGui::BeginDisabled(isBusy || !field_.has_value());
-      if (ImGui::Button("Refresh field display")) {
-        guarded_action([this] { visualize_field(); });
+      ImGui::BeginDisabled(
+          isBusy ||
+          (!calculatedField_.has_value() && !uploadedField_.has_value()));
+      if (ImGui::Button("Refresh field displays")) {
+        guarded_action([this] { visualize_fields(); });
       }
       ImGui::EndDisabled();
+
+      if (!calculatedFieldLabel_.empty()) {
+        ImGui::TextColored(ImVec4(0.15F, 0.65F, 1.0F, 1.0F), "%s",
+                           calculatedFieldLabel_.c_str());
+      }
     }
 
-    if (ImGui::CollapsingHeader("4. Remesh using input field",
+    if (ImGui::CollapsingHeader("4. Uploaded field",
                                 ImGuiTreeNodeFlags_DefaultOpen)) {
       const float browseWidth = ImGui::CalcTextSize("Browse...").x +
                                 2.0F * ImGui::GetStyle().FramePadding.x;
@@ -1073,49 +1267,41 @@ void save_quad_mesh() {
         open_field_picker();
       }
       ImGui::EndDisabled();
-      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
-      draw_labeled_full_width_control("Input field format", [this, &formats] {
-        ImGui::Combo("##input_field_format", &fieldInputFormat_, formats, 4);
-      });
+
+      const char *formats[] = {"Auto", "RawField",
+                               "CrossField / NeurCross", "RoSy"};
+      draw_labeled_full_width_control("Uploaded field format",
+                                      [this, &formats] {
+                                        ImGui::Combo("##input_field_format",
+                                                     &fieldInputFormat_,
+                                                     formats, 4);
+                                      });
+
       ImGui::BeginDisabled(isBusy || !mesh_.has_value());
-      if (ImGui::Button("Load field")) {
-        guarded_action([this] { load_field(); });
+      if (ImGui::Button("Load uploaded field")) {
+        guarded_action([this] { load_uploaded_field(); });
       }
       ImGui::SameLine();
-      if (ImGui::Button("Remesh using input field")) {
+      if (ImGui::Button("Remesh using uploaded field")) {
         guarded_action([this] {
-          load_field();
+          load_uploaded_field();
           launch_remesh_loaded_field();
         });
       }
       ImGui::EndDisabled();
-      if (!fieldLabel_.empty()) {
-        ImGui::TextWrapped("%s", fieldLabel_.c_str());
+
+      if (!uploadedFieldLabel_.empty()) {
+        ImGui::TextColored(ImVec4(1.0F, 0.45F, 0.15F, 1.0F), "%s",
+                           uploadedFieldLabel_.c_str());
       }
+      ImGui::TextWrapped(
+          "The uploaded field is shared by remeshing and field comparison.");
     }
 
     if (ImGui::CollapsingHeader("5. Compare fields")) {
-      const float browseWidth = ImGui::CalcTextSize("Browse...").x +
-                                2.0F * ImGui::GetStyle().FramePadding.x;
-      ImGui::SetNextItemWidth(-browseWidth - ImGui::GetStyle().ItemSpacing.x);
-      ImGui::InputText("##compare_field_input_path",
-                       compareFieldInputPath_.data(),
-                       compareFieldInputPath_.size());
-      ImGui::SameLine();
-      ImGui::BeginDisabled(isBusy);
-      if (ImGui::Button("Browse...##compare_field")) {
-        open_compare_field_picker();
-      }
-      ImGui::EndDisabled();
-
-      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
-      draw_labeled_full_width_control("Reference field format",
-                                      [this, &formats] {
-                                        ImGui::Combo(
-                                            "##compare_field_format",
-                                            &compareFieldInputFormat_, formats,
-                                            4);
-                                      });
+      ImGui::TextWrapped(
+          "Compare the calculated field against the uploaded field from "
+          "section 4.");
 
       ImGui::Checkbox("Remove best global 4-RoSy phase",
                       &comparisonRemoveGlobalPhase_);
@@ -1138,26 +1324,26 @@ void save_quad_mesh() {
                                "%.1f deg");
           });
 
-      ImGui::BeginDisabled(isBusy || !mesh_.has_value());
-      if (ImGui::Button("Load reference field")) {
-        guarded_action([this] { load_compare_field(); });
-      }
-      ImGui::SameLine();
-      ImGui::BeginDisabled(!field_.has_value() || !referenceField_.has_value());
-      if (ImGui::Button("Compare current field")) {
+      ImGui::BeginDisabled(
+          isBusy || !mesh_.has_value() || !calculatedField_.has_value() ||
+          !uploadedField_.has_value());
+      if (ImGui::Button("Compare calculated to uploaded")) {
         guarded_action([this] { launch_compare_fields(); });
       }
-      ImGui::EndDisabled();
       ImGui::EndDisabled();
 
       if (fieldComparison_.has_value()) {
         ImGui::Text("Mean: %.3f deg, median: %.3f deg",
                     fieldComparison_->meanDegrees,
                     fieldComparison_->medianDegrees);
-        ImGui::Text("Area-weighted mean: %.3f deg, p95: %.3f deg, p99: %.3f deg",
+        ImGui::Text("Area-weighted mean/RMS: %.3f / %.3f deg",
                     fieldComparison_->areaWeightedMeanDegrees,
+                    fieldComparison_->areaWeightedRmsDegrees);
+        ImGui::Text("p95: %.3f deg, p99: %.3f deg",
                     fieldComparison_->p95Degrees,
                     fieldComparison_->p99Degrees);
+        ImGui::Text("Primary q4 chordal objective: %.8g",
+                    fieldComparison_->q4WeightedMeanError);
         ImGui::Text("> %.3f deg: %lld faces, %.2f%% area, %d components",
                     comparisonHighErrorThresholdDegrees_,
                     static_cast<long long>(
@@ -1166,12 +1352,27 @@ void save_quad_mesh() {
                     fieldComparison_->highErrorComponentCount);
         ImGui::Text("Global phase: %.3f deg",
                     fieldComparison_->globalPhaseDegrees);
+        if (fieldComparison_->hasTopologyDiagnostics) {
+          ImGui::Text("Singularities candidate/reference: %lld / %lld",
+                      static_cast<long long>(
+                          fieldComparison_->candidateSingularityCount),
+                      static_cast<long long>(
+                          fieldComparison_->referenceSingularityCount));
+          ImGui::Text(
+              "Singularity vertex/index mismatches: %lld (%.2f%% area)",
+              static_cast<long long>(
+                  fieldComparison_->singularityMismatchVertexCount),
+              100.0 *
+                  fieldComparison_->singularityMismatchAreaFraction);
+        } else {
+          ImGui::TextUnformatted("Singularity diagnostics unavailable.");
+        }
         if (fieldComparison_->hasShapeOperatorAlignment) {
-          ImGui::Text("Shape alignment first: mean %.3f deg, p95 %.3f deg, energy %.6g",
+          ImGui::Text("Shape alignment candidate: mean %.3f deg, p95 %.3f deg, energy %.6g",
                       fieldComparison_->firstShapeAlignmentMeanDegrees,
                       fieldComparison_->firstShapeAlignmentP95Degrees,
                       fieldComparison_->firstShapeAlignmentEnergy);
-          ImGui::Text("Shape alignment second: mean %.3f deg, p95 %.3f deg, energy %.6g",
+          ImGui::Text("Shape alignment reference: mean %.3f deg, p95 %.3f deg, energy %.6g",
                       fieldComparison_->secondShapeAlignmentMeanDegrees,
                       fieldComparison_->secondShapeAlignmentP95Degrees,
                       fieldComparison_->secondShapeAlignmentEnergy);
@@ -1185,6 +1386,23 @@ void save_quad_mesh() {
         }
         ImGui::EndDisabled();
       }
+
+      ImGui::Spacing();
+      draw_labeled_full_width_control(
+          "Comparison report (.fieldcmp.json)", [this] {
+            ImGui::InputText("##comparison_report_path",
+                             comparisonReportPath_.data(),
+                             comparisonReportPath_.size());
+          });
+      ImGui::BeginDisabled(isBusy || !mesh_.has_value() ||
+                          !fieldComparison_.has_value());
+      if (ImGui::Button("Save comparison report")) {
+        guarded_action([this] { save_comparison_report(); });
+      }
+      ImGui::EndDisabled();
+      ImGui::TextWrapped(
+          "Writes a versioned JSON summary plus per-face CSV and PLY heatmap "
+          "sidecars for comparing parameter sweeps between runs.");
     }
 
     if (ImGui::CollapsingHeader("Remesh options",
@@ -1226,11 +1444,22 @@ void save_quad_mesh() {
       ImGui::SetNextItemWidth(-1.0F);
       ImGui::InputText("##field_output_path", fieldOutputPath_.data(),
                        fieldOutputPath_.size());
-      const char *formats[] = {"Auto", "RawField", "CrossField / NeurCross", "RoSy"};
+      const char *fieldSources[] = {"Calculated field", "Uploaded field"};
+      draw_labeled_full_width_control("Field output source",
+                                      [this, &fieldSources] {
+                                        ImGui::Combo("##field_output_source",
+                                                     &fieldOutputSource_,
+                                                     fieldSources, 2);
+                                      });
+      const char *formats[] = {"Auto", "RawField",
+                               "CrossField / NeurCross", "RoSy"};
       draw_labeled_full_width_control("Output field format", [this, &formats] {
         ImGui::Combo("##output_field_format", &fieldOutputFormat_, formats, 4);
       });
-      ImGui::BeginDisabled(isBusy || !field_.has_value());
+      const bool selectedFieldAvailable =
+          fieldOutputSource_ == 0 ? calculatedField_.has_value()
+                                  : uploadedField_.has_value();
+      ImGui::BeginDisabled(isBusy || !selectedFieldAvailable);
       if (ImGui::Button("Save field")) {
         guarded_action([this] { save_field(); });
       }

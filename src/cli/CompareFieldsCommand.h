@@ -167,7 +167,25 @@ inline int run_compare_fields(const int argc, char **argv) {
                                              mesh.faces, comparison);
   }
   if (jsonPath.has_value()) {
-    fields::write_cross_field_comparison_json(*jsonPath, comparison);
+    fields::CrossFieldComparisonReportMetadata metadata;
+    metadata.meshPath = meshPath.string();
+    metadata.vertexCount = mesh.vertices.rows();
+    metadata.candidatePath = firstFieldPath.string();
+    metadata.referencePath = secondFieldPath.string();
+    metadata.candidateLabel = "candidate";
+    metadata.referenceLabel = "reference";
+    metadata.referenceFormat = secondFormat;
+    metadata.removeGlobalPhase = removeGlobalPhase;
+    metadata.shapeOperatorAlignment = computeShapeOperatorAlignment;
+    metadata.candidateStringParameters["field_format"] = firstFormat;
+    if (csvPath.has_value()) {
+      metadata.faceCsvPath = csvPath->filename().string();
+    }
+    if (heatmapPath.has_value()) {
+      metadata.heatmapPath = heatmapPath->filename().string();
+    }
+    fields::write_cross_field_comparison_json(*jsonPath, comparison,
+                                              metadata);
   }
 
   progress.update(5, progressTotal, "Finalizing field comparison");

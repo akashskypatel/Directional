@@ -24,8 +24,20 @@ FieldData calculate_field(const MeshData &mesh, const FieldOptions &options,
     extraction.proxy.fidelityWeight = options.proxyFidelityWeight;
     extraction.proxy.smoothnessWeight = options.proxySmoothnessWeight;
     extraction.proxy.preserveBoundary = options.preserveBoundary;
+    extraction.proxy.preserveSharpFeatures = options.preserveSharpFeatures;
+    extraction.proxy.sharpFeatureAngleDegrees =
+        options.sharpFeatureAngleDegrees;
+    extraction.curvature.useFeatureAwareCornerNormals =
+        options.useFeatureAwareCornerNormals;
+    extraction.curvature.preserveSharpFeatures =
+        options.preserveSharpFeatures;
+    extraction.curvature.sharpFeatureAngleDegrees =
+        options.sharpFeatureAngleDegrees;
     extraction.fieldSmoothnessWeight = options.fieldSmoothnessWeight;
     extraction.curvatureAlignmentWeight = options.curvatureAlignmentWeight;
+    extraction.boundaryAlignmentWeight = options.boundaryAlignmentWeight;
+    extraction.sharpFeatureAlignmentWeight =
+        options.sharpFeatureAlignmentWeight;
     extraction.minimumConfidence = options.minimumConfidence;
     extraction.confidenceExponent = options.confidenceExponent;
     extraction.curvature.smoothingIterations =
