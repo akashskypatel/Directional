@@ -1,5 +1,6 @@
 #include "CliBackend.h"
 #include "CliCommands.h"
+#include "CompareFieldsCommand.h"
 
 #include <exception>
 #include <iostream>
