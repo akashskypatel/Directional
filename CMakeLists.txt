@@ -488,14 +488,6 @@ endif()
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/Eigen
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported")
-  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported
-          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-endif()
-
 install(
   EXPORT DirectionalTargets
   FILE DirectionalTargets.cmake

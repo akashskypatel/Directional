@@ -10,10 +10,10 @@
 #ifndef DIRECTIONAL_FIELDS_CROSS_FIELD_H
 #define DIRECTIONAL_FIELDS_CROSS_FIELD_H
 
-#include <stdexcept>
 #include <cmath>
 #include <complex>
 #include <numbers>
+#include <queue>
 #include <stdexcept>
 #include <vector>
 
@@ -231,6 +231,74 @@ namespace {
 using Complex = std::complex<double>;
 using ComplexSparseMatrix = Eigen::SparseMatrix<Complex>;
 using ComplexTriplet = Eigen::Triplet<Complex>;
+constexpr double kMinimumPowerMagnitude = 1e-14;
+
+inline void stabilize_power_field(const PCFaceTangentBundle &tangentBundle,
+                                  Eigen::VectorXcd &power) {
+  std::vector<std::vector<std::pair<int, Complex>>> adjacency(
+      static_cast<std::size_t>(tangentBundle.numSpaces));
+
+  for (int edge = 0; edge < tangentBundle.adjSpaces.rows(); ++edge) {
+    const int firstFace = tangentBundle.adjSpaces(edge, 0);
+    const int secondFace = tangentBundle.adjSpaces(edge, 1);
+    if (firstFace < 0 || secondFace < 0) {
+      continue;
+    }
+
+    const Complex transport =
+        std::pow(tangentBundle.connection(edge), kCrossFieldDegree);
+    if (!std::isfinite(transport.real()) || !std::isfinite(transport.imag())) {
+      continue;
+    }
+
+    adjacency[static_cast<std::size_t>(firstFace)].emplace_back(secondFace,
+                                                                transport);
+    adjacency[static_cast<std::size_t>(secondFace)].emplace_back(firstFace,
+                                                                 std::conj(transport));
+  }
+
+  std::queue<int> frontier;
+  std::vector<char> assigned(static_cast<std::size_t>(power.size()), 0);
+
+  for (int face = 0; face < power.size(); ++face) {
+    const double magnitude = std::abs(power(face));
+    if (!std::isfinite(magnitude) || magnitude <= kMinimumPowerMagnitude) {
+      continue;
+    }
+
+    power(face) /= magnitude;
+    assigned[static_cast<std::size_t>(face)] = 1;
+    frontier.push(face);
+  }
+
+  while (!frontier.empty()) {
+    const int face = frontier.front();
+    frontier.pop();
+
+    for (const auto &[neighbor, transport] :
+         adjacency[static_cast<std::size_t>(face)]) {
+      if (assigned[static_cast<std::size_t>(neighbor)]) {
+        continue;
+      }
+
+      const Complex propagated = transport * power(face);
+      const double magnitude = std::abs(propagated);
+      if (!std::isfinite(magnitude) || magnitude <= kMinimumPowerMagnitude) {
+        continue;
+      }
+
+      power(neighbor) = propagated / magnitude;
+      assigned[static_cast<std::size_t>(neighbor)] = 1;
+      frontier.push(neighbor);
+    }
+  }
+
+  for (int face = 0; face < power.size(); ++face) {
+    if (!assigned[static_cast<std::size_t>(face)]) {
+      power(face) = Complex(1.0, 0.0);
+    }
+  }
+}
 
 inline Eigen::VectorXcd
 solve_power_field(const PCFaceTangentBundle &tangentBundle,
@@ -290,19 +358,12 @@ solve_power_field(const PCFaceTangentBundle &tangentBundle,
   }
 
   power.tail(faceCount - 1) = solver.solve(rhs);
-  if (solver.info() != Eigen::Success) {
+  if (solver.info() != Eigen::Success || !power.array().isFinite().all()) {
     throw std::runtime_error("Cross-field power-system solve failed.");
   }
 
   if (normalizeDirections) {
-    for (int face = 0; face < power.size(); ++face) {
-      const double magnitude = std::abs(power(face));
-      if (magnitude <= 1e-14) {
-        throw std::runtime_error(
-            "Cross-field extraction produced a degenerate power value.");
-      }
-      power(face) /= magnitude;
-    }
+    stabilize_power_field(tangentBundle, power);
   }
 
   return power;
@@ -319,7 +380,7 @@ inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
         std::pow(power(face), 1.0 / static_cast<double>(kCrossFieldDegree));
     if (normalizeDirections) {
       const double magnitude = std::abs(firstRoot);
-      if (magnitude <= 1e-14) {
+      if (magnitude <= kMinimumPowerMagnitude) {
         throw std::runtime_error(
             "Cross-field extraction produced a degenerate direction.");
       }

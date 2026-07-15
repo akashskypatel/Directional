@@ -86,13 +86,14 @@ integration_linear_solver_factorization(
 
 /** @brief Numerical-stability controls for the cuDSS KKT backend. */
 struct CuDssSolverOptions {
-  int iterativeRefinementSteps = 8;
+  int iterativeRefinementSteps = 16;
   double iterativeRefinementTolerance = 0.0;
   bool enableMatching = false;
-  bool enableScaledPivotEpsilon = false;
+  bool enableScaledPivotEpsilon = true;
   bool enableGlobalPivoting = false;
+  double constraintDiagonalRegularization = 1.0e-8;
   double maximumRelativeResidual = 1.0e-8;
-  double maximumBackwardError = 1.0e-12;
+  double maximumBackwardError = 1.0e-10;
 };
 
 /** @brief Timing values returned by optional integration solver backends. */

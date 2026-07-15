@@ -27,7 +27,7 @@
 
 namespace directional::detail {
 
-/** @brief Persistent cuDSS context used for general sparse KKT solves. */
+/** @brief Persistent cuDSS context used for sparse KKT solves. */
 class CuDssIntegrationSolver {
 public:
   CuDssIntegrationSolver() = default;
@@ -45,9 +45,11 @@ public:
   /**
    * @brief Solves one KKT system with cuDSS and validates the returned solution.
    *
-   * The integration matrix is mathematically symmetric but has a structurally
-   * zero multiplier diagonal. It is therefore supplied as a full general CSR
-   * matrix so cuDSS can use its general LDU factorization and pivoting path.
+   * The integration matrix is mathematically symmetric indefinite, but the
+   * multiplier block has a zero diagonal. cuDSS 0.8 does not expose a usable
+   * Bunch-Kaufman style symmetric pivot for this KKT structure, so use full
+   * general CSR; the integration layer regularizes the multiplier diagonal
+   * before calling this backend.
    */
   bool solve(const Eigen::SparseMatrix<double> &matrix,
              const Eigen::VectorXd &rhs, Eigen::VectorXd &solution,
@@ -69,6 +71,7 @@ public:
     }
     if (options.iterativeRefinementSteps < 0 ||
         options.iterativeRefinementTolerance < 0.0 ||
+        options.constraintDiagonalRegularization < 0.0 ||
         options.maximumRelativeResidual <= 0.0 ||
         options.maximumBackwardError <= 0.0) {
       throw std::invalid_argument("cuDSS solver tolerances are invalid");
@@ -253,8 +256,7 @@ private:
           "cudssConfigSet(CUDSS_CONFIG_PIVOT_EPSILON_ALG)");
 
     const cudssReorderingAlg_t reorderingAlgorithm =
-        options.enableGlobalPivoting ? CUDSS_REORDERING_ALG_BTF_COLAMD
-                                     : CUDSS_REORDERING_ALG_DEFAULT;
+        CUDSS_REORDERING_ALG_DEFAULT;
     check(cudssConfigSet(config_, CUDSS_CONFIG_REORDERING_ALG,
                          &reorderingAlgorithm, sizeof(reorderingAlgorithm)),
           "cudssConfigSet(CUDSS_CONFIG_REORDERING_ALG)");

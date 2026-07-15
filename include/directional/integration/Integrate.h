@@ -495,6 +495,13 @@ struct IterativeSolveTimings {
       intData.linearSolver == IntegrationLinearSolver::Default
           ? resolve_default_integration_linear_solver()
           : intData.linearSolver;
+  const IntegrationLinearSolver cpuFallbackLinearSolver =
+#ifdef USE_SUITESPARSE_ENABLED
+      IntegrationLinearSolver::Umfpack;
+#else
+      IntegrationLinearSolver::EigenSparseLU;
+#endif
+  IntegrationLinearSolver currentLinearSolver = effectiveLinearSolver;
 
   if (intData.verbose) {
     std::cout << "[Directional::integrate] linear solver backend: "
@@ -768,7 +775,7 @@ struct IterativeSolveTimings {
     bool optionalBackendSucceeded = false;
     IntegrationSolverTimings optionalTimings;
 
-    switch (effectiveLinearSolver) {
+    switch (currentLinearSolver) {
     case IntegrationLinearSolver::Pardiso:
 #ifdef DIRECTIONAL_HAS_PARDISO
       solvedWithOptionalBackend = true;
@@ -782,8 +789,26 @@ struct IterativeSolveTimings {
     case IntegrationLinearSolver::CuDss:
 #ifdef DIRECTIONAL_HAS_CUDSS
       solvedWithOptionalBackend = true;
-      optionalBackendSucceeded = cuDssSolver.solve(
-          A, b, x, optionalTimings, intData.cuDssSolverOptions, intData.verbose);
+      {
+        SparseMatrix<double> cuDssSystem = A;
+        const double multiplierRegularization =
+            intData.cuDssSolverOptions.constraintDiagonalRegularization;
+        if (Cpart.rows() > 0 && multiplierRegularization > 0.0) {
+          for (int row = 0; row < Cpart.rows(); ++row) {
+            cuDssSystem.coeffRef(EtE.rows() + row, EtE.rows() + row) =
+                -multiplierRegularization;
+          }
+          cuDssSystem.makeCompressed();
+          if (intData.verbose && solveIteration == 0) {
+            std::cout << "[Directional::integrate] cuDSS KKT multiplier "
+                      << "regularization=" << multiplierRegularization
+                      << " rows=" << Cpart.rows() << '\n';
+          }
+        }
+        optionalBackendSucceeded = cuDssSolver.solve(
+            cuDssSystem, b, x, optionalTimings, intData.cuDssSolverOptions,
+            intData.verbose);
+      }
 #else
       throw std::runtime_error(
           "integrate(): cuDSS was selected but Directional was built without DIRECTIONAL_ENABLE_CUDSS");
@@ -799,9 +824,19 @@ struct IterativeSolveTimings {
       iterativeTimings.backSubstitution += optionalTimings.solve;
       if (!optionalBackendSucceeded) {
         ++iterativeTimings.factorizationFailures;
-        return false;
+        currentLinearSolver = cpuFallbackLinearSolver;
+        if (intData.verbose) {
+          std::cerr
+              << "[Directional::integrate] optional backend "
+              << integration_linear_solver_name(effectiveLinearSolver)
+              << " rejected the current system; retrying with "
+              << integration_linear_solver_name(cpuFallbackLinearSolver)
+              << " for the remaining solves\n";
+        }
       }
-    } else {
+    }
+
+    if (!solvedWithOptionalBackend || !optionalBackendSucceeded) {
 #ifdef USE_SUITESPARSE_ENABLED
     /*
      * Native UMFPACK path.
@@ -1031,6 +1066,42 @@ struct IterativeSolveTimings {
     }
 #else
     SparseLU<SparseMatrix<double>> lusolver;
+    const auto sparseQrFallback = [&]() -> bool {
+      SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> qrFallback;
+
+      const auto qrComputeStart = Clock::now();
+      qrFallback.compute(A);
+      iterativeTimings.symbolicAnalysis += seconds_since(qrComputeStart);
+
+      if (qrFallback.info() != Success) {
+        ++iterativeTimings.factorizationFailures;
+        if (intData.verbose) {
+          std::cout << "[Directional::integrate] SparseQR fallback failed at "
+                    << "rounding solve " << (solveIteration + 1) << std::endl;
+        }
+        return false;
+      }
+
+      const auto qrSolveStart = Clock::now();
+      x = qrFallback.solve(b);
+      iterativeTimings.backSubstitution += seconds_since(qrSolveStart);
+
+      if (qrFallback.info() != Success || x.size() != A.cols() ||
+          !x.allFinite()) {
+        ++iterativeTimings.solveFailures;
+        if (intData.verbose) {
+          std::cout << "[Directional::integrate] SparseQR solve failed at "
+                    << "rounding solve " << (solveIteration + 1) << std::endl;
+        }
+        return false;
+      }
+
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] SparseQR fallback succeeded at "
+                  << "rounding solve " << (solveIteration + 1) << std::endl;
+      }
+      return true;
+    };
 
     const auto symbolicAnalysisStart = Clock::now();
 
@@ -1046,7 +1117,9 @@ struct IterativeSolveTimings {
                   << "rounding solve " << (solveIteration + 1) << std::endl;
       }
 
-      return false;
+      if (!sparseQrFallback()) {
+        return false;
+      }
     }
 
     const auto numericFactorizationStart = Clock::now();
@@ -1064,7 +1137,9 @@ struct IterativeSolveTimings {
                   << "rounding solve " << (solveIteration + 1) << std::endl;
       }
 
-      return false;
+      if (!sparseQrFallback()) {
+        return false;
+      }
     }
 
     const auto backSubstitutionStart = Clock::now();
@@ -1082,7 +1157,9 @@ struct IterativeSolveTimings {
             << (solveIteration + 1) << std::endl;
       }
 
-      return false;
+      if (!sparseQrFallback()) {
+        return false;
+      }
     }
 #endif
     }

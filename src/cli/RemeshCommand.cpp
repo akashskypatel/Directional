@@ -14,10 +14,13 @@
 #include <stdexcept>
 #include <string>
 
+#include <directional/fields/RegularizedCurvatureCrossField.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
 namespace directional::cli {
 namespace {
+
+enum class GeneratedFieldMethod { Smooth, RegularizedCurvature };
 
 double parse_positive_double(const std::string &text,
                              const char *optionName) {
@@ -30,6 +33,26 @@ double parse_positive_double(const std::string &text,
   return value;
 }
 
+double parse_numeric_option(const std::string &text, const char *optionName) {
+  std::size_t parsed = 0;
+  const double value = std::stod(text, &parsed);
+  if (parsed != text.size() || !std::isfinite(value)) {
+    throw std::runtime_error(std::string(optionName) +
+                             " requires a numeric value.");
+  }
+  return value;
+}
+
+int parse_integer_option(const std::string &text, const char *optionName) {
+  std::size_t parsed = 0;
+  const int value = std::stoi(text, &parsed);
+  if (parsed != text.size()) {
+    throw std::runtime_error(std::string(optionName) +
+                             " requires an integer value.");
+  }
+  return value;
+}
+
 void validate_direction_matrix(const Eigen::MatrixXd &matrix,
                                const Eigen::Index faceCount,
                                const char *name) {
@@ -37,6 +60,17 @@ void validate_direction_matrix(const Eigen::MatrixXd &matrix,
     throw std::runtime_error(std::string(name) +
                              " must have shape (#F, 3).");
   }
+}
+
+GeneratedFieldMethod parse_generated_field_method(const std::string &value) {
+  if (value == "smooth") {
+    return GeneratedFieldMethod::Smooth;
+  }
+  if (value == "regularized-curvature") {
+    return GeneratedFieldMethod::RegularizedCurvature;
+  }
+  throw std::runtime_error(
+      "--field-method must be smooth or regularized-curvature.");
 }
 
 } // namespace
@@ -55,7 +89,9 @@ int run_remesh(const int argc, char **argv) {
   std::optional<std::filesystem::path> primaryDirectionsPath;
   std::optional<std::filesystem::path> secondaryDirectionsPath;
   std::optional<std::filesystem::path> diagnosticsPrefix;
+  GeneratedFieldMethod generatedFieldMethod = GeneratedFieldMethod::Smooth;
   pipeline::RemeshOptions options;
+  fields::RegularizedCurvatureCrossFieldOptions regularizedFieldOptions;
 
   for (int argument = 4; argument < argc; ++argument) {
     const std::string option = argv[argument];
@@ -69,6 +105,11 @@ int run_remesh(const int argc, char **argv) {
         throw std::runtime_error("--field-format requires a value.");
       }
       fieldFormat = argv[argument];
+    } else if (option == "--field-method") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--field-method requires a value.");
+      }
+      generatedFieldMethod = parse_generated_field_method(argv[argument]);
     } else if (option == "--raw-field") {
       if (++argument >= argc) {
         throw std::runtime_error("--raw-field requires an input path.");
@@ -116,6 +157,82 @@ int run_remesh(const int argc, char **argv) {
     } else if (option == "--no-normalize-directions" ||
                option == "--no-normalize") {
       options.normalizeDirections = false;
+      regularizedFieldOptions.normalizeDirections = false;
+    } else if (option == "--proxy-fidelity") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--proxy-fidelity requires a value.");
+      }
+      regularizedFieldOptions.proxy.fidelityWeight =
+          parse_numeric_option(argv[argument], "--proxy-fidelity");
+    } else if (option == "--proxy-smoothness") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--proxy-smoothness requires a value.");
+      }
+      regularizedFieldOptions.proxy.smoothnessWeight =
+          parse_numeric_option(argv[argument], "--proxy-smoothness");
+    } else if (option == "--no-preserve-boundary") {
+      regularizedFieldOptions.proxy.preserveBoundary = false;
+    } else if (option == "--no-preserve-sharp-features") {
+      regularizedFieldOptions.proxy.preserveSharpFeatures = false;
+      regularizedFieldOptions.curvature.preserveSharpFeatures = false;
+    } else if (option == "--no-feature-aware-corner-normals") {
+      regularizedFieldOptions.curvature.useFeatureAwareCornerNormals = false;
+    } else if (option == "--field-smoothness") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--field-smoothness requires a value.");
+      }
+      regularizedFieldOptions.fieldSmoothnessWeight =
+          parse_numeric_option(argv[argument], "--field-smoothness");
+    } else if (option == "--curvature-alignment") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--curvature-alignment requires a value.");
+      }
+      regularizedFieldOptions.curvatureAlignmentWeight =
+          parse_numeric_option(argv[argument], "--curvature-alignment");
+    } else if (option == "--boundary-alignment") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--boundary-alignment requires a value.");
+      }
+      regularizedFieldOptions.boundaryAlignmentWeight =
+          parse_numeric_option(argv[argument], "--boundary-alignment");
+    } else if (option == "--sharp-feature-alignment") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--sharp-feature-alignment requires a value.");
+      }
+      regularizedFieldOptions.sharpFeatureAlignmentWeight =
+          parse_numeric_option(argv[argument], "--sharp-feature-alignment");
+    } else if (option == "--curvature-min-confidence") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--curvature-min-confidence requires a value.");
+      }
+      regularizedFieldOptions.minimumConfidence =
+          parse_numeric_option(argv[argument], "--curvature-min-confidence");
+    } else if (option == "--curvature-confidence-exponent") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--curvature-confidence-exponent requires a value.");
+      }
+      regularizedFieldOptions.confidenceExponent = parse_numeric_option(
+          argv[argument], "--curvature-confidence-exponent");
+    } else if (option == "--curvature-smoothing-iterations") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--curvature-smoothing-iterations requires a value.");
+      }
+      regularizedFieldOptions.curvature.smoothingIterations =
+          parse_integer_option(argv[argument],
+                               "--curvature-smoothing-iterations");
+    } else if (option == "--curvature-sharp-angle") {
+      if (++argument >= argc) {
+        throw std::runtime_error("--curvature-sharp-angle requires a value.");
+      }
+      const double angle =
+          parse_numeric_option(argv[argument], "--curvature-sharp-angle");
+      regularizedFieldOptions.proxy.sharpFeatureAngleDegrees = angle;
+      regularizedFieldOptions.curvature.sharpFeatureAngleDegrees = angle;
+    } else if (option == "--smooth-curvature-across-features") {
+      regularizedFieldOptions.curvature.preserveSharpFeatures = false;
     } else if (option == "--diagnostics-prefix") {
       if (++argument >= argc) {
         throw std::runtime_error(
@@ -199,6 +316,17 @@ int run_remesh(const int argc, char **argv) {
       result = pipeline::remesh_from_cross_field(
           mesh.vertices, mesh.faces, primary, options);
     }
+  } else if (generatedFieldMethod == GeneratedFieldMethod::RegularizedCurvature) {
+    regularizedFieldOptions.progress = progress.range(5, 20, progressTotal);
+    regularizedFieldOptions.combDirections = true;
+    regularizedFieldOptions.computeMatching = false;
+    const fields::RegularizedCurvatureCrossFieldResult crossField =
+        fields::extract_regularized_curvature_cross_field(
+            mesh.vertices, mesh.faces, regularizedFieldOptions);
+    pipeline::RemeshOptions pipelineOptions = options;
+    pipelineOptions.progress = progress.range(20, 90, progressTotal);
+    result = pipeline::remesh_from_raw_cross_field(
+        mesh.vertices, mesh.faces, crossField.field.rawField, pipelineOptions);
   } else {
     result = pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
   }
