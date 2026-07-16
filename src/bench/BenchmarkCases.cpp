@@ -388,6 +388,9 @@ load_benchmark_manifest(const std::filesystem::path &path) {
     benchmarkCase.fieldPath = json_string_value(object, "field");
     benchmarkCase.fieldFormat =
         json_string_value(object, "field_format", benchmarkCase.fieldFormat);
+    benchmarkCase.generatedField =
+        json_string_value(object, "generated_field",
+                          benchmarkCase.generatedField);
     benchmarkCase.lengthRatio =
         json_number_value(object, "length_ratio", benchmarkCase.lengthRatio);
     benchmarkCase.integralSeamless =
@@ -452,6 +455,50 @@ BenchmarkField load_benchmark_field(const BenchmarkCase &benchmarkCase,
     throw std::runtime_error(
         "Benchmark field row count must match the mesh face count.");
   }
+  return field;
+}
+
+BenchmarkField generate_benchmark_field(const BenchmarkCase &benchmarkCase,
+                                        const BenchmarkMesh &mesh) {
+  if (benchmarkCase.generatedField != "face_edges") {
+    return {};
+  }
+
+  BenchmarkField field;
+  field.available = true;
+  field.degree = 4;
+
+  Eigen::MatrixXd primary(mesh.faces.rows(), 3);
+  Eigen::MatrixXd secondary(mesh.faces.rows(), 3);
+  for (Eigen::Index face = 0; face < mesh.faces.rows(); ++face) {
+    const Eigen::RowVector3d a = mesh.vertices.row(mesh.faces(face, 0));
+    const Eigen::RowVector3d b = mesh.vertices.row(mesh.faces(face, 1));
+    const Eigen::RowVector3d c = mesh.vertices.row(mesh.faces(face, 2));
+
+    Eigen::RowVector3d edge = b - a;
+    if (edge.squaredNorm() < 1.0e-20) {
+      edge = c - a;
+    }
+    Eigen::RowVector3d normal = edge.cross(c - a);
+    if (normal.squaredNorm() < 1.0e-20) {
+      throw std::runtime_error(
+          "Cannot generate benchmark field on a degenerate face.");
+    }
+    normal.normalize();
+
+    Eigen::RowVector3d tangent = edge - edge.dot(normal) * normal;
+    if (tangent.squaredNorm() < 1.0e-20) {
+      tangent = c - a;
+      tangent = tangent - tangent.dot(normal) * normal;
+    }
+    tangent = normalized(tangent);
+    Eigen::RowVector3d bitangent = normalized(normal.cross(tangent));
+
+    primary.row(face) = tangent;
+    secondary.row(face) = bitangent;
+  }
+
+  field.raw = make_raw_cross_field(primary, secondary);
   return field;
 }
 

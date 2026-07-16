@@ -1,10 +1,13 @@
 #include <algorithm>
 #include <cmath>
+#include <filesystem>
 #include <vector>
 
 #include <gtest/gtest.h>
 
 #include <directional/pipeline/RemeshPipeline.h>
+
+#include "BenchmarkCases.h"
 
 namespace {
 
@@ -94,6 +97,33 @@ TEST(RemeshRegressionPhase00, SyntheticOutputSatisfiesStructuralInvariants) {
     EXPECT_GT(polygon_area(result.vertices, result.faces, result.degrees, face),
               1.0e-14);
   }
+}
+
+TEST(RemeshRegressionPhase00, BunnyBenchmarkFixtureHasMatchingField) {
+  const std::filesystem::path manifestPath =
+      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
+      "benchmarks/fixtures/repo_regressions.json";
+
+  const std::vector<directional::bench::BenchmarkCase> cases =
+      directional::bench::load_benchmark_manifest(manifestPath);
+  const auto bunny = std::find_if(
+      cases.begin(), cases.end(),
+      [](const directional::bench::BenchmarkCase &candidate) {
+        return candidate.name == "bunny1k_medium";
+      });
+
+  ASSERT_NE(bunny, cases.end());
+  const directional::bench::BenchmarkMesh mesh =
+      directional::bench::load_benchmark_mesh(*bunny);
+  ASSERT_GT(mesh.vertices.rows(), 0);
+  ASSERT_EQ(mesh.faces.rows(), 2090);
+
+  const directional::bench::BenchmarkField field =
+      directional::bench::load_benchmark_field(*bunny, mesh.faces.rows());
+  ASSERT_TRUE(field.available);
+  EXPECT_EQ(field.degree, 4);
+  EXPECT_EQ(field.raw.rows(), mesh.faces.rows());
+  EXPECT_EQ(field.raw.cols(), 12);
 }
 
 } // namespace

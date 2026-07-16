@@ -310,8 +310,10 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase) {
   RunRecord record;
   const BenchmarkMesh mesh = load_benchmark_mesh(benchmarkCase);
   record.fixtureHash = hash_benchmark_mesh(mesh);
-  const BenchmarkField field =
-      load_benchmark_field(benchmarkCase, mesh.faces.rows());
+  BenchmarkField field = load_benchmark_field(benchmarkCase, mesh.faces.rows());
+  if (!field.available) {
+    field = generate_benchmark_field(benchmarkCase, mesh);
+  }
   if (field.available) {
     record.usedFieldFile = true;
     record.fieldHash = hash_matrix(field.raw);
@@ -447,7 +449,24 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << "\"generateArrangementSeconds\":"
       << diagnostics.generateArrangementSeconds << ","
       << "\"simplifyTotalSeconds\":" << diagnostics.simplifyTotalSeconds << ","
+      << "\"initialConsistencySeconds\":"
+      << diagnostics.initialConsistencySeconds << ","
+      << "\"boundaryScanSeconds\":" << diagnostics.boundaryScanSeconds << ","
+      << "\"boundaryStripSeconds\":" << diagnostics.boundaryStripSeconds << ","
+      << "\"vertexMatchSeconds\":" << diagnostics.vertexMatchSeconds << ","
+      << "\"representativeBuildSeconds\":"
+      << diagnostics.representativeBuildSeconds << ","
+      << "\"halfedgeRemapSeconds\":" << diagnostics.halfedgeRemapSeconds
+      << ","
+      << "\"degeneratePruneSeconds\":" << diagnostics.degeneratePruneSeconds
+      << ","
       << "\"retwinSeconds\":" << diagnostics.retwinSeconds << ","
+      << "\"danglingFunctionPruneSeconds\":"
+      << diagnostics.danglingFunctionPruneSeconds << ","
+      << "\"regionClassificationSeconds\":"
+      << diagnostics.regionClassificationSeconds << ","
+      << "\"faceRealignmentSeconds\":" << diagnostics.faceRealignmentSeconds
+      << ","
       << "\"lowQualityFacePruneSeconds\":"
       << diagnostics.lowQualityFacePruneSeconds << ","
       << "\"lowValenceUnificationSeconds\":"
@@ -586,6 +605,13 @@ void write_results_json(const Options &options,
           << escape_json(benchmarkCase.fieldPath.string())
           << "\", \"format\": \"" << escape_json(benchmarkCase.fieldFormat)
           << "\", \"hash\": \"";
+      if (!runs.empty()) {
+        out << std::hex << runs.front().fieldHash << std::dec;
+      }
+      out << "\"";
+    } else if (benchmarkCase.generatedField == "face_edges") {
+      out << "\"source\": \"generated\", \"method\": "
+             "\"face_edges\", \"normalizeDirections\": true, \"hash\": \"";
       if (!runs.empty()) {
         out << std::hex << runs.front().fieldHash << std::dec;
       }

@@ -238,6 +238,7 @@ if(DIRECTIONAL_BUILD_TESTS)
 
   add_executable(
     directional_phase1_tests
+    src/bench/BenchmarkCases.cpp
     tests/DiagnosticsTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp)
@@ -245,6 +246,12 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_phase1_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_phase1_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_phase1_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_phase1_tests
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
   if(MSVC)
     target_compile_options(directional_phase1_tests PRIVATE /bigobj)
   endif()
