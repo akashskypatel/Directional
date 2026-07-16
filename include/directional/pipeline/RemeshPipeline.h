@@ -25,6 +25,7 @@
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/Integrate.h>
 #include <directional/integration/IntegrationData.h>
+#include <directional/integration/IntegrationSolveStrategy.h>
 #include <directional/integration/SetupIntegration.h>
 #include <directional/meshing/Mesher.h>
 #include <directional/meshing/MesherData.h>
@@ -64,6 +65,13 @@ struct RemeshOptions {
 
   /// Enables the experimental TriFlow-style generated-DCEL simplification pass.
   bool useTriFlowDcelSimplification = false;
+
+  /// Integration KKT solve strategy. DirectOnly remains the default reference.
+  IntegrationSolveStrategy integrationSolveStrategy =
+      IntegrationSolveStrategy::DirectOnly;
+
+  /// Controls for the adaptive integration solve strategy.
+  AdaptiveIntegrationOptions adaptiveIntegration;
 
   /// Optional progress callback invoked by remeshing stages.
   ProgressCallback progress;
@@ -219,6 +227,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.integralSeamless = options.integralSeamless;
   integration.roundSeams = options.roundSeams;
   integration.verbose = options.verbose;
+  integration.solveStrategy = options.integrationSolveStrategy;
+  integration.adaptiveOptions = options.adaptiveIntegration;
 
   report_progress(options.progress, 20, 100, "Setting up integration");
   TriMesh meshCut;

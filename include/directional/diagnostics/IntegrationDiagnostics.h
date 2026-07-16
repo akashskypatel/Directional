@@ -35,12 +35,21 @@ struct IntegrationDiagnostics {
   std::size_t roundingBatches = 0;
   std::vector<std::size_t> roundingBatchHistogram;
   std::size_t directFactorizations = 0;
+  std::size_t iterativeAttempts = 0;
+  std::size_t iterativeSuccesses = 0;
+  std::size_t iterativeFailures = 0;
+  std::size_t directFallbacks = 0;
+  std::size_t adaptiveDisabledAfterFailures = 0;
+  std::size_t iterativeIterations = 0;
   std::size_t factorizationFailures = 0;
   std::size_t solveFailures = 0;
   std::size_t maximumFreeVariables = 0;
   std::size_t maximumConstraintRows = 0;
   std::size_t maximumSystemRows = 0;
   std::size_t maximumSystemNonZeros = 0;
+  double iterativeSolverSeconds = 0.0;
+  double directFactorizationSecondsAvoided = 0.0;
+  double medianIterationsPerIterativeSolve = 0.0;
 
   double finalLinearSystemResidualNorm =
       std::numeric_limits<double>::quiet_NaN();

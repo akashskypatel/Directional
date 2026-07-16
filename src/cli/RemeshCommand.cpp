@@ -53,6 +53,18 @@ int parse_integer_option(const std::string &text, const char *optionName) {
   return value;
 }
 
+IntegrationSolveStrategy parse_integration_solve_strategy(
+    const std::string &text, const char *optionName) {
+  if (text == "direct" || text == "direct-only" || text == "DirectOnly") {
+    return IntegrationSolveStrategy::DirectOnly;
+  }
+  if (text == "adaptive" || text == "Adaptive") {
+    return IntegrationSolveStrategy::Adaptive;
+  }
+  throw std::runtime_error(std::string(optionName) +
+                           " requires direct or adaptive.");
+}
+
 void validate_direction_matrix(const Eigen::MatrixXd &matrix,
                                const Eigen::Index faceCount,
                                const char *name) {
@@ -137,6 +149,13 @@ int run_remesh(const int argc, char **argv) {
       options.integralSeamless = false;
     } else if (option == "--round-seams") {
       options.roundSeams = true;
+    } else if (option == "--integration-solve-strategy") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--integration-solve-strategy requires direct or adaptive.");
+      }
+      options.integrationSolveStrategy = parse_integration_solve_strategy(
+          argv[argument], "--integration-solve-strategy");
     } else if (option == "--simplification-backend") {
       if (++argument >= argc) {
         throw std::runtime_error(

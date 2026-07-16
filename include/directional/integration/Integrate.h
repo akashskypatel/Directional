@@ -32,6 +32,7 @@
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/IntegrationData.h>
 #include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/integration/solvers/AdaptiveKktSolver.h>
 #include <directional/integration/solvers/CuDssSolver.h>
 #include <directional/integration/solvers/PardisoSolver.h>
 #include <directional/integration/SetupIntegration.h>
@@ -155,8 +156,18 @@ struct IterativeSolveTimings {
     double backSubstitution = 0.0;
     double fullSolutionReconstruction = 0.0;
     double integerCandidateSelection = 0.0;
+    double iterativeSolver = 0.0;
+    double directFactorizationAvoided = 0.0;
 
     std::size_t iterations = 0;
+    std::size_t directFactorizations = 0;
+    std::size_t iterativeAttempts = 0;
+    std::size_t iterativeSuccesses = 0;
+    std::size_t iterativeFailures = 0;
+    std::size_t directFallbacks = 0;
+    std::size_t adaptiveDisabledAfterFailures = 0;
+    std::size_t iterativeIterations = 0;
+    std::vector<std::size_t> iterativeIterationCounts;
     std::size_t factorizationFailures = 0;
     std::size_t solveFailures = 0;
 
@@ -210,6 +221,8 @@ struct IterativeSolveTimings {
               << iterativeTimings.symbolicAnalysis << " s\n"
               << "  numeric factorization:          "
               << iterativeTimings.numericFactorization << " s\n"
+              << "  adaptive iterative solve:       "
+              << iterativeTimings.iterativeSolver << " s\n"
               << "  back substitution:             "
               << iterativeTimings.backSubstitution << " s\n"
               << "  full-solution reconstruction:  "
@@ -221,6 +234,12 @@ struct IterativeSolveTimings {
               << iterativeTimings.factorizationFailures << '\n'
               << "  solve failures:                "
               << iterativeTimings.solveFailures << '\n'
+              << "  adaptive attempts:             "
+              << iterativeTimings.iterativeAttempts << '\n'
+              << "  adaptive successes:            "
+              << iterativeTimings.iterativeSuccesses << '\n'
+              << "  direct fallbacks:              "
+              << iterativeTimings.directFallbacks << '\n'
 #ifdef USE_SUITESPARSE_ENABLED
               << "  UMFPACK total estimated flops: "
               << iterativeTimings.umfpackTotalFlops << '\n'
@@ -447,6 +466,7 @@ struct IterativeSolveTimings {
   SparseMatrix<double> var2AllMat;
   VectorXd fullx(numVars);
   fullx.setZero();
+  VectorXd previousFullSolution;
 
   /*
    * Track every reduced variable that has actually been fixed by the
@@ -492,6 +512,8 @@ struct IterativeSolveTimings {
   };
 
   int solveIteration = 0;
+  bool adaptiveEnabled = true;
+  int consecutiveAdaptiveFailures = 0;
 
   const IntegrationLinearSolver effectiveLinearSolver =
       intData.linearSolver == IntegrationLinearSolver::Default
@@ -571,7 +593,14 @@ struct IterativeSolveTimings {
       diagnostics.roundingBatches +=
           diagnostics.roundingBatchHistogram[batchSize];
     }
-    diagnostics.directFactorizations = iterativeTimings.iterations;
+    diagnostics.directFactorizations = iterativeTimings.directFactorizations;
+    diagnostics.iterativeAttempts = iterativeTimings.iterativeAttempts;
+    diagnostics.iterativeSuccesses = iterativeTimings.iterativeSuccesses;
+    diagnostics.iterativeFailures = iterativeTimings.iterativeFailures;
+    diagnostics.directFallbacks = iterativeTimings.directFallbacks;
+    diagnostics.adaptiveDisabledAfterFailures =
+        iterativeTimings.adaptiveDisabledAfterFailures;
+    diagnostics.iterativeIterations = iterativeTimings.iterativeIterations;
     diagnostics.factorizationFailures = iterativeTimings.factorizationFailures;
     diagnostics.solveFailures = iterativeTimings.solveFailures;
     diagnostics.maximumFreeVariables =
@@ -582,6 +611,19 @@ struct IterativeSolveTimings {
         static_cast<std::size_t>(iterativeTimings.maximumSystemRows);
     diagnostics.maximumSystemNonZeros =
         static_cast<std::size_t>(iterativeTimings.maximumSystemNonZeros);
+    diagnostics.iterativeSolverSeconds = iterativeTimings.iterativeSolver;
+    diagnostics.directFactorizationSecondsAvoided =
+        iterativeTimings.directFactorizationAvoided;
+    if (!iterativeTimings.iterativeIterationCounts.empty()) {
+      std::vector<std::size_t> counts =
+          iterativeTimings.iterativeIterationCounts;
+      std::sort(counts.begin(), counts.end());
+      const std::size_t middle = counts.size() / 2;
+      diagnostics.medianIterationsPerIterativeSolve =
+          (counts.size() % 2 == 1)
+              ? static_cast<double>(counts[middle])
+              : 0.5 * static_cast<double>(counts[middle - 1] + counts[middle]);
+    }
     diagnostics.maximumUnresolvedIntegerResidual = maximumIntegerResidual;
 
     if (solution != nullptr && constraints != nullptr) {
@@ -844,72 +886,141 @@ struct IterativeSolveTimings {
 
     iterativeTimings.rhsAssembly += seconds_since(rhsAssemblyStart);
 
+    bool directSolveRequired = true;
+    if (intData.solveStrategy == IntegrationSolveStrategy::Adaptive &&
+        adaptiveEnabled) {
+      ++iterativeTimings.iterativeAttempts;
+      const Eigen::VectorXd initialGuess =
+          detail::AdaptiveKktSolver::map_warm_start(
+              previousFullSolution, freeToFull, A.rows(),
+              intData.adaptiveOptions);
+      const detail::AdaptiveKktSolveResult adaptiveResult =
+          detail::AdaptiveKktSolver::solve(A, b, initialGuess, Cpart.rows(),
+                                           intData.adaptiveOptions);
+      iterativeTimings.iterativeSolver += adaptiveResult.solverSeconds;
+      iterativeTimings.iterativeIterations +=
+          static_cast<std::size_t>(std::max(0, adaptiveResult.iterations));
+      iterativeTimings.iterativeIterationCounts.push_back(
+          static_cast<std::size_t>(std::max(0, adaptiveResult.iterations)));
+
+      if (adaptiveResult.accepted) {
+        x = adaptiveResult.solution;
+        directSolveRequired = false;
+        ++iterativeTimings.iterativeSuccesses;
+        consecutiveAdaptiveFailures = 0;
+        if (intData.verbose) {
+          std::cout << "[Directional::integrate] adaptive solve accepted at "
+                    << "rounding solve " << (solveIteration + 1)
+                    << " iterations=" << adaptiveResult.iterations
+                    << " relativeResidual="
+                    << adaptiveResult.relativeResidual
+                    << " constraintResidual="
+                    << adaptiveResult.constraintResidual << '\n';
+        }
+      } else {
+        ++iterativeTimings.iterativeFailures;
+        ++iterativeTimings.directFallbacks;
+        ++consecutiveAdaptiveFailures;
+        if (intData.adaptiveOptions.maximumConsecutiveFailures > 0 &&
+            consecutiveAdaptiveFailures >=
+                intData.adaptiveOptions.maximumConsecutiveFailures) {
+          adaptiveEnabled = false;
+          ++iterativeTimings.adaptiveDisabledAfterFailures;
+        }
+        if (intData.verbose) {
+          std::cout << "[Directional::integrate] adaptive solve rejected at "
+                    << "rounding solve " << (solveIteration + 1)
+                    << " converged=" << adaptiveResult.converged
+                    << " finite=" << adaptiveResult.finite
+                    << " symmetric=" << adaptiveResult.symmetric
+                    << " iterations=" << adaptiveResult.iterations
+                    << " relativeResidual="
+                    << adaptiveResult.relativeResidual
+                    << " absoluteResidual="
+                    << adaptiveResult.absoluteResidual
+                    << " constraintResidual="
+                    << adaptiveResult.constraintResidual
+                    << "; falling back to direct solve";
+          if (!adaptiveEnabled) {
+            std::cout << " and disabling adaptive attempts after "
+                      << consecutiveAdaptiveFailures
+                      << " consecutive failures";
+          }
+          std::cout << '\n';
+        }
+      }
+    }
+
+    const double directNumericBefore = iterativeTimings.numericFactorization;
     bool solvedWithOptionalBackend = false;
     bool optionalBackendSucceeded = false;
     IntegrationSolverTimings optionalTimings;
 
-    switch (currentLinearSolver) {
-    case IntegrationLinearSolver::Pardiso:
+    if (directSolveRequired) {
+      switch (currentLinearSolver) {
+      case IntegrationLinearSolver::Pardiso:
 #ifdef DIRECTIONAL_HAS_PARDISO
-      solvedWithOptionalBackend = true;
-      optionalBackendSucceeded = pardisoSolver.solve(
-          A, b, x, optionalTimings, intData.verbose);
+        solvedWithOptionalBackend = true;
+        optionalBackendSucceeded = pardisoSolver.solve(
+            A, b, x, optionalTimings, intData.verbose);
 #else
-      throw std::runtime_error(
-          "integrate(): PARDISO was selected but Directional was built without DIRECTIONAL_ENABLE_PARDISO");
+        throw std::runtime_error(
+            "integrate(): PARDISO was selected but Directional was built without DIRECTIONAL_ENABLE_PARDISO");
 #endif
-      break;
-    case IntegrationLinearSolver::CuDss:
+        break;
+      case IntegrationLinearSolver::CuDss:
 #ifdef DIRECTIONAL_HAS_CUDSS
-      solvedWithOptionalBackend = true;
-      {
-        SparseMatrix<double> cuDssSystem = A;
-        const double multiplierRegularization =
-            intData.cuDssSolverOptions.constraintDiagonalRegularization;
-        if (Cpart.rows() > 0 && multiplierRegularization > 0.0) {
-          for (int row = 0; row < Cpart.rows(); ++row) {
-            cuDssSystem.coeffRef(EtE.rows() + row, EtE.rows() + row) =
-                -multiplierRegularization;
+        solvedWithOptionalBackend = true;
+        {
+          SparseMatrix<double> cuDssSystem = A;
+          const double multiplierRegularization =
+              intData.cuDssSolverOptions.constraintDiagonalRegularization;
+          if (Cpart.rows() > 0 && multiplierRegularization > 0.0) {
+            for (int row = 0; row < Cpart.rows(); ++row) {
+              cuDssSystem.coeffRef(EtE.rows() + row, EtE.rows() + row) =
+                  -multiplierRegularization;
+            }
+            cuDssSystem.makeCompressed();
+            if (intData.verbose && solveIteration == 0) {
+              std::cout << "[Directional::integrate] cuDSS KKT multiplier "
+                        << "regularization=" << multiplierRegularization
+                        << " rows=" << Cpart.rows() << '\n';
+            }
           }
-          cuDssSystem.makeCompressed();
-          if (intData.verbose && solveIteration == 0) {
-            std::cout << "[Directional::integrate] cuDSS KKT multiplier "
-                      << "regularization=" << multiplierRegularization
-                      << " rows=" << Cpart.rows() << '\n';
-          }
+          optionalBackendSucceeded = cuDssSolver.solve(
+              cuDssSystem, b, x, optionalTimings, intData.cuDssSolverOptions,
+              intData.verbose);
         }
-        optionalBackendSucceeded = cuDssSolver.solve(
-            cuDssSystem, b, x, optionalTimings, intData.cuDssSolverOptions,
-            intData.verbose);
-      }
 #else
-      throw std::runtime_error(
-          "integrate(): cuDSS was selected but Directional was built without DIRECTIONAL_ENABLE_CUDSS");
+        throw std::runtime_error(
+            "integrate(): cuDSS was selected but Directional was built without DIRECTIONAL_ENABLE_CUDSS");
 #endif
-      break;
-    default:
-      break;
-    }
+        break;
+      default:
+        break;
+      }
 
-    if (solvedWithOptionalBackend) {
-      iterativeTimings.symbolicAnalysis += optionalTimings.analysis;
-      iterativeTimings.numericFactorization += optionalTimings.factorization;
-      iterativeTimings.backSubstitution += optionalTimings.solve;
-      if (!optionalBackendSucceeded) {
-        ++iterativeTimings.factorizationFailures;
-        currentLinearSolver = cpuFallbackLinearSolver;
-        if (intData.verbose) {
-          std::cerr
-              << "[Directional::integrate] optional backend "
-              << integration_linear_solver_name(effectiveLinearSolver)
-              << " rejected the current system; retrying with "
-              << integration_linear_solver_name(cpuFallbackLinearSolver)
-              << " for the remaining solves\n";
+      if (solvedWithOptionalBackend) {
+        iterativeTimings.symbolicAnalysis += optionalTimings.analysis;
+        iterativeTimings.numericFactorization += optionalTimings.factorization;
+        iterativeTimings.backSubstitution += optionalTimings.solve;
+        if (!optionalBackendSucceeded) {
+          ++iterativeTimings.factorizationFailures;
+          currentLinearSolver = cpuFallbackLinearSolver;
+          if (intData.verbose) {
+            std::cerr
+                << "[Directional::integrate] optional backend "
+                << integration_linear_solver_name(effectiveLinearSolver)
+                << " rejected the current system; retrying with "
+                << integration_linear_solver_name(cpuFallbackLinearSolver)
+                << " for the remaining solves\n";
+          }
         }
       }
     }
 
-    if (!solvedWithOptionalBackend || !optionalBackendSucceeded) {
+    if (directSolveRequired &&
+        (!solvedWithOptionalBackend || !optionalBackendSucceeded)) {
 #ifdef USE_SUITESPARSE_ENABLED
     /*
      * Native UMFPACK path.
@@ -1139,6 +1250,7 @@ struct IterativeSolveTimings {
     }
 #else
     SparseLU<SparseMatrix<double>> lusolver;
+    bool usedSparseQrFallback = false;
     const auto sparseQrFallback = [&]() -> bool {
       SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> qrFallback;
 
@@ -1178,7 +1290,7 @@ struct IterativeSolveTimings {
 
     const auto symbolicAnalysisStart = Clock::now();
 
-    lusolver.analyzePattern(A);
+    lusolver.compute(A);
 
     iterativeTimings.symbolicAnalysis += seconds_since(symbolicAnalysisStart);
 
@@ -1193,48 +1305,49 @@ struct IterativeSolveTimings {
       if (!sparseQrFallback()) {
         return false;
       }
+      usedSparseQrFallback = true;
     }
 
-    const auto numericFactorizationStart = Clock::now();
+    if (!usedSparseQrFallback) {
+      const auto backSubstitutionStart = Clock::now();
 
-    lusolver.factorize(A);
+      x = lusolver.solve(b);
 
-    iterativeTimings.numericFactorization +=
-        seconds_since(numericFactorizationStart);
+      iterativeTimings.backSubstitution += seconds_since(backSubstitutionStart);
 
-    if (lusolver.info() != Success) {
-      ++iterativeTimings.factorizationFailures;
+      if (lusolver.info() != Success) {
+        ++iterativeTimings.solveFailures;
 
-      if (intData.verbose) {
-        std::cout << "[Directional::integrate] numeric factorization failed at "
-                  << "rounding solve " << (solveIteration + 1) << std::endl;
-      }
+        if (intData.verbose) {
+          std::cout
+              << "[Directional::integrate] LU solve failed at rounding solve "
+              << (solveIteration + 1) << std::endl;
+        }
 
-      if (!sparseQrFallback()) {
-        return false;
-      }
-    }
-
-    const auto backSubstitutionStart = Clock::now();
-
-    x = lusolver.solve(b);
-
-    iterativeTimings.backSubstitution += seconds_since(backSubstitutionStart);
-
-    if (lusolver.info() != Success) {
-      ++iterativeTimings.solveFailures;
-
-      if (intData.verbose) {
-        std::cout
-            << "[Directional::integrate] LU solve failed at rounding solve "
-            << (solveIteration + 1) << std::endl;
-      }
-
-      if (!sparseQrFallback()) {
-        return false;
+        if (!sparseQrFallback()) {
+          return false;
+        }
+        usedSparseQrFallback = true;
       }
     }
 #endif
+    }
+
+    if (directSolveRequired) {
+      ++iterativeTimings.directFactorizations;
+      const double directNumericSeconds =
+          iterativeTimings.numericFactorization - directNumericBefore;
+      if (directNumericSeconds > 0.0) {
+        iterativeTimings.directFactorizationAvoided += 0.0;
+      }
+    } else {
+      const double averageDirectNumericSeconds =
+          iterativeTimings.directFactorizations == 0
+              ? 0.0
+              : iterativeTimings.numericFactorization /
+                    static_cast<double>(iterativeTimings.directFactorizations);
+      iterativeTimings.directFactorizationAvoided +=
+          averageDirectNumericSeconds;
     }
 
     if (x.size() < freeVariableCount) {
@@ -1246,6 +1359,7 @@ struct IterativeSolveTimings {
     const auto reconstructionStart = Clock::now();
 
     fullx = var2AllMat * x.head(freeVariableCount) + fixedValues;
+    previousFullSolution = fullx;
 
     iterativeTimings.fullSolutionReconstruction +=
         seconds_since(reconstructionStart);
@@ -1360,6 +1474,13 @@ struct IntegerCandidate {
     }
 
     const double bestResidual = candidates.front().residual;
+    const bool useAdaptiveBatching =
+        intData.solveStrategy == IntegrationSolveStrategy::Adaptive;
+    const int activeMaximumRoundingBatchSize =
+        useAdaptiveBatching
+            ? std::clamp(intData.adaptiveOptions.maximumRoundingBatchSize, 1,
+                         maximumRoundingBatchSize)
+            : maximumRoundingBatchSize;
 
     // const double additionalResidualLimit =
     //     std::min(
@@ -1367,12 +1488,18 @@ struct IntegerCandidate {
     //         std::max(
     //             minimumRelativeBatchWindow,
     //             relativeBatchResidualFactor * bestResidual));
-    const double additionalResidualLimit = std::min(0.10, bestResidual + 0.025);
+    const double additionalResidualLimit =
+        useAdaptiveBatching
+            ? std::min(intData.adaptiveOptions.additionalRoundingResidualCap,
+                       bestResidual +
+                           intData.adaptiveOptions
+                               .additionalRoundingResidualWindow)
+            : std::min(0.10, bestResidual + 0.025);
 
     int batchSize = 0;
 
     for (const IntegerCandidate &candidate : candidates) {
-      if (batchSize >= maximumRoundingBatchSize) {
+      if (batchSize >= activeMaximumRoundingBatchSize) {
         break;
       }
 
@@ -1396,7 +1523,7 @@ struct IntegerCandidate {
                   << candidate.index << " from " << candidate.value << " to "
                   << candidate.roundedValue << " (residual "
                   << candidate.residual << ", batch position " << batchSize
-                  << "/" << maximumRoundingBatchSize << ")" << std::endl;
+                  << "/" << activeMaximumRoundingBatchSize << ")" << std::endl;
       }
     }
 

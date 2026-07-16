@@ -28,6 +28,7 @@ namespace {
 struct Options {
   std::filesystem::path manifestPath;
   std::string selectedCase;
+  IntegrationSolveStrategy solveStrategy = IntegrationSolveStrategy::DirectOnly;
   int warmupRuns = 1;
   int measuredRuns = 5;
   std::filesystem::path outputPath = "benchmark-results/baseline.json";
@@ -58,6 +59,7 @@ void print_usage() {
   std::cout << "Usage: directional_benchmarks [options]\n"
             << "  --manifest <path>   Benchmark fixture manifest JSON.\n"
             << "  --case <name>       Run one case from the manifest.\n"
+            << "  --solve-strategy <direct|adaptive>\n"
             << "  --warmup <count>    Warm-up runs before measurements.\n"
             << "  --runs <count>      Measured run count.\n"
             << "  --output <path>     Output JSON path.\n";
@@ -89,6 +91,17 @@ Options parse_options(const int argc, char **argv) {
       options.manifestPath = requireValue("--manifest");
     } else if (argument == "--case") {
       options.selectedCase = requireValue("--case");
+    } else if (argument == "--solve-strategy") {
+      const std::string strategy = requireValue("--solve-strategy");
+      if (strategy == "direct" || strategy == "direct-only" ||
+          strategy == "DirectOnly") {
+        options.solveStrategy = IntegrationSolveStrategy::DirectOnly;
+      } else if (strategy == "adaptive" || strategy == "Adaptive") {
+        options.solveStrategy = IntegrationSolveStrategy::Adaptive;
+      } else {
+        throw std::runtime_error(
+            "--solve-strategy requires direct or adaptive.");
+      }
     } else if (argument == "--warmup") {
       options.warmupRuns = parse_nonnegative_int(requireValue("--warmup"), "--warmup");
     } else if (argument == "--runs") {
@@ -306,7 +319,8 @@ std::uint64_t hash_matrix(const Eigen::MatrixXd &matrix) {
   return hash;
 }
 
-RunRecord run_case_once(const BenchmarkCase &benchmarkCase) {
+RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
+                        const Options &benchmarkOptions) {
   RunRecord record;
   const BenchmarkMesh mesh = load_benchmark_mesh(benchmarkCase);
   record.fixtureHash = hash_benchmark_mesh(mesh);
@@ -319,6 +333,7 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase) {
     record.fieldHash = hash_matrix(field.raw);
   }
   pipeline::RemeshOptions options = make_remesh_options(benchmarkCase);
+  options.integrationSolveStrategy = benchmarkOptions.solveStrategy;
   const auto start = std::chrono::steady_clock::now();
   try {
     if (field.available) {
@@ -423,6 +438,19 @@ void write_integration_json(std::ostream &out,
   out << "],"
       << "\"directFactorizations\":" << diagnostics.directFactorizations
       << ","
+      << "\"iterativeAttempts\":" << diagnostics.iterativeAttempts << ","
+      << "\"iterativeSuccesses\":" << diagnostics.iterativeSuccesses << ","
+      << "\"iterativeFailures\":" << diagnostics.iterativeFailures << ","
+      << "\"directFallbacks\":" << diagnostics.directFallbacks << ","
+      << "\"adaptiveDisabledAfterFailures\":"
+      << diagnostics.adaptiveDisabledAfterFailures << ","
+      << "\"iterativeIterations\":" << diagnostics.iterativeIterations << ","
+      << "\"iterativeSolverSeconds\":" << diagnostics.iterativeSolverSeconds
+      << ","
+      << "\"directFactorizationSecondsAvoided\":"
+      << diagnostics.directFactorizationSecondsAvoided << ","
+      << "\"medianIterationsPerIterativeSolve\":"
+      << diagnostics.medianIterationsPerIterativeSolve << ","
       << "\"factorizationFailures\":" << diagnostics.factorizationFailures
       << ","
       << "\"solveFailures\":" << diagnostics.solveFailures << ","
@@ -578,6 +606,8 @@ void write_results_json(const Options &options,
   out << "  \"selectedIntegrationBackend\": \""
       << integration_linear_solver_name(resolve_default_integration_linear_solver())
       << "\",\n";
+  out << "  \"integrationSolveStrategy\": \""
+      << integration_solve_strategy_name(options.solveStrategy) << "\",\n";
   out << "  \"cases\": [\n";
   for (std::size_t caseIndex = 0; caseIndex < results.size(); ++caseIndex) {
     const BenchmarkCase &benchmarkCase = results[caseIndex].first;
@@ -625,7 +655,10 @@ void write_results_json(const Options &options,
         << benchmarkCase.lengthRatio << ", \"integralSeamless\": "
         << (benchmarkCase.integralSeamless ? "true" : "false")
         << ", \"roundSeams\": "
-        << (benchmarkCase.roundSeams ? "true" : "false") << "},\n";
+        << (benchmarkCase.roundSeams ? "true" : "false")
+        << ", \"integrationSolveStrategy\": \""
+        << integration_solve_strategy_name(options.solveStrategy)
+        << "\"},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {
       const RunRecord &run = runs[runIndex];
@@ -681,11 +714,11 @@ int main(const int argc, char **argv) {
     for (const directional::bench::BenchmarkCase &benchmarkCase : cases) {
       std::cout << "Running benchmark case " << benchmarkCase.name << '\n';
       for (int warmup = 0; warmup < options.warmupRuns; ++warmup) {
-        (void)directional::bench::run_case_once(benchmarkCase);
+        (void)directional::bench::run_case_once(benchmarkCase, options);
       }
       std::vector<directional::bench::RunRecord> runs;
       for (int run = 0; run < options.measuredRuns; ++run) {
-        runs.push_back(directional::bench::run_case_once(benchmarkCase));
+        runs.push_back(directional::bench::run_case_once(benchmarkCase, options));
         std::cout << "  run " << (run + 1) << "/" << options.measuredRuns
                   << ": " << (runs.back().success ? "success" : "failed")
                   << " in " << runs.back().wallSeconds << " s\n";

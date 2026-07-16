@@ -239,6 +239,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_phase1_tests
     src/bench/BenchmarkCases.cpp
+    tests/AdaptiveIntegrationSolverTests.cpp
     tests/DiagnosticsTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp)
@@ -308,6 +309,7 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
     # units that instantiate Directional's template-heavy field and pipeline APIs.
     if(MSVC)
       set_source_files_properties(
+        src/cli/CliBackend.cpp
         src/cli/CrossFieldCommand.cpp
         src/cli/SimplifyCommand.cpp
         src/cli/RemeshCommand.cpp

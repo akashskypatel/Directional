@@ -16,6 +16,7 @@
 
 #include <directional/diagnostics/IntegrationDiagnostics.h>
 #include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/integration/IntegrationSolveStrategy.h>
 #include <directional/util/Progress.h>
 
 /**
@@ -108,6 +109,12 @@ struct IntegrationData {
   /// Sparse direct backend used by iterative integer integration.
   IntegrationLinearSolver linearSolver;
 
+  /// Mixed-integer KKT solve strategy.
+  IntegrationSolveStrategy solveStrategy;
+
+  /// Controls for @ref IntegrationSolveStrategy::Adaptive.
+  AdaptiveIntegrationOptions adaptiveOptions;
+
   /// Numerical-stability controls used when @ref linearSolver selects cuDSS.
   CuDssSolverOptions cuDssSolverOptions;
 
@@ -122,7 +129,8 @@ struct IntegrationData {
 
   IntegrationData(int _N)
       : lengthRatio(0.02), integralSeamless(false), roundSeams(true),
-        linearSolver(IntegrationLinearSolver::Default), verbose(false) {
+        linearSolver(IntegrationLinearSolver::Default),
+        solveStrategy(IntegrationSolveStrategy::DirectOnly), verbose(false) {
     N = _N;
     n = (N % 2 == 0 ? N / 2 : N);
     if (N % 2 == 0)
