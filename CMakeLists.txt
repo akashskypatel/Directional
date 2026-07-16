@@ -16,6 +16,7 @@ option(DIRECTIONAL_BUILD_CLI
        "Build the optional native command line executable" OFF)
 option(DIRECTIONAL_BUILD_GUI
        "Build the optional Polyscope desktop UI" OFF)
+option(DIRECTIONAL_BUILD_BENCHMARKS "Build Directional benchmark tools" OFF)
 option(DIRECTIONAL_BUILD_TESTS "Build Directional unit tests" OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(
@@ -246,6 +247,17 @@ if(DIRECTIONAL_BUILD_TESTS)
   if(MSVC)
     target_compile_options(directional_phase1_tests PRIVATE /bigobj)
   endif()
+  if(WIN32)
+    add_custom_command(
+      TARGET directional_phase1_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_phase1_tests>
+        $<TARGET_FILE_DIR:directional_phase1_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
 
   include(GoogleTest)
   gtest_discover_tests(directional_phase1_tests)
@@ -298,6 +310,20 @@ endif()
 
 if(DIRECTIONAL_ENABLE_PARDISO)
   _directional_copy_pardiso_runtime_to_target(directional)
+endif()
+
+if(DIRECTIONAL_BUILD_BENCHMARKS)
+  add_executable(
+    directional_benchmarks
+    src/bench/BenchmarkCases.cpp
+    src/bench/DirectionalBenchmark.cpp)
+  target_link_libraries(directional_benchmarks PRIVATE Directional::directional)
+  target_compile_features(directional_benchmarks PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_benchmarks PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+  if(MSVC)
+    target_compile_options(directional_benchmarks PRIVATE /bigobj)
+  endif()
 endif()
 
 if(DIRECTIONAL_BUILD_CLI)

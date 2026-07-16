@@ -2759,7 +2759,12 @@ public:
                 << '\n';
     }
 
-    return remainingInteriorLeaves == 0;
+    if (remainingInteriorLeaves == 0) {
+      mData.diagnostics.danglingFunctionEdgesCleared += removedEdges;
+      return true;
+    }
+
+    return false;
   }
 
   bool realign_hex_halfedges(const SimplifyScratch &scratch) {
@@ -4382,6 +4387,7 @@ public:
                 << "removed " << facesToRemove.size() << " low-quality faces"
                 << std::endl;
     }
+    mData.diagnostics.lowQualityFacesPruned += facesToRemove.size();
 
     return true;
   }

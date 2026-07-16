@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "name": "synthetic_grid_2",
+      "synthetic": true,
+      "synthetic_subdivisions": 2,
+      "length_ratio": 0.2,
+      "integral_seamless": false,
+      "round_seams": false,
+      "tags": [
+        "synthetic",
+        "ci",
+        "diagnostics"
+      ]
+    },
+    {
+      "name": "example_local_regression",
+      "mesh": "D:/path/to/input.obj",
+      "field": "D:/path/to/input.vec",
+      "field_format": "vec",
+      "length_ratio": 0.02,
+      "integral_seamless": true,
+      "round_seams": true,
+      "tags": [
+        "integration",
+        "simplification",
+        "regression"
+      ]
+    }
+  ]
+}
