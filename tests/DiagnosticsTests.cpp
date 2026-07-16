@@ -1,5 +1,10 @@
+#include <algorithm>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
 #include <limits>
+#include <sstream>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -11,6 +16,66 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 namespace {
+
+struct SyntheticMesh {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+};
+
+SyntheticMesh make_grid_mesh(const int subdivisions) {
+  const int n = std::max(1, subdivisions);
+  SyntheticMesh mesh;
+  mesh.vertices.resize((n + 1) * (n + 1), 3);
+  for (int y = 0; y <= n; ++y) {
+    for (int x = 0; x <= n; ++x) {
+      const int vertex = y * (n + 1) + x;
+      mesh.vertices(vertex, 0) = static_cast<double>(x) / n;
+      mesh.vertices(vertex, 1) = static_cast<double>(y) / n;
+      mesh.vertices(vertex, 2) = 0.0;
+    }
+  }
+
+  mesh.faces.resize(2 * n * n, 3);
+  int face = 0;
+  for (int y = 0; y < n; ++y) {
+    for (int x = 0; x < n; ++x) {
+      const int v00 = y * (n + 1) + x;
+      const int v10 = v00 + 1;
+      const int v01 = (y + 1) * (n + 1) + x;
+      const int v11 = v01 + 1;
+      mesh.faces.row(face++) << v00, v10, v11;
+      mesh.faces.row(face++) << v00, v11, v01;
+    }
+  }
+  return mesh;
+}
+
+directional::pipeline::RemeshResult run_tiny_synthetic_remesh() {
+  const SyntheticMesh mesh = make_grid_mesh(2);
+  directional::pipeline::RemeshOptions options;
+  options.verbose = false;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  return directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
+                                                  options);
+}
+
+void expect_nonnegative_finite(const double value) {
+  EXPECT_TRUE(std::isfinite(value));
+  EXPECT_GE(value, 0.0);
+}
+
+std::string read_text_file(const std::filesystem::path &path) {
+  std::ifstream stream(path);
+  std::ostringstream buffer;
+  buffer << stream.rdbuf();
+  return buffer.str();
+}
+
+void expect_contains(const std::string &text, const std::string &needle) {
+  EXPECT_NE(text.find(needle), std::string::npos) << needle;
+}
 
 TEST(DiagnosticsPhase00, IntegrationDataOwnsDefaultDiagnostics) {
   directional::IntegrationData data(4);
@@ -41,6 +106,139 @@ TEST(DiagnosticsPhase00, RemeshResultAggregatesNestedDiagnostics) {
   EXPECT_EQ(result.diagnostics.integration.integerIterations, 3U);
   EXPECT_EQ(result.diagnostics.mesher.lowValenceOperationsAccepted, 2U);
   EXPECT_DOUBLE_EQ(result.diagnostics.overallPipelineSeconds, 1.25);
+}
+
+TEST(DiagnosticsPhase00, SyntheticRemeshDiagnosticsArePopulatedWithoutVerbose) {
+  const directional::pipeline::RemeshResult result =
+      run_tiny_synthetic_remesh();
+
+  ASSERT_TRUE(result.success);
+  EXPECT_GT(result.vertices.rows(), 0);
+  EXPECT_GT(result.faces.rows(), 0);
+
+  const directional::IntegrationDiagnostics &integration =
+      result.diagnostics.integration;
+  expect_nonnegative_finite(integration.totalSeconds);
+  expect_nonnegative_finite(integration.symbolicAnalysisSeconds);
+  expect_nonnegative_finite(integration.numericFactorizationSeconds);
+  expect_nonnegative_finite(integration.backSubstitutionSeconds);
+  EXPECT_GE(integration.integerIterations, 1U);
+  EXPECT_EQ(integration.directFactorizations, integration.integerIterations);
+  EXPECT_TRUE(std::isfinite(integration.finalLinearSystemResidualNorm));
+  EXPECT_TRUE(std::isfinite(integration.finalConstraintResidualNorm));
+  EXPECT_TRUE(std::isfinite(integration.finalIntegrationEnergy));
+
+  const directional::MesherDiagnostics &mesher = result.diagnostics.mesher;
+  expect_nonnegative_finite(mesher.totalMesherSeconds);
+  expect_nonnegative_finite(mesher.generateArrangementSeconds);
+  expect_nonnegative_finite(mesher.simplifyTotalSeconds);
+  expect_nonnegative_finite(mesher.retwinSeconds);
+  EXPECT_GT(mesher.verticesBeforeSimplification, 0U);
+  EXPECT_GT(mesher.facesBeforeSimplification, 0U);
+  EXPECT_GT(mesher.halfedgesBeforeSimplification, 0U);
+  EXPECT_GT(mesher.verticesAfterSimplification, 0U);
+  EXPECT_GT(mesher.facesAfterSimplification, 0U);
+  EXPECT_GT(mesher.halfedgesAfterSimplification, 0U);
+}
+
+TEST(DiagnosticsPhase00, RemeshDiagnosticsContainNestedStageTotals) {
+  const directional::pipeline::RemeshResult result =
+      run_tiny_synthetic_remesh();
+
+  ASSERT_TRUE(result.success);
+  const directional::RemeshDiagnostics &diagnostics = result.diagnostics;
+  expect_nonnegative_finite(diagnostics.overallPipelineSeconds);
+  expect_nonnegative_finite(diagnostics.setupIntegrationSeconds);
+  expect_nonnegative_finite(diagnostics.integrationTotalSeconds);
+  expect_nonnegative_finite(diagnostics.setupMesherSeconds);
+  expect_nonnegative_finite(diagnostics.mesherTotalSeconds);
+
+  constexpr double timerTolerance = 1.0e-6;
+  EXPECT_GE(diagnostics.overallPipelineSeconds + timerTolerance,
+            diagnostics.setupIntegrationSeconds);
+  EXPECT_GE(diagnostics.overallPipelineSeconds + timerTolerance,
+            diagnostics.integrationTotalSeconds);
+  EXPECT_GE(diagnostics.overallPipelineSeconds + timerTolerance,
+            diagnostics.setupMesherSeconds);
+  EXPECT_GE(diagnostics.overallPipelineSeconds + timerTolerance,
+            diagnostics.mesherTotalSeconds);
+}
+
+TEST(DiagnosticsPhase00, DiagnosticsDoNotChangeSyntheticSignature) {
+  const directional::pipeline::RemeshResult first =
+      run_tiny_synthetic_remesh();
+  const directional::pipeline::RemeshResult second =
+      run_tiny_synthetic_remesh();
+
+  ASSERT_TRUE(first.success);
+  ASSERT_TRUE(second.success);
+  ASSERT_EQ(first.vertices.rows(), second.vertices.rows());
+  ASSERT_EQ(first.faces.rows(), second.faces.rows());
+  ASSERT_EQ(first.degrees.size(), second.degrees.size());
+  EXPECT_EQ(first.degrees.sum(), second.degrees.sum());
+  EXPECT_EQ((first.degrees.array() == 4).count(),
+            (second.degrees.array() == 4).count());
+}
+
+TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
+  const std::filesystem::path path =
+      std::filesystem::temp_directory_path() /
+      "directional_benchmark_roundtrip.json";
+  {
+    std::ofstream output(path);
+    ASSERT_TRUE(output.good());
+    output << R"json({
+  "schema": 1,
+  "timestamp": "2026-07-16T00:00:00Z",
+  "buildType": "Release",
+  "compiler": "test",
+  "platform": "test",
+  "cpuDescription": "test",
+  "selectedIntegrationBackend": "Eigen SparseLU",
+  "cases": [{
+    "name": "synthetic_grid_2",
+    "fixturePath": "synthetic",
+    "fixtureHash": "abc",
+    "field": {"source": "generated", "method": "smooth"},
+    "remeshOptions": {"lengthRatio": 0.2},
+    "runs": [{
+      "success": true,
+      "wallSeconds": 0.1,
+      "diagnostics": {"overallPipelineSeconds": 0.1},
+      "outputVertexCount": 4,
+      "outputFaceCount": 1,
+      "quadCount": 1,
+      "nonQuadFaceCount": 0,
+      "connectedComponentCount": 1,
+      "boundaryEdgeCount": 4,
+      "degenerateFaceCount": 0
+    }],
+    "aggregates": {
+      "median": 0.1,
+      "p90": 0.1,
+      "min": 0.1,
+      "max": 0.1,
+      "coefficientOfVariation": 0.0
+    }
+  }]
+})json";
+  }
+
+  const std::string json = read_text_file(path);
+  expect_contains(json, "\"schema\"");
+  expect_contains(json, "\"timestamp\"");
+  expect_contains(json, "\"selectedIntegrationBackend\"");
+  expect_contains(json, "\"fixtureHash\"");
+  expect_contains(json, "\"field\"");
+  expect_contains(json, "\"success\"");
+  expect_contains(json, "\"wallSeconds\"");
+  expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"outputVertexCount\"");
+  expect_contains(json, "\"quadCount\"");
+  expect_contains(json, "\"connectedComponentCount\"");
+  expect_contains(json, "\"coefficientOfVariation\"");
+
+  std::filesystem::remove(path);
 }
 
 } // namespace

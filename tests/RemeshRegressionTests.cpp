@@ -1,0 +1,99 @@
+#include <algorithm>
+#include <cmath>
+#include <vector>
+
+#include <gtest/gtest.h>
+
+#include <directional/pipeline/RemeshPipeline.h>
+
+namespace {
+
+struct SyntheticMesh {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+};
+
+SyntheticMesh make_grid_mesh(const int subdivisions) {
+  const int n = std::max(1, subdivisions);
+  SyntheticMesh mesh;
+  mesh.vertices.resize((n + 1) * (n + 1), 3);
+  for (int y = 0; y <= n; ++y) {
+    for (int x = 0; x <= n; ++x) {
+      const int vertex = y * (n + 1) + x;
+      mesh.vertices(vertex, 0) = static_cast<double>(x) / n;
+      mesh.vertices(vertex, 1) = static_cast<double>(y) / n;
+      mesh.vertices(vertex, 2) = 0.0;
+    }
+  }
+
+  mesh.faces.resize(2 * n * n, 3);
+  int face = 0;
+  for (int y = 0; y < n; ++y) {
+    for (int x = 0; x < n; ++x) {
+      const int v00 = y * (n + 1) + x;
+      const int v10 = v00 + 1;
+      const int v01 = (y + 1) * (n + 1) + x;
+      const int v11 = v01 + 1;
+      mesh.faces.row(face++) << v00, v10, v11;
+      mesh.faces.row(face++) << v00, v11, v01;
+    }
+  }
+  return mesh;
+}
+
+directional::pipeline::RemeshResult run_regression_remesh() {
+  const SyntheticMesh mesh = make_grid_mesh(2);
+  directional::pipeline::RemeshOptions options;
+  options.verbose = false;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  return directional::pipeline::remesh_from_mesh(mesh.vertices, mesh.faces,
+                                                  options);
+}
+
+double polygon_area(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+                    const Eigen::VectorXi &degrees, const int face) {
+  const int degree = degrees(face);
+  if (degree < 3) {
+    return 0.0;
+  }
+  const Eigen::RowVector3d origin = vertices.row(faces(face, 0));
+  double area = 0.0;
+  for (int corner = 1; corner + 1 < degree; ++corner) {
+    const Eigen::RowVector3d a = vertices.row(faces(face, corner)) - origin;
+    const Eigen::RowVector3d b = vertices.row(faces(face, corner + 1)) - origin;
+    area += 0.5 * a.cross(b).norm();
+  }
+  return area;
+}
+
+TEST(RemeshRegressionPhase00, SyntheticOutputSatisfiesStructuralInvariants) {
+  const directional::pipeline::RemeshResult result = run_regression_remesh();
+
+  ASSERT_TRUE(result.success);
+  ASSERT_GT(result.vertices.rows(), 0);
+  ASSERT_GT(result.faces.rows(), 0);
+  ASSERT_EQ(result.degrees.size(), result.faces.rows());
+  EXPECT_TRUE(result.vertices.allFinite());
+
+  for (int face = 0; face < result.faces.rows(); ++face) {
+    const int degree = result.degrees(face);
+    ASSERT_GE(degree, 3);
+    ASSERT_LE(degree, result.faces.cols());
+
+    for (int corner = 0; corner < degree; ++corner) {
+      const int vertex = result.faces(face, corner);
+      ASSERT_GE(vertex, 0);
+      ASSERT_LT(vertex, result.vertices.rows());
+
+      const int nextVertex = result.faces(face, (corner + 1) % degree);
+      EXPECT_NE(vertex, nextVertex);
+    }
+
+    EXPECT_GT(polygon_area(result.vertices, result.faces, result.degrees, face),
+              1.0e-14);
+  }
+}
+
+} // namespace

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -14,6 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <directional/geometry/MeshTopology.h>
@@ -139,6 +141,27 @@ std::string timestamp_utc() {
   std::ostringstream output;
   output << std::put_time(&utc, "%Y-%m-%dT%H:%M:%SZ");
   return output.str();
+}
+
+std::string cpu_description() {
+#ifdef _WIN32
+  if (const char *processor = std::getenv("PROCESSOR_IDENTIFIER")) {
+    return processor;
+  }
+#elif defined(__linux__)
+  std::ifstream cpuinfo("/proc/cpuinfo");
+  std::string line;
+  while (std::getline(cpuinfo, line)) {
+    constexpr std::string_view modelName = "model name";
+    if (line.rfind(modelName.data(), 0) == 0) {
+      const std::size_t colon = line.find(':');
+      if (colon != std::string::npos) {
+        return line.substr(colon + 2);
+      }
+    }
+  }
+#endif
+  return "unknown";
 }
 
 std::vector<BenchmarkCase> select_cases(const Options &options) {
@@ -338,18 +361,54 @@ void write_integration_json(std::ostream &out,
                             const IntegrationDiagnostics &diagnostics) {
   out << "{"
       << "\"totalSeconds\":" << diagnostics.totalSeconds << ","
-      << "\"numericFactorizationSeconds\":"
-      << diagnostics.numericFactorizationSeconds << ","
-      << "\"symbolicAnalysisSeconds\":" << diagnostics.symbolicAnalysisSeconds
+      << "\"fullEnergyPrecomputeSeconds\":"
+      << diagnostics.fullEnergyPrecomputeSeconds << ","
+      << "\"freeVariableMapSeconds\":" << diagnostics.freeVariableMapSeconds
       << ","
       << "\"reducedOperatorExtractionSeconds\":"
       << diagnostics.reducedOperatorExtractionSeconds << ","
+      << "\"constraintRankReductionSeconds\":"
+      << diagnostics.constraintRankReductionSeconds << ","
       << "\"kktAssemblySeconds\":" << diagnostics.kktAssemblySeconds << ","
       << "\"rhsAssemblySeconds\":" << diagnostics.rhsAssemblySeconds << ","
+      << "\"symbolicAnalysisSeconds\":" << diagnostics.symbolicAnalysisSeconds
+      << ","
+      << "\"numericFactorizationSeconds\":"
+      << diagnostics.numericFactorizationSeconds << ","
       << "\"backSubstitutionSeconds\":"
       << diagnostics.backSubstitutionSeconds << ","
+      << "\"fullSolutionReconstructionSeconds\":"
+      << diagnostics.fullSolutionReconstructionSeconds << ","
+      << "\"integerCandidateSelectionSeconds\":"
+      << diagnostics.integerCandidateSelectionSeconds << ","
       << "\"integerIterations\":" << diagnostics.integerIterations << ","
+      << "\"roundingBatches\":" << diagnostics.roundingBatches << ","
+      << "\"roundingBatchHistogram\":[";
+  for (std::size_t index = 0;
+       index < diagnostics.roundingBatchHistogram.size(); ++index) {
+    out << diagnostics.roundingBatchHistogram[index]
+        << (index + 1 == diagnostics.roundingBatchHistogram.size() ? "" : ",");
+  }
+  out << "],"
       << "\"directFactorizations\":" << diagnostics.directFactorizations
+      << ","
+      << "\"factorizationFailures\":" << diagnostics.factorizationFailures
+      << ","
+      << "\"solveFailures\":" << diagnostics.solveFailures << ","
+      << "\"maximumFreeVariables\":" << diagnostics.maximumFreeVariables
+      << ","
+      << "\"maximumConstraintRows\":" << diagnostics.maximumConstraintRows
+      << ","
+      << "\"maximumSystemRows\":" << diagnostics.maximumSystemRows << ","
+      << "\"maximumSystemNonZeros\":" << diagnostics.maximumSystemNonZeros
+      << ","
+      << "\"finalLinearSystemResidualNorm\":"
+      << diagnostics.finalLinearSystemResidualNorm << ","
+      << "\"finalConstraintResidualNorm\":"
+      << diagnostics.finalConstraintResidualNorm << ","
+      << "\"maximumUnresolvedIntegerResidual\":"
+      << diagnostics.maximumUnresolvedIntegerResidual << ","
+      << "\"finalIntegrationEnergy\":" << diagnostics.finalIntegrationEnergy
       << "}";
 }
 
@@ -365,11 +424,37 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << "\"lowValenceUnificationSeconds\":"
       << diagnostics.lowValenceUnificationSeconds << ","
       << "\"finalCleanSeconds\":" << diagnostics.finalCleanSeconds << ","
+      << "\"triFlowSeconds\":" << diagnostics.triFlowSeconds << ","
+      << "\"verticesBeforeSimplification\":"
+      << diagnostics.verticesBeforeSimplification << ","
+      << "\"facesBeforeSimplification\":"
+      << diagnostics.facesBeforeSimplification << ","
+      << "\"halfedgesBeforeSimplification\":"
+      << diagnostics.halfedgesBeforeSimplification << ","
+      << "\"verticesAfterSimplification\":"
+      << diagnostics.verticesAfterSimplification << ","
+      << "\"facesAfterSimplification\":"
+      << diagnostics.facesAfterSimplification << ","
+      << "\"halfedgesAfterSimplification\":"
+      << diagnostics.halfedgesAfterSimplification << ","
+      << "\"retwinnedPairCount\":" << diagnostics.retwinnedPairCount << ","
+      << "\"danglingFunctionEdgesCleared\":"
+      << diagnostics.danglingFunctionEdgesCleared << ","
+      << "\"lowQualityFacesPruned\":" << diagnostics.lowQualityFacesPruned
+      << ","
+      << "\"lowValenceCandidatesConsidered\":"
+      << diagnostics.lowValenceCandidatesConsidered << ","
       << "\"lowValenceOperationsAccepted\":"
       << diagnostics.lowValenceOperationsAccepted << ","
       << "\"lowValenceOperationsRejected\":"
       << diagnostics.lowValenceOperationsRejected << ","
-      << "\"cleanupRollbacks\":" << diagnostics.cleanupRollbacks << "}";
+      << "\"cleanupRollbacks\":" << diagnostics.cleanupRollbacks << ","
+      << "\"boundaryHoleFillsAttempted\":"
+      << diagnostics.boundaryHoleFillsAttempted << ","
+      << "\"boundaryHoleFillsSucceeded\":"
+      << diagnostics.boundaryHoleFillsSucceeded << ","
+      << "\"nonSimpleFacesPruned\":" << diagnostics.nonSimpleFacesPruned
+      << "}";
 }
 
 void write_remesh_diagnostics_json(std::ostream &out,
@@ -377,6 +462,11 @@ void write_remesh_diagnostics_json(std::ostream &out,
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
+      << "\"tangentBundleInitializationSeconds\":"
+      << diagnostics.tangentBundleInitializationSeconds << ","
+      << "\"fieldSetupSeconds\":" << diagnostics.fieldSetupSeconds << ","
+      << "\"principalMatchingSeconds\":"
+      << diagnostics.principalMatchingSeconds << ","
       << "\"setupIntegrationSeconds\":" << diagnostics.setupIntegrationSeconds
       << ","
       << "\"integrationTotalSeconds\":" << diagnostics.integrationTotalSeconds
@@ -433,6 +523,8 @@ void write_results_json(const Options &options,
   out << "unknown";
 #endif
   out << "\",\n";
+  out << "  \"cpuDescription\": \"" << escape_json(cpu_description())
+      << "\",\n";
   out << "  \"warmupRuns\": " << options.warmupRuns << ",\n";
   out << "  \"measuredRuns\": " << options.measuredRuns << ",\n";
   out << "  \"selectedIntegrationBackend\": \""
@@ -459,6 +551,8 @@ void write_results_json(const Options &options,
       out << std::hex << runs.front().fixtureHash << std::dec;
     }
     out << "\",\n";
+    out << "      \"field\": {\"source\": \"generated\", \"method\": "
+           "\"smooth\", \"normalizeDirections\": true},\n";
     out << "      \"remeshOptions\": {\"lengthRatio\": "
         << benchmarkCase.lengthRatio << ", \"integralSeamless\": "
         << (benchmarkCase.integralSeamless ? "true" : "false")
