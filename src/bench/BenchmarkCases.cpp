@@ -2,10 +2,12 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <fstream>
 #include <regex>
 #include <sstream>
 #include <stdexcept>
+#include <vector>
 
 namespace directional::bench {
 namespace {
@@ -144,6 +146,127 @@ BenchmarkMesh make_synthetic_grid(const int subdivisions) {
   return mesh;
 }
 
+Eigen::RowVector3d normalized(const Eigen::RowVector3d &value) {
+  const double norm = value.norm();
+  if (norm < 1.0e-12) {
+    throw std::runtime_error("Benchmark field contains a near-zero vector.");
+  }
+  return value / norm;
+}
+
+Eigen::MatrixXd make_raw_cross_field(const Eigen::MatrixXd &primary,
+                                     const Eigen::MatrixXd &secondary) {
+  if (primary.rows() != secondary.rows() || primary.cols() != 3 ||
+      secondary.cols() != 3) {
+    throw std::runtime_error("Cross-field data must be #F-by-3 pairs.");
+  }
+  Eigen::MatrixXd raw(primary.rows(), 12);
+  raw.block(0, 0, primary.rows(), 3) = primary;
+  raw.block(0, 3, primary.rows(), 3) = secondary;
+  raw.block(0, 6, primary.rows(), 3) = -primary;
+  raw.block(0, 9, primary.rows(), 3) = -secondary;
+  return raw;
+}
+
+BenchmarkField read_crossfield(const std::filesystem::path &path) {
+  std::ifstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open benchmark field: " +
+                             path.string());
+  }
+
+  std::vector<Eigen::Matrix<double, 1, 6>> rows;
+  std::string line;
+  while (std::getline(stream, line)) {
+    const std::size_t comment = line.find('#');
+    if (comment != std::string::npos) {
+      line.erase(comment);
+    }
+    std::replace(line.begin(), line.end(), ',', ' ');
+    std::istringstream input(line);
+    std::vector<double> values;
+    double value = 0.0;
+    while (input >> value) {
+      values.push_back(value);
+    }
+    if (values.empty()) {
+      continue;
+    }
+    std::size_t offset = 0;
+    if (values.size() >= 7 &&
+        std::llround(values[0]) == static_cast<long long>(rows.size())) {
+      offset = 1;
+    }
+    if (values.size() - offset < 6) {
+      throw std::runtime_error(
+          "Benchmark crossfield rows require six numeric values.");
+    }
+    Eigen::Matrix<double, 1, 6> row;
+    for (int index = 0; index < 6; ++index) {
+      row(index) = values[offset + index];
+    }
+    rows.push_back(row);
+  }
+  if (rows.empty()) {
+    throw std::runtime_error("Benchmark field contains no rows: " +
+                             path.string());
+  }
+
+  BenchmarkField field;
+  field.available = true;
+  field.degree = 4;
+  Eigen::MatrixXd primary(rows.size(), 3);
+  Eigen::MatrixXd secondary(rows.size(), 3);
+  for (Eigen::Index row = 0; row < static_cast<Eigen::Index>(rows.size());
+       ++row) {
+    primary.row(row) = normalized(rows[static_cast<std::size_t>(row)].segment<3>(0));
+    secondary.row(row) =
+        normalized(rows[static_cast<std::size_t>(row)].segment<3>(3));
+  }
+  field.raw = make_raw_cross_field(primary, secondary);
+  return field;
+}
+
+BenchmarkField read_rawfield(const std::filesystem::path &path) {
+  std::ifstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open benchmark raw field: " +
+                             path.string());
+  }
+
+  Eigen::Index count = 0;
+  BenchmarkField field;
+  if (!(stream >> field.degree >> count) || field.degree <= 0 || count < 0) {
+    throw std::runtime_error("Invalid benchmark rawfield header.");
+  }
+  field.raw.resize(count, field.degree * 3);
+  for (Eigen::Index row = 0; row < count; ++row) {
+    for (Eigen::Index col = 0; col < field.raw.cols(); ++col) {
+      if (!(stream >> field.raw(row, col))) {
+        throw std::runtime_error("Invalid benchmark rawfield data.");
+      }
+    }
+  }
+  if (field.degree != 4 || field.raw.cols() != 12) {
+    throw std::runtime_error(
+        "Benchmark remeshing requires degree-4 raw fields.");
+  }
+  field.available = true;
+  return field;
+}
+
+bool format_is_crossfield(const std::string &format) {
+  const std::string lowered = lowercase(format);
+  return lowered == "crossfield" || lowered == "cross-field" ||
+         lowered == "neurcross" || lowered == "neuralcross" ||
+         lowered == "vec" || lowered == "txt";
+}
+
+bool format_is_rawfield(const std::string &format) {
+  const std::string lowered = lowercase(format);
+  return lowered == "rawfield" || lowered == "raw-field";
+}
+
 BenchmarkMesh read_off(const std::filesystem::path &path) {
   std::ifstream stream(path);
   if (!stream) {
@@ -256,11 +379,15 @@ std::vector<BenchmarkCase> default_benchmark_cases() {
 std::vector<BenchmarkCase>
 load_benchmark_manifest(const std::filesystem::path &path) {
   const std::string text = read_text_file(path);
+  const std::filesystem::path basePath = path.parent_path();
   std::vector<BenchmarkCase> cases;
   for (const std::string &object : manifest_case_objects(text)) {
     BenchmarkCase benchmarkCase;
     benchmarkCase.name = json_string_value(object, "name");
     benchmarkCase.meshPath = json_string_value(object, "mesh");
+    benchmarkCase.fieldPath = json_string_value(object, "field");
+    benchmarkCase.fieldFormat =
+        json_string_value(object, "field_format", benchmarkCase.fieldFormat);
     benchmarkCase.lengthRatio =
         json_number_value(object, "length_ratio", benchmarkCase.lengthRatio);
     benchmarkCase.integralSeamless =
@@ -276,6 +403,12 @@ load_benchmark_manifest(const std::filesystem::path &path) {
     if (benchmarkCase.name.empty()) {
       throw std::runtime_error("Benchmark manifest case is missing a name.");
     }
+    if (!benchmarkCase.meshPath.empty() && benchmarkCase.meshPath.is_relative()) {
+      benchmarkCase.meshPath = basePath / benchmarkCase.meshPath;
+    }
+    if (!benchmarkCase.fieldPath.empty() && benchmarkCase.fieldPath.is_relative()) {
+      benchmarkCase.fieldPath = basePath / benchmarkCase.fieldPath;
+    }
     cases.push_back(std::move(benchmarkCase));
   }
   if (cases.empty()) {
@@ -283,6 +416,43 @@ load_benchmark_manifest(const std::filesystem::path &path) {
                              path.string());
   }
   return cases;
+}
+
+BenchmarkField load_benchmark_field(const BenchmarkCase &benchmarkCase,
+                                    const Eigen::Index expectedFaces) {
+  if (benchmarkCase.fieldPath.empty()) {
+    return {};
+  }
+
+  BenchmarkField field;
+  if (benchmarkCase.fieldFormat != "auto") {
+    if (format_is_crossfield(benchmarkCase.fieldFormat)) {
+      field = read_crossfield(benchmarkCase.fieldPath);
+    } else if (format_is_rawfield(benchmarkCase.fieldFormat)) {
+      field = read_rawfield(benchmarkCase.fieldPath);
+    } else {
+      throw std::runtime_error("Unsupported benchmark field format: " +
+                               benchmarkCase.fieldFormat);
+    }
+  } else {
+    const std::string extension =
+        lowercase(benchmarkCase.fieldPath.extension().string());
+    if (extension == ".rawfield") {
+      field = read_rawfield(benchmarkCase.fieldPath);
+    } else if (extension == ".vec" || extension == ".txt" ||
+               extension == ".neurcross" || extension == ".ncfield") {
+      field = read_crossfield(benchmarkCase.fieldPath);
+    } else {
+      throw std::runtime_error(
+          "Cannot infer benchmark field format from extension: " + extension);
+    }
+  }
+
+  if (field.raw.rows() != expectedFaces) {
+    throw std::runtime_error(
+        "Benchmark field row count must match the mesh face count.");
+  }
+  return field;
 }
 
 BenchmarkMesh load_benchmark_mesh(const BenchmarkCase &benchmarkCase) {

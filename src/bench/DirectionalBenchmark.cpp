@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <numeric>
 #include <queue>
 #include <sstream>
@@ -46,6 +47,8 @@ struct RunRecord {
   bool success = false;
   double wallSeconds = 0.0;
   std::uint64_t fixtureHash = 0;
+  std::uint64_t fieldHash = 0;
+  bool usedFieldFile = false;
   std::string error;
   pipeline::RemeshResult result;
   StructuralMetrics metrics;
@@ -288,15 +291,41 @@ std::uint64_t hash_benchmark_mesh(const BenchmarkMesh &mesh) {
   return hash;
 }
 
+std::uint64_t hash_matrix(const Eigen::MatrixXd &matrix) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  fnv_mix(hash, static_cast<std::uint64_t>(matrix.rows()));
+  fnv_mix(hash, static_cast<std::uint64_t>(matrix.cols()));
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      std::uint64_t bits = 0;
+      const double value = matrix(row, col);
+      std::memcpy(&bits, &value, sizeof(double));
+      fnv_mix(hash, bits);
+    }
+  }
+  return hash;
+}
+
 RunRecord run_case_once(const BenchmarkCase &benchmarkCase) {
   RunRecord record;
   const BenchmarkMesh mesh = load_benchmark_mesh(benchmarkCase);
   record.fixtureHash = hash_benchmark_mesh(mesh);
+  const BenchmarkField field =
+      load_benchmark_field(benchmarkCase, mesh.faces.rows());
+  if (field.available) {
+    record.usedFieldFile = true;
+    record.fieldHash = hash_matrix(field.raw);
+  }
   pipeline::RemeshOptions options = make_remesh_options(benchmarkCase);
   const auto start = std::chrono::steady_clock::now();
   try {
-    record.result =
-        pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
+    if (field.available) {
+      record.result = pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, field.raw, options);
+    } else {
+      record.result =
+          pipeline::remesh_from_mesh(mesh.vertices, mesh.faces, options);
+    }
     record.success = record.result.success;
     if (record.success) {
       record.metrics = compute_structural_metrics(record.result);
@@ -551,8 +580,21 @@ void write_results_json(const Options &options,
       out << std::hex << runs.front().fixtureHash << std::dec;
     }
     out << "\",\n";
-    out << "      \"field\": {\"source\": \"generated\", \"method\": "
-           "\"smooth\", \"normalizeDirections\": true},\n";
+    out << "      \"field\": {";
+    if (!benchmarkCase.fieldPath.empty()) {
+      out << "\"source\": \"file\", \"path\": \""
+          << escape_json(benchmarkCase.fieldPath.string())
+          << "\", \"format\": \"" << escape_json(benchmarkCase.fieldFormat)
+          << "\", \"hash\": \"";
+      if (!runs.empty()) {
+        out << std::hex << runs.front().fieldHash << std::dec;
+      }
+      out << "\"";
+    } else {
+      out << "\"source\": \"generated\", \"method\": "
+             "\"smooth\", \"normalizeDirections\": true";
+    }
+    out << "},\n";
     out << "      \"remeshOptions\": {\"lengthRatio\": "
         << benchmarkCase.lengthRatio << ", \"integralSeamless\": "
         << (benchmarkCase.integralSeamless ? "true" : "false")
