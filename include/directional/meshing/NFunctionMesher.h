@@ -55,7 +55,7 @@ namespace directional {
 class NFunctionMesher {
 public:
   const TriMesh &origMesh;
-  const MesherData &mData;
+  MesherData &mData;
 
   /** @brief Metadata attached to an exact arrangement segment. */
   struct SegmentData {
@@ -4817,6 +4817,8 @@ public:
   }
 
   bool fill_generated_boundary_holes(const char *context) {
+    ++mData.diagnostics.boundaryHoleFillsAttempted;
+
     const int originalHalfedgeCount =
         static_cast<int>(genDcel.halfedges.size());
 
@@ -5187,6 +5189,8 @@ public:
       std::cout << '\n';
     }
 
+    ++mData.diagnostics.boundaryHoleFillsSucceeded;
+
     return true;
   }
 
@@ -5552,6 +5556,7 @@ public:
                 << facesToRemove.size()
                 << " non-simple post-unification faces\n";
     }
+    mData.diagnostics.nonSimpleFacesPruned += facesToRemove.size();
 
     return static_cast<int>(facesToRemove.size());
   }
@@ -5602,6 +5607,8 @@ public:
                    "unify_low_valence_vertices()]: "
                 << "eligible=" << eligibleVertices.size() << '\n';
     }
+    mData.diagnostics.lowValenceCandidatesConsidered +=
+        eligibleVertices.size();
 
     /*
      * One transaction for the entire phase instead of one complete
@@ -5616,6 +5623,7 @@ public:
     const auto rollbackLowValencePhase = [&](const char *reason) -> bool {
       rollback();
       unifyCount = 0;
+      ++mData.diagnostics.cleanupRollbacks;
 
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::"
@@ -6205,8 +6213,6 @@ public:
     const auto simplifyStart = Clock::now();
     auto phaseStart = simplifyStart;
     const auto logPhase = [&](const char *label) {
-      if (!mData.verbose)
-        return;
       const auto now = Clock::now();
       const auto phaseSeconds =
           std::chrono::duration_cast<std::chrono::microseconds>(now -
@@ -6218,10 +6224,13 @@ public:
                                                                 simplifyStart)
               .count() /
           1e+6;
-      std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: " << label
-                << " completed in " << phaseSeconds << " s (total "
-                << totalSeconds << " s)" << std::endl;
+      if (mData.verbose) {
+        std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                  << label << " completed in " << phaseSeconds << " s (total "
+                  << totalSeconds << " s)" << std::endl;
+      }
       phaseStart = now;
+      return phaseSeconds;
     };
     const auto shouldLogProgress = [&](int index, int total) {
       if (!mData.verbose || total <= 0)
@@ -6243,36 +6252,46 @@ public:
         };
 
     reportSimplifyProgress(82, "Checking generated mesh consistency");
+    mData.diagnostics.verticesBeforeSimplification = genDcel.vertices.size();
+    mData.diagnostics.facesBeforeSimplification = genDcel.faces.size();
+    mData.diagnostics.halfedgesBeforeSimplification =
+        genDcel.halfedges.size();
+
     if (!run_initial_consistency_check()) {
       return false;
     }
-    logPhase("Initial consistency check");
+    mData.diagnostics.initialConsistencySeconds +=
+        logPhase("Initial consistency check");
     reportSimplifyProgress(83, "Scanning original halfedge range");
 
     scan_original_halfedge_range(scratch);
-    logPhase("Original halfedge range scan");
+    mData.diagnostics.boundaryScanSeconds +=
+        logPhase("Original halfedge range scan");
     reportSimplifyProgress(84, "Visiting mesh boundary seeds");
 
     if (!visit_boundary_seeds(scratch)) {
       return false;
     }
-    logPhase("Boundary visitation sweep");
+    mData.diagnostics.boundaryScanSeconds +=
+        logPhase("Boundary visitation sweep");
     reportSimplifyProgress(85, "Collecting boundary strips");
 
     if (!collect_boundary_strips(scratch)) {
       return false;
     }
-    logPhase("Boundary strip collection");
+    mData.diagnostics.boundaryStripSeconds +=
+        logPhase("Boundary strip collection");
     reportSimplifyProgress(86, "Building boundary vertex sets");
 
     build_boundary_vertex_sets(scratch);
-    logPhase("Boundary vertex set build");
+    mData.diagnostics.boundaryStripSeconds +=
+        logPhase("Boundary vertex set build");
     reportSimplifyProgress(87, "Matching boundary vertices");
 
     if (!build_vertex_matches(scratch)) {
       return false;
     }
-    logPhase("Vertex match build");
+    mData.diagnostics.vertexMatchSeconds += logPhase("Vertex match build");
     reportSimplifyProgress(88, "Computing vertex representatives");
 
     /*
@@ -6280,10 +6299,12 @@ public:
      * representative to every component.
      */
     scan_vertex_match_distance(scratch);
-    logPhase("Vertex match distance scan");
+    mData.diagnostics.vertexMatchSeconds +=
+        logPhase("Vertex match distance scan");
 
     const int NumNewVertices = compute_vertex_representatives(scratch);
-    logPhase("Connected components");
+    mData.diagnostics.representativeBuildSeconds +=
+        logPhase("Connected components");
     reportSimplifyProgress(89, "Rebuilding simplified vertex topology");
 
     if (!genDcel.check_consistency(mData.verbose, false, false, false)) {
@@ -6292,20 +6313,23 @@ public:
     logPhase("Post-components consistency check");
 
     rebuild_vertex_table(NumNewVertices);
-    logPhase("Vertex representative rebuild");
+    mData.diagnostics.representativeBuildSeconds +=
+        logPhase("Vertex representative rebuild");
 
     std::vector<int> preRemapOrigin(genDcel.halfedges.size(), -1);
 
     std::vector<int> preRemapTarget(genDcel.halfedges.size(), -1);
 
     remap_halfedge_vertices(preRemapOrigin, preRemapTarget);
-    logPhase("Halfedge vertex remap");
+    mData.diagnostics.halfedgeRemapSeconds +=
+        logPhase("Halfedge vertex remap");
     reportSimplifyProgress(90, "Pruning remap-created degenerates");
 
     if (!prune_remap_created_degenerates(preRemapOrigin, preRemapTarget)) {
       return false;
     }
-    logPhase("Remap-created degenerate pruning");
+    mData.diagnostics.degeneratePruneSeconds +=
+        logPhase("Remap-created degenerate pruning");
 
     if (!genDcel.check_consistency(mData.verbose, true, false, false)) {
       return false;
@@ -6323,7 +6347,9 @@ public:
       std::cout << "[Directional::NFunctionMesher::simplify_mesh()]: "
                 << "retwinned " << retwinned << " halfedge pairs\n";
     }
-    logPhase("Halfedge twinning");
+    mData.diagnostics.retwinnedPairCount +=
+        static_cast<std::size_t>(retwinned);
+    mData.diagnostics.retwinSeconds += logPhase("Halfedge twinning");
 
     /*
      * Twinning must be complete and consistent before inspecting the
@@ -6356,7 +6382,8 @@ public:
 
       return false;
     }
-    logPhase("Dangling function-edge pruning");
+    mData.diagnostics.danglingFunctionPruneSeconds +=
+        logPhase("Dangling function-edge pruning");
 
     /*
      * Clearing function metadata should not change core topology, but run
@@ -6378,20 +6405,23 @@ public:
     if (!classify_triangle_regions(scratch)) {
       return false;
     }
-    logPhase("Triangle component classification");
+    mData.diagnostics.regionClassificationSeconds +=
+        logPhase("Triangle component classification");
 
     if (!realign_hex_halfedges(scratch)) {
       return false;
     }
-    logPhase("Hex halfedge realignment");
+    mData.diagnostics.faceRealignmentSeconds +=
+        logPhase("Hex halfedge realignment");
 
     invalidate_triangle_regions(scratch);
-    logPhase("Triangle invalidation");
+    mData.diagnostics.faceRealignmentSeconds +=
+        logPhase("Triangle invalidation");
 
     if (!realign_faces()) {
       return false;
     }
-    logPhase("Face realignment");
+    mData.diagnostics.faceRealignmentSeconds += logPhase("Face realignment");
     reportSimplifyProgress(94, "Pruning low-quality generated faces");
 
     /*
@@ -6410,6 +6440,7 @@ public:
     const auto rollbackTopologyCleanup = [&](const char *reason) {
       genDcel = topologyCleanupBackupDcel;
       skipLowValenceCleanup = true;
+      ++mData.diagnostics.cleanupRollbacks;
 
       if (mData.verbose) {
         std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
@@ -6422,7 +6453,8 @@ public:
     if (!prune_low_quality_faces_and_count_valence(scratch)) {
       return false;
     }
-    logPhase("Low-quality face pruning");
+    mData.diagnostics.lowQualityFacePruneSeconds +=
+        logPhase("Low-quality face pruning");
 
     /*
      * Low-quality face pruning can temporarily expose boundary halfedges which
@@ -6448,6 +6480,14 @@ public:
                                       preserveClosedTopologyCleanup)) {
         return false;
       }
+      mData.diagnostics.lowValenceOperationsAccepted +=
+          static_cast<std::size_t>(std::max(unifyCount, 0));
+      if (mData.diagnostics.lowValenceCandidatesConsidered >=
+          mData.diagnostics.lowValenceOperationsAccepted) {
+        mData.diagnostics.lowValenceOperationsRejected =
+            mData.diagnostics.lowValenceCandidatesConsidered -
+            mData.diagnostics.lowValenceOperationsAccepted;
+      }
 
       if (preserveClosedTopologyCleanup &&
           count_valid_boundary_halfedges() != 0) {
@@ -6471,7 +6511,8 @@ public:
                 << "Low-valence edge unification finished after " << unifyCount
                 << " operations\n";
     }
-    logPhase("Low-valence edge unification and validation");
+    mData.diagnostics.lowValenceUnificationSeconds +=
+        logPhase("Low-valence edge unification and validation");
     reportSimplifyProgress(95, "Finalizing simplified mesh topology");
 
     /*
@@ -6481,17 +6522,27 @@ public:
     if (!finalize_clean_mesh()) {
       return false;
     }
-    logPhase("DCEL clean_mesh");
+    mData.diagnostics.finalCleanSeconds += logPhase("DCEL clean_mesh");
 
     if (mData.simplificationBackend == MesherSimplificationBackend::TriFlowDCEL) {
       reportSimplifyProgress(96, "Running experimental TriFlow DCEL simplification");
       if (!run_triflow_dcel_simplification()) {
         return false;
       }
-      logPhase("Experimental TriFlow DCEL simplification");
+      mData.diagnostics.triFlowSeconds +=
+          logPhase("Experimental TriFlow DCEL simplification");
     }
 
     logPhase("Final consistency check");
+    mData.diagnostics.simplifyTotalSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                              simplifyStart)
+            .count() /
+        1.0e6;
+    mData.diagnostics.verticesAfterSimplification = genDcel.vertices.size();
+    mData.diagnostics.facesAfterSimplification = genDcel.faces.size();
+    mData.diagnostics.halfedgesAfterSimplification =
+        genDcel.halfedges.size();
 
     return true;
   }
@@ -7511,7 +7562,7 @@ public:
     }
   }
 
-  NFunctionMesher(const TriMesh &_origMesh, const MesherData &_mData)
+  NFunctionMesher(const TriMesh &_origMesh, MesherData &_mData)
       : origMesh(_origMesh), mData(_mData) {}
   ~NFunctionMesher() {}
 

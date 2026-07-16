@@ -47,9 +47,13 @@ namespace directional {
  * @param FOutput Output polygon vertex indices, padded to max degree.
  * @return True when simplification and output assembly succeed.
  */
-inline bool mesher(const directional::TriMesh &origMesh, const MesherData &mData,
+inline bool mesher(const directional::TriMesh &origMesh, MesherData &mData,
             Eigen::MatrixXd &VOutput, Eigen::VectorXi &DOutput,
             Eigen::MatrixXi &FOutput) {
+
+  using Clock = std::chrono::high_resolution_clock;
+  const auto mesherStart = Clock::now();
+  mData.diagnostics = MesherDiagnostics{};
 
   report_progress(mData.progress, 2, 100, "Initializing mesh generator");
   NFunctionMesher functionMesher(origMesh, mData);
@@ -61,7 +65,13 @@ inline bool mesher(const directional::TriMesh &origMesh, const MesherData &mData
     std::cout << "[Directional::mesher()]: " << "Generating mesh" << std::endl;
 
   report_progress(mData.progress, 10, 100, "Generating mesh topology");
+  const auto generateStart = Clock::now();
   functionMesher.generate_mesh();
+  mData.diagnostics.generateArrangementSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            generateStart)
+          .count() /
+      1.0e6;
   if (mData.verbose)
     std::cout << "[Directional::mesher()]: " << "Done generating!" << std::endl;
 
@@ -95,6 +105,12 @@ inline bool mesher(const directional::TriMesh &origMesh, const MesherData &mData
     report_progress(mData.progress, 100, 100, "Output mesh generated");
   } else if (mData.verbose)
     std::cout << "[Directional::mesher()]: " << "Cleaning failed!" << std::endl;
+
+  mData.diagnostics.totalMesherSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            mesherStart)
+          .count() /
+      1.0e6;
 
   return success;
 }

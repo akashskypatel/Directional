@@ -237,6 +237,7 @@ if(DIRECTIONAL_BUILD_TESTS)
 
   add_executable(
     directional_phase1_tests
+    tests/DiagnosticsTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp)
   target_link_libraries(
     directional_phase1_tests

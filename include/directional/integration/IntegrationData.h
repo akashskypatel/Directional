@@ -14,6 +14,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/diagnostics/IntegrationDiagnostics.h>
 #include <directional/integration/IntegrationLinearSolver.h>
 #include <directional/util/Progress.h>
 
@@ -115,6 +116,9 @@ struct IntegrationData {
 
   /// Optional progress callback invoked by integration solver stages.
   ProgressCallback progress;
+
+  /// Machine-readable diagnostics populated regardless of verbose logging.
+  IntegrationDiagnostics diagnostics;
 
   IntegrationData(int _N)
       : lengthRatio(0.02), integralSeamless(false), roundSeams(true),

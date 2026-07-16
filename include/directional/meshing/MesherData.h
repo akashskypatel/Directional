@@ -13,6 +13,7 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <directional/diagnostics/MesherDiagnostics.h>
 #include <directional/util/Progress.h>
 
 
@@ -88,6 +89,9 @@ struct MesherData {
 
   /// Preserve original seam/boundary edges in the experimental TriFlow DCEL backend.
   bool triFlowDcelPreserveOriginalBoundaryEdges;
+
+  /// Machine-readable diagnostics populated regardless of verbose logging.
+  MesherDiagnostics diagnostics;
 
   MesherData()
       : exactResolution(10e-9), verbose(false),

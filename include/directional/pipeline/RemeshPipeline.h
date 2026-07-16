@@ -19,6 +19,7 @@
 
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
+#include <directional/diagnostics/RemeshDiagnostics.h>
 #include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/fields/PCFaceTangentBundle.h>
@@ -110,6 +111,9 @@ struct RemeshResult {
 
   /// Integer singularity numerators; actual indices are divided by four.
   Eigen::VectorXi crossFieldSingularIndices;
+
+  /// Machine-readable timing and count diagnostics for this pipeline run.
+  directional::RemeshDiagnostics diagnostics;
 };
 
 /**
@@ -163,8 +167,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   const auto pipelineStart = Clock::now();
   auto phaseStart = pipelineStart;
   const auto log_phase = [&](const char *label) {
-    if (!options.verbose)
-      return;
     const auto now = Clock::now();
     const auto phaseSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(now - phaseStart)
@@ -175,11 +177,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                               pipelineStart)
             .count() /
         1e+6;
-    std::cout << "[Directional::pipeline::remesh_from_raw_cross_field_impl()]: "
-              << label << " completed in " << phaseSeconds << " s (total "
-              << totalSeconds << " s)" << std::endl;
+    if (options.verbose) {
+      std::cout
+          << "[Directional::pipeline::remesh_from_raw_cross_field_impl()]: "
+          << label << " completed in " << phaseSeconds << " s (total "
+          << totalSeconds << " s)" << std::endl;
+    }
     phaseStart = now;
+    return phaseSeconds;
   };
+  directional::RemeshDiagnostics diagnostics;
 
   // if (options.featureAlign) {
   //   throw std::runtime_error("featureAlign is not supported by the headless "
@@ -194,16 +201,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   report_progress(options.progress, 5, 100, "Initializing tangent bundle");
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
-  log_phase("PCFaceTangentBundle::init");
+  diagnostics.tangentBundleInitializationSeconds +=
+      log_phase("PCFaceTangentBundle::init");
 
   report_progress(options.progress, 10, 100, "Preparing raw cross field");
   CartesianField rawField;
   rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, 4);
   rawField.set_extrinsic_field(rawCrossField);
-  log_phase("CartesianField::init + set_extrinsic_field");
+  diagnostics.fieldSetupSeconds +=
+      log_phase("CartesianField::init + set_extrinsic_field");
   report_progress(options.progress, 15, 100, "Computing field matching");
   principal_matching(rawField);
-  log_phase("principal_matching");
+  diagnostics.principalMatchingSeconds += log_phase("principal_matching");
 
   IntegrationData integration(4);
   integration.lengthRatio = options.lengthRatio;
@@ -215,7 +224,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   TriMesh meshCut;
   CartesianField combedField;
   setup_integration(rawField, integration, meshCut, combedField);
-  log_phase("setup_integration");
+  diagnostics.setupIntegrationSeconds += log_phase("setup_integration");
 
   report_progress(options.progress, 21, 100, "Solving field integration");
   if (!options.verbose && options.progress) {
@@ -243,7 +252,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     throw std::runtime_error(
         "Field integration failed; the mesher cannot continue.");
   }
-  log_phase("integrate");
+  diagnostics.integrationTotalSeconds += log_phase("integrate");
+  diagnostics.integration = integration.diagnostics;
 
   report_progress(options.progress, 80, 100, "Preparing mesher");
   MesherData mesherData;
@@ -268,7 +278,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         };
   }
   setup_mesher(meshCut, integration, mesherData);
-  log_phase("setup_mesher");
+  diagnostics.setupMesherSeconds += log_phase("setup_mesher");
 
   RemeshResult result;
   result.rawCrossField = rawField.extField;
@@ -283,7 +293,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   report_progress(options.progress, 81, 100, "Generating output mesh");
   result.success = mesher(meshWhole, mesherData, result.vertices,
                           result.degrees, result.faces);
-  log_phase("mesher");
+  diagnostics.mesherTotalSeconds += log_phase("mesher");
+  diagnostics.mesher = mesherData.diagnostics;
+  diagnostics.overallPipelineSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            pipelineStart)
+          .count() /
+      1.0e6;
+  result.diagnostics = diagnostics;
   report_progress(options.progress, 100, 100, "Finalizing remesh result");
   return result;
 }

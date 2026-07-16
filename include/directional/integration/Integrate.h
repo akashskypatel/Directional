@@ -96,6 +96,8 @@ integrate(const directional::CartesianField &field, IntegrationData &intData,
   using namespace std;
   using Clock = std::chrono::high_resolution_clock;
 
+  intData.diagnostics = IntegrationDiagnostics{};
+
   const auto integrateStart = Clock::now();
   auto phaseStart = integrateStart;
   const auto log_phase = [&](const char *label) {
@@ -535,6 +537,77 @@ struct IterativeSolveTimings {
   int maximumObservedBatchSize = 0;
   std::array<std::size_t, maximumRoundingBatchSize + 1>
       roundingBatchHistogram{};
+
+  const auto copy_diagnostics = [&](const VectorXd *solution,
+                                    const SparseMatrix<double> *constraints,
+                                    const SparseMatrix<double> *energy,
+                                    const VectorXd *energyRhs,
+                                    const double maximumIntegerResidual) {
+    IntegrationDiagnostics &diagnostics = intData.diagnostics;
+    diagnostics.totalSeconds = seconds_since(integrateStart);
+    diagnostics.fullEnergyPrecomputeSeconds =
+        iterativeTimings.fullEnergyPrecompute;
+    diagnostics.freeVariableMapSeconds = iterativeTimings.freeVariableMap;
+    diagnostics.reducedOperatorExtractionSeconds =
+        iterativeTimings.reducedOperatorExtraction;
+    diagnostics.constraintRankReductionSeconds =
+        iterativeTimings.constraintRankReduction;
+    diagnostics.kktAssemblySeconds = iterativeTimings.kktMatrixAssembly;
+    diagnostics.rhsAssemblySeconds = iterativeTimings.rhsAssembly;
+    diagnostics.symbolicAnalysisSeconds = iterativeTimings.symbolicAnalysis;
+    diagnostics.numericFactorizationSeconds =
+        iterativeTimings.numericFactorization;
+    diagnostics.backSubstitutionSeconds = iterativeTimings.backSubstitution;
+    diagnostics.fullSolutionReconstructionSeconds =
+        iterativeTimings.fullSolutionReconstruction;
+    diagnostics.integerCandidateSelectionSeconds =
+        iterativeTimings.integerCandidateSelection;
+    diagnostics.integerIterations = iterativeTimings.iterations;
+    diagnostics.roundingBatches = 0;
+    diagnostics.roundingBatchHistogram.assign(roundingBatchHistogram.begin(),
+                                             roundingBatchHistogram.end());
+    for (std::size_t batchSize = 1;
+         batchSize < diagnostics.roundingBatchHistogram.size(); ++batchSize) {
+      diagnostics.roundingBatches +=
+          diagnostics.roundingBatchHistogram[batchSize];
+    }
+    diagnostics.directFactorizations = iterativeTimings.iterations;
+    diagnostics.factorizationFailures = iterativeTimings.factorizationFailures;
+    diagnostics.solveFailures = iterativeTimings.solveFailures;
+    diagnostics.maximumFreeVariables =
+        static_cast<std::size_t>(iterativeTimings.maximumFreeVariables);
+    diagnostics.maximumConstraintRows =
+        static_cast<std::size_t>(iterativeTimings.maximumConstraintRows);
+    diagnostics.maximumSystemRows =
+        static_cast<std::size_t>(iterativeTimings.maximumSystemRows);
+    diagnostics.maximumSystemNonZeros =
+        static_cast<std::size_t>(iterativeTimings.maximumSystemNonZeros);
+    diagnostics.maximumUnresolvedIntegerResidual = maximumIntegerResidual;
+
+    if (solution != nullptr && constraints != nullptr) {
+      diagnostics.finalConstraintResidualNorm =
+          ((*constraints) * (*solution)).norm();
+    }
+
+    if (solution != nullptr && energy != nullptr && energyRhs != nullptr) {
+      const VectorXd energyTimesSolution = (*energy) * (*solution);
+      diagnostics.finalLinearSystemResidualNorm =
+          (energyTimesSolution - (*energyRhs)).norm();
+      diagnostics.finalIntegrationEnergy =
+          0.5 * solution->dot(energyTimesSolution) -
+          energyRhs->dot(*solution);
+    }
+
+#ifdef USE_SUITESPARSE_ENABLED
+    diagnostics.umfpackTotalFlops = iterativeTimings.umfpackTotalFlops;
+    diagnostics.umfpackMaximumLNonzeros =
+        iterativeTimings.umfpackMaximumLNonzeros;
+    diagnostics.umfpackMaximumUNonzeros =
+        iterativeTimings.umfpackMaximumUNonzeros;
+    diagnostics.umfpackMaximumPeakMemory =
+        iterativeTimings.umfpackMaximumPeakMemory;
+#endif
+  };
 
   report_progress(intData.progress, 20, 100,
                   "Starting mixed-integer rounding solves");
@@ -1432,6 +1505,8 @@ struct IntegerCandidate {
       std::cerr << "[Directional::integrate] final reduced solution still "
                    "contains unresolved integer variables\n";
     }
+    copy_diagnostics(&fullx, &Cfull, &fullEnergy, &fullEnergyRhs,
+                     maximumReducedIntegerResidual);
     return false;
   }
 
@@ -1569,6 +1644,9 @@ struct IntegerCandidate {
   log_phase("Final corner allocation");
   report_progress(intData.progress, 100, 100,
                   "Field integration complete");
+
+  copy_diagnostics(&fullx, &Cfull, &fullEnergy, &fullEnergyRhs,
+                   maximumReducedIntegerResidual);
 
   return success;
 }
