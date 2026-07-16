@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <directional/geometry/MeshTopology.h>
+#include <directional/integration/IntegerBatchSelector.h>
 #include <directional/integration/IntegrationLinearSolver.h>
 
 namespace directional::bench {
@@ -29,6 +30,7 @@ struct Options {
   std::filesystem::path manifestPath;
   std::string selectedCase;
   IntegrationSolveStrategy solveStrategy = IntegrationSolveStrategy::DirectOnly;
+  IntegerBatchStrategy batchStrategy = IntegerBatchStrategy::ResidualOnly;
   int warmupRuns = 1;
   int measuredRuns = 5;
   std::filesystem::path outputPath = "benchmark-results/baseline.json";
@@ -60,6 +62,7 @@ void print_usage() {
             << "  --manifest <path>   Benchmark fixture manifest JSON.\n"
             << "  --case <name>       Run one case from the manifest.\n"
             << "  --solve-strategy <direct|adaptive>\n"
+            << "  --batch-strategy <residual|coupling>\n"
             << "  --warmup <count>    Warm-up runs before measurements.\n"
             << "  --runs <count>      Measured run count.\n"
             << "  --output <path>     Output JSON path.\n";
@@ -101,6 +104,18 @@ Options parse_options(const int argc, char **argv) {
       } else {
         throw std::runtime_error(
             "--solve-strategy requires direct or adaptive.");
+      }
+    } else if (argument == "--batch-strategy") {
+      const std::string strategy = requireValue("--batch-strategy");
+      if (strategy == "residual" || strategy == "residual-only" ||
+          strategy == "ResidualOnly") {
+        options.batchStrategy = IntegerBatchStrategy::ResidualOnly;
+      } else if (strategy == "coupling" || strategy == "coupling-aware" ||
+                 strategy == "CouplingAware") {
+        options.batchStrategy = IntegerBatchStrategy::CouplingAware;
+      } else {
+        throw std::runtime_error(
+            "--batch-strategy requires residual or coupling.");
       }
     } else if (argument == "--warmup") {
       options.warmupRuns = parse_nonnegative_int(requireValue("--warmup"), "--warmup");
@@ -334,6 +349,12 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
   }
   pipeline::RemeshOptions options = make_remesh_options(benchmarkCase);
   options.integrationSolveStrategy = benchmarkOptions.solveStrategy;
+  options.integerBatching.strategy = benchmarkOptions.batchStrategy;
+  if (benchmarkOptions.solveStrategy == IntegrationSolveStrategy::Adaptive &&
+      benchmarkOptions.batchStrategy == IntegerBatchStrategy::ResidualOnly) {
+    options.integerBatching.absoluteResidualCeiling = 0.49;
+    options.integerBatching.residualWindow = 0.49;
+  }
   const auto start = std::chrono::steady_clock::now();
   try {
     if (field.available) {
@@ -427,6 +448,8 @@ void write_integration_json(std::ostream &out,
       << diagnostics.fullSolutionReconstructionSeconds << ","
       << "\"integerCandidateSelectionSeconds\":"
       << diagnostics.integerCandidateSelectionSeconds << ","
+      << "\"couplingAnalysisSeconds\":" << diagnostics.couplingAnalysisSeconds
+      << ","
       << "\"integerIterations\":" << diagnostics.integerIterations << ","
       << "\"roundingBatches\":" << diagnostics.roundingBatches << ","
       << "\"roundingBatchHistogram\":[";
@@ -436,6 +459,10 @@ void write_integration_json(std::ostream &out,
         << (index + 1 == diagnostics.roundingBatchHistogram.size() ? "" : ",");
   }
   out << "],"
+      << "\"meanRoundingBatchSize\":" << diagnostics.meanRoundingBatchSize
+      << ","
+      << "\"medianRoundingBatchSize\":" << diagnostics.medianRoundingBatchSize
+      << ","
       << "\"directFactorizations\":" << diagnostics.directFactorizations
       << ","
       << "\"iterativeAttempts\":" << diagnostics.iterativeAttempts << ","
@@ -608,6 +635,8 @@ void write_results_json(const Options &options,
       << "\",\n";
   out << "  \"integrationSolveStrategy\": \""
       << integration_solve_strategy_name(options.solveStrategy) << "\",\n";
+  out << "  \"integerBatchStrategy\": \""
+      << integer_batch_strategy_name(options.batchStrategy) << "\",\n";
   out << "  \"cases\": [\n";
   for (std::size_t caseIndex = 0; caseIndex < results.size(); ++caseIndex) {
     const BenchmarkCase &benchmarkCase = results[caseIndex].first;
@@ -658,6 +687,8 @@ void write_results_json(const Options &options,
         << (benchmarkCase.roundSeams ? "true" : "false")
         << ", \"integrationSolveStrategy\": \""
         << integration_solve_strategy_name(options.solveStrategy)
+        << "\", \"integerBatchStrategy\": \""
+        << integer_batch_strategy_name(options.batchStrategy)
         << "\"},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {

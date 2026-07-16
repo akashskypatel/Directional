@@ -10,6 +10,8 @@
 #ifndef DIRECTIONAL_INTEGRATION_INTEGRATION_SOLVE_STRATEGY_H
 #define DIRECTIONAL_INTEGRATION_INTEGRATION_SOLVE_STRATEGY_H
 
+#include <directional/integration/IntegerBatchSelector.h>
+
 namespace directional {
 
 /** @brief Mixed-integer integration KKT solve strategy. */
@@ -28,9 +30,6 @@ struct AdaptiveIntegrationOptions {
   double constraintResidualTolerance = 1.0e-8;
   bool useWarmStart = true;
   int maximumConsecutiveFailures = 4;
-  int maximumRoundingBatchSize = 8;
-  double additionalRoundingResidualCap = 0.49;
-  double additionalRoundingResidualWindow = 0.49;
 };
 
 [[nodiscard]] constexpr const char *

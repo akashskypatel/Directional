@@ -30,10 +30,13 @@ struct IntegrationDiagnostics {
   double backSubstitutionSeconds = 0.0;
   double fullSolutionReconstructionSeconds = 0.0;
   double integerCandidateSelectionSeconds = 0.0;
+  double couplingAnalysisSeconds = 0.0;
 
   std::size_t integerIterations = 0;
   std::size_t roundingBatches = 0;
   std::vector<std::size_t> roundingBatchHistogram;
+  double meanRoundingBatchSize = 0.0;
+  double medianRoundingBatchSize = 0.0;
   std::size_t directFactorizations = 0;
   std::size_t iterativeAttempts = 0;
   std::size_t iterativeSuccesses = 0;

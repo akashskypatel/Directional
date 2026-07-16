@@ -73,6 +73,9 @@ struct RemeshOptions {
   /// Controls for the adaptive integration solve strategy.
   AdaptiveIntegrationOptions adaptiveIntegration;
 
+  /// Controls mixed-integer rounding batch selection.
+  IntegerBatchOptions integerBatching;
+
   /// Optional progress callback invoked by remeshing stages.
   ProgressCallback progress;
 };
@@ -229,6 +232,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.verbose = options.verbose;
   integration.solveStrategy = options.integrationSolveStrategy;
   integration.adaptiveOptions = options.adaptiveIntegration;
+  integration.integerBatchOptions = options.integerBatching;
 
   report_progress(options.progress, 20, 100, "Setting up integration");
   TriMesh meshCut;

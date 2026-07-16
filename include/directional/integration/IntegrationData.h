@@ -115,6 +115,9 @@ struct IntegrationData {
   /// Controls for @ref IntegrationSolveStrategy::Adaptive.
   AdaptiveIntegrationOptions adaptiveOptions;
 
+  /// Controls mixed-integer rounding batch selection.
+  IntegerBatchOptions integerBatchOptions;
+
   /// Numerical-stability controls used when @ref linearSolver selects cuDSS.
   CuDssSolverOptions cuDssSolverOptions;
 

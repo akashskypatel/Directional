@@ -32,6 +32,7 @@
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/IntegrationData.h>
 #include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/integration/IntegerBatchSelector.h>
 #include <directional/integration/solvers/AdaptiveKktSolver.h>
 #include <directional/integration/solvers/CuDssSolver.h>
 #include <directional/integration/solvers/PardisoSolver.h>
@@ -156,6 +157,7 @@ struct IterativeSolveTimings {
     double backSubstitution = 0.0;
     double fullSolutionReconstruction = 0.0;
     double integerCandidateSelection = 0.0;
+    double couplingAnalysis = 0.0;
     double iterativeSolver = 0.0;
     double directFactorizationAvoided = 0.0;
 
@@ -168,6 +170,7 @@ struct IterativeSolveTimings {
     std::size_t adaptiveDisabledAfterFailures = 0;
     std::size_t iterativeIterations = 0;
     std::vector<std::size_t> iterativeIterationCounts;
+    std::vector<std::size_t> roundingBatchSizes;
     std::size_t factorizationFailures = 0;
     std::size_t solveFailures = 0;
 
@@ -584,6 +587,7 @@ struct IterativeSolveTimings {
         iterativeTimings.fullSolutionReconstruction;
     diagnostics.integerCandidateSelectionSeconds =
         iterativeTimings.integerCandidateSelection;
+    diagnostics.couplingAnalysisSeconds = iterativeTimings.couplingAnalysis;
     diagnostics.integerIterations = iterativeTimings.iterations;
     diagnostics.roundingBatches = 0;
     diagnostics.roundingBatchHistogram.assign(roundingBatchHistogram.begin(),
@@ -592,6 +596,23 @@ struct IterativeSolveTimings {
          batchSize < diagnostics.roundingBatchHistogram.size(); ++batchSize) {
       diagnostics.roundingBatches +=
           diagnostics.roundingBatchHistogram[batchSize];
+    }
+    if (!iterativeTimings.roundingBatchSizes.empty()) {
+      std::vector<std::size_t> batchSizes = iterativeTimings.roundingBatchSizes;
+      std::size_t totalBatchSize = 0;
+      for (const std::size_t batchSize : batchSizes) {
+        totalBatchSize += batchSize;
+      }
+      diagnostics.meanRoundingBatchSize =
+          static_cast<double>(totalBatchSize) /
+          static_cast<double>(batchSizes.size());
+      std::sort(batchSizes.begin(), batchSizes.end());
+      const std::size_t middle = batchSizes.size() / 2;
+      diagnostics.medianRoundingBatchSize =
+          batchSizes.size() % 2 == 1
+              ? static_cast<double>(batchSizes[middle])
+              : 0.5 * static_cast<double>(batchSizes[middle - 1] +
+                                           batchSizes[middle]);
     }
     diagnostics.directFactorizations = iterativeTimings.directFactorizations;
     diagnostics.iterativeAttempts = iterativeTimings.iterativeAttempts;
@@ -1422,15 +1443,7 @@ struct IterativeSolveTimings {
 
     const auto candidateSelectionStart = Clock::now();
 
-    /** @brief Candidate integer variable value and its local objective score. */
-struct IntegerCandidate {
-      int index = -1;
-      double value = 0.0;
-      double roundedValue = 0.0;
-      double residual = std::numeric_limits<double>::infinity();
-    };
-
-    std::vector<IntegerCandidate> candidates;
+    std::vector<IntegerBatchCandidate> candidates;
     candidates.reserve(static_cast<std::size_t>(
         std::max(0, requestedFixedCount - completedFixedCount)));
 
@@ -1448,21 +1461,10 @@ struct IntegerCandidate {
 
       const double roundedValue = std::round(value);
 
-      candidates.push_back(IntegerCandidate{i, value, roundedValue,
-                                            std::abs(value - roundedValue)});
+      candidates.push_back(IntegerBatchCandidate{i, value, roundedValue,
+                                                 std::abs(value -
+                                                          roundedValue)});
     }
-
-    std::sort(candidates.begin(), candidates.end(),
-              [](const IntegerCandidate &lhs, const IntegerCandidate &rhs) {
-                if (lhs.residual != rhs.residual) {
-                  return lhs.residual < rhs.residual;
-                }
-
-                return lhs.index < rhs.index;
-              });
-
-    iterativeTimings.integerCandidateSelection +=
-        seconds_since(candidateSelectionStart);
 
     if (candidates.empty()) {
       if (intData.verbose) {
@@ -1473,43 +1475,21 @@ struct IntegerCandidate {
       return false;
     }
 
-    const double bestResidual = candidates.front().residual;
-    const bool useAdaptiveBatching =
-        intData.solveStrategy == IntegrationSolveStrategy::Adaptive;
-    const int activeMaximumRoundingBatchSize =
-        useAdaptiveBatching
-            ? std::clamp(intData.adaptiveOptions.maximumRoundingBatchSize, 1,
-                         maximumRoundingBatchSize)
-            : maximumRoundingBatchSize;
+    IntegerBatchOptions batchOptions = intData.integerBatchOptions;
+    batchOptions.maximumBatchSize =
+        std::clamp(batchOptions.maximumBatchSize, 1, maximumRoundingBatchSize);
 
-    // const double additionalResidualLimit =
-    //     std::min(
-    //         maximumAdditionalBatchResidual,
-    //         std::max(
-    //             minimumRelativeBatchWindow,
-    //             relativeBatchResidualFactor * bestResidual));
-    const double additionalResidualLimit =
-        useAdaptiveBatching
-            ? std::min(intData.adaptiveOptions.additionalRoundingResidualCap,
-                       bestResidual +
-                           intData.adaptiveOptions
-                               .additionalRoundingResidualWindow)
-            : std::min(0.10, bestResidual + 0.025);
+    const IntegerBatchSelectionResult batchSelection =
+        detail::IntegerBatchSelector::select(candidates, fullEnergy,
+                                             batchOptions);
+    iterativeTimings.integerCandidateSelection +=
+        seconds_since(candidateSelectionStart) -
+        batchSelection.couplingAnalysisSeconds;
+    iterativeTimings.couplingAnalysis +=
+        batchSelection.couplingAnalysisSeconds;
 
     int batchSize = 0;
-
-    for (const IntegerCandidate &candidate : candidates) {
-      if (batchSize >= activeMaximumRoundingBatchSize) {
-        break;
-      }
-
-      /*
-       * Always accept the best candidate. Additional candidates must be
-       * confidently close to an integer and near the best residual.
-       */
-      if (batchSize > 0 && candidate.residual > additionalResidualLimit) {
-        break;
-      }
+    for (const IntegerBatchCandidate &candidate : batchSelection.selected) {
 
       alreadyFixed(candidate.index) = 1;
       fixedValues(candidate.index) = candidate.roundedValue;
@@ -1523,7 +1503,7 @@ struct IntegerCandidate {
                   << candidate.index << " from " << candidate.value << " to "
                   << candidate.roundedValue << " (residual "
                   << candidate.residual << ", batch position " << batchSize
-                  << "/" << activeMaximumRoundingBatchSize << ")" << std::endl;
+                  << "/" << batchOptions.maximumBatchSize << ")" << std::endl;
       }
     }
 
@@ -1538,6 +1518,8 @@ struct IntegerCandidate {
     }
 
     ++roundingBatchHistogram[static_cast<std::size_t>(batchSize)];
+    iterativeTimings.roundingBatchSizes.push_back(
+        static_cast<std::size_t>(batchSize));
 
     totalVariablesFixedByBatching += static_cast<std::size_t>(batchSize);
 
