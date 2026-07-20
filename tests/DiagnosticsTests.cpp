@@ -211,7 +211,14 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "retwinCallsAfterFunctionCleanup": 0,
         "localPatchPrevalidationAccepted": 1,
         "localPatchPrevalidationRejected": 0,
-        "lowValenceMutationsAttempted": 1
+        "lowValenceMutationsAttempted": 1,
+        "patchFallbackRegionsDetected": 0,
+        "patchFallbackPatchesAttempted": 0,
+        "patchFallbackPatchesSucceeded": 0,
+        "patchFallbackPatchesRejected": 0,
+        "patchFallbackFacesRepaired": 0,
+        "patchFallbackNonQuadFacesBefore": 0,
+        "patchFallbackNonQuadFacesAfter": 0
       },
       "outputVertexCount": 4,
       "outputFaceCount": 1,
@@ -247,6 +254,13 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"localPatchPrevalidationAccepted\"");
   expect_contains(json, "\"localPatchPrevalidationRejected\"");
   expect_contains(json, "\"lowValenceMutationsAttempted\"");
+  expect_contains(json, "\"patchFallbackRegionsDetected\"");
+  expect_contains(json, "\"patchFallbackPatchesAttempted\"");
+  expect_contains(json, "\"patchFallbackPatchesSucceeded\"");
+  expect_contains(json, "\"patchFallbackPatchesRejected\"");
+  expect_contains(json, "\"patchFallbackFacesRepaired\"");
+  expect_contains(json, "\"patchFallbackNonQuadFacesBefore\"");
+  expect_contains(json, "\"patchFallbackNonQuadFacesAfter\"");
   expect_contains(json, "\"outputVertexCount\"");
   expect_contains(json, "\"quadCount\"");
   expect_contains(json, "\"connectedComponentCount\"");

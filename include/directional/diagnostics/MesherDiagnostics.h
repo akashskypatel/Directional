@@ -39,6 +39,10 @@ struct MesherDiagnostics {
   double postUnificationRetwinSeconds = 0.0;
   double nonSimplePruneSeconds = 0.0;
   double holeFillSeconds = 0.0;
+  double patchFallbackExtractionSeconds = 0.0;
+  double patchFallbackClassificationSeconds = 0.0;
+  double patchFallbackQuadrangulationSeconds = 0.0;
+  double patchFallbackReinsertionSeconds = 0.0;
   double finalCleanSeconds = 0.0;
   double triFlowSeconds = 0.0;
 
@@ -82,6 +86,13 @@ struct MesherDiagnostics {
   std::size_t boundaryHoleFillsAttempted = 0;
   std::size_t boundaryHoleFillsSucceeded = 0;
   std::size_t nonSimpleFacesPruned = 0;
+  std::size_t patchFallbackRegionsDetected = 0;
+  std::size_t patchFallbackPatchesAttempted = 0;
+  std::size_t patchFallbackPatchesSucceeded = 0;
+  std::size_t patchFallbackPatchesRejected = 0;
+  std::size_t patchFallbackFacesRepaired = 0;
+  std::size_t patchFallbackNonQuadFacesBefore = 0;
+  std::size_t patchFallbackNonQuadFacesAfter = 0;
 };
 
 } // namespace directional

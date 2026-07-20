@@ -96,6 +96,9 @@ struct MesherData {
   /// Use the Phase 05 local patch prevalidator before low-valence mutation.
   bool useLocalPatchPrevalidation;
 
+  /// Use the Phase 06 local patch quadrangulation fallback when triggered.
+  bool useLocalPatchQuadrangulationFallback;
+
   /// Machine-readable diagnostics populated regardless of verbose logging.
   MesherDiagnostics diagnostics;
 
@@ -106,7 +109,8 @@ struct MesherData {
         triFlowDcelTargetFaceRatio(0.95), triFlowDcelTopologyWeight(0.1),
         triFlowDcelPreserveFunctionEdges(true),
         triFlowDcelPreserveOriginalBoundaryEdges(true),
-        useFunctionSkeletonCleanup(true), useLocalPatchPrevalidation(true) {}
+        useFunctionSkeletonCleanup(true), useLocalPatchPrevalidation(true),
+        useLocalPatchQuadrangulationFallback(false) {}
   ~MesherData() = default;
 };
 

@@ -73,6 +73,10 @@ struct RemeshOptions {
   /// Enables Phase 05 local patch prevalidation before low-valence mutation.
   bool useLocalPatchPrevalidation = true;
 
+  /// Enables Phase 06 local patch quadrangulation fallback. Disabled by
+  /// default until non-trigger overhead and reinsertion behavior are stable.
+  bool useLocalPatchQuadrangulationFallback = false;
+
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
       IntegrationSolveStrategy::DirectOnly;
@@ -322,6 +326,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           : MesherSimplificationBackend::Directional;
   mesherData.useFunctionSkeletonCleanup = options.useFunctionSkeletonCleanup;
   mesherData.useLocalPatchPrevalidation = options.useLocalPatchPrevalidation;
+  mesherData.useLocalPatchQuadrangulationFallback =
+      options.useLocalPatchQuadrangulationFallback;
   if (!options.verbose && options.progress) {
     mesherData.progress =
         [callback = options.progress](const std::size_t current,

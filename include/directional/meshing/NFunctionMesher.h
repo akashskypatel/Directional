@@ -34,6 +34,7 @@
 #include <directional/meshing/FunctionSkeletonSimplifier.h>
 #include <directional/meshing/LocalPatchValidator.h>
 #include <directional/meshing/MesherData.h>
+#include <directional/meshing/PatchQuadrangulator.h>
 #include <directional/meshing/SetupMesher.h>
 #include <directional/meshing/TriFlowSimplificationDCEL.h>
 #include <directional/numerics/ExactGeometry.h>
@@ -4670,6 +4671,434 @@ public:
     return boundaryHalfedges;
   }
 
+  bool collect_valid_face_vertices(const int face,
+                                   std::vector<int> &vertices) const {
+    vertices.clear();
+    if (!genDcel.valid_face(face)) {
+      return false;
+    }
+    const int start = genDcel.faces[static_cast<std::size_t>(face)].halfedge;
+    if (!genDcel.valid_halfedge(start)) {
+      return false;
+    }
+
+    int current = start;
+    const int halfedgeLimit = static_cast<int>(genDcel.halfedges.size()) + 1;
+    for (int guard = 0; guard < halfedgeLimit; ++guard) {
+      if (!genDcel.valid_halfedge(current)) {
+        return false;
+      }
+      const auto &halfedge =
+          genDcel.halfedges[static_cast<std::size_t>(current)];
+      if (halfedge.face != face || !genDcel.valid_vertex(halfedge.vertex)) {
+        return false;
+      }
+      vertices.push_back(halfedge.vertex);
+      current = halfedge.next;
+      if (current == start) {
+        return vertices.size() >= 3;
+      }
+    }
+    return false;
+  }
+
+  int count_valid_non_quad_faces() const {
+    int nonQuadFaces = 0;
+    std::vector<int> vertices;
+    for (int face = 0; face < static_cast<int>(genDcel.faces.size()); ++face) {
+      if (!genDcel.valid_face(face)) {
+        continue;
+      }
+      if (!collect_valid_face_vertices(face, vertices) ||
+          vertices.size() != 4U) {
+        ++nonQuadFaces;
+      }
+    }
+    return nonQuadFaces;
+  }
+
+  void try_local_patch_quadrangulation_fallback(const char *context) {
+    using Clock = std::chrono::high_resolution_clock;
+
+    const int nonQuadBefore = count_valid_non_quad_faces();
+    mData.diagnostics.patchFallbackNonQuadFacesBefore =
+        static_cast<std::size_t>(std::max(nonQuadBefore, 0));
+    if (nonQuadBefore <= 0) {
+      mData.diagnostics.patchFallbackNonQuadFacesAfter = 0;
+      return;
+    }
+
+    mData.diagnostics.patchFallbackRegionsDetected +=
+        static_cast<std::size_t>(nonQuadBefore);
+
+    if (!mData.useLocalPatchQuadrangulationFallback) {
+      mData.diagnostics.patchFallbackNonQuadFacesAfter =
+          static_cast<std::size_t>(nonQuadBefore);
+      return;
+    }
+
+    std::vector<int> boundary;
+    for (int face = 0; face < static_cast<int>(genDcel.faces.size()); ++face) {
+      if (!genDcel.valid_face(face) ||
+          !collect_valid_face_vertices(face, boundary) ||
+          boundary.size() == 4U) {
+        continue;
+      }
+
+      ++mData.diagnostics.patchFallbackPatchesAttempted;
+
+      detail::PatchRegion region;
+      const auto extractionStart = Clock::now();
+      region.boundaryVertices = boundary;
+      region.sideEdgeCounts.assign(boundary.size(), 1);
+      region.diskTopology = true;
+      for (std::size_t index = 0; index < boundary.size(); ++index) {
+        region.protectedBoundaryEdges.insert(detail::canonical_patch_edge(
+            boundary[index], boundary[(index + 1) % boundary.size()]));
+      }
+      mData.diagnostics.patchFallbackExtractionSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - extractionStart)
+              .count() /
+          1.0e6;
+
+      const auto classificationStart = Clock::now();
+      const detail::PatchClassification classification =
+          detail::PatchClassifier::classify(region);
+      mData.diagnostics.patchFallbackClassificationSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - classificationStart)
+              .count() /
+          1.0e6;
+      if (!classification.accepted) {
+        ++mData.diagnostics.patchFallbackPatchesRejected;
+        continue;
+      }
+
+      const auto quadrangulationStart = Clock::now();
+      const detail::PatchQuadrangulationResult quadrangulation =
+          detail::PatchQuadrangulator::quadrangulate(region);
+      mData.diagnostics.patchFallbackQuadrangulationSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - quadrangulationStart)
+              .count() /
+          1.0e6;
+
+      /*
+       * First live Phase 06 transaction: replace one simple even-sided face by
+       * a center-vertex quad fan. More general multi-face region replacement
+       * remains isolated behind this fallback hook.
+       */
+      const auto reinsertionStart = Clock::now();
+      if (quadrangulation.success &&
+          replace_face_with_quad_patch_transaction(face, boundary,
+                                                   quadrangulation.mesh)) {
+        mData.diagnostics.patchFallbackReinsertionSeconds +=
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                Clock::now() - reinsertionStart)
+                .count() /
+            1.0e6;
+        ++mData.diagnostics.patchFallbackPatchesSucceeded;
+        mData.diagnostics.patchFallbackFacesRepaired += 1;
+        continue;
+      }
+      mData.diagnostics.patchFallbackReinsertionSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - reinsertionStart)
+              .count() /
+          1.0e6;
+
+      ++mData.diagnostics.patchFallbackPatchesRejected;
+    }
+
+    const int nonQuadAfter = count_valid_non_quad_faces();
+    mData.diagnostics.patchFallbackNonQuadFacesAfter =
+        static_cast<std::size_t>(std::max(nonQuadAfter, 0));
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "try_local_patch_quadrangulation_fallback()]: "
+                << context << " detected " << nonQuadBefore
+                << " non-quad faces; attempted "
+                << mData.diagnostics.patchFallbackPatchesAttempted
+                << " patch fallbacks\n";
+    }
+  }
+
+  bool replace_face_with_quad_patch_transaction(
+      const int face, const std::vector<int> &boundaryVertices,
+      const detail::PatchMesh &patchMesh) {
+    if (!genDcel.valid_face(face) || boundaryVertices.size() < 6U ||
+        boundaryVertices.size() % 2U != 0 || patchMesh.quads.empty() ||
+        !detail::PatchQuadrangulator::output_is_pure_quad(patchMesh)) {
+      return false;
+    }
+
+    FunctionDCEL backup = genDcel;
+    const auto rollback = [&]() {
+      genDcel = backup;
+      return false;
+    };
+
+    std::vector<int> oldCycle;
+    const int startHalfedge =
+        genDcel.faces[static_cast<std::size_t>(face)].halfedge;
+    if (!collect_face_cycle(startHalfedge, oldCycle,
+                            "replace_face_with_quad_patch_transaction",
+                            face) ||
+        oldCycle.size() != boundaryVertices.size()) {
+      return false;
+    }
+
+    for (std::size_t index = 0; index < oldCycle.size(); ++index) {
+      const int halfedge = oldCycle[index];
+      const int next = genDcel.halfedges[static_cast<std::size_t>(halfedge)].next;
+      if (!genDcel.valid_halfedge(next) ||
+          genDcel.halfedges[static_cast<std::size_t>(halfedge)].vertex !=
+              boundaryVertices[index] ||
+          genDcel.halfedges[static_cast<std::size_t>(next)].vertex !=
+              boundaryVertices[(index + 1) % boundaryVertices.size()]) {
+        return false;
+      }
+    }
+
+    VData centerData;
+    centerData.coords.setZero();
+    EVector3 exactCenter;
+    for (const int vertex : boundaryVertices) {
+      if (!genDcel.valid_vertex(vertex)) {
+        return false;
+      }
+      centerData.coords +=
+          genDcel.vertices[static_cast<std::size_t>(vertex)].data.coords;
+      exactCenter = exactCenter +
+                    genDcel.vertices[static_cast<std::size_t>(vertex)]
+                        .data.eCoords;
+    }
+    centerData.coords /= static_cast<double>(boundaryVertices.size());
+    const ENumber invCount(1.0 / static_cast<double>(boundaryVertices.size()));
+    centerData.eCoords = exactCenter * invCount;
+
+    const int centerVertex = static_cast<int>(genDcel.vertices.size());
+    typename FunctionDCEL::Vertex center;
+    center.ID = centerVertex;
+    center.valid = true;
+    center.halfedge = -1;
+    center.data = centerData;
+    genDcel.vertices.push_back(center);
+
+    const auto appendFace = [&]() {
+      const int newFaceIndex = static_cast<int>(genDcel.faces.size());
+      typename FunctionDCEL::Face newFace;
+      newFace.ID = newFaceIndex;
+      newFace.valid = true;
+      newFace.halfedge = -1;
+      newFace.data = genDcel.faces[static_cast<std::size_t>(face)].data;
+      genDcel.faces.push_back(newFace);
+      return newFaceIndex;
+    };
+
+    const auto appendHalfedge = [&](const int origin, const int faceIndex,
+                                    const SegmentData &data) {
+      const int halfedgeIndex = static_cast<int>(genDcel.halfedges.size());
+      typename FunctionDCEL::Halfedge halfedge;
+      halfedge.ID = halfedgeIndex;
+      halfedge.valid = true;
+      halfedge.vertex = origin;
+      halfedge.face = faceIndex;
+      halfedge.edge = -1;
+      halfedge.next = -1;
+      halfedge.prev = -1;
+      halfedge.twin = -1;
+      halfedge.data = data;
+      genDcel.halfedges.push_back(halfedge);
+      if (genDcel.vertices[static_cast<std::size_t>(origin)].halfedge < 0 ||
+          !genDcel.valid_halfedge(
+              genDcel.vertices[static_cast<std::size_t>(origin)].halfedge)) {
+        genDcel.vertices[static_cast<std::size_t>(origin)].halfedge =
+            halfedgeIndex;
+      }
+      return halfedgeIndex;
+    };
+
+    struct DirectedEdge {
+      int origin = -1;
+      int target = -1;
+      bool operator==(const DirectedEdge &other) const {
+        return origin == other.origin && target == other.target;
+      }
+    };
+    struct DirectedEdgeHash {
+      std::size_t operator()(const DirectedEdge &edge) const {
+        const std::uint64_t packed =
+            (static_cast<std::uint64_t>(static_cast<std::uint32_t>(edge.origin))
+             << 32U) ^
+            static_cast<std::uint32_t>(edge.target);
+        return static_cast<std::size_t>(packed ^ (packed >> 33U));
+      }
+    };
+
+    std::unordered_map<DirectedEdge, int, DirectedEdgeHash> pendingInterior;
+    std::unordered_map<DirectedEdge, int, DirectedEdgeHash> oldBoundaryByEdge;
+    oldBoundaryByEdge.reserve(oldCycle.size());
+    for (const int halfedge : oldCycle) {
+      const int next = genDcel.halfedges[static_cast<std::size_t>(halfedge)].next;
+      oldBoundaryByEdge.emplace(
+          DirectedEdge{genDcel.halfedges[static_cast<std::size_t>(halfedge)]
+                           .vertex,
+                       genDcel.halfedges[static_cast<std::size_t>(next)].vertex},
+          halfedge);
+    }
+
+    const auto appendInteriorEdge = [&](const int halfedgeIndex,
+                                        const int origin,
+                                        const int target) -> bool {
+      const DirectedEdge reverse{target, origin};
+      const auto reverseIt = pendingInterior.find(reverse);
+      if (reverseIt == pendingInterior.end()) {
+        pendingInterior.emplace(DirectedEdge{origin, target}, halfedgeIndex);
+        return true;
+      }
+
+      const int twin = reverseIt->second;
+      const int edgeIndex = static_cast<int>(genDcel.edges.size());
+      typename FunctionDCEL::Edge edge;
+      edge.ID = edgeIndex;
+      edge.valid = true;
+      edge.halfedge = halfedgeIndex;
+      genDcel.edges.push_back(edge);
+
+      genDcel.halfedges[static_cast<std::size_t>(halfedgeIndex)].edge =
+          edgeIndex;
+      genDcel.halfedges[static_cast<std::size_t>(twin)].edge = edgeIndex;
+      genDcel.halfedges[static_cast<std::size_t>(halfedgeIndex)].twin = twin;
+      genDcel.halfedges[static_cast<std::size_t>(twin)].twin = halfedgeIndex;
+      pendingInterior.erase(reverseIt);
+      return true;
+    };
+
+    std::set<int> oldCycleSet(oldCycle.begin(), oldCycle.end());
+    std::vector<int> newBoundaryHalfedges;
+
+    for (const std::vector<int> &quad : patchMesh.quads) {
+      if (quad.size() != 4U) {
+        return rollback();
+      }
+      const int newFace = appendFace();
+      std::array<int, 4> faceHalfedges{-1, -1, -1, -1};
+      for (int edgeOffset = 0; edgeOffset < 4; ++edgeOffset) {
+        int origin = quad[static_cast<std::size_t>(edgeOffset)];
+        int target = quad[static_cast<std::size_t>((edgeOffset + 1) % 4)];
+        if (origin < 0) {
+          origin = centerVertex;
+        }
+        if (target < 0) {
+          target = centerVertex;
+        }
+        if (!genDcel.valid_vertex(origin) || !genDcel.valid_vertex(target) ||
+            origin == target) {
+          return rollback();
+        }
+
+        SegmentData data;
+        const auto oldIt = oldBoundaryByEdge.find(DirectedEdge{origin, target});
+        if (oldIt != oldBoundaryByEdge.end()) {
+          data = genDcel.halfedges[static_cast<std::size_t>(oldIt->second)].data;
+        }
+
+        const int he = appendHalfedge(origin, newFace, data);
+        faceHalfedges[static_cast<std::size_t>(edgeOffset)] = he;
+      }
+
+      for (int edgeOffset = 0; edgeOffset < 4; ++edgeOffset) {
+        const int he = faceHalfedges[static_cast<std::size_t>(edgeOffset)];
+        genDcel.halfedges[static_cast<std::size_t>(he)].next =
+            faceHalfedges[static_cast<std::size_t>((edgeOffset + 1) % 4)];
+        genDcel.halfedges[static_cast<std::size_t>(he)].prev =
+            faceHalfedges[static_cast<std::size_t>((edgeOffset + 3) % 4)];
+      }
+      genDcel.faces[static_cast<std::size_t>(newFace)].halfedge =
+          faceHalfedges[0];
+
+      for (int edgeOffset = 0; edgeOffset < 4; ++edgeOffset) {
+        const int he = faceHalfedges[static_cast<std::size_t>(edgeOffset)];
+        const int next = genDcel.halfedges[static_cast<std::size_t>(he)].next;
+        const int origin =
+            genDcel.halfedges[static_cast<std::size_t>(he)].vertex;
+        const int target =
+            genDcel.halfedges[static_cast<std::size_t>(next)].vertex;
+        const auto oldIt = oldBoundaryByEdge.find(DirectedEdge{origin, target});
+        if (oldIt != oldBoundaryByEdge.end()) {
+          const int oldHalfedge = oldIt->second;
+          const int edgeIndex =
+              genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].edge;
+          if (!genDcel.valid_edge(edgeIndex)) {
+            return rollback();
+          }
+          genDcel.halfedges[static_cast<std::size_t>(he)].edge = edgeIndex;
+          genDcel.edges[static_cast<std::size_t>(edgeIndex)].halfedge = he;
+          const int twin =
+              genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].twin;
+          if (twin >= 0) {
+            if (!genDcel.valid_halfedge(twin) ||
+                oldCycleSet.count(twin) != 0) {
+              return rollback();
+            }
+            genDcel.halfedges[static_cast<std::size_t>(he)].twin = twin;
+            genDcel.halfedges[static_cast<std::size_t>(twin)].twin = he;
+          }
+          newBoundaryHalfedges.push_back(he);
+        } else if (!appendInteriorEdge(he, origin, target)) {
+          return rollback();
+        }
+      }
+    }
+
+    if (!pendingInterior.empty() ||
+        newBoundaryHalfedges.size() != boundaryVertices.size()) {
+      return rollback();
+    }
+
+    for (const int oldHalfedge : oldCycle) {
+      const int edgeIndex =
+          genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].edge;
+      genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].valid = false;
+      genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].twin = -1;
+      genDcel.halfedges[static_cast<std::size_t>(oldHalfedge)].edge = -1;
+      if (genDcel.valid_edge_index(edgeIndex) &&
+          genDcel.edges[static_cast<std::size_t>(edgeIndex)].halfedge ==
+              oldHalfedge) {
+        genDcel.edges[static_cast<std::size_t>(edgeIndex)].halfedge = -1;
+      }
+    }
+    genDcel.faces[static_cast<std::size_t>(face)].valid = false;
+    genDcel.faces[static_cast<std::size_t>(face)].halfedge = -1;
+
+    for (const int he : newBoundaryHalfedges) {
+      const int origin = genDcel.halfedges[static_cast<std::size_t>(he)].vertex;
+      if (genDcel.vertices[static_cast<std::size_t>(origin)].halfedge < 0 ||
+          !genDcel.valid_halfedge(
+              genDcel.vertices[static_cast<std::size_t>(origin)].halfedge)) {
+        genDcel.vertices[static_cast<std::size_t>(origin)].halfedge = he;
+      }
+    }
+    genDcel.vertices[static_cast<std::size_t>(centerVertex)].halfedge =
+        patchMesh.quads.empty()
+            ? -1
+            : genDcel.halfedges.size() >= 4
+                  ? static_cast<int>(genDcel.halfedges.size()) - 1
+                  : -1;
+    if (genDcel.vertices[static_cast<std::size_t>(centerVertex)].halfedge <
+        0) {
+      return rollback();
+    }
+
+    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+      return rollback();
+    }
+    return true;
+  }
+
   int count_valid_face_components() const {
     const int faceCount = static_cast<int>(genDcel.faces.size());
     std::vector<unsigned char> visited(static_cast<std::size_t>(faceCount),
@@ -6935,6 +7364,11 @@ public:
     }
     mData.diagnostics.lowValenceUnificationSeconds +=
         logPhase("Low-valence edge unification and validation");
+    if (mData.useLocalPatchQuadrangulationFallback) {
+      reportSimplifyProgress(95, "Evaluating local patch quadrangulation fallback");
+      try_local_patch_quadrangulation_fallback("post-low-valence cleanup");
+      logPhase("Local patch quadrangulation fallback");
+    }
     reportSimplifyProgress(95, "Finalizing simplified mesh topology");
 
     /*

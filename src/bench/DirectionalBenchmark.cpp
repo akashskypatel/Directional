@@ -38,6 +38,7 @@ struct Options {
   bool skipConstraintRankReduction = false;
   bool useFunctionSkeletonCleanup = true;
   bool useLocalPatchPrevalidation = true;
+  bool useLocalPatchQuadrangulationFallback = false;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
@@ -77,6 +78,7 @@ void print_usage() {
             << "  --skip-constraint-rank-reduction\n"
             << "  --disable-function-skeleton-cleanup\n"
             << "  --disable-local-patch-prevalidation\n"
+            << "  --enable-local-patch-quadrangulation-fallback\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
             << "  --verbose          Emit pipeline progress logs.\n"
@@ -144,6 +146,9 @@ Options parse_options(const int argc, char **argv) {
       options.useFunctionSkeletonCleanup = false;
     } else if (argument == "--disable-local-patch-prevalidation") {
       options.useLocalPatchPrevalidation = false;
+    } else if (argument ==
+               "--enable-local-patch-quadrangulation-fallback") {
+      options.useLocalPatchQuadrangulationFallback = true;
     } else if (argument == "--save-mesher-cache") {
       options.saveMesherCachePath = requireValue("--save-mesher-cache");
     } else if (argument == "--load-mesher-cache") {
@@ -561,6 +566,8 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
           benchmarkOptions.useFunctionSkeletonCleanup;
       mesherData.useLocalPatchPrevalidation =
           benchmarkOptions.useLocalPatchPrevalidation;
+      mesherData.useLocalPatchQuadrangulationFallback =
+          benchmarkOptions.useLocalPatchQuadrangulationFallback;
       record.result.cutVertices = mesherData.cutV;
       record.result.cutFaces = mesherData.cutF;
       record.result.success =
@@ -606,6 +613,8 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       benchmarkOptions.useFunctionSkeletonCleanup;
   options.useLocalPatchPrevalidation =
       benchmarkOptions.useLocalPatchPrevalidation;
+  options.useLocalPatchQuadrangulationFallback =
+      benchmarkOptions.useLocalPatchQuadrangulationFallback;
   if (!benchmarkOptions.saveMesherCachePath.empty()) {
     options.mesherDataCallback =
         [path = benchmarkOptions.saveMesherCachePath](
@@ -834,6 +843,14 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << "\"nonSimplePruneSeconds\":" << diagnostics.nonSimplePruneSeconds
       << ","
       << "\"holeFillSeconds\":" << diagnostics.holeFillSeconds << ","
+      << "\"patchFallbackExtractionSeconds\":"
+      << diagnostics.patchFallbackExtractionSeconds << ","
+      << "\"patchFallbackClassificationSeconds\":"
+      << diagnostics.patchFallbackClassificationSeconds << ","
+      << "\"patchFallbackQuadrangulationSeconds\":"
+      << diagnostics.patchFallbackQuadrangulationSeconds << ","
+      << "\"patchFallbackReinsertionSeconds\":"
+      << diagnostics.patchFallbackReinsertionSeconds << ","
       << "\"finalCleanSeconds\":" << diagnostics.finalCleanSeconds << ","
       << "\"triFlowSeconds\":" << diagnostics.triFlowSeconds << ","
       << "\"verticesBeforeSimplification\":"
@@ -913,6 +930,21 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << "\"boundaryHoleFillsSucceeded\":"
       << diagnostics.boundaryHoleFillsSucceeded << ","
       << "\"nonSimpleFacesPruned\":" << diagnostics.nonSimpleFacesPruned
+      << ","
+      << "\"patchFallbackRegionsDetected\":"
+      << diagnostics.patchFallbackRegionsDetected << ","
+      << "\"patchFallbackPatchesAttempted\":"
+      << diagnostics.patchFallbackPatchesAttempted << ","
+      << "\"patchFallbackPatchesSucceeded\":"
+      << diagnostics.patchFallbackPatchesSucceeded << ","
+      << "\"patchFallbackPatchesRejected\":"
+      << diagnostics.patchFallbackPatchesRejected << ","
+      << "\"patchFallbackFacesRepaired\":"
+      << diagnostics.patchFallbackFacesRepaired << ","
+      << "\"patchFallbackNonQuadFacesBefore\":"
+      << diagnostics.patchFallbackNonQuadFacesBefore << ","
+      << "\"patchFallbackNonQuadFacesAfter\":"
+      << diagnostics.patchFallbackNonQuadFacesAfter
       << "}";
 }
 
@@ -1003,6 +1035,9 @@ void write_results_json(const Options &options,
       << (options.useFunctionSkeletonCleanup ? "true" : "false") << ",\n";
   out << "  \"useLocalPatchPrevalidation\": "
       << (options.useLocalPatchPrevalidation ? "true" : "false") << ",\n";
+  out << "  \"useLocalPatchQuadrangulationFallback\": "
+      << (options.useLocalPatchQuadrangulationFallback ? "true" : "false")
+      << ",\n";
   out << "  \"saveMesherCachePath\": \""
       << escape_json(options.saveMesherCachePath.string()) << "\",\n";
   out << "  \"loadMesherCachePath\": \""
@@ -1070,6 +1105,8 @@ void write_results_json(const Options &options,
         << (options.useFunctionSkeletonCleanup ? "true" : "false")
         << ", \"useLocalPatchPrevalidation\": "
         << (options.useLocalPatchPrevalidation ? "true" : "false")
+        << ", \"useLocalPatchQuadrangulationFallback\": "
+        << (options.useLocalPatchQuadrangulationFallback ? "true" : "false")
         << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {
