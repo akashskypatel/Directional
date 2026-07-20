@@ -43,7 +43,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(DIRECTIONAL_TUTORIALS "ALL" CACHE STRING
     "Semicolon-separated tutorial directories to build, or ALL")
-set(TUTORIAL_DATA_PATH "${CMAKE_CURRENT_SOURCE_DIR}/data" CACHE PATH
+set(TUTORIAL_DATA_PATH "${DIRECTIONAL_ROOT}/tutorial_data" CACHE PATH
     "Location of tutorial data resources")
 set(TUTORIAL_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/output" CACHE PATH
     "Location for tutorial-generated files")
