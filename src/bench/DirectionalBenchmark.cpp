@@ -39,6 +39,7 @@ struct Options {
   bool useFunctionSkeletonCleanup = true;
   bool useLocalPatchPrevalidation = true;
   bool useLocalPatchQuadrangulationFallback = false;
+  bool preconditionInputMesh = false;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
@@ -79,6 +80,7 @@ void print_usage() {
             << "  --disable-function-skeleton-cleanup\n"
             << "  --disable-local-patch-prevalidation\n"
             << "  --enable-local-patch-quadrangulation-fallback\n"
+            << "  --precondition-input-mesh\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
             << "  --verbose          Emit pipeline progress logs.\n"
@@ -149,6 +151,8 @@ Options parse_options(const int argc, char **argv) {
     } else if (argument ==
                "--enable-local-patch-quadrangulation-fallback") {
       options.useLocalPatchQuadrangulationFallback = true;
+    } else if (argument == "--precondition-input-mesh") {
+      options.preconditionInputMesh = true;
     } else if (argument == "--save-mesher-cache") {
       options.saveMesherCachePath = requireValue("--save-mesher-cache");
     } else if (argument == "--load-mesher-cache") {
@@ -615,6 +619,7 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       benchmarkOptions.useLocalPatchPrevalidation;
   options.useLocalPatchQuadrangulationFallback =
       benchmarkOptions.useLocalPatchQuadrangulationFallback;
+  options.preconditionInputMesh = benchmarkOptions.preconditionInputMesh;
   if (!benchmarkOptions.saveMesherCachePath.empty()) {
     options.mesherDataCallback =
         [path = benchmarkOptions.saveMesherCachePath](
@@ -953,6 +958,8 @@ void write_remesh_diagnostics_json(std::ostream &out,
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
+      << "\"preconditioningSeconds\":" << diagnostics.preconditioningSeconds
+      << ","
       << "\"tangentBundleInitializationSeconds\":"
       << diagnostics.tangentBundleInitializationSeconds << ","
       << "\"fieldSetupSeconds\":" << diagnostics.fieldSetupSeconds << ","
@@ -964,6 +971,32 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ","
       << "\"setupMesherSeconds\":" << diagnostics.setupMesherSeconds << ","
       << "\"mesherTotalSeconds\":" << diagnostics.mesherTotalSeconds << ","
+      << "\"preconditioningFlipsAccepted\":"
+      << diagnostics.preconditioningFlipsAccepted << ","
+      << "\"preconditioningCollapsesAccepted\":"
+      << diagnostics.preconditioningCollapsesAccepted << ","
+      << "\"preconditioningSplitsAccepted\":"
+      << diagnostics.preconditioningSplitsAccepted << ","
+      << "\"preconditioningInputTriangleCount\":"
+      << diagnostics.preconditioningInputTriangleCount << ","
+      << "\"preconditioningOutputTriangleCount\":"
+      << diagnostics.preconditioningOutputTriangleCount << ","
+      << "\"preconditioningMinAngleBefore\":"
+      << diagnostics.preconditioningMinAngleBefore << ","
+      << "\"preconditioningMinAngleAfter\":"
+      << diagnostics.preconditioningMinAngleAfter << ","
+      << "\"preconditioningAspectRatioP95Before\":"
+      << diagnostics.preconditioningAspectRatioP95Before << ","
+      << "\"preconditioningAspectRatioP95After\":"
+      << diagnostics.preconditioningAspectRatioP95After << ","
+      << "\"preconditioningAspectRatioP99Before\":"
+      << diagnostics.preconditioningAspectRatioP99Before << ","
+      << "\"preconditioningAspectRatioP99After\":"
+      << diagnostics.preconditioningAspectRatioP99After << ","
+      << "\"preconditioningEdgeLengthCvBefore\":"
+      << diagnostics.preconditioningEdgeLengthCvBefore << ","
+      << "\"preconditioningEdgeLengthCvAfter\":"
+      << diagnostics.preconditioningEdgeLengthCvAfter << ","
       << "\"integration\":";
   write_integration_json(out, diagnostics.integration);
   out << ",\"mesher\":";
@@ -1038,6 +1071,8 @@ void write_results_json(const Options &options,
   out << "  \"useLocalPatchQuadrangulationFallback\": "
       << (options.useLocalPatchQuadrangulationFallback ? "true" : "false")
       << ",\n";
+  out << "  \"preconditionInputMesh\": "
+      << (options.preconditionInputMesh ? "true" : "false") << ",\n";
   out << "  \"saveMesherCachePath\": \""
       << escape_json(options.saveMesherCachePath.string()) << "\",\n";
   out << "  \"loadMesherCachePath\": \""
@@ -1107,6 +1142,8 @@ void write_results_json(const Options &options,
         << (options.useLocalPatchPrevalidation ? "true" : "false")
         << ", \"useLocalPatchQuadrangulationFallback\": "
         << (options.useLocalPatchQuadrangulationFallback ? "true" : "false")
+        << ", \"preconditionInputMesh\": "
+        << (options.preconditionInputMesh ? "true" : "false")
         << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {

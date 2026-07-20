@@ -21,8 +21,10 @@
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
 #include <directional/diagnostics/RemeshDiagnostics.h>
+#include <directional/fields/CrossFieldTransfer.h>
 #include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
+#include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/Integrate.h>
 #include <directional/integration/IntegrationData.h>
@@ -76,6 +78,21 @@ struct RemeshOptions {
   /// Enables Phase 06 local patch quadrangulation fallback. Disabled by
   /// default until non-trigger overhead and reinsertion behavior are stable.
   bool useLocalPatchQuadrangulationFallback = false;
+
+  /// Enables Phase 07 bounded input triangle-mesh preconditioning.
+  bool preconditionInputMesh = false;
+
+  /// Target/preferred face-count ratio for input preconditioning.
+  double preconditionTargetFaceRatio = 1.0;
+
+  /// Maximum allowed face-count ratio for input preconditioning.
+  double preconditionMaxFaceRatio = 1.05;
+
+  /// Minimum allowed face-count ratio for input preconditioning.
+  double preconditionMinFaceRatio = 0.95;
+
+  /// Dihedral angle threshold for protected feature edges.
+  double preconditionSharpAngleDegrees = 45.0;
 
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
@@ -232,16 +249,87 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         "rawCrossField must have shape (#F, 12) for a 4-RoSy cross field.");
   }
 
+  TriMesh workingMesh = meshWhole;
+  Eigen::MatrixXd workingRawCrossField = rawCrossField;
+  if (options.preconditionInputMesh) {
+    report_progress(options.progress, 3, 100, "Preconditioning input mesh");
+    geometry::BoundedMeshPreconditionerOptions preconditionOptions;
+    preconditionOptions.enabled = true;
+    preconditionOptions.targetFaceRatio = options.preconditionTargetFaceRatio;
+    preconditionOptions.maxFaceRatio = options.preconditionMaxFaceRatio;
+    preconditionOptions.minFaceRatio = options.preconditionMinFaceRatio;
+    preconditionOptions.sharpAngleDegrees =
+        options.preconditionSharpAngleDegrees;
+    const geometry::BoundedMeshPreconditionerResult preconditioned =
+        geometry::BoundedMeshPreconditioner::precondition(
+            meshWhole.V, meshWhole.F, preconditionOptions);
+    diagnostics.preconditioningSeconds += log_phase("input preconditioning");
+    diagnostics.preconditioningFlipsAccepted = preconditioned.flipsAccepted;
+    diagnostics.preconditioningCollapsesAccepted =
+        preconditioned.collapsesAccepted;
+    diagnostics.preconditioningSplitsAccepted = preconditioned.splitsAccepted;
+    diagnostics.preconditioningInputTriangleCount =
+        preconditioned.inputTriangleCount;
+    diagnostics.preconditioningOutputTriangleCount =
+        preconditioned.outputTriangleCount;
+    diagnostics.preconditioningMinAngleBefore =
+        preconditioned.before.minTriangleAngleDegrees;
+    diagnostics.preconditioningMinAngleAfter =
+        preconditioned.after.minTriangleAngleDegrees;
+    diagnostics.preconditioningAspectRatioP95Before =
+        preconditioned.before.aspectRatioP95;
+    diagnostics.preconditioningAspectRatioP95After =
+        preconditioned.after.aspectRatioP95;
+    diagnostics.preconditioningAspectRatioP99Before =
+        preconditioned.before.aspectRatioP99;
+    diagnostics.preconditioningAspectRatioP99After =
+        preconditioned.after.aspectRatioP99;
+    diagnostics.preconditioningEdgeLengthCvBefore =
+        preconditioned.before.edgeLengthCoefficientOfVariation;
+    diagnostics.preconditioningEdgeLengthCvAfter =
+        preconditioned.after.edgeLengthCoefficientOfVariation;
+    try {
+      workingMesh.set_mesh(preconditioned.vertices, preconditioned.faces);
+      workingRawCrossField =
+          fields::CrossFieldTransfer::transfer_raw_field_nearest_face(
+              meshWhole, rawCrossField, workingMesh,
+              options.normalizeDirections);
+      diagnostics.fieldSetupSeconds += log_phase("cross-field transfer");
+    } catch (const std::exception &) {
+      workingMesh = meshWhole;
+      workingRawCrossField = rawCrossField;
+      diagnostics.preconditioningFlipsAccepted = 0;
+      diagnostics.preconditioningCollapsesAccepted = 0;
+      diagnostics.preconditioningSplitsAccepted = 0;
+      diagnostics.preconditioningOutputTriangleCount =
+          static_cast<std::size_t>(meshWhole.F.rows());
+      diagnostics.preconditioningMinAngleAfter =
+          diagnostics.preconditioningMinAngleBefore;
+      diagnostics.preconditioningAspectRatioP95After =
+          diagnostics.preconditioningAspectRatioP95Before;
+      diagnostics.preconditioningAspectRatioP99After =
+          diagnostics.preconditioningAspectRatioP99Before;
+      diagnostics.preconditioningEdgeLengthCvAfter =
+          diagnostics.preconditioningEdgeLengthCvBefore;
+      log_phase("discard invalid preconditioning output");
+    }
+  } else {
+    diagnostics.preconditioningInputTriangleCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+    diagnostics.preconditioningOutputTriangleCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+  }
+
   report_progress(options.progress, 5, 100, "Initializing tangent bundle");
   PCFaceTangentBundle tangentBundle;
-  tangentBundle.init(meshWhole);
+  tangentBundle.init(workingMesh);
   diagnostics.tangentBundleInitializationSeconds +=
       log_phase("PCFaceTangentBundle::init");
 
   report_progress(options.progress, 10, 100, "Preparing raw cross field");
   CartesianField rawField;
   rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, 4);
-  rawField.set_extrinsic_field(rawCrossField);
+  rawField.set_extrinsic_field(workingRawCrossField);
   diagnostics.fieldSetupSeconds +=
       log_phase("CartesianField::init + set_extrinsic_field");
   report_progress(options.progress, 15, 100, "Computing field matching");
@@ -360,7 +448,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   result.cutFunctions = cutFunctions;
   result.cutCornerFunctions = cutCornerFunctions;
   report_progress(options.progress, 81, 100, "Generating output mesh");
-  result.success = mesher(meshWhole, mesherData, result.vertices,
+  result.success = mesher(workingMesh, mesherData, result.vertices,
                           result.degrees, result.faces);
   diagnostics.mesherTotalSeconds += log_phase("mesher");
   diagnostics.mesher = mesherData.diagnostics;
@@ -455,6 +543,78 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
                  const RemeshOptions &options = {}) {
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
+  if (options.preconditionInputMesh) {
+    const auto preconditionStart = std::chrono::high_resolution_clock::now();
+    geometry::BoundedMeshPreconditionerOptions preconditionOptions;
+    preconditionOptions.enabled = true;
+    preconditionOptions.targetFaceRatio = options.preconditionTargetFaceRatio;
+    preconditionOptions.maxFaceRatio = options.preconditionMaxFaceRatio;
+    preconditionOptions.minFaceRatio = options.preconditionMinFaceRatio;
+    preconditionOptions.sharpAngleDegrees =
+        options.preconditionSharpAngleDegrees;
+    const geometry::BoundedMeshPreconditionerResult preconditioned =
+        geometry::BoundedMeshPreconditioner::precondition(
+            meshWhole.V, meshWhole.F, preconditionOptions);
+    const double preconditioningSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now() - preconditionStart)
+            .count() /
+        1.0e6;
+    bool appliedPreconditioning = false;
+    try {
+      meshWhole.set_mesh(preconditioned.vertices, preconditioned.faces);
+      appliedPreconditioning = true;
+    } catch (const std::exception &) {
+      meshWhole.set_mesh(vertices, faces);
+    }
+    RemeshOptions preconditionedOptions = options;
+    preconditionedOptions.preconditionInputMesh = false;
+
+    report_progress(options.progress, 10, 110,
+                    "Extracting source cross field");
+    fields::CrossFieldOptions crossFieldOptions;
+    crossFieldOptions.normalizeDirections = options.normalizeDirections;
+    crossFieldOptions.computeMatching = false;
+    const fields::CrossFieldResult crossField =
+        fields::extract_cross_field(meshWhole, crossFieldOptions);
+    RemeshResult result =
+        remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
+                                         preconditionedOptions);
+    result.diagnostics.preconditioningSeconds = preconditioningSeconds;
+    result.diagnostics.preconditioningFlipsAccepted =
+        appliedPreconditioning ? preconditioned.flipsAccepted : 0;
+    result.diagnostics.preconditioningCollapsesAccepted =
+        appliedPreconditioning ? preconditioned.collapsesAccepted : 0;
+    result.diagnostics.preconditioningSplitsAccepted =
+        appliedPreconditioning ? preconditioned.splitsAccepted : 0;
+    result.diagnostics.preconditioningInputTriangleCount =
+        preconditioned.inputTriangleCount;
+    result.diagnostics.preconditioningOutputTriangleCount =
+        appliedPreconditioning ? preconditioned.outputTriangleCount
+                               : static_cast<std::size_t>(faces.rows());
+    result.diagnostics.preconditioningMinAngleBefore =
+        preconditioned.before.minTriangleAngleDegrees;
+    result.diagnostics.preconditioningMinAngleAfter =
+        appliedPreconditioning ? preconditioned.after.minTriangleAngleDegrees
+                               : preconditioned.before.minTriangleAngleDegrees;
+    result.diagnostics.preconditioningAspectRatioP95Before =
+        preconditioned.before.aspectRatioP95;
+    result.diagnostics.preconditioningAspectRatioP95After =
+        appliedPreconditioning ? preconditioned.after.aspectRatioP95
+                               : preconditioned.before.aspectRatioP95;
+    result.diagnostics.preconditioningAspectRatioP99Before =
+        preconditioned.before.aspectRatioP99;
+    result.diagnostics.preconditioningAspectRatioP99After =
+        appliedPreconditioning ? preconditioned.after.aspectRatioP99
+                               : preconditioned.before.aspectRatioP99;
+    result.diagnostics.preconditioningEdgeLengthCvBefore =
+        preconditioned.before.edgeLengthCoefficientOfVariation;
+    result.diagnostics.preconditioningEdgeLengthCvAfter =
+        appliedPreconditioning
+            ? preconditioned.after.edgeLengthCoefficientOfVariation
+            : preconditioned.before.edgeLengthCoefficientOfVariation;
+    return result;
+  }
 
   report_progress(options.progress, 10, 110, "Extracting source cross field");
   fields::CrossFieldOptions crossFieldOptions;

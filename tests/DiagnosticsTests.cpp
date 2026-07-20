@@ -206,6 +206,12 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
       "wallSeconds": 0.1,
       "diagnostics": {
         "overallPipelineSeconds": 0.1,
+        "preconditioningSeconds": 0.0,
+        "preconditioningFlipsAccepted": 0,
+        "preconditioningInputTriangleCount": 2,
+        "preconditioningOutputTriangleCount": 2,
+        "preconditioningMinAngleBefore": 30.0,
+        "preconditioningMinAngleAfter": 30.0,
         "retwinCallCount": 1,
         "retwinCallsBeforeFunctionCleanup": 1,
         "retwinCallsAfterFunctionCleanup": 0,
@@ -248,6 +254,12 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"success\"");
   expect_contains(json, "\"wallSeconds\"");
   expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"preconditioningSeconds\"");
+  expect_contains(json, "\"preconditioningFlipsAccepted\"");
+  expect_contains(json, "\"preconditioningInputTriangleCount\"");
+  expect_contains(json, "\"preconditioningOutputTriangleCount\"");
+  expect_contains(json, "\"preconditioningMinAngleBefore\"");
+  expect_contains(json, "\"preconditioningMinAngleAfter\"");
   expect_contains(json, "\"retwinCallCount\"");
   expect_contains(json, "\"retwinCallsBeforeFunctionCleanup\"");
   expect_contains(json, "\"retwinCallsAfterFunctionCleanup\"");
