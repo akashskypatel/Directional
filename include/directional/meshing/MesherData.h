@@ -90,6 +90,9 @@ struct MesherData {
   /// Preserve original seam/boundary edges in the experimental TriFlow DCEL backend.
   bool triFlowDcelPreserveOriginalBoundaryEdges;
 
+  /// Use the Phase 04 function-skeleton edit plan for safe metadata cleanup.
+  bool useFunctionSkeletonCleanup;
+
   /// Machine-readable diagnostics populated regardless of verbose logging.
   MesherDiagnostics diagnostics;
 
@@ -99,7 +102,8 @@ struct MesherData {
         triFlowDcelTargetVertexRatio(0.95),
         triFlowDcelTargetFaceRatio(0.95), triFlowDcelTopologyWeight(0.1),
         triFlowDcelPreserveFunctionEdges(true),
-        triFlowDcelPreserveOriginalBoundaryEdges(true) {}
+        triFlowDcelPreserveOriginalBoundaryEdges(true),
+        useFunctionSkeletonCleanup(true) {}
   ~MesherData() = default;
 };
 

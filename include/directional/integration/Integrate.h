@@ -17,6 +17,7 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <queue>
 #include <stdexcept>
 #include <string>
@@ -391,35 +392,315 @@ struct IterativeSolveTimings {
   for (int i = 0; i < intData.fixedValues.size(); i++)
     fixedValues(intData.fixedIndices(i)) = intData.fixedValues(i);
 
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] building full energy operator"
+              << std::endl;
+  }
   SparseMatrix<double> Efull = d0 * intData.vertexTrans2CutMat *
                                intData.linRedMat * intData.singIntSpanMat *
                                intData.intSpanMat;
+  Efull.makeCompressed();
+  log_phase("Full energy operator assembly");
   VectorXd x, xprev;
 
   // until then all the N depedencies should be resolved?
 
   // reducing constraintMat
   SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> qrsolver;
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] building full constraint operator"
+              << std::endl;
+  }
   SparseMatrix<double> Cfull = intData.constraintMat * intData.linRedMat *
                                intData.singIntSpanMat * intData.intSpanMat;
-  if (Cfull.rows() != 0) {
-    qrsolver.compute(Cfull.transpose());
-    int CRank = to_storage_index(qrsolver.rank());
+  Cfull.makeCompressed();
+  log_phase("Full constraint operator assembly");
 
-    // creating sliced permutation matrix
-    VectorXi PIndices = qrsolver.colsPermutation().indices();
-
-    vector<Triplet<double>> CTriplets;
-    for (int k = 0; k < Cfull.outerSize(); ++k) {
-      for (SparseMatrix<double>::InnerIterator it(Cfull, k); it; ++it) {
-        for (int j = 0; j < CRank; j++)
-          if (it.row() == PIndices(j))
-            CTriplets.emplace_back(j, to_storage_index(it.col()), it.value());
+  const auto compact_duplicate_rows =
+      [&](const SparseMatrix<double> &matrix) -> SparseMatrix<double> {
+    std::vector<std::vector<std::pair<int, double>>> rows(
+        static_cast<std::size_t>(matrix.rows()));
+    for (int col = 0; col < matrix.outerSize(); ++col) {
+      for (SparseMatrix<double>::InnerIterator it(matrix, col); it; ++it) {
+        if (it.value() == 0.0) {
+          continue;
+        }
+        rows[static_cast<std::size_t>(it.row())].emplace_back(
+            to_storage_index(it.col()), it.value());
       }
     }
 
-    Cfull.resize(CRank, Cfull.cols());
-    Cfull.setFromTriplets(CTriplets.begin(), CTriplets.end());
+    std::map<std::vector<std::pair<int, double>>, int> uniqueRows;
+    std::vector<Triplet<double>> triplets;
+    for (const auto &row : rows) {
+      if (row.empty()) {
+        continue;
+      }
+      auto [position, inserted] =
+          uniqueRows.emplace(row, static_cast<int>(uniqueRows.size()));
+      (void)inserted;
+      const int uniqueRow = position->second;
+      for (const auto &[col, value] : row) {
+        triplets.emplace_back(uniqueRow, col, value);
+      }
+    }
+
+    SparseMatrix<double> compacted(static_cast<int>(uniqueRows.size()),
+                                   matrix.cols());
+    compacted.setFromTriplets(triplets.begin(), triplets.end());
+    compacted.makeCompressed();
+    return compacted;
+  };
+
+  const Eigen::Index rawConstraintRows = Cfull.rows();
+  Cfull = compact_duplicate_rows(Cfull);
+  if (intData.verbose && Cfull.rows() != rawConstraintRows) {
+    std::cout << "[Directional::integrate] compacted duplicate constraint rows"
+              << " from " << rawConstraintRows << " to " << Cfull.rows()
+              << " nnz=" << Cfull.nonZeros() << std::endl;
+  }
+  if (intData.verbose && Cfull.rows() != 0) {
+    std::vector<int> rowNonZeros(static_cast<std::size_t>(Cfull.rows()), 0);
+    double maxAbsEntry = 0.0;
+    double minNonZeroAbsEntry = std::numeric_limits<double>::infinity();
+    bool allIntegralEntries = true;
+    for (int col = 0; col < Cfull.outerSize(); ++col) {
+      for (SparseMatrix<double>::InnerIterator it(Cfull, col); it; ++it) {
+        ++rowNonZeros[static_cast<std::size_t>(it.row())];
+        const double absValue = std::abs(it.value());
+        maxAbsEntry = std::max(maxAbsEntry, absValue);
+        if (absValue != 0.0) {
+          minNonZeroAbsEntry = std::min(minNonZeroAbsEntry, absValue);
+        }
+        allIntegralEntries =
+            allIntegralEntries &&
+            std::abs(it.value() - std::round(it.value())) < 1e-12;
+      }
+    }
+
+    std::map<int, int> rowNonZeroHistogram;
+    for (const int count : rowNonZeros) {
+      ++rowNonZeroHistogram[count];
+    }
+
+    std::cout << "[Directional::integrate] full constraint row structure"
+              << " rows=" << Cfull.rows() << " cols=" << Cfull.cols()
+              << " nnz=" << Cfull.nonZeros()
+              << " allIntegralEntries="
+              << (allIntegralEntries ? "true" : "false")
+              << " minAbs="
+              << (std::isfinite(minNonZeroAbsEntry) ? minNonZeroAbsEntry
+                                                    : 0.0)
+              << " maxAbs=" << maxAbsEntry << " rowNnzHistogram=";
+    bool firstBucket = true;
+    for (const auto &[nonZeros, rows] : rowNonZeroHistogram) {
+      if (!firstBucket) {
+        std::cout << ",";
+      }
+      firstBucket = false;
+      std::cout << nonZeros << ":" << rows;
+    }
+    std::cout << std::endl;
+  }
+
+  const auto positive_mod = [](long long value, int prime) -> int {
+    long long result = value % prime;
+    if (result < 0) {
+      result += prime;
+    }
+    return static_cast<int>(result);
+  };
+
+  const auto mod_pow = [](long long base, int exponent, int prime) -> int {
+    long long result = 1;
+    base %= prime;
+    while (exponent > 0) {
+      if ((exponent & 1) != 0) {
+        result = (result * base) % prime;
+      }
+      base = (base * base) % prime;
+      exponent >>= 1;
+    }
+    return static_cast<int>(result);
+  };
+
+  const auto select_integral_independent_rows =
+      [&](const SparseMatrix<double> &matrix,
+          int prime) -> std::vector<int> {
+    std::vector<std::vector<std::pair<int, int>>> rows(
+        static_cast<std::size_t>(matrix.rows()));
+    for (int col = 0; col < matrix.outerSize(); ++col) {
+      for (SparseMatrix<double>::InnerIterator it(matrix, col); it; ++it) {
+        const double rounded = std::round(it.value());
+        if (std::abs(it.value() - rounded) > 1e-12) {
+          return {};
+        }
+        const int value = positive_mod(static_cast<long long>(rounded), prime);
+        if (value != 0) {
+          rows[static_cast<std::size_t>(it.row())].emplace_back(
+              to_storage_index(it.col()), value);
+        }
+      }
+    }
+
+    const auto subtract_scaled_row =
+        [&](const std::vector<std::pair<int, int>> &row,
+            const std::vector<std::pair<int, int>> &pivotRow, int scale)
+            -> std::vector<std::pair<int, int>> {
+      std::vector<std::pair<int, int>> reduced;
+      reduced.reserve(row.size() + pivotRow.size());
+      std::size_t i = 0;
+      std::size_t j = 0;
+      while (i < row.size() || j < pivotRow.size()) {
+        if (j == pivotRow.size() ||
+            (i < row.size() && row[i].first < pivotRow[j].first)) {
+          reduced.push_back(row[i]);
+          ++i;
+          continue;
+        }
+        if (i == row.size() || pivotRow[j].first < row[i].first) {
+          const int value =
+              positive_mod(-static_cast<long long>(scale) * pivotRow[j].second,
+                           prime);
+          if (value != 0) {
+            reduced.emplace_back(pivotRow[j].first, value);
+          }
+          ++j;
+          continue;
+        }
+
+        const int value = positive_mod(
+            static_cast<long long>(row[i].second) -
+                static_cast<long long>(scale) * pivotRow[j].second,
+            prime);
+        if (value != 0) {
+          reduced.emplace_back(row[i].first, value);
+        }
+        ++i;
+        ++j;
+      }
+      return reduced;
+    };
+
+    std::map<int, std::vector<std::pair<int, int>>> pivotRows;
+    std::vector<int> selectedRows;
+    for (int rowIndex = 0; rowIndex < matrix.rows(); ++rowIndex) {
+      std::vector<std::pair<int, int>> row =
+          std::move(rows[static_cast<std::size_t>(rowIndex)]);
+      while (!row.empty()) {
+        const int pivotColumn = row.front().first;
+        const int pivotValue = row.front().second;
+        const auto pivot = pivotRows.find(pivotColumn);
+        if (pivot == pivotRows.end()) {
+          const int inverse = mod_pow(pivotValue, prime - 2, prime);
+          for (auto &[col, value] : row) {
+            (void)col;
+            value = static_cast<int>(
+                (static_cast<long long>(value) * inverse) % prime);
+          }
+          pivotRows.emplace(pivotColumn, std::move(row));
+          selectedRows.push_back(rowIndex);
+          break;
+        }
+
+        row = subtract_scaled_row(row, pivot->second, pivotValue);
+      }
+    }
+    return selectedRows;
+  };
+
+  const auto select_rank_rows =
+      [&](const SparseMatrix<double> &matrix) -> std::vector<int> {
+    const int primeA = 1000000007;
+    const int primeB = 1000000009;
+    std::vector<int> selectedRowsA =
+        select_integral_independent_rows(matrix, primeA);
+    if (selectedRowsA.empty() && matrix.nonZeros() != 0) {
+      return {};
+    }
+
+    std::vector<int> selectedRowsB =
+        select_integral_independent_rows(matrix, primeB);
+    if (selectedRowsB.size() != selectedRowsA.size()) {
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] modular rank selectors "
+                     "disagreed"
+                  << " primeA=" << selectedRowsA.size()
+                  << " primeB=" << selectedRowsB.size() << std::endl;
+      }
+      return {};
+    }
+    return selectedRowsA;
+  };
+
+  const auto slice_rows = [&](const SparseMatrix<double> &matrix,
+                              const std::vector<int> &selectedRows)
+      -> SparseMatrix<double> {
+    std::vector<int> rowMap(static_cast<std::size_t>(matrix.rows()), -1);
+    for (std::size_t i = 0; i < selectedRows.size(); ++i) {
+      rowMap[static_cast<std::size_t>(selectedRows[i])] =
+          static_cast<int>(i);
+    }
+
+    std::vector<Triplet<double>> triplets;
+    triplets.reserve(static_cast<std::size_t>(matrix.nonZeros()));
+    for (int col = 0; col < matrix.outerSize(); ++col) {
+      for (SparseMatrix<double>::InnerIterator it(matrix, col); it; ++it) {
+        const int mappedRow = rowMap[static_cast<std::size_t>(it.row())];
+        if (mappedRow >= 0) {
+          triplets.emplace_back(mappedRow, to_storage_index(it.col()),
+                                it.value());
+        }
+      }
+    }
+
+    SparseMatrix<double> reduced(static_cast<int>(selectedRows.size()),
+                                 matrix.cols());
+    reduced.setFromTriplets(triplets.begin(), triplets.end());
+    reduced.makeCompressed();
+    return reduced;
+  };
+
+  if (Cfull.rows() != 0 && !intData.skipConstraintRankReduction) {
+    if (intData.verbose) {
+      std::cout << "[Directional::integrate] reducing full constraint rank"
+                << " rows=" << Cfull.rows() << " cols=" << Cfull.cols()
+                << " nnz=" << Cfull.nonZeros() << std::endl;
+    }
+    const std::vector<int> selectedRows = select_rank_rows(Cfull);
+    if (!selectedRows.empty() || Cfull.nonZeros() == 0) {
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] modular full constraint rank"
+                  << " rows=" << Cfull.rows()
+                  << " rank=" << selectedRows.size() << std::endl;
+      }
+      Cfull = slice_rows(Cfull, selectedRows);
+    } else {
+      qrsolver.compute(Cfull.transpose());
+      int CRank = to_storage_index(qrsolver.rank());
+
+      // creating sliced permutation matrix
+      VectorXi PIndices = qrsolver.colsPermutation().indices();
+
+      vector<Triplet<double>> CTriplets;
+      for (int k = 0; k < Cfull.outerSize(); ++k) {
+        for (SparseMatrix<double>::InnerIterator it(Cfull, k); it; ++it) {
+          for (int j = 0; j < CRank; j++)
+            if (it.row() == PIndices(j))
+              CTriplets.emplace_back(j, to_storage_index(it.col()),
+                                     it.value());
+        }
+      }
+
+      Cfull.resize(CRank, Cfull.cols());
+      Cfull.setFromTriplets(CTriplets.begin(), CTriplets.end());
+    }
+  }
+  if (intData.skipConstraintRankReduction && intData.verbose) {
+    std::cout << "[Directional::integrate] skipping full constraint rank "
+                 "reduction"
+              << " rows=" << Cfull.rows() << " cols=" << Cfull.cols()
+              << " nnz=" << Cfull.nonZeros() << std::endl;
   }
   log_phase("Constraint reduction");
 
@@ -443,6 +724,11 @@ struct IterativeSolveTimings {
    */
   const auto fullEnergyPrecomputeStart = Clock::now();
 
+  if (intData.verbose) {
+    std::cout << "[Directional::integrate] precomputing full quadratic energy"
+              << " E rows=" << Efull.rows() << " cols=" << Efull.cols()
+              << " nnz=" << Efull.nonZeros() << std::endl;
+  }
   SparseMatrix<double> fullEnergy = Efull.transpose() * M1 * Efull;
 
   fullEnergy.makeCompressed();
@@ -577,6 +863,8 @@ struct IterativeSolveTimings {
         iterativeTimings.reducedOperatorExtraction;
     diagnostics.constraintRankReductionSeconds =
         iterativeTimings.constraintRankReduction;
+    diagnostics.constraintRankReductionSkipped =
+        intData.skipConstraintRankReduction;
     diagnostics.kktAssemblySeconds = iterativeTimings.kktMatrixAssembly;
     diagnostics.rhsAssemblySeconds = iterativeTimings.rhsAssembly;
     diagnostics.symbolicAnalysisSeconds = iterativeTimings.symbolicAnalysis;
@@ -588,7 +876,23 @@ struct IterativeSolveTimings {
     diagnostics.integerCandidateSelectionSeconds =
         iterativeTimings.integerCandidateSelection;
     diagnostics.couplingAnalysisSeconds = iterativeTimings.couplingAnalysis;
+    diagnostics.integerTransitionBasisAnalysisSeconds =
+        intData.integerTransitionBasis.analysisSeconds;
     diagnostics.integerIterations = iterativeTimings.iterations;
+    diagnostics.rawTransitionCount =
+        intData.integerTransitionBasis.rawTransitionCount;
+    diagnostics.rawIntegerVariableCount =
+        intData.integerTransitionBasis.rawIntegerVariableCount;
+    diagnostics.reducedIntegerVariableCount =
+        intData.integerTransitionBasis.reducedIntegerVariableCount;
+    diagnostics.redundantIntegerVariableCount =
+        intData.integerTransitionBasis.redundantIntegerVariableCount;
+    diagnostics.integerTransitionReductionRatio =
+        intData.integerTransitionBasis.reductionRatio;
+    diagnostics.integerTransitionNumericalRank =
+        intData.integerTransitionBasis.numericalRank;
+    diagnostics.integerTransitionReductionEnabled =
+        intData.integerTransitionBasis.reductionEnabled;
     diagnostics.roundingBatches = 0;
     diagnostics.roundingBatchHistogram.assign(roundingBatchHistogram.begin(),
                                              roundingBatchHistogram.end());
@@ -824,25 +1128,47 @@ struct IterativeSolveTimings {
     // Reduce the rank of the current constraint matrix.
     int CpartRank = 0;
     VectorXi PIndices(0);
-    if (Cpart.rows() != 0) {
-      qrsolver.compute(Cpart.transpose());
-      CpartRank = to_storage_index(qrsolver.rank());
-      PIndices = qrsolver.colsPermutation().indices();
+    if (Cpart.rows() != 0 && !intData.skipConstraintRankReduction) {
+      const std::vector<int> selectedRows = select_rank_rows(Cpart);
+      if (!selectedRows.empty() || Cpart.nonZeros() == 0) {
+        CpartRank = static_cast<int>(selectedRows.size());
+        PIndices.resize(CpartRank);
+        for (int row = 0; row < CpartRank; ++row) {
+          PIndices(row) = selectedRows[static_cast<std::size_t>(row)];
+        }
+        Cpart = slice_rows(Cpart, selectedRows);
+      } else {
+        qrsolver.compute(Cpart.transpose());
+        CpartRank = to_storage_index(qrsolver.rank());
+        PIndices = qrsolver.colsPermutation().indices();
 
-      vector<Triplet<double>> CPartTriplets;
-      for (int k = 0; k < Cpart.outerSize(); ++k) {
-        for (SparseMatrix<double>::InnerIterator it(Cpart, k); it; ++it) {
-          for (int j = 0; j < CpartRank; ++j) {
-            if (it.row() == PIndices(j)) {
-              CPartTriplets.emplace_back(j, to_storage_index(it.col()),
-                                         it.value());
+        vector<Triplet<double>> CPartTriplets;
+        for (int k = 0; k < Cpart.outerSize(); ++k) {
+          for (SparseMatrix<double>::InnerIterator it(Cpart, k); it; ++it) {
+            for (int j = 0; j < CpartRank; ++j) {
+              if (it.row() == PIndices(j)) {
+                CPartTriplets.emplace_back(j, to_storage_index(it.col()),
+                                           it.value());
+              }
             }
           }
         }
-      }
 
-      Cpart.resize(CpartRank, Cpart.cols());
-      Cpart.setFromTriplets(CPartTriplets.begin(), CPartTriplets.end());
+        Cpart.resize(CpartRank, Cpart.cols());
+        Cpart.setFromTriplets(CPartTriplets.begin(), CPartTriplets.end());
+      }
+    } else if (Cpart.rows() != 0) {
+      CpartRank = to_storage_index(Cpart.rows());
+      PIndices.resize(CpartRank);
+      for (int row = 0; row < CpartRank; ++row) {
+        PIndices(row) = row;
+      }
+      if (intData.verbose) {
+        std::cout << "[Directional::integrate] skipping current constraint "
+                     "rank reduction"
+                  << " rows=" << Cpart.rows() << " cols=" << Cpart.cols()
+                  << " nnz=" << Cpart.nonZeros() << std::endl;
+      }
     }
 
     iterativeTimings.constraintRankReduction +=

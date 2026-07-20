@@ -30,6 +30,8 @@
 #include <Eigen/Sparse>
 
 #include <directional/core/DCEL.h>
+#include <directional/meshing/FunctionSkeletonBuilder.h>
+#include <directional/meshing/FunctionSkeletonSimplifier.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
 #include <directional/meshing/TriFlowSimplificationDCEL.h>
@@ -1478,11 +1480,13 @@ public:
        * have different sampling counts.
        */
       if (vertexSet1.size() != vertexSet2.size()) {
-        std::cerr << "[Directional::NFunctionMesher::"
-                     "build_vertex_matches()]: "
-                  << "mismatched paired strip sizes for original halfedge " << i
-                  << ": " << vertexSet1.size() << " versus "
-                  << vertexSet2.size() << '\n';
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::"
+                       "build_vertex_matches()]: "
+                    << "mismatched paired strip sizes for original halfedge "
+                    << i << ": " << vertexSet1.size() << " versus "
+                    << vertexSet2.size() << '\n';
+        }
 
         const auto printStrip = [&](const char *label,
                                     const std::vector<int> &strip) {
@@ -1525,14 +1529,20 @@ public:
           }
         };
 
-        printStrip("side 1", vertexSet1);
-        printStrip("side 2", vertexSet2);
+        if (mData.verbose) {
+          printStrip("side 1", vertexSet1);
+          printStrip("side 2", vertexSet2);
+        }
 
         /*
-         * Report exact ordered correspondences without changing topology.
+         * Report exact ordered correspondences and keep them if every vertex on
+         * the smaller side has an unambiguous exact match. Extra vertices stay
+         * independent rather than forcing a non-exact seam identification.
          */
         std::size_t first = 0;
         std::size_t second = 0;
+        bool diverged = false;
+        std::vector<std::pair<int, int>> partialMatches;
 
         while (first < vertexSet1.size() && second < vertexSet2.size()) {
           const auto &point1 = genDcel.vertices[vertexSet1[first]].data.eCoords;
@@ -1541,11 +1551,15 @@ public:
               genDcel.vertices[vertexSet2[second]].data.eCoords;
 
           if (exact_point_equal(point1, point2)) {
-            std::cerr << "    exact match: side1[" << first << "] <-> side2["
-                      << second << "]\n";
+            if (mData.verbose) {
+              std::cerr << "    exact match: side1[" << first
+                        << "] <-> side2[" << second << "]\n";
+            }
 
             ++first;
             ++second;
+            partialMatches.emplace_back(
+                vertexSet1[first - 1], vertexSet2[second - 1]);
             continue;
           }
 
@@ -1567,39 +1581,82 @@ public:
           }
 
           if (skipFirst && !skipSecond) {
-            std::cerr << "    unmatched side1[" << first << "] vertex "
-                      << vertexSet1[first] << '\n';
+            if (mData.verbose) {
+              std::cerr << "    unmatched side1[" << first << "] vertex "
+                        << vertexSet1[first] << '\n';
+            }
 
             ++first;
             continue;
           }
 
           if (skipSecond && !skipFirst) {
-            std::cerr << "    unmatched side2[" << second << "] vertex "
-                      << vertexSet2[second] << '\n';
+            if (mData.verbose) {
+              std::cerr << "    unmatched side2[" << second << "] vertex "
+                        << vertexSet2[second] << '\n';
+            }
 
             ++second;
             continue;
           }
 
-          std::cerr << "    correspondence diverges at side1[" << first
-                    << "] and side2[" << second << "]\n";
+          if (mData.verbose) {
+            std::cerr << "    correspondence diverges at side1[" << first
+                      << "] and side2[" << second << "]\n";
+          }
 
+          diverged = true;
           break;
         }
 
         while (first < vertexSet1.size()) {
-          std::cerr << "    trailing unmatched side1[" << first << "] vertex "
-                    << vertexSet1[first] << '\n';
+          if (mData.verbose) {
+            std::cerr << "    trailing unmatched side1[" << first << "] vertex "
+                      << vertexSet1[first] << '\n';
+          }
           ++first;
         }
 
         while (second < vertexSet2.size()) {
-          std::cerr << "    trailing unmatched side2[" << second << "] vertex "
-                    << vertexSet2[second] << '\n';
+          if (mData.verbose) {
+            std::cerr << "    trailing unmatched side2[" << second
+                      << "] vertex " << vertexSet2[second] << '\n';
+          }
           ++second;
         }
 
+        const std::size_t requiredMatches =
+            std::min(vertexSet1.size(), vertexSet2.size());
+        if (!diverged && partialMatches.size() == requiredMatches) {
+          scratch.vertexMatches.insert(scratch.vertexMatches.end(),
+                                       partialMatches.begin(),
+                                       partialMatches.end());
+          if (mData.verbose) {
+            std::cerr << "[Directional::NFunctionMesher::"
+                         "build_vertex_matches()]: "
+                      << "accepted " << partialMatches.size()
+                      << " exact partial strip matches for original halfedge "
+                      << i << " and left "
+                      << (std::max(vertexSet1.size(), vertexSet2.size()) -
+                          requiredMatches)
+                      << " unmatched vertices independent\n";
+          }
+          continue;
+        }
+
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "build_vertex_matches()]: "
+                  << "mismatched paired strip sizes for original halfedge " << i
+                  << ": " << vertexSet1.size() << " versus "
+                  << vertexSet2.size() << '\n';
+        printStrip("side 1", vertexSet1);
+        printStrip("side 2", vertexSet2);
+        std::cerr << "[Directional::NFunctionMesher::"
+                     "build_vertex_matches()]: "
+                  << "rejected partial strip match"
+                  << " diverged=" << (diverged ? "true" : "false")
+                  << " matches=" << partialMatches.size()
+                  << " required=" << requiredMatches << '\n';
         return false;
       }
 
@@ -2765,6 +2822,53 @@ public:
     }
 
     return false;
+  }
+
+  bool apply_function_skeleton_edit_plan(FunctionSkeletonEditPlan &plan) {
+    std::set<int> clearedFunctionEdges;
+
+    for (const int halfedgeIndex : plan.clearFunctionHalfedges) {
+      if (!genDcel.valid_halfedge(halfedgeIndex)) {
+        ++plan.rejectedEdits;
+        continue;
+      }
+
+      auto &halfedge =
+          genDcel.halfedges[static_cast<std::size_t>(halfedgeIndex)];
+      if (!halfedge.data.isFunction) {
+        continue;
+      }
+
+      const int twin = halfedge.twin;
+      const int canonical =
+          twin >= 0 ? std::min(halfedgeIndex, twin) : halfedgeIndex;
+      clearedFunctionEdges.insert(canonical);
+      halfedge.data.isFunction = false;
+
+      if (twin >= 0) {
+        if (!genDcel.valid_halfedge(twin)) {
+          ++plan.rejectedEdits;
+          continue;
+        }
+        genDcel.halfedges[static_cast<std::size_t>(twin)].data.isFunction =
+            false;
+      }
+    }
+
+    plan.appliedEdits = plan.plannedEdits;
+    mData.diagnostics.danglingFunctionEdgesCleared +=
+        clearedFunctionEdges.size();
+
+    if (mData.verbose) {
+      std::cout << "[Directional::NFunctionMesher::"
+                   "apply_function_skeleton_edit_plan()]: "
+                << "planned " << plan.plannedEdits << " skeleton edits, "
+                << "cleared " << clearedFunctionEdges.size()
+                << " function edges, rejected " << plan.rejectedEdits << '\n';
+    }
+
+    return plan.rejectedEdits == plan.redundantDegreeTwoNodes +
+                                     plan.duplicateChains + plan.tinyCycles;
   }
 
   bool realign_hex_halfedges(const SimplifyScratch &scratch) {
@@ -5894,6 +5998,8 @@ public:
      * Rebuild twin relationships globally after degenerate cleanup, then run
      * the strict consistency check below.
      */
+    ++mData.diagnostics.retwinCallCount;
+    ++mData.diagnostics.retwinCallsAfterFunctionCleanup;
     const int finalRetwinned = retwin_halfedges();
 
     if (finalRetwinned < 0) {
@@ -5966,6 +6072,8 @@ public:
         return false;
       }
 
+      ++mData.diagnostics.retwinCallCount;
+      ++mData.diagnostics.retwinCallsAfterFunctionCleanup;
       const int postFacePruneRetwinned = retwin_halfedges();
 
       if (postFacePruneRetwinned < 0) {
@@ -6343,6 +6451,8 @@ public:
     logPhase("Post-remap pre-twinning consistency check");
     reportSimplifyProgress(91, "Retwinning simplified halfedges");
 
+    ++mData.diagnostics.retwinCallCount;
+    ++mData.diagnostics.retwinCallsBeforeFunctionCleanup;
     const int retwinned = retwin_halfedges();
 
     if (retwinned < 0) {
@@ -6366,46 +6476,96 @@ public:
       return false;
     }
     logPhase("Post-twinning consistency check");
-    reportSimplifyProgress(92, "Pruning dangling function edges");
+    if (mData.useFunctionSkeletonCleanup) {
+      reportSimplifyProgress(92, "Planning function skeleton cleanup");
 
-    /*
-     * Remove interior degree-one leaves from the retained function
-     * skeleton before triangle-region classification.
-     *
-     * This only clears SegmentData::isFunction on both halfedges of a
-     * dangling edge. It does not remove geometric DCEL edges or mutate
-     * face topology.
-     *
-     * Running it before classify_triangle_regions() ensures
-     * scratch.isPureTriangle and related classification results are based
-     * on the cleaned function skeleton.
-     */
-    if (!prune_dangling_interior_function_edges()) {
-      if (mData.verbose) {
-        std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
-                  << "dangling interior function-edge pruning failed\n";
+      FunctionSkeleton skeleton =
+          detail::FunctionSkeletonBuilder::build(genDcel);
+      mData.diagnostics.functionSkeletonNodeCount = skeleton.nodes.size();
+      mData.diagnostics.functionSkeletonEdgeCount = skeleton.edges.size();
+      mData.diagnostics.functionSkeletonRawFunctionEdgeCount =
+          skeleton.rawFunctionEdgeCount;
+      mData.diagnostics.functionSkeletonAverageHalfedgesPerEdge =
+          skeleton.averageHalfedgesPerSkeletonEdge();
+      mData.diagnostics.functionSkeletonMatchesConnectivity =
+          skeleton.matchesFunctionConnectivity;
+      mData.diagnostics.functionSkeletonBuildSeconds +=
+          logPhase("Function skeleton build");
+      if (!skeleton.matchesFunctionConnectivity) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                    << "function skeleton failed connectivity validation\n";
+        }
+        return false;
       }
 
-      return false;
-    }
-    mData.diagnostics.danglingFunctionPruneSeconds +=
-        logPhase("Dangling function-edge pruning");
+      /*
+       * Move safe graph-cleanup decisions onto the skeleton edit plan. The
+       * accepted Phase 04 operation is metadata-only: clear isFunction on
+       * dangling skeleton chains in one grouped transaction before region
+       * classification.
+       */
+      FunctionSkeletonEditPlan skeletonEditPlan =
+          detail::FunctionSkeletonSimplifier::plan_safe_cleanup(skeleton);
+      mData.diagnostics.functionSkeletonEditsPlanned =
+          skeletonEditPlan.plannedEdits;
+      mData.diagnostics.functionSkeletonSimplificationSeconds +=
+          logPhase("Function skeleton simplification plan");
 
-    /*
-     * Clearing function metadata should not change core topology, but run
-     * a consistency check here to catch any unexpected mutation before
-     * classification.
-     */
-    if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
-      if (mData.verbose) {
-        std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
-                  << "consistency check failed after dangling function-edge "
-                     "pruning\n";
+      if (!apply_function_skeleton_edit_plan(skeletonEditPlan)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                    << "function skeleton edit-plan application failed\n";
+        }
+        return false;
       }
+      mData.diagnostics.functionSkeletonEditsApplied =
+          skeletonEditPlan.appliedEdits;
+      mData.diagnostics.functionSkeletonEditsRejected =
+          skeletonEditPlan.rejectedEdits;
+      mData.diagnostics.functionSkeletonEditPlanApplicationSeconds +=
+          logPhase("Function skeleton edit-plan application");
 
-      return false;
+      skeleton = detail::FunctionSkeletonBuilder::build(genDcel);
+      mData.diagnostics.functionSkeletonNodeCount = skeleton.nodes.size();
+      mData.diagnostics.functionSkeletonEdgeCount = skeleton.edges.size();
+      mData.diagnostics.functionSkeletonRawFunctionEdgeCount =
+          skeleton.rawFunctionEdgeCount;
+      mData.diagnostics.functionSkeletonAverageHalfedgesPerEdge =
+          skeleton.averageHalfedgesPerSkeletonEdge();
+      mData.diagnostics.functionSkeletonMatchesConnectivity =
+          skeleton.matchesFunctionConnectivity;
+      mData.diagnostics.functionSkeletonBuildSeconds +=
+          logPhase("Function skeleton validation build");
+      if (!skeleton.matchesFunctionConnectivity) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                    << "function skeleton failed post-application validation\n";
+        }
+        return false;
+      }
+    } else {
+      reportSimplifyProgress(92, "Pruning dangling function edges");
+      if (!prune_dangling_interior_function_edges()) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                    << "dangling interior function-edge pruning failed\n";
+        }
+        return false;
+      }
+      mData.diagnostics.danglingFunctionPruneSeconds +=
+          logPhase("Legacy dangling function-edge pruning");
+
+      if (!genDcel.check_consistency(mData.verbose, true, true, true)) {
+        if (mData.verbose) {
+          std::cerr << "[Directional::NFunctionMesher::simplify_mesh()]: "
+                    << "consistency check failed after legacy dangling "
+                       "function-edge pruning\n";
+        }
+        return false;
+      }
+      logPhase("Post-legacy-dangling-pruning consistency check");
     }
-    logPhase("Post-dangling-pruning consistency check");
     reportSimplifyProgress(93, "Classifying and realigning mesh regions");
 
     if (!classify_triangle_regions(scratch)) {

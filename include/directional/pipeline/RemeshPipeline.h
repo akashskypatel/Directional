@@ -12,6 +12,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 
@@ -66,6 +67,9 @@ struct RemeshOptions {
   /// Enables the experimental TriFlow-style generated-DCEL simplification pass.
   bool useTriFlowDcelSimplification = false;
 
+  /// Enables the Phase 04 function-skeleton edit plan for safe mesher cleanup.
+  bool useFunctionSkeletonCleanup = true;
+
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
       IntegrationSolveStrategy::DirectOnly;
@@ -76,8 +80,20 @@ struct RemeshOptions {
   /// Controls mixed-integer rounding batch selection.
   IntegerBatchOptions integerBatching;
 
+  /// Controls diagnostic/experimental integer transition basis reduction.
+  IntegerTransitionBasisOptions integerTransitionBasis;
+
+  /// Stops after field integration and returns integration diagnostics only.
+  bool stopAfterIntegration = false;
+
+  /// Skips QR constraint rank reduction for explicit benchmark probes.
+  bool skipConstraintRankReduction = false;
+
   /// Optional progress callback invoked by remeshing stages.
   ProgressCallback progress;
+
+  /// Optional benchmark hook invoked after setup_mesher prepares MesherData.
+  std::function<void(const MesherData &)> mesherDataCallback;
 };
 
 /**
@@ -233,6 +249,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.solveStrategy = options.integrationSolveStrategy;
   integration.adaptiveOptions = options.adaptiveIntegration;
   integration.integerBatchOptions = options.integerBatching;
+  integration.integerTransitionBasisOptions = options.integerTransitionBasis;
+  integration.skipConstraintRankReduction = options.skipConstraintRankReduction;
 
   report_progress(options.progress, 20, 100, "Setting up integration");
   TriMesh meshCut;
@@ -269,6 +287,29 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   diagnostics.integrationTotalSeconds += log_phase("integrate");
   diagnostics.integration = integration.diagnostics;
 
+  if (options.stopAfterIntegration) {
+    RemeshResult result;
+    result.success = true;
+    result.rawCrossField = rawField.extField;
+    result.crossFieldMatching = rawField.matching;
+    result.crossFieldEffort = rawField.effort;
+    result.crossFieldSingularCycles = rawField.singLocalCycles;
+    result.crossFieldSingularIndices = rawField.singIndices;
+    result.cutVertices = meshCut.V;
+    result.cutFaces = meshCut.F;
+    result.cutFunctions = cutFunctions;
+    result.cutCornerFunctions = cutCornerFunctions;
+    diagnostics.overallPipelineSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                              pipelineStart)
+            .count() /
+        1.0e6;
+    result.diagnostics = diagnostics;
+    report_progress(options.progress, 100, 100,
+                    "Finalizing integration-only result");
+    return result;
+  }
+
   report_progress(options.progress, 80, 100, "Preparing mesher");
   MesherData mesherData;
   mesherData.verbose = options.verbose;
@@ -276,6 +317,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       options.useTriFlowDcelSimplification
           ? MesherSimplificationBackend::TriFlowDCEL
           : MesherSimplificationBackend::Directional;
+  mesherData.useFunctionSkeletonCleanup = options.useFunctionSkeletonCleanup;
   if (!options.verbose && options.progress) {
     mesherData.progress =
         [callback = options.progress](const std::size_t current,
@@ -293,6 +335,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   }
   setup_mesher(meshCut, integration, mesherData);
   diagnostics.setupMesherSeconds += log_phase("setup_mesher");
+  if (options.mesherDataCallback) {
+    options.mesherDataCallback(mesherData);
+  }
 
   RemeshResult result;
   result.rawCrossField = rawField.extField;

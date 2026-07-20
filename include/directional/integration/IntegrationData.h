@@ -17,6 +17,7 @@
 #include <directional/diagnostics/IntegrationDiagnostics.h>
 #include <directional/integration/IntegrationLinearSolver.h>
 #include <directional/integration/IntegrationSolveStrategy.h>
+#include <directional/integration/IntegerTransitionBasis.h>
 #include <directional/util/Progress.h>
 
 /**
@@ -117,6 +118,15 @@ struct IntegrationData {
 
   /// Controls mixed-integer rounding batch selection.
   IntegerBatchOptions integerBatchOptions;
+
+  /// Controls diagnostic/experimental integer transition basis reduction.
+  IntegerTransitionBasisOptions integerTransitionBasisOptions;
+
+  /// Skips numerical QR rank reduction of constraints for benchmark probes.
+  bool skipConstraintRankReduction = false;
+
+  /// Diagnostic/experimental integer transition basis analysis result.
+  IntegerTransitionBasisResult integerTransitionBasis;
 
   /// Numerical-stability controls used when @ref linearSolver selects cuDSS.
   CuDssSolverOptions cuDssSolverOptions;

@@ -241,7 +241,9 @@ if(DIRECTIONAL_BUILD_TESTS)
     src/bench/BenchmarkCases.cpp
     tests/AdaptiveIntegrationSolverTests.cpp
     tests/DiagnosticsTests.cpp
+    tests/FunctionSkeletonTests.cpp
     tests/IntegerBatchSelectorTests.cpp
+    tests/IntegerTransitionBasisTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp)
   target_link_libraries(

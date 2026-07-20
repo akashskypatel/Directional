@@ -204,7 +204,12 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
     "runs": [{
       "success": true,
       "wallSeconds": 0.1,
-      "diagnostics": {"overallPipelineSeconds": 0.1},
+      "diagnostics": {
+        "overallPipelineSeconds": 0.1,
+        "retwinCallCount": 1,
+        "retwinCallsBeforeFunctionCleanup": 1,
+        "retwinCallsAfterFunctionCleanup": 0
+      },
       "outputVertexCount": 4,
       "outputFaceCount": 1,
       "quadCount": 1,
@@ -233,6 +238,9 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"success\"");
   expect_contains(json, "\"wallSeconds\"");
   expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"retwinCallCount\"");
+  expect_contains(json, "\"retwinCallsBeforeFunctionCleanup\"");
+  expect_contains(json, "\"retwinCallsAfterFunctionCleanup\"");
   expect_contains(json, "\"outputVertexCount\"");
   expect_contains(json, "\"quadCount\"");
   expect_contains(json, "\"connectedComponentCount\"");

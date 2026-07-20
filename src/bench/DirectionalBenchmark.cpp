@@ -22,6 +22,7 @@
 #include <directional/geometry/MeshTopology.h>
 #include <directional/integration/IntegerBatchSelector.h>
 #include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/meshing/Mesher.h>
 
 namespace directional::bench {
 namespace {
@@ -31,6 +32,13 @@ struct Options {
   std::string selectedCase;
   IntegrationSolveStrategy solveStrategy = IntegrationSolveStrategy::DirectOnly;
   IntegerBatchStrategy batchStrategy = IntegerBatchStrategy::ResidualOnly;
+  bool reduceIntegerTransitionBasis = false;
+  bool integrationOnly = false;
+  bool verbose = false;
+  bool skipConstraintRankReduction = false;
+  bool useFunctionSkeletonCleanup = true;
+  std::filesystem::path saveMesherCachePath;
+  std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
   int measuredRuns = 5;
   std::filesystem::path outputPath = "benchmark-results/baseline.json";
@@ -63,6 +71,13 @@ void print_usage() {
             << "  --case <name>       Run one case from the manifest.\n"
             << "  --solve-strategy <direct|adaptive>\n"
             << "  --batch-strategy <residual|coupling>\n"
+            << "  --reduce-transition-basis\n"
+            << "  --integration-only Stop after integration diagnostics.\n"
+            << "  --skip-constraint-rank-reduction\n"
+            << "  --disable-function-skeleton-cleanup\n"
+            << "  --save-mesher-cache <path>\n"
+            << "  --load-mesher-cache <path> Run mesher only from cache.\n"
+            << "  --verbose          Emit pipeline progress logs.\n"
             << "  --warmup <count>    Warm-up runs before measurements.\n"
             << "  --runs <count>      Measured run count.\n"
             << "  --output <path>     Output JSON path.\n";
@@ -117,6 +132,20 @@ Options parse_options(const int argc, char **argv) {
         throw std::runtime_error(
             "--batch-strategy requires residual or coupling.");
       }
+    } else if (argument == "--reduce-transition-basis") {
+      options.reduceIntegerTransitionBasis = true;
+    } else if (argument == "--integration-only") {
+      options.integrationOnly = true;
+    } else if (argument == "--skip-constraint-rank-reduction") {
+      options.skipConstraintRankReduction = true;
+    } else if (argument == "--disable-function-skeleton-cleanup") {
+      options.useFunctionSkeletonCleanup = false;
+    } else if (argument == "--save-mesher-cache") {
+      options.saveMesherCachePath = requireValue("--save-mesher-cache");
+    } else if (argument == "--load-mesher-cache") {
+      options.loadMesherCachePath = requireValue("--load-mesher-cache");
+    } else if (argument == "--verbose") {
+      options.verbose = true;
     } else if (argument == "--warmup") {
       options.warmupRuns = parse_nonnegative_int(requireValue("--warmup"), "--warmup");
     } else if (argument == "--runs") {
@@ -334,11 +363,222 @@ std::uint64_t hash_matrix(const Eigen::MatrixXd &matrix) {
   return hash;
 }
 
+template <typename T> void write_binary(std::ostream &out, const T &value) {
+  out.write(reinterpret_cast<const char *>(&value), sizeof(T));
+}
+
+template <typename T> void read_binary(std::istream &in, T &value) {
+  in.read(reinterpret_cast<char *>(&value), sizeof(T));
+  if (!in) {
+    throw std::runtime_error("Unexpected end of mesher cache.");
+  }
+}
+
+void write_matrix(std::ostream &out, const Eigen::MatrixXd &matrix) {
+  const std::int64_t rows = matrix.rows();
+  const std::int64_t cols = matrix.cols();
+  write_binary(out, rows);
+  write_binary(out, cols);
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      write_binary(out, matrix(row, col));
+    }
+  }
+}
+
+Eigen::MatrixXd read_matrix(std::istream &in) {
+  std::int64_t rows = 0;
+  std::int64_t cols = 0;
+  read_binary(in, rows);
+  read_binary(in, cols);
+  Eigen::MatrixXd matrix(rows, cols);
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      read_binary(in, matrix(row, col));
+    }
+  }
+  return matrix;
+}
+
+void write_matrix(std::ostream &out, const Eigen::MatrixXi &matrix) {
+  const std::int64_t rows = matrix.rows();
+  const std::int64_t cols = matrix.cols();
+  write_binary(out, rows);
+  write_binary(out, cols);
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      write_binary(out, matrix(row, col));
+    }
+  }
+}
+
+Eigen::MatrixXi read_matrix_i(std::istream &in) {
+  std::int64_t rows = 0;
+  std::int64_t cols = 0;
+  read_binary(in, rows);
+  read_binary(in, cols);
+  Eigen::MatrixXi matrix(rows, cols);
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      read_binary(in, matrix(row, col));
+    }
+  }
+  return matrix;
+}
+
+void write_vector(std::ostream &out, const Eigen::VectorXd &vector) {
+  write_matrix(out, Eigen::MatrixXd(vector));
+}
+
+Eigen::VectorXd read_vector(std::istream &in) {
+  return read_matrix(in);
+}
+
+void write_vector(std::ostream &out, const Eigen::VectorXi &vector) {
+  write_matrix(out, Eigen::MatrixXi(vector));
+}
+
+Eigen::VectorXi read_vector_i(std::istream &in) {
+  return read_matrix_i(in);
+}
+
+template <typename Scalar>
+void write_sparse(std::ostream &out,
+                  const Eigen::SparseMatrix<Scalar> &matrix) {
+  const std::int64_t rows = matrix.rows();
+  const std::int64_t cols = matrix.cols();
+  const std::int64_t nonZeros = matrix.nonZeros();
+  write_binary(out, rows);
+  write_binary(out, cols);
+  write_binary(out, nonZeros);
+  for (int col = 0; col < matrix.outerSize(); ++col) {
+    for (typename Eigen::SparseMatrix<Scalar>::InnerIterator it(matrix, col);
+         it; ++it) {
+      const std::int64_t rowIndex = it.row();
+      const std::int64_t colIndex = it.col();
+      const Scalar value = it.value();
+      write_binary(out, rowIndex);
+      write_binary(out, colIndex);
+      write_binary(out, value);
+    }
+  }
+}
+
+template <typename Scalar>
+Eigen::SparseMatrix<Scalar> read_sparse(std::istream &in) {
+  std::int64_t rows = 0;
+  std::int64_t cols = 0;
+  std::int64_t nonZeros = 0;
+  read_binary(in, rows);
+  read_binary(in, cols);
+  read_binary(in, nonZeros);
+  std::vector<Eigen::Triplet<Scalar>> triplets;
+  triplets.reserve(static_cast<std::size_t>(nonZeros));
+  for (std::int64_t index = 0; index < nonZeros; ++index) {
+    std::int64_t row = 0;
+    std::int64_t col = 0;
+    Scalar value{};
+    read_binary(in, row);
+    read_binary(in, col);
+    read_binary(in, value);
+    triplets.emplace_back(static_cast<int>(row), static_cast<int>(col), value);
+  }
+  Eigen::SparseMatrix<Scalar> matrix(static_cast<int>(rows),
+                                     static_cast<int>(cols));
+  matrix.setFromTriplets(triplets.begin(), triplets.end());
+  matrix.makeCompressed();
+  return matrix;
+}
+
+void save_mesher_cache(const std::filesystem::path &path,
+                       const MesherData &mesherData) {
+  if (!path.parent_path().empty()) {
+    std::filesystem::create_directories(path.parent_path());
+  }
+  std::ofstream out(path, std::ios::binary);
+  if (!out) {
+    throw std::runtime_error("Failed to open mesher cache for writing: " +
+                             path.string());
+  }
+  const std::array<char, 16> magic = {'D', 'I', 'R', 'M', 'E', 'S',
+                                      'H', 'C', 'A', 'C', 'H', 'E',
+                                      '0', '1', '\0', '\0'};
+  out.write(magic.data(), static_cast<std::streamsize>(magic.size()));
+  write_binary(out, mesherData.N);
+  write_binary(out, mesherData.exactResolution);
+  write_matrix(out, mesherData.cutV);
+  write_matrix(out, mesherData.cutF);
+  write_vector(out, mesherData.vertexNFunction);
+  write_sparse(out, mesherData.orig2CutMat);
+  write_sparse(out, mesherData.exactOrig2CutMat);
+  write_vector(out, mesherData.integerVars);
+}
+
+MesherData load_mesher_cache(const std::filesystem::path &path) {
+  std::ifstream in(path, std::ios::binary);
+  if (!in) {
+    throw std::runtime_error("Failed to open mesher cache for reading: " +
+                             path.string());
+  }
+  std::array<char, 16> magic = {};
+  in.read(magic.data(), static_cast<std::streamsize>(magic.size()));
+  const std::array<char, 16> expected = {'D', 'I', 'R', 'M', 'E', 'S',
+                                         'H', 'C', 'A', 'C', 'H', 'E',
+                                         '0', '1', '\0', '\0'};
+  if (!in || magic != expected) {
+    throw std::runtime_error("Invalid mesher cache header: " + path.string());
+  }
+  MesherData mesherData;
+  read_binary(in, mesherData.N);
+  read_binary(in, mesherData.exactResolution);
+  mesherData.cutV = read_matrix(in);
+  mesherData.cutF = read_matrix_i(in);
+  mesherData.vertexNFunction = read_vector(in);
+  mesherData.orig2CutMat = read_sparse<double>(in);
+  mesherData.exactOrig2CutMat = read_sparse<int>(in);
+  mesherData.integerVars = read_vector_i(in);
+  return mesherData;
+}
+
 RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
                         const Options &benchmarkOptions) {
   RunRecord record;
   const BenchmarkMesh mesh = load_benchmark_mesh(benchmarkCase);
   record.fixtureHash = hash_benchmark_mesh(mesh);
+  if (!benchmarkOptions.loadMesherCachePath.empty()) {
+    const auto start = std::chrono::steady_clock::now();
+    try {
+      TriMesh meshWhole;
+      meshWhole.set_mesh(mesh.vertices, mesh.faces);
+      MesherData mesherData =
+          load_mesher_cache(benchmarkOptions.loadMesherCachePath);
+      mesherData.verbose = benchmarkOptions.verbose;
+      mesherData.useFunctionSkeletonCleanup =
+          benchmarkOptions.useFunctionSkeletonCleanup;
+      record.result.cutVertices = mesherData.cutV;
+      record.result.cutFaces = mesherData.cutF;
+      record.result.success =
+          mesher(meshWhole, mesherData, record.result.vertices,
+                 record.result.degrees, record.result.faces);
+      record.result.diagnostics.mesher = mesherData.diagnostics;
+      record.success = record.result.success;
+      if (record.success) {
+        record.metrics = compute_structural_metrics(record.result);
+      }
+    } catch (const std::exception &exception) {
+      record.success = false;
+      record.error = exception.what();
+    } catch (...) {
+      record.success = false;
+      record.error = "unknown non-std exception";
+    }
+    record.wallSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::steady_clock::now() - start)
+            .count() /
+        1.0e6;
+    return record;
+  }
   BenchmarkField field = load_benchmark_field(benchmarkCase, mesh.faces.rows());
   if (!field.available) {
     field = generate_benchmark_field(benchmarkCase, mesh);
@@ -350,6 +590,19 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
   pipeline::RemeshOptions options = make_remesh_options(benchmarkCase);
   options.integrationSolveStrategy = benchmarkOptions.solveStrategy;
   options.integerBatching.strategy = benchmarkOptions.batchStrategy;
+  options.integerTransitionBasis.reduceIntegerTransitionBasis =
+      benchmarkOptions.reduceIntegerTransitionBasis;
+  options.stopAfterIntegration = benchmarkOptions.integrationOnly;
+  options.verbose = benchmarkOptions.verbose;
+  options.skipConstraintRankReduction =
+      benchmarkOptions.skipConstraintRankReduction;
+  options.useFunctionSkeletonCleanup =
+      benchmarkOptions.useFunctionSkeletonCleanup;
+  if (!benchmarkOptions.saveMesherCachePath.empty()) {
+    options.mesherDataCallback =
+        [path = benchmarkOptions.saveMesherCachePath](
+            const MesherData &mesherData) { save_mesher_cache(path, mesherData); };
+  }
   if (benchmarkOptions.solveStrategy == IntegrationSolveStrategy::Adaptive &&
       benchmarkOptions.batchStrategy == IntegerBatchStrategy::ResidualOnly) {
     options.integerBatching.absoluteResidualCeiling = 0.49;
@@ -371,6 +624,9 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
   } catch (const std::exception &exception) {
     record.success = false;
     record.error = exception.what();
+  } catch (...) {
+    record.success = false;
+    record.error = "unknown non-std exception";
   }
   record.wallSeconds =
       std::chrono::duration_cast<std::chrono::microseconds>(
@@ -424,6 +680,14 @@ double coefficient_of_variation(const std::vector<double> &values) {
   return std::sqrt(variance) / mean;
 }
 
+void write_json_number(std::ostream &out, const double value) {
+  if (std::isfinite(value)) {
+    out << value;
+  } else {
+    out << "null";
+  }
+}
+
 void write_integration_json(std::ostream &out,
                             const IntegrationDiagnostics &diagnostics) {
   out << "{"
@@ -436,6 +700,9 @@ void write_integration_json(std::ostream &out,
       << diagnostics.reducedOperatorExtractionSeconds << ","
       << "\"constraintRankReductionSeconds\":"
       << diagnostics.constraintRankReductionSeconds << ","
+      << "\"constraintRankReductionSkipped\":"
+      << (diagnostics.constraintRankReductionSkipped ? "true" : "false")
+      << ","
       << "\"kktAssemblySeconds\":" << diagnostics.kktAssemblySeconds << ","
       << "\"rhsAssemblySeconds\":" << diagnostics.rhsAssemblySeconds << ","
       << "\"symbolicAnalysisSeconds\":" << diagnostics.symbolicAnalysisSeconds
@@ -450,7 +717,23 @@ void write_integration_json(std::ostream &out,
       << diagnostics.integerCandidateSelectionSeconds << ","
       << "\"couplingAnalysisSeconds\":" << diagnostics.couplingAnalysisSeconds
       << ","
+      << "\"integerTransitionBasisAnalysisSeconds\":"
+      << diagnostics.integerTransitionBasisAnalysisSeconds << ","
       << "\"integerIterations\":" << diagnostics.integerIterations << ","
+      << "\"rawTransitionCount\":" << diagnostics.rawTransitionCount << ","
+      << "\"rawIntegerVariableCount\":" << diagnostics.rawIntegerVariableCount
+      << ","
+      << "\"reducedIntegerVariableCount\":"
+      << diagnostics.reducedIntegerVariableCount << ","
+      << "\"redundantIntegerVariableCount\":"
+      << diagnostics.redundantIntegerVariableCount << ","
+      << "\"integerTransitionReductionRatio\":"
+      << diagnostics.integerTransitionReductionRatio << ","
+      << "\"integerTransitionNumericalRank\":"
+      << diagnostics.integerTransitionNumericalRank << ","
+      << "\"integerTransitionReductionEnabled\":"
+      << (diagnostics.integerTransitionReductionEnabled ? "true" : "false")
+      << ","
       << "\"roundingBatches\":" << diagnostics.roundingBatches << ","
       << "\"roundingBatchHistogram\":[";
   for (std::size_t index = 0;
@@ -488,14 +771,18 @@ void write_integration_json(std::ostream &out,
       << "\"maximumSystemRows\":" << diagnostics.maximumSystemRows << ","
       << "\"maximumSystemNonZeros\":" << diagnostics.maximumSystemNonZeros
       << ","
-      << "\"finalLinearSystemResidualNorm\":"
-      << diagnostics.finalLinearSystemResidualNorm << ","
-      << "\"finalConstraintResidualNorm\":"
-      << diagnostics.finalConstraintResidualNorm << ","
-      << "\"maximumUnresolvedIntegerResidual\":"
-      << diagnostics.maximumUnresolvedIntegerResidual << ","
-      << "\"finalIntegrationEnergy\":" << diagnostics.finalIntegrationEnergy
-      << "}";
+      << "\"finalLinearSystemResidualNorm\":";
+  write_json_number(out, diagnostics.finalLinearSystemResidualNorm);
+  out << ","
+      << "\"finalConstraintResidualNorm\":";
+  write_json_number(out, diagnostics.finalConstraintResidualNorm);
+  out << ","
+      << "\"maximumUnresolvedIntegerResidual\":";
+  write_json_number(out, diagnostics.maximumUnresolvedIntegerResidual);
+  out << ","
+      << "\"finalIntegrationEnergy\":";
+  write_json_number(out, diagnostics.finalIntegrationEnergy);
+  out << "}";
 }
 
 void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) {
@@ -518,6 +805,12 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << "\"retwinSeconds\":" << diagnostics.retwinSeconds << ","
       << "\"danglingFunctionPruneSeconds\":"
       << diagnostics.danglingFunctionPruneSeconds << ","
+      << "\"functionSkeletonBuildSeconds\":"
+      << diagnostics.functionSkeletonBuildSeconds << ","
+      << "\"functionSkeletonSimplificationSeconds\":"
+      << diagnostics.functionSkeletonSimplificationSeconds << ","
+      << "\"functionSkeletonEditPlanApplicationSeconds\":"
+      << diagnostics.functionSkeletonEditPlanApplicationSeconds << ","
       << "\"regionClassificationSeconds\":"
       << diagnostics.regionClassificationSeconds << ","
       << "\"faceRealignmentSeconds\":" << diagnostics.faceRealignmentSeconds
@@ -540,9 +833,31 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << diagnostics.facesAfterSimplification << ","
       << "\"halfedgesAfterSimplification\":"
       << diagnostics.halfedgesAfterSimplification << ","
+      << "\"retwinCallCount\":" << diagnostics.retwinCallCount << ","
+      << "\"retwinCallsBeforeFunctionCleanup\":"
+      << diagnostics.retwinCallsBeforeFunctionCleanup << ","
+      << "\"retwinCallsAfterFunctionCleanup\":"
+      << diagnostics.retwinCallsAfterFunctionCleanup << ","
       << "\"retwinnedPairCount\":" << diagnostics.retwinnedPairCount << ","
       << "\"danglingFunctionEdgesCleared\":"
       << diagnostics.danglingFunctionEdgesCleared << ","
+      << "\"functionSkeletonNodeCount\":"
+      << diagnostics.functionSkeletonNodeCount << ","
+      << "\"functionSkeletonEdgeCount\":"
+      << diagnostics.functionSkeletonEdgeCount << ","
+      << "\"functionSkeletonRawFunctionEdgeCount\":"
+      << diagnostics.functionSkeletonRawFunctionEdgeCount << ","
+      << "\"functionSkeletonAverageHalfedgesPerEdge\":"
+      << diagnostics.functionSkeletonAverageHalfedgesPerEdge << ","
+      << "\"functionSkeletonEditsPlanned\":"
+      << diagnostics.functionSkeletonEditsPlanned << ","
+      << "\"functionSkeletonEditsApplied\":"
+      << diagnostics.functionSkeletonEditsApplied << ","
+      << "\"functionSkeletonEditsRejected\":"
+      << diagnostics.functionSkeletonEditsRejected << ","
+      << "\"functionSkeletonMatchesConnectivity\":"
+      << (diagnostics.functionSkeletonMatchesConnectivity ? "true" : "false")
+      << ","
       << "\"lowQualityFacesPruned\":" << diagnostics.lowQualityFacesPruned
       << ","
       << "\"lowValenceCandidatesConsidered\":"
@@ -637,6 +952,19 @@ void write_results_json(const Options &options,
       << integration_solve_strategy_name(options.solveStrategy) << "\",\n";
   out << "  \"integerBatchStrategy\": \""
       << integer_batch_strategy_name(options.batchStrategy) << "\",\n";
+  out << "  \"reduceIntegerTransitionBasis\": "
+      << (options.reduceIntegerTransitionBasis ? "true" : "false") << ",\n";
+  out << "  \"integrationOnly\": "
+      << (options.integrationOnly ? "true" : "false") << ",\n";
+  out << "  \"skipConstraintRankReduction\": "
+      << (options.skipConstraintRankReduction ? "true" : "false") << ",\n";
+  out << "  \"useFunctionSkeletonCleanup\": "
+      << (options.useFunctionSkeletonCleanup ? "true" : "false") << ",\n";
+  out << "  \"saveMesherCachePath\": \""
+      << escape_json(options.saveMesherCachePath.string()) << "\",\n";
+  out << "  \"loadMesherCachePath\": \""
+      << escape_json(options.loadMesherCachePath.string()) << "\",\n";
+  out << "  \"verbose\": " << (options.verbose ? "true" : "false") << ",\n";
   out << "  \"cases\": [\n";
   for (std::size_t caseIndex = 0; caseIndex < results.size(); ++caseIndex) {
     const BenchmarkCase &benchmarkCase = results[caseIndex].first;
@@ -689,7 +1017,15 @@ void write_results_json(const Options &options,
         << integration_solve_strategy_name(options.solveStrategy)
         << "\", \"integerBatchStrategy\": \""
         << integer_batch_strategy_name(options.batchStrategy)
-        << "\"},\n";
+        << "\", \"reduceIntegerTransitionBasis\": "
+        << (options.reduceIntegerTransitionBasis ? "true" : "false")
+        << ", \"integrationOnly\": "
+        << (options.integrationOnly ? "true" : "false")
+        << ", \"skipConstraintRankReduction\": "
+        << (options.skipConstraintRankReduction ? "true" : "false")
+        << ", \"useFunctionSkeletonCleanup\": "
+        << (options.useFunctionSkeletonCleanup ? "true" : "false")
+        << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {
       const RunRecord &run = runs[runIndex];
@@ -744,6 +1080,7 @@ int main(const int argc, char **argv) {
         results;
     for (const directional::bench::BenchmarkCase &benchmarkCase : cases) {
       std::cout << "Running benchmark case " << benchmarkCase.name << '\n';
+      std::cout.flush();
       for (int warmup = 0; warmup < options.warmupRuns; ++warmup) {
         (void)directional::bench::run_case_once(benchmarkCase, options);
       }
@@ -753,14 +1090,21 @@ int main(const int argc, char **argv) {
         std::cout << "  run " << (run + 1) << "/" << options.measuredRuns
                   << ": " << (runs.back().success ? "success" : "failed")
                   << " in " << runs.back().wallSeconds << " s\n";
+        std::cout.flush();
       }
       results.emplace_back(benchmarkCase, std::move(runs));
     }
     directional::bench::write_results_json(options, results);
     std::cout << "Wrote " << options.outputPath.string() << '\n';
+    std::cout.flush();
     return 0;
   } catch (const std::exception &exception) {
     std::cerr << "directional_benchmarks: " << exception.what() << '\n';
+    std::cerr.flush();
     return 1;
+  } catch (...) {
+    std::cerr << "directional_benchmarks: unknown non-std exception\n";
+    std::cerr.flush();
+    return 2;
   }
 }

@@ -23,6 +23,7 @@ struct IntegrationDiagnostics {
   double freeVariableMapSeconds = 0.0;
   double reducedOperatorExtractionSeconds = 0.0;
   double constraintRankReductionSeconds = 0.0;
+  bool constraintRankReductionSkipped = false;
   double kktAssemblySeconds = 0.0;
   double rhsAssemblySeconds = 0.0;
   double symbolicAnalysisSeconds = 0.0;
@@ -31,8 +32,16 @@ struct IntegrationDiagnostics {
   double fullSolutionReconstructionSeconds = 0.0;
   double integerCandidateSelectionSeconds = 0.0;
   double couplingAnalysisSeconds = 0.0;
+  double integerTransitionBasisAnalysisSeconds = 0.0;
 
   std::size_t integerIterations = 0;
+  std::size_t rawTransitionCount = 0;
+  std::size_t rawIntegerVariableCount = 0;
+  std::size_t reducedIntegerVariableCount = 0;
+  std::size_t redundantIntegerVariableCount = 0;
+  double integerTransitionReductionRatio = 0.0;
+  double integerTransitionNumericalRank = 0.0;
+  bool integerTransitionReductionEnabled = false;
   std::size_t roundingBatches = 0;
   std::vector<std::size_t> roundingBatchHistogram;
   double meanRoundingBatchSize = 0.0;

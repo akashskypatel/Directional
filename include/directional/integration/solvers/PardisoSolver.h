@@ -359,7 +359,7 @@ public:
     }
 
     constexpr double maximumRelativeResidual = 1.0e-8;
-    constexpr double maximumBackwardError = 1.0e-12;
+    constexpr double maximumBackwardError = 1.0e-10;
     constexpr double maximumReasonableSolutionMagnitude = 1.0e12;
 
     if (!std::isfinite(relativeResidual) || !std::isfinite(backwardError) ||

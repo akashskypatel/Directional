@@ -27,6 +27,7 @@
 #include <directional/geometry/CutMesh.h>
 #include <directional/integration/IntegrationData.h>
 #include <directional/integration/Integrate.h>
+#include <directional/integration/IntegerTransitionBasis.h>
 #include <directional/util/GraphUtils.h>
 
 
@@ -605,10 +606,17 @@ inline void setup_integration(const directional::CartesianField &field,
   }
 
   intData.singIntSpanMat.setFromTriplets(singIntSpanMatTriplets.begin(),
-                                         singIntSpanMatTriplets.end());
+                                          singIntSpanMatTriplets.end());
   intData.singIntSpanMatInteger.setFromTriplets(
       singIntSpanMatTripletsInteger.begin(),
       singIntSpanMatTripletsInteger.end());
+
+  intData.integerTransitionBasis =
+      detail::IntegerTransitionBasis::analyze_expanded_integer_relations(
+          intData.constraintMatInteger, intData.linRedMatInteger,
+          intData.singIntSpanMatInteger, intData.intSpanMatInteger,
+          intData.integerVars, intData.n,
+          intData.integerTransitionBasisOptions);
 
   intData.singularIndices = singularIndices;
   intData.fixedValues.resize(intData.n);
