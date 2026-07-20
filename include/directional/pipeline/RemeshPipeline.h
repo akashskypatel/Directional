@@ -70,6 +70,9 @@ struct RemeshOptions {
   /// Enables the Phase 04 function-skeleton edit plan for safe mesher cleanup.
   bool useFunctionSkeletonCleanup = true;
 
+  /// Enables Phase 05 local patch prevalidation before low-valence mutation.
+  bool useLocalPatchPrevalidation = true;
+
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
       IntegrationSolveStrategy::DirectOnly;
@@ -318,6 +321,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           ? MesherSimplificationBackend::TriFlowDCEL
           : MesherSimplificationBackend::Directional;
   mesherData.useFunctionSkeletonCleanup = options.useFunctionSkeletonCleanup;
+  mesherData.useLocalPatchPrevalidation = options.useLocalPatchPrevalidation;
   if (!options.verbose && options.progress) {
     mesherData.progress =
         [callback = options.progress](const std::size_t current,

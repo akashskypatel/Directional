@@ -37,6 +37,7 @@ struct Options {
   bool verbose = false;
   bool skipConstraintRankReduction = false;
   bool useFunctionSkeletonCleanup = true;
+  bool useLocalPatchPrevalidation = true;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
@@ -75,6 +76,7 @@ void print_usage() {
             << "  --integration-only Stop after integration diagnostics.\n"
             << "  --skip-constraint-rank-reduction\n"
             << "  --disable-function-skeleton-cleanup\n"
+            << "  --disable-local-patch-prevalidation\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
             << "  --verbose          Emit pipeline progress logs.\n"
@@ -140,6 +142,8 @@ Options parse_options(const int argc, char **argv) {
       options.skipConstraintRankReduction = true;
     } else if (argument == "--disable-function-skeleton-cleanup") {
       options.useFunctionSkeletonCleanup = false;
+    } else if (argument == "--disable-local-patch-prevalidation") {
+      options.useLocalPatchPrevalidation = false;
     } else if (argument == "--save-mesher-cache") {
       options.saveMesherCachePath = requireValue("--save-mesher-cache");
     } else if (argument == "--load-mesher-cache") {
@@ -555,6 +559,8 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       mesherData.verbose = benchmarkOptions.verbose;
       mesherData.useFunctionSkeletonCleanup =
           benchmarkOptions.useFunctionSkeletonCleanup;
+      mesherData.useLocalPatchPrevalidation =
+          benchmarkOptions.useLocalPatchPrevalidation;
       record.result.cutVertices = mesherData.cutV;
       record.result.cutFaces = mesherData.cutF;
       record.result.success =
@@ -598,6 +604,8 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       benchmarkOptions.skipConstraintRankReduction;
   options.useFunctionSkeletonCleanup =
       benchmarkOptions.useFunctionSkeletonCleanup;
+  options.useLocalPatchPrevalidation =
+      benchmarkOptions.useLocalPatchPrevalidation;
   if (!benchmarkOptions.saveMesherCachePath.empty()) {
     options.mesherDataCallback =
         [path = benchmarkOptions.saveMesherCachePath](
@@ -819,6 +827,13 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << diagnostics.lowQualityFacePruneSeconds << ","
       << "\"lowValenceUnificationSeconds\":"
       << diagnostics.lowValenceUnificationSeconds << ","
+      << "\"localPatchPrevalidationSeconds\":"
+      << diagnostics.localPatchPrevalidationSeconds << ","
+      << "\"postUnificationRetwinSeconds\":"
+      << diagnostics.postUnificationRetwinSeconds << ","
+      << "\"nonSimplePruneSeconds\":" << diagnostics.nonSimplePruneSeconds
+      << ","
+      << "\"holeFillSeconds\":" << diagnostics.holeFillSeconds << ","
       << "\"finalCleanSeconds\":" << diagnostics.finalCleanSeconds << ","
       << "\"triFlowSeconds\":" << diagnostics.triFlowSeconds << ","
       << "\"verticesBeforeSimplification\":"
@@ -862,6 +877,32 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
       << ","
       << "\"lowValenceCandidatesConsidered\":"
       << diagnostics.lowValenceCandidatesConsidered << ","
+      << "\"localPatchPrevalidationAccepted\":"
+      << diagnostics.localPatchPrevalidationAccepted << ","
+      << "\"localPatchPrevalidationRejected\":"
+      << diagnostics.localPatchPrevalidationRejected << ","
+      << "\"localPatchInvalidPatchRejections\":"
+      << diagnostics.localPatchInvalidPatchRejections << ","
+      << "\"localPatchDisconnectedRegionRejections\":"
+      << diagnostics.localPatchDisconnectedRegionRejections << ","
+      << "\"localPatchRepeatedBoundaryVertexRejections\":"
+      << diagnostics.localPatchRepeatedBoundaryVertexRejections << ","
+      << "\"localPatchConsecutiveDuplicateEdgeRejections\":"
+      << diagnostics.localPatchConsecutiveDuplicateEdgeRejections << ","
+      << "\"localPatchFaceDegreeBelowThreeRejections\":"
+      << diagnostics.localPatchFaceDegreeBelowThreeRejections << ","
+      << "\"localPatchZeroLengthBoundaryEdgeRejections\":"
+      << diagnostics.localPatchZeroLengthBoundaryEdgeRejections << ","
+      << "\"localPatchEulerCharacteristicRejections\":"
+      << diagnostics.localPatchEulerCharacteristicRejections << ","
+      << "\"localPatchProtectedSeamRejections\":"
+      << diagnostics.localPatchProtectedSeamRejections << ","
+      << "\"localPatchComponentSplitRejections\":"
+      << diagnostics.localPatchComponentSplitRejections << ","
+      << "\"localPatchNewBoundaryOnClosedRegionRejections\":"
+      << diagnostics.localPatchNewBoundaryOnClosedRegionRejections << ","
+      << "\"lowValenceMutationsAttempted\":"
+      << diagnostics.lowValenceMutationsAttempted << ","
       << "\"lowValenceOperationsAccepted\":"
       << diagnostics.lowValenceOperationsAccepted << ","
       << "\"lowValenceOperationsRejected\":"
@@ -960,6 +1001,8 @@ void write_results_json(const Options &options,
       << (options.skipConstraintRankReduction ? "true" : "false") << ",\n";
   out << "  \"useFunctionSkeletonCleanup\": "
       << (options.useFunctionSkeletonCleanup ? "true" : "false") << ",\n";
+  out << "  \"useLocalPatchPrevalidation\": "
+      << (options.useLocalPatchPrevalidation ? "true" : "false") << ",\n";
   out << "  \"saveMesherCachePath\": \""
       << escape_json(options.saveMesherCachePath.string()) << "\",\n";
   out << "  \"loadMesherCachePath\": \""
@@ -1025,6 +1068,8 @@ void write_results_json(const Options &options,
         << (options.skipConstraintRankReduction ? "true" : "false")
         << ", \"useFunctionSkeletonCleanup\": "
         << (options.useFunctionSkeletonCleanup ? "true" : "false")
+        << ", \"useLocalPatchPrevalidation\": "
+        << (options.useLocalPatchPrevalidation ? "true" : "false")
         << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {

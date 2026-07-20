@@ -35,6 +35,10 @@ struct MesherDiagnostics {
   double faceRealignmentSeconds = 0.0;
   double lowQualityFacePruneSeconds = 0.0;
   double lowValenceUnificationSeconds = 0.0;
+  double localPatchPrevalidationSeconds = 0.0;
+  double postUnificationRetwinSeconds = 0.0;
+  double nonSimplePruneSeconds = 0.0;
+  double holeFillSeconds = 0.0;
   double finalCleanSeconds = 0.0;
   double triFlowSeconds = 0.0;
 
@@ -59,6 +63,19 @@ struct MesherDiagnostics {
   bool functionSkeletonMatchesConnectivity = true;
   std::size_t lowQualityFacesPruned = 0;
   std::size_t lowValenceCandidatesConsidered = 0;
+  std::size_t localPatchPrevalidationAccepted = 0;
+  std::size_t localPatchPrevalidationRejected = 0;
+  std::size_t localPatchInvalidPatchRejections = 0;
+  std::size_t localPatchDisconnectedRegionRejections = 0;
+  std::size_t localPatchRepeatedBoundaryVertexRejections = 0;
+  std::size_t localPatchConsecutiveDuplicateEdgeRejections = 0;
+  std::size_t localPatchFaceDegreeBelowThreeRejections = 0;
+  std::size_t localPatchZeroLengthBoundaryEdgeRejections = 0;
+  std::size_t localPatchEulerCharacteristicRejections = 0;
+  std::size_t localPatchProtectedSeamRejections = 0;
+  std::size_t localPatchComponentSplitRejections = 0;
+  std::size_t localPatchNewBoundaryOnClosedRegionRejections = 0;
+  std::size_t lowValenceMutationsAttempted = 0;
   std::size_t lowValenceOperationsAccepted = 0;
   std::size_t lowValenceOperationsRejected = 0;
   std::size_t cleanupRollbacks = 0;

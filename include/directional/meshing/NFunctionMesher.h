@@ -32,6 +32,7 @@
 #include <directional/core/DCEL.h>
 #include <directional/meshing/FunctionSkeletonBuilder.h>
 #include <directional/meshing/FunctionSkeletonSimplifier.h>
+#include <directional/meshing/LocalPatchValidator.h>
 #include <directional/meshing/MesherData.h>
 #include <directional/meshing/SetupMesher.h>
 #include <directional/meshing/TriFlowSimplificationDCEL.h>
@@ -5671,9 +5672,185 @@ public:
     return static_cast<int>(facesToRemove.size());
   }
 
+  void record_local_patch_rejection(
+      const detail::LocalPatchRejectionReason reason) {
+    ++mData.diagnostics.localPatchPrevalidationRejected;
+    switch (reason) {
+    case detail::LocalPatchRejectionReason::None:
+      break;
+    case detail::LocalPatchRejectionReason::InvalidPatch:
+      ++mData.diagnostics.localPatchInvalidPatchRejections;
+      break;
+    case detail::LocalPatchRejectionReason::DisconnectedRegion:
+      ++mData.diagnostics.localPatchDisconnectedRegionRejections;
+      break;
+    case detail::LocalPatchRejectionReason::RepeatedBoundaryVertex:
+      ++mData.diagnostics.localPatchRepeatedBoundaryVertexRejections;
+      break;
+    case detail::LocalPatchRejectionReason::ConsecutiveDuplicateEdge:
+      ++mData.diagnostics.localPatchConsecutiveDuplicateEdgeRejections;
+      break;
+    case detail::LocalPatchRejectionReason::FaceDegreeBelowThree:
+      ++mData.diagnostics.localPatchFaceDegreeBelowThreeRejections;
+      break;
+    case detail::LocalPatchRejectionReason::ZeroLengthBoundaryEdge:
+      ++mData.diagnostics.localPatchZeroLengthBoundaryEdgeRejections;
+      break;
+    case detail::LocalPatchRejectionReason::EulerCharacteristicChanged:
+      ++mData.diagnostics.localPatchEulerCharacteristicRejections;
+      break;
+    case detail::LocalPatchRejectionReason::ProtectedSeamMutation:
+      ++mData.diagnostics.localPatchProtectedSeamRejections;
+      break;
+    case detail::LocalPatchRejectionReason::ComponentSplit:
+      ++mData.diagnostics.localPatchComponentSplitRejections;
+      break;
+    case detail::LocalPatchRejectionReason::NewBoundaryOnClosedRegion:
+      ++mData.diagnostics.localPatchNewBoundaryOnClosedRegionRejections;
+      break;
+    }
+  }
+
+  detail::LocalPatchValidationResult validate_low_valence_local_patch(
+      const int halfedgeIndex, const bool preserveClosedGeneratedSurface) const {
+    using detail::LocalPatchDescriptor;
+    using detail::LocalPatchRejectionReason;
+    using detail::LocalPatchValidationResult;
+    using detail::LocalPatchValidator;
+
+    const auto reject = [](const LocalPatchRejectionReason reason) {
+      return LocalPatchValidationResult{false, reason};
+    };
+
+    if (!genDcel.valid_halfedge(halfedgeIndex)) {
+      return reject(LocalPatchRejectionReason::InvalidPatch);
+    }
+
+    const auto &halfedge =
+        genDcel.halfedges[static_cast<std::size_t>(halfedgeIndex)];
+    const int prev = halfedge.prev;
+    const int next = halfedge.next;
+    const int twin = halfedge.twin;
+    const int killedVertex = halfedge.vertex;
+
+    if (!genDcel.valid_halfedge(prev) || !genDcel.valid_halfedge(next) ||
+        !genDcel.valid_vertex(killedVertex)) {
+      return reject(LocalPatchRejectionReason::InvalidPatch);
+    }
+
+    const int replacementVertex =
+        genDcel.halfedges[static_cast<std::size_t>(prev)].vertex;
+    if (!genDcel.valid_vertex(replacementVertex) ||
+        replacementVertex == killedVertex) {
+      return reject(LocalPatchRejectionReason::ZeroLengthBoundaryEdge);
+    }
+
+    LocalPatchDescriptor patch;
+    patch.expectedComponentCount = 1;
+    patch.postEditComponentCount = 1;
+    patch.expectedEulerCharacteristic = 1;
+    patch.postEditEulerCharacteristic = 1;
+    patch.wasClosedRegion = preserveClosedGeneratedSurface;
+    patch.introducesBoundary = twin < 0;
+
+    const auto collectCycle = [&](const int face,
+                                  std::vector<int> &cycle) -> bool {
+      cycle.clear();
+      if (!genDcel.valid_face(face)) {
+        return false;
+      }
+      const int start = genDcel.faces[static_cast<std::size_t>(face)].halfedge;
+      if (!genDcel.valid_halfedge(start)) {
+        return false;
+      }
+      std::set<int> visited;
+      int current = start;
+      for (int step = 0; step < static_cast<int>(genDcel.halfedges.size());
+           ++step) {
+        if (!genDcel.valid_halfedge(current)) {
+          return false;
+        }
+        if (!visited.insert(current).second) {
+          return current == start && !cycle.empty();
+        }
+        const auto &currentHalfedge =
+            genDcel.halfedges[static_cast<std::size_t>(current)];
+        if (currentHalfedge.face != face ||
+            !genDcel.valid_halfedge(currentHalfedge.next)) {
+          return false;
+        }
+        cycle.push_back(current);
+        current = currentHalfedge.next;
+        if (current == start) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const auto addFacePatch = [&](const int face,
+                                  const int removedHalfedge) -> bool {
+      std::vector<int> cycle;
+      if (!collectCycle(face, cycle)) {
+        return false;
+      }
+      if (cycle.size() <= 3) {
+        return false;
+      }
+
+      std::vector<int> postBoundary;
+      postBoundary.reserve(cycle.size());
+      for (const int he : cycle) {
+        if (he == removedHalfedge) {
+          continue;
+        }
+        const auto &currentHalfedge =
+            genDcel.halfedges[static_cast<std::size_t>(he)];
+        int origin = currentHalfedge.vertex;
+        if (origin == killedVertex) {
+          origin = replacementVertex;
+        }
+        if (!genDcel.valid_vertex(origin)) {
+          return false;
+        }
+        postBoundary.push_back(origin);
+      }
+
+      patch.postEditFaceDegrees.push_back(static_cast<int>(postBoundary.size()));
+      for (std::size_t index = 0; index < postBoundary.size(); ++index) {
+        patch.regionAdjacency.emplace_back(
+            postBoundary[index],
+            postBoundary[(index + 1) % postBoundary.size()]);
+      }
+      return true;
+    };
+
+    if (!addFacePatch(halfedge.face, halfedgeIndex)) {
+      return reject(LocalPatchRejectionReason::FaceDegreeBelowThree);
+    }
+
+    if (twin >= 0) {
+      if (!genDcel.valid_halfedge(twin)) {
+        return reject(LocalPatchRejectionReason::InvalidPatch);
+      }
+      const auto &twinHalfedge =
+          genDcel.halfedges[static_cast<std::size_t>(twin)];
+      if (twinHalfedge.twin != halfedgeIndex) {
+        return reject(LocalPatchRejectionReason::InvalidPatch);
+      }
+      if (!addFacePatch(twinHalfedge.face, twin)) {
+        return reject(LocalPatchRejectionReason::FaceDegreeBelowThree);
+      }
+    }
+
+    return LocalPatchValidator::validate(patch);
+  }
+
   bool unify_low_valence_vertices(const SimplifyScratch &scratch,
                                   int &unifyCount,
                                   const bool preserveClosedGeneratedSurface) {
+    using Clock = std::chrono::high_resolution_clock;
+
     unifyCount = 0;
 
     const int vertexCount = static_cast<int>(genDcel.vertices.size());
@@ -5879,15 +6056,43 @@ public:
         continue;
       }
 
+      if (mData.useLocalPatchPrevalidation) {
+        const auto prevalidationStart = Clock::now();
+        const detail::LocalPatchValidationResult prevalidation =
+            validate_low_valence_local_patch(halfedge,
+                                             preserveClosedGeneratedSurface);
+        mData.diagnostics.localPatchPrevalidationSeconds +=
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                Clock::now() - prevalidationStart)
+                .count() /
+            1.0e6;
+
+        if (!prevalidation.accepted) {
+          record_local_patch_rejection(prevalidation.reason);
+          if (mData.verbose) {
+            std::cout << "[Directional::NFunctionMesher::"
+                         "unify_low_valence_vertices()]: "
+                      << "prevalidation rejected vertex " << vertex
+                      << " halfedge " << halfedge << " reason="
+                      << detail::LocalPatchValidator::reason_name(
+                             prevalidation.reason)
+                      << '\n';
+          }
+          continue;
+        }
+        ++mData.diagnostics.localPatchPrevalidationAccepted;
+      }
+
       /*
        * Fast batch operation:
        * - no whole-DCEL backup;
        * - no global representative rebuild;
        * - no global consistency check.
        *
-       * The function must still perform all local topology
-       * validation before mutation.
+       * The function must still perform all local topology validation before
+       * mutation; Phase 05 performs the local patch validation above.
        */
+      ++mData.diagnostics.lowValenceMutationsAttempted;
       if (!genDcel.unify_edges_in_place(halfedge, mData.verbose, false,
                                         false)) {
         rollback();
@@ -6000,7 +6205,13 @@ public:
      */
     ++mData.diagnostics.retwinCallCount;
     ++mData.diagnostics.retwinCallsAfterFunctionCleanup;
+    const auto finalRetwinStart = Clock::now();
     const int finalRetwinned = retwin_halfedges();
+    mData.diagnostics.postUnificationRetwinSeconds +=
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - finalRetwinStart)
+            .count() /
+        1.0e6;
 
     if (finalRetwinned < 0) {
       rollback();
@@ -6039,8 +6250,14 @@ public:
     int totalPrunedNonSimpleFaces = 0;
 
     for (;;) {
+      const auto nonSimplePruneStart = Clock::now();
       const int prunedNonSimpleFaces =
           prune_non_simple_faces_after_unification();
+      mData.diagnostics.nonSimplePruneSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - nonSimplePruneStart)
+              .count() /
+          1.0e6;
 
       if (prunedNonSimpleFaces < 0) {
         rollback();
@@ -6074,7 +6291,13 @@ public:
 
       ++mData.diagnostics.retwinCallCount;
       ++mData.diagnostics.retwinCallsAfterFunctionCleanup;
+      const auto postFacePruneRetwinStart = Clock::now();
       const int postFacePruneRetwinned = retwin_halfedges();
+      mData.diagnostics.postUnificationRetwinSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - postFacePruneRetwinStart)
+              .count() /
+          1.0e6;
 
       if (postFacePruneRetwinned < 0) {
         rollback();
@@ -6098,7 +6321,15 @@ public:
 
       if (preserveClosedGeneratedSurface &&
           count_valid_boundary_halfedges() != 0) {
-        if (!fill_generated_boundary_holes("post-unification face pruning")) {
+        const auto holeFillStart = Clock::now();
+        const bool filled =
+            fill_generated_boundary_holes("post-unification face pruning");
+        mData.diagnostics.holeFillSeconds +=
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                Clock::now() - holeFillStart)
+                .count() /
+            1.0e6;
+        if (!filled) {
           return rollbackLowValencePhase(
               "post-unification face pruning opened a previously closed "
               "generated surface and boundary fill failed");
@@ -6108,7 +6339,14 @@ public:
 
     if (preserveClosedGeneratedSurface &&
         count_valid_boundary_halfedges() != 0) {
-      if (!fill_generated_boundary_holes("low-valence cleanup")) {
+      const auto holeFillStart = Clock::now();
+      const bool filled = fill_generated_boundary_holes("low-valence cleanup");
+      mData.diagnostics.holeFillSeconds +=
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - holeFillStart)
+              .count() /
+          1.0e6;
+      if (!filled) {
         return rollbackLowValencePhase(
             "low-valence cleanup would leave boundary halfedges on a "
             "previously closed generated surface and boundary fill failed");
@@ -6127,8 +6365,17 @@ public:
         }
 
         if (count_valid_boundary_halfedges() != 0 &&
-            !fill_generated_boundary_holes(
-                "detached-component pruning after low-valence cleanup")) {
+            [&]() {
+              const auto holeFillStart = Clock::now();
+              const bool filled = fill_generated_boundary_holes(
+                  "detached-component pruning after low-valence cleanup");
+              mData.diagnostics.holeFillSeconds +=
+                  std::chrono::duration_cast<std::chrono::microseconds>(
+                      Clock::now() - holeFillStart)
+                      .count() /
+                  1.0e6;
+              return !filled;
+            }()) {
           return rollbackLowValencePhase(
               "detached-component pruning left boundary halfedges");
         }
@@ -6662,12 +6909,21 @@ public:
               "low-valence cleanup was rejected and low-quality pruning left "
               "boundary halfedges on a previously closed generated surface");
           unifyCount = 0;
-        } else if (!fill_generated_boundary_holes(
-                       "accepted generated-arrangement cleanup")) {
+        } else {
+          const auto holeFillStart = Clock::now();
+          const bool filled = fill_generated_boundary_holes(
+              "accepted generated-arrangement cleanup");
+          mData.diagnostics.holeFillSeconds +=
+              std::chrono::duration_cast<std::chrono::microseconds>(
+                  Clock::now() - holeFillStart)
+                  .count() /
+              1.0e6;
+          if (!filled) {
           rollbackTopologyCleanup(
               "accepted low-valence cleanup left boundary halfedges on a "
               "previously closed generated surface and boundary fill failed");
           unifyCount = 0;
+          }
         }
       }
     }

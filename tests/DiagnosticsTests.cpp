@@ -208,7 +208,10 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "overallPipelineSeconds": 0.1,
         "retwinCallCount": 1,
         "retwinCallsBeforeFunctionCleanup": 1,
-        "retwinCallsAfterFunctionCleanup": 0
+        "retwinCallsAfterFunctionCleanup": 0,
+        "localPatchPrevalidationAccepted": 1,
+        "localPatchPrevalidationRejected": 0,
+        "lowValenceMutationsAttempted": 1
       },
       "outputVertexCount": 4,
       "outputFaceCount": 1,
@@ -241,6 +244,9 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"retwinCallCount\"");
   expect_contains(json, "\"retwinCallsBeforeFunctionCleanup\"");
   expect_contains(json, "\"retwinCallsAfterFunctionCleanup\"");
+  expect_contains(json, "\"localPatchPrevalidationAccepted\"");
+  expect_contains(json, "\"localPatchPrevalidationRejected\"");
+  expect_contains(json, "\"lowValenceMutationsAttempted\"");
   expect_contains(json, "\"outputVertexCount\"");
   expect_contains(json, "\"quadCount\"");
   expect_contains(json, "\"connectedComponentCount\"");

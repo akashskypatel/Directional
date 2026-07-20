@@ -93,6 +93,9 @@ struct MesherData {
   /// Use the Phase 04 function-skeleton edit plan for safe metadata cleanup.
   bool useFunctionSkeletonCleanup;
 
+  /// Use the Phase 05 local patch prevalidator before low-valence mutation.
+  bool useLocalPatchPrevalidation;
+
   /// Machine-readable diagnostics populated regardless of verbose logging.
   MesherDiagnostics diagnostics;
 
@@ -103,7 +106,7 @@ struct MesherData {
         triFlowDcelTargetFaceRatio(0.95), triFlowDcelTopologyWeight(0.1),
         triFlowDcelPreserveFunctionEdges(true),
         triFlowDcelPreserveOriginalBoundaryEdges(true),
-        useFunctionSkeletonCleanup(true) {}
+        useFunctionSkeletonCleanup(true), useLocalPatchPrevalidation(true) {}
   ~MesherData() = default;
 };
 

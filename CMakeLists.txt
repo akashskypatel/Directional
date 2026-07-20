@@ -244,6 +244,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/FunctionSkeletonTests.cpp
     tests/IntegerBatchSelectorTests.cpp
     tests/IntegerTransitionBasisTests.cpp
+    tests/LocalPatchValidatorTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp)
   target_link_libraries(
