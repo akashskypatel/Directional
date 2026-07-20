@@ -101,6 +101,9 @@ struct IntegrationData {
   /// Global scaling applied to integrated functions.
   double lengthRatio;
 
+  /// Absolute target length override. Negative values derive it from lengthRatio.
+  double absoluteTargetLength = -1.0;
+
   /// Enables full translational seamlessness constraints.
   bool integralSeamless;
 

@@ -40,6 +40,8 @@ struct Options {
   bool useLocalPatchPrevalidation = true;
   bool useLocalPatchQuadrangulationFallback = false;
   bool preconditionInputMesh = false;
+  bool parallelizeComponents = false;
+  int maxComponentThreads = 0;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
@@ -81,6 +83,8 @@ void print_usage() {
             << "  --disable-local-patch-prevalidation\n"
             << "  --enable-local-patch-quadrangulation-fallback\n"
             << "  --precondition-input-mesh\n"
+            << "  --parallelize-components\n"
+            << "  --max-component-threads <count> 0 selects hardware concurrency.\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
             << "  --verbose          Emit pipeline progress logs.\n"
@@ -153,6 +157,12 @@ Options parse_options(const int argc, char **argv) {
       options.useLocalPatchQuadrangulationFallback = true;
     } else if (argument == "--precondition-input-mesh") {
       options.preconditionInputMesh = true;
+    } else if (argument == "--parallelize-components") {
+      options.parallelizeComponents = true;
+    } else if (argument == "--max-component-threads") {
+      options.maxComponentThreads =
+          parse_nonnegative_int(requireValue("--max-component-threads"),
+                                "--max-component-threads");
     } else if (argument == "--save-mesher-cache") {
       options.saveMesherCachePath = requireValue("--save-mesher-cache");
     } else if (argument == "--load-mesher-cache") {
@@ -620,6 +630,8 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
   options.useLocalPatchQuadrangulationFallback =
       benchmarkOptions.useLocalPatchQuadrangulationFallback;
   options.preconditionInputMesh = benchmarkOptions.preconditionInputMesh;
+  options.parallelizeComponents = benchmarkOptions.parallelizeComponents;
+  options.maxComponentThreads = benchmarkOptions.maxComponentThreads;
   if (!benchmarkOptions.saveMesherCachePath.empty()) {
     options.mesherDataCallback =
         [path = benchmarkOptions.saveMesherCachePath](
@@ -958,6 +970,43 @@ void write_remesh_diagnostics_json(std::ostream &out,
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
+      << "\"componentSplitSeconds\":" << diagnostics.componentSplitSeconds
+      << ","
+      << "\"componentParallelWallSeconds\":"
+      << diagnostics.componentParallelWallSeconds << ","
+      << "\"componentMergeSeconds\":" << diagnostics.componentMergeSeconds
+      << ","
+      << "\"componentCount\":" << diagnostics.componentCount << ","
+      << "\"componentThreadsRequested\":"
+      << diagnostics.componentThreadsRequested << ","
+      << "\"componentThreadsUsed\":" << diagnostics.componentThreadsUsed
+      << ","
+      << "\"componentPeakConcurrentTasks\":"
+      << diagnostics.componentPeakConcurrentTasks << ","
+      << "\"failedComponentIndex\":" << diagnostics.failedComponentIndex
+      << ","
+      << "\"failedComponentMinimumOriginalFace\":"
+      << diagnostics.failedComponentMinimumOriginalFace << ","
+      << "\"components\":[";
+  for (std::size_t componentIndex = 0;
+       componentIndex < diagnostics.components.size(); ++componentIndex) {
+    const ComponentRemeshDiagnostics &component =
+        diagnostics.components[componentIndex];
+    if (componentIndex > 0) {
+      out << ",";
+    }
+    out << "{"
+        << "\"componentIndex\":" << component.componentIndex << ","
+        << "\"minimumOriginalFace\":" << component.minimumOriginalFace << ","
+        << "\"inputFaceCount\":" << component.inputFaceCount << ","
+        << "\"outputVertexCount\":" << component.outputVertexCount << ","
+        << "\"outputFaceCount\":" << component.outputFaceCount << ","
+        << "\"success\":" << (component.success ? "true" : "false") << ","
+        << "\"wallSeconds\":" << component.wallSeconds << ","
+        << "\"integrationSeconds\":" << component.integrationSeconds << ","
+        << "\"mesherSeconds\":" << component.mesherSeconds << "}";
+  }
+  out << "],"
       << "\"preconditioningSeconds\":" << diagnostics.preconditioningSeconds
       << ","
       << "\"tangentBundleInitializationSeconds\":"
@@ -1073,6 +1122,9 @@ void write_results_json(const Options &options,
       << ",\n";
   out << "  \"preconditionInputMesh\": "
       << (options.preconditionInputMesh ? "true" : "false") << ",\n";
+  out << "  \"parallelizeComponents\": "
+      << (options.parallelizeComponents ? "true" : "false") << ",\n";
+  out << "  \"maxComponentThreads\": " << options.maxComponentThreads << ",\n";
   out << "  \"saveMesherCachePath\": \""
       << escape_json(options.saveMesherCachePath.string()) << "\",\n";
   out << "  \"loadMesherCachePath\": \""
@@ -1109,9 +1161,11 @@ void write_results_json(const Options &options,
         out << std::hex << runs.front().fieldHash << std::dec;
       }
       out << "\"";
-    } else if (benchmarkCase.generatedField == "face_edges") {
+    } else if (benchmarkCase.generatedField == "face_edges" ||
+               benchmarkCase.generatedField == "constant_xy") {
       out << "\"source\": \"generated\", \"method\": "
-             "\"face_edges\", \"normalizeDirections\": true, \"hash\": \"";
+          << "\"" << escape_json(benchmarkCase.generatedField)
+          << "\", \"normalizeDirections\": true, \"hash\": \"";
       if (!runs.empty()) {
         out << std::hex << runs.front().fieldHash << std::dec;
       }
@@ -1144,6 +1198,9 @@ void write_results_json(const Options &options,
         << (options.useLocalPatchQuadrangulationFallback ? "true" : "false")
         << ", \"preconditionInputMesh\": "
         << (options.preconditionInputMesh ? "true" : "false")
+        << ", \"parallelizeComponents\": "
+        << (options.parallelizeComponents ? "true" : "false")
+        << ", \"maxComponentThreads\": " << options.maxComponentThreads
         << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {

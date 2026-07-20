@@ -3634,3 +3634,6 @@ imgui.ini
 output/
 /*.zip
 **/benchmark*/*
+!benchmarks/fixtures/
+benchmarks/fixtures/*
+!benchmarks/fixtures/component_parallelism.json

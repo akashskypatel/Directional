@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "name": "synthetic_components_2",
+      "synthetic": true,
+      "synthetic_subdivisions": 1,
+      "synthetic_components": 2,
+      "generated_field": "constant_xy",
+      "length_ratio": 0.2,
+      "integral_seamless": false,
+      "round_seams": false,
+      "tags": ["phase08", "component-parallelism", "synthetic"]
+    },
+    {
+      "name": "synthetic_components_4",
+      "synthetic": true,
+      "synthetic_subdivisions": 1,
+      "synthetic_components": 4,
+      "generated_field": "constant_xy",
+      "length_ratio": 0.2,
+      "integral_seamless": false,
+      "round_seams": false,
+      "tags": ["phase08", "component-parallelism", "synthetic"]
+    },
+    {
+      "name": "synthetic_components_8",
+      "synthetic": true,
+      "synthetic_subdivisions": 1,
+      "synthetic_components": 8,
+      "generated_field": "constant_xy",
+      "length_ratio": 0.2,
+      "integral_seamless": false,
+      "round_seams": false,
+      "tags": ["phase08", "component-parallelism", "synthetic"]
+    }
+  ]
+}

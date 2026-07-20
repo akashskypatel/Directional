@@ -11,14 +11,31 @@
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
 #include <cstddef>
+#include <vector>
 
 #include <directional/diagnostics/IntegrationDiagnostics.h>
 #include <directional/diagnostics/MesherDiagnostics.h>
 
 namespace directional {
 
+/** @brief Per-component summary for Phase 08 component-level remeshing. */
+struct ComponentRemeshDiagnostics {
+  std::size_t componentIndex = 0;
+  std::size_t minimumOriginalFace = 0;
+  std::size_t inputFaceCount = 0;
+  std::size_t outputVertexCount = 0;
+  std::size_t outputFaceCount = 0;
+  bool success = false;
+  double wallSeconds = 0.0;
+  double integrationSeconds = 0.0;
+  double mesherSeconds = 0.0;
+};
+
 /** @brief Aggregate machine-readable diagnostics for the remesh pipeline. */
 struct RemeshDiagnostics {
+  double componentSplitSeconds = 0.0;
+  double componentParallelWallSeconds = 0.0;
+  double componentMergeSeconds = 0.0;
   double preconditioningSeconds = 0.0;
   double tangentBundleInitializationSeconds = 0.0;
   double fieldSetupSeconds = 0.0;
@@ -42,6 +59,14 @@ struct RemeshDiagnostics {
   double preconditioningAspectRatioP99After = 0.0;
   double preconditioningEdgeLengthCvBefore = 0.0;
   double preconditioningEdgeLengthCvAfter = 0.0;
+
+  std::size_t componentCount = 1;
+  std::size_t componentThreadsRequested = 1;
+  std::size_t componentThreadsUsed = 1;
+  std::size_t componentPeakConcurrentTasks = 1;
+  std::size_t failedComponentIndex = static_cast<std::size_t>(-1);
+  std::size_t failedComponentMinimumOriginalFace = static_cast<std::size_t>(-1);
+  std::vector<ComponentRemeshDiagnostics> components;
 
   IntegrationDiagnostics integration;
   MesherDiagnostics mesher;

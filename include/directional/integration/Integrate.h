@@ -273,9 +273,11 @@ struct IterativeSolveTimings {
 
   VectorXd edgeWeights = VectorXd::Constant(meshWhole.FE.maxCoeff() + 1, 1.0);
   double paramLength =
-      (meshWhole.V.colwise().maxCoeff() - meshWhole.V.colwise().minCoeff())
-          .norm() *
-      intData.lengthRatio;
+      intData.absoluteTargetLength >= 0.0
+          ? intData.absoluteTargetLength
+          : (meshWhole.V.colwise().maxCoeff() - meshWhole.V.colwise().minCoeff())
+                .norm() *
+                intData.lengthRatio;
 
   MatrixXd rawField = field.extField;
   double avgGradNorm = 0;

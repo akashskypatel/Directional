@@ -146,6 +146,29 @@ BenchmarkMesh make_synthetic_grid(const int subdivisions) {
   return mesh;
 }
 
+BenchmarkMesh make_synthetic_component_grid(const int subdivisions,
+                                            const int componentCount) {
+  BenchmarkMesh base = make_synthetic_grid(subdivisions);
+  const int components = std::max(1, componentCount);
+  BenchmarkMesh mesh;
+  mesh.vertices.resize(base.vertices.rows() * components, 3);
+  mesh.faces.resize(base.faces.rows() * components, 3);
+  const double spacing = 3.0;
+  for (int component = 0; component < components; ++component) {
+    const int vertexOffset = component * static_cast<int>(base.vertices.rows());
+    const int faceOffset = component * static_cast<int>(base.faces.rows());
+    for (int vertex = 0; vertex < base.vertices.rows(); ++vertex) {
+      mesh.vertices.row(vertexOffset + vertex) = base.vertices.row(vertex);
+      mesh.vertices(vertexOffset + vertex, 0) += spacing * component;
+    }
+    for (int face = 0; face < base.faces.rows(); ++face) {
+      mesh.faces.row(faceOffset + face) =
+          base.faces.row(face).array() + vertexOffset;
+    }
+  }
+  return mesh;
+}
+
 Eigen::RowVector3d normalized(const Eigen::RowVector3d &value) {
   const double norm = value.norm();
   if (norm < 1.0e-12) {
@@ -403,6 +426,9 @@ load_benchmark_manifest(const std::filesystem::path &path) {
     benchmarkCase.syntheticSubdivisions =
         json_int_value(object, "synthetic_subdivisions",
                        benchmarkCase.syntheticSubdivisions);
+    benchmarkCase.syntheticComponents =
+        json_int_value(object, "synthetic_components",
+                       benchmarkCase.syntheticComponents);
     if (benchmarkCase.name.empty()) {
       throw std::runtime_error("Benchmark manifest case is missing a name.");
     }
@@ -460,7 +486,8 @@ BenchmarkField load_benchmark_field(const BenchmarkCase &benchmarkCase,
 
 BenchmarkField generate_benchmark_field(const BenchmarkCase &benchmarkCase,
                                         const BenchmarkMesh &mesh) {
-  if (benchmarkCase.generatedField != "face_edges") {
+  if (benchmarkCase.generatedField != "face_edges" &&
+      benchmarkCase.generatedField != "constant_xy") {
     return {};
   }
 
@@ -470,6 +497,15 @@ BenchmarkField generate_benchmark_field(const BenchmarkCase &benchmarkCase,
 
   Eigen::MatrixXd primary(mesh.faces.rows(), 3);
   Eigen::MatrixXd secondary(mesh.faces.rows(), 3);
+  if (benchmarkCase.generatedField == "constant_xy") {
+    for (Eigen::Index face = 0; face < mesh.faces.rows(); ++face) {
+      primary.row(face) << 1.0, 0.0, 0.0;
+      secondary.row(face) << 0.0, 1.0, 0.0;
+    }
+    field.raw = make_raw_cross_field(primary, secondary);
+    return field;
+  }
+
   for (Eigen::Index face = 0; face < mesh.faces.rows(); ++face) {
     const Eigen::RowVector3d a = mesh.vertices.row(mesh.faces(face, 0));
     const Eigen::RowVector3d b = mesh.vertices.row(mesh.faces(face, 1));
@@ -504,7 +540,8 @@ BenchmarkField generate_benchmark_field(const BenchmarkCase &benchmarkCase,
 
 BenchmarkMesh load_benchmark_mesh(const BenchmarkCase &benchmarkCase) {
   if (benchmarkCase.synthetic) {
-    return make_synthetic_grid(benchmarkCase.syntheticSubdivisions);
+    return make_synthetic_component_grid(benchmarkCase.syntheticSubdivisions,
+                                         benchmarkCase.syntheticComponents);
   }
 
   const std::string extension = lowercase(benchmarkCase.meshPath.extension().string());

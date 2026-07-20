@@ -21,6 +21,7 @@ struct BenchmarkCase {
   bool roundSeams = true;
   bool synthetic = false;
   int syntheticSubdivisions = 1;
+  int syntheticComponents = 1;
 };
 
 struct BenchmarkMesh {

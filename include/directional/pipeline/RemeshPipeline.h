@@ -12,9 +12,13 @@
 
 #include <chrono>
 #include <cmath>
+#include <future>
 #include <functional>
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include <Eigen/Core>
 
@@ -25,6 +29,7 @@
 #include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
+#include <directional/geometry/MeshComponents.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/Integrate.h>
 #include <directional/integration/IntegrationData.h>
@@ -93,6 +98,15 @@ struct RemeshOptions {
 
   /// Dihedral angle threshold for protected feature edges.
   double preconditionSharpAngleDegrees = 45.0;
+
+  /// Enables Phase 08 component-level parallel remeshing. Disabled by default.
+  bool parallelizeComponents = false;
+
+  /// Maximum component worker tasks. 0 selects hardware concurrency.
+  int maxComponentThreads = 0;
+
+  /// Internal absolute target length override used for component remeshing.
+  double absoluteTargetLength = -1.0;
 
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
@@ -338,6 +352,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
   IntegrationData integration(4);
   integration.lengthRatio = options.lengthRatio;
+  integration.absoluteTargetLength = options.absoluteTargetLength;
   integration.integralSeamless = options.integralSeamless;
   integration.roundSeams = options.roundSeams;
   integration.verbose = options.verbose;
@@ -462,6 +477,313 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   return result;
 }
 
+inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
+                                            const RemeshOptions &options) {
+  if (options.absoluteTargetLength >= 0.0) {
+    return options.absoluteTargetLength;
+  }
+  if (vertices.rows() == 0) {
+    return 0.0;
+  }
+  return (vertices.colwise().maxCoeff() - vertices.colwise().minCoeff())
+             .norm() *
+         options.lengthRatio;
+}
+
+inline void append_matrix_rows(Eigen::MatrixXd &target,
+                               const Eigen::MatrixXd &source) {
+  if (source.rows() == 0) {
+    return;
+  }
+  if (target.rows() == 0) {
+    target = source;
+    return;
+  }
+  const Eigen::Index oldRows = target.rows();
+  target.conservativeResize(oldRows + source.rows(), source.cols());
+  target.block(oldRows, 0, source.rows(), source.cols()) = source;
+}
+
+inline void append_matrix_rows(Eigen::MatrixXi &target,
+                               const Eigen::MatrixXi &source,
+                               const int indexOffset = 0) {
+  if (source.rows() == 0) {
+    return;
+  }
+  Eigen::MatrixXi shifted = source;
+  if (indexOffset != 0) {
+    shifted.array() += indexOffset;
+  }
+  if (target.rows() == 0) {
+    target = shifted;
+    return;
+  }
+  const Eigen::Index oldRows = target.rows();
+  target.conservativeResize(oldRows + shifted.rows(), shifted.cols());
+  target.block(oldRows, 0, shifted.rows(), shifted.cols()) = shifted;
+}
+
+inline void append_vector(Eigen::VectorXi &target,
+                          const Eigen::VectorXi &source) {
+  if (source.size() == 0) {
+    return;
+  }
+  if (target.size() == 0) {
+    target = source;
+    return;
+  }
+  const Eigen::Index oldRows = target.size();
+  target.conservativeResize(oldRows + source.size());
+  target.segment(oldRows, source.size()) = source;
+}
+
+inline void append_vector(Eigen::VectorXd &target,
+                          const Eigen::VectorXd &source) {
+  if (source.size() == 0) {
+    return;
+  }
+  if (target.size() == 0) {
+    target = source;
+    return;
+  }
+  const Eigen::Index oldRows = target.size();
+  target.conservativeResize(oldRows + source.size());
+  target.segment(oldRows, source.size()) = source;
+}
+
+inline void accumulate_component_diagnostics(
+    directional::RemeshDiagnostics &target,
+    const directional::RemeshDiagnostics &source) {
+  target.preconditioningSeconds += source.preconditioningSeconds;
+  target.tangentBundleInitializationSeconds +=
+      source.tangentBundleInitializationSeconds;
+  target.fieldSetupSeconds += source.fieldSetupSeconds;
+  target.principalMatchingSeconds += source.principalMatchingSeconds;
+  target.setupIntegrationSeconds += source.setupIntegrationSeconds;
+  target.integrationTotalSeconds += source.integrationTotalSeconds;
+  target.setupMesherSeconds += source.setupMesherSeconds;
+  target.mesherTotalSeconds += source.mesherTotalSeconds;
+
+  target.preconditioningFlipsAccepted += source.preconditioningFlipsAccepted;
+  target.preconditioningCollapsesAccepted +=
+      source.preconditioningCollapsesAccepted;
+  target.preconditioningSplitsAccepted += source.preconditioningSplitsAccepted;
+  target.preconditioningInputTriangleCount +=
+      source.preconditioningInputTriangleCount;
+  target.preconditioningOutputTriangleCount +=
+      source.preconditioningOutputTriangleCount;
+
+  target.integration.totalSeconds += source.integration.totalSeconds;
+  target.integration.directFactorizations += source.integration.directFactorizations;
+  target.integration.roundingBatches += source.integration.roundingBatches;
+  target.integration.integerIterations += source.integration.integerIterations;
+  target.integration.maximumFreeVariables =
+      std::max(target.integration.maximumFreeVariables,
+               source.integration.maximumFreeVariables);
+  target.integration.maximumConstraintRows =
+      std::max(target.integration.maximumConstraintRows,
+               source.integration.maximumConstraintRows);
+  target.integration.maximumSystemRows =
+      std::max(target.integration.maximumSystemRows,
+               source.integration.maximumSystemRows);
+  target.integration.maximumSystemNonZeros =
+      std::max(target.integration.maximumSystemNonZeros,
+               source.integration.maximumSystemNonZeros);
+
+  target.mesher.totalMesherSeconds += source.mesher.totalMesherSeconds;
+  target.mesher.generateArrangementSeconds +=
+      source.mesher.generateArrangementSeconds;
+  target.mesher.simplifyTotalSeconds += source.mesher.simplifyTotalSeconds;
+  target.mesher.verticesBeforeSimplification +=
+      source.mesher.verticesBeforeSimplification;
+  target.mesher.facesBeforeSimplification +=
+      source.mesher.facesBeforeSimplification;
+  target.mesher.halfedgesBeforeSimplification +=
+      source.mesher.halfedgesBeforeSimplification;
+  target.mesher.verticesAfterSimplification +=
+      source.mesher.verticesAfterSimplification;
+  target.mesher.facesAfterSimplification +=
+      source.mesher.facesAfterSimplification;
+  target.mesher.halfedgesAfterSimplification +=
+      source.mesher.halfedgesAfterSimplification;
+}
+
+inline RemeshResult remesh_components_from_raw_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options) {
+  using Clock = std::chrono::high_resolution_clock;
+  const auto pipelineStart = Clock::now();
+  const auto splitStart = Clock::now();
+  std::vector<geometry::FaceComponent> components =
+      geometry::compact_face_components(vertices, faces, &rawCrossField);
+  const double splitSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            splitStart)
+          .count() /
+      1.0e6;
+
+  if (components.size() <= 1U) {
+    RemeshOptions sequentialOptions = options;
+    sequentialOptions.parallelizeComponents = false;
+    TriMesh meshWhole;
+    meshWhole.set_mesh(vertices, faces);
+    return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField,
+                                            sequentialOptions);
+  }
+
+  const unsigned int hardwareThreads =
+      std::max(1U, std::thread::hardware_concurrency());
+  const std::size_t requestedThreads =
+      options.maxComponentThreads > 0
+          ? static_cast<std::size_t>(options.maxComponentThreads)
+          : static_cast<std::size_t>(hardwareThreads);
+  const std::size_t workerCount =
+      std::max<std::size_t>(1, std::min(requestedThreads, components.size()));
+  const double absoluteTargetLength =
+      derive_absolute_target_length(vertices, options);
+
+  struct ComponentRun {
+    RemeshResult result;
+    bool threw = false;
+    std::string error;
+    double wallSeconds = 0.0;
+  };
+
+  auto runComponent = [&](const std::size_t componentIndex) {
+    const auto componentStart = Clock::now();
+    ComponentRun run;
+    try {
+      const geometry::FaceComponent &component = components[componentIndex];
+      TriMesh componentMesh;
+      componentMesh.set_mesh(component.vertices, component.faces);
+      RemeshOptions componentOptions = options;
+      componentOptions.parallelizeComponents = false;
+      componentOptions.progress = nullptr;
+      componentOptions.mesherDataCallback = nullptr;
+      componentOptions.absoluteTargetLength = absoluteTargetLength;
+      run.result = remesh_from_raw_cross_field_impl(
+          componentMesh, component.rawField, componentOptions);
+    } catch (const std::exception &exception) {
+      run.threw = true;
+      run.error = exception.what();
+    } catch (...) {
+      run.threw = true;
+      run.error = "Unknown component remesh failure.";
+    }
+    run.wallSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                              componentStart)
+            .count() /
+        1.0e6;
+    return run;
+  };
+
+  const auto parallelStart = Clock::now();
+  std::vector<ComponentRun> runs(components.size());
+  if (workerCount == 1U) {
+    for (std::size_t index = 0; index < components.size(); ++index) {
+      runs[index] = runComponent(index);
+    }
+  } else {
+    std::vector<std::future<ComponentRun>> active;
+    std::vector<std::size_t> activeIndices;
+    for (std::size_t next = 0; next < components.size(); ++next) {
+      activeIndices.push_back(next);
+      active.push_back(
+          std::async(std::launch::async, runComponent, next));
+      if (active.size() == workerCount || next + 1 == components.size()) {
+        for (std::size_t activeIndex = 0; activeIndex < active.size();
+             ++activeIndex) {
+          runs[activeIndices[activeIndex]] = active[activeIndex].get();
+        }
+        active.clear();
+        activeIndices.clear();
+      }
+    }
+  }
+  const double parallelSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            parallelStart)
+          .count() /
+      1.0e6;
+
+  const auto mergeStart = Clock::now();
+  RemeshResult merged;
+  merged.success = true;
+  merged.diagnostics.componentSplitSeconds = splitSeconds;
+  merged.diagnostics.componentParallelWallSeconds = parallelSeconds;
+  merged.diagnostics.componentCount = components.size();
+  merged.diagnostics.componentThreadsRequested = requestedThreads;
+  merged.diagnostics.componentThreadsUsed = workerCount;
+  merged.diagnostics.componentPeakConcurrentTasks = workerCount;
+
+  for (std::size_t index = 0; index < components.size(); ++index) {
+    const geometry::FaceComponent &component = components[index];
+    directional::ComponentRemeshDiagnostics componentDiagnostics;
+    componentDiagnostics.componentIndex = index;
+    componentDiagnostics.minimumOriginalFace =
+        static_cast<std::size_t>(component.minimum_original_face());
+    componentDiagnostics.inputFaceCount = component.originalFaces.size();
+    componentDiagnostics.success =
+        !runs[index].threw && runs[index].result.success;
+    componentDiagnostics.wallSeconds = runs[index].wallSeconds;
+    componentDiagnostics.integrationSeconds =
+        runs[index].result.diagnostics.integrationTotalSeconds;
+    componentDiagnostics.mesherSeconds =
+        runs[index].result.diagnostics.mesherTotalSeconds;
+    componentDiagnostics.outputVertexCount =
+        static_cast<std::size_t>(runs[index].result.vertices.rows());
+    componentDiagnostics.outputFaceCount =
+        static_cast<std::size_t>(runs[index].result.faces.rows());
+    merged.diagnostics.components.push_back(componentDiagnostics);
+
+    if (!componentDiagnostics.success) {
+      merged.success = false;
+      merged.diagnostics.failedComponentIndex = index;
+      merged.diagnostics.failedComponentMinimumOriginalFace =
+          componentDiagnostics.minimumOriginalFace;
+      break;
+    }
+
+    const int outputVertexOffset = static_cast<int>(merged.vertices.rows());
+    append_matrix_rows(merged.vertices, runs[index].result.vertices);
+    append_matrix_rows(merged.faces, runs[index].result.faces,
+                       outputVertexOffset);
+    append_vector(merged.degrees, runs[index].result.degrees);
+
+    const int cutVertexOffset = static_cast<int>(merged.cutVertices.rows());
+    append_matrix_rows(merged.cutVertices, runs[index].result.cutVertices);
+    append_matrix_rows(merged.cutFaces, runs[index].result.cutFaces,
+                       cutVertexOffset);
+    append_matrix_rows(merged.cutFunctions, runs[index].result.cutFunctions);
+    append_matrix_rows(merged.cutCornerFunctions,
+                       runs[index].result.cutCornerFunctions);
+    append_matrix_rows(merged.rawCrossField, runs[index].result.rawCrossField);
+    append_vector(merged.crossFieldMatching,
+                  runs[index].result.crossFieldMatching);
+    append_vector(merged.crossFieldEffort, runs[index].result.crossFieldEffort);
+    append_vector(merged.crossFieldSingularCycles,
+                  runs[index].result.crossFieldSingularCycles);
+    append_vector(merged.crossFieldSingularIndices,
+                  runs[index].result.crossFieldSingularIndices);
+
+    accumulate_component_diagnostics(merged.diagnostics,
+                                     runs[index].result.diagnostics);
+  }
+
+  merged.diagnostics.componentMergeSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            mergeStart)
+          .count() /
+      1.0e6;
+  merged.diagnostics.overallPipelineSeconds =
+      std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() -
+                                                            pipelineStart)
+          .count() /
+      1.0e6;
+  return merged;
+}
+
 /**
  * @brief Runs remeshing from raw mesh matrices and a raw 4-RoSy cross field.
  * @param vertices Source vertex positions.
@@ -473,6 +795,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 inline RemeshResult remesh_from_raw_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options = {}) {
+  if (options.parallelizeComponents) {
+    return remesh_components_from_raw_cross_field(vertices, faces, rawCrossField,
+                                                 options);
+  }
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
   return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
@@ -578,8 +904,8 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
     const fields::CrossFieldResult crossField =
         fields::extract_cross_field(meshWhole, crossFieldOptions);
     RemeshResult result =
-        remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
-                                         preconditionedOptions);
+        remesh_from_raw_cross_field(meshWhole.V, meshWhole.F,
+                                    crossField.rawField, preconditionedOptions);
     result.diagnostics.preconditioningSeconds = preconditioningSeconds;
     result.diagnostics.preconditioningFlipsAccepted =
         appliedPreconditioning ? preconditioned.flipsAccepted : 0;
@@ -636,8 +962,8 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
         report_progress(callback, std::min<std::size_t>(mapped, 110), 110,
                         task);
       };
-  return remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
-                                           remeshOptions);
+  return remesh_from_raw_cross_field(meshWhole.V, meshWhole.F,
+                                     crossField.rawField, remeshOptions);
 }
 
 } // namespace directional::pipeline
