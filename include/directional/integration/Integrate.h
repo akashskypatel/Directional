@@ -48,9 +48,9 @@
 #else
 #error "USE_SUITESPARSE_ENABLED is defined, but umfpack.h was not found"
 #endif
-#else
-#include <Eigen/SparseLU>
 #endif
+#include <Eigen/SparseLU>
+#include <Eigen/SparseQR>
 
 #ifdef USE_SUITESPARSE_ENABLED
 #ifndef DIRECTIONAL_UMFPACK_ORDERING
@@ -842,14 +842,15 @@ struct IterativeSolveTimings {
    * This reduces expensive sparse factorizations while avoiding aggressive
    * rounding of ambiguous variables.
    */
-  constexpr int maximumRoundingBatchSize = 8;
+  const int maximumRoundingBatchSize =
+      std::max(1, intData.integerBatchOptions.maximumBatchSize);
   constexpr double maximumAdditionalBatchResidual = 0.12;
   constexpr double relativeBatchResidualFactor = 1.5;
 
   std::size_t totalVariablesFixedByBatching = 0;
   int maximumObservedBatchSize = 0;
-  std::array<std::size_t, maximumRoundingBatchSize + 1>
-      roundingBatchHistogram{};
+  std::vector<std::size_t> roundingBatchHistogram(
+      static_cast<std::size_t>(maximumRoundingBatchSize) + 1U, 0U);
 
   const auto copy_diagnostics = [&](const VectorXd *solution,
                                     const SparseMatrix<double> *constraints,
@@ -2056,6 +2057,277 @@ struct IterativeSolveTimings {
   if (intData.verbose) {
     std::cout << "[Directional::integrate] final vertex-function copy: "
               << seconds_since(finalVertexCopyStart) << " s\n";
+  }
+
+  if (intData.N >= 2) {
+    const auto qualityAnalysisStart = Clock::now();
+    ParametrizationQualityReport initialQuality =
+        analyze_parametrization_quality(meshCut.V, meshCut.F, NFunction,
+                                        intData.targetedStiffening.thresholds);
+    intData.diagnostics.parametrizationQualityAnalysisSeconds +=
+        seconds_since(qualityAnalysisStart);
+    intData.diagnostics.parametrizationInitialBadFaceCount =
+        initialQuality.badFaceCount;
+    intData.diagnostics.parametrizationPostStiffeningBadFaceCount =
+        initialQuality.badFaceCount;
+    intData.diagnostics.parametrizationInvertedFaceCount =
+        initialQuality.invertedFaceCount;
+    intData.diagnostics.parametrizationNearDegenerateFaceCount =
+        initialQuality.nearDegenerateFaceCount;
+
+    const int requestedStiffeningPasses =
+        std::clamp(intData.targetedStiffening.maximumPasses, 0, 1);
+    const double badFaceFraction =
+        meshCut.F.rows() == 0
+            ? 0.0
+            : static_cast<double>(initialQuality.badFaceCount) /
+                  static_cast<double>(meshCut.F.rows());
+    const bool badRegionIsLocal =
+        badFaceFraction <=
+        std::clamp(intData.targetedStiffening.maximumBadFaceFraction, 0.0, 1.0);
+
+    if (intData.targetedStiffening.enabled && requestedStiffeningPasses > 0 &&
+        initialQuality.badFaceCount > 0 && badRegionIsLocal) {
+      const auto stiffeningStart = Clock::now();
+      const TargetedStiffeningWeights targetedWeights =
+          build_targeted_stiffening_weights(meshCut.F, initialQuality,
+                                            intData.targetedStiffening);
+
+      std::vector<Triplet<double>> weightedM1Triplets;
+      weightedM1Triplets.reserve(M1Triplets.size());
+      for (int i = 0; i < meshCut.F.rows(); i++) {
+        const double faceWeight = targetedWeights.faceWeights(i);
+        for (int j = 0; j < 3; j++) {
+          for (int k = 0; k < intData.N; k++) {
+            const int row = 3 * intData.N * i + intData.N * j + k;
+            weightedM1Triplets.emplace_back(
+                row, row, faceWeight * edgeWeights(meshWhole.FE(i, j)));
+          }
+        }
+      }
+
+      SparseMatrix<double> weightedM1(3 * intData.N * meshWhole.F.rows(),
+                                      3 * intData.N * meshWhole.F.rows());
+      weightedM1.setFromTriplets(weightedM1Triplets.begin(),
+                                 weightedM1Triplets.end());
+      weightedM1.makeCompressed();
+
+      SparseMatrix<double> weightedFullEnergy =
+          Efull.transpose() * weightedM1 * Efull;
+      weightedFullEnergy.makeCompressed();
+      const VectorXd weightedFullEnergyRhs =
+          Efull.transpose() * weightedM1 * gamma;
+
+      const int freeVariableCount = numVars - alreadyFixed.sum();
+      bool candidateSolved = freeVariableCount > 0;
+      VectorXd candidateFullx = fullx;
+
+      if (candidateSolved) {
+        SparseMatrix<double> candidateVar2AllMat(numVars, freeVariableCount);
+        std::vector<int> freeToFull(static_cast<std::size_t>(freeVariableCount),
+                                    -1);
+        std::vector<int> fullToFree(static_cast<std::size_t>(numVars), -1);
+        std::vector<Triplet<double>> var2AllTriplets;
+        var2AllTriplets.reserve(static_cast<std::size_t>(freeVariableCount));
+
+        int varCounter = 0;
+        for (int i = 0; i < numVars; ++i) {
+          if (alreadyFixed(i)) {
+            continue;
+          }
+          freeToFull[static_cast<std::size_t>(varCounter)] = i;
+          fullToFree[static_cast<std::size_t>(i)] = varCounter;
+          var2AllTriplets.emplace_back(i, varCounter, 1.0);
+          ++varCounter;
+        }
+        candidateVar2AllMat.setFromTriplets(var2AllTriplets.begin(),
+                                            var2AllTriplets.end());
+
+        std::vector<Triplet<double>> reducedEnergyTriplets;
+        reducedEnergyTriplets.reserve(static_cast<std::size_t>(
+            std::max<Eigen::Index>(freeVariableCount,
+                                   weightedFullEnergy.nonZeros())));
+        for (int freeColumn = 0; freeColumn < freeVariableCount;
+             ++freeColumn) {
+          const int fullColumn =
+              freeToFull[static_cast<std::size_t>(freeColumn)];
+          for (SparseMatrix<double>::InnerIterator entry(weightedFullEnergy,
+                                                         fullColumn);
+               entry; ++entry) {
+            const int fullRow = to_storage_index(entry.row());
+            const int freeRow = fullToFree[static_cast<std::size_t>(fullRow)];
+            if (freeRow >= 0) {
+              reducedEnergyTriplets.emplace_back(freeRow, freeColumn,
+                                                 entry.value());
+            }
+          }
+        }
+
+        SparseMatrix<double> EtE(freeVariableCount, freeVariableCount);
+        EtE.setFromTriplets(reducedEnergyTriplets.begin(),
+                            reducedEnergyTriplets.end());
+        EtE.makeCompressed();
+
+        std::vector<Triplet<double>> reducedConstraintTriplets;
+        reducedConstraintTriplets.reserve(
+            static_cast<std::size_t>(Cfull.nonZeros()));
+        for (int freeColumn = 0; freeColumn < freeVariableCount;
+             ++freeColumn) {
+          const int fullColumn =
+              freeToFull[static_cast<std::size_t>(freeColumn)];
+          for (SparseMatrix<double>::InnerIterator entry(Cfull, fullColumn);
+               entry; ++entry) {
+            reducedConstraintTriplets.emplace_back(to_storage_index(entry.row()),
+                                                   freeColumn, entry.value());
+          }
+        }
+
+        SparseMatrix<double> Cpart(Cfull.rows(), freeVariableCount);
+        Cpart.setFromTriplets(reducedConstraintTriplets.begin(),
+                              reducedConstraintTriplets.end());
+        Cpart.makeCompressed();
+
+        int CpartRank = 0;
+        VectorXi PIndices(0);
+        if (Cpart.rows() != 0 && !intData.skipConstraintRankReduction) {
+          const std::vector<int> selectedRows = select_rank_rows(Cpart);
+          if (!selectedRows.empty() || Cpart.nonZeros() == 0) {
+            CpartRank = static_cast<int>(selectedRows.size());
+            PIndices.resize(CpartRank);
+            for (int row = 0; row < CpartRank; ++row) {
+              PIndices(row) = selectedRows[static_cast<std::size_t>(row)];
+            }
+            Cpart = slice_rows(Cpart, selectedRows);
+          } else {
+            SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> localQr;
+            localQr.compute(Cpart.transpose());
+            CpartRank = to_storage_index(localQr.rank());
+            PIndices = localQr.colsPermutation().indices();
+            std::vector<Triplet<double>> CPartTriplets;
+            for (int k = 0; k < Cpart.outerSize(); ++k) {
+              for (SparseMatrix<double>::InnerIterator it(Cpart, k); it; ++it) {
+                for (int j = 0; j < CpartRank; ++j) {
+                  if (it.row() == PIndices(j)) {
+                    CPartTriplets.emplace_back(j, to_storage_index(it.col()),
+                                               it.value());
+                  }
+                }
+              }
+            }
+            Cpart.resize(CpartRank, Cpart.cols());
+            Cpart.setFromTriplets(CPartTriplets.begin(), CPartTriplets.end());
+          }
+        } else if (Cpart.rows() != 0) {
+          CpartRank = to_storage_index(Cpart.rows());
+          PIndices.resize(CpartRank);
+          for (int row = 0; row < CpartRank; ++row) {
+            PIndices(row) = row;
+          }
+        }
+
+        SparseMatrix<double> A(EtE.rows() + Cpart.rows(),
+                               EtE.rows() + Cpart.rows());
+        std::vector<Triplet<double>> ATriplets;
+        ATriplets.reserve(static_cast<std::size_t>(
+            EtE.nonZeros() + 2 * Cpart.nonZeros()));
+        for (int k = 0; k < EtE.outerSize(); ++k) {
+          for (SparseMatrix<double>::InnerIterator it(EtE, k); it; ++it) {
+            ATriplets.emplace_back(to_storage_index(it.row()),
+                                   to_storage_index(it.col()), it.value());
+          }
+        }
+        for (int k = 0; k < Cpart.outerSize(); ++k) {
+          for (SparseMatrix<double>::InnerIterator it(Cpart, k); it; ++it) {
+            ATriplets.emplace_back(to_storage_index(it.row() + EtE.rows()),
+                                   to_storage_index(it.col()), it.value());
+            ATriplets.emplace_back(to_storage_index(it.col()),
+                                   to_storage_index(it.row() + EtE.rows()),
+                                   it.value());
+          }
+        }
+        A.setFromTriplets(ATriplets.begin(), ATriplets.end());
+        A.makeCompressed();
+
+        VectorXd b = VectorXd::Zero(EtE.rows() + Cpart.rows());
+        const VectorXd fixedContribution = weightedFullEnergy * fixedValues;
+        for (int freeIndex = 0; freeIndex < freeVariableCount; ++freeIndex) {
+          const int fullIndex = freeToFull[static_cast<std::size_t>(freeIndex)];
+          b(freeIndex) =
+              weightedFullEnergyRhs(fullIndex) - fixedContribution(fullIndex);
+        }
+        const VectorXd bfull = -Cfull * fixedValues;
+        for (int k = 0; k < CpartRank; ++k) {
+          b(EtE.rows() + k) = bfull(PIndices(k));
+        }
+
+        VectorXd x;
+        SparseLU<SparseMatrix<double>> luSolver;
+        luSolver.compute(A);
+        ++intData.diagnostics.targetedStiffeningExtraFactorizations;
+        if (luSolver.info() == Success) {
+          x = luSolver.solve(b);
+          candidateSolved = luSolver.info() == Success;
+        } else {
+          SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> qrFallback;
+          qrFallback.compute(A);
+          ++intData.diagnostics.targetedStiffeningExtraFactorizations;
+          if (qrFallback.info() == Success) {
+            x = qrFallback.solve(b);
+            candidateSolved = qrFallback.info() == Success;
+          } else {
+            candidateSolved = false;
+          }
+        }
+
+        if (candidateSolved && x.size() >= freeVariableCount) {
+          candidateFullx =
+              candidateVar2AllMat * x.head(freeVariableCount) + fixedValues;
+        } else {
+          candidateSolved = false;
+        }
+      }
+
+      intData.diagnostics.targetedStiffeningExtraSolveSeconds +=
+          seconds_since(stiffeningStart);
+
+      if (candidateSolved) {
+        const VectorXd candidateFunctionVec =
+            x2CornerMat * candidateFullx;
+        MatrixXd candidateFunctions(meshCut.V.rows(), intData.N);
+        for (int i = 0; i < candidateFunctions.rows(); i++) {
+          candidateFunctions.row(i)
+              << candidateFunctionVec.segment(intData.N * i, intData.N)
+                     .transpose();
+        }
+
+        const auto postQualityStart = Clock::now();
+        const ParametrizationQualityReport postQuality =
+            analyze_parametrization_quality(
+                meshCut.V, meshCut.F, candidateFunctions,
+                intData.targetedStiffening.thresholds);
+        intData.diagnostics.parametrizationQualityAnalysisSeconds +=
+            seconds_since(postQualityStart);
+
+        const double oldConstraintResidual = (Cfull * fullx).norm();
+        const double newConstraintResidual = (Cfull * candidateFullx).norm();
+        const double residualTolerance =
+            1.0e-10 * std::max(1.0, oldConstraintResidual);
+
+        if (newConstraintResidual <= oldConstraintResidual + residualTolerance &&
+            postQuality.badFaceCount < initialQuality.badFaceCount) {
+          fullx = candidateFullx;
+          NFunction = candidateFunctions;
+          NFunctionVec = candidateFunctionVec;
+          intData.diagnostics.parametrizationPostStiffeningBadFaceCount =
+              postQuality.badFaceCount;
+          intData.diagnostics.parametrizationInvertedFaceCount =
+              postQuality.invertedFaceCount;
+          intData.diagnostics.parametrizationNearDegenerateFaceCount =
+              postQuality.nearDegenerateFaceCount;
+          intData.diagnostics.targetedStiffeningPasses = 1;
+        }
+      }
+    }
   }
 
   intData.nVertexFunction = fullx;

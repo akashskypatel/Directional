@@ -1,8 +1,8 @@
-#ifndef tutorial_shared_path_h_included
-#define tutorial_shared_path_h_included
+#ifndef tutorial_data_path_h_included
+#define tutorial_data_path_h_included
 
-#ifndef TUTORIAL_SHARED_PATH
-#define TUTORIAL_SHARED_PATH "../shared"
+#ifndef TUTORIAL_DATA_PATH
+#define TUTORIAL_DATA_PATH "../tutorial_data"
 #endif
 
 #endif

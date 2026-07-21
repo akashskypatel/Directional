@@ -20,6 +20,7 @@
 #include <directional/setup_parameterization.h>
 #include <directional/parameterize.h>
 #include <directional/cut_mesh_with_singularities.h>
+#include "tutorial_data_path.h"
 
 
 int N;
@@ -48,7 +49,7 @@ void hexline_texture(Eigen::Matrix<unsigned char,Eigen::Dynamic,Eigen::Dynamic> 
                      Eigen::Matrix<unsigned char,Eigen::Dynamic,Eigen::Dynamic> &texture_B)
 {
    Eigen::Matrix<unsigned char,Eigen::Dynamic,Eigen::Dynamic> A;
-   igl::png::readPNG(TUTORIAL_SHARED_PATH "/hexpattern2.png", texture_R, texture_G, texture_B, A);
+   igl::png::readPNG(TUTORIAL_DATA_PATH "/hexpattern2.png", texture_R, texture_G, texture_B, A);
 }
 
 
@@ -99,8 +100,8 @@ bool key_down(igl::opengl::glfw::Viewer& viewer, int key, int modifiers)
     case '4': viewingMode = UV_COORDS; break;
     case 'W':
       Eigen::MatrixXd emptyMat;
-      igl::writeOBJ(TUTORIAL_SHARED_PATH "/aqua-center-param-rot-seamless.obj", VMeshCut, FMeshCut, emptyMat, emptyMat, cutUVRot, FMeshCut);
-      igl::writeOBJ(TUTORIAL_SHARED_PATH "/aqua-center-param-full-seamless.obj", VMeshCut, FMeshCut, emptyMat, emptyMat, cutUVFull, FMeshCut);
+      igl::writeOBJ(TUTORIAL_DATA_PATH "/aqua-center-param-rot-seamless.obj", VMeshCut, FMeshCut, emptyMat, emptyMat, cutUVRot, FMeshCut);
+      igl::writeOBJ(TUTORIAL_DATA_PATH "/aqua-center-param-full-seamless.obj", VMeshCut, FMeshCut, emptyMat, emptyMat, cutUVFull, FMeshCut);
       break;
   }
   update_triangle_mesh();
@@ -118,8 +119,8 @@ int main()
   "  W  Save parameterized OBJ file "<< std::endl;
   
   hexline_texture(texture_R, texture_G, texture_B);
-  igl::readOFF(TUTORIAL_SHARED_PATH "/aqua-center.off", VMeshWhole, FMeshWhole);
-  directional::read_raw_field(TUTORIAL_SHARED_PATH "/aqua-center.rawfield", N, rawField);
+  igl::readOFF(TUTORIAL_DATA_PATH "/aqua-center.off", VMeshWhole, FMeshWhole);
+  directional::read_raw_field(TUTORIAL_DATA_PATH "/aqua-center.rawfield", N, rawField);
   igl::edge_topology(VMeshWhole, FMeshWhole, EV, FE, EF);
   igl::barycenter(VMeshWhole, FMeshWhole, barycenters);
   

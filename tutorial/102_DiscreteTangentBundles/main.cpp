@@ -10,7 +10,7 @@
 #include <directional/fields/PowerToRaw.h>
 #include <directional/visualization/DirectionalViewer.h>
 #include <directional/fields/FieldMatching.h>
-#include "tutorial_shared_path.h"
+#include "tutorial_data_path.h"
 #include <polyscope/polyscope.h>
 
 using namespace std;

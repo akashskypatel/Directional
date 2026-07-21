@@ -149,7 +149,7 @@ void callbackFunc()
 
 ...
 
-directional::readOBJ(TUTORIAL_SHARED_PATH "/elephant.obj", mesh);
+directional::readOBJ(TUTORIAL_DATA_PATH "/elephant.obj", mesh);
 viewer.init();
 viewer.set_callback(&callbackFunc);
 ftb.init(mesh);

@@ -248,9 +248,11 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/IntegerBatchSelectorTests.cpp
     tests/IntegerTransitionBasisTests.cpp
     tests/LocalPatchValidatorTests.cpp
+    tests/ParametrizationQualityTests.cpp
     tests/PatchQuadrangulatorTests.cpp
     tests/RemeshRegressionTests.cpp
-    tests/RegularizedCurvaturePhase1Tests.cpp)
+    tests/RegularizedCurvaturePhase1Tests.cpp
+    tests/TargetedStiffeningTests.cpp)
   target_link_libraries(
     directional_phase1_tests
     PRIVATE Directional::directional GTest::gtest_main)

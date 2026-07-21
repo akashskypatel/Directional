@@ -121,6 +121,13 @@ struct RemeshOptions {
   /// Controls diagnostic/experimental integer transition basis reduction.
   IntegerTransitionBasisOptions integerTransitionBasis;
 
+  /// Enables Phase 09 targeted parametrization stiffening. Disabled by default
+  /// until benchmark gates justify making it default-on.
+  bool useTargetedParametrizationStiffening = false;
+
+  /// Controls the default-off targeted parametrization stiffening pass.
+  TargetedStiffeningOptions targetedStiffening;
+
   /// Stops after field integration and returns integration diagnostics only.
   bool stopAfterIntegration = false;
 
@@ -360,6 +367,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   integration.adaptiveOptions = options.adaptiveIntegration;
   integration.integerBatchOptions = options.integerBatching;
   integration.integerTransitionBasisOptions = options.integerTransitionBasis;
+  integration.targetedStiffening = options.targetedStiffening;
+  integration.targetedStiffening.enabled =
+      options.useTargetedParametrizationStiffening &&
+      options.targetedStiffening.enabled;
   integration.skipConstraintRankReduction = options.skipConstraintRankReduction;
 
   report_progress(options.progress, 20, 100, "Setting up integration");
@@ -574,9 +585,25 @@ inline void accumulate_component_diagnostics(
       source.preconditioningOutputTriangleCount;
 
   target.integration.totalSeconds += source.integration.totalSeconds;
+  target.integration.parametrizationQualityAnalysisSeconds +=
+      source.integration.parametrizationQualityAnalysisSeconds;
+  target.integration.targetedStiffeningExtraSolveSeconds +=
+      source.integration.targetedStiffeningExtraSolveSeconds;
   target.integration.directFactorizations += source.integration.directFactorizations;
   target.integration.roundingBatches += source.integration.roundingBatches;
   target.integration.integerIterations += source.integration.integerIterations;
+  target.integration.parametrizationInitialBadFaceCount +=
+      source.integration.parametrizationInitialBadFaceCount;
+  target.integration.parametrizationPostStiffeningBadFaceCount +=
+      source.integration.parametrizationPostStiffeningBadFaceCount;
+  target.integration.parametrizationInvertedFaceCount +=
+      source.integration.parametrizationInvertedFaceCount;
+  target.integration.parametrizationNearDegenerateFaceCount +=
+      source.integration.parametrizationNearDegenerateFaceCount;
+  target.integration.targetedStiffeningPasses +=
+      source.integration.targetedStiffeningPasses;
+  target.integration.targetedStiffeningExtraFactorizations +=
+      source.integration.targetedStiffeningExtraFactorizations;
   target.integration.maximumFreeVariables =
       std::max(target.integration.maximumFreeVariables,
                source.integration.maximumFreeVariables);

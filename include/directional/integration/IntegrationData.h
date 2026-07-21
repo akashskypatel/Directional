@@ -18,6 +18,7 @@
 #include <directional/integration/IntegrationLinearSolver.h>
 #include <directional/integration/IntegrationSolveStrategy.h>
 #include <directional/integration/IntegerTransitionBasis.h>
+#include <directional/integration/ParametrizationQuality.h>
 #include <directional/util/Progress.h>
 
 /**
@@ -130,6 +131,9 @@ struct IntegrationData {
 
   /// Diagnostic/experimental integer transition basis analysis result.
   IntegerTransitionBasisResult integerTransitionBasis;
+
+  /// Default-off targeted parametrization stiffening controls.
+  TargetedStiffeningOptions targetedStiffening;
 
   /// Numerical-stability controls used when @ref linearSolver selects cuDSS.
   CuDssSolverOptions cuDssSolverOptions;

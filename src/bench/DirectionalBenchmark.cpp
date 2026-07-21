@@ -1,7 +1,9 @@
 #include "BenchmarkCases.h"
 
 #include <algorithm>
+#include <array>
 #include <chrono>
+#include <cctype>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -22,6 +24,7 @@
 #include <directional/geometry/MeshTopology.h>
 #include <directional/integration/IntegerBatchSelector.h>
 #include <directional/integration/IntegrationLinearSolver.h>
+#include <directional/integration/ParametrizationQuality.h>
 #include <directional/meshing/Mesher.h>
 
 namespace directional::bench {
@@ -41,7 +44,10 @@ struct Options {
   bool useLocalPatchQuadrangulationFallback = false;
   bool preconditionInputMesh = false;
   bool parallelizeComponents = false;
+  bool useTargetedParametrizationStiffening = false;
   int maxComponentThreads = 0;
+  int maximumIntegerBatchSize = 0;
+  std::filesystem::path parametrizationHeatmapDirectory;
   std::filesystem::path saveMesherCachePath;
   std::filesystem::path loadMesherCachePath;
   int warmupRuns = 1;
@@ -84,7 +90,10 @@ void print_usage() {
             << "  --enable-local-patch-quadrangulation-fallback\n"
             << "  --precondition-input-mesh\n"
             << "  --parallelize-components\n"
+            << "  --enable-targeted-stiffening\n"
             << "  --max-component-threads <count> 0 selects hardware concurrency.\n"
+            << "  --integer-batch-max <count> Override integration rounding batch cap.\n"
+            << "  --write-parametrization-heatmaps <dir>\n"
             << "  --save-mesher-cache <path>\n"
             << "  --load-mesher-cache <path> Run mesher only from cache.\n"
             << "  --verbose          Emit pipeline progress logs.\n"
@@ -159,10 +168,22 @@ Options parse_options(const int argc, char **argv) {
       options.preconditionInputMesh = true;
     } else if (argument == "--parallelize-components") {
       options.parallelizeComponents = true;
+    } else if (argument == "--enable-targeted-stiffening") {
+      options.useTargetedParametrizationStiffening = true;
     } else if (argument == "--max-component-threads") {
       options.maxComponentThreads =
           parse_nonnegative_int(requireValue("--max-component-threads"),
                                 "--max-component-threads");
+    } else if (argument == "--integer-batch-max") {
+      options.maximumIntegerBatchSize =
+          parse_nonnegative_int(requireValue("--integer-batch-max"),
+                                "--integer-batch-max");
+      if (options.maximumIntegerBatchSize <= 0) {
+        throw std::runtime_error("--integer-batch-max must be greater than zero.");
+      }
+    } else if (argument == "--write-parametrization-heatmaps") {
+      options.parametrizationHeatmapDirectory =
+          requireValue("--write-parametrization-heatmaps");
     } else if (argument == "--save-mesher-cache") {
       options.saveMesherCachePath = requireValue("--save-mesher-cache");
     } else if (argument == "--load-mesher-cache") {
@@ -210,6 +231,16 @@ std::string escape_json(const std::string &value) {
     }
   }
   return escaped.str();
+}
+
+std::string safe_artifact_name(std::string value) {
+  for (char &character : value) {
+    const unsigned char byte = static_cast<unsigned char>(character);
+    if (!std::isalnum(byte) && character != '-' && character != '_') {
+      character = '_';
+    }
+  }
+  return value.empty() ? "case" : value;
 }
 
 std::string timestamp_utc() {
@@ -384,6 +415,80 @@ std::uint64_t hash_matrix(const Eigen::MatrixXd &matrix) {
     }
   }
   return hash;
+}
+
+std::array<unsigned char, 3>
+determinant_heatmap_color(const ParametrizationFaceQuality &quality) {
+  if (quality.inverted) {
+    return {220, 40, 40};
+  }
+  if (quality.nearDegenerate || quality.highCondition ||
+      quality.highScaleDistortion) {
+    return {255, 150, 35};
+  }
+  const double determinant =
+      std::isfinite(quality.determinant) ? std::abs(quality.determinant) : 0.0;
+  const double normalized = std::clamp(std::log1p(determinant) / std::log(2.0),
+                                       0.0, 1.0);
+  const auto channel = [](const double value) -> unsigned char {
+    return static_cast<unsigned char>(
+        std::clamp(std::lround(value), 0L, 255L));
+  };
+  return {channel(45.0 + 180.0 * normalized),
+          channel(95.0 + 130.0 * normalized), 255};
+}
+
+void write_parametrization_heatmap_ply(
+    const std::filesystem::path &path,
+    const directional::pipeline::RemeshResult &result) {
+  if (result.cutVertices.rows() == 0 || result.cutFaces.rows() == 0 ||
+      result.cutFunctions.rows() == 0 || result.cutFunctions.cols() < 2) {
+    return;
+  }
+
+  const ParametrizationQualityReport report =
+      analyze_parametrization_quality(result.cutVertices, result.cutFaces,
+                                      result.cutFunctions);
+
+  if (!path.parent_path().empty()) {
+    std::filesystem::create_directories(path.parent_path());
+  }
+
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error("Failed to open parametrization heatmap: " +
+                             path.string());
+  }
+
+  out << "ply\n"
+      << "format ascii 1.0\n"
+      << "comment Directional parametrization determinant heatmap\n"
+      << "comment red=inverted orange=degenerate/high-distortion blue=healthy\n"
+      << "element vertex " << result.cutVertices.rows() << "\n"
+      << "property float x\n"
+      << "property float y\n"
+      << "property float z\n"
+      << "element face " << result.cutFaces.rows() << "\n"
+      << "property list uchar int vertex_indices\n"
+      << "property uchar red\n"
+      << "property uchar green\n"
+      << "property uchar blue\n"
+      << "end_header\n";
+
+  out << std::setprecision(9);
+  for (Eigen::Index row = 0; row < result.cutVertices.rows(); ++row) {
+    out << result.cutVertices(row, 0) << ' ' << result.cutVertices(row, 1)
+        << ' ' << result.cutVertices(row, 2) << '\n';
+  }
+
+  for (Eigen::Index face = 0; face < result.cutFaces.rows(); ++face) {
+    const std::array<unsigned char, 3> color = determinant_heatmap_color(
+        report.faces[static_cast<std::size_t>(face)]);
+    out << "3 " << result.cutFaces(face, 0) << ' ' << result.cutFaces(face, 1)
+        << ' ' << result.cutFaces(face, 2) << ' '
+        << static_cast<int>(color[0]) << ' ' << static_cast<int>(color[1])
+        << ' ' << static_cast<int>(color[2]) << '\n';
+  }
 }
 
 template <typename T> void write_binary(std::ostream &out, const T &value) {
@@ -631,7 +736,15 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       benchmarkOptions.useLocalPatchQuadrangulationFallback;
   options.preconditionInputMesh = benchmarkOptions.preconditionInputMesh;
   options.parallelizeComponents = benchmarkOptions.parallelizeComponents;
+  options.useTargetedParametrizationStiffening =
+      benchmarkOptions.useTargetedParametrizationStiffening;
+  options.targetedStiffening.enabled =
+      benchmarkOptions.useTargetedParametrizationStiffening;
   options.maxComponentThreads = benchmarkOptions.maxComponentThreads;
+  if (benchmarkOptions.maximumIntegerBatchSize > 0) {
+    options.integerBatching.maximumBatchSize =
+        benchmarkOptions.maximumIntegerBatchSize;
+  }
   if (!benchmarkOptions.saveMesherCachePath.empty()) {
     options.mesherDataCallback =
         [path = benchmarkOptions.saveMesherCachePath](
@@ -753,6 +866,10 @@ void write_integration_json(std::ostream &out,
       << ","
       << "\"integerTransitionBasisAnalysisSeconds\":"
       << diagnostics.integerTransitionBasisAnalysisSeconds << ","
+      << "\"parametrizationQualityAnalysisSeconds\":"
+      << diagnostics.parametrizationQualityAnalysisSeconds << ","
+      << "\"targetedStiffeningExtraSolveSeconds\":"
+      << diagnostics.targetedStiffeningExtraSolveSeconds << ","
       << "\"integerIterations\":" << diagnostics.integerIterations << ","
       << "\"rawTransitionCount\":" << diagnostics.rawTransitionCount << ","
       << "\"rawIntegerVariableCount\":" << diagnostics.rawIntegerVariableCount
@@ -786,6 +903,18 @@ void write_integration_json(std::ostream &out,
       << "\"iterativeSuccesses\":" << diagnostics.iterativeSuccesses << ","
       << "\"iterativeFailures\":" << diagnostics.iterativeFailures << ","
       << "\"directFallbacks\":" << diagnostics.directFallbacks << ","
+      << "\"parametrizationInitialBadFaceCount\":"
+      << diagnostics.parametrizationInitialBadFaceCount << ","
+      << "\"parametrizationPostStiffeningBadFaceCount\":"
+      << diagnostics.parametrizationPostStiffeningBadFaceCount << ","
+      << "\"parametrizationInvertedFaceCount\":"
+      << diagnostics.parametrizationInvertedFaceCount << ","
+      << "\"parametrizationNearDegenerateFaceCount\":"
+      << diagnostics.parametrizationNearDegenerateFaceCount << ","
+      << "\"targetedStiffeningPasses\":"
+      << diagnostics.targetedStiffeningPasses << ","
+      << "\"targetedStiffeningExtraFactorizations\":"
+      << diagnostics.targetedStiffeningExtraFactorizations << ","
       << "\"adaptiveDisabledAfterFailures\":"
       << diagnostics.adaptiveDisabledAfterFailures << ","
       << "\"iterativeIterations\":" << diagnostics.iterativeIterations << ","
@@ -1124,7 +1253,15 @@ void write_results_json(const Options &options,
       << (options.preconditionInputMesh ? "true" : "false") << ",\n";
   out << "  \"parallelizeComponents\": "
       << (options.parallelizeComponents ? "true" : "false") << ",\n";
+  out << "  \"useTargetedParametrizationStiffening\": "
+      << (options.useTargetedParametrizationStiffening ? "true" : "false")
+      << ",\n";
   out << "  \"maxComponentThreads\": " << options.maxComponentThreads << ",\n";
+  out << "  \"maximumIntegerBatchSize\": " << options.maximumIntegerBatchSize
+      << ",\n";
+  out << "  \"parametrizationHeatmapDirectory\": \""
+      << escape_json(options.parametrizationHeatmapDirectory.string())
+      << "\",\n";
   out << "  \"saveMesherCachePath\": \""
       << escape_json(options.saveMesherCachePath.string()) << "\",\n";
   out << "  \"loadMesherCachePath\": \""
@@ -1200,7 +1337,11 @@ void write_results_json(const Options &options,
         << (options.preconditionInputMesh ? "true" : "false")
         << ", \"parallelizeComponents\": "
         << (options.parallelizeComponents ? "true" : "false")
+        << ", \"useTargetedParametrizationStiffening\": "
+        << (options.useTargetedParametrizationStiffening ? "true" : "false")
         << ", \"maxComponentThreads\": " << options.maxComponentThreads
+        << ", \"maximumIntegerBatchSize\": "
+        << options.maximumIntegerBatchSize
         << "},\n";
     out << "      \"runs\": [\n";
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {
@@ -1263,6 +1404,15 @@ int main(const int argc, char **argv) {
       std::vector<directional::bench::RunRecord> runs;
       for (int run = 0; run < options.measuredRuns; ++run) {
         runs.push_back(directional::bench::run_case_once(benchmarkCase, options));
+        if (runs.back().success &&
+            !options.parametrizationHeatmapDirectory.empty()) {
+          const std::filesystem::path heatmapPath =
+              options.parametrizationHeatmapDirectory /
+              (directional::bench::safe_artifact_name(benchmarkCase.name) +
+               "_run" + std::to_string(run + 1) + ".param_det_heatmap.ply");
+          directional::bench::write_parametrization_heatmap_ply(
+              heatmapPath, runs.back().result);
+        }
         std::cout << "  run " << (run + 1) << "/" << options.measuredRuns
                   << ": " << (runs.back().success ? "success" : "failed")
                   << " in " << runs.back().wallSeconds << " s\n";

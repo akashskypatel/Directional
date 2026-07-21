@@ -33,6 +33,8 @@ struct IntegrationDiagnostics {
   double integerCandidateSelectionSeconds = 0.0;
   double couplingAnalysisSeconds = 0.0;
   double integerTransitionBasisAnalysisSeconds = 0.0;
+  double parametrizationQualityAnalysisSeconds = 0.0;
+  double targetedStiffeningExtraSolveSeconds = 0.0;
 
   std::size_t integerIterations = 0;
   std::size_t rawTransitionCount = 0;
@@ -51,6 +53,12 @@ struct IntegrationDiagnostics {
   std::size_t iterativeSuccesses = 0;
   std::size_t iterativeFailures = 0;
   std::size_t directFallbacks = 0;
+  std::size_t parametrizationInitialBadFaceCount = 0;
+  std::size_t parametrizationPostStiffeningBadFaceCount = 0;
+  std::size_t parametrizationInvertedFaceCount = 0;
+  std::size_t parametrizationNearDegenerateFaceCount = 0;
+  std::size_t targetedStiffeningPasses = 0;
+  std::size_t targetedStiffeningExtraFactorizations = 0;
   std::size_t adaptiveDisabledAfterFailures = 0;
   std::size_t iterativeIterations = 0;
   std::size_t factorizationFailures = 0;
