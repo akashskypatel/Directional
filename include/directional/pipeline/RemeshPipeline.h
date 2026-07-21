@@ -30,6 +30,7 @@
 #include <directional/fields/FieldMatching.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/geometry/MeshComponents.h>
+#include <directional/geometry/SurfacePoint.h>
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/integration/Integrate.h>
 #include <directional/integration/IntegrationData.h>
@@ -48,6 +49,17 @@
  */
 
 namespace directional::pipeline {
+
+enum class RemeshBackend {
+  Legacy,
+  SurfaceCells
+};
+
+struct SurfaceCellOptions {
+  bool enabled = false;
+  bool strictValidation = true;
+  double geometricTolerance = 1.0e-9;
+};
 
 /**
  * @brief User-tunable parameters for the high-level remeshing pipeline.
@@ -107,6 +119,12 @@ struct RemeshOptions {
 
   /// Internal absolute target length override used for component remeshing.
   double absoluteTargetLength = -1.0;
+
+  /// Selects the remeshing backend. SurfaceCells is default-off scaffold only.
+  RemeshBackend backend = RemeshBackend::Legacy;
+
+  /// Options for the default-off surface-cell backend scaffold.
+  SurfaceCellOptions surfaceCells;
 
   /// Integration KKT solve strategy. DirectOnly remains the default reference.
   IntegrationSolveStrategy integrationSolveStrategy =
@@ -168,6 +186,9 @@ struct RemeshResult {
 
   /// Integrated N-function values at cut-mesh corners.
   Eigen::MatrixXd cutCornerFunctions;
+
+  /// Source-surface provenance for generated output vertices.
+  std::vector<directional::geometry::SurfacePoint> outputVertexProvenance;
 
   /// Ordered #F-by-12 cross field consumed by integration.
   Eigen::MatrixXd rawCrossField;
@@ -238,6 +259,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   using Clock = std::chrono::high_resolution_clock;
   const auto pipelineStart = Clock::now();
   auto phaseStart = pipelineStart;
+  if (options.backend == RemeshBackend::SurfaceCells ||
+      options.surfaceCells.enabled) {
+    RemeshResult result;
+    result.success = false;
+    result.diagnostics.surfaceCellValidationFailures = 1;
+    result.diagnostics.overallPipelineSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - pipelineStart)
+            .count() /
+        1.0e6;
+    return result;
+  }
   const auto log_phase = [&](const char *label) {
     const auto now = Clock::now();
     const auto phaseSeconds =
@@ -565,6 +598,22 @@ inline void append_vector(Eigen::VectorXd &target,
 inline void accumulate_component_diagnostics(
     directional::RemeshDiagnostics &target,
     const directional::RemeshDiagnostics &source) {
+  target.surfaceCellFeatureSeconds += source.surfaceCellFeatureSeconds;
+  target.surfaceCellMetricSeconds += source.surfaceCellMetricSeconds;
+  target.surfaceCellReliefSeconds += source.surfaceCellReliefSeconds;
+  target.surfaceCellTracingSeconds += source.surfaceCellTracingSeconds;
+  target.surfaceCellArrangementSeconds += source.surfaceCellArrangementSeconds;
+  target.surfaceCellSimplificationSeconds +=
+      source.surfaceCellSimplificationSeconds;
+  target.surfaceCellCompletionSeconds += source.surfaceCellCompletionSeconds;
+  target.surfaceCellOptimizationSeconds +=
+      source.surfaceCellOptimizationSeconds;
+  target.surfaceCellValidationSeconds += source.surfaceCellValidationSeconds;
+  target.surfaceCellValidationFailures +=
+      source.surfaceCellValidationFailures;
+  target.surfaceCellProvenanceVertexCount +=
+      source.surfaceCellProvenanceVertexCount;
+
   target.preconditioningSeconds += source.preconditioningSeconds;
   target.tangentBundleInitializationSeconds +=
       source.tangentBundleInitializationSeconds;

@@ -1136,6 +1136,28 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << "\"mesherSeconds\":" << component.mesherSeconds << "}";
   }
   out << "],"
+      << "\"surfaceCellFeatureSeconds\":"
+      << diagnostics.surfaceCellFeatureSeconds << ","
+      << "\"surfaceCellMetricSeconds\":" << diagnostics.surfaceCellMetricSeconds
+      << ","
+      << "\"surfaceCellReliefSeconds\":" << diagnostics.surfaceCellReliefSeconds
+      << ","
+      << "\"surfaceCellTracingSeconds\":"
+      << diagnostics.surfaceCellTracingSeconds << ","
+      << "\"surfaceCellArrangementSeconds\":"
+      << diagnostics.surfaceCellArrangementSeconds << ","
+      << "\"surfaceCellSimplificationSeconds\":"
+      << diagnostics.surfaceCellSimplificationSeconds << ","
+      << "\"surfaceCellCompletionSeconds\":"
+      << diagnostics.surfaceCellCompletionSeconds << ","
+      << "\"surfaceCellOptimizationSeconds\":"
+      << diagnostics.surfaceCellOptimizationSeconds << ","
+      << "\"surfaceCellValidationSeconds\":"
+      << diagnostics.surfaceCellValidationSeconds << ","
+      << "\"surfaceCellValidationFailures\":"
+      << diagnostics.surfaceCellValidationFailures << ","
+      << "\"surfaceCellProvenanceVertexCount\":"
+      << diagnostics.surfaceCellProvenanceVertexCount << ","
       << "\"preconditioningSeconds\":" << diagnostics.preconditioningSeconds
       << ","
       << "\"tangentBundleInitializationSeconds\":"

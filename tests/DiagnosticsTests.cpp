@@ -206,6 +206,9 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
       "wallSeconds": 0.1,
       "diagnostics": {
         "overallPipelineSeconds": 0.1,
+        "surfaceCellValidationSeconds": 0.0,
+        "surfaceCellValidationFailures": 0,
+        "surfaceCellProvenanceVertexCount": 0,
         "preconditioningSeconds": 0.0,
         "preconditioningFlipsAccepted": 0,
         "preconditioningInputTriangleCount": 2,
@@ -254,6 +257,9 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"success\"");
   expect_contains(json, "\"wallSeconds\"");
   expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"surfaceCellValidationSeconds\"");
+  expect_contains(json, "\"surfaceCellValidationFailures\"");
+  expect_contains(json, "\"surfaceCellProvenanceVertexCount\"");
   expect_contains(json, "\"preconditioningSeconds\"");
   expect_contains(json, "\"preconditioningFlipsAccepted\"");
   expect_contains(json, "\"preconditioningInputTriangleCount\"");

@@ -33,6 +33,19 @@ struct ComponentRemeshDiagnostics {
 
 /** @brief Aggregate machine-readable diagnostics for the remesh pipeline. */
 struct RemeshDiagnostics {
+  double surfaceCellFeatureSeconds = 0.0;
+  double surfaceCellMetricSeconds = 0.0;
+  double surfaceCellReliefSeconds = 0.0;
+  double surfaceCellTracingSeconds = 0.0;
+  double surfaceCellArrangementSeconds = 0.0;
+  double surfaceCellSimplificationSeconds = 0.0;
+  double surfaceCellCompletionSeconds = 0.0;
+  double surfaceCellOptimizationSeconds = 0.0;
+  double surfaceCellValidationSeconds = 0.0;
+
+  std::size_t surfaceCellValidationFailures = 0;
+  std::size_t surfaceCellProvenanceVertexCount = 0;
+
   double componentSplitSeconds = 0.0;
   double componentParallelWallSeconds = 0.0;
   double componentMergeSeconds = 0.0;

@@ -11,10 +11,12 @@
 #define DIRECTIONAL_MESHING_PATCH_QUADRANGULATOR_H
 
 #include <algorithm>
+#include <map>
 #include <set>
 #include <vector>
 
 #include <directional/meshing/PatchClassifier.h>
+#include <directional/validation/MeshValidator.h>
 
 namespace directional {
 namespace detail {
@@ -67,7 +69,61 @@ public:
         }
       }
     }
+    if (mesh.vertexPositions.rows() ==
+        static_cast<Eigen::Index>(mesh.vertices.size())) {
+      return output_has_no_t_junctions(mesh, mesh.vertexPositions);
+    }
     return true;
+  }
+
+  [[nodiscard]] static bool
+  output_has_no_t_junctions(const PatchMesh &mesh,
+                            const Eigen::MatrixXd &vertexPositions) {
+    if (vertexPositions.rows() !=
+            static_cast<Eigen::Index>(mesh.vertices.size()) ||
+        vertexPositions.cols() != 3) {
+      return false;
+    }
+
+    std::map<int, int> vertexToLocal;
+    for (std::size_t index = 0; index < mesh.vertices.size(); ++index) {
+      vertexToLocal[mesh.vertices[index]] = static_cast<int>(index);
+    }
+
+    Eigen::MatrixXi faces(static_cast<Eigen::Index>(mesh.quads.size()), 4);
+    for (std::size_t face = 0; face < mesh.quads.size(); ++face) {
+      if (mesh.quads[face].size() != 4) {
+        return false;
+      }
+      for (int corner = 0; corner < 4; ++corner) {
+        const auto found = vertexToLocal.find(mesh.quads[face][corner]);
+        if (found == vertexToLocal.end()) {
+          return false;
+        }
+        faces(static_cast<Eigen::Index>(face), corner) = found->second;
+      }
+    }
+
+    directional::validation::MeshValidatorOptions options;
+    for (std::size_t index = 0; index < mesh.boundaryVertices.size(); ++index) {
+      const int first = mesh.boundaryVertices[index];
+      const int second =
+          mesh.boundaryVertices[(index + 1) % mesh.boundaryVertices.size()];
+      const auto firstLocal = vertexToLocal.find(first);
+      const auto secondLocal = vertexToLocal.find(second);
+      if (firstLocal == vertexToLocal.end() ||
+          secondLocal == vertexToLocal.end()) {
+        return false;
+      }
+      options.authoritativeBoundaryEdges.insert(
+          directional::validation::canonical_edge(firstLocal->second,
+                                                  secondLocal->second));
+    }
+
+    const directional::validation::MeshValidationResult validation =
+        directional::validation::MeshValidator::validate_surface_mesh(
+            vertexPositions, faces, options);
+    return validation.accepted;
   }
 
 private:

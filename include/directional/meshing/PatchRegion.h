@@ -15,6 +15,8 @@
 #include <utility>
 #include <vector>
 
+#include <Eigen/Core>
+
 namespace directional {
 namespace detail {
 
@@ -47,6 +49,7 @@ struct PatchRegion {
 
 struct PatchMesh {
   std::vector<int> vertices;
+  Eigen::MatrixXd vertexPositions;
   std::vector<std::vector<int>> quads;
   std::vector<int> boundaryVertices;
 };
