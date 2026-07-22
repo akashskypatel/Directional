@@ -29,6 +29,7 @@
 #include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
 #include <directional/geometry/AdaptiveFeatureMap.h>
+#include <directional/geometry/AdaptiveTargetSize.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/geometry/MeshComponents.h>
 #include <directional/geometry/SurfacePoint.h>
@@ -61,6 +62,8 @@ struct SurfaceCellOptions {
   bool strictValidation = true;
   double geometricTolerance = 1.0e-9;
   geometry::AdaptiveFeatureMapOptions featureMap;
+  geometry::AdaptiveTargetSizeOptions targetSize;
+  geometry::LocalThicknessOptions thickness;
 };
 
 /**
@@ -272,6 +275,36 @@ inline void copy_adaptive_feature_map_diagnostics(
                                            : featureMap.vertexDensity.maxCoeff();
 }
 
+inline void copy_adaptive_target_size_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::AdaptiveTargetSizeResult &targetSize) {
+  diagnostics.adaptiveTargetSizeResolvedSurfaceError =
+      targetSize.resolvedSurfaceError;
+  diagnostics.adaptiveTargetSizeFiniteVertexCount = 0;
+  diagnostics.adaptiveTargetSizeNonFiniteVertexCount = 0;
+  diagnostics.adaptiveTargetSizeMin = 0.0;
+  diagnostics.adaptiveTargetSizeMax = 0.0;
+  bool initialized = false;
+  for (int vertex = 0; vertex < targetSize.targetSize.size(); ++vertex) {
+    const double value = targetSize.targetSize[vertex];
+    if (std::isfinite(value)) {
+      ++diagnostics.adaptiveTargetSizeFiniteVertexCount;
+      if (!initialized) {
+        diagnostics.adaptiveTargetSizeMin = value;
+        diagnostics.adaptiveTargetSizeMax = value;
+        initialized = true;
+      } else {
+        diagnostics.adaptiveTargetSizeMin =
+            std::min(diagnostics.adaptiveTargetSizeMin, value);
+        diagnostics.adaptiveTargetSizeMax =
+            std::max(diagnostics.adaptiveTargetSizeMax, value);
+      }
+    } else {
+      ++diagnostics.adaptiveTargetSizeNonFiniteVertexCount;
+    }
+  }
+}
+
 /**
  * @brief Compatibility wrapper for tangent projection.
  * @see directional::fields::project_tangent
@@ -337,6 +370,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.adaptiveFeatureMapSeconds =
         result.diagnostics.surfaceCellFeatureSeconds;
     copy_adaptive_feature_map_diagnostics(result.diagnostics, featureMap);
+    const auto targetSizeStart = Clock::now();
+    const geometry::AdaptiveTargetSizeResult targetSize =
+        geometry::compute_adaptive_target_size(
+            meshWhole.V, meshWhole.F, featureMap,
+            options.surfaceCells.targetSize, options.surfaceCells.thickness);
+    result.diagnostics.adaptiveTargetSizeSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - targetSizeStart)
+            .count() /
+        1.0e6;
+    result.diagnostics.surfaceCellMetricSeconds =
+        result.diagnostics.adaptiveTargetSizeSeconds;
+    copy_adaptive_target_size_diagnostics(result.diagnostics, targetSize);
     result.success = false;
     result.diagnostics.surfaceCellValidationFailures = 1;
     result.diagnostics.overallPipelineSeconds =

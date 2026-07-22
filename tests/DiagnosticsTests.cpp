@@ -217,6 +217,12 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "adaptiveFeatureCurveCount": 0,
         "adaptiveFeatureClosedCurveCount": 0,
         "adaptiveFeatureMaxDensity": 0.0,
+        "adaptiveTargetSizeSeconds": 0.0,
+        "adaptiveTargetSizeResolvedSurfaceError": 0.0,
+        "adaptiveTargetSizeMin": 0.0,
+        "adaptiveTargetSizeMax": 0.0,
+        "adaptiveTargetSizeFiniteVertexCount": 0,
+        "adaptiveTargetSizeNonFiniteVertexCount": 0,
         "preconditioningSeconds": 0.0,
         "preconditioningFlipsAccepted": 0,
         "preconditioningInputTriangleCount": 2,
@@ -276,6 +282,12 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"adaptiveFeatureCurveCount\"");
   expect_contains(json, "\"adaptiveFeatureClosedCurveCount\"");
   expect_contains(json, "\"adaptiveFeatureMaxDensity\"");
+  expect_contains(json, "\"adaptiveTargetSizeSeconds\"");
+  expect_contains(json, "\"adaptiveTargetSizeResolvedSurfaceError\"");
+  expect_contains(json, "\"adaptiveTargetSizeMin\"");
+  expect_contains(json, "\"adaptiveTargetSizeMax\"");
+  expect_contains(json, "\"adaptiveTargetSizeFiniteVertexCount\"");
+  expect_contains(json, "\"adaptiveTargetSizeNonFiniteVertexCount\"");
   expect_contains(json, "\"preconditioningSeconds\"");
   expect_contains(json, "\"preconditioningFlipsAccepted\"");
   expect_contains(json, "\"preconditioningInputTriangleCount\"");

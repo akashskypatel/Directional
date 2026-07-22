@@ -240,6 +240,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_phase1_tests
     src/bench/BenchmarkCases.cpp
     tests/AdaptiveFeatureMapPhase11Tests.cpp
+    tests/AdaptiveTargetSizePhase12Tests.cpp
     tests/AdaptiveIntegrationSolverTests.cpp
     tests/BoundedMeshPreconditionerTests.cpp
     tests/ComponentParallelismTests.cpp

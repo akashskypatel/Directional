@@ -54,6 +54,12 @@ struct RemeshDiagnostics {
   std::size_t adaptiveFeatureCurveCount = 0;
   std::size_t adaptiveFeatureClosedCurveCount = 0;
   double adaptiveFeatureMaxDensity = 0.0;
+  double adaptiveTargetSizeSeconds = 0.0;
+  double adaptiveTargetSizeResolvedSurfaceError = 0.0;
+  double adaptiveTargetSizeMin = 0.0;
+  double adaptiveTargetSizeMax = 0.0;
+  std::size_t adaptiveTargetSizeFiniteVertexCount = 0;
+  std::size_t adaptiveTargetSizeNonFiniteVertexCount = 0;
 
   double componentSplitSeconds = 0.0;
   double componentParallelWallSeconds = 0.0;
