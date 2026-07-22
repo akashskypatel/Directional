@@ -253,6 +253,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/LocalPatchValidatorTests.cpp
     tests/ParametrizationQualityTests.cpp
     tests/PatchQuadrangulatorTests.cpp
+    tests/PureQuadCompletionPhase18Tests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp
     tests/SurfaceArrangementPhase16Tests.cpp
