@@ -23,8 +23,11 @@
 
 #include <Eigen/Core>
 
+#include <directional/core/TriMesh.h>
 #include <directional/geometry/AdaptiveFeatureMap.h>
+#include <directional/geometry/FaceCurvature.h>
 #include <directional/geometry/MeshComponents.h>
+#include <directional/geometry/SurfacePoint.h>
 
 namespace directional::geometry {
 
@@ -40,6 +43,7 @@ struct LocalThicknessOptions {
   double normalCompatibility = 0.85;
   double percentile = 0.25;
   double minimumDistance = 1.0e-12;
+  std::vector<int> faceSheets;
 };
 
 struct LocalThicknessResult {
@@ -61,6 +65,13 @@ struct AdaptiveTargetSizeOptions {
   double curvatureEpsilon = 1.0e-12;
   double gradationRatio = 2.0;
   int gradationPasses = 64;
+  bool enableHeatDistance = false;
+  bool enableSkeletonHints = false;
+};
+
+struct PrincipalVertexCurvatureResult {
+  Eigen::VectorXd curvature;
+  Eigen::VectorXd confidence;
 };
 
 struct AdaptiveTargetSizeInput {
@@ -384,6 +395,53 @@ inline Eigen::VectorXd estimate_dihedral_vertex_curvature(
   return curvature;
 }
 
+inline PrincipalVertexCurvatureResult estimate_principal_vertex_curvature(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const FaceCurvatureOptions &options = {}) {
+  if (vertices.cols() != 3 || faces.cols() != 3) {
+    throw std::invalid_argument(
+        "principal vertex curvature expects 3D triangles.");
+  }
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const FaceCurvatureResult faceCurvature = estimate_face_curvature(
+      mesh.V, mesh.F, mesh.FBx, mesh.FBy, mesh.faceNormals, mesh.faceAreas,
+      mesh.TT, mesh.vertexNormals, options);
+
+  PrincipalVertexCurvatureResult result;
+  result.curvature = Eigen::VectorXd::Zero(vertices.rows());
+  result.confidence = Eigen::VectorXd::Zero(vertices.rows());
+  Eigen::VectorXd weights = Eigen::VectorXd::Zero(vertices.rows());
+  for (int face = 0; face < faces.rows(); ++face) {
+    if (faceCurvature.valid(face) == 0) {
+      continue;
+    }
+    const double kappa =
+        std::max(std::abs(faceCurvature.principalCurvatures(face, 0)),
+                 std::abs(faceCurvature.principalCurvatures(face, 1)));
+    const double confidence = std::clamp(faceCurvature.confidence(face), 0.0, 1.0);
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      if (vertex < 0 || vertex >= vertices.rows()) {
+        continue;
+      }
+      const double weight = std::max(mesh.faceAreas(face), 1.0e-30);
+      result.curvature[vertex] += weight * confidence * kappa;
+      result.confidence[vertex] += weight * confidence;
+      weights[vertex] += weight;
+    }
+  }
+  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
+    if (result.confidence[vertex] > 0.0) {
+      result.curvature[vertex] /= result.confidence[vertex];
+    }
+    if (weights[vertex] > 0.0) {
+      result.confidence[vertex] /= weights[vertex];
+    }
+  }
+  return result;
+}
+
 inline LocalThicknessResult estimate_local_thickness(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const LocalThicknessOptions &options = {}) {
@@ -406,6 +464,8 @@ inline LocalThicknessResult estimate_local_thickness(
 
   const std::vector<int> faceComponents =
       adaptive_target_size_detail::face_components_by_index(faces);
+  const bool hasSheets =
+      options.faceSheets.size() == static_cast<std::size_t>(faceCount);
   std::vector<std::set<int>> incidentFaces(static_cast<std::size_t>(vertexCount));
   std::vector<std::set<int>> adjacentVertices(static_cast<std::size_t>(vertexCount));
   for (int face = 0; face < faceCount; ++face) {
@@ -463,9 +523,12 @@ inline LocalThicknessResult estimate_local_thickness(
     }
   }
 
+  const SurfaceProjectionBvh projectionBvh(vertices, faces);
   for (int vertex = 0; vertex < vertexCount; ++vertex) {
     const Eigen::RowVector3d point = row3(vertices, vertex);
-    std::vector<std::pair<double, int>> candidates;
+    std::vector<unsigned char> allowedFaces(static_cast<std::size_t>(faceCount),
+                                            0);
+    int allowedCount = 0;
     for (int face = 0; face < faceCount; ++face) {
       if (excludedFaces[static_cast<std::size_t>(vertex)].count(face) != 0) {
         continue;
@@ -473,6 +536,22 @@ inline LocalThicknessResult estimate_local_thickness(
       if (options.sameComponentOnly &&
           result.component[vertex] != faceComponents[static_cast<std::size_t>(face)]) {
         continue;
+      }
+      if (hasSheets && result.component[vertex] >= 0) {
+        const int referenceSheet = [&]() {
+          for (const int incident :
+               incidentFaces[static_cast<std::size_t>(vertex)]) {
+            if (incident >= 0 && incident < faceCount) {
+              return options.faceSheets[static_cast<std::size_t>(incident)];
+            }
+          }
+          return -1;
+        }();
+        if (referenceSheet >= 0 &&
+            options.faceSheets[static_cast<std::size_t>(face)] !=
+                referenceSheet) {
+          continue;
+        }
       }
       if (options.requireOpposingNormals &&
           vertexNormals[static_cast<std::size_t>(vertex)].squaredNorm() > 0.0 &&
@@ -482,34 +561,22 @@ inline LocalThicknessResult estimate_local_thickness(
               -std::abs(options.normalCompatibility)) {
         continue;
       }
-      const Eigen::RowVector3d a = row3(vertices, faces(face, 0));
-      const Eigen::RowVector3d b = row3(vertices, faces(face, 1));
-      const Eigen::RowVector3d c = row3(vertices, faces(face, 2));
-      const double distance =
-          (point - closest_point_on_triangle(point, a, b, c)).norm();
-      if (std::isfinite(distance) && distance > options.minimumDistance) {
-        candidates.push_back({distance, face});
-      }
+      allowedFaces[static_cast<std::size_t>(face)] = 1;
+      ++allowedCount;
     }
-    result.validCandidateCount[vertex] =
-        static_cast<int>(candidates.size());
-    if (!candidates.empty()) {
-      std::sort(candidates.begin(), candidates.end(),
-                [](const auto &lhs, const auto &rhs) {
-                  if (lhs.first != rhs.first) {
-                    return lhs.first < rhs.first;
-                  }
-                  return lhs.second < rhs.second;
-                });
-      std::vector<double> distances;
-      const std::size_t robustWindow =
-          std::min<std::size_t>(candidates.size(), 8U);
-      distances.reserve(robustWindow);
-      for (std::size_t index = 0; index < robustWindow; ++index) {
-        distances.push_back(candidates[index].first);
+    result.validCandidateCount[vertex] = allowedCount;
+    if (allowedCount > 0) {
+      SurfaceProjectionOptions projectionOptions;
+      projectionOptions.allowedFaces = &allowedFaces;
+      const SurfacePoint projected =
+          projectionBvh.project(point.transpose(), projectionOptions);
+      if (projected.valid()) {
+        const double distance = std::sqrt(projected.squaredDistance);
+        if (std::isfinite(distance) && distance > options.minimumDistance) {
+          result.thickness[vertex] = distance;
+          result.candidateFace[vertex] = projected.face;
+        }
       }
-      result.thickness[vertex] = percentile(distances, options.percentile);
-      result.candidateFace[vertex] = candidates.front().second;
     }
   }
   return result;
@@ -558,6 +625,14 @@ inline AdaptiveTargetSizeResult compute_adaptive_target_size(
   }
   if (options.minSize < 0.0 || options.maxSize < options.minSize) {
     throw std::invalid_argument("adaptive target size clamp range is invalid.");
+  }
+  if (options.enableHeatDistance) {
+    throw std::invalid_argument(
+        "Heat-method distance is unsupported in Phase 12 MVP; use deterministic graph distances.");
+  }
+  if (options.enableSkeletonHints) {
+    throw std::invalid_argument(
+        "Curve-skeleton hints are unsupported in Phase 12 MVP; leave skeleton hints disabled.");
   }
 
   const int vertexCount = static_cast<int>(vertices.rows());
@@ -638,7 +713,7 @@ inline AdaptiveTargetSizeResult compute_adaptive_target_size(
   input.salience =
       estimate_vertex_feature_salience(static_cast<int>(vertices.rows()), featureMap);
   input.featureDensity = featureMap.vertexDensity;
-  input.curvature = estimate_dihedral_vertex_curvature(vertices, faces);
+  input.curvature = estimate_principal_vertex_curvature(vertices, faces).curvature;
   input.thickness =
       estimate_local_thickness(vertices, faces, thicknessOptions).thickness;
   return compute_adaptive_target_size(vertices, faces, input, options);

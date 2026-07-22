@@ -12,6 +12,7 @@
 namespace {
 
 using directional::geometry::AdaptiveFeatureClass;
+using directional::geometry::AdaptiveFeatureCurve;
 using directional::geometry::AdaptiveFeatureMap;
 using directional::geometry::AdaptiveFeatureMapBuilder;
 using directional::geometry::AdaptiveFeatureMapOptions;
@@ -70,6 +71,18 @@ MeshFixture make_square_ring() {
   mesh.faces.resize(8, 3);
   mesh.faces << 0, 1, 5, 0, 5, 4, 1, 2, 6, 1, 6, 5, 2, 3, 7, 2, 7, 6,
       3, 0, 4, 3, 4, 7;
+  return mesh;
+}
+
+MeshFixture make_scrambled_square_ring() {
+  MeshFixture mesh;
+  mesh.vertices.resize(8, 3);
+  mesh.vertices << -1.0, -1.0, 0.0, 0.4, -0.4, 0.0, 1.0, 1.0, 0.0,
+      0.4, 0.4, 0.0, -1.0, 1.0, 0.0, -0.4, 0.4, 0.0, 1.0, -1.0,
+      0.0, -0.4, -0.4, 0.0;
+  mesh.faces.resize(8, 3);
+  mesh.faces << 0, 6, 1, 0, 1, 7, 6, 2, 3, 6, 3, 1, 2, 4, 5, 2, 5, 3,
+      4, 0, 7, 4, 7, 5;
   return mesh;
 }
 
@@ -169,6 +182,35 @@ MeshFixture make_beveled_strip(const int segments) {
       mesh.faces.row(face++) << a, b, d;
       mesh.faces.row(face++) << a, d, c;
     }
+  }
+  return mesh;
+}
+
+MeshFixture make_scrambled_bent_crease() {
+  MeshFixture mesh;
+  mesh.vertices.resize(12, 3);
+  mesh.vertices.row(4) << 0.0, 0.0, 0.0;
+  mesh.vertices.row(0) << 1.0, 0.0, 0.0;
+  mesh.vertices.row(7) << 2.0, 0.0, 0.0;
+  mesh.vertices.row(2) << 2.0, 1.0, 0.0;
+  mesh.vertices.row(5) << 0.0, 0.7, 0.0;
+  mesh.vertices.row(1) << 1.0, 0.7, 0.0;
+  mesh.vertices.row(8) << 2.0, 0.7, 0.0;
+  mesh.vertices.row(3) << 2.7, 1.0, 0.0;
+  mesh.vertices.row(6) << 0.0, -0.7, 0.35;
+  mesh.vertices.row(9) << 1.0, -0.7, 0.35;
+  mesh.vertices.row(10) << 2.0, -0.7, 0.35;
+  mesh.vertices.row(11) << 1.3, 1.0, 0.35;
+  mesh.faces.resize(12, 3);
+  const int center[4] = {4, 0, 7, 2};
+  const int left[4] = {5, 1, 8, 3};
+  const int right[4] = {6, 9, 10, 11};
+  int face = 0;
+  for (int i = 0; i < 3; ++i) {
+    mesh.faces.row(face++) << center[i], center[i + 1], left[i + 1];
+    mesh.faces.row(face++) << center[i], left[i + 1], left[i];
+    mesh.faces.row(face++) << center[i + 1], center[i], right[i + 1];
+    mesh.faces.row(face++) << center[i], right[i], right[i + 1];
   }
   return mesh;
 }
@@ -526,6 +568,85 @@ TEST(AdaptiveFeatureMapPhase11, OverlayExposesStrengthClassCurveAndDensity) {
   EXPECT_GE(overlay.edgeStrength.maxCoeff(), 1.0);
   EXPECT_GE(overlay.edgeClass.maxCoeff(),
             static_cast<int>(AdaptiveFeatureClass::Boundary));
+}
+
+TEST(AdaptiveFeatureMapPhase11, CanonicalEdgeIndexBacksRepeatedLookup) {
+  const MeshFixture mesh = make_open_crease_strip(12, 70.0);
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces);
+
+  ASSERT_EQ(map.edgeIndex.size(), map.edges.size());
+  for (int repeat = 0; repeat < 1000; ++repeat) {
+    EXPECT_GE(map.find_edge(edge(3, 4)), 0);
+    EXPECT_GT(map.strength(edge(3, 4)), 0.0);
+    EXPECT_NE(map.edge_class(edge(3, 4)), AdaptiveFeatureClass::Smooth);
+  }
+}
+
+TEST(AdaptiveFeatureMapPhase11, FeatureCurveOrderDoesNotSortVertexIds) {
+  const MeshFixture mesh = make_scrambled_square_ring();
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces);
+
+  const AdaptiveFeatureCurve *best = nullptr;
+  for (const auto &curve : map.curves) {
+    if (curve.closed && curve.edges.size() == 4) {
+      best = &curve;
+      break;
+    }
+  }
+  ASSERT_NE(best, nullptr);
+  ASSERT_GE(best->vertices.size(), 4U);
+  std::vector<int> sorted = best->vertices;
+  if (!sorted.empty() && sorted.front() == sorted.back()) {
+    sorted.pop_back();
+  }
+  std::sort(sorted.begin(), sorted.end());
+  std::vector<int> ordered = best->vertices;
+  if (!ordered.empty() && ordered.front() == ordered.back()) {
+    ordered.pop_back();
+  }
+  EXPECT_NE(ordered, sorted);
+  for (std::size_t i = 0; i + 1 < best->vertices.size(); ++i) {
+    EXPECT_GE(map.find_edge(edge(best->vertices[i], best->vertices[i + 1])), 0);
+  }
+}
+
+TEST(AdaptiveFeatureMapPhase11, TangentIncompatibleHysteresisSplitsCurve) {
+  const MeshFixture mesh = make_scrambled_bent_crease();
+  AdaptiveFeatureMapOptions options;
+  options.userHardEdges = {edge(4, 0), edge(0, 7), edge(7, 2)};
+  options.tangentContinuationDegrees = 20.0;
+
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces,
+                                                    options);
+
+  EXPECT_GT(map.tangentRejectedEdges, 0U);
+  int curveWithAllCenterEdges = 0;
+  for (const auto &curve : map.curves) {
+    std::set<std::pair<int, int>> curveEdges;
+    for (const int edgeIndex : curve.edges) {
+      curveEdges.insert(map.edges[static_cast<std::size_t>(edgeIndex)].vertices);
+    }
+    if (curveEdges.count(edge(4, 0)) && curveEdges.count(edge(0, 7)) &&
+        curveEdges.count(edge(7, 2))) {
+      ++curveWithAllCenterEdges;
+    }
+  }
+  EXPECT_EQ(curveWithAllCenterEdges, 0);
+}
+
+TEST(AdaptiveFeatureMapPhase11, SmoothRidgeValleyConfidenceIsRecorded) {
+  const MeshFixture mesh = make_hinge_strip(40.0);
+  AdaptiveFeatureMapOptions options;
+  options.hardSeedStrength = 0.99;
+  options.growStrength = 0.20;
+
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces,
+                                                    options);
+  const int ridge = map.find_edge(edge(2, 3));
+  ASSERT_GE(ridge, 0);
+  EXPECT_GT(map.edges[static_cast<std::size_t>(ridge)].ridgeValleyConfidence,
+            0.0);
+  EXPECT_NE(map.edge_class(edge(2, 3)), AdaptiveFeatureClass::Smooth);
 }
 
 } // namespace

@@ -18,6 +18,7 @@
 #include <limits>
 #include <map>
 #include <numeric>
+#include <optional>
 #include <queue>
 #include <set>
 #include <stdexcept>
@@ -46,6 +47,8 @@ struct AdaptiveFeatureMapOptions {
   double hardSeedStrength = 0.80;
   double growStrength = 0.55;
   double cornerAngleDegrees = 45.0;
+  double tangentContinuationDegrees = 35.0;
+  double ridgeValleyConfidenceThreshold = 0.35;
   double densityRadius = 0.0;
   std::size_t exactQuantileEdgeLimit = 200000;
   std::size_t sampledQuantileEdgeCount = 32768;
@@ -61,6 +64,7 @@ struct AdaptiveFeatureEdge {
   int curve = -1;
   double angleRadians = 0.0;
   double strength = 0.0;
+  double ridgeValleyConfidence = 0.0;
   double length = 0.0;
   AdaptiveFeatureClass edgeClass = AdaptiveFeatureClass::Smooth;
   bool userTagged = false;
@@ -89,19 +93,18 @@ struct AdaptiveFeatureCurve {
 
 struct AdaptiveFeatureMap {
   std::vector<AdaptiveFeatureEdge> edges;
+  std::map<std::pair<int, int>, int> edgeIndex;
   std::vector<AdaptiveFeatureComponentStats> componentStats;
   std::vector<AdaptiveFeatureCurve> curves;
   Eigen::VectorXd vertexDensity;
   bool hasNonManifold = false;
+  std::size_t tangentRejectedEdges = 0;
+  std::size_t indexedLookupCount = 0;
 
   [[nodiscard]] int find_edge(const std::pair<int, int> &edge) const {
     const std::pair<int, int> canonical = canonical_edge(edge.first, edge.second);
-    for (int index = 0; index < static_cast<int>(edges.size()); ++index) {
-      if (edges[static_cast<std::size_t>(index)].vertices == canonical) {
-        return index;
-      }
-    }
-    return -1;
+    const auto found = edgeIndex.find(canonical);
+    return found == edgeIndex.end() ? -1 : found->second;
   }
 
   [[nodiscard]] double strength(const std::pair<int, int> &edge) const {
@@ -295,6 +298,7 @@ public:
       }
       map.edges.push_back(std::move(featureEdge));
     }
+    rebuild_edge_index(map);
 
     compute_component_stats(componentAngles, componentKeys, options, map);
     classify_edges(options, map);
@@ -314,6 +318,14 @@ private:
           adaptive_feature_detail::face_normal(vertices, faces, face);
     }
     return normals;
+  }
+
+  static void rebuild_edge_index(AdaptiveFeatureMap &map) {
+    map.edgeIndex.clear();
+    for (int index = 0; index < static_cast<int>(map.edges.size()); ++index) {
+      map.edgeIndex[map.edges[static_cast<std::size_t>(index)].vertices] =
+          index;
+    }
   }
 
   [[nodiscard]] static std::vector<int> compute_face_components(
@@ -429,9 +441,18 @@ private:
       edge.strength = std::sqrt(
           relativeScore *
           adaptive_feature_detail::smoothstep(angle, absoluteLow, absoluteHigh));
+      edge.ridgeValleyConfidence =
+          std::clamp((edge.strength - options.growStrength) /
+                         std::max(options.hardSeedStrength -
+                                      options.growStrength,
+                                  1.0e-12),
+                     0.0, 1.0);
       if (edge.strength >= options.hardSeedStrength) {
         edge.edgeClass = AdaptiveFeatureClass::Hard;
       } else if (edge.strength >= options.growStrength) {
+        edge.edgeClass = AdaptiveFeatureClass::Soft;
+      } else if (edge.ridgeValleyConfidence >=
+                 options.ridgeValleyConfidenceThreshold) {
         edge.edgeClass = AdaptiveFeatureClass::Soft;
       } else {
         edge.edgeClass = AdaptiveFeatureClass::Smooth;
@@ -461,42 +482,38 @@ private:
       vertexEdges[edge.vertices.first].push_back(edgeIndex);
       vertexEdges[edge.vertices.second].push_back(edgeIndex);
     }
+    map.tangentRejectedEdges =
+        count_tangent_rejections(vertices, vertexEdges, map, options);
 
     std::vector<unsigned char> visited(map.edges.size(), 0);
-    for (int seed = 0; seed < static_cast<int>(map.edges.size()); ++seed) {
-      const AdaptiveFeatureEdge &seedEdge = map.edges[static_cast<std::size_t>(seed)];
-      if (visited[static_cast<std::size_t>(seed)] || !curve_candidate(seedEdge, options) ||
-          seedEdge.strength < options.hardSeedStrength) {
-        continue;
-      }
-
-      AdaptiveFeatureCurve curve;
-      curve.id = static_cast<int>(map.curves.size());
-      curve.component = seedEdge.component;
-      std::vector<int> stack{seed};
-      visited[static_cast<std::size_t>(seed)] = 1;
-      while (!stack.empty()) {
-        const int current = stack.back();
-        stack.pop_back();
-        AdaptiveFeatureEdge &edge = map.edges[static_cast<std::size_t>(current)];
-        edge.curve = curve.id;
-        curve.edges.push_back(current);
-        for (const int vertex : {edge.vertices.first, edge.vertices.second}) {
-          curve.vertices.push_back(vertex);
-          for (const int next : vertexEdges[vertex]) {
-            const AdaptiveFeatureEdge &candidate =
-                map.edges[static_cast<std::size_t>(next)];
-            if (visited[static_cast<std::size_t>(next)] ||
-                !compatible_curve_edge(seedEdge, candidate, options)) {
-              continue;
-            }
-            visited[static_cast<std::size_t>(next)] = 1;
-            stack.push_back(next);
-          }
+    for (const auto &[vertex, incidentEdges] : vertexEdges) {
+      for (const int seed : incidentEdges) {
+        if (visited[static_cast<std::size_t>(seed)] ||
+            !seed_can_start_curve(map.edges[static_cast<std::size_t>(seed)],
+                                  options) ||
+            !is_curve_break_vertex(vertices, vertexEdges, map, options,
+                                   vertex)) {
+          continue;
+        }
+        AdaptiveFeatureCurve curve = trace_curve_from_seed(
+            vertices, vertexEdges, map, options, seed, vertex, visited);
+        if (!curve.edges.empty()) {
+          map.curves.push_back(std::move(curve));
         }
       }
-      finalize_curve(vertices, vertexEdges, map, options, curve);
-      map.curves.push_back(std::move(curve));
+    }
+
+    for (int seed = 0; seed < static_cast<int>(map.edges.size()); ++seed) {
+      if (visited[static_cast<std::size_t>(seed)] ||
+          !seed_can_start_curve(map.edges[static_cast<std::size_t>(seed)],
+                                options)) {
+        continue;
+      }
+      AdaptiveFeatureCurve curve = trace_closed_curve(
+          vertices, vertexEdges, map, options, seed, visited);
+      if (!curve.edges.empty()) {
+        map.curves.push_back(std::move(curve));
+      }
     }
   }
 
@@ -506,6 +523,15 @@ private:
     return edge.edgeClass == AdaptiveFeatureClass::Boundary ||
            edge.edgeClass == AdaptiveFeatureClass::NonManifold ||
            edge.strength >= options.growStrength;
+  }
+
+  [[nodiscard]] static bool
+  seed_can_start_curve(const AdaptiveFeatureEdge &edge,
+                       const AdaptiveFeatureMapOptions &options) {
+    return curve_candidate(edge, options) &&
+           (edge.edgeClass == AdaptiveFeatureClass::Boundary ||
+            edge.edgeClass == AdaptiveFeatureClass::NonManifold ||
+            edge.strength >= options.hardSeedStrength);
   }
 
   [[nodiscard]] static bool compatible_curve_edge(
@@ -522,14 +548,233 @@ private:
     return true;
   }
 
+  [[nodiscard]] static int other_vertex(const AdaptiveFeatureEdge &edge,
+                                        const int vertex) {
+    if (edge.vertices.first == vertex) {
+      return edge.vertices.second;
+    }
+    if (edge.vertices.second == vertex) {
+      return edge.vertices.first;
+    }
+    return -1;
+  }
+
+  [[nodiscard]] static bool tangent_compatible_at_vertex(
+      const Eigen::MatrixXd &vertices, const AdaptiveFeatureEdge &previous,
+      const AdaptiveFeatureEdge &candidate, const int vertex,
+      const AdaptiveFeatureMapOptions &options) {
+    if (previous.edgeClass == AdaptiveFeatureClass::Boundary &&
+        candidate.edgeClass == AdaptiveFeatureClass::Boundary) {
+      return true;
+    }
+    const int previousOther = other_vertex(previous, vertex);
+    const int candidateOther = other_vertex(candidate, vertex);
+    if (previousOther < 0 || candidateOther < 0) {
+      return false;
+    }
+    Eigen::RowVector3d incoming =
+        adaptive_feature_detail::row3(vertices, vertex) -
+        adaptive_feature_detail::row3(vertices, previousOther);
+    Eigen::RowVector3d outgoing =
+        adaptive_feature_detail::row3(vertices, candidateOther) -
+        adaptive_feature_detail::row3(vertices, vertex);
+    const double incomingNorm = incoming.norm();
+    const double outgoingNorm = outgoing.norm();
+    if (incomingNorm <= 0.0 || outgoingNorm <= 0.0) {
+      return false;
+    }
+    incoming /= incomingNorm;
+    outgoing /= outgoingNorm;
+    const double turnDegrees = adaptive_feature_detail::radians_to_degrees(
+        std::acos(std::clamp(incoming.dot(outgoing), -1.0, 1.0)));
+    return turnDegrees <= options.tangentContinuationDegrees;
+  }
+
+  [[nodiscard]] static int compatible_degree_at_vertex(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      const AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      const int vertex) {
+    const auto found = vertexEdges.find(vertex);
+    if (found == vertexEdges.end()) {
+      return 0;
+    }
+    int degree = 0;
+    std::vector<int> candidateEdges;
+    for (const int edgeIndex : found->second) {
+      const AdaptiveFeatureEdge &edge =
+          map.edges[static_cast<std::size_t>(edgeIndex)];
+      if (!curve_candidate(edge, options)) {
+        continue;
+      }
+      candidateEdges.push_back(edgeIndex);
+      ++degree;
+    }
+    if (degree != 2) {
+      return degree;
+    }
+    const AdaptiveFeatureEdge &a =
+        map.edges[static_cast<std::size_t>(candidateEdges[0])];
+    const AdaptiveFeatureEdge &b =
+        map.edges[static_cast<std::size_t>(candidateEdges[1])];
+    return tangent_compatible_at_vertex(vertices, a, b, vertex, options) ? 2
+                                                                         : 3;
+  }
+
+  [[nodiscard]] static std::size_t count_tangent_rejections(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      const AdaptiveFeatureMap &map,
+      const AdaptiveFeatureMapOptions &options) {
+    std::size_t rejected = 0;
+    for (const auto &[vertex, incident] : vertexEdges) {
+      std::vector<int> candidates;
+      for (const int edgeIndex : incident) {
+        if (curve_candidate(map.edges[static_cast<std::size_t>(edgeIndex)],
+                            options)) {
+          candidates.push_back(edgeIndex);
+        }
+      }
+      for (std::size_t i = 0; i < candidates.size(); ++i) {
+        for (std::size_t j = i + 1; j < candidates.size(); ++j) {
+          const AdaptiveFeatureEdge &a =
+              map.edges[static_cast<std::size_t>(candidates[i])];
+          const AdaptiveFeatureEdge &b =
+              map.edges[static_cast<std::size_t>(candidates[j])];
+          if (!tangent_compatible_at_vertex(vertices, a, b, vertex, options)) {
+            ++rejected;
+          }
+        }
+      }
+    }
+    return rejected;
+  }
+
+  [[nodiscard]] static bool is_curve_break_vertex(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      const AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      const int vertex) {
+    return compatible_degree_at_vertex(vertices, vertexEdges, map, options,
+                                       vertex) != 2;
+  }
+
+  static void finalize_path_curve(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      const AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      AdaptiveFeatureCurve &curve) {
+    curve.closed = curve.vertices.size() > 2 &&
+                   curve.vertices.front() == curve.vertices.back();
+    std::vector<int> uniqueVertices = curve.vertices;
+    std::sort(uniqueVertices.begin(), uniqueVertices.end());
+    uniqueVertices.erase(
+        std::unique(uniqueVertices.begin(), uniqueVertices.end()),
+        uniqueVertices.end());
+    for (const int vertex : uniqueVertices) {
+      const int degree = compatible_degree_at_vertex(
+          vertices, vertexEdges, map, options, vertex);
+      if (degree > 2) {
+        curve.junctions.push_back(vertex);
+      } else if (degree == 2 &&
+                 is_corner(vertices, map, curve, vertex, options)) {
+        curve.corners.push_back(vertex);
+      }
+    }
+  }
+
+  static AdaptiveFeatureCurve trace_curve_from_seed(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      const int seed, const int startVertex,
+      std::vector<unsigned char> &visited) {
+    AdaptiveFeatureCurve curve;
+    curve.id = static_cast<int>(map.curves.size());
+    const AdaptiveFeatureEdge &seedEdge =
+        map.edges[static_cast<std::size_t>(seed)];
+    curve.component = seedEdge.component;
+    int previousEdge = -1;
+    int currentEdge = seed;
+    int currentVertex = startVertex;
+    curve.vertices.push_back(startVertex);
+    while (currentEdge >= 0) {
+      visited[static_cast<std::size_t>(currentEdge)] = 1;
+      AdaptiveFeatureEdge &edge =
+          map.edges[static_cast<std::size_t>(currentEdge)];
+      edge.curve = curve.id;
+      curve.edges.push_back(currentEdge);
+      const int nextVertex = other_vertex(edge, currentVertex);
+      if (nextVertex < 0) {
+        break;
+      }
+      curve.vertices.push_back(nextVertex);
+      if (is_curve_break_vertex(vertices, vertexEdges, map, options,
+                                nextVertex)) {
+        break;
+      }
+      const int nextEdge = next_unvisited_compatible_edge(
+          vertices, vertexEdges, map, options, currentEdge, nextVertex,
+          visited);
+      previousEdge = currentEdge;
+      currentEdge = nextEdge;
+      currentVertex = nextVertex;
+      (void)previousEdge;
+    }
+    finalize_path_curve(vertices, vertexEdges, map, options, curve);
+    return curve;
+  }
+
+  static AdaptiveFeatureCurve trace_closed_curve(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      const int seed, std::vector<unsigned char> &visited) {
+    const int startVertex = map.edges[static_cast<std::size_t>(seed)].vertices.first;
+    AdaptiveFeatureCurve curve = trace_curve_from_seed(
+        vertices, vertexEdges, map, options, seed, startVertex, visited);
+    if (!curve.vertices.empty() && curve.vertices.back() != startVertex) {
+      curve.vertices.push_back(startVertex);
+    }
+    curve.closed = true;
+    return curve;
+  }
+
+  static int next_unvisited_compatible_edge(
+      const Eigen::MatrixXd &vertices,
+      const std::map<int, std::vector<int>> &vertexEdges,
+      AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
+      const int currentEdge, const int vertex,
+      const std::vector<unsigned char> &visited) {
+    const auto found = vertexEdges.find(vertex);
+    if (found == vertexEdges.end()) {
+      return -1;
+    }
+    for (const int candidateIndex : found->second) {
+      if (candidateIndex == currentEdge ||
+          visited[static_cast<std::size_t>(candidateIndex)]) {
+        continue;
+      }
+      const AdaptiveFeatureEdge &current =
+          map.edges[static_cast<std::size_t>(currentEdge)];
+      const AdaptiveFeatureEdge &candidate =
+          map.edges[static_cast<std::size_t>(candidateIndex)];
+      if (!compatible_curve_edge(current, candidate, options)) {
+        continue;
+      }
+      if (!tangent_compatible_at_vertex(vertices, current, candidate, vertex,
+                                        options)) {
+        continue;
+      }
+      return candidateIndex;
+    }
+    return -1;
+  }
+
   static void finalize_curve(
       const Eigen::MatrixXd &vertices, const std::map<int, std::vector<int>> &vertexEdges,
       const AdaptiveFeatureMap &map, const AdaptiveFeatureMapOptions &options,
       AdaptiveFeatureCurve &curve) {
-    std::sort(curve.vertices.begin(), curve.vertices.end());
-    curve.vertices.erase(std::unique(curve.vertices.begin(), curve.vertices.end()),
-                         curve.vertices.end());
-
     int degreeOne = 0;
     for (const int vertex : curve.vertices) {
       int degree = 0;

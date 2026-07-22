@@ -353,3 +353,77 @@ TEST(AdaptiveTargetSizePhase12, SurfaceCellScaffoldPopulatesSizeDiagnostics) {
   EXPECT_LE(result.diagnostics.adaptiveTargetSizeMax,
             options.surfaceCells.targetSize.maxSize);
 }
+
+TEST(AdaptiveTargetSizePhase12, PrincipalCurvatureEstimatorDrivesSizing) {
+  constexpr double radius = 2.0;
+  const MeshFixture mesh = make_open_cylinder(48, radius, 2.0);
+
+  const auto curvature =
+      directional::geometry::estimate_principal_vertex_curvature(mesh.vertices,
+                                                                 mesh.faces);
+
+  ASSERT_EQ(curvature.curvature.size(), mesh.vertices.rows());
+  EXPECT_GT(curvature.confidence.mean(), 0.3);
+  EXPECT_NEAR(curvature.curvature.mean(), 1.0 / radius, 0.12);
+
+  directional::geometry::AdaptiveFeatureMap featureMap =
+      directional::geometry::AdaptiveFeatureMapBuilder::build(mesh.vertices,
+                                                              mesh.faces);
+  directional::geometry::AdaptiveTargetSizeOptions options;
+  options.baseSize = 1.0;
+  options.minSize = 0.01;
+  options.maxSize = 10.0;
+  options.absoluteSurfaceError = 0.01;
+  options.gradationPasses = 0;
+  const auto result = directional::geometry::compute_adaptive_target_size(
+      mesh.vertices, mesh.faces, featureMap, options);
+
+  EXPECT_LT(result.curvature.mean(), 0.75);
+  EXPECT_GT(result.curvature.mean(), 0.25);
+}
+
+TEST(AdaptiveTargetSizePhase12, ThicknessHonorsSheetFilterWhenComponentsAreClose) {
+  const MeshFixture base = make_box_grid(5, 0.2);
+  const MeshFixture close = make_box_grid(5, 0.02, 0.23);
+  const MeshFixture combined = combine(base, close);
+
+  directional::geometry::LocalThicknessOptions unfiltered;
+  unfiltered.sameComponentOnly = false;
+  const auto crossSheet =
+      directional::geometry::estimate_local_thickness(combined.vertices,
+                                                      combined.faces,
+                                                      unfiltered);
+
+  directional::geometry::LocalThicknessOptions sheetFiltered = unfiltered;
+  sheetFiltered.faceSheets.resize(static_cast<std::size_t>(combined.faces.rows()),
+                                  0);
+  for (int face = base.faces.rows(); face < combined.faces.rows(); ++face) {
+    sheetFiltered.faceSheets[static_cast<std::size_t>(face)] = 1;
+  }
+  const auto sameSheet =
+      directional::geometry::estimate_local_thickness(combined.vertices,
+                                                      combined.faces,
+                                                      sheetFiltered);
+
+  const int topCenter = 36 + 3 * 6 + 3;
+  ASSERT_TRUE(std::isfinite(crossSheet.thickness[topCenter]));
+  ASSERT_TRUE(std::isfinite(sameSheet.thickness[topCenter]));
+  EXPECT_LT(crossSheet.thickness[topCenter], sameSheet.thickness[topCenter]);
+  EXPECT_NEAR(sameSheet.thickness[topCenter], 0.2, 0.02);
+}
+
+TEST(AdaptiveTargetSizePhase12, OptionalHeatAndSkeletonHintsFailFast) {
+  const MeshFixture mesh = make_grid(1);
+  directional::geometry::AdaptiveTargetSizeInput input;
+  directional::geometry::AdaptiveTargetSizeOptions options;
+  options.enableHeatDistance = true;
+  EXPECT_THROW((void)directional::geometry::compute_adaptive_target_size(
+                   mesh.vertices, mesh.faces, input, options),
+               std::invalid_argument);
+
+  options.enableHeatDistance = false;
+  options.enableSkeletonHints = true;
+  EXPECT_THROW((void)directional::geometry::compute_adaptive_target_size(
+                   mesh.vertices, mesh.faces, input, options),
+               std::invalid_argument);
+}
