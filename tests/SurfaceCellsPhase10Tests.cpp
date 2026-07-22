@@ -25,6 +25,26 @@ directional::TriMesh make_two_sheet_mesh() {
   return mesh;
 }
 
+directional::TriMesh make_square_mesh() {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0,
+      0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 0, 2, 3;
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+directional::fields::PointSampledCrossFieldOptions two_sheet_projection_options() {
+  directional::fields::PointSampledCrossFieldOptions options;
+  options.uncoveredFacePolicy =
+      directional::fields::UncoveredFacePolicy::PropagateWithinComponent;
+  options.faceComponents = {0, 0, 1, 1};
+  options.faceSheets = {0, 0, 1, 1};
+  return options;
+}
+
 bool has_code(const directional::validation::MeshValidationResult &result,
               const MeshValidationFailureCode code) {
   for (const auto &issue : result.issues) {
@@ -208,6 +228,21 @@ TEST(SurfaceCellsPhase10, MeshValidatorDetectsBowTieVertexAndComponentMismatch) 
   EXPECT_TRUE(has_code(result, MeshValidationFailureCode::ComponentMerge));
 }
 
+TEST(SurfaceCellsPhase10, MeshValidatorDetectsFaceToFaceIntersection) {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << -1.0, -1.0, 0.0, 1.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      -0.25, -1.0, 0.0, -0.25, 1.0, 0.0, 0.75, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 3, 4, 5;
+
+  const auto result =
+      directional::validation::MeshValidator::validate_surface_mesh(vertices,
+                                                                    faces);
+
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::SelfIntersectingFace));
+}
+
 TEST(SurfaceCellsPhase10, MeshValidatorDetectsGeometricTJunction) {
   Eigen::MatrixXd vertices(5, 3);
   vertices << 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -279,11 +314,71 @@ TEST(SurfaceCellsPhase10, GeometricTJunctionIgnoresDisconnectedCloseSheet) {
 }
 
 TEST(SurfaceCellsPhase10,
+     MeshValidatorFailsClosedWhenRequiredAuthorityIsMissing) {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(1, 4);
+  faces << 0, 1, 2, 3;
+
+  directional::validation::MeshValidatorOptions options;
+  options.requireVertexProvenanceForGeometry = true;
+  auto result =
+      directional::validation::MeshValidator::validate_surface_mesh(vertices,
+                                                                    faces,
+                                                                    options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::MissingProvenance));
+
+  options = {};
+  options.requireAuthoritativeBoundary = true;
+  result = directional::validation::MeshValidator::validate_surface_mesh(
+      vertices, faces, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(
+      has_code(result, MeshValidationFailureCode::MissingBoundaryAuthority));
+
+  result = directional::validation::MeshValidator::validate_topology_only(
+      vertices, faces);
+  EXPECT_TRUE(result.accepted);
+}
+
+TEST(SurfaceCellsPhase10,
+     MeshValidatorUsesComponentSheetInsteadOfExactFaceEquality) {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 2.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(1, 4);
+  faces << 0, 1, 2, 3;
+  directional::validation::MeshValidatorOptions options;
+  options.requireVertexProvenanceForGeometry = true;
+  options.vertexProvenance.resize(5);
+  options.vertexProvenance[0].face = 0;
+  options.vertexProvenance[1].face = 0;
+  options.vertexProvenance[4].face = 1;
+  for (auto &point : options.vertexProvenance) {
+    point.component = 7;
+    point.sheet = 3;
+  }
+
+  const auto result =
+      directional::validation::MeshValidator::validate_surface_mesh(vertices,
+                                                                    faces,
+                                                                    options);
+
+  EXPECT_FALSE(result.accepted);
+  EXPECT_TRUE(
+      has_code(result, MeshValidationFailureCode::GeometricVertexOnUnsplitEdge));
+}
+
+TEST(SurfaceCellsPhase10,
      PointSampledCrossFieldIsInvariantToNinetyDegreeRelabeling) {
-  const directional::TriMesh mesh = make_two_sheet_mesh();
+  const directional::TriMesh mesh = make_square_mesh();
   std::vector<directional::fields::PointCrossFieldSample> samples = {
-      {Eigen::Vector3d(0.25, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0},
-      {Eigen::Vector3d(0.75, 0.25, 0.0), Eigen::Vector3d::UnitY(), 1.0}};
+      {Eigen::Vector3d(0.75, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0,
+       0},
+      {Eigen::Vector3d(0.25, 0.75, 0.0), Eigen::Vector3d::UnitY(), 1.0,
+       1}};
 
   const auto projected =
       directional::fields::project_point_sampled_cross_field(mesh, samples);
@@ -293,6 +388,28 @@ TEST(SurfaceCellsPhase10,
   const Eigen::RowVector3d primary = projected.field.rawField.block(0, 0, 1, 3);
   EXPECT_NEAR(std::abs(primary.dot(Eigen::RowVector3d(1, 0, 0))), 1.0,
               1.0e-10);
+}
+
+TEST(SurfaceCellsPhase10,
+     PointSampledCrossFieldComputesMatchingEffortAndSingularityStorage) {
+  const directional::TriMesh mesh = make_square_mesh();
+  const Eigen::Vector3d tilted(std::cos(0.25), std::sin(0.25), 0.0);
+  std::vector<directional::fields::PointCrossFieldSample> samples = {
+      {Eigen::Vector3d(0.75, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0, 0},
+      {Eigen::Vector3d(0.25, 0.75, 0.0), tilted, 1.0, 1}};
+  directional::fields::PointSampledCrossFieldOptions options;
+  options.combDirections = false;
+
+  const auto projected =
+      directional::fields::project_point_sampled_cross_field(mesh, samples,
+                                                             options);
+
+  ASSERT_EQ(projected.field.matching.size(), mesh.EV.rows());
+  ASSERT_EQ(projected.field.effort.size(), mesh.EV.rows());
+  EXPECT_FALSE((projected.field.matching.array() == 0).all());
+  EXPECT_GT(projected.field.effort.cwiseAbs().sum(), 1.0e-8);
+  EXPECT_EQ(projected.field.singularCycles.size(),
+            projected.field.singularIndices.size());
 }
 
 TEST(SurfaceCellsPhase10, SurfaceProjectionRecordsFaceAndBarycentricPoint) {
@@ -310,9 +427,12 @@ TEST(SurfaceCellsPhase10, SurfaceProjectionRecordsFaceAndBarycentricPoint) {
 
 TEST(SurfaceCellsPhase10,
      PointSampledConstantPlanarFieldHasTinyDegreeFourComplexError) {
-  const directional::TriMesh mesh = make_two_sheet_mesh();
+  const directional::TriMesh mesh = make_square_mesh();
   std::vector<directional::fields::PointCrossFieldSample> samples = {
-      {Eigen::Vector3d(0.25, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0}};
+      {Eigen::Vector3d(0.75, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0,
+       0},
+      {Eigen::Vector3d(0.25, 0.75, 0.0), Eigen::Vector3d::UnitX(), 1.0,
+       1}};
 
   const auto projected =
       directional::fields::project_point_sampled_cross_field(mesh, samples);
@@ -327,31 +447,52 @@ TEST(SurfaceCellsPhase10,
 
 TEST(SurfaceCellsPhase10,
      PointSampledCrossFieldReportsConfidenceCancellationAndUncoveredFaces) {
-  const directional::TriMesh mesh = make_two_sheet_mesh();
+  const directional::TriMesh mesh = make_square_mesh();
   std::vector<directional::fields::PointCrossFieldSample> samples = {
-      {Eigen::Vector3d(0.25, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0},
+      {Eigen::Vector3d(0.75, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0,
+       0},
       {Eigen::Vector3d(0.25, 0.25, 0.0),
-       Eigen::Vector3d(std::sqrt(0.5), std::sqrt(0.5), 0.0), 1.0}};
+       Eigen::Vector3d(std::sqrt(0.5), std::sqrt(0.5), 0.0), 1.0, 0}};
 
-  const auto projected =
-      directional::fields::project_point_sampled_cross_field(mesh, samples);
-
-  EXPECT_LT(projected.faceConfidence(0), 1.0e-10);
-  EXPECT_EQ(projected.faceConfidence(2), 0.0);
+  EXPECT_THROW(
+      (void)directional::fields::project_point_sampled_cross_field(mesh,
+                                                                   samples),
+      std::runtime_error);
 }
 
 TEST(SurfaceCellsPhase10, PointSampledCrossFieldDoesNotLeakToCloseSheet) {
   const directional::TriMesh mesh = make_two_sheet_mesh();
   std::vector<directional::fields::PointCrossFieldSample> samples = {
-      {Eigen::Vector3d(0.25, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0}};
+      {Eigen::Vector3d(0.25, 0.25, 0.0008), Eigen::Vector3d::UnitX(), 1.0,
+       -1, 0, 0},
+      {Eigen::Vector3d(0.25, 0.25, 0.001), Eigen::Vector3d::UnitY(), 1.0,
+       -1, 1, 1}};
+  const auto options = two_sheet_projection_options();
 
-  const auto projected =
-      directional::fields::project_point_sampled_cross_field(mesh, samples);
+  const auto projected = directional::fields::project_point_sampled_cross_field(
+      mesh, samples, options);
 
   EXPECT_GT(projected.faceConfidence(0), 0.99);
-  EXPECT_EQ(projected.faceConfidence(2), 0.0);
-  ASSERT_EQ(projected.sampleProvenance.size(), 1U);
+  EXPECT_GT(projected.faceConfidence(2), 0.99);
+  ASSERT_EQ(projected.sampleProvenance.size(), 2U);
   EXPECT_EQ(projected.sampleProvenance.front().face, 0);
+  EXPECT_EQ(projected.sampleProvenance.front().component, 0);
+}
+
+TEST(SurfaceCellsPhase10,
+     PointSampledCrossFieldExplicitlyPropagatesWithinComponent) {
+  const directional::TriMesh mesh = make_two_sheet_mesh();
+  std::vector<directional::fields::PointCrossFieldSample> samples = {
+      {Eigen::Vector3d(0.25, 0.25, 0.0), Eigen::Vector3d::UnitX(), 1.0, -1,
+       0, 0},
+      {Eigen::Vector3d(0.25, 0.25, 0.001), Eigen::Vector3d::UnitY(), 1.0,
+       -1, 1, 1}};
+
+  const auto projected = directional::fields::project_point_sampled_cross_field(
+      mesh, samples, two_sheet_projection_options());
+
+  EXPECT_GT(projected.faceConfidence(1), 0.99);
+  EXPECT_GT(projected.faceConfidence(3), 0.99);
 }
 
 TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffScaffold) {

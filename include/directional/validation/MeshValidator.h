@@ -38,7 +38,9 @@ enum class MeshValidationFailureCode {
   ZeroAreaFace,
   SelfIntersectingFace,
   ComponentMerge,
-  ChangedBoundaryLoop
+  ChangedBoundaryLoop,
+  MissingProvenance,
+  MissingBoundaryAuthority
 };
 
 struct MeshValidationIssue {
@@ -66,6 +68,9 @@ struct MeshValidatorOptions {
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<int> authoritativeBoundaryLoop;
   std::vector<geometry::SurfacePoint> vertexProvenance;
+  bool topologyOnly = false;
+  bool requireVertexProvenanceForGeometry = false;
+  bool requireAuthoritativeBoundary = false;
 };
 
 inline std::pair<int, int> canonical_edge(const int a, const int b) {
@@ -101,6 +106,10 @@ mesh_validation_failure_name(const MeshValidationFailureCode code) {
     return "ComponentMerge";
   case MeshValidationFailureCode::ChangedBoundaryLoop:
     return "ChangedBoundaryLoop";
+  case MeshValidationFailureCode::MissingProvenance:
+    return "MissingProvenance";
+  case MeshValidationFailureCode::MissingBoundaryAuthority:
+    return "MissingBoundaryAuthority";
   }
   return "Unknown";
 }
@@ -123,9 +132,11 @@ public:
     std::set<std::vector<int>> uniqueFaces;
     std::vector<std::set<int>> vertexFaceNeighbors(
         static_cast<std::size_t>(vertices.rows()));
+    std::vector<std::vector<int>> validFaceVertices;
 
     for (int face = 0; face < faces.rows(); ++face) {
       std::vector<int> faceVertices;
+      bool faceIndicesValid = true;
       for (int corner = 0; corner < faces.cols(); ++corner) {
         const int vertex = faces(face, corner);
         if (vertex == -1) {
@@ -134,12 +145,18 @@ public:
         if (vertex < 0 || vertex >= vertices.rows()) {
           result.fail({MeshValidationFailureCode::MissingVertex, vertex, -1,
                        -1, face});
+          faceIndicesValid = false;
           continue;
         }
         faceVertices.push_back(vertex);
         if (vertex >= 0 && vertex < vertices.rows()) {
           vertexFaceNeighbors[static_cast<std::size_t>(vertex)].insert(face);
         }
+      }
+      if (faceIndicesValid && faceVertices.size() >= 3) {
+        validFaceVertices.push_back(faceVertices);
+      } else {
+        validFaceVertices.push_back({});
       }
 
       std::vector<int> sortedFace = faceVertices;
@@ -186,6 +203,9 @@ public:
                                               options.authoritativeBoundaryLoop.size()]));
       }
     }
+    if (options.requireAuthoritativeBoundary && authoritativeBoundary.empty()) {
+      result.fail({MeshValidationFailureCode::MissingBoundaryAuthority});
+    }
 
     for (const auto &[edge, incidentFaces] : edgeIncidence) {
       const bool isAuthoritativeBoundary =
@@ -226,8 +246,20 @@ public:
 
     validate_bow_tie_vertices(vertexFaceNeighbors, edgeIncidence, result);
     validate_component_count(faces.rows(), edgeIncidence, options, result);
-    validate_geometric_t_junctions(vertices, edgeIncidence, options, result);
+    if (!options.topologyOnly) {
+      validate_face_to_face_intersections(vertices, validFaceVertices,
+                                          options, result);
+      validate_geometric_t_junctions(vertices, edgeIncidence, options, result);
+    }
     return result;
+  }
+
+  [[nodiscard]] static MeshValidationResult
+  validate_topology_only(const Eigen::MatrixXd &vertices,
+                         const Eigen::MatrixXi &faces,
+                         MeshValidatorOptions options = {}) {
+    options.topologyOnly = true;
+    return validate_surface_mesh(vertices, faces, options);
   }
 
 private:
@@ -320,21 +352,151 @@ private:
                                      tolerance);
   }
 
+  [[nodiscard]] static bool point_in_triangle3(
+      const Eigen::Vector3d &point, const Eigen::Vector3d &a,
+      const Eigen::Vector3d &b, const Eigen::Vector3d &c,
+      const double tolerance) {
+    const Eigen::Vector3d v0 = b - a;
+    const Eigen::Vector3d v1 = c - a;
+    const Eigen::Vector3d v2 = point - a;
+    const double d00 = v0.dot(v0);
+    const double d01 = v0.dot(v1);
+    const double d11 = v1.dot(v1);
+    const double d20 = v2.dot(v0);
+    const double d21 = v2.dot(v1);
+    const double denominator = d00 * d11 - d01 * d01;
+    if (std::abs(denominator) <= tolerance * tolerance) {
+      return false;
+    }
+    const double v = (d11 * d20 - d01 * d21) / denominator;
+    const double w = (d00 * d21 - d01 * d20) / denominator;
+    const double u = 1.0 - v - w;
+    return u >= -tolerance && v >= -tolerance && w >= -tolerance &&
+           u <= 1.0 + tolerance && v <= 1.0 + tolerance &&
+           w <= 1.0 + tolerance;
+  }
+
+  [[nodiscard]] static bool segment_intersects_triangle(
+      const Eigen::Vector3d &p0, const Eigen::Vector3d &p1,
+      const Eigen::Vector3d &a, const Eigen::Vector3d &b,
+      const Eigen::Vector3d &c, const double tolerance) {
+    const Eigen::Vector3d direction = p1 - p0;
+    const Eigen::Vector3d normal = (b - a).cross(c - a);
+    const double denominator = normal.dot(direction);
+    if (std::abs(denominator) <= tolerance * normal.norm() *
+                                      std::max(direction.norm(), tolerance)) {
+      return false;
+    }
+    const double t = normal.dot(a - p0) / denominator;
+    if (t < -tolerance || t > 1.0 + tolerance) {
+      return false;
+    }
+    const Eigen::Vector3d point = p0 + t * direction;
+    return point_in_triangle3(point, a, b, c, tolerance);
+  }
+
+  [[nodiscard]] static bool triangles_intersect3(
+      const Eigen::MatrixXd &vertices, const std::array<int, 3> &first,
+      const std::array<int, 3> &second, const double tolerance) {
+    const Eigen::Vector3d a0 = vertices.row(first[0]).transpose();
+    const Eigen::Vector3d a1 = vertices.row(first[1]).transpose();
+    const Eigen::Vector3d a2 = vertices.row(first[2]).transpose();
+    const Eigen::Vector3d b0 = vertices.row(second[0]).transpose();
+    const Eigen::Vector3d b1 = vertices.row(second[1]).transpose();
+    const Eigen::Vector3d b2 = vertices.row(second[2]).transpose();
+    const std::array<Eigen::Vector3d, 3> a = {a0, a1, a2};
+    const std::array<Eigen::Vector3d, 3> b = {b0, b1, b2};
+    for (int i = 0; i < 3; ++i) {
+      if (segment_intersects_triangle(a[i], a[(i + 1) % 3], b0, b1, b2,
+                                      tolerance)) {
+        return true;
+      }
+      if (segment_intersects_triangle(b[i], b[(i + 1) % 3], a0, a1, a2,
+                                      tolerance)) {
+        return true;
+      }
+    }
+    return point_in_triangle3(a0, b0, b1, b2, tolerance) ||
+           point_in_triangle3(b0, a0, a1, a2, tolerance);
+  }
+
+  [[nodiscard]] static bool faces_share_vertex(const std::vector<int> &first,
+                                               const std::vector<int> &second) {
+    for (const int a : first) {
+      for (const int b : second) {
+        if (a == b) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static void validate_face_to_face_intersections(
+      const Eigen::MatrixXd &vertices,
+      const std::vector<std::vector<int>> &validFaceVertices,
+      const MeshValidatorOptions &options, MeshValidationResult &result) {
+    (void)options;
+    for (std::size_t firstFace = 0; firstFace < validFaceVertices.size();
+         ++firstFace) {
+      const std::vector<int> &first = validFaceVertices[firstFace];
+      if (first.size() < 3) {
+        continue;
+      }
+      for (std::size_t secondFace = firstFace + 1;
+           secondFace < validFaceVertices.size(); ++secondFace) {
+        const std::vector<int> &second = validFaceVertices[secondFace];
+        if (second.size() < 3 || faces_share_vertex(first, second)) {
+          continue;
+        }
+        for (std::size_t i = 1; i + 1 < first.size(); ++i) {
+          const std::array<int, 3> firstTriangle = {
+              first[0], first[i], first[i + 1]};
+          for (std::size_t j = 1; j + 1 < second.size(); ++j) {
+            const std::array<int, 3> secondTriangle = {
+                second[0], second[j], second[j + 1]};
+            if (triangles_intersect3(vertices, firstTriangle, secondTriangle,
+                                     options.geometricTolerance)) {
+              result.fail({MeshValidationFailureCode::SelfIntersectingFace,
+                           -1, -1, -1,
+                           static_cast<int>(secondFace)});
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+
   [[nodiscard]] static bool same_source_sheet(
       const int vertex, const int a, const int b,
       const MeshValidatorOptions &options) {
     if (options.vertexProvenance.empty()) {
-      return true;
+      return !options.requireVertexProvenanceForGeometry;
     }
     const std::size_t maxIndex =
         static_cast<std::size_t>(std::max({vertex, a, b}));
     if (maxIndex >= options.vertexProvenance.size()) {
+      return false;
+    }
+    const geometry::SurfacePoint &p =
+        options.vertexProvenance[static_cast<std::size_t>(vertex)];
+    const geometry::SurfacePoint &pa =
+        options.vertexProvenance[static_cast<std::size_t>(a)];
+    const geometry::SurfacePoint &pb =
+        options.vertexProvenance[static_cast<std::size_t>(b)];
+    if (!p.valid() || !pa.valid() || !pb.valid()) {
+      return false;
+    }
+    if (p.face == pa.face && p.face == pb.face) {
       return true;
     }
-    const int face = options.vertexProvenance[static_cast<std::size_t>(vertex)].face;
-    return face >= 0 &&
-           face == options.vertexProvenance[static_cast<std::size_t>(a)].face &&
-           face == options.vertexProvenance[static_cast<std::size_t>(b)].face;
+    if (p.component >= 0 && pa.component >= 0 && pb.component >= 0 &&
+        p.sheet >= 0 && pa.sheet >= 0 && pb.sheet >= 0) {
+      return p.component == pa.component && p.component == pb.component &&
+             p.sheet == pa.sheet && p.sheet == pb.sheet;
+    }
+    return false;
   }
 
   static void validate_geometric_t_junctions(
@@ -342,22 +504,55 @@ private:
       const std::map<std::pair<int, int>, std::vector<int>> &edgeIncidence,
       const MeshValidatorOptions &options, MeshValidationResult &result) {
     const double tolerance = options.geometricTolerance;
+    if (options.requireVertexProvenanceForGeometry &&
+        options.vertexProvenance.size() <
+            static_cast<std::size_t>(vertices.rows())) {
+      result.fail({MeshValidationFailureCode::MissingProvenance});
+      return;
+    }
+
+    std::vector<int> sortedByX(static_cast<std::size_t>(vertices.rows()));
     for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
-      const Eigen::Vector3d p = vertices.row(vertex).transpose();
-      for (const auto &[edge, incidentFaces] : edgeIncidence) {
-        const int aIndex = edge.first;
-        const int bIndex = edge.second;
+      sortedByX[static_cast<std::size_t>(vertex)] = vertex;
+    }
+    std::sort(sortedByX.begin(), sortedByX.end(),
+              [&](const int lhs, const int rhs) {
+                return vertices(lhs, 0) < vertices(rhs, 0);
+              });
+
+    for (const auto &[edge, incidentFaces] : edgeIncidence) {
+      const int aIndex = edge.first;
+      const int bIndex = edge.second;
+      const Eigen::Vector3d a = vertices.row(aIndex).transpose();
+      const Eigen::Vector3d b = vertices.row(bIndex).transpose();
+      const Eigen::Vector3d ab = b - a;
+      const double lengthSquared = ab.squaredNorm();
+      if (lengthSquared <= tolerance * tolerance) {
+        continue;
+      }
+      const double minX = std::min(a.x(), b.x()) - tolerance;
+      const double maxX = std::max(a.x(), b.x()) + tolerance;
+      const auto lower = std::lower_bound(
+          sortedByX.begin(), sortedByX.end(), minX,
+          [&](const int vertex, const double value) {
+            return vertices(vertex, 0) < value;
+          });
+      for (auto it = lower; it != sortedByX.end(); ++it) {
+        const int vertex = *it;
+        if (vertices(vertex, 0) > maxX) {
+          break;
+        }
         if (vertex == aIndex || vertex == bIndex) {
           continue;
         }
         if (!same_source_sheet(vertex, aIndex, bIndex, options)) {
           continue;
         }
-        const Eigen::Vector3d a = vertices.row(aIndex).transpose();
-        const Eigen::Vector3d b = vertices.row(bIndex).transpose();
-        const Eigen::Vector3d ab = b - a;
-        const double lengthSquared = ab.squaredNorm();
-        if (lengthSquared <= tolerance * tolerance) {
+        const Eigen::Vector3d p = vertices.row(vertex).transpose();
+        if (p.y() < std::min(a.y(), b.y()) - tolerance ||
+            p.y() > std::max(a.y(), b.y()) + tolerance ||
+            p.z() < std::min(a.z(), b.z()) - tolerance ||
+            p.z() > std::max(a.z(), b.z()) + tolerance) {
           continue;
         }
         const double t = (p - a).dot(ab) / lengthSquared;

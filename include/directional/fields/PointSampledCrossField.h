@@ -13,6 +13,7 @@
 #include <complex>
 #include <limits>
 #include <numbers>
+#include <queue>
 #include <stdexcept>
 #include <vector>
 
@@ -28,6 +29,14 @@ struct PointCrossFieldSample {
   Eigen::Vector3d position = Eigen::Vector3d::Zero();
   Eigen::Vector3d direction = Eigen::Vector3d::UnitX();
   double weight = 1.0;
+  int requiredFace = -1;
+  int requiredComponent = -1;
+  int requiredSheet = -1;
+};
+
+enum class UncoveredFacePolicy {
+  Fail,
+  PropagateWithinComponent
 };
 
 struct PointSampledCrossFieldOptions {
@@ -35,6 +44,11 @@ struct PointSampledCrossFieldOptions {
   double maximumProjectionDistance =
       std::numeric_limits<double>::infinity();
   double minimumConfidence = 1.0e-12;
+  UncoveredFacePolicy uncoveredFacePolicy = UncoveredFacePolicy::Fail;
+  bool combDirections = true;
+  bool computeMatching = true;
+  std::vector<int> faceComponents;
+  std::vector<int> faceSheets;
 };
 
 struct PointSampledCrossFieldResult {
@@ -60,8 +74,38 @@ inline PointSampledCrossFieldResult project_point_sampled_cross_field(
   const geometry::SurfaceProjectionBvh projectionBvh(mesh.V, mesh.F);
 
   for (const PointCrossFieldSample &sample : samples) {
+    std::vector<unsigned char> allowedFaces;
+    if (sample.requiredFace >= 0 || sample.requiredComponent >= 0 ||
+        sample.requiredSheet >= 0) {
+      allowedFaces.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+      for (int face = 0; face < mesh.F.rows(); ++face) {
+        bool allowed = true;
+        if (sample.requiredFace >= 0 && face != sample.requiredFace) {
+          allowed = false;
+        }
+        if (sample.requiredComponent >= 0) {
+          const std::size_t index = static_cast<std::size_t>(face);
+          allowed = allowed && index < options.faceComponents.size() &&
+                    options.faceComponents[index] == sample.requiredComponent;
+        }
+        if (sample.requiredSheet >= 0) {
+          const std::size_t index = static_cast<std::size_t>(face);
+          allowed = allowed && index < options.faceSheets.size() &&
+                    options.faceSheets[index] == sample.requiredSheet;
+        }
+        allowedFaces[static_cast<std::size_t>(face)] =
+            static_cast<unsigned char>(allowed ? 1 : 0);
+      }
+    }
+    geometry::SurfaceProjectionOptions projectionOptions;
+    projectionOptions.allowedFaces =
+        allowedFaces.empty() ? nullptr : &allowedFaces;
+    projectionOptions.faceComponents =
+        options.faceComponents.empty() ? nullptr : &options.faceComponents;
+    projectionOptions.faceSheets =
+        options.faceSheets.empty() ? nullptr : &options.faceSheets;
     const geometry::SurfacePoint projected =
-        projectionBvh.project(sample.position);
+        projectionBvh.project(sample.position, projectionOptions);
     result.sampleProvenance.push_back(projected);
     if (!projected.valid() || sample.weight <= 0.0 ||
         projected.squaredDistance >
@@ -87,8 +131,58 @@ inline PointSampledCrossFieldResult project_point_sampled_cross_field(
     weights(face) += sample.weight;
   }
 
+  const auto propagate_uncovered = [&]() {
+    std::queue<int> frontier;
+    for (int face = 0; face < mesh.F.rows(); ++face) {
+      if (weights(face) > 0.0 && std::abs(accum(face)) > options.minimumConfidence) {
+        frontier.push(face);
+      }
+    }
+    while (!frontier.empty()) {
+      const int face = frontier.front();
+      frontier.pop();
+      for (int corner = 0; corner < mesh.TT.cols(); ++corner) {
+        const int neighbor = mesh.TT(face, corner);
+        if (neighbor < 0 || weights(neighbor) > 0.0) {
+          continue;
+        }
+        const std::size_t faceIndex = static_cast<std::size_t>(face);
+        const std::size_t neighborIndex = static_cast<std::size_t>(neighbor);
+        if (!options.faceComponents.empty() &&
+            (faceIndex >= options.faceComponents.size() ||
+             neighborIndex >= options.faceComponents.size() ||
+             options.faceComponents[faceIndex] !=
+                 options.faceComponents[neighborIndex])) {
+          continue;
+        }
+        if (!options.faceSheets.empty() &&
+            (faceIndex >= options.faceSheets.size() ||
+             neighborIndex >= options.faceSheets.size() ||
+             options.faceSheets[faceIndex] != options.faceSheets[neighborIndex])) {
+          continue;
+        }
+        accum(neighbor) = accum(face);
+        weights(neighbor) = weights(face);
+        frontier.push(neighbor);
+      }
+    }
+  };
+
+  if (options.uncoveredFacePolicy == UncoveredFacePolicy::PropagateWithinComponent) {
+    propagate_uncovered();
+  }
+
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    if (weights(face) <= 0.0 || std::abs(accum(face)) <= options.minimumConfidence) {
+      throw std::runtime_error(
+          "point-sampled cross-field projection left an uncovered or "
+          "ambiguous face; provide same-component samples or enable explicit "
+          "propagation.");
+    }
+  }
+
   result.faceConfidence = Eigen::VectorXd::Zero(mesh.F.rows());
-  result.field.rawField.resize(mesh.F.rows(), 3 * kCrossFieldDegree);
+  Eigen::MatrixXd intrinsic(mesh.F.rows(), 2 * kCrossFieldDegree);
   for (int face = 0; face < mesh.F.rows(); ++face) {
     Complex power(1.0, 0.0);
     if (weights(face) > 0.0) {
@@ -108,21 +202,18 @@ inline PointSampledCrossFieldResult project_point_sampled_cross_field(
                            static_cast<double>(branch) /
                            static_cast<double>(kCrossFieldDegree);
       const Complex rotated = root * std::exp(Complex(0.0, angle));
-      Eigen::RowVector3d direction =
-          rotated.real() * mesh.FBx.row(face) + rotated.imag() * mesh.FBy.row(face);
-      if (options.normalizeDirections) {
-        direction.normalize();
-      }
-      result.field.rawField.block(face, 3 * branch, 1, 3) = direction;
+      intrinsic(face, 2 * branch) = rotated.real();
+      intrinsic(face, 2 * branch + 1) = rotated.imag();
     }
   }
 
-  result.field.primaryDirections = result.field.rawField.leftCols<3>();
-  result.field.secondaryDirections = result.field.rawField.middleCols<3>(3);
-  result.field.matching = Eigen::VectorXi::Zero(mesh.EV.rows());
-  result.field.effort = Eigen::VectorXd::Zero(mesh.EV.rows());
-  result.field.singularCycles.resize(0);
-  result.field.singularIndices.resize(0);
+  PCFaceTangentBundle tangentBundle;
+  tangentBundle.init(mesh);
+  CartesianField rawField;
+  rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, kCrossFieldDegree);
+  rawField.set_intrinsic_field(intrinsic);
+  result.field = finalize_cross_field_result(
+      rawField, options.combDirections, options.computeMatching);
   return result;
 }
 

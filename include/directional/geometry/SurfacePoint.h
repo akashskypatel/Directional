@@ -24,6 +24,8 @@ namespace directional::geometry {
 
 struct SurfacePoint {
   int face = -1;
+  int component = -1;
+  int sheet = -1;
   Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
   Eigen::Vector3d position = Eigen::Vector3d::Zero();
   double squaredDistance = std::numeric_limits<double>::infinity();
@@ -33,6 +35,9 @@ struct SurfacePoint {
 
 struct SurfaceProjectionOptions {
   double barycentricTolerance = 1.0e-10;
+  const std::vector<unsigned char> *allowedFaces = nullptr;
+  const std::vector<int> *faceComponents = nullptr;
+  const std::vector<int> *faceSheets = nullptr;
 };
 
 namespace detail {
@@ -275,6 +280,13 @@ private:
                         const detail::ProjectionTriangle &triangle,
                         const SurfaceProjectionOptions &options,
                         SurfacePoint &best) const {
+    if (options.allowedFaces != nullptr) {
+      const std::size_t faceIndex = static_cast<std::size_t>(triangle.face);
+      if (faceIndex >= options.allowedFaces->size() ||
+          (*options.allowedFaces)[faceIndex] == 0) {
+        return;
+      }
+    }
     const Eigen::Vector3d a =
         vertices_->row(triangle.vertices[0]).transpose();
     const Eigen::Vector3d b =
@@ -297,6 +309,17 @@ private:
     const double squaredDistance = (projected - point).squaredNorm();
     if (squaredDistance < best.squaredDistance) {
       best.face = triangle.face;
+      if (options.faceComponents != nullptr &&
+          static_cast<std::size_t>(triangle.face) <
+              options.faceComponents->size()) {
+        best.component =
+            (*options.faceComponents)[static_cast<std::size_t>(triangle.face)];
+      }
+      if (options.faceSheets != nullptr &&
+          static_cast<std::size_t>(triangle.face) < options.faceSheets->size()) {
+        best.sheet =
+            (*options.faceSheets)[static_cast<std::size_t>(triangle.face)];
+      }
       best.barycentric = bary;
       best.position = projected;
       best.squaredDistance = squaredDistance;
