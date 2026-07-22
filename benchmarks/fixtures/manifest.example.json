@@ -8,6 +8,8 @@
       "length_ratio": 0.2,
       "integral_seamless": false,
       "round_seams": false,
+      "backend": "LegacyInteger",
+      "surface_cell_fallback": "Fail",
       "tags": [
         "synthetic",
         "ci",
@@ -22,10 +24,44 @@
       "length_ratio": 0.02,
       "integral_seamless": true,
       "round_seams": true,
+      "backend": "LegacyInteger",
+      "surface_cell_fallback": "Fail",
       "tags": [
         "integration",
         "simplification",
         "regression"
+      ]
+    },
+    {
+      "name": "fertility_surface_cells_no_skeleton",
+      "mesh": "../../data/fertility.obj",
+      "generated_field": "constant_xy",
+      "length_ratio": 0.02,
+      "integral_seamless": true,
+      "round_seams": true,
+      "backend": "SurfaceCells",
+      "surface_cell_fallback": "Fail",
+      "surface_cell_skeleton_hints": false,
+      "tags": [
+        "phase20",
+        "surface-cells",
+        "comparison-matrix"
+      ]
+    },
+    {
+      "name": "fertility_surface_cells_skeleton_hints",
+      "mesh": "../../data/fertility.obj",
+      "generated_field": "constant_xy",
+      "length_ratio": 0.02,
+      "integral_seamless": true,
+      "round_seams": true,
+      "backend": "SurfaceCells",
+      "surface_cell_fallback": "Fail",
+      "surface_cell_skeleton_hints": true,
+      "tags": [
+        "phase20",
+        "surface-cells",
+        "comparison-matrix"
       ]
     }
   ]

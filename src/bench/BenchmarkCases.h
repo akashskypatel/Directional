@@ -19,6 +19,11 @@ struct BenchmarkCase {
   double lengthRatio = 0.02;
   bool integralSeamless = true;
   bool roundSeams = true;
+  pipeline::RemeshBackend backend = pipeline::RemeshBackend::LegacyInteger;
+  pipeline::SurfaceCellFallbackPolicy surfaceCellFallback =
+      pipeline::SurfaceCellFallbackPolicy::Fail;
+  bool surfaceCellSkeletonHints = false;
+  bool surfaceCellPreserveDebugArtifacts = false;
   bool synthetic = false;
   int syntheticSubdivisions = 1;
   int syntheticComponents = 1;

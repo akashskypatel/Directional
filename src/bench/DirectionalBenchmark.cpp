@@ -1367,6 +1367,13 @@ void write_results_json(const Options &options,
         << (benchmarkCase.integralSeamless ? "true" : "false")
         << ", \"roundSeams\": "
         << (benchmarkCase.roundSeams ? "true" : "false")
+        << ", \"backend\": \""
+        << directional::pipeline::remesh_backend_name(benchmarkCase.backend)
+        << "\", \"surfaceCellFallback\": \""
+        << directional::pipeline::surface_cell_fallback_policy_name(
+               benchmarkCase.surfaceCellFallback)
+        << "\", \"surfaceCellSkeletonHints\": "
+        << (benchmarkCase.surfaceCellSkeletonHints ? "true" : "false")
         << ", \"integrationSolveStrategy\": \""
         << integration_solve_strategy_name(options.solveStrategy)
         << "\", \"integerBatchStrategy\": \""

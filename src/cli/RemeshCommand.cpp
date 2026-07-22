@@ -156,6 +156,25 @@ int run_remesh(const int argc, char **argv) {
       }
       options.integrationSolveStrategy = parse_integration_solve_strategy(
           argv[argument], "--integration-solve-strategy");
+    } else if (option == "--remesh-backend") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--remesh-backend requires LegacyInteger or SurfaceCells.");
+      }
+      options.backend = pipeline::parse_remesh_backend(argv[argument]);
+      options.surfaceCells.enabled =
+          options.backend == pipeline::RemeshBackend::SurfaceCells;
+    } else if (option == "--surface-cell-fallback") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--surface-cell-fallback requires Fail, ReturnQuadDominant, or TryLegacy.");
+      }
+      options.surfaceCells.fallbackPolicy =
+          pipeline::parse_surface_cell_fallback_policy(argv[argument]);
+    } else if (option == "--surface-cell-preserve-debug-artifacts") {
+      options.surfaceCells.preserveDebugArtifacts = true;
+    } else if (option == "--surface-cell-skeleton-hints") {
+      options.surfaceCells.useSkeletonHints = true;
     } else if (option == "--simplification-backend") {
       if (++argument >= argc) {
         throw std::runtime_error(
@@ -352,7 +371,10 @@ int run_remesh(const int argc, char **argv) {
 
   if (!result.success) {
     throw std::runtime_error(
-        "Remeshing failed while simplifying or assembling the output mesh.");
+        "Remeshing failed while simplifying or assembling the output mesh"
+        " (backend=" + result.diagnostics.remeshBackend +
+        ", failure=" + result.diagnostics.terminalFailureCode +
+        ", stage=" + result.diagnostics.terminalFailureStage + ").");
   }
 
   progress.update(95, progressTotal, "Writing remeshed output");

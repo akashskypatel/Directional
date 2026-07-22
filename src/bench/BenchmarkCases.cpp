@@ -421,6 +421,20 @@ load_benchmark_manifest(const std::filesystem::path &path) {
                         benchmarkCase.integralSeamless);
     benchmarkCase.roundSeams =
         json_bool_value(object, "round_seams", benchmarkCase.roundSeams);
+    benchmarkCase.backend = pipeline::parse_remesh_backend(
+        json_string_value(object, "backend",
+                          pipeline::remesh_backend_name(benchmarkCase.backend)));
+    benchmarkCase.surfaceCellFallback =
+        pipeline::parse_surface_cell_fallback_policy(json_string_value(
+            object, "surface_cell_fallback",
+            pipeline::surface_cell_fallback_policy_name(
+                benchmarkCase.surfaceCellFallback)));
+    benchmarkCase.surfaceCellSkeletonHints =
+        json_bool_value(object, "surface_cell_skeleton_hints",
+                        benchmarkCase.surfaceCellSkeletonHints);
+    benchmarkCase.surfaceCellPreserveDebugArtifacts =
+        json_bool_value(object, "surface_cell_preserve_debug_artifacts",
+                        benchmarkCase.surfaceCellPreserveDebugArtifacts);
     benchmarkCase.synthetic =
         json_bool_value(object, "synthetic", benchmarkCase.meshPath.empty());
     benchmarkCase.syntheticSubdivisions =
@@ -559,6 +573,14 @@ pipeline::RemeshOptions make_remesh_options(const BenchmarkCase &benchmarkCase) 
   options.lengthRatio = benchmarkCase.lengthRatio;
   options.integralSeamless = benchmarkCase.integralSeamless;
   options.roundSeams = benchmarkCase.roundSeams;
+  options.backend = benchmarkCase.backend;
+  options.surfaceCells.enabled =
+      benchmarkCase.backend == pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.fallbackPolicy = benchmarkCase.surfaceCellFallback;
+  options.surfaceCells.useSkeletonHints =
+      benchmarkCase.surfaceCellSkeletonHints;
+  options.surfaceCells.preserveDebugArtifacts =
+      benchmarkCase.surfaceCellPreserveDebugArtifacts;
   options.verbose = false;
   return options;
 }

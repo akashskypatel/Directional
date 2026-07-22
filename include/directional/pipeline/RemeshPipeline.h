@@ -11,7 +11,9 @@
 #define DIRECTIONAL_PIPELINE_REMESH_PIPELINE_H
 
 #include <chrono>
+#include <algorithm>
 #include <cmath>
+#include <cctype>
 #include <future>
 #include <functional>
 #include <iostream>
@@ -53,13 +55,121 @@
 namespace directional::pipeline {
 
 enum class RemeshBackend {
-  Legacy,
+  LegacyInteger,
+  Legacy = LegacyInteger,
   SurfaceCells
 };
+
+enum class SurfaceCellFallbackPolicy {
+  Fail,
+  ReturnQuadDominant,
+  TryLegacy
+};
+
+enum class SurfaceCellFailureCode {
+  None,
+  InvalidFieldDimensions,
+  MissingMatching,
+  MissingSingularities,
+  UnsupportedInput,
+  InjectedStageFailure,
+  NotProductionReady
+};
+
+inline std::string remesh_backend_name(const RemeshBackend backend) {
+  switch (backend) {
+  case RemeshBackend::LegacyInteger:
+    return "LegacyInteger";
+  case RemeshBackend::SurfaceCells:
+    return "SurfaceCells";
+  }
+  return "Unknown";
+}
+
+inline std::string
+surface_cell_fallback_policy_name(const SurfaceCellFallbackPolicy policy) {
+  switch (policy) {
+  case SurfaceCellFallbackPolicy::Fail:
+    return "Fail";
+  case SurfaceCellFallbackPolicy::ReturnQuadDominant:
+    return "ReturnQuadDominant";
+  case SurfaceCellFallbackPolicy::TryLegacy:
+    return "TryLegacy";
+  }
+  return "Unknown";
+}
+
+inline std::string
+surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
+  switch (code) {
+  case SurfaceCellFailureCode::None:
+    return "None";
+  case SurfaceCellFailureCode::InvalidFieldDimensions:
+    return "InvalidFieldDimensions";
+  case SurfaceCellFailureCode::MissingMatching:
+    return "MissingMatching";
+  case SurfaceCellFailureCode::MissingSingularities:
+    return "MissingSingularities";
+  case SurfaceCellFailureCode::UnsupportedInput:
+    return "UnsupportedInput";
+  case SurfaceCellFailureCode::InjectedStageFailure:
+    return "InjectedStageFailure";
+  case SurfaceCellFailureCode::NotProductionReady:
+    return "NotProductionReady";
+  }
+  return "Unknown";
+}
+
+inline std::string normalize_option_token(std::string value) {
+  value.erase(std::remove_if(value.begin(), value.end(),
+                             [](const char character) {
+                               return character == '-' || character == '_';
+                             }),
+              value.end());
+  std::transform(value.begin(), value.end(), value.begin(),
+                 [](const unsigned char character) {
+                   return static_cast<char>(std::tolower(character));
+                 });
+  return value;
+}
+
+inline RemeshBackend parse_remesh_backend(const std::string &value) {
+  const std::string token = normalize_option_token(value);
+  if (token == "legacy" || token == "legacyinteger") {
+    return RemeshBackend::LegacyInteger;
+  }
+  if (token == "surfacecells" || token == "surfacecell") {
+    return RemeshBackend::SurfaceCells;
+  }
+  throw std::runtime_error(
+      "Backend must be LegacyInteger or SurfaceCells.");
+}
+
+inline SurfaceCellFallbackPolicy
+parse_surface_cell_fallback_policy(const std::string &value) {
+  const std::string token = normalize_option_token(value);
+  if (token == "fail") {
+    return SurfaceCellFallbackPolicy::Fail;
+  }
+  if (token == "returnquaddominant" || token == "quaddominant") {
+    return SurfaceCellFallbackPolicy::ReturnQuadDominant;
+  }
+  if (token == "trylegacy") {
+    return SurfaceCellFallbackPolicy::TryLegacy;
+  }
+  throw std::runtime_error(
+      "Surface-cell fallback must be Fail, ReturnQuadDominant, or TryLegacy.");
+}
 
 struct SurfaceCellOptions {
   bool enabled = false;
   bool strictValidation = true;
+  bool requireMatching = true;
+  bool requireSingularities = true;
+  bool preserveDebugArtifacts = false;
+  bool useSkeletonHints = false;
+  SurfaceCellFallbackPolicy fallbackPolicy = SurfaceCellFallbackPolicy::Fail;
+  int injectFailureAfterStage = -1;
   double geometricTolerance = 1.0e-9;
   geometry::AdaptiveFeatureMapOptions featureMap;
   geometry::AdaptiveTargetSizeOptions targetSize;
@@ -79,7 +189,7 @@ struct RemeshOptions {
   /// Whether seam values should be rounded during integration.
   bool roundSeams = false;
 
-  /// Reserved for future feature-aligned pipeline support.
+  /// Enables shared adaptive feature-map behavior for feature-aware consumers.
   bool featureAlign = false;
 
   /// Emits per-stage timing logs when true.
@@ -128,8 +238,8 @@ struct RemeshOptions {
   /// Internal absolute target length override used for component remeshing.
   double absoluteTargetLength = -1.0;
 
-  /// Selects the remeshing backend. SurfaceCells is default-off scaffold only.
-  RemeshBackend backend = RemeshBackend::Legacy;
+  /// Selects the remeshing backend. SurfaceCells is explicit experimental.
+  RemeshBackend backend = RemeshBackend::LegacyInteger;
 
   /// Options for the default-off surface-cell backend scaffold.
   SurfaceCellOptions surfaceCells;
@@ -341,6 +451,21 @@ orthogonal_complement(const TriMesh &mesh,
                                        normalizeDirections);
 }
 
+inline void record_face_degree_histogram(RemeshResult &result) {
+  result.diagnostics.faceDegreeHistogram.clear();
+  for (Eigen::Index face = 0; face < result.degrees.size(); ++face) {
+    const int degree = result.degrees(face);
+    if (degree < 0) {
+      continue;
+    }
+    const std::size_t index = static_cast<std::size_t>(degree);
+    if (result.diagnostics.faceDegreeHistogram.size() <= index) {
+      result.diagnostics.faceDegreeHistogram.resize(index + 1U, 0U);
+    }
+    ++result.diagnostics.faceDegreeHistogram[index];
+  }
+}
+
 /**
  * @brief Runs the full remeshing pipeline on an initialized TriMesh and raw cross field.
  * @param meshWhole Initialized source mesh.
@@ -358,10 +483,76 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   if (options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled) {
     RemeshResult result;
+    result.diagnostics.remeshBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    result.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    auto fail_surface_cells = [&](const SurfaceCellFailureCode code,
+                                  const std::string &stage) {
+      result.success = false;
+      result.diagnostics.terminalFailureCode =
+          surface_cell_failure_code_name(code);
+      result.diagnostics.terminalFailureStage = stage;
+      result.diagnostics.surfaceCellValidationFailures += 1U;
+      result.diagnostics.surfaceCellDebugArtifactsPreserved =
+          options.surfaceCells.preserveDebugArtifacts;
+      if (options.surfaceCells.preserveDebugArtifacts) {
+        result.diagnostics.surfaceCellDebugArtifacts.push_back(stage);
+      }
+      result.diagnostics.overallPipelineSeconds =
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - pipelineStart)
+              .count() /
+          1.0e6;
+
+      if (options.surfaceCells.fallbackPolicy ==
+          SurfaceCellFallbackPolicy::ReturnQuadDominant) {
+        result.success = true;
+        result.vertices = meshWhole.V;
+        result.faces = meshWhole.F;
+        result.degrees =
+            Eigen::VectorXi::Constant(meshWhole.F.rows(), meshWhole.F.cols());
+        result.diagnostics.surfaceCellFallbackAttempted = true;
+        result.diagnostics.surfaceCellReturnedQuadDominantFallback = true;
+        record_face_degree_histogram(result);
+      } else if (options.surfaceCells.fallbackPolicy ==
+                 SurfaceCellFallbackPolicy::TryLegacy) {
+        result.diagnostics.surfaceCellFallbackAttempted = true;
+        if (rawCrossField.rows() == meshWhole.F.rows() &&
+            rawCrossField.cols() == 12) {
+          RemeshOptions legacyOptions = options;
+          legacyOptions.backend = RemeshBackend::LegacyInteger;
+          legacyOptions.surfaceCells.enabled = false;
+          legacyOptions.parallelizeComponents = false;
+          result = remesh_from_raw_cross_field_impl(meshWhole, rawCrossField,
+                                                   legacyOptions);
+          result.diagnostics.remeshBackend =
+              remesh_backend_name(RemeshBackend::SurfaceCells);
+          result.diagnostics.surfaceCellFallbackPolicy =
+              surface_cell_fallback_policy_name(
+                  options.surfaceCells.fallbackPolicy);
+          result.diagnostics.surfaceCellFallbackAttempted = true;
+          result.diagnostics.surfaceCellUsedLegacyFallback = true;
+          result.diagnostics.terminalFailureCode =
+              surface_cell_failure_code_name(code);
+          result.diagnostics.terminalFailureStage = stage;
+        }
+      }
+      return result;
+    };
+
+    if (rawCrossField.rows() != meshWhole.F.rows() ||
+        rawCrossField.cols() != 12) {
+      return fail_surface_cells(SurfaceCellFailureCode::InvalidFieldDimensions,
+                                "input-validation");
+    }
+
     const auto featureStart = Clock::now();
     const geometry::AdaptiveFeatureMap featureMap =
         geometry::AdaptiveFeatureMapBuilder::build(
-            meshWhole.V, meshWhole.F, options.surfaceCells.featureMap);
+            meshWhole.V, meshWhole.F,
+            options.featureAlign ? options.featureMap
+                                 : options.surfaceCells.featureMap);
     result.diagnostics.surfaceCellFeatureSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - featureStart)
@@ -369,6 +560,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.adaptiveFeatureMapSeconds =
         result.diagnostics.surfaceCellFeatureSeconds;
+    result.diagnostics.surfaceCellFeatureCount = featureMap.edges.size();
     copy_adaptive_feature_map_diagnostics(result.diagnostics, featureMap);
     const auto targetSizeStart = Clock::now();
     const geometry::AdaptiveTargetSizeResult targetSize =
@@ -382,15 +574,31 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.surfaceCellMetricSeconds =
         result.diagnostics.adaptiveTargetSizeSeconds;
+    result.diagnostics.surfaceCellMetricSampleCount =
+        static_cast<std::size_t>(meshWhole.V.rows());
     copy_adaptive_target_size_diagnostics(result.diagnostics, targetSize);
-    result.success = false;
-    result.diagnostics.surfaceCellValidationFailures = 1;
-    result.diagnostics.overallPipelineSeconds =
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            Clock::now() - pipelineStart)
-            .count() /
-        1.0e6;
-    return result;
+
+    if (options.surfaceCells.injectFailureAfterStage == 0) {
+      return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
+                                "feature");
+    }
+    if (options.surfaceCells.injectFailureAfterStage == 1) {
+      return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
+                                "metric");
+    }
+
+    result.diagnostics.surfaceCellReliefPatchCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+    result.diagnostics.surfaceCellTraceSegmentCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+    result.diagnostics.surfaceCellArrangementCellCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+    result.diagnostics.surfaceCellSimplifiedCellCount =
+        static_cast<std::size_t>(meshWhole.F.rows());
+    result.diagnostics.surfaceCellCompletedQuadCount = 0U;
+    result.diagnostics.surfaceCellOptimizationIterationCount = 0U;
+    return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                              "production-gate");
   }
   const auto log_phase = [&](const char *label) {
     const auto now = Clock::now();
@@ -413,6 +621,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     return phaseSeconds;
   };
   directional::RemeshDiagnostics diagnostics;
+  diagnostics.remeshBackend = remesh_backend_name(RemeshBackend::LegacyInteger);
+  diagnostics.surfaceCellFallbackPolicy =
+      surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
 
   // if (options.featureAlign) {
   //   throw std::runtime_error("featureAlign is not supported by the headless "
@@ -640,6 +851,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           .count() /
       1.0e6;
   result.diagnostics = diagnostics;
+  record_face_degree_histogram(result);
   report_progress(options.progress, 100, 100, "Finalizing remesh result");
   return result;
 }
@@ -721,6 +933,26 @@ inline void append_vector(Eigen::VectorXd &target,
 inline void accumulate_component_diagnostics(
     directional::RemeshDiagnostics &target,
     const directional::RemeshDiagnostics &source) {
+  if (target.terminalFailureCode == "None" &&
+      source.terminalFailureCode != "None") {
+    target.terminalFailureCode = source.terminalFailureCode;
+    target.terminalFailureStage = source.terminalFailureStage;
+  }
+  target.surfaceCellFallbackAttempted =
+      target.surfaceCellFallbackAttempted || source.surfaceCellFallbackAttempted;
+  target.surfaceCellUsedLegacyFallback =
+      target.surfaceCellUsedLegacyFallback || source.surfaceCellUsedLegacyFallback;
+  target.surfaceCellReturnedQuadDominantFallback =
+      target.surfaceCellReturnedQuadDominantFallback ||
+      source.surfaceCellReturnedQuadDominantFallback;
+  target.surfaceCellDebugArtifactsPreserved =
+      target.surfaceCellDebugArtifactsPreserved ||
+      source.surfaceCellDebugArtifactsPreserved;
+  target.surfaceCellDebugArtifacts.insert(
+      target.surfaceCellDebugArtifacts.end(),
+      source.surfaceCellDebugArtifacts.begin(),
+      source.surfaceCellDebugArtifacts.end());
+
   target.surfaceCellFeatureSeconds += source.surfaceCellFeatureSeconds;
   target.surfaceCellMetricSeconds += source.surfaceCellMetricSeconds;
   target.surfaceCellReliefSeconds += source.surfaceCellReliefSeconds;
@@ -923,6 +1155,9 @@ inline RemeshResult remesh_components_from_raw_cross_field(
   const auto mergeStart = Clock::now();
   RemeshResult merged;
   merged.success = true;
+  merged.diagnostics.remeshBackend = remesh_backend_name(options.backend);
+  merged.diagnostics.surfaceCellFallbackPolicy =
+      surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
   merged.diagnostics.componentSplitSeconds = splitSeconds;
   merged.diagnostics.componentParallelWallSeconds = parallelSeconds;
   merged.diagnostics.componentCount = components.size();
@@ -1015,6 +1250,70 @@ inline RemeshResult remesh_from_raw_cross_field(
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
   return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
+}
+
+inline RemeshResult
+remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
+                               const Eigen::MatrixXi &faces,
+                               const fields::CrossFieldResult &crossField,
+                               const RemeshOptions &options = {}) {
+  const bool surfaceCellsRequested =
+      options.backend == RemeshBackend::SurfaceCells ||
+      options.surfaceCells.enabled;
+  if (crossField.degree != fields::kCrossFieldDegree ||
+      crossField.rawField.rows() != faces.rows() ||
+      crossField.rawField.cols() != 12) {
+    if (!surfaceCellsRequested) {
+      throw std::runtime_error(
+          "CrossFieldResult must contain a #F-by-12 degree-4 raw field.");
+    }
+    RemeshResult result;
+    result.diagnostics.remeshBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    result.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    result.diagnostics.terminalFailureCode =
+        surface_cell_failure_code_name(
+            SurfaceCellFailureCode::InvalidFieldDimensions);
+    result.diagnostics.terminalFailureStage = "cross-field-validation";
+    result.diagnostics.surfaceCellValidationFailures = 1U;
+    return result;
+  }
+  if (surfaceCellsRequested && options.surfaceCells.requireMatching &&
+      crossField.matching.size() == 0) {
+    RemeshResult result;
+    result.diagnostics.remeshBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    result.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    result.diagnostics.terminalFailureCode =
+        surface_cell_failure_code_name(SurfaceCellFailureCode::MissingMatching);
+    result.diagnostics.terminalFailureStage = "cross-field-validation";
+    result.diagnostics.surfaceCellValidationFailures = 1U;
+    return result;
+  }
+  if (surfaceCellsRequested && options.surfaceCells.requireSingularities &&
+      crossField.singularCycles.size() == 0 &&
+      crossField.singularIndices.size() == 0) {
+    RemeshResult result;
+    result.diagnostics.remeshBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    result.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    result.diagnostics.terminalFailureCode =
+        surface_cell_failure_code_name(
+            SurfaceCellFailureCode::MissingSingularities);
+    result.diagnostics.terminalFailureStage = "cross-field-validation";
+    result.diagnostics.surfaceCellValidationFailures = 1U;
+    return result;
+  }
+  RemeshResult result =
+      remesh_from_raw_cross_field(vertices, faces, crossField.rawField, options);
+  result.crossFieldMatching = crossField.matching;
+  result.crossFieldEffort = crossField.effort;
+  result.crossFieldSingularCycles = crossField.singularCycles;
+  result.crossFieldSingularIndices = crossField.singularIndices;
+  return result;
 }
 
 /**

@@ -11,6 +11,7 @@
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
 #include <cstddef>
+#include <string>
 #include <vector>
 
 #include <directional/diagnostics/IntegrationDiagnostics.h>
@@ -33,6 +34,16 @@ struct ComponentRemeshDiagnostics {
 
 /** @brief Aggregate machine-readable diagnostics for the remesh pipeline. */
 struct RemeshDiagnostics {
+  std::string remeshBackend = "LegacyInteger";
+  std::string surfaceCellFallbackPolicy = "Fail";
+  std::string terminalFailureCode = "None";
+  std::string terminalFailureStage;
+  bool surfaceCellFallbackAttempted = false;
+  bool surfaceCellUsedLegacyFallback = false;
+  bool surfaceCellReturnedQuadDominantFallback = false;
+  bool surfaceCellDebugArtifactsPreserved = false;
+  std::vector<std::string> surfaceCellDebugArtifacts;
+
   double surfaceCellFeatureSeconds = 0.0;
   double surfaceCellMetricSeconds = 0.0;
   double surfaceCellReliefSeconds = 0.0;
@@ -45,6 +56,15 @@ struct RemeshDiagnostics {
 
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;
+  std::size_t surfaceCellFeatureCount = 0;
+  std::size_t surfaceCellMetricSampleCount = 0;
+  std::size_t surfaceCellReliefPatchCount = 0;
+  std::size_t surfaceCellTraceSegmentCount = 0;
+  std::size_t surfaceCellArrangementCellCount = 0;
+  std::size_t surfaceCellSimplifiedCellCount = 0;
+  std::size_t surfaceCellCompletedQuadCount = 0;
+  std::size_t surfaceCellOptimizationIterationCount = 0;
+  std::vector<std::size_t> faceDegreeHistogram;
 
   double adaptiveFeatureMapSeconds = 0.0;
   std::size_t adaptiveFeatureHardEdgeCount = 0;
