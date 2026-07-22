@@ -255,6 +255,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/PatchQuadrangulatorTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp
+    tests/SurfaceArrangementPhase16Tests.cpp
     tests/ReliefTopologyPhase13Tests.cpp
     tests/SurfaceCellTracingPhase14Tests.cpp
     tests/SurfaceCellsPhase10Tests.cpp
