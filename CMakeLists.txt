@@ -246,6 +246,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/ComponentParallelismTests.cpp
     tests/CrossFieldTransferTests.cpp
     tests/DiagnosticsTests.cpp
+    tests/FlowRepStrandsPhase15Tests.cpp
     tests/FunctionSkeletonTests.cpp
     tests/IntegerBatchSelectorTests.cpp
     tests/IntegerTransitionBasisTests.cpp
