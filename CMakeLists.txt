@@ -258,6 +258,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/RegularizedCurvaturePhase1Tests.cpp
     tests/SurfaceArrangementPhase16Tests.cpp
     tests/SurfaceComplexSimplificationPhase17Tests.cpp
+    tests/SurfaceMeshOptimizerPhase19Tests.cpp
     tests/ReliefTopologyPhase13Tests.cpp
     tests/SurfaceCellTracingPhase14Tests.cpp
     tests/SurfaceCellsPhase10Tests.cpp
