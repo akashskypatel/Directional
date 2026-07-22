@@ -56,6 +56,15 @@ struct TriFlowSimplificationOptions {
   /** Optional #V x 3 per-vertex predicted target x(v). Overrides vertexNvf. */
   Eigen::MatrixXd vertexTargets;
 
+  /** Explicit Phase 13 root label for each input vertex. Overrides NVF roots. */
+  Eigen::VectorXi prescribedRootLabels;
+
+  /** Explicit Phase 13 target position for each root label. */
+  Eigen::MatrixXd prescribedRootTargets;
+
+  /** Canonical edge keys that must not be collapsed. */
+  std::vector<std::uint64_t> protectedEdgeKeys;
+
   /** Root threshold tau. If negative, 0.5 * bbox diagonal / voxelResolution. */
   double rootThreshold = -1.0;
 
@@ -85,6 +94,8 @@ struct TriFlowSimplificationResult {
   Eigen::VectorXi rootLabels;
   int rootCount = 0;
   int collapsedEdges = 0;
+  int rejectedCrossRootCandidates = 0;
+  int rejectedProtectedEdges = 0;
 };
 
 namespace detail {
@@ -289,6 +300,7 @@ private:
   std::vector<int> vertexVersion_;
   std::vector<bool> initialBoundaryVertex_;
   std::unordered_set<std::uint64_t> initialBoundaryEdges_;
+  std::unordered_set<std::uint64_t> protectedEdges_;
   std::priority_queue<Candidate, std::vector<Candidate>, CandidateGreater>
       queue_;
   int validFaceCount_ = 0;
@@ -326,6 +338,39 @@ private:
   void prepare_targets_and_roots() {
     Eigen::MatrixXd targets;
     const Eigen::Index vertexCount = static_cast<Eigen::Index>(vertices_.size());
+
+    protectedEdges_.clear();
+    protectedEdges_.insert(options_.protectedEdgeKeys.begin(),
+                           options_.protectedEdgeKeys.end());
+
+    if (options_.prescribedRootLabels.size() > 0 ||
+        options_.prescribedRootTargets.size() > 0) {
+      validate_matrix_shape(options_.prescribedRootLabels, vertexCount, 1,
+                            "prescribedRootLabels");
+      if (options_.prescribedRootTargets.cols() != 3 ||
+          options_.prescribedRootTargets.rows() <= 0) {
+        throw std::runtime_error(
+            "prescribedRootTargets must have shape (#roots, 3).");
+      }
+      rootLabel_.assign(vertices_.size(), -1);
+      for (int vertex = 0; vertex < static_cast<int>(vertices_.size()); ++vertex) {
+        const int label = options_.prescribedRootLabels[vertex];
+        if (label < 0 || label >= options_.prescribedRootTargets.rows()) {
+          throw std::runtime_error(
+              "prescribedRootLabels contains an out-of-range root label.");
+        }
+        rootLabel_[static_cast<std::size_t>(vertex)] = label;
+      }
+      rootTarget_.resize(static_cast<std::size_t>(
+          options_.prescribedRootTargets.rows()));
+      for (int root = 0; root < options_.prescribedRootTargets.rows(); ++root) {
+        rootTarget_[static_cast<std::size_t>(root)] =
+            options_.prescribedRootTargets.row(root);
+      }
+      rootCount_ = static_cast<int>(rootTarget_.size());
+      hasNvf_ = true;
+      return;
+    }
 
     if (options_.vertexTargets.size() > 0) {
       validate_matrix_shape(options_.vertexTargets, vertexCount, 3,
@@ -579,6 +624,10 @@ private:
                .norm() <= options_.rootRelaxationThreshold;
   }
 
+  bool edge_is_protected(const int a, const int b) const {
+    return protectedEdges_.contains(edge_key(a, b));
+  }
+
   bool make_candidate(const int inputA, const int inputB,
                       Candidate &candidate) const {
     if (!vertex_is_valid(inputA) || !vertex_is_valid(inputB) ||
@@ -590,7 +639,7 @@ private:
     if (a > b)
       std::swap(a, b);
 
-    if (!roots_compatible(a, b))
+    if (!roots_compatible(a, b) || edge_is_protected(a, b))
       return false;
 
     const Eigen::Matrix4d quadric = candidate_quadric(a, b);
@@ -747,7 +796,8 @@ private:
 
   bool collapse_allowed(const int a, const int b,
                         const Eigen::RowVector3d &position) const {
-    if (!roots_compatible(a, b) || !boundary_ok(a, b))
+    if (!roots_compatible(a, b) || edge_is_protected(a, b) ||
+        !boundary_ok(a, b))
       return false;
     if (!link_condition_ok(a, b))
       return false;

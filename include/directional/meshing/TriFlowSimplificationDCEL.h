@@ -63,6 +63,15 @@ struct TriFlowSimplificationDCELOptions {
   /** Optional #dcel.vertices x 3 per-vertex predicted target x(v). Overrides vertexNvf. */
   Eigen::MatrixXd vertexTargets;
 
+  /** Explicit Phase 13 root label for each DCEL vertex. Overrides NVF roots. */
+  Eigen::VectorXi prescribedRootLabels;
+
+  /** Explicit Phase 13 target position for each root label. */
+  Eigen::MatrixXd prescribedRootTargets;
+
+  /** Canonical edge keys that must not be collapsed. */
+  std::vector<std::uint64_t> protectedEdgeKeys;
+
   /** Root threshold tau. If negative, 0.5 * bbox diagonal / voxelResolution. */
   double rootThreshold = -1.0;
 
@@ -114,6 +123,8 @@ struct TriFlowSimplificationDCELResult {
   int finalValidFaces = 0;
   int rootCount = 0;
   int collapsedEdges = 0;
+  int rejectedCrossRootCandidates = 0;
+  int rejectedProtectedEdges = 0;
   int rejectedCandidates = 0;
   int failedCollapses = 0;
 };
@@ -254,6 +265,7 @@ private:
   std::vector<Eigen::RowVector3d> rootTarget_;
   std::vector<unsigned char> initialBoundaryVertex_;
   std::unordered_set<std::uint64_t> initialBoundaryEdges_;
+  std::unordered_set<std::uint64_t> protectedEdges_;
   Eigen::MatrixXd targets_;
   int validVertexCount_ = 0;
   int validFaceCount_ = 0;
@@ -400,6 +412,24 @@ private:
   void resolve_targets() {
     const Eigen::Index vertexCount = static_cast<Eigen::Index>(dcel_.vertices.size());
 
+    protectedEdges_.clear();
+    protectedEdges_.insert(options_.protectedEdgeKeys.begin(),
+                           options_.protectedEdgeKeys.end());
+
+    if (options_.prescribedRootLabels.size() > 0 ||
+        options_.prescribedRootTargets.size() > 0) {
+      validate_matrix_shape(options_.prescribedRootLabels, vertexCount, 1,
+                            "prescribedRootLabels");
+      if (options_.prescribedRootTargets.cols() != 3 ||
+          options_.prescribedRootTargets.rows() <= 0) {
+        throw std::runtime_error(
+            "prescribedRootTargets must have shape (#roots, 3).");
+      }
+      targets_ = options_.prescribedRootTargets;
+      hasNvf_ = true;
+      return;
+    }
+
     if (options_.vertexTargets.size() > 0) {
       validate_matrix_shape(options_.vertexTargets, vertexCount, 3,
                             "vertexTargets");
@@ -430,6 +460,30 @@ private:
     rootLabel_.assign(dcel_.vertices.size(), -1);
     rootTarget_.clear();
     rootCount_ = 0;
+
+    if (options_.prescribedRootLabels.size() > 0 ||
+        options_.prescribedRootTargets.size() > 0) {
+      for (int vertex = 0; vertex < static_cast<int>(dcel_.vertices.size());
+           ++vertex) {
+        if (!valid_vertex(vertex)) {
+          continue;
+        }
+        const int label = options_.prescribedRootLabels[vertex];
+        if (label < 0 || label >= options_.prescribedRootTargets.rows()) {
+          throw std::runtime_error(
+              "prescribedRootLabels contains an out-of-range root label.");
+        }
+        rootLabel_[static_cast<std::size_t>(vertex)] = label;
+      }
+      rootTarget_.resize(static_cast<std::size_t>(
+          options_.prescribedRootTargets.rows()));
+      for (int root = 0; root < options_.prescribedRootTargets.rows(); ++root) {
+        rootTarget_[static_cast<std::size_t>(root)] =
+            options_.prescribedRootTargets.row(root);
+      }
+      rootCount_ = static_cast<int>(rootTarget_.size());
+      return;
+    }
 
     if (!hasNvf_) {
       std::fill(rootLabel_.begin(), rootLabel_.end(), 0);
@@ -668,6 +722,8 @@ private:
   }
 
   bool edge_is_protected(const int a, const int b) const {
+    if (protectedEdges_.contains(edge_key(a, b)))
+      return true;
     for (const int he : edge_halfedges(a, b)) {
       if (halfedge_is_protected(he))
         return true;

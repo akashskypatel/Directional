@@ -254,6 +254,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/PatchQuadrangulatorTests.cpp
     tests/RemeshRegressionTests.cpp
     tests/RegularizedCurvaturePhase1Tests.cpp
+    tests/ReliefTopologyPhase13Tests.cpp
     tests/SurfaceCellsPhase10Tests.cpp
     tests/TargetedStiffeningTests.cpp)
   target_link_libraries(
