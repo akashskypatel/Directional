@@ -182,6 +182,8 @@ TEST(BoundedMeshPreconditionerPhase07,
 
   EXPECT_EQ(result.flipsAccepted, 0U);
   EXPECT_EQ(result.faces, faces);
+  EXPECT_GT(result.adaptiveFeatureMapSeconds, 0.0);
+  EXPECT_GT(result.adaptiveFeatureHardEdgeCount, 0U);
 }
 
 TEST(BoundedMeshPreconditionerPhase07,

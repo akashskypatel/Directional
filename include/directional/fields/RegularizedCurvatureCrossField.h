@@ -27,6 +27,7 @@
 #include <directional/core/TriMesh.h>
 #include <directional/fields/CrossField.h>
 #include <directional/fields/PCFaceTangentBundle.h>
+#include <directional/geometry/AdaptiveFeatureMap.h>
 #include <directional/geometry/FaceCurvature.h>
 #include <directional/geometry/RegularizedProxyMesh.h>
 #include <directional/util/Progress.h>
@@ -48,6 +49,7 @@ enum class RegularizedCrossFieldConstraintType : int {
 struct RegularizedCurvatureCrossFieldOptions {
   RegularizedProxyMeshOptions proxy;
   FaceCurvatureOptions curvature;
+  geometry::AdaptiveFeatureMapOptions featureMap;
 
   /// Relative coefficient of the transported degree-4 smoothness energy.
   double fieldSmoothnessWeight = 1.0;
@@ -443,6 +445,16 @@ extract_regularized_curvature_cross_field(
   std::vector<AlignmentConstraint> constraints;
   constraints.reserve(static_cast<std::size_t>(mesh.F.rows() +
                                                 2 * mesh.EV.rows()));
+  geometry::AdaptiveFeatureMapOptions featureMapOptions = options.featureMap;
+  featureMapOptions.cadAbsoluteHighDegrees =
+      std::min(featureMapOptions.cadAbsoluteHighDegrees,
+               options.curvature.sharpFeatureAngleDegrees);
+  featureMapOptions.organicAbsoluteHighDegrees =
+      std::min(featureMapOptions.organicAbsoluteHighDegrees,
+               options.curvature.sharpFeatureAngleDegrees);
+  const geometry::AdaptiveFeatureMap featureMap =
+      geometry::AdaptiveFeatureMapBuilder::build(mesh.V, mesh.F,
+                                                 featureMapOptions);
 
   if (options.curvatureAlignmentWeight > 0.0) {
     for (int face = 0; face < mesh.F.rows(); ++face) {
@@ -494,10 +506,16 @@ extract_regularized_curvature_cross_field(
   if (options.sharpFeatureAlignmentWeight > 0.0) {
     for (int index = 0; index < mesh.innerEdges.size(); ++index) {
       const int edge = mesh.innerEdges(index);
-      if (!is_sharp_edge(mesh, edge,
-                         options.curvature.sharpFeatureAngleDegrees)) {
+      const std::pair<int, int> key =
+          geometry::AdaptiveFeatureMap::canonical_edge(mesh.EV(edge, 0),
+                                                       mesh.EV(edge, 1));
+      const geometry::AdaptiveFeatureClass edgeClass =
+          featureMap.edge_class(key);
+      if (edgeClass != geometry::AdaptiveFeatureClass::Hard &&
+          edgeClass != geometry::AdaptiveFeatureClass::Soft) {
         continue;
       }
+      const double strength = std::max(featureMap.strength(key), 1.0e-12);
       const double length =
           (mesh.V.row(mesh.EV(edge, 1)) - mesh.V.row(mesh.EV(edge, 0)))
               .norm();
@@ -509,7 +527,7 @@ extract_regularized_curvature_cross_field(
           continue;
         }
         constraints.push_back(
-            {face, direction, 1.0, std::max(length, 1e-30),
+            {face, direction, strength, std::max(length, 1e-30),
              RegularizedCrossFieldConstraintType::SharpFeature});
       }
     }

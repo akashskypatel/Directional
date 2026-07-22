@@ -28,6 +28,7 @@
 #include <directional/fields/CrossFieldTransfer.h>
 #include <directional/fields/CrossField.h>
 #include <directional/fields/FieldMatching.h>
+#include <directional/geometry/AdaptiveFeatureMap.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/geometry/MeshComponents.h>
 #include <directional/geometry/SurfacePoint.h>
@@ -59,6 +60,7 @@ struct SurfaceCellOptions {
   bool enabled = false;
   bool strictValidation = true;
   double geometricTolerance = 1.0e-9;
+  geometry::AdaptiveFeatureMapOptions featureMap;
 };
 
 /**
@@ -110,6 +112,9 @@ struct RemeshOptions {
 
   /// Dihedral angle threshold for protected feature edges.
   double preconditionSharpAngleDegrees = 45.0;
+
+  /// Shared adaptive feature-map options for Phase 11 feature consumers.
+  geometry::AdaptiveFeatureMapOptions featureMap;
 
   /// Enables Phase 08 component-level parallel remeshing. Disabled by default.
   bool parallelizeComponents = false;
@@ -209,6 +214,64 @@ struct RemeshResult {
   directional::RemeshDiagnostics diagnostics;
 };
 
+inline void copy_adaptive_feature_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::BoundedMeshPreconditionerResult &preconditioned) {
+  diagnostics.adaptiveFeatureMapSeconds =
+      preconditioned.adaptiveFeatureMapSeconds;
+  diagnostics.adaptiveFeatureHardEdgeCount =
+      preconditioned.adaptiveFeatureHardEdgeCount;
+  diagnostics.adaptiveFeatureSoftEdgeCount =
+      preconditioned.adaptiveFeatureSoftEdgeCount;
+  diagnostics.adaptiveFeatureBoundaryEdgeCount =
+      preconditioned.adaptiveFeatureBoundaryEdgeCount;
+  diagnostics.adaptiveFeatureNonManifoldEdgeCount =
+      preconditioned.adaptiveFeatureNonManifoldEdgeCount;
+  diagnostics.adaptiveFeatureCurveCount =
+      preconditioned.adaptiveFeatureCurveCount;
+  diagnostics.adaptiveFeatureClosedCurveCount =
+      preconditioned.adaptiveFeatureClosedCurveCount;
+  diagnostics.adaptiveFeatureMaxDensity =
+      preconditioned.adaptiveFeatureMaxDensity;
+}
+
+inline void copy_adaptive_feature_map_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::AdaptiveFeatureMap &featureMap) {
+  diagnostics.adaptiveFeatureHardEdgeCount = 0;
+  diagnostics.adaptiveFeatureSoftEdgeCount = 0;
+  diagnostics.adaptiveFeatureBoundaryEdgeCount = 0;
+  diagnostics.adaptiveFeatureNonManifoldEdgeCount = 0;
+  for (const geometry::AdaptiveFeatureEdge &edge : featureMap.edges) {
+    switch (edge.edgeClass) {
+    case geometry::AdaptiveFeatureClass::Hard:
+      ++diagnostics.adaptiveFeatureHardEdgeCount;
+      break;
+    case geometry::AdaptiveFeatureClass::Soft:
+      ++diagnostics.adaptiveFeatureSoftEdgeCount;
+      break;
+    case geometry::AdaptiveFeatureClass::Boundary:
+      ++diagnostics.adaptiveFeatureBoundaryEdgeCount;
+      break;
+    case geometry::AdaptiveFeatureClass::NonManifold:
+      ++diagnostics.adaptiveFeatureNonManifoldEdgeCount;
+      break;
+    case geometry::AdaptiveFeatureClass::Smooth:
+      break;
+    }
+  }
+  diagnostics.adaptiveFeatureCurveCount = featureMap.curves.size();
+  diagnostics.adaptiveFeatureClosedCurveCount = 0;
+  for (const geometry::AdaptiveFeatureCurve &curve : featureMap.curves) {
+    if (curve.closed) {
+      ++diagnostics.adaptiveFeatureClosedCurveCount;
+    }
+  }
+  diagnostics.adaptiveFeatureMaxDensity =
+      featureMap.vertexDensity.size() == 0 ? 0.0
+                                           : featureMap.vertexDensity.maxCoeff();
+}
+
 /**
  * @brief Compatibility wrapper for tangent projection.
  * @see directional::fields::project_tangent
@@ -262,6 +325,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   if (options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled) {
     RemeshResult result;
+    const auto featureStart = Clock::now();
+    const geometry::AdaptiveFeatureMap featureMap =
+        geometry::AdaptiveFeatureMapBuilder::build(
+            meshWhole.V, meshWhole.F, options.surfaceCells.featureMap);
+    result.diagnostics.surfaceCellFeatureSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - featureStart)
+            .count() /
+        1.0e6;
+    result.diagnostics.adaptiveFeatureMapSeconds =
+        result.diagnostics.surfaceCellFeatureSeconds;
+    copy_adaptive_feature_map_diagnostics(result.diagnostics, featureMap);
     result.success = false;
     result.diagnostics.surfaceCellValidationFailures = 1;
     result.diagnostics.overallPipelineSeconds =
@@ -314,10 +389,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     preconditionOptions.minFaceRatio = options.preconditionMinFaceRatio;
     preconditionOptions.sharpAngleDegrees =
         options.preconditionSharpAngleDegrees;
+    preconditionOptions.featureMap = options.featureMap;
     const geometry::BoundedMeshPreconditionerResult preconditioned =
         geometry::BoundedMeshPreconditioner::precondition(
             meshWhole.V, meshWhole.F, preconditionOptions);
     diagnostics.preconditioningSeconds += log_phase("input preconditioning");
+    copy_adaptive_feature_diagnostics(diagnostics, preconditioned);
     diagnostics.preconditioningFlipsAccepted = preconditioned.flipsAccepted;
     diagnostics.preconditioningCollapsesAccepted =
         preconditioned.collapsesAccepted;
@@ -613,6 +690,20 @@ inline void accumulate_component_diagnostics(
       source.surfaceCellValidationFailures;
   target.surfaceCellProvenanceVertexCount +=
       source.surfaceCellProvenanceVertexCount;
+
+  target.adaptiveFeatureMapSeconds += source.adaptiveFeatureMapSeconds;
+  target.adaptiveFeatureHardEdgeCount += source.adaptiveFeatureHardEdgeCount;
+  target.adaptiveFeatureSoftEdgeCount += source.adaptiveFeatureSoftEdgeCount;
+  target.adaptiveFeatureBoundaryEdgeCount +=
+      source.adaptiveFeatureBoundaryEdgeCount;
+  target.adaptiveFeatureNonManifoldEdgeCount +=
+      source.adaptiveFeatureNonManifoldEdgeCount;
+  target.adaptiveFeatureCurveCount += source.adaptiveFeatureCurveCount;
+  target.adaptiveFeatureClosedCurveCount +=
+      source.adaptiveFeatureClosedCurveCount;
+  target.adaptiveFeatureMaxDensity =
+      std::max(target.adaptiveFeatureMaxDensity,
+               source.adaptiveFeatureMaxDensity);
 
   target.preconditioningSeconds += source.preconditioningSeconds;
   target.tangentBundleInitializationSeconds +=
@@ -954,6 +1045,7 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
     preconditionOptions.minFaceRatio = options.preconditionMinFaceRatio;
     preconditionOptions.sharpAngleDegrees =
         options.preconditionSharpAngleDegrees;
+    preconditionOptions.featureMap = options.featureMap;
     const geometry::BoundedMeshPreconditionerResult preconditioned =
         geometry::BoundedMeshPreconditioner::precondition(
             meshWhole.V, meshWhole.F, preconditionOptions);
@@ -983,6 +1075,7 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
         remesh_from_raw_cross_field(meshWhole.V, meshWhole.F,
                                     crossField.rawField, preconditionedOptions);
     result.diagnostics.preconditioningSeconds = preconditioningSeconds;
+    copy_adaptive_feature_diagnostics(result.diagnostics, preconditioned);
     result.diagnostics.preconditioningFlipsAccepted =
         appliedPreconditioning ? preconditioned.flipsAccepted : 0;
     result.diagnostics.preconditioningCollapsesAccepted =

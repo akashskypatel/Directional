@@ -375,6 +375,9 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffScaffold) {
 
   EXPECT_FALSE(result.success);
   EXPECT_EQ(result.diagnostics.surfaceCellValidationFailures, 1U);
+  EXPECT_GE(result.diagnostics.surfaceCellFeatureSeconds, 0.0);
+  EXPECT_GT(result.diagnostics.adaptiveFeatureBoundaryEdgeCount, 0U);
+  EXPECT_GT(result.diagnostics.adaptiveFeatureCurveCount, 0U);
 }
 
 TEST(SurfaceCellsPhase10, StrictValidatorAcceptsLegacySyntheticOutput) {

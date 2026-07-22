@@ -239,6 +239,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_phase1_tests
     src/bench/BenchmarkCases.cpp
+    tests/AdaptiveFeatureMapPhase11Tests.cpp
     tests/AdaptiveIntegrationSolverTests.cpp
     tests/BoundedMeshPreconditionerTests.cpp
     tests/ComponentParallelismTests.cpp

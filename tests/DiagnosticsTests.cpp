@@ -209,6 +209,14 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "surfaceCellValidationSeconds": 0.0,
         "surfaceCellValidationFailures": 0,
         "surfaceCellProvenanceVertexCount": 0,
+        "adaptiveFeatureMapSeconds": 0.0,
+        "adaptiveFeatureHardEdgeCount": 0,
+        "adaptiveFeatureSoftEdgeCount": 0,
+        "adaptiveFeatureBoundaryEdgeCount": 0,
+        "adaptiveFeatureNonManifoldEdgeCount": 0,
+        "adaptiveFeatureCurveCount": 0,
+        "adaptiveFeatureClosedCurveCount": 0,
+        "adaptiveFeatureMaxDensity": 0.0,
         "preconditioningSeconds": 0.0,
         "preconditioningFlipsAccepted": 0,
         "preconditioningInputTriangleCount": 2,
@@ -260,6 +268,14 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"surfaceCellValidationSeconds\"");
   expect_contains(json, "\"surfaceCellValidationFailures\"");
   expect_contains(json, "\"surfaceCellProvenanceVertexCount\"");
+  expect_contains(json, "\"adaptiveFeatureMapSeconds\"");
+  expect_contains(json, "\"adaptiveFeatureHardEdgeCount\"");
+  expect_contains(json, "\"adaptiveFeatureSoftEdgeCount\"");
+  expect_contains(json, "\"adaptiveFeatureBoundaryEdgeCount\"");
+  expect_contains(json, "\"adaptiveFeatureNonManifoldEdgeCount\"");
+  expect_contains(json, "\"adaptiveFeatureCurveCount\"");
+  expect_contains(json, "\"adaptiveFeatureClosedCurveCount\"");
+  expect_contains(json, "\"adaptiveFeatureMaxDensity\"");
   expect_contains(json, "\"preconditioningSeconds\"");
   expect_contains(json, "\"preconditioningFlipsAccepted\"");
   expect_contains(json, "\"preconditioningInputTriangleCount\"");

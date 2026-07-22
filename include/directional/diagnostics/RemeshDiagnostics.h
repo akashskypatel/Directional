@@ -46,6 +46,15 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;
 
+  double adaptiveFeatureMapSeconds = 0.0;
+  std::size_t adaptiveFeatureHardEdgeCount = 0;
+  std::size_t adaptiveFeatureSoftEdgeCount = 0;
+  std::size_t adaptiveFeatureBoundaryEdgeCount = 0;
+  std::size_t adaptiveFeatureNonManifoldEdgeCount = 0;
+  std::size_t adaptiveFeatureCurveCount = 0;
+  std::size_t adaptiveFeatureClosedCurveCount = 0;
+  double adaptiveFeatureMaxDensity = 0.0;
+
   double componentSplitSeconds = 0.0;
   double componentParallelWallSeconds = 0.0;
   double componentMergeSeconds = 0.0;

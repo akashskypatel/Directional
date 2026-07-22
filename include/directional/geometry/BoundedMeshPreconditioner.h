@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <map>
 #include <numeric>
@@ -20,6 +21,8 @@
 #include <vector>
 
 #include <Eigen/Core>
+
+#include <directional/geometry/AdaptiveFeatureMap.h>
 
 namespace directional {
 namespace geometry {
@@ -30,6 +33,7 @@ struct BoundedMeshPreconditionerOptions {
   double maxFaceRatio = 1.05;
   double minFaceRatio = 0.95;
   double sharpAngleDegrees = 45.0;
+  AdaptiveFeatureMapOptions featureMap;
   int maxFlipPasses = 4;
 };
 
@@ -43,6 +47,14 @@ struct MeshQualityMetrics {
 struct BoundedMeshPreconditionerResult {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
+  double adaptiveFeatureMapSeconds = 0.0;
+  std::size_t adaptiveFeatureHardEdgeCount = 0;
+  std::size_t adaptiveFeatureSoftEdgeCount = 0;
+  std::size_t adaptiveFeatureBoundaryEdgeCount = 0;
+  std::size_t adaptiveFeatureNonManifoldEdgeCount = 0;
+  std::size_t adaptiveFeatureCurveCount = 0;
+  std::size_t adaptiveFeatureClosedCurveCount = 0;
+  double adaptiveFeatureMaxDensity = 0.0;
   std::size_t flipsAccepted = 0;
   std::size_t collapsesAccepted = 0;
   std::size_t splitsAccepted = 0;
@@ -75,8 +87,17 @@ public:
 
     std::set<std::pair<int, int>> protectedEdges =
         collect_boundary_edges(faces);
+    const auto featureMapStart = std::chrono::high_resolution_clock::now();
+    const AdaptiveFeatureMap featureMap =
+        build_adaptive_feature_map(vertices, faces, options);
+    result.adaptiveFeatureMapSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::high_resolution_clock::now() - featureMapStart)
+            .count() /
+        1.0e6;
+    store_feature_map_metrics(featureMap, result);
     const std::set<std::pair<int, int>> featureEdges =
-        detect_feature_edges(vertices, faces, options.sharpAngleDegrees);
+        collect_adaptive_feature_edges(featureMap);
     protectedEdges.insert(featureEdges.begin(), featureEdges.end());
 
     for (int pass = 0; pass < std::max(0, options.maxFlipPasses); ++pass) {
@@ -211,31 +232,58 @@ private:
     return boundary;
   }
 
+  [[nodiscard]] static AdaptiveFeatureMap build_adaptive_feature_map(
+      const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+      const BoundedMeshPreconditionerOptions &options) {
+    AdaptiveFeatureMapOptions mapOptions = options.featureMap;
+    mapOptions.cadAbsoluteHighDegrees =
+        std::min(mapOptions.cadAbsoluteHighDegrees, options.sharpAngleDegrees);
+    mapOptions.organicAbsoluteHighDegrees = std::min(
+        mapOptions.organicAbsoluteHighDegrees, options.sharpAngleDegrees);
+    return AdaptiveFeatureMapBuilder::build(vertices, faces, mapOptions);
+  }
+
   [[nodiscard]] static std::set<std::pair<int, int>>
-  detect_feature_edges(const Eigen::MatrixXd &vertices,
-                       const Eigen::MatrixXi &faces,
-                       const double sharpAngleDegrees) {
+  collect_adaptive_feature_edges(const AdaptiveFeatureMap &map) {
     std::set<std::pair<int, int>> features;
-    const auto edgeFaces = collect_edge_faces(faces);
-    const double cosineThreshold =
-        std::cos(std::clamp(sharpAngleDegrees, 0.0, 180.0) *
-                 3.14159265358979323846 / 180.0);
-    for (const auto &[edge, incidentFaces] : edgeFaces) {
-      if (incidentFaces.size() != 2) {
-        continue;
-      }
-      const Eigen::RowVector3d n0 =
-          face_normal(vertices, faces.row(incidentFaces[0]));
-      const Eigen::RowVector3d n1 =
-          face_normal(vertices, faces.row(incidentFaces[1]));
-      if (n0.squaredNorm() == 0.0 || n1.squaredNorm() == 0.0) {
-        continue;
-      }
-      if (n0.dot(n1) < cosineThreshold) {
-        features.insert(edge);
+    for (const AdaptiveFeatureEdge &edge : map.edges) {
+      if (edge.edgeClass == AdaptiveFeatureClass::Hard ||
+          edge.edgeClass == AdaptiveFeatureClass::Soft ||
+          edge.edgeClass == AdaptiveFeatureClass::NonManifold) {
+        features.insert(edge.vertices);
       }
     }
     return features;
+  }
+
+  static void store_feature_map_metrics(const AdaptiveFeatureMap &map,
+                                        BoundedMeshPreconditionerResult &result) {
+    for (const AdaptiveFeatureEdge &edge : map.edges) {
+      switch (edge.edgeClass) {
+      case AdaptiveFeatureClass::Hard:
+        ++result.adaptiveFeatureHardEdgeCount;
+        break;
+      case AdaptiveFeatureClass::Soft:
+        ++result.adaptiveFeatureSoftEdgeCount;
+        break;
+      case AdaptiveFeatureClass::Boundary:
+        ++result.adaptiveFeatureBoundaryEdgeCount;
+        break;
+      case AdaptiveFeatureClass::NonManifold:
+        ++result.adaptiveFeatureNonManifoldEdgeCount;
+        break;
+      case AdaptiveFeatureClass::Smooth:
+        break;
+      }
+    }
+    result.adaptiveFeatureCurveCount = map.curves.size();
+    for (const AdaptiveFeatureCurve &curve : map.curves) {
+      if (curve.closed) {
+        ++result.adaptiveFeatureClosedCurveCount;
+      }
+    }
+    result.adaptiveFeatureMaxDensity =
+        map.vertexDensity.size() == 0 ? 0.0 : map.vertexDensity.maxCoeff();
   }
 
   [[nodiscard]] static Eigen::RowVector3d
