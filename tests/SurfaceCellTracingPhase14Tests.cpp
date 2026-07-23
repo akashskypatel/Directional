@@ -252,6 +252,33 @@ TEST(SurfaceCellTracingPhase14, QuarterTurnHingeTransportKeepsForwardSign) {
   EXPECT_EQ(trace.segments[1].face, 1);
 }
 
+TEST(SurfaceCellTracingPhase14, CrossFieldResultMatchingSwapsFamilyAcrossEdge) {
+  const MeshFixture mesh = make_grid(1);
+  directional::fields::CrossFieldResult crossField;
+  crossField.primaryDirections.resize(mesh.faces.rows(), 3);
+  crossField.secondaryDirections.resize(mesh.faces.rows(), 3);
+  crossField.primaryDirections.row(0) << 1.0, 0.0, 0.0;
+  crossField.secondaryDirections.row(0) << 0.0, 1.0, 0.0;
+  crossField.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  crossField.secondaryDirections.row(1) << -1.0, 0.0, 0.0;
+  crossField.matching = Eigen::VectorXi::Constant(1, 1);
+  crossField.effort = Eigen::VectorXd::Constant(1, 0.25);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, crossField, seed, 0, -1, options);
+
+  ASSERT_GE(trace.segments.size(), 2U);
+  EXPECT_EQ(trace.segments[0].matching, 1);
+  EXPECT_NEAR(trace.segments[0].matchingEffort, 0.25, 1.0e-12);
+  EXPECT_EQ(trace.segments[1].face, 1);
+  EXPECT_EQ(trace.segments[1].family, 1);
+}
+
 TEST(SurfaceCellTracingPhase14, CurvedHingeTraceFieldDeviationWithinGate) {
   const MeshFixture mesh = make_hinge_pair();
   Eigen::MatrixXd x(mesh.faces.rows(), 3);
@@ -325,6 +352,13 @@ TEST(SurfaceCellTracingPhase14, CaptureRadiusTerminatesOnCompatibleTraceNode) {
 
   EXPECT_EQ(trace.termination,
             directional::geometry::TraceTerminationReason::Captured);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_NEAR(trace.segments.back().endBarycentric[0], capture.barycentric[0],
+              1.0e-12);
+  EXPECT_NEAR(trace.segments.back().endBarycentric[1], capture.barycentric[1],
+              1.0e-12);
+  EXPECT_NEAR(trace.segments.back().endBarycentric[2], capture.barycentric[2],
+              1.0e-12);
 }
 
 TEST(SurfaceCellTracingPhase14, RepeatedDirectedStateTerminatesCycle) {
@@ -370,6 +404,27 @@ TEST(SurfaceCellTracingPhase14, HardFeatureTerminatesAndDoesNotCross) {
   EXPECT_EQ(trace.segments.back().face, 0);
 }
 
+TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 0.75;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_NE(trace.termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_EQ(trace.segments.front().exitEdge, 1);
+}
+
 TEST(SurfaceCellTracingPhase14, ProposalStatsAccountForEveryAttempt) {
   const MeshFixture mesh = make_grid(2);
   Eigen::MatrixXd x, y;
@@ -409,23 +464,78 @@ TEST(SurfaceCellTracingPhase14, CellProposalReportsClosureAndAcceptedSides) {
             directional::geometry::CellRejectionReason::Accepted);
   EXPECT_NEAR(proposal.closureError, 0.0, 1.0e-12);
   EXPECT_FALSE(proposal.sides.empty());
+  for (const auto &path : proposal.boundaryPaths) {
+    EXPECT_FALSE(path.empty());
+  }
 
   const Eigen::RowVector3d center =
       directional::geometry::surface_cell_tracing_detail::point_position(
           mesh.vertices, mesh.faces, seed.point);
-  int cornerIndex = 0;
-  for (const int sx : {-1, 1}) {
-    for (const int sy : {-1, 1}) {
-      const Eigen::RowVector3d expected =
-          center + Eigen::RowVector3d(0.5 * sx * targetSize[0],
-                                      0.5 * sy * targetSize[0], 0.0);
-      const Eigen::RowVector3d actual =
-          directional::geometry::surface_cell_tracing_detail::point_position(
-              mesh.vertices, mesh.faces,
-              proposal.corners[static_cast<std::size_t>(cornerIndex++)]);
-      EXPECT_LE((actual - expected).norm(), 1.0e-6 * targetSize[0]);
-    }
+  const std::array<Eigen::RowVector3d, 4> expected{
+      center + Eigen::RowVector3d(-0.5 * targetSize[0], -0.5 * targetSize[0],
+                                  0.0),
+      center + Eigen::RowVector3d(0.5 * targetSize[0], -0.5 * targetSize[0],
+                                  0.0),
+      center + Eigen::RowVector3d(0.5 * targetSize[0], 0.5 * targetSize[0],
+                                  0.0),
+      center + Eigen::RowVector3d(-0.5 * targetSize[0], 0.5 * targetSize[0],
+                                  0.0)};
+  for (int cornerIndex = 0; cornerIndex < 4; ++cornerIndex) {
+    const Eigen::RowVector3d actual =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces,
+            proposal.corners[static_cast<std::size_t>(cornerIndex)]);
+    EXPECT_LE((actual - expected[static_cast<std::size_t>(cornerIndex)]).norm(),
+              1.0e-6 * targetSize[0]);
   }
+  for (int sideIndex = 0; sideIndex < 4; ++sideIndex) {
+    const auto &path =
+        proposal.boundaryPaths[static_cast<std::size_t>(sideIndex)];
+    ASSERT_FALSE(path.empty());
+    const Eigen::RowVector3d start =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces,
+            directional::geometry::SurfaceTracePoint{
+                path.front().face, path.front().startBarycentric});
+    const Eigen::RowVector3d end =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces,
+            directional::geometry::SurfaceTracePoint{path.back().face,
+                                                     path.back().endBarycentric});
+    const Eigen::RowVector3d expectedStart =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces,
+            proposal.corners[static_cast<std::size_t>(sideIndex)]);
+    const Eigen::RowVector3d expectedEnd =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces,
+            proposal.corners[static_cast<std::size_t>((sideIndex + 1) % 4)]);
+    EXPECT_LE((start - expectedStart).norm(), 1.0e-9);
+    EXPECT_LE((end - expectedEnd).norm(), 1.0e-9);
+  }
+}
+
+TEST(SurfaceCellTracingPhase14, CellProposalRejectsDegenerateLoop) {
+  const MeshFixture mesh = make_grid(2);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  y = x;
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 0.25);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 8;
+  seed.point.face = 6;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.25;
+  options.maxTraceLength = 1.0;
+
+  const auto proposal = directional::geometry::make_surface_cell_proposal(
+      mesh.vertices, mesh.faces, x, y, targetSize, seed, options);
+
+  EXPECT_FALSE(proposal.accepted);
+  EXPECT_EQ(proposal.rejection,
+            directional::geometry::CellRejectionReason::Degenerate);
 }
 
 TEST(SurfaceCellTracingPhase14, SampledSourceAreaWithinLocalTargetSize) {

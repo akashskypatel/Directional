@@ -223,6 +223,32 @@ TEST(ReliefTopologyPhase13, SaddleBranchesTraceToExtrema) {
   EXPECT_TRUE(hasAscending);
 }
 
+TEST(ReliefTopologyPhase13, CanceledExtremaDoNotAppearInRetainedBranches) {
+  const MeshFixture mesh = make_saddle_fan();
+  Eigen::VectorXd relief(5);
+  relief << 0.5, 0.0, 1.0, 0.0, 1.0;
+  directional::geometry::ReliefOptions options;
+  options.persistenceThreshold = 0.75;
+
+  const auto topology = directional::geometry::analyze_relief_topology(
+      mesh.vertices, mesh.faces, relief, {}, options);
+
+  std::set<int> canceledExtrema;
+  for (const auto &pair : topology.persistencePairs) {
+    if (pair.canceled) {
+      canceledExtrema.insert(pair.extremum);
+    }
+  }
+  ASSERT_FALSE(canceledExtrema.empty());
+  for (const auto &branch : topology.branches) {
+    EXPECT_EQ(canceledExtrema.count(branch.extremum), 0U);
+    ASSERT_GE(branch.saddle, 0);
+    ASSERT_GE(branch.extremum, 0);
+    EXPECT_TRUE(topology.criticalPoints[branch.saddle].retained);
+    EXPECT_TRUE(topology.criticalPoints[branch.extremum].retained);
+  }
+}
+
 TEST(ReliefTopologyPhase13, WatershedLabelsEveryVertexAndHonorsBarrier) {
   const MeshFixture mesh = make_grid(1);
   const std::set<std::uint64_t> barriers{edge_key(0, 2)};
@@ -255,6 +281,25 @@ TEST(ReliefTopologyPhase13, RootSelectionIncludesCrossFieldSingularities) {
             roots.roots.end());
   EXPECT_EQ(roots.targets.rows(), static_cast<int>(roots.roots.size()));
   EXPECT_EQ(roots.labels.size(), mesh.vertices.rows());
+}
+
+TEST(ReliefTopologyPhase13, RootSelectionPassesBarriersToEveryWatershed) {
+  const MeshFixture mesh = make_grid(1);
+  directional::geometry::ReliefTopologyResult topology;
+  topology.criticalPoints.push_back(
+      {1, directional::geometry::ReliefCriticalType::Minimum, 0, 0, 0, true});
+  topology.criticalPoints.push_back(
+      {3, directional::geometry::ReliefCriticalType::Minimum, 0, 0, 0, true});
+  directional::geometry::ReliefRootSelectionOptions options;
+  options.maximumNormalizedDistance = 100.0;
+  options.hardBarrierEdges.insert(edge_key(0, 2));
+
+  const auto roots = directional::geometry::select_relief_roots(
+      mesh.vertices, mesh.faces, topology,
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0), options);
+
+  ASSERT_EQ(roots.labels.size(), mesh.vertices.rows());
+  EXPECT_NE(roots.labels[0], roots.labels[2]);
 }
 
 TEST(ReliefTopologyPhase13, TriFlowUsesExplicitRootLabelsAndBlocksCrossRootCollapse) {

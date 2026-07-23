@@ -92,6 +92,7 @@ struct ReliefRootSelectionOptions {
   std::vector<int> featureJunctions;
   std::vector<int> singularities;
   std::vector<int> skeletonAnchors;
+  std::set<std::uint64_t> hardBarrierEdges;
 };
 
 struct ReliefRootSelectionResult {
@@ -512,6 +513,66 @@ inline Eigen::VectorXi watershed_to_roots(
   return labels;
 }
 
+inline Eigen::VectorXd normalized_dijkstra_to_roots(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &roots, const Eigen::VectorXd &targetSize,
+    const std::set<std::uint64_t> &barrierEdges = {}) {
+  using QueueItem = std::pair<double, int>;
+  struct Greater {
+    bool operator()(const QueueItem &a, const QueueItem &b) const {
+      if (a.first != b.first) {
+        return a.first > b.first;
+      }
+      return a.second > b.second;
+    }
+  };
+  const int vertexCount = static_cast<int>(vertices.rows());
+  const auto graph =
+      relief_topology_detail::vertex_neighbors_from_faces(vertexCount, faces);
+  Eigen::VectorXd distances =
+      Eigen::VectorXd::Constant(vertexCount, std::numeric_limits<double>::infinity());
+  std::priority_queue<QueueItem, std::vector<QueueItem>, Greater> queue;
+  for (const int root : roots) {
+    if (root < 0 || root >= vertexCount) {
+      continue;
+    }
+    if (distances[root] > 0.0) {
+      distances[root] = 0.0;
+      queue.push({0.0, root});
+    }
+  }
+  const auto safe_size = [&](const int vertex) {
+    if (vertex >= 0 && vertex < targetSize.size() && std::isfinite(targetSize[vertex]) &&
+        targetSize[vertex] > 0.0) {
+      return targetSize[vertex];
+    }
+    return 1.0;
+  };
+  while (!queue.empty()) {
+    const auto [distance, vertex] = queue.top();
+    queue.pop();
+    if (distance != distances[vertex]) {
+      continue;
+    }
+    for (const int neighbor : graph[static_cast<std::size_t>(vertex)]) {
+      if (barrierEdges.count(relief_topology_detail::edge_key(vertex, neighbor)) != 0) {
+        continue;
+      }
+      const double h = 0.5 * (safe_size(vertex) + safe_size(neighbor));
+      const double edgeLength =
+          (relief_topology_detail::row3(vertices, vertex) -
+           relief_topology_detail::row3(vertices, neighbor))
+              .norm();
+      const double candidate = distance + edgeLength / std::max(h, 1.0e-12);
+      if (candidate + 1.0e-14 < distances[neighbor]) {
+        distances[neighbor] = candidate;
+        queue.push({candidate, neighbor});
+      }
+    }
+  }
+  return distances;
+}
+
 inline std::vector<ReliefBranch> trace_relief_branches(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &relief,
@@ -629,9 +690,6 @@ inline ReliefTopologyResult analyze_relief_topology(
   result.persistencePairs =
       compute_relief_persistence_pairs(vertices, faces, relief,
                                        options.persistenceThreshold);
-  result.branches =
-      trace_relief_branches(vertices, faces, relief, result.criticalPoints,
-                            barrierEdges);
 
   std::set<int> canceledMinima;
   std::set<int> canceledMaxima;
@@ -663,6 +721,26 @@ inline ReliefTopologyResult analyze_relief_topology(
       }
     }
   }
+
+  result.branches =
+      trace_relief_branches(vertices, faces, relief, result.criticalPoints,
+                            barrierEdges);
+  result.branches.erase(
+      std::remove_if(result.branches.begin(), result.branches.end(),
+                     [&](const ReliefBranch &branch) {
+                       if (branch.saddle < 0 ||
+                           branch.saddle >= static_cast<int>(result.criticalPoints.size()) ||
+                           branch.extremum < 0 ||
+                           branch.extremum >= static_cast<int>(result.criticalPoints.size())) {
+                         return true;
+                       }
+                       const ReliefCriticalPoint &saddle =
+                           result.criticalPoints[static_cast<std::size_t>(branch.saddle)];
+                       const ReliefCriticalPoint &extremum =
+                           result.criticalPoints[static_cast<std::size_t>(branch.extremum)];
+                       return !saddle.retained || !extremum.retained;
+                     }),
+      result.branches.end());
 
   for (const ReliefCriticalPoint &point : result.criticalPoints) {
     if (point.type == ReliefCriticalType::Minimum && point.retained) {
@@ -720,19 +798,20 @@ inline ReliefRootSelectionResult select_relief_roots(
   }
 
   while (!roots.empty()) {
-    const Eigen::VectorXi labels = watershed_to_roots(vertices, faces, roots);
+    const Eigen::VectorXi labels =
+        watershed_to_roots(vertices, faces, roots, options.hardBarrierEdges);
+    const Eigen::VectorXd normalizedDistance = normalized_dijkstra_to_roots(
+        vertices, faces, roots, safeSize, options.hardBarrierEdges);
     double worst = 0.0;
     int worstVertex = -1;
     for (int vertex = 0; vertex < vertexCount; ++vertex) {
       if (labels[vertex] < 0) {
         continue;
       }
-      const int root = roots[static_cast<std::size_t>(labels[vertex])];
-      const double distance =
-          (relief_topology_detail::row3(vertices, vertex) -
-           relief_topology_detail::row3(vertices, root))
-              .norm() /
-          safeSize[vertex];
+      const double distance = normalizedDistance[vertex];
+      if (!std::isfinite(distance)) {
+        continue;
+      }
       if (distance > worst + 1.0e-14 ||
           (std::abs(distance - worst) <= 1.0e-14 && vertex < worstVertex)) {
         worst = distance;
@@ -749,7 +828,8 @@ inline ReliefRootSelectionResult select_relief_roots(
 
   ReliefRootSelectionResult result;
   result.roots = roots;
-  result.labels = watershed_to_roots(vertices, faces, result.roots);
+  result.labels =
+      watershed_to_roots(vertices, faces, result.roots, options.hardBarrierEdges);
   result.targets.resize(static_cast<int>(result.roots.size()), 3);
   for (int root = 0; root < static_cast<int>(result.roots.size()); ++root) {
     result.targets.row(root) =
