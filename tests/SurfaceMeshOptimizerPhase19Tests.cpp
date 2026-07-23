@@ -33,6 +33,44 @@ constraints_for_plane(const Eigen::MatrixXd &source) {
   return c;
 }
 
+Eigen::MatrixXd source_triangle_vertices() {
+  Eigen::MatrixXd v(4, 3);
+  v << 0.0, 0.0, 0.0,
+       1.0, 0.0, 0.0,
+       1.0, 1.0, 0.0,
+       0.0, 1.0, 0.0;
+  return v;
+}
+
+Eigen::MatrixXi source_triangles() {
+  Eigen::MatrixXi f(2, 3);
+  f << 0, 1, 2,
+       0, 2, 3;
+  return f;
+}
+
+directional::geometry::SurfaceOptimizationConstraints
+constraints_for_source_triangles() {
+  auto c = constraints_for_plane(source_triangle_vertices());
+  c.sourceVertices = source_triangle_vertices();
+  c.sourceFaces = source_triangles();
+  c.sourceNormals.resize(2, 3);
+  c.sourceNormals.row(0) << 0.0, 0.0, 1.0;
+  c.sourceNormals.row(1) << 0.0, 0.0, 1.0;
+  c.sourceFieldX.resize(2, 3);
+  c.sourceFieldY.resize(2, 3);
+  c.sourceFieldX.row(0) << 1.0, 0.0, 0.0;
+  c.sourceFieldX.row(1) << 0.0, 1.0, 0.0;
+  c.sourceFieldY.row(0) << 0.0, 1.0, 0.0;
+  c.sourceFieldY.row(1) << -1.0, 0.0, 0.0;
+  c.sourceFaceComponent = {0, 0};
+  c.sourceFaceSheet = {2, 2};
+  c.localTargetSize.resize(2);
+  c.localTargetSize << 1.0, 0.5;
+  c.authoritativeBoundaryLoop = {0, 1, 2, 3};
+  return c;
+}
+
 } // namespace
 
 TEST(SurfaceMeshOptimizerPhase19, PlanarGridConvergesToSourceProjection) {
@@ -166,6 +204,9 @@ TEST(SurfaceMeshOptimizerPhase19, ProjectionDoesNotJumpAcrossComponents) {
 TEST(SurfaceMeshOptimizerPhase19, FeatureParameterOrderGateFailsWhenCrossed) {
   auto constraints = constraints_for_plane(plane_vertices(0.0));
   constraints.featureVertices = {1, 2};
+  constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureCurveIds(1) = 7;
+  constraints.featureCurveIds(2) = 7;
   constraints.featureParameters = Eigen::VectorXd::Zero(4);
   constraints.featureParameters(1) = 0.8;
   constraints.featureParameters(2) = 0.2;
@@ -214,4 +255,142 @@ TEST(SurfaceMeshOptimizerPhase19, OptimizerTimingGateCanFail) {
 
   EXPECT_FALSE(report.optimizerTimeWithinGate);
   EXPECT_FALSE(report.accepted);
+}
+
+TEST(SurfaceMeshOptimizerPhase19, ProjectsToSourceTrianglesWithProvenance) {
+  Eigen::MatrixXd initial = source_triangle_vertices();
+  initial.array().col(2) += 0.2;
+  auto constraints = constraints_for_source_triangles();
+
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      initial, one_quad(), constraints);
+
+  ASSERT_EQ(result.vertexProvenance.size(), 4U);
+  EXPECT_TRUE(result.sourceTriangleProjectionUsed);
+  for (const auto &point : result.vertexProvenance) {
+    EXPECT_TRUE(point.valid());
+    EXPECT_GE(point.face, 0);
+    EXPECT_EQ(point.component, 0);
+    EXPECT_EQ(point.sheet, 2);
+    EXPECT_NEAR(point.barycentric.sum(), 1.0, 1.0e-12);
+    EXPECT_NEAR(point.position.z(), 0.0, 1.0e-12);
+  }
+}
+
+TEST(SurfaceMeshOptimizerPhase19, FeatureIntervalsUseCurveIdsNotVertexIds) {
+  auto constraints = constraints_for_source_triangles();
+  constraints.featureVertices = {1, 2};
+  constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureCurveIds(1) = 42;
+  constraints.featureCurveIds(2) = 42;
+  constraints.featureCurveIntervals.push_back(
+      {42, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}});
+  Eigen::MatrixXd initial = source_triangle_vertices();
+  initial.row(1) << 0.25, 0.4, 0.0;
+  initial.row(2) << 0.75, 0.5, 0.0;
+
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      initial, one_quad(), constraints);
+
+  EXPECT_NEAR(result.vertices(1, 1), 0.0, 1.0e-12);
+  EXPECT_NEAR(result.vertices(2, 1), 0.0, 1.0e-12);
+  EXPECT_TRUE(result.featureParametersOrdered);
+}
+
+TEST(SurfaceMeshOptimizerPhase19, FiniteDifferenceGradientCoversEnabledTerms) {
+  auto constraints = constraints_for_source_triangles();
+  Eigen::MatrixXd initial = source_triangle_vertices();
+  initial.row(2) << 1.1, 0.8, 0.15;
+  constraints.featureVertices = {2};
+  constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureCurveIds(2) = 99;
+  constraints.featureCurveIntervals.push_back(
+      {99, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}});
+
+  const auto expectGradientFor = [&](auto setWeight) {
+    directional::geometry::SurfaceOptimizationOptions options;
+    options.targetSize = 0.8;
+    options.weights.surface = 0.0;
+    options.weights.normal = 0.0;
+    options.weights.field = 0.0;
+    options.weights.orthogonality = 0.0;
+    options.weights.size = 0.0;
+    options.weights.valenceShape = 0.0;
+    options.weights.feature = 0.0;
+    setWeight(options.weights);
+    const auto gradient =
+        directional::geometry::finite_difference_surface_optimization_gradient(
+            initial, one_quad(), constraints, options);
+    EXPECT_EQ(gradient.rows(), initial.rows());
+    EXPECT_EQ(gradient.cols(), initial.cols());
+    EXPECT_GT(gradient.norm(), 1.0e-8);
+  };
+
+  expectGradientFor([](auto &w) { w.surface = 1.0; });
+  expectGradientFor([](auto &w) { w.normal = 1.0; });
+  expectGradientFor([](auto &w) { w.field = 1.0; });
+  expectGradientFor([](auto &w) { w.orthogonality = 1.0; });
+  expectGradientFor([](auto &w) { w.size = 1.0; });
+  expectGradientFor([](auto &w) { w.valenceShape = 1.0; });
+  expectGradientFor([](auto &w) { w.feature = 1.0; });
+}
+
+TEST(SurfaceMeshOptimizerPhase19, LocalSourceSizeAndFieldDriveMetrics) {
+  auto constraints = constraints_for_source_triangles();
+  constraints.localTargetSize << 2.0, 2.0;
+  constraints.sourceFieldX.row(0) << 1.0, 1.0, 0.0;
+  constraints.sourceFieldX.row(0).normalize();
+  constraints.sourceFieldY.row(0) << -1.0, 1.0, 0.0;
+  constraints.sourceFieldY.row(0).normalize();
+  directional::geometry::SurfaceOptimizationOptions options;
+  options.targetSize = 1.0;
+  const auto report = directional::geometry::validate_final_surface_mesh(
+      source_triangle_vertices(), one_quad(), constraints,
+      directional::geometry::optimize_projected_surface_mesh(
+          source_triangle_vertices(), one_quad(), constraints, options),
+      options, 0.1, 1.0);
+
+  EXPECT_LT(report.sizeP5, 1.0);
+  EXPECT_GT(report.fieldP95Degrees, 0.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase19, SignedScaledJacobianDetectsInversion) {
+  auto constraints = constraints_for_source_triangles();
+  Eigen::MatrixXd inverted = source_triangle_vertices();
+  inverted.row(1).swap(inverted.row(3));
+
+  const auto report = directional::geometry::validate_final_surface_mesh(
+      inverted, one_quad(), constraints,
+      directional::geometry::optimize_projected_surface_mesh(
+          source_triangle_vertices(), one_quad(), constraints),
+      {}, 0.1, 1.0);
+
+  EXPECT_LT(report.scaledJacobianMin, 0.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase19, OverlayErrorsAreComputedFromSourceData) {
+  auto constraints = constraints_for_source_triangles();
+  Eigen::MatrixXd vertices = source_triangle_vertices();
+  vertices.row(2) << 1.0, 1.0, 0.1;
+
+  const auto overlay = directional::geometry::make_surface_optimization_overlay(
+      vertices, one_quad(), constraints);
+
+  EXPECT_GT(overlay.surfaceError.maxCoeff(), 0.0);
+  EXPECT_GT(overlay.fieldAlignmentError.maxCoeff(), 0.0);
+  EXPECT_GE(overlay.normalError.maxCoeff(), 0.0);
+}
+
+TEST(SurfaceMeshOptimizerPhase19, FinalValidationUsesAuthorityOptions) {
+  auto constraints = constraints_for_source_triangles();
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      source_triangle_vertices(), one_quad(), constraints);
+
+  const auto report = directional::geometry::validate_final_surface_mesh(
+      result.vertices, one_quad(), constraints, result, {}, 0.1, 1.0);
+
+  EXPECT_TRUE(report.strictValidationUsed);
+  EXPECT_TRUE(report.provenanceValidationUsed);
+  EXPECT_TRUE(report.authoritativeBoundaryUsed);
+  EXPECT_EQ(report.tJunctions, 0);
 }
