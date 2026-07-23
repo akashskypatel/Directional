@@ -24,6 +24,7 @@
 #include <Eigen/Dense>
 
 #include <directional/meshing/PatchRegion.h>
+#include <directional/geometry/SurfacePoint.h>
 #include <directional/validation/MeshValidator.h>
 
 namespace directional::geometry {
@@ -65,6 +66,7 @@ enum class TopologyTemplateKind : int {
 
 struct PureQuadPatch {
   std::vector<int> boundaryVertices;
+  std::vector<SurfacePoint> boundaryProvenance;
   std::vector<int> sideEdgeCounts;
   std::vector<int> turns;
   int boundaryLoopCount = 1;
@@ -85,9 +87,11 @@ struct PureQuadPatchAdmissibility {
 struct PureQuadMesh {
   std::vector<int> vertices;
   Eigen::MatrixXd vertexPositions;
+  std::vector<SurfacePoint> vertexProvenance;
   std::vector<std::vector<int>> quads;
   std::vector<int> boundaryVertices;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  bool usesCenterFan = false;
 };
 
 struct PureQuadCompletionResult {
@@ -98,6 +102,8 @@ struct PureQuadCompletionResult {
 
 struct CompletionEndpoint {
   int id = -1;
+  int incidentTrace = -1;
+  int targetCurve = -1;
   int family = 0;
   double extendCost = std::numeric_limits<double>::infinity();
   double removeCost = std::numeric_limits<double>::infinity();
@@ -115,6 +121,8 @@ struct EndpointResolutionRecord {
 
 struct EndpointResolutionResult {
   std::vector<EndpointResolutionRecord> records;
+  std::vector<std::pair<int, int>> mutatedAdjacency;
+  int arrangementRebuilds = 0;
   int hangingNodes = 0;
   int endpointsEmbeddedInEdges = 0;
 };
@@ -138,6 +146,7 @@ struct TopologyRewriteCandidate {
   int featureLabel = 0;
   int singularityLabel = 0;
   bool singularityBudgetAvailable = true;
+  bool postconditionsHold = true;
   bool strictValidatorAccepts = true;
 };
 
@@ -145,6 +154,7 @@ struct TopologyRewriteRecord {
   int candidateId = -1;
   int templateId = -1;
   bool committed = false;
+  std::vector<int> outputAdjacency;
 };
 
 struct TopologyRewriteResult {
@@ -237,20 +247,114 @@ inline int expected_valence(const int singularIndexNumerator) {
 
 inline int next_generated_vertex(int &next) { return next--; }
 
+inline SurfacePoint make_planar_source_point(const int face,
+                                             const Eigen::Vector3d &position,
+                                             const Eigen::Vector3d &barycentric) {
+  SurfacePoint point;
+  point.face = face;
+  point.component = 0;
+  point.sheet = 0;
+  point.barycentric = barycentric;
+  point.position = position;
+  point.squaredDistance = 0.0;
+  return point;
+}
+
+inline SurfacePoint boundary_source_point(const PureQuadPatch &patch,
+                                          const int boundaryIndex) {
+  if (boundaryIndex >= 0 &&
+      boundaryIndex < static_cast<int>(patch.boundaryProvenance.size()) &&
+      patch.boundaryProvenance[static_cast<std::size_t>(boundaryIndex)].valid()) {
+    return patch.boundaryProvenance[static_cast<std::size_t>(boundaryIndex)];
+  }
+  const int count = std::max(1, static_cast<int>(patch.boundaryVertices.size()));
+  const double t = static_cast<double>(boundaryIndex) / static_cast<double>(count);
+  double x = 0.0;
+  double y = 0.0;
+  if (t < 0.25) {
+    x = 4.0 * t;
+  } else if (t < 0.5) {
+    x = 1.0;
+    y = 4.0 * (t - 0.25);
+  } else if (t < 0.75) {
+    x = 1.0 - 4.0 * (t - 0.5);
+    y = 1.0;
+  } else {
+    y = 1.0 - 4.0 * (t - 0.75);
+  }
+  const Eigen::Vector3d position(x, y, 0.0);
+  const Eigen::Vector3d barycentric(
+      std::max(0.0, 1.0 - 0.5 * (x + y)), 0.5 * x, 0.5 * y);
+  return make_planar_source_point(0, position, barycentric);
+}
+
+inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points) {
+  Eigen::Vector3d position = Eigen::Vector3d::Zero();
+  Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+  int face = -1;
+  int component = -1;
+  int sheet = -1;
+  int count = 0;
+  for (const SurfacePoint &point : points) {
+    if (!point.valid()) {
+      continue;
+    }
+    position += point.position;
+    barycentric += point.barycentric;
+    if (face < 0) {
+      face = point.face;
+      component = point.component;
+      sheet = point.sheet;
+    }
+    ++count;
+  }
+  if (count == 0) {
+    return make_planar_source_point(0, {1.0 / 3.0, 1.0 / 3.0, 0.0},
+                                    {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0});
+  }
+  position /= static_cast<double>(count);
+  barycentric /= static_cast<double>(count);
+  const double sum = std::max(1.0e-20, barycentric.sum());
+  barycentric /= sum;
+  SurfacePoint averaged;
+  averaged.face = face;
+  averaged.component = component;
+  averaged.sheet = sheet;
+  averaged.position = position;
+  averaged.barycentric = barycentric;
+  averaged.squaredDistance = 0.0;
+  return averaged;
+}
+
+inline void initialize_boundary_embedding(const PureQuadPatch &patch,
+                                          PureQuadMesh &mesh) {
+  mesh.boundaryVertices = patch.boundaryVertices;
+  mesh.vertices = patch.boundaryVertices;
+  mesh.vertexProvenance.clear();
+  mesh.vertexProvenance.reserve(mesh.vertices.size());
+  for (int i = 0; i < static_cast<int>(mesh.boundaryVertices.size()); ++i) {
+    mesh.vertexProvenance.push_back(boundary_source_point(patch, i));
+  }
+}
+
+inline int append_embedded_vertex(PureQuadMesh &mesh, int &nextInterior,
+                                  const std::vector<SurfacePoint> &anchors) {
+  const int vertex = next_generated_vertex(nextInterior);
+  mesh.vertices.push_back(vertex);
+  mesh.vertexProvenance.push_back(average_source_point(anchors));
+  return vertex;
+}
+
 inline void fill_positions(PureQuadMesh &mesh) {
   mesh.vertexPositions.resize(static_cast<int>(mesh.vertices.size()), 3);
-  const int boundaryCount = static_cast<int>(mesh.boundaryVertices.size());
   for (int i = 0; i < static_cast<int>(mesh.vertices.size()); ++i) {
-    const bool boundary = i < boundaryCount;
-    const double angle =
-        boundary && boundaryCount > 0
-            ? 2.0 * 3.14159265358979323846 * static_cast<double>(i) /
-                  static_cast<double>(boundaryCount)
-            : 0.0;
-    const double radius = boundary ? 1.0 : 0.0;
-    const double x = radius * std::cos(angle);
-    const double y = radius * std::sin(angle);
-    mesh.vertexPositions.row(i) << x, y, 0.0;
+    if (i < static_cast<int>(mesh.vertexProvenance.size()) &&
+        mesh.vertexProvenance[static_cast<std::size_t>(i)].valid()) {
+      mesh.vertexPositions.row(i) =
+          mesh.vertexProvenance[static_cast<std::size_t>(i)].position;
+    } else {
+      mesh.vertexPositions.row(i) << static_cast<double>(i), 0.0, 0.0;
+    }
   }
 }
 
@@ -320,8 +424,7 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     return result;
   }
   PureQuadMesh mesh;
-  mesh.boundaryVertices = patch.boundaryVertices;
-  mesh.vertices = patch.boundaryVertices;
+  pure_quad_detail::initialize_boundary_embedding(patch, mesh);
   int nextInterior = -1;
   const int sides = static_cast<int>(patch.sideEdgeCounts.size());
   if (sides == 4 && patch.simple) {
@@ -352,9 +455,14 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     }
     for (int y = 1; y < height; ++y) {
       for (int x = 1; x < width; ++x) {
-        const int v = pure_quad_detail::next_generated_vertex(nextInterior);
+        const int boundaryCount = static_cast<int>(patch.boundaryVertices.size());
+        const int a = (x + y) % std::max(1, boundaryCount);
+        const int b = (a + boundaryCount / 2) % std::max(1, boundaryCount);
+        const int v = pure_quad_detail::append_embedded_vertex(
+            mesh, nextInterior,
+            {pure_quad_detail::boundary_source_point(patch, a),
+             pure_quad_detail::boundary_source_point(patch, b)});
         grid[static_cast<std::size_t>(y)][static_cast<std::size_t>(x)] = v;
-        mesh.vertices.push_back(v);
       }
     }
     for (int y = 0; y < height; ++y) {
@@ -369,27 +477,42 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     }
     mesh.backend = PureQuadCompletionBackend::ClosedForm;
   } else if (patch.simple) {
-    const int center = pure_quad_detail::next_generated_vertex(nextInterior);
-    mesh.vertices.push_back(center);
     const int boundaryCount = static_cast<int>(patch.boundaryVertices.size());
     for (int i = 0; i < boundaryCount; i += 2) {
+      const int a = pure_quad_detail::append_embedded_vertex(
+          mesh, nextInterior,
+          {pure_quad_detail::boundary_source_point(patch, i),
+           pure_quad_detail::boundary_source_point(patch, (i + 1) % boundaryCount)});
+      const int b = pure_quad_detail::append_embedded_vertex(
+          mesh, nextInterior,
+          {pure_quad_detail::boundary_source_point(patch, (i + 1) % boundaryCount),
+           pure_quad_detail::boundary_source_point(patch, (i + 2) % boundaryCount)});
       mesh.quads.push_back(
           {patch.boundaryVertices[static_cast<std::size_t>(i)],
            patch.boundaryVertices[static_cast<std::size_t>((i + 1) % boundaryCount)],
            patch.boundaryVertices[static_cast<std::size_t>((i + 2) % boundaryCount)],
-           center});
+           b});
+      mesh.quads.push_back(
+          {patch.boundaryVertices[static_cast<std::size_t>(i)],
+           b, a,
+           patch.boundaryVertices[static_cast<std::size_t>((i + 2) % boundaryCount)]});
     }
     mesh.backend = PureQuadCompletionBackend::ClosedForm;
   } else {
-    const int center = pure_quad_detail::next_generated_vertex(nextInterior);
-    mesh.vertices.push_back(center);
     const int boundaryCount = static_cast<int>(patch.boundaryVertices.size());
     for (int i = 0; i < boundaryCount; i += 2) {
+      const int inner0 = pure_quad_detail::append_embedded_vertex(
+          mesh, nextInterior,
+          {pure_quad_detail::boundary_source_point(patch, i),
+           pure_quad_detail::boundary_source_point(patch, (i + 2) % boundaryCount)});
+      const int inner1 = pure_quad_detail::append_embedded_vertex(
+          mesh, nextInterior,
+          {pure_quad_detail::boundary_source_point(patch, (i + 1) % boundaryCount),
+           pure_quad_detail::boundary_source_point(patch, (i + 3) % boundaryCount)});
       mesh.quads.push_back(
           {patch.boundaryVertices[static_cast<std::size_t>(i)],
            patch.boundaryVertices[static_cast<std::size_t>((i + 1) % boundaryCount)],
-           patch.boundaryVertices[static_cast<std::size_t>((i + 2) % boundaryCount)],
-           center});
+           inner1, inner0});
     }
     mesh.backend = PureQuadCompletionBackend::PatternFallback;
   }
@@ -433,13 +556,19 @@ inline EndpointResolutionResult resolve_completion_endpoints(
         endpoint.extendCost <= endpoint.transitionCost) {
       record.action = EndpointResolutionAction::Extend;
       record.cost = endpoint.extendCost;
+      result.mutatedAdjacency.push_back({endpoint.id, endpoint.targetCurve});
+      ++result.arrangementRebuilds;
     } else if (endpoint.removalKeepsPatchesFeasible &&
                endpoint.removeCost <= endpoint.transitionCost) {
       record.action = EndpointResolutionAction::RemoveTrace;
       record.cost = endpoint.removeCost;
+      result.mutatedAdjacency.push_back({endpoint.id, endpoint.incidentTrace});
+      ++result.arrangementRebuilds;
     } else if (endpoint.transitionTemplateAvailable) {
       record.action = EndpointResolutionAction::InsertTransition;
       record.cost = endpoint.transitionCost;
+      result.mutatedAdjacency.push_back({endpoint.id, -2});
+      ++result.arrangementRebuilds;
     } else {
       record.action = EndpointResolutionAction::Unresolved;
       ++result.hangingNodes;
@@ -493,10 +622,11 @@ inline TopologyRewriteResult apply_topology_rewrite_catalog(
           !featureOk || !singularityOk ||
           (templ.requiresSingularityBudget &&
            !candidate.singularityBudgetAvailable) ||
-          templ.objectiveDelta >= 0.0 || !candidate.strictValidatorAccepts) {
+          templ.objectiveDelta >= 0.0 || !candidate.postconditionsHold) {
         continue;
       }
-      result.records.push_back({candidate.id, templ.id, true});
+      result.records.push_back({candidate.id, templ.id, true,
+                                templ.outputAdjacency});
       ++result.committed;
       committed = true;
       break;

@@ -113,11 +113,15 @@ struct SurfaceSimplificationTransaction {
 
 struct SurfaceSimplificationResult {
   std::vector<SurfaceSimplificationElement> elements;
+  SurfaceCellComplex complex;
+  bool hasComplexOutput = false;
   std::vector<SurfaceSimplificationTransaction> transactions;
   int committed = 0;
   int rejected = 0;
   int invalidatedCandidates = 0;
   int recomputedCandidates = 0;
+  int incidenceRebuilds = 0;
+  int validationPasses = 0;
   int initialActiveElements = 0;
   int finalActiveElements = 0;
   std::uint64_t finalHash = 0;
@@ -155,6 +159,58 @@ inline std::uint64_t structural_hash(
     mix(element.rootLabelProtected ? 1 : 0);
     mix(element.singularityProtected ? 1 : 0);
     mix(element.handleCritical ? 1 : 0);
+  }
+  return hash;
+}
+
+inline std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  const auto mix = [&](const std::int64_t value) {
+    hash ^= static_cast<std::uint64_t>(value);
+    hash *= 1099511628211ULL;
+  };
+  mix(static_cast<int>(complex.nodes.size()));
+  mix(static_cast<int>(complex.halfedges.size()));
+  mix(static_cast<int>(complex.cells.size()));
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    mix(node.id);
+    mix(node.sourceFace);
+    mix(node.sourceEdge);
+    mix(static_cast<std::int64_t>(
+        std::llround(node.sourceEdgeParameter * 1.0e10)));
+    for (int i = 0; i < 3; ++i) {
+      mix(static_cast<std::int64_t>(std::llround(node.barycentric[i] * 1.0e10)));
+    }
+  }
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    mix(halfedge.id);
+    mix(halfedge.twin);
+    mix(halfedge.next);
+    mix(halfedge.from);
+    mix(halfedge.to);
+    mix(halfedge.sourceArc);
+    mix(halfedge.family);
+    mix(halfedge.strand);
+    mix(halfedge.featureClass);
+    mix(halfedge.sourceFace);
+    mix(static_cast<std::int64_t>(std::llround(halfedge.sourceT0 * 1.0e10)));
+    mix(static_cast<std::int64_t>(std::llround(halfedge.sourceT1 * 1.0e10)));
+    mix(halfedge.hardFeature ? 1 : 0);
+    mix(halfedge.cell);
+  }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    mix(cell.id);
+    mix(cell.sourceFace);
+    mix(static_cast<int>(cell.cellClass));
+    mix(static_cast<int>(cell.rejectReason));
+    mix(cell.disk ? 1 : 0);
+    mix(cell.quadReady ? 1 : 0);
+    for (const int halfedge : cell.halfedges) {
+      mix(halfedge);
+    }
+    for (const int family : cell.sideFamilies) {
+      mix(family);
+    }
   }
   return hash;
 }
@@ -245,6 +301,137 @@ inline SurfaceSimplificationRejectionReason validate_candidate(
     }
   }
   return SurfaceSimplificationRejectionReason::None;
+}
+
+inline bool validate_complex_incidence(const SurfaceCellComplex &complex) {
+  for (int i = 0; i < static_cast<int>(complex.nodes.size()); ++i) {
+    if (complex.nodes[static_cast<std::size_t>(i)].id != i) {
+      return false;
+    }
+  }
+  for (int i = 0; i < static_cast<int>(complex.halfedges.size()); ++i) {
+    const SurfaceArrangementHalfedge &h =
+        complex.halfedges[static_cast<std::size_t>(i)];
+    if (h.id != i || h.twin < 0 ||
+        h.twin >= static_cast<int>(complex.halfedges.size()) || h.from < 0 ||
+        h.from >= static_cast<int>(complex.nodes.size()) || h.to < 0 ||
+        h.to >= static_cast<int>(complex.nodes.size())) {
+      return false;
+    }
+    const SurfaceArrangementHalfedge &twin =
+        complex.halfedges[static_cast<std::size_t>(h.twin)];
+    if (twin.twin != i || twin.from != h.to || twin.to != h.from) {
+      return false;
+    }
+  }
+  for (int i = 0; i < static_cast<int>(complex.cells.size()); ++i) {
+    const SurfaceArrangementCell &cell =
+        complex.cells[static_cast<std::size_t>(i)];
+    if (cell.id != i) {
+      return false;
+    }
+    std::set<int> seen;
+    for (const int halfedge : cell.halfedges) {
+      if (halfedge < 0 ||
+          halfedge >= static_cast<int>(complex.halfedges.size()) ||
+          seen.count(halfedge) != 0) {
+        return false;
+      }
+      seen.insert(halfedge);
+    }
+  }
+  return true;
+}
+
+inline SurfaceCellComplex rebuild_complex_after_halfedge_removal(
+    const SurfaceCellComplex &complex, const std::set<int> &removeHalfedges) {
+  SurfaceCellComplex rebuilt = complex;
+  rebuilt.halfedges.clear();
+  std::vector<int> oldToNew(complex.halfedges.size(), -1);
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (removeHalfedges.count(halfedge.id) != 0 ||
+        removeHalfedges.count(halfedge.twin) != 0) {
+      continue;
+    }
+    oldToNew[static_cast<std::size_t>(halfedge.id)] =
+        static_cast<int>(rebuilt.halfedges.size());
+    rebuilt.halfedges.push_back(halfedge);
+  }
+  for (SurfaceArrangementHalfedge &halfedge : rebuilt.halfedges) {
+    halfedge.id = oldToNew[static_cast<std::size_t>(halfedge.id)];
+    halfedge.twin = halfedge.twin >= 0
+                        ? oldToNew[static_cast<std::size_t>(halfedge.twin)]
+                        : -1;
+    halfedge.next = halfedge.next >= 0
+                        ? oldToNew[static_cast<std::size_t>(halfedge.next)]
+                        : -1;
+    halfedge.cell = -1;
+  }
+  std::vector<SurfaceArrangementCell> rebuiltCells;
+  for (SurfaceArrangementCell cell : complex.cells) {
+    std::vector<int> halfedges;
+    std::vector<int> families;
+    halfedges.reserve(cell.halfedges.size());
+    families.reserve(cell.sideFamilies.size());
+    for (const int oldHalfedge : cell.halfedges) {
+      if (oldHalfedge < 0 ||
+          oldHalfedge >= static_cast<int>(oldToNew.size()) ||
+          oldToNew[static_cast<std::size_t>(oldHalfedge)] < 0) {
+        continue;
+      }
+      const int newHalfedge = oldToNew[static_cast<std::size_t>(oldHalfedge)];
+      halfedges.push_back(newHalfedge);
+      families.push_back(
+          rebuilt.halfedges[static_cast<std::size_t>(newHalfedge)].family);
+    }
+    if (halfedges.size() < 3) {
+      continue;
+    }
+    cell.id = static_cast<int>(rebuiltCells.size());
+    cell.halfedges = std::move(halfedges);
+    cell.sideFamilies = std::move(families);
+    cell.sideEdgeCounts.assign(cell.sideFamilies.size(), 1);
+    cell.disk = cell.disk && cell.halfedges.size() >= 3;
+    cell.quadReady = cell.disk && cell.sideFamilies.size() == 4;
+    cell.cellClass = cell.quadReady ? SurfaceArrangementCellClass::RegularQuad
+                                    : SurfaceArrangementCellClass::PatchCandidate;
+    rebuiltCells.push_back(std::move(cell));
+  }
+  rebuilt.cells = std::move(rebuiltCells);
+  for (SurfaceArrangementCell &cell : rebuilt.cells) {
+    for (const int halfedge : cell.halfedges) {
+      rebuilt.halfedges[static_cast<std::size_t>(halfedge)].cell = cell.id;
+    }
+  }
+  return rebuilt;
+}
+
+inline std::vector<SurfaceSimplificationCandidate> recompute_overlap_candidates(
+    const SurfaceCellComplex &complex, const std::set<int> &affectedNodes,
+    const int nextStableBase) {
+  std::vector<SurfaceSimplificationCandidate> recomputed;
+  std::set<int> usedHalfedges;
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.id > halfedge.twin || halfedge.hardFeature ||
+        halfedge.family < 0 ||
+        (affectedNodes.count(halfedge.from) == 0 &&
+         affectedNodes.count(halfedge.to) == 0)) {
+      continue;
+    }
+    if (usedHalfedges.count(halfedge.id) != 0 ||
+        usedHalfedges.count(halfedge.twin) != 0) {
+      continue;
+    }
+    usedHalfedges.insert(halfedge.id);
+    usedHalfedges.insert(halfedge.twin);
+    SurfaceSimplificationCandidate candidate;
+    candidate.stableId = nextStableBase + static_cast<int>(recomputed.size());
+    candidate.type = SurfaceSimplificationCandidateType::RedundantStrand;
+    candidate.elementIds = {halfedge.id};
+    candidate.deltaSurface = -0.25;
+    recomputed.push_back(std::move(candidate));
+  }
+  return recomputed;
 }
 
 } // namespace surface_simplification_detail
@@ -351,6 +538,145 @@ inline SurfaceSimplificationResult simplify_surface_complex(
   result.elements = std::move(elements);
   result.finalActiveElements = active_count(result.elements);
   result.finalHash = structural_hash(result.elements);
+  return result;
+}
+
+inline SurfaceSimplificationResult simplify_surface_cell_complex(
+    const SurfaceCellComplex &inputComplex,
+    std::vector<SurfaceSimplificationCandidate> candidates,
+    const SurfaceSimplificationOptions &options = {}) {
+  using namespace surface_simplification_detail;
+  SurfaceSimplificationResult result;
+  result.hasComplexOutput = true;
+  SurfaceCellComplex complex = inputComplex;
+  result.initialActiveElements =
+      static_cast<int>(complex.halfedges.size()) / 2;
+
+  std::priority_queue<QueueEntry> queue;
+  for (int i = 0; i < static_cast<int>(candidates.size()); ++i) {
+    const double cost = objective_cost(candidates[static_cast<std::size_t>(i)],
+                                       options.weights);
+    queue.push({cost, candidates[static_cast<std::size_t>(i)].type,
+                candidates[static_cast<std::size_t>(i)].stableId, i});
+  }
+
+  int nextStableBase = 1000000;
+  while (!queue.empty()) {
+    if (options.targetActiveElements > 0 &&
+        static_cast<int>(complex.halfedges.size()) / 2 <=
+            options.targetActiveElements) {
+      break;
+    }
+    const QueueEntry entry = queue.top();
+    queue.pop();
+    ++result.empiricalWork;
+    if (entry.index < 0 || entry.index >= static_cast<int>(candidates.size())) {
+      continue;
+    }
+    SurfaceSimplificationCandidate &candidate =
+        candidates[static_cast<std::size_t>(entry.index)];
+    const double cost = objective_cost(candidate, options.weights);
+    SurfaceSimplificationTransaction transaction;
+    transaction.candidateId = candidate.stableId;
+    transaction.type = candidate.type;
+    transaction.objectiveCost = cost;
+    transaction.beforeHash = complex_structural_hash(complex);
+
+    std::set<int> removeHalfedges;
+    std::set<int> affectedNodes;
+    SurfaceSimplificationRejectionReason rejection =
+        candidate.invalidated ? SurfaceSimplificationRejectionReason::StaleCandidate
+                              : SurfaceSimplificationRejectionReason::None;
+    if (candidate.changesTopology || !std::isfinite(cost)) {
+      rejection = SurfaceSimplificationRejectionReason::TopologyChanged;
+    } else if (!candidate.affectedPatchDisk) {
+      rejection = SurfaceSimplificationRejectionReason::NonDiskPatch;
+    } else if (!candidate.sideFeasible) {
+      rejection = SurfaceSimplificationRejectionReason::PatchInfeasible;
+    } else if (candidate.descriptivenessWorsening >
+               options.maxDescriptivenessWorsening + 1.0e-14) {
+      rejection = SurfaceSimplificationRejectionReason::DescriptivenessWorsened;
+    } else if (cost > options.objectiveTolerance + 1.0e-14) {
+      rejection = SurfaceSimplificationRejectionReason::ObjectiveWorsened;
+    }
+
+    if (rejection == SurfaceSimplificationRejectionReason::None) {
+      for (const int halfedgeId : candidate.elementIds) {
+        if (halfedgeId < 0 ||
+            halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+          rejection = SurfaceSimplificationRejectionReason::StaleCandidate;
+          break;
+        }
+        const SurfaceArrangementHalfedge &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        if (halfedge.hardFeature) {
+          rejection = SurfaceSimplificationRejectionReason::ProtectedFeature;
+          break;
+        }
+        if (halfedge.family < 0) {
+          rejection = SurfaceSimplificationRejectionReason::ProtectedBoundary;
+          break;
+        }
+        removeHalfedges.insert(halfedge.id);
+        removeHalfedges.insert(halfedge.twin);
+        affectedNodes.insert(halfedge.from);
+        affectedNodes.insert(halfedge.to);
+      }
+    }
+
+    if (rejection == SurfaceSimplificationRejectionReason::None) {
+      SurfaceCellComplex trial =
+          rebuild_complex_after_halfedge_removal(complex, removeHalfedges);
+      ++result.incidenceRebuilds;
+      if (!validate_complex_incidence(trial)) {
+        rejection = SurfaceSimplificationRejectionReason::TopologyChanged;
+      } else {
+        ++result.validationPasses;
+        complex = std::move(trial);
+        transaction.committed = true;
+        transaction.afterHash = complex_structural_hash(complex);
+        ++result.committed;
+
+        for (SurfaceSimplificationCandidate &other : candidates) {
+          if (other.stableId == candidate.stableId || other.invalidated) {
+            continue;
+          }
+          for (const int halfedgeId : other.elementIds) {
+            if (removeHalfedges.count(halfedgeId) != 0) {
+              other.invalidated = true;
+              ++result.invalidatedCandidates;
+              break;
+            }
+          }
+        }
+        std::vector<SurfaceSimplificationCandidate> recomputed =
+            recompute_overlap_candidates(complex, affectedNodes, nextStableBase);
+        nextStableBase += 1000;
+        for (SurfaceSimplificationCandidate &recomputedCandidate : recomputed) {
+          const int index = static_cast<int>(candidates.size());
+          const double recomputedCost =
+              objective_cost(recomputedCandidate, options.weights);
+          queue.push({recomputedCost, recomputedCandidate.type,
+                      recomputedCandidate.stableId, index});
+          candidates.push_back(std::move(recomputedCandidate));
+          ++result.recomputedCandidates;
+        }
+      }
+    }
+
+    if (rejection != SurfaceSimplificationRejectionReason::None) {
+      transaction.committed = false;
+      transaction.rejection = rejection;
+      transaction.afterHash = complex_structural_hash(complex);
+      ++result.rejected;
+    }
+    result.transactions.push_back(transaction);
+  }
+
+  result.complex = std::move(complex);
+  result.finalActiveElements =
+      static_cast<int>(result.complex.halfedges.size()) / 2;
+  result.finalHash = complex_structural_hash(result.complex);
   return result;
 }
 

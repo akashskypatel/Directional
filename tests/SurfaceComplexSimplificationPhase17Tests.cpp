@@ -28,6 +28,41 @@ directional::geometry::SurfaceSimplificationOptions permissive_options() {
   return options;
 }
 
+directional::geometry::SurfaceArrangementArc arc(
+    const int id, const Eigen::RowVector3d &a, const Eigen::RowVector3d &b,
+    const int family = 0) {
+  directional::geometry::SurfaceArrangementArc result;
+  result.id = id;
+  result.sourceFace = 0;
+  result.startBarycentric = a;
+  result.endBarycentric = b;
+  result.family = family;
+  result.strand = id;
+  return result;
+}
+
+directional::geometry::SurfaceCellComplex two_strand_complex() {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  return directional::geometry::build_surface_cell_complex(
+      vertices, faces,
+      {arc(0, {0.5, 0.5, 0.0}, {0.25, 0.25, 0.5}),
+       arc(1, {0.25, 0.25, 0.5}, {0.5, 0.0, 0.5})});
+}
+
+int first_removable_halfedge(
+    const directional::geometry::SurfaceCellComplex &complex) {
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id < halfedge.twin && halfedge.family >= 0 &&
+        !halfedge.hardFeature) {
+      return halfedge.id;
+    }
+  }
+  return -1;
+}
+
 } // namespace
 
 TEST(SurfaceComplexSimplificationPhase17, OpenStripRemovalCommitsCoherently) {
@@ -316,4 +351,70 @@ TEST(SurfaceComplexSimplificationPhase17, EmpiricalWorkScalesNLogNOnSyntheticGri
     }
     previousRatio = ratio;
   }
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     SimplifySurfaceCellComplexReturnsMutatedComplex) {
+  const auto complex = two_strand_complex();
+  const int removable = first_removable_halfedge(complex);
+  ASSERT_GE(removable, 0);
+  std::vector<directional::geometry::SurfaceSimplificationCandidate> candidates = {
+      directional::geometry::make_removal_candidate(
+          100,
+          directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand,
+          {removable}, -1.0)};
+
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, candidates, permissive_options());
+
+  EXPECT_TRUE(result.hasComplexOutput);
+  EXPECT_GE(result.committed, 1);
+  EXPECT_LT(result.complex.halfedges.size(), complex.halfedges.size());
+  EXPECT_EQ(result.complex.nodes.size(), complex.nodes.size());
+  EXPECT_GT(result.incidenceRebuilds, 0);
+  EXPECT_GT(result.validationPasses, 0);
+  EXPECT_NE(result.finalHash,
+            directional::geometry::surface_simplification_detail::
+                complex_structural_hash(complex));
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     ComplexRollbackPreservesHashOnRejectedTrial) {
+  const auto complex = two_strand_complex();
+  const int removable = first_removable_halfedge(complex);
+  ASSERT_GE(removable, 0);
+  std::vector<directional::geometry::SurfaceSimplificationCandidate> candidates = {
+      directional::geometry::make_removal_candidate(
+          101, directional::geometry::SurfaceSimplificationCandidateType::OpenStrip,
+          {removable}, 1.0)};
+  const auto before =
+      directional::geometry::surface_simplification_detail::complex_structural_hash(
+          complex);
+
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, candidates, permissive_options());
+
+  ASSERT_EQ(result.transactions.size(), 1U);
+  EXPECT_FALSE(result.transactions.front().committed);
+  EXPECT_EQ(result.transactions.front().beforeHash, before);
+  EXPECT_EQ(result.transactions.front().afterHash, before);
+  EXPECT_EQ(result.finalHash, before);
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     ComplexCandidateRecomputationCreatesRealQueuedCandidates) {
+  const auto complex = two_strand_complex();
+  const int removable = first_removable_halfedge(complex);
+  ASSERT_GE(removable, 0);
+  std::vector<directional::geometry::SurfaceSimplificationCandidate> candidates = {
+      directional::geometry::make_removal_candidate(
+          102,
+          directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand,
+          {removable}, -1.0)};
+
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, candidates, permissive_options());
+
+  EXPECT_GT(result.recomputedCandidates, 0);
+  EXPECT_GT(result.transactions.size(), 1U);
 }

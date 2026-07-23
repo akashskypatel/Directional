@@ -1,6 +1,7 @@
 #include <directional/geometry/PureQuadCompletion.h>
 
 #include <algorithm>
+#include <map>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -15,6 +16,22 @@ directional::geometry::PureQuadPatch patch(std::vector<int> sides) {
     p.boundaryVertices.push_back(i);
   }
   p.turns.assign(p.sideEdgeCounts.size(), 1);
+  return p;
+}
+
+directional::geometry::PureQuadPatch embedded_patch(std::vector<int> sides) {
+  auto p = patch(std::move(sides));
+  p.boundaryProvenance.clear();
+  for (int i = 0; i < static_cast<int>(p.boundaryVertices.size()); ++i) {
+    directional::geometry::SurfacePoint point;
+    point.face = 7;
+    point.component = 2;
+    point.sheet = 3;
+    point.position << static_cast<double>(i), static_cast<double>(i % 2), 1.0;
+    point.barycentric << 0.5, 0.25, 0.25;
+    point.squaredDistance = 0.0;
+    p.boundaryProvenance.push_back(point);
+  }
   return p;
 }
 
@@ -128,17 +145,17 @@ TEST(PureQuadCompletionPhase18, ClosedFormCountsForSupportedPatches) {
 
   const auto tri = directional::geometry::complete_pure_quad_patch(patch({2, 2, 2}));
   ASSERT_TRUE(tri.success);
-  EXPECT_EQ(tri.mesh.quads.size(), 3U);
+  EXPECT_EQ(tri.mesh.quads.size(), 6U);
 
   const auto pent =
       directional::geometry::complete_pure_quad_patch(patch({2, 1, 1, 1, 1}));
   ASSERT_TRUE(pent.success);
-  EXPECT_EQ(pent.mesh.quads.size(), 3U);
+  EXPECT_EQ(pent.mesh.quads.size(), 6U);
 
   const auto hex =
       directional::geometry::complete_pure_quad_patch(patch({1, 1, 1, 1, 1, 1}));
   ASSERT_TRUE(hex.success);
-  EXPECT_EQ(hex.mesh.quads.size(), 3U);
+  EXPECT_EQ(hex.mesh.quads.size(), 6U);
 }
 
 TEST(PureQuadCompletionPhase18, PatternFallbackCompletesValidNonSimplePatch) {
@@ -153,14 +170,55 @@ TEST(PureQuadCompletionPhase18, PatternFallbackCompletesValidNonSimplePatch) {
                           [](const auto &q) { return q.size() == 4; }));
 }
 
+TEST(PureQuadCompletionPhase18, CompletionDoesNotUseSharedCenterFan) {
+  const auto completion =
+      directional::geometry::complete_pure_quad_patch(patch({2, 2, 2}));
+  ASSERT_TRUE(completion.success);
+  EXPECT_FALSE(completion.mesh.usesCenterFan);
+
+  std::map<int, int> interiorUseCount;
+  for (const auto &quad : completion.mesh.quads) {
+    for (const int vertex : quad) {
+      if (vertex < 0) {
+        ++interiorUseCount[vertex];
+      }
+    }
+  }
+  const auto sharedByEveryQuad =
+      std::find_if(interiorUseCount.begin(), interiorUseCount.end(),
+                   [&](const auto &entry) {
+                     return entry.second ==
+                            static_cast<int>(completion.mesh.quads.size());
+                   });
+  EXPECT_EQ(sharedByEveryQuad, interiorUseCount.end());
+}
+
+TEST(PureQuadCompletionPhase18, CompletionVerticesCarrySourceProvenance) {
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      embedded_patch({2, 2, 2}));
+  ASSERT_TRUE(completion.success);
+  ASSERT_EQ(completion.mesh.vertexProvenance.size(),
+            completion.mesh.vertices.size());
+  ASSERT_EQ(completion.mesh.vertexPositions.rows(),
+            static_cast<int>(completion.mesh.vertices.size()));
+  for (const auto &point : completion.mesh.vertexProvenance) {
+    EXPECT_TRUE(point.valid());
+    EXPECT_EQ(point.component, 2);
+    EXPECT_EQ(point.sheet, 3);
+  }
+  EXPECT_NEAR(completion.mesh.vertexPositions(0, 2), 1.0, 1.0e-12);
+}
+
 TEST(PureQuadCompletionPhase18, EndpointResolutionChoosesExtensionRemovalTransition) {
   std::vector<directional::geometry::CompletionEndpoint> endpoints(3);
   endpoints[0].id = 0;
+  endpoints[0].targetCurve = 10;
   endpoints[0].compatibleCurveAvailable = true;
   endpoints[0].extendCost = 1.0;
   endpoints[0].removeCost = 2.0;
   endpoints[0].transitionCost = 3.0;
   endpoints[1].id = 1;
+  endpoints[1].incidentTrace = 11;
   endpoints[1].removalKeepsPatchesFeasible = true;
   endpoints[1].removeCost = 1.0;
   endpoints[2].id = 2;
@@ -179,6 +237,8 @@ TEST(PureQuadCompletionPhase18, EndpointResolutionChoosesExtensionRemovalTransit
             directional::geometry::EndpointResolutionAction::InsertTransition);
   EXPECT_EQ(result.hangingNodes, 0);
   EXPECT_EQ(result.endpointsEmbeddedInEdges, 0);
+  EXPECT_EQ(result.arrangementRebuilds, 3);
+  EXPECT_EQ(result.mutatedAdjacency.size(), 3U);
 }
 
 TEST(PureQuadCompletionPhase18, UnresolvedEndpointReportsHangingNode) {
@@ -216,6 +276,24 @@ TEST(PureQuadCompletionPhase18, RewriteCatalogForwardAndRejectionCases) {
   EXPECT_FALSE(result.records[1].committed);
   EXPECT_EQ(result.committed, 1);
   EXPECT_EQ(result.rejected, 1);
+  EXPECT_EQ(result.records[0].outputAdjacency, std::vector<int>({4, 3, 5}));
+}
+
+TEST(PureQuadCompletionPhase18, RewriteAcceptanceUsesTemplatePostconditions) {
+  directional::geometry::TopologyRewriteCandidate candidate;
+  candidate.id = 9;
+  candidate.adjacency = {3, 5, 4};
+  candidate.boundarySignature = {2, 2};
+  candidate.singularityLabel = 3;
+  candidate.strictValidatorAccepts = false;
+  candidate.postconditionsHold = true;
+
+  const auto result =
+      directional::geometry::apply_topology_rewrite_catalog({candidate});
+
+  ASSERT_EQ(result.records.size(), 1U);
+  EXPECT_TRUE(result.records.front().committed);
+  EXPECT_EQ(result.committed, 1);
 }
 
 TEST(PureQuadCompletionPhase18, ClosedSurfaceSingularityBudgetExact) {
