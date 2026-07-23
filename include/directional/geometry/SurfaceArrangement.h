@@ -45,6 +45,11 @@ enum class SurfaceArrangementRejectReason : int {
   Sliver = 5,
 };
 
+struct SurfaceArrangementOptions {
+  bool insertBoundaryRails = true;
+  std::set<std::uint64_t> hardFeatureEdges;
+};
+
 struct SurfaceArrangementArc {
   int id = -1;
   int sourceFace = -1;
@@ -107,11 +112,13 @@ struct SurfaceArrangementDiagnostics {
   int incompleteArcChains = 0;
   int hardBarrierCrossings = 0;
   int eulerCharacteristic = 0;
+  int sourceEulerCharacteristic = 0;
   int peakSegmentsPerFace = 0;
   double supportedArea = 0.0;
   double extractedArea = 0.0;
   double relativeAreaError = 0.0;
   double memoryRatioEstimate = 0.0;
+  double measuredMemoryRatio = 0.0;
 };
 
 struct SurfaceCellComplex {
@@ -147,15 +154,18 @@ struct Segment2 {
 };
 
 struct NodeKey {
+  int kind = 2;
   int face = -1;
+  std::int64_t edge = -1;
+  std::int64_t edgeT = -1;
+  int vertex = -1;
   std::int64_t u = 0;
   std::int64_t v = 0;
-  int edge = -1;
-  std::int64_t edgeT = -1;
 
   bool operator<(const NodeKey &other) const {
-    return std::tie(face, edge, edgeT, u, v) <
-           std::tie(other.face, other.edge, other.edgeT, other.u, other.v);
+    return std::tie(kind, vertex, edge, edgeT, face, u, v) <
+           std::tie(other.kind, other.vertex, other.edge, other.edgeT,
+                    other.face, other.u, other.v);
   }
 };
 
@@ -207,14 +217,57 @@ inline double edge_parameter(const Eigen::Vector2d &uv, const int edge) {
   return 0.0;
 }
 
-inline NodeKey make_node_key(const int face, const Eigen::Vector2d &uv) {
+inline std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
+                                     const int face, const int edge) {
+  const int a = faces(face, (edge + 1) % 3);
+  const int b = faces(face, (edge + 2) % 3);
+  return surface_cell_tracing_detail::edge_key(a, b);
+}
+
+inline int source_vertex(const Eigen::RowVector3d &bary,
+                         const double eps = 1.0e-10) {
+  for (int i = 0; i < 3; ++i) {
+    if (bary[i] >= 1.0 - eps) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+inline NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
+                             const Eigen::Vector2d &uv) {
   const int edge = source_edge(uv);
   const double t = edge >= 0 ? edge_parameter(uv, edge) : -1.0;
-  return {face,
+  const Eigen::RowVector3d bary = uv_to_bary(uv);
+  const int vertexCorner = source_vertex(bary);
+  if (vertexCorner >= 0) {
+    return {0, -1, -1, -1, faces(face, vertexCorner), 0, 0};
+  }
+  if (edge >= 0) {
+    const std::uint64_t key = source_edge_key(faces, face, edge);
+    return {1,
+            -1,
+            static_cast<std::int64_t>(key),
+            static_cast<std::int64_t>(std::llround(t * 1.0e10)),
+            -1,
+            0,
+            0};
+  }
+  return {2,
+          face,
+          -1,
+          -1,
+          -1,
           static_cast<std::int64_t>(std::llround(uv.x() * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(uv.y() * 1.0e10)),
-          edge,
-          edge >= 0 ? static_cast<std::int64_t>(std::llround(t * 1.0e10)) : -1};
+          static_cast<std::int64_t>(std::llround(uv.y() * 1.0e10))};
+}
+
+inline int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
+                                    const int edge) {
+  if (edge < 0) {
+    return -1;
+  }
+  return static_cast<int>(source_edge_key(faces, face, edge) & 0x7fffffffu);
 }
 
 inline bool clip_to_triangle(Eigen::Vector2d &a, Eigen::Vector2d &b,
@@ -324,24 +377,35 @@ inline bool same_family_collinear(const SurfaceArrangementHalfedge &a,
 
 inline SurfaceCellComplex build_surface_cell_complex(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const std::vector<SurfaceArrangementArc> &inputArcs) {
+    const std::vector<SurfaceArrangementArc> &inputArcs,
+    const SurfaceArrangementOptions &options = {}) {
   if (vertices.cols() != 3 || faces.cols() != 3) {
     throw std::invalid_argument("surface arrangement requires triangle mesh.");
   }
   using namespace surface_arrangement_detail;
   SurfaceCellComplex complex;
   std::vector<Segment2> segments;
+  const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
 
   for (int face = 0; face < faces.rows(); ++face) {
     for (const auto &[a, b, edge] :
          {std::tuple<int, int, int>{0, 1, 2}, {1, 2, 0}, {2, 0, 1}}) {
+      const std::uint64_t key = source_edge_key(faces, face, edge);
+      const auto found = edgeFaces.find(key);
+      const bool boundaryEdge =
+          found == edgeFaces.end() || found->second[1] < 0;
+      const bool hardFeature =
+          options.hardFeatureEdges.count(key) != 0;
+      if ((!options.insertBoundaryRails || !boundaryEdge) && !hardFeature) {
+        continue;
+      }
       Segment2 boundary;
       boundary.sourceArc = -1;
       boundary.sourceFace = face;
       boundary.start = bary_to_uv(Eigen::RowVector3d::Unit(a));
       boundary.end = bary_to_uv(Eigen::RowVector3d::Unit(b));
       boundary.family = -1;
-      boundary.hardFeature = true;
+      boundary.hardFeature = hardFeature || boundaryEdge;
       boundary.featureClass = edge;
       segments.push_back(boundary);
     }
@@ -414,9 +478,16 @@ inline SurfaceCellComplex build_surface_cell_complex(
       if (ti > 1.0e-10 && ti < 1.0 - 1.0e-10 && tj > 1.0e-10 &&
           tj < 1.0 - 1.0e-10) {
         ++complex.diagnostics.plantedIntersections;
+        const bool aHard = segments[static_cast<std::size_t>(i)].hardFeature;
+        const bool bHard = segments[static_cast<std::size_t>(j)].hardFeature;
+        const bool aInput = segments[static_cast<std::size_t>(i)].sourceArc >= 0;
+        const bool bInput = segments[static_cast<std::size_t>(j)].sourceArc >= 0;
+        if (aHard != bHard && (aInput || bInput)) {
+          ++complex.diagnostics.hardBarrierCrossings;
+        }
       }
       intersectionKeys.insert(make_node_key(
-          segments[static_cast<std::size_t>(i)].sourceFace, p));
+          faces, segments[static_cast<std::size_t>(i)].sourceFace, p));
     }
   }
   complex.diagnostics.uniqueIntersections =
@@ -424,7 +495,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
 
   std::map<NodeKey, int> nodeByKey;
   const auto node_id = [&](const int face, const Eigen::Vector2d &uv) {
-    const NodeKey key = make_node_key(face, uv);
+    const NodeKey key = make_node_key(faces, face, uv);
     auto found = nodeByKey.find(key);
     if (found != nodeByKey.end()) {
       return found->second;
@@ -433,9 +504,10 @@ inline SurfaceCellComplex build_surface_cell_complex(
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
     node.barycentric = uv_to_bary(uv);
-    node.sourceEdge = key.edge;
+    node.sourceEdge =
+        key.kind == 1 ? static_cast<int>(key.edge & 0x7fffffffu) : -1;
     node.sourceEdgeParameter =
-        key.edge >= 0 ? static_cast<double>(key.edgeT) / 1.0e10 : 0.0;
+        key.kind == 1 ? static_cast<double>(key.edgeT) / 1.0e10 : 0.0;
     nodeByKey.emplace(key, node.id);
     complex.nodes.push_back(node);
     return node.id;
@@ -577,6 +649,21 @@ inline SurfaceCellComplex build_surface_cell_complex(
       cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
       cell.rejectReason = SurfaceArrangementRejectReason::Sliver;
     } else {
+      std::set<int> uniqueNodes;
+      for (const int halfedge : cell.halfedges) {
+        uniqueNodes.insert(
+            complex.halfedges[static_cast<std::size_t>(halfedge)].from);
+      }
+      cell.disk = uniqueNodes.size() == cell.halfedges.size();
+      if (!cell.disk) {
+        cell.cellClass = SurfaceArrangementCellClass::NonDisk;
+        cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
+        complex.cells.push_back(cell);
+        continue;
+      }
+      if (complex.diagnostics.hardBarrierCrossings > 0) {
+        cell.rejectReason = SurfaceArrangementRejectReason::HardFeatureCrossing;
+      }
       bool alternating = true;
       for (int i = 0; i < static_cast<int>(cell.sideFamilies.size()); ++i) {
         const int a = cell.sideFamilies[static_cast<std::size_t>(i)];
@@ -615,7 +702,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
       Eigen::Vector2d p;
       if (segment_intersection_params(a, b, ta, tb, p) && ta > 1.0e-8 &&
           ta < 1.0 - 1.0e-8 && tb > 1.0e-8 && tb < 1.0 - 1.0e-8) {
-        const NodeKey key = make_node_key(a.sourceFace, p);
+        const NodeKey key = make_node_key(faces, a.sourceFace, p);
         if (nodeByKey.count(key) == 0) {
           ++complex.diagnostics.unsplitCrossings;
         }
@@ -672,6 +759,15 @@ inline SurfaceCellComplex build_surface_cell_complex(
       [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
   complex.diagnostics.eulerCharacteristic =
       static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
+  std::set<std::uint64_t> sourceEdges;
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int edge = 0; edge < 3; ++edge) {
+      sourceEdges.insert(source_edge_key(faces, face, edge));
+    }
+  }
+  complex.diagnostics.sourceEulerCharacteristic =
+      static_cast<int>(vertices.rows()) - static_cast<int>(sourceEdges.size()) +
+      static_cast<int>(faces.rows());
   const int inputStorageUnits =
       std::max(1, static_cast<int>(faces.rows()) * 3 +
                       static_cast<int>(inputArcs.size()) * 2);
@@ -680,6 +776,16 @@ inline SurfaceCellComplex build_surface_cell_complex(
       static_cast<double>(complex.nodes.size() * 3 + complex.halfedges.size() * 2 +
                           complex.cells.size());
   complex.diagnostics.memoryRatioEstimate = arrangementStorage / inputStorage;
+  const std::size_t measuredBytes =
+      complex.nodes.size() * sizeof(SurfaceArrangementNode) +
+      complex.halfedges.size() * sizeof(SurfaceArrangementHalfedge) +
+      complex.cells.size() * sizeof(SurfaceArrangementCell);
+  const std::size_t inputBytes =
+      static_cast<std::size_t>(faces.rows()) * 3U * sizeof(int) +
+      inputArcs.size() * sizeof(SurfaceArrangementArc);
+  complex.diagnostics.measuredMemoryRatio =
+      static_cast<double>(measuredBytes) /
+      static_cast<double>(std::max<std::size_t>(1U, inputBytes));
   return complex;
 }
 

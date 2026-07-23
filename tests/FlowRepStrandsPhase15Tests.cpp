@@ -19,6 +19,20 @@ directional::geometry::FlowRepArc arc(const int id, const double x0,
   return a;
 }
 
+directional::geometry::FlowRepArc embedded_arc(
+    const int id, const Eigen::RowVector3d &start,
+    const Eigen::RowVector3d &end) {
+  auto a = arc(id, start[1], start[2], end[1], end[2]);
+  a.sourceFace = 0;
+  a.startBarycentric = start;
+  a.endBarycentric = end;
+  a.sourceComponent = 3;
+  a.sourceSheet = 5;
+  a.strandProvenance = 7;
+  a.featureProvenance = 11;
+  return a;
+}
+
 directional::geometry::FlowRepCycleInput feasible_cycle() {
   directional::geometry::FlowRepCycleInput cycle;
   cycle.targetSize = 1.0;
@@ -147,6 +161,93 @@ TEST(FlowRepStrandsPhase15, ExtractsMaximalFlowlinesFromStrands) {
   EXPECT_EQ(flowlines.front().arcIds.size(), 3U);
   EXPECT_FALSE(flowlines.front().closed);
   EXPECT_NEAR(flowlines.front().length, 3.0, 1.0e-12);
+}
+
+TEST(FlowRepStrandsPhase15, EmbeddedArcProvenanceSurvivesNetworkConversion) {
+  directional::geometry::SurfaceCellNetwork network;
+  directional::geometry::SurfaceTraceResult trace;
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 0.5, 0.5, 0.0;
+  segment.endBarycentric << 0.25, 0.25, 0.5;
+  segment.family = 1;
+  segment.exitEdge = 2;
+  trace.segments.push_back(segment);
+  trace.termination = directional::geometry::TraceTerminationReason::Feature;
+  network.traces.push_back(trace);
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  const auto arcs =
+      directional::geometry::build_flow_rep_arcs_from_network(vertices, faces,
+                                                              network);
+
+  ASSERT_EQ(arcs.size(), 1U);
+  EXPECT_EQ(arcs[0].sourceFace, 0);
+  EXPECT_EQ(arcs[0].family, 1);
+  EXPECT_TRUE(arcs[0].mandatoryRail);
+  EXPECT_TRUE(arcs[0].hardFeatureRail);
+  EXPECT_EQ(arcs[0].featureClass, 2);
+  EXPECT_NEAR((arcs[0].startBarycentric - segment.startBarycentric).norm(), 0.0,
+              1.0e-12);
+  EXPECT_NEAR((arcs[0].endBarycentric - segment.endBarycentric).norm(), 0.0,
+              1.0e-12);
+}
+
+TEST(FlowRepStrandsPhase15, CrossingPredicateUsesSourceTriangleCoordinates) {
+  auto a = embedded_arc(0, Eigen::RowVector3d(0.50, 0.50, 0.00),
+                        Eigen::RowVector3d(0.25, 0.25, 0.50));
+  auto b = embedded_arc(1, Eigen::RowVector3d(0.50, 0.00, 0.50),
+                        Eigen::RowVector3d(0.25, 0.50, 0.25));
+  a.start << 0.0, 0.0, 0.0;
+  a.end << 0.0, 0.0, 1.0;
+  b.start << 1.0, 0.0, 0.0;
+  b.end << 1.0, 0.0, 1.0;
+
+  const auto affinity = directional::geometry::compute_flow_rep_affinity(a, b);
+
+  EXPECT_LT(affinity.score, 0.0);
+  EXPECT_EQ(affinity.cue,
+            directional::geometry::FlowRepAffinityCue::GeometricCrossing);
+}
+
+TEST(FlowRepStrandsPhase15, FlowlinesSplitAtJunctions) {
+  std::vector<directional::geometry::FlowRepArc> arcs = {
+      arc(0, 0.0, 0.0, 1.0, 0.0), arc(1, 1.0, 0.0, 2.0, 0.0),
+      arc(2, 1.0, 0.0, 1.0, 1.0)};
+  for (auto &a : arcs) {
+    a.sameStrandHint = 1;
+  }
+
+  directional::geometry::FlowRepStrand strand;
+  strand.id = 0;
+  strand.arcIds = {0, 1, 2};
+  const auto flowlines =
+      directional::geometry::extract_flow_rep_flowlines(arcs, {strand});
+
+  EXPECT_EQ(flowlines.size(), 3U);
+  for (const auto &flowline : flowlines) {
+    EXPECT_EQ(flowline.arcIds.size(), 1U);
+  }
+}
+
+TEST(FlowRepStrandsPhase15, AcceptedTransactionsRebuildCycles) {
+  std::vector<directional::geometry::FlowRepArc> arcs = {
+      arc(0, 0.0, 0.0, 1.0, 0.0), arc(1, 0.0, 0.1, 1.0, 0.1)};
+  arcs[0].dominance = 0.1;
+  arcs[1].dominance = 10.0;
+  directional::geometry::FlowRepSparseOptions options;
+  options.maxCoverageWorsening = 10.0;
+
+  const auto network = directional::geometry::select_sparse_flow_rep_network(
+      arcs, {}, {feasible_cycle()}, options);
+
+  EXPECT_GT(network.cycleRebuilds, 0);
+  EXPECT_GT(network.acceptedTransactions, 0);
+  ASSERT_FALSE(network.cycleEvaluations.empty());
+  EXPECT_TRUE(network.cycleEvaluations.front().descriptive);
 }
 
 TEST(FlowRepStrandsPhase15, CycleNormalInterpolationAndP90IgnoreOutlier) {

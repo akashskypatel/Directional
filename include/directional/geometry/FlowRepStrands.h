@@ -58,11 +58,18 @@ struct FlowRepArc {
   int id = -1;
   Eigen::RowVector3d start = Eigen::RowVector3d::Zero();
   Eigen::RowVector3d end = Eigen::RowVector3d::Zero();
+  int sourceFace = -1;
+  Eigen::RowVector3d startBarycentric = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d endBarycentric = Eigen::RowVector3d::Zero();
+  int sourceComponent = -1;
+  int sourceSheet = -1;
   int family = 0;
   int featureClass = 0;
   bool mandatoryRail = false;
   bool boundaryRail = false;
   bool hardFeatureRail = false;
+  int strandProvenance = -1;
+  int featureProvenance = -1;
   double dominance = 1.0;
   double alignmentCost = 0.0;
   int sameStrandHint = -1;
@@ -137,6 +144,8 @@ struct FlowRepSparseNetwork {
   std::vector<FlowRepCycleEvaluation> cycleEvaluations;
   int mandatoryRails = 0;
   int retainedMandatoryRails = 0;
+  int acceptedTransactions = 0;
+  int cycleRebuilds = 0;
   double denseCoverageMax = 0.0;
   double sparseCoverageMax = 0.0;
 };
@@ -182,6 +191,25 @@ inline double cross2(const Eigen::RowVector3d &a, const Eigen::RowVector3d &b) {
   return a.x() * b.y() - a.y() * b.x();
 }
 
+inline Eigen::RowVector3d barycentric_uv3(const Eigen::RowVector3d &bary) {
+  return {bary[1], bary[2], 0.0};
+}
+
+inline Eigen::RowVector3d predicate_start(const FlowRepArc &arc) {
+  return arc.sourceFace >= 0 ? barycentric_uv3(arc.startBarycentric) : arc.start;
+}
+
+inline Eigen::RowVector3d predicate_end(const FlowRepArc &arc) {
+  return arc.sourceFace >= 0 ? barycentric_uv3(arc.endBarycentric) : arc.end;
+}
+
+inline FlowRepArc predicate_arc(const FlowRepArc &arc) {
+  FlowRepArc projected = arc;
+  projected.start = predicate_start(arc);
+  projected.end = predicate_end(arc);
+  return projected;
+}
+
 inline bool point_on_segment_2d(const Eigen::RowVector3d &p,
                                 const Eigen::RowVector3d &a,
                                 const Eigen::RowVector3d &b,
@@ -196,22 +224,27 @@ inline bool point_on_segment_2d(const Eigen::RowVector3d &p,
 
 inline bool segments_cross_2d(const FlowRepArc &a, const FlowRepArc &b,
                               const bool countSharedEndpoints = false) {
-  if (!countSharedEndpoints &&
-      (close_points(a.start, b.start, 1.0e-10) ||
-       close_points(a.start, b.end, 1.0e-10) ||
-       close_points(a.end, b.start, 1.0e-10) ||
-       close_points(a.end, b.end, 1.0e-10))) {
+  if (a.sourceFace >= 0 && b.sourceFace >= 0 && a.sourceFace != b.sourceFace) {
     return false;
   }
-  const Eigen::RowVector3d r = a.end - a.start;
-  const Eigen::RowVector3d s = b.end - b.start;
+  const FlowRepArc aa = predicate_arc(a);
+  const FlowRepArc bb = predicate_arc(b);
+  if (!countSharedEndpoints &&
+      (close_points(aa.start, bb.start, 1.0e-10) ||
+       close_points(aa.start, bb.end, 1.0e-10) ||
+       close_points(aa.end, bb.start, 1.0e-10) ||
+       close_points(aa.end, bb.end, 1.0e-10))) {
+    return false;
+  }
+  const Eigen::RowVector3d r = aa.end - aa.start;
+  const Eigen::RowVector3d s = bb.end - bb.start;
   const double denom = cross2(r, s);
-  const Eigen::RowVector3d qp = b.start - a.start;
+  const Eigen::RowVector3d qp = bb.start - aa.start;
   if (std::abs(denom) <= 1.0e-12) {
-    return point_on_segment_2d(a.start, b.start, b.end) ||
-           point_on_segment_2d(a.end, b.start, b.end) ||
-           point_on_segment_2d(b.start, a.start, a.end) ||
-           point_on_segment_2d(b.end, a.start, a.end);
+    return point_on_segment_2d(aa.start, bb.start, bb.end) ||
+           point_on_segment_2d(aa.end, bb.start, bb.end) ||
+           point_on_segment_2d(bb.start, aa.start, aa.end) ||
+           point_on_segment_2d(bb.end, aa.start, aa.end);
   }
   const double t = cross2(qp, s) / denom;
   const double u = cross2(qp, r) / denom;
@@ -227,6 +260,23 @@ inline std::uint64_t point_key(const Eigen::RowVector3d &p) {
   for (const std::int64_t value : {q(p.x()), q(p.y()), q(p.z())}) {
     h ^= static_cast<std::uint64_t>(value);
     h *= 1099511628211ULL;
+  }
+  return h;
+}
+
+inline std::uint64_t endpoint_key(const FlowRepArc &arc, const bool start) {
+  if (arc.sourceFace < 0) {
+    return point_key(start ? arc.start : arc.end);
+  }
+  std::uint64_t h = 1469598103934665603ULL;
+  const auto mix = [&](const std::int64_t value) {
+    h ^= static_cast<std::uint64_t>(value);
+    h *= 1099511628211ULL;
+  };
+  const Eigen::RowVector3d bary = start ? arc.startBarycentric : arc.endBarycentric;
+  mix(arc.sourceFace);
+  for (int i = 0; i < 3; ++i) {
+    mix(static_cast<std::int64_t>(std::llround(bary[i] * 1.0e9)));
   }
   return h;
 }
@@ -316,7 +366,14 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.end = surface_cell_tracing_detail::point_position(
         vertices, faces,
         SurfaceTracePoint{segment.face, segment.endBarycentric});
+    arc.sourceFace = segment.face;
+    arc.startBarycentric = segment.startBarycentric;
+    arc.endBarycentric = segment.endBarycentric;
     arc.family = segment.family;
+    arc.strandProvenance = segment.family;
+    arc.featureProvenance = segment.exitEdge;
+    arc.featureClass = segment.exitEdge;
+    arc.hardFeatureRail = mandatory;
     arc.mandatoryRail = mandatory;
     arcs.push_back(arc);
   };
@@ -408,7 +465,11 @@ inline bool strand_merge_is_simple(const std::vector<FlowRepArc> &arcs,
     for (int j = i + 1; j < static_cast<int>(merged.size()); ++j) {
       const FlowRepArc &a = arcs[static_cast<std::size_t>(merged[i])];
       const FlowRepArc &b = arcs[static_cast<std::size_t>(merged[j])];
-      if (flow_rep_detail::arcs_adjacent(a, b, 1.0e-8)) {
+      if (flow_rep_detail::endpoint_key(a, true) == flow_rep_detail::endpoint_key(b, true) ||
+          flow_rep_detail::endpoint_key(a, true) == flow_rep_detail::endpoint_key(b, false) ||
+          flow_rep_detail::endpoint_key(a, false) == flow_rep_detail::endpoint_key(b, true) ||
+          flow_rep_detail::endpoint_key(a, false) == flow_rep_detail::endpoint_key(b, false) ||
+          flow_rep_detail::arcs_adjacent(a, b, 1.0e-8)) {
         continue;
       }
       if (flow_rep_detail::segments_cross_2d(a, b)) {
@@ -500,8 +561,8 @@ inline std::vector<FlowRepStrand> cluster_flow_rep_strands(
     std::map<std::uint64_t, int> endpointCounts;
     for (const int arcId : cluster) {
       const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
-      ++endpointCounts[flow_rep_detail::point_key(arc.start)];
-      ++endpointCounts[flow_rep_detail::point_key(arc.end)];
+      ++endpointCounts[flow_rep_detail::endpoint_key(arc, true)];
+      ++endpointCounts[flow_rep_detail::endpoint_key(arc, false)];
       strand.length += flow_rep_detail::arc_length(arc);
       strand.mandatory = strand.mandatory || arc.mandatoryRail;
     }
@@ -533,17 +594,93 @@ inline std::vector<FlowRepFlowline> extract_flow_rep_flowlines(
     const std::vector<FlowRepStrand> &strands) {
   std::vector<FlowRepFlowline> flowlines;
   for (const FlowRepStrand &strand : strands) {
-    FlowRepFlowline flowline;
-    flowline.id = static_cast<int>(flowlines.size());
-    flowline.strandId = strand.id;
-    flowline.arcIds = strand.arcIds;
-    flowline.closed = strand.closed;
-    flowline.mandatory = strand.mandatory;
-    for (const int arcId : flowline.arcIds) {
-      flowline.length +=
-          flow_rep_detail::arc_length(arcs[static_cast<std::size_t>(arcId)]);
+    std::map<std::uint64_t, std::vector<int>> incident;
+    for (const int arcId : strand.arcIds) {
+      const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
+      incident[flow_rep_detail::endpoint_key(arc, true)].push_back(arcId);
+      incident[flow_rep_detail::endpoint_key(arc, false)].push_back(arcId);
     }
-    flowlines.push_back(flowline);
+    std::set<int> visited;
+    const auto endpoint_degree = [&](const std::uint64_t key) {
+      const auto found = incident.find(key);
+      return found == incident.end() ? 0 : static_cast<int>(found->second.size());
+    };
+    const auto make_flowline = [&](std::vector<int> chain, const bool closed) {
+      if (chain.empty()) {
+        return;
+      }
+      FlowRepFlowline flowline;
+      flowline.id = static_cast<int>(flowlines.size());
+      flowline.strandId = strand.id;
+      flowline.arcIds = std::move(chain);
+      flowline.closed = closed;
+      flowline.mandatory = strand.mandatory;
+      for (const int arcId : flowline.arcIds) {
+        flowline.length +=
+            flow_rep_detail::arc_length(arcs[static_cast<std::size_t>(arcId)]);
+      }
+      flowlines.push_back(flowline);
+    };
+    for (const int seedArc : strand.arcIds) {
+      if (visited.count(seedArc) != 0) {
+        continue;
+      }
+      const FlowRepArc &seed = arcs[static_cast<std::size_t>(seedArc)];
+      const std::uint64_t s0 = flow_rep_detail::endpoint_key(seed, true);
+      const std::uint64_t s1 = flow_rep_detail::endpoint_key(seed, false);
+      const bool startsAtJunction = endpoint_degree(s0) != 2 || endpoint_degree(s1) != 2;
+      if (!startsAtJunction && strand.closed) {
+        continue;
+      }
+      std::vector<int> chain;
+      int currentArc = seedArc;
+      std::uint64_t previousEndpoint = endpoint_degree(s0) == 1 ? s0 : s1;
+      while (currentArc >= 0 && visited.insert(currentArc).second) {
+        chain.push_back(currentArc);
+        const FlowRepArc &arc = arcs[static_cast<std::size_t>(currentArc)];
+        const std::uint64_t a0 = flow_rep_detail::endpoint_key(arc, true);
+        const std::uint64_t a1 = flow_rep_detail::endpoint_key(arc, false);
+        const std::uint64_t nextEndpoint = previousEndpoint == a0 ? a1 : a0;
+        if (endpoint_degree(nextEndpoint) != 2) {
+          break;
+        }
+        currentArc = -1;
+        for (const int candidate : incident[nextEndpoint]) {
+          if (visited.count(candidate) == 0) {
+            currentArc = candidate;
+            break;
+          }
+        }
+        previousEndpoint = nextEndpoint;
+      }
+      make_flowline(std::move(chain), false);
+    }
+    for (const int seedArc : strand.arcIds) {
+      if (visited.count(seedArc) != 0) {
+        continue;
+      }
+      std::vector<int> cycle;
+      int currentArc = seedArc;
+      std::uint64_t previousEndpoint =
+          flow_rep_detail::endpoint_key(arcs[static_cast<std::size_t>(seedArc)],
+                                        true);
+      while (currentArc >= 0 && visited.insert(currentArc).second) {
+        cycle.push_back(currentArc);
+        const FlowRepArc &arc = arcs[static_cast<std::size_t>(currentArc)];
+        const std::uint64_t a0 = flow_rep_detail::endpoint_key(arc, true);
+        const std::uint64_t a1 = flow_rep_detail::endpoint_key(arc, false);
+        const std::uint64_t nextEndpoint = previousEndpoint == a0 ? a1 : a0;
+        currentArc = -1;
+        for (const int candidate : incident[nextEndpoint]) {
+          if (visited.count(candidate) == 0) {
+            currentArc = candidate;
+            break;
+          }
+        }
+        previousEndpoint = nextEndpoint;
+      }
+      make_flowline(std::move(cycle), true);
+    }
   }
   std::stable_sort(flowlines.begin(), flowlines.end(),
                    [](const FlowRepFlowline &a, const FlowRepFlowline &b) {
@@ -652,8 +789,16 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
   for (const FlowRepCycleInput &cycle : cycles) {
     network.cycleEvaluations.push_back(evaluate_flow_rep_cycle(cycle));
   }
-  const auto cycles_ok = [&]() {
-    for (const FlowRepCycleEvaluation &cycle : network.cycleEvaluations) {
+  const auto rebuild_cycles = [&]() {
+    std::vector<FlowRepCycleEvaluation> rebuilt;
+    rebuilt.reserve(cycles.size());
+    for (const FlowRepCycleInput &cycle : cycles) {
+      rebuilt.push_back(evaluate_flow_rep_cycle(cycle));
+    }
+    return rebuilt;
+  };
+  const auto cycles_ok = [&](const std::vector<FlowRepCycleEvaluation> &evaluations) {
+    for (const FlowRepCycleEvaluation &cycle : evaluations) {
       if (!cycle.descriptive || !cycle.quadrangulable) {
         return false;
       }
@@ -688,9 +833,14 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
     }
     const double trialCoverage =
         flow_rep_detail::coverage_max_distance(arcs, trial, coverageSamples);
-    if (!cycles_ok() ||
+    std::vector<FlowRepCycleEvaluation> trialCycles = rebuild_cycles();
+    ++network.cycleRebuilds;
+    if (!cycles_ok(trialCycles) ||
         trialCoverage - network.denseCoverageMax > options.maxCoverageWorsening) {
       active[static_cast<std::size_t>(arcId)] = static_cast<unsigned char>(1);
+    } else {
+      network.cycleEvaluations = std::move(trialCycles);
+      ++network.acceptedTransactions;
     }
   }
 
@@ -722,11 +872,17 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
       }
       const double trialCoverage =
           flow_rep_detail::coverage_max_distance(arcs, trial, coverageSamples);
-      if (trialCoverage - network.denseCoverageMax >
-          options.maxCoverageWorsening) {
+      std::vector<FlowRepCycleEvaluation> trialCycles = rebuild_cycles();
+      ++network.cycleRebuilds;
+      if (!cycles_ok(trialCycles) ||
+          trialCoverage - network.denseCoverageMax >
+              options.maxCoverageWorsening) {
         active[static_cast<std::size_t>(arc.id)] = static_cast<unsigned char>(1);
         active[static_cast<std::size_t>(substituteId)] =
             static_cast<unsigned char>(0);
+      } else {
+        network.cycleEvaluations = std::move(trialCycles);
+        ++network.acceptedTransactions;
       }
       break;
     }

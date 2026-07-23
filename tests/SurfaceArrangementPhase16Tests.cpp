@@ -23,6 +23,16 @@ TriangleFixture unit_triangle() {
   return fixture;
 }
 
+TriangleFixture unit_square_two_triangles() {
+  TriangleFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0,
+      1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2, 1, 3, 2;
+  return fixture;
+}
+
 directional::geometry::SurfaceArrangementArc make_arc(
     const int id, const std::array<double, 3> &start,
     const std::array<double, 3> &end, const int family = 0,
@@ -37,6 +47,15 @@ directional::geometry::SurfaceArrangementArc make_arc(
   arc.featureClass = hard ? 7 : 0;
   arc.hardFeature = hard;
   arc.provenance = id;
+  return arc;
+}
+
+directional::geometry::SurfaceArrangementArc make_face_arc(
+    const int id, const int face, const std::array<double, 3> &start,
+    const std::array<double, 3> &end, const int family = 0,
+    const bool hard = false) {
+  auto arc = make_arc(id, start, end, family, hard);
+  arc.sourceFace = face;
   return arc;
 }
 
@@ -128,11 +147,51 @@ TEST(SurfaceArrangementPhase16, SourceEdgeAndVertexEventsAreCanonical) {
 
   EXPECT_TRUE(std::any_of(complex.nodes.begin(), complex.nodes.end(),
                           [](const auto &node) {
-                            return node.sourceEdge == 0 &&
+                            return node.sourceEdge >= 0 &&
                                    std::abs(node.sourceEdgeParameter - 0.75) <
                                        1.0e-8;
                           }));
   EXPECT_TRUE(has_node_near(complex, Eigen::RowVector3d(1.0, 0.0, 0.0)));
+}
+
+TEST(SurfaceArrangementPhase16, SharedSourceEdgeStitchesAcrossTwoFaces) {
+  const auto fixture = unit_square_two_triangles();
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_face_arc(0, 0, {0.0, 0.25, 0.75}, {0.0, 0.75, 0.25}, 0),
+      make_face_arc(1, 1, {0.75, 0.0, 0.25}, {0.25, 0.0, 0.75}, 1)};
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  int seamNodes = 0;
+  for (const auto &node : complex.nodes) {
+    if (node.sourceEdge >= 0 &&
+        std::abs(node.sourceEdgeParameter - 0.25) < 1.0e-8) {
+      ++seamNodes;
+    }
+  }
+  EXPECT_EQ(seamNodes, 1);
+}
+
+TEST(SurfaceArrangementPhase16, InteriorSourceEdgeIsNotHardRailByDefault) {
+  const auto fixture = unit_square_two_triangles();
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  const int sharedEdgeId = static_cast<int>(
+      directional::geometry::surface_arrangement_detail::source_edge_key(
+          fixture.faces, 0, 0) &
+      0x7fffffffu);
+  int hardInteriorSeamEdges = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    const auto &from = complex.nodes[static_cast<std::size_t>(halfedge.from)];
+    const auto &to = complex.nodes[static_cast<std::size_t>(halfedge.to)];
+    if (halfedge.hardFeature && from.sourceEdge == sharedEdgeId &&
+        to.sourceEdge == sharedEdgeId) {
+      ++hardInteriorSeamEdges;
+    }
+  }
+  EXPECT_EQ(hardInteriorSeamEdges, 0);
 }
 
 TEST(SurfaceArrangementPhase16, NearlyParallelSegmentsDoNotCreateFalseCrossing) {
@@ -186,10 +245,14 @@ TEST(SurfaceArrangementPhase16, NonDiskAndPatchCandidateClassificationIsExposed)
   EXPECT_TRUE(std::any_of(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) {
                             return !cell.boundaryCycle &&
-                                   cell.cellClass ==
-                                       directional::geometry::
-                                           SurfaceArrangementCellClass::
-                                               PatchCandidate;
+                                   (cell.cellClass ==
+                                        directional::geometry::
+                                            SurfaceArrangementCellClass::
+                                                PatchCandidate ||
+                                    cell.cellClass ==
+                                        directional::geometry::
+                                            SurfaceArrangementCellClass::
+                                                NonDisk);
                           }));
 }
 
@@ -224,6 +287,7 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
       fixture.vertices, fixture.faces, arcs);
 
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
+  EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
   EXPECT_LE(complex.diagnostics.relativeAreaError, 1.0e-8);
   EXPECT_TRUE(std::any_of(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }));
@@ -277,6 +341,7 @@ TEST(SurfaceArrangementPhase16, MemoryRatioAndOverlayChannelsAreBounded) {
       complex);
 
   EXPECT_LE(complex.diagnostics.memoryRatioEstimate, 10.0);
+  EXPECT_GT(complex.diagnostics.measuredMemoryRatio, 0.0);
   EXPECT_EQ(overlay.splitSegmentStarts.rows(),
             static_cast<int>(complex.halfedges.size()));
   EXPECT_EQ(overlay.splitSegmentEnds.rows(),
