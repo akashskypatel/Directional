@@ -359,6 +359,13 @@ private:
     const Eigen::Vector3d v0 = b - a;
     const Eigen::Vector3d v1 = c - a;
     const Eigen::Vector3d v2 = point - a;
+    const Eigen::Vector3d normal = v0.cross(v1);
+    const double normalNorm = normal.norm();
+    const double scale = std::max({v0.norm(), v1.norm(), (c - b).norm(), tolerance});
+    if (normalNorm <= tolerance * scale ||
+        std::abs(normal.dot(v2)) > tolerance * normalNorm * scale) {
+      return false;
+    }
     const double d00 = v0.dot(v0);
     const double d01 = v0.dot(v1);
     const double d11 = v1.dot(v1);

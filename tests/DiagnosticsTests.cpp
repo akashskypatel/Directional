@@ -206,9 +206,37 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
       "wallSeconds": 0.1,
       "diagnostics": {
         "overallPipelineSeconds": 0.1,
+        "remeshBackend": "SurfaceCells",
+        "requestedBackend": "SurfaceCells",
+        "executedBackend": "LegacyInteger",
+        "surfaceCellFallbackPolicy": "TryLegacy",
+        "surfaceCellFallbackCause": "NotProductionReady",
+        "originalSurfaceCellFailureCode": "NotProductionReady",
+        "originalSurfaceCellFailureStage": "production-gate",
+        "terminalFailureCode": "None",
+        "terminalFailureStage": "",
+        "surfaceCellFallbackAttempted": true,
+        "surfaceCellUsedLegacyFallback": true,
+        "surfaceCellReturnedQuadDominantFallback": false,
+        "surfaceCellReturnedInputMeshFallback": false,
+        "surfaceCellRemeshOccurred": true,
         "surfaceCellValidationSeconds": 0.0,
         "surfaceCellValidationFailures": 0,
         "surfaceCellProvenanceVertexCount": 0,
+        "surfaceCellFeatureCount": 0,
+        "surfaceCellMetricSampleCount": 0,
+        "surfaceCellReliefPatchCount": 0,
+        "surfaceCellTraceSegmentCount": 0,
+        "surfaceCellArrangementCellCount": 0,
+        "surfaceCellSimplifiedCellCount": 0,
+        "surfaceCellCompletedQuadCount": 0,
+        "surfaceCellOptimizationIterationCount": 0,
+        "surfaceCellReliefCountAvailable": false,
+        "surfaceCellTraceCountAvailable": false,
+        "surfaceCellArrangementCountAvailable": false,
+        "surfaceCellSimplifiedCountAvailable": false,
+        "surfaceCellCompletedQuadCountAvailable": false,
+        "surfaceCellOptimizationIterationCountAvailable": false,
         "adaptiveFeatureMapSeconds": 0.0,
         "adaptiveFeatureHardEdgeCount": 0,
         "adaptiveFeatureSoftEdgeCount": 0,
@@ -271,9 +299,19 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"success\"");
   expect_contains(json, "\"wallSeconds\"");
   expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"requestedBackend\"");
+  expect_contains(json, "\"executedBackend\"");
+  expect_contains(json, "\"surfaceCellFallbackCause\"");
+  expect_contains(json, "\"originalSurfaceCellFailureCode\"");
+  expect_contains(json, "\"surfaceCellReturnedInputMeshFallback\"");
+  expect_contains(json, "\"surfaceCellRemeshOccurred\"");
   expect_contains(json, "\"surfaceCellValidationSeconds\"");
   expect_contains(json, "\"surfaceCellValidationFailures\"");
   expect_contains(json, "\"surfaceCellProvenanceVertexCount\"");
+  expect_contains(json, "\"surfaceCellFeatureCount\"");
+  expect_contains(json, "\"surfaceCellMetricSampleCount\"");
+  expect_contains(json, "\"surfaceCellReliefCountAvailable\"");
+  expect_contains(json, "\"surfaceCellOptimizationIterationCountAvailable\"");
   expect_contains(json, "\"adaptiveFeatureMapSeconds\"");
   expect_contains(json, "\"adaptiveFeatureHardEdgeCount\"");
   expect_contains(json, "\"adaptiveFeatureSoftEdgeCount\"");

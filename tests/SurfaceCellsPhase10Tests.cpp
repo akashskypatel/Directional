@@ -495,7 +495,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_GT(projected.faceConfidence(3), 0.99);
 }
 
-TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffScaffold) {
+TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture) {
   directional::pipeline::RemeshOptions options;
   EXPECT_EQ(options.backend, directional::pipeline::RemeshBackend::Legacy);
   EXPECT_FALSE(options.surfaceCells.enabled);
@@ -514,8 +514,14 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffScaffold) {
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       vertices, faces, raw, options);
 
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ(result.diagnostics.surfaceCellValidationFailures, 1U);
+  EXPECT_TRUE(result.success);
+  EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
+  EXPECT_EQ(result.diagnostics.surfaceCellValidationFailures, 0U);
+  EXPECT_EQ(result.faces.rows(), 1);
+  ASSERT_EQ(result.degrees.size(), 1);
+  EXPECT_EQ(result.degrees(0), 4);
   EXPECT_GE(result.diagnostics.surfaceCellFeatureSeconds, 0.0);
   EXPECT_GT(result.diagnostics.adaptiveFeatureBoundaryEdgeCount, 0U);
   EXPECT_GT(result.diagnostics.adaptiveFeatureCurveCount, 0U);

@@ -35,12 +35,19 @@ struct ComponentRemeshDiagnostics {
 /** @brief Aggregate machine-readable diagnostics for the remesh pipeline. */
 struct RemeshDiagnostics {
   std::string remeshBackend = "LegacyInteger";
+  std::string requestedBackend = "LegacyInteger";
+  std::string executedBackend = "LegacyInteger";
   std::string surfaceCellFallbackPolicy = "Fail";
+  std::string surfaceCellFallbackCause;
+  std::string originalSurfaceCellFailureCode = "None";
+  std::string originalSurfaceCellFailureStage;
   std::string terminalFailureCode = "None";
   std::string terminalFailureStage;
   bool surfaceCellFallbackAttempted = false;
   bool surfaceCellUsedLegacyFallback = false;
   bool surfaceCellReturnedQuadDominantFallback = false;
+  bool surfaceCellReturnedInputMeshFallback = false;
+  bool surfaceCellRemeshOccurred = false;
   bool surfaceCellDebugArtifactsPreserved = false;
   std::vector<std::string> surfaceCellDebugArtifacts;
 
@@ -64,6 +71,12 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
   std::size_t surfaceCellOptimizationIterationCount = 0;
+  bool surfaceCellReliefCountAvailable = false;
+  bool surfaceCellTraceCountAvailable = false;
+  bool surfaceCellArrangementCountAvailable = false;
+  bool surfaceCellSimplifiedCountAvailable = false;
+  bool surfaceCellCompletedQuadCountAvailable = false;
+  bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 
   double adaptiveFeatureMapSeconds = 0.0;
