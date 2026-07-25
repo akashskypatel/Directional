@@ -44,7 +44,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(DIRECTIONAL_TUTORIALS "ALL" CACHE STRING
     "Semicolon-separated tutorial directories to build, or ALL")
 
-set(_directional_tutorial_data_default "${DIRECTIONAL_ROOT}/tutorial_data")
+set(_directional_tutorial_data_default "${DIRECTIONAL_ROOT}/data")
 cmake_path(ABSOLUTE_PATH _directional_tutorial_data_default NORMALIZE)
 
 set(TUTORIAL_DATA_PATH "${_directional_tutorial_data_default}" CACHE PATH

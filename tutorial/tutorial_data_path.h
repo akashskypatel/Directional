@@ -2,7 +2,7 @@
 #define tutorial_data_path_h_included
 
 #ifndef TUTORIAL_DATA_PATH
-#define TUTORIAL_DATA_PATH "../tutorial_data"
+#define TUTORIAL_DATA_PATH "../data"
 #endif
 
 #endif
