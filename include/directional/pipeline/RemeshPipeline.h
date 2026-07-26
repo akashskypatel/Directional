@@ -194,6 +194,8 @@ struct SurfaceCellOptions {
   geometry::AdaptiveFeatureMapOptions featureMap;
   geometry::AdaptiveTargetSizeOptions targetSize;
   geometry::LocalThicknessOptions thickness;
+  geometry::ReliefOptions relief;
+  geometry::ReliefRootSelectionOptions reliefRoots;
 };
 
 /**
@@ -326,6 +328,11 @@ struct SurfaceCellPipelineContext {
 
   geometry::ReliefTopologyResult reliefResult;
   bool hasReliefResult = false;
+
+  geometry::ReliefRootSelectionResult reliefRootSelection;
+  bool hasReliefRootSelection = false;
+  std::set<std::uint64_t> reliefBarrierEdges;
+  bool hasReliefBarrierEdges = false;
 
   geometry::SurfaceCellNetwork traceNetwork;
   bool hasTraceNetwork = false;
@@ -684,6 +691,17 @@ inline void hash_trace_point(std::uint64_t &seed,
 inline std::uint64_t hash_trace_network(
     const geometry::SurfaceCellNetwork &network) {
   std::uint64_t seed = structural_hash_seed("tracing");
+  hash_vector(seed, network.reliefRootVertices);
+  hash_combine_i64(seed, network.reliefRegionLabels.size());
+  for (Eigen::Index index = 0; index < network.reliefRegionLabels.size(); ++index) {
+    hash_combine_i64(seed, network.reliefRegionLabels(index));
+  }
+  hash_combine_u64(seed, network.reliefBarrierEdges.size());
+  for (const std::uint64_t barrier : network.reliefBarrierEdges) {
+    hash_combine_u64(seed, barrier);
+  }
+  hash_vector(seed, network.sourceFaceComponents);
+  hash_vector(seed, network.sourceFaceSheets);
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     hash_combine_i64(seed, rail.id);
     hash_combine_i64(seed, static_cast<int>(rail.kind));
@@ -1158,6 +1176,33 @@ inline std::vector<geometry::SurfaceCellRail> build_authoritative_surface_cell_r
   return rails;
 }
 
+inline std::set<std::uint64_t> relief_barrier_edges_from_topology(
+    const geometry::ReliefTopologyResult &topology) {
+  std::set<std::uint64_t> barriers;
+  for (const geometry::ReliefBranch &branch : topology.branches) {
+    for (int index = 0; index + 1 < static_cast<int>(branch.vertices.size());
+         ++index) {
+      barriers.insert(surface_cell_source_edge_key(
+          branch.vertices[static_cast<std::size_t>(index)],
+          branch.vertices[static_cast<std::size_t>(index + 1)]));
+    }
+  }
+  return barriers;
+}
+
+inline std::uint64_t hash_relief_operational_inputs(
+    const geometry::ReliefRootSelectionResult &roots,
+    const std::set<std::uint64_t> &barriers) {
+  std::uint64_t seed = structural_hash_seed("relief-consumption");
+  hash_vector(seed, roots.roots);
+  hash_vector(seed, roots.labels);
+  hash_matrix(seed, roots.targets);
+  hash_combine_u64(seed, barriers.size());
+  for (const std::uint64_t barrier : barriers) {
+    hash_combine_u64(seed, barrier);
+  }
+  return seed;
+}
 inline std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
     const std::vector<geometry::SurfaceCellRail> &rails) {
   std::set<std::uint64_t> keys;
@@ -1680,10 +1725,23 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     reliefInput.density = targetSize.normalizedFeatureDensity;
     reliefInput.thickness = targetSize.thickness;
     reliefInput.patchEnergy = Eigen::VectorXd::Zero(meshWhole.V.rows());
+    const geometry::ReliefOptions reliefOptions = options.surfaceCells.relief;
     const Eigen::VectorXd reliefValues =
-        geometry::compute_salience_relief(reliefInput, geometry::ReliefOptions{});
+        geometry::compute_salience_relief(reliefInput, reliefOptions);
     const geometry::ReliefTopologyResult reliefTopology =
-        geometry::analyze_relief_topology(meshWhole.V, meshWhole.F, reliefValues);
+        geometry::analyze_relief_topology(meshWhole.V, meshWhole.F, reliefValues,
+                                          hardFeatureRailEdges, reliefOptions);
+    const std::set<std::uint64_t> reliefBarrierEdges =
+        relief_barrier_edges_from_topology(reliefTopology);
+    std::set<std::uint64_t> operationalBarrierEdges = hardFeatureRailEdges;
+    operationalBarrierEdges.insert(reliefBarrierEdges.begin(),
+                                   reliefBarrierEdges.end());
+    geometry::ReliefRootSelectionOptions reliefRootOptions =
+        options.surfaceCells.reliefRoots;
+    reliefRootOptions.hardBarrierEdges = operationalBarrierEdges;
+    const geometry::ReliefRootSelectionResult reliefRootSelection =
+        geometry::select_relief_roots(meshWhole.V, meshWhole.F, reliefTopology,
+                                      targetSize.targetSize, reliefRootOptions);
     result.diagnostics.surfaceCellReliefSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - reliefStart)
@@ -1694,6 +1752,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellReliefCountAvailable = true;
     result.surfaceCellContext.reliefResult = reliefTopology;
     result.surfaceCellContext.hasReliefResult = true;
+    result.surfaceCellContext.reliefRootSelection = reliefRootSelection;
+    result.surfaceCellContext.hasReliefRootSelection = true;
+    result.surfaceCellContext.reliefBarrierEdges = reliefBarrierEdges;
+    result.surfaceCellContext.hasReliefBarrierEdges = true;
     const std::uint64_t reliefHash = hash_relief_topology(reliefTopology);
     const SurfaceCellObjectIdentity reliefIdentity = make_identity(
         "relief", reliefHash, result.diagnostics.surfaceCellReliefPatchCount);
@@ -1701,6 +1763,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                         SurfaceCellConsumptionKind::Full);
     record_surface_cell_stage("relief", metricIdentity, reliefIdentity, true,
                               result.diagnostics.surfaceCellReliefSeconds);
+    const SurfaceCellObjectIdentity reliefConsumptionIdentity = make_identity(
+        "relief-consumption",
+        hash_relief_operational_inputs(reliefRootSelection, reliefBarrierEdges),
+        reliefRootSelection.roots.size() + reliefBarrierEdges.size());
+    record_surface_cell_context_product(result.surfaceCellContext,
+                                        "relief-consumption",
+                                        reliefConsumptionIdentity, true);
     completedSurfaceCellStages.push_back("relief");
     if (options.surfaceCells.injectFailureAfterStage == 2) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
@@ -1715,6 +1784,23 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     geometry::SurfaceCellTracingOptions tracingOptions;
     tracingOptions.authoritativeRails = authoritativeRails;
     tracingOptions.hardFeatureEdges = hardFeatureRailEdges;
+    tracingOptions.reliefRootVertices = reliefRootSelection.roots;
+    tracingOptions.reliefRegionLabels = reliefRootSelection.labels;
+    tracingOptions.reliefBarrierEdges = reliefBarrierEdges;
+    tracingOptions.sourceFaceComponents.assign(
+        static_cast<std::size_t>(meshWhole.F.rows()), 0);
+    const std::vector<std::vector<int>> sourceFaceComponents =
+        geometry::face_connected_components(meshWhole.F);
+    for (std::size_t component = 0; component < sourceFaceComponents.size();
+         ++component) {
+      for (const int face : sourceFaceComponents[component]) {
+        if (face >= 0 && face < meshWhole.F.rows()) {
+          tracingOptions.sourceFaceComponents[static_cast<std::size_t>(face)] =
+              static_cast<int>(component);
+        }
+      }
+    }
+    tracingOptions.sourceFaceSheets = tracingOptions.sourceFaceComponents;
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
     }

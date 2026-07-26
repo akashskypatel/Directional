@@ -767,7 +767,12 @@ inline ReliefRootSelectionResult select_relief_roots(
     const ReliefRootSelectionOptions &options = {}) {
   const int vertexCount = static_cast<int>(vertices.rows());
   std::vector<int> roots;
+  std::set<int> canceledCriticalVertices;
   for (const ReliefCriticalPoint &point : topology.criticalPoints) {
+    if (!point.retained && point.type != ReliefCriticalType::Regular &&
+        point.vertex >= 0 && point.vertex < vertexCount) {
+      canceledCriticalVertices.insert(point.vertex);
+    }
     if (point.retained && point.type != ReliefCriticalType::Regular) {
       roots.push_back(point.vertex);
     }
@@ -783,8 +788,22 @@ inline ReliefRootSelectionResult select_relief_roots(
   }
   std::sort(roots.begin(), roots.end());
   roots.erase(std::unique(roots.begin(), roots.end()), roots.end());
+  roots.erase(std::remove_if(roots.begin(), roots.end(),
+                             [&](const int vertex) {
+                               return canceledCriticalVertices.count(vertex) !=
+                                      0;
+                             }),
+              roots.end());
   if (roots.empty() && vertexCount > 0) {
-    roots.push_back(0);
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      if (canceledCriticalVertices.count(vertex) == 0) {
+        roots.push_back(vertex);
+        break;
+      }
+    }
+    if (roots.empty()) {
+      roots.push_back(0);
+    }
   }
 
   Eigen::VectorXd safeSize =
@@ -805,6 +824,9 @@ inline ReliefRootSelectionResult select_relief_roots(
     double worst = 0.0;
     int worstVertex = -1;
     for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      if (canceledCriticalVertices.count(vertex) != 0) {
+        continue;
+      }
       if (labels[vertex] < 0) {
         continue;
       }

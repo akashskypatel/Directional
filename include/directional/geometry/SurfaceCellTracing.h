@@ -155,12 +155,17 @@ struct SurfaceCellTracingOptions {
   double closureToleranceFactor = 0.25;
   std::vector<int> singularityVertices;
   std::vector<int> reliefCriticalVertices;
+  std::vector<int> reliefRootVertices;
+  Eigen::VectorXi reliefRegionLabels;
+  std::set<std::uint64_t> reliefBarrierEdges;
   std::vector<int> separatrixVertices;
   std::vector<int> anchors;
   std::vector<SurfaceTracePoint> capturePoints;
   std::set<std::uint64_t> hardFeatureEdges;
   std::vector<SurfaceCellRail> authoritativeRails;
   bool followCompatibleHardFeatureRails = true;
+  std::vector<int> sourceFaceComponents;
+  std::vector<int> sourceFaceSheets;
   SurfaceGuidePotential guidePotential;
 };
 
@@ -169,6 +174,11 @@ struct SurfaceCellNetwork {
   std::vector<SurfaceTraceResult> traces;
   std::vector<SurfaceCellProposal> proposals;
   std::vector<SurfaceCellRail> authoritativeRails;
+  std::vector<int> sourceFaceComponents;
+  std::vector<int> sourceFaceSheets;
+  std::vector<int> reliefRootVertices;
+  Eigen::VectorXi reliefRegionLabels;
+  std::set<std::uint64_t> reliefBarrierEdges;
   SurfaceCellProposalStats stats;
 };
 
@@ -540,6 +550,63 @@ struct AdaptiveSeedCandidate {
   }
 };
 
+inline std::set<std::uint64_t> combined_barrier_edges(
+    const SurfaceCellTracingOptions &options) {
+  std::set<std::uint64_t> barriers = options.hardFeatureEdges;
+  barriers.insert(options.reliefBarrierEdges.begin(),
+                  options.reliefBarrierEdges.end());
+  return barriers;
+}
+
+inline int seed_anchor_vertex(const SurfaceTraceSeed &seed,
+                              const Eigen::MatrixXi &faces,
+                              const int vertexCount) {
+  switch (seed.provenance) {
+  case SurfaceSeedProvenance::Singularity:
+  case SurfaceSeedProvenance::ReliefCritical:
+  case SurfaceSeedProvenance::Separatrix:
+  case SurfaceSeedProvenance::Anchor:
+  case SurfaceSeedProvenance::AdaptiveFarthest:
+    if (seed.sourceId >= 0 && seed.sourceId < vertexCount) {
+      return seed.sourceId;
+    }
+    break;
+  case SurfaceSeedProvenance::Boundary:
+  case SurfaceSeedProvenance::Feature:
+    break;
+  }
+  if (seed.point.face >= 0 && seed.point.face < faces.rows()) {
+    return faces(seed.point.face,
+                 dominant_vertex_corner(seed.point.barycentric));
+  }
+  return -1;
+}
+
+inline int face_label_or_default(const std::vector<int> &labels,
+                                 const int face,
+                                 const int fallback) {
+  return face >= 0 && face < static_cast<int>(labels.size())
+             ? labels[static_cast<std::size_t>(face)]
+             : fallback;
+}
+
+inline bool trace_respects_face_labels(const SurfaceTraceResult &trace,
+                                       const std::vector<int> &components,
+                                       const std::vector<int> &sheets) {
+  int expectedComponent = -1;
+  int expectedSheet = -1;
+  for (const SurfaceTraceSegment &segment : trace.segments) {
+    const int component = face_label_or_default(components, segment.face, -1);
+    const int sheet = face_label_or_default(sheets, segment.face, component);
+    if (expectedComponent < 0) {
+      expectedComponent = component;
+      expectedSheet = sheet;
+    } else if (component != expectedComponent || sheet != expectedSheet) {
+      return false;
+    }
+  }
+  return true;
+}
 inline Eigen::VectorXd graph_distances_from_vertices(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &sourceVertices,
@@ -598,6 +665,8 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   }
   const int vertexCount = static_cast<int>(vertices.rows());
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+  const std::set<std::uint64_t> barrierEdges =
+      surface_cell_tracing_detail::combined_barrier_edges(options);
   const auto incident =
       surface_cell_tracing_detail::incident_faces_by_vertex(vertexCount, faces);
   std::vector<SurfaceTraceSeed> seeds;
@@ -671,6 +740,39 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   add_vertices(options.singularityVertices, SurfaceSeedProvenance::Singularity);
   add_vertices(options.reliefCriticalVertices,
                SurfaceSeedProvenance::ReliefCritical);
+  add_vertices(options.reliefRootVertices, SurfaceSeedProvenance::ReliefCritical);
+
+  if (options.reliefRegionLabels.size() == vertexCount) {
+    std::map<int, int> representativeByRegion;
+    std::set<int> seededRegions;
+    for (int vertex = 0; vertex < vertexCount; ++vertex) {
+      const int region = options.reliefRegionLabels[vertex];
+      if (region < 0) {
+        continue;
+      }
+      representativeByRegion.emplace(region, vertex);
+    }
+    for (const SurfaceTraceSeed &seed : seeds) {
+      const int vertex =
+          surface_cell_tracing_detail::seed_anchor_vertex(seed, faces,
+                                                          vertexCount);
+      if (vertex >= 0 && vertex < vertexCount) {
+        const int region = options.reliefRegionLabels[vertex];
+        if (region >= 0) {
+          seededRegions.insert(region);
+        }
+      }
+    }
+    for (const auto &[region, representative] : representativeByRegion) {
+      if (seededRegions.count(region) == 0) {
+        surface_cell_tracing_detail::append_seed(
+            seeds, seen,
+            surface_cell_tracing_detail::vertex_point(representative, incident,
+                                                      faces),
+            SurfaceSeedProvenance::ReliefCritical, representative);
+      }
+    }
+  }
   add_vertices(options.separatrixVertices, SurfaceSeedProvenance::Separatrix);
   add_vertices(options.anchors, SurfaceSeedProvenance::Anchor);
 
@@ -679,8 +781,11 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   const auto update_nearest = [&]() {
     std::vector<int> sourceVertices;
     for (const SurfaceTraceSeed &seed : seeds) {
-      if (seed.sourceId >= 0 && seed.sourceId < vertexCount) {
-        sourceVertices.push_back(seed.sourceId);
+      const int anchor =
+          surface_cell_tracing_detail::seed_anchor_vertex(seed, faces,
+                                                          vertexCount);
+      if (anchor >= 0 && anchor < vertexCount) {
+        sourceVertices.push_back(anchor);
       }
       for (int corner = 0; corner < 3; ++corner) {
         if (seed.point.face >= 0 && seed.point.barycentric[corner] > 1.0 - 1.0e-10) {
@@ -692,7 +797,7 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     sourceVertices.erase(std::unique(sourceVertices.begin(), sourceVertices.end()),
                          sourceVertices.end());
     nearest = surface_cell_tracing_detail::graph_distances_from_vertices(
-        vertices, faces, sourceVertices, options.hardFeatureEdges);
+        vertices, faces, sourceVertices, barrierEdges);
   };
 
   if (seeds.empty() && vertexCount > 0) {
@@ -741,6 +846,8 @@ inline SurfaceTraceResult trace_surface_field(
     throw std::invalid_argument("face axes must have shape (#F, 3).");
   }
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+  const std::set<std::uint64_t> barrierEdges =
+      surface_cell_tracing_detail::combined_barrier_edges(options);
   const auto edgeMatchingIndices =
       surface_cell_tracing_detail::edge_matching_indices(edgeFaces);
   const auto incident = surface_cell_tracing_detail::incident_faces_by_vertex(
@@ -868,7 +975,7 @@ inline SurfaceTraceResult trace_surface_field(
                         capture.barycentric));
           const Eigen::VectorXd intrinsic =
               surface_cell_tracing_detail::graph_distances_from_vertices(
-                  vertices, faces, {captureVertex}, options.hardFeatureEdges);
+                  vertices, faces, {captureVertex}, barrierEdges);
           captured = currentVertex >= 0 && currentVertex < intrinsic.size() &&
                      intrinsic[currentVertex] <= options.captureRadius;
         }
@@ -941,6 +1048,10 @@ inline SurfaceTraceResult trace_surface_field(
         entryEdge = hitCorner;
         continue;
       }
+      result.termination = TraceTerminationReason::Feature;
+      return result;
+    }
+    if (options.reliefBarrierEdges.count(key) != 0) {
       result.termination = TraceTerminationReason::Feature;
       return result;
     }
@@ -1205,6 +1316,11 @@ inline SurfaceCellNetwork build_surface_cell_network(
     const Eigen::VectorXd *edgeEffort = nullptr) {
   SurfaceCellNetwork network;
   network.authoritativeRails = options.authoritativeRails;
+  network.sourceFaceComponents = options.sourceFaceComponents;
+  network.sourceFaceSheets = options.sourceFaceSheets;
+  network.reliefRootVertices = options.reliefRootVertices;
+  network.reliefRegionLabels = options.reliefRegionLabels;
+  network.reliefBarrierEdges = options.reliefBarrierEdges;
   network.seeds =
       generate_deterministic_surface_seeds(vertices, faces, targetSize, options);
   for (const SurfaceTraceSeed &seed : network.seeds) {
