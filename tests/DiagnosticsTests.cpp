@@ -219,7 +219,27 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "surfaceCellUsedLegacyFallback": true,
         "surfaceCellReturnedQuadDominantFallback": false,
         "surfaceCellReturnedInputMeshFallback": false,
-        "surfaceCellRemeshOccurred": true,
+        "surfaceCellRemeshOccurred": false,
+        "surfaceCellOutputOrigin": "LegacyFallback",
+        "surfaceCellStageLineage": [{
+          "stage": "completion",
+          "inputObjectHash": "simplification:count=1",
+          "outputObjectHash": "completion:count=1",
+          "objectCount": 1,
+          "available": true,
+          "consumedByNextStage": true,
+          "consumptionKind": "Full",
+          "durationSeconds": 0.001,
+          "terminalFailureCode": "None",
+          "terminalFailureStage": ""
+        }],
+        "surfaceCellContextProducts": [{
+          "name": "completion",
+          "type": "completion",
+          "structuralHash": 17,
+          "elementCount": 1,
+          "available": true
+        }],
         "surfaceCellValidationSeconds": 0.0,
         "surfaceCellValidationFailures": 0,
         "surfaceCellProvenanceVertexCount": 0,
@@ -305,6 +325,11 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"originalSurfaceCellFailureCode\"");
   expect_contains(json, "\"surfaceCellReturnedInputMeshFallback\"");
   expect_contains(json, "\"surfaceCellRemeshOccurred\"");
+  expect_contains(json, "\"surfaceCellOutputOrigin\"");
+  expect_contains(json, "\"surfaceCellStageLineage\"");
+  expect_contains(json, "\"surfaceCellContextProducts\"");
+  expect_contains(json, "\"inputObjectHash\"");
+  expect_contains(json, "\"consumedByNextStage\"");
   expect_contains(json, "\"surfaceCellValidationSeconds\"");
   expect_contains(json, "\"surfaceCellValidationFailures\"");
   expect_contains(json, "\"surfaceCellProvenanceVertexCount\"");

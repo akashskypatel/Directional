@@ -1095,7 +1095,8 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
 }
 
 void write_remesh_diagnostics_json(std::ostream &out,
-                                   const RemeshDiagnostics &diagnostics) {
+                                   const RemeshResult &result) {
+  const RemeshDiagnostics &diagnostics = result.diagnostics;
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
@@ -1126,6 +1127,54 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ","
       << "\"surfaceCellRemeshOccurred\":"
       << (diagnostics.surfaceCellRemeshOccurred ? "true" : "false") << ","
+      << "\"surfaceCellOutputOrigin\":\""
+      << surface_cell_output_origin_name(diagnostics.surfaceCellOutputOrigin) << "\","
+      << "\"surfaceCellStageLineage\":[";
+  for (std::size_t stageIndex = 0;
+       stageIndex < diagnostics.surfaceCellStageLineage.size(); ++stageIndex) {
+    const SurfaceCellStageLineage &lineage =
+        diagnostics.surfaceCellStageLineage[stageIndex];
+    if (stageIndex > 0) {
+      out << ",";
+    }
+    out << "{"
+        << "\"stage\":\"" << lineage.stage << "\","
+        << "\"inputObjectHash\":\"" << lineage.inputObjectHash << "\","
+        << "\"outputObjectHash\":\"" << lineage.outputObjectHash << "\","
+        << "\"inputObjectType\":\"" << lineage.inputObject.type << "\","
+        << "\"inputStructuralHash\":" << lineage.inputObject.structuralHash << ","
+        << "\"outputObjectType\":\"" << lineage.outputObject.type << "\","
+        << "\"outputStructuralHash\":" << lineage.outputObject.structuralHash << ","
+        << "\"objectCount\":" << lineage.objectCount << ","
+        << "\"available\":" << (lineage.available ? "true" : "false") << ","
+        << "\"consumedByNextStage\":"
+        << (lineage.consumedByNextStage ? "true" : "false") << ","
+        << "\"consumptionKind\":\"" << surface_cell_consumption_kind_name(lineage.consumptionKind) << "\","
+        << "\"noOp\":" << (lineage.noOp ? "true" : "false") << ","
+        << "\"durationSeconds\":" << lineage.durationSeconds << ","
+        << "\"terminalFailureCode\":\"" << lineage.terminalFailureCode << "\","
+        << "\"terminalFailureStage\":\"" << lineage.terminalFailureStage << "\""
+        << "}";
+  }
+  out << "],"
+      << "\"surfaceCellContextProducts\":[";
+  for (std::size_t productIndex = 0;
+       productIndex < result.surfaceCellContext.debugProducts.size();
+       ++productIndex) {
+    const pipeline::SurfaceCellContextProductDebug &product =
+        result.surfaceCellContext.debugProducts[productIndex];
+    if (productIndex > 0) {
+      out << ",";
+    }
+    out << "{"
+        << "\"name\":\"" << escape_json(product.name) << "\","
+        << "\"type\":\"" << escape_json(product.type) << "\","
+        << "\"structuralHash\":" << product.structuralHash << ","
+        << "\"elementCount\":" << product.elementCount << ","
+        << "\"available\":" << (product.available ? "true" : "false")
+        << "}";
+  }
+  out << "],"
       << "\"componentSplitSeconds\":" << diagnostics.componentSplitSeconds
       << ","
       << "\"componentParallelWallSeconds\":"
@@ -1468,7 +1517,7 @@ void write_results_json(const Options &options,
         out << ", \"error\": \"" << escape_json(run.error) << "\"";
       } else {
         out << ", \"diagnostics\": ";
-        write_remesh_diagnostics_json(out, run.result.diagnostics);
+        write_remesh_diagnostics_json(out, run.result);
         out << ", \"outputVertexCount\": " << run.metrics.outputVertices
             << ", \"outputFaceCount\": " << run.metrics.outputFaces
             << ", \"quadCount\": " << run.metrics.quadFaces

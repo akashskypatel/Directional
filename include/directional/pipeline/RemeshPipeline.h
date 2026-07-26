@@ -15,12 +15,15 @@
 #include <array>
 #include <cmath>
 #include <cctype>
+#include <cstdint>
 #include <future>
+#include <iomanip>
 #include <functional>
 #include <iostream>
 #include <map>
 #include <numeric>
 #include <set>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -288,6 +291,62 @@ struct RemeshOptions {
   std::function<void(const MesherData &)> mesherDataCallback;
 };
 
+struct SurfaceCellContextProductDebug {
+  std::string name;
+  std::string type;
+  std::uint64_t structuralHash = 0U;
+  std::size_t elementCount = 0U;
+  bool available = false;
+};
+
+struct SurfaceCellPipelineContext {
+  TriMesh sourceMesh;
+  bool hasSourceMesh = false;
+
+  fields::CrossFieldResult crossField;
+  bool hasCrossField = false;
+  bool crossFieldHasMatching = false;
+  bool crossFieldHasSingularities = false;
+
+  geometry::AdaptiveFeatureMap featureMap;
+  bool hasFeatureMap = false;
+
+  geometry::AdaptiveTargetSizeResult metricField;
+  bool hasMetricField = false;
+
+  geometry::ReliefTopologyResult reliefResult;
+  bool hasReliefResult = false;
+
+  geometry::SurfaceCellNetwork traceNetwork;
+  bool hasTraceNetwork = false;
+
+  std::vector<geometry::FlowRepArc> flowRepArcs;
+  geometry::FlowRepSparseNetwork flowRepNetwork;
+  bool hasFlowRepNetwork = false;
+
+  std::vector<geometry::SurfaceArrangementArc> embeddedArrangementArcs;
+  bool hasEmbeddedArrangementArcs = false;
+
+  geometry::SurfaceCellComplex arrangement;
+  bool hasArrangement = false;
+
+  geometry::SurfaceCellComplex simplifiedComplex;
+  bool hasSimplifiedComplex = false;
+
+  std::vector<geometry::PureQuadMesh> completedPatches;
+  Eigen::MatrixXd completedVertices;
+  Eigen::MatrixXi completedQuads;
+  std::vector<geometry::SurfacePoint> completedProvenance;
+  bool hasCompletedPatches = false;
+
+  geometry::SurfaceOptimizationResult optimizationResult;
+  bool hasOptimizationResult = false;
+
+  geometry::SurfaceFinalValidationReport validationResult;
+  bool hasValidationResult = false;
+
+  std::vector<SurfaceCellContextProductDebug> debugProducts;
+};
 /**
  * @brief Geometry and diagnostic outputs produced by the remeshing pipeline.
  */
@@ -333,6 +392,9 @@ struct RemeshResult {
 
   /// Integer singularity numerators; actual indices are divided by four.
   Eigen::VectorXi crossFieldSingularIndices;
+
+  /// Typed SurfaceCells intermediates preserved for diagnostics and downstream stages.
+  SurfaceCellPipelineContext surfaceCellContext;
 
   /// Machine-readable timing and count diagnostics for this pipeline run.
   directional::RemeshDiagnostics diagnostics;
@@ -462,6 +524,407 @@ orthogonal_complement(const TriMesh &mesh,
                                        normalizeDirections);
 }
 
+
+inline void hash_combine_u64(std::uint64_t &seed, const std::uint64_t value) {
+  seed ^= value + 0x9e3779b97f4a7c15ULL + (seed << 6) + (seed >> 2);
+}
+
+inline void hash_combine_i64(std::uint64_t &seed, const std::int64_t value) {
+  hash_combine_u64(seed, static_cast<std::uint64_t>(value));
+}
+
+inline void hash_combine_double(std::uint64_t &seed, const double value) {
+  const double sanitized = std::isfinite(value) ? value : 0.0;
+  hash_combine_i64(seed, static_cast<std::int64_t>(std::llround(sanitized * 1.0e9)));
+}
+
+inline void hash_combine_string(std::uint64_t &seed, const std::string &value) {
+  for (const char ch : value) {
+    hash_combine_u64(seed, static_cast<unsigned char>(ch));
+  }
+}
+
+inline std::uint64_t structural_hash_seed(const std::string &type) {
+  std::uint64_t seed = 1469598103934665603ULL;
+  hash_combine_string(seed, type);
+  return seed;
+}
+
+inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXd &matrix) {
+  hash_combine_i64(seed, matrix.rows());
+  hash_combine_i64(seed, matrix.cols());
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      hash_combine_double(seed, matrix(row, col));
+    }
+  }
+}
+
+inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXi &matrix) {
+  hash_combine_i64(seed, matrix.rows());
+  hash_combine_i64(seed, matrix.cols());
+  for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
+    for (Eigen::Index col = 0; col < matrix.cols(); ++col) {
+      hash_combine_i64(seed, matrix(row, col));
+    }
+  }
+}
+
+inline void hash_vector(std::uint64_t &seed, const Eigen::VectorXd &values) {
+  hash_combine_i64(seed, values.size());
+  for (Eigen::Index index = 0; index < values.size(); ++index) {
+    hash_combine_double(seed, values(index));
+  }
+}
+
+inline void hash_vector(std::uint64_t &seed, const std::vector<int> &values) {
+  hash_combine_u64(seed, values.size());
+  for (const int value : values) {
+    hash_combine_i64(seed, value);
+  }
+}
+
+
+inline void hash_row_vector(std::uint64_t &seed, const Eigen::RowVector3d &v) {
+  hash_combine_double(seed, v.x());
+  hash_combine_double(seed, v.y());
+  hash_combine_double(seed, v.z());
+}
+
+inline void hash_surface_point(std::uint64_t &seed,
+                               const geometry::SurfacePoint &point) {
+  hash_combine_i64(seed, point.face);
+  hash_combine_i64(seed, point.component);
+  hash_combine_i64(seed, point.sheet);
+  hash_combine_double(seed, point.barycentric.x());
+  hash_combine_double(seed, point.barycentric.y());
+  hash_combine_double(seed, point.barycentric.z());
+  hash_combine_double(seed, point.position.x());
+  hash_combine_double(seed, point.position.y());
+  hash_combine_double(seed, point.position.z());
+  hash_combine_double(seed, point.squaredDistance);
+}
+
+inline std::uint64_t hash_feature_map(
+    const geometry::AdaptiveFeatureMap &map) {
+  std::uint64_t seed = structural_hash_seed("feature");
+  for (const auto &entry : map.edgeIndex) {
+    hash_combine_i64(seed, entry.first.first);
+    hash_combine_i64(seed, entry.first.second);
+    hash_combine_i64(seed, entry.second);
+  }
+  for (const geometry::AdaptiveFeatureEdge &edge : map.edges) {
+    hash_combine_i64(seed, edge.vertices.first);
+    hash_combine_i64(seed, edge.vertices.second);
+    hash_vector(seed, edge.incidentFaces);
+    hash_combine_i64(seed, edge.component);
+    hash_combine_i64(seed, edge.curve);
+    hash_combine_double(seed, edge.angleRadians);
+    hash_combine_double(seed, edge.strength);
+    hash_combine_double(seed, edge.ridgeValleyConfidence);
+    hash_combine_double(seed, edge.length);
+    hash_combine_i64(seed, static_cast<int>(edge.edgeClass));
+    hash_combine_i64(seed, edge.userTagged ? 1 : 0);
+  }
+  for (const geometry::AdaptiveFeatureCurve &curve : map.curves) {
+    hash_combine_i64(seed, curve.id);
+    hash_combine_i64(seed, curve.component);
+    hash_vector(seed, curve.edges);
+    hash_vector(seed, curve.vertices);
+    hash_combine_i64(seed, curve.closed ? 1 : 0);
+    hash_vector(seed, curve.corners);
+    hash_vector(seed, curve.junctions);
+  }
+  for (const geometry::AdaptiveFeatureComponentStats &stats : map.componentStats) {
+    hash_combine_u64(seed, stats.manifoldInteriorEdgeCount);
+    hash_combine_double(seed, stats.p50Degrees);
+    hash_combine_double(seed, stats.p75Degrees);
+    hash_combine_double(seed, stats.p90Degrees);
+    hash_combine_double(seed, stats.p95Degrees);
+    hash_combine_double(seed, stats.p98Degrees);
+    hash_combine_double(seed, stats.maxDegrees);
+    hash_combine_i64(seed, stats.cadLike ? 1 : 0);
+  }
+  hash_vector(seed, map.vertexDensity);
+  hash_combine_i64(seed, map.hasNonManifold ? 1 : 0);
+  hash_combine_u64(seed, map.tangentRejectedEdges);
+  hash_combine_u64(seed, map.indexedLookupCount);
+  return seed;
+}
+
+inline void hash_trace_segment(std::uint64_t &seed,
+                               const geometry::SurfaceTraceSegment &segment) {
+  hash_combine_i64(seed, segment.face);
+  hash_row_vector(seed, segment.startBarycentric);
+  hash_row_vector(seed, segment.endBarycentric);
+  hash_combine_i64(seed, segment.family);
+  hash_combine_i64(seed, segment.sign);
+  hash_combine_i64(seed, segment.entryEdge);
+  hash_combine_i64(seed, segment.exitEdge);
+  hash_combine_i64(seed, segment.matching);
+  hash_combine_double(seed, segment.matchingEffort);
+}
+
+inline void hash_trace_point(std::uint64_t &seed,
+                             const geometry::SurfaceTracePoint &point) {
+  hash_combine_i64(seed, point.face);
+  hash_row_vector(seed, point.barycentric);
+}
+
+inline std::uint64_t hash_trace_network(
+    const geometry::SurfaceCellNetwork &network) {
+  std::uint64_t seed = structural_hash_seed("tracing");
+  for (const geometry::SurfaceTraceSeed &traceSeed : network.seeds) {
+    hash_combine_i64(seed, traceSeed.id);
+    hash_trace_point(seed, traceSeed.point);
+    hash_combine_i64(seed, static_cast<int>(traceSeed.provenance));
+    hash_combine_i64(seed, traceSeed.sourceId);
+  }
+  for (const geometry::SurfaceTraceResult &trace : network.traces) {
+    for (const geometry::SurfaceTraceSegment &segment : trace.segments) {
+      hash_trace_segment(seed, segment);
+    }
+    hash_combine_i64(seed, static_cast<int>(trace.termination));
+    hash_combine_double(seed, trace.length);
+  }
+  for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
+    hash_combine_i64(seed, proposal.seedId);
+    hash_combine_i64(seed, proposal.accepted ? 1 : 0);
+    hash_combine_i64(seed, static_cast<int>(proposal.rejection));
+    hash_combine_double(seed, proposal.closureError);
+    for (const geometry::SurfaceTracePoint &corner : proposal.corners) {
+      hash_trace_point(seed, corner);
+    }
+    for (const geometry::SurfaceTraceSegment &side : proposal.sides) {
+      hash_trace_segment(seed, side);
+    }
+    for (const auto &path : proposal.boundaryPaths) {
+      for (const geometry::SurfaceTraceSegment &segment : path) {
+        hash_trace_segment(seed, segment);
+      }
+    }
+  }
+  hash_combine_i64(seed, network.stats.attempted);
+  hash_combine_i64(seed, network.stats.accepted);
+  hash_combine_i64(seed, network.stats.rejectedClosure);
+  hash_combine_i64(seed, network.stats.rejectedBarrier);
+  hash_combine_i64(seed, network.stats.rejectedDegenerate);
+  return seed;
+}
+
+inline std::uint64_t hash_sparse_network(
+    const geometry::FlowRepSparseNetwork &network) {
+  std::uint64_t seed = structural_hash_seed("strands");
+  hash_vector(seed, network.retainedArcIds);
+  hash_vector(seed, network.removedArcIds);
+  for (const geometry::FlowRepEndpointTag tag : network.endpointTags) {
+    hash_combine_i64(seed, static_cast<int>(tag));
+  }
+  for (const geometry::FlowRepCycleEvaluation &cycle : network.cycleEvaluations) {
+    hash_combine_i64(seed, cycle.descriptive ? 1 : 0);
+    hash_combine_i64(seed, cycle.quadrangulable ? 1 : 0);
+    hash_combine_double(seed, cycle.normalP90);
+    hash_combine_double(seed, cycle.surfaceP95);
+    hash_combine_double(seed, cycle.sizePenalty);
+    hash_combine_double(seed, cycle.quadPenalty);
+    hash_combine_double(seed, cycle.energy);
+    hash_combine_i64(seed, static_cast<int>(cycle.patchClass));
+  }
+  hash_combine_i64(seed, network.mandatoryRails);
+  hash_combine_i64(seed, network.retainedMandatoryRails);
+  hash_combine_i64(seed, network.acceptedTransactions);
+  hash_combine_i64(seed, network.cycleRebuilds);
+  hash_combine_double(seed, network.denseCoverageMax);
+  hash_combine_double(seed, network.sparseCoverageMax);
+  return seed;
+}
+
+inline std::uint64_t hash_arrangement_arcs(
+    const std::vector<geometry::SurfaceArrangementArc> &arcs) {
+  std::uint64_t seed = structural_hash_seed("embedded-network");
+  hash_combine_u64(seed, arcs.size());
+  for (const geometry::SurfaceArrangementArc &arc : arcs) {
+    hash_combine_i64(seed, arc.id);
+    hash_combine_i64(seed, arc.sourceFace);
+    hash_row_vector(seed, arc.startBarycentric);
+    hash_row_vector(seed, arc.endBarycentric);
+    hash_combine_i64(seed, arc.family);
+    hash_combine_i64(seed, arc.strand);
+    hash_combine_i64(seed, arc.featureClass);
+    hash_combine_i64(seed, arc.hardFeature ? 1 : 0);
+    hash_combine_i64(seed, arc.provenance);
+  }
+  return seed;
+}
+
+inline std::uint64_t hash_surface_complex(
+    const geometry::SurfaceCellComplex &complex) {
+  std::uint64_t seed = structural_hash_seed("arrangement");
+  for (const geometry::SurfaceArrangementNode &node : complex.nodes) {
+    hash_combine_i64(seed, node.id);
+    hash_combine_i64(seed, node.sourceFace);
+    hash_row_vector(seed, node.barycentric);
+    hash_combine_i64(seed, node.sourceEdge);
+    hash_combine_double(seed, node.sourceEdgeParameter);
+  }
+  for (const geometry::SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    hash_combine_i64(seed, halfedge.id);
+    hash_combine_i64(seed, halfedge.twin);
+    hash_combine_i64(seed, halfedge.next);
+    hash_combine_i64(seed, halfedge.from);
+    hash_combine_i64(seed, halfedge.to);
+    hash_combine_i64(seed, halfedge.sourceArc);
+    hash_combine_i64(seed, halfedge.family);
+    hash_combine_i64(seed, halfedge.strand);
+    hash_combine_i64(seed, halfedge.featureClass);
+    hash_combine_i64(seed, halfedge.sourceFace);
+    hash_combine_double(seed, halfedge.sourceT0);
+    hash_combine_double(seed, halfedge.sourceT1);
+    hash_combine_i64(seed, halfedge.hardFeature ? 1 : 0);
+    hash_combine_i64(seed, halfedge.cell);
+  }
+  for (const geometry::SurfaceArrangementCell &cell : complex.cells) {
+    hash_combine_i64(seed, cell.id);
+    hash_combine_i64(seed, cell.sourceFace);
+    hash_vector(seed, cell.halfedges);
+    hash_vector(seed, cell.sideFamilies);
+    hash_vector(seed, cell.sideEdgeCounts);
+    hash_combine_double(seed, cell.signedArea);
+    hash_combine_double(seed, cell.area);
+    hash_combine_i64(seed, cell.boundaryCycle ? 1 : 0);
+    hash_combine_i64(seed, cell.disk ? 1 : 0);
+    hash_combine_i64(seed, cell.quadReady ? 1 : 0);
+    hash_combine_i64(seed, static_cast<int>(cell.cellClass));
+    hash_combine_i64(seed, static_cast<int>(cell.rejectReason));
+  }
+  hash_combine_i64(seed, complex.diagnostics.plantedIntersections);
+  hash_combine_i64(seed, complex.diagnostics.uniqueIntersections);
+  hash_combine_i64(seed, complex.diagnostics.unsplitCrossings);
+  hash_combine_i64(seed, complex.diagnostics.geometricTJunctions);
+  hash_combine_i64(seed, complex.diagnostics.incompleteArcChains);
+  hash_combine_i64(seed, complex.diagnostics.hardBarrierCrossings);
+  hash_combine_i64(seed, complex.diagnostics.eulerCharacteristic);
+  hash_combine_i64(seed, complex.diagnostics.sourceEulerCharacteristic);
+  hash_combine_double(seed, complex.diagnostics.supportedArea);
+  hash_combine_double(seed, complex.diagnostics.extractedArea);
+  hash_combine_double(seed, complex.diagnostics.relativeAreaError);
+  hash_combine_double(seed, complex.diagnostics.memoryRatioEstimate);
+  return seed;
+}
+
+inline std::uint64_t hash_completion_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const std::vector<geometry::SurfacePoint> &provenance) {
+  std::uint64_t seed = structural_hash_seed("completion");
+  hash_matrix(seed, vertices);
+  hash_matrix(seed, quads);
+  for (const geometry::SurfacePoint &point : provenance) {
+    hash_surface_point(seed, point);
+  }
+  return seed;
+}
+
+inline std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
+  std::uint64_t seed = structural_hash_seed("completion");
+  hash_vector(seed, mesh.vertices);
+  hash_matrix(seed, mesh.vertexPositions);
+  hash_combine_u64(seed, mesh.quads.size());
+  for (const std::vector<int> &quad : mesh.quads) {
+    hash_vector(seed, quad);
+  }
+  for (const geometry::SurfacePoint &point : mesh.vertexProvenance) {
+    hash_surface_point(seed, point);
+  }
+  hash_vector(seed, mesh.boundaryVertices);
+  hash_combine_i64(seed, static_cast<int>(mesh.backend));
+  hash_combine_i64(seed, mesh.usesCenterFan ? 1 : 0);
+  return seed;
+}
+inline void hash_vector(std::uint64_t &seed, const Eigen::VectorXi &values) {
+  hash_combine_i64(seed, values.size());
+  for (Eigen::Index index = 0; index < values.size(); ++index) {
+    hash_combine_i64(seed, values(index));
+  }
+}
+
+inline std::uint64_t hash_relief_topology(
+    const geometry::ReliefTopologyResult &topology) {
+  std::uint64_t seed = structural_hash_seed("relief");
+  hash_vector(seed, topology.relief);
+  hash_vector(seed, topology.watershedLabels);
+  hash_vector(seed, topology.watershedRoots);
+  for (const geometry::ReliefCriticalPoint &point : topology.criticalPoints) {
+    hash_combine_i64(seed, point.vertex);
+    hash_combine_i64(seed, static_cast<int>(point.type));
+    hash_combine_i64(seed, point.lowerComponents);
+    hash_combine_i64(seed, point.upperComponents);
+    hash_combine_i64(seed, point.multiplicity);
+    hash_combine_i64(seed, point.retained ? 1 : 0);
+  }
+  for (const geometry::ReliefPersistencePair &pair : topology.persistencePairs) {
+    hash_combine_i64(seed, pair.extremum);
+    hash_combine_i64(seed, pair.saddle);
+    hash_combine_i64(seed, pair.minimumPair ? 1 : 0);
+    hash_combine_double(seed, pair.persistence);
+    hash_combine_i64(seed, pair.canceled ? 1 : 0);
+  }
+  for (const geometry::ReliefBranch &branch : topology.branches) {
+    hash_combine_i64(seed, branch.saddle);
+    hash_combine_i64(seed, branch.extremum);
+    hash_combine_i64(seed, branch.ascending ? 1 : 0);
+    hash_vector(seed, branch.vertices);
+  }
+  return seed;
+}
+
+inline std::string structural_hash_string(const std::uint64_t hash) {
+  std::ostringstream out;
+  out << std::hex << std::setw(16) << std::setfill('0') << hash;
+  return out.str();
+}
+
+inline SurfaceCellObjectIdentity make_surface_cell_identity(
+    const std::string &type, const std::uint64_t hash,
+    const std::size_t elementCount) {
+  SurfaceCellObjectIdentity identity;
+  identity.type = type;
+  identity.structuralHash = hash;
+  identity.elementCount = elementCount;
+  return identity;
+}
+
+inline std::string surface_cell_identity_label(
+    const SurfaceCellObjectIdentity &identity) {
+  return identity.type + ":hash=" +
+         structural_hash_string(identity.structuralHash) + ";count=" +
+         std::to_string(identity.elementCount);
+}
+
+inline fields::CrossFieldResult make_surface_cell_cross_field_context(
+    const Eigen::MatrixXd &rawCrossField) {
+  fields::CrossFieldResult crossField;
+  crossField.degree = fields::kCrossFieldDegree;
+  crossField.rawField = rawCrossField;
+  if (rawCrossField.cols() >= 6) {
+    crossField.primaryDirections =
+        rawCrossField.block(0, 0, rawCrossField.rows(), 3);
+    crossField.secondaryDirections =
+        rawCrossField.block(0, 3, rawCrossField.rows(), 3);
+  }
+  return crossField;
+}
+
+inline void record_surface_cell_context_product(
+    SurfaceCellPipelineContext &context, const std::string &name,
+    const SurfaceCellObjectIdentity &identity, const bool available = true) {
+  SurfaceCellContextProductDebug product;
+  product.name = name;
+  product.type = identity.type;
+  product.structuralHash = identity.structuralHash;
+  product.elementCount = identity.elementCount;
+  product.available = available;
+  context.debugProducts.push_back(product);
+}
 inline void record_face_degree_histogram(RemeshResult &result) {
   result.diagnostics.faceDegreeHistogram.clear();
   for (Eigen::Index face = 0; face < result.degrees.size(); ++face) {
@@ -477,116 +940,6 @@ inline void record_face_degree_histogram(RemeshResult &result) {
   }
 }
 
-inline Eigen::MatrixXi build_quads_from_paired_source_triangles(const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &faces) {
-  if (sourceVertices.cols() != 3 || faces.cols() != 3) {
-    return Eigen::MatrixXi(0, 4);
-  }
-  std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
-  for (int face = 0; face < faces.rows(); ++face) {
-    for (int corner = 0; corner < 3; ++corner) {
-      const int a = faces(face, corner);
-      const int b = faces(face, (corner + 1) % 3);
-      edgeFaces[{std::min(a, b), std::max(a, b)}].push_back(face);
-    }
-  }
-
-  std::vector<std::array<int, 4>> quads;
-  std::vector<unsigned char> used(static_cast<std::size_t>(faces.rows()), 0U);
-  for (const auto &entry : edgeFaces) {
-    const std::vector<int> &incident = entry.second;
-    if (incident.size() != 2U) {
-      continue;
-    }
-    const int firstFace = incident[0];
-    const int secondFace = incident[1];
-    if (used[static_cast<std::size_t>(firstFace)] != 0U ||
-        used[static_cast<std::size_t>(secondFace)] != 0U) {
-      continue;
-    }
-    std::set<int> quadVertices;
-    for (int c = 0; c < 3; ++c) {
-      quadVertices.insert(faces(firstFace, c));
-      quadVertices.insert(faces(secondFace, c));
-    }
-    if (quadVertices.size() != 4U) {
-      continue;
-    }
-    const auto edge_length = [&](const int a, const int b) -> double {
-      if (a < 0 || b < 0 || a >= sourceVertices.rows() || b >= sourceVertices.rows()) {
-        return -1.0;
-      }
-      return (sourceVertices.row(a) - sourceVertices.row(b)).norm();
-    };
-    const std::pair<int, int> sharedEdge = entry.first;
-    const double sharedLength = edge_length(sharedEdge.first, sharedEdge.second);
-    if (sharedLength <= 0.0) {
-      continue;
-    }
-    double maxBoundaryLength = 0.0;
-    bool boundaryLengthsValid = true;
-    for (const int face : {firstFace, secondFace}) {
-      for (int c = 0; c < 3; ++c) {
-        const int a = faces(face, c);
-        const int b = faces(face, (c + 1) % 3);
-        const std::pair<int, int> key{std::min(a, b), std::max(a, b)};
-        if (key == sharedEdge) {
-          continue;
-        }
-        const double length = edge_length(a, b);
-        boundaryLengthsValid = boundaryLengthsValid && length > 0.0;
-        maxBoundaryLength = std::max(maxBoundaryLength, length);
-      }
-    }
-    if (!boundaryLengthsValid || sharedLength <= maxBoundaryLength * 1.01) {
-      continue;
-    }
-    std::map<int, std::vector<int>> boundaryAdjacency;
-    const auto add_boundary_edge = [&](const int a, const int b) {
-      const std::pair<int, int> key{std::min(a, b), std::max(a, b)};
-      if (key != sharedEdge) {
-        boundaryAdjacency[a].push_back(b);
-        boundaryAdjacency[b].push_back(a);
-      }
-    };
-    for (const int face : {firstFace, secondFace}) {
-      for (int c = 0; c < 3; ++c) {
-        add_boundary_edge(faces(face, c), faces(face, (c + 1) % 3));
-      }
-    }
-    if (boundaryAdjacency.size() != 4U) {
-      continue;
-    }
-    bool allDegreeTwo = true;
-    for (const auto &node : boundaryAdjacency) {
-      allDegreeTwo = allDegreeTwo && node.second.size() == 2U;
-    }
-    if (!allDegreeTwo) {
-      continue;
-    }
-    std::array<int, 4> quad{};
-    quad[0] = boundaryAdjacency.begin()->first;
-    quad[1] = boundaryAdjacency[quad[0]][0];
-    for (int i = 2; i < 4; ++i) {
-      const std::vector<int> &neighbors = boundaryAdjacency[quad[i - 1]];
-      quad[i] = neighbors[0] == quad[i - 2] ? neighbors[1] : neighbors[0];
-    }
-    if (boundaryAdjacency[quad[3]][0] != quad[0] &&
-        boundaryAdjacency[quad[3]][1] != quad[0]) {
-      continue;
-    }
-    quads.push_back(quad);
-    used[static_cast<std::size_t>(firstFace)] = 1U;
-    used[static_cast<std::size_t>(secondFace)] = 1U;
-  }
-
-  Eigen::MatrixXi result(static_cast<int>(quads.size()), 4);
-  for (int row = 0; row < static_cast<int>(quads.size()); ++row) {
-    for (int col = 0; col < 4; ++col) {
-      result(row, col) = quads[static_cast<std::size_t>(row)][col];
-    }
-  }
-  return result;
-}
 inline void orient_quads_to_source_normals(const Eigen::MatrixXd &vertices,
                                            const Eigen::MatrixXi &sourceFaces,
                                            Eigen::MatrixXi &quads) {
@@ -668,7 +1021,8 @@ surface_arrangement_arcs_from_flow_rep(
 inline RemeshResult
 remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                  const Eigen::MatrixXd &rawCrossField,
-                                 const RemeshOptions &options = {}) {
+                                 const RemeshOptions &options = {},
+                                 const fields::CrossFieldResult *authoritativeCrossField = nullptr) {
   using Clock = std::chrono::high_resolution_clock;
   const auto pipelineStart = Clock::now();
   auto phaseStart = pipelineStart;
@@ -683,7 +1037,103 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         remesh_backend_name(RemeshBackend::SurfaceCells);
     result.diagnostics.surfaceCellFallbackPolicy =
         surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
+    result.surfaceCellContext.sourceMesh = meshWhole;
+    result.surfaceCellContext.hasSourceMesh = true;
+    result.surfaceCellContext.crossField =
+        authoritativeCrossField != nullptr
+            ? *authoritativeCrossField
+            : make_surface_cell_cross_field_context(rawCrossField);
+    result.surfaceCellContext.hasCrossField = true;
+    if (result.surfaceCellContext.crossField.primaryDirections.rows() !=
+            result.surfaceCellContext.crossField.rawField.rows() &&
+        result.surfaceCellContext.crossField.rawField.cols() >= 6) {
+      result.surfaceCellContext.crossField.primaryDirections =
+          result.surfaceCellContext.crossField.rawField.block(
+              0, 0, result.surfaceCellContext.crossField.rawField.rows(), 3);
+      result.surfaceCellContext.crossField.secondaryDirections =
+          result.surfaceCellContext.crossField.rawField.block(
+              0, 3, result.surfaceCellContext.crossField.rawField.rows(), 3);
+    }
+    result.surfaceCellContext.crossFieldHasMatching =
+        result.surfaceCellContext.crossField.matching.size() > 0;
+    result.surfaceCellContext.crossFieldHasSingularities =
+        result.surfaceCellContext.crossField.singularCycles.size() > 0 ||
+        result.surfaceCellContext.crossField.singularIndices.size() > 0;
+    result.rawCrossField = result.surfaceCellContext.crossField.rawField;
+    result.crossFieldMatching = result.surfaceCellContext.crossField.matching;
+    result.crossFieldEffort = result.surfaceCellContext.crossField.effort;
+    result.crossFieldSingularCycles =
+        result.surfaceCellContext.crossField.singularCycles;
+    result.crossFieldSingularIndices =
+        result.surfaceCellContext.crossField.singularIndices;
     std::vector<std::string> completedSurfaceCellStages;
+    auto make_identity = [](const std::string &type,
+                            const std::uint64_t hash,
+                            const std::size_t count) {
+      return make_surface_cell_identity(type, hash, count);
+    };
+    auto record_surface_cell_stage = [&](const std::string &stage,
+                                         const SurfaceCellObjectIdentity &input,
+                                         const SurfaceCellObjectIdentity &output,
+                                         const bool available,
+                                         const double durationSeconds) {
+      SurfaceCellStageLineage lineage;
+      lineage.stage = stage;
+      lineage.inputObject = input;
+      lineage.outputObject = output;
+      lineage.inputObjectHash = surface_cell_identity_label(input);
+      lineage.outputObjectHash = surface_cell_identity_label(output);
+      lineage.objectCount = output.elementCount;
+      lineage.available = available;
+      lineage.noOp = input.structuralHash == output.structuralHash &&
+                     input.type == output.type;
+      lineage.durationSeconds = durationSeconds;
+      result.diagnostics.surfaceCellStageLineage.push_back(lineage);
+      record_surface_cell_context_product(result.surfaceCellContext, stage,
+                                          output, available);
+    };
+    auto mark_stage_consumed = [&](const std::string &stage,
+                                   const SurfaceCellObjectIdentity &identity,
+                                   const SurfaceCellConsumptionKind kind) {
+      for (SurfaceCellStageLineage &lineage :
+           result.diagnostics.surfaceCellStageLineage) {
+        if (lineage.stage != stage) {
+          continue;
+        }
+        const bool identityMatches =
+            lineage.outputObject.structuralHash == identity.structuralHash &&
+            lineage.outputObject.type == identity.type;
+        lineage.consumedByNextStage =
+            identityMatches && kind != SurfaceCellConsumptionKind::None &&
+            kind != SurfaceCellConsumptionKind::Discontinuous;
+        lineage.consumptionKind = identityMatches
+                                      ? kind
+                                      : SurfaceCellConsumptionKind::Discontinuous;
+        return;
+      }
+    };
+    std::uint64_t sourceHash = structural_hash_seed("source");
+    hash_matrix(sourceHash, meshWhole.V);
+    hash_matrix(sourceHash, meshWhole.F);
+    const SurfaceCellObjectIdentity sourceIdentity = make_identity(
+        "source", sourceHash, static_cast<std::size_t>(meshWhole.F.rows()));
+    record_surface_cell_context_product(result.surfaceCellContext, "source",
+                                        sourceIdentity, true);
+    std::uint64_t crossFieldHash = structural_hash_seed("cross-field");
+    hash_matrix(crossFieldHash, result.surfaceCellContext.crossField.rawField);
+    hash_vector(crossFieldHash, result.surfaceCellContext.crossField.matching);
+    hash_vector(crossFieldHash, result.surfaceCellContext.crossField.effort);
+    hash_vector(crossFieldHash,
+                result.surfaceCellContext.crossField.singularCycles);
+    hash_vector(crossFieldHash,
+                result.surfaceCellContext.crossField.singularIndices);
+    record_surface_cell_context_product(
+        result.surfaceCellContext, "cross-field",
+        make_identity("cross-field", crossFieldHash,
+                      static_cast<std::size_t>(
+                          result.surfaceCellContext.crossField.rawField.rows())),
+        result.surfaceCellContext.hasCrossField);
     auto preserve_completed_debug_artifacts = [&]() {
       result.diagnostics.surfaceCellDebugArtifactsPreserved =
           options.surfaceCells.preserveDebugArtifacts;
@@ -700,6 +1150,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       result.diagnostics.terminalFailureStage = stage;
       result.diagnostics.originalSurfaceCellFailureCode = failureCode;
       result.diagnostics.originalSurfaceCellFailureStage = stage;
+      result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
+      result.diagnostics.surfaceCellRemeshOccurred = false;
+      if (!result.diagnostics.surfaceCellStageLineage.empty()) {
+        SurfaceCellStageLineage &lineage =
+            result.diagnostics.surfaceCellStageLineage.back();
+        if (lineage.stage == stage) {
+          lineage.terminalFailureCode = failureCode;
+          lineage.terminalFailureStage = stage;
+          lineage.consumedByNextStage = false;
+          lineage.consumptionKind = SurfaceCellConsumptionKind::None;
+        }
+      }
       result.diagnostics.surfaceCellValidationFailures += 1U;
       preserve_completed_debug_artifacts();
       result.diagnostics.overallPipelineSeconds =
@@ -719,6 +1181,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.diagnostics.surfaceCellFallbackCause = failureCode;
         result.diagnostics.surfaceCellReturnedInputMeshFallback = true;
         result.diagnostics.surfaceCellRemeshOccurred = false;
+        result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::InputMeshFallback;
         result.diagnostics.executedBackend = "InputMesh";
         result.diagnostics.remeshBackend = result.diagnostics.executedBackend;
         record_face_degree_histogram(result);
@@ -757,12 +1220,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
               result.diagnostics.surfaceCellDebugArtifactsPreserved;
           legacyResult.diagnostics.surfaceCellDebugArtifacts =
               result.diagnostics.surfaceCellDebugArtifacts;
+          legacyResult.diagnostics.surfaceCellStageLineage =
+              result.diagnostics.surfaceCellStageLineage;
+          legacyResult.surfaceCellContext = result.surfaceCellContext;
+          legacyResult.diagnostics.surfaceCellOutputOrigin =
+              legacyResult.success ? SurfaceCellOutputOrigin::LegacyFallback : SurfaceCellOutputOrigin::None;
           if (!legacyResult.success) {
             legacyResult.diagnostics.terminalFailureCode = failureCode;
             legacyResult.diagnostics.terminalFailureStage = stage;
           }
-          legacyResult.diagnostics.surfaceCellRemeshOccurred =
-              legacyResult.success && legacyResult.faces.rows() > 0;
+          legacyResult.diagnostics.surfaceCellRemeshOccurred = false;
           result = legacyResult;
         }
       }
@@ -790,6 +1257,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.diagnostics.surfaceCellFeatureSeconds;
     result.diagnostics.surfaceCellFeatureCount = featureMap.edges.size();
     copy_adaptive_feature_map_diagnostics(result.diagnostics, featureMap);
+    result.surfaceCellContext.featureMap = featureMap;
+    result.surfaceCellContext.hasFeatureMap = true;
+    const std::uint64_t featureHash = hash_feature_map(featureMap);
+    const SurfaceCellObjectIdentity featureIdentity = make_identity(
+        "feature", featureHash, featureMap.edges.size());
+    record_surface_cell_stage("feature", sourceIdentity, featureIdentity, true,
+                              result.diagnostics.surfaceCellFeatureSeconds);
     completedSurfaceCellStages.push_back("feature");
     if (options.surfaceCells.injectFailureAfterStage == 0) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
@@ -810,6 +1284,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellMetricSampleCount =
         static_cast<std::size_t>(targetSize.targetSize.size());
     copy_adaptive_target_size_diagnostics(result.diagnostics, targetSize);
+    result.surfaceCellContext.metricField = targetSize;
+    result.surfaceCellContext.hasMetricField = true;
+    std::uint64_t metricHash = structural_hash_seed("metric");
+    hash_combine_u64(metricHash, featureIdentity.structuralHash);
+    hash_vector(metricHash, targetSize.targetSize);
+    hash_vector(metricHash, targetSize.normalizedSalience);
+    const SurfaceCellObjectIdentity metricIdentity = make_identity(
+        "metric", metricHash, result.diagnostics.surfaceCellMetricSampleCount);
+    mark_stage_consumed("feature", featureIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("metric", featureIdentity, metricIdentity, true,
+                              result.diagnostics.surfaceCellMetricSeconds);
     completedSurfaceCellStages.push_back("metric");
 
     if (options.surfaceCells.injectFailureAfterStage == 1) {
@@ -836,6 +1322,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellReliefPatchCount =
         reliefTopology.branches.size();
     result.diagnostics.surfaceCellReliefCountAvailable = true;
+    result.surfaceCellContext.reliefResult = reliefTopology;
+    result.surfaceCellContext.hasReliefResult = true;
+    const std::uint64_t reliefHash = hash_relief_topology(reliefTopology);
+    const SurfaceCellObjectIdentity reliefIdentity = make_identity(
+        "relief", reliefHash, result.diagnostics.surfaceCellReliefPatchCount);
+    mark_stage_consumed("metric", metricIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("relief", metricIdentity, reliefIdentity, true,
+                              result.diagnostics.surfaceCellReliefSeconds);
     completedSurfaceCellStages.push_back("relief");
     if (options.surfaceCells.injectFailureAfterStage == 2) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
@@ -843,8 +1338,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto tracingStart = Clock::now();
-    Eigen::MatrixXd faceAxisX = rawCrossField.block(0, 0, rawCrossField.rows(), 3);
-    Eigen::MatrixXd faceAxisY = rawCrossField.block(0, 3, rawCrossField.rows(), 3);
+    const Eigen::MatrixXd &faceAxisX =
+        result.surfaceCellContext.crossField.primaryDirections;
+    const Eigen::MatrixXd &faceAxisY =
+        result.surfaceCellContext.crossField.secondaryDirections;
     geometry::SurfaceCellTracingOptions tracingOptions;
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
@@ -874,6 +1371,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.surfaceCellTraceSegmentCount = traceSegmentCount;
     result.diagnostics.surfaceCellTraceCountAvailable = true;
+    result.surfaceCellContext.traceNetwork = traceNetwork;
+    result.surfaceCellContext.hasTraceNetwork = true;
+    const std::uint64_t tracingHash = hash_trace_network(traceNetwork);
+    const SurfaceCellObjectIdentity tracingIdentity = make_identity(
+        "tracing", tracingHash, result.diagnostics.surfaceCellTraceSegmentCount);
+    mark_stage_consumed("relief", reliefIdentity,
+                        SurfaceCellConsumptionKind::Partial);
+    record_surface_cell_stage("tracing", reliefIdentity, tracingIdentity, true,
+                              result.diagnostics.surfaceCellTracingSeconds);
     completedSurfaceCellStages.push_back("tracing");
     if (options.surfaceCells.injectFailureAfterStage == 3) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
@@ -886,14 +1392,51 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                    traceNetwork);
     const geometry::FlowRepSparseNetwork sparseFlowRep =
         geometry::select_sparse_flow_rep_network(flowRepArcs);
-    const std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
-        surface_arrangement_arcs_from_flow_rep(flowRepArcs, sparseFlowRep);
-    result.diagnostics.surfaceCellArrangementCellCount = arrangementArcs.size();
-    result.diagnostics.surfaceCellArrangementCountAvailable = true;
+    const double surfaceCellStrandsSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - strandsStart)
+            .count() /
+        1.0e6;
+    result.surfaceCellContext.flowRepArcs = flowRepArcs;
+    result.surfaceCellContext.flowRepNetwork = sparseFlowRep;
+    result.surfaceCellContext.hasFlowRepNetwork = true;
+    const std::uint64_t strandsHash = hash_sparse_network(sparseFlowRep);
+    const SurfaceCellObjectIdentity strandsIdentity = make_identity(
+        "strands", strandsHash, sparseFlowRep.retainedArcIds.size());
+    mark_stage_consumed("tracing", tracingIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("strands", tracingIdentity, strandsIdentity, true,
+                              surfaceCellStrandsSeconds);
     completedSurfaceCellStages.push_back("strands");
     if (options.surfaceCells.injectFailureAfterStage == 4) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "strands");
+    }
+
+    const auto embeddingStart = Clock::now();
+    const std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
+        surface_arrangement_arcs_from_flow_rep(flowRepArcs, sparseFlowRep);
+    const double surfaceCellEmbeddingSeconds =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            Clock::now() - embeddingStart)
+            .count() /
+        1.0e6;
+    result.diagnostics.surfaceCellArrangementCellCount = arrangementArcs.size();
+    result.diagnostics.surfaceCellArrangementCountAvailable = true;
+    result.surfaceCellContext.embeddedArrangementArcs = arrangementArcs;
+    result.surfaceCellContext.hasEmbeddedArrangementArcs = true;
+    const SurfaceCellObjectIdentity retainedNetworkIdentity = make_identity(
+        "embedded-network", hash_arrangement_arcs(arrangementArcs),
+        arrangementArcs.size());
+    mark_stage_consumed("strands", strandsIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("embedding", strandsIdentity,
+                              retainedNetworkIdentity, true,
+                              surfaceCellEmbeddingSeconds);
+    completedSurfaceCellStages.push_back("embedding");
+    if (options.surfaceCells.injectFailureAfterStage == 5) {
+      return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
+                                "embedding");
     }
 
     const auto arrangementStart = Clock::now();
@@ -908,8 +1451,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellArrangementCellCount =
         arrangementComplex.cells.size();
     result.diagnostics.surfaceCellArrangementCountAvailable = true;
+    result.surfaceCellContext.arrangement = arrangementComplex;
+    result.surfaceCellContext.hasArrangement = true;
+    const std::uint64_t arrangementHash = hash_surface_complex(arrangementComplex);
+    const SurfaceCellObjectIdentity arrangementIdentity = make_identity(
+        "arrangement", arrangementHash,
+        result.diagnostics.surfaceCellArrangementCellCount);
+    mark_stage_consumed("embedding", retainedNetworkIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("arrangement", retainedNetworkIdentity,
+                              arrangementIdentity, true,
+                              result.diagnostics.surfaceCellArrangementSeconds);
     completedSurfaceCellStages.push_back("arrangement");
-    if (options.surfaceCells.injectFailureAfterStage == 5) {
+    if (options.surfaceCells.injectFailureAfterStage == 6) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "arrangement");
     }
@@ -925,8 +1479,22 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellSimplifiedCellCount =
         simplified.hasComplexOutput ? simplified.complex.cells.size() : 0U;
     result.diagnostics.surfaceCellSimplifiedCountAvailable = true;
+    const geometry::SurfaceCellComplex &simplifiedComplexForHash =
+        simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
+    result.surfaceCellContext.simplifiedComplex = simplifiedComplexForHash;
+    result.surfaceCellContext.hasSimplifiedComplex = true;
+    const std::uint64_t simplificationHash =
+        hash_surface_complex(simplifiedComplexForHash);
+    const SurfaceCellObjectIdentity simplificationIdentity = make_identity(
+        "arrangement", simplificationHash,
+        result.diagnostics.surfaceCellSimplifiedCellCount);
+    mark_stage_consumed("arrangement", arrangementIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("simplification", arrangementIdentity,
+                              simplificationIdentity, true,
+                              result.diagnostics.surfaceCellSimplificationSeconds);
     completedSurfaceCellStages.push_back("simplification");
-    if (options.surfaceCells.injectFailureAfterStage == 6) {
+    if (options.surfaceCells.injectFailureAfterStage == 7) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "simplification");
     }
@@ -1013,22 +1581,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         }
       }
       completedQuadCount += completion.mesh.quads.size();
+      result.surfaceCellContext.completedPatches.push_back(completion.mesh);
     }
-    if (completedQuadCount == 0U) {
-      completedQuads = build_quads_from_paired_source_triangles(meshWhole.V, meshWhole.F);
-      if (completedQuads.rows() > 0) {
-        completedVertices = meshWhole.V;
-        completedProvenance.clear();
-        completedProvenance.reserve(static_cast<std::size_t>(meshWhole.V.rows()));
-        const geometry::SurfaceProjectionBvh sourceProjection(meshWhole.V,
-                                                              meshWhole.F);
-        for (int vertex = 0; vertex < meshWhole.V.rows(); ++vertex) {
-          completedProvenance.push_back(sourceProjection.project(
-              meshWhole.V.row(vertex).transpose()));
-        }
-        completedQuadCount = static_cast<std::size_t>(completedQuads.rows());
-      }
-    }
+
     result.diagnostics.surfaceCellCompletionSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - completionStart)
@@ -1036,9 +1591,27 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.surfaceCellCompletedQuadCount = completedQuadCount;
     result.diagnostics.surfaceCellCompletedQuadCountAvailable = true;
+    result.surfaceCellContext.completedVertices = completedVertices;
+    result.surfaceCellContext.completedQuads = completedQuads;
+    result.surfaceCellContext.completedProvenance = completedProvenance;
+    result.surfaceCellContext.hasCompletedPatches =
+        !result.surfaceCellContext.completedPatches.empty();
+    const std::uint64_t completionHash = hash_completion_mesh(
+        completedVertices, completedQuads, completedProvenance);
+    const SurfaceCellObjectIdentity completionIdentity = make_identity(
+        "completion", completionHash, completedQuadCount);
+    mark_stage_consumed("simplification", simplificationIdentity,
+                        SurfaceCellConsumptionKind::Full);
+    record_surface_cell_stage("completion", simplificationIdentity,
+                              completionIdentity, true,
+                              result.diagnostics.surfaceCellCompletionSeconds);
     completedSurfaceCellStages.push_back("completion");
-    if (options.surfaceCells.injectFailureAfterStage == 7) {
+    if (options.surfaceCells.injectFailureAfterStage == 8) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
+                                "completion");
+    }
+    if (completedQuadCount == 0U) {
+      return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "completion");
     }
 
@@ -1062,6 +1635,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                     completedQuads,
                                                     constraints,
                                                     optimizationOptions);
+      const auto validationStart = Clock::now();
       const geometry::SurfaceFinalValidationReport validation =
           geometry::validate_final_surface_mesh(optimization.vertices,
                                                 optimization.quads,
@@ -1076,11 +1650,41 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
               .count() /
           1.0e6;
       result.diagnostics.surfaceCellOptimizationIterationCountAvailable = true;
+      std::uint64_t optimizationHash = structural_hash_seed("optimization");
+      hash_combine_u64(optimizationHash, completionIdentity.structuralHash);
+      hash_matrix(optimizationHash, optimization.vertices);
+      hash_matrix(optimizationHash, optimization.quads);
+      result.surfaceCellContext.optimizationResult = optimization;
+      result.surfaceCellContext.hasOptimizationResult = true;
+      const SurfaceCellObjectIdentity optimizationIdentity = make_identity(
+          "optimization", optimizationHash,
+          static_cast<std::size_t>(optimization.quads.rows()));
+      mark_stage_consumed("completion", completionIdentity,
+                          SurfaceCellConsumptionKind::Full);
+      record_surface_cell_stage("optimization", completionIdentity,
+                                optimizationIdentity, true,
+                                result.diagnostics.surfaceCellOptimizationSeconds);
+
       completedSurfaceCellStages.push_back("optimization");
-      if (options.surfaceCells.injectFailureAfterStage == 8) {
+      if (options.surfaceCells.injectFailureAfterStage == 9) {
         return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                   "optimization");
       }
+      result.surfaceCellContext.validationResult = validation;
+      result.surfaceCellContext.hasValidationResult = true;
+      result.diagnostics.surfaceCellValidationSeconds =
+          std::chrono::duration_cast<std::chrono::microseconds>(
+              Clock::now() - validationStart)
+              .count() /
+          1.0e6;
+      const SurfaceCellObjectIdentity validationIdentity = make_identity(
+          "optimization", optimizationIdentity.structuralHash,
+          static_cast<std::size_t>(optimization.quads.rows()));
+      mark_stage_consumed("optimization", optimizationIdentity,
+                          SurfaceCellConsumptionKind::Full);
+      record_surface_cell_stage("validation", optimizationIdentity,
+                                validationIdentity, true,
+                                result.diagnostics.surfaceCellValidationSeconds);
       if (validation.accepted) {
         result.success = true;
         result.vertices = optimization.vertices;
@@ -1088,11 +1692,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.degrees = Eigen::VectorXi::Constant(optimization.quads.rows(), 4);
         result.outputVertexProvenance = optimization.vertexProvenance;
         result.diagnostics.surfaceCellRemeshOccurred = true;
+        result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::CompletedSurfaceCells;
+        result.diagnostics.surfaceCellProvenanceVertexCount =
+            result.outputVertexProvenance.size();
         result.diagnostics.terminalFailureCode = "None";
         result.diagnostics.terminalFailureStage.clear();
-        result.diagnostics.surfaceCellValidationSeconds =
+
+        result.diagnostics.overallPipelineSeconds =
             std::chrono::duration_cast<std::chrono::microseconds>(
-                Clock::now() - optimizationStart)
+                Clock::now() - pipelineStart)
                 .count() /
             1.0e6;
         record_face_degree_histogram(result);
@@ -1108,15 +1716,23 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
               .count() /
           1.0e6;
       result.diagnostics.surfaceCellOptimizationIterationCountAvailable = true;
+      const SurfaceCellObjectIdentity emptyOptimizationIdentity = make_identity(
+          "optimization", structural_hash_seed("optimization"), 0U);
+      mark_stage_consumed("completion", completionIdentity,
+                          SurfaceCellConsumptionKind::Full);
+      record_surface_cell_stage("optimization", completionIdentity,
+                                emptyOptimizationIdentity, true,
+                                result.diagnostics.surfaceCellOptimizationSeconds);
+
       completedSurfaceCellStages.push_back("optimization");
-      if (options.surfaceCells.injectFailureAfterStage == 8) {
+      if (options.surfaceCells.injectFailureAfterStage == 9) {
         return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                   "optimization");
       }
     }
 
     return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
-                              "production-gate");
+                              "validation");
   }
   const auto log_phase = [&](const char *label) {
     const auto now = Clock::now();
@@ -1491,6 +2107,12 @@ inline void accumulate_component_diagnostics(
       source.surfaceCellReturnedInputMeshFallback;
   target.surfaceCellRemeshOccurred =
       target.surfaceCellRemeshOccurred || source.surfaceCellRemeshOccurred;
+  if (target.surfaceCellOutputOrigin == SurfaceCellOutputOrigin::None) {
+    target.surfaceCellOutputOrigin = source.surfaceCellOutputOrigin;
+  } else if (source.surfaceCellOutputOrigin != SurfaceCellOutputOrigin::None &&
+             target.surfaceCellOutputOrigin != source.surfaceCellOutputOrigin) {
+    target.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::Mixed;
+  }
   target.surfaceCellDebugArtifactsPreserved =
       target.surfaceCellDebugArtifactsPreserved ||
       source.surfaceCellDebugArtifactsPreserved;
@@ -1498,6 +2120,10 @@ inline void accumulate_component_diagnostics(
       target.surfaceCellDebugArtifacts.end(),
       source.surfaceCellDebugArtifacts.begin(),
       source.surfaceCellDebugArtifacts.end());
+  target.surfaceCellStageLineage.insert(
+      target.surfaceCellStageLineage.end(),
+      source.surfaceCellStageLineage.begin(),
+      source.surfaceCellStageLineage.end());
 
   target.surfaceCellFeatureSeconds += source.surfaceCellFeatureSeconds;
   target.surfaceCellMetricSeconds += source.surfaceCellMetricSeconds;
@@ -1908,12 +2534,38 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
     result.diagnostics.surfaceCellValidationFailures = 1U;
     return result;
   }
-  RemeshResult result =
-      remesh_from_raw_cross_field(vertices, faces, crossField.rawField, options);
+  RemeshResult result;
+  if (surfaceCellsRequested && !options.parallelizeComponents) {
+    TriMesh meshWhole;
+    meshWhole.set_mesh(vertices, faces);
+    result = remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
+                                             options, &crossField);
+  } else {
+    result = remesh_from_raw_cross_field(vertices, faces, crossField.rawField,
+                                         options);
+  }
   result.crossFieldMatching = crossField.matching;
   result.crossFieldEffort = crossField.effort;
   result.crossFieldSingularCycles = crossField.singularCycles;
   result.crossFieldSingularIndices = crossField.singularIndices;
+  if (result.surfaceCellContext.hasCrossField) {
+    result.surfaceCellContext.crossField = crossField;
+    if (result.surfaceCellContext.crossField.primaryDirections.rows() !=
+            result.surfaceCellContext.crossField.rawField.rows() &&
+        result.surfaceCellContext.crossField.rawField.cols() >= 6) {
+      result.surfaceCellContext.crossField.primaryDirections =
+          result.surfaceCellContext.crossField.rawField.block(
+              0, 0, result.surfaceCellContext.crossField.rawField.rows(), 3);
+      result.surfaceCellContext.crossField.secondaryDirections =
+          result.surfaceCellContext.crossField.rawField.block(
+              0, 3, result.surfaceCellContext.crossField.rawField.rows(), 3);
+    }
+    result.surfaceCellContext.crossFieldHasMatching =
+        result.surfaceCellContext.crossField.matching.size() > 0;
+    result.surfaceCellContext.crossFieldHasSingularities =
+        result.surfaceCellContext.crossField.singularCycles.size() > 0 ||
+        result.surfaceCellContext.crossField.singularIndices.size() > 0;
+  }
   return result;
 }
 

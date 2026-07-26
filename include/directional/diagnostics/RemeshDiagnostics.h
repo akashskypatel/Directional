@@ -11,6 +11,7 @@
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
 #include <cstddef>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -32,6 +33,76 @@ struct ComponentRemeshDiagnostics {
   double mesherSeconds = 0.0;
 };
 
+enum class SurfaceCellOutputOrigin {
+  None,
+  CompletedSurfaceCells,
+  LegacyFallback,
+  InputMeshFallback,
+  Mixed
+};
+
+inline const char *surface_cell_output_origin_name(
+    const SurfaceCellOutputOrigin origin) {
+  switch (origin) {
+  case SurfaceCellOutputOrigin::None:
+    return "None";
+  case SurfaceCellOutputOrigin::CompletedSurfaceCells:
+    return "CompletedSurfaceCells";
+  case SurfaceCellOutputOrigin::LegacyFallback:
+    return "LegacyFallback";
+  case SurfaceCellOutputOrigin::InputMeshFallback:
+    return "InputMeshFallback";
+  case SurfaceCellOutputOrigin::Mixed:
+    return "Mixed";
+  }
+  return "None";
+}
+
+
+enum class SurfaceCellConsumptionKind {
+  None,
+  Full,
+  Partial,
+  Discontinuous
+};
+
+inline const char *surface_cell_consumption_kind_name(
+    const SurfaceCellConsumptionKind kind) {
+  switch (kind) {
+  case SurfaceCellConsumptionKind::None:
+    return "None";
+  case SurfaceCellConsumptionKind::Full:
+    return "Full";
+  case SurfaceCellConsumptionKind::Partial:
+    return "Partial";
+  case SurfaceCellConsumptionKind::Discontinuous:
+    return "Discontinuous";
+  }
+  return "None";
+}
+
+struct SurfaceCellObjectIdentity {
+  std::string type;
+  std::uint64_t structuralHash = 0U;
+  std::size_t elementCount = 0;
+};
+
+struct SurfaceCellStageLineage {
+  std::string stage;
+  SurfaceCellObjectIdentity inputObject;
+  SurfaceCellObjectIdentity outputObject;
+  std::string inputObjectHash;
+  std::string outputObjectHash;
+  std::size_t objectCount = 0;
+  bool available = false;
+  bool consumedByNextStage = false;
+  SurfaceCellConsumptionKind consumptionKind = SurfaceCellConsumptionKind::None;
+  bool noOp = false;
+  double durationSeconds = 0.0;
+  std::string terminalFailureCode = "None";
+  std::string terminalFailureStage;
+};
+
 /** @brief Aggregate machine-readable diagnostics for the remesh pipeline. */
 struct RemeshDiagnostics {
   std::string remeshBackend = "LegacyInteger";
@@ -48,8 +119,10 @@ struct RemeshDiagnostics {
   bool surfaceCellReturnedQuadDominantFallback = false;
   bool surfaceCellReturnedInputMeshFallback = false;
   bool surfaceCellRemeshOccurred = false;
+  SurfaceCellOutputOrigin surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
   bool surfaceCellDebugArtifactsPreserved = false;
   std::vector<std::string> surfaceCellDebugArtifacts;
+  std::vector<SurfaceCellStageLineage> surfaceCellStageLineage;
 
   double surfaceCellFeatureSeconds = 0.0;
   double surfaceCellMetricSeconds = 0.0;
