@@ -140,6 +140,7 @@ struct SurfaceFinalValidationReport {
   bool optimizerTimeWithinGate = true;
   bool strictValidationUsed = false;
   bool authoritativeBoundaryUsed = false;
+  bool authoritativeFeatureRailsUsed = false;
   bool provenanceValidationUsed = false;
 };
 
@@ -926,6 +927,8 @@ inline SurfaceFinalValidationReport validate_final_surface_mesh(
       validatorOptions.requireVertexProvenanceForGeometry;
   report.authoritativeBoundaryUsed =
       validatorOptions.requireAuthoritativeBoundary;
+  report.authoritativeFeatureRailsUsed =
+      !constraints.featureCurveIntervals.empty();
   const auto validation =
       validation::MeshValidator::validate_surface_mesh(vertices, quads,
                                                        validatorOptions);

@@ -58,9 +58,34 @@ enum class CellRejectionReason : int {
   Degenerate = 3,
 };
 
+enum class SurfaceCellRailKind : int {
+  Boundary = 0,
+  HardFeature = 1,
+};
+
 struct SurfaceTracePoint {
   int face = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+};
+
+struct SurfaceCellRailSample {
+  int sourceFace = -1;
+  int sourceEdge = -1;
+  double parameter = 0.0;
+  double railParameter = 0.0;
+  Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
+};
+
+struct SurfaceCellRail {
+  int id = -1;
+  SurfaceCellRailKind kind = SurfaceCellRailKind::Boundary;
+  int curveId = -1;
+  int component = -1;
+  bool closed = false;
+  std::vector<int> sourceVertices;
+  std::vector<int> sourceEdges;
+  std::vector<SurfaceCellRailSample> samples;
 };
 
 struct SurfaceTraceSeed {
@@ -134,6 +159,7 @@ struct SurfaceCellTracingOptions {
   std::vector<int> anchors;
   std::vector<SurfaceTracePoint> capturePoints;
   std::set<std::uint64_t> hardFeatureEdges;
+  std::vector<SurfaceCellRail> authoritativeRails;
   bool followCompatibleHardFeatureRails = true;
   SurfaceGuidePotential guidePotential;
 };
@@ -142,6 +168,7 @@ struct SurfaceCellNetwork {
   std::vector<SurfaceTraceSeed> seeds;
   std::vector<SurfaceTraceResult> traces;
   std::vector<SurfaceCellProposal> proposals;
+  std::vector<SurfaceCellRail> authoritativeRails;
   SurfaceCellProposalStats stats;
 };
 
@@ -576,37 +603,56 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   std::vector<SurfaceTraceSeed> seeds;
   std::set<std::tuple<int, int, int, int>> seen;
 
-  for (const auto &[key, pair] : edgeFaces) {
-    if (pair[1] >= 0 && options.hardFeatureEdges.count(key) == 0) {
-      continue;
-    }
-    const int a = static_cast<int>(key >> 32u);
-    const int b = static_cast<int>(key & 0xffffffffu);
-    const double h = 0.5 * (surface_cell_tracing_detail::target_size_at_vertex(
-                                targetSize, a, options.defaultTargetSize) +
-                            surface_cell_tracing_detail::target_size_at_vertex(
-                                targetSize, b, options.defaultTargetSize));
-    const double length =
-        (surface_cell_tracing_detail::row3(vertices, a) -
-         surface_cell_tracing_detail::row3(vertices, b))
-            .norm();
-    const int samples = std::max(1, static_cast<int>(std::ceil(length / h)));
-    for (int sample = 0; sample <= samples; ++sample) {
-      const double t = static_cast<double>(sample) / samples;
-      SurfaceTracePoint point;
-      point.face = pair[0];
-      for (int corner = 0; corner < 3; ++corner) {
-        if (faces(point.face, corner) == a) {
-          point.barycentric[corner] = 1.0 - t;
-        } else if (faces(point.face, corner) == b) {
-          point.barycentric[corner] = t;
+  if (!options.authoritativeRails.empty()) {
+    for (const SurfaceCellRail &rail : options.authoritativeRails) {
+      const SurfaceSeedProvenance provenance =
+          rail.kind == SurfaceCellRailKind::Boundary
+              ? SurfaceSeedProvenance::Boundary
+              : SurfaceSeedProvenance::Feature;
+      for (const SurfaceCellRailSample &sample : rail.samples) {
+        if (sample.sourceFace < 0 || sample.sourceFace >= faces.rows()) {
+          continue;
         }
+        SurfaceTracePoint point;
+        point.face = sample.sourceFace;
+        point.barycentric = sample.barycentric;
+        surface_cell_tracing_detail::append_seed(seeds, seen, point, provenance,
+                                                 rail.id);
       }
-      surface_cell_tracing_detail::append_seed(
-          seeds, seen, point,
-          pair[1] < 0 ? SurfaceSeedProvenance::Boundary
-                      : SurfaceSeedProvenance::Feature,
-          static_cast<int>(key & 0x7fffffff));
+    }
+  } else {
+    for (const auto &[key, pair] : edgeFaces) {
+      if (pair[1] >= 0 && options.hardFeatureEdges.count(key) == 0) {
+        continue;
+      }
+      const int a = static_cast<int>(key >> 32u);
+      const int b = static_cast<int>(key & 0xffffffffu);
+      const double h = 0.5 * (surface_cell_tracing_detail::target_size_at_vertex(
+                                  targetSize, a, options.defaultTargetSize) +
+                              surface_cell_tracing_detail::target_size_at_vertex(
+                                  targetSize, b, options.defaultTargetSize));
+      const double length =
+          (surface_cell_tracing_detail::row3(vertices, a) -
+           surface_cell_tracing_detail::row3(vertices, b))
+              .norm();
+      const int samples = std::max(1, static_cast<int>(std::ceil(length / h)));
+      for (int sample = 0; sample <= samples; ++sample) {
+        const double t = static_cast<double>(sample) / samples;
+        SurfaceTracePoint point;
+        point.face = pair[0];
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(point.face, corner) == a) {
+            point.barycentric[corner] = 1.0 - t;
+          } else if (faces(point.face, corner) == b) {
+            point.barycentric[corner] = t;
+          }
+        }
+        surface_cell_tracing_detail::append_seed(
+            seeds, seen, point,
+            pair[1] < 0 ? SurfaceSeedProvenance::Boundary
+                        : SurfaceSeedProvenance::Feature,
+            static_cast<int>(key & 0x7fffffff));
+      }
     }
   }
 
@@ -1158,6 +1204,7 @@ inline SurfaceCellNetwork build_surface_cell_network(
     const Eigen::VectorXi *edgeMatching = nullptr,
     const Eigen::VectorXd *edgeEffort = nullptr) {
   SurfaceCellNetwork network;
+  network.authoritativeRails = options.authoritativeRails;
   network.seeds =
       generate_deterministic_surface_seeds(vertices, faces, targetSize, options);
   for (const SurfaceTraceSeed &seed : network.seeds) {

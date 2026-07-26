@@ -67,6 +67,8 @@ enum class TopologyTemplateKind : int {
 struct PureQuadPatch {
   std::vector<int> boundaryVertices;
   std::vector<SurfacePoint> boundaryProvenance;
+  std::vector<int> boundaryRailIds;
+  std::vector<int> boundaryCurveIds;
   std::vector<int> sideEdgeCounts;
   std::vector<int> turns;
   int boundaryLoopCount = 1;

@@ -90,6 +90,24 @@ struct CrossFieldResult {
 
   /// Integer singularity numerators; actual indices are singularIndices / 4.
   Eigen::VectorXi singularIndices;
+
+  /// Per-face confidence after raw/generator validation; zero marks uncovered faces.
+  Eigen::VectorXd confidence;
+
+  /// Faces whose finalized field was invalid or uncovered and must fail closed.
+  Eigen::VectorXi uncoveredFaces;
+
+  /// True when @ref matching and @ref effort were finalized for this mesh.
+  bool matchingComputed = false;
+
+  /// True when singularity metadata was finalized, even if no singularities exist.
+  bool singularitiesComputed = false;
+
+  /// True when per-face confidence was finalized.
+  bool confidenceComputed = false;
+
+  /// True when uncovered faces were identified and accepted/rejected by policy.
+  bool uncoveredFacePolicyApplied = false;
 };
 
 /**
@@ -121,11 +139,38 @@ finalize_cross_field_result(CartesianField &rawField,
   result.primaryDirections = outputField->extField.leftCols<3>();
   result.secondaryDirections = outputField->extField.middleCols<3>(3);
 
+  result.confidence = Eigen::VectorXd::Ones(outputField->extField.rows());
+  std::vector<int> uncoveredFaces;
+  for (Eigen::Index face = 0; face < outputField->extField.rows(); ++face) {
+    bool covered = true;
+    double maxNorm = 0.0;
+    for (Eigen::Index col = 0; col < outputField->extField.cols(); ++col) {
+      covered = covered && std::isfinite(outputField->extField(face, col));
+    }
+    for (int branch = 0; branch < kCrossFieldDegree; ++branch) {
+      maxNorm = std::max(maxNorm,
+                         outputField->extField.block(face, 3 * branch, 1, 3)
+                             .norm());
+    }
+    if (!covered || maxNorm <= 1.0e-12) {
+      result.confidence(face) = 0.0;
+      uncoveredFaces.push_back(static_cast<int>(face));
+    }
+  }
+  result.uncoveredFaces.resize(static_cast<Eigen::Index>(uncoveredFaces.size()));
+  for (Eigen::Index index = 0; index < result.uncoveredFaces.size(); ++index) {
+    result.uncoveredFaces(index) = uncoveredFaces[static_cast<std::size_t>(index)];
+  }
+  result.confidenceComputed = true;
+  result.uncoveredFacePolicyApplied = true;
+
   if (includeDiagnostics) {
     result.matching = outputField->matching;
     result.effort = outputField->effort;
     result.singularCycles = outputField->singLocalCycles;
     result.singularIndices = outputField->singIndices;
+    result.matchingComputed = true;
+    result.singularitiesComputed = true;
   }
   return result;
 }

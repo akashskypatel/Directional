@@ -70,6 +70,10 @@ struct FlowRepArc {
   bool hardFeatureRail = false;
   int strandProvenance = -1;
   int featureProvenance = -1;
+  int railId = -1;
+  int curveId = -1;
+  double railT0 = 0.0;
+  double railT1 = 1.0;
   double dominance = 1.0;
   double alignmentCost = 0.0;
   int sameStrandHint = -1;
@@ -377,6 +381,41 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.mandatoryRail = mandatory;
     arcs.push_back(arc);
   };
+  for (const SurfaceCellRail &rail : network.authoritativeRails) {
+    if (rail.samples.size() < 2U) {
+      continue;
+    }
+    const int segmentCount = static_cast<int>(rail.samples.size()) / 2;
+    for (int segment = 0; segment < segmentCount; ++segment) {
+      const int i = 2 * segment;
+      const SurfaceCellRailSample &a = rail.samples[static_cast<std::size_t>(i)];
+      const SurfaceCellRailSample &b = rail.samples[static_cast<std::size_t>(i + 1)];
+      if (a.sourceFace < 0 || b.sourceFace < 0 || a.sourceFace != b.sourceFace) {
+        continue;
+      }
+      FlowRepArc arc;
+      arc.id = static_cast<int>(arcs.size());
+      arc.start = a.position;
+      arc.end = b.position;
+      arc.sourceFace = a.sourceFace;
+      arc.startBarycentric = a.barycentric;
+      arc.endBarycentric = b.barycentric;
+      arc.sourceComponent = rail.component;
+      arc.family = -1;
+      arc.featureClass = rail.kind == SurfaceCellRailKind::Boundary ? 1 : 3;
+      arc.mandatoryRail = true;
+      arc.boundaryRail = rail.kind == SurfaceCellRailKind::Boundary;
+      arc.hardFeatureRail = rail.kind == SurfaceCellRailKind::HardFeature;
+      arc.strandProvenance = rail.id;
+      arc.featureProvenance = rail.curveId;
+      arc.railId = rail.id;
+      arc.curveId = rail.curveId;
+      arc.railT0 = a.railParameter;
+      arc.railT1 = b.railParameter;
+      arc.sameStrandHint = rail.id;
+      arcs.push_back(arc);
+    }
+  }
   for (const SurfaceTraceResult &trace : network.traces) {
     for (const SurfaceTraceSegment &segment : trace.segments) {
       append_segment(segment, trace.termination == TraceTerminationReason::Feature);

@@ -60,6 +60,11 @@ struct SurfaceArrangementArc {
   int featureClass = 0;
   bool hardFeature = false;
   int provenance = -1;
+  int railId = -1;
+  int curveId = -1;
+  int sourceComponent = -1;
+  double railT0 = 0.0;
+  double railT1 = 1.0;
 };
 
 struct SurfaceArrangementNode {
@@ -84,6 +89,11 @@ struct SurfaceArrangementHalfedge {
   double sourceT0 = 0.0;
   double sourceT1 = 1.0;
   bool hardFeature = false;
+  int railId = -1;
+  int curveId = -1;
+  int sourceComponent = -1;
+  double railT0 = 0.0;
+  double railT1 = 1.0;
   int cell = -1;
 };
 
@@ -149,6 +159,11 @@ struct Segment2 {
   int strand = -1;
   int featureClass = 0;
   bool hardFeature = false;
+  int railId = -1;
+  int curveId = -1;
+  int sourceComponent = -1;
+  double railT0 = 0.0;
+  double railT1 = 1.0;
   double sourceT0 = 0.0;
   double sourceT1 = 1.0;
 };
@@ -424,6 +439,11 @@ inline SurfaceCellComplex build_surface_cell_complex(
     segment.strand = arc.strand;
     segment.featureClass = arc.featureClass;
     segment.hardFeature = arc.hardFeature;
+    segment.railId = arc.railId;
+    segment.curveId = arc.curveId;
+    segment.sourceComponent = arc.sourceComponent;
+    segment.railT0 = arc.railT0;
+    segment.railT1 = arc.railT1;
     if (clip_to_triangle(segment.start, segment.end, segment.sourceT0,
                          segment.sourceT1)) {
       segments.push_back(segment);
@@ -556,6 +576,13 @@ inline SurfaceCellComplex build_surface_cell_complex(
       h1.sourceT0 = h0.sourceT1;
       h1.sourceT1 = h0.sourceT0;
       h0.hardFeature = h1.hardFeature = segment.hardFeature;
+      h0.railId = h1.railId = segment.railId;
+      h0.curveId = h1.curveId = segment.curveId;
+      h0.sourceComponent = h1.sourceComponent = segment.sourceComponent;
+      h0.railT0 = segment.railT0 + t0 * (segment.railT1 - segment.railT0);
+      h0.railT1 = segment.railT0 + t1 * (segment.railT1 - segment.railT0);
+      h1.railT0 = h0.railT1;
+      h1.railT1 = h0.railT0;
       complex.halfedges.push_back(h0);
       complex.halfedges.push_back(h1);
     }
