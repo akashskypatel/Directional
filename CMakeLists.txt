@@ -251,6 +251,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/IntegerBatchSelectorTests.cpp
     tests/IntegerTransitionBasisTests.cpp
     tests/LocalPatchValidatorTests.cpp
+    tests/MilestoneBClosureTests.cpp
     tests/ParametrizationQualityTests.cpp
     tests/PatchQuadrangulatorTests.cpp
     tests/PureQuadCompletionPhase18Tests.cpp

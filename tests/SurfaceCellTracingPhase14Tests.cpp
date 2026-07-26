@@ -74,6 +74,8 @@ std::uint64_t network_hash(const directional::geometry::SurfaceCellNetwork &netw
   mix(network.stats.rejectedBarrier);
   mix(network.stats.rejectedClosure);
   mix(network.stats.rejectedDegenerate);
+  mix(network.stats.rejectedSourceSheet);
+  mix(network.stats.rejectedFieldMetadata);
   for (const auto &seed : network.seeds) {
     mix(seed.id);
     mix(seed.point.face);
@@ -88,8 +90,25 @@ std::uint64_t network_hash(const directional::geometry::SurfaceCellNetwork &netw
     mix(static_cast<int>(trace.segments.size()));
     for (const auto &segment : trace.segments) {
       mix(segment.face);
+      for (int corner = 0; corner < 3; ++corner) {
+        mix(static_cast<std::int64_t>(
+            std::llround(segment.startBarycentric[corner] * 1.0e9)));
+        mix(static_cast<std::int64_t>(
+            std::llround(segment.endBarycentric[corner] * 1.0e9)));
+      }
       mix(segment.family);
       mix(segment.sign);
+      mix(segment.entryEdge);
+      mix(segment.exitEdge);
+      mix(segment.matching);
+      mix(static_cast<std::int64_t>(
+          std::llround(segment.matchingEffort * 1.0e9)));
+      mix(segment.railId);
+      mix(segment.curveId);
+      mix(segment.railIntervalIndex);
+      mix(segment.railSideSign);
+      mix(static_cast<std::int64_t>(std::llround(segment.railT0 * 1.0e9)));
+      mix(static_cast<std::int64_t>(std::llround(segment.railT1 * 1.0e9)));
     }
   }
   return hash;
@@ -144,6 +163,20 @@ double distance_to_candidate_network(
     }
   }
   return nearest;
+}
+
+directional::geometry::SurfaceCellRailSample rail_sample(
+    const MeshFixture &mesh, const int sourceFace, const int sourceEdge,
+    const double parameter, const double railParameter,
+    const Eigen::RowVector3d &barycentric, const int vertex) {
+  directional::geometry::SurfaceCellRailSample sample;
+  sample.sourceFace = sourceFace;
+  sample.sourceEdge = sourceEdge;
+  sample.parameter = parameter;
+  sample.railParameter = railParameter;
+  sample.barycentric = barycentric;
+  sample.position = mesh.vertices.row(vertex);
+  return sample;
 }
 
 double segment_axis_deviation_degrees(
@@ -263,6 +296,15 @@ TEST(SurfaceCellTracingPhase14, CrossFieldResultMatchingSwapsFamilyAcrossEdge) {
   crossField.secondaryDirections.row(1) << -1.0, 0.0, 0.0;
   crossField.matching = Eigen::VectorXi::Constant(1, 1);
   crossField.effort = Eigen::VectorXd::Constant(1, 0.25);
+  directional::fields::CrossFieldEdgeTransition transition;
+  transition.sourceEdge = 0;
+  transition.sourceVertex0 = 0;
+  transition.sourceVertex1 = 3;
+  transition.firstFace = 0;
+  transition.secondFace = 1;
+  transition.matching = 1;
+  transition.effort = 0.25;
+  crossField.edgeTransitions.push_back(transition);
   directional::geometry::SurfaceTraceSeed seed;
   seed.point.face = 0;
   seed.point.barycentric << 0.25, 0.25, 0.5;
@@ -404,6 +446,29 @@ TEST(SurfaceCellTracingPhase14, HardFeatureTerminatesAndDoesNotCross) {
   EXPECT_EQ(trace.segments.back().face, 0);
 }
 
+TEST(SurfaceCellTracingPhase14, BoundaryRailTerminatesAndDoesNotCross) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.50, 0.25, 0.25;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::Boundary);
+  ASSERT_FALSE(trace.segments.empty());
+  for (const directional::geometry::SurfaceTraceSegment &segment :
+       trace.segments) {
+    EXPECT_GE(segment.face, 0);
+    EXPECT_LT(segment.face, mesh.faces.rows());
+  }
+}
+
 TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
@@ -415,6 +480,26 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   options.maxTraceLength = 0.75;
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 5;
+  rail.curveId = 8;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  directional::geometry::SurfaceCellRailSample a;
+  a.sourceFace = 0;
+  a.sourceEdge = 1;
+  a.parameter = 0.0;
+  a.railParameter = 0.0;
+  a.barycentric << 1.0, 0.0, 0.0;
+  a.position = mesh.vertices.row(0);
+  directional::geometry::SurfaceCellRailSample b;
+  b.sourceFace = 0;
+  b.sourceEdge = 1;
+  b.parameter = 1.0;
+  b.railParameter = 1.0;
+  b.barycentric << 0.0, 0.0, 1.0;
+  b.position = mesh.vertices.row(3);
+  rail.samples = {a, b};
+  options.authoritativeRails.push_back(rail);
 
   const auto trace = directional::geometry::trace_surface_field(
       mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
@@ -423,6 +508,902 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
             directional::geometry::TraceTerminationReason::Feature);
   ASSERT_FALSE(trace.segments.empty());
   EXPECT_EQ(trace.segments.front().exitEdge, 1);
+  EXPECT_TRUE(std::any_of(
+      trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 5 && segment.curveId == 8 &&
+               segment.railIntervalIndex == 0;
+      }));
+}
+
+TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailTerminatesWhenFollowDisabled) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 0.75;
+  options.followCompatibleHardFeatureRails = false;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_EQ(trace.segments.front().exitEdge, 1);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     OpenHardFeatureRailEndpointIsNotClassifiedAsSourceSheet) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.10, 0.20, 0.70;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+  options.sourceFaceComponents.assign(mesh.faces.rows(), 0);
+  options.sourceFaceSheets.assign(mesh.faces.rows(), 0);
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 43;
+  rail.curveId = 9;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  options.authoritativeRails.push_back(rail);
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_NE(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_TRUE(std::any_of(
+      trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 43 && segment.railIntervalIndex == 0 &&
+               segment.railSideSign != 0;
+      }));
+
+  directional::geometry::SurfaceCellRail reverseRail = rail;
+  reverseRail.id = 44;
+  reverseRail.samples = {
+      rail_sample(mesh, 1, 2, 0.0, 1.0,
+                  Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
+      rail_sample(mesh, 1, 2, 1.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
+  options.authoritativeRails = {reverseRail};
+  directional::geometry::SurfaceTraceSeed reverseSeed = seed;
+  reverseSeed.point.face = 0;
+  reverseSeed.point.barycentric << 0.25, 0.25, 0.50;
+  const auto reverseTrace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, reverseSeed, 0, -1, options);
+  EXPECT_NE(reverseTrace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  EXPECT_TRUE(reverseTrace.termination ==
+                  directional::geometry::TraceTerminationReason::Feature ||
+              reverseTrace.termination ==
+                  directional::geometry::TraceTerminationReason::Boundary);
+}
+
+TEST(SurfaceCellTracingPhase14, SourceSheetMismatchTerminatesInteriorEdgeTransition) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_EQ(0, trace.segments.back().face);
+}
+
+TEST(SurfaceCellTracingPhase14, EqualSourceSheetAllowsInteriorTransition) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 0};
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  ASSERT_GE(trace.segments.size(), 2U);
+  EXPECT_EQ(1, trace.segments[1].face);
+}
+
+TEST(SurfaceCellTracingPhase14, SourceSheetMismatchBlocksVertexContinuation) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.5, 0.25, 0.25;
+  const Eigen::RowVector3d start =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          mesh.vertices, mesh.faces, seed.point);
+  x.row(0) = (mesh.vertices.row(0) - start).normalized();
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+}
+
+TEST(SurfaceCellTracingPhase14, InvalidSourceSheetArraysFailClosed) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0};
+  options.sourceFaceSheets = {0, 0};
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+  EXPECT_TRUE(trace.segments.empty());
+}
+
+TEST(SurfaceCellTracingPhase14, CellProposalRejectsSourceSheetCrossing) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 0.75);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 11;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.75;
+  options.maxTraceLength = 2.0;
+  options.closureToleranceFactor = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto proposal = directional::geometry::make_surface_cell_proposal(
+      mesh.vertices, mesh.faces, x, y, targetSize, seed, options);
+
+  EXPECT_FALSE(proposal.accepted);
+  EXPECT_EQ(directional::geometry::CellRejectionReason::SourceSheet,
+            proposal.rejection);
+}
+
+TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailPreservesIntervalMetadata) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.10, 0.20, 0.70;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 42;
+  rail.curveId = 7;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  directional::geometry::SurfaceCellRailSample a;
+  a.sourceFace = 0;
+  a.sourceEdge = 1;
+  a.parameter = 0.0;
+  a.railParameter = 0.0;
+  a.barycentric << 1.0, 0.0, 0.0;
+  a.position = mesh.vertices.row(0);
+  directional::geometry::SurfaceCellRailSample b;
+  b.sourceFace = 0;
+  b.sourceEdge = 1;
+  b.parameter = 1.0;
+  b.railParameter = 1.0;
+  b.barycentric << 0.0, 0.0, 1.0;
+  b.position = mesh.vertices.row(3);
+  rail.samples = {a, b};
+  options.authoritativeRails.push_back(rail);
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  ASSERT_GE(trace.segments.size(), 2U);
+  const auto followed = std::find_if(
+      trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 42;
+      });
+  ASSERT_NE(trace.segments.end(), followed);
+  EXPECT_EQ(7, followed->curveId);
+  EXPECT_EQ(0, followed->railIntervalIndex);
+  EXPECT_NEAR(0.70, followed->railT0, 1.0e-12);
+  EXPECT_NEAR(0.0, followed->railT1, 1.0e-12);
+}
+
+TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 0.75;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+
+  directional::geometry::SurfaceCellRail faceZeroRail;
+  faceZeroRail.id = 91;
+  faceZeroRail.curveId = 21;
+  faceZeroRail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  faceZeroRail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  options.authoritativeRails = {faceZeroRail};
+
+  directional::geometry::SurfaceTraceSeed fromOppositeSide;
+  fromOppositeSide.point.face = 1;
+  fromOppositeSide.point.barycentric << 0.25, 0.25, 0.50;
+  const auto oppositeTrace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, fromOppositeSide, 0, 1, options);
+
+  EXPECT_NE(oppositeTrace.termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_TRUE(std::any_of(
+      oppositeTrace.segments.begin(), oppositeTrace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 91 && segment.curveId == 21 &&
+               segment.railIntervalIndex == 0;
+      }));
+
+  directional::geometry::SurfaceCellRail faceOneReversedRail;
+  faceOneReversedRail.id = 92;
+  faceOneReversedRail.curveId = 22;
+  faceOneReversedRail.kind =
+      directional::geometry::SurfaceCellRailKind::HardFeature;
+  faceOneReversedRail.samples = {
+      rail_sample(mesh, 1, 2, 0.0, 1.0,
+                  Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
+      rail_sample(mesh, 1, 2, 1.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
+  options.authoritativeRails = {faceOneReversedRail};
+
+  directional::geometry::SurfaceTraceSeed fromStoredOppositeSide;
+  fromStoredOppositeSide.point.face = 0;
+  fromStoredOppositeSide.point.barycentric << 0.25, 0.25, 0.50;
+  const auto reversedTrace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, fromStoredOppositeSide, 0, -1, options);
+
+  EXPECT_NE(reversedTrace.termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_TRUE(std::any_of(
+      reversedTrace.segments.begin(), reversedTrace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 92 && segment.curveId == 22 &&
+               segment.railIntervalIndex == 0;
+      }));
+}
+
+TEST(SurfaceCellTracingPhase14,
+     CompatibleHardFeatureRailVisitsAlternatingStoredSideIntervalsInOrder) {
+  const MeshFixture mesh = make_grid(2);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.10, 0.70, 0.20;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 4));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(4, 7));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(4, 8));
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 77;
+  rail.curveId = 11;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  directional::geometry::SurfaceCellRailSample a0;
+  a0.sourceFace = 0;
+  a0.sourceEdge = 1;
+  a0.railParameter = 0.0;
+  a0.barycentric << 1.0, 0.0, 0.0;
+  a0.position = mesh.vertices.row(0);
+  directional::geometry::SurfaceCellRailSample b0;
+  b0.sourceFace = 0;
+  b0.sourceEdge = 1;
+  b0.parameter = 1.0;
+  b0.railParameter = 0.5;
+  b0.barycentric << 0.0, 0.0, 1.0;
+  b0.position = mesh.vertices.row(4);
+  directional::geometry::SurfaceCellRailSample a1;
+  a1.sourceFace = 7;
+  a1.sourceEdge = 1;
+  a1.railParameter = 0.5;
+  a1.barycentric << 1.0, 0.0, 0.0;
+  a1.position = mesh.vertices.row(4);
+  directional::geometry::SurfaceCellRailSample b1;
+  b1.sourceFace = 7;
+  b1.sourceEdge = 1;
+  b1.parameter = 1.0;
+  b1.railParameter = 1.0;
+  b1.barycentric << 0.0, 0.0, 1.0;
+  b1.position = mesh.vertices.row(7);
+  rail.samples = {a0, b0, a1, b1};
+  options.authoritativeRails.push_back(rail);
+  directional::geometry::SurfaceCellRail spur;
+  spur.id = 78;
+  spur.curveId = 12;
+  spur.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  directional::geometry::SurfaceCellRailSample spurA;
+  spurA.sourceFace = 6;
+  spurA.sourceEdge = 1;
+  spurA.railParameter = 0.0;
+  spurA.barycentric << 1.0, 0.0, 0.0;
+  spurA.position = mesh.vertices.row(4);
+  directional::geometry::SurfaceCellRailSample spurB;
+  spurB.sourceFace = 6;
+  spurB.sourceEdge = 1;
+  spurB.parameter = 1.0;
+  spurB.railParameter = 1.0;
+  spurB.barycentric << 0.0, 0.0, 1.0;
+  spurB.position = mesh.vertices.row(8);
+  spur.samples = {spurA, spurB};
+  options.authoritativeRails.push_back(spur);
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 1, 1, options);
+
+  std::vector<int> intervals;
+  std::vector<double> starts;
+  std::vector<double> ends;
+  for (const directional::geometry::SurfaceTraceSegment &segment :
+       trace.segments) {
+    if (segment.railId == 77) {
+      intervals.push_back(segment.railIntervalIndex);
+      starts.push_back(segment.railT0);
+      ends.push_back(segment.railT1);
+    }
+    EXPECT_NE(78, segment.railId);
+  }
+  ASSERT_GE(intervals.size(), 2U);
+  EXPECT_EQ(0, intervals[0]);
+  EXPECT_EQ(1, intervals[1]);
+  ASSERT_GE(trace.segments.size(), 2U);
+  EXPECT_EQ(0, trace.segments[trace.segments.size() - 2].face);
+  EXPECT_EQ(7, trace.segments[trace.segments.size() - 1].face);
+  EXPECT_NE(0, trace.segments[trace.segments.size() - 2].railSideSign);
+  EXPECT_EQ(trace.segments[trace.segments.size() - 2].railSideSign,
+            trace.segments[trace.segments.size() - 1].railSideSign);
+  EXPECT_LT(starts[0], ends[0]);
+  EXPECT_LT(starts[1], ends[1]);
+  EXPECT_NEAR(0.45, starts[0], 1.0e-12);
+  EXPECT_NEAR(0.5, ends[0], 1.0e-12);
+  EXPECT_NEAR(0.5, starts[1], 1.0e-12);
+  EXPECT_NEAR(1.0, ends[1], 1.0e-12);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     HardFeatureRailContinuationHonorsSourceSheetLabels) {
+  const MeshFixture mesh = make_grid(2);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.10, 0.70, 0.20;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 4));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(4, 7));
+  options.sourceFaceComponents.assign(mesh.faces.rows(), 0);
+  options.sourceFaceSheets.assign(mesh.faces.rows(), 0);
+  options.sourceFaceSheets[4] = 1;
+  options.sourceFaceSheets[7] = 1;
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 93;
+  rail.curveId = 23;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4),
+      rail_sample(mesh, 7, 1, 0.0, 0.5,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+      rail_sample(mesh, 7, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
+  options.authoritativeRails.push_back(rail);
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 1, 1, options);
+
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  EXPECT_TRUE(std::any_of(
+      trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 93 && segment.railIntervalIndex == 0;
+      }));
+  EXPECT_FALSE(std::any_of(
+      trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 93 && segment.railIntervalIndex == 1;
+      }));
+}
+
+TEST(SurfaceCellTracingPhase14,
+     RailPreprocessingRejectsMalformedIntervalsAndReportsEndpointForValidRail) {
+  const MeshFixture mesh = make_grid(2);
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 95;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4),
+      rail_sample(mesh, 0, 99, 0.0, 0.5,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+      rail_sample(mesh, 0, 99, 1.0, 0.75,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4),
+      rail_sample(mesh, 7, 1, 0.0, 0.75,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+      rail_sample(mesh, 7, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
+  const auto refs =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {rail}, mesh.vertices, mesh.faces, edgeFaces);
+  ASSERT_EQ(refs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSamplePair);
+  directional::geometry::SurfaceCellRail validRail = rail;
+  validRail.samples.resize(2);
+  const auto validRefs =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {validRail}, mesh.vertices, mesh.faces, edgeFaces);
+  ASSERT_EQ(validRefs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  directional::geometry::SurfaceCellTracingOptions options;
+  const auto endpoint =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          validRefs.intervals,
+          {&validRefs.intervals[0],
+           validRefs.intervals[0].incidentSides.front()},
+          1, options);
+  EXPECT_EQ(endpoint.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::OpenEndpoint);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     MalformedAuthoritativeRailsFailBeforeTracingAndSideDiscontinuityIsTyped) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.2, 0.3, 0.5;
+  const auto trace_with = [&](const std::vector<directional::geometry::SurfaceCellRail> &rails) {
+    directional::geometry::SurfaceCellTracingOptions options;
+    options.maxTraceLength = 10.0;
+    options.authoritativeRails = rails;
+    return directional::geometry::trace_surface_field(
+        mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+  };
+  directional::geometry::SurfaceCellRail odd;
+  odd.id = 101;
+  odd.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  odd.samples.push_back(rail_sample(mesh, 0, 1, 0.0, 0.0,
+                                     Eigen::RowVector3d(1.0, 0.0, 0.0), 0));
+  EXPECT_EQ(trace_with({odd}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+
+  directional::geometry::SurfaceCellRail invalid = odd;
+  invalid.id = 102;
+  invalid.samples = {
+      rail_sample(mesh, 0, 99, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 99, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  EXPECT_EQ(trace_with({invalid}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+  directional::geometry::SurfaceCellRail invalidMiddle = invalid;
+  invalidMiddle.id = 105;
+  invalidMiddle.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.33,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3),
+      rail_sample(mesh, 0, 99, 0.0, 0.33,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 99, 1.0, 0.66,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3),
+      rail_sample(mesh, 0, 0, 0.0, 0.66,
+                  Eigen::RowVector3d(0.0, 1.0, 0.0), 1),
+      rail_sample(mesh, 0, 0, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  EXPECT_EQ(trace_with({invalidMiddle}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+  directional::geometry::SurfaceCellRail invalidFinal = invalidMiddle;
+  invalidFinal.id = 106;
+  invalidFinal.samples[2].sourceEdge = 2;
+  invalidFinal.samples[3].sourceEdge = 2;
+  invalidFinal.samples[4].sourceEdge = 99;
+  invalidFinal.samples[5].sourceEdge = 99;
+  EXPECT_EQ(trace_with({invalidFinal}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+
+  directional::geometry::SurfaceCellRail valid = invalid;
+  valid.id = 103;
+  valid.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  directional::geometry::SurfaceCellRail duplicate = valid;
+  EXPECT_EQ(trace_with({valid, duplicate}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+  valid.closed = true;
+  EXPECT_EQ(trace_with({valid}).termination,
+            directional::geometry::TraceTerminationReason::FieldMetadata);
+
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  directional::geometry::SurfaceCellRail ordered = valid;
+  ordered.id = 104;
+  ordered.closed = false;
+  ordered.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3),
+      rail_sample(mesh, 0, 1, 0.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0)};
+  auto refs = directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+      {ordered}, mesh.vertices, mesh.faces, edgeFaces);
+  ASSERT_EQ(refs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DuplicateInterval);
+  ordered.samples[2] =
+      rail_sample(mesh, 0, 0, 0.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3);
+  ordered.samples[3] =
+      rail_sample(mesh, 0, 0, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 1.0, 0.0), 1);
+  refs = directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+      {ordered}, mesh.vertices, mesh.faces, edgeFaces);
+  ASSERT_EQ(refs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  refs.intervals[1].incidentSides.resize(1);
+  refs.intervals[1].incidentSides[0].sideSign =
+      -refs.intervals[0].incidentSides.front().sideSign;
+  directional::geometry::SurfaceCellTracingOptions options;
+  const auto continuation =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          refs.intervals,
+          {&refs.intervals[0], refs.intervals[0].incidentSides.front()}, 1,
+          options);
+  EXPECT_EQ(continuation.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::SideDiscontinuity);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     RailValidationRejectsDisconnectedGeometryParametersAndSharedEdges) {
+  const MeshFixture mesh = make_grid(2);
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  const auto validate = [&](const std::vector<directional::geometry::SurfaceCellRail> &rails) {
+    return directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+        rails, mesh.vertices, mesh.faces, edgeFaces);
+  };
+
+  directional::geometry::SurfaceCellRail first;
+  first.id = 201;
+  first.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  first.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4)};
+
+  directional::geometry::SurfaceCellRail empty;
+  empty.id = 200;
+  EXPECT_EQ(validate({empty}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::EmptyRail);
+
+  directional::geometry::SurfaceCellRail disconnected = first;
+  disconnected.id = 202;
+  disconnected.samples.insert(
+      disconnected.samples.end(),
+      {rail_sample(mesh, 3, 2, 0.0, 0.5,
+                   Eigen::RowVector3d(1.0, 0.0, 0.0), 1),
+       rail_sample(mesh, 3, 2, 1.0, 1.0,
+                   Eigen::RowVector3d(0.0, 1.0, 0.0), 5)});
+  EXPECT_EQ(validate({disconnected}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DisconnectedIntervals);
+
+  directional::geometry::SurfaceCellRail parameterGap = first;
+  parameterGap.id = 203;
+  parameterGap.samples.insert(
+      parameterGap.samples.end(),
+      {rail_sample(mesh, 7, 1, 0.0, 0.6,
+                   Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+       rail_sample(mesh, 7, 1, 1.0, 1.0,
+                   Eigen::RowVector3d(0.0, 0.0, 1.0), 7)});
+  EXPECT_EQ(validate({parameterGap}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::NonContiguousIntervals);
+
+  directional::geometry::SurfaceCellRail invalidGeometry = first;
+  invalidGeometry.id = 204;
+  invalidGeometry.samples[1].position.x() += 0.25;
+  EXPECT_EQ(validate({invalidGeometry}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
+
+  directional::geometry::SurfaceCellRail invalidLocalParameter = first;
+  invalidLocalParameter.id = 206;
+  invalidLocalParameter.samples[0].parameter = 0.25;
+  EXPECT_EQ(validate({invalidLocalParameter}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidRailParameters);
+
+  directional::geometry::SurfaceCellRail duplicateEdge = first;
+  duplicateEdge.id = 205;
+  EXPECT_EQ(validate({first, duplicateEdge}).status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DuplicateInterval);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     RailSideSelectionIsStableForReverseTraversalAndIncidentOrder) {
+  const MeshFixture mesh = make_grid(2);
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  auto reversedEdgeFaces = edgeFaces;
+  for (auto &[key, faces] : reversedEdgeFaces) {
+    std::swap(faces[0], faces[1]);
+  }
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 96;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4),
+      rail_sample(mesh, 7, 1, 0.0, 0.5,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+      rail_sample(mesh, 7, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
+  const auto refs =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {rail}, mesh.vertices, mesh.faces, edgeFaces);
+  const auto reversedRefs =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {rail}, mesh.vertices, mesh.faces, reversedEdgeFaces);
+  ASSERT_EQ(refs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  ASSERT_EQ(reversedRefs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  ASSERT_EQ(refs.intervals.size(), 2U);
+  ASSERT_EQ(reversedRefs.intervals.size(), 2U);
+  const auto side_for_face = [](const auto &interval, const int face) {
+    return std::find_if(interval.incidentSides.begin(),
+                        interval.incidentSides.end(),
+                        [&](const auto &side) { return side.sourceFace == face; });
+  };
+  const auto forwardSide = side_for_face(refs.intervals[0], 0);
+  const auto reverseSide = side_for_face(refs.intervals[1], 7);
+  const auto reorderedSide = side_for_face(reversedRefs.intervals[0], 0);
+  ASSERT_NE(refs.intervals[0].incidentSides.end(), forwardSide);
+  ASSERT_NE(refs.intervals[1].incidentSides.end(), reverseSide);
+  ASSERT_NE(reversedRefs.intervals[0].incidentSides.end(), reorderedSide);
+  directional::geometry::SurfaceCellTracingOptions options;
+  const auto forward =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          refs.intervals, {&refs.intervals[0], *forwardSide}, 1, options);
+  const auto reverse =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          refs.intervals, {&refs.intervals[1], *reverseSide}, -1, options);
+  const auto reordered =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          reversedRefs.intervals,
+          {&reversedRefs.intervals[0], *reorderedSide}, 1, options);
+  ASSERT_EQ(forward.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::Found);
+  ASSERT_EQ(reverse.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::Found);
+  ASSERT_EQ(reordered.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::Found);
+  EXPECT_EQ(forward.selection.side.sideSign, reverse.selection.side.sideSign);
+  EXPECT_EQ(forward.selection.side.sourceFace, 7);
+  EXPECT_EQ(reverse.selection.side.sourceFace, 0);
+  EXPECT_EQ(forward.selection.side.sideSign, reordered.selection.side.sideSign);
+
+  MeshFixture faceReordered = mesh;
+  for (int face = 0; face < mesh.faces.rows(); ++face) {
+    faceReordered.faces.row(face) = mesh.faces.row(mesh.faces.rows() - 1 - face);
+  }
+  directional::geometry::SurfaceCellRail rowReorderedRail = rail;
+  rowReorderedRail.samples[0].sourceFace = 7;
+  rowReorderedRail.samples[1].sourceFace = 7;
+  rowReorderedRail.samples[2].sourceFace = 0;
+  rowReorderedRail.samples[3].sourceFace = 0;
+  const auto rowReorderedRefs =
+      directional::geometry::surface_cell_tracing_detail::rail_interval_refs(
+          {rowReorderedRail}, faceReordered.vertices, faceReordered.faces,
+          directional::geometry::surface_cell_tracing_detail::edge_faces(
+              faceReordered.faces));
+  ASSERT_EQ(rowReorderedRefs.status,
+            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
+  const auto rowSide = std::find_if(
+      rowReorderedRefs.intervals[0].incidentSides.begin(),
+      rowReorderedRefs.intervals[0].incidentSides.end(),
+      [](const auto &side) { return side.sourceFace == 7; });
+  ASSERT_NE(rowReorderedRefs.intervals[0].incidentSides.end(), rowSide);
+  const auto rowForward =
+      directional::geometry::surface_cell_tracing_detail::find_next_rail_interval(
+          rowReorderedRefs.intervals,
+          {&rowReorderedRefs.intervals[0], *rowSide}, 1, options);
+  ASSERT_EQ(rowForward.status,
+            directional::geometry::surface_cell_tracing_detail::RailContinuationStatus::Found);
+  EXPECT_EQ(rowForward.selection.side.sourceFace, 0);
+  EXPECT_EQ(rowForward.selection.side.sideSign, forward.selection.side.sideSign);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     CellProposalDoesNotMislabelRailBarrierAsSourceSheet) {
+  const MeshFixture mesh = make_grid(2);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 2.0);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 94;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.10, 0.70, 0.20;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 2.0;
+  options.maxTraceLength = 10.0;
+  options.closureToleranceFactor = 100.0;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 4));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(4, 7));
+  options.sourceFaceComponents.assign(mesh.faces.rows(), 0);
+  options.sourceFaceSheets.assign(mesh.faces.rows(), 0);
+  options.sourceFaceSheets[4] = 1;
+  options.sourceFaceSheets[7] = 1;
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 94;
+  rail.curveId = 24;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 0.5,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 4),
+      rail_sample(mesh, 7, 1, 0.0, 0.5,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 4),
+      rail_sample(mesh, 7, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 7)};
+  options.authoritativeRails.push_back(rail);
+
+  const auto proposal = directional::geometry::make_surface_cell_proposal(
+      mesh.vertices, mesh.faces, x, y, targetSize, seed, options);
+
+  EXPECT_FALSE(proposal.accepted);
+  EXPECT_EQ(directional::geometry::CellRejectionReason::Barrier,
+            proposal.rejection);
+}
+
+TEST(SurfaceCellTracingPhase14, ClosedHardFeatureRailWrapsIntervalSequence) {
+  MeshFixture mesh;
+  mesh.vertices.resize(3, 3);
+  mesh.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  mesh.faces.resize(1, 3);
+  mesh.faces << 0, 1, 2;
+  Eigen::MatrixXd x(1, 3);
+  Eigen::MatrixXd y(1, 3);
+  x.row(0) << 1.0, -1.0, 0.0;
+  x.row(0).normalize();
+  y.row(0) << 0.0, 1.0, 0.0;
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.40, 0.20, 0.40;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 4.0;
+  options.maxTraceSegments = 16;
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 1));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(2, 0));
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 88;
+  rail.curveId = 12;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.closed = true;
+  const auto sample = [&](const int sourceEdge, const double parameter,
+                          const double railParameter,
+                          const Eigen::RowVector3d &barycentric,
+                          const int vertex) {
+    directional::geometry::SurfaceCellRailSample result;
+    result.sourceFace = 0;
+    result.sourceEdge = sourceEdge;
+    result.parameter = parameter;
+    result.railParameter = railParameter;
+    result.barycentric = barycentric;
+    result.position = mesh.vertices.row(vertex);
+    return result;
+  };
+  rail.samples = {
+      sample(2, 0.0, 0.0, Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      sample(2, 1.0, 1.0 / 3.0, Eigen::RowVector3d(0.0, 1.0, 0.0), 1),
+      sample(0, 0.0, 1.0 / 3.0, Eigen::RowVector3d(0.0, 1.0, 0.0), 1),
+      sample(0, 1.0, 2.0 / 3.0, Eigen::RowVector3d(0.0, 0.0, 1.0), 2),
+      sample(1, 0.0, 2.0 / 3.0, Eigen::RowVector3d(0.0, 0.0, 1.0), 2),
+      sample(1, 1.0, 1.0, Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+  };
+  options.authoritativeRails.push_back(rail);
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+
+  std::vector<int> intervals;
+  for (const directional::geometry::SurfaceTraceSegment &segment :
+       trace.segments) {
+    if (segment.railId == 88) {
+      intervals.push_back(segment.railIntervalIndex);
+    }
+  }
+  ASSERT_GE(intervals.size(), 4U);
+  EXPECT_EQ(0, intervals[0]);
+  EXPECT_EQ(1, intervals[1]);
+  EXPECT_EQ(2, intervals[2]);
+  EXPECT_EQ(0, intervals[3]);
 }
 
 TEST(SurfaceCellTracingPhase14, ProposalStatsAccountForEveryAttempt) {
@@ -439,7 +1420,9 @@ TEST(SurfaceCellTracingPhase14, ProposalStatsAccountForEveryAttempt) {
   EXPECT_EQ(network.stats.attempted, static_cast<int>(network.proposals.size()));
   EXPECT_EQ(network.stats.attempted,
             network.stats.accepted + network.stats.rejectedBarrier +
-                network.stats.rejectedClosure + network.stats.rejectedDegenerate);
+                network.stats.rejectedClosure + network.stats.rejectedDegenerate +
+                network.stats.rejectedSourceSheet +
+                network.stats.rejectedFieldMetadata);
 }
 
 TEST(SurfaceCellTracingPhase14, CellProposalReportsClosureAndAcceptedSides) {

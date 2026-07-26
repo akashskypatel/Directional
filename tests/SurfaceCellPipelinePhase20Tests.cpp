@@ -188,6 +188,55 @@ SyntheticMesh make_close_parallel_sheets() {
   mesh.faces << 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7;
   return mesh;
 }
+
+SyntheticMesh make_connected_close_opposing_sheets() {
+  SyntheticMesh mesh;
+  mesh.vertices.resize(8, 3);
+  mesh.vertices << 0.0, 0.0, 0.0,
+                   1.0, 0.0, 0.0,
+                   1.0, 0.0, 0.02,
+                   0.0, 0.0, 0.02,
+                   0.0, 1.0, 0.0,
+                   1.0, 1.0, 0.0,
+                   1.0, 1.0, 0.02,
+                   0.0, 1.0, 0.02;
+  mesh.faces.resize(6, 3);
+  mesh.faces << 0, 1, 5,
+                0, 5, 4,
+                1, 2, 6,
+                1, 6, 5,
+                2, 3, 7,
+                2, 7, 6;
+  return mesh;
+}
+
+SyntheticMesh make_smooth_hairpin_strip() {
+  const std::vector<Eigen::Vector2d> path = {
+      {0.0, 0.0},  {0.5, 0.0},   {1.0, 0.0},  {1.02, 0.005},
+      {1.035, 0.02}, {1.04, 0.04}, {1.035, 0.06}, {1.02, 0.075},
+      {1.0, 0.08}, {0.5, 0.08},  {0.0, 0.08}};
+  SyntheticMesh mesh;
+  mesh.vertices.resize(static_cast<int>(2 * path.size()), 3);
+  for (std::size_t index = 0; index < path.size(); ++index) {
+    mesh.vertices(static_cast<int>(index), 0) = path[index].x();
+    mesh.vertices(static_cast<int>(index), 1) = 0.0;
+    mesh.vertices(static_cast<int>(index), 2) = path[index].y();
+    mesh.vertices(static_cast<int>(index + path.size()), 0) = path[index].x();
+    mesh.vertices(static_cast<int>(index + path.size()), 1) = 1.0;
+    mesh.vertices(static_cast<int>(index + path.size()), 2) = path[index].y();
+  }
+  mesh.faces.resize(static_cast<int>(2 * (path.size() - 1)), 3);
+  int face = 0;
+  for (std::size_t column = 0; column + 1 < path.size(); ++column) {
+    const int a = static_cast<int>(column);
+    const int b = static_cast<int>(column + 1);
+    const int c = static_cast<int>(column + path.size());
+    const int d = static_cast<int>(column + 1 + path.size());
+    mesh.faces.row(face++) << a, b, d;
+    mesh.faces.row(face++) << a, d, c;
+  }
+  return mesh;
+}
 Eigen::MatrixXd constant_raw_field(const int faceCount) {
   Eigen::MatrixXd raw(faceCount, 12);
   for (int face = 0; face < faceCount; ++face) {
@@ -199,25 +248,51 @@ Eigen::MatrixXd constant_raw_field(const int faceCount) {
   return raw;
 }
 
-directional::fields::CrossFieldResult matching_swap_cross_field() {
+directional::fields::CrossFieldResult matching_swap_cross_field(
+    const SyntheticMesh &mesh) {
   directional::fields::CrossFieldResult field;
   field.degree = directional::fields::kCrossFieldDegree;
-  field.rawField = constant_raw_field(2);
-  field.primaryDirections.resize(2, 3);
-  field.secondaryDirections.resize(2, 3);
+  field.rawField = constant_raw_field(mesh.faces.rows());
+  field.primaryDirections.resize(mesh.faces.rows(), 3);
+  field.secondaryDirections.resize(mesh.faces.rows(), 3);
   field.primaryDirections.row(0) << 1.0, 0.0, 0.0;
   field.secondaryDirections.row(0) << 0.0, 1.0, 0.0;
   field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
   field.secondaryDirections.row(1) << -1.0, 0.0, 0.0;
-  field.rawField.block(0, 0, 2, 3) = field.primaryDirections;
-  field.rawField.block(0, 3, 2, 3) = field.secondaryDirections;
-  field.rawField.block(0, 6, 2, 3) = -field.primaryDirections;
-  field.rawField.block(0, 9, 2, 3) = -field.secondaryDirections;
-  field.matching = Eigen::VectorXi::Constant(1, 1);
-  field.effort = Eigen::VectorXd::Constant(1, 0.25);
+  for (int face = 2; face < mesh.faces.rows(); ++face) {
+    field.primaryDirections.row(face) << 1.0, 0.0, 0.0;
+    field.secondaryDirections.row(face) << 0.0, 1.0, 0.0;
+  }
+  field.rawField.block(0, 0, mesh.faces.rows(), 3) = field.primaryDirections;
+  field.rawField.block(0, 3, mesh.faces.rows(), 3) = field.secondaryDirections;
+  field.rawField.block(0, 6, mesh.faces.rows(), 3) = -field.primaryDirections;
+  field.rawField.block(0, 9, mesh.faces.rows(), 3) = -field.secondaryDirections;
+  directional::TriMesh sourceMesh;
+  sourceMesh.set_mesh(mesh.vertices, mesh.faces);
+  field.matching = Eigen::VectorXi::Zero(sourceMesh.EF.rows());
+  field.effort = Eigen::VectorXd::Zero(sourceMesh.EF.rows());
+  for (int edge = 0; edge < sourceMesh.EF.rows(); ++edge) {
+    directional::fields::CrossFieldEdgeTransition transition;
+    transition.sourceEdge = edge;
+    transition.sourceVertex0 = sourceMesh.EV(edge, 0);
+    transition.sourceVertex1 = sourceMesh.EV(edge, 1);
+    transition.firstFace = sourceMesh.EF(edge, 0);
+    transition.secondFace = sourceMesh.EF(edge, 1);
+    transition.matching = sourceMesh.EF(edge, 0) >= 0 &&
+                                  sourceMesh.EF(edge, 1) >= 0
+                              ? 1
+                              : -1;
+    transition.effort = sourceMesh.EF(edge, 0) >= 0 &&
+                                sourceMesh.EF(edge, 1) >= 0
+                            ? 0.25
+                            : 0.0;
+    field.matching(edge) = transition.matching;
+    field.effort(edge) = transition.effort;
+    field.edgeTransitions.push_back(transition);
+  }
   field.singularCycles.resize(0);
   field.singularIndices.resize(0);
-  field.confidence = Eigen::VectorXd::Ones(2);
+  field.confidence = Eigen::VectorXd::Ones(mesh.faces.rows());
   field.uncoveredFaces.resize(0);
   field.matchingComputed = true;
   field.singularitiesComputed = true;
@@ -432,8 +507,11 @@ TEST(SurfaceCellPipelinePhase20, FeatureRailsRetainOrderedIntervalsAcrossSourceT
   map.curves.push_back(curve);
   map.vertexDensity = Eigen::VectorXd::Ones(mesh.vertices.rows());
 
-  const std::vector<directional::geometry::SurfaceCellRail> rails =
+  const auto railBuild =
       directional::pipeline::build_authoritative_surface_cell_rails(meshWhole, map);
+  ASSERT_TRUE(railBuild.success);
+  const std::vector<directional::geometry::SurfaceCellRail> &rails =
+      railBuild.rails;
 
   ASSERT_EQ(1U, rails.size());
   const directional::geometry::SurfaceCellRail &rail = rails.front();
@@ -450,6 +528,69 @@ TEST(SurfaceCellPipelinePhase20, FeatureRailsRetainOrderedIntervalsAcrossSourceT
   EXPECT_DOUBLE_EQ(2.0 / 3.0, rail.samples[4].railParameter);
   EXPECT_DOUBLE_EQ(1.0, rail.samples[5].railParameter);
   EXPECT_NE(rail.samples[0].sourceFace, rail.samples[2].sourceFace);
+}
+
+TEST(SurfaceCellPipelinePhase20,
+     AuthoritativeRailAssemblyFailsWhenAnEdgeHasNoIncidentFace) {
+  const SyntheticMesh mesh = make_two_square_strip();
+  directional::TriMesh meshWhole;
+  meshWhole.set_mesh(mesh.vertices, mesh.faces);
+  directional::geometry::AdaptiveFeatureMap map;
+  directional::geometry::AdaptiveFeatureEdge edge;
+  edge.vertices = {0, 1};
+  edge.incidentFaces = {-1};
+  edge.edgeClass = directional::geometry::AdaptiveFeatureClass::Hard;
+  edge.component = 0;
+  edge.curve = 41;
+  map.edges.push_back(edge);
+  directional::geometry::AdaptiveFeatureCurve curve;
+  curve.id = 41;
+  curve.edges = {0};
+  curve.vertices = {0, 1};
+  curve.closed = false;
+  map.curves.push_back(curve);
+
+  const auto result =
+      directional::pipeline::build_authoritative_surface_cell_rails(meshWhole, map);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failedEdgeIndex, 0);
+  EXPECT_TRUE(result.rails.empty());
+}
+
+TEST(SurfaceCellPipelinePhase20,
+     TraceHashIncludesRailProvenanceAndRejectionSemantics) {
+  const directional::geometry::SurfaceCellNetwork baseline =
+      minimal_trace_network();
+  const auto hash = [&](const auto &mutate) {
+    auto candidate = baseline;
+    mutate(candidate);
+    return directional::pipeline::hash_trace_network(candidate);
+  };
+
+  EXPECT_NE(hash([](auto &network) {
+                network.traces[0].segments[0].railSideSign = 1;
+              }),
+            hash([](auto &network) {
+                network.traces[0].segments[0].railSideSign = -1;
+              }));
+  EXPECT_NE(hash([](auto &network) {
+                network.traces[0].segments[0].railId = 7;
+              }),
+            hash([](auto &network) {
+                network.traces[0].segments[0].railId = 8;
+              }));
+  EXPECT_NE(hash([](auto &network) {
+                network.traces[0].segments[0].railT1 = 0.25;
+              }),
+            hash([](auto &network) {
+                network.traces[0].segments[0].railT1 = 0.75;
+              }));
+  EXPECT_NE(hash([](auto &network) {
+                network.stats.rejectedSourceSheet = 1;
+              }),
+            hash([](auto &network) {
+                network.stats.rejectedFieldMetadata = 1;
+              }));
 }
 
 TEST(SurfaceCellPipelinePhase20, ArrangementArcHashChangesWhenRailIdentityChangesWithoutGeometry) {
@@ -602,6 +743,26 @@ TEST(SurfaceCellPipelinePhase20, InvalidRawFieldDimsReturnPreciseFailureCode) {
             result.diagnostics.originalSurfaceCellFailureStage);
 }
 
+TEST(SurfaceCellPipelinePhase20, InvalidRawFieldValuesFailClosedBeforeFinalization) {
+  const SyntheticMesh mesh = make_two_square_components();
+  Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
+  raw(0, 0) = std::numeric_limits<double>::quiet_NaN();
+  directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, raw, surface_options());
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
+
+  raw = constant_raw_field(mesh.faces.rows());
+  raw.block(1, 3, 1, 3).setZero();
+  result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.vertices, mesh.faces, raw, surface_options());
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
+}
+
 TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularities) {
   const SyntheticMesh mesh = make_two_square_components();
   directional::fields::CrossFieldResult field;
@@ -620,18 +781,22 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
       mesh.vertices, mesh.faces, field, options);
   EXPECT_EQ("MissingMatching", result.diagnostics.terminalFailureCode);
 
-  field.matchingComputed = true;
+  field = matching_swap_cross_field(mesh);
+  field.singularitiesComputed = false;
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, field, options);
   EXPECT_EQ("MissingSingularities", result.diagnostics.terminalFailureCode);
 
   field.singularitiesComputed = true;
+  field.confidence.resize(0);
+  field.confidenceComputed = false;
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, field, options);
   EXPECT_EQ("MissingConfidence", result.diagnostics.terminalFailureCode);
 
   field.confidence = Eigen::VectorXd::Ones(mesh.faces.rows());
   field.confidenceComputed = true;
+  field.uncoveredFacePolicyApplied = false;
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, field, options);
   EXPECT_EQ("UncoveredFaces", result.diagnostics.terminalFailureCode);
@@ -641,7 +806,7 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
   directional::TriMesh meshWhole;
   meshWhole.set_mesh(mesh.vertices, mesh.faces);
   field = directional::pipeline::finalize_surface_cell_raw_cross_field(
-      meshWhole, field.rawField);
+      meshWhole, constant_raw_field(mesh.faces.rows()));
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, field, options);
   EXPECT_TRUE(result.success);
@@ -692,6 +857,21 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
   }
 }
 
+TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresEdgeTransitionRecords) {
+  const SyntheticMesh mesh = make_planar_grid(1);
+  directional::fields::CrossFieldResult field = matching_swap_cross_field(mesh);
+  field.edgeTransitions.clear();
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_cross_field_result(
+          mesh.vertices, mesh.faces, field, surface_options());
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("MissingMatching", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
+  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+}
+
 TEST(SurfaceCellPipelinePhase20, RawAndFinalizedFieldInputsHaveEquivalentMetadata) {
   const SyntheticMesh mesh = make_two_square_components();
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
@@ -739,14 +919,10 @@ TEST(SurfaceCellPipelinePhase20, UncoveredRawFieldFacesFailBeforeTracing) {
           mesh.vertices, mesh.faces, raw, surface_options());
 
   EXPECT_FALSE(result.success);
-  EXPECT_EQ("UncoveredFaces", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_TRUE(result.surfaceCellContext.hasCrossField);
-  EXPECT_TRUE(result.surfaceCellContext.crossField.confidenceComputed);
-  EXPECT_TRUE(result.surfaceCellContext.crossField.uncoveredFacePolicyApplied);
-  ASSERT_EQ(1, result.surfaceCellContext.crossField.uncoveredFaces.size());
-  EXPECT_EQ(0, result.surfaceCellContext.crossField.uncoveredFaces(0));
+  EXPECT_FALSE(result.surfaceCellContext.hasCrossField);
   EXPECT_EQ(nullptr, find_stage_lineage(result.diagnostics, "tracing"));
 }
 
@@ -879,6 +1055,7 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
             context.completedPatches.size());
   for (const std::string &productName : {"source", "cross-field",
                                         "feature", "rails", "metric", "relief", "relief-consumption",
+                                        "source-labels",
                                         "tracing", "strands", "embedding",
                                         "arrangement", "simplification",
                                         "completion", "optimization",
@@ -1038,7 +1215,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
 
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_cross_field_result(
-          mesh.vertices, mesh.faces, matching_swap_cross_field(), options);
+          mesh.vertices, mesh.faces, matching_swap_cross_field(mesh), options);
 
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
@@ -1047,8 +1224,18 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
       result.surfaceCellContext;
   ASSERT_TRUE(context.hasTraceNetwork);
   ASSERT_TRUE(context.hasCrossField);
-  ASSERT_EQ(1, context.crossField.matching.size());
-  EXPECT_EQ(1, context.crossField.matching[0]);
+  directional::TriMesh sourceMesh;
+  sourceMesh.set_mesh(mesh.vertices, mesh.faces);
+  ASSERT_EQ(sourceMesh.EF.rows(), context.crossField.matching.size());
+  int interiorEdge = -1;
+  for (int edge = 0; edge < sourceMesh.EF.rows(); ++edge) {
+    if (sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0) {
+      interiorEdge = edge;
+      break;
+    }
+  }
+  ASSERT_GE(interiorEdge, 0);
+  EXPECT_EQ(1, context.crossField.matching[interiorEdge]);
 
   directional::geometry::SurfaceTraceSeed seed;
   seed.point.face = 0;
@@ -1070,6 +1257,105 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingUsesFamilySwapMatchingAcrossSourceEd
   ASSERT_NE(nullptr, tracing);
   EXPECT_EQ(directional::pipeline::hash_trace_network(context.traceNetwork),
             tracing->outputObject.structuralHash);
+}
+
+TEST(SurfaceCellPipelinePhase20, TraceMatchingUsesSourceEdgeTransitionIdentity) {
+  const SyntheticMesh mesh = make_planar_grid(2);
+  directional::TriMesh sourceMesh;
+  sourceMesh.set_mesh(mesh.vertices, mesh.faces);
+  Eigen::MatrixXd faceAxisX =
+      Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
+  Eigen::MatrixXd faceAxisY =
+      Eigen::MatrixXd::Zero(mesh.faces.rows(), 3);
+  faceAxisX.rowwise() = Eigen::RowVector3d(1.0, 0.0, 0.0);
+  faceAxisY.rowwise() = Eigen::RowVector3d(0.0, 1.0, 0.0);
+  Eigen::VectorXi matching = Eigen::VectorXi::Zero(sourceMesh.EF.rows());
+  Eigen::VectorXd effort = Eigen::VectorXd::Zero(sourceMesh.EF.rows());
+  std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+  for (int edge = 0; edge < sourceMesh.EF.rows(); ++edge) {
+    directional::fields::CrossFieldEdgeTransition transition;
+    transition.sourceEdge = edge;
+    transition.sourceVertex0 = sourceMesh.EV(edge, 0);
+    transition.sourceVertex1 = sourceMesh.EV(edge, 1);
+    transition.firstFace = sourceMesh.EF(edge, 0);
+    transition.secondFace = sourceMesh.EF(edge, 1);
+    transition.matching =
+        sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0
+            ? (edge % 3) + 1
+            : -1;
+    transition.effort =
+        sourceMesh.EF(edge, 0) >= 0 && sourceMesh.EF(edge, 1) >= 0
+            ? 0.125 * static_cast<double>(edge + 1)
+            : 0.0;
+    matching(edge) = transition.matching;
+    effort(edge) = transition.effort;
+    transitions.push_back(transition);
+  }
+  std::reverse(transitions.begin(), transitions.end());
+
+  int checked = 0;
+  for (int edge = 0; edge < sourceMesh.EF.rows(); ++edge) {
+    const int face = sourceMesh.EF(edge, 0);
+    const int neighbor = sourceMesh.EF(edge, 1);
+    if (face < 0 || neighbor < 0) {
+      continue;
+    }
+    const int a = sourceMesh.EV(edge, 0);
+    const int b = sourceMesh.EV(edge, 1);
+    const int exitEdge =
+        directional::pipeline::surface_cell_local_edge_index(mesh.faces, face,
+                                                             a, b);
+    ASSERT_GE(exitEdge, 0);
+    directional::geometry::SurfaceTraceSeed seed;
+    seed.point.face = face;
+    seed.point.barycentric =
+        Eigen::RowVector3d::Constant(0.25);
+    seed.point.barycentric[exitEdge] = 0.50;
+    const Eigen::RowVector3d start =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces, seed.point);
+    directional::geometry::SurfaceTracePoint edgeMidpoint;
+    edgeMidpoint.face = face;
+    edgeMidpoint.barycentric = Eigen::RowVector3d::Zero();
+    edgeMidpoint.barycentric[(exitEdge + 1) % 3] = 0.5;
+    edgeMidpoint.barycentric[(exitEdge + 2) % 3] = 0.5;
+    const Eigen::RowVector3d end =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            mesh.vertices, mesh.faces, edgeMidpoint);
+    faceAxisX.row(face) = (end - start).normalized();
+
+    directional::geometry::SurfaceCellTracingOptions options;
+    options.maxTraceLength = 10.0;
+    const directional::geometry::SurfaceTraceResult trace =
+        directional::geometry::trace_surface_field(
+            mesh.vertices, mesh.faces, faceAxisX, faceAxisY, seed, 0, 1,
+            options, &matching, &effort, &transitions);
+
+    ASSERT_GE(trace.segments.size(), 2U) << edge;
+    EXPECT_EQ(matching(edge), trace.segments[0].matching) << edge;
+    EXPECT_NEAR(effort(edge), trace.segments[0].matchingEffort, 1.0e-12)
+        << edge;
+    ++checked;
+  }
+  EXPECT_GT(checked, 1);
+}
+
+TEST(SurfaceCellPipelinePhase20, MissingEdgeTransitionTerminatesTraceFieldMetadata) {
+  const SyntheticMesh mesh = make_planar_grid(1);
+  directional::fields::CrossFieldResult field = matching_swap_cross_field(mesh);
+  field.edgeTransitions.clear();
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+
+  const directional::geometry::SurfaceTraceResult trace =
+      directional::geometry::trace_surface_field(mesh.vertices, mesh.faces,
+                                                 field, seed, 0, -1, options);
+
+  EXPECT_EQ(directional::geometry::TraceTerminationReason::FieldMetadata,
+            trace.termination);
 }
 TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHardFeatureRails) {
   const SyntheticMesh mesh = make_two_square_components();
@@ -1257,7 +1543,7 @@ TEST(SurfaceCellPipelinePhase20, MultiFaceStripFailsClosedAtCrossFieldValidation
   EXPECT_FALSE(result.success);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_STREQ("None", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
-  EXPECT_EQ("MissingSingularities", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("MissingMatching", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("cross-field-validation", result.diagnostics.terminalFailureStage);
   EXPECT_EQ(0U, result.diagnostics.surfaceCellCompletedQuadCount);
   EXPECT_TRUE(result.diagnostics.surfaceCellStageLineage.empty());
@@ -1288,6 +1574,65 @@ TEST(SurfaceCellPipelinePhase20, CloseSheetsDoNotLeakSourceProvenance) {
   }
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_EQ(2U, result.diagnostics.surfaceCellCompletedQuadCount);
+}
+
+TEST(SurfaceCellPipelinePhase20, ConnectedCloseSheetsKeepDistinctLocalSheetLabels) {
+  const SyntheticMesh mesh = make_connected_close_opposing_sheets();
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.injectFailureAfterStage = 3;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_cross_field_result(
+          mesh.vertices, mesh.faces, matching_swap_cross_field(mesh), options);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("tracing", result.diagnostics.terminalFailureStage);
+  const directional::pipeline::SurfaceCellPipelineContext &context =
+      result.surfaceCellContext;
+  ASSERT_TRUE(context.hasSourceSurfaceLabels);
+  ASSERT_EQ(mesh.faces.rows(),
+            context.sourceSurfaceLabels.componentByFace.size());
+  ASSERT_EQ(mesh.faces.rows(),
+            context.sourceSurfaceLabels.localSheetByFace.size());
+  EXPECT_EQ(context.sourceSurfaceLabels.componentByFace[0],
+            context.sourceSurfaceLabels.componentByFace[4]);
+  EXPECT_NE(context.sourceSurfaceLabels.localSheetByFace[0],
+            context.sourceSurfaceLabels.localSheetByFace[4]);
+  ASSERT_TRUE(context.hasTraceNetwork);
+  EXPECT_EQ(context.sourceSurfaceLabels.componentByFace,
+            context.traceNetwork.sourceFaceComponents);
+  EXPECT_EQ(context.sourceSurfaceLabels.localSheetByFace,
+            context.traceNetwork.sourceFaceSheets);
+  for (const directional::geometry::SurfaceTraceResult &trace :
+       context.traceNetwork.traces) {
+    EXPECT_TRUE(
+        directional::geometry::surface_cell_tracing_detail::
+            trace_respects_face_labels(trace,
+                                       context.traceNetwork.sourceFaceComponents,
+                                       context.traceNetwork.sourceFaceSheets));
+  }
+  const directional::pipeline::SurfaceCellContextProductDebug *labels =
+      find_context_product(context, "source-labels");
+  ASSERT_NE(nullptr, labels);
+  EXPECT_TRUE(labels->available);
+  EXPECT_EQ(context.sourceSurfaceLabels.localSheetByFace.size(),
+            labels->elementCount);
+}
+
+TEST(SurfaceCellPipelinePhase20, SmoothHairpinUsesProximityOnlyToSeparateOpposingSheets) {
+  const SyntheticMesh mesh = make_smooth_hairpin_strip();
+  const directional::geometry::SourceSurfaceLabels labels =
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(mesh.vertices, mesh.faces);
+  const int bottomFace = 0;
+  const int topFace = static_cast<int>(mesh.faces.rows()) - 2;
+
+  ASSERT_EQ(mesh.faces.rows(), labels.componentByFace.size());
+  ASSERT_EQ(mesh.faces.rows(), labels.localSheetByFace.size());
+  EXPECT_EQ(labels.componentByFace[bottomFace], labels.componentByFace[topFace]);
+  EXPECT_EQ(labels.localSheetByFace[0], labels.localSheetByFace[1]);
+  EXPECT_NE(labels.localSheetByFace[bottomFace], labels.localSheetByFace[topFace]);
 }
 
 
@@ -1403,38 +1748,47 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
   const SyntheticMesh mesh = make_two_square_components();
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
 
-  directional::pipeline::RemeshOptions sequential = surface_options();
-  sequential.surfaceCells.fallbackPolicy =
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::ReturnQuadDominant;
-  const directional::pipeline::RemeshResult sequentialResult =
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, raw, sequential);
+          mesh.vertices, mesh.faces, raw, options);
 
-  directional::pipeline::RemeshOptions parallel = sequential;
-  parallel.parallelizeComponents = true;
-  parallel.maxComponentThreads = 2;
-  const directional::pipeline::RemeshResult parallelResult =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, raw, parallel);
+  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_EQ("UnsupportedInput", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("component-scheduling", result.diagnostics.terminalFailureStage);
+  EXPECT_EQ("UnsupportedInput",
+            result.diagnostics.originalSurfaceCellFailureCode);
+  EXPECT_EQ("component-scheduling",
+            result.diagnostics.originalSurfaceCellFailureStage);
+  EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
+  EXPECT_TRUE(result.diagnostics.surfaceCellStageLineage.empty());
+}
 
-  EXPECT_TRUE(sequentialResult.success);
-  EXPECT_TRUE(parallelResult.success);
-  EXPECT_EQ(signature(sequentialResult), signature(parallelResult));
-  EXPECT_EQ(2U, parallelResult.diagnostics.componentCount);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
-            sequentialResult.diagnostics.surfaceCellOutputOrigin);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
-            parallelResult.diagnostics.surfaceCellOutputOrigin);
-  EXPECT_TRUE(parallelResult.diagnostics.surfaceCellRemeshOccurred);
-  const directional::SurfaceCellStageLineage *arrangement =
-      find_stage_lineage(parallelResult.diagnostics, "arrangement");
-  ASSERT_NE(nullptr, arrangement);
-  EXPECT_EQ("embedded-network", arrangement->inputObject.type);
-  EXPECT_NE(0U, arrangement->inputObject.structuralHash);
-  EXPECT_GE(parallelResult.diagnostics.surfaceCellStageLineage.size(),
-            sequentialResult.diagnostics.surfaceCellStageLineage.size());
-  EXPECT_GE(parallelResult.diagnostics.surfaceCellCompletedQuadCount, 2U);
-  expect_lineage_identities_are_valid(parallelResult.diagnostics);
+TEST(SurfaceCellPipelinePhase20,
+     CrossFieldResultParallelSurfaceCellsFailsBeforeRawRefinalization) {
+  const SyntheticMesh mesh = make_two_square_components();
+  directional::fields::CrossFieldResult field = matching_swap_cross_field(mesh);
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_cross_field_result(
+          mesh.vertices, mesh.faces, field, options);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_EQ("UnsupportedInput", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("component-scheduling", result.diagnostics.terminalFailureStage);
+  EXPECT_TRUE(result.rawCrossField.size() == 0);
+  EXPECT_TRUE(result.crossFieldMatching.size() == 0);
+  EXPECT_TRUE(result.crossFieldEffort.size() == 0);
+  EXPECT_FALSE(result.surfaceCellContext.hasCrossField);
 }
 
 TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {

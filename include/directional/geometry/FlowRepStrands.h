@@ -377,8 +377,17 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.strandProvenance = segment.family;
     arc.featureProvenance = segment.exitEdge;
     arc.featureClass = segment.exitEdge;
-    arc.hardFeatureRail = mandatory;
-    arc.mandatoryRail = mandatory;
+    arc.hardFeatureRail = mandatory || segment.railId >= 0;
+    arc.mandatoryRail = mandatory || segment.railId >= 0;
+    if (segment.railId >= 0) {
+      arc.featureProvenance = segment.curveId;
+      arc.featureClass = 3;
+      arc.railId = segment.railId;
+      arc.curveId = segment.curveId;
+      arc.railT0 = segment.railT0;
+      arc.railT1 = segment.railT1;
+      arc.sameStrandHint = segment.railId;
+    }
     arcs.push_back(arc);
   };
   for (const SurfaceCellRail &rail : network.authoritativeRails) {

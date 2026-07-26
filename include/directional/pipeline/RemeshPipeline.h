@@ -88,6 +88,7 @@ enum class SurfaceCellFailureCode {
   MissingConfidence,
   UncoveredFaces,
   UnsupportedInput,
+  InvalidRailTopology,
   InjectedStageFailure,
   NotProductionReady
 };
@@ -132,6 +133,8 @@ surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
     return "UncoveredFaces";
   case SurfaceCellFailureCode::UnsupportedInput:
     return "UnsupportedInput";
+  case SurfaceCellFailureCode::InvalidRailTopology:
+    return "InvalidRailTopology";
   case SurfaceCellFailureCode::InjectedStageFailure:
     return "InjectedStageFailure";
   case SurfaceCellFailureCode::NotProductionReady:
@@ -333,6 +336,9 @@ struct SurfaceCellPipelineContext {
   bool hasReliefRootSelection = false;
   std::set<std::uint64_t> reliefBarrierEdges;
   bool hasReliefBarrierEdges = false;
+
+  geometry::SourceSurfaceLabels sourceSurfaceLabels;
+  bool hasSourceSurfaceLabels = false;
 
   geometry::SurfaceCellNetwork traceNetwork;
   bool hasTraceNetwork = false;
@@ -680,6 +686,12 @@ inline void hash_trace_segment(std::uint64_t &seed,
   hash_combine_i64(seed, segment.exitEdge);
   hash_combine_i64(seed, segment.matching);
   hash_combine_double(seed, segment.matchingEffort);
+  hash_combine_i64(seed, segment.railId);
+  hash_combine_i64(seed, segment.curveId);
+  hash_combine_i64(seed, segment.railIntervalIndex);
+  hash_combine_i64(seed, segment.railSideSign);
+  hash_combine_double(seed, segment.railT0);
+  hash_combine_double(seed, segment.railT1);
 }
 
 inline void hash_trace_point(std::uint64_t &seed,
@@ -702,6 +714,7 @@ inline std::uint64_t hash_trace_network(
   }
   hash_vector(seed, network.sourceFaceComponents);
   hash_vector(seed, network.sourceFaceSheets);
+  hash_combine_u64(seed, network.authoritativeRails.size());
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     hash_combine_i64(seed, rail.id);
     hash_combine_i64(seed, static_cast<int>(rail.kind));
@@ -710,6 +723,7 @@ inline std::uint64_t hash_trace_network(
     hash_combine_i64(seed, rail.closed ? 1 : 0);
     hash_vector(seed, rail.sourceVertices);
     hash_vector(seed, rail.sourceEdges);
+    hash_combine_u64(seed, rail.samples.size());
     for (const geometry::SurfaceCellRailSample &sample : rail.samples) {
       hash_combine_i64(seed, sample.sourceFace);
       hash_combine_i64(seed, sample.sourceEdge);
@@ -719,19 +733,23 @@ inline std::uint64_t hash_trace_network(
       hash_row_vector(seed, sample.position);
     }
   }
+  hash_combine_u64(seed, network.seeds.size());
   for (const geometry::SurfaceTraceSeed &traceSeed : network.seeds) {
     hash_combine_i64(seed, traceSeed.id);
     hash_trace_point(seed, traceSeed.point);
     hash_combine_i64(seed, static_cast<int>(traceSeed.provenance));
     hash_combine_i64(seed, traceSeed.sourceId);
   }
+  hash_combine_u64(seed, network.traces.size());
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
+    hash_combine_u64(seed, trace.segments.size());
     for (const geometry::SurfaceTraceSegment &segment : trace.segments) {
       hash_trace_segment(seed, segment);
     }
     hash_combine_i64(seed, static_cast<int>(trace.termination));
     hash_combine_double(seed, trace.length);
   }
+  hash_combine_u64(seed, network.proposals.size());
   for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
     hash_combine_i64(seed, proposal.seedId);
     hash_combine_i64(seed, proposal.accepted ? 1 : 0);
@@ -740,10 +758,13 @@ inline std::uint64_t hash_trace_network(
     for (const geometry::SurfaceTracePoint &corner : proposal.corners) {
       hash_trace_point(seed, corner);
     }
+    hash_combine_u64(seed, proposal.sides.size());
     for (const geometry::SurfaceTraceSegment &side : proposal.sides) {
       hash_trace_segment(seed, side);
     }
+    hash_combine_u64(seed, proposal.boundaryPaths.size());
     for (const auto &path : proposal.boundaryPaths) {
+      hash_combine_u64(seed, path.size());
       for (const geometry::SurfaceTraceSegment &segment : path) {
         hash_trace_segment(seed, segment);
       }
@@ -754,6 +775,8 @@ inline std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.stats.rejectedClosure);
   hash_combine_i64(seed, network.stats.rejectedBarrier);
   hash_combine_i64(seed, network.stats.rejectedDegenerate);
+  hash_combine_i64(seed, network.stats.rejectedSourceSheet);
+  hash_combine_i64(seed, network.stats.rejectedFieldMetadata);
   return seed;
 }
 
@@ -977,6 +1000,25 @@ inline fields::CrossFieldResult make_surface_cell_cross_field_context(
 
 inline fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
     const TriMesh &meshWhole, const Eigen::MatrixXd &rawCrossField) {
+  if (rawCrossField.rows() != meshWhole.F.rows() ||
+      rawCrossField.cols() != 3 * fields::kCrossFieldDegree) {
+    throw std::invalid_argument(
+        "SurfaceCells raw cross field must have shape (#F, 12).");
+  }
+  for (Eigen::Index face = 0; face < rawCrossField.rows(); ++face) {
+    for (Eigen::Index col = 0; col < rawCrossField.cols(); ++col) {
+      if (!std::isfinite(rawCrossField(face, col))) {
+        throw std::invalid_argument(
+            "SurfaceCells raw cross field contains a nonfinite value.");
+      }
+    }
+    for (int branch = 0; branch < fields::kCrossFieldDegree; ++branch) {
+      if (rawCrossField.block(face, 3 * branch, 1, 3).norm() <= 1.0e-12) {
+        throw std::invalid_argument(
+            "SurfaceCells raw cross field contains a zero-length branch.");
+      }
+    }
+  }
   PCFaceTangentBundle tangentBundle;
   tangentBundle.init(meshWhole);
 
@@ -985,33 +1027,57 @@ inline fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
                 fields::kCrossFieldDegree);
   rawField.set_extrinsic_field(rawCrossField);
 
-  try {
-    fields::CrossFieldResult crossField = fields::finalize_cross_field_result(
-        rawField, false, true);
-    crossField.degree = fields::kCrossFieldDegree;
-    normalize_surface_cell_cross_field_directions(crossField);
-    return crossField;
-  } catch (const std::exception &) {
-    principal_matching(rawField, false);
-    fields::CrossFieldResult crossField;
-    crossField.degree = fields::kCrossFieldDegree;
-    crossField.rawField = rawField.extField;
-    normalize_surface_cell_cross_field_directions(crossField);
-    crossField.matching = rawField.matching;
-    crossField.effort = rawField.effort;
-    crossField.matchingComputed = true;
-    crossField.confidence = Eigen::VectorXd::Ones(rawField.extField.rows());
-    crossField.confidenceComputed = true;
-    crossField.uncoveredFaces.resize(0);
-    crossField.uncoveredFacePolicyApplied = true;
-    return crossField;
-  }
+  fields::CrossFieldResult crossField =
+      fields::finalize_cross_field_result(rawField, false, true);
+  crossField.degree = fields::kCrossFieldDegree;
+  normalize_surface_cell_cross_field_directions(crossField);
+  return crossField;
 }
 inline std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
   const int lo = std::min(a, b);
   const int hi = std::max(a, b);
   return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(lo)) << 32u) |
          static_cast<std::uint32_t>(hi);
+}
+
+inline bool cross_field_transitions_match_source_edges(
+    const TriMesh &meshWhole, const fields::CrossFieldResult &crossField) {
+  if (crossField.matching.size() != meshWhole.EF.rows() ||
+      crossField.effort.size() != meshWhole.EF.rows()) {
+    return false;
+  }
+  std::set<int> seenEdges;
+  for (const fields::CrossFieldEdgeTransition &transition :
+       crossField.edgeTransitions) {
+    if (transition.sourceEdge < 0 ||
+        transition.sourceEdge >= meshWhole.EF.rows() ||
+        !seenEdges.insert(transition.sourceEdge).second) {
+      return false;
+    }
+    const int edge = transition.sourceEdge;
+    if (surface_cell_source_edge_key(transition.sourceVertex0,
+                                     transition.sourceVertex1) !=
+        surface_cell_source_edge_key(meshWhole.EV(edge, 0),
+                                     meshWhole.EV(edge, 1))) {
+      return false;
+    }
+    if (transition.firstFace != meshWhole.EF(edge, 0) ||
+        transition.secondFace != meshWhole.EF(edge, 1)) {
+      return false;
+    }
+    if (transition.matching != crossField.matching(edge) ||
+        !std::isfinite(transition.effort) ||
+        std::abs(transition.effort - crossField.effort(edge)) > 1.0e-12) {
+      return false;
+    }
+  }
+  for (int edge = 0; edge < meshWhole.EF.rows(); ++edge) {
+    if (meshWhole.EF(edge, 0) >= 0 && meshWhole.EF(edge, 1) >= 0 &&
+        seenEdges.count(edge) == 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 inline int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
@@ -1060,14 +1126,30 @@ inline bool surface_cell_feature_edge_is_rail(
          edge.edgeClass == geometry::AdaptiveFeatureClass::Hard;
 }
 
-inline std::vector<geometry::SurfaceCellRail> build_authoritative_surface_cell_rails(
-    const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap) {
+struct SurfaceCellRailBuildResult {
+  bool success = true;
   std::vector<geometry::SurfaceCellRail> rails;
+  int failedEdgeIndex = -1;
+  int failedRailId = -1;
+  int failedIntervalIndex = -1;
+  geometry::surface_cell_tracing_detail::RailBuildStatus validationStatus =
+      geometry::surface_cell_tracing_detail::RailBuildStatus::Valid;
+};
+
+inline SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
+    const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap) {
+  SurfaceCellRailBuildResult result;
   std::set<int> coveredEdges;
+  const auto fail_edge = [&](const int edgeIndex) {
+    result.success = false;
+    result.failedEdgeIndex = edgeIndex;
+    result.rails.clear();
+    return false;
+  };
   const auto append_edge_interval = [&](geometry::SurfaceCellRail &rail,
                                         const geometry::AdaptiveFeatureEdge &edge,
-                                        const int a, const int b,
-                                        const double t0,
+                                        const int edgeIndex, const int a,
+                                        const int b, const double t0,
                                         const double t1) {
     int face = -1;
     for (const int incidentFace : edge.incidentFaces) {
@@ -1076,79 +1158,196 @@ inline std::vector<geometry::SurfaceCellRail> build_authoritative_surface_cell_r
         break;
       }
     }
-    if (face < 0) {
-      return;
+    if (face < 0 || a < 0 || b < 0 || a >= meshWhole.V.rows() ||
+        b >= meshWhole.V.rows() || a == b) {
+      return fail_edge(edgeIndex);
     }
-    rail.samples.push_back(
-        make_surface_cell_rail_sample(meshWhole, face, a, b, 0.0, t0));
-    rail.samples.push_back(
-        make_surface_cell_rail_sample(meshWhole, face, a, b, 1.0, t1));
+    bool hasA = false;
+    bool hasB = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      hasA = hasA || meshWhole.F(face, corner) == a;
+      hasB = hasB || meshWhole.F(face, corner) == b;
+    }
+    if (!hasA || !hasB) {
+      return fail_edge(edgeIndex);
+    }
+    const geometry::SurfaceCellRailSample startSample =
+        make_surface_cell_rail_sample(meshWhole, face, a, b, 0.0, t0);
+    const geometry::SurfaceCellRailSample endSample =
+        make_surface_cell_rail_sample(meshWhole, face, a, b, 1.0, t1);
+    if (startSample.sourceEdge < 0 || endSample.sourceEdge < 0) {
+      return fail_edge(edgeIndex);
+    }
+    rail.samples.push_back(startSample);
+    rail.samples.push_back(endSample);
+    return true;
+  };
+
+  struct OrderedCurveEdge {
+    int edgeIndex = -1;
+    int startVertex = -1;
+    int endVertex = -1;
+    bool isRail = false;
+    geometry::SurfaceCellRailKind kind =
+        geometry::SurfaceCellRailKind::Boundary;
+  };
+
+  const auto emit_run = [&](const geometry::AdaptiveFeatureCurve &curve,
+                            const std::vector<OrderedCurveEdge> &ordered,
+                            const std::vector<int> &run,
+                            const bool closed) {
+    if (run.empty()) {
+      return true;
+    }
+    geometry::SurfaceCellRail rail;
+    rail.id = static_cast<int>(result.rails.size());
+    rail.kind = ordered[static_cast<std::size_t>(run.front())].kind;
+    rail.curveId = curve.id;
+    rail.component = curve.component;
+    rail.closed = closed;
+    rail.sourceVertices.push_back(
+        ordered[static_cast<std::size_t>(run.front())].startVertex);
+    for (int localIndex = 0; localIndex < static_cast<int>(run.size());
+         ++localIndex) {
+      const OrderedCurveEdge &entry =
+          ordered[static_cast<std::size_t>(run[static_cast<std::size_t>(localIndex)])];
+      if (entry.kind != rail.kind || !entry.isRail ||
+          rail.sourceVertices.back() != entry.startVertex) {
+        return fail_edge(entry.edgeIndex);
+      }
+      const geometry::AdaptiveFeatureEdge &edge =
+          featureMap.edges[static_cast<std::size_t>(entry.edgeIndex)];
+      const double t0 = static_cast<double>(localIndex) /
+                        static_cast<double>(run.size());
+      const double t1 = static_cast<double>(localIndex + 1) /
+                        static_cast<double>(run.size());
+      if (!append_edge_interval(rail, edge, entry.edgeIndex, entry.startVertex,
+                                entry.endVertex, t0, t1)) {
+        return false;
+      }
+      rail.sourceEdges.push_back(entry.edgeIndex);
+      rail.sourceVertices.push_back(entry.endVertex);
+      coveredEdges.insert(entry.edgeIndex);
+    }
+    if (closed) {
+      if (rail.sourceVertices.front() != rail.sourceVertices.back()) {
+        return fail_edge(rail.sourceEdges.back());
+      }
+      rail.sourceVertices.pop_back();
+    }
+    result.rails.push_back(std::move(rail));
+    return true;
   };
 
   for (const geometry::AdaptiveFeatureCurve &curve : featureMap.curves) {
-    bool hasBoundary = false;
-    bool hasHard = false;
-    for (const int edgeIndex : curve.edges) {
-      if (edgeIndex < 0 || edgeIndex >= static_cast<int>(featureMap.edges.size())) {
-        continue;
+    const int edgeCount = static_cast<int>(curve.edges.size());
+    if (edgeCount == 0) {
+      continue;
+    }
+    const bool hasExplicitClosingVertex =
+        curve.vertices.size() == static_cast<std::size_t>(edgeCount + 1);
+    const bool hasImplicitClosingVertex =
+        curve.closed &&
+        curve.vertices.size() == static_cast<std::size_t>(edgeCount);
+    if (!hasExplicitClosingVertex && !hasImplicitClosingVertex) {
+      fail_edge(curve.edges.front());
+      return result;
+    }
+
+    std::vector<OrderedCurveEdge> ordered;
+    ordered.reserve(static_cast<std::size_t>(edgeCount));
+    for (int index = 0; index < edgeCount; ++index) {
+      const int edgeIndex = curve.edges[static_cast<std::size_t>(index)];
+      if (edgeIndex < 0 ||
+          edgeIndex >= static_cast<int>(featureMap.edges.size())) {
+        fail_edge(edgeIndex);
+        return result;
       }
       const geometry::AdaptiveFeatureEdge &edge =
           featureMap.edges[static_cast<std::size_t>(edgeIndex)];
-      hasBoundary = hasBoundary ||
-                    edge.edgeClass == geometry::AdaptiveFeatureClass::Boundary;
-      hasHard = hasHard || edge.edgeClass == geometry::AdaptiveFeatureClass::Hard;
+      const int a = curve.vertices[static_cast<std::size_t>(index)];
+      const int b = hasExplicitClosingVertex
+                        ? curve.vertices[static_cast<std::size_t>(index + 1)]
+                        : curve.vertices[static_cast<std::size_t>(
+                              (index + 1) % edgeCount)];
+      if (geometry::AdaptiveFeatureMap::canonical_edge(a, b) !=
+          geometry::AdaptiveFeatureMap::canonical_edge(edge.vertices.first,
+                                                       edge.vertices.second)) {
+        fail_edge(edgeIndex);
+        return result;
+      }
+      OrderedCurveEdge entry;
+      entry.edgeIndex = edgeIndex;
+      entry.startVertex = a;
+      entry.endVertex = b;
+      entry.isRail = surface_cell_feature_edge_is_rail(edge);
+      entry.kind = edge.edgeClass == geometry::AdaptiveFeatureClass::Hard
+                       ? geometry::SurfaceCellRailKind::HardFeature
+                       : geometry::SurfaceCellRailKind::Boundary;
+      ordered.push_back(entry);
     }
-    if (!hasBoundary && !hasHard) {
+
+    const bool allRail = std::all_of(
+        ordered.begin(), ordered.end(),
+        [](const OrderedCurveEdge &entry) { return entry.isRail; });
+    const bool oneKind = allRail &&
+                         std::all_of(ordered.begin() + 1, ordered.end(),
+                                     [&](const OrderedCurveEdge &entry) {
+                                       return entry.kind == ordered.front().kind;
+                                     });
+    if (curve.closed && allRail && oneKind) {
+      std::vector<int> run(static_cast<std::size_t>(edgeCount));
+      std::iota(run.begin(), run.end(), 0);
+      if (!emit_run(curve, ordered, run, true)) {
+        return result;
+      }
       continue;
     }
 
-    geometry::SurfaceCellRail rail;
-    rail.id = static_cast<int>(rails.size());
-    rail.kind = hasHard ? geometry::SurfaceCellRailKind::HardFeature
-                        : geometry::SurfaceCellRailKind::Boundary;
-    rail.curveId = curve.id;
-    rail.component = curve.component;
-    rail.closed = curve.closed;
-    rail.sourceVertices = curve.vertices;
-    rail.sourceEdges = curve.edges;
-    const int edgeCount = static_cast<int>(curve.edges.size());
-    for (int index = 0; index < edgeCount; ++index) {
-      const int edgeIndex = curve.edges[static_cast<std::size_t>(index)];
-      if (edgeIndex < 0 || edgeIndex >= static_cast<int>(featureMap.edges.size())) {
-        continue;
-      }
-      const geometry::AdaptiveFeatureEdge &edge =
-          featureMap.edges[static_cast<std::size_t>(edgeIndex)];
-      if (!surface_cell_feature_edge_is_rail(edge)) {
-        continue;
-      }
-      int a = edge.vertices.first;
-      int b = edge.vertices.second;
-      if (curve.vertices.size() >= 2U) {
-        const int candidateA = curve.vertices[static_cast<std::size_t>(
-            std::min<int>(index, static_cast<int>(curve.vertices.size()) - 1))];
-        const int nextIndex = index + 1;
-        const bool hasNext = nextIndex < static_cast<int>(curve.vertices.size());
-        const int candidateB = hasNext
-                                   ? curve.vertices[static_cast<std::size_t>(nextIndex)]
-                                   : (curve.closed ? curve.vertices.front() : b);
-        if (featureMap.find_edge({candidateA, candidateB}) == edgeIndex) {
-          a = candidateA;
-          b = candidateB;
+    int startIndex = 0;
+    if (curve.closed) {
+      for (int index = 0; index < edgeCount; ++index) {
+        const int previous = (index + edgeCount - 1) % edgeCount;
+        if (!ordered[static_cast<std::size_t>(index)].isRail ||
+            !ordered[static_cast<std::size_t>(previous)].isRail ||
+            ordered[static_cast<std::size_t>(index)].kind !=
+                ordered[static_cast<std::size_t>(previous)].kind) {
+          startIndex = index;
+          break;
         }
       }
-      const double t0 = edgeCount > 0 ? static_cast<double>(index) / edgeCount : 0.0;
-      const double t1 = edgeCount > 0 ? static_cast<double>(index + 1) / edgeCount : 1.0;
-      append_edge_interval(rail, edge, a, b, t0, t1);
-      coveredEdges.insert(edgeIndex);
     }
-    if (rail.samples.size() >= 2U) {
-      rails.push_back(std::move(rail));
+
+    int processed = 0;
+    int index = startIndex;
+    while (processed < edgeCount) {
+      const OrderedCurveEdge &entry =
+          ordered[static_cast<std::size_t>(index)];
+      if (!entry.isRail) {
+        index = (index + 1) % edgeCount;
+        ++processed;
+        continue;
+      }
+      const geometry::SurfaceCellRailKind kind = entry.kind;
+      std::vector<int> run;
+      while (processed < edgeCount) {
+        const OrderedCurveEdge &candidate =
+            ordered[static_cast<std::size_t>(index)];
+        if (!candidate.isRail || candidate.kind != kind) {
+          break;
+        }
+        run.push_back(index);
+        index = (index + 1) % edgeCount;
+        ++processed;
+      }
+      if (!emit_run(curve, ordered, run, false)) {
+        return result;
+      }
     }
   }
 
-  for (int edgeIndex = 0; edgeIndex < static_cast<int>(featureMap.edges.size());
-       ++edgeIndex) {
+  for (int edgeIndex = 0;
+       edgeIndex < static_cast<int>(featureMap.edges.size()); ++edgeIndex) {
     if (coveredEdges.count(edgeIndex) != 0) {
       continue;
     }
@@ -1158,7 +1357,7 @@ inline std::vector<geometry::SurfaceCellRail> build_authoritative_surface_cell_r
       continue;
     }
     geometry::SurfaceCellRail rail;
-    rail.id = static_cast<int>(rails.size());
+    rail.id = static_cast<int>(result.rails.size());
     rail.kind = edge.edgeClass == geometry::AdaptiveFeatureClass::Hard
                     ? geometry::SurfaceCellRailKind::HardFeature
                     : geometry::SurfaceCellRailKind::Boundary;
@@ -1167,13 +1366,37 @@ inline std::vector<geometry::SurfaceCellRail> build_authoritative_surface_cell_r
     rail.closed = false;
     rail.sourceVertices = {edge.vertices.first, edge.vertices.second};
     rail.sourceEdges = {edgeIndex};
-    append_edge_interval(rail, edge, edge.vertices.first, edge.vertices.second,
-                         0.0, 1.0);
-    if (rail.samples.size() >= 2U) {
-      rails.push_back(std::move(rail));
+    if (!append_edge_interval(rail, edge, edgeIndex, edge.vertices.first,
+                              edge.vertices.second, 0.0, 1.0)) {
+      return result;
     }
+    result.rails.push_back(std::move(rail));
   }
-  return rails;
+
+  const auto railValidation =
+      geometry::surface_cell_tracing_detail::rail_interval_refs(
+          result.rails, meshWhole.V, meshWhole.F,
+          geometry::surface_cell_tracing_detail::edge_faces(meshWhole.F));
+  if (railValidation.status !=
+      geometry::surface_cell_tracing_detail::RailBuildStatus::Valid) {
+    result.success = false;
+    result.validationStatus = railValidation.status;
+    result.failedRailId = railValidation.railId;
+    result.failedIntervalIndex = railValidation.intervalIndex;
+    if (railValidation.railId >= 0 &&
+        railValidation.railId < static_cast<int>(result.rails.size()) &&
+        railValidation.intervalIndex >= 0 &&
+        railValidation.intervalIndex < static_cast<int>(
+            result.rails[static_cast<std::size_t>(railValidation.railId)]
+                .sourceEdges.size())) {
+      result.failedEdgeIndex =
+          result.rails[static_cast<std::size_t>(railValidation.railId)]
+              .sourceEdges[static_cast<std::size_t>(
+                  railValidation.intervalIndex)];
+    }
+    result.rails.clear();
+  }
+  return result;
 }
 
 inline std::set<std::uint64_t> relief_barrier_edges_from_topology(
@@ -1216,7 +1439,8 @@ inline std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
           rail.sourceVertices[static_cast<std::size_t>(index)],
           rail.sourceVertices[static_cast<std::size_t>(index + 1)]));
     }
-    if (rail.closed && rail.sourceVertices.size() > 1U) {
+    if (rail.closed && rail.sourceVertices.size() > 1U &&
+        rail.sourceVertices.back() != rail.sourceVertices.front()) {
       keys.insert(surface_cell_source_edge_key(rail.sourceVertices.back(),
                                                rail.sourceVertices.front()));
     }
@@ -1247,11 +1471,17 @@ inline void fill_surface_cell_rail_constraints(
       constraints.authoritativeBoundaryEdges.insert({std::min(a, b), std::max(a, b)});
     }
     if (rail.closed && rail.sourceVertices.size() > 1U) {
-      constraints.authoritativeBoundaryEdges.insert(
-          {std::min(rail.sourceVertices.back(), rail.sourceVertices.front()),
-           std::max(rail.sourceVertices.back(), rail.sourceVertices.front())});
+      if (rail.sourceVertices.back() != rail.sourceVertices.front()) {
+        constraints.authoritativeBoundaryEdges.insert(
+            {std::min(rail.sourceVertices.back(), rail.sourceVertices.front()),
+             std::max(rail.sourceVertices.back(), rail.sourceVertices.front())});
+      }
       if (firstClosedBoundaryLoop.empty()) {
         firstClosedBoundaryLoop = rail.sourceVertices;
+        if (firstClosedBoundaryLoop.size() > 1U &&
+            firstClosedBoundaryLoop.front() == firstClosedBoundaryLoop.back()) {
+          firstClosedBoundaryLoop.pop_back();
+        }
       }
     }
   }
@@ -1270,6 +1500,7 @@ inline std::uint64_t hash_surface_cell_rails(
     hash_combine_i64(seed, rail.closed ? 1 : 0);
     hash_vector(seed, rail.sourceVertices);
     hash_vector(seed, rail.sourceEdges);
+    hash_combine_u64(seed, rail.samples.size());
     for (const geometry::SurfaceCellRailSample &sample : rail.samples) {
       hash_combine_i64(seed, sample.sourceFace);
       hash_combine_i64(seed, sample.sourceEdge);
@@ -1412,10 +1643,46 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
     result.surfaceCellContext.sourceMesh = meshWhole;
     result.surfaceCellContext.hasSourceMesh = true;
-    result.surfaceCellContext.crossField =
-        authoritativeCrossField != nullptr
-            ? *authoritativeCrossField
-            : finalize_surface_cell_raw_cross_field(meshWhole, rawCrossField);
+    if (authoritativeCrossField != nullptr) {
+      result.surfaceCellContext.crossField = *authoritativeCrossField;
+    } else {
+      try {
+        result.surfaceCellContext.crossField =
+            finalize_surface_cell_raw_cross_field(meshWhole, rawCrossField);
+      } catch (const std::invalid_argument &) {
+        result.diagnostics.terminalFailureCode =
+            surface_cell_failure_code_name(
+                SurfaceCellFailureCode::InvalidFieldDimensions);
+        result.diagnostics.terminalFailureStage = "cross-field-validation";
+        result.diagnostics.originalSurfaceCellFailureCode =
+            result.diagnostics.terminalFailureCode;
+        result.diagnostics.originalSurfaceCellFailureStage =
+            result.diagnostics.terminalFailureStage;
+        result.diagnostics.surfaceCellValidationFailures = 1U;
+        result.diagnostics.overallPipelineSeconds =
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                Clock::now() - pipelineStart)
+                .count() /
+            1.0e6;
+        return result;
+      } catch (const std::runtime_error &) {
+        result.diagnostics.terminalFailureCode =
+            surface_cell_failure_code_name(
+                SurfaceCellFailureCode::MissingMatching);
+        result.diagnostics.terminalFailureStage = "cross-field-validation";
+        result.diagnostics.originalSurfaceCellFailureCode =
+            result.diagnostics.terminalFailureCode;
+        result.diagnostics.originalSurfaceCellFailureStage =
+            result.diagnostics.terminalFailureStage;
+        result.diagnostics.surfaceCellValidationFailures = 1U;
+        result.diagnostics.overallPipelineSeconds =
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                Clock::now() - pipelineStart)
+                .count() /
+            1.0e6;
+        return result;
+      }
+    }
     normalize_surface_cell_cross_field_directions(
         result.surfaceCellContext.crossField);
     result.surfaceCellContext.hasCrossField = true;
@@ -1487,6 +1754,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     hash_matrix(crossFieldHash, result.surfaceCellContext.crossField.rawField);
     hash_vector(crossFieldHash, result.surfaceCellContext.crossField.matching);
     hash_vector(crossFieldHash, result.surfaceCellContext.crossField.effort);
+    hash_combine_u64(
+        crossFieldHash,
+        result.surfaceCellContext.crossField.edgeTransitions.size());
+    for (const fields::CrossFieldEdgeTransition &transition :
+         result.surfaceCellContext.crossField.edgeTransitions) {
+      hash_combine_i64(crossFieldHash, transition.sourceEdge);
+      hash_combine_i64(crossFieldHash, transition.sourceVertex0);
+      hash_combine_i64(crossFieldHash, transition.sourceVertex1);
+      hash_combine_i64(crossFieldHash, transition.firstFace);
+      hash_combine_i64(crossFieldHash, transition.secondFace);
+      hash_combine_i64(crossFieldHash, transition.matching);
+      hash_combine_double(crossFieldHash, transition.effort);
+    }
     hash_vector(crossFieldHash,
                 result.surfaceCellContext.crossField.singularCycles);
     hash_vector(crossFieldHash,
@@ -1626,7 +1906,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         (!result.surfaceCellContext.crossField.matchingComputed ||
          result.surfaceCellContext.crossField.matching.size() == 0 ||
          result.surfaceCellContext.crossField.effort.size() !=
-             result.surfaceCellContext.crossField.matching.size())) {
+             result.surfaceCellContext.crossField.matching.size() ||
+         !cross_field_transitions_match_source_edges(
+             meshWhole, result.surfaceCellContext.crossField))) {
       return fail_surface_cells(SurfaceCellFailureCode::MissingMatching,
                                 "cross-field-validation");
     }
@@ -1669,8 +1951,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     record_surface_cell_stage("feature", sourceIdentity, featureIdentity, true,
                               result.diagnostics.surfaceCellFeatureSeconds);
     completedSurfaceCellStages.push_back("feature");
-    const std::vector<geometry::SurfaceCellRail> authoritativeRails =
+    const SurfaceCellRailBuildResult railBuild =
         build_authoritative_surface_cell_rails(meshWhole, featureMap);
+    if (!railBuild.success) {
+      return fail_surface_cells(SurfaceCellFailureCode::InvalidRailTopology,
+                                "feature");
+    }
+    const std::vector<geometry::SurfaceCellRail> &authoritativeRails =
+        railBuild.rails;
     const std::set<std::uint64_t> hardFeatureRailEdges =
         hard_feature_edge_keys_from_rails(authoritativeRails);
     result.surfaceCellContext.authoritativeRails = authoritativeRails;
@@ -1787,20 +2075,21 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     tracingOptions.reliefRootVertices = reliefRootSelection.roots;
     tracingOptions.reliefRegionLabels = reliefRootSelection.labels;
     tracingOptions.reliefBarrierEdges = reliefBarrierEdges;
-    tracingOptions.sourceFaceComponents.assign(
-        static_cast<std::size_t>(meshWhole.F.rows()), 0);
-    const std::vector<std::vector<int>> sourceFaceComponents =
-        geometry::face_connected_components(meshWhole.F);
-    for (std::size_t component = 0; component < sourceFaceComponents.size();
-         ++component) {
-      for (const int face : sourceFaceComponents[component]) {
-        if (face >= 0 && face < meshWhole.F.rows()) {
-          tracingOptions.sourceFaceComponents[static_cast<std::size_t>(face)] =
-              static_cast<int>(component);
-        }
-      }
-    }
-    tracingOptions.sourceFaceSheets = tracingOptions.sourceFaceComponents;
+    const geometry::SourceSurfaceLabels sourceSurfaceLabels =
+        geometry::surface_cell_tracing_detail::classify_source_surface_labels(
+            meshWhole.V, meshWhole.F, hardFeatureRailEdges);
+    result.surfaceCellContext.sourceSurfaceLabels = sourceSurfaceLabels;
+    result.surfaceCellContext.hasSourceSurfaceLabels = true;
+    std::uint64_t sourceLabelHash = structural_hash_seed("source-labels");
+    hash_vector(sourceLabelHash, sourceSurfaceLabels.componentByFace);
+    hash_vector(sourceLabelHash, sourceSurfaceLabels.localSheetByFace);
+    record_surface_cell_context_product(
+        result.surfaceCellContext, "source-labels",
+        make_identity("source-labels", sourceLabelHash,
+                      sourceSurfaceLabels.localSheetByFace.size()),
+        true);
+    tracingOptions.sourceFaceComponents = sourceSurfaceLabels.componentByFace;
+    tracingOptions.sourceFaceSheets = sourceSurfaceLabels.localSheetByFace;
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
     }
@@ -1999,6 +2288,20 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         point.face = node.sourceFace;
         point.barycentric = node.barycentric.transpose();
         if (point.face >= 0 && point.face < meshWhole.F.rows()) {
+          if (point.face <
+              static_cast<int>(result.surfaceCellContext.sourceSurfaceLabels
+                                   .componentByFace.size())) {
+            point.component = result.surfaceCellContext.sourceSurfaceLabels
+                                  .componentByFace[static_cast<std::size_t>(
+                                      point.face)];
+          }
+          if (point.face <
+              static_cast<int>(result.surfaceCellContext.sourceSurfaceLabels
+                                   .localSheetByFace.size())) {
+            point.sheet = result.surfaceCellContext.sourceSurfaceLabels
+                              .localSheetByFace[static_cast<std::size_t>(
+                                  point.face)];
+          }
           point.position =
               point.barycentric(0) * meshWhole.V.row(meshWhole.F(point.face, 0)).transpose() +
               point.barycentric(1) * meshWhole.V.row(meshWhole.F(point.face, 1)).transpose() +
@@ -2089,6 +2392,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       constraints.sourceNormals = meshWhole.faceNormals;
       constraints.sourceFieldX = faceAxisX;
       constraints.sourceFieldY = faceAxisY;
+      constraints.sourceFaceComponent =
+          result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
+      constraints.sourceFaceSheet =
+          result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
       constraints.localTargetSize = targetSize.targetSize;
       constraints.vertexProvenance = completedProvenance;
       fill_surface_cell_rail_constraints(authoritativeRails, constraints);
@@ -2910,6 +3217,28 @@ inline RemeshResult remesh_components_from_raw_cross_field(
   return merged;
 }
 
+inline RemeshResult unsupported_parallel_surface_cells_result(
+    const RemeshOptions &options) {
+  RemeshResult result;
+  result.diagnostics.remeshBackend =
+      remesh_backend_name(RemeshBackend::SurfaceCells);
+  result.diagnostics.requestedBackend =
+      remesh_backend_name(RemeshBackend::SurfaceCells);
+  result.diagnostics.executedBackend =
+      remesh_backend_name(RemeshBackend::SurfaceCells);
+  result.diagnostics.surfaceCellFallbackPolicy =
+      surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+  result.diagnostics.terminalFailureCode =
+      surface_cell_failure_code_name(SurfaceCellFailureCode::UnsupportedInput);
+  result.diagnostics.terminalFailureStage = "component-scheduling";
+  result.diagnostics.originalSurfaceCellFailureCode =
+      result.diagnostics.terminalFailureCode;
+  result.diagnostics.originalSurfaceCellFailureStage =
+      result.diagnostics.terminalFailureStage;
+  result.diagnostics.surfaceCellValidationFailures = 1U;
+  return result;
+}
+
 /**
  * @brief Runs remeshing from raw mesh matrices and a raw 4-RoSy cross field.
  * @param vertices Source vertex positions.
@@ -2925,18 +3254,16 @@ inline RemeshResult remesh_from_raw_cross_field(
       options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled;
   if (options.parallelizeComponents) {
+    if (surfaceCellsRequested) {
+      return unsupported_parallel_surface_cells_result(options);
+    }
     return remesh_components_from_raw_cross_field(vertices, faces, rawCrossField,
                                                  options);
   }
   TriMesh meshWhole;
   meshWhole.set_mesh(vertices, faces);
   if (surfaceCellsRequested) {
-    const fields::CrossFieldResult crossField =
-        (rawCrossField.rows() == faces.rows() && rawCrossField.cols() == 12)
-            ? finalize_surface_cell_raw_cross_field(meshWhole, rawCrossField)
-            : make_surface_cell_cross_field_context(rawCrossField);
-    return remesh_surface_cells_from_cross_field_impl(meshWhole, crossField,
-                                                     options);
+    return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
   }
   return remesh_from_raw_cross_field_impl(meshWhole, rawCrossField, options);
 }
@@ -3019,6 +3346,9 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
         result.diagnostics.terminalFailureStage;
     result.diagnostics.surfaceCellValidationFailures = 1U;
     return result;
+  }
+  if (surfaceCellsRequested && options.parallelizeComponents) {
+    return unsupported_parallel_surface_cells_result(options);
   }
   RemeshResult result;
   if (surfaceCellsRequested && !options.parallelizeComponents) {

@@ -14,6 +14,7 @@
 #include <complex>
 #include <numbers>
 #include <queue>
+#include <set>
 #include <stdexcept>
 #include <vector>
 
@@ -66,6 +67,16 @@ struct CrossFieldOptions {
 /**
  * @brief Extracted face-based degree-4 cross field and diagnostics.
  */
+struct CrossFieldEdgeTransition {
+  int sourceEdge = -1;
+  int sourceVertex0 = -1;
+  int sourceVertex1 = -1;
+  int firstFace = -1;
+  int secondFace = -1;
+  int matching = 0;
+  double effort = 0.0;
+};
+
 struct CrossFieldResult {
   /// Field degree. Always four for this API.
   int degree = kCrossFieldDegree;
@@ -84,6 +95,9 @@ struct CrossFieldResult {
 
   /// Summed parallel-transport deviation across every mesh edge.
   Eigen::VectorXd effort;
+
+  /// Source-edge-keyed transition records in tangent-bundle/source-edge order.
+  std::vector<CrossFieldEdgeTransition> edgeTransitions;
 
   /// Vertex/local-cycle ids containing field singularities.
   Eigen::VectorXi singularCycles;
@@ -109,6 +123,35 @@ struct CrossFieldResult {
   /// True when uncovered faces were identified and accepted/rejected by policy.
   bool uncoveredFacePolicyApplied = false;
 };
+
+inline void populate_cross_field_edge_transitions(
+    const CartesianField &field, CrossFieldResult &result) {
+  result.edgeTransitions.clear();
+  const auto *bundle = dynamic_cast<const PCFaceTangentBundle *>(field.tb);
+  if (bundle == nullptr || bundle->mesh == nullptr ||
+      field.matching.size() != bundle->mesh->EF.rows() ||
+      field.effort.size() != bundle->mesh->EF.rows()) {
+    return;
+  }
+
+  std::set<int> seenEdges;
+  result.edgeTransitions.reserve(static_cast<std::size_t>(bundle->mesh->EF.rows()));
+  for (int edge = 0; edge < bundle->mesh->EF.rows(); ++edge) {
+    if (!seenEdges.insert(edge).second) {
+      result.edgeTransitions.clear();
+      return;
+    }
+    CrossFieldEdgeTransition transition;
+    transition.sourceEdge = edge;
+    transition.sourceVertex0 = bundle->mesh->EV(edge, 0);
+    transition.sourceVertex1 = bundle->mesh->EV(edge, 1);
+    transition.firstFace = bundle->mesh->EF(edge, 0);
+    transition.secondFace = bundle->mesh->EF(edge, 1);
+    transition.matching = field.matching(edge);
+    transition.effort = field.effort(edge);
+    result.edgeTransitions.push_back(transition);
+  }
+}
 
 /**
  * @brief Finalizes a raw cross field for output.
@@ -169,6 +212,7 @@ finalize_cross_field_result(CartesianField &rawField,
     result.effort = outputField->effort;
     result.singularCycles = outputField->singLocalCycles;
     result.singularIndices = outputField->singIndices;
+    populate_cross_field_edge_transitions(*outputField, result);
     result.matchingComputed = true;
     result.singularitiesComputed = true;
   }
