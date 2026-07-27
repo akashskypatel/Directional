@@ -51,6 +51,26 @@ MeshFixture make_hinge_pair() {
   return mesh;
 }
 
+MeshFixture make_vertex_fan() {
+  MeshFixture mesh;
+  mesh.vertices.resize(5, 3);
+  mesh.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0,
+      0.0, 0.0, 0.0, -1.0, 0.0;
+  mesh.faces.resize(4, 3);
+  mesh.faces << 0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 1;
+  return mesh;
+}
+
+MeshFixture make_close_parallel_triangles() {
+  MeshFixture mesh;
+  mesh.vertices.resize(6, 3);
+  mesh.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      0.0, 0.01, 0.0, 1.0, 0.01, 1.0, 0.0, 0.01;
+  mesh.faces.resize(2, 3);
+  mesh.faces << 0, 1, 2, 3, 5, 4;
+  return mesh;
+}
+
 void constant_axes(const MeshFixture &mesh, Eigen::MatrixXd &x,
                    Eigen::MatrixXd &y) {
   x.resize(mesh.faces.rows(), 3);
@@ -87,6 +107,16 @@ std::uint64_t network_hash(const directional::geometry::SurfaceCellNetwork &netw
   }
   for (const auto &trace : network.traces) {
     mix(static_cast<int>(trace.termination));
+    mix(static_cast<int>(trace.states.size()));
+    for (const auto &state : trace.states) {
+      mix(state.sourceFace);
+      mix(state.entryEdge);
+      mix(state.family);
+      mix(state.sign);
+      for (const std::int64_t barycentric : state.quantizedBarycentric) {
+        mix(barycentric);
+      }
+    }
     mix(static_cast<int>(trace.segments.size()));
     for (const auto &segment : trace.segments) {
       mix(segment.face);
@@ -227,6 +257,285 @@ TEST(SurfaceCellTracingPhase14, DeterministicSeedsCoverAdaptiveMetricRadius) {
     }
     EXPECT_LE(nearest, targetSize[vertex] + 1.0e-12);
   }
+}
+
+TEST(SurfaceCellTracingPhase14,
+     IntrinsicFarthestSamplingKeepsSharedVertexSheetsIndependent) {
+  const MeshFixture mesh = make_vertex_fan();
+  MeshFixture split;
+  split.vertices = mesh.vertices;
+  split.faces.resize(2, 3);
+  split.faces << 0, 1, 2, 0, 3, 4;
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(split.vertices.rows(), 1.1);
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 1.1;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 1;
+  directional::geometry::SurfaceCellRailSample sample;
+  sample.sourceFace = 0;
+  sample.barycentric << 1.0, 0.0, 0.0;
+  sample.position = split.vertices.row(0);
+  rail.samples.push_back(sample);
+  options.authoritativeRails.push_back(rail);
+
+  const auto seeds = directional::geometry::generate_deterministic_surface_seeds(
+      split.vertices, split.faces, targetSize, options);
+
+  ASSERT_EQ(2U, seeds.size());
+  EXPECT_EQ(0, seeds[0].point.face);
+  EXPECT_EQ(1, seeds[1].point.face);
+  EXPECT_EQ(directional::geometry::SurfaceSeedProvenance::AdaptiveFarthest,
+            seeds[1].provenance);
+  EXPECT_NEAR(1.0, seeds[1].point.barycentric[0], 1.0e-12);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     TraceStateUsesCurrentFaceLocalEntryEdgeAndBranch) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
+
+  ASSERT_GE(trace.segments.size(), 2U);
+  ASSERT_GE(trace.states.size(), 2U);
+  const std::uint64_t crossing =
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3);
+  const int expectedEntry =
+      directional::geometry::surface_cell_tracing_detail::local_edge_for_key(
+          mesh.faces, 1, crossing);
+  ASSERT_GE(expectedEntry, 0);
+  EXPECT_EQ(0, trace.states[0].sourceFace);
+  EXPECT_EQ(-1, trace.states[0].entryEdge);
+  EXPECT_EQ(1, trace.states[1].sourceFace);
+  EXPECT_EQ(expectedEntry, trace.states[1].entryEdge);
+  EXPECT_EQ(trace.segments[1].family, trace.states[1].family);
+  EXPECT_EQ(trace.segments[1].sign, trace.states[1].sign);
+  for (int corner = 0; corner < 3; ++corner) {
+    EXPECT_EQ(
+        directional::geometry::surface_cell_tracing_detail::
+            quantized_barycentric_value(
+                trace.segments[1].startBarycentric[corner]),
+        trace.states[1]
+            .quantizedBarycentric[static_cast<std::size_t>(corner)]);
+  }
+}
+
+TEST(SurfaceCellTracingPhase14,
+     VertexContinuationAppliesMatchingAcrossEveryCrossedEdge) {
+  const MeshFixture mesh = make_vertex_fan();
+  const double q = std::sqrt(0.5);
+  Eigen::MatrixXd x(4, 3);
+  Eigen::MatrixXd y(4, 3);
+  x.row(0) << -q, -q, 0.0;
+  y.row(0) << q, -q, 0.0;
+  x.row(1) << q, -q, 0.0;
+  y.row(1) << -q, -q, 0.0;
+  x.row(2) << q, q, 0.0;
+  y.row(2) << -q, q, 0.0;
+  x.row(3) << q, -q, 0.0;
+  y.row(3) << q, q, 0.0;
+
+  std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+  directional::fields::CrossFieldEdgeTransition first;
+  first.sourceVertex0 = 0;
+  first.sourceVertex1 = 2;
+  first.firstFace = 0;
+  first.secondFace = 1;
+  first.matching = 1;
+  first.effort = 0.2;
+  transitions.push_back(first);
+  directional::fields::CrossFieldEdgeTransition second;
+  second.sourceVertex0 = 0;
+  second.sourceVertex1 = 3;
+  second.firstFace = 1;
+  second.secondFace = 2;
+  second.matching = 1;
+  second.effort = 0.3;
+  transitions.push_back(second);
+
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.5, 0.25, 0.25;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0, 0, 0, 0};
+  options.sourceFaceSheets = {0, 0, 0, 1};
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 1));
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options, nullptr, nullptr,
+      &transitions);
+
+  ASSERT_GE(trace.segments.size(), 2U);
+  EXPECT_EQ(2, trace.segments[0].matching);
+  EXPECT_NEAR(0.5, trace.segments[0].matchingEffort, 1.0e-12);
+  EXPECT_EQ(2, trace.segments[1].face);
+  EXPECT_EQ(0, trace.segments[1].family);
+  EXPECT_EQ(-1, trace.segments[1].sign);
+  ASSERT_GE(trace.states.size(), 2U);
+  EXPECT_EQ(2, trace.states[1].sourceFace);
+  EXPECT_EQ(-1, trace.states[1].entryEdge);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     VertexContinuationRanksTurnThenEffortThenStableFaceId) {
+  const MeshFixture mesh = make_vertex_fan();
+  const double q = std::sqrt(0.5);
+  Eigen::MatrixXd x(4, 3);
+  Eigen::MatrixXd y(4, 3);
+  x.row(0) << -q, -q, 0.0;
+  y.row(0) << q, -q, 0.0;
+  x.row(1) << -q, q, 0.0;
+  y.row(1) << -q, -q, 0.0;
+  x.row(2) << q, q, 0.0;
+  y.row(2) << -q, q, 0.0;
+  x.row(3) << q, -q, 0.0;
+  y.row(3) << q, q, 0.0;
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents = {0, 0, 0, 0};
+  options.sourceFaceSheets = {0, 0, 1, 0};
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  const auto indices = directional::geometry::surface_cell_tracing_detail::
+      edge_matching_indices(edgeFaces);
+
+  const auto choose = [&](const double faceOneEffort,
+                          const double faceThreeEffort) {
+    std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+    directional::fields::CrossFieldEdgeTransition one;
+    one.sourceVertex0 = 0;
+    one.sourceVertex1 = 2;
+    one.firstFace = 0;
+    one.secondFace = 1;
+    one.matching = 0;
+    one.effort = faceOneEffort;
+    transitions.push_back(one);
+    directional::fields::CrossFieldEdgeTransition three;
+    three.sourceVertex0 = 0;
+    three.sourceVertex1 = 1;
+    three.firstFace = 0;
+    three.secondFace = 3;
+    three.matching = 0;
+    three.effort = faceThreeEffort;
+    transitions.push_back(three);
+    const auto lookup = directional::geometry::surface_cell_tracing_detail::
+        edge_transition_lookup(transitions);
+    return directional::geometry::surface_cell_tracing_detail::
+        resolve_vertex_continuation(
+            mesh.vertices, mesh.faces, x, y, edgeFaces, indices, lookup, 0, 0,
+            0, 1, Eigen::RowVector3d(-q, -q, 0.0), options, nullptr, nullptr,
+            &transitions);
+  };
+
+  const auto lowerEffort = choose(0.5, 0.1);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            lowerEffort.status);
+  EXPECT_EQ(3, lowerEffort.face);
+
+  const auto stableFace = choose(0.1, 0.1);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            stableFace.status);
+  EXPECT_EQ(1, stableFace.face);
+
+  const auto signedEffort = choose(-0.5, -0.1);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            signedEffort.status);
+  EXPECT_EQ(3, signedEffort.face);
+  EXPECT_NEAR(0.1, signedEffort.matchingEffort, 1.0e-12);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     VertexContinuationFailsClosedOnIncompleteMatchingMetadata) {
+  const MeshFixture mesh = make_vertex_fan();
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  const auto edgeFaces =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
+  const auto indices = directional::geometry::surface_cell_tracing_detail::
+      edge_matching_indices(edgeFaces);
+
+  directional::fields::CrossFieldEdgeTransition transition;
+  transition.sourceVertex0 = 0;
+  transition.sourceVertex1 = 2;
+  transition.firstFace = 0;
+  transition.secondFace = 1;
+  transition.matching = 0;
+  transition.effort = 0.1;
+  const std::vector<directional::fields::CrossFieldEdgeTransition> transitions{
+      transition};
+  const auto lookup = directional::geometry::surface_cell_tracing_detail::
+      edge_transition_lookup(transitions);
+  const directional::geometry::SurfaceCellTracingOptions options;
+
+  const auto continuation = directional::geometry::
+      surface_cell_tracing_detail::resolve_vertex_continuation(
+          mesh.vertices, mesh.faces, x, y, edgeFaces, indices, lookup, 0, 0,
+          0, 1, Eigen::RowVector3d(-1.0, -1.0, 0.0).normalized(), options,
+          nullptr, nullptr, &transitions);
+
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::FieldMetadata,
+            continuation.status);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     IntrinsicCaptureDoesNotJumpToEuclideanCloseOppositeSheet) {
+  const MeshFixture mesh = make_close_parallel_triangles();
+  Eigen::MatrixXd x(2, 3);
+  Eigen::MatrixXd y(2, 3);
+  x.row(0) << 1.0, 0.0, 0.0;
+  y.row(0) << 0.0, 1.0, 0.0;
+  x.row(1) << 1.0, 0.0, 0.0;
+  y.row(1) << 0.0, -1.0, 0.0;
+
+  directional::geometry::SurfaceTracePoint source;
+  source.face = 0;
+  source.barycentric << 0.0, 0.6, 0.4;
+  directional::geometry::SurfaceTracePoint opposite;
+  opposite.face = 1;
+  opposite.barycentric << 0.0, 0.4, 0.6;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.captureRadius = 0.02;
+  options.capturePoints.push_back(opposite);
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto barriers = directional::geometry::surface_cell_tracing_detail::
+      combined_barrier_edges(options);
+  const auto graph = directional::geometry::surface_cell_tracing_detail::
+      build_intrinsic_surface_graph(mesh.vertices, mesh.faces, options,
+                                    barriers);
+  EXPECT_TRUE(std::isinf(
+      directional::geometry::surface_cell_tracing_detail::
+          intrinsic_same_sheet_distance(graph, mesh.vertices, mesh.faces,
+                                         source, opposite)));
+
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.4, 0.2, 0.4;
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+  EXPECT_EQ(directional::geometry::TraceTerminationReason::Boundary,
+            trace.termination);
+  EXPECT_NE(directional::geometry::TraceTerminationReason::Captured,
+            trace.termination);
 }
 
 TEST(SurfaceCellTracingPhase14, PlanarConstantCrossTraceHitsBoundaryExactly) {
