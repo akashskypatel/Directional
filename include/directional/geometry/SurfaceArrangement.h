@@ -63,6 +63,11 @@ struct SurfaceArrangementArc {
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;
+  int sourceSheet = -1;
+  int proposalId = -1;
+  int proposalSeedId = -1;
+  int proposalSide = -1;
+  int proposalBoundarySegment = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
 };

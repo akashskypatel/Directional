@@ -722,6 +722,37 @@ TEST(SurfaceCellPipelinePhase20, BackendNamesAndParsersExposeStableApi) {
                std::runtime_error);
 }
 
+TEST(SurfaceCellPipelinePhase20, FlowRepFailuresMapToPrecisePipelineCodes) {
+  using directional::geometry::FlowRepSelectionFailureCode;
+  using directional::pipeline::SurfaceCellFailureCode;
+  const std::vector<std::pair<FlowRepSelectionFailureCode,
+                              SurfaceCellFailureCode>> cases = {
+      {FlowRepSelectionFailureCode::EmptyNetwork,
+       SurfaceCellFailureCode::EmptyFlowRepNetwork},
+      {FlowRepSelectionFailureCode::MissingCoverageEvidence,
+       SurfaceCellFailureCode::MissingFlowRepCoverageEvidence},
+      {FlowRepSelectionFailureCode::MissingCycleEvidence,
+       SurfaceCellFailureCode::MissingFlowRepCycleEvidence},
+      {FlowRepSelectionFailureCode::InvalidCoverageEvidence,
+       SurfaceCellFailureCode::InvalidFlowRepCoverageEvidence},
+      {FlowRepSelectionFailureCode::InvalidCycleEvidence,
+       SurfaceCellFailureCode::InvalidFlowRepCycleEvidence},
+      {FlowRepSelectionFailureCode::InvalidArcIdentity,
+       SurfaceCellFailureCode::InvalidFlowRepArcIdentity},
+      {FlowRepSelectionFailureCode::IncompleteArcProvenance,
+       SurfaceCellFailureCode::IncompleteFlowRepProvenance},
+      {FlowRepSelectionFailureCode::IncompleteCycleCoverage,
+       SurfaceCellFailureCode::IncompleteFlowRepCycleCoverage},
+      {FlowRepSelectionFailureCode::MandatoryRailLoss,
+       SurfaceCellFailureCode::FlowRepMandatoryRailLoss},
+  };
+  for (const auto &[flowRepCode, pipelineCode] : cases) {
+    EXPECT_EQ(pipelineCode,
+              directional::pipeline::surface_cell_failure_from_flow_rep(
+                  flowRepCode));
+  }
+}
+
 TEST(SurfaceCellPipelinePhase20, InvalidRawFieldDimsReturnPreciseFailureCode) {
   const SyntheticMesh mesh = make_two_square_components();
   Eigen::MatrixXd badRaw(mesh.faces.rows(), 9);
@@ -1038,6 +1069,13 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
   EXPECT_TRUE(context.hasReliefResult);
   EXPECT_TRUE(context.hasTraceNetwork);
   EXPECT_TRUE(context.hasFlowRepNetwork);
+  EXPECT_TRUE(context.flowRepNetwork.selectionSucceeded);
+  EXPECT_TRUE(context.flowRepNetwork.coverageEvidenceUsed);
+  EXPECT_TRUE(context.flowRepNetwork.cycleEvidenceUsed);
+  EXPECT_GT(context.flowRepNetwork.coverageSampleCount, 0);
+  EXPECT_GT(context.flowRepNetwork.cycleEvidenceCount, 0);
+  EXPECT_EQ(context.flowRepNetwork.mandatoryRails,
+            context.flowRepNetwork.retainedMandatoryRails);
   EXPECT_TRUE(context.hasEmbeddedArrangementArcs);
   EXPECT_TRUE(context.hasArrangement);
   EXPECT_TRUE(context.hasSimplifiedComplex);
@@ -1431,6 +1469,12 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   }
   EXPECT_TRUE(sawHardFlowRepRail);
   EXPECT_TRUE(sawBoundaryFlowRepRail);
+  ASSERT_TRUE(context.hasFlowRepNetwork);
+  EXPECT_TRUE(context.flowRepNetwork.selectionSucceeded);
+  EXPECT_TRUE(context.flowRepNetwork.coverageEvidenceUsed);
+  EXPECT_TRUE(context.flowRepNetwork.cycleEvidenceUsed);
+  EXPECT_EQ(context.flowRepNetwork.mandatoryRails,
+            context.flowRepNetwork.retainedMandatoryRails);
 
   bool sawArrangementRail = false;
   for (const directional::geometry::SurfaceArrangementArc &arc :

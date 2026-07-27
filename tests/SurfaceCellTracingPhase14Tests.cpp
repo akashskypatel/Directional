@@ -1903,6 +1903,131 @@ TEST(SurfaceCellTracingPhase14, CellBoundaryRejectsProperHardRailCrossing) {
                    trace_segment_crosses_authoritative_rail(segment, {rail}));
 }
 
+TEST(SurfaceCellTracingPhase14, HardRailCrossingUsesEndpointPairsOnly) {
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 0.5, 0.5, 0.0;
+  segment.endBarycentric << 0.5, 0.0, 0.5;
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 19;
+  const auto sample = [](const Eigen::RowVector3d &barycentric) {
+    directional::geometry::SurfaceCellRailSample result;
+    result.sourceFace = 0;
+    result.barycentric = barycentric;
+    return result;
+  };
+  // Neither stored interval crosses the trace. The artificial bridge between
+  // samples 1 and 2 does, and must not be interpreted as part of the rail.
+  rail.samples = {
+      sample(Eigen::RowVector3d(0.9, 0.1, 0.0)),
+      sample(Eigen::RowVector3d(0.8, 0.2, 0.0)),
+      sample(Eigen::RowVector3d(0.2, 0.0, 0.8)),
+      sample(Eigen::RowVector3d(0.1, 0.0, 0.9)),
+  };
+
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   trace_segment_crosses_authoritative_rail(segment, {rail}));
+}
+
+TEST(SurfaceCellTracingPhase14, ClosedBoundaryRejectsInteriorPathCrossing) {
+  using directional::geometry::CellRejectionReason;
+  using directional::geometry::SurfaceCellProposal;
+  using directional::geometry::SurfaceTracePoint;
+  using directional::geometry::SurfaceTraceSegment;
+
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  SurfaceCellProposal proposal;
+  proposal.corners = {
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.6, 0.2, 0.2)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.2, 0.6, 0.2)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.1, 0.6, 0.3)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.5, 0.2, 0.3)},
+  };
+  const auto segment = [](const Eigen::RowVector3d &a,
+                          const Eigen::RowVector3d &b) {
+    SurfaceTraceSegment result;
+    result.face = 0;
+    result.startBarycentric = a;
+    result.endBarycentric = b;
+    return result;
+  };
+
+  // Side 0 detours through the triangle interior. Side 2 crosses that detour,
+  // while the four corner chords themselves remain non-self-intersecting.
+  const Eigen::RowVector3d center(0.25, 0.40, 0.35);
+  proposal.boundaryPaths[0] = {
+      segment(proposal.corners[0].barycentric, center),
+      segment(center, proposal.corners[1].barycentric),
+  };
+  proposal.boundaryPaths[1] = {
+      segment(proposal.corners[1].barycentric,
+              proposal.corners[2].barycentric),
+  };
+  proposal.boundaryPaths[2] = {
+      segment(proposal.corners[2].barycentric,
+              proposal.corners[3].barycentric),
+  };
+  proposal.boundaryPaths[3] = {
+      segment(proposal.corners[3].barycentric,
+              proposal.corners[0].barycentric),
+  };
+
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                validate_closed_boundary_paths(vertices, faces, proposal.corners,
+                                               proposal.boundaryPaths, 1.0e-12),
+            CellRejectionReason::SelfIntersection);
+}
+
+TEST(SurfaceCellTracingPhase14, ClosedBoundaryRejectsEndpointGap) {
+  using directional::geometry::CellRejectionReason;
+  using directional::geometry::SurfaceCellProposal;
+  using directional::geometry::SurfaceTracePoint;
+  using directional::geometry::SurfaceTraceSegment;
+
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  SurfaceCellProposal proposal;
+  proposal.corners = {
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.8, 0.2, 0.0)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.2, 0.8, 0.0)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.2, 0.0, 0.8)},
+      SurfaceTracePoint{0, Eigen::RowVector3d(0.8, 0.0, 0.2)},
+  };
+  const auto segment = [](const Eigen::RowVector3d &a,
+                          const Eigen::RowVector3d &b) {
+    SurfaceTraceSegment result;
+    result.face = 0;
+    result.startBarycentric = a;
+    result.endBarycentric = b;
+    return result;
+  };
+  for (int side = 0; side < 4; ++side) {
+    proposal.boundaryPaths[static_cast<std::size_t>(side)] = {
+        segment(proposal.corners[static_cast<std::size_t>(side)].barycentric,
+                proposal.corners[static_cast<std::size_t>((side + 1) % 4)]
+                    .barycentric),
+    };
+  }
+  proposal.boundaryPaths[1][0].endBarycentric << 0.25, 0.0, 0.75;
+
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                validate_closed_boundary_paths(vertices, faces, proposal.corners,
+                                               proposal.boundaryPaths, 1.0e-12),
+            CellRejectionReason::Closure);
+}
+
 TEST(SurfaceCellTracingPhase14, SampledSourceAreaWithinLocalTargetSize) {
   const MeshFixture mesh = make_grid(3);
   Eigen::MatrixXd x, y;

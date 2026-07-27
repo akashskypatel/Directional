@@ -1486,6 +1486,63 @@ inline bool segments_intersect_2d(const Eigen::Vector2d &a,
   return o1 * o2 < -1.0e-14 && o3 * o4 < -1.0e-14;
 }
 
+inline bool point_on_segment_2d(const Eigen::Vector2d &point,
+                                const Eigen::Vector2d &a,
+                                const Eigen::Vector2d &b,
+                                const double tolerance) {
+  if (std::abs(orient2d(a, b, point)) > tolerance) {
+    return false;
+  }
+  return point.x() >= std::min(a.x(), b.x()) - tolerance &&
+         point.x() <= std::max(a.x(), b.x()) + tolerance &&
+         point.y() >= std::min(a.y(), b.y()) - tolerance &&
+         point.y() <= std::max(a.y(), b.y()) + tolerance;
+}
+
+inline bool segments_intersect_beyond_shared_endpoint_2d(
+    const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+    const Eigen::Vector2d &c, const Eigen::Vector2d &d) {
+  if (segments_intersect_2d(a, b, c, d)) {
+    return true;
+  }
+
+  const double scale = std::max(
+      {1.0, (b - a).norm(), (d - c).norm(), (c - a).norm(), (d - a).norm()});
+  const double tolerance = 1.0e-12 * scale * scale;
+  const double pointTolerance = 1.0e-12 * scale;
+  const auto same_point = [&](const Eigen::Vector2d &lhs,
+                              const Eigen::Vector2d &rhs) {
+    return (lhs - rhs).norm() <= pointTolerance;
+  };
+  const auto endpoint_on_interior = [&](const Eigen::Vector2d &point,
+                                        const Eigen::Vector2d &start,
+                                        const Eigen::Vector2d &end) {
+    return point_on_segment_2d(point, start, end, tolerance) &&
+           !same_point(point, start) && !same_point(point, end);
+  };
+
+  if (endpoint_on_interior(a, c, d) || endpoint_on_interior(b, c, d) ||
+      endpoint_on_interior(c, a, b) || endpoint_on_interior(d, a, b)) {
+    return true;
+  }
+
+  const bool collinear = std::abs(orient2d(a, b, c)) <= tolerance &&
+                         std::abs(orient2d(a, b, d)) <= tolerance;
+  if (!collinear) {
+    return false;
+  }
+  const int axis = std::abs(b.x() - a.x()) >= std::abs(b.y() - a.y()) ? 0 : 1;
+  const auto coordinate = [axis](const Eigen::Vector2d &point) {
+    return axis == 0 ? point.x() : point.y();
+  };
+  const double overlap =
+      std::min(std::max(coordinate(a), coordinate(b)),
+               std::max(coordinate(c), coordinate(d))) -
+      std::max(std::min(coordinate(a), coordinate(b)),
+               std::min(coordinate(c), coordinate(d)));
+  return overlap > pointTolerance;
+}
+
 inline CellRejectionReason classify_quad_loop(
     const std::array<Eigen::RowVector3d, 4> &corners, const double h,
     const Eigen::RowVector3d &expectedNormal,
@@ -1579,9 +1636,12 @@ inline bool trace_segment_crosses_authoritative_rail(
     if (segment.railId == rail.id) {
       continue;
     }
-    for (std::size_t index = 1; index < rail.samples.size(); ++index) {
-      const SurfaceCellRailSample &first = rail.samples[index - 1];
-      const SurfaceCellRailSample &second = rail.samples[index];
+    // Rail samples are stored as independent interval endpoint pairs:
+    // [a0,b0,a1,b1,...]. Never connect b_i to a_{i+1}; those endpoints may
+    // belong to different source faces or disjoint pieces of the same rail.
+    for (std::size_t index = 0; index + 1 < rail.samples.size(); index += 2) {
+      const SurfaceCellRailSample &first = rail.samples[index];
+      const SurfaceCellRailSample &second = rail.samples[index + 1];
       if (first.sourceFace != segment.face || second.sourceFace != segment.face) {
         continue;
       }
@@ -1593,6 +1653,89 @@ inline bool trace_segment_crosses_authoritative_rail(
     }
   }
   return false;
+}
+
+inline CellRejectionReason validate_closed_boundary_paths(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::array<SurfaceTracePoint, 4> &corners,
+    const std::array<std::vector<SurfaceTraceSegment>, 4> &boundaryPaths,
+    const double tolerance) {
+  const auto segment_point = [&](const SurfaceTraceSegment &segment,
+                                 const bool start) {
+    SurfaceTracePoint point;
+    point.face = segment.face;
+    point.barycentric =
+        start ? segment.startBarycentric : segment.endBarycentric;
+    return point;
+  };
+  const auto valid = [&](const SurfaceTracePoint &point) {
+    return point.face >= 0 && point.face < faces.rows() &&
+           point.barycentric.array().isFinite().all() &&
+           std::abs(point.barycentric.sum() - 1.0) <= 1.0e-8 &&
+           point.barycentric.minCoeff() >= -1.0e-8;
+  };
+  const auto close = [&](const SurfaceTracePoint &a,
+                         const SurfaceTracePoint &b) {
+    if (!valid(a) || !valid(b)) {
+      return false;
+    }
+    return (point_position(vertices, faces, a) -
+            point_position(vertices, faces, b))
+               .norm() <= tolerance;
+  };
+
+  for (int side = 0; side < 4; ++side) {
+    const auto &path = boundaryPaths[static_cast<std::size_t>(side)];
+    if (path.empty()) {
+      return CellRejectionReason::Closure;
+    }
+    const SurfaceTracePoint start = segment_point(path.front(), true);
+    const SurfaceTracePoint end = segment_point(path.back(), false);
+    if (!close(start, corners[static_cast<std::size_t>(side)]) ||
+        !close(end, corners[static_cast<std::size_t>((side + 1) % 4)])) {
+      return CellRejectionReason::Closure;
+    }
+    for (std::size_t segment = 0; segment + 1 < path.size(); ++segment) {
+      if (!close(segment_point(path[segment], false),
+                 segment_point(path[segment + 1], true))) {
+        return CellRejectionReason::Closure;
+      }
+    }
+  }
+
+  struct IndexedSegment {
+    int side = -1;
+    int index = -1;
+    const SurfaceTraceSegment *segment = nullptr;
+  };
+  std::vector<IndexedSegment> segments;
+  for (int side = 0; side < 4; ++side) {
+    const auto &path = boundaryPaths[static_cast<std::size_t>(side)];
+    for (int index = 0; index < static_cast<int>(path.size()); ++index) {
+      segments.push_back({side, index, &path[static_cast<std::size_t>(index)]});
+    }
+  }
+  for (std::size_t i = 0; i < segments.size(); ++i) {
+    const SurfaceTraceSegment &first = *segments[i].segment;
+    for (std::size_t j = i + 1; j < segments.size(); ++j) {
+      const SurfaceTraceSegment &second = *segments[j].segment;
+      if (first.face != second.face) {
+        continue;
+      }
+      const Eigen::Vector2d a(first.startBarycentric[1],
+                              first.startBarycentric[2]);
+      const Eigen::Vector2d b(first.endBarycentric[1],
+                              first.endBarycentric[2]);
+      const Eigen::Vector2d c(second.startBarycentric[1],
+                              second.startBarycentric[2]);
+      const Eigen::Vector2d d(second.endBarycentric[1],
+                              second.endBarycentric[2]);
+      if (segments_intersect_beyond_shared_endpoint_2d(a, b, c, d)) {
+        return CellRejectionReason::SelfIntersection;
+      }
+    }
+  }
+  return CellRejectionReason::Accepted;
 }
 
 inline SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
@@ -2836,6 +2979,14 @@ inline SurfaceCellProposal make_surface_cell_proposal(
   }
   if (proposal.sides.empty()) {
     proposal.rejection = CellRejectionReason::Degenerate;
+    return proposal;
+  }
+  const CellRejectionReason boundaryRejection =
+      surface_cell_tracing_detail::validate_closed_boundary_paths(
+          vertices, faces, proposal.corners, proposal.boundaryPaths,
+          options.closureToleranceFactor * std::min(hx, hy));
+  if (boundaryRejection != CellRejectionReason::Accepted) {
+    proposal.rejection = boundaryRejection;
     return proposal;
   }
   proposal.accepted = true;

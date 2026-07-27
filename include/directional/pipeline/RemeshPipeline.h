@@ -89,6 +89,15 @@ enum class SurfaceCellFailureCode {
   UncoveredFaces,
   UnsupportedInput,
   InvalidRailTopology,
+  EmptyFlowRepNetwork,
+  MissingFlowRepCoverageEvidence,
+  MissingFlowRepCycleEvidence,
+  InvalidFlowRepCoverageEvidence,
+  InvalidFlowRepCycleEvidence,
+  InvalidFlowRepArcIdentity,
+  IncompleteFlowRepProvenance,
+  IncompleteFlowRepCycleCoverage,
+  FlowRepMandatoryRailLoss,
   InjectedStageFailure,
   NotProductionReady
 };
@@ -135,12 +144,57 @@ surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
     return "UnsupportedInput";
   case SurfaceCellFailureCode::InvalidRailTopology:
     return "InvalidRailTopology";
+  case SurfaceCellFailureCode::EmptyFlowRepNetwork:
+    return "EmptyFlowRepNetwork";
+  case SurfaceCellFailureCode::MissingFlowRepCoverageEvidence:
+    return "MissingFlowRepCoverageEvidence";
+  case SurfaceCellFailureCode::MissingFlowRepCycleEvidence:
+    return "MissingFlowRepCycleEvidence";
+  case SurfaceCellFailureCode::InvalidFlowRepCoverageEvidence:
+    return "InvalidFlowRepCoverageEvidence";
+  case SurfaceCellFailureCode::InvalidFlowRepCycleEvidence:
+    return "InvalidFlowRepCycleEvidence";
+  case SurfaceCellFailureCode::InvalidFlowRepArcIdentity:
+    return "InvalidFlowRepArcIdentity";
+  case SurfaceCellFailureCode::IncompleteFlowRepProvenance:
+    return "IncompleteFlowRepProvenance";
+  case SurfaceCellFailureCode::IncompleteFlowRepCycleCoverage:
+    return "IncompleteFlowRepCycleCoverage";
+  case SurfaceCellFailureCode::FlowRepMandatoryRailLoss:
+    return "FlowRepMandatoryRailLoss";
   case SurfaceCellFailureCode::InjectedStageFailure:
     return "InjectedStageFailure";
   case SurfaceCellFailureCode::NotProductionReady:
     return "NotProductionReady";
   }
   return "Unknown";
+}
+
+inline SurfaceCellFailureCode surface_cell_failure_from_flow_rep(
+    const geometry::FlowRepSelectionFailureCode code) {
+  switch (code) {
+  case geometry::FlowRepSelectionFailureCode::None:
+    return SurfaceCellFailureCode::None;
+  case geometry::FlowRepSelectionFailureCode::EmptyNetwork:
+    return SurfaceCellFailureCode::EmptyFlowRepNetwork;
+  case geometry::FlowRepSelectionFailureCode::MissingCoverageEvidence:
+    return SurfaceCellFailureCode::MissingFlowRepCoverageEvidence;
+  case geometry::FlowRepSelectionFailureCode::MissingCycleEvidence:
+    return SurfaceCellFailureCode::MissingFlowRepCycleEvidence;
+  case geometry::FlowRepSelectionFailureCode::InvalidCoverageEvidence:
+    return SurfaceCellFailureCode::InvalidFlowRepCoverageEvidence;
+  case geometry::FlowRepSelectionFailureCode::InvalidCycleEvidence:
+    return SurfaceCellFailureCode::InvalidFlowRepCycleEvidence;
+  case geometry::FlowRepSelectionFailureCode::InvalidArcIdentity:
+    return SurfaceCellFailureCode::InvalidFlowRepArcIdentity;
+  case geometry::FlowRepSelectionFailureCode::IncompleteArcProvenance:
+    return SurfaceCellFailureCode::IncompleteFlowRepProvenance;
+  case geometry::FlowRepSelectionFailureCode::IncompleteCycleCoverage:
+    return SurfaceCellFailureCode::IncompleteFlowRepCycleCoverage;
+  case geometry::FlowRepSelectionFailureCode::MandatoryRailLoss:
+    return SurfaceCellFailureCode::FlowRepMandatoryRailLoss;
+  }
+  return SurfaceCellFailureCode::InvalidFlowRepCycleEvidence;
 }
 
 inline std::string normalize_option_token(std::string value) {
@@ -788,6 +842,8 @@ inline std::uint64_t hash_trace_network(
 inline std::uint64_t hash_sparse_network(
     const geometry::FlowRepSparseNetwork &network) {
   std::uint64_t seed = structural_hash_seed("strands");
+  hash_combine_i64(seed, network.selectionSucceeded ? 1 : 0);
+  hash_combine_i64(seed, static_cast<int>(network.failureCode));
   hash_vector(seed, network.retainedArcIds);
   hash_vector(seed, network.removedArcIds);
   for (const geometry::FlowRepEndpointTag tag : network.endpointTags) {
@@ -807,8 +863,98 @@ inline std::uint64_t hash_sparse_network(
   hash_combine_i64(seed, network.retainedMandatoryRails);
   hash_combine_i64(seed, network.acceptedTransactions);
   hash_combine_i64(seed, network.cycleRebuilds);
+  hash_combine_i64(seed, network.coverageSampleCount);
+  hash_combine_i64(seed, network.cycleEvidenceCount);
+  hash_combine_i64(seed, network.coverageEvidenceUsed ? 1 : 0);
+  hash_combine_i64(seed, network.cycleEvidenceUsed ? 1 : 0);
   hash_combine_double(seed, network.denseCoverageMax);
   hash_combine_double(seed, network.sparseCoverageMax);
+  return seed;
+}
+
+inline std::uint64_t hash_flow_rep_selection_input(
+    const geometry::FlowRepSelectionInput &input) {
+  std::uint64_t seed = structural_hash_seed("flow-rep-selection-input");
+  hash_combine_u64(seed, input.arcs.size());
+  for (const geometry::FlowRepArc &arc : input.arcs) {
+    hash_combine_i64(seed, arc.id);
+    hash_row_vector(seed, arc.start);
+    hash_row_vector(seed, arc.end);
+    hash_combine_i64(seed, arc.sourceFace);
+    hash_row_vector(seed, arc.startBarycentric);
+    hash_row_vector(seed, arc.endBarycentric);
+    hash_combine_i64(seed, arc.sourceComponent);
+    hash_combine_i64(seed, arc.sourceSheet);
+    hash_combine_i64(seed, arc.family);
+    hash_combine_i64(seed, arc.featureClass);
+    hash_combine_i64(seed, arc.mandatoryRail ? 1 : 0);
+    hash_combine_i64(seed, arc.boundaryRail ? 1 : 0);
+    hash_combine_i64(seed, arc.hardFeatureRail ? 1 : 0);
+    hash_combine_i64(seed, arc.strandProvenance);
+    hash_combine_i64(seed, arc.featureProvenance);
+    hash_combine_i64(seed, arc.railId);
+    hash_combine_i64(seed, arc.curveId);
+    hash_combine_double(seed, arc.railT0);
+    hash_combine_double(seed, arc.railT1);
+    hash_combine_double(seed, arc.dominance);
+    hash_combine_double(seed, arc.alignmentCost);
+    hash_combine_i64(seed, arc.sameStrandHint);
+    hash_combine_i64(seed, arc.initiallyActive ? 1 : 0);
+    hash_combine_i64(seed, arc.proposalId);
+    hash_combine_i64(seed, arc.proposalSeedId);
+    hash_combine_i64(seed, arc.proposalSide);
+    hash_combine_i64(seed, arc.proposalBoundarySegment);
+    hash_vector(seed, arc.substitutions);
+  }
+  hash_combine_u64(seed, input.coverageSamples.size());
+  for (const geometry::FlowRepCoverageSample &sample : input.coverageSamples) {
+    hash_row_vector(seed, sample.position);
+    hash_combine_i64(seed, sample.sourceFace);
+    hash_row_vector(seed, sample.barycentric);
+    hash_combine_i64(seed, sample.sourceComponent);
+    hash_combine_i64(seed, sample.sourceSheet);
+    hash_combine_double(seed, sample.targetSize);
+    hash_combine_i64(seed, sample.sourceArcId);
+  }
+  hash_combine_u64(seed, input.cycles.size());
+  for (const geometry::FlowRepCycleInput &cycle : input.cycles) {
+    hash_combine_i64(seed, cycle.id);
+    hash_combine_i64(seed, cycle.proposalId);
+    hash_combine_u64(seed, cycle.sideArcIds.size());
+    for (const std::vector<int> &side : cycle.sideArcIds) {
+      hash_vector(seed, side);
+    }
+    hash_vector(seed, cycle.boundaryArcIds);
+    hash_vector(seed, cycle.sideCounts);
+    hash_combine_u64(seed, cycle.normals.size());
+    for (const Eigen::RowVector3d &normal : cycle.normals) {
+      hash_row_vector(seed, normal);
+    }
+    for (const Eigen::RowVector3d &normal : cycle.boundaryNormalA) {
+      hash_row_vector(seed, normal);
+    }
+    for (const Eigen::RowVector3d &normal : cycle.boundaryNormalB) {
+      hash_row_vector(seed, normal);
+    }
+    hash_combine_u64(seed, cycle.distanceA.size());
+    for (const double value : cycle.distanceA) {
+      hash_combine_double(seed, value);
+    }
+    hash_combine_u64(seed, cycle.distanceB.size());
+    for (const double value : cycle.distanceB) {
+      hash_combine_double(seed, value);
+    }
+    hash_combine_u64(seed, cycle.surfaceDistances.size());
+    for (const double value : cycle.surfaceDistances) {
+      hash_combine_double(seed, value);
+    }
+    hash_combine_double(seed, cycle.targetSize);
+    hash_combine_double(seed, cycle.normalThresholdRadians);
+    hash_combine_i64(seed, cycle.diskTopology ? 1 : 0);
+    hash_combine_i64(seed, cycle.forbiddenTurn ? 1 : 0);
+    hash_combine_i64(seed, cycle.unresolvedHardFeatureCrossing ? 1 : 0);
+    hash_combine_i64(seed, cycle.impossibleSideCounts ? 1 : 0);
+  }
   return seed;
 }
 
@@ -829,6 +975,11 @@ inline std::uint64_t hash_arrangement_arcs(
     hash_combine_i64(seed, arc.railId);
     hash_combine_i64(seed, arc.curveId);
     hash_combine_i64(seed, arc.sourceComponent);
+    hash_combine_i64(seed, arc.sourceSheet);
+    hash_combine_i64(seed, arc.proposalId);
+    hash_combine_i64(seed, arc.proposalSeedId);
+    hash_combine_i64(seed, arc.proposalSide);
+    hash_combine_i64(seed, arc.proposalBoundarySegment);
     hash_combine_double(seed, arc.railT0);
     hash_combine_double(seed, arc.railT1);
   }
@@ -1613,6 +1764,11 @@ surface_arrangement_arcs_from_flow_rep(
     arrangementArc.railId = arc.railId;
     arrangementArc.curveId = arc.curveId;
     arrangementArc.sourceComponent = arc.sourceComponent;
+    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArc.proposalId = arc.proposalId;
+    arrangementArc.proposalSeedId = arc.proposalSeedId;
+    arrangementArc.proposalSide = arc.proposalSide;
+    arrangementArc.proposalBoundarySegment = arc.proposalBoundarySegment;
     arrangementArc.railT0 = arc.railT0;
     arrangementArc.railT1 = arc.railT1;
     arrangementArcs.push_back(arrangementArc);
@@ -2139,11 +2295,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto strandsStart = Clock::now();
-    const std::vector<geometry::FlowRepArc> flowRepArcs =
-        geometry::build_flow_rep_arcs_from_network(meshWhole.V, meshWhole.F,
-                                                   traceNetwork);
+    const geometry::FlowRepSelectionInput flowRepInput =
+        geometry::build_flow_rep_selection_input(
+            meshWhole.V, meshWhole.F, targetSize.targetSize, traceNetwork,
+            tracingOptions.defaultTargetSize);
+    const std::vector<geometry::FlowRepArc> &flowRepArcs = flowRepInput.arcs;
     const geometry::FlowRepSparseNetwork sparseFlowRep =
-        geometry::select_sparse_flow_rep_network(flowRepArcs);
+        geometry::select_sparse_flow_rep_network(
+            flowRepArcs, flowRepInput.coverageSamples, flowRepInput.cycles);
     const double surfaceCellStrandsSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - strandsStart)
@@ -2152,13 +2311,21 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.flowRepArcs = flowRepArcs;
     result.surfaceCellContext.flowRepNetwork = sparseFlowRep;
     result.surfaceCellContext.hasFlowRepNetwork = true;
-    const std::uint64_t strandsHash = hash_sparse_network(sparseFlowRep);
+    std::uint64_t strandsHash = hash_sparse_network(sparseFlowRep);
+    hash_combine_u64(strandsHash,
+                     hash_flow_rep_selection_input(flowRepInput));
     const SurfaceCellObjectIdentity strandsIdentity = make_identity(
         "strands", strandsHash, sparseFlowRep.retainedArcIds.size());
     mark_stage_consumed("tracing", tracingIdentity,
                         SurfaceCellConsumptionKind::Full);
-    record_surface_cell_stage("strands", tracingIdentity, strandsIdentity, true,
+    record_surface_cell_stage("strands", tracingIdentity, strandsIdentity,
+                              sparseFlowRep.selectionSucceeded,
                               surfaceCellStrandsSeconds);
+    if (!sparseFlowRep.selectionSucceeded) {
+      return fail_surface_cells(
+          surface_cell_failure_from_flow_rep(sparseFlowRep.failureCode),
+          "strands");
+    }
     completedSurfaceCellStages.push_back("strands");
     if (options.surfaceCells.injectFailureAfterStage == 4) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,

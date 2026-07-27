@@ -54,6 +54,46 @@ enum class FlowRepPatchClass : int {
   SixSided = 6,
 };
 
+enum class FlowRepSelectionFailureCode : int {
+  None = 0,
+  EmptyNetwork = 1,
+  MissingCoverageEvidence = 2,
+  MissingCycleEvidence = 3,
+  InvalidCoverageEvidence = 4,
+  InvalidCycleEvidence = 5,
+  InvalidArcIdentity = 6,
+  IncompleteArcProvenance = 7,
+  IncompleteCycleCoverage = 8,
+  MandatoryRailLoss = 9,
+};
+
+inline const char *flow_rep_selection_failure_name(
+    const FlowRepSelectionFailureCode code) {
+  switch (code) {
+  case FlowRepSelectionFailureCode::None:
+    return "None";
+  case FlowRepSelectionFailureCode::EmptyNetwork:
+    return "EmptyNetwork";
+  case FlowRepSelectionFailureCode::MissingCoverageEvidence:
+    return "MissingCoverageEvidence";
+  case FlowRepSelectionFailureCode::MissingCycleEvidence:
+    return "MissingCycleEvidence";
+  case FlowRepSelectionFailureCode::InvalidCoverageEvidence:
+    return "InvalidCoverageEvidence";
+  case FlowRepSelectionFailureCode::InvalidCycleEvidence:
+    return "InvalidCycleEvidence";
+  case FlowRepSelectionFailureCode::InvalidArcIdentity:
+    return "InvalidArcIdentity";
+  case FlowRepSelectionFailureCode::IncompleteArcProvenance:
+    return "IncompleteArcProvenance";
+  case FlowRepSelectionFailureCode::IncompleteCycleCoverage:
+    return "IncompleteCycleCoverage";
+  case FlowRepSelectionFailureCode::MandatoryRailLoss:
+    return "MandatoryRailLoss";
+  }
+  return "Unknown";
+}
+
 struct FlowRepArc {
   int id = -1;
   Eigen::RowVector3d start = Eigen::RowVector3d::Zero();
@@ -77,7 +117,22 @@ struct FlowRepArc {
   double dominance = 1.0;
   double alignmentCost = 0.0;
   int sameStrandHint = -1;
+  bool initiallyActive = true;
+  int proposalId = -1;
+  int proposalSeedId = -1;
+  int proposalSide = -1;
+  int proposalBoundarySegment = -1;
   std::vector<int> substitutions;
+};
+
+struct FlowRepCoverageSample {
+  Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
+  int sourceFace = -1;
+  Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  double targetSize = 0.0;
+  int sourceArcId = -1;
 };
 
 struct FlowRepAffinity {
@@ -106,6 +161,10 @@ struct FlowRepFlowline {
 };
 
 struct FlowRepCycleInput {
+  int id = -1;
+  int proposalId = -1;
+  std::vector<std::vector<int>> sideArcIds;
+  std::vector<int> boundaryArcIds;
   std::vector<Eigen::RowVector3d> normals;
   std::vector<Eigen::RowVector3d> boundaryNormalA;
   std::vector<Eigen::RowVector3d> boundaryNormalB;
@@ -139,9 +198,15 @@ struct FlowRepSparseOptions {
   double featureConflictPenalty = -8.0;
   double orthogonalPenalty = -2.0;
   double maxCoverageWorsening = 0.02;
+  bool requireCoverageEvidence = true;
+  bool requireCycleEvidence = true;
+  bool requireCompleteProvenance = true;
 };
 
 struct FlowRepSparseNetwork {
+  bool selectionSucceeded = false;
+  FlowRepSelectionFailureCode failureCode =
+      FlowRepSelectionFailureCode::None;
   std::vector<int> retainedArcIds;
   std::vector<int> removedArcIds;
   std::vector<FlowRepEndpointTag> endpointTags;
@@ -150,8 +215,18 @@ struct FlowRepSparseNetwork {
   int retainedMandatoryRails = 0;
   int acceptedTransactions = 0;
   int cycleRebuilds = 0;
+  int coverageSampleCount = 0;
+  int cycleEvidenceCount = 0;
+  bool coverageEvidenceUsed = false;
+  bool cycleEvidenceUsed = false;
   double denseCoverageMax = 0.0;
   double sparseCoverageMax = 0.0;
+};
+
+struct FlowRepSelectionInput {
+  std::vector<FlowRepArc> arcs;
+  std::vector<FlowRepCoverageSample> coverageSamples;
+  std::vector<FlowRepCycleInput> cycles;
 };
 
 struct FlowRepOverlay {
@@ -307,21 +382,76 @@ inline double point_segment_distance(const Eigen::RowVector3d &p,
   return (p - (arc.start + t * ab)).norm();
 }
 
-inline double coverage_max_distance(const std::vector<FlowRepArc> &arcs,
-                                    const std::vector<int> &activeArcIds,
-                                    const std::vector<Eigen::RowVector3d> &samples) {
+inline bool finite_row3(const Eigen::RowVector3d &value) {
+  return value.array().isFinite().all();
+}
+
+inline bool valid_barycentric(const Eigen::RowVector3d &value,
+                              const double tolerance = 1.0e-8) {
+  return finite_row3(value) &&
+         std::abs(value.sum() - 1.0) <= tolerance &&
+         value.minCoeff() >= -tolerance && value.maxCoeff() <= 1.0 + tolerance;
+}
+
+inline bool arc_has_complete_provenance(const FlowRepArc &arc) {
+  if (arc.sourceFace < 0 || arc.sourceComponent < 0 || arc.sourceSheet < 0 ||
+      !valid_barycentric(arc.startBarycentric) ||
+      !valid_barycentric(arc.endBarycentric) || !finite_row3(arc.start) ||
+      !finite_row3(arc.end) || arc_length(arc) <= 0.0) {
+    return false;
+  }
+  if (arc.mandatoryRail) {
+    return arc.initiallyActive && arc.railId >= 0 && arc.curveId >= 0 &&
+           arc.strandProvenance >= 0 &&
+           (arc.boundaryRail || arc.hardFeatureRail);
+  }
+  return arc.proposalId >= 0 && arc.proposalSide >= 0 &&
+         arc.proposalSide < 6 && arc.proposalBoundarySegment >= 0;
+}
+
+inline bool coverage_sample_is_valid(const FlowRepCoverageSample &sample) {
+  return finite_row3(sample.position) && sample.sourceFace >= 0 &&
+         sample.sourceComponent >= 0 && sample.sourceSheet >= 0 &&
+         valid_barycentric(sample.barycentric) &&
+         std::isfinite(sample.targetSize) && sample.targetSize > 0.0 &&
+         sample.sourceArcId >= 0;
+}
+
+inline bool sample_and_arc_are_intrinsically_compatible(
+    const FlowRepCoverageSample &sample, const FlowRepArc &arc) {
+  return sample.sourceFace == arc.sourceFace &&
+         sample.sourceComponent == arc.sourceComponent &&
+         sample.sourceSheet == arc.sourceSheet;
+}
+
+inline double normalized_intrinsic_sample_distance(
+    const FlowRepCoverageSample &sample, const FlowRepArc &arc) {
+  if (!sample_and_arc_are_intrinsically_compatible(sample, arc)) {
+    return std::numeric_limits<double>::infinity();
+  }
+  return point_segment_distance(sample.position, arc) / sample.targetSize;
+}
+
+inline double coverage_max_distance(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds,
+    const std::vector<FlowRepCoverageSample> &samples) {
   double maxDistance = 0.0;
-  for (const Eigen::RowVector3d &sample : samples) {
+  for (const FlowRepCoverageSample &sample : samples) {
     double nearest = std::numeric_limits<double>::infinity();
     for (const int arcId : activeArcIds) {
       if (arcId < 0 || arcId >= static_cast<int>(arcs.size())) {
         continue;
       }
-      nearest = std::min(nearest, point_segment_distance(sample, arcs[arcId]));
+      nearest = std::min(
+          nearest,
+          normalized_intrinsic_sample_distance(
+              sample, arcs[static_cast<std::size_t>(arcId)]));
     }
-    if (std::isfinite(nearest)) {
-      maxDistance = std::max(maxDistance, nearest);
+    if (!std::isfinite(nearest)) {
+      return std::numeric_limits<double>::infinity();
     }
+    maxDistance = std::max(maxDistance, nearest);
   }
   return maxDistance;
 }
@@ -360,8 +490,16 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellNetwork &network) {
   std::vector<FlowRepArc> arcs;
+  const auto face_label = [](const std::vector<int> &labels, const int face) {
+    return face >= 0 && face < static_cast<int>(labels.size())
+               ? labels[static_cast<std::size_t>(face)]
+               : -1;
+  };
   const auto append_segment = [&](const SurfaceTraceSegment &segment,
-                                  const bool mandatory) {
+                                  const bool mandatory, const int proposalId,
+                                  const int proposalSeedId,
+                                  const int proposalSide,
+                                  const int proposalBoundarySegment) {
     FlowRepArc arc;
     arc.id = static_cast<int>(arcs.size());
     arc.start = surface_cell_tracing_detail::point_position(
@@ -373,10 +511,17 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.sourceFace = segment.face;
     arc.startBarycentric = segment.startBarycentric;
     arc.endBarycentric = segment.endBarycentric;
+    arc.sourceComponent =
+        face_label(network.sourceFaceComponents, segment.face);
+    arc.sourceSheet = face_label(network.sourceFaceSheets, segment.face);
     arc.family = segment.family;
-    arc.strandProvenance = segment.family;
+    arc.strandProvenance = proposalId;
     arc.featureProvenance = segment.exitEdge;
     arc.featureClass = segment.exitEdge;
+    arc.proposalId = proposalId;
+    arc.proposalSeedId = proposalSeedId;
+    arc.proposalSide = proposalSide;
+    arc.proposalBoundarySegment = proposalBoundarySegment;
     arc.hardFeatureRail = mandatory || segment.railId >= 0;
     arc.mandatoryRail = mandatory || segment.railId >= 0;
     if (segment.railId >= 0) {
@@ -409,7 +554,11 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arc.sourceFace = a.sourceFace;
       arc.startBarycentric = a.barycentric;
       arc.endBarycentric = b.barycentric;
-      arc.sourceComponent = rail.component;
+      arc.sourceComponent = rail.component >= 0
+                                ? rail.component
+                                : face_label(network.sourceFaceComponents,
+                                             a.sourceFace);
+      arc.sourceSheet = face_label(network.sourceFaceSheets, a.sourceFace);
       arc.family = -1;
       arc.featureClass = rail.kind == SurfaceCellRailKind::Boundary ? 1 : 3;
       arc.mandatoryRail = true;
@@ -427,18 +576,151 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
   }
   // Half traces are diagnostic exploration only. FlowRep receives complete,
   // prevalidated cell-boundary cycles and authoritative rails exclusively.
-  for (const SurfaceCellProposal &proposal : network.proposals) {
+  for (int proposalId = 0;
+       proposalId < static_cast<int>(network.proposals.size()); ++proposalId) {
+    const SurfaceCellProposal &proposal =
+        network.proposals[static_cast<std::size_t>(proposalId)];
     if (!proposal.accepted ||
         proposal.rejection != CellRejectionReason::Accepted) {
       continue;
     }
-    for (const auto &boundaryPath : proposal.boundaryPaths) {
-      for (const SurfaceTraceSegment &segment : boundaryPath) {
-        append_segment(segment, false);
+    for (int side = 0; side < static_cast<int>(proposal.boundaryPaths.size());
+         ++side) {
+      const auto &boundaryPath =
+          proposal.boundaryPaths[static_cast<std::size_t>(side)];
+      for (int segmentIndex = 0;
+           segmentIndex < static_cast<int>(boundaryPath.size());
+           ++segmentIndex) {
+        append_segment(boundaryPath[static_cast<std::size_t>(segmentIndex)],
+                       false, proposalId, proposal.seedId, side, segmentIndex);
       }
     }
   }
   return arcs;
+}
+
+inline FlowRepSelectionInput build_flow_rep_selection_input(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
+    const double defaultTargetSize = 1.0) {
+  FlowRepSelectionInput input;
+  input.arcs = build_flow_rep_arcs_from_network(vertices, faces, network);
+
+  const auto target_size_at_barycentric = [&](const int face,
+                                               const Eigen::RowVector3d &bary) {
+    if (face < 0 || face >= faces.rows()) {
+      return defaultTargetSize;
+    }
+    double value = 0.0;
+    for (int corner = 0; corner < 3; ++corner) {
+      value += bary[corner] *
+               surface_cell_tracing_detail::target_size_at_vertex(
+                   targetSize, faces(face, corner), defaultTargetSize);
+    }
+    return std::isfinite(value) && value > 0.0 ? value : defaultTargetSize;
+  };
+
+  input.coverageSamples.reserve(input.arcs.size());
+  for (const FlowRepArc &arc : input.arcs) {
+    if (!arc.initiallyActive || arc.sourceFace < 0) {
+      continue;
+    }
+    const Eigen::RowVector3d midpointBarycentric =
+        0.5 * (arc.startBarycentric + arc.endBarycentric);
+    const double midpointTargetSize = target_size_at_barycentric(
+        arc.sourceFace, midpointBarycentric);
+    const int sampleCount = std::max(
+        1, static_cast<int>(std::ceil(
+               flow_rep_detail::arc_length(arc) /
+               std::max(0.5 * midpointTargetSize, 1.0e-12))));
+    for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+      const double parameter =
+          (static_cast<double>(sampleIndex) + 0.5) /
+          static_cast<double>(sampleCount);
+      FlowRepCoverageSample sample;
+      sample.position =
+          (1.0 - parameter) * arc.start + parameter * arc.end;
+      sample.sourceFace = arc.sourceFace;
+      sample.barycentric = (1.0 - parameter) * arc.startBarycentric +
+                           parameter * arc.endBarycentric;
+      sample.sourceComponent = arc.sourceComponent;
+      sample.sourceSheet = arc.sourceSheet;
+      sample.targetSize =
+          target_size_at_barycentric(sample.sourceFace, sample.barycentric);
+      sample.sourceArcId = arc.id;
+      input.coverageSamples.push_back(sample);
+    }
+  }
+
+  std::map<int, std::size_t> cycleByProposal;
+  for (const FlowRepArc &arc : input.arcs) {
+    // Standalone authoritative rails are constraints, not cell boundaries.
+    // Proposal segments that follow a rail remain mandatory, but must still
+    // participate in the proposal cycle they bound.
+    if (arc.proposalId < 0) {
+      continue;
+    }
+    auto [it, inserted] =
+        cycleByProposal.emplace(arc.proposalId, input.cycles.size());
+    if (inserted) {
+      FlowRepCycleInput cycle;
+      cycle.id = static_cast<int>(input.cycles.size());
+      cycle.proposalId = arc.proposalId;
+      cycle.targetSize = 0.0;
+      cycle.sideArcIds.resize(4);
+      input.cycles.push_back(std::move(cycle));
+    }
+    FlowRepCycleInput &cycle = input.cycles[it->second];
+    if (arc.proposalSide >= 0 &&
+        arc.proposalSide < static_cast<int>(cycle.sideArcIds.size())) {
+      cycle.sideArcIds[static_cast<std::size_t>(arc.proposalSide)].push_back(
+          arc.id);
+    }
+    cycle.boundaryArcIds.push_back(arc.id);
+
+    const Eigen::RowVector3d normal =
+        surface_cell_tracing_detail::face_normal(vertices, faces,
+                                                 arc.sourceFace);
+    cycle.normals.push_back(normal);
+    cycle.boundaryNormalA.push_back(normal);
+    cycle.boundaryNormalB.push_back(normal);
+    const double halfLength = std::max(0.5 * flow_rep_detail::arc_length(arc),
+                                       1.0e-12);
+    cycle.distanceA.push_back(halfLength);
+    cycle.distanceB.push_back(halfLength);
+    cycle.surfaceDistances.push_back(0.0);
+    cycle.targetSize += target_size_at_barycentric(
+        arc.sourceFace,
+        0.5 * (arc.startBarycentric + arc.endBarycentric));
+  }
+
+  for (FlowRepCycleInput &cycle : input.cycles) {
+    cycle.sideCounts.clear();
+    cycle.sideCounts.reserve(cycle.sideArcIds.size());
+    for (std::vector<int> &side : cycle.sideArcIds) {
+      std::stable_sort(side.begin(), side.end(), [&](const int first,
+                                                     const int second) {
+        const FlowRepArc &a = input.arcs[static_cast<std::size_t>(first)];
+        const FlowRepArc &b = input.arcs[static_cast<std::size_t>(second)];
+        if (a.proposalBoundarySegment != b.proposalBoundarySegment) {
+          return a.proposalBoundarySegment < b.proposalBoundarySegment;
+        }
+        return a.id < b.id;
+      });
+      // A traced proposal has one logical boundary side even when that side is
+      // split into multiple source-triangle segments. Segment count is used to
+      // prove completeness, not as the final patch subdivision count.
+      cycle.sideCounts.push_back(side.empty() ? 0 : 1);
+    }
+    std::stable_sort(cycle.boundaryArcIds.begin(), cycle.boundaryArcIds.end());
+    if (!cycle.boundaryArcIds.empty()) {
+      cycle.targetSize /= static_cast<double>(cycle.boundaryArcIds.size());
+    } else {
+      cycle.targetSize = defaultTargetSize;
+    }
+  }
+
+  return input;
 }
 
 inline FlowRepAffinity compute_flow_rep_affinity(
@@ -819,47 +1101,374 @@ evaluate_flow_rep_cycle(const FlowRepCycleInput &cycle) {
   return evaluation;
 }
 
-inline FlowRepSparseNetwork select_sparse_flow_rep_network(
-    const std::vector<FlowRepArc> &arcs,
-    const std::vector<Eigen::RowVector3d> &coverageSamples = {},
-    const std::vector<FlowRepCycleInput> &cycles = {},
-    const FlowRepSparseOptions &options = {}) {
-  FlowRepSparseNetwork network;
-  std::vector<unsigned char> active(arcs.size(), static_cast<unsigned char>(1));
-  std::vector<int> allArcIds;
-  allArcIds.reserve(arcs.size());
-  for (const FlowRepArc &arc : arcs) {
-    allArcIds.push_back(arc.id);
-    if (arc.mandatoryRail) {
-      ++network.mandatoryRails;
-    }
-  }
-  network.denseCoverageMax =
-      flow_rep_detail::coverage_max_distance(arcs, allArcIds, coverageSamples);
+namespace flow_rep_detail {
 
-  for (const FlowRepCycleInput &cycle : cycles) {
-    network.cycleEvaluations.push_back(evaluate_flow_rep_cycle(cycle));
+inline bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
+                                                   const FlowRepArc &candidate) {
+  if (candidate.mandatoryRail || candidate.sourceFace != original.sourceFace ||
+      candidate.sourceComponent != original.sourceComponent ||
+      candidate.sourceSheet != original.sourceSheet ||
+      candidate.family != original.family ||
+      candidate.proposalId != original.proposalId ||
+      candidate.proposalSide != original.proposalSide ||
+      candidate.proposalBoundarySegment !=
+          original.proposalBoundarySegment) {
+    return false;
   }
-  const auto rebuild_cycles = [&]() {
-    std::vector<FlowRepCycleEvaluation> rebuilt;
-    rebuilt.reserve(cycles.size());
-    for (const FlowRepCycleInput &cycle : cycles) {
-      rebuilt.push_back(evaluate_flow_rep_cycle(cycle));
+  const bool sameOrientation =
+      close_points(predicate_start(original), predicate_start(candidate),
+                   1.0e-10) &&
+      close_points(predicate_end(original), predicate_end(candidate), 1.0e-10);
+  const bool reverseOrientation =
+      close_points(predicate_start(original), predicate_end(candidate),
+                   1.0e-10) &&
+      close_points(predicate_end(original), predicate_start(candidate),
+                   1.0e-10);
+  return sameOrientation || reverseOrientation;
+}
+
+inline int resolve_cycle_arc(const FlowRepCycleInput &cycle,
+                             const std::vector<FlowRepArc> &arcs,
+                             const std::vector<unsigned char> &active,
+                             const int originalArcId) {
+  (void)cycle;
+  if (originalArcId < 0 || originalArcId >= static_cast<int>(arcs.size())) {
+    return -1;
+  }
+  if (active[static_cast<std::size_t>(originalArcId)] != 0) {
+    return originalArcId;
+  }
+  const FlowRepArc &original = arcs[static_cast<std::size_t>(originalArcId)];
+  for (const int substituteId : original.substitutions) {
+    if (substituteId < 0 || substituteId >= static_cast<int>(arcs.size()) ||
+        active[static_cast<std::size_t>(substituteId)] == 0) {
+      continue;
     }
-    return rebuilt;
-  };
-  const auto cycles_ok = [&](const std::vector<FlowRepCycleEvaluation> &evaluations) {
-    for (const FlowRepCycleEvaluation &cycle : evaluations) {
-      if (!cycle.descriptive || !cycle.quadrangulable) {
+    const FlowRepArc &candidate = arcs[static_cast<std::size_t>(substituteId)];
+    if (substitution_preserves_cycle_boundary(original, candidate)) {
+      return substituteId;
+    }
+  }
+  return -1;
+}
+
+inline FlowRepCycleEvaluation rebuild_cycle_evaluation(
+    const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs,
+    const std::vector<unsigned char> &active) {
+  FlowRepCycleInput rebuilt = cycle;
+  rebuilt.boundaryArcIds.clear();
+  rebuilt.sideCounts.clear();
+  bool completeBoundary = !cycle.sideArcIds.empty();
+  std::set<int> resolvedBoundary;
+  for (std::size_t sideIndex = 0; sideIndex < cycle.sideArcIds.size();
+       ++sideIndex) {
+    const std::vector<int> &side = cycle.sideArcIds[sideIndex];
+    bool completeSide = !side.empty();
+    for (const int originalArcId : side) {
+      const int resolvedArcId =
+          resolve_cycle_arc(cycle, arcs, active, originalArcId);
+      if (resolvedArcId < 0 || !resolvedBoundary.insert(resolvedArcId).second) {
+        completeSide = false;
+        continue;
+      }
+      rebuilt.boundaryArcIds.push_back(resolvedArcId);
+    }
+    const int logicalSideCount =
+        sideIndex < cycle.sideCounts.size() ? cycle.sideCounts[sideIndex] : 0;
+    rebuilt.sideCounts.push_back(completeSide ? logicalSideCount : 0);
+    completeBoundary = completeBoundary && completeSide && logicalSideCount > 0;
+  }
+  rebuilt.diskTopology = rebuilt.diskTopology && completeBoundary;
+  return evaluate_flow_rep_cycle(rebuilt);
+}
+
+inline bool cycle_input_is_structurally_valid(
+    const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs) {
+  if (cycle.id < 0 || cycle.proposalId < 0 ||
+      cycle.sideArcIds.size() < 3U || cycle.sideArcIds.size() > 6U ||
+      cycle.sideCounts.size() != cycle.sideArcIds.size() ||
+      cycle.boundaryArcIds.empty() || !std::isfinite(cycle.targetSize) ||
+      cycle.targetSize <= 0.0 ||
+      !std::isfinite(cycle.normalThresholdRadians) ||
+      cycle.normalThresholdRadians <= 0.0 || cycle.normals.empty() ||
+      cycle.normals.size() != cycle.boundaryNormalA.size() ||
+      cycle.normals.size() != cycle.boundaryNormalB.size() ||
+      cycle.normals.size() != cycle.distanceA.size() ||
+      cycle.normals.size() != cycle.distanceB.size() ||
+      cycle.surfaceDistances.empty()) {
+    return false;
+  }
+  for (std::size_t sample = 0; sample < cycle.normals.size(); ++sample) {
+    if (!finite_row3(cycle.normals[sample]) ||
+        !finite_row3(cycle.boundaryNormalA[sample]) ||
+        !finite_row3(cycle.boundaryNormalB[sample]) ||
+        !std::isfinite(cycle.distanceA[sample]) || cycle.distanceA[sample] < 0.0 ||
+        !std::isfinite(cycle.distanceB[sample]) || cycle.distanceB[sample] < 0.0) {
+      return false;
+    }
+  }
+  for (const double distance : cycle.surfaceDistances) {
+    if (!std::isfinite(distance) || distance < 0.0) {
+      return false;
+    }
+  }
+  std::vector<int> flattened;
+  for (std::size_t sideIndex = 0; sideIndex < cycle.sideArcIds.size();
+       ++sideIndex) {
+    const std::vector<int> &side = cycle.sideArcIds[sideIndex];
+    if (side.empty() || cycle.sideCounts[sideIndex] <= 0) {
+      return false;
+    }
+    int expectedSegment = 0;
+    for (const int arcId : side) {
+      if (arcId < 0 || arcId >= static_cast<int>(arcs.size())) {
+        return false;
+      }
+      const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
+      if (arc.proposalId != cycle.proposalId ||
+          arc.proposalSide != static_cast<int>(sideIndex) ||
+          arc.proposalBoundarySegment != expectedSegment++) {
         return false;
       }
     }
-    return true;
+    flattened.insert(flattened.end(), side.begin(), side.end());
+  }
+  std::stable_sort(flattened.begin(), flattened.end());
+  std::vector<int> boundary = cycle.boundaryArcIds;
+  std::stable_sort(boundary.begin(), boundary.end());
+  if (flattened != boundary ||
+      std::adjacent_find(boundary.begin(), boundary.end()) != boundary.end()) {
+    return false;
+  }
+  for (const int arcId : boundary) {
+    if (arcId < 0 || arcId >= static_cast<int>(arcs.size()) ||
+        !arcs[static_cast<std::size_t>(arcId)].initiallyActive) {
+      return false;
+    }
+  }
+  return true;
+}
+
+inline bool cycle_evaluations_are_valid(
+    const std::vector<FlowRepCycleEvaluation> &evaluations) {
+  for (const FlowRepCycleEvaluation &cycle : evaluations) {
+    if (!cycle.descriptive || !cycle.quadrangulable) {
+      return false;
+    }
+  }
+  return true;
+}
+
+} // namespace flow_rep_detail
+
+inline FlowRepSparseNetwork select_sparse_flow_rep_network(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<FlowRepCoverageSample> &coverageSamples = {},
+    const std::vector<FlowRepCycleInput> &cycles = {},
+    const FlowRepSparseOptions &options = {}) {
+  FlowRepSparseNetwork network;
+  network.coverageSampleCount = static_cast<int>(coverageSamples.size());
+  network.cycleEvidenceCount = static_cast<int>(cycles.size());
+
+  std::vector<unsigned char> active(arcs.size(), static_cast<unsigned char>(0));
+  std::vector<int> denseArcIds;
+  denseArcIds.reserve(arcs.size());
+  bool invalidArcIdentity = false;
+  for (int index = 0; index < static_cast<int>(arcs.size()); ++index) {
+    const FlowRepArc &arc = arcs[static_cast<std::size_t>(index)];
+    if (arc.mandatoryRail) {
+      ++network.mandatoryRails;
+    }
+    if (arc.id != index) {
+      invalidArcIdentity = true;
+      continue;
+    }
+    active[static_cast<std::size_t>(index)] =
+        static_cast<unsigned char>(arc.initiallyActive ? 1 : 0);
+    if (arc.initiallyActive) {
+      denseArcIds.push_back(arc.id);
+    }
+  }
+  if (invalidArcIdentity) {
+    network.failureCode = FlowRepSelectionFailureCode::InvalidArcIdentity;
+    for (int index = 0; index < static_cast<int>(arcs.size()); ++index) {
+      const FlowRepArc &arc = arcs[static_cast<std::size_t>(index)];
+      if (arc.initiallyActive) {
+        // IDs are invalid, so report safe vector identities for diagnostics.
+        network.retainedArcIds.push_back(index);
+        if (arc.mandatoryRail) {
+          ++network.retainedMandatoryRails;
+        }
+      } else {
+        network.removedArcIds.push_back(index);
+      }
+    }
+    return network;
+  }
+
+  const auto finish_failure = [&](const FlowRepSelectionFailureCode code) {
+    network.selectionSucceeded = false;
+    network.failureCode = code;
+    network.retainedArcIds.clear();
+    network.removedArcIds.clear();
+    network.retainedMandatoryRails = 0;
+    for (const FlowRepArc &arc : arcs) {
+      if (arc.initiallyActive) {
+        network.retainedArcIds.push_back(arc.id);
+        if (arc.mandatoryRail) {
+          ++network.retainedMandatoryRails;
+        }
+      } else {
+        network.removedArcIds.push_back(arc.id);
+      }
+    }
+    if (!network.retainedArcIds.empty()) {
+      network.endpointTags =
+          flow_rep_detail::classify_endpoints(arcs, network.retainedArcIds);
+    }
+    if (network.coverageEvidenceUsed) {
+      network.sparseCoverageMax = flow_rep_detail::coverage_max_distance(
+          arcs, network.retainedArcIds, coverageSamples);
+    }
+    return network;
   };
+
+  if (denseArcIds.empty()) {
+    return finish_failure(FlowRepSelectionFailureCode::EmptyNetwork);
+  }
+  // Absence of required evidence is the primary failure. Do not obscure it
+  // with secondary provenance validation on an input that cannot be selected.
+  if (coverageSamples.empty() && options.requireCoverageEvidence) {
+    return finish_failure(
+        FlowRepSelectionFailureCode::MissingCoverageEvidence);
+  }
+  if (options.requireCompleteProvenance) {
+    for (const FlowRepArc &arc : arcs) {
+      if (!flow_rep_detail::arc_has_complete_provenance(arc)) {
+        return finish_failure(
+            FlowRepSelectionFailureCode::IncompleteArcProvenance);
+      }
+    }
+  }
+
+  if (!coverageSamples.empty()) {
+    for (const FlowRepCoverageSample &sample : coverageSamples) {
+      if (!flow_rep_detail::coverage_sample_is_valid(sample) ||
+          sample.sourceArcId >= static_cast<int>(arcs.size()) ||
+          !arcs[static_cast<std::size_t>(sample.sourceArcId)].initiallyActive ||
+          sample.sourceFace !=
+              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceFace ||
+          sample.sourceComponent !=
+              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceComponent ||
+          sample.sourceSheet !=
+              arcs[static_cast<std::size_t>(sample.sourceArcId)].sourceSheet) {
+        return finish_failure(
+            FlowRepSelectionFailureCode::InvalidCoverageEvidence);
+      }
+    }
+    network.coverageEvidenceUsed = true;
+    network.denseCoverageMax = flow_rep_detail::coverage_max_distance(
+        arcs, denseArcIds, coverageSamples);
+    if (!std::isfinite(network.denseCoverageMax)) {
+      return finish_failure(
+          FlowRepSelectionFailureCode::InvalidCoverageEvidence);
+    }
+  }
+
+  std::vector<std::vector<int>> arcToCycles(arcs.size());
+  if (cycles.empty()) {
+    if (options.requireCycleEvidence) {
+      return finish_failure(FlowRepSelectionFailureCode::MissingCycleEvidence);
+    }
+  } else {
+    std::vector<unsigned char> coveredByCycle(arcs.size(),
+                                               static_cast<unsigned char>(0));
+    network.cycleEvaluations.reserve(cycles.size());
+    for (int cycleIndex = 0; cycleIndex < static_cast<int>(cycles.size());
+         ++cycleIndex) {
+      const FlowRepCycleInput &cycle =
+          cycles[static_cast<std::size_t>(cycleIndex)];
+      if (!flow_rep_detail::cycle_input_is_structurally_valid(cycle, arcs)) {
+        return finish_failure(
+            FlowRepSelectionFailureCode::InvalidCycleEvidence);
+      }
+      for (const int arcId : cycle.boundaryArcIds) {
+        arcToCycles[static_cast<std::size_t>(arcId)].push_back(cycleIndex);
+        coveredByCycle[static_cast<std::size_t>(arcId)] =
+            static_cast<unsigned char>(1);
+        for (const int substituteId :
+             arcs[static_cast<std::size_t>(arcId)].substitutions) {
+          if (substituteId >= 0 &&
+              substituteId < static_cast<int>(arcs.size())) {
+            arcToCycles[static_cast<std::size_t>(substituteId)].push_back(
+                cycleIndex);
+          }
+        }
+      }
+      network.cycleEvaluations.push_back(
+          flow_rep_detail::rebuild_cycle_evaluation(cycle, arcs, active));
+    }
+    for (const FlowRepArc &arc : arcs) {
+      if (arc.initiallyActive && arc.proposalId >= 0 &&
+          coveredByCycle[static_cast<std::size_t>(arc.id)] == 0) {
+        return finish_failure(
+            FlowRepSelectionFailureCode::IncompleteCycleCoverage);
+      }
+    }
+    if (!flow_rep_detail::cycle_evaluations_are_valid(
+            network.cycleEvaluations)) {
+      return finish_failure(FlowRepSelectionFailureCode::InvalidCycleEvidence);
+    }
+    for (std::vector<int> &affected : arcToCycles) {
+      std::stable_sort(affected.begin(), affected.end());
+      affected.erase(std::unique(affected.begin(), affected.end()),
+                     affected.end());
+    }
+    network.cycleEvidenceUsed = true;
+  }
+
+  const auto active_arc_ids = [&]() {
+    std::vector<int> ids;
+    ids.reserve(arcs.size());
+    for (const FlowRepArc &arc : arcs) {
+      if (active[static_cast<std::size_t>(arc.id)] != 0) {
+        ids.push_back(arc.id);
+      }
+    }
+    return ids;
+  };
+  const auto rebuild_affected_cycles =
+      [&](const std::vector<int> &affectedCycles,
+          std::vector<FlowRepCycleEvaluation> &evaluations) {
+        for (const int cycleIndex : affectedCycles) {
+          evaluations[static_cast<std::size_t>(cycleIndex)] =
+              flow_rep_detail::rebuild_cycle_evaluation(
+                  cycles[static_cast<std::size_t>(cycleIndex)], arcs, active);
+          ++network.cycleRebuilds;
+        }
+      };
+  const auto transaction_is_valid =
+      [&](const std::vector<int> &trialArcIds,
+          const std::vector<FlowRepCycleEvaluation> &trialCycles) {
+        const double trialCoverage =
+            network.coverageEvidenceUsed
+                ? flow_rep_detail::coverage_max_distance(
+                      arcs, trialArcIds, coverageSamples)
+                : 0.0;
+        const bool coverageOk =
+            !network.coverageEvidenceUsed ||
+            (std::isfinite(trialCoverage) &&
+             trialCoverage - network.denseCoverageMax <=
+                 options.maxCoverageWorsening);
+        const bool cyclesOk =
+            !network.cycleEvidenceUsed ||
+            flow_rep_detail::cycle_evaluations_are_valid(trialCycles);
+        return std::make_pair(coverageOk && cyclesOk, trialCoverage);
+      };
 
   std::vector<int> removable;
   for (const FlowRepArc &arc : arcs) {
-    if (!arc.mandatoryRail) {
+    if (arc.initiallyActive && !arc.mandatoryRail) {
       removable.push_back(arc.id);
     }
   }
@@ -867,27 +1476,23 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
                                                            const int b) {
     const FlowRepArc &aa = arcs[static_cast<std::size_t>(a)];
     const FlowRepArc &bb = arcs[static_cast<std::size_t>(b)];
-    const auto keyA =
-        std::make_tuple(aa.dominance, -aa.alignmentCost, aa.id);
-    const auto keyB =
-        std::make_tuple(bb.dominance, -bb.alignmentCost, bb.id);
+    const auto keyA = std::make_tuple(aa.dominance, -aa.alignmentCost, aa.id);
+    const auto keyB = std::make_tuple(bb.dominance, -bb.alignmentCost, bb.id);
     return keyA < keyB;
   });
 
   for (const int arcId : removable) {
     active[static_cast<std::size_t>(arcId)] = static_cast<unsigned char>(0);
-    std::vector<int> trial;
-    for (const FlowRepArc &arc : arcs) {
-      if (active[static_cast<std::size_t>(arc.id)] != 0) {
-        trial.push_back(arc.id);
-      }
+    std::vector<FlowRepCycleEvaluation> trialCycles = network.cycleEvaluations;
+    if (network.cycleEvidenceUsed) {
+      rebuild_affected_cycles(arcToCycles[static_cast<std::size_t>(arcId)],
+                              trialCycles);
     }
-    const double trialCoverage =
-        flow_rep_detail::coverage_max_distance(arcs, trial, coverageSamples);
-    std::vector<FlowRepCycleEvaluation> trialCycles = rebuild_cycles();
-    ++network.cycleRebuilds;
-    if (!cycles_ok(trialCycles) ||
-        trialCoverage - network.denseCoverageMax > options.maxCoverageWorsening) {
+    const std::vector<int> trial = active_arc_ids();
+    const auto [accepted, trialCoverage] =
+        transaction_is_valid(trial, trialCycles);
+    (void)trialCoverage;
+    if (!accepted) {
       active[static_cast<std::size_t>(arcId)] = static_cast<unsigned char>(1);
     } else {
       network.cycleEvaluations = std::move(trialCycles);
@@ -896,7 +1501,8 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
   }
 
   for (const FlowRepArc &arc : arcs) {
-    if (active[static_cast<std::size_t>(arc.id)] == 0 || arc.mandatoryRail) {
+    if (!arc.initiallyActive || arc.mandatoryRail ||
+        active[static_cast<std::size_t>(arc.id)] == 0) {
       continue;
     }
     for (const int substituteId : arc.substitutions) {
@@ -915,19 +1521,23 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
       active[static_cast<std::size_t>(arc.id)] = static_cast<unsigned char>(0);
       active[static_cast<std::size_t>(substituteId)] =
           static_cast<unsigned char>(1);
-      std::vector<int> trial;
-      for (const FlowRepArc &candidate : arcs) {
-        if (active[static_cast<std::size_t>(candidate.id)] != 0) {
-          trial.push_back(candidate.id);
-        }
+      std::vector<int> affected = arcToCycles[static_cast<std::size_t>(arc.id)];
+      affected.insert(affected.end(),
+                      arcToCycles[static_cast<std::size_t>(substituteId)].begin(),
+                      arcToCycles[static_cast<std::size_t>(substituteId)].end());
+      std::stable_sort(affected.begin(), affected.end());
+      affected.erase(std::unique(affected.begin(), affected.end()),
+                     affected.end());
+      std::vector<FlowRepCycleEvaluation> trialCycles =
+          network.cycleEvaluations;
+      if (network.cycleEvidenceUsed) {
+        rebuild_affected_cycles(affected, trialCycles);
       }
-      const double trialCoverage =
-          flow_rep_detail::coverage_max_distance(arcs, trial, coverageSamples);
-      std::vector<FlowRepCycleEvaluation> trialCycles = rebuild_cycles();
-      ++network.cycleRebuilds;
-      if (!cycles_ok(trialCycles) ||
-          trialCoverage - network.denseCoverageMax >
-              options.maxCoverageWorsening) {
+      const std::vector<int> trial = active_arc_ids();
+      const auto [accepted, trialCoverage] =
+          transaction_is_valid(trial, trialCycles);
+      (void)trialCoverage;
+      if (!accepted) {
         active[static_cast<std::size_t>(arc.id)] = static_cast<unsigned char>(1);
         active[static_cast<std::size_t>(substituteId)] =
             static_cast<unsigned char>(0);
@@ -949,10 +1559,18 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
       network.removedArcIds.push_back(arc.id);
     }
   }
-  network.sparseCoverageMax = flow_rep_detail::coverage_max_distance(
-      arcs, network.retainedArcIds, coverageSamples);
+  if (network.retainedMandatoryRails != network.mandatoryRails) {
+    return finish_failure(FlowRepSelectionFailureCode::MandatoryRailLoss);
+  }
+  network.sparseCoverageMax =
+      network.coverageEvidenceUsed
+          ? flow_rep_detail::coverage_max_distance(
+                arcs, network.retainedArcIds, coverageSamples)
+          : 0.0;
   network.endpointTags =
       flow_rep_detail::classify_endpoints(arcs, network.retainedArcIds);
+  network.selectionSucceeded = true;
+  network.failureCode = FlowRepSelectionFailureCode::None;
   return network;
 }
 
