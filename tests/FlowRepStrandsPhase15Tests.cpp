@@ -163,18 +163,34 @@ TEST(FlowRepStrandsPhase15, ExtractsMaximalFlowlinesFromStrands) {
   EXPECT_NEAR(flowlines.front().length, 3.0, 1.0e-12);
 }
 
-TEST(FlowRepStrandsPhase15, EmbeddedArcProvenanceSurvivesNetworkConversion) {
+TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
   directional::geometry::SurfaceCellNetwork network;
-  directional::geometry::SurfaceTraceResult trace;
-  directional::geometry::SurfaceTraceSegment segment;
-  segment.face = 0;
-  segment.startBarycentric << 0.5, 0.5, 0.0;
-  segment.endBarycentric << 0.25, 0.25, 0.5;
-  segment.family = 1;
-  segment.exitEdge = 2;
-  trace.segments.push_back(segment);
-  trace.termination = directional::geometry::TraceTerminationReason::Feature;
-  network.traces.push_back(trace);
+
+  directional::geometry::SurfaceTraceSegment halfTraceSegment;
+  halfTraceSegment.face = 0;
+  halfTraceSegment.startBarycentric << 0.5, 0.5, 0.0;
+  halfTraceSegment.endBarycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceTraceResult halfTrace;
+  halfTrace.segments.push_back(halfTraceSegment);
+  network.traces.push_back(halfTrace);
+
+  directional::geometry::SurfaceTraceSegment boundarySegment;
+  boundarySegment.face = 0;
+  boundarySegment.startBarycentric << 0.8, 0.2, 0.0;
+  boundarySegment.endBarycentric << 0.6, 0.2, 0.2;
+  boundarySegment.family = 1;
+  directional::geometry::SurfaceCellProposal accepted;
+  accepted.accepted = true;
+  accepted.rejection = directional::geometry::CellRejectionReason::Accepted;
+  accepted.boundaryPaths[0].push_back(boundarySegment);
+  network.proposals.push_back(accepted);
+
+  directional::geometry::SurfaceCellProposal rejected = accepted;
+  rejected.accepted = false;
+  rejected.rejection = directional::geometry::CellRejectionReason::Closure;
+  rejected.boundaryPaths[0][0].family = 0;
+  network.proposals.push_back(rejected);
+
   Eigen::MatrixXd vertices(3, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
@@ -187,13 +203,13 @@ TEST(FlowRepStrandsPhase15, EmbeddedArcProvenanceSurvivesNetworkConversion) {
   ASSERT_EQ(arcs.size(), 1U);
   EXPECT_EQ(arcs[0].sourceFace, 0);
   EXPECT_EQ(arcs[0].family, 1);
-  EXPECT_TRUE(arcs[0].mandatoryRail);
-  EXPECT_TRUE(arcs[0].hardFeatureRail);
-  EXPECT_EQ(arcs[0].featureClass, 2);
-  EXPECT_NEAR((arcs[0].startBarycentric - segment.startBarycentric).norm(), 0.0,
-              1.0e-12);
-  EXPECT_NEAR((arcs[0].endBarycentric - segment.endBarycentric).norm(), 0.0,
-              1.0e-12);
+  EXPECT_FALSE(arcs[0].mandatoryRail);
+  EXPECT_FALSE(arcs[0].hardFeatureRail);
+  EXPECT_NEAR((arcs[0].startBarycentric - boundarySegment.startBarycentric)
+                  .norm(),
+              0.0, 1.0e-12);
+  EXPECT_NEAR((arcs[0].endBarycentric - boundarySegment.endBarycentric).norm(),
+              0.0, 1.0e-12);
 }
 
 TEST(FlowRepStrandsPhase15, CrossingPredicateUsesSourceTriangleCoordinates) {

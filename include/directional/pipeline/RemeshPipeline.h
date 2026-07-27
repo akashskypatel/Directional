@@ -777,6 +777,11 @@ inline std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.stats.rejectedDegenerate);
   hash_combine_i64(seed, network.stats.rejectedSourceSheet);
   hash_combine_i64(seed, network.stats.rejectedFieldMetadata);
+  hash_combine_i64(seed, network.stats.rejectedSelfIntersection);
+  hash_combine_i64(seed, network.stats.rejectedInverted);
+  hash_combine_i64(seed, network.stats.rejectedDuplicateCorner);
+  hash_combine_i64(seed, network.stats.rejectedOutOfSize);
+  hash_combine_i64(seed, network.stats.rejectedHardRailCrossing);
   return seed;
 }
 

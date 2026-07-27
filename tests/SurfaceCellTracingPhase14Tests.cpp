@@ -96,6 +96,11 @@ std::uint64_t network_hash(const directional::geometry::SurfaceCellNetwork &netw
   mix(network.stats.rejectedDegenerate);
   mix(network.stats.rejectedSourceSheet);
   mix(network.stats.rejectedFieldMetadata);
+  mix(network.stats.rejectedSelfIntersection);
+  mix(network.stats.rejectedInverted);
+  mix(network.stats.rejectedDuplicateCorner);
+  mix(network.stats.rejectedOutOfSize);
+  mix(network.stats.rejectedHardRailCrossing);
   for (const auto &seed : network.seeds) {
     mix(seed.id);
     mix(seed.point.face);
@@ -1731,7 +1736,12 @@ TEST(SurfaceCellTracingPhase14, ProposalStatsAccountForEveryAttempt) {
             network.stats.accepted + network.stats.rejectedBarrier +
                 network.stats.rejectedClosure + network.stats.rejectedDegenerate +
                 network.stats.rejectedSourceSheet +
-                network.stats.rejectedFieldMetadata);
+                network.stats.rejectedFieldMetadata +
+                network.stats.rejectedSelfIntersection +
+                network.stats.rejectedInverted +
+                network.stats.rejectedDuplicateCorner +
+                network.stats.rejectedOutOfSize +
+                network.stats.rejectedHardRailCrossing);
 }
 
 TEST(SurfaceCellTracingPhase14, CellProposalReportsClosureAndAcceptedSides) {
@@ -1827,7 +1837,70 @@ TEST(SurfaceCellTracingPhase14, CellProposalRejectsDegenerateLoop) {
 
   EXPECT_FALSE(proposal.accepted);
   EXPECT_EQ(proposal.rejection,
-            directional::geometry::CellRejectionReason::Degenerate);
+            directional::geometry::CellRejectionReason::DuplicateCorner);
+}
+
+TEST(SurfaceCellTracingPhase14, CellLoopRejectionsAreSpecific) {
+  using directional::geometry::CellRejectionReason;
+  using directional::geometry::SurfaceCellTracingOptions;
+  using directional::geometry::surface_cell_tracing_detail::classify_quad_loop;
+  const Eigen::RowVector3d normal(0.0, 0.0, 1.0);
+  SurfaceCellTracingOptions options;
+
+  const std::array<Eigen::RowVector3d, 4> duplicate{
+      Eigen::RowVector3d(0.0, 0.0, 0.0),
+      Eigen::RowVector3d(1.0, 0.0, 0.0),
+      Eigen::RowVector3d(1.0, 0.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0)};
+  EXPECT_EQ(classify_quad_loop(duplicate, 1.0, normal, options),
+            CellRejectionReason::DuplicateCorner);
+
+  const std::array<Eigen::RowVector3d, 4> crossing{
+      Eigen::RowVector3d(0.0, 0.0, 0.0),
+      Eigen::RowVector3d(1.0, 1.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0),
+      Eigen::RowVector3d(1.0, 0.0, 0.0)};
+  EXPECT_EQ(classify_quad_loop(crossing, 1.0, normal, options),
+            CellRejectionReason::SelfIntersection);
+
+  const std::array<Eigen::RowVector3d, 4> inverted{
+      Eigen::RowVector3d(0.0, 0.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0),
+      Eigen::RowVector3d(1.0, 1.0, 0.0),
+      Eigen::RowVector3d(1.0, 0.0, 0.0)};
+  EXPECT_EQ(classify_quad_loop(inverted, 1.0, normal, options),
+            CellRejectionReason::Inverted);
+
+  const std::array<Eigen::RowVector3d, 4> oversized{
+      Eigen::RowVector3d(0.0, 0.0, 0.0),
+      Eigen::RowVector3d(5.0, 0.0, 0.0),
+      Eigen::RowVector3d(5.0, 1.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0)};
+  EXPECT_EQ(classify_quad_loop(oversized, 1.0, normal, options),
+            CellRejectionReason::OutOfSize);
+}
+
+TEST(SurfaceCellTracingPhase14, CellBoundaryRejectsProperHardRailCrossing) {
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 0.5, 0.5, 0.0;
+  segment.endBarycentric << 0.5, 0.0, 0.5;
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 17;
+  directional::geometry::SurfaceCellRailSample a;
+  a.sourceFace = 0;
+  a.barycentric << 0.75, 0.0, 0.25;
+  directional::geometry::SurfaceCellRailSample b;
+  b.sourceFace = 0;
+  b.barycentric << 0.25, 0.5, 0.25;
+  rail.samples = {a, b};
+
+  EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
+                  trace_segment_crosses_authoritative_rail(segment, {rail}));
+  segment.railId = rail.id;
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   trace_segment_crosses_authoritative_rail(segment, {rail}));
 }
 
 TEST(SurfaceCellTracingPhase14, SampledSourceAreaWithinLocalTargetSize) {

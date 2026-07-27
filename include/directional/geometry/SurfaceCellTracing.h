@@ -60,6 +60,11 @@ enum class CellRejectionReason : int {
   Degenerate = 3,
   SourceSheet = 4,
   FieldMetadata = 5,
+  SelfIntersection = 6,
+  Inverted = 7,
+  DuplicateCorner = 8,
+  OutOfSize = 9,
+  HardRailCrossing = 10,
 };
 
 enum class SurfaceCellRailKind : int {
@@ -175,6 +180,11 @@ struct SurfaceCellProposalStats {
   int rejectedDegenerate = 0;
   int rejectedSourceSheet = 0;
   int rejectedFieldMetadata = 0;
+  int rejectedSelfIntersection = 0;
+  int rejectedInverted = 0;
+  int rejectedDuplicateCorner = 0;
+  int rejectedOutOfSize = 0;
+  int rejectedHardRailCrossing = 0;
 };
 
 enum class SurfaceGuidePotentialStatus : int {
@@ -199,6 +209,9 @@ struct SurfaceCellTracingOptions {
   int maxTraceSegments = 128;
   double captureRadius = 0.0;
   double closureToleranceFactor = 0.25;
+  double minimumCellSideFactor = 0.1;
+  double maximumCellSideFactor = 4.0;
+  double duplicateCornerToleranceFactor = 1.0e-6;
   std::vector<int> singularityVertices;
   std::vector<int> reliefCriticalVertices;
   std::vector<int> reliefRootVertices;
@@ -1473,47 +1486,113 @@ inline bool segments_intersect_2d(const Eigen::Vector2d &a,
   return o1 * o2 < -1.0e-14 && o3 * o4 < -1.0e-14;
 }
 
+inline CellRejectionReason classify_quad_loop(
+    const std::array<Eigen::RowVector3d, 4> &corners, const double h,
+    const Eigen::RowVector3d &expectedNormal,
+    const SurfaceCellTracingOptions &options) {
+  const double duplicateTolerance =
+      std::max(1.0e-14, options.duplicateCornerToleranceFactor * h);
+  for (int i = 0; i < 4; ++i) {
+    for (int j = i + 1; j < 4; ++j) {
+      const double distance =
+          (corners[static_cast<std::size_t>(i)] -
+           corners[static_cast<std::size_t>(j)])
+              .norm();
+      if (!std::isfinite(distance) || distance <= duplicateTolerance) {
+        return CellRejectionReason::DuplicateCorner;
+      }
+    }
+  }
+
+  Eigen::RowVector3d loopNormal = Eigen::RowVector3d::Zero();
+  for (int i = 0; i < 4; ++i) {
+    loopNormal += cross3(corners[static_cast<std::size_t>(i)],
+                         corners[static_cast<std::size_t>((i + 1) % 4)]);
+  }
+  const Eigen::RowVector3d projectionNormal =
+      loopNormal.squaredNorm() > 0.0 ? loopNormal : expectedNormal;
+  int dropAxis = 2;
+  if (std::abs(projectionNormal.x()) >= std::abs(projectionNormal.y()) &&
+      std::abs(projectionNormal.x()) >= std::abs(projectionNormal.z())) {
+    dropAxis = 0;
+  } else if (std::abs(projectionNormal.y()) >=
+             std::abs(projectionNormal.z())) {
+    dropAxis = 1;
+  }
+  std::array<Eigen::Vector2d, 4> projected;
+  for (int i = 0; i < 4; ++i) {
+    projected[static_cast<std::size_t>(i)] =
+        project_for_quad_test(corners[static_cast<std::size_t>(i)], dropAxis);
+  }
+  if (segments_intersect_2d(projected[0], projected[1], projected[2],
+                            projected[3]) ||
+      segments_intersect_2d(projected[1], projected[2], projected[3],
+                            projected[0])) {
+    return CellRejectionReason::SelfIntersection;
+  }
+
+  if (!loopNormal.allFinite() ||
+      loopNormal.squaredNorm() <=
+          1.0e-24 * std::max(1.0, h * h * h * h)) {
+    return CellRejectionReason::Degenerate;
+  }
+  if (expectedNormal.squaredNorm() > 0.0 &&
+      loopNormal.dot(expectedNormal) <= 0.0) {
+    return CellRejectionReason::Inverted;
+  }
+
+  for (int i = 0; i < 4; ++i) {
+    const double sideLength =
+        (corners[static_cast<std::size_t>((i + 1) % 4)] -
+         corners[static_cast<std::size_t>(i)])
+            .norm();
+    if (!std::isfinite(sideLength) ||
+        sideLength < options.minimumCellSideFactor * h ||
+        sideLength > options.maximumCellSideFactor * h) {
+      return CellRejectionReason::OutOfSize;
+    }
+  }
+  return CellRejectionReason::Accepted;
+}
+
 inline bool quad_loop_is_valid(const std::array<Eigen::RowVector3d, 4> &corners,
                                const double h) {
+  SurfaceCellTracingOptions options;
   Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
   for (int i = 0; i < 4; ++i) {
     normal += cross3(corners[static_cast<std::size_t>(i)],
                      corners[static_cast<std::size_t>((i + 1) % 4)]);
   }
-  int dropAxis = 2;
-  if (std::abs(normal.x()) >= std::abs(normal.y()) &&
-      std::abs(normal.x()) >= std::abs(normal.z())) {
-    dropAxis = 0;
-  } else if (std::abs(normal.y()) >= std::abs(normal.z())) {
-    dropAxis = 1;
-  }
-  std::array<Eigen::Vector2d, 4> p;
-  for (int i = 0; i < 4; ++i) {
-    p[static_cast<std::size_t>(i)] =
-        project_for_quad_test(corners[static_cast<std::size_t>(i)], dropAxis);
-  }
-  double area = 0.0;
-  for (int i = 0; i < 4; ++i) {
-    const Eigen::Vector2d &a = p[static_cast<std::size_t>(i)];
-    const Eigen::Vector2d &b = p[static_cast<std::size_t>((i + 1) % 4)];
-    area += a.x() * b.y() - a.y() * b.x();
-    const double sideLength =
-        (corners[static_cast<std::size_t>((i + 1) % 4)] -
-         corners[static_cast<std::size_t>(i)])
-            .norm();
-    if (!std::isfinite(sideLength) || sideLength < 0.1 * h ||
-        sideLength > 4.0 * h) {
-      return false;
+  return classify_quad_loop(corners, h, normal, options) ==
+         CellRejectionReason::Accepted;
+}
+
+
+inline bool trace_segment_crosses_authoritative_rail(
+    const SurfaceTraceSegment &segment,
+    const std::vector<SurfaceCellRail> &rails) {
+  const Eigen::Vector2d a(segment.startBarycentric[1],
+                          segment.startBarycentric[2]);
+  const Eigen::Vector2d b(segment.endBarycentric[1],
+                          segment.endBarycentric[2]);
+  for (const SurfaceCellRail &rail : rails) {
+    if (segment.railId == rail.id) {
+      continue;
+    }
+    for (std::size_t index = 1; index < rail.samples.size(); ++index) {
+      const SurfaceCellRailSample &first = rail.samples[index - 1];
+      const SurfaceCellRailSample &second = rail.samples[index];
+      if (first.sourceFace != segment.face || second.sourceFace != segment.face) {
+        continue;
+      }
+      const Eigen::Vector2d c(first.barycentric[1], first.barycentric[2]);
+      const Eigen::Vector2d d(second.barycentric[1], second.barycentric[2]);
+      if (segments_intersect_2d(a, b, c, d)) {
+        return true;
+      }
     }
   }
-  if (area <= 1.0e-12 * std::max(1.0, h * h)) {
-    return false;
-  }
-  if (segments_intersect_2d(p[0], p[1], p[2], p[3]) ||
-      segments_intersect_2d(p[1], p[2], p[3], p[0])) {
-    return false;
-  }
-  return true;
+  return false;
 }
 
 inline SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
@@ -2681,9 +2760,15 @@ inline SurfaceCellProposal make_surface_cell_proposal(
         surface_cell_tracing_detail::point_position(
             vertices, faces, proposal.corners[static_cast<std::size_t>(corner)]);
   }
-  if (!surface_cell_tracing_detail::quad_loop_is_valid(cornerPositions,
-                                                       std::min(hx, hy))) {
-    proposal.rejection = CellRejectionReason::Degenerate;
+  const Eigen::RowVector3d seedFaceNormal =
+      surface_cell_tracing_detail::cross3(
+          vertices.row(faces(face, 1)) - vertices.row(faces(face, 0)),
+          vertices.row(faces(face, 2)) - vertices.row(faces(face, 0)));
+  const CellRejectionReason loopRejection =
+      surface_cell_tracing_detail::classify_quad_loop(
+          cornerPositions, std::min(hx, hy), seedFaceNormal, options);
+  if (loopRejection != CellRejectionReason::Accepted) {
+    proposal.rejection = loopRejection;
     return proposal;
   }
 
@@ -2718,6 +2803,12 @@ inline SurfaceCellProposal make_surface_cell_proposal(
       proposal.rejection = CellRejectionReason::Degenerate;
       return proposal;
     }
+    if (!std::isfinite(side.trace.length) ||
+        side.trace.length < options.minimumCellSideFactor * sideLength ||
+        side.trace.length > options.maximumCellSideFactor * sideLength) {
+      proposal.rejection = CellRejectionReason::OutOfSize;
+      return proposal;
+    }
     const Eigen::RowVector3d actualEnd =
         surface_cell_tracing_detail::point_position(vertices, faces, side.point);
     const Eigen::RowVector3d expectedEnd =
@@ -2728,10 +2819,20 @@ inline SurfaceCellProposal make_surface_cell_proposal(
       proposal.rejection = CellRejectionReason::Closure;
       return proposal;
     }
-    proposal.boundaryPaths[static_cast<std::size_t>(sideIndex)] =
-        side.trace.segments;
-    proposal.sides.insert(proposal.sides.end(), side.trace.segments.begin(),
-                          side.trace.segments.end());
+    for (const SurfaceTraceSegment &segment : side.trace.segments) {
+      if (surface_cell_tracing_detail::trace_segment_crosses_authoritative_rail(
+              segment, options.authoritativeRails)) {
+        proposal.rejection = CellRejectionReason::HardRailCrossing;
+        return proposal;
+      }
+    }
+    std::vector<SurfaceTraceSegment> closedPath = side.trace.segments;
+    if (!closedPath.empty() && closedPath.back().face == endCorner.face) {
+      closedPath.back().endBarycentric = endCorner.barycentric;
+    }
+    proposal.boundaryPaths[static_cast<std::size_t>(sideIndex)] = closedPath;
+    proposal.sides.insert(proposal.sides.end(), closedPath.begin(),
+                          closedPath.end());
   }
   if (proposal.sides.empty()) {
     proposal.rejection = CellRejectionReason::Degenerate;
@@ -2786,18 +2887,40 @@ inline SurfaceCellNetwork build_surface_cell_network(
         vertices, faces, faceAxisX, faceAxisY, targetSize, seed, options,
         edgeMatching, edgeEffort, edgeTransitions);
     ++network.stats.attempted;
-    if (proposal.accepted) {
+    switch (proposal.rejection) {
+    case CellRejectionReason::Accepted:
       ++network.stats.accepted;
-    } else if (proposal.rejection == CellRejectionReason::Closure) {
+      break;
+    case CellRejectionReason::Closure:
       ++network.stats.rejectedClosure;
-    } else if (proposal.rejection == CellRejectionReason::Barrier) {
+      break;
+    case CellRejectionReason::Barrier:
       ++network.stats.rejectedBarrier;
-    } else if (proposal.rejection == CellRejectionReason::SourceSheet) {
-      ++network.stats.rejectedSourceSheet;
-    } else if (proposal.rejection == CellRejectionReason::FieldMetadata) {
-      ++network.stats.rejectedFieldMetadata;
-    } else {
+      break;
+    case CellRejectionReason::Degenerate:
       ++network.stats.rejectedDegenerate;
+      break;
+    case CellRejectionReason::SourceSheet:
+      ++network.stats.rejectedSourceSheet;
+      break;
+    case CellRejectionReason::FieldMetadata:
+      ++network.stats.rejectedFieldMetadata;
+      break;
+    case CellRejectionReason::SelfIntersection:
+      ++network.stats.rejectedSelfIntersection;
+      break;
+    case CellRejectionReason::Inverted:
+      ++network.stats.rejectedInverted;
+      break;
+    case CellRejectionReason::DuplicateCorner:
+      ++network.stats.rejectedDuplicateCorner;
+      break;
+    case CellRejectionReason::OutOfSize:
+      ++network.stats.rejectedOutOfSize;
+      break;
+    case CellRejectionReason::HardRailCrossing:
+      ++network.stats.rejectedHardRailCrossing;
+      break;
     }
     network.proposals.push_back(std::move(proposal));
   }

@@ -425,14 +425,17 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arcs.push_back(arc);
     }
   }
-  for (const SurfaceTraceResult &trace : network.traces) {
-    for (const SurfaceTraceSegment &segment : trace.segments) {
-      append_segment(segment, trace.termination == TraceTerminationReason::Feature);
-    }
-  }
+  // Half traces are diagnostic exploration only. FlowRep receives complete,
+  // prevalidated cell-boundary cycles and authoritative rails exclusively.
   for (const SurfaceCellProposal &proposal : network.proposals) {
-    for (const SurfaceTraceSegment &segment : proposal.sides) {
-      append_segment(segment, false);
+    if (!proposal.accepted ||
+        proposal.rejection != CellRejectionReason::Accepted) {
+      continue;
+    }
+    for (const auto &boundaryPath : proposal.boundaryPaths) {
+      for (const SurfaceTraceSegment &segment : boundaryPath) {
+        append_segment(segment, false);
+      }
     }
   }
   return arcs;
