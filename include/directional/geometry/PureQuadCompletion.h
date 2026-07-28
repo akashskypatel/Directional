@@ -14,6 +14,7 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <map>
 #include <numeric>
 #include <set>
 #include <string>
@@ -44,6 +45,9 @@ enum class PureQuadPatchRejectReason : int {
   UnsupportedSingularityCompletion = 11,
   SearchLimitExceeded = 12,
   TopologyValidationFailed = 13,
+  RewritePreconditionFailed = 14,
+  RewriteFeatureViolation = 15,
+  RewriteValenceMismatch = 16,
 };
 
 enum class PureQuadCompletionBackend : int {
@@ -51,7 +55,24 @@ enum class PureQuadCompletionBackend : int {
   TransitionTemplate = 1,
   Pattern = 2,
   BoundedCombinatorial = 3,
+  PoleTemplate = 4,
 };
+
+enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };
+
+struct PureQuadFeatureIntervalLineage {
+  int railId = -1; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
+  [[nodiscard]] bool valid() const { return (railId >= 0 || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
+};
+struct PureQuadVertexLineage {
+  int outputVertex = -1; PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle; SurfacePoint sourcePoint; PureQuadFeatureIntervalLineage featureInterval;
+  [[nodiscard]] bool valid() const { return outputVertex >= 0 && ((kind == PureQuadVertexLineageKind::SourceTriangle && sourcePoint.valid()) || (kind == PureQuadVertexLineageKind::OrderedFeatureInterval && featureInterval.valid())); }
+};
+struct PureQuadFaceLineage {
+  int outputQuad = -1; int sourcePatch = -1; PureQuadCompletionBackend operation = PureQuadCompletionBackend::ClosedForm; int operationLocalQuad = -1;
+  [[nodiscard]] bool valid() const { return outputQuad >= 0 && sourcePatch >= 0 && operationLocalQuad >= 0; }
+};
+struct PureQuadOutputLineageValidation { bool valid=false; bool allVerticesMapped=false; bool allQuadsMapped=false; bool solelyPairedSourceTriangleBoundaries=false; std::string failure; };
 
 enum class EndpointResolutionAction : int {
   Extend = 0,
@@ -93,6 +114,7 @@ struct PureQuadPatchAdmissibility {
 };
 
 struct PureQuadMesh {
+  int sourcePatch = -1;
   std::vector<int> vertices;
   Eigen::MatrixXd vertexPositions;
   std::vector<SurfacePoint> vertexProvenance;
@@ -100,9 +122,12 @@ struct PureQuadMesh {
   std::vector<int> boundaryVertices;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   bool usesCenterFan = false;
+  std::vector<PureQuadVertexLineage> vertexLineage;
+  std::vector<PureQuadFaceLineage> quadLineage;
 };
 
 struct PureQuadCompletionOptions {
+  int sourcePatch = -1;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
 };
@@ -174,6 +199,34 @@ struct TopologyRewriteRecord {
 
 struct TopologyRewriteResult {
   std::vector<TopologyRewriteRecord> records;
+  int committed = 0;
+  int rejected = 0;
+};
+
+struct GuardedTopologyMutation {
+  int id = -1;
+  TopologyTemplateKind kind = TopologyTemplateKind::PolePairSlide;
+  std::vector<int> removeQuadIndices;
+  std::vector<std::vector<int>> replacementQuads;
+  std::vector<std::pair<int, int>> protectedEdges;
+  std::map<int, int> expectedValenceBefore;
+  std::map<int, int> expectedValenceAfter;
+  bool preserveBoundary = true;
+  bool preserveEulerCharacteristic = true;
+};
+
+struct GuardedTopologyMutationRecord {
+  int mutationId = -1;
+  TopologyTemplateKind kind = TopologyTemplateKind::PolePairSlide;
+  bool committed = false;
+  PureQuadPatchRejectReason reason =
+      PureQuadPatchRejectReason::RewritePreconditionFailed;
+  std::vector<int> affectedVertices;
+};
+
+struct GuardedTopologyMutationResult {
+  PureQuadMesh mesh;
+  std::vector<GuardedTopologyMutationRecord> records;
   int committed = 0;
   int rejected = 0;
 };
@@ -347,8 +400,16 @@ inline void initialize_boundary_embedding(const PureQuadPatch &patch,
   mesh.vertices = patch.boundaryVertices;
   mesh.vertexProvenance.clear();
   mesh.vertexProvenance.reserve(mesh.vertices.size());
+  mesh.vertexLineage.clear();
   for (int i = 0; i < static_cast<int>(mesh.boundaryVertices.size()); ++i) {
-    mesh.vertexProvenance.push_back(boundary_source_point(patch, i));
+    const SurfacePoint point = boundary_source_point(patch, i);
+    mesh.vertexProvenance.push_back(point);
+    PureQuadVertexLineage lineage; lineage.outputVertex = mesh.boundaryVertices[static_cast<std::size_t>(i)];
+    const int rail = i < static_cast<int>(patch.boundaryRailIds.size()) ? patch.boundaryRailIds[static_cast<std::size_t>(i)] : -1;
+    const int curve = i < static_cast<int>(patch.boundaryCurveIds.size()) ? patch.boundaryCurveIds[static_cast<std::size_t>(i)] : -1;
+    if (rail >= 0 || curve >= 0) { lineage.kind = PureQuadVertexLineageKind::OrderedFeatureInterval; lineage.featureInterval.railId=rail; lineage.featureInterval.curveId=curve; lineage.featureInterval.start=point; lineage.featureInterval.end=boundary_source_point(patch,(i+1)%static_cast<int>(mesh.boundaryVertices.size())); }
+    else { lineage.sourcePoint = point; }
+    mesh.vertexLineage.push_back(lineage);
   }
 }
 
@@ -356,7 +417,9 @@ inline int append_embedded_vertex(PureQuadMesh &mesh, int &nextInterior,
                                   const std::vector<SurfacePoint> &anchors) {
   const int vertex = next_generated_vertex(nextInterior);
   mesh.vertices.push_back(vertex);
-  mesh.vertexProvenance.push_back(average_source_point(anchors));
+  const SurfacePoint point = average_source_point(anchors);
+  mesh.vertexProvenance.push_back(point);
+  PureQuadVertexLineage lineage; lineage.outputVertex=vertex; lineage.sourcePoint=point; mesh.vertexLineage.push_back(lineage);
   return vertex;
 }
 
@@ -375,6 +438,71 @@ inline void fill_positions(PureQuadMesh &mesh) {
 
 inline bool vectors_equal(const std::vector<int> &a, const std::vector<int> &b) {
   return a == b;
+}
+
+inline std::pair<int, int> canonical_edge(const int a, const int b) {
+  return std::minmax(a, b);
+}
+
+inline std::map<std::pair<int, int>, int>
+edge_incidence(const std::vector<std::vector<int>> &quads) {
+  std::map<std::pair<int, int>, int> incidence;
+  for (const auto &quad : quads) {
+    if (quad.size() != 4) continue;
+    for (int i = 0; i < 4; ++i) {
+      ++incidence[canonical_edge(quad[static_cast<std::size_t>(i)],
+                                quad[static_cast<std::size_t>((i + 1) % 4)])];
+    }
+  }
+  return incidence;
+}
+
+inline std::map<int, int> vertex_valences(
+    const std::vector<std::vector<int>> &quads) {
+  std::map<int, std::set<int>> neighbors;
+  for (const auto &quad : quads) {
+    if (quad.size() != 4) continue;
+    for (int i = 0; i < 4; ++i) {
+      const int a = quad[static_cast<std::size_t>(i)];
+      const int b = quad[static_cast<std::size_t>((i + 1) % 4)];
+      neighbors[a].insert(b);
+      neighbors[b].insert(a);
+    }
+  }
+  std::map<int, int> result;
+  for (const auto &[vertex, adjacent] : neighbors) {
+    result[vertex] = static_cast<int>(adjacent.size());
+  }
+  return result;
+}
+
+inline int mesh_euler_characteristic(const std::vector<std::vector<int>> &quads) {
+  const auto incidence = edge_incidence(quads);
+  std::set<int> vertices;
+  for (const auto &quad : quads) vertices.insert(quad.begin(), quad.end());
+  return static_cast<int>(vertices.size()) - static_cast<int>(incidence.size()) +
+         static_cast<int>(quads.size());
+}
+
+inline std::set<std::pair<int, int>> boundary_edges(
+    const std::vector<std::vector<int>> &quads) {
+  std::set<std::pair<int, int>> result;
+  for (const auto &[edge, count] : edge_incidence(quads)) {
+    if (count == 1) result.insert(edge);
+  }
+  return result;
+}
+
+inline bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads) {
+  const auto incidence = edge_incidence(quads);
+  for (const auto &quad : quads) {
+    if (quad.size() != 4 || std::set<int>(quad.begin(), quad.end()).size() != 4)
+      return false;
+  }
+  return std::all_of(incidence.begin(), incidence.end(),
+                     [](const auto &entry) {
+                       return entry.second == 1 || entry.second == 2;
+                     });
 }
 
 } // namespace pure_quad_detail
@@ -541,6 +669,31 @@ inline void append_boundary_fan(const std::vector<int> &boundary,
   }
 }
 
+inline bool complete_singularity_pole(const PureQuadPatch &patch,
+                                      PureQuadMesh &mesh) {
+  if (patch.singularityCount != 1) return false;
+  const int valence = expected_valence(patch.singularIndexNumerator);
+  if (valence < 3 || valence > 6 ||
+      static_cast<int>(patch.sideEdgeCounts.size()) != valence ||
+      static_cast<int>(patch.boundaryVertices.size()) != 2 * valence ||
+      !std::all_of(patch.sideEdgeCounts.begin(), patch.sideEdgeCounts.end(),
+                   [](const int count) { return count == 2; })) {
+    return false;
+  }
+  int nextInterior = -1;
+  const int pole = append_embedded_vertex(mesh, nextInterior,
+                                           patch.boundaryProvenance);
+  const auto &v = patch.boundaryVertices;
+  for (int i = 0; i < valence; ++i) {
+    const int a = v[static_cast<std::size_t>(2 * i)];
+    const int b = v[static_cast<std::size_t>(2 * i + 1)];
+    const int c = v[static_cast<std::size_t>((2 * i + 2) % (2 * valence))];
+    mesh.quads.push_back({pole, a, b, c});
+  }
+  mesh.backend = PureQuadCompletionBackend::PoleTemplate;
+  return vertex_valences(mesh.quads)[pole] == valence;
+}
+
 inline bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
@@ -590,17 +743,21 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     result.failureReason = PureQuadPatchRejectReason::SearchLimitExceeded;
     return result;
   }
-  // Pole placement and singularity-preserving strip rewrites belong to P17.
-  // P16 therefore fails closed rather than silently emitting the wrong valence.
-  if (patch.singularityCount != 0) {
-    result.failureReason =
-        PureQuadPatchRejectReason::UnsupportedSingularityCompletion;
-    return result;
-  }
-
   PureQuadMesh mesh;
+  mesh.sourcePatch = options.sourcePatch;
   pure_quad_detail::initialize_boundary_embedding(patch, mesh);
-  bool completed = pure_quad_detail::complete_rectangular_grid(patch, mesh);
+  bool completed = false;
+  if (patch.singularityCount != 0) {
+    completed = pure_quad_detail::complete_singularity_pole(patch, mesh);
+    if (!completed) {
+      result.failureReason =
+          PureQuadPatchRejectReason::UnsupportedSingularityCompletion;
+      return result;
+    }
+  }
+  if (!completed) {
+    completed = pure_quad_detail::complete_rectangular_grid(patch, mesh);
+  }
   if (!completed && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(patch, mesh);
   }
@@ -616,6 +773,7 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     return result;
   }
   pure_quad_detail::fill_positions(mesh);
+  for (int q=0; q<static_cast<int>(mesh.quads.size()); ++q) mesh.quadLineage.push_back({q, mesh.sourcePatch, mesh.backend, q});
   if (!pure_quad_topology_is_disk(mesh)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     return result;
@@ -724,7 +882,8 @@ inline TopologyRewriteResult apply_topology_rewrite_catalog(
           !featureOk || !singularityOk ||
           (templ.requiresSingularityBudget &&
            !candidate.singularityBudgetAvailable) ||
-          templ.objectiveDelta >= 0.0 || !candidate.postconditionsHold) {
+          templ.objectiveDelta >= 0.0 || !candidate.postconditionsHold ||
+          !candidate.strictValidatorAccepts) {
         continue;
       }
       result.records.push_back({candidate.id, templ.id, true,
@@ -737,6 +896,112 @@ inline TopologyRewriteResult apply_topology_rewrite_catalog(
       result.records.push_back({candidate.id, -1, false});
       ++result.rejected;
     }
+  }
+  return result;
+}
+
+inline GuardedTopologyMutationResult apply_guarded_topology_mutations(
+    const PureQuadMesh &input,
+    std::vector<GuardedTopologyMutation> mutations) {
+  GuardedTopologyMutationResult result;
+  result.mesh = input;
+  std::sort(mutations.begin(), mutations.end(),
+            [](const auto &a, const auto &b) { return a.id < b.id; });
+
+  for (const GuardedTopologyMutation &mutation : mutations) {
+    GuardedTopologyMutationRecord record;
+    record.mutationId = mutation.id;
+    record.kind = mutation.kind;
+    PureQuadMesh trial = result.mesh;
+    const auto beforeValence =
+        pure_quad_detail::vertex_valences(trial.quads);
+    const auto beforeBoundary =
+        pure_quad_detail::boundary_edges(trial.quads);
+    const int beforeEuler =
+        pure_quad_detail::mesh_euler_characteristic(trial.quads);
+
+    bool preconditions = !mutation.removeQuadIndices.empty();
+    std::set<int> uniqueIndices;
+    for (const int index : mutation.removeQuadIndices) {
+      preconditions = preconditions && index >= 0 &&
+                      index < static_cast<int>(trial.quads.size()) &&
+                      uniqueIndices.insert(index).second;
+    }
+    for (const auto &[vertex, expected] : mutation.expectedValenceBefore) {
+      const auto found = beforeValence.find(vertex);
+      preconditions = preconditions && found != beforeValence.end() &&
+                      found->second == expected;
+    }
+    if (!preconditions) {
+      record.reason = PureQuadPatchRejectReason::RewritePreconditionFailed;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+
+    std::vector<std::vector<int>> retained;
+    retained.reserve(trial.quads.size() - mutation.removeQuadIndices.size() +
+                     mutation.replacementQuads.size());
+    for (int i = 0; i < static_cast<int>(trial.quads.size()); ++i) {
+      if (uniqueIndices.count(i) == 0) retained.push_back(trial.quads[i]);
+    }
+    retained.insert(retained.end(), mutation.replacementQuads.begin(),
+                    mutation.replacementQuads.end());
+    trial.quads = std::move(retained);
+
+    if (!pure_quad_detail::quads_are_locally_valid(trial.quads)) {
+      record.reason = PureQuadPatchRejectReason::TopologyValidationFailed;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+    const auto afterIncidence = pure_quad_detail::edge_incidence(trial.quads);
+    bool featuresPreserved = true;
+    for (const auto &[a, b] : mutation.protectedEdges) {
+      const auto edge = pure_quad_detail::canonical_edge(a, b);
+      featuresPreserved = featuresPreserved &&
+                          afterIncidence.find(edge) != afterIncidence.end();
+    }
+    if (!featuresPreserved) {
+      record.reason = PureQuadPatchRejectReason::RewriteFeatureViolation;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+    if (mutation.preserveBoundary &&
+        beforeBoundary != pure_quad_detail::boundary_edges(trial.quads)) {
+      record.reason = PureQuadPatchRejectReason::RewriteFeatureViolation;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+    if (mutation.preserveEulerCharacteristic &&
+        beforeEuler != pure_quad_detail::mesh_euler_characteristic(trial.quads)) {
+      record.reason = PureQuadPatchRejectReason::TopologyValidationFailed;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+    const auto afterValence = pure_quad_detail::vertex_valences(trial.quads);
+    bool valenceMatches = true;
+    for (const auto &[vertex, expected] : mutation.expectedValenceAfter) {
+      const auto found = afterValence.find(vertex);
+      valenceMatches = valenceMatches && found != afterValence.end() &&
+                       found->second == expected;
+      record.affectedVertices.push_back(vertex);
+    }
+    if (!valenceMatches) {
+      record.reason = PureQuadPatchRejectReason::RewriteValenceMismatch;
+      result.records.push_back(record);
+      ++result.rejected;
+      continue;
+    }
+
+    result.mesh = std::move(trial);
+    record.committed = true;
+    record.reason = PureQuadPatchRejectReason::None;
+    result.records.push_back(std::move(record));
+    ++result.committed;
   }
   return result;
 }
@@ -824,6 +1089,13 @@ inline PureQuadValidationReport validate_pure_quad_completion(
                                static_cast<double>(extraordinary);
   return report;
 }
+
+inline int source_vertex_from_point(const SurfacePoint &p, const Eigen::MatrixXi &F, double tol=1e-8) { if(!p.valid()||p.face<0||p.face>=F.rows()) return -1; int c=0; p.barycentric.maxCoeff(&c); return p.barycentric(c)>=1.0-tol ? F(p.face,c) : -1; }
+inline bool output_is_only_paired_source_triangle_boundaries(const PureQuadMesh &mesh,const Eigen::MatrixXi &F) {
+  if(mesh.quads.empty()||F.cols()!=3||mesh.vertexProvenance.size()!=mesh.vertices.size()) return false; std::map<int,int> row; for(int i=0;i<(int)mesh.vertices.size();++i) row[mesh.vertices[i]]=i; std::set<std::set<int>> pairs;
+  for(int a=0;a<F.rows();++a){ std::set<int> A={F(a,0),F(a,1),F(a,2)}; for(int b=a+1;b<F.rows();++b){ std::set<int>B={F(b,0),F(b,1),F(b,2)}; std::vector<int>I; std::set_intersection(A.begin(),A.end(),B.begin(),B.end(),std::back_inserter(I)); std::set<int>U=A; U.insert(B.begin(),B.end()); if(I.size()==2&&U.size()==4)pairs.insert(U); }}
+  for(const auto&q:mesh.quads){ std::set<int> sv; for(int v:q){auto it=row.find(v); if(it==row.end())return false; int x=source_vertex_from_point(mesh.vertexProvenance[it->second],F); if(x<0)return false; sv.insert(x);} if(sv.size()!=4||!pairs.count(sv))return false;} return true; }
+inline PureQuadOutputLineageValidation validate_pure_quad_output_lineage(const PureQuadMesh &mesh,const Eigen::MatrixXi &F,bool rejectPaired=true){ PureQuadOutputLineageValidation r; r.allVerticesMapped=mesh.vertexLineage.size()==mesh.vertices.size()&&std::all_of(mesh.vertexLineage.begin(),mesh.vertexLineage.end(),[](const auto&x){return x.valid();}); r.allQuadsMapped=mesh.quadLineage.size()==mesh.quads.size()&&std::all_of(mesh.quadLineage.begin(),mesh.quadLineage.end(),[&](const auto&x){return x.valid()&&x.sourcePatch==mesh.sourcePatch;}); r.solelyPairedSourceTriangleBoundaries=output_is_only_paired_source_triangle_boundaries(mesh,F); if(!r.allVerticesMapped)r.failure="MissingOutputVertexLineage"; else if(!r.allQuadsMapped)r.failure="MissingOutputQuadLineage"; else if(rejectPaired&&r.solelyPairedSourceTriangleBoundaries)r.failure="PairedSourceTriangleBoundaryOutput"; else r.valid=true; return r;}
 
 } // namespace directional::geometry
 

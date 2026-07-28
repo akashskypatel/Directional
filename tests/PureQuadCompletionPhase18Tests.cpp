@@ -306,8 +306,9 @@ TEST(PureQuadCompletionPhase18, RewriteAcceptanceUsesTemplatePostconditions) {
       directional::geometry::apply_topology_rewrite_catalog({candidate});
 
   ASSERT_EQ(result.records.size(), 1U);
-  EXPECT_TRUE(result.records.front().committed);
-  EXPECT_EQ(result.committed, 1);
+  EXPECT_FALSE(result.records.front().committed);
+  EXPECT_EQ(result.committed, 0);
+  EXPECT_EQ(result.rejected, 1);
 }
 
 TEST(PureQuadCompletionPhase18, ClosedSurfaceSingularityBudgetExact) {
@@ -393,12 +394,250 @@ TEST(PureQuadCompletionPhase18, BoundedFallbackHonorsSearchLimit) {
             directional::geometry::PureQuadPatchRejectReason::SearchLimitExceeded);
 }
 
-TEST(PureQuadCompletionPhase18, SingularityCompletionFailsClosedUntilPoleTemplates) {
+TEST(PureQuadCompletionPhase18, SingularityCompletionUsesPoleTemplate) {
   auto p = patch({2, 2, 2});
   p.singularityCount = 1;
   p.singularIndexNumerator = 1;
   const auto result = directional::geometry::complete_pure_quad_patch(p);
+  EXPECT_TRUE(result.success);
+  EXPECT_EQ(result.mesh.backend,
+            directional::geometry::PureQuadCompletionBackend::PoleTemplate);
+}
+
+TEST(PureQuadCompletionPhase18, P17BuildsValenceThreeSingularityPole) {
+  auto p = patch({2, 2, 2});
+  p.singularityCount = 1;
+  p.singularIndexNumerator = 1;
+  const auto result = directional::geometry::complete_pure_quad_patch(p);
+  ASSERT_TRUE(result.success);
+  EXPECT_EQ(result.mesh.backend,
+            directional::geometry::PureQuadCompletionBackend::PoleTemplate);
+  ASSERT_EQ(result.mesh.quads.size(), 3U);
+  const int pole = result.mesh.quads.front().front();
+  const auto valences =
+      directional::geometry::pure_quad_detail::vertex_valences(result.mesh.quads);
+  ASSERT_TRUE(valences.count(pole));
+  EXPECT_EQ(valences.at(pole), 3);
+  EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(result.mesh));
+}
+
+TEST(PureQuadCompletionPhase18, P17BuildsValenceFiveSingularityPole) {
+  auto p = patch({2, 2, 2, 2, 2});
+  p.singularityCount = 1;
+  p.singularIndexNumerator = -1;
+  const auto result = directional::geometry::complete_pure_quad_patch(p);
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.mesh.quads.size(), 5U);
+  const int pole = result.mesh.quads.front().front();
+  const auto valences =
+      directional::geometry::pure_quad_detail::vertex_valences(result.mesh.quads);
+  EXPECT_EQ(valences.at(pole), 5);
+  EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(result.mesh));
+}
+
+TEST(PureQuadCompletionPhase18, P17PoleTemplateFailsClosedForWrongBoundaryPattern) {
+  auto p = patch({1, 1, 1, 1, 2});
+  p.singularityCount = 1;
+  p.singularIndexNumerator = -1;
+  const auto result = directional::geometry::complete_pure_quad_patch(p);
   EXPECT_FALSE(result.success);
   EXPECT_EQ(result.failureReason,
             directional::geometry::PureQuadPatchRejectReason::UnsupportedSingularityCompletion);
+}
+
+TEST(PureQuadCompletionPhase18, P17GuardedLoopRedirectionMutatesConnectivity) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.vertices = {0, 1, 2, 3, 4, 5};
+  mesh.boundaryVertices = mesh.vertices;
+  mesh.quads = {{0, 1, 2, 3}, {0, 3, 4, 5}};
+
+  directional::geometry::GuardedTopologyMutation mutation;
+  mutation.id = 4;
+  mutation.kind = directional::geometry::TopologyTemplateKind::LoopRedirection;
+  mutation.removeQuadIndices = {0, 1};
+  mutation.replacementQuads = {{1, 2, 3, 4}, {1, 4, 5, 0}};
+  mutation.expectedValenceBefore = {{0, 3}, {3, 3}};
+  mutation.expectedValenceAfter = {{1, 3}, {4, 3}};
+
+  const auto result =
+      directional::geometry::apply_guarded_topology_mutations(mesh, {mutation});
+  ASSERT_EQ(result.committed, 1);
+  ASSERT_EQ(result.rejected, 0);
+  EXPECT_EQ(result.mesh.quads, mutation.replacementQuads);
+  EXPECT_EQ(result.records.front().reason,
+            directional::geometry::PureQuadPatchRejectReason::None);
+}
+
+TEST(PureQuadCompletionPhase18, P17ProtectedFeatureViolationRollsBack) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.vertices = {0, 1, 2, 3, 4, 5};
+  mesh.boundaryVertices = mesh.vertices;
+  mesh.quads = {{0, 1, 2, 3}, {0, 3, 4, 5}};
+
+  directional::geometry::GuardedTopologyMutation mutation;
+  mutation.id = 5;
+  mutation.kind = directional::geometry::TopologyTemplateKind::PolePairSlide;
+  mutation.removeQuadIndices = {0, 1};
+  mutation.replacementQuads = {{1, 2, 3, 4}, {1, 4, 5, 0}};
+  mutation.protectedEdges = {{0, 3}};
+
+  const auto result =
+      directional::geometry::apply_guarded_topology_mutations(mesh, {mutation});
+  ASSERT_EQ(result.committed, 0);
+  ASSERT_EQ(result.rejected, 1);
+  EXPECT_EQ(result.mesh.quads, mesh.quads);
+  EXPECT_EQ(result.records.front().reason,
+            directional::geometry::PureQuadPatchRejectReason::RewriteFeatureViolation);
+}
+
+TEST(PureQuadCompletionPhase18, P17ValenceMismatchRollsBack) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.vertices = {0, 1, 2, 3, 4, 5};
+  mesh.boundaryVertices = mesh.vertices;
+  mesh.quads = {{0, 1, 2, 3}, {0, 3, 4, 5}};
+
+  directional::geometry::GuardedTopologyMutation mutation;
+  mutation.id = 6;
+  mutation.kind = directional::geometry::TopologyTemplateKind::PolePairCancellation;
+  mutation.removeQuadIndices = {0, 1};
+  mutation.replacementQuads = {{1, 2, 3, 4}, {1, 4, 5, 0}};
+  mutation.expectedValenceAfter = {{1, 4}};
+
+  const auto result =
+      directional::geometry::apply_guarded_topology_mutations(mesh, {mutation});
+  EXPECT_EQ(result.committed, 0);
+  EXPECT_EQ(result.mesh.quads, mesh.quads);
+  EXPECT_EQ(result.records.front().reason,
+            directional::geometry::PureQuadPatchRejectReason::RewriteValenceMismatch);
+}
+
+TEST(PureQuadCompletionPhase18, P18MapsEveryQuadToPatchAndCompletionOperation) {
+  auto p = patch({2, 2, 2, 2});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 42;
+  const auto result = directional::geometry::complete_pure_quad_patch(p, options);
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.mesh.quadLineage.size(), result.mesh.quads.size());
+  for (int q = 0; q < static_cast<int>(result.mesh.quadLineage.size()); ++q) {
+    const auto &lineage = result.mesh.quadLineage[static_cast<std::size_t>(q)];
+    EXPECT_TRUE(lineage.valid());
+    EXPECT_EQ(lineage.outputQuad, q);
+    EXPECT_EQ(lineage.sourcePatch, 42);
+    EXPECT_EQ(lineage.operation,
+              directional::geometry::PureQuadCompletionBackend::ClosedForm);
+  }
+}
+
+TEST(PureQuadCompletionPhase18, P18MapsBoundaryFeatureVerticesToOrderedIntervals) {
+  auto p = patch({1, 1, 1, 1});
+  p.boundaryRailIds.assign(p.boundaryVertices.size(), 7);
+  p.boundaryCurveIds.assign(p.boundaryVertices.size(), 11);
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 3;
+  const auto result = directional::geometry::complete_pure_quad_patch(p, options);
+  ASSERT_TRUE(result.success);
+  ASSERT_EQ(result.mesh.vertexLineage.size(), result.mesh.vertices.size());
+  for (const auto &lineage : result.mesh.vertexLineage) {
+    EXPECT_TRUE(lineage.valid());
+    EXPECT_EQ(lineage.kind,
+              directional::geometry::PureQuadVertexLineageKind::OrderedFeatureInterval);
+    EXPECT_EQ(lineage.featureInterval.railId, 7);
+    EXPECT_EQ(lineage.featureInterval.curveId, 11);
+  }
+}
+
+TEST(PureQuadCompletionPhase18, P18GeneratedInteriorVertexHasSourceTriangleLineage) {
+  auto p = patch({2, 2, 2, 2});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 5;
+  const auto result = directional::geometry::complete_pure_quad_patch(p, options);
+  ASSERT_TRUE(result.success);
+  const auto generated = std::find_if(
+      result.mesh.vertexLineage.begin(), result.mesh.vertexLineage.end(),
+      [](const auto &lineage) { return lineage.outputVertex < 0; });
+  ASSERT_NE(generated, result.mesh.vertexLineage.end());
+  EXPECT_EQ(generated->kind,
+            directional::geometry::PureQuadVertexLineageKind::SourceTriangle);
+  EXPECT_TRUE(generated->sourcePoint.valid());
+}
+
+TEST(PureQuadCompletionPhase18, P18RejectsPairedSourceTriangleBoundaryProofFixture) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.sourcePatch = 9;
+  mesh.vertices = {0, 1, 2, 3};
+  mesh.quads = {{0, 1, 2, 3}};
+  mesh.boundaryVertices = mesh.vertices;
+  Eigen::MatrixXi F(2, 3);
+  F << 0, 1, 2,
+       0, 2, 3;
+  for (int v = 0; v < 4; ++v) {
+    directional::geometry::SurfacePoint point;
+    point.face = (v == 3) ? 1 : 0;
+    point.barycentric = Eigen::Vector3d::Zero();
+    if (v == 0) point.barycentric(0) = 1.0;
+    if (v == 1) point.barycentric(1) = 1.0;
+    if (v == 2) point.barycentric(2) = 1.0;
+    if (v == 3) point.barycentric(2) = 1.0;
+    mesh.vertexProvenance.push_back(point);
+    directional::geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = v;
+    lineage.sourcePoint = point;
+    mesh.vertexLineage.push_back(lineage);
+  }
+  mesh.quadLineage.push_back(
+      {0, 9, directional::geometry::PureQuadCompletionBackend::Pattern, 0});
+  const auto validation =
+      directional::geometry::validate_pure_quad_output_lineage(mesh, F, true);
+  EXPECT_FALSE(validation.valid);
+  EXPECT_TRUE(validation.solelyPairedSourceTriangleBoundaries);
+  EXPECT_EQ(validation.failure, "PairedSourceTriangleBoundaryOutput");
+}
+
+TEST(PureQuadCompletionPhase18,
+     P18PairedBoundaryDetectionIsDiagnosticUnlessExplicitlyRejected) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.sourcePatch = 9;
+  mesh.vertices = {0, 1, 2, 3};
+  mesh.quads = {{0, 1, 2, 3}};
+  mesh.boundaryVertices = mesh.vertices;
+  Eigen::MatrixXi F(2, 3);
+  F << 0, 1, 2,
+       0, 2, 3;
+  for (int v = 0; v < 4; ++v) {
+    directional::geometry::SurfacePoint point;
+    point.face = (v == 3) ? 1 : 0;
+    point.barycentric = Eigen::Vector3d::Zero();
+    if (v == 0) point.barycentric(0) = 1.0;
+    if (v == 1) point.barycentric(1) = 1.0;
+    if (v == 2) point.barycentric(2) = 1.0;
+    if (v == 3) point.barycentric(2) = 1.0;
+    mesh.vertexProvenance.push_back(point);
+    directional::geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = v;
+    lineage.sourcePoint = point;
+    mesh.vertexLineage.push_back(lineage);
+  }
+  mesh.quadLineage.push_back(
+      {0, 9, directional::geometry::PureQuadCompletionBackend::Pattern, 0});
+
+  const auto validation =
+      directional::geometry::validate_pure_quad_output_lineage(mesh, F, false);
+  EXPECT_TRUE(validation.valid);
+  EXPECT_TRUE(validation.solelyPairedSourceTriangleBoundaries);
+  EXPECT_TRUE(validation.failure.empty());
+}
+
+TEST(PureQuadCompletionPhase18, P18FailsClosedWhenQuadLineageIsMissing) {
+  auto p = patch({1, 1, 1, 1});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 12;
+  auto result = directional::geometry::complete_pure_quad_patch(p, options);
+  ASSERT_TRUE(result.success);
+  result.mesh.quadLineage.clear();
+  Eigen::MatrixXi F(1, 3);
+  F << 0, 1, 2;
+  const auto validation =
+      directional::geometry::validate_pure_quad_output_lineage(result.mesh, F, false);
+  EXPECT_FALSE(validation.valid);
+  EXPECT_EQ(validation.failure, "MissingOutputQuadLineage");
 }

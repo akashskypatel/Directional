@@ -245,6 +245,11 @@ struct SurfaceCellOptions {
   bool requireMatching = true;
   bool requireSingularities = true;
   bool preserveDebugArtifacts = false;
+  /// Reject outputs whose quads are all boundaries of adjacent source-triangle
+  /// pairs. This is an explicit proof-fixture gate rather than a general
+  /// production check because a valid minimal completed patch can coincide
+  /// geometrically with a two-triangle source region.
+  bool rejectPairedSourceTriangleBoundaryOutput = false;
   bool useSkeletonHints = false;
   SurfaceCellFallbackPolicy fallbackPolicy = SurfaceCellFallbackPolicy::Fail;
   int injectFailureAfterStage = -1;
@@ -418,6 +423,9 @@ struct SurfaceCellPipelineContext {
   Eigen::MatrixXd completedVertices;
   Eigen::MatrixXi completedQuads;
   std::vector<geometry::SurfacePoint> completedProvenance;
+  std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
+  std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
+  geometry::PureQuadOutputLineageValidation outputLineageValidation;
   bool hasCompletedPatches = false;
 
   geometry::SurfaceOptimizationResult optimizationResult;
@@ -458,6 +466,8 @@ struct RemeshResult {
 
   /// Source-surface provenance for generated output vertices.
   std::vector<directional::geometry::SurfacePoint> outputVertexProvenance;
+  std::vector<directional::geometry::PureQuadVertexLineage> outputVertexLineage;
+  std::vector<directional::geometry::PureQuadFaceLineage> outputQuadLineage;
 
   /// Ordered #F-by-12 cross field consumed by integration.
   Eigen::MatrixXd rawCrossField;
@@ -2466,6 +2476,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     Eigen::MatrixXd completedVertices;
     Eigen::MatrixXi completedQuads;
     std::vector<geometry::SurfacePoint> completedProvenance;
+    std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
+    std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
     const geometry::SurfaceCellComplex &completionComplex =
         simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
     geometry::PatchDescriptorOptions patchDescriptorOptions;
@@ -2486,8 +2498,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           !descriptor.feasibility.admissible) {
         continue;
       }
+      geometry::PureQuadCompletionOptions completionOptions;
+      completionOptions.sourcePatch = descriptor.cellId;
       const geometry::PureQuadCompletionResult completion =
-          geometry::complete_pure_quad_patch(descriptor.patch);
+          geometry::complete_pure_quad_patch(descriptor.patch, completionOptions);
       if (!completion.success || completion.mesh.quads.empty()) {
         continue;
       }
@@ -2501,6 +2515,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       completedProvenance.insert(completedProvenance.end(),
                                  completion.mesh.vertexProvenance.begin(),
                                  completion.mesh.vertexProvenance.end());
+      for (const geometry::PureQuadVertexLineage &localLineage :
+           completion.mesh.vertexLineage) {
+        geometry::PureQuadVertexLineage lineage = localLineage;
+        const auto localIt = std::find(completion.mesh.vertices.begin(),
+                                       completion.mesh.vertices.end(),
+                                       localLineage.outputVertex);
+        if (localIt != completion.mesh.vertices.end()) {
+          lineage.outputVertex = vertexOffset + static_cast<int>(
+              std::distance(completion.mesh.vertices.begin(), localIt));
+        }
+        completedVertexLineage.push_back(std::move(lineage));
+      }
       const int oldQuadRows = static_cast<int>(completedQuads.rows());
       completedQuads.conservativeResize(
           oldQuadRows + static_cast<int>(completion.mesh.quads.size()), 4);
@@ -2517,6 +2543,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                     [static_cast<std::size_t>(c)]];
         }
       }
+      for (const geometry::PureQuadFaceLineage &localLineage :
+           completion.mesh.quadLineage) {
+        geometry::PureQuadFaceLineage lineage = localLineage;
+        lineage.outputQuad = oldQuadRows + localLineage.outputQuad;
+        completedQuadLineage.push_back(std::move(lineage));
+      }
       completedQuadCount += completion.mesh.quads.size();
       result.surfaceCellContext.completedPatches.push_back(completion.mesh);
     }
@@ -2531,6 +2563,55 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.completedVertices = completedVertices;
     result.surfaceCellContext.completedQuads = completedQuads;
     result.surfaceCellContext.completedProvenance = completedProvenance;
+    result.surfaceCellContext.completedVertexLineage = completedVertexLineage;
+    result.surfaceCellContext.completedQuadLineage = completedQuadLineage;
+    geometry::PureQuadMesh aggregateLineageMesh;
+    aggregateLineageMesh.sourcePatch = completedQuadLineage.empty()
+                                           ? -1
+                                           : completedQuadLineage.front().sourcePatch;
+    aggregateLineageMesh.vertices.resize(static_cast<std::size_t>(completedVertices.rows()));
+    std::iota(aggregateLineageMesh.vertices.begin(), aggregateLineageMesh.vertices.end(), 0);
+    aggregateLineageMesh.vertexProvenance = completedProvenance;
+    aggregateLineageMesh.vertexLineage = completedVertexLineage;
+    aggregateLineageMesh.quadLineage = completedQuadLineage;
+    aggregateLineageMesh.quads.reserve(static_cast<std::size_t>(completedQuads.rows()));
+    for (int q = 0; q < completedQuads.rows(); ++q) {
+      aggregateLineageMesh.quads.push_back({completedQuads(q,0), completedQuads(q,1), completedQuads(q,2), completedQuads(q,3)});
+    }
+    // Aggregate quads may originate from different patches, so validate each
+    // lineage record independently. Geometric coincidence with paired source
+    // triangles is always detected, but it is rejected only when the explicit
+    // proof-fixture gate is enabled. A valid minimal completed patch can
+    // otherwise coincide with the boundary of two source triangles.
+    geometry::PureQuadOutputLineageValidation lineageValidation;
+    lineageValidation.allVerticesMapped =
+        completedVertexLineage.size() ==
+            static_cast<std::size_t>(completedVertices.rows()) &&
+        std::all_of(completedVertexLineage.begin(),
+                    completedVertexLineage.end(),
+                    [](const auto &lineage) { return lineage.valid(); });
+    lineageValidation.allQuadsMapped =
+        completedQuadLineage.size() ==
+            static_cast<std::size_t>(completedQuads.rows()) &&
+        std::all_of(completedQuadLineage.begin(), completedQuadLineage.end(),
+                    [](const auto &lineage) { return lineage.valid(); });
+    lineageValidation.solelyPairedSourceTriangleBoundaries =
+        geometry::output_is_only_paired_source_triangle_boundaries(
+            aggregateLineageMesh, meshWhole.F);
+    const bool pairedBoundaryOutputRejected =
+        options.surfaceCells.rejectPairedSourceTriangleBoundaryOutput &&
+        lineageValidation.solelyPairedSourceTriangleBoundaries;
+    lineageValidation.valid = lineageValidation.allVerticesMapped &&
+                              lineageValidation.allQuadsMapped &&
+                              !pairedBoundaryOutputRejected;
+    if (!lineageValidation.allVerticesMapped) {
+      lineageValidation.failure = "MissingOutputVertexLineage";
+    } else if (!lineageValidation.allQuadsMapped) {
+      lineageValidation.failure = "MissingOutputQuadLineage";
+    } else if (pairedBoundaryOutputRejected) {
+      lineageValidation.failure = "PairedSourceTriangleBoundaryOutput";
+    }
+    result.surfaceCellContext.outputLineageValidation = lineageValidation;
     result.surfaceCellContext.hasCompletedPatches =
         !result.surfaceCellContext.completedPatches.empty();
     const std::uint64_t completionHash = hash_completion_mesh(
@@ -2547,7 +2628,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "completion");
     }
-    if (completedQuadCount == 0U) {
+    if (completedQuadCount == 0U ||
+        !result.surfaceCellContext.outputLineageValidation.valid) {
       return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "completion");
     }
@@ -2633,6 +2715,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.faces = optimization.quads;
         result.degrees = Eigen::VectorXi::Constant(optimization.quads.rows(), 4);
         result.outputVertexProvenance = optimization.vertexProvenance;
+        result.outputVertexLineage = completedVertexLineage;
+        result.outputQuadLineage = completedQuadLineage;
         result.diagnostics.surfaceCellRemeshOccurred = true;
         result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::CompletedSurfaceCells;
         result.diagnostics.surfaceCellProvenanceVertexCount =

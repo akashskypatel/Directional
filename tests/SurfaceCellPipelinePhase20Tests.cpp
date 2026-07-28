@@ -1681,6 +1681,25 @@ TEST(SurfaceCellPipelinePhase20, SmoothHairpinUsesProximityOnlyToSeparateOpposin
 }
 
 
+TEST(SurfaceCellPipelinePhase20, PairedBoundaryProofGateIsExplicit) {
+  const SyntheticMesh mesh = make_two_square_components();
+  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.rejectPairedSourceTriangleBoundaryOutput = true;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, raw, options);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("completion", result.diagnostics.terminalFailureStage);
+  EXPECT_TRUE(result.surfaceCellContext.outputLineageValidation
+                  .solelyPairedSourceTriangleBoundaries);
+  EXPECT_EQ("PairedSourceTriangleBoundaryOutput",
+            result.surfaceCellContext.outputLineageValidation.failure);
+}
 TEST(SurfaceCellPipelinePhase20, ValidationRejectionCannotReportCompletedSurfaceCells) {
   const SyntheticMesh mesh = make_two_square_components();
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
