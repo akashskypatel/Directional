@@ -191,3 +191,59 @@ TEST(PatchDescriptorMilestoneE, BoundarySingularityDoesNotConsumeInteriorPole) {
   EXPECT_EQ(descriptor.patch.singularityCount, 0);
   EXPECT_TRUE(descriptor.feasibility.admissible);
 }
+
+TEST(PatchDescriptorMilestoneE,
+     CompletesAuthoritativeComplexThroughMilestoneEEntryPoint) {
+  const Fixture fixture = make_patch({2, 2, 2, 2});
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F);
+
+  ASSERT_TRUE(completion.success) << completion.assembly.failure;
+  EXPECT_EQ(1, completion.attemptedPatches);
+  EXPECT_EQ(0, completion.failedPatches);
+  ASSERT_EQ(1U, completion.completedPatches.size());
+  EXPECT_EQ(4U, completion.assembly.mesh.quads.size());
+  EXPECT_EQ(1, completion.assembly.connectedComponents);
+  EXPECT_EQ(1, completion.assembly.boundaryLoopCount);
+  EXPECT_EQ(1, completion.assembly.eulerCharacteristic);
+}
+
+
+TEST(PatchDescriptorMilestoneE,
+     ComplexCompletionFailsClosedInsteadOfReturningPartialOutput) {
+  Fixture fixture = make_patch({2, 2, 2, 2});
+  auto invalidCell = fixture.complex.cells.front();
+  invalidCell.id = 1;
+  fixture.complex.cells.push_back(std::move(invalidCell));
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F);
+
+  EXPECT_FALSE(completion.success);
+  EXPECT_EQ("IncompleteSurfaceCellComplex", completion.failure);
+  EXPECT_EQ(1, completion.attemptedPatches);
+  EXPECT_EQ(1, completion.failedPatches);
+  EXPECT_EQ(1U, completion.completedPatches.size());
+  EXPECT_FALSE(completion.assembly.success);
+  EXPECT_TRUE(completion.assembly.mesh.quads.empty());
+}
+
+TEST(PatchDescriptorMilestoneE,
+     ExteriorArrangementCyclesAreNotAuthoritativeCompletionPatches) {
+  Fixture fixture = make_patch({2, 2, 2, 2});
+  auto exteriorCell = fixture.complex.cells.front();
+  exteriorCell.id = 1;
+  exteriorCell.cellClass =
+      directional::geometry::SurfaceArrangementCellClass::Exterior;
+  exteriorCell.boundaryCycle = true;
+  fixture.complex.cells.push_back(std::move(exteriorCell));
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F);
+
+  ASSERT_TRUE(completion.success) << completion.failure;
+  EXPECT_EQ(1U, completion.descriptors.descriptors.size());
+  EXPECT_EQ(1, completion.attemptedPatches);
+  EXPECT_EQ(0, completion.failedPatches);
+  EXPECT_EQ(1U, completion.completedPatches.size());
+}

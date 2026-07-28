@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <set>
 #include <string>
@@ -98,6 +99,10 @@ struct PureQuadPatch {
   std::vector<int> boundaryCurveIds;
   std::vector<int> sideEdgeCounts;
   std::vector<int> turns;
+  // Source triangles covered by this patch. Completion uses this set to
+  // project generated vertices without leaking onto another component or
+  // nearby sheet.
+  std::vector<int> sourceFaces;
   int boundaryLoopCount = 1;
   bool diskTopology = true;
   bool hardFeatureCrossing = false;
@@ -120,6 +125,7 @@ struct PureQuadMesh {
   std::vector<SurfacePoint> vertexProvenance;
   std::vector<std::vector<int>> quads;
   std::vector<int> boundaryVertices;
+  std::vector<std::vector<int>> boundaryLoops;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   bool usesCenterFan = false;
   std::vector<PureQuadVertexLineage> vertexLineage;
@@ -130,6 +136,10 @@ struct PureQuadCompletionOptions {
   int sourcePatch = -1;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
+  const Eigen::MatrixXd *sourceVertices = nullptr;
+  const Eigen::MatrixXi *sourceFaces = nullptr;
+  const std::vector<int> *sourceFaceComponents = nullptr;
+  const std::vector<int> *sourceFaceSheets = nullptr;
 };
 
 struct PureQuadCompletionResult {
@@ -138,6 +148,16 @@ struct PureQuadCompletionResult {
   PureQuadMesh mesh;
   PureQuadPatchRejectReason failureReason = PureQuadPatchRejectReason::None;
   int exploredPatterns = 0;
+};
+
+struct PureQuadAssemblyResult {
+  bool success = false;
+  PureQuadMesh mesh;
+  int mergedBoundaryVertices = 0;
+  int connectedComponents = 0;
+  int boundaryLoopCount = 0;
+  int eulerCharacteristic = 0;
+  std::string failure;
 };
 
 struct CompletionEndpoint {
@@ -179,30 +199,6 @@ struct TopologyRewriteTemplate {
   double objectiveDelta = -1.0;
 };
 
-struct TopologyRewriteCandidate {
-  int id = -1;
-  std::vector<int> adjacency;
-  std::vector<int> boundarySignature;
-  int featureLabel = 0;
-  int singularityLabel = 0;
-  bool singularityBudgetAvailable = true;
-  bool postconditionsHold = true;
-  bool strictValidatorAccepts = true;
-};
-
-struct TopologyRewriteRecord {
-  int candidateId = -1;
-  int templateId = -1;
-  bool committed = false;
-  std::vector<int> outputAdjacency;
-};
-
-struct TopologyRewriteResult {
-  std::vector<TopologyRewriteRecord> records;
-  int committed = 0;
-  int rejected = 0;
-};
-
 struct GuardedTopologyMutation {
   int id = -1;
   TopologyTemplateKind kind = TopologyTemplateKind::PolePairSlide;
@@ -227,6 +223,32 @@ struct GuardedTopologyMutationRecord {
 struct GuardedTopologyMutationResult {
   PureQuadMesh mesh;
   std::vector<GuardedTopologyMutationRecord> records;
+  int committed = 0;
+  int rejected = 0;
+};
+
+struct TopologyRewriteCandidate {
+  int id = -1;
+  std::vector<int> adjacency;
+  std::vector<int> boundarySignature;
+  int featureLabel = 0;
+  int singularityLabel = 0;
+  bool singularityBudgetAvailable = true;
+  GuardedTopologyMutation mutation;
+};
+
+struct TopologyRewriteRecord {
+  int candidateId = -1;
+  int templateId = -1;
+  bool committed = false;
+  std::vector<int> outputAdjacency;
+  PureQuadPatchRejectReason reason =
+      PureQuadPatchRejectReason::RewritePreconditionFailed;
+};
+
+struct TopologyRewriteResult {
+  PureQuadMesh mesh;
+  std::vector<TopologyRewriteRecord> records;
   int committed = 0;
   int rejected = 0;
 };
@@ -335,25 +357,7 @@ inline SurfacePoint boundary_source_point(const PureQuadPatch &patch,
       patch.boundaryProvenance[static_cast<std::size_t>(boundaryIndex)].valid()) {
     return patch.boundaryProvenance[static_cast<std::size_t>(boundaryIndex)];
   }
-  const int count = std::max(1, static_cast<int>(patch.boundaryVertices.size()));
-  const double t = static_cast<double>(boundaryIndex) / static_cast<double>(count);
-  double x = 0.0;
-  double y = 0.0;
-  if (t < 0.25) {
-    x = 4.0 * t;
-  } else if (t < 0.5) {
-    x = 1.0;
-    y = 4.0 * (t - 0.25);
-  } else if (t < 0.75) {
-    x = 1.0 - 4.0 * (t - 0.5);
-    y = 1.0;
-  } else {
-    y = 1.0 - 4.0 * (t - 0.75);
-  }
-  const Eigen::Vector3d position(x, y, 0.0);
-  const Eigen::Vector3d barycentric(
-      std::max(0.0, 1.0 - 0.5 * (x + y)), 0.5 * x, 0.5 * y);
-  return make_planar_source_point(0, position, barycentric);
+  return {};
 }
 
 inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points) {
@@ -377,8 +381,7 @@ inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points
     ++count;
   }
   if (count == 0) {
-    return make_planar_source_point(0, {1.0 / 3.0, 1.0 / 3.0, 0.0},
-                                    {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0});
+    return {};
   }
   position /= static_cast<double>(count);
   barycentric /= static_cast<double>(count);
@@ -391,6 +394,39 @@ inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points
   averaged.position = position;
   averaged.barycentric = barycentric;
   averaged.squaredDistance = 0.0;
+  return averaged;
+}
+
+inline SurfacePoint project_generated_point(
+    const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets) {
+  if (projection != nullptr) {
+    SurfaceProjectionOptions options;
+    options.allowedFaces = allowedFaces;
+    options.faceComponents = faceComponents;
+    options.faceSheets = faceSheets;
+    SurfacePoint projected = projection->project(target, options);
+    if (projected.valid()) {
+      return projected;
+    }
+  }
+
+  // Standalone completion tests may not provide a source mesh. A fallback is
+  // truthful only when all anchors refer to the same source triangle and
+  // sheet. Real multi-triangle patches must provide a projection context.
+  const SurfacePoint averaged = average_source_point(anchors);
+  if (!averaged.valid()) {
+    return {};
+  }
+  for (const SurfacePoint &anchor : anchors) {
+    if (!anchor.valid() || anchor.face != averaged.face ||
+        anchor.component != averaged.component || anchor.sheet != averaged.sheet) {
+      return {};
+    }
+  }
   return averaged;
 }
 
@@ -413,17 +449,28 @@ inline void initialize_boundary_embedding(const PureQuadPatch &patch,
   }
 }
 
-inline int append_embedded_vertex(PureQuadMesh &mesh, int &nextInterior,
-                                  const std::vector<SurfacePoint> &anchors) {
+inline int append_embedded_vertex(
+    PureQuadMesh &mesh, int &nextInterior,
+    const Eigen::Vector3d &targetPosition,
+    const std::vector<SurfacePoint> &anchors,
+    const SurfaceProjectionBvh *projection = nullptr,
+    const std::vector<unsigned char> *allowedFaces = nullptr,
+    const std::vector<int> *faceComponents = nullptr,
+    const std::vector<int> *faceSheets = nullptr) {
+  const SurfacePoint point = project_generated_point(
+      targetPosition, anchors, projection, allowedFaces, faceComponents,
+      faceSheets);
+  if (!point.valid()) {
+    return std::numeric_limits<int>::max();
+  }
   const int vertex = next_generated_vertex(nextInterior);
   mesh.vertices.push_back(vertex);
-  const SurfacePoint point = average_source_point(anchors);
   mesh.vertexProvenance.push_back(point);
   PureQuadVertexLineage lineage; lineage.outputVertex=vertex; lineage.sourcePoint=point; mesh.vertexLineage.push_back(lineage);
   return vertex;
 }
 
-inline void fill_positions(PureQuadMesh &mesh) {
+inline bool fill_positions(PureQuadMesh &mesh) {
   mesh.vertexPositions.resize(static_cast<int>(mesh.vertices.size()), 3);
   for (int i = 0; i < static_cast<int>(mesh.vertices.size()); ++i) {
     if (i < static_cast<int>(mesh.vertexProvenance.size()) &&
@@ -431,9 +478,13 @@ inline void fill_positions(PureQuadMesh &mesh) {
       mesh.vertexPositions.row(i) =
           mesh.vertexProvenance[static_cast<std::size_t>(i)].position;
     } else {
-      mesh.vertexPositions.row(i) << static_cast<double>(i), 0.0, 0.0;
+      return false;
+    }
+    if (!mesh.vertexPositions.row(i).allFinite()) {
+      return false;
     }
   }
+  return true;
 }
 
 inline bool vectors_equal(const std::vector<int> &a, const std::vector<int> &b) {
@@ -609,8 +660,12 @@ inline bool pure_quad_topology_is_disk(const PureQuadMesh &mesh) {
 
 namespace pure_quad_detail {
 
-inline bool complete_rectangular_grid(const PureQuadPatch &patch,
-                                      PureQuadMesh &mesh) {
+inline bool complete_rectangular_grid(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets) {
   if (patch.sideEdgeCounts.size() != 4 ||
       patch.sideEdgeCounts[0] != patch.sideEdgeCounts[2] ||
       patch.sideEdgeCounts[1] != patch.sideEdgeCounts[3]) {
@@ -636,8 +691,18 @@ inline bool complete_rectangular_grid(const PureQuadPatch &patch,
   const SurfacePoint c01 = boundary_source_point(patch, 2 * width + height);
   for (int y = 1; y < height; ++y) {
     for (int x = 1; x < width; ++x) {
-      grid[y][x] = append_embedded_vertex(mesh, nextInterior,
-                                          {c00, c10, c11, c01});
+      const double u = static_cast<double>(x) / static_cast<double>(width);
+      const double v = static_cast<double>(y) / static_cast<double>(height);
+      const Eigen::Vector3d target =
+          (1.0 - u) * (1.0 - v) * c00.position +
+          u * (1.0 - v) * c10.position + u * v * c11.position +
+          (1.0 - u) * v * c01.position;
+      grid[y][x] = append_embedded_vertex(
+          mesh, nextInterior, target, {c00, c10, c11, c01}, projection,
+          allowedFaces, faceComponents, faceSheets);
+      if (grid[y][x] == std::numeric_limits<int>::max()) {
+        return false;
+      }
     }
   }
   for (int y = 0; y < height; ++y) {
@@ -669,8 +734,12 @@ inline void append_boundary_fan(const std::vector<int> &boundary,
   }
 }
 
-inline bool complete_singularity_pole(const PureQuadPatch &patch,
-                                      PureQuadMesh &mesh) {
+inline bool complete_singularity_pole(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets) {
   if (patch.singularityCount != 1) return false;
   const int valence = expected_valence(patch.singularIndexNumerator);
   if (valence < 3 || valence > 6 ||
@@ -681,8 +750,17 @@ inline bool complete_singularity_pole(const PureQuadPatch &patch,
     return false;
   }
   int nextInterior = -1;
-  const int pole = append_embedded_vertex(mesh, nextInterior,
-                                           patch.boundaryProvenance);
+  Eigen::Vector3d target = Eigen::Vector3d::Zero();
+  for (const SurfacePoint &point : patch.boundaryProvenance) {
+    target += point.position;
+  }
+  target /= static_cast<double>(patch.boundaryProvenance.size());
+  const int pole = append_embedded_vertex(
+      mesh, nextInterior, target, patch.boundaryProvenance, projection,
+      allowedFaces, faceComponents, faceSheets);
+  if (pole == std::numeric_limits<int>::max()) {
+    return false;
+  }
   const auto &v = patch.boundaryVertices;
   for (int i = 0; i < valence; ++i) {
     const int a = v[static_cast<std::size_t>(2 * i)];
@@ -746,9 +824,32 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
   PureQuadMesh mesh;
   mesh.sourcePatch = options.sourcePatch;
   pure_quad_detail::initialize_boundary_embedding(patch, mesh);
+  if ((options.sourceVertices == nullptr) != (options.sourceFaces == nullptr)) {
+    result.failureReason = PureQuadPatchRejectReason::MissingBoundaryData;
+    return result;
+  }
+  std::unique_ptr<SurfaceProjectionBvh> projection;
+  std::vector<unsigned char> allowedFaces;
+  if (options.sourceVertices != nullptr && options.sourceFaces != nullptr) {
+    projection = std::make_unique<SurfaceProjectionBvh>(
+        *options.sourceVertices, *options.sourceFaces);
+    if (!patch.sourceFaces.empty()) {
+      allowedFaces.assign(static_cast<std::size_t>(options.sourceFaces->rows()),
+                          0);
+      for (const int face : patch.sourceFaces) {
+        if (face >= 0 && face < options.sourceFaces->rows()) {
+          allowedFaces[static_cast<std::size_t>(face)] = 1;
+        }
+      }
+    }
+  }
+  const std::vector<unsigned char> *allowedFacePtr =
+      allowedFaces.empty() ? nullptr : &allowedFaces;
   bool completed = false;
   if (patch.singularityCount != 0) {
-    completed = pure_quad_detail::complete_singularity_pole(patch, mesh);
+    completed = pure_quad_detail::complete_singularity_pole(
+        patch, mesh, projection.get(), allowedFacePtr,
+        options.sourceFaceComponents, options.sourceFaceSheets);
     if (!completed) {
       result.failureReason =
           PureQuadPatchRejectReason::UnsupportedSingularityCompletion;
@@ -756,7 +857,9 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     }
   }
   if (!completed) {
-    completed = pure_quad_detail::complete_rectangular_grid(patch, mesh);
+    completed = pure_quad_detail::complete_rectangular_grid(
+        patch, mesh, projection.get(), allowedFacePtr,
+        options.sourceFaceComponents, options.sourceFaceSheets);
   }
   if (!completed && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(patch, mesh);
@@ -772,13 +875,275 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
     result.failureReason = PureQuadPatchRejectReason::SearchLimitExceeded;
     return result;
   }
-  pure_quad_detail::fill_positions(mesh);
+  if (!pure_quad_detail::fill_positions(mesh)) {
+    result.failureReason = PureQuadPatchRejectReason::MissingBoundaryData;
+    return result;
+  }
   for (int q=0; q<static_cast<int>(mesh.quads.size()); ++q) mesh.quadLineage.push_back({q, mesh.sourcePatch, mesh.backend, q});
   if (!pure_quad_topology_is_disk(mesh)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     return result;
   }
   result.mesh = std::move(mesh);
+  result.success = true;
+  return result;
+}
+
+inline PureQuadAssemblyResult stitch_pure_quad_patches(
+    const std::vector<PureQuadMesh> &patches,
+    const double positionTolerance = 1.0e-9) {
+  PureQuadAssemblyResult result;
+  if (patches.empty()) {
+    result.failure = "NoCompletedPatches";
+    return result;
+  }
+
+  std::map<std::tuple<int, int, int>, int> vertexRows;
+  std::vector<Eigen::Vector3d> positions;
+  std::set<std::vector<int>> canonicalQuads;
+
+  for (int patchIndex = 0; patchIndex < static_cast<int>(patches.size());
+       ++patchIndex) {
+    const PureQuadMesh &patch = patches[static_cast<std::size_t>(patchIndex)];
+    if (patch.vertices.size() !=
+            static_cast<std::size_t>(patch.vertexPositions.rows()) ||
+        patch.vertices.size() != patch.vertexProvenance.size() ||
+        patch.vertices.size() != patch.vertexLineage.size() ||
+        patch.quads.size() != patch.quadLineage.size()) {
+      result.failure = "IncompletePatchLineage";
+      return result;
+    }
+
+    const std::set<int> boundary(patch.boundaryVertices.begin(),
+                                 patch.boundaryVertices.end());
+    std::map<int, int> localToGlobal;
+    for (int localRow = 0; localRow < static_cast<int>(patch.vertices.size());
+         ++localRow) {
+      const int localVertex = patch.vertices[static_cast<std::size_t>(localRow)];
+      const bool sharedBoundary = boundary.count(localVertex) != 0;
+      const auto key = sharedBoundary
+                           ? std::make_tuple(0, 0, localVertex)
+                           : std::make_tuple(1, patchIndex, localVertex);
+      const Eigen::Vector3d position =
+          patch.vertexPositions.row(localRow).transpose();
+      const auto existing = vertexRows.find(key);
+      int globalRow = -1;
+      if (existing == vertexRows.end()) {
+        globalRow = static_cast<int>(positions.size());
+        vertexRows.emplace(key, globalRow);
+        positions.push_back(position);
+        result.mesh.vertexProvenance.push_back(
+            patch.vertexProvenance[static_cast<std::size_t>(localRow)]);
+        PureQuadVertexLineage lineage =
+            patch.vertexLineage[static_cast<std::size_t>(localRow)];
+        lineage.outputVertex = globalRow;
+        result.mesh.vertexLineage.push_back(std::move(lineage));
+      } else {
+        globalRow = existing->second;
+        if ((positions[static_cast<std::size_t>(globalRow)] - position).norm() >
+            positionTolerance) {
+          result.failure = "InconsistentSharedBoundaryPosition";
+          return result;
+        }
+        ++result.mergedBoundaryVertices;
+        PureQuadVertexLineage &stored =
+            result.mesh.vertexLineage[static_cast<std::size_t>(globalRow)];
+        const PureQuadVertexLineage &incoming =
+            patch.vertexLineage[static_cast<std::size_t>(localRow)];
+        if (stored.kind == PureQuadVertexLineageKind::SourceTriangle &&
+            incoming.kind == PureQuadVertexLineageKind::OrderedFeatureInterval) {
+          stored = incoming;
+          stored.outputVertex = globalRow;
+        }
+      }
+      localToGlobal.emplace(localVertex, globalRow);
+    }
+
+    for (int localQuad = 0; localQuad < static_cast<int>(patch.quads.size());
+         ++localQuad) {
+      const std::vector<int> &quad =
+          patch.quads[static_cast<std::size_t>(localQuad)];
+      if (quad.size() != 4) {
+        result.failure = "NonQuadPatchFace";
+        return result;
+      }
+      std::vector<int> globalQuad(4, -1);
+      for (int corner = 0; corner < 4; ++corner) {
+        const auto mapped = localToGlobal.find(quad[static_cast<std::size_t>(corner)]);
+        if (mapped == localToGlobal.end()) {
+          result.failure = "UnknownPatchVertex";
+          return result;
+        }
+        globalQuad[static_cast<std::size_t>(corner)] = mapped->second;
+      }
+      if (std::set<int>(globalQuad.begin(), globalQuad.end()).size() != 4) {
+        result.failure = "DegenerateStitchedQuad";
+        return result;
+      }
+      std::vector<int> canonical = globalQuad;
+      std::sort(canonical.begin(), canonical.end());
+      if (!canonicalQuads.insert(canonical).second) {
+        result.failure = "DuplicateStitchedQuad";
+        return result;
+      }
+      const int outputQuad = static_cast<int>(result.mesh.quads.size());
+      result.mesh.quads.push_back(std::move(globalQuad));
+      PureQuadFaceLineage lineage =
+          patch.quadLineage[static_cast<std::size_t>(localQuad)];
+      lineage.outputQuad = outputQuad;
+      result.mesh.quadLineage.push_back(std::move(lineage));
+    }
+  }
+
+  result.mesh.vertices.resize(positions.size());
+  std::iota(result.mesh.vertices.begin(), result.mesh.vertices.end(), 0);
+  result.mesh.vertexPositions.resize(static_cast<int>(positions.size()), 3);
+  for (int row = 0; row < static_cast<int>(positions.size()); ++row) {
+    result.mesh.vertexPositions.row(row) = positions[static_cast<std::size_t>(row)];
+  }
+
+  const auto incidence = pure_quad_detail::edge_incidence(result.mesh.quads);
+  for (const auto &[edge, count] : incidence) {
+    if (count != 1 && count != 2) {
+      result.failure = "NonManifoldStitchedEdge";
+      return result;
+    }
+  }
+  result.eulerCharacteristic =
+      static_cast<int>(result.mesh.vertices.size()) -
+      static_cast<int>(incidence.size()) +
+      static_cast<int>(result.mesh.quads.size());
+
+  std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
+  for (int face = 0; face < static_cast<int>(result.mesh.quads.size()); ++face) {
+    const auto &quad = result.mesh.quads[static_cast<std::size_t>(face)];
+    for (int corner = 0; corner < 4; ++corner) {
+      edgeFaces[pure_quad_detail::canonical_edge(
+                    quad[static_cast<std::size_t>(corner)],
+                    quad[static_cast<std::size_t>((corner + 1) % 4)])]
+          .push_back(face);
+    }
+  }
+  std::vector<std::vector<int>> faceAdjacency(result.mesh.quads.size());
+  for (const auto &[edge, faces] : edgeFaces) {
+    if (faces.size() == 2) {
+      faceAdjacency[static_cast<std::size_t>(faces[0])].push_back(faces[1]);
+      faceAdjacency[static_cast<std::size_t>(faces[1])].push_back(faces[0]);
+    }
+  }
+
+  std::vector<std::vector<int>> vertexFaces(result.mesh.vertices.size());
+  for (int face = 0; face < static_cast<int>(result.mesh.quads.size()); ++face) {
+    for (const int vertex : result.mesh.quads[static_cast<std::size_t>(face)]) {
+      vertexFaces[static_cast<std::size_t>(vertex)].push_back(face);
+    }
+  }
+  for (int vertex = 0; vertex < static_cast<int>(vertexFaces.size()); ++vertex) {
+    const auto &incident = vertexFaces[static_cast<std::size_t>(vertex)];
+    if (incident.empty()) {
+      result.failure = "UnusedStitchedVertex";
+      return result;
+    }
+    std::set<int> incidentSet(incident.begin(), incident.end());
+    std::set<int> reached;
+    std::vector<int> stack{incident.front()};
+    reached.insert(incident.front());
+    while (!stack.empty()) {
+      const int face = stack.back();
+      stack.pop_back();
+      const auto &quad = result.mesh.quads[static_cast<std::size_t>(face)];
+      for (int corner = 0; corner < 4; ++corner) {
+        if (quad[static_cast<std::size_t>(corner)] != vertex) {
+          continue;
+        }
+        const int previous = quad[static_cast<std::size_t>((corner + 3) % 4)];
+        const int next = quad[static_cast<std::size_t>((corner + 1) % 4)];
+        for (const int adjacentVertex : {previous, next}) {
+          const auto found = edgeFaces.find(
+              pure_quad_detail::canonical_edge(vertex, adjacentVertex));
+          if (found == edgeFaces.end()) {
+            continue;
+          }
+          for (const int adjacentFace : found->second) {
+            if (incidentSet.count(adjacentFace) != 0 &&
+                reached.insert(adjacentFace).second) {
+              stack.push_back(adjacentFace);
+            }
+          }
+        }
+      }
+    }
+    if (reached.size() != incidentSet.size()) {
+      result.failure = "NonManifoldStitchedVertex";
+      return result;
+    }
+  }
+
+  std::vector<unsigned char> visited(result.mesh.quads.size(), 0);
+  for (int start = 0; start < static_cast<int>(result.mesh.quads.size()); ++start) {
+    if (visited[static_cast<std::size_t>(start)] != 0) {
+      continue;
+    }
+    ++result.connectedComponents;
+    std::vector<int> stack{start};
+    visited[static_cast<std::size_t>(start)] = 1;
+    while (!stack.empty()) {
+      const int face = stack.back();
+      stack.pop_back();
+      for (const int next : faceAdjacency[static_cast<std::size_t>(face)]) {
+        if (visited[static_cast<std::size_t>(next)] == 0) {
+          visited[static_cast<std::size_t>(next)] = 1;
+          stack.push_back(next);
+        }
+      }
+    }
+  }
+
+  std::map<int, std::vector<int>> boundaryAdjacency;
+  std::set<std::pair<int, int>> unvisitedBoundary;
+  for (const auto &[edge, count] : incidence) {
+    if (count == 1) {
+      boundaryAdjacency[edge.first].push_back(edge.second);
+      boundaryAdjacency[edge.second].push_back(edge.first);
+      unvisitedBoundary.insert(edge);
+    }
+  }
+  for (const auto &[vertex, adjacent] : boundaryAdjacency) {
+    if (adjacent.size() != 2) {
+      result.failure = "NonManifoldBoundaryVertex";
+      return result;
+    }
+  }
+  while (!unvisitedBoundary.empty()) {
+    const auto firstEdge = *unvisitedBoundary.begin();
+    std::vector<int> loop;
+    int previous = firstEdge.first;
+    int current = firstEdge.second;
+    loop.push_back(previous);
+    unvisitedBoundary.erase(firstEdge);
+    while (current != loop.front()) {
+      loop.push_back(current);
+      const auto &adjacent = boundaryAdjacency[current];
+      const int next = adjacent[0] == previous ? adjacent[1] : adjacent[0];
+      const auto edge = pure_quad_detail::canonical_edge(current, next);
+      if (unvisitedBoundary.erase(edge) == 0) {
+        result.failure = "BrokenBoundaryLoop";
+        return result;
+      }
+      previous = current;
+      current = next;
+      if (loop.size() > boundaryAdjacency.size()) {
+        result.failure = "BrokenBoundaryLoop";
+        return result;
+      }
+    }
+    result.mesh.boundaryLoops.push_back(std::move(loop));
+  }
+  result.boundaryLoopCount =
+      static_cast<int>(result.mesh.boundaryLoops.size());
+  if (!result.mesh.boundaryLoops.empty()) {
+    result.mesh.boundaryVertices = result.mesh.boundaryLoops.front();
+  }
   result.success = true;
   return result;
 }
@@ -858,15 +1223,23 @@ inline std::vector<TopologyRewriteTemplate> default_topology_rewrite_catalog() {
   };
 }
 
+inline GuardedTopologyMutationResult apply_guarded_topology_mutations(
+    const PureQuadMesh &input,
+    std::vector<GuardedTopologyMutation> mutations);
+
 inline TopologyRewriteResult apply_topology_rewrite_catalog(
+    const PureQuadMesh &input,
     const std::vector<TopologyRewriteCandidate> &candidates,
     const std::vector<TopologyRewriteTemplate> &catalog =
         default_topology_rewrite_catalog()) {
   TopologyRewriteResult result;
+  result.mesh = input;
   std::vector<TopologyRewriteCandidate> sorted = candidates;
   std::sort(sorted.begin(), sorted.end(),
             [](const auto &a, const auto &b) { return a.id < b.id; });
   for (const TopologyRewriteCandidate &candidate : sorted) {
+    TopologyRewriteRecord record;
+    record.candidateId = candidate.id;
     bool committed = false;
     for (const TopologyRewriteTemplate &templ : catalog) {
       const bool featureOk =
@@ -882,20 +1255,31 @@ inline TopologyRewriteResult apply_topology_rewrite_catalog(
           !featureOk || !singularityOk ||
           (templ.requiresSingularityBudget &&
            !candidate.singularityBudgetAvailable) ||
-          templ.objectiveDelta >= 0.0 || !candidate.postconditionsHold ||
-          !candidate.strictValidatorAccepts) {
+          templ.objectiveDelta >= 0.0 || candidate.mutation.id < 0 ||
+          candidate.mutation.kind != templ.kind) {
         continue;
       }
-      result.records.push_back({candidate.id, templ.id, true,
-                                templ.outputAdjacency});
+      const GuardedTopologyMutationResult applied =
+          apply_guarded_topology_mutations(result.mesh, {candidate.mutation});
+      if (applied.committed != 1) {
+        if (!applied.records.empty()) {
+          record.reason = applied.records.front().reason;
+        }
+        continue;
+      }
+      result.mesh = applied.mesh;
+      record.templateId = templ.id;
+      record.committed = true;
+      record.outputAdjacency = templ.outputAdjacency;
+      record.reason = PureQuadPatchRejectReason::None;
       ++result.committed;
       committed = true;
       break;
     }
     if (!committed) {
-      result.records.push_back({candidate.id, -1, false});
       ++result.rejected;
     }
+    result.records.push_back(std::move(record));
   }
   return result;
 }

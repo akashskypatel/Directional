@@ -1,7 +1,10 @@
 #include <directional/geometry/PureQuadCompletion.h>
 
 #include <algorithm>
+#include <cmath>
 #include <map>
+#include <numbers>
+#include <set>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -46,6 +49,85 @@ directional::geometry::PureQuadPatch embedded_patch(std::vector<int> sides) {
     p.boundaryProvenance.push_back(point);
   }
   return p;
+}
+
+struct CompletionFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  directional::geometry::PureQuadPatch patch;
+};
+
+CompletionFixture generated_plane_patch() {
+  CompletionFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0, 0.0, 1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2, 0, 2, 3;
+  fixture.patch.sideEdgeCounts = {2, 2, 2, 2};
+  fixture.patch.turns = {1, 1, 1, 1};
+  fixture.patch.sourceFaces = {0, 1};
+  const std::vector<Eigen::Vector3d> boundary = {
+      {0.0, 0.0, 0.0}, {0.5, 0.0, 0.0}, {1.0, 0.0, 0.0},
+      {1.0, 0.5, 0.0}, {1.0, 1.0, 0.0}, {0.5, 1.0, 0.0},
+      {0.0, 1.0, 0.0}, {0.0, 0.5, 0.0}};
+  for (int index = 0; index < static_cast<int>(boundary.size()); ++index) {
+    fixture.patch.boundaryVertices.push_back(index);
+    fixture.patch.boundaryProvenance.push_back(
+        directional::geometry::project_to_surface(
+            fixture.vertices, fixture.faces,
+            boundary[static_cast<std::size_t>(index)]));
+  }
+  return fixture;
+}
+
+std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
+    Eigen::MatrixXd &vertices, Eigen::MatrixXi &faces,
+    const int segments = 8) {
+  vertices.resize(2 * segments, 3);
+  for (int ring = 0; ring < 2; ++ring) {
+    for (int segment = 0; segment < segments; ++segment) {
+      const double angle = 2.0 * std::numbers::pi *
+                           static_cast<double>(segment) /
+                           static_cast<double>(segments);
+      vertices.row(ring * segments + segment) <<
+          std::cos(angle), std::sin(angle), static_cast<double>(ring);
+    }
+  }
+  faces.resize(2 * segments, 3);
+  for (int segment = 0; segment < segments; ++segment) {
+    const int next = (segment + 1) % segments;
+    faces.row(2 * segment) << segment, next, segments + next;
+    faces.row(2 * segment + 1) << segment, segments + next,
+        segments + segment;
+  }
+
+  std::vector<directional::geometry::PureQuadMesh> patches;
+  for (int segment = 0; segment < segments; ++segment) {
+    const int next = (segment + 1) % segments;
+    directional::geometry::PureQuadPatch cylinderPatch;
+    cylinderPatch.sideEdgeCounts = {1, 1, 1, 1};
+    cylinderPatch.turns = {1, 1, 1, 1};
+    cylinderPatch.sourceFaces = {2 * segment, 2 * segment + 1};
+    cylinderPatch.boundaryVertices = {
+        segment, next, segments + next, segments + segment};
+    for (const int vertex : cylinderPatch.boundaryVertices) {
+      cylinderPatch.boundaryProvenance.push_back(
+          directional::geometry::project_to_surface(
+              vertices, faces, vertices.row(vertex).transpose()));
+    }
+    directional::geometry::PureQuadCompletionOptions options;
+    options.sourcePatch = segment;
+    options.sourceVertices = &vertices;
+    options.sourceFaces = &faces;
+    const auto completion =
+        directional::geometry::complete_pure_quad_patch(cylinderPatch, options);
+    if (!completion.success) {
+      return {};
+    }
+    patches.push_back(completion.mesh);
+  }
+  return patches;
 }
 
 } // namespace
@@ -268,12 +350,24 @@ TEST(PureQuadCompletionPhase18, UnresolvedEndpointReportsHangingNode) {
   EXPECT_EQ(result.endpointsEmbeddedInEdges, 1);
 }
 
-TEST(PureQuadCompletionPhase18, RewriteCatalogForwardAndRejectionCases) {
+TEST(PureQuadCompletionPhase18,
+     RewriteCatalogCommitsOnlyARealGuardedConnectivityMutation) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.vertices = {0, 1, 2, 3, 4, 5};
+  mesh.boundaryVertices = mesh.vertices;
+  mesh.quads = {{0, 1, 2, 3}, {0, 3, 4, 5}};
+
   directional::geometry::TopologyRewriteCandidate forward;
   forward.id = 0;
-  forward.adjacency = {3, 5, 4};
-  forward.boundarySignature = {2, 2};
-  forward.singularityLabel = 3;
+  forward.adjacency = {4, 4, 5};
+  forward.boundarySignature = {1, 2};
+  forward.featureLabel = 7;
+  forward.mutation.id = 0;
+  forward.mutation.kind =
+      directional::geometry::TopologyTemplateKind::LoopRedirection;
+  forward.mutation.removeQuadIndices = {0, 1};
+  forward.mutation.replacementQuads = {
+      {1, 2, 3, 4}, {1, 4, 5, 0}};
 
   directional::geometry::TopologyRewriteCandidate rejected;
   rejected.id = 1;
@@ -281,34 +375,52 @@ TEST(PureQuadCompletionPhase18, RewriteCatalogForwardAndRejectionCases) {
   rejected.boundarySignature = {2, 2};
   rejected.singularityLabel = 3;
   rejected.singularityBudgetAvailable = false;
+  rejected.mutation.id = 1;
+  rejected.mutation.kind =
+      directional::geometry::TopologyTemplateKind::PolePairCancellation;
+  rejected.mutation.removeQuadIndices = {0, 1};
+  rejected.mutation.replacementQuads = forward.mutation.replacementQuads;
 
-  const auto result =
-      directional::geometry::apply_topology_rewrite_catalog({forward, rejected});
+  const auto result = directional::geometry::apply_topology_rewrite_catalog(
+      mesh, {forward, rejected});
 
   ASSERT_EQ(result.records.size(), 2U);
   EXPECT_TRUE(result.records[0].committed);
   EXPECT_FALSE(result.records[1].committed);
   EXPECT_EQ(result.committed, 1);
   EXPECT_EQ(result.rejected, 1);
-  EXPECT_EQ(result.records[0].outputAdjacency, std::vector<int>({4, 3, 5}));
+  EXPECT_EQ(result.records[0].outputAdjacency,
+            std::vector<int>({4, 5, 4}));
+  EXPECT_EQ(result.mesh.quads, forward.mutation.replacementQuads);
 }
 
-TEST(PureQuadCompletionPhase18, RewriteAcceptanceUsesTemplatePostconditions) {
+TEST(PureQuadCompletionPhase18,
+     RewriteCatalogRejectsMatchedMetadataWithoutAValidMutation) {
+  directional::geometry::PureQuadMesh mesh;
+  mesh.vertices = {0, 1, 2, 3, 4, 5};
+  mesh.boundaryVertices = mesh.vertices;
+  mesh.quads = {{0, 1, 2, 3}, {0, 3, 4, 5}};
+
   directional::geometry::TopologyRewriteCandidate candidate;
   candidate.id = 9;
-  candidate.adjacency = {3, 5, 4};
-  candidate.boundarySignature = {2, 2};
-  candidate.singularityLabel = 3;
-  candidate.strictValidatorAccepts = false;
-  candidate.postconditionsHold = true;
+  candidate.adjacency = {4, 4, 5};
+  candidate.boundarySignature = {1, 2};
+  candidate.featureLabel = 7;
+  candidate.mutation.id = 9;
+  candidate.mutation.kind =
+      directional::geometry::TopologyTemplateKind::LoopRedirection;
 
-  const auto result =
-      directional::geometry::apply_topology_rewrite_catalog({candidate});
+  const auto result = directional::geometry::apply_topology_rewrite_catalog(
+      mesh, {candidate});
 
   ASSERT_EQ(result.records.size(), 1U);
   EXPECT_FALSE(result.records.front().committed);
+  EXPECT_EQ(result.records.front().reason,
+            directional::geometry::PureQuadPatchRejectReason::
+                RewritePreconditionFailed);
   EXPECT_EQ(result.committed, 0);
   EXPECT_EQ(result.rejected, 1);
+  EXPECT_EQ(result.mesh.quads, mesh.quads);
 }
 
 TEST(PureQuadCompletionPhase18, ClosedSurfaceSingularityBudgetExact) {
@@ -640,4 +752,111 @@ TEST(PureQuadCompletionPhase18, P18FailsClosedWhenQuadLineageIsMissing) {
       directional::geometry::validate_pure_quad_output_lineage(result.mesh, F, false);
   EXPECT_FALSE(validation.valid);
   EXPECT_EQ(validation.failure, "MissingOutputQuadLineage");
+}
+
+TEST(PureQuadCompletionPhase18,
+     GeneratedRectangularVerticesProjectToDistinctSourceLocations) {
+  const CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 17;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+
+  ASSERT_TRUE(completion.success);
+  ASSERT_EQ(9U, completion.mesh.vertices.size());
+  ASSERT_EQ(4U, completion.mesh.quads.size());
+  std::set<std::pair<long long, long long>> positions;
+  for (int row = 0; row < completion.mesh.vertexPositions.rows(); ++row) {
+    positions.emplace(
+        std::llround(completion.mesh.vertexPositions(row, 0) * 1000000.0),
+        std::llround(completion.mesh.vertexPositions(row, 1) * 1000000.0));
+  }
+  EXPECT_EQ(completion.mesh.vertices.size(), positions.size());
+  const auto interior = std::find_if(
+      completion.mesh.vertices.begin(), completion.mesh.vertices.end(),
+      [](const int vertex) { return vertex < 0; });
+  ASSERT_NE(interior, completion.mesh.vertices.end());
+  const int row = static_cast<int>(
+      std::distance(completion.mesh.vertices.begin(), interior));
+  EXPECT_NEAR(0.5, completion.mesh.vertexPositions(row, 0), 1.0e-12);
+  EXPECT_NEAR(0.5, completion.mesh.vertexPositions(row, 1), 1.0e-12);
+  EXPECT_TRUE(completion.mesh.vertexProvenance[static_cast<std::size_t>(row)]
+                  .valid());
+}
+
+TEST(PureQuadCompletionPhase18,
+     MilestoneEPlaneProducesGeneratedManifoldPureQuadTopology) {
+  const CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 0;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.success);
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh});
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+  EXPECT_EQ(1, assembly.connectedComponents);
+  EXPECT_EQ(1, assembly.boundaryLoopCount);
+  EXPECT_EQ(1, assembly.eulerCharacteristic);
+  EXPECT_EQ(4U, assembly.mesh.quads.size());
+  EXPECT_FALSE(
+      directional::geometry::output_is_only_paired_source_triangle_boundaries(
+          assembly.mesh, fixture.faces));
+  const auto report = directional::geometry::validate_pure_quad_completion(
+      assembly.mesh);
+  EXPECT_TRUE(report.pureQuads);
+  EXPECT_EQ(0, report.tJunctions);
+  EXPECT_EQ(0, report.nonManifoldElements);
+  EXPECT_EQ(0, report.degenerateElements);
+}
+
+TEST(PureQuadCompletionPhase18,
+     MilestoneECylinderStitchesPeriodicPatchBoundaries) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  const auto patches = completed_cylinder_patches(vertices, faces);
+  ASSERT_EQ(8U, patches.size());
+
+  const auto assembly =
+      directional::geometry::stitch_pure_quad_patches(patches);
+
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+  EXPECT_EQ(1, assembly.connectedComponents);
+  EXPECT_EQ(2, assembly.boundaryLoopCount);
+  EXPECT_EQ(0, assembly.eulerCharacteristic);
+  EXPECT_EQ(8U, assembly.mesh.quads.size());
+  EXPECT_EQ(16U, assembly.mesh.vertices.size());
+  EXPECT_GT(assembly.mergedBoundaryVertices, 0);
+  const auto report = directional::geometry::validate_pure_quad_completion(
+      assembly.mesh);
+  EXPECT_TRUE(report.pureQuads);
+  EXPECT_EQ(0, report.tJunctions);
+  EXPECT_EQ(0, report.nonManifoldElements);
+  EXPECT_EQ(0, report.degenerateElements);
+}
+
+TEST(PureQuadCompletionPhase18,
+     StitchingRejectsInconsistentSharedBoundaryGeometry) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto shared = std::find(patches[1].vertices.begin(),
+                                patches[1].vertices.end(), 1);
+  ASSERT_NE(shared, patches[1].vertices.end());
+  const int row =
+      static_cast<int>(std::distance(patches[1].vertices.begin(), shared));
+  patches[1].vertexPositions(row, 0) += 0.25;
+
+  const auto assembly =
+      directional::geometry::stitch_pure_quad_patches(patches);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InconsistentSharedBoundaryPosition", assembly.failure);
 }

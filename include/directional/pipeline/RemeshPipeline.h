@@ -2473,84 +2473,51 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
     const auto completionStart = Clock::now();
     std::size_t completedQuadCount = 0U;
-    Eigen::MatrixXd completedVertices;
-    Eigen::MatrixXi completedQuads;
+    Eigen::MatrixXd completedVertices(0, 3);
+    Eigen::MatrixXi completedQuads(0, 4);
     std::vector<geometry::SurfacePoint> completedProvenance;
     std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
     std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
     const geometry::SurfaceCellComplex &completionComplex =
         simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
-    geometry::PatchDescriptorOptions patchDescriptorOptions;
-    patchDescriptorOptions.singularCycles =
+    geometry::SurfaceCellComplexCompletionOptions completionOptions;
+    completionOptions.descriptorOptions.singularCycles =
         result.surfaceCellContext.crossField.singularCycles;
-    patchDescriptorOptions.singularIndices =
+    completionOptions.descriptorOptions.singularIndices =
         result.surfaceCellContext.crossField.singularIndices;
-    geometry::PatchDescriptorSet patchDescriptors =
-        geometry::derive_patch_descriptors(completionComplex, meshWhole.V,
-                                           meshWhole.F,
-                                           patchDescriptorOptions);
-    result.surfaceCellContext.patchDescriptors = patchDescriptors.descriptors;
+    if (result.surfaceCellContext.hasTraceNetwork) {
+      completionOptions.sourceFaceComponents =
+          &result.surfaceCellContext.traceNetwork.sourceFaceComponents;
+      completionOptions.sourceFaceSheets =
+          &result.surfaceCellContext.traceNetwork.sourceFaceSheets;
+    }
+    const geometry::SurfaceCellComplexCompletionResult completionResult =
+        geometry::complete_surface_cell_complex(
+            completionComplex, meshWhole.V, meshWhole.F, completionOptions);
+    result.surfaceCellContext.patchDescriptors =
+        completionResult.descriptors.descriptors;
     result.surfaceCellContext.hasPatchDescriptors =
-        !patchDescriptors.descriptors.empty();
-    for (const geometry::PatchDescriptor &descriptor :
-         patchDescriptors.descriptors) {
-      if (!descriptor.boundaryCycleValid ||
-          !descriptor.feasibility.admissible) {
-        continue;
-      }
-      geometry::PureQuadCompletionOptions completionOptions;
-      completionOptions.sourcePatch = descriptor.cellId;
-      const geometry::PureQuadCompletionResult completion =
-          geometry::complete_pure_quad_patch(descriptor.patch, completionOptions);
-      if (!completion.success || completion.mesh.quads.empty()) {
-        continue;
-      }
-      const int vertexOffset = static_cast<int>(completedVertices.rows());
-      const int oldVertexRows = static_cast<int>(completedVertices.rows());
-      completedVertices.conservativeResize(
-          oldVertexRows + completion.mesh.vertexPositions.rows(), 3);
-      completedVertices.block(oldVertexRows, 0,
-                              completion.mesh.vertexPositions.rows(), 3) =
-          completion.mesh.vertexPositions;
-      completedProvenance.insert(completedProvenance.end(),
-                                 completion.mesh.vertexProvenance.begin(),
-                                 completion.mesh.vertexProvenance.end());
-      for (const geometry::PureQuadVertexLineage &localLineage :
-           completion.mesh.vertexLineage) {
-        geometry::PureQuadVertexLineage lineage = localLineage;
-        const auto localIt = std::find(completion.mesh.vertices.begin(),
-                                       completion.mesh.vertices.end(),
-                                       localLineage.outputVertex);
-        if (localIt != completion.mesh.vertices.end()) {
-          lineage.outputVertex = vertexOffset + static_cast<int>(
-              std::distance(completion.mesh.vertices.begin(), localIt));
-        }
-        completedVertexLineage.push_back(std::move(lineage));
-      }
-      const int oldQuadRows = static_cast<int>(completedQuads.rows());
-      completedQuads.conservativeResize(
-          oldQuadRows + static_cast<int>(completion.mesh.quads.size()), 4);
-      std::map<int, int> vertexToRow;
-      for (int row = 0; row < static_cast<int>(completion.mesh.vertices.size());
-           ++row) {
-        vertexToRow[completion.mesh.vertices[static_cast<std::size_t>(row)]] =
-            vertexOffset + row;
-      }
-      for (int q = 0; q < static_cast<int>(completion.mesh.quads.size()); ++q) {
+        !completionResult.descriptors.descriptors.empty();
+    result.surfaceCellContext.completedPatches =
+        completionResult.completedPatches;
+
+    geometry::PureQuadMesh aggregateLineageMesh;
+    if (completionResult.success) {
+      aggregateLineageMesh = completionResult.assembly.mesh;
+      completedVertices = aggregateLineageMesh.vertexPositions;
+      completedProvenance = aggregateLineageMesh.vertexProvenance;
+      completedVertexLineage = aggregateLineageMesh.vertexLineage;
+      completedQuadLineage = aggregateLineageMesh.quadLineage;
+      completedQuads.resize(
+          static_cast<int>(aggregateLineageMesh.quads.size()), 4);
+      for (int q = 0; q < completedQuads.rows(); ++q) {
         for (int c = 0; c < 4; ++c) {
-          completedQuads(oldQuadRows + q, c) =
-              vertexToRow[completion.mesh.quads[static_cast<std::size_t>(q)]
-                                    [static_cast<std::size_t>(c)]];
+          completedQuads(q, c) =
+              aggregateLineageMesh.quads[static_cast<std::size_t>(q)]
+                                            [static_cast<std::size_t>(c)];
         }
       }
-      for (const geometry::PureQuadFaceLineage &localLineage :
-           completion.mesh.quadLineage) {
-        geometry::PureQuadFaceLineage lineage = localLineage;
-        lineage.outputQuad = oldQuadRows + localLineage.outputQuad;
-        completedQuadLineage.push_back(std::move(lineage));
-      }
-      completedQuadCount += completion.mesh.quads.size();
-      result.surfaceCellContext.completedPatches.push_back(completion.mesh);
+      completedQuadCount = aggregateLineageMesh.quads.size();
     }
 
     result.diagnostics.surfaceCellCompletionSeconds =
@@ -2565,19 +2532,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.completedProvenance = completedProvenance;
     result.surfaceCellContext.completedVertexLineage = completedVertexLineage;
     result.surfaceCellContext.completedQuadLineage = completedQuadLineage;
-    geometry::PureQuadMesh aggregateLineageMesh;
-    aggregateLineageMesh.sourcePatch = completedQuadLineage.empty()
-                                           ? -1
-                                           : completedQuadLineage.front().sourcePatch;
-    aggregateLineageMesh.vertices.resize(static_cast<std::size_t>(completedVertices.rows()));
-    std::iota(aggregateLineageMesh.vertices.begin(), aggregateLineageMesh.vertices.end(), 0);
-    aggregateLineageMesh.vertexProvenance = completedProvenance;
-    aggregateLineageMesh.vertexLineage = completedVertexLineage;
-    aggregateLineageMesh.quadLineage = completedQuadLineage;
-    aggregateLineageMesh.quads.reserve(static_cast<std::size_t>(completedQuads.rows()));
-    for (int q = 0; q < completedQuads.rows(); ++q) {
-      aggregateLineageMesh.quads.push_back({completedQuads(q,0), completedQuads(q,1), completedQuads(q,2), completedQuads(q,3)});
-    }
     // Aggregate quads may originate from different patches, so validate each
     // lineage record independently. Geometric coincidence with paired source
     // triangles is always detected, but it is rejected only when the explicit

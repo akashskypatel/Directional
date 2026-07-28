@@ -15,6 +15,7 @@
 #include <map>
 #include <numeric>
 #include <set>
+#include <string>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -57,6 +58,24 @@ struct PatchDescriptorSet {
   std::vector<PatchDescriptor> descriptors;
   int feasible = 0;
   int rejected = 0;
+};
+
+struct SurfaceCellComplexCompletionOptions {
+  PatchDescriptorOptions descriptorOptions;
+  int maxBoundaryEdges = 128;
+  bool allowBoundedCombinatorialFallback = true;
+  const std::vector<int> *sourceFaceComponents = nullptr;
+  const std::vector<int> *sourceFaceSheets = nullptr;
+};
+
+struct SurfaceCellComplexCompletionResult {
+  bool success = false;
+  PatchDescriptorSet descriptors;
+  std::vector<PureQuadMesh> completedPatches;
+  PureQuadAssemblyResult assembly;
+  int attemptedPatches = 0;
+  int failedPatches = 0;
+  std::string failure;
 };
 
 namespace patch_descriptor_detail {
@@ -271,6 +290,10 @@ inline PatchDescriptor derive_patch_descriptor(
   PureQuadPatch &patch = descriptor.patch;
   patch.diskTopology = cell.disk && cell.eulerCharacteristic == 1;
   patch.boundaryLoopCount = cell.boundaryComponentCount;
+  patch.sourceFaces = cell.sourceFaces;
+  if (patch.sourceFaces.empty() && cell.sourceFace >= 0) {
+    patch.sourceFaces.push_back(cell.sourceFace);
+  }
   patch.simple = true;
 
   std::vector<int> boundary;
@@ -353,6 +376,12 @@ inline PatchDescriptorSet derive_patch_descriptors(
   PatchDescriptorSet result;
   result.descriptors.reserve(complex.cells.size());
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    // Exterior DCEL cycles describe the unbounded side of each connected
+    // arrangement component. They are not authoritative surface patches and
+    // must not participate in completion completeness checks.
+    if (cell.cellClass == SurfaceArrangementCellClass::Exterior) {
+      continue;
+    }
     PatchDescriptor descriptor =
         derive_patch_descriptor(complex, cell, V, F, options);
     if (descriptor.feasibility.admissible) {
@@ -361,6 +390,56 @@ inline PatchDescriptorSet derive_patch_descriptors(
       ++result.rejected;
     }
     result.descriptors.push_back(std::move(descriptor));
+  }
+  return result;
+}
+
+inline SurfaceCellComplexCompletionResult complete_surface_cell_complex(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F,
+    const SurfaceCellComplexCompletionOptions &options = {}) {
+  SurfaceCellComplexCompletionResult result;
+  result.descriptors = derive_patch_descriptors(
+      complex, V, F, options.descriptorOptions);
+  if (result.descriptors.descriptors.empty()) {
+    result.failure = "NoPatchDescriptors";
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  for (const PatchDescriptor &descriptor : result.descriptors.descriptors) {
+    if (!descriptor.boundaryCycleValid ||
+        !descriptor.feasibility.admissible) {
+      ++result.failedPatches;
+      continue;
+    }
+    ++result.attemptedPatches;
+    PureQuadCompletionOptions completionOptions;
+    completionOptions.sourcePatch = descriptor.cellId;
+    completionOptions.maxBoundaryEdges = options.maxBoundaryEdges;
+    completionOptions.allowBoundedCombinatorialFallback =
+        options.allowBoundedCombinatorialFallback;
+    completionOptions.sourceVertices = &V;
+    completionOptions.sourceFaces = &F;
+    completionOptions.sourceFaceComponents = options.sourceFaceComponents;
+    completionOptions.sourceFaceSheets = options.sourceFaceSheets;
+    const PureQuadCompletionResult completion =
+        complete_pure_quad_patch(descriptor.patch, completionOptions);
+    if (!completion.success || completion.mesh.quads.empty()) {
+      ++result.failedPatches;
+      continue;
+    }
+    result.completedPatches.push_back(completion.mesh);
+  }
+  if (result.failedPatches != 0 ||
+      result.completedPatches.size() != result.descriptors.descriptors.size()) {
+    result.failure = "IncompleteSurfaceCellComplex";
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  result.assembly = stitch_pure_quad_patches(result.completedPatches);
+  result.success = result.assembly.success;
+  if (!result.success) {
+    result.failure = result.assembly.failure;
   }
   return result;
 }
