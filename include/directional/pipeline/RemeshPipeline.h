@@ -40,6 +40,7 @@
 #include <directional/geometry/AdaptiveFeatureMap.h>
 #include <directional/geometry/AdaptiveTargetSize.h>
 #include <directional/geometry/FlowRepStrands.h>
+#include <directional/geometry/PatchDescriptor.h>
 #include <directional/geometry/PureQuadCompletion.h>
 #include <directional/geometry/ReliefTopology.h>
 #include <directional/geometry/SurfaceArrangement.h>
@@ -409,6 +410,9 @@ struct SurfaceCellPipelineContext {
 
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
+
+  std::vector<geometry::PatchDescriptor> patchDescriptors;
+  bool hasPatchDescriptors = false;
 
   std::vector<geometry::PureQuadMesh> completedPatches;
   Eigen::MatrixXd completedVertices;
@@ -2464,67 +2468,26 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     std::vector<geometry::SurfacePoint> completedProvenance;
     const geometry::SurfaceCellComplex &completionComplex =
         simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
-    for (const geometry::SurfaceArrangementCell &cell : completionComplex.cells) {
-      if (!cell.quadReady || cell.halfedges.empty() ||
-          cell.sideEdgeCounts.size() != 4U) {
-        continue;
-      }
-      geometry::PureQuadPatch patch;
-      patch.sideEdgeCounts = cell.sideEdgeCounts;
-      patch.turns.assign(patch.sideEdgeCounts.size(), 0);
-      patch.diskTopology = cell.disk;
-      patch.hardFeatureCrossing =
-          completionComplex.diagnostics.hardBarrierCrossings > 0;
-      patch.simple = true;
-      for (const int halfedgeId : cell.halfedges) {
-        if (halfedgeId < 0 ||
-            halfedgeId >= static_cast<int>(completionComplex.halfedges.size())) {
-          continue;
-        }
-        const geometry::SurfaceArrangementHalfedge &halfedge =
-            completionComplex.halfedges[static_cast<std::size_t>(halfedgeId)];
-        if (halfedge.from < 0 ||
-            halfedge.from >= static_cast<int>(completionComplex.nodes.size())) {
-          continue;
-        }
-        const geometry::SurfaceArrangementNode &node =
-            completionComplex.nodes[static_cast<std::size_t>(halfedge.from)];
-        patch.boundaryVertices.push_back(node.id);
-        patch.boundaryRailIds.push_back(halfedge.railId);
-        patch.boundaryCurveIds.push_back(halfedge.curveId);
-        geometry::SurfacePoint point;
-        point.face = node.sourceFace;
-        point.barycentric = node.barycentric.transpose();
-        if (point.face >= 0 && point.face < meshWhole.F.rows()) {
-          if (point.face <
-              static_cast<int>(result.surfaceCellContext.sourceSurfaceLabels
-                                   .componentByFace.size())) {
-            point.component = result.surfaceCellContext.sourceSurfaceLabels
-                                  .componentByFace[static_cast<std::size_t>(
-                                      point.face)];
-          }
-          if (point.face <
-              static_cast<int>(result.surfaceCellContext.sourceSurfaceLabels
-                                   .localSheetByFace.size())) {
-            point.sheet = result.surfaceCellContext.sourceSurfaceLabels
-                              .localSheetByFace[static_cast<std::size_t>(
-                                  point.face)];
-          }
-          point.position =
-              point.barycentric(0) * meshWhole.V.row(meshWhole.F(point.face, 0)).transpose() +
-              point.barycentric(1) * meshWhole.V.row(meshWhole.F(point.face, 1)).transpose() +
-              point.barycentric(2) * meshWhole.V.row(meshWhole.F(point.face, 2)).transpose();
-          point.squaredDistance = 0.0;
-        }
-        patch.boundaryProvenance.push_back(point);
-      }
-      const int expectedBoundary = std::accumulate(
-          patch.sideEdgeCounts.begin(), patch.sideEdgeCounts.end(), 0);
-      if (static_cast<int>(patch.boundaryVertices.size()) != expectedBoundary) {
+    geometry::PatchDescriptorOptions patchDescriptorOptions;
+    patchDescriptorOptions.singularCycles =
+        result.surfaceCellContext.crossField.singularCycles;
+    patchDescriptorOptions.singularIndices =
+        result.surfaceCellContext.crossField.singularIndices;
+    geometry::PatchDescriptorSet patchDescriptors =
+        geometry::derive_patch_descriptors(completionComplex, meshWhole.V,
+                                           meshWhole.F,
+                                           patchDescriptorOptions);
+    result.surfaceCellContext.patchDescriptors = patchDescriptors.descriptors;
+    result.surfaceCellContext.hasPatchDescriptors =
+        !patchDescriptors.descriptors.empty();
+    for (const geometry::PatchDescriptor &descriptor :
+         patchDescriptors.descriptors) {
+      if (!descriptor.boundaryCycleValid ||
+          !descriptor.feasibility.admissible) {
         continue;
       }
       const geometry::PureQuadCompletionResult completion =
-          geometry::complete_pure_quad_patch(patch);
+          geometry::complete_pure_quad_patch(descriptor.patch);
       if (!completion.success || completion.mesh.quads.empty()) {
         continue;
       }

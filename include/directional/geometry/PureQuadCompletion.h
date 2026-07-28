@@ -413,6 +413,12 @@ check_pure_quad_patch_admissibility(const PureQuadPatch &patch) {
     result.reason = PureQuadPatchRejectReason::SingularityMismatch;
     return result;
   }
+  if ((sides == 3 || sides == 5 || sides == 6) &&
+      patch.singularityCount == 1 &&
+      result.expectedInteriorValence != sides) {
+    result.reason = PureQuadPatchRejectReason::SingularityMismatch;
+    return result;
+  }
   result.admissible = true;
   result.reason = PureQuadPatchRejectReason::None;
   return result;

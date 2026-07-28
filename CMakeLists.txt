@@ -255,6 +255,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/MilestoneCClosureTests.cpp
     tests/MilestoneDClosureTests.cpp
     tests/ParametrizationQualityTests.cpp
+    tests/PatchDescriptorMilestoneETests.cpp
     tests/PatchQuadrangulatorTests.cpp
     tests/PureQuadCompletionPhase18Tests.cpp
     tests/RemeshRegressionTests.cpp
@@ -340,6 +341,30 @@ if(DIRECTIONAL_BUILD_TESTS)
       VERBATIM)
   endif()
 
+
+  add_executable(
+    directional_milestone_e_tests
+    tests/PatchDescriptorMilestoneETests.cpp
+    tests/PureQuadCompletionPhase18Tests.cpp)
+  target_link_libraries(
+    directional_milestone_e_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_milestone_e_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_e_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    add_custom_command(
+      TARGET directional_milestone_e_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_e_tests>
+        $<TARGET_FILE_DIR:directional_milestone_e_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
   add_executable(
     directional_milestone_d_benchmark
     tests/MilestoneDBenchmark.cpp)
@@ -388,6 +413,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   gtest_discover_tests(directional_phase1_tests)
   gtest_discover_tests(directional_milestone_c_tests)
   gtest_discover_tests(directional_milestone_d_tests)
+  gtest_discover_tests(directional_milestone_e_tests)
 endif()
 
 if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
