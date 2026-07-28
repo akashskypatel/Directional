@@ -351,3 +351,167 @@ TEST(SurfaceArrangementPhase16, MemoryRatioAndOverlayChannelsAreBounded) {
   EXPECT_EQ(overlay.cellClass.size(), static_cast<int>(complex.cells.size()));
   EXPECT_EQ(overlay.sliverCycle.size(), static_cast<int>(complex.cells.size()));
 }
+
+TEST(SurfaceArrangementPhase16,
+     SharedSourceEdgeUsesOrientationCorrectedCanonicalParameters) {
+  const auto fixture = unit_square_two_triangles();
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_face_arc(10, 0, {0.0, 0.25, 0.75}, {0.0, 0.75, 0.25}, 0),
+      make_face_arc(11, 1, {0.25, 0.0, 0.75}, {0.75, 0.0, 0.25}, 0)};
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  std::vector<double> seamParameters;
+  for (const auto &node : complex.nodes) {
+    if (node.sourceEdge >= 0 && node.occurrences.size() == 2U) {
+      seamParameters.push_back(node.sourceEdgeParameter);
+      EXPECT_EQ(node.occurrences[0].sourceFace, 0);
+      EXPECT_EQ(node.occurrences[1].sourceFace, 1);
+    }
+  }
+  std::sort(seamParameters.begin(), seamParameters.end());
+  ASSERT_EQ(seamParameters.size(), 2U);
+  EXPECT_NEAR(seamParameters[0], 0.25, 1.0e-10);
+  EXPECT_NEAR(seamParameters[1], 0.75, 1.0e-10);
+}
+
+TEST(SurfaceArrangementPhase16,
+     CoincidentSharedEdgeSegmentsMergeAndPreserveAllProvenance) {
+  const auto fixture = unit_square_two_triangles();
+  auto first = make_face_arc(20, 0, {0.0, 0.25, 0.75},
+                             {0.0, 0.75, 0.25}, 0, true);
+  first.strand = 31;
+  first.provenance = 41;
+  first.railId = 51;
+  first.curveId = 61;
+  first.sourceComponent = 2;
+  first.sourceSheet = 3;
+  first.proposalId = 71;
+  first.proposalSeedId = 81;
+  first.proposalSide = 1;
+  first.proposalBoundarySegment = 91;
+
+  auto second = make_face_arc(21, 1, {0.25, 0.0, 0.75},
+                              {0.75, 0.0, 0.25}, 1, false);
+  second.strand = 32;
+  second.provenance = 42;
+  second.railId = 52;
+  second.curveId = 62;
+  second.sourceComponent = 2;
+  second.sourceSheet = 3;
+  second.proposalId = 72;
+  second.proposalSeedId = 82;
+  second.proposalSide = 2;
+  second.proposalBoundarySegment = 92;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second});
+
+  int stitchedUndirectedEdges = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id >= halfedge.twin) {
+      continue;
+    }
+    const auto &from = complex.nodes[static_cast<std::size_t>(halfedge.from)];
+    const auto &to = complex.nodes[static_cast<std::size_t>(halfedge.to)];
+    if (from.occurrences.size() != 2U || to.occurrences.size() != 2U) {
+      continue;
+    }
+    ++stitchedUndirectedEdges;
+    ASSERT_EQ(halfedge.provenance.size(), 2U);
+    std::set<int> sourceArcs;
+    std::set<int> sourceFaces;
+    std::set<int> strands;
+    std::set<int> provenances;
+    std::set<int> railIds;
+    std::set<int> curveIds;
+    std::set<int> proposalIds;
+    for (const auto &value : halfedge.provenance) {
+      sourceArcs.insert(value.sourceArc);
+      sourceFaces.insert(value.sourceFace);
+      strands.insert(value.strand);
+      provenances.insert(value.provenance);
+      railIds.insert(value.railId);
+      curveIds.insert(value.curveId);
+      proposalIds.insert(value.proposalId);
+      EXPECT_EQ(value.sourceComponent, 2);
+      EXPECT_EQ(value.sourceSheet, 3);
+    }
+    EXPECT_EQ(sourceArcs, (std::set<int>{20, 21}));
+    EXPECT_EQ(sourceFaces, (std::set<int>{0, 1}));
+    EXPECT_EQ(strands, (std::set<int>{31, 32}));
+    EXPECT_EQ(provenances, (std::set<int>{41, 42}));
+    EXPECT_EQ(railIds, (std::set<int>{51, 52}));
+    EXPECT_EQ(curveIds, (std::set<int>{61, 62}));
+    EXPECT_EQ(proposalIds, (std::set<int>{71, 72}));
+    EXPECT_TRUE(halfedge.hardFeature);
+  }
+  EXPECT_EQ(stitchedUndirectedEdges, 1);
+  EXPECT_EQ(complex.diagnostics.incompleteArcChains, 0);
+}
+
+TEST(SurfaceArrangementPhase16,
+     SharedSourceVertexUsesOneGlobalNodeWithAllFaceOccurrences) {
+  TriangleFixture fixture;
+  fixture.vertices.resize(5, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                     -1.0, 0.0, 0.0,
+                      0.0,-1.0, 0.0;
+  fixture.faces.resize(4, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3,
+                   0, 3, 4,
+                   0, 4, 1;
+
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+  for (int face = 0; face < 4; ++face) {
+    auto arc = make_face_arc(100 + face, face, {1.0, 0.0, 0.0},
+                             {0.5, 0.5, 0.0}, face % 2);
+    arc.provenance = 200 + face;
+    arcs.push_back(arc);
+  }
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  int matchingNodes = 0;
+  for (const auto &node : complex.nodes) {
+    if ((fixture.vertices.row(0) -
+         (node.barycentric[0] * fixture.vertices.row(node.sourceFace >= 0 ? fixture.faces(node.sourceFace, 0) : 0) +
+          node.barycentric[1] * fixture.vertices.row(node.sourceFace >= 0 ? fixture.faces(node.sourceFace, 1) : 0) +
+          node.barycentric[2] * fixture.vertices.row(node.sourceFace >= 0 ? fixture.faces(node.sourceFace, 2) : 0))).norm() < 1.0e-10) {
+      ++matchingNodes;
+      EXPECT_EQ(node.occurrences.size(), 4U);
+      std::set<int> faces;
+      for (const auto &occurrence : node.occurrences) {
+        faces.insert(occurrence.sourceFace);
+      }
+      EXPECT_EQ(faces, (std::set<int>{0, 1, 2, 3}));
+    }
+  }
+  EXPECT_EQ(matchingNodes, 1);
+}
+
+TEST(SurfaceArrangementPhase16,
+     FaceInteriorKeysSanitizeSubToleranceBarycentricNoise) {
+  const auto fixture = unit_triangle();
+  auto first = make_arc(300, {0.2, 0.3, 0.5}, {0.4, 0.3, 0.3}, 0);
+  auto second = make_arc(301, {0.2 + 2.0e-12, 0.3 - 1.0e-12,
+                               0.5 - 1.0e-12},
+                         {0.1, 0.4, 0.5}, 1);
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second});
+
+  int matching = 0;
+  for (const auto &node : complex.nodes) {
+    if ((node.barycentric - Eigen::RowVector3d(0.2, 0.3, 0.5)).norm() <
+        1.0e-9) {
+      ++matching;
+    }
+  }
+  EXPECT_EQ(matching, 1);
+}

@@ -72,12 +72,40 @@ struct SurfaceArrangementArc {
   double railT1 = 1.0;
 };
 
+struct SurfaceArrangementNodeOccurrence {
+  int sourceFace = -1;
+  Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+};
+
+struct SurfaceArrangementProvenance {
+  int sourceArc = -1;
+  int provenance = -1;
+  int sourceFace = -1;
+  int family = -1;
+  int strand = -1;
+  int featureClass = 0;
+  bool hardFeature = false;
+  int railId = -1;
+  int curveId = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  int proposalId = -1;
+  int proposalSeedId = -1;
+  int proposalSide = -1;
+  int proposalBoundarySegment = -1;
+  double sourceT0 = 0.0;
+  double sourceT1 = 1.0;
+  double railT0 = 0.0;
+  double railT1 = 1.0;
+};
+
 struct SurfaceArrangementNode {
   int id = -1;
   int sourceFace = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
   int sourceEdge = -1;
   double sourceEdgeParameter = 0.0;
+  std::vector<SurfaceArrangementNodeOccurrence> occurrences;
 };
 
 struct SurfaceArrangementHalfedge {
@@ -97,8 +125,14 @@ struct SurfaceArrangementHalfedge {
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;
+  int sourceSheet = -1;
+  int proposalId = -1;
+  int proposalSeedId = -1;
+  int proposalSide = -1;
+  int proposalBoundarySegment = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
+  std::vector<SurfaceArrangementProvenance> provenance;
   int cell = -1;
 };
 
@@ -157,6 +191,7 @@ namespace surface_arrangement_detail {
 
 struct Segment2 {
   int sourceArc = -1;
+  int provenance = -1;
   int sourceFace = -1;
   Eigen::Vector2d start = Eigen::Vector2d::Zero();
   Eigen::Vector2d end = Eigen::Vector2d::Zero();
@@ -167,6 +202,11 @@ struct Segment2 {
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;
+  int sourceSheet = -1;
+  int proposalId = -1;
+  int proposalSeedId = -1;
+  int proposalSide = -1;
+  int proposalBoundarySegment = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
   double sourceT0 = 0.0;
@@ -220,8 +260,25 @@ inline int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10) {
   return -1;
 }
 
-inline double edge_parameter(const Eigen::Vector2d &uv, const int edge) {
-  const Eigen::RowVector3d b = uv_to_bary(uv);
+inline Eigen::RowVector3d canonicalize_barycentric(
+    const Eigen::RowVector3d &input, const double eps = 1.0e-10) {
+  Eigen::RowVector3d result = input;
+  for (int i = 0; i < 3; ++i) {
+    if (std::abs(result[i]) <= eps) {
+      result[i] = 0.0;
+    } else if (std::abs(result[i] - 1.0) <= eps) {
+      result[i] = 1.0;
+    }
+  }
+  const double sum = result.sum();
+  if (std::abs(sum) > 1.0e-20) {
+    result /= sum;
+  }
+  return result;
+}
+
+inline double local_edge_parameter(const Eigen::Vector2d &uv, const int edge) {
+  const Eigen::RowVector3d b = canonicalize_barycentric(uv_to_bary(uv));
   if (edge == 0) {
     const double denom = std::max(1.0e-20, b[1] + b[2]);
     return b[2] / denom;
@@ -237,6 +294,15 @@ inline double edge_parameter(const Eigen::Vector2d &uv, const int edge) {
   return 0.0;
 }
 
+inline double canonical_edge_parameter(const Eigen::MatrixXi &faces,
+                                       const int face, const int edge,
+                                       const Eigen::Vector2d &uv) {
+  const int localStart = faces(face, (edge + 1) % 3);
+  const int localEnd = faces(face, (edge + 2) % 3);
+  const double local = local_edge_parameter(uv, edge);
+  return localStart <= localEnd ? local : 1.0 - local;
+}
+
 inline std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
                                      const int face, const int edge) {
   const int a = faces(face, (edge + 1) % 3);
@@ -246,8 +312,9 @@ inline std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
 
 inline int source_vertex(const Eigen::RowVector3d &bary,
                          const double eps = 1.0e-10) {
+  const Eigen::RowVector3d canonical = canonicalize_barycentric(bary, eps);
   for (int i = 0; i < 3; ++i) {
-    if (bary[i] >= 1.0 - eps) {
+    if (canonical[i] >= 1.0 - eps) {
       return i;
     }
   }
@@ -256,9 +323,11 @@ inline int source_vertex(const Eigen::RowVector3d &bary,
 
 inline NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
                              const Eigen::Vector2d &uv) {
-  const int edge = source_edge(uv);
-  const double t = edge >= 0 ? edge_parameter(uv, edge) : -1.0;
-  const Eigen::RowVector3d bary = uv_to_bary(uv);
+  const Eigen::RowVector3d bary = canonicalize_barycentric(uv_to_bary(uv));
+  const Eigen::Vector2d canonicalUv = bary_to_uv(bary);
+  const int edge = source_edge(canonicalUv);
+  const double t =
+      edge >= 0 ? canonical_edge_parameter(faces, face, edge, canonicalUv) : -1.0;
   const int vertexCorner = source_vertex(bary);
   if (vertexCorner >= 0) {
     return {0, -1, -1, -1, faces(face, vertexCorner), 0, 0};
@@ -278,8 +347,10 @@ inline NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
           -1,
           -1,
           -1,
-          static_cast<std::int64_t>(std::llround(uv.x() * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(uv.y() * 1.0e10))};
+          static_cast<std::int64_t>(
+              std::llround(canonicalUv.x() * 1.0e10)),
+          static_cast<std::int64_t>(
+              std::llround(canonicalUv.y() * 1.0e10))};
 }
 
 inline int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
@@ -437,6 +508,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
     }
     Segment2 segment;
     segment.sourceArc = arc.id;
+    segment.provenance = arc.provenance;
     segment.sourceFace = arc.sourceFace;
     segment.start = bary_to_uv(arc.startBarycentric);
     segment.end = bary_to_uv(arc.endBarycentric);
@@ -447,6 +519,11 @@ inline SurfaceCellComplex build_surface_cell_complex(
     segment.railId = arc.railId;
     segment.curveId = arc.curveId;
     segment.sourceComponent = arc.sourceComponent;
+    segment.sourceSheet = arc.sourceSheet;
+    segment.proposalId = arc.proposalId;
+    segment.proposalSeedId = arc.proposalSeedId;
+    segment.proposalSide = arc.proposalSide;
+    segment.proposalBoundarySegment = arc.proposalBoundarySegment;
     segment.railT0 = arc.railT0;
     segment.railT1 = arc.railT1;
     if (clip_to_triangle(segment.start, segment.end, segment.sourceT0,
@@ -519,26 +596,104 @@ inline SurfaceCellComplex build_surface_cell_complex(
       static_cast<int>(intersectionKeys.size());
 
   std::map<NodeKey, int> nodeByKey;
-  const auto node_id = [&](const int face, const Eigen::Vector2d &uv) {
+  const auto node_id = [&](const int face, const Eigen::Vector2d &rawUv) {
+    const Eigen::RowVector3d bary =
+        canonicalize_barycentric(uv_to_bary(rawUv));
+    const Eigen::Vector2d uv = bary_to_uv(bary);
     const NodeKey key = make_node_key(faces, face, uv);
     auto found = nodeByKey.find(key);
     if (found != nodeByKey.end()) {
+      SurfaceArrangementNode &node =
+          complex.nodes[static_cast<std::size_t>(found->second)];
+      const bool occurrenceExists =
+          std::any_of(node.occurrences.begin(), node.occurrences.end(),
+                      [&](const SurfaceArrangementNodeOccurrence &occurrence) {
+                        return occurrence.sourceFace == face &&
+                               (occurrence.barycentric - bary).norm() <= 1.0e-12;
+                      });
+      if (!occurrenceExists) {
+        node.occurrences.push_back({face, bary});
+        std::sort(node.occurrences.begin(), node.occurrences.end(),
+                  [](const SurfaceArrangementNodeOccurrence &a,
+                     const SurfaceArrangementNodeOccurrence &b) {
+                    if (a.sourceFace != b.sourceFace) {
+                      return a.sourceFace < b.sourceFace;
+                    }
+                    return std::tie(a.barycentric[0], a.barycentric[1],
+                                    a.barycentric[2]) <
+                           std::tie(b.barycentric[0], b.barycentric[1],
+                                    b.barycentric[2]);
+                  });
+      }
       return found->second;
     }
     SurfaceArrangementNode node;
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
-    node.barycentric = uv_to_bary(uv);
+    node.barycentric = bary;
     node.sourceEdge =
         key.kind == 1 ? static_cast<int>(key.edge & 0x7fffffffu) : -1;
     node.sourceEdgeParameter =
         key.kind == 1 ? static_cast<double>(key.edgeT) / 1.0e10 : 0.0;
+    node.occurrences.push_back({face, bary});
     nodeByKey.emplace(key, node.id);
     complex.nodes.push_back(node);
     return node.id;
   };
 
-  std::set<std::pair<int, int>> edgeSet;
+  std::map<std::pair<int, int>, int> halfedgeByUndirectedNodes;
+  const auto append_provenance =
+      [](SurfaceArrangementHalfedge &halfedge, const Segment2 &segment,
+         const double sourceT0, const double sourceT1, const double railT0,
+         const double railT1) {
+        SurfaceArrangementProvenance value;
+        value.sourceArc = segment.sourceArc;
+        value.provenance = segment.provenance;
+        value.sourceFace = segment.sourceFace;
+        value.family = segment.family;
+        value.strand = segment.strand;
+        value.featureClass = segment.featureClass;
+        value.hardFeature = segment.hardFeature;
+        value.railId = segment.railId;
+        value.curveId = segment.curveId;
+        value.sourceComponent = segment.sourceComponent;
+        value.sourceSheet = segment.sourceSheet;
+        value.proposalId = segment.proposalId;
+        value.proposalSeedId = segment.proposalSeedId;
+        value.proposalSide = segment.proposalSide;
+        value.proposalBoundarySegment = segment.proposalBoundarySegment;
+        value.sourceT0 = sourceT0;
+        value.sourceT1 = sourceT1;
+        value.railT0 = railT0;
+        value.railT1 = railT1;
+        const auto same = [&](const SurfaceArrangementProvenance &existing) {
+          return existing.sourceArc == value.sourceArc &&
+                 existing.provenance == value.provenance &&
+                 existing.sourceFace == value.sourceFace &&
+                 existing.family == value.family &&
+                 existing.strand == value.strand &&
+                 existing.featureClass == value.featureClass &&
+                 existing.hardFeature == value.hardFeature &&
+                 existing.railId == value.railId &&
+                 existing.curveId == value.curveId &&
+                 existing.sourceComponent == value.sourceComponent &&
+                 existing.sourceSheet == value.sourceSheet &&
+                 existing.proposalId == value.proposalId &&
+                 existing.proposalSeedId == value.proposalSeedId &&
+                 existing.proposalSide == value.proposalSide &&
+                 existing.proposalBoundarySegment ==
+                     value.proposalBoundarySegment &&
+                 std::abs(existing.sourceT0 - value.sourceT0) <= 1.0e-12 &&
+                 std::abs(existing.sourceT1 - value.sourceT1) <= 1.0e-12 &&
+                 std::abs(existing.railT0 - value.railT0) <= 1.0e-12 &&
+                 std::abs(existing.railT1 - value.railT1) <= 1.0e-12;
+        };
+        if (std::none_of(halfedge.provenance.begin(), halfedge.provenance.end(),
+                         same)) {
+          halfedge.provenance.push_back(value);
+        }
+      };
+
   for (int segmentIndex = 0; segmentIndex < static_cast<int>(segments.size());
        ++segmentIndex) {
     auto &params = splitParams[static_cast<std::size_t>(segmentIndex)];
@@ -554,43 +709,108 @@ inline SurfaceCellComplex build_surface_cell_complex(
       if (t1 - t0 <= 1.0e-12) {
         continue;
       }
-      const Eigen::Vector2d p0 = segment.start + t0 * (segment.end - segment.start);
-      const Eigen::Vector2d p1 = segment.start + t1 * (segment.end - segment.start);
+      const Eigen::Vector2d p0 =
+          segment.start + t0 * (segment.end - segment.start);
+      const Eigen::Vector2d p1 =
+          segment.start + t1 * (segment.end - segment.start);
       const int a = node_id(segment.sourceFace, p0);
       const int b = node_id(segment.sourceFace, p1);
-      if (a == b || !edgeSet.insert({std::min(a, b), std::max(a, b)}).second) {
+      if (a == b) {
         continue;
       }
-      SurfaceArrangementHalfedge h0;
-      SurfaceArrangementHalfedge h1;
-      h0.id = static_cast<int>(complex.halfedges.size());
-      h1.id = h0.id + 1;
-      h0.twin = h1.id;
-      h1.twin = h0.id;
-      h0.from = a;
-      h0.to = b;
-      h1.from = b;
-      h1.to = a;
-      h0.sourceArc = h1.sourceArc = segment.sourceArc;
-      h0.family = h1.family = segment.family;
-      h0.strand = h1.strand = segment.strand;
-      h0.featureClass = h1.featureClass = segment.featureClass;
-      h0.sourceFace = h1.sourceFace = segment.sourceFace;
-      h0.sourceT0 = segment.sourceT0 + t0 * (segment.sourceT1 - segment.sourceT0);
-      h0.sourceT1 = segment.sourceT0 + t1 * (segment.sourceT1 - segment.sourceT0);
-      h1.sourceT0 = h0.sourceT1;
-      h1.sourceT1 = h0.sourceT0;
-      h0.hardFeature = h1.hardFeature = segment.hardFeature;
-      h0.railId = h1.railId = segment.railId;
-      h0.curveId = h1.curveId = segment.curveId;
-      h0.sourceComponent = h1.sourceComponent = segment.sourceComponent;
-      h0.railT0 = segment.railT0 + t0 * (segment.railT1 - segment.railT0);
-      h0.railT1 = segment.railT0 + t1 * (segment.railT1 - segment.railT0);
-      h1.railT0 = h0.railT1;
-      h1.railT1 = h0.railT0;
-      complex.halfedges.push_back(h0);
-      complex.halfedges.push_back(h1);
+
+      const std::pair<int, int> edgeKey{std::min(a, b), std::max(a, b)};
+      int forwardId = -1;
+      auto foundEdge = halfedgeByUndirectedNodes.find(edgeKey);
+      if (foundEdge == halfedgeByUndirectedNodes.end()) {
+        SurfaceArrangementHalfedge h0;
+        SurfaceArrangementHalfedge h1;
+        h0.id = static_cast<int>(complex.halfedges.size());
+        h1.id = h0.id + 1;
+        h0.twin = h1.id;
+        h1.twin = h0.id;
+        h0.from = a;
+        h0.to = b;
+        h1.from = b;
+        h1.to = a;
+        complex.halfedges.push_back(h0);
+        complex.halfedges.push_back(h1);
+        halfedgeByUndirectedNodes.emplace(edgeKey, h0.id);
+        forwardId = h0.id;
+      } else {
+        const int storedId = foundEdge->second;
+        const SurfaceArrangementHalfedge &stored =
+            complex.halfedges[static_cast<std::size_t>(storedId)];
+        forwardId = stored.from == a && stored.to == b ? storedId : stored.twin;
+      }
+
+      SurfaceArrangementHalfedge &forward =
+          complex.halfedges[static_cast<std::size_t>(forwardId)];
+      SurfaceArrangementHalfedge &reverse =
+          complex.halfedges[static_cast<std::size_t>(forward.twin)];
+      const double source0 =
+          segment.sourceT0 + t0 * (segment.sourceT1 - segment.sourceT0);
+      const double source1 =
+          segment.sourceT0 + t1 * (segment.sourceT1 - segment.sourceT0);
+      const double rail0 =
+          segment.railT0 + t0 * (segment.railT1 - segment.railT0);
+      const double rail1 =
+          segment.railT0 + t1 * (segment.railT1 - segment.railT0);
+      append_provenance(forward, segment, source0, source1, rail0, rail1);
+      append_provenance(reverse, segment, source1, source0, rail1, rail0);
     }
+  }
+
+  for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    std::sort(
+        halfedge.provenance.begin(), halfedge.provenance.end(),
+        [](const SurfaceArrangementProvenance &a,
+           const SurfaceArrangementProvenance &b) {
+          const auto key = [](const SurfaceArrangementProvenance &value) {
+            return std::make_tuple(
+                value.sourceArc >= 0 ? 0 : 1, value.hardFeature ? 0 : 1,
+                value.sourceFace, value.sourceArc, value.provenance,
+                value.family, value.strand, value.featureClass, value.railId,
+                value.curveId, value.sourceComponent, value.sourceSheet,
+                value.proposalId, value.proposalSeedId, value.proposalSide,
+                value.proposalBoundarySegment,
+                static_cast<std::int64_t>(
+                    std::llround(value.sourceT0 * 1.0e10)),
+                static_cast<std::int64_t>(
+                    std::llround(value.sourceT1 * 1.0e10)),
+                static_cast<std::int64_t>(
+                    std::llround(value.railT0 * 1.0e10)),
+                static_cast<std::int64_t>(
+                    std::llround(value.railT1 * 1.0e10)));
+          };
+          return key(a) < key(b);
+        });
+    if (halfedge.provenance.empty()) {
+      continue;
+    }
+    const SurfaceArrangementProvenance &primary = halfedge.provenance.front();
+    halfedge.sourceArc = primary.sourceArc;
+    halfedge.family = primary.family;
+    halfedge.strand = primary.strand;
+    halfedge.featureClass = primary.featureClass;
+    halfedge.sourceFace = primary.sourceFace;
+    halfedge.sourceT0 = primary.sourceT0;
+    halfedge.sourceT1 = primary.sourceT1;
+    halfedge.hardFeature =
+        std::any_of(halfedge.provenance.begin(), halfedge.provenance.end(),
+                    [](const SurfaceArrangementProvenance &value) {
+                      return value.hardFeature;
+                    });
+    halfedge.railId = primary.railId;
+    halfedge.curveId = primary.curveId;
+    halfedge.sourceComponent = primary.sourceComponent;
+    halfedge.sourceSheet = primary.sourceSheet;
+    halfedge.proposalId = primary.proposalId;
+    halfedge.proposalSeedId = primary.proposalSeedId;
+    halfedge.proposalSide = primary.proposalSide;
+    halfedge.proposalBoundarySegment = primary.proposalBoundarySegment;
+    halfedge.railT0 = primary.railT0;
+    halfedge.railT1 = primary.railT1;
   }
 
   std::vector<std::vector<int>> outgoing(complex.nodes.size());
@@ -762,8 +982,14 @@ inline SurfaceCellComplex build_surface_cell_complex(
 
   std::map<int, double> coveredByArc;
   for (const SurfaceArrangementHalfedge &h : complex.halfedges) {
-    if (h.sourceArc >= 0 && h.id < h.twin) {
-      coveredByArc[h.sourceArc] += std::abs(h.sourceT1 - h.sourceT0);
+    if (h.id >= h.twin) {
+      continue;
+    }
+    for (const SurfaceArrangementProvenance &value : h.provenance) {
+      if (value.sourceArc >= 0) {
+        coveredByArc[value.sourceArc] +=
+            std::abs(value.sourceT1 - value.sourceT0);
+      }
     }
   }
   for (const SurfaceArrangementArc &arc : inputArcs) {
@@ -866,6 +1092,40 @@ inline std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex
     mix(static_cast<std::int64_t>(std::llround(node.sourceEdgeParameter * 1.0e10)));
     for (int i = 0; i < 3; ++i) {
       mix(static_cast<std::int64_t>(std::llround(node.barycentric[i] * 1.0e10)));
+    }
+    mix(static_cast<int>(node.occurrences.size()));
+    for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+      mix(occurrence.sourceFace);
+      for (int i = 0; i < 3; ++i) {
+        mix(static_cast<std::int64_t>(
+            std::llround(occurrence.barycentric[i] * 1.0e10)));
+      }
+    }
+  }
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    mix(halfedge.from);
+    mix(halfedge.to);
+    mix(static_cast<int>(halfedge.provenance.size()));
+    for (const SurfaceArrangementProvenance &value : halfedge.provenance) {
+      mix(value.sourceArc);
+      mix(value.provenance);
+      mix(value.sourceFace);
+      mix(value.family);
+      mix(value.strand);
+      mix(value.featureClass);
+      mix(value.hardFeature ? 1 : 0);
+      mix(value.railId);
+      mix(value.curveId);
+      mix(value.sourceComponent);
+      mix(value.sourceSheet);
+      mix(value.proposalId);
+      mix(value.proposalSeedId);
+      mix(value.proposalSide);
+      mix(value.proposalBoundarySegment);
+      mix(static_cast<std::int64_t>(std::llround(value.sourceT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.sourceT1 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.railT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.railT1 * 1.0e10)));
     }
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {

@@ -181,6 +181,14 @@ inline std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) 
     for (int i = 0; i < 3; ++i) {
       mix(static_cast<std::int64_t>(std::llround(node.barycentric[i] * 1.0e10)));
     }
+    mix(static_cast<int>(node.occurrences.size()));
+    for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+      mix(occurrence.sourceFace);
+      for (int i = 0; i < 3; ++i) {
+        mix(static_cast<std::int64_t>(
+            std::llround(occurrence.barycentric[i] * 1.0e10)));
+      }
+    }
   }
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     mix(halfedge.id);
@@ -196,6 +204,33 @@ inline std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) 
     mix(static_cast<std::int64_t>(std::llround(halfedge.sourceT0 * 1.0e10)));
     mix(static_cast<std::int64_t>(std::llround(halfedge.sourceT1 * 1.0e10)));
     mix(halfedge.hardFeature ? 1 : 0);
+    mix(halfedge.sourceSheet);
+    mix(halfedge.proposalId);
+    mix(halfedge.proposalSeedId);
+    mix(halfedge.proposalSide);
+    mix(halfedge.proposalBoundarySegment);
+    mix(static_cast<int>(halfedge.provenance.size()));
+    for (const SurfaceArrangementProvenance &value : halfedge.provenance) {
+      mix(value.sourceArc);
+      mix(value.provenance);
+      mix(value.sourceFace);
+      mix(value.family);
+      mix(value.strand);
+      mix(value.featureClass);
+      mix(value.hardFeature ? 1 : 0);
+      mix(value.railId);
+      mix(value.curveId);
+      mix(value.sourceComponent);
+      mix(value.sourceSheet);
+      mix(value.proposalId);
+      mix(value.proposalSeedId);
+      mix(value.proposalSide);
+      mix(value.proposalBoundarySegment);
+      mix(static_cast<std::int64_t>(std::llround(value.sourceT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.sourceT1 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.railT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(std::llround(value.railT1 * 1.0e10)));
+    }
     mix(halfedge.cell);
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
