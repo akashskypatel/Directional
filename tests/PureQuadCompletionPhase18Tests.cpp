@@ -16,6 +16,19 @@ directional::geometry::PureQuadPatch patch(std::vector<int> sides) {
     p.boundaryVertices.push_back(i);
   }
   p.turns.assign(p.sideEdgeCounts.size(), 1);
+  constexpr double pi = 3.14159265358979323846;
+  for (int i = 0; i < count; ++i) {
+    directional::geometry::SurfacePoint point;
+    point.face = 0;
+    point.component = 0;
+    point.sheet = 0;
+    const double angle = 2.0 * pi * static_cast<double>(i) /
+                         static_cast<double>(count);
+    point.position << std::cos(angle), std::sin(angle), 0.0;
+    point.barycentric << 1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0;
+    point.squaredDistance = 0.0;
+    p.boundaryProvenance.push_back(point);
+  }
   return p;
 }
 
@@ -145,27 +158,28 @@ TEST(PureQuadCompletionPhase18, ClosedFormCountsForSupportedPatches) {
 
   const auto tri = directional::geometry::complete_pure_quad_patch(patch({2, 2, 2}));
   ASSERT_TRUE(tri.success);
-  EXPECT_EQ(tri.mesh.quads.size(), 6U);
+  EXPECT_EQ(tri.mesh.quads.size(), 2U);
 
   const auto pent =
       directional::geometry::complete_pure_quad_patch(patch({2, 1, 1, 1, 1}));
   ASSERT_TRUE(pent.success);
-  EXPECT_EQ(pent.mesh.quads.size(), 6U);
+  EXPECT_EQ(pent.mesh.quads.size(), 2U);
 
   const auto hex =
       directional::geometry::complete_pure_quad_patch(patch({1, 1, 1, 1, 1, 1}));
   ASSERT_TRUE(hex.success);
-  EXPECT_EQ(hex.mesh.quads.size(), 6U);
+  EXPECT_EQ(hex.mesh.quads.size(), 2U);
 }
 
 TEST(PureQuadCompletionPhase18, PatternFallbackCompletesValidNonSimplePatch) {
-  auto p = patch({2, 2, 2});
+  auto p = patch({2, 2, 2, 1, 1});
   p.simple = false;
   const auto result = directional::geometry::complete_pure_quad_patch(p);
 
   ASSERT_TRUE(result.success);
   EXPECT_EQ(result.mesh.backend,
-            directional::geometry::PureQuadCompletionBackend::PatternFallback);
+            directional::geometry::PureQuadCompletionBackend::BoundedCombinatorial);
+  EXPECT_GT(result.exploredPatterns, 0);
   EXPECT_TRUE(std::all_of(result.mesh.quads.begin(), result.mesh.quads.end(),
                           [](const auto &q) { return q.size() == 4; }));
 }
@@ -336,4 +350,55 @@ TEST(PureQuadCompletionPhase18, ValidationReportsNonPureAndInvariantFlags) {
   EXPECT_FALSE(report.closedSurfaceSingularityBudgetExact);
   EXPECT_FALSE(report.topologyInvariant);
   EXPECT_FALSE(report.featureBoundaryInvariant);
+}
+
+
+TEST(PureQuadCompletionPhase18, TransitionTemplateHasConformingDiskTopology) {
+  const auto result = directional::geometry::complete_pure_quad_patch(
+      patch({2, 1, 1, 1, 1}));
+  ASSERT_TRUE(result.success);
+  EXPECT_EQ(result.mesh.backend,
+            directional::geometry::PureQuadCompletionBackend::TransitionTemplate);
+  EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(result.mesh));
+  EXPECT_EQ(result.mesh.quads.size(), 2U);
+}
+
+TEST(PureQuadCompletionPhase18, GeneralPatternPreservesEntireBoundary) {
+  const auto result = directional::geometry::complete_pure_quad_patch(
+      patch({2, 2, 2, 1, 1}));
+  ASSERT_TRUE(result.success);
+  EXPECT_EQ(result.mesh.backend,
+            directional::geometry::PureQuadCompletionBackend::Pattern);
+  EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(result.mesh));
+  EXPECT_EQ(result.mesh.quads.size(), 3U);
+}
+
+TEST(PureQuadCompletionPhase18, MissingProvenanceFailsClosed) {
+  auto p = patch({2, 2, 2, 2});
+  p.boundaryProvenance.clear();
+  const auto result = directional::geometry::complete_pure_quad_patch(p);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failureReason,
+            directional::geometry::PureQuadPatchRejectReason::MissingBoundaryData);
+}
+
+TEST(PureQuadCompletionPhase18, BoundedFallbackHonorsSearchLimit) {
+  auto p = patch({2, 2, 2, 1, 1});
+  p.simple = false;
+  directional::geometry::PureQuadCompletionOptions options;
+  options.maxBoundaryEdges = 6;
+  const auto result = directional::geometry::complete_pure_quad_patch(p, options);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failureReason,
+            directional::geometry::PureQuadPatchRejectReason::SearchLimitExceeded);
+}
+
+TEST(PureQuadCompletionPhase18, SingularityCompletionFailsClosedUntilPoleTemplates) {
+  auto p = patch({2, 2, 2});
+  p.singularityCount = 1;
+  p.singularIndexNumerator = 1;
+  const auto result = directional::geometry::complete_pure_quad_patch(p);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failureReason,
+            directional::geometry::PureQuadPatchRejectReason::UnsupportedSingularityCompletion);
 }
