@@ -862,6 +862,10 @@ inline std::uint64_t hash_sparse_network(
   hash_combine_i64(seed, network.mandatoryRails);
   hash_combine_i64(seed, network.retainedMandatoryRails);
   hash_combine_i64(seed, network.acceptedTransactions);
+  hash_combine_i64(seed, network.attemptedStrandTransactions);
+  hash_combine_i64(seed, network.rejectedStrandTransactions);
+  hash_combine_i64(seed, network.retainedFlowlines);
+  hash_combine_i64(seed, network.removedFlowlines);
   hash_combine_i64(seed, network.cycleRebuilds);
   hash_combine_i64(seed, network.coverageSampleCount);
   hash_combine_i64(seed, network.cycleEvidenceCount);

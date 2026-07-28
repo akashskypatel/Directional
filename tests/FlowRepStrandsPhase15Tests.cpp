@@ -166,6 +166,10 @@ std::uint64_t sparse_hash(
   mix(network.retainedMandatoryRails);
   mix(network.cycleRebuilds);
   mix(network.acceptedTransactions);
+  mix(network.attemptedStrandTransactions);
+  mix(network.rejectedStrandTransactions);
+  mix(network.retainedFlowlines);
+  mix(network.removedFlowlines);
   for (const auto tag : network.endpointTags) {
     mix(static_cast<int>(tag));
   }
@@ -622,6 +626,97 @@ TEST(FlowRepStrandsPhase15,
   ASSERT_EQ(network.cycleEvaluations.size(), 1U);
   EXPECT_TRUE(network.cycleEvaluations.front().descriptive);
   EXPECT_TRUE(network.cycleEvaluations.front().quadrangulable);
+}
+
+
+TEST(FlowRepStrandsPhase15,
+     MultiArcProposalSideIsRemovedOrRolledBackAsOneTransaction) {
+  std::vector<FlowRepArc> arcs = {
+      selection_arc(0, {0.0, 0.0, 0.0}, {0.5, 0.0, 0.0}, 0, 0),
+      selection_arc(1, {0.5, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 1),
+      selection_arc(2, {1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 1),
+      selection_arc(3, {1.0, 1.0, 0.0}, {0.0, 1.0, 0.0}, 2),
+      selection_arc(4, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}, 3),
+  };
+  FlowRepCycleInput cycle = feasible_cycle();
+  cycle.id = 0;
+  cycle.proposalId = 0;
+  cycle.sideArcIds = {{0, 1}, {2}, {3}, {4}};
+  cycle.boundaryArcIds = {0, 1, 2, 3, 4};
+  cycle.sideCounts = {1, 1, 1, 1};
+
+  const auto network = directional::geometry::select_sparse_flow_rep_network(
+      arcs, coverage_for_active_arcs(arcs), {cycle});
+
+  ASSERT_TRUE(network.selectionSucceeded);
+  EXPECT_EQ(network.retainedArcIds, (std::vector<int>{0, 1, 2, 3, 4}));
+  EXPECT_EQ(network.acceptedTransactions, 0);
+  EXPECT_EQ(network.attemptedStrandTransactions, 4);
+  EXPECT_EQ(network.rejectedStrandTransactions, 4);
+  EXPECT_EQ(network.cycleRebuilds, 4);
+  EXPECT_EQ(network.retainedFlowlines, 4);
+  EXPECT_EQ(network.removedFlowlines, 0);
+}
+
+TEST(FlowRepStrandsPhase15,
+     MultiArcStrandSubstitutionCommitsAllSegmentsAtomically) {
+  std::vector<FlowRepArc> arcs = {
+      selection_arc(0, {0.0, 0.0, 0.0}, {0.5, 0.0, 0.0}, 0, 0),
+      selection_arc(1, {0.5, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 1),
+      selection_arc(2, {1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 1),
+      selection_arc(3, {1.0, 1.0, 0.0}, {0.0, 1.0, 0.0}, 2),
+      selection_arc(4, {0.0, 1.0, 0.0}, {0.0, 0.0, 0.0}, 3),
+  };
+  for (int original = 0; original < 2; ++original) {
+    FlowRepArc substitute = arcs[static_cast<std::size_t>(original)];
+    substitute.id = static_cast<int>(arcs.size());
+    substitute.initiallyActive = false;
+    substitute.dominance = 0.05;
+    substitute.alignmentCost = 0.05;
+    arcs[static_cast<std::size_t>(original)].dominance = 2.0;
+    arcs[static_cast<std::size_t>(original)].alignmentCost = 2.0;
+    arcs[static_cast<std::size_t>(original)].substitutions = {substitute.id};
+    arcs.push_back(substitute);
+  }
+  FlowRepCycleInput cycle = feasible_cycle();
+  cycle.id = 0;
+  cycle.proposalId = 0;
+  cycle.sideArcIds = {{0, 1}, {2}, {3}, {4}};
+  cycle.boundaryArcIds = {0, 1, 2, 3, 4};
+  cycle.sideCounts = {1, 1, 1, 1};
+
+  const auto network = directional::geometry::select_sparse_flow_rep_network(
+      arcs, coverage_for_active_arcs(arcs), {cycle});
+
+  ASSERT_TRUE(network.selectionSucceeded);
+  EXPECT_EQ(network.acceptedTransactions, 1);
+  EXPECT_EQ(network.retainedArcIds, (std::vector<int>{2, 3, 4, 5, 6}));
+  EXPECT_EQ(network.removedArcIds, (std::vector<int>{0, 1}));
+  EXPECT_EQ(network.retainedFlowlines, 4);
+  EXPECT_EQ(network.removedFlowlines, 1);
+}
+
+TEST(FlowRepStrandsPhase15,
+     TransactionalFlowlinesSplitAtNetworkJunctionsAcrossSourceFaces) {
+  std::vector<FlowRepArc> arcs = {
+      selection_arc(0, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 0),
+      selection_arc(1, {1.0, 0.0, 0.0}, {2.0, 0.0, 0.0}, 0, 1),
+      selection_arc(2, {1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 1, 0),
+  };
+  arcs[1].sourceFace = 1;
+  arcs[1].sourceComponent = arcs[0].sourceComponent;
+  arcs[1].sourceSheet = arcs[0].sourceSheet;
+  arcs[1].startBarycentric << 1.0, 0.0, 0.0;
+  arcs[1].endBarycentric << 0.0, 1.0, 0.0;
+
+  const auto flowlines =
+      directional::geometry::flow_rep_detail::extract_transactional_flowlines(
+          arcs, {0, 1, 2});
+
+  ASSERT_EQ(flowlines.size(), 3U);
+  for (const auto &flowline : flowlines) {
+    EXPECT_EQ(flowline.arcIds.size(), 1U);
+  }
 }
 
 TEST(FlowRepStrandsPhase15, CycleNormalInterpolationAndP90IgnoreOutlier) {
