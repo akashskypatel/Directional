@@ -996,7 +996,14 @@ inline std::uint64_t hash_surface_complex(
   for (const geometry::SurfaceArrangementNode &node : complex.nodes) {
     hash_combine_i64(seed, node.id);
     hash_combine_i64(seed, node.sourceFace);
+    hash_combine_i64(seed, node.hardBarrierCrossing ? 1 : 0);
     hash_row_vector(seed, node.barycentric);
+    hash_combine_i64(seed, static_cast<int>(node.occurrences.size()));
+    for (const geometry::SurfaceArrangementNodeOccurrence &occurrence :
+         node.occurrences) {
+      hash_combine_i64(seed, occurrence.sourceFace);
+      hash_row_vector(seed, occurrence.barycentric);
+    }
     hash_combine_i64(seed, node.sourceEdge);
     hash_combine_double(seed, node.sourceEdgeParameter);
   }
@@ -1017,6 +1024,11 @@ inline std::uint64_t hash_surface_complex(
     hash_combine_i64(seed, halfedge.railId);
     hash_combine_i64(seed, halfedge.curveId);
     hash_combine_i64(seed, halfedge.sourceComponent);
+    hash_combine_i64(seed, halfedge.sourceSheet);
+    hash_combine_i64(seed, halfedge.proposalId);
+    hash_combine_i64(seed, halfedge.proposalSeedId);
+    hash_combine_i64(seed, halfedge.proposalSide);
+    hash_combine_i64(seed, halfedge.proposalBoundarySegment);
     hash_combine_double(seed, halfedge.railT0);
     hash_combine_double(seed, halfedge.railT1);
     hash_combine_i64(seed, halfedge.cell);
@@ -1024,13 +1036,17 @@ inline std::uint64_t hash_surface_complex(
   for (const geometry::SurfaceArrangementCell &cell : complex.cells) {
     hash_combine_i64(seed, cell.id);
     hash_combine_i64(seed, cell.sourceFace);
+    hash_vector(seed, cell.sourceFaces);
     hash_vector(seed, cell.halfedges);
     hash_vector(seed, cell.sideFamilies);
     hash_vector(seed, cell.sideEdgeCounts);
     hash_combine_double(seed, cell.signedArea);
     hash_combine_double(seed, cell.area);
     hash_combine_i64(seed, cell.boundaryCycle ? 1 : 0);
+    hash_combine_i64(seed, cell.closed ? 1 : 0);
     hash_combine_i64(seed, cell.disk ? 1 : 0);
+    hash_combine_i64(seed, cell.boundaryComponentCount);
+    hash_combine_i64(seed, cell.eulerCharacteristic);
     hash_combine_i64(seed, cell.quadReady ? 1 : 0);
     hash_combine_i64(seed, static_cast<int>(cell.cellClass));
     hash_combine_i64(seed, static_cast<int>(cell.rejectReason));
@@ -1043,6 +1059,17 @@ inline std::uint64_t hash_surface_complex(
   hash_combine_i64(seed, complex.diagnostics.hardBarrierCrossings);
   hash_combine_i64(seed, complex.diagnostics.eulerCharacteristic);
   hash_combine_i64(seed, complex.diagnostics.sourceEulerCharacteristic);
+  hash_combine_i64(seed, complex.diagnostics.connectedComponentCount);
+  hash_combine_i64(seed, complex.diagnostics.sourceConnectedComponentCount);
+  hash_combine_i64(seed, complex.diagnostics.boundaryLoopCount);
+  hash_combine_i64(seed, complex.diagnostics.sourceBoundaryLoopCount);
+  hash_combine_i64(seed, complex.diagnostics.incidenceValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.embeddingValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.orientationValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.cellsDiskValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.boundaryLoopsValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.eulerCharacteristicValid ? 1 : 0);
+  hash_combine_i64(seed, complex.diagnostics.topologyValid ? 1 : 0);
   hash_combine_double(seed, complex.diagnostics.supportedArea);
   hash_combine_double(seed, complex.diagnostics.extractedArea);
   hash_combine_double(seed, complex.diagnostics.relativeAreaError);
@@ -2395,8 +2422,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto simplificationStart = Clock::now();
+    const geometry::SurfaceSimplificationCandidateSet simplificationCandidates =
+        geometry::extract_surface_simplification_candidates(
+            arrangementComplex, meshWhole.V, meshWhole.F);
     const geometry::SurfaceSimplificationResult simplified =
-        geometry::simplify_surface_cell_complex(arrangementComplex, {});
+        geometry::simplify_surface_cell_complex(
+            arrangementComplex, meshWhole.V, meshWhole.F,
+            simplificationCandidates.candidates);
     result.diagnostics.surfaceCellSimplificationSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - simplificationStart)

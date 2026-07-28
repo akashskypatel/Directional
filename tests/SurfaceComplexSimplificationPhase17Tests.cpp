@@ -63,6 +63,62 @@ int first_removable_halfedge(
   return -1;
 }
 
+std::vector<int> complete_interface_for_halfedge(
+    const directional::geometry::SurfaceCellComplex &complex,
+    const int halfedgeId) {
+  if (halfedgeId < 0 ||
+      halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+    return {};
+  }
+  const auto &selected = complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+  if (selected.twin < 0 ||
+      selected.twin >= static_cast<int>(complex.halfedges.size())) {
+    return {};
+  }
+  const int cellA = selected.cell;
+  const int cellB =
+      complex.halfedges[static_cast<std::size_t>(selected.twin)].cell;
+  std::vector<int> result;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id > halfedge.twin || halfedge.family < 0 ||
+        halfedge.hardFeature) {
+      continue;
+    }
+    const int twinCell =
+        complex.halfedges[static_cast<std::size_t>(halfedge.twin)].cell;
+    if ((halfedge.cell == cellA && twinCell == cellB) ||
+        (halfedge.cell == cellB && twinCell == cellA)) {
+      result.push_back(halfedge.id);
+    }
+  }
+  std::sort(result.begin(), result.end());
+  return result;
+}
+
+struct OversampledFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  directional::geometry::SurfaceCellComplex complex;
+};
+
+OversampledFixture oversampled_parallel_complex() {
+  OversampledFixture fixture;
+  fixture.vertices.resize(3, 3);
+  fixture.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  fixture.faces.resize(1, 3);
+  fixture.faces << 0, 1, 2;
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+  int id = 0;
+  for (const double t : {0.25, 0.40, 0.55, 0.70}) {
+    auto value = arc(id++, {1.0 - t, t, 0.0}, {1.0 - t, 0.0, t}, 0);
+    value.strand = id;
+    arcs.push_back(value);
+  }
+  fixture.complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+  return fixture;
+}
+
 } // namespace
 
 TEST(SurfaceComplexSimplificationPhase17, OpenStripRemovalCommitsCoherently) {
@@ -358,11 +414,14 @@ TEST(SurfaceComplexSimplificationPhase17,
   const auto complex = two_strand_complex();
   const int removable = first_removable_halfedge(complex);
   ASSERT_GE(removable, 0);
+  const std::vector<int> interface =
+      complete_interface_for_halfedge(complex, removable);
+  ASSERT_FALSE(interface.empty());
   std::vector<directional::geometry::SurfaceSimplificationCandidate> candidates = {
       directional::geometry::make_removal_candidate(
           100,
           directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand,
-          {removable}, -1.0)};
+          interface, -1.0)};
 
   const auto result = directional::geometry::simplify_surface_cell_complex(
       complex, candidates, permissive_options());
@@ -370,7 +429,10 @@ TEST(SurfaceComplexSimplificationPhase17,
   EXPECT_TRUE(result.hasComplexOutput);
   EXPECT_GE(result.committed, 1);
   EXPECT_LT(result.complex.halfedges.size(), complex.halfedges.size());
-  EXPECT_EQ(result.complex.nodes.size(), complex.nodes.size());
+  EXPECT_LE(result.complex.nodes.size(), complex.nodes.size());
+  EXPECT_TRUE(result.complex.diagnostics.topologyValid);
+  EXPECT_EQ(result.complex.diagnostics.eulerCharacteristic,
+            complex.diagnostics.eulerCharacteristic);
   EXPECT_GT(result.incidenceRebuilds, 0);
   EXPECT_GT(result.validationPasses, 0);
   EXPECT_NE(result.finalHash,
@@ -403,18 +465,174 @@ TEST(SurfaceComplexSimplificationPhase17,
 
 TEST(SurfaceComplexSimplificationPhase17,
      ComplexCandidateRecomputationCreatesRealQueuedCandidates) {
+  const auto fixture = oversampled_parallel_complex();
+  auto extracted = directional::geometry::extract_surface_simplification_candidates(
+      fixture.complex, fixture.vertices, fixture.faces);
+  const auto found = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return !candidate.touchesHardFeature && !candidate.touchesBoundary &&
+               !candidate.touchesSingularity && !candidate.changesTopology &&
+               candidate.sideFeasible;
+      });
+  ASSERT_NE(found, extracted.candidates.end());
+
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      fixture.complex, fixture.vertices, fixture.faces, {*found},
+      permissive_options());
+
+  EXPECT_GT(result.committed, 0);
+  EXPECT_GT(result.recomputedCandidates, 0);
+  EXPECT_GT(result.transactions.size(), 1U);
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     CandidateExtractionIsDeterministicAndCarriesAuthoritativeSupport) {
   const auto complex = two_strand_complex();
+  const auto first =
+      directional::geometry::extract_surface_simplification_candidates(complex);
+  const auto second =
+      directional::geometry::extract_surface_simplification_candidates(complex);
+
+  ASSERT_FALSE(first.candidates.empty());
+  ASSERT_EQ(first.candidates.size(), second.candidates.size());
+  EXPECT_EQ(first.structuralHash, second.structuralHash);
+  for (std::size_t i = 0; i < first.candidates.size(); ++i) {
+    const auto &candidate = first.candidates[i];
+    EXPECT_EQ(candidate.stableId, static_cast<int>(i));
+    EXPECT_FALSE(candidate.elementIds.empty());
+    EXPECT_FALSE(candidate.affectedNodeIds.empty());
+    EXPECT_FALSE(candidate.affectedStrandIds.empty());
+    EXPECT_GT(candidate.removedLength, 0.0);
+    EXPECT_TRUE(std::isfinite(candidate.deltaSurface));
+    EXPECT_TRUE(std::isfinite(candidate.deltaSize));
+    EXPECT_TRUE(std::isfinite(candidate.deltaQuad));
+    EXPECT_TRUE(std::is_sorted(candidate.elementIds.begin(),
+                               candidate.elementIds.end()));
+  }
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     OversampledArrangementGeneratesRealNonemptyCandidateSet) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+  int id = 0;
+  for (const double t : {0.20, 0.30, 0.40, 0.50, 0.60, 0.70}) {
+    auto value = arc(id++, {1.0 - t, t, 0.0},
+                     {1.0 - t, 0.0, t}, 0);
+    value.strand = id;
+    arcs.push_back(value);
+  }
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, arcs);
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(complex);
+
+  EXPECT_GT(extracted.candidates.size(), 0U);
+  EXPECT_GT(extracted.openStripCandidates + extracted.closedLoopCandidates +
+                extracted.redundantStrandCandidates,
+            0);
+  EXPECT_TRUE(std::any_of(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return !candidate.elementIds.empty() &&
+               candidate.type == directional::geometry::
+                                     SurfaceSimplificationCandidateType::OpenStrip;
+      }));
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     CandidateExtractionMarksProtectedSupportInsteadOfSilentlyDroppingIt) {
+  auto complex = two_strand_complex();
   const int removable = first_removable_halfedge(complex);
   ASSERT_GE(removable, 0);
+  complex.halfedges[static_cast<std::size_t>(removable)].hardFeature = true;
+  const int twin = complex.halfedges[static_cast<std::size_t>(removable)].twin;
+  complex.halfedges[static_cast<std::size_t>(twin)].hardFeature = true;
+
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(complex);
+  EXPECT_GT(extracted.protectedCandidates, 0);
+  EXPECT_TRUE(std::any_of(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return candidate.touchesHardFeature &&
+               candidate.featurePenalty > 0.0;
+      }));
+}
+
+
+TEST(SurfaceComplexSimplificationPhase17,
+     TransactionalMutationCommitsExtractedOversampledCandidate) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+  int id = 0;
+  for (const double t : {0.25, 0.40, 0.55, 0.70}) {
+    auto value = arc(id++, {1.0 - t, t, 0.0}, {1.0 - t, 0.0, t}, 0);
+    value.strand = id;
+    arcs.push_back(value);
+  }
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, arcs);
+  auto extracted = directional::geometry::extract_surface_simplification_candidates(complex);
+  ASSERT_FALSE(extracted.candidates.empty());
+
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, extracted.candidates, permissive_options());
+
+  EXPECT_GT(result.committed, 0);
+  EXPECT_LT(result.finalActiveElements, result.initialActiveElements);
+  EXPECT_TRUE(result.complex.diagnostics.topologyValid);
+  EXPECT_EQ(result.complex.diagnostics.eulerCharacteristic,
+            complex.diagnostics.eulerCharacteristic);
+  EXPECT_GT(result.recomputedCandidates, 0);
+  EXPECT_TRUE(std::all_of(result.transactions.begin(), result.transactions.end(),
+                          [](const auto &transaction) {
+                            return transaction.committed ||
+                                   transaction.beforeHash == transaction.afterHash;
+                          }));
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     TransactionalMutationPreservesHardRailSupport) {
+  auto complex = two_strand_complex();
+  int protectedHalfedge = -1;
+  for (auto &halfedge : complex.halfedges) {
+    if (halfedge.id < halfedge.twin && halfedge.family < 0) {
+      protectedHalfedge = halfedge.id;
+      halfedge.hardFeature = true;
+      halfedge.railId = 77;
+      auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+      twin.hardFeature = true;
+      twin.railId = 77;
+      break;
+    }
+  }
+  ASSERT_GE(protectedHalfedge, 0);
+  const int removable = first_removable_halfedge(complex);
+  ASSERT_GE(removable, 0);
+  const std::vector<int> interface =
+      complete_interface_for_halfedge(complex, removable);
+  ASSERT_FALSE(interface.empty());
   std::vector<directional::geometry::SurfaceSimplificationCandidate> candidates = {
       directional::geometry::make_removal_candidate(
-          102,
-          directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand,
-          {removable}, -1.0)};
+          210, directional::geometry::SurfaceSimplificationCandidateType::RedundantStrand,
+          interface, -1.0)};
 
   const auto result = directional::geometry::simplify_surface_cell_complex(
       complex, candidates, permissive_options());
 
-  EXPECT_GT(result.recomputedCandidates, 0);
-  EXPECT_GT(result.transactions.size(), 1U);
+  ASSERT_GT(result.committed, 0);
+  EXPECT_TRUE(std::any_of(result.complex.halfedges.begin(), result.complex.halfedges.end(),
+                          [](const auto &halfedge) {
+                            return halfedge.hardFeature && halfedge.railId == 77;
+                          }));
+  EXPECT_TRUE(result.complex.diagnostics.topologyValid);
 }

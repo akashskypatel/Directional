@@ -140,6 +140,7 @@ struct SurfaceArrangementHalfedge {
 struct SurfaceArrangementCell {
   int id = -1;
   int sourceFace = -1;
+  std::vector<int> sourceFaces;
   std::vector<int> halfedges;
   std::vector<int> sideFamilies;
   std::vector<int> sideEdgeCounts;
@@ -171,7 +172,9 @@ struct SurfaceArrangementDiagnostics {
   int boundaryLoopCount = 0;
   int sourceBoundaryLoopCount = 0;
   bool incidenceValid = false;
+  bool embeddingValid = false;
   bool orientationValid = false;
+  bool cellsDiskValid = false;
   bool boundaryLoopsValid = false;
   bool eulerCharacteristicValid = false;
   bool topologyValid = false;
@@ -264,6 +267,261 @@ inline double triangle_area_3d(const Eigen::MatrixXd &vertices,
   const Eigen::RowVector3d b = vertices.row(faces(face, 1));
   const Eigen::RowVector3d c = vertices.row(faces(face, 2));
   return 0.5 * surface_cell_tracing_detail::cross3(b - a, c - a).norm();
+}
+
+inline Eigen::RowVector3d face_normal_3d(const Eigen::MatrixXd &vertices,
+                                         const Eigen::MatrixXi &faces,
+                                         const int face) {
+  if (face < 0 || face >= faces.rows()) {
+    return Eigen::RowVector3d::Zero();
+  }
+  const Eigen::RowVector3d a = vertices.row(faces(face, 0));
+  const Eigen::RowVector3d b = vertices.row(faces(face, 1));
+  const Eigen::RowVector3d c = vertices.row(faces(face, 2));
+  Eigen::RowVector3d normal =
+      surface_cell_tracing_detail::cross3(b - a, c - a);
+  const double norm = normal.norm();
+  if (!(norm > 1.0e-20) || !std::isfinite(norm)) {
+    return Eigen::RowVector3d::Zero();
+  }
+  return normal / norm;
+}
+
+inline Eigen::RowVector3d barycentric_position(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int face, const Eigen::RowVector3d &barycentric) {
+  if (face < 0 || face >= faces.rows()) {
+    return Eigen::RowVector3d::Zero();
+  }
+  return barycentric[0] * vertices.row(faces(face, 0)) +
+         barycentric[1] * vertices.row(faces(face, 1)) +
+         barycentric[2] * vertices.row(faces(face, 2));
+}
+
+inline Eigen::RowVector3d node_position(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceArrangementNode &node) {
+  return barycentric_position(vertices, faces, node.sourceFace,
+                              node.barycentric);
+}
+
+inline Eigen::RowVector3d node_barycentric_on_face(
+    const SurfaceArrangementNode &node, const int face) {
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    if (occurrence.sourceFace == face) {
+      return occurrence.barycentric;
+    }
+  }
+  return node.sourceFace == face ? node.barycentric
+                                 : Eigen::RowVector3d::Constant(
+                                       std::numeric_limits<double>::quiet_NaN());
+}
+
+inline Eigen::RowVector3d node_reference_normal(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceArrangementNode &node) {
+  Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
+  std::set<int> usedFaces;
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    if (usedFaces.insert(occurrence.sourceFace).second) {
+      normal += face_normal_3d(vertices, faces, occurrence.sourceFace);
+    }
+  }
+  if (usedFaces.empty() && node.sourceFace >= 0) {
+    normal = face_normal_3d(vertices, faces, node.sourceFace);
+  }
+  const double norm = normal.norm();
+  if (!(norm > 1.0e-14) || !std::isfinite(norm)) {
+    return Eigen::RowVector3d::Zero();
+  }
+  return normal / norm;
+}
+
+inline bool tangent_basis(const Eigen::RowVector3d &normal,
+                          Eigen::RowVector3d &axisX,
+                          Eigen::RowVector3d &axisY) {
+  const double norm = normal.norm();
+  if (!(norm > 1.0e-14) || !std::isfinite(norm)) {
+    return false;
+  }
+  const Eigen::RowVector3d n = normal / norm;
+  Eigen::RowVector3d seed = Eigen::RowVector3d::UnitX();
+  if (std::abs(n.y()) < std::abs(n.x()) &&
+      std::abs(n.y()) <= std::abs(n.z())) {
+    seed = Eigen::RowVector3d::UnitY();
+  } else if (std::abs(n.z()) < std::abs(n.x()) &&
+             std::abs(n.z()) < std::abs(n.y())) {
+    seed = Eigen::RowVector3d::UnitZ();
+  }
+  axisX = seed - seed.dot(n) * n;
+  const double xNorm = axisX.norm();
+  if (!(xNorm > 1.0e-14) || !std::isfinite(xNorm)) {
+    return false;
+  }
+  axisX /= xNorm;
+  axisY = surface_cell_tracing_detail::cross3(n, axisX);
+  const double yNorm = axisY.norm();
+  if (!(yNorm > 1.0e-14) || !std::isfinite(yNorm)) {
+    return false;
+  }
+  axisY /= yNorm;
+  return true;
+}
+
+inline bool polygon_geometry(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &halfedges,
+    const std::vector<SurfaceArrangementHalfedge> &allHalfedges,
+    const std::vector<SurfaceArrangementNode> &nodes, double &signedArea,
+    double &area, std::vector<int> &sourceFaces) {
+  signedArea = 0.0;
+  area = 0.0;
+  sourceFaces.clear();
+  if (halfedges.size() < 3U) {
+    return false;
+  }
+  std::vector<Eigen::RowVector3d> points;
+  points.reserve(halfedges.size());
+  Eigen::RowVector3d referenceNormal = Eigen::RowVector3d::Zero();
+  std::set<int> faceSet;
+  for (const int halfedgeId : halfedges) {
+    if (halfedgeId < 0 ||
+        halfedgeId >= static_cast<int>(allHalfedges.size())) {
+      return false;
+    }
+    const SurfaceArrangementHalfedge &halfedge =
+        allHalfedges[static_cast<std::size_t>(halfedgeId)];
+    if (halfedge.from < 0 ||
+        halfedge.from >= static_cast<int>(nodes.size())) {
+      return false;
+    }
+    points.push_back(node_position(vertices, faces,
+                                   nodes[static_cast<std::size_t>(halfedge.from)]));
+    if (halfedge.sourceFace >= 0 &&
+        faceSet.insert(halfedge.sourceFace).second) {
+      referenceNormal += face_normal_3d(vertices, faces, halfedge.sourceFace);
+    }
+    for (const SurfaceArrangementProvenance &provenance :
+         halfedge.provenance) {
+      if (provenance.sourceFace >= 0 &&
+          faceSet.insert(provenance.sourceFace).second) {
+        referenceNormal +=
+            face_normal_3d(vertices, faces, provenance.sourceFace);
+      }
+    }
+  }
+  sourceFaces.assign(faceSet.begin(), faceSet.end());
+  const double normalNorm = referenceNormal.norm();
+  if (!(normalNorm > 1.0e-14) || !std::isfinite(normalNorm)) {
+    return false;
+  }
+  referenceNormal /= normalNorm;
+
+  Eigen::RowVector3d centroid = Eigen::RowVector3d::Zero();
+  for (const Eigen::RowVector3d &point : points) {
+    centroid += point;
+  }
+  centroid /= static_cast<double>(points.size());
+
+  Eigen::RowVector3d axisX = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d axisY = Eigen::RowVector3d::Zero();
+  if (!tangent_basis(referenceNormal, axisX, axisY)) {
+    return false;
+  }
+  std::vector<Eigen::Vector2d> projected;
+  projected.reserve(points.size());
+  for (const Eigen::RowVector3d &point : points) {
+    const Eigen::RowVector3d offset = point - centroid;
+    projected.emplace_back(offset.dot(axisX), offset.dot(axisY));
+  }
+
+  double projectedArea = 0.0;
+  for (std::size_t i = 0; i < projected.size(); ++i) {
+    const Eigen::Vector2d &a = projected[i];
+    const Eigen::Vector2d &b = projected[(i + 1U) % projected.size()];
+    projectedArea += 0.5 * (a.x() * b.y() - a.y() * b.x());
+  }
+  if (!std::isfinite(projectedArea) ||
+      std::abs(projectedArea) <= 1.0e-20) {
+    return false;
+  }
+
+  // Ear clipping avoids the centroid-fan overlap that over-counts concave
+  // arrangement cells. Triangle areas are accumulated in 3D so curved,
+  // stitched multi-face cells retain their embedded geometry.
+  std::vector<int> polygon(points.size());
+  std::iota(polygon.begin(), polygon.end(), 0);
+  if (projectedArea < 0.0) {
+    std::reverse(polygon.begin(), polygon.end());
+  }
+  const auto orient2 = [&](const int a, const int b, const int c) {
+    const Eigen::Vector2d ab = projected[static_cast<std::size_t>(b)] -
+                               projected[static_cast<std::size_t>(a)];
+    const Eigen::Vector2d ac = projected[static_cast<std::size_t>(c)] -
+                               projected[static_cast<std::size_t>(a)];
+    return ab.x() * ac.y() - ab.y() * ac.x();
+  };
+  const auto inside_triangle = [&](const int point, const int a, const int b,
+                                   const int c) {
+    constexpr double epsilon = 1.0e-12;
+    return orient2(a, b, point) > epsilon &&
+           orient2(b, c, point) > epsilon &&
+           orient2(c, a, point) > epsilon;
+  };
+
+  double triangulatedArea = 0.0;
+  while (polygon.size() > 3U) {
+    bool clipped = false;
+    for (std::size_t i = 0; i < polygon.size(); ++i) {
+      const int previous = polygon[(i + polygon.size() - 1U) % polygon.size()];
+      const int current = polygon[i];
+      const int next = polygon[(i + 1U) % polygon.size()];
+      if (orient2(previous, current, next) <= 1.0e-14) {
+        continue;
+      }
+      bool containsVertex = false;
+      for (const int candidate : polygon) {
+        if (candidate == previous || candidate == current || candidate == next) {
+          continue;
+        }
+        if (inside_triangle(candidate, previous, current, next)) {
+          containsVertex = true;
+          break;
+        }
+      }
+      if (containsVertex) {
+        continue;
+      }
+      triangulatedArea += 0.5 *
+          surface_cell_tracing_detail::cross3(
+              points[static_cast<std::size_t>(current)] -
+                  points[static_cast<std::size_t>(previous)],
+              points[static_cast<std::size_t>(next)] -
+                  points[static_cast<std::size_t>(previous)])
+              .norm();
+      polygon.erase(polygon.begin() + static_cast<std::ptrdiff_t>(i));
+      clipped = true;
+      break;
+    }
+    if (!clipped) {
+      signedArea = projectedArea;
+      area = std::abs(projectedArea);
+      return area > 1.0e-20;
+    }
+  }
+  triangulatedArea += 0.5 *
+      surface_cell_tracing_detail::cross3(
+          points[static_cast<std::size_t>(polygon[1])] -
+              points[static_cast<std::size_t>(polygon[0])],
+          points[static_cast<std::size_t>(polygon[2])] -
+              points[static_cast<std::size_t>(polygon[0])])
+          .norm();
+  if (!std::isfinite(triangulatedArea) || triangulatedArea <= 1.0e-20) {
+    return false;
+  }
+  signedArea = projectedArea;
+  area = triangulatedArea;
+  return true;
 }
 
 inline int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10) {
@@ -516,6 +774,7 @@ inline std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
     bytes += vector_storage_bytes(halfedge.provenance);
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += vector_storage_bytes(cell.sourceFaces);
     bytes += vector_storage_bytes(cell.halfedges);
     bytes += vector_storage_bytes(cell.sideFamilies);
     bytes += vector_storage_bytes(cell.sideEdgeCounts);
@@ -589,16 +848,131 @@ inline std::pair<int, bool> boundary_loop_count(
   return {graph_component_count(vertexCount, edges, &active), true};
 }
 
-inline bool same_family_collinear(const SurfaceArrangementHalfedge &a,
-                                  const SurfaceArrangementHalfedge &b,
-                                  const std::vector<SurfaceArrangementNode> &nodes) {
+inline int boundary_orientation_vote(
+    const std::vector<int> &cellHalfedges,
+    const std::vector<SurfaceArrangementHalfedge> &halfedges,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
+  int interiorVotes = 0;
+  int exteriorVotes = 0;
+  constexpr double epsilon = 1.0e-12;
+  const Eigen::Vector2d triangleCentroid(1.0 / 3.0, 1.0 / 3.0);
+  for (const int halfedgeId : cellHalfedges) {
+    if (halfedgeId < 0 || halfedgeId >= static_cast<int>(halfedges.size())) {
+      continue;
+    }
+    const SurfaceArrangementHalfedge &halfedge =
+        halfedges[static_cast<std::size_t>(halfedgeId)];
+    if (halfedge.family >= 0 || halfedge.sourceFace < 0 ||
+        halfedge.from < 0 || halfedge.to < 0 ||
+        halfedge.from >= static_cast<int>(nodes.size()) ||
+        halfedge.to >= static_cast<int>(nodes.size())) {
+      continue;
+    }
+    const Eigen::RowVector3d fromBary = node_barycentric_on_face(
+        nodes[static_cast<std::size_t>(halfedge.from)], halfedge.sourceFace);
+    const Eigen::RowVector3d toBary = node_barycentric_on_face(
+        nodes[static_cast<std::size_t>(halfedge.to)], halfedge.sourceFace);
+    if (!fromBary.allFinite() || !toBary.allFinite()) {
+      continue;
+    }
+    int sourceEdge = -1;
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      if (std::abs(fromBary[coordinate]) <= epsilon &&
+          std::abs(toBary[coordinate]) <= epsilon) {
+        sourceEdge = coordinate;
+        break;
+      }
+    }
+    if (sourceEdge < 0) {
+      continue;
+    }
+    const auto found = edgeFaces.find(
+        source_edge_key(faces, halfedge.sourceFace, sourceEdge));
+    if (found == edgeFaces.end() || found->second[1] >= 0) {
+      // Interior hard-feature rails are not exterior boundaries.
+      continue;
+    }
+    const Eigen::Vector2d from = bary_to_uv(fromBary);
+    const Eigen::Vector2d to = bary_to_uv(toBary);
+    const Eigen::Vector2d direction = to - from;
+    const Eigen::Vector2d towardInterior =
+        triangleCentroid - 0.5 * (from + to);
+    const double side = direction.x() * towardInterior.y() -
+                        direction.y() * towardInterior.x();
+    if (side > epsilon) {
+      ++interiorVotes;
+    } else if (side < -epsilon) {
+      ++exteriorVotes;
+    }
+  }
+  if (interiorVotes == 0 && exteriorVotes == 0) {
+    return 0;
+  }
+  return exteriorVotes > interiorVotes ? -1 : 1;
+}
+
+inline void collect_cell_source_faces(
+    const std::vector<int> &cellHalfedges,
+    const std::vector<SurfaceArrangementHalfedge> &halfedges,
+    std::vector<int> &sourceFaces) {
+  std::set<int> faceSet;
+  for (const int halfedgeId : cellHalfedges) {
+    if (halfedgeId < 0 || halfedgeId >= static_cast<int>(halfedges.size())) {
+      continue;
+    }
+    const SurfaceArrangementHalfedge &halfedge =
+        halfedges[static_cast<std::size_t>(halfedgeId)];
+    if (halfedge.sourceFace >= 0) {
+      faceSet.insert(halfedge.sourceFace);
+    }
+    for (const SurfaceArrangementProvenance &provenance :
+         halfedge.provenance) {
+      if (provenance.sourceFace >= 0) {
+        faceSet.insert(provenance.sourceFace);
+      }
+    }
+  }
+  sourceFaces.assign(faceSet.begin(), faceSet.end());
+}
+
+inline bool same_family_collinear(
+    const SurfaceArrangementHalfedge &a,
+    const SurfaceArrangementHalfedge &b,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces) {
   if (a.family != b.family) {
     return false;
   }
-  const Eigen::Vector2d a0 = bary_to_uv(nodes[static_cast<std::size_t>(a.from)].barycentric);
-  const Eigen::Vector2d a1 = bary_to_uv(nodes[static_cast<std::size_t>(a.to)].barycentric);
-  const Eigen::Vector2d b1 = bary_to_uv(nodes[static_cast<std::size_t>(b.to)].barycentric);
-  return std::abs(cross2(a1 - a0, b1 - a1)) <= 1.0e-10;
+  if (a.to != b.from || a.from < 0 || a.to < 0 || b.to < 0 ||
+      a.from >= static_cast<int>(nodes.size()) ||
+      a.to >= static_cast<int>(nodes.size()) ||
+      b.to >= static_cast<int>(nodes.size())) {
+    return false;
+  }
+  const SurfaceArrangementNode &join = nodes[static_cast<std::size_t>(a.to)];
+  const Eigen::RowVector3d normal = node_reference_normal(vertices, faces, join);
+  if (normal.squaredNorm() <= 1.0e-20) {
+    return false;
+  }
+  const Eigen::RowVector3d joinPosition = node_position(vertices, faces, join);
+  Eigen::RowVector3d incoming =
+      joinPosition -
+      node_position(vertices, faces, nodes[static_cast<std::size_t>(a.from)]);
+  Eigen::RowVector3d outgoing =
+      node_position(vertices, faces, nodes[static_cast<std::size_t>(b.to)]) -
+      joinPosition;
+  incoming -= incoming.dot(normal) * normal;
+  outgoing -= outgoing.dot(normal) * normal;
+  const double incomingNorm = incoming.norm();
+  const double outgoingNorm = outgoing.norm();
+  if (!(incomingNorm > 1.0e-14) || !(outgoingNorm > 1.0e-14)) {
+    return false;
+  }
+  incoming /= incomingNorm;
+  outgoing /= outgoingNorm;
+  return incoming.dot(outgoing) >= 1.0 - 1.0e-8;
 }
 
 } // namespace surface_arrangement_detail
@@ -755,6 +1129,10 @@ inline SurfaceCellComplex build_surface_cell_complex(
   update_peak_memory(vector_storage_bytes(segments));
 
   std::map<NodeKey, int> nodeByKey;
+  bool embeddingValid = true;
+  const double positionTolerance =
+      1.0e-9 * std::max(1.0, (vertices.colwise().maxCoeff() -
+                             vertices.colwise().minCoeff()).norm());
   const auto node_id = [&](const int face, const Eigen::Vector2d &rawUv) {
     const Eigen::RowVector3d bary =
         canonicalize_barycentric(uv_to_bary(rawUv));
@@ -764,6 +1142,14 @@ inline SurfaceCellComplex build_surface_cell_complex(
     if (found != nodeByKey.end()) {
       SurfaceArrangementNode &node =
           complex.nodes[static_cast<std::size_t>(found->second)];
+      const Eigen::RowVector3d existingPosition =
+          node_position(vertices, faces, node);
+      const Eigen::RowVector3d occurrencePosition =
+          barycentric_position(vertices, faces, face, bary);
+      if (!existingPosition.allFinite() || !occurrencePosition.allFinite() ||
+          (existingPosition - occurrencePosition).norm() > positionTolerance) {
+        embeddingValid = false;
+      }
       node.hardBarrierCrossing =
           node.hardBarrierCrossing || hardBarrierCrossingKeys.count(key) != 0;
       const bool occurrenceExists =
@@ -979,18 +1365,32 @@ inline SurfaceCellComplex build_surface_cell_complex(
   for (const SurfaceArrangementHalfedge &h : complex.halfedges) {
     outgoing[static_cast<std::size_t>(h.from)].push_back(h.id);
   }
-  for (auto &list : outgoing) {
+  for (int nodeId = 0; nodeId < static_cast<int>(outgoing.size()); ++nodeId) {
+    auto &list = outgoing[static_cast<std::size_t>(nodeId)];
+    Eigen::RowVector3d axisX = Eigen::RowVector3d::Zero();
+    Eigen::RowVector3d axisY = Eigen::RowVector3d::Zero();
+    const Eigen::RowVector3d normal = node_reference_normal(
+        vertices, faces, complex.nodes[static_cast<std::size_t>(nodeId)]);
+    if (!tangent_basis(normal, axisX, axisY)) {
+      embeddingValid = false;
+    }
+    const Eigen::RowVector3d origin = node_position(
+        vertices, faces, complex.nodes[static_cast<std::size_t>(nodeId)]);
     std::sort(list.begin(), list.end(), [&](const int lhs, const int rhs) {
       const auto &a = complex.halfedges[static_cast<std::size_t>(lhs)];
       const auto &b = complex.halfedges[static_cast<std::size_t>(rhs)];
-      const Eigen::Vector2d p =
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(a.from)].barycentric);
-      const Eigen::Vector2d au =
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(a.to)].barycentric) - p;
-      const Eigen::Vector2d bu =
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(b.to)].barycentric) - p;
-      const double aa = std::atan2(au.y(), au.x());
-      const double ba = std::atan2(bu.y(), bu.x());
+      Eigen::RowVector3d au =
+          node_position(vertices, faces,
+                        complex.nodes[static_cast<std::size_t>(a.to)]) -
+          origin;
+      Eigen::RowVector3d bu =
+          node_position(vertices, faces,
+                        complex.nodes[static_cast<std::size_t>(b.to)]) -
+          origin;
+      au -= au.dot(normal) * normal;
+      bu -= bu.dot(normal) * normal;
+      const double aa = std::atan2(au.dot(axisY), au.dot(axisX));
+      const double ba = std::atan2(bu.dot(axisY), bu.dot(axisX));
       if (std::abs(aa - ba) > 1.0e-14) {
         return aa < ba;
       }
@@ -1002,6 +1402,11 @@ inline SurfaceCellComplex build_surface_cell_complex(
     const int twin = h.twin;
     const auto &list = outgoing[static_cast<std::size_t>(at)];
     const auto found = std::find(list.begin(), list.end(), twin);
+    if (list.empty() || found == list.end()) {
+      embeddingValid = false;
+      h.next = -1;
+      continue;
+    }
     const int pos = static_cast<int>(std::distance(list.begin(), found));
     const int nextPos = (pos - 1 + static_cast<int>(list.size())) %
                         static_cast<int>(list.size());
@@ -1016,46 +1421,89 @@ inline SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementCell cell;
     cell.id = static_cast<int>(complex.cells.size());
     int h = start;
-    std::vector<Eigen::Vector2d> polygon;
     for (int guard = 0; guard < static_cast<int>(complex.halfedges.size()) + 1;
          ++guard) {
+      if (h < 0 || h >= static_cast<int>(complex.halfedges.size())) {
+        embeddingValid = false;
+        break;
+      }
       if (visited[static_cast<std::size_t>(h)] != 0) {
         break;
       }
       visited[static_cast<std::size_t>(h)] = 1;
-      complex.halfedges[static_cast<std::size_t>(h)].cell = cell.id;
       cell.halfedges.push_back(h);
       const auto &he = complex.halfedges[static_cast<std::size_t>(h)];
-      cell.sourceFace = he.sourceFace;
-      polygon.push_back(
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(he.from)].barycentric));
+      if (cell.sourceFace < 0) {
+        cell.sourceFace = he.sourceFace;
+      }
       h = he.next;
       if (h == start) {
         break;
       }
     }
-    if (cell.halfedges.size() < 3) {
+    cell.closed = h == start;
+    if (cell.halfedges.size() < 3 || !cell.closed) {
+      embeddingValid = false;
       continue;
     }
-    cell.closed = h == start;
-    cell.signedArea = cell.closed ? polygon_area(polygon) : 0.0;
-    cell.area = std::abs(cell.signedArea);
-    cell.boundaryCycle = cell.closed && cell.signedArea < 0.0;
+    for (const int halfedgeId : cell.halfedges) {
+      complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell = cell.id;
+    }
+    const int boundaryVote = boundary_orientation_vote(
+        cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
+    cell.boundaryCycle = cell.closed && boundaryVote < 0;
+    if (!polygon_geometry(vertices, faces, cell.halfedges, complex.halfedges,
+                          complex.nodes, cell.signedArea, cell.area,
+                          cell.sourceFaces)) {
+      collect_cell_source_faces(cell.halfedges, complex.halfedges,
+                                cell.sourceFaces);
+      if (cell.boundaryCycle) {
+        // An exterior cycle can wrap a curved open surface and therefore need
+        // not admit one non-degenerate global tangent-plane projection. It is
+        // excluded from extracted-area accounting; retain only its topological
+        // orientation contract here.
+        cell.signedArea = -1.0;
+        cell.area = 0.0;
+      } else {
+        embeddingValid = false;
+        cell.signedArea = 0.0;
+        cell.area = 0.0;
+      }
+    } else if (boundaryVote != 0) {
+      cell.signedArea = boundaryVote < 0 ? -std::abs(cell.area)
+                                         : std::abs(cell.area);
+      cell.boundaryCycle = boundaryVote < 0;
+    } else {
+      cell.boundaryCycle = cell.closed && cell.signedArea < 0.0;
+    }
     for (int index = 0; index < static_cast<int>(cell.halfedges.size()); ++index) {
-      const auto &he =
+      const auto &current =
           complex.halfedges[static_cast<std::size_t>(cell.halfedges[index])];
-      const auto &next =
-          complex.halfedges[static_cast<std::size_t>(
-              cell.halfedges[(index + 1) % cell.halfedges.size()])];
-      if (he.family < 0) {
-        cell.sideFamilies.push_back(he.family);
-        cell.sideEdgeCounts.push_back(1);
-      } else if (!cell.sideFamilies.empty() &&
-                 same_family_collinear(he, next, complex.nodes)) {
+      bool continuesPrevious = false;
+      if (index > 0 && !cell.sideFamilies.empty() &&
+          cell.sideFamilies.back() == current.family) {
+        const auto &previous = complex.halfedges[static_cast<std::size_t>(
+            cell.halfedges[static_cast<std::size_t>(index - 1)])];
+        continuesPrevious = same_family_collinear(
+            previous, current, complex.nodes, vertices, faces);
+      }
+      if (continuesPrevious) {
         ++cell.sideEdgeCounts.back();
       } else {
-        cell.sideFamilies.push_back(he.family);
+        cell.sideFamilies.push_back(current.family);
         cell.sideEdgeCounts.push_back(1);
+      }
+    }
+    if (cell.sideFamilies.size() > 1U &&
+        cell.sideFamilies.front() == cell.sideFamilies.back()) {
+      const auto &last = complex.halfedges[static_cast<std::size_t>(
+          cell.halfedges.back())];
+      const auto &first = complex.halfedges[static_cast<std::size_t>(
+          cell.halfedges.front())];
+      if (same_family_collinear(last, first, complex.nodes, vertices, faces)) {
+        cell.sideEdgeCounts.front() += cell.sideEdgeCounts.back();
+        cell.sideEdgeCounts.pop_back();
+        cell.sideFamilies.pop_back();
       }
     }
     if (cell.boundaryCycle) {
@@ -1130,12 +1578,21 @@ inline SurfaceCellComplex build_surface_cell_complex(
   std::vector<std::vector<Eigen::Vector2d>> cellPolygons(complex.cells.size());
   for (const SurfaceArrangementCell &cell : complex.cells) {
     auto &polygon = cellPolygons[static_cast<std::size_t>(cell.id)];
+    if (cell.sourceFaces.size() != 1U) {
+      continue;
+    }
+    const int polygonFace = cell.sourceFaces.front();
     polygon.reserve(cell.halfedges.size());
     for (const int halfedgeId : cell.halfedges) {
       const SurfaceArrangementHalfedge &halfedge =
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-      polygon.push_back(bary_to_uv(
-          complex.nodes[static_cast<std::size_t>(halfedge.from)].barycentric));
+      const Eigen::RowVector3d barycentric = node_barycentric_on_face(
+          complex.nodes[static_cast<std::size_t>(halfedge.from)], polygonFace);
+      if (!barycentric.allFinite()) {
+        polygon.clear();
+        break;
+      }
+      polygon.push_back(bary_to_uv(barycentric));
     }
   }
   for (SurfaceArrangementCell &cell : complex.cells) {
@@ -1146,12 +1603,16 @@ inline SurfaceCellComplex build_surface_cell_complex(
     const auto &outer = cellPolygons[static_cast<std::size_t>(cell.id)];
     for (const SurfaceArrangementCell &candidate : complex.cells) {
       if (!candidate.boundaryCycle || !candidate.closed ||
-          candidate.sourceFace != cell.sourceFace ||
+          cell.sourceFaces.size() != 1U ||
+          candidate.sourceFaces != cell.sourceFaces || outer.empty() ||
           candidate.area >= cell.area - 1.0e-14) {
         continue;
       }
       const auto &hole =
           cellPolygons[static_cast<std::size_t>(candidate.id)];
+      if (hole.empty()) {
+        continue;
+      }
       Eigen::Vector2d centroid = Eigen::Vector2d::Zero();
       for (const Eigen::Vector2d &point : hole) {
         centroid += point;
@@ -1194,19 +1655,34 @@ inline SurfaceCellComplex build_surface_cell_complex(
     }
   }
   for (const SurfaceArrangementNode &node : complex.nodes) {
-    const Eigen::Vector2d p = bary_to_uv(node.barycentric);
-    for (const SurfaceArrangementHalfedge &h : complex.halfedges) {
-      if (h.sourceFace != node.sourceFace || h.from == node.id || h.to == node.id) {
-        continue;
+    bool foundTJunction = false;
+    for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+      const Eigen::Vector2d point = bary_to_uv(occurrence.barycentric);
+      for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+        if (halfedge.sourceFace != occurrence.sourceFace ||
+            halfedge.from == node.id || halfedge.to == node.id) {
+          continue;
+        }
+        const Eigen::RowVector3d startBarycentric = node_barycentric_on_face(
+            complex.nodes[static_cast<std::size_t>(halfedge.from)],
+            occurrence.sourceFace);
+        const Eigen::RowVector3d endBarycentric = node_barycentric_on_face(
+            complex.nodes[static_cast<std::size_t>(halfedge.to)],
+            occurrence.sourceFace);
+        if (!startBarycentric.allFinite() || !endBarycentric.allFinite()) {
+          continue;
+        }
+        Segment2 split;
+        split.sourceFace = occurrence.sourceFace;
+        split.start = bary_to_uv(startBarycentric);
+        split.end = bary_to_uv(endBarycentric);
+        if (point_on_segment(point, split)) {
+          ++complex.diagnostics.geometricTJunctions;
+          foundTJunction = true;
+          break;
+        }
       }
-      Segment2 split;
-      split.sourceFace = h.sourceFace;
-      split.start =
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(h.from)].barycentric);
-      split.end =
-          bary_to_uv(complex.nodes[static_cast<std::size_t>(h.to)].barycentric);
-      if (point_on_segment(p, split)) {
-        ++complex.diagnostics.geometricTJunctions;
+      if (foundTJunction) {
         break;
       }
     }
@@ -1235,8 +1711,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
     if (!cell.boundaryCycle) {
-      complex.diagnostics.extractedArea +=
-          cell.area * 2.0 * triangle_area_3d(vertices, faces, cell.sourceFace);
+      complex.diagnostics.extractedArea += cell.area;
     }
   }
   complex.diagnostics.relativeAreaError =
@@ -1255,6 +1730,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
   std::vector<std::pair<int, int>> arrangementBoundaryEdges;
   bool incidenceValid = true;
   bool orientationValid = true;
+  bool cellsDiskValid = true;
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     if (halfedge.id < 0 || halfedge.id >= static_cast<int>(complex.halfedges.size()) ||
         halfedge.twin < 0 ||
@@ -1302,6 +1778,9 @@ inline SurfaceCellComplex build_surface_cell_complex(
         orientationValid = false;
       }
     }
+    if (!cell.boundaryCycle && !cell.disk) {
+      cellsDiskValid = false;
+    }
     for (const int halfedgeId : cell.halfedges) {
       if (halfedgeId < 0 ||
           halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
@@ -1312,7 +1791,9 @@ inline SurfaceCellComplex build_surface_cell_complex(
     }
   }
   complex.diagnostics.incidenceValid = incidenceValid;
+  complex.diagnostics.embeddingValid = embeddingValid;
   complex.diagnostics.orientationValid = orientationValid;
+  complex.diagnostics.cellsDiskValid = cellsDiskValid;
   complex.diagnostics.connectedComponentCount = graph_component_count(
       static_cast<int>(complex.nodes.size()), arrangementEdges);
   const auto [boundaryLoops, boundaryValid] = boundary_loop_count(
@@ -1362,7 +1843,9 @@ inline SurfaceCellComplex build_surface_cell_complex(
           complex.diagnostics.sourceBoundaryLoopCount;
   complex.diagnostics.topologyValid =
       complex.diagnostics.incidenceValid &&
+      complex.diagnostics.embeddingValid &&
       complex.diagnostics.orientationValid &&
+      complex.diagnostics.cellsDiskValid &&
       complex.diagnostics.boundaryLoopsValid &&
       complex.diagnostics.eulerCharacteristicValid &&
       complex.diagnostics.unsplitCrossings == 0 &&
@@ -1426,6 +1909,7 @@ inline std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex
   mix(static_cast<int>(complex.halfedges.size()));
   mix(static_cast<int>(complex.cells.size()));
   for (const SurfaceArrangementNode &node : complex.nodes) {
+    mix(node.hardBarrierCrossing ? 1 : 0);
     mix(node.sourceFace);
     mix(node.sourceEdge);
     mix(static_cast<std::int64_t>(std::llround(node.sourceEdgeParameter * 1.0e10)));
@@ -1468,9 +1952,24 @@ inline std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex
     }
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    mix(cell.closed ? 1 : 0);
+    mix(cell.disk ? 1 : 0);
+    mix(cell.boundaryCycle ? 1 : 0);
+    mix(cell.boundaryComponentCount);
+    mix(cell.eulerCharacteristic);
+    for (const int sourceFace : cell.sourceFaces) {
+      mix(sourceFace);
+    }
     mix(static_cast<int>(cell.cellClass));
     mix(static_cast<int>(cell.rejectReason));
+    mix(static_cast<std::int64_t>(std::llround(cell.signedArea * 1.0e10)));
     mix(static_cast<std::int64_t>(std::llround(cell.area * 1.0e10)));
+    for (const int family : cell.sideFamilies) {
+      mix(family);
+    }
+    for (const int count : cell.sideEdgeCounts) {
+      mix(count);
+    }
   }
   return hash;
 }

@@ -1550,11 +1550,12 @@ TEST(SurfaceCellPipelinePhase20, TryLegacyReportsExecutedBackendWhenLegacySuccee
   EXPECT_TRUE(result.diagnostics.surfaceCellUsedLegacyFallback);
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
   EXPECT_EQ("LegacyInteger", result.diagnostics.executedBackend);
-  EXPECT_EQ("NotProductionReady",
+  EXPECT_EQ("InjectedStageFailure",
             result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("completion",
+  EXPECT_EQ("optimization",
             result.diagnostics.originalSurfaceCellFailureStage);
-  EXPECT_EQ("NotProductionReady", result.diagnostics.surfaceCellFallbackCause);
+  EXPECT_EQ("InjectedStageFailure",
+            result.diagnostics.surfaceCellFallbackCause);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_STREQ("LegacyFallback", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
   EXPECT_NE("InjectedStageFailure", result.diagnostics.terminalFailureCode);

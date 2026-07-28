@@ -253,6 +253,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/LocalPatchValidatorTests.cpp
     tests/MilestoneBClosureTests.cpp
     tests/MilestoneCClosureTests.cpp
+    tests/MilestoneDClosureTests.cpp
     tests/ParametrizationQualityTests.cpp
     tests/PatchQuadrangulatorTests.cpp
     tests/PureQuadCompletionPhase18Tests.cpp
@@ -316,6 +317,52 @@ if(DIRECTIONAL_BUILD_TESTS)
   endif()
 
   add_executable(
+    directional_milestone_d_tests
+    tests/MilestoneDClosureTests.cpp
+    tests/SurfaceArrangementPhase16Tests.cpp
+    tests/SurfaceComplexSimplificationPhase17Tests.cpp)
+  target_link_libraries(
+    directional_milestone_d_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_milestone_d_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_d_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    add_custom_command(
+      TARGET directional_milestone_d_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_d_tests>
+        $<TARGET_FILE_DIR:directional_milestone_d_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_d_benchmark
+    tests/MilestoneDBenchmark.cpp)
+  target_link_libraries(
+    directional_milestone_d_benchmark
+    PRIVATE Directional::directional)
+  target_compile_features(directional_milestone_d_benchmark PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_d_benchmark PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    add_custom_command(
+      TARGET directional_milestone_d_benchmark
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_d_benchmark>
+        $<TARGET_FILE_DIR:directional_milestone_d_benchmark>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
     directional_milestone_c_benchmark
     tests/MilestoneCBenchmark.cpp)
   target_link_libraries(
@@ -340,6 +387,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   include(GoogleTest)
   gtest_discover_tests(directional_phase1_tests)
   gtest_discover_tests(directional_milestone_c_tests)
+  gtest_discover_tests(directional_milestone_d_tests)
 endif()
 
 if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
