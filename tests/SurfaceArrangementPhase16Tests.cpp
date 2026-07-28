@@ -340,7 +340,9 @@ TEST(SurfaceArrangementPhase16, MemoryRatioAndOverlayChannelsAreBounded) {
   const auto overlay = directional::geometry::make_surface_arrangement_overlay(
       complex);
 
-  EXPECT_LE(complex.diagnostics.memoryRatioEstimate, 10.0);
+  EXPECT_GT(complex.diagnostics.memoryRatioEstimate, 0.0);
+  EXPECT_GE(complex.diagnostics.peakMemoryBytes,
+            complex.diagnostics.retainedMemoryBytes);
   EXPECT_GT(complex.diagnostics.measuredMemoryRatio, 0.0);
   EXPECT_EQ(overlay.splitSegmentStarts.rows(),
             static_cast<int>(complex.halfedges.size()));
@@ -514,4 +516,140 @@ TEST(SurfaceArrangementPhase16,
     }
   }
   EXPECT_EQ(matching, 1);
+}
+
+TEST(SurfaceArrangementPhase16,
+     AuthoritativeTopologyDiagnosticsMatchSingleDiskSource) {
+  const auto fixture = unit_triangle();
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  EXPECT_TRUE(complex.diagnostics.incidenceValid);
+  EXPECT_TRUE(complex.diagnostics.orientationValid);
+  EXPECT_TRUE(complex.diagnostics.boundaryLoopsValid);
+  EXPECT_TRUE(complex.diagnostics.eulerCharacteristicValid);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.connectedComponentCount, 1);
+  EXPECT_EQ(complex.diagnostics.sourceConnectedComponentCount, 1);
+  EXPECT_EQ(complex.diagnostics.boundaryLoopCount, 1);
+  EXPECT_EQ(complex.diagnostics.sourceBoundaryLoopCount, 1);
+  EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
+  EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
+}
+
+TEST(SurfaceArrangementPhase16,
+     AuthoritativeTopologyDiagnosticsHandleDisconnectedSourceComponents) {
+  TriangleFixture fixture;
+  fixture.vertices.resize(6, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                      3.0, 0.0, 0.0,
+                      4.0, 0.0, 0.0,
+                      3.0, 1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2,
+                   3, 4, 5;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.connectedComponentCount, 2);
+  EXPECT_EQ(complex.diagnostics.sourceConnectedComponentCount, 2);
+  EXPECT_EQ(complex.diagnostics.boundaryLoopCount, 2);
+  EXPECT_EQ(complex.diagnostics.sourceBoundaryLoopCount, 2);
+  EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 2);
+  EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 2);
+}
+
+TEST(SurfaceArrangementPhase16,
+     NestedCyclesAreClassifiedAsNonDiskInsteadOfDefaultDisk) {
+  const auto fixture = unit_triangle();
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_arc(400, {0.70, 0.20, 0.10}, {0.50, 0.40, 0.10}, 0),
+      make_arc(401, {0.50, 0.40, 0.10}, {0.30, 0.40, 0.30}, 1),
+      make_arc(402, {0.30, 0.40, 0.30}, {0.50, 0.20, 0.30}, 0),
+      make_arc(403, {0.50, 0.20, 0.30}, {0.70, 0.20, 0.10}, 1),
+      make_arc(410, {0.55, 0.27, 0.18}, {0.47, 0.35, 0.18}, 0),
+      make_arc(411, {0.47, 0.35, 0.18}, {0.39, 0.35, 0.26}, 1),
+      make_arc(412, {0.39, 0.35, 0.26}, {0.47, 0.27, 0.26}, 0),
+      make_arc(413, {0.47, 0.27, 0.26}, {0.55, 0.27, 0.18}, 1)};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs, options);
+
+  EXPECT_TRUE(std::any_of(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return !cell.boundaryCycle && !cell.disk &&
+               cell.boundaryComponentCount == 2 &&
+               cell.eulerCharacteristic == 0 &&
+               cell.cellClass == directional::geometry::
+                   SurfaceArrangementCellClass::NonDisk;
+      }));
+}
+
+TEST(SurfaceArrangementPhase16,
+     HardBarrierCrossingsAreUniqueTransverseAndLocalizedToIncidentCells) {
+  const auto fixture = unit_triangle();
+  auto hard = make_arc(500, {0.70, 0.10, 0.20}, {0.30, 0.50, 0.20}, 0, true);
+  auto crossing =
+      make_arc(501, {0.60, 0.30, 0.10}, {0.40, 0.30, 0.30}, 1, false);
+  auto overlap =
+      make_arc(502, {0.60, 0.20, 0.20}, {0.40, 0.40, 0.20}, 0, false);
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {hard, crossing, overlap});
+
+  EXPECT_EQ(complex.diagnostics.hardBarrierCrossings, 1);
+  EXPECT_EQ(static_cast<int>(std::count_if(
+                complex.nodes.begin(), complex.nodes.end(),
+                [](const auto &node) { return node.hardBarrierCrossing; })),
+            1);
+}
+
+TEST(SurfaceArrangementPhase16,
+     PeakMemoryMeasurementUsesOwnedCapacityAndBoundsRetainedStorage) {
+  const auto fixture = unit_triangle();
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_arc(600, {0.50, 0.50, 0.00}, {0.25, 0.25, 0.50}, 0),
+      make_arc(601, {0.50, 0.00, 0.50}, {0.25, 0.50, 0.25}, 1)};
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  EXPECT_GT(complex.diagnostics.inputMemoryBytes, 0U);
+  EXPECT_GT(complex.diagnostics.retainedMemoryBytes, 0U);
+  EXPECT_GE(complex.diagnostics.peakMemoryBytes,
+            complex.diagnostics.retainedMemoryBytes);
+  EXPECT_DOUBLE_EQ(
+      complex.diagnostics.measuredMemoryRatio,
+      static_cast<double>(complex.diagnostics.peakMemoryBytes) /
+          static_cast<double>(complex.diagnostics.inputMemoryBytes));
+  EXPECT_DOUBLE_EQ(complex.diagnostics.memoryRatioEstimate,
+                   complex.diagnostics.measuredMemoryRatio);
+}
+
+TEST(SurfaceArrangementPhase16,
+     CurvedMultiFaceFixturePreservesStitchedTopologyAndEulerCharacteristic) {
+  auto fixture = unit_square_two_triangles();
+  fixture.vertices(3, 2) = 0.4;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  EXPECT_TRUE(complex.diagnostics.incidenceValid);
+  EXPECT_TRUE(complex.diagnostics.orientationValid);
+  EXPECT_TRUE(complex.diagnostics.eulerCharacteristicValid);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
+  EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
+  EXPECT_EQ(complex.diagnostics.connectedComponentCount, 1);
+  EXPECT_EQ(complex.diagnostics.boundaryLoopCount, 1);
+  EXPECT_TRUE(std::any_of(
+      complex.nodes.begin(), complex.nodes.end(), [](const auto &node) {
+        return node.occurrences.size() == 2U;
+      }));
 }

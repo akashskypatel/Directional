@@ -102,6 +102,7 @@ struct SurfaceArrangementProvenance {
 struct SurfaceArrangementNode {
   int id = -1;
   int sourceFace = -1;
+  bool hardBarrierCrossing = false;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
   int sourceEdge = -1;
   double sourceEdgeParameter = 0.0;
@@ -145,7 +146,10 @@ struct SurfaceArrangementCell {
   double signedArea = 0.0;
   double area = 0.0;
   bool boundaryCycle = false;
-  bool disk = true;
+  bool closed = false;
+  bool disk = false;
+  int boundaryComponentCount = 0;
+  int eulerCharacteristic = 0;
   bool quadReady = false;
   SurfaceArrangementCellClass cellClass =
       SurfaceArrangementCellClass::PatchCandidate;
@@ -162,12 +166,24 @@ struct SurfaceArrangementDiagnostics {
   int hardBarrierCrossings = 0;
   int eulerCharacteristic = 0;
   int sourceEulerCharacteristic = 0;
+  int connectedComponentCount = 0;
+  int sourceConnectedComponentCount = 0;
+  int boundaryLoopCount = 0;
+  int sourceBoundaryLoopCount = 0;
+  bool incidenceValid = false;
+  bool orientationValid = false;
+  bool boundaryLoopsValid = false;
+  bool eulerCharacteristicValid = false;
+  bool topologyValid = false;
   int peakSegmentsPerFace = 0;
   double supportedArea = 0.0;
   double extractedArea = 0.0;
   double relativeAreaError = 0.0;
   double memoryRatioEstimate = 0.0;
   double measuredMemoryRatio = 0.0;
+  std::uint64_t inputMemoryBytes = 0;
+  std::uint64_t retainedMemoryBytes = 0;
+  std::uint64_t peakMemoryBytes = 0;
 };
 
 struct SurfaceCellComplex {
@@ -452,6 +468,127 @@ inline double polygon_area(const std::vector<Eigen::Vector2d> &points) {
   return 0.5 * twice;
 }
 
+inline bool point_in_polygon(const Eigen::Vector2d &point,
+                             const std::vector<Eigen::Vector2d> &polygon) {
+  bool inside = false;
+  for (std::size_t i = 0, j = polygon.size() - 1; i < polygon.size();
+       j = i++) {
+    const Eigen::Vector2d &a = polygon[i];
+    const Eigen::Vector2d &b = polygon[j];
+    const bool straddles = (a.y() > point.y()) != (b.y() > point.y());
+    if (!straddles) {
+      continue;
+    }
+    const double x = (b.x() - a.x()) * (point.y() - a.y()) /
+                         (b.y() - a.y()) +
+                     a.x();
+    if (point.x() < x) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+inline bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
+                                       const double ta, const double tb) {
+  const Eigen::Vector2d da = a.end - a.start;
+  const Eigen::Vector2d db = b.end - b.start;
+  if (std::abs(cross2(da, db)) <= 1.0e-12) {
+    return false;
+  }
+  return ta > 1.0e-10 && ta < 1.0 - 1.0e-10 && tb > 1.0e-10 &&
+         tb < 1.0 - 1.0e-10;
+}
+
+template <typename T>
+inline std::uint64_t vector_storage_bytes(const std::vector<T> &values) {
+  return static_cast<std::uint64_t>(values.capacity()) * sizeof(T);
+}
+
+inline std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
+  std::uint64_t bytes = vector_storage_bytes(complex.nodes) +
+                        vector_storage_bytes(complex.halfedges) +
+                        vector_storage_bytes(complex.cells);
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    bytes += vector_storage_bytes(node.occurrences);
+  }
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    bytes += vector_storage_bytes(halfedge.provenance);
+  }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += vector_storage_bytes(cell.halfedges);
+    bytes += vector_storage_bytes(cell.sideFamilies);
+    bytes += vector_storage_bytes(cell.sideEdgeCounts);
+  }
+  return bytes;
+}
+
+inline int graph_component_count(
+    const int vertexCount, const std::vector<std::pair<int, int>> &edges,
+    const std::vector<unsigned char> *activeMask = nullptr) {
+  std::vector<std::vector<int>> adjacency(static_cast<std::size_t>(vertexCount));
+  std::vector<unsigned char> active(static_cast<std::size_t>(vertexCount), 0);
+  for (const auto &[a, b] : edges) {
+    if (a < 0 || b < 0 || a >= vertexCount || b >= vertexCount) {
+      continue;
+    }
+    adjacency[static_cast<std::size_t>(a)].push_back(b);
+    adjacency[static_cast<std::size_t>(b)].push_back(a);
+    active[static_cast<std::size_t>(a)] = 1;
+    active[static_cast<std::size_t>(b)] = 1;
+  }
+  if (activeMask != nullptr) {
+    active = *activeMask;
+  }
+  int count = 0;
+  std::vector<unsigned char> visited(static_cast<std::size_t>(vertexCount), 0);
+  for (int start = 0; start < vertexCount; ++start) {
+    if (active[static_cast<std::size_t>(start)] == 0 ||
+        visited[static_cast<std::size_t>(start)] != 0) {
+      continue;
+    }
+    ++count;
+    std::vector<int> stack{start};
+    visited[static_cast<std::size_t>(start)] = 1;
+    while (!stack.empty()) {
+      const int current = stack.back();
+      stack.pop_back();
+      for (const int next : adjacency[static_cast<std::size_t>(current)]) {
+        if (visited[static_cast<std::size_t>(next)] == 0) {
+          visited[static_cast<std::size_t>(next)] = 1;
+          stack.push_back(next);
+        }
+      }
+    }
+  }
+  return count;
+}
+
+inline std::pair<int, bool> boundary_loop_count(
+    const int vertexCount, const std::vector<std::pair<int, int>> &edges) {
+  if (edges.empty()) {
+    return {0, true};
+  }
+  std::vector<int> degree(static_cast<std::size_t>(vertexCount), 0);
+  std::vector<unsigned char> active(static_cast<std::size_t>(vertexCount), 0);
+  for (const auto &[a, b] : edges) {
+    if (a < 0 || b < 0 || a >= vertexCount || b >= vertexCount || a == b) {
+      return {0, false};
+    }
+    ++degree[static_cast<std::size_t>(a)];
+    ++degree[static_cast<std::size_t>(b)];
+    active[static_cast<std::size_t>(a)] = 1;
+    active[static_cast<std::size_t>(b)] = 1;
+  }
+  for (int vertex = 0; vertex < vertexCount; ++vertex) {
+    if (active[static_cast<std::size_t>(vertex)] != 0 &&
+        degree[static_cast<std::size_t>(vertex)] != 2) {
+      return {0, false};
+    }
+  }
+  return {graph_component_count(vertexCount, edges, &active), true};
+}
+
 inline bool same_family_collinear(const SurfaceArrangementHalfedge &a,
                                   const SurfaceArrangementHalfedge &b,
                                   const std::vector<SurfaceArrangementNode> &nodes) {
@@ -475,6 +612,12 @@ inline SurfaceCellComplex build_surface_cell_complex(
   }
   using namespace surface_arrangement_detail;
   SurfaceCellComplex complex;
+  std::uint64_t peakOwnedBytes = 0;
+  const auto update_peak_memory = [&](const std::uint64_t temporaryBytes = 0) {
+    peakOwnedBytes = std::max(
+        peakOwnedBytes,
+        complex_storage_bytes(complex) + temporaryBytes);
+  };
   std::vector<Segment2> segments;
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
 
@@ -560,7 +703,16 @@ inline SurfaceCellComplex build_surface_cell_complex(
   for (auto &params : splitParams) {
     params = {0.0, 1.0};
   }
+  const auto split_storage_bytes = [&]() {
+    std::uint64_t bytes = vector_storage_bytes(splitParams);
+    for (const auto &params : splitParams) {
+      bytes += vector_storage_bytes(params);
+    }
+    return bytes;
+  };
+  update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes());
   std::set<NodeKey> intersectionKeys;
+  std::set<NodeKey> hardBarrierCrossingKeys;
   for (int i = 0; i < static_cast<int>(segments.size()); ++i) {
     for (int j = i + 1; j < static_cast<int>(segments.size()); ++j) {
       if (segments[static_cast<std::size_t>(i)].sourceFace !=
@@ -584,8 +736,12 @@ inline SurfaceCellComplex build_surface_cell_complex(
         const bool bHard = segments[static_cast<std::size_t>(j)].hardFeature;
         const bool aInput = segments[static_cast<std::size_t>(i)].sourceArc >= 0;
         const bool bInput = segments[static_cast<std::size_t>(j)].sourceArc >= 0;
-        if (aHard != bHard && (aInput || bInput)) {
-          ++complex.diagnostics.hardBarrierCrossings;
+        if (aHard != bHard && (aInput || bInput) &&
+            proper_transverse_crossing(
+                segments[static_cast<std::size_t>(i)],
+                segments[static_cast<std::size_t>(j)], ti, tj)) {
+          hardBarrierCrossingKeys.insert(make_node_key(
+              faces, segments[static_cast<std::size_t>(i)].sourceFace, p));
         }
       }
       intersectionKeys.insert(make_node_key(
@@ -594,6 +750,9 @@ inline SurfaceCellComplex build_surface_cell_complex(
   }
   complex.diagnostics.uniqueIntersections =
       static_cast<int>(intersectionKeys.size());
+  complex.diagnostics.hardBarrierCrossings =
+      static_cast<int>(hardBarrierCrossingKeys.size());
+  update_peak_memory(vector_storage_bytes(segments));
 
   std::map<NodeKey, int> nodeByKey;
   const auto node_id = [&](const int face, const Eigen::Vector2d &rawUv) {
@@ -605,6 +764,8 @@ inline SurfaceCellComplex build_surface_cell_complex(
     if (found != nodeByKey.end()) {
       SurfaceArrangementNode &node =
           complex.nodes[static_cast<std::size_t>(found->second)];
+      node.hardBarrierCrossing =
+          node.hardBarrierCrossing || hardBarrierCrossingKeys.count(key) != 0;
       const bool occurrenceExists =
           std::any_of(node.occurrences.begin(), node.occurrences.end(),
                       [&](const SurfaceArrangementNodeOccurrence &occurrence) {
@@ -630,6 +791,7 @@ inline SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementNode node;
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
+    node.hardBarrierCrossing = hardBarrierCrossingKeys.count(key) != 0;
     node.barycentric = bary;
     node.sourceEdge =
         key.kind == 1 ? static_cast<int>(key.edge & 0x7fffffffu) : -1;
@@ -875,9 +1037,10 @@ inline SurfaceCellComplex build_surface_cell_complex(
     if (cell.halfedges.size() < 3) {
       continue;
     }
-    cell.signedArea = polygon_area(polygon);
+    cell.closed = h == start;
+    cell.signedArea = cell.closed ? polygon_area(polygon) : 0.0;
     cell.area = std::abs(cell.signedArea);
-    cell.boundaryCycle = cell.signedArea < 0.0;
+    cell.boundaryCycle = cell.closed && cell.signedArea < 0.0;
     for (int index = 0; index < static_cast<int>(cell.halfedges.size()); ++index) {
       const auto &he =
           complex.halfedges[static_cast<std::size_t>(cell.halfedges[index])];
@@ -906,14 +1069,29 @@ inline SurfaceCellComplex build_surface_cell_complex(
         uniqueNodes.insert(
             complex.halfedges[static_cast<std::size_t>(halfedge)].from);
       }
-      cell.disk = uniqueNodes.size() == cell.halfedges.size();
+      cell.boundaryComponentCount = cell.closed ? 1 : 0;
+      cell.eulerCharacteristic =
+          static_cast<int>(uniqueNodes.size()) -
+          static_cast<int>(cell.halfedges.size()) + (cell.closed ? 1 : 0);
+      cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
+                  uniqueNodes.size() == cell.halfedges.size() &&
+                  cell.eulerCharacteristic == 1;
       if (!cell.disk) {
         cell.cellClass = SurfaceArrangementCellClass::NonDisk;
         cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
         complex.cells.push_back(cell);
         continue;
       }
-      if (complex.diagnostics.hardBarrierCrossings > 0) {
+      const bool crossesHardBarrier = std::any_of(
+          cell.halfedges.begin(), cell.halfedges.end(), [&](const int edge) {
+            const SurfaceArrangementHalfedge &halfedge =
+                complex.halfedges[static_cast<std::size_t>(edge)];
+            return complex.nodes[static_cast<std::size_t>(halfedge.from)]
+                       .hardBarrierCrossing ||
+                   complex.nodes[static_cast<std::size_t>(halfedge.to)]
+                       .hardBarrierCrossing;
+          });
+      if (crossesHardBarrier) {
         cell.rejectReason = SurfaceArrangementRejectReason::HardFeatureCrossing;
       }
       bool alternating = true;
@@ -927,20 +1105,74 @@ inline SurfaceCellComplex build_surface_cell_complex(
       }
       const int boundaryCount = std::accumulate(cell.sideEdgeCounts.begin(),
                                                 cell.sideEdgeCounts.end(), 0);
-      if (cell.sideFamilies.size() == 4 && alternating) {
+      if (cell.sideFamilies.size() == 4 && alternating &&
+          cell.rejectReason != SurfaceArrangementRejectReason::HardFeatureCrossing) {
         cell.quadReady = true;
         cell.cellClass = SurfaceArrangementCellClass::RegularQuad;
       } else {
         cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
-        cell.rejectReason = !alternating
-                                ? SurfaceArrangementRejectReason::NonAlternatingFamilies
-                                : (boundaryCount % 2 != 0
-                                       ? SurfaceArrangementRejectReason::OddBoundaryParity
-                                       : SurfaceArrangementRejectReason::NotFourSided);
+        if (cell.rejectReason != SurfaceArrangementRejectReason::HardFeatureCrossing) {
+          cell.rejectReason = !alternating
+                                  ? SurfaceArrangementRejectReason::NonAlternatingFamilies
+                                  : (boundaryCount % 2 != 0
+                                         ? SurfaceArrangementRejectReason::OddBoundaryParity
+                                         : SurfaceArrangementRejectReason::NotFourSided);
+        }
       }
     }
     complex.cells.push_back(cell);
   }
+
+  // A DCEL walk yields one oriented cycle at a time.  A bounded region may
+  // nevertheless have nested, oppositely oriented cycles (holes).  Detect
+  // those components explicitly so annular and multiply connected cells are
+  // not silently reported as disks.
+  std::vector<std::vector<Eigen::Vector2d>> cellPolygons(complex.cells.size());
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    auto &polygon = cellPolygons[static_cast<std::size_t>(cell.id)];
+    polygon.reserve(cell.halfedges.size());
+    for (const int halfedgeId : cell.halfedges) {
+      const SurfaceArrangementHalfedge &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      polygon.push_back(bary_to_uv(
+          complex.nodes[static_cast<std::size_t>(halfedge.from)].barycentric));
+    }
+  }
+  for (SurfaceArrangementCell &cell : complex.cells) {
+    if (cell.boundaryCycle || !cell.closed || cell.area <= 1.0e-14) {
+      continue;
+    }
+    int nestedBoundaryCount = 0;
+    const auto &outer = cellPolygons[static_cast<std::size_t>(cell.id)];
+    for (const SurfaceArrangementCell &candidate : complex.cells) {
+      if (!candidate.boundaryCycle || !candidate.closed ||
+          candidate.sourceFace != cell.sourceFace ||
+          candidate.area >= cell.area - 1.0e-14) {
+        continue;
+      }
+      const auto &hole =
+          cellPolygons[static_cast<std::size_t>(candidate.id)];
+      Eigen::Vector2d centroid = Eigen::Vector2d::Zero();
+      for (const Eigen::Vector2d &point : hole) {
+        centroid += point;
+      }
+      centroid /= static_cast<double>(std::max<std::size_t>(1U, hole.size()));
+      if (point_in_polygon(centroid, outer)) {
+        ++nestedBoundaryCount;
+      }
+    }
+    cell.boundaryComponentCount = 1 + nestedBoundaryCount;
+    cell.eulerCharacteristic = 2 - cell.boundaryComponentCount;
+    cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
+                cell.eulerCharacteristic == 1;
+    if (!cell.disk) {
+      cell.quadReady = false;
+      cell.cellClass = SurfaceArrangementCellClass::NonDisk;
+      cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
+    }
+  }
+  update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes() +
+                     vector_storage_bytes(cellPolygons));
 
   for (int i = 0; i < static_cast<int>(segments.size()); ++i) {
     const Segment2 &a = segments[static_cast<std::size_t>(i)];
@@ -1017,33 +1249,140 @@ inline SurfaceCellComplex build_surface_cell_complex(
       [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
   complex.diagnostics.eulerCharacteristic =
       static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
-  std::set<std::uint64_t> sourceEdges;
-  for (int face = 0; face < faces.rows(); ++face) {
-    for (int edge = 0; edge < 3; ++edge) {
-      sourceEdges.insert(source_edge_key(faces, face, edge));
+
+  std::vector<std::pair<int, int>> arrangementEdges;
+  arrangementEdges.reserve(static_cast<std::size_t>(undirectedEdges));
+  std::vector<std::pair<int, int>> arrangementBoundaryEdges;
+  bool incidenceValid = true;
+  bool orientationValid = true;
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.id < 0 || halfedge.id >= static_cast<int>(complex.halfedges.size()) ||
+        halfedge.twin < 0 ||
+        halfedge.twin >= static_cast<int>(complex.halfedges.size()) ||
+        halfedge.next < 0 ||
+        halfedge.next >= static_cast<int>(complex.halfedges.size()) ||
+        halfedge.from < 0 ||
+        halfedge.from >= static_cast<int>(complex.nodes.size()) ||
+        halfedge.to < 0 ||
+        halfedge.to >= static_cast<int>(complex.nodes.size()) ||
+        halfedge.cell < 0 ||
+        halfedge.cell >= static_cast<int>(complex.cells.size())) {
+      incidenceValid = false;
+      continue;
+    }
+    const SurfaceArrangementHalfedge &twin =
+        complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+    if (twin.twin != halfedge.id || twin.from != halfedge.to ||
+        twin.to != halfedge.from) {
+      incidenceValid = false;
+    }
+    const SurfaceArrangementHalfedge &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    if (next.from != halfedge.to) {
+      incidenceValid = false;
+    }
+    if (halfedge.id < halfedge.twin) {
+      arrangementEdges.emplace_back(halfedge.from, halfedge.to);
+      const bool leftExterior =
+          complex.cells[static_cast<std::size_t>(halfedge.cell)].boundaryCycle;
+      const bool rightExterior =
+          complex.cells[static_cast<std::size_t>(twin.cell)].boundaryCycle;
+      if (leftExterior != rightExterior) {
+        arrangementBoundaryEdges.emplace_back(halfedge.from, halfedge.to);
+      }
     }
   }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    if (!cell.closed || cell.halfedges.size() < 3U) {
+      incidenceValid = false;
+    }
+    if (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
+                           : !(cell.signedArea > 1.0e-14)) {
+      if (cell.rejectReason != SurfaceArrangementRejectReason::Sliver) {
+        orientationValid = false;
+      }
+    }
+    for (const int halfedgeId : cell.halfedges) {
+      if (halfedgeId < 0 ||
+          halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell !=
+              cell.id) {
+        incidenceValid = false;
+      }
+    }
+  }
+  complex.diagnostics.incidenceValid = incidenceValid;
+  complex.diagnostics.orientationValid = orientationValid;
+  complex.diagnostics.connectedComponentCount = graph_component_count(
+      static_cast<int>(complex.nodes.size()), arrangementEdges);
+  const auto [boundaryLoops, boundaryValid] = boundary_loop_count(
+      static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
+  complex.diagnostics.boundaryLoopCount = boundaryLoops;
+  complex.diagnostics.boundaryLoopsValid = boundaryValid;
+
+  std::set<std::uint64_t> sourceEdges;
+  std::vector<std::pair<int, int>> sourceGraphEdges;
+  std::vector<std::pair<int, int>> sourceBoundaryEdges;
+  std::vector<unsigned char> sourceVertexUsed(
+      static_cast<std::size_t>(vertices.rows()), 0);
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      sourceVertexUsed[static_cast<std::size_t>(faces(face, corner))] = 1;
+    }
+    for (int edge = 0; edge < 3; ++edge) {
+      const std::uint64_t key = source_edge_key(faces, face, edge);
+      if (sourceEdges.insert(key).second) {
+        const int a = faces(face, (edge + 1) % 3);
+        const int b = faces(face, (edge + 2) % 3);
+        sourceGraphEdges.emplace_back(a, b);
+        const auto found = edgeFaces.find(key);
+        if (found == edgeFaces.end() || found->second[1] < 0) {
+          sourceBoundaryEdges.emplace_back(a, b);
+        }
+      }
+    }
+  }
+  const int sourceVertexCount = static_cast<int>(std::count(
+      sourceVertexUsed.begin(), sourceVertexUsed.end(),
+      static_cast<unsigned char>(1)));
   complex.diagnostics.sourceEulerCharacteristic =
-      static_cast<int>(vertices.rows()) - static_cast<int>(sourceEdges.size()) +
-      static_cast<int>(faces.rows());
-  const int inputStorageUnits =
-      std::max(1, static_cast<int>(faces.rows()) * 3 +
-                      static_cast<int>(inputArcs.size()) * 2);
-  const double inputStorage = static_cast<double>(inputStorageUnits);
-  const double arrangementStorage =
-      static_cast<double>(complex.nodes.size() * 3 + complex.halfedges.size() * 2 +
-                          complex.cells.size());
-  complex.diagnostics.memoryRatioEstimate = arrangementStorage / inputStorage;
-  const std::size_t measuredBytes =
-      complex.nodes.size() * sizeof(SurfaceArrangementNode) +
-      complex.halfedges.size() * sizeof(SurfaceArrangementHalfedge) +
-      complex.cells.size() * sizeof(SurfaceArrangementCell);
-  const std::size_t inputBytes =
-      static_cast<std::size_t>(faces.rows()) * 3U * sizeof(int) +
-      inputArcs.size() * sizeof(SurfaceArrangementArc);
+      sourceVertexCount - static_cast<int>(sourceEdges.size()) + faces.rows();
+  complex.diagnostics.sourceConnectedComponentCount = graph_component_count(
+      static_cast<int>(vertices.rows()), sourceGraphEdges, &sourceVertexUsed);
+  const auto [sourceBoundaryLoops, sourceBoundaryValid] = boundary_loop_count(
+      static_cast<int>(vertices.rows()), sourceBoundaryEdges);
+  complex.diagnostics.sourceBoundaryLoopCount = sourceBoundaryLoops;
+  complex.diagnostics.eulerCharacteristicValid =
+      complex.diagnostics.eulerCharacteristic ==
+          complex.diagnostics.sourceEulerCharacteristic &&
+      complex.diagnostics.connectedComponentCount ==
+          complex.diagnostics.sourceConnectedComponentCount &&
+      boundaryValid && sourceBoundaryValid &&
+      complex.diagnostics.boundaryLoopCount ==
+          complex.diagnostics.sourceBoundaryLoopCount;
+  complex.diagnostics.topologyValid =
+      complex.diagnostics.incidenceValid &&
+      complex.diagnostics.orientationValid &&
+      complex.diagnostics.boundaryLoopsValid &&
+      complex.diagnostics.eulerCharacteristicValid &&
+      complex.diagnostics.unsplitCrossings == 0 &&
+      complex.diagnostics.geometricTJunctions == 0;
+
+  complex.diagnostics.inputMemoryBytes =
+      static_cast<std::uint64_t>(vertices.size()) * sizeof(double) +
+      static_cast<std::uint64_t>(faces.size()) * sizeof(int) +
+      static_cast<std::uint64_t>(inputArcs.capacity()) *
+          sizeof(SurfaceArrangementArc);
+  complex.diagnostics.retainedMemoryBytes = complex_storage_bytes(complex);
+  update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes());
+  complex.diagnostics.peakMemoryBytes = std::max(
+      peakOwnedBytes, complex.diagnostics.retainedMemoryBytes);
   complex.diagnostics.measuredMemoryRatio =
-      static_cast<double>(measuredBytes) /
-      static_cast<double>(std::max<std::size_t>(1U, inputBytes));
+      static_cast<double>(complex.diagnostics.peakMemoryBytes) /
+      static_cast<double>(std::max<std::uint64_t>(
+          1U, complex.diagnostics.inputMemoryBytes));
+  complex.diagnostics.memoryRatioEstimate =
+      complex.diagnostics.measuredMemoryRatio;
   return complex;
 }
 
