@@ -251,6 +251,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/IntegerBatchSelectorTests.cpp
     tests/IntegerTransitionBasisTests.cpp
     tests/LocalPatchValidatorTests.cpp
+    tests/MilestoneFP19IntegrationTests.cpp
     tests/MilestoneBClosureTests.cpp
     tests/MilestoneCClosureTests.cpp
     tests/MilestoneDClosureTests.cpp
@@ -363,6 +364,23 @@ if(DIRECTIONAL_BUILD_TESTS)
         $<TARGET_FILE_DIR:directional_milestone_e_tests>
       COMMAND_EXPAND_LISTS
       VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_f_tests
+    tests/SurfaceMeshOptimizerPhase19Tests.cpp
+    tests/MilestoneFP19IntegrationTests.cpp)
+  target_link_libraries(
+    directional_milestone_f_tests
+    PRIVATE GTest::gtest_main)
+  target_include_directories(
+    directional_milestone_f_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
+  target_compile_features(directional_milestone_f_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_f_tests PRIVATE /bigobj)
   endif()
 
   add_executable(

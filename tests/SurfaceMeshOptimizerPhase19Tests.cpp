@@ -267,6 +267,8 @@ TEST(SurfaceMeshOptimizerPhase19, ProjectsToSourceTrianglesWithProvenance) {
 
   ASSERT_EQ(result.vertexProvenance.size(), 4U);
   EXPECT_TRUE(result.sourceTriangleProjectionUsed);
+  EXPECT_EQ(result.sourceBvhBuildCount, 1U);
+  EXPECT_GT(result.projectionQueryCount, 0U);
   for (const auto &point : result.vertexProvenance) {
     EXPECT_TRUE(point.valid());
     EXPECT_GE(point.face, 0);
@@ -393,4 +395,191 @@ TEST(SurfaceMeshOptimizerPhase19, FinalValidationUsesAuthorityOptions) {
   EXPECT_TRUE(report.provenanceValidationUsed);
   EXPECT_TRUE(report.authoritativeBoundaryUsed);
   EXPECT_EQ(report.tJunctions, 0);
+}
+
+TEST(SurfaceMeshOptimizerPhase19,
+     BarycentricProvenanceInterpolatesNormalsFourRosyFieldAndTargetSize) {
+  directional::geometry::SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices.resize(3, 3);
+  constraints.sourceVertices << 0.0, 0.0, 0.0,
+                                1.0, 0.0, 0.0,
+                                0.0, 1.0, 0.0;
+  constraints.sourceFaces.resize(1, 3);
+  constraints.sourceFaces << 0, 1, 2;
+  constraints.sourceNormals.resize(3, 3);
+  constraints.sourceNormals << 0.0, 0.0, 1.0,
+                               0.0, 0.6, 0.8,
+                               0.0, 0.0, 1.0;
+  constraints.sourceFieldX.resize(3, 3);
+  constraints.sourceFieldX << 1.0, 0.0, 0.0,
+                              0.0, 1.0, 0.0,
+                              1.0, 0.0, 0.0;
+  constraints.localTargetSize.resize(3);
+  constraints.localTargetSize << 1.0, 2.0, 4.0;
+
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 3;
+  point.sheet = 7;
+  point.barycentric << 0.2, 0.3, 0.5;
+
+  const auto normal =
+      directional::geometry::surface_optimizer_detail::local_source_normal(
+          constraints, point, 0);
+  const auto cross =
+      directional::geometry::surface_optimizer_detail::local_source_cross(
+          constraints, point, 0);
+  const double target =
+      directional::geometry::surface_optimizer_detail::local_target_size(
+          constraints, point, 0, 1.0);
+
+  const Eigen::RowVector3d expectedNormal =
+      Eigen::RowVector3d(0.0, 0.18, 0.94).normalized();
+  EXPECT_TRUE(normal.isApprox(expectedNormal, 1.0e-12));
+  EXPECT_NEAR(std::abs(cross.x.dot(Eigen::RowVector3d(1.0, 0.0, 0.0))),
+              1.0, 1.0e-12);
+  EXPECT_NEAR(cross.x.dot(cross.y), 0.0, 1.0e-12);
+  EXPECT_NEAR(target, 2.8, 1.0e-12);
+}
+
+TEST(SurfaceMeshOptimizerPhase19,
+     ExplicitCurveIntervalsPreserveSegmentAssociationAndOrder) {
+  auto constraints = constraints_for_source_triangles();
+  constraints.featureVertices = {0, 1};
+  constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureIntervalIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureParameters = Eigen::VectorXd::Zero(4);
+  constraints.featureCurveIds(0) = 12;
+  constraints.featureCurveIds(1) = 12;
+  constraints.featureIntervalIds(0) = 101;
+  constraints.featureIntervalIds(1) = 102;
+  constraints.featureParameters(0) = 0.25;
+  constraints.featureParameters(1) = 1.75;
+  constraints.orderedFeatureVertices = {0, 1};
+  constraints.featureCurveIntervals = {
+      {12, Eigen::RowVector3d(0.0, 0.0, 0.0),
+       Eigen::RowVector3d(1.0, 0.0, 0.0), 101, 0, 0, 0, 2, 0.0, 1.0},
+      {12, Eigen::RowVector3d(1.0, 0.0, 0.0),
+       Eigen::RowVector3d(1.0, 1.0, 0.0), 102, 1, 0, 0, 2, 1.0, 2.0}};
+
+  Eigen::MatrixXd vertices = source_triangle_vertices();
+  vertices.row(0) << 0.25, 0.4, 0.0;
+  vertices.row(1) << 0.6, 0.75, 0.0;
+  Eigen::VectorXd parameters;
+  bool ordered = false;
+  std::vector<directional::geometry::SurfacePoint> provenance;
+  const Eigen::MatrixXd projected =
+      directional::geometry::surface_optimizer_detail::project_vertices(
+          vertices, constraints, &parameters, &ordered, nullptr, &provenance);
+
+  EXPECT_NEAR(projected(0, 0), 0.25, 1.0e-12);
+  EXPECT_NEAR(projected(0, 1), 0.0, 1.0e-12);
+  EXPECT_NEAR(projected(1, 0), 1.0, 1.0e-12);
+  EXPECT_NEAR(projected(1, 1), 0.75, 1.0e-12);
+  EXPECT_NEAR(parameters(0), 0.25, 1.0e-12);
+  EXPECT_NEAR(parameters(1), 1.75, 1.0e-12);
+  EXPECT_TRUE(ordered);
+  ASSERT_EQ(provenance.size(), 4U);
+  EXPECT_TRUE(provenance[0].valid());
+  EXPECT_TRUE(provenance[1].valid());
+}
+
+TEST(SurfaceMeshOptimizerPhase19,
+     TriangleProjectionFailsClosedWhenRequiredSheetIsUnavailable) {
+  auto constraints = constraints_for_source_triangles();
+  constraints.sourceFaceSheet = {0, 0};
+  constraints.vertexProvenance.resize(4);
+  for (auto &point : constraints.vertexProvenance) {
+    point.face = 0;
+    point.component = 0;
+    point.sheet = 9;
+    point.barycentric << 1.0, 0.0, 0.0;
+  }
+
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      source_triangle_vertices(), one_quad(), constraints);
+
+  EXPECT_FALSE(result.projectionStayedOnSheets);
+  EXPECT_FALSE(result.projectionHasCompleteProvenance);
+  EXPECT_FALSE(result.sourceTriangleProjectionUsed);
+}
+
+TEST(SurfaceMeshOptimizerPhase19,
+     FixedFeatureVertexRefreshesSourceTriangleProvenance) {
+  auto constraints = constraints_for_source_triangles();
+  constraints.fixedVertices = {0};
+  constraints.featureVertices = {0};
+  constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureIntervalIds = Eigen::VectorXi::Constant(4, -1);
+  constraints.featureParameters = Eigen::VectorXd::Zero(4);
+  constraints.featureCurveIds(0) = 4;
+  constraints.featureIntervalIds(0) = 9;
+  directional::geometry::SurfaceFeatureCurveInterval interval;
+  interval.curveId = 4;
+  interval.intervalId = 9;
+  interval.sourceFace = 0;
+  interval.component = 0;
+  interval.sheet = 2;
+  interval.parameterStart = 0.0;
+  interval.parameterEnd = 1.0;
+  interval.start << 0.0, 0.0, 0.0;
+  interval.end << 1.0, 0.0, 0.0;
+  constraints.featureCurveIntervals = {interval};
+  constraints.vertexProvenance.resize(4);
+  for (auto &point : constraints.vertexProvenance) {
+    point.face = 0;
+    point.component = 0;
+    point.sheet = 2;
+    point.barycentric << 1.0, 0.0, 0.0;
+  }
+
+  Eigen::MatrixXd initial = source_triangle_vertices();
+  initial.row(0) << 0.25, 0.2, 0.3;
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      initial, one_quad(), constraints);
+
+  EXPECT_NEAR(result.vertices(0, 0), 0.25, 1.0e-12);
+  EXPECT_NEAR(result.vertices(0, 1), 0.0, 1.0e-12);
+  EXPECT_NEAR(result.vertices(0, 2), 0.0, 1.0e-12);
+  ASSERT_EQ(result.vertexProvenance.size(), 4U);
+  EXPECT_TRUE(result.vertexProvenance[0].valid());
+  EXPECT_EQ(result.vertexProvenance[0].component, 0);
+  EXPECT_EQ(result.vertexProvenance[0].sheet, 2);
+  EXPECT_TRUE(result.projectionHasCompleteProvenance);
+  EXPECT_TRUE(result.sourceTriangleProjectionUsed);
+}
+
+TEST(SurfaceMeshOptimizerPhase19,
+     FixedRailSegmentUsesItsRealizableLengthForSizeEnergyAndValidation) {
+  directional::geometry::SurfaceOptimizationConstraints constraints;
+  constraints.fixedVertices = {0, 1};
+  constraints.featureVertices = {0, 1};
+  constraints.featureRailIds = Eigen::VectorXi::Constant(2, 17);
+  constraints.localTargetSize = Eigen::VectorXd::Constant(2, 0.25);
+
+  directional::geometry::SurfacePoint first;
+  first.face = 0;
+  first.barycentric << 1.0, 0.0, 0.0;
+  directional::geometry::SurfacePoint second = first;
+
+  const double fixedTarget =
+      directional::geometry::surface_optimizer_detail::
+          effective_edge_target_size(constraints, first, second, 0, 1, 1.0,
+                                     0.25);
+  EXPECT_DOUBLE_EQ(fixedTarget, 1.0);
+
+  constraints.localTargetSize = Eigen::VectorXd::Constant(2, 0.01);
+  const double extremeTarget =
+      directional::geometry::surface_optimizer_detail::
+          effective_edge_target_size(constraints, first, second, 0, 1, 1.0,
+                                     0.01);
+  EXPECT_DOUBLE_EQ(extremeTarget, 0.01);
+
+  constraints.localTargetSize = Eigen::VectorXd::Constant(2, 0.25);
+  constraints.fixedVertices = {0};
+  const double movableTarget =
+      directional::geometry::surface_optimizer_detail::
+          effective_edge_target_size(constraints, first, second, 0, 1, 1.0,
+                                     0.25);
+  EXPECT_DOUBLE_EQ(movableTarget, 0.25);
 }

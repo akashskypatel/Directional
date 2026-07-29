@@ -47,6 +47,7 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceComplexSimplification.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
 #include <directional/geometry/MeshComponents.h>
 #include <directional/geometry/SurfacePoint.h>
@@ -1651,25 +1652,40 @@ inline std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
 
 inline void fill_surface_cell_rail_constraints(
     const std::vector<geometry::SurfaceCellRail> &rails,
+    const Eigen::MatrixXd &outputVertices,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
     geometry::SurfaceOptimizationConstraints &constraints) {
-  std::vector<int> firstClosedBoundaryLoop;
+  geometry::fill_surface_optimization_rail_constraints(
+      rails, outputVertices, outputProvenance, constraints);
+}
+
+// Compatibility overload for callers that only need authoritative rail
+// topology. Vertex-to-rail assignments require output geometry and provenance
+// and are intentionally left empty here.
+inline void fill_surface_cell_rail_constraints(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    geometry::SurfaceOptimizationConstraints &constraints) {
+  constraints.featureCurveIntervals.clear();
+  constraints.featureIntervals.clear();
+  constraints.featureVertices.clear();
+  constraints.orderedFeatureVertices.clear();
+  constraints.authoritativeBoundaryEdges.clear();
+  constraints.authoritativeBoundaryLoop.clear();
+  constraints.featureCurveIds.resize(0);
+  constraints.featureRailIds.resize(0);
+  constraints.featureIntervalIds.resize(0);
+  constraints.featureParameters.resize(0);
+
   for (const geometry::SurfaceCellRail &rail : rails) {
-    if (rail.samples.size() >= 2U) {
-      geometry::SurfaceFeatureCurveInterval interval;
-      interval.curveId = rail.curveId >= 0 ? rail.curveId : rail.id;
-      interval.start = rail.samples.front().position;
-      interval.end = rail.samples.back().position;
-      constraints.featureCurveIntervals.push_back(interval);
-      constraints.featureIntervals.push_back({interval.start, interval.end});
-    }
     if (rail.kind != geometry::SurfaceCellRailKind::Boundary) {
       continue;
     }
-    for (int index = 0; index + 1 < static_cast<int>(rail.sourceVertices.size());
-         ++index) {
+    for (int index = 0;
+         index + 1 < static_cast<int>(rail.sourceVertices.size()); ++index) {
       const int a = rail.sourceVertices[static_cast<std::size_t>(index)];
       const int b = rail.sourceVertices[static_cast<std::size_t>(index + 1)];
-      constraints.authoritativeBoundaryEdges.insert({std::min(a, b), std::max(a, b)});
+      constraints.authoritativeBoundaryEdges.insert(
+          {std::min(a, b), std::max(a, b)});
     }
     if (rail.closed && rail.sourceVertices.size() > 1U) {
       if (rail.sourceVertices.back() != rail.sourceVertices.front()) {
@@ -1677,16 +1693,16 @@ inline void fill_surface_cell_rail_constraints(
             {std::min(rail.sourceVertices.back(), rail.sourceVertices.front()),
              std::max(rail.sourceVertices.back(), rail.sourceVertices.front())});
       }
-      if (firstClosedBoundaryLoop.empty()) {
-        firstClosedBoundaryLoop = rail.sourceVertices;
-        if (firstClosedBoundaryLoop.size() > 1U &&
-            firstClosedBoundaryLoop.front() == firstClosedBoundaryLoop.back()) {
-          firstClosedBoundaryLoop.pop_back();
+      if (constraints.authoritativeBoundaryLoop.empty()) {
+        constraints.authoritativeBoundaryLoop = rail.sourceVertices;
+        if (constraints.authoritativeBoundaryLoop.size() > 1U &&
+            constraints.authoritativeBoundaryLoop.front() ==
+                constraints.authoritativeBoundaryLoop.back()) {
+          constraints.authoritativeBoundaryLoop.pop_back();
         }
       }
     }
   }
-  constraints.authoritativeBoundaryLoop = firstClosedBoundaryLoop;
 }
 
 inline std::uint64_t hash_surface_cell_rails(
@@ -2605,7 +2621,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
       constraints.localTargetSize = targetSize.targetSize;
       constraints.vertexProvenance = completedProvenance;
-      fill_surface_cell_rail_constraints(authoritativeRails, constraints);
+      fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
+                                         completedProvenance, constraints);
       geometry::SurfaceOptimizationOptions optimizationOptions;
       optimizationOptions.targetSize = tracingOptions.defaultTargetSize;
       const geometry::SurfaceOptimizationResult optimization =
