@@ -3596,8 +3596,6 @@ include/directional/Deprecated/.idea/Deprecated.iml
 include/directional/Deprecated/.idea/modules.xml
 include/directional/Deprecated/.idea/vcs.xml
 include/directional/Deprecated/.idea/workspace.xml
-tutorial/data/vase-11-generated.off
-tutorial/data/vase-7-generated.off
 tutorial/output/vase-11-generated.off
 tutorial/output/vase-4-generated.off
 tutorial/output/vase-7-generated.off
@@ -3605,6 +3603,8 @@ tutorial/output/horsers-param-full-seamless.obj
 tutorial/output/horsers-param-rot-seamless.obj
 tutorial/output/index-prescription.rawfield
 tutorial/output/polyvector.rawfield
+**/data/*
+**/tutorial_data/*
 **/build/
 **/install/
 **/*.egg-info/
@@ -3625,5 +3625,7 @@ tutorial/
 imgui.ini
 output/
 /*.zip
-**/benchmarks/*
-**/benchmark-results/*
+**/benchmark*/*
+!benchmarks/fixtures/
+benchmarks/fixtures/*
+!benchmarks/fixtures/component_parallelism.json
