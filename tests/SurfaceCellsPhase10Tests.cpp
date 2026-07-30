@@ -510,6 +510,7 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixtur
       0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0,
       0.0;
   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.lengthRatio = 0.2;
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       vertices, faces, raw, options);
@@ -519,9 +520,10 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixtur
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
   EXPECT_EQ(result.diagnostics.surfaceCellValidationFailures, 0U);
-  EXPECT_EQ(result.faces.rows(), 1);
-  ASSERT_EQ(result.degrees.size(), 1);
-  EXPECT_EQ(result.degrees(0), 4);
+  EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
+  EXPECT_EQ(result.faces.rows(), 4);
+  ASSERT_EQ(result.degrees.size(), 4);
+  EXPECT_TRUE((result.degrees.array() == 4).all());
   EXPECT_GE(result.diagnostics.surfaceCellFeatureSeconds, 0.0);
   EXPECT_GT(result.diagnostics.adaptiveFeatureBoundaryEdgeCount, 0U);
   EXPECT_GT(result.diagnostics.adaptiveFeatureCurveCount, 0U);

@@ -21,6 +21,81 @@
 
 namespace directional::geometry {
 
+namespace surface_optimization_rail_detail {
+
+inline bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
+                                        const int face,
+                                        const int vertex) {
+  if (face < 0 || face >= faces.rows() || faces.cols() != 3) {
+    return false;
+  }
+  return faces(face, 0) == vertex || faces(face, 1) == vertex ||
+         faces(face, 2) == vertex;
+}
+
+inline bool provenance_supports_interval_sheet(
+    const SurfacePoint &provenance,
+    const SurfaceFeatureCurveInterval &interval,
+    const SurfaceOptimizationConstraints &constraints) {
+  if (provenance.component >= 0 && interval.component >= 0 &&
+      provenance.component != interval.component) {
+    return false;
+  }
+  if (provenance.sheet < 0 || interval.sheet < 0 ||
+      provenance.sheet == interval.sheet) {
+    return true;
+  }
+  if (!provenance.valid() || provenance.face < 0 ||
+      provenance.face >= constraints.sourceFaces.rows() ||
+      interval.sourceFace < 0 ||
+      interval.sourceFace >= constraints.sourceFaces.rows() ||
+      constraints.sourceFaces.cols() != 3 ||
+      !provenance.barycentric.allFinite()) {
+    return false;
+  }
+
+  // A point on a source edge or vertex legitimately belongs to every
+  // incident local sheet. Its stored provenance face is only one valid chart.
+  // Accept a rail interval from another sheet only when both charts share the
+  // exact source entity supporting the point; interior points remain confined
+  // to their authoritative sheet.
+  std::vector<int> supportVertices;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (provenance.barycentric(corner) > 1.0e-8) {
+      supportVertices.push_back(
+          constraints.sourceFaces(provenance.face, corner));
+    }
+  }
+  if (supportVertices.empty() || supportVertices.size() >= 3U) {
+    return false;
+  }
+  for (const int sourceVertex : supportVertices) {
+    if (sourceVertex < 0 ||
+        !source_face_contains_vertex(constraints.sourceFaces,
+                                     interval.sourceFace, sourceVertex)) {
+      return false;
+    }
+  }
+
+  if (interval.component >= 0 &&
+      constraints.sourceFaceComponent.size() ==
+          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
+      constraints.sourceFaceComponent[static_cast<std::size_t>(
+          interval.sourceFace)] != interval.component) {
+    return false;
+  }
+  if (interval.sheet >= 0 &&
+      constraints.sourceFaceSheet.size() ==
+          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
+      constraints.sourceFaceSheet[static_cast<std::size_t>(
+          interval.sourceFace)] != interval.sheet) {
+    return false;
+  }
+  return true;
+}
+
+} // namespace surface_optimization_rail_detail
+
 inline void fill_surface_optimization_rail_constraints(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &outputVertices,
@@ -112,12 +187,9 @@ inline void fill_surface_optimization_rail_constraints(
     std::vector<IncidentInterval> incidentIntervals;
     for (const SurfaceFeatureCurveInterval &interval :
          constraints.featureCurveIntervals) {
-      if (provenance.component >= 0 && interval.component >= 0 &&
-          provenance.component != interval.component) {
-        continue;
-      }
-      if (provenance.sheet >= 0 && interval.sheet >= 0 &&
-          provenance.sheet != interval.sheet) {
+      if (!surface_optimization_rail_detail::
+              provenance_supports_interval_sheet(provenance, interval,
+                                                  constraints)) {
         continue;
       }
       double localParameter = 0.0;

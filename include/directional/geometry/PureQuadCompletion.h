@@ -57,6 +57,7 @@ enum class PureQuadCompletionBackend : int {
   Pattern = 2,
   BoundedCombinatorial = 3,
   PoleTemplate = 4,
+  SourceGridRecovery = 5,
 };
 
 enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };

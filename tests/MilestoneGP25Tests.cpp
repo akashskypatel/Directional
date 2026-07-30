@@ -53,6 +53,7 @@ directional::pipeline::RemeshOptions surface_options() {
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
   options.parallelizeComponents = true;
+  options.lengthRatio = 0.2;
   return options;
 }
 
@@ -99,6 +100,23 @@ void expect_same_structure(
               rhs.outputQuadLineage[index].operationLocalQuad);
   }
 
+  EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryUsed,
+            rhs.surfaceCellContext.sourceGridRecoveryUsed);
+  EXPECT_EQ(lhs.surfaceCellContext.hasSourceGridRecoveryTargetSize,
+            rhs.surfaceCellContext.hasSourceGridRecoveryTargetSize);
+  EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed,
+            rhs.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed);
+  EXPECT_DOUBLE_EQ(
+      lhs.surfaceCellContext
+          .sourceGridRecoveryTargetSizeMaxRelaxationRatio,
+      rhs.surfaceCellContext
+          .sourceGridRecoveryTargetSizeMaxRelaxationRatio);
+  if (lhs.surfaceCellContext.hasSourceGridRecoveryTargetSize &&
+      rhs.surfaceCellContext.hasSourceGridRecoveryTargetSize) {
+    EXPECT_EQ(lhs.surfaceCellContext.sourceGridRecoveryTargetSize,
+              rhs.surfaceCellContext.sourceGridRecoveryTargetSize);
+  }
+
   EXPECT_EQ(lhs.surfaceCellContext.hasOptimizationResult,
             rhs.surfaceCellContext.hasOptimizationResult);
   if (lhs.surfaceCellContext.hasOptimizationResult) {
@@ -139,6 +157,13 @@ void expect_same_structure(
   EXPECT_EQ(a.executedBackend, b.executedBackend);
   EXPECT_EQ(a.surfaceCellOutputOrigin, b.surfaceCellOutputOrigin);
   EXPECT_EQ(a.surfaceCellRemeshOccurred, b.surfaceCellRemeshOccurred);
+  EXPECT_EQ(a.surfaceCellSourceGridRecoveryUsed,
+            b.surfaceCellSourceGridRecoveryUsed);
+  EXPECT_EQ(a.surfaceCellSourceGridRecoveryTargetSizeRelaxed,
+            b.surfaceCellSourceGridRecoveryTargetSizeRelaxed);
+  EXPECT_DOUBLE_EQ(
+      a.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio,
+      b.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio);
   EXPECT_EQ(a.componentCount, b.componentCount);
   EXPECT_EQ(a.failedComponentIndex, b.failedComponentIndex);
   ASSERT_EQ(a.surfaceCellStageLineage.size(),
@@ -151,10 +176,14 @@ void expect_same_structure(
     EXPECT_EQ(la.componentIndex, lb.componentIndex);
     EXPECT_EQ(la.inputObject.type, lb.inputObject.type);
     EXPECT_EQ(la.inputObject.structuralHash,
-              lb.inputObject.structuralHash);
+              lb.inputObject.structuralHash)
+        << "component=" << la.componentIndex << " stage=" << la.stage
+        << " input";
     EXPECT_EQ(la.outputObject.type, lb.outputObject.type);
     EXPECT_EQ(la.outputObject.structuralHash,
-              lb.outputObject.structuralHash);
+              lb.outputObject.structuralHash)
+        << "component=" << la.componentIndex << " stage=" << la.stage
+        << " output";
     EXPECT_EQ(la.terminalFailureCode, lb.terminalFailureCode);
     EXPECT_EQ(la.terminalFailureStage, lb.terminalFailureStage);
   }
@@ -232,6 +261,15 @@ TEST(MilestoneGP25, SequentialAndParallelSchedulesAreStructurallyIdentical) {
   ASSERT_TRUE(parallelResult.success);
   ASSERT_TRUE(sequentialResult.surfaceCellContext.hasOptimizationResult);
   ASSERT_TRUE(sequentialResult.surfaceCellContext.hasValidationResult);
+  ASSERT_TRUE(sequentialResult.surfaceCellContext.sourceGridRecoveryUsed);
+  ASSERT_TRUE(
+      sequentialResult.surfaceCellContext.hasSourceGridRecoveryTargetSize);
+  ASSERT_EQ(mesh.vertices.rows(),
+            sequentialResult.surfaceCellContext
+                .sourceGridRecoveryTargetSize.size());
+  ASSERT_TRUE(parallelResult.surfaceCellContext.sourceGridRecoveryUsed);
+  ASSERT_TRUE(
+      parallelResult.surfaceCellContext.hasSourceGridRecoveryTargetSize);
   EXPECT_EQ(sequentialResult.vertices,
             sequentialResult.surfaceCellContext.optimizationResult.vertices);
   EXPECT_EQ(sequentialResult.faces,

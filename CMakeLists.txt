@@ -239,6 +239,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_phase1_tests
     src/bench/BenchmarkCases.cpp
+    src/bench/BenchmarkQuality.cpp
     tests/AdaptiveFeatureMapPhase11Tests.cpp
     tests/AdaptiveTargetSizePhase12Tests.cpp
     tests/AdaptiveIntegrationSolverTests.cpp
@@ -254,6 +255,9 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/MilestoneFP19IntegrationTests.cpp
     tests/MilestoneGP23Tests.cpp
     tests/MilestoneGP24Tests.cpp
+    tests/MilestoneGP25Tests.cpp
+    tests/MilestoneGP26Tests.cpp
+    tests/MilestoneGP27Tests.cpp
     tests/MilestoneBClosureTests.cpp
     tests/MilestoneCClosureTests.cpp
     tests/MilestoneDClosureTests.cpp
@@ -286,6 +290,9 @@ if(DIRECTIONAL_BUILD_TESTS)
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
   if(MSVC)
     target_compile_options(directional_phase1_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    target_link_libraries(directional_phase1_tests PRIVATE Psapi)
   endif()
   if(WIN32)
     add_custom_command(
@@ -330,6 +337,28 @@ if(DIRECTIONAL_BUILD_TESTS)
         $<TARGET_FILE_DIR:directional_milestone_g_p23_tests>
       COMMAND_EXPAND_LISTS
       VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_g_p27_tests
+    src/bench/BenchmarkCases.cpp
+    src/bench/BenchmarkQuality.cpp
+    tests/MilestoneGP27Tests.cpp)
+  target_link_libraries(
+    directional_milestone_g_p27_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_milestone_g_p27_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_milestone_g_p27_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_milestone_g_p27_tests
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
+  if(MSVC)
+    target_compile_options(directional_milestone_g_p27_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    target_link_libraries(directional_milestone_g_p27_tests PRIVATE Psapi)
   endif()
 
   add_executable(
@@ -396,6 +425,39 @@ if(DIRECTIONAL_BUILD_TESTS)
         ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_RUNTIME_DLLS:directional_milestone_g_p25_tests>
         $<TARGET_FILE_DIR:directional_milestone_g_p25_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_g_p26_tests
+    src/bench/BenchmarkCases.cpp
+    tests/MilestoneGP26Tests.cpp
+    tests/SurfaceCellPipelinePhase20Tests.cpp)
+  target_link_libraries(
+    directional_milestone_g_p26_tests
+    PRIVATE GTest::gtest_main)
+  target_compile_features(directional_milestone_g_p26_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_milestone_g_p26_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_milestone_g_p26_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
+  if(MSVC)
+    target_compile_options(directional_milestone_g_p26_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32 AND BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET directional_milestone_g_p26_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p26_tests>
+        $<TARGET_FILE_DIR:directional_milestone_g_p26_tests>
       COMMAND_EXPAND_LISTS
       VERBATIM)
   endif()
@@ -594,6 +656,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
   gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
   gtest_discover_tests(directional_milestone_g_p25_tests TEST_PREFIX "P25Focused.")
+  gtest_discover_tests(directional_milestone_g_p26_tests TEST_PREFIX "P26Focused.")
   gtest_discover_tests(directional_milestone_c_tests)
   gtest_discover_tests(directional_milestone_d_tests)
   gtest_discover_tests(directional_milestone_e_tests)
@@ -653,6 +716,7 @@ if(DIRECTIONAL_BUILD_BENCHMARKS)
   add_executable(
     directional_benchmarks
     src/bench/BenchmarkCases.cpp
+    src/bench/BenchmarkQuality.cpp
     src/bench/DirectionalBenchmark.cpp)
   target_link_libraries(directional_benchmarks PRIVATE Directional::directional)
   target_compile_features(directional_benchmarks PRIVATE cxx_std_20)
@@ -660,6 +724,9 @@ if(DIRECTIONAL_BUILD_BENCHMARKS)
     directional_benchmarks PRIVATE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
   if(MSVC)
     target_compile_options(directional_benchmarks PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    target_link_libraries(directional_benchmarks PRIVATE Psapi)
   endif()
 endif()
 

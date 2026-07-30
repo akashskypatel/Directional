@@ -123,6 +123,9 @@ struct RemeshDiagnostics {
   bool surfaceCellUsedLegacyFallback = false;
   bool surfaceCellReturnedInputMeshFallback = false;
   bool surfaceCellRemeshOccurred = false;
+  bool surfaceCellSourceGridRecoveryUsed = false;
+  bool surfaceCellSourceGridRecoveryTargetSizeRelaxed = false;
+  double surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio = 1.0;
   SurfaceCellOutputOrigin surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
   bool surfaceCellDebugArtifactsPreserved = false;
   std::vector<std::string> surfaceCellDebugArtifacts;

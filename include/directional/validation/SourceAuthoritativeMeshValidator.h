@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cstddef>
 #include <limits>
+#include <iterator>
 #include <map>
 #include <numeric>
 #include <set>
@@ -735,12 +736,137 @@ inline std::vector<int> canonical_loop(const std::vector<int> &input) {
   return best;
 }
 
-inline bool same_sheet(const geometry::SurfacePoint &a,
-                       const geometry::SurfacePoint &b) {
-  return a.valid() && b.valid() && a.component >= 0 && b.component >= 0 &&
-         a.sheet >= 0 && b.sheet >= 0 && a.component == b.component &&
-         a.sheet == b.sheet;
-}
+struct SourcePointLabelSupport {
+  const Eigen::MatrixXi *sourceFaces = nullptr;
+  const std::vector<int> *components = nullptr;
+  const std::vector<int> *sheets = nullptr;
+  std::vector<std::vector<int>> vertexFaces;
+  std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
+
+  SourcePointLabelSupport(
+      const Eigen::MatrixXi *faces,
+      const std::vector<int> *sourceComponents,
+      const std::vector<int> *sourceSheets)
+      : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets) {
+    if (sourceFaces == nullptr || sourceFaces->cols() != 3) {
+      return;
+    }
+    int maximumVertex = -1;
+    for (int face = 0; face < sourceFaces->rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        maximumVertex = std::max(maximumVertex, (*sourceFaces)(face, corner));
+      }
+    }
+    vertexFaces.resize(static_cast<std::size_t>(std::max(0, maximumVertex + 1)));
+    for (int face = 0; face < sourceFaces->rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        const int vertex = (*sourceFaces)(face, corner);
+        if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
+          vertexFaces[static_cast<std::size_t>(vertex)].push_back(face);
+        }
+        const int next = (*sourceFaces)(face, (corner + 1) % 3);
+        if (vertex >= 0 && next >= 0 && vertex != next) {
+          edgeFaces[canonical_edge(vertex, next)].push_back(face);
+        }
+      }
+    }
+    for (auto &facesAtVertex : vertexFaces) {
+      std::sort(facesAtVertex.begin(), facesAtVertex.end());
+      facesAtVertex.erase(
+          std::unique(facesAtVertex.begin(), facesAtVertex.end()),
+          facesAtVertex.end());
+    }
+    for (auto &[edge, facesAtEdge] : edgeFaces) {
+      (void)edge;
+      std::sort(facesAtEdge.begin(), facesAtEdge.end());
+      facesAtEdge.erase(std::unique(facesAtEdge.begin(), facesAtEdge.end()),
+                        facesAtEdge.end());
+    }
+  }
+
+  [[nodiscard]] bool available() const {
+    return sourceFaces != nullptr && components != nullptr && sheets != nullptr &&
+           components->size() == static_cast<std::size_t>(sourceFaces->rows()) &&
+           sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
+  }
+
+  [[nodiscard]] std::set<std::pair<int, int>>
+  supported_labels(const geometry::SurfacePoint &point) const {
+    std::set<std::pair<int, int>> labels;
+    if (!available() || !point.valid() || point.face < 0 ||
+        point.face >= sourceFaces->rows() || !point.barycentric.allFinite()) {
+      return labels;
+    }
+    std::vector<int> supportCorners;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (point.barycentric(corner) > 1.0e-8) {
+        supportCorners.push_back(corner);
+      }
+    }
+
+    std::vector<int> candidateFaces;
+    if (supportCorners.size() == 1U) {
+      const int vertex = (*sourceFaces)(point.face, supportCorners.front());
+      if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
+        candidateFaces = vertexFaces[static_cast<std::size_t>(vertex)];
+      }
+    } else if (supportCorners.size() == 2U) {
+      const int first = (*sourceFaces)(point.face, supportCorners[0]);
+      const int second = (*sourceFaces)(point.face, supportCorners[1]);
+      const auto found = edgeFaces.find(canonical_edge(first, second));
+      if (found != edgeFaces.end()) {
+        candidateFaces = found->second;
+      }
+    }
+    if (candidateFaces.empty()) {
+      candidateFaces.push_back(point.face);
+    } else if (std::find(candidateFaces.begin(), candidateFaces.end(),
+                         point.face) == candidateFaces.end()) {
+      candidateFaces.push_back(point.face);
+    }
+
+    for (const int face : candidateFaces) {
+      if (face < 0 || face >= sourceFaces->rows()) {
+        continue;
+      }
+      labels.insert({(*components)[static_cast<std::size_t>(face)],
+                     (*sheets)[static_cast<std::size_t>(face)]});
+    }
+    return labels;
+  }
+
+  [[nodiscard]] bool have_common_label(
+      const std::vector<const geometry::SurfacePoint *> &points) const {
+    if (!available() || points.empty()) {
+      return false;
+    }
+    std::set<std::pair<int, int>> common;
+    bool first = true;
+    for (const geometry::SurfacePoint *point : points) {
+      if (point == nullptr) {
+        return false;
+      }
+      const std::set<std::pair<int, int>> labels = supported_labels(*point);
+      if (labels.empty()) {
+        return false;
+      }
+      if (first) {
+        common = labels;
+        first = false;
+      } else {
+        std::set<std::pair<int, int>> intersection;
+        std::set_intersection(common.begin(), common.end(), labels.begin(),
+                              labels.end(),
+                              std::inserter(intersection, intersection.end()));
+        common = std::move(intersection);
+      }
+      if (common.empty()) {
+        return false;
+      }
+    }
+    return !common.empty();
+  }
+};
 
 inline Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
                                       const std::vector<int> &polygon) {
@@ -871,6 +997,9 @@ validate_source_authoritative_surface_mesh(
   }
 
   const auto &provenance = *options.vertexProvenance;
+  const SourcePointLabelSupport labelSupport(
+      options.sourceFaces, options.sourceFaceComponents,
+      options.sourceFaceSheets);
   const double sourceScale =
       options.sourceVertices->rows() == 0
           ? 1.0
@@ -950,19 +1079,24 @@ validate_source_authoritative_surface_mesh(
   for (int face = 0; face < faces.rows(); ++face) {
     const std::vector<int> polygon = face_vertices(faces, face);
     if (options.requireLocalSheetCompatibility) {
-      for (std::size_t index = 1; index < polygon.size(); ++index) {
-        const int first = polygon[0];
-        const int second = polygon[index];
-        if (first < 0 || second < 0 ||
-            static_cast<std::size_t>(std::max(first, second)) >=
-                provenance.size() ||
-            !same_sheet(provenance[static_cast<std::size_t>(first)],
-                        provenance[static_cast<std::size_t>(second)])) {
-          result.localSheetCompatibilityPassed = false;
-          result.fail({MeshValidationFailureCode::LocalSheetMismatch, second,
-                       first, second, face});
+      std::vector<const geometry::SurfacePoint *> facePoints;
+      facePoints.reserve(polygon.size());
+      int invalidVertex = -1;
+      bool faceProvenanceValid = true;
+      for (const int vertex : polygon) {
+        if (vertex < 0 || static_cast<std::size_t>(vertex) >= provenance.size()) {
+          invalidVertex = vertex;
+          faceProvenanceValid = false;
           break;
         }
+        facePoints.push_back(
+            &provenance[static_cast<std::size_t>(vertex)]);
+      }
+      if (!faceProvenanceValid ||
+          !labelSupport.have_common_label(facePoints)) {
+        result.localSheetCompatibilityPassed = false;
+        result.fail({MeshValidationFailureCode::LocalSheetMismatch,
+                     invalidVertex, -1, -1, face});
       }
     }
 
@@ -1049,10 +1183,11 @@ validate_source_authoritative_surface_mesh(
               provenance.size()) {
         return;
       }
-      if (!same_sheet(provenance[static_cast<std::size_t>(vertex)],
-                      provenance[static_cast<std::size_t>(edge.first)]) ||
-          !same_sheet(provenance[static_cast<std::size_t>(vertex)],
-                      provenance[static_cast<std::size_t>(edge.second)])) {
+      const std::vector<const geometry::SurfacePoint *> edgePoints = {
+          &provenance[static_cast<std::size_t>(vertex)],
+          &provenance[static_cast<std::size_t>(edge.first)],
+          &provenance[static_cast<std::size_t>(edge.second)]};
+      if (!labelSupport.have_common_label(edgePoints)) {
         return;
       }
       const Eigen::Vector3d point = vertices.row(vertex).transpose();

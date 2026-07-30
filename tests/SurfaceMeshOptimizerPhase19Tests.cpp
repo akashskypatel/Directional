@@ -373,7 +373,7 @@ TEST(SurfaceMeshOptimizerPhase19, SignedScaledJacobianDetectsInversion) {
 TEST(SurfaceMeshOptimizerPhase19, OverlayErrorsAreComputedFromSourceData) {
   auto constraints = constraints_for_source_triangles();
   Eigen::MatrixXd vertices = source_triangle_vertices();
-  vertices.row(2) << 1.0, 1.0, 0.1;
+  vertices.row(2) << 1.2, 0.8, 0.1;
 
   const auto overlay = directional::geometry::make_surface_optimization_overlay(
       vertices, one_quad(), constraints);

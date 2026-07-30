@@ -1,4 +1,5 @@
 #include "BenchmarkCases.h"
+#include "BenchmarkQuality.h"
 
 #include <algorithm>
 #include <array>
@@ -69,12 +70,15 @@ struct StructuralMetrics {
 struct RunRecord {
   bool success = false;
   double wallSeconds = 0.0;
+  std::uint64_t peakWorkingSetBytes = 0;
   std::uint64_t fixtureHash = 0;
   std::uint64_t fieldHash = 0;
   bool usedFieldFile = false;
   std::string error;
+  std::string reviewImagePath;
   pipeline::RemeshResult result;
   StructuralMetrics metrics;
+  BenchmarkQuality quality;
 };
 
 void print_usage() {
@@ -669,12 +673,31 @@ MesherData load_mesher_cache(const std::filesystem::path &path) {
   return mesherData;
 }
 
-RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
-                        const Options &benchmarkOptions) {
+void record_benchmark_exception(RunRecord &record,
+                                const BenchmarkCase &benchmarkCase,
+                                const std::string &message) {
+  record.error = message;
+  RemeshDiagnostics &diagnostics = record.result.diagnostics;
+  diagnostics.remeshBackend =
+      pipeline::remesh_backend_name(benchmarkCase.backend);
+  diagnostics.requestedBackend = diagnostics.remeshBackend;
+  diagnostics.executedBackend = diagnostics.remeshBackend;
+  diagnostics.surfaceCellFallbackPolicy =
+      pipeline::surface_cell_fallback_policy_name(
+          benchmarkCase.surfaceCellFallback);
+  diagnostics.terminalFailureCode = "BenchmarkException";
+  diagnostics.terminalFailureStage = "benchmark";
+}
+
+RunRecord run_case_once(
+    const BenchmarkCase &benchmarkCase, const Options &benchmarkOptions,
+    const std::filesystem::path &artifactDirectory = {},
+    std::map<std::uint64_t, BenchmarkQuality> *qualityCache = nullptr) {
   RunRecord record;
   const BenchmarkMesh mesh = load_benchmark_mesh(benchmarkCase);
   record.fixtureHash = hash_benchmark_mesh(mesh);
   if (!benchmarkOptions.loadMesherCachePath.empty()) {
+    PeakWorkingSetSampler memorySampler;
     const auto start = std::chrono::steady_clock::now();
     try {
       TriMesh meshWhole;
@@ -700,16 +723,18 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
       }
     } catch (const std::exception &exception) {
       record.success = false;
-      record.error = exception.what();
+      record_benchmark_exception(record, benchmarkCase, exception.what());
     } catch (...) {
       record.success = false;
-      record.error = "unknown non-std exception";
+      record_benchmark_exception(record, benchmarkCase,
+                                 "unknown non-std exception");
     }
     record.wallSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             std::chrono::steady_clock::now() - start)
             .count() /
         1.0e6;
+    record.peakWorkingSetBytes = memorySampler.finish();
     return record;
   }
   BenchmarkField field = load_benchmark_field(benchmarkCase, mesh.faces.rows());
@@ -756,6 +781,7 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
     options.integerBatching.absoluteResidualCeiling = 0.49;
     options.integerBatching.residualWindow = 0.49;
   }
+  PeakWorkingSetSampler memorySampler;
   const auto start = std::chrono::steady_clock::now();
   try {
     if (field.available) {
@@ -771,16 +797,52 @@ RunRecord run_case_once(const BenchmarkCase &benchmarkCase,
     }
   } catch (const std::exception &exception) {
     record.success = false;
-    record.error = exception.what();
+    record_benchmark_exception(record, benchmarkCase, exception.what());
   } catch (...) {
     record.success = false;
-    record.error = "unknown non-std exception";
+    record_benchmark_exception(record, benchmarkCase,
+                               "unknown non-std exception");
   }
   record.wallSeconds =
       std::chrono::duration_cast<std::chrono::microseconds>(
           std::chrono::steady_clock::now() - start)
           .count() /
       1.0e6;
+  record.peakWorkingSetBytes = memorySampler.finish();
+  if (record.success && !artifactDirectory.empty()) {
+    const std::uint64_t outputHash =
+        benchmark_output_structural_hash(record.result);
+    if (qualityCache != nullptr) {
+      const auto cached = qualityCache->find(outputHash);
+      if (cached != qualityCache->end()) {
+        record.quality = cached->second;
+        record.quality.peakWorkingSetBytes = record.peakWorkingSetBytes;
+      } else {
+        record.quality = evaluate_benchmark_quality(
+            benchmarkCase, mesh, field, record.result,
+            record.peakWorkingSetBytes, artifactDirectory);
+        if (record.quality.available) {
+          qualityCache->emplace(outputHash, record.quality);
+        }
+      }
+    } else {
+      record.quality = evaluate_benchmark_quality(
+          benchmarkCase, mesh, field, record.result,
+          record.peakWorkingSetBytes, artifactDirectory);
+    }
+    record.reviewImagePath = record.quality.reviewImagePath;
+  } else if (!record.success && !artifactDirectory.empty()) {
+    try {
+      record.reviewImagePath = write_benchmark_failure_review_image(
+          benchmarkCase, mesh, artifactDirectory);
+    } catch (const std::exception &exception) {
+      if (!record.error.empty()) {
+        record.error += "; ";
+      }
+      record.error +=
+          std::string("failed to write review image: ") + exception.what();
+    }
+  }
   return record;
 }
 
@@ -1127,6 +1189,17 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ","
       << "\"surfaceCellRemeshOccurred\":"
       << (diagnostics.surfaceCellRemeshOccurred ? "true" : "false") << ","
+      << "\"surfaceCellSourceGridRecoveryUsed\":"
+      << (diagnostics.surfaceCellSourceGridRecoveryUsed ? "true" : "false")
+      << ","
+      << "\"surfaceCellSourceGridRecoveryTargetSizeRelaxed\":"
+      << (diagnostics.surfaceCellSourceGridRecoveryTargetSizeRelaxed
+              ? "true"
+              : "false")
+      << ","
+      << "\"surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio\":"
+      << diagnostics.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio
+      << ","
       << "\"surfaceCellOutputOrigin\":\""
       << surface_cell_output_origin_name(diagnostics.surfaceCellOutputOrigin) << "\","
       << "\"surfaceCellStageLineage\":[";
@@ -1536,12 +1609,17 @@ void write_results_json(const Options &options,
     for (std::size_t runIndex = 0; runIndex < runs.size(); ++runIndex) {
       const RunRecord &run = runs[runIndex];
       out << "        {\"success\": " << (run.success ? "true" : "false")
-          << ", \"wallSeconds\": " << run.wallSeconds;
+          << ", \"wallSeconds\": " << run.wallSeconds
+          << ", \"peakWorkingSetBytes\": " << run.peakWorkingSetBytes
+          << ", \"reviewImagePath\": \""
+          << escape_json(run.reviewImagePath) << "\""
+          << ", \"diagnostics\": ";
+      write_remesh_diagnostics_json(out, run.result);
       if (!run.success) {
         out << ", \"error\": \"" << escape_json(run.error) << "\"";
       } else {
-        out << ", \"diagnostics\": ";
-        write_remesh_diagnostics_json(out, run.result);
+        out << ", \"quality\": ";
+        write_benchmark_quality_json(out, run.quality);
         out << ", \"outputVertexCount\": " << run.metrics.outputVertices
             << ", \"outputFaceCount\": " << run.metrics.outputFaces
             << ", \"quadCount\": " << run.metrics.quadFaces
@@ -1591,8 +1669,13 @@ int main(const int argc, char **argv) {
         (void)directional::bench::run_case_once(benchmarkCase, options);
       }
       std::vector<directional::bench::RunRecord> runs;
+      std::map<std::uint64_t, directional::bench::BenchmarkQuality>
+          qualityCache;
+      const std::filesystem::path artifactDirectory =
+          options.outputPath.parent_path() / "artifacts";
       for (int run = 0; run < options.measuredRuns; ++run) {
-        runs.push_back(directional::bench::run_case_once(benchmarkCase, options));
+        runs.push_back(directional::bench::run_case_once(
+            benchmarkCase, options, artifactDirectory, &qualityCache));
         if (runs.back().success &&
             !options.parametrizationHeatmapDirectory.empty()) {
           const std::filesystem::path heatmapPath =

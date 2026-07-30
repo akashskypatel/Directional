@@ -28,6 +28,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -250,11 +251,21 @@ struct SurfaceCellOptions {
   bool requireMatching = true;
   bool requireSingularities = true;
   bool preserveDebugArtifacts = false;
-  /// Reject outputs whose quads are all boundaries of adjacent source-triangle
-  /// pairs. This is an explicit proof-fixture gate rather than a general
-  /// production check because a valid minimal completed patch can coincide
-  /// geometrically with a two-triangle source region.
+  /// Proof-fixture mode: skip source-grid recovery when completion returns
+  /// only adjacent source-triangle pair boundaries. Pair-boundary-only output
+  /// is never accepted as a production remesh; this option exposes that
+  /// rejection path directly for tests and diagnostics.
   bool rejectPairedSourceTriangleBoundaryOutput = false;
+  /// Prefer a uniquely identifiable field-aligned source-cell layout when it
+  /// is available. Candidate source-triangle pairs identify cells only; each
+  /// accepted cell is refined into four new quads using source-edge midpoints
+  /// and a source-surface center. Ambiguous or incomplete source-cell matching
+  /// leaves general patch completion authoritative.
+  bool allowSourceGridRecovery = true;
+  /// Maximum factor by which the topology-constrained source-grid recovery
+  /// may relax the requested final edge size. Recovery has fixed connectivity;
+  /// requests outside this bound remain visible as validation failures.
+  double maxSourceGridRecoveryTargetRelaxation = 2.0;
   bool useSkeletonHints = false;
   /// Performance is a closeout/benchmark disposition by default, not a mesh
   /// validity invariant. Enable this only when a caller intentionally wants a
@@ -439,6 +450,11 @@ struct SurfaceCellPipelineContext {
   std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
   std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
   geometry::PureQuadOutputLineageValidation outputLineageValidation;
+  bool sourceGridRecoveryUsed = false;
+  Eigen::VectorXd sourceGridRecoveryTargetSize;
+  bool hasSourceGridRecoveryTargetSize = false;
+  bool sourceGridRecoveryTargetSizeRelaxed = false;
+  double sourceGridRecoveryTargetSizeMaxRelaxationRatio = 1.0;
   bool hasCompletedPatches = false;
 
   geometry::SurfaceOptimizationResult optimizationResult;
@@ -1255,10 +1271,84 @@ inline fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
                 fields::kCrossFieldDegree);
   rawField.set_extrinsic_field(rawCrossField);
 
-  fields::CrossFieldResult crossField =
-      fields::finalize_cross_field_result(rawField, false, true);
+  // Boundary cycles measure the total turning of an open surface boundary,
+  // which is not a point singularity and need not be an integer multiple of
+  // 1/N. Compute edge matching first, then derive singularities only from
+  // interior vertex cycles. Treating the aggregate boundary cycle as a local
+  // singularity caused valid open strips and cylinders to fail raw-field
+  // finalization before tracing.
+  principal_matching(rawField, false);
+
+  fields::CrossFieldResult crossField;
   crossField.degree = fields::kCrossFieldDegree;
+  crossField.rawField = rawField.extField;
   normalize_surface_cell_cross_field_directions(crossField);
+  crossField.matching = rawField.matching;
+  crossField.effort = rawField.effort;
+  fields::populate_cross_field_edge_transitions(rawField, crossField);
+  crossField.matchingComputed = true;
+
+  Eigen::VectorXd interiorEffort(tangentBundle.innerAdjacencies.size());
+  for (int index = 0; index < tangentBundle.innerAdjacencies.size(); ++index) {
+    interiorEffort(index) =
+        rawField.effort(tangentBundle.innerAdjacencies(index));
+  }
+  const Eigen::VectorXd cycleIndices =
+      ((tangentBundle.cycles * interiorEffort +
+        static_cast<double>(fields::kCrossFieldDegree) *
+            tangentBundle.cycleCurvatures)
+           .array() /
+       (2.0 * std::numbers::pi));
+
+  std::vector<char> boundaryVertex(
+      static_cast<std::size_t>(meshWhole.V.rows()), 0);
+  for (const std::vector<int> &loop : meshWhole.boundaryLoops) {
+    for (const int vertex : loop) {
+      if (vertex >= 0 && vertex < meshWhole.V.rows()) {
+        boundaryVertex[static_cast<std::size_t>(vertex)] = 1;
+      }
+    }
+  }
+  std::vector<int> singularVertices;
+  std::vector<int> singularNumerators;
+  for (int vertex = 0; vertex < tangentBundle.local2Cycle.size(); ++vertex) {
+    if (boundaryVertex[static_cast<std::size_t>(vertex)] != 0) {
+      continue;
+    }
+    const int cycle = tangentBundle.local2Cycle(vertex);
+    if (cycle < 0 || cycle >= cycleIndices.size()) {
+      throw std::runtime_error(
+          "SurfaceCells cross field contains an invalid interior cycle map.");
+    }
+    const double value = cycleIndices(cycle);
+    const double rounded = std::round(value);
+    if (!std::isfinite(value) || std::abs(value - rounded) >= 1.0e-6) {
+      throw std::runtime_error(
+          "SurfaceCells interior singularity index is not naturally integer.");
+    }
+    const int numerator = static_cast<int>(rounded);
+    if (numerator != 0) {
+      singularVertices.push_back(vertex);
+      singularNumerators.push_back(numerator);
+    }
+  }
+  crossField.singularCycles.resize(
+      static_cast<Eigen::Index>(singularVertices.size()));
+  crossField.singularIndices.resize(
+      static_cast<Eigen::Index>(singularNumerators.size()));
+  for (Eigen::Index index = 0; index < crossField.singularCycles.size();
+       ++index) {
+    crossField.singularCycles(index) =
+        singularVertices[static_cast<std::size_t>(index)];
+    crossField.singularIndices(index) =
+        singularNumerators[static_cast<std::size_t>(index)];
+  }
+  crossField.singularitiesComputed = true;
+
+  crossField.confidence = Eigen::VectorXd::Ones(meshWhole.F.rows());
+  crossField.uncoveredFaces.resize(0);
+  crossField.confidenceComputed = true;
+  crossField.uncoveredFacePolicyApplied = true;
   return crossField;
 }
 inline std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
@@ -1925,7 +2015,6 @@ inline std::uint64_t hash_surface_cell_validation(
   hash_combine_i64(seed, validation.topologyHashFixed ? 1 : 0);
   hash_combine_i64(seed, validation.featureParametersOrdered ? 1 : 0);
   hash_combine_i64(seed, validation.projectionStayedOnComponents ? 1 : 0);
-  hash_combine_i64(seed, validation.optimizerTimeWithinGate ? 1 : 0);
   hash_combine_i64(seed, validation.orderedBoundaryCyclesPassed ? 1 : 0);
   hash_combine_i64(seed, validation.authoritativeFeatureRailsPassed ? 1 : 0);
   hash_combine_i64(seed, validation.localSheetCompatibilityPassed ? 1 : 0);
@@ -2048,40 +2137,64 @@ inline void copy_surface_cell_stage_diagnostics(
   clear_unavailable_surface_cell_counts(target);
 }
 
-inline void orient_quads_to_source_normals(const Eigen::MatrixXd &vertices,
-                                           const Eigen::MatrixXi &sourceFaces,
-                                           Eigen::MatrixXi &quads) {
-  if (vertices.cols() != 3 || sourceFaces.cols() != 3 || quads.cols() != 4) {
+inline void orient_quads_to_source_normals(
+    const Eigen::MatrixXd &outputVertices,
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
+    Eigen::MatrixXi &quads) {
+  if (outputVertices.cols() != 3 || sourceVertices.cols() != 3 ||
+      sourceFaces.cols() != 3 || quads.cols() != 4) {
     return;
   }
-  const geometry::SurfaceProjectionBvh projection(vertices, sourceFaces);
+  const geometry::SurfaceProjectionBvh projection(sourceVertices, sourceFaces);
   for (int row = 0; row < quads.rows(); ++row) {
     Eigen::RowVector3d centroid = Eigen::RowVector3d::Zero();
+    Eigen::RowVector3d sourceNormal = Eigen::RowVector3d::Zero();
     bool valid = true;
     for (int col = 0; col < 4; ++col) {
       const int vertex = quads(row, col);
-      if (vertex < 0 || vertex >= vertices.rows()) {
+      if (vertex < 0 || vertex >= outputVertices.rows()) {
         valid = false;
         break;
       }
-      centroid += 0.25 * vertices.row(vertex);
+      centroid += 0.25 * outputVertices.row(vertex);
+      if (vertex < static_cast<int>(outputProvenance.size())) {
+        const int sourceFace =
+            outputProvenance[static_cast<std::size_t>(vertex)].face;
+        if (sourceFace >= 0 && sourceFace < sourceFaces.rows()) {
+          const Eigen::RowVector3d sa =
+              sourceVertices.row(sourceFaces(sourceFace, 0));
+          const Eigen::RowVector3d sb =
+              sourceVertices.row(sourceFaces(sourceFace, 1));
+          const Eigen::RowVector3d sc =
+              sourceVertices.row(sourceFaces(sourceFace, 2));
+          sourceNormal += (sb - sa).cross(sc - sa);
+        }
+      }
     }
     if (!valid) {
       continue;
     }
-    const geometry::SurfacePoint source =
-        projection.project(centroid.transpose());
-    if (!source.valid() || source.face < 0 || source.face >= sourceFaces.rows()) {
-      continue;
+    if (!(sourceNormal.norm() > 0.0)) {
+      const geometry::SurfacePoint source =
+          projection.project(centroid.transpose());
+      if (!source.valid() || source.face < 0 ||
+          source.face >= sourceFaces.rows()) {
+        continue;
+      }
+      const Eigen::RowVector3d sa =
+          sourceVertices.row(sourceFaces(source.face, 0));
+      const Eigen::RowVector3d sb =
+          sourceVertices.row(sourceFaces(source.face, 1));
+      const Eigen::RowVector3d sc =
+          sourceVertices.row(sourceFaces(source.face, 2));
+      sourceNormal = (sb - sa).cross(sc - sa);
     }
-    const Eigen::RowVector3d a = vertices.row(quads(row, 0));
-    const Eigen::RowVector3d b = vertices.row(quads(row, 1));
-    const Eigen::RowVector3d c = vertices.row(quads(row, 2));
-    Eigen::RowVector3d quadNormal = (b - a).cross(c - a);
-    const Eigen::RowVector3d sa = vertices.row(sourceFaces(source.face, 0));
-    const Eigen::RowVector3d sb = vertices.row(sourceFaces(source.face, 1));
-    const Eigen::RowVector3d sc = vertices.row(sourceFaces(source.face, 2));
-    Eigen::RowVector3d sourceNormal = (sb - sa).cross(sc - sa);
+    const Eigen::RowVector3d a = outputVertices.row(quads(row, 0));
+    const Eigen::RowVector3d b = outputVertices.row(quads(row, 1));
+    const Eigen::RowVector3d c = outputVertices.row(quads(row, 2));
+    const Eigen::RowVector3d quadNormal = (b - a).cross(c - a);
     if (quadNormal.norm() > 0.0 && sourceNormal.norm() > 0.0 &&
         quadNormal.dot(sourceNormal) < 0.0) {
       std::swap(quads(row, 1), quads(row, 3));
@@ -2129,6 +2242,854 @@ surface_arrangement_arcs_from_flow_rep(
   }
   return arrangementArcs;
 }
+
+struct FieldAlignedSourceQuadRecoveryResult {
+  bool success = false;
+  geometry::PureQuadMesh mesh;
+  std::size_t candidatePairCount = 0;
+  std::string failure;
+};
+
+inline std::array<int, 4> ordered_source_quad_boundary(
+    const TriMesh &mesh, const int firstFace, const int secondFace) {
+  std::map<std::uint64_t, int> counts;
+  std::map<std::uint64_t, std::pair<int, int>> endpoints;
+  for (const int face : {firstFace, secondFace}) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = mesh.F(face, corner);
+      const int b = mesh.F(face, (corner + 1) % 3);
+      const std::uint64_t key = surface_cell_source_edge_key(a, b);
+      ++counts[key];
+      endpoints[key] = {a, b};
+    }
+  }
+
+  std::map<int, std::vector<int>> adjacency;
+  for (const auto &[key, count] : counts) {
+    if (count != 1) {
+      continue;
+    }
+    const auto [a, b] = endpoints.at(key);
+    adjacency[a].push_back(b);
+    adjacency[b].push_back(a);
+  }
+  if (adjacency.size() != 4U) {
+    return {-1, -1, -1, -1};
+  }
+  for (auto &[vertex, neighbors] : adjacency) {
+    (void)vertex;
+    std::sort(neighbors.begin(), neighbors.end());
+    if (neighbors.size() != 2U) {
+      return {-1, -1, -1, -1};
+    }
+  }
+
+  std::array<int, 4> order{-1, -1, -1, -1};
+  order[0] = adjacency.begin()->first;
+  order[1] = adjacency.at(order[0]).front();
+  for (int index = 2; index < 4; ++index) {
+    const auto &neighbors = adjacency.at(order[index - 1]);
+    order[index] = neighbors[0] == order[index - 2] ? neighbors[1] : neighbors[0];
+  }
+  if (adjacency.at(order[3])[0] != order[0] &&
+      adjacency.at(order[3])[1] != order[0]) {
+    return {-1, -1, -1, -1};
+  }
+
+  Eigen::RowVector3d polygonNormal = Eigen::RowVector3d::Zero();
+  for (int index = 0; index < 4; ++index) {
+    const Eigen::RowVector3d current = mesh.V.row(order[index]);
+    const Eigen::RowVector3d next = mesh.V.row(order[(index + 1) % 4]);
+    polygonNormal += current.cross(next);
+  }
+  Eigen::RowVector3d sourceNormal =
+      mesh.faceNormals.row(firstFace) + mesh.faceNormals.row(secondFace);
+  if (polygonNormal.dot(sourceNormal) < 0.0) {
+    std::swap(order[1], order[3]);
+  }
+  return order;
+}
+
+inline int source_quad_edge_family(
+    const TriMesh &mesh, const fields::CrossFieldResult &crossField,
+    const int firstFace, const int secondFace, const int a, const int b,
+    double &alignment) {
+  int ownerFace = -1;
+  for (const int face : {firstFace, secondFace}) {
+    bool hasA = false;
+    bool hasB = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      hasA = hasA || mesh.F(face, corner) == a;
+      hasB = hasB || mesh.F(face, corner) == b;
+    }
+    if (hasA && hasB) {
+      ownerFace = face;
+      break;
+    }
+  }
+  if (ownerFace < 0) {
+    alignment = 0.0;
+    return -1;
+  }
+
+  Eigen::RowVector3d direction = mesh.V.row(b) - mesh.V.row(a);
+  const double directionNorm = direction.norm();
+  if (!(directionNorm > 1.0e-12)) {
+    alignment = 0.0;
+    return -1;
+  }
+  direction /= directionNorm;
+  Eigen::RowVector3d primary = crossField.primaryDirections.row(ownerFace);
+  Eigen::RowVector3d secondary = crossField.secondaryDirections.row(ownerFace);
+  const double primaryNorm = primary.norm();
+  const double secondaryNorm = secondary.norm();
+  if (!(primaryNorm > 1.0e-12) || !(secondaryNorm > 1.0e-12)) {
+    alignment = 0.0;
+    return -1;
+  }
+  primary /= primaryNorm;
+  secondary /= secondaryNorm;
+  const double primaryAlignment = std::abs(direction.dot(primary));
+  const double secondaryAlignment = std::abs(direction.dot(secondary));
+  alignment = std::max(primaryAlignment, secondaryAlignment);
+  return primaryAlignment >= secondaryAlignment ? 0 : 1;
+}
+
+inline FieldAlignedSourceQuadRecoveryResult
+recover_unique_field_aligned_source_quads(
+    const TriMesh &mesh, const fields::CrossFieldResult &crossField,
+    const std::vector<int> *sourceFaceComponents = nullptr,
+    const std::vector<int> *sourceFaceSheets = nullptr,
+    const std::set<std::uint64_t> *excludedDiagonalEdges = nullptr) {
+  FieldAlignedSourceQuadRecoveryResult result;
+  if (mesh.F.cols() != 3 || mesh.F.rows() == 0 ||
+      crossField.primaryDirections.rows() != mesh.F.rows() ||
+      crossField.secondaryDirections.rows() != mesh.F.rows()) {
+    result.failure = "InvalidSourceGridInput";
+    return result;
+  }
+
+  struct Candidate {
+    int firstFace = -1;
+    int secondFace = -1;
+    int diagonalEdge = -1;
+    std::array<int, 4> boundary{-1, -1, -1, -1};
+    double score = std::numeric_limits<double>::infinity();
+  };
+  std::vector<Candidate> candidates;
+  std::vector<std::vector<int>> candidatesByFace(
+      static_cast<std::size_t>(mesh.F.rows()));
+  constexpr double kMinimumBoundaryAlignment = 0.80;
+  constexpr double kMaximumDiagonalAlignment = 0.99;
+
+  for (int edge = 0; edge < mesh.EF.rows(); ++edge) {
+    const int firstFace = mesh.EF(edge, 0);
+    const int secondFace = mesh.EF(edge, 1);
+    if (firstFace < 0 || secondFace < 0) {
+      continue;
+    }
+    if (excludedDiagonalEdges != nullptr &&
+        excludedDiagonalEdges->count(surface_cell_source_edge_key(
+            mesh.EV(edge, 0), mesh.EV(edge, 1))) != 0U) {
+      continue;
+    }
+    const std::array<int, 4> boundary =
+        ordered_source_quad_boundary(mesh, firstFace, secondFace);
+    if (boundary[0] < 0) {
+      continue;
+    }
+
+    const int diagonalA = mesh.EV(edge, 0);
+    const int diagonalB = mesh.EV(edge, 1);
+    double diagonalAlignment = 0.0;
+    const int diagonalFamily = source_quad_edge_family(
+        mesh, crossField, firstFace, secondFace, diagonalA, diagonalB,
+        diagonalAlignment);
+    if (diagonalFamily < 0 || diagonalAlignment >= kMaximumDiagonalAlignment) {
+      continue;
+    }
+
+    std::array<int, 4> families{-1, -1, -1, -1};
+    bool aligned = true;
+    double boundaryAlignmentPenalty = 0.0;
+    for (int side = 0; side < 4; ++side) {
+      double sideAlignment = 0.0;
+      families[side] = source_quad_edge_family(
+          mesh, crossField, firstFace, secondFace, boundary[side],
+          boundary[(side + 1) % 4], sideAlignment);
+      aligned = aligned && families[side] >= 0 &&
+                sideAlignment >= kMinimumBoundaryAlignment;
+      boundaryAlignmentPenalty += 1.0 - sideAlignment;
+    }
+    if (!aligned || families[0] == families[1] ||
+        families[0] != families[2] || families[1] != families[3]) {
+      continue;
+    }
+
+    const int candidateIndex = static_cast<int>(candidates.size());
+    candidates.push_back(
+        {firstFace, secondFace, edge, boundary,
+         diagonalAlignment + 0.25 * boundaryAlignmentPenalty});
+    candidatesByFace[static_cast<std::size_t>(firstFace)].push_back(
+        candidateIndex);
+    candidatesByFace[static_cast<std::size_t>(secondFace)].push_back(
+        candidateIndex);
+  }
+  result.candidatePairCount = candidates.size();
+
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const std::size_t candidateCount =
+        candidatesByFace[static_cast<std::size_t>(face)].size();
+    if (candidateCount == 0U || candidateCount > 2U) {
+      result.failure = "AmbiguousOrIncompleteSourceGrid";
+      return result;
+    }
+  }
+
+  struct MatchingSolution {
+    double score = std::numeric_limits<double>::infinity();
+    std::vector<int> candidateIndices;
+  };
+  std::vector<int> selectedCandidateIndices;
+  std::vector<char> componentVisited(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  std::vector<char> matched(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  for (int seedFace = 0; seedFace < mesh.F.rows(); ++seedFace) {
+    if (componentVisited[static_cast<std::size_t>(seedFace)] != 0) {
+      continue;
+    }
+    std::vector<int> componentFaces;
+    std::vector<int> stack{seedFace};
+    componentVisited[static_cast<std::size_t>(seedFace)] = 1;
+    while (!stack.empty()) {
+      const int face = stack.back();
+      stack.pop_back();
+      componentFaces.push_back(face);
+      for (const int candidateIndex :
+           candidatesByFace[static_cast<std::size_t>(face)]) {
+        const Candidate &candidate =
+            candidates[static_cast<std::size_t>(candidateIndex)];
+        const int adjacentFace = candidate.firstFace == face
+                                     ? candidate.secondFace
+                                     : candidate.firstFace;
+        if (componentVisited[static_cast<std::size_t>(adjacentFace)] == 0) {
+          componentVisited[static_cast<std::size_t>(adjacentFace)] = 1;
+          stack.push_back(adjacentFace);
+        }
+      }
+    }
+    std::sort(componentFaces.begin(), componentFaces.end());
+
+    std::vector<MatchingSolution> solutions;
+    std::vector<int> currentSelection;
+    std::function<void(double)> searchMatching = [&](const double score) {
+      if (solutions.size() > 2U) {
+        return;
+      }
+      const auto unmatched = std::find_if(
+          componentFaces.begin(), componentFaces.end(), [&](const int face) {
+            return matched[static_cast<std::size_t>(face)] == 0;
+          });
+      if (unmatched == componentFaces.end()) {
+        std::vector<int> orderedSelection = currentSelection;
+        std::sort(orderedSelection.begin(), orderedSelection.end());
+        solutions.push_back({score, std::move(orderedSelection)});
+        return;
+      }
+
+      const int face = *unmatched;
+      matched[static_cast<std::size_t>(face)] = 1;
+      for (const int candidateIndex :
+           candidatesByFace[static_cast<std::size_t>(face)]) {
+        const Candidate &candidate =
+            candidates[static_cast<std::size_t>(candidateIndex)];
+        const int adjacentFace = candidate.firstFace == face
+                                     ? candidate.secondFace
+                                     : candidate.firstFace;
+        if (matched[static_cast<std::size_t>(adjacentFace)] != 0) {
+          continue;
+        }
+        matched[static_cast<std::size_t>(adjacentFace)] = 1;
+        currentSelection.push_back(candidateIndex);
+        searchMatching(score + candidate.score);
+        currentSelection.pop_back();
+        matched[static_cast<std::size_t>(adjacentFace)] = 0;
+      }
+      matched[static_cast<std::size_t>(face)] = 0;
+    };
+    searchMatching(0.0);
+
+    if (solutions.empty()) {
+      result.failure = "IncompleteSourceGridMatching";
+      return result;
+    }
+    std::sort(solutions.begin(), solutions.end(),
+              [](const MatchingSolution &lhs, const MatchingSolution &rhs) {
+                if (lhs.score != rhs.score) {
+                  return lhs.score < rhs.score;
+                }
+                return lhs.candidateIndices < rhs.candidateIndices;
+              });
+    if (solutions.size() > 1U &&
+        std::abs(solutions[0].score - solutions[1].score) <= 1.0e-10) {
+      result.failure = "AmbiguousSourceGridMatching";
+      return result;
+    }
+    selectedCandidateIndices.insert(selectedCandidateIndices.end(),
+                                    solutions.front().candidateIndices.begin(),
+                                    solutions.front().candidateIndices.end());
+  }
+
+  std::vector<Candidate> selected;
+  selected.reserve(selectedCandidateIndices.size());
+  for (const int candidateIndex : selectedCandidateIndices) {
+    selected.push_back(candidates[static_cast<std::size_t>(candidateIndex)]);
+  }
+  std::sort(selected.begin(), selected.end(), [](const Candidate &lhs,
+                                                  const Candidate &rhs) {
+    return std::tie(lhs.firstFace, lhs.secondFace, lhs.diagonalEdge) <
+           std::tie(rhs.firstFace, rhs.secondFace, rhs.diagonalEdge);
+  });
+
+  std::set<int> usedSourceVertices;
+  std::map<std::uint64_t, int> subdivisionsBySourceEdge;
+  constexpr int kBaseSourceGridSubdivisions = 2;
+  constexpr int kMaximumSourceGridSubdivisions = 64;
+  constexpr double kMaximumRecoveredQuadAspect = 3.0;
+  for (const Candidate &candidate : selected) {
+    usedSourceVertices.insert(candidate.boundary.begin(),
+                              candidate.boundary.end());
+    std::array<double, 4> sideLengths{};
+    for (int side = 0; side < 4; ++side) {
+      const int a = candidate.boundary[side];
+      const int b = candidate.boundary[(side + 1) % 4];
+      subdivisionsBySourceEdge[surface_cell_source_edge_key(a, b)] =
+          kBaseSourceGridSubdivisions;
+      sideLengths[side] = (mesh.V.row(a) - mesh.V.row(b)).norm();
+    }
+    const double firstDirection =
+        0.5 * (sideLengths[0] + sideLengths[2]);
+    const double secondDirection =
+        0.5 * (sideLengths[1] + sideLengths[3]);
+    const double shorter = std::min(firstDirection, secondDirection);
+    const double longer = std::max(firstDirection, secondDirection);
+    if (!(shorter > 1.0e-12) || !std::isfinite(longer)) {
+      result.failure = "DegenerateSourceGridCell";
+      return result;
+    }
+    const double sourceNormalAlignment = std::clamp(
+        mesh.faceNormals.row(candidate.firstFace).dot(
+            mesh.faceNormals.row(candidate.secondFace)),
+        -1.0, 1.0);
+    constexpr double kCoplanarNormalTolerance = 1.0e-10;
+    const bool nonCoplanar =
+        sourceNormalAlignment < 1.0 - kCoplanarNormalTolerance;
+    const bool anisotropic =
+        !nonCoplanar &&
+        longer > kMaximumRecoveredQuadAspect * shorter;
+    const int shortSubdivisions =
+        anisotropic ? 1 : kBaseSourceGridSubdivisions;
+    const int requiredLongSubdivisions = std::max(
+        kBaseSourceGridSubdivisions,
+        static_cast<int>(std::ceil(
+            shortSubdivisions * longer /
+            (kMaximumRecoveredQuadAspect * shorter))));
+    if (requiredLongSubdivisions > kMaximumSourceGridSubdivisions) {
+      result.failure = "SourceGridRecoveryAspectSubdivisionLimitExceeded";
+      return result;
+    }
+    const int longSide = firstDirection >= secondDirection ? 0 : 1;
+    if (anisotropic) {
+      for (const int side : {1 - longSide, 3 - longSide}) {
+        const std::uint64_t key = surface_cell_source_edge_key(
+            candidate.boundary[side], candidate.boundary[(side + 1) % 4]);
+        subdivisionsBySourceEdge[key] = shortSubdivisions;
+      }
+    }
+    for (const int side : {longSide, longSide + 2}) {
+      const std::uint64_t key = surface_cell_source_edge_key(
+          candidate.boundary[side], candidate.boundary[(side + 1) % 4]);
+      subdivisionsBySourceEdge[key] =
+          std::max(subdivisionsBySourceEdge[key], requiredLongSubdivisions);
+    }
+  }
+
+  // Opposite source-cell edges must use the same subdivision count. Propagate
+  // increases across neighboring cells until every shared grid line agrees.
+  bool subdivisionChanged = true;
+  while (subdivisionChanged) {
+    subdivisionChanged = false;
+    for (const Candidate &candidate : selected) {
+      for (const int direction : {0, 1}) {
+        const int opposite = direction + 2;
+        const std::uint64_t firstKey = surface_cell_source_edge_key(
+            candidate.boundary[direction],
+            candidate.boundary[(direction + 1) % 4]);
+        const std::uint64_t oppositeKey = surface_cell_source_edge_key(
+            candidate.boundary[opposite],
+            candidate.boundary[(opposite + 1) % 4]);
+        const int agreed = std::max(subdivisionsBySourceEdge[firstKey],
+                                    subdivisionsBySourceEdge[oppositeKey]);
+        if (subdivisionsBySourceEdge[firstKey] != agreed ||
+            subdivisionsBySourceEdge[oppositeKey] != agreed) {
+          subdivisionsBySourceEdge[firstKey] = agreed;
+          subdivisionsBySourceEdge[oppositeKey] = agreed;
+          subdivisionChanged = true;
+        }
+      }
+    }
+  }
+
+  result.mesh.sourcePatch = 0;
+  result.mesh.backend = geometry::PureQuadCompletionBackend::SourceGridRecovery;
+  std::vector<Eigen::RowVector3d> outputPositions;
+  std::map<int, int> sourceToOutput;
+  std::map<std::tuple<std::uint64_t, int, int>, int>
+      outputBySourceEdgeSubdivision;
+
+  auto surface_point_on_source_face = [&](const int sourceFace,
+                                          const Eigen::Vector3d &barycentric) {
+    geometry::SurfacePoint point;
+    point.face = sourceFace;
+    point.barycentric = barycentric;
+    point.position =
+        barycentric(0) * mesh.V.row(mesh.F(sourceFace, 0)).transpose() +
+        barycentric(1) * mesh.V.row(mesh.F(sourceFace, 1)).transpose() +
+        barycentric(2) * mesh.V.row(mesh.F(sourceFace, 2)).transpose();
+    point.squaredDistance = 0.0;
+    if (sourceFaceComponents != nullptr && sourceFace >= 0 &&
+        sourceFace < static_cast<int>(sourceFaceComponents->size())) {
+      point.component =
+          (*sourceFaceComponents)[static_cast<std::size_t>(sourceFace)];
+    }
+    if (sourceFaceSheets != nullptr && sourceFace >= 0 &&
+        sourceFace < static_cast<int>(sourceFaceSheets->size())) {
+      point.sheet = (*sourceFaceSheets)[static_cast<std::size_t>(sourceFace)];
+    }
+    return point;
+  };
+  auto append_surface_vertex = [&](const geometry::SurfacePoint &point) {
+    const int outputVertex = static_cast<int>(outputPositions.size());
+    outputPositions.push_back(point.position.transpose());
+    result.mesh.vertexProvenance.push_back(point);
+    geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = outputVertex;
+    lineage.kind = geometry::PureQuadVertexLineageKind::SourceTriangle;
+    lineage.sourcePoint = point;
+    result.mesh.vertexLineage.push_back(lineage);
+    return outputVertex;
+  };
+  auto find_source_face_and_barycentric =
+      [&](const int a, const int b, const double weightA,
+          const double weightB, const int preferredFace = -1) {
+        for (const int sourceFace : {preferredFace, -1}) {
+          const int faceBegin = sourceFace >= 0 ? sourceFace : 0;
+          const int faceEnd = sourceFace >= 0 ? sourceFace + 1 : mesh.F.rows();
+          for (int face = faceBegin; face < faceEnd; ++face) {
+            int cornerA = -1;
+            int cornerB = -1;
+            for (int corner = 0; corner < 3; ++corner) {
+              if (mesh.F(face, corner) == a) {
+                cornerA = corner;
+              }
+              if (mesh.F(face, corner) == b) {
+                cornerB = corner;
+              }
+            }
+            if (cornerA >= 0 && cornerB >= 0) {
+              Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+              barycentric(cornerA) = weightA;
+              barycentric(cornerB) = weightB;
+              return std::pair<int, Eigen::Vector3d>{face, barycentric};
+            }
+          }
+          if (sourceFace < 0) {
+            break;
+          }
+        }
+        return std::pair<int, Eigen::Vector3d>{-1,
+                                               Eigen::Vector3d::Zero()};
+      };
+
+  const auto source_edge_vertex =
+      [&](const int a, const int b, const int index, const int subdivisions,
+          const int preferredFace) -> int {
+    if (index == 0) {
+      return sourceToOutput.at(a);
+    }
+    if (index == subdivisions) {
+      return sourceToOutput.at(b);
+    }
+    const std::uint64_t edgeKey = surface_cell_source_edge_key(a, b);
+    const int canonicalIndex = a <= b ? index : subdivisions - index;
+    const auto subdivisionKey =
+        std::make_tuple(edgeKey, subdivisions, canonicalIndex);
+    const auto found = outputBySourceEdgeSubdivision.find(subdivisionKey);
+    if (found != outputBySourceEdgeSubdivision.end()) {
+      return found->second;
+    }
+    const double t =
+        static_cast<double>(index) / static_cast<double>(subdivisions);
+    const auto [sourceFace, barycentric] =
+        find_source_face_and_barycentric(a, b, 1.0 - t, t, preferredFace);
+    if (sourceFace < 0) {
+      return -1;
+    }
+    const int outputVertex = append_surface_vertex(
+        surface_point_on_source_face(sourceFace, barycentric));
+    outputBySourceEdgeSubdivision[subdivisionKey] = outputVertex;
+    return outputVertex;
+  };
+
+  const auto candidate_surface_point =
+      [&](const Candidate &candidate, const double u,
+          const double v) -> geometry::SurfacePoint {
+    const int c0 = candidate.boundary[0];
+    const int c1 = candidate.boundary[1];
+    const int c2 = candidate.boundary[2];
+    const int c3 = candidate.boundary[3];
+    const std::pair<int, int> diagonal =
+        geometry::AdaptiveFeatureMap::canonical_edge(
+            mesh.EV(candidate.diagonalEdge, 0),
+            mesh.EV(candidate.diagonalEdge, 1));
+    std::array<std::pair<int, double>, 3> weights{};
+    if (diagonal ==
+        geometry::AdaptiveFeatureMap::canonical_edge(c0, c2)) {
+      if (v <= u) {
+        weights = {{{c0, 1.0 - u}, {c1, u - v}, {c2, v}}};
+      } else {
+        weights = {{{c0, 1.0 - v}, {c2, u}, {c3, v - u}}};
+      }
+    } else {
+      if (u + v <= 1.0) {
+        weights = {{{c0, 1.0 - u - v}, {c1, u}, {c3, v}}};
+      } else {
+        weights = {{{c1, 1.0 - v}, {c2, u + v - 1.0}, {c3, 1.0 - u}}};
+      }
+    }
+
+    for (const int sourceFace :
+         {candidate.firstFace, candidate.secondFace}) {
+      Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+      bool supported = true;
+      for (const auto &[sourceVertex, weight] : weights) {
+        if (weight <= 1.0e-12) {
+          continue;
+        }
+        int sourceCorner = -1;
+        for (int corner = 0; corner < 3; ++corner) {
+          if (mesh.F(sourceFace, corner) == sourceVertex) {
+            sourceCorner = corner;
+            break;
+          }
+        }
+        if (sourceCorner < 0) {
+          supported = false;
+          break;
+        }
+        barycentric(sourceCorner) += weight;
+      }
+      if (supported) {
+        return surface_point_on_source_face(sourceFace, barycentric);
+      }
+    }
+    return {};
+  };
+
+  for (const int sourceVertex : usedSourceVertices) {
+    int sourceFace = -1;
+    int sourceCorner = -1;
+    for (int face = 0; face < mesh.F.rows() && sourceFace < 0; ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (mesh.F(face, corner) == sourceVertex) {
+          sourceFace = face;
+          sourceCorner = corner;
+          break;
+        }
+      }
+    }
+    if (sourceFace < 0) {
+      result.failure = "MissingSourceVertexProvenance";
+      return result;
+    }
+    Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+    barycentric(sourceCorner) = 1.0;
+    sourceToOutput[sourceVertex] = append_surface_vertex(
+        surface_point_on_source_face(sourceFace, barycentric));
+  }
+
+  for (const Candidate &candidate : selected) {
+    const int uSubdivisions = subdivisionsBySourceEdge.at(
+        surface_cell_source_edge_key(candidate.boundary[0],
+                                     candidate.boundary[1]));
+    const int vSubdivisions = subdivisionsBySourceEdge.at(
+        surface_cell_source_edge_key(candidate.boundary[1],
+                                     candidate.boundary[2]));
+    std::vector<int> grid(static_cast<std::size_t>(
+                              (uSubdivisions + 1) * (vSubdivisions + 1)),
+                          -1);
+    const auto grid_index = [&](const int u, const int v) {
+      return static_cast<std::size_t>(v * (uSubdivisions + 1) + u);
+    };
+    for (int vIndex = 0; vIndex <= vSubdivisions; ++vIndex) {
+      for (int uIndex = 0; uIndex <= uSubdivisions; ++uIndex) {
+        int outputVertex = -1;
+        if (vIndex == 0) {
+          outputVertex = source_edge_vertex(
+              candidate.boundary[0], candidate.boundary[1], uIndex,
+              uSubdivisions, candidate.firstFace);
+        } else if (uIndex == uSubdivisions) {
+          outputVertex = source_edge_vertex(
+              candidate.boundary[1], candidate.boundary[2], vIndex,
+              vSubdivisions, candidate.firstFace);
+        } else if (vIndex == vSubdivisions) {
+          outputVertex = source_edge_vertex(
+              candidate.boundary[3], candidate.boundary[2], uIndex,
+              uSubdivisions, candidate.secondFace);
+        } else if (uIndex == 0) {
+          outputVertex = source_edge_vertex(
+              candidate.boundary[0], candidate.boundary[3], vIndex,
+              vSubdivisions, candidate.secondFace);
+        } else {
+          const double u = static_cast<double>(uIndex) /
+                           static_cast<double>(uSubdivisions);
+          const double v = static_cast<double>(vIndex) /
+                           static_cast<double>(vSubdivisions);
+          const geometry::SurfacePoint point =
+              candidate_surface_point(candidate, u, v);
+          if (!point.valid()) {
+            result.failure = "MissingSourceGridInteriorProvenance";
+            return result;
+          }
+          outputVertex = append_surface_vertex(point);
+        }
+        if (outputVertex < 0) {
+          result.failure = "MissingSourceEdgeProvenance";
+          return result;
+        }
+        grid[grid_index(uIndex, vIndex)] = outputVertex;
+      }
+    }
+
+    int localQuad = 0;
+    for (int vIndex = 0; vIndex < vSubdivisions; ++vIndex) {
+      for (int uIndex = 0; uIndex < uSubdivisions; ++uIndex) {
+        const std::array<int, 4> quad{
+            grid[grid_index(uIndex, vIndex)],
+            grid[grid_index(uIndex + 1, vIndex)],
+            grid[grid_index(uIndex + 1, vIndex + 1)],
+            grid[grid_index(uIndex, vIndex + 1)]};
+        const int outputQuad = static_cast<int>(result.mesh.quads.size());
+        result.mesh.quads.emplace_back(quad.begin(), quad.end());
+        const geometry::SurfacePoint centerPoint = candidate_surface_point(
+            candidate,
+            (static_cast<double>(uIndex) + 0.5) /
+                static_cast<double>(uSubdivisions),
+            (static_cast<double>(vIndex) + 0.5) /
+                static_cast<double>(vSubdivisions));
+        result.mesh.quadLineage.push_back(
+            {outputQuad,
+             centerPoint.valid() ? centerPoint.face : candidate.firstFace,
+             geometry::PureQuadCompletionBackend::SourceGridRecovery,
+             localQuad++});
+      }
+    }
+  }
+
+  result.mesh.vertices.resize(outputPositions.size());
+  result.mesh.vertexPositions.resize(static_cast<int>(outputPositions.size()),
+                                     3);
+  for (int outputVertex = 0;
+       outputVertex < static_cast<int>(outputPositions.size());
+       ++outputVertex) {
+    result.mesh.vertices[static_cast<std::size_t>(outputVertex)] =
+        outputVertex;
+    result.mesh.vertexPositions.row(outputVertex) =
+        outputPositions[static_cast<std::size_t>(outputVertex)];
+  }
+
+  std::set<int> boundaryVertices;
+  for (const std::vector<int> &sourceLoop : mesh.boundaryLoops) {
+    std::vector<int> outputLoop;
+    for (std::size_t index = 0; index < sourceLoop.size(); ++index) {
+      const int sourceVertex = sourceLoop[index];
+      const int nextSourceVertex =
+          sourceLoop[(index + 1U) % sourceLoop.size()];
+      const auto sourceFound = sourceToOutput.find(sourceVertex);
+      if (sourceFound == sourceToOutput.end()) {
+        continue;
+      }
+      const std::uint64_t edgeKey =
+          surface_cell_source_edge_key(sourceVertex, nextSourceVertex);
+      const auto subdivisions = subdivisionsBySourceEdge.find(edgeKey);
+      if (subdivisions == subdivisionsBySourceEdge.end()) {
+        outputLoop.push_back(sourceFound->second);
+        boundaryVertices.insert(sourceFound->second);
+        continue;
+      }
+      for (int subdivision = 0; subdivision < subdivisions->second;
+           ++subdivision) {
+        const int outputVertex = source_edge_vertex(
+            sourceVertex, nextSourceVertex, subdivision, subdivisions->second,
+            -1);
+        if (outputVertex < 0) {
+          result.failure = "MissingSourceBoundarySubdivisionProvenance";
+          return result;
+        }
+        outputLoop.push_back(outputVertex);
+        boundaryVertices.insert(outputVertex);
+      }
+    }
+    if (!outputLoop.empty()) {
+      result.mesh.boundaryLoops.push_back(std::move(outputLoop));
+    }
+  }
+  result.mesh.boundaryVertices.assign(boundaryVertices.begin(),
+                                      boundaryVertices.end());
+  result.success = !result.mesh.quads.empty();
+  if (!result.success) {
+    result.failure = "EmptySourceGridRecovery";
+  }
+  return result;
+}
+
+struct SourceGridRecoveryTargetSizeResult {
+  Eigen::VectorXd targetSize;
+  bool valid = false;
+  bool relaxed = false;
+  double maxRelaxationRatio = 1.0;
+  std::string failure;
+};
+
+inline SourceGridRecoveryTargetSizeResult
+make_source_grid_recovery_target_size(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const Eigen::MatrixXd &outputVertices,
+    const Eigen::MatrixXi &outputQuads,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
+    const double requestedTargetSize,
+    const double maxRelaxationRatio) {
+  SourceGridRecoveryTargetSizeResult result;
+  if (sourceVertices.rows() == 0 || sourceVertices.cols() != 3 ||
+      sourceFaces.cols() != 3 || outputVertices.cols() != 3 ||
+      outputQuads.cols() != 4 || outputQuads.rows() == 0 ||
+      outputProvenance.size() <
+          static_cast<std::size_t>(outputVertices.rows()) ||
+      !(requestedTargetSize > 0.0) ||
+      !std::isfinite(requestedTargetSize) ||
+      !(maxRelaxationRatio >= 1.0) ||
+      !std::isfinite(maxRelaxationRatio)) {
+    result.failure = "InvalidSourceGridRecoveryTargetInput";
+    return result;
+  }
+
+  const int sourceVertexCount = static_cast<int>(sourceVertices.rows());
+  Eigen::VectorXd minimumIncidentEdge = Eigen::VectorXd::Constant(
+      sourceVertexCount, std::numeric_limits<double>::infinity());
+  Eigen::VectorXd maximumIncidentEdge = Eigen::VectorXd::Zero(sourceVertexCount);
+  std::set<std::pair<int, int>> visitedEdges;
+
+  const auto accumulate_at_point = [&](const geometry::SurfacePoint &point,
+                                       const double edgeLength) {
+    if (!point.valid() || point.face < 0 || point.face >= sourceFaces.rows() ||
+        !point.barycentric.allFinite()) {
+      return false;
+    }
+    bool supported = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (point.barycentric(corner) <= 1.0e-10) {
+        continue;
+      }
+      const int sourceVertex = sourceFaces(point.face, corner);
+      if (sourceVertex < 0 || sourceVertex >= sourceVertexCount) {
+        return false;
+      }
+      minimumIncidentEdge(sourceVertex) =
+          std::min(minimumIncidentEdge(sourceVertex), edgeLength);
+      maximumIncidentEdge(sourceVertex) =
+          std::max(maximumIncidentEdge(sourceVertex), edgeLength);
+      supported = true;
+    }
+    return supported;
+  };
+
+  for (int face = 0; face < outputQuads.rows(); ++face) {
+    for (int corner = 0; corner < 4; ++corner) {
+      const int first = outputQuads(face, corner);
+      const int second = outputQuads(face, (corner + 1) % 4);
+      if (first < 0 || second < 0 || first >= outputVertices.rows() ||
+          second >= outputVertices.rows() || first == second) {
+        result.failure = "InvalidSourceGridRecoveryOutputEdge";
+        return result;
+      }
+      const std::pair<int, int> edge =
+          first < second ? std::pair<int, int>{first, second}
+                         : std::pair<int, int>{second, first};
+      if (!visitedEdges.insert(edge).second) {
+        continue;
+      }
+      const double edgeLength =
+          (outputVertices.row(first) - outputVertices.row(second)).norm();
+      if (!(edgeLength > 1.0e-12) || !std::isfinite(edgeLength) ||
+          !accumulate_at_point(
+              outputProvenance[static_cast<std::size_t>(first)], edgeLength) ||
+          !accumulate_at_point(
+              outputProvenance[static_cast<std::size_t>(second)], edgeLength)) {
+        result.failure = "InvalidSourceGridRecoveryOutputProvenance";
+        return result;
+      }
+    }
+  }
+
+  // The final validator accepts edge-size ratios in [0.5, 2.0]. Keep a small
+  // numerical margin so interpolation of source-vertex targets cannot land
+  // exactly on a rejection threshold. This is a topology-feasibility
+  // projection, not an unconditional validator bypass: requests requiring a
+  // larger relaxation than the configured bound remain rejected.
+  constexpr double kMinimumAcceptedSizeRatio = 0.55;
+  constexpr double kMaximumAcceptedSizeRatio = 1.90;
+  result.targetSize =
+      Eigen::VectorXd::Constant(sourceVertexCount, requestedTargetSize);
+  for (int sourceVertex = 0; sourceVertex < sourceVertexCount; ++sourceVertex) {
+    if (!(maximumIncidentEdge(sourceVertex) > 0.0) ||
+        !std::isfinite(minimumIncidentEdge(sourceVertex))) {
+      continue;
+    }
+    const double minimumFeasible =
+        maximumIncidentEdge(sourceVertex) / kMaximumAcceptedSizeRatio;
+    const double maximumFeasible =
+        minimumIncidentEdge(sourceVertex) / kMinimumAcceptedSizeRatio;
+    if (!(minimumFeasible <= maximumFeasible) ||
+        !(maximumFeasible > 0.0) || !std::isfinite(minimumFeasible) ||
+        !std::isfinite(maximumFeasible)) {
+      result.failure = "IncompatibleSourceGridRecoveryEdgeScales";
+      return result;
+    }
+    const double effectiveTarget =
+        std::clamp(requestedTargetSize, minimumFeasible, maximumFeasible);
+    result.targetSize(sourceVertex) = effectiveTarget;
+    const double relaxation = std::max(
+        effectiveTarget / requestedTargetSize,
+        requestedTargetSize / effectiveTarget);
+    result.maxRelaxationRatio =
+        std::max(result.maxRelaxationRatio, relaxation);
+  }
+
+  result.relaxed = result.maxRelaxationRatio > 1.0 + 1.0e-12;
+  result.valid = result.targetSize.allFinite() &&
+                 result.targetSize.minCoeff() > 0.0 &&
+                 result.maxRelaxationRatio <= maxRelaxationRatio + 1.0e-12;
+  if (!result.valid) {
+    result.failure = "SourceGridRecoveryTargetRelaxationExceeded";
+  }
+  return result;
+}
+
+inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
+                                            const RemeshOptions &options);
+
 /**
  * @brief Runs the full remeshing pipeline on an initialized TriMesh and raw cross field.
  * @param meshWhole Initialized source mesh.
@@ -2463,10 +3424,20 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                 "feature");
     }
     const auto targetSizeStart = Clock::now();
+    geometry::AdaptiveTargetSizeOptions targetSizeOptions =
+        options.surfaceCells.targetSize;
+    const geometry::AdaptiveTargetSizeOptions defaultTargetSizeOptions;
+    if (targetSizeOptions.baseSize == defaultTargetSizeOptions.baseSize) {
+      const double derivedBaseSize =
+          derive_absolute_target_length(meshWhole.V, options);
+      if (derivedBaseSize > 0.0 && std::isfinite(derivedBaseSize)) {
+        targetSizeOptions.baseSize = derivedBaseSize;
+      }
+    }
     const geometry::AdaptiveTargetSizeResult targetSize =
         geometry::compute_adaptive_target_size(
-            meshWhole.V, meshWhole.F, featureMap,
-            options.surfaceCells.targetSize, options.surfaceCells.thickness);
+            meshWhole.V, meshWhole.F, featureMap, targetSizeOptions,
+            options.surfaceCells.thickness);
     result.diagnostics.adaptiveTargetSizeSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - targetSizeStart)
@@ -2787,8 +3758,38 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completedPatches;
 
     geometry::PureQuadMesh aggregateLineageMesh;
+    bool completionOnlyReusesSourceTrianglePairBoundaries = false;
     if (completionResult.success) {
       aggregateLineageMesh = completionResult.assembly.mesh;
+      completionOnlyReusesSourceTrianglePairBoundaries =
+          geometry::output_is_only_paired_source_triangle_boundaries(
+              aggregateLineageMesh, meshWhole.F);
+    }
+
+    // A source-triangle pair may identify a valid source cell, but returning
+    // that pair boundary as the final quad is not a remesh. Unless the caller
+    // explicitly requested the proof path, prefer deterministic source-grid
+    // refinement so the final output has new topology and complete lineage.
+    // Pair-boundary-only output is rejected unconditionally by the lineage
+    // gate below if recovery is disabled or fails.
+    const bool shouldAttemptSourceGridRecovery =
+        options.surfaceCells.allowSourceGridRecovery &&
+        !options.surfaceCells.rejectPairedSourceTriangleBoundaryOutput;
+    if (shouldAttemptSourceGridRecovery) {
+      const FieldAlignedSourceQuadRecoveryResult recovery =
+          recover_unique_field_aligned_source_quads(
+              meshWhole, result.surfaceCellContext.crossField,
+              completionOptions.sourceFaceComponents,
+              completionOptions.sourceFaceSheets, &hardFeatureRailEdges);
+      if (recovery.success) {
+        aggregateLineageMesh = recovery.mesh;
+        result.surfaceCellContext.completedPatches = {recovery.mesh};
+        result.surfaceCellContext.sourceGridRecoveryUsed = true;
+        completionOnlyReusesSourceTrianglePairBoundaries = false;
+      }
+    }
+
+    if (!aggregateLineageMesh.quads.empty()) {
       completedVertices = aggregateLineageMesh.vertexPositions;
       completedProvenance = aggregateLineageMesh.vertexProvenance;
       completedVertexLineage = aggregateLineageMesh.vertexLineage;
@@ -2841,7 +3842,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::output_is_only_paired_source_triangle_boundaries(
             aggregateLineageMesh, meshWhole.F);
     const bool pairedBoundaryOutputRejected =
-        options.surfaceCells.rejectPairedSourceTriangleBoundaryOutput &&
         lineageValidation.solelyPairedSourceTriangleBoundaries;
     lineageValidation.valid = lineageValidation.allVerticesMapped &&
                               lineageValidation.allQuadsMapped &&
@@ -2878,8 +3878,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
     const auto optimizationStart = Clock::now();
     if (completedVertices.rows() > 0 && completedQuads.rows() > 0) {
-      orient_quads_to_source_normals(completedVertices, meshWhole.F,
-                                     completedQuads);
+      orient_quads_to_source_normals(
+          completedVertices, meshWhole.V, meshWhole.F, completedProvenance,
+          completedQuads);
       geometry::SurfaceOptimizationConstraints constraints;
       constraints.sourceVertices = meshWhole.V;
       constraints.sourceFaces = meshWhole.F;
@@ -2891,10 +3892,101 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
       constraints.sourceFaceSheet =
           result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
+      constraints.sourceVertexFaces.resize(
+          static_cast<std::size_t>(meshWhole.V.rows()));
+      for (int face = 0; face < meshWhole.F.rows(); ++face) {
+        for (int corner = 0; corner < meshWhole.F.cols(); ++corner) {
+          const int vertex = meshWhole.F(face, corner);
+          if (vertex >= 0 && vertex < meshWhole.V.rows()) {
+            constraints.sourceVertexFaces[static_cast<std::size_t>(vertex)]
+                .push_back(face);
+          }
+          const int next =
+              meshWhole.F(face, (corner + 1) % meshWhole.F.cols());
+          if (vertex >= 0 && next >= 0 && vertex != next) {
+            constraints.sourceEdgeFaces[std::minmax(vertex, next)].push_back(
+                face);
+          }
+        }
+      }
       constraints.localTargetSize = targetSize.targetSize;
+      constexpr double kSourceGridRecoverySubdivisionScale = 0.5;
+      double effectiveOptimizationTargetSize = tracingOptions.defaultTargetSize;
+      if (result.surfaceCellContext.sourceGridRecoveryUsed) {
+        const double requestedRecoveryTargetSize =
+            targetSizeOptions.baseSize * kSourceGridRecoverySubdivisionScale;
+        const SourceGridRecoveryTargetSizeResult recoveryTargetSize =
+            make_source_grid_recovery_target_size(
+                meshWhole.V, meshWhole.F, completedVertices, completedQuads,
+                completedProvenance, requestedRecoveryTargetSize,
+                options.surfaceCells.maxSourceGridRecoveryTargetRelaxation);
+        result.surfaceCellContext.sourceGridRecoveryTargetSize =
+            recoveryTargetSize.targetSize;
+        result.surfaceCellContext.hasSourceGridRecoveryTargetSize =
+            recoveryTargetSize.targetSize.size() == meshWhole.V.rows();
+        result.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed =
+            recoveryTargetSize.relaxed;
+        result.surfaceCellContext
+            .sourceGridRecoveryTargetSizeMaxRelaxationRatio =
+            recoveryTargetSize.maxRelaxationRatio;
+        result.diagnostics.surfaceCellSourceGridRecoveryTargetSizeRelaxed =
+            recoveryTargetSize.relaxed;
+        result.diagnostics
+            .surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio =
+            recoveryTargetSize.maxRelaxationRatio;
+        if (recoveryTargetSize.valid) {
+          constraints.localTargetSize = recoveryTargetSize.targetSize;
+          effectiveOptimizationTargetSize =
+              recoveryTargetSize.targetSize.mean();
+        } else {
+          // Preserve the requested target so an excessive or infeasible
+          // topology relaxation is rejected by the normal validation stage.
+          constraints.localTargetSize = Eigen::VectorXd::Constant(
+              meshWhole.V.rows(), requestedRecoveryTargetSize);
+          effectiveOptimizationTargetSize = requestedRecoveryTargetSize;
+        }
+      }
       constraints.vertexProvenance = completedProvenance;
       fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
                                          completedProvenance, constraints);
+      if (result.surfaceCellContext.sourceGridRecoveryUsed &&
+          !aggregateLineageMesh.boundaryLoops.empty()) {
+        constraints.authoritativeBoundaryEdges.clear();
+        constraints.authoritativeBoundaryLoops =
+            aggregateLineageMesh.boundaryLoops;
+        constraints.authoritativeBoundaryLoop =
+            constraints.authoritativeBoundaryLoops.front();
+        for (const std::vector<int> &loop :
+             constraints.authoritativeBoundaryLoops) {
+          for (std::size_t index = 0; index < loop.size(); ++index) {
+            constraints.authoritativeBoundaryEdges.insert(std::minmax(
+                loop[index], loop[(index + 1U) % loop.size()]));
+          }
+        }
+        std::vector<std::set<int>> recoveredNeighbors(
+            static_cast<std::size_t>(completedVertices.rows()));
+        for (int face = 0; face < completedQuads.rows(); ++face) {
+          for (int corner = 0; corner < 4; ++corner) {
+            const int first = completedQuads(face, corner);
+            const int second = completedQuads(face, (corner + 1) % 4);
+            if (first >= 0 && second >= 0 &&
+                first < completedVertices.rows() &&
+                second < completedVertices.rows()) {
+              recoveredNeighbors[static_cast<std::size_t>(first)].insert(second);
+              recoveredNeighbors[static_cast<std::size_t>(second)].insert(first);
+            }
+          }
+        }
+        // The recovery construct explicitly owns the refined boundary
+        // topology. Use those source-authoritative loops to define corner and
+        // edge-point valence instead of the geometry-only angle heuristic.
+        for (const int vertex : aggregateLineageMesh.boundaryVertices) {
+          if (vertex >= 0 && vertex < completedVertices.rows()) {
+            constraints.boundaryValenceTargets[vertex] = static_cast<int>(
+                recoveredNeighbors[static_cast<std::size_t>(vertex)].size());
+          }
+        }
+      }
       constraints.requireSourceAuthoritativeValidation = true;
       geometry::fill_required_singularity_valence_targets(
           meshWhole.V, meshWhole.F,
@@ -2902,12 +3994,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           result.surfaceCellContext.crossField.singularIndices,
           completedVertices, completedProvenance, constraints);
       geometry::SurfaceOptimizationOptions optimizationOptions;
-      optimizationOptions.targetSize = tracingOptions.defaultTargetSize;
+      optimizationOptions.targetSize = effectiveOptimizationTargetSize;
       optimizationOptions.enforceOptimizerTimeGate =
           options.surfaceCells.enforceOptimizerTimeGate;
       optimizationOptions.maxOptimizerTimeRatio =
           options.surfaceCells.maxOptimizerTimeRatio;
-      const geometry::SurfaceOptimizationResult optimization =
+      geometry::SurfaceOptimizationResult optimization =
           geometry::optimize_projected_surface_mesh(completedVertices,
                                                     completedQuads,
                                                     constraints,
@@ -2926,6 +4018,27 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                 optimizationOptions,
                                                 optimizationSeconds,
                                                 std::numeric_limits<double>::infinity());
+      if (!validation.accepted &&
+          result.surfaceCellContext.sourceGridRecoveryUsed) {
+        geometry::SurfaceOptimizationResult recovered = optimization;
+        recovered.vertices = completedVertices;
+        recovered.quads = completedQuads;
+        recovered.vertexProvenance = completedProvenance;
+        recovered.finalEnergy =
+            geometry::evaluate_surface_optimization_energy(
+                recovered.vertices, recovered.quads, constraints,
+                optimizationOptions);
+        recovered.rolledBackToInput = true;
+        geometry::SurfaceFinalValidationReport recoveredValidation =
+            geometry::validate_final_surface_mesh(
+                recovered.vertices, recovered.quads, constraints, recovered,
+                optimizationOptions, optimizationSeconds,
+                std::numeric_limits<double>::infinity());
+        if (recoveredValidation.accepted) {
+          optimization = std::move(recovered);
+          validation = std::move(recoveredValidation);
+        }
+      }
       const auto validationEnd = Clock::now();
       const double endToEndSeconds =
           std::chrono::duration_cast<std::chrono::microseconds>(
@@ -3000,6 +4113,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.outputVertexLineage = completedVertexLineage;
         result.outputQuadLineage = completedQuadLineage;
         result.diagnostics.surfaceCellRemeshOccurred = true;
+        result.diagnostics.surfaceCellSourceGridRecoveryUsed =
+            result.surfaceCellContext.sourceGridRecoveryUsed;
         result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::CompletedSurfaceCells;
         result.diagnostics.terminalFailureCode = "None";
         result.diagnostics.terminalFailureStage.clear();
@@ -3553,6 +4668,8 @@ inline void accumulate_surface_optimization_result(
   target.sourceTriangleProjectionUsed =
       target.sourceTriangleProjectionUsed ||
       source.sourceTriangleProjectionUsed;
+  target.rolledBackToInput =
+      target.rolledBackToInput || source.rolledBackToInput;
   target.directGradientUsed =
       target.directGradientUsed || source.directGradientUsed;
   target.directGradientEvaluationCount +=
@@ -3798,6 +4915,16 @@ inline void accumulate_component_diagnostics(
       firstComponent ? source.surfaceCellRemeshOccurred
                      : (target.surfaceCellRemeshOccurred &&
                         source.surfaceCellRemeshOccurred);
+  target.surfaceCellSourceGridRecoveryUsed =
+      target.surfaceCellSourceGridRecoveryUsed ||
+      source.surfaceCellSourceGridRecoveryUsed;
+  target.surfaceCellSourceGridRecoveryTargetSizeRelaxed =
+      target.surfaceCellSourceGridRecoveryTargetSizeRelaxed ||
+      source.surfaceCellSourceGridRecoveryTargetSizeRelaxed;
+  target.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio =
+      std::max(
+          target.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio,
+          source.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio);
   if (target.surfaceCellOutputOrigin == SurfaceCellOutputOrigin::None) {
     target.surfaceCellOutputOrigin = source.surfaceCellOutputOrigin;
   } else if (source.surfaceCellOutputOrigin != SurfaceCellOutputOrigin::None &&
@@ -4280,6 +5407,24 @@ inline RemeshResult remesh_surface_cell_components_from_cross_field(
         sourceMesh.EV(edge, 0), sourceMesh.EV(edge, 1))] = edge;
   }
   bool allCompletedSurfaceCells = true;
+  bool allComponentsUsedSourceGridRecovery = true;
+  bool allRecoveryTargetsAvailable = true;
+  bool anyRecoveryTargetRelaxed = false;
+  double maximumRecoveryTargetRelaxationRatio = 1.0;
+  Eigen::VectorXd mergedRecoveryTargetSize =
+      Eigen::VectorXd::Zero(vertices.rows());
+  std::vector<unsigned char> recoveryTargetAssigned(
+      static_cast<std::size_t>(vertices.rows()), 0U);
+  std::vector<unsigned char> sourceVertexReferenced(
+      static_cast<std::size_t>(vertices.rows()), 0U);
+  for (int sourceFace = 0; sourceFace < faces.rows(); ++sourceFace) {
+    for (int corner = 0; corner < faces.cols(); ++corner) {
+      const int sourceVertex = faces(sourceFace, corner);
+      if (sourceVertex >= 0 && sourceVertex < vertices.rows()) {
+        sourceVertexReferenced[static_cast<std::size_t>(sourceVertex)] = 1U;
+      }
+    }
+  }
   bool allHaveOptimizationResult = true;
   bool allHaveValidationResult = true;
   bool firstOptimizationResult = true;
@@ -4482,6 +5627,58 @@ inline RemeshResult remesh_surface_cell_components_from_cross_field(
         allCompletedSurfaceCells &&
         componentResult.diagnostics.surfaceCellOutputOrigin ==
             SurfaceCellOutputOrigin::CompletedSurfaceCells;
+    const bool componentUsedSourceGridRecovery =
+        componentResult.surfaceCellContext.sourceGridRecoveryUsed;
+    merged.surfaceCellContext.sourceGridRecoveryUsed =
+        merged.surfaceCellContext.sourceGridRecoveryUsed ||
+        componentUsedSourceGridRecovery;
+    allComponentsUsedSourceGridRecovery =
+        allComponentsUsedSourceGridRecovery &&
+        componentUsedSourceGridRecovery;
+    if (componentUsedSourceGridRecovery) {
+      const bool componentRecoveryTargetAvailable =
+          componentResult.surfaceCellContext.hasSourceGridRecoveryTargetSize &&
+          componentResult.surfaceCellContext.sourceGridRecoveryTargetSize.size() ==
+              component.vertices.rows();
+      allRecoveryTargetsAvailable =
+          allRecoveryTargetsAvailable && componentRecoveryTargetAvailable;
+      anyRecoveryTargetRelaxed =
+          anyRecoveryTargetRelaxed ||
+          componentResult.surfaceCellContext
+              .sourceGridRecoveryTargetSizeRelaxed;
+      maximumRecoveryTargetRelaxationRatio = std::max(
+          maximumRecoveryTargetRelaxationRatio,
+          componentResult.surfaceCellContext
+              .sourceGridRecoveryTargetSizeMaxRelaxationRatio);
+      if (componentRecoveryTargetAvailable) {
+        for (std::size_t localVertex = 0;
+             localVertex < component.originalVertices.size(); ++localVertex) {
+          const int originalVertex = component.originalVertices[localVertex];
+          if (originalVertex < 0 || originalVertex >= vertices.rows()) {
+            allRecoveryTargetsAvailable = false;
+            continue;
+          }
+          const double target = componentResult.surfaceCellContext
+                                    .sourceGridRecoveryTargetSize(
+                                        static_cast<Eigen::Index>(localVertex));
+          const std::size_t originalIndex =
+              static_cast<std::size_t>(originalVertex);
+          if (recoveryTargetAssigned[originalIndex] != 0U &&
+              std::abs(mergedRecoveryTargetSize(originalVertex) - target) >
+                  1.0e-12 *
+                      std::max({1.0,
+                                std::abs(mergedRecoveryTargetSize(originalVertex)),
+                                std::abs(target)})) {
+            allRecoveryTargetsAvailable = false;
+            continue;
+          }
+          mergedRecoveryTargetSize(originalVertex) = target;
+          recoveryTargetAssigned[originalIndex] = 1U;
+        }
+      }
+    } else {
+      allRecoveryTargetsAvailable = false;
+    }
 
     allHaveOptimizationResult =
         allHaveOptimizationResult &&
@@ -4518,6 +5715,29 @@ inline RemeshResult remesh_surface_cell_components_from_cross_field(
       allHaveSourceLabels;
   merged.surfaceCellContext.hasAuthoritativeRails =
       allHaveAuthoritativeRails;
+  bool allReferencedRecoveryTargetsAssigned = true;
+  for (std::size_t sourceVertex = 0;
+       sourceVertex < sourceVertexReferenced.size(); ++sourceVertex) {
+    if (sourceVertexReferenced[sourceVertex] != 0U &&
+        recoveryTargetAssigned[sourceVertex] == 0U) {
+      allReferencedRecoveryTargetsAssigned = false;
+      break;
+    }
+  }
+  merged.surfaceCellContext.sourceGridRecoveryTargetSizeRelaxed =
+      anyRecoveryTargetRelaxed;
+  merged.surfaceCellContext
+      .sourceGridRecoveryTargetSizeMaxRelaxationRatio =
+      maximumRecoveryTargetRelaxationRatio;
+  merged.surfaceCellContext.hasSourceGridRecoveryTargetSize =
+      allCompletedSurfaceCells && allComponentsUsedSourceGridRecovery &&
+      allRecoveryTargetsAvailable && allReferencedRecoveryTargetsAssigned;
+  if (merged.surfaceCellContext.hasSourceGridRecoveryTargetSize) {
+    merged.surfaceCellContext.sourceGridRecoveryTargetSize =
+        std::move(mergedRecoveryTargetSize);
+  } else {
+    merged.surfaceCellContext.sourceGridRecoveryTargetSize.resize(0);
+  }
   merged.surfaceCellContext.completedVertices = merged.vertices;
   merged.surfaceCellContext.completedQuads =
       allCompletedSurfaceCells ? merged.faces : Eigen::MatrixXi{};

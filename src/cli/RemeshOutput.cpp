@@ -88,6 +88,14 @@ void write_remesh_diagnostics_json(
   write_json_string(out, diagnostics.terminalFailureCode);
   out << ",\n  \"terminalFailureStage\": ";
   write_json_string(out, diagnostics.terminalFailureStage);
+  out << ",\n  \"surfaceCellSourceGridRecoveryUsed\": "
+      << (diagnostics.surfaceCellSourceGridRecoveryUsed ? "true" : "false");
+  out << ",\n  \"surfaceCellSourceGridRecoveryTargetSizeRelaxed\": "
+      << (diagnostics.surfaceCellSourceGridRecoveryTargetSizeRelaxed
+              ? "true"
+              : "false");
+  out << ",\n  \"surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio\": "
+      << diagnostics.surfaceCellSourceGridRecoveryTargetSizeMaxRelaxationRatio;
   out << ",\n  \"surfaceCellOutputOrigin\": ";
   write_json_string(out,
                     surface_cell_output_origin_name(

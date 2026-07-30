@@ -733,10 +733,9 @@ private:
     const int startVertex = map.edges[static_cast<std::size_t>(seed)].vertices.first;
     AdaptiveFeatureCurve curve = trace_curve_from_seed(
         vertices, vertexEdges, map, options, seed, startVertex, visited);
-    if (!curve.vertices.empty() && curve.vertices.back() != startVertex) {
-      curve.vertices.push_back(startVertex);
-    }
-    curve.closed = true;
+    curve.closed =
+        curve.vertices.size() == curve.edges.size() + 1U &&
+        !curve.vertices.empty() && curve.vertices.back() == startVertex;
     return curve;
   }
 

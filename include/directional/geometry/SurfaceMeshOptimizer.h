@@ -83,6 +83,8 @@ struct SurfaceOptimizationConstraints {
   Eigen::VectorXi sourceComponent;
   std::vector<int> sourceFaceComponent;
   std::vector<int> sourceFaceSheet;
+  std::vector<std::vector<int>> sourceVertexFaces;
+  std::map<std::pair<int, int>, std::vector<int>> sourceEdgeFaces;
   Eigen::VectorXd localTargetSize;
   std::vector<int> fixedVertices;
   std::vector<int> featureVertices;
@@ -164,6 +166,7 @@ struct SurfaceOptimizationResult {
   std::size_t orientationRejectionCount = 0;
   std::size_t armijoRejectionCount = 0;
   std::size_t hardInvariantRejectionCount = 0;
+  bool rolledBackToInput = false;
   SurfaceOptimizationEnergy initialEnergy;
   SurfaceOptimizationEnergy finalEnergy;
 };
@@ -274,6 +277,16 @@ inline Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v) {
     return Eigen::RowVector3d::Zero();
   }
   return v / n;
+}
+
+inline Eigen::RowVector3d tangent_direction(
+    const Eigen::RowVector3d &vector,
+    const Eigen::RowVector3d &surfaceNormal) {
+  const Eigen::RowVector3d normal = normalized_or_zero(surfaceNormal);
+  if (normal.squaredNorm() == 0.0) {
+    return normalized_or_zero(vector);
+  }
+  return normalized_or_zero(vector - vector.dot(normal) * normal);
 }
 
 inline Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
@@ -764,6 +777,98 @@ inline LocalSourceCross local_source_cross(
   return cross;
 }
 
+inline std::vector<int> compatible_source_field_charts(
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfacePoint &point) {
+  std::vector<int> charts;
+  if (!point.valid() || point.face < 0 ||
+      point.face >= constraints.sourceFaces.rows() ||
+      constraints.sourceFaces.cols() != 3 ||
+      constraints.sourceFieldX.rows() != constraints.sourceFaces.rows()) {
+    return charts;
+  }
+
+  std::vector<int> supportCorners;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (point.barycentric(corner) > 1.0e-8) {
+      supportCorners.push_back(corner);
+    }
+  }
+  if (supportCorners.size() == 1U) {
+    const int vertex =
+        constraints.sourceFaces(point.face, supportCorners.front());
+    if (vertex >= 0 &&
+        vertex < static_cast<int>(constraints.sourceVertexFaces.size())) {
+      charts = constraints.sourceVertexFaces[static_cast<std::size_t>(vertex)];
+    }
+  } else if (supportCorners.size() == 2U) {
+    const int first =
+        constraints.sourceFaces(point.face, supportCorners[0]);
+    const int second =
+        constraints.sourceFaces(point.face, supportCorners[1]);
+    const auto found =
+        constraints.sourceEdgeFaces.find(std::minmax(first, second));
+    if (found != constraints.sourceEdgeFaces.end()) {
+      charts = found->second;
+    }
+  }
+  if (charts.empty()) {
+    charts.push_back(point.face);
+  } else if (std::find(charts.begin(), charts.end(), point.face) ==
+             charts.end()) {
+    charts.push_back(point.face);
+  }
+
+  charts.erase(
+      std::remove_if(charts.begin(), charts.end(), [&](const int face) {
+        return face < 0 || face >= constraints.sourceFaces.rows();
+      }),
+      charts.end());
+  std::sort(charts.begin(), charts.end());
+  charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
+  return charts;
+}
+
+inline double best_source_field_alignment(
+    const Eigen::RowVector3d &edge,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfacePoint &point, const int fallbackFace,
+    const SurfacePoint *firstEndpoint = nullptr,
+    const SurfacePoint *secondEndpoint = nullptr) {
+  std::vector<int> charts =
+      compatible_source_field_charts(constraints, point);
+  if (firstEndpoint != nullptr && secondEndpoint != nullptr) {
+    const std::vector<int> firstCharts =
+        compatible_source_field_charts(constraints, *firstEndpoint);
+    const std::vector<int> secondCharts =
+        compatible_source_field_charts(constraints, *secondEndpoint);
+    std::vector<int> commonCharts;
+    std::set_intersection(firstCharts.begin(), firstCharts.end(),
+                          secondCharts.begin(), secondCharts.end(),
+                          std::back_inserter(commonCharts));
+    if (!commonCharts.empty()) {
+      charts = std::move(commonCharts);
+    }
+  }
+  if (charts.empty()) {
+    charts.push_back(point.valid() ? point.face : fallbackFace);
+  }
+  double best = 0.0;
+  for (const int chart : charts) {
+    SurfacePoint chartPoint = point;
+    chartPoint.face = chart;
+    const LocalSourceCross cross =
+        local_source_cross(constraints, chartPoint, fallbackFace);
+    const Eigen::RowVector3d normal =
+        local_source_normal(constraints, chartPoint, fallbackFace);
+    const Eigen::RowVector3d direction = tangent_direction(edge, normal);
+    best = std::max(
+        best, std::max(std::abs(direction.dot(cross.x)),
+                       std::abs(direction.dot(cross.y))));
+  }
+  return std::clamp(best, 0.0, 1.0);
+}
+
 inline Eigen::RowVector3d source_triangle_scalar_gradient(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
     const Eigen::VectorXd &values) {
@@ -1108,7 +1213,55 @@ inline double angle_degrees(const Eigen::RowVector3d &a,
 
 inline std::pair<int, int> consistent_component_sheet(
     const Eigen::MatrixXi &quads, const int face,
-    const std::vector<SurfacePoint> &provenance) {
+    const std::vector<SurfacePoint> &provenance,
+    const SurfaceOptimizationConstraints *constraints = nullptr) {
+  if (constraints != nullptr) {
+    const validation::source_authoritative_detail::SourcePointLabelSupport
+        labelSupport(&constraints->sourceFaces,
+                     &constraints->sourceFaceComponent,
+                     &constraints->sourceFaceSheet);
+    if (labelSupport.available()) {
+      std::set<std::pair<int, int>> commonLabels;
+      bool firstPoint = true;
+      for (int corner = 0; corner < 4; ++corner) {
+        const int vertex = quads(face, corner);
+        if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
+          commonLabels.clear();
+          break;
+        }
+        const SurfacePoint &point =
+            provenance[static_cast<std::size_t>(vertex)];
+        const std::set<std::pair<int, int>> labels =
+            labelSupport.supported_labels(point);
+        if (labels.empty()) {
+          commonLabels.clear();
+          break;
+        }
+        if (point.component >= 0 && point.sheet >= 0 &&
+            labels.count({point.component, point.sheet}) == 0U) {
+          commonLabels.clear();
+          break;
+        }
+        if (firstPoint) {
+          commonLabels = labels;
+          firstPoint = false;
+        } else {
+          std::set<std::pair<int, int>> intersection;
+          std::set_intersection(
+              commonLabels.begin(), commonLabels.end(), labels.begin(),
+              labels.end(), std::inserter(intersection, intersection.end()));
+          commonLabels = std::move(intersection);
+        }
+        if (commonLabels.empty()) {
+          break;
+        }
+      }
+      if (!commonLabels.empty()) {
+        return *commonLabels.begin();
+      }
+    }
+  }
+
   constexpr int incompatibleLabel = std::numeric_limits<int>::max();
   int component = -1;
   int sheet = -1;
@@ -1153,7 +1306,7 @@ inline SurfacePoint quad_reference_surface_point(
     centroid += 0.25 * vertices.row(quads(face, corner));
   }
   const auto [component, sheet] =
-      consistent_component_sheet(quads, face, provenance);
+      consistent_component_sheet(quads, face, provenance, &constraints);
   SurfacePoint point = nearest_source_point(centroid, constraints, component,
                                             sheet, projectionCache);
   if (point.valid()) {
@@ -1194,8 +1347,10 @@ struct OutputProjectionCache {
   std::map<std::pair<int, int>, std::vector<unsigned char>> masks;
 
   OutputProjectionCache(const Eigen::MatrixXd &vertices,
-                        const Eigen::MatrixXi &quads,
-                        const std::vector<SurfacePoint> &provenance) {
+                         const Eigen::MatrixXi &quads,
+                         const std::vector<SurfacePoint> &provenance,
+                         const SurfaceOptimizationConstraints *constraints =
+                             nullptr) {
     triangles.resize(2 * quads.rows(), 3);
     faceComponents.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
     faceSheets.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
@@ -1203,7 +1358,7 @@ struct OutputProjectionCache {
       triangles.row(2 * face) << quads(face, 0), quads(face, 1), quads(face, 2);
       triangles.row(2 * face + 1) << quads(face, 0), quads(face, 2), quads(face, 3);
       const auto [component, sheet] =
-          consistent_component_sheet(quads, face, provenance);
+          consistent_component_sheet(quads, face, provenance, constraints);
       faceComponents[static_cast<std::size_t>(2 * face)] = component;
       faceComponents[static_cast<std::size_t>(2 * face + 1)] = component;
       faceSheets[static_cast<std::size_t>(2 * face)] = sheet;
@@ -1519,7 +1674,7 @@ inline SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
       energy.size += std::pow(ratio - 1.0, 2.0);
       const LocalSourceCross cross =
           local_source_cross(constraints, faceSource, f);
-      const Eigen::RowVector3d dir = normalized_or_zero(e);
+      const Eigen::RowVector3d dir = tangent_direction(e, sourceNormal);
       const double align =
           std::max(std::abs(dir.dot(cross.x)), std::abs(dir.dot(cross.y)));
       energy.field += std::pow(1.0 - align, 2.0);
@@ -2013,21 +2168,29 @@ inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached
               local_target_size_gradient(constraints, secondPoint);
         }
 
-        const Eigen::RowVector3d direction = edge / length;
-        const double dotX = direction.dot(sourceCross.x);
-        const double dotY = direction.dot(sourceCross.y);
-        const bool chooseX = std::abs(dotX) >= std::abs(dotY);
-        const double selectedDot = chooseX ? dotX : dotY;
-        const Eigen::RowVector3d selectedAxis =
-            chooseX ? sourceCross.x : sourceCross.y;
-        const double selectedSign = selectedDot >= 0.0 ? 1.0 : -1.0;
-        const double alignment = std::abs(selectedDot);
-        const Eigen::RowVector3d directionGradient =
-            2.0 * (alignment - 1.0) * selectedSign * selectedAxis;
-        const Eigen::RowVector3d edgeGradient =
-            normalized_pullback(edge, directionGradient);
-        gradient.field.row(first) -= edgeGradient;
-        gradient.field.row(second) += edgeGradient;
+        const Eigen::RowVector3d projectedEdge =
+            edge - edge.dot(sourceNormal) * sourceNormal;
+        const double projectedLength = projectedEdge.norm();
+        if (projectedLength > 1.0e-20) {
+          const Eigen::RowVector3d direction = projectedEdge / projectedLength;
+          const double dotX = direction.dot(sourceCross.x);
+          const double dotY = direction.dot(sourceCross.y);
+          const bool chooseX = std::abs(dotX) >= std::abs(dotY);
+          const double selectedDot = chooseX ? dotX : dotY;
+          const Eigen::RowVector3d selectedAxis =
+              chooseX ? sourceCross.x : sourceCross.y;
+          const double selectedSign = selectedDot >= 0.0 ? 1.0 : -1.0;
+          const double alignment = std::abs(selectedDot);
+          const Eigen::RowVector3d directionGradient =
+              2.0 * (alignment - 1.0) * selectedSign * selectedAxis;
+          const Eigen::RowVector3d projectedGradient =
+              normalized_pullback(projectedEdge, directionGradient);
+          const Eigen::RowVector3d edgeGradient =
+              projectedGradient -
+              projectedGradient.dot(sourceNormal) * sourceNormal;
+          gradient.field.row(first) -= edgeGradient;
+          gradient.field.row(second) += edgeGradient;
+        }
       }
 
       const int center = faceVertices[static_cast<std::size_t>(corner)];
@@ -2063,17 +2226,20 @@ inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached
       const double eps = std::max(1.0e-8, options.finiteDifferenceStep);
       const int requiredComponent = faceSource.component;
       const int requiredSheet = faceSource.sheet;
-      const auto fieldEnergyForCross = [&](const LocalSourceCross &cross) {
+      const auto fieldEnergyForSource = [&](const SurfacePoint &source) {
+        const LocalSourceCross cross =
+            local_source_cross(constraints, source, face);
+        const Eigen::RowVector3d fieldNormal =
+            local_source_normal(constraints, source, face);
         double value = 0.0;
         for (int edgeIndex = 0; edgeIndex < 4; ++edgeIndex) {
           const Eigen::RowVector3d edge =
               faceEdges[static_cast<std::size_t>(edgeIndex)];
-          const double length =
-              faceLengths[static_cast<std::size_t>(edgeIndex)];
-          if (length <= 1.0e-20) {
+          const Eigen::RowVector3d direction =
+              tangent_direction(edge, fieldNormal);
+          if (direction.squaredNorm() == 0.0) {
             continue;
           }
-          const Eigen::RowVector3d direction = edge / length;
           const double alignment =
               std::max(std::abs(direction.dot(cross.x)),
                        std::abs(direction.dot(cross.y)));
@@ -2092,10 +2258,8 @@ inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached
         const SurfacePoint minusSource = nearest_source_point(
             minusPoint, constraints, requiredComponent, requiredSheet,
             &projectionCache);
-        const double plusEnergy = fieldEnergyForCross(
-            local_source_cross(constraints, plusSource, face));
-        const double minusEnergy = fieldEnergyForCross(
-            local_source_cross(constraints, minusSource, face));
+        const double plusEnergy = fieldEnergyForSource(plusSource);
+        const double minusEnergy = fieldEnergyForSource(minusSource);
         gradient.field(faceSourceVertex, coordinate) +=
             (plusEnergy - minusEnergy) / (2.0 * eps);
       }
@@ -2352,7 +2516,7 @@ inline SurfaceFinalValidationReport validate_final_surface_mesh(
       constraints.sourceFaces.rows() > 0) {
   for (int face = 0; face < quads.rows(); ++face) {
     const auto [component, sheet] =
-        consistent_component_sheet(quads, face, provenance);
+        consistent_component_sheet(quads, face, provenance, &constraints);
     for (const double u : quadSamples) {
       for (const double v : quadSamples) {
         const Eigen::RowVector3d sample =
@@ -2398,7 +2562,8 @@ inline SurfaceFinalValidationReport validate_final_surface_mesh(
   // disconnected or folded sheets cannot hide a coverage hole.
   if (constraints.sourceVertices.rows() > 0 &&
       constraints.sourceFaces.rows() > 0 && quads.rows() > 0) {
-    OutputProjectionCache outputProjection(vertices, quads, provenance);
+    OutputProjectionCache outputProjection(vertices, quads, provenance,
+                                           &constraints);
     const std::vector<Eigen::Vector3d> barycentrics =
         triangle_sample_barycentrics();
     for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {
@@ -2529,13 +2694,9 @@ inline SurfaceFinalValidationReport validate_final_surface_mesh(
       const SurfacePoint edgeSource = nearest_source_point(
           0.5 * (first + second), constraints, component, sheet,
           &sourceProjection);
-      const LocalSourceCross edgeCross = local_source_cross(
-          constraints, edgeSource.valid() ? edgeSource : faceSource, face);
-      const Eigen::RowVector3d direction = normalized_or_zero(edge);
-      const double alignment = std::clamp(
-          std::max(std::abs(direction.dot(edgeCross.x)),
-                   std::abs(direction.dot(edgeCross.y))),
-          0.0, 1.0);
+      const double alignment = best_source_field_alignment(
+          edge, constraints, edgeSource.valid() ? edgeSource : faceSource,
+          face, &firstPoint, &secondPoint);
       fieldErrors.push_back(
           std::acos(alignment) * 180.0 / 3.14159265358979323846);
     }
@@ -2822,15 +2983,10 @@ inline SurfaceOptimizationOverlay make_surface_optimization_overlay(
       const SurfacePoint edgeSource = nearest_source_point(
           0.5 * (first + second), constraints, component, sheet,
           &sourceProjection);
-      const LocalSourceCross cross =
-          local_source_cross(constraints,
-                             edgeSource.valid() ? edgeSource : faceSource,
-                             face);
-      const Eigen::RowVector3d direction = normalized_or_zero(second - first);
-      const double alignment = std::clamp(
-          std::max(std::abs(direction.dot(cross.x)),
-                   std::abs(direction.dot(cross.y))),
-          0.0, 1.0);
+      const double alignment = best_source_field_alignment(
+          second - first, constraints,
+          edgeSource.valid() ? edgeSource : faceSource, face, &firstPoint,
+          &secondPoint);
       overlay.fieldAlignmentError(row) =
           std::acos(alignment) * 180.0 / 3.14159265358979323846;
     }
@@ -2867,7 +3023,8 @@ inline SurfaceOptimizationOverlay make_surface_optimization_overlay(
           : constraints.sourcePositions.rows();
   overlay.sourceToOutputError = Eigen::VectorXd::Zero(sourceSampleCount);
   if (sourceSampleCount > 0 && quads.rows() > 0) {
-    OutputProjectionCache outputProjection(vertices, quads, provenance);
+    OutputProjectionCache outputProjection(vertices, quads, provenance,
+                                           &constraints);
     for (int source = 0; source < sourceSampleCount; ++source) {
       const Eigen::RowVector3d position =
           constraints.sourceVertices.rows() > 0

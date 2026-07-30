@@ -50,6 +50,7 @@ directional::pipeline::RemeshOptions surface_options() {
   options.surfaceCells.enabled = true;
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.lengthRatio = 0.2;
   return options;
 }
 
@@ -94,7 +95,16 @@ TEST(MilestoneGP24, EverySurfaceCellCountHasAvailability) {
   const directional::pipeline::RemeshResult completed =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
-  ASSERT_TRUE(completed.success);
+  ASSERT_TRUE(completed.success)
+      << completed.diagnostics.terminalFailureCode << "/"
+      << completed.diagnostics.terminalFailureStage << " validation="
+      << completed.diagnostics.surfaceCellValidationFailures << " time="
+      << completed.surfaceCellContext.validationResult.optimizerTimeWithinGate
+      << " size="
+      << completed.surfaceCellContext.validationResult.sizeP5 << ","
+      << completed.surfaceCellContext.validationResult.sizeP95 << " field="
+      << completed.surfaceCellContext.validationResult.fieldMedianDegrees << ","
+      << completed.surfaceCellContext.validationResult.fieldP95Degrees;
   expect_all_surface_counts_available(completed.diagnostics);
 
   directional::pipeline::RemeshOptions featureFailure = surface_options();
@@ -147,7 +157,16 @@ TEST(MilestoneGP24, ProvenanceCountComesFromOutput) {
   const directional::pipeline::RemeshResult completed =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
-  ASSERT_TRUE(completed.success);
+  ASSERT_TRUE(completed.success)
+      << completed.diagnostics.terminalFailureCode << "/"
+      << completed.diagnostics.terminalFailureStage << " validation="
+      << completed.diagnostics.surfaceCellValidationFailures << " time="
+      << completed.surfaceCellContext.validationResult.optimizerTimeWithinGate
+      << " size="
+      << completed.surfaceCellContext.validationResult.sizeP5 << ","
+      << completed.surfaceCellContext.validationResult.sizeP95 << " field="
+      << completed.surfaceCellContext.validationResult.fieldMedianDegrees << ","
+      << completed.surfaceCellContext.validationResult.fieldP95Degrees;
   ASSERT_TRUE(completed.diagnostics.surfaceCellProvenanceVertexCountAvailable);
   EXPECT_EQ(completed.outputVertexProvenance.size(),
             completed.diagnostics.surfaceCellProvenanceVertexCount);
@@ -275,7 +294,15 @@ TEST(MilestoneGP24, StageDurationsUseIndependentIntervals) {
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, surface_options());
-  ASSERT_TRUE(result.success);
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << "/"
+      << result.diagnostics.terminalFailureStage << " validation="
+      << result.diagnostics.surfaceCellValidationFailures << " time="
+      << result.surfaceCellContext.validationResult.optimizerTimeWithinGate
+      << " size=" << result.surfaceCellContext.validationResult.sizeP5 << ","
+      << result.surfaceCellContext.validationResult.sizeP95 << " field="
+      << result.surfaceCellContext.validationResult.fieldMedianDegrees << ","
+      << result.surfaceCellContext.validationResult.fieldP95Degrees;
   expect_overall_time(result);
 
   double stageSum = 0.0;
@@ -320,4 +347,23 @@ TEST(MilestoneGP24, StageDurationsUseIndependentIntervals) {
   EXPECT_EQ("validation", validation->outputObject.type);
   EXPECT_NE(optimization->outputObject.structuralHash,
             validation->outputObject.structuralHash);
+}
+
+TEST(MilestoneGP24, ValidationHashIgnoresUnenforcedTimingObservation) {
+  directional::geometry::SurfaceFinalValidationReport withinGate;
+  withinGate.accepted = true;
+  withinGate.optimizerTimeWithinGate = true;
+  directional::geometry::SurfaceFinalValidationReport exceededGate =
+      withinGate;
+  exceededGate.optimizerTimeWithinGate = false;
+
+  EXPECT_EQ(directional::pipeline::hash_surface_cell_validation(withinGate),
+            directional::pipeline::hash_surface_cell_validation(exceededGate));
+  directional::geometry::SurfaceFinalValidationReport enforcedRejection =
+      exceededGate;
+  enforcedRejection.accepted = false;
+  EXPECT_NE(
+      directional::pipeline::hash_surface_cell_validation(withinGate, true),
+      directional::pipeline::hash_surface_cell_validation(enforcedRejection,
+                                                          true));
 }
