@@ -3625,3 +3625,5 @@ tutorial/
 imgui.ini
 output/
 /*.zip
+**/benchmarks/*
+**/benchmark-results/*
