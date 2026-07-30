@@ -167,7 +167,7 @@ int run_remesh(const int argc, char **argv) {
     } else if (option == "--surface-cell-fallback") {
       if (++argument >= argc) {
         throw std::runtime_error(
-            "--surface-cell-fallback requires Fail, ReturnQuadDominant, or TryLegacy.");
+            "--surface-cell-fallback requires Fail, ReturnInputMesh, or TryLegacy.");
       }
       options.surfaceCells.fallbackPolicy =
           pipeline::parse_surface_cell_fallback_policy(argv[argument]);
@@ -387,7 +387,7 @@ int run_remesh(const int argc, char **argv) {
         result.cutFaces, result.cutFunctions, result.cutCornerFunctions,
         result.rawCrossField, result.crossFieldMatching,
         result.crossFieldEffort, result.crossFieldSingularCycles,
-        result.crossFieldSingularIndices);
+        result.crossFieldSingularIndices, result.diagnostics);
   }
 
   progress.update(100, progressTotal, "Finalizing remesh pipeline");

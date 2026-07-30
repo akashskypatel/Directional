@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <numeric>
 #include <queue>
@@ -1095,11 +1096,13 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
 }
 
 void write_remesh_diagnostics_json(std::ostream &out,
-                                   const RemeshResult &result) {
+                                   const pipeline::RemeshResult &result) {
   const RemeshDiagnostics &diagnostics = result.diagnostics;
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
+      << "\"overallPipelineTimeAvailable\":"
+      << (diagnostics.overallPipelineTimeAvailable ? "true" : "false") << ","
       << "\"remeshBackend\":\"" << diagnostics.remeshBackend << "\","
       << "\"requestedBackend\":\"" << diagnostics.requestedBackend << "\","
       << "\"executedBackend\":\"" << diagnostics.executedBackend << "\","
@@ -1119,9 +1122,6 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << (diagnostics.surfaceCellFallbackAttempted ? "true" : "false") << ","
       << "\"surfaceCellUsedLegacyFallback\":"
       << (diagnostics.surfaceCellUsedLegacyFallback ? "true" : "false") << ","
-      << "\"surfaceCellReturnedQuadDominantFallback\":"
-      << (diagnostics.surfaceCellReturnedQuadDominantFallback ? "true" : "false")
-      << ","
       << "\"surfaceCellReturnedInputMeshFallback\":"
       << (diagnostics.surfaceCellReturnedInputMeshFallback ? "true" : "false")
       << ","
@@ -1151,6 +1151,13 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << (lineage.consumedByNextStage ? "true" : "false") << ","
         << "\"consumptionKind\":\"" << surface_cell_consumption_kind_name(lineage.consumptionKind) << "\","
         << "\"noOp\":" << (lineage.noOp ? "true" : "false") << ","
+        << "\"componentIndex\":";
+    if (lineage.componentIndex == std::numeric_limits<std::size_t>::max()) {
+      out << "null";
+    } else {
+      out << lineage.componentIndex;
+    }
+    out << ","
         << "\"durationSeconds\":" << lineage.durationSeconds << ","
         << "\"terminalFailureCode\":\"" << lineage.terminalFailureCode << "\","
         << "\"terminalFailureStage\":\"" << lineage.terminalFailureStage << "\""
@@ -1250,6 +1257,17 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << diagnostics.surfaceCellCompletedQuadCount << ","
       << "\"surfaceCellOptimizationIterationCount\":"
       << diagnostics.surfaceCellOptimizationIterationCount << ","
+      << "\"surfaceCellValidationFailureCountAvailable\":"
+      << (diagnostics.surfaceCellValidationFailureCountAvailable ? "true" : "false")
+      << ","
+      << "\"surfaceCellProvenanceVertexCountAvailable\":"
+      << (diagnostics.surfaceCellProvenanceVertexCountAvailable ? "true" : "false")
+      << ","
+      << "\"surfaceCellFeatureCountAvailable\":"
+      << (diagnostics.surfaceCellFeatureCountAvailable ? "true" : "false") << ","
+      << "\"surfaceCellMetricSampleCountAvailable\":"
+      << (diagnostics.surfaceCellMetricSampleCountAvailable ? "true" : "false")
+      << ","
       << "\"surfaceCellReliefCountAvailable\":"
       << (diagnostics.surfaceCellReliefCountAvailable ? "true" : "false") << ","
       << "\"surfaceCellTraceCountAvailable\":"

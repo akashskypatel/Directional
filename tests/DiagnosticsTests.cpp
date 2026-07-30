@@ -147,6 +147,7 @@ TEST(DiagnosticsPhase00, RemeshDiagnosticsContainNestedStageTotals) {
 
   ASSERT_TRUE(result.success);
   const directional::RemeshDiagnostics &diagnostics = result.diagnostics;
+  EXPECT_TRUE(diagnostics.overallPipelineTimeAvailable);
   expect_nonnegative_finite(diagnostics.overallPipelineSeconds);
   expect_nonnegative_finite(diagnostics.setupIntegrationSeconds);
   expect_nonnegative_finite(diagnostics.integrationTotalSeconds);
@@ -206,6 +207,7 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
       "wallSeconds": 0.1,
       "diagnostics": {
         "overallPipelineSeconds": 0.1,
+        "overallPipelineTimeAvailable": true,
         "remeshBackend": "SurfaceCells",
         "requestedBackend": "SurfaceCells",
         "executedBackend": "LegacyInteger",
@@ -217,7 +219,6 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "terminalFailureStage": "",
         "surfaceCellFallbackAttempted": true,
         "surfaceCellUsedLegacyFallback": true,
-        "surfaceCellReturnedQuadDominantFallback": false,
         "surfaceCellReturnedInputMeshFallback": false,
         "surfaceCellRemeshOccurred": false,
         "surfaceCellOutputOrigin": "LegacyFallback",
@@ -229,6 +230,7 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
           "available": true,
           "consumedByNextStage": true,
           "consumptionKind": "Full",
+          "componentIndex": null,
           "durationSeconds": 0.001,
           "terminalFailureCode": "None",
           "terminalFailureStage": ""
@@ -251,6 +253,10 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
         "surfaceCellSimplifiedCellCount": 0,
         "surfaceCellCompletedQuadCount": 0,
         "surfaceCellOptimizationIterationCount": 0,
+        "surfaceCellValidationFailureCountAvailable": true,
+        "surfaceCellProvenanceVertexCountAvailable": true,
+        "surfaceCellFeatureCountAvailable": true,
+        "surfaceCellMetricSampleCountAvailable": true,
         "surfaceCellReliefCountAvailable": false,
         "surfaceCellTraceCountAvailable": false,
         "surfaceCellArrangementCountAvailable": false,
@@ -319,6 +325,7 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"success\"");
   expect_contains(json, "\"wallSeconds\"");
   expect_contains(json, "\"diagnostics\"");
+  expect_contains(json, "\"overallPipelineTimeAvailable\"");
   expect_contains(json, "\"requestedBackend\"");
   expect_contains(json, "\"executedBackend\"");
   expect_contains(json, "\"surfaceCellFallbackCause\"");
@@ -330,11 +337,16 @@ TEST(DiagnosticsPhase00, BenchmarkJsonRoundTripsRequiredFields) {
   expect_contains(json, "\"surfaceCellContextProducts\"");
   expect_contains(json, "\"inputObjectHash\"");
   expect_contains(json, "\"consumedByNextStage\"");
+  expect_contains(json, "\"componentIndex\"");
   expect_contains(json, "\"surfaceCellValidationSeconds\"");
   expect_contains(json, "\"surfaceCellValidationFailures\"");
   expect_contains(json, "\"surfaceCellProvenanceVertexCount\"");
   expect_contains(json, "\"surfaceCellFeatureCount\"");
   expect_contains(json, "\"surfaceCellMetricSampleCount\"");
+  expect_contains(json, "\"surfaceCellValidationFailureCountAvailable\"");
+  expect_contains(json, "\"surfaceCellProvenanceVertexCountAvailable\"");
+  expect_contains(json, "\"surfaceCellFeatureCountAvailable\"");
+  expect_contains(json, "\"surfaceCellMetricSampleCountAvailable\"");
   expect_contains(json, "\"surfaceCellReliefCountAvailable\"");
   expect_contains(json, "\"surfaceCellOptimizationIterationCountAvailable\"");
   expect_contains(json, "\"adaptiveFeatureMapSeconds\"");

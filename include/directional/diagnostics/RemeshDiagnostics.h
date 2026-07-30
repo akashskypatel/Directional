@@ -12,6 +12,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -98,6 +99,7 @@ struct SurfaceCellStageLineage {
   bool consumedByNextStage = false;
   SurfaceCellConsumptionKind consumptionKind = SurfaceCellConsumptionKind::None;
   bool noOp = false;
+  std::size_t componentIndex = std::numeric_limits<std::size_t>::max();
   double durationSeconds = 0.0;
   std::string terminalFailureCode = "None";
   std::string terminalFailureStage;
@@ -116,7 +118,6 @@ struct RemeshDiagnostics {
   std::string terminalFailureStage;
   bool surfaceCellFallbackAttempted = false;
   bool surfaceCellUsedLegacyFallback = false;
-  bool surfaceCellReturnedQuadDominantFallback = false;
   bool surfaceCellReturnedInputMeshFallback = false;
   bool surfaceCellRemeshOccurred = false;
   SurfaceCellOutputOrigin surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
@@ -144,6 +145,10 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
   std::size_t surfaceCellOptimizationIterationCount = 0;
+  bool surfaceCellValidationFailureCountAvailable = false;
+  bool surfaceCellProvenanceVertexCountAvailable = false;
+  bool surfaceCellFeatureCountAvailable = false;
+  bool surfaceCellMetricSampleCountAvailable = false;
   bool surfaceCellReliefCountAvailable = false;
   bool surfaceCellTraceCountAvailable = false;
   bool surfaceCellArrangementCountAvailable = false;
@@ -179,6 +184,7 @@ struct RemeshDiagnostics {
   double setupMesherSeconds = 0.0;
   double mesherTotalSeconds = 0.0;
   double overallPipelineSeconds = 0.0;
+  bool overallPipelineTimeAvailable = false;
 
   std::size_t preconditioningFlipsAccepted = 0;
   std::size_t preconditioningCollapsesAccepted = 0;

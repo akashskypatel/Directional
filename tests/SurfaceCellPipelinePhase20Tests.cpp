@@ -715,9 +715,12 @@ TEST(SurfaceCellPipelinePhase20, BackendNamesAndParsersExposeStableApi) {
             directional::pipeline::parse_remesh_backend("legacy-integer"));
   EXPECT_EQ(RemeshBackend::SurfaceCells,
             directional::pipeline::parse_remesh_backend("surface_cells"));
-  EXPECT_EQ(SurfaceCellFallbackPolicy::ReturnQuadDominant,
+  EXPECT_EQ(SurfaceCellFallbackPolicy::ReturnInputMesh,
             directional::pipeline::parse_surface_cell_fallback_policy(
-                "return-quad-dominant"));
+                "return-input-mesh"));
+  EXPECT_EQ("ReturnInputMesh",
+            directional::pipeline::surface_cell_fallback_policy_name(
+                SurfaceCellFallbackPolicy::ReturnInputMesh));
   EXPECT_THROW((void)directional::pipeline::parse_remesh_backend("unknown"),
                std::runtime_error);
 }
@@ -972,12 +975,11 @@ TEST(SurfaceCellPipelinePhase20, ExplicitFallbackPoliciesAreObservable) {
   EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
 
   options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::ReturnQuadDominant;
+      directional::pipeline::SurfaceCellFallbackPolicy::ReturnInputMesh;
   result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.vertices, mesh.faces, raw, options);
   EXPECT_TRUE(result.success) << "relief=" << result.diagnostics.surfaceCellReliefPatchCount << " trace=" << result.diagnostics.surfaceCellTraceSegmentCount << " arrangement=" << result.diagnostics.surfaceCellArrangementCellCount << " simplified=" << result.diagnostics.surfaceCellSimplifiedCellCount << " completed=" << result.diagnostics.surfaceCellCompletedQuadCount << " opt=" << result.diagnostics.surfaceCellOptimizationIterationCount << " terminal=" << result.diagnostics.terminalFailureCode << ":" << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
-  EXPECT_FALSE(result.diagnostics.surfaceCellReturnedQuadDominantFallback);
   EXPECT_TRUE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_STREQ("InputMeshFallback", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
@@ -1046,10 +1048,19 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
     EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
               result.diagnostics.surfaceCellOutputOrigin);
   }
+  EXPECT_TRUE(result.diagnostics.overallPipelineTimeAvailable);
+  EXPECT_GE(result.diagnostics.overallPipelineSeconds, 0.0);
+  EXPECT_TRUE(result.diagnostics.surfaceCellFeatureCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellMetricSampleCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellProvenanceVertexCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellValidationFailureCountAvailable);
   EXPECT_EQ(static_cast<std::size_t>(mesh.vertices.rows()),
             result.diagnostics.surfaceCellMetricSampleCount);
   EXPECT_NE(static_cast<std::size_t>(mesh.faces.rows()),
             result.diagnostics.surfaceCellFeatureCount);
+  EXPECT_EQ(result.outputVertexProvenance.size(),
+            result.diagnostics.surfaceCellProvenanceVertexCount);
+  EXPECT_EQ(0U, result.diagnostics.surfaceCellValidationFailures);
   EXPECT_TRUE(result.diagnostics.surfaceCellReliefCountAvailable);
   EXPECT_TRUE(result.diagnostics.surfaceCellTraceCountAvailable);
   EXPECT_TRUE(result.diagnostics.surfaceCellArrangementCountAvailable);
@@ -1084,6 +1095,14 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
   EXPECT_TRUE(context.hasValidationResult);
   EXPECT_TRUE(context.validationResult.authoritativeBoundaryUsed);
   EXPECT_TRUE(context.validationResult.authoritativeFeatureRailsUsed);
+  EXPECT_GE(result.diagnostics.surfaceCellOptimizationSeconds, 0.0);
+  EXPECT_GE(result.diagnostics.surfaceCellValidationSeconds, 0.0);
+  EXPECT_LE(result.diagnostics.surfaceCellOptimizationSeconds +
+                result.diagnostics.surfaceCellValidationSeconds,
+            result.diagnostics.overallPipelineSeconds + 1.0e-6);
+  EXPECT_EQ(context.validationResult.optimizerTimeWithinGate,
+            result.diagnostics.surfaceCellOptimizationSeconds <=
+                0.25 * result.diagnostics.overallPipelineSeconds + 1.0e-6);
   EXPECT_EQ(mesh.faces.rows(), context.sourceMesh.F.rows());
   EXPECT_EQ(result.diagnostics.surfaceCellFeatureCount,
             context.featureMap.edges.size());
@@ -1716,6 +1735,12 @@ TEST(SurfaceCellPipelinePhase20, ValidationRejectionCannotReportCompletedSurface
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("validation", result.diagnostics.terminalFailureStage);
+  EXPECT_TRUE(result.diagnostics.overallPipelineTimeAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellValidationFailureCountAvailable);
+  EXPECT_GT(result.diagnostics.surfaceCellValidationFailures, 0U);
+  EXPECT_TRUE(result.diagnostics.surfaceCellProvenanceVertexCountAvailable);
+  EXPECT_EQ(result.surfaceCellContext.optimizationResult.vertexProvenance.size(),
+            result.diagnostics.surfaceCellProvenanceVertexCount);
   ASSERT_FALSE(result.diagnostics.surfaceCellStageLineage.empty());
   const directional::SurfaceCellStageLineage &lastStage =
       result.diagnostics.surfaceCellStageLineage.back();
@@ -1814,21 +1839,30 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
 
   directional::pipeline::RemeshOptions options = surface_options();
   options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::ReturnQuadDominant;
+      directional::pipeline::SurfaceCellFallbackPolicy::ReturnInputMesh;
   options.parallelizeComponents = true;
   options.maxComponentThreads = 2;
   const directional::pipeline::RemeshResult result =
       directional::pipeline::remesh_from_raw_cross_field(
           mesh.vertices, mesh.faces, raw, options);
 
-  EXPECT_FALSE(result.success);
+  ASSERT_TRUE(result.success);
+  EXPECT_EQ(mesh.vertices, result.vertices);
+  EXPECT_EQ(mesh.faces, result.faces);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_EQ("UnsupportedInput", result.diagnostics.terminalFailureCode);
-  EXPECT_EQ("component-scheduling", result.diagnostics.terminalFailureStage);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
+  EXPECT_EQ("InputMesh", result.diagnostics.executedBackend);
   EXPECT_EQ("UnsupportedInput",
             result.diagnostics.originalSurfaceCellFailureCode);
   EXPECT_EQ("component-scheduling",
             result.diagnostics.originalSurfaceCellFailureStage);
+  EXPECT_EQ("UnsupportedInput", result.diagnostics.surfaceCellFallbackCause);
+  EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
+  EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty());
+  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_TRUE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::InputMeshFallback,
+            result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
   EXPECT_TRUE(result.diagnostics.surfaceCellStageLineage.empty());
 }
@@ -1860,7 +1894,7 @@ TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
   directional::pipeline::RemeshOptions options = surface_options();
   options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::ReturnQuadDominant;
+      directional::pipeline::SurfaceCellFallbackPolicy::ReturnInputMesh;
 
   const std::string expected = signature(
       directional::pipeline::remesh_from_raw_cross_field(

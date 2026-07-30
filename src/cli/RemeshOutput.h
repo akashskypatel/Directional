@@ -5,6 +5,8 @@
 
 #include <Eigen/Core>
 
+#include <directional/diagnostics/RemeshDiagnostics.h>
+
 namespace directional::cli {
 
 struct QuadMeshData {
@@ -35,6 +37,7 @@ void write_remesh_diagnostics(
     const Eigen::VectorXi &crossFieldMatching,
     const Eigen::VectorXd &crossFieldEffort,
     const Eigen::VectorXi &crossFieldSingularCycles,
-    const Eigen::VectorXi &crossFieldSingularIndices);
+    const Eigen::VectorXi &crossFieldSingularIndices,
+    const directional::RemeshDiagnostics &diagnostics);
 
 } // namespace directional::cli

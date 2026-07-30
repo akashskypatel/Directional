@@ -252,6 +252,8 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/IntegerTransitionBasisTests.cpp
     tests/LocalPatchValidatorTests.cpp
     tests/MilestoneFP19IntegrationTests.cpp
+    tests/MilestoneGP23Tests.cpp
+    tests/MilestoneGP24Tests.cpp
     tests/MilestoneBClosureTests.cpp
     tests/MilestoneCClosureTests.cpp
     tests/MilestoneDClosureTests.cpp
@@ -265,6 +267,9 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceComplexSimplificationPhase17Tests.cpp
     tests/SurfaceCellPipelinePhase20Tests.cpp
     tests/SurfaceMeshOptimizerPhase19Tests.cpp
+    tests/SurfaceMeshOptimizerPhase20Tests.cpp
+    tests/SurfaceMeshOptimizerPhase21Tests.cpp
+    tests/SurfaceMeshOptimizerPhase22Tests.cpp
     tests/ReliefTopologyPhase13Tests.cpp
     tests/SurfaceCellTracingPhase14Tests.cpp
     tests/SurfaceCellsPhase10Tests.cpp
@@ -290,6 +295,73 @@ if(DIRECTIONAL_BUILD_TESTS)
         ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_RUNTIME_DLLS:directional_phase1_tests>
         $<TARGET_FILE_DIR:directional_phase1_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_g_p23_tests
+    src/bench/BenchmarkCases.cpp
+    tests/MilestoneGP23Tests.cpp
+    tests/SurfaceCellPipelinePhase20Tests.cpp)
+  target_link_libraries(
+    directional_milestone_g_p23_tests
+    PRIVATE GTest::gtest_main)
+  target_compile_features(directional_milestone_g_p23_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_milestone_g_p23_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_milestone_g_p23_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
+  if(MSVC)
+    target_compile_options(directional_milestone_g_p23_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32 AND BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET directional_milestone_g_p23_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p23_tests>
+        $<TARGET_FILE_DIR:directional_milestone_g_p23_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
+    directional_milestone_g_p24_tests
+    src/bench/BenchmarkCases.cpp
+    tests/DiagnosticsTests.cpp
+    tests/MilestoneGP24Tests.cpp
+    tests/SurfaceCellPipelinePhase20Tests.cpp)
+  target_link_libraries(
+    directional_milestone_g_p24_tests
+    PRIVATE GTest::gtest_main)
+  target_compile_features(directional_milestone_g_p24_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_milestone_g_p24_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_milestone_g_p24_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
+  if(MSVC)
+    target_compile_options(directional_milestone_g_p24_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32 AND BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET directional_milestone_g_p24_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p24_tests>
+        $<TARGET_FILE_DIR:directional_milestone_g_p24_tests>
       COMMAND_EXPAND_LISTS
       VERBATIM)
   endif()
@@ -369,7 +441,11 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_milestone_f_tests
     tests/SurfaceMeshOptimizerPhase19Tests.cpp
-    tests/MilestoneFP19IntegrationTests.cpp)
+    tests/SurfaceMeshOptimizerPhase20Tests.cpp
+    tests/SurfaceMeshOptimizerPhase21Tests.cpp
+    tests/SurfaceMeshOptimizerPhase22Tests.cpp
+    tests/MilestoneFP19IntegrationTests.cpp
+    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_tests
     PRIVATE GTest::gtest_main)
@@ -381,6 +457,58 @@ if(DIRECTIONAL_BUILD_TESTS)
   target_compile_features(directional_milestone_f_tests PRIVATE cxx_std_20)
   if(MSVC)
     target_compile_options(directional_milestone_f_tests PRIVATE /bigobj)
+  endif()
+
+  add_executable(
+    directional_milestone_f_optimizer_tests
+    tests/SurfaceMeshOptimizerPhase19Tests.cpp
+    tests/SurfaceMeshOptimizerPhase20Tests.cpp
+    tests/SurfaceMeshOptimizerPhase21Tests.cpp
+    tests/SurfaceMeshOptimizerPhase22Tests.cpp
+    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
+  target_link_libraries(
+    directional_milestone_f_optimizer_tests
+    PRIVATE GTest::gtest_main)
+  target_include_directories(
+    directional_milestone_f_optimizer_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
+  target_compile_features(directional_milestone_f_optimizer_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_f_optimizer_tests PRIVATE /bigobj)
+  endif()
+
+  add_executable(
+    directional_milestone_f_validator_tests
+    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
+  target_link_libraries(
+    directional_milestone_f_validator_tests
+    PRIVATE GTest::gtest_main)
+  target_include_directories(
+    directional_milestone_f_validator_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
+  target_compile_features(directional_milestone_f_validator_tests PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_f_validator_tests PRIVATE /bigobj)
+  endif()
+
+  add_executable(
+    directional_milestone_f_benchmark
+    tests/MilestoneFBenchmark.cpp)
+  target_include_directories(
+    directional_milestone_f_benchmark
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen")
+  target_compile_features(directional_milestone_f_benchmark PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(directional_milestone_f_benchmark PRIVATE /bigobj)
+  endif()
+  if(WIN32)
+    target_link_libraries(directional_milestone_f_benchmark PRIVATE Psapi)
   endif()
 
   add_executable(
@@ -429,6 +557,8 @@ if(DIRECTIONAL_BUILD_TESTS)
 
   include(GoogleTest)
   gtest_discover_tests(directional_phase1_tests)
+  gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
+  gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
   gtest_discover_tests(directional_milestone_c_tests)
   gtest_discover_tests(directional_milestone_d_tests)
   gtest_discover_tests(directional_milestone_e_tests)

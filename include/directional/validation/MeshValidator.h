@@ -40,7 +40,15 @@ enum class MeshValidationFailureCode {
   ComponentMerge,
   ChangedBoundaryLoop,
   MissingProvenance,
-  MissingBoundaryAuthority
+  MissingBoundaryAuthority,
+  MissingSourceAuthority,
+  InvalidProvenance,
+  SourceComponentMismatch,
+  SourceSheetMismatch,
+  SourcePositionMismatch,
+  LocalSheetMismatch,
+  ChangedEulerCharacteristic,
+  MissingFeatureRail
 };
 
 struct MeshValidationIssue {
@@ -110,6 +118,22 @@ mesh_validation_failure_name(const MeshValidationFailureCode code) {
     return "MissingProvenance";
   case MeshValidationFailureCode::MissingBoundaryAuthority:
     return "MissingBoundaryAuthority";
+  case MeshValidationFailureCode::MissingSourceAuthority:
+    return "MissingSourceAuthority";
+  case MeshValidationFailureCode::InvalidProvenance:
+    return "InvalidProvenance";
+  case MeshValidationFailureCode::SourceComponentMismatch:
+    return "SourceComponentMismatch";
+  case MeshValidationFailureCode::SourceSheetMismatch:
+    return "SourceSheetMismatch";
+  case MeshValidationFailureCode::SourcePositionMismatch:
+    return "SourcePositionMismatch";
+  case MeshValidationFailureCode::LocalSheetMismatch:
+    return "LocalSheetMismatch";
+  case MeshValidationFailureCode::ChangedEulerCharacteristic:
+    return "ChangedEulerCharacteristic";
+  case MeshValidationFailureCode::MissingFeatureRail:
+    return "MissingFeatureRail";
   }
   return "Unknown";
 }

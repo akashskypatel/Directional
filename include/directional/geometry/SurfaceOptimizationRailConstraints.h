@@ -32,7 +32,10 @@ inline void fill_surface_optimization_rail_constraints(
   constraints.orderedFeatureVertices.clear();
   constraints.authoritativeBoundaryEdges.clear();
   constraints.authoritativeBoundaryLoop.clear();
-  std::vector<int> firstClosedBoundaryLoop;
+  constraints.authoritativeBoundaryLoops.clear();
+  constraints.authoritativeFeatureRails.clear();
+  constraints.requiredFeatureRailCount = 0;
+  constraints.featureRailAuthorityProvided = true;
   int nextIntervalId = 0;
   for (const SurfaceCellRail &rail : rails) {
     const int curveId = rail.curveId >= 0 ? rail.curveId : rail.id;
@@ -64,32 +67,10 @@ inline void fill_surface_optimization_rail_constraints(
       interval.end = end.position;
       constraints.featureCurveIntervals.push_back(interval);
     }
-    if (rail.kind != SurfaceCellRailKind::Boundary) {
-      continue;
-    }
-    for (int index = 0; index + 1 < static_cast<int>(rail.sourceVertices.size());
-         ++index) {
-      const int a = rail.sourceVertices[static_cast<std::size_t>(index)];
-      const int b = rail.sourceVertices[static_cast<std::size_t>(index + 1)];
-      constraints.authoritativeBoundaryEdges.insert(
-          {std::min(a, b), std::max(a, b)});
-    }
-    if (rail.closed && rail.sourceVertices.size() > 1U) {
-      if (rail.sourceVertices.back() != rail.sourceVertices.front()) {
-        constraints.authoritativeBoundaryEdges.insert(
-            {std::min(rail.sourceVertices.back(), rail.sourceVertices.front()),
-             std::max(rail.sourceVertices.back(), rail.sourceVertices.front())});
-      }
-      if (firstClosedBoundaryLoop.empty()) {
-        firstClosedBoundaryLoop = rail.sourceVertices;
-        if (firstClosedBoundaryLoop.size() > 1U &&
-            firstClosedBoundaryLoop.front() == firstClosedBoundaryLoop.back()) {
-          firstClosedBoundaryLoop.pop_back();
-        }
-      }
+    if (rail.kind == SurfaceCellRailKind::HardFeature) {
+      ++constraints.requiredFeatureRailCount;
     }
   }
-  constraints.authoritativeBoundaryLoop = firstClosedBoundaryLoop;
 
   constraints.featureCurveIds =
       Eigen::VectorXi::Constant(outputVertices.rows(), -1);
@@ -232,6 +213,46 @@ inline void fill_surface_optimization_rail_constraints(
                    });
   for (const FeatureAssignment &assignment : assignments) {
     constraints.orderedFeatureVertices.push_back(assignment.vertex);
+  }
+
+  for (const SurfaceCellRail &rail : rails) {
+    std::vector<int> sequence;
+    for (const FeatureAssignment &assignment : assignments) {
+      if (assignment.sequenceId != rail.id) {
+        continue;
+      }
+      if (sequence.empty() || sequence.back() != assignment.vertex) {
+        sequence.push_back(assignment.vertex);
+      }
+    }
+
+    if (rail.kind == SurfaceCellRailKind::Boundary) {
+      if (rail.closed && sequence.size() >= 3U) {
+        constraints.authoritativeBoundaryLoops.push_back(sequence);
+        if (constraints.authoritativeBoundaryLoop.empty()) {
+          constraints.authoritativeBoundaryLoop = sequence;
+        }
+        for (std::size_t index = 0; index < sequence.size(); ++index) {
+          constraints.authoritativeBoundaryEdges.insert(
+              {std::min(sequence[index],
+                        sequence[(index + 1U) % sequence.size()]),
+               std::max(sequence[index],
+                        sequence[(index + 1U) % sequence.size()])});
+        }
+      } else {
+        for (std::size_t index = 0; index + 1U < sequence.size(); ++index) {
+          constraints.authoritativeBoundaryEdges.insert(
+              {std::min(sequence[index], sequence[index + 1U]),
+               std::max(sequence[index], sequence[index + 1U])});
+        }
+      }
+    } else if (rail.kind == SurfaceCellRailKind::HardFeature &&
+               sequence.size() >= 2U) {
+      if (rail.closed && sequence.front() != sequence.back()) {
+        sequence.push_back(sequence.front());
+      }
+      constraints.authoritativeFeatureRails.push_back(std::move(sequence));
+    }
   }
 }
 

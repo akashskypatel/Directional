@@ -5,6 +5,9 @@
 
 #include <algorithm>
 #include <cctype>
+#include <fstream>
+#include <iomanip>
+#include <limits>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -26,6 +29,181 @@ std::string lowercase(std::string value) {
                  });
   return value;
 }
+
+
+void write_json_string(std::ostream &out, const std::string &value) {
+  out << '"';
+  for (const unsigned char character : value) {
+    switch (character) {
+    case '"':
+      out << "\\\"";
+      break;
+    case '\\':
+      out << "\\\\";
+      break;
+    case '\n':
+      out << "\\n";
+      break;
+    case '\r':
+      out << "\\r";
+      break;
+    case '\t':
+      out << "\\t";
+      break;
+    default:
+      out << static_cast<char>(character);
+      break;
+    }
+  }
+  out << '"';
+}
+
+void write_remesh_diagnostics_json(
+    const std::filesystem::path &path,
+    const directional::RemeshDiagnostics &diagnostics) {
+  std::ofstream out(path);
+  if (!out) {
+    throw std::runtime_error("Failed to open remesh diagnostics JSON output.");
+  }
+  out << std::setprecision(17);
+  out << "{\n";
+  out << "  \"overallPipelineSeconds\": "
+      << diagnostics.overallPipelineSeconds << ",\n";
+  out << "  \"overallPipelineTimeAvailable\": "
+      << (diagnostics.overallPipelineTimeAvailable ? "true" : "false")
+      << ",\n";
+  out << "  \"requestedBackend\": ";
+  write_json_string(out, diagnostics.requestedBackend);
+  out << ",\n  \"executedBackend\": ";
+  write_json_string(out, diagnostics.executedBackend);
+  out << ",\n  \"surfaceCellFallbackPolicy\": ";
+  write_json_string(out, diagnostics.surfaceCellFallbackPolicy);
+  out << ",\n  \"surfaceCellFallbackCause\": ";
+  write_json_string(out, diagnostics.surfaceCellFallbackCause);
+  out << ",\n  \"originalSurfaceCellFailureCode\": ";
+  write_json_string(out, diagnostics.originalSurfaceCellFailureCode);
+  out << ",\n  \"originalSurfaceCellFailureStage\": ";
+  write_json_string(out, diagnostics.originalSurfaceCellFailureStage);
+  out << ",\n  \"terminalFailureCode\": ";
+  write_json_string(out, diagnostics.terminalFailureCode);
+  out << ",\n  \"terminalFailureStage\": ";
+  write_json_string(out, diagnostics.terminalFailureStage);
+  out << ",\n  \"surfaceCellOutputOrigin\": ";
+  write_json_string(out,
+                    surface_cell_output_origin_name(
+                        diagnostics.surfaceCellOutputOrigin));
+  out << ",\n";
+
+  out << "  \"surfaceCellFeatureSeconds\": "
+      << diagnostics.surfaceCellFeatureSeconds << ",\n";
+  out << "  \"surfaceCellMetricSeconds\": "
+      << diagnostics.surfaceCellMetricSeconds << ",\n";
+  out << "  \"surfaceCellReliefSeconds\": "
+      << diagnostics.surfaceCellReliefSeconds << ",\n";
+  out << "  \"surfaceCellTracingSeconds\": "
+      << diagnostics.surfaceCellTracingSeconds << ",\n";
+  out << "  \"surfaceCellArrangementSeconds\": "
+      << diagnostics.surfaceCellArrangementSeconds << ",\n";
+  out << "  \"surfaceCellSimplificationSeconds\": "
+      << diagnostics.surfaceCellSimplificationSeconds << ",\n";
+  out << "  \"surfaceCellCompletionSeconds\": "
+      << diagnostics.surfaceCellCompletionSeconds << ",\n";
+  out << "  \"surfaceCellOptimizationSeconds\": "
+      << diagnostics.surfaceCellOptimizationSeconds << ",\n";
+  out << "  \"surfaceCellValidationSeconds\": "
+      << diagnostics.surfaceCellValidationSeconds << ",\n";
+
+  out << "  \"surfaceCellStageLineage\": [";
+  for (std::size_t index = 0;
+       index < diagnostics.surfaceCellStageLineage.size(); ++index) {
+    if (index > 0U) {
+      out << ',';
+    }
+    const directional::SurfaceCellStageLineage &lineage =
+        diagnostics.surfaceCellStageLineage[index];
+    out << "{\"stage\":";
+    write_json_string(out, lineage.stage);
+    out << ",\"inputType\":";
+    write_json_string(out, lineage.inputObject.type);
+    out << ",\"inputStructuralHash\":"
+        << lineage.inputObject.structuralHash;
+    out << ",\"outputType\":";
+    write_json_string(out, lineage.outputObject.type);
+    out << ",\"outputStructuralHash\":"
+        << lineage.outputObject.structuralHash;
+    out << ",\"available\":"
+        << (lineage.available ? "true" : "false");
+    out << ",\"consumptionKind\":";
+    write_json_string(out,
+                      surface_cell_consumption_kind_name(
+                          lineage.consumptionKind));
+    out << ",\"componentIndex\":";
+    if (lineage.componentIndex == std::numeric_limits<std::size_t>::max()) {
+      out << "null";
+    } else {
+      out << lineage.componentIndex;
+    }
+    out << ",\"durationSeconds\":" << lineage.durationSeconds;
+    out << ",\"terminalFailureCode\":";
+    write_json_string(out, lineage.terminalFailureCode);
+    out << ",\"terminalFailureStage\":";
+    write_json_string(out, lineage.terminalFailureStage);
+    out << '}';
+  }
+  out << "],\n";
+
+  auto write_count = [&](const char *name, const std::size_t value,
+                         const char *availableName, const bool available,
+                         const bool trailingComma) {
+    out << "  \"" << name << "\": " << value << ",\n";
+    out << "  \"" << availableName << "\": "
+        << (available ? "true" : "false");
+    out << (trailingComma ? ",\n" : "\n");
+  };
+
+  write_count("surfaceCellValidationFailures",
+              diagnostics.surfaceCellValidationFailures,
+              "surfaceCellValidationFailureCountAvailable",
+              diagnostics.surfaceCellValidationFailureCountAvailable, true);
+  write_count("surfaceCellProvenanceVertexCount",
+              diagnostics.surfaceCellProvenanceVertexCount,
+              "surfaceCellProvenanceVertexCountAvailable",
+              diagnostics.surfaceCellProvenanceVertexCountAvailable, true);
+  write_count("surfaceCellFeatureCount", diagnostics.surfaceCellFeatureCount,
+              "surfaceCellFeatureCountAvailable",
+              diagnostics.surfaceCellFeatureCountAvailable, true);
+  write_count("surfaceCellMetricSampleCount",
+              diagnostics.surfaceCellMetricSampleCount,
+              "surfaceCellMetricSampleCountAvailable",
+              diagnostics.surfaceCellMetricSampleCountAvailable, true);
+  write_count("surfaceCellReliefPatchCount",
+              diagnostics.surfaceCellReliefPatchCount,
+              "surfaceCellReliefCountAvailable",
+              diagnostics.surfaceCellReliefCountAvailable, true);
+  write_count("surfaceCellTraceSegmentCount",
+              diagnostics.surfaceCellTraceSegmentCount,
+              "surfaceCellTraceCountAvailable",
+              diagnostics.surfaceCellTraceCountAvailable, true);
+  write_count("surfaceCellArrangementCellCount",
+              diagnostics.surfaceCellArrangementCellCount,
+              "surfaceCellArrangementCountAvailable",
+              diagnostics.surfaceCellArrangementCountAvailable, true);
+  write_count("surfaceCellSimplifiedCellCount",
+              diagnostics.surfaceCellSimplifiedCellCount,
+              "surfaceCellSimplifiedCountAvailable",
+              diagnostics.surfaceCellSimplifiedCountAvailable, true);
+  write_count("surfaceCellCompletedQuadCount",
+              diagnostics.surfaceCellCompletedQuadCount,
+              "surfaceCellCompletedQuadCountAvailable",
+              diagnostics.surfaceCellCompletedQuadCountAvailable, true);
+  write_count("surfaceCellOptimizationIterationCount",
+              diagnostics.surfaceCellOptimizationIterationCount,
+              "surfaceCellOptimizationIterationCountAvailable",
+              diagnostics.surfaceCellOptimizationIterationCountAvailable,
+              false);
+  out << "}\n";
+}
+
 
 QuadMeshData quadrangulate_remeshed_mesh_impl(
     const Eigen::MatrixXd &vertices,
@@ -194,7 +372,8 @@ void write_remesh_diagnostics(
     const Eigen::VectorXi &crossFieldMatching,
     const Eigen::VectorXd &crossFieldEffort,
     const Eigen::VectorXi &crossFieldSingularCycles,
-    const Eigen::VectorXi &crossFieldSingularIndices) {
+    const Eigen::VectorXi &crossFieldSingularIndices,
+    const directional::RemeshDiagnostics &diagnostics) {
   write_dmat(sidecar(prefix, ".degrees.dmat"), degrees);
 
   const std::string extension = lowercase(meshExtension);
@@ -220,6 +399,8 @@ void write_remesh_diagnostics(
   write_dmat(
       sidecar(prefix, ".singular_indices.dmat"),
       crossFieldSingularIndices);
+  write_remesh_diagnostics_json(sidecar(prefix, ".diagnostics.json"),
+                                diagnostics);
 }
 
 } // namespace directional::cli
