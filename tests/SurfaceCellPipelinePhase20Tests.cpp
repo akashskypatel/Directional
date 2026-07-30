@@ -1847,28 +1847,27 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
           mesh.vertices, mesh.faces, raw, options);
 
   ASSERT_TRUE(result.success);
-  EXPECT_EQ(mesh.vertices, result.vertices);
-  EXPECT_EQ(mesh.faces, result.faces);
-  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
-  EXPECT_EQ("InputMesh", result.diagnostics.executedBackend);
-  EXPECT_EQ("UnsupportedInput",
-            result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("component-scheduling",
-            result.diagnostics.originalSurfaceCellFailureStage);
-  EXPECT_EQ("UnsupportedInput", result.diagnostics.surfaceCellFallbackCause);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
+  EXPECT_EQ("None", result.diagnostics.originalSurfaceCellFailureCode);
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
-  EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty());
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
-  EXPECT_TRUE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::InputMeshFallback,
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
             result.diagnostics.surfaceCellOutputOrigin);
-  EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
-  EXPECT_TRUE(result.diagnostics.surfaceCellStageLineage.empty());
+  EXPECT_EQ(2U, result.diagnostics.componentCount);
+  EXPECT_EQ(2U, result.diagnostics.components.size());
+  EXPECT_TRUE(result.surfaceCellContext.hasCrossField);
+  ASSERT_FALSE(result.diagnostics.surfaceCellStageLineage.empty());
+  for (const directional::SurfaceCellStageLineage &lineage :
+       result.diagnostics.surfaceCellStageLineage) {
+    EXPECT_LT(lineage.componentIndex, 2U);
+  }
 }
 
 TEST(SurfaceCellPipelinePhase20,
-     CrossFieldResultParallelSurfaceCellsFailsBeforeRawRefinalization) {
+     CrossFieldResultParallelSurfaceCellsPreservesAuthoritativeMetadata) {
   const SyntheticMesh mesh = make_two_square_components();
   directional::fields::CrossFieldResult field = matching_swap_cross_field(mesh);
   directional::pipeline::RemeshOptions options = surface_options();
@@ -1879,15 +1878,19 @@ TEST(SurfaceCellPipelinePhase20,
       directional::pipeline::remesh_from_cross_field_result(
           mesh.vertices, mesh.faces, field, options);
 
-  EXPECT_FALSE(result.success);
-  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_EQ("UnsupportedInput", result.diagnostics.terminalFailureCode);
-  EXPECT_EQ("component-scheduling", result.diagnostics.terminalFailureStage);
-  EXPECT_TRUE(result.rawCrossField.size() == 0);
-  EXPECT_TRUE(result.crossFieldMatching.size() == 0);
-  EXPECT_TRUE(result.crossFieldEffort.size() == 0);
-  EXPECT_FALSE(result.surfaceCellContext.hasCrossField);
+  ASSERT_TRUE(result.success);
+  EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_EQ(field.rawField, result.rawCrossField);
+  EXPECT_EQ(field.matching, result.crossFieldMatching);
+  EXPECT_EQ(field.effort, result.crossFieldEffort);
+  EXPECT_EQ(field.singularCycles, result.crossFieldSingularCycles);
+  EXPECT_EQ(field.singularIndices, result.crossFieldSingularIndices);
+  ASSERT_TRUE(result.surfaceCellContext.hasCrossField);
+  EXPECT_EQ(field.matching, result.surfaceCellContext.crossField.matching);
+  EXPECT_EQ(field.effort, result.surfaceCellContext.crossField.effort);
+  EXPECT_EQ(2U, result.diagnostics.componentCount);
 }
+
 
 TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {
   const SyntheticMesh mesh = make_two_square_components();

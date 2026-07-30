@@ -263,6 +263,9 @@ struct SurfaceCellOptions {
   double maxOptimizerTimeRatio = 0.25;
   SurfaceCellFallbackPolicy fallbackPolicy = SurfaceCellFallbackPolicy::Fail;
   int injectFailureAfterStage = -1;
+  /// Optional component-local injection target used by deterministic
+  /// component-execution tests. -1 applies the injection to every component.
+  int injectFailureComponentIndex = -1;
   double geometricTolerance = 1.0e-9;
   geometry::AdaptiveFeatureMapOptions featureMap;
   geometry::AdaptiveTargetSizeOptions targetSize;
@@ -1305,6 +1308,36 @@ inline bool cross_field_transitions_match_source_edges(
   return true;
 }
 
+inline SurfaceCellFailureCode validate_surface_cell_cross_field(
+    const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
+    const SurfaceCellOptions &options) {
+  if (crossField.degree != fields::kCrossFieldDegree ||
+      crossField.rawField.rows() != meshWhole.F.rows() ||
+      crossField.rawField.cols() != 12 ||
+      crossField.primaryDirections.rows() != meshWhole.F.rows() ||
+      crossField.secondaryDirections.rows() != meshWhole.F.rows()) {
+    return SurfaceCellFailureCode::InvalidFieldDimensions;
+  }
+  if (options.requireMatching &&
+      (!crossField.matchingComputed || crossField.matching.size() == 0 ||
+       crossField.effort.size() != crossField.matching.size() ||
+       !cross_field_transitions_match_source_edges(meshWhole, crossField))) {
+    return SurfaceCellFailureCode::MissingMatching;
+  }
+  if (options.requireSingularities && !crossField.singularitiesComputed) {
+    return SurfaceCellFailureCode::MissingSingularities;
+  }
+  if (!crossField.confidenceComputed ||
+      crossField.confidence.rows() != meshWhole.F.rows()) {
+    return SurfaceCellFailureCode::MissingConfidence;
+  }
+  if (!crossField.uncoveredFacePolicyApplied ||
+      crossField.uncoveredFaces.size() > 0) {
+    return SurfaceCellFailureCode::UncoveredFaces;
+  }
+  return SurfaceCellFailureCode::None;
+}
+
 inline int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
                                          const int face, const int a,
                                          const int b) {
@@ -2255,10 +2288,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
       return result;
     };
-    if (options.parallelizeComponents) {
-      return fail_surface_cells(SurfaceCellFailureCode::UnsupportedInput,
-                                "component-scheduling");
-    }
     if (authoritativeCrossField != nullptr) {
       result.surfaceCellContext.crossField = *authoritativeCrossField;
     } else {
@@ -2380,40 +2409,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                       static_cast<std::size_t>(
                           result.surfaceCellContext.crossField.rawField.rows())),
         result.surfaceCellContext.hasCrossField);
-    if (result.surfaceCellContext.crossField.degree != fields::kCrossFieldDegree ||
-        result.surfaceCellContext.crossField.rawField.rows() != meshWhole.F.rows() ||
-        result.surfaceCellContext.crossField.rawField.cols() != 12 ||
-        result.surfaceCellContext.crossField.primaryDirections.rows() !=
-            meshWhole.F.rows() ||
-        result.surfaceCellContext.crossField.secondaryDirections.rows() !=
-            meshWhole.F.rows()) {
-      return fail_surface_cells(SurfaceCellFailureCode::InvalidFieldDimensions,
-                                "cross-field-validation");
-    }
-    if (options.surfaceCells.requireMatching &&
-        (!result.surfaceCellContext.crossField.matchingComputed ||
-         result.surfaceCellContext.crossField.matching.size() == 0 ||
-         result.surfaceCellContext.crossField.effort.size() !=
-             result.surfaceCellContext.crossField.matching.size() ||
-         !cross_field_transitions_match_source_edges(
-             meshWhole, result.surfaceCellContext.crossField))) {
-      return fail_surface_cells(SurfaceCellFailureCode::MissingMatching,
-                                "cross-field-validation");
-    }
-    if (options.surfaceCells.requireSingularities &&
-        !result.surfaceCellContext.crossField.singularitiesComputed) {
-      return fail_surface_cells(SurfaceCellFailureCode::MissingSingularities,
-                                "cross-field-validation");
-    }
-    if (!result.surfaceCellContext.crossField.confidenceComputed ||
-        result.surfaceCellContext.crossField.confidence.rows() != meshWhole.F.rows()) {
-      return fail_surface_cells(SurfaceCellFailureCode::MissingConfidence,
-                                "cross-field-validation");
-    }
-    if (!result.surfaceCellContext.crossField.uncoveredFacePolicyApplied ||
-        result.surfaceCellContext.crossField.uncoveredFaces.size() > 0) {
-      return fail_surface_cells(SurfaceCellFailureCode::UncoveredFaces,
-                                "cross-field-validation");
+    const SurfaceCellFailureCode crossFieldFailure =
+        validate_surface_cell_cross_field(
+            meshWhole, result.surfaceCellContext.crossField,
+            options.surfaceCells);
+    if (crossFieldFailure != SurfaceCellFailureCode::None) {
+      return fail_surface_cells(crossFieldFailure, "cross-field-validation");
     }
 
     const auto featureStart = Clock::now();
@@ -2986,6 +2987,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                 validationIdentity, true,
                                 result.diagnostics.surfaceCellValidationSeconds);
       completedSurfaceCellStages.push_back("validation");
+      if (options.surfaceCells.injectFailureAfterStage == 10) {
+        return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
+                                  "validation");
+      }
       if (validation.accepted) {
         result.success = true;
         result.vertices = optimization.vertices;
@@ -3304,6 +3309,382 @@ inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
          options.lengthRatio;
 }
 
+inline fields::CrossFieldResult remap_surface_cell_cross_field_component(
+    const TriMesh &sourceMesh, const geometry::FaceComponent &component,
+    const TriMesh &componentMesh,
+    const fields::CrossFieldResult &sourceCrossField) {
+  fields::CrossFieldResult local;
+  local.degree = sourceCrossField.degree;
+
+  const Eigen::Index localFaceCount =
+      static_cast<Eigen::Index>(component.originalFaces.size());
+  auto copy_face_rows = [&](const Eigen::MatrixXd &source,
+                            Eigen::MatrixXd &target) {
+    if (source.rows() != sourceMesh.F.rows()) {
+      target.resize(0, source.cols());
+      return;
+    }
+    target.resize(localFaceCount, source.cols());
+    for (Eigen::Index localFace = 0; localFace < localFaceCount; ++localFace) {
+      target.row(localFace) =
+          source.row(component.originalFaces[static_cast<std::size_t>(
+              localFace)]);
+    }
+  };
+  copy_face_rows(sourceCrossField.rawField, local.rawField);
+  copy_face_rows(sourceCrossField.primaryDirections, local.primaryDirections);
+  copy_face_rows(sourceCrossField.secondaryDirections,
+                 local.secondaryDirections);
+
+  if (sourceCrossField.confidence.rows() == sourceMesh.F.rows()) {
+    local.confidence.resize(localFaceCount);
+    for (Eigen::Index localFace = 0; localFace < localFaceCount; ++localFace) {
+      local.confidence(localFace) =
+          sourceCrossField.confidence(
+              component.originalFaces[static_cast<std::size_t>(localFace)]);
+    }
+  }
+
+  std::map<int, int> localFaceByOriginal;
+  for (std::size_t localFace = 0;
+       localFace < component.originalFaces.size(); ++localFace) {
+    localFaceByOriginal[component.originalFaces[localFace]] =
+        static_cast<int>(localFace);
+  }
+  std::map<int, int> localVertexByOriginal;
+  for (std::size_t localVertex = 0;
+       localVertex < component.originalVertices.size(); ++localVertex) {
+    localVertexByOriginal[component.originalVertices[localVertex]] =
+        static_cast<int>(localVertex);
+  }
+
+  std::vector<int> uncovered;
+  for (Eigen::Index index = 0;
+       index < sourceCrossField.uncoveredFaces.size(); ++index) {
+    const auto found =
+        localFaceByOriginal.find(sourceCrossField.uncoveredFaces(index));
+    if (found != localFaceByOriginal.end()) {
+      uncovered.push_back(found->second);
+    }
+  }
+  local.uncoveredFaces.resize(static_cast<Eigen::Index>(uncovered.size()));
+  for (Eigen::Index index = 0; index < local.uncoveredFaces.size(); ++index) {
+    local.uncoveredFaces(index) =
+        uncovered[static_cast<std::size_t>(index)];
+  }
+
+  std::vector<int> singularCycles;
+  std::vector<int> singularIndices;
+  const Eigen::Index singularCount =
+      std::min(sourceCrossField.singularCycles.size(),
+               sourceCrossField.singularIndices.size());
+  for (Eigen::Index index = 0; index < singularCount; ++index) {
+    const auto found =
+        localVertexByOriginal.find(sourceCrossField.singularCycles(index));
+    if (found == localVertexByOriginal.end()) {
+      continue;
+    }
+    singularCycles.push_back(found->second);
+    singularIndices.push_back(sourceCrossField.singularIndices(index));
+  }
+  local.singularCycles.resize(
+      static_cast<Eigen::Index>(singularCycles.size()));
+  local.singularIndices.resize(
+      static_cast<Eigen::Index>(singularIndices.size()));
+  for (Eigen::Index index = 0; index < local.singularCycles.size(); ++index) {
+    local.singularCycles(index) =
+        singularCycles[static_cast<std::size_t>(index)];
+    local.singularIndices(index) =
+        singularIndices[static_cast<std::size_t>(index)];
+  }
+
+  std::map<std::uint64_t, int> sourceEdgeByVertices;
+  for (int edge = 0; edge < sourceMesh.EV.rows(); ++edge) {
+    sourceEdgeByVertices[surface_cell_source_edge_key(
+        sourceMesh.EV(edge, 0), sourceMesh.EV(edge, 1))] = edge;
+  }
+
+  if (sourceCrossField.matching.size() == sourceMesh.EF.rows() &&
+      sourceCrossField.effort.size() == sourceMesh.EF.rows()) {
+    local.matching.resize(componentMesh.EF.rows());
+    local.effort.resize(componentMesh.EF.rows());
+    local.edgeTransitions.reserve(
+        static_cast<std::size_t>(componentMesh.EF.rows()));
+    for (int localEdge = 0; localEdge < componentMesh.EV.rows();
+         ++localEdge) {
+      const int originalVertex0 = component.originalVertices[
+          static_cast<std::size_t>(componentMesh.EV(localEdge, 0))];
+      const int originalVertex1 = component.originalVertices[
+          static_cast<std::size_t>(componentMesh.EV(localEdge, 1))];
+      const auto found = sourceEdgeByVertices.find(
+          surface_cell_source_edge_key(originalVertex0, originalVertex1));
+      if (found == sourceEdgeByVertices.end()) {
+        local.matching.resize(0);
+        local.effort.resize(0);
+        local.edgeTransitions.clear();
+        break;
+      }
+
+      const int sourceEdge = found->second;
+      local.matching(localEdge) = sourceCrossField.matching(sourceEdge);
+      local.effort(localEdge) = sourceCrossField.effort(sourceEdge);
+
+      fields::CrossFieldEdgeTransition transition;
+      transition.sourceEdge = localEdge;
+      transition.sourceVertex0 = componentMesh.EV(localEdge, 0);
+      transition.sourceVertex1 = componentMesh.EV(localEdge, 1);
+      transition.firstFace = componentMesh.EF(localEdge, 0);
+      transition.secondFace = componentMesh.EF(localEdge, 1);
+      transition.matching = local.matching(localEdge);
+      transition.effort = local.effort(localEdge);
+      local.edgeTransitions.push_back(transition);
+    }
+  }
+
+  local.matchingComputed = sourceCrossField.matchingComputed;
+  local.singularitiesComputed = sourceCrossField.singularitiesComputed;
+  local.confidenceComputed = sourceCrossField.confidenceComputed;
+  local.uncoveredFacePolicyApplied =
+      sourceCrossField.uncoveredFacePolicyApplied;
+  normalize_surface_cell_cross_field_directions(local);
+  return local;
+}
+
+inline geometry::SurfacePoint remap_component_surface_point(
+    geometry::SurfacePoint point, const geometry::FaceComponent &component,
+    const std::size_t componentIndex, const int sheetOffset) {
+  if (point.face >= 0 &&
+      static_cast<std::size_t>(point.face) < component.originalFaces.size()) {
+    point.face =
+        component.originalFaces[static_cast<std::size_t>(point.face)];
+  } else {
+    point.face = -1;
+  }
+  point.component = static_cast<int>(componentIndex);
+  if (point.sheet >= 0) {
+    point.sheet += sheetOffset;
+  }
+  return point;
+}
+
+inline void append_polygon_faces(
+    Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,
+    const Eigen::MatrixXi &sourceFaces, const Eigen::VectorXi &sourceDegrees,
+    const int vertexOffset) {
+  if (sourceFaces.rows() == 0) {
+    return;
+  }
+  const Eigen::Index oldRows = targetFaces.rows();
+  const Eigen::Index oldColumns = targetFaces.cols();
+  const Eigen::Index newColumns =
+      std::max(oldColumns, sourceFaces.cols());
+  if (oldRows == 0) {
+    targetFaces =
+        Eigen::MatrixXi::Constant(sourceFaces.rows(), newColumns, -1);
+  } else {
+    targetFaces.conservativeResize(oldRows + sourceFaces.rows(), newColumns);
+    if (newColumns > oldColumns) {
+      targetFaces.block(0, oldColumns, oldRows, newColumns - oldColumns)
+          .setConstant(-1);
+    }
+    targetFaces.block(oldRows, 0, sourceFaces.rows(), newColumns)
+        .setConstant(-1);
+  }
+
+  const Eigen::Index oldDegreeCount = targetDegrees.size();
+  targetDegrees.conservativeResize(oldDegreeCount + sourceFaces.rows());
+  for (Eigen::Index face = 0; face < sourceFaces.rows(); ++face) {
+    const int degree =
+        sourceDegrees.size() == sourceFaces.rows()
+            ? sourceDegrees(face)
+            : static_cast<int>(sourceFaces.cols());
+    targetDegrees(oldDegreeCount + face) = degree;
+    for (int corner = 0;
+         corner < degree && corner < sourceFaces.cols(); ++corner) {
+      const int sourceVertex = sourceFaces(face, corner);
+      targetFaces(oldRows + face, corner) =
+          sourceVertex >= 0 ? sourceVertex + vertexOffset : -1;
+    }
+  }
+}
+
+inline void accumulate_surface_optimization_energy(
+    geometry::SurfaceOptimizationEnergy &target,
+    const geometry::SurfaceOptimizationEnergy &source) {
+  target.surface += source.surface;
+  target.normal += source.normal;
+  target.field += source.field;
+  target.orthogonality += source.orthogonality;
+  target.size += source.size;
+  target.valenceShape += source.valenceShape;
+  target.feature += source.feature;
+  target.total += source.total;
+}
+
+inline void accumulate_surface_optimization_result(
+    geometry::SurfaceOptimizationResult &target,
+    const geometry::SurfaceOptimizationResult &source,
+    const bool firstComponent) {
+  if (firstComponent) {
+    target.monotonicEnergy = source.monotonicEnergy;
+    target.topologyHashFixed = source.topologyHashFixed;
+    target.featureParametersOrdered = source.featureParametersOrdered;
+    target.projectionStayedOnComponents =
+        source.projectionStayedOnComponents;
+    target.projectionStayedOnSheets = source.projectionStayedOnSheets;
+    target.projectionHasCompleteProvenance =
+        source.projectionHasCompleteProvenance;
+  } else {
+    target.monotonicEnergy =
+        target.monotonicEnergy && source.monotonicEnergy;
+    target.topologyHashFixed =
+        target.topologyHashFixed && source.topologyHashFixed;
+    target.featureParametersOrdered =
+        target.featureParametersOrdered && source.featureParametersOrdered;
+    target.projectionStayedOnComponents =
+        target.projectionStayedOnComponents &&
+        source.projectionStayedOnComponents;
+    target.projectionStayedOnSheets =
+        target.projectionStayedOnSheets && source.projectionStayedOnSheets;
+    target.projectionHasCompleteProvenance =
+        target.projectionHasCompleteProvenance &&
+        source.projectionHasCompleteProvenance;
+  }
+  target.sourceTriangleProjectionUsed =
+      target.sourceTriangleProjectionUsed ||
+      source.sourceTriangleProjectionUsed;
+  target.directGradientUsed =
+      target.directGradientUsed || source.directGradientUsed;
+  target.directGradientEvaluationCount +=
+      source.directGradientEvaluationCount;
+  target.sourceBvhBuildCount += source.sourceBvhBuildCount;
+  target.projectionQueryCount += source.projectionQueryCount;
+  target.lineSearchTrialCount += source.lineSearchTrialCount;
+  target.lineSearchRejectionCount += source.lineSearchRejectionCount;
+  target.projectionConstraintRejectionCount +=
+      source.projectionConstraintRejectionCount;
+  target.orientationRejectionCount += source.orientationRejectionCount;
+  target.armijoRejectionCount += source.armijoRejectionCount;
+  target.hardInvariantRejectionCount +=
+      source.hardInvariantRejectionCount;
+  accumulate_surface_optimization_energy(target.initialEnergy,
+                                         source.initialEnergy);
+  accumulate_surface_optimization_energy(target.finalEnergy,
+                                         source.finalEnergy);
+  for (geometry::SurfaceOptimizationIteration iteration : source.iterations) {
+    iteration.iteration = static_cast<int>(target.iterations.size());
+    target.iterations.push_back(std::move(iteration));
+  }
+}
+
+inline void accumulate_surface_validation_report(
+    geometry::SurfaceFinalValidationReport &target,
+    const geometry::SurfaceFinalValidationReport &source,
+    const bool firstComponent) {
+  if (firstComponent) {
+    target = source;
+    return;
+  }
+  target.accepted = target.accepted && source.accepted;
+  target.quadToSourceP95 =
+      std::max(target.quadToSourceP95, source.quadToSourceP95);
+  target.quadToSourceMax =
+      std::max(target.quadToSourceMax, source.quadToSourceMax);
+  target.sourceToOutputP95 =
+      std::max(target.sourceToOutputP95, source.sourceToOutputP95);
+  target.sourceToOutputMax =
+      std::max(target.sourceToOutputMax, source.sourceToOutputMax);
+  target.surfaceP95 = std::max(target.surfaceP95, source.surfaceP95);
+  target.surfaceMax = std::max(target.surfaceMax, source.surfaceMax);
+  target.normalP95Degrees =
+      std::max(target.normalP95Degrees, source.normalP95Degrees);
+  target.featureP95 = std::max(target.featureP95, source.featureP95);
+  target.featureMax = std::max(target.featureMax, source.featureMax);
+  target.featureTangentP95Degrees =
+      std::max(target.featureTangentP95Degrees,
+               source.featureTangentP95Degrees);
+  target.fieldMedianDegrees =
+      std::max(target.fieldMedianDegrees, source.fieldMedianDegrees);
+  target.fieldP95Degrees =
+      std::max(target.fieldP95Degrees, source.fieldP95Degrees);
+  target.sizeP5 = std::min(target.sizeP5, source.sizeP5);
+  target.sizeP95 = std::max(target.sizeP95, source.sizeP95);
+  target.angleMinDegrees =
+      std::min(target.angleMinDegrees, source.angleMinDegrees);
+  target.angleMaxDegrees =
+      std::max(target.angleMaxDegrees, source.angleMaxDegrees);
+  target.angleP5Degrees =
+      std::min(target.angleP5Degrees, source.angleP5Degrees);
+  target.angleP95Degrees =
+      std::max(target.angleP95Degrees, source.angleP95Degrees);
+  target.warpageP95Degrees =
+      std::max(target.warpageP95Degrees, source.warpageP95Degrees);
+  target.warpageMaxDegrees =
+      std::max(target.warpageMaxDegrees, source.warpageMaxDegrees);
+  target.aspectP95 = std::max(target.aspectP95, source.aspectP95);
+  target.aspectP99 = std::max(target.aspectP99, source.aspectP99);
+  target.scaledJacobianMin =
+      std::min(target.scaledJacobianMin, source.scaledJacobianMin);
+  target.scaledJacobianP5 =
+      std::min(target.scaledJacobianP5, source.scaledJacobianP5);
+  target.tJunctions += source.tJunctions;
+  target.nonManifold += source.nonManifold;
+  target.degenerate += source.degenerate;
+  target.inverted += source.inverted;
+  target.selfIntersecting += source.selfIntersecting;
+  target.nonConvex += source.nonConvex;
+  target.boundaryValenceTargetCount += source.boundaryValenceTargetCount;
+  target.boundaryValenceMismatchCount += source.boundaryValenceMismatchCount;
+  target.requiredSingularityValenceTargetCount +=
+      source.requiredSingularityValenceTargetCount;
+  target.requiredSingularityValenceMismatchCount +=
+      source.requiredSingularityValenceMismatchCount;
+  target.quadToSourceSampleCount += source.quadToSourceSampleCount;
+  target.sourceToOutputSampleCount += source.sourceToOutputSampleCount;
+  target.topologyHashFixed =
+      target.topologyHashFixed && source.topologyHashFixed;
+  target.featureParametersOrdered =
+      target.featureParametersOrdered && source.featureParametersOrdered;
+  target.projectionStayedOnComponents =
+      target.projectionStayedOnComponents &&
+      source.projectionStayedOnComponents;
+  target.optimizerTimeWithinGate =
+      target.optimizerTimeWithinGate && source.optimizerTimeWithinGate;
+  target.strictValidationUsed =
+      target.strictValidationUsed && source.strictValidationUsed;
+  target.authoritativeBoundaryUsed =
+      target.authoritativeBoundaryUsed && source.authoritativeBoundaryUsed;
+  target.authoritativeFeatureRailsUsed =
+      target.authoritativeFeatureRailsUsed &&
+      source.authoritativeFeatureRailsUsed;
+  target.provenanceValidationUsed =
+      target.provenanceValidationUsed && source.provenanceValidationUsed;
+  target.sourceAuthoritativeValidationUsed =
+      target.sourceAuthoritativeValidationUsed &&
+      source.sourceAuthoritativeValidationUsed;
+  target.spatialAccelerationUsed =
+      target.spatialAccelerationUsed && source.spatialAccelerationUsed;
+  target.orderedBoundaryCyclesPassed =
+      target.orderedBoundaryCyclesPassed &&
+      source.orderedBoundaryCyclesPassed;
+  target.authoritativeFeatureRailsPassed =
+      target.authoritativeFeatureRailsPassed &&
+      source.authoritativeFeatureRailsPassed;
+  target.localSheetCompatibilityPassed =
+      target.localSheetCompatibilityPassed &&
+      source.localSheetCompatibilityPassed;
+  target.connectedComponentMismatchCount +=
+      source.connectedComponentMismatchCount;
+  target.eulerCharacteristicMismatchCount +=
+      source.eulerCharacteristicMismatchCount;
+  target.boundaryCycleMismatchCount += source.boundaryCycleMismatchCount;
+  target.featureRailMismatchCount += source.featureRailMismatchCount;
+  target.provenanceFailureCount += source.provenanceFailureCount;
+  target.localSheetMismatchCount += source.localSheetMismatchCount;
+  target.duplicateFaceCount += source.duplicateFaceCount;
+  target.bowTieVertexCount += source.bowTieVertexCount;
+}
+
 inline void append_matrix_rows(Eigen::MatrixXd &target,
                                const Eigen::MatrixXd &source) {
   if (source.rows() == 0) {
@@ -3414,7 +3795,9 @@ inline void accumulate_component_diagnostics(
       target.surfaceCellReturnedInputMeshFallback ||
       source.surfaceCellReturnedInputMeshFallback;
   target.surfaceCellRemeshOccurred =
-      target.surfaceCellRemeshOccurred || source.surfaceCellRemeshOccurred;
+      firstComponent ? source.surfaceCellRemeshOccurred
+                     : (target.surfaceCellRemeshOccurred &&
+                        source.surfaceCellRemeshOccurred);
   if (target.surfaceCellOutputOrigin == SurfaceCellOutputOrigin::None) {
     target.surfaceCellOutputOrigin = source.surfaceCellOutputOrigin;
   } else if (source.surfaceCellOutputOrigin != SurfaceCellOutputOrigin::None &&
@@ -3424,10 +3807,14 @@ inline void accumulate_component_diagnostics(
   target.surfaceCellDebugArtifactsPreserved =
       target.surfaceCellDebugArtifactsPreserved ||
       source.surfaceCellDebugArtifactsPreserved;
-  target.surfaceCellDebugArtifacts.insert(
-      target.surfaceCellDebugArtifacts.end(),
-      source.surfaceCellDebugArtifacts.begin(),
-      source.surfaceCellDebugArtifacts.end());
+  for (const std::string &artifact : source.surfaceCellDebugArtifacts) {
+    if (componentIndex == std::numeric_limits<std::size_t>::max()) {
+      target.surfaceCellDebugArtifacts.push_back(artifact);
+    } else {
+      target.surfaceCellDebugArtifacts.push_back(
+          "component[" + std::to_string(componentIndex) + "]/" + artifact);
+    }
+  }
   for (const SurfaceCellStageLineage &sourceLineage :
        source.surfaceCellStageLineage) {
     SurfaceCellStageLineage lineage = sourceLineage;
@@ -3518,6 +3905,25 @@ inline void accumulate_component_diagnostics(
   target.adaptiveFeatureMaxDensity =
       std::max(target.adaptiveFeatureMaxDensity,
                source.adaptiveFeatureMaxDensity);
+  target.adaptiveTargetSizeSeconds += source.adaptiveTargetSizeSeconds;
+  target.adaptiveTargetSizeResolvedSurfaceError =
+      std::max(target.adaptiveTargetSizeResolvedSurfaceError,
+               source.adaptiveTargetSizeResolvedSurfaceError);
+  if (firstComponent) {
+    target.adaptiveTargetSizeMin = source.adaptiveTargetSizeMin;
+    target.adaptiveTargetSizeMax = source.adaptiveTargetSizeMax;
+  } else {
+    target.adaptiveTargetSizeMin =
+        std::min(target.adaptiveTargetSizeMin,
+                 source.adaptiveTargetSizeMin);
+    target.adaptiveTargetSizeMax =
+        std::max(target.adaptiveTargetSizeMax,
+                 source.adaptiveTargetSizeMax);
+  }
+  target.adaptiveTargetSizeFiniteVertexCount +=
+      source.adaptiveTargetSizeFiniteVertexCount;
+  target.adaptiveTargetSizeNonFiniteVertexCount +=
+      source.adaptiveTargetSizeNonFiniteVertexCount;
 
   target.preconditioningSeconds += source.preconditioningSeconds;
   target.tangentBundleInitializationSeconds +=
@@ -3602,6 +4008,554 @@ inline void accumulate_component_diagnostics(
       !target.surfaceCellReliefCountAvailable;
   accumulate_component_diagnostics(
       target, source, std::numeric_limits<std::size_t>::max(), firstComponent);
+}
+
+inline RemeshResult remesh_surface_cell_components_from_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options) {
+  using Clock = RemeshPipelineClock;
+  const auto pipelineStart = Clock::now();
+
+  TriMesh sourceMesh;
+  sourceMesh.set_mesh(vertices, faces);
+  fields::CrossFieldResult sourceCrossField = authoritativeCrossField;
+  normalize_surface_cell_cross_field_directions(sourceCrossField);
+
+  RemeshOptions sequentialOptions = options;
+  sequentialOptions.parallelizeComponents = false;
+  const SurfaceCellFailureCode globalFieldFailure =
+      validate_surface_cell_cross_field(sourceMesh, sourceCrossField,
+                                        options.surfaceCells);
+  if (globalFieldFailure != SurfaceCellFailureCode::None) {
+    RemeshResult result = remesh_surface_cells_from_cross_field_impl(
+        sourceMesh, sourceCrossField, sequentialOptions);
+    set_overall_pipeline_time(result, pipelineStart);
+    return result;
+  }
+
+  const auto splitStart = Clock::now();
+  std::vector<geometry::FaceComponent> components =
+      geometry::compact_face_components(vertices, faces,
+                                        &sourceCrossField.rawField);
+  const double splitSeconds = remesh_elapsed_seconds(splitStart);
+  if (components.size() <= 1U) {
+    RemeshResult result = remesh_surface_cells_from_cross_field_impl(
+        sourceMesh, sourceCrossField, sequentialOptions);
+    result.diagnostics.componentSplitSeconds = splitSeconds;
+    result.diagnostics.componentCount =
+        std::max<std::size_t>(1U, components.size());
+    set_overall_pipeline_time(result, pipelineStart);
+    return result;
+  }
+
+  const unsigned int hardwareThreads =
+      std::max(1U, std::thread::hardware_concurrency());
+  const std::size_t requestedThreads =
+      options.maxComponentThreads > 0
+          ? static_cast<std::size_t>(options.maxComponentThreads)
+          : static_cast<std::size_t>(hardwareThreads);
+  const std::size_t workerCount =
+      std::max<std::size_t>(1U,
+                            std::min(requestedThreads, components.size()));
+  const double absoluteTargetLength =
+      derive_absolute_target_length(vertices, options);
+
+  struct ComponentRun {
+    RemeshResult result;
+    double wallSeconds = 0.0;
+  };
+
+  auto runComponent = [&](const std::size_t componentIndex) {
+    const auto componentStart = Clock::now();
+    ComponentRun run;
+    const geometry::FaceComponent &component = components[componentIndex];
+    try {
+      TriMesh componentMesh;
+      componentMesh.set_mesh(component.vertices, component.faces);
+      fields::CrossFieldResult componentCrossField =
+          remap_surface_cell_cross_field_component(
+              sourceMesh, component, componentMesh, sourceCrossField);
+
+      RemeshOptions componentOptions = options;
+      componentOptions.parallelizeComponents = false;
+      componentOptions.progress = nullptr;
+      componentOptions.mesherDataCallback = nullptr;
+      componentOptions.absoluteTargetLength = absoluteTargetLength;
+      if (componentOptions.surfaceCells.injectFailureComponentIndex >= 0 &&
+          componentOptions.surfaceCells.injectFailureComponentIndex !=
+              static_cast<int>(componentIndex)) {
+        componentOptions.surfaceCells.injectFailureAfterStage = -1;
+      }
+
+      run.result = remesh_surface_cells_from_cross_field_impl(
+          componentMesh, componentCrossField, componentOptions);
+    } catch (const std::exception &) {
+      run.result.success = false;
+      run.result.diagnostics.remeshBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.requestedBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.executedBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.surfaceCellFallbackPolicy =
+          surface_cell_fallback_policy_name(
+              options.surfaceCells.fallbackPolicy);
+      run.result.diagnostics.terminalFailureCode =
+          surface_cell_failure_code_name(
+              SurfaceCellFailureCode::UnsupportedInput);
+      run.result.diagnostics.terminalFailureStage = "component-execution";
+      run.result.diagnostics.originalSurfaceCellFailureCode =
+          run.result.diagnostics.terminalFailureCode;
+      run.result.diagnostics.originalSurfaceCellFailureStage =
+          run.result.diagnostics.terminalFailureStage;
+      run.result.diagnostics.surfaceCellOutputOrigin =
+          SurfaceCellOutputOrigin::None;
+      run.result.diagnostics.surfaceCellRemeshOccurred = false;
+      set_overall_pipeline_time(run.result, componentStart);
+    } catch (...) {
+      run.result.success = false;
+      run.result.diagnostics.remeshBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.requestedBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.executedBackend =
+          remesh_backend_name(RemeshBackend::SurfaceCells);
+      run.result.diagnostics.surfaceCellFallbackPolicy =
+          surface_cell_fallback_policy_name(
+              options.surfaceCells.fallbackPolicy);
+      run.result.diagnostics.terminalFailureCode =
+          surface_cell_failure_code_name(
+              SurfaceCellFailureCode::UnsupportedInput);
+      run.result.diagnostics.terminalFailureStage = "component-execution";
+      run.result.diagnostics.originalSurfaceCellFailureCode =
+          run.result.diagnostics.terminalFailureCode;
+      run.result.diagnostics.originalSurfaceCellFailureStage =
+          run.result.diagnostics.terminalFailureStage;
+      run.result.diagnostics.surfaceCellOutputOrigin =
+          SurfaceCellOutputOrigin::None;
+      run.result.diagnostics.surfaceCellRemeshOccurred = false;
+      set_overall_pipeline_time(run.result, componentStart);
+    }
+    run.wallSeconds = remesh_elapsed_seconds(componentStart);
+    return run;
+  };
+
+  const auto parallelStart = Clock::now();
+  std::vector<ComponentRun> runs(components.size());
+  if (workerCount == 1U) {
+    for (std::size_t index = 0; index < components.size(); ++index) {
+      runs[index] = runComponent(index);
+    }
+  } else {
+    std::vector<std::future<ComponentRun>> active;
+    std::vector<std::size_t> activeIndices;
+    for (std::size_t next = 0; next < components.size(); ++next) {
+      activeIndices.push_back(next);
+      active.push_back(std::async(std::launch::async, runComponent, next));
+      if (active.size() == workerCount || next + 1U == components.size()) {
+        for (std::size_t activeIndex = 0; activeIndex < active.size();
+             ++activeIndex) {
+          runs[activeIndices[activeIndex]] = active[activeIndex].get();
+        }
+        active.clear();
+        activeIndices.clear();
+      }
+    }
+  }
+  const double parallelSeconds = remesh_elapsed_seconds(parallelStart);
+
+  const auto mergeStart = Clock::now();
+  RemeshResult merged;
+  merged.success = true;
+  merged.diagnostics.remeshBackend =
+      remesh_backend_name(RemeshBackend::SurfaceCells);
+  merged.diagnostics.requestedBackend =
+      remesh_backend_name(RemeshBackend::SurfaceCells);
+  merged.diagnostics.executedBackend.clear();
+  merged.diagnostics.surfaceCellFallbackPolicy =
+      surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+  merged.diagnostics.componentSplitSeconds = splitSeconds;
+  merged.diagnostics.componentParallelWallSeconds = parallelSeconds;
+  merged.diagnostics.componentCount = components.size();
+  merged.diagnostics.componentThreadsRequested = requestedThreads;
+  merged.diagnostics.componentThreadsUsed = workerCount;
+  merged.diagnostics.componentPeakConcurrentTasks = workerCount;
+
+  std::size_t failedComponent = std::numeric_limits<std::size_t>::max();
+  for (std::size_t index = 0; index < components.size(); ++index) {
+    const geometry::FaceComponent &component = components[index];
+    const RemeshResult &componentResult = runs[index].result;
+
+    ComponentRemeshDiagnostics componentDiagnostics;
+    componentDiagnostics.componentIndex = index;
+    componentDiagnostics.minimumOriginalFace =
+        static_cast<std::size_t>(component.minimum_original_face());
+    componentDiagnostics.inputFaceCount = component.originalFaces.size();
+    componentDiagnostics.outputVertexCount =
+        static_cast<std::size_t>(componentResult.vertices.rows());
+    componentDiagnostics.outputFaceCount =
+        static_cast<std::size_t>(componentResult.faces.rows());
+    componentDiagnostics.success = componentResult.success;
+    componentDiagnostics.terminalFailureCode =
+        componentResult.diagnostics.terminalFailureCode;
+    componentDiagnostics.terminalFailureStage =
+        componentResult.diagnostics.terminalFailureStage;
+    componentDiagnostics.outputOrigin = surface_cell_output_origin_name(
+        componentResult.diagnostics.surfaceCellOutputOrigin);
+    componentDiagnostics.wallSeconds = runs[index].wallSeconds;
+    componentDiagnostics.integrationSeconds =
+        componentResult.diagnostics.integrationTotalSeconds;
+    componentDiagnostics.mesherSeconds =
+        componentResult.diagnostics.mesherTotalSeconds;
+    merged.diagnostics.components.push_back(componentDiagnostics);
+
+    accumulate_component_diagnostics(
+        merged.diagnostics, componentResult.diagnostics, index, index == 0U);
+    if (!componentResult.success &&
+        failedComponent == std::numeric_limits<std::size_t>::max()) {
+      failedComponent = index;
+    }
+  }
+
+  if (failedComponent != std::numeric_limits<std::size_t>::max()) {
+    const geometry::FaceComponent &component = components[failedComponent];
+    const RemeshResult &failure = runs[failedComponent].result;
+    merged.success = false;
+    merged.vertices.resize(0, 3);
+    merged.faces.resize(0, 0);
+    merged.degrees.resize(0);
+    merged.outputVertexProvenance.clear();
+    merged.outputVertexLineage.clear();
+    merged.outputQuadLineage.clear();
+    merged.rawCrossField.resize(0, 0);
+    merged.crossFieldMatching.resize(0);
+    merged.crossFieldEffort.resize(0);
+    merged.crossFieldSingularCycles.resize(0);
+    merged.crossFieldSingularIndices.resize(0);
+    merged.surfaceCellContext = failure.surfaceCellContext;
+    merged.diagnostics.failedComponentIndex = failedComponent;
+    merged.diagnostics.failedComponentMinimumOriginalFace =
+        static_cast<std::size_t>(component.minimum_original_face());
+    merged.diagnostics.terminalFailureCode =
+        failure.diagnostics.terminalFailureCode;
+    merged.diagnostics.terminalFailureStage =
+        failure.diagnostics.terminalFailureStage;
+    merged.diagnostics.surfaceCellOutputOrigin =
+        SurfaceCellOutputOrigin::None;
+    merged.diagnostics.surfaceCellRemeshOccurred = false;
+    merged.diagnostics.componentMergeSeconds =
+        remesh_elapsed_seconds(mergeStart);
+    set_overall_pipeline_time(merged, pipelineStart);
+    return merged;
+  }
+
+  merged.rawCrossField = sourceCrossField.rawField;
+  merged.crossFieldMatching = sourceCrossField.matching;
+  merged.crossFieldEffort = sourceCrossField.effort;
+  merged.crossFieldSingularCycles = sourceCrossField.singularCycles;
+  merged.crossFieldSingularIndices = sourceCrossField.singularIndices;
+  merged.surfaceCellContext.sourceMesh = sourceMesh;
+  merged.surfaceCellContext.hasSourceMesh = true;
+  merged.surfaceCellContext.crossField = sourceCrossField;
+  merged.surfaceCellContext.hasCrossField = true;
+  merged.surfaceCellContext.crossFieldHasMatching =
+      sourceCrossField.matchingComputed;
+  merged.surfaceCellContext.crossFieldHasSingularities =
+      sourceCrossField.singularitiesComputed;
+
+  int sheetOffset = 0;
+  int patchOffset = 0;
+  int railOffset = 0;
+  int curveOffset = 0;
+  bool allHaveSourceLabels = true;
+  bool allHaveAuthoritativeRails = true;
+  merged.surfaceCellContext.sourceSurfaceLabels.componentByFace.assign(
+      static_cast<std::size_t>(faces.rows()), -1);
+  merged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace.assign(
+      static_cast<std::size_t>(faces.rows()), -1);
+  std::map<std::uint64_t, int> globalEdgeByVertices;
+  for (int edge = 0; edge < sourceMesh.EV.rows(); ++edge) {
+    globalEdgeByVertices[surface_cell_source_edge_key(
+        sourceMesh.EV(edge, 0), sourceMesh.EV(edge, 1))] = edge;
+  }
+  bool allCompletedSurfaceCells = true;
+  bool allHaveOptimizationResult = true;
+  bool allHaveValidationResult = true;
+  bool firstOptimizationResult = true;
+  bool firstValidationResult = true;
+  geometry::SurfaceOptimizationResult aggregateOptimizationResult;
+  aggregateOptimizationResult.topologyHash =
+      structural_hash_seed("component-optimization");
+  geometry::SurfaceFinalValidationReport aggregateValidationResult;
+
+  for (std::size_t index = 0; index < components.size(); ++index) {
+    const geometry::FaceComponent &component = components[index];
+    const RemeshResult &componentResult = runs[index].result;
+    const int vertexOffset = static_cast<int>(merged.vertices.rows());
+    const int faceOffset = static_cast<int>(merged.faces.rows());
+
+    TriMesh componentMesh;
+    componentMesh.set_mesh(component.vertices, component.faces);
+    std::vector<int> globalEdgeByLocal(
+        static_cast<std::size_t>(componentMesh.EV.rows()), -1);
+    for (int localEdge = 0; localEdge < componentMesh.EV.rows(); ++localEdge) {
+      const int originalVertex0 = component.originalVertices[
+          static_cast<std::size_t>(componentMesh.EV(localEdge, 0))];
+      const int originalVertex1 = component.originalVertices[
+          static_cast<std::size_t>(componentMesh.EV(localEdge, 1))];
+      const auto found = globalEdgeByVertices.find(
+          surface_cell_source_edge_key(originalVertex0, originalVertex1));
+      if (found != globalEdgeByVertices.end()) {
+        globalEdgeByLocal[static_cast<std::size_t>(localEdge)] = found->second;
+      }
+    }
+
+    int localMaximumRail = -1;
+    int localMaximumCurve = -1;
+    allHaveSourceLabels =
+        allHaveSourceLabels &&
+        componentResult.surfaceCellContext.hasSourceSurfaceLabels;
+    if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
+      const auto &labels =
+          componentResult.surfaceCellContext.sourceSurfaceLabels;
+      for (std::size_t localFace = 0;
+           localFace < component.originalFaces.size(); ++localFace) {
+        const int originalFace = component.originalFaces[localFace];
+        merged.surfaceCellContext.sourceSurfaceLabels.componentByFace[
+            static_cast<std::size_t>(originalFace)] =
+            static_cast<int>(index);
+        if (localFace < labels.localSheetByFace.size() &&
+            labels.localSheetByFace[localFace] >= 0) {
+          merged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace[
+              static_cast<std::size_t>(originalFace)] =
+              labels.localSheetByFace[localFace] + sheetOffset;
+        }
+      }
+    }
+
+    allHaveAuthoritativeRails =
+        allHaveAuthoritativeRails &&
+        componentResult.surfaceCellContext.hasAuthoritativeRails;
+    for (geometry::SurfaceCellRail rail :
+         componentResult.surfaceCellContext.authoritativeRails) {
+      localMaximumRail = std::max(localMaximumRail, rail.id);
+      localMaximumCurve = std::max(localMaximumCurve, rail.curveId);
+      if (rail.id >= 0) {
+        rail.id += railOffset;
+      }
+      if (rail.curveId >= 0) {
+        rail.curveId += curveOffset;
+      }
+      rail.component = static_cast<int>(index);
+      for (int &sourceVertex : rail.sourceVertices) {
+        if (sourceVertex >= 0 &&
+            static_cast<std::size_t>(sourceVertex) <
+                component.originalVertices.size()) {
+          sourceVertex = component.originalVertices[
+              static_cast<std::size_t>(sourceVertex)];
+        } else {
+          sourceVertex = -1;
+        }
+      }
+      for (int &sourceEdge : rail.sourceEdges) {
+        if (sourceEdge >= 0 &&
+            static_cast<std::size_t>(sourceEdge) <
+                globalEdgeByLocal.size()) {
+          sourceEdge =
+              globalEdgeByLocal[static_cast<std::size_t>(sourceEdge)];
+        } else {
+          sourceEdge = -1;
+        }
+      }
+      for (geometry::SurfaceCellRailSample &sample : rail.samples) {
+        if (sample.sourceFace >= 0 &&
+            static_cast<std::size_t>(sample.sourceFace) <
+                component.originalFaces.size()) {
+          sample.sourceFace = component.originalFaces[
+              static_cast<std::size_t>(sample.sourceFace)];
+        } else {
+          sample.sourceFace = -1;
+        }
+      }
+      merged.surfaceCellContext.authoritativeRails.push_back(
+          std::move(rail));
+    }
+
+    append_matrix_rows(merged.vertices, componentResult.vertices);
+    append_polygon_faces(merged.faces, merged.degrees,
+                         componentResult.faces, componentResult.degrees,
+                         vertexOffset);
+
+    int localMaximumSheet = -1;
+    if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
+      for (const int sheet :
+           componentResult.surfaceCellContext.sourceSurfaceLabels
+               .localSheetByFace) {
+        localMaximumSheet = std::max(localMaximumSheet, sheet);
+      }
+    }
+
+    for (geometry::SurfacePoint provenance :
+         componentResult.outputVertexProvenance) {
+      provenance = remap_component_surface_point(
+          provenance, component, index, sheetOffset);
+      localMaximumSheet =
+          std::max(localMaximumSheet, provenance.sheet - sheetOffset);
+      merged.outputVertexProvenance.push_back(std::move(provenance));
+    }
+
+    for (geometry::PureQuadVertexLineage lineage :
+         componentResult.outputVertexLineage) {
+      lineage.outputVertex += vertexOffset;
+      lineage.sourcePoint = remap_component_surface_point(
+          lineage.sourcePoint, component, index, sheetOffset);
+      lineage.featureInterval.start = remap_component_surface_point(
+          lineage.featureInterval.start, component, index, sheetOffset);
+      lineage.featureInterval.end = remap_component_surface_point(
+          lineage.featureInterval.end, component, index, sheetOffset);
+      if (lineage.featureInterval.railId >= 0) {
+        lineage.featureInterval.railId += railOffset;
+      }
+      if (lineage.featureInterval.curveId >= 0) {
+        lineage.featureInterval.curveId += curveOffset;
+      }
+      merged.outputVertexLineage.push_back(std::move(lineage));
+    }
+
+    int localMaximumPatch = -1;
+    for (geometry::PureQuadFaceLineage lineage :
+         componentResult.outputQuadLineage) {
+      lineage.outputQuad += faceOffset;
+      if (lineage.sourcePatch >= 0) {
+        localMaximumPatch = std::max(localMaximumPatch, lineage.sourcePatch);
+        lineage.sourcePatch += patchOffset;
+      }
+      merged.outputQuadLineage.push_back(std::move(lineage));
+    }
+
+    for (geometry::PureQuadMesh patch :
+         componentResult.surfaceCellContext.completedPatches) {
+      if (patch.sourcePatch >= 0) {
+        localMaximumPatch = std::max(localMaximumPatch, patch.sourcePatch);
+        patch.sourcePatch += patchOffset;
+      }
+      for (geometry::SurfacePoint &point : patch.vertexProvenance) {
+        point = remap_component_surface_point(
+            point, component, index, sheetOffset);
+      }
+      for (geometry::PureQuadVertexLineage &lineage :
+           patch.vertexLineage) {
+        lineage.sourcePoint = remap_component_surface_point(
+            lineage.sourcePoint, component, index, sheetOffset);
+        lineage.featureInterval.start = remap_component_surface_point(
+            lineage.featureInterval.start, component, index, sheetOffset);
+        lineage.featureInterval.end = remap_component_surface_point(
+            lineage.featureInterval.end, component, index, sheetOffset);
+        if (lineage.featureInterval.railId >= 0) {
+          lineage.featureInterval.railId += railOffset;
+        }
+        if (lineage.featureInterval.curveId >= 0) {
+          lineage.featureInterval.curveId += curveOffset;
+        }
+      }
+      for (geometry::PureQuadFaceLineage &lineage : patch.quadLineage) {
+        if (lineage.sourcePatch >= 0) {
+          localMaximumPatch = std::max(localMaximumPatch,
+                                       lineage.sourcePatch);
+          lineage.sourcePatch += patchOffset;
+        }
+      }
+      merged.surfaceCellContext.completedPatches.push_back(std::move(patch));
+    }
+
+    for (const SurfaceCellContextProductDebug &product :
+         componentResult.surfaceCellContext.debugProducts) {
+      SurfaceCellContextProductDebug mergedProduct = product;
+      mergedProduct.name = "component[" + std::to_string(index) + "]/" +
+                           product.name;
+      merged.surfaceCellContext.debugProducts.push_back(
+          std::move(mergedProduct));
+    }
+
+    allCompletedSurfaceCells =
+        allCompletedSurfaceCells &&
+        componentResult.diagnostics.surfaceCellOutputOrigin ==
+            SurfaceCellOutputOrigin::CompletedSurfaceCells;
+
+    allHaveOptimizationResult =
+        allHaveOptimizationResult &&
+        componentResult.surfaceCellContext.hasOptimizationResult;
+    if (componentResult.surfaceCellContext.hasOptimizationResult) {
+      const geometry::SurfaceOptimizationResult &componentOptimization =
+          componentResult.surfaceCellContext.optimizationResult;
+      hash_combine_u64(aggregateOptimizationResult.topologyHash,
+                       componentOptimization.topologyHash);
+      accumulate_surface_optimization_result(
+          aggregateOptimizationResult, componentOptimization,
+          firstOptimizationResult);
+      firstOptimizationResult = false;
+    }
+
+    allHaveValidationResult =
+        allHaveValidationResult &&
+        componentResult.surfaceCellContext.hasValidationResult;
+    if (componentResult.surfaceCellContext.hasValidationResult) {
+      accumulate_surface_validation_report(
+          aggregateValidationResult,
+          componentResult.surfaceCellContext.validationResult,
+          firstValidationResult);
+      firstValidationResult = false;
+    }
+
+    sheetOffset += localMaximumSheet + 1;
+    patchOffset += localMaximumPatch + 1;
+    railOffset += localMaximumRail + 1;
+    curveOffset += localMaximumCurve + 1;
+  }
+
+  merged.surfaceCellContext.hasSourceSurfaceLabels =
+      allHaveSourceLabels;
+  merged.surfaceCellContext.hasAuthoritativeRails =
+      allHaveAuthoritativeRails;
+  merged.surfaceCellContext.completedVertices = merged.vertices;
+  merged.surfaceCellContext.completedQuads =
+      allCompletedSurfaceCells ? merged.faces : Eigen::MatrixXi{};
+  merged.surfaceCellContext.completedProvenance =
+      merged.outputVertexProvenance;
+  merged.surfaceCellContext.completedVertexLineage =
+      merged.outputVertexLineage;
+  merged.surfaceCellContext.completedQuadLineage =
+      merged.outputQuadLineage;
+  merged.surfaceCellContext.hasCompletedPatches =
+      allCompletedSurfaceCells &&
+      !merged.surfaceCellContext.completedPatches.empty();
+
+  if (allCompletedSurfaceCells && allHaveOptimizationResult &&
+      !firstOptimizationResult) {
+    aggregateOptimizationResult.vertices = merged.vertices;
+    aggregateOptimizationResult.quads = merged.faces;
+    aggregateOptimizationResult.vertexProvenance =
+        merged.outputVertexProvenance;
+    merged.surfaceCellContext.optimizationResult =
+        std::move(aggregateOptimizationResult);
+    merged.surfaceCellContext.hasOptimizationResult = true;
+  }
+  if (allCompletedSurfaceCells && allHaveValidationResult &&
+      !firstValidationResult) {
+    merged.surfaceCellContext.validationResult =
+        std::move(aggregateValidationResult);
+    merged.surfaceCellContext.hasValidationResult = true;
+  }
+
+  merged.diagnostics.surfaceCellRemeshOccurred =
+      allCompletedSurfaceCells;
+  merged.success = true;
+  record_face_degree_histogram(merged);
+  merged.diagnostics.componentMergeSeconds =
+      remesh_elapsed_seconds(mergeStart);
+  set_overall_pipeline_time(merged, pipelineStart);
+  return merged;
 }
 
 inline RemeshResult remesh_components_from_raw_cross_field(
@@ -3804,9 +4758,23 @@ inline RemeshResult remesh_from_raw_cross_field(
       options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled;
   RemeshResult result;
-  if (options.parallelizeComponents && !surfaceCellsRequested) {
-    result = remesh_components_from_raw_cross_field(vertices, faces,
-                                                    rawCrossField, options);
+  if (options.parallelizeComponents && surfaceCellsRequested) {
+    TriMesh meshWhole;
+    meshWhole.set_mesh(vertices, faces);
+    try {
+      const fields::CrossFieldResult crossField =
+          finalize_surface_cell_raw_cross_field(meshWhole, rawCrossField);
+      result = remesh_surface_cell_components_from_cross_field(
+          vertices, faces, crossField, options);
+    } catch (...) {
+      RemeshOptions sequentialOptions = options;
+      sequentialOptions.parallelizeComponents = false;
+      result = remesh_from_raw_cross_field_impl(
+          meshWhole, rawCrossField, sequentialOptions);
+    }
+  } else if (options.parallelizeComponents) {
+    result = remesh_components_from_raw_cross_field(
+        vertices, faces, rawCrossField, options);
   } else {
     TriMesh meshWhole;
     meshWhole.set_mesh(vertices, faces);
@@ -3834,7 +4802,10 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
   }
 
   RemeshResult result;
-  if (surfaceCellsRequested) {
+  if (surfaceCellsRequested && options.parallelizeComponents) {
+    result = remesh_surface_cell_components_from_cross_field(
+        vertices, faces, crossField, options);
+  } else if (surfaceCellsRequested) {
     TriMesh meshWhole;
     meshWhole.set_mesh(vertices, faces);
     result = remesh_surface_cells_from_cross_field_impl(meshWhole, crossField,

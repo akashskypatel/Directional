@@ -29,6 +29,9 @@ struct ComponentRemeshDiagnostics {
   std::size_t outputVertexCount = 0;
   std::size_t outputFaceCount = 0;
   bool success = false;
+  std::string terminalFailureCode = "None";
+  std::string terminalFailureStage;
+  std::string outputOrigin = "None";
   double wallSeconds = 0.0;
   double integrationSeconds = 0.0;
   double mesherSeconds = 0.0;

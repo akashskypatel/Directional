@@ -367,6 +367,40 @@ if(DIRECTIONAL_BUILD_TESTS)
   endif()
 
   add_executable(
+    directional_milestone_g_p25_tests
+    src/bench/BenchmarkCases.cpp
+    tests/ComponentParallelismTests.cpp
+    tests/MilestoneGP25Tests.cpp
+    tests/SurfaceCellPipelinePhase20Tests.cpp)
+  target_link_libraries(
+    directional_milestone_g_p25_tests
+    PRIVATE GTest::gtest_main)
+  target_compile_features(directional_milestone_g_p25_tests PRIVATE cxx_std_20)
+  target_compile_definitions(
+    directional_milestone_g_p25_tests
+    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+  target_include_directories(
+    directional_milestone_g_p25_tests
+    PRIVATE
+      "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      "${CMAKE_CURRENT_SOURCE_DIR}/external/eigen"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
+  if(MSVC)
+    target_compile_options(directional_milestone_g_p25_tests PRIVATE /bigobj)
+  endif()
+  if(WIN32 AND BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET directional_milestone_g_p25_tests
+      POST_BUILD
+      COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_RUNTIME_DLLS:directional_milestone_g_p25_tests>
+        $<TARGET_FILE_DIR:directional_milestone_g_p25_tests>
+      COMMAND_EXPAND_LISTS
+      VERBATIM)
+  endif()
+
+  add_executable(
     directional_milestone_c_tests
     tests/MilestoneCClosureTests.cpp
     tests/SurfaceCellTracingPhase14Tests.cpp
@@ -559,6 +593,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   gtest_discover_tests(directional_phase1_tests)
   gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
   gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
+  gtest_discover_tests(directional_milestone_g_p25_tests TEST_PREFIX "P25Focused.")
   gtest_discover_tests(directional_milestone_c_tests)
   gtest_discover_tests(directional_milestone_d_tests)
   gtest_discover_tests(directional_milestone_e_tests)

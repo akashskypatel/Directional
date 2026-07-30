@@ -1214,6 +1214,12 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << "\"outputVertexCount\":" << component.outputVertexCount << ","
         << "\"outputFaceCount\":" << component.outputFaceCount << ","
         << "\"success\":" << (component.success ? "true" : "false") << ","
+        << "\"terminalFailureCode\":\""
+        << escape_json(component.terminalFailureCode) << "\","
+        << "\"terminalFailureStage\":\""
+        << escape_json(component.terminalFailureStage) << "\","
+        << "\"outputOrigin\":\"" << escape_json(component.outputOrigin)
+        << "\","
         << "\"wallSeconds\":" << component.wallSeconds << ","
         << "\"integrationSeconds\":" << component.integrationSeconds << ","
         << "\"mesherSeconds\":" << component.mesherSeconds << "}";
