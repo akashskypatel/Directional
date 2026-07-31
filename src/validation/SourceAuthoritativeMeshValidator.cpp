@@ -842,7 +842,7 @@ validate_source_authoritative_surface_mesh(
             &provenance[static_cast<std::size_t>(vertex)]);
       }
       if (!faceProvenanceValid ||
-          !labelSupport.have_common_label(facePoints)) {
+          !labelSupport.have_compatible_chart(facePoints)) {
         result.localSheetCompatibilityPassed = false;
         result.fail({MeshValidationFailureCode::LocalSheetMismatch,
                      invalidVertex, -1, -1, face});
@@ -936,7 +936,7 @@ validate_source_authoritative_surface_mesh(
           &provenance[static_cast<std::size_t>(vertex)],
           &provenance[static_cast<std::size_t>(edge.first)],
           &provenance[static_cast<std::size_t>(edge.second)]};
-      if (!labelSupport.have_common_label(edgePoints)) {
+      if (!labelSupport.have_compatible_chart(edgePoints)) {
         return;
       }
       const Eigen::Vector3d point = vertices.row(vertex).transpose();

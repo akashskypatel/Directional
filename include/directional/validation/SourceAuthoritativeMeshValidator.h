@@ -315,12 +315,12 @@ struct SourcePointLabelSupport {
            sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
   }
 
-  [[nodiscard]] std::set<std::pair<int, int>>
-  supported_labels(const geometry::SurfacePoint &point) const {
-    std::set<std::pair<int, int>> labels;
+  [[nodiscard]] std::vector<int>
+  supported_faces(const geometry::SurfacePoint &point) const {
+    std::vector<int> candidateFaces;
     if (!available() || !point.valid() || point.face < 0 ||
         point.face >= sourceFaces->rows() || !point.barycentric.allFinite()) {
-      return labels;
+      return candidateFaces;
     }
     std::vector<int> supportCorners;
     for (int corner = 0; corner < 3; ++corner) {
@@ -329,7 +329,6 @@ struct SourcePointLabelSupport {
       }
     }
 
-    std::vector<int> candidateFaces;
     if (supportCorners.size() == 1U) {
       const int vertex = (*sourceFaces)(point.face, supportCorners.front());
       if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
@@ -349,8 +348,17 @@ struct SourcePointLabelSupport {
                          point.face) == candidateFaces.end()) {
       candidateFaces.push_back(point.face);
     }
+    std::sort(candidateFaces.begin(), candidateFaces.end());
+    candidateFaces.erase(
+        std::unique(candidateFaces.begin(), candidateFaces.end()),
+        candidateFaces.end());
+    return candidateFaces;
+  }
 
-    for (const int face : candidateFaces) {
+  [[nodiscard]] std::set<std::pair<int, int>>
+  supported_labels(const geometry::SurfacePoint &point) const {
+    std::set<std::pair<int, int>> labels;
+    for (const int face : supported_faces(point)) {
       if (face < 0 || face >= sourceFaces->rows()) {
         continue;
       }
@@ -358,6 +366,104 @@ struct SourcePointLabelSupport {
                      (*sheets)[static_cast<std::size_t>(face)]});
     }
     return labels;
+  }
+
+  [[nodiscard]] bool faces_share_source_edge(const int firstFace,
+                                              const int secondFace) const {
+    if (!available() || firstFace < 0 || secondFace < 0 ||
+        firstFace >= sourceFaces->rows() || secondFace >= sourceFaces->rows() ||
+        firstFace == secondFace) {
+      return false;
+    }
+    int sharedVertices = 0;
+    for (int firstCorner = 0; firstCorner < 3; ++firstCorner) {
+      const int vertex = (*sourceFaces)(firstFace, firstCorner);
+      for (int secondCorner = 0; secondCorner < 3; ++secondCorner) {
+        if (vertex == (*sourceFaces)(secondFace, secondCorner)) {
+          ++sharedVertices;
+          break;
+        }
+      }
+    }
+    return sharedVertices == 2;
+  }
+
+  // A completed output face may live on one source triangle or cross exactly
+  // one genuine source edge between two adjacent projection charts.  This is
+  // intentionally stricter than component-only compatibility: non-adjacent
+  // close/opposing sheets can never satisfy the contract.
+  [[nodiscard]] std::vector<int> compatible_chart_faces(
+      const std::vector<const geometry::SurfacePoint *> &points) const {
+    if (!available() || points.empty()) {
+      return {};
+    }
+    std::vector<std::vector<int>> support;
+    support.reserve(points.size());
+    std::set<int> unionFaces;
+    for (const geometry::SurfacePoint *point : points) {
+      if (point == nullptr) {
+        return {};
+      }
+      std::vector<int> faces = supported_faces(*point);
+      if (faces.empty()) {
+        return {};
+      }
+      unionFaces.insert(faces.begin(), faces.end());
+      support.push_back(std::move(faces));
+    }
+
+    for (const int face : unionFaces) {
+      const bool coversAll = std::all_of(
+          support.begin(), support.end(), [&](const std::vector<int> &faces) {
+            return std::binary_search(faces.begin(), faces.end(), face);
+          });
+      if (coversAll) {
+        return {face};
+      }
+    }
+
+    const std::vector<int> orderedFaces(unionFaces.begin(), unionFaces.end());
+    for (std::size_t first = 0; first < orderedFaces.size(); ++first) {
+      for (std::size_t second = first + 1U; second < orderedFaces.size();
+           ++second) {
+        const int firstFace = orderedFaces[first];
+        const int secondFace = orderedFaces[second];
+        if ((*components)[static_cast<std::size_t>(firstFace)] !=
+                (*components)[static_cast<std::size_t>(secondFace)] ||
+            !faces_share_source_edge(firstFace, secondFace)) {
+          continue;
+        }
+        const bool coversAll = std::all_of(
+            support.begin(), support.end(), [&](const std::vector<int> &faces) {
+              return std::binary_search(faces.begin(), faces.end(), firstFace) ||
+                     std::binary_search(faces.begin(), faces.end(), secondFace);
+            });
+        if (coversAll) {
+          return {firstFace, secondFace};
+        }
+      }
+    }
+    return {};
+  }
+
+  [[nodiscard]] std::set<std::pair<int, int>> chart_labels(
+      const std::vector<int> &chartFaces) const {
+    std::set<std::pair<int, int>> labels;
+    if (!available()) {
+      return labels;
+    }
+    for (const int face : chartFaces) {
+      if (face >= 0 && face < sourceFaces->rows()) {
+        labels.insert({(*components)[static_cast<std::size_t>(face)],
+                       (*sheets)[static_cast<std::size_t>(face)]});
+      }
+    }
+    return labels;
+  }
+
+  [[nodiscard]] bool have_compatible_chart(
+      const std::vector<const geometry::SurfacePoint *> &points) const {
+    return !compatible_chart_faces(points).empty();
   }
 
   [[nodiscard]] bool have_common_label(

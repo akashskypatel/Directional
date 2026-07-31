@@ -997,43 +997,40 @@ std::pair<int, int> consistent_component_sheet(
                      &constraints->sourceFaceComponent,
                      &constraints->sourceFaceSheet);
     if (labelSupport.available()) {
-      std::set<std::pair<int, int>> commonLabels;
-      bool firstPoint = true;
+      std::vector<const SurfacePoint *> points;
+      points.reserve(4);
       for (int corner = 0; corner < 4; ++corner) {
         const int vertex = quads(face, corner);
         if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
-          commonLabels.clear();
+          points.clear();
           break;
         }
         const SurfacePoint &point =
             provenance[static_cast<std::size_t>(vertex)];
         const std::set<std::pair<int, int>> labels =
             labelSupport.supported_labels(point);
-        if (labels.empty()) {
-          commonLabels.clear();
+        if (labels.empty() ||
+            (point.component >= 0 && point.sheet >= 0 &&
+             labels.count({point.component, point.sheet}) == 0U)) {
+          points.clear();
           break;
         }
-        if (point.component >= 0 && point.sheet >= 0 &&
-            labels.count({point.component, point.sheet}) == 0U) {
-          commonLabels.clear();
-          break;
-        }
-        if (firstPoint) {
-          commonLabels = labels;
-          firstPoint = false;
-        } else {
-          std::set<std::pair<int, int>> intersection;
-          std::set_intersection(
-              commonLabels.begin(), commonLabels.end(), labels.begin(),
-              labels.end(), std::inserter(intersection, intersection.end()));
-          commonLabels = std::move(intersection);
-        }
-        if (commonLabels.empty()) {
-          break;
-        }
+        points.push_back(&point);
       }
-      if (!commonLabels.empty()) {
-        return *commonLabels.begin();
+      const std::set<std::pair<int, int>> labels = labelSupport.chart_labels(
+          labelSupport.compatible_chart_faces(points));
+      if (labels.size() == 1U) {
+        return *labels.begin();
+      }
+      if (!labels.empty()) {
+        const int component = labels.begin()->first;
+        const bool oneComponent = std::all_of(
+            labels.begin(), labels.end(), [&](const auto &label) {
+              return label.first == component;
+            });
+        if (oneComponent) {
+          return {component, -1};
+        }
       }
     }
   }
@@ -1085,10 +1082,33 @@ SurfacePoint quad_reference_surface_point(
   for (int corner = 0; corner < 4; ++corner) {
     centroid += 0.25 * vertices.row(quads(face, corner));
   }
-  const auto [component, sheet] =
-      consistent_component_sheet(quads, face, provenance, &constraints);
-  SurfacePoint point = nearest_source_point(centroid, constraints, component,
-                                            sheet, projectionCache);
+  const validation::source_authoritative_detail::SourcePointLabelSupport
+      labelSupport(&constraints.sourceFaces,
+                   &constraints.sourceFaceComponent,
+                   &constraints.sourceFaceSheet);
+  std::vector<const SurfacePoint *> points;
+  points.reserve(4);
+  for (int corner = 0; corner < 4; ++corner) {
+    const int vertex = quads(face, corner);
+    if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
+      points.clear();
+      break;
+    }
+    points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
+  }
+  const std::vector<int> chartFaces =
+      labelSupport.compatible_chart_faces(points);
+  SourceProjectionCache localCache(constraints);
+  SourceProjectionCache *cache =
+      projectionCache != nullptr ? projectionCache : &localCache;
+  SurfacePoint point;
+  if (!chartFaces.empty()) {
+    point = cache->project(centroid, chartFaces);
+  } else {
+    const auto [component, sheet] =
+        consistent_component_sheet(quads, face, provenance, &constraints);
+    point = cache->project(centroid, component, sheet);
+  }
   if (point.valid()) {
     return point;
   }
@@ -2330,6 +2350,10 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   std::vector<double> jacobians;
   const std::vector<SurfacePoint> &provenance = optimization.vertexProvenance;
   SourceProjectionCache sourceProjection(constraints);
+  const validation::source_authoritative_detail::SourcePointLabelSupport
+      sourceLabelSupport(&constraints.sourceFaces,
+                         &constraints.sourceFaceComponent,
+                         &constraints.sourceFaceSheet);
 
   // Sample the complete output faces, not only their vertices. Bilinear 3x3
   // sampling observes bowed edges and warped interiors while remaining
@@ -2338,14 +2362,29 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   if (constraints.sourceVertices.rows() > 0 &&
       constraints.sourceFaces.rows() > 0) {
   for (int face = 0; face < quads.rows(); ++face) {
+    std::vector<const SurfacePoint *> facePoints;
+    facePoints.reserve(4);
+    for (int corner = 0; corner < 4; ++corner) {
+      const int vertex = quads(face, corner);
+      if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
+        facePoints.clear();
+        break;
+      }
+      facePoints.push_back(&provenance[static_cast<std::size_t>(vertex)]);
+    }
+    const std::vector<int> chartFaces =
+        sourceLabelSupport.compatible_chart_faces(facePoints);
     const auto [component, sheet] =
         consistent_component_sheet(quads, face, provenance, &constraints);
     for (const double u : quadSamples) {
       for (const double v : quadSamples) {
         const Eigen::RowVector3d sample =
             quad_bilinear_sample(vertices, quads, face, u, v);
-        const SurfacePoint sourcePoint = nearest_source_point(
-            sample, constraints, component, sheet, &sourceProjection);
+        const SurfacePoint sourcePoint =
+            !chartFaces.empty()
+                ? sourceProjection.project(sample, chartFaces)
+                : nearest_source_point(sample, constraints, component, sheet,
+                                       &sourceProjection);
         if (!sourcePoint.valid()) {
           quadToSourceErrors.push_back(
               std::numeric_limits<double>::infinity());

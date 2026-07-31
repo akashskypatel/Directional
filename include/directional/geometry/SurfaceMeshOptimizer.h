@@ -336,6 +336,29 @@ struct SourceProjectionCache {
     return &allowedFaceMasks.emplace(key, std::move(mask)).first->second;
   }
 
+  [[nodiscard]] const std::vector<unsigned char> *allowed_faces(
+      const std::vector<int> &requiredFaces) {
+    if (!bvh.has_value() || requiredFaces.empty()) {
+      return nullptr;
+    }
+    std::vector<int> key = requiredFaces;
+    std::sort(key.begin(), key.end());
+    key.erase(std::unique(key.begin(), key.end()), key.end());
+    const auto existing = exactAllowedFaceMasks.find(key);
+    if (existing != exactAllowedFaceMasks.end()) {
+      return &existing->second;
+    }
+    std::vector<unsigned char> mask(
+        static_cast<std::size_t>(constraints->sourceFaces.rows()), 0);
+    for (const int face : key) {
+      if (face >= 0 && face < constraints->sourceFaces.rows()) {
+        mask[static_cast<std::size_t>(face)] = 1;
+      }
+    }
+    return &exactAllowedFaceMasks.emplace(std::move(key), std::move(mask))
+                .first->second;
+  }
+
   [[nodiscard]] SurfacePoint project(const Eigen::RowVector3d &point,
                                      const int requiredComponent = -1,
                                      const int requiredSheet = -1) {
@@ -356,9 +379,29 @@ struct SourceProjectionCache {
     return bvh->project(point.transpose(), options);
   }
 
+  [[nodiscard]] SurfacePoint project(const Eigen::RowVector3d &point,
+                                     const std::vector<int> &requiredFaces) {
+    ++queryCount;
+    if (!bvh.has_value() || requiredFaces.empty()) {
+      return {};
+    }
+    SurfaceProjectionOptions options;
+    options.allowedFaces = allowed_faces(requiredFaces);
+    if (constraints->sourceFaceComponent.size() ==
+        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
+      options.faceComponents = &constraints->sourceFaceComponent;
+    }
+    if (constraints->sourceFaceSheet.size() ==
+        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
+      options.faceSheets = &constraints->sourceFaceSheet;
+    }
+    return bvh->project(point.transpose(), options);
+  }
+
   const SurfaceOptimizationConstraints *constraints = nullptr;
   std::optional<SurfaceProjectionBvh> bvh;
   std::map<std::pair<int, int>, std::vector<unsigned char>> allowedFaceMasks;
+  std::map<std::vector<int>, std::vector<unsigned char>> exactAllowedFaceMasks;
   std::size_t queryCount = 0;
 };
 
@@ -504,6 +547,7 @@ struct OutputProjectionCache {
   Eigen::MatrixXi triangles;
   std::vector<int> faceComponents;
   std::vector<int> faceSheets;
+  std::vector<std::set<std::pair<int, int>>> faceLabels;
   std::optional<SurfaceProjectionBvh> bvh;
   std::map<std::pair<int, int>, std::vector<unsigned char>> masks;
 
@@ -515,15 +559,41 @@ struct OutputProjectionCache {
     triangles.resize(2 * quads.rows(), 3);
     faceComponents.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
     faceSheets.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
+    faceLabels.resize(static_cast<std::size_t>(2 * quads.rows()));
+    const validation::source_authoritative_detail::SourcePointLabelSupport
+        labelSupport(
+            constraints != nullptr ? &constraints->sourceFaces : nullptr,
+            constraints != nullptr ? &constraints->sourceFaceComponent : nullptr,
+            constraints != nullptr ? &constraints->sourceFaceSheet : nullptr);
     for (int face = 0; face < quads.rows(); ++face) {
       triangles.row(2 * face) << quads(face, 0), quads(face, 1), quads(face, 2);
       triangles.row(2 * face + 1) << quads(face, 0), quads(face, 2), quads(face, 3);
       const auto [component, sheet] =
           consistent_component_sheet(quads, face, provenance, constraints);
+      std::set<std::pair<int, int>> labels;
+      if (labelSupport.available()) {
+        std::vector<const SurfacePoint *> points;
+        points.reserve(4);
+        for (int corner = 0; corner < 4; ++corner) {
+          const int vertex = quads(face, corner);
+          if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
+            points.clear();
+            break;
+          }
+          points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
+        }
+        labels = labelSupport.chart_labels(
+            labelSupport.compatible_chart_faces(points));
+      }
+      if (labels.empty() && component >= 0 && sheet >= 0) {
+        labels.insert({component, sheet});
+      }
       faceComponents[static_cast<std::size_t>(2 * face)] = component;
       faceComponents[static_cast<std::size_t>(2 * face + 1)] = component;
       faceSheets[static_cast<std::size_t>(2 * face)] = sheet;
       faceSheets[static_cast<std::size_t>(2 * face + 1)] = sheet;
+      faceLabels[static_cast<std::size_t>(2 * face)] = labels;
+      faceLabels[static_cast<std::size_t>(2 * face + 1)] = labels;
     }
     if (vertices.rows() > 0 && triangles.rows() > 0) {
       bvh.emplace(vertices, triangles);
@@ -542,12 +612,24 @@ struct OutputProjectionCache {
     }
     std::vector<unsigned char> mask(static_cast<std::size_t>(triangles.rows()), 1);
     for (int face = 0; face < triangles.rows(); ++face) {
-      if (component >= 0 &&
-          faceComponents[static_cast<std::size_t>(face)] != component) {
-        mask[static_cast<std::size_t>(face)] = 0;
-      }
-      if (sheet >= 0 && faceSheets[static_cast<std::size_t>(face)] != sheet) {
-        mask[static_cast<std::size_t>(face)] = 0;
+      const auto &labels = faceLabels[static_cast<std::size_t>(face)];
+      if (!labels.empty()) {
+        const bool supported = std::any_of(
+            labels.begin(), labels.end(), [&](const auto &label) {
+              return (component < 0 || label.first == component) &&
+                     (sheet < 0 || label.second == sheet);
+            });
+        if (!supported) {
+          mask[static_cast<std::size_t>(face)] = 0;
+        }
+      } else {
+        if (component >= 0 &&
+            faceComponents[static_cast<std::size_t>(face)] != component) {
+          mask[static_cast<std::size_t>(face)] = 0;
+        }
+        if (sheet >= 0 && faceSheets[static_cast<std::size_t>(face)] != sheet) {
+          mask[static_cast<std::size_t>(face)] = 0;
+        }
       }
     }
     return &masks.emplace(key, std::move(mask)).first->second;

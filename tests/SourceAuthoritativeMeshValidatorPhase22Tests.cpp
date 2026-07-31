@@ -106,3 +106,88 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   EXPECT_FALSE(result.accepted);
   EXPECT_TRUE(has_code(result, MeshValidationFailureCode::FlippedFace));
 }
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     EdgeAdjacentSourceChartsMaySupportOneOutputQuad) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  Eigen::MatrixXi quads(1, 4);
+  quads << 0, 1, 2, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 1};
+
+  std::vector<SurfacePoint> provenance(4);
+  const auto assign = [&](const int outputVertex, const int sourceFace,
+                          const int sourceCorner) {
+    SurfacePoint &point = provenance[static_cast<std::size_t>(outputVertex)];
+    point.face = sourceFace;
+    point.component = components[static_cast<std::size_t>(sourceFace)];
+    point.sheet = sheets[static_cast<std::size_t>(sourceFace)];
+    point.barycentric = Eigen::Vector3d::Zero();
+    point.barycentric(sourceCorner) = 1.0;
+    point.position = vertices.row(outputVertex).transpose();
+    point.squaredDistance = 0.0;
+  };
+  assign(0, 0, 0);
+  assign(1, 0, 1);
+  assign(2, 0, 2);
+  assign(3, 1, 2);
+
+  directional::validation::SourceAuthoritativeMeshValidatorOptions options;
+  options.sourceVertices = &vertices;
+  options.sourceFaces = &sourceFaces;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+  options.vertexProvenance = &provenance;
+  options.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          vertices, quads, options);
+  EXPECT_TRUE(result.accepted);
+  EXPECT_TRUE(result.localSheetCompatibilityPassed);
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     NonAdjacentChartsInOneComponentRemainIncompatible) {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      0.0, 1.0, 0.0,
+      0.0, 0.0, 0.001,
+      1.0, 0.0, 0.001,
+      0.0, 1.0, 0.001;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      3, 4, 5;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 1};
+  std::vector<SurfacePoint> provenance(4);
+  const std::array<std::pair<int, int>, 4> sourceCorners = {
+      std::pair<int, int>{0, 0}, {0, 1}, {1, 1}, {1, 2}};
+  for (int vertex = 0; vertex < 4; ++vertex) {
+    const auto [face, corner] = sourceCorners[static_cast<std::size_t>(vertex)];
+    SurfacePoint &point = provenance[static_cast<std::size_t>(vertex)];
+    point.face = face;
+    point.component = 0;
+    point.sheet = sheets[static_cast<std::size_t>(face)];
+    point.barycentric = Eigen::Vector3d::Zero();
+    point.barycentric(corner) = 1.0;
+    point.position = vertices.row(sourceFaces(face, corner)).transpose();
+    point.squaredDistance = 0.0;
+  }
+
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&sourceFaces, &components, &sheets);
+  std::vector<const SurfacePoint *> points;
+  for (const SurfacePoint &point : provenance) {
+    points.push_back(&point);
+  }
+  EXPECT_FALSE(support.have_compatible_chart(points));
+}
