@@ -1032,6 +1032,25 @@ endif()
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+# Directional exposes Eigen types throughout its public API and uses the
+# vendored Eigen checkout directly in the build tree. Install the matching
+# header set so the exported target remains self-contained and ABI-consistent.
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/Eigen
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/Polynomials
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen)
+install(DIRECTORY
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/src/Polynomials
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen/src)
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.APACHE
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.BSD
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.MINPACK
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.MPL2
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.README
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/LICENSE
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/Directional/eigen)
+
 install(
   EXPORT DirectionalTargets
   FILE DirectionalTargets.cmake

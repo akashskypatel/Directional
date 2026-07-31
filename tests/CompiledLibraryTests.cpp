@@ -11,7 +11,11 @@
 #include <fstream>
 
 TEST(CompiledLibrary, ExposesBuildInformation) {
+#if defined(DIRECTIONAL_SHARED)
   EXPECT_STREQ("Directional shared library core", directional_build_info());
+#else
+  EXPECT_STREQ("Directional static library core", directional_build_info());
+#endif
 }
 
 TEST(CompiledLibrary, LinksCrossFieldImplementation) {
