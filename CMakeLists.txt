@@ -125,13 +125,23 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
   include(DirectionalDependenciesSuiteSparse)
 endif()
 
-add_library(directional SHARED
-  src/core/Library.cpp)
+add_library(
+  directional
+  src/core/Library.cpp
+  src/fields/CrossField.cpp)
 add_library(Directional::directional ALIAS directional)
 
-set_target_properties(directional PROPERTIES OUTPUT_NAME directional
-                                             WINDOWS_EXPORT_ALL_SYMBOLS ON)
-target_compile_definitions(directional INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+set_target_properties(
+  directional
+  PROPERTIES OUTPUT_NAME directional
+             VERSION ${PROJECT_VERSION}
+             SOVERSION ${PROJECT_VERSION_MAJOR}
+             WINDOWS_EXPORT_ALL_SYMBOLS ON)
+target_compile_definitions(
+  directional
+  PRIVATE DIRECTIONAL_BUILDING_LIBRARY
+  PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
+         $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
 target_include_directories(
   directional
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -235,6 +245,14 @@ if(DIRECTIONAL_BUILD_TESTS)
   set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
+
+  add_executable(
+    directional_compiled_api_tests
+    tests/CompiledLibraryTests.cpp)
+  target_link_libraries(
+    directional_compiled_api_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_compiled_api_tests PRIVATE cxx_std_20)
 
   add_executable(
     directional_phase1_tests
@@ -652,6 +670,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   endif()
 
   include(GoogleTest)
+  gtest_discover_tests(directional_compiled_api_tests)
   gtest_discover_tests(directional_phase1_tests)
   gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
   gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
