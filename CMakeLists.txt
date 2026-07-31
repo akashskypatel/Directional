@@ -128,7 +128,8 @@ endif()
 add_library(
   directional
   src/core/Library.cpp
-  src/fields/CrossField.cpp)
+  src/fields/CrossField.cpp
+  src/pipeline/RemeshPipeline.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(
@@ -331,7 +332,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p23_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p23_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p23_tests
@@ -387,7 +388,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p24_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p24_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p24_tests
@@ -421,7 +422,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p25_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p25_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p25_tests
@@ -454,7 +455,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p26_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p26_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p26_tests

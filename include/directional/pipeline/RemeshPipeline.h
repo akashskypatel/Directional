@@ -108,7 +108,8 @@ enum class SurfaceCellFailureCode {
   NotProductionReady
 };
 
-inline std::string remesh_backend_name(const RemeshBackend backend) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string remesh_backend_name(const RemeshBackend backend) {
   switch (backend) {
   case RemeshBackend::LegacyInteger:
     return "LegacyInteger";
@@ -117,8 +118,12 @@ inline std::string remesh_backend_name(const RemeshBackend backend) {
   }
   return "Unknown";
 }
+#else
+std::string remesh_backend_name(const RemeshBackend backend);
+#endif
 
-inline std::string
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string
 surface_cell_fallback_policy_name(const SurfaceCellFallbackPolicy policy) {
   switch (policy) {
   case SurfaceCellFallbackPolicy::Fail:
@@ -130,8 +135,13 @@ surface_cell_fallback_policy_name(const SurfaceCellFallbackPolicy policy) {
   }
   return "Unknown";
 }
+#else
+std::string
+surface_cell_fallback_policy_name(const SurfaceCellFallbackPolicy policy);
+#endif
 
-inline std::string
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string
 surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
   switch (code) {
   case SurfaceCellFailureCode::None:
@@ -175,8 +185,13 @@ surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
   }
   return "Unknown";
 }
+#else
+std::string
+surface_cell_failure_code_name(const SurfaceCellFailureCode code);
+#endif
 
-inline SurfaceCellFailureCode surface_cell_failure_from_flow_rep(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SurfaceCellFailureCode surface_cell_failure_from_flow_rep(
     const geometry::FlowRepSelectionFailureCode code) {
   switch (code) {
   case geometry::FlowRepSelectionFailureCode::None:
@@ -202,8 +217,13 @@ inline SurfaceCellFailureCode surface_cell_failure_from_flow_rep(
   }
   return SurfaceCellFailureCode::InvalidFlowRepCycleEvidence;
 }
+#else
+SurfaceCellFailureCode surface_cell_failure_from_flow_rep(
+    const geometry::FlowRepSelectionFailureCode code);
+#endif
 
-inline std::string normalize_option_token(std::string value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string normalize_option_token(std::string value) {
   value.erase(std::remove_if(value.begin(), value.end(),
                              [](const char character) {
                                return character == '-' || character == '_';
@@ -215,8 +235,12 @@ inline std::string normalize_option_token(std::string value) {
                  });
   return value;
 }
+#else
+std::string normalize_option_token(std::string value);
+#endif
 
-inline RemeshBackend parse_remesh_backend(const std::string &value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshBackend parse_remesh_backend(const std::string &value) {
   const std::string token = normalize_option_token(value);
   if (token == "legacy" || token == "legacyinteger") {
     return RemeshBackend::LegacyInteger;
@@ -227,8 +251,12 @@ inline RemeshBackend parse_remesh_backend(const std::string &value) {
   throw std::runtime_error(
       "Backend must be LegacyInteger or SurfaceCells.");
 }
+#else
+RemeshBackend parse_remesh_backend(const std::string &value);
+#endif
 
-inline SurfaceCellFallbackPolicy
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SurfaceCellFallbackPolicy
 parse_surface_cell_fallback_policy(const std::string &value) {
   const std::string token = normalize_option_token(value);
   if (token == "fail") {
@@ -244,6 +272,10 @@ parse_surface_cell_fallback_policy(const std::string &value) {
   throw std::runtime_error(
       "Surface-cell fallback must be Fail, ReturnInputMesh, or TryLegacy.");
 }
+#else
+SurfaceCellFallbackPolicy
+parse_surface_cell_fallback_policy(const std::string &value);
+#endif
 
 struct SurfaceCellOptions {
   bool enabled = false;
@@ -522,19 +554,30 @@ struct RemeshResult {
 
 using RemeshPipelineClock = std::chrono::steady_clock;
 
-inline double remesh_elapsed_seconds(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+double remesh_elapsed_seconds(
     const RemeshPipelineClock::time_point start) {
   return std::chrono::duration<double>(RemeshPipelineClock::now() - start)
       .count();
 }
+#else
+double remesh_elapsed_seconds(
+    const RemeshPipelineClock::time_point start);
+#endif
 
-inline void set_overall_pipeline_time(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void set_overall_pipeline_time(
     RemeshResult &result, const RemeshPipelineClock::time_point start) {
   result.diagnostics.overallPipelineSeconds = remesh_elapsed_seconds(start);
   result.diagnostics.overallPipelineTimeAvailable = true;
 }
+#else
+void set_overall_pipeline_time(
+    RemeshResult &result, const RemeshPipelineClock::time_point start);
+#endif
 
-inline void copy_adaptive_feature_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void copy_adaptive_feature_diagnostics(
     directional::RemeshDiagnostics &diagnostics,
     const geometry::BoundedMeshPreconditionerResult &preconditioned) {
   diagnostics.adaptiveFeatureMapSeconds =
@@ -554,8 +597,14 @@ inline void copy_adaptive_feature_diagnostics(
   diagnostics.adaptiveFeatureMaxDensity =
       preconditioned.adaptiveFeatureMaxDensity;
 }
+#else
+void copy_adaptive_feature_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::BoundedMeshPreconditionerResult &preconditioned);
+#endif
 
-inline void copy_adaptive_feature_map_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void copy_adaptive_feature_map_diagnostics(
     directional::RemeshDiagnostics &diagnostics,
     const geometry::AdaptiveFeatureMap &featureMap) {
   diagnostics.adaptiveFeatureHardEdgeCount = 0;
@@ -591,8 +640,14 @@ inline void copy_adaptive_feature_map_diagnostics(
       featureMap.vertexDensity.size() == 0 ? 0.0
                                            : featureMap.vertexDensity.maxCoeff();
 }
+#else
+void copy_adaptive_feature_map_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::AdaptiveFeatureMap &featureMap);
+#endif
 
-inline void copy_adaptive_target_size_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void copy_adaptive_target_size_diagnostics(
     directional::RemeshDiagnostics &diagnostics,
     const geometry::AdaptiveTargetSizeResult &targetSize) {
   diagnostics.adaptiveTargetSizeResolvedSurfaceError =
@@ -621,22 +676,34 @@ inline void copy_adaptive_target_size_diagnostics(
     }
   }
 }
+#else
+void copy_adaptive_target_size_diagnostics(
+    directional::RemeshDiagnostics &diagnostics,
+    const geometry::AdaptiveTargetSizeResult &targetSize);
+#endif
 
 /**
  * @brief Compatibility wrapper for tangent projection.
  * @see directional::fields::project_tangent
  */
-inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
                                           const Eigen::RowVector3d &normal,
                                           const bool normalize) {
   return fields::project_tangent(vector, normal, normalize);
 }
+#else
+Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
+                                          const Eigen::RowVector3d &normal,
+                                          const bool normalize);
+#endif
 
 /**
  * @brief Compatibility wrapper for constructing a raw 4-RoSy field.
  * @see directional::fields::make_raw_cross_field
  */
-inline Eigen::MatrixXd
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+Eigen::MatrixXd
 make_raw_cross_field(const TriMesh &mesh,
                      const Eigen::MatrixXd &primaryDirections,
                      const Eigen::MatrixXd &secondaryDirections,
@@ -645,46 +712,81 @@ make_raw_cross_field(const TriMesh &mesh,
                                       secondaryDirections,
                                       normalizeDirections);
 }
+#else
+Eigen::MatrixXd
+make_raw_cross_field(const TriMesh &mesh,
+                     const Eigen::MatrixXd &primaryDirections,
+                     const Eigen::MatrixXd &secondaryDirections,
+                     const bool normalizeDirections);
+#endif
 
 /**
  * @brief Compatibility wrapper for constructing the second cross axis.
  * @see directional::fields::orthogonal_complement
  */
-inline Eigen::MatrixXd
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+Eigen::MatrixXd
 orthogonal_complement(const TriMesh &mesh,
                       const Eigen::MatrixXd &primaryDirections,
                       const bool normalizeDirections) {
   return fields::orthogonal_complement(mesh, primaryDirections,
                                        normalizeDirections);
 }
+#else
+Eigen::MatrixXd
+orthogonal_complement(const TriMesh &mesh,
+                      const Eigen::MatrixXd &primaryDirections,
+                      const bool normalizeDirections);
+#endif
 
 
-inline void hash_combine_u64(std::uint64_t &seed, const std::uint64_t value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_combine_u64(std::uint64_t &seed, const std::uint64_t value) {
   seed ^= value + 0x9e3779b97f4a7c15ULL + (seed << 6) + (seed >> 2);
 }
+#else
+void hash_combine_u64(std::uint64_t &seed, const std::uint64_t value);
+#endif
 
-inline void hash_combine_i64(std::uint64_t &seed, const std::int64_t value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_combine_i64(std::uint64_t &seed, const std::int64_t value) {
   hash_combine_u64(seed, static_cast<std::uint64_t>(value));
 }
+#else
+void hash_combine_i64(std::uint64_t &seed, const std::int64_t value);
+#endif
 
-inline void hash_combine_double(std::uint64_t &seed, const double value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_combine_double(std::uint64_t &seed, const double value) {
   const double sanitized = std::isfinite(value) ? value : 0.0;
   hash_combine_i64(seed, static_cast<std::int64_t>(std::llround(sanitized * 1.0e9)));
 }
+#else
+void hash_combine_double(std::uint64_t &seed, const double value);
+#endif
 
-inline void hash_combine_string(std::uint64_t &seed, const std::string &value) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_combine_string(std::uint64_t &seed, const std::string &value) {
   for (const char ch : value) {
     hash_combine_u64(seed, static_cast<unsigned char>(ch));
   }
 }
+#else
+void hash_combine_string(std::uint64_t &seed, const std::string &value);
+#endif
 
-inline std::uint64_t structural_hash_seed(const std::string &type) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t structural_hash_seed(const std::string &type) {
   std::uint64_t seed = 1469598103934665603ULL;
   hash_combine_string(seed, type);
   return seed;
 }
+#else
+std::uint64_t structural_hash_seed(const std::string &type);
+#endif
 
-inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXd &matrix) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXd &matrix) {
   hash_combine_i64(seed, matrix.rows());
   hash_combine_i64(seed, matrix.cols());
   for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
@@ -693,8 +795,12 @@ inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXd &matrix) {
     }
   }
 }
+#else
+void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXd &matrix);
+#endif
 
-inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXi &matrix) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXi &matrix) {
   hash_combine_i64(seed, matrix.rows());
   hash_combine_i64(seed, matrix.cols());
   for (Eigen::Index row = 0; row < matrix.rows(); ++row) {
@@ -703,29 +809,45 @@ inline void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXi &matrix) {
     }
   }
 }
+#else
+void hash_matrix(std::uint64_t &seed, const Eigen::MatrixXi &matrix);
+#endif
 
-inline void hash_vector(std::uint64_t &seed, const Eigen::VectorXd &values) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_vector(std::uint64_t &seed, const Eigen::VectorXd &values) {
   hash_combine_i64(seed, values.size());
   for (Eigen::Index index = 0; index < values.size(); ++index) {
     hash_combine_double(seed, values(index));
   }
 }
+#else
+void hash_vector(std::uint64_t &seed, const Eigen::VectorXd &values);
+#endif
 
-inline void hash_vector(std::uint64_t &seed, const std::vector<int> &values) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_vector(std::uint64_t &seed, const std::vector<int> &values) {
   hash_combine_u64(seed, values.size());
   for (const int value : values) {
     hash_combine_i64(seed, value);
   }
 }
+#else
+void hash_vector(std::uint64_t &seed, const std::vector<int> &values);
+#endif
 
 
-inline void hash_row_vector(std::uint64_t &seed, const Eigen::RowVector3d &v) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_row_vector(std::uint64_t &seed, const Eigen::RowVector3d &v) {
   hash_combine_double(seed, v.x());
   hash_combine_double(seed, v.y());
   hash_combine_double(seed, v.z());
 }
+#else
+void hash_row_vector(std::uint64_t &seed, const Eigen::RowVector3d &v);
+#endif
 
-inline void hash_surface_point(std::uint64_t &seed,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_surface_point(std::uint64_t &seed,
                                const geometry::SurfacePoint &point) {
   hash_combine_i64(seed, point.face);
   hash_combine_i64(seed, point.component);
@@ -738,8 +860,13 @@ inline void hash_surface_point(std::uint64_t &seed,
   hash_combine_double(seed, point.position.z());
   hash_combine_double(seed, point.squaredDistance);
 }
+#else
+void hash_surface_point(std::uint64_t &seed,
+                               const geometry::SurfacePoint &point);
+#endif
 
-inline std::uint64_t hash_feature_map(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_feature_map(
     const geometry::AdaptiveFeatureMap &map) {
   std::uint64_t seed = structural_hash_seed("feature");
   for (const auto &entry : map.edgeIndex) {
@@ -785,8 +912,13 @@ inline std::uint64_t hash_feature_map(
   hash_combine_u64(seed, map.indexedLookupCount);
   return seed;
 }
+#else
+std::uint64_t hash_feature_map(
+    const geometry::AdaptiveFeatureMap &map);
+#endif
 
-inline void hash_trace_segment(std::uint64_t &seed,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_trace_segment(std::uint64_t &seed,
                                const geometry::SurfaceTraceSegment &segment) {
   hash_combine_i64(seed, segment.face);
   hash_row_vector(seed, segment.startBarycentric);
@@ -804,14 +936,24 @@ inline void hash_trace_segment(std::uint64_t &seed,
   hash_combine_double(seed, segment.railT0);
   hash_combine_double(seed, segment.railT1);
 }
+#else
+void hash_trace_segment(std::uint64_t &seed,
+                               const geometry::SurfaceTraceSegment &segment);
+#endif
 
-inline void hash_trace_point(std::uint64_t &seed,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_trace_point(std::uint64_t &seed,
                              const geometry::SurfaceTracePoint &point) {
   hash_combine_i64(seed, point.face);
   hash_row_vector(seed, point.barycentric);
 }
+#else
+void hash_trace_point(std::uint64_t &seed,
+                             const geometry::SurfaceTracePoint &point);
+#endif
 
-inline std::uint64_t hash_trace_network(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_trace_network(
     const geometry::SurfaceCellNetwork &network) {
   std::uint64_t seed = structural_hash_seed("tracing");
   hash_vector(seed, network.reliefRootVertices);
@@ -895,8 +1037,13 @@ inline std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.stats.rejectedHardRailCrossing);
   return seed;
 }
+#else
+std::uint64_t hash_trace_network(
+    const geometry::SurfaceCellNetwork &network);
+#endif
 
-inline std::uint64_t hash_sparse_network(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_sparse_network(
     const geometry::FlowRepSparseNetwork &network) {
   std::uint64_t seed = structural_hash_seed("strands");
   hash_combine_i64(seed, network.selectionSucceeded ? 1 : 0);
@@ -932,8 +1079,13 @@ inline std::uint64_t hash_sparse_network(
   hash_combine_double(seed, network.sparseCoverageMax);
   return seed;
 }
+#else
+std::uint64_t hash_sparse_network(
+    const geometry::FlowRepSparseNetwork &network);
+#endif
 
-inline std::uint64_t hash_flow_rep_selection_input(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_flow_rep_selection_input(
     const geometry::FlowRepSelectionInput &input) {
   std::uint64_t seed = structural_hash_seed("flow-rep-selection-input");
   hash_combine_u64(seed, input.arcs.size());
@@ -1018,8 +1170,13 @@ inline std::uint64_t hash_flow_rep_selection_input(
   }
   return seed;
 }
+#else
+std::uint64_t hash_flow_rep_selection_input(
+    const geometry::FlowRepSelectionInput &input);
+#endif
 
-inline std::uint64_t hash_arrangement_arcs(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_arrangement_arcs(
     const std::vector<geometry::SurfaceArrangementArc> &arcs) {
   std::uint64_t seed = structural_hash_seed("embedded-network");
   hash_combine_u64(seed, arcs.size());
@@ -1046,8 +1203,13 @@ inline std::uint64_t hash_arrangement_arcs(
   }
   return seed;
 }
+#else
+std::uint64_t hash_arrangement_arcs(
+    const std::vector<geometry::SurfaceArrangementArc> &arcs);
+#endif
 
-inline std::uint64_t hash_surface_complex(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_surface_complex(
     const geometry::SurfaceCellComplex &complex) {
   std::uint64_t seed = structural_hash_seed("arrangement");
   for (const geometry::SurfaceArrangementNode &node : complex.nodes) {
@@ -1133,8 +1295,13 @@ inline std::uint64_t hash_surface_complex(
   hash_combine_double(seed, complex.diagnostics.memoryRatioEstimate);
   return seed;
 }
+#else
+std::uint64_t hash_surface_complex(
+    const geometry::SurfaceCellComplex &complex);
+#endif
 
-inline std::uint64_t hash_completion_mesh(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_completion_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const std::vector<geometry::SurfacePoint> &provenance) {
   std::uint64_t seed = structural_hash_seed("completion");
@@ -1145,8 +1312,14 @@ inline std::uint64_t hash_completion_mesh(
   }
   return seed;
 }
+#else
+std::uint64_t hash_completion_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const std::vector<geometry::SurfacePoint> &provenance);
+#endif
 
-inline std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
   std::uint64_t seed = structural_hash_seed("completion");
   hash_vector(seed, mesh.vertices);
   hash_matrix(seed, mesh.vertexPositions);
@@ -1162,14 +1335,22 @@ inline std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
   hash_combine_i64(seed, mesh.usesCenterFan ? 1 : 0);
   return seed;
 }
-inline void hash_vector(std::uint64_t &seed, const Eigen::VectorXi &values) {
+#else
+std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void hash_vector(std::uint64_t &seed, const Eigen::VectorXi &values) {
   hash_combine_i64(seed, values.size());
   for (Eigen::Index index = 0; index < values.size(); ++index) {
     hash_combine_i64(seed, values(index));
   }
 }
+#else
+void hash_vector(std::uint64_t &seed, const Eigen::VectorXi &values);
+#endif
 
-inline std::uint64_t hash_relief_topology(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_relief_topology(
     const geometry::ReliefTopologyResult &topology) {
   std::uint64_t seed = structural_hash_seed("relief");
   hash_vector(seed, topology.relief);
@@ -1198,14 +1379,23 @@ inline std::uint64_t hash_relief_topology(
   }
   return seed;
 }
+#else
+std::uint64_t hash_relief_topology(
+    const geometry::ReliefTopologyResult &topology);
+#endif
 
-inline std::string structural_hash_string(const std::uint64_t hash) {
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string structural_hash_string(const std::uint64_t hash) {
   std::ostringstream out;
   out << std::hex << std::setw(16) << std::setfill('0') << hash;
   return out.str();
 }
+#else
+std::string structural_hash_string(const std::uint64_t hash);
+#endif
 
-inline SurfaceCellObjectIdentity make_surface_cell_identity(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SurfaceCellObjectIdentity make_surface_cell_identity(
     const std::string &type, const std::uint64_t hash,
     const std::size_t elementCount) {
   SurfaceCellObjectIdentity identity;
@@ -1214,15 +1404,26 @@ inline SurfaceCellObjectIdentity make_surface_cell_identity(
   identity.elementCount = elementCount;
   return identity;
 }
+#else
+SurfaceCellObjectIdentity make_surface_cell_identity(
+    const std::string &type, const std::uint64_t hash,
+    const std::size_t elementCount);
+#endif
 
-inline std::string surface_cell_identity_label(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::string surface_cell_identity_label(
     const SurfaceCellObjectIdentity &identity) {
   return identity.type + ":hash=" +
          structural_hash_string(identity.structuralHash) + ";count=" +
          std::to_string(identity.elementCount);
 }
+#else
+std::string surface_cell_identity_label(
+    const SurfaceCellObjectIdentity &identity);
+#endif
 
-inline void normalize_surface_cell_cross_field_directions(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void normalize_surface_cell_cross_field_directions(
     fields::CrossFieldResult &crossField) {
   if (crossField.primaryDirections.rows() != crossField.rawField.rows() &&
       crossField.rawField.cols() >= 6) {
@@ -1232,8 +1433,13 @@ inline void normalize_surface_cell_cross_field_directions(
         crossField.rawField.block(0, 3, crossField.rawField.rows(), 3);
   }
 }
+#else
+void normalize_surface_cell_cross_field_directions(
+    fields::CrossFieldResult &crossField);
+#endif
 
-inline fields::CrossFieldResult make_surface_cell_cross_field_context(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+fields::CrossFieldResult make_surface_cell_cross_field_context(
     const Eigen::MatrixXd &rawCrossField) {
   fields::CrossFieldResult crossField;
   crossField.degree = fields::kCrossFieldDegree;
@@ -1241,8 +1447,13 @@ inline fields::CrossFieldResult make_surface_cell_cross_field_context(
   normalize_surface_cell_cross_field_directions(crossField);
   return crossField;
 }
+#else
+fields::CrossFieldResult make_surface_cell_cross_field_context(
+    const Eigen::MatrixXd &rawCrossField);
+#endif
 
-inline fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
     const TriMesh &meshWhole, const Eigen::MatrixXd &rawCrossField) {
   if (rawCrossField.rows() != meshWhole.F.rows() ||
       rawCrossField.cols() != 3 * fields::kCrossFieldDegree) {
@@ -1351,14 +1562,23 @@ inline fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
   crossField.uncoveredFacePolicyApplied = true;
   return crossField;
 }
-inline std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
+#else
+fields::CrossFieldResult finalize_surface_cell_raw_cross_field(
+    const TriMesh &meshWhole, const Eigen::MatrixXd &rawCrossField);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
   const int lo = std::min(a, b);
   const int hi = std::max(a, b);
   return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(lo)) << 32u) |
          static_cast<std::uint32_t>(hi);
 }
+#else
+std::uint64_t surface_cell_source_edge_key(const int a, const int b);
+#endif
 
-inline bool cross_field_transitions_match_source_edges(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+bool cross_field_transitions_match_source_edges(
     const TriMesh &meshWhole, const fields::CrossFieldResult &crossField) {
   if (crossField.matching.size() != meshWhole.EF.rows() ||
       crossField.effort.size() != meshWhole.EF.rows()) {
@@ -1397,8 +1617,13 @@ inline bool cross_field_transitions_match_source_edges(
   }
   return true;
 }
+#else
+bool cross_field_transitions_match_source_edges(
+    const TriMesh &meshWhole, const fields::CrossFieldResult &crossField);
+#endif
 
-inline SurfaceCellFailureCode validate_surface_cell_cross_field(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SurfaceCellFailureCode validate_surface_cell_cross_field(
     const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
     const SurfaceCellOptions &options) {
   if (crossField.degree != fields::kCrossFieldDegree ||
@@ -1427,8 +1652,14 @@ inline SurfaceCellFailureCode validate_surface_cell_cross_field(
   }
   return SurfaceCellFailureCode::None;
 }
+#else
+SurfaceCellFailureCode validate_surface_cell_cross_field(
+    const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
+    const SurfaceCellOptions &options);
+#endif
 
-inline int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
                                          const int face, const int a,
                                          const int b) {
   if (face < 0 || face >= faces.rows()) {
@@ -1444,8 +1675,14 @@ inline int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
   }
   return -1;
 }
+#else
+int surface_cell_local_edge_index(const Eigen::MatrixXi &faces,
+                                         const int face, const int a,
+                                         const int b);
+#endif
 
-inline geometry::SurfaceCellRailSample make_surface_cell_rail_sample(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+geometry::SurfaceCellRailSample make_surface_cell_rail_sample(
     const TriMesh &meshWhole, const int face, const int a, const int b,
     const double t, const double railParameter) {
   geometry::SurfaceCellRailSample sample;
@@ -1467,12 +1704,22 @@ inline geometry::SurfaceCellRailSample make_surface_cell_rail_sample(
   }
   return sample;
 }
+#else
+geometry::SurfaceCellRailSample make_surface_cell_rail_sample(
+    const TriMesh &meshWhole, const int face, const int a, const int b,
+    const double t, const double railParameter);
+#endif
 
-inline bool surface_cell_feature_edge_is_rail(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+bool surface_cell_feature_edge_is_rail(
     const geometry::AdaptiveFeatureEdge &edge) {
   return edge.edgeClass == geometry::AdaptiveFeatureClass::Boundary ||
          edge.edgeClass == geometry::AdaptiveFeatureClass::Hard;
 }
+#else
+bool surface_cell_feature_edge_is_rail(
+    const geometry::AdaptiveFeatureEdge &edge);
+#endif
 
 struct SurfaceCellRailBuildResult {
   bool success = true;
@@ -1484,7 +1731,8 @@ struct SurfaceCellRailBuildResult {
       geometry::surface_cell_tracing_detail::RailBuildStatus::Valid;
 };
 
-inline SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap) {
   SurfaceCellRailBuildResult result;
   std::set<int> coveredEdges;
@@ -1746,8 +1994,13 @@ inline SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
   }
   return result;
 }
+#else
+SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
+    const TriMesh &meshWhole, const geometry::AdaptiveFeatureMap &featureMap);
+#endif
 
-inline std::set<std::uint64_t> relief_barrier_edges_from_topology(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::set<std::uint64_t> relief_barrier_edges_from_topology(
     const geometry::ReliefTopologyResult &topology) {
   std::set<std::uint64_t> barriers;
   for (const geometry::ReliefBranch &branch : topology.branches) {
@@ -1760,8 +2013,13 @@ inline std::set<std::uint64_t> relief_barrier_edges_from_topology(
   }
   return barriers;
 }
+#else
+std::set<std::uint64_t> relief_barrier_edges_from_topology(
+    const geometry::ReliefTopologyResult &topology);
+#endif
 
-inline std::uint64_t hash_relief_operational_inputs(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_relief_operational_inputs(
     const geometry::ReliefRootSelectionResult &roots,
     const std::set<std::uint64_t> &barriers) {
   std::uint64_t seed = structural_hash_seed("relief-consumption");
@@ -1774,7 +2032,13 @@ inline std::uint64_t hash_relief_operational_inputs(
   }
   return seed;
 }
-inline std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
+#else
+std::uint64_t hash_relief_operational_inputs(
+    const geometry::ReliefRootSelectionResult &roots,
+    const std::set<std::uint64_t> &barriers);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
     const std::vector<geometry::SurfaceCellRail> &rails) {
   std::set<std::uint64_t> keys;
   for (const geometry::SurfaceCellRail &rail : rails) {
@@ -1795,8 +2059,13 @@ inline std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
   }
   return keys;
 }
+#else
+std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
+    const std::vector<geometry::SurfaceCellRail> &rails);
+#endif
 
-inline void fill_surface_cell_rail_constraints(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void fill_surface_cell_rail_constraints(
     const std::vector<geometry::SurfaceCellRail> &rails,
     const Eigen::MatrixXd &outputVertices,
     const std::vector<geometry::SurfacePoint> &outputProvenance,
@@ -1804,11 +2073,19 @@ inline void fill_surface_cell_rail_constraints(
   geometry::fill_surface_optimization_rail_constraints(
       rails, outputVertices, outputProvenance, constraints);
 }
+#else
+void fill_surface_cell_rail_constraints(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    const Eigen::MatrixXd &outputVertices,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
+    geometry::SurfaceOptimizationConstraints &constraints);
+#endif
 
 // Compatibility overload for callers that only need authoritative rail
 // topology. Vertex-to-rail assignments require output geometry and provenance
 // and are intentionally left empty here.
-inline void fill_surface_cell_rail_constraints(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void fill_surface_cell_rail_constraints(
     const std::vector<geometry::SurfaceCellRail> &rails,
     geometry::SurfaceOptimizationConstraints &constraints) {
   constraints.featureCurveIntervals.clear();
@@ -1854,8 +2131,14 @@ inline void fill_surface_cell_rail_constraints(
     }
   }
 }
+#else
+void fill_surface_cell_rail_constraints(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    geometry::SurfaceOptimizationConstraints &constraints);
+#endif
 
-inline std::uint64_t hash_surface_cell_rails(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_surface_cell_rails(
     const std::vector<geometry::SurfaceCellRail> &rails) {
   std::uint64_t seed = structural_hash_seed("rails");
   hash_combine_u64(seed, rails.size());
@@ -1879,7 +2162,12 @@ inline std::uint64_t hash_surface_cell_rails(
   }
   return seed;
 }
-inline void record_surface_cell_context_product(
+#else
+std::uint64_t hash_surface_cell_rails(
+    const std::vector<geometry::SurfaceCellRail> &rails);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void record_surface_cell_context_product(
     SurfaceCellPipelineContext &context, const std::string &name,
     const SurfaceCellObjectIdentity &identity, const bool available = true) {
   SurfaceCellContextProductDebug product;
@@ -1890,7 +2178,13 @@ inline void record_surface_cell_context_product(
   product.available = available;
   context.debugProducts.push_back(product);
 }
-inline void record_face_degree_histogram(RemeshResult &result) {
+#else
+void record_surface_cell_context_product(
+    SurfaceCellPipelineContext &context, const std::string &name,
+    const SurfaceCellObjectIdentity &identity, const bool available = true);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void record_face_degree_histogram(RemeshResult &result) {
   result.diagnostics.faceDegreeHistogram.clear();
   for (Eigen::Index face = 0; face < result.degrees.size(); ++face) {
     const int degree = result.degrees(face);
@@ -1904,9 +2198,13 @@ inline void record_face_degree_histogram(RemeshResult &result) {
     ++result.diagnostics.faceDegreeHistogram[index];
   }
 }
+#else
+void record_face_degree_histogram(RemeshResult &result);
+#endif
 
 
-inline std::size_t surface_cell_validation_failure_count(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::size_t surface_cell_validation_failure_count(
     const geometry::SurfaceFinalValidationReport &validation,
     const bool enforceOptimizerTimeGate = false) {
   if (validation.accepted) {
@@ -1988,8 +2286,14 @@ inline std::size_t surface_cell_validation_failure_count(
   }
   return failures;
 }
+#else
+std::size_t surface_cell_validation_failure_count(
+    const geometry::SurfaceFinalValidationReport &validation,
+    const bool enforceOptimizerTimeGate = false);
+#endif
 
-inline std::uint64_t hash_surface_cell_validation(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::uint64_t hash_surface_cell_validation(
     const geometry::SurfaceFinalValidationReport &validation,
     const bool enforceOptimizerTimeGate = false) {
   std::uint64_t seed = structural_hash_seed("validation");
@@ -2025,8 +2329,14 @@ inline std::uint64_t hash_surface_cell_validation(
   hash_combine_double(seed, validation.scaledJacobianMin);
   return seed;
 }
+#else
+std::uint64_t hash_surface_cell_validation(
+    const geometry::SurfaceFinalValidationReport &validation,
+    const bool enforceOptimizerTimeGate = false);
+#endif
 
-inline void clear_unavailable_surface_cell_counts(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void clear_unavailable_surface_cell_counts(
     directional::RemeshDiagnostics &diagnostics) {
   if (!diagnostics.surfaceCellValidationFailureCountAvailable) {
     diagnostics.surfaceCellValidationFailures = 0U;
@@ -2059,8 +2369,13 @@ inline void clear_unavailable_surface_cell_counts(
     diagnostics.surfaceCellOptimizationIterationCount = 0U;
   }
 }
+#else
+void clear_unavailable_surface_cell_counts(
+    directional::RemeshDiagnostics &diagnostics);
+#endif
 
-inline void copy_surface_cell_stage_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void copy_surface_cell_stage_diagnostics(
     const directional::RemeshDiagnostics &source,
     directional::RemeshDiagnostics &target) {
   target.surfaceCellFeatureSeconds = source.surfaceCellFeatureSeconds;
@@ -2136,8 +2451,14 @@ inline void copy_surface_cell_stage_diagnostics(
   target.surfaceCellStageLineage = source.surfaceCellStageLineage;
   clear_unavailable_surface_cell_counts(target);
 }
+#else
+void copy_surface_cell_stage_diagnostics(
+    const directional::RemeshDiagnostics &source,
+    directional::RemeshDiagnostics &target);
+#endif
 
-inline void orient_quads_to_source_normals(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void orient_quads_to_source_normals(
     const Eigen::MatrixXd &outputVertices,
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
@@ -2201,7 +2522,16 @@ inline void orient_quads_to_source_normals(
     }
   }
 }
-inline std::vector<geometry::SurfaceArrangementArc>
+#else
+void orient_quads_to_source_normals(
+    const Eigen::MatrixXd &outputVertices,
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
+    Eigen::MatrixXi &quads);
+#endif
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
     const geometry::FlowRepSparseNetwork &sparseNetwork) {
@@ -2242,6 +2572,12 @@ surface_arrangement_arcs_from_flow_rep(
   }
   return arrangementArcs;
 }
+#else
+std::vector<geometry::SurfaceArrangementArc>
+surface_arrangement_arcs_from_flow_rep(
+    const std::vector<geometry::FlowRepArc> &arcs,
+    const geometry::FlowRepSparseNetwork &sparseNetwork);
+#endif
 
 struct FieldAlignedSourceQuadRecoveryResult {
   bool success = false;
@@ -2250,7 +2586,8 @@ struct FieldAlignedSourceQuadRecoveryResult {
   std::string failure;
 };
 
-inline std::array<int, 4> ordered_source_quad_boundary(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+std::array<int, 4> ordered_source_quad_boundary(
     const TriMesh &mesh, const int firstFace, const int secondFace) {
   std::map<std::uint64_t, int> counts;
   std::map<std::uint64_t, std::pair<int, int>> endpoints;
@@ -2309,8 +2646,13 @@ inline std::array<int, 4> ordered_source_quad_boundary(
   }
   return order;
 }
+#else
+std::array<int, 4> ordered_source_quad_boundary(
+    const TriMesh &mesh, const int firstFace, const int secondFace);
+#endif
 
-inline int source_quad_edge_family(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+int source_quad_edge_family(
     const TriMesh &mesh, const fields::CrossFieldResult &crossField,
     const int firstFace, const int secondFace, const int a, const int b,
     double &alignment) {
@@ -2354,8 +2696,15 @@ inline int source_quad_edge_family(
   alignment = std::max(primaryAlignment, secondaryAlignment);
   return primaryAlignment >= secondaryAlignment ? 0 : 1;
 }
+#else
+int source_quad_edge_family(
+    const TriMesh &mesh, const fields::CrossFieldResult &crossField,
+    const int firstFace, const int secondFace, const int a, const int b,
+    double &alignment);
+#endif
 
-inline FieldAlignedSourceQuadRecoveryResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+FieldAlignedSourceQuadRecoveryResult
 recover_unique_field_aligned_source_quads(
     const TriMesh &mesh, const fields::CrossFieldResult &crossField,
     const std::vector<int> *sourceFaceComponents = nullptr,
@@ -2953,6 +3302,14 @@ recover_unique_field_aligned_source_quads(
   }
   return result;
 }
+#else
+FieldAlignedSourceQuadRecoveryResult
+recover_unique_field_aligned_source_quads(
+    const TriMesh &mesh, const fields::CrossFieldResult &crossField,
+    const std::vector<int> *sourceFaceComponents = nullptr,
+    const std::vector<int> *sourceFaceSheets = nullptr,
+    const std::set<std::uint64_t> *excludedDiagonalEdges = nullptr);
+#endif
 
 struct SourceGridRecoveryTargetSizeResult {
   Eigen::VectorXd targetSize;
@@ -2962,7 +3319,8 @@ struct SourceGridRecoveryTargetSizeResult {
   std::string failure;
 };
 
-inline SourceGridRecoveryTargetSizeResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+SourceGridRecoveryTargetSizeResult
 make_source_grid_recovery_target_size(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
@@ -3086,6 +3444,17 @@ make_source_grid_recovery_target_size(
   }
   return result;
 }
+#else
+SourceGridRecoveryTargetSizeResult
+make_source_grid_recovery_target_size(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const Eigen::MatrixXd &outputVertices,
+    const Eigen::MatrixXi &outputQuads,
+    const std::vector<geometry::SurfacePoint> &outputProvenance,
+    const double requestedTargetSize,
+    const double maxRelaxationRatio);
+#endif
 
 inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
                                             const RemeshOptions &options);
@@ -3097,7 +3466,8 @@ inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
  * @param options Pipeline options.
  * @return Remeshing result with generated mesh and cut-mesh diagnostics.
  */
-inline RemeshResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult
 remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                  const Eigen::MatrixXd &rawCrossField,
                                  const RemeshOptions &options = {},
@@ -4403,15 +4773,29 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   report_progress(options.progress, 100, 100, "Finalizing remesh result");
   return result;
 }
+#else
+RemeshResult
+remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
+                                 const Eigen::MatrixXd &rawCrossField,
+                                 const RemeshOptions &options = {},
+                                 const fields::CrossFieldResult *authoritativeCrossField = nullptr);
+#endif
 
-inline RemeshResult remesh_surface_cells_from_cross_field_impl(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult remesh_surface_cells_from_cross_field_impl(
     const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
     const RemeshOptions &options) {
   return remesh_from_raw_cross_field_impl(meshWhole, crossField.rawField,
                                           options, &crossField);
 }
+#else
+RemeshResult remesh_surface_cells_from_cross_field_impl(
+    const TriMesh &meshWhole, const fields::CrossFieldResult &crossField,
+    const RemeshOptions &options);
+#endif
 
-inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
                                             const RemeshOptions &options) {
   if (options.absoluteTargetLength >= 0.0) {
     return options.absoluteTargetLength;
@@ -4423,8 +4807,13 @@ inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
              .norm() *
          options.lengthRatio;
 }
+#else
+double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
+                                            const RemeshOptions &options);
+#endif
 
-inline fields::CrossFieldResult remap_surface_cell_cross_field_component(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+fields::CrossFieldResult remap_surface_cell_cross_field_component(
     const TriMesh &sourceMesh, const geometry::FaceComponent &component,
     const TriMesh &componentMesh,
     const fields::CrossFieldResult &sourceCrossField) {
@@ -4564,8 +4953,15 @@ inline fields::CrossFieldResult remap_surface_cell_cross_field_component(
   normalize_surface_cell_cross_field_directions(local);
   return local;
 }
+#else
+fields::CrossFieldResult remap_surface_cell_cross_field_component(
+    const TriMesh &sourceMesh, const geometry::FaceComponent &component,
+    const TriMesh &componentMesh,
+    const fields::CrossFieldResult &sourceCrossField);
+#endif
 
-inline geometry::SurfacePoint remap_component_surface_point(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
     const std::size_t componentIndex, const int sheetOffset) {
   if (point.face >= 0 &&
@@ -4581,8 +4977,14 @@ inline geometry::SurfacePoint remap_component_surface_point(
   }
   return point;
 }
+#else
+geometry::SurfacePoint remap_component_surface_point(
+    geometry::SurfacePoint point, const geometry::FaceComponent &component,
+    const std::size_t componentIndex, const int sheetOffset);
+#endif
 
-inline void append_polygon_faces(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void append_polygon_faces(
     Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,
     const Eigen::MatrixXi &sourceFaces, const Eigen::VectorXi &sourceDegrees,
     const int vertexOffset) {
@@ -4622,8 +5024,15 @@ inline void append_polygon_faces(
     }
   }
 }
+#else
+void append_polygon_faces(
+    Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,
+    const Eigen::MatrixXi &sourceFaces, const Eigen::VectorXi &sourceDegrees,
+    const int vertexOffset);
+#endif
 
-inline void accumulate_surface_optimization_energy(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void accumulate_surface_optimization_energy(
     geometry::SurfaceOptimizationEnergy &target,
     const geometry::SurfaceOptimizationEnergy &source) {
   target.surface += source.surface;
@@ -4635,8 +5044,14 @@ inline void accumulate_surface_optimization_energy(
   target.feature += source.feature;
   target.total += source.total;
 }
+#else
+void accumulate_surface_optimization_energy(
+    geometry::SurfaceOptimizationEnergy &target,
+    const geometry::SurfaceOptimizationEnergy &source);
+#endif
 
-inline void accumulate_surface_optimization_result(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void accumulate_surface_optimization_result(
     geometry::SurfaceOptimizationResult &target,
     const geometry::SurfaceOptimizationResult &source,
     const bool firstComponent) {
@@ -4693,8 +5108,15 @@ inline void accumulate_surface_optimization_result(
     target.iterations.push_back(std::move(iteration));
   }
 }
+#else
+void accumulate_surface_optimization_result(
+    geometry::SurfaceOptimizationResult &target,
+    const geometry::SurfaceOptimizationResult &source,
+    const bool firstComponent);
+#endif
 
-inline void accumulate_surface_validation_report(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void accumulate_surface_validation_report(
     geometry::SurfaceFinalValidationReport &target,
     const geometry::SurfaceFinalValidationReport &source,
     const bool firstComponent) {
@@ -4801,8 +5223,15 @@ inline void accumulate_surface_validation_report(
   target.duplicateFaceCount += source.duplicateFaceCount;
   target.bowTieVertexCount += source.bowTieVertexCount;
 }
+#else
+void accumulate_surface_validation_report(
+    geometry::SurfaceFinalValidationReport &target,
+    const geometry::SurfaceFinalValidationReport &source,
+    const bool firstComponent);
+#endif
 
-inline void append_matrix_rows(Eigen::MatrixXd &target,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void append_matrix_rows(Eigen::MatrixXd &target,
                                const Eigen::MatrixXd &source) {
   if (source.rows() == 0) {
     return;
@@ -4815,8 +5244,13 @@ inline void append_matrix_rows(Eigen::MatrixXd &target,
   target.conservativeResize(oldRows + source.rows(), source.cols());
   target.block(oldRows, 0, source.rows(), source.cols()) = source;
 }
+#else
+void append_matrix_rows(Eigen::MatrixXd &target,
+                               const Eigen::MatrixXd &source);
+#endif
 
-inline void append_matrix_rows(Eigen::MatrixXi &target,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void append_matrix_rows(Eigen::MatrixXi &target,
                                const Eigen::MatrixXi &source,
                                const int indexOffset = 0) {
   if (source.rows() == 0) {
@@ -4834,8 +5268,14 @@ inline void append_matrix_rows(Eigen::MatrixXi &target,
   target.conservativeResize(oldRows + shifted.rows(), shifted.cols());
   target.block(oldRows, 0, shifted.rows(), shifted.cols()) = shifted;
 }
+#else
+void append_matrix_rows(Eigen::MatrixXi &target,
+                               const Eigen::MatrixXi &source,
+                               const int indexOffset = 0);
+#endif
 
-inline void append_vector(Eigen::VectorXi &target,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void append_vector(Eigen::VectorXi &target,
                           const Eigen::VectorXi &source) {
   if (source.size() == 0) {
     return;
@@ -4848,8 +5288,13 @@ inline void append_vector(Eigen::VectorXi &target,
   target.conservativeResize(oldRows + source.size());
   target.segment(oldRows, source.size()) = source;
 }
+#else
+void append_vector(Eigen::VectorXi &target,
+                          const Eigen::VectorXi &source);
+#endif
 
-inline void append_vector(Eigen::VectorXd &target,
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void append_vector(Eigen::VectorXd &target,
                           const Eigen::VectorXd &source) {
   if (source.size() == 0) {
     return;
@@ -4862,8 +5307,13 @@ inline void append_vector(Eigen::VectorXd &target,
   target.conservativeResize(oldRows + source.size());
   target.segment(oldRows, source.size()) = source;
 }
+#else
+void append_vector(Eigen::VectorXd &target,
+                          const Eigen::VectorXd &source);
+#endif
 
-inline void accumulate_component_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void accumulate_component_diagnostics(
     directional::RemeshDiagnostics &target,
     const directional::RemeshDiagnostics &source,
     const std::size_t componentIndex,
@@ -5123,8 +5573,16 @@ inline void accumulate_component_diagnostics(
 
   clear_unavailable_surface_cell_counts(target);
 }
+#else
+void accumulate_component_diagnostics(
+    directional::RemeshDiagnostics &target,
+    const directional::RemeshDiagnostics &source,
+    const std::size_t componentIndex,
+    const bool firstComponent);
+#endif
 
-inline void accumulate_component_diagnostics(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+void accumulate_component_diagnostics(
     directional::RemeshDiagnostics &target,
     const directional::RemeshDiagnostics &source) {
   const bool firstComponent =
@@ -5136,8 +5594,14 @@ inline void accumulate_component_diagnostics(
   accumulate_component_diagnostics(
       target, source, std::numeric_limits<std::size_t>::max(), firstComponent);
 }
+#else
+void accumulate_component_diagnostics(
+    directional::RemeshDiagnostics &target,
+    const directional::RemeshDiagnostics &source);
+#endif
 
-inline RemeshResult remesh_surface_cell_components_from_cross_field(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult remesh_surface_cell_components_from_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &authoritativeCrossField,
     const RemeshOptions &options) {
@@ -5777,8 +6241,15 @@ inline RemeshResult remesh_surface_cell_components_from_cross_field(
   set_overall_pipeline_time(merged, pipelineStart);
   return merged;
 }
+#else
+RemeshResult remesh_surface_cell_components_from_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options);
+#endif
 
-inline RemeshResult remesh_components_from_raw_cross_field(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult remesh_components_from_raw_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options) {
   using Clock = RemeshPipelineClock;
@@ -5961,6 +6432,11 @@ inline RemeshResult remesh_components_from_raw_cross_field(
   set_overall_pipeline_time(merged, pipelineStart);
   return merged;
 }
+#else
+RemeshResult remesh_components_from_raw_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options);
+#endif
 
 /**
  * @brief Runs remeshing from raw mesh matrices and a raw 4-RoSy cross field.
@@ -5970,7 +6446,8 @@ inline RemeshResult remesh_components_from_raw_cross_field(
  * @param options Pipeline options.
  * @return Remeshing result.
  */
-inline RemeshResult remesh_from_raw_cross_field(
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult remesh_from_raw_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options = {}) {
   const auto pipelineStart = RemeshPipelineClock::now();
@@ -6003,8 +6480,14 @@ inline RemeshResult remesh_from_raw_cross_field(
   set_overall_pipeline_time(result, pipelineStart);
   return result;
 }
+#else
+RemeshResult remesh_from_raw_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &rawCrossField, const RemeshOptions &options = {});
+#endif
 
-inline RemeshResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult
 remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
                                const Eigen::MatrixXi &faces,
                                const fields::CrossFieldResult &crossField,
@@ -6056,6 +6539,13 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
   set_overall_pipeline_time(result, pipelineStart);
   return result;
 }
+#else
+RemeshResult
+remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
+                               const Eigen::MatrixXi &faces,
+                               const fields::CrossFieldResult &crossField,
+                               const RemeshOptions &options = {});
+#endif
 
 /**
  * @brief Runs remeshing from two direction families per face.
@@ -6066,7 +6556,8 @@ remesh_from_cross_field_result(const Eigen::MatrixXd &vertices,
  * @param options Pipeline options.
  * @return Remeshing result.
  */
-inline RemeshResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult
 remesh_from_cross_field(const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces,
                         const Eigen::MatrixXd &primaryDirections,
@@ -6084,6 +6575,14 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
   set_overall_pipeline_time(result, pipelineStart);
   return result;
 }
+#else
+RemeshResult
+remesh_from_cross_field(const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces,
+                        const Eigen::MatrixXd &primaryDirections,
+                        const Eigen::MatrixXd &secondaryDirections,
+                        const RemeshOptions &options = {});
+#endif
 
 /**
  * @brief Runs remeshing from one direction family per face.
@@ -6097,7 +6596,8 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
  * @param options Pipeline options.
  * @return Remeshing result.
  */
-inline RemeshResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult
 remesh_from_cross_field(const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces,
                         const Eigen::MatrixXd &primaryDirections,
@@ -6116,6 +6616,13 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
   set_overall_pipeline_time(result, pipelineStart);
   return result;
 }
+#else
+RemeshResult
+remesh_from_cross_field(const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces,
+                        const Eigen::MatrixXd &primaryDirections,
+                        const RemeshOptions &options = {});
+#endif
 
 /**
  * @brief Extracts a smooth 4-RoSy cross field and runs the full remeshing pipeline.
@@ -6124,7 +6631,8 @@ remesh_from_cross_field(const Eigen::MatrixXd &vertices,
  * @param options Remeshing and direction-normalization options.
  * @return Remeshing result including the automatically extracted raw cross field.
  */
-inline RemeshResult
+#if defined(DIRECTIONAL_REMESH_PIPELINE_IMPLEMENTATION)
+RemeshResult
 remesh_from_mesh(const Eigen::MatrixXd &vertices,
                  const Eigen::MatrixXi &faces,
                  const RemeshOptions &options = {}) {
@@ -6232,6 +6740,12 @@ remesh_from_mesh(const Eigen::MatrixXd &vertices,
   set_overall_pipeline_time(result, pipelineStart);
   return result;
 }
+#else
+RemeshResult
+remesh_from_mesh(const Eigen::MatrixXd &vertices,
+                 const Eigen::MatrixXi &faces,
+                 const RemeshOptions &options = {});
+#endif
 
 } // namespace directional::pipeline
 

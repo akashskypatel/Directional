@@ -1,5 +1,6 @@
 #include <directional/core/Library.h>
 #include <directional/fields/CrossField.h>
+#include <directional/pipeline/RemeshPipeline.h>
 
 #include <gtest/gtest.h>
 
@@ -16,4 +17,12 @@ TEST(CompiledLibrary, LinksCrossFieldImplementation) {
   EXPECT_NEAR(1.0, tangent.x(), 1.0e-12);
   EXPECT_NEAR(0.0, tangent.y(), 1.0e-12);
   EXPECT_NEAR(0.0, tangent.z(), 1.0e-12);
+}
+
+TEST(CompiledLibrary, LinksPipelineImplementation) {
+  EXPECT_EQ(directional::pipeline::RemeshBackend::SurfaceCells,
+            directional::pipeline::parse_remesh_backend("surface-cells"));
+  EXPECT_EQ("LegacyInteger",
+            directional::pipeline::remesh_backend_name(
+                directional::pipeline::RemeshBackend::LegacyInteger));
 }
