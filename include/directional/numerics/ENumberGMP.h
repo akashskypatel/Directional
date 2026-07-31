@@ -81,15 +81,7 @@ public:
   const mpz_class &raw() const { return value; }
 };
 
-#if defined(DIRECTIONAL_ENUMBER_GMP_IMPLEMENTATION)
-EInt gcd(EInt a, EInt b) {
-  mpz_class g;
-  mpz_gcd(g.get_mpz_t(), a.value.get_mpz_t(), b.value.get_mpz_t());
-  return EInt(g);
-}
-#else
 EInt gcd(EInt a, EInt b);
-#endif
 
 /** @brief Exact rational number implemented with GMP-backed numerator and denominator. */
 class ENumber {
@@ -142,16 +134,8 @@ public:
   const mpq_class &raw() const { return value; }
 };
 
-#if defined(DIRECTIONAL_ENUMBER_GMP_IMPLEMENTATION)
-EInt enumber_num(const ENumber &value) { return value.num(); }
-#else
 EInt enumber_num(const ENumber &value);
-#endif
 
-#if defined(DIRECTIONAL_ENUMBER_GMP_IMPLEMENTATION)
-EInt enumber_den(const ENumber &value) { return value.den(); }
-#else
 EInt enumber_den(const ENumber &value);
-#endif
 
 #endif // DIRECTIONAL_NUMERICS_ENUMBER_GMP_HEADER_FILE
