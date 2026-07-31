@@ -29,38 +29,6 @@ namespace directional
 // Output:
 //  rotationAngles: #adjSpaces rotation angles (difference from parallel transport) per inner space adjacency relation
 //  linfError:      l_infinity error of the computation. If this is not approximately 0, the prescribed indices are likely inconsistent (don't add up to the correct sum).
-#if defined(DIRECTIONAL_INDEX_PRESCRIPTION_IMPLEMENTATION)
-void index_prescription(const Eigen::VectorXi& cycleIndices,
-                               const int N,
-                               const double globalRotation,
-                               Eigen::SimplicialLDLT<Eigen::SparseMatrix<double> >& ldltSolver,
-                               directional::CartesianField& field,
-                               Eigen::VectorXd& rotationAngles,
-                               double &linfError)
-{
-    using namespace Eigen;
-    using namespace std;
-    
-    VectorXd cycleNewCurvature = cycleIndices.cast<double>()*(2.0*std::numbers::pi/(double)N);
-    
-    //Initialize solver if never before
-    if (!ldltSolver.rows())
-    {
-        SparseMatrix<double> AAt = field.tb->cycles*field.tb->cycles.transpose();
-        ldltSolver.compute(AAt);
-    }
-    
-    VectorXd innerRotationAngles = field.tb->cycles.transpose()*ldltSolver.solve(-field.tb->cycleCurvatures + cycleNewCurvature);
-    rotationAngles.conservativeResize(field.tb->adjSpaces.rows());
-    rotationAngles.setZero();
-    for (int i=0;i<field.tb->innerAdjacencies.rows();i++)
-        rotationAngles(field.tb->innerAdjacencies(i))=innerRotationAngles(i);
-    
-    linfError = (field.tb->cycles*innerRotationAngles - (-field.tb->cycleCurvatures + cycleNewCurvature)).template lpNorm<Infinity>();
-    
-    directional::rotation_to_raw(*(field.tb), rotationAngles,N,globalRotation,field);
-}
-#else
 void index_prescription(const Eigen::VectorXi& cycleIndices,
                                const int N,
                                const double globalRotation,
@@ -68,28 +36,14 @@ void index_prescription(const Eigen::VectorXi& cycleIndices,
                                directional::CartesianField& field,
                                Eigen::VectorXd& rotationAngles,
                                double &linfError);
-#endif
 
 //Minimal version: without a provided solver
-#if defined(DIRECTIONAL_INDEX_PRESCRIPTION_IMPLEMENTATION)
-void index_prescription(const Eigen::VectorXi& cycleIndices,
-                               const int N,
-                               const double globalRotation,
-                               directional::CartesianField& field,
-                               Eigen::VectorXd& rotationAngles,
-                               double &error)
-{
-    Eigen::SimplicialLDLT<Eigen::SparseMatrix<double> > ldltSolver;
-    index_prescription(cycleIndices, N, globalRotation,ldltSolver,  field, rotationAngles, error);
-}
-#else
 void index_prescription(const Eigen::VectorXi& cycleIndices,
                                const int N,
                                const double globalRotation,
                                directional::CartesianField& field,
                                Eigen::VectorXd& rotationAngles,
                                double &error);
-#endif
 }
 
 

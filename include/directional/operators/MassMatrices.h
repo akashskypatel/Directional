@@ -11,7 +11,6 @@
 #include <Eigen/Sparse>
 #include <directional/core/TriMesh.h>
 #include <directional/util/EigenSparseUtils.h>
-#include <directional/util/EigenSparseUtils.h>
 
 namespace directional {
 

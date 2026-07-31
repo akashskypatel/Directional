@@ -9,9 +9,6 @@
 #define HEDRA_POLYGONAL_WRITE_OFF_H
 #include <Eigen/Core>
 #include <string>
-#include <vector>
-#include <cstdio>
-#include <fstream>
 
 namespace hedra
 {
@@ -21,40 +18,12 @@ namespace hedra
   //  V  eigen double matrix  #V by 3 - vertex coordinates
   //  D  eigen int vector     #F by 1 - face degrees
   //  F  eigen int matrix     #F by max(D) - vertex indices in face
-  #if defined(DIRECTIONAL_POLYGONAL_WRITE_OFF_IMPLEMENTATION)
-bool polygonal_write_OFF(const std::string& str,
-                                      const Eigen::MatrixXd& V,
-                                      const Eigen::VectorXi& D,
-                                      const Eigen::MatrixXi& F)
-  {
-    
-    using namespace std;
-    using namespace Eigen;
-    ofstream FileHandle;
-    FileHandle.open(str);
-    if (!FileHandle.is_open())
-      return false;
-
-    int precision = 9; // Set precision to 5 decimal places
-    Eigen::IOFormat resFormat(precision, 0, " ", "\n");
-    FileHandle<<"OFF"<<endl<<V.rows()<<" "<<F.rows()<<" 0"<<endl;
-    FileHandle<<V.format(resFormat)<<endl;
-    MatrixXi FD(D.rows(), D.cols()+F.cols());
-    FD<<D, F;
-    for (int i=0;i<F.rows();i++)
-      FileHandle<<FD.block(i,0,1,D(i)+1)<<endl;
-    FileHandle.close();
-    return true;
-  }
-#else
 bool polygonal_write_OFF(const std::string& str,
                                       const Eigen::MatrixXd& V,
                                       const Eigen::VectorXi& D,
                                       const Eigen::MatrixXi& F);
-#endif
 }
 
 
 #endif
-
 

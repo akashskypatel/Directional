@@ -90,11 +90,14 @@ if(NOT GMP_VERSION_OK)
   # search first if an GMPConfig.cmake is available in the system,
   # if successful this would set GMP_INCLUDE_DIRS and the rest of
   # the script will work as usual
-  find_package(GMP ${GMP_FIND_VERSION} NO_MODULE QUIET)
+  if(NOT GMP_ROOT)
+    find_package(GMP ${GMP_FIND_VERSION} NO_MODULE QUIET)
+  endif()
 
   if(NOT GMP_INCLUDE_DIRS)
     find_path(GMP_INCLUDE_DIRS NAMES gmp.h
-      HINTS ENV GMPDIR ENV GMPDIR
+      HINTS ${GMP_ROOT} ENV GMPDIR
+      PATH_SUFFIXES include
       PATHS ${INCLUDE_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/include)
   endif()
 
@@ -104,10 +107,12 @@ if(NOT GMP_VERSION_OK)
 
   if(NOT GMP_LIBRARIES)
     find_library(GMP_LIBRARIES NAMES gmp
-      HINTS ENV GMPDIR ENV GMPDIR
+      HINTS ${GMP_ROOT} ENV GMPDIR
+      PATH_SUFFIXES lib
       PATHS ${LIB_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/lib)
     find_library(GMPXX_LIBRARIES NAMES gmpxx
-      HINTS ENV GMPDIR ENV GMPDIR
+      HINTS ${GMP_ROOT} ENV GMPDIR
+      PATH_SUFFIXES lib
       PATHS ${LIB_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/lib)
     set(GMP_LIBRARIES ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
   endif()
@@ -158,7 +163,8 @@ if (GMP_INCLUDE_DIRS AND GMP_LIBRARIES)
   set_property(TARGET GMP::GMP PROPERTY
     INTERFACE_INCLUDE_DIRECTORIES ${GMP_INCLUDE_DIRS})
   # Extract only the base C library for the main target location
-  find_library(GMP_PURE_C_LIB NAMES gmp HINTS ENV GMPDIR PATHS ${LIB_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/lib)
+  find_library(GMP_PURE_C_LIB NAMES gmp HINTS ${GMP_ROOT} ENV GMPDIR
+    PATH_SUFFIXES lib PATHS ${LIB_INSTALL_DIR} ${CMAKE_INSTALL_PREFIX}/lib)
   set_property(TARGET GMP::GMP PROPERTY
     IMPORTED_LOCATION ${GMP_PURE_C_LIB})
 endif (GMP_INCLUDE_DIRS AND GMP_LIBRARIES)

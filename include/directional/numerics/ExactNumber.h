@@ -297,17 +297,9 @@ public:
 };
 
 /// @brief Get the numerator of an ENumber
-#if defined(DIRECTIONAL_EXACT_NUMBER_IMPLEMENTATION)
-EInt enumber_num(const ENumber &value) { return value.num; }
-#else
 EInt enumber_num(const ENumber &value);
-#endif
 
 /// @brief Get the denominator of an ENumber
-#if defined(DIRECTIONAL_EXACT_NUMBER_IMPLEMENTATION)
-EInt enumber_den(const ENumber &value) { return value.den; }
-#else
 EInt enumber_den(const ENumber &value);
-#endif
 
 #endif // DIRECTIONAL_NUMERICS_EXACT_NUMBER_H

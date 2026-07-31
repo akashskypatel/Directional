@@ -7,12 +7,8 @@
 #ifndef DIRECTIONAL_WRITE_SINGULARITIES_H
 #define DIRECTIONAL_WRITE_SINGULARITIES_H
 
-#include <cmath>
 #include <Eigen/Core>
 #include <string>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fstream>
 
 
 namespace directional
@@ -26,27 +22,10 @@ singIndices:            The integer index of the singularities, where the actual
 Output:
  Whether or not the file was written successfully
  ***/
-#if defined(DIRECTIONAL_WRITE_SINGULARITIES_IMPLEMENTATION)
-bool write_singularities(const std::string &fileName,
-                                    const int N,
-                                    const Eigen::VectorXi &singLocalCycles,
-                                    const Eigen::VectorXi &singIndices)
-{
-    std::ofstream f(fileName, std::ios::trunc);
-    f << N << " " << singIndices.size() << std::endl;
-    
-    for (int i=0;i<singIndices.rows();i++)
-        f << singLocalCycles(i) << " " << singIndices(i) << std::endl;
-    
-    f.close();
-    return !f.fail();
-}
-#else
 bool write_singularities(const std::string &fileName,
                                     const int N,
                                     const Eigen::VectorXi &singLocalCycles,
                                     const Eigen::VectorXi &singIndices);
-#endif
 }
 
 #endif

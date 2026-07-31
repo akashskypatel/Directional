@@ -19,9 +19,9 @@ struct IntegrationData;
 struct MesherData;
 
 /** @brief Converts integration output into mesher input data. */
-DIRECTIONAL_API void setup_mesher(const TriMesh &meshCut,
-                                  const IntegrationData &integrationData,
-                                  MesherData &mesherData);
+DIRECTIONAL_PIPELINE_API void
+setup_mesher(const TriMesh &meshCut, const IntegrationData &integrationData,
+             MesherData &mesherData);
 
 } // namespace directional
 

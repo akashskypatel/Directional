@@ -16,10 +16,20 @@
 #else
 #define DIRECTIONAL_API __declspec(dllimport)
 #endif
+#if defined(DIRECTIONAL_BUILDING_PIPELINE)
+#define DIRECTIONAL_PIPELINE_API __declspec(dllexport)
+#else
+#define DIRECTIONAL_PIPELINE_API __declspec(dllimport)
+#endif
 #elif defined(__GNUC__) && defined(DIRECTIONAL_BUILDING_LIBRARY)
 #define DIRECTIONAL_API __attribute__((visibility("default")))
+#define DIRECTIONAL_PIPELINE_API
+#elif defined(__GNUC__) && defined(DIRECTIONAL_BUILDING_PIPELINE)
+#define DIRECTIONAL_API
+#define DIRECTIONAL_PIPELINE_API __attribute__((visibility("default")))
 #else
 #define DIRECTIONAL_API
+#define DIRECTIONAL_PIPELINE_API
 #endif
 
 #endif // DIRECTIONAL_CORE_EXPORT_H

@@ -14,31 +14,13 @@
 
 namespace directional::pipeline {
 
-#if defined(DIRECTIONAL_PARALLEL_REMESH_PIPELINE_IMPLEMENTATION)
-RemeshResult parallel_remesh_from_raw_cross_field(
-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const Eigen::MatrixXd &rawCrossField, RemeshOptions options = {}) {
-  options.parallelizeComponents = true;
-  return remesh_from_raw_cross_field(vertices, faces, rawCrossField, options);
-}
-#else
 RemeshResult parallel_remesh_from_raw_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &rawCrossField, RemeshOptions options = {});
-#endif
 
-#if defined(DIRECTIONAL_PARALLEL_REMESH_PIPELINE_IMPLEMENTATION)
-RemeshResult parallel_remesh_from_mesh(
-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    RemeshOptions options = {}) {
-  options.parallelizeComponents = true;
-  return remesh_from_mesh(vertices, faces, options);
-}
-#else
 RemeshResult parallel_remesh_from_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     RemeshOptions options = {});
-#endif
 
 } // namespace directional::pipeline
 
