@@ -26,7 +26,8 @@ singIndices:            The integer index of the singularities, where the actual
 Output:
  Whether or not the file was written successfully
  ***/
-bool inline write_singularities(const std::string &fileName,
+#if defined(DIRECTIONAL_WRITE_SINGULARITIES_IMPLEMENTATION)
+bool write_singularities(const std::string &fileName,
                                     const int N,
                                     const Eigen::VectorXi &singLocalCycles,
                                     const Eigen::VectorXi &singIndices)
@@ -40,6 +41,12 @@ bool inline write_singularities(const std::string &fileName,
     f.close();
     return !f.fail();
 }
+#else
+bool write_singularities(const std::string &fileName,
+                                    const int N,
+                                    const Eigen::VectorXi &singLocalCycles,
+                                    const Eigen::VectorXi &singIndices);
+#endif
 }
 
 #endif

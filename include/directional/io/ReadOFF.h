@@ -19,7 +19,8 @@
 namespace directional
 {
 //Reading an OFF file into a TriMesh class
-bool inline readOFF(const std::string off_file_name,
+#if defined(DIRECTIONAL_READ_OFF_IMPLEMENTATION)
+bool readOFF(const std::string off_file_name,
                     directional::TriMesh& mesh){
     Eigen::MatrixXd V;
     Eigen::MatrixXi F;
@@ -48,6 +49,10 @@ bool inline readOFF(const std::string off_file_name,
     mesh.set_mesh(V,F);
     return true;
 }
+#else
+bool readOFF(const std::string off_file_name,
+                    directional::TriMesh& mesh);
+#endif
 }
 
 #endif

@@ -176,6 +176,16 @@ add_library(
   src/integration/Integrate.cpp
   src/integration/ParametrizationQuality.cpp
   src/integration/SetupIntegration.cpp
+  src/io/PolygonalWriteOFF.cpp
+  src/io/ReadMatching.cpp
+  src/io/ReadOBJ.cpp
+  src/io/ReadOFF.cpp
+  src/io/ReadRawField.cpp
+  src/io/ReadSingularities.cpp
+  src/io/WriteMatching.cpp
+  src/io/WriteOBJ.cpp
+  src/io/WriteRawField.cpp
+  src/io/WriteSingularities.cpp
   src/meshing/GenerateMesh.cpp
   src/meshing/Mesher.cpp
   src/meshing/PatchRegion.cpp
@@ -186,7 +196,10 @@ add_library(
   src/pipeline/RemeshPipeline.cpp
   src/validation/MeshValidator.cpp
   src/validation/SourceAuthoritativeMeshValidator.cpp
-  src/validation/ValidationVisualizer.cpp)
+  src/validation/ValidationVisualizer.cpp
+  src/util/GraphUtils.cpp
+  src/util/IsOrderPreserving.cpp
+  src/util/Progress.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(

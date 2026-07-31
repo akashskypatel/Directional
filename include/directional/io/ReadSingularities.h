@@ -29,7 +29,8 @@ namespace directional
  Return:
  Whether or not the file was written successfully
  ***/
-bool inline read_singularities(const std::string &fileName,
+#if defined(DIRECTIONAL_READ_SINGULARITIES_IMPLEMENTATION)
+bool read_singularities(const std::string &fileName,
                                int& N,
                                Eigen::VectorXi& singElements,
                                Eigen::VectorXi& singIndices)
@@ -55,10 +56,17 @@ bool inline read_singularities(const std::string &fileName,
         return false;
     }
 }
+#else
+bool read_singularities(const std::string &fileName,
+                               int& N,
+                               Eigen::VectorXi& singElements,
+                               Eigen::VectorXi& singIndices);
+#endif
 
 
 //This version reads directly into a field object.
-bool inline read_singularities(const std::string &fileName,
+#if defined(DIRECTIONAL_READ_SINGULARITIES_IMPLEMENTATION)
+bool read_singularities(const std::string &fileName,
                                directional::CartesianField& field)
 {
     try
@@ -84,6 +92,10 @@ bool inline read_singularities(const std::string &fileName,
         return false;
     }
 }
+#else
+bool read_singularities(const std::string &fileName,
+                               directional::CartesianField& field);
+#endif
 }
 
 #endif

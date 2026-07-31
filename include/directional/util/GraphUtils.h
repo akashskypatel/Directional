@@ -29,7 +29,8 @@ namespace directional {
 /// @param EV #E by 2 list of edges in the graph
 /// @param tE #Te vector of edges (within EV) in the graph
 /// @param tEf #V the edges leading to each vertex. -1 for the root
-inline void tree(const Eigen::MatrixXi &EV, Eigen::VectorXi &tE,
+#if defined(DIRECTIONAL_GRAPH_UTILS_IMPLEMENTATION)
+void tree(const Eigen::MatrixXi &EV, Eigen::VectorXi &tE,
                  Eigen::VectorXi &tEf) {
   using namespace Eigen;
   int numV = EV.maxCoeff() + 1;
@@ -91,6 +92,10 @@ inline void tree(const Eigen::MatrixXi &EV, Eigen::VectorXi &tE,
 
   tE.conservativeResize(usedVertices.sum() - 1);
 }
+#else
+void tree(const Eigen::MatrixXi &EV, Eigen::VectorXi &tE,
+                 Eigen::VectorXi &tEf);
+#endif
 
 } // namespace directional
 

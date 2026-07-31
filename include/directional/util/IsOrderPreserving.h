@@ -29,7 +29,8 @@ namespace directional {
  *        has positive orientation around the face normal.
  * @param products Output signed cross products for every face and vector pair.
  */
-inline void is_order_preserving(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_IS_ORDER_PRESERVING_IMPLEMENTATION)
+void is_order_preserving(const Eigen::MatrixXd &vertices,
                                 const Eigen::MatrixXi &faces,
                                 const Eigen::MatrixXd &rawField,
                                 Eigen::VectorXi &isOrderPreserving,
@@ -60,6 +61,13 @@ inline void is_order_preserving(const Eigen::MatrixXd &vertices,
     }
   }
 }
+#else
+void is_order_preserving(const Eigen::MatrixXd &vertices,
+                                const Eigen::MatrixXi &faces,
+                                const Eigen::MatrixXd &rawField,
+                                Eigen::VectorXi &isOrderPreserving,
+                                Eigen::MatrixXd &products);
+#endif
 
 } // namespace directional
 

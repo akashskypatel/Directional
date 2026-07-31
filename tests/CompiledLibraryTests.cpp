@@ -1,8 +1,13 @@
 #include <directional/core/Library.h>
 #include <directional/fields/CrossField.h>
+#include <directional/io/WriteRawField.h>
 #include <directional/pipeline/RemeshPipeline.h>
+#include <directional/util/Progress.h>
 
 #include <gtest/gtest.h>
+
+#include <filesystem>
+#include <fstream>
 
 TEST(CompiledLibrary, ExposesBuildInformation) {
   EXPECT_STREQ("Directional shared library core", directional_build_info());
@@ -25,4 +30,46 @@ TEST(CompiledLibrary, LinksPipelineImplementation) {
   EXPECT_EQ("LegacyInteger",
             directional::pipeline::remesh_backend_name(
                 directional::pipeline::RemeshBackend::LegacyInteger));
+}
+
+TEST(CompiledLibrary, LinksIoImplementation) {
+  directional::CartesianField field;
+  field.N = 2;
+  field.extField.resize(1, 6);
+  field.extField << 1.0, 0.0, 0.0, -1.0, 0.0, 0.0;
+
+  const std::filesystem::path path =
+      std::filesystem::current_path() / "directional_compiled_api.rawfield";
+  std::error_code error;
+  std::filesystem::remove(path, error);
+
+  ASSERT_TRUE(directional::write_raw_field(path.string(), field, true));
+
+  std::ifstream input(path);
+  int degree = 0;
+  int rows = 0;
+  input >> degree >> rows;
+  EXPECT_EQ(2, degree);
+  EXPECT_EQ(1, rows);
+
+  input.close();
+  EXPECT_TRUE(std::filesystem::remove(path, error));
+}
+
+TEST(CompiledLibrary, LinksUtilityImplementation) {
+  std::size_t current = 0;
+  std::size_t total = 0;
+  std::string task;
+  directional::report_progress(
+      [&](const std::size_t value, const std::size_t maximum,
+          const std::string_view name) {
+        current = value;
+        total = maximum;
+        task = name;
+      },
+      3, 7, "compiled utility");
+
+  EXPECT_EQ(3U, current);
+  EXPECT_EQ(7U, total);
+  EXPECT_EQ("compiled utility", task);
 }

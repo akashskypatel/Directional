@@ -13,6 +13,11 @@
 #include <vector>
 #include <directional/core/TriMesh.h>
 
+#if defined(DIRECTIONAL_WRITE_OBJ_IMPLEMENTATION)
+#include <fstream>
+#include <stdexcept>
+#endif
+
 namespace directional
 {
 
@@ -26,7 +31,8 @@ mtlFileName:  name of MTL file that associates with the texture
 textureName:  texture name inside the MTL file.
 ***/
 
-inline bool writeOBJ(const std::string& fileName,
+#if defined(DIRECTIONAL_WRITE_OBJ_IMPLEMENTATION)
+bool writeOBJ(const std::string& fileName,
               const directional::TriMesh& mesh,
               const Eigen::MatrixXd& TC,
               const Eigen::MatrixXi& FTC,
@@ -67,6 +73,14 @@ inline bool writeOBJ(const std::string& fileName,
     out.close();
     return true;
 }
+#else
+bool writeOBJ(const std::string& fileName,
+              const directional::TriMesh& mesh,
+              const Eigen::MatrixXd& TC,
+              const Eigen::MatrixXi& FTC,
+              const std::string& mtlFileName = "",
+              const std::string& textureName = "");
+#endif
 }
 
 #endif

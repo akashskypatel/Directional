@@ -20,7 +20,8 @@ namespace directional
 {
 
 //Reading an OBJ file into a surface TriMesh class.
-bool inline readOBJ(const std::string objFileName,
+#if defined(DIRECTIONAL_READ_OBJ_IMPLEMENTATION)
+bool readOBJ(const std::string objFileName,
                     directional::TriMesh& mesh) {
     Eigen::MatrixXd V;
     Eigen::MatrixXi F;
@@ -76,6 +77,10 @@ bool inline readOBJ(const std::string objFileName,
     mesh.set_mesh(V, F);
     return true;
 }
+#else
+bool readOBJ(const std::string objFileName,
+                    directional::TriMesh& mesh);
+#endif
 }
 
 #endif
