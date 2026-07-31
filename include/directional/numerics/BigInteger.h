@@ -388,7 +388,8 @@ public:
   }
 };
 
-inline BigInteger gcd(BigInteger a, BigInteger b) {
+#if defined(DIRECTIONAL_BIG_INTEGER_IMPLEMENTATION)
+BigInteger gcd(BigInteger a, BigInteger b) {
   int whileTest = 0;
   if (b > a)
     std::swap(a, b);
@@ -405,5 +406,8 @@ inline BigInteger gcd(BigInteger a, BigInteger b) {
   }
   return a;
 }
+#else
+BigInteger gcd(BigInteger a, BigInteger b);
+#endif
 
 #endif // DIRECTIONAL_NUMERICS_BIG_INTEGER_H

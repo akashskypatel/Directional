@@ -243,6 +243,8 @@ if(DIRECTIONAL_ENABLE_PARDISO)
   
   target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_PARDISO)
   target_link_libraries(directional PUBLIC MKL::MKL)
+  target_sources(
+    directional PRIVATE src/integration/solvers/PardisoSolver.cpp)
   _directional_collect_pardiso_runtime_files(
     DIRECTIONAL_PARDISO_RUNTIME_FILES)
 elseif(DIRECTIONAL_ENABLE_CUDSS)
@@ -314,6 +316,15 @@ if(DIRECTIONAL_ENABLE_GMP)
         OFF
         CACHE BOOL "Enable GMP support if found" FORCE)
   endif()
+endif()
+
+target_sources(directional PRIVATE src/numerics/ExactGeometry.cpp)
+if(DIRECTIONAL_ENABLE_GMP)
+  target_sources(directional PRIVATE src/numerics/ENumberGMP.cpp)
+else()
+  target_sources(
+    directional
+    PRIVATE src/numerics/BigInteger.cpp src/numerics/ExactNumber.cpp)
 endif()
 
 if(BUILD_TUTORIALS)

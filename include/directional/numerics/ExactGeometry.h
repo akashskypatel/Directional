@@ -175,10 +175,14 @@ public:
   friend std::ostream &operator<<(std::ostream &os, const Segment2 &seg);
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Segment2 &seg) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+std::ostream &operator<<(std::ostream &os, const Segment2 &seg) {
   os << "Segment2(" << seg.source << "->" << seg.target << ")";
   return os;
 }
+#else
+std::ostream &operator<<(std::ostream &os, const Segment2 &seg);
+#endif
 
 /** @brief Exact implicit 2D line with integer/rational coefficients. */
 struct Line2 {
@@ -198,10 +202,14 @@ public:
   }
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Line2 &line) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+std::ostream &operator<<(std::ostream &os, const Line2 &line) {
   os << "Line2(" << line.point << " + " << line.direction << ")";
   return os;
 }
+#else
+std::ostream &operator<<(std::ostream &os, const Line2 &line);
+#endif
 
 /** @brief Family of parallel or related exact lines generated from a base line. */
 struct LinePencil {
@@ -215,16 +223,21 @@ struct LinePencil {
   }
 };
 
-inline ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2) {
   ENumber sd(0);
   for (int i = 0; i < 3; i++)
     sd += (v1[i] - v2[i]) * (v1[i] - v2[i]); // maybe it's not efficient
 
   return sd;
 }
+#else
+ENumber squaredDistance(const EVector3 &v1, const EVector3 &v2);
+#endif
 
 // produces y = M*x
-inline void exactSparseMult(const Eigen::SparseMatrix<int> &M,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+void exactSparseMult(const Eigen::SparseMatrix<int> &M,
                             const std::vector<ENumber> &x,
                             std::vector<ENumber> &y) {
   y.resize(M.rows());
@@ -237,8 +250,14 @@ inline void exactSparseMult(const Eigen::SparseMatrix<int> &M,
       y[it.row()] += ENumber((long)it.value()) * x[it.col()];
     }
 }
+#else
+void exactSparseMult(const Eigen::SparseMatrix<int> &M,
+                            const std::vector<ENumber> &x,
+                            std::vector<ENumber> &y);
+#endif
 
-inline void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
                            const std::vector<ENumber> &x,
                            std::vector<ENumber> &y) {
   y.resize(nM.rows());
@@ -248,10 +267,16 @@ inline void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
     for (int j = 0; j < nM.cols(); j++)
       y[i] += x[j] * ENumber(nM(i, j), dM(i, j));
 }
+#else
+void exactDenseMult(const Eigen::MatrixXi &nM, const Eigen::MatrixXi &dM,
+                           const std::vector<ENumber> &x,
+                           std::vector<ENumber> &y);
+#endif
 
 // This assumes components is already resized to the correct |v|
 // not very efficient but probably not terrible
-inline int connectedComponents(const std::vector<std::pair<int, int>> &matches,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+int connectedComponents(const std::vector<std::pair<int, int>> &matches,
                                std::vector<int> &components) {
   for (int i = 0; i < components.size(); i++)
     components[i] = -1;
@@ -289,8 +314,13 @@ inline int connectedComponents(const std::vector<std::pair<int, int>> &matches,
   }
   return numComponents;
 }
+#else
+int connectedComponents(const std::vector<std::pair<int, int>> &matches,
+                               std::vector<int> &components);
+#endif
 
-inline int line_line_intersection(const Line2 &line1, const Line2 &line2,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+int line_line_intersection(const Line2 &line1, const Line2 &line2,
                                   ENumber &t1, ENumber &t2) {
   ENumber v1v2 = line1.direction.cross(line2.direction);
   if (v1v2 == ENumber(0)) {
@@ -302,6 +332,10 @@ inline int line_line_intersection(const Line2 &line1, const Line2 &line2,
   t2 = p12.cross(line1.direction) / v1v2;
   return 1;
 }
+#else
+int line_line_intersection(const Line2 &line1, const Line2 &line2,
+                                  ENumber &t1, ENumber &t2);
+#endif
 
 // returns a generator for the grid of intersections, parameterized by p00 +
 // pVec1*isoValue1 + pVec2*isoValue2, txp00 is the t(1 or 2) of the p00 point in
@@ -318,7 +352,8 @@ inline int line_line_intersection(const Line2 &line1, const Line2 &line2,
  * - avoids temporary EVector/Eigen expressions in the hot path;
  * - uses runtime validation instead of release-disabled assertions.
  */
-inline int linepencil_intersection(const LinePencil &lp1, const LinePencil &lp2,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+int linepencil_intersection(const LinePencil &lp1, const LinePencil &lp2,
                                    Eigen::Matrix<ENumber, 2, 1> &t00,
                                    Eigen::Matrix<ENumber, 2, 2> &I2dt,
                                    EInt &iso1Overlap) {
@@ -412,13 +447,20 @@ inline int linepencil_intersection(const LinePencil &lp1, const LinePencil &lp2,
 
   return 1;
 }
+#else
+int linepencil_intersection(const LinePencil &lp1, const LinePencil &lp2,
+                                   Eigen::Matrix<ENumber, 2, 1> &t00,
+                                   Eigen::Matrix<ENumber, 2, 2> &I2dt,
+                                   EInt &iso1Overlap);
+#endif
 
 /*
  * Specialized hot-path intersection between a line pencil and one line.
  * Only the first affine column is needed by triangle clipping, so this avoids
  * constructing a temporary LinePencil and avoids computing two unused values.
  */
-inline int linepencil_single_line_intersection(
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+int linepencil_single_line_intersection(
     const LinePencil &pencil, const EVector2 &linePoint,
     const EVector2 &lineDirection, ENumber &lineParameter0,
     ENumber &edgeParameter0, ENumber &lineParameterStep,
@@ -477,8 +519,16 @@ inline int linepencil_single_line_intersection(
 
   return 1;
 }
+#else
+int linepencil_single_line_intersection(
+    const LinePencil &pencil, const EVector2 &linePoint,
+    const EVector2 &lineDirection, ENumber &lineParameter0,
+    ENumber &edgeParameter0, ENumber &lineParameterStep,
+    ENumber &edgeParameterStep, EInt &overlapLine);
+#endif
 
-inline std::vector<std::pair<ENumber, ENumber>>
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+std::vector<std::pair<ENumber, ENumber>>
 segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2) {
 
   ENumber t1, t2;
@@ -542,8 +592,13 @@ segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2) {
   }
   return std::vector<std::pair<ENumber, ENumber>>();
 }
+#else
+std::vector<std::pair<ENumber, ENumber>>
+segment_segment_intersection(const Segment2 &seg1, const Segment2 &seg2);
+#endif
 
-inline std::vector<ENumber> line_segment_intersection(const Line2 &line,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+std::vector<ENumber> line_segment_intersection(const Line2 &line,
                                                       const Segment2 &segment) {
   Line2 segLine(segment.source, segment.target - segment.source);
   ENumber t1, t2;
@@ -566,8 +621,13 @@ inline std::vector<ENumber> line_segment_intersection(const Line2 &line,
     }
   }
 }
+#else
+std::vector<ENumber> line_segment_intersection(const Line2 &line,
+                                                      const Segment2 &segment);
+#endif
 
-inline void line_triangle_intersection(const Line2 &line,
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+void line_triangle_intersection(const Line2 &line,
                                        const std::vector<EVector2> &triangle,
                                        bool &intEdge, bool &intFace,
                                        ENumber &inParam, ENumber &outParam) {
@@ -594,6 +654,12 @@ inline void line_triangle_intersection(const Line2 &line,
                            // ignored
     intFace = intEdge = false;
 }
+#else
+void line_triangle_intersection(const Line2 &line,
+                                       const std::vector<EVector2> &triangle,
+                                       bool &intEdge, bool &intFace,
+                                       ENumber &inParam, ENumber &outParam);
+#endif
 
 /*
  * Intersect every line in a pencil with a CCW triangle.
@@ -615,7 +681,8 @@ inline void line_triangle_intersection(const Line2 &line,
  * 5. Output buffers are initialized in bulk and reused by callers when their
  *    capacity is retained.
  */
-inline void linepencil_triangle_intersection(
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+void linepencil_triangle_intersection(
     const LinePencil &lp, const std::vector<EVector2> &triangle,
     std::vector<bool> &intEdges, std::vector<bool> &intFaces,
     std::vector<ENumber> &inParams, std::vector<ENumber> &outParams,
@@ -768,10 +835,20 @@ inline void linepencil_triangle_intersection(
     }
   }
 }
+#else
+void linepencil_triangle_intersection(
+    const LinePencil &lp, const std::vector<EVector2> &triangle,
+    std::vector<bool> &intEdges, std::vector<bool> &intFaces,
+    std::vector<ENumber> &inParams, std::vector<ENumber> &outParams,
+    std::vector<std::vector<ENumber>> &triParams, const int triangleIndex = -1,
+    const int localPencilIndex = -1, const int originalFunctionIndex = -1,
+    const std::array<int, 3> *originalHalfedges = nullptr);
+#endif
 
 // according to this:
 // https://math.stackexchange.com/questions/1450498/rational-ordering-of-vectors
-inline ENumber slope_function(const EVector2 &vec) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+ENumber slope_function(const EVector2 &vec) {
   // predicates might be expensive, so precomputing
   bool x0 = vec[0] > ENumber(0);
   bool y0 = vec[1] > ENumber(0);
@@ -794,8 +871,12 @@ inline ENumber slope_function(const EVector2 &vec) {
     }
   }
 }
+#else
+ENumber slope_function(const EVector2 &vec);
+#endif
 
-inline double slope_function_double(const Eigen::RowVector2d &vec) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+double slope_function_double(const Eigen::RowVector2d &vec) {
   // predicates might be expensive, so precomputing
   bool x0 = vec[0] > 0.0;
   bool y0 = vec[1] > 0.0;
@@ -818,8 +899,12 @@ inline double slope_function_double(const Eigen::RowVector2d &vec) {
     }
   }
 }
+#else
+double slope_function_double(const Eigen::RowVector2d &vec);
+#endif
 
-inline double signed_face_area(const std::vector<EVector2> &faceVectors) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+double signed_face_area(const std::vector<EVector2> &faceVectors) {
   Eigen::RowVector2d currVertex =
       Eigen::RowVector2d::Zero(); // currVertex[0]=currVertex[1]=ENumber(0);
   double sfa = 0.0;
@@ -831,18 +916,29 @@ inline double signed_face_area(const std::vector<EVector2> &faceVectors) {
   }
   return sfa;
 }
+#else
+double signed_face_area(const std::vector<EVector2> &faceVectors);
+#endif
 
-inline ENumber triangle_area(const std::vector<EVector2> &tri) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+ENumber triangle_area(const std::vector<EVector2> &tri) {
   EVector2 e12 = tri[1] - tri[0];
   EVector2 e13 = tri[2] - tri[0];
   return (e12[0] * e13[1] - e13[0] * e12[1]) / ENumber(2);
 }
+#else
+ENumber triangle_area(const std::vector<EVector2> &tri);
+#endif
 
-inline void div_mod(const EInt a, const EInt b, EInt &q, EInt &r) {
+#if defined(DIRECTIONAL_EXACT_GEOMETRY_IMPLEMENTATION)
+void div_mod(const EInt a, const EInt b, EInt &q, EInt &r) {
   // mpz_tdiv_qr(q.get_mpz_t(),r.get_mpz_t(),a,b);
   q = a / b;
   r = a - b * q;
 }
+#else
+void div_mod(const EInt a, const EInt b, EInt &q, EInt &r);
+#endif
 } // namespace directional
 
 #endif // DIRECTIONAL_NUMERICS_EXACT_GEOMETRY_H

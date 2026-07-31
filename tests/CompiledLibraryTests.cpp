@@ -1,6 +1,7 @@
 #include <directional/core/Library.h>
 #include <directional/fields/CrossField.h>
 #include <directional/io/WriteRawField.h>
+#include <directional/numerics/ExactGeometry.h>
 #include <directional/pipeline/RemeshPipeline.h>
 #include <directional/util/Progress.h>
 
@@ -72,4 +73,23 @@ TEST(CompiledLibrary, LinksUtilityImplementation) {
   EXPECT_EQ(3U, current);
   EXPECT_EQ(7U, total);
   EXPECT_EQ("compiled utility", task);
+}
+
+TEST(CompiledLibrary, LinksExactGeometryImplementation) {
+  const directional::Line2 horizontal(
+      directional::EVector2{ENumber(0), ENumber(0)},
+      directional::EVector2{ENumber(1), ENumber(0)});
+  const directional::Line2 vertical(
+      directional::EVector2{ENumber(2), ENumber(-1)},
+      directional::EVector2{ENumber(0), ENumber(1)});
+  ENumber horizontalParameter;
+  ENumber verticalParameter;
+
+  ASSERT_EQ(1, directional::line_line_intersection(
+                   horizontal, vertical, horizontalParameter,
+                   verticalParameter));
+  EXPECT_NEAR(2.0, static_cast<double>(horizontalParameter.to_double()),
+              1.0e-12);
+  EXPECT_NEAR(1.0, static_cast<double>(verticalParameter.to_double()),
+              1.0e-12);
 }
