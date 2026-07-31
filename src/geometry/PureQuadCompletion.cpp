@@ -1,0 +1,2 @@
+#define DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION
+#include <directional/geometry/PureQuadCompletion.h>

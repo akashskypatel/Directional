@@ -67,7 +67,8 @@ enum class FlowRepSelectionFailureCode : int {
   MandatoryRailLoss = 9,
 };
 
-inline const char *flow_rep_selection_failure_name(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+const char *flow_rep_selection_failure_name(
     const FlowRepSelectionFailureCode code) {
   switch (code) {
   case FlowRepSelectionFailureCode::None:
@@ -93,6 +94,10 @@ inline const char *flow_rep_selection_failure_name(
   }
   return "Unknown";
 }
+#else
+const char *flow_rep_selection_failure_name(
+    const FlowRepSelectionFailureCode code);
+#endif
 
 struct FlowRepArc {
   int id = -1;
@@ -245,55 +250,98 @@ struct FlowRepOverlay {
 
 namespace flow_rep_detail {
 
-inline Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v) {
   const double n = v.norm();
   if (n <= 0.0) {
     return Eigen::RowVector3d::Zero();
   }
   return v / n;
 }
+#else
+Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v);
+#endif
 
-inline double arc_length(const FlowRepArc &arc) { return (arc.end - arc.start).norm(); }
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double arc_length(const FlowRepArc &arc) { return (arc.end - arc.start).norm(); }
+#else
+double arc_length(const FlowRepArc &arc);
+#endif
 
-inline Eigen::RowVector3d arc_tangent(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+Eigen::RowVector3d arc_tangent(const FlowRepArc &arc) {
   return normalized_or_zero(arc.end - arc.start);
 }
+#else
+Eigen::RowVector3d arc_tangent(const FlowRepArc &arc);
+#endif
 
-inline bool close_points(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool close_points(const Eigen::RowVector3d &a,
                          const Eigen::RowVector3d &b, const double eps) {
   return (a - b).norm() <= eps;
 }
+#else
+bool close_points(const Eigen::RowVector3d &a,
+                         const Eigen::RowVector3d &b, const double eps);
+#endif
 
-inline bool arcs_adjacent(const FlowRepArc &a, const FlowRepArc &b,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool arcs_adjacent(const FlowRepArc &a, const FlowRepArc &b,
                           const double eps) {
   return close_points(a.start, b.start, eps) || close_points(a.start, b.end, eps) ||
          close_points(a.end, b.start, eps) || close_points(a.end, b.end, eps);
 }
+#else
+bool arcs_adjacent(const FlowRepArc &a, const FlowRepArc &b,
+                          const double eps);
+#endif
 
-inline double cross2(const Eigen::RowVector3d &a, const Eigen::RowVector3d &b) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double cross2(const Eigen::RowVector3d &a, const Eigen::RowVector3d &b) {
   return a.x() * b.y() - a.y() * b.x();
 }
+#else
+double cross2(const Eigen::RowVector3d &a, const Eigen::RowVector3d &b);
+#endif
 
-inline Eigen::RowVector3d barycentric_uv3(const Eigen::RowVector3d &bary) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+Eigen::RowVector3d barycentric_uv3(const Eigen::RowVector3d &bary) {
   return {bary[1], bary[2], 0.0};
 }
+#else
+Eigen::RowVector3d barycentric_uv3(const Eigen::RowVector3d &bary);
+#endif
 
-inline Eigen::RowVector3d predicate_start(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+Eigen::RowVector3d predicate_start(const FlowRepArc &arc) {
   return arc.sourceFace >= 0 ? barycentric_uv3(arc.startBarycentric) : arc.start;
 }
+#else
+Eigen::RowVector3d predicate_start(const FlowRepArc &arc);
+#endif
 
-inline Eigen::RowVector3d predicate_end(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+Eigen::RowVector3d predicate_end(const FlowRepArc &arc) {
   return arc.sourceFace >= 0 ? barycentric_uv3(arc.endBarycentric) : arc.end;
 }
+#else
+Eigen::RowVector3d predicate_end(const FlowRepArc &arc);
+#endif
 
-inline FlowRepArc predicate_arc(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepArc predicate_arc(const FlowRepArc &arc) {
   FlowRepArc projected = arc;
   projected.start = predicate_start(arc);
   projected.end = predicate_end(arc);
   return projected;
 }
+#else
+FlowRepArc predicate_arc(const FlowRepArc &arc);
+#endif
 
-inline bool point_on_segment_2d(const Eigen::RowVector3d &p,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool point_on_segment_2d(const Eigen::RowVector3d &p,
                                 const Eigen::RowVector3d &a,
                                 const Eigen::RowVector3d &b,
                                 const double eps = 1.0e-10) {
@@ -304,8 +352,15 @@ inline bool point_on_segment_2d(const Eigen::RowVector3d &p,
   }
   return ap.dot(ab) >= -eps && ap.dot(ab) <= ab.squaredNorm() + eps;
 }
+#else
+bool point_on_segment_2d(const Eigen::RowVector3d &p,
+                                const Eigen::RowVector3d &a,
+                                const Eigen::RowVector3d &b,
+                                const double eps = 1.0e-10);
+#endif
 
-inline bool segments_cross_2d(const FlowRepArc &a, const FlowRepArc &b,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool segments_cross_2d(const FlowRepArc &a, const FlowRepArc &b,
                               const bool countSharedEndpoints = false) {
   if (a.sourceFace >= 0 && b.sourceFace >= 0 && a.sourceFace != b.sourceFace) {
     return false;
@@ -334,8 +389,13 @@ inline bool segments_cross_2d(const FlowRepArc &a, const FlowRepArc &b,
   const double eps = countSharedEndpoints ? 1.0e-12 : 1.0e-8;
   return t > eps && t < 1.0 - eps && u > eps && u < 1.0 - eps;
 }
+#else
+bool segments_cross_2d(const FlowRepArc &a, const FlowRepArc &b,
+                              const bool countSharedEndpoints = false);
+#endif
 
-inline std::uint64_t point_key(const Eigen::RowVector3d &p) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::uint64_t point_key(const Eigen::RowVector3d &p) {
   const auto q = [](const double value) {
     return static_cast<std::int64_t>(std::llround(value * 1.0e9));
   };
@@ -346,8 +406,12 @@ inline std::uint64_t point_key(const Eigen::RowVector3d &p) {
   }
   return h;
 }
+#else
+std::uint64_t point_key(const Eigen::RowVector3d &p);
+#endif
 
-inline std::uint64_t endpoint_key(const FlowRepArc &arc, const bool start) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::uint64_t endpoint_key(const FlowRepArc &arc, const bool start) {
   if (arc.sourceFace < 0) {
     return point_key(start ? arc.start : arc.end);
   }
@@ -363,8 +427,12 @@ inline std::uint64_t endpoint_key(const FlowRepArc &arc, const bool start) {
   }
   return h;
 }
+#else
+std::uint64_t endpoint_key(const FlowRepArc &arc, const bool start);
+#endif
 
-inline double percentile(std::vector<double> values, const double p) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double percentile(std::vector<double> values, const double p) {
   if (values.empty()) {
     return 0.0;
   }
@@ -374,8 +442,12 @@ inline double percentile(std::vector<double> values, const double p) {
                  static_cast<double>(values.size() - 1)));
   return values[index];
 }
+#else
+double percentile(std::vector<double> values, const double p);
+#endif
 
-inline double point_segment_distance(const Eigen::RowVector3d &p,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double point_segment_distance(const Eigen::RowVector3d &p,
                                      const FlowRepArc &arc) {
   const Eigen::RowVector3d ab = arc.end - arc.start;
   const double denom = ab.squaredNorm();
@@ -385,19 +457,33 @@ inline double point_segment_distance(const Eigen::RowVector3d &p,
   const double t = std::clamp((p - arc.start).dot(ab) / denom, 0.0, 1.0);
   return (p - (arc.start + t * ab)).norm();
 }
+#else
+double point_segment_distance(const Eigen::RowVector3d &p,
+                                     const FlowRepArc &arc);
+#endif
 
-inline bool finite_row3(const Eigen::RowVector3d &value) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool finite_row3(const Eigen::RowVector3d &value) {
   return value.array().isFinite().all();
 }
+#else
+bool finite_row3(const Eigen::RowVector3d &value);
+#endif
 
-inline bool valid_barycentric(const Eigen::RowVector3d &value,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool valid_barycentric(const Eigen::RowVector3d &value,
                               const double tolerance = 1.0e-8) {
   return finite_row3(value) &&
          std::abs(value.sum() - 1.0) <= tolerance &&
          value.minCoeff() >= -tolerance && value.maxCoeff() <= 1.0 + tolerance;
 }
+#else
+bool valid_barycentric(const Eigen::RowVector3d &value,
+                              const double tolerance = 1.0e-8);
+#endif
 
-inline bool arc_has_complete_provenance(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool arc_has_complete_provenance(const FlowRepArc &arc) {
   if (arc.sourceFace < 0 || arc.sourceComponent < 0 || arc.sourceSheet < 0 ||
       !valid_barycentric(arc.startBarycentric) ||
       !valid_barycentric(arc.endBarycentric) || !finite_row3(arc.start) ||
@@ -412,31 +498,49 @@ inline bool arc_has_complete_provenance(const FlowRepArc &arc) {
   return arc.proposalId >= 0 && arc.proposalSide >= 0 &&
          arc.proposalSide < 6 && arc.proposalBoundarySegment >= 0;
 }
+#else
+bool arc_has_complete_provenance(const FlowRepArc &arc);
+#endif
 
-inline bool coverage_sample_is_valid(const FlowRepCoverageSample &sample) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool coverage_sample_is_valid(const FlowRepCoverageSample &sample) {
   return finite_row3(sample.position) && sample.sourceFace >= 0 &&
          sample.sourceComponent >= 0 && sample.sourceSheet >= 0 &&
          valid_barycentric(sample.barycentric) &&
          std::isfinite(sample.targetSize) && sample.targetSize > 0.0 &&
          sample.sourceArcId >= 0;
 }
+#else
+bool coverage_sample_is_valid(const FlowRepCoverageSample &sample);
+#endif
 
-inline bool sample_and_arc_are_intrinsically_compatible(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool sample_and_arc_are_intrinsically_compatible(
     const FlowRepCoverageSample &sample, const FlowRepArc &arc) {
   return sample.sourceFace == arc.sourceFace &&
          sample.sourceComponent == arc.sourceComponent &&
          sample.sourceSheet == arc.sourceSheet;
 }
+#else
+bool sample_and_arc_are_intrinsically_compatible(
+    const FlowRepCoverageSample &sample, const FlowRepArc &arc);
+#endif
 
-inline double normalized_intrinsic_sample_distance(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double normalized_intrinsic_sample_distance(
     const FlowRepCoverageSample &sample, const FlowRepArc &arc) {
   if (!sample_and_arc_are_intrinsically_compatible(sample, arc)) {
     return std::numeric_limits<double>::infinity();
   }
   return point_segment_distance(sample.position, arc) / sample.targetSize;
 }
+#else
+double normalized_intrinsic_sample_distance(
+    const FlowRepCoverageSample &sample, const FlowRepArc &arc);
+#endif
 
-inline double coverage_max_distance(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+double coverage_max_distance(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds,
     const std::vector<FlowRepCoverageSample> &samples) {
@@ -459,8 +563,15 @@ inline double coverage_max_distance(
   }
   return maxDistance;
 }
+#else
+double coverage_max_distance(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds,
+    const std::vector<FlowRepCoverageSample> &samples);
+#endif
 
-inline std::vector<FlowRepEndpointTag>
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepEndpointTag>
 classify_endpoints(const std::vector<FlowRepArc> &arcs,
                    const std::vector<int> &activeArcIds) {
   std::map<std::uint64_t, int> counts;
@@ -487,10 +598,16 @@ classify_endpoints(const std::vector<FlowRepArc> &arcs,
   }
   return tags;
 }
+#else
+std::vector<FlowRepEndpointTag>
+classify_endpoints(const std::vector<FlowRepArc> &arcs,
+                   const std::vector<int> &activeArcIds);
+#endif
 
 } // namespace flow_rep_detail
 
-inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellNetwork &network) {
   std::vector<FlowRepArc> arcs;
@@ -602,8 +719,14 @@ inline std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
   }
   return arcs;
 }
+#else
+std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceCellNetwork &network);
+#endif
 
-inline FlowRepSelectionInput build_flow_rep_selection_input(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepSelectionInput build_flow_rep_selection_input(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
     const double defaultTargetSize = 1.0) {
@@ -726,8 +849,15 @@ inline FlowRepSelectionInput build_flow_rep_selection_input(
 
   return input;
 }
+#else
+FlowRepSelectionInput build_flow_rep_selection_input(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
+    const double defaultTargetSize = 1.0);
+#endif
 
-inline FlowRepAffinity compute_flow_rep_affinity(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepAffinity compute_flow_rep_affinity(
     const FlowRepArc &a, const FlowRepArc &b,
     const FlowRepSparseOptions &options = {}) {
   FlowRepAffinity affinity;
@@ -775,8 +905,14 @@ inline FlowRepAffinity compute_flow_rep_affinity(
   affinity.score = 0.0;
   return affinity;
 }
+#else
+FlowRepAffinity compute_flow_rep_affinity(
+    const FlowRepArc &a, const FlowRepArc &b,
+    const FlowRepSparseOptions &options = {});
+#endif
 
-inline std::vector<FlowRepAffinity> compute_flow_rep_affinities(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepAffinity> compute_flow_rep_affinities(
     const std::vector<FlowRepArc> &arcs,
     const FlowRepSparseOptions &options = {}) {
   std::vector<FlowRepAffinity> affinities;
@@ -792,8 +928,14 @@ inline std::vector<FlowRepAffinity> compute_flow_rep_affinities(
   }
   return affinities;
 }
+#else
+std::vector<FlowRepAffinity> compute_flow_rep_affinities(
+    const std::vector<FlowRepArc> &arcs,
+    const FlowRepSparseOptions &options = {});
+#endif
 
-inline bool strand_merge_is_simple(const std::vector<FlowRepArc> &arcs,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool strand_merge_is_simple(const std::vector<FlowRepArc> &arcs,
                                    const std::vector<int> &clusterA,
                                    const std::vector<int> &clusterB) {
   std::vector<int> merged = clusterA;
@@ -816,8 +958,14 @@ inline bool strand_merge_is_simple(const std::vector<FlowRepArc> &arcs,
   }
   return true;
 }
+#else
+bool strand_merge_is_simple(const std::vector<FlowRepArc> &arcs,
+                                   const std::vector<int> &clusterA,
+                                   const std::vector<int> &clusterB);
+#endif
 
-inline std::vector<FlowRepStrand> cluster_flow_rep_strands(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepStrand> cluster_flow_rep_strands(
     const std::vector<FlowRepArc> &arcs,
     const FlowRepSparseOptions &options = {}) {
   std::vector<std::vector<int>> clusters;
@@ -925,8 +1073,14 @@ inline std::vector<FlowRepStrand> cluster_flow_rep_strands(
   }
   return strands;
 }
+#else
+std::vector<FlowRepStrand> cluster_flow_rep_strands(
+    const std::vector<FlowRepArc> &arcs,
+    const FlowRepSparseOptions &options = {});
+#endif
 
-inline std::vector<FlowRepFlowline> extract_flow_rep_flowlines(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepFlowline> extract_flow_rep_flowlines(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<FlowRepStrand> &strands) {
   std::vector<FlowRepFlowline> flowlines;
@@ -1034,8 +1188,14 @@ inline std::vector<FlowRepFlowline> extract_flow_rep_flowlines(
   }
   return flowlines;
 }
+#else
+std::vector<FlowRepFlowline> extract_flow_rep_flowlines(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<FlowRepStrand> &strands);
+#endif
 
-inline FlowRepCycleEvaluation
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepCycleEvaluation
 evaluate_flow_rep_cycle(const FlowRepCycleInput &cycle) {
   FlowRepCycleEvaluation evaluation;
   if (!cycle.diskTopology || cycle.forbiddenTurn ||
@@ -1104,10 +1264,15 @@ evaluate_flow_rep_cycle(const FlowRepCycleInput &cycle) {
   evaluation.descriptive = evaluation.quadrangulable && evaluation.energy <= 1.0;
   return evaluation;
 }
+#else
+FlowRepCycleEvaluation
+evaluate_flow_rep_cycle(const FlowRepCycleInput &cycle);
+#endif
 
 namespace flow_rep_detail {
 
-inline bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
                                                    const FlowRepArc &candidate) {
   if (candidate.mandatoryRail || candidate.sourceFace != original.sourceFace ||
       candidate.sourceComponent != original.sourceComponent ||
@@ -1130,8 +1295,13 @@ inline bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
                    1.0e-10);
   return sameOrientation || reverseOrientation;
 }
+#else
+bool substitution_preserves_cycle_boundary(const FlowRepArc &original,
+                                                   const FlowRepArc &candidate);
+#endif
 
-inline int resolve_cycle_arc(const FlowRepCycleInput &cycle,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+int resolve_cycle_arc(const FlowRepCycleInput &cycle,
                              const std::vector<FlowRepArc> &arcs,
                              const std::vector<unsigned char> &active,
                              const int originalArcId) {
@@ -1155,8 +1325,15 @@ inline int resolve_cycle_arc(const FlowRepCycleInput &cycle,
   }
   return -1;
 }
+#else
+int resolve_cycle_arc(const FlowRepCycleInput &cycle,
+                             const std::vector<FlowRepArc> &arcs,
+                             const std::vector<unsigned char> &active,
+                             const int originalArcId);
+#endif
 
-inline FlowRepCycleEvaluation rebuild_cycle_evaluation(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepCycleEvaluation rebuild_cycle_evaluation(
     const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs,
     const std::vector<unsigned char> &active) {
   FlowRepCycleInput rebuilt = cycle;
@@ -1185,8 +1362,14 @@ inline FlowRepCycleEvaluation rebuild_cycle_evaluation(
   rebuilt.diskTopology = rebuilt.diskTopology && completeBoundary;
   return evaluate_flow_rep_cycle(rebuilt);
 }
+#else
+FlowRepCycleEvaluation rebuild_cycle_evaluation(
+    const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs,
+    const std::vector<unsigned char> &active);
+#endif
 
-inline bool cycle_input_is_structurally_valid(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool cycle_input_is_structurally_valid(
     const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs) {
   if (cycle.id < 0 || cycle.proposalId < 0 ||
       cycle.sideArcIds.size() < 3U || cycle.sideArcIds.size() > 6U ||
@@ -1252,8 +1435,13 @@ inline bool cycle_input_is_structurally_valid(
   }
   return true;
 }
+#else
+bool cycle_input_is_structurally_valid(
+    const FlowRepCycleInput &cycle, const std::vector<FlowRepArc> &arcs);
+#endif
 
-inline bool cycle_evaluations_are_valid(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool cycle_evaluations_are_valid(
     const std::vector<FlowRepCycleEvaluation> &evaluations) {
   for (const FlowRepCycleEvaluation &cycle : evaluations) {
     if (!cycle.descriptive || !cycle.quadrangulable) {
@@ -1262,6 +1450,10 @@ inline bool cycle_evaluations_are_valid(
   }
   return true;
 }
+#else
+bool cycle_evaluations_are_valid(
+    const std::vector<FlowRepCycleEvaluation> &evaluations);
+#endif
 
 } // namespace flow_rep_detail
 
@@ -1270,7 +1462,8 @@ namespace flow_rep_detail {
 
 using FlowRepLogicalStrandKey = std::tuple<int, int, int, int, int>;
 
-inline FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
   if (arc.mandatoryRail || arc.railId >= 0) {
     return {0, arc.railId, arc.curveId, arc.family, arc.sourceSheet};
   }
@@ -1280,8 +1473,12 @@ inline FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
   return {2, arc.sameStrandHint, arc.family, arc.sourceComponent,
           arc.sourceSheet};
 }
+#else
+FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc);
+#endif
 
-inline std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
                                            const bool start) {
   std::uint64_t h = point_key(start ? arc.start : arc.end);
   const auto mix = [&](const std::int64_t value) {
@@ -1292,8 +1489,13 @@ inline std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
   mix(arc.sourceSheet);
   return h;
 }
+#else
+std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
+                                           const bool start);
+#endif
 
-inline std::vector<FlowRepFlowline> extract_transactional_flowlines(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::vector<FlowRepFlowline> extract_transactional_flowlines(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds) {
   using IncidenceKey = std::pair<FlowRepLogicalStrandKey, std::uint64_t>;
@@ -1422,8 +1624,14 @@ inline std::vector<FlowRepFlowline> extract_transactional_flowlines(
   }
   return result;
 }
+#else
+std::vector<FlowRepFlowline> extract_transactional_flowlines(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds);
+#endif
 
-inline std::map<std::uint64_t, int> protected_endpoint_degrees(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+std::map<std::uint64_t, int> protected_endpoint_degrees(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds) {
   std::map<std::uint64_t, int> degrees;
@@ -1452,8 +1660,14 @@ inline std::map<std::uint64_t, int> protected_endpoint_degrees(
   }
   return degrees;
 }
+#else
+std::map<std::uint64_t, int> protected_endpoint_degrees(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds);
+#endif
 
-inline bool preserves_protected_endpoint_degrees(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+bool preserves_protected_endpoint_degrees(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds,
     const std::map<std::uint64_t, int> &requiredDegrees) {
@@ -1471,8 +1685,15 @@ inline bool preserves_protected_endpoint_degrees(
   }
   return true;
 }
+#else
+bool preserves_protected_endpoint_degrees(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds,
+    const std::map<std::uint64_t, int> &requiredDegrees);
+#endif
 
-inline int count_closed_boundary_cycles(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+int count_closed_boundary_cycles(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<int> &activeArcIds) {
   std::vector<int> boundaryArcIds;
@@ -1544,10 +1765,16 @@ inline int count_closed_boundary_cycles(
   }
   return closedCycles;
 }
+#else
+int count_closed_boundary_cycles(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &activeArcIds);
+#endif
 
 } // namespace flow_rep_detail
 
-inline FlowRepSparseNetwork select_sparse_flow_rep_network(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepSparseNetwork select_sparse_flow_rep_network(
     const std::vector<FlowRepArc> &arcs,
     const std::vector<FlowRepCoverageSample> &coverageSamples = {},
     const std::vector<FlowRepCycleInput> &cycles = {},
@@ -2055,8 +2282,16 @@ inline FlowRepSparseNetwork select_sparse_flow_rep_network(
   network.failureCode = FlowRepSelectionFailureCode::None;
   return network;
 }
+#else
+FlowRepSparseNetwork select_sparse_flow_rep_network(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<FlowRepCoverageSample> &coverageSamples = {},
+    const std::vector<FlowRepCycleInput> &cycles = {},
+    const FlowRepSparseOptions &options = {});
+#endif
 
-inline FlowRepOverlay make_flow_rep_overlay(
+#if defined(DIRECTIONAL_FLOW_REP_STRANDS_IMPLEMENTATION)
+FlowRepOverlay make_flow_rep_overlay(
     const std::vector<FlowRepArc> &arcs, const std::vector<FlowRepStrand> &strands,
     const FlowRepSparseNetwork &network) {
   FlowRepOverlay overlay;
@@ -2095,6 +2330,11 @@ inline FlowRepOverlay make_flow_rep_overlay(
   }
   return overlay;
 }
+#else
+FlowRepOverlay make_flow_rep_overlay(
+    const std::vector<FlowRepArc> &arcs, const std::vector<FlowRepStrand> &strands,
+    const FlowRepSparseNetwork &network);
+#endif
 
 } // namespace directional::geometry
 

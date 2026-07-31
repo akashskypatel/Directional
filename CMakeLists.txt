@@ -129,7 +129,11 @@ add_library(
   directional
   src/core/Library.cpp
   src/fields/CrossField.cpp
+  src/geometry/FlowRepStrands.cpp
+  src/geometry/PureQuadCompletion.cpp
+  src/geometry/SurfaceArrangement.cpp
   src/geometry/SurfaceCellTracing.cpp
+  src/geometry/SurfaceComplexSimplification.cpp
   src/geometry/SurfaceMeshOptimizer.cpp
   src/pipeline/RemeshPipeline.cpp
   src/validation/MeshValidator.cpp

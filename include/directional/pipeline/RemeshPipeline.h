@@ -3456,8 +3456,8 @@ make_source_grid_recovery_target_size(
     const double maxRelaxationRatio);
 #endif
 
-inline double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
-                                            const RemeshOptions &options);
+double derive_absolute_target_length(const Eigen::MatrixXd &vertices,
+                                     const RemeshOptions &options);
 
 /**
  * @brief Runs the full remeshing pipeline on an initialized TriMesh and raw cross field.
