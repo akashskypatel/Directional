@@ -7,15 +7,12 @@
 #ifndef DIRECTIONAL_WRITE_RAW_FIELD_H
 #define DIRECTIONAL_WRITE_RAW_FIELD_H
 
-#include <Eigen/Core>
 #include <string>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fstream>
-#include <directional/core/CartesianField.h>
 
 namespace directional
 {
+
+class CartesianField;
 
 /*** Writes the extrinsic embedding of a directional field in raw format to file
  Input:
@@ -25,33 +22,9 @@ namespace directional
  Output:
  Whether or not the file was written successfully
  ***/
-#if defined(DIRECTIONAL_WRITE_RAW_FIELD_IMPLEMENTATION)
-bool write_raw_field(const std::string fileName,
-                            const directional::CartesianField& rawField,
-                            bool high_precision = false)
-{
-    std::ofstream f(fileName);
-    if (high_precision)
-    {
-        f.flags(std::ios::scientific);
-        f.precision(std::numeric_limits<double>::digits10 + 1);
-    }
-    
-    f << rawField.N << " " << rawField.extField.rows() << std::endl;
-    for (int i=0;i<rawField.extField.rows();i++)
-    {
-        for (int j=0;j<rawField.extField.cols();j++)
-            f << rawField.extField(i,j) << " ";
-        f << std::endl;
-    }
-    f.close();
-    return !f.fail();
-}
-#else
 bool write_raw_field(const std::string fileName,
                             const directional::CartesianField& rawField,
                             bool high_precision = false);
-#endif
 }
 
 #endif
