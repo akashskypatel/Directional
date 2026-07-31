@@ -10,23 +10,28 @@
 #ifndef DIRECTIONAL_MESHING_TRI_FLOW_SIMPLIFICATION_H
 #define DIRECTIONAL_MESHING_TRI_FLOW_SIMPLIFICATION_H
 
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+#include <Eigen/Core>
+
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <limits>
 #include <queue>
 #include <set>
-#include <stdexcept>
-#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
-#include <vector>
 
 #include <Eigen/Dense>
+#endif
 
 /**
  * @file TriFlowSimplification.h
@@ -100,13 +105,18 @@ struct TriFlowSimplificationResult {
 
 namespace detail {
 
-inline std::uint64_t edge_key(const int a, const int b) {
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+std::uint64_t edge_key(const int a, const int b) {
   const auto lo = static_cast<std::uint32_t>(std::min(a, b));
   const auto hi = static_cast<std::uint32_t>(std::max(a, b));
   return (static_cast<std::uint64_t>(lo) << 32u) | hi;
 }
+#else
+std::uint64_t edge_key(const int a, const int b);
+#endif
 
-inline Eigen::Matrix4d plane_quadric(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+Eigen::Matrix4d plane_quadric(const Eigen::RowVector3d &a,
                                      const Eigen::RowVector3d &b,
                                      const Eigen::RowVector3d &c) {
   const Eigen::RowVector3d normal = (b - a).cross(c - a);
@@ -119,8 +129,14 @@ inline Eigen::Matrix4d plane_quadric(const Eigen::RowVector3d &a,
   plane[3] = -plane.head<3>().dot(a.transpose());
   return plane * plane.transpose();
 }
+#else
+Eigen::Matrix4d plane_quadric(const Eigen::RowVector3d &a,
+                                     const Eigen::RowVector3d &b,
+                                     const Eigen::RowVector3d &c);
+#endif
 
-inline Eigen::Matrix4d point_quadric(const Eigen::RowVector3d &point) {
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+Eigen::Matrix4d point_quadric(const Eigen::RowVector3d &point) {
   Eigen::Matrix4d quadric = Eigen::Matrix4d::Zero();
   quadric(0, 0) = 1.0;
   quadric(1, 1) = 1.0;
@@ -131,15 +147,24 @@ inline Eigen::Matrix4d point_quadric(const Eigen::RowVector3d &point) {
   quadric(3, 3) = point.squaredNorm();
   return quadric;
 }
+#else
+Eigen::Matrix4d point_quadric(const Eigen::RowVector3d &point);
+#endif
 
-inline double quadric_error(const Eigen::Matrix4d &quadric,
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+double quadric_error(const Eigen::Matrix4d &quadric,
                             const Eigen::RowVector3d &point) {
   Eigen::Vector4d homogeneous;
   homogeneous << point.x(), point.y(), point.z(), 1.0;
   return homogeneous.dot(quadric * homogeneous);
 }
+#else
+double quadric_error(const Eigen::Matrix4d &quadric,
+                            const Eigen::RowVector3d &point);
+#endif
 
-inline Eigen::RowVector3d best_quadric_position(
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+Eigen::RowVector3d best_quadric_position(
     const Eigen::Matrix4d &quadric,
     const std::vector<Eigen::RowVector3d> &fallbacks) {
   const Eigen::Matrix3d a = quadric.topLeftCorner<3, 3>();
@@ -162,6 +187,11 @@ inline Eigen::RowVector3d best_quadric_position(
   }
   return best;
 }
+#else
+Eigen::RowVector3d best_quadric_position(
+    const Eigen::Matrix4d &quadric,
+    const std::vector<Eigen::RowVector3d> &fallbacks);
+#endif
 
 template <typename Matrix>
 inline void validate_matrix_shape(const Matrix &matrix, const Eigen::Index rows,
@@ -174,6 +204,7 @@ inline void validate_matrix_shape(const Matrix &matrix, const Eigen::Index rows,
   }
 }
 
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
 class TriFlowSimplifier {
 public:
   TriFlowSimplifier(const Eigen::MatrixXd &inputVertices,
@@ -958,15 +989,22 @@ private:
     return faceRow > 0;
   }
 };
+#endif
 
 } // namespace detail
 
-inline TriFlowSimplificationResult
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION)
+TriFlowSimplificationResult
 tri_flow_simplify(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
                   const TriFlowSimplificationOptions &options = {}) {
   detail::TriFlowSimplifier simplifier(vertices, faces, options);
   return simplifier.run();
 }
+#else
+TriFlowSimplificationResult
+tri_flow_simplify(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+                  const TriFlowSimplificationOptions &options = {});
+#endif
 
 } // namespace directional
 

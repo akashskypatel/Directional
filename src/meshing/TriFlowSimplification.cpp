@@ -1,0 +1,2 @@
+#define DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_IMPLEMENTATION
+#include <directional/meshing/TriFlowSimplification.h>

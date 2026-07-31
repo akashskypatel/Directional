@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include <directional/core/TriMesh.h>
-#include <directional/meshing/GenerateMesh.h>
 #include <directional/meshing/MesherData.h>
+#include <directional/meshing/NFunctionMesher.h>
 
 namespace directional {
 

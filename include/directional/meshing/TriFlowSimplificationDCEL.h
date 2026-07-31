@@ -131,10 +131,14 @@ struct TriFlowSimplificationDCELResult {
 
 namespace detail {
 
-inline EVector3 triflow_dcel_exact_from_double(const Eigen::RowVector3d &p) {
+#if defined(DIRECTIONAL_TRI_FLOW_SIMPLIFICATION_DCEL_IMPLEMENTATION)
+EVector3 triflow_dcel_exact_from_double(const Eigen::RowVector3d &p) {
   return EVector3{ENumber(p.x(), 1e-9), ENumber(p.y(), 1e-9),
                   ENumber(p.z(), 1e-9)};
 }
+#else
+EVector3 triflow_dcel_exact_from_double(const Eigen::RowVector3d &p);
+#endif
 
 template <typename FunctionDCEL> class TriFlowDCELSimplifier {
 public:

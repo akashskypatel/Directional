@@ -176,8 +176,12 @@ add_library(
   src/integration/Integrate.cpp
   src/integration/ParametrizationQuality.cpp
   src/integration/SetupIntegration.cpp
+  src/meshing/GenerateMesh.cpp
   src/meshing/Mesher.cpp
+  src/meshing/PatchRegion.cpp
   src/meshing/SetupMesher.cpp
+  src/meshing/TriFlowSimplification.cpp
+  src/meshing/TriFlowSimplificationDCEL.cpp
   src/pipeline/ParallelRemeshPipeline.cpp
   src/pipeline/RemeshPipeline.cpp
   src/validation/MeshValidator.cpp
@@ -207,7 +211,9 @@ target_compile_features(directional PUBLIC cxx_std_20)
 if(MSVC)
   set_source_files_properties(
     src/integration/Integrate.cpp
+    src/meshing/GenerateMesh.cpp
     src/meshing/Mesher.cpp
+    src/meshing/TriFlowSimplification.cpp
     PROPERTIES COMPILE_OPTIONS "/bigobj")
 endif()
 

@@ -42,13 +42,15 @@
 
 namespace directional {
 
+#if defined(DIRECTIONAL_GENERATE_MESH_IMPLEMENTATION)
+
 // arranging a line set on a triangle
 // triangle is represented by a 3x2 matrix of (CCW) coordinates
 // lines are Nx4 matrices of (origin, direction).
 // line data is an integer associated with data on the line that gets inherited
 // to the halfedges output is the DCEL of the result Outer face is deleted in
 // post-process
-inline void NFunctionMesher::arrange_on_triangle(
+void NFunctionMesher::arrange_on_triangle(
     const std::vector<EVector2> &triangle,
     const std::vector<std::pair<int, bool>> &triangleData,
     const std::vector<LinePencil> &linePencils,
@@ -364,7 +366,7 @@ inline void NFunctionMesher::arrange_on_triangle(
                       pencilPairHasPointIntersections, V, triDcel);
 }
 
-inline void NFunctionMesher::segment_arrangement(
+void NFunctionMesher::segment_arrangement(
     const std::vector<Segment2> &segments, const std::vector<SegmentData> &data,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 2> &I2dts,
     const Eigen::Matrix<ENumber, Eigen::Dynamic, 1> &t00s,
@@ -1171,7 +1173,7 @@ edgeData = newEdgeData;
 }
 
 // The top mesh generation function
-inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7) {
+void NFunctionMesher::generate_mesh(const unsigned long resolution) {
 
   using namespace std;
   using namespace Eigen;
@@ -1477,6 +1479,8 @@ inline void NFunctionMesher::generate_mesh(const unsigned long resolution = 1e7)
         "NFunctionMesher::generate_mesh(): generated DCEL is inconsistent");
   }
 }
+
+#endif
 
 } // namespace directional
 
