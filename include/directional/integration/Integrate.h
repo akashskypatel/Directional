@@ -10,6 +10,9 @@
 #ifndef DIRECTIONAL_INTEGRATION_INTEGRATE_H
 #define DIRECTIONAL_INTEGRATION_INTEGRATE_H
 
+#include <Eigen/Core>
+
+#if defined(DIRECTIONAL_INTEGRATE_IMPLEMENTATION)
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -24,7 +27,8 @@
 #include <type_traits>
 #include <vector>
 
-#include <Eigen/Core>
+#include <Eigen/SparseLU>
+#include <Eigen/SparseQR>
 
 #include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
@@ -37,7 +41,6 @@
 #include <directional/integration/solvers/AdaptiveKktSolver.h>
 #include <directional/integration/solvers/CuDssSolver.h>
 #include <directional/integration/solvers/PardisoSolver.h>
-#include <directional/integration/SetupIntegration.h>
 #include <directional/util/GraphUtils.h>
 
 #ifdef USE_SUITESPARSE_ENABLED
@@ -49,8 +52,6 @@
 #error "USE_SUITESPARSE_ENABLED is defined, but umfpack.h was not found"
 #endif
 #endif
-#include <Eigen/SparseLU>
-#include <Eigen/SparseQR>
 
 #ifdef USE_SUITESPARSE_ENABLED
 #ifndef DIRECTIONAL_UMFPACK_ORDERING
@@ -65,6 +66,13 @@
 #define DIRECTIONAL_UMFPACK_SCALE UMFPACK_SCALE_SUM
 #endif
 #endif
+#endif // DIRECTIONAL_INTEGRATE_IMPLEMENTATION
+
+namespace directional {
+class CartesianField;
+class TriMesh;
+struct IntegrationData;
+} // namespace directional
 
 
 /**
@@ -89,7 +97,8 @@ namespace directional {
 //  NFunction:          #cV x N parameterization functions per cut vertex (full
 //  version with all symmetries unpacked) NCornerFunctions   (3*N) x #F
 //  parameterization functions per corner of whole mesh
-inline bool
+#if defined(DIRECTIONAL_INTEGRATE_IMPLEMENTATION)
+bool
 integrate(const directional::CartesianField &field, IntegrationData &intData,
           const directional::TriMesh &meshCut, Eigen::MatrixXd &NFunction,
           Eigen::MatrixXd &NCornerFunctions)
@@ -2359,6 +2368,12 @@ struct IterativeSolveTimings {
 
   return success;
 }
+#else
+bool
+integrate(const directional::CartesianField &field, IntegrationData &intData,
+          const directional::TriMesh &meshCut, Eigen::MatrixXd &NFunction,
+          Eigen::MatrixXd &NCornerFunctions);
+#endif
 
 } // namespace directional
 

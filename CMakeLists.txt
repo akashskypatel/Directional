@@ -135,6 +135,10 @@ add_library(
   src/geometry/SurfaceCellTracing.cpp
   src/geometry/SurfaceComplexSimplification.cpp
   src/geometry/SurfaceMeshOptimizer.cpp
+  src/integration/Integrate.cpp
+  src/integration/SetupIntegration.cpp
+  src/meshing/Mesher.cpp
+  src/meshing/SetupMesher.cpp
   src/pipeline/RemeshPipeline.cpp
   src/validation/MeshValidator.cpp
   src/validation/SourceAuthoritativeMeshValidator.cpp)
@@ -158,6 +162,13 @@ target_include_directories(
          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_compile_features(directional PUBLIC cxx_std_20)
+
+if(MSVC)
+  set_source_files_properties(
+    src/integration/Integrate.cpp
+    src/meshing/Mesher.cpp
+    PROPERTIES COMPILE_OPTIONS "/bigobj")
+endif()
 
 if(DIRECTIONAL_ENABLE_PARDISO)
   include(DirectionalDependenciesPARDISO)
