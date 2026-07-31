@@ -186,7 +186,8 @@ namespace compare_detail {
 inline constexpr double pi = std::numbers::pi_v<double>;
 inline constexpr int crossFieldDegree = 4;
 
-inline void validate_mesh(const Eigen::MatrixXd &V, const Eigen::MatrixXi &F) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void validate_mesh(const Eigen::MatrixXd &V, const Eigen::MatrixXi &F) {
   if (V.cols() != 3) {
     throw std::runtime_error("Mesh vertex matrix must have three columns.");
   }
@@ -197,8 +198,12 @@ inline void validate_mesh(const Eigen::MatrixXd &V, const Eigen::MatrixXi &F) {
     throw std::runtime_error("Mesh vertices contain non-finite values.");
   }
 }
+#else
+void validate_mesh(const Eigen::MatrixXd &V, const Eigen::MatrixXi &F);
+#endif
 
-inline void validate_field(const Eigen::MatrixXd &field,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void validate_field(const Eigen::MatrixXd &field,
                            const Eigen::Index faceCount,
                            const std::string &name) {
   if (field.rows() != faceCount) {
@@ -212,8 +217,14 @@ inline void validate_field(const Eigen::MatrixXd &field,
     throw std::runtime_error(name + " contains non-finite values.");
   }
 }
+#else
+void validate_field(const Eigen::MatrixXd &field,
+                           const Eigen::Index faceCount,
+                           const std::string &name);
+#endif
 
-inline Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value,
                                          const char *context) {
   const double norm = value.norm();
   if (!std::isfinite(norm) || norm <= 1e-30) {
@@ -222,8 +233,13 @@ inline Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value,
   }
   return value / norm;
 }
+#else
+Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value,
+                                         const char *context);
+#endif
 
-inline void compute_face_geometry(const Eigen::MatrixXd &V,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void compute_face_geometry(const Eigen::MatrixXd &V,
                                   const Eigen::MatrixXi &F,
                                   Eigen::MatrixXd &normals,
                                   Eigen::MatrixXd &basisX,
@@ -256,16 +272,30 @@ inline void compute_face_geometry(const Eigen::MatrixXd &V,
     areas(face) = 0.5 * doubleArea;
   }
 }
+#else
+void compute_face_geometry(const Eigen::MatrixXd &V,
+                                  const Eigen::MatrixXi &F,
+                                  Eigen::MatrixXd &normals,
+                                  Eigen::MatrixXd &basisX,
+                                  Eigen::MatrixXd &basisY,
+                                  Eigen::MatrixXd &centers,
+                                  Eigen::VectorXd &areas);
+#endif
 
-inline std::complex<double> normalized_complex(std::complex<double> value) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::complex<double> normalized_complex(std::complex<double> value) {
   const double magnitude = std::abs(value);
   if (!std::isfinite(magnitude) || magnitude <= 1e-30) {
     return {1.0, 0.0};
   }
   return value / magnitude;
 }
+#else
+std::complex<double> normalized_complex(std::complex<double> value);
+#endif
 
-inline std::complex<double> direction_q4(const Eigen::RowVector3d &direction,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::complex<double> direction_q4(const Eigen::RowVector3d &direction,
                                          const Eigen::RowVector3d &basisX,
                                          const Eigen::RowVector3d &basisY) {
   const Eigen::RowVector3d unit = normalized_row(direction, "field direction");
@@ -273,8 +303,14 @@ inline std::complex<double> direction_q4(const Eigen::RowVector3d &direction,
   const std::complex<double> q = normalized_complex(z);
   return q * q * q * q;
 }
+#else
+std::complex<double> direction_q4(const Eigen::RowVector3d &direction,
+                                         const Eigen::RowVector3d &basisX,
+                                         const Eigen::RowVector3d &basisY);
+#endif
 
-inline Eigen::VectorXcd field_q4(const Eigen::MatrixXd &field,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+Eigen::VectorXcd field_q4(const Eigen::MatrixXd &field,
                                  const Eigen::MatrixXd &basisX,
                                  const Eigen::MatrixXd &basisY) {
   Eigen::VectorXcd q4(field.rows());
@@ -284,8 +320,14 @@ inline Eigen::VectorXcd field_q4(const Eigen::MatrixXd &field,
   }
   return q4;
 }
+#else
+Eigen::VectorXcd field_q4(const Eigen::MatrixXd &field,
+                                 const Eigen::MatrixXd &basisX,
+                                 const Eigen::MatrixXd &basisY);
+#endif
 
-inline Eigen::MatrixXd raw_cross_field(const Eigen::MatrixXd &field) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+Eigen::MatrixXd raw_cross_field(const Eigen::MatrixXd &field) {
   if (field.cols() == 12) {
     return field;
   }
@@ -296,8 +338,12 @@ inline Eigen::MatrixXd raw_cross_field(const Eigen::MatrixXd &field) {
   raw.middleCols<3>(9) = -field.middleCols<3>(3);
   return raw;
 }
+#else
+Eigen::MatrixXd raw_cross_field(const Eigen::MatrixXd &field);
+#endif
 
-inline double percentile_sorted(const std::vector<double> &sorted,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+double percentile_sorted(const std::vector<double> &sorted,
                                 const double percentile) {
   if (sorted.empty()) {
     return 0.0;
@@ -309,8 +355,13 @@ inline double percentile_sorted(const std::vector<double> &sorted,
   const double fraction = position - static_cast<double>(lower);
   return sorted[lower] * (1.0 - fraction) + sorted[upper] * fraction;
 }
+#else
+double percentile_sorted(const std::vector<double> &sorted,
+                                const double percentile);
+#endif
 
-inline ScalarDistributionStats scalar_stats(const Eigen::VectorXd &values,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+ScalarDistributionStats scalar_stats(const Eigen::VectorXd &values,
                                             const Eigen::VectorXd &weights) {
   ScalarDistributionStats stats;
   if (values.size() == 0) {
@@ -352,8 +403,13 @@ inline ScalarDistributionStats scalar_stats(const Eigen::VectorXd &values,
   }
   return stats;
 }
+#else
+ScalarDistributionStats scalar_stats(const Eigen::VectorXd &values,
+                                            const Eigen::VectorXd &weights);
+#endif
 
-inline ScalarDistributionStats scalar_stats(const std::vector<double> &values) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+ScalarDistributionStats scalar_stats(const std::vector<double> &values) {
   if (values.empty()) {
     return {};
   }
@@ -364,9 +420,13 @@ inline ScalarDistributionStats scalar_stats(const std::vector<double> &values) {
   }
   return scalar_stats(eigenValues, weights);
 }
+#else
+ScalarDistributionStats scalar_stats(const std::vector<double> &values);
+#endif
 
 
-inline ScalarDistributionStats masked_scalar_stats(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+ScalarDistributionStats masked_scalar_stats(
     const Eigen::VectorXd &values, const Eigen::VectorXd &weights,
     const Eigen::VectorXi &valid) {
   if (values.size() != valid.size()) {
@@ -397,8 +457,14 @@ inline ScalarDistributionStats masked_scalar_stats(
   }
   return scalar_stats(filteredValues, filteredWeights);
 }
+#else
+ScalarDistributionStats masked_scalar_stats(
+    const Eigen::VectorXd &values, const Eigen::VectorXd &weights,
+    const Eigen::VectorXi &valid);
+#endif
 
-inline ShapeOperatorAlignmentStats shape_operator_stats(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+ShapeOperatorAlignmentStats shape_operator_stats(
     const ShapeOperatorAlignmentResult &alignment) {
   ShapeOperatorAlignmentStats stats;
   stats.validFaceCount = alignment.validFaceCount;
@@ -410,8 +476,13 @@ inline ShapeOperatorAlignmentStats shape_operator_stats(
       alignment.normalizedEnergy, alignment.weights, alignment.valid);
   return stats;
 }
+#else
+ShapeOperatorAlignmentStats shape_operator_stats(
+    const ShapeOperatorAlignmentResult &alignment);
+#endif
 
-inline double average_edge_length(const Eigen::MatrixXd &V,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+double average_edge_length(const Eigen::MatrixXd &V,
                                   const Eigen::MatrixXi &F) {
   double total = 0.0;
   Eigen::Index count = 0;
@@ -425,8 +496,13 @@ inline double average_edge_length(const Eigen::MatrixXd &V,
   }
   return count > 0 ? total / static_cast<double>(count) : 1.0;
 }
+#else
+double average_edge_length(const Eigen::MatrixXd &V,
+                                  const Eigen::MatrixXi &F);
+#endif
 
-inline Eigen::VectorXd vertex_area_weights(const Eigen::MatrixXi &F,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+Eigen::VectorXd vertex_area_weights(const Eigen::MatrixXi &F,
                                            const Eigen::VectorXd &faceAreas,
                                            const Eigen::Index vertexCount) {
   Eigen::VectorXd weights = Eigen::VectorXd::Zero(vertexCount);
@@ -438,8 +514,14 @@ inline Eigen::VectorXd vertex_area_weights(const Eigen::MatrixXi &F,
   }
   return weights;
 }
+#else
+Eigen::VectorXd vertex_area_weights(const Eigen::MatrixXi &F,
+                                           const Eigen::VectorXd &faceAreas,
+                                           const Eigen::Index vertexCount);
+#endif
 
-inline CrossFieldTopologyStats
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+CrossFieldTopologyStats
 topology_stats(const PCFaceTangentBundle &tangentBundle,
                const Eigen::Index vertexCount,
                const Eigen::MatrixXd &field) {
@@ -470,8 +552,15 @@ topology_stats(const PCFaceTangentBundle &tangentBundle,
   }
   return stats;
 }
+#else
+CrossFieldTopologyStats
+topology_stats(const PCFaceTangentBundle &tangentBundle,
+               const Eigen::Index vertexCount,
+               const Eigen::MatrixXd &field);
+#endif
 
-inline CrossFieldTopologyComparison topology_comparison(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+CrossFieldTopologyComparison topology_comparison(
     const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
     const Eigen::VectorXd &faceAreas, const Eigen::MatrixXd &firstField,
     const Eigen::MatrixXd &secondField) {
@@ -550,6 +639,12 @@ inline CrossFieldTopologyComparison topology_comparison(
   result.available = true;
   return result;
 }
+#else
+CrossFieldTopologyComparison topology_comparison(
+    const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
+    const Eigen::VectorXd &faceAreas, const Eigen::MatrixXd &firstField,
+    const Eigen::MatrixXd &secondField);
+#endif
 
 struct InteriorEdge {
   Eigen::Index firstFace = -1;
@@ -558,7 +653,8 @@ struct InteriorEdge {
   int secondVertex = -1;
 };
 
-inline std::vector<InteriorEdge> interior_edges(const Eigen::MatrixXi &F) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::vector<InteriorEdge> interior_edges(const Eigen::MatrixXi &F) {
   std::map<std::pair<int, int>, Eigen::Index> edgeToFace;
   std::vector<InteriorEdge> edges;
   for (Eigen::Index face = 0; face < F.rows(); ++face) {
@@ -577,8 +673,12 @@ inline std::vector<InteriorEdge> interior_edges(const Eigen::MatrixXi &F) {
   }
   return edges;
 }
+#else
+std::vector<InteriorEdge> interior_edges(const Eigen::MatrixXi &F);
+#endif
 
-inline CrossFieldSmoothnessStats smoothness_stats(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+CrossFieldSmoothnessStats smoothness_stats(
     const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
     const Eigen::MatrixXd &basisX, const Eigen::MatrixXd &basisY,
     const Eigen::VectorXd &areas, const Eigen::VectorXcd &q4) {
@@ -623,8 +723,15 @@ inline CrossFieldSmoothnessStats smoothness_stats(
                                                 : 0.0;
   return stats;
 }
+#else
+CrossFieldSmoothnessStats smoothness_stats(
+    const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
+    const Eigen::MatrixXd &basisX, const Eigen::MatrixXd &basisY,
+    const Eigen::VectorXd &areas, const Eigen::VectorXcd &q4);
+#endif
 
-inline HighErrorComponents high_error_components(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+HighErrorComponents high_error_components(
     const Eigen::MatrixXi &F, const Eigen::VectorXd &areas,
     const Eigen::MatrixXd &centers,
     const Eigen::VectorXd &deviationDegrees, const double thresholdDegrees) {
@@ -708,8 +815,15 @@ inline HighErrorComponents high_error_components(
   }
   return result;
 }
+#else
+HighErrorComponents high_error_components(
+    const Eigen::MatrixXi &F, const Eigen::VectorXd &areas,
+    const Eigen::MatrixXd &centers,
+    const Eigen::VectorXd &deviationDegrees, const double thresholdDegrees);
+#endif
 
-inline std::array<unsigned char, 3> heatmap_color(double value,
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::array<unsigned char, 3> heatmap_color(double value,
                                                   double maximumDegrees) {
   const double t = std::clamp(value / std::max(maximumDegrees, 1e-30), 0.0, 1.0);
   if (t < 0.5) {
@@ -723,8 +837,13 @@ inline std::array<unsigned char, 3> heatmap_color(double value,
           static_cast<unsigned char>(std::round(255.0 * (1.0 - u))),
           0};
 }
+#else
+std::array<unsigned char, 3> heatmap_color(double value,
+                                                  double maximumDegrees);
+#endif
 
-inline void write_json_string(std::ostream &stream, const std::string &value) {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void write_json_string(std::ostream &stream, const std::string &value) {
   stream << '"';
   for (const unsigned char character : value) {
     switch (character) {
@@ -761,8 +880,12 @@ inline void write_json_string(std::ostream &stream, const std::string &value) {
   }
   stream << '"';
 }
+#else
+void write_json_string(std::ostream &stream, const std::string &value);
+#endif
 
-inline std::string utc_timestamp() {
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::string utc_timestamp() {
   const std::time_t time = std::chrono::system_clock::to_time_t(
       std::chrono::system_clock::now());
   std::tm utc{};
@@ -775,10 +898,14 @@ inline std::string utc_timestamp() {
   stream << std::put_time(&utc, "%Y-%m-%dT%H:%M:%SZ");
   return stream.str();
 }
+#else
+std::string utc_timestamp();
+#endif
 
 } // namespace compare_detail
 
-inline CrossFieldComparisonResult compare_cross_fields(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+CrossFieldComparisonResult compare_cross_fields(
     const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
     const Eigen::MatrixXd &firstField, const Eigen::MatrixXd &secondField,
     const CrossFieldComparisonOptions &options = {}) {
@@ -880,8 +1007,15 @@ inline CrossFieldComparisonResult compare_cross_fields(
   }
   return result;
 }
+#else
+CrossFieldComparisonResult compare_cross_fields(
+    const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
+    const Eigen::MatrixXd &firstField, const Eigen::MatrixXd &secondField,
+    const CrossFieldComparisonOptions &options = {});
+#endif
 
-inline void write_cross_field_comparison_csv(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void write_cross_field_comparison_csv(
     const std::filesystem::path &path, const CrossFieldComparisonResult &result) {
   if (!path.parent_path().empty()) {
     std::filesystem::create_directories(path.parent_path());
@@ -924,8 +1058,13 @@ inline void write_cross_field_comparison_csv(
     stream << '\n';
   }
 }
+#else
+void write_cross_field_comparison_csv(
+    const std::filesystem::path &path, const CrossFieldComparisonResult &result);
+#endif
 
-inline void write_cross_field_comparison_ply(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void write_cross_field_comparison_ply(
     const std::filesystem::path &path, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F, const CrossFieldComparisonResult &result,
     const double maximumDegrees = 45.0) {
@@ -959,8 +1098,15 @@ inline void write_cross_field_comparison_ply(
     stream << "3 " << base << ' ' << base + 1 << ' ' << base + 2 << '\n';
   }
 }
+#else
+void write_cross_field_comparison_ply(
+    const std::filesystem::path &path, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F, const CrossFieldComparisonResult &result,
+    const double maximumDegrees = 45.0);
+#endif
 
-inline void write_cross_field_comparison_json(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+void write_cross_field_comparison_json(
     const std::filesystem::path &path, const CrossFieldComparisonResult &result,
     const CrossFieldComparisonReportMetadata &metadata = {}) {
   if (!path.parent_path().empty()) {
@@ -1259,8 +1405,14 @@ inline void write_cross_field_comparison_json(
   write_string_field("heatmap_ply", metadata.heatmapPath, 4, false);
   stream << "  }\n}\n";
 }
+#else
+void write_cross_field_comparison_json(
+    const std::filesystem::path &path, const CrossFieldComparisonResult &result,
+    const CrossFieldComparisonReportMetadata &metadata = {});
+#endif
 
-inline CrossFieldComparisonReportPaths write_cross_field_comparison_report(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+CrossFieldComparisonReportPaths write_cross_field_comparison_report(
     const std::filesystem::path &requestedPath, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F, const CrossFieldComparisonResult &result,
     const CrossFieldComparisonReportMetadata &metadata = {},
@@ -1288,8 +1440,16 @@ inline CrossFieldComparisonReportPaths write_cross_field_comparison_report(
   write_cross_field_comparison_json(paths.json, result, reportMetadata);
   return paths;
 }
+#else
+CrossFieldComparisonReportPaths write_cross_field_comparison_report(
+    const std::filesystem::path &requestedPath, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F, const CrossFieldComparisonResult &result,
+    const CrossFieldComparisonReportMetadata &metadata = {},
+    const double maximumDegrees = 45.0);
+#endif
 
-inline std::string summarize_cross_field_comparison(
+#if defined(DIRECTIONAL_COMPARE_CROSS_FIELDS_IMPLEMENTATION)
+std::string summarize_cross_field_comparison(
     const CrossFieldComparisonResult &result) {
   std::ostringstream stream;
   stream << std::setprecision(6);
@@ -1332,6 +1492,10 @@ inline std::string summarize_cross_field_comparison(
   }
   return stream.str();
 }
+#else
+std::string summarize_cross_field_comparison(
+    const CrossFieldComparisonResult &result);
+#endif
 
 } // namespace directional::fields
 

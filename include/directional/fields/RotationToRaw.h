@@ -24,7 +24,8 @@ namespace directional
  field:          The raw Cartesian field.
  ***/
 
-inline void rotation_to_raw(const TangentBundle& tb,
+#if defined(DIRECTIONAL_ROTATION_TO_RAW_IMPLEMENTATION)
+void rotation_to_raw(const TangentBundle& tb,
                             const Eigen::VectorXd& rotationAngles,
                             const int N,
                             const double globalRotation,
@@ -74,6 +75,13 @@ inline void rotation_to_raw(const TangentBundle& tb,
     //constructing raw intField
     field.set_intrinsic_field(intField);
 }
+#else
+void rotation_to_raw(const TangentBundle& tb,
+                            const Eigen::VectorXd& rotationAngles,
+                            const int N,
+                            const double globalRotation,
+                            directional::CartesianField& field);
+#endif
 }
 
 #endif

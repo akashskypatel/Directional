@@ -130,12 +130,18 @@ struct AlignmentEnergyBreakdown {
   }
 };
 
-inline std::size_t constraint_type_index(
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+std::size_t constraint_type_index(
     const RegularizedCrossFieldConstraintType type) {
   return static_cast<std::size_t>(static_cast<int>(type));
 }
+#else
+std::size_t constraint_type_index(
+    const RegularizedCrossFieldConstraintType type);
+#endif
 
-inline double constraint_group_weight(
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+double constraint_group_weight(
     const RegularizedCurvatureCrossFieldOptions &options,
     const RegularizedCrossFieldConstraintType type) {
   switch (type) {
@@ -148,8 +154,14 @@ inline double constraint_group_weight(
   }
   return 0.0;
 }
+#else
+double constraint_group_weight(
+    const RegularizedCurvatureCrossFieldOptions &options,
+    const RegularizedCrossFieldConstraintType type);
+#endif
 
-inline double &constraint_group_energy(
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+double &constraint_group_energy(
     AlignmentEnergyBreakdown &energy,
     const RegularizedCrossFieldConstraintType type) {
   switch (type) {
@@ -162,8 +174,14 @@ inline double &constraint_group_energy(
   }
   return energy.curvature;
 }
+#else
+double &constraint_group_energy(
+    AlignmentEnergyBreakdown &energy,
+    const RegularizedCrossFieldConstraintType type);
+#endif
 
-inline Eigen::Vector3d transport_proxy_direction_to_original(
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+Eigen::Vector3d transport_proxy_direction_to_original(
     const Eigen::Vector3d &direction,
     const Eigen::Vector3d &proxyNormal,
     const Eigen::Vector3d &originalNormal) {
@@ -177,8 +195,15 @@ inline Eigen::Vector3d transport_proxy_direction_to_original(
   }
   return transported / norm;
 }
+#else
+Eigen::Vector3d transport_proxy_direction_to_original(
+    const Eigen::Vector3d &direction,
+    const Eigen::Vector3d &proxyNormal,
+    const Eigen::Vector3d &originalNormal);
+#endif
 
-inline Eigen::Vector3d projected_edge_direction(const TriMesh &mesh,
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+Eigen::Vector3d projected_edge_direction(const TriMesh &mesh,
                                                 const int edge,
                                                 const int face) {
   Eigen::Vector3d direction =
@@ -192,8 +217,14 @@ inline Eigen::Vector3d projected_edge_direction(const TriMesh &mesh,
   }
   return direction / norm;
 }
+#else
+Eigen::Vector3d projected_edge_direction(const TriMesh &mesh,
+                                                const int edge,
+                                                const int face);
+#endif
 
-inline bool is_sharp_edge(const TriMesh &mesh, const int edge,
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+bool is_sharp_edge(const TriMesh &mesh, const int edge,
                           const double thresholdDegrees) {
   const int firstFace = mesh.EF(edge, 0);
   const int secondFace = mesh.EF(edge, 1);
@@ -205,8 +236,13 @@ inline bool is_sharp_edge(const TriMesh &mesh, const int edge,
   return mesh.faceNormals.row(firstFace).dot(
              mesh.faceNormals.row(secondFace)) < thresholdCosine;
 }
+#else
+bool is_sharp_edge(const TriMesh &mesh, const int edge,
+                          const double thresholdDegrees);
+#endif
 
-inline Complex degree_four_target(const TriMesh &mesh, const int face,
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+Complex degree_four_target(const TriMesh &mesh, const int face,
                                   const Eigen::Vector3d &direction) {
   Complex intrinsic(direction.dot(mesh.FBx.row(face).transpose()),
                     direction.dot(mesh.FBy.row(face).transpose()));
@@ -218,8 +254,13 @@ inline Complex degree_four_target(const TriMesh &mesh, const int face,
   intrinsic /= magnitude;
   return std::pow(intrinsic, kCrossFieldDegree);
 }
+#else
+Complex degree_four_target(const TriMesh &mesh, const int face,
+                                  const Eigen::Vector3d &direction);
+#endif
 
-inline Eigen::VectorXcd solve_aligned_power_field(
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+Eigen::VectorXcd solve_aligned_power_field(
     const TriMesh &mesh, const PCFaceTangentBundle &tangentBundle,
     const std::vector<AlignmentConstraint> &constraints,
     const RegularizedCurvatureCrossFieldOptions &options,
@@ -361,8 +402,16 @@ inline Eigen::VectorXcd solve_aligned_power_field(
   }
   return power;
 }
+#else
+Eigen::VectorXcd solve_aligned_power_field(
+    const TriMesh &mesh, const PCFaceTangentBundle &tangentBundle,
+    const std::vector<AlignmentConstraint> &constraints,
+    const RegularizedCurvatureCrossFieldOptions &options,
+    double &smoothnessEnergy, AlignmentEnergyBreakdown &alignmentEnergy);
+#endif
 
-inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
                                      const Eigen::VectorXcd &power,
                                      const bool normalizeDirections) {
   Eigen::MatrixXcd roots(tangentBundle.numSpaces, kCrossFieldDegree);
@@ -396,6 +445,11 @@ inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
   rawField.set_intrinsic_field(intrinsic);
   return rawField;
 }
+#else
+CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
+                                     const Eigen::VectorXcd &power,
+                                     const bool normalizeDirections);
+#endif
 
 } // namespace regularized_cross_field_detail
 
@@ -403,7 +457,8 @@ inline CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
  * @brief Computes a smooth 4-RoSy field aligned to curvature, boundary edges,
  *        and sharp feature edges of a fidelity-preserving regularized proxy.
  */
-inline RegularizedCurvatureCrossFieldResult
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+RegularizedCurvatureCrossFieldResult
 extract_regularized_curvature_cross_field(
     const TriMesh &mesh,
     const RegularizedCurvatureCrossFieldOptions &options = {}) {
@@ -622,11 +677,18 @@ extract_regularized_curvature_cross_field(
   result.alignmentEnergy = alignmentEnergy.total();
   return result;
 }
+#else
+RegularizedCurvatureCrossFieldResult
+extract_regularized_curvature_cross_field(
+    const TriMesh &mesh,
+    const RegularizedCurvatureCrossFieldOptions &options = {});
+#endif
 
 /**
  * @brief Array-based overload for regularized curvature cross-field extraction.
  */
-inline RegularizedCurvatureCrossFieldResult
+#if defined(DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION)
+RegularizedCurvatureCrossFieldResult
 extract_regularized_curvature_cross_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const RegularizedCurvatureCrossFieldOptions &options = {}) {
@@ -634,6 +696,12 @@ extract_regularized_curvature_cross_field(
   mesh.set_mesh(vertices, faces);
   return extract_regularized_curvature_cross_field(mesh, options);
 }
+#else
+RegularizedCurvatureCrossFieldResult
+extract_regularized_curvature_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const RegularizedCurvatureCrossFieldOptions &options = {});
+#endif
 
 } // namespace directional::fields
 

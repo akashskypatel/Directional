@@ -35,7 +35,8 @@ namespace directional
 // Output:
 //  pvField: the computer field (returned in the input parameter)
 //  pvData:  Updated structure with all operators
-inline void polyvector_precompute(directional::CartesianField& pvField,
+#if defined(DIRECTIONAL_POLY_VECTOR_FIELD_IMPLEMENTATION)
+void polyvector_precompute(directional::CartesianField& pvField,
                                   PolyVectorData& pvData)
 {
     
@@ -256,6 +257,10 @@ inline void polyvector_precompute(directional::CartesianField& pvField,
     pvData.WAlign.resize(rowCounter,rowCounter);
     pvData.WAlign.setFromTriplets(WAlignTriplets.begin(), WAlignTriplets.end());
 }
+#else
+void polyvector_precompute(directional::CartesianField& pvField,
+                                  PolyVectorData& pvData);
+#endif
 
 
 // Computes a polyvector field on the entire mesh, where precomputation has taken place.
@@ -263,7 +268,8 @@ inline void polyvector_precompute(directional::CartesianField& pvField,
 //  PolyVectorData: The data structure which should have been initialized with polyvector_precompute()
 // Outputs:
 //  pvField: a POLYVECTOR_FIELD type cartesian field object
-inline void polyvector_field(PolyVectorData& pvData,
+#if defined(DIRECTIONAL_POLY_VECTOR_FIELD_IMPLEMENTATION)
+void polyvector_field(PolyVectorData& pvData,
                              directional::CartesianField& pvField)
 {
     using namespace std;
@@ -335,6 +341,10 @@ inline void polyvector_field(PolyVectorData& pvData,
         assert(pvData.implicitSolver.info() == Success && "Implicit factorization failed!");
     }
 }
+#else
+void polyvector_field(PolyVectorData& pvData,
+                             directional::CartesianField& pvField);
+#endif
 
 
 // Computes iterations of the extended PolyVector algorithm, which includes a single implicit step and running the set of projection iteration functions by order once.
@@ -346,7 +356,8 @@ inline void polyvector_field(PolyVectorData& pvData,
 //  numIterations: how many iterations (of everyting) to run
 // Outputs:
 //  pvField: a POLYVECTOR_FIELD type cartesian field object
-inline void polyvector_iterate(PolyVectorData& pvData,
+#if defined(DIRECTIONAL_POLY_VECTOR_FIELD_IMPLEMENTATION)
+void polyvector_iterate(PolyVectorData& pvData,
                                directional::CartesianField& pvField,
                                const std::vector<directional::PvIterationFunction> iterationFunctions,
                                const int numIterations = 1,
@@ -441,6 +452,13 @@ inline void polyvector_iterate(PolyVectorData& pvData,
         }
     }
 }
+#else
+void polyvector_iterate(PolyVectorData& pvData,
+                               directional::CartesianField& pvField,
+                               const std::vector<directional::PvIterationFunction> iterationFunctions,
+                               const int numIterations = 1,
+                               const directional::PvTerminationFunction terminationFunction = directional::default_termination);
+#endif
 
 }
 

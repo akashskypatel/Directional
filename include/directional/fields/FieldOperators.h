@@ -32,7 +32,8 @@ namespace directional {
 /// @param mesh The mesh to compute the gradient for.
 /// @param N The number of folds (symmetry order).
 /// @param G The resulting gradient matrix.
-inline void branched_gradient(const TriMesh &mesh, const int N,
+#if defined(DIRECTIONAL_FIELD_OPERATORS_IMPLEMENTATION)
+void branched_gradient(const TriMesh &mesh, const int N,
                               Eigen::SparseMatrix<double> &G) {
 
   using namespace Eigen;
@@ -59,6 +60,10 @@ inline void branched_gradient(const TriMesh &mesh, const int N,
   G.conservativeResize(3 * N * mesh.F.rows(), N * mesh.V.rows());
   G.setFromTriplets(GTri.begin(), GTri.end());
 }
+#else
+void branched_gradient(const TriMesh &mesh, const int N,
+                              Eigen::SparseMatrix<double> &G);
+#endif
 
 } // namespace directional
 

@@ -23,7 +23,8 @@ namespace directional {
 
 //Aiding functions
 
-inline void multiply_polynomials(Eigen::RowVectorXcd &p1,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void multiply_polynomials(Eigen::RowVectorXcd &p1,
                                  const Eigen::RowVectorXcd &p2) {
     Eigen::RowVectorXcd newp = Eigen::RowVectorXcd::Zero(p1.size() + p2.size());
     for (int i = 0; i < p1.size(); i++)
@@ -32,8 +33,13 @@ inline void multiply_polynomials(Eigen::RowVectorXcd &p1,
     
     p1 = newp;
 }
+#else
+void multiply_polynomials(Eigen::RowVectorXcd &p1,
+                                 const Eigen::RowVectorXcd &p2);
+#endif
 
-inline void multiply_polynomials(Eigen::MatrixXcd &p1,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void multiply_polynomials(Eigen::MatrixXcd &p1,
                                  const Eigen::MatrixXcd &p2) {
     assert(p1.rows() == p2.rows());
     Eigen::MatrixXcd newp = Eigen::MatrixXcd::Zero(p1.rows(), p1.cols() + p2.cols());
@@ -50,16 +56,27 @@ inline void multiply_polynomials(Eigen::MatrixXcd &p1,
     
     p1 = newp;
 }
+#else
+void multiply_polynomials(Eigen::MatrixXcd &p1,
+                                 const Eigen::MatrixXcd &p2);
+#endif
 
-inline void polynomial_eval_from_roots(const Eigen::RowVectorXcd &roots,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void polynomial_eval_from_roots(const Eigen::RowVectorXcd &roots,
                                        const std::complex<double> &evalPoint,
                                        std::complex<double> &polyValue) {
     polyValue = std::complex<double>(1.0, 0.0);
     for (int i = 0; i < roots.size(); i++)
         polyValue *= (evalPoint - roots(i));
 }
+#else
+void polynomial_eval_from_roots(const Eigen::RowVectorXcd &roots,
+                                       const std::complex<double> &evalPoint,
+                                       std::complex<double> &polyValue);
+#endif
 
-inline void polynomial_eval_from_roots(const Eigen::MatrixXcd &roots,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void polynomial_eval_from_roots(const Eigen::MatrixXcd &roots,
                                        const Eigen::VectorXcd &evalPoints,
                                        Eigen::VectorXcd &polyValues) {
     assert(evalPoints.rows() == roots.rows());
@@ -68,8 +85,14 @@ inline void polynomial_eval_from_roots(const Eigen::MatrixXcd &roots,
         polyValues.array() *= (evalPoints - roots.col(i)).array();  //rowwise-product faster?;
     
 }
+#else
+void polynomial_eval_from_roots(const Eigen::MatrixXcd &roots,
+                                       const Eigen::VectorXcd &evalPoints,
+                                       Eigen::VectorXcd &polyValues);
+#endif
 
-inline void polynomial_eval(const Eigen::RowVectorXcd &coeffs,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void polynomial_eval(const Eigen::RowVectorXcd &coeffs,
                             const std::complex<double> &evalPoint,
                             std::complex<double> &polyValue) {
     polyValue = std::complex<double>(0.0, 0.0);
@@ -81,8 +104,14 @@ inline void polynomial_eval(const Eigen::RowVectorXcd &coeffs,
     std::cout << "[Directional::polynomial_eval()]: " << "z: " << z << std::endl;
     polyValue += z;  //the biggest and unit power
 }
+#else
+void polynomial_eval(const Eigen::RowVectorXcd &coeffs,
+                            const std::complex<double> &evalPoint,
+                            std::complex<double> &polyValue);
+#endif
 
-inline void polynomial_eval(const Eigen::MatrixXcd &coeffs,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+void polynomial_eval(const Eigen::MatrixXcd &coeffs,
                             const Eigen::VectorXcd &evalPoints,
                             Eigen::VectorXcd &polyValues) {
     polyValues = Eigen::VectorXcd::Zero(coeffs.rows());
@@ -94,6 +123,11 @@ inline void polynomial_eval(const Eigen::MatrixXcd &coeffs,
     //std::cout<<"z: "<<z<<std::endl;
     polyValues.array() += z.array();  //the biggest and unit power
 }
+#else
+void polynomial_eval(const Eigen::MatrixXcd &coeffs,
+                            const Eigen::VectorXcd &evalPoints,
+                            Eigen::VectorXcd &polyValues);
+#endif
 
 
 // Converts a field in PolyVector representation to raw represenation. This is done by the fixed-point Durand-Kerner method.
@@ -105,7 +139,8 @@ inline void polynomial_eval(const Eigen::MatrixXcd &coeffs,
 // Output:
 //  roots:              #TangentSpaces by N complex matrix with all N roots of the PolyVectors in order
 //    returns true if succeeded
-inline bool polyvector_to_raw(const Eigen::MatrixXd& pvField,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+bool polyvector_to_raw(const Eigen::MatrixXd& pvField,
                               const int N,
                               Eigen::MatrixXcd &roots,
                               const bool _signSymmetry = true,
@@ -188,6 +223,14 @@ inline bool polyvector_to_raw(const Eigen::MatrixXd& pvField,
     
     return true;
 }
+#else
+bool polyvector_to_raw(const Eigen::MatrixXd& pvField,
+                              const int N,
+                              Eigen::MatrixXcd &roots,
+                              const bool _signSymmetry = true,
+                              const bool normalizeRoots = false,
+                              const double rootTolerance = 1e-8);
+#endif
 
 // Converts a field in PolyVector representation to raw represenation. This is done by the fixed-point Durand-Kerner method.
 // Input:
@@ -198,7 +241,8 @@ inline bool polyvector_to_raw(const Eigen::MatrixXd& pvField,
 // Output:
 //  rawField:               #the outpur Cartesian field in raw representation
 //    returns true if succeeded
-inline bool polyvector_to_raw(const directional::CartesianField &pvField,
+#if defined(DIRECTIONAL_POLY_VECTOR_TO_RAW_IMPLEMENTATION)
+bool polyvector_to_raw(const directional::CartesianField &pvField,
                               directional::CartesianField &rawField,
                               const bool signSymmetry = true,
                               const bool normalizeRoots = false,
@@ -212,6 +256,13 @@ inline bool polyvector_to_raw(const directional::CartesianField &pvField,
     rawField.set_intrinsic_field(intField);
     return true;
 }
+#else
+bool polyvector_to_raw(const directional::CartesianField &pvField,
+                              directional::CartesianField &rawField,
+                              const bool signSymmetry = true,
+                              const bool normalizeRoots = false,
+                              const double rootTolerance = 1e-8);
+#endif
 
 }
 

@@ -128,8 +128,25 @@ endif()
 add_library(
   directional
   src/core/Library.cpp
+  src/fields/CompareCrossFields.cpp
   src/fields/CrossField.cpp
+  src/fields/CurlMatching.cpp
+  src/fields/FieldCombing.cpp
+  src/fields/FieldMatching.cpp
+  src/fields/FieldOperators.cpp
+  src/fields/IndexPrescription.cpp
   src/fields/PointSampledCrossField.cpp
+  src/fields/PointwiseVectors.cpp
+  src/fields/PolyVectorField.cpp
+  src/fields/PolyVectorIteration.cpp
+  src/fields/PolyVectorToRaw.cpp
+  src/fields/PowerField.cpp
+  src/fields/PowerToRaw.cpp
+  src/fields/ProjectCurl.cpp
+  src/fields/RawToPolyVector.cpp
+  src/fields/RegularizedCurvatureCrossField.cpp
+  src/fields/RotationToRaw.cpp
+  src/fields/ShapeOperatorAlignment.cpp
   src/geometry/AdaptiveFeatureMap.cpp
   src/geometry/AdaptiveTargetSize.cpp
   src/geometry/FlowRepStrands.cpp

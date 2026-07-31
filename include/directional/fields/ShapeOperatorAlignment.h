@@ -69,23 +69,32 @@ namespace shape_operator_alignment_detail {
 
 inline constexpr double pi = std::numbers::pi_v<double>;
 
-inline Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value) {
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value) {
   const double norm = value.norm();
   if (!(norm > 1e-30) || !std::isfinite(norm)) {
     return Eigen::RowVector3d::Zero();
   }
   return value / norm;
 }
+#else
+Eigen::RowVector3d normalized_row(const Eigen::RowVector3d &value);
+#endif
 
-inline Eigen::Vector3d normalized_vector(const Eigen::Vector3d &value) {
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::Vector3d normalized_vector(const Eigen::Vector3d &value) {
   const double norm = value.norm();
   if (!(norm > 1e-30) || !std::isfinite(norm)) {
     return Eigen::Vector3d::Zero();
   }
   return value / norm;
 }
+#else
+Eigen::Vector3d normalized_vector(const Eigen::Vector3d &value);
+#endif
 
-inline void validate_field(const Eigen::MatrixXd &field,
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+void validate_field(const Eigen::MatrixXd &field,
                            const Eigen::Index faceCount) {
   if (field.rows() != faceCount) {
     throw std::runtime_error(
@@ -101,15 +110,26 @@ inline void validate_field(const Eigen::MatrixXd &field,
         "Shape-operator alignment field contains non-finite values.");
   }
 }
+#else
+void validate_field(const Eigen::MatrixXd &field,
+                           const Eigen::Index faceCount);
+#endif
 
-inline Eigen::Vector3d field_axis(const Eigen::MatrixXd &field,
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::Vector3d field_axis(const Eigen::MatrixXd &field,
                                   const Eigen::Index face,
                                   const int axis) {
   const int column = axis == 0 ? 0 : 3;
   return field.block(face, column, 1, 3).transpose();
 }
+#else
+Eigen::Vector3d field_axis(const Eigen::MatrixXd &field,
+                                  const Eigen::Index face,
+                                  const int axis);
+#endif
 
-inline Eigen::Vector3d transport_axis_to_proxy(
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::Vector3d transport_axis_to_proxy(
     const Eigen::Vector3d &axis, const Eigen::Vector3d &originalNormal,
     const Eigen::Vector3d &proxyNormal) {
   Eigen::Vector3d transported =
@@ -117,8 +137,14 @@ inline Eigen::Vector3d transport_axis_to_proxy(
   transported -= transported.dot(proxyNormal) * proxyNormal;
   return normalized_vector(transported);
 }
+#else
+Eigen::Vector3d transport_axis_to_proxy(
+    const Eigen::Vector3d &axis, const Eigen::Vector3d &originalNormal,
+    const Eigen::Vector3d &proxyNormal);
+#endif
 
-inline Eigen::Vector2d coordinates_in_basis(
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::Vector2d coordinates_in_basis(
     const Eigen::Vector3d &axis, const Eigen::Vector3d &basisX,
     const Eigen::Vector3d &basisY) {
   Eigen::Vector2d coordinates(axis.dot(basisX), axis.dot(basisY));
@@ -128,8 +154,14 @@ inline Eigen::Vector2d coordinates_in_basis(
   }
   return coordinates / norm;
 }
+#else
+Eigen::Vector2d coordinates_in_basis(
+    const Eigen::Vector3d &axis, const Eigen::Vector3d &basisX,
+    const Eigen::Vector3d &basisY);
+#endif
 
-inline double anisotropy_from_shape_operator(const Eigen::Matrix2d &shape) {
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+double anisotropy_from_shape_operator(const Eigen::Matrix2d &shape) {
   if (!shape.array().isFinite().all()) {
     return 0.0;
   }
@@ -141,8 +173,12 @@ inline double anisotropy_from_shape_operator(const Eigen::Matrix2d &shape) {
   return std::abs(eigensolver.eigenvalues()(1) -
                   eigensolver.eigenvalues()(0));
 }
+#else
+double anisotropy_from_shape_operator(const Eigen::Matrix2d &shape);
+#endif
 
-inline double normalized_offdiagonal_ratio(const Eigen::Matrix2d &shape,
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+double normalized_offdiagonal_ratio(const Eigen::Matrix2d &shape,
                                            const Eigen::Vector2d &axisA,
                                            const Eigen::Vector2d &axisB,
                                            const double anisotropy) {
@@ -154,8 +190,15 @@ inline double normalized_offdiagonal_ratio(const Eigen::Matrix2d &shape,
   const double mixed = axisA.transpose() * symmetric * axisB;
   return std::clamp(2.0 * std::abs(mixed) / anisotropy, 0.0, 1.0);
 }
+#else
+double normalized_offdiagonal_ratio(const Eigen::Matrix2d &shape,
+                                           const Eigen::Vector2d &axisA,
+                                           const Eigen::Vector2d &axisB,
+                                           const double anisotropy);
+#endif
 
-inline Eigen::Vector3d orthogonalized_second_axis(const Eigen::Vector3d &axisA,
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+Eigen::Vector3d orthogonalized_second_axis(const Eigen::Vector3d &axisA,
                                                   const Eigen::Vector3d &axisB,
                                                   const Eigen::Vector3d &normal) {
   Eigen::Vector3d second = axisB - axisB.dot(axisA) * axisA;
@@ -167,8 +210,14 @@ inline Eigen::Vector3d orthogonalized_second_axis(const Eigen::Vector3d &axisA,
   second = normal.cross(axisA);
   return normalized_vector(second);
 }
+#else
+Eigen::Vector3d orthogonalized_second_axis(const Eigen::Vector3d &axisA,
+                                                  const Eigen::Vector3d &axisB,
+                                                  const Eigen::Vector3d &normal);
+#endif
 
-inline void ensure_valid_options(const ShapeOperatorAlignmentOptions &options) {
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+void ensure_valid_options(const ShapeOperatorAlignmentOptions &options) {
   if (!std::isfinite(options.minimumConfidence) ||
       options.minimumConfidence < 0.0 || options.minimumConfidence > 1.0 ||
       !std::isfinite(options.confidenceExponent) ||
@@ -177,6 +226,9 @@ inline void ensure_valid_options(const ShapeOperatorAlignmentOptions &options) {
         "Invalid shape-operator alignment confidence options.");
   }
 }
+#else
+void ensure_valid_options(const ShapeOperatorAlignmentOptions &options);
+#endif
 
 } // namespace shape_operator_alignment_detail
 
@@ -188,7 +240,8 @@ inline void ensure_valid_options(const ShapeOperatorAlignmentOptions &options) {
  * normalized energy is (2 |a^T S b| / |k_max-k_min|)^2; it is 0 for perfect
  * alignment and approaches 1 at a 45-degree line-field mismatch.
  */
-inline ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
     const TriMesh &mesh, const Eigen::MatrixXd &field,
     const ShapeOperatorAlignmentOptions &options = {}) {
   using namespace shape_operator_alignment_detail;
@@ -294,8 +347,14 @@ inline ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
       totalWeight > 0.0 ? weightedEnergy / totalWeight : 0.0;
   return result;
 }
+#else
+ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
+    const TriMesh &mesh, const Eigen::MatrixXd &field,
+    const ShapeOperatorAlignmentOptions &options = {});
+#endif
 
-inline ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
+#if defined(DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION)
+ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &field,
     const ShapeOperatorAlignmentOptions &options = {}) {
@@ -303,6 +362,12 @@ inline ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
   mesh.set_mesh(vertices, faces);
   return evaluate_shape_operator_alignment(mesh, field, options);
 }
+#else
+ShapeOperatorAlignmentResult evaluate_shape_operator_alignment(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &field,
+    const ShapeOperatorAlignmentOptions &options = {});
+#endif
 
 } // namespace directional::fields
 
