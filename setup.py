@@ -112,7 +112,27 @@ def _windows_ninja_executable() -> Path | None:
         candidate = Path(override)
         if candidate.exists():
             return candidate
+        resolved = shutil.which(override)
+        if resolved is not None:
+            return Path(resolved)
     return _first_existing_path(WINDOWS_VS_NINJA_CANDIDATES)
+
+
+def _ninja_executable() -> str:
+    if sys.platform == "win32":
+        candidate = _windows_ninja_executable()
+        if candidate is not None:
+            return str(candidate)
+
+    for executable in ("ninja", "ninja-build"):
+        candidate = shutil.which(executable)
+        if candidate is not None:
+            return candidate
+
+    raise RuntimeError(
+        "Ninja is required to build Directional. Install Ninja or set "
+        "CMAKE_MAKE_PROGRAM to the Ninja executable."
+    )
 
 
 def _cmake_executable() -> str:
@@ -146,6 +166,9 @@ def _build_env(env: dict[str, str] | None = None) -> dict[str, str]:
     merged = os.environ.copy()
     if env:
         merged.update(env)
+
+    ninja_exe = _ninja_executable()
+    merged["CMAKE_MAKE_PROGRAM"] = ninja_exe
     if sys.platform != "win32":
         return merged
 
@@ -169,17 +192,15 @@ def _build_env(env: dict[str, str] | None = None) -> dict[str, str]:
     windows_cmake = _windows_cmake_executable()
     if windows_cmake is not None:
         prepend.append(str(windows_cmake.parent))
-    ninja_exe = _windows_ninja_executable()
-    if ninja_exe is not None:
-        prepend.append(str(ninja_exe.parent))
+    ninja_path = Path(ninja_exe)
+    prepend.append(str(ninja_path.parent))
     seven_zip_dir = _find_vcpkg_tool_dir("7z.exe")
     if seven_zip_dir is not None:
         prepend.append(str(seven_zip_dir))
 
     merged["PATH"] = os.pathsep.join([*prepend, *path_entries])
     merged["CMAKE_COMMAND"] = cmake_exe
-    if ninja_exe is not None:
-        merged.setdefault("CMAKE_MAKE_PROGRAM", str(ninja_exe))
+    merged["CMAKE_MAKE_PROGRAM"] = ninja_exe
     if seven_zip_dir is not None:
         merged.setdefault("VCPKG_FORCE_SYSTEM_BINARIES", "1")
     return merged
@@ -384,18 +405,31 @@ def _features_from_command(command: object) -> BuildFeatures:
 
 def _configure(build_dir: Path, configure_args: list[str]) -> None:
     build_dir.mkdir(parents=True, exist_ok=True)
-    _run(["cmake", "-S", str(ROOT), "-B", str(build_dir), *configure_args])
+    _run(
+        [
+            "cmake",
+            "-S",
+            str(ROOT),
+            "-B",
+            str(build_dir),
+            "-G",
+            "Ninja",
+            f"-DCMAKE_MAKE_PROGRAM={_ninja_executable()}",
+            "-DCMAKE_BUILD_TYPE=Release",
+            *configure_args,
+        ]
+    )
 
 
 def _build(build_dir: Path, *targets: str) -> None:
-    command = ["cmake", "--build", str(build_dir), "--config", "Release"]
+    command = ["cmake", "--build", str(build_dir)]
     if targets:
         command.extend(["--target", *targets])
     _run(command)
 
 
 def _install(build_dir: Path) -> None:
-    _run(["cmake", "--install", str(build_dir), "--config", "Release"])
+    _run(["cmake", "--install", str(build_dir)])
 
 
 class CMakeExtension(Extension):
