@@ -22,7 +22,8 @@ using ProgressCallback =
                        std::string_view task)>;
 
 /** Reports progress when a callback is installed. */
-inline void report_progress(const ProgressCallback &callback,
+#if defined(DIRECTIONAL_PROGRESS_IMPLEMENTATION)
+void report_progress(const ProgressCallback &callback,
                             const std::size_t current,
                             const std::size_t total,
                             const std::string_view task) {
@@ -30,6 +31,12 @@ inline void report_progress(const ProgressCallback &callback,
     callback(current, total, task);
   }
 }
+#else
+void report_progress(const ProgressCallback &callback,
+                            const std::size_t current,
+                            const std::size_t total,
+                            const std::string_view task);
+#endif
 
 } // namespace directional
 

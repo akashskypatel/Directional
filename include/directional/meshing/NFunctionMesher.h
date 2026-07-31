@@ -30,6 +30,7 @@
 #include <Eigen/Sparse>
 
 #include <directional/core/DCEL.h>
+#include <directional/core/TriMesh.h>
 #include <directional/meshing/FunctionSkeletonBuilder.h>
 #include <directional/meshing/FunctionSkeletonSimplifier.h>
 #include <directional/meshing/LocalPatchValidator.h>
@@ -105,7 +106,7 @@ public:
       const std::vector<std::uint8_t> &pencilPairHasPointIntersections,
       std::vector<EVector2> &V, FunctionDCEL &triDcel);
 
-  void generate_mesh(const unsigned long Resolution);
+  void generate_mesh(const unsigned long Resolution = 10000000UL);
 
   std::vector<int> TransVertices;
   std::vector<int> InStrip;

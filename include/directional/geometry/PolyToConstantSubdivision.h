@@ -21,7 +21,8 @@ namespace directional{
 
 //subdividing a mesh with a polynomial field (of order K) into a mesh with a piecewise constant sampled field. Used for visualization alone!
 //subdividing 4-1 subdDepth
-void inline poly_to_constant_subdivision(const TriMesh& mesh,
+#if defined(DIRECTIONAL_POLY_TO_CONSTANT_SUBDIVISION_IMPLEMENTATION)
+void poly_to_constant_subdivision(const TriMesh& mesh,
                                          const Eigen::MatrixXd& rawField,
                                          const int K,
                                          const int subdDepth,
@@ -74,6 +75,15 @@ void inline poly_to_constant_subdivision(const TriMesh& mesh,
     directional::pointwise_vectors(mesh, FFK, subdMesh.barycenters, rawField,K,rawFieldK);
     
 }
+#else
+void poly_to_constant_subdivision(const TriMesh& mesh,
+                                         const Eigen::MatrixXd& rawField,
+                                         const int K,
+                                         const int subdDepth,
+                                         TriMesh& subdMesh,
+                                         Eigen::VectorXi& FFK,
+                                         Eigen::MatrixXd& rawFieldK);
+#endif
 
 
 

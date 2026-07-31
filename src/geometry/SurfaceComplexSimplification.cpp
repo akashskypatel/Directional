@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION
+#include <directional/geometry/SurfaceComplexSimplification.h>

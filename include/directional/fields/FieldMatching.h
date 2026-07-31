@@ -36,7 +36,8 @@ namespace directional {
  * @param indices Output cycle indices multiplied by @p N.
  * @throws std::runtime_error if numerical values are not close to integers.
  */
-inline void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
+#if defined(DIRECTIONAL_FIELD_MATCHING_IMPLEMENTATION)
+void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
                               const Eigen::VectorXd &effort,
                               const Eigen::VectorXd &cycleCurvature,
                               const int N, Eigen::VectorXi &indices) {
@@ -54,12 +55,19 @@ inline void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
     indices(i) = static_cast<int>(std::round(dIndices(i)));
   }
 }
+#else
+void effort_to_indices(const Eigen::SparseMatrix<double> &basisCycles,
+                              const Eigen::VectorXd &effort,
+                              const Eigen::VectorXd &cycleCurvature,
+                              const int N, Eigen::VectorXi &indices);
+#endif
 
 /**
  * @brief Computes singularity cycle ids and indices in-place for a field.
  * @param field Cartesian field with populated matching effort and tangent-bundle cycles.
  */
-inline void effort_to_indices(directional::CartesianField &field) {
+#if defined(DIRECTIONAL_FIELD_MATCHING_IMPLEMENTATION)
+void effort_to_indices(directional::CartesianField &field) {
   Eigen::VectorXd effortInner(field.tb->innerAdjacencies.size());
   for (int i = 0; i < field.tb->innerAdjacencies.size(); i++)
     effortInner(i) = field.effort(field.tb->innerAdjacencies(i));
@@ -88,6 +96,9 @@ inline void effort_to_indices(directional::CartesianField &field) {
   }
   field.set_singularities(singCycles, singIndices);
 }
+#else
+void effort_to_indices(directional::CartesianField &field);
+#endif
 /**
  * @brief Computes principal rotational matching and transport effort for a raw field.
  * @param field Raw Cartesian field to update with matching, effort, and optionally singularities.
@@ -96,7 +107,8 @@ inline void effort_to_indices(directional::CartesianField &field) {
  * The raw directions in each tangent space must be ordered counter-clockwise;
  * otherwise the rotational offsets are not meaningful.
  */
-inline void principal_matching(directional::CartesianField &field,
+#if defined(DIRECTIONAL_FIELD_MATCHING_IMPLEMENTATION)
+void principal_matching(directional::CartesianField &field,
                                const bool isSingularities = true) {
 
   typedef std::complex<double> Complex;
@@ -166,6 +178,10 @@ inline void principal_matching(directional::CartesianField &field,
   if (isSingularities)
     effort_to_indices(field);
 }
+#else
+void principal_matching(directional::CartesianField &field,
+                               const bool isSingularities = true);
+#endif
 } // namespace directional
 
 #endif // DIRECTIONAL_FIELDS_FIELD_MATCHING_H

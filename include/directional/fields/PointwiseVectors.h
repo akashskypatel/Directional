@@ -33,7 +33,8 @@ namespace directional{
  }*/
 
 
-inline void raw_to_polyvector_polynomial(const Eigen::MatrixXd& V,
+#if defined(DIRECTIONAL_POINTWISE_VECTORS_IMPLEMENTATION)
+void raw_to_polyvector_polynomial(const Eigen::MatrixXd& V,
                                          const Eigen::MatrixXi& F,
                                          const Eigen::MatrixXd& B1,
                                          const Eigen::MatrixXd& B2,
@@ -69,9 +70,20 @@ inline void raw_to_polyvector_polynomial(const Eigen::MatrixXd& V,
         //std::cout<<"pvField.row(i): "<<pvField.row(i)<<endl;
     }
 }
+#else
+void raw_to_polyvector_polynomial(const Eigen::MatrixXd& V,
+                                         const Eigen::MatrixXi& F,
+                                         const Eigen::MatrixXd& B1,
+                                         const Eigen::MatrixXd& B2,
+                                         const int N,
+                                         const int K,
+                                         const Eigen::MatrixXd& rawField,
+                                         Eigen::MatrixXcd& pvField);
+#endif
 
 
-void inline pointwise_vectors(const TriMesh& mesh,
+#if defined(DIRECTIONAL_POINTWISE_VECTORS_IMPLEMENTATION)
+void pointwise_vectors(const TriMesh& mesh,
                               const Eigen::VectorXi& faces,
                               const Eigen::MatrixXd& locations,
                               const Eigen::MatrixXd& rawField,
@@ -161,6 +173,14 @@ void inline pointwise_vectors(const TriMesh& mesh,
     
     
 }
+#else
+void pointwise_vectors(const TriMesh& mesh,
+                              const Eigen::VectorXi& faces,
+                              const Eigen::MatrixXd& locations,
+                              const Eigen::MatrixXd& rawField,
+                              const int order,
+                              Eigen::MatrixXd& interpField);
+#endif
 }
 
 

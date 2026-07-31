@@ -1,0 +1,402 @@
+#include <directional/fields/CrossField.h>
+
+#include <algorithm>
+#include <cmath>
+#include <complex>
+#include <numbers>
+#include <queue>
+#include <set>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+#include <Eigen/Sparse>
+#include <Eigen/SparseCholesky>
+
+#include <directional/core/CartesianField.h>
+#include <directional/core/TriMesh.h>
+#include <directional/fields/FieldCombing.h>
+#include <directional/fields/FieldMatching.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+
+namespace directional::fields {
+
+void populate_cross_field_edge_transitions(const CartesianField &field,
+                                           CrossFieldResult &result) {
+  result.edgeTransitions.clear();
+  const auto *bundle = dynamic_cast<const PCFaceTangentBundle *>(field.tb);
+  if (bundle == nullptr || bundle->mesh == nullptr ||
+      field.matching.size() != bundle->mesh->EF.rows() ||
+      field.effort.size() != bundle->mesh->EF.rows()) {
+    return;
+  }
+
+  std::set<int> seenEdges;
+  result.edgeTransitions.reserve(
+      static_cast<std::size_t>(bundle->mesh->EF.rows()));
+  for (int edge = 0; edge < bundle->mesh->EF.rows(); ++edge) {
+    if (!seenEdges.insert(edge).second) {
+      result.edgeTransitions.clear();
+      return;
+    }
+    CrossFieldEdgeTransition transition;
+    transition.sourceEdge = edge;
+    transition.sourceVertex0 = bundle->mesh->EV(edge, 0);
+    transition.sourceVertex1 = bundle->mesh->EV(edge, 1);
+    transition.firstFace = bundle->mesh->EF(edge, 0);
+    transition.secondFace = bundle->mesh->EF(edge, 1);
+    transition.matching = field.matching(edge);
+    transition.effort = field.effort(edge);
+    result.edgeTransitions.push_back(transition);
+  }
+}
+
+CrossFieldResult finalize_cross_field_result(CartesianField &rawField,
+                                             const bool combDirections,
+                                             const bool includeDiagnostics) {
+  CartesianField combedField;
+  CartesianField *outputField = &rawField;
+
+  if (combDirections || includeDiagnostics) {
+    principal_matching(rawField);
+  }
+  if (combDirections) {
+    combing(rawField, combedField);
+    outputField = &combedField;
+  }
+
+  CrossFieldResult result;
+  result.rawField = outputField->extField;
+  result.primaryDirections = outputField->extField.leftCols<3>();
+  result.secondaryDirections = outputField->extField.middleCols<3>(3);
+
+  result.confidence = Eigen::VectorXd::Ones(outputField->extField.rows());
+  std::vector<int> uncoveredFaces;
+  for (Eigen::Index face = 0; face < outputField->extField.rows(); ++face) {
+    bool covered = true;
+    double maxNorm = 0.0;
+    for (Eigen::Index col = 0; col < outputField->extField.cols(); ++col) {
+      covered = covered && std::isfinite(outputField->extField(face, col));
+    }
+    for (int branch = 0; branch < kCrossFieldDegree; ++branch) {
+      maxNorm = std::max(maxNorm,
+                         outputField->extField.block(face, 3 * branch, 1, 3)
+                             .norm());
+    }
+    if (!covered || maxNorm <= 1.0e-12) {
+      result.confidence(face) = 0.0;
+      uncoveredFaces.push_back(static_cast<int>(face));
+    }
+  }
+  result.uncoveredFaces.resize(
+      static_cast<Eigen::Index>(uncoveredFaces.size()));
+  for (Eigen::Index index = 0; index < result.uncoveredFaces.size(); ++index) {
+    result.uncoveredFaces(index) =
+        uncoveredFaces[static_cast<std::size_t>(index)];
+  }
+  result.confidenceComputed = true;
+  result.uncoveredFacePolicyApplied = true;
+
+  if (includeDiagnostics) {
+    result.matching = outputField->matching;
+    result.effort = outputField->effort;
+    result.singularCycles = outputField->singLocalCycles;
+    result.singularIndices = outputField->singIndices;
+    populate_cross_field_edge_transitions(*outputField, result);
+    result.matchingComputed = true;
+    result.singularitiesComputed = true;
+  }
+  return result;
+}
+
+Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &vector,
+                                   const Eigen::RowVector3d &normal,
+                                   const bool normalize) {
+  Eigen::RowVector3d tangent = vector - vector.dot(normal) * normal;
+  const double norm = tangent.norm();
+  if (norm <= 1e-12) {
+    throw std::runtime_error(
+        "Directional cross-field construction received a degenerate tangent "
+        "direction.");
+  }
+  if (normalize) {
+    tangent /= norm;
+  }
+  return tangent;
+}
+
+Eigen::MatrixXd make_raw_cross_field(
+    const TriMesh &mesh, const Eigen::MatrixXd &primaryDirections,
+    const Eigen::MatrixXd &secondaryDirections,
+    const bool normalizeDirections) {
+  if (primaryDirections.rows() != mesh.F.rows() ||
+      primaryDirections.cols() != 3) {
+    throw std::runtime_error("primaryDirections must have shape (#F, 3).");
+  }
+  if (secondaryDirections.rows() != mesh.F.rows() ||
+      secondaryDirections.cols() != 3) {
+    throw std::runtime_error("secondaryDirections must have shape (#F, 3).");
+  }
+
+  Eigen::MatrixXd rawField(mesh.F.rows(), 12);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
+    const Eigen::RowVector3d primary = project_tangent(
+        primaryDirections.row(face), normal, normalizeDirections);
+    const Eigen::RowVector3d secondary = project_tangent(
+        secondaryDirections.row(face), normal, normalizeDirections);
+
+    rawField.block(face, 0, 1, 3) = primary;
+    rawField.block(face, 3, 1, 3) = secondary;
+    rawField.block(face, 6, 1, 3) = -primary;
+    rawField.block(face, 9, 1, 3) = -secondary;
+  }
+  return rawField;
+}
+
+Eigen::MatrixXd orthogonal_complement(
+    const TriMesh &mesh, const Eigen::MatrixXd &primaryDirections,
+    const bool normalizeDirections) {
+  if (primaryDirections.rows() != mesh.F.rows() ||
+      primaryDirections.cols() != 3) {
+    throw std::runtime_error("primaryDirections must have shape (#F, 3).");
+  }
+
+  Eigen::MatrixXd secondary(mesh.F.rows(), 3);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d normal = mesh.faceNormals.row(face);
+    const Eigen::RowVector3d primary = project_tangent(
+        primaryDirections.row(face), normal, normalizeDirections);
+    Eigen::RowVector3d direction = normal.cross(primary);
+    if (normalizeDirections) {
+      direction.normalize();
+    }
+    secondary.row(face) = direction;
+  }
+  return secondary;
+}
+
+namespace {
+
+using Complex = std::complex<double>;
+using ComplexSparseMatrix = Eigen::SparseMatrix<Complex>;
+using ComplexTriplet = Eigen::Triplet<Complex>;
+constexpr double kMinimumPowerMagnitude = 1e-14;
+
+void stabilize_power_field(const PCFaceTangentBundle &tangentBundle,
+                           Eigen::VectorXcd &power) {
+  std::vector<std::vector<std::pair<int, Complex>>> adjacency(
+      static_cast<std::size_t>(tangentBundle.numSpaces));
+
+  for (int edge = 0; edge < tangentBundle.adjSpaces.rows(); ++edge) {
+    const int firstFace = tangentBundle.adjSpaces(edge, 0);
+    const int secondFace = tangentBundle.adjSpaces(edge, 1);
+    if (firstFace < 0 || secondFace < 0) {
+      continue;
+    }
+
+    const Complex transport =
+        std::pow(tangentBundle.connection(edge), kCrossFieldDegree);
+    if (!std::isfinite(transport.real()) || !std::isfinite(transport.imag())) {
+      continue;
+    }
+
+    adjacency[static_cast<std::size_t>(firstFace)].emplace_back(secondFace,
+                                                                transport);
+    adjacency[static_cast<std::size_t>(secondFace)].emplace_back(
+        firstFace, std::conj(transport));
+  }
+
+  std::queue<int> frontier;
+  std::vector<char> assigned(static_cast<std::size_t>(power.size()), 0);
+
+  for (int face = 0; face < power.size(); ++face) {
+    const double magnitude = std::abs(power(face));
+    if (!std::isfinite(magnitude) || magnitude <= kMinimumPowerMagnitude) {
+      continue;
+    }
+
+    power(face) /= magnitude;
+    assigned[static_cast<std::size_t>(face)] = 1;
+    frontier.push(face);
+  }
+
+  while (!frontier.empty()) {
+    const int face = frontier.front();
+    frontier.pop();
+
+    for (const auto &[neighbor, transport] :
+         adjacency[static_cast<std::size_t>(face)]) {
+      if (assigned[static_cast<std::size_t>(neighbor)]) {
+        continue;
+      }
+
+      const Complex propagated = transport * power(face);
+      const double magnitude = std::abs(propagated);
+      if (!std::isfinite(magnitude) || magnitude <= kMinimumPowerMagnitude) {
+        continue;
+      }
+
+      power(neighbor) = propagated / magnitude;
+      assigned[static_cast<std::size_t>(neighbor)] = 1;
+      frontier.push(neighbor);
+    }
+  }
+
+  for (int face = 0; face < power.size(); ++face) {
+    if (!assigned[static_cast<std::size_t>(face)]) {
+      power(face) = Complex(1.0, 0.0);
+    }
+  }
+}
+
+Eigen::VectorXcd solve_power_field(const PCFaceTangentBundle &tangentBundle,
+                                   const bool normalizeDirections) {
+  const int faceCount = tangentBundle.numSpaces;
+  Eigen::VectorXcd power = Eigen::VectorXcd::Ones(faceCount);
+  if (faceCount == 1) {
+    return power;
+  }
+
+  std::vector<ComplexTriplet> triplets;
+  triplets.reserve(
+      static_cast<std::size_t>(4 * tangentBundle.innerAdjacencies.size()));
+  Eigen::VectorXcd rhs = Eigen::VectorXcd::Zero(faceCount - 1);
+
+  const auto add_coefficient = [&](const int row, const int column,
+                                   const Complex value) {
+    if (row == 0) {
+      return;
+    }
+    if (column == 0) {
+      rhs(row - 1) -= value;
+      return;
+    }
+    triplets.emplace_back(row - 1, column - 1, value);
+  };
+
+  int innerEdge = 0;
+  for (int edge = 0; edge < tangentBundle.adjSpaces.rows(); ++edge) {
+    const int firstFace = tangentBundle.adjSpaces(edge, 0);
+    const int secondFace = tangentBundle.adjSpaces(edge, 1);
+    if (firstFace == -1 || secondFace == -1) {
+      continue;
+    }
+
+    const double weight =
+        tangentBundle.connectionMass.coeff(innerEdge, innerEdge);
+    const Complex transport =
+        std::pow(tangentBundle.connection(edge), kCrossFieldDegree);
+
+    add_coefficient(firstFace, firstFace, weight * std::norm(transport));
+    add_coefficient(secondFace, secondFace, weight);
+    add_coefficient(firstFace, secondFace, -weight * std::conj(transport));
+    add_coefficient(secondFace, firstFace, -weight * transport);
+    ++innerEdge;
+  }
+
+  ComplexSparseMatrix system(faceCount - 1, faceCount - 1);
+  system.setFromTriplets(triplets.begin(), triplets.end());
+
+  Eigen::SimplicialLDLT<ComplexSparseMatrix> solver;
+  solver.compute(system);
+  if (solver.info() != Eigen::Success) {
+    throw std::runtime_error(
+        "Cross-field power-system factorization failed. The mesh must be a "
+        "connected manifold triangle mesh.");
+  }
+
+  power.tail(faceCount - 1) = solver.solve(rhs);
+  if (solver.info() != Eigen::Success || !power.array().isFinite().all()) {
+    throw std::runtime_error("Cross-field power-system solve failed.");
+  }
+
+  if (normalizeDirections) {
+    stabilize_power_field(tangentBundle, power);
+  }
+
+  return power;
+}
+
+CartesianField make_raw_field(const PCFaceTangentBundle &tangentBundle,
+                              const Eigen::VectorXcd &power,
+                              const bool normalizeDirections) {
+  const int faceCount = tangentBundle.numSpaces;
+  Eigen::MatrixXcd roots(faceCount, kCrossFieldDegree);
+
+  for (int face = 0; face < faceCount; ++face) {
+    Complex firstRoot =
+        std::pow(power(face), 1.0 / static_cast<double>(kCrossFieldDegree));
+    if (normalizeDirections) {
+      const double magnitude = std::abs(firstRoot);
+      if (magnitude <= kMinimumPowerMagnitude) {
+        throw std::runtime_error(
+            "Cross-field extraction produced a degenerate direction.");
+      }
+      firstRoot /= magnitude;
+    }
+
+    for (int direction = 0; direction < kCrossFieldDegree; ++direction) {
+      const double angle = 2.0 * std::numbers::pi * direction /
+                           static_cast<double>(kCrossFieldDegree);
+      roots(face, direction) = firstRoot * std::exp(Complex(0.0, angle));
+    }
+  }
+
+  Eigen::MatrixXd intrinsic(faceCount, 2 * kCrossFieldDegree);
+  for (int direction = 0; direction < kCrossFieldDegree; ++direction) {
+    intrinsic.col(2 * direction) = roots.col(direction).real();
+    intrinsic.col(2 * direction + 1) = roots.col(direction).imag();
+  }
+
+  CartesianField rawField;
+  rawField.init(tangentBundle, fieldTypeEnum::RAW_FIELD, kCrossFieldDegree);
+  rawField.set_intrinsic_field(intrinsic);
+  return rawField;
+}
+
+} // namespace
+
+CrossFieldResult extract_cross_field(const TriMesh &mesh,
+                                     const CrossFieldOptions &options) {
+  if (mesh.V.rows() == 0 || mesh.F.rows() == 0) {
+    throw std::runtime_error(
+        "Cross-field extraction requires a non-empty triangle mesh.");
+  }
+  if (mesh.F.cols() != 3) {
+    throw std::runtime_error(
+        "Cross-field extraction requires triangular faces.");
+  }
+
+  report_progress(options.progress, 1, 4, "Initializing tangent bundle");
+  PCFaceTangentBundle tangentBundle;
+  tangentBundle.init(mesh);
+
+  report_progress(options.progress, 2, 4, "Solving cross-field power system");
+  const Eigen::VectorXcd power =
+      solve_power_field(tangentBundle, options.normalizeDirections);
+  report_progress(options.progress, 3, 4,
+                  "Constructing cross-field directions");
+  CartesianField rawField =
+      make_raw_field(tangentBundle, power, options.normalizeDirections);
+
+  report_progress(
+      options.progress, 4, 4,
+      options.combDirections
+          ? "Combing cross-field branches"
+          : (options.computeMatching ? "Computing field matching"
+                                     : "Finalizing cross field"));
+
+  return finalize_cross_field_result(
+      rawField, options.combDirections, options.computeMatching);
+}
+
+CrossFieldResult extract_cross_field(const Eigen::MatrixXd &vertices,
+                                     const Eigen::MatrixXi &faces,
+                                     const CrossFieldOptions &options) {
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return extract_cross_field(mesh, options);
+}
+
+} // namespace directional::fields

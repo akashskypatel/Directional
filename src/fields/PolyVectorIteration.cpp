@@ -1,0 +1,2 @@
+#define DIRECTIONAL_POLY_VECTOR_ITERATION_IMPLEMENTATION
+#include <directional/fields/PolyVectorIteration.h>

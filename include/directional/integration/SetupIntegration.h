@@ -10,13 +10,16 @@
 #ifndef DIRECTIONAL_INTEGRATION_INTEGRATION_SETUP_H
 #define DIRECTIONAL_INTEGRATION_INTEGRATION_SETUP_H
 
-#include <Eigen/Sparse>
+#include <Eigen/Core>
+
+#if defined(DIRECTIONAL_SETUP_INTEGRATION_IMPLEMENTATION)
 #include <cmath>
+#include <limits>
 #include <queue>
 #include <stdexcept>
 #include <vector>
 
-#include <Eigen/Core>
+#include <Eigen/Sparse>
 
 #include <directional/core/CartesianField.h>
 #include <directional/core/DCEL.h>
@@ -26,9 +29,15 @@
 #include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/geometry/CutMesh.h>
 #include <directional/integration/IntegrationData.h>
-#include <directional/integration/Integrate.h>
 #include <directional/integration/IntegerTransitionBasis.h>
 #include <directional/util/GraphUtils.h>
+#endif // DIRECTIONAL_SETUP_INTEGRATION_IMPLEMENTATION
+
+namespace directional {
+class CartesianField;
+class TriMesh;
+struct IntegrationData;
+} // namespace directional
 
 
 /**
@@ -39,13 +48,17 @@
  */
 
 namespace directional {
-inline int eigen_index_to_int(const Eigen::Index value) {
+#if defined(DIRECTIONAL_SETUP_INTEGRATION_IMPLEMENTATION)
+int eigen_index_to_int(const Eigen::Index value) {
   if (value < 0 ||
       value > static_cast<Eigen::Index>(std::numeric_limits<int>::max())) {
     throw std::overflow_error("Eigen index does not fit in int");
   }
   return static_cast<int>(value);
 }
+#else
+int eigen_index_to_int(const Eigen::Index value);
+#endif
 /// @brief Setting up the seamless integration algorithm
 /// @details Seamless integration only works on IntrinsicFaceTangentBundle at
 /// the moment.
@@ -54,7 +67,8 @@ inline int eigen_index_to_int(const Eigen::Index value) {
 /// @param meshCut The cut mesh
 /// @param combedField The combed field
 /// @note The raw field must be face-based
-inline void setup_integration(const directional::CartesianField &field,
+#if defined(DIRECTIONAL_SETUP_INTEGRATION_IMPLEMENTATION)
+void setup_integration(const directional::CartesianField &field,
                               IntegrationData &intData,
                               directional::TriMesh &meshCut,
                               directional::CartesianField &combedField) {
@@ -624,6 +638,12 @@ inline void setup_integration(const directional::CartesianField &field,
 
   meshCut.set_mesh(cutV, cutF);
 }
+#else
+void setup_integration(const directional::CartesianField &field,
+                              IntegrationData &intData,
+                              directional::TriMesh &meshCut,
+                              directional::CartesianField &combedField);
+#endif
 
 } // namespace directional
 

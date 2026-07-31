@@ -1,0 +1,2 @@
+#define DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION
+#include <directional/geometry/TensorCurvatureTarget.h>

@@ -1,0 +1,2 @@
+#define DIRECTIONAL_POLY_TO_CONSTANT_SUBDIVISION_IMPLEMENTATION
+#include <directional/geometry/PolyToConstantSubdivision.h>

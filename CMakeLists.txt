@@ -125,13 +125,94 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
   include(DirectionalDependenciesSuiteSparse)
 endif()
 
-add_library(directional SHARED
-  src/core/Library.cpp)
+add_library(
+  directional
+  src/core/Library.cpp
+  src/diagnostics/RemeshDiagnostics.cpp
+  src/fields/CompareCrossFields.cpp
+  src/fields/CrossField.cpp
+  src/fields/CurlMatching.cpp
+  src/fields/FieldCombing.cpp
+  src/fields/FieldMatching.cpp
+  src/fields/FieldOperators.cpp
+  src/fields/IndexPrescription.cpp
+  src/fields/PointSampledCrossField.cpp
+  src/fields/PointwiseVectors.cpp
+  src/fields/PolyVectorField.cpp
+  src/fields/PolyVectorIteration.cpp
+  src/fields/PolyVectorToRaw.cpp
+  src/fields/PowerField.cpp
+  src/fields/PowerToRaw.cpp
+  src/fields/ProjectCurl.cpp
+  src/fields/RawToPolyVector.cpp
+  src/fields/RegularizedCurvatureCrossField.cpp
+  src/fields/RotationToRaw.cpp
+  src/fields/ShapeOperatorAlignment.cpp
+  src/geometry/AdaptiveFeatureMap.cpp
+  src/geometry/AdaptiveFeatureMapVisualizer.cpp
+  src/geometry/AdaptiveTargetSize.cpp
+  src/geometry/BarycentricCoordinates.cpp
+  src/geometry/BarycentricSubdivision.cpp
+  src/geometry/BranchedIsolines.cpp
+  src/geometry/Curvature.cpp
+  src/geometry/CutMesh.cpp
+  src/geometry/FaceCurvature.cpp
+  src/geometry/FlowRepStrands.cpp
+  src/geometry/MeshComponents.cpp
+  src/geometry/MeshTopology.cpp
+  src/geometry/PatchDescriptor.cpp
+  src/geometry/PolyToConstantSubdivision.cpp
+  src/geometry/PureQuadCompletion.cpp
+  src/geometry/RegularizedProxyMesh.cpp
+  src/geometry/ReliefTopology.cpp
+  src/geometry/Streamlines.cpp
+  src/geometry/SurfaceArrangement.cpp
+  src/geometry/SurfaceCellTracing.cpp
+  src/geometry/SurfaceComplexSimplification.cpp
+  src/geometry/SurfaceMeshOptimizer.cpp
+  src/geometry/SurfaceOptimizationRailConstraints.cpp
+  src/geometry/SurfacePoint.cpp
+  src/geometry/TensorCurvatureTarget.cpp
+  src/integration/Integrate.cpp
+  src/integration/ParametrizationQuality.cpp
+  src/integration/SetupIntegration.cpp
+  src/io/PolygonalWriteOFF.cpp
+  src/io/ReadMatching.cpp
+  src/io/ReadOBJ.cpp
+  src/io/ReadOFF.cpp
+  src/io/ReadRawField.cpp
+  src/io/ReadSingularities.cpp
+  src/io/WriteMatching.cpp
+  src/io/WriteOBJ.cpp
+  src/io/WriteRawField.cpp
+  src/io/WriteSingularities.cpp
+  src/meshing/GenerateMesh.cpp
+  src/meshing/Mesher.cpp
+  src/meshing/PatchRegion.cpp
+  src/meshing/SetupMesher.cpp
+  src/meshing/TriFlowSimplification.cpp
+  src/meshing/TriFlowSimplificationDCEL.cpp
+  src/pipeline/ParallelRemeshPipeline.cpp
+  src/pipeline/RemeshPipeline.cpp
+  src/validation/MeshValidator.cpp
+  src/validation/SourceAuthoritativeMeshValidator.cpp
+  src/validation/ValidationVisualizer.cpp
+  src/util/GraphUtils.cpp
+  src/util/IsOrderPreserving.cpp
+  src/util/Progress.cpp)
 add_library(Directional::directional ALIAS directional)
 
-set_target_properties(directional PROPERTIES OUTPUT_NAME directional
-                                             WINDOWS_EXPORT_ALL_SYMBOLS ON)
-target_compile_definitions(directional INTERFACE DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}")
+set_target_properties(
+  directional
+  PROPERTIES OUTPUT_NAME directional
+             VERSION ${PROJECT_VERSION}
+             SOVERSION ${PROJECT_VERSION_MAJOR}
+             WINDOWS_EXPORT_ALL_SYMBOLS ON)
+target_compile_definitions(
+  directional
+  PRIVATE DIRECTIONAL_BUILDING_LIBRARY
+  PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
+         $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
 target_include_directories(
   directional
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -139,6 +220,15 @@ target_include_directories(
          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 target_compile_features(directional PUBLIC cxx_std_20)
+
+if(MSVC)
+  set_source_files_properties(
+    src/integration/Integrate.cpp
+    src/meshing/GenerateMesh.cpp
+    src/meshing/Mesher.cpp
+    src/meshing/TriFlowSimplification.cpp
+    PROPERTIES COMPILE_OPTIONS "/bigobj")
+endif()
 
 if(DIRECTIONAL_ENABLE_PARDISO)
   include(DirectionalDependenciesPARDISO)
@@ -151,8 +241,10 @@ if(DIRECTIONAL_ENABLE_PARDISO)
     message(FATAL_ERROR "Intel MKL PARDISO not found")
   endif()
   
-  target_compile_definitions(directional INTERFACE DIRECTIONAL_HAS_PARDISO)
+  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_PARDISO)
   target_link_libraries(directional PUBLIC MKL::MKL)
+  target_sources(
+    directional PRIVATE src/integration/solvers/PardisoSolver.cpp)
   _directional_collect_pardiso_runtime_files(
     DIRECTIONAL_PARDISO_RUNTIME_FILES)
 elseif(DIRECTIONAL_ENABLE_CUDSS)
@@ -160,7 +252,7 @@ elseif(DIRECTIONAL_ENABLE_CUDSS)
   if(NOT TARGET CUDSS::cudss)
     message(FATAL_ERROR "DIRECTIONAL_ENABLE_CUDSS requires CUDSS::cudss")
   endif()
-  target_compile_definitions(directional INTERFACE DIRECTIONAL_HAS_CUDSS)
+  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_CUDSS)
   target_link_libraries(directional PUBLIC CUDSS::cudss)
 elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
   message(STATUS "Attempting to find SuiteSparse for Directional core...")
@@ -177,7 +269,7 @@ elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
   if(SUITESPARSE_TARGETS OR SuiteSparse_FOUND)
     target_compile_definitions(
       directional
-      INTERFACE DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
+      PUBLIC DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
                 USE_SUITESPARSE_ENABLED SUITESPARSE_ENABLED ENABLE_SUITESPARSE)
     foreach(_target IN LISTS SUITESPARSE_TARGETS)
       if(TARGET ${_target})
@@ -207,7 +299,7 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(STATUS "GMP found for Directional core")
 
     target_compile_definitions(
-      directional INTERFACE DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
+      directional PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
                           GMP_ENABLED ENABLE_GMP)
 
     target_link_libraries(directional PUBLIC GMP::GMP)
@@ -226,6 +318,15 @@ if(DIRECTIONAL_ENABLE_GMP)
   endif()
 endif()
 
+target_sources(directional PRIVATE src/numerics/ExactGeometry.cpp)
+if(DIRECTIONAL_ENABLE_GMP)
+  target_sources(directional PRIVATE src/numerics/ENumberGMP.cpp)
+else()
+  target_sources(
+    directional
+    PRIVATE src/numerics/BigInteger.cpp src/numerics/ExactNumber.cpp)
+endif()
+
 if(BUILD_TUTORIALS)
   add_subdirectory(tutorial)
 endif()
@@ -235,6 +336,14 @@ if(DIRECTIONAL_BUILD_TESTS)
   set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
+
+  add_executable(
+    directional_compiled_api_tests
+    tests/CompiledLibraryTests.cpp)
+  target_link_libraries(
+    directional_compiled_api_tests
+    PRIVATE Directional::directional GTest::gtest_main)
+  target_compile_features(directional_compiled_api_tests PRIVATE cxx_std_20)
 
   add_executable(
     directional_phase1_tests
@@ -313,7 +422,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p23_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p23_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p23_tests
@@ -369,7 +478,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p24_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p24_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p24_tests
@@ -403,7 +512,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p25_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p25_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p25_tests
@@ -436,7 +545,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceCellPipelinePhase20Tests.cpp)
   target_link_libraries(
     directional_milestone_g_p26_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p26_tests PRIVATE cxx_std_20)
   target_compile_definitions(
     directional_milestone_g_p26_tests
@@ -544,7 +653,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_tests
     PRIVATE
@@ -564,7 +673,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_optimizer_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_optimizer_tests
     PRIVATE
@@ -580,7 +689,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_validator_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_validator_tests
     PRIVATE
@@ -594,6 +703,9 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_milestone_f_benchmark
     tests/MilestoneFBenchmark.cpp)
+  target_link_libraries(
+    directional_milestone_f_benchmark
+    PRIVATE Directional::directional)
   target_include_directories(
     directional_milestone_f_benchmark
     PRIVATE
@@ -652,6 +764,7 @@ if(DIRECTIONAL_BUILD_TESTS)
   endif()
 
   include(GoogleTest)
+  gtest_discover_tests(directional_compiled_api_tests)
   gtest_discover_tests(directional_phase1_tests)
   gtest_discover_tests(directional_milestone_g_p23_tests TEST_PREFIX "P23Focused.")
   gtest_discover_tests(directional_milestone_g_p24_tests TEST_PREFIX "P24Focused.")
@@ -918,6 +1031,25 @@ endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# Directional exposes Eigen types throughout its public API and uses the
+# vendored Eigen checkout directly in the build tree. Install the matching
+# header set so the exported target remains self-contained and ABI-consistent.
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/Eigen
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/Polynomials
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen)
+install(DIRECTORY
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/unsupported/Eigen/src/Polynomials
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unsupported/Eigen/src)
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.APACHE
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.BSD
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.MINPACK
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.MPL2
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/COPYING.README
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/eigen/LICENSE
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/Directional/eigen)
 
 install(
   EXPORT DirectionalTargets

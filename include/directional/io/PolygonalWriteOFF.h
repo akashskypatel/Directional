@@ -21,7 +21,8 @@ namespace hedra
   //  V  eigen double matrix  #V by 3 - vertex coordinates
   //  D  eigen int vector     #F by 1 - face degrees
   //  F  eigen int matrix     #F by max(D) - vertex indices in face
-  inline bool polygonal_write_OFF(const std::string& str,
+  #if defined(DIRECTIONAL_POLYGONAL_WRITE_OFF_IMPLEMENTATION)
+bool polygonal_write_OFF(const std::string& str,
                                       const Eigen::MatrixXd& V,
                                       const Eigen::VectorXi& D,
                                       const Eigen::MatrixXi& F)
@@ -45,6 +46,12 @@ namespace hedra
     FileHandle.close();
     return true;
   }
+#else
+bool polygonal_write_OFF(const std::string& str,
+                                      const Eigen::MatrixXd& V,
+                                      const Eigen::VectorXi& D,
+                                      const Eigen::MatrixXi& F);
+#endif
 }
 
 

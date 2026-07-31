@@ -54,7 +54,8 @@ struct PatchMesh {
   std::vector<int> boundaryVertices;
 };
 
-[[nodiscard]] inline std::size_t
+#if defined(DIRECTIONAL_PATCH_REGION_IMPLEMENTATION)
+[[nodiscard]] std::size_t
 patch_boundary_edge_count(const PatchRegion &region) {
   std::size_t total = 0;
   for (const int count : region.sideEdgeCounts) {
@@ -65,12 +66,21 @@ patch_boundary_edge_count(const PatchRegion &region) {
   }
   return total;
 }
+#else
+[[nodiscard]] std::size_t
+patch_boundary_edge_count(const PatchRegion &region);
+#endif
 
-[[nodiscard]] inline PatchBoundaryEdge
+#if defined(DIRECTIONAL_PATCH_REGION_IMPLEMENTATION)
+[[nodiscard]] PatchBoundaryEdge
 canonical_patch_edge(const int first, const int second) {
   return first <= second ? PatchBoundaryEdge{first, second}
                          : PatchBoundaryEdge{second, first};
 }
+#else
+[[nodiscard]] PatchBoundaryEdge
+canonical_patch_edge(const int first, const int second);
+#endif
 
 } // namespace detail
 } // namespace directional

@@ -45,7 +45,8 @@ enum class SurfaceCellOutputOrigin {
   Mixed
 };
 
-inline const char *surface_cell_output_origin_name(
+#if defined(DIRECTIONAL_REMESH_DIAGNOSTICS_IMPLEMENTATION)
+const char *surface_cell_output_origin_name(
     const SurfaceCellOutputOrigin origin) {
   switch (origin) {
   case SurfaceCellOutputOrigin::None:
@@ -61,6 +62,10 @@ inline const char *surface_cell_output_origin_name(
   }
   return "None";
 }
+#else
+const char *surface_cell_output_origin_name(
+    const SurfaceCellOutputOrigin origin);
+#endif
 
 
 enum class SurfaceCellConsumptionKind {
@@ -70,7 +75,8 @@ enum class SurfaceCellConsumptionKind {
   Discontinuous
 };
 
-inline const char *surface_cell_consumption_kind_name(
+#if defined(DIRECTIONAL_REMESH_DIAGNOSTICS_IMPLEMENTATION)
+const char *surface_cell_consumption_kind_name(
     const SurfaceCellConsumptionKind kind) {
   switch (kind) {
   case SurfaceCellConsumptionKind::None:
@@ -84,6 +90,10 @@ inline const char *surface_cell_consumption_kind_name(
   }
   return "None";
 }
+#else
+const char *surface_cell_consumption_kind_name(
+    const SurfaceCellConsumptionKind kind);
+#endif
 
 struct SurfaceCellObjectIdentity {
   std::string type;

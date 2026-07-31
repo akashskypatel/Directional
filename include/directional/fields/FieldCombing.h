@@ -39,7 +39,8 @@ namespace directional {
 /// @param combedField the combed field object, also RAW_FIELD
 /// @param _spaceIsCut Optionally prescribing the TB edges (corresponding to
 /// mesh faces) that must be a seam
-inline void combing(const directional::CartesianField &rawField,
+#if defined(DIRECTIONAL_FIELD_COMBING_IMPLEMENTATION)
+void combing(const directional::CartesianField &rawField,
                     directional::CartesianField &combedField,
                     const Eigen::MatrixXi &_spaceIsCut = Eigen::MatrixXi()) {
   using namespace Eigen;
@@ -127,6 +128,11 @@ inline void combing(const directional::CartesianField &rawField,
   // Recompute matching and effort to keep the combed field self-consistent.
   principal_matching(combedField);
 }
+#else
+void combing(const directional::CartesianField &rawField,
+                    directional::CartesianField &combedField,
+                    const Eigen::MatrixXi &_spaceIsCut = Eigen::MatrixXi());
+#endif
 
 } // namespace directional
 

@@ -30,7 +30,8 @@ namespace directional{
 //isoOrigE    #E by 3 in (f,if,f) (if - index of edge in face opposite to vertex if) identity of halfedges in relevant faces
 //funcNum: identity of function (as NFunction #col) of the corresponding P1 (or P2) entry.
 
-void inline branched_isolines(const Eigen::MatrixXd& V,
+#if defined(DIRECTIONAL_BRANCHED_ISOLINES_IMPLEMENTATION)
+void branched_isolines(const Eigen::MatrixXd& V,
                               const Eigen::MatrixXi& F,
                               const Eigen::MatrixXd& NFunction,
                               Eigen::MatrixXd& isoV,
@@ -64,6 +65,16 @@ void inline branched_isolines(const Eigen::MatrixXd& V,
         funcNum.tail(isoNPart.rows()).setConstant(i);
     }
 }
+#else
+void branched_isolines(const Eigen::MatrixXd& V,
+                              const Eigen::MatrixXi& F,
+                              const Eigen::MatrixXd& NFunction,
+                              Eigen::MatrixXd& isoV,
+                              Eigen::MatrixXi& isoE,
+                              Eigen::MatrixXi& isoOrigE,
+                              Eigen::MatrixXd& isoN,
+                              Eigen::VectorXi& funcNum);
+#endif
 }
 
 #endif

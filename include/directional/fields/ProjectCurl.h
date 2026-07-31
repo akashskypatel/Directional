@@ -20,7 +20,8 @@
 
 namespace directional {
 
-inline void gradient_descent(const Eigen::SparseMatrix<double>& A,
+#if defined(DIRECTIONAL_PROJECT_CURL_IMPLEMENTATION)
+void gradient_descent(const Eigen::SparseMatrix<double>& A,
                              const Eigen::VectorXd& gradMasses,
                              const Eigen::VectorXd& b,
                              const Eigen::VectorXd& initx,
@@ -52,6 +53,15 @@ inline void gradient_descent(const Eigen::SparseMatrix<double>& A,
     }
     
 }
+#else
+void gradient_descent(const Eigen::SparseMatrix<double>& A,
+                             const Eigen::VectorXd& gradMasses,
+                             const Eigen::VectorXd& b,
+                             const Eigen::VectorXd& initx,
+                             const double tol,
+                             const int maxIterations,
+                             Eigen::VectorXd& resultx);
+#endif
 
 
 //This only works with face based raw fields, with a given matching
@@ -59,7 +69,8 @@ inline void gradient_descent(const Eigen::SparseMatrix<double>& A,
 //the optional objMatrix is in case we want to minimize an objective (default: closeness)
 //The optional reducMatrix is if the field has reduced degrees of freedom (for instance, symmetry). We have that field = reducMatrix*trueDofField
 //Currently hard constraints are ignored
-inline void project_curl(const CartesianField& origField,
+#if defined(DIRECTIONAL_PROJECT_CURL_IMPLEMENTATION)
+void project_curl(const CartesianField& origField,
                          const Eigen::VectorXi& constFaces,   //these are only in case of hard constraints, otherwise leave empty (soft constraints should be baked into objMatrix
                          const Eigen::MatrixXd& constVectors,
                          CartesianField& curlFreeField,
@@ -159,6 +170,15 @@ inline void project_curl(const CartesianField& origField,
      cout<<"Extrinsic curl: "<<(Cext*IE*cfFieldVec).lpNorm<Infinity>()<<endl;*/
     
 }
+#else
+void project_curl(const CartesianField& origField,
+                         const Eigen::VectorXi& constFaces,   //these are only in case of hard constraints, otherwise leave empty (soft constraints should be baked into objMatrix
+                         const Eigen::MatrixXd& constVectors,
+                         CartesianField& curlFreeField,
+                         const Eigen::SparseMatrix<double>& objMatrix=Eigen::SparseMatrix<double>(),
+                         const Eigen::VectorXd& objRhs=Eigen::VectorXd(),
+                         const Eigen::SparseMatrix<double>& reducMatrix = Eigen::SparseMatrix<double>());
+#endif
 };
 
 

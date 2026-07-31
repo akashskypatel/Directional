@@ -1,0 +1,2 @@
+#define DIRECTIONAL_REGULARIZED_CURVATURE_CROSS_FIELD_IMPLEMENTATION
+#include <directional/fields/RegularizedCurvatureCrossField.h>

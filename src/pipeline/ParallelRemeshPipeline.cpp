@@ -1,0 +1,2 @@
+#define DIRECTIONAL_PARALLEL_REMESH_PIPELINE_IMPLEMENTATION
+#include <directional/pipeline/ParallelRemeshPipeline.h>

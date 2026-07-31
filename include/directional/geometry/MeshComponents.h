@@ -34,7 +34,8 @@ struct FaceComponent {
   }
 };
 
-inline std::vector<std::vector<int>>
+#if defined(DIRECTIONAL_MESH_COMPONENTS_IMPLEMENTATION)
+std::vector<std::vector<int>>
 face_connected_components(const Eigen::MatrixXi &faces) {
   if (faces.cols() != 3) {
     throw std::runtime_error("face_connected_components expects triangle faces.");
@@ -80,8 +81,13 @@ face_connected_components(const Eigen::MatrixXi &faces) {
             });
   return components;
 }
+#else
+std::vector<std::vector<int>>
+face_connected_components(const Eigen::MatrixXi &faces);
+#endif
 
-inline FaceComponent compact_face_component(
+#if defined(DIRECTIONAL_MESH_COMPONENTS_IMPLEMENTATION)
+FaceComponent compact_face_component(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &componentFaces,
     const Eigen::MatrixXd *rawField = nullptr) {
@@ -143,8 +149,15 @@ inline FaceComponent compact_face_component(
 
   return component;
 }
+#else
+FaceComponent compact_face_component(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &componentFaces,
+    const Eigen::MatrixXd *rawField = nullptr);
+#endif
 
-inline std::vector<FaceComponent>
+#if defined(DIRECTIONAL_MESH_COMPONENTS_IMPLEMENTATION)
+std::vector<FaceComponent>
 compact_face_components(const Eigen::MatrixXd &vertices,
                         const Eigen::MatrixXi &faces,
                         const Eigen::MatrixXd *rawField = nullptr) {
@@ -156,6 +169,12 @@ compact_face_components(const Eigen::MatrixXd &vertices,
   }
   return result;
 }
+#else
+std::vector<FaceComponent>
+compact_face_components(const Eigen::MatrixXd &vertices,
+                        const Eigen::MatrixXi &faces,
+                        const Eigen::MatrixXd *rawField = nullptr);
+#endif
 
 } // namespace directional::geometry
 

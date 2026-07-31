@@ -81,11 +81,16 @@ struct MeshValidatorOptions {
   bool requireAuthoritativeBoundary = false;
 };
 
-inline std::pair<int, int> canonical_edge(const int a, const int b) {
+#if defined(DIRECTIONAL_MESH_VALIDATOR_IMPLEMENTATION)
+std::pair<int, int> canonical_edge(const int a, const int b) {
   return a <= b ? std::pair<int, int>{a, b} : std::pair<int, int>{b, a};
 }
+#else
+std::pair<int, int> canonical_edge(const int a, const int b);
+#endif
 
-inline std::string_view
+#if defined(DIRECTIONAL_MESH_VALIDATOR_IMPLEMENTATION)
+std::string_view
 mesh_validation_failure_name(const MeshValidationFailureCode code) {
   switch (code) {
   case MeshValidationFailureCode::None:
@@ -137,6 +142,10 @@ mesh_validation_failure_name(const MeshValidationFailureCode code) {
   }
   return "Unknown";
 }
+#else
+std::string_view
+mesh_validation_failure_name(const MeshValidationFailureCode code);
+#endif
 
 class MeshValidator {
 public:

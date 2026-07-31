@@ -22,7 +22,8 @@ namespace directional{
  Output:
  pvField:                   #TangentSpaces x N complex representation of the PolyVector.
  ***/
-inline void raw_to_polyvector(const Eigen::MatrixXd& intField,
+#if defined(DIRECTIONAL_RAW_TO_POLY_VECTOR_IMPLEMENTATION)
+void raw_to_polyvector(const Eigen::MatrixXd& intField,
                               const int N,
                               Eigen::MatrixXcd& pvField,
                               const bool signSymmetry=true){
@@ -57,9 +58,16 @@ inline void raw_to_polyvector(const Eigen::MatrixXd& intField,
     for (int i=0;i<N;i+=jump)
         pvField.col(i)=actualPVField.col(i/jump);
 }
+#else
+void raw_to_polyvector(const Eigen::MatrixXd& intField,
+                              const int N,
+                              Eigen::MatrixXcd& pvField,
+                              const bool signSymmetry=true);
+#endif
 
 
-inline void raw_to_polyvector(const CartesianField& rawField,
+#if defined(DIRECTIONAL_RAW_TO_POLY_VECTOR_IMPLEMENTATION)
+void raw_to_polyvector(const CartesianField& rawField,
                               CartesianField& pvField,
                               const bool signSymmetry=true){
     
@@ -68,6 +76,11 @@ inline void raw_to_polyvector(const CartesianField& rawField,
     pvField.init(*(rawField.tb), fieldTypeEnum::POLYVECTOR_FIELD, rawField.N);
     pvField.set_intrinsic_field(pvFieldComplex);
 }
+#else
+void raw_to_polyvector(const CartesianField& rawField,
+                              CartesianField& pvField,
+                              const bool signSymmetry=true);
+#endif
 
 }
 

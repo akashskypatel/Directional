@@ -29,7 +29,8 @@ struct AdaptiveFeatureMapOverlay {
   Eigen::VectorXi junctionVertices;
 };
 
-inline AdaptiveFeatureMapOverlay
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_VISUALIZER_IMPLEMENTATION)
+AdaptiveFeatureMapOverlay
 make_adaptive_feature_map_overlay(const AdaptiveFeatureMap &map) {
   AdaptiveFeatureMapOverlay overlay;
   overlay.edgeStrength.resize(static_cast<int>(map.edges.size()));
@@ -61,6 +62,10 @@ make_adaptive_feature_map_overlay(const AdaptiveFeatureMap &map) {
   }
   return overlay;
 }
+#else
+AdaptiveFeatureMapOverlay
+make_adaptive_feature_map_overlay(const AdaptiveFeatureMap &map);
+#endif
 
 } // namespace directional::geometry
 

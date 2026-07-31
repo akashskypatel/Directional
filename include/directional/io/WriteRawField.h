@@ -25,7 +25,8 @@ namespace directional
  Output:
  Whether or not the file was written successfully
  ***/
-bool inline write_raw_field(const std::string fileName,
+#if defined(DIRECTIONAL_WRITE_RAW_FIELD_IMPLEMENTATION)
+bool write_raw_field(const std::string fileName,
                             const directional::CartesianField& rawField,
                             bool high_precision = false)
 {
@@ -46,6 +47,11 @@ bool inline write_raw_field(const std::string fileName,
     f.close();
     return !f.fail();
 }
+#else
+bool write_raw_field(const std::string fileName,
+                            const directional::CartesianField& rawField,
+                            bool high_precision = false);
+#endif
 }
 
 #endif

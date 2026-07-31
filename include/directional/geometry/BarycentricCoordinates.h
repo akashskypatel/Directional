@@ -37,7 +37,8 @@ namespace directional {
  *
  * Degenerate triangles produce quiet NaN coordinates.
  */
-inline void barycentric_coordinates(const Eigen::MatrixXd &points,
+#if defined(DIRECTIONAL_BARYCENTRIC_COORDINATES_IMPLEMENTATION)
+void barycentric_coordinates(const Eigen::MatrixXd &points,
                                     const Eigen::MatrixXd &corner0,
                                     const Eigen::MatrixXd &corner1,
                                     const Eigen::MatrixXd &corner2,
@@ -79,6 +80,13 @@ inline void barycentric_coordinates(const Eigen::MatrixXd &points,
     coordinates(row, 2) = weight2;
   }
 }
+#else
+void barycentric_coordinates(const Eigen::MatrixXd &points,
+                                    const Eigen::MatrixXd &corner0,
+                                    const Eigen::MatrixXd &corner1,
+                                    const Eigen::MatrixXd &corner2,
+                                    Eigen::MatrixXd &coordinates);
+#endif
 
 } // namespace directional
 

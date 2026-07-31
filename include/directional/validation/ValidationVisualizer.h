@@ -21,7 +21,8 @@ struct ValidationDebugColors {
   Eigen::MatrixXd faceColors;
 };
 
-inline ValidationDebugColors make_validation_debug_colors(
+#if defined(DIRECTIONAL_VALIDATION_VISUALIZER_IMPLEMENTATION)
+ValidationDebugColors make_validation_debug_colors(
     const int vertexCount, const int faceCount,
     const MeshValidationResult &validation) {
   ValidationDebugColors colors;
@@ -44,6 +45,11 @@ inline ValidationDebugColors make_validation_debug_colors(
   }
   return colors;
 }
+#else
+ValidationDebugColors make_validation_debug_colors(
+    const int vertexCount, const int faceCount,
+    const MeshValidationResult &validation);
+#endif
 
 } // namespace directional::validation
 

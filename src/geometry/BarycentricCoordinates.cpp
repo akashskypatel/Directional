@@ -1,0 +1,2 @@
+#define DIRECTIONAL_BARYCENTRIC_COORDINATES_IMPLEMENTATION
+#include <directional/geometry/BarycentricCoordinates.h>

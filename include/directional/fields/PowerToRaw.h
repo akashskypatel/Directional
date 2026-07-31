@@ -21,7 +21,8 @@ namespace directional
 //  normalize: whether to produce a normalized result (length = 1)
 // Output:
 //  rawField: a RAW_FIELD object representing the (CCW sorted) roots of the power field.
-inline void power_to_raw(const directional::CartesianField& powerField,
+#if defined(DIRECTIONAL_POWER_TO_RAW_IMPLEMENTATION)
+void power_to_raw(const directional::CartesianField& powerField,
                          int N,
                          directional::CartesianField& rawField,
                          bool normalize=false)
@@ -49,6 +50,12 @@ inline void power_to_raw(const directional::CartesianField& powerField,
     
     rawField.set_intrinsic_field(intField);
 }
+#else
+void power_to_raw(const directional::CartesianField& powerField,
+                         int N,
+                         directional::CartesianField& rawField,
+                         bool normalize=false);
+#endif
 
 }
 

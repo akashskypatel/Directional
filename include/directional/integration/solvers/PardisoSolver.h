@@ -118,7 +118,8 @@ pardiso_ordering_name(PardisoOrdering ordering) noexcept {
  *                      PardisoOrdering::MetisNestedDissection, or
  *                      PardisoOrdering::ParallelNestedDissection;
  */
-[[nodiscard]] inline PardisoBenchmarkOptions
+#if defined(DIRECTIONAL_PARDISO_SOLVER_IMPLEMENTATION)
+[[nodiscard]] PardisoBenchmarkOptions
 default_pardiso_benchmark_options() {
   PardisoBenchmarkOptions options;
   options.threadCount = 4;
@@ -135,6 +136,10 @@ default_pardiso_benchmark_options() {
   options.printPhaseSummaryEverySolve = false;
   return options;
 }
+#else
+[[nodiscard]] PardisoBenchmarkOptions
+default_pardiso_benchmark_options();
+#endif
 
 } // namespace directional
 

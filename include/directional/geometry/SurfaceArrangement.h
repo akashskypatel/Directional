@@ -248,19 +248,32 @@ struct NodeKey {
   }
 };
 
-inline double cross2(const Eigen::Vector2d &a, const Eigen::Vector2d &b) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+double cross2(const Eigen::Vector2d &a, const Eigen::Vector2d &b) {
   return a.x() * b.y() - a.y() * b.x();
 }
+#else
+double cross2(const Eigen::Vector2d &a, const Eigen::Vector2d &b);
+#endif
 
-inline Eigen::Vector2d bary_to_uv(const Eigen::RowVector3d &bary) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::Vector2d bary_to_uv(const Eigen::RowVector3d &bary) {
   return {bary[1], bary[2]};
 }
+#else
+Eigen::Vector2d bary_to_uv(const Eigen::RowVector3d &bary);
+#endif
 
-inline Eigen::RowVector3d uv_to_bary(const Eigen::Vector2d &uv) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d uv_to_bary(const Eigen::Vector2d &uv) {
   return {1.0 - uv.x() - uv.y(), uv.x(), uv.y()};
 }
+#else
+Eigen::RowVector3d uv_to_bary(const Eigen::Vector2d &uv);
+#endif
 
-inline double triangle_area_3d(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+double triangle_area_3d(const Eigen::MatrixXd &vertices,
                                const Eigen::MatrixXi &faces,
                                const int face) {
   const Eigen::RowVector3d a = vertices.row(faces(face, 0));
@@ -268,8 +281,14 @@ inline double triangle_area_3d(const Eigen::MatrixXd &vertices,
   const Eigen::RowVector3d c = vertices.row(faces(face, 2));
   return 0.5 * surface_cell_tracing_detail::cross3(b - a, c - a).norm();
 }
+#else
+double triangle_area_3d(const Eigen::MatrixXd &vertices,
+                               const Eigen::MatrixXi &faces,
+                               const int face);
+#endif
 
-inline Eigen::RowVector3d face_normal_3d(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d face_normal_3d(const Eigen::MatrixXd &vertices,
                                          const Eigen::MatrixXi &faces,
                                          const int face) {
   if (face < 0 || face >= faces.rows()) {
@@ -286,8 +305,14 @@ inline Eigen::RowVector3d face_normal_3d(const Eigen::MatrixXd &vertices,
   }
   return normal / norm;
 }
+#else
+Eigen::RowVector3d face_normal_3d(const Eigen::MatrixXd &vertices,
+                                         const Eigen::MatrixXi &faces,
+                                         const int face);
+#endif
 
-inline Eigen::RowVector3d barycentric_position(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d barycentric_position(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const int face, const Eigen::RowVector3d &barycentric) {
   if (face < 0 || face >= faces.rows()) {
@@ -297,15 +322,27 @@ inline Eigen::RowVector3d barycentric_position(
          barycentric[1] * vertices.row(faces(face, 1)) +
          barycentric[2] * vertices.row(faces(face, 2));
 }
+#else
+Eigen::RowVector3d barycentric_position(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int face, const Eigen::RowVector3d &barycentric);
+#endif
 
-inline Eigen::RowVector3d node_position(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d node_position(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceArrangementNode &node) {
   return barycentric_position(vertices, faces, node.sourceFace,
                               node.barycentric);
 }
+#else
+Eigen::RowVector3d node_position(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceArrangementNode &node);
+#endif
 
-inline Eigen::RowVector3d node_barycentric_on_face(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d node_barycentric_on_face(
     const SurfaceArrangementNode &node, const int face) {
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
     if (occurrence.sourceFace == face) {
@@ -316,8 +353,13 @@ inline Eigen::RowVector3d node_barycentric_on_face(
                                  : Eigen::RowVector3d::Constant(
                                        std::numeric_limits<double>::quiet_NaN());
 }
+#else
+Eigen::RowVector3d node_barycentric_on_face(
+    const SurfaceArrangementNode &node, const int face);
+#endif
 
-inline Eigen::RowVector3d node_reference_normal(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d node_reference_normal(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceArrangementNode &node) {
   Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
@@ -336,8 +378,14 @@ inline Eigen::RowVector3d node_reference_normal(
   }
   return normal / norm;
 }
+#else
+Eigen::RowVector3d node_reference_normal(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceArrangementNode &node);
+#endif
 
-inline bool tangent_basis(const Eigen::RowVector3d &normal,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool tangent_basis(const Eigen::RowVector3d &normal,
                           Eigen::RowVector3d &axisX,
                           Eigen::RowVector3d &axisY) {
   const double norm = normal.norm();
@@ -367,8 +415,14 @@ inline bool tangent_basis(const Eigen::RowVector3d &normal,
   axisY /= yNorm;
   return true;
 }
+#else
+bool tangent_basis(const Eigen::RowVector3d &normal,
+                          Eigen::RowVector3d &axisX,
+                          Eigen::RowVector3d &axisY);
+#endif
 
-inline bool polygon_geometry(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool polygon_geometry(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &halfedges,
     const std::vector<SurfaceArrangementHalfedge> &allHalfedges,
@@ -523,8 +577,17 @@ inline bool polygon_geometry(
   area = triangulatedArea;
   return true;
 }
+#else
+bool polygon_geometry(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &halfedges,
+    const std::vector<SurfaceArrangementHalfedge> &allHalfedges,
+    const std::vector<SurfaceArrangementNode> &nodes, double &signedArea,
+    double &area, std::vector<int> &sourceFaces);
+#endif
 
-inline int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10) {
   const Eigen::RowVector3d bary = uv_to_bary(uv);
   for (int i = 0; i < 3; ++i) {
     if (std::abs(bary[i]) <= eps) {
@@ -533,8 +596,12 @@ inline int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10) {
   }
   return -1;
 }
+#else
+int source_edge(const Eigen::Vector2d &uv, const double eps = 1.0e-10);
+#endif
 
-inline Eigen::RowVector3d canonicalize_barycentric(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+Eigen::RowVector3d canonicalize_barycentric(
     const Eigen::RowVector3d &input, const double eps = 1.0e-10) {
   Eigen::RowVector3d result = input;
   for (int i = 0; i < 3; ++i) {
@@ -550,8 +617,13 @@ inline Eigen::RowVector3d canonicalize_barycentric(
   }
   return result;
 }
+#else
+Eigen::RowVector3d canonicalize_barycentric(
+    const Eigen::RowVector3d &input, const double eps = 1.0e-10);
+#endif
 
-inline double local_edge_parameter(const Eigen::Vector2d &uv, const int edge) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+double local_edge_parameter(const Eigen::Vector2d &uv, const int edge) {
   const Eigen::RowVector3d b = canonicalize_barycentric(uv_to_bary(uv));
   if (edge == 0) {
     const double denom = std::max(1.0e-20, b[1] + b[2]);
@@ -567,8 +639,12 @@ inline double local_edge_parameter(const Eigen::Vector2d &uv, const int edge) {
   }
   return 0.0;
 }
+#else
+double local_edge_parameter(const Eigen::Vector2d &uv, const int edge);
+#endif
 
-inline double canonical_edge_parameter(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+double canonical_edge_parameter(const Eigen::MatrixXi &faces,
                                        const int face, const int edge,
                                        const Eigen::Vector2d &uv) {
   const int localStart = faces(face, (edge + 1) % 3);
@@ -576,15 +652,26 @@ inline double canonical_edge_parameter(const Eigen::MatrixXi &faces,
   const double local = local_edge_parameter(uv, edge);
   return localStart <= localEnd ? local : 1.0 - local;
 }
+#else
+double canonical_edge_parameter(const Eigen::MatrixXi &faces,
+                                       const int face, const int edge,
+                                       const Eigen::Vector2d &uv);
+#endif
 
-inline std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
                                      const int face, const int edge) {
   const int a = faces(face, (edge + 1) % 3);
   const int b = faces(face, (edge + 2) % 3);
   return surface_cell_tracing_detail::edge_key(a, b);
 }
+#else
+std::uint64_t source_edge_key(const Eigen::MatrixXi &faces,
+                                     const int face, const int edge);
+#endif
 
-inline int source_vertex(const Eigen::RowVector3d &bary,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+int source_vertex(const Eigen::RowVector3d &bary,
                          const double eps = 1.0e-10) {
   const Eigen::RowVector3d canonical = canonicalize_barycentric(bary, eps);
   for (int i = 0; i < 3; ++i) {
@@ -594,8 +681,13 @@ inline int source_vertex(const Eigen::RowVector3d &bary,
   }
   return -1;
 }
+#else
+int source_vertex(const Eigen::RowVector3d &bary,
+                         const double eps = 1.0e-10);
+#endif
 
-inline NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
                              const Eigen::Vector2d &uv) {
   const Eigen::RowVector3d bary = canonicalize_barycentric(uv_to_bary(uv));
   const Eigen::Vector2d canonicalUv = bary_to_uv(bary);
@@ -626,16 +718,26 @@ inline NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
           static_cast<std::int64_t>(
               std::llround(canonicalUv.y() * 1.0e10))};
 }
+#else
+NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
+                             const Eigen::Vector2d &uv);
+#endif
 
-inline int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
                                     const int edge) {
   if (edge < 0) {
     return -1;
   }
   return static_cast<int>(source_edge_key(faces, face, edge) & 0x7fffffffu);
 }
+#else
+int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
+                                    const int edge);
+#endif
 
-inline bool clip_to_triangle(Eigen::Vector2d &a, Eigen::Vector2d &b,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool clip_to_triangle(Eigen::Vector2d &a, Eigen::Vector2d &b,
                              double &ta, double &tb) {
   double lo = 0.0;
   double hi = 1.0;
@@ -671,8 +773,13 @@ inline bool clip_to_triangle(Eigen::Vector2d &a, Eigen::Vector2d &b,
   tb = oldTa + hi * (oldTb - oldTa);
   return (b - a).squaredNorm() > 1.0e-24;
 }
+#else
+bool clip_to_triangle(Eigen::Vector2d &a, Eigen::Vector2d &b,
+                             double &ta, double &tb);
+#endif
 
-inline bool segment_intersection_params(const Segment2 &a, const Segment2 &b,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool segment_intersection_params(const Segment2 &a, const Segment2 &b,
                                         double &ta, double &tb,
                                         Eigen::Vector2d &point) {
   const Eigen::Vector2d r = a.end - a.start;
@@ -708,8 +815,14 @@ inline bool segment_intersection_params(const Segment2 &a, const Segment2 &b,
   point = a.start + ta * r;
   return true;
 }
+#else
+bool segment_intersection_params(const Segment2 &a, const Segment2 &b,
+                                        double &ta, double &tb,
+                                        Eigen::Vector2d &point);
+#endif
 
-inline bool point_on_segment(const Eigen::Vector2d &p, const Segment2 &s) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool point_on_segment(const Eigen::Vector2d &p, const Segment2 &s) {
   const Eigen::Vector2d ap = p - s.start;
   const Eigen::Vector2d ab = s.end - s.start;
   if (std::abs(cross2(ap, ab)) > 1.0e-10) {
@@ -717,16 +830,24 @@ inline bool point_on_segment(const Eigen::Vector2d &p, const Segment2 &s) {
   }
   return ap.dot(ab) > 1.0e-10 && ap.dot(ab) < ab.squaredNorm() - 1.0e-10;
 }
+#else
+bool point_on_segment(const Eigen::Vector2d &p, const Segment2 &s);
+#endif
 
-inline double polygon_area(const std::vector<Eigen::Vector2d> &points) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+double polygon_area(const std::vector<Eigen::Vector2d> &points) {
   double twice = 0.0;
   for (std::size_t i = 0; i < points.size(); ++i) {
     twice += cross2(points[i], points[(i + 1) % points.size()]);
   }
   return 0.5 * twice;
 }
+#else
+double polygon_area(const std::vector<Eigen::Vector2d> &points);
+#endif
 
-inline bool point_in_polygon(const Eigen::Vector2d &point,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool point_in_polygon(const Eigen::Vector2d &point,
                              const std::vector<Eigen::Vector2d> &polygon) {
   bool inside = false;
   for (std::size_t i = 0, j = polygon.size() - 1; i < polygon.size();
@@ -746,8 +867,13 @@ inline bool point_in_polygon(const Eigen::Vector2d &point,
   }
   return inside;
 }
+#else
+bool point_in_polygon(const Eigen::Vector2d &point,
+                             const std::vector<Eigen::Vector2d> &polygon);
+#endif
 
-inline bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
                                        const double ta, const double tb) {
   const Eigen::Vector2d da = a.end - a.start;
   const Eigen::Vector2d db = b.end - b.start;
@@ -757,13 +883,18 @@ inline bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
   return ta > 1.0e-10 && ta < 1.0 - 1.0e-10 && tb > 1.0e-10 &&
          tb < 1.0 - 1.0e-10;
 }
+#else
+bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
+                                       const double ta, const double tb);
+#endif
 
 template <typename T>
 inline std::uint64_t vector_storage_bytes(const std::vector<T> &values) {
   return static_cast<std::uint64_t>(values.capacity()) * sizeof(T);
 }
 
-inline std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
   std::uint64_t bytes = vector_storage_bytes(complex.nodes) +
                         vector_storage_bytes(complex.halfedges) +
                         vector_storage_bytes(complex.cells);
@@ -781,8 +912,12 @@ inline std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
   }
   return bytes;
 }
+#else
+std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex);
+#endif
 
-inline int graph_component_count(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+int graph_component_count(
     const int vertexCount, const std::vector<std::pair<int, int>> &edges,
     const std::vector<unsigned char> *activeMask = nullptr) {
   std::vector<std::vector<int>> adjacency(static_cast<std::size_t>(vertexCount));
@@ -822,8 +957,14 @@ inline int graph_component_count(
   }
   return count;
 }
+#else
+int graph_component_count(
+    const int vertexCount, const std::vector<std::pair<int, int>> &edges,
+    const std::vector<unsigned char> *activeMask = nullptr);
+#endif
 
-inline std::pair<int, bool> boundary_loop_count(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+std::pair<int, bool> boundary_loop_count(
     const int vertexCount, const std::vector<std::pair<int, int>> &edges) {
   if (edges.empty()) {
     return {0, true};
@@ -847,8 +988,13 @@ inline std::pair<int, bool> boundary_loop_count(
   }
   return {graph_component_count(vertexCount, edges, &active), true};
 }
+#else
+std::pair<int, bool> boundary_loop_count(
+    const int vertexCount, const std::vector<std::pair<int, int>> &edges);
+#endif
 
-inline int boundary_orientation_vote(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+int boundary_orientation_vote(
     const std::vector<int> &cellHalfedges,
     const std::vector<SurfaceArrangementHalfedge> &halfedges,
     const std::vector<SurfaceArrangementNode> &nodes,
@@ -912,8 +1058,17 @@ inline int boundary_orientation_vote(
   }
   return exteriorVotes > interiorVotes ? -1 : 1;
 }
+#else
+int boundary_orientation_vote(
+    const std::vector<int> &cellHalfedges,
+    const std::vector<SurfaceArrangementHalfedge> &halfedges,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces);
+#endif
 
-inline void collect_cell_source_faces(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+void collect_cell_source_faces(
     const std::vector<int> &cellHalfedges,
     const std::vector<SurfaceArrangementHalfedge> &halfedges,
     std::vector<int> &sourceFaces) {
@@ -936,8 +1091,15 @@ inline void collect_cell_source_faces(
   }
   sourceFaces.assign(faceSet.begin(), faceSet.end());
 }
+#else
+void collect_cell_source_faces(
+    const std::vector<int> &cellHalfedges,
+    const std::vector<SurfaceArrangementHalfedge> &halfedges,
+    std::vector<int> &sourceFaces);
+#endif
 
-inline bool same_family_collinear(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+bool same_family_collinear(
     const SurfaceArrangementHalfedge &a,
     const SurfaceArrangementHalfedge &b,
     const std::vector<SurfaceArrangementNode> &nodes,
@@ -974,10 +1136,18 @@ inline bool same_family_collinear(
   outgoing /= outgoingNorm;
   return incoming.dot(outgoing) >= 1.0 - 1.0e-8;
 }
+#else
+bool same_family_collinear(
+    const SurfaceArrangementHalfedge &a,
+    const SurfaceArrangementHalfedge &b,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
+#endif
 
 } // namespace surface_arrangement_detail
 
-inline SurfaceCellComplex build_surface_cell_complex(
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+SurfaceCellComplex build_surface_cell_complex(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<SurfaceArrangementArc> &inputArcs,
     const SurfaceArrangementOptions &options = {}) {
@@ -1868,8 +2038,15 @@ inline SurfaceCellComplex build_surface_cell_complex(
       complex.diagnostics.measuredMemoryRatio;
   return complex;
 }
+#else
+SurfaceCellComplex build_surface_cell_complex(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<SurfaceArrangementArc> &inputArcs,
+    const SurfaceArrangementOptions &options = {});
+#endif
 
-inline SurfaceArrangementOverlay
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+SurfaceArrangementOverlay
 make_surface_arrangement_overlay(const SurfaceCellComplex &complex) {
   SurfaceArrangementOverlay overlay;
   const int edgeCount = static_cast<int>(complex.halfedges.size());
@@ -1898,8 +2075,13 @@ make_surface_arrangement_overlay(const SurfaceCellComplex &complex) {
   }
   return overlay;
 }
+#else
+SurfaceArrangementOverlay
+make_surface_arrangement_overlay(const SurfaceCellComplex &complex);
+#endif
 
-inline std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
+#if defined(DIRECTIONAL_SURFACE_ARRANGEMENT_IMPLEMENTATION)
+std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
   std::uint64_t hash = 1469598103934665603ULL;
   const auto mix = [&](const std::int64_t value) {
     hash ^= static_cast<std::uint64_t>(value);
@@ -1973,6 +2155,9 @@ inline std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex
   }
   return hash;
 }
+#else
+std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex);
+#endif
 
 } // namespace directional::geometry
 

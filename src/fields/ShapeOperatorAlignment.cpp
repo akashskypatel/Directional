@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SHAPE_OPERATOR_ALIGNMENT_IMPLEMENTATION
+#include <directional/fields/ShapeOperatorAlignment.h>

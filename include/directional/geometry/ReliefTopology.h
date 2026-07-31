@@ -103,26 +103,41 @@ struct ReliefRootSelectionResult {
 
 namespace relief_topology_detail {
 
-inline std::uint64_t edge_key(const int a, const int b) {
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::uint64_t edge_key(const int a, const int b) {
   const auto lo = static_cast<std::uint32_t>(std::min(a, b));
   const auto hi = static_cast<std::uint32_t>(std::max(a, b));
   return (static_cast<std::uint64_t>(lo) << 32u) | hi;
 }
+#else
+std::uint64_t edge_key(const int a, const int b);
+#endif
 
-inline bool symbolic_less(const Eigen::VectorXd &relief, const int a,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+bool symbolic_less(const Eigen::VectorXd &relief, const int a,
                           const int b) {
   if (relief[a] != relief[b]) {
     return relief[a] < relief[b];
   }
   return a < b;
 }
+#else
+bool symbolic_less(const Eigen::VectorXd &relief, const int a,
+                          const int b);
+#endif
 
-inline Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
                                const int vertex) {
   return {vertices(vertex, 0), vertices(vertex, 1), vertices(vertex, 2)};
 }
+#else
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+                               const int vertex);
+#endif
 
-inline std::vector<std::vector<int>>
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::vector<std::vector<int>>
 vertex_neighbors_from_faces(const int vertexCount, const Eigen::MatrixXi &faces) {
   std::vector<std::set<int>> sets(static_cast<std::size_t>(vertexCount));
   for (int face = 0; face < faces.rows(); ++face) {
@@ -144,8 +159,13 @@ vertex_neighbors_from_faces(const int vertexCount, const Eigen::MatrixXi &faces)
   }
   return result;
 }
+#else
+std::vector<std::vector<int>>
+vertex_neighbors_from_faces(const int vertexCount, const Eigen::MatrixXi &faces);
+#endif
 
-inline std::map<int, std::set<int>>
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::map<int, std::set<int>>
 link_adjacency(const Eigen::MatrixXi &faces, const int center) {
   std::map<int, std::set<int>> adjacency;
   for (int face = 0; face < faces.rows(); ++face) {
@@ -166,8 +186,13 @@ link_adjacency(const Eigen::MatrixXi &faces, const int center) {
   }
   return adjacency;
 }
+#else
+std::map<int, std::set<int>>
+link_adjacency(const Eigen::MatrixXi &faces, const int center);
+#endif
 
-inline int count_restricted_components(const std::map<int, std::set<int>> &graph,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+int count_restricted_components(const std::map<int, std::set<int>> &graph,
                                        const std::set<int> &enabled) {
   if (enabled.empty()) {
     return 0;
@@ -197,6 +222,10 @@ inline int count_restricted_components(const std::map<int, std::set<int>> &graph
   }
   return components;
 }
+#else
+int count_restricted_components(const std::map<int, std::set<int>> &graph,
+                                       const std::set<int> &enabled);
+#endif
 
 class UnionFind {
 public:
@@ -238,14 +267,20 @@ private:
   std::vector<unsigned char> rank_;
 };
 
-inline void append_unique_sorted(std::vector<int> &values, const int value,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+void append_unique_sorted(std::vector<int> &values, const int value,
                                  const int vertexCount) {
   if (value >= 0 && value < vertexCount) {
     values.push_back(value);
   }
 }
+#else
+void append_unique_sorted(std::vector<int> &values, const int value,
+                                 const int vertexCount);
+#endif
 
-inline Eigen::VectorXd zero_or_validate(const Eigen::VectorXd &values,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+Eigen::VectorXd zero_or_validate(const Eigen::VectorXd &values,
                                         const int count, const char *name) {
   if (values.size() == 0) {
     return Eigen::VectorXd::Zero(count);
@@ -255,10 +290,15 @@ inline Eigen::VectorXd zero_or_validate(const Eigen::VectorXd &values,
   }
   return values;
 }
+#else
+Eigen::VectorXd zero_or_validate(const Eigen::VectorXd &values,
+                                        const int count, const char *name);
+#endif
 
 } // namespace relief_topology_detail
 
-inline Eigen::VectorXd compute_salience_relief(const ReliefInput &input,
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+Eigen::VectorXd compute_salience_relief(const ReliefInput &input,
                                                const ReliefOptions &options) {
   const int count = static_cast<int>(
       std::max({input.salience.size(), input.curvature.size(),
@@ -314,8 +354,13 @@ inline Eigen::VectorXd compute_salience_relief(const ReliefInput &input,
   }
   return relief;
 }
+#else
+Eigen::VectorXd compute_salience_relief(const ReliefInput &input,
+                                               const ReliefOptions &options);
+#endif
 
-inline std::vector<ReliefCriticalPoint>
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::vector<ReliefCriticalPoint>
 classify_pl_critical_points(const Eigen::MatrixXi &faces,
                             const Eigen::VectorXd &relief) {
   const int vertexCount = static_cast<int>(relief.size());
@@ -354,8 +399,14 @@ classify_pl_critical_points(const Eigen::MatrixXi &faces,
   }
   return points;
 }
+#else
+std::vector<ReliefCriticalPoint>
+classify_pl_critical_points(const Eigen::MatrixXi &faces,
+                            const Eigen::VectorXd &relief);
+#endif
 
-inline std::vector<ReliefPersistencePair>
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::vector<ReliefPersistencePair>
 compute_relief_persistence_pairs(const Eigen::MatrixXd &vertices,
                                  const Eigen::MatrixXi &faces,
                                  const Eigen::VectorXd &relief,
@@ -445,8 +496,16 @@ compute_relief_persistence_pairs(const Eigen::MatrixXd &vertices,
             });
   return pairs;
 }
+#else
+std::vector<ReliefPersistencePair>
+compute_relief_persistence_pairs(const Eigen::MatrixXd &vertices,
+                                 const Eigen::MatrixXi &faces,
+                                 const Eigen::VectorXd &relief,
+                                 const double threshold = 0.0);
+#endif
 
-inline Eigen::VectorXi watershed_to_roots(
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+Eigen::VectorXi watershed_to_roots(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &roots,
     const std::set<std::uint64_t> &barrierEdges = {}) {
@@ -512,8 +571,15 @@ inline Eigen::VectorXi watershed_to_roots(
   }
   return labels;
 }
+#else
+Eigen::VectorXi watershed_to_roots(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &roots,
+    const std::set<std::uint64_t> &barrierEdges = {});
+#endif
 
-inline Eigen::VectorXd normalized_dijkstra_to_roots(
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+Eigen::VectorXd normalized_dijkstra_to_roots(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &roots, const Eigen::VectorXd &targetSize,
     const std::set<std::uint64_t> &barrierEdges = {}) {
@@ -572,8 +638,15 @@ inline Eigen::VectorXd normalized_dijkstra_to_roots(
   }
   return distances;
 }
+#else
+Eigen::VectorXd normalized_dijkstra_to_roots(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &roots, const Eigen::VectorXd &targetSize,
+    const std::set<std::uint64_t> &barrierEdges = {});
+#endif
 
-inline std::vector<ReliefBranch> trace_relief_branches(
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+std::vector<ReliefBranch> trace_relief_branches(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &relief,
     const std::vector<ReliefCriticalPoint> &criticalPoints,
@@ -678,8 +751,16 @@ inline std::vector<ReliefBranch> trace_relief_branches(
             });
   return branches;
 }
+#else
+std::vector<ReliefBranch> trace_relief_branches(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &relief,
+    const std::vector<ReliefCriticalPoint> &criticalPoints,
+    const std::set<std::uint64_t> &barrierEdges = {});
+#endif
 
-inline ReliefTopologyResult analyze_relief_topology(
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+ReliefTopologyResult analyze_relief_topology(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &relief,
     const std::set<std::uint64_t> &barrierEdges = {},
@@ -760,8 +841,16 @@ inline ReliefTopologyResult analyze_relief_topology(
       watershed_to_roots(vertices, faces, result.watershedRoots, barrierEdges);
   return result;
 }
+#else
+ReliefTopologyResult analyze_relief_topology(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &relief,
+    const std::set<std::uint64_t> &barrierEdges = {},
+    const ReliefOptions &options = {});
+#endif
 
-inline ReliefRootSelectionResult select_relief_roots(
+#if defined(DIRECTIONAL_RELIEF_TOPOLOGY_IMPLEMENTATION)
+ReliefRootSelectionResult select_relief_roots(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const ReliefTopologyResult &topology, const Eigen::VectorXd &targetSize,
     const ReliefRootSelectionOptions &options = {}) {
@@ -859,6 +948,12 @@ inline ReliefRootSelectionResult select_relief_roots(
   }
   return result;
 }
+#else
+ReliefRootSelectionResult select_relief_roots(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const ReliefTopologyResult &topology, const Eigen::VectorXd &targetSize,
+    const ReliefRootSelectionOptions &options = {});
+#endif
 
 } // namespace directional::geometry
 

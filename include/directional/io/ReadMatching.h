@@ -28,7 +28,8 @@ namespace directional
 //   N:         The degree of the field
 // Return:
 //   Whether or not the file was written successfully
-inline bool read_matching(const std::string &fileName,
+#if defined(DIRECTIONAL_READ_MATCHING_IMPLEMENTATION)
+bool read_matching(const std::string &fileName,
                               Eigen::VectorXi& matching,
                               Eigen::MatrixXi& EF,
                               Eigen::MatrixXi& EV,
@@ -60,6 +61,14 @@ inline bool read_matching(const std::string &fileName,
         return false;
     }
 }
+#else
+bool read_matching(const std::string &fileName,
+                              Eigen::VectorXi& matching,
+                              Eigen::MatrixXi& EF,
+                              Eigen::MatrixXi& EV,
+                              Eigen::MatrixXi& FE,
+                              int & N);
+#endif
 }
 
 #endif

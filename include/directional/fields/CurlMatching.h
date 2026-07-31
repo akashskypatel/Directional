@@ -27,7 +27,8 @@ namespace directional
 // Output:
 //  curlNorm:   L2-norm of the curl vector
 //  rawField:   With input field matching, effort, and singularities computed
-inline void curl_matching(directional::CartesianField& rawField,
+#if defined(DIRECTIONAL_CURL_MATCHING_IMPLEMENTATION)
+void curl_matching(directional::CartesianField& rawField,
                           Eigen::VectorXd& curlNorm)
 {
     
@@ -96,6 +97,10 @@ inline void curl_matching(directional::CartesianField& rawField,
     effort_to_indices(rawField);
     
 }
+#else
+void curl_matching(directional::CartesianField& rawField,
+                          Eigen::VectorXd& curlNorm);
+#endif
 }
 
 

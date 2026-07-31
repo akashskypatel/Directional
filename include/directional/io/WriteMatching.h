@@ -27,7 +27,8 @@ namespace directional
  Output:
  Whether or not the file was written successfully
  ***/
-bool inline write_matching(const std::string &fileName,
+#if defined(DIRECTIONAL_WRITE_MATCHING_IMPLEMENTATION)
+bool write_matching(const std::string &fileName,
                            const Eigen::VectorXi& matching,
                            const Eigen::MatrixXi& EF,
                            const Eigen::MatrixXi& EV,
@@ -60,6 +61,14 @@ bool inline write_matching(const std::string &fileName,
     }
     return true;
 }
+#else
+bool write_matching(const std::string &fileName,
+                           const Eigen::VectorXi& matching,
+                           const Eigen::MatrixXi& EF,
+                           const Eigen::MatrixXi& EV,
+                           const Eigen::MatrixXi& FE,
+                           int N);
+#endif
 }
 
 #endif

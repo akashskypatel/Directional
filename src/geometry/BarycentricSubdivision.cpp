@@ -1,0 +1,2 @@
+#define DIRECTIONAL_BARYCENTRIC_SUBDIVISION_IMPLEMENTATION
+#include <directional/geometry/BarycentricSubdivision.h>

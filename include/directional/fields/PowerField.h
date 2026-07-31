@@ -28,7 +28,8 @@ namespace directional
 //  N: The degree of the field.
 // Output:
 //  powerField: a cartesian power-field object.
-inline void power_field(const TangentBundle& tb,
+#if defined(DIRECTIONAL_POWER_FIELD_IMPLEMENTATION)
+void power_field(const TangentBundle& tb,
                         const Eigen::VectorXi& constSpaces,
                         const Eigen::MatrixXd& constVectors,
                         const Eigen::VectorXd& alignWeights,
@@ -64,6 +65,15 @@ inline void power_field(const TangentBundle& tb,
         field.set_intrinsic_field(intField);
     }
 }
+#else
+void power_field(const TangentBundle& tb,
+                        const Eigen::VectorXi& constSpaces,
+                        const Eigen::MatrixXd& constVectors,
+                        const Eigen::VectorXd& alignWeights,
+                        const int N,
+                        directional::CartesianField& field,
+                        const bool normalizeField = false);
+#endif
 }
 
 

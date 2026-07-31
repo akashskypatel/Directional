@@ -16,7 +16,7 @@
 
 /**
  * @file ExactNumber.h
- * @brief Header-only exact rational number fallback.
+ * @brief Exact rational number fallback.
  *
  * Defines the ENumber rational type over the fallback BigInteger backend for builds that do not use GMP.
  */
@@ -297,9 +297,17 @@ public:
 };
 
 /// @brief Get the numerator of an ENumber
-inline EInt enumber_num(const ENumber &value) { return value.num; }
+#if defined(DIRECTIONAL_EXACT_NUMBER_IMPLEMENTATION)
+EInt enumber_num(const ENumber &value) { return value.num; }
+#else
+EInt enumber_num(const ENumber &value);
+#endif
 
 /// @brief Get the denominator of an ENumber
-inline EInt enumber_den(const ENumber &value) { return value.den; }
+#if defined(DIRECTIONAL_EXACT_NUMBER_IMPLEMENTATION)
+EInt enumber_den(const ENumber &value) { return value.den; }
+#else
+EInt enumber_den(const ENumber &value);
+#endif
 
 #endif // DIRECTIONAL_NUMERICS_EXACT_NUMBER_H

@@ -271,12 +271,17 @@ struct PureQuadValidationReport {
 
 namespace pure_quad_detail {
 
-inline int boundary_edge_count(const PureQuadPatch &patch) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int boundary_edge_count(const PureQuadPatch &patch) {
   return std::accumulate(patch.sideEdgeCounts.begin(),
                          patch.sideEdgeCounts.end(), 0);
 }
+#else
+int boundary_edge_count(const PureQuadPatch &patch);
+#endif
 
-inline bool turns_are_valid(const PureQuadPatch &patch) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool turns_are_valid(const PureQuadPatch &patch) {
   for (const int turn : patch.turns) {
     if (turn != 0 && std::abs(turn) != 1) {
       return false;
@@ -284,8 +289,12 @@ inline bool turns_are_valid(const PureQuadPatch &patch) {
   }
   return true;
 }
+#else
+bool turns_are_valid(const PureQuadPatch &patch);
+#endif
 
-inline bool side_inequalities_hold(const std::vector<int> &e) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool side_inequalities_hold(const std::vector<int> &e) {
   const int n = static_cast<int>(e.size());
   if (n < 3 || n > 6) {
     return false;
@@ -322,8 +331,12 @@ inline bool side_inequalities_hold(const std::vector<int> &e) {
   }
   return true;
 }
+#else
+bool side_inequalities_hold(const std::vector<int> &e);
+#endif
 
-inline bool hex_parity_holds(const std::vector<int> &e) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool hex_parity_holds(const std::vector<int> &e) {
   if (e.size() != 6) {
     return true;
   }
@@ -331,14 +344,26 @@ inline bool hex_parity_holds(const std::vector<int> &e) {
   const int odd = e[1] + e[3] + e[5];
   return even == odd;
 }
+#else
+bool hex_parity_holds(const std::vector<int> &e);
+#endif
 
-inline int expected_valence(const int singularIndexNumerator) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int expected_valence(const int singularIndexNumerator) {
   return 4 - singularIndexNumerator;
 }
+#else
+int expected_valence(const int singularIndexNumerator);
+#endif
 
-inline int next_generated_vertex(int &next) { return next--; }
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int next_generated_vertex(int &next) { return next--; }
+#else
+int next_generated_vertex(int &next);
+#endif
 
-inline SurfacePoint make_planar_source_point(const int face,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+SurfacePoint make_planar_source_point(const int face,
                                              const Eigen::Vector3d &position,
                                              const Eigen::Vector3d &barycentric) {
   SurfacePoint point;
@@ -350,8 +375,14 @@ inline SurfacePoint make_planar_source_point(const int face,
   point.squaredDistance = 0.0;
   return point;
 }
+#else
+SurfacePoint make_planar_source_point(const int face,
+                                             const Eigen::Vector3d &position,
+                                             const Eigen::Vector3d &barycentric);
+#endif
 
-inline SurfacePoint boundary_source_point(const PureQuadPatch &patch,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+SurfacePoint boundary_source_point(const PureQuadPatch &patch,
                                           const int boundaryIndex) {
   if (boundaryIndex >= 0 &&
       boundaryIndex < static_cast<int>(patch.boundaryProvenance.size()) &&
@@ -360,8 +391,13 @@ inline SurfacePoint boundary_source_point(const PureQuadPatch &patch,
   }
   return {};
 }
+#else
+SurfacePoint boundary_source_point(const PureQuadPatch &patch,
+                                          const int boundaryIndex);
+#endif
 
-inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+SurfacePoint average_source_point(const std::vector<SurfacePoint> &points) {
   Eigen::Vector3d position = Eigen::Vector3d::Zero();
   Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
   int face = -1;
@@ -397,8 +433,12 @@ inline SurfacePoint average_source_point(const std::vector<SurfacePoint> &points
   averaged.squaredDistance = 0.0;
   return averaged;
 }
+#else
+SurfacePoint average_source_point(const std::vector<SurfacePoint> &points);
+#endif
 
-inline SurfacePoint project_generated_point(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+SurfacePoint project_generated_point(
     const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
@@ -430,8 +470,17 @@ inline SurfacePoint project_generated_point(
   }
   return averaged;
 }
+#else
+SurfacePoint project_generated_point(
+    const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets);
+#endif
 
-inline void initialize_boundary_embedding(const PureQuadPatch &patch,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+void initialize_boundary_embedding(const PureQuadPatch &patch,
                                           PureQuadMesh &mesh) {
   mesh.boundaryVertices = patch.boundaryVertices;
   mesh.vertices = patch.boundaryVertices;
@@ -449,8 +498,13 @@ inline void initialize_boundary_embedding(const PureQuadPatch &patch,
     mesh.vertexLineage.push_back(lineage);
   }
 }
+#else
+void initialize_boundary_embedding(const PureQuadPatch &patch,
+                                          PureQuadMesh &mesh);
+#endif
 
-inline int append_embedded_vertex(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int append_embedded_vertex(
     PureQuadMesh &mesh, int &nextInterior,
     const Eigen::Vector3d &targetPosition,
     const std::vector<SurfacePoint> &anchors,
@@ -470,8 +524,19 @@ inline int append_embedded_vertex(
   PureQuadVertexLineage lineage; lineage.outputVertex=vertex; lineage.sourcePoint=point; mesh.vertexLineage.push_back(lineage);
   return vertex;
 }
+#else
+int append_embedded_vertex(
+    PureQuadMesh &mesh, int &nextInterior,
+    const Eigen::Vector3d &targetPosition,
+    const std::vector<SurfacePoint> &anchors,
+    const SurfaceProjectionBvh *projection = nullptr,
+    const std::vector<unsigned char> *allowedFaces = nullptr,
+    const std::vector<int> *faceComponents = nullptr,
+    const std::vector<int> *faceSheets = nullptr);
+#endif
 
-inline bool fill_positions(PureQuadMesh &mesh) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool fill_positions(PureQuadMesh &mesh) {
   mesh.vertexPositions.resize(static_cast<int>(mesh.vertices.size()), 3);
   for (int i = 0; i < static_cast<int>(mesh.vertices.size()); ++i) {
     if (i < static_cast<int>(mesh.vertexProvenance.size()) &&
@@ -487,16 +552,28 @@ inline bool fill_positions(PureQuadMesh &mesh) {
   }
   return true;
 }
+#else
+bool fill_positions(PureQuadMesh &mesh);
+#endif
 
-inline bool vectors_equal(const std::vector<int> &a, const std::vector<int> &b) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool vectors_equal(const std::vector<int> &a, const std::vector<int> &b) {
   return a == b;
 }
+#else
+bool vectors_equal(const std::vector<int> &a, const std::vector<int> &b);
+#endif
 
-inline std::pair<int, int> canonical_edge(const int a, const int b) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+std::pair<int, int> canonical_edge(const int a, const int b) {
   return std::minmax(a, b);
 }
+#else
+std::pair<int, int> canonical_edge(const int a, const int b);
+#endif
 
-inline std::map<std::pair<int, int>, int>
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+std::map<std::pair<int, int>, int>
 edge_incidence(const std::vector<std::vector<int>> &quads) {
   std::map<std::pair<int, int>, int> incidence;
   for (const auto &quad : quads) {
@@ -508,8 +585,13 @@ edge_incidence(const std::vector<std::vector<int>> &quads) {
   }
   return incidence;
 }
+#else
+std::map<std::pair<int, int>, int>
+edge_incidence(const std::vector<std::vector<int>> &quads);
+#endif
 
-inline std::map<int, int> vertex_valences(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+std::map<int, int> vertex_valences(
     const std::vector<std::vector<int>> &quads) {
   std::map<int, std::set<int>> neighbors;
   for (const auto &quad : quads) {
@@ -527,16 +609,25 @@ inline std::map<int, int> vertex_valences(
   }
   return result;
 }
+#else
+std::map<int, int> vertex_valences(
+    const std::vector<std::vector<int>> &quads);
+#endif
 
-inline int mesh_euler_characteristic(const std::vector<std::vector<int>> &quads) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int mesh_euler_characteristic(const std::vector<std::vector<int>> &quads) {
   const auto incidence = edge_incidence(quads);
   std::set<int> vertices;
   for (const auto &quad : quads) vertices.insert(quad.begin(), quad.end());
   return static_cast<int>(vertices.size()) - static_cast<int>(incidence.size()) +
          static_cast<int>(quads.size());
 }
+#else
+int mesh_euler_characteristic(const std::vector<std::vector<int>> &quads);
+#endif
 
-inline std::set<std::pair<int, int>> boundary_edges(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+std::set<std::pair<int, int>> boundary_edges(
     const std::vector<std::vector<int>> &quads) {
   std::set<std::pair<int, int>> result;
   for (const auto &[edge, count] : edge_incidence(quads)) {
@@ -544,8 +635,13 @@ inline std::set<std::pair<int, int>> boundary_edges(
   }
   return result;
 }
+#else
+std::set<std::pair<int, int>> boundary_edges(
+    const std::vector<std::vector<int>> &quads);
+#endif
 
-inline bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads) {
   const auto incidence = edge_incidence(quads);
   for (const auto &quad : quads) {
     if (quad.size() != 4 || std::set<int>(quad.begin(), quad.end()).size() != 4)
@@ -556,10 +652,14 @@ inline bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads) 
                        return entry.second == 1 || entry.second == 2;
                      });
 }
+#else
+bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads);
+#endif
 
 } // namespace pure_quad_detail
 
-inline PureQuadPatchAdmissibility
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+PureQuadPatchAdmissibility
 check_pure_quad_patch_admissibility(const PureQuadPatch &patch) {
   PureQuadPatchAdmissibility result;
   result.expectedInteriorValence =
@@ -616,8 +716,13 @@ check_pure_quad_patch_admissibility(const PureQuadPatch &patch) {
   result.reason = PureQuadPatchRejectReason::None;
   return result;
 }
+#else
+PureQuadPatchAdmissibility
+check_pure_quad_patch_admissibility(const PureQuadPatch &patch);
+#endif
 
-inline bool pure_quad_topology_is_disk(const PureQuadMesh &mesh) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool pure_quad_topology_is_disk(const PureQuadMesh &mesh) {
   if (mesh.quads.empty() || mesh.boundaryVertices.size() < 4) {
     return false;
   }
@@ -658,10 +763,14 @@ inline bool pure_quad_topology_is_disk(const PureQuadMesh &mesh) {
   const int F = static_cast<int>(mesh.quads.size());
   return V - E + F == 1;
 }
+#else
+bool pure_quad_topology_is_disk(const PureQuadMesh &mesh);
+#endif
 
 namespace pure_quad_detail {
 
-inline bool complete_rectangular_grid(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool complete_rectangular_grid(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
@@ -715,8 +824,17 @@ inline bool complete_rectangular_grid(
   mesh.backend = PureQuadCompletionBackend::ClosedForm;
   return true;
 }
+#else
+bool complete_rectangular_grid(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets);
+#endif
 
-inline bool complete_six_vertex_transition(const PureQuadPatch &patch,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool complete_six_vertex_transition(const PureQuadPatch &patch,
                                            PureQuadMesh &mesh) {
   if (patch.boundaryVertices.size() != 6) return false;
   const auto &v = patch.boundaryVertices;
@@ -725,8 +843,13 @@ inline bool complete_six_vertex_transition(const PureQuadPatch &patch,
   mesh.backend = PureQuadCompletionBackend::TransitionTemplate;
   return true;
 }
+#else
+bool complete_six_vertex_transition(const PureQuadPatch &patch,
+                                           PureQuadMesh &mesh);
+#endif
 
-inline void append_boundary_fan(const std::vector<int> &boundary,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+void append_boundary_fan(const std::vector<int> &boundary,
                                 const int anchor, PureQuadMesh &mesh) {
   const int n = static_cast<int>(boundary.size());
   const auto at = [&](int i) { return boundary[(anchor + i) % n]; };
@@ -734,8 +857,13 @@ inline void append_boundary_fan(const std::vector<int> &boundary,
     mesh.quads.push_back({at(0), at(i), at(i + 1), at(i + 2)});
   }
 }
+#else
+void append_boundary_fan(const std::vector<int> &boundary,
+                                const int anchor, PureQuadMesh &mesh);
+#endif
 
-inline bool complete_singularity_pole(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool complete_singularity_pole(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
@@ -772,16 +900,29 @@ inline bool complete_singularity_pole(
   mesh.backend = PureQuadCompletionBackend::PoleTemplate;
   return vertex_valences(mesh.quads)[pole] == valence;
 }
+#else
+bool complete_singularity_pole(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const std::vector<int> *faceComponents,
+    const std::vector<int> *faceSheets);
+#endif
 
-inline bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
   append_boundary_fan(patch.boundaryVertices, 0, mesh);
   mesh.backend = PureQuadCompletionBackend::Pattern;
   return true;
 }
+#else
+bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh);
+#endif
 
-inline bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
                              int &explored) {
   const int n = static_cast<int>(patch.boundaryVertices.size());
   for (int anchor = 0; anchor < n; ++anchor) {
@@ -796,10 +937,15 @@ inline bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
   }
   return false;
 }
+#else
+bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
+                             int &explored);
+#endif
 
 } // namespace pure_quad_detail
 
-inline PureQuadCompletionResult complete_pure_quad_patch(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+PureQuadCompletionResult complete_pure_quad_patch(
     const PureQuadPatch &patch,
     const PureQuadCompletionOptions &options = {}) {
   PureQuadCompletionResult result;
@@ -889,8 +1035,14 @@ inline PureQuadCompletionResult complete_pure_quad_patch(
   result.success = true;
   return result;
 }
+#else
+PureQuadCompletionResult complete_pure_quad_patch(
+    const PureQuadPatch &patch,
+    const PureQuadCompletionOptions &options = {});
+#endif
 
-inline PureQuadAssemblyResult stitch_pure_quad_patches(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
     const double positionTolerance = 1.0e-9) {
   PureQuadAssemblyResult result;
@@ -1148,8 +1300,14 @@ inline PureQuadAssemblyResult stitch_pure_quad_patches(
   result.success = true;
   return result;
 }
+#else
+PureQuadAssemblyResult stitch_pure_quad_patches(
+    const std::vector<PureQuadMesh> &patches,
+    const double positionTolerance = 1.0e-9);
+#endif
 
-inline EndpointResolutionResult resolve_completion_endpoints(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+EndpointResolutionResult resolve_completion_endpoints(
     std::vector<CompletionEndpoint> endpoints) {
   std::sort(endpoints.begin(), endpoints.end(), [](const auto &a, const auto &b) {
     const double ca =
@@ -1204,8 +1362,13 @@ inline EndpointResolutionResult resolve_completion_endpoints(
   }
   return result;
 }
+#else
+EndpointResolutionResult resolve_completion_endpoints(
+    std::vector<CompletionEndpoint> endpoints);
+#endif
 
-inline std::vector<TopologyRewriteTemplate> default_topology_rewrite_catalog() {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+std::vector<TopologyRewriteTemplate> default_topology_rewrite_catalog() {
   return {
       {0, TopologyTemplateKind::PolePairSlide, {3, 5, 4}, {2, 2}, {}, {3, 5},
        {4, 3, 5}, false, -1.0},
@@ -1223,12 +1386,16 @@ inline std::vector<TopologyRewriteTemplate> default_topology_rewrite_catalog() {
        {}, {3, 5}, false, -0.75},
   };
 }
+#else
+std::vector<TopologyRewriteTemplate> default_topology_rewrite_catalog();
+#endif
 
-inline GuardedTopologyMutationResult apply_guarded_topology_mutations(
+GuardedTopologyMutationResult apply_guarded_topology_mutations(
     const PureQuadMesh &input,
     std::vector<GuardedTopologyMutation> mutations);
 
-inline TopologyRewriteResult apply_topology_rewrite_catalog(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+TopologyRewriteResult apply_topology_rewrite_catalog(
     const PureQuadMesh &input,
     const std::vector<TopologyRewriteCandidate> &candidates,
     const std::vector<TopologyRewriteTemplate> &catalog =
@@ -1284,8 +1451,16 @@ inline TopologyRewriteResult apply_topology_rewrite_catalog(
   }
   return result;
 }
+#else
+TopologyRewriteResult apply_topology_rewrite_catalog(
+    const PureQuadMesh &input,
+    const std::vector<TopologyRewriteCandidate> &candidates,
+    const std::vector<TopologyRewriteTemplate> &catalog =
+        default_topology_rewrite_catalog());
+#endif
 
-inline GuardedTopologyMutationResult apply_guarded_topology_mutations(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+GuardedTopologyMutationResult apply_guarded_topology_mutations(
     const PureQuadMesh &input,
     std::vector<GuardedTopologyMutation> mutations) {
   GuardedTopologyMutationResult result;
@@ -1390,15 +1565,26 @@ inline GuardedTopologyMutationResult apply_guarded_topology_mutations(
   }
   return result;
 }
+#else
+GuardedTopologyMutationResult apply_guarded_topology_mutations(
+    const PureQuadMesh &input,
+    std::vector<GuardedTopologyMutation> mutations);
+#endif
 
-inline bool closed_surface_singularity_budget_exact(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool closed_surface_singularity_budget_exact(
     const int eulerCharacteristic, const std::vector<int> &singularityNumerators) {
   const int sum = std::accumulate(singularityNumerators.begin(),
                                   singularityNumerators.end(), 0);
   return sum == 4 * eulerCharacteristic;
 }
+#else
+bool closed_surface_singularity_budget_exact(
+    const int eulerCharacteristic, const std::vector<int> &singularityNumerators);
+#endif
 
-inline PureQuadValidationReport validate_pure_quad_completion(
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+PureQuadValidationReport validate_pure_quad_completion(
     const PureQuadMesh &mesh, const std::vector<int> &extraordinaryValences = {},
     const std::set<int> &featureVertices = {},
     const bool singularityBudgetExact = true) {
@@ -1474,13 +1660,31 @@ inline PureQuadValidationReport validate_pure_quad_completion(
                                static_cast<double>(extraordinary);
   return report;
 }
+#else
+PureQuadValidationReport validate_pure_quad_completion(
+    const PureQuadMesh &mesh, const std::vector<int> &extraordinaryValences = {},
+    const std::set<int> &featureVertices = {},
+    const bool singularityBudgetExact = true);
+#endif
 
-inline int source_vertex_from_point(const SurfacePoint &p, const Eigen::MatrixXi &F, double tol=1e-8) { if(!p.valid()||p.face<0||p.face>=F.rows()) return -1; int c=0; p.barycentric.maxCoeff(&c); return p.barycentric(c)>=1.0-tol ? F(p.face,c) : -1; }
-inline bool output_is_only_paired_source_triangle_boundaries(const PureQuadMesh &mesh,const Eigen::MatrixXi &F) {
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+int source_vertex_from_point(const SurfacePoint &p, const Eigen::MatrixXi &F, double tol=1e-8) { if(!p.valid()||p.face<0||p.face>=F.rows()) return -1; int c=0; p.barycentric.maxCoeff(&c); return p.barycentric(c)>=1.0-tol ? F(p.face,c) : -1; }
+#else
+int source_vertex_from_point(const SurfacePoint &p, const Eigen::MatrixXi &F, double tol=1e-8);
+#endif
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+bool output_is_only_paired_source_triangle_boundaries(const PureQuadMesh &mesh,const Eigen::MatrixXi &F) {
   if(mesh.quads.empty()||F.cols()!=3||mesh.vertexProvenance.size()!=mesh.vertices.size()) return false; std::map<int,int> row; for(int i=0;i<(int)mesh.vertices.size();++i) row[mesh.vertices[i]]=i; std::set<std::set<int>> pairs;
   for(int a=0;a<F.rows();++a){ std::set<int> A={F(a,0),F(a,1),F(a,2)}; for(int b=a+1;b<F.rows();++b){ std::set<int>B={F(b,0),F(b,1),F(b,2)}; std::vector<int>I; std::set_intersection(A.begin(),A.end(),B.begin(),B.end(),std::back_inserter(I)); std::set<int>U=A; U.insert(B.begin(),B.end()); if(I.size()==2&&U.size()==4)pairs.insert(U); }}
   for(const auto&q:mesh.quads){ std::set<int> sv; for(int v:q){auto it=row.find(v); if(it==row.end())return false; int x=source_vertex_from_point(mesh.vertexProvenance[it->second],F); if(x<0)return false; sv.insert(x);} if(sv.size()!=4||!pairs.count(sv))return false;} return true; }
-inline PureQuadOutputLineageValidation validate_pure_quad_output_lineage(const PureQuadMesh &mesh,const Eigen::MatrixXi &F,bool rejectPaired=true){ PureQuadOutputLineageValidation r; r.allVerticesMapped=mesh.vertexLineage.size()==mesh.vertices.size()&&std::all_of(mesh.vertexLineage.begin(),mesh.vertexLineage.end(),[](const auto&x){return x.valid();}); r.allQuadsMapped=mesh.quadLineage.size()==mesh.quads.size()&&std::all_of(mesh.quadLineage.begin(),mesh.quadLineage.end(),[&](const auto&x){return x.valid()&&x.sourcePatch==mesh.sourcePatch;}); r.solelyPairedSourceTriangleBoundaries=output_is_only_paired_source_triangle_boundaries(mesh,F); if(!r.allVerticesMapped)r.failure="MissingOutputVertexLineage"; else if(!r.allQuadsMapped)r.failure="MissingOutputQuadLineage"; else if(rejectPaired&&r.solelyPairedSourceTriangleBoundaries)r.failure="PairedSourceTriangleBoundaryOutput"; else r.valid=true; return r;}
+#else
+bool output_is_only_paired_source_triangle_boundaries(const PureQuadMesh &mesh,const Eigen::MatrixXi &F);
+#endif
+#if defined(DIRECTIONAL_PURE_QUAD_COMPLETION_IMPLEMENTATION)
+PureQuadOutputLineageValidation validate_pure_quad_output_lineage(const PureQuadMesh &mesh,const Eigen::MatrixXi &F,bool rejectPaired=true){ PureQuadOutputLineageValidation r; r.allVerticesMapped=mesh.vertexLineage.size()==mesh.vertices.size()&&std::all_of(mesh.vertexLineage.begin(),mesh.vertexLineage.end(),[](const auto&x){return x.valid();}); r.allQuadsMapped=mesh.quadLineage.size()==mesh.quads.size()&&std::all_of(mesh.quadLineage.begin(),mesh.quadLineage.end(),[&](const auto&x){return x.valid()&&x.sourcePatch==mesh.sourcePatch;}); r.solelyPairedSourceTriangleBoundaries=output_is_only_paired_source_triangle_boundaries(mesh,F); if(!r.allVerticesMapped)r.failure="MissingOutputVertexLineage"; else if(!r.allQuadsMapped)r.failure="MissingOutputQuadLineage"; else if(rejectPaired&&r.solelyPairedSourceTriangleBoundaries)r.failure="PairedSourceTriangleBoundaryOutput"; else r.valid=true; return r;}
+#else
+PureQuadOutputLineageValidation validate_pure_quad_output_lineage(const PureQuadMesh &mesh,const Eigen::MatrixXi &F,bool rejectPaired=true);
+#endif
 
 } // namespace directional::geometry
 

@@ -173,12 +173,17 @@ struct SurfaceSimplificationOverlay {
 
 namespace surface_simplification_detail {
 
-inline bool element_protected(const SurfaceSimplificationElement &element) {
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+bool element_protected(const SurfaceSimplificationElement &element) {
   return element.hardFeature || element.boundary || element.basinRoot ||
          element.rootLabelProtected || element.singularityProtected;
 }
+#else
+bool element_protected(const SurfaceSimplificationElement &element);
+#endif
 
-inline std::uint64_t structural_hash(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::uint64_t structural_hash(
     const std::vector<SurfaceSimplificationElement> &elements) {
   std::uint64_t hash = 1469598103934665603ULL;
   const auto mix = [&](const std::int64_t value) {
@@ -197,8 +202,13 @@ inline std::uint64_t structural_hash(
   }
   return hash;
 }
+#else
+std::uint64_t structural_hash(
+    const std::vector<SurfaceSimplificationElement> &elements);
+#endif
 
-inline std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   std::uint64_t hash = 1469598103934665603ULL;
   const auto mix = [&](const std::int64_t value) {
     hash ^= static_cast<std::uint64_t>(value);
@@ -312,14 +322,22 @@ inline std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) 
   mix(complex.diagnostics.topologyValid ? 1 : 0);
   return hash;
 }
+#else
+std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex);
+#endif
 
-inline int active_count(const std::vector<SurfaceSimplificationElement> &elements) {
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+int active_count(const std::vector<SurfaceSimplificationElement> &elements) {
   return static_cast<int>(std::count_if(
       elements.begin(), elements.end(),
       [](const SurfaceSimplificationElement &element) { return element.active; }));
 }
+#else
+int active_count(const std::vector<SurfaceSimplificationElement> &elements);
+#endif
 
-inline double objective_cost(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+double objective_cost(
     const SurfaceSimplificationCandidate &candidate,
     const SurfaceSimplificationObjectiveWeights &weights) {
   if (candidate.changesTopology) {
@@ -333,6 +351,11 @@ inline double objective_cost(
          weights.feature * candidate.featurePenalty +
          weights.topology * candidate.topologyPenalty;
 }
+#else
+double objective_cost(
+    const SurfaceSimplificationCandidate &candidate,
+    const SurfaceSimplificationObjectiveWeights &weights);
+#endif
 
 struct QueueEntry {
   double cost = 0.0;
@@ -352,7 +375,8 @@ struct QueueEntry {
   }
 };
 
-inline SurfaceSimplificationRejectionReason validate_candidate(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationRejectionReason validate_candidate(
     const SurfaceSimplificationCandidate &candidate,
     const std::vector<SurfaceSimplificationElement> &elements,
     const SurfaceSimplificationOptions &options, const double cost) {
@@ -400,8 +424,15 @@ inline SurfaceSimplificationRejectionReason validate_candidate(
   }
   return SurfaceSimplificationRejectionReason::None;
 }
+#else
+SurfaceSimplificationRejectionReason validate_candidate(
+    const SurfaceSimplificationCandidate &candidate,
+    const std::vector<SurfaceSimplificationElement> &elements,
+    const SurfaceSimplificationOptions &options, const double cost);
+#endif
 
-inline bool validate_complex_incidence(const SurfaceCellComplex &complex) {
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+bool validate_complex_incidence(const SurfaceCellComplex &complex) {
   for (int i = 0; i < static_cast<int>(complex.nodes.size()); ++i) {
     if (complex.nodes[static_cast<std::size_t>(i)].id != i) {
       return false;
@@ -465,8 +496,12 @@ inline bool validate_complex_incidence(const SurfaceCellComplex &complex) {
   return std::all_of(halfedgeUse.begin(), halfedgeUse.end(),
                      [](const int count) { return count == 1; });
 }
+#else
+bool validate_complex_incidence(const SurfaceCellComplex &complex);
+#endif
 
-inline std::vector<std::int64_t> protected_node_signature(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::vector<std::int64_t> protected_node_signature(
     const SurfaceArrangementNode &node) {
   std::vector<std::int64_t> signature;
   signature.push_back(static_cast<std::int64_t>(node.occurrences.size()));
@@ -479,8 +514,13 @@ inline std::vector<std::int64_t> protected_node_signature(
   }
   return signature;
 }
+#else
+std::vector<std::int64_t> protected_node_signature(
+    const SurfaceArrangementNode &node);
+#endif
 
-inline std::multiset<std::vector<std::int64_t>> protected_support(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::multiset<std::vector<std::int64_t>> protected_support(
     const SurfaceCellComplex &complex) {
   std::multiset<std::vector<std::int64_t>> keys;
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
@@ -548,13 +588,23 @@ inline std::multiset<std::vector<std::int64_t>> protected_support(
   }
   return keys;
 }
+#else
+std::multiset<std::vector<std::int64_t>> protected_support(
+    const SurfaceCellComplex &complex);
+#endif
 
-inline bool same_protected_support(const SurfaceCellComplex &before,
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+bool same_protected_support(const SurfaceCellComplex &before,
                                    const SurfaceCellComplex &after) {
   return protected_support(before) == protected_support(after);
 }
+#else
+bool same_protected_support(const SurfaceCellComplex &before,
+                                   const SurfaceCellComplex &after);
+#endif
 
-inline bool order_boundary_cycle(const SurfaceCellComplex &complex,
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+bool order_boundary_cycle(const SurfaceCellComplex &complex,
                                  const std::vector<int> &input,
                                  std::vector<int> &ordered) {
   if (input.size() < 3) return false;
@@ -580,8 +630,14 @@ inline bool order_boundary_cycle(const SurfaceCellComplex &complex,
   }
   return current == ordered.front() && used.size() == input.size();
 }
+#else
+bool order_boundary_cycle(const SurfaceCellComplex &complex,
+                                 const std::vector<int> &input,
+                                 std::vector<int> &ordered);
+#endif
 
-inline void classify_rebuilt_cell_sides(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+void classify_rebuilt_cell_sides(
     SurfaceArrangementCell &cell, const SurfaceCellComplex &complex,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces) {
   cell.sideFamilies.clear();
@@ -636,8 +692,14 @@ inline void classify_rebuilt_cell_sides(
                           ? SurfaceArrangementRejectReason::None
                           : SurfaceArrangementRejectReason::NotFourSided;
 }
+#else
+void classify_rebuilt_cell_sides(
+    SurfaceArrangementCell &cell, const SurfaceCellComplex &complex,
+    const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces);
+#endif
 
-inline void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
   const int interiorCells = static_cast<int>(std::count_if(
       complex.cells.begin(), complex.cells.end(),
@@ -731,8 +793,12 @@ inline void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
       complex.diagnostics.unsplitCrossings == 0 &&
       complex.diagnostics.geometricTJunctions == 0;
 }
+#else
+void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex);
+#endif
 
-inline SurfaceCellComplex rebuild_complex_after_halfedge_removal(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     const SurfaceCellComplex &complex, const std::set<int> &requestedRemoval,
     const Eigen::MatrixXd *vertices = nullptr,
     const Eigen::MatrixXi *faces = nullptr) {
@@ -977,8 +1043,15 @@ inline SurfaceCellComplex rebuild_complex_after_halfedge_removal(
   recompute_rebuilt_diagnostics(rebuilt);
   return rebuilt;
 }
+#else
+SurfaceCellComplex rebuild_complex_after_halfedge_removal(
+    const SurfaceCellComplex &complex, const std::set<int> &requestedRemoval,
+    const Eigen::MatrixXd *vertices = nullptr,
+    const Eigen::MatrixXi *faces = nullptr);
+#endif
 
-inline std::vector<SurfaceSimplificationCandidate> recompute_overlap_candidates(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::vector<SurfaceSimplificationCandidate> recompute_overlap_candidates(
     const SurfaceCellComplex &complex, const std::set<int> &affectedNodes,
     const int nextStableBase) {
   std::vector<SurfaceSimplificationCandidate> recomputed;
@@ -1005,11 +1078,17 @@ inline std::vector<SurfaceSimplificationCandidate> recompute_overlap_candidates(
   }
   return recomputed;
 }
+#else
+std::vector<SurfaceSimplificationCandidate> recompute_overlap_candidates(
+    const SurfaceCellComplex &complex, const std::set<int> &affectedNodes,
+    const int nextStableBase);
+#endif
 
 } // namespace surface_simplification_detail
 
 
-inline SurfaceSimplificationCandidateSet
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationCandidateSet
 extract_surface_simplification_candidates_impl(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd *vertices,
     const Eigen::MatrixXi *faces,
@@ -1332,23 +1411,44 @@ extract_surface_simplification_candidates_impl(
   result.structuralHash = hash;
   return result;
 }
+#else
+SurfaceSimplificationCandidateSet
+extract_surface_simplification_candidates_impl(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd *vertices,
+    const Eigen::MatrixXi *faces,
+    const SurfaceSimplificationCandidateExtractionOptions &options);
+#endif
 
-inline SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
     const SurfaceCellComplex &complex,
     const SurfaceSimplificationCandidateExtractionOptions &options = {}) {
   return extract_surface_simplification_candidates_impl(complex, nullptr, nullptr,
                                                          options);
 }
+#else
+SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
+    const SurfaceCellComplex &complex,
+    const SurfaceSimplificationCandidateExtractionOptions &options = {});
+#endif
 
-inline SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     const SurfaceSimplificationCandidateExtractionOptions &options = {}) {
   return extract_surface_simplification_candidates_impl(complex, &vertices, &faces,
                                                          options);
 }
+#else
+SurfaceSimplificationCandidateSet extract_surface_simplification_candidates(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd &vertices,
+    const Eigen::MatrixXi &faces,
+    const SurfaceSimplificationCandidateExtractionOptions &options = {});
+#endif
 
-inline std::vector<SurfaceSimplificationElement>
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+std::vector<SurfaceSimplificationElement>
 make_simplification_elements_from_complex(const SurfaceCellComplex &complex) {
   std::vector<SurfaceSimplificationElement> elements;
   elements.reserve(complex.halfedges.size());
@@ -1366,8 +1466,13 @@ make_simplification_elements_from_complex(const SurfaceCellComplex &complex) {
   }
   return elements;
 }
+#else
+std::vector<SurfaceSimplificationElement>
+make_simplification_elements_from_complex(const SurfaceCellComplex &complex);
+#endif
 
-inline SurfaceSimplificationCandidate make_removal_candidate(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationCandidate make_removal_candidate(
     const int stableId, const SurfaceSimplificationCandidateType type,
     std::vector<int> elementIds, const double cost = -1.0) {
   SurfaceSimplificationCandidate candidate;
@@ -1377,8 +1482,14 @@ inline SurfaceSimplificationCandidate make_removal_candidate(
   candidate.deltaSurface = cost;
   return candidate;
 }
+#else
+SurfaceSimplificationCandidate make_removal_candidate(
+    const int stableId, const SurfaceSimplificationCandidateType type,
+    std::vector<int> elementIds, const double cost = -1.0);
+#endif
 
-inline SurfaceSimplificationResult simplify_surface_complex(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationResult simplify_surface_complex(
     std::vector<SurfaceSimplificationElement> elements,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {}) {
@@ -1452,8 +1563,15 @@ inline SurfaceSimplificationResult simplify_surface_complex(
   result.finalHash = structural_hash(result.elements);
   return result;
 }
+#else
+SurfaceSimplificationResult simplify_surface_complex(
+    std::vector<SurfaceSimplificationElement> elements,
+    std::vector<SurfaceSimplificationCandidate> candidates,
+    const SurfaceSimplificationOptions &options = {});
+#endif
 
-inline SurfaceSimplificationResult simplify_surface_cell_complex_impl(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationResult simplify_surface_cell_complex_impl(
     const SurfaceCellComplex &inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
@@ -1618,16 +1736,31 @@ inline SurfaceSimplificationResult simplify_surface_cell_complex_impl(
   result.finalHash = complex_structural_hash(result.complex);
   return result;
 }
+#else
+SurfaceSimplificationResult simplify_surface_cell_complex_impl(
+    const SurfaceCellComplex &inputComplex,
+    std::vector<SurfaceSimplificationCandidate> candidates,
+    const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
+    const SurfaceSimplificationOptions &options);
+#endif
 
-inline SurfaceSimplificationResult simplify_surface_cell_complex(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationResult simplify_surface_cell_complex(
     const SurfaceCellComplex &inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {}) {
   return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
                                              nullptr, nullptr, options);
 }
+#else
+SurfaceSimplificationResult simplify_surface_cell_complex(
+    const SurfaceCellComplex &inputComplex,
+    std::vector<SurfaceSimplificationCandidate> candidates,
+    const SurfaceSimplificationOptions &options = {});
+#endif
 
-inline SurfaceSimplificationResult simplify_surface_cell_complex(
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationResult simplify_surface_cell_complex(
     const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     std::vector<SurfaceSimplificationCandidate> candidates,
@@ -1635,8 +1768,16 @@ inline SurfaceSimplificationResult simplify_surface_cell_complex(
   return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
                                              &vertices, &faces, options);
 }
+#else
+SurfaceSimplificationResult simplify_surface_cell_complex(
+    const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
+    const Eigen::MatrixXi &faces,
+    std::vector<SurfaceSimplificationCandidate> candidates,
+    const SurfaceSimplificationOptions &options = {});
+#endif
 
-inline SurfaceSimplificationOverlay
+#if defined(DIRECTIONAL_SURFACE_COMPLEX_SIMPLIFICATION_IMPLEMENTATION)
+SurfaceSimplificationOverlay
 make_surface_simplification_overlay(const SurfaceSimplificationResult &result) {
   SurfaceSimplificationOverlay overlay;
   const int transactionCount = static_cast<int>(result.transactions.size());
@@ -1659,6 +1800,10 @@ make_surface_simplification_overlay(const SurfaceSimplificationResult &result) {
   }
   return overlay;
 }
+#else
+SurfaceSimplificationOverlay
+make_surface_simplification_overlay(const SurfaceSimplificationResult &result);
+#endif
 
 } // namespace directional::geometry
 

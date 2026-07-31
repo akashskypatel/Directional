@@ -1,0 +1,2 @@
+#define DIRECTIONAL_REGULARIZED_PROXY_MESH_IMPLEMENTATION
+#include <directional/geometry/RegularizedProxyMesh.h>

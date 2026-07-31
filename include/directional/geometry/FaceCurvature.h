@@ -88,19 +88,32 @@ struct FaceCurvatureResult {
 
 namespace face_curvature_detail {
 
-inline double clamp_unit(const double value) {
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+double clamp_unit(const double value) {
   return std::max(-1.0, std::min(1.0, value));
 }
+#else
+double clamp_unit(const double value);
+#endif
 
-inline bool finite_vector(const Eigen::Vector3d &value) {
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+bool finite_vector(const Eigen::Vector3d &value) {
   return value.array().isFinite().all();
 }
+#else
+bool finite_vector(const Eigen::Vector3d &value);
+#endif
 
-inline bool finite_matrix(const Eigen::Matrix2d &value) {
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+bool finite_matrix(const Eigen::Matrix2d &value) {
   return value.array().isFinite().all();
 }
+#else
+bool finite_matrix(const Eigen::Matrix2d &value);
+#endif
 
-inline Eigen::Matrix3d normal_transport_rotation(
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+Eigen::Matrix3d normal_transport_rotation(
     const Eigen::Vector3d &sourceNormal,
     const Eigen::Vector3d &targetNormal) {
   constexpr double epsilon = 1e-14;
@@ -132,8 +145,14 @@ inline Eigen::Matrix3d normal_transport_rotation(
   return Eigen::AngleAxisd(std::atan2(sine, cosine), axis)
       .toRotationMatrix();
 }
+#else
+Eigen::Matrix3d normal_transport_rotation(
+    const Eigen::Vector3d &sourceNormal,
+    const Eigen::Vector3d &targetNormal);
+#endif
 
-inline Eigen::Matrix3d ambient_tensor(const Eigen::Matrix2d &shapeOperator,
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+Eigen::Matrix3d ambient_tensor(const Eigen::Matrix2d &shapeOperator,
                                       const Eigen::Vector3d &basisX,
                                       const Eigen::Vector3d &basisY) {
   Eigen::Matrix<double, 3, 2> basis;
@@ -141,8 +160,14 @@ inline Eigen::Matrix3d ambient_tensor(const Eigen::Matrix2d &shapeOperator,
   basis.col(1) = basisY;
   return basis * shapeOperator * basis.transpose();
 }
+#else
+Eigen::Matrix3d ambient_tensor(const Eigen::Matrix2d &shapeOperator,
+                                      const Eigen::Vector3d &basisX,
+                                      const Eigen::Vector3d &basisY);
+#endif
 
-inline Eigen::Matrix2d restrict_tensor(const Eigen::Matrix3d &ambient,
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+Eigen::Matrix2d restrict_tensor(const Eigen::Matrix3d &ambient,
                                        const Eigen::Vector3d &basisX,
                                        const Eigen::Vector3d &basisY) {
   Eigen::Matrix<double, 3, 2> basis;
@@ -150,8 +175,14 @@ inline Eigen::Matrix2d restrict_tensor(const Eigen::Matrix3d &ambient,
   basis.col(1) = basisY;
   return basis.transpose() * ambient * basis;
 }
+#else
+Eigen::Matrix2d restrict_tensor(const Eigen::Matrix3d &ambient,
+                                       const Eigen::Vector3d &basisX,
+                                       const Eigen::Vector3d &basisY);
+#endif
 
-inline Eigen::Matrix2d transport_tensor(
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+Eigen::Matrix2d transport_tensor(
     const Eigen::Matrix2d &shapeOperator,
     const Eigen::Vector3d &sourceBasisX,
     const Eigen::Vector3d &sourceBasisY,
@@ -167,8 +198,19 @@ inline Eigen::Matrix2d transport_tensor(
       rotation * sourceAmbient * rotation.transpose();
   return restrict_tensor(targetAmbient, targetBasisX, targetBasisY);
 }
+#else
+Eigen::Matrix2d transport_tensor(
+    const Eigen::Matrix2d &shapeOperator,
+    const Eigen::Vector3d &sourceBasisX,
+    const Eigen::Vector3d &sourceBasisY,
+    const Eigen::Vector3d &sourceNormal,
+    const Eigen::Vector3d &targetBasisX,
+    const Eigen::Vector3d &targetBasisY,
+    const Eigen::Vector3d &targetNormal);
+#endif
 
-inline double average_edge_length(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+double average_edge_length(const Eigen::MatrixXd &vertices,
                                   const Eigen::MatrixXi &faces) {
   double sum = 0.0;
   std::size_t count = 0;
@@ -182,8 +224,13 @@ inline double average_edge_length(const Eigen::MatrixXd &vertices,
   }
   return count == 0 ? 0.0 : sum / static_cast<double>(count);
 }
+#else
+double average_edge_length(const Eigen::MatrixXd &vertices,
+                                  const Eigen::MatrixXi &faces);
+#endif
 
-inline void validate_inputs(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+void validate_inputs(const Eigen::MatrixXd &vertices,
                             const Eigen::MatrixXi &faces,
                             const Eigen::MatrixXd &faceBasisX,
                             const Eigen::MatrixXd &faceBasisY,
@@ -205,9 +252,20 @@ inline void validate_inputs(const Eigen::MatrixXd &vertices,
         "Face curvature input dimensions are inconsistent.");
   }
 }
+#else
+void validate_inputs(const Eigen::MatrixXd &vertices,
+                            const Eigen::MatrixXi &faces,
+                            const Eigen::MatrixXd &faceBasisX,
+                            const Eigen::MatrixXd &faceBasisY,
+                            const Eigen::MatrixXd &faceNormals,
+                            const Eigen::VectorXd &faceAreas,
+                            const Eigen::MatrixXi &faceAdjacency,
+                            const Eigen::MatrixXd &vertexNormals);
+#endif
 
 
-inline std::vector<std::array<Eigen::Vector3d, 3>>
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+std::vector<std::array<Eigen::Vector3d, 3>>
 build_face_corner_normals(const Eigen::MatrixXi &faces,
                           const Eigen::MatrixXd &faceNormals,
                           const Eigen::VectorXd &faceAreas,
@@ -261,8 +319,17 @@ build_face_corner_normals(const Eigen::MatrixXi &faces,
   }
   return cornerNormals;
 }
+#else
+std::vector<std::array<Eigen::Vector3d, 3>>
+build_face_corner_normals(const Eigen::MatrixXi &faces,
+                          const Eigen::MatrixXd &faceNormals,
+                          const Eigen::VectorXd &faceAreas,
+                          const Eigen::MatrixXd &vertexNormals,
+                          const FaceCurvatureOptions &options);
+#endif
 
-inline void decompose_shape_operators(
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+void decompose_shape_operators(
     const Eigen::MatrixXd &faceBasisX, const Eigen::MatrixXd &faceBasisY,
     const double averageEdgeLength, const FaceCurvatureOptions &options,
     FaceCurvatureResult &result) {
@@ -332,18 +399,30 @@ inline void decompose_shape_operators(
     result.confidence(face) = confidence;
   }
 }
+#else
+void decompose_shape_operators(
+    const Eigen::MatrixXd &faceBasisX, const Eigen::MatrixXd &faceBasisY,
+    const double averageEdgeLength, const FaceCurvatureOptions &options,
+    FaceCurvatureResult &result);
+#endif
 
 } // namespace face_curvature_detail
 
 /**
  * @brief Minimal ambient rotation carrying one unit normal to another.
  */
-inline Eigen::Matrix3d transport_rotation_between_normals(
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+Eigen::Matrix3d transport_rotation_between_normals(
     const Eigen::Vector3d &sourceNormal,
     const Eigen::Vector3d &targetNormal) {
   return face_curvature_detail::normal_transport_rotation(sourceNormal,
                                                            targetNormal);
 }
+#else
+Eigen::Matrix3d transport_rotation_between_normals(
+    const Eigen::Vector3d &sourceNormal,
+    const Eigen::Vector3d &targetNormal);
+#endif
 
 /**
  * @brief Estimates one symmetric shape operator per face from normal variation.
@@ -351,7 +430,8 @@ inline Eigen::Matrix3d transport_rotation_between_normals(
  * For each triangle edge e with endpoint-normal difference dn, solves
  * S * e_tangent ~= dn_tangent for the three independent coefficients of S.
  */
-inline FaceCurvatureResult estimate_face_curvature(
+#if defined(DIRECTIONAL_FACE_CURVATURE_IMPLEMENTATION)
+FaceCurvatureResult estimate_face_curvature(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceBasisX, const Eigen::MatrixXd &faceBasisY,
     const Eigen::MatrixXd &faceNormals, const Eigen::VectorXd &faceAreas,
@@ -535,6 +615,15 @@ inline FaceCurvatureResult estimate_face_curvature(
                             result);
   return result;
 }
+#else
+FaceCurvatureResult estimate_face_curvature(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceBasisX, const Eigen::MatrixXd &faceBasisY,
+    const Eigen::MatrixXd &faceNormals, const Eigen::VectorXd &faceAreas,
+    const Eigen::MatrixXi &faceAdjacency,
+    const Eigen::MatrixXd &vertexNormals,
+    const FaceCurvatureOptions &options = {});
+#endif
 
 } // namespace directional
 

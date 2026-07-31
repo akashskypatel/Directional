@@ -11,7 +11,7 @@ This fork now supports two build workflows:
 
 The top-level project can build:
 
-1. `directional` — shared C++ library
+1. `directional` — compiled C++ library (shared by default, static when requested)
 2. `_directional` — Python extension module
 3. `directional_cli` — optional native executable installed as `directional`
 4. `directional_cli_backend` — shared C++ command implementation used by both CLIs
@@ -46,6 +46,9 @@ Eigen is required and included as a repository submodule.
 ```powershell
 git submodule update --init --recursive
 ```
+
+Native installs include the vendored Eigen headers required by Directional's
+public API, so installed-package consumers do not need a separate Eigen setup.
 
 ### GMP
 
@@ -117,6 +120,7 @@ SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install
 
 | Option | Default | Purpose |
 |---|---:|---|
+| `BUILD_SHARED_LIBS` | `ON` | Build `directional` as a shared library; set `OFF` for a static archive |
 | `BUILD_PYTHON` | `OFF` | Build the Python extension |
 | `DIRECTIONAL_BUILD_CLI` | `OFF` | Build the native CLI executable |
 | `DIRECTIONAL_ENABLE_GMP` | `ON` | Enable GMP exact arithmetic |
@@ -133,6 +137,7 @@ SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install
 ```powershell
 cmake -S . -B build\standalone `
   -DCMAKE_INSTALL_PREFIX="$PWD\build\standalone\install" `
+  -DBUILD_SHARED_LIBS=ON `
   -DBUILD_PYTHON=OFF `
   -DDIRECTIONAL_BUILD_CLI=OFF `
   -DDIRECTIONAL_ENABLE_GMP=ON `
@@ -142,6 +147,21 @@ cmake -S . -B build\standalone `
 
 cmake --build build\standalone --config Release --target directional
 cmake --install build\standalone --config Release
+```
+
+### Static library
+
+Use the same target and installed package with `BUILD_SHARED_LIBS=OFF`:
+
+```powershell
+cmake -S . -B build\static `
+  -DCMAKE_INSTALL_PREFIX="$PWD\build\static\install" `
+  -DBUILD_SHARED_LIBS=OFF `
+  -DBUILD_PYTHON=OFF `
+  -DDIRECTIONAL_BUILD_CLI=OFF
+
+cmake --build build\static --config Release --target directional
+cmake --install build\static --config Release
 ```
 
 ### Shared library with PARDISO
@@ -611,7 +631,9 @@ Use `pip` when:
 ## Notes
 
 - The installed C++ package exports `Directional::directional`.
-- The current standalone library is intentionally minimal; most functionality remains header-driven.
+- Non-template algorithms are compiled into `directional`; public headers retain
+  declarations and template definitions.
+- Shared and static installs expose the same `Directional::directional` target.
 - The Python wheel is platform-specific because it contains a compiled extension module.
 - Tutorial and Python builds depend on the same top-level CMake project; `setup.py` is only a wrapper over that build.
 

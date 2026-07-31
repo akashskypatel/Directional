@@ -96,22 +96,37 @@ struct AdaptiveTargetSizeResult {
 
 namespace adaptive_target_size_detail {
 
-inline std::pair<int, int> canonical_edge(const int a, const int b) {
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+std::pair<int, int> canonical_edge(const int a, const int b) {
   return a <= b ? std::pair<int, int>{a, b} : std::pair<int, int>{b, a};
 }
+#else
+std::pair<int, int> canonical_edge(const int a, const int b);
+#endif
 
-inline Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
                                const int vertex) {
   return {vertices(vertex, 0), vertices(vertex, 1), vertices(vertex, 2)};
 }
+#else
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+                               const int vertex);
+#endif
 
-inline Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
                                  const Eigen::RowVector3d &b) {
   return {a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
           a.x() * b.y() - a.y() * b.x()};
 }
+#else
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+                                 const Eigen::RowVector3d &b);
+#endif
 
-inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
                                       const Eigen::MatrixXi &faces,
                                       const int face) {
   const Eigen::RowVector3d a = row3(vertices, faces(face, 0));
@@ -124,8 +139,14 @@ inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
   }
   return normal;
 }
+#else
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+                                      const Eigen::MatrixXi &faces,
+                                      const int face);
+#endif
 
-inline double percentile(std::vector<double> values, const double q) {
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+double percentile(std::vector<double> values, const double q) {
   if (values.empty()) {
     return std::numeric_limits<double>::infinity();
   }
@@ -135,8 +156,12 @@ inline double percentile(std::vector<double> values, const double q) {
       std::floor(clamped * static_cast<double>(values.size() - 1) + 0.5));
   return values[index];
 }
+#else
+double percentile(std::vector<double> values, const double q);
+#endif
 
-inline double robust_positive_scale(std::vector<double> values) {
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+double robust_positive_scale(std::vector<double> values) {
   values.erase(std::remove_if(values.begin(), values.end(),
                               [](const double value) {
                                 return !std::isfinite(value) || value <= 0.0;
@@ -150,8 +175,12 @@ inline double robust_positive_scale(std::vector<double> values) {
       std::floor(0.95 * static_cast<double>(values.size() - 1) + 0.5));
   return std::max(values[index], std::numeric_limits<double>::epsilon());
 }
+#else
+double robust_positive_scale(std::vector<double> values);
+#endif
 
-inline Eigen::VectorXd robust_normalize(const Eigen::VectorXd &values,
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::VectorXd robust_normalize(const Eigen::VectorXd &values,
                                         const int count) {
   Eigen::VectorXd normalized = Eigen::VectorXd::Zero(count);
   if (values.size() == 0) {
@@ -175,8 +204,13 @@ inline Eigen::VectorXd robust_normalize(const Eigen::VectorXd &values,
   }
   return normalized;
 }
+#else
+Eigen::VectorXd robust_normalize(const Eigen::VectorXd &values,
+                                        const int count);
+#endif
 
-inline std::vector<std::vector<std::pair<int, double>>>
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+std::vector<std::vector<std::pair<int, double>>>
 vertex_graph(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
              std::vector<std::pair<int, int>> *edgesOut = nullptr) {
   if (vertices.cols() != 3 || faces.cols() != 3) {
@@ -223,8 +257,14 @@ vertex_graph(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
   }
   return graph;
 }
+#else
+std::vector<std::vector<std::pair<int, double>>>
+vertex_graph(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+             std::vector<std::pair<int, int>> *edgesOut = nullptr);
+#endif
 
-inline std::vector<int> face_components_by_index(const Eigen::MatrixXi &faces) {
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+std::vector<int> face_components_by_index(const Eigen::MatrixXi &faces) {
   std::vector<int> components(static_cast<std::size_t>(faces.rows()), -1);
   const std::vector<std::vector<int>> groups = face_connected_components(faces);
   for (int component = 0; component < static_cast<int>(groups.size());
@@ -235,8 +275,12 @@ inline std::vector<int> face_components_by_index(const Eigen::MatrixXi &faces) {
   }
   return components;
 }
+#else
+std::vector<int> face_components_by_index(const Eigen::MatrixXi &faces);
+#endif
 
-inline Eigen::RowVector3d closest_point_on_triangle(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::RowVector3d closest_point_on_triangle(
     const Eigen::RowVector3d &p, const Eigen::RowVector3d &a,
     const Eigen::RowVector3d &b, const Eigen::RowVector3d &c) {
   const Eigen::RowVector3d ab = b - a;
@@ -285,10 +329,16 @@ inline Eigen::RowVector3d closest_point_on_triangle(
   const double w = vc * denom;
   return a + ab * v + ac * w;
 }
+#else
+Eigen::RowVector3d closest_point_on_triangle(
+    const Eigen::RowVector3d &p, const Eigen::RowVector3d &a,
+    const Eigen::RowVector3d &b, const Eigen::RowVector3d &c);
+#endif
 
 } // namespace adaptive_target_size_detail
 
-inline IntrinsicGraphDistanceResult compute_intrinsic_graph_distances(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+IntrinsicGraphDistanceResult compute_intrinsic_graph_distances(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &sourceVertices) {
   using Node = std::pair<double, int>;
@@ -334,8 +384,14 @@ inline IntrinsicGraphDistanceResult compute_intrinsic_graph_distances(
   }
   return result;
 }
+#else
+IntrinsicGraphDistanceResult compute_intrinsic_graph_distances(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &sourceVertices);
+#endif
 
-inline Eigen::VectorXd estimate_vertex_feature_salience(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::VectorXd estimate_vertex_feature_salience(
     const int vertexCount, const AdaptiveFeatureMap &featureMap) {
   Eigen::VectorXd salience = Eigen::VectorXd::Zero(vertexCount);
   for (const AdaptiveFeatureEdge &edge : featureMap.edges) {
@@ -351,8 +407,13 @@ inline Eigen::VectorXd estimate_vertex_feature_salience(
   }
   return salience;
 }
+#else
+Eigen::VectorXd estimate_vertex_feature_salience(
+    const int vertexCount, const AdaptiveFeatureMap &featureMap);
+#endif
 
-inline Eigen::VectorXd estimate_dihedral_vertex_curvature(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::VectorXd estimate_dihedral_vertex_curvature(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces) {
   using adaptive_target_size_detail::canonical_edge;
   using adaptive_target_size_detail::face_normal;
@@ -394,8 +455,13 @@ inline Eigen::VectorXd estimate_dihedral_vertex_curvature(
   }
   return curvature;
 }
+#else
+Eigen::VectorXd estimate_dihedral_vertex_curvature(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
+#endif
 
-inline PrincipalVertexCurvatureResult estimate_principal_vertex_curvature(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+PrincipalVertexCurvatureResult estimate_principal_vertex_curvature(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const FaceCurvatureOptions &options = {}) {
   if (vertices.cols() != 3 || faces.cols() != 3) {
@@ -441,8 +507,14 @@ inline PrincipalVertexCurvatureResult estimate_principal_vertex_curvature(
   }
   return result;
 }
+#else
+PrincipalVertexCurvatureResult estimate_principal_vertex_curvature(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const FaceCurvatureOptions &options = {});
+#endif
 
-inline LocalThicknessResult estimate_local_thickness(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+LocalThicknessResult estimate_local_thickness(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const LocalThicknessOptions &options = {}) {
   using adaptive_target_size_detail::closest_point_on_triangle;
@@ -581,8 +653,14 @@ inline LocalThicknessResult estimate_local_thickness(
   }
   return result;
 }
+#else
+LocalThicknessResult estimate_local_thickness(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const LocalThicknessOptions &options = {});
+#endif
 
-inline Eigen::VectorXd apply_size_gradation(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+Eigen::VectorXd apply_size_gradation(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &sizes, const double ratio, const int maxPasses) {
   if (sizes.size() != vertices.rows()) {
@@ -612,8 +690,14 @@ inline Eigen::VectorXd apply_size_gradation(
   }
   return graded;
 }
+#else
+Eigen::VectorXd apply_size_gradation(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &sizes, const double ratio, const int maxPasses);
+#endif
 
-inline AdaptiveTargetSizeResult compute_adaptive_target_size(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+AdaptiveTargetSizeResult compute_adaptive_target_size(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const AdaptiveTargetSizeInput &input,
     const AdaptiveTargetSizeOptions &options = {}) {
@@ -703,8 +787,15 @@ inline AdaptiveTargetSizeResult compute_adaptive_target_size(
   }
   return result;
 }
+#else
+AdaptiveTargetSizeResult compute_adaptive_target_size(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const AdaptiveTargetSizeInput &input,
+    const AdaptiveTargetSizeOptions &options = {});
+#endif
 
-inline AdaptiveTargetSizeResult compute_adaptive_target_size(
+#if defined(DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION)
+AdaptiveTargetSizeResult compute_adaptive_target_size(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const AdaptiveFeatureMap &featureMap,
     const AdaptiveTargetSizeOptions &options = {},
@@ -718,6 +809,13 @@ inline AdaptiveTargetSizeResult compute_adaptive_target_size(
       estimate_local_thickness(vertices, faces, thicknessOptions).thickness;
   return compute_adaptive_target_size(vertices, faces, input, options);
 }
+#else
+AdaptiveTargetSizeResult compute_adaptive_target_size(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const AdaptiveFeatureMap &featureMap,
+    const AdaptiveTargetSizeOptions &options = {},
+    const LocalThicknessOptions &thicknessOptions = {});
+#endif
 
 } // namespace directional::geometry
 

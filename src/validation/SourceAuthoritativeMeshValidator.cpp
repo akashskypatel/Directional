@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION
+#include <directional/validation/SourceAuthoritativeMeshValidator.h>

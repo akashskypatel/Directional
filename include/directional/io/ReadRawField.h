@@ -29,7 +29,8 @@ namespace directional
  Return:
  Whether or not the file was read successfully
  ***/
-bool inline read_raw_field(const std::string &fileName,
+#if defined(DIRECTIONAL_READ_RAW_FIELD_IMPLEMENTATION)
+bool read_raw_field(const std::string &fileName,
                            const directional::TangentBundle& tb,
                            int& N,
                            directional::CartesianField& field)
@@ -63,6 +64,12 @@ bool inline read_raw_field(const std::string &fileName,
         return false;
     }
 }
+#else
+bool read_raw_field(const std::string &fileName,
+                           const directional::TangentBundle& tb,
+                           int& N,
+                           directional::CartesianField& field);
+#endif
 }
 
 #endif

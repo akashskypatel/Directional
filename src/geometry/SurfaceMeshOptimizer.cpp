@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION
+#include <directional/geometry/SurfaceMeshOptimizer.h>

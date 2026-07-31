@@ -48,7 +48,8 @@ struct TensorCurvatureTarget {
  * stores twice the principal angle. Squaring its unit representative gives the
  * degree-4 cross-field target without choosing an eigenvector branch.
  */
-inline TensorCurvatureTarget tensor_curvature_target(
+#if defined(DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION)
+TensorCurvatureTarget tensor_curvature_target(
     const Eigen::Matrix2d &shapeOperator,
     const double epsilon = 1e-14) {
   TensorCurvatureTarget result;
@@ -81,11 +82,17 @@ inline TensorCurvatureTarget tensor_curvature_target(
                  result.q4.imag() == result.q4.imag();
   return result;
 }
+#else
+TensorCurvatureTarget tensor_curvature_target(
+    const Eigen::Matrix2d &shapeOperator,
+    const double epsilon = 1e-14);
+#endif
 
 /**
  * @brief Restricts an ambient symmetric tensor to a face tangent basis.
  */
-inline Eigen::Matrix2d restrict_tensor_to_basis(
+#if defined(DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION)
+Eigen::Matrix2d restrict_tensor_to_basis(
     const Eigen::Matrix3d &ambientTensor, const Eigen::Vector3d &basisX,
     const Eigen::Vector3d &basisY) {
   Eigen::Matrix<double, 3, 2> basis;
@@ -93,11 +100,17 @@ inline Eigen::Matrix2d restrict_tensor_to_basis(
   basis.col(1) = basisY;
   return basis.transpose() * ambientTensor * basis;
 }
+#else
+Eigen::Matrix2d restrict_tensor_to_basis(
+    const Eigen::Matrix3d &ambientTensor, const Eigen::Vector3d &basisX,
+    const Eigen::Vector3d &basisY);
+#endif
 
 /**
  * @brief Lifts a face-basis tensor to ambient 3D coordinates.
  */
-inline Eigen::Matrix3d lift_tensor_to_ambient(
+#if defined(DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION)
+Eigen::Matrix3d lift_tensor_to_ambient(
     const Eigen::Matrix2d &shapeOperator, const Eigen::Vector3d &basisX,
     const Eigen::Vector3d &basisY) {
   Eigen::Matrix<double, 3, 2> basis;
@@ -105,13 +118,19 @@ inline Eigen::Matrix3d lift_tensor_to_ambient(
   basis.col(1) = basisY;
   return basis * shapeOperator * basis.transpose();
 }
+#else
+Eigen::Matrix3d lift_tensor_to_ambient(
+    const Eigen::Matrix2d &shapeOperator, const Eigen::Vector3d &basisX,
+    const Eigen::Vector3d &basisY);
+#endif
 
 /**
  * @brief Transports a face shape operator between tangent planes using the
  *        minimal normal-to-normal rotation, then restricts it to the target
  *        tangent basis.
  */
-inline Eigen::Matrix2d transport_shape_operator_between_faces(
+#if defined(DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION)
+Eigen::Matrix2d transport_shape_operator_between_faces(
     const Eigen::Matrix2d &sourceShapeOperator,
     const Eigen::Vector3d &sourceBasisX, const Eigen::Vector3d &sourceBasisY,
     const Eigen::Vector3d &sourceNormal, const Eigen::Vector3d &targetBasisX,
@@ -126,12 +145,21 @@ inline Eigen::Matrix2d transport_shape_operator_between_faces(
   return restrict_tensor_to_basis(transportedAmbient, targetBasisX,
                                   targetBasisY);
 }
+#else
+Eigen::Matrix2d transport_shape_operator_between_faces(
+    const Eigen::Matrix2d &sourceShapeOperator,
+    const Eigen::Vector3d &sourceBasisX, const Eigen::Vector3d &sourceBasisY,
+    const Eigen::Vector3d &sourceNormal, const Eigen::Vector3d &targetBasisX,
+    const Eigen::Vector3d &targetBasisY,
+    const Eigen::Vector3d &targetNormal);
+#endif
 
 /**
  * @brief Picks one representative direction from a degree-4 target in a face
  *        basis. The branch is arbitrary and should only be used for diagnostics.
  */
-inline Eigen::Vector3d representative_direction_from_q4(
+#if defined(DIRECTIONAL_TENSOR_CURVATURE_TARGET_IMPLEMENTATION)
+Eigen::Vector3d representative_direction_from_q4(
     const std::complex<double> &q4, const Eigen::Vector3d &basisX,
     const Eigen::Vector3d &basisY) {
   const double angle = 0.25 * std::atan2(q4.imag(), q4.real());
@@ -143,6 +171,11 @@ inline Eigen::Vector3d representative_direction_from_q4(
   }
   return direction / norm;
 }
+#else
+Eigen::Vector3d representative_direction_from_q4(
+    const std::complex<double> &q4, const Eigen::Vector3d &basisX,
+    const Eigen::Vector3d &basisY);
+#endif
 
 } // namespace directional
 
