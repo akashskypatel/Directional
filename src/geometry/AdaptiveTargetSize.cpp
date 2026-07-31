@@ -1,0 +1,2 @@
+#define DIRECTIONAL_ADAPTIVE_TARGET_SIZE_IMPLEMENTATION
+#include <directional/geometry/AdaptiveTargetSize.h>

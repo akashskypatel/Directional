@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SURFACE_OPTIMIZATION_RAIL_CONSTRAINTS_IMPLEMENTATION
+#include <directional/geometry/SurfaceOptimizationRailConstraints.h>

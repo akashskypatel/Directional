@@ -1,0 +1,2 @@
+#define DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION
+#include <directional/geometry/AdaptiveFeatureMap.h>

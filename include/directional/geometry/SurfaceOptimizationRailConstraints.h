@@ -23,7 +23,8 @@ namespace directional::geometry {
 
 namespace surface_optimization_rail_detail {
 
-inline bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_OPTIMIZATION_RAIL_CONSTRAINTS_IMPLEMENTATION)
+bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
                                         const int face,
                                         const int vertex) {
   if (face < 0 || face >= faces.rows() || faces.cols() != 3) {
@@ -32,8 +33,14 @@ inline bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
   return faces(face, 0) == vertex || faces(face, 1) == vertex ||
          faces(face, 2) == vertex;
 }
+#else
+bool source_face_contains_vertex(const Eigen::MatrixXi &faces,
+                                        const int face,
+                                        const int vertex);
+#endif
 
-inline bool provenance_supports_interval_sheet(
+#if defined(DIRECTIONAL_SURFACE_OPTIMIZATION_RAIL_CONSTRAINTS_IMPLEMENTATION)
+bool provenance_supports_interval_sheet(
     const SurfacePoint &provenance,
     const SurfaceFeatureCurveInterval &interval,
     const SurfaceOptimizationConstraints &constraints) {
@@ -93,10 +100,17 @@ inline bool provenance_supports_interval_sheet(
   }
   return true;
 }
+#else
+bool provenance_supports_interval_sheet(
+    const SurfacePoint &provenance,
+    const SurfaceFeatureCurveInterval &interval,
+    const SurfaceOptimizationConstraints &constraints);
+#endif
 
 } // namespace surface_optimization_rail_detail
 
-inline void fill_surface_optimization_rail_constraints(
+#if defined(DIRECTIONAL_SURFACE_OPTIMIZATION_RAIL_CONSTRAINTS_IMPLEMENTATION)
+void fill_surface_optimization_rail_constraints(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &outputVertices,
     const std::vector<SurfacePoint> &outputProvenance,
@@ -327,6 +341,13 @@ inline void fill_surface_optimization_rail_constraints(
     }
   }
 }
+#else
+void fill_surface_optimization_rail_constraints(
+    const std::vector<SurfaceCellRail> &rails,
+    const Eigen::MatrixXd &outputVertices,
+    const std::vector<SurfacePoint> &outputProvenance,
+    SurfaceOptimizationConstraints &constraints);
+#endif
 
 } // namespace directional::geometry
 

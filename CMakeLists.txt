@@ -129,12 +129,19 @@ add_library(
   directional
   src/core/Library.cpp
   src/fields/CrossField.cpp
+  src/fields/PointSampledCrossField.cpp
+  src/geometry/AdaptiveFeatureMap.cpp
+  src/geometry/AdaptiveTargetSize.cpp
   src/geometry/FlowRepStrands.cpp
+  src/geometry/MeshComponents.cpp
+  src/geometry/PatchDescriptor.cpp
   src/geometry/PureQuadCompletion.cpp
+  src/geometry/ReliefTopology.cpp
   src/geometry/SurfaceArrangement.cpp
   src/geometry/SurfaceCellTracing.cpp
   src/geometry/SurfaceComplexSimplification.cpp
   src/geometry/SurfaceMeshOptimizer.cpp
+  src/geometry/SurfaceOptimizationRailConstraints.cpp
   src/integration/Integrate.cpp
   src/integration/SetupIntegration.cpp
   src/meshing/Mesher.cpp

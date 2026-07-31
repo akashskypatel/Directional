@@ -80,7 +80,8 @@ struct SurfaceCellComplexCompletionResult {
 
 namespace patch_descriptor_detail {
 
-inline const SurfaceArrangementNode *find_node(
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+const SurfaceArrangementNode *find_node(
     const SurfaceCellComplex &complex, const int id) {
   if (id >= 0 && id < static_cast<int>(complex.nodes.size()) &&
       complex.nodes[static_cast<std::size_t>(id)].id == id) {
@@ -91,15 +92,24 @@ inline const SurfaceArrangementNode *find_node(
       [&](const SurfaceArrangementNode &node) { return node.id == id; });
   return it == complex.nodes.end() ? nullptr : &*it;
 }
+#else
+const SurfaceArrangementNode *find_node(
+    const SurfaceCellComplex &complex, const int id);
+#endif
 
-inline int normalized_family(const int family) {
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+int normalized_family(const int family) {
   if (family < 0) {
     return family;
   }
   return family & 1;
 }
+#else
+int normalized_family(const int family);
+#endif
 
-inline int source_vertex_at_node(const SurfaceArrangementNode &node,
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+int source_vertex_at_node(const SurfaceArrangementNode &node,
                                  const Eigen::MatrixXi &F,
                                  const double tolerance) {
   const auto inspect = [&](const int face, const Eigen::RowVector3d &bary) {
@@ -125,8 +135,14 @@ inline int source_vertex_at_node(const SurfaceArrangementNode &node,
   }
   return -1;
 }
+#else
+int source_vertex_at_node(const SurfaceArrangementNode &node,
+                                 const Eigen::MatrixXi &F,
+                                 const double tolerance);
+#endif
 
-inline SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
                                        const Eigen::MatrixXd &V,
                                        const Eigen::MatrixXi &F,
                                        const SurfaceArrangementHalfedge &edge) {
@@ -145,8 +161,15 @@ inline SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
   }
   return point;
 }
+#else
+SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
+                                       const Eigen::MatrixXd &V,
+                                       const Eigen::MatrixXi &F,
+                                       const SurfaceArrangementHalfedge &edge);
+#endif
 
-inline bool ordered_boundary(const SurfaceCellComplex &complex,
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+bool ordered_boundary(const SurfaceCellComplex &complex,
                              const SurfaceArrangementCell &cell,
                              std::vector<int> &ordered) {
   ordered.clear();
@@ -181,8 +204,14 @@ inline bool ordered_boundary(const SurfaceCellComplex &complex,
   }
   return current == first && ordered.size() == cell.halfedges.size();
 }
+#else
+bool ordered_boundary(const SurfaceCellComplex &complex,
+                             const SurfaceArrangementCell &cell,
+                             std::vector<int> &ordered);
+#endif
 
-inline std::vector<PatchSideDescriptor>
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+std::vector<PatchSideDescriptor>
 extract_sides(const SurfaceCellComplex &complex,
               const SurfaceArrangementCell &cell,
               const std::vector<int> &boundary) {
@@ -254,8 +283,15 @@ extract_sides(const SurfaceCellComplex &complex,
   }
   return sides;
 }
+#else
+std::vector<PatchSideDescriptor>
+extract_sides(const SurfaceCellComplex &complex,
+              const SurfaceArrangementCell &cell,
+              const std::vector<int> &boundary);
+#endif
 
-inline bool source_vertex_is_in_cell(const int vertex,
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+bool source_vertex_is_in_cell(const int vertex,
                                      const SurfaceArrangementCell &cell,
                                      const Eigen::MatrixXi &F) {
   for (const int face : cell.sourceFaces) {
@@ -278,10 +314,16 @@ inline bool source_vertex_is_in_cell(const int vertex,
   }
   return false;
 }
+#else
+bool source_vertex_is_in_cell(const int vertex,
+                                     const SurfaceArrangementCell &cell,
+                                     const Eigen::MatrixXi &F);
+#endif
 
 } // namespace patch_descriptor_detail
 
-inline PatchDescriptor derive_patch_descriptor(
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+PatchDescriptor derive_patch_descriptor(
     const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
     const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
     const PatchDescriptorOptions &options = {}) {
@@ -369,8 +411,15 @@ inline PatchDescriptor derive_patch_descriptor(
   descriptor.feasibility = check_pure_quad_patch_admissibility(patch);
   return descriptor;
 }
+#else
+PatchDescriptor derive_patch_descriptor(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
+    const Eigen::MatrixXd &V, const Eigen::MatrixXi &F,
+    const PatchDescriptorOptions &options = {});
+#endif
 
-inline PatchDescriptorSet derive_patch_descriptors(
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+PatchDescriptorSet derive_patch_descriptors(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F, const PatchDescriptorOptions &options = {}) {
   PatchDescriptorSet result;
@@ -393,8 +442,14 @@ inline PatchDescriptorSet derive_patch_descriptors(
   }
   return result;
 }
+#else
+PatchDescriptorSet derive_patch_descriptors(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F, const PatchDescriptorOptions &options = {});
+#endif
 
-inline SurfaceCellComplexCompletionResult complete_surface_cell_complex(
+#if defined(DIRECTIONAL_PATCH_DESCRIPTOR_IMPLEMENTATION)
+SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F,
     const SurfaceCellComplexCompletionOptions &options = {}) {
@@ -443,6 +498,12 @@ inline SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   }
   return result;
 }
+#else
+SurfaceCellComplexCompletionResult complete_surface_cell_complex(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F,
+    const SurfaceCellComplexCompletionOptions &options = {});
+#endif
 
 } // namespace directional::geometry
 

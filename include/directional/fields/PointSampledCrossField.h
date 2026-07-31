@@ -23,6 +23,11 @@
 #include <directional/fields/CrossField.h>
 #include <directional/geometry/SurfacePoint.h>
 
+#if defined(DIRECTIONAL_POINT_SAMPLED_CROSS_FIELD_IMPLEMENTATION)
+#include <directional/core/CartesianField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
+#endif
+
 namespace directional::fields {
 
 struct PointCrossFieldSample {
@@ -57,7 +62,8 @@ struct PointSampledCrossFieldResult {
   std::vector<geometry::SurfacePoint> sampleProvenance;
 };
 
-inline PointSampledCrossFieldResult project_point_sampled_cross_field(
+#if defined(DIRECTIONAL_POINT_SAMPLED_CROSS_FIELD_IMPLEMENTATION)
+PointSampledCrossFieldResult project_point_sampled_cross_field(
     const TriMesh &mesh, const std::vector<PointCrossFieldSample> &samples,
     const PointSampledCrossFieldOptions &options =
         PointSampledCrossFieldOptions{}) {
@@ -216,6 +222,12 @@ inline PointSampledCrossFieldResult project_point_sampled_cross_field(
       rawField, options.combDirections, options.computeMatching);
   return result;
 }
+#else
+PointSampledCrossFieldResult project_point_sampled_cross_field(
+    const TriMesh &mesh, const std::vector<PointCrossFieldSample> &samples,
+    const PointSampledCrossFieldOptions &options =
+        PointSampledCrossFieldOptions{});
+#endif
 
 } // namespace directional::fields
 

@@ -129,15 +129,24 @@ namespace adaptive_feature_detail {
 
 constexpr double pi = 3.141592653589793238462643383279502884;
 
-inline double radians_to_degrees(const double radians) {
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+double radians_to_degrees(const double radians) {
   return radians * 180.0 / pi;
 }
+#else
+double radians_to_degrees(const double radians);
+#endif
 
-inline double degrees_to_radians(const double degrees) {
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+double degrees_to_radians(const double degrees) {
   return degrees * pi / 180.0;
 }
+#else
+double degrees_to_radians(const double degrees);
+#endif
 
-inline double smoothstep(const double value, const double low,
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+double smoothstep(const double value, const double low,
                          const double high) {
   if (high <= low) {
     return value >= high ? 1.0 : 0.0;
@@ -145,19 +154,34 @@ inline double smoothstep(const double value, const double low,
   const double t = std::clamp((value - low) / (high - low), 0.0, 1.0);
   return t * t * (3.0 - 2.0 * t);
 }
+#else
+double smoothstep(const double value, const double low,
+                         const double high);
+#endif
 
-inline Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
                                const int vertex) {
   return {vertices(vertex, 0), vertices(vertex, 1), vertices(vertex, 2)};
 }
+#else
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+                               const int vertex);
+#endif
 
-inline Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
                                  const Eigen::RowVector3d &b) {
   return {a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
           a.x() * b.y() - a.y() * b.x()};
 }
+#else
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+                                 const Eigen::RowVector3d &b);
+#endif
 
-inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
                                       const Eigen::MatrixXi &faces,
                                       const int face) {
   const Eigen::RowVector3d a = row3(vertices, faces(face, 0));
@@ -170,8 +194,14 @@ inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
   }
   return normal;
 }
+#else
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+                                      const Eigen::MatrixXi &faces,
+                                      const int face);
+#endif
 
-inline std::uint64_t edge_hash(const std::pair<int, int> &edge) {
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+std::uint64_t edge_hash(const std::pair<int, int> &edge) {
   std::uint64_t hash = 1469598103934665603ULL;
   hash ^= static_cast<std::uint64_t>(edge.first);
   hash *= 1099511628211ULL;
@@ -179,8 +209,12 @@ inline std::uint64_t edge_hash(const std::pair<int, int> &edge) {
   hash *= 1099511628211ULL;
   return hash;
 }
+#else
+std::uint64_t edge_hash(const std::pair<int, int> &edge);
+#endif
 
-inline double percentile(std::vector<double> values, const double q) {
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+double percentile(std::vector<double> values, const double q) {
   if (values.empty()) {
     return 0.0;
   }
@@ -189,8 +223,12 @@ inline double percentile(std::vector<double> values, const double q) {
       std::clamp(q, 0.0, 1.0) * static_cast<double>(values.size() - 1)));
   return values[index];
 }
+#else
+double percentile(std::vector<double> values, const double q);
+#endif
 
-inline std::vector<double>
+#if defined(DIRECTIONAL_ADAPTIVE_FEATURE_MAP_IMPLEMENTATION)
+std::vector<double>
 quantile_values_for_component(const std::vector<double> &values,
                               const std::vector<std::pair<int, int>> &keys,
                               const AdaptiveFeatureMapOptions &options) {
@@ -219,6 +257,12 @@ quantile_values_for_component(const std::vector<double> &values,
   }
   return sampled;
 }
+#else
+std::vector<double>
+quantile_values_for_component(const std::vector<double> &values,
+                              const std::vector<std::pair<int, int>> &keys,
+                              const AdaptiveFeatureMapOptions &options);
+#endif
 
 } // namespace adaptive_feature_detail
 

@@ -1,0 +1,2 @@
+#define DIRECTIONAL_POINT_SAMPLED_CROSS_FIELD_IMPLEMENTATION
+#include <directional/fields/PointSampledCrossField.h>
