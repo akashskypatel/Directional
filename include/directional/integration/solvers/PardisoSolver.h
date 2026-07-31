@@ -118,28 +118,8 @@ pardiso_ordering_name(PardisoOrdering ordering) noexcept {
  *                      PardisoOrdering::MetisNestedDissection, or
  *                      PardisoOrdering::ParallelNestedDissection;
  */
-#if defined(DIRECTIONAL_PARDISO_SOLVER_IMPLEMENTATION)
-[[nodiscard]] PardisoBenchmarkOptions
-default_pardiso_benchmark_options() {
-  PardisoBenchmarkOptions options;
-  options.threadCount = 4;
-  options.ordering = PardisoOrdering::MinimumDegree;
-
-  options.scaling = PardisoOptionSwitch::LibraryDefault;
-  options.matching = PardisoOptionSwitch::LibraryDefault;
-
-  options.reuseSymbolicAnalysisForIdenticalPattern = false;
-  options.iterativeRefinementSteps = 2;
-
-  options.matrixChecker = false;
-  options.printPardisoStatistics = false;
-  options.printPhaseSummaryEverySolve = false;
-  return options;
-}
-#else
 [[nodiscard]] PardisoBenchmarkOptions
 default_pardiso_benchmark_options();
-#endif
 
 } // namespace directional
 
