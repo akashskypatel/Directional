@@ -258,11 +258,16 @@ struct SurfaceOptimizationOverlay {
 
 namespace surface_optimizer_detail {
 
-inline bool contains(const std::vector<int> &values, const int value) {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool contains(const std::vector<int> &values, const int value) {
   return std::find(values.begin(), values.end(), value) != values.end();
 }
+#else
+bool contains(const std::vector<int> &values, const int value);
+#endif
 
-inline bool armijo_sufficient_decrease(const double currentEnergy,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool armijo_sufficient_decrease(const double currentEnergy,
                                        const double trialEnergy,
                                        const double alpha,
                                        const double directionSquaredNorm,
@@ -270,16 +275,28 @@ inline bool armijo_sufficient_decrease(const double currentEnergy,
   return trialEnergy <=
          currentEnergy - armijo * alpha * directionSquaredNorm;
 }
+#else
+bool armijo_sufficient_decrease(const double currentEnergy,
+                                       const double trialEnergy,
+                                       const double alpha,
+                                       const double directionSquaredNorm,
+                                       const double armijo);
+#endif
 
-inline Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v) {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v) {
   const double n = v.norm();
   if (n <= 0.0) {
     return Eigen::RowVector3d::Zero();
   }
   return v / n;
 }
+#else
+Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v);
+#endif
 
-inline Eigen::RowVector3d tangent_direction(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d tangent_direction(
     const Eigen::RowVector3d &vector,
     const Eigen::RowVector3d &surfaceNormal) {
   const Eigen::RowVector3d normal = normalized_or_zero(surfaceNormal);
@@ -288,14 +305,25 @@ inline Eigen::RowVector3d tangent_direction(
   }
   return normalized_or_zero(vector - vector.dot(normal) * normal);
 }
+#else
+Eigen::RowVector3d tangent_direction(
+    const Eigen::RowVector3d &vector,
+    const Eigen::RowVector3d &surfaceNormal);
+#endif
 
-inline Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
                                  const Eigen::RowVector3d &b) {
   return {a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
           a.x() * b.y() - a.y() * b.x()};
 }
+#else
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+                                 const Eigen::RowVector3d &b);
+#endif
 
-inline std::uint64_t topology_hash(const Eigen::MatrixXi &quads) {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::uint64_t topology_hash(const Eigen::MatrixXi &quads) {
   std::uint64_t hash = 1469598103934665603ULL;
   for (int r = 0; r < quads.rows(); ++r) {
     std::array<int, 4> face = {quads(r, 0), quads(r, 1), quads(r, 2),
@@ -311,8 +339,12 @@ inline std::uint64_t topology_hash(const Eigen::MatrixXi &quads) {
   }
   return hash;
 }
+#else
+std::uint64_t topology_hash(const Eigen::MatrixXi &quads);
+#endif
 
-inline Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
                                               const Eigen::RowVector3d &a,
                                               const Eigen::RowVector3d &b,
                                               double *parameter = nullptr) {
@@ -327,8 +359,15 @@ inline Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
   }
   return a + t * ab;
 }
+#else
+Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
+                                              const Eigen::RowVector3d &a,
+                                              const Eigen::RowVector3d &b,
+                                              double *parameter = nullptr);
+#endif
 
-inline Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
                                             const Eigen::MatrixXd &source,
                                             int *component,
                                             const Eigen::VectorXi &components) {
@@ -353,6 +392,12 @@ inline Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
   }
   return source.row(bestRow);
 }
+#else
+Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
+                                            const Eigen::MatrixXd &source,
+                                            int *component,
+                                            const Eigen::VectorXi &components);
+#endif
 
 struct SourceProjectionCache {
   explicit SourceProjectionCache(
@@ -429,7 +474,8 @@ struct SourceProjectionCache {
   std::size_t queryCount = 0;
 };
 
-inline Eigen::RowVector3d source_point_position(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d source_point_position(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfacePoint &point) {
   if (!point.valid() || point.face < 0 || point.face >= faces.rows() ||
@@ -445,8 +491,14 @@ inline Eigen::RowVector3d source_point_position(
   }
   return p;
 }
+#else
+Eigen::RowVector3d source_point_position(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfacePoint &point);
+#endif
 
-inline SurfacePoint nearest_source_point(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfacePoint nearest_source_point(
     const Eigen::RowVector3d &p, const SurfaceOptimizationConstraints &constraints,
     const int requiredComponent = -1, const int requiredSheet = -1,
     SourceProjectionCache *projectionCache = nullptr) {
@@ -478,8 +530,15 @@ inline SurfacePoint nearest_source_point(
   projected.squaredDistance = (projected.position - p.transpose()).squaredNorm();
   return projected;
 }
+#else
+SurfacePoint nearest_source_point(
+    const Eigen::RowVector3d &p, const SurfaceOptimizationConstraints &constraints,
+    const int requiredComponent = -1, const int requiredSheet = -1,
+    SourceProjectionCache *projectionCache = nullptr);
+#endif
 
-inline int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
                                     const int vertex) {
   if (constraints.featureCurveIds.size() == 0 ||
       vertex < 0 || vertex >= constraints.featureCurveIds.size()) {
@@ -487,8 +546,13 @@ inline int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constr
   }
   return constraints.featureCurveIds(vertex);
 }
+#else
+int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
+                                    const int vertex);
+#endif
 
-inline int feature_sequence_for_vertex(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+int feature_sequence_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex) {
   if (constraints.featureRailIds.size() > 0 && vertex >= 0 &&
       vertex < constraints.featureRailIds.size() &&
@@ -497,8 +561,13 @@ inline int feature_sequence_for_vertex(
   }
   return feature_curve_for_vertex(constraints, vertex);
 }
+#else
+int feature_sequence_for_vertex(
+    const SurfaceOptimizationConstraints &constraints, const int vertex);
+#endif
 
-inline int feature_interval_for_vertex(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+int feature_interval_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex) {
   if (constraints.featureIntervalIds.size() == 0 || vertex < 0 ||
       vertex >= constraints.featureIntervalIds.size()) {
@@ -506,6 +575,10 @@ inline int feature_interval_for_vertex(
   }
   return constraints.featureIntervalIds(vertex);
 }
+#else
+int feature_interval_for_vertex(
+    const SurfaceOptimizationConstraints &constraints, const int vertex);
+#endif
 
 struct SurfaceFeatureProjection {
   bool valid = false;
@@ -520,7 +593,8 @@ struct SurfaceFeatureProjection {
   Eigen::RowVector3d tangent = Eigen::RowVector3d::Zero();
 };
 
-inline SurfaceFeatureProjection project_to_feature_curve(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceFeatureProjection project_to_feature_curve(
     const Eigen::RowVector3d &point,
     const SurfaceOptimizationConstraints &constraints, const int vertex) {
   SurfaceFeatureProjection best;
@@ -588,8 +662,14 @@ inline SurfaceFeatureProjection project_to_feature_curve(
   }
   return best;
 }
+#else
+SurfaceFeatureProjection project_to_feature_curve(
+    const Eigen::RowVector3d &point,
+    const SurfaceOptimizationConstraints &constraints, const int vertex);
+#endif
 
-inline bool find_feature_interval(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool find_feature_interval(
     const SurfaceOptimizationConstraints &constraints, const int vertex,
     Eigen::RowVector3d *start, Eigen::RowVector3d *end) {
   const int curveId = feature_curve_for_vertex(constraints, vertex);
@@ -623,8 +703,14 @@ inline bool find_feature_interval(
   }
   return false;
 }
+#else
+bool find_feature_interval(
+    const SurfaceOptimizationConstraints &constraints, const int vertex,
+    Eigen::RowVector3d *start, Eigen::RowVector3d *end);
+#endif
 
-inline Eigen::RowVector3d local_source_normal(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d local_source_normal(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
     const int fallbackFace) {
   if (point.valid() && point.face >= 0 &&
@@ -679,13 +765,19 @@ inline Eigen::RowVector3d local_source_normal(
   }
   return {0.0, 0.0, 1.0};
 }
+#else
+Eigen::RowVector3d local_source_normal(
+    const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
+    const int fallbackFace);
+#endif
 
 struct LocalSourceCross {
   Eigen::RowVector3d x = {1.0, 0.0, 0.0};
   Eigen::RowVector3d y = {0.0, 1.0, 0.0};
 };
 
-inline Eigen::RowVector3d tangent_reference(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d tangent_reference(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
     const Eigen::RowVector3d &normal) {
   Eigen::RowVector3d reference = Eigen::RowVector3d::Zero();
@@ -710,8 +802,14 @@ inline Eigen::RowVector3d tangent_reference(
   }
   return reference;
 }
+#else
+Eigen::RowVector3d tangent_reference(
+    const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
+    const Eigen::RowVector3d &normal);
+#endif
 
-inline LocalSourceCross local_source_cross(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+LocalSourceCross local_source_cross(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
     const int fallbackFace) {
   const Eigen::RowVector3d normal =
@@ -776,8 +874,14 @@ inline LocalSourceCross local_source_cross(
   cross.y = normalized_or_zero(cross3(normal, x));
   return cross;
 }
+#else
+LocalSourceCross local_source_cross(
+    const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
+    const int fallbackFace);
+#endif
 
-inline std::vector<int> compatible_source_field_charts(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<int> compatible_source_field_charts(
     const SurfaceOptimizationConstraints &constraints,
     const SurfacePoint &point) {
   std::vector<int> charts;
@@ -828,8 +932,14 @@ inline std::vector<int> compatible_source_field_charts(
   charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
   return charts;
 }
+#else
+std::vector<int> compatible_source_field_charts(
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfacePoint &point);
+#endif
 
-inline double best_source_field_alignment(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double best_source_field_alignment(
     const Eigen::RowVector3d &edge,
     const SurfaceOptimizationConstraints &constraints,
     const SurfacePoint &point, const int fallbackFace,
@@ -868,8 +978,17 @@ inline double best_source_field_alignment(
   }
   return std::clamp(best, 0.0, 1.0);
 }
+#else
+double best_source_field_alignment(
+    const Eigen::RowVector3d &edge,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfacePoint &point, const int fallbackFace,
+    const SurfacePoint *firstEndpoint = nullptr,
+    const SurfacePoint *secondEndpoint = nullptr);
+#endif
 
-inline Eigen::RowVector3d source_triangle_scalar_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d source_triangle_scalar_gradient(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
     const Eigen::VectorXd &values) {
   if (!point.valid() || point.face < 0 ||
@@ -904,8 +1023,14 @@ inline Eigen::RowVector3d source_triangle_scalar_gradient(
   const Eigen::Vector2d coefficients = gram.inverse() * difference;
   return coefficients(0) * e1 + coefficients(1) * e2;
 }
+#else
+Eigen::RowVector3d source_triangle_scalar_gradient(
+    const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point,
+    const Eigen::VectorXd &values);
+#endif
 
-inline Eigen::RowVector3d local_target_size_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d local_target_size_gradient(
     const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point) {
   if (constraints.localTargetSize.size() !=
       constraints.sourceVertices.rows()) {
@@ -914,8 +1039,13 @@ inline Eigen::RowVector3d local_target_size_gradient(
   return source_triangle_scalar_gradient(constraints, point,
                                          constraints.localTargetSize);
 }
+#else
+Eigen::RowVector3d local_target_size_gradient(
+    const SurfaceOptimizationConstraints &constraints, const SurfacePoint &point);
+#endif
 
-inline double local_target_size(const SurfaceOptimizationConstraints &constraints,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double local_target_size(const SurfaceOptimizationConstraints &constraints,
                                 const SurfacePoint &point,
                                 const int fallbackVertex,
                                 const double globalTargetSize) {
@@ -946,10 +1076,17 @@ inline double local_target_size(const SurfaceOptimizationConstraints &constraint
   }
   return std::max(1.0e-12, globalTargetSize);
 }
+#else
+double local_target_size(const SurfaceOptimizationConstraints &constraints,
+                                const SurfacePoint &point,
+                                const int fallbackVertex,
+                                const double globalTargetSize);
+#endif
 
 inline constexpr double kMaxImmutableRailSizeRatio = 4.0;
 
-inline bool immutable_rail_edge(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool immutable_rail_edge(
     const SurfaceOptimizationConstraints &constraints, const int firstVertex,
     const int secondVertex) {
   if (firstVertex < 0 || secondVertex < 0 ||
@@ -965,8 +1102,14 @@ inline bool immutable_rail_edge(
   const int secondRail = constraints.featureRailIds(secondVertex);
   return firstRail >= 0 && firstRail == secondRail;
 }
+#else
+bool immutable_rail_edge(
+    const SurfaceOptimizationConstraints &constraints, const int firstVertex,
+    const int secondVertex);
+#endif
 
-inline double effective_edge_target_size(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double effective_edge_target_size(
     const SurfaceOptimizationConstraints &constraints,
     const SurfacePoint &firstPoint, const SurfacePoint &secondPoint,
     const int firstVertex, const int secondVertex, const double edgeLength,
@@ -991,8 +1134,16 @@ inline double effective_edge_target_size(
   }
   return localTarget;
 }
+#else
+double effective_edge_target_size(
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfacePoint &firstPoint, const SurfacePoint &secondPoint,
+    const int firstVertex, const int secondVertex, const double edgeLength,
+    const double globalTargetSize);
+#endif
 
-inline bool provenance_is_complete(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool provenance_is_complete(
     const SurfacePoint &point,
     const SurfaceOptimizationConstraints &constraints) {
   if (!point.valid() || !point.position.allFinite() ||
@@ -1016,8 +1167,14 @@ inline bool provenance_is_complete(
   return (!componentsAuthoritative || point.component >= 0) &&
          (!sheetsAuthoritative || point.sheet >= 0);
 }
+#else
+bool provenance_is_complete(
+    const SurfacePoint &point,
+    const SurfaceOptimizationConstraints &constraints);
+#endif
 
-inline Eigen::MatrixXd project_vertices(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::MatrixXd project_vertices(
     const Eigen::MatrixXd &vertices, const SurfaceOptimizationConstraints &constraints,
     Eigen::VectorXd *featureParameters = nullptr,
     bool *ordered = nullptr, bool *componentsOk = nullptr,
@@ -1168,8 +1325,18 @@ inline Eigen::MatrixXd project_vertices(
   }
   return projected;
 }
+#else
+Eigen::MatrixXd project_vertices(
+    const Eigen::MatrixXd &vertices, const SurfaceOptimizationConstraints &constraints,
+    Eigen::VectorXd *featureParameters = nullptr,
+    bool *ordered = nullptr, bool *componentsOk = nullptr,
+    bool *sheetsOk = nullptr, bool *completeProvenance = nullptr,
+    std::vector<SurfacePoint> *provenance = nullptr,
+    SourceProjectionCache *projectionCache = nullptr);
+#endif
 
-inline Eigen::MatrixXd project_vertices(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::MatrixXd project_vertices(
     const Eigen::MatrixXd &vertices,
     const SurfaceOptimizationConstraints &constraints,
     Eigen::VectorXd *featureParameters, bool *ordered, bool *componentsOk,
@@ -1177,8 +1344,16 @@ inline Eigen::MatrixXd project_vertices(
   return project_vertices(vertices, constraints, featureParameters, ordered,
                           componentsOk, nullptr, nullptr, provenance, nullptr);
 }
+#else
+Eigen::MatrixXd project_vertices(
+    const Eigen::MatrixXd &vertices,
+    const SurfaceOptimizationConstraints &constraints,
+    Eigen::VectorXd *featureParameters, bool *ordered, bool *componentsOk,
+    std::vector<SurfacePoint> *provenance);
+#endif
 
-inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
                                       const Eigen::MatrixXi &q,
                                       const int face) {
   const Eigen::RowVector3d a = v.row(q(face, 0));
@@ -1186,13 +1361,23 @@ inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
   const Eigen::RowVector3d c = v.row(q(face, 2));
   return normalized_or_zero(cross3(b - a, c - a));
 }
+#else
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &v,
+                                      const Eigen::MatrixXi &q,
+                                      const int face);
+#endif
 
-inline std::vector<double> sorted_percentiles(std::vector<double> values) {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<double> sorted_percentiles(std::vector<double> values) {
   std::sort(values.begin(), values.end());
   return values;
 }
+#else
+std::vector<double> sorted_percentiles(std::vector<double> values);
+#endif
 
-inline double percentile(std::vector<double> values, const double p) {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double percentile(std::vector<double> values, const double p) {
   if (values.empty()) {
     return 0.0;
   }
@@ -1201,17 +1386,26 @@ inline double percentile(std::vector<double> values, const double p) {
       std::floor(std::clamp(p, 0.0, 1.0) * static_cast<double>(values.size() - 1)));
   return values[static_cast<std::size_t>(index)];
 }
+#else
+double percentile(std::vector<double> values, const double p);
+#endif
 
-inline double angle_degrees(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double angle_degrees(const Eigen::RowVector3d &a,
                             const Eigen::RowVector3d &b) {
   const Eigen::RowVector3d na = normalized_or_zero(a);
   const Eigen::RowVector3d nb = normalized_or_zero(b);
   const double dot = std::clamp(na.dot(nb), -1.0, 1.0);
   return std::acos(dot) * 180.0 / 3.14159265358979323846;
 }
+#else
+double angle_degrees(const Eigen::RowVector3d &a,
+                            const Eigen::RowVector3d &b);
+#endif
 
 
-inline std::pair<int, int> consistent_component_sheet(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::pair<int, int> consistent_component_sheet(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
     const SurfaceOptimizationConstraints *constraints = nullptr) {
@@ -1295,8 +1489,15 @@ inline std::pair<int, int> consistent_component_sheet(
   }
   return {component, sheet};
 }
+#else
+std::pair<int, int> consistent_component_sheet(
+    const Eigen::MatrixXi &quads, const int face,
+    const std::vector<SurfacePoint> &provenance,
+    const SurfaceOptimizationConstraints *constraints = nullptr);
+#endif
 
-inline SurfacePoint quad_reference_surface_point(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfacePoint quad_reference_surface_point(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const int face, const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance,
@@ -1321,8 +1522,16 @@ inline SurfacePoint quad_reference_surface_point(
   }
   return {};
 }
+#else
+SurfacePoint quad_reference_surface_point(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const int face, const SurfaceOptimizationConstraints &constraints,
+    const std::vector<SurfacePoint> &provenance,
+    SourceProjectionCache *projectionCache = nullptr);
+#endif
 
-inline Eigen::RowVector3d quad_bilinear_sample(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d quad_bilinear_sample(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const int face, const double u, const double v) {
   const Eigen::RowVector3d p0 = vertices.row(quads(face, 0));
@@ -1332,12 +1541,21 @@ inline Eigen::RowVector3d quad_bilinear_sample(
   return (1.0 - u) * (1.0 - v) * p0 + u * (1.0 - v) * p1 +
          u * v * p2 + (1.0 - u) * v * p3;
 }
+#else
+Eigen::RowVector3d quad_bilinear_sample(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const int face, const double u, const double v);
+#endif
 
-inline std::vector<Eigen::Vector3d> triangle_sample_barycentrics() {
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<Eigen::Vector3d> triangle_sample_barycentrics() {
   return {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0},
           {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}, {0.5, 0.0, 0.5},
           {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0}};
 }
+#else
+std::vector<Eigen::Vector3d> triangle_sample_barycentrics();
+#endif
 
 struct OutputProjectionCache {
   Eigen::MatrixXi triangles;
@@ -1405,7 +1623,8 @@ struct OutputProjectionCache {
   }
 };
 
-inline std::map<std::pair<int, int>, int> quad_edge_incidence(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::map<std::pair<int, int>, int> quad_edge_incidence(
     const Eigen::MatrixXi &quads) {
   std::map<std::pair<int, int>, int> incidence;
   for (int face = 0; face < quads.rows(); ++face) {
@@ -1420,8 +1639,13 @@ inline std::map<std::pair<int, int>, int> quad_edge_incidence(
   }
   return incidence;
 }
+#else
+std::map<std::pair<int, int>, int> quad_edge_incidence(
+    const Eigen::MatrixXi &quads);
+#endif
 
-inline std::vector<std::set<int>> quad_vertex_neighbors(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<std::set<int>> quad_vertex_neighbors(
     const Eigen::MatrixXi &quads, const int vertexCount) {
   std::vector<std::set<int>> neighbors(static_cast<std::size_t>(vertexCount));
   for (int face = 0; face < quads.rows(); ++face) {
@@ -1436,8 +1660,13 @@ inline std::vector<std::set<int>> quad_vertex_neighbors(
   }
   return neighbors;
 }
+#else
+std::vector<std::set<int>> quad_vertex_neighbors(
+    const Eigen::MatrixXi &quads, const int vertexCount);
+#endif
 
-inline std::map<int, std::vector<int>> quad_boundary_neighbors(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::map<int, std::vector<int>> quad_boundary_neighbors(
     const Eigen::MatrixXi &quads) {
   std::map<int, std::vector<int>> result;
   for (const auto &[edge, count] : quad_edge_incidence(quads)) {
@@ -1449,8 +1678,13 @@ inline std::map<int, std::vector<int>> quad_boundary_neighbors(
   }
   return result;
 }
+#else
+std::map<int, std::vector<int>> quad_boundary_neighbors(
+    const Eigen::MatrixXi &quads);
+#endif
 
-inline int inferred_boundary_valence_target(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+int inferred_boundary_valence_target(
     const Eigen::MatrixXd &vertices, const int vertex,
     const std::vector<int> &boundaryNeighbors) {
   if (vertex < 0 || vertex >= vertices.rows() ||
@@ -1466,8 +1700,14 @@ inline int inferred_boundary_valence_target(
   // boundary-parallel continuation and have target valence 2.
   return angle_degrees(first, second) < 150.0 ? 2 : 3;
 }
+#else
+int inferred_boundary_valence_target(
+    const Eigen::MatrixXd &vertices, const int vertex,
+    const std::vector<int> &boundaryNeighbors);
+#endif
 
-inline Eigen::RowVector3d normalized_pullback(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d normalized_pullback(
     const Eigen::RowVector3d &raw,
     const Eigen::RowVector3d &normalizedGradient) {
   const double length = raw.norm();
@@ -1479,8 +1719,14 @@ inline Eigen::RowVector3d normalized_pullback(
           unit * unit.dot(normalizedGradient)) /
          length;
 }
+#else
+Eigen::RowVector3d normalized_pullback(
+    const Eigen::RowVector3d &raw,
+    const Eigen::RowVector3d &normalizedGradient);
+#endif
 
-inline Eigen::RowVector3d feature_order_coordinate_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::RowVector3d feature_order_coordinate_gradient(
     const SurfaceFeatureProjection &projection) {
   if (!projection.valid || projection.localParameter <= 1.0e-12 ||
       projection.localParameter >= 1.0 - 1.0e-12) {
@@ -1492,16 +1738,26 @@ inline Eigen::RowVector3d feature_order_coordinate_gradient(
   }
   return projection.tangent / squaredLength;
 }
+#else
+Eigen::RowVector3d feature_order_coordinate_gradient(
+    const SurfaceFeatureProjection &projection);
+#endif
 
-inline std::vector<int> ordered_feature_vertices(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<int> ordered_feature_vertices(
     const SurfaceOptimizationConstraints &constraints) {
   if (!constraints.orderedFeatureVertices.empty()) {
     return constraints.orderedFeatureVertices;
   }
   return constraints.featureVertices;
 }
+#else
+std::vector<int> ordered_feature_vertices(
+    const SurfaceOptimizationConstraints &constraints);
+#endif
 
-inline double feature_order_energy(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double feature_order_energy(
     const Eigen::MatrixXd &vertices,
     const SurfaceOptimizationConstraints &constraints) {
   const std::vector<int> features = ordered_feature_vertices(constraints);
@@ -1535,8 +1791,14 @@ inline double feature_order_energy(
   }
   return energy;
 }
+#else
+double feature_order_energy(
+    const Eigen::MatrixXd &vertices,
+    const SurfaceOptimizationConstraints &constraints);
+#endif
 
-inline SurfaceOptimizationGradient zero_surface_optimization_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationGradient zero_surface_optimization_gradient(
     const int vertexCount, const int dimensions) {
   SurfaceOptimizationGradient gradient;
   gradient.surface = Eigen::MatrixXd::Zero(vertexCount, dimensions);
@@ -1549,8 +1811,13 @@ inline SurfaceOptimizationGradient zero_surface_optimization_gradient(
   gradient.total = Eigen::MatrixXd::Zero(vertexCount, dimensions);
   return gradient;
 }
+#else
+SurfaceOptimizationGradient zero_surface_optimization_gradient(
+    const int vertexCount, const int dimensions);
+#endif
 
-inline void add_edge_length_gradient(Eigen::MatrixXd &gradient,
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+void add_edge_length_gradient(Eigen::MatrixXd &gradient,
                                      const int firstVertex,
                                      const int secondVertex,
                                      const Eigen::RowVector3d &edge,
@@ -1564,8 +1831,16 @@ inline void add_edge_length_gradient(Eigen::MatrixXd &gradient,
   gradient.row(firstVertex) -= edgeGradient;
   gradient.row(secondVertex) += edgeGradient;
 }
+#else
+void add_edge_length_gradient(Eigen::MatrixXd &gradient,
+                                     const int firstVertex,
+                                     const int secondVertex,
+                                     const Eigen::RowVector3d &edge,
+                                     const double derivativeByLength);
+#endif
 
-inline void zero_fixed_gradient_rows(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+void zero_fixed_gradient_rows(
     SurfaceOptimizationGradient &gradient,
     const SurfaceOptimizationConstraints &constraints) {
   for (const int vertex : constraints.fixedVertices) {
@@ -1582,10 +1857,16 @@ inline void zero_fixed_gradient_rows(
     gradient.total.row(vertex).setZero();
   }
 }
+#else
+void zero_fixed_gradient_rows(
+    SurfaceOptimizationGradient &gradient,
+    const SurfaceOptimizationConstraints &constraints);
+#endif
 
 } // namespace surface_optimizer_detail
 
-inline std::complex<double> degree_four_average(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::complex<double> degree_four_average(
     const std::vector<double> &anglesRadians,
     const std::vector<double> &connectionAnglesRadians = {},
     const std::vector<double> &weights = {}) {
@@ -1608,8 +1889,15 @@ inline std::complex<double> degree_four_average(
   }
   return sum / n;
 }
+#else
+std::complex<double> degree_four_average(
+    const std::vector<double> &anglesRadians,
+    const std::vector<double> &connectionAnglesRadians = {},
+    const std::vector<double> &weights = {});
+#endif
 
-inline SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options,
@@ -1701,8 +1989,16 @@ inline SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
                  options.weights.feature * energy.feature;
   return energy;
 }
+#else
+SurfaceOptimizationEnergy evaluate_surface_optimization_energy_cached(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options,
+    surface_optimizer_detail::SourceProjectionCache &projectionCache);
+#endif
 
-inline SurfaceOptimizationEnergy evaluate_surface_optimization_energy(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationEnergy evaluate_surface_optimization_energy(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options) {
@@ -1710,8 +2006,15 @@ inline SurfaceOptimizationEnergy evaluate_surface_optimization_energy(
   return evaluate_surface_optimization_energy_cached(
       vertices, quads, constraints, options, projectionCache);
 }
+#else
+SurfaceOptimizationEnergy evaluate_surface_optimization_energy(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options);
+#endif
 
-inline double signed_scaled_jacobian(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+double signed_scaled_jacobian(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads, const int face,
     const Eigen::RowVector3d &sourceNormal) {
   double minimum = std::numeric_limits<double>::infinity();
@@ -1730,8 +2033,14 @@ inline double signed_scaled_jacobian(
   }
   return minimum == std::numeric_limits<double>::infinity() ? 0.0 : minimum;
 }
+#else
+double signed_scaled_jacobian(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads, const int face,
+    const Eigen::RowVector3d &sourceNormal);
+#endif
 
-inline std::vector<unsigned char> source_boundary_vertex_mask(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+std::vector<unsigned char> source_boundary_vertex_mask(
     const Eigen::MatrixXi &sourceFaces, const int sourceVertexCount) {
   std::map<std::pair<int, int>, int> edgeIncidence;
   for (int face = 0; face < sourceFaces.rows(); ++face) {
@@ -1762,8 +2071,13 @@ inline std::vector<unsigned char> source_boundary_vertex_mask(
   }
   return boundary;
 }
+#else
+std::vector<unsigned char> source_boundary_vertex_mask(
+    const Eigen::MatrixXi &sourceFaces, const int sourceVertexCount);
+#endif
 
-inline void fill_required_singularity_valence_targets(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+void fill_required_singularity_valence_targets(
     const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
     const Eigen::VectorXi &singularCycles,
     const Eigen::VectorXi &singularIndices,
@@ -1834,8 +2148,18 @@ inline void fill_required_singularity_valence_targets(
     }
   }
 }
+#else
+void fill_required_singularity_valence_targets(
+    const Eigen::MatrixXd &sourceVertices, const Eigen::MatrixXi &sourceFaces,
+    const Eigen::VectorXi &singularCycles,
+    const Eigen::VectorXi &singularIndices,
+    const Eigen::MatrixXd &outputVertices,
+    const std::vector<SurfacePoint> &outputProvenance,
+    SurfaceOptimizationConstraints &constraints);
+#endif
 
-inline SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const int face, const Eigen::RowVector3d &sourceNormal) {
   using namespace surface_optimizer_detail;
@@ -1882,8 +2206,14 @@ inline SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
   quality.warpageDegrees = std::max(diagonal02, diagonal13);
   return quality;
 }
+#else
+SurfaceQuadQualityMetrics evaluate_surface_quad_quality(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const int face, const Eigen::RowVector3d &sourceNormal);
+#endif
 
-inline bool local_orientation_valid(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool local_orientation_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints *constraints = nullptr,
     const std::vector<SurfacePoint> *vertexProvenance = nullptr,
@@ -1914,8 +2244,16 @@ inline bool local_orientation_valid(
   }
   return true;
 }
+#else
+bool local_orientation_valid(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints *constraints = nullptr,
+    const std::vector<SurfacePoint> *vertexProvenance = nullptr,
+    surface_optimizer_detail::SourceProjectionCache *projectionCache = nullptr);
+#endif
 
-inline validation::SourceAuthoritativeMeshValidatorOptions
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+validation::SourceAuthoritativeMeshValidatorOptions
 make_source_authoritative_validator_options(
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance) {
@@ -1944,8 +2282,15 @@ make_source_authoritative_validator_options(
   validatorOptions.requireLocalSheetCompatibility = true;
   return validatorOptions;
 }
+#else
+validation::SourceAuthoritativeMeshValidatorOptions
+make_source_authoritative_validator_options(
+    const SurfaceOptimizationConstraints &constraints,
+    const std::vector<SurfacePoint> &provenance);
+#endif
 
-inline bool source_authoritative_hard_invariants_valid(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance) {
@@ -1957,13 +2302,20 @@ inline bool source_authoritative_hard_invariants_valid(
       make_source_authoritative_validator_options(constraints, provenance));
   return validation.accepted;
 }
+#else
+bool source_authoritative_hard_invariants_valid(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const std::vector<SurfacePoint> &provenance);
+#endif
 
 // Computes the optimizer derivative directly per enabled energy. Geometric
 // terms use closed-form derivatives. Source-normal and 4-RoSy transport
 // depend on piecewise source-triangle projection and normalized barycentric
 // interpolation, so only those local source-data pullbacks use centered
 // differences; the full objective is never finite-differenced by the optimizer.
-inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options,
@@ -2317,8 +2669,16 @@ inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached
   zero_fixed_gradient_rows(gradient, constraints);
   return gradient;
 }
+#else
+SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options,
+    surface_optimizer_detail::SourceProjectionCache &projectionCache);
+#endif
 
-inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationGradient evaluate_surface_optimization_gradient(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {}) {
@@ -2326,8 +2686,15 @@ inline SurfaceOptimizationGradient evaluate_surface_optimization_gradient(
   return evaluate_surface_optimization_gradient_cached(
       vertices, quads, constraints, options, projectionCache);
 }
+#else
+SurfaceOptimizationGradient evaluate_surface_optimization_gradient(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+#endif
 
-inline Eigen::MatrixXd finite_difference_surface_optimization_gradient_cached(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::MatrixXd finite_difference_surface_optimization_gradient_cached(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options,
@@ -2356,8 +2723,16 @@ inline Eigen::MatrixXd finite_difference_surface_optimization_gradient_cached(
   }
   return gradient;
 }
+#else
+Eigen::MatrixXd finite_difference_surface_optimization_gradient_cached(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options,
+    surface_optimizer_detail::SourceProjectionCache &projectionCache);
+#endif
 
-inline Eigen::MatrixXd finite_difference_surface_optimization_gradient(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+Eigen::MatrixXd finite_difference_surface_optimization_gradient(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {}) {
@@ -2365,8 +2740,15 @@ inline Eigen::MatrixXd finite_difference_surface_optimization_gradient(
   return finite_difference_surface_optimization_gradient_cached(
       vertices, quads, constraints, options, projectionCache);
 }
+#else
+Eigen::MatrixXd finite_difference_surface_optimization_gradient(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+#endif
 
-inline SurfaceOptimizationResult optimize_projected_surface_mesh(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationResult optimize_projected_surface_mesh(
     const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {}) {
@@ -2485,8 +2867,15 @@ inline SurfaceOptimizationResult optimize_projected_surface_mesh(
   result.finalEnergy = current;
   return result;
 }
+#else
+SurfaceOptimizationResult optimize_projected_surface_mesh(
+    const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+#endif
 
-inline SurfaceFinalValidationReport validate_final_surface_mesh(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceFinalValidationReport validate_final_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationResult &optimization,
@@ -2914,8 +3303,17 @@ inline SurfaceFinalValidationReport validate_final_surface_mesh(
       (!options.enforceOptimizerTimeGate || report.optimizerTimeWithinGate);
   return report;
 }
+#else
+SurfaceFinalValidationReport validate_final_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationResult &optimization,
+    const SurfaceOptimizationOptions &options = {},
+    const double optimizerSeconds = 0.0, const double endToEndSeconds = 1.0);
+#endif
 
-inline SurfaceOptimizationOverlay make_surface_optimization_overlay(
+#if defined(DIRECTIONAL_SURFACE_MESH_OPTIMIZER_IMPLEMENTATION)
+SurfaceOptimizationOverlay make_surface_optimization_overlay(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {}) {
@@ -3079,6 +3477,12 @@ inline SurfaceOptimizationOverlay make_surface_optimization_overlay(
   }
   return overlay;
 }
+#else
+SurfaceOptimizationOverlay make_surface_optimization_overlay(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+#endif
 
 } // namespace directional::geometry
 

@@ -129,7 +129,11 @@ add_library(
   directional
   src/core/Library.cpp
   src/fields/CrossField.cpp
-  src/pipeline/RemeshPipeline.cpp)
+  src/geometry/SurfaceCellTracing.cpp
+  src/geometry/SurfaceMeshOptimizer.cpp
+  src/pipeline/RemeshPipeline.cpp
+  src/validation/MeshValidator.cpp
+  src/validation/SourceAuthoritativeMeshValidator.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(
@@ -563,7 +567,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_tests
     PRIVATE
@@ -583,7 +587,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_optimizer_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_optimizer_tests
     PRIVATE
@@ -599,7 +603,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp)
   target_link_libraries(
     directional_milestone_f_validator_tests
-    PRIVATE GTest::gtest_main)
+    PRIVATE Directional::directional GTest::gtest_main)
   target_include_directories(
     directional_milestone_f_validator_tests
     PRIVATE
@@ -613,6 +617,9 @@ if(DIRECTIONAL_BUILD_TESTS)
   add_executable(
     directional_milestone_f_benchmark
     tests/MilestoneFBenchmark.cpp)
+  target_link_libraries(
+    directional_milestone_f_benchmark
+    PRIVATE Directional::directional)
   target_include_directories(
     directional_milestone_f_benchmark
     PRIVATE

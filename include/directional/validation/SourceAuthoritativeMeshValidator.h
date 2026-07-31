@@ -69,7 +69,8 @@ struct SourceAuthoritativeMeshValidationResult : MeshValidationResult {
 
 namespace source_authoritative_detail {
 
-inline std::vector<int> face_vertices(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<int> face_vertices(const Eigen::MatrixXi &faces,
                                       const int face) {
   std::vector<int> vertices;
   for (int corner = 0; corner < faces.cols(); ++corner) {
@@ -80,8 +81,13 @@ inline std::vector<int> face_vertices(const Eigen::MatrixXi &faces,
   }
   return vertices;
 }
+#else
+std::vector<int> face_vertices(const Eigen::MatrixXi &faces,
+                                      const int face);
+#endif
 
-inline MeshTopologySummary summarize_topology(const Eigen::MatrixXi &faces) {
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+MeshTopologySummary summarize_topology(const Eigen::MatrixXi &faces) {
   MeshTopologySummary summary;
   std::set<int> usedVertices;
   std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
@@ -176,6 +182,9 @@ inline MeshTopologySummary summarize_topology(const Eigen::MatrixXi &faces) {
   }
   return summary;
 }
+#else
+MeshTopologySummary summarize_topology(const Eigen::MatrixXi &faces);
+#endif
 
 struct Aabb {
   Eigen::Vector3d minimum =
@@ -297,13 +306,19 @@ private:
   std::vector<Node> nodes_;
 };
 
-inline double orient2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+double orient2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
                       const Eigen::Vector2d &c) {
   return (b.x() - a.x()) * (c.y() - a.y()) -
          (b.y() - a.y()) * (c.x() - a.x());
 }
+#else
+double orient2(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+                      const Eigen::Vector2d &c);
+#endif
 
-inline int dominant_axis(const Eigen::Vector3d &normal) {
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+int dominant_axis(const Eigen::Vector3d &normal) {
   const Eigen::Vector3d absolute = normal.cwiseAbs();
   int axis = 0;
   if (absolute(1) > absolute(axis)) {
@@ -314,8 +329,12 @@ inline int dominant_axis(const Eigen::Vector3d &normal) {
   }
   return axis;
 }
+#else
+int dominant_axis(const Eigen::Vector3d &normal);
+#endif
 
-inline Eigen::Vector2d project2(const Eigen::Vector3d &point,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+Eigen::Vector2d project2(const Eigen::Vector3d &point,
                                 const int dropAxis) {
   if (dropAxis == 0) {
     return {point.y(), point.z()};
@@ -325,8 +344,13 @@ inline Eigen::Vector2d project2(const Eigen::Vector3d &point,
   }
   return {point.x(), point.y()};
 }
+#else
+Eigen::Vector2d project2(const Eigen::Vector3d &point,
+                                const int dropAxis);
+#endif
 
-inline bool point_in_triangle2_strict(const Eigen::Vector2d &point,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool point_in_triangle2_strict(const Eigen::Vector2d &point,
                                       const Eigen::Vector2d &a,
                                       const Eigen::Vector2d &b,
                                       const Eigen::Vector2d &c,
@@ -338,8 +362,16 @@ inline bool point_in_triangle2_strict(const Eigen::Vector2d &point,
   const bool negative = o0 < -tolerance && o1 < -tolerance && o2 < -tolerance;
   return positive || negative;
 }
+#else
+bool point_in_triangle2_strict(const Eigen::Vector2d &point,
+                                      const Eigen::Vector2d &a,
+                                      const Eigen::Vector2d &b,
+                                      const Eigen::Vector2d &c,
+                                      const double tolerance);
+#endif
 
-inline bool proper_segment_intersection2(const Eigen::Vector2d &a,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool proper_segment_intersection2(const Eigen::Vector2d &a,
                                          const Eigen::Vector2d &b,
                                          const Eigen::Vector2d &c,
                                          const Eigen::Vector2d &d,
@@ -353,8 +385,16 @@ inline bool proper_segment_intersection2(const Eigen::Vector2d &a,
          ((o2 > tolerance && o3 < -tolerance) ||
           (o2 < -tolerance && o3 > tolerance));
 }
+#else
+bool proper_segment_intersection2(const Eigen::Vector2d &a,
+                                         const Eigen::Vector2d &b,
+                                         const Eigen::Vector2d &c,
+                                         const Eigen::Vector2d &d,
+                                         const double tolerance);
+#endif
 
-inline bool collinear_segment_overlap2(const Eigen::Vector2d &a,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool collinear_segment_overlap2(const Eigen::Vector2d &a,
                                        const Eigen::Vector2d &b,
                                        const Eigen::Vector2d &c,
                                        const Eigen::Vector2d &d,
@@ -372,16 +412,30 @@ inline bool collinear_segment_overlap2(const Eigen::Vector2d &a,
   return std::min(firstMax, secondMax) - std::max(firstMin, secondMin) >
          tolerance;
 }
+#else
+bool collinear_segment_overlap2(const Eigen::Vector2d &a,
+                                       const Eigen::Vector2d &b,
+                                       const Eigen::Vector2d &c,
+                                       const Eigen::Vector2d &d,
+                                       const double tolerance);
+#endif
 
-inline bool near_any(const Eigen::Vector3d &point,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool near_any(const Eigen::Vector3d &point,
                      const std::vector<Eigen::Vector3d> &allowed,
                      const double tolerance) {
   return std::any_of(allowed.begin(), allowed.end(), [&](const auto &candidate) {
     return (point - candidate).norm() <= tolerance;
   });
 }
+#else
+bool near_any(const Eigen::Vector3d &point,
+                     const std::vector<Eigen::Vector3d> &allowed,
+                     const double tolerance);
+#endif
 
-inline bool segment_triangle_intersection_point(
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool segment_triangle_intersection_point(
     const Eigen::Vector3d &p0, const Eigen::Vector3d &p1,
     const Eigen::Vector3d &a, const Eigen::Vector3d &b,
     const Eigen::Vector3d &c, const double tolerance,
@@ -414,6 +468,13 @@ inline bool segment_triangle_intersection_point(
   intersection = p0 + t * direction;
   return true;
 }
+#else
+bool segment_triangle_intersection_point(
+    const Eigen::Vector3d &p0, const Eigen::Vector3d &p1,
+    const Eigen::Vector3d &a, const Eigen::Vector3d &b,
+    const Eigen::Vector3d &c, const double tolerance,
+    Eigen::Vector3d &intersection);
+#endif
 
 struct TrianglePrimitive {
   std::array<int, 3> vertices = {-1, -1, -1};
@@ -421,7 +482,8 @@ struct TrianglePrimitive {
   Aabb bounds;
 };
 
-inline std::vector<int> shared_vertices(const TrianglePrimitive &first,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<int> shared_vertices(const TrianglePrimitive &first,
                                         const TrianglePrimitive &second) {
   std::vector<int> shared;
   for (const int a : first.vertices) {
@@ -435,8 +497,13 @@ inline std::vector<int> shared_vertices(const TrianglePrimitive &first,
   shared.erase(std::unique(shared.begin(), shared.end()), shared.end());
   return shared;
 }
+#else
+std::vector<int> shared_vertices(const TrianglePrimitive &first,
+                                        const TrianglePrimitive &second);
+#endif
 
-inline bool coplanar_triangles_overlap(
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool coplanar_triangles_overlap(
     const std::array<Eigen::Vector3d, 3> &first,
     const std::array<Eigen::Vector3d, 3> &second,
     const std::vector<Eigen::Vector3d> &allowedTouches,
@@ -491,8 +558,16 @@ inline bool coplanar_triangles_overlap(
   (void)allowedTouches;
   return false;
 }
+#else
+bool coplanar_triangles_overlap(
+    const std::array<Eigen::Vector3d, 3> &first,
+    const std::array<Eigen::Vector3d, 3> &second,
+    const std::vector<Eigen::Vector3d> &allowedTouches,
+    const double tolerance);
+#endif
 
-inline bool triangles_intersect(
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+bool triangles_intersect(
     const Eigen::MatrixXd &vertices, const TrianglePrimitive &first,
     const TrianglePrimitive &second, const double tolerance) {
   const std::vector<int> shared = shared_vertices(first, second);
@@ -540,8 +615,14 @@ inline bool triangles_intersect(
   }
   return false;
 }
+#else
+bool triangles_intersect(
+    const Eigen::MatrixXd &vertices, const TrianglePrimitive &first,
+    const TrianglePrimitive &second, const double tolerance);
+#endif
 
-inline std::vector<TrianglePrimitive>
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<TrianglePrimitive>
 triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
                   const double tolerance) {
   std::vector<TrianglePrimitive> triangles;
@@ -570,8 +651,14 @@ triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
   }
   return triangles;
 }
+#else
+std::vector<TrianglePrimitive>
+triangulate_faces(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+                  const double tolerance);
+#endif
 
-inline std::vector<std::vector<int>> extract_loops_from_edges(
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<std::vector<int>> extract_loops_from_edges(
     const std::set<std::pair<int, int>> &edges, bool &closed) {
   std::map<int, std::set<int>> adjacency;
   for (const auto &edge : edges) {
@@ -629,8 +716,13 @@ inline std::vector<std::vector<int>> extract_loops_from_edges(
   }
   return loops;
 }
+#else
+std::vector<std::vector<int>> extract_loops_from_edges(
+    const std::set<std::pair<int, int>> &edges, bool &closed);
+#endif
 
-inline std::vector<std::vector<int>> extract_boundary_loops(
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<std::vector<int>> extract_boundary_loops(
     const Eigen::MatrixXi &faces, bool &closed) {
   std::map<std::pair<int, int>, int> incidence;
   for (int face = 0; face < faces.rows(); ++face) {
@@ -708,8 +800,13 @@ inline std::vector<std::vector<int>> extract_boundary_loops(
   }
   return loops;
 }
+#else
+std::vector<std::vector<int>> extract_boundary_loops(
+    const Eigen::MatrixXi &faces, bool &closed);
+#endif
 
-inline std::vector<int> canonical_loop(const std::vector<int> &input) {
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+std::vector<int> canonical_loop(const std::vector<int> &input) {
   std::vector<int> loop = input;
   if (loop.size() > 1U && loop.front() == loop.back()) {
     loop.pop_back();
@@ -735,6 +832,9 @@ inline std::vector<int> canonical_loop(const std::vector<int> &input) {
   consider(loop);
   return best;
 }
+#else
+std::vector<int> canonical_loop(const std::vector<int> &input);
+#endif
 
 struct SourcePointLabelSupport {
   const Eigen::MatrixXi *sourceFaces = nullptr;
@@ -868,7 +968,8 @@ struct SourcePointLabelSupport {
   }
 };
 
-inline Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
                                       const std::vector<int> &polygon) {
   Eigen::Vector3d normal = Eigen::Vector3d::Zero();
   if (polygon.size() < 3U) {
@@ -884,14 +985,23 @@ inline Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
   }
   return normal;
 }
+#else
+Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
+                                      const std::vector<int> &polygon);
+#endif
 
 } // namespace source_authoritative_detail
 
-inline MeshTopologySummary summarize_mesh_topology(const Eigen::MatrixXi &faces) {
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+MeshTopologySummary summarize_mesh_topology(const Eigen::MatrixXi &faces) {
   return source_authoritative_detail::summarize_topology(faces);
 }
+#else
+MeshTopologySummary summarize_mesh_topology(const Eigen::MatrixXi &faces);
+#endif
 
-inline SourceAuthoritativeMeshValidationResult
+#if defined(DIRECTIONAL_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_IMPLEMENTATION)
+SourceAuthoritativeMeshValidationResult
 validate_source_authoritative_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SourceAuthoritativeMeshValidatorOptions &options) {
@@ -1207,6 +1317,12 @@ validate_source_authoritative_surface_mesh(
 
   return result;
 }
+#else
+SourceAuthoritativeMeshValidationResult
+validate_source_authoritative_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SourceAuthoritativeMeshValidatorOptions &options);
+#endif
 
 } // namespace directional::validation
 

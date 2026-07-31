@@ -1,0 +1,2 @@
+#define DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION
+#include <directional/geometry/SurfaceCellTracing.h>

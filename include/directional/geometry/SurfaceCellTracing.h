@@ -258,22 +258,37 @@ struct SurfaceCellTracingOverlay {
 
 namespace surface_cell_tracing_detail {
 
-inline std::uint64_t edge_key(const int a, const int b) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::uint64_t edge_key(const int a, const int b) {
   return relief_topology_detail::edge_key(a, b);
 }
+#else
+std::uint64_t edge_key(const int a, const int b);
+#endif
 
-inline Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
                                const int vertex) {
   return {vertices(vertex, 0), vertices(vertex, 1), vertices(vertex, 2)};
 }
+#else
+Eigen::RowVector3d row3(const Eigen::MatrixXd &vertices,
+                               const int vertex);
+#endif
 
-inline Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
                                  const Eigen::RowVector3d &b) {
   return {a.y() * b.z() - a.z() * b.y(), a.z() * b.x() - a.x() * b.z(),
           a.x() * b.y() - a.y() * b.x()};
 }
+#else
+Eigen::RowVector3d cross3(const Eigen::RowVector3d &a,
+                                 const Eigen::RowVector3d &b);
+#endif
 
-inline Eigen::RowVector3d point_position(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d point_position(const Eigen::MatrixXd &vertices,
                                          const Eigen::MatrixXi &faces,
                                          const SurfaceTracePoint &point) {
   Eigen::RowVector3d p = Eigen::RowVector3d::Zero();
@@ -282,8 +297,14 @@ inline Eigen::RowVector3d point_position(const Eigen::MatrixXd &vertices,
   }
   return p;
 }
+#else
+Eigen::RowVector3d point_position(const Eigen::MatrixXd &vertices,
+                                         const Eigen::MatrixXi &faces,
+                                         const SurfaceTracePoint &point);
+#endif
 
-inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
                                       const Eigen::MatrixXi &faces,
                                       const int face) {
   const Eigen::RowVector3d a = row3(vertices, faces(face, 0));
@@ -296,8 +317,14 @@ inline Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
   }
   return normal;
 }
+#else
+Eigen::RowVector3d face_normal(const Eigen::MatrixXd &vertices,
+                                      const Eigen::MatrixXi &faces,
+                                      const int face);
+#endif
 
-inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &direction,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &direction,
                                           const Eigen::RowVector3d &normal) {
   Eigen::RowVector3d tangent = direction - direction.dot(normal) * normal;
   const double norm = tangent.norm();
@@ -306,8 +333,13 @@ inline Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &direction,
   }
   return tangent;
 }
+#else
+Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &direction,
+                                          const Eigen::RowVector3d &normal);
+#endif
 
-inline std::map<std::uint64_t, std::array<int, 2>>
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::map<std::uint64_t, std::array<int, 2>>
 edge_faces(const Eigen::MatrixXi &faces) {
   std::map<std::uint64_t, std::array<int, 2>> result;
   for (int face = 0; face < faces.rows(); ++face) {
@@ -324,8 +356,13 @@ edge_faces(const Eigen::MatrixXi &faces) {
   }
   return result;
 }
+#else
+std::map<std::uint64_t, std::array<int, 2>>
+edge_faces(const Eigen::MatrixXi &faces);
+#endif
 
-inline std::map<std::uint64_t, int>
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::map<std::uint64_t, int>
 edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
   std::map<std::uint64_t, int> indices;
   int index = 0;
@@ -336,13 +373,18 @@ edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFac
   }
   return indices;
 }
+#else
+std::map<std::uint64_t, int>
+edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces);
+#endif
 
 struct EdgeTransitionLookup {
   std::map<std::uint64_t, fields::CrossFieldEdgeTransition> byEdge;
   bool duplicate = false;
 };
 
-inline EdgeTransitionLookup edge_transition_lookup(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+EdgeTransitionLookup edge_transition_lookup(
     const std::vector<fields::CrossFieldEdgeTransition> &transitions) {
   EdgeTransitionLookup lookup;
   for (const fields::CrossFieldEdgeTransition &transition : transitions) {
@@ -358,13 +400,23 @@ inline EdgeTransitionLookup edge_transition_lookup(
   }
   return lookup;
 }
+#else
+EdgeTransitionLookup edge_transition_lookup(
+    const std::vector<fields::CrossFieldEdgeTransition> &transitions);
+#endif
 
-inline bool contains_vertex(const std::vector<int> &vertices,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool contains_vertex(const std::vector<int> &vertices,
                             const int vertex) {
   return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
 }
+#else
+bool contains_vertex(const std::vector<int> &vertices,
+                            const int vertex);
+#endif
 
-inline std::vector<std::vector<int>>
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::vector<std::vector<int>>
 incident_faces_by_vertex(const int vertexCount, const Eigen::MatrixXi &faces) {
   std::vector<std::vector<int>> incident(static_cast<std::size_t>(vertexCount));
   for (int face = 0; face < faces.rows(); ++face) {
@@ -383,8 +435,13 @@ incident_faces_by_vertex(const int vertexCount, const Eigen::MatrixXi &faces) {
   }
   return incident;
 }
+#else
+std::vector<std::vector<int>>
+incident_faces_by_vertex(const int vertexCount, const Eigen::MatrixXi &faces);
+#endif
 
-inline SurfaceTracePoint vertex_point(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceTracePoint vertex_point(
     const int vertex, const std::vector<std::vector<int>> &incident,
     const Eigen::MatrixXi &faces) {
   SurfaceTracePoint point;
@@ -398,8 +455,14 @@ inline SurfaceTracePoint vertex_point(
   }
   return point;
 }
+#else
+SurfaceTracePoint vertex_point(
+    const int vertex, const std::vector<std::vector<int>> &incident,
+    const Eigen::MatrixXi &faces);
+#endif
 
-inline double target_size_at_vertex(const Eigen::VectorXd &targetSize,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double target_size_at_vertex(const Eigen::VectorXd &targetSize,
                                     const int vertex,
                                     const double fallback) {
   if (vertex >= 0 && vertex < targetSize.size() &&
@@ -408,8 +471,14 @@ inline double target_size_at_vertex(const Eigen::VectorXd &targetSize,
   }
   return fallback;
 }
+#else
+double target_size_at_vertex(const Eigen::VectorXd &targetSize,
+                                    const int vertex,
+                                    const double fallback);
+#endif
 
-inline void append_seed(std::vector<SurfaceTraceSeed> &seeds,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+void append_seed(std::vector<SurfaceTraceSeed> &seeds,
                         std::set<std::tuple<int, int, int, int>> &seen,
                         const SurfaceTracePoint &point,
                         const SurfaceSeedProvenance provenance,
@@ -431,13 +500,26 @@ inline void append_seed(std::vector<SurfaceTraceSeed> &seeds,
   seed.sourceId = sourceId;
   seeds.push_back(seed);
 }
+#else
+void append_seed(std::vector<SurfaceTraceSeed> &seeds,
+                        std::set<std::tuple<int, int, int, int>> &seen,
+                        const SurfaceTracePoint &point,
+                        const SurfaceSeedProvenance provenance,
+                        const int sourceId);
+#endif
 
-inline bool point_on_edge(const Eigen::RowVector3d &bary, const int edgeCorner,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool point_on_edge(const Eigen::RowVector3d &bary, const int edgeCorner,
                           const double eps = 1.0e-10) {
   return std::abs(bary[edgeCorner]) <= eps;
 }
+#else
+bool point_on_edge(const Eigen::RowVector3d &bary, const int edgeCorner,
+                          const double eps = 1.0e-10);
+#endif
 
-inline int hit_vertex(const Eigen::RowVector3d &bary,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int hit_vertex(const Eigen::RowVector3d &bary,
                       const double eps = 1.0e-10) {
   int one = -1;
   for (int corner = 0; corner < 3; ++corner) {
@@ -447,8 +529,13 @@ inline int hit_vertex(const Eigen::RowVector3d &bary,
   }
   return one;
 }
+#else
+int hit_vertex(const Eigen::RowVector3d &bary,
+                      const double eps = 1.0e-10);
+#endif
 
-inline int dominant_vertex_corner(const Eigen::RowVector3d &bary) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int dominant_vertex_corner(const Eigen::RowVector3d &bary) {
   int best = 0;
   for (int corner = 1; corner < 3; ++corner) {
     if (bary[corner] > bary[best]) {
@@ -457,8 +544,12 @@ inline int dominant_vertex_corner(const Eigen::RowVector3d &bary) {
   }
   return best;
 }
+#else
+int dominant_vertex_corner(const Eigen::RowVector3d &bary);
+#endif
 
-inline Eigen::RowVector3d remap_barycentric_to_neighbor(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d remap_barycentric_to_neighbor(
     const Eigen::MatrixXi &faces, const int fromFace, const int toFace,
     const Eigen::RowVector3d &fromBary) {
   Eigen::RowVector3d to = Eigen::RowVector3d::Zero();
@@ -472,8 +563,14 @@ inline Eigen::RowVector3d remap_barycentric_to_neighbor(
   }
   return to;
 }
+#else
+Eigen::RowVector3d remap_barycentric_to_neighbor(
+    const Eigen::MatrixXi &faces, const int fromFace, const int toFace,
+    const Eigen::RowVector3d &fromBary);
+#endif
 
-inline bool barycentric_derivative(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool barycentric_derivative(const Eigen::MatrixXd &vertices,
                                    const Eigen::MatrixXi &faces,
                                    const int face,
                                    const Eigen::RowVector3d &direction,
@@ -493,13 +590,26 @@ inline bool barycentric_derivative(const Eigen::MatrixXd &vertices,
   dbary << -uv[0] - uv[1], uv[0], uv[1];
   return dbary.allFinite() && dbary.squaredNorm() > 0.0;
 }
+#else
+bool barycentric_derivative(const Eigen::MatrixXd &vertices,
+                                   const Eigen::MatrixXi &faces,
+                                   const int face,
+                                   const Eigen::RowVector3d &direction,
+                                   Eigen::RowVector3d &dbary);
+#endif
 
-inline bool source_label_arrays_enabled(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool source_label_arrays_enabled(
     const SurfaceCellTracingOptions &options) {
   return !options.sourceFaceComponents.empty() || !options.sourceFaceSheets.empty();
 }
+#else
+bool source_label_arrays_enabled(
+    const SurfaceCellTracingOptions &options);
+#endif
 
-inline bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
                                       const int faceCount) {
   if (!source_label_arrays_enabled(options)) {
     return true;
@@ -516,8 +626,13 @@ inline bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
   }
   return true;
 }
+#else
+bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
+                                      const int faceCount);
+#endif
 
-inline bool source_faces_compatible(const SurfaceCellTracingOptions &options,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool source_faces_compatible(const SurfaceCellTracingOptions &options,
                                     const int a, const int b) {
   if (!source_label_arrays_enabled(options)) {
     return true;
@@ -534,6 +649,10 @@ inline bool source_faces_compatible(const SurfaceCellTracingOptions &options,
          options.sourceFaceSheets[static_cast<std::size_t>(a)] ==
              options.sourceFaceSheets[static_cast<std::size_t>(b)];
 }
+#else
+bool source_faces_compatible(const SurfaceCellTracingOptions &options,
+                                    const int a, const int b);
+#endif
 
 struct SurfaceCellRailIntervalRef {
   int railId = -1;
@@ -598,7 +717,8 @@ struct RailContinuationResult {
   SurfaceCellRailIntervalSelection selection;
 };
 
-inline int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
                               const std::uint64_t key) {
   if (face < 0 || face >= faces.rows()) {
     return -1;
@@ -612,8 +732,13 @@ inline int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
   }
   return -1;
 }
+#else
+int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
+                              const std::uint64_t key);
+#endif
 
-inline std::uint64_t local_edge_key(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::uint64_t local_edge_key(const Eigen::MatrixXi &faces,
                                     const int face, const int edge) {
   if (face < 0 || face >= faces.rows() || edge < 0 || edge >= 3) {
     return 0;
@@ -621,23 +746,41 @@ inline std::uint64_t local_edge_key(const Eigen::MatrixXi &faces,
   return edge_key(faces(face, (edge + 1) % 3),
                   faces(face, (edge + 2) % 3));
 }
+#else
+std::uint64_t local_edge_key(const Eigen::MatrixXi &faces,
+                                    const int face, const int edge);
+#endif
 
-inline bool rail_sample_is_finite(const SurfaceCellRailSample &sample) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool rail_sample_is_finite(const SurfaceCellRailSample &sample) {
   return std::isfinite(sample.parameter) &&
          std::isfinite(sample.railParameter) &&
          sample.barycentric.allFinite() && sample.position.allFinite();
 }
+#else
+bool rail_sample_is_finite(const SurfaceCellRailSample &sample);
+#endif
 
-inline double rail_position_tolerance(const Eigen::RowVector3d &a,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double rail_position_tolerance(const Eigen::RowVector3d &a,
                                       const Eigen::RowVector3d &b) {
   return 1.0e-8 * std::max({1.0, a.norm(), b.norm()});
 }
+#else
+double rail_position_tolerance(const Eigen::RowVector3d &a,
+                                      const Eigen::RowVector3d &b);
+#endif
 
-inline double rail_parameter_tolerance(const double a, const double b) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double rail_parameter_tolerance(const double a, const double b) {
   return 1.0e-10 * std::max({1.0, std::abs(a), std::abs(b)});
 }
+#else
+double rail_parameter_tolerance(const double a, const double b);
+#endif
 
-inline int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
                                      const SurfaceCellRailSample &sample) {
   constexpr double tolerance = 1.0e-8;
   if (sample.sourceFace < 0 || sample.sourceFace >= faces.rows() ||
@@ -662,8 +805,13 @@ inline int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
   }
   return faces(sample.sourceFace, vertexCorner);
 }
+#else
+int rail_sample_source_vertex(const Eigen::MatrixXi &faces,
+                                     const SurfaceCellRailSample &sample);
+#endif
 
-inline bool rail_sample_geometry_is_valid(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool rail_sample_geometry_is_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellRailSample &sample) {
   constexpr double tolerance = 1.0e-8;
@@ -689,8 +837,14 @@ inline bool rail_sample_geometry_is_valid(
   return (expected - sample.position).norm() <=
          rail_position_tolerance(expected, sample.position);
 }
+#else
+bool rail_sample_geometry_is_valid(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceCellRailSample &sample);
+#endif
 
-inline RailIntervalBuildResult
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+RailIntervalBuildResult
 rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
@@ -893,8 +1047,16 @@ rail_interval_refs(
   }
   return result;
 }
+#else
+RailIntervalBuildResult
+rail_interval_refs(
+    const std::vector<SurfaceCellRail> &rails,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces);
+#endif
 
-inline SurfaceCellRailIntervalSelection find_rail_interval(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellRailIntervalSelection find_rail_interval(
     const std::vector<SurfaceCellRailIntervalRef> &intervals, const int face,
     const int edge) {
   for (const SurfaceCellRailIntervalRef &interval : intervals) {
@@ -910,8 +1072,14 @@ inline SurfaceCellRailIntervalSelection find_rail_interval(
   }
   return {};
 }
+#else
+SurfaceCellRailIntervalSelection find_rail_interval(
+    const std::vector<SurfaceCellRailIntervalRef> &intervals, const int face,
+    const int edge);
+#endif
 
-inline RailContinuationResult find_next_rail_interval(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+RailContinuationResult find_next_rail_interval(
     const std::vector<SurfaceCellRailIntervalRef> &intervals,
     const SurfaceCellRailIntervalSelection &current, const int direction,
     const SurfaceCellTracingOptions &options) {
@@ -964,8 +1132,15 @@ inline RailContinuationResult find_next_rail_interval(
   }
   return {RailContinuationStatus::MissingInterval, {}};
 }
+#else
+RailContinuationResult find_next_rail_interval(
+    const std::vector<SurfaceCellRailIntervalRef> &intervals,
+    const SurfaceCellRailIntervalSelection &current, const int direction,
+    const SurfaceCellTracingOptions &options);
+#endif
 
-inline double rail_parameter_at_position(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double rail_parameter_at_position(
     const SurfaceCellRailIntervalRef &interval,
     const Eigen::RowVector3d &position) {
   const Eigen::RowVector3d delta =
@@ -980,8 +1155,14 @@ inline double rail_parameter_at_position(
   return interval.start.railParameter +
          u * (interval.end.railParameter - interval.start.railParameter);
 }
+#else
+double rail_parameter_at_position(
+    const SurfaceCellRailIntervalRef &interval,
+    const Eigen::RowVector3d &position);
+#endif
 
-inline Eigen::RowVector3d rail_direction(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d rail_direction(
     const SurfaceCellRailIntervalRef &interval, const int direction) {
   Eigen::RowVector3d delta = interval.end.position - interval.start.position;
   if (direction < 0) {
@@ -994,18 +1175,31 @@ inline Eigen::RowVector3d rail_direction(
   }
   return Eigen::RowVector3d::Zero();
 }
+#else
+Eigen::RowVector3d rail_direction(
+    const SurfaceCellRailIntervalRef &interval, const int direction);
+#endif
 
-inline int branch_from_family_sign(const int family, const int sign) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int branch_from_family_sign(const int family, const int sign) {
   return (family == 0 ? 0 : 1) + (sign >= 0 ? 0 : 2);
 }
+#else
+int branch_from_family_sign(const int family, const int sign);
+#endif
 
-inline void family_sign_from_branch(const int branch, int &family, int &sign) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+void family_sign_from_branch(const int branch, int &family, int &sign) {
   const int normalized = ((branch % 4) + 4) % 4;
   family = normalized % 2;
   sign = normalized < 2 ? 1 : -1;
 }
+#else
+void family_sign_from_branch(const int branch, int &family, int &sign);
+#endif
 
-inline Eigen::RowVector3d axis_for_family(const Eigen::MatrixXd &faceAxisX,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d axis_for_family(const Eigen::MatrixXd &faceAxisX,
                                           const Eigen::MatrixXd &faceAxisY,
                                           const int face, const int family,
                                           const int sign) {
@@ -1013,12 +1207,23 @@ inline Eigen::RowVector3d axis_for_family(const Eigen::MatrixXd &faceAxisX,
       family == 0 ? faceAxisX.row(face) : faceAxisY.row(face);
   return (sign >= 0 ? 1.0 : -1.0) * axis;
 }
+#else
+Eigen::RowVector3d axis_for_family(const Eigen::MatrixXd &faceAxisX,
+                                          const Eigen::MatrixXd &faceAxisY,
+                                          const int face, const int family,
+                                          const int sign);
+#endif
 
-inline std::int64_t quantized_barycentric_value(const double value) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::int64_t quantized_barycentric_value(const double value) {
   return static_cast<std::int64_t>(std::llround(value * 1.0e9));
 }
+#else
+std::int64_t quantized_barycentric_value(const double value);
+#endif
 
-inline SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
                                           const int entryEdge,
                                           const int family,
                                           const int sign) {
@@ -1033,12 +1238,23 @@ inline SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
   }
   return state;
 }
+#else
+SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
+                                          const int entryEdge,
+                                          const int family,
+                                          const int sign);
+#endif
 
-inline int normalized_branch(const int branch) {
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int normalized_branch(const int branch) {
   return ((branch % 4) + 4) % 4;
 }
+#else
+int normalized_branch(const int branch);
+#endif
 
-inline Eigen::RowVector3d transport_direction_between_faces(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::RowVector3d transport_direction_between_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const int sourceFace, const int targetFace,
     const Eigen::RowVector3d &direction) {
@@ -1081,6 +1297,12 @@ inline Eigen::RowVector3d transport_direction_between_faces(
   }
   return project_tangent(transported.transpose(), targetNormal);
 }
+#else
+Eigen::RowVector3d transport_direction_between_faces(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int sourceFace, const int targetFace,
+    const Eigen::RowVector3d &direction);
+#endif
 
 struct BranchTransitionResult {
   bool valid = false;
@@ -1093,7 +1315,8 @@ struct BranchTransitionResult {
   Eigen::RowVector3d transportedInput = Eigen::RowVector3d::Zero();
 };
 
-inline bool transition_faces_match(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool transition_faces_match(
     const fields::CrossFieldEdgeTransition &transition, const int sourceFace,
     const int targetFace) {
   return (transition.firstFace == sourceFace &&
@@ -1101,8 +1324,14 @@ inline bool transition_faces_match(
          (transition.firstFace == targetFace &&
           transition.secondFace == sourceFace);
 }
+#else
+bool transition_faces_match(
+    const fields::CrossFieldEdgeTransition &transition, const int sourceFace,
+    const int targetFace);
+#endif
 
-inline BranchTransitionResult resolve_branch_transition(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+BranchTransitionResult resolve_branch_transition(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
@@ -1224,8 +1453,21 @@ inline BranchTransitionResult resolve_branch_transition(
                  result.direction.array().isFinite().all();
   return result;
 }
+#else
+BranchTransitionResult resolve_branch_transition(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
+    const std::map<std::uint64_t, int> &edgeMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup, const std::uint64_t edgeKey,
+    const int sourceFace, const int targetFace, const int sourceFamily,
+    const int sourceSign, const Eigen::RowVector3d &sourceDirection,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions);
+#endif
 
-inline bool direction_enters_face_from_vertex(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool direction_enters_face_from_vertex(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const int face, const int vertex, const Eigen::RowVector3d &direction) {
   int vertexCorner = -1;
@@ -1252,6 +1494,11 @@ inline bool direction_enters_face_from_vertex(
   }
   return true;
 }
+#else
+bool direction_enters_face_from_vertex(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int face, const int vertex, const Eigen::RowVector3d &direction);
+#endif
 
 enum class VertexContinuationStatus : int {
   Found = 0,
@@ -1278,7 +1525,8 @@ struct VertexPathStep {
   std::uint64_t edgeKey = 0;
 };
 
-inline std::map<int, std::vector<VertexPathStep>> vertex_face_adjacency(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::map<int, std::vector<VertexPathStep>> vertex_face_adjacency(
     const int vertex,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
   std::map<int, std::vector<VertexPathStep>> adjacency;
@@ -1301,8 +1549,14 @@ inline std::map<int, std::vector<VertexPathStep>> vertex_face_adjacency(
   }
   return adjacency;
 }
+#else
+std::map<int, std::vector<VertexPathStep>> vertex_face_adjacency(
+    const int vertex,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces);
+#endif
 
-inline bool continuation_is_better(const VertexContinuationResult &candidate,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool continuation_is_better(const VertexContinuationResult &candidate,
                                    const VertexContinuationResult &best) {
   if (candidate.turnAngle < best.turnAngle - 1.0e-14) {
     return true;
@@ -1321,8 +1575,13 @@ inline bool continuation_is_better(const VertexContinuationResult &candidate,
   }
   return candidate.facePath < best.facePath;
 }
+#else
+bool continuation_is_better(const VertexContinuationResult &candidate,
+                                   const VertexContinuationResult &best);
+#endif
 
-inline VertexContinuationResult resolve_vertex_continuation(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+VertexContinuationResult resolve_vertex_continuation(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
@@ -1457,8 +1716,22 @@ inline VertexContinuationResult resolve_vertex_continuation(
   }
   return best;
 }
+#else
+VertexContinuationResult resolve_vertex_continuation(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
+    const std::map<std::uint64_t, int> &edgeMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup, const int currentFace,
+    const int vertex, const int currentFamily, const int currentSign,
+    const Eigen::RowVector3d &incomingDirection,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions);
+#endif
 
-inline Eigen::Vector2d project_for_quad_test(const Eigen::RowVector3d &point,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::Vector2d project_for_quad_test(const Eigen::RowVector3d &point,
                                              const int dropAxis) {
   if (dropAxis == 0) {
     return {point.y(), point.z()};
@@ -1468,14 +1741,24 @@ inline Eigen::Vector2d project_for_quad_test(const Eigen::RowVector3d &point,
   }
   return {point.x(), point.y()};
 }
+#else
+Eigen::Vector2d project_for_quad_test(const Eigen::RowVector3d &point,
+                                             const int dropAxis);
+#endif
 
-inline double orient2d(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double orient2d(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
                        const Eigen::Vector2d &c) {
   return (b.x() - a.x()) * (c.y() - a.y()) -
          (b.y() - a.y()) * (c.x() - a.x());
 }
+#else
+double orient2d(const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+                       const Eigen::Vector2d &c);
+#endif
 
-inline bool segments_intersect_2d(const Eigen::Vector2d &a,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool segments_intersect_2d(const Eigen::Vector2d &a,
                                   const Eigen::Vector2d &b,
                                   const Eigen::Vector2d &c,
                                   const Eigen::Vector2d &d) {
@@ -1485,8 +1768,15 @@ inline bool segments_intersect_2d(const Eigen::Vector2d &a,
   const double o4 = orient2d(c, d, b);
   return o1 * o2 < -1.0e-14 && o3 * o4 < -1.0e-14;
 }
+#else
+bool segments_intersect_2d(const Eigen::Vector2d &a,
+                                  const Eigen::Vector2d &b,
+                                  const Eigen::Vector2d &c,
+                                  const Eigen::Vector2d &d);
+#endif
 
-inline bool point_on_segment_2d(const Eigen::Vector2d &point,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool point_on_segment_2d(const Eigen::Vector2d &point,
                                 const Eigen::Vector2d &a,
                                 const Eigen::Vector2d &b,
                                 const double tolerance) {
@@ -1498,8 +1788,15 @@ inline bool point_on_segment_2d(const Eigen::Vector2d &point,
          point.y() >= std::min(a.y(), b.y()) - tolerance &&
          point.y() <= std::max(a.y(), b.y()) + tolerance;
 }
+#else
+bool point_on_segment_2d(const Eigen::Vector2d &point,
+                                const Eigen::Vector2d &a,
+                                const Eigen::Vector2d &b,
+                                const double tolerance);
+#endif
 
-inline bool segments_intersect_beyond_shared_endpoint_2d(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool segments_intersect_beyond_shared_endpoint_2d(
     const Eigen::Vector2d &a, const Eigen::Vector2d &b,
     const Eigen::Vector2d &c, const Eigen::Vector2d &d) {
   if (segments_intersect_2d(a, b, c, d)) {
@@ -1542,8 +1839,14 @@ inline bool segments_intersect_beyond_shared_endpoint_2d(
                std::min(coordinate(c), coordinate(d)));
   return overlap > pointTolerance;
 }
+#else
+bool segments_intersect_beyond_shared_endpoint_2d(
+    const Eigen::Vector2d &a, const Eigen::Vector2d &b,
+    const Eigen::Vector2d &c, const Eigen::Vector2d &d);
+#endif
 
-inline CellRejectionReason classify_quad_loop(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+CellRejectionReason classify_quad_loop(
     const std::array<Eigen::RowVector3d, 4> &corners, const double h,
     const Eigen::RowVector3d &expectedNormal,
     const SurfaceCellTracingOptions &options) {
@@ -1611,8 +1914,15 @@ inline CellRejectionReason classify_quad_loop(
   }
   return CellRejectionReason::Accepted;
 }
+#else
+CellRejectionReason classify_quad_loop(
+    const std::array<Eigen::RowVector3d, 4> &corners, const double h,
+    const Eigen::RowVector3d &expectedNormal,
+    const SurfaceCellTracingOptions &options);
+#endif
 
-inline bool quad_loop_is_valid(const std::array<Eigen::RowVector3d, 4> &corners,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool quad_loop_is_valid(const std::array<Eigen::RowVector3d, 4> &corners,
                                const double h) {
   SurfaceCellTracingOptions options;
   Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
@@ -1623,9 +1933,14 @@ inline bool quad_loop_is_valid(const std::array<Eigen::RowVector3d, 4> &corners,
   return classify_quad_loop(corners, h, normal, options) ==
          CellRejectionReason::Accepted;
 }
+#else
+bool quad_loop_is_valid(const std::array<Eigen::RowVector3d, 4> &corners,
+                               const double h);
+#endif
 
 
-inline bool trace_segment_crosses_authoritative_rail(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool trace_segment_crosses_authoritative_rail(
     const SurfaceTraceSegment &segment,
     const std::vector<SurfaceCellRail> &rails) {
   const Eigen::Vector2d a(segment.startBarycentric[1],
@@ -1654,8 +1969,14 @@ inline bool trace_segment_crosses_authoritative_rail(
   }
   return false;
 }
+#else
+bool trace_segment_crosses_authoritative_rail(
+    const SurfaceTraceSegment &segment,
+    const std::vector<SurfaceCellRail> &rails);
+#endif
 
-inline CellRejectionReason validate_closed_boundary_paths(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+CellRejectionReason validate_closed_boundary_paths(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::array<SurfaceTracePoint, 4> &corners,
     const std::array<std::vector<SurfaceTraceSegment>, 4> &boundaryPaths,
@@ -1737,8 +2058,16 @@ inline CellRejectionReason validate_closed_boundary_paths(
   }
   return CellRejectionReason::Accepted;
 }
+#else
+CellRejectionReason validate_closed_boundary_paths(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::array<SurfaceTracePoint, 4> &corners,
+    const std::array<std::vector<SurfaceTraceSegment>, 4> &boundaryPaths,
+    const double tolerance);
+#endif
 
-inline SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
                                               const int face,
                                               const int vertex) {
   SurfaceTracePoint point;
@@ -1748,6 +2077,11 @@ inline SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
   }
   return point;
 }
+#else
+SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
+                                              const int face,
+                                              const int vertex);
+#endif
 
 struct AdaptiveSeedCandidate {
   double normalizedDistance = 0.0;
@@ -1764,15 +2098,21 @@ struct AdaptiveSeedCandidate {
   }
 };
 
-inline std::set<std::uint64_t> combined_barrier_edges(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::set<std::uint64_t> combined_barrier_edges(
     const SurfaceCellTracingOptions &options) {
   std::set<std::uint64_t> barriers = options.hardFeatureEdges;
   barriers.insert(options.reliefBarrierEdges.begin(),
                   options.reliefBarrierEdges.end());
   return barriers;
 }
+#else
+std::set<std::uint64_t> combined_barrier_edges(
+    const SurfaceCellTracingOptions &options);
+#endif
 
-inline int seed_anchor_vertex(const SurfaceTraceSeed &seed,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int seed_anchor_vertex(const SurfaceTraceSeed &seed,
                               const Eigen::MatrixXi &faces,
                               const int vertexCount) {
   switch (seed.provenance) {
@@ -1795,16 +2135,28 @@ inline int seed_anchor_vertex(const SurfaceTraceSeed &seed,
   }
   return -1;
 }
+#else
+int seed_anchor_vertex(const SurfaceTraceSeed &seed,
+                              const Eigen::MatrixXi &faces,
+                              const int vertexCount);
+#endif
 
-inline int face_label_or_default(const std::vector<int> &labels,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+int face_label_or_default(const std::vector<int> &labels,
                                  const int face,
                                  const int fallback) {
   return face >= 0 && face < static_cast<int>(labels.size())
              ? labels[static_cast<std::size_t>(face)]
              : fallback;
 }
+#else
+int face_label_or_default(const std::vector<int> &labels,
+                                 const int face,
+                                 const int fallback);
+#endif
 
-inline bool trace_respects_face_labels(const SurfaceTraceResult &trace,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool trace_respects_face_labels(const SurfaceTraceResult &trace,
                                        const std::vector<int> &components,
                                        const std::vector<int> &sheets) {
   int expectedComponent = -1;
@@ -1821,8 +2173,14 @@ inline bool trace_respects_face_labels(const SurfaceTraceResult &trace,
   }
   return true;
 }
+#else
+bool trace_respects_face_labels(const SurfaceTraceResult &trace,
+                                       const std::vector<int> &components,
+                                       const std::vector<int> &sheets);
+#endif
 
-inline SourceSurfaceLabels classify_source_surface_labels(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::set<std::uint64_t> &barrierEdges = {},
     const double normalCompatibility = 0.25) {
@@ -1975,6 +2333,12 @@ inline SourceSurfaceLabels classify_source_surface_labels(
   }
   return labels;
 }
+#else
+SourceSurfaceLabels classify_source_surface_labels(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::set<std::uint64_t> &barrierEdges = {},
+    const double normalCompatibility = 0.25);
+#endif
 struct IntrinsicSurfaceGraph {
   std::vector<std::vector<std::pair<int, double>>> adjacency;
   int faceCount = 0;
@@ -1984,15 +2348,21 @@ struct IntrinsicSurfaceGraph {
   }
 };
 
-inline bool trace_point_is_valid(const SurfaceTracePoint &point,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+bool trace_point_is_valid(const SurfaceTracePoint &point,
                                  const Eigen::MatrixXi &faces) {
   return point.face >= 0 && point.face < faces.rows() &&
          point.barycentric.array().isFinite().all() &&
          std::abs(point.barycentric.sum() - 1.0) <= 1.0e-8 &&
          point.barycentric.minCoeff() >= -1.0e-8;
 }
+#else
+bool trace_point_is_valid(const SurfaceTracePoint &point,
+                                 const Eigen::MatrixXi &faces);
+#endif
 
-inline IntrinsicSurfaceGraph build_intrinsic_surface_graph(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+IntrinsicSurfaceGraph build_intrinsic_surface_graph(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellTracingOptions &options,
     const std::set<std::uint64_t> &barrierEdges) {
@@ -2051,8 +2421,15 @@ inline IntrinsicSurfaceGraph build_intrinsic_surface_graph(
   }
   return graph;
 }
+#else
+IntrinsicSurfaceGraph build_intrinsic_surface_graph(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceCellTracingOptions &options,
+    const std::set<std::uint64_t> &barrierEdges);
+#endif
 
-inline Eigen::VectorXd intrinsic_distances_from_points(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::VectorXd intrinsic_distances_from_points(
     const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     const std::vector<SurfaceTracePoint> &sources) {
@@ -2104,8 +2481,15 @@ inline Eigen::VectorXd intrinsic_distances_from_points(
   }
   return distance;
 }
+#else
+Eigen::VectorXd intrinsic_distances_from_points(
+    const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
+    const Eigen::MatrixXi &faces,
+    const std::vector<SurfaceTracePoint> &sources);
+#endif
 
-inline double intrinsic_distance_to_point(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double intrinsic_distance_to_point(
     const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces, const Eigen::VectorXd &distance,
     const SurfaceTracePoint &target) {
@@ -2123,8 +2507,15 @@ inline double intrinsic_distance_to_point(
   }
   return result;
 }
+#else
+double intrinsic_distance_to_point(
+    const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
+    const Eigen::MatrixXi &faces, const Eigen::VectorXd &distance,
+    const SurfaceTracePoint &target);
+#endif
 
-inline double intrinsic_same_sheet_distance(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+double intrinsic_same_sheet_distance(
     const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces, const SurfaceTracePoint &source,
     const SurfaceTracePoint &target) {
@@ -2141,8 +2532,15 @@ inline double intrinsic_same_sheet_distance(
       intrinsic_distances_from_points(graph, vertices, faces, {source});
   return intrinsic_distance_to_point(graph, vertices, faces, distance, target);
 }
+#else
+double intrinsic_same_sheet_distance(
+    const IntrinsicSurfaceGraph &graph, const Eigen::MatrixXd &vertices,
+    const Eigen::MatrixXi &faces, const SurfaceTracePoint &source,
+    const SurfaceTracePoint &target);
+#endif
 
-inline Eigen::VectorXd graph_distances_from_vertices(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+Eigen::VectorXd graph_distances_from_vertices(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &sourceVertices,
     const std::set<std::uint64_t> &barrierEdges = {}) {
@@ -2176,10 +2574,17 @@ inline Eigen::VectorXd graph_distances_from_vertices(
   }
   return vertexDistance;
 }
+#else
+Eigen::VectorXd graph_distances_from_vertices(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::vector<int> &sourceVertices,
+    const std::set<std::uint64_t> &barrierEdges = {});
+#endif
 
 } // namespace surface_cell_tracing_detail
 
-inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::VectorXd &targetSize,
     const SurfaceCellTracingOptions &options = {}) {
@@ -2370,8 +2775,15 @@ inline std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   }
   return seeds;
 }
+#else
+std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::VectorXd &targetSize,
+    const SurfaceCellTracingOptions &options = {});
+#endif
 
-inline SurfaceTraceResult trace_surface_field(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceTraceResult trace_surface_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const SurfaceTraceSeed &seed, const int family, const int sign,
@@ -2756,8 +3168,20 @@ inline SurfaceTraceResult trace_surface_field(
   result.termination = TraceTerminationReason::Budget;
   return result;
 }
+#else
+SurfaceTraceResult trace_surface_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SurfaceTraceSeed &seed, const int family, const int sign,
+    const SurfaceCellTracingOptions &options = {},
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions =
+        nullptr);
+#endif
 
-inline SurfaceWalkResult walk_surface_field(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceWalkResult walk_surface_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const SurfaceTracePoint &start, const int family, const int sign,
@@ -2782,8 +3206,20 @@ inline SurfaceWalkResult walk_surface_field(
   }
   return walk;
 }
+#else
+SurfaceWalkResult walk_surface_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SurfaceTracePoint &start, const int family, const int sign,
+    const double distance, const SurfaceCellTracingOptions &options = {},
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions =
+        nullptr);
+#endif
 
-inline void cross_field_axes(const fields::CrossFieldResult &crossField,
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+void cross_field_axes(const fields::CrossFieldResult &crossField,
                              Eigen::MatrixXd &faceAxisX,
                              Eigen::MatrixXd &faceAxisY) {
   if (crossField.primaryDirections.cols() == 3 &&
@@ -2800,8 +3236,14 @@ inline void cross_field_axes(const fields::CrossFieldResult &crossField,
   faceAxisX = crossField.rawField.block(0, 0, crossField.rawField.rows(), 3);
   faceAxisY = crossField.rawField.block(0, 3, crossField.rawField.rows(), 3);
 }
+#else
+void cross_field_axes(const fields::CrossFieldResult &crossField,
+                             Eigen::MatrixXd &faceAxisX,
+                             Eigen::MatrixXd &faceAxisY);
+#endif
 
-inline SurfaceTraceResult trace_surface_field(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceTraceResult trace_surface_field(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField, const SurfaceTraceSeed &seed,
     const int family, const int sign,
@@ -2814,8 +3256,16 @@ inline SurfaceTraceResult trace_surface_field(
                              &crossField.effort,
                              &crossField.edgeTransitions);
 }
+#else
+SurfaceTraceResult trace_surface_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &crossField, const SurfaceTraceSeed &seed,
+    const int family, const int sign,
+    const SurfaceCellTracingOptions &options = {});
+#endif
 
-inline SurfaceCellProposal make_surface_cell_proposal(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellProposal make_surface_cell_proposal(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const SurfaceTraceSeed &seed,
@@ -2993,8 +3443,20 @@ inline SurfaceCellProposal make_surface_cell_proposal(
   proposal.rejection = CellRejectionReason::Accepted;
   return proposal;
 }
+#else
+SurfaceCellProposal make_surface_cell_proposal(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const SurfaceTraceSeed &seed,
+    const SurfaceCellTracingOptions &options = {},
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions =
+        nullptr);
+#endif
 
-inline SurfaceCellProposal make_surface_cell_proposal(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellProposal make_surface_cell_proposal(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField, const Eigen::VectorXd &targetSize,
     const SurfaceTraceSeed &seed,
@@ -3007,8 +3469,16 @@ inline SurfaceCellProposal make_surface_cell_proposal(
                                      &crossField.matching, &crossField.effort,
                                      &crossField.edgeTransitions);
 }
+#else
+SurfaceCellProposal make_surface_cell_proposal(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &crossField, const Eigen::VectorXd &targetSize,
+    const SurfaceTraceSeed &seed,
+    const SurfaceCellTracingOptions &options = {});
+#endif
 
-inline SurfaceCellNetwork build_surface_cell_network(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellNetwork build_surface_cell_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize,
@@ -3077,8 +3547,20 @@ inline SurfaceCellNetwork build_surface_cell_network(
   }
   return network;
 }
+#else
+SurfaceCellNetwork build_surface_cell_network(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize,
+    const SurfaceCellTracingOptions &options = {},
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions =
+        nullptr);
+#endif
 
-inline SurfaceCellNetwork build_surface_cell_network(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellNetwork build_surface_cell_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField, const Eigen::VectorXd &targetSize,
     const SurfaceCellTracingOptions &options = {}) {
@@ -3090,8 +3572,15 @@ inline SurfaceCellNetwork build_surface_cell_network(
                                      &crossField.effort,
                                      &crossField.edgeTransitions);
 }
+#else
+SurfaceCellNetwork build_surface_cell_network(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &crossField, const Eigen::VectorXd &targetSize,
+    const SurfaceCellTracingOptions &options = {});
+#endif
 
-inline SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
+#if defined(DIRECTIONAL_SURFACE_CELL_TRACING_IMPLEMENTATION)
+SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
@@ -3177,6 +3666,13 @@ inline SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
   }
   return overlay;
 }
+#else
+SurfaceCellTracingOverlay make_surface_cell_tracing_overlay(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const SurfaceCellNetwork &network,
+    const double glyphScale = 0.25);
+#endif
 
 } // namespace directional::geometry
 
