@@ -32,7 +32,8 @@ namespace directional {
 /// @param F #F by 3 triangles.
 /// @param isBoundaryVertex #V boolean indicating if vertex is a boundary.
 /// @param G #V discrete Gaussian curvature. sum(G) = eulerChar of mesh.
-inline void gaussian_curvature(const Eigen::MatrixXd &V,
+#if defined(DIRECTIONAL_CURVATURE_IMPLEMENTATION)
+void gaussian_curvature(const Eigen::MatrixXd &V,
                                const Eigen::MatrixXi &F,
                                const Eigen::VectorXi &isBoundaryVertex,
                                Eigen::VectorXd &G) {
@@ -50,11 +51,18 @@ inline void gaussian_curvature(const Eigen::MatrixXd &V,
     }
   }
 }
+#else
+void gaussian_curvature(const Eigen::MatrixXd &V,
+                               const Eigen::MatrixXi &F,
+                               const Eigen::VectorXi &isBoundaryVertex,
+                               Eigen::VectorXd &G);
+#endif
 
 /// @brief Builds adjacency map from edge-vertex pairs.
 /// @param EV #E by 2 edge-vertex pairs.
 /// @return Adjacency map.
-inline std::unordered_map<int, std::set<int>>
+#if defined(DIRECTIONAL_CURVATURE_IMPLEMENTATION)
+std::unordered_map<int, std::set<int>>
 build_adjacency(const Eigen::MatrixXi &EV) {
   std::unordered_map<int, std::set<int>> adj;
   for (int i = 0; i < EV.rows(); ++i) {
@@ -65,6 +73,10 @@ build_adjacency(const Eigen::MatrixXi &EV) {
   }
   return adj;
 }
+#else
+std::unordered_map<int, std::set<int>>
+build_adjacency(const Eigen::MatrixXi &EV);
+#endif
 
 /// @brief Compute shape operator (2x2 Hessian of interpolated height function
 /// in tangent frame)
@@ -74,7 +86,8 @@ build_adjacency(const Eigen::MatrixXi &EV) {
 /// @param VBy #V by 3 boundary tangent vector y.
 /// @param vertexNormals #V by 3 vertex normals.
 /// @param Sv #V shape operators.
-inline void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
+#if defined(DIRECTIONAL_CURVATURE_IMPLEMENTATION)
+void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
                     const Eigen::MatrixXd &VBx, const Eigen::MatrixXd &VBy,
                     const Eigen::MatrixXd &vertexNormals,
                     std::vector<Eigen::Matrix2d> &Sv) {
@@ -116,6 +129,12 @@ inline void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
     Sv[vi] = -H;
   }
 }
+#else
+void shape_operator(const Eigen::MatrixXd &V, const Eigen::MatrixXi &EV,
+                    const Eigen::MatrixXd &VBx, const Eigen::MatrixXd &VBy,
+                    const Eigen::MatrixXd &vertexNormals,
+                    std::vector<Eigen::Matrix2d> &Sv);
+#endif
 
 } // namespace directional
 

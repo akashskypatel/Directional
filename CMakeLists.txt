@@ -128,6 +128,7 @@ endif()
 add_library(
   directional
   src/core/Library.cpp
+  src/diagnostics/RemeshDiagnostics.cpp
   src/fields/CompareCrossFields.cpp
   src/fields/CrossField.cpp
   src/fields/CurlMatching.cpp
@@ -148,24 +149,40 @@ add_library(
   src/fields/RotationToRaw.cpp
   src/fields/ShapeOperatorAlignment.cpp
   src/geometry/AdaptiveFeatureMap.cpp
+  src/geometry/AdaptiveFeatureMapVisualizer.cpp
   src/geometry/AdaptiveTargetSize.cpp
+  src/geometry/BarycentricCoordinates.cpp
+  src/geometry/BarycentricSubdivision.cpp
+  src/geometry/BranchedIsolines.cpp
+  src/geometry/Curvature.cpp
+  src/geometry/CutMesh.cpp
+  src/geometry/FaceCurvature.cpp
   src/geometry/FlowRepStrands.cpp
   src/geometry/MeshComponents.cpp
+  src/geometry/MeshTopology.cpp
   src/geometry/PatchDescriptor.cpp
+  src/geometry/PolyToConstantSubdivision.cpp
   src/geometry/PureQuadCompletion.cpp
+  src/geometry/RegularizedProxyMesh.cpp
   src/geometry/ReliefTopology.cpp
+  src/geometry/Streamlines.cpp
   src/geometry/SurfaceArrangement.cpp
   src/geometry/SurfaceCellTracing.cpp
   src/geometry/SurfaceComplexSimplification.cpp
   src/geometry/SurfaceMeshOptimizer.cpp
   src/geometry/SurfaceOptimizationRailConstraints.cpp
+  src/geometry/SurfacePoint.cpp
+  src/geometry/TensorCurvatureTarget.cpp
   src/integration/Integrate.cpp
+  src/integration/ParametrizationQuality.cpp
   src/integration/SetupIntegration.cpp
   src/meshing/Mesher.cpp
   src/meshing/SetupMesher.cpp
+  src/pipeline/ParallelRemeshPipeline.cpp
   src/pipeline/RemeshPipeline.cpp
   src/validation/MeshValidator.cpp
-  src/validation/SourceAuthoritativeMeshValidator.cpp)
+  src/validation/SourceAuthoritativeMeshValidator.cpp
+  src/validation/ValidationVisualizer.cpp)
 add_library(Directional::directional ALIAS directional)
 
 set_target_properties(
@@ -205,7 +222,7 @@ if(DIRECTIONAL_ENABLE_PARDISO)
     message(FATAL_ERROR "Intel MKL PARDISO not found")
   endif()
   
-  target_compile_definitions(directional INTERFACE DIRECTIONAL_HAS_PARDISO)
+  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_PARDISO)
   target_link_libraries(directional PUBLIC MKL::MKL)
   _directional_collect_pardiso_runtime_files(
     DIRECTIONAL_PARDISO_RUNTIME_FILES)
@@ -214,7 +231,7 @@ elseif(DIRECTIONAL_ENABLE_CUDSS)
   if(NOT TARGET CUDSS::cudss)
     message(FATAL_ERROR "DIRECTIONAL_ENABLE_CUDSS requires CUDSS::cudss")
   endif()
-  target_compile_definitions(directional INTERFACE DIRECTIONAL_HAS_CUDSS)
+  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_CUDSS)
   target_link_libraries(directional PUBLIC CUDSS::cudss)
 elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
   message(STATUS "Attempting to find SuiteSparse for Directional core...")
@@ -231,7 +248,7 @@ elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
   if(SUITESPARSE_TARGETS OR SuiteSparse_FOUND)
     target_compile_definitions(
       directional
-      INTERFACE DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
+      PUBLIC DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
                 USE_SUITESPARSE_ENABLED SUITESPARSE_ENABLED ENABLE_SUITESPARSE)
     foreach(_target IN LISTS SUITESPARSE_TARGETS)
       if(TARGET ${_target})
@@ -261,7 +278,7 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(STATUS "GMP found for Directional core")
 
     target_compile_definitions(
-      directional INTERFACE DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
+      directional PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
                           GMP_ENABLED ENABLE_GMP)
 
     target_link_libraries(directional PUBLIC GMP::GMP)

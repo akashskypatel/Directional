@@ -16,7 +16,8 @@ namespace directional
 {
 
 //Subdivides a mesh trivially in the middle
-inline void barycentric_subdivision(const Eigen::MatrixXd& V,
+#if defined(DIRECTIONAL_BARYCENTRIC_SUBDIVISION_IMPLEMENTATION)
+void barycentric_subdivision(const Eigen::MatrixXd& V,
                                     const Eigen::MatrixXi& F,
                                     Eigen::MatrixXd& VFine,
                                     Eigen::MatrixXi& FFine)
@@ -34,6 +35,12 @@ inline void barycentric_subdivision(const Eigen::MatrixXd& V,
     }
     
 }
+#else
+void barycentric_subdivision(const Eigen::MatrixXd& V,
+                                    const Eigen::MatrixXi& F,
+                                    Eigen::MatrixXd& VFine,
+                                    Eigen::MatrixXi& FFine);
+#endif
 }
 
 

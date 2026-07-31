@@ -45,7 +45,8 @@ namespace directional {
 /// oriented positively or negatively in the face (e.g. in the example above we
 /// get -1) InnerEdges: indices into EV of which edges are internal (not
 /// boundary)
-inline void polygonal_edge_topology(const Eigen::VectorXi &D,
+#if defined(DIRECTIONAL_MESH_TOPOLOGY_IMPLEMENTATION)
+void polygonal_edge_topology(const Eigen::VectorXi &D,
                                     const Eigen::MatrixXi &F,
                                     Eigen::MatrixXi &EV, Eigen::MatrixXi &FE,
                                     Eigen::MatrixXi &EF, Eigen::MatrixXi &EFi,
@@ -148,6 +149,14 @@ inline void polygonal_edge_topology(const Eigen::VectorXi &D,
   for (int i = 0; i < InnerEdgesVec.size(); i++)
     InnerEdges(i) = InnerEdgesVec[i];
 }
+#else
+void polygonal_edge_topology(const Eigen::VectorXi &D,
+                                    const Eigen::MatrixXi &F,
+                                    Eigen::MatrixXi &EV, Eigen::MatrixXi &FE,
+                                    Eigen::MatrixXi &EF, Eigen::MatrixXi &EFi,
+                                    Eigen::MatrixXd &FEs,
+                                    Eigen::VectorXi &InnerEdges);
+#endif
 
 /// @brief Creates the set of independent dual cycles (closed loops of connected
 /// faces that cannot be morphed to each other) on a mesh. Primarily used for
@@ -164,7 +173,8 @@ inline void polygonal_edge_topology(const Eigen::VectorXi &D,
 /// inner vertices map to their cycles, boundary vertices to the bigger boundary
 /// cycle. innerEdges:       #iE by 1 the subset of #EV that are inner edges,
 /// and with the same ordering as the columns of basisCycles.
-inline void dual_cycles(const TriMesh &mesh,
+#if defined(DIRECTIONAL_MESH_TOPOLOGY_IMPLEMENTATION)
+void dual_cycles(const TriMesh &mesh,
                         Eigen::SparseMatrix<double> &basisCycles,
                         Eigen::VectorXd &cycleCurvature,
                         Eigen::VectorXi &vertex2cycle,
@@ -450,6 +460,13 @@ inline void dual_cycles(const TriMesh &mesh,
       cycleCurvature(i) -= allAngles(*si);
   }
 }
+#else
+void dual_cycles(const TriMesh &mesh,
+                        Eigen::SparseMatrix<double> &basisCycles,
+                        Eigen::VectorXd &cycleCurvature,
+                        Eigen::VectorXi &vertex2cycle,
+                        Eigen::VectorXi &innerEdges);
+#endif
 
 } // namespace directional
 

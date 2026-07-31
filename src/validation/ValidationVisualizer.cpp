@@ -1,0 +1,2 @@
+#define DIRECTIONAL_VALIDATION_VISUALIZER_IMPLEMENTATION
+#include <directional/validation/ValidationVisualizer.h>

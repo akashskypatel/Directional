@@ -1,0 +1,2 @@
+#define DIRECTIONAL_REMESH_DIAGNOSTICS_IMPLEMENTATION
+#include <directional/diagnostics/RemeshDiagnostics.h>

@@ -92,7 +92,8 @@ struct ProjectionTriangle {
   Eigen::Vector3d centroid = Eigen::Vector3d::Zero();
 };
 
-inline Eigen::Vector3d closest_point_on_triangle_barycentric(
+#if defined(DIRECTIONAL_SURFACE_POINT_IMPLEMENTATION)
+Eigen::Vector3d closest_point_on_triangle_barycentric(
     const Eigen::Vector3d &point, const Eigen::Vector3d &a,
     const Eigen::Vector3d &b, const Eigen::Vector3d &c) {
   const Eigen::Vector3d ab = b - a;
@@ -141,6 +142,11 @@ inline Eigen::Vector3d closest_point_on_triangle_barycentric(
   const double w = vc * denominator;
   return {1.0 - v - w, v, w};
 }
+#else
+Eigen::Vector3d closest_point_on_triangle_barycentric(
+    const Eigen::Vector3d &point, const Eigen::Vector3d &a,
+    const Eigen::Vector3d &b, const Eigen::Vector3d &c);
+#endif
 
 } // namespace detail
 
@@ -332,14 +338,22 @@ private:
   std::vector<Node> nodes_;
 };
 
-inline SurfacePoint project_to_surface(
+#if defined(DIRECTIONAL_SURFACE_POINT_IMPLEMENTATION)
+SurfacePoint project_to_surface(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::Vector3d &point,
     const SurfaceProjectionOptions &options = SurfaceProjectionOptions{}) {
   return SurfaceProjectionBvh(vertices, faces).project(point, options);
 }
+#else
+SurfacePoint project_to_surface(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::Vector3d &point,
+    const SurfaceProjectionOptions &options = SurfaceProjectionOptions{});
+#endif
 
-inline std::vector<SurfacePoint>
+#if defined(DIRECTIONAL_SURFACE_POINT_IMPLEMENTATION)
+std::vector<SurfacePoint>
 project_vertices_to_surface(const Eigen::MatrixXd &sourceVertices,
                             const Eigen::MatrixXi &sourceFaces,
                             const Eigen::MatrixXd &queryVertices) {
@@ -351,6 +365,12 @@ project_vertices_to_surface(const Eigen::MatrixXd &sourceVertices,
   }
   return provenance;
 }
+#else
+std::vector<SurfacePoint>
+project_vertices_to_surface(const Eigen::MatrixXd &sourceVertices,
+                            const Eigen::MatrixXi &sourceFaces,
+                            const Eigen::MatrixXd &queryVertices);
+#endif
 
 } // namespace directional::geometry
 

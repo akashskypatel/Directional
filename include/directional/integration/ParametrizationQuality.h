@@ -70,7 +70,8 @@ struct TargetedStiffeningWeights {
 
 namespace detail {
 
-inline Eigen::Matrix2d triangle_source_basis(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_PARAMETRIZATION_QUALITY_IMPLEMENTATION)
+Eigen::Matrix2d triangle_source_basis(const Eigen::MatrixXd &vertices,
                                              const Eigen::Vector3i &face) {
   const Eigen::Vector3d p0 = vertices.row(face(0)).transpose();
   const Eigen::Vector3d p1 = vertices.row(face(1)).transpose();
@@ -91,8 +92,13 @@ inline Eigen::Matrix2d triangle_source_basis(const Eigen::MatrixXd &vertices,
   basis << e1Norm, x2, 0.0, y2;
   return basis;
 }
+#else
+Eigen::Matrix2d triangle_source_basis(const Eigen::MatrixXd &vertices,
+                                             const Eigen::Vector3i &face);
+#endif
 
-inline bool faces_share_vertex(const Eigen::Vector3i &a,
+#if defined(DIRECTIONAL_PARAMETRIZATION_QUALITY_IMPLEMENTATION)
+bool faces_share_vertex(const Eigen::Vector3i &a,
                                const Eigen::Vector3i &b) {
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < 3; ++j) {
@@ -103,10 +109,15 @@ inline bool faces_share_vertex(const Eigen::Vector3i &a,
   }
   return false;
 }
+#else
+bool faces_share_vertex(const Eigen::Vector3i &a,
+                               const Eigen::Vector3i &b);
+#endif
 
 } // namespace detail
 
-inline ParametrizationQualityReport analyze_parametrization_quality(
+#if defined(DIRECTIONAL_PARAMETRIZATION_QUALITY_IMPLEMENTATION)
+ParametrizationQualityReport analyze_parametrization_quality(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &parameterFunctions,
     const ParametrizationQualityThresholds &thresholds =
@@ -226,8 +237,16 @@ inline ParametrizationQualityReport analyze_parametrization_quality(
 
   return report;
 }
+#else
+ParametrizationQualityReport analyze_parametrization_quality(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &parameterFunctions,
+    const ParametrizationQualityThresholds &thresholds =
+        ParametrizationQualityThresholds{});
+#endif
 
-inline TargetedStiffeningWeights build_targeted_stiffening_weights(
+#if defined(DIRECTIONAL_PARAMETRIZATION_QUALITY_IMPLEMENTATION)
+TargetedStiffeningWeights build_targeted_stiffening_weights(
     const Eigen::MatrixXi &faces, const ParametrizationQualityReport &report,
     const TargetedStiffeningOptions &options = TargetedStiffeningOptions{}) {
   if (faces.cols() != 3) {
@@ -271,6 +290,11 @@ inline TargetedStiffeningWeights build_targeted_stiffening_weights(
 
   return weights;
 }
+#else
+TargetedStiffeningWeights build_targeted_stiffening_weights(
+    const Eigen::MatrixXi &faces, const ParametrizationQualityReport &report,
+    const TargetedStiffeningOptions &options = TargetedStiffeningOptions{});
+#endif
 
 } // namespace directional
 

@@ -1,0 +1,2 @@
+#define DIRECTIONAL_PARAMETRIZATION_QUALITY_IMPLEMENTATION
+#include <directional/integration/ParametrizationQuality.h>

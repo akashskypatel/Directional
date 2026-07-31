@@ -70,7 +70,8 @@ struct StreamlineState {
       segTimeSignatures; // the time of the beginning of the segment
 };
 
-inline void poisson_disk_sampling(const directional::TriMesh &mesh,
+#if defined(DIRECTIONAL_STREAMLINES_IMPLEMENTATION)
+void poisson_disk_sampling(const directional::TriMesh &mesh,
                                   const double distRatio,
                                   Eigen::VectorXi &sampleTris,
                                   Eigen::MatrixXd &samplePoints) {
@@ -207,8 +208,15 @@ inline void poisson_disk_sampling(const directional::TriMesh &mesh,
   for (int i = 0; i < samplePointsVec.size(); i++)
     samplePoints.row(i) = samplePointsVec[i];
 }
+#else
+void poisson_disk_sampling(const directional::TriMesh &mesh,
+                                  const double distRatio,
+                                  Eigen::VectorXi &sampleTris,
+                                  Eigen::MatrixXd &samplePoints);
+#endif
 
-inline bool segment_segment_intersection(const Eigen::RowVector2d &p,
+#if defined(DIRECTIONAL_STREAMLINES_IMPLEMENTATION)
+bool segment_segment_intersection(const Eigen::RowVector2d &p,
                                          const Eigen::RowVector2d &u,
                                          const Eigen::RowVector2d &q,
                                          const Eigen::RowVector2d &v, double &t,
@@ -224,6 +232,13 @@ inline bool segment_segment_intersection(const Eigen::RowVector2d &p,
 
   return (t >= -tol && t <= 1 + tol && s >= -tol && s <= 1 + tol);
 }
+#else
+bool segment_segment_intersection(const Eigen::RowVector2d &p,
+                                         const Eigen::RowVector2d &u,
+                                         const Eigen::RowVector2d &q,
+                                         const Eigen::RowVector2d &v, double &t,
+                                         double &s, const double tol = 1e-6);
+#endif
 
 // Given a mesh and a field the function computes the /data/ necessary for
 // tracing the field' streamlines, and creates the initial /state/ for the
@@ -236,7 +251,8 @@ inline bool segment_segment_intersection(const Eigen::RowVector2d &p,
 // Output:
 //   data          struct containing topology information of the mesh and field
 //   state         struct containing the state of the tracing
-inline void streamlines_init(const directional::CartesianField &field,
+#if defined(DIRECTIONAL_STREAMLINES_IMPLEMENTATION)
+void streamlines_init(const directional::CartesianField &field,
                              const Eigen::VectorXi &seedFaces,
                              const double distRatio, StreamlineData &data,
                              StreamlineState &state) {
@@ -398,11 +414,18 @@ inline void streamlines_init(const directional::CartesianField &field,
     }
   }
 }
+#else
+void streamlines_init(const directional::CartesianField &field,
+                             const Eigen::VectorXi &seedFaces,
+                             const double distRatio, StreamlineData &data,
+                             StreamlineState &state);
+#endif
 
 // The function computes the next state for each point in the sample
 //   data          struct containing topology information
 //   state         struct containing the state of the tracing
-inline void streamlines_next(const StreamlineData &data, StreamlineState &state,
+#if defined(DIRECTIONAL_STREAMLINES_IMPLEMENTATION)
+void streamlines_next(const StreamlineData &data, StreamlineState &state,
                              const double dTime) {
 
   using namespace Eigen;
@@ -558,6 +581,10 @@ inline void streamlines_next(const StreamlineData &data, StreamlineState &state,
   }
   state.currTime += dTime;
 }
+#else
+void streamlines_next(const StreamlineData &data, StreamlineState &state,
+                             const double dTime);
+#endif
 } // namespace directional
 
 #endif

@@ -62,7 +62,8 @@ struct RegularizedProxyMeshResult {
 
 namespace regularized_proxy_detail {
 
-inline double cotangent(const Eigen::Vector3d &first,
+#if defined(DIRECTIONAL_REGULARIZED_PROXY_MESH_IMPLEMENTATION)
+double cotangent(const Eigen::Vector3d &first,
                         const Eigen::Vector3d &second) {
   const double denominator = first.cross(second).norm();
   if (denominator <= 1e-30) {
@@ -70,8 +71,13 @@ inline double cotangent(const Eigen::Vector3d &first,
   }
   return first.dot(second) / denominator;
 }
+#else
+double cotangent(const Eigen::Vector3d &first,
+                        const Eigen::Vector3d &second);
+#endif
 
-inline double average_unique_edge_length(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_REGULARIZED_PROXY_MESH_IMPLEMENTATION)
+double average_unique_edge_length(const Eigen::MatrixXd &vertices,
                                          const Eigen::MatrixXi &edges) {
   if (edges.rows() == 0) {
     return 0.0;
@@ -83,8 +89,13 @@ inline double average_unique_edge_length(const Eigen::MatrixXd &vertices,
   }
   return sum / static_cast<double>(edges.rows());
 }
+#else
+double average_unique_edge_length(const Eigen::MatrixXd &vertices,
+                                         const Eigen::MatrixXi &edges);
+#endif
 
-inline void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
+#if defined(DIRECTIONAL_REGULARIZED_PROXY_MESH_IMPLEMENTATION)
+void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
                                   const Eigen::MatrixXi &faces,
                                   const Eigen::MatrixXi &edges,
                                   const Eigen::VectorXi &boundaryVertices,
@@ -107,6 +118,13 @@ inline void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
         "in (0, 180).");
   }
 }
+#else
+void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
+                                  const Eigen::MatrixXi &faces,
+                                  const Eigen::MatrixXi &edges,
+                                  const Eigen::VectorXi &boundaryVertices,
+                                  const RegularizedProxyMeshOptions &options);
+#endif
 
 } // namespace regularized_proxy_detail
 
@@ -120,7 +138,8 @@ inline void validate_proxy_inputs(const Eigen::MatrixXd &vertices,
  * average edge length. Boundary and caller-selected vertices can be eliminated
  * as exact positional constraints.
  */
-inline RegularizedProxyMeshResult regularize_proxy_mesh(
+#if defined(DIRECTIONAL_REGULARIZED_PROXY_MESH_IMPLEMENTATION)
+RegularizedProxyMeshResult regularize_proxy_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXi &edges, const Eigen::VectorXi &boundaryVertices,
     const RegularizedProxyMeshOptions &options = {}) {
@@ -375,6 +394,12 @@ inline RegularizedProxyMeshResult regularize_proxy_mesh(
   }
   return result;
 }
+#else
+RegularizedProxyMeshResult regularize_proxy_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXi &edges, const Eigen::VectorXi &boundaryVertices,
+    const RegularizedProxyMeshOptions &options = {});
+#endif
 
 } // namespace directional
 

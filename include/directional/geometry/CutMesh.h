@@ -15,6 +15,15 @@
 
 #include <Eigen/Core>
 
+#if defined(DIRECTIONAL_CUT_MESH_IMPLEMENTATION)
+#include <queue>
+
+#include <directional/core/TriMesh.h>
+#endif
+
+namespace directional {
+class TriMesh;
+} // namespace directional
 
 /**
  * @file CutMesh.h
@@ -35,9 +44,10 @@ namespace directional {
  * retracts valence-one cut branches that do not terminate at singularities. The
  * output uses the source mesh's per-face edge ordering.
  */
-inline void cut_mesh_with_singularities(const TriMesh &mesh,
-                                        const Eigen::VectorXi &singularities,
-                                        Eigen::MatrixXi &face2cut) {
+#if defined(DIRECTIONAL_CUT_MESH_IMPLEMENTATION)
+void cut_mesh_with_singularities(const TriMesh &mesh,
+                                 const Eigen::VectorXi &singularities,
+                                 Eigen::MatrixXi &face2cut) {
 
   // Flood-fill across dual edges to keep a disk-like spanning region.
   std::queue<std::pair<int, int>> faceQueue;
@@ -149,6 +159,11 @@ inline void cut_mesh_with_singularities(const TriMesh &mesh,
     }
   }
 }
+#else
+void cut_mesh_with_singularities(const TriMesh &mesh,
+                                 const Eigen::VectorXi &singularities,
+                                 Eigen::MatrixXi &face2cut);
+#endif
 
 }; // namespace directional
 

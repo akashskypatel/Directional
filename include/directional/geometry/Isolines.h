@@ -10,6 +10,8 @@
 #ifndef DIRECTIONAL_ISOLINES_H
 #define DIRECTIONAL_ISOLINES_H
 
+#include <cassert>
+
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <array>
