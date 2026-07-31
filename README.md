@@ -632,7 +632,13 @@ Use `pip` when:
 
 - The installed C++ package exports `Directional::directional`.
 - Non-template algorithms are compiled into `directional`; public headers retain
-  declarations and template definitions.
+  declarations and genuinely type-dependent template definitions. Implementations
+  live physically in `.cpp` files, so implementation-only edits rebuild their
+  owning object and relink without recompiling consumers.
+- Generic Eigen and DCEL templates remain available for arbitrary supported scalar,
+  expression, and payload types. Directional avoids restrictive explicit
+  instantiations; implementation-only template dependencies are included by their
+  owning `.cpp` files instead of public declarations where possible.
 - Shared and static installs expose the same `Directional::directional` target.
 - The Python wheel is platform-specific because it contains a compiled extension module.
 - Tutorial and Python builds depend on the same top-level CMake project; `setup.py` is only a wrapper over that build.
