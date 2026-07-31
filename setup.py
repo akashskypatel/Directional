@@ -475,11 +475,12 @@ class BuildStandalone(Command):
             install_dir,
             [
                 *features.cmake_args(build_python=False),
+                "-DBUILD_SHARED_LIBS=ON",
                 "-DBUILD_TUTORIALS=OFF",
             ],
         )
         _configure(build_dir, configure_args)
-        targets = ["directional"]
+        targets = ["directional_pipeline"]
         if features.build_gui:
             targets.append("directional_gui")
         _build(build_dir, *targets)
@@ -520,6 +521,7 @@ class BuildCli(Command):
             install_dir,
             [
                 *features.cmake_args(build_python=False),
+                "-DBUILD_SHARED_LIBS=ON",
                 "-DBUILD_TUTORIALS=OFF",
                 "-DDIRECTIONAL_BUILD_CLI=ON",
                 "-DDIRECTIONAL_BUILD_GUI=OFF",
@@ -620,6 +622,7 @@ class BuildGui(Command):
             install_dir,
             [
                 *features.cmake_args(build_python=False),
+                "-DBUILD_SHARED_LIBS=ON",
                 "-DBUILD_TUTORIALS=OFF",
                 "-DDIRECTIONAL_BUILD_CLI=OFF",
                 "-DDIRECTIONAL_BUILD_GUI=ON",
@@ -673,6 +676,7 @@ class CMakeBuildExt(build_ext):
             install_dir,
             [
                 *features.cmake_args(build_python=True),
+                "-DBUILD_SHARED_LIBS=ON",
                 "-DBUILD_TUTORIALS=OFF",
                 f"-Dpybind11_DIR={pybind11_dir}",
             ],

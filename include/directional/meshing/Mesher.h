@@ -20,10 +20,10 @@ class TriMesh;
 struct MesherData;
 
 /** @brief Generates polygonal output from prepared integration data. */
-DIRECTIONAL_API bool mesher(const TriMesh &origMesh, MesherData &mesherData,
-                            Eigen::MatrixXd &outputVertices,
-                            Eigen::VectorXi &outputDegrees,
-                            Eigen::MatrixXi &outputFaces);
+DIRECTIONAL_PIPELINE_API bool
+mesher(const TriMesh &origMesh, MesherData &mesherData,
+       Eigen::MatrixXd &outputVertices, Eigen::VectorXi &outputDegrees,
+       Eigen::MatrixXi &outputFaces);
 
 } // namespace directional
 

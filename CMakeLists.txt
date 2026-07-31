@@ -126,7 +126,7 @@ if(DIRECTIONAL_ENABLE_SUITESPARSE)
 endif()
 
 add_library(
-  directional
+  directional_core
   src/core/Library.cpp
   src/diagnostics/RemeshDiagnostics.cpp
   src/fields/CompareCrossFields.cpp
@@ -188,6 +188,36 @@ add_library(
   src/io/WriteOBJ.cpp
   src/io/WriteRawField.cpp
   src/io/WriteSingularities.cpp
+  src/validation/MeshValidator.cpp
+  src/validation/SourceAuthoritativeMeshValidator.cpp
+  src/validation/ValidationVisualizer.cpp
+  src/util/GraphUtils.cpp
+  src/util/IsOrderPreserving.cpp
+  src/util/Progress.cpp)
+add_library(Directional::core ALIAS directional_core)
+
+set_target_properties(
+  directional_core
+  PROPERTIES OUTPUT_NAME directional_core
+             EXPORT_NAME core
+             VERSION ${PROJECT_VERSION}
+             SOVERSION ${PROJECT_VERSION_MAJOR}
+             WINDOWS_EXPORT_ALL_SYMBOLS ON)
+target_compile_definitions(
+  directional_core
+  PRIVATE DIRECTIONAL_BUILDING_LIBRARY
+  PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
+         $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
+target_include_directories(
+  directional_core
+  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/eigen>
+         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_compile_features(directional_core PUBLIC cxx_std_20)
+
+add_library(
+  directional_pipeline
   src/meshing/GenerateMesh.cpp
   src/meshing/Mesher.cpp
   src/meshing/PatchRegion.cpp
@@ -195,33 +225,33 @@ add_library(
   src/meshing/TriFlowSimplification.cpp
   src/meshing/TriFlowSimplificationDCEL.cpp
   src/pipeline/ParallelRemeshPipeline.cpp
-  src/pipeline/RemeshPipeline.cpp
-  src/validation/MeshValidator.cpp
-  src/validation/SourceAuthoritativeMeshValidator.cpp
-  src/validation/ValidationVisualizer.cpp
-  src/util/GraphUtils.cpp
-  src/util/IsOrderPreserving.cpp
-  src/util/Progress.cpp)
-add_library(Directional::directional ALIAS directional)
-
+  src/pipeline/RemeshPipeline.cpp)
+add_library(Directional::pipeline ALIAS directional_pipeline)
 set_target_properties(
-  directional
-  PROPERTIES OUTPUT_NAME directional
+  directional_pipeline
+  PROPERTIES OUTPUT_NAME directional_pipeline
+             EXPORT_NAME pipeline
              VERSION ${PROJECT_VERSION}
              SOVERSION ${PROJECT_VERSION_MAJOR}
              WINDOWS_EXPORT_ALL_SYMBOLS ON)
 target_compile_definitions(
-  directional
-  PRIVATE DIRECTIONAL_BUILDING_LIBRARY
+  directional_pipeline
+  PRIVATE DIRECTIONAL_BUILDING_PIPELINE
   PUBLIC DIRECTIONAL_VERSION="${CMAKE_PROJECT_VERSION}"
          $<$<BOOL:${BUILD_SHARED_LIBS}>:DIRECTIONAL_SHARED>)
 target_include_directories(
-  directional
+  directional_pipeline
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/eigen>
          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_compile_features(directional_pipeline PUBLIC cxx_std_20)
+target_link_libraries(directional_pipeline PUBLIC Directional::core)
 
-target_compile_features(directional PUBLIC cxx_std_20)
+# Preserve the original full-library target for downstream consumers while
+# exposing the new Core/Pipeline boundary to applications that want it.
+add_library(directional INTERFACE)
+add_library(Directional::directional ALIAS directional)
+target_link_libraries(directional INTERFACE Directional::pipeline)
 
 if(MSVC)
   set_source_files_properties(
@@ -243,10 +273,10 @@ if(DIRECTIONAL_ENABLE_PARDISO)
     message(FATAL_ERROR "Intel MKL PARDISO not found")
   endif()
   
-  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_PARDISO)
-  target_link_libraries(directional PUBLIC MKL::MKL)
+  target_compile_definitions(directional_core PUBLIC DIRECTIONAL_HAS_PARDISO)
+  target_link_libraries(directional_core PUBLIC MKL::MKL)
   target_sources(
-    directional PRIVATE src/integration/solvers/PardisoSolver.cpp)
+    directional_core PRIVATE src/integration/solvers/PardisoSolver.cpp)
   _directional_collect_pardiso_runtime_files(
     DIRECTIONAL_PARDISO_RUNTIME_FILES)
 elseif(DIRECTIONAL_ENABLE_CUDSS)
@@ -254,8 +284,8 @@ elseif(DIRECTIONAL_ENABLE_CUDSS)
   if(NOT TARGET CUDSS::cudss)
     message(FATAL_ERROR "DIRECTIONAL_ENABLE_CUDSS requires CUDSS::cudss")
   endif()
-  target_compile_definitions(directional PUBLIC DIRECTIONAL_HAS_CUDSS)
-  target_link_libraries(directional PUBLIC CUDSS::cudss)
+  target_compile_definitions(directional_core PUBLIC DIRECTIONAL_HAS_CUDSS)
+  target_link_libraries(directional_core PUBLIC CUDSS::cudss)
 elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
   message(STATUS "Attempting to find SuiteSparse for Directional core...")
 
@@ -270,14 +300,14 @@ elseif(DIRECTIONAL_ENABLE_SUITESPARSE)
 
   if(SUITESPARSE_TARGETS OR SuiteSparse_FOUND)
     target_compile_definitions(
-      directional
+      directional_core
       PUBLIC DIRECTIONAL_ENABLE_SUITESPARSE USE_SUITESPARSE
                 USE_SUITESPARSE_ENABLED SUITESPARSE_ENABLED ENABLE_SUITESPARSE)
     foreach(_target IN LISTS SUITESPARSE_TARGETS)
       if(TARGET ${_target})
         message(
           STATUS "SuiteSparse target found for Directional core: ${_target}")
-        target_link_libraries(directional PUBLIC ${_target})
+        target_link_libraries(directional_core PUBLIC ${_target})
       endif()
     endforeach()
   else()
@@ -301,12 +331,12 @@ if(DIRECTIONAL_ENABLE_GMP)
     message(STATUS "GMP found for Directional core")
 
     target_compile_definitions(
-      directional PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
+      directional_core PUBLIC DIRECTIONAL_ENABLE_GMP USE_GMP USE_GMP_ENABLED
                           GMP_ENABLED ENABLE_GMP)
 
-    target_link_libraries(directional PUBLIC GMP::GMP)
+    target_link_libraries(directional_core PUBLIC GMP::GMP)
 
-    target_link_libraries(directional PUBLIC GMP::GMPXX)
+    target_link_libraries(directional_core PUBLIC GMP::GMPXX)
   else()
     message(
       WARNING
@@ -320,12 +350,12 @@ if(DIRECTIONAL_ENABLE_GMP)
   endif()
 endif()
 
-target_sources(directional PRIVATE src/numerics/ExactGeometry.cpp)
+target_sources(directional_core PRIVATE src/numerics/ExactGeometry.cpp)
 if(DIRECTIONAL_ENABLE_GMP)
-  target_sources(directional PRIVATE src/numerics/ENumberGMP.cpp)
+  target_sources(directional_core PRIVATE src/numerics/ENumberGMP.cpp)
 else()
   target_sources(
-    directional
+    directional_core
     PRIVATE src/numerics/BigInteger.cpp src/numerics/ExactNumber.cpp)
 endif()
 
@@ -824,7 +854,8 @@ if(DIRECTIONAL_BUILD_CLI OR BUILD_PYTHON OR DIRECTIONAL_BUILD_GUI)
 endif()
 
 if(DIRECTIONAL_ENABLE_PARDISO)
-  _directional_copy_pardiso_runtime_to_target(directional)
+  _directional_copy_pardiso_runtime_to_target(directional_core)
+  _directional_copy_pardiso_runtime_to_target(directional_pipeline)
 endif()
 
 if(DIRECTIONAL_BUILD_BENCHMARKS)
@@ -990,7 +1021,7 @@ if(BUILD_PYTHON)
 endif()
 
 install(
-  TARGETS directional
+  TARGETS directional_core directional_pipeline directional
   EXPORT DirectionalTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -1012,8 +1043,11 @@ if(DIRECTIONAL_ENABLE_PARDISO)
 endif()
 
 if(WIN32)
-  install(FILES $<TARGET_RUNTIME_DLLS:directional>
-          DESTINATION "${CMAKE_INSTALL_BINDIR}")
+  if(BUILD_SHARED_LIBS)
+    install(FILES $<TARGET_RUNTIME_DLLS:directional_core>
+                  $<TARGET_RUNTIME_DLLS:directional_pipeline>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}")
+  endif()
   if(DIRECTIONAL_BUILD_CLI)
     install(FILES $<TARGET_RUNTIME_DLLS:directional_cli>
             DESTINATION "${CMAKE_INSTALL_BINDIR}")
@@ -1074,4 +1108,5 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/DirectionalConfig.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindCUDSS.cmake
+              ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindGMP.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Directional)

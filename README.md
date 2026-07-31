@@ -120,7 +120,7 @@ SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install
 
 | Option | Default | Purpose |
 |---|---:|---|
-| `BUILD_SHARED_LIBS` | `ON` | Build `directional` as a shared library; set `OFF` for a static archive |
+| `BUILD_SHARED_LIBS` | `ON` | Build the Directional Core and Pipeline modules as shared libraries; set `OFF` for static archives |
 | `BUILD_PYTHON` | `OFF` | Build the Python extension |
 | `DIRECTIONAL_BUILD_CLI` | `OFF` | Build the native CLI executable |
 | `DIRECTIONAL_ENABLE_GMP` | `ON` | Enable GMP exact arithmetic |
@@ -131,6 +131,11 @@ SuiteSparse is the default CMake backend. Supported MSVC builds can auto-install
 | `CMAKE_INSTALL_PREFIX` | platform default | Installation destination |
 
 ## Native CMake builds
+
+Directional is split into `Directional::core` and `Directional::pipeline`.
+Pipeline links Core and contains the meshing and high-level remeshing
+implementation. `Directional::directional` remains available as a compatibility
+target that links the complete Pipeline/Core stack.
 
 ### Shared library with SuiteSparse
 
@@ -145,7 +150,7 @@ cmake -S . -B build\standalone `
   -DDIRECTIONAL_ENABLE_CUDSS=OFF `
   -DDIRECTIONAL_ENABLE_SUITESPARSE=ON
 
-cmake --build build\standalone --config Release --target directional
+cmake --build build\standalone --config Release --target directional_pipeline
 cmake --install build\standalone --config Release
 ```
 
@@ -160,7 +165,7 @@ cmake -S . -B build\static `
   -DBUILD_PYTHON=OFF `
   -DDIRECTIONAL_BUILD_CLI=OFF
 
-cmake --build build\static --config Release --target directional
+cmake --build build\static --config Release --target directional_pipeline
 cmake --install build\static --config Release
 ```
 
@@ -174,7 +179,7 @@ cmake -S . -B build\pardiso `
   -DDIRECTIONAL_ENABLE_CUDSS=OFF `
   -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
 
-cmake --build build\pardiso --config Release --target directional
+cmake --build build\pardiso --config Release --target directional_pipeline
 cmake --install build\pardiso --config Release
 ```
 

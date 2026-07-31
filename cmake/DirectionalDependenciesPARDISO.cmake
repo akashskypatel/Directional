@@ -108,6 +108,16 @@ function(_directional_find_PARDISO)
     return()
   endif()
 
+  # A shared Directional build already deploys the oneMKL runtime DLLs.  Do
+  # not allow a stale MKL_LINK=static cache entry to pull oneMKL's component
+  # archives into directional.dll: their combined member count can exceed
+  # the MSVC linker's 65,535-library-member limit (LNK1189).
+  if(BUILD_SHARED_LIBS)
+    set(MKL_LINK
+        dynamic
+        CACHE STRING "oneMKL linkage used by Directional" FORCE)
+  endif()
+
   if(NOT MKL_DIR)
     set(MKL_DIR
         "${DIRECTIONAL_VCPKG_INSTALL_ROOT}/intel-mkl/${DIRECTIONAL_VCPKG_TRIPLET}/share/mkl"

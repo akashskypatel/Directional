@@ -9,5 +9,8 @@ endif()
 if(@DIRECTIONAL_ENABLE_CUDSS@)
   find_dependency(CUDSS)
 endif()
+if(@DIRECTIONAL_ENABLE_GMP@)
+  find_dependency(GMP)
+endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/DirectionalTargets.cmake")
