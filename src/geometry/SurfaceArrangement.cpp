@@ -2,6 +2,11 @@
 
 namespace directional::geometry::surface_arrangement_detail {
 
+template <typename T>
+std::uint64_t vector_storage_bytes(const std::vector<T> &values) {
+  return static_cast<std::uint64_t>(values.capacity()) * sizeof(T);
+}
+
 double cross2(const Eigen::Vector2d &a, const Eigen::Vector2d &b) {
   return a.x() * b.y() - a.y() * b.x();
 }

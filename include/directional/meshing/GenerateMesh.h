@@ -10,39 +10,12 @@
 #ifndef DIRECTIONAL_MESHING_GENERATE_MESH_H
 #define DIRECTIONAL_MESHING_GENERATE_MESH_H
 
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <cstdint>
-#include <functional>
-#include <iostream>
-#include <iterator>
-#include <limits>
-#include <queue>
-#include <set>
-#include <stdexcept>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-
-#include <directional/core/DCEL.h>
-#include <directional/meshing/NFunctionMesher.h>
-#include <directional/numerics/ExactGeometry.h>
-
-
 /**
  * @file GenerateMesh.h
- * @brief Mesh generation implementation for integrated N-functions.
+ * @brief Compatibility header for integrated N-function mesh generation.
  *
- * Contains the implementation steps that trace integer isolines, arrange segments inside triangles, simplify the arrangement, and emit the final remeshed output.
+ * The implementation is compiled into Directional. New code should use
+ * Mesher.h rather than depending on implementation details.
  */
-
-namespace directional {
-
-
-} // namespace directional
 
 #endif // DIRECTIONAL_MESHING_GENERATE_MESH_H

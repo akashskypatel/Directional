@@ -1,5 +1,7 @@
 #include <directional/meshing/GenerateMesh.h>
 
+#include <directional/meshing/NFunctionMesher.h>
+
 namespace directional {
 
 

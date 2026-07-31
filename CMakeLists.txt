@@ -153,6 +153,7 @@ add_library(
   src/geometry/AdaptiveTargetSize.cpp
   src/geometry/BarycentricCoordinates.cpp
   src/geometry/BarycentricSubdivision.cpp
+  src/geometry/BoundedMeshPreconditioner.cpp
   src/geometry/BranchedIsolines.cpp
   src/geometry/Curvature.cpp
   src/geometry/CutMesh.cpp
@@ -174,6 +175,7 @@ add_library(
   src/geometry/SurfacePoint.cpp
   src/geometry/TensorCurvatureTarget.cpp
   src/integration/Integrate.cpp
+  src/integration/IntegerTransitionBasis.cpp
   src/integration/ParametrizationQuality.cpp
   src/integration/SetupIntegration.cpp
   src/io/PolygonalWriteOFF.cpp

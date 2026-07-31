@@ -1,5 +1,7 @@
 #include <directional/geometry/BranchedIsolines.h>
 
+#include <directional/geometry/Isolines.h>
+
 namespace directional {
 
 void branched_isolines(const Eigen::MatrixXd& V,

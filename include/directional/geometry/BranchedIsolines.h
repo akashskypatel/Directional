@@ -11,10 +11,6 @@
 #define DIRECTIONAL_BRANCHED_ISOLINES_H
 
 #include <Eigen/Dense>
-#include <Eigen/Sparse>
-#include <array>
-#include <vector>
-#include <directional/geometry/Isolines.h>
 
 namespace directional{
 

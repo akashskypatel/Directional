@@ -1,5 +1,7 @@
 #include <directional/core/Library.h>
 #include <directional/fields/CrossField.h>
+#include <directional/geometry/BoundedMeshPreconditioner.h>
+#include <directional/integration/IntegerTransitionBasis.h>
 #include <directional/io/WriteRawField.h>
 #include <directional/numerics/ExactGeometry.h>
 #include <directional/pipeline/RemeshPipeline.h>
@@ -96,4 +98,28 @@ TEST(CompiledLibrary, LinksExactGeometryImplementation) {
               1.0e-12);
   EXPECT_NEAR(1.0, static_cast<double>(verticalParameter.to_double()),
               1.0e-12);
+}
+
+TEST(CompiledLibrary, LinksBoundedPreconditionerImplementation) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  const auto result =
+      directional::geometry::BoundedMeshPreconditioner::precondition(
+          vertices, faces, {});
+
+  EXPECT_EQ(1U, result.inputTriangleCount);
+  EXPECT_EQ(1U, result.outputTriangleCount);
+}
+
+TEST(CompiledLibrary, LinksIntegerTransitionBasisImplementation) {
+  const Eigen::SparseMatrix<int> relations(0, 3);
+  const auto result =
+      directional::detail::IntegerTransitionBasis::analyze_relation_matrix(
+          relations);
+
+  EXPECT_EQ(3U, result.rawIntegerVariableCount);
+  EXPECT_EQ(3U, result.reducedIntegerVariableCount);
 }

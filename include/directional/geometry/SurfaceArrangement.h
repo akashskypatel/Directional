@@ -328,11 +328,6 @@ bool point_in_polygon(const Eigen::Vector2d &point,
 bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
                                        const double ta, const double tb);
 
-template <typename T>
-inline std::uint64_t vector_storage_bytes(const std::vector<T> &values) {
-  return static_cast<std::uint64_t>(values.capacity()) * sizeof(T);
-}
-
 std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex);
 
 int graph_component_count(
