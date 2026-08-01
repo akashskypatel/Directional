@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 14:34 PDT
+Last updated: 2026-08-01 14:41 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -54,7 +54,8 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - The 18 unresolved endpoints are now concrete: three empty hard-feature retries, two optional traces ending at an unexpected boundary on the closed bunny, and 13 required singular supports. Of the 13 required supports, nine terminate at a feature after 12–128 segments and four exhaust the 128-segment budget.
 - Implemented canonical feature-rail interval ownership across adjacent source-face charts. A feature termination is accepted only when its terminal source-edge coordinate lies inside a retained hard-feature rail interval on the same source component and sheet; a `Feature` label alone remains insufficient.
 - Added focused positive and cross-sheet fail-closed tests. Validation: 2/2 focused tests and all 195 Phase 14–18 tests pass. Evidence: `build/mg-debug/results/p5-feature-rail-focused.json` and `build/mg-debug/results/p5-feature-rail-phase14-18.json`.
-- Next action: run the fast endpoint-stage bunny benchmark to measure which feature-terminal obligations are resolved before implementing bounded continuation for the remaining budget-exhausted required traces. Boundary and empty hard-feature terminations remain fail-closed until their topology is proved.
+- Fast bunny endpoint benchmark after incident-side sheet ownership is unchanged: 3,910 open, 3,892 resolved, 18 unresolved, 13 unresolved required, and 1,997 added arcs. The nine required feature terminations are therefore not simple adjacent-chart interval matches. Evidence: `benchmark-results/p28-local/bunny-feature-rail-sides-diagnostics.json`.
+- Next action: record terminal intrinsic vertex/edge ownership details for unresolved feature terminations, then implement authoritative feature-vertex capture only when an incident retained rail proves ownership. Budget continuation remains separate and bounded.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
