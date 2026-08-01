@@ -1,9 +1,9 @@
 name: Agent Source Snapshot
 
 on:
-  push:
+  pull_request:
     branches:
-      - surface_cell_quad
+      - master
     paths:
       - .github/workflows/agent-source-snapshot.yml
   workflow_dispatch:
