@@ -141,6 +141,14 @@ TEST(SurfaceMeshOptimizerPhase19, LineSearchRejectsFaceInversion) {
       directional::geometry::local_orientation_valid(inverted, one_quad()));
 }
 
+TEST(SurfaceMeshOptimizerPhase19, LineSearchRejectsConcaveQuad) {
+  Eigen::MatrixXd concave = plane_vertices(0.0);
+  concave.row(2) << 0.25, 0.25, 0.0;
+
+  EXPECT_FALSE(
+      directional::geometry::local_orientation_valid(concave, one_quad()));
+}
+
 TEST(SurfaceMeshOptimizerPhase19, DegreeFourAverageHandlesNinetyDegreeRelabel) {
   const auto q = directional::geometry::degree_four_average(
       {0.0, 0.5 * 3.14159265358979323846});

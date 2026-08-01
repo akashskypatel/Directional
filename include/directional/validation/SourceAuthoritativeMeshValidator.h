@@ -47,6 +47,7 @@ struct SourceAuthoritativeMeshValidatorOptions {
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
   const std::vector<geometry::SurfacePoint> *vertexProvenance = nullptr;
+  const std::vector<int> *outputQuadSourceFaces = nullptr;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
@@ -402,6 +403,18 @@ struct SourcePointLabelSupport {
     std::set<int> unionFaces;
     for (const geometry::SurfacePoint *point : points) {
       if (point == nullptr) {
+        return {};
+      }
+      const std::set<std::pair<int, int>> labels = supported_labels(*point);
+      const bool declaredLabelSupported = std::any_of(
+          labels.begin(), labels.end(), [&](const std::pair<int, int> &label) {
+            const bool componentMatches =
+                point->component < 0 || label.first == point->component;
+            const bool sheetMatches =
+                point->sheet < 0 || label.second == point->sheet;
+            return componentMatches && sheetMatches;
+          });
+      if (!declaredLabelSupported) {
         return {};
       }
       std::vector<int> faces = supported_faces(*point);

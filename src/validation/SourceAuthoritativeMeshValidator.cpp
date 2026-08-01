@@ -240,8 +240,8 @@ bool segment_triangle_intersection_point(
   const Eigen::Vector3d edge2 = c - a;
   const Eigen::Vector3d pvec = direction.cross(edge2);
   const double determinant = edge1.dot(pvec);
-  const double scale = std::max({direction.norm(), edge1.norm(), edge2.norm(),
-                                 1.0});
+  const double scale =
+      std::max({direction.norm(), edge1.norm(), edge2.norm(), tolerance});
   if (std::abs(determinant) <= tolerance * scale * scale) {
     return false;
   }
@@ -369,10 +369,16 @@ bool triangles_intersect(
   }
   const Eigen::Vector3d normalA = (a[1] - a[0]).cross(a[2] - a[0]);
   const Eigen::Vector3d normalB = (b[1] - b[0]).cross(b[2] - b[0]);
-  const double normalScale = std::max(normalA.norm() * normalB.norm(), 1.0);
-  if (normalA.cross(normalB).norm() <= tolerance * normalScale &&
+  const double normalProduct = normalA.norm() * normalB.norm();
+  const double edgeScale = std::max(
+      { (a[1] - a[0]).norm(), (a[2] - a[0]).norm(),
+        (b[1] - b[0]).norm(), (b[2] - b[0]).norm(), tolerance });
+  const double angularTolerance =
+      std::max(1.0e-12, tolerance / edgeScale);
+  if (normalProduct > tolerance * tolerance &&
+      normalA.cross(normalB).norm() <= angularTolerance * normalProduct &&
       std::abs(normalA.dot(b[0] - a[0])) <=
-          tolerance * std::max(normalA.norm(), 1.0)) {
+          tolerance * normalA.norm()) {
     return coplanar_triangles_overlap(a, b, allowedTouches, tolerance);
   }
 
@@ -752,12 +758,13 @@ validate_source_authoritative_surface_mesh(
   const double sourceScale =
       options.sourceVertices->rows() == 0
           ? 1.0
-          : std::max(1.0,
-                     (options.sourceVertices->colwise().maxCoeff() -
-                      options.sourceVertices->colwise().minCoeff())
-                         .norm());
+          : std::max(
+                std::numeric_limits<double>::epsilon(),
+                (options.sourceVertices->colwise().maxCoeff() -
+                 options.sourceVertices->colwise().minCoeff())
+                    .norm());
   const double positionTolerance =
-      std::max(options.geometricTolerance, 1.0e-9) * sourceScale * 32.0;
+      std::max(options.geometricTolerance, 1.0e-12) * sourceScale * 32.0;
   result.provenanceCoverageComplete =
       provenance.size() >= static_cast<std::size_t>(vertices.rows());
   if (!result.provenanceCoverageComplete) {
@@ -851,13 +858,15 @@ validate_source_authoritative_surface_mesh(
 
     const Eigen::Vector3d outputNormal = polygon_normal(vertices, polygon);
     Eigen::Vector3d sourceNormal = Eigen::Vector3d::Zero();
-    for (const int vertex : polygon) {
-      if (vertex < 0 || static_cast<std::size_t>(vertex) >= provenance.size()) {
-        continue;
-      }
-      const int sourceFace = provenance[static_cast<std::size_t>(vertex)].face;
+    int authoritativeSourceFace = -1;
+    if (options.outputQuadSourceFaces != nullptr && face >= 0 &&
+        face < static_cast<int>(options.outputQuadSourceFaces->size())) {
+      authoritativeSourceFace =
+          (*options.outputQuadSourceFaces)[static_cast<std::size_t>(face)];
+    }
+    const auto accumulate_source_normal = [&](const int sourceFace) {
       if (sourceFace < 0 || sourceFace >= options.sourceFaces->rows()) {
-        continue;
+        return;
       }
       const Eigen::Vector3d sa = options.sourceVertices->row(
           (*options.sourceFaces)(sourceFace, 0)).transpose();
@@ -866,6 +875,18 @@ validate_source_authoritative_surface_mesh(
       const Eigen::Vector3d sc = options.sourceVertices->row(
           (*options.sourceFaces)(sourceFace, 2)).transpose();
       sourceNormal += (sb - sa).cross(sc - sa);
+    };
+    if (authoritativeSourceFace >= 0) {
+      accumulate_source_normal(authoritativeSourceFace);
+    } else {
+      for (const int vertex : polygon) {
+        if (vertex < 0 ||
+            static_cast<std::size_t>(vertex) >= provenance.size()) {
+          continue;
+        }
+        accumulate_source_normal(
+            provenance[static_cast<std::size_t>(vertex)].face);
+      }
     }
     if (outputNormal.norm() > positionTolerance &&
         sourceNormal.norm() > positionTolerance &&
@@ -894,13 +915,37 @@ validate_source_authoritative_surface_mesh(
               triangles[static_cast<std::size_t>(second)].parentFace) {
         return;
       }
+      const int firstParent =
+          triangles[static_cast<std::size_t>(first)].parentFace;
+      const int secondParent =
+          triangles[static_cast<std::size_t>(second)].parentFace;
+      const std::vector<int> firstPolygon =
+          face_vertices(faces, firstParent);
+      const std::vector<int> secondPolygon =
+          face_vertices(faces, secondParent);
+      const bool adjacentAtOutputVertex = std::any_of(
+          firstPolygon.begin(), firstPolygon.end(), [&](const int vertex) {
+            return std::find(secondPolygon.begin(), secondPolygon.end(),
+                             vertex) != secondPolygon.end();
+          });
+      // Incident output faces are allowed to meet along their shared vertex
+      // or edge. Their local fan is checked separately by incidence,
+      // orientation, bow-tie, convexity, and Jacobian tests; treating a legal
+      // shared-edge contact as a global self-intersection produces false
+      // positives after polygon triangulation.
+      if (adjacentAtOutputVertex) {
+        return;
+      }
       if (triangles_intersect(vertices,
                               triangles[static_cast<std::size_t>(first)],
                               triangles[static_cast<std::size_t>(second)],
                               positionTolerance)) {
-        result.fail({MeshValidationFailureCode::SelfIntersectingFace, -1, -1,
-                     -1,
-                     triangles[static_cast<std::size_t>(second)].parentFace});
+        const int firstFace =
+            triangles[static_cast<std::size_t>(first)].parentFace;
+        const int secondFace =
+            triangles[static_cast<std::size_t>(second)].parentFace;
+        result.fail({MeshValidationFailureCode::SelfIntersectingFace, -1,
+                     firstFace, secondFace, secondFace});
         selfIntersectionFound = true;
       }
     });

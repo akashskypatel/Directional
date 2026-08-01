@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <numeric>
@@ -12,6 +13,7 @@
 #include <gtest/gtest.h>
 
 #include "BenchmarkCases.h"
+#include <directional/geometry/GeneralGraphMatching.h>
 
 namespace {
 
@@ -70,6 +72,38 @@ std::vector<int> json_integer_array(const fs::path &path,
     values.push_back(std::stoi(iterator->str()));
   }
   return values;
+}
+
+int brute_force_matching_cardinality(
+    const int vertexCount,
+    const std::vector<std::vector<unsigned char>> &adjacent,
+    const std::uint32_t available) {
+  int first = -1;
+  for (int vertex = 0; vertex < vertexCount; ++vertex) {
+    if ((available & (std::uint32_t{1} << vertex)) != 0U) {
+      first = vertex;
+      break;
+    }
+  }
+  if (first < 0) {
+    return 0;
+  }
+  const std::uint32_t withoutFirst =
+      available & ~(std::uint32_t{1} << first);
+  int best = brute_force_matching_cardinality(
+      vertexCount, adjacent, withoutFirst);
+  for (int second = first + 1; second < vertexCount; ++second) {
+    if ((withoutFirst & (std::uint32_t{1} << second)) == 0U ||
+        adjacent[static_cast<std::size_t>(first)]
+                [static_cast<std::size_t>(second)] == 0U) {
+      continue;
+    }
+    best = std::max(
+        best, 1 + brute_force_matching_cardinality(
+                      vertexCount, adjacent,
+                      withoutFirst & ~(std::uint32_t{1} << second)));
+  }
+  return best;
 }
 
 void expect_completed_surface_cells(
@@ -585,7 +619,7 @@ TEST(MilestoneGP26, UniqueFieldAlignedRecoveryAcceptsEveryProductionFixture) {
   }
 }
 
-TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteInput) {
+TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteField) {
   directional::TriMesh mesh;
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0;
@@ -593,12 +627,13 @@ TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteInput) {
   faces << 0, 1, 2, 0, 2, 3;
   mesh.set_mesh(vertices, faces);
 
-  // Align one cross branch with the shared diagonal. The only possible
-  // triangle pair is therefore explicitly rejected as a source-cell
-  // candidate, leaving an incomplete candidate graph that must fail closed.
+  // Supply only one field row for two source faces. Field alignment is a soft
+  // source-cell cost on arbitrary triangulations, so a valid two-triangle
+  // square is not an incomplete recovery scenario. Missing authoritative face
+  // data is, and must fail before any topology is emitted.
   const double inverseSqrtTwo = 1.0 / std::sqrt(2.0);
   directional::fields::CrossFieldResult field;
-  field.rawField = Eigen::MatrixXd::Zero(2, 12);
+  field.rawField = Eigen::MatrixXd::Zero(1, 12);
   for (Eigen::Index face = 0; face < field.rawField.rows(); ++face) {
     field.rawField.row(face) << inverseSqrtTwo, inverseSqrtTwo, 0.0,
         -inverseSqrtTwo, inverseSqrtTwo, 0.0, -inverseSqrtTwo, -inverseSqrtTwo,
@@ -610,8 +645,92 @@ TEST(MilestoneGP26, SourceCellRecoveryFailsClosedForIncompleteInput) {
       directional::pipeline::recover_unique_field_aligned_source_quads(mesh,
                                                                        field);
   EXPECT_FALSE(recovery.success);
-  EXPECT_EQ("AmbiguousOrIncompleteSourceGrid", recovery.failure);
+  EXPECT_EQ("InvalidSourceGridInput", recovery.failure);
   EXPECT_TRUE(recovery.mesh.quads.empty());
+}
+
+TEST(MilestoneGP26, GeneralMatchingContractsOddCyclesDeterministically) {
+  using directional::geometry::GeneralGraphMatchingEdge;
+  const std::vector<GeneralGraphMatchingEdge> edges = {
+      {0, 1, 0.0}, {1, 2, 0.0}, {2, 0, 0.0},
+      {0, 3, 1.0}, {1, 4, 1.0}, {2, 5, 1.0}};
+
+  const auto first =
+      directional::geometry::maximum_cardinality_matching(6, edges);
+  const auto second =
+      directional::geometry::maximum_cardinality_matching(6, edges);
+
+  ASSERT_TRUE(first.perfect());
+  EXPECT_EQ(first.mate, second.mate);
+  for (int vertex = 0; vertex < 6; ++vertex) {
+    ASSERT_GE(first.mate[static_cast<std::size_t>(vertex)], 0);
+    EXPECT_EQ(vertex,
+              first.mate[static_cast<std::size_t>(
+                  first.mate[static_cast<std::size_t>(vertex)])]);
+  }
+}
+
+TEST(MilestoneGP26, GeneralMatchingReportsMaximumWhenPerfectIsImpossible) {
+  using directional::geometry::GeneralGraphMatchingEdge;
+  const std::vector<GeneralGraphMatchingEdge> edges = {
+      {0, 1, 0.0}, {1, 2, 0.0}, {2, 0, 0.0}};
+  const auto result =
+      directional::geometry::maximum_cardinality_matching(3, edges);
+  EXPECT_FALSE(result.perfect());
+  EXPECT_EQ(1, result.matchedEdgeCount);
+  EXPECT_EQ(1, std::count(result.mate.begin(), result.mate.end(), -1));
+}
+
+TEST(MilestoneGP26, GeneralMatchingMatchesExhaustiveSmallGraphOracle) {
+  using directional::geometry::GeneralGraphMatchingEdge;
+  for (int vertexCount = 1; vertexCount <= 6; ++vertexCount) {
+    std::vector<std::pair<int, int>> possibleEdges;
+    for (int first = 0; first < vertexCount; ++first) {
+      for (int second = first + 1; second < vertexCount; ++second) {
+        possibleEdges.emplace_back(first, second);
+      }
+    }
+    const std::uint32_t graphCount =
+        std::uint32_t{1} << possibleEdges.size();
+    for (std::uint32_t graph = 0; graph < graphCount; ++graph) {
+      std::vector<GeneralGraphMatchingEdge> edges;
+      std::vector<std::vector<unsigned char>> adjacent(
+          static_cast<std::size_t>(vertexCount),
+          std::vector<unsigned char>(static_cast<std::size_t>(vertexCount),
+                                     0));
+      for (std::size_t edge = 0; edge < possibleEdges.size(); ++edge) {
+        if ((graph & (std::uint32_t{1} << edge)) == 0U) {
+          continue;
+        }
+        const auto [first, second] = possibleEdges[edge];
+        edges.push_back(
+            {first, second, static_cast<double>(possibleEdges.size() - edge)});
+        adjacent[static_cast<std::size_t>(first)]
+                [static_cast<std::size_t>(second)] = 1;
+        adjacent[static_cast<std::size_t>(second)]
+                [static_cast<std::size_t>(first)] = 1;
+      }
+      const auto matching =
+          directional::geometry::maximum_cardinality_matching(vertexCount,
+                                                               edges);
+      const int expected = brute_force_matching_cardinality(
+          vertexCount, adjacent,
+          (std::uint32_t{1} << vertexCount) - std::uint32_t{1});
+      ASSERT_EQ(expected, matching.matchedEdgeCount)
+          << "vertices=" << vertexCount << " graph=" << graph;
+      ASSERT_EQ(static_cast<std::size_t>(vertexCount), matching.mate.size());
+      for (int vertex = 0; vertex < vertexCount; ++vertex) {
+        const int mate = matching.mate[static_cast<std::size_t>(vertex)];
+        if (mate < 0) {
+          continue;
+        }
+        ASSERT_LT(mate, vertexCount);
+        EXPECT_EQ(vertex, matching.mate[static_cast<std::size_t>(mate)]);
+        EXPECT_NE(0U, adjacent[static_cast<std::size_t>(vertex)]
+                              [static_cast<std::size_t>(mate)]);
+      }
+    }
+  }
 }
 
 TEST(MilestoneGP26, RecoveryPreservesComponentAndSheetProvenance) {

@@ -153,6 +153,8 @@ struct SurfaceCellOptions {
   /// slow but otherwise valid optimization to fail the backend request.
   bool enforceOptimizerTimeGate = false;
   double maxOptimizerTimeRatio = 0.25;
+  int optimizerMaxIterations = 32;
+  int optimizerMaxLineSearchTrials = 24;
   SurfaceCellFallbackPolicy fallbackPolicy = SurfaceCellFallbackPolicy::Fail;
   int injectFailureAfterStage = -1;
   /// Optional component-local injection target used by deterministic
@@ -607,7 +609,8 @@ void orient_quads_to_source_normals(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
     const std::vector<geometry::SurfacePoint> &outputProvenance,
-    Eigen::MatrixXi &quads);
+    Eigen::MatrixXi &quads,
+    const std::vector<geometry::PureQuadFaceLineage> *quadLineage = nullptr);
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
@@ -616,7 +619,12 @@ surface_arrangement_arcs_from_flow_rep(
 struct FieldAlignedSourceQuadRecoveryResult {
   bool success = false;
   geometry::PureQuadMesh mesh;
+  std::size_t strictCandidatePairCount = 0;
   std::size_t candidatePairCount = 0;
+  std::size_t matchedPairCount = 0;
+  std::size_t unmatchedFaceCount = 0;
+  std::size_t triangleTemplateCount = 0;
+  bool usedGeneralMatching = false;
   std::string failure;
 };
 

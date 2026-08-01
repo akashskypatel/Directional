@@ -95,6 +95,7 @@ void fill_surface_optimization_rail_constraints(
   constraints.authoritativeBoundaryLoops.clear();
   constraints.authoritativeFeatureRails.clear();
   constraints.requiredFeatureRailCount = 0;
+  constraints.missingFeatureRailIds.clear();
   constraints.featureRailAuthorityProvided = true;
   int nextIntervalId = 0;
   for (const SurfaceCellRail &rail : rails) {
@@ -156,6 +157,10 @@ void fill_surface_optimization_rail_constraints(
     double localParameter = 0.0;
   };
   std::vector<FeatureAssignment> assignments;
+  // Authority membership is many-to-many at feature junctions. The optimizer
+  // still chooses one primary curve coordinate per vertex, but validation
+  // must retain the same endpoint in every incident hard rail.
+  std::vector<FeatureAssignment> authorityAssignments;
   for (int vertex = 0; vertex < outputVertices.rows(); ++vertex) {
     const SurfacePoint provenance =
         vertex < static_cast<int>(outputProvenance.size())
@@ -200,6 +205,17 @@ void fill_surface_optimization_rail_constraints(
     }
     if (best == nullptr || bestDistance > toleranceSquared) {
       continue;
+    }
+    for (const IncidentInterval &incident : incidentIntervals) {
+      const SurfaceFeatureCurveInterval &interval = *incident.interval;
+      authorityAssignments.push_back(
+          {vertex, interval.curveId,
+           interval.railId >= 0 ? interval.railId : interval.curveId,
+           interval.order,
+           interval.parameterStart +
+               incident.localParameter *
+                   (interval.parameterEnd - interval.parameterStart),
+           incident.localParameter});
     }
     constraints.featureVertices.push_back(vertex);
     constraints.featureCurveIds(vertex) = best->curveId;
@@ -268,13 +284,31 @@ void fill_surface_optimization_rail_constraints(
                      }
                      return a.vertex < b.vertex;
                    });
+  std::stable_sort(authorityAssignments.begin(),
+                   authorityAssignments.end(),
+                   [](const FeatureAssignment &a,
+                      const FeatureAssignment &b) {
+                     if (a.sequenceId != b.sequenceId) {
+                       return a.sequenceId < b.sequenceId;
+                     }
+                     if (a.order != b.order) {
+                       return a.order < b.order;
+                     }
+                     if (a.localParameter != b.localParameter) {
+                       return a.localParameter < b.localParameter;
+                     }
+                     if (a.parameter != b.parameter) {
+                       return a.parameter < b.parameter;
+                     }
+                     return a.vertex < b.vertex;
+                   });
   for (const FeatureAssignment &assignment : assignments) {
     constraints.orderedFeatureVertices.push_back(assignment.vertex);
   }
 
   for (const SurfaceCellRail &rail : rails) {
     std::vector<int> sequence;
-    for (const FeatureAssignment &assignment : assignments) {
+    for (const FeatureAssignment &assignment : authorityAssignments) {
       if (assignment.sequenceId != rail.id) {
         continue;
       }
@@ -284,6 +318,10 @@ void fill_surface_optimization_rail_constraints(
     }
 
     if (rail.kind == SurfaceCellRailKind::Boundary) {
+      if (rail.closed && sequence.size() >= 2U &&
+          sequence.front() == sequence.back()) {
+        sequence.pop_back();
+      }
       if (rail.closed && sequence.size() >= 3U) {
         constraints.authoritativeBoundaryLoops.push_back(sequence);
         if (constraints.authoritativeBoundaryLoop.empty()) {
@@ -309,6 +347,8 @@ void fill_surface_optimization_rail_constraints(
         sequence.push_back(sequence.front());
       }
       constraints.authoritativeFeatureRails.push_back(std::move(sequence));
+    } else if (rail.kind == SurfaceCellRailKind::HardFeature) {
+      constraints.missingFeatureRailIds.push_back(rail.id);
     }
   }
 }

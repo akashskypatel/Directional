@@ -48,12 +48,42 @@ struct SurfaceOptimizationOptions {
   double tolerance = 1.0e-9;
   double armijo = 1.0e-6;
   double targetSize = 1.0;
+  // Maximum unconstrained displacement at alpha=1, expressed in local target
+  // cell widths. This trust region makes line-search behavior scale invariant
+  // even when one energy term produces a very large raw gradient.
+  double maxStepTargetFraction = 0.25;
+  int maxLineSearchTrials = 24;
   double maxOptimizerTimeRatio = 0.25;
   bool enforceOptimizerTimeGate = true;
-  std::array<double, 12> lineSearchSteps = {
-      1.0,       0.5,        0.25,       0.125,
-      0.0625,    0.03125,    0.015625,   0.0078125,
-      0.00390625, 0.001953125, 0.0009765625, 0.00048828125};
+  // Raw multi-energy gradients can differ by several orders of magnitude on
+  // irregular input triangulations. Keep halving far enough to find a
+  // topology-safe projected step instead of declaring failure while the
+  // smallest trial still crosses an output edge.
+  std::array<double, 24> lineSearchSteps = {
+      1.0,
+      0.5,
+      0.25,
+      0.125,
+      0.0625,
+      0.03125,
+      0.015625,
+      0.0078125,
+      0.00390625,
+      0.001953125,
+      0.0009765625,
+      0.00048828125,
+      0.000244140625,
+      0.0001220703125,
+      0.00006103515625,
+      0.000030517578125,
+      0.0000152587890625,
+      0.00000762939453125,
+      0.000003814697265625,
+      0.0000019073486328125,
+      0.00000095367431640625,
+      0.000000476837158203125,
+      0.0000002384185791015625,
+      0.00000011920928955078125};
   double finiteDifferenceStep = 1.0e-6;
   bool enforceSourceAuthoritativeHardInvariants = true;
 };
@@ -83,6 +113,11 @@ struct SurfaceOptimizationConstraints {
   Eigen::VectorXi sourceComponent;
   std::vector<int> sourceFaceComponent;
   std::vector<int> sourceFaceSheet;
+  // Authoritative source chart at each output quad center. Vertex provenance
+  // is intentionally multi-chart on source vertices and edges, so it cannot
+  // by itself select a stable orientation/field chart for the whole quad.
+  std::vector<int> outputQuadSourceFaces;
+  bool constrainVerticesToProvenanceEntities = false;
   std::vector<std::vector<int>> sourceVertexFaces;
   std::map<std::pair<int, int>, std::vector<int>> sourceEdgeFaces;
   Eigen::VectorXd localTargetSize;
@@ -102,6 +137,7 @@ struct SurfaceOptimizationConstraints {
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
   std::size_t requiredFeatureRailCount = 0;
+  std::vector<int> missingFeatureRailIds;
   // Distinguishes an explicitly supplied empty authority set from callers
   // that never configured feature-rail authority. An empty authoritative set
   // is still meaningful: it proves that no hard feature rails are expected.
@@ -148,6 +184,7 @@ struct SurfaceOptimizationResult {
   Eigen::MatrixXi quads;
   std::vector<SurfacePoint> vertexProvenance;
   std::vector<SurfaceOptimizationIteration> iterations;
+  std::vector<validation::MeshValidationIssue> lastHardInvariantIssues;
   std::uint64_t topologyHash = 0;
   bool monotonicEnergy = true;
   bool topologyHashFixed = true;
@@ -166,6 +203,8 @@ struct SurfaceOptimizationResult {
   std::size_t orientationRejectionCount = 0;
   std::size_t armijoRejectionCount = 0;
   std::size_t hardInvariantRejectionCount = 0;
+  double maximumRawGradientRowNorm = 0.0;
+  std::size_t trustRegionScaleCount = 0;
   bool rolledBackToInput = false;
   SurfaceOptimizationEnergy initialEnergy;
   SurfaceOptimizationEnergy finalEnergy;
@@ -240,6 +279,10 @@ struct SurfaceFinalValidationReport {
   int localSheetMismatchCount = 0;
   int duplicateFaceCount = 0;
   int bowTieVertexCount = 0;
+  // Retained for actionable production diagnostics; aggregate counters alone
+  // cannot identify the offending output face, edge, or missing rail.
+  std::vector<validation::MeshValidationIssue> strictValidationIssues;
+  std::vector<int> missingFeatureRailIds;
 };
 
 struct SurfaceOptimizationOverlay {
@@ -263,7 +306,7 @@ bool contains(const std::vector<int> &values, const int value);
 bool armijo_sufficient_decrease(const double currentEnergy,
                                        const double trialEnergy,
                                        const double alpha,
-                                       const double directionSquaredNorm,
+                                       const double descentDirectionalDerivative,
                                        const double armijo);
 
 Eigen::RowVector3d normalized_or_zero(const Eigen::RowVector3d &v);
@@ -739,7 +782,8 @@ make_source_authoritative_validator_options(
 bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
-    const std::vector<SurfacePoint> &provenance);
+    const std::vector<SurfacePoint> &provenance,
+    std::vector<validation::MeshValidationIssue> *issues = nullptr);
 
 // Computes the optimizer derivative directly per enabled energy. Geometric
 // terms use closed-form derivatives. Source-normal and 4-RoSy transport
