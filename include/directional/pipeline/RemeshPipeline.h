@@ -327,6 +327,13 @@ struct SurfaceCellPipelineContext {
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
 
+  geometry::SurfaceCellComplex completionComplex;
+  bool hasCompletionComplex = false;
+  int completionOddCellsBeforeRepair = 0;
+  int completionOddCellsAfterRepair = 0;
+  int completionParitySplitEdges = 0;
+  int completionParityHardFeatureSplits = 0;
+
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   bool hasPatchDescriptors = false;
 

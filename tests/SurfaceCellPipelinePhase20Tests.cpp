@@ -875,8 +875,8 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
        traceNetwork.traces) {
     EXPECT_TRUE(
         directional::geometry::surface_cell_tracing_detail::
-            trace_respects_face_labels(trace, traceNetwork.sourceFaceComponents,
-                                       traceNetwork.sourceFaceSheets));
+            trace_respects_source_component(
+                trace, traceNetwork.sourceFaceComponents));
   }
   for (const directional::geometry::SurfaceCellProposal &proposal :
        traceNetwork.proposals) {
@@ -884,9 +884,8 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
     sideTrace.segments = proposal.sides;
     EXPECT_TRUE(
         directional::geometry::surface_cell_tracing_detail::
-            trace_respects_face_labels(sideTrace,
-                                       traceNetwork.sourceFaceComponents,
-                                       traceNetwork.sourceFaceSheets));
+            trace_respects_source_component(
+                sideTrace, traceNetwork.sourceFaceComponents));
   }
   EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
@@ -1716,9 +1715,8 @@ TEST(SurfaceCellPipelinePhase20, ConnectedCloseSheetsKeepDistinctLocalSheetLabel
        context.traceNetwork.traces) {
     EXPECT_TRUE(
         directional::geometry::surface_cell_tracing_detail::
-            trace_respects_face_labels(trace,
-                                       context.traceNetwork.sourceFaceComponents,
-                                       context.traceNetwork.sourceFaceSheets));
+            trace_respects_source_component(
+                trace, context.traceNetwork.sourceFaceComponents));
   }
   const directional::pipeline::SurfaceCellContextProductDebug *labels =
       find_context_product(context, "source-labels");

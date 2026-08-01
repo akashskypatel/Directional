@@ -328,6 +328,114 @@ TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
 }
 
 TEST(FlowRepStrandsPhase15,
+     RailEndpointTracesBecomeDeduplicatedOptionalLayoutSupport) {
+  directional::geometry::SurfaceCellNetwork network;
+  network.sourceFaceComponents = {3};
+  network.sourceFaceSheets = {5};
+
+  const Eigen::RowVector3d edge01Mid(0.5, 0.5, 0.0);
+  const Eigen::RowVector3d edge12Mid(0.0, 0.5, 0.5);
+  const auto make_rail = [&](const int id, const int curve,
+                             const Eigen::RowVector3d &start,
+                             const Eigen::RowVector3d &end) {
+    directional::geometry::SurfaceCellRail rail;
+    rail.id = id;
+    rail.curveId = curve;
+    rail.component = 3;
+    rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+    directional::geometry::SurfaceCellRailSample a;
+    a.sourceFace = 0;
+    a.barycentric = start;
+    a.position = Eigen::RowVector3d(start[1], start[2], 0.0);
+    a.railParameter = 0.0;
+    directional::geometry::SurfaceCellRailSample b = a;
+    b.barycentric = end;
+    b.position = Eigen::RowVector3d(end[1], end[2], 0.0);
+    b.railParameter = 1.0;
+    rail.samples = {a, b};
+    return rail;
+  };
+  network.authoritativeRails.push_back(
+      make_rail(7, 17, Eigen::RowVector3d(1.0, 0.0, 0.0),
+                Eigen::RowVector3d(0.0, 1.0, 0.0)));
+  network.authoritativeRails.push_back(
+      make_rail(8, 18, Eigen::RowVector3d(0.0, 1.0, 0.0),
+                Eigen::RowVector3d(0.0, 0.0, 1.0)));
+
+  directional::geometry::SurfaceTraceSeed firstSeed;
+  firstSeed.id = 41;
+  firstSeed.point = {0, edge01Mid};
+  firstSeed.provenance =
+      directional::geometry::SurfaceSeedProvenance::Feature;
+  directional::geometry::SurfaceTraceSeed secondSeed;
+  secondSeed.id = 42;
+  secondSeed.point = {0, edge12Mid};
+  secondSeed.provenance =
+      directional::geometry::SurfaceSeedProvenance::Feature;
+  network.seeds = {firstSeed, secondSeed};
+  network.traces.resize(8);
+
+  directional::geometry::SurfaceTraceSegment forward;
+  forward.face = 0;
+  forward.startBarycentric = edge01Mid;
+  forward.endBarycentric = edge12Mid;
+  forward.family = 1;
+  network.traces[0].segments = {forward};
+  network.traces[0].termination =
+      directional::geometry::TraceTerminationReason::Feature;
+  directional::geometry::SurfaceTraceSegment reverse = forward;
+  std::swap(reverse.startBarycentric, reverse.endBarycentric);
+  reverse.sign = -1;
+  network.traces[4].segments = {reverse};
+  network.traces[4].termination =
+      directional::geometry::TraceTerminationReason::Feature;
+
+  directional::geometry::SurfaceTraceSegment unresolved = forward;
+  unresolved.endBarycentric << 0.2, 0.4, 0.4;
+  network.traces[1].segments = {unresolved};
+  network.traces[1].termination =
+      directional::geometry::TraceTerminationReason::Budget;
+
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+      vertices, faces, network);
+
+  ASSERT_EQ(3U, arcs.size());
+  const FlowRepArc &support = arcs.back();
+  EXPECT_TRUE(support.layoutSupport);
+  EXPECT_FALSE(support.mandatoryRail);
+  EXPECT_FALSE(support.hardFeatureRail);
+  EXPECT_FALSE(support.boundaryRail);
+  EXPECT_EQ(0, support.supportTraceId);
+  EXPECT_EQ(41, support.supportSeedId);
+  EXPECT_EQ(0, support.supportSegment);
+  EXPECT_EQ(support.supportTraceId, support.sameStrandHint);
+  EXPECT_LT(support.strandProvenance, -1);
+  EXPECT_TRUE(directional::geometry::flow_rep_detail::
+                  arc_has_complete_provenance(support));
+  EXPECT_TRUE(std::none_of(arcs.begin(), arcs.end(), [](const FlowRepArc &value) {
+    return value.layoutSupport && value.supportTraceId == 1;
+  }));
+
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Ones(3);
+  const auto selectionInput =
+      directional::geometry::build_flow_rep_selection_input(
+          vertices, faces, targetSize, network, 1.0);
+  const FlowRepSparseNetwork selected =
+      directional::geometry::select_sparse_flow_rep_network(
+          selectionInput.arcs, selectionInput.coverageSamples,
+          selectionInput.cycles);
+  ASSERT_TRUE(selected.selectionSucceeded);
+  EXPECT_EQ(FlowRepSelectionFailureCode::None, selected.failureCode);
+  EXPECT_EQ(arcs.size(), selected.retainedArcIds.size());
+  EXPECT_FALSE(selected.cycleEvidenceUsed);
+  EXPECT_EQ(0, selected.cycleEvidenceCount);
+}
+
+TEST(FlowRepStrandsPhase15,
      SelectionInputBuildsNormalizedCoverageAndClosedCycleEvidence) {
   directional::geometry::SurfaceCellNetwork network;
   network.sourceFaceComponents = {3};

@@ -201,7 +201,8 @@ double target_size_at_vertex(const Eigen::VectorXd &targetSize,
 namespace directional::geometry::surface_cell_tracing_detail {
 
 void append_seed(std::vector<SurfaceTraceSeed> &seeds,
-                        std::set<std::tuple<int, int, int, int>> &seen,
+                        std::set<std::tuple<int, std::int64_t, std::int64_t,
+                                                std::int64_t>> &seen,
                         const SurfaceTracePoint &point,
                         const SurfaceSeedProvenance provenance,
                         const int sourceId) {
@@ -209,9 +210,13 @@ void append_seed(std::vector<SurfaceTraceSeed> &seeds,
     return;
   }
   const auto key = std::make_tuple(
-      point.face, static_cast<int>(std::llround(point.barycentric[0] * 1.0e9)),
-      static_cast<int>(std::llround(point.barycentric[1] * 1.0e9)),
-      static_cast<int>(std::llround(point.barycentric[2] * 1.0e9)));
+      point.face,
+      static_cast<std::int64_t>(
+          std::llround(point.barycentric[0] * 1.0e15)),
+      static_cast<std::int64_t>(
+          std::llround(point.barycentric[1] * 1.0e15)),
+      static_cast<std::int64_t>(
+          std::llround(point.barycentric[2] * 1.0e15)));
   if (!seen.insert(key).second) {
     return;
   }
@@ -356,6 +361,24 @@ bool source_faces_compatible(const SurfaceCellTracingOptions &options,
              options.sourceFaceComponents[static_cast<std::size_t>(b)] &&
          options.sourceFaceSheets[static_cast<std::size_t>(a)] ==
              options.sourceFaceSheets[static_cast<std::size_t>(b)];
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
+bool source_faces_share_component(const SurfaceCellTracingOptions &options,
+                                  const int a, const int b) {
+  if (!source_label_arrays_enabled(options)) {
+    return true;
+  }
+  if (a < 0 || b < 0 ||
+      a >= static_cast<int>(options.sourceFaceComponents.size()) ||
+      b >= static_cast<int>(options.sourceFaceComponents.size())) {
+    return false;
+  }
+  return options.sourceFaceComponents[static_cast<std::size_t>(a)] ==
+         options.sourceFaceComponents[static_cast<std::size_t>(b)];
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -745,7 +768,7 @@ RailContinuationResult find_next_rail_interval(
       }
       hasSameSide = true;
       if (side.sourceFace == current.side.sourceFace &&
-          source_faces_compatible(options, current.side.sourceFace,
+          source_faces_share_component(options, current.side.sourceFace,
                                   side.sourceFace)) {
         return {RailContinuationStatus::Found, {&interval, side}};
       }
@@ -753,7 +776,7 @@ RailContinuationResult find_next_rail_interval(
     for (const SurfaceCellRailIntervalRef::FaceSideEmbedding &side :
          interval.incidentSides) {
       if (side.sideSign == current.side.sideSign &&
-          source_faces_compatible(options, current.side.sourceFace,
+          source_faces_share_component(options, current.side.sourceFace,
                                   side.sourceFace)) {
         return {RailContinuationStatus::Found, {&interval, side}};
       }
@@ -1213,7 +1236,7 @@ VertexContinuationResult resolve_vertex_continuation(
         featureBlocked = true;
         continue;
       }
-      if (!source_faces_compatible(options, path.face, step.face)) {
+      if (!source_faces_share_component(options, path.face, step.face)) {
         sourceSheetBlocked = true;
         continue;
       }
@@ -1688,6 +1711,23 @@ bool trace_respects_face_labels(const SurfaceTraceResult &trace,
   return true;
 }
 
+bool trace_respects_source_component(const SurfaceTraceResult &trace,
+                                     const std::vector<int> &components) {
+  int expectedComponent = -1;
+  for (const SurfaceTraceSegment &segment : trace.segments) {
+    const int component = face_label_or_default(components, segment.face, -1);
+    if (component < 0) {
+      return false;
+    }
+    if (expectedComponent < 0) {
+      expectedComponent = component;
+    } else if (component != expectedComponent) {
+      return false;
+    }
+  }
+  return true;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -2045,7 +2085,7 @@ IntrinsicSurfaceGraph build_intrinsic_surface_graph(
   const auto edgeFaces = edge_faces(faces);
   for (const auto &[key, pair] : edgeFaces) {
     if (pair[0] < 0 || pair[1] < 0 || barrierEdges.count(key) != 0 ||
-        !source_faces_compatible(options, pair[0], pair[1])) {
+        !source_faces_share_component(options, pair[0], pair[1])) {
       continue;
     }
     const int vertex0 = static_cast<int>(key >> 32u);
@@ -2242,7 +2282,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   const auto incident =
       surface_cell_tracing_detail::incident_faces_by_vertex(vertexCount, faces);
   std::vector<SurfaceTraceSeed> seeds;
-  std::set<std::tuple<int, int, int, int>> seen;
+  std::set<std::tuple<int, std::int64_t, std::int64_t, std::int64_t>> seen;
 
   if (!options.authoritativeRails.empty()) {
     for (const SurfaceCellRail &rail : options.authoritativeRails) {
@@ -2259,6 +2299,30 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
         point.barycentric = sample.barycentric;
         surface_cell_tracing_detail::append_seed(seeds, seen, point, provenance,
                                                  rail.id);
+        // A hard feature is embedded in both incident face charts. Seed both
+        // sides so transverse field branches connect the rail to cells on each
+        // side instead of depending on the arbitrary provenance face.
+        if (rail.kind == SurfaceCellRailKind::HardFeature &&
+            sample.sourceEdge >= 0 && sample.sourceEdge < 3) {
+          const int a =
+              faces(sample.sourceFace, (sample.sourceEdge + 1) % 3);
+          const int b =
+              faces(sample.sourceFace, (sample.sourceEdge + 2) % 3);
+          const auto found = edgeFaces.find(
+              surface_cell_tracing_detail::edge_key(a, b));
+          if (found != edgeFaces.end() && found->second[1] >= 0) {
+            const int neighbor = found->second[0] == sample.sourceFace
+                                     ? found->second[1]
+                                     : found->second[0];
+            SurfaceTracePoint opposite;
+            opposite.face = neighbor;
+            opposite.barycentric =
+                surface_cell_tracing_detail::remap_barycentric_to_neighbor(
+                    faces, sample.sourceFace, neighbor, sample.barycentric);
+            surface_cell_tracing_detail::append_seed(
+                seeds, seen, opposite, provenance, rail.id);
+          }
+        }
       }
     }
   } else {
@@ -2397,7 +2461,32 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     const auto worst = uncovered.top();
     SurfaceTracePoint point;
     point.face = worst.face;
-    point.barycentric[worst.corner] = 1.0;
+    // Coverage candidates are cell centers, not topological anchors. Move the
+    // selected corner toward its face centroid by a target-size-relative
+    // amount. The resulting seed stays within h/4 of the uncovered corner, so
+    // the coverage iteration makes progress while avoiding vertex ambiguity.
+    const double h =
+        options.coverageRadiusFactor *
+        surface_cell_tracing_detail::target_size_at_vertex(
+            targetSize, worst.vertex, options.defaultTargetSize);
+    const Eigen::RowVector3d vertexPosition =
+        surface_cell_tracing_detail::row3(vertices, worst.vertex);
+    Eigen::RowVector3d faceCentroid = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 3; ++corner) {
+      faceCentroid += surface_cell_tracing_detail::row3(
+                          vertices, faces(worst.face, corner)) /
+                      3.0;
+    }
+    const double cornerToCentroid =
+        (faceCentroid - vertexPosition).norm();
+    if (!(h > 0.0) || !(cornerToCentroid > 0.0)) {
+      throw std::runtime_error(
+          "intrinsic farthest-point sampling found a degenerate candidate.");
+    }
+    const double blend =
+        std::clamp(0.25 * h / cornerToCentroid, 1.0e-12, 0.5);
+    point.barycentric = Eigen::RowVector3d::Constant(blend / 3.0);
+    point.barycentric[worst.corner] += 1.0 - blend;
     const std::size_t oldSize = seeds.size();
     surface_cell_tracing_detail::append_seed(
         seeds, seen, point, SurfaceSeedProvenance::AdaptiveFarthest,
@@ -2871,7 +2960,8 @@ SurfaceTraceResult trace_surface_field(
   if (initialVertexCorner >= 0) {
     const int initialVertex = faces(current.face, initialVertexCorner);
     if (surface_cell_tracing_detail::contains_vertex(
-            options.singularityVertices, initialVertex)) {
+            options.singularityVertices, initialVertex) &&
+        seed.provenance != SurfaceSeedProvenance::Singularity) {
       result.termination = TraceTerminationReason::Singularity;
       return result;
     }
@@ -2916,6 +3006,112 @@ SurfaceTraceResult trace_surface_field(
       currentFamily = continuation.family;
       currentSign = continuation.sign;
       direction = continuation.direction;
+    }
+  }
+
+  // Edge-backed rail seeds need the same wedge resolution as vertex seeds.
+  // Without it, a branch pointing into the opposite incident face starts at
+  // barycentric zero and marches outside the current triangle because the
+  // zero-length edge exit is ignored by the positive-step intersection test.
+  if (initialVertexCorner < 0) {
+    int initialEdge = -1;
+    for (int edge = 0; edge < 3; ++edge) {
+      if (surface_cell_tracing_detail::point_on_edge(current.barycentric,
+                                                     edge)) {
+        initialEdge = edge;
+        break;
+      }
+    }
+    if (initialEdge >= 0) {
+      const Eigen::RowVector3d initialNormal =
+          surface_cell_tracing_detail::face_normal(vertices, faces,
+                                                   current.face);
+      direction =
+          surface_cell_tracing_detail::project_tangent(direction, initialNormal);
+      Eigen::RowVector3d derivative;
+      if (direction.squaredNorm() == 0.0 ||
+          !surface_cell_tracing_detail::barycentric_derivative(
+              vertices, faces, current.face, direction, derivative)) {
+        result.termination = TraceTerminationReason::Degenerate;
+        return result;
+      }
+      const int a = faces(current.face, (initialEdge + 1) % 3);
+      const int b = faces(current.face, (initialEdge + 2) % 3);
+      const std::uint64_t key =
+          surface_cell_tracing_detail::edge_key(a, b);
+      const bool hardBarrier = options.hardFeatureEdges.count(key) != 0;
+      const bool reliefBarrier =
+          options.reliefBarriersEmbedded &&
+          options.reliefBarrierEdges.count(key) != 0;
+      const Eigen::RowVector3d edgeDirection =
+          (surface_cell_tracing_detail::row3(vertices, b) -
+           surface_cell_tracing_detail::row3(vertices, a))
+              .normalized();
+      const double railAlignment = std::abs(edgeDirection.dot(direction));
+
+      if (hardBarrier && options.followCompatibleHardFeatureRails &&
+          railAlignment >= 0.7) {
+        activeRail = surface_cell_tracing_detail::find_rail_interval(
+            railIntervals, current.face, initialEdge);
+        if (activeRail.interval == nullptr) {
+          result.termination = TraceTerminationReason::Feature;
+          return result;
+        }
+        const Eigen::RowVector3d railDelta =
+            activeRail.interval->end.position -
+            activeRail.interval->start.position;
+        activeRailDirection = railDelta.dot(direction) >= 0.0 ? 1 : -1;
+        activeRailT =
+            surface_cell_tracing_detail::rail_parameter_at_position(
+                *activeRail.interval,
+                surface_cell_tracing_detail::point_position(vertices, faces,
+                                                             current));
+        direction = surface_cell_tracing_detail::rail_direction(
+            *activeRail.interval, activeRailDirection);
+        entryEdge = initialEdge;
+      } else if (derivative[initialEdge] < -1.0e-12) {
+        if (hardBarrier || reliefBarrier) {
+          result.termination = TraceTerminationReason::Feature;
+          return result;
+        }
+        const auto found = edgeFaces.find(key);
+        if (found == edgeFaces.end() || found->second[1] < 0) {
+          result.termination = TraceTerminationReason::Boundary;
+          return result;
+        }
+        const int nextFace = found->second[0] == current.face
+                                 ? found->second[1]
+                                 : found->second[0];
+        if (!surface_cell_tracing_detail::source_faces_share_component(
+                options, current.face, nextFace)) {
+          result.termination = TraceTerminationReason::SourceSheet;
+          return result;
+        }
+        const surface_cell_tracing_detail::BranchTransitionResult transition =
+            surface_cell_tracing_detail::resolve_branch_transition(
+                vertices, faces, faceAxisX, faceAxisY, edgeFaces,
+                edgeMatchingIndices, transitionLookup, key, current.face,
+                nextFace, currentFamily, currentSign, direction, edgeMatching,
+                edgeEffort, edgeTransitions);
+        if (!transition.valid) {
+          result.termination = TraceTerminationReason::FieldMetadata;
+          return result;
+        }
+        current.barycentric =
+            surface_cell_tracing_detail::remap_barycentric_to_neighbor(
+                faces, current.face, nextFace, current.barycentric);
+        current.face = nextFace;
+        currentFamily = transition.family;
+        currentSign = transition.sign;
+        direction = transition.direction;
+        entryEdge =
+            surface_cell_tracing_detail::local_edge_for_key(faces, nextFace,
+                                                            key);
+        if (entryEdge < 0) {
+          result.termination = TraceTerminationReason::FieldMetadata;
+          return result;
+        }
+      }
     }
   }
 
@@ -2979,7 +3175,18 @@ SurfaceTraceResult trace_surface_field(
         nextBary[corner] = 0.0;
       }
     }
-    nextBary /= nextBary.sum();
+    const double nextBarySum = nextBary.sum();
+    if (!nextBary.array().isFinite().all() ||
+        !std::isfinite(nextBarySum) || std::abs(nextBarySum) <= 1.0e-14) {
+      result.termination = TraceTerminationReason::Degenerate;
+      return result;
+    }
+    nextBary /= nextBarySum;
+    if (nextBary.minCoeff() < -1.0e-10 ||
+        nextBary.maxCoeff() > 1.0 + 1.0e-10) {
+      result.termination = TraceTerminationReason::Degenerate;
+      return result;
+    }
 
     SurfaceTracePoint nextPoint;
     nextPoint.face = current.face;
@@ -3091,7 +3298,7 @@ SurfaceTraceResult trace_surface_field(
         }
         const surface_cell_tracing_detail::SurfaceCellRailIntervalSelection nextRail =
             continuation.selection;
-        if (!surface_cell_tracing_detail::source_faces_compatible(
+        if (!surface_cell_tracing_detail::source_faces_share_component(
                 options, activeRail.side.sourceFace, nextRail.side.sourceFace)) {
           result.termination = TraceTerminationReason::SourceSheet;
           return result;
@@ -3193,7 +3400,7 @@ SurfaceTraceResult trace_surface_field(
     }
     const int nextFace =
         found->second[0] == current.face ? found->second[1] : found->second[0];
-    if (!surface_cell_tracing_detail::source_faces_compatible(options,
+    if (!surface_cell_tracing_detail::source_faces_share_component(options,
                                                               current.face,
                                                               nextFace)) {
       result.termination = TraceTerminationReason::SourceSheet;

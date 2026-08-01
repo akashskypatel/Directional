@@ -269,6 +269,12 @@ bool arc_has_complete_provenance(const FlowRepArc &arc) {
            arc.strandProvenance >= 0 &&
            (arc.boundaryRail || arc.hardFeatureRail);
   }
+  if (arc.layoutSupport) {
+    return !arc.boundaryRail && !arc.hardFeatureRail && arc.railId < 0 &&
+           arc.curveId < 0 && arc.proposalId < 0 && arc.supportTraceId >= 0 &&
+           arc.supportSeedId >= 0 && arc.supportSegment >= 0 &&
+           arc.sameStrandHint == arc.supportTraceId;
+  }
   return arc.proposalId >= 0 && arc.proposalSide >= 0 &&
          arc.proposalSide < 6 && arc.proposalBoundarySegment >= 0;
 }
@@ -385,7 +391,10 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
                                   const bool mandatory, const int proposalId,
                                   const int proposalSeedId,
                                   const int proposalSide,
-                                  const int proposalBoundarySegment) {
+                                  const int proposalBoundarySegment,
+                                  const int supportTraceId,
+                                  const int supportSeedId,
+                                  const int supportSegment) {
     FlowRepArc arc;
     arc.id = static_cast<int>(arcs.size());
     arc.start = surface_cell_tracing_detail::point_position(
@@ -408,6 +417,14 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     arc.proposalSeedId = proposalSeedId;
     arc.proposalSide = proposalSide;
     arc.proposalBoundarySegment = proposalBoundarySegment;
+    arc.layoutSupport = supportTraceId >= 0;
+    arc.supportTraceId = supportTraceId;
+    arc.supportSeedId = supportSeedId;
+    arc.supportSegment = supportSegment;
+    if (arc.layoutSupport) {
+      arc.strandProvenance = -2 - supportTraceId;
+      arc.sameStrandHint = supportTraceId;
+    }
     arc.hardFeatureRail = mandatory || segment.railId >= 0;
     arc.mandatoryRail = mandatory || segment.railId >= 0;
     if (segment.railId >= 0) {
@@ -460,8 +477,100 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arcs.push_back(arc);
     }
   }
-  // Half traces are diagnostic exploration only. FlowRep receives complete,
-  // prevalidated cell-boundary cycles and authoritative rails exclusively.
+
+  // An open boundary/feature rail is a bridge unless the field layout connects
+  // it to surrounding cells, and a cross-field singularity must emit its
+  // separatrix branches to become an explicit layout node. Retain these
+  // deterministic anchored traces as optional layout support. Traces that run
+  // along a rail are already represented by the authoritative rail arc,
+  // while budget/degenerate endpoints remain unresolved and are intentionally
+  // excluded. A whole-path canonical key removes the same connector traced in
+  // opposite directions without collapsing distinct paths that merely share a
+  // segment or endpoint.
+  std::set<std::vector<std::int64_t>> supportPathKeys;
+  const auto quantized_barycentric = [](const double value) {
+    return static_cast<std::int64_t>(std::llround(value * 1.0e12));
+  };
+  const auto encode_support_path = [&](const std::vector<SurfaceTraceSegment> &path,
+                                       const bool reverse) {
+    std::vector<std::int64_t> key;
+    key.reserve(8U * path.size());
+    for (int offset = 0; offset < static_cast<int>(path.size()); ++offset) {
+      const int index = reverse ? static_cast<int>(path.size()) - 1 - offset
+                                : offset;
+      const SurfaceTraceSegment &segment =
+          path[static_cast<std::size_t>(index)];
+      const Eigen::RowVector3d &start =
+          reverse ? segment.endBarycentric : segment.startBarycentric;
+      const Eigen::RowVector3d &end =
+          reverse ? segment.startBarycentric : segment.endBarycentric;
+      key.push_back(segment.face);
+      key.push_back(segment.family);
+      for (int corner = 0; corner < 3; ++corner) {
+        key.push_back(quantized_barycentric(start[corner]));
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        key.push_back(quantized_barycentric(end[corner]));
+      }
+    }
+    return key;
+  };
+  const auto terminal_is_embedded_anchor = [](const TraceTerminationReason reason) {
+    return reason == TraceTerminationReason::Boundary ||
+           reason == TraceTerminationReason::Feature ||
+           reason == TraceTerminationReason::Captured ||
+           reason == TraceTerminationReason::Singularity ||
+           reason == TraceTerminationReason::RepeatedState;
+  };
+  if (network.traces.size() == 4U * network.seeds.size()) {
+    for (int seedIndex = 0;
+         seedIndex < static_cast<int>(network.seeds.size()); ++seedIndex) {
+      const SurfaceTraceSeed &seed =
+          network.seeds[static_cast<std::size_t>(seedIndex)];
+      if (seed.provenance != SurfaceSeedProvenance::Boundary &&
+          seed.provenance != SurfaceSeedProvenance::Feature &&
+          seed.provenance != SurfaceSeedProvenance::Singularity) {
+        continue;
+      }
+      for (int branch = 0; branch < 4; ++branch) {
+        const int traceId = 4 * seedIndex + branch;
+        const SurfaceTraceResult &trace =
+            network.traces[static_cast<std::size_t>(traceId)];
+        if (trace.segments.empty() ||
+            !terminal_is_embedded_anchor(trace.termination) ||
+            trace.segments.front().railId >= 0) {
+          continue;
+        }
+        std::vector<SurfaceTraceSegment> supportPath;
+        for (const SurfaceTraceSegment &segment : trace.segments) {
+          if (segment.railId >= 0) {
+            break;
+          }
+          supportPath.push_back(segment);
+        }
+        if (supportPath.empty()) {
+          continue;
+        }
+        std::vector<std::int64_t> forward =
+            encode_support_path(supportPath, false);
+        std::vector<std::int64_t> reverse =
+            encode_support_path(supportPath, true);
+        std::vector<std::int64_t> canonical =
+            reverse < forward ? std::move(reverse) : std::move(forward);
+        if (!supportPathKeys.insert(std::move(canonical)).second) {
+          continue;
+        }
+        for (int segmentIndex = 0;
+             segmentIndex < static_cast<int>(supportPath.size());
+             ++segmentIndex) {
+          append_segment(supportPath[static_cast<std::size_t>(segmentIndex)],
+                         false, -1, -1, -1, -1, traceId, seed.id,
+                         segmentIndex);
+        }
+      }
+    }
+  }
+
   for (int proposalId = 0;
        proposalId < static_cast<int>(network.proposals.size()); ++proposalId) {
     const SurfaceCellProposal &proposal =
@@ -478,7 +587,8 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
            segmentIndex < static_cast<int>(boundaryPath.size());
            ++segmentIndex) {
         append_segment(boundaryPath[static_cast<std::size_t>(segmentIndex)],
-                       false, proposalId, proposal.seedId, side, segmentIndex);
+                       false, proposalId, proposal.seedId, side, segmentIndex,
+                       -1, -1, -1);
       }
     }
   }
@@ -1197,13 +1307,14 @@ namespace directional::geometry::flow_rep_detail {
 
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
   if (arc.mandatoryRail || arc.railId >= 0) {
-    return {0, arc.railId, arc.curveId, arc.family, arc.sourceSheet};
+    return {0, arc.railId, arc.curveId, arc.family, arc.sourceComponent};
   }
   if (arc.proposalId >= 0 && arc.proposalSide >= 0) {
-    return {1, arc.proposalId, arc.proposalSide, arc.family, arc.sourceSheet};
+    return {1, arc.proposalId, arc.proposalSide, arc.family,
+            arc.sourceComponent};
   }
   return {2, arc.sameStrandHint, arc.family, arc.sourceComponent,
-          arc.sourceSheet};
+          arc.sourceComponent};
 }
 
 } // namespace directional::geometry::flow_rep_detail
@@ -1218,7 +1329,6 @@ std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
     h *= 1099511628211ULL;
   };
   mix(arc.sourceComponent);
-  mix(arc.sourceSheet);
   return h;
 }
 
@@ -1570,16 +1680,16 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
     return finish_failure(FlowRepSelectionFailureCode::EmptyNetwork);
   }
 
-  // A network containing only authoritative rails has no optional strand to
-  // simplify. Treat it as a successful no-op, but still validate and report
-  // the evidence supplied by the producer. Coverage samples prove that the
-  // retained rails represent their embedded geometry. Closed boundary rails
-  // provide cycle evidence even though they are constraints rather than
-  // proposal-generated cell boundaries.
+  // A network containing only authoritative rails and anchored layout-support
+  // traces has no proposal cycle on which FlowRep can transact. Treat it as a
+  // successful no-op, but still validate and report the supplied coverage.
+  // This does not fabricate cycle evidence: closed boundary rails are counted
+  // only when they actually close, and support-only networks report zero.
   const bool constraintOnlyNetwork =
       std::all_of(denseArcIds.begin(), denseArcIds.end(), [&](const int arcId) {
         const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
-        return arc.mandatoryRail || arc.boundaryRail || arc.hardFeatureRail;
+        return arc.mandatoryRail || arc.boundaryRail || arc.hardFeatureRail ||
+               arc.layoutSupport;
       });
   if (constraintOnlyNetwork) {
     if (!coverageSamples.empty()) {

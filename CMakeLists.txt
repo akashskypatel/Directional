@@ -170,6 +170,7 @@ add_library(
   src/geometry/Streamlines.cpp
   src/geometry/SurfaceArrangement.cpp
   src/geometry/SurfaceCellTracing.cpp
+  src/geometry/SurfaceCellFeasibilityRepair.cpp
   src/geometry/SurfaceComplexSimplification.cpp
   src/geometry/SurfaceMeshOptimizer.cpp
   src/geometry/SurfaceOptimizationRailConstraints.cpp

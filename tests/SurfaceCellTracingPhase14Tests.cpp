@@ -405,7 +405,57 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(1, seeds[1].point.face);
   EXPECT_EQ(directional::geometry::SurfaceSeedProvenance::AdaptiveFarthest,
             seeds[1].provenance);
-  EXPECT_NEAR(1.0, seeds[1].point.barycentric[0], 1.0e-12);
+  EXPECT_GT(seeds[1].point.barycentric.minCoeff(), 0.0);
+  EXPECT_LT(seeds[1].point.barycentric.maxCoeff(), 1.0);
+  const Eigen::RowVector3d adaptivePosition =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          split.vertices, split.faces, seeds[1].point);
+  EXPECT_LT((adaptivePosition - split.vertices.row(0)).norm(),
+            targetSize[0]);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     InteriorHardRailSeedsBothIncidentFaceCharts) {
+  const MeshFixture mesh = make_grid(1);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 10.0);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 10.0;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 19;
+  rail.curveId = 7;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.samples = {
+      rail_sample(mesh, 0, 1, 0.0, 0.0,
+                  Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
+      rail_sample(mesh, 0, 1, 1.0, 1.0,
+                  Eigen::RowVector3d(0.0, 0.0, 1.0), 3)};
+  options.authoritativeRails.push_back(rail);
+
+  const auto seeds = directional::geometry::generate_deterministic_surface_seeds(
+      mesh.vertices, mesh.faces, targetSize, options);
+
+  ASSERT_EQ(4U, seeds.size());
+  std::set<std::pair<int, int>> endpointCharts;
+  for (const auto &seed : seeds) {
+    EXPECT_EQ(directional::geometry::SurfaceSeedProvenance::Feature,
+              seed.provenance);
+    EXPECT_EQ(19, seed.sourceId);
+    const Eigen::Index corner = [&]() {
+      Eigen::Index index = 0;
+      seed.point.barycentric.maxCoeff(&index);
+      return index;
+    }();
+    ASSERT_GT(seed.point.barycentric[corner], 1.0 - 1.0e-12);
+    endpointCharts.insert(
+        {mesh.faces(seed.point.face, static_cast<int>(corner)),
+         seed.point.face});
+  }
+  EXPECT_EQ((std::set<std::pair<int, int>>{{0, 0}, {0, 1}, {3, 0}, {3, 1}}),
+            endpointCharts);
 }
 
 TEST(SurfaceCellTracingPhase14,
@@ -485,9 +535,11 @@ TEST(SurfaceCellTracingPhase14,
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 10.0;
   options.sourceFaceComponents = {0, 0, 0, 0};
-  options.sourceFaceSheets = {0, 0, 0, 1};
+  options.sourceFaceSheets = {0, 0, 0, 0};
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 1));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 4));
 
   const auto trace = directional::geometry::trace_surface_field(
       mesh.vertices, mesh.faces, x, y, seed, 0, 1, options, nullptr, nullptr,
@@ -521,7 +573,14 @@ TEST(SurfaceCellTracingPhase14,
 
   directional::geometry::SurfaceCellTracingOptions options;
   options.sourceFaceComponents = {0, 0, 0, 0};
-  options.sourceFaceSheets = {0, 0, 1, 0};
+  options.sourceFaceSheets = {0, 0, 0, 0};
+  // Bound the candidate wedge with real topology constraints. Local sheet IDs
+  // are query/projection charts and must not be abused to remove valid vertex
+  // continuation candidates from this matching-effort test.
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
+  options.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(0, 4));
   const auto edgeFaces =
       directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
   const auto indices = directional::geometry::surface_cell_tracing_detail::
@@ -798,6 +857,31 @@ TEST(SurfaceCellTracingPhase14, ExactSourceVertexHitTerminatesAsSingularity) {
             directional::geometry::TraceTerminationReason::Singularity);
 }
 
+TEST(SurfaceCellTracingPhase14,
+     SingularitySeedEmitsOutgoingSeparatrixBranch) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 9;
+  seed.point.face = 0;
+  seed.point.barycentric << 1.0, 0.0, 0.0;
+  seed.provenance =
+      directional::geometry::SurfaceSeedProvenance::Singularity;
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.singularityVertices.push_back(0);
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_NE(trace.termination,
+            directional::geometry::TraceTerminationReason::Singularity);
+  EXPECT_NEAR(1.0, trace.segments.front().startBarycentric.sum(), 1.0e-12);
+  EXPECT_GE(trace.segments.front().startBarycentric.minCoeff(), -1.0e-12);
+}
+
 TEST(SurfaceCellTracingPhase14, CaptureRadiusTerminatesOnCompatibleTraceNode) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
@@ -1023,7 +1107,8 @@ TEST(SurfaceCellTracingPhase14,
                   directional::geometry::TraceTerminationReason::Boundary);
 }
 
-TEST(SurfaceCellTracingPhase14, SourceSheetMismatchTerminatesInteriorEdgeTransition) {
+TEST(SurfaceCellTracingPhase14,
+     AdjacentLocalSheetChartsAllowInteriorEdgeTransition) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
   constant_axes(mesh, x, y);
@@ -1038,13 +1123,14 @@ TEST(SurfaceCellTracingPhase14, SourceSheetMismatchTerminatesInteriorEdgeTransit
   const auto trace = directional::geometry::trace_surface_field(
       mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
 
-  EXPECT_EQ(trace.termination,
+  ASSERT_GE(trace.segments.size(), 2U);
+  EXPECT_EQ(1, trace.segments[1].face);
+  EXPECT_NE(trace.termination,
             directional::geometry::TraceTerminationReason::SourceSheet);
-  ASSERT_FALSE(trace.segments.empty());
-  EXPECT_EQ(0, trace.segments.back().face);
 }
 
-TEST(SurfaceCellTracingPhase14, EqualSourceSheetAllowsInteriorTransition) {
+TEST(SurfaceCellTracingPhase14,
+     SourceComponentMismatchTerminatesInteriorEdgeTransition) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
   constant_axes(mesh, x, y);
@@ -1053,17 +1139,20 @@ TEST(SurfaceCellTracingPhase14, EqualSourceSheetAllowsInteriorTransition) {
   seed.point.barycentric << 0.25, 0.25, 0.5;
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 10.0;
-  options.sourceFaceComponents = {0, 0};
-  options.sourceFaceSheets = {0, 0};
+  options.sourceFaceComponents = {0, 1};
+  options.sourceFaceSheets = {0, 1};
 
   const auto trace = directional::geometry::trace_surface_field(
       mesh.vertices, mesh.faces, x, y, seed, 0, -1, options);
 
-  ASSERT_GE(trace.segments.size(), 2U);
-  EXPECT_EQ(1, trace.segments[1].face);
+  EXPECT_EQ(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  ASSERT_FALSE(trace.segments.empty());
+  EXPECT_EQ(0, trace.segments.back().face);
 }
 
-TEST(SurfaceCellTracingPhase14, SourceSheetMismatchBlocksVertexContinuation) {
+TEST(SurfaceCellTracingPhase14,
+     AdjacentLocalSheetChartsAllowVertexContinuation) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
   constant_axes(mesh, x, y);
@@ -1077,6 +1166,30 @@ TEST(SurfaceCellTracingPhase14, SourceSheetMismatchBlocksVertexContinuation) {
   directional::geometry::SurfaceCellTracingOptions options;
   options.maxTraceLength = 10.0;
   options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto trace = directional::geometry::trace_surface_field(
+      mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
+
+  EXPECT_NE(trace.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceComponentMismatchBlocksVertexContinuation) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.5, 0.25, 0.25;
+  const Eigen::RowVector3d start =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          mesh.vertices, mesh.faces, seed.point);
+  x.row(0) = (mesh.vertices.row(0) - start).normalized();
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.sourceFaceComponents = {0, 1};
   options.sourceFaceSheets = {0, 1};
 
   const auto trace = directional::geometry::trace_surface_field(
@@ -1106,7 +1219,8 @@ TEST(SurfaceCellTracingPhase14, InvalidSourceSheetArraysFailClosed) {
   EXPECT_TRUE(trace.segments.empty());
 }
 
-TEST(SurfaceCellTracingPhase14, CellProposalRejectsSourceSheetCrossing) {
+TEST(SurfaceCellTracingPhase14,
+     CellProposalMayCrossAdjacentLocalSheetCharts) {
   const MeshFixture mesh = make_grid(1);
   Eigen::MatrixXd x, y;
   constant_axes(mesh, x, y);
@@ -1121,6 +1235,32 @@ TEST(SurfaceCellTracingPhase14, CellProposalRejectsSourceSheetCrossing) {
   options.maxTraceLength = 2.0;
   options.closureToleranceFactor = 10.0;
   options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto proposal = directional::geometry::make_surface_cell_proposal(
+      mesh.vertices, mesh.faces, x, y, targetSize, seed, options);
+
+  EXPECT_TRUE(proposal.accepted);
+  EXPECT_EQ(directional::geometry::CellRejectionReason::Accepted,
+            proposal.rejection);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     CellProposalRejectsSourceComponentCrossing) {
+  const MeshFixture mesh = make_grid(1);
+  Eigen::MatrixXd x, y;
+  constant_axes(mesh, x, y);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 0.75);
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 11;
+  seed.point.face = 0;
+  seed.point.barycentric << 0.25, 0.25, 0.5;
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.75;
+  options.maxTraceLength = 2.0;
+  options.closureToleranceFactor = 10.0;
+  options.sourceFaceComponents = {0, 1};
   options.sourceFaceSheets = {0, 1};
 
   const auto proposal = directional::geometry::make_surface_cell_proposal(
@@ -1346,7 +1486,7 @@ TEST(SurfaceCellTracingPhase14,
 }
 
 TEST(SurfaceCellTracingPhase14,
-     HardFeatureRailContinuationHonorsSourceSheetLabels) {
+     HardFeatureRailContinuationCrossesAdjacentLocalSheetCharts) {
   const MeshFixture mesh = make_grid(2);
   Eigen::MatrixXd x, y;
   constant_axes(mesh, x, y);
@@ -1383,14 +1523,27 @@ TEST(SurfaceCellTracingPhase14,
       mesh.vertices, mesh.faces, x, y, seed, 1, 1, options);
 
   EXPECT_EQ(trace.termination,
-            directional::geometry::TraceTerminationReason::SourceSheet);
+            directional::geometry::TraceTerminationReason::Feature);
   EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
         return segment.railId == 93 && segment.railIntervalIndex == 0;
       }));
-  EXPECT_FALSE(std::any_of(
+  EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
+      [](const directional::geometry::SurfaceTraceSegment &segment) {
+        return segment.railId == 93 && segment.railIntervalIndex == 1;
+      }));
+
+  options.sourceFaceComponents[4] = 1;
+  options.sourceFaceComponents[7] = 1;
+  const auto componentBlocked =
+      directional::geometry::trace_surface_field(
+          mesh.vertices, mesh.faces, x, y, seed, 1, 1, options);
+  EXPECT_EQ(componentBlocked.termination,
+            directional::geometry::TraceTerminationReason::SourceSheet);
+  EXPECT_FALSE(std::any_of(
+      componentBlocked.segments.begin(), componentBlocked.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
         return segment.railId == 93 && segment.railIntervalIndex == 1;
       }));

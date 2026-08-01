@@ -695,6 +695,10 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, arc.proposalSeedId);
     hash_combine_i64(seed, arc.proposalSide);
     hash_combine_i64(seed, arc.proposalBoundarySegment);
+    hash_combine_i64(seed, arc.layoutSupport ? 1 : 0);
+    hash_combine_i64(seed, arc.supportTraceId);
+    hash_combine_i64(seed, arc.supportSeedId);
+    hash_combine_i64(seed, arc.supportSegment);
     hash_vector(seed, arc.substitutions);
   }
   hash_combine_u64(seed, input.coverageSamples.size());
@@ -3968,6 +3972,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     const geometry::SurfaceCellComplexCompletionResult completionResult =
         geometry::complete_surface_cell_complex(
             completionComplex, meshWhole.V, meshWhole.F, completionOptions);
+    result.surfaceCellContext.completionOddCellsBeforeRepair =
+        completionResult.parityOddCellsBefore;
+    result.surfaceCellContext.completionOddCellsAfterRepair =
+        completionResult.parityOddCellsAfter;
+    result.surfaceCellContext.completionParitySplitEdges =
+        completionResult.paritySplitEdges;
+    result.surfaceCellContext.completionParityHardFeatureSplits =
+        completionResult.parityHardFeatureSplits;
+    if (completionResult.hasPreparedComplex) {
+      result.surfaceCellContext.completionComplex =
+          completionResult.preparedComplex;
+      result.surfaceCellContext.hasCompletionComplex = true;
+    }
     result.surfaceCellContext.patchDescriptors =
         completionResult.descriptors.descriptors;
     result.surfaceCellContext.hasPatchDescriptors =

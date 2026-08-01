@@ -355,8 +355,23 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     const Eigen::MatrixXi &F,
     const SurfaceCellComplexCompletionOptions &options) {
   SurfaceCellComplexCompletionResult result;
+  const SurfaceCellParityRepairResult parityRepair =
+      repair_surface_cell_boundary_parity(complex);
+  result.parityOddCellsBefore = parityRepair.oddCellsBefore;
+  result.parityOddCellsAfter = parityRepair.oddCellsAfter;
+  result.paritySplitEdges =
+      static_cast<int>(parityRepair.splitHalfedges.size());
+  result.parityHardFeatureSplits = parityRepair.hardFeatureSplits;
+  if (!parityRepair.success) {
+    result.failure = "BoundaryParityRepair:" + parityRepair.failure;
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  result.preparedComplex = parityRepair.complex;
+  result.hasPreparedComplex = true;
+  const SurfaceCellComplex &prepared = result.preparedComplex;
   result.descriptors = derive_patch_descriptors(
-      complex, V, F, options.descriptorOptions);
+      prepared, V, F, options.descriptorOptions);
   if (result.descriptors.descriptors.empty()) {
     result.failure = "NoPatchDescriptors";
     result.assembly.failure = result.failure;

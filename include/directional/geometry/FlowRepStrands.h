@@ -98,6 +98,13 @@ struct FlowRepArc {
   int proposalSeedId = -1;
   int proposalSide = -1;
   int proposalBoundarySegment = -1;
+  /// A field-aligned connector emitted from a boundary/feature rail seed.
+  /// These arcs complete the layout graph but are not authoritative rails and
+  /// may be simplified only when endpoint, coverage, and cycle guards permit.
+  bool layoutSupport = false;
+  int supportTraceId = -1;
+  int supportSeedId = -1;
+  int supportSegment = -1;
   std::vector<int> substitutions;
 };
 

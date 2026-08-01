@@ -1,4 +1,5 @@
 #include <directional/geometry/PatchDescriptor.h>
+#include <directional/geometry/SurfaceComplexSimplification.h>
 
 #include <gtest/gtest.h>
 
@@ -135,6 +136,63 @@ TEST(PatchDescriptorMilestoneE, RejectsOddBoundaryAndHardBarrierCrossing) {
         descriptor.feasibility.reason,
         directional::geometry::PureQuadPatchRejectReason::HardFeatureCrossing);
   }
+}
+
+TEST(PatchDescriptorMilestoneE,
+     SharedEdgeParityRepairConforminglyCompletesTwoOddCells) {
+  Eigen::MatrixXd V(4, 3);
+  V << 0.0, 0.0, 0.0,
+       1.0, 0.0, 0.0,
+       1.0, 1.0, 0.0,
+       0.0, 1.0, 0.0;
+  Eigen::MatrixXi F(2, 3);
+  F << 0, 1, 2,
+       0, 2, 3;
+  directional::geometry::SurfaceArrangementArc first;
+  first.id = 0;
+  first.sourceFace = 0;
+  first.startBarycentric << 1.0, 0.0, 0.0;
+  first.endBarycentric << 0.0, 0.0, 1.0;
+  first.family = 0;
+  first.strand = 7;
+  first.sourceComponent = 0;
+  first.sourceSheet = 0;
+  directional::geometry::SurfaceArrangementArc second = first;
+  second.id = 1;
+  second.sourceFace = 1;
+  second.startBarycentric << 1.0, 0.0, 0.0;
+  second.endBarycentric << 0.0, 1.0, 0.0;
+  const directional::geometry::SurfaceCellComplex complex =
+      directional::geometry::build_surface_cell_complex(V, F, {first, second});
+  ASSERT_TRUE(complex.diagnostics.topologyValid);
+  const int oddBefore = static_cast<int>(std::count_if(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return !cell.boundaryCycle && cell.halfedges.size() % 2U != 0U;
+      }));
+  ASSERT_EQ(2, oddBefore);
+
+  const auto repaired =
+      directional::geometry::repair_surface_cell_boundary_parity(complex);
+  ASSERT_TRUE(repaired.success) << repaired.failure;
+  EXPECT_EQ(2, repaired.oddCellsBefore);
+  EXPECT_EQ(0, repaired.oddCellsAfter);
+  EXPECT_FALSE(repaired.splitHalfedges.empty());
+  EXPECT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(repaired.complex));
+  for (const auto &cell : repaired.complex.cells) {
+    if (!cell.boundaryCycle) {
+      EXPECT_EQ(0U, cell.halfedges.size() % 2U);
+    }
+  }
+
+  const auto completion =
+      directional::geometry::complete_surface_cell_complex(complex, V, F);
+  ASSERT_TRUE(completion.success) << completion.failure;
+  EXPECT_EQ(2, completion.parityOddCellsBefore);
+  EXPECT_EQ(0, completion.parityOddCellsAfter);
+  EXPECT_GT(completion.paritySplitEdges, 0);
+  EXPECT_TRUE(completion.hasPreparedComplex);
+  EXPECT_FALSE(completion.assembly.mesh.quads.empty());
 }
 
 TEST(PatchDescriptorMilestoneE, RejectsNonDiskAndBrokenBoundaryCycle) {

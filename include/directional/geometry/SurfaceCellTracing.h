@@ -328,7 +328,8 @@ double target_size_at_vertex(const Eigen::VectorXd &targetSize,
                                     const double fallback);
 
 void append_seed(std::vector<SurfaceTraceSeed> &seeds,
-                        std::set<std::tuple<int, int, int, int>> &seen,
+                        std::set<std::tuple<int, std::int64_t, std::int64_t,
+                                                std::int64_t>> &seen,
                         const SurfaceTracePoint &point,
                         const SurfaceSeedProvenance provenance,
                         const int sourceId);
@@ -359,6 +360,9 @@ bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
 
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
                                     const int a, const int b);
+
+bool source_faces_share_component(const SurfaceCellTracingOptions &options,
+                                  const int a, const int b);
 
 struct SurfaceCellRailIntervalRef {
   int railId = -1;
@@ -634,6 +638,13 @@ int face_label_or_default(const std::vector<int> &labels,
 bool trace_respects_face_labels(const SurfaceTraceResult &trace,
                                        const std::vector<int> &components,
                                        const std::vector<int> &sheets);
+
+/**
+ * Topological field traces may cross local sheet-chart boundaries through
+ * source adjacency, but may never cross a connected-component boundary.
+ */
+bool trace_respects_source_component(const SurfaceTraceResult &trace,
+                                     const std::vector<int> &components);
 
 SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

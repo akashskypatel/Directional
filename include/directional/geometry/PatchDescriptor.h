@@ -22,6 +22,7 @@
 
 #include <directional/geometry/PureQuadCompletion.h>
 #include <directional/geometry/SurfaceArrangement.h>
+#include <directional/geometry/SurfaceCellFeasibilityRepair.h>
 
 namespace directional::geometry {
 
@@ -70,6 +71,12 @@ struct SurfaceCellComplexCompletionOptions {
 
 struct SurfaceCellComplexCompletionResult {
   bool success = false;
+  SurfaceCellComplex preparedComplex;
+  bool hasPreparedComplex = false;
+  int parityOddCellsBefore = 0;
+  int parityOddCellsAfter = 0;
+  int paritySplitEdges = 0;
+  int parityHardFeatureSplits = 0;
   PatchDescriptorSet descriptors;
   std::vector<PureQuadMesh> completedPatches;
   PureQuadAssemblyResult assembly;
