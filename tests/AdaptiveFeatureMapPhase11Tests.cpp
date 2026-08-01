@@ -127,6 +127,29 @@ MeshFixture make_noisy_flat_grid(const int subdivisions,
   return mesh;
 }
 
+MeshFixture make_irregular_organic_fan() {
+  constexpr int samples = 24;
+  MeshFixture mesh;
+  mesh.vertices.resize(samples + 1, 3);
+  mesh.vertices.row(0).setZero();
+  for (int sample = 0; sample < samples; ++sample) {
+    const double angle =
+        2.0 * 3.14159265358979323846 * static_cast<double>(sample) /
+        static_cast<double>(samples);
+    const double height =
+        0.3 * (std::sin(3.0 * angle) +
+               0.45 * std::sin(7.0 * angle + 0.2));
+    mesh.vertices.row(sample + 1)
+        << std::cos(angle), std::sin(angle), height;
+  }
+  mesh.faces.resize(samples, 3);
+  for (int sample = 0; sample < samples; ++sample) {
+    mesh.faces.row(sample)
+        << 0, sample + 1, ((sample + 1) % samples) + 1;
+  }
+  return mesh;
+}
+
 MeshFixture make_open_crease_strip(const int segments,
                                    const double angleDegrees) {
   const int n = std::max(1, segments);
@@ -433,6 +456,70 @@ TEST(AdaptiveFeatureMapPhase11, NoisySphereLikePatchDoesNotCreateHardNoise) {
     }
   }
   EXPECT_EQ(hardInteriorEdges, 0U);
+}
+
+TEST(AdaptiveFeatureMapPhase11,
+     BroadOrganicDihedralTailDoesNotImplyCadComponent) {
+  const MeshFixture mesh = make_irregular_organic_fan();
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces);
+
+  ASSERT_EQ(map.componentStats.size(), 1U);
+  const auto &stats = map.componentStats.front();
+  EXPECT_GT(stats.p98Degrees, 60.0);
+  EXPECT_GT(stats.p50Degrees, 10.0);
+  EXPECT_LT(stats.p75Degrees, 70.0);
+  EXPECT_FALSE(stats.cadLike);
+}
+
+TEST(AdaptiveFeatureMapPhase11,
+     IsolatedOrganicSpikesRemainSoftSizingAndFieldCues) {
+  const MeshFixture mesh = make_irregular_organic_fan();
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces);
+
+  int hardInteriorEdges = 0;
+  int strongSoftInteriorEdges = 0;
+  for (const auto &featureEdge : map.edges) {
+    if (featureEdge.incidentFaces.size() != 2) {
+      continue;
+    }
+    hardInteriorEdges +=
+        featureEdge.edgeClass == AdaptiveFeatureClass::Hard ? 1 : 0;
+    strongSoftInteriorEdges +=
+        featureEdge.edgeClass == AdaptiveFeatureClass::Soft &&
+                featureEdge.strength >= 0.80
+            ? 1
+            : 0;
+  }
+  EXPECT_EQ(hardInteriorEdges, 0);
+  EXPECT_GT(strongSoftInteriorEdges, 0);
+}
+
+TEST(AdaptiveFeatureMapPhase11, CoherentOrganicRailRemainsHard) {
+  constexpr int segments = 8;
+  const MeshFixture mesh = make_open_crease_strip(segments, 70.0);
+  AdaptiveFeatureMapOptions options;
+  options.cadMedianCeilingDegrees = -1.0;
+  options.cadUpperQuartileFloorDegrees = 181.0;
+
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces,
+                                                    options);
+
+  ASSERT_EQ(map.componentStats.size(), 1U);
+  EXPECT_FALSE(map.componentStats.front().cadLike);
+  EXPECT_GE(hard_feature_recall(map, open_crease_labels(segments)), 0.95);
+}
+
+TEST(AdaptiveFeatureMapPhase11, UserHardOrganicSpikeIsNeverDemoted) {
+  const MeshFixture mesh = make_irregular_organic_fan();
+  AdaptiveFeatureMapOptions options;
+  options.userHardEdges.insert(edge(0, 1));
+
+  const auto map = AdaptiveFeatureMapBuilder::build(mesh.vertices, mesh.faces,
+                                                    options);
+
+  EXPECT_FALSE(map.componentStats.front().cadLike);
+  EXPECT_EQ(map.edge_class(edge(0, 1)), AdaptiveFeatureClass::Hard);
+  EXPECT_DOUBLE_EQ(map.strength(edge(0, 1)), 1.0);
 }
 
 TEST(AdaptiveFeatureMapPhase11, OpenCreaseContinuityRecallGate) {

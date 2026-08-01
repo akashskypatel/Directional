@@ -39,6 +39,12 @@ enum class AdaptiveFeatureClass : int {
 struct AdaptiveFeatureMapOptions {
   double cadP95Degrees = 45.0;
   double cadP98Degrees = 60.0;
+  // A high dihedral tail alone does not make a component CAD-like: coarse,
+  // irregular organic triangulations can have a broad normal distribution.
+  // CAD components either have a predominantly smooth median with sparse
+  // rails, or a dominant population of deliberately sharp facets.
+  double cadMedianCeilingDegrees = 10.0;
+  double cadUpperQuartileFloorDegrees = 70.0;
   double cadAbsoluteLowDegrees = 15.0;
   double cadAbsoluteHighDegrees = 60.0;
   double organicAbsoluteLowDegrees = 8.0;
@@ -49,6 +55,9 @@ struct AdaptiveFeatureMapOptions {
   double cornerAngleDegrees = 45.0;
   double tangentContinuationDegrees = 35.0;
   double ridgeValleyConfidenceThreshold = 0.35;
+  // Short automatic spikes on organic components remain Soft sizing/field
+  // cues. User-tagged hard edges and structured CAD components are exempt.
+  int organicMinimumHardCurveEdges = 5;
   double densityRadius = 0.0;
   std::size_t exactQuantileEdgeLimit = 200000;
   std::size_t sampledQuantileEdgeCount = 32768;
@@ -238,6 +247,7 @@ public:
     compute_component_stats(componentAngles, componentKeys, options, map);
     classify_edges(options, map);
     extract_curves(vertices, map, options);
+    regularize_automatic_hard_curves(options, map);
     compute_density(vertices, map, options);
     return map;
   }
@@ -319,8 +329,12 @@ private:
       stats.p95Degrees = adaptive_feature_detail::percentile(values, 0.95);
       stats.p98Degrees = adaptive_feature_detail::percentile(values, 0.98);
       stats.maxDegrees = adaptive_feature_detail::percentile(values, 1.00);
-      stats.cadLike = stats.p95Degrees > options.cadP95Degrees ||
-                      stats.p98Degrees > options.cadP98Degrees;
+      const bool sharpTail = stats.p95Degrees > options.cadP95Degrees ||
+                             stats.p98Degrees > options.cadP98Degrees;
+      const bool structuredDistribution =
+          stats.p50Degrees <= options.cadMedianCeilingDegrees ||
+          stats.p75Degrees >= options.cadUpperQuartileFloorDegrees;
+      stats.cadLike = sharpTail && structuredDistribution;
     }
   }
 
@@ -448,6 +462,32 @@ private:
           vertices, vertexEdges, map, options, seed, visited);
       if (!curve.edges.empty()) {
         map.curves.push_back(std::move(curve));
+      }
+    }
+  }
+
+  static void regularize_automatic_hard_curves(
+      const AdaptiveFeatureMapOptions &options, AdaptiveFeatureMap &map) {
+    if (options.organicMinimumHardCurveEdges <= 1) {
+      return;
+    }
+    for (const AdaptiveFeatureCurve &curve : map.curves) {
+      if (curve.component < 0 ||
+          curve.component >= static_cast<int>(map.componentStats.size()) ||
+          map.componentStats[static_cast<std::size_t>(curve.component)].cadLike ||
+          static_cast<int>(curve.edges.size()) >=
+              options.organicMinimumHardCurveEdges) {
+        continue;
+      }
+      for (const int edgeIndex : curve.edges) {
+        if (edgeIndex < 0 || edgeIndex >= static_cast<int>(map.edges.size())) {
+          continue;
+        }
+        AdaptiveFeatureEdge &edge =
+            map.edges[static_cast<std::size_t>(edgeIndex)];
+        if (!edge.userTagged && edge.edgeClass == AdaptiveFeatureClass::Hard) {
+          edge.edgeClass = AdaptiveFeatureClass::Soft;
+        }
       }
     }
   }
