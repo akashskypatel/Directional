@@ -1173,6 +1173,7 @@ TEST(SurfaceCellPipelinePhase20, ReliefBarrierEdgesStopTracingAcrossSourceEdge) 
   options.maxTraceLength = 2.0;
   options.reliefBarrierEdges.insert(
       directional::pipeline::surface_cell_source_edge_key(0, 2));
+  options.reliefBarriersEmbedded = true;
 
   const directional::geometry::SurfaceTraceResult trace =
       directional::geometry::trace_surface_field(
@@ -1740,6 +1741,27 @@ TEST(SurfaceCellPipelinePhase20, SmoothHairpinUsesProximityOnlyToSeparateOpposin
   EXPECT_EQ(labels.componentByFace[bottomFace], labels.componentByFace[topFace]);
   EXPECT_EQ(labels.localSheetByFace[0], labels.localSheetByFace[1]);
   EXPECT_NE(labels.localSheetByFace[bottomFace], labels.localSheetByFace[topFace]);
+}
+
+TEST(SurfaceCellPipelinePhase20,
+     InvalidSourceClassifierPolicyFailsBeforeTracing) {
+  const SyntheticMesh mesh = make_two_square_strip();
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.sourceClassifier.closeSheetRadiusMeanEdges = 0.0;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces, constant_raw_field(mesh.faces.rows()),
+          options);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidClassifierOptions",
+            result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("source-classification",
+            result.diagnostics.terminalFailureStage);
+  EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
+  EXPECT_EQ(0, result.vertices.rows());
+  EXPECT_EQ(0, result.faces.rows());
 }
 
 

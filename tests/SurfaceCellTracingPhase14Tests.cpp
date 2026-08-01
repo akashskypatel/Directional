@@ -71,6 +71,116 @@ MeshFixture make_close_parallel_triangles() {
   return mesh;
 }
 
+MeshFixture make_connected_close_opposing_sheets() {
+  MeshFixture mesh;
+  mesh.vertices.resize(8, 3);
+  mesh.vertices << 0.0, 0.0, 0.0,
+                   1.0, 0.0, 0.0,
+                   1.0, 0.0, 0.02,
+                   0.0, 0.0, 0.02,
+                   0.0, 1.0, 0.0,
+                   1.0, 1.0, 0.0,
+                   1.0, 1.0, 0.02,
+                   0.0, 1.0, 0.02;
+  mesh.faces.resize(6, 3);
+  mesh.faces << 0, 1, 5,
+                0, 5, 4,
+                1, 2, 6,
+                1, 6, 5,
+                2, 3, 7,
+                2, 7, 6;
+  return mesh;
+}
+
+MeshFixture make_open_cylinder(const int segments) {
+  MeshFixture mesh;
+  mesh.vertices.resize(2 * segments, 3);
+  constexpr double tau = 6.28318530717958647692;
+  for (int segment = 0; segment < segments; ++segment) {
+    const double angle = tau * static_cast<double>(segment) / segments;
+    for (int row = 0; row < 2; ++row) {
+      mesh.vertices.row(row * segments + segment)
+          << std::cos(angle), std::sin(angle), static_cast<double>(row);
+    }
+  }
+  mesh.faces.resize(2 * segments, 3);
+  int face = 0;
+  for (int segment = 0; segment < segments; ++segment) {
+    const int next = (segment + 1) % segments;
+    const int a = segment;
+    const int b = next;
+    const int c = segments + segment;
+    const int d = segments + next;
+    mesh.faces.row(face++) << a, b, d;
+    mesh.faces.row(face++) << a, d, c;
+  }
+  return mesh;
+}
+
+MeshFixture make_octahedron_sphere() {
+  MeshFixture mesh;
+  mesh.vertices.resize(6, 3);
+  mesh.vertices << 0.0, 0.0, 1.0,
+                   0.0, 0.0, -1.0,
+                   1.0, 0.0, 0.0,
+                   0.0, 1.0, 0.0,
+                   -1.0, 0.0, 0.0,
+                   0.0, -1.0, 0.0;
+  mesh.faces.resize(8, 3);
+  mesh.faces << 0, 2, 3,
+                0, 3, 4,
+                0, 4, 5,
+                0, 5, 2,
+                1, 3, 2,
+                1, 4, 3,
+                1, 5, 4,
+                1, 2, 5;
+  return mesh;
+}
+
+MeshFixture make_coarse_curved_strip() {
+  const std::array<Eigen::Vector2d, 4> path{
+      Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(1.0, 0.0),
+      Eigen::Vector2d(1.7, 0.7), Eigen::Vector2d(1.7, 1.7)};
+  MeshFixture mesh;
+  mesh.vertices.resize(2 * static_cast<int>(path.size()), 3);
+  for (int point = 0; point < static_cast<int>(path.size()); ++point) {
+    mesh.vertices.row(point) << path[static_cast<std::size_t>(point)].x(), 0.0,
+        path[static_cast<std::size_t>(point)].y();
+    mesh.vertices.row(point + static_cast<int>(path.size()))
+        << path[static_cast<std::size_t>(point)].x(), 1.0,
+        path[static_cast<std::size_t>(point)].y();
+  }
+  mesh.faces.resize(2 * (static_cast<int>(path.size()) - 1), 3);
+  int face = 0;
+  for (int point = 0; point + 1 < static_cast<int>(path.size()); ++point) {
+    const int a = point;
+    const int b = point + 1;
+    const int c = point + static_cast<int>(path.size());
+    const int d = c + 1;
+    mesh.faces.row(face++) << a, b, d;
+    mesh.faces.row(face++) << a, d, c;
+  }
+  return mesh;
+}
+
+std::uint64_t source_label_hash(
+    const directional::geometry::SourceSurfaceLabels &labels) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  const auto mix = [&](const int value) {
+    hash ^= static_cast<std::uint64_t>(static_cast<std::uint32_t>(value));
+    hash *= 1099511628211ULL;
+  };
+  for (const int component : labels.componentByFace) {
+    mix(component);
+  }
+  mix(-1);
+  for (const int sheet : labels.localSheetByFace) {
+    mix(sheet);
+  }
+  return hash;
+}
+
 void constant_axes(const MeshFixture &mesh, Eigen::MatrixXd &x,
                    Eigen::MatrixXd &y) {
   x.resize(mesh.faces.rows(), 3);
@@ -2102,4 +2212,202 @@ TEST(SurfaceCellTracingPhase14, TenRunNetworkHashIsIdentical) {
         mesh.vertices, mesh.faces, x, y, targetSize, options);
     EXPECT_EQ(network_hash(repeated), hash);
   }
+}
+
+TEST(SurfaceCellTracingPhase14,
+     IntersectingFlowlinesCloseWhenOrderedFieldWalksDoNotCommute) {
+  const MeshFixture mesh = make_grid(8);
+  Eigen::MatrixXd axisX(mesh.faces.rows(), 3);
+  Eigen::MatrixXd axisY(mesh.faces.rows(), 3);
+  constexpr double gradient = 0.8;
+  for (int face = 0; face < mesh.faces.rows(); ++face) {
+    double centroidX = 0.0;
+    for (int corner = 0; corner < 3; ++corner) {
+      centroidX += mesh.vertices(mesh.faces(face, corner), 0) / 3.0;
+    }
+    const double angle = gradient * centroidX;
+    axisX.row(face) << std::cos(angle), std::sin(angle), 0.0;
+    axisY.row(face) << -std::sin(angle), std::cos(angle), 0.0;
+  }
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 81;
+  seed.point.face = 2 * (4 * 8 + 4);
+  seed.point.barycentric << 0.2, 0.3, 0.5;
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.vertices.rows(), 1.0);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 1.0;
+  options.maxTraceLength = 4.0;
+  options.closureToleranceFactor = 0.05;
+
+  const auto walk = [&](const int family, const int sign,
+                        const directional::geometry::SurfaceTracePoint &start) {
+    return directional::geometry::walk_surface_field(
+        mesh.vertices, mesh.faces, axisX, axisY, start, family, sign, 0.5,
+        options);
+  };
+  const auto xFirst = walk(0, 1, seed.point);
+  const auto xy = walk(1, 1, xFirst.point);
+  const auto yFirst = walk(1, 1, seed.point);
+  const auto yx = walk(0, 1, yFirst.point);
+  const Eigen::RowVector3d xyPosition =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          mesh.vertices, mesh.faces, xy.point);
+  const Eigen::RowVector3d yxPosition =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          mesh.vertices, mesh.faces, yx.point);
+  ASSERT_GT((xyPosition - yxPosition).norm(),
+            options.closureToleranceFactor);
+
+  const auto proposal = directional::geometry::make_surface_cell_proposal(
+      mesh.vertices, mesh.faces, axisX, axisY, targetSize, seed, options);
+  ASSERT_TRUE(proposal.accepted);
+  EXPECT_EQ(directional::geometry::CellRejectionReason::Accepted,
+            proposal.rejection);
+  for (const auto &boundaryPath : proposal.boundaryPaths) {
+    EXPECT_FALSE(boundaryPath.empty());
+  }
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceClassifierMakesUnmarkedSharpBendPolicyExplicit) {
+  const MeshFixture mesh = make_hinge_pair();
+  const auto defaultLabels =
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(mesh.vertices, mesh.faces);
+  ASSERT_EQ(2U, defaultLabels.localSheetByFace.size());
+  EXPECT_EQ(defaultLabels.localSheetByFace[0],
+            defaultLabels.localSheetByFace[1]);
+
+  directional::geometry::SourceSurfaceClassifierOptions splitPolicy;
+  splitPolicy.traverseUnmarkedSharpBends = false;
+  const auto splitLabels =
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(mesh.vertices, mesh.faces, {},
+                                         splitPolicy);
+  EXPECT_NE(splitLabels.localSheetByFace[0], splitLabels.localSheetByFace[1]);
+
+  const std::set<std::uint64_t> markedBarrier{
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2)};
+  const auto markedLabels =
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(mesh.vertices, mesh.faces,
+                                         markedBarrier);
+  EXPECT_NE(markedLabels.localSheetByFace[0],
+            markedLabels.localSheetByFace[1]);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceClassifierSeparatesConnectedCloseOpposingSheets) {
+  const MeshFixture mesh = make_connected_close_opposing_sheets();
+  const auto labels = directional::geometry::surface_cell_tracing_detail::
+      classify_source_surface_labels(mesh.vertices, mesh.faces);
+  ASSERT_EQ(6U, labels.componentByFace.size());
+  EXPECT_EQ(labels.componentByFace[0], labels.componentByFace[4]);
+  EXPECT_EQ(labels.localSheetByFace[0], labels.localSheetByFace[1]);
+  EXPECT_NE(labels.localSheetByFace[0], labels.localSheetByFace[4]);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceClassifierIsScaleInvariantAndDeterministic) {
+  const MeshFixture source = make_connected_close_opposing_sheets();
+  std::vector<int> referenceComponents;
+  std::vector<int> referenceSheets;
+  std::uint64_t referenceHash = 0U;
+  for (const double scale : {1.0e-3, 1.0, 1.0e3}) {
+    MeshFixture mesh = source;
+    mesh.vertices *= scale;
+    const auto labels = directional::geometry::surface_cell_tracing_detail::
+        classify_source_surface_labels(mesh.vertices, mesh.faces);
+    if (referenceComponents.empty()) {
+      referenceComponents = labels.componentByFace;
+      referenceSheets = labels.localSheetByFace;
+      referenceHash = source_label_hash(labels);
+    } else {
+      EXPECT_EQ(referenceComponents, labels.componentByFace);
+      EXPECT_EQ(referenceSheets, labels.localSheetByFace);
+      EXPECT_EQ(referenceHash, source_label_hash(labels));
+    }
+    for (int repeat = 0; repeat < 3; ++repeat) {
+      const auto repeated =
+          directional::geometry::surface_cell_tracing_detail::
+              classify_source_surface_labels(mesh.vertices, mesh.faces);
+      EXPECT_EQ(source_label_hash(labels), source_label_hash(repeated));
+    }
+  }
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceClassifierCoversCurvedClosedAndCoarseManifoldFixtures) {
+  for (const MeshFixture mesh : {make_open_cylinder(16),
+                                 make_octahedron_sphere(),
+                                 make_coarse_curved_strip()}) {
+    const auto first = directional::geometry::surface_cell_tracing_detail::
+        classify_source_surface_labels(mesh.vertices, mesh.faces);
+    const auto second = directional::geometry::surface_cell_tracing_detail::
+        classify_source_surface_labels(mesh.vertices, mesh.faces);
+    ASSERT_EQ(static_cast<std::size_t>(mesh.faces.rows()),
+              first.componentByFace.size());
+    ASSERT_EQ(static_cast<std::size_t>(mesh.faces.rows()),
+              first.localSheetByFace.size());
+    EXPECT_TRUE(std::all_of(first.componentByFace.begin(),
+                            first.componentByFace.end(),
+                            [](const int label) { return label >= 0; }));
+    EXPECT_TRUE(std::all_of(first.localSheetByFace.begin(),
+                            first.localSheetByFace.end(),
+                            [](const int label) { return label >= 0; }));
+    EXPECT_EQ(source_label_hash(first), source_label_hash(second));
+  }
+  const auto stripLabels =
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(make_coarse_curved_strip().vertices,
+                                         make_coarse_curved_strip().faces);
+  EXPECT_TRUE(std::all_of(
+      stripLabels.localSheetByFace.begin(), stripLabels.localSheetByFace.end(),
+      [&](const int label) {
+        return label == stripLabels.localSheetByFace.front();
+      }));
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SourceClassifierFailsClosedOnInvalidTopologyAndPolicy) {
+  MeshFixture nonManifold;
+  nonManifold.vertices.resize(5, 3);
+  nonManifold.vertices << 0.0, 0.0, 0.0,
+                          1.0, 0.0, 0.0,
+                          0.0, 1.0, 0.0,
+                          0.0, -1.0, 0.0,
+                          0.0, 0.0, 1.0;
+  nonManifold.faces.resize(3, 3);
+  nonManifold.faces << 0, 1, 2,
+                       1, 0, 3,
+                       1, 0, 4;
+  EXPECT_THROW(
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(nonManifold.vertices,
+                                         nonManifold.faces),
+      std::invalid_argument);
+
+  MeshFixture inconsistent = nonManifold;
+  inconsistent.faces.resize(2, 3);
+  inconsistent.faces << 0, 1, 2,
+                        0, 1, 3;
+  EXPECT_THROW(
+      directional::geometry::surface_cell_tracing_detail::
+          classify_source_surface_labels(inconsistent.vertices,
+                                         inconsistent.faces),
+      std::invalid_argument);
+
+  directional::geometry::SourceSurfaceClassifierOptions invalid;
+  invalid.normalCompatibility = -0.01;
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   source_surface_classifier_options_valid(invalid));
+  invalid = {};
+  invalid.closeSheetRadiusMeanEdges = 0.0;
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   source_surface_classifier_options_valid(invalid));
+  invalid = {};
+  invalid.geodesicExclusionDepth = 65;
+  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   source_surface_classifier_options_valid(invalid));
 }

@@ -202,6 +202,25 @@ struct SourceSurfaceLabels {
   std::vector<int> localSheetByFace;
 };
 
+/**
+ * Policy for intrinsic source-face charts used to prevent proximity-based
+ * capture and projection from jumping between nearby surface sheets.
+ */
+struct SourceSurfaceClassifierOptions {
+  /// Ordinary manifold curvature is traversable unless an edge is explicitly
+  /// supplied in barrierEdges. Set false to split at adjacent face-normal dots
+  /// below normalCompatibility.
+  bool traverseUnmarkedSharpBends = true;
+  /// Unitless cosine threshold in [0, 1]. It is used both by the optional
+  /// sharp-bend split and, with opposite sign, to identify opposing sheets.
+  double normalCompatibility = 0.25;
+  /// Euclidean close-sheet search radius measured in mean source-edge lengths.
+  double closeSheetRadiusMeanEdges = 2.5;
+  /// Faces within this many source-edge adjacency rings are intrinsically
+  /// local and therefore excluded from close/opposing-sheet conflicts.
+  int geodesicExclusionDepth = 2;
+};
+
 struct SurfaceCellTracingOptions {
   double defaultTargetSize = 1.0;
   double coverageRadiusFactor = 1.0;
@@ -217,6 +236,9 @@ struct SurfaceCellTracingOptions {
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
   std::set<std::uint64_t> reliefBarrierEdges;
+  /// Relief separatrices remain guidance until the arrangement embeds them.
+  /// Only embedded separatrices are allowed to stop traces as hard barriers.
+  bool reliefBarriersEmbedded = false;
   std::vector<int> separatrixVertices;
   std::vector<int> anchors;
   std::vector<SurfaceTracePoint> capturePoints;
@@ -616,7 +638,10 @@ bool trace_respects_face_labels(const SurfaceTraceResult &trace,
 SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::set<std::uint64_t> &barrierEdges = {},
-    const double normalCompatibility = 0.25);
+    const SourceSurfaceClassifierOptions &options = {});
+
+bool source_surface_classifier_options_valid(
+    const SourceSurfaceClassifierOptions &options);
 struct IntrinsicSurfaceGraph {
   std::vector<std::vector<std::pair<int, double>>> adjacency;
   int faceCount = 0;

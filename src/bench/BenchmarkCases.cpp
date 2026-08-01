@@ -435,6 +435,18 @@ load_benchmark_manifest(const std::filesystem::path &path) {
     benchmarkCase.surfaceCellPreserveDebugArtifacts =
         json_bool_value(object, "surface_cell_preserve_debug_artifacts",
                         benchmarkCase.surfaceCellPreserveDebugArtifacts);
+    benchmarkCase.surfaceCellTraverseUnmarkedSharpBends = json_bool_value(
+        object, "surface_cell_traverse_unmarked_sharp_bends",
+        benchmarkCase.surfaceCellTraverseUnmarkedSharpBends);
+    benchmarkCase.surfaceCellSheetNormalCompatibility = json_number_value(
+        object, "surface_cell_sheet_normal_compatibility",
+        benchmarkCase.surfaceCellSheetNormalCompatibility);
+    benchmarkCase.surfaceCellCloseSheetRadiusMeanEdges = json_number_value(
+        object, "surface_cell_close_sheet_radius_mean_edges",
+        benchmarkCase.surfaceCellCloseSheetRadiusMeanEdges);
+    benchmarkCase.surfaceCellGeodesicExclusionDepth = json_int_value(
+        object, "surface_cell_geodesic_exclusion_depth",
+        benchmarkCase.surfaceCellGeodesicExclusionDepth);
     benchmarkCase.synthetic =
         json_bool_value(object, "synthetic", benchmarkCase.meshPath.empty());
     benchmarkCase.syntheticSubdivisions =
@@ -581,6 +593,14 @@ pipeline::RemeshOptions make_remesh_options(const BenchmarkCase &benchmarkCase) 
       benchmarkCase.surfaceCellSkeletonHints;
   options.surfaceCells.preserveDebugArtifacts =
       benchmarkCase.surfaceCellPreserveDebugArtifacts;
+  options.surfaceCells.sourceClassifier.traverseUnmarkedSharpBends =
+      benchmarkCase.surfaceCellTraverseUnmarkedSharpBends;
+  options.surfaceCells.sourceClassifier.normalCompatibility =
+      benchmarkCase.surfaceCellSheetNormalCompatibility;
+  options.surfaceCells.sourceClassifier.closeSheetRadiusMeanEdges =
+      benchmarkCase.surfaceCellCloseSheetRadiusMeanEdges;
+  options.surfaceCells.sourceClassifier.geodesicExclusionDepth =
+      benchmarkCase.surfaceCellGeodesicExclusionDepth;
   options.verbose = false;
   return options;
 }

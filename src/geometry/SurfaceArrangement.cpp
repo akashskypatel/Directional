@@ -210,6 +210,23 @@ bool polygon_geometry(
     }
   }
   sourceFaces.assign(faceSet.begin(), faceSet.end());
+  // The unweighted sum of incident face normals can cancel on a curved patch
+  // even when its boundary is a perfectly valid embedded cycle. The closed
+  // polygon's vector area is translation invariant and supplies the least-
+  // squares projection normal directly. Prefer it whenever it is resolved;
+  // retain the source-normal sum only for a near-zero vector-area boundary.
+  Eigen::RowVector3d vectorArea = Eigen::RowVector3d::Zero();
+  for (std::size_t index = 0; index < points.size(); ++index) {
+    vectorArea += 0.5 * surface_cell_tracing_detail::cross3(
+                            points[index], points[(index + 1U) % points.size()]);
+  }
+  if (vectorArea.squaredNorm() > 1.0e-28 && vectorArea.allFinite()) {
+    if (referenceNormal.squaredNorm() > 1.0e-28 &&
+        vectorArea.dot(referenceNormal) < 0.0) {
+      vectorArea = -vectorArea;
+    }
+    referenceNormal = vectorArea;
+  }
   const double normalNorm = referenceNormal.norm();
   if (!(normalNorm > 1.0e-14) || !std::isfinite(normalNorm)) {
     return false;
@@ -1325,6 +1342,22 @@ SurfaceCellComplex build_surface_cell_complex(
     for (const int halfedgeId : cell.halfedges) {
       complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell = cell.id;
     }
+    // Establish the topological disk invariant from incidence before any
+    // geometric area calculation. A curved multi-face cycle may not admit a
+    // nondegenerate single-plane projection, but that cannot turn a closed,
+    // simple DCEL cycle into a non-disk.
+    std::set<int> uniqueNodes;
+    for (const int halfedge : cell.halfedges) {
+      uniqueNodes.insert(
+          complex.halfedges[static_cast<std::size_t>(halfedge)].from);
+    }
+    cell.boundaryComponentCount = cell.closed ? 1 : 0;
+    cell.eulerCharacteristic =
+        static_cast<int>(uniqueNodes.size()) -
+        static_cast<int>(cell.halfedges.size()) + (cell.closed ? 1 : 0);
+    cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
+                uniqueNodes.size() == cell.halfedges.size() &&
+                cell.eulerCharacteristic == 1;
     const int boundaryVote = boundary_orientation_vote(
         cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
     cell.boundaryCycle = cell.closed && boundaryVote < 0;
@@ -1384,28 +1417,13 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     if (cell.boundaryCycle) {
       cell.cellClass = SurfaceArrangementCellClass::Exterior;
+    } else if (!cell.disk) {
+      cell.cellClass = SurfaceArrangementCellClass::NonDisk;
+      cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
     } else if (cell.area <= 1.0e-14) {
       cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
       cell.rejectReason = SurfaceArrangementRejectReason::Sliver;
     } else {
-      std::set<int> uniqueNodes;
-      for (const int halfedge : cell.halfedges) {
-        uniqueNodes.insert(
-            complex.halfedges[static_cast<std::size_t>(halfedge)].from);
-      }
-      cell.boundaryComponentCount = cell.closed ? 1 : 0;
-      cell.eulerCharacteristic =
-          static_cast<int>(uniqueNodes.size()) -
-          static_cast<int>(cell.halfedges.size()) + (cell.closed ? 1 : 0);
-      cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
-                  uniqueNodes.size() == cell.halfedges.size() &&
-                  cell.eulerCharacteristic == 1;
-      if (!cell.disk) {
-        cell.cellClass = SurfaceArrangementCellClass::NonDisk;
-        cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
-        complex.cells.push_back(cell);
-        continue;
-      }
       const bool crossesHardBarrier = std::any_of(
           cell.halfedges.begin(), cell.halfedges.end(), [&](const int edge) {
             const SurfaceArrangementHalfedge &halfedge =

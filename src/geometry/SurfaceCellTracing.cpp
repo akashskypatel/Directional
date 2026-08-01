@@ -1619,8 +1619,10 @@ namespace directional::geometry::surface_cell_tracing_detail {
 std::set<std::uint64_t> combined_barrier_edges(
     const SurfaceCellTracingOptions &options) {
   std::set<std::uint64_t> barriers = options.hardFeatureEdges;
-  barriers.insert(options.reliefBarrierEdges.begin(),
-                  options.reliefBarrierEdges.end());
+  if (options.reliefBarriersEmbedded) {
+    barriers.insert(options.reliefBarrierEdges.begin(),
+                    options.reliefBarrierEdges.end());
+  }
   return barriers;
 }
 
@@ -1690,23 +1692,92 @@ bool trace_respects_face_labels(const SurfaceTraceResult &trace,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
+bool source_surface_classifier_options_valid(
+    const SourceSurfaceClassifierOptions &options) {
+  return std::isfinite(options.normalCompatibility) &&
+         options.normalCompatibility >= 0.0 &&
+         options.normalCompatibility <= 1.0 &&
+         std::isfinite(options.closeSheetRadiusMeanEdges) &&
+         options.closeSheetRadiusMeanEdges > 0.0 &&
+         options.geodesicExclusionDepth >= 0 &&
+         options.geodesicExclusionDepth <= 64;
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
 SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::set<std::uint64_t> &barrierEdges,
-    const double normalCompatibility) {
+    const SourceSurfaceClassifierOptions &options) {
+  if (vertices.cols() != 3 || faces.cols() != 3 ||
+      !vertices.array().isFinite().all()) {
+    throw std::invalid_argument(
+        "source-surface classification requires finite 3D triangles.");
+  }
+  if (!source_surface_classifier_options_valid(options)) {
+    throw std::invalid_argument("invalid source-surface classifier policy.");
+  }
+
   SourceSurfaceLabels labels;
   const int faceCount = static_cast<int>(faces.rows());
   labels.componentByFace.assign(static_cast<std::size_t>(faceCount), -1);
   labels.localSheetByFace.assign(static_cast<std::size_t>(faceCount), -1);
-  const auto edgeFaces = edge_faces(faces);
-  std::vector<std::vector<std::pair<int, std::uint64_t>>> adjacency(
-      static_cast<std::size_t>(faceCount));
-  for (const auto &[key, pair] : edgeFaces) {
-    if (pair[0] >= 0 && pair[1] >= 0) {
-      adjacency[static_cast<std::size_t>(pair[0])].push_back({pair[1], key});
-      adjacency[static_cast<std::size_t>(pair[1])].push_back({pair[0], key});
+
+  struct EdgeIncidence {
+    int firstFace = -1;
+    int secondFace = -1;
+    int firstOrientation = 0;
+  };
+  std::map<std::uint64_t, EdgeIncidence> edgeIncidence;
+  for (int face = 0; face < faceCount; ++face) {
+    std::set<int> uniqueVertices;
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      if (vertex < 0 || vertex >= vertices.rows() ||
+          !uniqueVertices.insert(vertex).second) {
+        throw std::invalid_argument(
+            "source-surface classification received an invalid face.");
+      }
+      const int next = faces(face, (corner + 1) % 3);
+      if (next < 0 || next >= vertices.rows()) {
+        throw std::invalid_argument(
+            "source-surface classification received an invalid index.");
+      }
+      const std::uint64_t key = edge_key(vertex, next);
+      const int orientation = vertex < next ? 1 : -1;
+      EdgeIncidence &incidence = edgeIncidence[key];
+      if (incidence.firstFace < 0) {
+        incidence.firstFace = face;
+        incidence.firstOrientation = orientation;
+      } else if (incidence.secondFace < 0) {
+        if (incidence.firstOrientation == orientation) {
+          throw std::invalid_argument(
+              "source-surface classification requires consistent winding.");
+        }
+        incidence.secondFace = face;
+      } else {
+        throw std::invalid_argument(
+            "source-surface classification requires manifold edges.");
+      }
     }
   }
+
+  std::vector<std::vector<std::pair<int, std::uint64_t>>> adjacency(
+      static_cast<std::size_t>(faceCount));
+  for (const auto &[key, incidence] : edgeIncidence) {
+    if (incidence.firstFace >= 0 && incidence.secondFace >= 0) {
+      adjacency[static_cast<std::size_t>(incidence.firstFace)].push_back(
+          {incidence.secondFace, key});
+      adjacency[static_cast<std::size_t>(incidence.secondFace)].push_back(
+          {incidence.firstFace, key});
+    }
+  }
+  for (auto &neighbors : adjacency) {
+    std::sort(neighbors.begin(), neighbors.end());
+  }
+
   std::vector<Eigen::RowVector3d> centroids(static_cast<std::size_t>(faceCount));
   std::vector<Eigen::RowVector3d> normals(static_cast<std::size_t>(faceCount));
   double totalEdgeLength = 0.0;
@@ -1715,73 +1786,127 @@ SourceSurfaceLabels classify_source_surface_labels(
     Eigen::RowVector3d centroid = Eigen::RowVector3d::Zero();
     for (int corner = 0; corner < 3; ++corner) {
       const int a = faces(face, corner);
-      const int b = faces(face, (corner + 1) % 3);
       centroid += row3(vertices, a) / 3.0;
-      totalEdgeLength += (row3(vertices, a) - row3(vertices, b)).norm();
-      ++edgeLengthCount;
     }
     centroids[static_cast<std::size_t>(face)] = centroid;
     normals[static_cast<std::size_t>(face)] = face_normal(vertices, faces, face);
+    if (normals[static_cast<std::size_t>(face)].squaredNorm() == 0.0) {
+      throw std::invalid_argument(
+          "source-surface classification requires nondegenerate faces.");
+    }
+  }
+  for (const auto &[key, incidence] : edgeIncidence) {
+    (void)incidence;
+    const int a = static_cast<int>(key >> 32u);
+    const int b = static_cast<int>(key & 0xffffffffu);
+    const double length = (row3(vertices, a) - row3(vertices, b)).norm();
+    if (!(length > 0.0) || !std::isfinite(length)) {
+      throw std::invalid_argument(
+          "source-surface classification requires finite source edges.");
+    }
+    totalEdgeLength += length;
+    ++edgeLengthCount;
   }
   const double meanEdgeLength =
       edgeLengthCount > 0 ? totalEdgeLength / static_cast<double>(edgeLengthCount)
                           : 0.0;
-  const double closeSheetRadius = 2.5 * meanEdgeLength;
+  const double closeSheetRadius =
+      options.closeSheetRadiusMeanEdges * meanEdgeLength;
+  if (faceCount > 0 && (!(closeSheetRadius > 0.0) ||
+                        !std::isfinite(closeSheetRadius))) {
+    throw std::invalid_argument(
+        "source-surface close-sheet radius is not representable.");
+  }
 
-  const auto geodesically_near = [&](const int source, const int target) {
-    if (source == target) {
-      return true;
+  using GridKey = std::array<std::int64_t, 3>;
+  Eigen::RowVector3d gridOrigin = Eigen::RowVector3d::Zero();
+  if (faceCount > 0) {
+    gridOrigin = centroids.front();
+    for (const Eigen::RowVector3d &centroid : centroids) {
+      gridOrigin = gridOrigin.cwiseMin(centroid);
     }
-    constexpr int maxDepth = 2;
-    std::vector<int> depth(static_cast<std::size_t>(faceCount), -1);
+  }
+  const auto grid_key = [&](const Eigen::RowVector3d &position) {
+    GridKey key{};
+    for (int axis = 0; axis < 3; ++axis) {
+      const long double coordinate =
+          (static_cast<long double>(position[axis]) -
+           static_cast<long double>(gridOrigin[axis])) /
+          static_cast<long double>(closeSheetRadius);
+      if (!std::isfinite(coordinate) ||
+          coordinate <
+              static_cast<long double>(std::numeric_limits<std::int64_t>::min()) +
+                  2.0L ||
+          coordinate >
+              static_cast<long double>(std::numeric_limits<std::int64_t>::max()) -
+                  2.0L) {
+        throw std::invalid_argument(
+            "source-surface spatial index coordinate is out of range.");
+      }
+      key[static_cast<std::size_t>(axis)] =
+          static_cast<std::int64_t>(std::floor(coordinate));
+    }
+    return key;
+  };
+  std::map<GridKey, std::vector<int>> spatialBins;
+  std::vector<GridKey> faceGridKeys(static_cast<std::size_t>(faceCount));
+  for (int face = 0; face < faceCount; ++face) {
+    const GridKey key = grid_key(centroids[static_cast<std::size_t>(face)]);
+    faceGridKeys[static_cast<std::size_t>(face)] = key;
+    spatialBins[key].push_back(face);
+  }
+
+  std::vector<std::vector<int>> geodesicNeighborhoods(
+      static_cast<std::size_t>(faceCount));
+  std::vector<bool> geodesicNeighborhoodReady(
+      static_cast<std::size_t>(faceCount), false);
+  std::vector<int> visitStamp(static_cast<std::size_t>(faceCount), 0);
+  std::vector<int> visitDepth(static_cast<std::size_t>(faceCount), 0);
+  int nextVisitStamp = 0;
+  const auto ensure_geodesic_neighborhood = [&](const int source) {
+    if (geodesicNeighborhoodReady[static_cast<std::size_t>(source)]) {
+      return;
+    }
+    if (nextVisitStamp == std::numeric_limits<int>::max()) {
+      std::fill(visitStamp.begin(), visitStamp.end(), 0);
+      nextVisitStamp = 0;
+    }
+    const int stamp = ++nextVisitStamp;
     std::queue<int> queue;
-    depth[static_cast<std::size_t>(source)] = 0;
     queue.push(source);
+    visitStamp[static_cast<std::size_t>(source)] = stamp;
+    visitDepth[static_cast<std::size_t>(source)] = 0;
+    std::vector<int> &neighborhood =
+        geodesicNeighborhoods[static_cast<std::size_t>(source)];
     while (!queue.empty()) {
       const int face = queue.front();
       queue.pop();
-      if (depth[static_cast<std::size_t>(face)] >= maxDepth) {
+      neighborhood.push_back(face);
+      if (visitDepth[static_cast<std::size_t>(face)] >=
+          options.geodesicExclusionDepth) {
         continue;
       }
       for (const auto &[neighbor, key] :
            adjacency[static_cast<std::size_t>(face)]) {
         (void)key;
-        if (depth[static_cast<std::size_t>(neighbor)] >= 0) {
+        if (visitStamp[static_cast<std::size_t>(neighbor)] == stamp) {
           continue;
         }
-        depth[static_cast<std::size_t>(neighbor)] =
-            depth[static_cast<std::size_t>(face)] + 1;
-        if (neighbor == target) {
-          return true;
-        }
+        visitStamp[static_cast<std::size_t>(neighbor)] = stamp;
+        visitDepth[static_cast<std::size_t>(neighbor)] =
+            visitDepth[static_cast<std::size_t>(face)] + 1;
         queue.push(neighbor);
       }
     }
-    return false;
+    std::sort(neighborhood.begin(), neighborhood.end());
+    geodesicNeighborhoodReady[static_cast<std::size_t>(source)] = true;
   };
-
-  const auto conflicts_with_current_sheet =
-      [&](const int candidate, const std::vector<int> &sheetFaces) {
-        if (closeSheetRadius <= 0.0) {
-          return false;
-        }
-        for (const int sheetFace : sheetFaces) {
-          if (geodesically_near(candidate, sheetFace)) {
-            continue;
-          }
-          if ((centroids[static_cast<std::size_t>(candidate)] -
-               centroids[static_cast<std::size_t>(sheetFace)])
-                      .norm() > closeSheetRadius) {
-            continue;
-          }
-          if (normals[static_cast<std::size_t>(candidate)].dot(
-                  normals[static_cast<std::size_t>(sheetFace)]) <
-              -normalCompatibility) {
-            return true;
-          }
-        }
-        return false;
-      };
+  const auto geodesically_near = [&](const int source, const int target) {
+    ensure_geodesic_neighborhood(source);
+    const std::vector<int> &neighborhood =
+        geodesicNeighborhoods[static_cast<std::size_t>(source)];
+    return std::binary_search(neighborhood.begin(), neighborhood.end(), target);
+  };
 
   int nextComponent = 0;
   for (int seed = 0; seed < faceCount; ++seed) {
@@ -1816,7 +1941,6 @@ SourceSurfaceLabels classify_source_surface_labels(
     std::queue<int> queue;
     queue.push(seed);
     labels.localSheetByFace[static_cast<std::size_t>(seed)] = nextSheet;
-    std::vector<int> currentSheetFaces = {seed};
     while (!queue.empty()) {
       const int face = queue.front();
       queue.pop();
@@ -1828,14 +1952,48 @@ SourceSurfaceLabels classify_source_surface_labels(
                 labels.componentByFace[static_cast<std::size_t>(face)]) {
           continue;
         }
-        if (normals[static_cast<std::size_t>(face)].dot(
+        if (!options.traverseUnmarkedSharpBends &&
+            normals[static_cast<std::size_t>(face)].dot(
                 normals[static_cast<std::size_t>(neighbor)]) <
-                normalCompatibility ||
-            conflicts_with_current_sheet(neighbor, currentSheetFaces)) {
+                options.normalCompatibility) {
+          continue;
+        }
+        bool closeSheetConflict = false;
+        const GridKey candidateKey =
+            faceGridKeys[static_cast<std::size_t>(neighbor)];
+        for (int dx = -1; dx <= 1 && !closeSheetConflict; ++dx) {
+          for (int dy = -1; dy <= 1 && !closeSheetConflict; ++dy) {
+            for (int dz = -1; dz <= 1 && !closeSheetConflict; ++dz) {
+              const GridKey queryKey{
+                  candidateKey[0] + dx, candidateKey[1] + dy,
+                  candidateKey[2] + dz};
+              const auto bin = spatialBins.find(queryKey);
+              if (bin == spatialBins.end()) {
+                continue;
+              }
+              for (const int sheetFace : bin->second) {
+                if (labels.localSheetByFace[
+                        static_cast<std::size_t>(sheetFace)] != nextSheet ||
+                    geodesically_near(neighbor, sheetFace) ||
+                    (centroids[static_cast<std::size_t>(neighbor)] -
+                     centroids[static_cast<std::size_t>(sheetFace)])
+                            .norm() > closeSheetRadius) {
+                  continue;
+                }
+                if (normals[static_cast<std::size_t>(neighbor)].dot(
+                        normals[static_cast<std::size_t>(sheetFace)]) <
+                    -options.normalCompatibility) {
+                  closeSheetConflict = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+        if (closeSheetConflict) {
           continue;
         }
         labels.localSheetByFace[static_cast<std::size_t>(neighbor)] = nextSheet;
-        currentSheetFaces.push_back(neighbor);
         queue.push(neighbor);
       }
     }
@@ -2259,6 +2417,377 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
 
 } // namespace directional::geometry
 
+namespace directional::geometry::surface_cell_tracing_detail {
+
+struct ProposalFlowline {
+  std::vector<SurfaceTraceSegment> segments;
+};
+
+struct ProposalFlowlineIntersection {
+  bool valid = false;
+  SurfaceTracePoint point;
+  double firstParameter = 0.0;
+  double secondParameter = 0.0;
+};
+
+SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
+  std::swap(segment.startBarycentric, segment.endBarycentric);
+  std::swap(segment.entryEdge, segment.exitEdge);
+  std::swap(segment.railT0, segment.railT1);
+  segment.sign = -segment.sign;
+  segment.railSideSign = -segment.railSideSign;
+  segment.matching = (4 - (segment.matching % 4) + 4) % 4;
+  return segment;
+}
+
+bool proposal_trace_is_blocked(const SurfaceTraceResult &trace) {
+  return trace.termination == TraceTerminationReason::Feature ||
+         trace.termination == TraceTerminationReason::FieldMetadata ||
+         trace.termination == TraceTerminationReason::SourceSheet ||
+         trace.termination == TraceTerminationReason::Degenerate;
+}
+
+bool build_proposal_flowline(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SurfaceTracePoint &center, const int family, const double halfLength,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    ProposalFlowline &flowline) {
+  flowline.segments.clear();
+  const SurfaceWalkResult negative = walk_surface_field(
+      vertices, faces, faceAxisX, faceAxisY, center, family, -1, halfLength,
+      options, edgeMatching, edgeEffort, edgeTransitions);
+  const SurfaceWalkResult positive = walk_surface_field(
+      vertices, faces, faceAxisX, faceAxisY, center, family, 1, halfLength,
+      options, edgeMatching, edgeEffort, edgeTransitions);
+  if (proposal_trace_is_blocked(negative.trace) ||
+      proposal_trace_is_blocked(positive.trace) ||
+      negative.trace.segments.empty() || positive.trace.segments.empty()) {
+    return false;
+  }
+  flowline.segments.reserve(negative.trace.segments.size() +
+                            positive.trace.segments.size());
+  for (auto segment = negative.trace.segments.rbegin();
+       segment != negative.trace.segments.rend(); ++segment) {
+    flowline.segments.push_back(reversed_trace_segment(*segment));
+  }
+  flowline.segments.insert(flowline.segments.end(),
+                           positive.trace.segments.begin(),
+                           positive.trace.segments.end());
+  return true;
+}
+
+double cross2(const Eigen::Vector2d &first, const Eigen::Vector2d &second) {
+  return first.x() * second.y() - first.y() * second.x();
+}
+
+ProposalFlowlineIntersection intersect_proposal_flowlines(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const ProposalFlowline &first, const ProposalFlowline &second,
+    const Eigen::RowVector3d &expectedPosition) {
+  ProposalFlowlineIntersection best;
+  double bestDistance = std::numeric_limits<double>::infinity();
+  for (int firstIndex = 0;
+       firstIndex < static_cast<int>(first.segments.size()); ++firstIndex) {
+    const SurfaceTraceSegment &firstSegment =
+        first.segments[static_cast<std::size_t>(firstIndex)];
+    for (int secondIndex = 0;
+         secondIndex < static_cast<int>(second.segments.size()); ++secondIndex) {
+      const SurfaceTraceSegment &secondSegment =
+          second.segments[static_cast<std::size_t>(secondIndex)];
+      if (firstSegment.face < 0 ||
+          firstSegment.face != secondSegment.face) {
+        continue;
+      }
+      const Eigen::Vector2d firstStart(
+          firstSegment.startBarycentric[1],
+          firstSegment.startBarycentric[2]);
+      const Eigen::Vector2d firstDirection(
+          firstSegment.endBarycentric[1] -
+              firstSegment.startBarycentric[1],
+          firstSegment.endBarycentric[2] -
+              firstSegment.startBarycentric[2]);
+      const Eigen::Vector2d secondStart(
+          secondSegment.startBarycentric[1],
+          secondSegment.startBarycentric[2]);
+      const Eigen::Vector2d secondDirection(
+          secondSegment.endBarycentric[1] -
+              secondSegment.startBarycentric[1],
+          secondSegment.endBarycentric[2] -
+              secondSegment.startBarycentric[2]);
+      const double denominator = cross2(firstDirection, secondDirection);
+      const double directionScale =
+          firstDirection.norm() * secondDirection.norm();
+      if (!(directionScale > 1.0e-15) ||
+          std::abs(denominator) <= 1.0e-10 * directionScale) {
+        continue;
+      }
+      const Eigen::Vector2d offset = secondStart - firstStart;
+      const double firstT = cross2(offset, secondDirection) / denominator;
+      const double secondT = cross2(offset, firstDirection) / denominator;
+      constexpr double parameterTolerance = 1.0e-9;
+      if (firstT < -parameterTolerance || firstT > 1.0 + parameterTolerance ||
+          secondT < -parameterTolerance ||
+          secondT > 1.0 + parameterTolerance) {
+        continue;
+      }
+      SurfaceTracePoint point;
+      point.face = firstSegment.face;
+      point.barycentric =
+          firstSegment.startBarycentric +
+          std::clamp(firstT, 0.0, 1.0) *
+              (firstSegment.endBarycentric -
+               firstSegment.startBarycentric);
+      for (int coordinate = 0; coordinate < 3; ++coordinate) {
+        if (std::abs(point.barycentric[coordinate]) <= 1.0e-12) {
+          point.barycentric[coordinate] = 0.0;
+        }
+      }
+      const double barycentricSum = point.barycentric.sum();
+      if (!(std::abs(barycentricSum) > 1.0e-15) ||
+          !point.barycentric.allFinite()) {
+        continue;
+      }
+      point.barycentric /= barycentricSum;
+      const Eigen::RowVector3d position =
+          point_position(vertices, faces, point);
+      const double distance = (position - expectedPosition).squaredNorm();
+      const double firstParameter =
+          static_cast<double>(firstIndex) + std::clamp(firstT, 0.0, 1.0);
+      const double secondParameter =
+          static_cast<double>(secondIndex) + std::clamp(secondT, 0.0, 1.0);
+      if (distance < bestDistance - 1.0e-24 ||
+          (std::abs(distance - bestDistance) <= 1.0e-24 &&
+           std::tie(firstParameter, secondParameter, point.face) <
+               std::tie(best.firstParameter, best.secondParameter,
+                        best.point.face))) {
+        bestDistance = distance;
+        best.valid = true;
+        best.point = point;
+        best.firstParameter = firstParameter;
+        best.secondParameter = secondParameter;
+      }
+    }
+  }
+  return best;
+}
+
+std::vector<SurfaceTraceSegment> reverse_trace_path(
+    const std::vector<SurfaceTraceSegment> &path) {
+  std::vector<SurfaceTraceSegment> reversed;
+  reversed.reserve(path.size());
+  for (auto segment = path.rbegin(); segment != path.rend(); ++segment) {
+    reversed.push_back(reversed_trace_segment(*segment));
+  }
+  return reversed;
+}
+
+std::vector<SurfaceTraceSegment> extract_proposal_flowline_path(
+    const ProposalFlowline &flowline, const double startParameter,
+    const double endParameter, const SurfaceTracePoint &startPoint,
+    const SurfaceTracePoint &endPoint) {
+  if (endParameter + 1.0e-12 < startParameter) {
+    return reverse_trace_path(extract_proposal_flowline_path(
+        flowline, endParameter, startParameter, endPoint, startPoint));
+  }
+  std::vector<SurfaceTraceSegment> path;
+  if (flowline.segments.empty() ||
+      endParameter - startParameter <= 1.0e-12) {
+    return path;
+  }
+  const int lastAvailable = static_cast<int>(flowline.segments.size()) - 1;
+  const int firstIndex = std::clamp(
+      static_cast<int>(std::floor(startParameter)), 0, lastAvailable);
+  const int lastIndex = std::clamp(
+      static_cast<int>(std::floor(
+          std::min(endParameter,
+                   std::nextafter(static_cast<double>(flowline.segments.size()),
+                                  0.0)))),
+      0, lastAvailable);
+  for (int index = firstIndex; index <= lastIndex; ++index) {
+    SurfaceTraceSegment segment =
+        flowline.segments[static_cast<std::size_t>(index)];
+    if (index == firstIndex) {
+      if (segment.face != startPoint.face) {
+        return {};
+      }
+      segment.startBarycentric = startPoint.barycentric;
+    }
+    if (index == lastIndex) {
+      if (segment.face != endPoint.face) {
+        return {};
+      }
+      segment.endBarycentric = endPoint.barycentric;
+    }
+    if ((segment.endBarycentric - segment.startBarycentric).norm() >
+        1.0e-12) {
+      path.push_back(segment);
+    }
+  }
+  return path;
+}
+
+double trace_path_length(const Eigen::MatrixXd &vertices,
+                         const Eigen::MatrixXi &faces,
+                         const std::vector<SurfaceTraceSegment> &path) {
+  double length = 0.0;
+  for (const SurfaceTraceSegment &segment : path) {
+    length +=
+        (point_position(vertices, faces,
+                        SurfaceTracePoint{segment.face,
+                                          segment.endBarycentric}) -
+         point_position(vertices, faces,
+                        SurfaceTracePoint{segment.face,
+                                          segment.startBarycentric}))
+            .norm();
+  }
+  return length;
+}
+
+bool make_intersection_surface_cell_proposal(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SurfaceTraceSeed &seed, const double h,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    SurfaceCellProposal &proposal) {
+  const auto offset = [&](const int family, const int sign) {
+    return walk_surface_field(vertices, faces, faceAxisX, faceAxisY, seed.point,
+                              family, sign, 0.5 * h, options, edgeMatching,
+                              edgeEffort, edgeTransitions);
+  };
+  const SurfaceWalkResult leftCenter = offset(0, -1);
+  const SurfaceWalkResult rightCenter = offset(0, 1);
+  const SurfaceWalkResult bottomCenter = offset(1, -1);
+  const SurfaceWalkResult topCenter = offset(1, 1);
+  for (const SurfaceWalkResult *walk :
+       {&leftCenter, &rightCenter, &bottomCenter, &topCenter}) {
+    if (walk->point.face < 0 || proposal_trace_is_blocked(walk->trace)) {
+      return false;
+    }
+  }
+
+  ProposalFlowline bottom;
+  ProposalFlowline right;
+  ProposalFlowline top;
+  ProposalFlowline left;
+  if (!build_proposal_flowline(
+          vertices, faces, faceAxisX, faceAxisY, bottomCenter.point, 0, h,
+          options, edgeMatching, edgeEffort, edgeTransitions, bottom) ||
+      !build_proposal_flowline(
+          vertices, faces, faceAxisX, faceAxisY, rightCenter.point, 1, h,
+          options, edgeMatching, edgeEffort, edgeTransitions, right) ||
+      !build_proposal_flowline(
+          vertices, faces, faceAxisX, faceAxisY, topCenter.point, 0, h,
+          options, edgeMatching, edgeEffort, edgeTransitions, top) ||
+      !build_proposal_flowline(
+          vertices, faces, faceAxisX, faceAxisY, leftCenter.point, 1, h,
+          options, edgeMatching, edgeEffort, edgeTransitions, left)) {
+    return false;
+  }
+
+  Eigen::RowVector3d axisX = project_tangent(
+      faceAxisX.row(seed.point.face),
+      face_normal(vertices, faces, seed.point.face));
+  Eigen::RowVector3d axisY = project_tangent(
+      faceAxisY.row(seed.point.face),
+      face_normal(vertices, faces, seed.point.face));
+  if (!(axisX.norm() > 1.0e-12) || !(axisY.norm() > 1.0e-12)) {
+    return false;
+  }
+  axisX.normalize();
+  axisY.normalize();
+  const Eigen::RowVector3d seedPosition =
+      point_position(vertices, faces, seed.point);
+  const auto expected = [&](const int xSign, const int ySign) {
+    return seedPosition + 0.5 * h *
+                              (static_cast<double>(xSign) * axisX +
+                               static_cast<double>(ySign) * axisY);
+  };
+
+  const ProposalFlowlineIntersection bottomLeft =
+      intersect_proposal_flowlines(vertices, faces, bottom, left,
+                                   expected(-1, -1));
+  const ProposalFlowlineIntersection bottomRight =
+      intersect_proposal_flowlines(vertices, faces, bottom, right,
+                                   expected(1, -1));
+  const ProposalFlowlineIntersection topRight =
+      intersect_proposal_flowlines(vertices, faces, top, right,
+                                   expected(1, 1));
+  const ProposalFlowlineIntersection topLeft =
+      intersect_proposal_flowlines(vertices, faces, top, left,
+                                   expected(-1, 1));
+  if (!bottomLeft.valid || !bottomRight.valid || !topRight.valid ||
+      !topLeft.valid) {
+    return false;
+  }
+
+  proposal.seedId = seed.id;
+  proposal.corners = {bottomLeft.point, bottomRight.point, topRight.point,
+                      topLeft.point};
+  proposal.boundaryPaths[0] = extract_proposal_flowline_path(
+      bottom, bottomLeft.firstParameter, bottomRight.firstParameter,
+      bottomLeft.point, bottomRight.point);
+  proposal.boundaryPaths[1] = extract_proposal_flowline_path(
+      right, bottomRight.secondParameter, topRight.secondParameter,
+      bottomRight.point, topRight.point);
+  proposal.boundaryPaths[2] = extract_proposal_flowline_path(
+      top, topRight.firstParameter, topLeft.firstParameter, topRight.point,
+      topLeft.point);
+  proposal.boundaryPaths[3] = extract_proposal_flowline_path(
+      left, topLeft.secondParameter, bottomLeft.secondParameter, topLeft.point,
+      bottomLeft.point);
+  if (std::any_of(proposal.boundaryPaths.begin(),
+                  proposal.boundaryPaths.end(),
+                  [](const auto &path) { return path.empty(); })) {
+    return false;
+  }
+
+  std::array<Eigen::RowVector3d, 4> cornerPositions;
+  for (int corner = 0; corner < 4; ++corner) {
+    cornerPositions[static_cast<std::size_t>(corner)] = point_position(
+        vertices, faces, proposal.corners[static_cast<std::size_t>(corner)]);
+  }
+  const Eigen::RowVector3d seedNormal = face_normal(
+      vertices, faces, seed.point.face);
+  const CellRejectionReason loopRejection =
+      classify_quad_loop(cornerPositions, h, seedNormal, options);
+  if (loopRejection != CellRejectionReason::Accepted) {
+    return false;
+  }
+  for (const auto &path : proposal.boundaryPaths) {
+    const double length = trace_path_length(vertices, faces, path);
+    if (!std::isfinite(length) ||
+        length < options.minimumCellSideFactor * h ||
+        length > options.maximumCellSideFactor * h) {
+      return false;
+    }
+    for (const SurfaceTraceSegment &segment : path) {
+      if (trace_segment_crosses_authoritative_rail(
+              segment, options.authoritativeRails)) {
+        return false;
+      }
+      proposal.sides.push_back(segment);
+    }
+  }
+  const CellRejectionReason boundaryRejection = validate_closed_boundary_paths(
+      vertices, faces, proposal.corners, proposal.boundaryPaths,
+      options.closureToleranceFactor * h);
+  if (boundaryRejection != CellRejectionReason::Accepted) {
+    proposal.sides.clear();
+    return false;
+  }
+  proposal.accepted = true;
+  proposal.rejection = CellRejectionReason::Accepted;
+  proposal.closureError = 0.0;
+  return true;
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
 namespace directional::geometry {
 
 SurfaceTraceResult trace_surface_field(
@@ -2332,6 +2861,62 @@ SurfaceTraceResult trace_surface_field(
     captureDistance =
         surface_cell_tracing_detail::intrinsic_distances_from_points(
             captureGraph, vertices, faces, validCapturePoints);
+  }
+
+  // Vertex-backed seeds are deterministic anchors, but the face used to store
+  // their provenance is arbitrary. Resolve the incident wedge entered by this
+  // particular cross-field branch before taking its first finite step.
+  const int initialVertexCorner =
+      surface_cell_tracing_detail::hit_vertex(current.barycentric);
+  if (initialVertexCorner >= 0) {
+    const int initialVertex = faces(current.face, initialVertexCorner);
+    if (surface_cell_tracing_detail::contains_vertex(
+            options.singularityVertices, initialVertex)) {
+      result.termination = TraceTerminationReason::Singularity;
+      return result;
+    }
+    const Eigen::RowVector3d initialNormal =
+        surface_cell_tracing_detail::face_normal(vertices, faces, current.face);
+    direction =
+        surface_cell_tracing_detail::project_tangent(direction, initialNormal);
+    if (direction.squaredNorm() == 0.0) {
+      result.termination = TraceTerminationReason::Degenerate;
+      return result;
+    }
+    if (!surface_cell_tracing_detail::direction_enters_face_from_vertex(
+            vertices, faces, current.face, initialVertex, direction)) {
+      const surface_cell_tracing_detail::VertexContinuationResult continuation =
+          surface_cell_tracing_detail::resolve_vertex_continuation(
+              vertices, faces, faceAxisX, faceAxisY, edgeFaces,
+              edgeMatchingIndices, transitionLookup, current.face,
+              initialVertex, currentFamily, currentSign, direction, options,
+              edgeMatching, edgeEffort, edgeTransitions);
+      if (continuation.status !=
+          surface_cell_tracing_detail::VertexContinuationStatus::Found) {
+        switch (continuation.status) {
+        case surface_cell_tracing_detail::VertexContinuationStatus::Feature:
+          result.termination = TraceTerminationReason::Feature;
+          break;
+        case surface_cell_tracing_detail::VertexContinuationStatus::SourceSheet:
+          result.termination = TraceTerminationReason::SourceSheet;
+          break;
+        case surface_cell_tracing_detail::VertexContinuationStatus::FieldMetadata:
+          result.termination = TraceTerminationReason::FieldMetadata;
+          break;
+        case surface_cell_tracing_detail::VertexContinuationStatus::Boundary:
+          result.termination = TraceTerminationReason::Boundary;
+          break;
+        case surface_cell_tracing_detail::VertexContinuationStatus::Found:
+          break;
+        }
+        return result;
+      }
+      current = surface_cell_tracing_detail::vertex_point_in_face(
+          faces, continuation.face, initialVertex);
+      currentFamily = continuation.family;
+      currentSign = continuation.sign;
+      direction = continuation.direction;
+    }
   }
 
   for (int step = 0; step < options.maxTraceSegments &&
@@ -2596,7 +3181,8 @@ SurfaceTraceResult trace_surface_field(
       result.termination = TraceTerminationReason::Feature;
       return result;
     }
-    if (options.reliefBarrierEdges.count(key) != 0) {
+    if (options.reliefBarriersEmbedded &&
+        options.reliefBarrierEdges.count(key) != 0) {
       result.termination = TraceTerminationReason::Feature;
       return result;
     }
@@ -2743,6 +3329,12 @@ SurfaceCellProposal make_surface_cell_proposal(
   }
   const double hx = h;
   const double hy = h;
+
+  if (surface_cell_tracing_detail::make_intersection_surface_cell_proposal(
+          vertices, faces, faceAxisX, faceAxisY, seed, h, options,
+          edgeMatching, edgeEffort, edgeTransitions, proposal)) {
+    return proposal;
+  }
 
   const std::array<std::pair<int, int>, 4> cornerSigns{
       std::pair<int, int>{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};

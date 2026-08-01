@@ -1579,6 +1579,15 @@ void write_results_json(const Options &options,
                benchmarkCase.surfaceCellFallback)
         << "\", \"surfaceCellSkeletonHints\": "
         << (benchmarkCase.surfaceCellSkeletonHints ? "true" : "false")
+        << ", \"surfaceCellTraverseUnmarkedSharpBends\": "
+        << (benchmarkCase.surfaceCellTraverseUnmarkedSharpBends ? "true"
+                                                                : "false")
+        << ", \"surfaceCellSheetNormalCompatibility\": "
+        << benchmarkCase.surfaceCellSheetNormalCompatibility
+        << ", \"surfaceCellCloseSheetRadiusMeanEdges\": "
+        << benchmarkCase.surfaceCellCloseSheetRadiusMeanEdges
+        << ", \"surfaceCellGeodesicExclusionDepth\": "
+        << benchmarkCase.surfaceCellGeodesicExclusionDepth
         << ", \"integrationSolveStrategy\": \""
         << integration_solve_strategy_name(options.solveStrategy)
         << "\", \"integerBatchStrategy\": \""

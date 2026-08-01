@@ -24,6 +24,10 @@ struct BenchmarkCase {
       pipeline::SurfaceCellFallbackPolicy::Fail;
   bool surfaceCellSkeletonHints = false;
   bool surfaceCellPreserveDebugArtifacts = false;
+  bool surfaceCellTraverseUnmarkedSharpBends = true;
+  double surfaceCellSheetNormalCompatibility = 0.25;
+  double surfaceCellCloseSheetRadiusMeanEdges = 2.5;
+  int surfaceCellGeodesicExclusionDepth = 2;
   bool synthetic = false;
   int syntheticSubdivisions = 1;
   int syntheticComponents = 1;

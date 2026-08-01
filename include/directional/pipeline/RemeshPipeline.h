@@ -94,6 +94,7 @@ enum class SurfaceCellFailureCode {
   MissingConfidence,
   UncoveredFaces,
   UnsupportedInput,
+  InvalidClassifierOptions,
   InvalidRailTopology,
   EmptyFlowRepNetwork,
   MissingFlowRepCoverageEvidence,
@@ -166,6 +167,9 @@ struct SurfaceCellOptions {
   geometry::LocalThicknessOptions thickness;
   geometry::ReliefOptions relief;
   geometry::ReliefRootSelectionOptions reliefRoots;
+  /// Scale-invariant local-sheet classifier policy. Invalid numeric ranges
+  /// fail at source classification rather than silently changing charts.
+  geometry::SourceSurfaceClassifierOptions sourceClassifier;
 };
 
 /**

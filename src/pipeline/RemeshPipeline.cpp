@@ -51,6 +51,8 @@ surface_cell_failure_code_name(const SurfaceCellFailureCode code) {
     return "UncoveredFaces";
   case SurfaceCellFailureCode::UnsupportedInput:
     return "UnsupportedInput";
+  case SurfaceCellFailureCode::InvalidClassifierOptions:
+    return "InvalidClassifierOptions";
   case SurfaceCellFailureCode::InvalidRailTopology:
     return "InvalidRailTopology";
   case SurfaceCellFailureCode::EmptyFlowRepNetwork:
@@ -3721,12 +3723,44 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     tracingOptions.reliefRootVertices = reliefRootSelection.roots;
     tracingOptions.reliefRegionLabels = reliefRootSelection.labels;
     tracingOptions.reliefBarrierEdges = reliefBarrierEdges;
+    tracingOptions.reliefBarriersEmbedded = false;
+    tracingOptions.singularityVertices.reserve(
+        static_cast<std::size_t>(
+            result.surfaceCellContext.crossField.singularCycles.size()));
+    for (Eigen::Index singularity = 0;
+         singularity <
+         result.surfaceCellContext.crossField.singularCycles.size();
+         ++singularity) {
+      tracingOptions.singularityVertices.push_back(
+          result.surfaceCellContext.crossField.singularCycles[singularity]);
+    }
+    if (!geometry::surface_cell_tracing_detail::
+            source_surface_classifier_options_valid(
+                options.surfaceCells.sourceClassifier)) {
+      return fail_surface_cells(
+          SurfaceCellFailureCode::InvalidClassifierOptions,
+          "source-classification");
+    }
     const geometry::SourceSurfaceLabels sourceSurfaceLabels =
         geometry::surface_cell_tracing_detail::classify_source_surface_labels(
-            meshWhole.V, meshWhole.F, hardFeatureRailEdges);
+            meshWhole.V, meshWhole.F, hardFeatureRailEdges,
+            options.surfaceCells.sourceClassifier);
     result.surfaceCellContext.sourceSurfaceLabels = sourceSurfaceLabels;
     result.surfaceCellContext.hasSourceSurfaceLabels = true;
     std::uint64_t sourceLabelHash = structural_hash_seed("source-labels");
+    hash_combine_i64(
+        sourceLabelHash,
+        options.surfaceCells.sourceClassifier.traverseUnmarkedSharpBends ? 1
+                                                                         : 0);
+    hash_combine_double(
+        sourceLabelHash,
+        options.surfaceCells.sourceClassifier.normalCompatibility);
+    hash_combine_double(
+        sourceLabelHash,
+        options.surfaceCells.sourceClassifier.closeSheetRadiusMeanEdges);
+    hash_combine_i64(
+        sourceLabelHash,
+        options.surfaceCells.sourceClassifier.geodesicExclusionDepth);
     hash_vector(sourceLabelHash, sourceSurfaceLabels.componentByFace);
     hash_vector(sourceLabelHash, sourceSurfaceLabels.localSheetByFace);
     record_surface_cell_context_product(

@@ -175,6 +175,40 @@ int run_remesh(const int argc, char **argv) {
       options.surfaceCells.preserveDebugArtifacts = true;
     } else if (option == "--surface-cell-skeleton-hints") {
       options.surfaceCells.useSkeletonHints = true;
+    } else if (option ==
+               "--surface-cell-split-unmarked-sharp-bends") {
+      options.surfaceCells.sourceClassifier.traverseUnmarkedSharpBends = false;
+    } else if (option ==
+               "--surface-cell-traverse-unmarked-sharp-bends") {
+      options.surfaceCells.sourceClassifier.traverseUnmarkedSharpBends = true;
+    } else if (option ==
+               "--surface-cell-sheet-normal-compatibility") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--surface-cell-sheet-normal-compatibility requires a value in [0, 1].");
+      }
+      options.surfaceCells.sourceClassifier.normalCompatibility =
+          parse_numeric_option(
+              argv[argument],
+              "--surface-cell-sheet-normal-compatibility");
+    } else if (option == "--surface-cell-close-sheet-radius") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--surface-cell-close-sheet-radius requires a positive mean-edge factor.");
+      }
+      options.surfaceCells.sourceClassifier.closeSheetRadiusMeanEdges =
+          parse_positive_double(argv[argument],
+                                "--surface-cell-close-sheet-radius");
+    } else if (option ==
+               "--surface-cell-geodesic-exclusion-depth") {
+      if (++argument >= argc) {
+        throw std::runtime_error(
+            "--surface-cell-geodesic-exclusion-depth requires an edge-ring count.");
+      }
+      options.surfaceCells.sourceClassifier.geodesicExclusionDepth =
+          parse_integer_option(
+              argv[argument],
+              "--surface-cell-geodesic-exclusion-depth");
     } else if (option == "--simplification-backend") {
       if (++argument >= argc) {
         throw std::runtime_error(
