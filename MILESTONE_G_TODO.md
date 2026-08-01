@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 15:22 PDT
+Last updated: 2026-08-01 16:08 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -20,11 +20,17 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - [x] P3 — Restore required nonempty singular separatrix prefixes with fail-closed termination rules.
 - [x] P4 — Implement and validate balanced regular-disk quadrangulation for high-side even boundaries.
 - [ ] P5 — Resolve required singular-support endpoints and remaining direct-completion failures without weakening validation. **In progress**
+- [x] P5A — Make SurfaceCells fail closed without invoking legacy `setup_integration()`, `integrate()`, or legacy meshing.
 - [ ] P6 — Validate topology, provenance, source projection, field alignment, determinism, and quality metrics.
 - [ ] P7 — Run focused and broader regression tests; repair only real implementation or fixture defects.
 - [ ] P8 — Run final bunny benchmark and document production-readiness evidence and remaining limitations.
 
 ## Current checkpoint
+
+- Production fallback contract changed: a failed SurfaceCells request terminates in SurfaceCells and never invokes `setup_integration()`, `integrate()`, sparse integer factorization, or the LegacyInteger mesher. `TryLegacy` is now a deprecated source-compatible alias of `Fail`, while parser/CLI input `TryLegacy` is rejected.
+- New tests use a valid planar field and an injected late SurfaceCells failure that previously allowed a successful legacy fallback. They now require no output, `executedBackend=SurfaceCells`, no fallback attempt, and zero integration/mesher timings, integer iterations, direct factorizations, and numeric-factorization time. This is not a malformed-input shortcut.
+- All future SurfaceCells benchmarks use `fallbackPolicy=Fail`. A run only counts as SurfaceCells success when its origin is `CompletedSurfaceCells`; LegacyInteger comparison remains a separately requested benchmark case and never a fallback continuation.
+- Validation after the fail-closed fallback change: all 52 focused P23/Phase 20 tests pass. The transition-identity regression was corrected to build a nondegenerate destination chart for each authoritative matching value; it still verifies shuffled source-edge transition records by both matching and unique effort without requiring unrelated second-segment continuation. Evidence: `build/mg-debug/results/p5a-no-legacy-p23-phase20-v3.json`.
 
 - Corrected Milestone G P26 fixture tests so the fieldless random bunny exercises the library-calculated cross-field path instead of passing an empty raw field. Prescribed-field-only tests still cover all eight paired field fixtures.
 - Applied the narrow singular-separatrix contract change: nonempty required prefixes terminated by later geometric degeneracy remain explicit completion obligations; invalid field metadata and source-sheet terminations remain unusable.
@@ -68,7 +74,10 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Added an explicit benchmark diagnostic switch, `--disable-surface-cell-source-grid-recovery`, and direct completion counters so the arrangement path can be measured without the recovery mesh masking its status.
 - Direct bunny completion now finishes in about 23 s and identifies exactly 16 rejected descriptors out of 21,289; 21,273 patches complete successfully. All 16 are closed one-boundary-component walks rejected as non-disks before patch completion. Evidence: `benchmark-results/p28-local/bunny-direct-completion-diagnostics-v4.json`.
 - Twelve rejected cells contain an immediate twin backtrack on a required singularity-support arc. Two of those cells also contain larger repeated-node pinches. One additional cell contains two optional layout-support backtracks, and three cells contain complex repeated-node pinches without an immediate twin pair. Required endpoint ownership is resolved, but these retained support strands still terminate or overlap topologically inside the DCEL.
-- Next action: classify the 16 rejected cell walks by source arc and endpoint ownership, then transactionally splice or continue only the proven dangling support branches. Do not strip required singularity-support bridges or reinterpret non-disks as valid patches.
+- Added final retained-arc, arrangement-halfedge provenance, and per-stage endpoint-degree diagnostics for rejected completion descriptors. This exposed a concrete contract violation: ten connectors were marked `endEmbeddedAnchor=true` after the endpoint-completion tolerance accepted near-parallel source-chart lines that the arrangement's exact intersection predicate correctly did not split.
+- Endpoint interception now uses the same strict segment-intersection predicate as arrangement construction and snaps committed connector endpoints to the target-chart intersection. A focused regression includes a false near-parallel candidate followed by a real retained-network crossing and verifies the committed anchor has degree at least three in the rebuilt arrangement.
+- Direct random-bunny completion after arrangement-consistent endpoint capture improves from 21,273 to 21,283 completed patches and reduces rejected descriptors from 16 to six. Ten required singularity-support bridge cells are eliminated without deleting support topology. Evidence: `benchmark-results/p28-local/bunny-arrangement-consistent-capture.json` and `build/mg-debug/results/p5-arrangement-consistent-capture-focused.json`.
+- The six remaining failures are now isolated: three complex repeated-node pinches, one mixed complex cell with a required bridge, one required support bridge whose claimed embedded anchor still has arrangement degree one, and one cell with two optional support bridges. Next action: record the exact capture target/parameter for the two remaining required bridges and prove whether later connector mutation invalidates ownership or whether a source-chart transition needs canonical target transfer.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
