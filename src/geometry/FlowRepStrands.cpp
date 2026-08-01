@@ -2338,7 +2338,12 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
   std::vector<OpenEndpoint> openEndpoints;
   for (const int arcId : result.retainedArcIds) {
     const FlowRepArc &arc = result.arcs[static_cast<std::size_t>(arcId)];
-    if (arc.mandatoryRail || arc.boundaryRail || arc.hardFeatureRail) {
+    // Boundary rails are complete boundary cycles and never need extension.
+    // An open hard-feature chain is different: preserving the rail without a
+    // layout connection leaves every chain edge as a graph bridge and pinches
+    // the incident DCEL face. Extend degree-one hard-feature endpoints just
+    // like optional layout tips; the authoritative rail itself remains fixed.
+    if (arc.boundaryRail || (arc.mandatoryRail && !arc.hardFeatureRail)) {
       continue;
     }
     for (const bool start : {true, false}) {
@@ -2425,8 +2430,7 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     }
     const FlowRepArc &source =
         result.arcs[static_cast<std::size_t>(endpoint.arcId)];
-    if (source.family < 0 || source.sourceFace < 0 ||
-        source.sourceFace >= faces.rows()) {
+    if (source.sourceFace < 0 || source.sourceFace >= faces.rows()) {
       ++result.unresolvedEndpoints;
       continue;
     }
@@ -2435,7 +2439,22 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
         endpoint.start ? source.startBarycentric : source.endBarycentric};
     const Eigen::RowVector3d outward =
         endpoint.start ? source.start - source.end : source.end - source.start;
-    const int family = ((source.family % 2) + 2) % 2;
+    int family = ((source.family % 2) + 2) % 2;
+    if (source.family < 0) {
+      const Eigen::RowVector3d tangent = source.end - source.start;
+      if (!tangent.allFinite() || tangent.squaredNorm() <= 1.0e-24) {
+        ++result.unresolvedEndpoints;
+        continue;
+      }
+      const Eigen::RowVector3d unitTangent = tangent.normalized();
+      const double primaryAlignment = std::abs(unitTangent.dot(
+          crossField.primaryDirections.row(source.sourceFace)));
+      const double secondaryAlignment = std::abs(unitTangent.dot(
+          crossField.secondaryDirections.row(source.sourceFace)));
+      // Stable ties choose the primary family. Feature-constrained fields are
+      // expected to make one of these axes tangent to the rail.
+      family = secondaryAlignment > primaryAlignment ? 1 : 0;
+    }
     const Eigen::RowVector3d axis =
         family == 0 ? crossField.primaryDirections.row(source.sourceFace)
                     : crossField.secondaryDirections.row(source.sourceFace);

@@ -996,6 +996,8 @@ SurfaceCellComplex build_surface_cell_complex(
     segment.strand = arc.strand;
     segment.featureClass = arc.featureClass;
     segment.hardFeature = arc.hardFeature;
+    segment.layoutSupport = arc.layoutSupport;
+    segment.singularitySupport = arc.singularitySupport;
     segment.railId = arc.railId;
     segment.curveId = arc.curveId;
     segment.sourceComponent = arc.sourceComponent;
@@ -1165,6 +1167,8 @@ SurfaceCellComplex build_surface_cell_complex(
         value.strand = segment.strand;
         value.featureClass = segment.featureClass;
         value.hardFeature = segment.hardFeature;
+        value.layoutSupport = segment.layoutSupport;
+        value.singularitySupport = segment.singularitySupport;
         value.railId = segment.railId;
         value.curveId = segment.curveId;
         value.sourceComponent = segment.sourceComponent;
@@ -1185,6 +1189,8 @@ SurfaceCellComplex build_surface_cell_complex(
                  existing.strand == value.strand &&
                  existing.featureClass == value.featureClass &&
                  existing.hardFeature == value.hardFeature &&
+                 existing.layoutSupport == value.layoutSupport &&
+                 existing.singularitySupport == value.singularitySupport &&
                  existing.railId == value.railId &&
                  existing.curveId == value.curveId &&
                  existing.sourceComponent == value.sourceComponent &&
@@ -1280,6 +1286,8 @@ SurfaceCellComplex build_surface_cell_complex(
           const auto key = [](const SurfaceArrangementProvenance &value) {
             return std::make_tuple(
                 value.sourceArc >= 0 ? 0 : 1, value.hardFeature ? 0 : 1,
+                value.layoutSupport ? 0 : 1,
+                value.singularitySupport ? 0 : 1,
                 value.sourceFace, value.sourceArc, value.provenance,
                 value.family, value.strand, value.featureClass, value.railId,
                 value.curveId, value.sourceComponent, value.sourceSheet,
@@ -1311,6 +1319,16 @@ SurfaceCellComplex build_surface_cell_complex(
         std::any_of(halfedge.provenance.begin(), halfedge.provenance.end(),
                     [](const SurfaceArrangementProvenance &value) {
                       return value.hardFeature;
+                    });
+    halfedge.layoutSupport =
+        std::any_of(halfedge.provenance.begin(), halfedge.provenance.end(),
+                    [](const SurfaceArrangementProvenance &value) {
+                      return value.layoutSupport;
+                    });
+    halfedge.singularitySupport =
+        std::any_of(halfedge.provenance.begin(), halfedge.provenance.end(),
+                    [](const SurfaceArrangementProvenance &value) {
+                      return value.singularitySupport;
                     });
     halfedge.railId = primary.railId;
     halfedge.curveId = primary.curveId;
@@ -1560,7 +1578,13 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
   for (SurfaceArrangementCell &cell : complex.cells) {
-    if (cell.boundaryCycle || !cell.closed || cell.area <= 1.0e-14) {
+    // The nesting pass may only disprove a disk. It must never erase the
+    // repeated-node/self-touch evidence established by the DCEL incidence
+    // walk above. The previous assignment of `disk` from boundary count alone
+    // accidentally made pinched cycles topologically valid while leaving
+    // their stale NonDisk class behind.
+    if (cell.boundaryCycle || !cell.disk || !cell.closed ||
+        cell.area <= 1.0e-14) {
       continue;
     }
     int nestedBoundaryCount = 0;
@@ -1586,11 +1610,10 @@ SurfaceCellComplex build_surface_cell_complex(
         ++nestedBoundaryCount;
       }
     }
-    cell.boundaryComponentCount = 1 + nestedBoundaryCount;
-    cell.eulerCharacteristic = 2 - cell.boundaryComponentCount;
-    cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
-                cell.eulerCharacteristic == 1;
-    if (!cell.disk) {
+    if (nestedBoundaryCount > 0) {
+      cell.boundaryComponentCount = 1 + nestedBoundaryCount;
+      cell.eulerCharacteristic = 2 - cell.boundaryComponentCount;
+      cell.disk = false;
       cell.quadReady = false;
       cell.cellClass = SurfaceArrangementCellClass::NonDisk;
       cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
@@ -1909,6 +1932,8 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
       mix(value.strand);
       mix(value.featureClass);
       mix(value.hardFeature ? 1 : 0);
+      mix(value.layoutSupport ? 1 : 0);
+      mix(value.singularitySupport ? 1 : 0);
       mix(value.railId);
       mix(value.curveId);
       mix(value.sourceComponent);

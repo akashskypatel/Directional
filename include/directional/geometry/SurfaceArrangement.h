@@ -70,6 +70,8 @@ struct SurfaceArrangementArc {
   int proposalBoundarySegment = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
+  bool layoutSupport = false;
+  bool singularitySupport = false;
 };
 
 struct SurfaceArrangementNodeOccurrence {
@@ -85,6 +87,8 @@ struct SurfaceArrangementProvenance {
   int strand = -1;
   int featureClass = 0;
   bool hardFeature = false;
+  bool layoutSupport = false;
+  bool singularitySupport = false;
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;
@@ -123,6 +127,8 @@ struct SurfaceArrangementHalfedge {
   double sourceT0 = 0.0;
   double sourceT1 = 1.0;
   bool hardFeature = false;
+  bool layoutSupport = false;
+  bool singularitySupport = false;
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;
@@ -218,6 +224,8 @@ struct Segment2 {
   int strand = -1;
   int featureClass = 0;
   bool hardFeature = false;
+  bool layoutSupport = false;
+  bool singularitySupport = false;
   int railId = -1;
   int curveId = -1;
   int sourceComponent = -1;

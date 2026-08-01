@@ -718,6 +718,8 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, arc.curveId);
     hash_combine_double(seed, arc.railT0);
     hash_combine_double(seed, arc.railT1);
+    hash_combine_i64(seed, arc.layoutSupport ? 1 : 0);
+    hash_combine_i64(seed, arc.singularitySupport ? 1 : 0);
     hash_combine_double(seed, arc.dominance);
     hash_combine_double(seed, arc.alignmentCost);
     hash_combine_i64(seed, arc.sameStrandHint);
@@ -854,6 +856,8 @@ std::uint64_t hash_surface_complex(
     hash_combine_double(seed, halfedge.sourceT0);
     hash_combine_double(seed, halfedge.sourceT1);
     hash_combine_i64(seed, halfedge.hardFeature ? 1 : 0);
+    hash_combine_i64(seed, halfedge.layoutSupport ? 1 : 0);
+    hash_combine_i64(seed, halfedge.singularitySupport ? 1 : 0);
     hash_combine_i64(seed, halfedge.railId);
     hash_combine_i64(seed, halfedge.curveId);
     hash_combine_i64(seed, halfedge.sourceComponent);
@@ -2139,6 +2143,12 @@ surface_arrangement_arcs_from_flow_rep(
     arrangementArc.proposalBoundarySegment = arc.proposalBoundarySegment;
     arrangementArc.railT0 = arc.railT0;
     arrangementArc.railT1 = arc.railT1;
+    // Every non-authoritative FlowRep arc is optional layout support at the
+    // arrangement layer. Proposal boundaries that participate in cycles are
+    // retained; a proposal segment that is a graph bridge cannot bound a cell
+    // and is eligible for the conservative topology-healing pass.
+    arrangementArc.layoutSupport = !arc.mandatoryRail;
+    arrangementArc.singularitySupport = arc.singularitySupport;
     arrangementArcs.push_back(arrangementArc);
   }
   return arrangementArcs;
@@ -3993,10 +4003,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     const geometry::SurfaceSimplificationCandidateSet simplificationCandidates =
         geometry::extract_surface_simplification_candidates(
             arrangementComplex, meshWhole.V, meshWhole.F);
+    geometry::SurfaceSimplificationOptions simplificationOptions;
+    // The production path currently enables only the independently validated
+    // topological repair: trim optional layout-support graph bridges that
+    // pinch DCEL face walks. General FlowRep removals remain available to the
+    // experimental API but require separate fidelity gates before integration.
+    simplificationOptions.topologyHealingOnly = true;
     const geometry::SurfaceSimplificationResult simplified =
         geometry::simplify_surface_cell_complex(
             arrangementComplex, meshWhole.V, meshWhole.F,
-            simplificationCandidates.candidates);
+            simplificationCandidates.candidates, simplificationOptions);
     result.diagnostics.surfaceCellSimplificationSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - simplificationStart)

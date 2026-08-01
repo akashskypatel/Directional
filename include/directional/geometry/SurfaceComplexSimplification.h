@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <functional>
 #include <limits>
 #include <map>
 #include <queue>
@@ -103,6 +104,10 @@ struct SurfaceSimplificationCandidate {
   bool affectedPatchDisk = true;
   bool sideFeasible = true;
   bool changesTopology = false;
+  /// Removal deletes an optional layout-support bridge whose two DCEL sides
+  /// currently pinch a non-disk face. Trial acceptance requires a strict
+  /// reduction in the non-disk defect while preserving source topology.
+  bool topologyHealing = false;
   bool invalidated = false;
 };
 
@@ -132,6 +137,11 @@ struct SurfaceSimplificationOptions {
   int targetActiveElements = 0;
   double objectiveTolerance = 0.0;
   double maxDescriptivenessWorsening = 0.05;
+  /// Restrict the transactional queue to optional layout-support graph
+  /// bridges whose removal strictly improves a non-disk arrangement cell.
+  /// Production surface-cell integration uses this conservative mode until
+  /// the general FlowRep edit operators have independent fidelity gates.
+  bool topologyHealingOnly = false;
 };
 
 struct SurfaceSimplificationTransaction {
@@ -209,7 +219,10 @@ SurfaceSimplificationRejectionReason validate_candidate(
     const std::vector<SurfaceSimplificationElement> &elements,
     const SurfaceSimplificationOptions &options, const double cost);
 
-bool validate_complex_incidence(const SurfaceCellComplex &complex);
+bool validate_complex_incidence(const SurfaceCellComplex &complex,
+                                bool requireDiskCells = true);
+
+int non_disk_topology_defect(const SurfaceCellComplex &complex);
 
 std::vector<std::int64_t> protected_node_signature(
     const SurfaceArrangementNode &node);

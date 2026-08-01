@@ -636,3 +636,89 @@ TEST(SurfaceComplexSimplificationPhase17,
                           }));
   EXPECT_TRUE(result.complex.diagnostics.topologyValid);
 }
+
+TEST(SurfaceComplexSimplificationPhase17,
+     OptionalLayoutBridgeHealsPinchedCellTransactionally) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  auto dangling = arc(300, {0.5, 0.5, 0.0}, {0.4, 0.3, 0.3}, 0);
+  dangling.layoutSupport = true;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, {dangling});
+  const int beforeDefect = directional::geometry::
+      surface_simplification_detail::non_disk_topology_defect(complex);
+  ASSERT_GT(beforeDefect, 0);
+  ASSERT_FALSE(complex.diagnostics.topologyValid);
+
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          complex, vertices, faces);
+  const auto healing = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return candidate.topologyHealing && !candidate.touchesHardFeature &&
+               !candidate.touchesBoundary && !candidate.touchesSingularity;
+      });
+  ASSERT_NE(healing, extracted.candidates.end());
+  EXPECT_FALSE(healing->affectedPatchDisk);
+
+  auto options = permissive_options();
+  options.topologyHealingOnly = true;
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, vertices, faces, extracted.candidates, options);
+
+  EXPECT_EQ(result.committed, 1);
+  EXPECT_EQ(result.rejected, 0);
+  EXPECT_LT(result.complex.halfedges.size(), complex.halfedges.size());
+  EXPECT_EQ(directional::geometry::surface_simplification_detail::
+                non_disk_topology_defect(result.complex),
+            0);
+  EXPECT_TRUE(result.complex.diagnostics.topologyValid);
+  EXPECT_EQ(result.complex.diagnostics.eulerCharacteristic,
+            result.complex.diagnostics.sourceEulerCharacteristic);
+  EXPECT_EQ(result.complex.diagnostics.boundaryLoopCount,
+            result.complex.diagnostics.sourceBoundaryLoopCount);
+}
+
+TEST(SurfaceComplexSimplificationPhase17,
+     RequiredSingularityBridgeIsProtectedAndRollsBackExactly) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  auto separatrix = arc(301, {0.5, 0.5, 0.0}, {0.4, 0.3, 0.3}, 0);
+  separatrix.layoutSupport = true;
+  separatrix.singularitySupport = true;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, {separatrix});
+  const auto before = directional::geometry::surface_simplification_detail::
+      complex_structural_hash(complex);
+
+  const auto extracted =
+      directional::geometry::extract_surface_simplification_candidates(
+          complex, vertices, faces);
+  const auto healing = std::find_if(
+      extracted.candidates.begin(), extracted.candidates.end(),
+      [](const auto &candidate) {
+        return candidate.topologyHealing && candidate.touchesSingularity;
+      });
+  ASSERT_NE(healing, extracted.candidates.end());
+
+  auto options = permissive_options();
+  options.topologyHealingOnly = true;
+  const auto result = directional::geometry::simplify_surface_cell_complex(
+      complex, vertices, faces, extracted.candidates, options);
+
+  ASSERT_EQ(result.transactions.size(), 1U);
+  EXPECT_FALSE(result.transactions.front().committed);
+  EXPECT_EQ(result.transactions.front().rejection,
+            directional::geometry::SurfaceSimplificationRejectionReason::
+                ProtectedSingularity);
+  EXPECT_EQ(result.transactions.front().beforeHash, before);
+  EXPECT_EQ(result.transactions.front().afterHash, before);
+  EXPECT_EQ(result.finalHash, before);
+}

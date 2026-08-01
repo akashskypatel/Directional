@@ -265,6 +265,54 @@ TEST(FlowRepStrandsPhase15,
 }
 
 TEST(FlowRepStrandsPhase15,
+     OpenHardFeatureEndpointsExtendWithoutRemovingAuthoritativeRail) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  std::vector<FlowRepArc> arcs;
+  auto feature = endpoint_completion_arc(
+      0, 0, {0.60, 0.25, 0.15}, {0.40, 0.45, 0.15}, 3, 5, true);
+  feature.boundaryRail = false;
+  feature.hardFeatureRail = true;
+  feature.family = -1;
+  arcs.push_back(feature);
+  arcs.push_back(endpoint_completion_arc(
+      1, 0, {0.85, 0.10, 0.05}, {0.50, 0.10, 0.40}, 3, 5, true));
+  arcs.push_back(endpoint_completion_arc(
+      2, 0, {0.20, 0.75, 0.05}, {0.05, 0.75, 0.20}, 3, 5, true));
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(1), tracing, arcs, {0, 1, 2},
+      completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 2);
+  EXPECT_EQ(result.resolvedEndpoints, 2);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_GE(result.addedArcs, 2);
+  ASSERT_LT(0, static_cast<int>(result.retainedArcIds.size()));
+  EXPECT_EQ(result.retainedArcIds.front(), 0);
+  EXPECT_TRUE(result.arcs.front().mandatoryRail);
+  EXPECT_TRUE(result.arcs.front().hardFeatureRail);
+  EXPECT_EQ(result.arcs.front().railId, feature.railId);
+  for (std::size_t index = arcs.size(); index < result.arcs.size(); ++index) {
+    EXPECT_TRUE(result.arcs[index].layoutSupport);
+    EXPECT_FALSE(result.arcs[index].mandatoryRail);
+    EXPECT_FALSE(result.arcs[index].singularitySupport);
+    EXPECT_EQ(result.arcs[index].family, 0);
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
      EndpointCompletionDoesNotCaptureCoincidentOtherSheet) {
   Eigen::MatrixXd vertices(6, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
