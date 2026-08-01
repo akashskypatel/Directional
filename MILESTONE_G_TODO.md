@@ -19,7 +19,7 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - [x] P2 — Reproduce the current bunny failure and capture stage/cell diagnostics. Optimized run reaches final validation after successful completion and optimization.
 - [x] P3 — Restore required nonempty singular separatrix prefixes with fail-closed termination rules.
 - [x] P4 — Implement and validate balanced regular-disk quadrangulation for high-side even boundaries.
-- [ ] P5 — Diagnose and fix the remaining strict validation failures without weakening validation. **In progress**
+- [ ] P5 — Resolve required singular-support endpoints and remaining direct-completion failures without weakening validation. **In progress**
 - [ ] P6 — Validate topology, provenance, source projection, field alignment, determinism, and quality metrics.
 - [ ] P7 — Run focused and broader regression tests; repair only real implementation or fixture defects.
 - [ ] P8 — Run final bunny benchmark and document production-readiness evidence and remaining limitations.
@@ -35,7 +35,13 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Test evidence: `build/mg-debug/p3-focused.json`, `build/mg-debug/p3-phase15-18.json`, `build/mg-debug/p4-focused.json`, `build/mg-debug/p4-phase15-18.json`.
 - Optimized random-bunny result after P3–P4: completion emits 2,256 quads, optimization completes 13 iterations, and the pipeline now fails honestly at final validation with 39 counted failures instead of failing during completion.
 - Runtime evidence: 258.75 s pipeline time, 364,512 KiB peak RSS. Artifacts are under `benchmark-results/p28-local/`.
-- Next action: dump the full strict validation issue list and quantitative gate metrics, then fix the actual topology/provenance/quality defect.
+- Detailed validation diagnosis: strict topology, manifoldness, source authority, rails, provenance, sheets, orientation, intersections, and warpage all pass. The 39 failures are exactly 33 required singularity-valence mismatches plus six quantitative gates: field median/P95, size P5, angle P5/P95, and aspect P95.
+- The final output is the whole-mesh `SourceGridRecovery` fallback (2,256 quads), not the direct arrangement-cell assembly. It therefore does not yet realize the required singular topology or cross-field/size quality on the random bunny.
+- Direct completion currently has 68 failures: 66 pinched/non-disk boundary walks and two valid even regular disks with two logical sides.
+- The 66 pinched walks contain 132 two-halfedge bridge excursions. Of those, 131 are required `singularitySupport` segments from unresolved separatrix prefixes; one is a hard-feature bridge.
+- Endpoint completion sees 88 open tips, resolves 13, adds 30 connector arcs, and leaves 75 unresolved because the pipeline currently sets `requireAllEndpointsResolved=false`.
+- These unresolved required tips are the concrete cause of the invalid DCEL face walks; stripping the bridge excursions would erase required singular topology and is not acceptable.
+- Next action: diagnose retry termination per endpoint, implement deterministic cross-edge/vertex continuation for degenerate required tips, and fail closed before arrangement if required singular supports remain unresolved.
 
 - Local archive HEAD matches remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`.
 - Recursive submodules are present.
