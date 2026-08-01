@@ -1,0 +1,105 @@
+{
+  "assets": [
+    {
+      "bytes": 15247,
+      "path": "benchmarks/fixtures/generate_milestone_g_fixtures.py",
+      "sha256": "0a30b76cbe7ce582c69f70a52ecc31c553061593b319c97830465b27ec598a80"
+    },
+    {
+      "bytes": 698,
+      "path": "benchmarks/fixtures/milestone-g/LICENSE.md",
+      "sha256": "6c2a343e7b78aad724d7464246300eb1601f48553d9471d12d160c5812950c54"
+    },
+    {
+      "bytes": 49554,
+      "path": "benchmarks/fixtures/milestone-g/bunny_1k_random.obj",
+      "sha256": "8e19700250ea2d53608d10796d9a9c2216b25d718f85ca4e2bc1566ba128d1b3"
+    },
+    {
+      "bytes": 1869,
+      "path": "benchmarks/fixtures/milestone-g/close_sheets.obj",
+      "sha256": "2a5ed020a4be70ef2b28f24ab2ed0c45e59640bb31d86c99bebdb2f7d64b1533"
+    },
+    {
+      "bytes": 1085,
+      "path": "benchmarks/fixtures/milestone-g/close_sheets.rawfield",
+      "sha256": "cd762567682448020ab56ca4731824767a9a44b5ddd962f03ea9ea5bf5a749d1"
+    },
+    {
+      "bytes": 4681,
+      "path": "benchmarks/fixtures/milestone-g/cylinder.obj",
+      "sha256": "59ed6d736410dbef6bc751136ba0eb1d557a43c9df63fb2a570daf85c79419ae"
+    },
+    {
+      "bytes": 12950,
+      "path": "benchmarks/fixtures/milestone-g/cylinder.rawfield",
+      "sha256": "6e861e06fa5d3dd6ed84c48bf7d459df701acd7f6ab241cc2adbde66d829084d"
+    },
+    {
+      "bytes": 12922,
+      "path": "benchmarks/fixtures/milestone-g/mechanical_feature.obj",
+      "sha256": "eb967408f2c7fe002464dbb76bfd52d80120b52b0423fd713c8af2ca040f5fb9"
+    },
+    {
+      "bytes": 19740,
+      "path": "benchmarks/fixtures/milestone-g/mechanical_feature.rawfield",
+      "sha256": "688c4b228f47efa97484e3a77d7311e63ea7b06e1f04fa3ad3ad906b1c172ad5"
+    },
+    {
+      "bytes": 652,
+      "path": "benchmarks/fixtures/milestone-g/multi_face_seam.obj",
+      "sha256": "3c3f0c81c3fb711cbc019d85f54edc1d6f360769b6a11c59f61ce0d771b98be9"
+    },
+    {
+      "bytes": 965,
+      "path": "benchmarks/fixtures/milestone-g/multi_face_seam.rawfield",
+      "sha256": "7029e3135c14489ce0f9e04c50e5fed2826f24aa306e756ea019e775ca4fa775"
+    },
+    {
+      "bytes": 646,
+      "path": "benchmarks/fixtures/milestone-g/plane.obj",
+      "sha256": "33f8c3a1e6003b1682f0ad291609a5735494a03be4282e19aa6025d144073d4e"
+    },
+    {
+      "bytes": 725,
+      "path": "benchmarks/fixtures/milestone-g/plane.rawfield",
+      "sha256": "33ade8a013e1fa6585ef37aa5e4c98b1ce1521a8e8c6f3c478aca0c27ed39ace"
+    },
+    {
+      "bytes": 266,
+      "path": "benchmarks/fixtures/milestone-g/sphere_prescribed.fieldmeta.json",
+      "sha256": "40c558cfe4203d3bfadea1876c65314ad8368fc4e53c08b70467156f59bfb024"
+    },
+    {
+      "bytes": 7344,
+      "path": "benchmarks/fixtures/milestone-g/sphere_prescribed.obj",
+      "sha256": "3973d82788756a514a5bcbe893e2a3e426857876468a204436b256f88f9b7253"
+    },
+    {
+      "bytes": 47554,
+      "path": "benchmarks/fixtures/milestone-g/sphere_prescribed.rawfield",
+      "sha256": "340f24b1360a520126962bf9013750d8d112a354dc4978a01a3e63a7c3efcd83"
+    },
+    {
+      "bytes": 10191,
+      "path": "benchmarks/fixtures/milestone-g/thin_bent_tube.obj",
+      "sha256": "3abc3b254dad4cd44f6d58c74d8375d0a68a6664143a5a2531b89c750ea89515"
+    },
+    {
+      "bytes": 59992,
+      "path": "benchmarks/fixtures/milestone-g/thin_bent_tube.rawfield",
+      "sha256": "d1a5d66bd4770f70cb49cdfbdf32874c50291b9306b9c9c5ef1a78162796037a"
+    },
+    {
+      "bytes": 5664,
+      "path": "benchmarks/fixtures/milestone-g/torus.obj",
+      "sha256": "8a6e0b63382a5eab8b02dc6e07f35e1611c736bf9c5744533fcee573de84c1d8"
+    },
+    {
+      "bytes": 36084,
+      "path": "benchmarks/fixtures/milestone-g/torus.rawfield",
+      "sha256": "25dddeb56f19122833643d6092b862e6777e9e2be9aa2853dfa445c36fd02dbe"
+    }
+  ],
+  "generator": "benchmarks/fixtures/generate_milestone_g_fixtures.py"
+}

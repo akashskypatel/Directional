@@ -1,0 +1,204 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "name": "plane__surface_cells",
+      "mesh": "milestone-g/plane.obj",
+      "length_ratio": 0.05,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "generated_field": "constant_xy",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "plane__legacy_integer",
+      "mesh": "milestone-g/plane.obj",
+      "length_ratio": 0.05,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "generated_field": "constant_xy",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "cylinder__surface_cells",
+      "mesh": "milestone-g/cylinder.obj",
+      "length_ratio": 0.04,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/cylinder.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "cylinder__legacy_integer",
+      "mesh": "milestone-g/cylinder.obj",
+      "length_ratio": 0.04,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/cylinder.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "torus__surface_cells",
+      "mesh": "milestone-g/torus.obj",
+      "length_ratio": 0.035,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/torus.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "torus__legacy_integer",
+      "mesh": "milestone-g/torus.obj",
+      "length_ratio": 0.035,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/torus.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "thin_bent_tube__surface_cells",
+      "mesh": "milestone-g/thin_bent_tube.obj",
+      "length_ratio": 0.025,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/thin_bent_tube.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "thin_bent_tube__legacy_integer",
+      "mesh": "milestone-g/thin_bent_tube.obj",
+      "length_ratio": 0.025,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/thin_bent_tube.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "close_sheets__surface_cells",
+      "mesh": "milestone-g/close_sheets.obj",
+      "length_ratio": 0.025,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/close_sheets.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "close_sheets__legacy_integer",
+      "mesh": "milestone-g/close_sheets.obj",
+      "length_ratio": 0.025,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/close_sheets.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "sphere_singularities__surface_cells",
+      "mesh": "milestone-g/sphere.obj",
+      "length_ratio": 0.035,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/sphere_prescribed.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "sphere_singularities__legacy_integer",
+      "mesh": "milestone-g/sphere.obj",
+      "length_ratio": 0.035,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/sphere_prescribed.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "multi_face_seam__surface_cells",
+      "mesh": "milestone-g/multi_face_seam.obj",
+      "length_ratio": 0.04,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/multi_face_seam.rawfield",
+      "field_format": "rawfield",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "multi_face_seam__legacy_integer",
+      "mesh": "milestone-g/multi_face_seam.obj",
+      "length_ratio": 0.04,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "field": "milestone-g/multi_face_seam.rawfield",
+      "field_format": "rawfield",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "bunny_1k_random__surface_cells",
+      "mesh": "milestone-g/bunny_1k_random.obj",
+      "length_ratio": 0.08,
+      "integral_seamless": false,
+      "round_seams": false,
+      "surface_cell_fallback": "Fail",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "bunny_1k_random__legacy_integer",
+      "mesh": "milestone-g/bunny_1k_random.obj",
+      "length_ratio": 0.08,
+      "integral_seamless": false,
+      "round_seams": false,
+      "surface_cell_fallback": "Fail",
+      "backend": "LegacyInteger"
+    },
+    {
+      "name": "mechanical_feature__surface_cells",
+      "mesh": "milestone-g/mechanical_feature.obj",
+      "length_ratio": 0.02,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "generated_field": "smooth",
+      "backend": "SurfaceCells",
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "mechanical_feature__legacy_integer",
+      "mesh": "milestone-g/mechanical_feature.obj",
+      "length_ratio": 0.02,
+      "integral_seamless": true,
+      "round_seams": true,
+      "surface_cell_fallback": "Fail",
+      "generated_field": "smooth",
+      "backend": "LegacyInteger"
+    }
+  ]
+}

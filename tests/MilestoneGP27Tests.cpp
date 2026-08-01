@@ -46,8 +46,18 @@ directional::pipeline::RemeshResult square_quad_result() {
 }
 
 std::filesystem::path artifact_directory(const std::string &testName) {
-  return std::filesystem::temp_directory_path() /
-         ("directional-p27-" + testName);
+  std::error_code error;
+  std::filesystem::path root = std::filesystem::temp_directory_path(error);
+  if (error) {
+    error.clear();
+    root = std::filesystem::current_path() / "build" / "test-artifacts";
+    std::filesystem::create_directories(root, error);
+  }
+  if (error) {
+    throw std::filesystem::filesystem_error(
+        "unable to create P27 artifact root", root, error);
+  }
+  return root / ("directional-p27-" + testName);
 }
 
 void remove_quality_artifacts(const BenchmarkQuality &quality) {
@@ -217,7 +227,7 @@ TEST(MilestoneGP27, ProductionManifestIsCanonicalCompleteAndPaired) {
   }
   for (const std::string &fixture :
        {"plane", "cylinder", "torus", "thin_bent_tube", "close_sheets",
-        "sphere_prescribed", "multi_face_seam", "bunny1k",
+        "sphere_prescribed", "multi_face_seam", "bunny_1k_random",
         "mechanical_feature"}) {
     EXPECT_EQ(names.count(fixture + "__surface_cells"), 1U) << fixture;
     EXPECT_EQ(names.count(fixture + "__legacy_integer"), 1U) << fixture;
@@ -316,19 +326,13 @@ TEST(MilestoneGP27, ProductionSurfaceCellMatrixMatchesSupportedDisposition) {
         directional::pipeline::SurfaceCellFallbackPolicy::Fail;
     options.surfaceCells.enforceOptimizerTimeGate = false;
     const directional::pipeline::RemeshResult result =
-        directional::pipeline::remesh_from_raw_cross_field(
-            mesh.vertices, mesh.faces, field.raw, options);
-    if (benchmarkCase.name == "bunny1k__surface_cells") {
-      EXPECT_FALSE(result.success);
-      EXPECT_EQ(result.diagnostics.terminalFailureCode, "NotProductionReady");
-      EXPECT_EQ(result.diagnostics.terminalFailureStage, "completion");
-      EXPECT_EQ(result.vertices.rows(), 0);
-      EXPECT_EQ(result.faces.rows(), 0);
-      EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
-    } else {
-      EXPECT_TRUE(result.success)
-          << benchmarkCase.name << " " << validation_detail(result);
-    }
+        field.available
+            ? directional::pipeline::remesh_from_raw_cross_field(
+                  mesh.vertices, mesh.faces, field.raw, options)
+            : directional::pipeline::remesh_from_mesh(
+                  mesh.vertices, mesh.faces, options);
+    EXPECT_TRUE(result.success)
+        << benchmarkCase.name << " " << validation_detail(result);
   }
 }
 

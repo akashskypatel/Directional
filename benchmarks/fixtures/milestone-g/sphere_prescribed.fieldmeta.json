@@ -1,0 +1,24 @@
+{
+  "degree": 4,
+  "index_convention": "degree-4 integer numerator; valence = 4 - index",
+  "singular_indices": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "singular_vertices": [
+    0,
+    8,
+    21,
+    24,
+    25,
+    34,
+    45,
+    49
+  ]
+}
