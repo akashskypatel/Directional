@@ -333,6 +333,11 @@ struct SurfaceCellPipelineContext {
   int completionOddCellsAfterRepair = 0;
   int completionParitySplitEdges = 0;
   int completionParityHardFeatureSplits = 0;
+  int completionSideInfeasibleBeforeRepair = 0;
+  int completionSideInfeasibleAfterRepair = 0;
+  int completionSideInsertedVertices = 0;
+  int completionSideSplitEdges = 0;
+  int completionSideHardFeatureSplits = 0;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   bool hasPatchDescriptors = false;

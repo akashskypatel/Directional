@@ -355,6 +355,13 @@ bool same_family_collinear(
     const std::vector<SurfaceArrangementNode> &nodes,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
 
+/** Return whether two consecutive halfedges are one logical field line side. */
+bool same_logical_side(
+    const SurfaceArrangementHalfedge &a,
+    const SurfaceArrangementHalfedge &b,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
+
 } // namespace surface_arrangement_detail
 
 SurfaceCellComplex build_surface_cell_complex(

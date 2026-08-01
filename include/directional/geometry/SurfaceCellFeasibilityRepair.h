@@ -57,6 +57,34 @@ struct SurfaceCellParityRepairResult {
 SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
     const SurfaceCellComplex &input);
 
+struct SurfaceCellSideRepairOptions {
+  int maxInsertedVertices = 100000;
+  int maxLocalInsertedVertices = 512;
+};
+
+struct SurfaceCellSideRepairResult {
+  bool success = false;
+  SurfaceCellComplex complex;
+  int infeasibleCellsBefore = 0;
+  int infeasibleCellsAfter = 0;
+  int insertedVertices = 0;
+  int splitUndirectedEdges = 0;
+  int hardFeatureSplits = 0;
+  std::string failure;
+};
+
+/**
+ * Balance the integer side-subdivision equations for every disk cell with
+ * three through six logical sides. Insertions are shared variables on the
+ * arrangement dual, so a subdivision is always applied to both incident
+ * patches and the system is iterated until all coupled equations agree.
+ */
+SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
+    const SurfaceCellComplex &input,
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const SurfaceCellSideRepairOptions &options = {});
+
 } // namespace directional::geometry
 
 #endif // DIRECTIONAL_GEOMETRY_SURFACE_CELL_FEASIBILITY_REPAIR_H

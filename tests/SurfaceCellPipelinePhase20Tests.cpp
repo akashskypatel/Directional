@@ -343,6 +343,21 @@ std::string signature(const directional::pipeline::RemeshResult &result) {
          std::to_string(result.degrees.sum());
 }
 
+std::string patch_descriptor_summary(
+    const directional::pipeline::RemeshResult &result) {
+  std::string summary;
+  for (const auto &descriptor : result.surfaceCellContext.patchDescriptors) {
+    if (!summary.empty()) {
+      summary += ",";
+    }
+    summary += std::to_string(descriptor.cellId) + ":" +
+               std::to_string(descriptor.sides.size()) + ":" +
+               std::to_string(static_cast<int>(
+                   descriptor.feasibility.reason));
+  }
+  return summary;
+}
+
 directional::geometry::AdaptiveFeatureMap minimal_feature_map() {
   directional::geometry::AdaptiveFeatureMap map;
   directional::geometry::AdaptiveFeatureEdge edge;
@@ -1778,7 +1793,16 @@ TEST(SurfaceCellPipelinePhase20, PairedBoundaryProofGateIsExplicit) {
   EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("completion", result.diagnostics.terminalFailureStage);
   EXPECT_TRUE(result.surfaceCellContext.outputLineageValidation
-                  .solelyPairedSourceTriangleBoundaries);
+                  .solelyPairedSourceTriangleBoundaries)
+      << "descriptors=" << result.surfaceCellContext.patchDescriptors.size()
+      << " completed=" << result.surfaceCellContext.completedPatches.size()
+      << " parity="
+      << result.surfaceCellContext.completionOddCellsBeforeRepair << "->"
+      << result.surfaceCellContext.completionOddCellsAfterRepair
+      << " sides="
+      << result.surfaceCellContext.completionSideInfeasibleBeforeRepair << "->"
+      << result.surfaceCellContext.completionSideInfeasibleAfterRepair
+      << " patches=" << patch_descriptor_summary(result);
   EXPECT_EQ("PairedSourceTriangleBoundaryOutput",
             result.surfaceCellContext.outputLineageValidation.failure);
 }
@@ -1798,7 +1822,16 @@ TEST(SurfaceCellPipelinePhase20,
   EXPECT_EQ("NotProductionReady", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("completion", result.diagnostics.terminalFailureStage);
   EXPECT_TRUE(result.surfaceCellContext.outputLineageValidation
-                  .solelyPairedSourceTriangleBoundaries);
+                  .solelyPairedSourceTriangleBoundaries)
+      << "descriptors=" << result.surfaceCellContext.patchDescriptors.size()
+      << " completed=" << result.surfaceCellContext.completedPatches.size()
+      << " parity="
+      << result.surfaceCellContext.completionOddCellsBeforeRepair << "->"
+      << result.surfaceCellContext.completionOddCellsAfterRepair
+      << " sides="
+      << result.surfaceCellContext.completionSideInfeasibleBeforeRepair << "->"
+      << result.surfaceCellContext.completionSideInfeasibleAfterRepair
+      << " patches=" << patch_descriptor_summary(result);
   EXPECT_EQ("PairedSourceTriangleBoundaryOutput",
             result.surfaceCellContext.outputLineageValidation.failure);
 }

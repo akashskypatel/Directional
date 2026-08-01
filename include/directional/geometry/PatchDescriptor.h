@@ -77,6 +77,11 @@ struct SurfaceCellComplexCompletionResult {
   int parityOddCellsAfter = 0;
   int paritySplitEdges = 0;
   int parityHardFeatureSplits = 0;
+  int sideInfeasibleCellsBefore = 0;
+  int sideInfeasibleCellsAfter = 0;
+  int sideInsertedVertices = 0;
+  int sideSplitEdges = 0;
+  int sideHardFeatureSplits = 0;
   PatchDescriptorSet descriptors;
   std::vector<PureQuadMesh> completedPatches;
   PureQuadAssemblyResult assembly;
@@ -108,7 +113,9 @@ bool ordered_boundary(const SurfaceCellComplex &complex,
 std::vector<PatchSideDescriptor>
 extract_sides(const SurfaceCellComplex &complex,
               const SurfaceArrangementCell &cell,
-              const std::vector<int> &boundary);
+              const std::vector<int> &boundary,
+              const Eigen::MatrixXd &V,
+              const Eigen::MatrixXi &F);
 
 bool source_vertex_is_in_cell(const int vertex,
                                      const SurfaceArrangementCell &cell,

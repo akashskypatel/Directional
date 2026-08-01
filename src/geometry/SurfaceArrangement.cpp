@@ -828,24 +828,21 @@ void collect_cell_source_faces(
 
 namespace directional::geometry::surface_arrangement_detail {
 
-bool same_family_collinear(
+static double consecutive_halfedge_alignment(
     const SurfaceArrangementHalfedge &a,
     const SurfaceArrangementHalfedge &b,
     const std::vector<SurfaceArrangementNode> &nodes,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces) {
-  if (a.family != b.family) {
-    return false;
-  }
   if (a.to != b.from || a.from < 0 || a.to < 0 || b.to < 0 ||
       a.from >= static_cast<int>(nodes.size()) ||
       a.to >= static_cast<int>(nodes.size()) ||
       b.to >= static_cast<int>(nodes.size())) {
-    return false;
+    return -1.0;
   }
   const SurfaceArrangementNode &join = nodes[static_cast<std::size_t>(a.to)];
   const Eigen::RowVector3d normal = node_reference_normal(vertices, faces, join);
   if (normal.squaredNorm() <= 1.0e-20) {
-    return false;
+    return -1.0;
   }
   const Eigen::RowVector3d joinPosition = node_position(vertices, faces, join);
   Eigen::RowVector3d incoming =
@@ -859,11 +856,76 @@ bool same_family_collinear(
   const double incomingNorm = incoming.norm();
   const double outgoingNorm = outgoing.norm();
   if (!(incomingNorm > 1.0e-14) || !(outgoingNorm > 1.0e-14)) {
+    return -1.0;
+  }
+  return incoming.dot(outgoing) / (incomingNorm * outgoingNorm);
+}
+
+bool same_family_collinear(
+    const SurfaceArrangementHalfedge &a,
+    const SurfaceArrangementHalfedge &b,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces) {
+  if (a.family != b.family) {
     return false;
   }
-  incoming /= incomingNorm;
-  outgoing /= outgoingNorm;
-  return incoming.dot(outgoing) >= 1.0 - 1.0e-8;
+  return consecutive_halfedge_alignment(a, b, nodes, vertices, faces) >=
+         1.0 - 1.0e-8;
+}
+
+bool same_logical_side(
+    const SurfaceArrangementHalfedge &a,
+    const SurfaceArrangementHalfedge &b,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces) {
+  const auto normalized_family = [](const int family) {
+    return family < 0 ? family : ((family % 2) + 2) % 2;
+  };
+  if (a.to != b.from || normalized_family(a.family) !=
+                            normalized_family(b.family)) {
+    return false;
+  }
+  const bool sameRail = a.railId >= 0 && a.railId == b.railId &&
+                        (a.curveId < 0 || b.curveId < 0 ||
+                         a.curveId == b.curveId);
+  const bool sameCurve = a.curveId >= 0 && a.curveId == b.curveId;
+  const bool sameStrand = a.strand >= 0 && a.strand == b.strand;
+  const bool sameProposalSide =
+      a.proposalId >= 0 && a.proposalId == b.proposalId &&
+      a.proposalSide >= 0 && a.proposalSide == b.proposalSide;
+  bool sameSourceArc = a.sourceArc >= 0 && a.sourceArc == b.sourceArc;
+  if (!sameSourceArc) {
+    for (const SurfaceArrangementProvenance &first : a.provenance) {
+      if (first.sourceArc < 0) {
+        continue;
+      }
+      sameSourceArc = std::any_of(
+          b.provenance.begin(), b.provenance.end(),
+          [&](const SurfaceArrangementProvenance &second) {
+            return second.sourceArc == first.sourceArc;
+          });
+      if (sameSourceArc) {
+        break;
+      }
+    }
+  }
+  if (sameRail || sameCurve || sameStrand || sameProposalSide ||
+      sameSourceArc) {
+    // Identity establishes that both pieces belong to one embedded curve,
+    // while this turn guard still splits closed rails and self-intersections
+    // at actual corners.  Forty-five degrees permits piecewise-linear traces
+    // to follow smooth source curvature without merging orthogonal sides.
+    constexpr double minimumSmoothAlignment = 0.70710678118654752440;
+    return consecutive_halfedge_alignment(a, b, nodes, vertices, faces) >=
+           minimumSmoothAlignment;
+  }
+
+  SurfaceArrangementHalfedge normalizedA = a;
+  SurfaceArrangementHalfedge normalizedB = b;
+  normalizedA.family = normalized_family(a.family);
+  normalizedB.family = normalized_family(b.family);
+  return same_family_collinear(normalizedA, normalizedB, nodes, vertices,
+                               faces);
 }
 
 } // namespace directional::geometry::surface_arrangement_detail
@@ -1393,7 +1455,7 @@ SurfaceCellComplex build_surface_cell_complex(
           cell.sideFamilies.back() == current.family) {
         const auto &previous = complex.halfedges[static_cast<std::size_t>(
             cell.halfedges[static_cast<std::size_t>(index - 1)])];
-        continuesPrevious = same_family_collinear(
+        continuesPrevious = same_logical_side(
             previous, current, complex.nodes, vertices, faces);
       }
       if (continuesPrevious) {
@@ -1409,7 +1471,7 @@ SurfaceCellComplex build_surface_cell_complex(
           cell.halfedges.back())];
       const auto &first = complex.halfedges[static_cast<std::size_t>(
           cell.halfedges.front())];
-      if (same_family_collinear(last, first, complex.nodes, vertices, faces)) {
+      if (same_logical_side(last, first, complex.nodes, vertices, faces)) {
         cell.sideEdgeCounts.front() += cell.sideEdgeCounts.back();
         cell.sideEdgeCounts.pop_back();
         cell.sideFamilies.pop_back();

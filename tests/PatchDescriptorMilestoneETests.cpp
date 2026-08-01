@@ -22,10 +22,25 @@ Fixture make_patch(const std::vector<int> &sideCounts,
   fixture.V.resize(boundaryCount + 1, 3);
   fixture.V.row(0) << 0.0, 0.0, 0.0;
   constexpr double pi = 3.14159265358979323846;
-  for (int i = 0; i < boundaryCount; ++i) {
-    const double angle = 2.0 * pi * static_cast<double>(i) /
-                         static_cast<double>(boundaryCount);
-    fixture.V.row(i + 1) << std::cos(angle), std::sin(angle), 0.0;
+  int boundaryVertex = 0;
+  for (int side = 0; side < static_cast<int>(sideCounts.size()); ++side) {
+    const double firstAngle =
+        2.0 * pi * static_cast<double>(side) /
+        static_cast<double>(sideCounts.size());
+    const double secondAngle =
+        2.0 * pi * static_cast<double>((side + 1) % sideCounts.size()) /
+        static_cast<double>(sideCounts.size());
+    const Eigen::RowVector3d first{std::cos(firstAngle), std::sin(firstAngle),
+                                   0.0};
+    const Eigen::RowVector3d second{
+        std::cos(secondAngle), std::sin(secondAngle), 0.0};
+    for (int local = 0; local < sideCounts[static_cast<std::size_t>(side)];
+         ++local) {
+      const double t = static_cast<double>(local) /
+                       static_cast<double>(
+                           sideCounts[static_cast<std::size_t>(side)]);
+      fixture.V.row(++boundaryVertex) = (1.0 - t) * first + t * second;
+    }
   }
   fixture.F.resize(boundaryCount, 3);
   for (int i = 0; i < boundaryCount; ++i) {
@@ -62,6 +77,10 @@ Fixture make_patch(const std::vector<int> &sideCounts,
     node.id = i;
     node.sourceFace = i;
     node.barycentric << 0.0, 1.0, 0.0;
+    directional::geometry::SurfaceArrangementNodeOccurrence previousFace;
+    previousFace.sourceFace = (i + boundaryCount - 1) % boundaryCount;
+    previousFace.barycentric << 0.0, 0.0, 1.0;
+    node.occurrences.push_back(previousFace);
     node.hardBarrierCrossing = hardBarrier && i == 0;
 
     auto &edge = fixture.complex.halfedges[static_cast<std::size_t>(i)];
@@ -81,6 +100,74 @@ Fixture make_patch(const std::vector<int> &sideCounts,
   }
   fixture.complex.cells.push_back(std::move(cell));
   return fixture;
+}
+
+Fixture make_authoritative_patch(const std::vector<int> &sideCounts) {
+  Fixture fixture = make_patch(sideCounts);
+  auto &interior = fixture.complex.cells.front();
+  interior.boundaryCycle = false;
+  interior.cellClass =
+      directional::geometry::SurfaceArrangementCellClass::PatchCandidate;
+  interior.signedArea = std::abs(interior.signedArea);
+
+  const int edgeCount = static_cast<int>(fixture.complex.halfedges.size());
+  directional::geometry::SurfaceArrangementCell exterior = interior;
+  exterior.id = 1;
+  exterior.boundaryCycle = true;
+  exterior.cellClass =
+      directional::geometry::SurfaceArrangementCellClass::Exterior;
+  exterior.signedArea = -std::abs(interior.signedArea);
+  exterior.halfedges.clear();
+
+  fixture.complex.halfedges.reserve(static_cast<std::size_t>(2 * edgeCount));
+  for (int edgeId = 0; edgeId < edgeCount; ++edgeId) {
+    auto twin = fixture.complex.halfedges[static_cast<std::size_t>(edgeId)];
+    twin.id = edgeCount + edgeId;
+    twin.from = fixture.complex.halfedges[static_cast<std::size_t>(edgeId)].to;
+    twin.to = fixture.complex.halfedges[static_cast<std::size_t>(edgeId)].from;
+    twin.twin = edgeId;
+    twin.cell = exterior.id;
+    twin.next = edgeCount + (edgeId + edgeCount - 1) % edgeCount;
+    fixture.complex.halfedges[static_cast<std::size_t>(edgeId)].twin = twin.id;
+    fixture.complex.halfedges.push_back(std::move(twin));
+  }
+  for (int offset = 0; offset < edgeCount; ++offset) {
+    exterior.halfedges.push_back(
+        edgeCount + (edgeCount - offset) % edgeCount);
+  }
+  fixture.complex.cells.push_back(std::move(exterior));
+  fixture.complex.diagnostics.incidenceValid = true;
+  fixture.complex.diagnostics.topologyValid = true;
+  return fixture;
+}
+
+void append_authoritative_component(
+    const directional::geometry::SurfaceCellComplex &component,
+    directional::geometry::SurfaceCellComplex &destination) {
+  const int nodeOffset = static_cast<int>(destination.nodes.size());
+  const int edgeOffset = static_cast<int>(destination.halfedges.size());
+  const int cellOffset = static_cast<int>(destination.cells.size());
+
+  for (auto node : component.nodes) {
+    node.id += nodeOffset;
+    destination.nodes.push_back(std::move(node));
+  }
+  for (auto edge : component.halfedges) {
+    edge.id += edgeOffset;
+    edge.from += nodeOffset;
+    edge.to += nodeOffset;
+    edge.twin += edgeOffset;
+    edge.next += edgeOffset;
+    edge.cell += cellOffset;
+    destination.halfedges.push_back(std::move(edge));
+  }
+  for (auto cell : component.cells) {
+    cell.id += cellOffset;
+    for (int &edge : cell.halfedges) {
+      edge += edgeOffset;
+    }
+    destination.cells.push_back(std::move(cell));
+  }
 }
 
 } // namespace
@@ -193,6 +280,71 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_GT(completion.paritySplitEdges, 0);
   EXPECT_TRUE(completion.hasPreparedComplex);
   EXPECT_FALSE(completion.assembly.mesh.quads.empty());
+
+  int sharedInterior = -1;
+  for (const auto &edge : repaired.complex.halfedges) {
+    if (edge.id > edge.twin) {
+      continue;
+    }
+    const auto &twin = repaired.complex.halfedges[
+        static_cast<std::size_t>(edge.twin)];
+    if (!repaired.complex.cells[static_cast<std::size_t>(edge.cell)]
+             .boundaryCycle &&
+        !repaired.complex.cells[static_cast<std::size_t>(twin.cell)]
+             .boundaryCycle) {
+      sharedInterior = edge.id;
+      break;
+    }
+  }
+  ASSERT_GE(sharedInterior, 0);
+  const auto perturbed =
+      directional::geometry::subdivide_surface_cell_complex_edges(
+          repaired.complex, {{sharedInterior, 1}});
+  ASSERT_TRUE(perturbed.success) << perturbed.failure;
+  const auto sideRepair =
+      directional::geometry::repair_surface_cell_side_subdivisions(
+          perturbed.complex, V, F);
+  ASSERT_TRUE(sideRepair.success) << sideRepair.failure;
+  EXPECT_GT(sideRepair.infeasibleCellsBefore, 0);
+  EXPECT_EQ(0, sideRepair.infeasibleCellsAfter);
+  EXPECT_GT(sideRepair.insertedVertices, 0);
+  EXPECT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(sideRepair.complex));
+  const auto descriptors = directional::geometry::derive_patch_descriptors(
+      sideRepair.complex, V, F);
+  for (const auto &descriptor : descriptors.descriptors) {
+    EXPECT_NE(directional::geometry::PureQuadPatchRejectReason::OddBoundary,
+              descriptor.feasibility.reason);
+    EXPECT_NE(directional::geometry::PureQuadPatchRejectReason::SideInequality,
+              descriptor.feasibility.reason);
+    EXPECT_NE(directional::geometry::PureQuadPatchRejectReason::HexParity,
+              descriptor.feasibility.reason);
+  }
+}
+
+TEST(PatchDescriptorMilestoneE,
+     FiveSidedRepairUsesBoundedClosedFormInsteadOfCompositionSearch) {
+  const Fixture fixture = make_authoritative_patch({20, 1, 1, 1, 1});
+  const auto before = directional::geometry::derive_patch_descriptor(
+      fixture.complex, fixture.complex.cells.front(), fixture.V, fixture.F);
+  ASSERT_EQ(5U, before.sides.size());
+  ASSERT_EQ(directional::geometry::PureQuadPatchRejectReason::SideInequality,
+            before.feasibility.reason);
+
+  const auto repaired =
+      directional::geometry::repair_surface_cell_side_subdivisions(
+          fixture.complex, fixture.V, fixture.F);
+  ASSERT_TRUE(repaired.success) << repaired.failure;
+  EXPECT_EQ(1, repaired.infeasibleCellsBefore);
+  EXPECT_EQ(0, repaired.infeasibleCellsAfter);
+  EXPECT_EQ(36, repaired.insertedVertices);
+
+  const auto after = directional::geometry::derive_patch_descriptor(
+      repaired.complex, repaired.complex.cells.front(), fixture.V, fixture.F);
+  ASSERT_EQ(5U, after.sides.size());
+  EXPECT_EQ((std::vector<int>{20, 10, 10, 10, 10}),
+            after.patch.sideEdgeCounts);
+  EXPECT_TRUE(after.feasibility.admissible);
 }
 
 TEST(PatchDescriptorMilestoneE, RejectsNonDiskAndBrokenBoundaryCycle) {
@@ -252,7 +404,7 @@ TEST(PatchDescriptorMilestoneE, BoundarySingularityDoesNotConsumeInteriorPole) {
 
 TEST(PatchDescriptorMilestoneE,
      CompletesAuthoritativeComplexThroughMilestoneEEntryPoint) {
-  const Fixture fixture = make_patch({2, 2, 2, 2});
+  const Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F);
 
@@ -269,10 +421,12 @@ TEST(PatchDescriptorMilestoneE,
 
 TEST(PatchDescriptorMilestoneE,
      ComplexCompletionFailsClosedInsteadOfReturningPartialOutput) {
-  Fixture fixture = make_patch({2, 2, 2, 2});
-  auto invalidCell = fixture.complex.cells.front();
-  invalidCell.id = 1;
-  fixture.complex.cells.push_back(std::move(invalidCell));
+  Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
+  Fixture invalid = make_authoritative_patch({2, 2, 2, 2});
+  invalid.complex.cells.front().disk = false;
+  invalid.complex.cells.front().cellClass =
+      directional::geometry::SurfaceArrangementCellClass::NonDisk;
+  append_authoritative_component(invalid.complex, fixture.complex);
 
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F);
@@ -288,13 +442,7 @@ TEST(PatchDescriptorMilestoneE,
 
 TEST(PatchDescriptorMilestoneE,
      ExteriorArrangementCyclesAreNotAuthoritativeCompletionPatches) {
-  Fixture fixture = make_patch({2, 2, 2, 2});
-  auto exteriorCell = fixture.complex.cells.front();
-  exteriorCell.id = 1;
-  exteriorCell.cellClass =
-      directional::geometry::SurfaceArrangementCellClass::Exterior;
-  exteriorCell.boundaryCycle = true;
-  fixture.complex.cells.push_back(std::move(exteriorCell));
+  Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
 
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F);

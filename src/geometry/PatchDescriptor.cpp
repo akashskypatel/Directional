@@ -127,43 +127,25 @@ namespace directional::geometry::patch_descriptor_detail {
 std::vector<PatchSideDescriptor>
 extract_sides(const SurfaceCellComplex &complex,
               const SurfaceArrangementCell &cell,
-              const std::vector<int> &boundary) {
+              const std::vector<int> &boundary,
+              const Eigen::MatrixXd &V,
+              const Eigen::MatrixXi &F) {
   std::vector<PatchSideDescriptor> sides;
   if (boundary.empty()) {
-    return sides;
-  }
-  const int declaredCount = std::accumulate(
-      cell.sideEdgeCounts.begin(), cell.sideEdgeCounts.end(), 0);
-  if (cell.sideEdgeCounts.size() >= 3 && cell.sideEdgeCounts.size() <= 6 &&
-      declaredCount == static_cast<int>(boundary.size())) {
-    std::size_t offset = 0;
-    for (std::size_t sideIndex = 0; sideIndex < cell.sideEdgeCounts.size();
-         ++sideIndex) {
-      PatchSideDescriptor side;
-      side.family = sideIndex < cell.sideFamilies.size()
-                        ? normalized_family(cell.sideFamilies[sideIndex])
-                        : normalized_family(complex.halfedges[
-                              static_cast<std::size_t>(boundary[offset])].family);
-      for (int local = 0; local < cell.sideEdgeCounts[sideIndex]; ++local) {
-        const int id = boundary[offset++];
-        const SurfaceArrangementHalfedge &edge =
-            complex.halfedges[static_cast<std::size_t>(id)];
-        side.halfedges.push_back(id);
-        side.boundaryVertices.push_back(edge.from);
-        ++side.subdivisionCount;
-        side.hardFeature = side.hardFeature || edge.hardFeature;
-        if (edge.railId >= 0) side.railIds.insert(edge.railId);
-        if (edge.curveId >= 0) side.curveIds.insert(edge.curveId);
-      }
-      sides.push_back(std::move(side));
-    }
     return sides;
   }
   for (const int id : boundary) {
     const SurfaceArrangementHalfedge &edge =
         complex.halfedges[static_cast<std::size_t>(id)];
     const int family = normalized_family(edge.family);
-    if (sides.empty() || sides.back().family != family) {
+    bool continues = !sides.empty() && sides.back().family == family;
+    if (continues) {
+      const int previousId = sides.back().halfedges.back();
+      continues = surface_arrangement_detail::same_logical_side(
+          complex.halfedges[static_cast<std::size_t>(previousId)], edge,
+          complex.nodes, V, F);
+    }
+    if (!continues) {
       PatchSideDescriptor side;
       side.family = family;
       sides.push_back(std::move(side));
@@ -180,7 +162,13 @@ extract_sides(const SurfaceCellComplex &complex,
       side.curveIds.insert(edge.curveId);
     }
   }
-  if (sides.size() > 1 && sides.front().family == sides.back().family) {
+  if (sides.size() > 1 && sides.front().family == sides.back().family &&
+      surface_arrangement_detail::same_logical_side(
+          complex.halfedges[static_cast<std::size_t>(
+              sides.back().halfedges.back())],
+          complex.halfedges[static_cast<std::size_t>(
+              sides.front().halfedges.front())],
+          complex.nodes, V, F)) {
     PatchSideDescriptor tail = std::move(sides.back());
     sides.pop_back();
     PatchSideDescriptor &front = sides.front();
@@ -254,7 +242,7 @@ PatchDescriptor derive_patch_descriptor(
   }
 
   descriptor.sides =
-      patch_descriptor_detail::extract_sides(complex, cell, boundary);
+      patch_descriptor_detail::extract_sides(complex, cell, boundary, V, F);
   patch.sideEdgeCounts.reserve(descriptor.sides.size());
   patch.turns.reserve(descriptor.sides.size());
   for (const PatchSideDescriptor &side : descriptor.sides) {
@@ -367,7 +355,19 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     result.assembly.failure = result.failure;
     return result;
   }
-  result.preparedComplex = parityRepair.complex;
+  const SurfaceCellSideRepairResult sideRepair =
+      repair_surface_cell_side_subdivisions(parityRepair.complex, V, F);
+  result.sideInfeasibleCellsBefore = sideRepair.infeasibleCellsBefore;
+  result.sideInfeasibleCellsAfter = sideRepair.infeasibleCellsAfter;
+  result.sideInsertedVertices = sideRepair.insertedVertices;
+  result.sideSplitEdges = sideRepair.splitUndirectedEdges;
+  result.sideHardFeatureSplits = sideRepair.hardFeatureSplits;
+  if (!sideRepair.success) {
+    result.failure = "SideSubdivisionRepair:" + sideRepair.failure;
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  result.preparedComplex = sideRepair.complex;
   result.hasPreparedComplex = true;
   const SurfaceCellComplex &prepared = result.preparedComplex;
   result.descriptors = derive_patch_descriptors(
