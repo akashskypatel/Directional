@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 14:41 PDT
+Last updated: 2026-08-01 14:32 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -55,7 +55,10 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Implemented canonical feature-rail interval ownership across adjacent source-face charts. A feature termination is accepted only when its terminal source-edge coordinate lies inside a retained hard-feature rail interval on the same source component and sheet; a `Feature` label alone remains insufficient.
 - Added focused positive and cross-sheet fail-closed tests. Validation: 2/2 focused tests and all 195 Phase 14–18 tests pass. Evidence: `build/mg-debug/results/p5-feature-rail-focused.json` and `build/mg-debug/results/p5-feature-rail-phase14-18.json`.
 - Fast bunny endpoint benchmark after incident-side sheet ownership is unchanged: 3,910 open, 3,892 resolved, 18 unresolved, 13 unresolved required, and 1,997 added arcs. The nine required feature terminations are therefore not simple adjacent-chart interval matches. Evidence: `benchmark-results/p28-local/bunny-feature-rail-sides-diagnostics.json`.
-- Next action: record terminal intrinsic vertex/edge ownership details for unresolved feature terminations, then implement authoritative feature-vertex capture only when an incident retained rail proves ownership. Budget continuation remains separate and bounded.
+- Endpoint completion no longer aborts a traced retry when a finite chart-transition segment is at or below the intersection tolerance. It preserves the raw terminal state for ownership diagnostics, skips only the non-representable zero-length segment, and continues processing later valid segments. Non-finite geometry still fails closed.
+- Fast random-bunny evidence after this correction: 3,910 open endpoints, 3,894 resolved, 16 unresolved, 13 unresolved required supports, and 2,028 added arcs. Two optional boundary retries now resolve; all 13 required supports remain explicit. Seventeen degenerate transition segments were skipped. Evidence: `benchmark-results/p28-local/bunny-zero-segment-skip-diagnostics.json`.
+- Validation after the zero-segment correction: all 45 FlowRep Phase 15 tests and all 196 Phase 14–18 tests pass. Evidence: `build/mg-debug/results/p5-zero-segment-flowrep.json` and `build/mg-debug/results/p5-zero-segment-phase14-18.json`.
+- The remaining nine feature terminations still classify their raw terminal nodes as face-interior points with no authoritative rail candidates. Next action: compare the raw terminal point to the last nondegenerate trace endpoint and accept feature ownership only when the points coincide within tolerance and an incident retained rail proves the canonical edge or vertex. Budget continuation remains separate and bounded.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
