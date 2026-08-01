@@ -316,6 +316,12 @@ struct SurfaceCellPipelineContext {
 
   std::vector<geometry::FlowRepArc> flowRepArcs;
   geometry::FlowRepSparseNetwork flowRepNetwork;
+  bool flowRepEndpointCompletionAttempted = false;
+  int flowRepOpenEndpointsBeforeCompletion = 0;
+  int flowRepResolvedEndpoints = 0;
+  int flowRepUnresolvedEndpoints = 0;
+  int flowRepEndpointCompletionAddedArcs = 0;
+  std::string flowRepEndpointCompletionFailure;
   bool hasFlowRepNetwork = false;
 
   std::vector<geometry::SurfaceArrangementArc> embeddedArrangementArcs;

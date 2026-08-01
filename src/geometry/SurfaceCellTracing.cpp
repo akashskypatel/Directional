@@ -3784,6 +3784,457 @@ SurfaceCellNetwork build_surface_cell_network(
     }
     network.proposals.push_back(std::move(proposal));
   }
+
+  // Enumerate singular branches in an intrinsically unrolled one-ring.  The
+  // four generic traces above remain stable API evidence for every seed, but
+  // they cannot express the 3/5-valent topology of nonzero cross-field
+  // indices.  A branch is owned by the incident face wedge containing its
+  // outgoing field ray; rays on shared wedge boundaries are canonicalized.
+  if (!options.singularityIndexNumerators.empty()) {
+    SurfaceSingularitySeparatrixStats &stats =
+        network.singularSeparatrixStats;
+    stats.singularityCount =
+        static_cast<int>(options.singularityVertices.size());
+    if (options.singularityIndexNumerators.size() !=
+        options.singularityVertices.size()) {
+      stats.metadataValid = false;
+      stats.incompleteSingularities = stats.singularityCount;
+      return network;
+    }
+
+    struct Wedge {
+      int face = -1;
+      int corner = -1;
+      int startNeighbor = -1;
+      int endNeighbor = -1;
+      double angle = 0.0;
+      double offset = 0.0;
+    };
+    struct BranchCandidate {
+      int face = -1;
+      int family = -1;
+      int sign = 0;
+      double angle = 0.0;
+      bool synthesized = false;
+    };
+    const auto incident =
+        surface_cell_tracing_detail::incident_faces_by_vertex(
+            static_cast<int>(vertices.rows()), faces);
+    const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+    constexpr double pi = 3.141592653589793238462643383279502884;
+    constexpr double angularTolerance = 1.0e-7;
+    const auto other_face = [&](const std::uint64_t edge, const int face) {
+      const auto found = edgeFaces.find(edge);
+      if (found == edgeFaces.end()) {
+        return -1;
+      }
+      if (found->second[0] == face) {
+        return found->second[1];
+      }
+      if (found->second[1] == face) {
+        return found->second[0];
+      }
+      return -1;
+    };
+    const auto face_corner = [&](const int face, const int vertex) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(face, corner) == vertex) {
+          return corner;
+        }
+      }
+      return -1;
+    };
+    const auto make_wedge = [&](const int face, const int vertex) {
+      Wedge wedge;
+      wedge.face = face;
+      wedge.corner = face_corner(face, vertex);
+      if (wedge.corner < 0) {
+        return wedge;
+      }
+      wedge.startNeighbor = faces(face, (wedge.corner + 1) % 3);
+      wedge.endNeighbor = faces(face, (wedge.corner + 2) % 3);
+      Eigen::RowVector3d start =
+          surface_cell_tracing_detail::row3(vertices, wedge.startNeighbor) -
+          surface_cell_tracing_detail::row3(vertices, vertex);
+      Eigen::RowVector3d end =
+          surface_cell_tracing_detail::row3(vertices, wedge.endNeighbor) -
+          surface_cell_tracing_detail::row3(vertices, vertex);
+      if (start.norm() > 0.0 && end.norm() > 0.0) {
+        start.normalize();
+        end.normalize();
+        wedge.angle = std::acos(std::clamp(start.dot(end), -1.0, 1.0));
+      }
+      return wedge;
+    };
+
+    for (std::size_t singularity = 0;
+         singularity < options.singularityVertices.size(); ++singularity) {
+      const int vertex = options.singularityVertices[singularity];
+      const int index = options.singularityIndexNumerators[singularity];
+      const int expectedValence = 4 - index;
+      if (vertex < 0 || vertex >= vertices.rows() || expectedValence < 3 ||
+          expectedValence > 6 ||
+          incident[static_cast<std::size_t>(vertex)].empty()) {
+        ++stats.invalidIndexCount;
+        ++stats.incompleteSingularities;
+        stats.metadataValid = false;
+        continue;
+      }
+      stats.expectedBranches += expectedValence;
+
+      std::map<int, Wedge> wedgeByFace;
+      for (const int face : incident[static_cast<std::size_t>(vertex)]) {
+        Wedge wedge = make_wedge(face, vertex);
+        if (wedge.corner < 0 || !(wedge.angle > 0.0) ||
+            !std::isfinite(wedge.angle)) {
+          continue;
+        }
+        wedgeByFace.emplace(face, wedge);
+      }
+      if (wedgeByFace.size() !=
+          incident[static_cast<std::size_t>(vertex)].size()) {
+        ++stats.incompleteSingularities;
+        stats.metadataValid = false;
+        continue;
+      }
+
+      int firstFace = wedgeByFace.begin()->first;
+      bool closedOneRing = true;
+      for (const auto &[face, wedge] : wedgeByFace) {
+        const auto startEdge = surface_cell_tracing_detail::edge_key(
+            vertex, wedge.startNeighbor);
+        const auto found = edgeFaces.find(startEdge);
+        const bool boundary =
+            found == edgeFaces.end() || found->second[1] < 0;
+        if (boundary) {
+          firstFace = face;
+          closedOneRing = false;
+          break;
+        }
+      }
+
+      std::vector<Wedge> ordered;
+      std::set<int> visited;
+      int face = firstFace;
+      double offset = 0.0;
+      while (face >= 0 && visited.insert(face).second) {
+        const auto found = wedgeByFace.find(face);
+        if (found == wedgeByFace.end()) {
+          break;
+        }
+        Wedge wedge = found->second;
+        wedge.offset = offset;
+        offset += wedge.angle;
+        ordered.push_back(wedge);
+        face = other_face(surface_cell_tracing_detail::edge_key(
+                              vertex, wedge.endNeighbor),
+                          face);
+      }
+      if (ordered.size() != wedgeByFace.size() ||
+          (closedOneRing && face != firstFace)) {
+        ++stats.incompleteSingularities;
+        stats.metadataValid = false;
+        continue;
+      }
+
+      std::vector<BranchCandidate> candidates;
+      for (const Wedge &wedge : ordered) {
+        const Eigen::RowVector3d vertexPosition =
+            surface_cell_tracing_detail::row3(vertices, vertex);
+        Eigen::RowVector3d start =
+            surface_cell_tracing_detail::row3(vertices,
+                                              wedge.startNeighbor) -
+            vertexPosition;
+        const Eigen::RowVector3d normal =
+            surface_cell_tracing_detail::face_normal(vertices, faces,
+                                                     wedge.face);
+        start = surface_cell_tracing_detail::project_tangent(start, normal);
+        if (start.squaredNorm() <= 0.0 || normal.squaredNorm() <= 0.0) {
+          continue;
+        }
+        for (int family = 0; family < 2; ++family) {
+          for (const int sign : {-1, 1}) {
+            Eigen::RowVector3d direction =
+                sign * (family == 0 ? faceAxisX.row(wedge.face)
+                                    : faceAxisY.row(wedge.face));
+            direction = surface_cell_tracing_detail::project_tangent(
+                direction, normal);
+            if (direction.squaredNorm() <= 0.0) {
+              continue;
+            }
+            double localAngle = std::atan2(
+                normal.dot(surface_cell_tracing_detail::cross3(start,
+                                                               direction)),
+                start.dot(direction));
+            if (localAngle < -angularTolerance) {
+              localAngle += 2.0 * pi;
+            }
+            if (localAngle > 2.0 * pi - angularTolerance) {
+              localAngle = 0.0;
+            }
+            if (localAngle < -angularTolerance ||
+                localAngle > wedge.angle + angularTolerance) {
+              continue;
+            }
+            candidates.push_back(
+                {wedge.face, family, sign,
+                 wedge.offset + std::clamp(localAngle, 0.0, wedge.angle)});
+          }
+        }
+      }
+      std::stable_sort(candidates.begin(), candidates.end(),
+                       [](const BranchCandidate &a,
+                          const BranchCandidate &b) {
+                         return std::tie(a.angle, a.face, a.family, a.sign) <
+                                std::tie(b.angle, b.face, b.family, b.sign);
+                       });
+      std::vector<BranchCandidate> uniqueCandidates;
+      for (const BranchCandidate &candidate : candidates) {
+        if (!uniqueCandidates.empty() &&
+            std::abs(candidate.angle - uniqueCandidates.back().angle) <=
+                angularTolerance) {
+          continue;
+        }
+        uniqueCandidates.push_back(candidate);
+      }
+      if (closedOneRing && uniqueCandidates.size() > 1U &&
+          uniqueCandidates.front().angle <= angularTolerance &&
+          offset - uniqueCandidates.back().angle <= angularTolerance) {
+        uniqueCandidates.pop_back();
+      }
+      stats.enumeratedBranches +=
+          static_cast<int>(uniqueCandidates.size());
+
+      std::vector<BranchCandidate> selectedCandidates = uniqueCandidates;
+      if (static_cast<int>(selectedCandidates.size()) != expectedValence) {
+        // The integer index comes from principal matching and is the
+        // authoritative topology. Facewise constant axes can put a ray on
+        // opposite sides of a wedge boundary in its two incident faces,
+        // producing one missing or duplicate raw candidate. Reconcile that
+        // representation deterministically with an equally spaced one-ring
+        // star whose phase minimizes distance to the observed field rays.
+        ++stats.reconciledSingularities;
+        const double spacing = offset / static_cast<double>(expectedValence);
+        std::vector<double> phaseTrials = {0.0};
+        for (const BranchCandidate &candidate : uniqueCandidates) {
+          double phase = std::fmod(candidate.angle, spacing);
+          if (phase < 0.0) {
+            phase += spacing;
+          }
+          phaseTrials.push_back(phase);
+        }
+        std::sort(phaseTrials.begin(), phaseTrials.end());
+        phaseTrials.erase(
+            std::unique(phaseTrials.begin(), phaseTrials.end(),
+                        [](const double a, const double b) {
+                          return std::abs(a - b) <= angularTolerance;
+                        }),
+            phaseTrials.end());
+        const auto circular_distance = [&](const double a, const double b) {
+          const double difference = std::abs(a - b);
+          return std::min(difference, offset - difference);
+        };
+        double bestPhase = 0.0;
+        double bestCost = std::numeric_limits<double>::infinity();
+        for (const double phase : phaseTrials) {
+          double cost = 0.0;
+          for (int branch = 0; branch < expectedValence; ++branch) {
+            const double desired = phase + branch * spacing;
+            double nearest = spacing;
+            for (const BranchCandidate &candidate : uniqueCandidates) {
+              nearest = std::min(
+                  nearest, circular_distance(desired, candidate.angle));
+            }
+            cost += nearest * nearest;
+          }
+          if (cost < bestCost - 1.0e-15 ||
+              (std::abs(cost - bestCost) <= 1.0e-15 && phase < bestPhase)) {
+            bestCost = cost;
+            bestPhase = phase;
+          }
+        }
+
+        selectedCandidates.clear();
+        for (int branch = 0; branch < expectedValence; ++branch) {
+          double desired = bestPhase + branch * spacing;
+          if (desired >= offset) {
+            desired -= offset;
+          }
+          const Wedge *owner = nullptr;
+          for (const Wedge &wedge : ordered) {
+            if (desired >= wedge.offset - angularTolerance &&
+                desired <= wedge.offset + wedge.angle + angularTolerance) {
+              owner = &wedge;
+              break;
+            }
+          }
+          if (owner == nullptr) {
+            continue;
+          }
+          const Eigen::RowVector3d normal =
+              surface_cell_tracing_detail::face_normal(vertices, faces,
+                                                       owner->face);
+          Eigen::RowVector3d radial =
+              surface_cell_tracing_detail::row3(
+                  vertices, owner->startNeighbor) -
+              surface_cell_tracing_detail::row3(vertices, vertex);
+          radial = surface_cell_tracing_detail::project_tangent(radial,
+                                                                normal);
+          const double localAngle =
+              std::clamp(desired - owner->offset, 0.0, owner->angle);
+          radial = std::cos(localAngle) * radial +
+                   std::sin(localAngle) *
+                       surface_cell_tracing_detail::cross3(normal, radial);
+          radial.normalize();
+          int bestFamily = -1;
+          int bestSign = 0;
+          double bestAlignment = -std::numeric_limits<double>::infinity();
+          for (int family = 0; family < 2; ++family) {
+            for (const int sign : {-1, 1}) {
+              Eigen::RowVector3d axis =
+                  sign * (family == 0 ? faceAxisX.row(owner->face)
+                                      : faceAxisY.row(owner->face));
+              axis = surface_cell_tracing_detail::project_tangent(axis,
+                                                                  normal);
+              const double alignment = radial.dot(axis);
+              if (alignment > bestAlignment + 1.0e-15) {
+                bestAlignment = alignment;
+                bestFamily = family;
+                bestSign = sign;
+              }
+            }
+          }
+          if (bestFamily >= 0) {
+            selectedCandidates.push_back(
+                {owner->face, bestFamily, bestSign, desired, true});
+          }
+        }
+      }
+
+      int seedId = -1;
+      for (const SurfaceTraceSeed &candidateSeed : network.seeds) {
+        if (candidateSeed.provenance == SurfaceSeedProvenance::Singularity &&
+            candidateSeed.sourceId == vertex) {
+          seedId = candidateSeed.id;
+          break;
+        }
+      }
+      int nonemptyForSingularity = 0;
+      for (int branch = 0;
+           branch < static_cast<int>(selectedCandidates.size()); ++branch) {
+        const BranchCandidate &candidate =
+            selectedCandidates[static_cast<std::size_t>(branch)];
+        SurfaceTraceSeed seed;
+        seed.id = seedId;
+        seed.provenance = SurfaceSeedProvenance::Singularity;
+        seed.sourceId = vertex;
+        const SurfaceTracePoint vertexPoint =
+            surface_cell_tracing_detail::vertex_point_in_face(
+                faces, candidate.face, vertex);
+        seed.point = vertexPoint;
+        if (candidate.synthesized) {
+          const Wedge *synthesizedWedge = nullptr;
+          for (const Wedge &orderedWedge : ordered) {
+            if (orderedWedge.face == candidate.face) {
+              synthesizedWedge = &orderedWedge;
+              break;
+            }
+          }
+          if (synthesizedWedge == nullptr) {
+            continue;
+          }
+          const Wedge &wedge = *synthesizedWedge;
+          const Eigen::RowVector3d vertexPosition =
+              surface_cell_tracing_detail::row3(vertices, vertex);
+          const Eigen::RowVector3d edge0 =
+              surface_cell_tracing_detail::row3(vertices,
+                                                wedge.startNeighbor) -
+              vertexPosition;
+          const Eigen::RowVector3d edge1 =
+              surface_cell_tracing_detail::row3(vertices,
+                                                wedge.endNeighbor) -
+              vertexPosition;
+          const Eigen::RowVector3d normal =
+              surface_cell_tracing_detail::face_normal(vertices, faces,
+                                                       candidate.face);
+          Eigen::RowVector3d radial =
+              surface_cell_tracing_detail::project_tangent(edge0, normal);
+          const double localAngle =
+              std::clamp(candidate.angle - wedge.offset, 0.0, wedge.angle);
+          radial = std::cos(localAngle) * radial +
+                   std::sin(localAngle) *
+                       surface_cell_tracing_detail::cross3(normal, radial);
+          const double g00 = edge0.dot(edge0);
+          const double g01 = edge0.dot(edge1);
+          const double g11 = edge1.dot(edge1);
+          const double determinant = g00 * g11 - g01 * g01;
+          if (!(determinant > 1.0e-24)) {
+            continue;
+          }
+          double coefficient0 =
+              (g11 * edge0.dot(radial) - g01 * edge1.dot(radial)) /
+              determinant;
+          double coefficient1 =
+              (g00 * edge1.dot(radial) - g01 * edge0.dot(radial)) /
+              determinant;
+          if (coefficient0 < -1.0e-10 || coefficient1 < -1.0e-10) {
+            continue;
+          }
+          coefficient0 = std::max(0.0, coefficient0);
+          coefficient1 = std::max(0.0, coefficient1);
+          const double coefficientSum = coefficient0 + coefficient1;
+          if (!(coefficientSum > 0.0)) {
+            continue;
+          }
+          constexpr double microStep = 1.0e-6;
+          seed.point.barycentric = Eigen::RowVector3d::Zero();
+          seed.point.barycentric[wedge.corner] = 1.0 - microStep;
+          seed.point.barycentric[(wedge.corner + 1) % 3] =
+              microStep * coefficient0 / coefficientSum;
+          seed.point.barycentric[(wedge.corner + 2) % 3] =
+              microStep * coefficient1 / coefficientSum;
+        }
+        SurfaceSingularitySeparatrix separatrix;
+        separatrix.sourceVertex = vertex;
+        separatrix.singularityIndexNumerator = index;
+        separatrix.expectedValence = expectedValence;
+        separatrix.branch = branch;
+        separatrix.initialFace = candidate.face;
+        separatrix.family = candidate.family;
+        separatrix.sign = candidate.sign;
+        separatrix.oneRingAngle = candidate.angle;
+        separatrix.trace = trace_surface_field(
+            vertices, faces, faceAxisX, faceAxisY, seed, candidate.family,
+            candidate.sign, options, edgeMatching, edgeEffort,
+            edgeTransitions);
+        if (candidate.synthesized) {
+          SurfaceTraceSegment prefix;
+          prefix.face = candidate.face;
+          prefix.startBarycentric = vertexPoint.barycentric;
+          prefix.endBarycentric = seed.point.barycentric;
+          prefix.family = candidate.family;
+          prefix.sign = candidate.sign;
+          separatrix.trace.segments.insert(separatrix.trace.segments.begin(),
+                                           prefix);
+          separatrix.trace.length +=
+              (surface_cell_tracing_detail::point_position(vertices, faces,
+                                                            seed.point) -
+               surface_cell_tracing_detail::point_position(vertices, faces,
+                                                            vertexPoint))
+                  .norm();
+        }
+        if (!separatrix.trace.segments.empty()) {
+          ++stats.nonemptyBranches;
+          ++nonemptyForSingularity;
+        }
+        network.singularSeparatrices.push_back(std::move(separatrix));
+      }
+      if (static_cast<int>(selectedCandidates.size()) != expectedValence ||
+          nonemptyForSingularity != expectedValence) {
+        ++stats.incompleteSingularities;
+      }
+    }
+  }
   return network;
 }
 

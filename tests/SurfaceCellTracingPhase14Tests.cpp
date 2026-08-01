@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <set>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -880,6 +881,112 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::TraceTerminationReason::Singularity);
   EXPECT_NEAR(1.0, trace.segments.front().startBarycentric.sum(), 1.0e-12);
   EXPECT_GE(trace.segments.front().startBarycentric.minCoeff(), -1.0e-12);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     NegativeIndexSingularityEmitsFiveOneRingSeparatrices) {
+  MeshFixture mesh;
+  mesh.vertices.resize(6, 3);
+  mesh.vertices.row(0) << 0.0, 0.0, 0.0;
+  constexpr double pi = 3.141592653589793238462643383279502884;
+  for (int ring = 0; ring < 5; ++ring) {
+    const double angle = 2.0 * pi * static_cast<double>(ring) / 5.0;
+    mesh.vertices.row(ring + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  mesh.faces.resize(5, 3);
+  for (int face = 0; face < 5; ++face) {
+    mesh.faces.row(face) << 0, face + 1, (face + 1) % 5 + 1;
+  }
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(5, 3);
+  field.secondaryDirections.resize(5, 3);
+  for (int face = 0; face < 5; ++face) {
+    const double angle =
+        2.0 * pi * (static_cast<double>(face) + 0.5) / 5.0;
+    field.primaryDirections.row(face) << std::cos(angle), std::sin(angle), 0.0;
+    field.secondaryDirections.row(face) << -std::sin(angle), std::cos(angle),
+        0.0;
+  }
+  field.matching.resize(0);
+  field.effort.resize(0);
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 1.0;
+  options.maxTraceLength = 10.0;
+  options.maxTraceSegments = 16;
+  options.singularityVertices = {0};
+  options.singularityIndexNumerators = {-1};
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Ones(6);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.vertices, mesh.faces, field, targetSize, options);
+
+  EXPECT_TRUE(network.singularSeparatrixStats.metadataValid);
+  EXPECT_EQ(network.singularSeparatrixStats.singularityCount, 1);
+  EXPECT_EQ(network.singularSeparatrixStats.expectedBranches, 5);
+  EXPECT_EQ(network.singularSeparatrixStats.enumeratedBranches, 5);
+  EXPECT_EQ(network.singularSeparatrixStats.nonemptyBranches, 5);
+  EXPECT_EQ(network.singularSeparatrixStats.incompleteSingularities, 0);
+  ASSERT_EQ(network.singularSeparatrices.size(), 5U);
+  std::set<int> initialFaces;
+  for (const auto &separatrix : network.singularSeparatrices) {
+    EXPECT_EQ(separatrix.sourceVertex, 0);
+    EXPECT_EQ(separatrix.singularityIndexNumerator, -1);
+    EXPECT_EQ(separatrix.expectedValence, 5);
+    ASSERT_FALSE(separatrix.trace.segments.empty());
+    EXPECT_NE(separatrix.trace.termination,
+              directional::geometry::TraceTerminationReason::Singularity);
+    initialFaces.insert(separatrix.initialFace);
+    const auto &start = separatrix.trace.segments.front().startBarycentric;
+    EXPECT_NEAR(start.sum(), 1.0, 1.0e-12);
+    EXPECT_NEAR(start.maxCoeff(), 1.0, 1.0e-12);
+  }
+  EXPECT_EQ(initialFaces.size(), 5U);
+}
+
+TEST(SurfaceCellTracingPhase14,
+     SingularIndexReconcilesFacewiseRayMismatchToRequiredValence) {
+  MeshFixture mesh;
+  mesh.vertices.resize(6, 3);
+  mesh.vertices.row(0) << 0.0, 0.0, 0.0;
+  constexpr double pi = 3.141592653589793238462643383279502884;
+  for (int ring = 0; ring < 5; ++ring) {
+    const double angle = 2.0 * pi * static_cast<double>(ring) / 5.0;
+    mesh.vertices.row(ring + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  mesh.faces.resize(5, 3);
+  for (int face = 0; face < 5; ++face) {
+    mesh.faces.row(face) << 0, face + 1, (face + 1) % 5 + 1;
+  }
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections = Eigen::MatrixXd::Zero(5, 3);
+  field.secondaryDirections = Eigen::MatrixXd::Zero(5, 3);
+  field.primaryDirections.col(0).setOnes();
+  field.secondaryDirections.col(1).setOnes();
+  field.matching.resize(0);
+  field.effort.resize(0);
+
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.maxTraceLength = 10.0;
+  options.maxTraceSegments = 16;
+  options.singularityVertices = {0};
+  options.singularityIndexNumerators = {-1};
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.vertices, mesh.faces, field, Eigen::VectorXd::Ones(6), options);
+
+  EXPECT_TRUE(network.singularSeparatrixStats.metadataValid);
+  EXPECT_EQ(network.singularSeparatrixStats.expectedBranches, 5);
+  EXPECT_NE(network.singularSeparatrixStats.enumeratedBranches, 5);
+  EXPECT_EQ(network.singularSeparatrixStats.reconciledSingularities, 1);
+  EXPECT_EQ(network.singularSeparatrixStats.incompleteSingularities, 0);
+  EXPECT_EQ(network.singularSeparatrixStats.nonemptyBranches, 5);
+  ASSERT_EQ(network.singularSeparatrices.size(), 5U);
+  for (const auto &separatrix : network.singularSeparatrices) {
+    ASSERT_FALSE(separatrix.trace.segments.empty());
+    const auto &prefix = separatrix.trace.segments.front();
+    EXPECT_NEAR(prefix.startBarycentric.maxCoeff(), 1.0, 1.0e-12);
+    EXPECT_GE(prefix.endBarycentric.minCoeff(), -1.0e-12);
+    EXPECT_NEAR(prefix.endBarycentric.sum(), 1.0, 1.0e-12);
+  }
 }
 
 TEST(SurfaceCellTracingPhase14, CaptureRadiusTerminatesOnCompatibleTraceNode) {

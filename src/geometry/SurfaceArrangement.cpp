@@ -924,8 +924,16 @@ bool same_logical_side(
   SurfaceArrangementHalfedge normalizedB = b;
   normalizedA.family = normalized_family(a.family);
   normalizedB.family = normalized_family(b.family);
-  return same_family_collinear(normalizedA, normalizedB, nodes, vertices,
-                               faces);
+  // Two independently traced pieces of the same transported family can meet
+  // after intersection planting or endpoint completion. Provenance identity
+  // is then different even though the field supplies a unique smooth
+  // continuation. Use the same branch-turn guard as identity-preserving
+  // pieces; exact collinearity is not invariant under curved source-face
+  // transport and was fragmenting one logical side at every such junction.
+  constexpr double minimumSmoothAlignment = 0.70710678118654752440;
+  return consecutive_halfedge_alignment(normalizedA, normalizedB, nodes,
+                                        vertices, faces) >=
+         minimumSmoothAlignment;
 }
 
 } // namespace directional::geometry::surface_arrangement_detail

@@ -266,6 +266,41 @@ TEST(PureQuadCompletionPhase18, PatternFallbackCompletesValidNonSimplePatch) {
                           [](const auto &q) { return q.size() == 4; }));
 }
 
+TEST(PureQuadCompletionPhase18,
+     BoundedFallbackHandlesEvenBoundaryWhenSimpleSideEquationsFail) {
+  for (const auto &counts :
+       {std::vector<int>{3, 1, 1, 1},
+        std::vector<int>{2, 1, 1, 1, 2, 1}}) {
+    auto candidate = patch(counts);
+    const auto strict =
+        directional::geometry::check_pure_quad_patch_admissibility(candidate);
+    ASSERT_FALSE(strict.admissible);
+    EXPECT_TRUE(strict.reason ==
+                    directional::geometry::PureQuadPatchRejectReason::
+                        SideInequality ||
+                strict.reason ==
+                    directional::geometry::PureQuadPatchRejectReason::
+                        HexParity);
+
+    directional::geometry::PureQuadCompletionOptions disabled;
+    disabled.allowBoundedCombinatorialFallback = false;
+    EXPECT_FALSE(directional::geometry::complete_pure_quad_patch(candidate,
+                                                                 disabled)
+                     .success);
+
+    directional::geometry::PureQuadCompletionOptions enabled;
+    enabled.allowBoundedCombinatorialFallback = true;
+    const auto completed =
+        directional::geometry::complete_pure_quad_patch(candidate, enabled);
+    ASSERT_TRUE(completed.success);
+    EXPECT_EQ(completed.mesh.backend,
+              directional::geometry::PureQuadCompletionBackend::
+                  BoundedCombinatorial);
+    EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(
+        completed.mesh));
+  }
+}
+
 TEST(PureQuadCompletionPhase18, CompletionDoesNotUseSharedCenterFan) {
   const auto completion =
       directional::geometry::complete_pure_quad_patch(patch({2, 2, 2}));

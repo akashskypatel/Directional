@@ -18,6 +18,7 @@
 #include <map>
 #include <numeric>
 #include <set>
+#include <string>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
@@ -105,6 +106,12 @@ struct FlowRepArc {
   int supportTraceId = -1;
   int supportSeedId = -1;
   int supportSegment = -1;
+  /// Endpoint ownership is geometric, not restricted to endpoint equality:
+  /// a trace can terminate in the interior of a retained rail/network arc.
+  bool startEmbeddedAnchor = false;
+  bool endEmbeddedAnchor = false;
+  /// Required separatrix topology may be extended but never leaf-pruned.
+  bool singularitySupport = false;
   std::vector<int> substitutions;
 };
 
@@ -208,6 +215,25 @@ struct FlowRepSparseNetwork {
   bool cycleEvidenceUsed = false;
   double denseCoverageMax = 0.0;
   double sparseCoverageMax = 0.0;
+};
+
+struct FlowRepEndpointCompletionOptions {
+  int maxEndpointTraces = 4096;
+  int maxAddedArcs = 100000;
+  double intersectionTolerance = 1.0e-9;
+  bool requireAllEndpointsResolved = true;
+};
+
+struct FlowRepEndpointCompletionResult {
+  bool success = false;
+  std::vector<FlowRepArc> arcs;
+  std::vector<int> retainedArcIds;
+  std::vector<FlowRepEndpointTag> endpointTags;
+  int openEndpointsBefore = 0;
+  int resolvedEndpoints = 0;
+  int unresolvedEndpoints = 0;
+  int addedArcs = 0;
+  std::string failure;
 };
 
 struct FlowRepSelectionInput {
@@ -381,6 +407,21 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
     const std::vector<FlowRepCoverageSample> &coverageSamples = {},
     const std::vector<FlowRepCycleInput> &cycles = {},
     const FlowRepSparseOptions &options = {});
+
+/**
+ * Extend every non-authoritative open flowline endpoint along its transported
+ * cross-field branch until it reaches the retained embedded network or an
+ * authoritative source boundary/feature. Intersections are computed in the
+ * source triangle's barycentric chart, so a nearby point on another sheet can
+ * never capture an endpoint.
+ */
+FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &crossField,
+    const SurfaceCellTracingOptions &tracingOptions,
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<int> &retainedArcIds,
+    const FlowRepEndpointCompletionOptions &options = {});
 
 FlowRepOverlay make_flow_rep_overlay(
     const std::vector<FlowRepArc> &arcs, const std::vector<FlowRepStrand> &strands,

@@ -641,7 +641,12 @@ PureQuadCompletionResult complete_pure_quad_patch(
     const PureQuadCompletionOptions &options) {
   PureQuadCompletionResult result;
   result.admissibility = check_pure_quad_patch_admissibility(patch);
-  if (!result.admissibility.admissible) {
+  const bool boundedFallbackAdmissible =
+      options.allowBoundedCombinatorialFallback &&
+      (result.admissibility.reason ==
+           PureQuadPatchRejectReason::SideInequality ||
+       result.admissibility.reason == PureQuadPatchRejectReason::HexParity);
+  if (!result.admissibility.admissible && !boundedFallbackAdmissible) {
     result.failureReason = result.admissibility.reason;
     return result;
   }
@@ -684,7 +689,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   const std::vector<unsigned char> *allowedFacePtr =
       allowedFaces.empty() ? nullptr : &allowedFaces;
   bool completed = false;
-  if (patch.singularityCount != 0) {
+  if (!boundedFallbackAdmissible && patch.singularityCount != 0) {
     completed = pure_quad_detail::complete_singularity_pole(
         patch, mesh, projection.get(), allowedFacePtr,
         options.sourceFaceComponents, options.sourceFaceSheets);
@@ -694,15 +699,15 @@ PureQuadCompletionResult complete_pure_quad_patch(
       return result;
     }
   }
-  if (!completed) {
+  if (!completed && !boundedFallbackAdmissible) {
     completed = pure_quad_detail::complete_rectangular_grid(
         patch, mesh, projection.get(), allowedFacePtr,
         options.sourceFaceComponents, options.sourceFaceSheets);
   }
-  if (!completed && boundaryCount == 6) {
+  if (!completed && !boundedFallbackAdmissible && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(patch, mesh);
   }
-  if (!completed && patch.simple) {
+  if (!completed && !boundedFallbackAdmissible && patch.simple) {
     completed = pure_quad_detail::complete_pattern(patch, mesh);
   }
   if (!completed && options.allowBoundedCombinatorialFallback) {

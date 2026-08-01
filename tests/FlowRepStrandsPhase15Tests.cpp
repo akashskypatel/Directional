@@ -176,7 +176,182 @@ std::uint64_t sparse_hash(
   return hash;
 }
 
+directional::fields::CrossFieldResult constant_cross_field(
+    const int faceCount) {
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(faceCount, 3);
+  field.secondaryDirections.resize(faceCount, 3);
+  for (int face = 0; face < faceCount; ++face) {
+    field.primaryDirections.row(face) << 1.0, 0.0, 0.0;
+    field.secondaryDirections.row(face) << 0.0, 1.0, 0.0;
+  }
+  field.matching.resize(0);
+  field.effort.resize(0);
+  return field;
+}
+
+FlowRepArc endpoint_completion_arc(
+    const int id, const int sourceFace,
+    const Eigen::RowVector3d &startBarycentric,
+    const Eigen::RowVector3d &endBarycentric, const int sourceComponent,
+    const int sourceSheet, const bool mandatory = false) {
+  FlowRepArc value;
+  value.id = id;
+  value.start << startBarycentric[1], startBarycentric[2], 0.0;
+  value.end << endBarycentric[1], endBarycentric[2], 0.0;
+  value.sourceFace = sourceFace;
+  value.startBarycentric = startBarycentric;
+  value.endBarycentric = endBarycentric;
+  value.sourceComponent = sourceComponent;
+  value.sourceSheet = sourceSheet;
+  value.family = 0;
+  value.strandProvenance = id;
+  value.featureProvenance = id;
+  value.layoutSupport = !mandatory;
+  value.supportTraceId = mandatory ? -1 : id;
+  value.supportSeedId = mandatory ? -1 : id;
+  value.supportSegment = 0;
+  value.sameStrandHint = id;
+  value.mandatoryRail = mandatory;
+  value.boundaryRail = mandatory;
+  value.railId = mandatory ? id : -1;
+  value.curveId = mandatory ? id : -1;
+  return value;
+}
+
 } // namespace
+
+TEST(FlowRepStrandsPhase15,
+     EndpointCompletionExtendsToRetainedSameSheetNetwork) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  std::vector<FlowRepArc> arcs;
+  arcs.push_back(endpoint_completion_arc(
+      0, 0, {0.60, 0.25, 0.15}, {0.40, 0.45, 0.15}, 3, 5));
+  arcs.push_back(endpoint_completion_arc(
+      1, 0, {0.85, 0.10, 0.05}, {0.50, 0.10, 0.40}, 3, 5, true));
+  arcs.push_back(endpoint_completion_arc(
+      2, 0, {0.20, 0.75, 0.05}, {0.05, 0.75, 0.20}, 3, 5, true));
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(1), tracing, arcs, {0, 1, 2},
+      completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 2);
+  EXPECT_EQ(result.resolvedEndpoints, 2);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_GE(result.addedArcs, 2);
+  ASSERT_EQ(result.arcs.size(), arcs.size() + result.addedArcs);
+  for (std::size_t index = arcs.size(); index < result.arcs.size(); ++index) {
+    const FlowRepArc &added = result.arcs[index];
+    EXPECT_EQ(added.sourceFace, 0);
+    EXPECT_EQ(added.sourceComponent, 3);
+    EXPECT_EQ(added.sourceSheet, 5);
+    EXPECT_TRUE(added.layoutSupport);
+    EXPECT_TRUE(added.startBarycentric.allFinite());
+    EXPECT_TRUE(added.endBarycentric.allFinite());
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
+     EndpointCompletionDoesNotCaptureCoincidentOtherSheet) {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 1.0e-6, 1.0, 0.0, 1.0e-6, 0.0, 1.0, 1.0e-6;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 3, 4, 5;
+
+  std::vector<FlowRepArc> arcs;
+  arcs.push_back(endpoint_completion_arc(
+      0, 0, {0.60, 0.25, 0.15}, {0.40, 0.45, 0.15}, 3, 5));
+  arcs.push_back(endpoint_completion_arc(
+      1, 1, {0.85, 0.10, 0.05}, {0.50, 0.10, 0.40}, 4, 6, true));
+  arcs.push_back(endpoint_completion_arc(
+      2, 1, {0.20, 0.75, 0.05}, {0.05, 0.75, 0.20}, 4, 6, true));
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3, 4};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(2), tracing, arcs, {0, 1, 2},
+      completion);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failure, "UnresolvedFlowlineEndpoints");
+  EXPECT_EQ(result.openEndpointsBefore, 2);
+  EXPECT_EQ(result.resolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedEndpoints, 2);
+  EXPECT_EQ(result.addedArcs, 0);
+  EXPECT_EQ(result.arcs.size(), arcs.size());
+}
+
+TEST(FlowRepStrandsPhase15,
+     IndexAwareSingularitySeparatrixBecomesEmbeddedLayoutSupport) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  directional::geometry::SurfaceCellNetwork network;
+  network.sourceFaceComponents = {3};
+  network.sourceFaceSheets = {5};
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 0;
+  seed.sourceId = 0;
+  seed.provenance = directional::geometry::SurfaceSeedProvenance::Singularity;
+  seed.point.face = 0;
+  seed.point.barycentric << 1.0, 0.0, 0.0;
+  network.seeds.push_back(seed);
+  network.traces.resize(4);
+  directional::geometry::SurfaceSingularitySeparatrix separatrix;
+  separatrix.sourceVertex = 0;
+  separatrix.singularityIndexNumerator = -1;
+  separatrix.expectedValence = 5;
+  separatrix.branch = 0;
+  separatrix.initialFace = 0;
+  separatrix.family = 0;
+  separatrix.sign = 1;
+  separatrix.trace.termination =
+      directional::geometry::TraceTerminationReason::Budget;
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 1.0, 0.0, 0.0;
+  segment.endBarycentric << 0.5, 0.5, 0.0;
+  segment.family = 0;
+  segment.sign = 1;
+  separatrix.trace.segments.push_back(segment);
+  separatrix.trace.length = 0.5;
+  network.singularSeparatrices.push_back(separatrix);
+
+  const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+      vertices, faces, network);
+
+  ASSERT_EQ(arcs.size(), 1U);
+  EXPECT_TRUE(arcs.front().layoutSupport);
+  EXPECT_TRUE(arcs.front().singularitySupport);
+  EXPECT_TRUE(arcs.front().startEmbeddedAnchor);
+  EXPECT_FALSE(arcs.front().endEmbeddedAnchor);
+  EXPECT_FALSE(arcs.front().mandatoryRail);
+  EXPECT_EQ(arcs.front().supportSeedId, 0);
+  EXPECT_EQ(arcs.front().sourceFace, 0);
+  EXPECT_EQ(arcs.front().sourceComponent, 3);
+  EXPECT_EQ(arcs.front().sourceSheet, 5);
+  EXPECT_NEAR((arcs.front().start - vertices.row(0)).norm(), 0.0, 1.0e-12);
+}
 
 TEST(FlowRepStrandsPhase15, SignedAffinityCuesAreDeterministic) {
   directional::geometry::FlowRepSparseOptions options;

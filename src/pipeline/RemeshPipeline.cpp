@@ -582,6 +582,37 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, static_cast<int>(trace.termination));
     hash_combine_double(seed, trace.length);
   }
+  hash_combine_u64(seed, network.singularSeparatrices.size());
+  for (const geometry::SurfaceSingularitySeparatrix &separatrix :
+       network.singularSeparatrices) {
+    hash_combine_i64(seed, separatrix.sourceVertex);
+    hash_combine_i64(seed, separatrix.singularityIndexNumerator);
+    hash_combine_i64(seed, separatrix.expectedValence);
+    hash_combine_i64(seed, separatrix.branch);
+    hash_combine_i64(seed, separatrix.initialFace);
+    hash_combine_i64(seed, separatrix.family);
+    hash_combine_i64(seed, separatrix.sign);
+    hash_combine_double(seed, separatrix.oneRingAngle);
+    hash_combine_u64(seed, separatrix.trace.segments.size());
+    for (const geometry::SurfaceTraceSegment &segment :
+         separatrix.trace.segments) {
+      hash_trace_segment(seed, segment);
+    }
+    hash_combine_i64(seed,
+                     static_cast<int>(separatrix.trace.termination));
+    hash_combine_double(seed, separatrix.trace.length);
+  }
+  hash_combine_i64(seed, network.singularSeparatrixStats.singularityCount);
+  hash_combine_i64(seed, network.singularSeparatrixStats.expectedBranches);
+  hash_combine_i64(seed, network.singularSeparatrixStats.enumeratedBranches);
+  hash_combine_i64(seed, network.singularSeparatrixStats.nonemptyBranches);
+  hash_combine_i64(seed,
+                   network.singularSeparatrixStats.reconciledSingularities);
+  hash_combine_i64(seed,
+                   network.singularSeparatrixStats.incompleteSingularities);
+  hash_combine_i64(seed, network.singularSeparatrixStats.invalidIndexCount);
+  hash_combine_i64(seed,
+                   network.singularSeparatrixStats.metadataValid ? 1 : 0);
   hash_combine_u64(seed, network.proposals.size());
   for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
     hash_combine_i64(seed, proposal.seedId);
@@ -699,6 +730,9 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, arc.supportTraceId);
     hash_combine_i64(seed, arc.supportSeedId);
     hash_combine_i64(seed, arc.supportSegment);
+    hash_combine_i64(seed, arc.startEmbeddedAnchor ? 1 : 0);
+    hash_combine_i64(seed, arc.endEmbeddedAnchor ? 1 : 0);
+    hash_combine_i64(seed, arc.singularitySupport ? 1 : 0);
     hash_vector(seed, arc.substitutions);
   }
   hash_combine_u64(seed, input.coverageSamples.size());
@@ -3731,12 +3765,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     tracingOptions.singularityVertices.reserve(
         static_cast<std::size_t>(
             result.surfaceCellContext.crossField.singularCycles.size()));
+    tracingOptions.singularityIndexNumerators.reserve(
+        static_cast<std::size_t>(
+            result.surfaceCellContext.crossField.singularIndices.size()));
     for (Eigen::Index singularity = 0;
          singularity <
          result.surfaceCellContext.crossField.singularCycles.size();
          ++singularity) {
       tracingOptions.singularityVertices.push_back(
           result.surfaceCellContext.crossField.singularCycles[singularity]);
+      tracingOptions.singularityIndexNumerators.push_back(
+          result.surfaceCellContext.crossField.singularIndices[singularity]);
     }
     if (!geometry::surface_cell_tracing_detail::
             source_surface_classifier_options_valid(
@@ -3791,6 +3830,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     for (const geometry::SurfaceTraceResult &trace : traceNetwork.traces) {
       traceSegmentCount += trace.segments.size();
     }
+    for (const geometry::SurfaceSingularitySeparatrix &separatrix :
+         traceNetwork.singularSeparatrices) {
+      traceSegmentCount += separatrix.trace.segments.size();
+    }
     for (const geometry::SurfaceCellProposal &proposal :
          traceNetwork.proposals) {
       traceSegmentCount += proposal.sides.size();
@@ -3822,10 +3865,41 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::build_flow_rep_selection_input(
             meshWhole.V, meshWhole.F, targetSize.targetSize, traceNetwork,
             tracingOptions.defaultTargetSize);
-    const std::vector<geometry::FlowRepArc> &flowRepArcs = flowRepInput.arcs;
-    const geometry::FlowRepSparseNetwork sparseFlowRep =
+    std::vector<geometry::FlowRepArc> flowRepArcs = flowRepInput.arcs;
+    geometry::FlowRepSparseNetwork sparseFlowRep =
         geometry::select_sparse_flow_rep_network(
             flowRepArcs, flowRepInput.coverageSamples, flowRepInput.cycles);
+    geometry::FlowRepEndpointCompletionResult endpointCompletion;
+    if (sparseFlowRep.selectionSucceeded) {
+      geometry::FlowRepEndpointCompletionOptions endpointOptions;
+      // Extension is the first endpoint-resolution action. Unresolved tips
+      // remain explicit patch-completion evidence until the guarded removal
+      // and transition actions are implemented; they are never accepted by
+      // the final complex/completion validators.
+      endpointOptions.requireAllEndpointsResolved = false;
+      endpointCompletion = geometry::complete_flow_rep_endpoints(
+          meshWhole.V, meshWhole.F, result.surfaceCellContext.crossField,
+          tracingOptions, flowRepArcs, sparseFlowRep.retainedArcIds,
+          endpointOptions);
+      result.surfaceCellContext.flowRepEndpointCompletionAttempted = true;
+      result.surfaceCellContext.flowRepOpenEndpointsBeforeCompletion =
+          endpointCompletion.openEndpointsBefore;
+      result.surfaceCellContext.flowRepResolvedEndpoints =
+          endpointCompletion.resolvedEndpoints;
+      result.surfaceCellContext.flowRepUnresolvedEndpoints =
+          endpointCompletion.unresolvedEndpoints;
+      result.surfaceCellContext.flowRepEndpointCompletionAddedArcs =
+          endpointCompletion.addedArcs;
+      result.surfaceCellContext.flowRepEndpointCompletionFailure =
+          endpointCompletion.failure;
+      if (endpointCompletion.success) {
+        flowRepArcs = std::move(endpointCompletion.arcs);
+        sparseFlowRep.retainedArcIds =
+            std::move(endpointCompletion.retainedArcIds);
+        sparseFlowRep.endpointTags =
+            std::move(endpointCompletion.endpointTags);
+      }
+    }
     const double surfaceCellStrandsSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - strandsStart)
@@ -3835,8 +3909,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.flowRepNetwork = sparseFlowRep;
     result.surfaceCellContext.hasFlowRepNetwork = true;
     std::uint64_t strandsHash = hash_sparse_network(sparseFlowRep);
+    geometry::FlowRepSelectionInput embeddedFlowRepInput = flowRepInput;
+    embeddedFlowRepInput.arcs = flowRepArcs;
     hash_combine_u64(strandsHash,
-                     hash_flow_rep_selection_input(flowRepInput));
+                     hash_flow_rep_selection_input(embeddedFlowRepInput));
     const SurfaceCellObjectIdentity strandsIdentity = make_identity(
         "strands", strandsHash, sparseFlowRep.retainedArcIds.size());
     mark_stage_consumed("tracing", tracingIdentity,
@@ -4117,17 +4193,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         "completion", completionHash, completedQuadCount);
     mark_stage_consumed("simplification", simplificationIdentity,
                         SurfaceCellConsumptionKind::Full);
+    const bool completionAccepted =
+        completedQuadCount > 0U &&
+        result.surfaceCellContext.outputLineageValidation.valid;
     record_surface_cell_stage("completion", simplificationIdentity,
-                              completionIdentity, true,
+                              completionIdentity, completionAccepted,
                               result.diagnostics.surfaceCellCompletionSeconds);
+    if (!completionAccepted) {
+      return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                "completion");
+    }
     completedSurfaceCellStages.push_back("completion");
     if (options.surfaceCells.injectFailureAfterStage == 8) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
-                                "completion");
-    }
-    if (completedQuadCount == 0U ||
-        !result.surfaceCellContext.outputLineageValidation.valid) {
-      return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "completion");
     }
 

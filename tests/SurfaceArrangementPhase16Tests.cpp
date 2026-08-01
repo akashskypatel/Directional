@@ -77,7 +77,48 @@ bool has_node_near(const directional::geometry::SurfaceCellComplex &complex,
   return false;
 }
 
+directional::geometry::SurfaceArrangementNode logical_side_node(
+    const int id, const Eigen::RowVector3d &barycentric) {
+  directional::geometry::SurfaceArrangementNode node;
+  node.id = id;
+  node.sourceFace = 0;
+  node.barycentric = barycentric;
+  return node;
+}
+
 } // namespace
+
+TEST(SurfaceArrangementPhase16,
+     LogicalSideContinuesAcrossDifferentProvenanceBelowBranchTurn) {
+  const auto fixture = unit_triangle();
+  std::vector<directional::geometry::SurfaceArrangementNode> nodes = {
+      logical_side_node(0, {0.80, 0.10, 0.10}),
+      logical_side_node(1, {0.60, 0.30, 0.10}),
+      logical_side_node(2, {0.3267949192431123, 0.4732050807568877,
+                            0.20})};
+  directional::geometry::SurfaceArrangementHalfedge first;
+  first.from = 0;
+  first.to = 1;
+  first.family = 2;
+  first.sourceArc = 10;
+  first.strand = 20;
+  directional::geometry::SurfaceArrangementHalfedge second;
+  second.from = 1;
+  second.to = 2;
+  second.family = 0;
+  second.sourceArc = 11;
+  second.strand = 21;
+
+  EXPECT_TRUE(directional::geometry::surface_arrangement_detail::
+                  same_logical_side(first, second, nodes, fixture.vertices,
+                                    fixture.faces));
+
+  nodes[2].barycentric << 0.3267949192431123, 0.40,
+      0.2732050807568877;
+  EXPECT_FALSE(directional::geometry::surface_arrangement_detail::
+                   same_logical_side(first, second, nodes, fixture.vertices,
+                                     fixture.faces));
+}
 
 TEST(SurfaceArrangementPhase16, TwoCrossingSegmentsSplitOnce) {
   const auto fixture = unit_triangle();

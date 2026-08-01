@@ -157,6 +157,37 @@ struct SurfaceTraceResult {
   double length = 0.0;
 };
 
+/**
+ * One cross-field separatrix emitted by a source-field singularity.
+ *
+ * A degree-four field singularity with integer numerator `k` owns `4-k`
+ * outgoing branches.  These branches cannot be represented by the four
+ * generic `(family, sign)` traces launched from one arbitrary incident face:
+ * the field branch can move between families while the one-ring is unrolled.
+ */
+struct SurfaceSingularitySeparatrix {
+  int sourceVertex = -1;
+  int singularityIndexNumerator = 0;
+  int expectedValence = 0;
+  int branch = -1;
+  int initialFace = -1;
+  int family = -1;
+  int sign = 0;
+  double oneRingAngle = 0.0;
+  SurfaceTraceResult trace;
+};
+
+struct SurfaceSingularitySeparatrixStats {
+  int singularityCount = 0;
+  int expectedBranches = 0;
+  int enumeratedBranches = 0;
+  int nonemptyBranches = 0;
+  int reconciledSingularities = 0;
+  int incompleteSingularities = 0;
+  int invalidIndexCount = 0;
+  bool metadataValid = true;
+};
+
 struct SurfaceCellProposal {
   int seedId = -1;
   bool accepted = false;
@@ -232,6 +263,9 @@ struct SurfaceCellTracingOptions {
   double maximumCellSideFactor = 4.0;
   double duplicateCornerToleranceFactor = 1.0e-6;
   std::vector<int> singularityVertices;
+  /// Integer index numerators parallel to singularityVertices. When present,
+  /// the tracer emits the exact `4-index` one-ring separatrix valence.
+  std::vector<int> singularityIndexNumerators;
   std::vector<int> reliefCriticalVertices;
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
@@ -253,6 +287,8 @@ struct SurfaceCellTracingOptions {
 struct SurfaceCellNetwork {
   std::vector<SurfaceTraceSeed> seeds;
   std::vector<SurfaceTraceResult> traces;
+  std::vector<SurfaceSingularitySeparatrix> singularSeparatrices;
+  SurfaceSingularitySeparatrixStats singularSeparatrixStats;
   std::vector<SurfaceCellProposal> proposals;
   std::vector<SurfaceCellRail> authoritativeRails;
   std::vector<int> sourceFaceComponents;

@@ -413,12 +413,33 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   result.sideInsertedVertices = sideRepair.insertedVertices;
   result.sideSplitEdges = sideRepair.splitUndirectedEdges;
   result.sideHardFeatureSplits = sideRepair.hardFeatureSplits;
-  if (!sideRepair.success) {
+  const bool mayUseGeneralFallback =
+      options.allowBoundedCombinatorialFallback &&
+      (sideRepair.failure == "CoupledSideRepairStalled" ||
+       sideRepair.failure == "SideRepairInsertionLimit" ||
+       sideRepair.failure == "SideRepairPropagationLimit" ||
+       sideRepair.failure == "LocalSideInsertionLimit");
+  if (!sideRepair.success && !mayUseGeneralFallback) {
     result.failure = "SideSubdivisionRepair:" + sideRepair.failure;
     result.assembly.failure = result.failure;
     return result;
   }
-  result.preparedComplex = sideRepair.complex;
+  if (sideRepair.success) {
+    result.preparedComplex = sideRepair.complex;
+  } else {
+    // The simple closed-form equations are a regularity condition, not a
+    // necessary condition for an even disk patch. If their coupled global
+    // subdivision solve cannot converge, retain the last committed parity
+    // complex and route only the strict inequality/parity rejections to the
+    // bounded general-pattern backend. Never expose the uncommitted greedy
+    // insertion trial as repaired topology.
+    result.preparedComplex = parityRepair.complex;
+    result.sideInfeasibleCellsAfter = result.sideInfeasibleCellsBefore;
+    result.sideFinalEquationDefect = result.sideInitialEquationDefect;
+    result.sideInsertedVertices = 0;
+    result.sideSplitEdges = 0;
+    result.sideHardFeatureSplits = 0;
+  }
   result.hasPreparedComplex = true;
   const SurfaceCellComplex &prepared = result.preparedComplex;
   result.descriptors = derive_patch_descriptors(
@@ -434,8 +455,15 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     return result;
   }
   for (const PatchDescriptor &descriptor : result.descriptors.descriptors) {
+    const bool boundedFallbackAdmissible =
+        options.allowBoundedCombinatorialFallback &&
+        (descriptor.feasibility.reason ==
+             PureQuadPatchRejectReason::SideInequality ||
+         descriptor.feasibility.reason ==
+             PureQuadPatchRejectReason::HexParity);
     if (!descriptor.boundaryCycleValid ||
-        !descriptor.feasibility.admissible) {
+        (!descriptor.feasibility.admissible &&
+         !boundedFallbackAdmissible)) {
       ++result.failedPatches;
       continue;
     }
