@@ -346,6 +346,90 @@ double coverage_max_distance(
 
 namespace directional::geometry::flow_rep_detail {
 
+struct CoverageCandidate {
+  int arcId = -1;
+  double normalizedDistance = std::numeric_limits<double>::infinity();
+};
+
+struct CoverageIndex {
+  std::vector<std::vector<CoverageCandidate>> candidatesBySample;
+};
+
+CoverageIndex build_coverage_index(
+    const std::vector<FlowRepArc> &arcs,
+    const std::vector<FlowRepCoverageSample> &samples) {
+  int maximumSourceFace = -1;
+  for (const FlowRepArc &arc : arcs) {
+    maximumSourceFace = std::max(maximumSourceFace, arc.sourceFace);
+  }
+  for (const FlowRepCoverageSample &sample : samples) {
+    maximumSourceFace = std::max(maximumSourceFace, sample.sourceFace);
+  }
+
+  std::vector<std::vector<int>> arcsBySourceFace(
+      static_cast<std::size_t>(maximumSourceFace + 1));
+  for (int arcIndex = 0; arcIndex < static_cast<int>(arcs.size()); ++arcIndex) {
+    const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcIndex)];
+    if (arc.sourceFace >= 0) {
+      arcsBySourceFace[static_cast<std::size_t>(arc.sourceFace)].push_back(
+          arcIndex);
+    }
+  }
+
+  CoverageIndex index;
+  index.candidatesBySample.resize(samples.size());
+  for (int sampleIndex = 0; sampleIndex < static_cast<int>(samples.size());
+       ++sampleIndex) {
+    const FlowRepCoverageSample &sample =
+        samples[static_cast<std::size_t>(sampleIndex)];
+    if (sample.sourceFace < 0 ||
+        sample.sourceFace >= static_cast<int>(arcsBySourceFace.size())) {
+      continue;
+    }
+    std::vector<CoverageCandidate> &candidates =
+        index.candidatesBySample[static_cast<std::size_t>(sampleIndex)];
+    for (const int arcIndex :
+         arcsBySourceFace[static_cast<std::size_t>(sample.sourceFace)]) {
+      const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcIndex)];
+      if (!sample_and_arc_are_intrinsically_compatible(sample, arc)) {
+        continue;
+      }
+      candidates.push_back(
+          {arcIndex, normalized_intrinsic_sample_distance(sample, arc)});
+    }
+  }
+  return index;
+}
+
+double coverage_max_distance(
+    const CoverageIndex &index, const std::vector<unsigned char> &active) {
+  if (index.candidatesBySample.empty()) {
+    return 0.0;
+  }
+  double maximumDistance = 0.0;
+  for (const std::vector<CoverageCandidate> &candidates :
+       index.candidatesBySample) {
+    double nearest = std::numeric_limits<double>::infinity();
+    for (const CoverageCandidate &candidate : candidates) {
+      if (candidate.arcId < 0 ||
+          candidate.arcId >= static_cast<int>(active.size()) ||
+          active[static_cast<std::size_t>(candidate.arcId)] == 0) {
+        continue;
+      }
+      nearest = std::min(nearest, candidate.normalizedDistance);
+    }
+    if (!std::isfinite(nearest)) {
+      return std::numeric_limits<double>::infinity();
+    }
+    maximumDistance = std::max(maximumDistance, nearest);
+  }
+  return maximumDistance;
+}
+
+} // namespace directional::geometry::flow_rep_detail
+
+namespace directional::geometry::flow_rep_detail {
+
 std::vector<FlowRepEndpointTag>
 classify_endpoints(const std::vector<FlowRepArc> &arcs,
                    const std::vector<int> &activeArcIds) {
@@ -1649,6 +1733,10 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
     return network;
   }
 
+  const std::vector<unsigned char> initiallyActive = active;
+  const flow_rep_detail::CoverageIndex coverageIndex =
+      flow_rep_detail::build_coverage_index(arcs, coverageSamples);
+
   const auto finish_failure = [&](const FlowRepSelectionFailureCode code) {
     network.selectionSucceeded = false;
     network.failureCode = code;
@@ -1671,7 +1759,7 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
     }
     if (network.coverageEvidenceUsed) {
       network.sparseCoverageMax = flow_rep_detail::coverage_max_distance(
-          arcs, network.retainedArcIds, coverageSamples);
+          coverageIndex, initiallyActive);
     }
     return network;
   };
@@ -1710,7 +1798,7 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
       }
       network.coverageEvidenceUsed = true;
       network.denseCoverageMax = flow_rep_detail::coverage_max_distance(
-          arcs, denseArcIds, coverageSamples);
+          coverageIndex, initiallyActive);
       if (!std::isfinite(network.denseCoverageMax)) {
         return finish_failure(
             FlowRepSelectionFailureCode::InvalidCoverageEvidence);
@@ -1799,7 +1887,7 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
     }
     network.coverageEvidenceUsed = true;
     network.denseCoverageMax = flow_rep_detail::coverage_max_distance(
-        arcs, denseArcIds, coverageSamples);
+        coverageIndex, initiallyActive);
     if (!std::isfinite(network.denseCoverageMax)) {
       return finish_failure(
           FlowRepSelectionFailureCode::InvalidCoverageEvidence);
@@ -1881,10 +1969,10 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
   const auto transaction_is_valid =
       [&](const std::vector<int> &trialArcIds,
           const std::vector<FlowRepCycleEvaluation> &trialCycles) {
+        (void)trialArcIds;
         const double trialCoverage =
             network.coverageEvidenceUsed
-                ? flow_rep_detail::coverage_max_distance(
-                      arcs, trialArcIds, coverageSamples)
+                ? flow_rep_detail::coverage_max_distance(coverageIndex, active)
                 : 0.0;
         const bool coverageOk =
             !network.coverageEvidenceUsed ||
@@ -2080,8 +2168,7 @@ FlowRepSparseNetwork select_sparse_flow_rep_network(
   }
   network.sparseCoverageMax =
       network.coverageEvidenceUsed
-          ? flow_rep_detail::coverage_max_distance(
-                arcs, network.retainedArcIds, coverageSamples)
+          ? flow_rep_detail::coverage_max_distance(coverageIndex, active)
           : 0.0;
   network.endpointTags =
       flow_rep_detail::classify_endpoints(arcs, network.retainedArcIds);
