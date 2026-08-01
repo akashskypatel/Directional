@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 14:08 PDT
+Last updated: 2026-08-01 14:34 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -52,7 +52,9 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Optimized random-bunny endpoint result after intrinsic capture: 3,910 open endpoints, 3,892 resolved, 18 unresolved, 13 unresolved required singular supports, and 1,997 added connector arcs. The full pipeline still reaches the same 39 strict validation failures after 261.3 s; evidence: `benchmark-results/p28-local/bunny-intrinsic-capture.json`.
 - Added benchmark-stage injection and per-endpoint structured JSON diagnostics so endpoint work can be measured after the strands stage in about 9 seconds instead of paying the 230-second optimizer cost. Evidence: `benchmark-results/p28-local/bunny-endpoint-diagnostics.json`.
 - The 18 unresolved endpoints are now concrete: three empty hard-feature retries, two optional traces ending at an unexpected boundary on the closed bunny, and 13 required singular supports. Of the 13 required supports, nine terminate at a feature after 12–128 segments and four exhaust the 128-segment budget.
-- Next action: resolve feature-terminal ownership against authoritative rails, then continue budget-exhausted required traces transactionally. Boundary and empty hard-feature terminations remain fail-closed until their topology is proved.
+- Implemented canonical feature-rail interval ownership across adjacent source-face charts. A feature termination is accepted only when its terminal source-edge coordinate lies inside a retained hard-feature rail interval on the same source component and sheet; a `Feature` label alone remains insufficient.
+- Added focused positive and cross-sheet fail-closed tests. Validation: 2/2 focused tests and all 195 Phase 14–18 tests pass. Evidence: `build/mg-debug/results/p5-feature-rail-focused.json` and `build/mg-debug/results/p5-feature-rail-phase14-18.json`.
+- Next action: run the fast endpoint-stage bunny benchmark to measure which feature-terminal obligations are resolved before implementing bounded continuation for the remaining budget-exhausted required traces. Boundary and empty hard-feature terminations remain fail-closed until their topology is proved.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
