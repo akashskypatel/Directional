@@ -3984,6 +3984,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.sideInfeasibleCellsBefore;
     result.surfaceCellContext.completionSideInfeasibleAfterRepair =
         completionResult.sideInfeasibleCellsAfter;
+    result.surfaceCellContext.completionSideInitialEquationDefect =
+        completionResult.sideInitialEquationDefect;
+    result.surfaceCellContext.completionSideFinalEquationDefect =
+        completionResult.sideFinalEquationDefect;
+    result.surfaceCellContext.completionSidePropagationPasses =
+        completionResult.sidePropagationPasses;
+    result.surfaceCellContext.completionSideAttemptedInsertions =
+        completionResult.sideAttemptedInsertions;
     result.surfaceCellContext.completionSideInsertedVertices =
         completionResult.sideInsertedVertices;
     result.surfaceCellContext.completionSideSplitEdges =
@@ -3997,6 +4005,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
     result.surfaceCellContext.patchDescriptors =
         completionResult.descriptors.descriptors;
+    result.surfaceCellContext.completionUnresolvedSingularVertices =
+        completionResult.descriptors.unresolvedSingularVertices;
     result.surfaceCellContext.hasPatchDescriptors =
         !completionResult.descriptors.descriptors.empty();
     result.surfaceCellContext.completedPatches =

@@ -224,6 +224,48 @@ bool side_equations_hold(const std::vector<int> &counts) {
          counts[1] + counts[3] + counts[5];
 }
 
+int side_equation_defect(const std::vector<int> &counts) {
+  const int sides = static_cast<int>(counts.size());
+  if (sides < 3 || sides > 6 ||
+      std::any_of(counts.begin(), counts.end(),
+                  [](const int value) { return value <= 0; })) {
+    return std::numeric_limits<int>::max() / 4;
+  }
+  int defect = std::accumulate(counts.begin(), counts.end(), 0) & 1;
+  if (sides == 3) {
+    for (int side = 0; side < 3; ++side) {
+      defect += std::max(0, counts[side] - counts[(side + 1) % 3] -
+                               counts[(side + 2) % 3]);
+    }
+    return defect;
+  }
+  if (sides == 4) {
+    return defect + std::abs(counts[0] - counts[2]) +
+           std::abs(counts[1] - counts[3]);
+  }
+  if (sides == 5) {
+    for (int side = 0; side < 5; ++side) {
+      const int lhs = counts[side] + counts[(side + 1) % 5] +
+                      counts[(side + 4) % 5];
+      const int rhs = counts[(side + 2) % 5] + counts[(side + 3) % 5];
+      defect += std::max(0, rhs - lhs);
+    }
+    return defect;
+  }
+  const int even = counts[0] + counts[2] + counts[4];
+  const int odd = counts[1] + counts[3] + counts[5];
+  defect += std::abs(even - odd);
+  for (const std::array<int, 3> group :
+       {std::array<int, 3>{0, 2, 4}, std::array<int, 3>{1, 3, 5}}) {
+    for (int local = 0; local < 3; ++local) {
+      defect += std::max(0, counts[group[local]] -
+                                counts[group[(local + 1) % 3]] -
+                                counts[group[(local + 2) % 3]]);
+    }
+  }
+  return defect;
+}
+
 std::vector<std::vector<int>> side_halfedges(
     const SurfaceArrangementCell &cell) {
   std::vector<std::vector<int>> result(cell.sideEdgeCounts.size());
@@ -383,6 +425,18 @@ int side_infeasible_cell_count(const SurfaceCellComplex &complex,
     }
   }
   return count;
+}
+
+int total_side_equation_defect(const SurfaceCellComplex &complex,
+                               const std::map<int, int> &insertions) {
+  int defect = 0;
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    if (supported_side_metadata(cell)) {
+      defect += side_equation_defect(
+          effective_side_counts(complex, cell, insertions));
+    }
+  }
+  return defect;
 }
 
 } // namespace directional::geometry::surface_cell_feasibility_detail
@@ -821,7 +875,8 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
       canonicalInput, sourceVertices, sourceFaces);
   result.complex = canonicalInput;
   if (options.maxInsertedVertices < 0 ||
-      options.maxLocalInsertedVertices < 0) {
+      options.maxLocalInsertedVertices < 0 ||
+      options.maxPropagationPasses <= 0 || options.maxStagnantPasses <= 0) {
     result.failure = "InvalidSideRepairOptions";
     return result;
   }
@@ -834,13 +889,34 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
   result.infeasibleCellsBefore =
       surface_cell_feasibility_detail::side_infeasible_cell_count(
           canonicalInput, insertions);
+  result.initialEquationDefect =
+      surface_cell_feasibility_detail::total_side_equation_defect(
+          canonicalInput, insertions);
+  result.finalEquationDefect = result.initialEquationDefect;
   if (result.infeasibleCellsBefore == 0) {
     result.success = true;
     return result;
   }
+  std::vector<int> halfedgeSide(canonicalInput.halfedges.size(), -1);
+  for (const SurfaceArrangementCell &cell : canonicalInput.cells) {
+    if (!surface_cell_feasibility_detail::supported_side_metadata(cell)) {
+      continue;
+    }
+    const auto sides = surface_cell_feasibility_detail::side_halfedges(cell);
+    for (int side = 0; side < static_cast<int>(sides.size()); ++side) {
+      for (const int halfedge : sides[static_cast<std::size_t>(side)]) {
+        halfedgeSide[static_cast<std::size_t>(halfedge)] = side;
+      }
+    }
+  }
   int inserted = 0;
+  int passes = 0;
+  int stagnantPasses = 0;
+  int bestDefect = result.initialEquationDefect;
   bool converged = result.infeasibleCellsBefore == 0;
-  while (!converged && inserted < options.maxInsertedVertices) {
+  while (!converged && inserted < options.maxInsertedVertices &&
+         passes < options.maxPropagationPasses) {
+    ++passes;
     bool progress = false;
     for (const SurfaceArrangementCell &cell : canonicalInput.cells) {
       if (!surface_cell_feasibility_detail::supported_side_metadata(cell)) {
@@ -856,16 +932,21 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
           surface_cell_feasibility_detail::local_side_repair_delta(
               counts, options.maxLocalInsertedVertices);
       if (delta.size() != cell.sideEdgeCounts.size()) {
-        result.failure = "LocalSideEquationSearchFailed";
+        result.failure = "LocalSideInsertionLimit";
+        result.propagationPasses = passes;
+        result.attemptedInsertions = inserted;
         return result;
       }
       const auto sideEdges =
           surface_cell_feasibility_detail::side_halfedges(cell);
       int selectedSide = -1;
-      std::tuple<int, int, int, int> selectedScore{
+      std::tuple<int, int, int, int, int> selectedScore{
+          std::numeric_limits<int>::max(),
           std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
           std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
       int selectedEdge = -1;
+      const int currentDefect =
+          surface_cell_feasibility_detail::side_equation_defect(counts);
       for (int side = 0; side < static_cast<int>(delta.size()); ++side) {
         if (delta[static_cast<std::size_t>(side)] <= 0) {
           continue;
@@ -874,14 +955,48 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
           const int canonical =
               surface_cell_feasibility_detail::canonical_halfedge(canonicalInput,
                                                                   halfedge);
-          const SurfaceArrangementHalfedge &edge =
-              canonicalInput.halfedges[static_cast<std::size_t>(canonical)];
+          const SurfaceArrangementHalfedge &oriented =
+              canonicalInput.halfedges[static_cast<std::size_t>(halfedge)];
           const SurfaceArrangementHalfedge &twin =
-              canonicalInput.halfedges[static_cast<std::size_t>(edge.twin)];
-          const int hard = edge.hardFeature || twin.hardFeature ? 1 : 0;
+              canonicalInput.halfedges[static_cast<std::size_t>(oriented.twin)];
+          const SurfaceArrangementHalfedge &canonicalEdge =
+              canonicalInput.halfedges[static_cast<std::size_t>(canonical)];
+          const SurfaceArrangementHalfedge &canonicalTwin =
+              canonicalInput.halfedges[
+                  static_cast<std::size_t>(canonicalEdge.twin)];
+          const int hard =
+              canonicalEdge.hardFeature || canonicalTwin.hardFeature ? 1 : 0;
           const auto loaded = insertions.find(canonical);
           const int load = loaded == insertions.end() ? 0 : loaded->second;
-          const auto score = std::make_tuple(hard, load, side, canonical);
+          std::vector<int> currentAfter = counts;
+          ++currentAfter[static_cast<std::size_t>(side)];
+          int defectDelta =
+              surface_cell_feasibility_detail::side_equation_defect(
+                  currentAfter) -
+              currentDefect;
+          if (twin.cell != cell.id &&
+              surface_cell_feasibility_detail::supported_side_metadata(
+                  canonicalInput.cells[static_cast<std::size_t>(twin.cell)])) {
+            const int twinSide =
+                halfedgeSide[static_cast<std::size_t>(oriented.twin)];
+            if (twinSide >= 0) {
+              const SurfaceArrangementCell &neighbor =
+                  canonicalInput.cells[static_cast<std::size_t>(twin.cell)];
+              std::vector<int> neighborCounts =
+                  surface_cell_feasibility_detail::effective_side_counts(
+                      canonicalInput, neighbor, insertions);
+              const int neighborBefore =
+                  surface_cell_feasibility_detail::side_equation_defect(
+                      neighborCounts);
+              ++neighborCounts[static_cast<std::size_t>(twinSide)];
+              defectDelta +=
+                  surface_cell_feasibility_detail::side_equation_defect(
+                      neighborCounts) -
+                  neighborBefore;
+            }
+          }
+          const auto score =
+              std::make_tuple(defectDelta, hard, load, side, canonical);
           if (score < selectedScore) {
             selectedScore = score;
             selectedSide = side;
@@ -891,6 +1006,8 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
       }
       if (selectedSide < 0 || selectedEdge < 0) {
         result.failure = "MissingSideSubdivisionEdge";
+        result.propagationPasses = passes;
+        result.attemptedInsertions = inserted;
         return result;
       }
       ++insertions[selectedEdge];
@@ -903,14 +1020,33 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     const int remaining =
         surface_cell_feasibility_detail::side_infeasible_cell_count(
             canonicalInput, insertions);
+    const int defect =
+        surface_cell_feasibility_detail::total_side_equation_defect(
+            canonicalInput, insertions);
+    result.infeasibleCellsAfter = remaining;
+    result.finalEquationDefect = defect;
+    result.propagationPasses = passes;
+    result.attemptedInsertions = inserted;
     converged = remaining == 0;
+    if (defect < bestDefect) {
+      bestDefect = defect;
+      stagnantPasses = 0;
+    } else {
+      ++stagnantPasses;
+    }
     if (!progress && !converged) {
       result.failure = "SideRepairStalled";
       return result;
     }
+    if (!converged && stagnantPasses >= options.maxStagnantPasses) {
+      result.failure = "CoupledSideRepairStalled";
+      return result;
+    }
   }
   if (!converged) {
-    result.failure = "SideRepairInsertionLimit";
+    result.failure = inserted >= options.maxInsertedVertices
+                         ? "SideRepairInsertionLimit"
+                         : "SideRepairPropagationLimit";
     return result;
   }
   const SurfaceCellSubdivisionResult subdivision =
@@ -920,6 +1056,8 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     return result;
   }
   result.complex = subdivision.complex;
+  result.propagationPasses = passes;
+  result.attemptedInsertions = inserted;
   result.insertedVertices = subdivision.insertedVertices;
   result.splitUndirectedEdges = subdivision.splitUndirectedEdges;
   result.hardFeatureSplits = subdivision.hardFeatureSplits;

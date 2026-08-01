@@ -284,9 +284,20 @@ PatchDescriptor derive_patch_descriptor(
       std::min(options.singularCycles.size(), options.singularIndices.size());
   for (int i = 0; i < singularCount; ++i) {
     const int sourceVertex = options.singularCycles(i);
-    if (!patch_descriptor_detail::source_vertex_is_in_cell(sourceVertex, cell,
-                                                            F)) {
-      continue;
+    if (options.enforceGlobalSingularityOwnership) {
+      if (options.embeddedSingularVertices.count(sourceVertex) != 0U) {
+        continue;
+      }
+      const auto owner = options.interiorSingularityOwner.find(sourceVertex);
+      if (owner == options.interiorSingularityOwner.end() ||
+          owner->second != cell.id) {
+        continue;
+      }
+    } else {
+      if (!patch_descriptor_detail::source_vertex_is_in_cell(sourceVertex,
+                                                              cell, F)) {
+        continue;
+      }
     }
     if (boundarySourceVertices.count(sourceVertex) != 0) {
       // Boundary singularities are represented by adjacent patches and do not
@@ -315,6 +326,42 @@ PatchDescriptorSet derive_patch_descriptors(
     const Eigen::MatrixXi &F, const PatchDescriptorOptions &options) {
   PatchDescriptorSet result;
   result.descriptors.reserve(complex.cells.size());
+  PatchDescriptorOptions resolvedOptions = options;
+  resolvedOptions.enforceGlobalSingularityOwnership = true;
+  const int singularCount =
+      std::min(options.singularCycles.size(), options.singularIndices.size());
+  std::set<int> singularVertices;
+  for (int singular = 0; singular < singularCount; ++singular) {
+    singularVertices.insert(options.singularCycles(singular));
+  }
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    const int sourceVertex = patch_descriptor_detail::source_vertex_at_node(
+        node, F, options.barycentricTolerance);
+    if (singularVertices.count(sourceVertex) != 0U) {
+      resolvedOptions.embeddedSingularVertices.insert(sourceVertex);
+    }
+  }
+  for (const int sourceVertex : singularVertices) {
+    if (resolvedOptions.embeddedSingularVertices.count(sourceVertex) != 0U) {
+      continue;
+    }
+    std::vector<int> candidates;
+    for (const SurfaceArrangementCell &cell : complex.cells) {
+      if (cell.cellClass == SurfaceArrangementCellClass::Exterior) {
+        continue;
+      }
+      if (patch_descriptor_detail::source_vertex_is_in_cell(sourceVertex, cell,
+                                                             F)) {
+        candidates.push_back(cell.id);
+      }
+    }
+    if (candidates.size() == 1U) {
+      resolvedOptions.interiorSingularityOwner.emplace(sourceVertex,
+                                                       candidates.front());
+    } else {
+      result.unresolvedSingularVertices.push_back(sourceVertex);
+    }
+  }
   for (const SurfaceArrangementCell &cell : complex.cells) {
     // Exterior DCEL cycles describe the unbounded side of each connected
     // arrangement component. They are not authoritative surface patches and
@@ -323,7 +370,7 @@ PatchDescriptorSet derive_patch_descriptors(
       continue;
     }
     PatchDescriptor descriptor =
-        derive_patch_descriptor(complex, cell, V, F, options);
+        derive_patch_descriptor(complex, cell, V, F, resolvedOptions);
     if (descriptor.feasibility.admissible) {
       ++result.feasible;
     } else {
@@ -359,6 +406,10 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       repair_surface_cell_side_subdivisions(parityRepair.complex, V, F);
   result.sideInfeasibleCellsBefore = sideRepair.infeasibleCellsBefore;
   result.sideInfeasibleCellsAfter = sideRepair.infeasibleCellsAfter;
+  result.sideInitialEquationDefect = sideRepair.initialEquationDefect;
+  result.sideFinalEquationDefect = sideRepair.finalEquationDefect;
+  result.sidePropagationPasses = sideRepair.propagationPasses;
+  result.sideAttemptedInsertions = sideRepair.attemptedInsertions;
   result.sideInsertedVertices = sideRepair.insertedVertices;
   result.sideSplitEdges = sideRepair.splitUndirectedEdges;
   result.sideHardFeatureSplits = sideRepair.hardFeatureSplits;
@@ -374,6 +425,11 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       prepared, V, F, options.descriptorOptions);
   if (result.descriptors.descriptors.empty()) {
     result.failure = "NoPatchDescriptors";
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  if (!result.descriptors.unresolvedSingularVertices.empty()) {
+    result.failure = "UnresolvedSingularityOwnership";
     result.assembly.failure = result.failure;
     return result;
   }

@@ -32,6 +32,9 @@ struct PatchDescriptorOptions {
   Eigen::VectorXi singularCycles;
   Eigen::VectorXi singularIndices;
   double barycentricTolerance = 1.0e-10;
+  bool enforceGlobalSingularityOwnership = false;
+  std::set<int> embeddedSingularVertices;
+  std::map<int, int> interiorSingularityOwner;
 };
 
 struct PatchSideDescriptor {
@@ -57,6 +60,7 @@ struct PatchDescriptor {
 
 struct PatchDescriptorSet {
   std::vector<PatchDescriptor> descriptors;
+  std::vector<int> unresolvedSingularVertices;
   int feasible = 0;
   int rejected = 0;
 };
@@ -79,6 +83,10 @@ struct SurfaceCellComplexCompletionResult {
   int parityHardFeatureSplits = 0;
   int sideInfeasibleCellsBefore = 0;
   int sideInfeasibleCellsAfter = 0;
+  int sideInitialEquationDefect = 0;
+  int sideFinalEquationDefect = 0;
+  int sidePropagationPasses = 0;
+  int sideAttemptedInsertions = 0;
   int sideInsertedVertices = 0;
   int sideSplitEdges = 0;
   int sideHardFeatureSplits = 0;

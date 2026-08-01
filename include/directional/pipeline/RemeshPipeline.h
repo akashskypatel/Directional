@@ -335,11 +335,16 @@ struct SurfaceCellPipelineContext {
   int completionParityHardFeatureSplits = 0;
   int completionSideInfeasibleBeforeRepair = 0;
   int completionSideInfeasibleAfterRepair = 0;
+  int completionSideInitialEquationDefect = 0;
+  int completionSideFinalEquationDefect = 0;
+  int completionSidePropagationPasses = 0;
+  int completionSideAttemptedInsertions = 0;
   int completionSideInsertedVertices = 0;
   int completionSideSplitEdges = 0;
   int completionSideHardFeatureSplits = 0;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
+  std::vector<int> completionUnresolvedSingularVertices;
   bool hasPatchDescriptors = false;
 
   std::vector<geometry::PureQuadMesh> completedPatches;

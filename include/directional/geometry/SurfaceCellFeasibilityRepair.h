@@ -60,6 +60,8 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
 struct SurfaceCellSideRepairOptions {
   int maxInsertedVertices = 100000;
   int maxLocalInsertedVertices = 512;
+  int maxPropagationPasses = 4096;
+  int maxStagnantPasses = 64;
 };
 
 struct SurfaceCellSideRepairResult {
@@ -67,6 +69,10 @@ struct SurfaceCellSideRepairResult {
   SurfaceCellComplex complex;
   int infeasibleCellsBefore = 0;
   int infeasibleCellsAfter = 0;
+  int initialEquationDefect = 0;
+  int finalEquationDefect = 0;
+  int propagationPasses = 0;
+  int attemptedInsertions = 0;
   int insertedVertices = 0;
   int splitUndirectedEdges = 0;
   int hardFeatureSplits = 0;

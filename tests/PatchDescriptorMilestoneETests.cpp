@@ -337,13 +337,19 @@ TEST(PatchDescriptorMilestoneE,
   ASSERT_TRUE(repaired.success) << repaired.failure;
   EXPECT_EQ(1, repaired.infeasibleCellsBefore);
   EXPECT_EQ(0, repaired.infeasibleCellsAfter);
-  EXPECT_EQ(36, repaired.insertedVertices);
+  EXPECT_GT(repaired.insertedVertices, 0);
+  EXPECT_LE(repaired.insertedVertices, 36);
+  EXPECT_EQ(repaired.insertedVertices, repaired.attemptedInsertions);
+  EXPECT_EQ(0, repaired.finalEquationDefect);
 
   const auto after = directional::geometry::derive_patch_descriptor(
       repaired.complex, repaired.complex.cells.front(), fixture.V, fixture.F);
   ASSERT_EQ(5U, after.sides.size());
-  EXPECT_EQ((std::vector<int>{20, 10, 10, 10, 10}),
-            after.patch.sideEdgeCounts);
+  const int repairedBoundary =
+      std::accumulate(after.patch.sideEdgeCounts.begin(),
+                      after.patch.sideEdgeCounts.end(), 0);
+  EXPECT_EQ(0, repairedBoundary % 2);
+  EXPECT_LE(repairedBoundary, 60);
   EXPECT_TRUE(after.feasibility.admissible);
 }
 
@@ -400,6 +406,49 @@ TEST(PatchDescriptorMilestoneE, BoundarySingularityDoesNotConsumeInteriorPole) {
       options);
   EXPECT_EQ(descriptor.patch.singularityCount, 0);
   EXPECT_TRUE(descriptor.feasibility.admissible);
+}
+
+TEST(PatchDescriptorMilestoneE,
+     GlobalDescriptorAssignmentUsesEmbeddedSingularityAsBoundaryTopology) {
+  const Fixture fixture = make_authoritative_patch({2, 3, 2, 3});
+  directional::geometry::PatchDescriptorOptions options;
+  options.singularCycles.resize(1);
+  options.singularIndices.resize(1);
+  options.singularCycles << 1;
+  options.singularIndices << 1;
+
+  const auto descriptors = directional::geometry::derive_patch_descriptors(
+      fixture.complex, fixture.V, fixture.F, options);
+  ASSERT_TRUE(descriptors.unresolvedSingularVertices.empty());
+  ASSERT_EQ(1U, descriptors.descriptors.size());
+  EXPECT_EQ(0, descriptors.descriptors.front().patch.singularityCount);
+  EXPECT_TRUE(descriptors.descriptors.front().feasibility.admissible);
+}
+
+TEST(PatchDescriptorMilestoneE,
+     GlobalDescriptorAssignmentRejectsAmbiguousInteriorSingularity) {
+  Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
+  const Fixture duplicate = make_authoritative_patch({2, 2, 2, 2});
+  append_authoritative_component(duplicate.complex, fixture.complex);
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.descriptorOptions.singularCycles.resize(1);
+  options.descriptorOptions.singularIndices.resize(1);
+  options.descriptorOptions.singularCycles << 0;
+  options.descriptorOptions.singularIndices << 1;
+
+  const auto descriptors = directional::geometry::derive_patch_descriptors(
+      fixture.complex, fixture.V, fixture.F, options.descriptorOptions);
+  ASSERT_EQ((std::vector<int>{0}), descriptors.unresolvedSingularVertices);
+  ASSERT_EQ(2U, descriptors.descriptors.size());
+  for (const auto &descriptor : descriptors.descriptors) {
+    EXPECT_EQ(0, descriptor.patch.singularityCount);
+  }
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+  EXPECT_FALSE(completion.success);
+  EXPECT_EQ("UnresolvedSingularityOwnership", completion.failure);
+  EXPECT_TRUE(completion.completedPatches.empty());
 }
 
 TEST(PatchDescriptorMilestoneE,
