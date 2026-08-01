@@ -24,6 +24,7 @@ jobs:
       - name: Package working tree
         shell: bash
         run: |
+          # Archive the checked-out worktree without Git metadata.
           tar --exclude=.git --exclude='*/.git' -czf "$RUNNER_TEMP/directional-surface-cell-quad.tar.gz" .
 
       - name: Upload source snapshot
