@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 14:51 PDT
+Last updated: 2026-08-01 15:22 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -64,7 +64,11 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - The last required bunny endpoint was not an unowned feature termination: its first retry segment reached an existing intrinsic network node only `6.8e-11` source units away. The connector was correctly rejected as sub-tolerance, but the original degree-one endpoint remained open. Endpoint completion now reconciles that degree-one endpoint transactionally to the proven same-component/sheet capture point instead of emitting a zero-length arc or dropping the branch.
 - Validation after spatial interception and transactional endpoint reconciliation: all 49 FlowRep Phase 15 tests and all 200 Phase 14–18 tests pass. Evidence: `build/mg-debug/results/p5-endpoint-reconciliation-flowrep.json` and `build/mg-debug/results/p5-endpoint-reconciliation-phase14-18.json`.
 - Fast random-bunny result after reconciliation: 3,910 open endpoints, 3,905 resolved, five unresolved optional endpoints, **zero unresolved required singular supports**, and 2,000 added arcs. The remaining endpoints are three empty open hard-feature retries plus two optional singular-vertex retries; no required topology is silently discarded. Evidence: `benchmark-results/p28-local/bunny-endpoint-reconciliation-diagnostics.json`.
-- Next action: run direct arrangement/completion and the optimized full bunny pipeline to measure whether removing the final required bridge obligations eliminates the pinched cells and SourceGridRecovery fallback. The five optional endpoints remain fail-closed unless their ownership is independently proved.
+- Full optimized bunny after endpoint reconciliation remains validation-rejected after 260.27 s (643,000 KiB peak RSS): 2,256 recovery quads and the same 39 strict validation failures. The endpoint contract is improved but the production output is still not direct cell completion. Evidence: `benchmark-results/p28-local/bunny-endpoint-reconciliation-full.json`.
+- Added an explicit benchmark diagnostic switch, `--disable-surface-cell-source-grid-recovery`, and direct completion counters so the arrangement path can be measured without the recovery mesh masking its status.
+- Direct bunny completion now finishes in about 23 s and identifies exactly 16 rejected descriptors out of 21,289; 21,273 patches complete successfully. All 16 are closed one-boundary-component walks rejected as non-disks before patch completion. Evidence: `benchmark-results/p28-local/bunny-direct-completion-diagnostics-v4.json`.
+- Twelve rejected cells contain an immediate twin backtrack on a required singularity-support arc. Two of those cells also contain larger repeated-node pinches. One additional cell contains two optional layout-support backtracks, and three cells contain complex repeated-node pinches without an immediate twin pair. Required endpoint ownership is resolved, but these retained support strands still terminate or overlap topologically inside the DCEL.
+- Next action: classify the 16 rejected cell walks by source arc and endpoint ownership, then transactionally splice or continue only the proven dangling support branches. Do not strip required singularity-support bridges or reinterpret non-disks as valid patches.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
