@@ -1,0 +1,34 @@
+name: Agent Source Snapshot
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout requested branch shallowly with submodules
+        uses: actions/checkout@v4
+        with:
+          ref: surface_cell_quad
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Package working tree
+        shell: bash
+        run: |
+          tar --exclude=.git --exclude='*/.git' -czf "$RUNNER_TEMP/directional-surface-cell-quad.tar.gz" .
+
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: directional-surface-cell-quad-source
+          path: ${{ runner.temp }}/directional-surface-cell-quad.tar.gz
+          if-no-files-found: error
+          retention-days: 1
