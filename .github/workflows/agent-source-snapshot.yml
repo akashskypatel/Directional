@@ -27,10 +27,18 @@ jobs:
           set -euo pipefail
           git config user.name "OpenAI Agent"
           git config user.email "noreply@openai.com"
-          base64 --decode .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 > /tmp/0001.patch
-          base64 --decode .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64 > /tmp/0002.patch
-          git am /tmp/0001.patch
-          git am /tmp/0002.patch
+          base64 --decode .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 | gzip --decompress > /tmp/0001.diff
+          base64 --decode .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64 | gzip --decompress > /tmp/0002.diff
+          echo "0819133772b4d76bef988cc10a67c783fd8905cddafb53ec49fc165b92f62472  /tmp/0001.diff" | sha256sum --check
+          echo "a89f8be551b514b677757b085a4b5f1b53ce3c7a71effa77768f913b70d441ef  /tmp/0002.diff" | sha256sum --check
+          git apply --check /tmp/0001.diff
+          git apply /tmp/0001.diff
+          git add src/geometry/FlowRepStrands.cpp tests/FlowRepStrandsPhase15Tests.cpp
+          git commit -m "Retain partial singularity separatrices"
+          git apply --check /tmp/0002.diff
+          git apply /tmp/0002.diff
+          git add src/geometry/PureQuadCompletion.cpp tests/PureQuadCompletionPhase18Tests.cpp
+          git commit -m "Balance regular disk quadrangulation"
 
       - name: Add focused test target without changing the commit
         shell: bash
