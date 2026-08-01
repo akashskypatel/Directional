@@ -16,10 +16,10 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 
 - [x] P0 — Establish reproducible local source and dependency snapshot.
 - [x] P1 — Review Milestone G plan, failed-fix notes, current checkpoint patches, and benchmark/test harness.
-- [~] P2 — Reproduce the current bunny failure and capture stage/cell diagnostics. Debug benchmark is reproducible but too slow; optimized run remains pending.
+- [x] P2 — Reproduce the current bunny failure and capture stage/cell diagnostics. Optimized run reaches final validation after successful completion and optimization.
 - [x] P3 — Restore required nonempty singular separatrix prefixes with fail-closed termination rules.
 - [x] P4 — Implement and validate balanced regular-disk quadrangulation for high-side even boundaries.
-- [ ] P5 — Diagnose and implement remaining non-disk/transition-sector completion cases without weakening validation. **In progress**
+- [ ] P5 — Diagnose and fix the remaining strict validation failures without weakening validation. **In progress**
 - [ ] P6 — Validate topology, provenance, source projection, field alignment, determinism, and quality metrics.
 - [ ] P7 — Run focused and broader regression tests; repair only real implementation or fixture defects.
 - [ ] P8 — Run final bunny benchmark and document production-readiness evidence and remaining limitations.
@@ -33,7 +33,9 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Implemented balanced recursive quadrangulation for even regular-disk boundaries with more than six logical sides. It preserves the complete boundary, emits exactly `n/2 - 1` quads, distributes diagonal endpoints, and keeps unsupported non-disk/singular cases fail-closed.
 - Validation after P4: 2/2 focused topology tests passed; all 127 Phase 15–18 tests passed.
 - Test evidence: `build/mg-debug/p3-focused.json`, `build/mg-debug/p3-phase15-18.json`, `build/mg-debug/p4-focused.json`, `build/mg-debug/p4-phase15-18.json`.
-- Next action: run the optimized random-bunny pipeline to identify the first remaining completion/validation failure after P3–P4.
+- Optimized random-bunny result after P3–P4: completion emits 2,256 quads, optimization completes 13 iterations, and the pipeline now fails honestly at final validation with 39 counted failures instead of failing during completion.
+- Runtime evidence: 258.75 s pipeline time, 364,512 KiB peak RSS. Artifacts are under `benchmark-results/p28-local/`.
+- Next action: dump the full strict validation issue list and quantitative gate metrics, then fix the actual topology/provenance/quality defect.
 
 - Local archive HEAD matches remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`.
 - Recursive submodules are present.
