@@ -764,6 +764,112 @@ FlowRepSelectionInput build_flow_rep_selection_input(
   FlowRepSelectionInput input;
   input.arcs = build_flow_rep_arcs_from_network(vertices, faces, network);
 
+  // Radial separatrices alone form graph bridges at a 3/5-valent field
+  // singularity.  Insert one intrinsic transition ring in the source
+  // one-ring so every radial branch bounds a local disk sector.  Each point
+  // on a source edge is parameterized only by its two global endpoints and
+  // the singular vertex target size; both incident faces therefore emit the
+  // identical canonical point without a world-space weld tolerance.
+  std::set<int> singularVertices;
+  for (const SurfaceSingularitySeparatrix &separatrix :
+       network.singularSeparatrices) {
+    if (separatrix.sourceVertex >= 0 &&
+        separatrix.sourceVertex < vertices.rows() &&
+        separatrix.expectedValence > 0) {
+      singularVertices.insert(separatrix.sourceVertex);
+    }
+  }
+  const auto face_label = [](const std::vector<int> &labels, const int face) {
+    return face >= 0 && face < static_cast<int>(labels.size())
+               ? labels[static_cast<std::size_t>(face)]
+               : -1;
+  };
+  const auto vertex_target_size = [&](const int vertex) {
+    return surface_cell_tracing_detail::target_size_at_vertex(
+        targetSize, vertex, defaultTargetSize);
+  };
+  const auto edge_fraction = [&](const int singularVertex,
+                                 const int otherVertex) {
+    const double length =
+        (vertices.row(otherVertex) - vertices.row(singularVertex)).norm();
+    if (!(length > 1.0e-14) || !std::isfinite(length)) {
+      return 0.0;
+    }
+    const double localTargetSize =
+        std::min(vertex_target_size(singularVertex),
+                 vertex_target_size(otherVertex));
+    constexpr double targetRadiusFraction = 0.25;
+    constexpr double maximumEdgeFraction = 0.20;
+    constexpr double minimumEdgeFraction = 1.0e-6;
+    return std::clamp(targetRadiusFraction * localTargetSize / length,
+                      minimumEdgeFraction, maximumEdgeFraction);
+  };
+  const int transitionRingTraceBase =
+      static_cast<int>(4U * network.seeds.size() +
+                       network.singularSeparatrices.size());
+  int transitionRingIndex = 0;
+  for (const int singularVertex : singularVertices) {
+    const int supportTraceId = transitionRingTraceBase + transitionRingIndex++;
+    int supportSegment = 0;
+    for (int face = 0; face < faces.rows(); ++face) {
+      int singularCorner = -1;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(face, corner) == singularVertex) {
+          singularCorner = corner;
+          break;
+        }
+      }
+      if (singularCorner < 0) {
+        continue;
+      }
+      const int firstCorner = (singularCorner + 1) % 3;
+      const int secondCorner = (singularCorner + 2) % 3;
+      const int firstVertex = faces(face, firstCorner);
+      const int secondVertex = faces(face, secondCorner);
+      const double firstFraction =
+          edge_fraction(singularVertex, firstVertex);
+      const double secondFraction =
+          edge_fraction(singularVertex, secondVertex);
+      if (!(firstFraction > 0.0) || !(secondFraction > 0.0)) {
+        continue;
+      }
+
+      FlowRepArc arc;
+      arc.id = static_cast<int>(input.arcs.size());
+      arc.sourceFace = face;
+      arc.startBarycentric[singularCorner] = 1.0 - firstFraction;
+      arc.startBarycentric[firstCorner] = firstFraction;
+      arc.endBarycentric[singularCorner] = 1.0 - secondFraction;
+      arc.endBarycentric[secondCorner] = secondFraction;
+      arc.start = surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          SurfaceTracePoint{face, arc.startBarycentric});
+      arc.end = surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          SurfaceTracePoint{face, arc.endBarycentric});
+      if (!arc.start.allFinite() || !arc.end.allFinite() ||
+          (arc.end - arc.start).norm() <= 1.0e-14) {
+        continue;
+      }
+      arc.sourceComponent =
+          face_label(network.sourceFaceComponents, face);
+      arc.sourceSheet = face_label(network.sourceFaceSheets, face);
+      // A transition ring is a protected topology-template boundary, not one
+      // of the two transported cross-field families.
+      arc.family = -1;
+      arc.strandProvenance = -2 - supportTraceId;
+      arc.sameStrandHint = supportTraceId;
+      arc.layoutSupport = true;
+      arc.supportTraceId = supportTraceId;
+      arc.supportSeedId = singularVertex;
+      arc.supportSegment = supportSegment++;
+      arc.startEmbeddedAnchor = true;
+      arc.endEmbeddedAnchor = true;
+      arc.singularitySupport = true;
+      input.arcs.push_back(std::move(arc));
+    }
+  }
+
   const auto target_size_at_barycentric = [&](const int face,
                                                const Eigen::RowVector3d &bary) {
     if (face < 0 || face >= faces.rows()) {
@@ -1549,7 +1655,8 @@ std::vector<FlowRepFlowline> extract_transactional_flowlines(
       const FlowRepArc &arc = arcs[static_cast<std::size_t>(arcId)];
       flowline.length += arc_length(arc);
       flowline.mandatory = flowline.mandatory || arc.mandatoryRail ||
-                           arc.boundaryRail || arc.hardFeatureRail;
+                           arc.boundaryRail || arc.hardFeatureRail ||
+                           arc.singularitySupport;
     }
     result.push_back(std::move(flowline));
   };
@@ -1638,7 +1745,8 @@ std::map<std::uint64_t, int> protected_endpoint_degrees(
     for (const bool start : {true, false}) {
       const std::uint64_t key = embedded_endpoint_key(arc, start);
       ++degrees[key];
-      if (arc.boundaryRail || arc.hardFeatureRail || arc.mandatoryRail) {
+      if (arc.boundaryRail || arc.hardFeatureRail || arc.mandatoryRail ||
+          arc.singularitySupport) {
         protectedEndpoints.insert(key);
       }
     }

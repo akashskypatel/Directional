@@ -1,7 +1,10 @@
 #include <directional/geometry/FlowRepStrands.h>
+#include <directional/geometry/SurfaceArrangement.h>
 
 #include <algorithm>
 #include <cstdint>
+#include <map>
+#include <queue>
 #include <set>
 #include <vector>
 
@@ -117,6 +120,94 @@ coverage_for_active_arcs(const std::vector<FlowRepArc> &arcs,
     }
   }
   return samples;
+}
+
+struct TetrahedralSingularityFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  Eigen::VectorXd targetSize;
+  directional::geometry::SurfaceCellNetwork network;
+};
+
+TetrahedralSingularityFixture tetrahedral_singularity_fixture() {
+  TetrahedralSingularityFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, -0.5,
+      0.8660254037844386, 0.0, -0.5, -0.8660254037844386, 0.0;
+  fixture.faces.resize(4, 3);
+  fixture.faces << 0, 1, 2, 0, 2, 3, 0, 3, 1, 1, 3, 2;
+  fixture.targetSize = Eigen::VectorXd::Constant(4, 0.5);
+  fixture.network.sourceFaceComponents.assign(4, 0);
+  fixture.network.sourceFaceSheets.assign(4, 0);
+  for (int branch = 0; branch < 3; ++branch) {
+    directional::geometry::SurfaceSingularitySeparatrix separatrix;
+    separatrix.sourceVertex = 0;
+    separatrix.singularityIndexNumerator = 1;
+    separatrix.expectedValence = 3;
+    separatrix.branch = branch;
+    separatrix.initialFace = branch;
+    separatrix.family = branch % 2;
+    separatrix.sign = branch == 1 ? -1 : 1;
+    separatrix.trace.termination =
+        directional::geometry::TraceTerminationReason::Budget;
+    directional::geometry::SurfaceTraceSegment segment;
+    segment.face = branch;
+    segment.startBarycentric << 1.0, 0.0, 0.0;
+    segment.endBarycentric << 0.20, 0.40, 0.40;
+    segment.family = separatrix.family;
+    segment.sign = separatrix.sign;
+    separatrix.trace.segments.push_back(segment);
+    separatrix.trace.length =
+        (directional::geometry::surface_cell_tracing_detail::point_position(
+             fixture.vertices, fixture.faces,
+             directional::geometry::SurfaceTracePoint{
+                 branch, segment.endBarycentric}) -
+         fixture.vertices.row(0))
+            .norm();
+    fixture.network.singularSeparatrices.push_back(std::move(separatrix));
+  }
+  return fixture;
+}
+
+std::vector<directional::geometry::SurfaceArrangementArc>
+arrangement_arcs(const std::vector<FlowRepArc> &arcs) {
+  std::vector<directional::geometry::SurfaceArrangementArc> result;
+  result.reserve(arcs.size());
+  for (const FlowRepArc &arc : arcs) {
+    directional::geometry::SurfaceArrangementArc embedded;
+    embedded.id = static_cast<int>(result.size());
+    embedded.sourceFace = arc.sourceFace;
+    embedded.startBarycentric = arc.startBarycentric;
+    embedded.endBarycentric = arc.endBarycentric;
+    embedded.family = arc.family;
+    embedded.strand = arc.strandProvenance;
+    embedded.featureClass = arc.featureClass;
+    embedded.hardFeature = arc.hardFeatureRail || arc.mandatoryRail;
+    embedded.provenance = arc.id;
+    embedded.sourceComponent = arc.sourceComponent;
+    embedded.sourceSheet = arc.sourceSheet;
+    embedded.layoutSupport = arc.layoutSupport;
+    embedded.singularitySupport = arc.singularitySupport;
+    result.push_back(std::move(embedded));
+  }
+  return result;
+}
+
+bool node_is_source_vertex(
+    const directional::geometry::SurfaceArrangementNode &node,
+    const Eigen::MatrixXi &faces, const int sourceVertex) {
+  for (const auto &occurrence : node.occurrences) {
+    if (occurrence.sourceFace < 0 || occurrence.sourceFace >= faces.rows()) {
+      continue;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      if (faces(occurrence.sourceFace, corner) == sourceVertex &&
+          std::abs(occurrence.barycentric[corner] - 1.0) <= 1.0e-10) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 FlowRepCycleInput square_cycle() {
@@ -399,6 +490,153 @@ TEST(FlowRepStrandsPhase15,
   EXPECT_EQ(arcs.front().sourceComponent, 3);
   EXPECT_EQ(arcs.front().sourceSheet, 5);
   EXPECT_NEAR((arcs.front().start - vertices.row(0)).norm(), 0.0, 1.0e-12);
+}
+
+TEST(FlowRepStrandsPhase15,
+     SingularityTransitionRingIsIntrinsicClosedAndDeterministic) {
+  const TetrahedralSingularityFixture fixture =
+      tetrahedral_singularity_fixture();
+
+  const auto first = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+  const auto second = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+
+  ASSERT_EQ(first.arcs.size(), 6U);
+  ASSERT_EQ(first.arcs.size(), second.arcs.size());
+  std::vector<int> ringArcIds;
+  std::map<std::uint64_t, int> ringEndpointDegree;
+  int ringTraceId = -1;
+  for (std::size_t index = 0; index < first.arcs.size(); ++index) {
+    const FlowRepArc &arc = first.arcs[index];
+    const FlowRepArc &repeat = second.arcs[index];
+    EXPECT_EQ(arc.id, repeat.id);
+    EXPECT_EQ(arc.sourceFace, repeat.sourceFace);
+    EXPECT_EQ(arc.supportTraceId, repeat.supportTraceId);
+    EXPECT_EQ(arc.supportSegment, repeat.supportSegment);
+    EXPECT_TRUE(arc.startBarycentric.isApprox(repeat.startBarycentric, 0.0));
+    EXPECT_TRUE(arc.endBarycentric.isApprox(repeat.endBarycentric, 0.0));
+    if (!arc.singularitySupport || arc.family >= 0) {
+      continue;
+    }
+    ringArcIds.push_back(arc.id);
+    ringTraceId = ringTraceId < 0 ? arc.supportTraceId : ringTraceId;
+    EXPECT_EQ(arc.supportTraceId, ringTraceId);
+    EXPECT_EQ(arc.sameStrandHint, ringTraceId);
+    EXPECT_EQ(arc.supportSeedId, 0);
+    EXPECT_TRUE(arc.layoutSupport);
+    EXPECT_FALSE(arc.mandatoryRail);
+    EXPECT_TRUE(arc.startEmbeddedAnchor);
+    EXPECT_TRUE(arc.endEmbeddedAnchor);
+    EXPECT_TRUE(directional::geometry::flow_rep_detail::
+                    arc_has_complete_provenance(arc));
+    ++ringEndpointDegree[directional::geometry::flow_rep_detail::point_key(
+        arc.start)];
+    ++ringEndpointDegree[directional::geometry::flow_rep_detail::point_key(
+        arc.end)];
+  }
+  ASSERT_EQ(ringArcIds.size(), 3U);
+  ASSERT_EQ(ringEndpointDegree.size(), 3U);
+  for (const auto &[endpoint, degree] : ringEndpointDegree) {
+    (void)endpoint;
+    EXPECT_EQ(degree, 2);
+  }
+
+  const FlowRepSparseNetwork selected =
+      directional::geometry::select_sparse_flow_rep_network(
+          first.arcs, first.coverageSamples, first.cycles);
+  ASSERT_TRUE(selected.selectionSucceeded);
+  const std::set<int> retained(selected.retainedArcIds.begin(),
+                               selected.retainedArcIds.end());
+  for (const int arcId : ringArcIds) {
+    EXPECT_EQ(retained.count(arcId), 1U);
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
+     SingularityTransitionRingMakesRadialSectorsNonBridgingDisks) {
+  const TetrahedralSingularityFixture fixture =
+      tetrahedral_singularity_fixture();
+  const auto input = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arrangement_arcs(input.arcs), options);
+
+  int center = -1;
+  for (const auto &node : complex.nodes) {
+    if (node_is_source_vertex(node, fixture.faces, 0)) {
+      ASSERT_EQ(center, -1);
+      center = node.id;
+    }
+  }
+  ASSERT_GE(center, 0);
+
+  std::vector<std::vector<std::pair<int, int>>> adjacency(
+      complex.nodes.size());
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.twin < 0 || halfedge.id > halfedge.twin) {
+      continue;
+    }
+    adjacency[static_cast<std::size_t>(halfedge.from)].push_back(
+        {halfedge.to, halfedge.id});
+    adjacency[static_cast<std::size_t>(halfedge.to)].push_back(
+        {halfedge.from, halfedge.id});
+  }
+
+  int radialEdges = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.twin < 0 || halfedge.id > halfedge.twin ||
+        !halfedge.singularitySupport ||
+        (halfedge.from != center && halfedge.to != center)) {
+      continue;
+    }
+    ++radialEdges;
+    const int destination =
+        halfedge.from == center ? halfedge.to : halfedge.from;
+    std::vector<unsigned char> visited(complex.nodes.size(), 0);
+    std::queue<int> queue;
+    visited[static_cast<std::size_t>(center)] = 1;
+    queue.push(center);
+    while (!queue.empty()) {
+      const int node = queue.front();
+      queue.pop();
+      for (const auto &[next, edgeId] :
+           adjacency[static_cast<std::size_t>(node)]) {
+        if (edgeId == halfedge.id ||
+            visited[static_cast<std::size_t>(next)] != 0) {
+          continue;
+        }
+        visited[static_cast<std::size_t>(next)] = 1;
+        queue.push(next);
+      }
+    }
+    EXPECT_NE(visited[static_cast<std::size_t>(destination)], 0)
+        << "radial singularity support must be part of a local cycle";
+  }
+  EXPECT_EQ(radialEdges, 3);
+
+  int centerCells = 0;
+  for (const auto &cell : complex.cells) {
+    bool touchesCenter = false;
+    for (const int halfedgeId : cell.halfedges) {
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      touchesCenter = touchesCenter || halfedge.from == center ||
+                      halfedge.to == center;
+    }
+    if (!cell.boundaryCycle && touchesCenter) {
+      ++centerCells;
+      EXPECT_TRUE(cell.disk);
+      EXPECT_EQ(cell.boundaryComponentCount, 1);
+      EXPECT_EQ(cell.eulerCharacteristic, 1);
+    }
+  }
+  EXPECT_EQ(centerCells, 3);
 }
 
 TEST(FlowRepStrandsPhase15, SignedAffinityCuesAreDeterministic) {
