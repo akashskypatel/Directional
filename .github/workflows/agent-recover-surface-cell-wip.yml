@@ -6,6 +6,11 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - .github/workflows/agent-recover-surface-cell-wip.yml
+  pull_request:
+    branches:
+      - surface_cell_quad
+    paths:
+      - .github/workflows/agent-recover-surface-cell-wip.yml
   workflow_dispatch:
 
 permissions:
@@ -39,7 +44,6 @@ jobs:
           dst = Path('recovery/decoded')
           dst.mkdir(parents=True, exist_ok=True)
 
-          # Reassemble split base64 snapshots first.
           groups = {}
           for path in src.glob('*.part*'):
               base = re.sub(r'\.part\d+$', '', path.name)
@@ -49,7 +53,7 @@ jobs:
               (src / base).write_text(data)
 
           for path in sorted(src.iterdir()):
-              if path.name.endswith(tuple(f'.part{i:02d}' for i in range(100))):
+              if re.search(r'\.part\d+$', path.name):
                   continue
               out_name = path.name
               data = path.read_bytes()
@@ -63,7 +67,7 @@ jobs:
 
           with (Path('recovery') / 'decoded-manifest.txt').open('w') as f:
               for path in sorted(dst.iterdir()):
-                  first = path.read_text(errors='replace').splitlines()[:8]
+                  first = path.read_text(errors='replace').splitlines()[:12]
                   f.write(f'=== {path.name} ===\n')
                   f.write('\n'.join(first) + '\n\n')
           PY
@@ -72,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git bundle create recovery/surface-cell-branch.bundle agent/surface_cell_quad/p5-recover-bridge-healing surface_cell_quad
+          git bundle create recovery/surface-cell-branch.bundle HEAD surface_cell_quad
           git status --short > recovery/checkout-status.txt
 
       - name: Upload recovery artifact
