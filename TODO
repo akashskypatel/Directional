@@ -1,6 +1,6 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-02 12:45 PDT
+Last updated: 2026-08-02 12:55 PDT
 
 ## Active phase
 
@@ -19,17 +19,18 @@ Last updated: 2026-08-02 12:45 PDT
 - [x] Restore `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md` as an ordinary tracked file.
 - [x] Synchronize the working branch with `surface_cell_quad`; the working branch is zero commits behind.
 - [x] Fetch all required submodules recursively with shallow history.
-- [x] Compile the exact pushed ordinary-source checkpoint without running tests or benchmarks.
+- [x] Compile an exact remote working-branch checkpoint without running tests or benchmarks.
 
 ## Latest build evidence
 
 - Materialized implementation commit: `bb78dbe52fc4dbba74b220334c67cbde3305d04a`.
 - Restored remediation-plan commit: `ac933e895179410f324baa6dd4c635a823cfd9e6`.
-- Final direct-source build commit: `4c702c6a7ee7ba39ceab1aee0a1f8f9123c8425b`.
-- Workflow run: `30763728058` — `Agent Build Surface Cell P5`.
+- Exact working-branch build commit: `c84e2e1d64e867e5975f414780f9c81e649612fb`.
+- Workflow run: `30764152204` — `Agent Build Surface Cell P5`.
 - Build result: successful compilation of `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a`.
-- Artifact: `8838345026`, `surface-cell-p5-linux-release`.
-- Artifact digest: `sha256:add7ff0934a07ca599f017832e61d2e0d6d29787003ba7719d1f6449ed21e285`.
+- Artifact: `8838467442`, `surface-cell-p5-branch-linux-release`.
+- Artifact digest: `sha256:9a70545b0cdecd181da0c914fb5f95f50a163a12a54871e1d4ee634d54f882a1`.
+- Artifact verification: `source-commit.txt` is exactly `c84e2e1d64e867e5975f414780f9c81e649612fb`.
 - Tests executed in the code/build turn: none.
 - Benchmarks executed in the code/build turn: none.
 
@@ -44,7 +45,7 @@ Last updated: 2026-08-02 12:45 PDT
 
 ## Test and benchmark turn entry criteria
 
-- Use artifact `8838345026` and verify its recorded source commit before execution.
+- Use artifact `8838467442` and verify its recorded source commit before execution.
 - Run the minimized intrinsic source-vertex fan regression and duplicate stitched-quad diagnostic regression.
 - Run Phase 14–18 focused tests, then P23 and Phase 20 fail-closed backend tests.
 - Run the fast direct random-bunny benchmark with source-grid recovery disabled.
