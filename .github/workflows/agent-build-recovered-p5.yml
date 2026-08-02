@@ -19,11 +19,21 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout source
+      - name: Checkout exact working branch
         uses: actions/checkout@v4
         with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
           fetch-depth: 1
           submodules: false
+
+      - name: Verify exact remote working-branch commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          local_sha=$(git rev-parse HEAD)
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "${local_sha}" = "${remote_sha}"
+          echo "${local_sha}" > /tmp/source-commit.txt
 
       - name: Fetch required submodules shallowly
         shell: bash
@@ -83,7 +93,7 @@ jobs:
           cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
           cp -a benchmarks tests include artifact/source/
-          git rev-parse HEAD > artifact/source-commit.txt
+          cp /tmp/source-commit.txt artifact/source-commit.txt
           git status --short > artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > artifact/files.sha256
@@ -91,7 +101,7 @@ jobs:
       - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-linux-release
+          name: surface-cell-p5-branch-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
