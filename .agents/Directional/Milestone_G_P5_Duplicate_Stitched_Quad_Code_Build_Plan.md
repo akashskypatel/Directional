@@ -263,3 +263,38 @@ The next benchmark must confirm either:
 - a new, more authoritative fail-closed diagnostic identifying the remaining topology defect.
 
 P5 closes only after direct completion proceeds past assembly without duplicate ownership, `SourceGridRecovery`, legacy fallback, or validator weakening.
+
+## 10. Code/build checkpoint — 2026-08-02
+
+### Implemented invariant
+
+- Added reusable canonical arrangement-domain and stitch-vertex identity types.
+- Patch descriptors now derive orientation-aware boundary identity, canonical source support, component/sheet scope, and source-authoritative boundary-node identity.
+- Repeated oriented domains and overlapping undirected boundaries fail before patch completion with a typed ownership conflict.
+- Global assembly now merges vertices only when authoritative stitch identities match. Position tolerance validates matching identities but cannot create identity.
+- Generated interior vertices are qualified by source patch and local vertex.
+- Final canonical duplicate-quad detection remains transactional and continues to report both source patches.
+- Generalized regression sources were added for reordered duplicate domains, source-face row order, coincident separate sheets, patch-local interiors, shared boundaries, patch order, duplicate detection, and inconsistent shared geometry.
+
+### Compile-only evidence
+
+- Exact implementation/build commit: `d4c1bce4338b7f2e91264c349a73b6b260e80f54`.
+- Workflow run: `30769701224` — **success**.
+- Artifact: `8840174777` (`surface-cell-p5-branch-linux-release`).
+- Artifact digest: `sha256:a5659e86e0f1e90129d1b085e25ed0f2afff0ea882a43304fae15a5f18b9970a`.
+- Compiled targets: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- The artifact contains the exact tracked-source archive, binaries, libraries, source/submodule status, configure/build logs, and stable checksums.
+- No test, benchmark, or custom mesh executable was run.
+
+### Acceptance status
+
+- [ ] The exact patches 241/255 runtime conflict is classified under A, B, C, or D. The code now emits the authoritative evidence needed, but this turn was prohibited from executing the bunny.
+- [x] The implementation enforces general topology/ownership invariants rather than suppressing duplicate output.
+- [x] Final duplicate-quad detection remains fail-closed.
+- [x] New generalized regression sources compile.
+- [x] Existing test and benchmark targets compile in a clean Release build.
+- [x] No test or benchmark executable was run.
+- [x] The exact implementation commit and artifact are recorded.
+- [x] The branch remains a draft, unmerged checkpoint and P5 remains open.
+
+The next authoritative turn is test and benchmark. It must execute the compiled artifact without rebuilding, classify the original duplicate using the new ownership evidence, and determine whether assembly advances or another code/build turn is required.
