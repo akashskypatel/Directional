@@ -1,48 +1,55 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-02 12:05 PDT
+Last updated: 2026-08-02 12:45 PDT
 
 ## Active phase
 
 - Phase: P5 — bridge/pinch topology healing.
 - Active working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Base branch: `surface_cell_quad`.
-- Active turn type: **code changes + build**. Tests and benchmarks are prohibited during this turn.
+- Completed turn type: **code changes + build**.
+- Next authoritative turn type: **test and benchmark**. No code changes are permitted until that turn assesses the compiled checkpoint.
 
 ## Repository recovery
 
-- [x] Identify the active P5 recovery branch and draft PR #8.
-- [x] Confirm the existing encoded checkpoint chain can be reconstructed.
-- [x] Export the reconstructed checkpoint as 23 ordinary source, test, benchmark, plan, and tracker files.
-- [x] Compile the reconstructed library, test binary, and benchmark binary without running them.
-- [ ] Commit every exported source and test file directly to the working branch.
-- [ ] Remove build-time dependence on encoded checkpoints and overlay patches.
-- [ ] Synchronize the working branch history with `surface_cell_quad` before the final direct-source build.
-- [ ] Confirm a fresh shallow checkout contains the exact source tree used by the build.
+- [x] Restore every decodable staged checkpoint as ordinary source, test, benchmark, plan, and tracker files.
+- [x] Commit and push the materialized implementation directly to the working branch.
+- [x] Remove tracked encoded WIP checkpoints and build-overlay patches.
+- [x] Remove obsolete recovery/materialization workflows.
+- [x] Restore `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md` as an ordinary tracked file.
+- [x] Synchronize the working branch with `surface_cell_quad`; the working branch is zero commits behind.
+- [x] Fetch all required submodules recursively with shallow history.
+- [x] Compile the exact pushed ordinary-source checkpoint without running tests or benchmarks.
 
 ## Latest build evidence
 
-- Commit: `dcce156f49c1df1b0487edf1fcd3693c790e882a`.
-- Workflow run: `30762195202` — `Agent Build Recovered P5`.
-- Result: successful compile of `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a`.
-- Artifact: `8837883638`, `recovered-p5-linux-release-materialized`.
-- Artifact digest: `sha256:84df399057bc0707a7575aad0abe4be6871bcb3f18bd2af51e593cd9ee7d4ea7`.
-- Tests executed in this turn: none.
-- Benchmarks executed in this turn: none.
-
-## Active recovery blocker
-
-The GitHub connector can create files, blobs, trees, and commits, but it has no operation that applies a patch or uploads extracted local files as blob content. Several reconstructed blob objects are not present in the remote repository object database, so a connector-only tree commit cannot reference them. The agent container also cannot resolve `github.com`, preventing an authenticated local push.
-
-The exported materialized tree is complete and compiled. Finishing the direct-source commit requires one authorized transfer mechanism for those file bytes. No additional encoded checkpoint has been created or pushed.
+- Materialized implementation commit: `bb78dbe52fc4dbba74b220334c67cbde3305d04a`.
+- Restored remediation-plan commit: `ac933e895179410f324baa6dd4c635a823cfd9e6`.
+- Final direct-source build commit: `4c702c6a7ee7ba39ceab1aee0a1f8f9123c8425b`.
+- Workflow run: `30763728058` — `Agent Build Surface Cell P5`.
+- Build result: successful compilation of `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a`.
+- Artifact: `8838345026`, `surface-cell-p5-linux-release`.
+- Artifact digest: `sha256:add7ff0934a07ca599f017832e61d2e0d6d29787003ba7719d1f6449ed21e285`.
+- Tests executed in the code/build turn: none.
+- Benchmarks executed in the code/build turn: none.
 
 ## P5 implementation
 
 - [x] Resolve all required singular-support endpoints without deleting required topology.
-- [x] Reduce direct bunny completion failures to two repeated-node pinches.
-- [ ] Validate the generalized intrinsic source-vertex fan ordering implementation.
-- [ ] Diagnose and repair every remaining repeated-node pinch at its topological cause.
-- [ ] Complete all direct arrangement-cell patches without SourceGridRecovery.
+- [x] Reduce the pre-fan-ordering random-bunny direct completion failure to two repeated-node pinches.
+- [ ] Validate generalized intrinsic source-vertex fan ordering with focused regressions.
+- [ ] Run the direct `bunny_1k_random.obj` completion benchmark with source-grid recovery disabled.
+- [ ] Classify and repair any remaining repeated-node pinch at its topological cause.
+- [ ] Complete every direct arrangement-cell patch without `SourceGridRecovery`.
+
+## Test and benchmark turn entry criteria
+
+- Use artifact `8838345026` and verify its recorded source commit before execution.
+- Run the minimized intrinsic source-vertex fan regression and duplicate stitched-quad diagnostic regression.
+- Run Phase 14–18 focused tests, then P23 and Phase 20 fail-closed backend tests.
+- Run the fast direct random-bunny benchmark with source-grid recovery disabled.
+- Record completed/rejected descriptor counts, exact rejected-cell provenance, endpoint counts, deterministic hashes, runtime, and peak memory.
+- Do not modify code during that turn; failures determine the next code/build phase.
 
 ## Later production gates
 
