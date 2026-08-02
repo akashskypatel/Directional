@@ -95,7 +95,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git status --short > /tmp/source-status.txt
+          git status --porcelain=v1 > /tmp/source-status.txt
+          if [[ -s /tmp/source-status.txt ]]; then
+            echo 'Source checkpoint is not clean before packaging:' >&2
+            cat /tmp/source-status.txt >&2
+            exit 1
+          fi
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
           cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
