@@ -876,6 +876,27 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     result.assembly.failure = result.failure;
     return result;
   }
+  if (result.descriptors.ownershipConflict.active()) {
+    result.assembly.ownershipConflict =
+        result.descriptors.ownershipConflict;
+    const SurfaceCellOwnershipConflict &conflict =
+        result.descriptors.ownershipConflict;
+    std::string prefix = "InvalidArrangementDomainIdentity";
+    if (conflict.classification ==
+        SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain) {
+      prefix = "DuplicateArrangementDomain";
+    } else if (conflict.classification ==
+               SurfaceCellOwnershipConflictClass::
+                   OverlappingUndirectedBoundary) {
+      prefix = "OverlappingArrangementBoundary";
+    }
+    result.failure = prefix + ";firstPatch=" +
+                     std::to_string(conflict.firstPatch) +
+                     ";secondPatch=" +
+                     std::to_string(conflict.secondPatch);
+    result.assembly.failure = result.failure;
+    return result;
+  }
   if (!result.descriptors.unresolvedSingularVertices.empty()) {
     result.failure = "UnresolvedSingularityOwnership";
     result.assembly.failure = result.failure;
