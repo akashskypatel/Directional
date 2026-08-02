@@ -36,25 +36,6 @@ TestMesh make_planar_grid() {
   return mesh;
 }
 
-TestMesh make_disconnected_squares() {
-  TestMesh mesh;
-  mesh.vertices.resize(8, 3);
-  mesh.vertices << 0.0, 0.0, 0.0,
-                   1.0, 0.0, 0.0,
-                   1.0, 1.0, 0.0,
-                   0.0, 1.0, 0.0,
-                   3.0, 0.0, 0.0,
-                   4.0, 0.0, 0.0,
-                   4.0, 1.0, 0.0,
-                   3.0, 1.0, 0.0;
-  mesh.faces.resize(4, 3);
-  mesh.faces << 0, 1, 2,
-                0, 2, 3,
-                4, 5, 6,
-                4, 6, 7;
-  return mesh;
-}
-
 Eigen::MatrixXd constant_raw_field(const int faceCount) {
   Eigen::MatrixXd raw(faceCount, 12);
   for (int face = 0; face < faceCount; ++face) {
@@ -187,12 +168,18 @@ TEST(MilestoneGP23, LegacyFallbackAliasParsesButSerializesCanonicalName) {
             directional::pipeline::surface_cell_fallback_policy_name(parsed));
 }
 
-TEST(MilestoneGP23, TryLegacyFailureDoesNotReportLegacyExecution) {
+TEST(MilestoneGP23, TryLegacyParserRejectsLegacyIntegrationFallback) {
+  EXPECT_THROW(
+      directional::pipeline::parse_surface_cell_fallback_policy("TryLegacy"),
+      std::runtime_error);
+}
+
+TEST(MilestoneGP23, SurfaceCellFailureTerminatesBeforeLegacyIntegration) {
   using directional::pipeline::SurfaceCellFallbackPolicy;
-  const TestMesh mesh = make_disconnected_squares();
+  const TestMesh mesh = make_planar_grid();
   const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
   directional::pipeline::RemeshOptions options =
-      surface_options(SurfaceCellFallbackPolicy::TryLegacy);
+      surface_options(SurfaceCellFallbackPolicy::Fail);
   options.surfaceCells.injectFailureAfterStage = 9;
 
   const directional::pipeline::RemeshResult result =
@@ -203,47 +190,27 @@ TEST(MilestoneGP23, TryLegacyFailureDoesNotReportLegacyExecution) {
   expect_no_output_mesh(result);
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_EQ("Fail", result.diagnostics.surfaceCellFallbackPolicy);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
+  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackCause.empty());
   EXPECT_EQ("InjectedStageFailure",
             result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("InjectedStageFailure", result.diagnostics.surfaceCellFallbackCause);
+  EXPECT_EQ("optimization",
+            result.diagnostics.originalSurfaceCellFailureStage);
   EXPECT_EQ("InjectedStageFailure", result.diagnostics.terminalFailureCode);
   EXPECT_EQ("optimization", result.diagnostics.terminalFailureStage);
   EXPECT_EQ(directional::SurfaceCellOutputOrigin::None,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
-}
-
-TEST(MilestoneGP23, TryLegacySuccessReportsLegacyExecution) {
-  using directional::pipeline::SurfaceCellFallbackPolicy;
-  const TestMesh mesh = make_planar_grid();
-  const Eigen::MatrixXd raw = constant_raw_field(mesh.faces.rows());
-  directional::pipeline::RemeshOptions options =
-      surface_options(SurfaceCellFallbackPolicy::TryLegacy);
-  options.surfaceCells.injectFailureAfterStage = 9;
-
-  const directional::pipeline::RemeshResult result =
-      directional::pipeline::remesh_from_raw_cross_field(
-          mesh.vertices, mesh.faces, raw, options);
-
-  ASSERT_TRUE(result.success);
-  EXPECT_GT(result.vertices.rows(), 0);
-  EXPECT_GT(result.faces.rows(), 0);
-  EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend);
-  EXPECT_EQ("LegacyInteger", result.diagnostics.executedBackend);
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
-  EXPECT_TRUE(result.diagnostics.surfaceCellUsedLegacyFallback);
-  EXPECT_EQ("InjectedStageFailure",
-            result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("optimization",
-            result.diagnostics.originalSurfaceCellFailureStage);
-  EXPECT_EQ("InjectedStageFailure", result.diagnostics.surfaceCellFallbackCause);
-  EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
-  EXPECT_TRUE(result.diagnostics.terminalFailureStage.empty());
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::LegacyFallback,
-            result.diagnostics.surfaceCellOutputOrigin);
-  EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.setupIntegrationSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.integrationTotalSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.setupMesherSeconds);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.mesherTotalSeconds);
+  EXPECT_EQ(0U, result.diagnostics.integration.integerIterations);
+  EXPECT_EQ(0U, result.diagnostics.integration.directFactorizations);
+  EXPECT_DOUBLE_EQ(0.0,
+                   result.diagnostics.integration.numericFactorizationSeconds);
 }
 
 TEST(MilestoneGP23, EarlyCrossFieldValidationUsesConfiguredFallbackPolicy) {
@@ -267,15 +234,17 @@ TEST(MilestoneGP23, EarlyCrossFieldValidationUsesConfiguredFallbackPolicy) {
   EXPECT_EQ("InputMesh", result.diagnostics.executedBackend);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
 
-  options.surfaceCells.fallbackPolicy = SurfaceCellFallbackPolicy::TryLegacy;
+  options.surfaceCells.fallbackPolicy = SurfaceCellFallbackPolicy::Fail;
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, malformed, options);
   EXPECT_FALSE(result.success);
   expect_no_output_mesh(result);
-  EXPECT_TRUE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
   EXPECT_EQ("InvalidFieldDimensions", result.diagnostics.terminalFailureCode);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.integrationTotalSeconds);
+  EXPECT_EQ(0U, result.diagnostics.integration.directFactorizations);
 
   directional::fields::CrossFieldResult missingMatching;
   missingMatching.degree = directional::fields::kCrossFieldDegree;
@@ -291,15 +260,17 @@ TEST(MilestoneGP23, EarlyCrossFieldValidationUsesConfiguredFallbackPolicy) {
 
   result = directional::pipeline::remesh_from_cross_field_result(
       mesh.vertices, mesh.faces, missingMatching, options);
-  ASSERT_TRUE(result.success);
+  EXPECT_FALSE(result.success);
+  expect_no_output_mesh(result);
   EXPECT_EQ("MissingMatching",
             result.diagnostics.originalSurfaceCellFailureCode);
-  EXPECT_EQ("LegacyInteger", result.diagnostics.executedBackend);
-  EXPECT_TRUE(result.diagnostics.surfaceCellUsedLegacyFallback);
-  EXPECT_GT(result.crossFieldMatching.size(), 0);
-  EXPECT_EQ(result.crossFieldMatching.size(), result.crossFieldEffort.size());
-  EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::LegacyFallback,
+  EXPECT_EQ("MissingMatching", result.diagnostics.terminalFailureCode);
+  EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellUsedLegacyFallback);
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::None,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_FALSE(result.diagnostics.surfaceCellRemeshOccurred);
+  EXPECT_DOUBLE_EQ(0.0, result.diagnostics.integrationTotalSeconds);
+  EXPECT_EQ(0U, result.diagnostics.integration.directFactorizations);
 }
