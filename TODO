@@ -1,0 +1,40 @@
+# Directional Surface-Cell Production Readiness
+
+Last updated: 2026-08-02 11:50 PDT
+
+## Active phase
+
+- Phase: P5 — bridge/pinch topology healing.
+- Active working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
+- Base branch: `surface_cell_quad`.
+- Active turn type: **code changes + build**. Tests and benchmarks are prohibited during this turn.
+
+## Repository recovery
+
+- [x] Identify the active P5 recovery branch and draft PR #8.
+- [x] Confirm the encoded checkpoint chain can be reconstructed and compiled.
+- [ ] Materialize every recovered source and test change as ordinary files on the working branch.
+- [ ] Remove build-time dependence on encoded checkpoints and overlay patches.
+- [ ] Synchronize the working branch with `surface_cell_quad` before the final build.
+- [ ] Confirm a fresh shallow checkout contains the exact source tree used by the build.
+
+## P5 implementation
+
+- [x] Resolve all required singular-support endpoints without deleting required topology.
+- [x] Reduce direct bunny completion failures to two repeated-node pinches.
+- [ ] Validate the generalized intrinsic source-vertex fan ordering implementation.
+- [ ] Diagnose and repair every remaining repeated-node pinch at its topological cause.
+- [ ] Complete all direct arrangement-cell patches without SourceGridRecovery.
+
+## Later production gates
+
+- [ ] P6 — topology, provenance, source projection, field alignment, determinism, and quality validation.
+- [ ] P7 — focused and full regression closure.
+- [ ] P8 — final random-bunny benchmark evidence and production disposition.
+
+## Current code/build turn exit criteria
+
+- Recovered implementation exists as normal source commits.
+- Remote working branch is synchronized before compiling.
+- Library, tests, and benchmarks compile successfully through GitHub Actions.
+- No test or benchmark executable is run in this turn.
