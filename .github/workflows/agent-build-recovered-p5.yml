@@ -105,7 +105,8 @@ jobs:
           git submodule status --recursive > artifact/submodule-status.txt
           cp build/agent-p5-release/configure.log artifact/logs/
           cp build/agent-p5-release/build.log artifact/logs/
-          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > artifact/files.sha256
+          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 artifact/files.sha256
 
       - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
