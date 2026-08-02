@@ -12,17 +12,9 @@
 
 #include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include <Eigen/Core>
-
 namespace directional::geometry {
-
-struct PureQuadMesh;
-struct PureQuadPatch;
-struct SurfaceArrangementCell;
-struct SurfaceCellComplex;
 
 struct SurfaceCellCanonicalIdentity {
   bool valid = false;
@@ -256,44 +248,6 @@ struct PureQuadStitchIdentity {
     return lhs.canonical < rhs.canonical;
   }
 };
-
-struct SurfaceCellOwnershipRecord {
-  bool valid = false;
-  SurfaceCellDomainIdentity domain;
-  SurfaceCellCanonicalIdentity boundaryNodes;
-  SurfaceCellCanonicalIdentity boundaryHalfedges;
-  std::vector<PureQuadStitchIdentity> boundaryVertices;
-};
-
-struct PureQuadCompletedFaceOwnership {
-  int sourcePatch = -1;
-  int operationLocalQuad = -1;
-  int completionBackend = -1;
-  SurfaceCellDomainIdentity domain;
-  SurfaceCellCanonicalIdentity boundaryNodes;
-  SurfaceCellCanonicalIdentity boundaryHalfedges;
-  std::vector<PureQuadStitchIdentity> localCorners;
-  std::vector<int> globalCorners;
-};
-
-SurfaceCellOwnershipRecord derive_surface_cell_ownership(
-    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
-    const std::vector<int> &orderedBoundaryHalfedges,
-    const Eigen::MatrixXi &sourceFaces,
-    double barycentricTolerance = 1.0e-10);
-
-bool apply_surface_cell_ownership(const PureQuadPatch &patch,
-                                  PureQuadMesh &mesh,
-                                  int sourcePatch);
-
-SurfaceCellOwnershipConflict classify_surface_cell_ownership_conflict(
-    const PureQuadMesh &first, int firstLocalQuad,
-    const std::vector<PureQuadStitchIdentity> &firstCorners,
-    const PureQuadMesh &second, int secondLocalQuad,
-    const std::vector<PureQuadStitchIdentity> &secondCorners);
-
-std::string format_surface_cell_ownership_conflict(
-    const SurfaceCellOwnershipConflict &conflict);
 
 } // namespace directional::geometry
 
