@@ -104,14 +104,14 @@ jobs:
           git diff --cached --check
           git diff --cached --stat
 
-      - name: Configure optimized static benchmark build
+      - name: Configure optimized static focused build
         shell: bash
         run: |
           cmake -S . -B build/agent-p5-release -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
-            -DDIRECTIONAL_BUILD_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
             -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
             -DDIRECTIONAL_BUILD_CLI=OFF \
             -DDIRECTIONAL_BUILD_GUI=OFF \
@@ -120,16 +120,19 @@ jobs:
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
 
-      - name: Compile benchmark artifact
+      - name: Compile focused test and benchmark artifacts
         shell: bash
         run: |
-          cmake --build build/agent-p5-release --target directional_benchmarks -j 4
+          cmake --build build/agent-p5-release \
+            --target directional_phase1_tests directional_benchmarks \
+            -j 4
 
-      - name: Package compiled artifact
+      - name: Package compiled artifacts
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p artifact/bin artifact/lib artifact/source
+          cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
           cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
@@ -137,10 +140,10 @@ jobs:
           git diff --cached --binary > artifact/recovered-source.patch
           git status --short > artifact/source-status.txt
 
-      - name: Upload compiled artifact
+      - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: recovered-p5-linux-release-libs
+          name: recovered-p5-linux-release-focused
           path: artifact
           if-no-files-found: error
           retention-days: 7
