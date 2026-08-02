@@ -6,11 +6,13 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - .github/workflows/agent-build-recovered-p5.yml
+      - .github/build-overlays/p5-intrinsic-source-vertex-fan.patch
   pull_request:
     branches:
       - surface_cell_quad
     paths:
       - .github/workflows/agent-build-recovered-p5.yml
+      - .github/build-overlays/p5-intrinsic-source-vertex-fan.patch
   workflow_dispatch:
 
 permissions:
@@ -31,6 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           cp -a .agents/Directional/wip /tmp/milestone-g-wip
+          cp .github/build-overlays/p5-intrinsic-source-vertex-fan.patch /tmp/p5-intrinsic-source-vertex-fan.patch
           git reset --hard 92db9c701fb9f0cdba3cd3127ebecccf7c77e410
           git submodule update --init --recursive --depth 1
           mkdir -p /tmp/milestone-g-decoded
@@ -101,6 +104,7 @@ jobs:
             echo "Applying ${patch}"
             git apply --index --whitespace=nowarn "/tmp/milestone-g-decoded/${patch}"
           done
+          git apply --index --whitespace=nowarn /tmp/p5-intrinsic-source-vertex-fan.patch
           git diff --cached --check
           git diff --cached --stat
 
