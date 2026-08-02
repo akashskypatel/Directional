@@ -382,8 +382,15 @@ check_pure_quad_patch_admissibility(const PureQuadPatch &patch) {
     return result;
   }
   const int sides = static_cast<int>(patch.sideEdgeCounts.size());
-  if (sides < 3 || sides > 6) {
+  if (sides < 3) {
     result.reason = PureQuadPatchRejectReason::SideCountUnsupported;
+    return result;
+  }
+  const bool generalRegularDisk =
+      sides > 6 && patch.singularityCount == 0 &&
+      !patch.unmatchedInteriorSingularity;
+  if (sides > 6 && !generalRegularDisk) {
+    result.reason = PureQuadPatchRejectReason::SingularityMismatch;
     return result;
   }
   if (!pure_quad_detail::turns_are_valid(patch)) {
@@ -398,11 +405,19 @@ check_pure_quad_patch_admissibility(const PureQuadPatch &patch) {
     result.reason = PureQuadPatchRejectReason::HardFeatureCrossing;
     return result;
   }
-  if (!pure_quad_detail::side_inequalities_hold(patch.sideEdgeCounts)) {
+  if (!std::all_of(patch.sideEdgeCounts.begin(),
+                   patch.sideEdgeCounts.end(),
+                   [](const int count) { return count > 0; })) {
     result.reason = PureQuadPatchRejectReason::SideInequality;
     return result;
   }
-  if (!pure_quad_detail::hex_parity_holds(patch.sideEdgeCounts)) {
+  if (!generalRegularDisk &&
+      !pure_quad_detail::side_inequalities_hold(patch.sideEdgeCounts)) {
+    result.reason = PureQuadPatchRejectReason::SideInequality;
+    return result;
+  }
+  if (!generalRegularDisk &&
+      !pure_quad_detail::hex_parity_holds(patch.sideEdgeCounts)) {
     result.reason = PureQuadPatchRejectReason::HexParity;
     return result;
   }
@@ -549,13 +564,49 @@ bool complete_six_vertex_transition(const PureQuadPatch &patch,
 
 namespace directional::geometry::pure_quad_detail {
 
-void append_boundary_fan(const std::vector<int> &boundary,
-                                const int anchor, PureQuadMesh &mesh) {
+bool append_balanced_boundary_quadrangulation(
+    const std::vector<int> &boundary, PureQuadMesh &mesh) {
   const int n = static_cast<int>(boundary.size());
-  const auto at = [&](int i) { return boundary[(anchor + i) % n]; };
-  for (int i = 1; i + 2 < n; i += 2) {
-    mesh.quads.push_back({at(0), at(i), at(i + 1), at(i + 2)});
+  if (n < 4 || n % 2 != 0) {
+    return false;
   }
+  if (n == 4) {
+    mesh.quads.push_back(boundary);
+    return true;
+  }
+
+  // Split along an odd-span diagonal so both child polygons remain even.
+  // Choosing the diagonal near the polygon midpoint and rotating its start
+  // into the current quarter distributes diagonal endpoints across the
+  // boundary instead of concentrating every quad at one fan anchor.
+  int splitSpan = -1;
+  for (int candidate = 3; candidate <= n - 3; candidate += 2) {
+    if (splitSpan < 0 ||
+        std::abs(2 * candidate - n) < std::abs(2 * splitSpan - n)) {
+      splitSpan = candidate;
+    }
+  }
+  if (splitSpan < 0) {
+    return false;
+  }
+
+  const int splitStart = n / 4;
+  std::vector<int> first;
+  first.reserve(static_cast<std::size_t>(splitSpan + 1));
+  for (int offset = 0; offset <= splitSpan; ++offset) {
+    first.push_back(boundary[static_cast<std::size_t>(
+        (splitStart + offset) % n)]);
+  }
+
+  std::vector<int> second;
+  second.reserve(static_cast<std::size_t>(n - splitSpan + 1));
+  for (int offset = 0; offset <= n - splitSpan; ++offset) {
+    second.push_back(boundary[static_cast<std::size_t>(
+        (splitStart + splitSpan + offset) % n)]);
+  }
+
+  return append_balanced_boundary_quadrangulation(first, mesh) &&
+         append_balanced_boundary_quadrangulation(second, mesh);
 }
 
 } // namespace directional::geometry::pure_quad_detail
@@ -607,7 +658,10 @@ namespace directional::geometry::pure_quad_detail {
 bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
-  append_boundary_fan(patch.boundaryVertices, 0, mesh);
+  if (!append_balanced_boundary_quadrangulation(patch.boundaryVertices,
+                                                 mesh)) {
+    return false;
+  }
   mesh.backend = PureQuadCompletionBackend::Pattern;
   return true;
 }
@@ -618,18 +672,16 @@ namespace directional::geometry::pure_quad_detail {
 
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
                              int &explored) {
-  const int n = static_cast<int>(patch.boundaryVertices.size());
-  for (int anchor = 0; anchor < n; ++anchor) {
-    PureQuadMesh trial = mesh;
-    append_boundary_fan(patch.boundaryVertices, anchor, trial);
-    ++explored;
-    if (pure_quad_topology_is_disk(trial)) {
-      trial.backend = PureQuadCompletionBackend::BoundedCombinatorial;
-      mesh = std::move(trial);
-      return true;
-    }
+  PureQuadMesh trial = mesh;
+  ++explored;
+  if (!append_balanced_boundary_quadrangulation(patch.boundaryVertices,
+                                                trial) ||
+      !pure_quad_topology_is_disk(trial)) {
+    return false;
   }
-  return false;
+  trial.backend = PureQuadCompletionBackend::BoundedCombinatorial;
+  mesh = std::move(trial);
+  return true;
 }
 
 } // namespace directional::geometry::pure_quad_detail
@@ -747,7 +799,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
 
   std::map<std::tuple<int, int, int>, int> vertexRows;
   std::vector<Eigen::Vector3d> positions;
-  std::set<std::vector<int>> canonicalQuads;
+  std::map<std::vector<int>, std::pair<int, int>> canonicalQuads;
 
   for (int patchIndex = 0; patchIndex < static_cast<int>(patches.size());
        ++patchIndex) {
@@ -829,8 +881,22 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       }
       std::vector<int> canonical = globalQuad;
       std::sort(canonical.begin(), canonical.end());
-      if (!canonicalQuads.insert(canonical).second) {
-        result.failure = "DuplicateStitchedQuad";
+      const auto [existingQuad, inserted] = canonicalQuads.emplace(
+          canonical, std::make_pair(patchIndex, localQuad));
+      if (!inserted) {
+        const auto [firstPatchIndex, firstLocalQuad] = existingQuad->second;
+        const PureQuadMesh &firstPatch =
+            patches[static_cast<std::size_t>(firstPatchIndex)];
+        result.failure =
+            "DuplicateStitchedQuad:firstPatch=" +
+            std::to_string(firstPatch.sourcePatch) +
+            ";firstLocalQuad=" + std::to_string(firstLocalQuad) +
+            ";secondPatch=" + std::to_string(patch.sourcePatch) +
+            ";secondLocalQuad=" + std::to_string(localQuad) +
+            ";globalVertices=" + std::to_string(canonical[0]) + "," +
+            std::to_string(canonical[1]) + "," +
+            std::to_string(canonical[2]) + "," +
+            std::to_string(canonical[3]);
         return result;
       }
       const int outputQuad = static_cast<int>(result.mesh.quads.size());

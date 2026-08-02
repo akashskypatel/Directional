@@ -83,7 +83,8 @@ enum class SurfaceCellFallbackPolicy {
   Fail,
   ReturnInputMesh,
   ReturnQuadDominant [[deprecated("Use ReturnInputMesh.")]] = ReturnInputMesh,
-  TryLegacy
+  TryLegacy [[deprecated(
+      "Legacy integration fallback is disabled; use Fail.")]] = Fail
 };
 
 enum class SurfaceCellFailureCode {
@@ -320,7 +321,11 @@ struct SurfaceCellPipelineContext {
   int flowRepOpenEndpointsBeforeCompletion = 0;
   int flowRepResolvedEndpoints = 0;
   int flowRepUnresolvedEndpoints = 0;
+  int flowRepUnresolvedRequiredEndpoints = 0;
   int flowRepEndpointCompletionAddedArcs = 0;
+  std::array<int, 9> flowRepEndpointTerminationCounts{};
+  std::vector<geometry::FlowRepEndpointCompletionDiagnostic>
+      flowRepEndpointDiagnostics;
   std::string flowRepEndpointCompletionFailure;
   bool hasFlowRepNetwork = false;
 
@@ -332,6 +337,15 @@ struct SurfaceCellPipelineContext {
 
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
+  int simplificationCandidateCount = 0;
+  int simplificationTopologyHealingCandidateCount = 0;
+  int simplificationCommitted = 0;
+  int simplificationRejected = 0;
+  std::vector<geometry::SurfaceSimplificationCandidate>
+      simplificationTopologyHealingCandidates;
+  std::vector<geometry::SurfaceSimplificationTransaction>
+      simplificationTransactions;
+  bool hasSimplificationDiagnostics = false;
 
   geometry::SurfaceCellComplex completionComplex;
   bool hasCompletionComplex = false;
@@ -348,6 +362,9 @@ struct SurfaceCellPipelineContext {
   int completionSideInsertedVertices = 0;
   int completionSideSplitEdges = 0;
   int completionSideHardFeatureSplits = 0;
+  int completionAttemptedPatches = 0;
+  int completionFailedPatches = 0;
+  std::string completionFailure;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   std::vector<int> completionUnresolvedSingularVertices;

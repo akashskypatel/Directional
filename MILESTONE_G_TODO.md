@@ -1,18 +1,8 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 21:08 PDT
+Last updated: 2026-08-01 16:08 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
-
-## Active implementation branch
-
-- Phase: P5 — recover and complete bridge/pinch topology healing.
-- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
-- Draft recovery PR: `#8` (`agent/surface_cell_quad/p5-recover-bridge-healing` → `surface_cell_quad`).
-- Recovery baseline: `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`.
-- Encoded checkpoint target: local implementation state represented through `062ed12`.
-- Status: all decodable staged checkpoints have been reconstructed locally as actual source/test changes. The next remote checkpoint must commit those files directly to the working branch; no additional encoded patch snapshots are permitted.
-- Recovery rule: after interruption, resume from this working branch and this tracker. Merge into `surface_cell_quad` only after focused tests and the real bunny direct-completion benchmark close the phase.
 
 ## Success criteria
 
@@ -37,7 +27,9 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 
 ## Current checkpoint
 
-- Recovery workflow transition: the previously staged encoded P5 checkpoint chain has been reconstructed into 23 actual source, test, benchmark, plan, and tracker files on the active working branch checkout. These recovered changes are not treated as verified until they compile and pass the focused regressions and real bunny benchmark in the container.
+- Recovery completed: the reconstructed P5 implementation is committed as ordinary source, test, benchmark, plan, and tracker files on the active working branch. Encoded checkpoints and build-overlay patches are no longer active build inputs.
+- The current code/build turn compiles the exact pushed source commit. No tests or benchmarks are executed in this turn.
+
 - Production fallback contract changed: a failed SurfaceCells request terminates in SurfaceCells and never invokes `setup_integration()`, `integrate()`, sparse integer factorization, or the LegacyInteger mesher. `TryLegacy` is now a deprecated source-compatible alias of `Fail`, while parser/CLI input `TryLegacy` is rejected.
 - New tests use a valid planar field and an injected late SurfaceCells failure that previously allowed a successful legacy fallback. They now require no output, `executedBackend=SurfaceCells`, no fallback attempt, and zero integration/mesher timings, integer iterations, direct factorizations, and numeric-factorization time. This is not a malformed-input shortcut.
 - All future SurfaceCells benchmarks use `fallbackPolicy=Fail`. A run only counts as SurfaceCells success when its origin is `CompletedSurfaceCells`; LegacyInteger comparison remains a separately requested benchmark case and never a fallback continuation.

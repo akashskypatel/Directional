@@ -475,6 +475,284 @@ NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
 
 namespace directional::geometry::surface_arrangement_detail {
 
+using ScopedNodeKey = std::tuple<NodeKey, int, int>;
+using ScopedSourceEdgeKey = std::tuple<std::uint64_t, int>;
+using FaceVertexKey = std::pair<int, int>;
+using VertexFanScopes = std::map<FaceVertexKey, int>;
+
+struct VertexFanWedge {
+  int order = -1;
+  int faceCount = 0;
+  bool closed = false;
+  double cornerAngle = 0.0;
+};
+
+using VertexFanWedges = std::map<FaceVertexKey, VertexFanWedge>;
+
+int face_label(const std::vector<int> *labels, const int face) {
+  if (labels == nullptr || face < 0 ||
+      face >= static_cast<int>(labels->size())) {
+    return -1;
+  }
+  return (*labels)[static_cast<std::size_t>(face)];
+}
+
+void complete_segment_scope(const SurfaceArrangementOptions &options,
+                            Segment2 &segment) {
+  if (segment.sourceComponent < 0) {
+    segment.sourceComponent =
+        face_label(options.sourceFaceComponents, segment.sourceFace);
+  }
+  if (segment.sourceSheet < 0) {
+    segment.sourceSheet =
+        face_label(options.sourceFaceSheets, segment.sourceFace);
+  }
+}
+
+bool same_segment_scope(const Segment2 &a, const Segment2 &b) {
+  return a.sourceComponent == b.sourceComponent &&
+         a.sourceSheet == b.sourceSheet;
+}
+
+int canonical_node_sheet_scope(const NodeKey &key, const int sourceFace,
+                               const int sourceSheet,
+                               const VertexFanScopes &vertexFanScopes) {
+  if (key.kind == 0) {
+    const auto found = vertexFanScopes.find({sourceFace, key.vertex});
+    return found == vertexFanScopes.end() ? sourceSheet : found->second;
+  }
+  // An edge-interior source point is intrinsically shared by both incident
+  // triangle charts. Local sheet labels are chart labels and may differ
+  // across that adjacency, so they must not split the same source edge.
+  if (key.kind == 1) {
+    return -1;
+  }
+  return sourceSheet;
+}
+
+ScopedNodeKey make_scoped_node_key(const Eigen::MatrixXi &faces,
+                                   const Segment2 &segment,
+                                   const Eigen::Vector2d &uv,
+                                   const VertexFanScopes &vertexFanScopes) {
+  const NodeKey key = make_node_key(faces, segment.sourceFace, uv);
+  return {key, segment.sourceComponent,
+          canonical_node_sheet_scope(key, segment.sourceFace,
+                                     segment.sourceSheet, vertexFanScopes)};
+}
+
+int face_vertex_corner(const Eigen::MatrixXi &faces, const int face,
+                       const int vertex) {
+  if (face < 0 || face >= faces.rows()) {
+    return -1;
+  }
+  for (int corner = 0; corner < 3; ++corner) {
+    if (faces(face, corner) == vertex) {
+      return corner;
+    }
+  }
+  return -1;
+}
+
+int adjacent_face_across_vertex_edge(
+    const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
+    const VertexFanScopes &vertexFanScopes, const int face, const int vertex,
+    const int scope, const bool acrossWedgeEnd) {
+  const int corner = face_vertex_corner(faces, face, vertex);
+  if (corner < 0) {
+    return -1;
+  }
+  const int otherCorner =
+      acrossWedgeEnd ? (corner + 2) % 3 : (corner + 1) % 3;
+  const auto found = edgeFaces.find(
+      surface_cell_tracing_detail::edge_key(vertex,
+                                            faces(face, otherCorner)));
+  if (found == edgeFaces.end()) {
+    return -1;
+  }
+  for (const int candidate : found->second) {
+    if (candidate < 0 || candidate == face) {
+      continue;
+    }
+    const auto candidateScope = vertexFanScopes.find({candidate, vertex});
+    if (candidateScope != vertexFanScopes.end() &&
+        candidateScope->second == scope) {
+      return candidate;
+    }
+  }
+  return -1;
+}
+
+double vertex_corner_angle(const Eigen::MatrixXd &vertices,
+                           const Eigen::MatrixXi &faces, const int face,
+                           const int vertex) {
+  const int corner = face_vertex_corner(faces, face, vertex);
+  if (corner < 0) {
+    return 0.0;
+  }
+  Eigen::RowVector3d first =
+      vertices.row(faces(face, (corner + 1) % 3)) - vertices.row(vertex);
+  Eigen::RowVector3d second =
+      vertices.row(faces(face, (corner + 2) % 3)) - vertices.row(vertex);
+  const double firstNorm = first.norm();
+  const double secondNorm = second.norm();
+  if (!(firstNorm > 1.0e-14) || !(secondNorm > 1.0e-14) ||
+      !std::isfinite(firstNorm) || !std::isfinite(secondNorm)) {
+    return 0.0;
+  }
+  first /= firstNorm;
+  second /= secondNorm;
+  return std::acos(std::clamp(first.dot(second), -1.0, 1.0));
+}
+
+VertexFanWedges build_vertex_fan_wedges(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
+    const VertexFanScopes &vertexFanScopes) {
+  std::map<std::pair<int, int>, std::vector<int>> facesByFan;
+  for (const auto &[faceVertex, scope] : vertexFanScopes) {
+    facesByFan[{faceVertex.second, scope}].push_back(faceVertex.first);
+  }
+
+  VertexFanWedges wedges;
+  for (auto &[fan, incidentFaces] : facesByFan) {
+    const int vertex = fan.first;
+    const int scope = fan.second;
+    std::sort(incidentFaces.begin(), incidentFaces.end());
+    incidentFaces.erase(
+        std::unique(incidentFaces.begin(), incidentFaces.end()),
+        incidentFaces.end());
+    if (incidentFaces.empty()) {
+      continue;
+    }
+
+    int startFace = -1;
+    for (const int face : incidentFaces) {
+      if (adjacent_face_across_vertex_edge(
+              faces, edgeFaces, vertexFanScopes, face, vertex, scope,
+              false) < 0) {
+        startFace = face;
+        break;
+      }
+    }
+    const bool closed = startFace < 0;
+    if (closed) {
+      startFace = incidentFaces.front();
+    }
+
+    std::set<int> visited;
+    int face = startFace;
+    int order = 0;
+    while (face >= 0 && visited.insert(face).second) {
+      wedges[{face, vertex}] =
+          {order++, static_cast<int>(incidentFaces.size()), closed,
+           vertex_corner_angle(vertices, faces, face, vertex)};
+      face = adjacent_face_across_vertex_edge(
+          faces, edgeFaces, vertexFanScopes, face, vertex, scope, true);
+      if (closed && face == startFace) {
+        break;
+      }
+    }
+
+    // A nonmanifold or inconsistently oriented fan should already have been
+    // separated by vertexFanScopes. Keep any residual faces deterministic,
+    // but give them an invalid corner angle so the caller falls back to the
+    // geometric ordering instead of pretending the fan is authoritative.
+    for (const int residual : incidentFaces) {
+      if (visited.count(residual) == 0U) {
+        wedges[{residual, vertex}] =
+            {order++, static_cast<int>(incidentFaces.size()), false, 0.0};
+      }
+    }
+  }
+  return wedges;
+}
+
+int node_source_vertex_id(const SurfaceArrangementNode &node,
+                          const Eigen::MatrixXi &faces) {
+  int vertex = -1;
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    const int corner = source_vertex(occurrence.barycentric);
+    if (corner < 0 || occurrence.sourceFace < 0 ||
+        occurrence.sourceFace >= faces.rows()) {
+      continue;
+    }
+    const int candidate = faces(occurrence.sourceFace, corner);
+    if (vertex >= 0 && vertex != candidate) {
+      return -1;
+    }
+    vertex = candidate;
+  }
+  return vertex;
+}
+
+bool intrinsic_vertex_outgoing_parameter(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const VertexFanWedges &wedges,
+    const std::vector<SurfaceArrangementNode> &nodes,
+    const SurfaceArrangementHalfedge &halfedge, const int sourceVertex,
+    double &parameter) {
+  if (halfedge.from < 0 || halfedge.to < 0 ||
+      halfedge.from >= static_cast<int>(nodes.size()) ||
+      halfedge.to >= static_cast<int>(nodes.size()) ||
+      halfedge.sourceFace < 0 || halfedge.sourceFace >= faces.rows()) {
+    return false;
+  }
+  const int corner =
+      face_vertex_corner(faces, halfedge.sourceFace, sourceVertex);
+  const auto found = wedges.find({halfedge.sourceFace, sourceVertex});
+  if (corner < 0 || found == wedges.end() ||
+      !(found->second.cornerAngle > 1.0e-14)) {
+    return false;
+  }
+  const Eigen::RowVector3d toBarycentric = node_barycentric_on_face(
+      nodes[static_cast<std::size_t>(halfedge.to)], halfedge.sourceFace);
+  if (!toBarycentric.allFinite()) {
+    return false;
+  }
+
+  const Eigen::RowVector3d origin = vertices.row(sourceVertex);
+  Eigen::RowVector3d start =
+      vertices.row(faces(halfedge.sourceFace, (corner + 1) % 3)) - origin;
+  Eigen::RowVector3d direction =
+      barycentric_position(vertices, faces, halfedge.sourceFace,
+                           toBarycentric) -
+      origin;
+  const Eigen::RowVector3d normal =
+      face_normal_3d(vertices, faces, halfedge.sourceFace);
+  const double startNorm = start.norm();
+  const double directionNorm = direction.norm();
+  if (!(startNorm > 1.0e-14) || !(directionNorm > 1.0e-14) ||
+      !(normal.norm() > 1.0e-14)) {
+    return false;
+  }
+  start /= startNorm;
+  direction /= directionNorm;
+  double localAngle = std::atan2(
+      surface_cell_tracing_detail::cross3(start, direction).dot(normal),
+      start.dot(direction));
+  if (localAngle < -1.0e-12) {
+    constexpr double twoPi = 6.283185307179586476925286766559;
+    localAngle += twoPi;
+  }
+  const double cornerAngle = found->second.cornerAngle;
+  if (localAngle < -1.0e-10 || localAngle > cornerAngle + 1.0e-10) {
+    return false;
+  }
+  const double localFraction =
+      std::clamp(localAngle / cornerAngle, 0.0, 1.0);
+  parameter = static_cast<double>(found->second.order) + localFraction;
+  if (found->second.closed && found->second.faceCount > 0 &&
+      parameter >= static_cast<double>(found->second.faceCount) - 1.0e-10) {
+    parameter = 0.0;
+  }
+  return std::isfinite(parameter);
+}
+
+} // namespace directional::geometry::surface_arrangement_detail
+
+namespace directional::geometry::surface_arrangement_detail {
+
 int canonical_source_edge_id(const Eigen::MatrixXi &faces, const int face,
                                     const int edge) {
   if (edge < 0) {
@@ -531,32 +809,58 @@ namespace directional::geometry::surface_arrangement_detail {
 bool segment_intersection_params(const Segment2 &a, const Segment2 &b,
                                         double &ta, double &tb,
                                         Eigen::Vector2d &point) {
+  constexpr double kAngularTolerance = 1.0e-12;
+  constexpr double kSpatialCollinearityTolerance = 1.0e-12;
+  constexpr double kParameterTolerance = 1.0e-12;
   const Eigen::Vector2d r = a.end - a.start;
   const Eigen::Vector2d s = b.end - b.start;
+  const double rr = r.squaredNorm();
+  const double ss = s.squaredNorm();
+  if (rr <= 1.0e-24 || ss <= 1.0e-24) {
+    return false;
+  }
+  const double rLength = std::sqrt(rr);
+  const double sLength = std::sqrt(ss);
   const double denom = cross2(r, s);
   const Eigen::Vector2d qp = b.start - a.start;
-  if (std::abs(denom) <= 1.0e-12) {
-    if (std::abs(cross2(qp, r)) > 1.0e-12) {
+  const double parallelTolerance =
+      kAngularTolerance * rLength * sLength;
+  if (std::abs(denom) <= parallelTolerance) {
+    // Cross products have squared-length units. Convert the collinearity
+    // check to an actual chart-space distance so short segments do not admit
+    // large false offsets merely because their direction vector is small.
+    if (std::abs(cross2(qp, r)) / rLength >
+        kSpatialCollinearityTolerance) {
       return false;
     }
-    const double rr = std::max(1.0e-20, r.squaredNorm());
     const double t0 = (b.start - a.start).dot(r) / rr;
     const double t1 = (b.end - a.start).dot(r) / rr;
     const double lo = std::max(0.0, std::min(t0, t1));
     const double hi = std::min(1.0, std::max(t0, t1));
-    if (lo > hi + 1.0e-12) {
+    if (lo > hi + kParameterTolerance) {
       return false;
     }
-    ta = lo;
-    point = a.start + ta * r;
-    const double ss = std::max(1.0e-20, s.squaredNorm());
-    tb = (point - b.start).dot(s) / ss;
+    ta = std::clamp(lo, 0.0, 1.0);
+    const Eigen::Vector2d pointOnA = a.start + ta * r;
+    tb = (pointOnA - b.start).dot(s) / ss;
+    // The overlap tolerance must not turn two finite, disjoint segments into
+    // an intersection whose parameter lies beyond either endpoint.
+    if (tb < -kParameterTolerance || tb > 1.0 + kParameterTolerance) {
+      return false;
+    }
+    tb = std::clamp(tb, 0.0, 1.0);
+    const Eigen::Vector2d pointOnB = b.start + tb * s;
+    if ((pointOnA - pointOnB).norm() >
+        kSpatialCollinearityTolerance) {
+      return false;
+    }
+    point = 0.5 * (pointOnA + pointOnB);
     return true;
   }
   ta = cross2(qp, s) / denom;
   tb = cross2(qp, r) / denom;
-  if (ta < -1.0e-12 || ta > 1.0 + 1.0e-12 || tb < -1.0e-12 ||
-      tb > 1.0 + 1.0e-12) {
+  if (ta < -kParameterTolerance || ta > 1.0 + kParameterTolerance ||
+      tb < -kParameterTolerance || tb > 1.0 + kParameterTolerance) {
     return false;
   }
   ta = std::clamp(ta, 0.0, 1.0);
@@ -957,6 +1261,70 @@ SurfaceCellComplex build_surface_cell_complex(
   };
   std::vector<Segment2> segments;
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+  VertexFanScopes vertexFanScopes;
+  std::vector<std::vector<int>> incidentFacesByVertex(
+      static_cast<std::size_t>(vertices.rows()));
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      if (vertex < 0 || vertex >= vertices.rows()) {
+        throw std::invalid_argument(
+            "surface arrangement received an invalid face index.");
+      }
+      incidentFacesByVertex[static_cast<std::size_t>(vertex)].push_back(face);
+    }
+  }
+  int nextVertexFanScope = 0;
+  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
+    auto &incidentFaces =
+        incidentFacesByVertex[static_cast<std::size_t>(vertex)];
+    std::sort(incidentFaces.begin(), incidentFaces.end());
+    incidentFaces.erase(
+        std::unique(incidentFaces.begin(), incidentFaces.end()),
+        incidentFaces.end());
+    for (const int seedFace : incidentFaces) {
+      if (vertexFanScopes.count({seedFace, vertex}) != 0U) {
+        continue;
+      }
+      std::queue<int> pending;
+      pending.push(seedFace);
+      vertexFanScopes.emplace(FaceVertexKey{seedFace, vertex},
+                              nextVertexFanScope);
+      while (!pending.empty()) {
+        const int face = pending.front();
+        pending.pop();
+        for (int edge = 0; edge < 3; ++edge) {
+          const int a = faces(face, (edge + 1) % 3);
+          const int b = faces(face, (edge + 2) % 3);
+          if (a != vertex && b != vertex) {
+            continue;
+          }
+          const auto found = edgeFaces.find(source_edge_key(faces, face, edge));
+          if (found == edgeFaces.end()) {
+            continue;
+          }
+          for (const int neighbor : found->second) {
+            if (neighbor < 0 || neighbor == face ||
+                vertexFanScopes.count({neighbor, vertex}) != 0U) {
+              continue;
+            }
+            const bool containsVertex =
+                faces(neighbor, 0) == vertex || faces(neighbor, 1) == vertex ||
+                faces(neighbor, 2) == vertex;
+            if (!containsVertex) {
+              continue;
+            }
+            vertexFanScopes.emplace(FaceVertexKey{neighbor, vertex},
+                                    nextVertexFanScope);
+            pending.push(neighbor);
+          }
+        }
+      }
+      ++nextVertexFanScope;
+    }
+  }
+  const VertexFanWedges vertexFanWedges = build_vertex_fan_wedges(
+      vertices, faces, edgeFaces, vertexFanScopes);
 
   for (int face = 0; face < faces.rows(); ++face) {
     for (const auto &[a, b, edge] :
@@ -978,6 +1346,7 @@ SurfaceCellComplex build_surface_cell_complex(
       boundary.family = -1;
       boundary.hardFeature = hardFeature || boundaryEdge;
       boundary.featureClass = edge;
+      complete_segment_scope(options, boundary);
       segments.push_back(boundary);
     }
   }
@@ -1008,6 +1377,7 @@ SurfaceCellComplex build_surface_cell_complex(
     segment.proposalBoundarySegment = arc.proposalBoundarySegment;
     segment.railT0 = arc.railT0;
     segment.railT1 = arc.railT1;
+    complete_segment_scope(options, segment);
     if (clip_to_triangle(segment.start, segment.end, segment.sourceT0,
                          segment.sourceT1)) {
       segments.push_back(segment);
@@ -1050,12 +1420,16 @@ SurfaceCellComplex build_surface_cell_complex(
     return bytes;
   };
   update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes());
-  std::set<NodeKey> intersectionKeys;
-  std::set<NodeKey> hardBarrierCrossingKeys;
+  std::set<ScopedNodeKey> intersectionKeys;
+  std::set<ScopedNodeKey> hardBarrierCrossingKeys;
   for (int i = 0; i < static_cast<int>(segments.size()); ++i) {
     for (int j = i + 1; j < static_cast<int>(segments.size()); ++j) {
       if (segments[static_cast<std::size_t>(i)].sourceFace !=
           segments[static_cast<std::size_t>(j)].sourceFace) {
+        continue;
+      }
+      if (!same_segment_scope(segments[static_cast<std::size_t>(i)],
+                              segments[static_cast<std::size_t>(j)])) {
         continue;
       }
       double ti = 0.0;
@@ -1079,31 +1453,127 @@ SurfaceCellComplex build_surface_cell_complex(
             proper_transverse_crossing(
                 segments[static_cast<std::size_t>(i)],
                 segments[static_cast<std::size_t>(j)], ti, tj)) {
-          hardBarrierCrossingKeys.insert(make_node_key(
-              faces, segments[static_cast<std::size_t>(i)].sourceFace, p));
+          hardBarrierCrossingKeys.insert(make_scoped_node_key(
+              faces, segments[static_cast<std::size_t>(i)], p,
+              vertexFanScopes));
         }
       }
-      intersectionKeys.insert(make_node_key(
-          faces, segments[static_cast<std::size_t>(i)].sourceFace, p));
+      intersectionKeys.insert(make_scoped_node_key(
+          faces, segments[static_cast<std::size_t>(i)], p,
+          vertexFanScopes));
     }
   }
+  // A source edge is represented in both incident triangle charts.  If an
+  // intersection splits an edge-aligned segment in one chart, every
+  // coincident segment in the opposite chart must receive the same canonical
+  // split.  Otherwise one chart contributes a direct endpoint-to-endpoint
+  // chord while the other contributes a subdivided chain, creating a DCEL
+  // bridge even though both describe the same intrinsic source edge.
+  struct SourceEdgeSegmentRef {
+    int segment = -1;
+    int localEdge = -1;
+    double canonicalStart = 0.0;
+    double canonicalEnd = 0.0;
+  };
+  std::map<ScopedSourceEdgeKey, std::vector<SourceEdgeSegmentRef>>
+      segmentsBySourceEdge;
+  for (int segmentIndex = 0; segmentIndex < static_cast<int>(segments.size());
+       ++segmentIndex) {
+    const Segment2 &segment = segments[static_cast<std::size_t>(segmentIndex)];
+    const Eigen::RowVector3d startBary =
+        canonicalize_barycentric(uv_to_bary(segment.start));
+    const Eigen::RowVector3d endBary =
+        canonicalize_barycentric(uv_to_bary(segment.end));
+    int localEdge = -1;
+    for (int edge = 0; edge < 3; ++edge) {
+      if (std::abs(startBary[edge]) <= 1.0e-10 &&
+          std::abs(endBary[edge]) <= 1.0e-10) {
+        localEdge = edge;
+        break;
+      }
+    }
+    if (localEdge < 0) {
+      continue;
+    }
+    const double canonicalStart = canonical_edge_parameter(
+        faces, segment.sourceFace, localEdge, segment.start);
+    const double canonicalEnd = canonical_edge_parameter(
+        faces, segment.sourceFace, localEdge, segment.end);
+    if (!std::isfinite(canonicalStart) || !std::isfinite(canonicalEnd) ||
+        std::abs(canonicalEnd - canonicalStart) <= 1.0e-14) {
+      continue;
+    }
+    segmentsBySourceEdge[{source_edge_key(faces, segment.sourceFace,
+                                          localEdge),
+                          segment.sourceComponent}]
+        .push_back(
+            {segmentIndex, localEdge, canonicalStart, canonicalEnd});
+  }
+  for (const auto &[unusedEdgeKey, edgeSegments] : segmentsBySourceEdge) {
+    (void)unusedEdgeKey;
+    std::vector<double> canonicalSplits;
+    for (const SourceEdgeSegmentRef &reference : edgeSegments) {
+      const Segment2 &segment =
+          segments[static_cast<std::size_t>(reference.segment)];
+      for (const double parameter :
+           splitParams[static_cast<std::size_t>(reference.segment)]) {
+        const Eigen::Vector2d point =
+            segment.start + parameter * (segment.end - segment.start);
+        canonicalSplits.push_back(canonical_edge_parameter(
+            faces, segment.sourceFace, reference.localEdge, point));
+      }
+    }
+    std::sort(canonicalSplits.begin(), canonicalSplits.end());
+    canonicalSplits.erase(
+        std::unique(canonicalSplits.begin(), canonicalSplits.end(),
+                    [](const double a, const double b) {
+                      return std::abs(a - b) <= 1.0e-10;
+                    }),
+        canonicalSplits.end());
+    for (const SourceEdgeSegmentRef &reference : edgeSegments) {
+      const double denominator =
+          reference.canonicalEnd - reference.canonicalStart;
+      const double minimum =
+          std::min(reference.canonicalStart, reference.canonicalEnd) - 1.0e-10;
+      const double maximum =
+          std::max(reference.canonicalStart, reference.canonicalEnd) + 1.0e-10;
+      auto &parameters =
+          splitParams[static_cast<std::size_t>(reference.segment)];
+      for (const double canonical : canonicalSplits) {
+        if (canonical < minimum || canonical > maximum) {
+          continue;
+        }
+        const double parameter =
+            (canonical - reference.canonicalStart) / denominator;
+        if (parameter >= -1.0e-10 && parameter <= 1.0 + 1.0e-10) {
+          parameters.push_back(std::clamp(parameter, 0.0, 1.0));
+        }
+      }
+    }
+  }
+
   complex.diagnostics.uniqueIntersections =
       static_cast<int>(intersectionKeys.size());
   complex.diagnostics.hardBarrierCrossings =
       static_cast<int>(hardBarrierCrossingKeys.size());
   update_peak_memory(vector_storage_bytes(segments));
 
-  std::map<NodeKey, int> nodeByKey;
+  std::map<ScopedNodeKey, int> nodeByKey;
+  std::vector<std::pair<int, int>> nodeScopes;
   bool embeddingValid = true;
   const double positionTolerance =
       1.0e-9 * std::max(1.0, (vertices.colwise().maxCoeff() -
                              vertices.colwise().minCoeff()).norm());
-  const auto node_id = [&](const int face, const Eigen::Vector2d &rawUv) {
+  const auto node_id = [&](const Segment2 &segment,
+                           const Eigen::Vector2d &rawUv) {
+    const int face = segment.sourceFace;
     const Eigen::RowVector3d bary =
         canonicalize_barycentric(uv_to_bary(rawUv));
     const Eigen::Vector2d uv = bary_to_uv(bary);
-    const NodeKey key = make_node_key(faces, face, uv);
-    auto found = nodeByKey.find(key);
+    const ScopedNodeKey scopedKey =
+        make_scoped_node_key(faces, segment, uv, vertexFanScopes);
+    const NodeKey &key = std::get<0>(scopedKey);
+    auto found = nodeByKey.find(scopedKey);
     if (found != nodeByKey.end()) {
       SurfaceArrangementNode &node =
           complex.nodes[static_cast<std::size_t>(found->second)];
@@ -1116,7 +1586,8 @@ SurfaceCellComplex build_surface_cell_complex(
         embeddingValid = false;
       }
       node.hardBarrierCrossing =
-          node.hardBarrierCrossing || hardBarrierCrossingKeys.count(key) != 0;
+          node.hardBarrierCrossing ||
+          hardBarrierCrossingKeys.count(scopedKey) != 0;
       const bool occurrenceExists =
           std::any_of(node.occurrences.begin(), node.occurrences.end(),
                       [&](const SurfaceArrangementNodeOccurrence &occurrence) {
@@ -1142,14 +1613,19 @@ SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementNode node;
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
-    node.hardBarrierCrossing = hardBarrierCrossingKeys.count(key) != 0;
+    node.sourceComponent = segment.sourceComponent;
+    node.sourceSheet = segment.sourceSheet;
+    node.hardBarrierCrossing =
+        hardBarrierCrossingKeys.count(scopedKey) != 0;
     node.barycentric = bary;
     node.sourceEdge =
         key.kind == 1 ? static_cast<int>(key.edge & 0x7fffffffu) : -1;
     node.sourceEdgeParameter =
         key.kind == 1 ? static_cast<double>(key.edgeT) / 1.0e10 : 0.0;
     node.occurrences.push_back({face, bary});
-    nodeByKey.emplace(key, node.id);
+    nodeByKey.emplace(scopedKey, node.id);
+    nodeScopes.emplace_back(std::get<1>(scopedKey),
+                            std::get<2>(scopedKey));
     complex.nodes.push_back(node);
     return node.id;
   };
@@ -1214,6 +1690,14 @@ SurfaceCellComplex build_surface_cell_complex(
   for (int segmentIndex = 0; segmentIndex < static_cast<int>(segments.size());
        ++segmentIndex) {
     auto &params = splitParams[static_cast<std::size_t>(segmentIndex)];
+    params.erase(std::remove_if(params.begin(), params.end(), [](double value) {
+                   return !std::isfinite(value) || value < -1.0e-12 ||
+                          value > 1.0 + 1.0e-12;
+                 }),
+                 params.end());
+    for (double &parameter : params) {
+      parameter = std::clamp(parameter, 0.0, 1.0);
+    }
     std::sort(params.begin(), params.end());
     params.erase(std::unique(params.begin(), params.end(), [](double a, double b) {
                    return std::abs(a - b) <= 1.0e-10;
@@ -1230,8 +1714,8 @@ SurfaceCellComplex build_surface_cell_complex(
           segment.start + t0 * (segment.end - segment.start);
       const Eigen::Vector2d p1 =
           segment.start + t1 * (segment.end - segment.start);
-      const int a = node_id(segment.sourceFace, p0);
-      const int b = node_id(segment.sourceFace, p1);
+      const int a = node_id(segment, p0);
+      const int b = node_id(segment, p1);
       if (a == b) {
         continue;
       }
@@ -1348,6 +1832,36 @@ SurfaceCellComplex build_surface_cell_complex(
   }
   for (int nodeId = 0; nodeId < static_cast<int>(outgoing.size()); ++nodeId) {
     auto &list = outgoing[static_cast<std::size_t>(nodeId)];
+    const int sourceVertex = node_source_vertex_id(
+        complex.nodes[static_cast<std::size_t>(nodeId)], faces);
+    std::map<int, double> intrinsicParameters;
+    bool useIntrinsicOrder = sourceVertex >= 0 && !list.empty();
+    if (useIntrinsicOrder) {
+      for (const int halfedgeId : list) {
+        double parameter = 0.0;
+        if (!intrinsic_vertex_outgoing_parameter(
+                vertices, faces, vertexFanWedges, complex.nodes,
+                complex.halfedges[static_cast<std::size_t>(halfedgeId)],
+                sourceVertex, parameter)) {
+          useIntrinsicOrder = false;
+          intrinsicParameters.clear();
+          break;
+        }
+        intrinsicParameters.emplace(halfedgeId, parameter);
+      }
+    }
+    if (useIntrinsicOrder) {
+      std::sort(list.begin(), list.end(), [&](const int lhs, const int rhs) {
+        const double a = intrinsicParameters.at(lhs);
+        const double b = intrinsicParameters.at(rhs);
+        if (std::abs(a - b) > 1.0e-14) {
+          return a < b;
+        }
+        return lhs < rhs;
+      });
+      continue;
+    }
+
     Eigen::RowVector3d axisX = Eigen::RowVector3d::Zero();
     Eigen::RowVector3d axisY = Eigen::RowVector3d::Zero();
     const Eigen::RowVector3d normal = node_reference_normal(
@@ -1629,12 +2143,16 @@ SurfaceCellComplex build_surface_cell_complex(
       if (a.sourceFace != b.sourceFace) {
         continue;
       }
+      if (!same_segment_scope(a, b)) {
+        continue;
+      }
       double ta = 0.0;
       double tb = 0.0;
       Eigen::Vector2d p;
       if (segment_intersection_params(a, b, ta, tb, p) && ta > 1.0e-8 &&
           ta < 1.0 - 1.0e-8 && tb > 1.0e-8 && tb < 1.0 - 1.0e-8) {
-        const NodeKey key = make_node_key(faces, a.sourceFace, p);
+        const ScopedNodeKey key =
+            make_scoped_node_key(faces, a, p, vertexFanScopes);
         if (nodeByKey.count(key) == 0) {
           ++complex.diagnostics.unsplitCrossings;
         }
@@ -1648,6 +2166,18 @@ SurfaceCellComplex build_surface_cell_complex(
       for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
         if (halfedge.sourceFace != occurrence.sourceFace ||
             halfedge.from == node.id || halfedge.to == node.id) {
+          continue;
+        }
+        Segment2 scopeSegment;
+        scopeSegment.sourceFace = occurrence.sourceFace;
+        scopeSegment.sourceComponent = halfedge.sourceComponent;
+        scopeSegment.sourceSheet = halfedge.sourceSheet;
+        const ScopedNodeKey candidateScope = make_scoped_node_key(
+            faces, scopeSegment, point, vertexFanScopes);
+        const std::pair<int, int> expectedScope =
+            nodeScopes[static_cast<std::size_t>(node.id)];
+        if (std::get<1>(candidateScope) != expectedScope.first ||
+            std::get<2>(candidateScope) != expectedScope.second) {
           continue;
         }
         const Eigen::RowVector3d startBarycentric = node_barycentric_on_face(
@@ -1906,6 +2436,8 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
   for (const SurfaceArrangementNode &node : complex.nodes) {
     mix(node.hardBarrierCrossing ? 1 : 0);
     mix(node.sourceFace);
+    mix(node.sourceComponent);
+    mix(node.sourceSheet);
     mix(node.sourceEdge);
     mix(static_cast<std::int64_t>(std::llround(node.sourceEdgeParameter * 1.0e10)));
     for (int i = 0; i < 3; ++i) {

@@ -310,6 +310,47 @@ bool barycentric_derivative(const Eigen::MatrixXd &vertices,
   return dbary.allFinite() && dbary.squaredNorm() > 0.0;
 }
 
+/**
+ * Orient one matched cross-field family into the target face after an edge
+ * crossing. A 4-RoSy family contains both opposite rays; authoritative
+ * matching determines the family, while the trace orientation must choose
+ * the ray whose barycentric derivative moves away from the shared edge.
+ */
+bool orient_transition_into_face_from_edge(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int targetFace, const int entryEdge,
+    BranchTransitionResult &transition) {
+  if (!transition.valid || targetFace < 0 || targetFace >= faces.rows() ||
+      entryEdge < 0 || entryEdge >= 3) {
+    return false;
+  }
+  Eigen::RowVector3d derivative;
+  if (!barycentric_derivative(vertices, faces, targetFace,
+                              transition.direction, derivative)) {
+    return false;
+  }
+  constexpr double entryTolerance = 1.0e-12;
+  if (derivative[entryEdge] > entryTolerance) {
+    return true;
+  }
+  if (derivative[entryEdge] >= -entryTolerance) {
+    return false;
+  }
+
+  transition.direction *= -1.0;
+  transition.sign *= -1;
+  if (!barycentric_derivative(vertices, faces, targetFace,
+                              transition.direction, derivative) ||
+      derivative[entryEdge] <= entryTolerance) {
+    return false;
+  }
+  transition.turnAngle = std::acos(std::clamp(
+      transition.transportedInput.dot(transition.direction), -1.0, 1.0));
+  transition.valid = std::isfinite(transition.turnAngle) &&
+                     transition.direction.array().isFinite().all();
+  return transition.valid;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -3087,7 +3128,7 @@ SurfaceTraceResult trace_surface_field(
           result.termination = TraceTerminationReason::SourceSheet;
           return result;
         }
-        const surface_cell_tracing_detail::BranchTransitionResult transition =
+        surface_cell_tracing_detail::BranchTransitionResult transition =
             surface_cell_tracing_detail::resolve_branch_transition(
                 vertices, faces, faceAxisX, faceAxisY, edgeFaces,
                 edgeMatchingIndices, transitionLookup, key, current.face,
@@ -3097,6 +3138,18 @@ SurfaceTraceResult trace_surface_field(
           result.termination = TraceTerminationReason::FieldMetadata;
           return result;
         }
+        const int nextEntryEdge =
+            surface_cell_tracing_detail::local_edge_for_key(faces, nextFace,
+                                                            key);
+        if (nextEntryEdge < 0) {
+          result.termination = TraceTerminationReason::FieldMetadata;
+          return result;
+        }
+        if (!surface_cell_tracing_detail::orient_transition_into_face_from_edge(
+                vertices, faces, nextFace, nextEntryEdge, transition)) {
+          result.termination = TraceTerminationReason::Degenerate;
+          return result;
+        }
         current.barycentric =
             surface_cell_tracing_detail::remap_barycentric_to_neighbor(
                 faces, current.face, nextFace, current.barycentric);
@@ -3104,13 +3157,7 @@ SurfaceTraceResult trace_surface_field(
         currentFamily = transition.family;
         currentSign = transition.sign;
         direction = transition.direction;
-        entryEdge =
-            surface_cell_tracing_detail::local_edge_for_key(faces, nextFace,
-                                                            key);
-        if (entryEdge < 0) {
-          result.termination = TraceTerminationReason::FieldMetadata;
-          return result;
-        }
+        entryEdge = nextEntryEdge;
       }
     }
   }
@@ -3410,7 +3457,7 @@ SurfaceTraceResult trace_surface_field(
     nextPoint.barycentric =
         surface_cell_tracing_detail::remap_barycentric_to_neighbor(
             faces, current.face, nextFace, nextBary);
-    const surface_cell_tracing_detail::BranchTransitionResult transition =
+    surface_cell_tracing_detail::BranchTransitionResult transition =
         surface_cell_tracing_detail::resolve_branch_transition(
             vertices, faces, faceAxisX, faceAxisY, edgeFaces,
             edgeMatchingIndices, transitionLookup, key, current.face, nextFace,
@@ -3424,6 +3471,11 @@ SurfaceTraceResult trace_surface_field(
         surface_cell_tracing_detail::local_edge_for_key(faces, nextFace, key);
     if (nextEntryEdge < 0) {
       result.termination = TraceTerminationReason::FieldMetadata;
+      return result;
+    }
+    if (!surface_cell_tracing_detail::orient_transition_into_face_from_edge(
+            vertices, faces, nextFace, nextEntryEdge, transition)) {
+      result.termination = TraceTerminationReason::Degenerate;
       return result;
     }
     result.segments.back().matching = transition.matching;

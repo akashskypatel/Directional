@@ -1,6 +1,6 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-02 12:05 PDT
+Last updated: 2026-08-02 12:40 PDT
 
 ## Active phase
 
@@ -11,37 +11,19 @@ Last updated: 2026-08-02 12:05 PDT
 
 ## Repository recovery
 
-- [x] Identify the active P5 recovery branch and draft PR #8.
-- [x] Confirm the existing encoded checkpoint chain can be reconstructed.
-- [x] Export the reconstructed checkpoint as 23 ordinary source, test, benchmark, plan, and tracker files.
-- [x] Compile the reconstructed library, test binary, and benchmark binary without running them.
-- [ ] Commit every exported source and test file directly to the working branch.
-- [ ] Remove build-time dependence on encoded checkpoints and overlay patches.
-- [ ] Synchronize the working branch history with `surface_cell_quad` before the final direct-source build.
-- [ ] Confirm a fresh shallow checkout contains the exact source tree used by the build.
-
-## Latest build evidence
-
-- Commit: `dcce156f49c1df1b0487edf1fcd3693c790e882a`.
-- Workflow run: `30762195202` — `Agent Build Recovered P5`.
-- Result: successful compile of `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a`.
-- Artifact: `8837883638`, `recovered-p5-linux-release-materialized`.
-- Artifact digest: `sha256:84df399057bc0707a7575aad0abe4be6871bcb3f18bd2af51e593cd9ee7d4ea7`.
-- Tests executed in this turn: none.
-- Benchmarks executed in this turn: none.
-
-## Active recovery blocker
-
-The GitHub connector can create files, blobs, trees, and commits, but it has no operation that applies a patch or uploads extracted local files as blob content. Several reconstructed blob objects are not present in the remote repository object database, so a connector-only tree commit cannot reference them. The agent container also cannot resolve `github.com`, preventing an authenticated local push.
-
-The exported materialized tree is complete and compiled. Finishing the direct-source commit requires one authorized transfer mechanism for those file bytes. No additional encoded checkpoint has been created or pushed.
+- [x] Restore every decodable staged checkpoint as ordinary source and test files.
+- [x] Remove active dependence on encoded checkpoints and build-overlay patches.
+- [x] Synchronize the working branch with `surface_cell_quad` before compiling.
+- [x] Build from the exact ordinary-source commit pushed to the remote working branch.
+- [ ] Remove obsolete recovery workflows through the GitHub connector after the materialized build succeeds.
+- [ ] Run focused tests and the direct random-bunny benchmark in the next test-and-benchmark turn.
 
 ## P5 implementation
 
 - [x] Resolve all required singular-support endpoints without deleting required topology.
-- [x] Reduce direct bunny completion failures to two repeated-node pinches.
-- [ ] Validate the generalized intrinsic source-vertex fan ordering implementation.
-- [ ] Diagnose and repair every remaining repeated-node pinch at its topological cause.
+- [x] Reduce direct random-bunny completion failures to two repeated-node pinches before intrinsic fan ordering.
+- [ ] Validate generalized intrinsic source-vertex fan ordering.
+- [ ] Diagnose and repair any remaining repeated-node pinch at its topological cause.
 - [ ] Complete all direct arrangement-cell patches without SourceGridRecovery.
 
 ## Later production gates

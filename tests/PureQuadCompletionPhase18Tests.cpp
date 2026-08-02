@@ -521,6 +521,62 @@ TEST(PureQuadCompletionPhase18, GeneralPatternPreservesEntireBoundary) {
   EXPECT_EQ(result.mesh.quads.size(), 3U);
 }
 
+TEST(PureQuadCompletionPhase18,
+     BalancedPatternCompletesManySidedRegularDiskWithoutBoundaryFan) {
+  const auto candidate = patch(std::vector<int>(14, 2));
+  const auto admissibility =
+      directional::geometry::check_pure_quad_patch_admissibility(candidate);
+  ASSERT_TRUE(admissibility.admissible);
+
+  const auto result =
+      directional::geometry::complete_pure_quad_patch(candidate);
+  ASSERT_TRUE(result.success);
+  EXPECT_EQ(result.mesh.backend,
+            directional::geometry::PureQuadCompletionBackend::Pattern);
+  EXPECT_TRUE(directional::geometry::pure_quad_topology_is_disk(result.mesh));
+  ASSERT_EQ(result.mesh.quads.size(), 13U);
+  EXPECT_EQ(result.mesh.vertices, candidate.boundaryVertices);
+
+  std::set<std::pair<int, int>> expectedBoundary;
+  for (int index = 0;
+       index < static_cast<int>(candidate.boundaryVertices.size()); ++index) {
+    expectedBoundary.insert(std::minmax(
+        candidate.boundaryVertices[static_cast<std::size_t>(index)],
+        candidate.boundaryVertices[static_cast<std::size_t>(
+            (index + 1) % candidate.boundaryVertices.size())]));
+  }
+  EXPECT_EQ(directional::geometry::pure_quad_detail::boundary_edges(
+                result.mesh.quads),
+            expectedBoundary);
+
+  const auto valences =
+      directional::geometry::pure_quad_detail::vertex_valences(
+          result.mesh.quads);
+  const auto maximum = std::max_element(
+      valences.begin(), valences.end(),
+      [](const auto &left, const auto &right) {
+        return left.second < right.second;
+      });
+  ASSERT_NE(maximum, valences.end());
+  EXPECT_LE(maximum->second, 6);
+}
+
+TEST(PureQuadCompletionPhase18,
+     ManySidedCompletionStillRejectsNonDiskAndSingularPatches) {
+  auto nonDisk = patch(std::vector<int>(14, 2));
+  nonDisk.diskTopology = false;
+  EXPECT_EQ(directional::geometry::check_pure_quad_patch_admissibility(nonDisk)
+                .reason,
+            directional::geometry::PureQuadPatchRejectReason::NonDisk);
+
+  auto singular = patch(std::vector<int>(14, 2));
+  singular.singularityCount = 1;
+  singular.singularIndexNumerator = 1;
+  EXPECT_EQ(directional::geometry::check_pure_quad_patch_admissibility(singular)
+                .reason,
+            directional::geometry::PureQuadPatchRejectReason::SingularityMismatch);
+}
+
 TEST(PureQuadCompletionPhase18, MissingProvenanceFailsClosed) {
   auto p = patch({2, 2, 2, 2});
   p.boundaryProvenance.clear();
@@ -874,6 +930,30 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_EQ(0, report.tJunctions);
   EXPECT_EQ(0, report.nonManifoldElements);
   EXPECT_EQ(0, report.degenerateElements);
+}
+
+
+TEST(PureQuadCompletionPhase18,
+     DuplicateStitchedQuadReportsBothAuthoritativeSourcePatches) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 41;
+  const auto first = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(first.success);
+
+  directional::geometry::PureQuadMesh second = first.mesh;
+  second.sourcePatch = 73;
+  for (auto &lineage : second.quadLineage) {
+    lineage.sourcePatch = 73;
+  }
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first.mesh, second});
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ(assembly.failure,
+            "DuplicateStitchedQuad:firstPatch=41;firstLocalQuad=0;"
+            "secondPatch=73;secondLocalQuad=0;globalVertices=0,1,2,3");
 }
 
 TEST(PureQuadCompletionPhase18,

@@ -77,6 +77,98 @@ bool has_node_near(const directional::geometry::SurfaceCellComplex &complex,
   return false;
 }
 
+struct BunnySingularityFanFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  std::vector<int> sourceComponents;
+  std::vector<int> sourceSheets;
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+};
+
+BunnySingularityFanFixture bunny_singularity_fan_fixture() {
+  // Minimized directly from source vertex 296 and rejected completion cell
+  // 6822 of bunny_1k_random.obj. The six incident source triangles, three
+  // required singular supports, transition ring, and outer continuation are
+  // retained; unrelated mesh geometry is omitted.
+  BunnySingularityFanFixture fixture;
+  fixture.vertices.resize(7, 3);
+  fixture.vertices <<
+      -0.010010721447988506, 0.1669560603584521,
+      -0.017230066768264458, -0.013936776751792961,
+      0.18099765790104674, -0.02263356514784081,
+      -0.009673296574374138, 0.17933166897414712,
+      -0.030216798833368308, -0.008907478151513765,
+      0.16960721958364328, -0.025732266315518212,
+      -0.01692817591703402, 0.18785199951164022,
+      -0.02146722827642511, -0.015127970157993838,
+      0.1849640629036794, -0.026812442827628975,
+      -0.02022963778078798, 0.17431411966666274,
+      -0.022227561483050516;
+  fixture.faces.resize(6, 3);
+  fixture.faces << 1, 0, 2, 0, 3, 2, 3, 6, 2, 6, 5, 2, 2, 5, 4, 4, 1,
+      2;
+  fixture.sourceComponents.assign(6, 0);
+  fixture.sourceSheets = {13, 13, 6, 17, 4, 13};
+
+  struct ArcData {
+    int face;
+    int family;
+    int sheet;
+    std::array<double, 3> start;
+    std::array<double, 3> end;
+  };
+  const std::vector<ArcData> arcData = {
+      // Intrinsic transition ring, in source-face fan order.
+      {0, -1, 13, {0.1719429297, 0.0, 0.8280570703},
+       {0.0, 0.08488410013, 0.9151158999}},
+      {1, -1, 13, {0.08488410013, 0.0, 0.9151158999},
+       {0.0, 0.1, 0.9}},
+      {2, -1, 6, {0.1, 0.0, 0.9},
+       {0.0, 0.09960349404, 0.900396506}},
+      {3, -1, 17, {0.09960349404, 0.0, 0.900396506},
+       {0.0, 0.2, 0.8}},
+      {4, -1, 4, {0.8, 0.2, 0.0},
+       {0.8664646879, 0.0, 0.1335353121}},
+      {5, -1, 13, {0.1335353121, 0.0, 0.8664646879},
+       {0.0, 0.1719429297, 0.8280570703}},
+      // Three required radial supports. The third crosses a source edge.
+      {0, 0, 13, {0.0, 0.0, 1.0},
+       {0.8394742484, 0.1605257516, 0.0}},
+      {3, 1, 17, {0.0, 0.0, 1.0},
+       {0.537483684, 0.462516316, 0.0}},
+      {4, 1, 4, {1.0, 0.0, 0.0},
+       {0.9999979605, 2.039457838e-6, 0.0}},
+      {3, 1, 17, {0.0, 2.039457838e-6, 0.9999979605},
+       {0.5374828406, 0.4625171594, 0.0}},
+      // Retained outer continuation that made the wrong source-vertex
+      // rotation concatenate all three valid sectors into one pinched walk.
+      {3, 1, 17, {0.554909718, 0.445090282, 0.0},
+       {0.03767605608, 0.0, 0.9623239439}},
+      {2, 1, 6, {0.0, 0.03767605608, 0.9623239439},
+       {0.01918077744, 0.0, 0.9808192226}},
+      {1, 0, 13, {0.0, 0.01918077744, 0.9808192226},
+       {0.0134956923, 0.0, 0.9865043077}},
+      {0, 0, 13, {0.0, 0.0134956923, 0.9865043077},
+       {0.8281449623, 0.1718550377, 0.0}},
+  };
+  for (const ArcData &value : arcData) {
+    directional::geometry::SurfaceArrangementArc arc;
+    arc.id = static_cast<int>(fixture.arcs.size());
+    arc.sourceFace = value.face;
+    arc.startBarycentric << value.start[0], value.start[1], value.start[2];
+    arc.endBarycentric << value.end[0], value.end[1], value.end[2];
+    arc.family = value.family;
+    arc.strand = value.family;
+    arc.provenance = arc.id;
+    arc.sourceComponent = 0;
+    arc.sourceSheet = value.sheet;
+    arc.layoutSupport = true;
+    arc.singularitySupport = true;
+    fixture.arcs.push_back(std::move(arc));
+  }
+  return fixture;
+}
+
 directional::geometry::SurfaceArrangementNode logical_side_node(
     const int id, const Eigen::RowVector3d &barycentric) {
   directional::geometry::SurfaceArrangementNode node;
@@ -420,6 +512,61 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     SharedEdgeSplitsPropagateAcrossIncidentFaceCharts) {
+  const auto fixture = unit_square_two_triangles();
+  auto first = make_face_arc(10, 0, {0.0, 1.0, 0.0},
+                             {0.0, 0.0, 1.0}, -1, true);
+  first.provenance = 110;
+  auto second = make_face_arc(11, 1, {1.0, 0.0, 0.0},
+                              {0.0, 0.0, 1.0}, -1, true);
+  second.provenance = 111;
+  // This support arc plants a midpoint split only in face 0.  Canonical
+  // source-edge stitching must propagate that split to the coincident edge
+  // segment represented in face 1.
+  auto crossing = make_face_arc(12, 0, {1.0, 0.0, 0.0},
+                                {0.0, 0.5, 0.5}, 0, false);
+  crossing.provenance = 112;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second, crossing});
+
+  int sharedEdgePieces = 0;
+  bool foundUnsplitChord = false;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id >= halfedge.twin) {
+      continue;
+    }
+    const auto &from = complex.nodes[static_cast<std::size_t>(halfedge.from)];
+    const auto &to = complex.nodes[static_cast<std::size_t>(halfedge.to)];
+    std::set<int> sourceArcs;
+    std::set<int> sourceFaces;
+    for (const auto &value : halfedge.provenance) {
+      if (value.sourceArc == 10 || value.sourceArc == 11) {
+        sourceArcs.insert(value.sourceArc);
+        sourceFaces.insert(value.sourceFace);
+      }
+    }
+    if (sourceArcs.empty()) {
+      continue;
+    }
+    ++sharedEdgePieces;
+    EXPECT_EQ(sourceArcs, (std::set<int>{10, 11}));
+    EXPECT_EQ(sourceFaces, (std::set<int>{0, 1}));
+    const Eigen::RowVector3d fromPosition =
+        directional::geometry::surface_arrangement_detail::node_position(
+            fixture.vertices, fixture.faces, from);
+    const Eigen::RowVector3d toPosition =
+        directional::geometry::surface_arrangement_detail::node_position(
+            fixture.vertices, fixture.faces, to);
+    foundUnsplitChord = foundUnsplitChord ||
+                        (fromPosition - toPosition).norm() > 1.0;
+  }
+  EXPECT_EQ(sharedEdgePieces, 2);
+  EXPECT_FALSE(foundUnsplitChord);
+  EXPECT_EQ(complex.diagnostics.incompleteArcChains, 0);
+}
+
+TEST(SurfaceArrangementPhase16,
      CoincidentSharedEdgeSegmentsMergeAndPreserveAllProvenance) {
   const auto fixture = unit_square_two_triangles();
   auto first = make_face_arc(20, 0, {0.0, 0.25, 0.75},
@@ -492,6 +639,122 @@ TEST(SurfaceArrangementPhase16,
   }
   EXPECT_EQ(stitchedUndirectedEdges, 1);
   EXPECT_EQ(complex.diagnostics.incompleteArcChains, 0);
+}
+
+TEST(SurfaceArrangementPhase16,
+     FaceLabelsMergeCoincidentSharedEdgeSegmentsOnTheSameSheet) {
+  const auto fixture = unit_square_two_triangles();
+  auto first = make_face_arc(30, 0, {0.0, 0.25, 0.75},
+                             {0.0, 0.75, 0.25}, 0, true);
+  auto second = make_face_arc(31, 1, {0.25, 0.0, 0.75},
+                              {0.75, 0.0, 0.25}, 1, false);
+
+  const std::vector<int> components = {2, 2};
+  const std::vector<int> sheets = {5, 5};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second}, options);
+
+  ASSERT_EQ(complex.nodes.size(), 2U);
+  for (const auto &node : complex.nodes) {
+    EXPECT_EQ(node.sourceComponent, 2);
+    EXPECT_EQ(node.sourceSheet, 5);
+    EXPECT_EQ(node.occurrences.size(), 2U);
+  }
+  ASSERT_EQ(complex.halfedges.size(), 2U);
+  ASSERT_EQ(complex.halfedges.front().provenance.size(), 2U);
+  EXPECT_EQ(complex.halfedges.front().sourceComponent, 2);
+  EXPECT_EQ(complex.halfedges.front().sourceSheet, 5);
+}
+
+TEST(SurfaceArrangementPhase16,
+     AdjacentSourceVertexChartsMergeAcrossDifferentLocalSheetLabels) {
+  const auto fixture = unit_square_two_triangles();
+  auto first = make_face_arc(40, 0, {0.0, 1.0, 0.0},
+                             {0.50, 0.25, 0.25}, 0, false);
+  auto second = make_face_arc(41, 1, {1.0, 0.0, 0.0},
+                              {0.50, 0.25, 0.25}, 1, false);
+
+  const std::vector<int> components = {2, 2};
+  const std::vector<int> sheets = {5, 6};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second}, options);
+
+  ASSERT_EQ(complex.nodes.size(), 3U);
+  int sharedVertexNode = -1;
+  for (const auto &node : complex.nodes) {
+    const Eigen::RowVector3d position =
+        directional::geometry::surface_arrangement_detail::node_position(
+            fixture.vertices, fixture.faces, node);
+    if ((position - fixture.vertices.row(1)).norm() <= 1.0e-12) {
+      sharedVertexNode = node.id;
+      EXPECT_EQ(node.sourceComponent, 2);
+      EXPECT_EQ(node.occurrences.size(), 2U);
+    }
+  }
+  ASSERT_GE(sharedVertexNode, 0);
+  EXPECT_EQ(2, std::count_if(
+                   complex.halfedges.begin(), complex.halfedges.end(),
+                   [&](const auto &halfedge) {
+                     return halfedge.from == sharedVertexNode;
+                   }));
+}
+
+TEST(SurfaceArrangementPhase16,
+     DifferentPinchedSourceVertexFansRemainSeparate) {
+  TriangleFixture fixture;
+  fixture.vertices.resize(5, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                     -1.0, 0.0, 0.0,
+                      0.0,-1.0, 0.0;
+  fixture.faces.resize(4, 3);
+  fixture.faces << 0, 1, 2,
+                   1, 3, 2,
+                   2, 3, 4,
+                   0, 4, 3;
+
+  auto first = make_face_arc(50, 0, {1.0, 0.0, 0.0},
+                             {0.50, 0.25, 0.25}, 0, false);
+  auto second = make_face_arc(51, 3, {1.0, 0.0, 0.0},
+                              {0.50, 0.25, 0.25}, 1, false);
+
+  const std::vector<int> components = {2, 2, 2, 2};
+  const std::vector<int> sheets = {5, 5, 6, 6};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {first, second}, options);
+
+  ASSERT_EQ(complex.nodes.size(), 4U);
+  int sourceVertexNodes = 0;
+  std::set<int> sourceVertexSheets;
+  for (const auto &node : complex.nodes) {
+    const Eigen::RowVector3d position =
+        directional::geometry::surface_arrangement_detail::node_position(
+            fixture.vertices, fixture.faces, node);
+    if ((position - fixture.vertices.row(0)).norm() <= 1.0e-12) {
+      ++sourceVertexNodes;
+      sourceVertexSheets.insert(node.sourceSheet);
+      EXPECT_EQ(node.occurrences.size(), 1U);
+    }
+  }
+  EXPECT_EQ(sourceVertexNodes, 2);
+  EXPECT_EQ(sourceVertexSheets, (std::set<int>{5, 6}));
+  EXPECT_EQ(complex.halfedges.size(), 4U);
 }
 
 TEST(SurfaceArrangementPhase16,
@@ -674,6 +937,78 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     ShortParallelSegmentsUseSpatialCollinearityTolerance) {
+  using directional::geometry::surface_arrangement_detail::Segment2;
+  using directional::geometry::surface_arrangement_detail::
+      segment_intersection_params;
+
+  Segment2 first;
+  first.start << 0.0, 0.0;
+  first.end << 1.0e-6, 0.0;
+
+  Segment2 second;
+  second.start << 0.0, 2.5e-7;
+  second.end << 1.0e-6, 2.5e-7;
+
+  double firstParameter = 0.0;
+  double secondParameter = 0.0;
+  Eigen::Vector2d point = Eigen::Vector2d::Zero();
+  EXPECT_FALSE(segment_intersection_params(
+      first, second, firstParameter, secondParameter, point));
+}
+
+TEST(SurfaceArrangementPhase16,
+     CollinearToleranceDoesNotIntersectDisjointFiniteSegments) {
+  using directional::geometry::surface_arrangement_detail::Segment2;
+  using directional::geometry::surface_arrangement_detail::
+      segment_intersection_params;
+
+  Segment2 first;
+  first.start << 0.0, 0.0;
+  first.end << 1.0, 0.0;
+
+  Segment2 second;
+  second.start << -1.0e-6, 5.0e-13;
+  second.end << -2.0e-13, 5.0e-13;
+
+  double firstParameter = 0.0;
+  double secondParameter = 0.0;
+  Eigen::Vector2d point = Eigen::Vector2d::Zero();
+  EXPECT_FALSE(segment_intersection_params(
+      first, second, firstParameter, secondParameter, point));
+}
+
+TEST(SurfaceArrangementPhase16,
+     SplitProvenanceRemainsWithinFiniteSourceArcDomain) {
+  const auto fixture = unit_triangle();
+  auto primary =
+      make_arc(700, {0.8, 0.2, 0.0}, {0.2, 0.8, 0.0}, 0);
+  auto nearDisjoint = make_arc(
+      701, {0.8999999999995, 0.1, 5.0e-13},
+      {0.8000000000003, 0.1999999999998, 5.0e-13}, 1);
+
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {primary, nearDisjoint}, options);
+
+  bool sawPrimary = false;
+  bool sawNearDisjoint = false;
+  for (const auto &halfedge : complex.halfedges) {
+    for (const auto &provenance : halfedge.provenance) {
+      sawPrimary = sawPrimary || provenance.sourceArc == 700;
+      sawNearDisjoint = sawNearDisjoint || provenance.sourceArc == 701;
+      EXPECT_GE(provenance.sourceT0, -1.0e-12);
+      EXPECT_LE(provenance.sourceT0, 1.0 + 1.0e-12);
+      EXPECT_GE(provenance.sourceT1, -1.0e-12);
+      EXPECT_LE(provenance.sourceT1, 1.0 + 1.0e-12);
+    }
+  }
+  EXPECT_TRUE(sawPrimary);
+  EXPECT_TRUE(sawNearDisjoint);
+}
+
+TEST(SurfaceArrangementPhase16,
      CurvedMultiFaceFixturePreservesStitchedTopologyAndEulerCharacteristic) {
   auto fixture = unit_square_two_triangles();
   fixture.vertices(3, 2) = 0.4;
@@ -693,4 +1028,65 @@ TEST(SurfaceArrangementPhase16,
       complex.nodes.begin(), complex.nodes.end(), [](const auto &node) {
         return node.occurrences.size() == 2U;
       }));
+}
+
+TEST(SurfaceArrangementPhase16,
+     BunnySingularityFanUsesIntrinsicSourceVertexRotation) {
+  const BunnySingularityFanFixture fixture =
+      bunny_singularity_fan_fixture();
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  options.sourceFaceComponents = &fixture.sourceComponents;
+  options.sourceFaceSheets = &fixture.sourceSheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, fixture.arcs, options);
+
+  EXPECT_TRUE(complex.diagnostics.embeddingValid);
+  EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+
+  int center = -1;
+  for (const auto &node : complex.nodes) {
+    for (const auto &occurrence : node.occurrences) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (fixture.faces(occurrence.sourceFace, corner) == 2 &&
+            occurrence.barycentric[corner] >= 1.0 - 1.0e-10) {
+          ASSERT_TRUE(center < 0 || center == node.id);
+          center = node.id;
+        }
+      }
+    }
+  }
+  ASSERT_GE(center, 0);
+
+  int centerCells = 0;
+  for (const auto &cell : complex.cells) {
+    bool touchesCenter = false;
+    for (const int halfedgeId : cell.halfedges) {
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      touchesCenter = touchesCenter || halfedge.from == center ||
+                      halfedge.to == center;
+    }
+    if (touchesCenter && !cell.boundaryCycle) {
+      ++centerCells;
+      std::set<int> boundaryNodes;
+      std::set<int> halfedges;
+      for (const int halfedgeId : cell.halfedges) {
+        const auto &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        EXPECT_TRUE(halfedges.insert(halfedgeId).second);
+        EXPECT_EQ(halfedges.count(halfedge.twin), 0U)
+            << "a local singular sector must not contain both sides of a "
+               "required support";
+        EXPECT_TRUE(boundaryNodes.insert(halfedge.from).second)
+            << "a local singular sector must have a simple boundary";
+      }
+      EXPECT_TRUE(cell.disk);
+      EXPECT_EQ(cell.boundaryComponentCount, 1);
+      EXPECT_EQ(cell.eulerCharacteristic, 1);
+    }
+  }
+  EXPECT_EQ(centerCells, 3);
 }

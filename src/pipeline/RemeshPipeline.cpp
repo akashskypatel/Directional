@@ -24,8 +24,6 @@ surface_cell_fallback_policy_name(const SurfaceCellFallbackPolicy policy) {
     return "Fail";
   case SurfaceCellFallbackPolicy::ReturnInputMesh:
     return "ReturnInputMesh";
-  case SurfaceCellFallbackPolicy::TryLegacy:
-    return "TryLegacy";
   }
   return "Unknown";
 }
@@ -160,10 +158,12 @@ parse_surface_cell_fallback_policy(const std::string &value) {
     return SurfaceCellFallbackPolicy::ReturnInputMesh;
   }
   if (token == "trylegacy") {
-    return SurfaceCellFallbackPolicy::TryLegacy;
+    throw std::runtime_error(
+        "TryLegacy is disabled for SurfaceCells; failures must terminate "
+        "without entering legacy integer integration.");
   }
   throw std::runtime_error(
-      "Surface-cell fallback must be Fail, ReturnInputMesh, or TryLegacy.");
+      "Surface-cell fallback must be Fail or ReturnInputMesh.");
 }
 
 } // namespace directional::pipeline
@@ -705,6 +705,10 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, arc.sourceFace);
     hash_row_vector(seed, arc.startBarycentric);
     hash_row_vector(seed, arc.endBarycentric);
+    hash_combine_i64(seed, arc.startIntrinsicEndpointKeyValid ? 1 : 0);
+    hash_combine_i64(seed, arc.endIntrinsicEndpointKeyValid ? 1 : 0);
+    hash_combine_u64(seed, arc.startIntrinsicEndpointKey);
+    hash_combine_u64(seed, arc.endIntrinsicEndpointKey);
     hash_combine_i64(seed, arc.sourceComponent);
     hash_combine_i64(seed, arc.sourceSheet);
     hash_combine_i64(seed, arc.family);
@@ -3432,55 +3436,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         return result;
       }
 
-      if (options.surfaceCells.fallbackPolicy ==
-          SurfaceCellFallbackPolicy::TryLegacy) {
-        result.diagnostics.surfaceCellFallbackAttempted = true;
-        result.diagnostics.surfaceCellFallbackCause = failureCode;
-        if (rawCrossField.rows() == meshWhole.F.rows() &&
-            rawCrossField.cols() == 12) {
-          RemeshOptions legacyOptions = options;
-          legacyOptions.backend = RemeshBackend::LegacyInteger;
-          legacyOptions.surfaceCells.enabled = false;
-          legacyOptions.parallelizeComponents = false;
-          try {
-            RemeshResult legacyResult = remesh_from_raw_cross_field_impl(
-                meshWhole, rawCrossField, legacyOptions);
-            if (legacyResult.success) {
-              legacyResult.diagnostics.requestedBackend =
-                  remesh_backend_name(RemeshBackend::SurfaceCells);
-              legacyResult.diagnostics.executedBackend =
-                  remesh_backend_name(RemeshBackend::LegacyInteger);
-              legacyResult.diagnostics.remeshBackend =
-                  legacyResult.diagnostics.executedBackend;
-              legacyResult.diagnostics.surfaceCellFallbackPolicy =
-                  surface_cell_fallback_policy_name(
-                      options.surfaceCells.fallbackPolicy);
-              legacyResult.diagnostics.surfaceCellFallbackAttempted = true;
-              legacyResult.diagnostics.surfaceCellUsedLegacyFallback = true;
-              legacyResult.diagnostics.surfaceCellReturnedInputMeshFallback =
-                  false;
-              legacyResult.diagnostics.surfaceCellFallbackCause = failureCode;
-              legacyResult.diagnostics.originalSurfaceCellFailureCode =
-                  failureCode;
-              legacyResult.diagnostics.originalSurfaceCellFailureStage = stage;
-              legacyResult.diagnostics.terminalFailureCode =
-                  surface_cell_failure_code_name(SurfaceCellFailureCode::None);
-              legacyResult.diagnostics.terminalFailureStage.clear();
-              copy_surface_cell_stage_diagnostics(
-                  result.diagnostics, legacyResult.diagnostics);
-              legacyResult.diagnostics.surfaceCellOutputOrigin =
-                  SurfaceCellOutputOrigin::LegacyFallback;
-              legacyResult.diagnostics.surfaceCellRemeshOccurred = false;
-              legacyResult.surfaceCellContext = result.surfaceCellContext;
-              set_overall_pipeline_time(legacyResult, pipelineStart);
-              return legacyResult;
-            }
-          } catch (...) {
-            // Preserve the original SurfaceCells failure below.
-          }
-        }
-        update_overall_pipeline_time();
-      }
+
       return result;
     };
     if (authoritativeCrossField != nullptr) {
@@ -3898,8 +3854,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           endpointCompletion.resolvedEndpoints;
       result.surfaceCellContext.flowRepUnresolvedEndpoints =
           endpointCompletion.unresolvedEndpoints;
+      result.surfaceCellContext.flowRepUnresolvedRequiredEndpoints =
+          endpointCompletion.unresolvedRequiredEndpoints;
       result.surfaceCellContext.flowRepEndpointCompletionAddedArcs =
           endpointCompletion.addedArcs;
+      result.surfaceCellContext.flowRepEndpointTerminationCounts =
+          endpointCompletion.traceTerminationCounts;
+      result.surfaceCellContext.flowRepEndpointDiagnostics =
+          endpointCompletion.diagnostics;
       result.surfaceCellContext.flowRepEndpointCompletionFailure =
           endpointCompletion.failure;
       if (endpointCompletion.success) {
@@ -3971,6 +3933,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     geometry::SurfaceArrangementOptions arrangementOptions;
     arrangementOptions.insertBoundaryRails = authoritativeRails.empty();
     arrangementOptions.hardFeatureEdges = hardFeatureRailEdges;
+    arrangementOptions.sourceFaceComponents =
+        &result.surfaceCellContext.traceNetwork.sourceFaceComponents;
+    arrangementOptions.sourceFaceSheets =
+        &result.surfaceCellContext.traceNetwork.sourceFaceSheets;
     const geometry::SurfaceCellComplex arrangementComplex =
         geometry::build_surface_cell_complex(meshWhole.V, meshWhole.F,
                                              arrangementArcs, arrangementOptions);
@@ -4013,6 +3979,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::simplify_surface_cell_complex(
             arrangementComplex, meshWhole.V, meshWhole.F,
             simplificationCandidates.candidates, simplificationOptions);
+    result.surfaceCellContext.simplificationCandidateCount =
+        static_cast<int>(simplificationCandidates.candidates.size());
+    result.surfaceCellContext.simplificationTopologyHealingCandidates.clear();
+    for (const geometry::SurfaceSimplificationCandidate &candidate :
+         simplificationCandidates.candidates) {
+      if (candidate.topologyHealing) {
+        result.surfaceCellContext.simplificationTopologyHealingCandidates
+            .push_back(candidate);
+      }
+    }
+    result.surfaceCellContext.simplificationTopologyHealingCandidateCount =
+        static_cast<int>(
+            result.surfaceCellContext.simplificationTopologyHealingCandidates
+                .size());
+    result.surfaceCellContext.simplificationCommitted = simplified.committed;
+    result.surfaceCellContext.simplificationRejected = simplified.rejected;
+    result.surfaceCellContext.simplificationTransactions =
+        simplified.transactions;
+    result.surfaceCellContext.hasSimplificationDiagnostics = true;
     result.diagnostics.surfaceCellSimplificationSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - simplificationStart)
@@ -4090,6 +4075,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.sideSplitEdges;
     result.surfaceCellContext.completionSideHardFeatureSplits =
         completionResult.sideHardFeatureSplits;
+    result.surfaceCellContext.completionAttemptedPatches =
+        completionResult.attemptedPatches;
+    result.surfaceCellContext.completionFailedPatches =
+        completionResult.failedPatches;
+    result.surfaceCellContext.completionFailure = completionResult.failure;
     if (completionResult.hasPreparedComplex) {
       result.surfaceCellContext.completionComplex =
           completionResult.preparedComplex;

@@ -356,6 +356,840 @@ TEST(FlowRepStrandsPhase15,
 }
 
 TEST(FlowRepStrandsPhase15,
+     EndpointCompletionIgnoresSubToleranceIntersectionAtTraceOrigin) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  std::vector<FlowRepArc> arcs;
+  arcs.push_back(endpoint_completion_arc(
+      0, 0, {0.60, 0.25, 0.15}, {0.40, 0.45, 0.15}, 3, 5));
+  arcs.push_back(endpoint_completion_arc(
+      1, 0, {0.85, 0.10, 0.05}, {0.50, 0.10, 0.40}, 3, 5, true));
+  arcs.push_back(endpoint_completion_arc(
+      2, 0, {0.20, 0.75, 0.05}, {0.05, 0.75, 0.20}, 3, 5, true));
+  // This retained segment crosses the outgoing trace only 5e-10 source units
+  // from its origin. Treating the dimensionless trace parameter as a spatial
+  // tolerance clips the connector to a non-representable zero-length arc and
+  // discards the valid continuation to arc 2.
+  arcs.push_back(endpoint_completion_arc(
+      3, 0, {0.4499999995, 0.4500000005, 0.10},
+      {0.3499999995, 0.4500000005, 0.20}, 3, 5, true));
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(1), tracing, arcs, {0, 1, 2, 3},
+      completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 2);
+  EXPECT_EQ(result.resolvedEndpoints, 2);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  ASSERT_GT(result.addedArcs, 0);
+  for (std::size_t index = arcs.size(); index < result.arcs.size(); ++index) {
+    EXPECT_GT((result.arcs[index].end - result.arcs[index].start).norm(),
+              completion.intersectionTolerance);
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
+     EndpointCompletionOnlyCommitsArrangementReproducibleIntersections) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  const FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.60, 0.25, 0.15}, {0.40, 0.45, 0.15}, 3, 5);
+  std::vector<FlowRepArc> arcs = {
+      source,
+      endpoint_completion_arc(1, 0, {0.85, 0.10, 0.05},
+                              {0.50, 0.10, 0.40}, 3, 5, true),
+      endpoint_completion_arc(2, 0, {0.20, 0.75, 0.05},
+                              {0.05, 0.75, 0.20}, 3, 5, true),
+      // This segment is 5e-10 source units above the outgoing trace. The
+      // endpoint-completion tolerance is intentionally looser than the exact
+      // arrangement predicate. It is not an intersection and must not be
+      // accepted as network ownership merely because the lines are nearly
+      // parallel.
+      endpoint_completion_arc(3, 0, {0.2999999995, 0.55, 0.1500000005},
+                              {0.2499999995, 0.60, 0.1500000005}, 3, 5,
+                              true)};
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(1), tracing, arcs, {0, 1, 2, 3},
+      completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  const auto added = std::find_if(
+      result.arcs.begin() + static_cast<std::ptrdiff_t>(arcs.size()),
+      result.arcs.end(), [&](const FlowRepArc &arc) {
+        return (arc.startBarycentric - source.endBarycentric).norm() < 1.0e-12;
+      });
+  ASSERT_NE(added, result.arcs.end());
+  EXPECT_TRUE(added->endEmbeddedAnchor);
+  EXPECT_NEAR(added->endBarycentric[1], 0.75, 1.0e-12);
+  EXPECT_NEAR(added->endBarycentric[2], 0.15, 1.0e-12);
+  const auto diagnostic = std::find_if(
+      result.diagnostics.begin(), result.diagnostics.end(),
+      [&](const auto &candidate) {
+        return candidate.sourceArcId == source.id &&
+               !candidate.startEndpoint;
+      });
+  ASSERT_NE(diagnostic, result.diagnostics.end());
+  EXPECT_EQ(diagnostic->captureTargetArcId, 2);
+  EXPECT_EQ(diagnostic->captureTraceSegment, 0);
+  EXPECT_EQ(diagnostic->captureTargetSourceFace, 0);
+  EXPECT_NEAR(diagnostic->captureBarycentric[1], 0.75, 1.0e-12);
+  EXPECT_NEAR(diagnostic->captureBarycentric[2], 0.15, 1.0e-12);
+
+  std::set<int> retained(result.retainedArcIds.begin(),
+                         result.retainedArcIds.end());
+  std::vector<directional::geometry::SurfaceArrangementArc> arrangementArcs;
+  for (const FlowRepArc &arc : result.arcs) {
+    if (retained.count(arc.id) == 0) {
+      continue;
+    }
+    directional::geometry::SurfaceArrangementArc arrangementArc;
+    arrangementArc.id = static_cast<int>(arrangementArcs.size());
+    arrangementArc.sourceFace = arc.sourceFace;
+    arrangementArc.startBarycentric = arc.startBarycentric;
+    arrangementArc.endBarycentric = arc.endBarycentric;
+    arrangementArc.family = arc.family;
+    arrangementArc.provenance = arc.id;
+    arrangementArc.sourceComponent = arc.sourceComponent;
+    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArcs.push_back(arrangementArc);
+  }
+  directional::geometry::SurfaceArrangementOptions arrangementOptions;
+  arrangementOptions.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, arrangementArcs, arrangementOptions);
+
+  const auto endpointKey =
+      directional::geometry::surface_arrangement_detail::make_node_key(
+          faces, added->sourceFace,
+          directional::geometry::surface_arrangement_detail::bary_to_uv(
+              added->endBarycentric));
+  int endpointNode = -1;
+  for (std::size_t nodeIndex = 0; nodeIndex < complex.nodes.size();
+       ++nodeIndex) {
+    const auto &node = complex.nodes[nodeIndex];
+    const auto matches = [&](const int sourceFace,
+                             const Eigen::RowVector3d &barycentric) {
+      const auto candidate =
+          directional::geometry::surface_arrangement_detail::make_node_key(
+              faces, sourceFace,
+              directional::geometry::surface_arrangement_detail::bary_to_uv(
+                  barycentric));
+      return !(candidate < endpointKey) && !(endpointKey < candidate);
+    };
+    if (matches(node.sourceFace, node.barycentric) ||
+        std::any_of(node.occurrences.begin(), node.occurrences.end(),
+                    [&](const auto &occurrence) {
+                      return matches(occurrence.sourceFace,
+                                     occurrence.barycentric);
+                    })) {
+      endpointNode = static_cast<int>(nodeIndex);
+      break;
+    }
+  }
+  ASSERT_GE(endpointNode, 0);
+  const int endpointDegree = static_cast<int>(std::count_if(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) { return halfedge.from == endpointNode; }));
+  EXPECT_GE(endpointDegree, 3);
+}
+
+TEST(FlowRepStrandsPhase15,
+     SubToleranceIntrinsicCaptureReconcilesOpenEndpointWithoutTinyArc) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  constexpr double epsilon = 5.0e-10;
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.40 - epsilon, 0.10 + epsilon, 0.50},
+      {0.50 - epsilon, epsilon, 0.50}, 3, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+
+  FlowRepArc target = endpoint_completion_arc(
+      1, 0, {0.50, 0.0, 0.50}, {0.0, 0.0, 1.0}, 3, 5, true);
+  target.startEmbeddedAnchor = true;
+  target.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(1), tracing, {source, target},
+      {0, 1}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 0);
+  EXPECT_EQ(result.addedArcs, 0);
+  ASSERT_EQ(result.arcs.size(), 2U);
+  EXPECT_TRUE(result.arcs[0].endEmbeddedAnchor);
+  EXPECT_NEAR((result.arcs[0].end - target.start).norm(), 0.0, 1.0e-15);
+  EXPECT_NEAR((result.arcs[0].endBarycentric - target.startBarycentric).norm(),
+              0.0, 1.0e-15);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::IntrinsicNode);
+  EXPECT_EQ(result.diagnostics.front().skippedDegenerateSegments, 1);
+}
+
+TEST(FlowRepStrandsPhase15,
+     AdjacentFaceFanCanonicalizesSubToleranceEndpointsToSourceVertex) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      0.0, -1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 0, 3;
+
+  constexpr double epsilon = 5.0e-10;
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.40, 0.30, 0.30}, {1.0 - epsilon, epsilon, 0.0}, 3, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+
+  FlowRepArc chartTransition = endpoint_completion_arc(
+      1, 1, {epsilon, 1.0 - epsilon, 0.0},
+      {0.0, 1.0 - epsilon, epsilon}, 3, 6, true);
+  chartTransition.start =
+      chartTransition.startBarycentric[0] * vertices.row(faces(1, 0)) +
+      chartTransition.startBarycentric[1] * vertices.row(faces(1, 1)) +
+      chartTransition.startBarycentric[2] * vertices.row(faces(1, 2));
+  chartTransition.end =
+      chartTransition.endBarycentric[0] * vertices.row(faces(1, 0)) +
+      chartTransition.endBarycentric[1] * vertices.row(faces(1, 1)) +
+      chartTransition.endBarycentric[2] * vertices.row(faces(1, 2));
+  chartTransition.layoutSupport = true;
+  chartTransition.singularitySupport = true;
+
+  FlowRepArc continuation = endpoint_completion_arc(
+      2, 1, {0.0, 1.0 - epsilon, epsilon}, {0.10, 0.60, 0.30}, 3, 6,
+      true);
+  continuation.start =
+      continuation.startBarycentric[0] * vertices.row(faces(1, 0)) +
+      continuation.startBarycentric[1] * vertices.row(faces(1, 1)) +
+      continuation.startBarycentric[2] * vertices.row(faces(1, 2));
+  continuation.end =
+      continuation.endBarycentric[0] * vertices.row(faces(1, 0)) +
+      continuation.endBarycentric[1] * vertices.row(faces(1, 1)) +
+      continuation.endBarycentric[2] * vertices.row(faces(1, 2));
+  continuation.layoutSupport = true;
+  continuation.singularitySupport = true;
+  continuation.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {3, 3};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, constant_cross_field(2), tracing,
+      {source, chartTransition, continuation}, {0, 1, 2}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 0);
+  EXPECT_EQ(result.addedArcs, 0);
+  ASSERT_EQ(result.arcs.size(), 3U);
+  const Eigen::RowVector3d vertex0 = vertices.row(0);
+  EXPECT_NEAR((result.arcs[0].end - vertex0).norm(), 0.0, 1.0e-15);
+  EXPECT_NEAR((result.arcs[1].start - vertex0).norm(), 0.0, 1.0e-15);
+  EXPECT_NEAR((result.arcs[1].end - vertex0).norm(), 0.0, 1.0e-15);
+  EXPECT_NEAR((result.arcs[2].start - vertex0).norm(), 0.0, 1.0e-15);
+  EXPECT_TRUE(result.arcs[0].endEmbeddedAnchor);
+  EXPECT_TRUE(result.arcs[1].startEmbeddedAnchor);
+  EXPECT_TRUE(result.arcs[1].endEmbeddedAnchor);
+  EXPECT_TRUE(result.arcs[2].startEmbeddedAnchor);
+
+  std::vector<directional::geometry::SurfaceArrangementArc> arrangementArcs;
+  for (const FlowRepArc &arc : result.arcs) {
+    directional::geometry::SurfaceArrangementArc arrangementArc;
+    arrangementArc.id = static_cast<int>(arrangementArcs.size());
+    arrangementArc.sourceFace = arc.sourceFace;
+    arrangementArc.startBarycentric = arc.startBarycentric;
+    arrangementArc.endBarycentric = arc.endBarycentric;
+    arrangementArc.family = arc.family;
+    arrangementArc.provenance = arc.id;
+    arrangementArc.sourceComponent = arc.sourceComponent;
+    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArcs.push_back(arrangementArc);
+  }
+  directional::geometry::SurfaceArrangementOptions arrangementOptions;
+  arrangementOptions.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      vertices, faces, arrangementArcs, arrangementOptions);
+
+  const auto vertexKey =
+      directional::geometry::surface_arrangement_detail::make_node_key(
+          faces, 0, Eigen::Vector2d(0.0, 0.0));
+  int vertexNode = -1;
+  for (std::size_t nodeIndex = 0; nodeIndex < complex.nodes.size();
+       ++nodeIndex) {
+    const auto &node = complex.nodes[nodeIndex];
+    const auto matches = [&](const int sourceFace,
+                             const Eigen::RowVector3d &barycentric) {
+      const auto candidate =
+          directional::geometry::surface_arrangement_detail::make_node_key(
+              faces, sourceFace,
+              directional::geometry::surface_arrangement_detail::bary_to_uv(
+                  barycentric));
+      return !(candidate < vertexKey) && !(vertexKey < candidate);
+    };
+    if (matches(node.sourceFace, node.barycentric) ||
+        std::any_of(node.occurrences.begin(), node.occurrences.end(),
+                    [&](const auto &occurrence) {
+                      return matches(occurrence.sourceFace,
+                                     occurrence.barycentric);
+                    })) {
+      vertexNode = static_cast<int>(nodeIndex);
+      break;
+    }
+  }
+  ASSERT_GE(vertexNode, 0);
+  const int vertexDegree = static_cast<int>(std::count_if(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) { return halfedge.from == vertexNode; }));
+  EXPECT_EQ(vertexDegree, 2);
+}
+
+TEST(FlowRepStrandsPhase15,
+     EndpointCompletionCapturesCanonicalVertexOwnedByAnotherFace) {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      -1.0, 0.0, 0.0, 0.0, -1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 0, 3, 4;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 1.0, 0.0;
+  field.secondaryDirections.row(0) << -1.0, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  field.secondaryDirections.row(1) << 0.0, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.40, 0.30, 0.30}, {0.50, 0.25, 0.25}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  FlowRepArc target = endpoint_completion_arc(
+      1, 1, {1.0, 0.0, 0.0}, {0.80, 0.10, 0.10}, 0, 5, true);
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {0, 0};
+  tracing.sourceFaceSheets = {5, 5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, target}, {0, 1}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 0);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::IntrinsicNode);
+  EXPECT_GE(result.addedArcs, 1);
+  EXPECT_TRUE(result.arcs.back().endEmbeddedAnchor);
+}
+
+TEST(FlowRepStrandsPhase15,
+     CanonicalVertexCaptureRemainsSeparatedAcrossSourceSheets) {
+  Eigen::MatrixXd vertices(5, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      -1.0, 0.0, 0.0, 0.0, -1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 0, 3, 4;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 1.0, 0.0;
+  field.secondaryDirections.row(0) << -1.0, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  field.secondaryDirections.row(1) << 0.0, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.40, 0.30, 0.30}, {0.50, 0.25, 0.25}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  FlowRepArc otherSheet = endpoint_completion_arc(
+      1, 1, {1.0, 0.0, 0.0}, {0.80, 0.10, 0.10}, 0, 6, true);
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {0, 0};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, otherSheet}, {0, 1},
+      completion);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failure, "UnresolvedFlowlineEndpoints");
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedEndpoints, 1);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::NoNetworkCapture);
+  EXPECT_EQ(result.addedArcs, 0);
+}
+
+TEST(FlowRepStrandsPhase15,
+     FeatureTerminationCapturesRailIntervalInAdjacentFaceChart) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 3, 2;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 1.0, 0.0;
+  field.secondaryDirections.row(0) << -1.0, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  field.secondaryDirections.row(1) << 0.0, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.60, 0.20, 0.20}, {0.40, 0.30, 0.30}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+  FlowRepArc rail = endpoint_completion_arc(
+      1, 1, {0.25, 0.0, 0.75}, {0.75, 0.0, 0.25}, 0, 5, true);
+  rail.boundaryRail = false;
+  rail.hardFeatureRail = true;
+  rail.startEmbeddedAnchor = true;
+  rail.endEmbeddedAnchor = true;
+  rail.start = directional::geometry::surface_cell_tracing_detail::point_position(
+      vertices, faces,
+      directional::geometry::SurfaceTracePoint{rail.sourceFace,
+                                                rail.startBarycentric});
+  rail.end = directional::geometry::surface_cell_tracing_detail::point_position(
+      vertices, faces,
+      directional::geometry::SurfaceTracePoint{rail.sourceFace,
+                                                rail.endBarycentric});
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.followCompatibleHardFeatureRails = false;
+  tracing.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  tracing.sourceFaceComponents = {0, 0};
+  tracing.sourceFaceSheets = {5, 5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, rail}, {0, 1}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 0);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::IntrinsicNode);
+  EXPECT_GE(result.addedArcs, 1);
+  EXPECT_TRUE(result.arcs.back().endEmbeddedAnchor);
+}
+
+TEST(FlowRepStrandsPhase15,
+     FeatureTerminationNearVertexCapturesIncidentAuthoritativeRail) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  constexpr double epsilon = 5.0e-10;
+  const Eigen::Vector2d endpoint(0.20, 0.20);
+  const Eigen::Vector2d terminal(epsilon, 1.0 - epsilon);
+  Eigen::Vector2d direction = terminal - endpoint;
+  direction.normalize();
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(1, 3);
+  field.secondaryDirections.resize(1, 3);
+  field.primaryDirections.row(0) << direction.x(), direction.y(), 0.0;
+  field.secondaryDirections.row(0) << -direction.y(), direction.x(), 0.0;
+
+  const Eigen::Vector2d start = endpoint - 0.10 * (terminal - endpoint);
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {1.0 - start.x() - start.y(), start.x(), start.y()},
+      {0.60, endpoint.x(), endpoint.y()}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+
+  // The trace terminates on feature edge (1,2), within the spatial endpoint
+  // tolerance of vertex 2. The authoritative retained rail leaves vertex 2
+  // through the other incident edge (0,2), so ownership must transfer through
+  // the canonical source vertex rather than by matching the terminal edge.
+  FlowRepArc rail = endpoint_completion_arc(
+      1, 0, {1.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, 0, 5, true);
+  rail.boundaryRail = false;
+  rail.hardFeatureRail = true;
+  rail.startEmbeddedAnchor = true;
+  rail.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.followCompatibleHardFeatureRails = false;
+  tracing.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  tracing.sourceFaceComponents = {0};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, rail}, {0, 1}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 0);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::IntrinsicNode);
+  EXPECT_GT(result.diagnostics.front().terminalFeatureRailCandidates, 0);
+  EXPECT_GT(result.diagnostics.front().terminalCompatibleFeatureRailCandidates,
+            0);
+}
+
+TEST(FlowRepStrandsPhase15,
+     FeatureTerminationNearVertexRejectsIncidentRailFromAnotherComponent) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  constexpr double epsilon = 5.0e-10;
+  const Eigen::Vector2d endpoint(0.20, 0.20);
+  const Eigen::Vector2d terminal(epsilon, 1.0 - epsilon);
+  Eigen::Vector2d direction = terminal - endpoint;
+  direction.normalize();
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(1, 3);
+  field.secondaryDirections.resize(1, 3);
+  field.primaryDirections.row(0) << direction.x(), direction.y(), 0.0;
+  field.secondaryDirections.row(0) << -direction.y(), direction.x(), 0.0;
+
+  const Eigen::Vector2d start = endpoint - 0.10 * (terminal - endpoint);
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {1.0 - start.x() - start.y(), start.x(), start.y()},
+      {0.60, endpoint.x(), endpoint.y()}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+
+  FlowRepArc otherComponentRail = endpoint_completion_arc(
+      1, 0, {1.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, 1, 5, true);
+  otherComponentRail.boundaryRail = false;
+  otherComponentRail.hardFeatureRail = true;
+  otherComponentRail.startEmbeddedAnchor = true;
+  otherComponentRail.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.followCompatibleHardFeatureRails = false;
+  tracing.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  tracing.sourceFaceComponents = {0};
+  tracing.sourceFaceSheets = {5};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+  completion.intersectionTolerance = 1.0e-9;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, otherComponentRail}, {0, 1},
+      completion);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failure, "UnresolvedFlowlineEndpoints");
+  EXPECT_EQ(result.resolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 1);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::NoNetworkCapture);
+  EXPECT_GT(result.diagnostics.front().terminalFeatureRailCandidates, 0);
+  EXPECT_EQ(result.diagnostics.front().terminalCompatibleFeatureRailCandidates,
+            0);
+}
+
+TEST(FlowRepStrandsPhase15,
+     FeatureTerminationAcceptsEitherIncidentLocalSheetOfAuthoritativeRail) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 3, 2;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 1.0, 0.0;
+  field.secondaryDirections.row(0) << -1.0, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  field.secondaryDirections.row(1) << 0.0, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.60, 0.20, 0.20}, {0.40, 0.30, 0.30}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+  FlowRepArc otherSheetRail = endpoint_completion_arc(
+      1, 1, {0.25, 0.0, 0.75}, {0.75, 0.0, 0.25}, 0, 6, true);
+  otherSheetRail.boundaryRail = false;
+  otherSheetRail.hardFeatureRail = true;
+  otherSheetRail.startEmbeddedAnchor = true;
+  otherSheetRail.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.followCompatibleHardFeatureRails = false;
+  tracing.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  tracing.sourceFaceComponents = {0, 0};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, otherSheetRail}, {0, 1},
+      completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 0);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::IntrinsicNode);
+  EXPECT_GE(result.addedArcs, 1);
+}
+
+TEST(FlowRepStrandsPhase15,
+     FeatureTerminationRejectsAuthoritativeRailFromAnotherComponent) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 3, 2;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 1.0, 0.0;
+  field.secondaryDirections.row(0) << -1.0, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, 0.0, 0.0;
+  field.secondaryDirections.row(1) << 0.0, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+
+  FlowRepArc source = endpoint_completion_arc(
+      0, 0, {0.60, 0.20, 0.20}, {0.40, 0.30, 0.30}, 0, 5);
+  source.startEmbeddedAnchor = true;
+  source.singularitySupport = true;
+  FlowRepArc otherComponentRail = endpoint_completion_arc(
+      1, 1, {0.25, 0.0, 0.75}, {0.75, 0.0, 0.25}, 1, 6, true);
+  otherComponentRail.boundaryRail = false;
+  otherComponentRail.hardFeatureRail = true;
+  otherComponentRail.startEmbeddedAnchor = true;
+  otherComponentRail.endEmbeddedAnchor = true;
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.followCompatibleHardFeatureRails = false;
+  tracing.hardFeatureEdges.insert(
+      directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
+  tracing.sourceFaceComponents = {0, 1};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, {source, otherComponentRail}, {0, 1},
+      completion);
+
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ(result.failure, "UnresolvedFlowlineEndpoints");
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 0);
+  EXPECT_EQ(result.unresolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedRequiredEndpoints, 1);
+  ASSERT_EQ(result.diagnostics.size(), 1U);
+  EXPECT_EQ(result.diagnostics.front().termination,
+            directional::geometry::TraceTerminationReason::Feature);
+  EXPECT_EQ(result.diagnostics.front().resolution,
+            directional::geometry::FlowRepEndpointResolution::NoNetworkCapture);
+  EXPECT_EQ(result.addedArcs, 0);
+}
+
+TEST(FlowRepStrandsPhase15,
+     DegenerateEdgeTipReorientsMatchedFamilyAndReachesRetainedNetwork) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0,
+      1.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 3, 2;
+
+  directional::fields::CrossFieldResult field;
+  field.primaryDirections.resize(2, 3);
+  field.secondaryDirections.resize(2, 3);
+  field.primaryDirections.row(0) << 1.0, 0.1, 0.0;
+  field.secondaryDirections.row(0) << -0.1, 1.0, 0.0;
+  field.primaryDirections.row(1) << 1.0, -1.2, 0.0;
+  field.secondaryDirections.row(1) << 1.2, 1.0, 0.0;
+  for (int face = 0; face < 2; ++face) {
+    field.primaryDirections.row(face).normalize();
+    field.secondaryDirections.row(face).normalize();
+  }
+  directional::fields::CrossFieldEdgeTransition transition;
+  transition.sourceVertex0 = 1;
+  transition.sourceVertex1 = 2;
+  transition.firstFace = 0;
+  transition.secondFace = 1;
+  transition.matching = 0;
+  transition.effort = 0.4;
+  field.edgeTransitions.push_back(transition);
+
+  std::vector<FlowRepArc> arcs;
+  FlowRepArc required = endpoint_completion_arc(
+      0, 0, {0.22, 0.30, 0.48}, {0.0, 0.5, 0.5}, 0, 5);
+  required.start =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          directional::geometry::SurfaceTracePoint{
+              required.sourceFace, required.startBarycentric});
+  required.end =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          directional::geometry::SurfaceTracePoint{
+              required.sourceFace, required.endBarycentric});
+  required.startEmbeddedAnchor = true;
+  required.singularitySupport = true;
+  arcs.push_back(required);
+
+  FlowRepArc retained = endpoint_completion_arc(
+      1, 1, {0.32, 0.02, 0.66}, {0.22, 0.12, 0.66}, 0, 6, true);
+  retained.start =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          directional::geometry::SurfaceTracePoint{
+              retained.sourceFace, retained.startBarycentric});
+  retained.end =
+      directional::geometry::surface_cell_tracing_detail::point_position(
+          vertices, faces,
+          directional::geometry::SurfaceTracePoint{
+              retained.sourceFace, retained.endBarycentric});
+  arcs.push_back(retained);
+
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.maxTraceLength = 2.0;
+  tracing.maxTraceSegments = 16;
+  tracing.sourceFaceComponents = {0, 0};
+  tracing.sourceFaceSheets = {5, 6};
+  directional::geometry::FlowRepEndpointCompletionOptions completion;
+  completion.requireAllEndpointsResolved = true;
+
+  const auto result = directional::geometry::complete_flow_rep_endpoints(
+      vertices, faces, field, tracing, arcs, {0, 1}, completion);
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(result.openEndpointsBefore, 1);
+  EXPECT_EQ(result.resolvedEndpoints, 1);
+  EXPECT_EQ(result.unresolvedEndpoints, 0);
+  ASSERT_EQ(result.addedArcs, 1);
+  ASSERT_EQ(result.arcs.size(), 3U);
+  const FlowRepArc &connector = result.arcs.back();
+  EXPECT_EQ(connector.sourceFace, 1);
+  EXPECT_EQ(connector.family, 0);
+  EXPECT_TRUE(connector.singularitySupport);
+  EXPECT_TRUE(connector.endEmbeddedAnchor);
+  EXPECT_TRUE(directional::geometry::flow_rep_detail::
+                  arc_has_complete_provenance(connector));
+}
+
+TEST(FlowRepStrandsPhase15,
      OpenHardFeatureEndpointsExtendWithoutRemovingAuthoritativeRail) {
   Eigen::MatrixXd vertices(3, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
@@ -440,6 +1274,392 @@ TEST(FlowRepStrandsPhase15,
 }
 
 TEST(FlowRepStrandsPhase15,
+     RailTruncatedGenericSupportDoesNotInheritLaterTerminalAnchor) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  directional::geometry::SurfaceCellNetwork network;
+  network.sourceFaceComponents = {3};
+  network.sourceFaceSheets = {5};
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 7;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.curveId = 11;
+  rail.component = 3;
+  directional::geometry::SurfaceCellRailSample railStart;
+  railStart.sourceFace = 0;
+  railStart.sourceEdge = 0;
+  railStart.railParameter = 0.0;
+  railStart.barycentric << 0.0, 0.5, 0.5;
+  railStart.position = 0.5 * (vertices.row(1) + vertices.row(2));
+  directional::geometry::SurfaceCellRailSample railEnd = railStart;
+  railEnd.railParameter = 1.0;
+  railEnd.barycentric << 0.0, 1.0, 0.0;
+  railEnd.position = vertices.row(1);
+  rail.samples = {railStart, railEnd};
+  network.authoritativeRails.push_back(rail);
+
+  directional::geometry::SurfaceTraceSeed seed;
+  seed.id = 0;
+  seed.sourceId = 0;
+  seed.provenance = directional::geometry::SurfaceSeedProvenance::Boundary;
+  seed.point.face = 0;
+  seed.point.barycentric << 1.0, 0.0, 0.0;
+  network.seeds.push_back(seed);
+  network.traces.resize(4);
+  directional::geometry::SurfaceTraceResult &trace = network.traces.front();
+  trace.termination = directional::geometry::TraceTerminationReason::Boundary;
+  directional::geometry::SurfaceTraceSegment prefix;
+  prefix.face = 0;
+  prefix.startBarycentric << 1.0, 0.0, 0.0;
+  prefix.endBarycentric = railStart.barycentric;
+  prefix.family = 0;
+  prefix.sign = 1;
+  directional::geometry::SurfaceTraceSegment railSuffix;
+  railSuffix.face = 0;
+  railSuffix.startBarycentric = railStart.barycentric;
+  railSuffix.endBarycentric = railEnd.barycentric;
+  railSuffix.family = 0;
+  railSuffix.sign = 1;
+  railSuffix.railId = rail.id;
+  railSuffix.curveId = rail.curveId;
+  railSuffix.railT0 = 0.0;
+  railSuffix.railT1 = 1.0;
+  trace.segments = {prefix, railSuffix};
+
+  const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+      vertices, faces, network);
+
+  ASSERT_EQ(arcs.size(), 2U);
+  const FlowRepArc &railArc = arcs[0];
+  const FlowRepArc &support = arcs[1];
+  EXPECT_TRUE(railArc.mandatoryRail);
+  EXPECT_TRUE(railArc.hardFeatureRail);
+  EXPECT_TRUE(support.layoutSupport);
+  EXPECT_FALSE(support.singularitySupport);
+  EXPECT_TRUE(support.startEmbeddedAnchor);
+  EXPECT_FALSE(support.endEmbeddedAnchor);
+  EXPECT_EQ(support.supportSegment, 0);
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                support, false),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                railArc, true));
+}
+
+TEST(FlowRepStrandsPhase15,
+     RailTruncatedSingularitySupportDoesNotInheritLaterTerminalAnchor) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  directional::geometry::SurfaceCellNetwork network;
+  network.sourceFaceComponents = {3};
+  network.sourceFaceSheets = {5};
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 7;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.curveId = 11;
+  rail.component = 3;
+  directional::geometry::SurfaceCellRailSample railStart;
+  railStart.sourceFace = 0;
+  railStart.sourceEdge = 0;
+  railStart.railParameter = 0.0;
+  railStart.barycentric << 0.0, 0.5, 0.5;
+  railStart.position = 0.5 * (vertices.row(1) + vertices.row(2));
+  directional::geometry::SurfaceCellRailSample railEnd = railStart;
+  railEnd.railParameter = 1.0;
+  railEnd.barycentric << 0.0, 1.0, 0.0;
+  railEnd.position = vertices.row(1);
+  rail.samples = {railStart, railEnd};
+  network.authoritativeRails.push_back(rail);
+
+  directional::geometry::SurfaceSingularitySeparatrix separatrix;
+  separatrix.sourceVertex = 0;
+  separatrix.singularityIndexNumerator = 1;
+  separatrix.expectedValence = 3;
+  separatrix.branch = 0;
+  separatrix.initialFace = 0;
+  separatrix.family = 0;
+  separatrix.sign = 1;
+  separatrix.trace.termination =
+      directional::geometry::TraceTerminationReason::Feature;
+  directional::geometry::SurfaceTraceSegment prefix;
+  prefix.face = 0;
+  prefix.startBarycentric << 1.0, 0.0, 0.0;
+  prefix.endBarycentric = railStart.barycentric;
+  prefix.family = 0;
+  prefix.sign = 1;
+  directional::geometry::SurfaceTraceSegment railSuffix;
+  railSuffix.face = 0;
+  railSuffix.startBarycentric = railStart.barycentric;
+  railSuffix.endBarycentric = railEnd.barycentric;
+  railSuffix.family = 0;
+  railSuffix.sign = 1;
+  railSuffix.railId = rail.id;
+  railSuffix.curveId = rail.curveId;
+  railSuffix.railT0 = 0.0;
+  railSuffix.railT1 = 1.0;
+  separatrix.trace.segments = {prefix, railSuffix};
+  network.singularSeparatrices.push_back(separatrix);
+
+  const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+      vertices, faces, network);
+
+  ASSERT_EQ(arcs.size(), 2U);
+  const FlowRepArc &railArc = arcs[0];
+  const FlowRepArc &support = arcs[1];
+  EXPECT_TRUE(railArc.mandatoryRail);
+  EXPECT_TRUE(railArc.hardFeatureRail);
+  EXPECT_TRUE(support.layoutSupport);
+  EXPECT_TRUE(support.singularitySupport);
+  EXPECT_TRUE(support.startEmbeddedAnchor);
+  EXPECT_FALSE(support.endEmbeddedAnchor);
+  EXPECT_EQ(support.supportSegment, 0);
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                support, false),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                railArc, true));
+}
+
+TEST(FlowRepStrandsPhase15,
+     IntraRingRailPrefixUsesCanonicalSingularitySpokeInsteadOfMicroLoop) {
+  TetrahedralSingularityFixture fixture =
+      tetrahedral_singularity_fixture();
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 7;
+  rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
+  rail.curveId = 11;
+  rail.component = 0;
+  directional::geometry::SurfaceCellRailSample railStart;
+  railStart.sourceFace = 0;
+  railStart.sourceEdge = 2;
+  railStart.railParameter = 0.0;
+  railStart.barycentric << 1.0, 0.0, 0.0;
+  railStart.position = fixture.vertices.row(0);
+  directional::geometry::SurfaceCellRailSample railEnd = railStart;
+  railEnd.railParameter = 1.0;
+  railEnd.barycentric << 0.0, 1.0, 0.0;
+  railEnd.position = fixture.vertices.row(1);
+  rail.samples = {railStart, railEnd};
+  fixture.network.authoritativeRails.push_back(rail);
+
+  auto &trace = fixture.network.singularSeparatrices.front().trace;
+  directional::geometry::SurfaceTraceSegment prefix;
+  prefix.face = 0;
+  prefix.startBarycentric << 1.0, 0.0, 0.0;
+  prefix.endBarycentric << 1.0 - 1.0e-6, 1.0e-6, 0.0;
+  prefix.family = 0;
+  prefix.sign = 1;
+  directional::geometry::SurfaceTraceSegment suffix;
+  suffix.face = 0;
+  suffix.startBarycentric = prefix.endBarycentric;
+  suffix.endBarycentric = railEnd.barycentric;
+  suffix.family = 0;
+  suffix.sign = 1;
+  suffix.railId = rail.id;
+  suffix.curveId = rail.curveId;
+  suffix.railT0 = 1.0e-6;
+  suffix.railT1 = 1.0;
+  trace.segments = {prefix, suffix};
+  trace.termination =
+      directional::geometry::TraceTerminationReason::Feature;
+
+  const auto input = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+
+  std::vector<const FlowRepArc *> branchArcs;
+  for (const FlowRepArc &arc : input.arcs) {
+    if (arc.singularitySupport && arc.family >= 0 &&
+        arc.supportTraceId == 0) {
+      branchArcs.push_back(&arc);
+    }
+  }
+  ASSERT_EQ(branchArcs.size(), 2U);
+  const FlowRepArc *inactivePrefix = nullptr;
+  const FlowRepArc *canonicalSpoke = nullptr;
+  for (const FlowRepArc *arc : branchArcs) {
+    if (arc->initiallyActive) {
+      canonicalSpoke = arc;
+    } else {
+      inactivePrefix = arc;
+    }
+  }
+  ASSERT_NE(inactivePrefix, nullptr);
+  ASSERT_NE(canonicalSpoke, nullptr);
+  EXPECT_LT((inactivePrefix->end - inactivePrefix->start).norm(), 1.0e-4);
+  EXPECT_GT((canonicalSpoke->end - canonicalSpoke->start).norm(), 1.0e-3);
+  EXPECT_TRUE(canonicalSpoke->startEmbeddedAnchor);
+  EXPECT_TRUE(canonicalSpoke->endEmbeddedAnchor);
+  EXPECT_TRUE(canonicalSpoke->startBarycentric.isApprox(
+      Eigen::RowVector3d(1.0, 0.0, 0.0), 0.0));
+
+  std::vector<FlowRepArc> active;
+  for (const FlowRepArc &arc : input.arcs) {
+    if (arc.initiallyActive) {
+      active.push_back(arc);
+    }
+  }
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arrangement_arcs(active), options);
+
+  int center = -1;
+  for (const auto &node : complex.nodes) {
+    if (node_is_source_vertex(node, fixture.faces, 0)) {
+      center = node.id;
+      break;
+    }
+  }
+  ASSERT_GE(center, 0);
+  int radialEdges = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.twin >= 0 && halfedge.id < halfedge.twin &&
+        halfedge.singularitySupport &&
+        (halfedge.from == center || halfedge.to == center)) {
+      ++radialEdges;
+    }
+  }
+  EXPECT_EQ(radialEdges, 3);
+  for (const auto &cell : complex.cells) {
+    bool touchesCenter = false;
+    for (const int halfedgeId : cell.halfedges) {
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      touchesCenter = touchesCenter || halfedge.from == center ||
+                      halfedge.to == center;
+    }
+    if (!cell.boundaryCycle && touchesCenter) {
+      EXPECT_TRUE(cell.disk);
+      EXPECT_EQ(cell.eulerCharacteristic, 1);
+    }
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
+     PreRingReturnRerootsRetainedSingularityContinuation) {
+  TetrahedralSingularityFixture fixture =
+      tetrahedral_singularity_fixture();
+
+  auto &trace = fixture.network.singularSeparatrices.front().trace;
+  directional::geometry::SurfaceTraceSegment outbound;
+  outbound.face = 0;
+  outbound.startBarycentric << 1.0, 0.0, 0.0;
+  outbound.endBarycentric << 1.0 - 3.0e-6, 2.4e-6, 6.0e-7;
+  outbound.family = 0;
+  outbound.sign = 1;
+
+  directional::geometry::SurfaceTraceSegment returning = outbound;
+  returning.startBarycentric = outbound.endBarycentric;
+  returning.endBarycentric << 1.0 - 2.0e-7, 1.6e-7, 4.0e-8;
+
+  directional::geometry::SurfaceTraceSegment continuation = outbound;
+  continuation.startBarycentric = returning.endBarycentric;
+  continuation.endBarycentric << 0.20, 0.40, 0.40;
+
+  trace.segments = {outbound, returning, continuation};
+  trace.termination = directional::geometry::TraceTerminationReason::Budget;
+  trace.length = 0.0;
+  for (const auto &segment : trace.segments) {
+    const auto start =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            fixture.vertices, fixture.faces,
+            directional::geometry::SurfaceTracePoint{
+                segment.face, segment.startBarycentric});
+    const auto end =
+        directional::geometry::surface_cell_tracing_detail::point_position(
+            fixture.vertices, fixture.faces,
+            directional::geometry::SurfaceTracePoint{
+                segment.face, segment.endBarycentric});
+    trace.length += (end - start).norm();
+  }
+
+  const auto input = directional::geometry::build_flow_rep_selection_input(
+      fixture.vertices, fixture.faces, fixture.targetSize, fixture.network,
+      0.5);
+
+  std::vector<const FlowRepArc *> branchArcs;
+  for (const FlowRepArc &arc : input.arcs) {
+    if (arc.singularitySupport && arc.family >= 0 &&
+        arc.supportTraceId == 0) {
+      branchArcs.push_back(&arc);
+    }
+  }
+  ASSERT_EQ(branchArcs.size(), 3U);
+  std::sort(branchArcs.begin(), branchArcs.end(),
+            [](const FlowRepArc *first, const FlowRepArc *second) {
+              return first->supportSegment < second->supportSegment;
+            });
+  EXPECT_FALSE(branchArcs[0]->initiallyActive);
+  EXPECT_FALSE(branchArcs[1]->initiallyActive);
+  ASSERT_TRUE(branchArcs[2]->initiallyActive);
+  EXPECT_EQ(branchArcs[2]->supportSegment, 2);
+  EXPECT_TRUE(branchArcs[2]->startEmbeddedAnchor);
+  EXPECT_TRUE(branchArcs[2]->start.isApprox(fixture.vertices.row(0), 0.0));
+  EXPECT_TRUE(branchArcs[2]->startBarycentric.isApprox(
+      Eigen::RowVector3d(1.0, 0.0, 0.0), 0.0));
+  EXPECT_TRUE(branchArcs[2]->endBarycentric.isApprox(
+      continuation.endBarycentric, 0.0));
+
+  std::vector<FlowRepArc> active;
+  for (const FlowRepArc &arc : input.arcs) {
+    if (arc.initiallyActive) {
+      active.push_back(arc);
+    }
+  }
+  directional::geometry::SurfaceArrangementOptions options;
+  options.insertBoundaryRails = false;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arrangement_arcs(active), options);
+
+  int center = -1;
+  for (const auto &node : complex.nodes) {
+    if (node_is_source_vertex(node, fixture.faces, 0)) {
+      ASSERT_EQ(center, -1);
+      center = node.id;
+    }
+  }
+  ASSERT_GE(center, 0);
+
+  int radialEdges = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.twin >= 0 && halfedge.id < halfedge.twin &&
+        halfedge.singularitySupport &&
+        (halfedge.from == center || halfedge.to == center)) {
+      ++radialEdges;
+    }
+  }
+  EXPECT_EQ(radialEdges, 3);
+
+  for (const auto &cell : complex.cells) {
+    bool touchesCenter = false;
+    for (std::size_t index = 0; index < cell.halfedges.size(); ++index) {
+      const int halfedgeId = cell.halfedges[index];
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      touchesCenter = touchesCenter || halfedge.from == center ||
+                      halfedge.to == center;
+      if (!cell.boundaryCycle && !cell.halfedges.empty()) {
+        const int nextId =
+            cell.halfedges[(index + 1) % cell.halfedges.size()];
+        EXPECT_NE(halfedge.twin, nextId);
+      }
+    }
+    if (!cell.boundaryCycle && touchesCenter) {
+      EXPECT_TRUE(cell.disk);
+      EXPECT_EQ(cell.eulerCharacteristic, 1);
+    }
+  }
+}
+
+TEST(FlowRepStrandsPhase15,
      IndexAwareSingularitySeparatrixBecomesEmbeddedLayoutSupport) {
   Eigen::MatrixXd vertices(3, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
@@ -490,6 +1710,96 @@ TEST(FlowRepStrandsPhase15,
   EXPECT_EQ(arcs.front().sourceComponent, 3);
   EXPECT_EQ(arcs.front().sourceSheet, 5);
   EXPECT_NEAR((arcs.front().start - vertices.row(0)).norm(), 0.0, 1.0e-12);
+}
+
+TEST(FlowRepStrandsPhase15,
+     NonemptyDegenerateSingularitySeparatrixRemainsCompletionObligation) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  directional::geometry::SurfaceCellNetwork network;
+  network.sourceFaceComponents = {3};
+  network.sourceFaceSheets = {5};
+
+  directional::geometry::SurfaceSingularitySeparatrix separatrix;
+  separatrix.sourceVertex = 0;
+  separatrix.singularityIndexNumerator = 1;
+  separatrix.expectedValence = 3;
+  separatrix.branch = 0;
+  separatrix.initialFace = 0;
+  separatrix.family = 0;
+  separatrix.sign = 1;
+  separatrix.trace.termination =
+      directional::geometry::TraceTerminationReason::Degenerate;
+
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 1.0, 0.0, 0.0;
+  segment.endBarycentric << 0.25, 0.50, 0.25;
+  segment.family = 0;
+  segment.sign = 1;
+  separatrix.trace.segments.push_back(segment);
+  separatrix.trace.length =
+      (directional::geometry::surface_cell_tracing_detail::point_position(
+           vertices, faces,
+           directional::geometry::SurfaceTracePoint{
+               0, segment.endBarycentric}) -
+       vertices.row(0))
+          .norm();
+  network.singularSeparatrices.push_back(separatrix);
+
+  const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+      vertices, faces, network);
+
+  ASSERT_EQ(arcs.size(), 1U);
+  EXPECT_TRUE(arcs.front().layoutSupport);
+  EXPECT_TRUE(arcs.front().singularitySupport);
+  EXPECT_TRUE(arcs.front().startEmbeddedAnchor);
+  EXPECT_FALSE(arcs.front().endEmbeddedAnchor);
+  EXPECT_EQ(arcs.front().supportSeedId, 0);
+  EXPECT_EQ(arcs.front().sourceFace, 0);
+  EXPECT_EQ(arcs.front().sourceComponent, 3);
+  EXPECT_EQ(arcs.front().sourceSheet, 5);
+}
+
+TEST(FlowRepStrandsPhase15,
+     InvalidSingularitySeparatrixMetadataStillFailsClosed) {
+  Eigen::MatrixXd vertices(3, 3);
+  vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  directional::geometry::SurfaceSingularitySeparatrix separatrix;
+  separatrix.sourceVertex = 0;
+  separatrix.singularityIndexNumerator = 1;
+  separatrix.expectedValence = 3;
+  separatrix.branch = 0;
+  separatrix.initialFace = 0;
+  separatrix.family = 0;
+  separatrix.sign = 1;
+  directional::geometry::SurfaceTraceSegment segment;
+  segment.face = 0;
+  segment.startBarycentric << 1.0, 0.0, 0.0;
+  segment.endBarycentric << 0.25, 0.50, 0.25;
+  segment.family = 0;
+  segment.sign = 1;
+  separatrix.trace.segments.push_back(segment);
+
+  for (const auto termination :
+       {directional::geometry::TraceTerminationReason::FieldMetadata,
+        directional::geometry::TraceTerminationReason::SourceSheet}) {
+    directional::geometry::SurfaceCellNetwork network;
+    network.sourceFaceComponents = {3};
+    network.sourceFaceSheets = {5};
+    separatrix.trace.termination = termination;
+    network.singularSeparatrices = {separatrix};
+
+    const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
+        vertices, faces, network);
+    EXPECT_TRUE(arcs.empty());
+  }
 }
 
 TEST(FlowRepStrandsPhase15,
@@ -637,6 +1947,99 @@ TEST(FlowRepStrandsPhase15,
     }
   }
   EXPECT_EQ(centerCells, 3);
+}
+
+
+TEST(FlowRepStrandsPhase15,
+     IntrinsicEndpointKeyMatchesSharedSourceEdgeAcrossFaceCharts) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           1, 0, 3;
+
+  FlowRepArc first;
+  first.sourceFace = 0;
+  first.sourceComponent = 7;
+  first.startBarycentric << 0.25, 0.75, 0.0;
+  first.endBarycentric << 0.10, 0.90, 0.0;
+
+  FlowRepArc second;
+  second.sourceFace = 1;
+  second.sourceComponent = 7;
+  second.startBarycentric << 0.75, 0.25, 0.0;
+  second.endBarycentric << 0.90, 0.10, 0.0;
+
+  directional::geometry::flow_rep_detail::assign_intrinsic_endpoint_keys(
+      first, faces);
+  directional::geometry::flow_rep_detail::assign_intrinsic_endpoint_keys(
+      second, faces);
+
+  ASSERT_TRUE(first.startIntrinsicEndpointKeyValid);
+  ASSERT_TRUE(second.startIntrinsicEndpointKeyValid);
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, true),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, true));
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, false),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, false));
+}
+
+TEST(FlowRepStrandsPhase15,
+     IntrinsicEndpointKeySeparatesWorldCloseSurfacePoints) {
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+
+  FlowRepArc first;
+  first.sourceFace = 0;
+  first.sourceComponent = 2;
+  first.start << 0.0, 0.0, 0.0;
+  first.end << 1.0, 0.0, 0.0;
+  first.startBarycentric << 1.0 - 1.0e-8, 1.0e-8, 0.0;
+  first.endBarycentric << 0.0, 1.0, 0.0;
+
+  FlowRepArc second = first;
+  second.start << 4.0e-10, 0.0, 0.0;
+  second.startBarycentric << 1.0 - 2.0e-8, 2.0e-8, 0.0;
+
+  // The legacy world-space key rounds these distinct intrinsic points into
+  // one endpoint. Production arcs must instead use their source-mesh key.
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, true),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, true));
+
+  directional::geometry::flow_rep_detail::assign_intrinsic_endpoint_keys(
+      first, faces);
+  directional::geometry::flow_rep_detail::assign_intrinsic_endpoint_keys(
+      second, faces);
+
+  ASSERT_TRUE(first.startIntrinsicEndpointKeyValid);
+  ASSERT_TRUE(second.startIntrinsicEndpointKeyValid);
+  EXPECT_NE(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, true),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, true));
+}
+
+TEST(FlowRepStrandsPhase15,
+     ManualArcEndpointKeyRetainsWorldSpaceFallback) {
+  FlowRepArc first = arc(0, 1.0, 2.0, 3.0, 4.0);
+  FlowRepArc second = first;
+  first.sourceComponent = 5;
+  second.sourceComponent = 5;
+
+  EXPECT_FALSE(first.startIntrinsicEndpointKeyValid);
+  EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, true),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, true));
+
+  second.sourceComponent = 6;
+  EXPECT_NE(directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                first, true),
+            directional::geometry::flow_rep_detail::embedded_endpoint_key(
+                second, true));
 }
 
 TEST(FlowRepStrandsPhase15, SignedAffinityCuesAreDeterministic) {
