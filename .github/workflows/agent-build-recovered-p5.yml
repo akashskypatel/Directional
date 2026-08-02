@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - TODO
       - MILESTONE_G_TODO.md
+      - .agents/Directional/Milestone_G_P5_Duplicate_Stitched_Quad_Code_Build_Plan.md
   pull_request:
     branches:
       - surface_cell_quad
