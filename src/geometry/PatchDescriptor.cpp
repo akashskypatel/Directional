@@ -215,6 +215,270 @@ bool source_vertex_is_in_cell(const int vertex,
 
 } // namespace directional::geometry::patch_descriptor_detail
 
+
+namespace directional::geometry::patch_descriptor_detail {
+
+std::int64_t quantized_parameter(const double value) {
+  return static_cast<std::int64_t>(std::llround(value * 1.0e10));
+}
+
+void append_identity(std::vector<std::int64_t> &destination,
+                     const SurfaceCellCanonicalIdentity &identity) {
+  destination.push_back(static_cast<std::int64_t>(identity.values.size()));
+  destination.insert(destination.end(), identity.values.begin(),
+                     identity.values.end());
+}
+
+SurfaceCellCanonicalIdentity source_point_identity(
+    const Eigen::MatrixXi &F, const int face,
+    const Eigen::RowVector3d &barycentric, const int component,
+    const int sheet) {
+  SurfaceCellCanonicalIdentity result;
+  if (face < 0 || face >= F.rows() || F.cols() != 3 ||
+      !barycentric.allFinite()) {
+    return result;
+  }
+  std::vector<std::pair<int, std::int64_t>> weights;
+  weights.reserve(3);
+  for (int corner = 0; corner < 3; ++corner) {
+    weights.emplace_back(F(face, corner),
+                         quantized_parameter(barycentric[corner]));
+  }
+  std::sort(weights.begin(), weights.end());
+  result.valid = true;
+  result.values = {component, sheet};
+  for (const auto &[vertex, weight] : weights) {
+    result.values.push_back(vertex);
+    result.values.push_back(weight);
+  }
+  return result;
+}
+
+SurfaceCellCanonicalIdentity arrangement_node_identity(
+    const SurfaceArrangementNode &node, const Eigen::MatrixXi &F,
+    const int component, const int sheet) {
+  std::vector<SurfaceCellCanonicalIdentity> occurrences;
+  occurrences.push_back(
+      source_point_identity(F, node.sourceFace, node.barycentric, component,
+                            sheet));
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    occurrences.push_back(source_point_identity(
+        F, occurrence.sourceFace, occurrence.barycentric, component, sheet));
+  }
+  occurrences.erase(
+      std::remove_if(occurrences.begin(), occurrences.end(),
+                     [](const SurfaceCellCanonicalIdentity &identity) {
+                       return !identity.valid;
+                     }),
+      occurrences.end());
+  std::sort(occurrences.begin(), occurrences.end());
+  occurrences.erase(std::unique(occurrences.begin(), occurrences.end()),
+                    occurrences.end());
+
+  SurfaceCellCanonicalIdentity result;
+  if (occurrences.empty()) {
+    return result;
+  }
+  result.valid = true;
+  result.values = {component, sheet,
+                   static_cast<std::int64_t>(occurrences.size())};
+  for (const SurfaceCellCanonicalIdentity &occurrence : occurrences) {
+    append_identity(result.values, occurrence);
+  }
+  return result;
+}
+
+std::vector<std::int64_t> provenance_semantics(
+    const SurfaceArrangementProvenance &provenance) {
+  return {
+      provenance.family,
+      provenance.featureClass,
+      provenance.hardFeature ? 1 : 0,
+      provenance.layoutSupport ? 1 : 0,
+      provenance.singularitySupport ? 1 : 0,
+      provenance.railId,
+      provenance.curveId,
+      provenance.sourceComponent,
+      provenance.sourceSheet,
+      provenance.proposalSide,
+      provenance.proposalBoundarySegment,
+      quantized_parameter(std::min(provenance.sourceT0,
+                                   provenance.sourceT1)),
+      quantized_parameter(std::max(provenance.sourceT0,
+                                   provenance.sourceT1)),
+      quantized_parameter(std::min(provenance.railT0,
+                                   provenance.railT1)),
+      quantized_parameter(std::max(provenance.railT0,
+                                   provenance.railT1)),
+  };
+}
+
+std::vector<std::int64_t> halfedge_identity(
+    const SurfaceCellComplex &complex,
+    const SurfaceArrangementHalfedge &edge, const Eigen::MatrixXi &F,
+    const bool directed) {
+  const SurfaceArrangementNode *from = find_node(complex, edge.from);
+  const SurfaceArrangementNode *to = find_node(complex, edge.to);
+  if (from == nullptr || to == nullptr) {
+    return {};
+  }
+  SurfaceCellCanonicalIdentity fromIdentity = arrangement_node_identity(
+      *from, F, edge.sourceComponent, edge.sourceSheet);
+  SurfaceCellCanonicalIdentity toIdentity = arrangement_node_identity(
+      *to, F, edge.sourceComponent, edge.sourceSheet);
+  if (!fromIdentity.valid || !toIdentity.valid) {
+    return {};
+  }
+  if (!directed && toIdentity < fromIdentity) {
+    std::swap(fromIdentity, toIdentity);
+  }
+
+  std::vector<std::vector<std::int64_t>> provenance;
+  provenance.reserve(edge.provenance.size());
+  for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+    provenance.push_back(provenance_semantics(entry));
+  }
+  std::sort(provenance.begin(), provenance.end());
+
+  std::vector<std::int64_t> result;
+  append_identity(result, fromIdentity);
+  append_identity(result, toIdentity);
+  result.insert(result.end(),
+                {edge.family,
+                 edge.featureClass,
+                 edge.hardFeature ? 1 : 0,
+                 edge.layoutSupport ? 1 : 0,
+                 edge.singularitySupport ? 1 : 0,
+                 edge.railId,
+                 edge.curveId,
+                 edge.sourceComponent,
+                 edge.sourceSheet,
+                 edge.proposalSide,
+                 edge.proposalBoundarySegment});
+  if (directed) {
+    result.push_back(quantized_parameter(edge.sourceT0));
+    result.push_back(quantized_parameter(edge.sourceT1));
+    result.push_back(quantized_parameter(edge.railT0));
+    result.push_back(quantized_parameter(edge.railT1));
+  } else {
+    result.push_back(quantized_parameter(
+        std::min(edge.sourceT0, edge.sourceT1)));
+    result.push_back(quantized_parameter(
+        std::max(edge.sourceT0, edge.sourceT1)));
+    result.push_back(
+        quantized_parameter(std::min(edge.railT0, edge.railT1)));
+    result.push_back(
+        quantized_parameter(std::max(edge.railT0, edge.railT1)));
+  }
+  result.push_back(static_cast<std::int64_t>(provenance.size()));
+  for (const std::vector<std::int64_t> &entry : provenance) {
+    result.push_back(static_cast<std::int64_t>(entry.size()));
+    result.insert(result.end(), entry.begin(), entry.end());
+  }
+  return result;
+}
+
+std::vector<std::vector<std::int64_t>> canonical_cycle_rotation(
+    const std::vector<std::vector<std::int64_t>> &cycle) {
+  if (cycle.empty()) {
+    return {};
+  }
+  std::vector<std::vector<std::int64_t>> best;
+  for (std::size_t start = 0; start < cycle.size(); ++start) {
+    std::vector<std::vector<std::int64_t>> candidate;
+    candidate.reserve(cycle.size());
+    for (std::size_t offset = 0; offset < cycle.size(); ++offset) {
+      candidate.push_back(cycle[(start + offset) % cycle.size()]);
+    }
+    if (best.empty() || candidate < best) {
+      best = std::move(candidate);
+    }
+  }
+  return best;
+}
+
+SurfaceCellCanonicalIdentity flatten_identities(
+    const std::vector<std::vector<std::int64_t>> &identities) {
+  SurfaceCellCanonicalIdentity result;
+  if (identities.empty()) {
+    return result;
+  }
+  result.valid = true;
+  result.values.push_back(static_cast<std::int64_t>(identities.size()));
+  for (const std::vector<std::int64_t> &identity : identities) {
+    result.values.push_back(static_cast<std::int64_t>(identity.size()));
+    result.values.insert(result.values.end(), identity.begin(), identity.end());
+  }
+  return result;
+}
+
+SurfaceCellCanonicalIdentity source_support_identity(
+    const SurfaceArrangementCell &cell, const Eigen::MatrixXi &F) {
+  std::vector<std::vector<std::int64_t>> faces;
+  std::vector<int> sourceFaces = cell.sourceFaces;
+  if (sourceFaces.empty() && cell.sourceFace >= 0) {
+    sourceFaces.push_back(cell.sourceFace);
+  }
+  for (const int face : sourceFaces) {
+    if (face < 0 || face >= F.rows() || F.cols() != 3) {
+      return {};
+    }
+    std::vector<std::int64_t> vertices = {
+        F(face, 0), F(face, 1), F(face, 2)};
+    std::sort(vertices.begin(), vertices.end());
+    faces.push_back(std::move(vertices));
+  }
+  std::sort(faces.begin(), faces.end());
+  faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
+  return flatten_identities(faces);
+}
+
+SurfaceCellDomainIdentity build_domain_identity(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
+    const std::vector<int> &boundary, const Eigen::MatrixXi &F) {
+  SurfaceCellDomainIdentity result;
+  if (boundary.empty()) {
+    return result;
+  }
+  std::vector<std::vector<std::int64_t>> directed;
+  std::vector<std::vector<std::int64_t>> undirected;
+  std::set<int> components;
+  std::set<int> sheets;
+  for (const int halfedgeId : boundary) {
+    if (halfedgeId < 0 ||
+        halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+      return {};
+    }
+    const SurfaceArrangementHalfedge &edge =
+        complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    std::vector<std::int64_t> directedIdentity =
+        halfedge_identity(complex, edge, F, true);
+    std::vector<std::int64_t> undirectedIdentity =
+        halfedge_identity(complex, edge, F, false);
+    if (directedIdentity.empty() || undirectedIdentity.empty()) {
+      return {};
+    }
+    directed.push_back(std::move(directedIdentity));
+    undirected.push_back(std::move(undirectedIdentity));
+    components.insert(edge.sourceComponent);
+    sheets.insert(edge.sourceSheet);
+  }
+  std::sort(undirected.begin(), undirected.end());
+  result.orientedBoundary =
+      flatten_identities(canonical_cycle_rotation(directed));
+  result.undirectedBoundary = flatten_identities(undirected);
+  result.sourceSupport = source_support_identity(cell, F);
+  result.sourceComponent =
+      components.size() == 1U ? *components.begin() : -2;
+  result.sourceSheet = sheets.size() == 1U ? *sheets.begin() : -2;
+  result.valid = result.orientedBoundary.valid &&
+                 result.undirectedBoundary.valid &&
+                 result.sourceSupport.valid;
+  return result;
+}
+
+} // namespace directional::geometry::patch_descriptor_detail
+
 namespace directional::geometry {
 
 PatchDescriptor derive_patch_descriptor(
@@ -268,6 +532,11 @@ PatchDescriptor derive_patch_descriptor(
     patch.boundaryVertices.push_back(node->id);
     patch.boundaryRailIds.push_back(edge.railId);
     patch.boundaryCurveIds.push_back(edge.curveId);
+    patch.boundaryComponents.push_back(edge.sourceComponent);
+    patch.boundarySheets.push_back(edge.sourceSheet);
+    patch.boundaryNodeIdentities.push_back(
+        patch_descriptor_detail::arrangement_node_identity(
+            *node, F, edge.sourceComponent, edge.sourceSheet));
     patch.boundaryProvenance.push_back(
         patch_descriptor_detail::node_surface_point(*node, V, F, edge));
     patch.hardFeatureCrossing =
@@ -279,6 +548,8 @@ PatchDescriptor derive_patch_descriptor(
     }
   }
 
+  patch.domainIdentity = patch_descriptor_detail::build_domain_identity(
+      complex, cell, boundary, F);
   descriptor.featureConstraintsValid = !patch.hardFeatureCrossing;
   const int singularCount =
       std::min(options.singularCycles.size(), options.singularIndices.size());
@@ -378,6 +649,99 @@ PatchDescriptorSet derive_patch_descriptors(
     }
     result.descriptors.push_back(std::move(descriptor));
   }
+
+  std::sort(result.descriptors.begin(), result.descriptors.end(),
+            [](const PatchDescriptor &lhs, const PatchDescriptor &rhs) {
+              if (lhs.patch.domainIdentity < rhs.patch.domainIdentity) {
+                return true;
+              }
+              if (rhs.patch.domainIdentity < lhs.patch.domainIdentity) {
+                return false;
+              }
+              return lhs.cellId < rhs.cellId;
+            });
+
+  std::map<SurfaceCellDomainIdentity, int> orientedOwner;
+  using UndirectedOwnerKey =
+      std::tuple<int, int, SurfaceCellCanonicalIdentity,
+                 SurfaceCellCanonicalIdentity>;
+  std::map<UndirectedOwnerKey, int> undirectedOwner;
+  for (int descriptorIndex = 0;
+       descriptorIndex < static_cast<int>(result.descriptors.size());
+       ++descriptorIndex) {
+    const PatchDescriptor &descriptor =
+        result.descriptors[static_cast<std::size_t>(descriptorIndex)];
+    const SurfaceCellDomainIdentity &identity = descriptor.patch.domainIdentity;
+    if (!identity.valid) {
+      result.ownershipConflict.classification =
+          SurfaceCellOwnershipConflictClass::InvalidDomainIdentity;
+      result.ownershipConflict.firstPatch = descriptor.cellId;
+      result.ownershipConflict.firstDomainHash = identity.hash();
+      break;
+    }
+    const auto [oriented, inserted] =
+        orientedOwner.emplace(identity, descriptorIndex);
+    if (!inserted) {
+      const PatchDescriptor &first = result.descriptors[
+          static_cast<std::size_t>(oriented->second)];
+      result.ownershipConflict.classification =
+          SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain;
+      result.ownershipConflict.firstPatch = first.cellId;
+      result.ownershipConflict.secondPatch = descriptor.cellId;
+      result.ownershipConflict.firstDomainHash = first.patch.domainIdentity.hash();
+      result.ownershipConflict.secondDomainHash = identity.hash();
+      result.ownershipConflict.firstBoundaryNodeHash =
+          first.patch.domainIdentity.orientedBoundary.hash();
+      result.ownershipConflict.secondBoundaryNodeHash =
+          identity.orientedBoundary.hash();
+      result.ownershipConflict.firstBoundaryHalfedgeHash =
+          first.patch.domainIdentity.undirectedBoundary.hash();
+      result.ownershipConflict.secondBoundaryHalfedgeHash =
+          identity.undirectedBoundary.hash();
+      result.ownershipConflict.firstSourceSupportHash =
+          first.patch.domainIdentity.sourceSupport.hash();
+      result.ownershipConflict.secondSourceSupportHash =
+          identity.sourceSupport.hash();
+      result.ownershipConflict.firstComponent =
+          first.patch.domainIdentity.sourceComponent;
+      result.ownershipConflict.firstSheet =
+          first.patch.domainIdentity.sourceSheet;
+      result.ownershipConflict.secondComponent = identity.sourceComponent;
+      result.ownershipConflict.secondSheet = identity.sourceSheet;
+      break;
+    }
+
+    const UndirectedOwnerKey key{
+        identity.sourceComponent, identity.sourceSheet,
+        identity.sourceSupport, identity.undirectedBoundary};
+    const auto [undirected, undirectedInserted] =
+        undirectedOwner.emplace(key, descriptorIndex);
+    if (!undirectedInserted) {
+      const PatchDescriptor &first = result.descriptors[
+          static_cast<std::size_t>(undirected->second)];
+      result.ownershipConflict.classification =
+          SurfaceCellOwnershipConflictClass::OverlappingUndirectedBoundary;
+      result.ownershipConflict.firstPatch = first.cellId;
+      result.ownershipConflict.secondPatch = descriptor.cellId;
+      result.ownershipConflict.firstDomainHash = first.patch.domainIdentity.hash();
+      result.ownershipConflict.secondDomainHash = identity.hash();
+      result.ownershipConflict.firstBoundaryHalfedgeHash =
+          first.patch.domainIdentity.undirectedBoundary.hash();
+      result.ownershipConflict.secondBoundaryHalfedgeHash =
+          identity.undirectedBoundary.hash();
+      result.ownershipConflict.firstSourceSupportHash =
+          first.patch.domainIdentity.sourceSupport.hash();
+      result.ownershipConflict.secondSourceSupportHash =
+          identity.sourceSupport.hash();
+      result.ownershipConflict.firstComponent =
+          first.patch.domainIdentity.sourceComponent;
+      result.ownershipConflict.firstSheet =
+          first.patch.domainIdentity.sourceSheet;
+      result.ownershipConflict.secondComponent = identity.sourceComponent;
+      result.ownershipConflict.secondSheet = identity.sourceSheet;
+      break;
+    }
+  }
   return result;
 }
 
@@ -446,6 +810,27 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       prepared, V, F, options.descriptorOptions);
   if (result.descriptors.descriptors.empty()) {
     result.failure = "NoPatchDescriptors";
+    result.assembly.failure = result.failure;
+    return result;
+  }
+  if (result.descriptors.ownershipConflict.active()) {
+    result.assembly.ownershipConflict =
+        result.descriptors.ownershipConflict;
+    const SurfaceCellOwnershipConflict &conflict =
+        result.descriptors.ownershipConflict;
+    std::string prefix = "InvalidArrangementDomainIdentity";
+    if (conflict.classification ==
+        SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain) {
+      prefix = "DuplicateArrangementDomain";
+    } else if (conflict.classification ==
+               SurfaceCellOwnershipConflictClass::
+                   OverlappingUndirectedBoundary) {
+      prefix = "OverlappingArrangementBoundary";
+    }
+    result.failure = prefix + ";firstPatch=" +
+                     std::to_string(conflict.firstPatch) +
+                     ";secondPatch=" +
+                     std::to_string(conflict.secondPatch);
     result.assembly.failure = result.failure;
     return result;
   }

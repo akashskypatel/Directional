@@ -60,6 +60,7 @@ struct PatchDescriptor {
 
 struct PatchDescriptorSet {
   std::vector<PatchDescriptor> descriptors;
+  SurfaceCellOwnershipConflict ownershipConflict;
   std::vector<int> unresolvedSingularVertices;
   int feasible = 0;
   int rejected = 0;

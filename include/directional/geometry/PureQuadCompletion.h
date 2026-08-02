@@ -27,6 +27,7 @@
 
 #include <directional/meshing/PatchRegion.h>
 #include <directional/geometry/SurfacePoint.h>
+#include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/validation/MeshValidator.h>
 
 namespace directional::geometry {
@@ -67,8 +68,22 @@ struct PureQuadFeatureIntervalLineage {
   [[nodiscard]] bool valid() const { return (railId >= 0 || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
 };
 struct PureQuadVertexLineage {
-  int outputVertex = -1; PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle; SurfacePoint sourcePoint; PureQuadFeatureIntervalLineage featureInterval;
-  [[nodiscard]] bool valid() const { return outputVertex >= 0 && ((kind == PureQuadVertexLineageKind::SourceTriangle && sourcePoint.valid()) || (kind == PureQuadVertexLineageKind::OrderedFeatureInterval && featureInterval.valid())); }
+  int outputVertex = -1;
+  PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle;
+  SurfacePoint sourcePoint;
+  PureQuadFeatureIntervalLineage featureInterval;
+  PureQuadStitchIdentity stitchIdentity;
+  int sourcePatch = -1;
+  int localVertex = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  [[nodiscard]] bool valid() const {
+    return outputVertex >= 0 &&
+           ((kind == PureQuadVertexLineageKind::SourceTriangle &&
+             sourcePoint.valid()) ||
+            (kind == PureQuadVertexLineageKind::OrderedFeatureInterval &&
+             featureInterval.valid()));
+  }
 };
 struct PureQuadFaceLineage {
   int outputQuad = -1; int sourcePatch = -1; PureQuadCompletionBackend operation = PureQuadCompletionBackend::ClosedForm; int operationLocalQuad = -1;
@@ -98,6 +113,10 @@ struct PureQuadPatch {
   std::vector<SurfacePoint> boundaryProvenance;
   std::vector<int> boundaryRailIds;
   std::vector<int> boundaryCurveIds;
+  std::vector<int> boundaryComponents;
+  std::vector<int> boundarySheets;
+  std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
+  SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> sideEdgeCounts;
   std::vector<int> turns;
   // Source triangles covered by this patch. Completion uses this set to
@@ -121,6 +140,7 @@ struct PureQuadPatchAdmissibility {
 
 struct PureQuadMesh {
   int sourcePatch = -1;
+  SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> vertices;
   Eigen::MatrixXd vertexPositions;
   std::vector<SurfacePoint> vertexProvenance;
@@ -158,6 +178,7 @@ struct PureQuadAssemblyResult {
   int connectedComponents = 0;
   int boundaryLoopCount = 0;
   int eulerCharacteristic = 0;
+  SurfaceCellOwnershipConflict ownershipConflict;
   std::string failure;
 };
 

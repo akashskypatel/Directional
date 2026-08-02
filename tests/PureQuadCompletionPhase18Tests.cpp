@@ -951,9 +951,12 @@ TEST(PureQuadCompletionPhase18,
       {first.mesh, second});
 
   EXPECT_FALSE(assembly.success);
-  EXPECT_EQ(assembly.failure,
-            "DuplicateStitchedQuad:firstPatch=41;firstLocalQuad=0;"
-            "secondPatch=73;secondLocalQuad=0;globalVertices=0,1,2,3");
+  EXPECT_TRUE(assembly.failure.starts_with(
+      "DuplicateStitchedQuad:firstPatch=41;firstLocalQuad=0;"
+      "secondPatch=73;secondLocalQuad=0;globalVertices=0,1,2,3"));
+  EXPECT_NE(std::string::npos,
+            assembly.failure.find(";classification="));
+  EXPECT_TRUE(assembly.ownershipConflict.active());
 }
 
 TEST(PureQuadCompletionPhase18,
@@ -974,4 +977,80 @@ TEST(PureQuadCompletionPhase18,
 
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("InconsistentSharedBoundaryPosition", assembly.failure);
+}
+
+
+TEST(PureQuadCompletionPhase18,
+     CoincidentPositionsOnDistinctSheetsDoNotMerge) {
+  auto firstPatch = patch({1, 1, 1, 1});
+  auto secondPatch = firstPatch;
+  for (auto &point : firstPatch.boundaryProvenance) {
+    point.component = 7;
+    point.sheet = 11;
+  }
+  for (auto &point : secondPatch.boundaryProvenance) {
+    point.component = 7;
+    point.sheet = 19;
+  }
+  directional::geometry::PureQuadCompletionOptions firstOptions;
+  firstOptions.sourcePatch = 101;
+  directional::geometry::PureQuadCompletionOptions secondOptions;
+  secondOptions.sourcePatch = 205;
+  const auto first = directional::geometry::complete_pure_quad_patch(
+      firstPatch, firstOptions);
+  const auto second = directional::geometry::complete_pure_quad_patch(
+      secondPatch, secondOptions);
+  ASSERT_TRUE(first.success);
+  ASSERT_TRUE(second.success);
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first.mesh, second.mesh});
+
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+  EXPECT_EQ(8U, assembly.mesh.vertices.size());
+  EXPECT_EQ(2U, assembly.mesh.quads.size());
+  EXPECT_EQ(2, assembly.connectedComponents);
+  EXPECT_EQ(0, assembly.mergedBoundaryVertices);
+}
+
+TEST(PureQuadCompletionPhase18,
+     CoincidentGeneratedInteriorsRemainPatchLocal) {
+  directional::geometry::PureQuadCompletionOptions firstOptions;
+  firstOptions.sourcePatch = 301;
+  directional::geometry::PureQuadCompletionOptions secondOptions;
+  secondOptions.sourcePatch = 509;
+  const auto first = directional::geometry::complete_pure_quad_patch(
+      patch({2, 2, 2, 2}), firstOptions);
+  const auto second = directional::geometry::complete_pure_quad_patch(
+      patch({2, 2, 2, 2}), secondOptions);
+  ASSERT_TRUE(first.success);
+  ASSERT_TRUE(second.success);
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first.mesh, second.mesh});
+
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+  const int expected = static_cast<int>(first.mesh.vertices.size() +
+                                        second.mesh.vertices.size() -
+                                        first.mesh.boundaryVertices.size());
+  EXPECT_EQ(expected, static_cast<int>(assembly.mesh.vertices.size()));
+}
+
+TEST(PureQuadCompletionPhase18, StitchingIsPatchOrderInvariant) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto forward =
+      directional::geometry::stitch_pure_quad_patches(patches);
+  std::reverse(patches.begin(), patches.end());
+  const auto reverse =
+      directional::geometry::stitch_pure_quad_patches(patches);
+  ASSERT_TRUE(forward.success) << forward.failure;
+  ASSERT_TRUE(reverse.success) << reverse.failure;
+  EXPECT_EQ(forward.mesh.quads, reverse.mesh.quads);
+  EXPECT_TRUE(forward.mesh.vertexPositions.isApprox(
+      reverse.mesh.vertexPositions, 0.0));
+  EXPECT_EQ(forward.eulerCharacteristic, reverse.eulerCharacteristic);
+  EXPECT_EQ(forward.boundaryLoopCount, reverse.boundaryLoopCount);
 }

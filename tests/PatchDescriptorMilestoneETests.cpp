@@ -502,3 +502,81 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_EQ(0, completion.failedPatches);
   EXPECT_EQ(1U, completion.completedPatches.size());
 }
+
+
+TEST(PatchDescriptorMilestoneE,
+     DuplicateDomainsFailBeforePatchCompletion) {
+  Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
+  directional::geometry::SurfaceCellComplex duplicate;
+  append_authoritative_component(fixture.complex, duplicate);
+  append_authoritative_component(fixture.complex, duplicate);
+  duplicate.cells[0].id = 91;
+  duplicate.cells[1].id = 92;
+  duplicate.cells[2].id = 401;
+  duplicate.cells[3].id = 402;
+  for (auto &edge : duplicate.halfedges) {
+    if (edge.cell == 0) edge.cell = 91;
+    else if (edge.cell == 1) edge.cell = 92;
+    else if (edge.cell == 2) edge.cell = 401;
+    else if (edge.cell == 3) edge.cell = 402;
+  }
+  std::reverse(duplicate.cells.begin(), duplicate.cells.end());
+
+  const auto descriptors = directional::geometry::derive_patch_descriptors(
+      duplicate, fixture.V, fixture.F);
+
+  ASSERT_TRUE(descriptors.ownershipConflict.active());
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                DuplicateOrientedDomain,
+            descriptors.ownershipConflict.classification);
+  EXPECT_EQ(91, descriptors.ownershipConflict.firstPatch);
+  EXPECT_EQ(401, descriptors.ownershipConflict.secondPatch);
+}
+
+TEST(PatchDescriptorMilestoneE,
+     DomainIdentityIsIndependentOfSourceFaceRowOrder) {
+  const Fixture first = make_authoritative_patch({2, 2, 2, 2});
+  Fixture reordered = first;
+  std::vector<int> permutation(reordered.F.rows());
+  std::iota(permutation.begin(), permutation.end(), 0);
+  std::reverse(permutation.begin(), permutation.end());
+  Eigen::MatrixXi reorderedFaces = reordered.F;
+  for (int row = 0; row < reordered.F.rows(); ++row) {
+    reorderedFaces.row(row) = reordered.F.row(permutation[row]);
+  }
+  std::vector<int> inverse(permutation.size());
+  for (int row = 0; row < static_cast<int>(permutation.size()); ++row) {
+    inverse[static_cast<std::size_t>(permutation[row])] = row;
+  }
+  reordered.F = reorderedFaces;
+  for (auto &node : reordered.complex.nodes) {
+    node.sourceFace = inverse[static_cast<std::size_t>(node.sourceFace)];
+    for (auto &occurrence : node.occurrences) {
+      occurrence.sourceFace =
+          inverse[static_cast<std::size_t>(occurrence.sourceFace)];
+    }
+  }
+  for (auto &edge : reordered.complex.halfedges) {
+    edge.sourceFace = inverse[static_cast<std::size_t>(edge.sourceFace)];
+  }
+  for (auto &cell : reordered.complex.cells) {
+    cell.sourceFace = inverse[static_cast<std::size_t>(cell.sourceFace)];
+    for (int &face : cell.sourceFaces) {
+      face = inverse[static_cast<std::size_t>(face)];
+    }
+  }
+
+  const auto firstDescriptor = directional::geometry::derive_patch_descriptor(
+      first.complex, first.complex.cells.front(), first.V, first.F);
+  const auto reorderedDescriptor =
+      directional::geometry::derive_patch_descriptor(
+          reordered.complex, reordered.complex.cells.front(), reordered.V,
+          reordered.F);
+
+  ASSERT_TRUE(firstDescriptor.patch.domainIdentity.valid);
+  ASSERT_TRUE(reorderedDescriptor.patch.domainIdentity.valid);
+  EXPECT_TRUE(firstDescriptor.patch.domainIdentity.same_oriented_domain(
+      reorderedDescriptor.patch.domainIdentity));
+  EXPECT_EQ(firstDescriptor.patch.boundaryNodeIdentities,
+            reorderedDescriptor.patch.boundaryNodeIdentities);
+}

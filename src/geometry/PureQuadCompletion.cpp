@@ -203,21 +203,61 @@ SurfacePoint project_generated_point(
 namespace directional::geometry::pure_quad_detail {
 
 void initialize_boundary_embedding(const PureQuadPatch &patch,
-                                          PureQuadMesh &mesh) {
+                                   PureQuadMesh &mesh) {
   mesh.boundaryVertices = patch.boundaryVertices;
   mesh.vertices = patch.boundaryVertices;
   mesh.vertexProvenance.clear();
   mesh.vertexProvenance.reserve(mesh.vertices.size());
   mesh.vertexLineage.clear();
+  mesh.domainIdentity = patch.domainIdentity;
   for (int i = 0; i < static_cast<int>(mesh.boundaryVertices.size()); ++i) {
     const SurfacePoint point = boundary_source_point(patch, i);
     mesh.vertexProvenance.push_back(point);
-    PureQuadVertexLineage lineage; lineage.outputVertex = mesh.boundaryVertices[static_cast<std::size_t>(i)];
-    const int rail = i < static_cast<int>(patch.boundaryRailIds.size()) ? patch.boundaryRailIds[static_cast<std::size_t>(i)] : -1;
-    const int curve = i < static_cast<int>(patch.boundaryCurveIds.size()) ? patch.boundaryCurveIds[static_cast<std::size_t>(i)] : -1;
-    if (rail >= 0 || curve >= 0) { lineage.kind = PureQuadVertexLineageKind::OrderedFeatureInterval; lineage.featureInterval.railId=rail; lineage.featureInterval.curveId=curve; lineage.featureInterval.start=point; lineage.featureInterval.end=boundary_source_point(patch,(i+1)%static_cast<int>(mesh.boundaryVertices.size())); }
-    else { lineage.sourcePoint = point; }
-    mesh.vertexLineage.push_back(lineage);
+    PureQuadVertexLineage lineage;
+    lineage.outputVertex =
+        mesh.boundaryVertices[static_cast<std::size_t>(i)];
+    lineage.sourcePatch = mesh.sourcePatch;
+    lineage.localVertex = lineage.outputVertex;
+    lineage.sourceComponent =
+        i < static_cast<int>(patch.boundaryComponents.size())
+            ? patch.boundaryComponents[static_cast<std::size_t>(i)]
+            : point.component;
+    lineage.sourceSheet =
+        i < static_cast<int>(patch.boundarySheets.size())
+            ? patch.boundarySheets[static_cast<std::size_t>(i)]
+            : point.sheet;
+    lineage.stitchIdentity.kind =
+        PureQuadStitchIdentityKind::ArrangementBoundaryNode;
+    if (i < static_cast<int>(patch.boundaryNodeIdentities.size()) &&
+        patch.boundaryNodeIdentities[static_cast<std::size_t>(i)].valid) {
+      lineage.stitchIdentity.canonical =
+          patch.boundaryNodeIdentities[static_cast<std::size_t>(i)];
+    } else {
+      // Compatibility path for standalone completion fixtures. Production
+      // descriptors always provide the exact arrangement-node identity.
+      lineage.stitchIdentity.canonical.valid = true;
+      lineage.stitchIdentity.canonical.values = {
+          lineage.outputVertex, lineage.sourceComponent, lineage.sourceSheet};
+    }
+    const int rail =
+        i < static_cast<int>(patch.boundaryRailIds.size())
+            ? patch.boundaryRailIds[static_cast<std::size_t>(i)]
+            : -1;
+    const int curve =
+        i < static_cast<int>(patch.boundaryCurveIds.size())
+            ? patch.boundaryCurveIds[static_cast<std::size_t>(i)]
+            : -1;
+    if (rail >= 0 || curve >= 0) {
+      lineage.kind = PureQuadVertexLineageKind::OrderedFeatureInterval;
+      lineage.featureInterval.railId = rail;
+      lineage.featureInterval.curveId = curve;
+      lineage.featureInterval.start = point;
+      lineage.featureInterval.end = boundary_source_point(
+          patch, (i + 1) % static_cast<int>(mesh.boundaryVertices.size()));
+    } else {
+      lineage.sourcePoint = point;
+    }
+    mesh.vertexLineage.push_back(std::move(lineage));
   }
 }
 
@@ -242,7 +282,19 @@ int append_embedded_vertex(
   const int vertex = next_generated_vertex(nextInterior);
   mesh.vertices.push_back(vertex);
   mesh.vertexProvenance.push_back(point);
-  PureQuadVertexLineage lineage; lineage.outputVertex=vertex; lineage.sourcePoint=point; mesh.vertexLineage.push_back(lineage);
+  PureQuadVertexLineage lineage;
+  lineage.outputVertex = vertex;
+  lineage.sourcePoint = point;
+  lineage.sourcePatch = mesh.sourcePatch;
+  lineage.localVertex = vertex;
+  lineage.sourceComponent = point.component;
+  lineage.sourceSheet = point.sheet;
+  lineage.stitchIdentity.kind =
+      PureQuadStitchIdentityKind::GeneratedPatchInterior;
+  lineage.stitchIdentity.canonical.valid = true;
+  lineage.stitchIdentity.canonical.values = {
+      mesh.sourcePatch, vertex, point.component, point.sheet};
+  mesh.vertexLineage.push_back(std::move(lineage));
   return vertex;
 }
 
@@ -797,12 +849,62 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     return result;
   }
 
-  std::map<std::tuple<int, int, int>, int> vertexRows;
-  std::vector<Eigen::Vector3d> positions;
-  std::map<std::vector<int>, std::pair<int, int>> canonicalQuads;
+  const auto stable_patch_owner = [](const PureQuadMesh &patch) {
+    if (patch.sourcePatch >= 0) {
+      return static_cast<std::int64_t>(patch.sourcePatch);
+    }
+    if (patch.domainIdentity.valid) {
+      return static_cast<std::int64_t>(patch.domainIdentity.hash());
+    }
+    std::uint64_t seed = 1469598103934665603ULL;
+    const auto mix = [&](const std::int64_t value) {
+      seed ^= static_cast<std::uint64_t>(value);
+      seed *= 1099511628211ULL;
+    };
+    mix(patch.vertexPositions.rows());
+    mix(static_cast<std::int64_t>(patch.quads.size()));
+    for (int row = 0; row < patch.vertexPositions.rows(); ++row) {
+      for (int column = 0; column < patch.vertexPositions.cols(); ++column) {
+        mix(static_cast<std::int64_t>(std::llround(
+            patch.vertexPositions(row, column) * 1.0e10)));
+      }
+    }
+    return static_cast<std::int64_t>(seed);
+  };
 
-  for (int patchIndex = 0; patchIndex < static_cast<int>(patches.size());
-       ++patchIndex) {
+  std::vector<int> patchOrder(patches.size());
+  std::iota(patchOrder.begin(), patchOrder.end(), 0);
+  std::sort(patchOrder.begin(), patchOrder.end(), [&](const int lhs,
+                                                       const int rhs) {
+    const PureQuadMesh &a = patches[static_cast<std::size_t>(lhs)];
+    const PureQuadMesh &b = patches[static_cast<std::size_t>(rhs)];
+    if (a.domainIdentity < b.domainIdentity) {
+      return true;
+    }
+    if (b.domainIdentity < a.domainIdentity) {
+      return false;
+    }
+    const std::int64_t ownerA = stable_patch_owner(a);
+    const std::int64_t ownerB = stable_patch_owner(b);
+    if (ownerA != ownerB) {
+      return ownerA < ownerB;
+    }
+    if (a.vertices != b.vertices) {
+      return a.vertices < b.vertices;
+    }
+    return a.quads < b.quads;
+  });
+
+  std::map<PureQuadStitchIdentity, int> vertexRows;
+  std::vector<Eigen::Vector3d> positions;
+  struct QuadOwner {
+    int patchIndex = -1;
+    int localQuad = -1;
+    std::vector<std::uint64_t> cornerHashes;
+  };
+  std::map<std::vector<int>, QuadOwner> canonicalQuads;
+
+  for (const int patchIndex : patchOrder) {
     const PureQuadMesh &patch = patches[static_cast<std::size_t>(patchIndex)];
     if (patch.vertices.size() !=
             static_cast<std::size_t>(patch.vertexPositions.rows()) ||
@@ -816,13 +918,45 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::set<int> boundary(patch.boundaryVertices.begin(),
                                  patch.boundaryVertices.end());
     std::map<int, int> localToGlobal;
+    std::map<int, std::uint64_t> localIdentityHashes;
     for (int localRow = 0; localRow < static_cast<int>(patch.vertices.size());
          ++localRow) {
       const int localVertex = patch.vertices[static_cast<std::size_t>(localRow)];
       const bool sharedBoundary = boundary.count(localVertex) != 0;
-      const auto key = sharedBoundary
-                           ? std::make_tuple(0, 0, localVertex)
-                           : std::make_tuple(1, patchIndex, localVertex);
+      const SurfacePoint &provenance =
+          patch.vertexProvenance[static_cast<std::size_t>(localRow)];
+      PureQuadVertexLineage incoming =
+          patch.vertexLineage[static_cast<std::size_t>(localRow)];
+      PureQuadStitchIdentity key = incoming.stitchIdentity;
+      if (!key.valid()) {
+        key.kind = sharedBoundary
+                       ? PureQuadStitchIdentityKind::ArrangementBoundaryNode
+                       : PureQuadStitchIdentityKind::GeneratedPatchInterior;
+        key.canonical.valid = true;
+        if (sharedBoundary) {
+          key.canonical.values = {localVertex, provenance.component,
+                                  provenance.sheet};
+        } else {
+          key.canonical.values = {stable_patch_owner(patch), localVertex,
+                                  provenance.component, provenance.sheet};
+        }
+      }
+      if (!sharedBoundary &&
+          key.kind != PureQuadStitchIdentityKind::GeneratedPatchInterior) {
+        // Interior topology is patch-owned unless an explicit shared topology
+        // record exists. Current completion emits no such record.
+        key.kind = PureQuadStitchIdentityKind::GeneratedPatchInterior;
+        key.canonical.valid = true;
+        key.canonical.values = {stable_patch_owner(patch), localVertex,
+                                provenance.component, provenance.sheet};
+      }
+      incoming.stitchIdentity = key;
+      incoming.sourcePatch = patch.sourcePatch;
+      incoming.localVertex = localVertex;
+      incoming.sourceComponent = provenance.component;
+      incoming.sourceSheet = provenance.sheet;
+      localIdentityHashes.emplace(localVertex, key.hash());
+
       const Eigen::Vector3d position =
           patch.vertexPositions.row(localRow).transpose();
       const auto existing = vertexRows.find(key);
@@ -831,12 +965,9 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         globalRow = static_cast<int>(positions.size());
         vertexRows.emplace(key, globalRow);
         positions.push_back(position);
-        result.mesh.vertexProvenance.push_back(
-            patch.vertexProvenance[static_cast<std::size_t>(localRow)]);
-        PureQuadVertexLineage lineage =
-            patch.vertexLineage[static_cast<std::size_t>(localRow)];
-        lineage.outputVertex = globalRow;
-        result.mesh.vertexLineage.push_back(std::move(lineage));
+        result.mesh.vertexProvenance.push_back(provenance);
+        incoming.outputVertex = globalRow;
+        result.mesh.vertexLineage.push_back(std::move(incoming));
       } else {
         globalRow = existing->second;
         if ((positions[static_cast<std::size_t>(globalRow)] - position).norm() >
@@ -847,8 +978,6 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         ++result.mergedBoundaryVertices;
         PureQuadVertexLineage &stored =
             result.mesh.vertexLineage[static_cast<std::size_t>(globalRow)];
-        const PureQuadVertexLineage &incoming =
-            patch.vertexLineage[static_cast<std::size_t>(localRow)];
         if (stored.kind == PureQuadVertexLineageKind::SourceTriangle &&
             incoming.kind == PureQuadVertexLineageKind::OrderedFeatureInterval) {
           stored = incoming;
@@ -867,13 +996,17 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         return result;
       }
       std::vector<int> globalQuad(4, -1);
+      std::vector<std::uint64_t> cornerHashes;
+      cornerHashes.reserve(4);
       for (int corner = 0; corner < 4; ++corner) {
-        const auto mapped = localToGlobal.find(quad[static_cast<std::size_t>(corner)]);
+        const int localCorner = quad[static_cast<std::size_t>(corner)];
+        const auto mapped = localToGlobal.find(localCorner);
         if (mapped == localToGlobal.end()) {
           result.failure = "UnknownPatchVertex";
           return result;
         }
         globalQuad[static_cast<std::size_t>(corner)] = mapped->second;
+        cornerHashes.push_back(localIdentityHashes.at(localCorner));
       }
       if (std::set<int>(globalQuad.begin(), globalQuad.end()).size() != 4) {
         result.failure = "DegenerateStitchedQuad";
@@ -882,21 +1015,80 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       std::vector<int> canonical = globalQuad;
       std::sort(canonical.begin(), canonical.end());
       const auto [existingQuad, inserted] = canonicalQuads.emplace(
-          canonical, std::make_pair(patchIndex, localQuad));
+          canonical, QuadOwner{patchIndex, localQuad, cornerHashes});
       if (!inserted) {
-        const auto [firstPatchIndex, firstLocalQuad] = existingQuad->second;
+        const QuadOwner &firstOwner = existingQuad->second;
         const PureQuadMesh &firstPatch =
-            patches[static_cast<std::size_t>(firstPatchIndex)];
+            patches[static_cast<std::size_t>(firstOwner.patchIndex)];
+        SurfaceCellOwnershipConflict &conflict = result.ownershipConflict;
+        conflict.firstPatch = firstPatch.sourcePatch;
+        conflict.firstLocalQuad = firstOwner.localQuad;
+        conflict.secondPatch = patch.sourcePatch;
+        conflict.secondLocalQuad = localQuad;
+        conflict.firstDomainHash = firstPatch.domainIdentity.hash();
+        conflict.secondDomainHash = patch.domainIdentity.hash();
+        conflict.firstBoundaryNodeHash =
+            firstPatch.domainIdentity.orientedBoundary.hash();
+        conflict.secondBoundaryNodeHash =
+            patch.domainIdentity.orientedBoundary.hash();
+        conflict.firstBoundaryHalfedgeHash =
+            firstPatch.domainIdentity.undirectedBoundary.hash();
+        conflict.secondBoundaryHalfedgeHash =
+            patch.domainIdentity.undirectedBoundary.hash();
+        conflict.firstSourceSupportHash =
+            firstPatch.domainIdentity.sourceSupport.hash();
+        conflict.secondSourceSupportHash =
+            patch.domainIdentity.sourceSupport.hash();
+        conflict.firstComponent = firstPatch.domainIdentity.sourceComponent;
+        conflict.firstSheet = firstPatch.domainIdentity.sourceSheet;
+        conflict.secondComponent = patch.domainIdentity.sourceComponent;
+        conflict.secondSheet = patch.domainIdentity.sourceSheet;
+        conflict.firstCornerIdentityHashes = firstOwner.cornerHashes;
+        conflict.secondCornerIdentityHashes = cornerHashes;
+        if (firstPatch.domainIdentity.same_oriented_domain(
+                patch.domainIdentity)) {
+          conflict.classification =
+              SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain;
+        } else if (firstPatch.domainIdentity.same_undirected_support(
+                       patch.domainIdentity)) {
+          conflict.classification =
+              SurfaceCellOwnershipConflictClass::OverlappingUndirectedBoundary;
+        } else if (firstOwner.cornerHashes == cornerHashes) {
+          conflict.classification =
+              SurfaceCellOwnershipConflictClass::FalseVertexEquivalence;
+        } else {
+          conflict.classification =
+              SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership;
+        }
+
         result.failure =
             "DuplicateStitchedQuad:firstPatch=" +
             std::to_string(firstPatch.sourcePatch) +
-            ";firstLocalQuad=" + std::to_string(firstLocalQuad) +
+            ";firstLocalQuad=" + std::to_string(firstOwner.localQuad) +
             ";secondPatch=" + std::to_string(patch.sourcePatch) +
             ";secondLocalQuad=" + std::to_string(localQuad) +
             ";globalVertices=" + std::to_string(canonical[0]) + "," +
             std::to_string(canonical[1]) + "," +
             std::to_string(canonical[2]) + "," +
-            std::to_string(canonical[3]);
+            std::to_string(canonical[3]) +
+            ";classification=" +
+            surface_cell_ownership_conflict_name(conflict.classification) +
+            ";firstDomainHash=" +
+            std::to_string(conflict.firstDomainHash) +
+            ";secondDomainHash=" +
+            std::to_string(conflict.secondDomainHash) +
+            ";firstBoundaryNodeHash=" +
+            std::to_string(conflict.firstBoundaryNodeHash) +
+            ";secondBoundaryNodeHash=" +
+            std::to_string(conflict.secondBoundaryNodeHash) +
+            ";firstBoundaryHalfedgeHash=" +
+            std::to_string(conflict.firstBoundaryHalfedgeHash) +
+            ";secondBoundaryHalfedgeHash=" +
+            std::to_string(conflict.secondBoundaryHalfedgeHash) +
+            ";firstSourceSupportHash=" +
+            std::to_string(conflict.firstSourceSupportHash) +
+            ";secondSourceSupportHash=" +
+            std::to_string(conflict.secondSourceSupportHash);
         return result;
       }
       const int outputQuad = static_cast<int>(result.mesh.quads.size());
@@ -939,6 +1131,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
   }
   std::vector<std::vector<int>> faceAdjacency(result.mesh.quads.size());
   for (const auto &[edge, faces] : edgeFaces) {
+    (void)edge;
     if (faces.size() == 2) {
       faceAdjacency[static_cast<std::size_t>(faces[0])].push_back(faces[1]);
       faceAdjacency[static_cast<std::size_t>(faces[1])].push_back(faces[0]);
@@ -1022,6 +1215,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     }
   }
   for (const auto &[vertex, adjacent] : boundaryAdjacency) {
+    (void)vertex;
     if (adjacent.size() != 2) {
       result.failure = "NonManifoldBoundaryVertex";
       return result;
