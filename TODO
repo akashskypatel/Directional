@@ -38,11 +38,12 @@ Last updated: 2026-08-02 15:22 PDT
 - Artifact digest: `sha256:a5659e86e0f1e90129d1b085e25ed0f2afff0ea882a43304fae15a5f18b9970a`.
 - Compiled targets: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
 - Artifact contains compiled binaries/libraries, an exact tracked-source archive, source commit/status, submodule status, configure/build logs, and stable file checksums.
+- `source-status.txt` contains only `?? artifact/`, the workflow-created packaging directory; tracked source files were unchanged.
 - No test, benchmark, or custom mesh executable was run in this code/build turn.
 
 ## Next test and benchmark turn
 
-- Verify the artifact source commit is `d4c1bce4338b7f2e91264c349a73b6b260e80f54` and source status is clean.
+- Verify the artifact source commit is `d4c1bce4338b7f2e91264c349a73b6b260e80f54`; treat the sole `?? artifact/` status entry as workflow packaging output, not a source mutation.
 - Run only the new minimized ownership/identity regressions first.
 - Run `SurfaceArrangementPhase16.*`, `PatchDescriptorMilestoneE.*`, and `PureQuadCompletionPhase18.*`.
 - Run Phase 14–18 aggregate suites plus Milestone G P23 and Phase 20 fail-closed suites.
