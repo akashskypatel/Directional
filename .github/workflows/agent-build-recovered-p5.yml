@@ -30,6 +30,14 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
+      - name: Record compile-only run start on draft PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5 completion-ownership compile-only run `${{ github.run_id }}` started for event commit `${{ github.sha }}`. The workflow executes compilation and artifact packaging only; it contains no test, benchmark, or custom mesh command."
+
       - name: Checkout exact working branch
         uses: actions/checkout@v4
         with:
@@ -132,11 +140,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      - name: Record compile-only run on draft PR
+      - name: Record compile-only run result on draft PR
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 completion-ownership compile-only run `${{ github.run_id }}` finished with job status `${{ job.status }}` for commit `${{ github.sha }}`. No tests, benchmarks, or custom mesh executions are part of this workflow."
+            -f body="P5 completion-ownership compile-only run `${{ github.run_id }}` finished with job status `${{ job.status }}` for event commit `${{ github.sha }}`. No tests, benchmarks, or custom mesh executions are part of this workflow."
