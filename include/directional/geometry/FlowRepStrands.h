@@ -78,6 +78,14 @@ struct FlowRepArc {
   int sourceFace = -1;
   Eigen::RowVector3d startBarycentric = Eigen::RowVector3d::Zero();
   Eigen::RowVector3d endBarycentric = Eigen::RowVector3d::Zero();
+  /// Canonical intrinsic endpoint identities mirror arrangement node keys.
+  /// They prevent close but distinct surface points from being welded by a
+  /// world-space tolerance while still identifying one source-edge point in
+  /// both incident triangle charts.
+  bool startIntrinsicEndpointKeyValid = false;
+  bool endIntrinsicEndpointKeyValid = false;
+  std::uint64_t startIntrinsicEndpointKey = 0U;
+  std::uint64_t endIntrinsicEndpointKey = 0U;
   int sourceComponent = -1;
   int sourceSheet = -1;
   int family = 0;
@@ -224,6 +232,60 @@ struct FlowRepEndpointCompletionOptions {
   bool requireAllEndpointsResolved = true;
 };
 
+enum class FlowRepEndpointResolution : int {
+  AlreadyResolved = 0,
+  SegmentIntersection = 1,
+  IntrinsicNode = 2,
+  InvalidSourceFace = 3,
+  DegenerateSource = 4,
+  EmptyTrace = 5,
+  NoNetworkCapture = 6,
+  AddedArcLimit = 7,
+};
+
+struct FlowRepEndpointCompletionDiagnostic {
+  int sourceArcId = -1;
+  bool startEndpoint = false;
+  bool requiredSingularitySupport = false;
+  bool hardFeatureRail = false;
+  int family = -1;
+  int sign = 0;
+  TraceTerminationReason termination = TraceTerminationReason::Budget;
+  int tracedSegments = 0;
+  int skippedDegenerateSegments = 0;
+  int terminalSourceFace = -1;
+  int terminalSourceVertex = -1;
+  int terminalSourceEdge0 = -1;
+  int terminalSourceEdge1 = -1;
+  double terminalSourceEdgeT = -1.0;
+  Eigen::RowVector3d terminalBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  int lastRepresentableSourceFace = -1;
+  int lastRepresentableSourceVertex = -1;
+  int lastRepresentableSourceEdge0 = -1;
+  int lastRepresentableSourceEdge1 = -1;
+  double lastRepresentableSourceEdgeT = -1.0;
+  Eigen::RowVector3d lastRepresentableBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  double terminalDistanceToLastRepresentable = -1.0;
+  int terminalFeatureRailCandidates = 0;
+  int terminalCompatibleFeatureRailCandidates = 0;
+  int generatedSupportTraceId = -1;
+  int captureTargetArcId = -1;
+  int captureTraceSegment = -1;
+  double captureTraceParameter = -1.0;
+  double captureTargetParameter = -1.0;
+  int captureTargetSourceFace = -1;
+  Eigen::RowVector3d captureBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  Eigen::RowVector3d captureTargetStartBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  Eigen::RowVector3d captureTargetEndBarycentric =
+      Eigen::RowVector3d::Constant(std::numeric_limits<double>::quiet_NaN());
+  FlowRepEndpointResolution resolution =
+      FlowRepEndpointResolution::NoNetworkCapture;
+};
+
 struct FlowRepEndpointCompletionResult {
   bool success = false;
   std::vector<FlowRepArc> arcs;
@@ -232,7 +294,10 @@ struct FlowRepEndpointCompletionResult {
   int openEndpointsBefore = 0;
   int resolvedEndpoints = 0;
   int unresolvedEndpoints = 0;
+  int unresolvedRequiredEndpoints = 0;
   int addedArcs = 0;
+  std::array<int, 9> traceTerminationCounts{};
+  std::vector<FlowRepEndpointCompletionDiagnostic> diagnostics;
   std::string failure;
 };
 
@@ -381,7 +446,10 @@ using FlowRepLogicalStrandKey = std::tuple<int, int, int, int, int>;
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc);
 
 std::uint64_t embedded_endpoint_key(const FlowRepArc &arc,
-                                           const bool start);
+                                    const bool start);
+
+void assign_intrinsic_endpoint_keys(FlowRepArc &arc,
+                                    const Eigen::MatrixXi &faces);
 
 std::vector<FlowRepFlowline> extract_transactional_flowlines(
     const std::vector<FlowRepArc> &arcs,
