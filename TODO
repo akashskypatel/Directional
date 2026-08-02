@@ -1,54 +1,93 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-02 15:22 PDT
+Last updated: 2026-08-02
 
 ## Active phase
 
 - Phase: P5 — duplicate stitched-quad ownership remediation.
 - Active working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Base branch: `surface_cell_quad`.
-- Completed turn type: **code changes + build**.
-- Next authoritative turn type: **test and benchmark**. Make no code changes until the compiled checkpoint is classified.
+- Completed turn type: **test and benchmark**.
+- Next authoritative turn type: **code changes + compile-only build**.
+- Review policy: `never`; the new code/build plan is authoritative immediately.
 
-## Verified entry evidence
+## Validated checkpoint
 
-- Baseline source checkpoint: `c84e2e1d64e867e5975f414780f9c81e649612fb`.
-- Minimized intrinsic fan and duplicate stitched-quad regressions: **2/2 passed**.
-- Phase 14–18 focused suites: **216/216 passed**.
-- Milestone G P23 and Phase 20 fail-closed backend suites: **52/52 passed**.
-- Direct `bunny_1k_random.obj` runs failed deterministically at completion with `DuplicateStitchedQuad:firstPatch=241;firstLocalQuad=0;secondPatch=255;secondLocalQuad=1;globalVertices=860,861,862,863`.
-- Source-grid recovery was disabled and required unresolved endpoints were zero.
-
-## P5 ownership checkpoint
-
-- [x] Add deterministic canonical arrangement-domain, source-support, boundary, component, and sheet identities.
-- [x] Detect duplicate oriented domains and overlapping undirected boundaries before patch completion with typed fail-closed diagnostics.
-- [x] Replace raw boundary-number stitching with source-authoritative vertex identities.
-- [x] Keep generated interior vertices patch-local and prevent coincident cross-sheet vertices from merging by position.
-- [x] Preserve the final `DuplicateStitchedQuad` validator and both-source diagnostic prefix.
-- [x] Add generalized regression sources for reordered duplicate domains, coincident sheets, patch-local interiors, shared boundaries, patch-order invariance, active duplicate detection, and inconsistent shared geometry.
-- [ ] Classify the original patches 241/255 pair from the next direct execution as duplicate-domain, overlapping-boundary, false-merge, or completion-template ownership.
-- [ ] Confirm direct completion proceeds past assembly without duplicate ownership, recovery, legacy fallback, or validator weakening.
-
-## Compile-only evidence
-
-- Exact implementation/build commit: `d4c1bce4338b7f2e91264c349a73b6b260e80f54`.
-- GitHub Actions run: `30769701224` — **success**.
+- Validated source commit: `d4c1bce4338b7f2e91264c349a73b6b260e80f54`.
 - Artifact: `8840174777` (`surface-cell-p5-branch-linux-release`).
 - Artifact digest: `sha256:a5659e86e0f1e90129d1b085e25ed0f2afff0ea882a43304fae15a5f18b9970a`.
-- Compiled targets: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Artifact contains compiled binaries/libraries, an exact tracked-source archive, source commit/status, submodule status, configure/build logs, and stable file checksums.
-- `source-status.txt` contains only `?? artifact/`, the workflow-created packaging directory; tracked source files were unchanged.
-- No test, benchmark, or custom mesh executable was run in this code/build turn.
+- Build workflow: `30769701224` — success.
+- Validation used the exact artifact binaries without rebuilding.
 
-## Next test and benchmark turn
+## Test evidence
 
-- Verify the artifact source commit is `d4c1bce4338b7f2e91264c349a73b6b260e80f54`; treat the sole `?? artifact/` status entry as workflow packaging output, not a source mutation.
-- Run only the new minimized ownership/identity regressions first.
-- Run `SurfaceArrangementPhase16.*`, `PatchDescriptorMilestoneE.*`, and `PureQuadCompletionPhase18.*`.
-- Run Phase 14–18 aggregate suites plus Milestone G P23 and Phase 20 fail-closed suites.
-- Run direct `bunny_1k_random.obj` with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled; repeat for determinism.
-- Record the new ownership classification, authoritative hashes, descriptor/endpoint counts, runtime, peak memory, and whether assembly advances past the prior duplicate.
+- [x] New ownership/identity regressions: **8/8 passed**.
+- [x] Phase 14–18 aggregate: **219/219 passed**.
+- [x] Milestone G P23 and Phase 20: **52/52 passed** after recreating the artifact's baked source-root path with a symlink.
+- [ ] `PatchDescriptorMilestoneE.*`: **12/15 passed**.
+  - `SharedEdgeParityRepairConforminglyCompletesTwoOddCells`: pre-existing structurally invalid fixture; baseline and current artifacts both fail before parity repair because the initial arrangement is not topology-valid.
+  - `GlobalDescriptorAssignmentRejectsAmbiguousInteriorSingularity`: fixture duplicates an entire domain, so the new unique-domain validator correctly preempts the intended singularity-ownership scenario.
+  - `ComplexCompletionFailsClosedInsteadOfReturningPartialOutput`: fixture duplicates the valid domain, so duplicate-domain validation correctly preempts the intended valid-plus-nondisk scenario.
+- A non-authoritative full-suite attempt was interrupted by the execution environment timeout during the Milestone G P26 production matrix. No full-suite conclusion is recorded.
+
+## Direct random-bunny classification
+
+Two independent runs used `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
+
+Both failed identically at completion:
+
+```text
+DuplicateStitchedQuad:firstPatch=378;firstLocalQuad=1;
+secondPatch=394;secondLocalQuad=4;
+globalVertices=7643,7644,7647,7648;
+classification=completion-template;
+firstDomainHash=1626132098604174973;
+secondDomainHash=12830489233532523937;
+firstBoundaryNodeHash=9853059121513979599;
+secondBoundaryNodeHash=6530130091133399252;
+firstBoundaryHalfedgeHash=11019542682270369445;
+secondBoundaryHalfedgeHash=4213466302263896358;
+firstSourceSupportHash=9777327708078931779;
+secondSourceSupportHash=17251474233191701613
+```
+
+- Arrangement cells: **21,298**.
+- Descriptors attempted/completed/failed: **21,297 / 21,297 / 0**.
+- Required unresolved endpoints: **0**.
+- Accepted output quads: **0**.
+- Exact failure and all stage structural hashes were deterministic.
+
+The distinct domain, boundary, and source-support hashes rule out duplicate-domain and overlapping-boundary ownership. The artifact selected **completion-template ownership**, but the B-vs-D classification remains provisional because per-corner hashes are compared in local order and are not serialized with identity kinds/backend lineage. The next code turn must canonicalize the completed-face identity cycle before applying the final false-merge versus completion-template decision.
+
+## Performance regression
+
+Same-machine baseline artifact `8838467442`, commit `c84e2e1d64e867e5975f414780f9c81e649612fb`:
+
+- Wall time: **22.981569 s** baseline vs **26.775241 s** current mean (**+16.51%**).
+- Peak working set: **749,375,488 bytes** baseline vs **1,696,000,000 bytes** current mean (**+126.32%**).
+- Completion stage: **4.168940 s** baseline vs **6.318718 s** current mean (**+51.57%**).
+
+Ownership records must be compacted without weakening exact equality or diagnostics.
+
+## P5 status
+
+- [x] Canonical arrangement-domain and stitch-vertex identities exist.
+- [x] Duplicate oriented domains and overlapping undirected boundaries fail closed before completion.
+- [x] Generated interior vertices remain patch-local.
+- [x] Final duplicate-quad detection remains transactional and active.
+- [x] The random-bunny conflict advanced beyond the former patches 241/255 and now exposes patches 378/394.
+- [ ] Canonicalize and serialize completed-face corner ownership.
+- [ ] Confirm case B versus case D with order-independent evidence.
+- [ ] Repair the responsible stitch key or completion template generally.
+- [ ] Correct the three invalid Milestone E fixtures without weakening their contracts.
+- [ ] Recover ownership memory/runtime overhead.
+- [ ] Complete direct assembly without recovery, fallback, or duplicate output.
+
+## Authoritative next plan
+
+- Test report: `.agents/Directional/Milestone_G_P5_Test_Benchmark_Report.md`.
+- Code/build authority: `.agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md`.
+- The next turn may edit and compile only. It must run no tests, benchmarks, or custom mesh executables.
 
 ## Later production gates
 
