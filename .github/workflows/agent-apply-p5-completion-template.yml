@@ -1,0 +1,154 @@
+# One-shot compile-only workflow for the authoritative P5 code/build turn.
+# It applies the staged source patch, commits the exact source checkpoint, and
+# compiles without executing tests, benchmarks, or custom mesh programs.
+name: Apply and Build P5 Completion Ownership
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-apply-p5-completion-template.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-apply-p5-completion-template
+  cancel-in-progress: false
+
+jobs:
+  apply-and-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Apply authoritative P5 source patch and commit
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          patch_payload=.agents/Directional/p5-completion-template.patch.gz.b64
+          test -f "${patch_payload}"
+          base64 --decode "${patch_payload}" | gzip --decompress > /tmp/p5-completion-template.patch
+          git apply --check /tmp/p5-completion-template.patch
+          git apply /tmp/p5-completion-template.patch
+          git rm "${patch_payload}"
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add include/directional/geometry/SurfaceCellOwnership.h \
+                  include/directional/geometry/PureQuadCompletion.h \
+                  include/directional/geometry/PatchDescriptor.h \
+                  src/geometry/PureQuadCompletion.cpp \
+                  src/geometry/PatchDescriptor.cpp \
+                  src/pipeline/RemeshPipeline.cpp \
+                  tests/PatchDescriptorMilestoneETests.cpp \
+                  tests/PureQuadCompletionPhase18Tests.cpp
+          git diff --cached --check
+          git commit -m "fix(surface-cells): repair completion face ownership"
+          source_sha=$(git rev-parse HEAD)
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
+          echo "${source_sha}" > /tmp/source-commit.txt
+
+      - name: Fetch required submodules shallowly
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1
+
+      - name: Verify committed source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ steps.source.outputs.source_sha }}"
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "$(git rev-parse HEAD)" = "${remote_sha}"
+          git diff --check
+          test -f TODO
+          test -f MILESTONE_G_TODO.md
+          test -f .agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md
+          test -f benchmarks/fixtures/milestone-g/bunny_1k_random.obj
+          if git ls-files '.agents/Directional/wip/*' | grep -q .; then
+            echo 'Encoded WIP checkpoints remain tracked' >&2
+            exit 1
+          fi
+          if git ls-files '.github/build-overlays/*' | grep -q .; then
+            echo 'Build overlay patches remain tracked' >&2
+            exit 1
+          fi
+          git status --porcelain=v1 > /tmp/source-status.txt
+          if [[ -s /tmp/source-status.txt ]]; then
+            echo 'Source checkpoint is not clean:' >&2
+            cat /tmp/source-status.txt >&2
+            exit 1
+          fi
+
+      - name: Configure clean optimized static build
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf build/agent-p5-completion-release
+          cmake -S . -B build/agent-p5-completion-release -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee build/agent-p5-completion-release/configure.log
+
+      - name: Compile required targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --build build/agent-p5-completion-release \
+            --target directional_core directional_pipeline \
+                     directional_phase1_tests directional_benchmarks \
+            -j 4 \
+            2>&1 | tee build/agent-p5-completion-release/build.log
+
+      - name: Package exact compiled checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain=v1 > /tmp/source-status.txt
+          if [[ -s /tmp/source-status.txt ]]; then
+            echo 'Source checkpoint changed during compilation:' >&2
+            cat /tmp/source-status.txt >&2
+            exit 1
+          fi
+          mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
+          cp -v build/agent-p5-completion-release/directional_phase1_tests artifact/bin/
+          cp -v build/agent-p5-completion-release/directional_benchmarks artifact/bin/
+          cp -v build/agent-p5-completion-release/libdirectional_core.a artifact/lib/
+          cp -v build/agent-p5-completion-release/libdirectional_pipeline.a artifact/lib/
+          git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
+          cp /tmp/source-commit.txt artifact/source-commit.txt
+          cp /tmp/source-status.txt artifact/source-status.txt
+          git submodule status --recursive > artifact/submodule-status.txt
+          cp build/agent-p5-completion-release/configure.log artifact/logs/
+          cp build/agent-p5-completion-release/build.log artifact/logs/
+          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 artifact/files.sha256
+
+      - name: Upload compiled checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-completion-ownership-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 7
