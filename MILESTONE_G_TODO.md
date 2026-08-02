@@ -57,7 +57,7 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 
 ## Next test and benchmark turn
 
-- Verify artifact `8840174777` records source commit `d4c1bce4338b7f2e91264c349a73b6b260e80f54`, a clean source status, and the expected submodule revisions.
+- Verify artifact `8840174777` records source commit `d4c1bce4338b7f2e91264c349a73b6b260e80f54` and the expected submodule revisions. `source-status.txt` contains only `?? artifact/`, the workflow-created packaging directory; tracked source files were unchanged.
 - Run the new minimized ownership/identity regressions.
 - Run `SurfaceArrangementPhase16.*`, `PatchDescriptorMilestoneE.*`, and `PureQuadCompletionPhase18.*`.
 - Run focused Phase 14–18, Milestone G P23, and Phase 20 fail-closed suites.
