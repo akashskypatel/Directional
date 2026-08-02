@@ -6,6 +6,11 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - .github/workflows/agent-build-recovered-p5.yml
+  pull_request:
+    branches:
+      - surface_cell_quad
+    paths:
+      - .github/workflows/agent-build-recovered-p5.yml
   workflow_dispatch:
 
 permissions:
