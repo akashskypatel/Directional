@@ -30,6 +30,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          sed -i 's/))),"p5-ownership"/)),"p5-ownership"/' \
+            .agents/Directional/apply_p5_ownership.py
           python .agents/Directional/apply_p5_ownership.py
           git diff --check
           git add \
