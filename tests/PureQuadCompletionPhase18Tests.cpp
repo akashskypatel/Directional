@@ -81,6 +81,23 @@ CompletionFixture generated_plane_patch() {
   return fixture;
 }
 
+void assign_distinct_domain_identity(
+    directional::geometry::PureQuadMesh &mesh, const int token) {
+  auto &identity = mesh.domainIdentity;
+  identity.valid = true;
+  identity.sourceComponent = 3;
+  identity.sourceSheet = 5;
+  identity.boundaryNodeCount = 4;
+  identity.boundaryHalfedgeCount = 4;
+  identity.sourceSupportCount = 2;
+  identity.orientedBoundary.valid = true;
+  identity.orientedBoundary.values = {101, token};
+  identity.undirectedBoundary.valid = true;
+  identity.undirectedBoundary.values = {211, token};
+  identity.sourceSupport.valid = true;
+  identity.sourceSupport.values = {307, token};
+}
+
 std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
     Eigen::MatrixXd &vertices, Eigen::MatrixXi &faces,
     const int segments = 8) {
@@ -957,6 +974,124 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_NE(std::string::npos,
             assembly.failure.find(";classification="));
   EXPECT_TRUE(assembly.ownershipConflict.active());
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletedFaceOwnershipCanonicalizesRotationAndReversal) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 41;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(completion.success);
+
+  auto first = completion.mesh;
+  auto second = completion.mesh;
+  first.sourcePatch = 41;
+  second.sourcePatch = 73;
+  assign_distinct_domain_identity(first, 1);
+  assign_distinct_domain_identity(second, 2);
+  for (auto &lineage : first.quadLineage) {
+    lineage.sourcePatch = first.sourcePatch;
+  }
+  for (auto &lineage : second.quadLineage) {
+    lineage.sourcePatch = second.sourcePatch;
+  }
+  ASSERT_EQ(1U, second.quads.size());
+  second.quads[0] = {2, 1, 0, 3};
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first, second});
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                CompletionTemplateOwnership,
+            assembly.ownershipConflict.classification);
+  EXPECT_EQ(assembly.ownershipConflict.firstCornerIdentityHashes,
+            assembly.ownershipConflict.secondCornerIdentityHashes);
+  EXPECT_EQ(assembly.ownershipConflict.firstCornerAuthoritativeHashes,
+            assembly.ownershipConflict.secondCornerAuthoritativeHashes);
+  EXPECT_NE(std::string::npos,
+            assembly.failure.find(";firstBackend=closed-form;"));
+  EXPECT_NE(std::string::npos,
+            assembly.failure.find(";firstCornerKinds=arrangement-node,"));
+}
+
+TEST(PureQuadCompletionPhase18,
+     UnderQualifiedStitchIdentityIsClassifiedAsFalseMerge) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 101;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(completion.success);
+
+  auto first = completion.mesh;
+  auto second = completion.mesh;
+  first.sourcePatch = 101;
+  second.sourcePatch = 205;
+  assign_distinct_domain_identity(first, 3);
+  assign_distinct_domain_identity(second, 4);
+  for (auto &lineage : first.quadLineage) {
+    lineage.sourcePatch = first.sourcePatch;
+  }
+  for (auto &lineage : second.quadLineage) {
+    lineage.sourcePatch = second.sourcePatch;
+  }
+  for (int row = 0; row < static_cast<int>(second.vertexLineage.size()); ++row) {
+    auto &authoritative =
+        second.vertexLineage[static_cast<std::size_t>(row)]
+            .authoritativeIdentity;
+    authoritative.canonical.values.push_back(900 + row);
+  }
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first, second});
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                FalseVertexEquivalence,
+            assembly.ownershipConflict.classification);
+  EXPECT_EQ(assembly.ownershipConflict.firstCornerIdentityHashes,
+            assembly.ownershipConflict.secondCornerIdentityHashes);
+  EXPECT_NE(assembly.ownershipConflict.firstCornerAuthoritativeHashes,
+            assembly.ownershipConflict.secondCornerAuthoritativeHashes);
+  EXPECT_NE(std::string::npos,
+            assembly.failure.find(";classification=false-merge;"));
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionOwnershipClassificationIsPatchOrderInvariant) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 301;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(completion.success);
+
+  auto first = completion.mesh;
+  auto second = completion.mesh;
+  first.sourcePatch = 301;
+  second.sourcePatch = 509;
+  assign_distinct_domain_identity(first, 5);
+  assign_distinct_domain_identity(second, 6);
+  for (auto &lineage : first.quadLineage) {
+    lineage.sourcePatch = first.sourcePatch;
+  }
+  for (auto &lineage : second.quadLineage) {
+    lineage.sourcePatch = second.sourcePatch;
+  }
+
+  const auto forward = directional::geometry::stitch_pure_quad_patches(
+      {first, second});
+  const auto reverse = directional::geometry::stitch_pure_quad_patches(
+      {second, first});
+
+  EXPECT_FALSE(forward.success);
+  EXPECT_FALSE(reverse.success);
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                CompletionTemplateOwnership,
+            forward.ownershipConflict.classification);
+  EXPECT_EQ(forward.ownershipConflict.classification,
+            reverse.ownershipConflict.classification);
+  EXPECT_EQ(forward.failure, reverse.failure);
 }
 
 TEST(PureQuadCompletionPhase18,

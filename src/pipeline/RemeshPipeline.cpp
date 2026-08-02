@@ -940,6 +940,11 @@ namespace directional::pipeline {
 
 std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
   std::uint64_t seed = structural_hash_seed("completion");
+  hash_combine_i64(seed, mesh.sourcePatch);
+  hash_combine_u64(seed, mesh.domainIdentity.hash());
+  hash_combine_i64(seed, mesh.domainIdentity.boundaryNodeCount);
+  hash_combine_i64(seed, mesh.domainIdentity.boundaryHalfedgeCount);
+  hash_combine_i64(seed, mesh.domainIdentity.sourceSupportCount);
   hash_vector(seed, mesh.vertices);
   hash_matrix(seed, mesh.vertexPositions);
   hash_combine_u64(seed, mesh.quads.size());
@@ -948,6 +953,30 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
   }
   for (const geometry::SurfacePoint &point : mesh.vertexProvenance) {
     hash_surface_point(seed, point);
+  }
+  hash_combine_u64(seed, mesh.vertexLineage.size());
+  for (const geometry::PureQuadVertexLineage &lineage : mesh.vertexLineage) {
+    hash_combine_i64(seed, lineage.outputVertex);
+    hash_combine_i64(seed, lineage.sourcePatch);
+    hash_combine_i64(seed, lineage.localVertex);
+    hash_combine_i64(seed, lineage.sourceComponent);
+    hash_combine_i64(seed, lineage.sourceSheet);
+    hash_combine_i64(seed, static_cast<int>(lineage.stitchIdentity.kind));
+    hash_combine_u64(seed, lineage.stitchIdentity.hash());
+    hash_combine_i64(seed,
+                     static_cast<int>(lineage.authoritativeIdentity.kind));
+    hash_combine_u64(seed, lineage.authoritativeIdentity.hash());
+  }
+  hash_combine_u64(seed, mesh.quadLineage.size());
+  for (const geometry::PureQuadFaceLineage &lineage : mesh.quadLineage) {
+    hash_combine_i64(seed, lineage.outputQuad);
+    hash_combine_i64(seed, lineage.sourcePatch);
+    hash_combine_i64(seed, static_cast<int>(lineage.operation));
+    hash_combine_i64(seed, lineage.operationLocalQuad);
+    hash_combine_i64(seed, lineage.completionVariant);
+    hash_combine_i64(seed, lineage.boundaryOnly ? 1 : 0);
+    hash_combine_u64(seed, lineage.canonicalStitchCycleHash);
+    hash_combine_u64(seed, lineage.canonicalAuthoritativeCycleHash);
   }
   hash_vector(seed, mesh.boundaryVertices);
   hash_combine_i64(seed, static_cast<int>(mesh.backend));

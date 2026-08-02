@@ -170,6 +170,66 @@ void append_authoritative_component(
   }
 }
 
+void append_fixture_component(const Fixture &component, Fixture &destination,
+                              const bool shareCenterVertex,
+                              const Eigen::RowVector3d &translation) {
+  std::vector<int> vertexMap(static_cast<std::size_t>(component.V.rows()), -1);
+  const int originalVertexCount = static_cast<int>(destination.V.rows());
+  const int firstComponentVertex = shareCenterVertex ? 1 : 0;
+  const int addedVertices = component.V.rows() - firstComponentVertex;
+  destination.V.conservativeResize(originalVertexCount + addedVertices, 3);
+  if (shareCenterVertex) {
+    ASSERT_GT(originalVertexCount, 0);
+    vertexMap[0] = 0;
+  }
+  for (int vertex = firstComponentVertex; vertex < component.V.rows(); ++vertex) {
+    const int destinationVertex =
+        originalVertexCount + vertex - firstComponentVertex;
+    vertexMap[static_cast<std::size_t>(vertex)] = destinationVertex;
+    destination.V.row(destinationVertex) = component.V.row(vertex) + translation;
+  }
+
+  const int faceOffset = static_cast<int>(destination.F.rows());
+  destination.F.conservativeResize(faceOffset + component.F.rows(), 3);
+  for (int face = 0; face < component.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      destination.F(faceOffset + face, corner) =
+          vertexMap[static_cast<std::size_t>(component.F(face, corner))];
+    }
+  }
+
+  directional::geometry::SurfaceCellComplex remapped = component.complex;
+  for (auto &node : remapped.nodes) {
+    if (node.sourceFace >= 0) {
+      node.sourceFace += faceOffset;
+    }
+    for (auto &occurrence : node.occurrences) {
+      if (occurrence.sourceFace >= 0) {
+        occurrence.sourceFace += faceOffset;
+      }
+    }
+  }
+  for (auto &edge : remapped.halfedges) {
+    if (edge.sourceFace >= 0) {
+      edge.sourceFace += faceOffset;
+    }
+    for (auto &provenance : edge.provenance) {
+      if (provenance.sourceFace >= 0) {
+        provenance.sourceFace += faceOffset;
+      }
+    }
+  }
+  for (auto &cell : remapped.cells) {
+    if (cell.sourceFace >= 0) {
+      cell.sourceFace += faceOffset;
+    }
+    for (int &sourceFace : cell.sourceFaces) {
+      sourceFace += faceOffset;
+    }
+  }
+  append_authoritative_component(remapped, destination.complex);
+}
+
 } // namespace
 
 TEST(PatchDescriptorMilestoneE, DerivesOrderedSidesSubdivisionsAndFeatures) {
@@ -238,8 +298,13 @@ TEST(PatchDescriptorMilestoneE,
   directional::geometry::SurfaceArrangementArc first;
   first.id = 0;
   first.sourceFace = 0;
-  first.startBarycentric << 1.0, 0.0, 0.0;
-  first.endBarycentric << 0.0, 0.0, 1.0;
+  // Enter through the midpoint of boundary edge (0,1), cross the shared
+  // source edge (0,2), and continue into the second source triangle. This
+  // creates two topology-valid odd cells with a real shared interior
+  // interface. The previous fixture placed both arcs directly on (0,2), so it
+  // never established the parity-repair scenario it claimed to test.
+  first.startBarycentric << 0.5, 0.5, 0.0;
+  first.endBarycentric << 0.5, 0.0, 0.5;
   first.family = 0;
   first.strand = 7;
   first.sourceComponent = 0;
@@ -247,8 +312,8 @@ TEST(PatchDescriptorMilestoneE,
   directional::geometry::SurfaceArrangementArc second = first;
   second.id = 1;
   second.sourceFace = 1;
-  second.startBarycentric << 1.0, 0.0, 0.0;
-  second.endBarycentric << 0.0, 1.0, 0.0;
+  second.startBarycentric << 0.5, 0.5, 0.0;
+  second.endBarycentric << 0.0, 0.5, 0.5;
   const directional::geometry::SurfaceCellComplex complex =
       directional::geometry::build_surface_cell_complex(V, F, {first, second});
   ASSERT_TRUE(complex.diagnostics.topologyValid);
@@ -428,8 +493,9 @@ TEST(PatchDescriptorMilestoneE,
 TEST(PatchDescriptorMilestoneE,
      GlobalDescriptorAssignmentRejectsAmbiguousInteriorSingularity) {
   Fixture fixture = make_authoritative_patch({2, 2, 2, 2});
-  const Fixture duplicate = make_authoritative_patch({2, 2, 2, 2});
-  append_authoritative_component(duplicate.complex, fixture.complex);
+  const Fixture secondDomain = make_authoritative_patch({2, 2, 2, 2});
+  append_fixture_component(secondDomain, fixture, true,
+                           Eigen::RowVector3d{2.5, 0.0, 0.0});
   directional::geometry::SurfaceCellComplexCompletionOptions options;
   options.descriptorOptions.singularCycles.resize(1);
   options.descriptorOptions.singularIndices.resize(1);
@@ -475,7 +541,8 @@ TEST(PatchDescriptorMilestoneE,
   invalid.complex.cells.front().disk = false;
   invalid.complex.cells.front().cellClass =
       directional::geometry::SurfaceArrangementCellClass::NonDisk;
-  append_authoritative_component(invalid.complex, fixture.complex);
+  append_fixture_component(invalid, fixture, false,
+                           Eigen::RowVector3d{3.0, 0.0, 0.0});
 
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F);

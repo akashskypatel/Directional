@@ -433,6 +433,26 @@ SurfaceCellCanonicalIdentity source_support_identity(
   return flatten_identities(faces);
 }
 
+int source_support_count(const SurfaceArrangementCell &cell,
+                         const Eigen::MatrixXi &F) {
+  std::vector<std::array<int, 3>> faces;
+  std::vector<int> sourceFaces = cell.sourceFaces;
+  if (sourceFaces.empty() && cell.sourceFace >= 0) {
+    sourceFaces.push_back(cell.sourceFace);
+  }
+  for (const int face : sourceFaces) {
+    if (face < 0 || face >= F.rows() || F.cols() != 3) {
+      continue;
+    }
+    std::array<int, 3> vertices{{F(face, 0), F(face, 1), F(face, 2)}};
+    std::sort(vertices.begin(), vertices.end());
+    faces.push_back(vertices);
+  }
+  std::sort(faces.begin(), faces.end());
+  faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
+  return static_cast<int>(faces.size());
+}
+
 SurfaceCellDomainIdentity build_domain_identity(
     const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
     const std::vector<int> &boundary, const Eigen::MatrixXi &F) {
@@ -468,6 +488,9 @@ SurfaceCellDomainIdentity build_domain_identity(
       flatten_identities(canonical_cycle_rotation(directed));
   result.undirectedBoundary = flatten_identities(undirected);
   result.sourceSupport = source_support_identity(cell, F);
+  result.boundaryNodeCount = static_cast<int>(boundary.size());
+  result.boundaryHalfedgeCount = static_cast<int>(boundary.size());
+  result.sourceSupportCount = source_support_count(cell, F);
   result.sourceComponent =
       components.size() == 1U ? *components.begin() : -2;
   result.sourceSheet = sheets.size() == 1U ? *sheets.begin() : -2;
@@ -475,6 +498,85 @@ SurfaceCellDomainIdentity build_domain_identity(
                  result.undirectedBoundary.valid &&
                  result.sourceSupport.valid;
   return result;
+}
+
+void compact_identity_group(
+    std::vector<SurfaceCellCanonicalIdentity *> identities,
+    const std::int64_t namespaceTag) {
+  identities.erase(
+      std::remove_if(identities.begin(), identities.end(),
+                     [](const SurfaceCellCanonicalIdentity *identity) {
+                       return identity == nullptr || !identity->valid;
+                     }),
+      identities.end());
+  std::sort(identities.begin(), identities.end(),
+            [](const SurfaceCellCanonicalIdentity *lhs,
+               const SurfaceCellCanonicalIdentity *rhs) {
+              if (*lhs != *rhs) {
+                return *lhs < *rhs;
+              }
+              return lhs < rhs;
+            });
+
+  std::vector<std::pair<SurfaceCellCanonicalIdentity *, std::int64_t>>
+      assignments;
+  assignments.reserve(identities.size());
+  std::int64_t nextId = -1;
+  const SurfaceCellCanonicalIdentity *previous = nullptr;
+  for (SurfaceCellCanonicalIdentity *identity : identities) {
+    if (previous == nullptr || *identity != *previous) {
+      ++nextId;
+      previous = identity;
+    }
+    assignments.emplace_back(identity, nextId);
+  }
+  for (const auto &[identity, id] : assignments) {
+    std::vector<std::int64_t> compactValues{namespaceTag, id};
+    identity->values.swap(compactValues);
+    identity->valid = true;
+  }
+}
+
+void compact_patch_ownership_identities(
+    std::vector<PatchDescriptor> &descriptors) {
+  std::vector<SurfaceCellCanonicalIdentity *> boundaryNodes;
+  std::vector<SurfaceCellCanonicalIdentity *> orientedBoundaries;
+  std::vector<SurfaceCellCanonicalIdentity *> undirectedBoundaries;
+  std::vector<SurfaceCellCanonicalIdentity *> sourceSupports;
+  for (PatchDescriptor &descriptor : descriptors) {
+    for (SurfaceCellCanonicalIdentity &identity :
+         descriptor.patch.boundaryNodeIdentities) {
+      boundaryNodes.push_back(&identity);
+    }
+    orientedBoundaries.push_back(
+        &descriptor.patch.domainIdentity.orientedBoundary);
+    undirectedBoundaries.push_back(
+        &descriptor.patch.domainIdentity.undirectedBoundary);
+    sourceSupports.push_back(&descriptor.patch.domainIdentity.sourceSupport);
+  }
+  // IDs are assigned after exact lexicographic comparison of the complete
+  // records. They are collision-free interned identities, not hashes, and are
+  // deterministic under descriptor, patch, and source-face reordering.
+  compact_identity_group(std::move(boundaryNodes), 1);
+  compact_identity_group(std::move(orientedBoundaries), 2);
+  compact_identity_group(std::move(undirectedBoundaries), 3);
+  compact_identity_group(std::move(sourceSupports), 4);
+}
+
+int completion_variant_count(const PureQuadPatch &patch,
+                             const PureQuadCompletionBackend backend) {
+  switch (backend) {
+  case PureQuadCompletionBackend::TransitionTemplate:
+    return 3;
+  case PureQuadCompletionBackend::Pattern:
+  case PureQuadCompletionBackend::BoundedCombinatorial:
+    return std::max(1, static_cast<int>(patch.boundaryVertices.size()));
+  case PureQuadCompletionBackend::ClosedForm:
+  case PureQuadCompletionBackend::PoleTemplate:
+  case PureQuadCompletionBackend::SourceGridRecovery:
+    return 1;
+  }
+  return 1;
 }
 
 } // namespace directional::geometry::patch_descriptor_detail
@@ -650,6 +752,9 @@ PatchDescriptorSet derive_patch_descriptors(
     result.descriptors.push_back(std::move(descriptor));
   }
 
+  patch_descriptor_detail::compact_patch_ownership_identities(
+      result.descriptors);
+
   std::sort(result.descriptors.begin(), result.descriptors.end(),
             [](const PatchDescriptor &lhs, const PatchDescriptor &rhs) {
               if (lhs.patch.domainIdentity < rhs.patch.domainIdentity) {
@@ -702,6 +807,10 @@ PatchDescriptorSet derive_patch_descriptors(
           first.patch.domainIdentity.sourceSupport.hash();
       result.ownershipConflict.secondSourceSupportHash =
           identity.sourceSupport.hash();
+      result.ownershipConflict.firstSourceSupportCount =
+          first.patch.domainIdentity.sourceSupportCount;
+      result.ownershipConflict.secondSourceSupportCount =
+          identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
           first.patch.domainIdentity.sourceComponent;
       result.ownershipConflict.firstSheet =
@@ -733,6 +842,10 @@ PatchDescriptorSet derive_patch_descriptors(
           first.patch.domainIdentity.sourceSupport.hash();
       result.ownershipConflict.secondSourceSupportHash =
           identity.sourceSupport.hash();
+      result.ownershipConflict.firstSourceSupportCount =
+          first.patch.domainIdentity.sourceSupportCount;
+      result.ownershipConflict.secondSourceSupportCount =
+          identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
           first.patch.domainIdentity.sourceComponent;
       result.ownershipConflict.firstSheet =
@@ -839,7 +952,40 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     result.assembly.failure = result.failure;
     return result;
   }
-  for (const PatchDescriptor &descriptor : result.descriptors.descriptors) {
+  const int descriptorCount =
+      static_cast<int>(result.descriptors.descriptors.size());
+  std::vector<int> completionVariants(
+      static_cast<std::size_t>(descriptorCount), 0);
+  std::map<int, int> descriptorIndexByPatch;
+  for (int descriptorIndex = 0; descriptorIndex < descriptorCount;
+       ++descriptorIndex) {
+    descriptorIndexByPatch.emplace(
+        result.descriptors.descriptors[static_cast<std::size_t>(descriptorIndex)]
+            .cellId,
+        descriptorIndex);
+  }
+
+  const auto completeDescriptor = [&](const int descriptorIndex,
+                                      const int completionVariant) {
+    const PatchDescriptor &descriptor = result.descriptors.descriptors[
+        static_cast<std::size_t>(descriptorIndex)];
+    PureQuadCompletionOptions completionOptions;
+    completionOptions.sourcePatch = descriptor.cellId;
+    completionOptions.maxBoundaryEdges = options.maxBoundaryEdges;
+    completionOptions.allowBoundedCombinatorialFallback =
+        options.allowBoundedCombinatorialFallback;
+    completionOptions.completionVariant = completionVariant;
+    completionOptions.sourceVertices = &V;
+    completionOptions.sourceFaces = &F;
+    completionOptions.sourceFaceComponents = options.sourceFaceComponents;
+    completionOptions.sourceFaceSheets = options.sourceFaceSheets;
+    return complete_pure_quad_patch(descriptor.patch, completionOptions);
+  };
+
+  for (int descriptorIndex = 0; descriptorIndex < descriptorCount;
+       ++descriptorIndex) {
+    const PatchDescriptor &descriptor = result.descriptors.descriptors[
+        static_cast<std::size_t>(descriptorIndex)];
     const bool boundedFallbackAdmissible =
         options.allowBoundedCombinatorialFallback &&
         (descriptor.feasibility.reason ==
@@ -853,30 +999,74 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       continue;
     }
     ++result.attemptedPatches;
-    PureQuadCompletionOptions completionOptions;
-    completionOptions.sourcePatch = descriptor.cellId;
-    completionOptions.maxBoundaryEdges = options.maxBoundaryEdges;
-    completionOptions.allowBoundedCombinatorialFallback =
-        options.allowBoundedCombinatorialFallback;
-    completionOptions.sourceVertices = &V;
-    completionOptions.sourceFaces = &F;
-    completionOptions.sourceFaceComponents = options.sourceFaceComponents;
-    completionOptions.sourceFaceSheets = options.sourceFaceSheets;
     const PureQuadCompletionResult completion =
-        complete_pure_quad_patch(descriptor.patch, completionOptions);
+        completeDescriptor(descriptorIndex, 0);
     if (!completion.success || completion.mesh.quads.empty()) {
       ++result.failedPatches;
+      if (result.failure.empty() && !completion.failure.empty()) {
+        result.failure = completion.failure;
+      }
       continue;
     }
     result.completedPatches.push_back(completion.mesh);
   }
   if (result.failedPatches != 0 ||
       result.completedPatches.size() != result.descriptors.descriptors.size()) {
-    result.failure = "IncompleteSurfaceCellComplex";
+    if (result.failure.empty()) {
+      result.failure = "IncompleteSurfaceCellComplex";
+    }
     result.assembly.failure = result.failure;
     return result;
   }
   result.assembly = stitch_pure_quad_patches(result.completedPatches);
+  while (!result.assembly.success &&
+         result.assembly.ownershipConflict.classification ==
+             SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership &&
+         result.completionOwnershipRepairAttempts <
+             options.maxCompletionOwnershipRepairs) {
+    const SurfaceCellOwnershipConflict conflict =
+        result.assembly.ownershipConflict;
+    const std::array<int, 2> candidatePatches{{conflict.secondPatch,
+                                               conflict.firstPatch}};
+    bool advanced = false;
+    for (const int patchId : candidatePatches) {
+      const auto descriptorIndexIt = descriptorIndexByPatch.find(patchId);
+      if (descriptorIndexIt == descriptorIndexByPatch.end()) {
+        continue;
+      }
+      const int descriptorIndex = descriptorIndexIt->second;
+      PureQuadMesh &currentMesh = result.completedPatches[
+          static_cast<std::size_t>(descriptorIndex)];
+      const PatchDescriptor &descriptor = result.descriptors.descriptors[
+          static_cast<std::size_t>(descriptorIndex)];
+      const int variantCount =
+          patch_descriptor_detail::completion_variant_count(
+              descriptor.patch, currentMesh.backend);
+      int &variant =
+          completionVariants[static_cast<std::size_t>(descriptorIndex)];
+      while (variant + 1 < variantCount &&
+             result.completionOwnershipRepairAttempts <
+                 options.maxCompletionOwnershipRepairs) {
+        ++variant;
+        ++result.completionOwnershipRepairAttempts;
+        const PureQuadCompletionResult alternative =
+            completeDescriptor(descriptorIndex, variant);
+        if (!alternative.success || alternative.mesh.quads.empty()) {
+          continue;
+        }
+        currentMesh = alternative.mesh;
+        result.assembly = stitch_pure_quad_patches(result.completedPatches);
+        advanced = true;
+        break;
+      }
+      if (advanced) {
+        break;
+      }
+    }
+    if (!advanced) {
+      break;
+    }
+  }
   result.success = result.assembly.success;
   if (!result.success) {
     result.failure = result.assembly.failure;

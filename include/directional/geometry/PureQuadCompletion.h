@@ -61,6 +61,25 @@ enum class PureQuadCompletionBackend : int {
   SourceGridRecovery = 5,
 };
 
+inline const char *pure_quad_completion_backend_name(
+    const PureQuadCompletionBackend backend) {
+  switch (backend) {
+  case PureQuadCompletionBackend::ClosedForm:
+    return "closed-form";
+  case PureQuadCompletionBackend::TransitionTemplate:
+    return "transition-template";
+  case PureQuadCompletionBackend::Pattern:
+    return "pattern";
+  case PureQuadCompletionBackend::BoundedCombinatorial:
+    return "bounded-combinatorial";
+  case PureQuadCompletionBackend::PoleTemplate:
+    return "pole-template";
+  case PureQuadCompletionBackend::SourceGridRecovery:
+    return "source-grid-recovery";
+  }
+  return "unknown";
+}
+
 enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };
 
 struct PureQuadFeatureIntervalLineage {
@@ -73,6 +92,10 @@ struct PureQuadVertexLineage {
   SurfacePoint sourcePoint;
   PureQuadFeatureIntervalLineage featureInterval;
   PureQuadStitchIdentity stitchIdentity;
+  // Strong source-authoritative identity used to verify that a compact stitch
+  // key did not merge distinct topology. Production completion initializes it
+  // from exact arrangement/source lineage before assembly.
+  PureQuadStitchIdentity authoritativeIdentity;
   int sourcePatch = -1;
   int localVertex = -1;
   int sourceComponent = -1;
@@ -87,6 +110,10 @@ struct PureQuadVertexLineage {
 };
 struct PureQuadFaceLineage {
   int outputQuad = -1; int sourcePatch = -1; PureQuadCompletionBackend operation = PureQuadCompletionBackend::ClosedForm; int operationLocalQuad = -1;
+  int completionVariant = 0;
+  bool boundaryOnly = false;
+  std::uint64_t canonicalStitchCycleHash = 0U;
+  std::uint64_t canonicalAuthoritativeCycleHash = 0U;
   [[nodiscard]] bool valid() const { return outputQuad >= 0 && sourcePatch >= 0 && operationLocalQuad >= 0; }
 };
 struct PureQuadOutputLineageValidation { bool valid=false; bool allVerticesMapped=false; bool allQuadsMapped=false; bool solelyPairedSourceTriangleBoundaries=false; std::string failure; };
@@ -157,6 +184,10 @@ struct PureQuadCompletionOptions {
   int sourcePatch = -1;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
+  // Selects a deterministic alternative completion template. Variant zero is
+  // the historical template; higher values are used only by global ownership
+  // assignment when a distinct patch would otherwise emit the same face.
+  int completionVariant = 0;
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
   const std::vector<int> *sourceFaceComponents = nullptr;
@@ -169,6 +200,7 @@ struct PureQuadCompletionResult {
   PureQuadMesh mesh;
   PureQuadPatchRejectReason failureReason = PureQuadPatchRejectReason::None;
   int exploredPatterns = 0;
+  std::string failure;
 };
 
 struct PureQuadAssemblyResult {

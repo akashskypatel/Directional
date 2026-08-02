@@ -10,6 +10,7 @@
 #ifndef DIRECTIONAL_GEOMETRY_SURFACE_CELL_OWNERSHIP_H
 #define DIRECTIONAL_GEOMETRY_SURFACE_CELL_OWNERSHIP_H
 
+#include <array>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -58,6 +59,9 @@ struct SurfaceCellDomainIdentity {
   SurfaceCellCanonicalIdentity orientedBoundary;
   SurfaceCellCanonicalIdentity undirectedBoundary;
   SurfaceCellCanonicalIdentity sourceSupport;
+  int boundaryNodeCount = 0;
+  int boundaryHalfedgeCount = 0;
+  int sourceSupportCount = 0;
   int sourceComponent = -1;
   int sourceSheet = -1;
 
@@ -71,6 +75,9 @@ struct SurfaceCellDomainIdentity {
     mix(orientedBoundary.hash());
     mix(undirectedBoundary.hash());
     mix(sourceSupport.hash());
+    mix(static_cast<std::uint64_t>(boundaryNodeCount));
+    mix(static_cast<std::uint64_t>(boundaryHalfedgeCount));
+    mix(static_cast<std::uint64_t>(sourceSupportCount));
     mix(static_cast<std::uint64_t>(sourceComponent));
     mix(static_cast<std::uint64_t>(sourceSheet));
     return seed;
@@ -81,6 +88,9 @@ struct SurfaceCellDomainIdentity {
     return valid && other.valid &&
            sourceComponent == other.sourceComponent &&
            sourceSheet == other.sourceSheet &&
+           boundaryNodeCount == other.boundaryNodeCount &&
+           boundaryHalfedgeCount == other.boundaryHalfedgeCount &&
+           sourceSupportCount == other.sourceSupportCount &&
            orientedBoundary == other.orientedBoundary &&
            sourceSupport == other.sourceSupport;
   }
@@ -90,6 +100,8 @@ struct SurfaceCellDomainIdentity {
     return valid && other.valid &&
            sourceComponent == other.sourceComponent &&
            sourceSheet == other.sourceSheet &&
+           boundaryHalfedgeCount == other.boundaryHalfedgeCount &&
+           sourceSupportCount == other.sourceSupportCount &&
            undirectedBoundary == other.undirectedBoundary &&
            sourceSupport == other.sourceSupport;
   }
@@ -99,6 +111,9 @@ struct SurfaceCellDomainIdentity {
     return lhs.valid == rhs.valid &&
            lhs.sourceComponent == rhs.sourceComponent &&
            lhs.sourceSheet == rhs.sourceSheet &&
+           lhs.boundaryNodeCount == rhs.boundaryNodeCount &&
+           lhs.boundaryHalfedgeCount == rhs.boundaryHalfedgeCount &&
+           lhs.sourceSupportCount == rhs.sourceSupportCount &&
            lhs.orientedBoundary == rhs.orientedBoundary &&
            lhs.undirectedBoundary == rhs.undirectedBoundary &&
            lhs.sourceSupport == rhs.sourceSupport;
@@ -119,6 +134,15 @@ struct SurfaceCellDomainIdentity {
     }
     if (lhs.sourceSheet != rhs.sourceSheet) {
       return lhs.sourceSheet < rhs.sourceSheet;
+    }
+    if (lhs.sourceSupportCount != rhs.sourceSupportCount) {
+      return lhs.sourceSupportCount < rhs.sourceSupportCount;
+    }
+    if (lhs.boundaryHalfedgeCount != rhs.boundaryHalfedgeCount) {
+      return lhs.boundaryHalfedgeCount < rhs.boundaryHalfedgeCount;
+    }
+    if (lhs.boundaryNodeCount != rhs.boundaryNodeCount) {
+      return lhs.boundaryNodeCount < rhs.boundaryNodeCount;
     }
     if (lhs.sourceSupport != rhs.sourceSupport) {
       return lhs.sourceSupport < rhs.sourceSupport;
@@ -182,8 +206,18 @@ struct SurfaceCellOwnershipConflict {
   int firstSheet = -1;
   int secondComponent = -1;
   int secondSheet = -1;
-  std::vector<std::uint64_t> firstCornerIdentityHashes;
-  std::vector<std::uint64_t> secondCornerIdentityHashes;
+  int firstCompletionBackend = -1;
+  int secondCompletionBackend = -1;
+  std::array<int, 4> firstCornerIdentityKinds{{0, 0, 0, 0}};
+  std::array<int, 4> secondCornerIdentityKinds{{0, 0, 0, 0}};
+  std::array<std::uint64_t, 4> firstCornerIdentityHashes{{0, 0, 0, 0}};
+  std::array<std::uint64_t, 4> secondCornerIdentityHashes{{0, 0, 0, 0}};
+  std::array<std::uint64_t, 4> firstCornerAuthoritativeHashes{{0, 0, 0, 0}};
+  std::array<std::uint64_t, 4> secondCornerAuthoritativeHashes{{0, 0, 0, 0}};
+  std::array<int, 4> firstLocalVertices{{-1, -1, -1, -1}};
+  std::array<int, 4> secondLocalVertices{{-1, -1, -1, -1}};
+  std::array<int, 4> firstGlobalVertices{{-1, -1, -1, -1}};
+  std::array<int, 4> secondGlobalVertices{{-1, -1, -1, -1}};
 
   [[nodiscard]] bool active() const {
     return classification != SurfaceCellOwnershipConflictClass::None;

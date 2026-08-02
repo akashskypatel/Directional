@@ -70,6 +70,7 @@ struct SurfaceCellComplexCompletionOptions {
   PatchDescriptorOptions descriptorOptions;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
+  int maxCompletionOwnershipRepairs = 256;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
 };
@@ -96,6 +97,7 @@ struct SurfaceCellComplexCompletionResult {
   PureQuadAssemblyResult assembly;
   int attemptedPatches = 0;
   int failedPatches = 0;
+  int completionOwnershipRepairAttempts = 0;
   std::string failure;
 };
 

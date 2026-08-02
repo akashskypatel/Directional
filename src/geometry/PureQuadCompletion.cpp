@@ -1,5 +1,7 @@
 #include <directional/geometry/PureQuadCompletion.h>
 
+#include <sstream>
+
 namespace directional::geometry::pure_quad_detail {
 
 int boundary_edge_count(const PureQuadPatch &patch) {
@@ -88,6 +90,110 @@ int expected_valence(const int singularIndexNumerator) {
 namespace directional::geometry::pure_quad_detail {
 
 int next_generated_vertex(int &next) { return next--; }
+
+} // namespace directional::geometry::pure_quad_detail
+
+namespace directional::geometry::pure_quad_detail {
+
+int normalized_completion_variant(const int variant, const int count) {
+  if (count <= 0) {
+    return 0;
+  }
+  const int remainder = variant % count;
+  return remainder < 0 ? remainder + count : remainder;
+}
+
+std::vector<int> rotated_cycle(const std::vector<int> &cycle,
+                               const int variant) {
+  if (cycle.empty()) {
+    return {};
+  }
+  const int start = normalized_completion_variant(
+      variant, static_cast<int>(cycle.size()));
+  std::vector<int> rotated;
+  rotated.reserve(cycle.size());
+  for (int offset = 0; offset < static_cast<int>(cycle.size()); ++offset) {
+    rotated.push_back(cycle[static_cast<std::size_t>(
+        (start + offset) % static_cast<int>(cycle.size()))]);
+  }
+  return rotated;
+}
+
+template <typename T>
+struct CanonicalQuadCycle {
+  std::array<T, 4> values{};
+  std::array<int, 4> sourceIndices{{0, 1, 2, 3}};
+};
+
+template <typename T>
+CanonicalQuadCycle<T> canonical_quad_cycle(
+    const std::array<T, 4> &cycle, const bool reversed) {
+  CanonicalQuadCycle<T> best;
+  bool initialized = false;
+  for (int start = 0; start < 4; ++start) {
+    CanonicalQuadCycle<T> candidate;
+    for (int offset = 0; offset < 4; ++offset) {
+      const int index = reversed ? (start - offset + 8) % 4
+                                 : (start + offset) % 4;
+      candidate.values[static_cast<std::size_t>(offset)] =
+          cycle[static_cast<std::size_t>(index)];
+      candidate.sourceIndices[static_cast<std::size_t>(offset)] = index;
+    }
+    if (!initialized || candidate.values < best.values) {
+      best = std::move(candidate);
+      initialized = true;
+    }
+  }
+  return best;
+}
+
+std::uint64_t stitch_cycle_hash(
+    const std::array<PureQuadStitchIdentity, 4> &cycle) {
+  std::uint64_t seed = 1469598103934665603ULL;
+  for (const PureQuadStitchIdentity &identity : cycle) {
+    seed ^= static_cast<std::uint64_t>(identity.kind);
+    seed *= 1099511628211ULL;
+    seed ^= identity.canonical.hash();
+    seed *= 1099511628211ULL;
+  }
+  return seed;
+}
+
+bool same_unoriented_cycle(
+    const CanonicalQuadCycle<PureQuadStitchIdentity> &firstForward,
+    const CanonicalQuadCycle<PureQuadStitchIdentity> &firstReversed,
+    const CanonicalQuadCycle<PureQuadStitchIdentity> &secondForward,
+    const CanonicalQuadCycle<PureQuadStitchIdentity> &secondReversed) {
+  return firstForward.values == secondForward.values ||
+         firstForward.values == secondReversed.values ||
+         firstReversed.values == secondForward.values ||
+         firstReversed.values == secondReversed.values;
+}
+
+std::string identity_hash_list(
+    const std::array<std::uint64_t, 4> &hashes) {
+  std::ostringstream stream;
+  for (int corner = 0; corner < 4; ++corner) {
+    if (corner != 0) {
+      stream << ',';
+    }
+    stream << hashes[static_cast<std::size_t>(corner)];
+  }
+  return stream.str();
+}
+
+std::string identity_kind_list(const std::array<int, 4> &kinds) {
+  std::ostringstream stream;
+  for (int corner = 0; corner < 4; ++corner) {
+    if (corner != 0) {
+      stream << ',';
+    }
+    stream << pure_quad_stitch_identity_kind_name(
+        static_cast<PureQuadStitchIdentityKind>(
+            kinds[static_cast<std::size_t>(corner)]));
+  }
+  return stream.str();
+}
 
 } // namespace directional::geometry::pure_quad_detail
 
@@ -239,6 +345,7 @@ void initialize_boundary_embedding(const PureQuadPatch &patch,
       lineage.stitchIdentity.canonical.values = {
           lineage.outputVertex, lineage.sourceComponent, lineage.sourceSheet};
     }
+    lineage.authoritativeIdentity = lineage.stitchIdentity;
     const int rail =
         i < static_cast<int>(patch.boundaryRailIds.size())
             ? patch.boundaryRailIds[static_cast<std::size_t>(i)]
@@ -294,6 +401,7 @@ int append_embedded_vertex(
   lineage.stitchIdentity.canonical.valid = true;
   lineage.stitchIdentity.canonical.values = {
       mesh.sourcePatch, vertex, point.component, point.sheet};
+  lineage.authoritativeIdentity = lineage.stitchIdentity;
   mesh.vertexLineage.push_back(std::move(lineage));
   return vertex;
 }
@@ -315,6 +423,142 @@ bool fill_positions(PureQuadMesh &mesh) {
     if (!mesh.vertexPositions.row(i).allFinite()) {
       return false;
     }
+  }
+  return true;
+}
+
+} // namespace directional::geometry::pure_quad_detail
+
+namespace directional::geometry::pure_quad_detail {
+
+bool validate_completion_domain_ownership(const PureQuadPatch &patch,
+                                          PureQuadMesh &mesh,
+                                          const int completionVariant,
+                                          std::string &failure) {
+  if (mesh.vertices.size() != mesh.vertexProvenance.size() ||
+      mesh.vertices.size() != mesh.vertexLineage.size()) {
+    failure = "CompletionOwnershipIncompleteVertexLineage";
+    return false;
+  }
+
+  std::map<int, std::size_t> boundaryRows;
+  for (std::size_t boundaryIndex = 0;
+       boundaryIndex < patch.boundaryVertices.size(); ++boundaryIndex) {
+    if (!boundaryRows.emplace(patch.boundaryVertices[boundaryIndex],
+                              boundaryIndex)
+             .second) {
+      failure = "CompletionOwnershipDuplicateBoundaryVertex";
+      return false;
+    }
+  }
+  const std::set<int> sourceFaces(patch.sourceFaces.begin(),
+                                  patch.sourceFaces.end());
+
+  std::map<int, std::size_t> vertexRows;
+  for (std::size_t row = 0; row < mesh.vertices.size(); ++row) {
+    const int localVertex = mesh.vertices[row];
+    if (!vertexRows.emplace(localVertex, row).second) {
+      failure = "CompletionOwnershipDuplicateLocalVertex";
+      return false;
+    }
+    PureQuadVertexLineage &lineage = mesh.vertexLineage[row];
+    if (lineage.outputVertex != localVertex ||
+        lineage.sourcePatch != mesh.sourcePatch ||
+        lineage.localVertex != localVertex) {
+      failure = "CompletionOwnershipInvalidVertexOwner";
+      return false;
+    }
+    if (!lineage.stitchIdentity.valid()) {
+      failure = "CompletionOwnershipMissingStitchIdentity";
+      return false;
+    }
+    if (!lineage.authoritativeIdentity.valid()) {
+      lineage.authoritativeIdentity = lineage.stitchIdentity;
+    }
+
+    const auto boundary = boundaryRows.find(localVertex);
+    if (boundary != boundaryRows.end()) {
+      const std::size_t boundaryIndex = boundary->second;
+      if (boundaryIndex < patch.boundaryNodeIdentities.size() &&
+          patch.boundaryNodeIdentities[boundaryIndex].valid) {
+        PureQuadStitchIdentity expected;
+        expected.kind = PureQuadStitchIdentityKind::ArrangementBoundaryNode;
+        expected.canonical = patch.boundaryNodeIdentities[boundaryIndex];
+        if (lineage.authoritativeIdentity != expected) {
+          failure = "CompletionOwnershipBoundaryIdentityMismatch";
+          return false;
+        }
+      } else if (lineage.authoritativeIdentity.kind !=
+                 PureQuadStitchIdentityKind::ArrangementBoundaryNode) {
+        // Standalone completion fixtures do not carry an arrangement. Their
+        // fallback identity remains valid only as an arrangement-node key.
+        failure = "CompletionOwnershipMissingBoundaryIdentity";
+        return false;
+      }
+    } else if (lineage.stitchIdentity.kind !=
+                   PureQuadStitchIdentityKind::GeneratedPatchInterior ||
+               lineage.authoritativeIdentity.kind !=
+                   PureQuadStitchIdentityKind::GeneratedPatchInterior) {
+      failure = "CompletionOwnershipInteriorNotPatchLocal";
+      return false;
+    }
+
+    const SurfacePoint &provenance = mesh.vertexProvenance[row];
+    if (!provenance.valid()) {
+      failure = "CompletionOwnershipMissingSourcePoint";
+      return false;
+    }
+    if (!sourceFaces.empty() && sourceFaces.count(provenance.face) == 0U) {
+      failure = "CompletionOwnershipSourceSupportEscape";
+      return false;
+    }
+  }
+
+  mesh.quadLineage.clear();
+  mesh.quadLineage.reserve(mesh.quads.size());
+  for (int localQuad = 0; localQuad < static_cast<int>(mesh.quads.size());
+       ++localQuad) {
+    const std::vector<int> &quad =
+        mesh.quads[static_cast<std::size_t>(localQuad)];
+    if (quad.size() != 4 ||
+        std::set<int>(quad.begin(), quad.end()).size() != 4U) {
+      failure = "CompletionOwnershipInvalidLocalQuad";
+      return false;
+    }
+    PureQuadFaceLineage lineage;
+    lineage.outputQuad = localQuad;
+    lineage.sourcePatch = mesh.sourcePatch;
+    lineage.operation = mesh.backend;
+    lineage.operationLocalQuad = localQuad;
+    lineage.completionVariant = completionVariant;
+    lineage.boundaryOnly = true;
+
+    std::array<PureQuadStitchIdentity, 4> stitchCycle;
+    std::array<PureQuadStitchIdentity, 4> authoritativeCycle;
+    for (int corner = 0; corner < 4; ++corner) {
+      const int localVertex = quad[static_cast<std::size_t>(corner)];
+      const auto row = vertexRows.find(localVertex);
+      if (row == vertexRows.end()) {
+        failure = "CompletionOwnershipUnknownLocalVertex";
+        return false;
+      }
+      const PureQuadVertexLineage &vertexLineage =
+          mesh.vertexLineage[row->second];
+      stitchCycle[static_cast<std::size_t>(corner)] =
+          vertexLineage.stitchIdentity;
+      authoritativeCycle[static_cast<std::size_t>(corner)] =
+          vertexLineage.authoritativeIdentity;
+      lineage.boundaryOnly =
+          lineage.boundaryOnly && boundaryRows.count(localVertex) != 0U;
+    }
+    const auto canonicalStitch = canonical_quad_cycle(stitchCycle, false);
+    const auto canonicalAuthoritative =
+        canonical_quad_cycle(authoritativeCycle, false);
+    lineage.canonicalStitchCycleHash =
+        stitch_cycle_hash(canonicalStitch.values);
+    lineage.canonicalAuthoritativeCycleHash =
+        stitch_cycle_hash(canonicalAuthoritative.values);
+    mesh.quadLineage.push_back(std::move(lineage));
   }
   return true;
 }
@@ -603,11 +847,16 @@ bool complete_rectangular_grid(
 namespace directional::geometry::pure_quad_detail {
 
 bool complete_six_vertex_transition(const PureQuadPatch &patch,
-                                           PureQuadMesh &mesh) {
+                                    PureQuadMesh &mesh,
+                                    const int completionVariant) {
   if (patch.boundaryVertices.size() != 6) return false;
   const auto &v = patch.boundaryVertices;
-  mesh.quads.push_back({v[0], v[1], v[2], v[3]});
-  mesh.quads.push_back({v[0], v[3], v[4], v[5]});
+  const int start = normalized_completion_variant(completionVariant, 3);
+  const auto at = [&](const int offset) {
+    return v[static_cast<std::size_t>((start + offset) % 6)];
+  };
+  mesh.quads.push_back({at(0), at(1), at(2), at(3)});
+  mesh.quads.push_back({at(0), at(3), at(4), at(5)});
   mesh.backend = PureQuadCompletionBackend::TransitionTemplate;
   return true;
 }
@@ -707,11 +956,13 @@ bool complete_singularity_pole(
 
 namespace directional::geometry::pure_quad_detail {
 
-bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
+bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh,
+                      const int completionVariant) {
   if (patch.boundaryVertices.size() < 4 ||
       patch.boundaryVertices.size() % 2 != 0) return false;
-  if (!append_balanced_boundary_quadrangulation(patch.boundaryVertices,
-                                                 mesh)) {
+  const std::vector<int> boundary =
+      rotated_cycle(patch.boundaryVertices, completionVariant);
+  if (!append_balanced_boundary_quadrangulation(boundary, mesh)) {
     return false;
   }
   mesh.backend = PureQuadCompletionBackend::Pattern;
@@ -723,11 +974,12 @@ bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh) {
 namespace directional::geometry::pure_quad_detail {
 
 bool complete_bounded(const PureQuadPatch &patch, PureQuadMesh &mesh,
-                             int &explored) {
+                      int &explored, const int completionVariant) {
   PureQuadMesh trial = mesh;
   ++explored;
-  if (!append_balanced_boundary_quadrangulation(patch.boundaryVertices,
-                                                trial) ||
+  const std::vector<int> boundary =
+      rotated_cycle(patch.boundaryVertices, completionVariant);
+  if (!append_balanced_boundary_quadrangulation(boundary, trial) ||
       !pure_quad_topology_is_disk(trial)) {
     return false;
   }
@@ -809,14 +1061,16 @@ PureQuadCompletionResult complete_pure_quad_patch(
         options.sourceFaceComponents, options.sourceFaceSheets);
   }
   if (!completed && !boundedFallbackAdmissible && boundaryCount == 6) {
-    completed = pure_quad_detail::complete_six_vertex_transition(patch, mesh);
+    completed = pure_quad_detail::complete_six_vertex_transition(
+        patch, mesh, options.completionVariant);
   }
   if (!completed && !boundedFallbackAdmissible && patch.simple) {
-    completed = pure_quad_detail::complete_pattern(patch, mesh);
+    completed = pure_quad_detail::complete_pattern(
+        patch, mesh, options.completionVariant);
   }
   if (!completed && options.allowBoundedCombinatorialFallback) {
     completed = pure_quad_detail::complete_bounded(
-        patch, mesh, result.exploredPatterns);
+        patch, mesh, result.exploredPatterns, options.completionVariant);
   }
   if (!completed) {
     result.failureReason = PureQuadPatchRejectReason::SearchLimitExceeded;
@@ -826,7 +1080,13 @@ PureQuadCompletionResult complete_pure_quad_patch(
     result.failureReason = PureQuadPatchRejectReason::MissingBoundaryData;
     return result;
   }
-  for (int q=0; q<static_cast<int>(mesh.quads.size()); ++q) mesh.quadLineage.push_back({q, mesh.sourcePatch, mesh.backend, q});
+  std::string ownershipFailure;
+  if (!pure_quad_detail::validate_completion_domain_ownership(
+          patch, mesh, options.completionVariant, ownershipFailure)) {
+    result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
+    result.failure = ownershipFailure;
+    return result;
+  }
   if (!pure_quad_topology_is_disk(mesh)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     return result;
@@ -839,6 +1099,100 @@ PureQuadCompletionResult complete_pure_quad_patch(
 } // namespace directional::geometry
 
 namespace directional::geometry {
+
+namespace {
+
+struct CompletedFaceCornerRecord {
+  PureQuadStitchIdentity stitchIdentity;
+  PureQuadStitchIdentity authoritativeIdentity;
+  int localVertex = -1;
+  int globalVertex = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+};
+
+struct CompletedFaceOwnershipRecord {
+  int patchIndex = -1;
+  int localQuad = -1;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int completionVariant = 0;
+  std::array<CompletedFaceCornerRecord, 4> localCorners;
+  pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity> stitchForward;
+  pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity> stitchReversed;
+  pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity>
+      authoritativeForward;
+  pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity>
+      authoritativeReversed;
+};
+
+CompletedFaceOwnershipRecord make_completed_face_ownership(
+    const int patchIndex, const int localQuad,
+    const PureQuadFaceLineage &lineage,
+    const std::vector<int> &localQuadVertices,
+    const std::array<int, 4> &globalQuad,
+    const std::map<int, PureQuadStitchIdentity> &localStitchIdentities,
+    const std::map<int, PureQuadStitchIdentity> &localAuthoritativeIdentities,
+    const std::map<int, int> &localComponents,
+    const std::map<int, int> &localSheets) {
+  CompletedFaceOwnershipRecord record;
+  record.patchIndex = patchIndex;
+  record.localQuad = localQuad;
+  record.backend = lineage.operation;
+  record.completionVariant = lineage.completionVariant;
+  std::array<PureQuadStitchIdentity, 4> stitchCycle;
+  std::array<PureQuadStitchIdentity, 4> authoritativeCycle;
+  for (int corner = 0; corner < 4; ++corner) {
+    const int localVertex =
+        localQuadVertices[static_cast<std::size_t>(corner)];
+    CompletedFaceCornerRecord &cornerRecord =
+        record.localCorners[static_cast<std::size_t>(corner)];
+    cornerRecord.stitchIdentity = localStitchIdentities.at(localVertex);
+    cornerRecord.authoritativeIdentity =
+        localAuthoritativeIdentities.at(localVertex);
+    cornerRecord.localVertex = localVertex;
+    cornerRecord.globalVertex = globalQuad[static_cast<std::size_t>(corner)];
+    cornerRecord.sourceComponent = localComponents.at(localVertex);
+    cornerRecord.sourceSheet = localSheets.at(localVertex);
+    stitchCycle[static_cast<std::size_t>(corner)] =
+        cornerRecord.stitchIdentity;
+    authoritativeCycle[static_cast<std::size_t>(corner)] =
+        cornerRecord.authoritativeIdentity;
+  }
+  record.stitchForward =
+      pure_quad_detail::canonical_quad_cycle(stitchCycle, false);
+  record.stitchReversed =
+      pure_quad_detail::canonical_quad_cycle(stitchCycle, true);
+  record.authoritativeForward =
+      pure_quad_detail::canonical_quad_cycle(authoritativeCycle, false);
+  record.authoritativeReversed =
+      pure_quad_detail::canonical_quad_cycle(authoritativeCycle, true);
+  return record;
+}
+
+void copy_conflict_corner_diagnostics(
+    const CompletedFaceOwnershipRecord &record,
+    std::array<int, 4> &kinds,
+    std::array<std::uint64_t, 4> &identityHashes,
+    std::array<std::uint64_t, 4> &authoritativeHashes,
+    std::array<int, 4> &localVertices,
+    std::array<int, 4> &globalVertices) {
+  const auto &order = record.stitchForward.sourceIndices;
+  for (int corner = 0; corner < 4; ++corner) {
+    const int sourceIndex = order[static_cast<std::size_t>(corner)];
+    const CompletedFaceCornerRecord &source =
+        record.localCorners[static_cast<std::size_t>(sourceIndex)];
+    kinds[static_cast<std::size_t>(corner)] =
+        static_cast<int>(source.stitchIdentity.kind);
+    identityHashes[static_cast<std::size_t>(corner)] =
+        source.stitchIdentity.hash();
+    authoritativeHashes[static_cast<std::size_t>(corner)] =
+        source.authoritativeIdentity.hash();
+    localVertices[static_cast<std::size_t>(corner)] = source.localVertex;
+    globalVertices[static_cast<std::size_t>(corner)] = source.globalVertex;
+  }
+}
+
+} // namespace
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
@@ -897,12 +1251,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
 
   std::map<PureQuadStitchIdentity, int> vertexRows;
   std::vector<Eigen::Vector3d> positions;
-  struct QuadOwner {
-    int patchIndex = -1;
-    int localQuad = -1;
-    std::vector<std::uint64_t> cornerHashes;
-  };
-  std::map<std::vector<int>, QuadOwner> canonicalQuads;
+  std::map<std::array<int, 4>, CompletedFaceOwnershipRecord> canonicalQuads;
 
   for (const int patchIndex : patchOrder) {
     const PureQuadMesh &patch = patches[static_cast<std::size_t>(patchIndex)];
@@ -918,7 +1267,10 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::set<int> boundary(patch.boundaryVertices.begin(),
                                  patch.boundaryVertices.end());
     std::map<int, int> localToGlobal;
-    std::map<int, std::uint64_t> localIdentityHashes;
+    std::map<int, PureQuadStitchIdentity> localStitchIdentities;
+    std::map<int, PureQuadStitchIdentity> localAuthoritativeIdentities;
+    std::map<int, int> localComponents;
+    std::map<int, int> localSheets;
     for (int localRow = 0; localRow < static_cast<int>(patch.vertices.size());
          ++localRow) {
       const int localVertex = patch.vertices[static_cast<std::size_t>(localRow)];
@@ -951,11 +1303,18 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
                                 provenance.component, provenance.sheet};
       }
       incoming.stitchIdentity = key;
+      if (!incoming.authoritativeIdentity.valid()) {
+        incoming.authoritativeIdentity = key;
+      }
       incoming.sourcePatch = patch.sourcePatch;
       incoming.localVertex = localVertex;
       incoming.sourceComponent = provenance.component;
       incoming.sourceSheet = provenance.sheet;
-      localIdentityHashes.emplace(localVertex, key.hash());
+      localStitchIdentities.emplace(localVertex, key);
+      localAuthoritativeIdentities.emplace(
+          localVertex, incoming.authoritativeIdentity);
+      localComponents.emplace(localVertex, provenance.component);
+      localSheets.emplace(localVertex, provenance.sheet);
 
       const Eigen::Vector3d position =
           patch.vertexPositions.row(localRow).transpose();
@@ -995,9 +1354,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         result.failure = "NonQuadPatchFace";
         return result;
       }
-      std::vector<int> globalQuad(4, -1);
-      std::vector<std::uint64_t> cornerHashes;
-      cornerHashes.reserve(4);
+      std::array<int, 4> globalQuad{{-1, -1, -1, -1}};
       for (int corner = 0; corner < 4; ++corner) {
         const int localCorner = quad[static_cast<std::size_t>(corner)];
         const auto mapped = localToGlobal.find(localCorner);
@@ -1006,18 +1363,28 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           return result;
         }
         globalQuad[static_cast<std::size_t>(corner)] = mapped->second;
-        cornerHashes.push_back(localIdentityHashes.at(localCorner));
       }
       if (std::set<int>(globalQuad.begin(), globalQuad.end()).size() != 4) {
         result.failure = "DegenerateStitchedQuad";
         return result;
       }
-      std::vector<int> canonical = globalQuad;
+      std::array<int, 4> canonical = globalQuad;
       std::sort(canonical.begin(), canonical.end());
+      const PureQuadFaceLineage &faceLineage =
+          patch.quadLineage[static_cast<std::size_t>(localQuad)];
+      CompletedFaceOwnershipRecord ownership = make_completed_face_ownership(
+          patchIndex, localQuad, faceLineage, quad, globalQuad,
+          localStitchIdentities, localAuthoritativeIdentities, localComponents,
+          localSheets);
       const auto [existingQuad, inserted] = canonicalQuads.emplace(
-          canonical, QuadOwner{patchIndex, localQuad, cornerHashes});
+          canonical, std::move(ownership));
       if (!inserted) {
-        const QuadOwner &firstOwner = existingQuad->second;
+        const CompletedFaceOwnershipRecord &firstOwner = existingQuad->second;
+        const CompletedFaceOwnershipRecord secondOwner =
+            make_completed_face_ownership(
+                patchIndex, localQuad, faceLineage, quad, globalQuad,
+                localStitchIdentities, localAuthoritativeIdentities,
+                localComponents, localSheets);
         const PureQuadMesh &firstPatch =
             patches[static_cast<std::size_t>(firstOwner.patchIndex)];
         SurfaceCellOwnershipConflict &conflict = result.ownershipConflict;
@@ -1043,8 +1410,24 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         conflict.firstSheet = firstPatch.domainIdentity.sourceSheet;
         conflict.secondComponent = patch.domainIdentity.sourceComponent;
         conflict.secondSheet = patch.domainIdentity.sourceSheet;
-        conflict.firstCornerIdentityHashes = firstOwner.cornerHashes;
-        conflict.secondCornerIdentityHashes = cornerHashes;
+        conflict.firstSourceSupportCount =
+            firstPatch.domainIdentity.sourceSupportCount;
+        conflict.secondSourceSupportCount =
+            patch.domainIdentity.sourceSupportCount;
+        conflict.firstCompletionBackend =
+            static_cast<int>(firstOwner.backend);
+        conflict.secondCompletionBackend =
+            static_cast<int>(secondOwner.backend);
+        copy_conflict_corner_diagnostics(
+            firstOwner, conflict.firstCornerIdentityKinds,
+            conflict.firstCornerIdentityHashes,
+            conflict.firstCornerAuthoritativeHashes,
+            conflict.firstLocalVertices, conflict.firstGlobalVertices);
+        copy_conflict_corner_diagnostics(
+            secondOwner, conflict.secondCornerIdentityKinds,
+            conflict.secondCornerIdentityHashes,
+            conflict.secondCornerAuthoritativeHashes,
+            conflict.secondLocalVertices, conflict.secondGlobalVertices);
         if (firstPatch.domainIdentity.same_oriented_domain(
                 patch.domainIdentity)) {
           conflict.classification =
@@ -1053,12 +1436,21 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
                        patch.domainIdentity)) {
           conflict.classification =
               SurfaceCellOwnershipConflictClass::OverlappingUndirectedBoundary;
-        } else if (firstOwner.cornerHashes == cornerHashes) {
+        } else if (pure_quad_detail::same_unoriented_cycle(
+                       firstOwner.authoritativeForward,
+                       firstOwner.authoritativeReversed,
+                       secondOwner.authoritativeForward,
+                       secondOwner.authoritativeReversed)) {
+          conflict.classification =
+              SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership;
+        } else if (pure_quad_detail::same_unoriented_cycle(
+                       firstOwner.stitchForward, firstOwner.stitchReversed,
+                       secondOwner.stitchForward, secondOwner.stitchReversed)) {
           conflict.classification =
               SurfaceCellOwnershipConflictClass::FalseVertexEquivalence;
         } else {
           conflict.classification =
-              SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership;
+              SurfaceCellOwnershipConflictClass::Unclassified;
         }
 
         result.failure =
@@ -1088,11 +1480,42 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
             ";firstSourceSupportHash=" +
             std::to_string(conflict.firstSourceSupportHash) +
             ";secondSourceSupportHash=" +
-            std::to_string(conflict.secondSourceSupportHash);
+            std::to_string(conflict.secondSourceSupportHash) +
+            ";firstComponent=" + std::to_string(conflict.firstComponent) +
+            ";firstSheet=" + std::to_string(conflict.firstSheet) +
+            ";secondComponent=" + std::to_string(conflict.secondComponent) +
+            ";secondSheet=" + std::to_string(conflict.secondSheet) +
+            ";firstBackend=" +
+            pure_quad_completion_backend_name(firstOwner.backend) +
+            ";secondBackend=" +
+            pure_quad_completion_backend_name(secondOwner.backend) +
+            ";firstVariant=" +
+            std::to_string(firstOwner.completionVariant) +
+            ";secondVariant=" +
+            std::to_string(secondOwner.completionVariant) +
+            ";firstCornerKinds=" +
+            pure_quad_detail::identity_kind_list(
+                conflict.firstCornerIdentityKinds) +
+            ";secondCornerKinds=" +
+            pure_quad_detail::identity_kind_list(
+                conflict.secondCornerIdentityKinds) +
+            ";firstCornerIdentityHashes=" +
+            pure_quad_detail::identity_hash_list(
+                conflict.firstCornerIdentityHashes) +
+            ";secondCornerIdentityHashes=" +
+            pure_quad_detail::identity_hash_list(
+                conflict.secondCornerIdentityHashes) +
+            ";firstCornerAuthoritativeHashes=" +
+            pure_quad_detail::identity_hash_list(
+                conflict.firstCornerAuthoritativeHashes) +
+            ";secondCornerAuthoritativeHashes=" +
+            pure_quad_detail::identity_hash_list(
+                conflict.secondCornerAuthoritativeHashes);
         return result;
       }
       const int outputQuad = static_cast<int>(result.mesh.quads.size());
-      result.mesh.quads.push_back(std::move(globalQuad));
+      result.mesh.quads.push_back(
+          {globalQuad[0], globalQuad[1], globalQuad[2], globalQuad[3]});
       PureQuadFaceLineage lineage =
           patch.quadLineage[static_cast<std::size_t>(localQuad)];
       lineage.outputQuad = outputQuad;
