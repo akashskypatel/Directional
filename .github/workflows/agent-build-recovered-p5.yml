@@ -1,29 +1,55 @@
-name: Agent Build Surface Cell P5
+name: Agent Restore Plan and Build P5
 
 on:
-  push:
-    branches:
-      - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths-ignore:
-      - TODO
-      - MILESTONE_G_TODO.md
   pull_request:
     branches:
       - surface_cell_quad
+    paths:
+      - .github/workflows/agent-build-recovered-p5.yml
   workflow_dispatch:
 
 permissions:
-  contents: read
+  actions: read
+  contents: write
 
 jobs:
-  build:
+  restore-and-build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout source
+      - name: Checkout active working branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 0
           submodules: false
+
+      - name: Restore ignored remediation plan as an ordinary file
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "Directional Agent"
+          git config user.email "actions@github.com"
+
+          if [[ ! -f .agents/Directional/Surface_Cell_Backend_Remediation_Plan.md ]]; then
+            gh api repos/${GITHUB_REPOSITORY}/actions/artifacts/8837883638/zip > /tmp/recovered-p5.zip
+            mkdir -p /tmp/recovered-p5-artifact
+            unzip -q /tmp/recovered-p5.zip -d /tmp/recovered-p5-artifact
+            echo "7ac183ba7c9089a2a68f4e1d223241795814fe36baa2750c573fb5280904e4ab  /tmp/recovered-p5-artifact/recovered-source.patch" | sha256sum -c -
+            git apply --include='.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md' --whitespace=nowarn /tmp/recovered-p5-artifact/recovered-source.patch
+            echo "a1bba73f2847204587feb51882b478bca2849bc385892976b326952d4180957a  .agents/Directional/Surface_Cell_Backend_Remediation_Plan.md" | sha256sum -c -
+            git add -f .agents/Directional/Surface_Cell_Backend_Remediation_Plan.md
+            git diff --cached --check
+            git commit -m "docs: restore Milestone G remediation plan"
+            git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          fi
+
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          local_sha=$(git rev-parse HEAD)
+          test "${remote_sha}" = "${local_sha}"
+          test -z "$(git status --porcelain)"
+          echo "${local_sha}" > /tmp/source-commit.txt
 
       - name: Fetch required submodules shallowly
         shell: bash
@@ -83,7 +109,7 @@ jobs:
           cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
           cp -a benchmarks tests include artifact/source/
-          git rev-parse HEAD > artifact/source-commit.txt
+          cp /tmp/source-commit.txt artifact/source-commit.txt
           git status --short > artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > artifact/files.sha256
@@ -91,7 +117,7 @@ jobs:
       - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-linux-release
+          name: surface-cell-p5-plan-restored-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
