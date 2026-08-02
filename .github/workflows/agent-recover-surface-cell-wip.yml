@@ -39,37 +39,49 @@ jobs:
           import base64
           import gzip
           import re
+          import traceback
 
           src = Path('recovery/encoded')
           dst = Path('recovery/decoded')
           dst.mkdir(parents=True, exist_ok=True)
+          errors = []
 
           groups = {}
           for path in src.glob('*.part*'):
               base = re.sub(r'\.part\d+$', '', path.name)
               groups.setdefault(base, []).append(path)
           for base, parts in groups.items():
-              data = ''.join(p.read_text().strip() for p in sorted(parts))
-              (src / base).write_text(data)
+              try:
+                  data = ''.join(p.read_text().strip() for p in sorted(parts))
+                  (src / base).write_text(data)
+              except Exception as exc:
+                  errors.append(f'{base}: failed to reassemble parts: {exc}')
 
           for path in sorted(src.iterdir()):
               if re.search(r'\.part\d+$', path.name):
                   continue
               out_name = path.name
-              data = path.read_bytes()
-              if out_name.endswith('.b64'):
-                  data = base64.b64decode(b''.join(data.split()))
-                  out_name = out_name[:-4]
-              if out_name.endswith('.gz'):
-                  data = gzip.decompress(data)
-                  out_name = out_name[:-3]
-              (dst / out_name).write_bytes(data)
+              try:
+                  data = path.read_bytes()
+                  if out_name.endswith('.b64'):
+                      data = base64.b64decode(b''.join(data.split()), validate=True)
+                      out_name = out_name[:-4]
+                  if out_name.endswith('.gz'):
+                      data = gzip.decompress(data)
+                      out_name = out_name[:-3]
+                  (dst / out_name).write_bytes(data)
+              except Exception as exc:
+                  errors.append(f'{path.name}: {type(exc).__name__}: {exc}')
 
           with (Path('recovery') / 'decoded-manifest.txt').open('w') as f:
               for path in sorted(dst.iterdir()):
-                  first = path.read_text(errors='replace').splitlines()[:12]
+                  first = path.read_text(errors='replace').splitlines()[:16]
                   f.write(f'=== {path.name} ===\n')
                   f.write('\n'.join(first) + '\n\n')
+
+          (Path('recovery') / 'decode-errors.txt').write_text(
+              '\n'.join(errors) + ('\n' if errors else '')
+          )
           PY
 
       - name: Package repository and recovery data
