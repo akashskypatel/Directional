@@ -167,7 +167,7 @@ int run_remesh(const int argc, char **argv) {
     } else if (option == "--surface-cell-fallback") {
       if (++argument >= argc) {
         throw std::runtime_error(
-            "--surface-cell-fallback requires Fail, ReturnInputMesh, or TryLegacy.");
+            "--surface-cell-fallback requires Fail or ReturnInputMesh.");
       }
       options.surfaceCells.fallbackPolicy =
           pipeline::parse_surface_cell_fallback_policy(argv[argument]);
