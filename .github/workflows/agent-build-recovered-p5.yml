@@ -94,6 +94,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git status --short > /tmp/source-status.txt
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
           cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
@@ -101,7 +102,7 @@ jobs:
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
           git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
           cp /tmp/source-commit.txt artifact/source-commit.txt
-          git status --short > artifact/source-status.txt
+          cp /tmp/source-status.txt artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
           cp build/agent-p5-release/configure.log artifact/logs/
           cp build/agent-p5-release/build.log artifact/logs/
