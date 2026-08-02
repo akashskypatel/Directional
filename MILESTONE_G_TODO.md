@@ -1,8 +1,18 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-01 16:08 PDT
+Last updated: 2026-08-01 21:08 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
+
+## Active implementation branch
+
+- Phase: P5 — recover and complete bridge/pinch topology healing.
+- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+- Draft recovery PR: `#8` (`agent/surface_cell_quad/p5-recover-bridge-healing` → `surface_cell_quad`).
+- Recovery baseline: `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`.
+- Encoded checkpoint target: local implementation state represented through `062ed12`.
+- Status: all decodable staged checkpoints have been reconstructed locally as actual source/test changes. The next remote checkpoint must commit those files directly to the working branch; no additional encoded patch snapshots are permitted.
+- Recovery rule: after interruption, resume from this working branch and this tracker. Merge into `surface_cell_quad` only after focused tests and the real bunny direct-completion benchmark close the phase.
 
 ## Success criteria
 
@@ -27,6 +37,7 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 
 ## Current checkpoint
 
+- Recovery workflow transition: the previously staged encoded P5 checkpoint chain has been reconstructed into 23 actual source, test, benchmark, plan, and tracker files on the active working branch checkout. These recovered changes are not treated as verified until they compile and pass the focused regressions and real bunny benchmark in the container.
 - Production fallback contract changed: a failed SurfaceCells request terminates in SurfaceCells and never invokes `setup_integration()`, `integrate()`, sparse integer factorization, or the LegacyInteger mesher. `TryLegacy` is now a deprecated source-compatible alias of `Fail`, while parser/CLI input `TryLegacy` is rejected.
 - New tests use a valid planar field and an injected late SurfaceCells failure that previously allowed a successful legacy fallback. They now require no output, `executedBackend=SurfaceCells`, no fallback attempt, and zero integration/mesher timings, integer iterations, direct factorizations, and numeric-factorization time. This is not a malformed-input shortcut.
 - All future SurfaceCells benchmarks use `fallbackPolicy=Fail`. A run only counts as SurfaceCells success when its origin is `CompletedSurfaceCells`; LegacyInteger comparison remains a separately requested benchmark case and never a fallback continuation.
@@ -78,6 +89,12 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Endpoint interception now uses the same strict segment-intersection predicate as arrangement construction and snaps committed connector endpoints to the target-chart intersection. A focused regression includes a false near-parallel candidate followed by a real retained-network crossing and verifies the committed anchor has degree at least three in the rebuilt arrangement.
 - Direct random-bunny completion after arrangement-consistent endpoint capture improves from 21,273 to 21,283 completed patches and reduces rejected descriptors from 16 to six. Ten required singularity-support bridge cells are eliminated without deleting support topology. Evidence: `benchmark-results/p28-local/bunny-arrangement-consistent-capture.json` and `build/mg-debug/results/p5-arrangement-consistent-capture-focused.json`.
 - The six remaining failures are now isolated: three complex repeated-node pinches, one mixed complex cell with a required bridge, one required support bridge whose claimed embedded anchor still has arrangement degree one, and one cell with two optional support bridges. Next action: record the exact capture target/parameter for the two remaining required bridges and prove whether later connector mutation invalidates ownership or whether a source-chart transition needs canonical target transfer.
+- Diagnosed the source-vertex-383 failure as a numerical pre-ring return: required support trace 2369 makes four sub-nanometer source-chart segments back to the same singular vertex and then continues outward. The retained prefix formed a homoclinic loop, producing one pinched cell and one valid four-edge/two-logical-side lens.
+- Added a scale-aware pre-ring return contract. A required separatrix that returns within `1e-5` of the minimum transition-ring radius and has a later traced continuation keeps the continuation, deactivates only the local return prefix, and reroots the continuation at the exact intrinsic source vertex. Global/post-ring homoclinic paths are not rewritten.
+- Added a tetrahedral regression that deliberately returns just outside the old tolerance before continuing across the transition ring. It verifies the prefix is inactive, the continuation remains authoritative, exactly three radial singular supports remain, and every non-boundary center sector is a disk without twin backtracking.
+- Validation after pre-ring rerooting: all 55 FlowRep Phase 15 tests and all 209 Phase 14-18 tests pass. Evidence: `build/mg-debug/results/p5-pre-ring-return-flowrep-v3.json` and `build/mg-debug/results/p5-pre-ring-return-phase14-18-v3.json`.
+- Direct random-bunny completion improves from five rejected descriptors to two: 21,293 of 21,295 patches complete, unresolved required endpoints remain zero, and the source-vertex-383 pinch/lens pair is eliminated. Runtime is 22.11 s with 732,880 KiB peak RSS. Evidence: `benchmark-results/p28-local/bunny-pre-ring-return-reroot-v2.json`.
+- The remaining production blockers are now exactly two complex repeated-node pinches (cells 6822 and 18113 in this arrangement). Next action: classify their repeated-node paths by final retained-arc provenance and repair the underlying overlapping/support topology rather than accepting or triangulating malformed cells.
 
 - Local archive base was remote commit `92db9c701fb9f0cdba3cd3127ebecccf7c77e410`; the container now contains the WIP commit above.
 - Recursive submodules are present.
