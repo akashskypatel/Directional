@@ -1,3 +1,4 @@
+# Compile-only workflow. It does not execute tests, benchmarks, or custom meshes.
 name: Agent Build Surface Cell P5
 
 on:
