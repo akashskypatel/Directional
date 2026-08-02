@@ -39,7 +39,6 @@ jobs:
           from pathlib import Path
           import base64
           import gzip
-          import re
 
           src = Path('/tmp/milestone-g-wip')
           dst = Path('/tmp/milestone-g-decoded')
@@ -105,50 +104,42 @@ jobs:
           git diff --cached --check
           git diff --cached --stat
 
-      - name: Configure static test build
+      - name: Configure optimized static benchmark build
         shell: bash
         run: |
-          cmake -S . -B build/agent-p5 -G Ninja \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DCMAKE_CXX_FLAGS_DEBUG='-O0 -g0' \
+          cmake -S . -B build/agent-p5-release -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
-            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=OFF \
             -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
-            -DDIRECTIONAL_BUILD_CLI=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
             -DDIRECTIONAL_BUILD_GUI=OFF \
             -DDIRECTIONAL_ENABLE_GMP=OFF \
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
 
-      - name: Compile test and benchmark artifacts
+      - name: Compile benchmark artifact
         shell: bash
         run: |
-          cmake --build build/agent-p5 --target \
-            directional_phase1_tests \
-            directional_milestone_g_p23_tests \
-            directional_benchmarks \
-            -j 4
+          cmake --build build/agent-p5-release --target directional_benchmarks -j 4
 
-      - name: Package compiled artifacts
+      - name: Package compiled artifact
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p artifact/bin artifact/source
-          find build/agent-p5 -maxdepth 2 -type f \
-            \( -name 'directional_phase1_tests' \
-               -o -name 'directional_milestone_g_p23_tests' \
-               -o -name 'directional_benchmarks' \
-               -o -name 'directional_cli' \) \
+          find build/agent-p5-release -maxdepth 2 -type f -name 'directional_benchmarks' \
             -exec cp -v {} artifact/bin/ \;
-          cp -a include src tests benchmarks CMakeLists.txt artifact/source/
+          cp -a benchmarks artifact/source/
           git diff --cached --binary > artifact/recovered-source.patch
           git status --short > artifact/source-status.txt
 
-      - name: Upload compiled artifacts
+      - name: Upload compiled artifact
         uses: actions/upload-artifact@v4
         with:
-          name: recovered-p5-linux-static
+          name: recovered-p5-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
