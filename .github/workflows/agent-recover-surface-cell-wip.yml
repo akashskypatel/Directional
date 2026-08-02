@@ -39,7 +39,6 @@ jobs:
           import base64
           import gzip
           import re
-          import traceback
 
           src = Path('recovery/encoded')
           dst = Path('recovery/decoded')
@@ -88,7 +87,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git bundle create recovery/surface-cell-branch.bundle HEAD surface_cell_quad
+          git bundle create recovery/surface-cell-branch.bundle HEAD origin/surface_cell_quad
           git status --short > recovery/checkout-status.txt
 
       - name: Upload recovery artifact
