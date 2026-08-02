@@ -6,13 +6,16 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 
 ## Active implementation branch
 
-- Phase: P5 — resolve duplicate authoritative patch ownership during direct completion.
+- Phase: P5 — resolve remaining direct-completion ownership failures.
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: `#8`.
-- Validated source checkpoint: `d4c1bce4338b7f2e91264c349a73b6b260e80f54`.
-- Build artifact: `8840174777`, digest `sha256:a5659e86e0f1e90129d1b085e25ed0f2afff0ea882a43304fae15a5f18b9970a`.
-- Completed turn: **test and benchmark** using exact artifact binaries without rebuilding.
-- Next authoritative turn: **code changes + compile-only build**.
+- Previous validated artifact: `8840174777`, source `d4c1bce4338b7f2e91264c349a73b6b260e80f54`.
+- Implementation commit: `713eb310ec0afe6e2608cf3b0f3b8f6962b485e5`.
+- Exact compiled source: `dcef9fbf65930b20db93128deb193f10702dc9c7`.
+- Compile-only run: `30771945124` — **success**.
+- New artifact: `8840866875`, digest `sha256:d67a464b2f2c2f6d58bbb9fa15a0e87009176698f14d19a9054facfbcb97cd90`.
+- Completed turn: **code changes + compile-only build**.
+- Next authoritative turn: **test and benchmark using artifact `8840866875` without rebuilding**.
 - Review policy: `never`.
 
 ## Work phases
@@ -33,66 +36,69 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P5-TB2 — Run ownership regressions: 8/8 passed.
 - [x] P5-TB3 — Run Phase 14–18 aggregate: 219/219 passed.
 - [x] P5-TB4 — Run Milestone G P23 and Phase 20: 52/52 passed.
-- [x] P5-TB5 — Repeat direct bunny twice and classify the new conflict.
-- [ ] P5-CB7 — Canonicalize completed-face identity cycles and serialize corner/backend lineage.
-- [ ] P5-CB8 — Reclassify and repair case B or case D generally.
-- [ ] P5-CB9 — Enforce per-face completion-domain ownership proof.
-- [ ] P5-CB10 — Add false-merge versus completion-template discriminator regressions.
-- [ ] P5-CB11 — Correct three structurally invalid Milestone E fixtures.
-- [ ] P5-CB12 — Reduce ownership memory and completion-time overhead.
+- [x] P5-TB5 — Repeat direct bunny and expose provisional completion-template conflict.
+- [x] P5-CB7 — Canonicalize completed-face cycles and serialize corner/backend lineage.
+- [x] P5-CB8 — Implement authoritative false-merge versus completion-template discrimination and general repair routing.
+- [x] P5-CB9 — Enforce per-face completion-domain ownership proof.
+- [x] P5-CB10 — Add discriminator, canonical-order, and patch-order regression sources.
+- [x] P5-CB11 — Correct the three structurally invalid Milestone E fixtures.
+- [x] P5-CB12 — Compact ownership identities and release superseded vector capacity.
+- [x] P5-CB13 — Compile all required library, test, and benchmark targets and package exact artifact `8840866875`.
+- [ ] P5-TB6 — Execute artifact `8840866875` and validate classification, repair, corrected fixtures, determinism, and performance.
 - [ ] P6 — Validate topology, provenance, projection, alignment, determinism, and quality.
 - [ ] P7 — Focused and full regression closure.
 - [ ] P8 — Final bunny benchmark and production disposition.
 
-## Validated test evidence
+## Implemented code/build checkpoint
 
-- New ownership/identity regressions: **8/8 passed**.
-- Phase 14–18 aggregate: **219/219 passed**.
-- Milestone G P23 and Phase 20: **52/52 passed** after recreating the artifact's baked absolute source path with a symlink.
-- `PatchDescriptorMilestoneE.*`: **12/15 passed**.
-  - Shared-edge parity fixture is pre-existing and topology-invalid before parity repair on both baseline and current artifacts.
-  - Ambiguous-singularity fixture duplicates an entire canonical domain and is preempted by correct unique-domain validation.
-  - Partial-output fixture also duplicates the valid domain and is preempted by correct unique-domain validation.
-- Full-suite status remains unclaimed because an optional attempt was interrupted by the execution environment timeout during the P26 production matrix.
+- Completed-face ownership is canonical under cyclic rotation and reversed orientation.
+- Compact stitch identities and stronger source-authoritative identities are retained independently.
+- Conflict diagnostics include identity kinds/hashes, local/global corners, component/sheet scope, completion backend, completion variant, and source/operation ownership.
+- Equal compact stitch cycles with different authoritative cycles classify as false stitch equivalence.
+- Distinct domains with equal authoritative face ownership classify as completion-template ownership.
+- Boundary corners, generated interiors, source support, and operation-local ownership are validated before assembly.
+- Eligible completion-template conflicts can use bounded deterministic alternative completion variants.
+- The final duplicate validator remains transactional and fail-closed.
+- Variable-length ownership identities are compacted into deterministic exact IDs after canonicalization, and superseded capacity is released.
+- Structural hashes include the new ownership semantics.
+- The three invalid Milestone E fixture constructions were replaced with valid scenarios matching their stated contracts.
 
-## Direct random-bunny evidence
+## Compile-only evidence
 
-Two independent runs, with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled, failed identically:
+- Clean Release configure: success with GCC 13.3.0.
+- Build: **131/131 steps completed**.
+- Compiled targets:
+  - `directional_core`;
+  - `directional_pipeline`;
+  - `directional_phase1_tests`;
+  - `directional_benchmarks`.
+- Modified production and regression sources compiled successfully.
+- Artifact `source-commit.txt`: `dcef9fbf65930b20db93128deb193f10702dc9c7`.
+- Artifact `source-status.txt`: empty.
+- Packaged checksums: all pass.
+- No test, benchmark, or custom mesh executable ran.
 
-```text
-DuplicateStitchedQuad:firstPatch=378;firstLocalQuad=1;
-secondPatch=394;secondLocalQuad=4;
-globalVertices=7643,7644,7647,7648;
-classification=completion-template;
-firstDomainHash=1626132098604174973;
-secondDomainHash=12830489233532523937;
-firstBoundaryNodeHash=9853059121513979599;
-secondBoundaryNodeHash=6530130091133399252;
-firstBoundaryHalfedgeHash=11019542682270369445;
-secondBoundaryHalfedgeHash=4213466302263896358;
-firstSourceSupportHash=9777327708078931779;
-secondSourceSupportHash=17251474233191701613
-```
+## Required next validation turn
 
-- Arrangement cells: **21,298**.
-- Descriptors attempted/completed/failed: **21,297 / 21,297 / 0**.
-- Required unresolved endpoints: **0**.
-- Accepted output quads: **0**.
-- Failure text and all stage structural hashes were deterministic.
+Use artifact `8840866875` directly and do not rebuild.
 
-The distinct domain, boundary, and source-support hashes rule out duplicate-domain and overlapping-boundary ownership. The artifact selected completion-template ownership. This remains provisional until per-corner identities are canonicalized across cyclic/reversed local order and serialized with backend/region lineage.
+1. Run canonical face-ownership and false-merge/completion-template discriminator regressions.
+2. Run corrected `PatchDescriptorMilestoneE.*`.
+3. Run `SurfaceArrangementPhase16.*` and `PureQuadCompletionPhase18.*`.
+4. Run the Phase 14–18 aggregate.
+5. Run Milestone G P23 and Phase 20 fail-closed suites.
+6. Run the random bunny at least twice with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
+7. Record definitive classification, repair attempts, descriptor/endpoint counts, output origin, structural hashes, runtime, and peak memory.
+8. Compare same-machine performance with artifacts `8838467442` and `8840174777`.
 
-## Performance evidence
+## Closure rules
 
-Same-machine baseline artifact `8838467442`, commit `c84e2e1d64e867e5975f414780f9c81e649612fb`:
+P5 remains open until direct completion proceeds beyond assembly without duplicate ownership, recovery, fallback, final-face deduplication, or validator weakening. Runtime and memory improvement must be demonstrated; compilation alone does not close the phase.
 
-- Wall time: **22.981569 s** baseline vs **26.775241 s** current mean (**+16.51%**).
-- Peak working set: **749,375,488 bytes** baseline vs **1,696,000,000 bytes** current mean (**+126.32%**).
-- Completion stage: **4.168940 s** baseline vs **6.318718 s** current mean (**+51.57%**).
+## Evidence files
 
-## Next turn authority
+- `.agents/Directional/Milestone_G_P5_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md`
+- `.agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Report.md`
 
-- Validation report: `.agents/Directional/Milestone_G_P5_Test_Benchmark_Report.md`.
-- Authoritative code/build plan: `.agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md`.
-- The next turn must compile only and run no tests, benchmarks, or custom mesh executions.
-- P5 remains open and PR #8 remains draft/unmerged.
+PR #8 remains draft and unmerged.
