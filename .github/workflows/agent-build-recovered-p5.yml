@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
@@ -26,55 +26,6 @@ jobs:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
           fetch-depth: 1
           submodules: false
-
-      - name: Collapse duplicated ownership guard
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path('src/geometry/PatchDescriptor.cpp')
-          text = path.read_text()
-          pattern = re.compile(
-              r'  if \(result\.descriptors\.ownershipConflict\.active\(\)\) \{\n'
-              r'    result\.assembly\.ownershipConflict =\n'
-              r'        result\.descriptors\.ownershipConflict;\n'
-              r'    const SurfaceCellOwnershipConflict &conflict =\n'
-              r'        result\.descriptors\.ownershipConflict;\n'
-              r'    std::string prefix = "InvalidArrangementDomainIdentity";\n'
-              r'    if \(conflict\.classification ==\n'
-              r'        SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain\) \{\n'
-              r'      prefix = "DuplicateArrangementDomain";\n'
-              r'    \} else if \(conflict\.classification ==\n'
-              r'               SurfaceCellOwnershipConflictClass::\n'
-              r'                   OverlappingUndirectedBoundary\) \{\n'
-              r'      prefix = "OverlappingArrangementBoundary";\n'
-              r'    \}\n'
-              r'    result\.failure = prefix \+ ";firstPatch=" \+\n'
-              r'                     std::to_string\(conflict\.firstPatch\) \+\n'
-              r'                     ";secondPatch=" \+\n'
-              r'                     std::to_string\(conflict\.secondPatch\);\n'
-              r'    result\.assembly\.failure = result\.failure;\n'
-              r'    return result;\n'
-              r'  \}\n')
-          matches = list(pattern.finditer(text))
-          if not matches:
-              raise SystemExit('ownership guard not found')
-          for match in reversed(matches[1:]):
-              text = text[:match.start()] + text[match.end():]
-          path.write_text(text)
-          print(f'ownership guards: {len(matches)} -> 1')
-          PY
-          git diff --check
-          if ! git diff --quiet -- src/geometry/PatchDescriptor.cpp; then
-            git config user.name "OpenAI Coding Agent"
-            git config user.email "coding-agent@openai.com"
-            git add src/geometry/PatchDescriptor.cpp
-            git commit -m "fix(surface-cells): collapse duplicate ownership guard"
-            git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
-          fi
 
       - name: Verify exact remote working-branch commit
         shell: bash
