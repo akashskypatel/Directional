@@ -23,6 +23,8 @@ concurrency:
 
 permissions:
   contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
@@ -129,3 +131,12 @@ jobs:
           path: artifact
           if-no-files-found: error
           retention-days: 7
+
+      - name: Record compile-only run on draft PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5 completion-ownership compile-only run `${{ github.run_id }}` finished with job status `${{ job.status }}` for commit `${{ github.sha }}`. No tests, benchmarks, or custom mesh executions are part of this workflow."
