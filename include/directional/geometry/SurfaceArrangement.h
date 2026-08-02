@@ -48,6 +48,8 @@ enum class SurfaceArrangementRejectReason : int {
 struct SurfaceArrangementOptions {
   bool insertBoundaryRails = true;
   std::set<std::uint64_t> hardFeatureEdges;
+  const std::vector<int> *sourceFaceComponents = nullptr;
+  const std::vector<int> *sourceFaceSheets = nullptr;
 };
 
 struct SurfaceArrangementArc {
@@ -106,6 +108,8 @@ struct SurfaceArrangementProvenance {
 struct SurfaceArrangementNode {
   int id = -1;
   int sourceFace = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
   bool hardBarrierCrossing = false;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
   int sourceEdge = -1;
