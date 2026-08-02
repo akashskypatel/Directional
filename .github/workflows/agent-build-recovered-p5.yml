@@ -63,6 +63,8 @@ jobs:
       - name: Configure optimized static build
         shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p build/agent-p5-release
           cmake -S . -B build/agent-p5-release -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
@@ -74,29 +76,34 @@ jobs:
             -DDIRECTIONAL_ENABLE_GMP=OFF \
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
-            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee build/agent-p5-release/configure.log
 
       - name: Compile library tests and benchmarks
         shell: bash
         run: |
+          set -euo pipefail
           cmake --build build/agent-p5-release \
             --target directional_core directional_pipeline \
                      directional_phase1_tests directional_benchmarks \
-            -j 4
+            -j 4 \
+            2>&1 | tee build/agent-p5-release/build.log
 
       - name: Package compiled artifacts
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p artifact/bin artifact/lib artifact/source
+          mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
           cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
           cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
-          cp -a benchmarks tests include artifact/source/
+          git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
           cp /tmp/source-commit.txt artifact/source-commit.txt
           git status --short > artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
+          cp build/agent-p5-release/configure.log artifact/logs/
+          cp build/agent-p5-release/build.log artifact/logs/
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > artifact/files.sha256
 
       - name: Upload compiled artifacts
