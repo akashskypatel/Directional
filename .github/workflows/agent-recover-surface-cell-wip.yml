@@ -1,0 +1,84 @@
+name: Agent Surface Cell WIP Recovery
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-recover-surface-cell-wip.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout working branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Decode staged WIP patches
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p recovery/encoded recovery/decoded
+          cp -a .agents/Directional/wip/. recovery/encoded/
+          git log --reverse --date=iso-strict --format='commit %H%nDate: %ad%nSubject: %s' --name-status 92db9c701fb9f0cdba3cd3127ebecccf7c77e410..HEAD -- .agents/Directional/wip > recovery/wip-history.txt
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import gzip
+          import re
+
+          src = Path('recovery/encoded')
+          dst = Path('recovery/decoded')
+          dst.mkdir(parents=True, exist_ok=True)
+
+          # Reassemble split base64 snapshots first.
+          groups = {}
+          for path in src.glob('*.part*'):
+              base = re.sub(r'\.part\d+$', '', path.name)
+              groups.setdefault(base, []).append(path)
+          for base, parts in groups.items():
+              data = ''.join(p.read_text().strip() for p in sorted(parts))
+              (src / base).write_text(data)
+
+          for path in sorted(src.iterdir()):
+              if path.name.endswith(tuple(f'.part{i:02d}' for i in range(100))):
+                  continue
+              out_name = path.name
+              data = path.read_bytes()
+              if out_name.endswith('.b64'):
+                  data = base64.b64decode(b''.join(data.split()))
+                  out_name = out_name[:-4]
+              if out_name.endswith('.gz'):
+                  data = gzip.decompress(data)
+                  out_name = out_name[:-3]
+              (dst / out_name).write_bytes(data)
+
+          with (Path('recovery') / 'decoded-manifest.txt').open('w') as f:
+              for path in sorted(dst.iterdir()):
+                  first = path.read_text(errors='replace').splitlines()[:8]
+                  f.write(f'=== {path.name} ===\n')
+                  f.write('\n'.join(first) + '\n\n')
+          PY
+
+      - name: Package repository and recovery data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git bundle create recovery/surface-cell-branch.bundle agent/surface_cell_quad/p5-recover-bridge-healing surface_cell_quad
+          git status --short > recovery/checkout-status.txt
+
+      - name: Upload recovery artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-wip-recovery
+          path: recovery
+          if-no-files-found: error
+          retention-days: 7
