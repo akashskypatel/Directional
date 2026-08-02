@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-02 12:45 PDT
+Last updated: 2026-08-02 12:55 PDT
 Branch: `surface_cell_quad`
 Target fixture: `benchmark-results/bunny_1k_random.obj`
 
@@ -10,9 +10,10 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: `#8` (`agent/surface_cell_quad/p5-recover-bridge-healing` → `surface_cell_quad`).
 - Materialized source commit: `bb78dbe52fc4dbba74b220334c67cbde3305d04a`.
-- Final direct-source build commit: `4c702c6a7ee7ba39ceab1aee0a1f8f9123c8425b`.
-- Final build run: `30763728058`.
-- Final build artifact: `8838345026`, digest `sha256:add7ff0934a07ca599f017832e61d2e0d6d29787003ba7719d1f6449ed21e285`.
+- Exact working-branch build commit: `c84e2e1d64e867e5975f414780f9c81e649612fb`.
+- Final build run: `30764152204`.
+- Final build artifact: `8838467442`, digest `sha256:9a70545b0cdecd181da0c914fb5f95f50a163a12a54871e1d4ee634d54f882a1`.
+- Artifact `source-commit.txt`: `c84e2e1d64e867e5975f414780f9c81e649612fb`.
 - Recovery status: complete. The implementation is committed as ordinary files; encoded WIP checkpoints and build overlays are removed.
 - Next authoritative turn: test and benchmark. Do not modify code until that turn classifies the compiled checkpoint.
 
@@ -43,12 +44,12 @@ Target fixture: `benchmark-results/bunny_1k_random.obj`
 - Arrangement-consistent endpoint interception and scale-aware pre-ring return rerooting reduced the direct random-bunny completion result to two complex repeated-node pinches before the latest intrinsic fan-ordering change.
 - The latest implementation adds generalized intrinsic ordering of outgoing arrangement halfedges around source vertices using source-triangle fan connectivity, source component/sheet scope, and intrinsic corner angles. It contains no fixture-name, bunny vertex-ID, rejected-cell-ID, or expected-count special cases.
 - Duplicate stitched-quad failures now report both authoritative source patches and local quad identities.
-- The ordinary-source branch compiles successfully with shallow recursive submodules. `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a` were produced.
+- The exact remote working-branch checkpoint compiles successfully with shallow recursive submodules. `directional_phase1_tests`, `directional_benchmarks`, `libdirectional_core.a`, and `libdirectional_pipeline.a` were produced.
 - No tests or benchmarks were run in the code/build turn.
 
 ## Next test and benchmark turn
 
-- Verify artifact `8838345026` records source commit `4c702c6a7ee7ba39ceab1aee0a1f8f9123c8425b`.
+- Verify artifact `8838467442` records source commit `c84e2e1d64e867e5975f414780f9c81e649612fb`.
 - Run the minimized intrinsic source-vertex fan regression.
 - Run the duplicate stitched-quad diagnostic regression.
 - Run focused Phase 14–18 tests.
