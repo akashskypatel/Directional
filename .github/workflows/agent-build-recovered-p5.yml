@@ -43,34 +43,44 @@ jobs:
 
           src = Path('/tmp/milestone-g-wip')
           dst = Path('/tmp/milestone-g-decoded')
+          encoded_names = [
+              'milestone-g-6e4b3bf.patch.gz.b64',
+              'milestone-g-6e4b3bf-to-6b87ea1.patch.gz.b64',
+              'milestone-g-6b87ea1-to-8b00f87.patch.gz.b64',
+              'milestone-g-8b00f87-to-3db9003.patch.gz.b64',
+              'milestone-g-3db9003-to-3d8d252.patch.gz.b64',
+              'milestone-g-3d8d252-to-3fe7fcd.patch.gz.b64',
+              'milestone-g-3fe7fcd-to-8cfe3ae.patch.gz.b64',
+              'milestone-g-8cfe3ae-to-9985162.patch.gz.b64',
+              'milestone-g-9985162-to-7e13897.patch.gz.b64',
+              'milestone-g-7e13897-to-464a2e3.patch.gz.b64',
+              'milestone-g-53806e7-to-ba9aa02.patch.gz.b64',
+              'milestone-g-ba9aa02-to-f748d71.patch.gz.b64',
+              'milestone-g-f748d71-to-062ed12.patch.gz.b64',
+          ]
 
-          groups = {}
-          for path in src.glob('*.part*'):
-              base = re.sub(r'\.part\d+$', '', path.name)
-              groups.setdefault(base, []).append(path)
-          for base, parts in groups.items():
-              texts = []
-              for part in sorted(parts):
-                  text = part.read_text().strip()
-                  if base == 'milestone-g-6e4b3bf.patch.gz.b64' and part.name.endswith('.part03'):
-                      if len(text) <= 1719 or text[1719] != 'a':
-                          raise RuntimeError('Expected recoverable part03 corruption was not found')
-                      text = text[:1719] + text[1720:]
-                  texts.append(text)
-              (src / base).write_text(''.join(texts))
+          for encoded_name in encoded_names:
+              path = src / encoded_name
+              if path.exists():
+                  text = path.read_text().strip()
+              else:
+                  parts = sorted(src.glob(encoded_name + '.part*'))
+                  if not parts:
+                      raise FileNotFoundError(encoded_name)
+                  texts = []
+                  for part in parts:
+                      part_text = part.read_text().strip()
+                      if encoded_name == 'milestone-g-6e4b3bf.patch.gz.b64' and part.name.endswith('.part03'):
+                          if len(part_text) <= 1719 or part_text[1719] != 'a':
+                              raise RuntimeError('Expected recoverable part03 corruption was not found')
+                          part_text = part_text[:1719] + part_text[1720:]
+                      texts.append(part_text)
+                  text = ''.join(texts)
 
-          for path in sorted(src.iterdir()):
-              if re.search(r'\.part\d+$', path.name):
-                  continue
-              name = path.name
-              data = path.read_bytes()
-              if name.endswith('.b64'):
-                  data = base64.b64decode(b''.join(data.split()), validate=True)
-                  name = name[:-4]
-              if name.endswith('.gz'):
-                  data = gzip.decompress(data)
-                  name = name[:-3]
-              (dst / name).write_bytes(data)
+              compressed = base64.b64decode(''.join(text.split()), validate=True)
+              patch = gzip.decompress(compressed)
+              output_name = encoded_name.removesuffix('.gz.b64')
+              (dst / output_name).write_bytes(patch)
           PY
 
           patches=(
