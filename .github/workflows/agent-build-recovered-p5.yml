@@ -1,0 +1,139 @@
+name: Agent Build Recovered P5
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-recovered-p5.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout working branch and submodules
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Reconstruct recovered source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a .agents/Directional/wip /tmp/milestone-g-wip
+          git reset --hard 92db9c701fb9f0cdba3cd3127ebecccf7c77e410
+          git submodule update --init --recursive --depth 1
+          mkdir -p /tmp/milestone-g-decoded
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import gzip
+          import re
+
+          src = Path('/tmp/milestone-g-wip')
+          dst = Path('/tmp/milestone-g-decoded')
+
+          groups = {}
+          for path in src.glob('*.part*'):
+              base = re.sub(r'\.part\d+$', '', path.name)
+              groups.setdefault(base, []).append(path)
+          for base, parts in groups.items():
+              texts = []
+              for part in sorted(parts):
+                  text = part.read_text().strip()
+                  if base == 'milestone-g-6e4b3bf.patch.gz.b64' and part.name.endswith('.part03'):
+                      if len(text) <= 1719 or text[1719] != 'a':
+                          raise RuntimeError('Expected recoverable part03 corruption was not found')
+                      text = text[:1719] + text[1720:]
+                  texts.append(text)
+              (src / base).write_text(''.join(texts))
+
+          for path in sorted(src.iterdir()):
+              if re.search(r'\.part\d+$', path.name):
+                  continue
+              name = path.name
+              data = path.read_bytes()
+              if name.endswith('.b64'):
+                  data = base64.b64decode(b''.join(data.split()), validate=True)
+                  name = name[:-4]
+              if name.endswith('.gz'):
+                  data = gzip.decompress(data)
+                  name = name[:-3]
+              (dst / name).write_bytes(data)
+          PY
+
+          patches=(
+            milestone-g-6e4b3bf.patch
+            milestone-g-6e4b3bf-to-6b87ea1.patch
+            milestone-g-6b87ea1-to-8b00f87.patch
+            milestone-g-8b00f87-to-3db9003.patch
+            milestone-g-3db9003-to-3d8d252.patch
+            milestone-g-3d8d252-to-3fe7fcd.patch
+            milestone-g-3fe7fcd-to-8cfe3ae.patch
+            milestone-g-8cfe3ae-to-9985162.patch
+            milestone-g-9985162-to-7e13897.patch
+            milestone-g-7e13897-to-464a2e3.patch
+            milestone-g-53806e7-to-ba9aa02.patch
+            milestone-g-ba9aa02-to-f748d71.patch
+            milestone-g-f748d71-to-062ed12.patch
+          )
+          for patch in "${patches[@]}"; do
+            echo "Applying ${patch}"
+            git apply --index --whitespace=nowarn "/tmp/milestone-g-decoded/${patch}"
+          done
+          git diff --cached --check
+          git diff --cached --stat
+
+      - name: Configure static test build
+        shell: bash
+        run: |
+          cmake -S . -B build/agent-p5 -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_FLAGS_DEBUG='-O0 -g0' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=ON \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
+
+      - name: Compile test and benchmark artifacts
+        shell: bash
+        run: |
+          cmake --build build/agent-p5 --target \
+            directional_phase1_tests \
+            directional_milestone_g_p23_tests \
+            directional_benchmarks \
+            -j 4
+
+      - name: Package compiled artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifact/bin artifact/source
+          find build/agent-p5 -maxdepth 2 -type f \
+            \( -name 'directional_phase1_tests' \
+               -o -name 'directional_milestone_g_p23_tests' \
+               -o -name 'directional_benchmarks' \
+               -o -name 'directional_cli' \) \
+            -exec cp -v {} artifact/bin/ \;
+          cp -a include src tests benchmarks CMakeLists.txt artifact/source/
+          git diff --cached --binary > artifact/recovered-source.patch
+          git status --short > artifact/source-status.txt
+
+      - name: Upload compiled artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovered-p5-linux-static
+          path: artifact
+          if-no-files-found: error
+          retention-days: 7
