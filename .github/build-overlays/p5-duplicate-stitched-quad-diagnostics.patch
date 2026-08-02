@@ -1,0 +1,73 @@
+diff --git a/src/geometry/PureQuadCompletion.cpp b/src/geometry/PureQuadCompletion.cpp
+index 0024e14..f2f1769 100644
+--- a/src/geometry/PureQuadCompletion.cpp
++++ b/src/geometry/PureQuadCompletion.cpp
+@@ -799,7 +799,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
+ 
+   std::map<std::tuple<int, int, int>, int> vertexRows;
+   std::vector<Eigen::Vector3d> positions;
+-  std::set<std::vector<int>> canonicalQuads;
++  std::map<std::vector<int>, std::pair<int, int>> canonicalQuads;
+ 
+   for (int patchIndex = 0; patchIndex < static_cast<int>(patches.size());
+        ++patchIndex) {
+@@ -881,8 +881,22 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
+       }
+       std::vector<int> canonical = globalQuad;
+       std::sort(canonical.begin(), canonical.end());
+-      if (!canonicalQuads.insert(canonical).second) {
+-        result.failure = "DuplicateStitchedQuad";
++      const auto [existingQuad, inserted] = canonicalQuads.emplace(
++          canonical, std::make_pair(patchIndex, localQuad));
++      if (!inserted) {
++        const auto [firstPatchIndex, firstLocalQuad] = existingQuad->second;
++        const PureQuadMesh &firstPatch =
++            patches[static_cast<std::size_t>(firstPatchIndex)];
++        result.failure =
++            "DuplicateStitchedQuad:firstPatch=" +
++            std::to_string(firstPatch.sourcePatch) +
++            ";firstLocalQuad=" + std::to_string(firstLocalQuad) +
++            ";secondPatch=" + std::to_string(patch.sourcePatch) +
++            ";secondLocalQuad=" + std::to_string(localQuad) +
++            ";globalVertices=" + std::to_string(canonical[0]) + "," +
++            std::to_string(canonical[1]) + "," +
++            std::to_string(canonical[2]) + "," +
++            std::to_string(canonical[3]);
+         return result;
+       }
+       const int outputQuad = static_cast<int>(result.mesh.quads.size());
+diff --git a/tests/PureQuadCompletionPhase18Tests.cpp b/tests/PureQuadCompletionPhase18Tests.cpp
+index e8bcff3..9a08484 100644
+--- a/tests/PureQuadCompletionPhase18Tests.cpp
++++ b/tests/PureQuadCompletionPhase18Tests.cpp
+@@ -932,6 +932,30 @@ TEST(PureQuadCompletionPhase18,
+   EXPECT_EQ(0, report.degenerateElements);
+ }
+ 
++
++TEST(PureQuadCompletionPhase18,
++     DuplicateStitchedQuadReportsBothAuthoritativeSourcePatches) {
++  directional::geometry::PureQuadCompletionOptions options;
++  options.sourcePatch = 41;
++  const auto first = directional::geometry::complete_pure_quad_patch(
++      patch({1, 1, 1, 1}), options);
++  ASSERT_TRUE(first.success);
++
++  directional::geometry::PureQuadMesh second = first.mesh;
++  second.sourcePatch = 73;
++  for (auto &lineage : second.quadLineage) {
++    lineage.sourcePatch = 73;
++  }
++
++  const auto assembly = directional::geometry::stitch_pure_quad_patches(
++      {first.mesh, second});
++
++  EXPECT_FALSE(assembly.success);
++  EXPECT_EQ(assembly.failure,
++            "DuplicateStitchedQuad:firstPatch=41;firstLocalQuad=0;"
++            "secondPatch=73;secondLocalQuad=0;globalVertices=0,1,2,3");
++}
++
+ TEST(PureQuadCompletionPhase18,
+      StitchingRejectsInconsistentSharedBoundaryGeometry) {
+   Eigen::MatrixXd vertices;
