@@ -1,5 +1,6 @@
 name: Trigger P5 Materialization
 
+# Second push intentionally triggers this dispatcher after the workflow exists.
 on:
   push:
     branches:
