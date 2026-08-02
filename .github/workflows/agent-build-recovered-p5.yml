@@ -135,23 +135,33 @@ jobs:
             --target directional_phase1_tests directional_benchmarks \
             -j 4
 
-      - name: Package compiled artifacts
+      - name: Package compiled artifacts and materialized checkpoint
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p artifact/bin artifact/lib artifact/source
+          mkdir -p artifact/bin artifact/lib artifact/source artifact/materialized-tree
           cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
           cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
           cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
           cp -a include benchmarks artifact/source/
+
+          git diff --cached --name-only --diff-filter=ACMRT | while IFS= read -r path; do
+            mkdir -p "artifact/materialized-tree/$(dirname "$path")"
+            cp -a "$path" "artifact/materialized-tree/$path"
+          done
+
+          git diff --cached --name-status > artifact/materialized-files.txt
           git diff --cached --binary > artifact/recovered-source.patch
           git status --short > artifact/source-status.txt
+          git rev-parse HEAD > artifact/recovery-baseline.txt
+          git write-tree > artifact/materialized-tree-sha.txt
+          sha256sum artifact/recovered-source.patch > artifact/recovered-source.patch.sha256
 
       - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: recovered-p5-linux-release-focused
+          name: recovered-p5-linux-release-materialized
           path: artifact
           if-no-files-found: error
           retention-days: 7
