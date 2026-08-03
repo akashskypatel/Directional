@@ -1,9 +1,16 @@
 # Compile-only workflow for the P5 CB66 rollback-integrity checkpoint.
-# Push triggering is temporarily paused while the source checkpoint is assembled.
 # It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
 name: Agent Build Surface Cell P5 CB66 Rollback Integrity
 
 on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths-ignore:
+      - TODO
+      - MILESTONE_G_TODO.md
+      - '.agents/Directional/*.md'
+      - 'benchmark-results/*.json'
   workflow_dispatch:
 
 concurrency:
