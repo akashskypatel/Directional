@@ -1961,161 +1961,238 @@ PatchDescriptorSet derive_patch_descriptors(
 
 namespace directional::geometry::patch_descriptor_detail {
 
-bool exact_surface_point_equal(const SurfacePoint &lhs,
-                               const SurfacePoint &rhs) {
-  return lhs.face == rhs.face && lhs.component == rhs.component &&
-         lhs.sheet == rhs.sheet &&
-         (lhs.barycentric.array() == rhs.barycentric.array()).all() &&
-         (lhs.position.array() == rhs.position.array()).all() &&
-         lhs.squaredDistance == rhs.squaredDistance;
-}
+\
+  using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
 
-bool exact_surface_point_vector_equal(const std::vector<SurfacePoint> &lhs,
-                                      const std::vector<SurfacePoint> &rhs) {
-  if (lhs.size() != rhs.size()) {
-    return false;
-  }
-  for (std::size_t index = 0; index < lhs.size(); ++index) {
-    if (!exact_surface_point_equal(lhs[index], rhs[index])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool exact_patch_side_equal(const PatchSideDescriptor &lhs,
-                            const PatchSideDescriptor &rhs) {
-  // Halfedge and arrangement-node ids are allocation-local. Exact completion
-  // reuse is keyed by the authoritative ordered rail/curve support and the
-  // resulting subdivision signature instead of incidental rebuilt indices.
-  return lhs.family == rhs.family &&
-         lhs.halfedges.size() == rhs.halfedges.size() &&
-         lhs.boundaryVertices.size() == rhs.boundaryVertices.size() &&
-         lhs.subdivisionCount == rhs.subdivisionCount &&
-         lhs.hardFeature == rhs.hardFeature && lhs.railIds == rhs.railIds &&
-         lhs.curveIds == rhs.curveIds;
-}
-
-bool exact_patch_dependency_equal(const PatchDescriptor &lhs,
-                                  const PatchDescriptor &rhs) {
-  const PureQuadPatch &a = lhs.patch;
-  const PureQuadPatch &b = rhs.patch;
-  if (lhs.feasibility.admissible != rhs.feasibility.admissible ||
-      lhs.feasibility.reason != rhs.feasibility.reason ||
-      lhs.feasibility.expectedInteriorValence !=
-          rhs.feasibility.expectedInteriorValence ||
-      lhs.singularSourceVertices != rhs.singularSourceVertices ||
-      lhs.singularNumerators != rhs.singularNumerators ||
-      lhs.boundaryCycleValid != rhs.boundaryCycleValid ||
-      lhs.featureConstraintsValid != rhs.featureConstraintsValid ||
-      lhs.sides.size() != rhs.sides.size() ||
-      a.boundaryVertices.size() != b.boundaryVertices.size() ||
-      !exact_surface_point_vector_equal(a.boundaryProvenance,
-                                        b.boundaryProvenance) ||
-      a.boundaryRailIds != b.boundaryRailIds ||
-      a.boundaryCurveIds != b.boundaryCurveIds ||
-      a.boundaryComponents != b.boundaryComponents ||
-      a.boundarySheets != b.boundarySheets ||
-      // boundaryNodeIdentities and domainIdentity are compact registry IDs
-      // assigned after every rebuild. Their numeric values are allocation
-      // local and can shift when an unrelated patch is inserted or removed.
-      // The exact semantic support compared above and below is authoritative.
-      a.sideEdgeCounts != b.sideEdgeCounts || a.turns != b.turns ||
-      a.sourceFaces != b.sourceFaces ||
-      a.boundaryLoopCount != b.boundaryLoopCount ||
-      a.diskTopology != b.diskTopology ||
-      a.hardFeatureCrossing != b.hardFeatureCrossing ||
-      a.singularityCount != b.singularityCount ||
-      a.singularIndexNumerator != b.singularIndexNumerator ||
-      a.unmatchedInteriorSingularity != b.unmatchedInteriorSingularity ||
-      a.simple != b.simple) {
-    return false;
-  }
-  for (std::size_t index = 0; index < lhs.sides.size(); ++index) {
-    if (!exact_patch_side_equal(lhs.sides[index], rhs.sides[index])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-
-std::uint64_t exact_patch_dependency_hash(const PatchDescriptor &descriptor) {
-  std::uint64_t seed = 1469598103934665603ULL;
-  const auto mix = [&](const std::uint64_t value) {
-    seed ^= value;
-    seed *= 1099511628211ULL;
-  };
-  const auto mixInt = [&](const std::int64_t value) {
-    mix(static_cast<std::uint64_t>(value));
-  };
-  const auto mixDouble = [&](const double value) {
-    std::uint64_t bits = 0U;
-    static_assert(sizeof(bits) == sizeof(value));
-    std::memcpy(&bits, &value, sizeof(bits));
-    mix(bits);
-  };
-  const auto mixInts = [&](const std::vector<int> &values) {
-    mix(values.size());
+  void append_completion_dependency_values(
+      PatchCompletionDependencyIdentity &identity,
+      const std::vector<int> &values) {
+    identity.push_back(static_cast<std::int64_t>(values.size()));
     for (const int value : values) {
-      mixInt(value);
+      identity.push_back(value);
     }
-  };
-  const auto mixSet = [&](const std::set<int> &values) {
-    mix(values.size());
+  }
+
+  void append_completion_dependency_set(
+      PatchCompletionDependencyIdentity &identity,
+      const std::set<int> &values) {
+    identity.push_back(static_cast<std::int64_t>(values.size()));
     for (const int value : values) {
-      mixInt(value);
+      identity.push_back(value);
     }
-  };
+  }
 
-  mix(descriptor.feasibility.admissible ? 1U : 0U);
-  mixInt(static_cast<int>(descriptor.feasibility.reason));
-  mixInt(descriptor.feasibility.expectedInteriorValence);
-  mixInts(descriptor.singularSourceVertices);
-  mixInts(descriptor.singularNumerators);
-  mix(descriptor.boundaryCycleValid ? 1U : 0U);
-  mix(descriptor.featureConstraintsValid ? 1U : 0U);
+  int completion_dependency_label(const std::vector<int> &values,
+                                  const std::size_t index) {
+    return index < values.size() ? values[index] : -1;
+  }
 
-  const PureQuadPatch &patch = descriptor.patch;
-  mix(patch.boundaryVertices.size());
-  mix(patch.boundaryProvenance.size());
-  for (const SurfacePoint &point : patch.boundaryProvenance) {
-    mixInt(point.face);
-    mixInt(point.component);
-    mixInt(point.sheet);
+  void append_completion_dependency_point(
+      PatchCompletionDependencyIdentity &identity, const PureQuadPatch &patch,
+      const std::size_t index) {
+    if (index >= patch.boundaryProvenance.size()) {
+      identity.insert(identity.end(), {-1, -1, -1, -1, -1, -1, -1,
+                                        -1, -1, -1});
+      return;
+    }
+    const SurfacePoint &point = patch.boundaryProvenance[index];
+    identity.push_back(point.face);
+    identity.push_back(point.component);
+    identity.push_back(point.sheet);
     for (int coordinate = 0; coordinate < 3; ++coordinate) {
-      mixDouble(point.barycentric(coordinate));
-      mixDouble(point.position(coordinate));
+      identity.push_back(
+          quantized_parameter(point.barycentric(coordinate)));
     }
-    mixDouble(point.squaredDistance);
+    identity.push_back(
+        completion_dependency_label(patch.boundaryRailIds, index));
+    identity.push_back(
+        completion_dependency_label(patch.boundaryCurveIds, index));
+    identity.push_back(
+        completion_dependency_label(patch.boundaryComponents, index));
+    identity.push_back(
+        completion_dependency_label(patch.boundarySheets, index));
   }
-  mixInts(patch.boundaryRailIds);
-  mixInts(patch.boundaryCurveIds);
-  mixInts(patch.boundaryComponents);
-  mixInts(patch.boundarySheets);
-  mixInts(patch.sideEdgeCounts);
-  mixInts(patch.turns);
-  mixInts(patch.sourceFaces);
-  mixInt(patch.boundaryLoopCount);
-  mix(patch.diskTopology ? 1U : 0U);
-  mix(patch.hardFeatureCrossing ? 1U : 0U);
-  mixInt(patch.singularityCount);
-  mixInt(patch.singularIndexNumerator);
-  mix(patch.unmatchedInteriorSingularity ? 1U : 0U);
-  mix(patch.simple ? 1U : 0U);
 
-  mix(descriptor.sides.size());
-  for (const PatchSideDescriptor &side : descriptor.sides) {
-    mixInt(side.family);
-    mix(side.halfedges.size());
-    mix(side.boundaryVertices.size());
-    mixInt(side.subdivisionCount);
-    mix(side.hardFeature ? 1U : 0U);
-    mixSet(side.railIds);
-    mixSet(side.curveIds);
+  PatchCompletionDependencyIdentity completion_dependency_side_record(
+      const PatchDescriptor &descriptor,
+      const std::vector<std::size_t> &offsets, const int sideIndex,
+      const bool reversed) {
+    PatchCompletionDependencyIdentity record;
+    const PatchSideDescriptor &side =
+        descriptor.sides[static_cast<std::size_t>(sideIndex)];
+    const PureQuadPatch &patch = descriptor.patch;
+    const int count =
+        patch.sideEdgeCounts[static_cast<std::size_t>(sideIndex)];
+    record.push_back(side.family);
+    record.push_back(static_cast<std::int64_t>(side.halfedges.size()));
+    record.push_back(
+        static_cast<std::int64_t>(side.boundaryVertices.size()));
+    record.push_back(side.subdivisionCount);
+    record.push_back(side.hardFeature ? 1 : 0);
+    record.push_back(count);
+    const int turn =
+        sideIndex < static_cast<int>(patch.turns.size())
+            ? patch.turns[static_cast<std::size_t>(sideIndex)]
+            : 0;
+    record.push_back(reversed ? -turn : turn);
+    append_completion_dependency_set(record, side.railIds);
+    append_completion_dependency_set(record, side.curveIds);
+    record.push_back(count);
+    for (int local = 0; local < count; ++local) {
+      const int orientedLocal = reversed ? count - local - 1 : local;
+      PatchCompletionDependencyIdentity point;
+      append_completion_dependency_point(
+          point, patch,
+          offsets[static_cast<std::size_t>(sideIndex)] +
+              static_cast<std::size_t>(orientedLocal));
+      record.push_back(static_cast<std::int64_t>(point.size()));
+      record.insert(record.end(), point.begin(), point.end());
+    }
+    return record;
   }
-  return seed;
-}
+
+  PatchCompletionDependencyIdentity
+  canonical_completion_boundary_dependency(
+      const PatchDescriptor &descriptor) {
+    const PureQuadPatch &patch = descriptor.patch;
+    const int sideCount = static_cast<int>(descriptor.sides.size());
+    bool metadataValid =
+        sideCount > 0 &&
+        patch.sideEdgeCounts.size() == descriptor.sides.size();
+    std::vector<std::size_t> offsets(
+        static_cast<std::size_t>(std::max(sideCount, 0)) + 1U, 0U);
+    if (metadataValid) {
+      for (int side = 0; side < sideCount; ++side) {
+        const int count =
+            patch.sideEdgeCounts[static_cast<std::size_t>(side)];
+        if (count < 0) {
+          metadataValid = false;
+          break;
+        }
+        offsets[static_cast<std::size_t>(side + 1)] =
+            offsets[static_cast<std::size_t>(side)] +
+            static_cast<std::size_t>(count);
+      }
+      metadataValid =
+          metadataValid &&
+          offsets.back() == patch.boundaryProvenance.size();
+    }
+
+    if (!metadataValid) {
+      PatchCompletionDependencyIdentity fallback;
+      fallback.push_back(-1);
+      fallback.push_back(
+          static_cast<std::int64_t>(patch.boundaryProvenance.size()));
+      for (std::size_t index = 0;
+           index < patch.boundaryProvenance.size(); ++index) {
+        append_completion_dependency_point(fallback, patch, index);
+      }
+      append_completion_dependency_values(fallback,
+                                          patch.sideEdgeCounts);
+      append_completion_dependency_values(fallback, patch.turns);
+      return fallback;
+    }
+
+    PatchCompletionDependencyIdentity canonical;
+    bool initialized = false;
+    for (const bool reversed : {false, true}) {
+      for (int startSide = 0; startSide < sideCount; ++startSide) {
+        PatchCompletionDependencyIdentity candidate;
+        candidate.push_back(sideCount);
+        for (int step = 0; step < sideCount; ++step) {
+          const int sideIndex =
+              reversed
+                  ? (startSide - step + sideCount) % sideCount
+                  : (startSide + step) % sideCount;
+          PatchCompletionDependencyIdentity record =
+              completion_dependency_side_record(
+                  descriptor, offsets, sideIndex, reversed);
+          candidate.push_back(
+              static_cast<std::int64_t>(record.size()));
+          candidate.insert(candidate.end(), record.begin(),
+                           record.end());
+        }
+        if (!initialized || candidate < canonical) {
+          canonical = std::move(candidate);
+          initialized = true;
+        }
+      }
+    }
+    return canonical;
+  }
+
+  PatchCompletionDependencyIdentity exact_patch_dependency_identity(
+      const PatchDescriptor &descriptor) {
+    PatchCompletionDependencyIdentity identity;
+    const PureQuadPatch &patch = descriptor.patch;
+    identity.insert(
+        identity.end(),
+        {descriptor.feasibility.admissible ? 1 : 0,
+         static_cast<int>(descriptor.feasibility.reason),
+         descriptor.feasibility.expectedInteriorValence,
+         descriptor.boundaryCycleValid ? 1 : 0,
+         descriptor.featureConstraintsValid ? 1 : 0});
+
+    std::vector<std::pair<int, int>> singularities;
+    const std::size_t singularityCount = std::max(
+        descriptor.singularSourceVertices.size(),
+        descriptor.singularNumerators.size());
+    singularities.reserve(singularityCount);
+    for (std::size_t index = 0; index < singularityCount; ++index) {
+      singularities.emplace_back(
+          index < descriptor.singularSourceVertices.size()
+              ? descriptor.singularSourceVertices[index]
+              : -1,
+          index < descriptor.singularNumerators.size()
+              ? descriptor.singularNumerators[index]
+              : 0);
+    }
+    std::sort(singularities.begin(), singularities.end());
+    identity.push_back(
+        static_cast<std::int64_t>(singularities.size()));
+    for (const auto &[sourceVertex, numerator] : singularities) {
+      identity.push_back(sourceVertex);
+      identity.push_back(numerator);
+    }
+
+    PatchCompletionDependencyIdentity boundary =
+        canonical_completion_boundary_dependency(descriptor);
+    identity.push_back(static_cast<std::int64_t>(boundary.size()));
+    identity.insert(identity.end(), boundary.begin(), boundary.end());
+
+    std::vector<int> sourceFaces = patch.sourceFaces;
+    std::sort(sourceFaces.begin(), sourceFaces.end());
+    sourceFaces.erase(
+        std::unique(sourceFaces.begin(), sourceFaces.end()),
+        sourceFaces.end());
+    append_completion_dependency_values(identity, sourceFaces);
+    identity.insert(identity.end(),
+                    {patch.boundaryLoopCount,
+                     patch.diskTopology ? 1 : 0,
+                     patch.hardFeatureCrossing ? 1 : 0,
+                     patch.singularityCount,
+                     patch.singularIndexNumerator,
+                     patch.unmatchedInteriorSingularity ? 1 : 0,
+                     patch.simple ? 1 : 0});
+    return identity;
+  }
+
+  bool exact_patch_dependency_equal(const PatchDescriptor &lhs,
+                                    const PatchDescriptor &rhs) {
+    return exact_patch_dependency_identity(lhs) ==
+           exact_patch_dependency_identity(rhs);
+  }
+
+  std::uint64_t
+  exact_patch_dependency_hash(const PatchDescriptor &descriptor) {
+    std::uint64_t seed = 1469598103934665603ULL;
+    for (const std::int64_t value :
+         exact_patch_dependency_identity(descriptor)) {
+      seed ^= static_cast<std::uint64_t>(value);
+      seed *= 1099511628211ULL;
+    }
+    return seed;
+  }
 
 struct CachedCompletionProduct {
   PatchDescriptor descriptor;

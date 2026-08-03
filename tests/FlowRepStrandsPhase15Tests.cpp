@@ -334,6 +334,10 @@ TEST(FlowRepStrandsPhase15,
   tracing.sourceFaceSheets = {5};
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
+  // Force generated connector insertion to reallocate the arc vector.
+  // Committed diagnostics must reacquire the source by stable identity.
+  arcs.shrink_to_fit();
+
   const auto result = directional::geometry::complete_flow_rep_endpoints(
       vertices, faces, constant_cross_field(1), tracing, arcs, {0, 1, 2},
       completion);
