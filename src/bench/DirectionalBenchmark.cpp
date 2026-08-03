@@ -1626,6 +1626,51 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext
              .completionOwnershipInsertedBoundaryVertices
       << ","
+      << "\"completionOwnershipStructuralCandidateBudget\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralCandidateBudget
+      << ","
+      << "\"completionOwnershipStructuralCandidatesConsumed\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralCandidatesConsumed
+      << ","
+      << "\"completionOwnershipVisitedStateCount\":"
+      << result.surfaceCellContext.completionOwnershipVisitedStateCount
+      << ","
+      << "\"completionOwnershipFullRecomputationPasses\":"
+      << result.surfaceCellContext
+             .completionOwnershipFullRecomputationPasses
+      << ","
+      << "\"completionOwnershipIncrementalRecomputationPasses\":"
+      << result.surfaceCellContext
+             .completionOwnershipIncrementalRecomputationPasses
+      << ","
+      << "\"completionOwnershipCurrentLiveCandidateComplexes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCurrentLiveCandidateComplexes
+      << ","
+      << "\"completionOwnershipPeakLiveCandidateComplexes\":"
+      << result.surfaceCellContext
+             .completionOwnershipPeakLiveCandidateComplexes
+      << ","
+      << "\"completionOwnershipLastCandidateHalfedge\":"
+      << result.surfaceCellContext.completionOwnershipLastCandidateHalfedge
+      << ","
+      << "\"completionOwnershipStructuralExhaustionReason\":\""
+      << geometry::surface_cell_structural_repair_exhaustion_reason_name(
+             result.surfaceCellContext
+                 .completionOwnershipStructuralExhaustionReason)
+      << "\","
+      << "\"completionOwnershipLastAffectedPatches\":[";
+  for (std::size_t patchIndex = 0;
+       patchIndex < result.surfaceCellContext
+                        .completionOwnershipLastAffectedPatches.size();
+       ++patchIndex) {
+    if (patchIndex > 0U) out << ",";
+    out << result.surfaceCellContext
+               .completionOwnershipLastAffectedPatches[patchIndex];
+  }
+  out << "],"
       << "\"completionOwnershipRepairLog\":[";
   for (std::size_t attemptIndex = 0;
        attemptIndex <
@@ -1663,10 +1708,41 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << ","
         << "\"splitUndirectedEdges\":"
         << attempt.splitUndirectedEdges << ","
+        << "\"candidateEvaluation\":"
+        << attempt.candidateEvaluation << ","
+        << "\"structuralAttempt\":"
+        << attempt.structuralAttempt << ","
+        << "\"fullRecomputationPass\":"
+        << attempt.fullRecomputationPass << ","
+        << "\"visitedStateCount\":"
+        << attempt.visitedStateCount << ","
+        << "\"globalInsertedVerticesBefore\":"
+        << attempt.globalInsertedVerticesBefore << ","
+        << "\"globalInsertedVerticesAfter\":"
+        << attempt.globalInsertedVerticesAfter << ","
+        << "\"liveCandidateComplexes\":"
+        << attempt.liveCandidateComplexes << ","
+        << "\"outcome\":\""
+        << geometry::surface_cell_ownership_repair_outcome_name(
+               attempt.outcome)
+        << "\","
         << "\"completionSucceeded\":"
         << (attempt.completionSucceeded ? "true" : "false") << ","
         << "\"committed\":"
         << (attempt.committed ? "true" : "false") << ","
+        << "\"repeatedState\":"
+        << (attempt.repeatedState ? "true" : "false") << ","
+        << "\"madeProgress\":"
+        << (attempt.madeProgress ? "true" : "false") << ","
+        << "\"introducedOwnershipClaim\":"
+        << (attempt.introducedOwnershipClaim ? "true" : "false") << ","
+        << "\"affectedPatches\":[";
+    for (std::size_t patchIndex = 0;
+         patchIndex < attempt.affectedPatches.size(); ++patchIndex) {
+      if (patchIndex > 0U) out << ",";
+      out << attempt.affectedPatches[patchIndex];
+    }
+    out << "],"
         << "\"failure\":\"" << escape_json(attempt.failure)
         << "\"}";
   }

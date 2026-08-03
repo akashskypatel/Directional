@@ -128,6 +128,17 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellCompletionOwnershipRepairAttempts = 0;
   std::size_t surfaceCellCompletionOwnershipStructuralRepairAttempts = 0;
   std::size_t surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidateBudget = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidatesConsumed = 0;
+  std::size_t surfaceCellCompletionOwnershipVisitedStateCount = 0;
+  std::size_t surfaceCellCompletionOwnershipFullRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipIncrementalRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0;
+  std::size_t surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0;
+  int surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> surfaceCellCompletionOwnershipLastAffectedPatches;
+  std::string surfaceCellCompletionOwnershipStructuralExhaustionReason =
+      "none";
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
   std::string surfaceCellCompletionOwnershipFailure;
   int surfaceCellCompletionOwnershipSourcePatch = -1;
@@ -157,6 +168,7 @@ struct RemeshDiagnostics {
   bool surfaceCellCompletedQuadCountAvailable = false;
   bool surfaceCellCompletionOwnershipRepairAttemptsAvailable = false;
   bool surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralLedgerAvailable = false;
   bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 

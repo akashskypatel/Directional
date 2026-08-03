@@ -71,6 +71,86 @@ enum class SurfaceCellOwnershipRepairAction : int {
   BoundarySectorSubdivision = 1,
 };
 
+enum class SurfaceCellOwnershipRepairOutcome : int {
+  None = 0,
+  SubdivisionFailed = 1,
+  ValidationFailed = 2,
+  RepeatedState = 3,
+  NoProgress = 4,
+  IntroducedOwnershipClaim = 5,
+  Committed = 6,
+  AssemblySucceeded = 7,
+  BudgetExhausted = 8,
+};
+
+inline const char *surface_cell_ownership_repair_outcome_name(
+    const SurfaceCellOwnershipRepairOutcome outcome) {
+  switch (outcome) {
+  case SurfaceCellOwnershipRepairOutcome::None:
+    return "none";
+  case SurfaceCellOwnershipRepairOutcome::SubdivisionFailed:
+    return "subdivision-failed";
+  case SurfaceCellOwnershipRepairOutcome::ValidationFailed:
+    return "validation-failed";
+  case SurfaceCellOwnershipRepairOutcome::RepeatedState:
+    return "repeated-state";
+  case SurfaceCellOwnershipRepairOutcome::NoProgress:
+    return "no-progress";
+  case SurfaceCellOwnershipRepairOutcome::IntroducedOwnershipClaim:
+    return "introduced-ownership-claim";
+  case SurfaceCellOwnershipRepairOutcome::Committed:
+    return "committed";
+  case SurfaceCellOwnershipRepairOutcome::AssemblySucceeded:
+    return "assembly-succeeded";
+  case SurfaceCellOwnershipRepairOutcome::BudgetExhausted:
+    return "budget-exhausted";
+  }
+  return "unknown";
+}
+
+enum class SurfaceCellStructuralRepairExhaustionReason : int {
+  None = 0,
+  CandidateBudget = 1,
+  StructuralAttemptBudget = 2,
+  InsertedVertexBudget = 3,
+  FullRecomputationBudget = 4,
+  VisitedStateBudget = 5,
+  RepeatedState = 6,
+  NoProgress = 7,
+  NoCandidate = 8,
+  OwnershipOverlap = 9,
+  IntroducedOwnershipClaim = 10,
+};
+
+inline const char *surface_cell_structural_repair_exhaustion_reason_name(
+    const SurfaceCellStructuralRepairExhaustionReason reason) {
+  switch (reason) {
+  case SurfaceCellStructuralRepairExhaustionReason::None:
+    return "none";
+  case SurfaceCellStructuralRepairExhaustionReason::CandidateBudget:
+    return "candidate-budget";
+  case SurfaceCellStructuralRepairExhaustionReason::StructuralAttemptBudget:
+    return "structural-attempt-budget";
+  case SurfaceCellStructuralRepairExhaustionReason::InsertedVertexBudget:
+    return "inserted-vertex-budget";
+  case SurfaceCellStructuralRepairExhaustionReason::FullRecomputationBudget:
+    return "full-recomputation-budget";
+  case SurfaceCellStructuralRepairExhaustionReason::VisitedStateBudget:
+    return "visited-state-budget";
+  case SurfaceCellStructuralRepairExhaustionReason::RepeatedState:
+    return "repeated-state";
+  case SurfaceCellStructuralRepairExhaustionReason::NoProgress:
+    return "no-progress";
+  case SurfaceCellStructuralRepairExhaustionReason::NoCandidate:
+    return "no-candidate";
+  case SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap:
+    return "ownership-overlap";
+  case SurfaceCellStructuralRepairExhaustionReason::IntroducedOwnershipClaim:
+    return "introduced-ownership-claim";
+  }
+  return "unknown";
+}
+
 inline const char *surface_cell_ownership_repair_action_name(
     const SurfaceCellOwnershipRepairAction action) {
   switch (action) {
@@ -99,8 +179,21 @@ struct SurfaceCellOwnershipRepairAttempt {
   int toVariant = 0;
   int insertedVertices = 0;
   int splitUndirectedEdges = 0;
+  int candidateEvaluation = 0;
+  int structuralAttempt = 0;
+  int fullRecomputationPass = 0;
+  int visitedStateCount = 0;
+  int globalInsertedVerticesBefore = 0;
+  int globalInsertedVerticesAfter = 0;
+  int liveCandidateComplexes = 0;
   bool completionSucceeded = false;
   bool committed = false;
+  bool repeatedState = false;
+  bool madeProgress = false;
+  bool introducedOwnershipClaim = false;
+  SurfaceCellOwnershipRepairOutcome outcome =
+      SurfaceCellOwnershipRepairOutcome::None;
+  std::vector<int> affectedPatches;
   std::string failure;
 };
 
@@ -109,7 +202,14 @@ struct SurfaceCellComplexCompletionOptions {
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
   int maxCompletionOwnershipRepairs = 256;
-  int maxSameCornerBoundaryRepairs = 8;
+  // Global, invocation-owned structural repair budgets. These are never reset
+  // by a candidate evaluation. Defaults permit an initial pass and at most two
+  // full candidate passes, which keeps production work bounded while allowing
+  // a deterministic first-fails/second-succeeds repair sequence.
+  int maxSameCornerBoundaryRepairs = 2;
+  int maxSameCornerCandidateEvaluations = 2;
+  int maxSameCornerFullCompletionPasses = 3;
+  int maxSameCornerVisitedStates = 3;
   int maxSameCornerInsertedVertices = 8;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
@@ -140,6 +240,18 @@ struct SurfaceCellComplexCompletionResult {
   int completionOwnershipRepairAttempts = 0;
   int completionOwnershipStructuralRepairAttempts = 0;
   int completionOwnershipInsertedBoundaryVertices = 0;
+  int completionOwnershipStructuralCandidateBudget = 0;
+  int completionOwnershipStructuralCandidatesConsumed = 0;
+  int completionOwnershipVisitedStateCount = 0;
+  int completionOwnershipFullRecomputationPasses = 0;
+  int completionOwnershipIncrementalRecomputationPasses = 0;
+  int completionOwnershipCurrentLiveCandidateComplexes = 0;
+  int completionOwnershipPeakLiveCandidateComplexes = 0;
+  int completionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> completionOwnershipLastAffectedPatches;
+  SurfaceCellStructuralRepairExhaustionReason
+      completionOwnershipStructuralExhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::None;
   std::vector<SurfaceCellOwnershipRepairAttempt> ownershipRepairAttempts;
   PureQuadCompletionOwnershipRejection firstCompletionOwnershipRejection;
   std::string failure;

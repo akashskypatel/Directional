@@ -369,6 +369,187 @@ Fixture make_two_odd_cells_with_shared_interface() {
   return fixture;
 }
 
+Fixture make_same_corner_distinct_boundary_components() {
+  const Fixture component = make_authoritative_patch({1, 1, 1, 1});
+  Fixture fixture;
+  fixture.V = component.V;
+  fixture.F = component.F;
+  append_authoritative_component(component.complex, fixture.complex);
+
+  directional::geometry::SurfaceCellComplex alternate = component.complex;
+  for (auto &edge : alternate.halfedges) {
+    edge.railId += 1000;
+    edge.curveId += 2000;
+    edge.proposalBoundarySegment += 3000;
+    for (auto &provenance : edge.provenance) {
+      provenance.railId += 1000;
+      provenance.curveId += 2000;
+      provenance.proposalBoundarySegment += 3000;
+    }
+  }
+  append_authoritative_component(alternate, fixture.complex);
+
+  // This fixture is intentionally an overlapping ownership input. Derive
+  // its diagnostics from the constructed DCEL instead of setting validity
+  // flags. The production path must reject it before candidate expansion.
+  fixture.complex.diagnostics.sourceEulerCharacteristic = 1;
+  fixture.complex.diagnostics.sourceConnectedComponentCount = 1;
+  fixture.complex.diagnostics.sourceBoundaryLoopCount = 1;
+  fixture.complex.diagnostics.supportedArea = 1.0;
+  fixture.complex.diagnostics.inputMemoryBytes = 1;
+  directional::geometry::surface_simplification_detail::
+      recompute_rebuilt_diagnostics(fixture.complex);
+  return fixture;
+}
+
+
+Fixture make_valid_parallel_route_same_corner_complex() {
+  Fixture fixture;
+  fixture.V.resize(6, 3);
+  fixture.V << 0.0, 0.0, 0.0,
+               1.0, -1.0, 0.0,
+               2.0, -1.0, 0.0,
+               3.0, 0.0, 0.0,
+               2.0, -3.0, 0.0,
+               1.0, -3.0, 0.0;
+  fixture.F.resize(6, 3);
+  fixture.F << 0, 1, 2,
+               0, 2, 3,
+               3, 2, 4,
+               2, 1, 4,
+               1, 5, 4,
+               1, 0, 5;
+
+  const std::array<std::vector<int>, 6> incidentFaces{{
+      {0, 1, 5}, {0, 3, 4, 5}, {0, 1, 2, 3},
+      {1, 2}, {2, 3, 4}, {4, 5}}};
+  fixture.complex.nodes.resize(6);
+  for (int vertex = 0; vertex < 6; ++vertex) {
+    auto &node = fixture.complex.nodes[static_cast<std::size_t>(vertex)];
+    node.id = vertex;
+    node.sourceComponent = 0;
+    node.sourceSheet = 0;
+    for (const int face : incidentFaces[static_cast<std::size_t>(vertex)]) {
+      int corner = -1;
+      for (int candidate = 0; candidate < 3; ++candidate) {
+        if (fixture.F(face, candidate) == vertex) {
+          corner = candidate;
+          break;
+        }
+      }
+      if (corner < 0) {
+        return fixture;
+      }
+      Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+      barycentric(corner) = 1.0;
+      if (node.sourceFace < 0) {
+        node.sourceFace = face;
+        node.barycentric = barycentric;
+      }
+      node.occurrences.push_back({face, barycentric});
+    }
+  }
+
+  fixture.complex.halfedges.resize(14);
+  const auto configureHalfedge = [&](const int id, const int twin,
+                                     const int from, const int to,
+                                     const int cell, const int next,
+                                     const int sourceFace, const int sourceArc,
+                                     const int family) {
+    auto &edge = fixture.complex.halfedges[static_cast<std::size_t>(id)];
+    edge.id = id;
+    edge.twin = twin;
+    edge.from = from;
+    edge.to = to;
+    edge.cell = cell;
+    edge.next = next;
+    edge.sourceFace = sourceFace;
+    edge.sourceArc = sourceArc;
+    edge.family = family;
+    edge.strand = sourceArc;
+    edge.sourceComponent = 0;
+    edge.sourceSheet = 0;
+    edge.railId = sourceArc;
+    edge.curveId = 100 + sourceArc;
+    directional::geometry::SurfaceArrangementProvenance provenance;
+    provenance.sourceArc = sourceArc;
+    provenance.sourceFace = sourceFace;
+    provenance.family = family;
+    provenance.strand = sourceArc;
+    provenance.sourceComponent = 0;
+    provenance.sourceSheet = 0;
+    provenance.railId = edge.railId;
+    provenance.curveId = edge.curveId;
+    edge.provenance.push_back(provenance);
+  };
+
+  // Patch A: 0 -> 1 -> 2 -> 3 -> 0.
+  configureHalfedge(0, 1, 0, 1, 0, 2, 0, 0, 0);
+  configureHalfedge(2, 3, 1, 2, 0, 4, 0, 1, 1);
+  configureHalfedge(4, 5, 2, 3, 0, 6, 1, 2, 0);
+  configureHalfedge(6, 7, 3, 0, 0, 0, 1, 3, 1);
+
+  // Patch B traverses the shared chain in reverse and closes through the
+  // distinct lower route: 3 -> 2 -> 1 -> 0 -> 5 -> 4 -> 3.
+  configureHalfedge(5, 4, 3, 2, 1, 3, 2, 2, 0);
+  configureHalfedge(3, 2, 2, 1, 1, 1, 3, 1, 1);
+  configureHalfedge(1, 0, 1, 0, 1, 8, 5, 0, 0);
+  configureHalfedge(8, 9, 0, 5, 1, 10, 5, 4, 1);
+  configureHalfedge(10, 11, 5, 4, 1, 12, 4, 5, 0);
+  configureHalfedge(12, 13, 4, 3, 1, 5, 2, 6, 1);
+
+  // Exterior cycle: 0 -> 3 -> 4 -> 5 -> 0.
+  configureHalfedge(7, 6, 0, 3, 2, 13, 1, 3, 1);
+  configureHalfedge(13, 12, 3, 4, 2, 11, 2, 6, 1);
+  configureHalfedge(11, 10, 4, 5, 2, 9, 4, 5, 0);
+  configureHalfedge(9, 8, 5, 0, 2, 7, 5, 4, 1);
+
+  fixture.complex.cells.resize(3);
+  const auto configureCell = [&](const int id, std::vector<int> halfedges,
+                                 std::vector<int> sourceFaces,
+                                 std::vector<int> families,
+                                 const double signedArea,
+                                 const bool exterior) {
+    auto &cell = fixture.complex.cells[static_cast<std::size_t>(id)];
+    cell.id = id;
+    cell.sourceFace = sourceFaces.empty() ? -1 : sourceFaces.front();
+    cell.sourceFaces = std::move(sourceFaces);
+    cell.halfedges = std::move(halfedges);
+    cell.sideFamilies = std::move(families);
+    cell.sideEdgeCounts.assign(cell.sideFamilies.size(), 1);
+    cell.boundaryCycle = exterior;
+    cell.closed = true;
+    cell.disk = true;
+    cell.boundaryComponentCount = 1;
+    cell.eulerCharacteristic = 1;
+    cell.signedArea = signedArea;
+    cell.area = std::abs(signedArea);
+    cell.cellClass =
+        exterior
+            ? directional::geometry::SurfaceArrangementCellClass::Exterior
+            : directional::geometry::SurfaceArrangementCellClass::
+                  PatchCandidate;
+  };
+  configureCell(0, {0, 2, 4, 6}, {0, 1}, {0, 1, 0, 1}, 2.0, false);
+  configureCell(1, {5, 3, 1, 8, 10, 12}, {2, 3, 4, 5},
+                {0, 1, 0, 1, 0, 1}, 4.0, false);
+  configureCell(2, {7, 13, 11, 9}, {0, 1, 2, 3, 4, 5},
+                {1, 1, 0, 1}, -6.0, true);
+
+  auto &diagnostics = fixture.complex.diagnostics;
+  diagnostics.embeddingValid = true;
+  diagnostics.sourceEulerCharacteristic = 1;
+  diagnostics.sourceConnectedComponentCount = 1;
+  diagnostics.sourceBoundaryLoopCount = 1;
+  diagnostics.supportedArea = 6.0;
+  diagnostics.inputMemoryBytes = 1;
+  diagnostics.unsplitCrossings = 0;
+  diagnostics.geometricTJunctions = 0;
+  directional::geometry::surface_simplification_detail::
+      recompute_rebuilt_diagnostics(fixture.complex);
+  return fixture;
+}
+
 } // namespace
 
 TEST(PatchDescriptorMilestoneE, DerivesOrderedSidesSubdivisionsAndFeatures) {
@@ -762,4 +943,166 @@ TEST(PatchDescriptorMilestoneE,
       reorderedDescriptor.patch.domainIdentity));
   EXPECT_EQ(firstDescriptor.patch.boundaryNodeIdentities,
             reorderedDescriptor.patch.boundaryNodeIdentities);
+}
+
+
+TEST(PatchDescriptorMilestoneE,
+     WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger) {
+  const Fixture fixture = make_valid_parallel_route_same_corner_complex();
+  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(fixture.complex));
+  ASSERT_TRUE(fixture.complex.diagnostics.topologyValid);
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.maxSameCornerBoundaryRepairs = 4;
+  options.maxSameCornerCandidateEvaluations = 4;
+  options.maxSameCornerFullCompletionPasses = 5;
+  options.maxSameCornerVisitedStates = 5;
+  options.maxSameCornerInsertedVertices = 8;
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+
+  ASSERT_TRUE(completion.success) << completion.failure;
+  EXPECT_GE(completion.completionOwnershipStructuralRepairAttempts, 1);
+  EXPECT_LE(completion.completionOwnershipStructuralRepairAttempts, 4);
+  EXPECT_LE(completion.completionOwnershipStructuralCandidatesConsumed, 4);
+  EXPECT_LE(completion.completionOwnershipFullRecomputationPasses, 5);
+  EXPECT_LE(completion.completionOwnershipVisitedStateCount, 5);
+  EXPECT_LE(completion.completionOwnershipInsertedBoundaryVertices, 8);
+  EXPECT_EQ(1, completion.completionOwnershipPeakLiveCandidateComplexes);
+  EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);
+  ASSERT_FALSE(completion.ownershipRepairAttempts.empty());
+  EXPECT_EQ(
+      directional::geometry::SurfaceCellOwnershipRepairAction::
+          BoundarySectorSubdivision,
+      completion.ownershipRepairAttempts.front().action);
+  EXPECT_EQ(
+      directional::geometry::SurfaceCellOwnershipRepairOutcome::
+          AssemblySucceeded,
+      completion.ownershipRepairAttempts.back().outcome);
+  EXPECT_FALSE(completion.assembly.ownershipConflict.active());
+}
+
+TEST(PatchDescriptorMilestoneE,
+     SemanticOnlySameCornerOverlapFailsBeforeCandidateExpansion) {
+  const Fixture fixture = make_same_corner_distinct_boundary_components();
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.maxSameCornerBoundaryRepairs = 8;
+  options.maxSameCornerCandidateEvaluations = 8;
+  options.maxSameCornerFullCompletionPasses = 9;
+  options.maxSameCornerVisitedStates = 9;
+  options.maxSameCornerInsertedVertices = 16;
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+
+  EXPECT_FALSE(completion.success);
+  EXPECT_EQ(0, completion.completionOwnershipStructuralRepairAttempts);
+  EXPECT_EQ(0, completion.completionOwnershipStructuralCandidatesConsumed);
+  EXPECT_EQ(1, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_EQ(
+      directional::geometry::SurfaceCellStructuralRepairExhaustionReason::
+          OwnershipOverlap,
+      completion.completionOwnershipStructuralExhaustionReason);
+  EXPECT_TRUE(completion.ownershipRepairAttempts.empty());
+  EXPECT_NE(std::string::npos,
+            completion.failure.find("SameCornerDistinctBoundaryOverlap:"));
+}
+
+TEST(PatchDescriptorMilestoneE,
+     ZeroStructuralBudgetFailsBeforeCandidateExpansion) {
+  const Fixture fixture = make_valid_parallel_route_same_corner_complex();
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.maxSameCornerBoundaryRepairs = 0;
+  options.maxSameCornerCandidateEvaluations = 0;
+  options.maxSameCornerFullCompletionPasses = 1;
+  options.maxSameCornerVisitedStates = 1;
+  options.maxSameCornerInsertedVertices = 0;
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+
+  EXPECT_FALSE(completion.success);
+  EXPECT_EQ(0, completion.completionOwnershipStructuralRepairAttempts);
+  EXPECT_EQ(0, completion.completionOwnershipStructuralCandidatesConsumed);
+  EXPECT_EQ(1, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_EQ(
+      directional::geometry::SurfaceCellStructuralRepairExhaustionReason::
+          CandidateBudget,
+      completion.completionOwnershipStructuralExhaustionReason);
+  EXPECT_NE(std::string::npos,
+            completion.failure.find(
+                "SameCornerStructuralRepairExhausted:candidate-budget:"));
+}
+
+TEST(PatchDescriptorMilestoneE,
+     OneCandidateBudgetIsExactAndDoesNotRecurse) {
+  const Fixture fixture = make_valid_parallel_route_same_corner_complex();
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.maxSameCornerBoundaryRepairs = 1;
+  options.maxSameCornerCandidateEvaluations = 1;
+  options.maxSameCornerFullCompletionPasses = 2;
+  options.maxSameCornerVisitedStates = 2;
+  options.maxSameCornerInsertedVertices = 2;
+
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+
+  EXPECT_EQ(1, completion.completionOwnershipStructuralRepairAttempts);
+  EXPECT_EQ(1, completion.completionOwnershipStructuralCandidatesConsumed);
+  EXPECT_EQ(2, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_LE(completion.completionOwnershipVisitedStateCount, 2);
+  EXPECT_LE(completion.completionOwnershipPeakLiveCandidateComplexes, 1);
+  EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);
+  ASSERT_EQ(1U, completion.ownershipRepairAttempts.size());
+  EXPECT_EQ(1, completion.ownershipRepairAttempts.front().candidateEvaluation);
+  EXPECT_EQ(1, completion.ownershipRepairAttempts.front().structuralAttempt);
+}
+
+TEST(PatchDescriptorMilestoneE,
+     StructuralRepairLedgerIsPatchOrderInvariant) {
+  const Fixture first = make_valid_parallel_route_same_corner_complex();
+  Fixture reordered = first;
+  std::swap(reordered.complex.cells[0], reordered.complex.cells[1]);
+  reordered.complex.cells[0].id = 0;
+  reordered.complex.cells[1].id = 1;
+  for (auto &edge : reordered.complex.halfedges) {
+    if (edge.cell == 0) {
+      edge.cell = 1;
+    } else if (edge.cell == 1) {
+      edge.cell = 0;
+    }
+  }
+  directional::geometry::surface_simplification_detail::
+      recompute_rebuilt_diagnostics(reordered.complex);
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.maxSameCornerBoundaryRepairs = 4;
+  options.maxSameCornerCandidateEvaluations = 4;
+  options.maxSameCornerFullCompletionPasses = 5;
+  options.maxSameCornerVisitedStates = 5;
+  options.maxSameCornerInsertedVertices = 8;
+
+  const auto a = directional::geometry::complete_surface_cell_complex(
+      first.complex, first.V, first.F, options);
+  const auto b = directional::geometry::complete_surface_cell_complex(
+      reordered.complex, reordered.V, reordered.F, options);
+
+  EXPECT_EQ(a.success, b.success);
+  EXPECT_EQ(a.completionOwnershipStructuralRepairAttempts,
+            b.completionOwnershipStructuralRepairAttempts);
+  EXPECT_EQ(a.completionOwnershipStructuralCandidatesConsumed,
+            b.completionOwnershipStructuralCandidatesConsumed);
+  EXPECT_EQ(a.completionOwnershipFullRecomputationPasses,
+            b.completionOwnershipFullRecomputationPasses);
+  EXPECT_EQ(a.completionOwnershipVisitedStateCount,
+            b.completionOwnershipVisitedStateCount);
+  EXPECT_EQ(a.completionOwnershipStructuralExhaustionReason,
+            b.completionOwnershipStructuralExhaustionReason);
+  ASSERT_EQ(a.ownershipRepairAttempts.size(), b.ownershipRepairAttempts.size());
+  for (std::size_t index = 0; index < a.ownershipRepairAttempts.size(); ++index) {
+    EXPECT_EQ(a.ownershipRepairAttempts[index].outcome,
+              b.ownershipRepairAttempts[index].outcome);
+    EXPECT_EQ(a.ownershipRepairAttempts[index].candidateEvaluation,
+              b.ownershipRepairAttempts[index].candidateEvaluation);
+  }
 }

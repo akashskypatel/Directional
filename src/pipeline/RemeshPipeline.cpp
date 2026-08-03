@@ -1975,6 +1975,21 @@ void clear_unavailable_surface_cell_counts(
   if (!diagnostics.surfaceCellCompletionOwnershipRepairAttemptsAvailable) {
     diagnostics.surfaceCellCompletionOwnershipRepairAttempts = 0U;
   }
+  if (!diagnostics.surfaceCellCompletionOwnershipStructuralLedgerAvailable) {
+    diagnostics.surfaceCellCompletionOwnershipStructuralRepairAttempts = 0U;
+    diagnostics.surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0U;
+    diagnostics.surfaceCellCompletionOwnershipStructuralCandidateBudget = 0U;
+    diagnostics.surfaceCellCompletionOwnershipStructuralCandidatesConsumed = 0U;
+    diagnostics.surfaceCellCompletionOwnershipVisitedStateCount = 0U;
+    diagnostics.surfaceCellCompletionOwnershipFullRecomputationPasses = 0U;
+    diagnostics.surfaceCellCompletionOwnershipIncrementalRecomputationPasses = 0U;
+    diagnostics.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0U;
+    diagnostics.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0U;
+    diagnostics.surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+    diagnostics.surfaceCellCompletionOwnershipLastAffectedPatches.clear();
+    diagnostics.surfaceCellCompletionOwnershipStructuralExhaustionReason =
+        "none";
+  }
   if (!diagnostics.surfaceCellOptimizationIterationCountAvailable) {
     diagnostics.surfaceCellOptimizationIterationCount = 0U;
   }
@@ -2012,6 +2027,30 @@ void copy_surface_cell_stage_diagnostics(
   target.surfaceCellCompletedQuadCount = source.surfaceCellCompletedQuadCount;
   target.surfaceCellCompletionOwnershipRepairAttempts =
       source.surfaceCellCompletionOwnershipRepairAttempts;
+  target.surfaceCellCompletionOwnershipStructuralRepairAttempts =
+      source.surfaceCellCompletionOwnershipStructuralRepairAttempts;
+  target.surfaceCellCompletionOwnershipInsertedBoundaryVertices =
+      source.surfaceCellCompletionOwnershipInsertedBoundaryVertices;
+  target.surfaceCellCompletionOwnershipStructuralCandidateBudget =
+      source.surfaceCellCompletionOwnershipStructuralCandidateBudget;
+  target.surfaceCellCompletionOwnershipStructuralCandidatesConsumed =
+      source.surfaceCellCompletionOwnershipStructuralCandidatesConsumed;
+  target.surfaceCellCompletionOwnershipVisitedStateCount =
+      source.surfaceCellCompletionOwnershipVisitedStateCount;
+  target.surfaceCellCompletionOwnershipFullRecomputationPasses =
+      source.surfaceCellCompletionOwnershipFullRecomputationPasses;
+  target.surfaceCellCompletionOwnershipIncrementalRecomputationPasses =
+      source.surfaceCellCompletionOwnershipIncrementalRecomputationPasses;
+  target.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes =
+      source.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes;
+  target.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes =
+      source.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes;
+  target.surfaceCellCompletionOwnershipLastCandidateHalfedge =
+      source.surfaceCellCompletionOwnershipLastCandidateHalfedge;
+  target.surfaceCellCompletionOwnershipLastAffectedPatches =
+      source.surfaceCellCompletionOwnershipLastAffectedPatches;
+  target.surfaceCellCompletionOwnershipStructuralExhaustionReason =
+      source.surfaceCellCompletionOwnershipStructuralExhaustionReason;
   target.surfaceCellCompletionOwnershipRejectionAvailable =
       source.surfaceCellCompletionOwnershipRejectionAvailable;
   target.surfaceCellCompletionOwnershipFailure =
@@ -2066,6 +2105,10 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletedQuadCountAvailable;
   target.surfaceCellCompletionOwnershipRepairAttemptsAvailable =
       source.surfaceCellCompletionOwnershipRepairAttemptsAvailable;
+  target.surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable =
+      source.surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable;
+  target.surfaceCellCompletionOwnershipStructuralLedgerAvailable =
+      source.surfaceCellCompletionOwnershipStructuralLedgerAvailable;
   target.surfaceCellOptimizationIterationCountAvailable =
       source.surfaceCellOptimizationIterationCountAvailable;
 
@@ -4153,6 +4196,26 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipStructuralRepairAttempts;
     result.surfaceCellContext.completionOwnershipInsertedBoundaryVertices =
         completionResult.completionOwnershipInsertedBoundaryVertices;
+    result.surfaceCellContext.completionOwnershipStructuralCandidateBudget =
+        completionResult.completionOwnershipStructuralCandidateBudget;
+    result.surfaceCellContext.completionOwnershipStructuralCandidatesConsumed =
+        completionResult.completionOwnershipStructuralCandidatesConsumed;
+    result.surfaceCellContext.completionOwnershipVisitedStateCount =
+        completionResult.completionOwnershipVisitedStateCount;
+    result.surfaceCellContext.completionOwnershipFullRecomputationPasses =
+        completionResult.completionOwnershipFullRecomputationPasses;
+    result.surfaceCellContext.completionOwnershipIncrementalRecomputationPasses =
+        completionResult.completionOwnershipIncrementalRecomputationPasses;
+    result.surfaceCellContext.completionOwnershipCurrentLiveCandidateComplexes =
+        completionResult.completionOwnershipCurrentLiveCandidateComplexes;
+    result.surfaceCellContext.completionOwnershipPeakLiveCandidateComplexes =
+        completionResult.completionOwnershipPeakLiveCandidateComplexes;
+    result.surfaceCellContext.completionOwnershipLastCandidateHalfedge =
+        completionResult.completionOwnershipLastCandidateHalfedge;
+    result.surfaceCellContext.completionOwnershipLastAffectedPatches =
+        completionResult.completionOwnershipLastAffectedPatches;
+    result.surfaceCellContext.completionOwnershipStructuralExhaustionReason =
+        completionResult.completionOwnershipStructuralExhaustionReason;
     result.surfaceCellContext.completionOwnershipRepairLog =
         completionResult.ownershipRepairAttempts;
     result.surfaceCellContext.firstCompletionOwnershipRejection =
@@ -4171,8 +4234,43 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         .surfaceCellCompletionOwnershipInsertedBoundaryVertices =
         static_cast<std::size_t>(
             completionResult.completionOwnershipInsertedBoundaryVertices);
+    result.diagnostics.surfaceCellCompletionOwnershipStructuralCandidateBudget =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipStructuralCandidateBudget);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipStructuralCandidatesConsumed =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipStructuralCandidatesConsumed);
+    result.diagnostics.surfaceCellCompletionOwnershipVisitedStateCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipVisitedStateCount);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipFullRecomputationPasses =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipFullRecomputationPasses);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipIncrementalRecomputationPasses =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipIncrementalRecomputationPasses);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipCurrentLiveCandidateComplexes);
+    result.diagnostics.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipPeakLiveCandidateComplexes);
+    result.diagnostics.surfaceCellCompletionOwnershipLastCandidateHalfedge =
+        completionResult.completionOwnershipLastCandidateHalfedge;
+    result.diagnostics.surfaceCellCompletionOwnershipLastAffectedPatches =
+        completionResult.completionOwnershipLastAffectedPatches;
+    result.diagnostics
+        .surfaceCellCompletionOwnershipStructuralExhaustionReason =
+        geometry::surface_cell_structural_repair_exhaustion_reason_name(
+            completionResult.completionOwnershipStructuralExhaustionReason);
     result.diagnostics
         .surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = true;
+    result.diagnostics.surfaceCellCompletionOwnershipStructuralLedgerAvailable =
+        true;
     const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     if (ownershipRejection.active) {
@@ -4340,6 +4438,49 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             .completionOwnershipInsertedBoundaryVertices);
     hash_combine_i64(
         completionHash,
+        result.surfaceCellContext
+            .completionOwnershipStructuralCandidateBudget);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipStructuralCandidatesConsumed);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionOwnershipVisitedStateCount);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipFullRecomputationPasses);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipIncrementalRecomputationPasses);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipCurrentLiveCandidateComplexes);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipPeakLiveCandidateComplexes);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionOwnershipLastCandidateHalfedge);
+    hash_combine_i64(
+        completionHash,
+        static_cast<int>(result.surfaceCellContext
+                             .completionOwnershipStructuralExhaustionReason));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipLastAffectedPatches
+                                      .size()));
+    for (const int patch : result.surfaceCellContext
+                               .completionOwnershipLastAffectedPatches) {
+      hash_combine_i64(completionHash, patch);
+    }
+    hash_combine_i64(
+        completionHash,
         static_cast<std::int64_t>(
             result.surfaceCellContext.completionOwnershipRepairLog.size()));
     for (const geometry::SurfaceCellOwnershipRepairAttempt &attempt :
@@ -4359,9 +4500,29 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       hash_combine_i64(completionHash, attempt.toVariant);
       hash_combine_i64(completionHash, attempt.insertedVertices);
       hash_combine_i64(completionHash, attempt.splitUndirectedEdges);
+      hash_combine_i64(completionHash, attempt.candidateEvaluation);
+      hash_combine_i64(completionHash, attempt.structuralAttempt);
+      hash_combine_i64(completionHash, attempt.fullRecomputationPass);
+      hash_combine_i64(completionHash, attempt.visitedStateCount);
+      hash_combine_i64(completionHash,
+                       attempt.globalInsertedVerticesBefore);
+      hash_combine_i64(completionHash,
+                       attempt.globalInsertedVerticesAfter);
+      hash_combine_i64(completionHash, attempt.liveCandidateComplexes);
       hash_combine_i64(completionHash,
                        attempt.completionSucceeded ? 1 : 0);
       hash_combine_i64(completionHash, attempt.committed ? 1 : 0);
+      hash_combine_i64(completionHash, attempt.repeatedState ? 1 : 0);
+      hash_combine_i64(completionHash, attempt.madeProgress ? 1 : 0);
+      hash_combine_i64(completionHash,
+                       attempt.introducedOwnershipClaim ? 1 : 0);
+      hash_combine_i64(completionHash, static_cast<int>(attempt.outcome));
+      hash_combine_i64(
+          completionHash,
+          static_cast<std::int64_t>(attempt.affectedPatches.size()));
+      for (const int patch : attempt.affectedPatches) {
+        hash_combine_i64(completionHash, patch);
+      }
       hash_combine_string(completionHash, attempt.failure);
     }
     const geometry::PureQuadCompletionOwnershipRejection &hashRejection =
@@ -5625,6 +5786,85 @@ void accumulate_component_diagnostics(
               target.surfaceCellCompletionOwnershipRepairAttemptsAvailable,
               source.surfaceCellCompletionOwnershipRepairAttempts,
               source.surfaceCellCompletionOwnershipRepairAttemptsAvailable);
+  if (firstComponent) {
+    target.surfaceCellCompletionOwnershipStructuralLedgerAvailable =
+        source.surfaceCellCompletionOwnershipStructuralLedgerAvailable;
+    target.surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable =
+        source.surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable;
+    target.surfaceCellCompletionOwnershipStructuralRepairAttempts =
+        source.surfaceCellCompletionOwnershipStructuralRepairAttempts;
+    target.surfaceCellCompletionOwnershipInsertedBoundaryVertices =
+        source.surfaceCellCompletionOwnershipInsertedBoundaryVertices;
+    target.surfaceCellCompletionOwnershipStructuralCandidateBudget =
+        source.surfaceCellCompletionOwnershipStructuralCandidateBudget;
+    target.surfaceCellCompletionOwnershipStructuralCandidatesConsumed =
+        source.surfaceCellCompletionOwnershipStructuralCandidatesConsumed;
+    target.surfaceCellCompletionOwnershipVisitedStateCount =
+        source.surfaceCellCompletionOwnershipVisitedStateCount;
+    target.surfaceCellCompletionOwnershipFullRecomputationPasses =
+        source.surfaceCellCompletionOwnershipFullRecomputationPasses;
+    target.surfaceCellCompletionOwnershipIncrementalRecomputationPasses =
+        source.surfaceCellCompletionOwnershipIncrementalRecomputationPasses;
+    target.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes =
+        source.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes;
+    target.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes =
+        source.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes;
+    target.surfaceCellCompletionOwnershipLastCandidateHalfedge =
+        source.surfaceCellCompletionOwnershipLastCandidateHalfedge;
+    target.surfaceCellCompletionOwnershipLastAffectedPatches =
+        source.surfaceCellCompletionOwnershipLastAffectedPatches;
+    target.surfaceCellCompletionOwnershipStructuralExhaustionReason =
+        source.surfaceCellCompletionOwnershipStructuralExhaustionReason;
+  } else if (target.surfaceCellCompletionOwnershipStructuralLedgerAvailable &&
+             source.surfaceCellCompletionOwnershipStructuralLedgerAvailable) {
+    target.surfaceCellCompletionOwnershipStructuralRepairAttempts +=
+        source.surfaceCellCompletionOwnershipStructuralRepairAttempts;
+    target.surfaceCellCompletionOwnershipInsertedBoundaryVertices +=
+        source.surfaceCellCompletionOwnershipInsertedBoundaryVertices;
+    target.surfaceCellCompletionOwnershipStructuralCandidateBudget +=
+        source.surfaceCellCompletionOwnershipStructuralCandidateBudget;
+    target.surfaceCellCompletionOwnershipStructuralCandidatesConsumed +=
+        source.surfaceCellCompletionOwnershipStructuralCandidatesConsumed;
+    target.surfaceCellCompletionOwnershipVisitedStateCount +=
+        source.surfaceCellCompletionOwnershipVisitedStateCount;
+    target.surfaceCellCompletionOwnershipFullRecomputationPasses +=
+        source.surfaceCellCompletionOwnershipFullRecomputationPasses;
+    target.surfaceCellCompletionOwnershipIncrementalRecomputationPasses +=
+        source.surfaceCellCompletionOwnershipIncrementalRecomputationPasses;
+    target.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes +=
+        source.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes;
+    target.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes =
+        std::max(
+            target.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes,
+            source.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes);
+    if (target.surfaceCellCompletionOwnershipStructuralExhaustionReason ==
+            "none" &&
+        source.surfaceCellCompletionOwnershipStructuralExhaustionReason !=
+            "none") {
+      target.surfaceCellCompletionOwnershipStructuralExhaustionReason =
+          source.surfaceCellCompletionOwnershipStructuralExhaustionReason;
+      target.surfaceCellCompletionOwnershipLastCandidateHalfedge =
+          source.surfaceCellCompletionOwnershipLastCandidateHalfedge;
+      target.surfaceCellCompletionOwnershipLastAffectedPatches =
+          source.surfaceCellCompletionOwnershipLastAffectedPatches;
+    }
+  } else {
+    target.surfaceCellCompletionOwnershipStructuralLedgerAvailable = false;
+    target.surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable =
+        false;
+    target.surfaceCellCompletionOwnershipStructuralRepairAttempts = 0U;
+    target.surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0U;
+    target.surfaceCellCompletionOwnershipStructuralCandidateBudget = 0U;
+    target.surfaceCellCompletionOwnershipStructuralCandidatesConsumed = 0U;
+    target.surfaceCellCompletionOwnershipVisitedStateCount = 0U;
+    target.surfaceCellCompletionOwnershipFullRecomputationPasses = 0U;
+    target.surfaceCellCompletionOwnershipIncrementalRecomputationPasses = 0U;
+    target.surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0U;
+    target.surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0U;
+    target.surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+    target.surfaceCellCompletionOwnershipLastAffectedPatches.clear();
+    target.surfaceCellCompletionOwnershipStructuralExhaustionReason = "none";
+  }
   if (source.surfaceCellCompletionOwnershipRejectionAvailable &&
       !target.surfaceCellCompletionOwnershipRejectionAvailable) {
     target.surfaceCellCompletionOwnershipRejectionAvailable = true;

@@ -1,5 +1,7 @@
 #include <directional/geometry/PatchDescriptor.h>
 
+#include <iterator>
+
 namespace directional::geometry::patch_descriptor_detail {
 
 const SurfaceArrangementNode *find_node(
@@ -624,17 +626,95 @@ struct SameCornerBoundaryCandidate {
   int patch = -1;
   int halfedge = -1;
   bool hardFeature = false;
+  std::vector<std::int64_t> boundaryIdentity;
+  // Exact embedded support without rail/curve/proposal labels. If two
+  // boundaries differ only in semantic labels while occupying the same source
+  // interval, they are overlapping ownership, not a parallel route.
+  std::vector<std::int64_t> geometricSupportIdentity;
 
   friend bool operator<(const SameCornerBoundaryCandidate &lhs,
                         const SameCornerBoundaryCandidate &rhs) {
-    return std::tie(lhs.hardFeature, lhs.halfedge, lhs.patch) <
-           std::tie(rhs.hardFeature, rhs.halfedge, rhs.patch);
+    return std::tie(lhs.hardFeature, lhs.boundaryIdentity,
+                    lhs.geometricSupportIdentity, lhs.patch, lhs.halfedge) <
+           std::tie(rhs.hardFeature, rhs.boundaryIdentity,
+                    rhs.geometricSupportIdentity, rhs.patch, rhs.halfedge);
   }
 };
 
+std::vector<std::int64_t> halfedge_geometric_support_identity(
+    const SurfaceCellComplex &complex,
+    const SurfaceArrangementHalfedge &edge, const Eigen::MatrixXi &F) {
+  const SurfaceArrangementNode *from = find_node(complex, edge.from);
+  const SurfaceArrangementNode *to = find_node(complex, edge.to);
+  if (from == nullptr || to == nullptr) {
+    return {};
+  }
+  SurfaceCellCanonicalIdentity fromIdentity = arrangement_node_identity(
+      *from, F, edge.sourceComponent, edge.sourceSheet);
+  SurfaceCellCanonicalIdentity toIdentity = arrangement_node_identity(
+      *to, F, edge.sourceComponent, edge.sourceSheet);
+  if (!fromIdentity.valid || !toIdentity.valid) {
+    return {};
+  }
+  if (toIdentity < fromIdentity) {
+    std::swap(fromIdentity, toIdentity);
+  }
+
+  // A single arrangement interval is geometrically determined by its exact
+  // authoritative endpoints and source sheet. Face/rail/proposal labels are
+  // chart or semantic metadata and cannot by themselves prove a distinct
+  // embedded route. Routes with intermediate arrangement nodes naturally
+  // produce different endpoint identities and remain eligible candidates.
+  std::vector<std::int64_t> result{
+      edge.sourceComponent, edge.sourceSheet};
+  append_identity(result, fromIdentity);
+  append_identity(result, toIdentity);
+  return result;
+}
+
+std::map<std::vector<std::int64_t>, SameCornerBoundaryCandidate>
+canonical_cell_boundary_candidates(const SurfaceCellComplex &complex,
+                                   const SurfaceArrangementCell &cell,
+                                   const Eigen::MatrixXi &F) {
+  std::map<std::vector<std::int64_t>, SameCornerBoundaryCandidate> result;
+  for (const int halfedgeId : cell.halfedges) {
+    const int canonical = canonical_complex_halfedge(complex, halfedgeId);
+    if (canonical < 0 ||
+        canonical >= static_cast<int>(complex.halfedges.size())) {
+      return {};
+    }
+    const SurfaceArrangementHalfedge &edge =
+        complex.halfedges[static_cast<std::size_t>(canonical)];
+    if (edge.twin < 0 ||
+        edge.twin >= static_cast<int>(complex.halfedges.size())) {
+      return {};
+    }
+    std::vector<std::int64_t> identity =
+        halfedge_identity(complex, edge, F, false);
+    if (identity.empty()) {
+      return {};
+    }
+    const SurfaceArrangementHalfedge &twin =
+        complex.halfedges[static_cast<std::size_t>(edge.twin)];
+    SameCornerBoundaryCandidate candidate;
+    candidate.patch = cell.id;
+    candidate.halfedge = canonical;
+    candidate.hardFeature = edge.hardFeature || twin.hardFeature;
+    candidate.boundaryIdentity = identity;
+    candidate.geometricSupportIdentity =
+        halfedge_geometric_support_identity(complex, edge, F);
+    if (candidate.geometricSupportIdentity.empty()) {
+      return {};
+    }
+    result.emplace(std::move(identity), std::move(candidate));
+  }
+  return result;
+}
+
 std::vector<SameCornerBoundaryCandidate> same_corner_boundary_candidates(
     const SurfaceCellComplex &complex,
-    const SurfaceCellOwnershipConflict &conflict) {
+    const SurfaceCellOwnershipConflict &conflict,
+    const Eigen::MatrixXi &F) {
   const SurfaceArrangementCell *first =
       find_cell_by_id(complex, conflict.firstPatch);
   const SurfaceArrangementCell *second =
@@ -642,38 +722,41 @@ std::vector<SameCornerBoundaryCandidate> same_corner_boundary_candidates(
   if (first == nullptr || second == nullptr) {
     return {};
   }
-  const std::set<int> firstBoundary = canonical_cell_boundary(complex, *first);
-  const std::set<int> secondBoundary = canonical_cell_boundary(complex, *second);
+  const auto firstBoundary =
+      canonical_cell_boundary_candidates(complex, *first, F);
+  const auto secondBoundary =
+      canonical_cell_boundary_candidates(complex, *second, F);
   if (firstBoundary.empty() || secondBoundary.empty()) {
     return {};
   }
 
+  std::set<std::vector<std::int64_t>> firstGeometricSupport;
+  std::set<std::vector<std::int64_t>> secondGeometricSupport;
+  for (const auto &[identity, candidate] : firstBoundary) {
+    (void)identity;
+    firstGeometricSupport.insert(candidate.geometricSupportIdentity);
+  }
+  for (const auto &[identity, candidate] : secondBoundary) {
+    (void)identity;
+    secondGeometricSupport.insert(candidate.geometricSupportIdentity);
+  }
+
   std::vector<SameCornerBoundaryCandidate> candidates;
-  const auto appendDifference = [&](const std::set<int> &owned,
-                                    const std::set<int> &other,
-                                    const int patch) {
-    for (const int halfedge : owned) {
-      if (other.count(halfedge) != 0U) {
-        continue;
-      }
-      const SurfaceArrangementHalfedge &edge =
-          complex.halfedges[static_cast<std::size_t>(halfedge)];
-      const SurfaceArrangementHalfedge &twin =
-          complex.halfedges[static_cast<std::size_t>(edge.twin)];
-      candidates.push_back(
-          {patch, halfedge, edge.hardFeature || twin.hardFeature});
+  for (const auto &[identity, candidate] : firstBoundary) {
+    if (secondBoundary.count(identity) == 0U &&
+        secondGeometricSupport.count(candidate.geometricSupportIdentity) ==
+            0U) {
+      candidates.push_back(candidate);
     }
-  };
-  appendDifference(firstBoundary, secondBoundary, first->id);
-  appendDifference(secondBoundary, firstBoundary, second->id);
+  }
+  for (const auto &[identity, candidate] : secondBoundary) {
+    if (firstBoundary.count(identity) == 0U &&
+        firstGeometricSupport.count(candidate.geometricSupportIdentity) ==
+            0U) {
+      candidates.push_back(candidate);
+    }
+  }
   std::sort(candidates.begin(), candidates.end());
-  candidates.erase(
-      std::unique(candidates.begin(), candidates.end(),
-                  [](const SameCornerBoundaryCandidate &lhs,
-                     const SameCornerBoundaryCandidate &rhs) {
-                    return lhs.halfedge == rhs.halfedge;
-                  }),
-      candidates.end());
   return candidates;
 }
 
@@ -687,6 +770,215 @@ bool same_unordered_conflict_pair(const SurfaceCellOwnershipConflict &conflict,
           conflict.secondPatch == secondPatch) ||
          (conflict.firstPatch == secondPatch &&
           conflict.secondPatch == firstPatch);
+}
+
+void append_repair_identity(std::vector<std::int64_t> &destination,
+                            const SurfaceCellCanonicalIdentity &identity) {
+  destination.push_back(identity.valid ? 1 : 0);
+  destination.push_back(static_cast<std::int64_t>(identity.values.size()));
+  destination.insert(destination.end(), identity.values.begin(),
+                     identity.values.end());
+}
+
+void append_repair_domain_identity(
+    std::vector<std::int64_t> &destination,
+    const SurfaceCellDomainIdentity &identity) {
+  destination.push_back(identity.valid ? 1 : 0);
+  destination.push_back(identity.boundaryNodeCount);
+  destination.push_back(identity.boundaryHalfedgeCount);
+  destination.push_back(identity.sourceSupportCount);
+  destination.push_back(identity.sourceComponent);
+  destination.push_back(identity.sourceSheet);
+  append_repair_identity(destination, identity.orientedBoundary);
+  append_repair_identity(destination, identity.undirectedBoundary);
+  append_repair_identity(destination, identity.sourceSupport);
+}
+
+void append_repair_conflict_identity(
+    std::vector<std::int64_t> &destination,
+    const SurfaceCellOwnershipConflict &conflict) {
+  destination.push_back(static_cast<int>(conflict.classification));
+  const auto ownerIdentity = [&](const bool first) {
+    std::vector<std::int64_t> owner;
+    owner.push_back(first ? conflict.firstPatch : conflict.secondPatch);
+    owner.push_back(first ? conflict.firstLocalQuad : conflict.secondLocalQuad);
+    owner.push_back(first ? conflict.firstBoundaryNodeCount
+                          : conflict.secondBoundaryNodeCount);
+    owner.push_back(first ? conflict.firstBoundaryHalfedgeCount
+                          : conflict.secondBoundaryHalfedgeCount);
+    owner.push_back(first ? conflict.firstBoundaryVertexCount
+                          : conflict.secondBoundaryVertexCount);
+    owner.push_back(first ? conflict.firstComponent : conflict.secondComponent);
+    owner.push_back(first ? conflict.firstSheet : conflict.secondSheet);
+    owner.push_back(first ? conflict.firstCompletionBackend
+                          : conflict.secondCompletionBackend);
+    owner.push_back(first ? conflict.firstCompletionVariant
+                          : conflict.secondCompletionVariant);
+    const auto &cornerKinds = first ? conflict.firstCornerIdentityKinds
+                                    : conflict.secondCornerIdentityKinds;
+    const auto &cornerHashes = first ? conflict.firstCornerIdentityHashes
+                                     : conflict.secondCornerIdentityHashes;
+    const auto &authoritativeHashes =
+        first ? conflict.firstCornerAuthoritativeHashes
+              : conflict.secondCornerAuthoritativeHashes;
+    for (const int value : cornerKinds) {
+      owner.push_back(value);
+    }
+    for (const std::uint64_t value : cornerHashes) {
+      owner.push_back(static_cast<std::int64_t>(value));
+    }
+    for (const std::uint64_t value : authoritativeHashes) {
+      owner.push_back(static_cast<std::int64_t>(value));
+    }
+    return owner;
+  };
+  std::array<std::vector<std::int64_t>, 2> owners{
+      ownerIdentity(true), ownerIdentity(false)};
+  if (owners[1] < owners[0]) {
+    std::swap(owners[0], owners[1]);
+  }
+  for (const auto &owner : owners) {
+    destination.push_back(static_cast<std::int64_t>(owner.size()));
+    destination.insert(destination.end(), owner.begin(), owner.end());
+  }
+}
+
+
+using SurfaceCellRepairStateIdentity = std::vector<std::int64_t>;
+
+SurfaceCellRepairStateIdentity canonical_repair_state_identity(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXi &F,
+    const SurfaceCellOwnershipConflict &conflict) {
+  SurfaceCellRepairStateIdentity identity;
+  identity.reserve(complex.nodes.size() * 12U +
+                   complex.halfedges.size() * 7U +
+                   complex.cells.size() * 16U);
+  identity.push_back(static_cast<std::int64_t>(complex.nodes.size()));
+  identity.push_back(static_cast<std::int64_t>(complex.halfedges.size()));
+  identity.push_back(static_cast<std::int64_t>(complex.cells.size()));
+
+  std::vector<const SurfaceArrangementNode *> nodes;
+  nodes.reserve(complex.nodes.size());
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    nodes.push_back(&node);
+  }
+  std::sort(nodes.begin(), nodes.end(),
+            [](const SurfaceArrangementNode *lhs,
+               const SurfaceArrangementNode *rhs) {
+              return lhs->id < rhs->id;
+            });
+  for (const SurfaceArrangementNode *node : nodes) {
+    identity.insert(identity.end(),
+                    {node->id, node->sourceFace, node->sourceComponent,
+                     node->sourceSheet, node->sourceEdge,
+                     quantized_parameter(node->sourceEdgeParameter),
+                     quantized_parameter(node->barycentric(0)),
+                     quantized_parameter(node->barycentric(1)),
+                     quantized_parameter(node->barycentric(2))});
+    std::vector<std::array<std::int64_t, 4>> occurrences;
+    occurrences.reserve(node->occurrences.size());
+    for (const SurfaceArrangementNodeOccurrence &occurrence :
+         node->occurrences) {
+      occurrences.push_back(
+          {occurrence.sourceFace,
+           quantized_parameter(occurrence.barycentric(0)),
+           quantized_parameter(occurrence.barycentric(1)),
+           quantized_parameter(occurrence.barycentric(2))});
+    }
+    std::sort(occurrences.begin(), occurrences.end());
+    identity.push_back(static_cast<std::int64_t>(occurrences.size()));
+    for (const auto &occurrence : occurrences) {
+      identity.insert(identity.end(), occurrence.begin(), occurrence.end());
+    }
+  }
+
+  std::vector<const SurfaceArrangementHalfedge *> halfedges;
+  halfedges.reserve(complex.halfedges.size());
+  for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
+    halfedges.push_back(&edge);
+  }
+  std::sort(halfedges.begin(), halfedges.end(),
+            [](const SurfaceArrangementHalfedge *lhs,
+               const SurfaceArrangementHalfedge *rhs) {
+              return lhs->id < rhs->id;
+            });
+  for (const SurfaceArrangementHalfedge *edge : halfedges) {
+    identity.insert(identity.end(),
+                    {edge->id, edge->twin, edge->next, edge->from, edge->to,
+                     edge->cell});
+  }
+
+  std::vector<const SurfaceArrangementCell *> cells;
+  cells.reserve(complex.cells.size());
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    cells.push_back(&cell);
+  }
+  std::sort(cells.begin(), cells.end(),
+            [](const SurfaceArrangementCell *lhs,
+               const SurfaceArrangementCell *rhs) {
+              return lhs->id < rhs->id;
+            });
+  for (const SurfaceArrangementCell *cell : cells) {
+    std::vector<int> boundary;
+    const bool boundaryValid = ordered_boundary(complex, *cell, boundary);
+    identity.insert(identity.end(),
+                    {cell->id, cell->sourceFace,
+                     cell->boundaryCycle ? 1 : 0, cell->closed ? 1 : 0,
+                     cell->disk ? 1 : 0,
+                     static_cast<int>(cell->cellClass),
+                     static_cast<int>(cell->rejectReason),
+                     boundaryValid ? 1 : 0});
+    std::vector<int> sourceFaces = cell->sourceFaces;
+    std::sort(sourceFaces.begin(), sourceFaces.end());
+    sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
+                      sourceFaces.end());
+    identity.push_back(static_cast<std::int64_t>(sourceFaces.size()));
+    identity.insert(identity.end(), sourceFaces.begin(), sourceFaces.end());
+    if (boundaryValid) {
+      append_repair_domain_identity(
+          identity, build_domain_identity(complex, *cell, boundary, F));
+    } else {
+      identity.push_back(static_cast<std::int64_t>(cell->halfedges.size()));
+      identity.insert(identity.end(), cell->halfedges.begin(),
+                      cell->halfedges.end());
+    }
+  }
+  append_repair_conflict_identity(identity, conflict);
+  return identity;
+}
+
+std::vector<int> affected_patches_for_halfedge(
+    const SurfaceCellComplex &complex, const int halfedgeId) {
+  std::vector<int> patches;
+  if (halfedgeId < 0 ||
+      halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+    return patches;
+  }
+  const SurfaceArrangementHalfedge &edge =
+      complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+  if (edge.cell >= 0) {
+    patches.push_back(edge.cell);
+  }
+  if (edge.twin >= 0 &&
+      edge.twin < static_cast<int>(complex.halfedges.size())) {
+    const int twinCell = complex.halfedges[static_cast<std::size_t>(edge.twin)].cell;
+    if (twinCell >= 0) {
+      patches.push_back(twinCell);
+    }
+  }
+  std::sort(patches.begin(), patches.end());
+  patches.erase(std::unique(patches.begin(), patches.end()), patches.end());
+  return patches;
+}
+
+void release_rejected_completion_storage(
+    SurfaceCellComplexCompletionResult &result) {
+  result.completedPatches.clear();
+  result.completedPatches.shrink_to_fit();
+  result.descriptors.descriptors.clear();
+  result.descriptors.descriptors.shrink_to_fit();
+  result.preparedComplex = {};
+  result.assembly.mesh = {};
 }
 
 void renumber_ownership_repair_attempts(
@@ -977,9 +1269,9 @@ PatchDescriptorSet derive_patch_descriptors(
 
 } // namespace directional::geometry
 
-namespace directional::geometry {
+namespace directional::geometry::patch_descriptor_detail {
 
-SurfaceCellComplexCompletionResult complete_surface_cell_complex(
+SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F,
     const SurfaceCellComplexCompletionOptions &options) {
@@ -1187,6 +1479,8 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         attempt.completionSucceeded =
             alternative.success && !alternative.mesh.quads.empty();
         if (!attempt.completionSucceeded) {
+          attempt.outcome =
+              SurfaceCellOwnershipRepairOutcome::ValidationFailed;
           attempt.failure = alternative.failure.empty()
                                 ? "CompletionVariantUnavailable"
                                 : alternative.failure;
@@ -1201,6 +1495,11 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         currentMesh = alternative.mesh;
         result.assembly = stitch_pure_quad_patches(result.completedPatches);
         attempt.committed = true;
+        attempt.madeProgress = true;
+        attempt.outcome = result.assembly.success
+                              ? SurfaceCellOwnershipRepairOutcome::
+                                    AssemblySucceeded
+                              : SurfaceCellOwnershipRepairOutcome::Committed;
         attempt.resultingConflictClass =
             result.assembly.ownershipConflict.classification;
         if (!result.assembly.success) {
@@ -1219,128 +1518,6 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     }
   }
 
-  if (!result.assembly.success &&
-      result.assembly.ownershipConflict.classification ==
-          SurfaceCellOwnershipConflictClass::
-              SameCornerDistinctBoundaryClaim) {
-    const SurfaceCellOwnershipConflict originalConflict =
-        result.assembly.ownershipConflict;
-    const std::vector<patch_descriptor_detail::SameCornerBoundaryCandidate>
-        candidates = patch_descriptor_detail::same_corner_boundary_candidates(
-            prepared, originalConflict);
-    if (candidates.empty()) {
-      result.failure = "SameCornerDistinctBoundaryOverlap:" +
-                       result.assembly.failure;
-      result.assembly.failure = result.failure;
-      patch_descriptor_detail::renumber_ownership_repair_attempts(
-          result.ownershipRepairAttempts);
-      return result;
-    }
-
-    const int structuralBudget =
-        std::max(0, std::min(options.maxSameCornerBoundaryRepairs,
-                             options.maxSameCornerInsertedVertices));
-    int attemptedCandidates = 0;
-    for (const auto &candidate : candidates) {
-      if (attemptedCandidates >= structuralBudget) {
-        break;
-      }
-      ++attemptedCandidates;
-      ++result.completionOwnershipStructuralRepairAttempts;
-      SurfaceCellOwnershipRepairAttempt attempt;
-      attempt.action =
-          SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision;
-      attempt.conflictClass = originalConflict.classification;
-      attempt.firstPatch = originalConflict.firstPatch;
-      attempt.secondPatch = originalConflict.secondPatch;
-      attempt.selectedPatch = candidate.patch;
-      attempt.selectedHalfedge = candidate.halfedge;
-      const int selectedBackend =
-          candidate.patch == originalConflict.firstPatch
-              ? originalConflict.firstCompletionBackend
-              : originalConflict.secondCompletionBackend;
-      attempt.backend =
-          selectedBackend >=
-                      static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
-                  selectedBackend <=
-                      static_cast<int>(PureQuadCompletionBackend::BoundedCombinatorial)
-              ? static_cast<PureQuadCompletionBackend>(selectedBackend)
-              : PureQuadCompletionBackend::ClosedForm;
-
-      const SurfaceCellSubdivisionResult subdivision =
-          subdivide_surface_cell_complex_edges(
-              prepared, {{candidate.halfedge, 1}});
-      attempt.insertedVertices = subdivision.insertedVertices;
-      attempt.splitUndirectedEdges = subdivision.splitUndirectedEdges;
-      if (!subdivision.success) {
-        attempt.failure = "BoundarySectorSubdivision:" + subdivision.failure;
-        result.ownershipRepairAttempts.push_back(std::move(attempt));
-        continue;
-      }
-
-      SurfaceCellComplexCompletionOptions childOptions = options;
-      childOptions.maxSameCornerBoundaryRepairs =
-          std::max(0, options.maxSameCornerBoundaryRepairs - 1);
-      childOptions.maxSameCornerInsertedVertices =
-          std::max(0, options.maxSameCornerInsertedVertices -
-                          subdivision.insertedVertices);
-      SurfaceCellComplexCompletionResult repaired =
-          complete_surface_cell_complex(subdivision.complex, V, F,
-                                        childOptions);
-      const bool reachedAssembly = repaired.assembly.success ||
-                                   repaired.assembly.ownershipConflict.active();
-      const bool originalClaimPersists =
-          reachedAssembly &&
-          repaired.assembly.ownershipConflict.classification ==
-              SurfaceCellOwnershipConflictClass::
-                  SameCornerDistinctBoundaryClaim &&
-          patch_descriptor_detail::same_unordered_conflict_pair(
-              repaired.assembly.ownershipConflict, originalConflict.firstPatch,
-              originalConflict.secondPatch);
-      attempt.completionSucceeded = reachedAssembly;
-      attempt.resultingConflictClass =
-          repaired.assembly.ownershipConflict.classification;
-      attempt.committed = reachedAssembly && !originalClaimPersists;
-      if (!attempt.committed) {
-        attempt.failure = repaired.failure.empty()
-                              ? "SameCornerBoundarySubdivisionDidNotResolveClaim"
-                              : repaired.failure;
-        result.ownershipRepairAttempts.push_back(std::move(attempt));
-        continue;
-      }
-
-      std::vector<SurfaceCellOwnershipRepairAttempt> combined =
-          std::move(result.ownershipRepairAttempts);
-      combined.push_back(std::move(attempt));
-      combined.insert(combined.end(),
-                      repaired.ownershipRepairAttempts.begin(),
-                      repaired.ownershipRepairAttempts.end());
-      repaired.ownershipRepairAttempts = std::move(combined);
-      repaired.completionOwnershipRepairAttempts +=
-          result.completionOwnershipRepairAttempts;
-      repaired.completionOwnershipStructuralRepairAttempts +=
-          result.completionOwnershipStructuralRepairAttempts;
-      repaired.completionOwnershipInsertedBoundaryVertices +=
-          result.completionOwnershipInsertedBoundaryVertices +
-          subdivision.insertedVertices;
-      if (!repaired.firstCompletionOwnershipRejection.active &&
-          result.firstCompletionOwnershipRejection.active) {
-        repaired.firstCompletionOwnershipRejection =
-            result.firstCompletionOwnershipRejection;
-      }
-      patch_descriptor_detail::renumber_ownership_repair_attempts(
-          repaired.ownershipRepairAttempts);
-      return repaired;
-    }
-
-    result.failure = "SameCornerDistinctBoundaryUnresolved:" +
-                     result.assembly.failure;
-    result.assembly.failure = result.failure;
-    patch_descriptor_detail::renumber_ownership_repair_attempts(
-        result.ownershipRepairAttempts);
-    return result;
-  }
-
   result.success = result.assembly.success;
   if (!result.success) {
     result.failure = result.assembly.failure;
@@ -1348,6 +1525,362 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   patch_descriptor_detail::renumber_ownership_repair_attempts(
       result.ownershipRepairAttempts);
   return result;
+}
+
+} // namespace directional::geometry::patch_descriptor_detail
+
+
+namespace directional::geometry {
+
+SurfaceCellComplexCompletionResult complete_surface_cell_complex(
+    const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
+    const Eigen::MatrixXi &F,
+    const SurfaceCellComplexCompletionOptions &options) {
+  struct StructuralRepairLedger {
+    int candidateBudget = 0;
+    int structuralAttemptBudget = 0;
+    int insertedVertexBudget = 0;
+    int fullPassBudget = 0;
+    int visitedStateBudget = 0;
+    int candidatesConsumed = 0;
+    int structuralAttempts = 0;
+    int insertedVertices = 0;
+    int fullRecomputationPasses = 0;
+    int incrementalRecomputationPasses = 0;
+    int currentLiveCandidateComplexes = 0;
+    int peakLiveCandidateComplexes = 0;
+    SurfaceCellStructuralRepairExhaustionReason exhaustionReason =
+        SurfaceCellStructuralRepairExhaustionReason::None;
+    std::set<patch_descriptor_detail::SurfaceCellRepairStateIdentity>
+        visitedStates;
+  } ledger;
+
+  ledger.candidateBudget =
+      std::max(0, options.maxSameCornerCandidateEvaluations);
+  ledger.structuralAttemptBudget =
+      std::max(0, options.maxSameCornerBoundaryRepairs);
+  ledger.insertedVertexBudget =
+      std::max(0, options.maxSameCornerInsertedVertices);
+  ledger.fullPassBudget =
+      std::max(1, options.maxSameCornerFullCompletionPasses);
+  ledger.visitedStateBudget =
+      std::max(1, options.maxSameCornerVisitedStates);
+
+  std::vector<SurfaceCellOwnershipRepairAttempt> aggregateAttempts;
+  int aggregateVariantAttempts = 0;
+  PureQuadCompletionOwnershipRejection firstOwnershipRejection;
+
+  const auto mergePassEvidence =
+      [&](SurfaceCellComplexCompletionResult &pass) {
+        aggregateVariantAttempts += pass.completionOwnershipRepairAttempts;
+        aggregateAttempts.insert(
+            aggregateAttempts.end(),
+            std::make_move_iterator(pass.ownershipRepairAttempts.begin()),
+            std::make_move_iterator(pass.ownershipRepairAttempts.end()));
+        pass.ownershipRepairAttempts.clear();
+        if (!firstOwnershipRejection.active &&
+            pass.firstCompletionOwnershipRejection.active) {
+          firstOwnershipRejection = pass.firstCompletionOwnershipRejection;
+        }
+      };
+
+  const auto finalize = [&](SurfaceCellComplexCompletionResult pass) {
+    pass.completionOwnershipRepairAttempts = aggregateVariantAttempts;
+    pass.completionOwnershipStructuralRepairAttempts =
+        ledger.structuralAttempts;
+    pass.completionOwnershipInsertedBoundaryVertices =
+        ledger.insertedVertices;
+    pass.completionOwnershipStructuralCandidateBudget =
+        ledger.candidateBudget;
+    pass.completionOwnershipStructuralCandidatesConsumed =
+        ledger.candidatesConsumed;
+    pass.completionOwnershipVisitedStateCount =
+        static_cast<int>(ledger.visitedStates.size());
+    pass.completionOwnershipFullRecomputationPasses =
+        ledger.fullRecomputationPasses;
+    pass.completionOwnershipIncrementalRecomputationPasses =
+        ledger.incrementalRecomputationPasses;
+    pass.completionOwnershipCurrentLiveCandidateComplexes =
+        ledger.currentLiveCandidateComplexes;
+    pass.completionOwnershipPeakLiveCandidateComplexes =
+        ledger.peakLiveCandidateComplexes;
+    pass.completionOwnershipStructuralExhaustionReason =
+        ledger.exhaustionReason;
+    pass.ownershipRepairAttempts = std::move(aggregateAttempts);
+    if (!pass.firstCompletionOwnershipRejection.active &&
+        firstOwnershipRejection.active) {
+      pass.firstCompletionOwnershipRejection = firstOwnershipRejection;
+    }
+    patch_descriptor_detail::renumber_ownership_repair_attempts(
+        pass.ownershipRepairAttempts);
+    return pass;
+  };
+
+  SurfaceCellComplexCompletionResult current =
+      patch_descriptor_detail::complete_surface_cell_complex_pass(
+          complex, V, F, options);
+  ++ledger.fullRecomputationPasses;
+  mergePassEvidence(current);
+
+  if (current.hasPreparedComplex &&
+      current.assembly.ownershipConflict.active()) {
+    ledger.visitedStates.insert(
+        patch_descriptor_detail::canonical_repair_state_identity(
+            current.preparedComplex, F, current.assembly.ownershipConflict));
+  }
+
+  if (current.success ||
+      current.assembly.ownershipConflict.classification !=
+          SurfaceCellOwnershipConflictClass::SameCornerDistinctBoundaryClaim) {
+    return finalize(std::move(current));
+  }
+
+  const SurfaceCellOwnershipConflict originalConflict =
+      current.assembly.ownershipConflict;
+  const std::vector<patch_descriptor_detail::SameCornerBoundaryCandidate>
+      candidates = patch_descriptor_detail::same_corner_boundary_candidates(
+          current.preparedComplex, originalConflict, F);
+  if (candidates.empty()) {
+    ledger.exhaustionReason =
+        SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap;
+    current.failure = "SameCornerDistinctBoundaryOverlap:" +
+                      current.assembly.failure;
+    current.assembly.failure = current.failure;
+    patch_descriptor_detail::release_rejected_completion_storage(current);
+    return finalize(std::move(current));
+  }
+
+  // Retain one rollback snapshot (the prepared complex) and one mutable
+  // candidate complex. Failed patch meshes and descriptors are not part of the
+  // rollback contract and are released before candidate evaluation.
+  current.completedPatches.clear();
+  current.completedPatches.shrink_to_fit();
+  current.descriptors.descriptors.clear();
+  current.descriptors.descriptors.shrink_to_fit();
+  current.assembly.mesh = {};
+
+  bool sawRepeatedState = false;
+  bool sawNoProgress = false;
+  bool sawIntroducedClaim = false;
+  bool sawValidationFailure = false;
+
+  for (const patch_descriptor_detail::SameCornerBoundaryCandidate &candidate :
+       candidates) {
+    if (ledger.candidatesConsumed >= ledger.candidateBudget) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::CandidateBudget;
+      break;
+    }
+    if (ledger.structuralAttempts >= ledger.structuralAttemptBudget) {
+      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
+          StructuralAttemptBudget;
+      break;
+    }
+    if (ledger.fullRecomputationPasses >= ledger.fullPassBudget) {
+      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
+          FullRecomputationBudget;
+      break;
+    }
+    if (ledger.insertedVertices >= ledger.insertedVertexBudget) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::InsertedVertexBudget;
+      break;
+    }
+
+    ++ledger.candidatesConsumed;
+    ++ledger.structuralAttempts;
+    SurfaceCellOwnershipRepairAttempt attempt;
+    attempt.action =
+        SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision;
+    attempt.conflictClass = originalConflict.classification;
+    attempt.firstPatch = originalConflict.firstPatch;
+    attempt.secondPatch = originalConflict.secondPatch;
+    attempt.selectedPatch = candidate.patch;
+    attempt.selectedHalfedge = candidate.halfedge;
+    attempt.candidateEvaluation = ledger.candidatesConsumed;
+    attempt.structuralAttempt = ledger.structuralAttempts;
+    attempt.fullRecomputationPass = ledger.fullRecomputationPasses + 1;
+    attempt.globalInsertedVerticesBefore = ledger.insertedVertices;
+    attempt.affectedPatches =
+        patch_descriptor_detail::affected_patches_for_halfedge(
+            current.preparedComplex, candidate.halfedge);
+    current.completionOwnershipLastCandidateHalfedge = candidate.halfedge;
+    current.completionOwnershipLastAffectedPatches = attempt.affectedPatches;
+    const int selectedBackend =
+        candidate.patch == originalConflict.firstPatch
+            ? originalConflict.firstCompletionBackend
+            : originalConflict.secondCompletionBackend;
+    attempt.backend =
+        selectedBackend >=
+                    static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
+                selectedBackend <= static_cast<int>(
+                                       PureQuadCompletionBackend::
+                                           BoundedCombinatorial)
+            ? static_cast<PureQuadCompletionBackend>(selectedBackend)
+            : PureQuadCompletionBackend::ClosedForm;
+
+    SurfaceCellSubdivisionResult subdivision =
+        subdivide_surface_cell_complex_edges(
+            current.preparedComplex, {{candidate.halfedge, 1}});
+    attempt.insertedVertices = subdivision.insertedVertices;
+    attempt.splitUndirectedEdges = subdivision.splitUndirectedEdges;
+    if (!subdivision.success) {
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::SubdivisionFailed;
+      attempt.failure = "BoundarySectorSubdivision:" + subdivision.failure;
+      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
+      aggregateAttempts.push_back(std::move(attempt));
+      continue;
+    }
+    if (ledger.insertedVertices + subdivision.insertedVertices >
+        ledger.insertedVertexBudget) {
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::BudgetExhausted;
+      attempt.failure = "SameCornerInsertedVertexBudget";
+      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
+      aggregateAttempts.push_back(std::move(attempt));
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::InsertedVertexBudget;
+      subdivision.complex = {};
+      break;
+    }
+
+    ledger.insertedVertices += subdivision.insertedVertices;
+    attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
+    ledger.currentLiveCandidateComplexes = 1;
+    ledger.peakLiveCandidateComplexes =
+        std::max(ledger.peakLiveCandidateComplexes,
+                 ledger.currentLiveCandidateComplexes);
+    attempt.liveCandidateComplexes = ledger.currentLiveCandidateComplexes;
+
+    SurfaceCellComplexCompletionResult candidateResult =
+        patch_descriptor_detail::complete_surface_cell_complex_pass(
+            subdivision.complex, V, F, options);
+    ++ledger.fullRecomputationPasses;
+    ledger.currentLiveCandidateComplexes = 0;
+    subdivision.complex = {};
+
+    attempt.completionSucceeded = candidateResult.success;
+    attempt.resultingConflictClass =
+        candidateResult.assembly.ownershipConflict.classification;
+
+    if (candidateResult.success) {
+      // The monotonic ownership measure is the number of active exact
+      // ownership claims: one before subdivision and zero after assembly.
+      attempt.madeProgress = true;
+      attempt.committed = true;
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::AssemblySucceeded;
+      attempt.visitedStateCount =
+          static_cast<int>(ledger.visitedStates.size());
+      candidateResult.completionOwnershipLastCandidateHalfedge =
+          candidate.halfedge;
+      candidateResult.completionOwnershipLastAffectedPatches =
+          attempt.affectedPatches;
+      aggregateAttempts.push_back(std::move(attempt));
+      mergePassEvidence(candidateResult);
+      return finalize(std::move(candidateResult));
+    }
+
+    patch_descriptor_detail::SurfaceCellRepairStateIdentity candidateState;
+    const bool hasCandidateState = candidateResult.hasPreparedComplex;
+    if (hasCandidateState) {
+      candidateState = patch_descriptor_detail::canonical_repair_state_identity(
+          candidateResult.preparedComplex, F,
+          candidateResult.assembly.ownershipConflict);
+    }
+    if (hasCandidateState &&
+        ledger.visitedStates.count(candidateState) != 0U) {
+      sawRepeatedState = true;
+      attempt.repeatedState = true;
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::RepeatedState;
+      attempt.failure = "SameCornerRepeatedRepairState";
+      attempt.visitedStateCount =
+          static_cast<int>(ledger.visitedStates.size());
+      aggregateAttempts.push_back(std::move(attempt));
+      mergePassEvidence(candidateResult);
+      patch_descriptor_detail::release_rejected_completion_storage(
+          candidateResult);
+      continue;
+    }
+    if (hasCandidateState) {
+      if (static_cast<int>(ledger.visitedStates.size()) >=
+          ledger.visitedStateBudget) {
+        attempt.outcome = SurfaceCellOwnershipRepairOutcome::BudgetExhausted;
+        attempt.failure = "SameCornerVisitedStateBudget";
+        aggregateAttempts.push_back(std::move(attempt));
+        mergePassEvidence(candidateResult);
+        patch_descriptor_detail::release_rejected_completion_storage(
+            candidateResult);
+        ledger.exhaustionReason =
+            SurfaceCellStructuralRepairExhaustionReason::VisitedStateBudget;
+        break;
+      }
+      ledger.visitedStates.insert(std::move(candidateState));
+    }
+    attempt.visitedStateCount =
+        static_cast<int>(ledger.visitedStates.size());
+
+    if (candidateResult.assembly.ownershipConflict.active()) {
+      const bool originalClaimPersists =
+          candidateResult.assembly.ownershipConflict.classification ==
+              SurfaceCellOwnershipConflictClass::
+                  SameCornerDistinctBoundaryClaim &&
+          patch_descriptor_detail::same_unordered_conflict_pair(
+              candidateResult.assembly.ownershipConflict,
+              originalConflict.firstPatch, originalConflict.secondPatch);
+      if (originalClaimPersists) {
+        sawNoProgress = true;
+        attempt.outcome = SurfaceCellOwnershipRepairOutcome::NoProgress;
+        attempt.failure =
+            "SameCornerBoundarySubdivisionDidNotResolveClaim";
+      } else {
+        sawIntroducedClaim = true;
+        attempt.introducedOwnershipClaim = true;
+        attempt.outcome =
+            SurfaceCellOwnershipRepairOutcome::IntroducedOwnershipClaim;
+        attempt.failure = candidateResult.assembly.failure.empty()
+                              ? "SameCornerRepairIntroducedOwnershipClaim"
+                              : candidateResult.assembly.failure;
+      }
+    } else {
+      sawValidationFailure = true;
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::ValidationFailed;
+      attempt.failure = candidateResult.failure.empty()
+                            ? "SameCornerRepairCandidateValidationFailed"
+                            : candidateResult.failure;
+    }
+    aggregateAttempts.push_back(std::move(attempt));
+    mergePassEvidence(candidateResult);
+    patch_descriptor_detail::release_rejected_completion_storage(
+        candidateResult);
+  }
+
+  if (ledger.exhaustionReason ==
+      SurfaceCellStructuralRepairExhaustionReason::None) {
+    if (sawRepeatedState) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::RepeatedState;
+    } else if (sawNoProgress) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::NoProgress;
+    } else if (sawIntroducedClaim) {
+      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
+          IntroducedOwnershipClaim;
+    } else if (sawValidationFailure) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::NoProgress;
+    } else {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::NoCandidate;
+    }
+  }
+  current.failure =
+      std::string("SameCornerStructuralRepairExhausted:") +
+      surface_cell_structural_repair_exhaustion_reason_name(
+          ledger.exhaustionReason) +
+      ":" + current.assembly.failure;
+  current.assembly.failure = current.failure;
+  patch_descriptor_detail::release_rejected_completion_storage(current);
+
+  return finalize(std::move(current));
 }
 
 } // namespace directional::geometry
