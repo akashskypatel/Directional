@@ -1,4 +1,4 @@
-# Compile-only workflow for the completed P5-CB83 through P5-CB90 source checkpoint.
+# Compile-only workflow for the clean P5-CB83 through P5-CB90 source checkpoint.
 # It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
 name: Agent Build Surface Cell P5 CB90
 
