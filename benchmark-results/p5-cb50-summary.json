@@ -1,0 +1,51 @@
+{
+  "turn": "P5-CB42-P5-CB50",
+  "turnType": "code-build",
+  "reviewPolicy": "never",
+  "implementationCommit": "413660dba15fe1376adc13aa80aea0e1ba99194e",
+  "compiledSource": "643cc483e430d2cd161dde94a983aedac4be57dd",
+  "workflowRun": 30794828420,
+  "workflowJob": 91625965577,
+  "artifact": {
+    "id": 8848599037,
+    "name": "surface-cell-p5-global-frontier-linux-release",
+    "digest": "sha256:597c788ed3f34f09480857c910872ff0e6230120a13e57781ef58f3a8bed395d",
+    "sizeBytes": 11141753,
+    "sourceStatusEmpty": true,
+    "checksumsPassed": 11,
+    "checksumsTotal": 11,
+    "selfContainedManifestFixture": true
+  },
+  "build": {
+    "generator": "Ninja",
+    "configuration": "Release",
+    "compiler": "GNU 13.3.0",
+    "stepsPassed": 131,
+    "stepsTotal": 131,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ]
+  },
+  "executed": {
+    "tests": false,
+    "benchmarks": false,
+    "customMeshes": false,
+    "helpOrListCommands": false
+  },
+  "implemented": {
+    "completeExactConflictInventory": true,
+    "exactConflictSetProgress": true,
+    "deterministicConflictComponents": true,
+    "topologyCompleteAtomicRepair": true,
+    "exactCompletionReuse": true,
+    "frontierAndCacheDiagnostics": true,
+    "executableRelativeFixtures": true,
+    "compileOnlyRegressionSources": true
+  },
+  "runtimeVerified": false,
+  "p5Complete": false,
+  "nextTurn": "P5-TB11 artifact-only test and benchmark"
+}
