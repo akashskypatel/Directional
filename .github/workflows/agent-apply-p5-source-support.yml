@@ -1,0 +1,60 @@
+# One-shot source materialization for the authoritative P5 code/build turn.
+# The resulting source commit removes this workflow and its staged patch.
+name: Apply P5 Source Support
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-apply-p5-source-support.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-apply-p5-source-support
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Apply reviewed source patch and commit exact checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload=.agents/Directional/p5-source-support.patch.gz.b64
+          workflow=.github/workflows/agent-apply-p5-source-support.yml
+          test -f "${payload}"
+          base64 --decode "${payload}" | gzip --decompress > /tmp/p5-source-support.patch
+          echo '79b5d6d5bcd61b52e4f78e54f36389c89c5b3f62095697b98ac27c579bad3891  /tmp/p5-source-support.patch' | sha256sum --check -
+          git apply --check /tmp/p5-source-support.patch
+          git apply /tmp/p5-source-support.patch
+          git rm "${payload}" "${workflow}"
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add include/directional/diagnostics/RemeshDiagnostics.h \
+                  include/directional/geometry/PatchDescriptor.h \
+                  include/directional/geometry/PureQuadCompletion.h \
+                  include/directional/geometry/SurfacePointSupport.h \
+                  include/directional/pipeline/RemeshPipeline.h \
+                  include/directional/validation/SourceAuthoritativeMeshValidator.h \
+                  src/bench/DirectionalBenchmark.cpp \
+                  src/geometry/PatchDescriptor.cpp \
+                  src/geometry/PureQuadCompletion.cpp \
+                  src/pipeline/RemeshPipeline.cpp \
+                  tests/PatchDescriptorMilestoneETests.cpp \
+                  tests/PureQuadCompletionPhase18Tests.cpp
+          git diff --cached --check
+          git commit -m 'fix(surface-cells): resolve intrinsic source support'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          git rev-parse HEAD
