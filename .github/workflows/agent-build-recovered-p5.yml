@@ -35,13 +35,18 @@ jobs:
           set -euo pipefail
           payload=.agents/Directional/p5-same-corner-code.patch.gz.b64
           workflow=.github/workflows/agent-build-recovered-p5.yml
-          test -f "${payload}"
-          base64 --decode "${payload}" | gzip --decompress > /tmp/p5-same-corner.patch
+          cat "${payload}" "${payload}.part1" "${payload}.part2" \
+              "${payload}.part3" "${payload}.part4" "${payload}.part5" \
+            | tr -d '\r\n' \
+            | base64 --decode \
+            | gzip --decompress > /tmp/p5-same-corner.patch
           echo '5a94c30107e5b35131d008bdf3f3b58f74b419307b310d1257ab1767134c30c6  /tmp/p5-same-corner.patch' | sha256sum --check -
           git apply --check /tmp/p5-same-corner.patch
           git apply /tmp/p5-same-corner.patch
-          git rm "${payload}"
-          git checkout HEAD^ -- "${workflow}"
+          git rm "${payload}" "${payload}.part1" "${payload}.part2" \
+                 "${payload}.part3" "${payload}.part4" "${payload}.part5"
+          git fetch --depth=1 origin a9845cccf29c5013afaba42d198011171c3afa9e
+          git checkout a9845cccf29c5013afaba42d198011171c3afa9e -- "${workflow}"
           git diff --check
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
@@ -95,7 +100,7 @@ jobs:
           test -f MILESTONE_G_TODO.md
           test -f .agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md
           test -f benchmarks/fixtures/milestone-g/bunny_1k_random.obj
-          if git ls-files '.agents/Directional/*patch.gz.b64' | grep -q .; then
+          if git ls-files '.agents/Directional/*patch.gz.b64*' | grep -q .; then
             echo 'Transient encoded patch remains tracked' >&2
             exit 1
           fi
