@@ -1,0 +1,239 @@
+tor<std::uint64_t> after =
++        surface_cell_feasibility_detail::exact_rollback_identity(
++            result.complex);
++    result.rollbackIdentityHashAfter =
++        surface_cell_feasibility_detail::rollback_identity_hash(after);
++    result.rollbackEquivalent = after == rollbackIdentity;
++    if (!result.rollbackEquivalent) {
++      result.failure = "SubdivisionRollbackMismatch:" + failure;
++    }
++    return std::move(result);
++  };
++
+   if (!surface_cell_feasibility_detail::
+           validate_incidence_allowing_nondisk(input)) {
+-    result.failure = "InvalidInputIncidence";
+-    return result;
++    return returnCommittedFailure("InvalidInputIncidence");
+   }
+ 
+   std::map<int, int> insertionCount;
+   for (const auto &[id, count] : insertionsByHalfedge) {
+     if (count <= 0) {
+-      result.failure = "InvalidInsertionCount";
+-      return result;
++      return returnCommittedFailure("InvalidInsertionCount");
+     }
+     const int canonical =
+         surface_cell_feasibility_detail::canonical_halfedge(input, id);
+     if (canonical < 0) {
+-      result.failure = "InvalidHalfedge";
+-      return result;
++      return returnCommittedFailure("InvalidHalfedge");
+     }
+     const auto [iterator, inserted] = insertionCount.emplace(canonical, count);
+     if (!inserted && iterator->second != count) {
+-      result.failure = "ConflictingTwinInsertionCount";
+-      return result;
++      return returnCommittedFailure("ConflictingTwinInsertionCount");
+     }
+   }
+   if (insertionCount.empty()) {
+     result.complex = std::move(input);
+     result.success = true;
++    result.rollbackEquivalent = true;
++    result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
+     return result;
+   }
+ 
+   SurfaceCellComplex rebuilt;
+   const bool inputTopologyValid = input.diagnostics.topologyValid;
+-  // Nodes, cells, and diagnostics are not structurally duplicated by edge
+-  // subdivision. Move them into the transaction workspace and retain only the
+-  // input halfedges while their replacement chains are generated.
++  const std::size_t originalNodeCount = input.nodes.size();
++  const SurfaceArrangementDiagnostics originalDiagnostics = input.diagnostics;
++  // Keep the committed halfedge vector in `input`. Nodes and cells move into
++  // the mutable transaction and are restored through a compact undo log on
++  // every rejected path, avoiding a second full complex.
+   rebuilt.nodes = std::move(input.nodes);
+   rebuilt.cells = std::move(input.cells);
+   rebuilt.diagnostics = std::move(input.diagnostics);
+   std::vector<std::vector<int>> replacement(input.halfedges.size());
+   std::vector<unsigned char> processed(input.halfedges.size(), 0);
+ 
++  struct CellUndo {
++    int index = -1;
++    std::vector<int> halfedges;
++    std::vector<int> sideFamilies;
++    std::vector<int> sideEdgeCounts;
++    int boundaryComponentCount = 0;
++    int eulerCharacteristic = 0;
++    bool disk = false;
++  };
++  std::vector<CellUndo> cellUndo;
++  cellUndo.reserve(rebuilt.cells.size());
++
++  const auto restoreCommitted =
++      [&](const std::string &failure) -> SurfaceCellSubdivisionResult {
++    for (auto undo = cellUndo.rbegin(); undo != cellUndo.rend(); ++undo) {
++      SurfaceArrangementCell &cell =
++          rebuilt.cells[static_cast<std::size_t>(undo->index)];
++      cell.halfedges = std::move(undo->halfedges);
++      cell.sideFamilies = std::move(undo->sideFamilies);
++      cell.sideEdgeCounts = std::move(undo->sideEdgeCounts);
++      cell.boundaryComponentCount = undo->boundaryComponentCount;
++      cell.eulerCharacteristic = undo->eulerCharacteristic;
++      cell.disk = undo->disk;
++    }
++    rebuilt.nodes.resize(originalNodeCount);
++    input.nodes = std::move(rebuilt.nodes);
++    input.cells = std::move(rebuilt.cells);
++    input.diagnostics = originalDiagnostics;
++    result.failure = failure;
++    result.complex = std::move(input);
++    const std::vector<std::uint64_t> after =
++        surface_cell_feasibility_detail::exact_rollback_identity(
++            result.complex);
++    result.rollbackIdentityHashAfter =
++        surface_cell_feasibility_detail::rollback_identity_hash(after);
++    result.rollbackEquivalent = after == rollbackIdentity;
++    if (!result.rollbackEquivalent) {
++      result.failure = "SubdivisionRollbackMismatch:" + failure;
++    }
++    return std::move(result);
++  };
++
+   const auto append_halfedge = [&](SurfaceArrangementHalfedge value) {
+     value.id = static_cast<int>(rebuilt.halfedges.size());
+     value.next = -1;
+@@ -504,8 +717,7 @@
+     const int twinId = forward.twin;
+     if (twinId < 0 || twinId >= static_cast<int>(input.halfedges.size()) ||
+         processed[static_cast<std::size_t>(twinId)] != 0U) {
+-      result.failure = "InvalidTwinPair";
+-      return result;
++      return restoreCommitted("InvalidTwinPair");
+     }
+     const SurfaceArrangementHalfedge &reverse =
+         input.halfedges[static_cast<std::size_t>(twinId)];
+@@ -525,39 +737,62 @@
+                            static_cast<double>(parts);
+       SurfaceArrangementNode node;
+       node.id = static_cast<int>(rebuilt.nodes.size());
+-      node.sourceFace = forward.sourceFace;
+-      node.barycentric =
+-          surface_cell_feasibility_detail::interpolated_barycentric(
+-              rebuilt, forward.from, forward.to, forward.sourceFace, alpha);
+-      if (!node.barycentric.allFinite() ||
+-          node.barycentric.minCoeff() < -1.0e-10 ||
+-          node.barycentric.maxCoeff() > 1.0 + 1.0e-10) {
+-        result.failure = "InvalidMidpointEmbedding";
+-        return result;
+-      }
++      node.sourceComponent = forward.sourceComponent >= 0
++          ? forward.sourceComponent
++          : reverse.sourceComponent;
++      node.sourceSheet =
++          forward.sourceSheet >= 0 ? forward.sourceSheet : reverse.sourceSheet;
++      const SurfaceArrangementNode &fromNode =
++          rebuilt.nodes[static_cast<std::size_t>(forward.from)];
++      const SurfaceArrangementNode &toNode =
++          rebuilt.nodes[static_cast<std::size_t>(forward.to)];
++      node.hardBarrierCrossing =
++          fromNode.hardBarrierCrossing || toNode.hardBarrierCrossing;
++
+       std::set<int> occurrenceFaces;
+-      for (const auto &occurrence :
+-           rebuilt.nodes[static_cast<std::size_t>(forward.from)].occurrences) {
+-        occurrenceFaces.insert(occurrence.sourceFace);
++      for (const auto &occurrence : fromNode.occurrences) {
++        if (occurrence.sourceFace >= 0) {
++          occurrenceFaces.insert(occurrence.sourceFace);
++        }
++      }
++      for (const auto &occurrence : toNode.occurrences) {
++        if (occurrence.sourceFace >= 0) {
++          occurrenceFaces.insert(occurrence.sourceFace);
++        }
++      }
++      if (fromNode.sourceFace >= 0) {
++        occurrenceFaces.insert(fromNode.sourceFace);
++      }
++      if (toNode.sourceFace >= 0) {
++        occurrenceFaces.insert(toNode.sourceFace);
+       }
+-      occurrenceFaces.insert(forward.sourceFace);
+-      occurrenceFaces.insert(reverse.sourceFace);
++      if (forward.sourceFace >= 0) {
++        occurrenceFaces.insert(forward.sourceFace);
++      }
++      if (reverse.sourceFace >= 0) {
++        occurrenceFaces.insert(reverse.sourceFace);
++      }
++
++      bool primarySet = false;
+       for (const int face : occurrenceFaces) {
+         const Eigen::RowVector3d barycentric =
+             surface_cell_feasibility_detail::interpolated_barycentric(
+                 rebuilt, forward.from, forward.to, face, alpha);
+-        if (barycentric.allFinite() && barycentric.minCoeff() >= -1.0e-10 &&
+-            barycentric.maxCoeff() <= 1.0 + 1.0e-10) {
+-          node.occurrences.push_back({face, barycentric});
++        if (!barycentric.allFinite() ||
++            barycentric.minCoeff() < -1.0e-10 ||
++            barycentric.maxCoeff() > 1.0 + 1.0e-10) {
++          continue;
++        }
++        node.occurrences.push_back({face, barycentric});
++        if (!primarySet) {
++          node.sourceFace = face;
++          node.barycentric = barycentric;
++          primarySet = true;
+         }
+       }
+-      if (node.occurrences.empty()) {
+-        node.occurrences.push_back({node.sourceFace, node.barycentric});
++      if (!primarySet) {
++        return restoreCommitted("InvalidMidpointEmbedding");
+       }
+-      const SurfaceArrangementNode &fromNode =
+-          rebuilt.nodes[static_cast<std::size_t>(forward.from)];
+-      const SurfaceArrangementNode &toNode =
+-          rebuilt.nodes[static_cast<std::size_t>(forward.to)];
+       if (fromNode.sourceEdge >= 0 &&
+           fromNode.sourceEdge == toNode.sourceEdge) {
+         node.sourceEdge = fromNode.sourceEdge;
+@@ -627,7 +862,20 @@
+     }
+   }
+ 
+-  for (SurfaceArrangementCell &cell : rebuilt.cells) {
++  for (int cellIndex = 0; cellIndex < static_cast<int>(rebuilt.cells.size());
++       ++cellIndex) {
++    SurfaceArrangementCell &cell =
++        rebuilt.cells[static_cast<std::size_t>(cellIndex)];
++    CellUndo undo;
++    undo.index = cellIndex;
++    undo.halfedges = cell.halfedges;
++    undo.sideFamilies = cell.sideFamilies;
++    undo.sideEdgeCounts = cell.sideEdgeCounts;
++    undo.boundaryComponentCount = cell.boundaryComponentCount;
++    undo.eulerCharacteristic = cell.eulerCharacteristic;
++    undo.disk = cell.disk;
++    cellUndo.push_back(std::move(undo));
++
+     const std::vector<int> oldBoundary = cell.halfedges;
+     std::vector<int> newBoundary;
+     std::vector<int> newSideCounts(cell.sideEdgeCounts.size(), 0);
+@@ -640,20 +888,19 @@
+     for (const int oldId : oldBoundary) {
+       if (oldId < 0 || oldId >= static_cast<int>(replacement.size()) ||
+           replacement[static_cast<std::size_t>(oldId)].empty()) {
+-        result.failure = "MissingHalfedgeReplacement";
+-        return result;
++        return restoreCommitted("MissingHalfedgeReplacement");
+       }
+       const auto &pieces = replacement[static_cast<std::size_t>(oldId)];
+       newBoundary.insert(newBoundary.end(), pieces.begin(), pieces.end());
+       if
