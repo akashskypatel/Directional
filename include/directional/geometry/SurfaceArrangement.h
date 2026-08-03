@@ -163,6 +163,11 @@ struct SurfaceArrangementHalfedge {
 struct SurfaceArrangementCell {
   int id = -1;
   int sourceFace = -1;
+  // Exact ownership scope of the oriented cell.  Source-face support is kept
+  // separately because one cell can span many source triangles while still
+  // belonging to one connected component and one source sheet.
+  int sourceComponent = -1;
+  int sourceSheet = -1;
   std::vector<int> sourceFaces;
   std::vector<int> halfedges;
   std::vector<int> sideFamilies;
