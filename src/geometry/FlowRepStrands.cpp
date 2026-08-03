@@ -3362,8 +3362,9 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     result.diagnostics.push_back(std::move(diagnostic));
   };
   for (const OpenEndpoint &endpoint : openEndpoints) {
+    const int sourceArcId = endpoint.arcId;
     FlowRepArc &source =
-        result.arcs[static_cast<std::size_t>(endpoint.arcId)];
+        result.arcs[static_cast<std::size_t>(sourceArcId)];
     if (endpointDegree[endpoint.key] != 1) {
       ++result.resolvedEndpoints;
       record_diagnostic(endpoint, source, source.family, 0, nullptr,
@@ -3640,8 +3641,12 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
       ++result.addedArcs;
     }
     ++result.resolvedEndpoints;
+    // Generated connector insertion can reallocate result.arcs. Reacquire
+    // the source by stable arc identity before recording committed evidence.
+    const FlowRepArc &committedSource =
+        result.arcs[static_cast<std::size_t>(sourceArcId)];
     record_diagnostic(
-        endpoint, source, family, sign, &trace,
+        endpoint, committedSource, family, sign, &trace,
         hasTerminalTraceArc ? &terminalTraceArc : nullptr,
         hasLastRepresentableTraceArc ? &lastRepresentableTraceArc : nullptr,
         terminalFeatureRailOwnership, supportTraceId,
