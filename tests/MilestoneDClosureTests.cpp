@@ -152,6 +152,8 @@ SurfaceCellComplex two_interface_complex(const MeshFixture &mesh) {
     directional::geometry::SurfaceArrangementCell cell;
     cell.id = id;
     cell.sourceFace = 0;
+    cell.sourceComponent = 0;
+    cell.sourceSheet = 0;
     cell.sourceFaces = {0};
     cell.halfedges = cycles[static_cast<std::size_t>(id)];
     cell.boundaryCycle = id == 2;
@@ -277,51 +279,36 @@ MeshFixture open_cylinder(const int segments, const int axialCells) {
 
 std::vector<SurfaceArrangementArc> cylinder_grid_arcs(
     const MeshFixture &mesh, const int segments, const int axialCells) {
-  std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>> desired;
-  for (int segment = 0; segment < segments; ++segment) {
-    for (int ring = 0; ring < axialCells; ++ring) {
-      desired.push_back({{ring * segments + segment,
-                          (ring + 1) * segments + segment},
-                         {1, segment}});
-    }
-  }
-  for (int ring = 1; ring < axialCells; ++ring) {
-    for (int segment = 0; segment < segments; ++segment) {
-      desired.push_back({{ring * segments + segment,
-                          ring * segments + (segment + 1) % segments},
-                         {0, 1000 + ring}});
-    }
-  }
-
+  // Build one canonical, face-interior axial strand. Each quadrilateral band
+  // contributes two chart-local segments meeting on its diagonal. Arrangement
+  // stitching then identifies the diagonal and ring-edge crossings by exact
+  // source-edge parameter, avoiding duplicate arcs that coincide with source
+  // mesh edges already owned by the base DCEL.
   std::vector<SurfaceArrangementArc> arcs;
+  arcs.reserve(static_cast<std::size_t>(2 * axialCells));
+  constexpr int segment = 0;
+  constexpr int family = 1;
+  constexpr int strand = 7;
   int id = 0;
-  for (const auto &[edge, metadata] : desired) {
-    // Emit each intrinsic source edge once. Arrangement node identity stitches
-    // the edge across incident triangle charts; duplicating a coincident arc in
-    // every chart creates overlapping DCEL ownership before simplification.
-    int ownerFace = -1;
-    int localA = -1;
-    int localB = -1;
-    for (int face = 0; face < mesh.faces.rows() && ownerFace < 0; ++face) {
-      int candidateA = -1;
-      int candidateB = -1;
-      for (int corner = 0; corner < 3; ++corner) {
-        if (mesh.faces(face, corner) == edge.first) candidateA = corner;
-        if (mesh.faces(face, corner) == edge.second) candidateB = corner;
-      }
-      if (candidateA >= 0 && candidateB >= 0) {
-        ownerFace = face;
-        localA = candidateA;
-        localB = candidateB;
-      }
+  for (int ring = 0; ring < axialCells; ++ring) {
+    const int firstFace = 2 * (ring * segments + segment);
+    const int secondFace = firstFace + 1;
+    if (secondFace >= mesh.faces.rows()) {
+      break;
     }
-    if (ownerFace < 0) continue;
-    Eigen::RowVector3d a = Eigen::RowVector3d::Zero();
-    Eigen::RowVector3d b = Eigen::RowVector3d::Zero();
-    a[localA] = 1.0;
-    b[localB] = 1.0;
-    arcs.push_back(
-        arc(id++, ownerFace, a, b, metadata.first, metadata.second));
+
+    SurfaceArrangementArc first = arc(
+        id++, firstFace,
+        Eigen::RowVector3d(0.5, 0.5, 0.0),
+        Eigen::RowVector3d(0.0, 0.5, 0.5), family, strand);
+    SurfaceArrangementArc second = arc(
+        id++, secondFace,
+        Eigen::RowVector3d(0.5, 0.0, 0.5),
+        Eigen::RowVector3d(0.0, 0.5, 0.5), family, strand);
+    first.layoutSupport = true;
+    second.layoutSupport = true;
+    arcs.push_back(std::move(first));
+    arcs.push_back(std::move(second));
   }
   return arcs;
 }
@@ -519,7 +506,8 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
       extracted.candidates.begin(), extracted.candidates.end(),
       [](const auto &value) {
         return value.type == SurfaceSimplificationCandidateType::OpenStrip &&
-               value.elementIds.size() == static_cast<std::size_t>(axialCells) &&
+               value.elementIds.size() ==
+                   static_cast<std::size_t>(2 * axialCells) &&
                !value.touchesHardFeature && !value.touchesBoundary &&
                !value.touchesSingularity && !value.changesTopology &&
                value.sideFeasible;
