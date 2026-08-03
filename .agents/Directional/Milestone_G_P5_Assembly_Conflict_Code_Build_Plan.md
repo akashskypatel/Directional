@@ -6,6 +6,17 @@
 **Input artifact:** `8841726806`  
 **Review policy:** `never`
 
+## Completion status
+
+This plan was implemented by source commits:
+
+- `4b7e02b0e8248a8093959147e27cc1ee9440d35a` — production, diagnostics, and regression-source implementation;
+- `1f4c3c2a014f0bc945b50f1bb5a837c438cec992` — minimal backend enum compile correction.
+
+Compile-only run `30776779114` succeeded and produced artifact `8842377256`, digest `sha256:669bf5d6f3e9b3738298b5985b6bb715668bce0715b0a68d880eb4aa0e80d6bc`.
+
+All work packages P5-CB21 through P5-CB26 are source-complete and compile-valid. Runtime acceptance is deferred to P5-TB8 using artifact `8842377256` without rebuilding.
+
 ## 1. Authoritative evidence
 
 Artifact `8841726806` removed the earlier source-support gate and reached assembly deterministically. Both random-bunny runs completed all 21,297 descriptors and failed with the same terminal conflict:
@@ -16,130 +27,62 @@ secondPatch=8573;secondLocalQuad=2;
 classification=completion-template
 ```
 
-The owners have different domain and boundary identities, equal source support, equal canonical stitch corners, equal canonical authoritative corners, the same component/sheet, and closed-form backend variant zero. Four earlier completion ownership repair attempts did not prevent the terminal conflict.
-
-Two regression inputs are also invalid and must be corrected without weakening production logic:
-
-1. the generated-interior escape test changes provenance to a face already contained in `patch.sourceFaces`;
-2. the parity fixture has valid DCEL incidence but omits the authoritative geometry/source diagnostics required for `topologyValid`.
+The owners had different domain and boundary identities, equal source support, equal canonical stitch corners, equal canonical authoritative corners, the same component/sheet, and closed-form backend variant zero.
 
 ## 2. Non-negotiable constraints
 
 - Do not delete or deduplicate final faces.
 - Do not merge vertices by position.
-- Do not special-case patch IDs `8595`, `8573`, `378`, or `394`.
+- Do not special-case patch IDs.
 - Do not use source-triangle pairing, source-grid recovery, legacy fallback, or validator weakening.
-- Preserve transactional assembly: failure returns no accepted partial mesh.
-- Preserve exact domain, boundary, source-support, component, sheet, and lineage identities.
-- Correct invalid tests so they exercise their stated contracts; do not make them pass synthetically.
-- This turn may configure and compile only. It must not execute tests, benchmarks, or custom meshes.
+- Preserve transactional assembly and exact ownership identities.
+- Correct invalid tests for their stated scenarios.
+- Compile only; execute no test, benchmark, or custom mesh binary.
 
-## 3. Work packages
+## 3. Implemented work packages
 
-### P5-CB21 — Correct the two invalid regression fixtures
+### P5-CB21 — Correct invalid regression fixtures
 
-#### Generated interior source-support escape
+- Generated-interior escape now uses a valid source face outside patch support.
+- Added positive controls for generated interiors on both allowed patch faces.
+- Parity fixture now supplies authoritative embedding, orientation, area, Euler, component, and boundary-loop evidence before recomputation.
 
-- Extend the fixture with a valid source triangle that is not included in the patch's `sourceFaces`.
-- Mutate the generated interior provenance to that outside face with finite barycentrics and matching position/lineage.
-- Retain the expected typed failure `CompletionOwnershipSourceSupportEscape` and `boundaryVertex == false`.
-- Add a paired positive control proving a generated interior on either allowed patch face remains valid.
+### P5-CB22 — Exact same-corner claim evidence
 
-#### Shared-edge parity fixture
+- Added `SameCornerDistinctBoundaryClaim`.
+- Claims record canonical stitch/authoritative corners, source patch/local quad, backend/variant, complete domain and boundary identity, source scope, boundary counts, and side counts.
+- Added deterministic typed attempt records for variant and structural actions.
 
-- Keep the explicit two bounded odd cells and real shared interface.
-- Populate node positions and cell area/signed-area evidence from the source triangles.
-- Populate source Euler characteristic, connected-component count, boundary-loop count, supported area, embedding validity, and other inputs consumed by `recompute_rebuilt_diagnostics()`.
-- Prefer constructing the complex through the production arrangement helper when feasible.
-- Require `validate_complex_incidence()` and recomputed `topologyValid` to succeed naturally; never assign the final validity flag directly.
+### P5-CB23 — Upstream transactional repair
 
-### P5-CB22 — Add exact same-corner claim evidence before repair
+- Distinguishes same-corner claims by exact complete identities.
+- Selects candidate intervals from canonical boundary symmetric difference.
+- Applies bounded twin-aware boundary-sector subdivision through existing complex machinery.
+- Reruns parity, coupled side repair, descriptor derivation, and completion transactionally.
+- Commits only when the original exact claim is removed and all validators pass.
+- Fails closed when overlap or conforming repair cannot be proven.
+- Closed-form patches do not consume nonexistent rotation variants.
 
-Create a compact deterministic claim record for every completed quad containing:
+### P5-CB24 — Regression sources
 
-- canonical stitch and authoritative corner cycles;
-- source patch, local quad, backend, and variant;
-- complete domain identity;
-- oriented boundary-node identity;
-- undirected boundary-halfedge identity;
-- source support, component, and sheet;
-- patch side count, side subdivisions, boundary vertex count, and boundary halfedge count.
+Compiled sources cover corrected fixtures, exact classification/routing, closed-form handling, and final duplicate validation.
 
-When two claims have equal authoritative corner cycles but different domain boundaries, classify them separately from generic completion-template ownership, for example as `SameCornerDistinctBoundaryClaim`.
+### P5-CB25 — Bounded performance
 
-Record a bounded repair-attempt ledger containing the conflict class, selected owner, old/new variant or structural repair, and resulting conflict. Hashes remain diagnostics; exact identities decide equality.
+- Reuses compact identities.
+- Uses deterministic hard limits for attempts and inserted intervals.
+- Releases superseded transactional state on failure/commit boundaries.
 
-### P5-CB23 — Repair same-corner/distinct-boundary claims upstream
+### P5-CB26 — Compile-only gate
 
-Use the complete boundary-halfedge identities to distinguish two cases before accepting any global face:
+- GCC 13.3.0 optimized static Release.
+- 131/131 build steps completed.
+- `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` linked.
+- Exact source `1f4c3c2a014f0bc945b50f1bb5a837c438cec992` packaged with empty source status and ten passing checksums.
+- No test or benchmark executable ran.
 
-1. **Invalid overlapping arrangement ownership**  
-   If the embedded domains overlap or duplicate source-area ownership despite different serialized boundaries, fail closed before completion with a typed arrangement-domain error and complete evidence.
+## 4. P5-TB8 handoff
 
-2. **Valid distinct parallel boundary routes with the same corner nodes**  
-   Apply a bounded, deterministic, transactional boundary-sector subdivision before completion:
-   - choose the lowest canonical differing authoritative boundary interval;
-   - split the complete undirected interval, including its twin, through the existing complex edge-subdivision machinery;
-   - rerun parity repair, coupled side-subdivision repair, descriptor derivation, and completion for the affected connected patch neighborhood;
-   - require exact source provenance, component/sheet consistency, disk topology, and conforming neighbor boundaries;
-   - commit only if the repaired neighborhood removes the same-corner claim and passes all existing local ownership/lineage validators.
+Use artifact `8842377256` directly without rebuilding. Run corrected fixtures, focused same-corner regressions, the required broader suites, and at least two direct random-bunny processes. Record exact repair attempts, inserted intervals, assembly disposition, determinism, runtime, and peak memory.
 
-Closed-form patches have no rotational variants. Do not count unavailable closed-form variants as repair attempts. Structural repair must be bounded by an explicit option and deterministic ordering.
-
-If neither ownership overlap nor a valid conforming subdivision can be proven, fail closed with `SameCornerDistinctBoundaryUnresolved` rather than emitting duplicate faces.
-
-### P5-CB24 — Generalized regression sources
-
-Add or correct compiled test sources for:
-
-- generated interior outside-source-support rejection using a genuinely outside face;
-- generated interior positive control on both allowed patch faces;
-- topology-valid two-odd-cell parity repair;
-- two valid parallel boundary routes with the same four corner nodes requiring conforming subdivision;
-- overlapping same-corner domains failing before final assembly;
-- patch and insertion-order invariance;
-- repeated-run structural hash stability;
-- closed-form conflict routing that does not pretend a rotation variant exists;
-- final `DuplicateStitchedQuad` validation remaining active after repair.
-
-### P5-CB25 — Preserve performance and bounded memory
-
-- Reuse compact identity IDs and exact interned records.
-- Do not retain full per-quad variable-length boundary data after conflict resolution unless diagnostics request it.
-- Restrict structural repair and re-completion to the affected patch neighborhood.
-- Release superseded meshes and descriptor capacity after each committed repair.
-- Keep deterministic hard limits for structural attempts and inserted boundary vertices.
-
-## 4. Compile-only gate
-
-Configure a clean optimized static Release build and compile only:
-
-- `directional_core`;
-- `directional_pipeline`;
-- `directional_phase1_tests`;
-- `directional_benchmarks`.
-
-Required evidence:
-
-- exact pushed source commit;
-- empty source status before packaging;
-- configure and build logs;
-- exact source archive and recursive submodule revisions;
-- checksums for all packaged files;
-- explicit confirmation that no test, benchmark, or custom mesh executable ran.
-
-## 5. Acceptance checklist for this turn
-
-- [ ] Both invalid test fixtures are corrected for their intended scenarios.
-- [ ] Same-corner/distinct-boundary claims have an exact typed classification.
-- [ ] Attempt diagnostics identify every variant or structural repair decision.
-- [ ] Valid parallel-route claims receive bounded conforming upstream repair.
-- [ ] Invalid overlapping claims fail before final face assembly.
-- [ ] Closed-form patches do not consume nonexistent rotation variants.
-- [ ] No prohibited recovery, fallback, deduplication, positional ownership, or ID special case is introduced.
-- [ ] All four required targets compile from the exact pushed source.
-- [ ] No tests or benchmarks execute.
-
-## 6. Handoff
-
-P5 remains open after compilation. The following authoritative turn must use the packaged artifact without rebuilding and rerun the focused regressions, PatchDescriptor suite, Phase 14–18 aggregate, Milestone G P23/Phase 20, and at least two direct random-bunny processes. It must determine whether the `8595/8573` claim is resolved, reclassified upstream, or remains fail-closed, and must measure repair count, runtime, and peak memory.
+P5 remains open and PR #8 remains draft/unmerged until runtime validation closes the production gates.
