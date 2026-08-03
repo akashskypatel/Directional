@@ -1,0 +1,75 @@
+{
+  "schema": "directional.milestone-g.code-build-summary.v1",
+  "phase": "P5",
+  "turn": "P5-CB75-P5-CB82",
+  "date": "2026-08-03",
+  "review_policy": "never",
+  "runtime_verified": false,
+  "implementation": {
+    "commit": "1dab9a0e8915e7d9641c9b005bfa57eaefb4a8cc",
+    "exact_compiled_source": "f4a6a392dc3d490efca4f94bd613aadaad2c1b01"
+  },
+  "compile": {
+    "run_id": 30839059634,
+    "job_id": 91771355792,
+    "conclusion": "success",
+    "completed_steps": 131,
+    "total_steps": 131,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "executables_run": false
+  },
+  "artifact": {
+    "id": 8866222973,
+    "name": "surface-cell-p5-cb82-mixed-sheet-liveness-linux-release",
+    "digest": "sha256:c38649208b1586094f804895c39c1319b71eb0c5220e84d1d2514b04954c63fe",
+    "size_bytes": 11434378,
+    "source_status_bytes": 0,
+    "checksums_verified": 36,
+    "checksums_total": 36,
+    "packaged_fixture_files": 26,
+    "random_bunny_vertices": 502,
+    "random_bunny_faces": 1000,
+    "temporary_source_transfer_files": 0
+  },
+  "implemented": {
+    "scoped_source_occurrences": true,
+    "oriented_twin_sheet_rebinding": true,
+    "successful_subdivision_mixed_scope_rejection": true,
+    "extended_occurrence_structural_hashing": true,
+    "compact_rollback_undo": true,
+    "rollback_undo_owned_bytes": true,
+    "product_consumption_state": true,
+    "multi_product_semantic_buckets": true,
+    "rail_provenance_rebinding": true,
+    "explicit_multi_edge_dcel_fixture": true,
+    "complete_cylinder_incident_charts": true,
+    "candidate_generation_identity": true,
+    "candidate_semantic_deduplication": true,
+    "stale_generation_discard": true,
+    "frontier_generation_replacement": true,
+    "monotone_edge_reduction": true,
+    "runtime_mixed_sheet_verified": false,
+    "runtime_rollback_verified": false,
+    "runtime_positive_reuse_verified": false,
+    "runtime_signal11_elimination_verified": false,
+    "runtime_liveness_verified": false
+  },
+  "resource_reference": {
+    "p5_tb14_failed_path_peak_rss_bytes": 184205312,
+    "formal_peak_memory_limit_bytes": 1115394560,
+    "formal_wall_limit_seconds": 39.228299,
+    "successful_path_measured_this_turn": false
+  },
+  "next_turn": "P5-TB15 artifact-only test and benchmark",
+  "p5_closed": false,
+  "pr": {
+    "number": 8,
+    "draft": true,
+    "merged": false
+  }
+}
