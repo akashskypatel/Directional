@@ -727,69 +727,69 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       return returnCommittedFailure("ConflictingTwinInsertionCount");
     }
   }
-if (insertionCount.empty()) {
-  result.complex = std::move(input);
-  result.success = true;
-  result.rollbackEquivalent = true;
-  result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
-  return result;
-}
+  if (insertionCount.empty()) {
+    result.complex = std::move(input);
+    result.success = true;
+    result.rollbackEquivalent = true;
+    result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
+    return result;
+  }
 
-// Derive one exact source scope from each committed input cell before
-// moving or mutating ownership data. Frequency voting can select a
-// scope that is absent from a boundary edge and discover the conflict
-// only after the parity transaction has rebuilt the complex.
-using SourceScope = std::pair<int, int>;
-std::vector<SourceScope> authoritativeCellScopes(
-    input.cells.size(), SourceScope{-1, -1});
-for (int cellIndex = 0; cellIndex < static_cast<int>(input.cells.size());
-     ++cellIndex) {
-  const SurfaceArrangementCell &cell =
-      input.cells[static_cast<std::size_t>(cellIndex)];
-  std::set<SourceScope> sharedScopes;
-  bool firstBoundaryEdge = true;
-  for (const int halfedgeId : cell.halfedges) {
-    if (halfedgeId < 0 ||
-        halfedgeId >= static_cast<int>(input.halfedges.size())) {
-      return returnCommittedFailure("InvalidCellHalfedge");
-    }
-    const SurfaceArrangementHalfedge &edge =
-        input.halfedges[static_cast<std::size_t>(halfedgeId)];
-    std::set<SourceScope> edgeScopes;
-    if (edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
-      edgeScopes.emplace(edge.sourceComponent, edge.sourceSheet);
-    }
-    for (const SurfaceArrangementProvenance &entry : edge.provenance) {
-      if (entry.sourceComponent >= 0 && entry.sourceSheet >= 0) {
-        edgeScopes.emplace(entry.sourceComponent, entry.sourceSheet);
+  // Derive one exact source scope from each committed input cell before
+  // moving or mutating ownership data. Frequency voting can select a
+  // scope that is absent from a boundary edge and discover the conflict
+  // only after the parity transaction has rebuilt the complex.
+  using SourceScope = std::pair<int, int>;
+  std::vector<SourceScope> authoritativeCellScopes(
+      input.cells.size(), SourceScope{-1, -1});
+  for (int cellIndex = 0; cellIndex < static_cast<int>(input.cells.size());
+       ++cellIndex) {
+    const SurfaceArrangementCell &cell =
+        input.cells[static_cast<std::size_t>(cellIndex)];
+    std::set<SourceScope> sharedScopes;
+    bool firstBoundaryEdge = true;
+    for (const int halfedgeId : cell.halfedges) {
+      if (halfedgeId < 0 ||
+          halfedgeId >= static_cast<int>(input.halfedges.size())) {
+        return returnCommittedFailure("InvalidCellHalfedge");
+      }
+      const SurfaceArrangementHalfedge &edge =
+          input.halfedges[static_cast<std::size_t>(halfedgeId)];
+      std::set<SourceScope> edgeScopes;
+      if (edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
+        edgeScopes.emplace(edge.sourceComponent, edge.sourceSheet);
+      }
+      for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+        if (entry.sourceComponent >= 0 && entry.sourceSheet >= 0) {
+          edgeScopes.emplace(entry.sourceComponent, entry.sourceSheet);
+        }
+      }
+      if (edgeScopes.empty()) {
+        return returnCommittedFailure("MissingCellSourceScope");
+      }
+      if (firstBoundaryEdge) {
+        sharedScopes = std::move(edgeScopes);
+        firstBoundaryEdge = false;
+      } else {
+        std::set<SourceScope> intersection;
+        std::set_intersection(
+            sharedScopes.begin(), sharedScopes.end(), edgeScopes.begin(),
+            edgeScopes.end(),
+            std::inserter(intersection, intersection.end()));
+        sharedScopes = std::move(intersection);
+      }
+      if (sharedScopes.empty()) {
+        return returnCommittedFailure("MixedCellSourceScope");
       }
     }
-    if (edgeScopes.empty()) {
+    if (firstBoundaryEdge || sharedScopes.empty()) {
       return returnCommittedFailure("MissingCellSourceScope");
     }
-    if (firstBoundaryEdge) {
-      sharedScopes = std::move(edgeScopes);
-      firstBoundaryEdge = false;
-    } else {
-      std::set<SourceScope> intersection;
-      std::set_intersection(
-          sharedScopes.begin(), sharedScopes.end(), edgeScopes.begin(),
-          edgeScopes.end(),
-          std::inserter(intersection, intersection.end()));
-      sharedScopes = std::move(intersection);
-    }
-    if (sharedScopes.empty()) {
-      return returnCommittedFailure("MixedCellSourceScope");
-    }
+    authoritativeCellScopes[static_cast<std::size_t>(cellIndex)] =
+        *sharedScopes.begin();
   }
-  if (firstBoundaryEdge || sharedScopes.empty()) {
-    return returnCommittedFailure("MissingCellSourceScope");
-  }
-  authoritativeCellScopes[static_cast<std::size_t>(cellIndex)] =
-      *sharedScopes.begin();
-}
 
-SurfaceCellComplex rebuilt;
+  SurfaceCellComplex rebuilt;
   const bool inputTopologyValid = input.diagnostics.topologyValid;
   const std::size_t originalNodeCount = input.nodes.size();
   const SurfaceArrangementDiagnostics originalDiagnostics = input.diagnostics;

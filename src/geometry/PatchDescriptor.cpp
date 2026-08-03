@@ -1961,8 +1961,7 @@ PatchDescriptorSet derive_patch_descriptors(
 
 namespace directional::geometry::patch_descriptor_detail {
 
-\
-  using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
+using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
 
   void append_completion_dependency_values(
       PatchCompletionDependencyIdentity &identity,
