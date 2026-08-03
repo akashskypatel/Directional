@@ -111,6 +111,8 @@ std::vector<std::uint64_t> exact_rollback_identity(
   for (const SurfaceArrangementCell &cell : complex.cells) {
     append_rollback_word(identity, cell.id);
     append_rollback_word(identity, cell.sourceFace);
+    append_rollback_word(identity, cell.sourceComponent);
+    append_rollback_word(identity, cell.sourceSheet);
     const auto appendVector = [&](const std::vector<int> &values) {
       append_rollback_word(identity,
                            static_cast<std::int64_t>(values.size()));
@@ -746,7 +748,11 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
        ++cellIndex) {
     const SurfaceArrangementCell &cell =
         input.cells[static_cast<std::size_t>(cellIndex)];
+    const bool hasStoredScope =
+        cell.sourceComponent >= 0 && cell.sourceSheet >= 0;
+    const SourceScope storedScope{cell.sourceComponent, cell.sourceSheet};
     std::set<SourceScope> sharedScopes;
+    std::set<SourceScope> availableScopes;
     bool firstBoundaryEdge = true;
     for (const int halfedgeId : cell.halfedges) {
       if (halfedgeId < 0 ||
@@ -765,7 +771,33 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         }
       }
       if (edgeScopes.empty()) {
+        result.firstScopeFailure.active = true;
+        result.firstScopeFailure.originalCell = cell.id;
+        result.firstScopeFailure.replacementCell = cell.id;
+        result.firstScopeFailure.halfedge = halfedgeId;
+        result.firstScopeFailure.twin = edge.twin;
+        for (const SourceScope &scope : availableScopes) {
+          result.firstScopeFailure.availableComponents.push_back(scope.first);
+          result.firstScopeFailure.availableSheets.push_back(scope.second);
+        }
+        result.firstScopeFailure.mutationPhase = "preflight";
         return returnCommittedFailure("MissingCellSourceScope");
+      }
+      availableScopes.insert(edgeScopes.begin(), edgeScopes.end());
+      if (hasStoredScope && edgeScopes.count(storedScope) == 0U) {
+        result.firstScopeFailure.active = true;
+        result.firstScopeFailure.originalCell = cell.id;
+        result.firstScopeFailure.replacementCell = cell.id;
+        result.firstScopeFailure.halfedge = halfedgeId;
+        result.firstScopeFailure.twin = edge.twin;
+        result.firstScopeFailure.selectedComponent = storedScope.first;
+        result.firstScopeFailure.selectedSheet = storedScope.second;
+        for (const SourceScope &scope : availableScopes) {
+          result.firstScopeFailure.availableComponents.push_back(scope.first);
+          result.firstScopeFailure.availableSheets.push_back(scope.second);
+        }
+        result.firstScopeFailure.mutationPhase = "preflight";
+        return returnCommittedFailure("MixedCellSourceScope");
       }
       if (firstBoundaryEdge) {
         sharedScopes = std::move(edgeScopes);
@@ -779,14 +811,39 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         sharedScopes = std::move(intersection);
       }
       if (sharedScopes.empty()) {
+        result.firstScopeFailure.active = true;
+        result.firstScopeFailure.originalCell = cell.id;
+        result.firstScopeFailure.replacementCell = cell.id;
+        result.firstScopeFailure.halfedge = halfedgeId;
+        result.firstScopeFailure.twin = edge.twin;
+        for (const SourceScope &scope : availableScopes) {
+          result.firstScopeFailure.availableComponents.push_back(scope.first);
+          result.firstScopeFailure.availableSheets.push_back(scope.second);
+        }
+        result.firstScopeFailure.mutationPhase = "preflight";
         return returnCommittedFailure("MixedCellSourceScope");
       }
     }
     if (firstBoundaryEdge || sharedScopes.empty()) {
+      result.firstScopeFailure.active = true;
+      result.firstScopeFailure.originalCell = cell.id;
+      result.firstScopeFailure.replacementCell = cell.id;
+      result.firstScopeFailure.mutationPhase = "preflight";
       return returnCommittedFailure("MissingCellSourceScope");
     }
+    if (!hasStoredScope && sharedScopes.size() != 1U) {
+      result.firstScopeFailure.active = true;
+      result.firstScopeFailure.originalCell = cell.id;
+      result.firstScopeFailure.replacementCell = cell.id;
+      for (const SourceScope &scope : availableScopes) {
+        result.firstScopeFailure.availableComponents.push_back(scope.first);
+        result.firstScopeFailure.availableSheets.push_back(scope.second);
+      }
+      result.firstScopeFailure.mutationPhase = "preflight";
+      return returnCommittedFailure("MixedCellSourceScope");
+    }
     authoritativeCellScopes[static_cast<std::size_t>(cellIndex)] =
-        *sharedScopes.begin();
+        hasStoredScope ? storedScope : *sharedScopes.begin();
   }
 
   SurfaceCellComplex rebuilt;
@@ -809,6 +866,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     std::vector<int> sideEdgeCounts;
     std::vector<int> sourceFaces;
     int sourceFace = -1;
+    int sourceComponent = -1;
+    int sourceSheet = -1;
     int boundaryComponentCount = 0;
     int eulerCharacteristic = 0;
     bool disk = false;
@@ -826,6 +885,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       cell.sideEdgeCounts = std::move(undo->sideEdgeCounts);
       cell.sourceFaces = std::move(undo->sourceFaces);
       cell.sourceFace = undo->sourceFace;
+      cell.sourceComponent = undo->sourceComponent;
+      cell.sourceSheet = undo->sourceSheet;
       cell.boundaryComponentCount = undo->boundaryComponentCount;
       cell.eulerCharacteristic = undo->eulerCharacteristic;
       cell.disk = undo->disk;
@@ -1066,6 +1127,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     undo.sideEdgeCounts = cell.sideEdgeCounts;
     undo.sourceFaces = cell.sourceFaces;
     undo.sourceFace = cell.sourceFace;
+    undo.sourceComponent = cell.sourceComponent;
+    undo.sourceSheet = cell.sourceSheet;
     undo.boundaryComponentCount = cell.boundaryComponentCount;
     undo.eulerCharacteristic = cell.eulerCharacteristic;
     undo.disk = cell.disk;
@@ -1126,6 +1189,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
 
     const SourceScope selectedScope =
         authoritativeCellScopes[static_cast<std::size_t>(cellIndex)];
+    cell.sourceComponent = selectedScope.first;
+    cell.sourceSheet = selectedScope.second;
     for (const int halfedgeId : cell.halfedges) {
       SurfaceArrangementHalfedge &edge =
           rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)];
@@ -1148,10 +1213,12 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       if (selected == edge.provenance.end() ||
           selected->sourceComponent != selectedScope.first ||
           selected->sourceSheet != selectedScope.second) {
-        if (edge.sourceComponent != selectedScope.first ||
-            edge.sourceSheet != selectedScope.second) {
-          return restoreCommitted("MixedCellSourceScope");
-        }
+        // Component/sheet ownership belongs to the oriented cell, not to an
+        // undirected source segment.  Preserve the complete source-face and
+        // rail lineage while rebinding every replacement record to the exact
+        // pre-transaction cell scope.
+        edge.sourceComponent = selectedScope.first;
+        edge.sourceSheet = selectedScope.second;
       } else {
         edge.sourceArc = selected->sourceArc;
         edge.family = selected->family;
@@ -1174,6 +1241,74 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         edge.proposalBoundarySegment = selected->proposalBoundarySegment;
         edge.railT0 = selected->railT0;
         edge.railT1 = selected->railT1;
+      }
+      for (SurfaceArrangementProvenance &entry : edge.provenance) {
+        entry.sourceComponent = selectedScope.first;
+        entry.sourceSheet = selectedScope.second;
+      }
+
+      const auto ensureOccurrence = [&](const int nodeId,
+                                        const double sourceParameter,
+                                        const double railParameter) {
+        if (nodeId < 0 ||
+            nodeId >= static_cast<int>(rebuilt.nodes.size())) {
+          return false;
+        }
+        SurfaceArrangementNode &node =
+            rebuilt.nodes[static_cast<std::size_t>(nodeId)];
+        const auto present = std::find_if(
+            node.occurrences.begin(), node.occurrences.end(),
+            [&](const SurfaceArrangementNodeOccurrence &occurrence) {
+              return occurrence.sourceFace == edge.sourceFace &&
+                     occurrence.sourceComponent == selectedScope.first &&
+                     occurrence.sourceSheet == selectedScope.second;
+            });
+        if (present != node.occurrences.end()) {
+          return true;
+        }
+        Eigen::RowVector3d barycentric =
+            surface_arrangement_detail::node_barycentric_on_face(
+                node, edge.sourceFace);
+        if (!barycentric.allFinite()) {
+          return false;
+        }
+        SurfaceArrangementNodeOccurrence occurrence;
+        occurrence.sourceFace = edge.sourceFace;
+        occurrence.barycentric = barycentric;
+        occurrence.sourceComponent = selectedScope.first;
+        occurrence.sourceSheet = selectedScope.second;
+        occurrence.sourceArc = edge.sourceArc;
+        occurrence.provenance = edge.provenance.empty()
+                                    ? -1
+                                    : edge.provenance.front().provenance;
+        occurrence.railId = edge.railId;
+        occurrence.curveId = edge.curveId;
+        occurrence.sourceT0 = sourceParameter;
+        occurrence.sourceT1 = sourceParameter;
+        occurrence.railT0 = railParameter;
+        occurrence.railT1 = railParameter;
+        node.occurrences.push_back(std::move(occurrence));
+        if (node.sourceFace < 0) {
+          node.sourceFace = edge.sourceFace;
+          node.barycentric = barycentric;
+        }
+        if (node.sourceComponent < 0 || node.sourceSheet < 0) {
+          node.sourceComponent = selectedScope.first;
+          node.sourceSheet = selectedScope.second;
+        }
+        return true;
+      };
+      if (!ensureOccurrence(edge.from, edge.sourceT0, edge.railT0) ||
+          !ensureOccurrence(edge.to, edge.sourceT1, edge.railT1)) {
+        result.firstScopeFailure.active = true;
+        result.firstScopeFailure.originalCell = cell.id;
+        result.firstScopeFailure.replacementCell = cell.id;
+        result.firstScopeFailure.halfedge = halfedgeId;
+        result.firstScopeFailure.twin = edge.twin;
+        result.firstScopeFailure.selectedComponent = selectedScope.first;
+        result.firstScopeFailure.selectedSheet = selectedScope.second;
+        result.firstScopeFailure.mutationPhase = "replacement-occurrence";
+        return restoreCommitted("MissingReplacementSourceOccurrence");
       }
     }
 
@@ -1388,6 +1523,7 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
       subdivide_surface_cell_complex_edges(std::move(input), insertions);
   if (!subdivision.success) {
     result.failure = subdivision.failure;
+    result.firstScopeFailure = std::move(subdivision.firstScopeFailure);
     result.complex = std::move(subdivision.complex);
     return result;
   }
