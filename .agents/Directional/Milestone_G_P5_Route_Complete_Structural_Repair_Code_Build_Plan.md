@@ -1,8 +1,21 @@
 # Milestone G P5 — Route-Complete Structural Repair Code + Build Plan
 
-**Next turn type:** Code changes + compile-only build  
+**Turn type:** Code changes + compile-only build  
 **Authoritative input:** P5-TB9 artifact `8843206930` evidence  
-**Review policy:** `never`
+**Review policy:** `never`  
+**Status:** Implemented and compile-valid; runtime validation deferred to P5-TB10.
+
+## Completion checkpoint
+
+- Route-complete implementation commit: `5dcc6da94977c733ada42967ecdafa566cbc5d0b`.
+- Exact compiled source: `76cf884a6890a23a6db7d7bda9bc77b85ec4505c`.
+- Compile-only run: `30782277625` — success.
+- Job: `91589158985` — success.
+- Artifact: `8844133680`, `surface-cell-p5-route-complete-linux-release`.
+- Digest: `sha256:1f32a4d3600d1a7be39e710d35273f80bed0c24850626d744ab15e7a748a34bb`.
+- Build: 131/131 steps; all four required targets linked.
+- Source status is empty and all ten packaged checksums pass.
+- No test, benchmark, or custom mesh executable ran.
 
 ## Objective
 
@@ -17,136 +30,108 @@ Resolve the deterministic `4956/4954` same-corner ownership claim with an exact,
 - Do not merge vertices by position.
 - Do not special-case production patch or halfedge IDs.
 - Do not use source-triangle pairing, source-grid recovery, legacy fallback, or validator weakening.
-- This turn may configure and compile only. It must not execute tests, benchmarks, or custom meshes.
+- Execute no test, benchmark, or custom mesh binary in this turn.
 
-## P5-CB34 — Correct the structural-repair fixtures
+## P5-CB34 — Correct the structural-repair fixtures — Complete
 
-Replace `make_valid_parallel_route_same_corner_complex()` with an authoritative fixture that proves all of the following before budget-specific assertions:
+- Replaced the vacuous fixture with an explicit authoritative DCEL/source-support fixture.
+- The initial closed-form completion claims the same authoritative corner cycle through distinct complete boundary routes.
+- Budget and order-invariance tests assert the initial `SameCornerDistinctBoundaryClaim` precondition.
+- Added an already-successful negative control that requires zero repair work.
+- No final validity or ownership-conflict diagnostic is assigned synthetically.
 
-1. complex incidence and recomputed topology are valid;
-2. patch descriptors have unique authoritative domains;
-3. the initial completion path reaches an exact `SameCornerDistinctBoundaryClaim`;
-4. at least one geometrically distinct parallel route exists;
-5. no final output is accepted before repair.
+## P5-CB35 — Route-complete candidate identity — Complete
 
-Use either a minimized production-derived arrangement or a direct explicit DCEL with valid source provenance and geometry. Do not assign final validity or conflict diagnostics manually.
+Candidates now contain:
 
-Update the tests so that:
+- ordered shared authoritative corner identities;
+- maximal complete route chains between consecutive shared corners;
+- sorted canonical undirected interval identities;
+- exact geometric-support identities;
+- affected patches and domains;
+- component/sheet scope;
+- deterministic exact candidate identity and diagnostic hash.
 
-- zero budget fails with `CandidateBudget` only after the initial same-corner claim is established;
-- one candidate consumes exactly one global candidate and one structural attempt;
-- the success fixture actually executes `BoundarySectorSubdivision`;
-- patch/source-row order invariance compares nonempty identical ledgers;
-- a negative control proves an already successful complex performs zero structural repair.
+Exact identities determine equality and ordering. Hashes remain diagnostic.
 
-## P5-CB35 — Route-complete candidate identity
+## P5-CB36 — Atomic coupled-sector subdivision — Complete
 
-Replace the single-halfedge structural candidate with a compact exact candidate containing:
+- Complete differing route sectors are derived from topology.
+- When multiple sectors belong to one unresolved same-corner relationship, one coupled-sector interval union is generated and evaluated first.
+- No arbitrary subset or powerset enumeration is used.
+- All candidate intervals are submitted in one subdivision request with twin-conforming subdivision.
+- Parity, coupled side repair, descriptor derivation, completion, and assembly rerun once for the entire transaction.
+- Commit requires assembly success and zero exact ownership conflicts.
 
-- ordered canonical shared corner identities;
-- one complete differing boundary route or a coupled route-sector pair;
-- sorted canonical undirected halfedge IDs;
-- exact geometric-support identities for every interval;
-- affected patch/domain set;
-- hard-feature and component/sheet scope;
-- deterministic candidate identity and diagnostic hash.
+## P5-CB37 — Progress and exhaustion semantics — Complete
 
-Derive maximal route chains between consecutive shared authoritative corners. Intervals that belong to one route sector must be evaluated atomically.
-
-Hashes remain diagnostic. Exact identities determine candidate equality and ordering.
-
-## P5-CB36 — Atomic coupled-sector subdivision
-
-For a route-complete candidate:
-
-- build one subdivision request containing every required undirected interval;
-- include twins through the existing subdivision machinery;
-- validate that the complete route remains conforming across every incident patch;
-- rerun parity, coupled side repair, descriptor derivation, completion, and assembly once;
-- commit only when assembly succeeds and the exact active claim count reaches zero;
-- reject the whole transaction if any interval fails, if another ownership claim appears, or if topology/source support changes illegally.
-
-For the production evidence, the two individual candidates corresponding to halfedges `22706` and `23112` must be recognized through topology—not IDs—as one coupled boundary-sector relationship when appropriate.
-
-Do not add a generic combinatorial subset search. The allowable candidate set must be derived from complete route topology.
-
-## P5-CB37 — Progress and exhaustion semantics
-
-Retain one invocation-owned global ledger.
-
-Add typed outcomes for:
+The global ledger retains strict typed outcomes for:
 
 - incomplete route candidate;
-- coupled route validation failure;
-- route-complete candidate repeated state;
-- route-complete candidate introduced ownership;
+- route validation failure;
+- repeated route state;
+- no progress;
+- introduced ownership claim;
 - no route-complete candidate;
-- route candidate budget exhaustion.
+- route candidate budget exhaustion;
+- committed assembly success.
 
-The monotonic progress contract remains strict:
+No intermediate conflicting state is committed.
 
-- success means zero active ownership claims;
-- persistence of the original claim is `NoProgress`;
-- any replacement claim is `IntroducedOwnershipClaim`;
-- no intermediate conflicting state is committed.
+## P5-CB38 — Peak-memory margin — Source complete
 
-## P5-CB38 — Peak-memory margin
+- Superseded failed descriptors, completed patch meshes, assembly storage, and repeated failure strings are released before route evaluation.
+- The authoritative rollback complex remains immutable while at most one mutable candidate complex is live.
+- Candidate products are released before the next candidate.
+- Full recomputation remains authoritative because incremental equivalence has not been proven.
+- Runtime memory acceptance remains deferred to P5-TB10.
 
-The clean formal runs meet the cap, but two supplementary processes exceed it. Increase safety margin by removing avoidable full-complex duplication:
+## P5-CB39 — Diagnostics and semantic hashes — Complete
 
-- allow the non-recursive completion pass to consume/move an owned candidate complex where safe;
-- avoid retaining both parity and side-repair complex copies after the next representation is committed;
-- retain a compact rollback/edit log or immutable base plus one mutable candidate, not multiple full prepared complexes;
-- release candidate completed patches, descriptors, assembly mesh, and repeated failure strings before the next candidate;
-- keep peak live candidate-complex count at one;
-- report estimated owned bytes for rollback, candidate, descriptors, completed patches, and assembly.
-
-Do not implement incremental recomputation unless exact equivalence is proven.
-
-## P5-CB39 — Diagnostics and semantic hashes
-
-Expose through completion results, pipeline diagnostics, semantic hashes, and benchmark JSON:
+Completion results, pipeline diagnostics, semantic hashes, and benchmark JSON expose:
 
 - route candidate count and consumed count;
-- each candidate's complete interval list;
+- complete candidate interval lists;
 - shared-corner and route identities;
-- affected patches/domains;
+- affected patches and domains;
 - compound inserted-vertex and split-edge totals;
-- exact route validation outcome;
-- rollback/candidate/descriptor/completed-patch/assembly owned-byte estimates;
-- current and peak total structural-repair owned bytes.
+- typed route validation outcomes;
+- rollback, candidate, descriptor, completed-patch, and assembly byte estimates;
+- current and peak structural-repair owned bytes.
 
-## P5-CB40 — Compile-only regression sources
+## P5-CB40 — Compile-only regression sources — Complete
 
-Compile, but do not execute, tests covering:
+Compiled sources cover:
 
-- initial same-corner precondition for every structural budget test;
-- one atomic route-complete repair that succeeds;
-- incomplete single-interval repair rejected without commit;
-- two route sectors where the first fails and the second succeeds under one global ledger;
-- route candidate repeated-state rejection;
-- zero/one candidate exact budgets;
-- patch and source-face-row order invariance with nonempty ledgers;
-- compound candidate diagnostics and semantic-hash mutation;
-- already-successful negative control with zero repair work;
-- medium fixture with one live candidate and bounded owned-byte accounting.
+- initial same-corner preconditions for structural budget tests;
+- one atomic route-complete repair;
+- incomplete single-interval rejection;
+- coupled-sector evaluation under one global ledger;
+- repeated-state rejection;
+- exact zero/one candidate budgets;
+- nonempty patch/source-row order-invariant ledgers;
+- compound diagnostics and semantic-hash mutation;
+- already-successful zero-work negative control;
+- bounded one-live-candidate byte accounting.
 
-## P5-CB41 — Compile-only gate
+These tests were not executed in this turn.
 
-Perform a clean optimized static Release build and compile only:
+## P5-CB41 — Compile-only gate — Complete
+
+A clean optimized static Release build compiled only:
 
 - `directional_core`;
 - `directional_pipeline`;
 - `directional_phase1_tests`;
 - `directional_benchmarks`.
 
-Package exact source, binaries and libraries, configure/build logs, source commit and empty status, recursive submodule revisions, and checksums.
+Artifact `8844133680` packages exact source, binaries, libraries, configure/build logs, source commit and empty status, recursive submodule revisions, and ten passing checksums.
 
-Run no test, benchmark, or custom mesh executable.
+The first compile run `30781889869` also compiled successfully but produced a self-referential checksum manifest. It was superseded by authoritative run `30782277625`, whose workflow writes the manifest outside the artifact before moving it into place.
 
 ## Required P5-TB10 gates
 
-The following turn must validate the artifact without rebuilding:
+The next turn must validate artifact `8844133680` without rebuilding:
 
 - all corrected route-complete structural tests;
 - PatchDescriptor, Phase 16/18, Phase 14–18, and P23/Phase20 suites;
