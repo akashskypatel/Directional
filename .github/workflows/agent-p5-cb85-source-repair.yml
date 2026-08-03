@@ -1,0 +1,96 @@
+name: Agent P5 CB84-CB85 source repair
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-p5-cb85-source-repair.yml
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record edit start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB84/85 source-repair run ${RUN_ID} started for ${EVENT_SHA}. Source formatting edits only; no project binary, test, benchmark, help/list, discovery, or custom mesh command."
+
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Repair generated source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          descriptor_path = Path("src/geometry/PatchDescriptor.cpp")
+          descriptor = descriptor_path.read_text()
+          bad = "namespace directional::geometry::patch_descriptor_detail {\n\n\\\n  using PatchCompletionDependencyIdentity"
+          good = "namespace directional::geometry::patch_descriptor_detail {\n\nusing PatchCompletionDependencyIdentity"
+          if descriptor.count(bad) != 1:
+              raise RuntimeError(f"literal backslash anchor count={descriptor.count(bad)}")
+          descriptor_path.write_text(descriptor.replace(bad, good, 1))
+
+          repair_path = Path("src/geometry/SurfaceCellFeasibilityRepair.cpp")
+          repair = repair_path.read_text()
+          start = repair.find("if (insertionCount.empty()) {", repair.find("ConflictingTwinInsertionCount"))
+          end = repair.find("  const bool inputTopologyValid", start)
+          if start < 0 or end < 0:
+              raise RuntimeError("parity scope block not found")
+          block = repair[start:end]
+          lines = block.splitlines()
+          indented = "\n".join("  " + line if line else line for line in lines) + "\n"
+          repair_path.write_text(repair[:start] + indented + repair[end:])
+
+          workflow_path = Path(".github/workflows/agent-build-recovered-p5.yml")
+          workflow = workflow_path.read_text()
+          workflow = workflow.replace(
+              "# Compile-only workflow for the P5 CB82 mixed-sheet/liveness checkpoint.",
+              "# Compile-only workflow for the P5 CB83-CB90 checkpoint.")
+          workflow = workflow.replace(
+              "name: Agent Build Surface Cell P5 CB82 Mixed Sheet Liveness",
+              "name: Agent Build Surface Cell P5 CB90 Parity FlowRep Reuse Rail")
+          workflow = workflow.replace(
+              "agent-surface-cell-p5-cb82-",
+              "agent-surface-cell-p5-cb90-")
+          workflow = workflow.replace(
+              "P5-CB75 through P5-CB82 mixed-sheet/liveness",
+              "P5-CB83 through P5-CB90 parity/FlowRep/reuse/rail")
+          workflow = workflow.replace(
+              "surface-cell-p5-cb82-mixed-sheet-liveness-linux-release",
+              "surface-cell-p5-cb90-parity-flowrep-reuse-rail-linux-release")
+          workflow_path.write_text(workflow)
+          PY
+
+      - name: Commit source repair
+        run: |
+          git config user.name "directional-agent"
+          git config user.email "directional-agent@users.noreply.github.com"
+          git add src/geometry/PatchDescriptor.cpp \
+                  src/geometry/SurfaceCellFeasibilityRepair.cpp \
+                  .github/workflows/agent-build-recovered-p5.yml
+          git commit -m "fix(surface-cells): repair P5-CB84/85 source generation"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+
+      - name: Record edit result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB84/85 source-repair run ${RUN_ID} finished ${JOB_STATUS}. No project binary, test, benchmark, help/list, discovery, or custom mesh command executed."
