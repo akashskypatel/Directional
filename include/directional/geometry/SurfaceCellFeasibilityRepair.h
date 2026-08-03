@@ -19,6 +19,19 @@
 
 namespace directional::geometry {
 
+struct SurfaceCellReplacementScopeFailure {
+  bool active = false;
+  int originalCell = -1;
+  int replacementCell = -1;
+  int halfedge = -1;
+  int twin = -1;
+  int selectedComponent = -1;
+  int selectedSheet = -1;
+  std::vector<int> availableComponents;
+  std::vector<int> availableSheets;
+  std::string mutationPhase;
+};
+
 struct SurfaceCellSubdivisionResult {
   bool success = false;
   // True only when a failed transaction returned the exact committed input
@@ -32,6 +45,7 @@ struct SurfaceCellSubdivisionResult {
   int splitUndirectedEdges = 0;
   int insertedVertices = 0;
   int hardFeatureSplits = 0;
+  SurfaceCellReplacementScopeFailure firstScopeFailure;
   std::string failure;
 };
 
@@ -55,6 +69,7 @@ struct SurfaceCellParityRepairResult {
   int oddCellsBefore = 0;
   int oddCellsAfter = 0;
   int hardFeatureSplits = 0;
+  SurfaceCellReplacementScopeFailure firstScopeFailure;
   std::string failure;
 };
 
