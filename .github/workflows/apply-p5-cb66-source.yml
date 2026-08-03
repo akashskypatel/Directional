@@ -39,7 +39,7 @@ jobs:
           fetch-depth: 1
           submodules: false
 
-      - name: Assemble staged source patch
+      - name: Assemble exact staged source patch
         shell: bash
         run: |
           set -euo pipefail
@@ -48,18 +48,8 @@ jobs:
               "${patch_dir}"/part-01.patch \
               "${patch_dir}"/part-02.patch \
               "${patch_dir}"/part-03.patch \
-              "${patch_dir}"/part-04.patch > /tmp/p5-cb66.patch
-          sha256sum /tmp/p5-cb66.patch
-          mkdir -p patch-diagnostic
-          cp /tmp/p5-cb66.patch patch-diagnostic/
-
-      - name: Upload staged patch diagnostic
-        uses: actions/upload-artifact@v4
-        with:
-          name: p5-cb66-staged-patch-${{ github.run_id }}
-          path: patch-diagnostic/p5-cb66.patch
-          if-no-files-found: error
-          retention-days: 1
+              "${patch_dir}"/part-04.patch | tr -d '\r' > /tmp/p5-cb66.patch
+          echo "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9  /tmp/p5-cb66.patch" | sha256sum -c -
 
       - name: Verify and apply source patch
         shell: bash
