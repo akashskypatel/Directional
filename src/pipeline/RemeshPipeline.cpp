@@ -4212,8 +4212,26 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipPeakLiveCandidateComplexes;
     result.surfaceCellContext.completionOwnershipLastCandidateHalfedge =
         completionResult.completionOwnershipLastCandidateHalfedge;
+    result.surfaceCellContext.completionOwnershipLastCandidateHalfedges =
+        completionResult.completionOwnershipLastCandidateHalfedges;
     result.surfaceCellContext.completionOwnershipLastAffectedPatches =
         completionResult.completionOwnershipLastAffectedPatches;
+    result.surfaceCellContext.completionOwnershipRouteCandidateCount =
+        completionResult.completionOwnershipRouteCandidateCount;
+    result.surfaceCellContext.completionOwnershipRollbackOwnedBytes =
+        completionResult.completionOwnershipRollbackOwnedBytes;
+    result.surfaceCellContext.completionOwnershipCandidateOwnedBytes =
+        completionResult.completionOwnershipCandidateOwnedBytes;
+    result.surfaceCellContext.completionOwnershipDescriptorOwnedBytes =
+        completionResult.completionOwnershipDescriptorOwnedBytes;
+    result.surfaceCellContext.completionOwnershipCompletedPatchOwnedBytes =
+        completionResult.completionOwnershipCompletedPatchOwnedBytes;
+    result.surfaceCellContext.completionOwnershipAssemblyOwnedBytes =
+        completionResult.completionOwnershipAssemblyOwnedBytes;
+    result.surfaceCellContext.completionOwnershipCurrentStructuralOwnedBytes =
+        completionResult.completionOwnershipCurrentStructuralOwnedBytes;
+    result.surfaceCellContext.completionOwnershipPeakStructuralOwnedBytes =
+        completionResult.completionOwnershipPeakStructuralOwnedBytes;
     result.surfaceCellContext.completionOwnershipStructuralExhaustionReason =
         completionResult.completionOwnershipStructuralExhaustionReason;
     result.surfaceCellContext.completionOwnershipRepairLog =
@@ -4261,8 +4279,29 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             completionResult.completionOwnershipPeakLiveCandidateComplexes);
     result.diagnostics.surfaceCellCompletionOwnershipLastCandidateHalfedge =
         completionResult.completionOwnershipLastCandidateHalfedge;
+    result.diagnostics.surfaceCellCompletionOwnershipLastCandidateHalfedges =
+        completionResult.completionOwnershipLastCandidateHalfedges;
     result.diagnostics.surfaceCellCompletionOwnershipLastAffectedPatches =
         completionResult.completionOwnershipLastAffectedPatches;
+    result.diagnostics.surfaceCellCompletionOwnershipRouteCandidateCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipRouteCandidateCount);
+    result.diagnostics.surfaceCellCompletionOwnershipRollbackOwnedBytes =
+        completionResult.completionOwnershipRollbackOwnedBytes;
+    result.diagnostics.surfaceCellCompletionOwnershipCandidateOwnedBytes =
+        completionResult.completionOwnershipCandidateOwnedBytes;
+    result.diagnostics.surfaceCellCompletionOwnershipDescriptorOwnedBytes =
+        completionResult.completionOwnershipDescriptorOwnedBytes;
+    result.diagnostics
+        .surfaceCellCompletionOwnershipCompletedPatchOwnedBytes =
+        completionResult.completionOwnershipCompletedPatchOwnedBytes;
+    result.diagnostics.surfaceCellCompletionOwnershipAssemblyOwnedBytes =
+        completionResult.completionOwnershipAssemblyOwnedBytes;
+    result.diagnostics
+        .surfaceCellCompletionOwnershipCurrentStructuralOwnedBytes =
+        completionResult.completionOwnershipCurrentStructuralOwnedBytes;
+    result.diagnostics.surfaceCellCompletionOwnershipPeakStructuralOwnedBytes =
+        completionResult.completionOwnershipPeakStructuralOwnedBytes;
     result.diagnostics
         .surfaceCellCompletionOwnershipStructuralExhaustionReason =
         geometry::surface_cell_structural_repair_exhaustion_reason_name(
@@ -4466,6 +4505,42 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     hash_combine_i64(
         completionHash,
         result.surfaceCellContext.completionOwnershipLastCandidateHalfedge);
+    hash_vector(completionHash,
+                result.surfaceCellContext
+                    .completionOwnershipLastCandidateHalfedges);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionOwnershipRouteCandidateCount);
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipRollbackOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipCandidateOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipDescriptorOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(
+            result.surfaceCellContext
+                .completionOwnershipCompletedPatchOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipAssemblyOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(
+            result.surfaceCellContext
+                .completionOwnershipCurrentStructuralOwnedBytes));
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+                                      .completionOwnershipPeakStructuralOwnedBytes));
     hash_combine_i64(
         completionHash,
         static_cast<int>(result.surfaceCellContext
@@ -4495,6 +4570,31 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       hash_combine_i64(completionHash, attempt.secondPatch);
       hash_combine_i64(completionHash, attempt.selectedPatch);
       hash_combine_i64(completionHash, attempt.selectedHalfedge);
+      hash_vector(completionHash, attempt.selectedHalfedges);
+      hash_combine_i64(
+          completionHash,
+          static_cast<std::int64_t>(attempt.sharedCornerIdentityHashes.size()));
+      for (const std::uint64_t hash : attempt.sharedCornerIdentityHashes) {
+        hash_combine_i64(completionHash, static_cast<std::int64_t>(hash));
+      }
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.routeIdentityHash));
+      hash_combine_i64(completionHash, attempt.routeCandidateCount);
+      hash_combine_i64(completionHash, attempt.routeIntervalCount);
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.rollbackOwnedBytes));
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.candidateOwnedBytes));
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.descriptorOwnedBytes));
+      hash_combine_i64(
+          completionHash,
+          static_cast<std::int64_t>(attempt.completedPatchOwnedBytes));
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.assemblyOwnedBytes));
+      hash_combine_i64(
+          completionHash,
+          static_cast<std::int64_t>(attempt.totalStructuralOwnedBytes));
       hash_combine_i64(completionHash, static_cast<int>(attempt.backend));
       hash_combine_i64(completionHash, attempt.fromVariant);
       hash_combine_i64(completionHash, attempt.toVariant);

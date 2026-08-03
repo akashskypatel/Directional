@@ -136,7 +136,16 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0;
   std::size_t surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0;
   int surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> surfaceCellCompletionOwnershipLastCandidateHalfedges;
   std::vector<int> surfaceCellCompletionOwnershipLastAffectedPatches;
+  std::size_t surfaceCellCompletionOwnershipRouteCandidateCount = 0;
+  std::uint64_t surfaceCellCompletionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipPeakStructuralOwnedBytes = 0U;
   std::string surfaceCellCompletionOwnershipStructuralExhaustionReason =
       "none";
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;

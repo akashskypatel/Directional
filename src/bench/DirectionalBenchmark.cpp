@@ -1656,6 +1656,42 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\"completionOwnershipLastCandidateHalfedge\":"
       << result.surfaceCellContext.completionOwnershipLastCandidateHalfedge
       << ","
+      << "\"completionOwnershipRouteCandidateCount\":"
+      << result.surfaceCellContext.completionOwnershipRouteCandidateCount
+      << ","
+      << "\"completionOwnershipRollbackOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipRollbackOwnedBytes
+      << ","
+      << "\"completionOwnershipCandidateOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipCandidateOwnedBytes
+      << ","
+      << "\"completionOwnershipDescriptorOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipDescriptorOwnedBytes
+      << ","
+      << "\"completionOwnershipCompletedPatchOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCompletedPatchOwnedBytes
+      << ","
+      << "\"completionOwnershipAssemblyOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipAssemblyOwnedBytes
+      << ","
+      << "\"completionOwnershipCurrentStructuralOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipCurrentStructuralOwnedBytes
+      << ","
+      << "\"completionOwnershipPeakStructuralOwnedBytes\":"
+      << result.surfaceCellContext.completionOwnershipPeakStructuralOwnedBytes
+      << ","
+      << "\"completionOwnershipLastCandidateHalfedges\":[";
+  for (std::size_t halfedgeIndex = 0;
+       halfedgeIndex < result.surfaceCellContext
+                           .completionOwnershipLastCandidateHalfedges.size();
+       ++halfedgeIndex) {
+    if (halfedgeIndex > 0U) out << ",";
+    out << result.surfaceCellContext
+               .completionOwnershipLastCandidateHalfedges[halfedgeIndex];
+  }
+  out << "],"
       << "\"completionOwnershipStructuralExhaustionReason\":\""
       << geometry::surface_cell_structural_repair_exhaustion_reason_name(
              result.surfaceCellContext
@@ -1699,6 +1735,37 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << "\"selectedPatch\":" << attempt.selectedPatch << ","
         << "\"selectedHalfedge\":" << attempt.selectedHalfedge
         << ","
+        << "\"routeIdentityHash\":" << attempt.routeIdentityHash
+        << ","
+        << "\"routeCandidateCount\":" << attempt.routeCandidateCount
+        << ","
+        << "\"routeIntervalCount\":" << attempt.routeIntervalCount
+        << ","
+        << "\"rollbackOwnedBytes\":" << attempt.rollbackOwnedBytes
+        << ","
+        << "\"candidateOwnedBytes\":" << attempt.candidateOwnedBytes
+        << ","
+        << "\"descriptorOwnedBytes\":" << attempt.descriptorOwnedBytes
+        << ","
+        << "\"completedPatchOwnedBytes\":"
+        << attempt.completedPatchOwnedBytes << ","
+        << "\"assemblyOwnedBytes\":" << attempt.assemblyOwnedBytes
+        << ","
+        << "\"totalStructuralOwnedBytes\":"
+        << attempt.totalStructuralOwnedBytes << ","
+        << "\"selectedHalfedges\":[";
+    for (std::size_t halfedgeIndex = 0;
+         halfedgeIndex < attempt.selectedHalfedges.size(); ++halfedgeIndex) {
+      if (halfedgeIndex > 0U) out << ",";
+      out << attempt.selectedHalfedges[halfedgeIndex];
+    }
+    out << "],\"sharedCornerIdentityHashes\":[";
+    for (std::size_t hashIndex = 0;
+         hashIndex < attempt.sharedCornerIdentityHashes.size(); ++hashIndex) {
+      if (hashIndex > 0U) out << ",";
+      out << attempt.sharedCornerIdentityHashes[hashIndex];
+    }
+    out << "],"
         << "\"backend\":\""
         << geometry::pure_quad_completion_backend_name(attempt.backend)
         << "\","

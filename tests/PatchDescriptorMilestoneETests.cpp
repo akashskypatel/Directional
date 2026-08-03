@@ -405,57 +405,52 @@ Fixture make_same_corner_distinct_boundary_components() {
 
 Fixture make_valid_parallel_route_same_corner_complex() {
   Fixture fixture;
-  fixture.V.resize(6, 3);
-  fixture.V << 0.0, 0.0, 0.0,
-               1.0, -1.0, 0.0,
-               2.0, -1.0, 0.0,
-               3.0, 0.0, 0.0,
-               2.0, -3.0, 0.0,
-               1.0, -3.0, 0.0;
-  fixture.F.resize(6, 3);
-  fixture.F << 0, 1, 2,
-               0, 2, 3,
-               3, 2, 4,
-               2, 1, 4,
-               1, 5, 4,
-               1, 0, 5;
+  // A triangulated annular source support.  Both arrangement domains use the
+  // same four authoritative corner vertices, but their boundary curves carry
+  // different complete face-route provenance through the annulus.
+  fixture.V.resize(8, 3);
+  fixture.V << -2.0, -2.0, 0.0,
+                2.0, -2.0, 0.0,
+                2.0,  2.0, 0.0,
+               -2.0,  2.0, 0.0,
+               -0.7, -0.7, 0.0,
+                0.7, -0.7, 0.0,
+                0.7,  0.7, 0.0,
+               -0.7,  0.7, 0.0;
+  fixture.F.resize(8, 3);
+  fixture.F << 0, 1, 5,
+               0, 5, 4,
+               1, 2, 6,
+               1, 6, 5,
+               2, 3, 7,
+               2, 7, 6,
+               3, 0, 4,
+               3, 4, 7;
 
-  const std::array<std::vector<int>, 6> incidentFaces{{
-      {0, 1, 5}, {0, 3, 4, 5}, {0, 1, 2, 3},
-      {1, 2}, {2, 3, 4}, {4, 5}}};
-  fixture.complex.nodes.resize(6);
-  for (int vertex = 0; vertex < 6; ++vertex) {
+  fixture.complex.nodes.resize(4);
+  for (int vertex = 0; vertex < 4; ++vertex) {
     auto &node = fixture.complex.nodes[static_cast<std::size_t>(vertex)];
     node.id = vertex;
     node.sourceComponent = 0;
     node.sourceSheet = 0;
-    for (const int face : incidentFaces[static_cast<std::size_t>(vertex)]) {
-      int corner = -1;
-      for (int candidate = 0; candidate < 3; ++candidate) {
-        if (fixture.F(face, candidate) == vertex) {
-          corner = candidate;
-          break;
+    for (int face = 0; face < fixture.F.rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (fixture.F(face, corner) != vertex) continue;
+        Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+        barycentric(corner) = 1.0;
+        if (node.sourceFace < 0) {
+          node.sourceFace = face;
+          node.barycentric = barycentric;
         }
+        node.occurrences.push_back({face, barycentric});
       }
-      if (corner < 0) {
-        return fixture;
-      }
-      Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
-      barycentric(corner) = 1.0;
-      if (node.sourceFace < 0) {
-        node.sourceFace = face;
-        node.barycentric = barycentric;
-      }
-      node.occurrences.push_back({face, barycentric});
     }
   }
 
-  fixture.complex.halfedges.resize(14);
-  const auto configureHalfedge = [&](const int id, const int twin,
-                                     const int from, const int to,
-                                     const int cell, const int next,
-                                     const int sourceFace, const int sourceArc,
-                                     const int family) {
+  fixture.complex.halfedges.resize(16);
+  const auto configureEdge = [&](const int id, const int twin, const int from,
+                                 const int to, const int cell, const int next,
+                                 const int side, const bool alternateRoute) {
     auto &edge = fixture.complex.halfedges[static_cast<std::size_t>(id)];
     edge.id = id;
     edge.twin = twin;
@@ -463,84 +458,91 @@ Fixture make_valid_parallel_route_same_corner_complex() {
     edge.to = to;
     edge.cell = cell;
     edge.next = next;
-    edge.sourceFace = sourceFace;
-    edge.sourceArc = sourceArc;
-    edge.family = family;
-    edge.strand = sourceArc;
+    edge.family = side & 1;
+    edge.sourceFace = 2 * side;
+    edge.sourceArc = 100 * (alternateRoute ? 2 : 1) + side;
+    edge.strand = edge.sourceArc;
     edge.sourceComponent = 0;
     edge.sourceSheet = 0;
-    edge.railId = sourceArc;
-    edge.curveId = 100 + sourceArc;
-    directional::geometry::SurfaceArrangementProvenance provenance;
-    provenance.sourceArc = sourceArc;
-    provenance.sourceFace = sourceFace;
-    provenance.family = family;
-    provenance.strand = sourceArc;
-    provenance.sourceComponent = 0;
-    provenance.sourceSheet = 0;
-    provenance.railId = edge.railId;
-    provenance.curveId = edge.curveId;
-    edge.provenance.push_back(provenance);
+    edge.railId = (alternateRoute ? 1000 : 0) + side;
+    edge.curveId = (alternateRoute ? 2000 : 1000) + side;
+    edge.sourceT0 = 0.0;
+    edge.sourceT1 = 1.0;
+    const auto addProvenance = [&](const int face, const int ordinal) {
+      directional::geometry::SurfaceArrangementProvenance provenance;
+      provenance.sourceArc = edge.sourceArc + ordinal;
+      provenance.sourceFace = face;
+      provenance.family = edge.family;
+      provenance.strand = edge.strand;
+      provenance.sourceComponent = 0;
+      provenance.sourceSheet = 0;
+      provenance.railId = edge.railId;
+      provenance.curveId = edge.curveId;
+      provenance.sourceT0 = 0.0;
+      provenance.sourceT1 = 1.0;
+      edge.provenance.push_back(provenance);
+    };
+    addProvenance(2 * side, 0);
+    if (alternateRoute) {
+      addProvenance(2 * side + 1, 1);
+      addProvenance((2 * ((side + 1) % 4) + 1) % 8, 2);
+    }
   };
 
-  // Patch A: 0 -> 1 -> 2 -> 3 -> 0.
-  configureHalfedge(0, 1, 0, 1, 0, 2, 0, 0, 0);
-  configureHalfedge(2, 3, 1, 2, 0, 4, 0, 1, 1);
-  configureHalfedge(4, 5, 2, 3, 0, 6, 1, 2, 0);
-  configureHalfedge(6, 7, 3, 0, 0, 0, 1, 3, 1);
+  // Domain A and its exterior twin loop.
+  configureEdge(0, 1, 0, 1, 0, 2, 0, false);
+  configureEdge(2, 3, 1, 2, 0, 4, 1, false);
+  configureEdge(4, 5, 2, 3, 0, 6, 2, false);
+  configureEdge(6, 7, 3, 0, 0, 0, 3, false);
+  configureEdge(1, 0, 1, 0, 1, 7, 0, false);
+  configureEdge(7, 6, 0, 3, 1, 5, 3, false);
+  configureEdge(5, 4, 3, 2, 1, 3, 2, false);
+  configureEdge(3, 2, 2, 1, 1, 1, 1, false);
 
-  // Patch B traverses the shared chain in reverse and closes through the
-  // distinct lower route: 3 -> 2 -> 1 -> 0 -> 5 -> 4 -> 3.
-  configureHalfedge(5, 4, 3, 2, 1, 3, 2, 2, 0);
-  configureHalfedge(3, 2, 2, 1, 1, 1, 3, 1, 1);
-  configureHalfedge(1, 0, 1, 0, 1, 8, 5, 0, 0);
-  configureHalfedge(8, 9, 0, 5, 1, 10, 5, 4, 1);
-  configureHalfedge(10, 11, 5, 4, 1, 12, 4, 5, 0);
-  configureHalfedge(12, 13, 4, 3, 1, 5, 2, 6, 1);
+  // Domain B has the same authoritative corners but a distinct complete
+  // embedded route on every side.  Both completions are closed-form quads, so
+  // no rotation variant can bypass the initial same-corner claim.
+  configureEdge(8, 9, 0, 1, 2, 10, 0, true);
+  configureEdge(10, 11, 1, 2, 2, 12, 1, true);
+  configureEdge(12, 13, 2, 3, 2, 14, 2, true);
+  configureEdge(14, 15, 3, 0, 2, 8, 3, true);
+  configureEdge(9, 8, 1, 0, 3, 15, 0, true);
+  configureEdge(15, 14, 0, 3, 3, 13, 3, true);
+  configureEdge(13, 12, 3, 2, 3, 11, 2, true);
+  configureEdge(11, 10, 2, 1, 3, 9, 1, true);
 
-  // Exterior cycle: 0 -> 3 -> 4 -> 5 -> 0.
-  configureHalfedge(7, 6, 0, 3, 2, 13, 1, 3, 1);
-  configureHalfedge(13, 12, 3, 4, 2, 11, 2, 6, 1);
-  configureHalfedge(11, 10, 4, 5, 2, 9, 4, 5, 0);
-  configureHalfedge(9, 8, 5, 0, 2, 7, 5, 4, 1);
-
-  fixture.complex.cells.resize(3);
+  fixture.complex.cells.resize(4);
+  const std::vector<int> allFaces{0, 1, 2, 3, 4, 5, 6, 7};
   const auto configureCell = [&](const int id, std::vector<int> halfedges,
-                                 std::vector<int> sourceFaces,
-                                 std::vector<int> families,
-                                 const double signedArea,
                                  const bool exterior) {
     auto &cell = fixture.complex.cells[static_cast<std::size_t>(id)];
     cell.id = id;
-    cell.sourceFace = sourceFaces.empty() ? -1 : sourceFaces.front();
-    cell.sourceFaces = std::move(sourceFaces);
+    cell.sourceFace = 0;
+    cell.sourceFaces = allFaces;
     cell.halfedges = std::move(halfedges);
-    cell.sideFamilies = std::move(families);
-    cell.sideEdgeCounts.assign(cell.sideFamilies.size(), 1);
+    cell.sideFamilies = {0, 1, 0, 1};
+    cell.sideEdgeCounts = {1, 1, 1, 1};
     cell.boundaryCycle = exterior;
     cell.closed = true;
     cell.disk = true;
     cell.boundaryComponentCount = 1;
     cell.eulerCharacteristic = 1;
-    cell.signedArea = signedArea;
-    cell.area = std::abs(signedArea);
-    cell.cellClass =
-        exterior
-            ? directional::geometry::SurfaceArrangementCellClass::Exterior
-            : directional::geometry::SurfaceArrangementCellClass::
-                  PatchCandidate;
+    cell.signedArea = exterior ? -3.0 : 3.0;
+    cell.area = 3.0;
+    cell.cellClass = exterior
+        ? directional::geometry::SurfaceArrangementCellClass::Exterior
+        : directional::geometry::SurfaceArrangementCellClass::PatchCandidate;
   };
-  configureCell(0, {0, 2, 4, 6}, {0, 1}, {0, 1, 0, 1}, 2.0, false);
-  configureCell(1, {5, 3, 1, 8, 10, 12}, {2, 3, 4, 5},
-                {0, 1, 0, 1, 0, 1}, 4.0, false);
-  configureCell(2, {7, 13, 11, 9}, {0, 1, 2, 3, 4, 5},
-                {1, 1, 0, 1}, -6.0, true);
+  configureCell(0, {0, 2, 4, 6}, false);
+  configureCell(1, {1, 7, 5, 3}, true);
+  configureCell(2, {8, 10, 12, 14}, false);
+  configureCell(3, {9, 15, 13, 11}, true);
 
   auto &diagnostics = fixture.complex.diagnostics;
   diagnostics.embeddingValid = true;
-  diagnostics.sourceEulerCharacteristic = 1;
+  diagnostics.sourceEulerCharacteristic = 0;
   diagnostics.sourceConnectedComponentCount = 1;
-  diagnostics.sourceBoundaryLoopCount = 1;
+  diagnostics.sourceBoundaryLoopCount = 2;
   diagnostics.supportedArea = 6.0;
   diagnostics.inputMemoryBytes = 1;
   diagnostics.unsplitCrossings = 0;
@@ -951,7 +953,21 @@ TEST(PatchDescriptorMilestoneE,
   const Fixture fixture = make_valid_parallel_route_same_corner_complex();
   ASSERT_TRUE(directional::geometry::surface_simplification_detail::
                   validate_complex_incidence(fixture.complex));
-  ASSERT_TRUE(fixture.complex.diagnostics.topologyValid);
+  directional::geometry::SurfaceCellComplexCompletionOptions preconditionOptions;
+  preconditionOptions.maxSameCornerBoundaryRepairs = 0;
+  preconditionOptions.maxSameCornerCandidateEvaluations = 0;
+  preconditionOptions.maxSameCornerFullCompletionPasses = 1;
+  preconditionOptions.maxSameCornerVisitedStates = 1;
+  preconditionOptions.maxSameCornerInsertedVertices = 0;
+  const auto precondition =
+      directional::geometry::complete_surface_cell_complex(
+          fixture.complex, fixture.V, fixture.F, preconditionOptions);
+  ASSERT_FALSE(precondition.success);
+  ASSERT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                SameCornerDistinctBoundaryClaim,
+            precondition.assembly.ownershipConflict.classification);
+  ASSERT_GT(precondition.completionOwnershipRouteCandidateCount, 0);
+
   directional::geometry::SurfaceCellComplexCompletionOptions options;
   options.maxSameCornerBoundaryRepairs = 4;
   options.maxSameCornerCandidateEvaluations = 4;
@@ -972,9 +988,12 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_EQ(1, completion.completionOwnershipPeakLiveCandidateComplexes);
   EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);
   ASSERT_FALSE(completion.ownershipRepairAttempts.empty());
+  EXPECT_GT(completion.ownershipRepairAttempts.front().routeIntervalCount, 1);
+  EXPECT_EQ(completion.completionOwnershipRouteCandidateCount,
+            completion.ownershipRepairAttempts.front().routeCandidateCount);
   EXPECT_EQ(
       directional::geometry::SurfaceCellOwnershipRepairAction::
-          BoundarySectorSubdivision,
+          RouteCompleteBoundarySubdivision,
       completion.ownershipRepairAttempts.front().action);
   EXPECT_EQ(
       directional::geometry::SurfaceCellOwnershipRepairOutcome::
@@ -1023,6 +1042,10 @@ TEST(PatchDescriptorMilestoneE,
       fixture.complex, fixture.V, fixture.F, options);
 
   EXPECT_FALSE(completion.success);
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                SameCornerDistinctBoundaryClaim,
+            completion.assembly.ownershipConflict.classification);
+  EXPECT_GT(completion.completionOwnershipRouteCandidateCount, 0);
   EXPECT_EQ(0, completion.completionOwnershipStructuralRepairAttempts);
   EXPECT_EQ(0, completion.completionOwnershipStructuralCandidatesConsumed);
   EXPECT_EQ(1, completion.completionOwnershipFullRecomputationPasses);
@@ -1043,7 +1066,7 @@ TEST(PatchDescriptorMilestoneE,
   options.maxSameCornerCandidateEvaluations = 1;
   options.maxSameCornerFullCompletionPasses = 2;
   options.maxSameCornerVisitedStates = 2;
-  options.maxSameCornerInsertedVertices = 2;
+  options.maxSameCornerInsertedVertices = 8;
 
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F, options);
@@ -1055,6 +1078,10 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_LE(completion.completionOwnershipPeakLiveCandidateComplexes, 1);
   EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);
   ASSERT_EQ(1U, completion.ownershipRepairAttempts.size());
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipRepairAction::
+                RouteCompleteBoundarySubdivision,
+            completion.ownershipRepairAttempts.front().action);
+  EXPECT_GT(completion.ownershipRepairAttempts.front().routeIntervalCount, 1);
   EXPECT_EQ(1, completion.ownershipRepairAttempts.front().candidateEvaluation);
   EXPECT_EQ(1, completion.ownershipRepairAttempts.front().structuralAttempt);
 }
@@ -1063,13 +1090,13 @@ TEST(PatchDescriptorMilestoneE,
      StructuralRepairLedgerIsPatchOrderInvariant) {
   const Fixture first = make_valid_parallel_route_same_corner_complex();
   Fixture reordered = first;
-  std::swap(reordered.complex.cells[0], reordered.complex.cells[1]);
+  std::swap(reordered.complex.cells[0], reordered.complex.cells[2]);
   reordered.complex.cells[0].id = 0;
-  reordered.complex.cells[1].id = 1;
+  reordered.complex.cells[2].id = 2;
   for (auto &edge : reordered.complex.halfedges) {
     if (edge.cell == 0) {
-      edge.cell = 1;
-    } else if (edge.cell == 1) {
+      edge.cell = 2;
+    } else if (edge.cell == 2) {
       edge.cell = 0;
     }
   }
@@ -1098,11 +1125,30 @@ TEST(PatchDescriptorMilestoneE,
             b.completionOwnershipVisitedStateCount);
   EXPECT_EQ(a.completionOwnershipStructuralExhaustionReason,
             b.completionOwnershipStructuralExhaustionReason);
+  ASSERT_FALSE(a.ownershipRepairAttempts.empty());
   ASSERT_EQ(a.ownershipRepairAttempts.size(), b.ownershipRepairAttempts.size());
   for (std::size_t index = 0; index < a.ownershipRepairAttempts.size(); ++index) {
     EXPECT_EQ(a.ownershipRepairAttempts[index].outcome,
               b.ownershipRepairAttempts[index].outcome);
     EXPECT_EQ(a.ownershipRepairAttempts[index].candidateEvaluation,
               b.ownershipRepairAttempts[index].candidateEvaluation);
+    EXPECT_EQ(a.ownershipRepairAttempts[index].routeIdentityHash,
+              b.ownershipRepairAttempts[index].routeIdentityHash);
+    EXPECT_EQ(a.ownershipRepairAttempts[index].routeIntervalCount,
+              b.ownershipRepairAttempts[index].routeIntervalCount);
+    EXPECT_EQ(a.ownershipRepairAttempts[index].selectedHalfedges,
+              b.ownershipRepairAttempts[index].selectedHalfedges);
   }
+}
+
+TEST(PatchDescriptorMilestoneE,
+     AlreadySuccessfulComplexPerformsNoStructuralRepair) {
+  const Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F);
+  ASSERT_TRUE(completion.success) << completion.failure;
+  EXPECT_EQ(0, completion.completionOwnershipStructuralRepairAttempts);
+  EXPECT_EQ(0, completion.completionOwnershipStructuralCandidatesConsumed);
+  EXPECT_EQ(0, completion.completionOwnershipRouteCandidateCount);
+  EXPECT_TRUE(completion.ownershipRepairAttempts.empty());
 }

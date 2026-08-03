@@ -622,24 +622,53 @@ std::set<int> canonical_cell_boundary(
   return result;
 }
 
-struct SameCornerBoundaryCandidate {
+struct SameCornerBoundaryRoute {
   int patch = -1;
-  int halfedge = -1;
   bool hardFeature = false;
-  std::vector<std::int64_t> boundaryIdentity;
-  // Exact embedded support without rail/curve/proposal labels. If two
-  // boundaries differ only in semantic labels while occupying the same source
-  // interval, they are overlapping ownership, not a parallel route.
-  std::vector<std::int64_t> geometricSupportIdentity;
+  SurfaceCellCanonicalIdentity firstCorner;
+  SurfaceCellCanonicalIdentity secondCorner;
+  std::vector<int> halfedges;
+  std::vector<std::vector<std::int64_t>> boundaryIdentities;
+  std::vector<std::vector<std::int64_t>> geometricSupportIdentities;
+  std::vector<std::int64_t> endpointIdentity;
+  std::vector<std::int64_t> exactIdentity;
+  std::vector<std::int64_t> geometricIdentity;
+};
 
-  friend bool operator<(const SameCornerBoundaryCandidate &lhs,
-                        const SameCornerBoundaryCandidate &rhs) {
-    return std::tie(lhs.hardFeature, lhs.boundaryIdentity,
-                    lhs.geometricSupportIdentity, lhs.patch, lhs.halfedge) <
-           std::tie(rhs.hardFeature, rhs.boundaryIdentity,
-                    rhs.geometricSupportIdentity, rhs.patch, rhs.halfedge);
+struct SameCornerRouteCandidate {
+  // Coupled route-sector candidates sort before individual route candidates.
+  // This is a topology-derived all-sector transaction, not an arbitrary subset.
+  int priority = 1;
+  bool hardFeature = false;
+  std::vector<int> patches;
+  std::vector<int> halfedges;
+  std::vector<std::uint64_t> sharedCornerIdentityHashes;
+  std::vector<std::int64_t> identity;
+
+  friend bool operator<(const SameCornerRouteCandidate &lhs,
+                        const SameCornerRouteCandidate &rhs) {
+    return std::tie(lhs.priority, lhs.hardFeature, lhs.identity, lhs.patches,
+                    lhs.halfedges) <
+           std::tie(rhs.priority, rhs.hardFeature, rhs.identity, rhs.patches,
+                    rhs.halfedges);
   }
 };
+
+struct SameCornerRouteCandidateSet {
+  std::vector<SameCornerRouteCandidate> candidates;
+  bool semanticOverlap = false;
+  bool incompleteRoute = false;
+};
+
+std::vector<std::int64_t> source_face_geometry_identity(
+    const Eigen::MatrixXi &F, const int face) {
+  if (face < 0 || face >= F.rows() || F.cols() != 3) {
+    return {};
+  }
+  std::array<int, 3> vertices{{F(face, 0), F(face, 1), F(face, 2)}};
+  std::sort(vertices.begin(), vertices.end());
+  return {vertices[0], vertices[1], vertices[2]};
+}
 
 std::vector<std::int64_t> halfedge_geometric_support_identity(
     const SurfaceCellComplex &complex,
@@ -660,104 +689,412 @@ std::vector<std::int64_t> halfedge_geometric_support_identity(
     std::swap(fromIdentity, toIdentity);
   }
 
-  // A single arrangement interval is geometrically determined by its exact
-  // authoritative endpoints and source sheet. Face/rail/proposal labels are
-  // chart or semantic metadata and cannot by themselves prove a distinct
-  // embedded route. Routes with intermediate arrangement nodes naturally
-  // produce different endpoint identities and remain eligible candidates.
-  std::vector<std::int64_t> result{
-      edge.sourceComponent, edge.sourceSheet};
+  // Geometric support deliberately excludes rail/curve/proposal labels.  It
+  // retains source-triangle vertex identities and interval parameters so two
+  // chart aliases of the same embedded interval compare equal while genuinely
+  // different routes through the source triangulation remain distinct.  Face
+  // row numbers are never serialized, preserving source-row invariance.
+  std::vector<std::vector<std::int64_t>> support;
+  const auto appendSupport = [&](const int sourceFace, const double t0,
+                                 const double t1) {
+    std::vector<std::int64_t> item =
+        source_face_geometry_identity(F, sourceFace);
+    if (item.empty()) {
+      return;
+    }
+    item.push_back(quantized_parameter(std::min(t0, t1)));
+    item.push_back(quantized_parameter(std::max(t0, t1)));
+    support.push_back(std::move(item));
+  };
+  appendSupport(edge.sourceFace, edge.sourceT0, edge.sourceT1);
+  for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+    appendSupport(entry.sourceFace, entry.sourceT0, entry.sourceT1);
+  }
+  std::sort(support.begin(), support.end());
+  support.erase(std::unique(support.begin(), support.end()), support.end());
+
+  std::vector<std::int64_t> result{edge.sourceComponent, edge.sourceSheet};
   append_identity(result, fromIdentity);
   append_identity(result, toIdentity);
-  return result;
-}
-
-std::map<std::vector<std::int64_t>, SameCornerBoundaryCandidate>
-canonical_cell_boundary_candidates(const SurfaceCellComplex &complex,
-                                   const SurfaceArrangementCell &cell,
-                                   const Eigen::MatrixXi &F) {
-  std::map<std::vector<std::int64_t>, SameCornerBoundaryCandidate> result;
-  for (const int halfedgeId : cell.halfedges) {
-    const int canonical = canonical_complex_halfedge(complex, halfedgeId);
-    if (canonical < 0 ||
-        canonical >= static_cast<int>(complex.halfedges.size())) {
-      return {};
-    }
-    const SurfaceArrangementHalfedge &edge =
-        complex.halfedges[static_cast<std::size_t>(canonical)];
-    if (edge.twin < 0 ||
-        edge.twin >= static_cast<int>(complex.halfedges.size())) {
-      return {};
-    }
-    std::vector<std::int64_t> identity =
-        halfedge_identity(complex, edge, F, false);
-    if (identity.empty()) {
-      return {};
-    }
-    const SurfaceArrangementHalfedge &twin =
-        complex.halfedges[static_cast<std::size_t>(edge.twin)];
-    SameCornerBoundaryCandidate candidate;
-    candidate.patch = cell.id;
-    candidate.halfedge = canonical;
-    candidate.hardFeature = edge.hardFeature || twin.hardFeature;
-    candidate.boundaryIdentity = identity;
-    candidate.geometricSupportIdentity =
-        halfedge_geometric_support_identity(complex, edge, F);
-    if (candidate.geometricSupportIdentity.empty()) {
-      return {};
-    }
-    result.emplace(std::move(identity), std::move(candidate));
+  result.push_back(static_cast<std::int64_t>(support.size()));
+  for (const auto &item : support) {
+    result.push_back(static_cast<std::int64_t>(item.size()));
+    result.insert(result.end(), item.begin(), item.end());
   }
   return result;
 }
 
-std::vector<SameCornerBoundaryCandidate> same_corner_boundary_candidates(
+SurfaceCellCanonicalIdentity boundary_node_identity(
+    const SurfaceCellComplex &complex, const int halfedgeId,
+    const Eigen::MatrixXi &F) {
+  SurfaceCellCanonicalIdentity result;
+  if (halfedgeId < 0 ||
+      halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+    return result;
+  }
+  const SurfaceArrangementHalfedge &edge =
+      complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+  const SurfaceArrangementNode *node = find_node(complex, edge.from);
+  if (node == nullptr) {
+    return result;
+  }
+  return arrangement_node_identity(*node, F, edge.sourceComponent,
+                                   edge.sourceSheet);
+}
+
+std::vector<std::int64_t> endpoint_pair_identity(
+    SurfaceCellCanonicalIdentity first, SurfaceCellCanonicalIdentity second) {
+  if (!first.valid || !second.valid || first == second) {
+    return {};
+  }
+  if (second < first) {
+    std::swap(first, second);
+  }
+  std::vector<std::int64_t> result;
+  append_identity(result, first);
+  append_identity(result, second);
+  return result;
+}
+
+std::vector<SameCornerBoundaryRoute> boundary_routes_between_shared_corners(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
+    const Eigen::MatrixXi &F,
+    const std::set<SurfaceCellCanonicalIdentity> &sharedCorners,
+    bool &incomplete) {
+  std::vector<int> boundary;
+  if (!ordered_boundary(complex, cell, boundary) || boundary.size() < 2U) {
+    incomplete = true;
+    return {};
+  }
+  std::vector<SurfaceCellCanonicalIdentity> nodeIdentities;
+  nodeIdentities.reserve(boundary.size());
+  std::vector<int> anchors;
+  for (int index = 0; index < static_cast<int>(boundary.size()); ++index) {
+    SurfaceCellCanonicalIdentity identity =
+        boundary_node_identity(complex, boundary[static_cast<std::size_t>(index)],
+                               F);
+    if (!identity.valid) {
+      incomplete = true;
+      return {};
+    }
+    nodeIdentities.push_back(identity);
+    if (sharedCorners.count(identity) != 0U) {
+      anchors.push_back(index);
+    }
+  }
+  if (anchors.size() < 2U) {
+    incomplete = true;
+    return {};
+  }
+
+  std::vector<SameCornerBoundaryRoute> routes;
+  routes.reserve(anchors.size());
+  for (int anchor = 0; anchor < static_cast<int>(anchors.size()); ++anchor) {
+    const int begin = anchors[static_cast<std::size_t>(anchor)];
+    const int end = anchors[static_cast<std::size_t>(
+        (anchor + 1) % static_cast<int>(anchors.size()))];
+    SameCornerBoundaryRoute route;
+    route.patch = cell.id;
+    route.firstCorner = nodeIdentities[static_cast<std::size_t>(begin)];
+    route.secondCorner = nodeIdentities[static_cast<std::size_t>(end)];
+    route.endpointIdentity =
+        endpoint_pair_identity(route.firstCorner, route.secondCorner);
+    if (route.endpointIdentity.empty()) {
+      incomplete = true;
+      return {};
+    }
+
+    int cursor = begin;
+    do {
+      const int directedHalfedge = boundary[static_cast<std::size_t>(cursor)];
+      const int canonical =
+          canonical_complex_halfedge(complex, directedHalfedge);
+      if (canonical < 0 ||
+          canonical >= static_cast<int>(complex.halfedges.size())) {
+        incomplete = true;
+        return {};
+      }
+      const SurfaceArrangementHalfedge &edge =
+          complex.halfedges[static_cast<std::size_t>(canonical)];
+      const SurfaceArrangementHalfedge &twin =
+          complex.halfedges[static_cast<std::size_t>(edge.twin)];
+      std::vector<std::int64_t> boundaryIdentity =
+          halfedge_identity(complex, edge, F, false);
+      std::vector<std::int64_t> geometricIdentity =
+          halfedge_geometric_support_identity(complex, edge, F);
+      if (boundaryIdentity.empty() || geometricIdentity.empty()) {
+        incomplete = true;
+        return {};
+      }
+      route.halfedges.push_back(canonical);
+      route.boundaryIdentities.push_back(std::move(boundaryIdentity));
+      route.geometricSupportIdentities.push_back(
+          std::move(geometricIdentity));
+      route.hardFeature = route.hardFeature || edge.hardFeature ||
+                          twin.hardFeature;
+      cursor = (cursor + 1) % static_cast<int>(boundary.size());
+    } while (cursor != end);
+
+    // Normalize route orientation by exact authoritative endpoint identity.
+    if (route.secondCorner < route.firstCorner) {
+      std::swap(route.firstCorner, route.secondCorner);
+      std::reverse(route.halfedges.begin(), route.halfedges.end());
+      std::reverse(route.boundaryIdentities.begin(),
+                   route.boundaryIdentities.end());
+      std::reverse(route.geometricSupportIdentities.begin(),
+                   route.geometricSupportIdentities.end());
+    }
+
+    route.exactIdentity = route.endpointIdentity;
+    route.exactIdentity.push_back(
+        static_cast<std::int64_t>(route.boundaryIdentities.size()));
+    for (const auto &identity : route.boundaryIdentities) {
+      route.exactIdentity.push_back(
+          static_cast<std::int64_t>(identity.size()));
+      route.exactIdentity.insert(route.exactIdentity.end(), identity.begin(),
+                                 identity.end());
+    }
+    route.geometricIdentity = route.endpointIdentity;
+    route.geometricIdentity.push_back(
+        static_cast<std::int64_t>(route.geometricSupportIdentities.size()));
+    for (const auto &identity : route.geometricSupportIdentities) {
+      route.geometricIdentity.push_back(
+          static_cast<std::int64_t>(identity.size()));
+      route.geometricIdentity.insert(route.geometricIdentity.end(),
+                                     identity.begin(), identity.end());
+    }
+    routes.push_back(std::move(route));
+  }
+  return routes;
+}
+
+SameCornerRouteCandidateSet same_corner_route_candidates(
     const SurfaceCellComplex &complex,
     const SurfaceCellOwnershipConflict &conflict,
     const Eigen::MatrixXi &F) {
+  SameCornerRouteCandidateSet result;
   const SurfaceArrangementCell *first =
       find_cell_by_id(complex, conflict.firstPatch);
   const SurfaceArrangementCell *second =
       find_cell_by_id(complex, conflict.secondPatch);
   if (first == nullptr || second == nullptr) {
-    return {};
-  }
-  const auto firstBoundary =
-      canonical_cell_boundary_candidates(complex, *first, F);
-  const auto secondBoundary =
-      canonical_cell_boundary_candidates(complex, *second, F);
-  if (firstBoundary.empty() || secondBoundary.empty()) {
-    return {};
+    result.incompleteRoute = true;
+    return result;
   }
 
-  std::set<std::vector<std::int64_t>> firstGeometricSupport;
-  std::set<std::vector<std::int64_t>> secondGeometricSupport;
-  for (const auto &[identity, candidate] : firstBoundary) {
-    (void)identity;
-    firstGeometricSupport.insert(candidate.geometricSupportIdentity);
+  const auto boundaryNodeSet = [&](const SurfaceArrangementCell &cell) {
+    std::set<SurfaceCellCanonicalIdentity> identities;
+    std::vector<int> boundary;
+    if (!ordered_boundary(complex, cell, boundary)) {
+      return identities;
+    }
+    for (const int halfedge : boundary) {
+      SurfaceCellCanonicalIdentity identity =
+          boundary_node_identity(complex, halfedge, F);
+      if (!identity.valid) {
+        identities.clear();
+        return identities;
+      }
+      identities.insert(std::move(identity));
+    }
+    return identities;
+  };
+
+  const std::set<SurfaceCellCanonicalIdentity> firstNodes =
+      boundaryNodeSet(*first);
+  const std::set<SurfaceCellCanonicalIdentity> secondNodes =
+      boundaryNodeSet(*second);
+  if (firstNodes.empty() || secondNodes.empty()) {
+    result.incompleteRoute = true;
+    return result;
   }
-  for (const auto &[identity, candidate] : secondBoundary) {
-    (void)identity;
-    secondGeometricSupport.insert(candidate.geometricSupportIdentity);
+  std::set<SurfaceCellCanonicalIdentity> sharedCorners;
+  std::set_intersection(firstNodes.begin(), firstNodes.end(),
+                        secondNodes.begin(), secondNodes.end(),
+                        std::inserter(sharedCorners, sharedCorners.end()));
+  if (sharedCorners.size() < 2U) {
+    result.incompleteRoute = true;
+    return result;
   }
 
-  std::vector<SameCornerBoundaryCandidate> candidates;
-  for (const auto &[identity, candidate] : firstBoundary) {
-    if (secondBoundary.count(identity) == 0U &&
-        secondGeometricSupport.count(candidate.geometricSupportIdentity) ==
-            0U) {
-      candidates.push_back(candidate);
+  bool incomplete = false;
+  const std::vector<SameCornerBoundaryRoute> firstRoutes =
+      boundary_routes_between_shared_corners(complex, *first, F,
+                                             sharedCorners, incomplete);
+  const std::vector<SameCornerBoundaryRoute> secondRoutes =
+      boundary_routes_between_shared_corners(complex, *second, F,
+                                             sharedCorners, incomplete);
+  if (incomplete || firstRoutes.empty() || secondRoutes.empty()) {
+    result.incompleteRoute = true;
+    return result;
+  }
+
+  std::map<std::vector<std::int64_t>, std::vector<SameCornerBoundaryRoute>>
+      firstByEndpoints;
+  std::map<std::vector<std::int64_t>, std::vector<SameCornerBoundaryRoute>>
+      secondByEndpoints;
+  for (const SameCornerBoundaryRoute &route : firstRoutes) {
+    firstByEndpoints[route.endpointIdentity].push_back(route);
+  }
+  for (const SameCornerBoundaryRoute &route : secondRoutes) {
+    secondByEndpoints[route.endpointIdentity].push_back(route);
+  }
+
+  for (auto &[endpoint, routes] : firstByEndpoints) {
+    auto secondIt = secondByEndpoints.find(endpoint);
+    if (secondIt == secondByEndpoints.end()) {
+      continue;
+    }
+    auto &otherRoutes = secondIt->second;
+    const auto routeLess = [](const SameCornerBoundaryRoute &lhs,
+                              const SameCornerBoundaryRoute &rhs) {
+      return std::tie(lhs.exactIdentity, lhs.geometricIdentity, lhs.patch,
+                      lhs.halfedges) <
+             std::tie(rhs.exactIdentity, rhs.geometricIdentity, rhs.patch,
+                      rhs.halfedges);
+    };
+    std::sort(routes.begin(), routes.end(), routeLess);
+    std::sort(otherRoutes.begin(), otherRoutes.end(), routeLess);
+    if (routes.size() != otherRoutes.size()) {
+      result.incompleteRoute = true;
+      continue;
+    }
+    for (std::size_t routeIndex = 0; routeIndex < routes.size(); ++routeIndex) {
+      const SameCornerBoundaryRoute &a = routes[routeIndex];
+      const SameCornerBoundaryRoute &b = otherRoutes[routeIndex];
+      if (a.exactIdentity == b.exactIdentity) {
+        continue;
+      }
+      if (a.geometricIdentity == b.geometricIdentity) {
+        result.semanticOverlap = true;
+        continue;
+      }
+
+      std::map<std::vector<std::int64_t>, int> aIntervals;
+      std::map<std::vector<std::int64_t>, int> bIntervals;
+      for (std::size_t index = 0; index < a.boundaryIdentities.size(); ++index) {
+        aIntervals.emplace(a.boundaryIdentities[index], a.halfedges[index]);
+      }
+      for (std::size_t index = 0; index < b.boundaryIdentities.size(); ++index) {
+        bIntervals.emplace(b.boundaryIdentities[index], b.halfedges[index]);
+      }
+      std::vector<std::pair<std::vector<std::int64_t>, int>> intervals;
+      for (const auto &[identity, halfedge] : aIntervals) {
+        if (bIntervals.count(identity) == 0U) {
+          intervals.emplace_back(identity, halfedge);
+        }
+      }
+      for (const auto &[identity, halfedge] : bIntervals) {
+        if (aIntervals.count(identity) == 0U) {
+          intervals.emplace_back(identity, halfedge);
+        }
+      }
+      std::sort(intervals.begin(), intervals.end(),
+                [](const auto &lhs, const auto &rhs) {
+                  return std::tie(lhs.first, lhs.second) <
+                         std::tie(rhs.first, rhs.second);
+                });
+      intervals.erase(std::unique(intervals.begin(), intervals.end(),
+                                  [](const auto &lhs, const auto &rhs) {
+                                    return lhs.second == rhs.second;
+                                  }),
+                      intervals.end());
+      if (intervals.empty()) {
+        result.incompleteRoute = true;
+        continue;
+      }
+
+      SameCornerRouteCandidate candidate;
+      candidate.hardFeature = a.hardFeature || b.hardFeature;
+      candidate.patches = {a.patch, b.patch};
+      std::sort(candidate.patches.begin(), candidate.patches.end());
+      candidate.patches.erase(
+          std::unique(candidate.patches.begin(), candidate.patches.end()),
+          candidate.patches.end());
+      candidate.sharedCornerIdentityHashes = {
+          a.firstCorner.hash(), a.secondCorner.hash()};
+      std::sort(candidate.sharedCornerIdentityHashes.begin(),
+                candidate.sharedCornerIdentityHashes.end());
+      for (const auto &[identity, halfedge] : intervals) {
+        (void)identity;
+        candidate.halfedges.push_back(halfedge);
+      }
+      candidate.identity = endpoint;
+      std::array<std::vector<std::int64_t>, 2> routeIdentities{
+          a.exactIdentity, b.exactIdentity};
+      if (routeIdentities[1] < routeIdentities[0]) {
+        std::swap(routeIdentities[0], routeIdentities[1]);
+      }
+      for (const auto &identity : routeIdentities) {
+        candidate.identity.push_back(
+            static_cast<std::int64_t>(identity.size()));
+        candidate.identity.insert(candidate.identity.end(), identity.begin(),
+                                  identity.end());
+      }
+      candidate.identity.push_back(
+          static_cast<std::int64_t>(intervals.size()));
+      for (const auto &[identity, halfedge] : intervals) {
+        (void)halfedge;
+        candidate.identity.push_back(
+            static_cast<std::int64_t>(identity.size()));
+        candidate.identity.insert(candidate.identity.end(), identity.begin(),
+                                  identity.end());
+      }
+      result.candidates.push_back(std::move(candidate));
     }
   }
-  for (const auto &[identity, candidate] : secondBoundary) {
-    if (firstBoundary.count(identity) == 0U &&
-        firstGeometricSupport.count(candidate.geometricSupportIdentity) ==
-            0U) {
-      candidates.push_back(candidate);
+
+  // When more than one differing route sector belongs to the same ownership
+  // claim, evaluate their union atomically before any individual sector.  A
+  // single-sector split can merely move the duplicate claim to an adjacent
+  // sector; the all-sector transaction is the unique topology-derived coupled
+  // candidate and does not enumerate a powerset.
+  if (result.candidates.size() > 1U) {
+    SameCornerRouteCandidate coupled;
+    coupled.priority = 0;
+    coupled.identity = {-1, static_cast<std::int64_t>(result.candidates.size())};
+    for (const SameCornerRouteCandidate &candidate : result.candidates) {
+      coupled.hardFeature = coupled.hardFeature || candidate.hardFeature;
+      coupled.patches.insert(coupled.patches.end(), candidate.patches.begin(),
+                             candidate.patches.end());
+      coupled.halfedges.insert(coupled.halfedges.end(),
+                               candidate.halfedges.begin(),
+                               candidate.halfedges.end());
+      coupled.sharedCornerIdentityHashes.insert(
+          coupled.sharedCornerIdentityHashes.end(),
+          candidate.sharedCornerIdentityHashes.begin(),
+          candidate.sharedCornerIdentityHashes.end());
+      coupled.identity.push_back(
+          static_cast<std::int64_t>(candidate.identity.size()));
+      coupled.identity.insert(coupled.identity.end(), candidate.identity.begin(),
+                              candidate.identity.end());
     }
+    std::sort(coupled.patches.begin(), coupled.patches.end());
+    coupled.patches.erase(
+        std::unique(coupled.patches.begin(), coupled.patches.end()),
+        coupled.patches.end());
+    std::sort(coupled.halfedges.begin(), coupled.halfedges.end());
+    coupled.halfedges.erase(
+        std::unique(coupled.halfedges.begin(), coupled.halfedges.end()),
+        coupled.halfedges.end());
+    std::sort(coupled.sharedCornerIdentityHashes.begin(),
+              coupled.sharedCornerIdentityHashes.end());
+    coupled.sharedCornerIdentityHashes.erase(
+        std::unique(coupled.sharedCornerIdentityHashes.begin(),
+                    coupled.sharedCornerIdentityHashes.end()),
+        coupled.sharedCornerIdentityHashes.end());
+    result.candidates.push_back(std::move(coupled));
   }
-  std::sort(candidates.begin(), candidates.end());
-  return candidates;
+
+  std::sort(result.candidates.begin(), result.candidates.end());
+  result.candidates.erase(
+      std::unique(result.candidates.begin(), result.candidates.end(),
+                  [](const SameCornerRouteCandidate &lhs,
+                     const SameCornerRouteCandidate &rhs) {
+                    return lhs.identity == rhs.identity;
+                  }),
+      result.candidates.end());
+  return result;
 }
 
 bool same_unordered_conflict_pair(const SurfaceCellOwnershipConflict &conflict,
@@ -969,6 +1306,137 @@ std::vector<int> affected_patches_for_halfedge(
   std::sort(patches.begin(), patches.end());
   patches.erase(std::unique(patches.begin(), patches.end()), patches.end());
   return patches;
+}
+
+
+std::vector<int> affected_patches_for_halfedges(
+    const SurfaceCellComplex &complex, const std::vector<int> &halfedges) {
+  std::vector<int> patches;
+  for (const int halfedge : halfedges) {
+    std::vector<int> local =
+        affected_patches_for_halfedge(complex, halfedge);
+    patches.insert(patches.end(), local.begin(), local.end());
+  }
+  std::sort(patches.begin(), patches.end());
+  patches.erase(std::unique(patches.begin(), patches.end()), patches.end());
+  return patches;
+}
+
+std::uint64_t exact_identity_hash(
+    const std::vector<std::int64_t> &identity) {
+  SurfaceCellCanonicalIdentity canonical;
+  canonical.valid = !identity.empty();
+  canonical.values = identity;
+  return canonical.hash();
+}
+
+std::uint64_t estimated_complex_owned_bytes(
+    const SurfaceCellComplex &complex) {
+  std::uint64_t bytes = sizeof(SurfaceCellComplex);
+  bytes += static_cast<std::uint64_t>(complex.nodes.capacity()) *
+           sizeof(SurfaceArrangementNode);
+  bytes += static_cast<std::uint64_t>(complex.halfedges.capacity()) *
+           sizeof(SurfaceArrangementHalfedge);
+  bytes += static_cast<std::uint64_t>(complex.cells.capacity()) *
+           sizeof(SurfaceArrangementCell);
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    bytes += static_cast<std::uint64_t>(node.occurrences.capacity()) *
+             sizeof(SurfaceArrangementNodeOccurrence);
+  }
+  for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
+    bytes += static_cast<std::uint64_t>(edge.provenance.capacity()) *
+             sizeof(SurfaceArrangementProvenance);
+  }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += static_cast<std::uint64_t>(cell.sourceFaces.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.halfedges.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.sideFamilies.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.sideEdgeCounts.capacity()) *
+             sizeof(int);
+  }
+  return bytes;
+}
+
+std::uint64_t estimated_descriptor_owned_bytes(
+    const PatchDescriptorSet &descriptors) {
+  std::uint64_t bytes = sizeof(PatchDescriptorSet);
+  bytes += static_cast<std::uint64_t>(descriptors.descriptors.capacity()) *
+           sizeof(PatchDescriptor);
+  bytes += static_cast<std::uint64_t>(
+               descriptors.unresolvedSingularVertices.capacity()) *
+           sizeof(int);
+  for (const PatchDescriptor &descriptor : descriptors.descriptors) {
+    bytes += static_cast<std::uint64_t>(descriptor.sides.capacity()) *
+             sizeof(PatchSideDescriptor);
+    bytes += static_cast<std::uint64_t>(
+                 descriptor.singularSourceVertices.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(
+                 descriptor.singularNumerators.capacity()) *
+             sizeof(int);
+    for (const PatchSideDescriptor &side : descriptor.sides) {
+      bytes += static_cast<std::uint64_t>(side.halfedges.capacity()) *
+               sizeof(int);
+      bytes += static_cast<std::uint64_t>(side.boundaryVertices.capacity()) *
+               sizeof(int);
+    }
+    const PureQuadPatch &patch = descriptor.patch;
+    bytes += static_cast<std::uint64_t>(patch.sideEdgeCounts.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(patch.turns.capacity()) * sizeof(int);
+    bytes += static_cast<std::uint64_t>(patch.boundaryVertices.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.capacity()) *
+             sizeof(SurfacePoint);
+    bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(patch.sourceFaces.capacity()) *
+             sizeof(int);
+  }
+  return bytes;
+}
+
+std::uint64_t estimated_mesh_owned_bytes(const PureQuadMesh &mesh) {
+  std::uint64_t bytes = sizeof(PureQuadMesh);
+  bytes += static_cast<std::uint64_t>(mesh.vertices.capacity()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.vertexPositions.size()) *
+           sizeof(double);
+  bytes += static_cast<std::uint64_t>(mesh.vertexProvenance.capacity()) *
+           sizeof(SurfacePoint);
+  bytes += static_cast<std::uint64_t>(mesh.quads.capacity()) *
+           sizeof(std::vector<int>);
+  for (const auto &quad : mesh.quads) {
+    bytes += static_cast<std::uint64_t>(quad.capacity()) * sizeof(int);
+  }
+  bytes += static_cast<std::uint64_t>(mesh.boundaryVertices.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.boundaryLoops.capacity()) *
+           sizeof(std::vector<int>);
+  for (const auto &loop : mesh.boundaryLoops) {
+    bytes += static_cast<std::uint64_t>(loop.capacity()) * sizeof(int);
+  }
+  bytes += static_cast<std::uint64_t>(mesh.sourceSideEdgeCounts.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.vertexLineage.capacity()) *
+           sizeof(PureQuadVertexLineage);
+  bytes += static_cast<std::uint64_t>(mesh.quadLineage.capacity()) *
+           sizeof(PureQuadFaceLineage);
+  return bytes;
+}
+
+std::uint64_t estimated_completed_patches_owned_bytes(
+    const std::vector<PureQuadMesh> &patches) {
+  std::uint64_t bytes =
+      static_cast<std::uint64_t>(patches.capacity()) * sizeof(PureQuadMesh);
+  for (const PureQuadMesh &patch : patches) {
+    bytes += estimated_mesh_owned_bytes(patch);
+  }
+  return bytes;
 }
 
 void release_rejected_completion_storage(
@@ -1549,6 +2017,14 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     int incrementalRecomputationPasses = 0;
     int currentLiveCandidateComplexes = 0;
     int peakLiveCandidateComplexes = 0;
+    int routeCandidateCount = 0;
+    std::uint64_t rollbackOwnedBytes = 0U;
+    std::uint64_t candidateOwnedBytes = 0U;
+    std::uint64_t descriptorOwnedBytes = 0U;
+    std::uint64_t completedPatchOwnedBytes = 0U;
+    std::uint64_t assemblyOwnedBytes = 0U;
+    std::uint64_t currentStructuralOwnedBytes = 0U;
+    std::uint64_t peakStructuralOwnedBytes = 0U;
     SurfaceCellStructuralRepairExhaustionReason exhaustionReason =
         SurfaceCellStructuralRepairExhaustionReason::None;
     std::set<patch_descriptor_detail::SurfaceCellRepairStateIdentity>
@@ -1604,6 +2080,17 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         ledger.currentLiveCandidateComplexes;
     pass.completionOwnershipPeakLiveCandidateComplexes =
         ledger.peakLiveCandidateComplexes;
+    pass.completionOwnershipRouteCandidateCount = ledger.routeCandidateCount;
+    pass.completionOwnershipRollbackOwnedBytes = ledger.rollbackOwnedBytes;
+    pass.completionOwnershipCandidateOwnedBytes = ledger.candidateOwnedBytes;
+    pass.completionOwnershipDescriptorOwnedBytes = ledger.descriptorOwnedBytes;
+    pass.completionOwnershipCompletedPatchOwnedBytes =
+        ledger.completedPatchOwnedBytes;
+    pass.completionOwnershipAssemblyOwnedBytes = ledger.assemblyOwnedBytes;
+    pass.completionOwnershipCurrentStructuralOwnedBytes =
+        ledger.currentStructuralOwnedBytes;
+    pass.completionOwnershipPeakStructuralOwnedBytes =
+        ledger.peakStructuralOwnedBytes;
     pass.completionOwnershipStructuralExhaustionReason =
         ledger.exhaustionReason;
     pass.ownershipRepairAttempts = std::move(aggregateAttempts);
@@ -1637,18 +2124,40 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
 
   const SurfaceCellOwnershipConflict originalConflict =
       current.assembly.ownershipConflict;
-  const std::vector<patch_descriptor_detail::SameCornerBoundaryCandidate>
-      candidates = patch_descriptor_detail::same_corner_boundary_candidates(
+  const patch_descriptor_detail::SameCornerRouteCandidateSet candidateSet =
+      patch_descriptor_detail::same_corner_route_candidates(
           current.preparedComplex, originalConflict, F);
+  const std::vector<patch_descriptor_detail::SameCornerRouteCandidate>
+      &candidates = candidateSet.candidates;
+  ledger.routeCandidateCount = static_cast<int>(candidates.size());
+  current.completionOwnershipRouteCandidateCount =
+      ledger.routeCandidateCount;
   if (candidates.empty()) {
-    ledger.exhaustionReason =
-        SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap;
-    current.failure = "SameCornerDistinctBoundaryOverlap:" +
-                      current.assembly.failure;
+    if (candidateSet.semanticOverlap) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap;
+      current.failure = "SameCornerDistinctBoundaryOverlap:" +
+                        current.assembly.failure;
+    } else if (candidateSet.incompleteRoute) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::IncompleteRoute;
+      current.failure = "SameCornerIncompleteBoundaryRoute:" +
+                        current.assembly.failure;
+    } else {
+      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
+          NoRouteCompleteCandidate;
+      current.failure = "SameCornerNoRouteCompleteCandidate:" +
+                        current.assembly.failure;
+    }
     current.assembly.failure = current.failure;
     patch_descriptor_detail::release_rejected_completion_storage(current);
     return finalize(std::move(current));
   }
+  ledger.rollbackOwnedBytes =
+      patch_descriptor_detail::estimated_complex_owned_bytes(
+          current.preparedComplex);
+  ledger.currentStructuralOwnedBytes = ledger.rollbackOwnedBytes;
+  ledger.peakStructuralOwnedBytes = ledger.currentStructuralOwnedBytes;
 
   // Retain one rollback snapshot (the prepared complex) and one mutable
   // candidate complex. Failed patch meshes and descriptors are not part of the
@@ -1663,8 +2172,15 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   bool sawNoProgress = false;
   bool sawIntroducedClaim = false;
   bool sawValidationFailure = false;
+  const auto releaseCandidateMemory = [&]() {
+    ledger.candidateOwnedBytes = 0U;
+    ledger.descriptorOwnedBytes = 0U;
+    ledger.completedPatchOwnedBytes = 0U;
+    ledger.assemblyOwnedBytes = 0U;
+    ledger.currentStructuralOwnedBytes = ledger.rollbackOwnedBytes;
+  };
 
-  for (const patch_descriptor_detail::SameCornerBoundaryCandidate &candidate :
+  for (const patch_descriptor_detail::SameCornerRouteCandidate &candidate :
        candidates) {
     if (ledger.candidatesConsumed >= ledger.candidateBudget) {
       ledger.exhaustionReason =
@@ -1691,25 +2207,49 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     ++ledger.structuralAttempts;
     SurfaceCellOwnershipRepairAttempt attempt;
     attempt.action =
-        SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision;
+        SurfaceCellOwnershipRepairAction::RouteCompleteBoundarySubdivision;
     attempt.conflictClass = originalConflict.classification;
     attempt.firstPatch = originalConflict.firstPatch;
     attempt.secondPatch = originalConflict.secondPatch;
-    attempt.selectedPatch = candidate.patch;
-    attempt.selectedHalfedge = candidate.halfedge;
+    attempt.selectedPatch = candidate.patches.empty()
+                                ? -1
+                                : candidate.patches.front();
+    attempt.selectedHalfedges = candidate.halfedges;
+    attempt.selectedHalfedge = candidate.halfedges.empty()
+                                   ? -1
+                                   : candidate.halfedges.front();
+    attempt.sharedCornerIdentityHashes =
+        candidate.sharedCornerIdentityHashes;
+    attempt.routeIdentityHash =
+        patch_descriptor_detail::exact_identity_hash(candidate.identity);
+    attempt.routeCandidateCount = ledger.routeCandidateCount;
+    attempt.routeIntervalCount =
+        static_cast<int>(candidate.halfedges.size());
     attempt.candidateEvaluation = ledger.candidatesConsumed;
     attempt.structuralAttempt = ledger.structuralAttempts;
     attempt.fullRecomputationPass = ledger.fullRecomputationPasses + 1;
     attempt.globalInsertedVerticesBefore = ledger.insertedVertices;
     attempt.affectedPatches =
-        patch_descriptor_detail::affected_patches_for_halfedge(
-            current.preparedComplex, candidate.halfedge);
-    current.completionOwnershipLastCandidateHalfedge = candidate.halfedge;
+        patch_descriptor_detail::affected_patches_for_halfedges(
+            current.preparedComplex, candidate.halfedges);
+    attempt.affectedPatches.insert(attempt.affectedPatches.end(),
+                                   candidate.patches.begin(),
+                                   candidate.patches.end());
+    std::sort(attempt.affectedPatches.begin(), attempt.affectedPatches.end());
+    attempt.affectedPatches.erase(
+        std::unique(attempt.affectedPatches.begin(),
+                    attempt.affectedPatches.end()),
+        attempt.affectedPatches.end());
+    current.completionOwnershipLastCandidateHalfedge =
+        attempt.selectedHalfedge;
+    current.completionOwnershipLastCandidateHalfedges =
+        candidate.halfedges;
     current.completionOwnershipLastAffectedPatches = attempt.affectedPatches;
-    const int selectedBackend =
-        candidate.patch == originalConflict.firstPatch
-            ? originalConflict.firstCompletionBackend
-            : originalConflict.secondCompletionBackend;
+    int selectedBackend = originalConflict.firstCompletionBackend;
+    if (std::find(candidate.patches.begin(), candidate.patches.end(),
+                  originalConflict.secondPatch) != candidate.patches.end()) {
+      selectedBackend = originalConflict.secondCompletionBackend;
+    }
     attempt.backend =
         selectedBackend >=
                     static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
@@ -1718,17 +2258,44 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
                                            BoundedCombinatorial)
             ? static_cast<PureQuadCompletionBackend>(selectedBackend)
             : PureQuadCompletionBackend::ClosedForm;
+    attempt.rollbackOwnedBytes = ledger.rollbackOwnedBytes;
+
+    std::map<int, int> routeInsertions;
+    for (const int halfedge : candidate.halfedges) {
+      routeInsertions.emplace(halfedge, 1);
+    }
+    if (routeInsertions.empty()) {
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::IncompleteRoute;
+      attempt.failure = "RouteCompleteCandidateHasNoIntervals";
+      aggregateAttempts.push_back(std::move(attempt));
+      sawValidationFailure = true;
+      continue;
+    }
 
     SurfaceCellSubdivisionResult subdivision =
-        subdivide_surface_cell_complex_edges(
-            current.preparedComplex, {{candidate.halfedge, 1}});
+        subdivide_surface_cell_complex_edges(current.preparedComplex,
+                                             routeInsertions);
     attempt.insertedVertices = subdivision.insertedVertices;
     attempt.splitUndirectedEdges = subdivision.splitUndirectedEdges;
     if (!subdivision.success) {
       attempt.outcome = SurfaceCellOwnershipRepairOutcome::SubdivisionFailed;
-      attempt.failure = "BoundarySectorSubdivision:" + subdivision.failure;
+      attempt.failure = "RouteCompleteBoundarySubdivision:" +
+                        subdivision.failure;
       attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
       aggregateAttempts.push_back(std::move(attempt));
+      continue;
+    }
+    if (subdivision.splitUndirectedEdges !=
+            static_cast<int>(routeInsertions.size()) ||
+        subdivision.insertedVertices !=
+            static_cast<int>(routeInsertions.size())) {
+      attempt.outcome =
+          SurfaceCellOwnershipRepairOutcome::RouteValidationFailed;
+      attempt.failure = "RouteCompleteSubdivisionIncomplete";
+      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
+      aggregateAttempts.push_back(std::move(attempt));
+      subdivision.complex = {};
+      sawValidationFailure = true;
       continue;
     }
     if (ledger.insertedVertices + subdivision.insertedVertices >
@@ -1750,6 +2317,15 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         std::max(ledger.peakLiveCandidateComplexes,
                  ledger.currentLiveCandidateComplexes);
     attempt.liveCandidateComplexes = ledger.currentLiveCandidateComplexes;
+    ledger.candidateOwnedBytes =
+        patch_descriptor_detail::estimated_complex_owned_bytes(
+            subdivision.complex);
+    attempt.candidateOwnedBytes = ledger.candidateOwnedBytes;
+    ledger.currentStructuralOwnedBytes =
+        ledger.rollbackOwnedBytes + ledger.candidateOwnedBytes;
+    ledger.peakStructuralOwnedBytes =
+        std::max(ledger.peakStructuralOwnedBytes,
+                 ledger.currentStructuralOwnedBytes);
 
     SurfaceCellComplexCompletionResult candidateResult =
         patch_descriptor_detail::complete_surface_cell_complex_pass(
@@ -1757,6 +2333,32 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     ++ledger.fullRecomputationPasses;
     ledger.currentLiveCandidateComplexes = 0;
     subdivision.complex = {};
+
+    ledger.candidateOwnedBytes = candidateResult.hasPreparedComplex
+        ? patch_descriptor_detail::estimated_complex_owned_bytes(
+              candidateResult.preparedComplex)
+        : 0U;
+    ledger.descriptorOwnedBytes =
+        patch_descriptor_detail::estimated_descriptor_owned_bytes(
+            candidateResult.descriptors);
+    ledger.completedPatchOwnedBytes =
+        patch_descriptor_detail::estimated_completed_patches_owned_bytes(
+            candidateResult.completedPatches);
+    ledger.assemblyOwnedBytes =
+        patch_descriptor_detail::estimated_mesh_owned_bytes(
+            candidateResult.assembly.mesh);
+    ledger.currentStructuralOwnedBytes =
+        ledger.rollbackOwnedBytes + ledger.candidateOwnedBytes +
+        ledger.descriptorOwnedBytes + ledger.completedPatchOwnedBytes +
+        ledger.assemblyOwnedBytes;
+    ledger.peakStructuralOwnedBytes =
+        std::max(ledger.peakStructuralOwnedBytes,
+                 ledger.currentStructuralOwnedBytes);
+    attempt.candidateOwnedBytes = ledger.candidateOwnedBytes;
+    attempt.descriptorOwnedBytes = ledger.descriptorOwnedBytes;
+    attempt.completedPatchOwnedBytes = ledger.completedPatchOwnedBytes;
+    attempt.assemblyOwnedBytes = ledger.assemblyOwnedBytes;
+    attempt.totalStructuralOwnedBytes = ledger.currentStructuralOwnedBytes;
 
     attempt.completionSucceeded = candidateResult.success;
     attempt.resultingConflictClass =
@@ -1771,9 +2373,13 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       attempt.visitedStateCount =
           static_cast<int>(ledger.visitedStates.size());
       candidateResult.completionOwnershipLastCandidateHalfedge =
-          candidate.halfedge;
+          attempt.selectedHalfedge;
+      candidateResult.completionOwnershipLastCandidateHalfedges =
+          candidate.halfedges;
       candidateResult.completionOwnershipLastAffectedPatches =
           attempt.affectedPatches;
+      candidateResult.completionOwnershipRouteCandidateCount =
+          ledger.routeCandidateCount;
       aggregateAttempts.push_back(std::move(attempt));
       mergePassEvidence(candidateResult);
       return finalize(std::move(candidateResult));
@@ -1798,6 +2404,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       mergePassEvidence(candidateResult);
       patch_descriptor_detail::release_rejected_completion_storage(
           candidateResult);
+      releaseCandidateMemory();
       continue;
     }
     if (hasCandidateState) {
@@ -1809,6 +2416,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         mergePassEvidence(candidateResult);
         patch_descriptor_detail::release_rejected_completion_storage(
             candidateResult);
+        releaseCandidateMemory();
         ledger.exhaustionReason =
             SurfaceCellStructuralRepairExhaustionReason::VisitedStateBudget;
         break;
@@ -1851,6 +2459,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     mergePassEvidence(candidateResult);
     patch_descriptor_detail::release_rejected_completion_storage(
         candidateResult);
+    releaseCandidateMemory();
   }
 
   if (ledger.exhaustionReason ==
@@ -1866,7 +2475,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
           IntroducedOwnershipClaim;
     } else if (sawValidationFailure) {
       ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::NoProgress;
+          SurfaceCellStructuralRepairExhaustionReason::RouteValidationFailed;
     } else {
       ledger.exhaustionReason =
           SurfaceCellStructuralRepairExhaustionReason::NoCandidate;

@@ -69,6 +69,7 @@ struct PatchDescriptorSet {
 enum class SurfaceCellOwnershipRepairAction : int {
   CompletionVariant = 0,
   BoundarySectorSubdivision = 1,
+  RouteCompleteBoundarySubdivision = 2,
 };
 
 enum class SurfaceCellOwnershipRepairOutcome : int {
@@ -81,6 +82,9 @@ enum class SurfaceCellOwnershipRepairOutcome : int {
   Committed = 6,
   AssemblySucceeded = 7,
   BudgetExhausted = 8,
+  IncompleteRoute = 9,
+  RouteValidationFailed = 10,
+  NoRouteCompleteCandidate = 11,
 };
 
 inline const char *surface_cell_ownership_repair_outcome_name(
@@ -104,6 +108,12 @@ inline const char *surface_cell_ownership_repair_outcome_name(
     return "assembly-succeeded";
   case SurfaceCellOwnershipRepairOutcome::BudgetExhausted:
     return "budget-exhausted";
+  case SurfaceCellOwnershipRepairOutcome::IncompleteRoute:
+    return "incomplete-route";
+  case SurfaceCellOwnershipRepairOutcome::RouteValidationFailed:
+    return "route-validation-failed";
+  case SurfaceCellOwnershipRepairOutcome::NoRouteCompleteCandidate:
+    return "no-route-complete-candidate";
   }
   return "unknown";
 }
@@ -120,6 +130,9 @@ enum class SurfaceCellStructuralRepairExhaustionReason : int {
   NoCandidate = 8,
   OwnershipOverlap = 9,
   IntroducedOwnershipClaim = 10,
+  IncompleteRoute = 11,
+  RouteValidationFailed = 12,
+  NoRouteCompleteCandidate = 13,
 };
 
 inline const char *surface_cell_structural_repair_exhaustion_reason_name(
@@ -147,6 +160,12 @@ inline const char *surface_cell_structural_repair_exhaustion_reason_name(
     return "ownership-overlap";
   case SurfaceCellStructuralRepairExhaustionReason::IntroducedOwnershipClaim:
     return "introduced-ownership-claim";
+  case SurfaceCellStructuralRepairExhaustionReason::IncompleteRoute:
+    return "incomplete-route";
+  case SurfaceCellStructuralRepairExhaustionReason::RouteValidationFailed:
+    return "route-validation-failed";
+  case SurfaceCellStructuralRepairExhaustionReason::NoRouteCompleteCandidate:
+    return "no-route-complete-candidate";
   }
   return "unknown";
 }
@@ -158,6 +177,8 @@ inline const char *surface_cell_ownership_repair_action_name(
     return "completion-variant";
   case SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision:
     return "boundary-sector-subdivision";
+  case SurfaceCellOwnershipRepairAction::RouteCompleteBoundarySubdivision:
+    return "route-complete-boundary-subdivision";
   }
   return "unknown";
 }
@@ -174,6 +195,17 @@ struct SurfaceCellOwnershipRepairAttempt {
   int secondPatch = -1;
   int selectedPatch = -1;
   int selectedHalfedge = -1;
+  std::vector<int> selectedHalfedges;
+  std::vector<std::uint64_t> sharedCornerIdentityHashes;
+  std::uint64_t routeIdentityHash = 0U;
+  int routeCandidateCount = 0;
+  int routeIntervalCount = 0;
+  std::uint64_t rollbackOwnedBytes = 0U;
+  std::uint64_t candidateOwnedBytes = 0U;
+  std::uint64_t descriptorOwnedBytes = 0U;
+  std::uint64_t completedPatchOwnedBytes = 0U;
+  std::uint64_t assemblyOwnedBytes = 0U;
+  std::uint64_t totalStructuralOwnedBytes = 0U;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   int fromVariant = 0;
   int toVariant = 0;
@@ -248,7 +280,16 @@ struct SurfaceCellComplexCompletionResult {
   int completionOwnershipCurrentLiveCandidateComplexes = 0;
   int completionOwnershipPeakLiveCandidateComplexes = 0;
   int completionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> completionOwnershipLastCandidateHalfedges;
   std::vector<int> completionOwnershipLastAffectedPatches;
+  int completionOwnershipRouteCandidateCount = 0;
+  std::uint64_t completionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t completionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t completionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t completionOwnershipPeakStructuralOwnedBytes = 0U;
   SurfaceCellStructuralRepairExhaustionReason
       completionOwnershipStructuralExhaustionReason =
           SurfaceCellStructuralRepairExhaustionReason::None;

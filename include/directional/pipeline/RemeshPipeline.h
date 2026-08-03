@@ -375,7 +375,16 @@ struct SurfaceCellPipelineContext {
   int completionOwnershipCurrentLiveCandidateComplexes = 0;
   int completionOwnershipPeakLiveCandidateComplexes = 0;
   int completionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> completionOwnershipLastCandidateHalfedges;
   std::vector<int> completionOwnershipLastAffectedPatches;
+  int completionOwnershipRouteCandidateCount = 0;
+  std::uint64_t completionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t completionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t completionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t completionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t completionOwnershipPeakStructuralOwnedBytes = 0U;
   geometry::SurfaceCellStructuralRepairExhaustionReason
       completionOwnershipStructuralExhaustionReason =
           geometry::SurfaceCellStructuralRepairExhaustionReason::None;
