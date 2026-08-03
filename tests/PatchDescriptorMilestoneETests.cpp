@@ -1230,6 +1230,35 @@ TEST(PatchDescriptorMilestoneE,
 
 
 TEST(PatchDescriptorMilestoneE,
+     SubdivisionWithoutCommonSourceChartFailsBeforeMutation) {
+  Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
+  const auto &badEdge = fixture.complex.halfedges[2];
+  auto &badFrom =
+      fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
+  auto &badTo =
+      fixture.complex.nodes[static_cast<std::size_t>(badEdge.to)];
+  badFrom.occurrences.clear();
+  badTo.occurrences.clear();
+  badFrom.sourceFace = badEdge.sourceFace;
+  badTo.sourceFace =
+      (badEdge.sourceFace + 1) % static_cast<int>(fixture.F.rows());
+
+  const std::uint64_t before =
+      directional::geometry::surface_simplification_detail::
+          complex_structural_hash(fixture.complex);
+  const auto result =
+      directional::geometry::subdivide_surface_cell_complex_edges(
+          fixture.complex, {{2, 1}});
+
+  ASSERT_FALSE(result.success);
+  EXPECT_EQ("MissingCommonSourceChart", result.failure);
+  EXPECT_TRUE(result.rollbackEquivalent);
+  EXPECT_EQ(before,
+            directional::geometry::surface_simplification_detail::
+                complex_structural_hash(result.complex));
+}
+
+TEST(PatchDescriptorMilestoneE,
      FailedSubdivisionReturnsBitExactCommittedComplex) {
   Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
   ASSERT_GE(fixture.complex.halfedges.size(), 4U);
@@ -1242,8 +1271,10 @@ TEST(PatchDescriptorMilestoneE,
             fixture.complex.nodes.size());
 
   // Keep edge 0 valid so the transaction appends a tentative node first.
-  // Then remove common face support from edge 2's endpoint pair so its
-  // midpoint embedding fails after mutation has begun.
+  // Edge 2 still declares one exact common chart and source scope, but its
+  // finite endpoint coordinates interpolate to a zero-sum barycentric point.
+  // This reaches InvalidMidpointEmbedding after mutation has begun instead of
+  // testing the earlier MissingCommonSourceChart contract.
   auto &badFrom =
       fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
   auto &badTo =
@@ -1251,10 +1282,13 @@ TEST(PatchDescriptorMilestoneE,
   badFrom.occurrences.clear();
   badTo.occurrences.clear();
   badFrom.sourceFace = badEdge.sourceFace;
-  badTo.sourceFace =
-      (badEdge.sourceFace + 1) % static_cast<int>(fixture.F.rows());
-  badFrom.barycentric = Eigen::RowVector3d(0.2, 0.7, 0.1);
-  badTo.barycentric = Eigen::RowVector3d(0.2, 0.1, 0.7);
+  badTo.sourceFace = badEdge.sourceFace;
+  badFrom.sourceComponent = badEdge.sourceComponent;
+  badTo.sourceComponent = badEdge.sourceComponent;
+  badFrom.sourceSheet = badEdge.sourceSheet;
+  badTo.sourceSheet = badEdge.sourceSheet;
+  badFrom.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
+  badTo.barycentric = Eigen::RowVector3d(-1.0, 0.0, 0.0);
 
   const std::uint64_t before =
       directional::geometry::surface_simplification_detail::

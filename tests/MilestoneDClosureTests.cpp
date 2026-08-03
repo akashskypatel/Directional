@@ -296,20 +296,32 @@ std::vector<SurfaceArrangementArc> cylinder_grid_arcs(
   std::vector<SurfaceArrangementArc> arcs;
   int id = 0;
   for (const auto &[edge, metadata] : desired) {
-    for (int face = 0; face < mesh.faces.rows(); ++face) {
-      int localA = -1;
-      int localB = -1;
+    // Emit each intrinsic source edge once. Arrangement node identity stitches
+    // the edge across incident triangle charts; duplicating a coincident arc in
+    // every chart creates overlapping DCEL ownership before simplification.
+    int ownerFace = -1;
+    int localA = -1;
+    int localB = -1;
+    for (int face = 0; face < mesh.faces.rows() && ownerFace < 0; ++face) {
+      int candidateA = -1;
+      int candidateB = -1;
       for (int corner = 0; corner < 3; ++corner) {
-        if (mesh.faces(face, corner) == edge.first) localA = corner;
-        if (mesh.faces(face, corner) == edge.second) localB = corner;
+        if (mesh.faces(face, corner) == edge.first) candidateA = corner;
+        if (mesh.faces(face, corner) == edge.second) candidateB = corner;
       }
-      if (localA < 0 || localB < 0) continue;
-      Eigen::RowVector3d a = Eigen::RowVector3d::Zero();
-      Eigen::RowVector3d b = Eigen::RowVector3d::Zero();
-      a[localA] = 1.0;
-      b[localB] = 1.0;
-      arcs.push_back(arc(id++, face, a, b, metadata.first, metadata.second));
+      if (candidateA >= 0 && candidateB >= 0) {
+        ownerFace = face;
+        localA = candidateA;
+        localB = candidateB;
+      }
     }
+    if (ownerFace < 0) continue;
+    Eigen::RowVector3d a = Eigen::RowVector3d::Zero();
+    Eigen::RowVector3d b = Eigen::RowVector3d::Zero();
+    a[localA] = 1.0;
+    b[localB] = 1.0;
+    arcs.push_back(
+        arc(id++, ownerFace, a, b, metadata.first, metadata.second));
   }
   return arcs;
 }
@@ -489,8 +501,15 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   const SurfaceCellComplex complex =
       directional::geometry::build_surface_cell_complex(mesh.vertices,
                                                          mesh.faces, arcs);
+  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(complex));
+  ASSERT_TRUE(complex.diagnostics.incidenceValid);
+  ASSERT_TRUE(complex.diagnostics.embeddingValid);
+  ASSERT_TRUE(complex.diagnostics.orientationValid);
+  ASSERT_TRUE(complex.diagnostics.cellsDiskValid);
   ASSERT_TRUE(complex.diagnostics.topologyValid);
   ASSERT_EQ(complex.diagnostics.eulerCharacteristic, 0);
+  ASSERT_EQ(complex.diagnostics.connectedComponentCount, 1);
   ASSERT_EQ(complex.diagnostics.boundaryLoopCount, 2);
 
   const auto extracted =

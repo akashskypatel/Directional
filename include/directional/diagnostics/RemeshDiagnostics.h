@@ -115,6 +115,18 @@ struct RemeshDiagnostics {
   double surfaceCellCompletionSeconds = 0.0;
   double surfaceCellOptimizationSeconds = 0.0;
   double surfaceCellValidationSeconds = 0.0;
+  std::uint64_t surfaceCellTracingCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellTracingPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationPeakOwnedBytes = 0U;
+  std::size_t surfaceCellMaxSimultaneousLiveLargeStructures = 0;
+  bool surfaceCellTraceStorageReleasedAfterFlowRep = false;
+  bool surfaceCellFlowRepSelectionStorageReleasedAfterSelection = false;
+  bool surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement = false;
 
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;

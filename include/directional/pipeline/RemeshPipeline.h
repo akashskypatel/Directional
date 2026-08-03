@@ -319,6 +319,9 @@ struct SurfaceCellPipelineContext {
 
   geometry::SurfaceCellNetwork traceNetwork;
   bool hasTraceNetwork = false;
+  std::uint64_t tracingCurrentOwnedBytes = 0U;
+  std::uint64_t tracingPeakOwnedBytes = 0U;
+  bool traceStorageReleasedAfterFlowRep = false;
 
   std::vector<geometry::FlowRepArc> flowRepArcs;
   geometry::FlowRepSparseNetwork flowRepNetwork;
@@ -333,12 +336,18 @@ struct SurfaceCellPipelineContext {
       flowRepEndpointDiagnostics;
   std::string flowRepEndpointCompletionFailure;
   bool hasFlowRepNetwork = false;
+  std::uint64_t flowRepCurrentOwnedBytes = 0U;
+  std::uint64_t flowRepPeakOwnedBytes = 0U;
+  bool flowRepSelectionStorageReleasedAfterSelection = false;
 
   std::vector<geometry::SurfaceArrangementArc> embeddedArrangementArcs;
   bool hasEmbeddedArrangementArcs = false;
 
   geometry::SurfaceCellComplex arrangement;
   bool hasArrangement = false;
+  std::uint64_t arrangementCurrentOwnedBytes = 0U;
+  std::uint64_t arrangementPeakOwnedBytes = 0U;
+  bool embeddedArrangementStorageReleasedAfterArrangement = false;
 
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
@@ -358,6 +367,9 @@ struct SurfaceCellPipelineContext {
   std::vector<geometry::SurfaceSimplificationTransaction>
       simplificationTransactions;
   bool hasSimplificationDiagnostics = false;
+  std::uint64_t simplificationCurrentOwnedBytes = 0U;
+  std::uint64_t simplificationPeakOwnedBytes = 0U;
+  int maxSimultaneousLiveLargeStructures = 0;
 
   geometry::SurfaceCellComplex completionComplex;
   bool hasCompletionComplex = false;

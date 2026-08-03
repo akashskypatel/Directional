@@ -2249,10 +2249,32 @@ SurfaceCellComplex build_surface_cell_complex(
       const SurfaceArrangementProvenance &primary = **std::min_element(
           compatible.begin(), compatible.end(),
           [&](const auto *lhs, const auto *rhs) { return key(lhs) < key(rhs); });
+      const auto railEntry = std::min_element(
+          edge.provenance.begin(), edge.provenance.end(),
+          [](const SurfaceArrangementProvenance &lhs,
+             const SurfaceArrangementProvenance &rhs) {
+            const auto railKey = [](const SurfaceArrangementProvenance &value) {
+              return std::make_tuple(
+                  value.railId >= 0 ? 0 : 1,
+                  value.hardFeature ? 0 : 1, value.railId, value.curveId,
+                  value.sourceArc, value.sourceFace,
+                  static_cast<std::int64_t>(
+                      std::llround(value.railT0 * 1.0e10)),
+                  static_cast<std::int64_t>(
+                      std::llround(value.railT1 * 1.0e10)));
+            };
+            return railKey(lhs) < railKey(rhs);
+          });
+      const SurfaceArrangementProvenance *authoritativeRail =
+          railEntry != edge.provenance.end() && railEntry->railId >= 0
+              ? &*railEntry
+              : nullptr;
       edge.sourceArc = primary.sourceArc;
       edge.family = primary.family;
       edge.strand = primary.strand;
-      edge.featureClass = primary.featureClass;
+      edge.featureClass = authoritativeRail != nullptr
+                              ? authoritativeRail->featureClass
+                              : primary.featureClass;
       edge.sourceFace = primary.sourceFace;
       edge.sourceT0 = primary.sourceT0;
       edge.sourceT1 = primary.sourceT1;
@@ -2260,16 +2282,24 @@ SurfaceCellComplex build_surface_cell_complex(
       edge.layoutSupport = edge.layoutSupport || primary.layoutSupport;
       edge.singularitySupport =
           edge.singularitySupport || primary.singularitySupport;
-      edge.railId = primary.railId;
-      edge.curveId = primary.curveId;
+      // Rail lineage is an edge property and can originate in the opposite
+      // incident source chart from the cell's selected component/sheet scope.
+      // Preserve the oriented rail record independently; never infer it from
+      // geometry or discard it while rebinding cell ownership.
+      edge.railId = authoritativeRail != nullptr ? authoritativeRail->railId
+                                                 : primary.railId;
+      edge.curveId = authoritativeRail != nullptr ? authoritativeRail->curveId
+                                                  : primary.curveId;
       edge.sourceComponent = selectedScope.first;
       edge.sourceSheet = selectedScope.second;
       edge.proposalId = primary.proposalId;
       edge.proposalSeedId = primary.proposalSeedId;
       edge.proposalSide = primary.proposalSide;
       edge.proposalBoundarySegment = primary.proposalBoundarySegment;
-      edge.railT0 = primary.railT0;
-      edge.railT1 = primary.railT1;
+      edge.railT0 = authoritativeRail != nullptr ? authoritativeRail->railT0
+                                                 : primary.railT0;
+      edge.railT1 = authoritativeRail != nullptr ? authoritativeRail->railT1
+                                                 : primary.railT1;
       if (edge.sourceFace >= 0) {
         selectedFaces.insert(edge.sourceFace);
       }

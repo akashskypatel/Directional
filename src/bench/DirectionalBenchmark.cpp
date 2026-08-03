@@ -1607,6 +1607,35 @@ void write_remesh_diagnostics_json(std::ostream &out,
     out << "]}";
   }
   out << "],"
+      << "\"tracingCurrentOwnedBytes\":"
+      << result.surfaceCellContext.tracingCurrentOwnedBytes << ","
+      << "\"tracingPeakOwnedBytes\":"
+      << result.surfaceCellContext.tracingPeakOwnedBytes << ","
+      << "\"flowRepCurrentOwnedBytes\":"
+      << result.surfaceCellContext.flowRepCurrentOwnedBytes << ","
+      << "\"flowRepPeakOwnedBytes\":"
+      << result.surfaceCellContext.flowRepPeakOwnedBytes << ","
+      << "\"arrangementCurrentOwnedBytes\":"
+      << result.surfaceCellContext.arrangementCurrentOwnedBytes << ","
+      << "\"arrangementPeakOwnedBytes\":"
+      << result.surfaceCellContext.arrangementPeakOwnedBytes << ","
+      << "\"simplificationCurrentOwnedBytes\":"
+      << result.surfaceCellContext.simplificationCurrentOwnedBytes << ","
+      << "\"simplificationPeakOwnedBytes\":"
+      << result.surfaceCellContext.simplificationPeakOwnedBytes << ","
+      << "\"maxSimultaneousLiveLargeStructures\":"
+      << result.surfaceCellContext.maxSimultaneousLiveLargeStructures << ","
+      << "\"traceStorageReleasedAfterFlowRep\":"
+      << (result.surfaceCellContext.traceStorageReleasedAfterFlowRep
+              ? "true" : "false") << ","
+      << "\"flowRepSelectionStorageReleasedAfterSelection\":"
+      << (result.surfaceCellContext
+                  .flowRepSelectionStorageReleasedAfterSelection
+              ? "true" : "false") << ","
+      << "\"embeddedArrangementStorageReleasedAfterArrangement\":"
+      << (result.surfaceCellContext
+                  .embeddedArrangementStorageReleasedAfterArrangement
+              ? "true" : "false") << ","
       << "\"surfaceCellContextSourceGridRecoveryUsed\":"
       << (result.surfaceCellContext.sourceGridRecoveryUsed ? "true" : "false")
       << ","

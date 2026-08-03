@@ -1594,6 +1594,17 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
     }
   }
   EXPECT_TRUE(sawArrangementRail);
+  ASSERT_TRUE(context.hasArrangement);
+  EXPECT_GT(context.tracingCurrentOwnedBytes, 0U);
+  EXPECT_GE(context.tracingPeakOwnedBytes,
+            context.tracingCurrentOwnedBytes);
+  EXPECT_GT(context.flowRepCurrentOwnedBytes, 0U);
+  EXPECT_GE(context.flowRepPeakOwnedBytes,
+            context.flowRepCurrentOwnedBytes);
+  EXPECT_GT(context.arrangementCurrentOwnedBytes, 0U);
+  EXPECT_GE(context.arrangementPeakOwnedBytes,
+            context.arrangementCurrentOwnedBytes);
+  EXPECT_GE(context.maxSimultaneousLiveLargeStructures, 2);
   bool sawHalfedgeRail = false;
   for (const directional::geometry::SurfaceArrangementHalfedge &halfedge :
        context.arrangement.halfedges) {
