@@ -9,72 +9,59 @@
 
 ## Current checkpoint
 
-P5-TB15 tested artifact `8866222973` directly without rebuilding. P5 remains open.
+P5-CB83 through P5-CB90 source implementation and compile-only validation are complete. P5 remains open.
 
-- Exact source: `f4a6a392dc3d490efca4f94bd613aadaad2c1b01`.
-- Digest: `sha256:c38649208b1586094f804895c39c1319b71eb0c5220e84d1d2514b04954c63fe`.
-- Source status empty; checksums **36/36**; fixture closure valid from an arbitrary path.
-- Phase 14–18: **230/230 passed**.
-- Complete packaged disposition: **579/592 passed**, with 10 assertion failures and 3 signal-11 tests.
-- Four face-edge random-bunny processes terminate deterministically within wall and memory limits but fail closed before descriptors at `BoundaryParityRepair:MixedCellSourceScope`.
-- The generated-smooth-field production case still exits `139`; stage injection isolates the fault to FlowRep strands after a deterministic `80,862`-segment trace network.
-- Next turn: **P5-CB83 through P5-CB90 code changes + compile-only build**.
+- Source implementation commit: `57be334c7a5d41538dcfd7011f429da525d2d2ca`.
+- Exact clean compiled source: `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`.
+- Compile-only run: `30849904147` — **success**.
+- Artifact: `8870351914`, `surface-cell-p5-cb90-parity-flowrep-reuse-rail-linux-release`.
+- Digest: `sha256:ce6ca28d8eb41562c3486077934302643100fab575f34ea8a341e3212964a7e4`.
+- Clean source status and required fixture closure were verified.
+- Only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` were compiled.
+- No test, benchmark, custom mesh, help/list, or discovery command ran.
+- Next turn: **P5-TB16 artifact-only test and benchmark using artifact `8870351914`; do not rebuild**.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB15_Parity_Scope_Reuse_Rail_Test_Benchmark_Report.md`
+3. `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Report.md`
 4. `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb15-summary.json`
-6. `.agents/Directional/Milestone_G_P5_Mixed_Sheet_Liveness_Code_Build_Report.md`
-7. `benchmark-results/p5-cb82-summary.json`
+5. `.agents/Directional/Milestone_G_P5_TB15_Parity_Scope_Reuse_Rail_Test_Benchmark_Report.md`
+6. `benchmark-results/p5-tb15-summary.json`
 
-## P5-TB15 results
+## Implemented in the completed code + build turn
 
-Newly passing:
+- High-cardinality FlowRep no longer retains references across `FlowRepArc` vector growth; a regression source forces reallocation.
+- Boundary parity repair inherits one exact authoritative pre-transaction cell scope rather than choosing by frequency.
+- Completion reuse identity is derived from canonical authoritative source-domain dependencies, excluding allocation-local cell IDs and regenerated numbering.
+- Final oriented arrangement halfedges preserve authoritative rail/curve identity, feature class, rail parameters, and complete provenance independently of cell scope.
+- Missing-common-chart and invalid-midpoint fixtures are separate valid scenarios.
+- The cylinder simplification fixture represents each intrinsic source edge once and verifies valid DCEL incidence before simplification.
+- Source-supported producer ownership, scope, rail, and lifetime defects were corrected; runtime production-output closure is not yet claimed.
+- Current/peak owned-byte telemetry now covers tracing, FlowRep, arrangement, and simplification, with release flags and maximum simultaneous live-large-structure bounds.
+- Temporary source-transfer workflows and patch payloads were removed before the authoritative clean build.
 
-- exact rollback for the real permitted side-repair failure;
-- partial multi-edge interface fixture;
-- complete multi-edge interface fixture with protected rails.
+## P5-TB16 instructions
 
-Still failing:
+Download and execute artifact `8870351914` directly. Do not configure or rebuild.
 
-- both positive exact completion-reuse regressions;
-- invalid-midpoint fixture, which currently exercises missing common chart instead;
-- final authoritative rail identity;
-- topology-invalid cylinder simplification fixture;
-- Phase 20 cylinder production output;
-- four GP26 end-to-end production cases;
-- three generated-smooth-field production-matrix processes with signal 11.
+Validate:
 
-The face-edge random-bunny path now has deterministic bounded simplification:
+1. Generated-smooth-field random bunny and all production-matrix processes return normally rather than signal 11.
+2. Face-edge random bunny parity repair commits with one exact inherited source scope.
+3. Both intended exact-reuse regressions report positive reuse without false reuse.
+4. Final arrangement rail and provenance lineage is preserved.
+5. Missing-chart, invalid-midpoint, and cylinder simplification regressions reach their intended contracts.
+6. Plane, cylinder, seam, torus, mechanical-feature, Phase 20 cylinder, and production-matrix output contracts.
+7. Determinism across independent processes.
+8. Wall time, peak working set, stage-owned bytes, release flags, and simultaneous live-structure bounds.
 
-- wall: `17.594136–19.939944 s`;
-- peak working set: `137,039,872–137,162,752 B`;
-- trace segments: `12,130`;
-- arrangement/simplified cells: `7,405 / 7,405`;
-- simplification generations: `5`;
-- peak live candidates: `747`;
-- fallback/recovery: neither used.
+Update the artifact-only test/benchmark report, `TODO`, `MILESTONE_G_TODO.md`, this handoff, benchmark summaries, and PR #8. Do not mark P5 complete unless every production gate has runtime evidence.
 
-It still emits no descriptors or output because the parity transaction reduces odd cells `1,860 -> 0` only inside a transaction rejected for mixed cell source scope.
+## Preserved constraints and lessons
 
-## Required next turn
-
-Implement P5-CB83 through P5-CB90 from the parity-scope/FlowRep/reuse/rail plan.
-
-Priorities:
-
-1. Eliminate stale references, unsafe recursion, and ownership faults in high-cardinality FlowRep input, selection, and endpoint completion.
-2. Replace parity source-scope frequency voting with one authoritative pre-transaction cell scope inherited by every oriented replacement piece and twin.
-3. Define completion reuse identity only from canonical authoritative source-domain dependencies and produce positive exact reuse.
-4. Preserve authoritative rail/curve identity and complete provenance to final arrangement halfedges and lineage.
-5. Split the missing-chart and invalid-midpoint regressions into valid scenarios; rebuild the cylinder fixture from a valid DCEL without duplicate coincident per-face arcs.
-6. Repair remaining plane, cylinder, seam, torus, mechanical-feature, and Phase 20 cylinder producer defects without weakening validation.
-7. Add current and peak stage-owned bytes for trace, FlowRep, arrangement, simplification, and completion, avoiding double counting moved buffers.
-8. Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no binary.
-
-Preserve all prohibitions: no final-face deduplication, positional merge, source-triangle pairing, fallback, recovery, validator weakening, arbitrary subset search, timeout-as-correctness, or production ID special case.
-
-Workflow files under `.github/workflows` must be changed directly through the GitHub connector, never through a patch-applicator workflow.
+- Compile success is not runtime correctness; do not infer P5 closure from this turn.
+- Use the exact artifact without rebuilding so test evidence remains tied to `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`.
+- Do not weaken validators, deduplicate final faces, merge positionally, pair source triangles, add fallback/recovery, use arbitrary subset search, treat timeout as correctness, or special-case production IDs.
+- Workflow files must use valid YAML comments (`#`) and must be changed directly through the GitHub connector; never embed dedented C++ text in a YAML `run: |` block.
