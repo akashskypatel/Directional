@@ -57,6 +57,20 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
+      mix(occurrence.sourceComponent);
+      mix(occurrence.sourceSheet);
+      mix(occurrence.sourceArc);
+      mix(occurrence.provenance);
+      mix(occurrence.railId);
+      mix(occurrence.curveId);
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT1 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT1 * 1.0e10)));
       for (int i = 0; i < 3; ++i) {
         mix(static_cast<std::int64_t>(
             std::llround(occurrence.barycentric[i] * 1.0e10)));
@@ -1629,6 +1643,94 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
   result.initialActiveElements =
       static_cast<int>(complex.halfedges.size()) / 2;
 
+  const auto candidateSemanticIdentity =
+      [&](const SurfaceSimplificationCandidate &candidate) {
+        std::vector<std::int64_t> identity{
+            static_cast<int>(candidate.type),
+            candidate.topologyHealing ? 1 : 0};
+        std::vector<std::vector<std::int64_t>> edges;
+        for (const int halfedgeId : candidate.elementIds) {
+          if (halfedgeId < 0 ||
+              halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+            edges.push_back({-1, halfedgeId});
+            continue;
+          }
+          const SurfaceArrangementHalfedge &edge =
+              complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+          std::vector<std::int64_t> edgeIdentity{
+              std::min(edge.from, edge.to), std::max(edge.from, edge.to),
+              edge.family, edge.strand, edge.featureClass,
+              edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
+              edge.singularitySupport ? 1 : 0, edge.railId, edge.curveId,
+              edge.sourceComponent, edge.sourceSheet, edge.proposalSide,
+              edge.proposalBoundarySegment};
+          for (const SurfaceArrangementProvenance &provenance :
+               edge.provenance) {
+            edgeIdentity.insert(
+                edgeIdentity.end(),
+                {provenance.family, provenance.strand,
+                 provenance.featureClass, provenance.hardFeature ? 1 : 0,
+                 provenance.layoutSupport ? 1 : 0,
+                 provenance.singularitySupport ? 1 : 0,
+                 provenance.railId, provenance.curveId,
+                 provenance.sourceComponent, provenance.sourceSheet,
+                 provenance.proposalSide,
+                 provenance.proposalBoundarySegment});
+          }
+          edges.push_back(std::move(edgeIdentity));
+        }
+        std::sort(edges.begin(), edges.end());
+        identity.push_back(static_cast<std::int64_t>(edges.size()));
+        for (const auto &edge : edges) {
+          identity.push_back(static_cast<std::int64_t>(edge.size()));
+          identity.insert(identity.end(), edge.begin(), edge.end());
+        }
+        return identity;
+      };
+  const auto hashSemanticIdentity = [](const std::vector<std::int64_t> &values) {
+    std::uint64_t hash = 1469598103934665603ULL;
+    for (const std::int64_t value : values) {
+      hash ^= static_cast<std::uint64_t>(value);
+      hash *= 1099511628211ULL;
+    }
+    return hash;
+  };
+
+  int currentGeneration = 0;
+  const auto normalizeGeneration =
+      [&](std::vector<SurfaceSimplificationCandidate> input,
+          const bool preserveStableIds) {
+        std::vector<SurfaceSimplificationCandidate> normalized;
+        normalized.reserve(input.size());
+        std::set<std::vector<std::int64_t>> liveIdentities;
+        for (SurfaceSimplificationCandidate &candidate : input) {
+          if (options.topologyHealingOnly && !candidate.topologyHealing) {
+            continue;
+          }
+          ++result.generatedCandidates;
+          const std::vector<std::int64_t> identity =
+              candidateSemanticIdentity(candidate);
+          if (!liveIdentities.insert(identity).second) {
+            ++result.deduplicatedCandidates;
+            continue;
+          }
+          candidate.generation = currentGeneration;
+          candidate.semanticHash = hashSemanticIdentity(identity);
+          if (!preserveStableIds || candidate.stableId < 0) {
+            candidate.stableId = 1000000 +
+                currentGeneration * 1000000 +
+                static_cast<int>(normalized.size());
+          }
+          normalized.push_back(std::move(candidate));
+        }
+        result.peakLiveCandidates = std::max(
+            result.peakLiveCandidates, static_cast<int>(normalized.size()));
+        return normalized;
+      };
+
+  candidates = normalizeGeneration(std::move(candidates), true);
+  result.frontierGenerations = 1;
+
   std::priority_queue<QueueEntry> queue;
   for (int i = 0; i < static_cast<int>(candidates.size()); ++i) {
     if (options.topologyHealingOnly &&
@@ -1641,7 +1743,6 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                 candidates[static_cast<std::size_t>(i)].stableId, i});
   }
 
-  int nextStableBase = 1000000;
   while (!queue.empty()) {
     if (options.targetActiveElements > 0 &&
         static_cast<int>(complex.halfedges.size()) / 2 <=
@@ -1656,6 +1757,10 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
     }
     SurfaceSimplificationCandidate &candidate =
         candidates[static_cast<std::size_t>(entry.index)];
+    if (candidate.generation != currentGeneration) {
+      ++result.staleGenerationCandidates;
+      continue;
+    }
     const double cost = objective_cost(candidate, options.weights);
     SurfaceSimplificationTransaction transaction;
     transaction.candidateId = candidate.stableId;
@@ -1830,8 +1935,12 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
           transaction.afterNonDiskDefect < beforeNonDiskDefect;
       const bool ordinaryTopologyValid =
           validate_complex_incidence(trial) && trial.diagnostics.topologyValid;
-      if (candidate.topologyHealing ? !healingTopologyValid
-                                    : !ordinaryTopologyValid) {
+      const bool monotoneReduction =
+          transaction.afterUndirectedEdgeCount <
+          transaction.beforeUndirectedEdgeCount;
+      if (!monotoneReduction ||
+          (candidate.topologyHealing ? !healingTopologyValid
+                                     : !ordinaryTopologyValid)) {
         rejection = SurfaceSimplificationRejectionReason::TopologyChanged;
       } else if (!transaction.protectedSupportPreserved) {
         rejection = SurfaceSimplificationRejectionReason::ProtectedFeature;
@@ -1843,13 +1952,8 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
         transaction.afterHash = complex_structural_hash(complex);
         ++result.committed;
 
-        for (SurfaceSimplificationCandidate &other : candidates) {
-          if (other.stableId == candidate.stableId || other.invalidated) {
-            continue;
-          }
-          other.invalidated = true;
-          ++result.invalidatedCandidates;
-        }
+        result.invalidatedCandidates +=
+            std::max(0, static_cast<int>(candidates.size()) - 1);
         const bool commitLimitReached =
             options.maxCommittedTransactions >= 0 &&
             result.committed >= options.maxCommittedTransactions;
@@ -1859,20 +1963,24 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                   ? extract_surface_simplification_candidates(
                         complex, *vertices, *faces)
                   : extract_surface_simplification_candidates(complex);
-          for (SurfaceSimplificationCandidate recomputedCandidate :
-               refreshed.candidates) {
-            if (options.topologyHealingOnly &&
-                !recomputedCandidate.topologyHealing) {
-              continue;
-            }
-            recomputedCandidate.stableId = nextStableBase++;
-            const int index = static_cast<int>(candidates.size());
-            const double recomputedCost =
-                objective_cost(recomputedCandidate, options.weights);
-            queue.push({recomputedCost, recomputedCandidate.type,
-                        recomputedCandidate.stableId, index});
-            candidates.push_back(std::move(recomputedCandidate));
-            ++result.recomputedCandidates;
+          ++currentGeneration;
+          ++result.frontierGenerations;
+          candidates = normalizeGeneration(refreshed.candidates, false);
+          result.recomputedCandidates +=
+              static_cast<int>(candidates.size());
+          queue = std::priority_queue<QueueEntry>();
+          for (int index = 0; index < static_cast<int>(candidates.size());
+               ++index) {
+            const SurfaceSimplificationCandidate &refreshedCandidate =
+                candidates[static_cast<std::size_t>(index)];
+            const double refreshedCost =
+                objective_cost(refreshedCandidate, options.weights);
+            queue.push({refreshedCost, refreshedCandidate.type,
+                        refreshedCandidate.stableId, index});
+          }
+        } else {
+          for (SurfaceSimplificationCandidate &other : candidates) {
+            other.invalidated = true;
           }
         }
       }

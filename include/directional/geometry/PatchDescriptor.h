@@ -292,6 +292,7 @@ struct SurfaceCellComplexCompletionResult {
   bool sideRollbackEquivalent = false;
   std::uint64_t sideRollbackIdentityHashBefore = 0U;
   std::uint64_t sideRollbackIdentityHashAfter = 0U;
+  std::uint64_t sideRollbackUndoOwnedBytes = 0U;
   SurfaceCellDomainIdentityAudit firstInvalidDomain;
   PatchDescriptorSet descriptors;
   std::vector<PureQuadMesh> completedPatches;

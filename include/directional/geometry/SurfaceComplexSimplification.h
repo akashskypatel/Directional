@@ -80,6 +80,8 @@ struct SurfaceSimplificationObjectiveWeights {
 
 struct SurfaceSimplificationCandidate {
   int stableId = -1;
+  int generation = 0;
+  std::uint64_t semanticHash = 0U;
   SurfaceSimplificationCandidateType type =
       SurfaceSimplificationCandidateType::OpenStrip;
   // Canonical arrangement halfedge IDs. Each undirected edge is represented
@@ -213,6 +215,11 @@ struct SurfaceSimplificationResult {
   int rejected = 0;
   int invalidatedCandidates = 0;
   int recomputedCandidates = 0;
+  int generatedCandidates = 0;
+  int deduplicatedCandidates = 0;
+  int staleGenerationCandidates = 0;
+  int frontierGenerations = 0;
+  int peakLiveCandidates = 0;
   int incidenceRebuilds = 0;
   int validationPasses = 0;
   int initialActiveElements = 0;

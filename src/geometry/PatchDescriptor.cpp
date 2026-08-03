@@ -68,10 +68,34 @@ SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
                                        const Eigen::MatrixXi &F,
                                        const SurfaceArrangementHalfedge &edge) {
   SurfacePoint point;
-  point.face = node.sourceFace;
   point.component = edge.sourceComponent;
   point.sheet = edge.sourceSheet;
-  point.barycentric = node.barycentric.transpose();
+  const SurfaceArrangementNodeOccurrence *selected = nullptr;
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    const bool componentCompatible = occurrence.sourceComponent < 0 ||
+                                     edge.sourceComponent < 0 ||
+                                     occurrence.sourceComponent ==
+                                         edge.sourceComponent;
+    const bool sheetCompatible = occurrence.sourceSheet < 0 ||
+                                 edge.sourceSheet < 0 ||
+                                 occurrence.sourceSheet == edge.sourceSheet;
+    if (!componentCompatible || !sheetCompatible) {
+      continue;
+    }
+    if (selected == nullptr ||
+        std::make_tuple(occurrence.sourceFace == edge.sourceFace ? 0 : 1,
+                        occurrence.sourceFace, occurrence.sourceArc,
+                        occurrence.provenance) <
+            std::make_tuple(selected->sourceFace == edge.sourceFace ? 0 : 1,
+                            selected->sourceFace, selected->sourceArc,
+                            selected->provenance)) {
+      selected = &occurrence;
+    }
+  }
+  point.face = selected != nullptr ? selected->sourceFace : node.sourceFace;
+  point.barycentric =
+      (selected != nullptr ? selected->barycentric : node.barycentric)
+          .transpose();
   if (point.face >= 0 && point.face < F.rows() && F.cols() == 3 &&
       V.cols() == 3) {
     point.position =
@@ -261,10 +285,20 @@ SurfaceCellCanonicalIdentity arrangement_node_identity(
     const SurfaceArrangementNode &node, const Eigen::MatrixXi &F,
     const int component, const int sheet) {
   std::vector<SurfaceCellCanonicalIdentity> occurrences;
-  occurrences.push_back(
-      source_point_identity(F, node.sourceFace, node.barycentric, component,
-                            sheet));
+  if ((node.sourceComponent < 0 || component < 0 ||
+       node.sourceComponent == component) &&
+      (node.sourceSheet < 0 || sheet < 0 || node.sourceSheet == sheet)) {
+    occurrences.push_back(
+        source_point_identity(F, node.sourceFace, node.barycentric, component,
+                              sheet));
+  }
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    if ((occurrence.sourceComponent >= 0 && component >= 0 &&
+         occurrence.sourceComponent != component) ||
+        (occurrence.sourceSheet >= 0 && sheet >= 0 &&
+         occurrence.sourceSheet != sheet)) {
+      continue;
+    }
     occurrences.push_back(source_point_identity(
         F, occurrence.sourceFace, occurrence.barycentric, component, sheet));
   }
@@ -482,8 +516,16 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
           const int sheet, int &sourceFace) {
         bool hasSourceChart = false;
         const auto accept = [&](const int face,
-                                const Eigen::RowVector3d &barycentric) {
+                                const Eigen::RowVector3d &barycentric,
+                                const int occurrenceComponent,
+                                const int occurrenceSheet) {
           if (face < 0 || face >= F.rows() || F.cols() != 3) {
+            return false;
+          }
+          if ((occurrenceComponent >= 0 && component >= 0 &&
+               occurrenceComponent != component) ||
+              (occurrenceSheet >= 0 && sheet >= 0 &&
+               occurrenceSheet != sheet)) {
             return false;
           }
           hasSourceChart = true;
@@ -497,12 +539,14 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
           return source_point_identity(F, face, barycentric, component, sheet)
               .valid;
         };
-        if (accept(node.sourceFace, node.barycentric)) {
+        if (accept(node.sourceFace, node.barycentric, node.sourceComponent,
+                   node.sourceSheet)) {
           return SurfaceCellDomainIdentityFailureKind::None;
         }
         for (const SurfaceArrangementNodeOccurrence &occurrence :
              node.occurrences) {
-          if (accept(occurrence.sourceFace, occurrence.barycentric)) {
+          if (accept(occurrence.sourceFace, occurrence.barycentric,
+                     occurrence.sourceComponent, occurrence.sourceSheet)) {
             return SurfaceCellDomainIdentityFailureKind::None;
           }
         }
@@ -2076,6 +2120,7 @@ std::uint64_t exact_patch_dependency_hash(const PatchDescriptor &descriptor) {
 struct CachedCompletionProduct {
   PatchDescriptor descriptor;
   PureQuadMesh mesh;
+  bool consumed = false;
 };
 
 struct ReusableCompletionProducts {
@@ -2098,18 +2143,35 @@ void retarget_reused_completion_product(
 ReusableCompletionProducts take_reusable_completion_products(
     SurfaceCellComplexCompletionResult &result) {
   ReusableCompletionProducts cache;
-  std::map<int, PureQuadMesh> meshes;
-  for (PureQuadMesh &mesh : result.completedPatches) {
-    meshes.emplace(mesh.sourcePatch, std::move(mesh));
-  }
-  for (PatchDescriptor &descriptor : result.descriptors.descriptors) {
-    const auto mesh = meshes.find(descriptor.cellId);
-    if (mesh == meshes.end()) {
+  std::vector<unsigned char> meshUsed(result.completedPatches.size(), 0U);
+  for (std::size_t descriptorIndex = 0;
+       descriptorIndex < result.descriptors.descriptors.size();
+       ++descriptorIndex) {
+    PatchDescriptor &descriptor =
+        result.descriptors.descriptors[descriptorIndex];
+    std::size_t meshIndex = result.completedPatches.size();
+    if (descriptorIndex < result.completedPatches.size() &&
+        result.completedPatches[descriptorIndex].sourcePatch ==
+            descriptor.cellId) {
+      meshIndex = descriptorIndex;
+    } else {
+      for (std::size_t candidate = 0;
+           candidate < result.completedPatches.size(); ++candidate) {
+        if (meshUsed[candidate] == 0U &&
+            result.completedPatches[candidate].sourcePatch ==
+                descriptor.cellId) {
+          meshIndex = candidate;
+          break;
+        }
+      }
+    }
+    if (meshIndex >= result.completedPatches.size()) {
       continue;
     }
+    meshUsed[meshIndex] = 1U;
     CachedCompletionProduct product;
     product.descriptor = std::move(descriptor);
-    product.mesh = std::move(mesh->second);
+    product.mesh = std::move(result.completedPatches[meshIndex]);
     const std::uint64_t semanticHash =
         exact_patch_dependency_hash(product.descriptor);
     cache.products[semanticHash].push_back(std::move(product));
@@ -2215,6 +2277,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       sideRepair.rollbackIdentityHashBefore;
   result.sideRollbackIdentityHashAfter =
       sideRepair.rollbackIdentityHashAfter;
+  result.sideRollbackUndoOwnedBytes = sideRepair.rollbackUndoOwnedBytes;
   const bool mayUseGeneralFallback =
       options.allowBoundedCombinatorialFallback &&
       sideRepair.rollbackEquivalent &&
@@ -2377,17 +2440,14 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
         const auto exact = std::find_if(
             bucket.begin(), bucket.end(),
             [&](const CachedCompletionProduct &product) {
-              return exact_patch_dependency_equal(
+              return !product.consumed && exact_patch_dependency_equal(
                   descriptor, product.descriptor);
             });
         if (exact != bucket.end()) {
           PureQuadMesh reused = std::move(exact->mesh);
+          exact->consumed = true;
           retarget_reused_completion_product(reused, descriptor);
           result.completedPatches.push_back(std::move(reused));
-          bucket.erase(exact);
-          if (bucket.empty()) {
-            reusableProducts->products.erase(cached);
-          }
           ++result.completionOwnershipReusedPatchCompletions;
           continue;
         }

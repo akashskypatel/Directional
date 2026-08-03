@@ -79,6 +79,19 @@ struct SurfaceArrangementArc {
 struct SurfaceArrangementNodeOccurrence {
   int sourceFace = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
+  // Exact source-chart scope. Edge-interior arrangement nodes may be shared
+  // geometrically by two source sheets, so the node-level primary chart is
+  // not sufficient to select an oriented halfedge endpoint.
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  int sourceArc = -1;
+  int provenance = -1;
+  int railId = -1;
+  int curveId = -1;
+  double sourceT0 = 0.0;
+  double sourceT1 = 0.0;
+  double railT0 = 0.0;
+  double railT1 = 0.0;
 };
 
 struct SurfaceArrangementProvenance {
@@ -284,6 +297,10 @@ Eigen::RowVector3d node_position(
 
 Eigen::RowVector3d node_barycentric_on_face(
     const SurfaceArrangementNode &node, const int face);
+
+Eigen::RowVector3d node_barycentric_on_face(
+    const SurfaceArrangementNode &node, const int face,
+    const int component, const int sheet);
 
 Eigen::RowVector3d node_reference_normal(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

@@ -52,6 +52,16 @@ std::vector<std::uint64_t> exact_rollback_identity(
     for (const SurfaceArrangementNodeOccurrence &occurrence :
          node.occurrences) {
       append_rollback_word(identity, occurrence.sourceFace);
+      append_rollback_word(identity, occurrence.sourceComponent);
+      append_rollback_word(identity, occurrence.sourceSheet);
+      append_rollback_word(identity, occurrence.sourceArc);
+      append_rollback_word(identity, occurrence.provenance);
+      append_rollback_word(identity, occurrence.railId);
+      append_rollback_word(identity, occurrence.curveId);
+      append_rollback_double(identity, occurrence.sourceT0);
+      append_rollback_double(identity, occurrence.sourceT1);
+      append_rollback_double(identity, occurrence.railT0);
+      append_rollback_double(identity, occurrence.railT1);
       for (int corner = 0; corner < 3; ++corner) {
         append_rollback_double(identity, occurrence.barycentric[corner]);
       }
@@ -210,23 +220,32 @@ bool valid_source_face_index(const int face,
 
 std::set<int> node_supported_faces(
     const SurfaceArrangementNode &node,
-    const Eigen::MatrixXi *sourceFaces) {
+    const Eigen::MatrixXi *sourceFaces,
+    const int component = -1, const int sheet = -1) {
   std::set<int> result;
+  const auto scopeCompatible = [](const int stored, const int requested) {
+    return requested < 0 || stored < 0 || stored == requested;
+  };
   const auto add = [&](const int face,
-                       const Eigen::RowVector3d &barycentric) {
+                       const Eigen::RowVector3d &barycentric,
+                       const int storedComponent,
+                       const int storedSheet) {
+    // Face membership and chart validity are separate contracts. Preserve a
+    // declared common chart here so midpoint interpolation can report the
+    // typed InvalidMidpointEmbedding failure for malformed chart data.
     if (!valid_source_face_index(face, sourceFaces) ||
-        !barycentric.allFinite() ||
-        barycentric.minCoeff() < -1.0e-10 ||
-        barycentric.maxCoeff() > 1.0 + 1.0e-10 ||
-        std::abs(barycentric.sum() - 1.0) > 1.0e-8) {
+        !scopeCompatible(storedComponent, component) ||
+        !scopeCompatible(storedSheet, sheet)) {
       return;
     }
     result.insert(face);
   };
-  add(node.sourceFace, node.barycentric);
+  add(node.sourceFace, node.barycentric, node.sourceComponent,
+      node.sourceSheet);
   for (const SurfaceArrangementNodeOccurrence &occurrence :
        node.occurrences) {
-    add(occurrence.sourceFace, occurrence.barycentric);
+    add(occurrence.sourceFace, occurrence.barycentric,
+        occurrence.sourceComponent, occurrence.sourceSheet);
   }
   return result;
 }
@@ -234,38 +253,33 @@ std::set<int> node_supported_faces(
 std::vector<int> common_edge_source_faces(
     const SurfaceArrangementNode &from,
     const SurfaceArrangementNode &to,
-    const SurfaceArrangementHalfedge &forward,
-    const SurfaceArrangementHalfedge &reverse,
+    const SurfaceArrangementHalfedge &oriented,
     const Eigen::MatrixXi *sourceFaces) {
   const std::set<int> fromFaces =
-      node_supported_faces(from, sourceFaces);
+      node_supported_faces(from, sourceFaces, oriented.sourceComponent,
+                           oriented.sourceSheet);
   const std::set<int> toFaces =
-      node_supported_faces(to, sourceFaces);
+      node_supported_faces(to, sourceFaces, oriented.sourceComponent,
+                           oriented.sourceSheet);
   std::vector<int> common;
   std::set_intersection(fromFaces.begin(), fromFaces.end(),
                         toFaces.begin(), toFaces.end(),
                         std::back_inserter(common));
   const auto priority = [&](const int face) {
-    if (face == forward.sourceFace) {
+    if (face == oriented.sourceFace) {
       return 0;
     }
-    if (face == reverse.sourceFace) {
-      return 1;
-    }
-    const bool forwardProvenance = std::any_of(
-        forward.provenance.begin(), forward.provenance.end(),
+    const bool orientedProvenance = std::any_of(
+        oriented.provenance.begin(), oriented.provenance.end(),
         [&](const SurfaceArrangementProvenance &value) {
-          return value.sourceFace == face;
+          return value.sourceFace == face &&
+                 (oriented.sourceComponent < 0 ||
+                  value.sourceComponent < 0 ||
+                  value.sourceComponent == oriented.sourceComponent) &&
+                 (oriented.sourceSheet < 0 || value.sourceSheet < 0 ||
+                  value.sourceSheet == oriented.sourceSheet);
         });
-    if (forwardProvenance) {
-      return 2;
-    }
-    const bool reverseProvenance = std::any_of(
-        reverse.provenance.begin(), reverse.provenance.end(),
-        [&](const SurfaceArrangementProvenance &value) {
-          return value.sourceFace == face;
-        });
-    return reverseProvenance ? 3 : 4;
+    return orientedProvenance ? 1 : 2;
   };
   std::sort(common.begin(), common.end(), [&](const int lhs, const int rhs) {
     return std::make_tuple(priority(lhs), lhs) <
@@ -800,38 +814,25 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     }
     const SurfaceArrangementHalfedge &reverse =
         input.halfedges[static_cast<std::size_t>(twinId)];
-    if (forward.sourceComponent >= 0 && reverse.sourceComponent >= 0 &&
-        forward.sourceComponent != reverse.sourceComponent) {
-      return restoreCommitted("InconsistentTwinSourceComponent");
-    }
-    if (forward.sourceSheet >= 0 && reverse.sourceSheet >= 0 &&
-        forward.sourceSheet != reverse.sourceSheet) {
-      return restoreCommitted("InconsistentTwinSourceSheet");
-    }
     const SurfaceArrangementNode &edgeFromNode =
         rebuilt.nodes[static_cast<std::size_t>(forward.from)];
     const SurfaceArrangementNode &edgeToNode =
         rebuilt.nodes[static_cast<std::size_t>(forward.to)];
-    const std::vector<int> commonSourceFaces =
+    const std::vector<int> forwardSourceFaces =
         surface_cell_feasibility_detail::common_edge_source_faces(
-            edgeFromNode, edgeToNode, forward, reverse, sourceFaces);
-    if (commonSourceFaces.empty()) {
+            edgeFromNode, edgeToNode, forward, sourceFaces);
+    const std::vector<int> reverseSourceFaces =
+        surface_cell_feasibility_detail::common_edge_source_faces(
+            edgeToNode, edgeFromNode, reverse, sourceFaces);
+    if (forwardSourceFaces.empty() || reverseSourceFaces.empty()) {
       return restoreCommitted("MissingCommonSourceChart");
     }
-    const int primaryForwardFace = commonSourceFaces.front();
-    int primaryReverseFace = primaryForwardFace;
-    const auto reversePreferred =
-        std::find(commonSourceFaces.begin(), commonSourceFaces.end(),
-                  reverse.sourceFace);
-    if (reversePreferred != commonSourceFaces.end()) {
-      primaryReverseFace = *reversePreferred;
-    }
-    const int resolvedComponent =
-        forward.sourceComponent >= 0 ? forward.sourceComponent
-                                     : reverse.sourceComponent;
-    const int resolvedSheet =
-        forward.sourceSheet >= 0 ? forward.sourceSheet
-                                 : reverse.sourceSheet;
+    const int primaryForwardFace = forwardSourceFaces.front();
+    const int primaryReverseFace = reverseSourceFaces.front();
+    const int forwardComponent = forward.sourceComponent;
+    const int forwardSheet = forward.sourceSheet;
+    const int reverseComponent = reverse.sourceComponent;
+    const int reverseSheet = reverse.sourceSheet;
     processed[static_cast<std::size_t>(id)] = 1U;
     processed[static_cast<std::size_t>(twinId)] = 1U;
     const int canonical = std::min(id, twinId);
@@ -848,8 +849,6 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
                            static_cast<double>(parts);
       SurfaceArrangementNode node;
       node.id = static_cast<int>(rebuilt.nodes.size());
-      node.sourceComponent = resolvedComponent;
-      node.sourceSheet = resolvedSheet;
       const SurfaceArrangementNode &fromNode =
           rebuilt.nodes[static_cast<std::size_t>(forward.from)];
       const SurfaceArrangementNode &toNode =
@@ -857,21 +856,69 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       node.hardBarrierCrossing =
           fromNode.hardBarrierCrossing || toNode.hardBarrierCrossing;
 
-      const std::vector<int> &occurrenceFaces = commonSourceFaces;
+      struct OccurrenceScope {
+        int face = -1;
+        int component = -1;
+        int sheet = -1;
+        const SurfaceArrangementHalfedge *edge = nullptr;
+        double orientedAlpha = 0.0;
+      };
+      std::vector<OccurrenceScope> scopes;
+      for (const int face : forwardSourceFaces) {
+        scopes.push_back({face, forwardComponent, forwardSheet, &forward,
+                          alpha});
+      }
+      for (const int face : reverseSourceFaces) {
+        scopes.push_back({face, reverseComponent, reverseSheet, &reverse,
+                          1.0 - alpha});
+      }
+      std::sort(scopes.begin(), scopes.end(), [](const auto &a, const auto &b) {
+        return std::tie(a.component, a.sheet, a.face) <
+               std::tie(b.component, b.sheet, b.face);
+      });
+      scopes.erase(std::unique(scopes.begin(), scopes.end(),
+                               [](const auto &a, const auto &b) {
+                                 return a.face == b.face &&
+                                        a.component == b.component &&
+                                        a.sheet == b.sheet;
+                               }),
+                   scopes.end());
 
       bool primarySet = false;
-      for (const int face : occurrenceFaces) {
+      for (const OccurrenceScope &scope : scopes) {
         const Eigen::RowVector3d barycentric =
             surface_cell_feasibility_detail::interpolated_barycentric(
-                rebuilt, forward.from, forward.to, face, alpha);
+                rebuilt, forward.from, forward.to, scope.face, alpha);
         if (!barycentric.allFinite() ||
             barycentric.minCoeff() < -1.0e-10 ||
             barycentric.maxCoeff() > 1.0 + 1.0e-10) {
           continue;
         }
-        node.occurrences.push_back({face, barycentric});
+        SurfaceArrangementNodeOccurrence occurrence;
+        occurrence.sourceFace = scope.face;
+        occurrence.barycentric = barycentric;
+        occurrence.sourceComponent = scope.component;
+        occurrence.sourceSheet = scope.sheet;
+        occurrence.sourceArc = scope.edge->sourceArc;
+        occurrence.provenance =
+            scope.edge->provenance.empty()
+                ? -1
+                : scope.edge->provenance.front().provenance;
+        occurrence.railId = scope.edge->railId;
+        occurrence.curveId = scope.edge->curveId;
+        occurrence.sourceT0 =
+            (1.0 - scope.orientedAlpha) * scope.edge->sourceT0 +
+            scope.orientedAlpha * scope.edge->sourceT1;
+        occurrence.sourceT1 = occurrence.sourceT0;
+        occurrence.railT0 =
+            (1.0 - scope.orientedAlpha) * scope.edge->railT0 +
+            scope.orientedAlpha * scope.edge->railT1;
+        occurrence.railT1 = occurrence.railT0;
+        node.occurrences.push_back(std::move(occurrence));
         if (!primarySet) {
-          node.sourceFace = face;
+          node.sourceFace = scope.face;
+          node.sourceComponent = scope.component;
+          node.sourceSheet = scope.sheet;
           node.barycentric = barycentric;
           primarySet = true;
         }
@@ -902,8 +949,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
           static_cast<double>(part + 1) / static_cast<double>(parts);
       SurfaceArrangementHalfedge piece = forward;
       piece.sourceFace = primaryForwardFace;
-      piece.sourceComponent = resolvedComponent;
-      piece.sourceSheet = resolvedSheet;
+      piece.sourceComponent = forwardComponent;
+      piece.sourceSheet = forwardSheet;
       piece.from = pathNodes[static_cast<std::size_t>(part)];
       piece.to = pathNodes[static_cast<std::size_t>(part + 1)];
       piece.sourceT0 =
@@ -920,8 +967,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
 
       SurfaceArrangementHalfedge twinPiece = reverse;
       twinPiece.sourceFace = primaryReverseFace;
-      twinPiece.sourceComponent = resolvedComponent;
-      twinPiece.sourceSheet = resolvedSheet;
+      twinPiece.sourceComponent = reverseComponent;
+      twinPiece.sourceSheet = reverseSheet;
       twinPiece.from = pathNodes[static_cast<std::size_t>(parts - part)];
       twinPiece.to = pathNodes[static_cast<std::size_t>(parts - part - 1)];
       twinPiece.sourceT0 =
@@ -968,6 +1015,11 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     undo.boundaryComponentCount = cell.boundaryComponentCount;
     undo.eulerCharacteristic = cell.eulerCharacteristic;
     undo.disk = cell.disk;
+    result.rollbackUndoOwnedBytes +=
+        static_cast<std::uint64_t>(undo.halfedges.capacity()) * sizeof(int) +
+        static_cast<std::uint64_t>(undo.sideFamilies.capacity()) * sizeof(int) +
+        static_cast<std::uint64_t>(undo.sideEdgeCounts.capacity()) * sizeof(int) +
+        static_cast<std::uint64_t>(undo.sourceFaces.capacity()) * sizeof(int);
     cellUndo.push_back(std::move(undo));
 
     const std::vector<int> oldBoundary = cell.halfedges;
@@ -1017,6 +1069,84 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       halfedge.next = cell.halfedges[static_cast<std::size_t>(
           (index + 1) % static_cast<int>(cell.halfedges.size()))];
     }
+
+    std::map<std::pair<int, int>, int> scopeFrequency;
+    for (const int halfedgeId : cell.halfedges) {
+      const SurfaceArrangementHalfedge &edge =
+          rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)];
+      bool counted = false;
+      for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+        if (entry.sourceComponent >= 0 && entry.sourceSheet >= 0) {
+          ++scopeFrequency[{entry.sourceComponent, entry.sourceSheet}];
+          counted = true;
+        }
+      }
+      if (!counted && edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
+        ++scopeFrequency[{edge.sourceComponent, edge.sourceSheet}];
+      }
+    }
+    if (scopeFrequency.empty()) {
+      return restoreCommitted("MissingCellSourceScope");
+    }
+    const auto selectedScope = std::max_element(
+        scopeFrequency.begin(), scopeFrequency.end(),
+        [](const auto &lhs, const auto &rhs) {
+          if (lhs.second != rhs.second) {
+            return lhs.second < rhs.second;
+          }
+          return lhs.first > rhs.first;
+        })->first;
+    for (const int halfedgeId : cell.halfedges) {
+      SurfaceArrangementHalfedge &edge =
+          rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)];
+      const auto selected = std::min_element(
+          edge.provenance.begin(), edge.provenance.end(),
+          [&](const SurfaceArrangementProvenance &lhs,
+              const SurfaceArrangementProvenance &rhs) {
+            const auto key = [&](const SurfaceArrangementProvenance &value) {
+              const bool compatible =
+                  value.sourceComponent == selectedScope.first &&
+                  value.sourceSheet == selectedScope.second;
+              return std::make_tuple(
+                  compatible ? 0 : 1, value.railId >= 0 ? 0 : 1,
+                  value.hardFeature ? 0 : 1, value.sourceFace,
+                  value.sourceArc, value.provenance, value.family,
+                  value.strand, value.railId, value.curveId);
+            };
+            return key(lhs) < key(rhs);
+          });
+      if (selected == edge.provenance.end() ||
+          selected->sourceComponent != selectedScope.first ||
+          selected->sourceSheet != selectedScope.second) {
+        if (edge.sourceComponent != selectedScope.first ||
+            edge.sourceSheet != selectedScope.second) {
+          return restoreCommitted("MixedCellSourceScope");
+        }
+      } else {
+        edge.sourceArc = selected->sourceArc;
+        edge.family = selected->family;
+        edge.strand = selected->strand;
+        edge.featureClass = selected->featureClass;
+        edge.sourceFace = selected->sourceFace;
+        edge.sourceT0 = selected->sourceT0;
+        edge.sourceT1 = selected->sourceT1;
+        edge.hardFeature = edge.hardFeature || selected->hardFeature;
+        edge.layoutSupport = edge.layoutSupport || selected->layoutSupport;
+        edge.singularitySupport =
+            edge.singularitySupport || selected->singularitySupport;
+        edge.railId = selected->railId;
+        edge.curveId = selected->curveId;
+        edge.sourceComponent = selectedScope.first;
+        edge.sourceSheet = selectedScope.second;
+        edge.proposalId = selected->proposalId;
+        edge.proposalSeedId = selected->proposalSeedId;
+        edge.proposalSide = selected->proposalSide;
+        edge.proposalBoundarySegment = selected->proposalBoundarySegment;
+        edge.railT0 = selected->railT0;
+        edge.railT1 = selected->railT1;
+      }
+    }
+
     std::set<int> authoritativeSourceFaces;
     const auto addSourceFace = [&](const int face) {
       if (surface_cell_feasibility_detail::valid_source_face_index(
@@ -1034,7 +1164,10 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       addSourceFace(edge.sourceFace);
       for (const SurfaceArrangementProvenance &provenance :
            edge.provenance) {
-        addSourceFace(provenance.sourceFace);
+        if (provenance.sourceComponent == selectedScope.first &&
+            provenance.sourceSheet == selectedScope.second) {
+          addSourceFace(provenance.sourceFace);
+        }
       }
     }
     if (authoritativeSourceFaces.empty()) {
@@ -1247,15 +1380,35 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     const SurfaceCellSideRepairOptions &options) {
   SurfaceCellSideRepairResult result;
   SurfaceCellComplex canonicalInput = std::move(input);
-  surface_cell_feasibility_detail::canonicalize_logical_sides(
-      canonicalInput, sourceVertices, sourceFaces);
+  struct LogicalSideUndo {
+    std::vector<int> families;
+    std::vector<int> counts;
+  };
+  std::vector<LogicalSideUndo> logicalSideUndo;
+  logicalSideUndo.reserve(canonicalInput.cells.size());
+  for (const SurfaceArrangementCell &cell : canonicalInput.cells) {
+    logicalSideUndo.push_back({cell.sideFamilies, cell.sideEdgeCounts});
+    result.rollbackUndoOwnedBytes +=
+        static_cast<std::uint64_t>(cell.sideFamilies.capacity()) * sizeof(int) +
+        static_cast<std::uint64_t>(cell.sideEdgeCounts.capacity()) * sizeof(int);
+  }
   const std::vector<std::uint64_t> rollbackIdentity =
       surface_cell_feasibility_detail::exact_rollback_identity(canonicalInput);
+  surface_cell_feasibility_detail::canonicalize_logical_sides(
+      canonicalInput, sourceVertices, sourceFaces);
   result.rollbackIdentityHashBefore =
       surface_cell_feasibility_detail::rollback_identity_hash(
           rollbackIdentity);
   const auto returnRollback =
       [&](const std::string &failure) -> SurfaceCellSideRepairResult {
+    for (std::size_t index = 0; index < canonicalInput.cells.size() &&
+                                index < logicalSideUndo.size();
+         ++index) {
+      canonicalInput.cells[index].sideFamilies =
+          std::move(logicalSideUndo[index].families);
+      canonicalInput.cells[index].sideEdgeCounts =
+          std::move(logicalSideUndo[index].counts);
+    }
     result.failure = failure;
     result.complex = std::move(canonicalInput);
     const std::vector<std::uint64_t> after =
@@ -1452,6 +1605,7 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
         subdivision.rollbackIdentityHashBefore;
     result.rollbackIdentityHashAfter =
         subdivision.rollbackIdentityHashAfter;
+    result.rollbackUndoOwnedBytes += subdivision.rollbackUndoOwnedBytes;
     if (!result.rollbackEquivalent) {
       result.failure = "SideSubdivisionTransaction:" + result.failure;
     }

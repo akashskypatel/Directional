@@ -346,6 +346,13 @@ struct SurfaceCellPipelineContext {
   int simplificationTopologyHealingCandidateCount = 0;
   int simplificationCommitted = 0;
   int simplificationRejected = 0;
+  int simplificationGeneratedCandidates = 0;
+  int simplificationDeduplicatedCandidates = 0;
+  int simplificationInvalidatedCandidates = 0;
+  int simplificationStaleGenerationCandidates = 0;
+  int simplificationFrontierGenerations = 0;
+  int simplificationPeakLiveCandidates = 0;
+  double simplificationEvaluatedCandidates = 0.0;
   std::vector<geometry::SurfaceSimplificationCandidate>
       simplificationTopologyHealingCandidates;
   std::vector<geometry::SurfaceSimplificationTransaction>
@@ -370,6 +377,7 @@ struct SurfaceCellPipelineContext {
   bool completionSideRollbackEquivalent = false;
   std::uint64_t completionSideRollbackIdentityHashBefore = 0U;
   std::uint64_t completionSideRollbackIdentityHashAfter = 0U;
+  std::uint64_t completionSideRollbackUndoOwnedBytes = 0U;
   int completionAttemptedPatches = 0;
   int completionFailedPatches = 0;
   int completionOwnershipRepairAttempts = 0;

@@ -850,6 +850,16 @@ std::uint64_t hash_surface_complex(
          node.occurrences) {
       hash_combine_i64(seed, occurrence.sourceFace);
       hash_row_vector(seed, occurrence.barycentric);
+      hash_combine_i64(seed, occurrence.sourceComponent);
+      hash_combine_i64(seed, occurrence.sourceSheet);
+      hash_combine_i64(seed, occurrence.sourceArc);
+      hash_combine_i64(seed, occurrence.provenance);
+      hash_combine_i64(seed, occurrence.railId);
+      hash_combine_i64(seed, occurrence.curveId);
+      hash_combine_double(seed, occurrence.sourceT0);
+      hash_combine_double(seed, occurrence.sourceT1);
+      hash_combine_double(seed, occurrence.railT0);
+      hash_combine_double(seed, occurrence.railT1);
     }
     hash_combine_i64(seed, node.sourceEdge);
     hash_combine_double(seed, node.sourceEdgeParameter);
@@ -4172,6 +4182,20 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
     result.surfaceCellContext.simplificationCommitted = simplified.committed;
     result.surfaceCellContext.simplificationRejected = simplified.rejected;
+    result.surfaceCellContext.simplificationGeneratedCandidates =
+        simplified.generatedCandidates;
+    result.surfaceCellContext.simplificationDeduplicatedCandidates =
+        simplified.deduplicatedCandidates;
+    result.surfaceCellContext.simplificationInvalidatedCandidates =
+        simplified.invalidatedCandidates;
+    result.surfaceCellContext.simplificationStaleGenerationCandidates =
+        simplified.staleGenerationCandidates;
+    result.surfaceCellContext.simplificationFrontierGenerations =
+        simplified.frontierGenerations;
+    result.surfaceCellContext.simplificationPeakLiveCandidates =
+        simplified.peakLiveCandidates;
+    result.surfaceCellContext.simplificationEvaluatedCandidates =
+        simplified.empiricalWork;
     result.surfaceCellContext.hasSimplificationDiagnostics = true;
     result.diagnostics.surfaceCellSimplificationSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
@@ -4266,6 +4290,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.sideRollbackIdentityHashBefore;
     result.surfaceCellContext.completionSideRollbackIdentityHashAfter =
         completionResult.sideRollbackIdentityHashAfter;
+    result.surfaceCellContext.completionSideRollbackUndoOwnedBytes =
+        completionResult.sideRollbackUndoOwnedBytes;
     result.surfaceCellContext.completionAttemptedPatches =
         completionResult.attemptedPatches;
     result.surfaceCellContext.completionFailedPatches =

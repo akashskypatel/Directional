@@ -1409,6 +1409,20 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.simplificationCommitted << ","
       << "\"simplificationRejected\":"
       << result.surfaceCellContext.simplificationRejected << ","
+      << "\"simplificationGeneratedCandidates\":"
+      << result.surfaceCellContext.simplificationGeneratedCandidates << ","
+      << "\"simplificationDeduplicatedCandidates\":"
+      << result.surfaceCellContext.simplificationDeduplicatedCandidates << ","
+      << "\"simplificationInvalidatedCandidates\":"
+      << result.surfaceCellContext.simplificationInvalidatedCandidates << ","
+      << "\"simplificationStaleGenerationCandidates\":"
+      << result.surfaceCellContext.simplificationStaleGenerationCandidates << ","
+      << "\"simplificationFrontierGenerations\":"
+      << result.surfaceCellContext.simplificationFrontierGenerations << ","
+      << "\"simplificationPeakLiveCandidates\":"
+      << result.surfaceCellContext.simplificationPeakLiveCandidates << ","
+      << "\"simplificationEvaluatedCandidates\":"
+      << result.surfaceCellContext.simplificationEvaluatedCandidates << ","
       << "\"simplificationTopologyHealingCandidates\":[";
   for (std::size_t index = 0;
        index < result.surfaceCellContext
@@ -1622,6 +1636,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ","
       << "\"completionSideRollbackIdentityHashAfter\":"
       << result.surfaceCellContext.completionSideRollbackIdentityHashAfter
+      << ","
+      << "\"completionSideRollbackUndoOwnedBytes\":"
+      << result.surfaceCellContext.completionSideRollbackUndoOwnedBytes
       << ","
       << "\"completionAttemptedPatches\":"
       << result.surfaceCellContext.completionAttemptedPatches << ","

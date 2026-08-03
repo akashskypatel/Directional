@@ -94,14 +94,34 @@ namespace directional::geometry::surface_arrangement_detail {
 
 Eigen::RowVector3d node_barycentric_on_face(
     const SurfaceArrangementNode &node, const int face) {
+  return node_barycentric_on_face(node, face, -1, -1);
+}
+
+Eigen::RowVector3d node_barycentric_on_face(
+    const SurfaceArrangementNode &node, const int face,
+    const int component, const int sheet) {
+  const auto scopeCompatible = [](const int stored, const int requested) {
+    return requested < 0 || stored < 0 || stored == requested;
+  };
+  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+    if (occurrence.sourceFace == face &&
+        scopeCompatible(occurrence.sourceComponent, component) &&
+        scopeCompatible(occurrence.sourceSheet, sheet)) {
+      return occurrence.barycentric;
+    }
+  }
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
     if (occurrence.sourceFace == face) {
       return occurrence.barycentric;
     }
   }
-  return node.sourceFace == face ? node.barycentric
-                                 : Eigen::RowVector3d::Constant(
-                                       std::numeric_limits<double>::quiet_NaN());
+  if (node.sourceFace == face &&
+      scopeCompatible(node.sourceComponent, component) &&
+      scopeCompatible(node.sourceSheet, sheet)) {
+    return node.barycentric;
+  }
+  return Eigen::RowVector3d::Constant(
+      std::numeric_limits<double>::quiet_NaN());
 }
 
 } // namespace directional::geometry::surface_arrangement_detail
@@ -1565,7 +1585,8 @@ SurfaceCellComplex build_surface_cell_complex(
       1.0e-9 * std::max(1.0, (vertices.colwise().maxCoeff() -
                              vertices.colwise().minCoeff()).norm());
   const auto node_id = [&](const Segment2 &segment,
-                           const Eigen::Vector2d &rawUv) {
+                           const Eigen::Vector2d &rawUv,
+                           const double segmentParameter) {
     const int face = segment.sourceFace;
     const Eigen::RowVector3d bary =
         canonicalize_barycentric(uv_to_bary(rawUv));
@@ -1588,24 +1609,53 @@ SurfaceCellComplex build_surface_cell_complex(
       node.hardBarrierCrossing =
           node.hardBarrierCrossing ||
           hardBarrierCrossingKeys.count(scopedKey) != 0;
+      const double sourceParameter =
+          segment.sourceT0 + segmentParameter *
+                                 (segment.sourceT1 - segment.sourceT0);
+      const double railParameter =
+          segment.railT0 + segmentParameter *
+                               (segment.railT1 - segment.railT0);
       const bool occurrenceExists =
           std::any_of(node.occurrences.begin(), node.occurrences.end(),
                       [&](const SurfaceArrangementNodeOccurrence &occurrence) {
                         return occurrence.sourceFace == face &&
+                               occurrence.sourceComponent ==
+                                   segment.sourceComponent &&
+                               occurrence.sourceSheet == segment.sourceSheet &&
+                               occurrence.sourceArc == segment.sourceArc &&
+                               occurrence.provenance == segment.provenance &&
                                (occurrence.barycentric - bary).norm() <= 1.0e-12;
                       });
       if (!occurrenceExists) {
-        node.occurrences.push_back({face, bary});
+        SurfaceArrangementNodeOccurrence occurrence;
+        occurrence.sourceFace = face;
+        occurrence.barycentric = bary;
+        occurrence.sourceComponent = segment.sourceComponent;
+        occurrence.sourceSheet = segment.sourceSheet;
+        occurrence.sourceArc = segment.sourceArc;
+        occurrence.provenance = segment.provenance;
+        occurrence.railId = segment.railId;
+        occurrence.curveId = segment.curveId;
+        occurrence.sourceT0 = sourceParameter;
+        occurrence.sourceT1 = sourceParameter;
+        occurrence.railT0 = railParameter;
+        occurrence.railT1 = railParameter;
+        node.occurrences.push_back(std::move(occurrence));
         std::sort(node.occurrences.begin(), node.occurrences.end(),
                   [](const SurfaceArrangementNodeOccurrence &a,
                      const SurfaceArrangementNodeOccurrence &b) {
-                    if (a.sourceFace != b.sourceFace) {
-                      return a.sourceFace < b.sourceFace;
-                    }
-                    return std::tie(a.barycentric[0], a.barycentric[1],
-                                    a.barycentric[2]) <
-                           std::tie(b.barycentric[0], b.barycentric[1],
-                                    b.barycentric[2]);
+                    return std::tie(
+                               a.sourceComponent, a.sourceSheet,
+                               a.sourceFace, a.sourceArc, a.provenance,
+                               a.railId, a.curveId, a.sourceT0, a.sourceT1,
+                               a.railT0, a.railT1, a.barycentric[0],
+                               a.barycentric[1], a.barycentric[2]) <
+                           std::tie(
+                               b.sourceComponent, b.sourceSheet,
+                               b.sourceFace, b.sourceArc, b.provenance,
+                               b.railId, b.curveId, b.sourceT0, b.sourceT1,
+                               b.railT0, b.railT1, b.barycentric[0],
+                               b.barycentric[1], b.barycentric[2]);
                   });
       }
       return found->second;
@@ -1622,7 +1672,24 @@ SurfaceCellComplex build_surface_cell_complex(
         key.kind == 1 ? static_cast<int>(key.edge & 0x7fffffffu) : -1;
     node.sourceEdgeParameter =
         key.kind == 1 ? static_cast<double>(key.edgeT) / 1.0e10 : 0.0;
-    node.occurrences.push_back({face, bary});
+    SurfaceArrangementNodeOccurrence occurrence;
+    occurrence.sourceFace = face;
+    occurrence.barycentric = bary;
+    occurrence.sourceComponent = segment.sourceComponent;
+    occurrence.sourceSheet = segment.sourceSheet;
+    occurrence.sourceArc = segment.sourceArc;
+    occurrence.provenance = segment.provenance;
+    occurrence.railId = segment.railId;
+    occurrence.curveId = segment.curveId;
+    occurrence.sourceT0 =
+        segment.sourceT0 + segmentParameter *
+                               (segment.sourceT1 - segment.sourceT0);
+    occurrence.sourceT1 = occurrence.sourceT0;
+    occurrence.railT0 =
+        segment.railT0 + segmentParameter *
+                             (segment.railT1 - segment.railT0);
+    occurrence.railT1 = occurrence.railT0;
+    node.occurrences.push_back(std::move(occurrence));
     nodeByKey.emplace(scopedKey, node.id);
     nodeScopes.emplace_back(std::get<1>(scopedKey),
                             std::get<2>(scopedKey));
@@ -1714,8 +1781,8 @@ SurfaceCellComplex build_surface_cell_complex(
           segment.start + t0 * (segment.end - segment.start);
       const Eigen::Vector2d p1 =
           segment.start + t1 * (segment.end - segment.start);
-      const int a = node_id(segment, p0);
-      const int b = node_id(segment, p1);
+      const int a = node_id(segment, p0, t0);
+      const int b = node_id(segment, p1, t1);
       if (a == b) {
         continue;
       }
@@ -2103,6 +2170,116 @@ SurfaceCellComplex build_surface_cell_complex(
     complex.cells.push_back(cell);
   }
 
+  // Rebind every oriented halfedge to the exact source sheet of its incident
+  // cell. Coincident source-edge segments can contribute provenance from both
+  // local sheets; selecting one undirected primary record for both twins
+  // silently mixed sheets. The complete provenance remains attached, while
+  // each orientation chooses a deterministic record compatible with its cell.
+  for (SurfaceArrangementCell &cell : complex.cells) {
+    std::map<std::pair<int, int>, int> scopeFrequency;
+    const std::set<int> cellFaces(cell.sourceFaces.begin(),
+                                  cell.sourceFaces.end());
+    for (const int halfedgeId : cell.halfedges) {
+      const SurfaceArrangementHalfedge &edge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      bool counted = false;
+      for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+        if (entry.sourceComponent < 0 || entry.sourceSheet < 0 ||
+            (!cellFaces.empty() &&
+             cellFaces.count(entry.sourceFace) == 0U)) {
+          continue;
+        }
+        ++scopeFrequency[{entry.sourceComponent, entry.sourceSheet}];
+        counted = true;
+      }
+      if (!counted && edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
+        ++scopeFrequency[{edge.sourceComponent, edge.sourceSheet}];
+      }
+    }
+    if (scopeFrequency.empty()) {
+      continue;
+    }
+    const auto selectedScope = std::max_element(
+        scopeFrequency.begin(), scopeFrequency.end(),
+        [](const auto &lhs, const auto &rhs) {
+          if (lhs.second != rhs.second) {
+            return lhs.second < rhs.second;
+          }
+          return lhs.first > rhs.first;
+        })->first;
+
+    std::set<int> selectedFaces;
+    for (const int halfedgeId : cell.halfedges) {
+      SurfaceArrangementHalfedge &edge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      std::vector<const SurfaceArrangementProvenance *> compatible;
+      for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+        if (entry.sourceComponent == selectedScope.first &&
+            entry.sourceSheet == selectedScope.second &&
+            (cellFaces.empty() || cellFaces.count(entry.sourceFace) != 0U)) {
+          compatible.push_back(&entry);
+        }
+      }
+      if (compatible.empty()) {
+        for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+          if (entry.sourceComponent == selectedScope.first &&
+              entry.sourceSheet == selectedScope.second) {
+            compatible.push_back(&entry);
+          }
+        }
+      }
+      if (compatible.empty()) {
+        continue;
+      }
+      const auto key = [](const SurfaceArrangementProvenance *value) {
+        return std::make_tuple(
+            value->railId >= 0 ? 0 : 1, value->hardFeature ? 0 : 1,
+            value->sourceFace, value->sourceArc, value->provenance,
+            value->family, value->strand, value->featureClass,
+            value->railId, value->curveId,
+            static_cast<std::int64_t>(
+                std::llround(value->sourceT0 * 1.0e10)),
+            static_cast<std::int64_t>(
+                std::llround(value->sourceT1 * 1.0e10)),
+            static_cast<std::int64_t>(
+                std::llround(value->railT0 * 1.0e10)),
+            static_cast<std::int64_t>(
+                std::llround(value->railT1 * 1.0e10)));
+      };
+      const SurfaceArrangementProvenance &primary = **std::min_element(
+          compatible.begin(), compatible.end(),
+          [&](const auto *lhs, const auto *rhs) { return key(lhs) < key(rhs); });
+      edge.sourceArc = primary.sourceArc;
+      edge.family = primary.family;
+      edge.strand = primary.strand;
+      edge.featureClass = primary.featureClass;
+      edge.sourceFace = primary.sourceFace;
+      edge.sourceT0 = primary.sourceT0;
+      edge.sourceT1 = primary.sourceT1;
+      edge.hardFeature = edge.hardFeature || primary.hardFeature;
+      edge.layoutSupport = edge.layoutSupport || primary.layoutSupport;
+      edge.singularitySupport =
+          edge.singularitySupport || primary.singularitySupport;
+      edge.railId = primary.railId;
+      edge.curveId = primary.curveId;
+      edge.sourceComponent = selectedScope.first;
+      edge.sourceSheet = selectedScope.second;
+      edge.proposalId = primary.proposalId;
+      edge.proposalSeedId = primary.proposalSeedId;
+      edge.proposalSide = primary.proposalSide;
+      edge.proposalBoundarySegment = primary.proposalBoundarySegment;
+      edge.railT0 = primary.railT0;
+      edge.railT1 = primary.railT1;
+      if (edge.sourceFace >= 0) {
+        selectedFaces.insert(edge.sourceFace);
+      }
+    }
+    if (!selectedFaces.empty()) {
+      cell.sourceFaces.assign(selectedFaces.begin(), selectedFaces.end());
+      cell.sourceFace = cell.sourceFaces.front();
+    }
+  }
+
   // A DCEL walk yields one oriented cycle at a time.  A bounded region may
   // nevertheless have nested, oppositely oriented cycles (holes).  Detect
   // those components explicitly so annular and multiply connected cells are
@@ -2482,6 +2659,20 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
+      mix(occurrence.sourceComponent);
+      mix(occurrence.sourceSheet);
+      mix(occurrence.sourceArc);
+      mix(occurrence.provenance);
+      mix(occurrence.railId);
+      mix(occurrence.curveId);
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.sourceT1 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT0 * 1.0e10)));
+      mix(static_cast<std::int64_t>(
+          std::llround(occurrence.railT1 * 1.0e10)));
       for (int i = 0; i < 3; ++i) {
         mix(static_cast<std::int64_t>(
             std::llround(occurrence.barycentric[i] * 1.0e10)));

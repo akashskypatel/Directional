@@ -27,6 +27,7 @@ struct SurfaceCellSubdivisionResult {
   bool rollbackEquivalent = false;
   std::uint64_t rollbackIdentityHashBefore = 0U;
   std::uint64_t rollbackIdentityHashAfter = 0U;
+  std::uint64_t rollbackUndoOwnedBytes = 0U;
   SurfaceCellComplex complex;
   int splitUndirectedEdges = 0;
   int insertedVertices = 0;
@@ -79,6 +80,7 @@ struct SurfaceCellSideRepairResult {
   bool rollbackEquivalent = false;
   std::uint64_t rollbackIdentityHashBefore = 0U;
   std::uint64_t rollbackIdentityHashAfter = 0U;
+  std::uint64_t rollbackUndoOwnedBytes = 0U;
   SurfaceCellComplex complex;
   int infeasibleCellsBefore = 0;
   int infeasibleCellsAfter = 0;

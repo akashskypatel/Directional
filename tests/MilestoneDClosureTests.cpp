@@ -3,6 +3,7 @@
 #include <directional/geometry/SurfaceComplexSimplification.h>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <map>
 #include <set>
@@ -64,35 +65,127 @@ MeshFixture curved_square() {
 }
 
 SurfaceCellComplex two_interface_complex(const MeshFixture &mesh) {
-  SurfaceCellComplex complex = directional::geometry::build_surface_cell_complex(
-      mesh.vertices, mesh.faces,
-      {arc(0, 0, {0.5, 0.5, 0.0}, {0.5, 0.0, 0.5}, 0, 7)});
-  int shared = -1;
-  for (const auto &halfedge : complex.halfedges) {
-    if (halfedge.id > halfedge.twin || halfedge.twin < 0 ||
-        halfedge.twin >= static_cast<int>(complex.halfedges.size())) {
-      continue;
-    }
-    const auto &twin =
-        complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
-    if (halfedge.cell < 0 || twin.cell < 0 ||
-        halfedge.cell == twin.cell ||
-        complex.cells[static_cast<std::size_t>(halfedge.cell)].boundaryCycle ||
-        complex.cells[static_cast<std::size_t>(twin.cell)].boundaryCycle) {
-      continue;
-    }
-    shared = halfedge.id;
-    break;
+  SurfaceCellComplex complex;
+  const std::array<Eigen::RowVector3d, 6> barycentrics = {
+      Eigen::RowVector3d(1.0, 0.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0),
+      Eigen::RowVector3d(0.0, 0.0, 1.0),
+      Eigen::RowVector3d(0.5, 0.5, 0.0),
+      Eigen::RowVector3d(1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0),
+      Eigen::RowVector3d(0.5, 0.0, 0.5)};
+  complex.nodes.reserve(barycentrics.size());
+  for (int id = 0; id < static_cast<int>(barycentrics.size()); ++id) {
+    directional::geometry::SurfaceArrangementNode node;
+    node.id = id;
+    node.sourceFace = 0;
+    node.sourceComponent = 0;
+    node.sourceSheet = 0;
+    node.barycentric = barycentrics[static_cast<std::size_t>(id)];
+    directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+    occurrence.sourceFace = 0;
+    occurrence.barycentric = node.barycentric;
+    occurrence.sourceComponent = 0;
+    occurrence.sourceSheet = 0;
+    occurrence.provenance = id;
+    node.occurrences.push_back(occurrence);
+    complex.nodes.push_back(std::move(node));
   }
-  if (shared < 0) {
-    return complex;
-  }
-  auto subdivided =
-      directional::geometry::subdivide_surface_cell_complex_edges(
-          std::move(complex), {{shared, 1}}, &mesh.faces);
-  return std::move(subdivided.complex);
-}
 
+  const auto add_pair = [&](const int from, const int to,
+                            const int forwardCell, const int reverseCell,
+                            const int family, const int strand) {
+    const int first = static_cast<int>(complex.halfedges.size());
+    directional::geometry::SurfaceArrangementHalfedge forward;
+    directional::geometry::SurfaceArrangementHalfedge reverse;
+    for (directional::geometry::SurfaceArrangementHalfedge *edge :
+         {&forward, &reverse}) {
+      edge->sourceFace = 0;
+      edge->sourceComponent = 0;
+      edge->sourceSheet = 0;
+      edge->family = family;
+      edge->strand = strand;
+      edge->sourceArc = strand;
+      directional::geometry::SurfaceArrangementProvenance provenance;
+      provenance.sourceArc = strand;
+      provenance.provenance = strand;
+      provenance.sourceFace = 0;
+      provenance.family = family;
+      provenance.strand = strand;
+      provenance.sourceComponent = 0;
+      provenance.sourceSheet = 0;
+      edge->provenance.push_back(provenance);
+    }
+    forward.id = first;
+    forward.twin = first + 1;
+    forward.from = from;
+    forward.to = to;
+    forward.cell = forwardCell;
+    reverse.id = first + 1;
+    reverse.twin = first;
+    reverse.from = to;
+    reverse.to = from;
+    reverse.cell = reverseCell;
+    reverse.sourceT0 = 1.0;
+    reverse.sourceT1 = 0.0;
+    reverse.provenance.front().sourceT0 = 1.0;
+    reverse.provenance.front().sourceT1 = 0.0;
+    complex.halfedges.push_back(std::move(forward));
+    complex.halfedges.push_back(std::move(reverse));
+    return first;
+  };
+
+  // Nodes: A=0, B=1, C=2, P=3, R=4, Q=5.
+  const int ap = add_pair(0, 3, 1, 2, -1, 0);
+  const int pb = add_pair(3, 1, 0, 2, -1, 1);
+  const int bc = add_pair(1, 2, 0, 2, -1, 2);
+  const int cq = add_pair(2, 5, 0, 2, -1, 3);
+  const int qa = add_pair(5, 0, 1, 2, -1, 4);
+  const int pr = add_pair(3, 4, 1, 0, 0, 7);
+  const int rq = add_pair(4, 5, 1, 0, 0, 7);
+
+  const std::array<std::vector<int>, 3> cycles = {
+      std::vector<int>{pb, bc, cq, rq + 1, pr + 1},
+      std::vector<int>{ap, pr, rq, qa},
+      std::vector<int>{ap + 1, qa + 1, cq + 1, bc + 1, pb + 1}};
+  complex.cells.reserve(cycles.size());
+  for (int id = 0; id < static_cast<int>(cycles.size()); ++id) {
+    directional::geometry::SurfaceArrangementCell cell;
+    cell.id = id;
+    cell.sourceFace = 0;
+    cell.sourceFaces = {0};
+    cell.halfedges = cycles[static_cast<std::size_t>(id)];
+    cell.boundaryCycle = id == 2;
+    cell.closed = true;
+    cell.disk = true;
+    cell.boundaryComponentCount = 1;
+    cell.eulerCharacteristic = 1;
+    cell.signedArea = cell.boundaryCycle ? -0.5 : (id == 0 ? 1.0 / 3.0 : 1.0 / 6.0);
+    cell.area = std::abs(cell.signedArea);
+    for (int index = 0; index < static_cast<int>(cell.halfedges.size()); ++index) {
+      const int edgeId = cell.halfedges[static_cast<std::size_t>(index)];
+      complex.halfedges[static_cast<std::size_t>(edgeId)].next =
+          cell.halfedges[static_cast<std::size_t>((index + 1) % cell.halfedges.size())];
+    }
+    complex.cells.push_back(std::move(cell));
+  }
+
+  complex.diagnostics.eulerCharacteristic = 1;
+  complex.diagnostics.sourceEulerCharacteristic = 1;
+  complex.diagnostics.connectedComponentCount = 1;
+  complex.diagnostics.sourceConnectedComponentCount = 1;
+  complex.diagnostics.boundaryLoopCount = 1;
+  complex.diagnostics.sourceBoundaryLoopCount = 1;
+  complex.diagnostics.incidenceValid = true;
+  complex.diagnostics.embeddingValid = true;
+  complex.diagnostics.orientationValid = true;
+  complex.diagnostics.cellsDiskValid = true;
+  complex.diagnostics.boundaryLoopsValid = true;
+  complex.diagnostics.eulerCharacteristicValid = true;
+  complex.diagnostics.topologyValid = true;
+  complex.diagnostics.supportedArea = 0.5;
+  complex.diagnostics.extractedArea = 0.5;
+  return complex;
+}
 std::vector<int> internal_interface(const SurfaceCellComplex &complex) {
   std::map<std::pair<int, int>, std::vector<int>> interfaces;
   for (const auto &halfedge : complex.halfedges) {
@@ -216,7 +309,6 @@ std::vector<SurfaceArrangementArc> cylinder_grid_arcs(
       a[localA] = 1.0;
       b[localB] = 1.0;
       arcs.push_back(arc(id++, face, a, b, metadata.first, metadata.second));
-      break;
     }
   }
   return arcs;
