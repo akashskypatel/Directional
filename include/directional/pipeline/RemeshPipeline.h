@@ -348,6 +348,18 @@ struct SurfaceCellPipelineContext {
   std::uint64_t arrangementCurrentOwnedBytes = 0U;
   std::uint64_t arrangementPeakOwnedBytes = 0U;
   bool embeddedArrangementStorageReleasedAfterArrangement = false;
+  std::uint64_t tracingLogicalPayloadBytes = 0U;
+  std::uint64_t tracingRetainedCapacityBytes = 0U;
+  std::uint64_t flowRepLogicalPayloadBytes = 0U;
+  std::uint64_t flowRepRetainedCapacityBytes = 0U;
+  std::uint64_t arrangementLogicalPayloadBytes = 0U;
+  std::uint64_t arrangementRetainedCapacityBytes = 0U;
+  std::uint64_t simplificationLogicalPayloadBytes = 0U;
+  std::uint64_t simplificationRetainedCapacityBytes = 0U;
+  std::uint64_t completionLogicalPayloadBytes = 0U;
+  std::uint64_t completionRetainedCapacityBytes = 0U;
+  std::uint64_t estimatedPeakSimultaneousOwnedBytes = 0U;
+  std::vector<SurfaceCellMemoryOwnershipEvent> memoryOwnershipTimeline;
 
   geometry::SurfaceCellComplex simplifiedComplex;
   bool hasSimplifiedComplex = false;
@@ -443,6 +455,10 @@ struct SurfaceCellPipelineContext {
   std::string completionFailure;
   geometry::SurfaceCellDomainIdentityAudit completionDomainIdentityAudit;
   bool hasCompletionDomainIdentityAudit = false;
+  geometry::SurfaceCellReplacementScopeFailure completionParityScopeFailure;
+  bool hasCompletionParityScopeFailure = false;
+  std::vector<geometry::PatchCompletionReuseMismatch>
+      completionOwnershipProductCacheMismatchVector;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   std::vector<int> completionUnresolvedSingularVertices;
