@@ -1,55 +1,86 @@
-# Compile-only workflow. It does not execute tests, benchmarks, or custom meshes.
-name: Agent Build Surface Cell P5 Route Complete
+# One-shot P5 global ownership frontier materialization and compile-only validation.
+# This workflow never executes tests, benchmarks, or custom mesh binaries.
+name: Agent Build Surface Cell P5 Global Ownership Frontier
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths-ignore:
-      - TODO
-      - MILESTONE_G_TODO.md
-      - '.agents/Directional/*.md'
-      - 'benchmark-results/*.json'
   workflow_dispatch:
 
 concurrency:
-  group: agent-surface-cell-p5-route-${{ github.ref }}
+  group: agent-surface-cell-p5-frontier-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
 jobs:
-  build:
+  materialize-and-build:
     runs-on: ubuntu-24.04
     steps:
+      - name: Checkout exact staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 5
+          submodules: false
+
+      - name: Materialize global ownership frontier checkpoint
+        id: source
+        shell: bash
+        env:
+          BASELINE_SHA: 9f8de20528cb2db637e1073e54917ab7f8540741
+          PAYLOAD_SHA256: 89836d76191f54b54afdcf6012c63d894917f99c3221f5b1247d227717f8be32
+          PATCH_SHA256: fa9c2ab888051123f372dbcca29de605881199ebf47380fc6483ada3b61d12c7
+        run: |
+          set -euo pipefail
+          payload=/tmp/p5-global-frontier.patch.gz.b64
+          : > "${payload}"
+          for part in \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part1 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part2 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part3 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part4
+          do
+            cat "${part}" >> "${payload}"
+          done
+          echo "${PAYLOAD_SHA256}  ${payload}" | sha256sum --check -
+          base64 --decode "${payload}" | gzip --decompress > /tmp/p5-global-frontier.patch
+          echo "${PATCH_SHA256}  /tmp/p5-global-frontier.patch" | sha256sum --check -
+
+          git show "${BASELINE_SHA}:.github/workflows/agent-build-recovered-p5.yml" \
+            > .github/workflows/agent-build-recovered-p5.yml
+          git rm -f .github/workflows/apply-p5-cb50-patch.yml
+          git apply --check --whitespace=error /tmp/p5-global-frontier.patch
+          git apply --whitespace=error /tmp/p5-global-frontier.patch
+          git rm -f \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part1 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part2 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part3 \
+            .agents/Directional/p5-global-frontier.patch.gz.b64.part4
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git diff --cached --check
+          git commit -m 'feat(surface-cells): add global ownership frontier [skip ci]'
+          source_sha=$(git rev-parse HEAD)
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
+          echo "${source_sha}" > /tmp/source-commit.txt
+
       - name: Record compile-only run start
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 route-complete compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. No tests, benchmarks, or custom meshes execute."
-
-      - name: Checkout exact working branch
-        uses: actions/checkout@v4
-        with:
-          ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 1
-          submodules: false
-
-      - name: Verify exact remote source
-        shell: bash
-        run: |
-          set -euo pipefail
-          local_sha=$(git rev-parse HEAD)
-          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
-          test "${local_sha}" = "${remote_sha}"
-          echo "${local_sha}" > /tmp/source-commit.txt
+            -f body="P5 global-frontier compile-only run ${RUN_ID} started for exact source ${SOURCE_SHA}. It compiles and packages only; no tests, benchmarks, or custom meshes execute."
 
       - name: Fetch required submodules shallowly
         shell: bash
@@ -58,11 +89,19 @@ jobs:
           git submodule sync --recursive
           git submodule update --init --recursive --depth 1
 
-      - name: Verify clean checkpoint
+      - name: Verify exact clean source
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${SOURCE_SHA}"
+          test "${SOURCE_SHA}" = "$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)"
           git diff --check
+          for part in .agents/Directional/p5-global-frontier.patch.gz.b64.part*; do
+            test ! -e "${part}"
+          done
+          test ! -e .github/workflows/apply-p5-cb50-patch.yml
           git status --porcelain=v1 > /tmp/source-status.txt
           test ! -s /tmp/source-status.txt
 
@@ -70,9 +109,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf build/agent-p5-route-release
-          mkdir -p build/agent-p5-route-release
-          cmake -S . -B build/agent-p5-route-release -G Ninja \
+          rm -rf build/agent-p5-frontier-release
+          mkdir -p build/agent-p5-frontier-release
+          cmake -S . -B build/agent-p5-frontier-release -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
@@ -84,15 +123,15 @@ jobs:
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee build/agent-p5-route-release/configure.log
+            2>&1 | tee build/agent-p5-frontier-release/configure.log
 
       - name: Compile required targets only
         shell: bash
         run: |
           set -euo pipefail
-          cmake --build build/agent-p5-route-release \
+          cmake --build build/agent-p5-frontier-release \
             --target directional_core directional_pipeline directional_phase1_tests directional_benchmarks \
-            -j 4 2>&1 | tee build/agent-p5-route-release/build.log
+            -j 4 2>&1 | tee build/agent-p5-frontier-release/build.log
 
       - name: Package exact compiled checkpoint
         shell: bash
@@ -101,23 +140,25 @@ jobs:
           git status --porcelain=v1 > /tmp/source-status.txt
           test ! -s /tmp/source-status.txt
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
-          cp build/agent-p5-route-release/directional_phase1_tests artifact/bin/
-          cp build/agent-p5-route-release/directional_benchmarks artifact/bin/
-          cp build/agent-p5-route-release/libdirectional_core.a artifact/lib/
-          cp build/agent-p5-route-release/libdirectional_pipeline.a artifact/lib/
+          cp build/agent-p5-frontier-release/directional_phase1_tests artifact/bin/
+          cp build/agent-p5-frontier-release/directional_benchmarks artifact/bin/
+          test -f build/agent-p5-frontier-release/test-data/benchmarks/fixtures/manifest.example.json
+          cp -a build/agent-p5-frontier-release/test-data artifact/bin/
+          cp build/agent-p5-frontier-release/libdirectional_core.a artifact/lib/
+          cp build/agent-p5-frontier-release/libdirectional_pipeline.a artifact/lib/
           git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
           cp /tmp/source-commit.txt artifact/source-commit.txt
           cp /tmp/source-status.txt artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
-          cp build/agent-p5-route-release/configure.log artifact/logs/
-          cp build/agent-p5-route-release/build.log artifact/logs/
+          cp build/agent-p5-frontier-release/configure.log artifact/logs/
+          cp build/agent-p5-frontier-release/build.log artifact/logs/
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
           mv /tmp/files.sha256 artifact/files.sha256
 
       - name: Upload compiled checkpoint
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-route-complete-linux-release
+          name: surface-cell-p5-global-frontier-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
@@ -127,9 +168,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
           JOB_STATUS: ${{ job.status }}
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 route-complete compile-only run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, or custom meshes were executed."
+            -f body="P5 global-frontier compile-only run ${RUN_ID} finished ${JOB_STATUS} for exact source ${SOURCE_SHA}. No tests, benchmarks, or custom meshes were executed."
