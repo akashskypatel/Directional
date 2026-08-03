@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - '.agents/Directional/p5-cb58-source.patch.gz.b64'
+      - '.agents/Directional/p5-cb58-source.patch.gz.b64.part07'
 
 permissions:
   contents: write
@@ -25,8 +25,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base64 --decode .agents/Directional/p5-cb58-source.patch.gz.b64 |
-            gzip --decompress > /tmp/p5-cb58-source.patch
+          cat .agents/Directional/p5-cb58-source.patch.gz.b64.part* |
+            base64 --decode | gzip --decompress > /tmp/p5-cb58-source.patch
+          test "$(sha256sum /tmp/p5-cb58-source.patch | cut -d' ' -f1)" = \
+            'ccd7214a9c4bd90a80f68330ef07cf84afc8069e414f84de5b8f46f67d5ad357'
           if grep -qE '^diff -ruN .*\.github/workflows/' /tmp/p5-cb58-source.patch; then
             echo 'Source materialization patch must not modify workflows.' >&2
             exit 1
