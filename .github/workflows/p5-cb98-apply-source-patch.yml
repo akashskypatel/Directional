@@ -1,0 +1,161 @@
+# One-shot source synchronization for P5-CB98.
+# This workflow applies only the seven source/test files listed below.
+# It never stages, commits, or pushes any workflow file.
+name: Apply P5 CB98 Remaining Source Patch
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/p5-cb98-apply-source-patch.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: p5-cb98-source-patch-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply-source-patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Record source synchronization start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB98 source synchronization workflow ${RUN_ID} started for ${EVENT_SHA}. It is restricted to the seven declared source/test files and will not modify, stage, commit, or push any workflow file."
+
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify event owns the branch head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "${remote_sha}" = "${GITHUB_SHA}"
+          test -z "$(git status --porcelain=v1)"
+
+      - name: Reconstruct and verify preserved patch
+        id: reconstruct
+        shell: bash
+        run: |
+          set -euo pipefail
+          patch_root=.agents/Directional/patches
+          encoded=/tmp/p5-cb98-remaining.patch.gz.b64
+          compressed=/tmp/p5-cb98-remaining.patch.gz
+          patch=/tmp/p5-cb98-remaining.patch
+
+          cat \
+            "${patch_root}/p5-cb98-remaining.patch.gz.b64.part00" \
+            "${patch_root}/p5-cb98-remaining.patch.gz.b64.part01" \
+            "${patch_root}/p5-cb98-remaining.patch.gz.b64.part02" \
+            "${patch_root}/p5-cb98-remaining.patch.gz.b64.part03" \
+            > "${encoded}"
+
+          printf '%s  %s\n' \
+            'f41c94c0de85a1ab37a2b6cb8bfaa062623df482289c2f06eaf93bf2225512fb' \
+            "${encoded}" | sha256sum --check
+
+          base64 --decode "${encoded}" > "${compressed}"
+          printf '%s  %s\n' \
+            'ea4d16a2cef572c1ee8e245b88c51cdfe8ce780effa7b612cd5db2ad373da2e8' \
+            "${compressed}" | sha256sum --check
+
+          gzip --decompress --stdout "${compressed}" > "${patch}"
+          test "$(wc -c < "${patch}")" -eq 106126
+          printf '%s  %s\n' \
+            'cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8' \
+            "${patch}" | sha256sum --check
+
+          echo "patch=${patch}" >> "${GITHUB_OUTPUT}"
+
+      - name: Prove exact non-workflow patch scope
+        shell: bash
+        env:
+          PATCH_FILE: ${{ steps.reconstruct.outputs.patch }}
+        run: |
+          set -euo pipefail
+          expected=/tmp/p5-cb98-expected-files.txt
+          actual=/tmp/p5-cb98-actual-files.txt
+
+          cat > "${expected}" <<'EOF'
+          src/bench/DirectionalBenchmark.cpp
+          src/geometry/PatchDescriptor.cpp
+          src/geometry/SurfaceArrangement.cpp
+          src/geometry/SurfaceComplexSimplification.cpp
+          src/pipeline/RemeshPipeline.cpp
+          tests/PatchDescriptorMilestoneETests.cpp
+          tests/SurfaceCellPipelinePhase20Tests.cpp
+          EOF
+          sed -i 's/^          //' "${expected}"
+
+          git apply --numstat "${PATCH_FILE}" | cut -f3- | sort -u > "${actual}"
+          diff -u "${expected}" "${actual}"
+          ! grep -Eq '(^|/)\.github/workflows/' "${actual}"
+          ! grep -E '^(diff --git|--- |\+\+\+ )' "${PATCH_FILE}" | grep -F '.github/workflows/'
+
+      - name: Apply patch transactionally
+        shell: bash
+        env:
+          PATCH_FILE: ${{ steps.reconstruct.outputs.patch }}
+        run: |
+          set -euo pipefail
+          git apply --check "${PATCH_FILE}"
+          git apply "${PATCH_FILE}"
+          git diff --check
+
+          expected=/tmp/p5-cb98-expected-files.txt
+          changed=/tmp/p5-cb98-changed-files.txt
+          git diff --name-only | sort -u > "${changed}"
+          diff -u "${expected}" "${changed}"
+
+          test -z "$(git diff --name-only -- .github/workflows)"
+          test -z "$(git status --porcelain=v1 --untracked-files=no | awk '$2 ~ /^\.github\/workflows\// { print }')"
+
+      - name: Commit and push source files only
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=/tmp/p5-cb98-expected-files.txt
+          staged=/tmp/p5-cb98-staged-files.txt
+
+          git config user.name 'directional-agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          xargs -d '\n' git add -- < "${expected}"
+          git diff --cached --name-only | sort -u > "${staged}"
+          diff -u "${expected}" "${staged}"
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
+
+          git commit -m 'fix(surface-cells): apply P5-CB98 remaining source patch'
+          applied_sha=$(git rev-parse HEAD)
+          git push origin HEAD:refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "applied_sha=${applied_sha}" >> "${GITHUB_OUTPUT}"
+
+      - name: Record source synchronization result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+          APPLIED_SHA: ${{ steps.commit.outputs.applied_sha }}
+        run: |
+          set -euo pipefail
+          applied=${APPLIED_SHA:-none}
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB98 source synchronization workflow ${RUN_ID} finished ${JOB_STATUS}. Event commit: ${EVENT_SHA}. Applied source commit: ${applied}. The workflow did not modify, stage, commit, or push any workflow file."
