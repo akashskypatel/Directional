@@ -85,6 +85,9 @@ enum class SurfaceCellOwnershipRepairOutcome : int {
   IncompleteRoute = 9,
   RouteValidationFailed = 10,
   NoRouteCompleteCandidate = 11,
+  StrictConflictReduction = 12,
+  LatentClaimExposed = 13,
+  ConflictRegression = 14,
 };
 
 inline const char *surface_cell_ownership_repair_outcome_name(
@@ -114,6 +117,12 @@ inline const char *surface_cell_ownership_repair_outcome_name(
     return "route-validation-failed";
   case SurfaceCellOwnershipRepairOutcome::NoRouteCompleteCandidate:
     return "no-route-complete-candidate";
+  case SurfaceCellOwnershipRepairOutcome::StrictConflictReduction:
+    return "strict-conflict-reduction";
+  case SurfaceCellOwnershipRepairOutcome::LatentClaimExposed:
+    return "latent-claim-exposed";
+  case SurfaceCellOwnershipRepairOutcome::ConflictRegression:
+    return "conflict-regression";
   }
   return "unknown";
 }
@@ -223,6 +232,15 @@ struct SurfaceCellOwnershipRepairAttempt {
   bool repeatedState = false;
   bool madeProgress = false;
   bool introducedOwnershipClaim = false;
+  int preConflictCount = 0;
+  int postConflictCount = 0;
+  int retainedConflictCount = 0;
+  int removedConflictCount = 0;
+  int introducedConflictCount = 0;
+  int reusedPatchCompletions = 0;
+  int recomputedPatchCompletions = 0;
+  std::uint64_t preConflictInventoryHash = 0U;
+  std::uint64_t postConflictInventoryHash = 0U;
   SurfaceCellOwnershipRepairOutcome outcome =
       SurfaceCellOwnershipRepairOutcome::None;
   std::vector<int> affectedPatches;
@@ -242,7 +260,10 @@ struct SurfaceCellComplexCompletionOptions {
   int maxSameCornerCandidateEvaluations = 2;
   int maxSameCornerFullCompletionPasses = 3;
   int maxSameCornerVisitedStates = 3;
-  int maxSameCornerInsertedVertices = 8;
+  // Negative selects the exact topology-derived interval count for the one
+  // atomic frontier transaction. Nonnegative values remain explicit test and
+  // caller caps.
+  int maxSameCornerInsertedVertices = -1;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
 };
@@ -277,6 +298,19 @@ struct SurfaceCellComplexCompletionResult {
   int completionOwnershipVisitedStateCount = 0;
   int completionOwnershipFullRecomputationPasses = 0;
   int completionOwnershipIncrementalRecomputationPasses = 0;
+  int completionOwnershipPreConflictCount = 0;
+  int completionOwnershipPostConflictCount = 0;
+  int completionOwnershipRetainedConflictCount = 0;
+  int completionOwnershipRemovedConflictCount = 0;
+  int completionOwnershipIntroducedConflictCount = 0;
+  int completionOwnershipConflictComponentCount = 0;
+  int completionOwnershipIndependentComponentCount = 0;
+  int completionOwnershipReusedPatchCompletions = 0;
+  int completionOwnershipRecomputedPatchCompletions = 0;
+  std::uint64_t completionOwnershipPreConflictInventoryHash = 0U;
+  std::uint64_t completionOwnershipPostConflictInventoryHash = 0U;
+  std::uint64_t completionOwnershipConflictFrontierOwnedBytes = 0U;
+  std::uint64_t completionOwnershipProductCacheOwnedBytes = 0U;
   int completionOwnershipCurrentLiveCandidateComplexes = 0;
   int completionOwnershipPeakLiveCandidateComplexes = 0;
   int completionOwnershipLastCandidateHalfedge = -1;

@@ -1371,6 +1371,176 @@ void copy_conflict_corner_diagnostics(
   }
 }
 
+std::array<PureQuadStitchIdentity, 4> exact_canonical_cycle(
+    const pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity> &forward,
+    const pure_quad_detail::CanonicalQuadCycle<PureQuadStitchIdentity> &reversed) {
+  return reversed.values < forward.values ? reversed.values : forward.values;
+}
+
+SurfaceCellCompletedFaceOwnerIdentity exact_owner_identity(
+    const CompletedFaceOwnershipRecord &record, const PureQuadMesh &patch) {
+  SurfaceCellCompletedFaceOwnerIdentity identity;
+  identity.domain = patch.domainIdentity;
+  identity.canonicalStitchCycle =
+      exact_canonical_cycle(record.stitchForward, record.stitchReversed);
+  identity.canonicalAuthoritativeCycle = exact_canonical_cycle(
+      record.authoritativeForward, record.authoritativeReversed);
+  identity.sourcePatch = patch.sourcePatch;
+  identity.localQuad = record.localQuad;
+  identity.completionBackend = static_cast<int>(record.backend);
+  identity.completionVariant = record.completionVariant;
+  identity.boundaryVertexCount =
+      static_cast<int>(patch.boundaryVertices.size());
+  identity.sideEdgeCounts = patch.sourceSideEdgeCounts;
+  return identity;
+}
+
+SurfaceCellOwnershipConflict make_ownership_conflict(
+    const CompletedFaceOwnershipRecord &firstRecord,
+    const CompletedFaceOwnershipRecord &secondRecord,
+    const std::vector<PureQuadMesh> &patches) {
+  const PureQuadMesh &firstPatch =
+      patches[static_cast<std::size_t>(firstRecord.patchIndex)];
+  const PureQuadMesh &secondPatch =
+      patches[static_cast<std::size_t>(secondRecord.patchIndex)];
+  SurfaceCellOwnershipConflict conflict;
+  conflict.firstOwner = exact_owner_identity(firstRecord, firstPatch);
+  conflict.secondOwner = exact_owner_identity(secondRecord, secondPatch);
+
+  const CompletedFaceOwnershipRecord *first = &firstRecord;
+  const CompletedFaceOwnershipRecord *second = &secondRecord;
+  const PureQuadMesh *firstMesh = &firstPatch;
+  const PureQuadMesh *secondMesh = &secondPatch;
+  if (conflict.secondOwner < conflict.firstOwner) {
+    std::swap(conflict.firstOwner, conflict.secondOwner);
+    std::swap(first, second);
+    std::swap(firstMesh, secondMesh);
+  }
+
+  conflict.firstPatch = firstMesh->sourcePatch;
+  conflict.firstLocalQuad = first->localQuad;
+  conflict.secondPatch = secondMesh->sourcePatch;
+  conflict.secondLocalQuad = second->localQuad;
+  conflict.firstDomainHash = firstMesh->domainIdentity.hash();
+  conflict.secondDomainHash = secondMesh->domainIdentity.hash();
+  conflict.firstBoundaryNodeHash =
+      firstMesh->domainIdentity.orientedBoundary.hash();
+  conflict.secondBoundaryNodeHash =
+      secondMesh->domainIdentity.orientedBoundary.hash();
+  conflict.firstBoundaryHalfedgeHash =
+      firstMesh->domainIdentity.undirectedBoundary.hash();
+  conflict.secondBoundaryHalfedgeHash =
+      secondMesh->domainIdentity.undirectedBoundary.hash();
+  conflict.firstSourceSupportHash =
+      firstMesh->domainIdentity.sourceSupport.hash();
+  conflict.secondSourceSupportHash =
+      secondMesh->domainIdentity.sourceSupport.hash();
+  conflict.firstSourceSupportCount =
+      firstMesh->domainIdentity.sourceSupportCount;
+  conflict.secondSourceSupportCount =
+      secondMesh->domainIdentity.sourceSupportCount;
+  conflict.firstComponent = firstMesh->domainIdentity.sourceComponent;
+  conflict.firstSheet = firstMesh->domainIdentity.sourceSheet;
+  conflict.secondComponent = secondMesh->domainIdentity.sourceComponent;
+  conflict.secondSheet = secondMesh->domainIdentity.sourceSheet;
+  conflict.firstCompletionBackend = static_cast<int>(first->backend);
+  conflict.secondCompletionBackend = static_cast<int>(second->backend);
+  conflict.firstCompletionVariant = first->completionVariant;
+  conflict.secondCompletionVariant = second->completionVariant;
+  conflict.firstBoundaryNodeCount =
+      firstMesh->domainIdentity.boundaryNodeCount;
+  conflict.secondBoundaryNodeCount =
+      secondMesh->domainIdentity.boundaryNodeCount;
+  conflict.firstBoundaryHalfedgeCount =
+      firstMesh->domainIdentity.boundaryHalfedgeCount;
+  conflict.secondBoundaryHalfedgeCount =
+      secondMesh->domainIdentity.boundaryHalfedgeCount;
+  conflict.firstBoundaryVertexCount =
+      static_cast<int>(firstMesh->boundaryVertices.size());
+  conflict.secondBoundaryVertexCount =
+      static_cast<int>(secondMesh->boundaryVertices.size());
+  conflict.firstSideEdgeCounts = firstMesh->sourceSideEdgeCounts;
+  conflict.secondSideEdgeCounts = secondMesh->sourceSideEdgeCounts;
+  copy_conflict_corner_diagnostics(
+      *first, conflict.firstCornerIdentityKinds,
+      conflict.firstCornerIdentityHashes,
+      conflict.firstCornerAuthoritativeHashes,
+      conflict.firstLocalVertices, conflict.firstGlobalVertices);
+  copy_conflict_corner_diagnostics(
+      *second, conflict.secondCornerIdentityKinds,
+      conflict.secondCornerIdentityHashes,
+      conflict.secondCornerAuthoritativeHashes,
+      conflict.secondLocalVertices, conflict.secondGlobalVertices);
+
+  if (firstMesh->domainIdentity.same_oriented_domain(
+          secondMesh->domainIdentity)) {
+    conflict.classification =
+        SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain;
+  } else if (firstMesh->domainIdentity.same_undirected_support(
+                 secondMesh->domainIdentity)) {
+    conflict.classification =
+        SurfaceCellOwnershipConflictClass::OverlappingUndirectedBoundary;
+  } else if (pure_quad_detail::same_unoriented_cycle(
+                 first->authoritativeForward, first->authoritativeReversed,
+                 second->authoritativeForward, second->authoritativeReversed)) {
+    const bool sameSourceSupport =
+        firstMesh->domainIdentity.valid && secondMesh->domainIdentity.valid &&
+        firstMesh->domainIdentity.sourceSupport.valid &&
+        secondMesh->domainIdentity.sourceSupport.valid &&
+        firstMesh->domainIdentity.sourceSupport ==
+            secondMesh->domainIdentity.sourceSupport &&
+        firstMesh->domainIdentity.sourceSupportCount ==
+            secondMesh->domainIdentity.sourceSupportCount &&
+        firstMesh->domainIdentity.sourceComponent ==
+            secondMesh->domainIdentity.sourceComponent &&
+        firstMesh->domainIdentity.sourceSheet ==
+            secondMesh->domainIdentity.sourceSheet;
+    conflict.classification =
+        sameSourceSupport
+            ? SurfaceCellOwnershipConflictClass::SameCornerDistinctBoundaryClaim
+            : SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership;
+  } else if (pure_quad_detail::same_unoriented_cycle(
+                 first->stitchForward, first->stitchReversed,
+                 second->stitchForward, second->stitchReversed)) {
+    conflict.classification =
+        SurfaceCellOwnershipConflictClass::FalseVertexEquivalence;
+  } else {
+    conflict.classification = SurfaceCellOwnershipConflictClass::Unclassified;
+  }
+  return conflict;
+}
+
+std::string ownership_conflict_failure(
+    const SurfaceCellOwnershipConflict &conflict) {
+  return "DuplicateStitchedQuad:firstPatch=" +
+         std::to_string(conflict.firstPatch) +
+         ";firstLocalQuad=" + std::to_string(conflict.firstLocalQuad) +
+         ";secondPatch=" + std::to_string(conflict.secondPatch) +
+         ";secondLocalQuad=" + std::to_string(conflict.secondLocalQuad) +
+         ";globalVertices=" +
+         pure_quad_detail::integer_list(std::vector<int>(
+             conflict.firstGlobalVertices.begin(),
+             conflict.firstGlobalVertices.end())) +
+         ";classification=" +
+         surface_cell_ownership_conflict_name(conflict.classification) +
+         ";firstDomainHash=" + std::to_string(conflict.firstDomainHash) +
+         ";secondDomainHash=" + std::to_string(conflict.secondDomainHash) +
+         ";firstBoundaryNodeHash=" +
+         std::to_string(conflict.firstBoundaryNodeHash) +
+         ";secondBoundaryNodeHash=" +
+         std::to_string(conflict.secondBoundaryNodeHash) +
+         ";firstBoundaryHalfedgeHash=" +
+         std::to_string(conflict.firstBoundaryHalfedgeHash) +
+         ";secondBoundaryHalfedgeHash=" +
+         std::to_string(conflict.secondBoundaryHalfedgeHash) +
+         ";firstSourceSupportHash=" +
+         std::to_string(conflict.firstSourceSupportHash) +
+         ";secondSourceSupportHash=" +
+         std::to_string(conflict.secondSourceSupportHash) +
+         ";exactConflictHash=" + std::to_string(conflict.exact_hash());
+}
+
+
 } // namespace
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
@@ -1430,7 +1600,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
 
   std::map<PureQuadStitchIdentity, int> vertexRows;
   std::vector<Eigen::Vector3d> positions;
-  std::map<std::array<int, 4>, CompletedFaceOwnershipRecord> canonicalQuads;
+  std::map<std::array<int, 4>, std::vector<CompletedFaceOwnershipRecord>> canonicalQuads;
 
   for (const int patchIndex : patchOrder) {
     const PureQuadMesh &patch = patches[static_cast<std::size_t>(patchIndex)];
@@ -1555,192 +1725,17 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           patchIndex, localQuad, faceLineage, quad, globalQuad,
           localStitchIdentities, localAuthoritativeIdentities, localComponents,
           localSheets);
-      const auto [existingQuad, inserted] = canonicalQuads.emplace(
-          canonical, std::move(ownership));
-      if (!inserted) {
-        const CompletedFaceOwnershipRecord &firstOwner = existingQuad->second;
-        const CompletedFaceOwnershipRecord secondOwner =
-            make_completed_face_ownership(
-                patchIndex, localQuad, faceLineage, quad, globalQuad,
-                localStitchIdentities, localAuthoritativeIdentities,
-                localComponents, localSheets);
-        const PureQuadMesh &firstPatch =
-            patches[static_cast<std::size_t>(firstOwner.patchIndex)];
-        SurfaceCellOwnershipConflict &conflict = result.ownershipConflict;
-        conflict.firstPatch = firstPatch.sourcePatch;
-        conflict.firstLocalQuad = firstOwner.localQuad;
-        conflict.secondPatch = patch.sourcePatch;
-        conflict.secondLocalQuad = localQuad;
-        conflict.firstDomainHash = firstPatch.domainIdentity.hash();
-        conflict.secondDomainHash = patch.domainIdentity.hash();
-        conflict.firstBoundaryNodeHash =
-            firstPatch.domainIdentity.orientedBoundary.hash();
-        conflict.secondBoundaryNodeHash =
-            patch.domainIdentity.orientedBoundary.hash();
-        conflict.firstBoundaryHalfedgeHash =
-            firstPatch.domainIdentity.undirectedBoundary.hash();
-        conflict.secondBoundaryHalfedgeHash =
-            patch.domainIdentity.undirectedBoundary.hash();
-        conflict.firstSourceSupportHash =
-            firstPatch.domainIdentity.sourceSupport.hash();
-        conflict.secondSourceSupportHash =
-            patch.domainIdentity.sourceSupport.hash();
-        conflict.firstComponent = firstPatch.domainIdentity.sourceComponent;
-        conflict.firstSheet = firstPatch.domainIdentity.sourceSheet;
-        conflict.secondComponent = patch.domainIdentity.sourceComponent;
-        conflict.secondSheet = patch.domainIdentity.sourceSheet;
-        conflict.firstSourceSupportCount =
-            firstPatch.domainIdentity.sourceSupportCount;
-        conflict.secondSourceSupportCount =
-            patch.domainIdentity.sourceSupportCount;
-        conflict.firstCompletionBackend =
-            static_cast<int>(firstOwner.backend);
-        conflict.secondCompletionBackend =
-            static_cast<int>(secondOwner.backend);
-        conflict.firstCompletionVariant = firstOwner.completionVariant;
-        conflict.secondCompletionVariant = secondOwner.completionVariant;
-        conflict.firstBoundaryNodeCount =
-            firstPatch.domainIdentity.boundaryNodeCount;
-        conflict.secondBoundaryNodeCount =
-            patch.domainIdentity.boundaryNodeCount;
-        conflict.firstBoundaryHalfedgeCount =
-            firstPatch.domainIdentity.boundaryHalfedgeCount;
-        conflict.secondBoundaryHalfedgeCount =
-            patch.domainIdentity.boundaryHalfedgeCount;
-        conflict.firstBoundaryVertexCount =
-            static_cast<int>(firstPatch.boundaryVertices.size());
-        conflict.secondBoundaryVertexCount =
-            static_cast<int>(patch.boundaryVertices.size());
-        conflict.firstSideEdgeCounts = firstPatch.sourceSideEdgeCounts;
-        conflict.secondSideEdgeCounts = patch.sourceSideEdgeCounts;
-        copy_conflict_corner_diagnostics(
-            firstOwner, conflict.firstCornerIdentityKinds,
-            conflict.firstCornerIdentityHashes,
-            conflict.firstCornerAuthoritativeHashes,
-            conflict.firstLocalVertices, conflict.firstGlobalVertices);
-        copy_conflict_corner_diagnostics(
-            secondOwner, conflict.secondCornerIdentityKinds,
-            conflict.secondCornerIdentityHashes,
-            conflict.secondCornerAuthoritativeHashes,
-            conflict.secondLocalVertices, conflict.secondGlobalVertices);
-        if (firstPatch.domainIdentity.same_oriented_domain(
-                patch.domainIdentity)) {
-          conflict.classification =
-              SurfaceCellOwnershipConflictClass::DuplicateOrientedDomain;
-        } else if (firstPatch.domainIdentity.same_undirected_support(
-                       patch.domainIdentity)) {
-          conflict.classification =
-              SurfaceCellOwnershipConflictClass::OverlappingUndirectedBoundary;
-        } else if (pure_quad_detail::same_unoriented_cycle(
-                       firstOwner.authoritativeForward,
-                       firstOwner.authoritativeReversed,
-                       secondOwner.authoritativeForward,
-                       secondOwner.authoritativeReversed)) {
-          const bool sameSourceSupport =
-              firstPatch.domainIdentity.valid &&
-              patch.domainIdentity.valid &&
-              firstPatch.domainIdentity.sourceSupport.valid &&
-              patch.domainIdentity.sourceSupport.valid &&
-              firstPatch.domainIdentity.sourceSupport ==
-                  patch.domainIdentity.sourceSupport &&
-              firstPatch.domainIdentity.sourceSupportCount ==
-                  patch.domainIdentity.sourceSupportCount &&
-              firstPatch.domainIdentity.sourceComponent ==
-                  patch.domainIdentity.sourceComponent &&
-              firstPatch.domainIdentity.sourceSheet ==
-                  patch.domainIdentity.sourceSheet;
-          conflict.classification =
-              sameSourceSupport
-                  ? SurfaceCellOwnershipConflictClass::
-                        SameCornerDistinctBoundaryClaim
-                  : SurfaceCellOwnershipConflictClass::
-                        CompletionTemplateOwnership;
-        } else if (pure_quad_detail::same_unoriented_cycle(
-                       firstOwner.stitchForward, firstOwner.stitchReversed,
-                       secondOwner.stitchForward, secondOwner.stitchReversed)) {
-          conflict.classification =
-              SurfaceCellOwnershipConflictClass::FalseVertexEquivalence;
-        } else {
-          conflict.classification =
-              SurfaceCellOwnershipConflictClass::Unclassified;
+      auto &owners = canonicalQuads[canonical];
+      if (!owners.empty()) {
+        for (const CompletedFaceOwnershipRecord &firstOwner : owners) {
+          SurfaceCellOwnershipConflict conflict = make_ownership_conflict(
+              firstOwner, ownership, patches);
+          result.ownershipConflicts.push_back(std::move(conflict));
         }
-
-        result.failure =
-            "DuplicateStitchedQuad:firstPatch=" +
-            std::to_string(firstPatch.sourcePatch) +
-            ";firstLocalQuad=" + std::to_string(firstOwner.localQuad) +
-            ";secondPatch=" + std::to_string(patch.sourcePatch) +
-            ";secondLocalQuad=" + std::to_string(localQuad) +
-            ";globalVertices=" + std::to_string(canonical[0]) + "," +
-            std::to_string(canonical[1]) + "," +
-            std::to_string(canonical[2]) + "," +
-            std::to_string(canonical[3]) +
-            ";classification=" +
-            surface_cell_ownership_conflict_name(conflict.classification) +
-            ";firstDomainHash=" +
-            std::to_string(conflict.firstDomainHash) +
-            ";secondDomainHash=" +
-            std::to_string(conflict.secondDomainHash) +
-            ";firstBoundaryNodeHash=" +
-            std::to_string(conflict.firstBoundaryNodeHash) +
-            ";secondBoundaryNodeHash=" +
-            std::to_string(conflict.secondBoundaryNodeHash) +
-            ";firstBoundaryHalfedgeHash=" +
-            std::to_string(conflict.firstBoundaryHalfedgeHash) +
-            ";secondBoundaryHalfedgeHash=" +
-            std::to_string(conflict.secondBoundaryHalfedgeHash) +
-            ";firstSourceSupportHash=" +
-            std::to_string(conflict.firstSourceSupportHash) +
-            ";secondSourceSupportHash=" +
-            std::to_string(conflict.secondSourceSupportHash) +
-            ";firstComponent=" + std::to_string(conflict.firstComponent) +
-            ";firstSheet=" + std::to_string(conflict.firstSheet) +
-            ";secondComponent=" + std::to_string(conflict.secondComponent) +
-            ";secondSheet=" + std::to_string(conflict.secondSheet) +
-            ";firstBackend=" +
-            pure_quad_completion_backend_name(firstOwner.backend) +
-            ";secondBackend=" +
-            pure_quad_completion_backend_name(secondOwner.backend) +
-            ";firstVariant=" +
-            std::to_string(firstOwner.completionVariant) +
-            ";secondVariant=" +
-            std::to_string(secondOwner.completionVariant) +
-            ";firstBoundaryNodeCount=" +
-            std::to_string(conflict.firstBoundaryNodeCount) +
-            ";secondBoundaryNodeCount=" +
-            std::to_string(conflict.secondBoundaryNodeCount) +
-            ";firstBoundaryHalfedgeCount=" +
-            std::to_string(conflict.firstBoundaryHalfedgeCount) +
-            ";secondBoundaryHalfedgeCount=" +
-            std::to_string(conflict.secondBoundaryHalfedgeCount) +
-            ";firstBoundaryVertexCount=" +
-            std::to_string(conflict.firstBoundaryVertexCount) +
-            ";secondBoundaryVertexCount=" +
-            std::to_string(conflict.secondBoundaryVertexCount) +
-            ";firstSideEdgeCounts=" +
-            pure_quad_detail::integer_list(conflict.firstSideEdgeCounts) +
-            ";secondSideEdgeCounts=" +
-            pure_quad_detail::integer_list(conflict.secondSideEdgeCounts) +
-            ";firstCornerKinds=" +
-            pure_quad_detail::identity_kind_list(
-                conflict.firstCornerIdentityKinds) +
-            ";secondCornerKinds=" +
-            pure_quad_detail::identity_kind_list(
-                conflict.secondCornerIdentityKinds) +
-            ";firstCornerIdentityHashes=" +
-            pure_quad_detail::identity_hash_list(
-                conflict.firstCornerIdentityHashes) +
-            ";secondCornerIdentityHashes=" +
-            pure_quad_detail::identity_hash_list(
-                conflict.secondCornerIdentityHashes) +
-            ";firstCornerAuthoritativeHashes=" +
-            pure_quad_detail::identity_hash_list(
-                conflict.firstCornerAuthoritativeHashes) +
-            ";secondCornerAuthoritativeHashes=" +
-            pure_quad_detail::identity_hash_list(
-                conflict.secondCornerAuthoritativeHashes);
-        return result;
+        owners.push_back(std::move(ownership));
+        continue;
       }
+      owners.push_back(std::move(ownership));
       const int outputQuad = static_cast<int>(result.mesh.quads.size());
       result.mesh.quads.push_back(
           {globalQuad[0], globalQuad[1], globalQuad[2], globalQuad[3]});
@@ -1749,6 +1744,19 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       lineage.outputQuad = outputQuad;
       result.mesh.quadLineage.push_back(std::move(lineage));
     }
+  }
+
+  if (!result.ownershipConflicts.empty()) {
+    std::sort(result.ownershipConflicts.begin(), result.ownershipConflicts.end());
+    result.ownershipConflicts.erase(
+        std::unique(result.ownershipConflicts.begin(),
+                    result.ownershipConflicts.end()),
+        result.ownershipConflicts.end());
+    result.ownershipConflict = result.ownershipConflicts.front();
+    result.failure = ownership_conflict_failure(result.ownershipConflict) +
+                     ";inventoryCount=" +
+                     std::to_string(result.ownershipConflicts.size());
+    return result;
   }
 
   result.mesh.vertices.resize(positions.size());

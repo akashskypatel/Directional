@@ -7,6 +7,14 @@
 #include <string>
 #include <vector>
 
+#if defined(_WIN32)
+#include <windows.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <gtest/gtest.h>
 
 #include <directional/fields/CrossField.h>
@@ -20,6 +28,37 @@ struct SyntheticMesh {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
 };
+
+std::filesystem::path test_executable_directory() {
+#if defined(_WIN32)
+  std::wstring buffer(32768, L'\0');
+  const DWORD length = GetModuleFileNameW(
+      nullptr, buffer.data(), static_cast<DWORD>(buffer.size()));
+  if (length == 0 || length == buffer.size()) {
+    return {};
+  }
+  buffer.resize(length);
+  return std::filesystem::path(buffer).parent_path();
+#elif defined(__APPLE__)
+  std::uint32_t size = 0;
+  _NSGetExecutablePath(nullptr, &size);
+  std::vector<char> buffer(size);
+  if (_NSGetExecutablePath(buffer.data(), &size) != 0) {
+    return {};
+  }
+  return std::filesystem::weakly_canonical(buffer.data()).parent_path();
+#else
+  std::vector<char> buffer(4096);
+  const ssize_t length =
+      readlink("/proc/self/exe", buffer.data(), buffer.size());
+  if (length <= 0 || static_cast<std::size_t>(length) == buffer.size()) {
+    return {};
+  }
+  return std::filesystem::path(
+             std::string(buffer.data(), static_cast<std::size_t>(length)))
+      .parent_path();
+#endif
+}
 
 
 const directional::SurfaceCellStageLineage *find_stage_lineage(
@@ -2077,8 +2116,10 @@ TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {
 
 TEST(SurfaceCellPipelinePhase20, BenchmarkManifestDispatchesBackends) {
   const std::filesystem::path manifestPath =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/manifest.example.json";
+      test_executable_directory() /
+      "test-data/benchmarks/fixtures/manifest.example.json";
+  ASSERT_TRUE(std::filesystem::is_regular_file(manifestPath))
+      << manifestPath.string();
   const std::vector<directional::bench::BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifestPath);
 

@@ -1313,6 +1313,59 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     CompleteOwnershipInventoryReportsIndependentClaimsDeterministically) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 101;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(completion.success);
+
+  auto first = completion.mesh;
+  auto second = completion.mesh;
+  auto third = completion.mesh;
+  auto fourth = completion.mesh;
+  first.sourcePatch = 101;
+  second.sourcePatch = 202;
+  third.sourcePatch = 303;
+  fourth.sourcePatch = 404;
+  assign_same_support_distinct_boundary_identity(first, 1);
+  assign_same_support_distinct_boundary_identity(second, 2);
+  assign_same_support_distinct_boundary_identity(third, 3);
+  assign_same_support_distinct_boundary_identity(fourth, 4);
+  for (auto *mesh : {&first, &second, &third, &fourth}) {
+    for (auto &lineage : mesh->quadLineage) {
+      lineage.sourcePatch = mesh->sourcePatch;
+    }
+  }
+  for (auto *mesh : {&third, &fourth}) {
+    for (int row = 0; row < static_cast<int>(mesh->vertexLineage.size());
+         ++row) {
+      auto &lineage = mesh->vertexLineage[static_cast<std::size_t>(row)];
+      lineage.stitchIdentity.canonical.values.push_back(700 + row);
+      lineage.authoritativeIdentity.canonical.values.push_back(700 + row);
+    }
+  }
+
+  const auto forward = directional::geometry::stitch_pure_quad_patches(
+      {first, second, third, fourth});
+  const auto reordered = directional::geometry::stitch_pure_quad_patches(
+      {fourth, second, first, third});
+
+  ASSERT_FALSE(forward.success);
+  ASSERT_EQ(2U, forward.ownershipConflicts.size());
+  EXPECT_EQ(forward.ownershipConflicts, reordered.ownershipConflicts);
+  EXPECT_EQ(forward.ownershipConflict, forward.ownershipConflicts.front());
+  for (const auto &conflict : forward.ownershipConflicts) {
+    EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                  SameCornerDistinctBoundaryClaim,
+              conflict.classification);
+    EXPECT_NE(0U, conflict.exact_hash());
+    EXPECT_NE(conflict.firstOwner.domain.undirectedBoundary,
+              conflict.secondOwner.domain.undirectedBoundary);
+  }
+}
+
+TEST(PureQuadCompletionPhase18,
      UnderQualifiedStitchIdentityIsClassifiedAsFalseMerge) {
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 101;

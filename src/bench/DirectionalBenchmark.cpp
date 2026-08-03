@@ -1645,6 +1645,51 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext
              .completionOwnershipIncrementalRecomputationPasses
       << ","
+      << "\"completionOwnershipPreConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipPreConflictCount
+      << ","
+      << "\"completionOwnershipPostConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipPostConflictCount
+      << ","
+      << "\"completionOwnershipRetainedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipRetainedConflictCount
+      << ","
+      << "\"completionOwnershipRemovedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipRemovedConflictCount
+      << ","
+      << "\"completionOwnershipIntroducedConflictCount\":"
+      << result.surfaceCellContext.completionOwnershipIntroducedConflictCount
+      << ","
+      << "\"completionOwnershipConflictComponentCount\":"
+      << result.surfaceCellContext.completionOwnershipConflictComponentCount
+      << ","
+      << "\"completionOwnershipIndependentComponentCount\":"
+      << result.surfaceCellContext
+             .completionOwnershipIndependentComponentCount
+      << ","
+      << "\"completionOwnershipReusedPatchCompletions\":"
+      << result.surfaceCellContext.completionOwnershipReusedPatchCompletions
+      << ","
+      << "\"completionOwnershipRecomputedPatchCompletions\":"
+      << result.surfaceCellContext
+             .completionOwnershipRecomputedPatchCompletions
+      << ","
+      << "\"completionOwnershipPreConflictInventoryHash\":"
+      << result.surfaceCellContext
+             .completionOwnershipPreConflictInventoryHash
+      << ","
+      << "\"completionOwnershipPostConflictInventoryHash\":"
+      << result.surfaceCellContext
+             .completionOwnershipPostConflictInventoryHash
+      << ","
+      << "\"completionOwnershipConflictFrontierOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipConflictFrontierOwnedBytes
+      << ","
+      << "\"completionOwnershipProductCacheOwnedBytes\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheOwnedBytes
+      << ","
       << "\"completionOwnershipCurrentLiveCandidateComplexes\":"
       << result.surfaceCellContext
              .completionOwnershipCurrentLiveCandidateComplexes
@@ -1803,6 +1848,22 @@ void write_remesh_diagnostics_json(std::ostream &out,
         << (attempt.madeProgress ? "true" : "false") << ","
         << "\"introducedOwnershipClaim\":"
         << (attempt.introducedOwnershipClaim ? "true" : "false") << ","
+        << "\"preConflictCount\":" << attempt.preConflictCount << ","
+        << "\"postConflictCount\":" << attempt.postConflictCount << ","
+        << "\"retainedConflictCount\":"
+        << attempt.retainedConflictCount << ","
+        << "\"removedConflictCount\":"
+        << attempt.removedConflictCount << ","
+        << "\"introducedConflictCount\":"
+        << attempt.introducedConflictCount << ","
+        << "\"preConflictInventoryHash\":"
+        << attempt.preConflictInventoryHash << ","
+        << "\"postConflictInventoryHash\":"
+        << attempt.postConflictInventoryHash << ","
+        << "\"reusedPatchCompletions\":"
+        << attempt.reusedPatchCompletions << ","
+        << "\"recomputedPatchCompletions\":"
+        << attempt.recomputedPatchCompletions << ","
         << "\"affectedPatches\":[";
     for (std::size_t patchIndex = 0;
          patchIndex < attempt.affectedPatches.size(); ++patchIndex) {

@@ -250,6 +250,7 @@ struct PureQuadAssemblyResult {
   int boundaryLoopCount = 0;
   int eulerCharacteristic = 0;
   SurfaceCellOwnershipConflict ownershipConflict;
+  std::vector<SurfaceCellOwnershipConflict> ownershipConflicts;
   std::string failure;
 };
 

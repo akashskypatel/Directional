@@ -1185,7 +1185,7 @@ using SurfaceCellRepairStateIdentity = std::vector<std::int64_t>;
 
 SurfaceCellRepairStateIdentity canonical_repair_state_identity(
     const SurfaceCellComplex &complex, const Eigen::MatrixXi &F,
-    const SurfaceCellOwnershipConflict &conflict) {
+    const std::vector<SurfaceCellOwnershipConflict> &conflicts) {
   SurfaceCellRepairStateIdentity identity;
   identity.reserve(complex.nodes.size() * 12U +
                    complex.halfedges.size() * 7U +
@@ -1280,7 +1280,10 @@ SurfaceCellRepairStateIdentity canonical_repair_state_identity(
                       cell->halfedges.end());
     }
   }
-  append_repair_conflict_identity(identity, conflict);
+  identity.push_back(static_cast<std::int64_t>(conflicts.size()));
+  for (const SurfaceCellOwnershipConflict &conflict : conflicts) {
+    append_repair_conflict_identity(identity, conflict);
+  }
   return identity;
 }
 
@@ -1360,6 +1363,40 @@ std::uint64_t estimated_complex_owned_bytes(
   return bytes;
 }
 
+std::uint64_t estimated_descriptor_payload_owned_bytes(
+    const PatchDescriptor &descriptor) {
+  std::uint64_t bytes = 0U;
+  bytes += static_cast<std::uint64_t>(descriptor.sides.capacity()) *
+           sizeof(PatchSideDescriptor);
+  bytes += static_cast<std::uint64_t>(
+               descriptor.singularSourceVertices.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(
+               descriptor.singularNumerators.capacity()) *
+           sizeof(int);
+  for (const PatchSideDescriptor &side : descriptor.sides) {
+    bytes += static_cast<std::uint64_t>(side.halfedges.capacity()) *
+             sizeof(int);
+    bytes += static_cast<std::uint64_t>(side.boundaryVertices.capacity()) *
+             sizeof(int);
+  }
+  const PureQuadPatch &patch = descriptor.patch;
+  bytes += static_cast<std::uint64_t>(patch.sideEdgeCounts.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.turns.capacity()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryVertices.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.capacity()) *
+           sizeof(SurfacePoint);
+  bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.capacity()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.sourceFaces.capacity()) *
+           sizeof(int);
+  return bytes;
+}
+
 std::uint64_t estimated_descriptor_owned_bytes(
     const PatchDescriptorSet &descriptors) {
   std::uint64_t bytes = sizeof(PatchDescriptorSet);
@@ -1369,34 +1406,7 @@ std::uint64_t estimated_descriptor_owned_bytes(
                descriptors.unresolvedSingularVertices.capacity()) *
            sizeof(int);
   for (const PatchDescriptor &descriptor : descriptors.descriptors) {
-    bytes += static_cast<std::uint64_t>(descriptor.sides.capacity()) *
-             sizeof(PatchSideDescriptor);
-    bytes += static_cast<std::uint64_t>(
-                 descriptor.singularSourceVertices.capacity()) *
-             sizeof(int);
-    bytes += static_cast<std::uint64_t>(
-                 descriptor.singularNumerators.capacity()) *
-             sizeof(int);
-    for (const PatchSideDescriptor &side : descriptor.sides) {
-      bytes += static_cast<std::uint64_t>(side.halfedges.capacity()) *
-               sizeof(int);
-      bytes += static_cast<std::uint64_t>(side.boundaryVertices.capacity()) *
-               sizeof(int);
-    }
-    const PureQuadPatch &patch = descriptor.patch;
-    bytes += static_cast<std::uint64_t>(patch.sideEdgeCounts.capacity()) *
-             sizeof(int);
-    bytes += static_cast<std::uint64_t>(patch.turns.capacity()) * sizeof(int);
-    bytes += static_cast<std::uint64_t>(patch.boundaryVertices.capacity()) *
-             sizeof(int);
-    bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.capacity()) *
-             sizeof(SurfacePoint);
-    bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.capacity()) *
-             sizeof(int);
-    bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.capacity()) *
-             sizeof(int);
-    bytes += static_cast<std::uint64_t>(patch.sourceFaces.capacity()) *
-             sizeof(int);
+    bytes += estimated_descriptor_payload_owned_bytes(descriptor);
   }
   return bytes;
 }
@@ -1739,10 +1749,174 @@ PatchDescriptorSet derive_patch_descriptors(
 
 namespace directional::geometry::patch_descriptor_detail {
 
+bool exact_surface_point_equal(const SurfacePoint &lhs,
+                               const SurfacePoint &rhs) {
+  return lhs.face == rhs.face && lhs.component == rhs.component &&
+         lhs.sheet == rhs.sheet &&
+         (lhs.barycentric.array() == rhs.barycentric.array()).all() &&
+         (lhs.position.array() == rhs.position.array()).all() &&
+         lhs.squaredDistance == rhs.squaredDistance;
+}
+
+bool exact_surface_point_vector_equal(const std::vector<SurfacePoint> &lhs,
+                                      const std::vector<SurfacePoint> &rhs) {
+  if (lhs.size() != rhs.size()) {
+    return false;
+  }
+  for (std::size_t index = 0; index < lhs.size(); ++index) {
+    if (!exact_surface_point_equal(lhs[index], rhs[index])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool exact_patch_side_equal(const PatchSideDescriptor &lhs,
+                            const PatchSideDescriptor &rhs) {
+  return lhs.family == rhs.family && lhs.halfedges == rhs.halfedges &&
+         lhs.boundaryVertices == rhs.boundaryVertices &&
+         lhs.subdivisionCount == rhs.subdivisionCount &&
+         lhs.hardFeature == rhs.hardFeature && lhs.railIds == rhs.railIds &&
+         lhs.curveIds == rhs.curveIds;
+}
+
+bool exact_patch_dependency_equal(const PatchDescriptor &lhs,
+                                  const PatchDescriptor &rhs) {
+  const PureQuadPatch &a = lhs.patch;
+  const PureQuadPatch &b = rhs.patch;
+  if (lhs.cellId != rhs.cellId ||
+      lhs.feasibility.admissible != rhs.feasibility.admissible ||
+      lhs.feasibility.reason != rhs.feasibility.reason ||
+      lhs.feasibility.expectedInteriorValence !=
+          rhs.feasibility.expectedInteriorValence ||
+      lhs.singularSourceVertices != rhs.singularSourceVertices ||
+      lhs.singularNumerators != rhs.singularNumerators ||
+      lhs.boundaryCycleValid != rhs.boundaryCycleValid ||
+      lhs.featureConstraintsValid != rhs.featureConstraintsValid ||
+      lhs.sides.size() != rhs.sides.size() ||
+      a.boundaryVertices != b.boundaryVertices ||
+      !exact_surface_point_vector_equal(a.boundaryProvenance,
+                                        b.boundaryProvenance) ||
+      a.boundaryRailIds != b.boundaryRailIds ||
+      a.boundaryCurveIds != b.boundaryCurveIds ||
+      a.boundaryComponents != b.boundaryComponents ||
+      a.boundarySheets != b.boundarySheets ||
+      a.boundaryNodeIdentities != b.boundaryNodeIdentities ||
+      a.domainIdentity != b.domainIdentity ||
+      a.sideEdgeCounts != b.sideEdgeCounts || a.turns != b.turns ||
+      a.sourceFaces != b.sourceFaces ||
+      a.boundaryLoopCount != b.boundaryLoopCount ||
+      a.diskTopology != b.diskTopology ||
+      a.hardFeatureCrossing != b.hardFeatureCrossing ||
+      a.singularityCount != b.singularityCount ||
+      a.singularIndexNumerator != b.singularIndexNumerator ||
+      a.unmatchedInteriorSingularity != b.unmatchedInteriorSingularity ||
+      a.simple != b.simple) {
+    return false;
+  }
+  for (std::size_t index = 0; index < lhs.sides.size(); ++index) {
+    if (!exact_patch_side_equal(lhs.sides[index], rhs.sides[index])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+struct CachedCompletionProduct {
+  PatchDescriptor descriptor;
+  PureQuadMesh mesh;
+};
+
+struct ReusableCompletionProducts {
+  std::map<int, CachedCompletionProduct> products;
+  std::uint64_t ownedBytes = 0U;
+};
+
+ReusableCompletionProducts take_reusable_completion_products(
+    SurfaceCellComplexCompletionResult &result) {
+  ReusableCompletionProducts cache;
+  std::map<int, PureQuadMesh> meshes;
+  for (PureQuadMesh &mesh : result.completedPatches) {
+    meshes.emplace(mesh.sourcePatch, std::move(mesh));
+  }
+  for (PatchDescriptor &descriptor : result.descriptors.descriptors) {
+    const auto mesh = meshes.find(descriptor.cellId);
+    if (mesh == meshes.end()) {
+      continue;
+    }
+    CachedCompletionProduct product;
+    product.descriptor = std::move(descriptor);
+    product.mesh = std::move(mesh->second);
+    cache.products.emplace(product.descriptor.cellId, std::move(product));
+  }
+  result.completedPatches.clear();
+  result.completedPatches.shrink_to_fit();
+  result.descriptors.descriptors.clear();
+  result.descriptors.descriptors.shrink_to_fit();
+  result.assembly.mesh = {};
+  for (const auto &[cell, product] : cache.products) {
+    (void)cell;
+    cache.ownedBytes += sizeof(PatchDescriptor) +
+                        estimated_descriptor_payload_owned_bytes(
+                            product.descriptor);
+    cache.ownedBytes += estimated_mesh_owned_bytes(product.mesh);
+  }
+  return cache;
+}
+
+std::uint64_t conflict_inventory_hash(
+    const std::vector<SurfaceCellOwnershipConflict> &conflicts) {
+  std::uint64_t seed = 1469598103934665603ULL;
+  const auto mix = [&](const std::uint64_t value) {
+    seed ^= value;
+    seed *= 1099511628211ULL;
+  };
+  mix(static_cast<std::uint64_t>(conflicts.size()));
+  for (const SurfaceCellOwnershipConflict &conflict : conflicts) {
+    mix(conflict.exact_hash());
+  }
+  return seed;
+}
+
+struct ConflictInventoryDifference {
+  int retained = 0;
+  int removed = 0;
+  int introduced = 0;
+  bool strictReduction = false;
+};
+
+ConflictInventoryDifference compare_conflict_inventories(
+    const std::vector<SurfaceCellOwnershipConflict> &before,
+    const std::vector<SurfaceCellOwnershipConflict> &after) {
+  ConflictInventoryDifference difference;
+  std::size_t beforeIndex = 0;
+  std::size_t afterIndex = 0;
+  while (beforeIndex < before.size() && afterIndex < after.size()) {
+    if (before[beforeIndex] == after[afterIndex]) {
+      ++difference.retained;
+      ++beforeIndex;
+      ++afterIndex;
+    } else if (before[beforeIndex] < after[afterIndex]) {
+      ++difference.removed;
+      ++beforeIndex;
+    } else {
+      ++difference.introduced;
+      ++afterIndex;
+    }
+  }
+  difference.removed += static_cast<int>(before.size() - beforeIndex);
+  difference.introduced += static_cast<int>(after.size() - afterIndex);
+  difference.strictReduction = difference.introduced == 0 &&
+                               difference.removed > 0 &&
+                               after.size() < before.size();
+  return difference;
+}
+
 SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F,
-    const SurfaceCellComplexCompletionOptions &options) {
+    const SurfaceCellComplexCompletionOptions &options,
+    ReusableCompletionProducts *reusableProducts = nullptr) {
   SurfaceCellComplexCompletionResult result;
   const SurfacePointSourceSupportResolver sourceSupportResolver(F);
   const SurfaceCellParityRepairResult parityRepair =
@@ -1878,6 +2052,18 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       continue;
     }
     ++result.attemptedPatches;
+    if (reusableProducts != nullptr) {
+      const auto cached = reusableProducts->products.find(descriptor.cellId);
+      if (cached != reusableProducts->products.end() &&
+          exact_patch_dependency_equal(descriptor,
+                                       cached->second.descriptor)) {
+        result.completedPatches.push_back(std::move(cached->second.mesh));
+        reusableProducts->products.erase(cached);
+        ++result.completionOwnershipReusedPatchCompletions;
+        continue;
+      }
+    }
+    ++result.completionOwnershipRecomputedPatchCompletions;
     const PureQuadCompletionResult completion =
         completeDescriptor(descriptorIndex, 0);
     if (!completion.success || completion.mesh.quads.empty()) {
@@ -2007,7 +2193,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   struct StructuralRepairLedger {
     int candidateBudget = 0;
     int structuralAttemptBudget = 0;
-    int insertedVertexBudget = 0;
+    int insertedVertexBudget = -1;
     int fullPassBudget = 0;
     int visitedStateBudget = 0;
     int candidatesConsumed = 0;
@@ -2018,6 +2204,19 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     int currentLiveCandidateComplexes = 0;
     int peakLiveCandidateComplexes = 0;
     int routeCandidateCount = 0;
+    int preConflictCount = 0;
+    int postConflictCount = 0;
+    int retainedConflictCount = 0;
+    int removedConflictCount = 0;
+    int introducedConflictCount = 0;
+    int conflictComponentCount = 0;
+    int independentComponentCount = 0;
+    int reusedPatchCompletions = 0;
+    int recomputedPatchCompletions = 0;
+    std::uint64_t preConflictInventoryHash = 0U;
+    std::uint64_t postConflictInventoryHash = 0U;
+    std::uint64_t conflictFrontierOwnedBytes = 0U;
+    std::uint64_t productCacheOwnedBytes = 0U;
     std::uint64_t rollbackOwnedBytes = 0U;
     std::uint64_t candidateOwnedBytes = 0U;
     std::uint64_t descriptorOwnedBytes = 0U;
@@ -2035,8 +2234,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       std::max(0, options.maxSameCornerCandidateEvaluations);
   ledger.structuralAttemptBudget =
       std::max(0, options.maxSameCornerBoundaryRepairs);
-  ledger.insertedVertexBudget =
-      std::max(0, options.maxSameCornerInsertedVertices);
+  ledger.insertedVertexBudget = options.maxSameCornerInsertedVertices;
   ledger.fullPassBudget =
       std::max(1, options.maxSameCornerFullCompletionPasses);
   ledger.visitedStateBudget =
@@ -2076,6 +2274,30 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         ledger.fullRecomputationPasses;
     pass.completionOwnershipIncrementalRecomputationPasses =
         ledger.incrementalRecomputationPasses;
+    pass.completionOwnershipPreConflictCount = ledger.preConflictCount;
+    pass.completionOwnershipPostConflictCount = ledger.postConflictCount;
+    pass.completionOwnershipRetainedConflictCount =
+        ledger.retainedConflictCount;
+    pass.completionOwnershipRemovedConflictCount =
+        ledger.removedConflictCount;
+    pass.completionOwnershipIntroducedConflictCount =
+        ledger.introducedConflictCount;
+    pass.completionOwnershipConflictComponentCount =
+        ledger.conflictComponentCount;
+    pass.completionOwnershipIndependentComponentCount =
+        ledger.independentComponentCount;
+    pass.completionOwnershipReusedPatchCompletions =
+        ledger.reusedPatchCompletions;
+    pass.completionOwnershipRecomputedPatchCompletions =
+        ledger.recomputedPatchCompletions;
+    pass.completionOwnershipPreConflictInventoryHash =
+        ledger.preConflictInventoryHash;
+    pass.completionOwnershipPostConflictInventoryHash =
+        ledger.postConflictInventoryHash;
+    pass.completionOwnershipConflictFrontierOwnedBytes =
+        ledger.conflictFrontierOwnedBytes;
+    pass.completionOwnershipProductCacheOwnedBytes =
+        ledger.productCacheOwnedBytes;
     pass.completionOwnershipCurrentLiveCandidateComplexes =
         ledger.currentLiveCandidateComplexes;
     pass.completionOwnershipPeakLiveCandidateComplexes =
@@ -2109,80 +2331,152 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
   ++ledger.fullRecomputationPasses;
   mergePassEvidence(current);
 
-  if (current.hasPreparedComplex &&
-      current.assembly.ownershipConflict.active()) {
-    ledger.visitedStates.insert(
-        patch_descriptor_detail::canonical_repair_state_identity(
-            current.preparedComplex, F, current.assembly.ownershipConflict));
-  }
-
-  if (current.success ||
-      current.assembly.ownershipConflict.classification !=
-          SurfaceCellOwnershipConflictClass::SameCornerDistinctBoundaryClaim) {
-    return finalize(std::move(current));
-  }
-
-  const SurfaceCellOwnershipConflict originalConflict =
-      current.assembly.ownershipConflict;
-  const patch_descriptor_detail::SameCornerRouteCandidateSet candidateSet =
-      patch_descriptor_detail::same_corner_route_candidates(
-          current.preparedComplex, originalConflict, F);
-  const std::vector<patch_descriptor_detail::SameCornerRouteCandidate>
-      &candidates = candidateSet.candidates;
-  ledger.routeCandidateCount = static_cast<int>(candidates.size());
-  current.completionOwnershipRouteCandidateCount =
-      ledger.routeCandidateCount;
-  if (candidates.empty()) {
-    if (candidateSet.semanticOverlap) {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap;
-      current.failure = "SameCornerDistinctBoundaryOverlap:" +
-                        current.assembly.failure;
-    } else if (candidateSet.incompleteRoute) {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::IncompleteRoute;
-      current.failure = "SameCornerIncompleteBoundaryRoute:" +
-                        current.assembly.failure;
-    } else {
-      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
-          NoRouteCompleteCandidate;
-      current.failure = "SameCornerNoRouteCompleteCandidate:" +
-                        current.assembly.failure;
-    }
-    current.assembly.failure = current.failure;
-    patch_descriptor_detail::release_rejected_completion_storage(current);
-    return finalize(std::move(current));
-  }
-  ledger.rollbackOwnedBytes =
-      patch_descriptor_detail::estimated_complex_owned_bytes(
-          current.preparedComplex);
-  ledger.currentStructuralOwnedBytes = ledger.rollbackOwnedBytes;
-  ledger.peakStructuralOwnedBytes = ledger.currentStructuralOwnedBytes;
-
-  // Retain one rollback snapshot (the prepared complex) and one mutable
-  // candidate complex. Failed patch meshes and descriptors are not part of the
-  // rollback contract and are released before candidate evaluation.
-  current.completedPatches.clear();
-  current.completedPatches.shrink_to_fit();
-  current.descriptors.descriptors.clear();
-  current.descriptors.descriptors.shrink_to_fit();
-  current.assembly.mesh = {};
-
-  bool sawRepeatedState = false;
-  bool sawNoProgress = false;
-  bool sawIntroducedClaim = false;
-  bool sawValidationFailure = false;
-  const auto releaseCandidateMemory = [&]() {
-    ledger.candidateOwnedBytes = 0U;
-    ledger.descriptorOwnedBytes = 0U;
-    ledger.completedPatchOwnedBytes = 0U;
-    ledger.assemblyOwnedBytes = 0U;
-    ledger.currentStructuralOwnedBytes = ledger.rollbackOwnedBytes;
+  struct FrontierCandidate {
+    SurfaceCellOwnershipConflict conflict;
+    patch_descriptor_detail::SameCornerRouteCandidate candidate;
+    std::vector<int> affectedPatches;
   };
 
-  for (const patch_descriptor_detail::SameCornerRouteCandidate &candidate :
-       candidates) {
-    if (ledger.candidatesConsumed >= ledger.candidateBudget) {
+  const auto exact_set_overlap = [](const std::vector<int> &lhs,
+                                    const std::vector<int> &rhs) {
+    std::size_t a = 0;
+    std::size_t b = 0;
+    while (a < lhs.size() && b < rhs.size()) {
+      if (lhs[a] == rhs[b]) {
+        return true;
+      }
+      if (lhs[a] < rhs[b]) {
+        ++a;
+      } else {
+        ++b;
+      }
+    }
+    return false;
+  };
+
+  const auto owner_corner_overlap = [](
+      const SurfaceCellCompletedFaceOwnerIdentity &lhs,
+      const SurfaceCellCompletedFaceOwnerIdentity &rhs) {
+    for (const PureQuadStitchIdentity &left :
+         lhs.canonicalAuthoritativeCycle) {
+      for (const PureQuadStitchIdentity &right :
+           rhs.canonicalAuthoritativeCycle) {
+        if (left == right) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const auto conflicts_overlap = [&](const FrontierCandidate &lhs,
+                                     const FrontierCandidate &rhs) {
+    if (exact_set_overlap(lhs.affectedPatches, rhs.affectedPatches) ||
+        exact_set_overlap(lhs.candidate.halfedges,
+                          rhs.candidate.halfedges)) {
+      return true;
+    }
+    const std::array<const SurfaceCellCompletedFaceOwnerIdentity *, 2>
+        leftOwners{{&lhs.conflict.firstOwner, &lhs.conflict.secondOwner}};
+    const std::array<const SurfaceCellCompletedFaceOwnerIdentity *, 2>
+        rightOwners{{&rhs.conflict.firstOwner, &rhs.conflict.secondOwner}};
+    for (const auto *left : leftOwners) {
+      for (const auto *right : rightOwners) {
+        if (left->domain.same_undirected_support(right->domain) ||
+            (left->domain.sourceComponent == right->domain.sourceComponent &&
+             left->domain.sourceSheet == right->domain.sourceSheet &&
+             left->domain.sourceSupport.valid &&
+             right->domain.sourceSupport.valid &&
+             left->domain.sourceSupport == right->domain.sourceSupport) ||
+            owner_corner_overlap(*left, *right)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  while (!current.success) {
+    std::vector<SurfaceCellOwnershipConflict> before =
+        current.assembly.ownershipConflicts;
+    if (before.empty() && current.assembly.ownershipConflict.active()) {
+      before.push_back(current.assembly.ownershipConflict);
+    }
+    std::sort(before.begin(), before.end());
+    before.erase(std::unique(before.begin(), before.end()), before.end());
+
+    if (!current.hasPreparedComplex || before.empty()) {
+      return finalize(std::move(current));
+    }
+    if (std::any_of(before.begin(), before.end(),
+                    [](const SurfaceCellOwnershipConflict &conflict) {
+                      return conflict.classification !=
+                             SurfaceCellOwnershipConflictClass::
+                                 SameCornerDistinctBoundaryClaim;
+                    })) {
+      return finalize(std::move(current));
+    }
+    const auto state =
+        patch_descriptor_detail::canonical_repair_state_identity(
+            current.preparedComplex, F, before);
+    if (ledger.visitedStates.count(state) != 0U) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::RepeatedState;
+      break;
+    }
+    if (static_cast<int>(ledger.visitedStates.size()) >=
+        ledger.visitedStateBudget) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::VisitedStateBudget;
+      break;
+    }
+    ledger.visitedStates.insert(state);
+
+    std::vector<FrontierCandidate> frontier;
+    std::set<std::vector<std::int64_t>> candidateIdentities;
+    bool invalidFrontier = false;
+    for (const SurfaceCellOwnershipConflict &conflict : before) {
+      const auto candidateSet =
+          patch_descriptor_detail::same_corner_route_candidates(
+              current.preparedComplex, conflict, F);
+      ledger.routeCandidateCount +=
+          static_cast<int>(candidateSet.candidates.size());
+      if (candidateSet.semanticOverlap || candidateSet.incompleteRoute ||
+          candidateSet.candidates.empty()) {
+        ledger.exhaustionReason = candidateSet.semanticOverlap
+            ? SurfaceCellStructuralRepairExhaustionReason::OwnershipOverlap
+            : candidateSet.incompleteRoute
+                  ? SurfaceCellStructuralRepairExhaustionReason::IncompleteRoute
+                  : SurfaceCellStructuralRepairExhaustionReason::
+                        NoRouteCompleteCandidate;
+        invalidFrontier = true;
+        break;
+      }
+      const auto &candidate = candidateSet.candidates.front();
+      if (!candidateIdentities.insert(candidate.identity).second) {
+        continue;
+      }
+      FrontierCandidate entry;
+      entry.conflict = conflict;
+      entry.candidate = candidate;
+      entry.affectedPatches =
+          patch_descriptor_detail::affected_patches_for_halfedges(
+              current.preparedComplex, candidate.halfedges);
+      entry.affectedPatches.insert(entry.affectedPatches.end(),
+                                   candidate.patches.begin(),
+                                   candidate.patches.end());
+      std::sort(entry.affectedPatches.begin(), entry.affectedPatches.end());
+      entry.affectedPatches.erase(
+          std::unique(entry.affectedPatches.begin(),
+                      entry.affectedPatches.end()),
+          entry.affectedPatches.end());
+      frontier.push_back(std::move(entry));
+    }
+    if (invalidFrontier || frontier.empty()) {
+      break;
+    }
+    if (ledger.candidatesConsumed + static_cast<int>(frontier.size()) >
+        ledger.candidateBudget) {
       ledger.exhaustionReason =
           SurfaceCellStructuralRepairExhaustionReason::CandidateBudget;
       break;
@@ -2192,123 +2486,145 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
           StructuralAttemptBudget;
       break;
     }
-    if (ledger.fullRecomputationPasses >= ledger.fullPassBudget) {
+    if (ledger.incrementalRecomputationPasses +
+            ledger.fullRecomputationPasses >=
+        ledger.fullPassBudget) {
       ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
           FullRecomputationBudget;
       break;
     }
-    if (ledger.insertedVertices >= ledger.insertedVertexBudget) {
+
+    std::vector<int> parent(frontier.size());
+    std::iota(parent.begin(), parent.end(), 0);
+    const auto findRoot = [&](int value, const auto &self) -> int {
+      if (parent[static_cast<std::size_t>(value)] == value) {
+        return value;
+      }
+      parent[static_cast<std::size_t>(value)] =
+          self(parent[static_cast<std::size_t>(value)], self);
+      return parent[static_cast<std::size_t>(value)];
+    };
+    for (int lhs = 0; lhs < static_cast<int>(frontier.size()); ++lhs) {
+      for (int rhs = lhs + 1; rhs < static_cast<int>(frontier.size()); ++rhs) {
+        if (!conflicts_overlap(frontier[static_cast<std::size_t>(lhs)],
+                               frontier[static_cast<std::size_t>(rhs)])) {
+          continue;
+        }
+        const int leftRoot = findRoot(lhs, findRoot);
+        const int rightRoot = findRoot(rhs, findRoot);
+        if (leftRoot != rightRoot) {
+          parent[static_cast<std::size_t>(rightRoot)] = leftRoot;
+        }
+      }
+    }
+    std::set<int> components;
+    for (int index = 0; index < static_cast<int>(frontier.size()); ++index) {
+      components.insert(findRoot(index, findRoot));
+    }
+    ledger.conflictComponentCount = static_cast<int>(components.size());
+    ledger.independentComponentCount = ledger.conflictComponentCount;
+
+    std::map<int, int> routeInsertions;
+    std::vector<int> allAffectedPatches;
+    std::vector<std::uint64_t> routeHashes;
+    for (const FrontierCandidate &entry : frontier) {
+      for (const int halfedge : entry.candidate.halfedges) {
+        routeInsertions.emplace(halfedge, 1);
+      }
+      allAffectedPatches.insert(allAffectedPatches.end(),
+                                entry.affectedPatches.begin(),
+                                entry.affectedPatches.end());
+      routeHashes.push_back(
+          patch_descriptor_detail::exact_identity_hash(entry.candidate.identity));
+    }
+    std::sort(allAffectedPatches.begin(), allAffectedPatches.end());
+    allAffectedPatches.erase(
+        std::unique(allAffectedPatches.begin(), allAffectedPatches.end()),
+        allAffectedPatches.end());
+    std::sort(routeHashes.begin(), routeHashes.end());
+
+    if (routeInsertions.empty()) {
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::NoCandidate;
+      break;
+    }
+    const int requiredInsertions = static_cast<int>(routeInsertions.size());
+    if (ledger.insertedVertexBudget >= 0 &&
+        ledger.insertedVertices + requiredInsertions >
+            ledger.insertedVertexBudget) {
       ledger.exhaustionReason =
           SurfaceCellStructuralRepairExhaustionReason::InsertedVertexBudget;
       break;
     }
 
-    ++ledger.candidatesConsumed;
     ++ledger.structuralAttempts;
+    ledger.candidatesConsumed += static_cast<int>(frontier.size());
     SurfaceCellOwnershipRepairAttempt attempt;
     attempt.action =
         SurfaceCellOwnershipRepairAction::RouteCompleteBoundarySubdivision;
-    attempt.conflictClass = originalConflict.classification;
-    attempt.firstPatch = originalConflict.firstPatch;
-    attempt.secondPatch = originalConflict.secondPatch;
-    attempt.selectedPatch = candidate.patches.empty()
+    attempt.conflictClass = before.front().classification;
+    attempt.firstPatch = before.front().firstPatch;
+    attempt.secondPatch = before.front().secondPatch;
+    attempt.selectedPatch = allAffectedPatches.empty()
                                 ? -1
-                                : candidate.patches.front();
-    attempt.selectedHalfedges = candidate.halfedges;
-    attempt.selectedHalfedge = candidate.halfedges.empty()
+                                : allAffectedPatches.front();
+    for (const auto &[halfedge, count] : routeInsertions) {
+      (void)count;
+      attempt.selectedHalfedges.push_back(halfedge);
+    }
+    attempt.selectedHalfedge = attempt.selectedHalfedges.empty()
                                    ? -1
-                                   : candidate.halfedges.front();
-    attempt.sharedCornerIdentityHashes =
-        candidate.sharedCornerIdentityHashes;
-    attempt.routeIdentityHash =
-        patch_descriptor_detail::exact_identity_hash(candidate.identity);
+                                   : attempt.selectedHalfedges.front();
     attempt.routeCandidateCount = ledger.routeCandidateCount;
-    attempt.routeIntervalCount =
-        static_cast<int>(candidate.halfedges.size());
+    attempt.routeIntervalCount = requiredInsertions;
+    std::uint64_t batchedRouteHash = 1469598103934665603ULL;
+    for (const std::uint64_t routeHash : routeHashes) {
+      batchedRouteHash ^= routeHash;
+      batchedRouteHash *= 1099511628211ULL;
+    }
+    attempt.routeIdentityHash =
+        routeHashes.empty() ? 0U : batchedRouteHash;
     attempt.candidateEvaluation = ledger.candidatesConsumed;
     attempt.structuralAttempt = ledger.structuralAttempts;
-    attempt.fullRecomputationPass = ledger.fullRecomputationPasses + 1;
+    attempt.fullRecomputationPass = ledger.fullRecomputationPasses;
     attempt.globalInsertedVerticesBefore = ledger.insertedVertices;
-    attempt.affectedPatches =
-        patch_descriptor_detail::affected_patches_for_halfedges(
-            current.preparedComplex, candidate.halfedges);
-    attempt.affectedPatches.insert(attempt.affectedPatches.end(),
-                                   candidate.patches.begin(),
-                                   candidate.patches.end());
-    std::sort(attempt.affectedPatches.begin(), attempt.affectedPatches.end());
-    attempt.affectedPatches.erase(
-        std::unique(attempt.affectedPatches.begin(),
-                    attempt.affectedPatches.end()),
-        attempt.affectedPatches.end());
-    current.completionOwnershipLastCandidateHalfedge =
-        attempt.selectedHalfedge;
-    current.completionOwnershipLastCandidateHalfedges =
-        candidate.halfedges;
-    current.completionOwnershipLastAffectedPatches = attempt.affectedPatches;
-    int selectedBackend = originalConflict.firstCompletionBackend;
-    if (std::find(candidate.patches.begin(), candidate.patches.end(),
-                  originalConflict.secondPatch) != candidate.patches.end()) {
-      selectedBackend = originalConflict.secondCompletionBackend;
-    }
-    attempt.backend =
-        selectedBackend >=
-                    static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
-                selectedBackend <= static_cast<int>(
-                                       PureQuadCompletionBackend::
-                                           BoundedCombinatorial)
-            ? static_cast<PureQuadCompletionBackend>(selectedBackend)
-            : PureQuadCompletionBackend::ClosedForm;
-    attempt.rollbackOwnedBytes = ledger.rollbackOwnedBytes;
-
-    std::map<int, int> routeInsertions;
-    for (const int halfedge : candidate.halfedges) {
-      routeInsertions.emplace(halfedge, 1);
-    }
-    if (routeInsertions.empty()) {
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::IncompleteRoute;
-      attempt.failure = "RouteCompleteCandidateHasNoIntervals";
-      aggregateAttempts.push_back(std::move(attempt));
-      sawValidationFailure = true;
-      continue;
-    }
+    attempt.affectedPatches = allAffectedPatches;
+    attempt.preConflictCount = static_cast<int>(before.size());
+    attempt.preConflictInventoryHash =
+        patch_descriptor_detail::conflict_inventory_hash(before);
+    attempt.rollbackOwnedBytes =
+        patch_descriptor_detail::estimated_complex_owned_bytes(
+            current.preparedComplex);
+    ledger.rollbackOwnedBytes = attempt.rollbackOwnedBytes;
+    ledger.preConflictCount = attempt.preConflictCount;
+    ledger.preConflictInventoryHash = attempt.preConflictInventoryHash;
+    ledger.conflictFrontierOwnedBytes =
+        static_cast<std::uint64_t>(before.capacity()) *
+        sizeof(SurfaceCellOwnershipConflict);
 
     SurfaceCellSubdivisionResult subdivision =
         subdivide_surface_cell_complex_edges(current.preparedComplex,
                                              routeInsertions);
     attempt.insertedVertices = subdivision.insertedVertices;
     attempt.splitUndirectedEdges = subdivision.splitUndirectedEdges;
-    if (!subdivision.success) {
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::SubdivisionFailed;
-      attempt.failure = "RouteCompleteBoundarySubdivision:" +
-                        subdivision.failure;
-      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
-      aggregateAttempts.push_back(std::move(attempt));
-      continue;
-    }
-    if (subdivision.splitUndirectedEdges !=
-            static_cast<int>(routeInsertions.size()) ||
-        subdivision.insertedVertices !=
-            static_cast<int>(routeInsertions.size())) {
-      attempt.outcome =
-          SurfaceCellOwnershipRepairOutcome::RouteValidationFailed;
-      attempt.failure = "RouteCompleteSubdivisionIncomplete";
-      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
-      aggregateAttempts.push_back(std::move(attempt));
-      subdivision.complex = {};
-      sawValidationFailure = true;
-      continue;
-    }
-    if (ledger.insertedVertices + subdivision.insertedVertices >
-        ledger.insertedVertexBudget) {
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::BudgetExhausted;
-      attempt.failure = "SameCornerInsertedVertexBudget";
-      attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
+    if (!subdivision.success ||
+        subdivision.insertedVertices != requiredInsertions ||
+        subdivision.splitUndirectedEdges != requiredInsertions) {
+      attempt.outcome = subdivision.success
+          ? SurfaceCellOwnershipRepairOutcome::RouteValidationFailed
+          : SurfaceCellOwnershipRepairOutcome::SubdivisionFailed;
+      attempt.failure = subdivision.success
+          ? "GlobalOwnershipFrontierSubdivisionIncomplete"
+          : "GlobalOwnershipFrontierSubdivision:" + subdivision.failure;
       aggregateAttempts.push_back(std::move(attempt));
       ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::InsertedVertexBudget;
-      subdivision.complex = {};
+          SurfaceCellStructuralRepairExhaustionReason::RouteValidationFailed;
       break;
     }
+
+    patch_descriptor_detail::ReusableCompletionProducts cache =
+        patch_descriptor_detail::take_reusable_completion_products(current);
+    ledger.productCacheOwnedBytes = cache.ownedBytes;
 
     ledger.insertedVertices += subdivision.insertedVertices;
     attempt.globalInsertedVerticesAfter = ledger.insertedVertices;
@@ -2316,28 +2632,33 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     ledger.peakLiveCandidateComplexes =
         std::max(ledger.peakLiveCandidateComplexes,
                  ledger.currentLiveCandidateComplexes);
-    attempt.liveCandidateComplexes = ledger.currentLiveCandidateComplexes;
+    attempt.liveCandidateComplexes = 1;
     ledger.candidateOwnedBytes =
         patch_descriptor_detail::estimated_complex_owned_bytes(
             subdivision.complex);
     attempt.candidateOwnedBytes = ledger.candidateOwnedBytes;
     ledger.currentStructuralOwnedBytes =
-        ledger.rollbackOwnedBytes + ledger.candidateOwnedBytes;
+        ledger.rollbackOwnedBytes + ledger.candidateOwnedBytes +
+        ledger.productCacheOwnedBytes + ledger.conflictFrontierOwnedBytes;
     ledger.peakStructuralOwnedBytes =
         std::max(ledger.peakStructuralOwnedBytes,
                  ledger.currentStructuralOwnedBytes);
 
     SurfaceCellComplexCompletionResult candidateResult =
         patch_descriptor_detail::complete_surface_cell_complex_pass(
-            subdivision.complex, V, F, options);
-    ++ledger.fullRecomputationPasses;
+            subdivision.complex, V, F, options, &cache);
+    ++ledger.incrementalRecomputationPasses;
     ledger.currentLiveCandidateComplexes = 0;
     subdivision.complex = {};
 
-    ledger.candidateOwnedBytes = candidateResult.hasPreparedComplex
-        ? patch_descriptor_detail::estimated_complex_owned_bytes(
-              candidateResult.preparedComplex)
-        : 0U;
+    ledger.reusedPatchCompletions +=
+        candidateResult.completionOwnershipReusedPatchCompletions;
+    ledger.recomputedPatchCompletions +=
+        candidateResult.completionOwnershipRecomputedPatchCompletions;
+    attempt.reusedPatchCompletions =
+        candidateResult.completionOwnershipReusedPatchCompletions;
+    attempt.recomputedPatchCompletions =
+        candidateResult.completionOwnershipRecomputedPatchCompletions;
     ledger.descriptorOwnedBytes =
         patch_descriptor_detail::estimated_descriptor_owned_bytes(
             candidateResult.descriptors);
@@ -2350,136 +2671,91 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     ledger.currentStructuralOwnedBytes =
         ledger.rollbackOwnedBytes + ledger.candidateOwnedBytes +
         ledger.descriptorOwnedBytes + ledger.completedPatchOwnedBytes +
-        ledger.assemblyOwnedBytes;
+        ledger.assemblyOwnedBytes + ledger.conflictFrontierOwnedBytes;
     ledger.peakStructuralOwnedBytes =
         std::max(ledger.peakStructuralOwnedBytes,
                  ledger.currentStructuralOwnedBytes);
-    attempt.candidateOwnedBytes = ledger.candidateOwnedBytes;
     attempt.descriptorOwnedBytes = ledger.descriptorOwnedBytes;
     attempt.completedPatchOwnedBytes = ledger.completedPatchOwnedBytes;
     attempt.assemblyOwnedBytes = ledger.assemblyOwnedBytes;
     attempt.totalStructuralOwnedBytes = ledger.currentStructuralOwnedBytes;
-
     attempt.completionSucceeded = candidateResult.success;
     attempt.resultingConflictClass =
         candidateResult.assembly.ownershipConflict.classification;
 
+    std::vector<SurfaceCellOwnershipConflict> after =
+        candidateResult.assembly.ownershipConflicts;
+    if (after.empty() &&
+        candidateResult.assembly.ownershipConflict.active()) {
+      after.push_back(candidateResult.assembly.ownershipConflict);
+    }
+    std::sort(after.begin(), after.end());
+    after.erase(std::unique(after.begin(), after.end()), after.end());
+    const auto difference =
+        patch_descriptor_detail::compare_conflict_inventories(before, after);
+    attempt.postConflictCount = static_cast<int>(after.size());
+    attempt.retainedConflictCount = difference.retained;
+    attempt.removedConflictCount = difference.removed;
+    attempt.introducedConflictCount = difference.introduced;
+    attempt.postConflictInventoryHash =
+        patch_descriptor_detail::conflict_inventory_hash(after);
+    attempt.introducedOwnershipClaim = difference.introduced != 0;
+    ledger.postConflictCount = attempt.postConflictCount;
+    ledger.retainedConflictCount = difference.retained;
+    ledger.removedConflictCount = difference.removed;
+    ledger.introducedConflictCount = difference.introduced;
+    ledger.postConflictInventoryHash = attempt.postConflictInventoryHash;
+
     if (candidateResult.success) {
-      // The monotonic ownership measure is the number of active exact
-      // ownership claims: one before subdivision and zero after assembly.
       attempt.madeProgress = true;
       attempt.committed = true;
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::AssemblySucceeded;
-      attempt.visitedStateCount =
-          static_cast<int>(ledger.visitedStates.size());
-      candidateResult.completionOwnershipLastCandidateHalfedge =
-          attempt.selectedHalfedge;
-      candidateResult.completionOwnershipLastCandidateHalfedges =
-          candidate.halfedges;
-      candidateResult.completionOwnershipLastAffectedPatches =
-          attempt.affectedPatches;
-      candidateResult.completionOwnershipRouteCandidateCount =
-          ledger.routeCandidateCount;
+      attempt.outcome =
+          SurfaceCellOwnershipRepairOutcome::AssemblySucceeded;
       aggregateAttempts.push_back(std::move(attempt));
       mergePassEvidence(candidateResult);
       return finalize(std::move(candidateResult));
     }
 
-    patch_descriptor_detail::SurfaceCellRepairStateIdentity candidateState;
-    const bool hasCandidateState = candidateResult.hasPreparedComplex;
-    if (hasCandidateState) {
-      candidateState = patch_descriptor_detail::canonical_repair_state_identity(
-          candidateResult.preparedComplex, F,
-          candidateResult.assembly.ownershipConflict);
-    }
-    if (hasCandidateState &&
-        ledger.visitedStates.count(candidateState) != 0U) {
-      sawRepeatedState = true;
-      attempt.repeatedState = true;
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::RepeatedState;
-      attempt.failure = "SameCornerRepeatedRepairState";
-      attempt.visitedStateCount =
-          static_cast<int>(ledger.visitedStates.size());
+    if (difference.introduced != 0) {
+      attempt.outcome =
+          SurfaceCellOwnershipRepairOutcome::IntroducedOwnershipClaim;
+      attempt.failure = "GlobalOwnershipFrontierIntroducedClaim:" +
+                        candidateResult.assembly.failure;
       aggregateAttempts.push_back(std::move(attempt));
       mergePassEvidence(candidateResult);
-      patch_descriptor_detail::release_rejected_completion_storage(
-          candidateResult);
-      releaseCandidateMemory();
-      continue;
+      candidateResult.failure = aggregateAttempts.back().failure;
+      candidateResult.assembly.failure = candidateResult.failure;
+      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
+          IntroducedOwnershipClaim;
+      return finalize(std::move(candidateResult));
     }
-    if (hasCandidateState) {
-      if (static_cast<int>(ledger.visitedStates.size()) >=
-          ledger.visitedStateBudget) {
-        attempt.outcome = SurfaceCellOwnershipRepairOutcome::BudgetExhausted;
-        attempt.failure = "SameCornerVisitedStateBudget";
-        aggregateAttempts.push_back(std::move(attempt));
-        mergePassEvidence(candidateResult);
-        patch_descriptor_detail::release_rejected_completion_storage(
-            candidateResult);
-        releaseCandidateMemory();
-        ledger.exhaustionReason =
-            SurfaceCellStructuralRepairExhaustionReason::VisitedStateBudget;
-        break;
-      }
-      ledger.visitedStates.insert(std::move(candidateState));
+    if (!difference.strictReduction) {
+      attempt.outcome = SurfaceCellOwnershipRepairOutcome::NoProgress;
+      attempt.failure = "GlobalOwnershipFrontierNoProgress:" +
+                        candidateResult.assembly.failure;
+      aggregateAttempts.push_back(std::move(attempt));
+      mergePassEvidence(candidateResult);
+      candidateResult.failure = aggregateAttempts.back().failure;
+      candidateResult.assembly.failure = candidateResult.failure;
+      ledger.exhaustionReason =
+          SurfaceCellStructuralRepairExhaustionReason::NoProgress;
+      return finalize(std::move(candidateResult));
     }
-    attempt.visitedStateCount =
-        static_cast<int>(ledger.visitedStates.size());
 
-    if (candidateResult.assembly.ownershipConflict.active()) {
-      const bool originalClaimPersists =
-          candidateResult.assembly.ownershipConflict.classification ==
-              SurfaceCellOwnershipConflictClass::
-                  SameCornerDistinctBoundaryClaim &&
-          patch_descriptor_detail::same_unordered_conflict_pair(
-              candidateResult.assembly.ownershipConflict,
-              originalConflict.firstPatch, originalConflict.secondPatch);
-      if (originalClaimPersists) {
-        sawNoProgress = true;
-        attempt.outcome = SurfaceCellOwnershipRepairOutcome::NoProgress;
-        attempt.failure =
-            "SameCornerBoundarySubdivisionDidNotResolveClaim";
-      } else {
-        sawIntroducedClaim = true;
-        attempt.introducedOwnershipClaim = true;
-        attempt.outcome =
-            SurfaceCellOwnershipRepairOutcome::IntroducedOwnershipClaim;
-        attempt.failure = candidateResult.assembly.failure.empty()
-                              ? "SameCornerRepairIntroducedOwnershipClaim"
-                              : candidateResult.assembly.failure;
-      }
-    } else {
-      sawValidationFailure = true;
-      attempt.outcome = SurfaceCellOwnershipRepairOutcome::ValidationFailed;
-      attempt.failure = candidateResult.failure.empty()
-                            ? "SameCornerRepairCandidateValidationFailed"
-                            : candidateResult.failure;
-    }
+    attempt.madeProgress = true;
+    attempt.committed = true;
+    attempt.outcome = difference.retained > 0
+        ? SurfaceCellOwnershipRepairOutcome::LatentClaimExposed
+        : SurfaceCellOwnershipRepairOutcome::StrictConflictReduction;
     aggregateAttempts.push_back(std::move(attempt));
     mergePassEvidence(candidateResult);
-    patch_descriptor_detail::release_rejected_completion_storage(
-        candidateResult);
-    releaseCandidateMemory();
+    current = std::move(candidateResult);
   }
 
   if (ledger.exhaustionReason ==
       SurfaceCellStructuralRepairExhaustionReason::None) {
-    if (sawRepeatedState) {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::RepeatedState;
-    } else if (sawNoProgress) {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::NoProgress;
-    } else if (sawIntroducedClaim) {
-      ledger.exhaustionReason = SurfaceCellStructuralRepairExhaustionReason::
-          IntroducedOwnershipClaim;
-    } else if (sawValidationFailure) {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::RouteValidationFailed;
-    } else {
-      ledger.exhaustionReason =
-          SurfaceCellStructuralRepairExhaustionReason::NoCandidate;
-    }
+    ledger.exhaustionReason =
+        SurfaceCellStructuralRepairExhaustionReason::NoCandidate;
   }
   current.failure =
       std::string("SameCornerStructuralRepairExhausted:") +
@@ -2488,7 +2764,6 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       ":" + current.assembly.failure;
   current.assembly.failure = current.failure;
   patch_descriptor_detail::release_rejected_completion_storage(current);
-
   return finalize(std::move(current));
 }
 

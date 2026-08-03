@@ -4206,6 +4206,32 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipFullRecomputationPasses;
     result.surfaceCellContext.completionOwnershipIncrementalRecomputationPasses =
         completionResult.completionOwnershipIncrementalRecomputationPasses;
+    result.surfaceCellContext.completionOwnershipPreConflictCount =
+        completionResult.completionOwnershipPreConflictCount;
+    result.surfaceCellContext.completionOwnershipPostConflictCount =
+        completionResult.completionOwnershipPostConflictCount;
+    result.surfaceCellContext.completionOwnershipRetainedConflictCount =
+        completionResult.completionOwnershipRetainedConflictCount;
+    result.surfaceCellContext.completionOwnershipRemovedConflictCount =
+        completionResult.completionOwnershipRemovedConflictCount;
+    result.surfaceCellContext.completionOwnershipIntroducedConflictCount =
+        completionResult.completionOwnershipIntroducedConflictCount;
+    result.surfaceCellContext.completionOwnershipConflictComponentCount =
+        completionResult.completionOwnershipConflictComponentCount;
+    result.surfaceCellContext.completionOwnershipIndependentComponentCount =
+        completionResult.completionOwnershipIndependentComponentCount;
+    result.surfaceCellContext.completionOwnershipReusedPatchCompletions =
+        completionResult.completionOwnershipReusedPatchCompletions;
+    result.surfaceCellContext.completionOwnershipRecomputedPatchCompletions =
+        completionResult.completionOwnershipRecomputedPatchCompletions;
+    result.surfaceCellContext.completionOwnershipPreConflictInventoryHash =
+        completionResult.completionOwnershipPreConflictInventoryHash;
+    result.surfaceCellContext.completionOwnershipPostConflictInventoryHash =
+        completionResult.completionOwnershipPostConflictInventoryHash;
+    result.surfaceCellContext.completionOwnershipConflictFrontierOwnedBytes =
+        completionResult.completionOwnershipConflictFrontierOwnedBytes;
+    result.surfaceCellContext.completionOwnershipProductCacheOwnedBytes =
+        completionResult.completionOwnershipProductCacheOwnedBytes;
     result.surfaceCellContext.completionOwnershipCurrentLiveCandidateComplexes =
         completionResult.completionOwnershipCurrentLiveCandidateComplexes;
     result.surfaceCellContext.completionOwnershipPeakLiveCandidateComplexes =
@@ -4270,6 +4296,42 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         .surfaceCellCompletionOwnershipIncrementalRecomputationPasses =
         static_cast<std::size_t>(
             completionResult.completionOwnershipIncrementalRecomputationPasses);
+    result.diagnostics.surfaceCellCompletionOwnershipPreConflictCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipPreConflictCount);
+    result.diagnostics.surfaceCellCompletionOwnershipPostConflictCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipPostConflictCount);
+    result.diagnostics.surfaceCellCompletionOwnershipRetainedConflictCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipRetainedConflictCount);
+    result.diagnostics.surfaceCellCompletionOwnershipRemovedConflictCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipRemovedConflictCount);
+    result.diagnostics.surfaceCellCompletionOwnershipIntroducedConflictCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipIntroducedConflictCount);
+    result.diagnostics.surfaceCellCompletionOwnershipConflictComponentCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipConflictComponentCount);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipIndependentComponentCount =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipIndependentComponentCount);
+    result.diagnostics.surfaceCellCompletionOwnershipReusedPatchCompletions =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipReusedPatchCompletions);
+    result.diagnostics.surfaceCellCompletionOwnershipRecomputedPatchCompletions =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipRecomputedPatchCompletions);
+    result.diagnostics.surfaceCellCompletionOwnershipPreConflictInventoryHash =
+        completionResult.completionOwnershipPreConflictInventoryHash;
+    result.diagnostics.surfaceCellCompletionOwnershipPostConflictInventoryHash =
+        completionResult.completionOwnershipPostConflictInventoryHash;
+    result.diagnostics.surfaceCellCompletionOwnershipConflictFrontierOwnedBytes =
+        completionResult.completionOwnershipConflictFrontierOwnedBytes;
+    result.diagnostics.surfaceCellCompletionOwnershipProductCacheOwnedBytes =
+        completionResult.completionOwnershipProductCacheOwnedBytes;
     result.diagnostics
         .surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes =
         static_cast<std::size_t>(
@@ -4494,6 +4556,36 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionHash,
         result.surfaceCellContext
             .completionOwnershipIncrementalRecomputationPasses);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipPreConflictCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipPostConflictCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipRetainedConflictCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipRemovedConflictCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipIntroducedConflictCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipConflictComponentCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipIndependentComponentCount);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipReusedPatchCompletions);
+    hash_combine_i64(completionHash,
+                     result.surfaceCellContext.completionOwnershipRecomputedPatchCompletions);
+    hash_combine_i64(completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+            .completionOwnershipPreConflictInventoryHash));
+    hash_combine_i64(completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+            .completionOwnershipPostConflictInventoryHash));
+    hash_combine_i64(completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+            .completionOwnershipConflictFrontierOwnedBytes));
+    hash_combine_i64(completionHash,
+        static_cast<std::int64_t>(result.surfaceCellContext
+            .completionOwnershipProductCacheOwnedBytes));
     hash_combine_i64(
         completionHash,
         result.surfaceCellContext
@@ -4616,6 +4708,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       hash_combine_i64(completionHash, attempt.madeProgress ? 1 : 0);
       hash_combine_i64(completionHash,
                        attempt.introducedOwnershipClaim ? 1 : 0);
+      hash_combine_i64(completionHash, attempt.preConflictCount);
+      hash_combine_i64(completionHash, attempt.postConflictCount);
+      hash_combine_i64(completionHash, attempt.retainedConflictCount);
+      hash_combine_i64(completionHash, attempt.removedConflictCount);
+      hash_combine_i64(completionHash, attempt.introducedConflictCount);
+      hash_combine_i64(completionHash, attempt.reusedPatchCompletions);
+      hash_combine_i64(completionHash, attempt.recomputedPatchCompletions);
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.preConflictInventoryHash));
+      hash_combine_i64(completionHash,
+                       static_cast<std::int64_t>(attempt.postConflictInventoryHash));
       hash_combine_i64(completionHash, static_cast<int>(attempt.outcome));
       hash_combine_i64(
           completionHash,

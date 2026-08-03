@@ -982,7 +982,10 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_GE(completion.completionOwnershipStructuralRepairAttempts, 1);
   EXPECT_LE(completion.completionOwnershipStructuralRepairAttempts, 4);
   EXPECT_LE(completion.completionOwnershipStructuralCandidatesConsumed, 4);
-  EXPECT_LE(completion.completionOwnershipFullRecomputationPasses, 5);
+  EXPECT_EQ(1, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_GE(completion.completionOwnershipIncrementalRecomputationPasses, 1);
+  EXPECT_GT(completion.completionOwnershipReusedPatchCompletions, 0);
+  EXPECT_GT(completion.completionOwnershipRecomputedPatchCompletions, 0);
   EXPECT_LE(completion.completionOwnershipVisitedStateCount, 5);
   EXPECT_LE(completion.completionOwnershipInsertedBoundaryVertices, 8);
   EXPECT_EQ(1, completion.completionOwnershipPeakLiveCandidateComplexes);
@@ -1073,7 +1076,10 @@ TEST(PatchDescriptorMilestoneE,
 
   EXPECT_EQ(1, completion.completionOwnershipStructuralRepairAttempts);
   EXPECT_EQ(1, completion.completionOwnershipStructuralCandidatesConsumed);
-  EXPECT_EQ(2, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_EQ(1, completion.completionOwnershipFullRecomputationPasses);
+  EXPECT_EQ(1, completion.completionOwnershipIncrementalRecomputationPasses);
+  EXPECT_GT(completion.completionOwnershipReusedPatchCompletions, 0);
+  EXPECT_GT(completion.completionOwnershipRecomputedPatchCompletions, 0);
   EXPECT_LE(completion.completionOwnershipVisitedStateCount, 2);
   EXPECT_LE(completion.completionOwnershipPeakLiveCandidateComplexes, 1);
   EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);

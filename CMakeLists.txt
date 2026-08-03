@@ -379,6 +379,19 @@ if(DIRECTIONAL_BUILD_TESTS)
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_compiled_api_tests PRIVATE cxx_std_20)
 
+
+  function(directional_copy_manifest_fixture target_name)
+    add_custom_command(
+      TARGET ${target_name}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E make_directory
+              "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks/fixtures"
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+              "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/fixtures/manifest.example.json"
+              "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks/fixtures/manifest.example.json"
+      VERBATIM)
+  endfunction()
+
   add_executable(
     directional_phase1_tests
     src/bench/BenchmarkCases.cpp
@@ -425,6 +438,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_phase1_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_phase1_tests PRIVATE cxx_std_20)
+  directional_copy_manifest_fixture(directional_phase1_tests)
   target_compile_definitions(
     directional_phase1_tests
     PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -458,6 +472,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_milestone_g_p23_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p23_tests PRIVATE cxx_std_20)
+  directional_copy_manifest_fixture(directional_milestone_g_p23_tests)
   target_compile_definitions(
     directional_milestone_g_p23_tests
     PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -514,6 +529,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_milestone_g_p24_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p24_tests PRIVATE cxx_std_20)
+  directional_copy_manifest_fixture(directional_milestone_g_p24_tests)
   target_compile_definitions(
     directional_milestone_g_p24_tests
     PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -548,6 +564,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_milestone_g_p25_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p25_tests PRIVATE cxx_std_20)
+  directional_copy_manifest_fixture(directional_milestone_g_p25_tests)
   target_compile_definitions(
     directional_milestone_g_p25_tests
     PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
@@ -581,6 +598,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     directional_milestone_g_p26_tests
     PRIVATE Directional::directional GTest::gtest_main)
   target_compile_features(directional_milestone_g_p26_tests PRIVATE cxx_std_20)
+  directional_copy_manifest_fixture(directional_milestone_g_p26_tests)
   target_compile_definitions(
     directional_milestone_g_p26_tests
     PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
