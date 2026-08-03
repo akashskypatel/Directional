@@ -8,48 +8,41 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB11 artifact-only test and benchmark**.
-- Next turn: **code changes + compile-only build**.
+- Completed turn: **P5-CB51 through P5-CB58 code changes + compile-only build**.
+- Next turn: **P5-TB12 artifact-only test and benchmark**.
 
-## Tested checkpoint
+## Compile-only checkpoint
 
-- Implementation commit: `413660dba15fe1376adc13aa80aea0e1ba99194e`.
-- Exact compiled source: `643cc483e430d2cd161dde94a983aedac4be57dd`.
-- Artifact: `8848599037` (`surface-cell-p5-global-frontier-linux-release`).
-- Digest: `sha256:597c788ed3f34f09480857c910872ff0e6230120a13e57781ef58f3a8bed395d`.
-- Source status empty; checksums **11/11**; no rebuild occurred.
+- Main implementation: `9ed03260df430eb856bd9a3edf1587402ddfc16a`.
+- Exact compiled source: `0980c0912a2538314bb6bbb77dc7d4dbbcea5bc5`.
+- Run / job: `30803697079` / `91654036551` — success.
+- Artifact: `8852049639` (`surface-cell-p5-cb58-memory-frontier-linux-release`).
+- Digest: `sha256:aeab9fc7d38dc65a29fec04a5635d8d63cbef46d7c872dbc17e46b26f3aaa34e`.
+- Build: **131/131**; source status empty; checksums **36/36**.
+- Packaged benchmark fixture files: **26**.
+- No executable was run.
 
-## P5-TB11 result
+## Completed P5-CB51–P5-CB58 scope
 
-- Focused global-frontier: **5/7**.
-- PatchDescriptor: **15/21**.
-- Phase 14–18: **229/230**.
-- P23 + Phase20: **50/52**.
-- Authoritative non-overlapping total: **294/303**.
-- Full packaged binary: **549/578**; 17 failures are unresolved absolute-path fixture dependencies.
-- Four random-bunny processes failed closed deterministically.
-- Mean wall: **61.277891 s**; maximum memory: **936,484,864 B**.
-- Wall gate failed; memory gate passed; no fallback or recovery occurred.
+- [x] Charge work budgets per deterministic atomic transaction, not per exact claim.
+- [x] Batch compatible completion-template ownership changes by conflict component.
+- [x] Correct exact reuse across allocation-local renumbering while preserving semantic dependencies.
+- [x] Restore fail-closed output and bounded ownership diagnostics.
+- [x] Add compile-only regressions for batching, budgets, reuse, memory accounting, intermediate release, and portability.
+- [x] Package executable-relative `manifest.example.json`, `milestone_g_manifest.json`, `repo_regressions.json`, and the tracked fixture closure.
+- [x] Replace the stale 2,090-face `bunny1k.obj` regression with the authoritative 1,000-face `bunny_1k_random.obj` and a real generated degree-four field.
+- [x] Compile and package the corrected source without executing a binary.
 
-Production reaches an inventory of 92 same-corner claims after 41 sequential completion-template variant commits. The frontier then fails before any structural transaction because 92 exact candidates are compared against a candidate budget of 2. Candidates consumed and structural attempts remain zero.
+## Memory focus
 
-## Required next work
+The approximately 49 KB OBJ expands into tens of thousands of trace/cell/completion records. P5-TB11 observed about 80,862 trace segments, 21,298 arrangement cells, 21,297 completion patches, and 2,729 parity splits. This turn releases consumed production intermediates, moves expanded payloads, compacts ownership state, defers final output allocation, retains one rollback/one mutable candidate, and adds owned-byte diagnostics.
 
-Use `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Candidate_Budget_Code_Build_Plan.md`.
-
-- [ ] Apply budgets to atomic transactions/components, not every exact claim.
-- [ ] Batch completion-template ownership assignment rather than performing 41 full assembly cycles.
-- [ ] Correct exact completion-product reuse and its zero-reuse regressions.
-- [ ] Restore fail-closed output invariants and bounded diagnostic details.
-- [ ] Remediate the nine authoritative P5 test failures and three Milestone D regressions without synthetic test changes.
-- [ ] Package the complete runtime fixture closure without absolute CI paths.
-- [ ] Recover wall time to `<= 39.228299 s` without exceeding `1,115,394,560 B`.
-- [ ] Compile only the four required targets and execute no binary.
+Actual RSS improvement is not yet measured. P5-TB12 must compare the new artifact against the previous maximum of `936,484,864 B` and still enforce the formal cap of `1,115,394,560 B`.
 
 Evidence:
 
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_P5_TB11_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Memory_Bounded_Frontier_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Candidate_Budget_Code_Build_Plan.md`
-- `benchmark-results/p5-tb11-summary.json`
+- `benchmark-results/p5-cb58-summary.json`
 
 P5 remains open.
