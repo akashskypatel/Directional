@@ -1,0 +1,148 @@
+name: Agent P5 CB84 authoritative parity scope edit
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-p5-cb84-parity-scope-edit.yml
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record edit start
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB84 parity-scope source-edit run ${RUN_ID} started for ${EVENT_SHA}. Source edits only; no project binary, test, benchmark, help/list, discovery, or custom mesh command."
+
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Replace frequency voting with authoritative scope inheritance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import textwrap
+
+          path = Path("src/geometry/SurfaceCellFeasibilityRepair.cpp")
+          text = path.read_text()
+
+          anchor = "  if (insertionCount.empty()) {\n    result.complex = std::move(input);\n    result.success = true;\n    result.rollbackEquivalent = true;\n    result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;\n    return result;\n  }\n\n  SurfaceCellComplex rebuilt;"
+          if text.count(anchor) != 1:
+              raise RuntimeError(f"parity precompute anchor count={text.count(anchor)}")
+
+          replacement = textwrap.dedent('''\
+            if (insertionCount.empty()) {
+              result.complex = std::move(input);
+              result.success = true;
+              result.rollbackEquivalent = true;
+              result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
+              return result;
+            }
+
+            // Derive one exact source scope from each committed input cell before
+            // moving or mutating ownership data. Frequency voting can select a
+            // scope that is absent from a boundary edge and discover the conflict
+            // only after the parity transaction has rebuilt the complex.
+            using SourceScope = std::pair<int, int>;
+            std::vector<SourceScope> authoritativeCellScopes(
+                input.cells.size(), SourceScope{-1, -1});
+            for (int cellIndex = 0; cellIndex < static_cast<int>(input.cells.size());
+                 ++cellIndex) {
+              const SurfaceArrangementCell &cell =
+                  input.cells[static_cast<std::size_t>(cellIndex)];
+              std::set<SourceScope> sharedScopes;
+              bool firstBoundaryEdge = true;
+              for (const int halfedgeId : cell.halfedges) {
+                if (halfedgeId < 0 ||
+                    halfedgeId >= static_cast<int>(input.halfedges.size())) {
+                  return returnCommittedFailure("InvalidCellHalfedge");
+                }
+                const SurfaceArrangementHalfedge &edge =
+                    input.halfedges[static_cast<std::size_t>(halfedgeId)];
+                std::set<SourceScope> edgeScopes;
+                if (edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
+                  edgeScopes.emplace(edge.sourceComponent, edge.sourceSheet);
+                }
+                for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+                  if (entry.sourceComponent >= 0 && entry.sourceSheet >= 0) {
+                    edgeScopes.emplace(entry.sourceComponent, entry.sourceSheet);
+                  }
+                }
+                if (edgeScopes.empty()) {
+                  return returnCommittedFailure("MissingCellSourceScope");
+                }
+                if (firstBoundaryEdge) {
+                  sharedScopes = std::move(edgeScopes);
+                  firstBoundaryEdge = false;
+                } else {
+                  std::set<SourceScope> intersection;
+                  std::set_intersection(
+                      sharedScopes.begin(), sharedScopes.end(), edgeScopes.begin(),
+                      edgeScopes.end(),
+                      std::inserter(intersection, intersection.end()));
+                  sharedScopes = std::move(intersection);
+                }
+                if (sharedScopes.empty()) {
+                  return returnCommittedFailure("MixedCellSourceScope");
+                }
+              }
+              if (firstBoundaryEdge || sharedScopes.empty()) {
+                return returnCommittedFailure("MissingCellSourceScope");
+              }
+              authoritativeCellScopes[static_cast<std::size_t>(cellIndex)] =
+                  *sharedScopes.begin();
+            }
+
+            SurfaceCellComplex rebuilt;''')
+          text = text.replace(anchor, replacement, 1)
+
+          pattern = re.compile(
+              r"    std::map<std::pair<int, int>, int> scopeFrequency;\n"
+              r".*?"
+              r"    const auto selectedScope = std::max_element\(\n"
+              r".*?"
+              r"        \}\)->first;\n",
+              re.DOTALL)
+          matches = list(pattern.finditer(text))
+          if len(matches) != 1:
+              raise RuntimeError(f"parity frequency block count={len(matches)}")
+          text = pattern.sub(
+              "    const SourceScope selectedScope =\n"
+              "        authoritativeCellScopes[static_cast<std::size_t>(cellIndex)];\n",
+              text,
+              count=1)
+          path.write_text(text)
+          PY
+
+      - name: Commit source change
+        run: |
+          git config user.name "directional-agent"
+          git config user.email "directional-agent@users.noreply.github.com"
+          git add src/geometry/SurfaceCellFeasibilityRepair.cpp
+          git commit -m "fix(surface-cells): inherit exact parity source scope"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+
+      - name: Record edit result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB84 parity-scope source-edit run ${RUN_ID} finished ${JOB_STATUS}. No project binary, test, benchmark, help/list, discovery, or custom mesh command executed."
