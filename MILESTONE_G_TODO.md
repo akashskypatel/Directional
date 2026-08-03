@@ -9,53 +9,47 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — global ownership-frontier remediation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`.
-- Implementation commit: `413660dba15fe1376adc13aa80aea0e1ba99194e`.
-- Exact compiled source: `643cc483e430d2cd161dde94a983aedac4be57dd`.
-- Compile-only run / job: `30794828420` / `91625965577` — success.
-- Artifact: `8848599037` (`surface-cell-p5-global-frontier-linux-release`).
-- Digest: `sha256:597c788ed3f34f09480857c910872ff0e6230120a13e57781ef58f3a8bed395d`.
-- Build: **131/131**; source status empty; checksums **11/11**.
-- Completed turn: P5-CB42 through P5-CB50.
-- Next turn: P5-TB11 artifact-only test and benchmark.
-
-See `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Report.md` for implementation and artifact evidence. Runtime success is not claimed.
+- Tested artifact: `8848599037` (`surface-cell-p5-global-frontier-linux-release`).
+- Exact source: `643cc483e430d2cd161dde94a983aedac4be57dd`.
+- Completed turn: P5-TB11 artifact-only test and benchmark.
+- Next turn: code changes + compile-only build.
 
 ## Work phases
 
-- [x] P0–P4 — reproducibility, diagnosis, singular traces, and regular-disk completion.
+- [x] P0–P4 — earlier remediation.
 - [ ] P5 — direct completion ownership remediation. **In progress**
-- [x] P5-CB1–P5-CB41 — canonical ownership through route-complete structural repair.
-- [x] P5-TB7–P5-TB10 — progressive diagnosis through first-conflict inventory failure.
-- [x] P5-CB42 — self-contained executable-relative fixtures.
-- [x] P5-CB43 — complete compact exact ownership-conflict inventory.
-- [x] P5-CB44 — exact latent/introduced and conflict-set progress classification.
-- [x] P5-CB45 — deterministic global ownership frontier and component batching.
-- [x] P5-CB46 — exact completion-product reuse and wall-time remediation path.
-- [x] P5-CB47 — compact frontier/cache memory discipline.
-- [x] P5-CB48 — frontier, progress, reuse, and memory diagnostics/hashes.
-- [x] P5-CB49 — global-frontier regression sources compiled.
-- [x] P5-CB50 — compile and package artifact `8848599037`.
-- [ ] P5-TB11 — validate artifact `8848599037` without rebuilding.
-- [ ] P6 — production topology/provenance/alignment/quality validation.
-- [ ] P7 — focused and full regression closure.
-- [ ] P8 — final bunny benchmark and production disposition.
+- [x] P5-CB42–P5-CB50 — initial global-frontier implementation and artifact.
+- [x] P5-TB11 — artifact validation completed; closure gates failed.
+- [ ] P5-CB51 — correct atomic transaction budget semantics.
+- [ ] P5-CB52 — global completion-template ownership assignment.
+- [ ] P5-CB53 — correct and prove exact product reuse.
+- [ ] P5-CB54 — restore fail-closed result and diagnostic invariants.
+- [ ] P5-CB55 — remediate authoritative test regressions.
+- [ ] P5-CB56 — package complete runtime fixture closure.
+- [ ] P5-CB57 — recover wall time.
+- [ ] P5-CB58 — compile/package corrected checkpoint.
+- [ ] P5-TB12 — artifact-only validation.
+- [ ] P6–P8 — final validation, regression closure, and production disposition.
 
-## P5-TB11 gates
+## P5-TB11 evidence
 
-- Verify exact source, empty status, all checksums, binaries, libraries, logs, source archive, submodules, and packaged fixture from an arbitrary extraction path.
-- Run the global-frontier focused tests and all prior authoritative suites without rebuilding.
-- Require no source-path staging workaround.
-- Run at least two formal and two supplementary fresh random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
-- Require deterministic zero ownership conflicts and nonempty pure-quad output.
-- Require no timeout, fallback, recovery, partial output, final-face deduplication, positional merge, source-triangle pairing, or ID-specific repair.
-- Require wall time ≤ `39.228299 s` and peak memory ≤ `1,115,394,560 B` in every process.
+- Authoritative tests: **294/303 passed**.
+- Full binary: **549/578 passed**.
+- 17 full-suite failures are absolute-path fixture dependencies.
+- Four random-bunny processes failed closed deterministically.
+- Wall mean: **61.277891 s**; maximum memory: **936,484,864 B**.
+- Initial completion-template inventory: **143**.
+- Sequential variant commits: **41**.
+- Remaining same-corner inventory / route candidates: **92 / 92**.
+- Candidate budget / consumed / structural attempts: **2 / 0 / 0**.
+- Terminal reason: `candidate-budget`.
 
-## Current evidence
+The budget gate rejects `frontier.size()` before component partitioning and batching. Completion-template ownership also performs repeated full assembly cycles and remains a wall-time blocker.
 
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Test_Benchmark_Report.md`
-- `benchmark-results/p5-cb50-summary.json`
-- `benchmark-results/p5-tb10-summary.json`
+## Next authority
+
+- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_P5_TB11_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Candidate_Budget_Code_Build_Plan.md`
+- `benchmark-results/p5-tb11-summary.json`
 
 P5 remains open. PR #8 remains draft and unmerged.
