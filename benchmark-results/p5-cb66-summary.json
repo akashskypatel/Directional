@@ -1,0 +1,66 @@
+{
+  "schema": "directional.milestone-g.code-build-summary.v1",
+  "phase": "P5",
+  "turn": "P5-CB59-P5-CB66",
+  "date": "2026-08-03",
+  "review_policy": "never",
+  "runtime_verified": false,
+  "implementation": {
+    "commit": "4dcba533915aad116824f5e47e91a47a440e7718",
+    "exact_compiled_source": "074ec5d125b531db03fcfbda9d6d3654bfc696b7"
+  },
+  "compile": {
+    "run_id": 30824384650,
+    "job_id": 91722103206,
+    "conclusion": "success",
+    "completed_steps": 131,
+    "total_steps": 131,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "executables_run": false
+  },
+  "artifact": {
+    "id": 8860409984,
+    "name": "surface-cell-p5-cb66-rollback-integrity-linux-release",
+    "digest": "sha256:37c04eaa694a87ed9ab4f48b2123b54f52c0a0d16d8fb9672d367ebdfdbfcee3",
+    "size_bytes": 11310510,
+    "source_status_bytes": 0,
+    "checksums_verified": 36,
+    "checksums_total": 36,
+    "packaged_fixture_files": 26,
+    "random_bunny_faces": 1000,
+    "temporary_source_transfer_files": 0
+  },
+  "implemented": {
+    "exact_rollback_identity": true,
+    "compact_undo_log": true,
+    "rollback_proof_required_for_general_completion": true,
+    "inserted_node_source_support_reconstruction": true,
+    "successful_assembly_fast_finalize": true,
+    "compact_descriptor_retention_on_failure": true,
+    "typed_semantic_overlap_preserved": true,
+    "allocation_local_dependency_ids_excluded": true,
+    "explicit_simplification_candidate_scope": true,
+    "p26_p27_case_isolation_sources": true,
+    "successful_path_memory_verified": false,
+    "segfault_elimination_verified": false,
+    "exact_product_reuse_verified": false
+  },
+  "resource_reference": {
+    "p5_tb12_early_failure_peak_rss_bytes": 158949376,
+    "formal_peak_memory_limit_bytes": 1115394560,
+    "formal_wall_limit_seconds": 39.228299,
+    "successful_path_measured_this_turn": false
+  },
+  "next_turn": "P5-TB13 artifact-only test and benchmark",
+  "p5_closed": false,
+  "pr": {
+    "number": 8,
+    "draft": true,
+    "merged": false
+  }
+}
