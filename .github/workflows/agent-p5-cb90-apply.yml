@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/Directional/p5-cb90-source-patch/APPLY_READY_RETRY
+      - .agents/Directional/p5-cb90-source-patch/APPLY_READY_RETRY2
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
           EVENT_SHA: ${{ github.sha }}
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB86 through P5-CB90 source-apply retry ${RUN_ID} started for staging commit ${EVENT_SHA}. Source and regression edits only; no project binary, test, benchmark, help/list, discovery, or custom mesh command."
+            -f body="P5-CB86 through P5-CB90 source-apply retry 2 ${RUN_ID} started for staging commit ${EVENT_SHA}. Source and regression edits only; no project binary, test, benchmark, help/list, discovery, or custom mesh command."
 
       - uses: actions/checkout@v4
         with:
@@ -35,9 +35,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          encoded=.agents/Directional/p5-cb90-source-patch/p5-cb90.patch.gz.b64
-          tr -d '\r\n' < "${encoded}" > /tmp/p5-cb90.patch.gz.b64
-          base64 --decode /tmp/p5-cb90.patch.gz.b64 | gzip -dc > /tmp/p5-cb90.patch
+          patch_dir=.agents/Directional/p5-cb90-source-patch
+          echo "6c6e880417b2dd7cac1b3f627abb5d50535d7db2d3bfba1cdf488444a510cec9  ${patch_dir}/part-00" | sha256sum -c -
+          echo "26525a23608b381acfb743c7dca8a2d8de756b49a5f57ef9b32422d78e96a9e9  ${patch_dir}/part-01" | sha256sum -c -
+          echo "c0b1f72e098efc03b0d278dd8c9cdf69717527de569251855fc1323d1563ab83  ${patch_dir}/part-02" | sha256sum -c -
+          echo "74ef8f72fb598e1dd5cca7de068079b954831db1002e1325b3e8b1624985ecea  ${patch_dir}/part-03" | sha256sum -c -
+          cat "${patch_dir}/part-00" "${patch_dir}/part-01" \
+              "${patch_dir}/part-02" "${patch_dir}/part-03" \
+            | base64 --decode | gzip -dc > /tmp/p5-cb90.patch
           echo "05fe987687450ce19fb598cb856bdff2e942c46a6b9927a14b2a6a45a2a513f3  /tmp/p5-cb90.patch" | sha256sum -c -
           test "$(wc -c < /tmp/p5-cb90.patch)" = "45218"
 
@@ -75,4 +80,4 @@ jobs:
           JOB_STATUS: ${{ job.status }}
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB86 through P5-CB90 source-apply retry ${RUN_ID} finished ${JOB_STATUS}. No project binary, test, benchmark, help/list, discovery, or custom mesh command executed."
+            -f body="P5-CB86 through P5-CB90 source-apply retry 2 ${RUN_ID} finished ${JOB_STATUS}. No project binary, test, benchmark, help/list, discovery, or custom mesh command executed."
