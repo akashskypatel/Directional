@@ -1,4 +1,4 @@
 P5-CB66 source patch
 sha256=9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9
-parts=8-base64
-attempt=7
+parts=gzip-base64
+attempt=8
