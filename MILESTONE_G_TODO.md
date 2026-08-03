@@ -9,10 +9,13 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — resolve remaining direct-completion ownership failures.
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: `#8`.
-- Exact validated artifact source: `dcef9fbf65930b20db93128deb193f10702dc9c7`.
-- Artifact: `8840866875`, digest `sha256:d67a464b2f2c2f6d58bbb9fa15a0e87009176698f14d19a9054facfbcb97cd90`.
-- Completed turn: **test and benchmark** without rebuilding.
-- Next authoritative turn: **code changes + compile-only build**.
+- Previous validated artifact: `8840866875`, source `dcef9fbf65930b20db93128deb193f10702dc9c7`.
+- Intrinsic source-support implementation: `9f6d266436574c7ba797ca42407684700e603bb2`.
+- Exact compiled source: `053fe3816f585320e65526824f1107b8ccb1332d`.
+- Compile-only run: `30774730933` — **success**.
+- New artifact: `8841726806`, digest `sha256:9b9bf5ad23640dfe049d416a0b81649c2e8a3d0353e1bff475fa6ea58155a681`.
+- Completed turn: **code changes + compile-only build**.
+- Next authoritative turn: **test and benchmark using artifact `8841726806` without rebuilding**.
 - Review policy: `never`.
 
 ## Work phases
@@ -29,105 +32,81 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P5-CB3 — Stitch only equal authoritative identities and keep interiors patch-local.
 - [x] P5-CB4 — Preserve duplicate validation and add typed ownership hashes.
 - [x] P5-CB5 — Add generalized ownership/ordering regression sources.
-- [x] P5-TB1 — Validate artifact `8840174777` without rebuilding.
-- [x] P5-TB2 — Run ownership regressions: 8/8 passed.
-- [x] P5-TB3 — Run Phase 14–18 aggregate: 219/219 passed.
-- [x] P5-TB4 — Run Milestone G P23 and Phase 20: 52/52 passed.
-- [x] P5-TB5 — Repeat direct bunny and expose provisional completion-template conflict.
+- [x] P5-TB1 through P5-TB5 — Validate the original ownership checkpoint and expose the deterministic completion conflict.
 - [x] P5-CB7 — Canonicalize completed-face cycles and add stronger ownership lineage.
 - [x] P5-CB8 — Implement false-merge versus completion-template classification and repair routing.
 - [x] P5-CB9 — Add completion-domain ownership proof.
 - [x] P5-CB10 — Add discriminator and patch-order regression sources.
-- [x] P5-CB11 — Correct two of three invalid Milestone E fixture scenarios.
+- [x] P5-CB11 — Correct ambiguous-singularity and transactional partial-output fixtures.
 - [x] P5-CB12 — Compact ownership identities and release superseded capacity.
 - [x] P5-CB13 — Build and package artifact `8840866875`.
-- [x] P5-TB6 — Execute artifact `8840866875` and collect focused tests, deterministic bunny runs, and performance evidence.
-- [ ] P5-CB14 — Replace literal boundary-face membership with intrinsic source-entity support.
-- [ ] P5-CB15 — Canonicalize serialized conflict corner order under reversal.
-- [ ] P5-CB16 — Construct a topology-valid two-odd-cell parity fixture.
-- [ ] P5-CB17 — Add chart-alias and strict source-support escape regressions.
-- [ ] P5-CB18 — Propagate ownership repair attempts and typed support diagnostics.
-- [ ] P5-CB19 — Preserve compact ownership performance while adding source incidence.
+- [x] P5-TB6 — Execute artifact `8840866875`; identify intrinsic source-support rejection as the next blocker.
+- [x] P5-CB14 — Replace literal boundary-face membership with intrinsic source-entity support.
+- [x] P5-CB15 — Canonicalize serialized conflict corner order under reversal.
+- [x] P5-CB16 — Construct an explicit two-odd-cell parity fixture with a real shared interface.
+- [x] P5-CB17 — Add chart-alias and strict source-support escape regressions.
+- [x] P5-CB18 — Propagate ownership repair attempts and typed support diagnostics.
+- [x] P5-CB19 — Reuse one source-incidence resolver per completion invocation and preserve compact identities.
+- [x] P5-CB20 — Compile all required targets and package exact artifact `8841726806`.
+- [ ] P5-TB7 — Execute artifact `8841726806` and validate intrinsic support, parity, assembly progress, determinism, and performance.
 - [ ] P6 — Validate topology, provenance, projection, alignment, determinism, and quality.
 - [ ] P7 — Focused and full regression closure.
 - [ ] P8 — Final bunny benchmark and production disposition.
 
-## Artifact validation
+## Implemented source-support contract
 
-- All packaged checksums passed.
-- `source-commit.txt` matches `dcef9fbf65930b20db93128deb193f10702dc9c7`.
-- `source-status.txt` is empty.
-- No rebuild was performed during this turn.
+- Face-interior point: exact source face support.
+- Source-edge point: incident faces of the canonical source edge.
+- Source-vertex point: incident faces of the canonical source vertex.
+- Boundary point: exact authoritative boundary identity plus nonempty intrinsic-support intersection with patch support.
+- Generated interior point: strict patch-local identity and exact stored-face confinement.
+- Component and sheet labels remain authoritative when available.
+- Invalid or ambiguous barycentric support fails closed with typed diagnostics.
+- Position does not create support or ownership.
 
-## Test evidence
+## Diagnostic and fixture changes
 
-| Scope | Passed | Failed |
-|---|---:|---:|
-| Ownership discriminator subset | 3 | 1 |
-| `PatchDescriptorMilestoneE.*` | 14 | 1 |
-| Phase 14–18 aggregate | 218 | 4 |
-| Milestone G P23 + Phase 20 | 52 | 0 |
+- Typed ownership rejection records include patch, local vertex, completion backend/variant, stored face, barycentric coordinates, source entity, candidate incident faces, patch faces, component, sheet, and failure class.
+- Completion repair attempts and first ownership rejection propagate through pipeline products, remesh diagnostics, semantic hashing, and benchmark JSON.
+- Conflict corner arrays use one canonical unoriented order across cyclic rotation and reversal.
+- The parity fixture now directly constructs two odd bounded cells sharing an interior interface with explicit twin/next/cell incidence.
+- Added boundary source-edge/source-vertex chart-alias tests and strict exterior/interior escape tests.
 
-Five unique failures remain:
+## Compile-only evidence
 
-1. Reversed equivalent face cycles classify correctly, but conflict corner arrays are serialized in different orientations.
-2. Three valid periodic-cylinder/stitching tests are preempted because boundary provenance stored in an adjacent incident source-face chart is rejected.
-3. The shared-edge parity fixture still has invalid topology before parity repair.
+- Clean Release configure: success with GCC 13.3.0.
+- Build: **131/131 steps completed**.
+- Compiled targets:
+  - `directional_core`;
+  - `directional_pipeline`;
+  - `directional_phase1_tests`;
+  - `directional_benchmarks`.
+- Modified production and regression sources compiled successfully.
+- Artifact `source-commit.txt`: `053fe3816f585320e65526824f1107b8ccb1332d`.
+- Artifact `source-status.txt`: empty.
+- Packaged checksums: all ten pass.
+- Artifact contains exact source, binaries, libraries, configure/build logs, and submodule revisions.
+- No test, benchmark, or custom mesh executable ran.
 
-## Direct random-bunny evidence
+A first compile attempt exposed four malformed benchmark JSON key literals; those were corrected without changing the ownership design before the successful final build.
 
-Two independent runs failed identically before assembly:
+## Required next validation turn
 
-```text
-CompletionOwnershipSourceSupportEscape
-```
+Use artifact `8841726806` directly and do not rebuild.
 
-- Arrangement cells: **21,298**.
-- Descriptors attempted/completed/failed: **21,297 / 21,193 / 104**.
-- Required unresolved endpoints: **0**.
-- Accepted output quads: **0**.
-- All stage structural hashes matched.
-- The earlier duplicate pair `378/394` was not reached, so it is neither confirmed fixed nor reclassified.
+1. Run intrinsic source-support and canonical diagnostic regressions.
+2. Run corrected `PatchDescriptorMilestoneE.*`.
+3. Run `SurfaceArrangementPhase16.*` and `PureQuadCompletionPhase18.*`.
+4. Run the Phase 14–18 aggregate.
+5. Run Milestone G P23 and Phase 20 fail-closed suites.
+6. Run the random bunny at least twice with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
+7. Record typed rejection details, ownership repair attempts, descriptor/endpoint counts, output origin, accepted quads, and all stage hashes.
+8. Determine whether the pipeline reaches, repairs, or authoritatively reclassifies the prior patches `378/394` duplicate conflict.
+9. Compare same-machine runtime and peak memory with artifacts `8838467442`, `8840174777`, and `8840866875`.
 
-## Root-cause contract
+## Closure rules
 
-A boundary `SurfacePoint` stored on a source edge or source vertex may use any incident source-face chart. Literal `point.face ∈ patch.sourceFaces` is not a valid support test for those points.
-
-The repair must use exact source topology:
-
-- face interior → exact face;
-- source edge → incident faces of the canonical edge;
-- source vertex → incident faces of the canonical vertex;
-- generated interior → strict patch face support.
-
-Component/sheet labels and authoritative boundary identity remain enforced. Position must not create ownership.
-
-## Performance evidence
-
-Current means:
-
-- wall time: **24.835062 s**;
-- peak working set: **872,785,920 B**;
-- completion stage: **5.176516 s**.
-
-Versus baseline `8838467442`: +8.07% wall, +16.47% memory, +24.17% completion.
-
-Versus previous `8840174777`: -7.25% wall, -48.54% memory, -18.08% completion.
-
-## Authoritative next turn
-
-Use `.agents/Directional/Milestone_G_P5_Source_Support_Code_Build_Plan.md`.
-
-The next turn must:
-
-1. implement intrinsic source-entity support and typed rejection diagnostics;
-2. canonicalize reversed conflict serialization;
-3. fix the parity fixture construction;
-4. propagate `completionOwnershipRepairAttempts` and first ownership rejection;
-5. preserve compact identity performance;
-6. compile the four required targets only;
-7. run no tests, benchmarks, or custom mesh executables;
-8. keep P5 open and PR #8 draft/unmerged.
+P5 remains open until direct completion proceeds through assembly without duplicate ownership, recovery, fallback, final-face deduplication, or validator weakening. Correctness, determinism, and acceptable runtime/memory must be demonstrated by execution; compilation alone does not close the phase.
 
 ## Evidence files
 
