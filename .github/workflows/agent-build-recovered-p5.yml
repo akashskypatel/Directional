@@ -1,6 +1,7 @@
-# Compile-only workflow for the clean P5-CB83 through P5-CB90 source checkpoint.
-# It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
-name: Agent Build Surface Cell P5 CB90
+# Compile-only closeout workflow for P5-CB91 through P5-CB98.
+# It never executes tests, benchmarks, help/list commands, discovery commands,
+# custom meshes, or any compiled project binary.
+name: Agent Build Surface Cell P5 CB98
 
 on:
   push:
@@ -22,21 +23,35 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: agent-surface-cell-p5-cb90-${{ github.ref }}
+  group: agent-surface-cell-p5-cb98-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  BUILD_DIR: build/agent-p5-cb98-release
+  PACKAGE_DIR: artifact
+  LOG_DIR: workflow-logs
+  ACTIVITY_LOG: workflow-logs/p5-cb98-compile-activity.log
 
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Record compile-only run start
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
+      - name: Initialize persistent workflow log
+        shell: bash
         run: |
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB83 through P5-CB90 compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes execute."
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          {
+            echo "P5-CB91 through P5-CB98 compile-only closeout"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "ref=${GITHUB_REF}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "${ACTIVITY_LOG}"
 
       - name: Checkout exact working branch
         uses: actions/checkout@v4
@@ -45,37 +60,59 @@ jobs:
           fetch-depth: 1
           submodules: false
 
-      - name: Verify exact remote source
+      - name: Compile and package exact checkpoint with detailed logging
+        id: compile
         shell: bash
         run: |
-          set -euo pipefail
+          set -Eeuo pipefail
+          mkdir -p "${LOG_DIR}"
+          exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
+          PS4='+ ${BASH_SOURCE}:${LINENO}: '
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            {
+              echo "compile_step_exit_code=${rc}"
+              echo "compile_step_finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              echo "final_git_status_begin"
+              git status --short --branch || true
+              echo "final_git_status_end"
+              echo "disk_usage_begin"
+              df -h . || true
+              du -sh "${BUILD_DIR}" "${PACKAGE_DIR}" 2>/dev/null || true
+              echo "disk_usage_end"
+            } | tee -a "${ACTIVITY_LOG}"
+            exit "${rc}"
+          }
+          trap finish EXIT
+          set -x
+
+          echo "tool_versions_begin"
+          git --version
+          cmake --version
+          ninja --version
+          c++ --version
+          echo "tool_versions_end"
+
           local_sha=$(git rev-parse HEAD)
           remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
           test "${local_sha}" = "${remote_sha}"
-          echo "${local_sha}" > /tmp/source-commit.txt
+          printf '%s\n' "${local_sha}" > /tmp/source-commit.txt
 
-      - name: Fetch required submodules shallowly
-        shell: bash
-        run: |
-          set -euo pipefail
           git submodule sync --recursive
-          git submodule update --init --recursive --depth 1
+          git submodule update --init --recursive --depth 1 --jobs 4
+          git submodule status --recursive | tee /tmp/submodule-status.txt
 
-      - name: Verify clean checkpoint
-        shell: bash
-        run: |
-          set -euo pipefail
           git diff --check
           git status --porcelain=v1 > /tmp/source-status.txt
           test ! -s /tmp/source-status.txt
 
-      - name: Configure clean optimized static build
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf build/agent-p5-cb90-release
-          mkdir -p build/agent-p5-cb90-release
-          cmake -S . -B build/agent-p5-cb90-release -G Ninja \
+          rm -rf "${BUILD_DIR}" "${PACKAGE_DIR}"
+          mkdir -p "${BUILD_DIR}" "${PACKAGE_DIR}/bin" "${PACKAGE_DIR}/lib" \
+            "${PACKAGE_DIR}/source" "${PACKAGE_DIR}/logs"
+
+          cmake -S . -B "${BUILD_DIR}" -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
@@ -87,58 +124,85 @@ jobs:
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee build/agent-p5-cb90-release/configure.log
+            |& tee "${BUILD_DIR}/configure.log"
 
-      - name: Compile required targets only
-        shell: bash
-        run: |
-          set -euo pipefail
-          cmake --build build/agent-p5-cb90-release \
+          cmake --build "${BUILD_DIR}" \
             --target directional_core directional_pipeline directional_phase1_tests directional_benchmarks \
-            -j 4 2>&1 | tee build/agent-p5-cb90-release/build.log
+            -j 4 |& tee "${BUILD_DIR}/build.log"
 
-      - name: Package exact compiled checkpoint
-        shell: bash
-        run: |
-          set -euo pipefail
-          git status --porcelain=v1 > /tmp/source-status.txt
-          test ! -s /tmp/source-status.txt
-          fixture_root=build/agent-p5-cb90-release/test-data/benchmarks/fixtures
+          test -f "${BUILD_DIR}/libdirectional_core.a"
+          test -f "${BUILD_DIR}/libdirectional_pipeline.a"
+          test -x "${BUILD_DIR}/directional_phase1_tests"
+          test -x "${BUILD_DIR}/directional_benchmarks"
+
+          fixture_root="${BUILD_DIR}/test-data/benchmarks/fixtures"
           test -f "${fixture_root}/manifest.example.json"
           test -f "${fixture_root}/milestone_g_manifest.json"
           test -f "${fixture_root}/repo_regressions.json"
           test -f "${fixture_root}/milestone-g/bunny_1k_random.obj"
-          mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
-          cp build/agent-p5-cb90-release/directional_phase1_tests artifact/bin/
-          cp build/agent-p5-cb90-release/directional_benchmarks artifact/bin/
-          cp -a build/agent-p5-cb90-release/test-data artifact/bin/
-          cp build/agent-p5-cb90-release/libdirectional_core.a artifact/lib/
-          cp build/agent-p5-cb90-release/libdirectional_pipeline.a artifact/lib/
-          git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
-          cp /tmp/source-commit.txt artifact/source-commit.txt
-          cp /tmp/source-status.txt artifact/source-status.txt
-          git submodule status --recursive > artifact/submodule-status.txt
-          cp build/agent-p5-cb90-release/configure.log artifact/logs/
-          cp build/agent-p5-cb90-release/build.log artifact/logs/
-          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
-          mv /tmp/files.sha256 artifact/files.sha256
+          find "${fixture_root}" -type f | sort | tee /tmp/fixture-files.txt
+
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+
+          cp "${BUILD_DIR}/directional_phase1_tests" "${PACKAGE_DIR}/bin/"
+          cp "${BUILD_DIR}/directional_benchmarks" "${PACKAGE_DIR}/bin/"
+          cp -a "${BUILD_DIR}/test-data" "${PACKAGE_DIR}/bin/"
+          cp "${BUILD_DIR}/libdirectional_core.a" "${PACKAGE_DIR}/lib/"
+          cp "${BUILD_DIR}/libdirectional_pipeline.a" "${PACKAGE_DIR}/lib/"
+          git archive --format=tar.gz --output="${PACKAGE_DIR}/source/source.tar.gz" HEAD
+          cp /tmp/source-commit.txt "${PACKAGE_DIR}/source-commit.txt"
+          cp /tmp/source-status.txt "${PACKAGE_DIR}/source-status.txt"
+          cp /tmp/submodule-status.txt "${PACKAGE_DIR}/submodule-status.txt"
+          cp /tmp/fixture-files.txt "${PACKAGE_DIR}/fixture-files.txt"
+          cp "${BUILD_DIR}/configure.log" "${PACKAGE_DIR}/logs/"
+          cp "${BUILD_DIR}/build.log" "${PACKAGE_DIR}/logs/"
+          cp "${ACTIVITY_LOG}" "${PACKAGE_DIR}/logs/"
+
+          find "${PACKAGE_DIR}" -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 "${PACKAGE_DIR}/files.sha256"
+          sha256sum "${PACKAGE_DIR}/bin/directional_phase1_tests" \
+            "${PACKAGE_DIR}/bin/directional_benchmarks" \
+            "${PACKAGE_DIR}/lib/libdirectional_core.a" \
+            "${PACKAGE_DIR}/lib/libdirectional_pipeline.a" \
+            | tee "${PACKAGE_DIR}/built-targets.sha256"
+          find "${PACKAGE_DIR}" -maxdepth 3 -type f -printf '%p %s bytes\n' | sort
 
       - name: Upload compiled checkpoint
+        if: steps.compile.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-cb90-parity-flowrep-reuse-rail-linux-release
+          name: surface-cell-p5-cb98-github-source-linux-release
           path: artifact
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 14
           compression-level: 6
 
       - name: Record compile-only result
         if: always()
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
           EVENT_SHA: ${{ github.sha }}
-          JOB_STATUS: ${{ job.status }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+        shell: bash
         run: |
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB83 through P5-CB90 compile-only run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes were executed."
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          message="P5-CB91 through P5-CB98 GitHub-source compile-only closeout run ${RUN_ID} finished ${COMPILE_OUTCOME} for event commit ${EVENT_SHA}. Detailed success/failure activity is retained in the run log artifact. No test, benchmark, help/list, discovery, custom-mesh, or compiled project binary command executed."
+          {
+            echo "result_comment=${message}"
+            echo "result_recorded_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "${ACTIVITY_LOG}"
+          gh api repos/${{ github.repository }}/issues/8/comments -f body="${message}"
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-cb98-workflow-logs-${{ github.run_id }}
+          path: workflow-logs
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
