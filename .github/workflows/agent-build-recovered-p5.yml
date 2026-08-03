@@ -29,8 +29,8 @@ concurrency:
 env:
   BUILD_DIR: build/agent-p5-cb98-release
   PACKAGE_DIR: artifact
-  LOG_DIR: workflow-logs
-  ACTIVITY_LOG: workflow-logs/p5-cb98-compile-activity.log
+  LOG_DIR: ${{ runner.temp }}/p5-cb98-workflow-logs
+  ACTIVITY_LOG: ${{ runner.temp }}/p5-cb98-workflow-logs/p5-cb98-compile-activity.log
 
 jobs:
   build:
@@ -50,6 +50,7 @@ jobs:
             echo "repository=${GITHUB_REPOSITORY}"
             echo "ref=${GITHUB_REF}"
             echo "runner_os=${RUNNER_OS}"
+            echo "runner_temp=${RUNNER_TEMP}"
             echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } | tee "${ACTIVITY_LOG}"
 
@@ -202,7 +203,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: surface-cell-p5-cb98-workflow-logs-${{ github.run_id }}
-          path: workflow-logs
+          path: ${{ runner.temp }}/p5-cb98-workflow-logs
           if-no-files-found: error
           retention-days: 30
           compression-level: 6
