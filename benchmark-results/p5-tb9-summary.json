@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "turn": "P5-TB9",
+  "turnType": "test and benchmark without rebuilding",
+  "artifact": {
+    "id": 8843206930,
+    "name": "surface-cell-p5-bounded-repair-linux-release",
+    "digest": "sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94",
+    "sourceCommit": "bc95579be68d5de073de956022eec8fb89120ec0",
+    "sourceStatusEmpty": true,
+    "checksumsPassed": 10,
+    "rebuildPerformed": false
+  },
+  "tests": {
+    "focusedStructural": {"passed": 2, "failed": 3},
+    "patchDescriptorMilestoneE": {"passed": 17, "failed": 3},
+    "phase16And18": {"passed": 89, "failed": 0},
+    "phase14Through18": {"passed": 229, "failed": 0},
+    "milestoneGP23AndPhase20": {"passed": 52, "failed": 0},
+    "authoritativeNonOverlappingTotal": {"passed": 298, "failed": 3},
+    "uniqueFailures": [
+      "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+      "PatchDescriptorMilestoneE.ZeroStructuralBudgetFailsBeforeCandidateExpansion",
+      "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse"
+    ],
+    "fixtureFinding": "The valid-parallel-route fixture completes on the initial pass and does not produce a same-corner ownership conflict, so three budget/repair expectations are not exercised. The patch-order test also passes vacuously with zero structural attempts."
+  },
+  "formalBunnyRuns": [
+    {
+      "run": 3,
+      "processExit": 0,
+      "success": false,
+      "wallSeconds": 32.075226,
+      "peakWorkingSetBytes": 1053339648,
+      "completionSeconds": 15.882026,
+      "terminalFailureCode": "NotProductionReady",
+      "terminalFailureStage": "completion",
+      "structuralExhaustionReason": "candidate-budget",
+      "candidatesConsumed": 2,
+      "structuralAttempts": 2,
+      "insertedBoundaryVertices": 2,
+      "visitedStates": 3,
+      "fullRecomputationPasses": 3,
+      "peakLiveCandidateComplexes": 1
+    },
+    {
+      "run": 4,
+      "processExit": 0,
+      "success": false,
+      "wallSeconds": 33.23025,
+      "peakWorkingSetBytes": 1083228160,
+      "completionSeconds": 16.525224,
+      "terminalFailureCode": "NotProductionReady",
+      "terminalFailureStage": "completion",
+      "structuralExhaustionReason": "candidate-budget",
+      "candidatesConsumed": 2,
+      "structuralAttempts": 2,
+      "insertedBoundaryVertices": 2,
+      "visitedStates": 3,
+      "fullRecomputationPasses": 3,
+      "peakLiveCandidateComplexes": 1
+    }
+  ],
+  "supplementaryGuardedRuns": [
+    {
+      "run": 1,
+      "benchmarkJsonComplete": true,
+      "outerWrapperExitUncaptured": true,
+      "success": false,
+      "wallSeconds": 37.153023,
+      "peakWorkingSetBytes": 1241817088,
+      "completionSeconds": 18.488107
+    },
+    {
+      "run": 2,
+      "benchmarkJsonComplete": true,
+      "outerWrapperExitUncaptured": true,
+      "success": false,
+      "wallSeconds": 38.504713,
+      "peakWorkingSetBytes": 1241993216,
+      "completionSeconds": 19.844143
+    }
+  ],
+  "determinism": {
+    "fixtureHashMatched": true,
+    "terminalFailureMatched": true,
+    "repairLedgerMatched": true,
+    "contextProductHashesMatched": true,
+    "stageStructuralHashesMatched": true
+  },
+  "formalMeans": {
+    "wallSeconds": 32.652738,
+    "peakWorkingSetBytes": 1068283904,
+    "completionSeconds": 16.203625
+  },
+  "allFourMeans": {
+    "wallSeconds": 35.240803,
+    "peakWorkingSetBytes": 1155094528,
+    "completionSeconds": 17.684875
+  },
+  "gates": {
+    "wallLimitSeconds": 39.228299,
+    "peakWorkingSetLimitBytes": 1115394560,
+    "formalWallPassed": true,
+    "formalPeakPassed": true,
+    "supplementaryPeakStable": false,
+    "terminationPassed": true,
+    "productionSuccessPassed": false
+  },
+  "terminal": {
+    "success": false,
+    "failureCode": "NotProductionReady",
+    "failureStage": "completion",
+    "completionFailurePrefix": "SameCornerStructuralRepairExhausted:candidate-budget:",
+    "originalConflict": {"firstPatch": 4956, "secondPatch": 4954},
+    "candidateBudget": 2,
+    "candidatesConsumed": 2,
+    "structuralAttempts": 2,
+    "insertedBoundaryVertices": 2,
+    "visitedStates": 3,
+    "fullRecomputationPasses": 3,
+    "incrementalRecomputationPasses": 0,
+    "peakLiveCandidateComplexes": 1,
+    "lastCandidateHalfedge": 23112,
+    "lastAffectedPatches": [4952, 4954],
+    "candidateOutcomes": ["introduced-ownership-claim", "introduced-ownership-claim"],
+    "outputOrigin": "None",
+    "acceptedQuads": 0,
+    "fallbackAttempted": false,
+    "sourceGridRecoveryUsed": false
+  },
+  "p5Closed": false,
+  "nextTurn": "code changes + compile-only build",
+  "reviewPolicy": "never"
+}
