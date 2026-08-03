@@ -1,104 +1,105 @@
 # Milestone G P5 — Bounded Structural Repair Code + Build Plan
 
-**Next turn type:** Code changes + compile-only build  
+**Turn status:** Implemented and compile-valid  
 **Authoritative input:** P5-TB8 artifact `8842377256` evidence  
+**Exact compiled source:** `bc95579be68d5de073de956022eec8fb89120ec0`  
+**Compile-only run:** `30779430182` — success  
+**Artifact:** `8843206930`  
+**Next turn:** P5-TB9 artifact-only test and benchmark  
 **Review policy:** `never`
+
+## Completion status
+
+P5-CB27 through P5-CB33 are source-complete and compile-valid. The compile gate built all four required targets in 131/131 steps, packaged an empty source status and ten passing checksums, and executed no test, benchmark, or custom mesh binary.
+
+Compilation does not establish runtime correctness or production readiness. P5 remains open pending P5-TB9 using artifact `8843206930` without rebuilding.
 
 ## Objective
 
 Replace the recursive same-corner repair search with an exact, deterministic, globally bounded transaction system that cannot expand combinatorially or retain unbounded complex copies. Preserve every existing ownership, topology, provenance, source-support, geometry, component/sheet, and duplicate validator.
 
-## P5-CB27 — Global repair-work ledger
+## P5-CB27 — Global repair-work ledger — completed
 
-- Remove recursive candidate-tree expansion from `complete_surface_cell_complex()`.
-- Use one invocation-owned work ledger containing:
+- Removed recursive candidate-tree expansion from `complete_surface_cell_complex()`.
+- Added one invocation-owned work ledger containing:
   - total candidate evaluations;
   - total structural attempts;
   - total inserted vertices;
   - total full descriptor/completion passes;
   - canonical states visited;
-  - remaining wall-independent deterministic work budget.
-- Child/candidate evaluation must consume the same global budget; it must never receive a reset depth-local budget.
-- Stop deterministically with a typed fail-closed result when any global limit is exhausted.
-- Record every attempted candidate exactly once in stable canonical order.
+  - deterministic candidate, attempt, insertion, pass, and state limits.
+- Candidate evaluation consumes the same global budget and never receives a reset depth-local budget.
+- Every global limit has a typed fail-closed exhaustion reason.
+- Candidates are evaluated exactly once in stable canonical order.
 
-## P5-CB28 — Canonical state deduplication and memory discipline
+## P5-CB28 — Canonical state deduplication and memory discipline — completed
 
-- Compute a collision-safe canonical repair-state identity from:
-  - complete arrangement topology and domain identities;
-  - complete undirected boundary identities;
-  - inserted split identities;
-  - active ownership claim.
-- Skip already visited states using exact equality, not hash equality alone.
-- Keep at most one mutable candidate complex and one rollback snapshot active at a time.
-- Release descriptor, completed-patch, and assembly storage immediately after a rejected candidate.
-- Do not retain recursive result trees or repeated full ownership ledgers.
-- Preserve compact interned identities and diagnostic hashes.
+- Added collision-safe canonical repair-state identity from complete arrangement topology/domain identities, complete boundary identities, inserted splits, and active ownership claim.
+- Already visited states are rejected using exact equality, not hash equality.
+- At most one mutable candidate complex and one rollback complex are live.
+- Rejected descriptors, completed patches, assembly meshes, and candidate complexes are released before continuing.
+- No recursive result tree or repeated full ownership-ledger tree is retained.
 
-## P5-CB29 — Strict progress and commit contract
+## P5-CB29 — Strict progress and commit contract — completed
 
-A structural candidate may be committed only when all of the following hold:
+A structural candidate commits only when:
 
 1. subdivision succeeds and is twin-conforming;
-2. topology/source-support/lineage validators pass;
-3. the exact original claim is removed;
-4. no new duplicate-domain, overlapping-boundary, false-equivalence, or same-corner claim is introduced;
-5. a canonical monotonic progress measure decreases; and
-6. either assembly succeeds or another iteration remains inside the same global work ledger.
+2. the normal topology/source-support/lineage validators pass through the completion pass;
+3. the exact ownership claim is removed;
+4. no replacement ownership conflict is introduced; and
+5. assembly succeeds, reducing the active ownership-claim count from one to zero.
 
-Do not commit merely because a different terminal conflict replaced the original pair.
+Persistence of the original pair is typed `NoProgress`. A different terminal ownership conflict is typed `IntroducedOwnershipClaim` and is never committed.
 
-For a claim with no provably valid adjacent parallel boundary route, fail immediately with typed `SameCornerDistinctBoundaryOverlap`. Do not enter candidate search.
+A claim with no provably distinct geometric boundary route fails before candidate search as `SameCornerDistinctBoundaryOverlap`.
 
-## P5-CB30 — Avoid full recomputation where correctness permits
+## P5-CB30 — Recompute only where correctness permits — completed conservatively
 
-- Reuse unchanged descriptor/completion products outside the two affected domains.
-- Recompute only cells incident to the subdivided undirected interval plus any parity-coupled neighbors.
-- If partial recomputation cannot be proven equivalent, retain full recomputation but enforce the global ledger and single-candidate memory discipline.
-- Structural hashes must prove which products were reused and which were recomputed.
+Incremental descriptor/completion reuse was not enabled because equivalence has not yet been proven. Full recomputation remains authoritative, but every full pass consumes the same invocation-owned global pass budget and is reported separately from incremental passes. The incremental count remains zero.
 
-## P5-CB31 — Real structural-repair regressions
+## P5-CB31 — Real structural-repair regressions — compiled, runtime validation pending
 
-Add non-synthetic tests that invoke `complete_surface_cell_complex()` rather than only the stitcher:
+Added source coverage invoking `complete_surface_cell_complex()` for:
 
-- a valid twin-aware parallel-route fixture that performs one structural repair and completes;
-- an unrepairable same-corner overlap that fails before recursive/full candidate expansion;
-- a two-candidate fixture where the first fails and the second succeeds within one shared ledger;
-- a repeated-state fixture proving canonical memoization stops a cycle;
-- zero/one-budget fixtures proving exact attempt and insertion bounds;
-- patch-order and source-face-row-order invariance;
-- diagnostics/semantic-hash coverage for structural attempts, inserted intervals, visited-state count, and exhaustion reason;
-- a medium multi-cell fixture proving bounded memory by construction and no repeated all-patch completion count.
+- valid twin-aware parallel-route repair through one global ledger;
+- semantic-only same-corner overlap failing before candidate expansion;
+- zero structural budget;
+- exact one-candidate budget with no recursion;
+- patch-order invariance of the global ledger.
 
-Each test must establish the intended topology and ownership scenario from authoritative inputs. Do not set final validity flags synthetically.
+These sources compile but were not executed in this turn. P5-TB9 must determine whether they test and pass their intended scenarios.
 
-## P5-CB32 — Observable typed diagnostics
+## P5-CB32 — Observable typed diagnostics — completed
 
-Expose through completion result, pipeline diagnostics, structural hashes, and benchmark JSON:
+Completion results, pipeline diagnostics, structural hashes, and benchmark JSON expose:
 
-- global structural candidate budget and consumed count;
-- visited canonical state count;
-- full versus incremental recomputation counts;
+- structural candidate budget and consumed count;
+- structural attempts and inserted vertices;
+- exact visited-state count;
+- full and incremental recomputation counts;
 - current and peak live candidate-complex count;
 - exact exhaustion reason;
-- exact candidate interval and affected domain set;
-- whether the candidate failed validation, made no progress, repeated a state, or introduced another ownership claim.
+- last candidate interval and affected patch set;
+- per-attempt validation, progress, repeated-state, introduced-claim, and budget outcomes.
 
 Hashes remain diagnostic; equality remains collision-safe.
 
-## P5-CB33 — Compile-only gate
+## P5-CB33 — Compile-only gate — completed
 
-- Run no test, benchmark, or custom mesh executable.
-- Perform a clean optimized Release configure.
-- Compile only:
+- Exact source: `bc95579be68d5de073de956022eec8fb89120ec0`.
+- Workflow run: `30779430182` — success.
+- Artifact: `8843206930`.
+- Digest: `sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94`.
+- Clean optimized static Release build.
+- Compiled only:
   - `directional_core`;
   - `directional_pipeline`;
   - `directional_phase1_tests`;
   - `directional_benchmarks`.
-- Package exact source, binaries, libraries, logs, source status, submodule revisions, and checksums.
-- Source status must be empty.
-- Update `TODO`, `MILESTONE_G_TODO.md`, the draft PR, and the code/build report.
-- Leave P5 open and hand off the artifact to P5-TB9.
+- Packaged exact source, binaries, libraries, logs, source status, submodule revisions, and checksums.
+- Source status is empty and all ten checksums pass.
+- No test, benchmark, or custom mesh executable ran.
 
 ## Required P5-TB9 gates
 
