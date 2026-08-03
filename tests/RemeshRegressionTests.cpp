@@ -100,7 +100,7 @@ TEST(RemeshRegressionPhase00, SyntheticOutputSatisfiesStructuralInvariants) {
   }
 }
 
-TEST(RemeshRegressionPhase00, BunnyBenchmarkFixtureHasMatchingField) {
+TEST(RemeshRegressionPhase00, RandomBunnyBenchmarkFixtureHasUsableField) {
   const std::filesystem::path manifestPath =
       directional::tests::benchmark_fixture_path(
           "repo_regressions.json");
@@ -110,17 +110,21 @@ TEST(RemeshRegressionPhase00, BunnyBenchmarkFixtureHasMatchingField) {
   const auto bunny = std::find_if(
       cases.begin(), cases.end(),
       [](const directional::bench::BenchmarkCase &candidate) {
-        return candidate.name == "bunny1k_medium";
+        return candidate.name == "bunny_1k_random_medium";
       });
 
   ASSERT_NE(bunny, cases.end());
+  EXPECT_EQ(bunny->meshPath.filename(), "bunny_1k_random.obj");
+  EXPECT_EQ(bunny->generatedField, "face_edges");
+
   const directional::bench::BenchmarkMesh mesh =
       directional::bench::load_benchmark_mesh(*bunny);
   ASSERT_GT(mesh.vertices.rows(), 0);
-  ASSERT_EQ(mesh.faces.rows(), 2090);
+  ASSERT_EQ(mesh.faces.rows(), 1000);
 
-  const directional::bench::BenchmarkField field =
-      directional::bench::load_benchmark_field(*bunny, mesh.faces.rows());
+  const directional::bench::BenchmarkField field = bunny->fieldPath.empty()
+      ? directional::bench::generate_benchmark_field(*bunny, mesh)
+      : directional::bench::load_benchmark_field(*bunny, mesh.faces.rows());
   ASSERT_TRUE(field.available);
   EXPECT_EQ(field.degree, 4);
   EXPECT_EQ(field.raw.rows(), mesh.faces.rows());
