@@ -4,62 +4,55 @@ Last updated: 2026-08-03
 
 ## Active phase
 
-- Phase: P5 — global ownership-frontier remediation.
+- Phase: P5 — direct surface-cell completion remediation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB12 artifact-only test and benchmark**.
-- Next turn: **P5-CB59 through P5-CB66 code changes + compile-only build**.
+- Completed turn: **P5-CB59 through P5-CB66 code changes + compile-only build**.
+- Next turn: **P5-TB13 artifact-only test and benchmark**.
 
-## Tested checkpoint
+## Compile-only checkpoint
 
-- Exact source: `0980c0912a2538314bb6bbb77dc7d4dbbcea5bc5`.
-- Artifact: `8852049639` (`surface-cell-p5-cb58-memory-frontier-linux-release`).
-- Digest: `sha256:aeab9fc7d38dc65a29fec04a5635d8d63cbef46d7c872dbc17e46b26f3aaa34e`.
-- Source status empty; checksums **36/36**; no rebuild occurred.
-- Executable-relative fixture closure passed from an arbitrary path.
+- Implementation: `4dcba533915aad116824f5e47e91a47a440e7718`.
+- Exact compiled source: `074ec5d125b531db03fcfbda9d6d3654bfc696b7`.
+- Run / job: `30824384650` / `91722103206` — success.
+- Artifact: `8860409984` (`surface-cell-p5-cb66-rollback-integrity-linux-release`).
+- Digest: `sha256:37c04eaa694a87ed9ab4f48b2123b54f52c0a0d16d8fb9672d367ebdfdbfcee3`.
+- Build: **131/131**; source status empty; checksums **36/36**.
+- Packaged fixture files: **26**; random bunny faces: **1,000**.
+- No executable was run.
 
-## P5-TB12 result
+## Completed P5-CB59–P5-CB66 scope
 
-- Focused memory/frontier/fixture subset: **8/11 passed**.
-- `PatchDescriptorMilestoneE.*`: **15/21 passed**.
-- Phase 14–18: **230/230 passed**.
-- P23 + Phase 20: **51/54 passed**.
-- Authoritative non-overlapping P5 total: **296/305 passed**.
-- Milestone D: **4/7 passed**.
-- Full packaged binary: **566/580 passed**, with 12 assertion failures and 2 deterministic SIGSEGVs.
+- [x] Add exact before/after rollback identity and an explicit rollback-equivalence proof.
+- [x] Restore rejected subdivision and side-repair transactions through a compact undo log without retaining two full complexes.
+- [x] Require exact rollback proof before permitted general-completion handoff.
+- [x] Restore inserted-node source-face, component, sheet, rail, and barrier support.
+- [x] Finalize an initially successful assembly directly and preserve compact descriptors and typed failure diagnostics.
+- [x] Preserve `SameCornerDistinctBoundaryOverlap:` as a typed terminal failure.
+- [x] Exclude allocation-local compact IDs from exact completion-product dependency equality while retaining semantic support equality.
+- [x] Keep explicit simplification requests scoped to caller-supplied candidates; retain live refresh for production topology healing.
+- [x] Add isolated P26/P27 matrix and returned-result ownership regression sources.
+- [x] Compile and package the exact source without executing a binary.
 
-Four independent random-bunny processes completed under the formal wall and memory caps, but all failed closed before descriptor completion:
+## P5-TB13 requirements
 
-```text
-InvalidArrangementDomainIdentity;firstPatch=2;secondPatch=-1
-```
+Use artifact `8860409984` directly without rebuilding.
 
-- all-process wall mean: **32.658431 s**;
-- maximum peak working set: **158,949,376 B**;
-- reduction from P5-TB11 maximum `936,484,864 B`: **83.03%**;
-- descriptors/completed patches/output quads: **0/0/0**;
-- fallback/recovery: neither used.
-
-The memory reduction is measured but is not successful-path evidence because completion exits before descriptor derivation.
-
-## Required next work
-
-Use `.agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Plan.md`.
-
-- [ ] Restore exact canonical rollback after a failed side-repair transaction without retaining two complete complexes.
-- [ ] Eliminate `InvalidArrangementDomainIdentity` and restore authoritative descriptor production.
-- [ ] Complete exact reusable-product semantics; unaffected fixtures must report reuse greater than zero.
-- [ ] Restore typed semantic-overlap, Phase 20 provenance, and Milestone D topology contracts.
-- [ ] Isolate and eliminate the GP26 and GP27 production-matrix segmentation faults without reducing coverage.
-- [ ] Preserve intermediate release, compact ownership, deferred output, and the successful memory footprint on a zero-conflict completion path.
-- [ ] Add successful-path lifetime and per-case matrix regression sources.
-- [ ] Compile only the four required targets and execute no binary.
+- Verify source, status, checksums, binaries, libraries, logs, source archive, submodules, and executable-relative fixtures from an arbitrary extraction path.
+- Run focused rollback, descriptor, reuse, semantic-overlap, simplification, lifetime, and matrix-isolation tests.
+- Run all prior authoritative P5 suites, Milestone D, and the full packaged binary; require no signal-11 termination.
+- Run at least two formal and two supplementary fresh random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
+- Require authoritative descriptors, deterministic zero-conflict nonempty pure-quad output, and no fallback or recovery.
+- Require exact rollback hashes to match on every permitted rejected side-repair transaction.
+- Require unaffected completion-product reuse where the fixture proves unchanged dependencies.
+- Require wall time `<= 39.228299 s` and peak memory `<= 1,115,394,560 B` in every process.
+- Compare successful-path RSS with the P5-TB12 early-failure maximum of `158,949,376 B` and explain the difference using owned-byte diagnostics.
 
 Evidence:
 
-- `.agents/Directional/Milestone_G_P5_TB12_Memory_Frontier_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Plan.md`
-- `benchmark-results/p5-tb12-summary.json`
+- `benchmark-results/p5-cb66-summary.json`
 
-P5 remains open.
+Runtime correctness, crash elimination, reuse, and successful-path memory preservation are not yet claimed. P5 remains open.
