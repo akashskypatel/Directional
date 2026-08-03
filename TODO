@@ -8,51 +8,63 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB67 through P5-CB74 code changes + compile-only build**.
-- Next turn: **P5-TB14 artifact-only test and benchmark**.
+- Completed turn: **P5-TB14 artifact-only test and benchmark**.
+- Next turn: **P5-CB75 through P5-CB82 code changes + compile-only build**.
 
-## Compile-only checkpoint
+## Tested checkpoint
 
-- Implementation: `9a5c97e7bdb0d11e4cac04bfbe519fb1975d4acd`.
-- Exact compiled source: `188baf35a13c02b20424cd72fb9c6d8fe81ec9fc`.
-- Run / job: `30834563914` / `91756464993` — success.
+- Exact source: `188baf35a13c02b20424cd72fb9c6d8fe81ec9fc`.
 - Artifact: `8864496877` (`surface-cell-p5-cb74-successful-identity-linux-release`).
 - Digest: `sha256:5629045697a3819f3caeb9416d0d4bbe941d6981d6e226420c5899062378a088`.
-- Build: **131/131**; source status empty; checksums **36/36**.
-- Packaged fixture files: **26**; random bunny faces: **1,000**.
-- No executable was run.
+- Source status empty; checksums **36/36**; no rebuild.
+- Fixture closure passed from an arbitrary path; 26 files; random bunny has 502 vertices and 1,000 faces.
 
-## Completed P5-CB67–P5-CB74 scope
+## P5-TB14 result
 
-- [x] Add typed successful-subdivision domain auditing and first-invalid cell/edge/node/source diagnostics.
-- [x] Reconstruct inserted-node source charts from both endpoints, edge directions, and canonical provenance.
-- [x] Recompute cell source support and fail closed before descriptor acceptance when a committed subdivision is invalid.
-- [x] Add a real permitted side-repair failure path to the full completion regression surface.
-- [x] Replace allocation-local `cellId` product lookup with semantic hashing plus exact collision-safe equality.
-- [x] Add product-cache hash-miss and exact-mismatch diagnostics.
-- [x] Restore default simplification fixed-point candidate refresh and expose explicit bounded transaction controls.
-- [x] Reconstruct the invalid Milestone D multi-edge-interface and cylinder fixtures without weakening validation.
-- [x] Propagate authoritative rail metadata and complete provenance to arrangement halfedges.
-- [x] Guard completion/recovery lifetime ordering and retain per-case bunny lifecycle markers.
-- [x] Compile and package the exact source without executing a binary.
+- Focused identity/rollback/reuse/simplification/rail/Milestone D subset: **3/10 passed**.
+- `PatchDescriptorMilestoneE.*`: **20/24 passed**.
+- Phase 14–18: **230/230 passed**.
+- P23 + Phase 20: **52/54 passed**.
+- Milestone D: **4/7 passed**; all three reconstructed fixtures still fail their topology preconditions.
+- Full binary excluding three crash tests: **576/589 passed**.
+- Complete packaged disposition: **576/592 passed**, with 13 assertion-failing tests and 3 signal-11 tests.
 
-## P5-TB14 requirements
+All three bunny matrix tests still crash before the pipeline returns. Their last markers are the respective `BEFORE_PIPELINE` markers for `bunny_1k_random__surface_cells`.
 
-Use artifact `8864496877` directly without rebuilding.
+Four fresh random-bunny processes are not live or deterministic:
 
-- Verify source, status, all checksums, binaries, libraries, logs, source archive, submodules, and executable-relative fixtures from an arbitrary extraction path.
-- Run focused successful-subdivision identity, failed-side-repair rollback, reusable-product, simplification, rail, Milestone D, and result-lifetime tests.
-- Run all prior authoritative P5 suites, Milestone D, and the full packaged binary; require no signal-11 termination.
-- Run at least two formal and two supplementary fresh random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
-- Require valid typed domain audits, nonzero authoritative descriptors, positive exact unaffected-product reuse, deterministic zero ownership conflicts, nonempty pure-quad output, and valid lineage/provenance.
-- Require no fallback, recovery, final-face deduplication, positional merge, source-triangle pairing, or ID-specific repair.
-- Require wall time `<= 39.228299 s` and peak memory `<= 1,115,394,560 B` in every process.
-- Compare successful-path RSS with P5-TB13's failed-path maximum of `185,614,336 B` and explain the difference using stage-owned diagnostics.
+- formal run 1: did not terminate within 300 seconds;
+- formal run 2: completed in `40.925049 s`, failed closed on `mixed-source-sheet` at cell `19`, halfedge `52893`, source face `794`, component `0`, sheet `9`;
+- supplementary runs 3 and 4: did not terminate within 120 seconds each.
+
+The completed run reports:
+
+- descriptors/completed patches: `0/0`;
+- exact reused completions: `0`;
+- side repair: infeasible cells `918 -> 0`, inserted vertices `8,074`;
+- peak working set: `184,205,312 B`;
+- fallback/recovery: neither used;
+- output origin: `None`.
+
+## Required next work
+
+Use `.agents/Directional/Milestone_G_P5_Mixed_Sheet_Liveness_Code_Build_Plan.md`.
+
+- [ ] Preserve exact component/sheet identity on inserted occurrences, oriented replacement halfedges, twins, and owning cells.
+- [ ] Restore every mutated field before claiming exact side-repair rollback equivalence.
+- [ ] Produce positive semantic reusable-product hits in both targeted regressions.
+- [ ] Finish rail and complete-provenance propagation to final arrangement halfedges.
+- [ ] Rebuild the Milestone D fixtures from validated DCEL primitives.
+- [ ] Correct the four failing GP26 end-to-end cases and Phase 20 cylinder without weakening validation.
+- [ ] Make simplification candidate refresh deterministic, duplicate-free, dependency-bounded, and provably convergent.
+- [ ] Eliminate the in-pipeline bunny signal 11; audit stale references and iterator invalidation inside simplification/completion.
+- [ ] Verify rollback storage is compact undo state rather than a second full complex.
+- [ ] Compile only the four required targets and execute no binary.
 
 Evidence:
 
-- `.agents/Directional/Milestone_G_P5_Successful_Subdivision_Identity_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Successful_Subdivision_Identity_Code_Build_Plan.md`
-- `benchmark-results/p5-cb74-summary.json`
+- `.agents/Directional/Milestone_G_P5_TB14_Successful_Subdivision_Identity_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Mixed_Sheet_Liveness_Code_Build_Plan.md`
+- `benchmark-results/p5-tb14-summary.json`
 
-Runtime correctness, crash elimination, positive reuse, successful output, timing, and successful-path memory are not yet claimed. P5 remains open.
+P5 remains open.
