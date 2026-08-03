@@ -13,7 +13,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
 
 concurrency:
   group: p5-cb98-source-patch-${{ github.ref }}
@@ -23,16 +22,6 @@ jobs:
   apply-source-patch:
     runs-on: ubuntu-24.04
     steps:
-      - name: Record source synchronization start
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source synchronization workflow ${RUN_ID} started for ${EVENT_SHA}. It is restricted to the seven declared source/test files and will not modify, stage, commit, or push any workflow file."
-
       - name: Checkout exact branch head
         uses: actions/checkout@v4
         with:
@@ -142,20 +131,4 @@ jobs:
           test -z "$(git diff --cached --name-only -- .github/workflows)"
 
           git commit -m 'fix(surface-cells): apply P5-CB98 remaining source patch'
-          applied_sha=$(git rev-parse HEAD)
           git push origin HEAD:refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
-          echo "applied_sha=${applied_sha}" >> "${GITHUB_OUTPUT}"
-
-      - name: Record source synchronization result
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
-          JOB_STATUS: ${{ job.status }}
-          APPLIED_SHA: ${{ steps.commit.outputs.applied_sha }}
-        run: |
-          set -euo pipefail
-          applied=${APPLIED_SHA:-none}
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source synchronization workflow ${RUN_ID} finished ${JOB_STATUS}. Event commit: ${EVENT_SHA}. Applied source commit: ${applied}. The workflow did not modify, stage, commit, or push any workflow file."
