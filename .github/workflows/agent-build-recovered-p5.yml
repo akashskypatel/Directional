@@ -1,20 +1,13 @@
-# Compile-only workflow for the P5 CB74 successful-subdivision identity checkpoint.
+# Compile-only workflow for the P5 CB82 mixed-sheet/liveness checkpoint.
+# Push triggering is paused while the exact source checkpoint is assembled.
 # It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
-name: Agent Build Surface Cell P5 CB74 Successful Identity
+name: Agent Build Surface Cell P5 CB82 Mixed Sheet Liveness
 
 on:
-  push:
-    branches:
-      - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths-ignore:
-      - TODO
-      - MILESTONE_G_TODO.md
-      - '.agents/Directional/*.md'
-      - 'benchmark-results/*.json'
   workflow_dispatch:
 
 concurrency:
-  group: agent-surface-cell-p5-cb74-${{ github.ref }}
+  group: agent-surface-cell-p5-cb82-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -34,7 +27,7 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB67 through P5-CB74 successful-identity compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes execute."
+            -f body="P5-CB75 through P5-CB82 mixed-sheet/liveness compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes execute."
 
       - name: Checkout exact working branch
         uses: actions/checkout@v4
@@ -71,9 +64,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf build/agent-p5-cb74-release
-          mkdir -p build/agent-p5-cb74-release
-          cmake -S . -B build/agent-p5-cb74-release -G Ninja \
+          rm -rf build/agent-p5-cb82-release
+          mkdir -p build/agent-p5-cb82-release
+          cmake -S . -B build/agent-p5-cb82-release -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
@@ -85,15 +78,15 @@ jobs:
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee build/agent-p5-cb74-release/configure.log
+            2>&1 | tee build/agent-p5-cb82-release/configure.log
 
       - name: Compile required targets only
         shell: bash
         run: |
           set -euo pipefail
-          cmake --build build/agent-p5-cb74-release \
+          cmake --build build/agent-p5-cb82-release \
             --target directional_core directional_pipeline directional_phase1_tests directional_benchmarks \
-            -j 4 2>&1 | tee build/agent-p5-cb74-release/build.log
+            -j 4 2>&1 | tee build/agent-p5-cb82-release/build.log
 
       - name: Package exact compiled checkpoint
         shell: bash
@@ -101,30 +94,30 @@ jobs:
           set -euo pipefail
           git status --porcelain=v1 > /tmp/source-status.txt
           test ! -s /tmp/source-status.txt
-          fixture_root=build/agent-p5-cb74-release/test-data/benchmarks/fixtures
+          fixture_root=build/agent-p5-cb82-release/test-data/benchmarks/fixtures
           test -f "${fixture_root}/manifest.example.json"
           test -f "${fixture_root}/milestone_g_manifest.json"
           test -f "${fixture_root}/repo_regressions.json"
           test -f "${fixture_root}/milestone-g/bunny_1k_random.obj"
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
-          cp build/agent-p5-cb74-release/directional_phase1_tests artifact/bin/
-          cp build/agent-p5-cb74-release/directional_benchmarks artifact/bin/
-          cp -a build/agent-p5-cb74-release/test-data artifact/bin/
-          cp build/agent-p5-cb74-release/libdirectional_core.a artifact/lib/
-          cp build/agent-p5-cb74-release/libdirectional_pipeline.a artifact/lib/
+          cp build/agent-p5-cb82-release/directional_phase1_tests artifact/bin/
+          cp build/agent-p5-cb82-release/directional_benchmarks artifact/bin/
+          cp -a build/agent-p5-cb82-release/test-data artifact/bin/
+          cp build/agent-p5-cb82-release/libdirectional_core.a artifact/lib/
+          cp build/agent-p5-cb82-release/libdirectional_pipeline.a artifact/lib/
           git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
           cp /tmp/source-commit.txt artifact/source-commit.txt
           cp /tmp/source-status.txt artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
-          cp build/agent-p5-cb74-release/configure.log artifact/logs/
-          cp build/agent-p5-cb74-release/build.log artifact/logs/
+          cp build/agent-p5-cb82-release/configure.log artifact/logs/
+          cp build/agent-p5-cb82-release/build.log artifact/logs/
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
           mv /tmp/files.sha256 artifact/files.sha256
 
       - name: Upload compiled checkpoint
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-cb74-successful-identity-linux-release
+          name: surface-cell-p5-cb82-mixed-sheet-liveness-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
@@ -139,4 +132,4 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB67 through P5-CB74 successful-identity compile-only run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes were executed."
+            -f body="P5-CB75 through P5-CB82 mixed-sheet/liveness compile-only run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes were executed."
