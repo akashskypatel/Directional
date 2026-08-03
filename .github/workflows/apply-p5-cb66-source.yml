@@ -55,11 +55,13 @@ jobs:
             52345b0faa50d3c409b83d7260cb66f97108acb67e75941d1beb3cfa84927f58
           )
           : > /tmp/p5-cb66.b64
-          for index in $(seq -w 0 7); do
+          for number in $(seq 0 7); do
+            index=$(printf '%02d' "${number}")
             normalized=/tmp/part-${index}
             tr -d '\r\n' < "${patch_dir}/part-${index}" > "${normalized}"
             actual=$(sha256sum "${normalized}" | cut -d' ' -f1)
-            echo "part-${index} bytes=$(wc -c < "${normalized}") sha256=${actual} expected=${expected[10#${index}]}"
+            echo "part-${index} bytes=$(wc -c < "${normalized}") sha256=${actual} expected=${expected[${number}]}"
+            test "${actual}" = "${expected[${number}]}"
             cat "${normalized}" >> /tmp/p5-cb66.b64
           done
           base64 --decode /tmp/p5-cb66.b64 > /tmp/p5-cb66.patch
