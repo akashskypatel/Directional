@@ -147,6 +147,61 @@ std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
   return patches;
 }
 
+CompletionFixture source_support_alias_patch() {
+  CompletionFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      1.0, 1.0, 0.0,
+                      0.0, 1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3;
+  fixture.patch.sideEdgeCounts = {1, 1, 1, 1};
+  fixture.patch.turns = {1, 1, 1, 1};
+  fixture.patch.sourceFaces = {0};
+  fixture.patch.boundaryVertices = {10, 11, 12, 13};
+  fixture.patch.boundaryComponents.assign(4, 0);
+  fixture.patch.boundarySheets.assign(4, 0);
+
+  directional::geometry::SurfacePoint vertexAlias;
+  vertexAlias.face = 1;
+  vertexAlias.component = 0;
+  vertexAlias.sheet = 1;
+  vertexAlias.barycentric << 1.0, 0.0, 0.0;
+  vertexAlias.position = fixture.vertices.row(0).transpose();
+  vertexAlias.squaredDistance = 0.0;
+
+  directional::geometry::SurfacePoint faceZeroVertexOne;
+  faceZeroVertexOne.face = 0;
+  faceZeroVertexOne.component = 0;
+  faceZeroVertexOne.sheet = 0;
+  faceZeroVertexOne.barycentric << 0.0, 1.0, 0.0;
+  faceZeroVertexOne.position = fixture.vertices.row(1).transpose();
+  faceZeroVertexOne.squaredDistance = 0.0;
+
+  directional::geometry::SurfacePoint faceZeroVertexTwo;
+  faceZeroVertexTwo.face = 0;
+  faceZeroVertexTwo.component = 0;
+  faceZeroVertexTwo.sheet = 0;
+  faceZeroVertexTwo.barycentric << 0.0, 0.0, 1.0;
+  faceZeroVertexTwo.position = fixture.vertices.row(2).transpose();
+  faceZeroVertexTwo.squaredDistance = 0.0;
+
+  directional::geometry::SurfacePoint edgeAlias;
+  edgeAlias.face = 1;
+  edgeAlias.component = 0;
+  edgeAlias.sheet = 1;
+  edgeAlias.barycentric << 0.5, 0.5, 0.0;
+  edgeAlias.position =
+      0.5 * (fixture.vertices.row(0) + fixture.vertices.row(2)).transpose();
+  edgeAlias.squaredDistance = 0.0;
+
+  fixture.patch.boundaryProvenance = {
+      vertexAlias, faceZeroVertexOne, faceZeroVertexTwo, edgeAlias};
+  return fixture;
+}
+
 } // namespace
 
 TEST(PureQuadCompletionPhase18, ThreeSidedInequalityEqualityAndFailure) {
@@ -922,6 +977,142 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_EQ(0, report.tJunctions);
   EXPECT_EQ(0, report.nonManifoldElements);
   EXPECT_EQ(0, report.degenerateElements);
+}
+
+
+TEST(PureQuadCompletionPhase18,
+     SourceSupportResolverUsesIntrinsicVertexAndEdgeIncidence) {
+  const CompletionFixture fixture = source_support_alias_patch();
+  directional::geometry::SurfacePointSourceSupportResolver resolver(
+      fixture.faces);
+
+  const auto vertexSupport =
+      resolver.resolve(fixture.patch.boundaryProvenance[0]);
+  ASSERT_TRUE(vertexSupport.valid());
+  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::SourceVertex,
+            vertexSupport.kind);
+  EXPECT_EQ(0, vertexSupport.sourceVertex);
+  EXPECT_EQ((std::vector<int>{0, 1}), vertexSupport.supportedFaces);
+
+  const auto edgeSupport =
+      resolver.resolve(fixture.patch.boundaryProvenance[3]);
+  ASSERT_TRUE(edgeSupport.valid());
+  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::SourceEdge,
+            edgeSupport.kind);
+  EXPECT_EQ((std::pair<int, int>{0, 2}), edgeSupport.sourceEdge);
+  EXPECT_EQ((std::vector<int>{0, 1}), edgeSupport.supportedFaces);
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionAcceptsBoundaryVertexAndEdgeChartAliases) {
+  const CompletionFixture fixture = source_support_alias_patch();
+  const std::vector<int> components{0, 0};
+  const std::vector<int> sheets{0, 1};
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 27;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+
+  EXPECT_TRUE(completion.success) << completion.failure;
+  EXPECT_FALSE(completion.ownershipRejection.active);
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionRejectsFaceInteriorOutsidePatchSupport) {
+  CompletionFixture fixture = source_support_alias_patch();
+  auto &outside = fixture.patch.boundaryProvenance[0];
+  outside.face = 1;
+  outside.component = 0;
+  outside.sheet = 1;
+  outside.barycentric << 0.2, 0.3, 0.5;
+  outside.position =
+      0.2 * fixture.vertices.row(0).transpose() +
+      0.3 * fixture.vertices.row(2).transpose() +
+      0.5 * fixture.vertices.row(3).transpose();
+  const std::vector<int> components{0, 0};
+  const std::vector<int> sheets{0, 1};
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 31;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+
+  EXPECT_FALSE(completion.success);
+  EXPECT_TRUE(completion.failure.starts_with(
+      "CompletionOwnershipSourceSupportEscape:"));
+  EXPECT_TRUE(completion.ownershipRejection.active);
+  EXPECT_TRUE(completion.ownershipRejection.boundaryVertex);
+  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::FaceInterior,
+            completion.ownershipRejection.sourceEntityKind);
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionRejectsGeneratedInteriorOutsidePatchSupport) {
+  const CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 37;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.success) << completion.failure;
+
+  auto escapedMesh = completion.mesh;
+  const auto interior = std::find_if(
+      escapedMesh.vertices.begin(), escapedMesh.vertices.end(),
+      [](const int vertex) { return vertex < 0; });
+  ASSERT_NE(interior, escapedMesh.vertices.end());
+  const std::size_t row = static_cast<std::size_t>(
+      std::distance(escapedMesh.vertices.begin(), interior));
+  escapedMesh.vertexProvenance[row].face = 1;
+  escapedMesh.vertexProvenance[row].barycentric << 0.2, 0.3, 0.5;
+  escapedMesh.vertexLineage[row].sourcePoint =
+      escapedMesh.vertexProvenance[row];
+
+  directional::geometry::SurfacePointSourceSupportResolver resolver(
+      fixture.faces);
+  directional::geometry::PureQuadCompletionOwnershipRejection rejection;
+  std::string failure;
+  EXPECT_FALSE(directional::geometry::pure_quad_detail::
+                   validate_completion_domain_ownership(
+                       fixture.patch, escapedMesh, 0, &resolver, nullptr,
+                       nullptr, failure, &rejection));
+  EXPECT_TRUE(failure.starts_with(
+      "CompletionOwnershipSourceSupportEscape:"));
+  EXPECT_TRUE(rejection.active);
+  EXPECT_FALSE(rejection.boundaryVertex);
+}
+
+TEST(PureQuadCompletionPhase18,
+     CompletionRejectsComponentSheetMismatchAtSharedSourceEntity) {
+  CompletionFixture fixture = source_support_alias_patch();
+  fixture.patch.boundarySheets[0] = 7;
+  const std::vector<int> components{0, 0};
+  const std::vector<int> sheets{0, 1};
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 43;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+
+  EXPECT_FALSE(completion.success);
+  EXPECT_TRUE(completion.failure.starts_with(
+      "CompletionOwnershipComponentSheetMismatch:"));
+  EXPECT_TRUE(completion.ownershipRejection.active);
+  EXPECT_EQ(7, completion.ownershipRejection.sourceSheet);
 }
 
 TEST(PureQuadCompletionPhase18,

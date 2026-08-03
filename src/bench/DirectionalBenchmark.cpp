@@ -1616,8 +1616,63 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.completionAttemptedPatches << ","
       << "\"completionFailedPatches\":"
       << result.surfaceCellContext.completionFailedPatches << ","
+      << "\"completionOwnershipRepairAttempts\":"
+      << result.surfaceCellContext.completionOwnershipRepairAttempts << ","
       << "\"completionFailure\":\""
       << escape_json(result.surfaceCellContext.completionFailure) << "\","
+      << "\"completionOwnershipRejectionAvailable\":"
+      << (result.surfaceCellContext.firstCompletionOwnershipRejection.active
+              ? "true"
+              : "false")
+      << ",";
+  const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
+      result.surfaceCellContext.firstCompletionOwnershipRejection;
+  out << "\"completionOwnershipFailure\":\""
+      << escape_json(ownershipRejection.failure) << "\","
+      << "\"completionOwnershipSourcePatch\":"
+      << ownershipRejection.sourcePatch << ","
+      << "\"completionOwnershipLocalVertex\":"
+      << ownershipRejection.localVertex << ","
+      << "\"completionOwnershipBoundaryVertex\":"
+      << (ownershipRejection.boundaryVertex ? "true" : "false") << ","
+      << "\"completionOwnershipBackend\":\""
+      << geometry::pure_quad_completion_backend_name(ownershipRejection.backend)
+      << "\","
+      << "\"completionOwnershipVariant\":"
+      << ownershipRejection.completionVariant << ","
+      << "\"completionOwnershipStoredFace\":"
+      << ownershipRejection.storedFace << ","
+      << "\"completionOwnershipBarycentric":["
+      << ownershipRejection.barycentric(0) << ","
+      << ownershipRejection.barycentric(1) << ","
+      << ownershipRejection.barycentric(2) << "],"
+      << "\"completionOwnershipEntityKind\":\""
+      << geometry::surface_point_source_entity_kind_name(
+             ownershipRejection.sourceEntityKind)
+      << "\","
+      << "\"completionOwnershipSourceVertex\":"
+      << ownershipRejection.sourceVertex << ","
+      << "\"completionOwnershipSourceEdge":["
+      << ownershipRejection.sourceEdge[0] << ","
+      << ownershipRejection.sourceEdge[1] << "],"
+      << "\"completionOwnershipComponent\":"
+      << ownershipRejection.sourceComponent << ","
+      << "\"completionOwnershipSheet\":"
+      << ownershipRejection.sourceSheet << ","
+      << "\"completionOwnershipCandidateFaces":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < ownershipRejection.candidateSupportedFaces.size();
+       ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << ownershipRejection.candidateSupportedFaces[faceIndex];
+  }
+  out << "],\"completionOwnershipPatchFaces":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < ownershipRejection.patchSourceFaces.size(); ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << ownershipRejection.patchSourceFaces[faceIndex];
+  }
+  out << "],"
       << "\"completionUnresolvedSingularVertexCount\":"
       << result.surfaceCellContext.completionUnresolvedSingularVertices.size()
       << ","

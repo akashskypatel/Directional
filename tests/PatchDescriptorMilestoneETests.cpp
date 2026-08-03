@@ -3,6 +3,8 @@
 
 #include <gtest/gtest.h>
 
+#include <array>
+#include <limits>
 #include <numeric>
 #include <vector>
 
@@ -230,6 +232,128 @@ void append_fixture_component(const Fixture &component, Fixture &destination,
   append_authoritative_component(remapped, destination.complex);
 }
 
+
+Fixture make_two_odd_cells_with_shared_interface() {
+  Fixture fixture;
+  fixture.V.resize(4, 3);
+  fixture.V << 0.0, 0.0, 0.0,
+               1.0, 0.0, 0.0,
+               1.0, 1.0, 0.0,
+               0.0, 1.0, 0.0;
+  fixture.F.resize(2, 3);
+  fixture.F << 0, 1, 2,
+               0, 2, 3;
+
+  fixture.complex.nodes.resize(4);
+  const std::array<Eigen::RowVector3d, 4> face0Bary{{
+      Eigen::RowVector3d(1.0, 0.0, 0.0),
+      Eigen::RowVector3d(0.0, 1.0, 0.0),
+      Eigen::RowVector3d(0.0, 0.0, 1.0),
+      Eigen::RowVector3d::Constant(
+          std::numeric_limits<double>::quiet_NaN())}};
+  const std::array<Eigen::RowVector3d, 4> face1Bary{{
+      Eigen::RowVector3d(1.0, 0.0, 0.0),
+      Eigen::RowVector3d::Constant(
+          std::numeric_limits<double>::quiet_NaN()),
+      Eigen::RowVector3d(0.0, 1.0, 0.0),
+      Eigen::RowVector3d(0.0, 0.0, 1.0)}};
+  for (int vertex = 0; vertex < 4; ++vertex) {
+    auto &node = fixture.complex.nodes[static_cast<std::size_t>(vertex)];
+    node.id = vertex;
+    node.sourceComponent = 0;
+    node.sourceSheet = 0;
+    if (face0Bary[static_cast<std::size_t>(vertex)].allFinite()) {
+      node.sourceFace = 0;
+      node.barycentric = face0Bary[static_cast<std::size_t>(vertex)];
+      node.occurrences.push_back(
+          {0, face0Bary[static_cast<std::size_t>(vertex)]});
+    }
+    if (face1Bary[static_cast<std::size_t>(vertex)].allFinite()) {
+      if (node.sourceFace < 0) {
+        node.sourceFace = 1;
+        node.barycentric = face1Bary[static_cast<std::size_t>(vertex)];
+      }
+      node.occurrences.push_back(
+          {1, face1Bary[static_cast<std::size_t>(vertex)]});
+    }
+  }
+
+  fixture.complex.halfedges.resize(10);
+  const auto configureHalfedge = [&](const int id, const int twin,
+                                     const int from, const int to,
+                                     const int cell, const int next,
+                                     const int sourceFace, const int family,
+                                     const bool hardFeature) {
+    auto &edge = fixture.complex.halfedges[static_cast<std::size_t>(id)];
+    edge.id = id;
+    edge.twin = twin;
+    edge.from = from;
+    edge.to = to;
+    edge.cell = cell;
+    edge.next = next;
+    edge.sourceFace = sourceFace;
+    edge.sourceArc = id / 2;
+    edge.family = family;
+    edge.strand = id / 2;
+    edge.sourceComponent = 0;
+    edge.sourceSheet = 0;
+    edge.hardFeature = hardFeature;
+    directional::geometry::SurfaceArrangementProvenance provenance;
+    provenance.sourceArc = edge.sourceArc;
+    provenance.sourceFace = sourceFace;
+    provenance.family = family;
+    provenance.strand = edge.strand;
+    provenance.sourceComponent = 0;
+    provenance.sourceSheet = 0;
+    edge.provenance.push_back(provenance);
+  };
+
+  // Bounded cell 0: 0 -> 1 -> 2 -> 0.
+  configureHalfedge(0, 1, 0, 1, 0, 2, 0, 0, true);
+  configureHalfedge(2, 3, 1, 2, 0, 4, 0, 1, true);
+  configureHalfedge(4, 5, 2, 0, 0, 0, 0, 0, false);
+  // Bounded cell 1: 0 -> 2 -> 3 -> 0.
+  configureHalfedge(5, 4, 0, 2, 1, 6, 1, 0, false);
+  configureHalfedge(6, 7, 2, 3, 1, 8, 1, 1, true);
+  configureHalfedge(8, 9, 3, 0, 1, 5, 1, 0, true);
+  // Exterior boundary cycle: 1 -> 0 -> 3 -> 2 -> 1.
+  configureHalfedge(1, 0, 1, 0, 2, 9, 0, 0, true);
+  configureHalfedge(9, 8, 0, 3, 2, 7, 1, 1, true);
+  configureHalfedge(7, 6, 3, 2, 2, 3, 1, 0, true);
+  configureHalfedge(3, 2, 2, 1, 2, 1, 0, 1, true);
+
+  fixture.complex.cells.resize(3);
+  const auto configureCell = [&](const int id, std::vector<int> halfedges,
+                                 const int sourceFace,
+                                 const bool boundaryCycle) {
+    auto &cell = fixture.complex.cells[static_cast<std::size_t>(id)];
+    cell.id = id;
+    cell.sourceFace = sourceFace;
+    if (sourceFace >= 0) {
+      cell.sourceFaces = {sourceFace};
+    }
+    cell.halfedges = std::move(halfedges);
+    cell.sideFamilies = boundaryCycle ? std::vector<int>{0, 1, 0, 1}
+                                      : std::vector<int>{0, 1, 0};
+    cell.sideEdgeCounts.assign(cell.sideFamilies.size(), 1);
+    cell.boundaryCycle = boundaryCycle;
+    cell.closed = true;
+    cell.disk = true;
+    cell.boundaryComponentCount = 1;
+    cell.eulerCharacteristic = 1;
+    cell.cellClass = boundaryCycle
+                         ? directional::geometry::SurfaceArrangementCellClass::Exterior
+                         : directional::geometry::SurfaceArrangementCellClass::PatchCandidate;
+  };
+  configureCell(0, {0, 2, 4}, 0, false);
+  configureCell(1, {5, 6, 8}, 1, false);
+  configureCell(2, {1, 9, 7, 3}, -1, true);
+
+  directional::geometry::surface_simplification_detail::
+      recompute_rebuilt_diagnostics(fixture.complex);
+  return fixture;
+}
+
 } // namespace
 
 TEST(PatchDescriptorMilestoneE, DerivesOrderedSidesSubdivisionsAndFeatures) {
@@ -287,35 +411,12 @@ TEST(PatchDescriptorMilestoneE, RejectsOddBoundaryAndHardBarrierCrossing) {
 
 TEST(PatchDescriptorMilestoneE,
      SharedEdgeParityRepairConforminglyCompletesTwoOddCells) {
-  Eigen::MatrixXd V(4, 3);
-  V << 0.0, 0.0, 0.0,
-       1.0, 0.0, 0.0,
-       1.0, 1.0, 0.0,
-       0.0, 1.0, 0.0;
-  Eigen::MatrixXi F(2, 3);
-  F << 0, 1, 2,
-       0, 2, 3;
-  directional::geometry::SurfaceArrangementArc first;
-  first.id = 0;
-  first.sourceFace = 0;
-  // Enter through the midpoint of boundary edge (0,1), cross the shared
-  // source edge (0,2), and continue into the second source triangle. This
-  // creates two topology-valid odd cells with a real shared interior
-  // interface. The previous fixture placed both arcs directly on (0,2), so it
-  // never established the parity-repair scenario it claimed to test.
-  first.startBarycentric << 0.5, 0.5, 0.0;
-  first.endBarycentric << 0.5, 0.0, 0.5;
-  first.family = 0;
-  first.strand = 7;
-  first.sourceComponent = 0;
-  first.sourceSheet = 0;
-  directional::geometry::SurfaceArrangementArc second = first;
-  second.id = 1;
-  second.sourceFace = 1;
-  second.startBarycentric << 0.5, 0.5, 0.0;
-  second.endBarycentric << 0.0, 0.5, 0.5;
-  const directional::geometry::SurfaceCellComplex complex =
-      directional::geometry::build_surface_cell_complex(V, F, {first, second});
+  const Fixture fixture = make_two_odd_cells_with_shared_interface();
+  const Eigen::MatrixXd &V = fixture.V;
+  const Eigen::MatrixXi &F = fixture.F;
+  const directional::geometry::SurfaceCellComplex &complex = fixture.complex;
+  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(complex));
   ASSERT_TRUE(complex.diagnostics.topologyValid);
   const int oddBefore = static_cast<int>(std::count_if(
       complex.cells.begin(), complex.cells.end(), [](const auto &cell) {

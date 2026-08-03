@@ -431,10 +431,97 @@ bool fill_positions(PureQuadMesh &mesh) {
 
 namespace directional::geometry::pure_quad_detail {
 
-bool validate_completion_domain_ownership(const PureQuadPatch &patch,
-                                          PureQuadMesh &mesh,
-                                          const int completionVariant,
-                                          std::string &failure) {
+std::string completion_ownership_face_list(const std::vector<int> &faces) {
+  std::ostringstream stream;
+  for (std::size_t index = 0; index < faces.size(); ++index) {
+    if (index != 0U) {
+      stream << ',';
+    }
+    stream << faces[index];
+  }
+  return stream.str();
+}
+
+bool completion_ownership_face_matches_labels(
+    const int face, const PureQuadVertexLineage &lineage,
+    const std::vector<int> *sourceFaceComponents,
+    const std::vector<int> *sourceFaceSheets) {
+  if (face < 0) {
+    return false;
+  }
+  if (lineage.sourceComponent >= 0 && sourceFaceComponents != nullptr) {
+    if (static_cast<std::size_t>(face) >= sourceFaceComponents->size() ||
+        (*sourceFaceComponents)[static_cast<std::size_t>(face)] !=
+            lineage.sourceComponent) {
+      return false;
+    }
+  }
+  if (lineage.sourceSheet >= 0 && sourceFaceSheets != nullptr) {
+    if (static_cast<std::size_t>(face) >= sourceFaceSheets->size() ||
+        (*sourceFaceSheets)[static_cast<std::size_t>(face)] !=
+            lineage.sourceSheet) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void set_completion_ownership_rejection(
+    PureQuadCompletionOwnershipRejection *rejection,
+    const std::string &failureCode, const PureQuadMesh &mesh,
+    const PureQuadVertexLineage &lineage, const SurfacePoint &provenance,
+    const bool boundaryVertex, const int completionVariant,
+    const SurfacePointSourceSupport &support,
+    const std::vector<int> &patchSourceFaces, std::string &failure) {
+  failure = failureCode + ":sourcePatch=" +
+            std::to_string(mesh.sourcePatch) + ";localVertex=" +
+            std::to_string(lineage.localVertex) + ";boundary=" +
+            std::to_string(boundaryVertex ? 1 : 0) + ";backend=" +
+            pure_quad_completion_backend_name(mesh.backend) + ";variant=" +
+            std::to_string(completionVariant) + ";storedFace=" +
+            std::to_string(provenance.face) + ";barycentric=" +
+            std::to_string(provenance.barycentric(0)) + "," +
+            std::to_string(provenance.barycentric(1)) + "," +
+            std::to_string(provenance.barycentric(2)) + ";entity=" +
+            surface_point_source_entity_kind_name(support.kind) +
+            ";sourceVertex=" + std::to_string(support.sourceVertex) +
+            ";sourceEdge=" + std::to_string(support.sourceEdge.first) + "," +
+            std::to_string(support.sourceEdge.second) + ";candidateFaces=" +
+            completion_ownership_face_list(support.supportedFaces) +
+            ";patchFaces=" +
+            completion_ownership_face_list(patchSourceFaces) +
+            ";component=" + std::to_string(lineage.sourceComponent) +
+            ";sheet=" + std::to_string(lineage.sourceSheet) +
+            ";supportFailure=" +
+            surface_point_source_support_failure_name(support.failure);
+  if (rejection == nullptr || rejection->active) {
+    return;
+  }
+  rejection->active = true;
+  rejection->failure = failureCode;
+  rejection->sourcePatch = mesh.sourcePatch;
+  rejection->localVertex = lineage.localVertex;
+  rejection->boundaryVertex = boundaryVertex;
+  rejection->backend = mesh.backend;
+  rejection->completionVariant = completionVariant;
+  rejection->storedFace = provenance.face;
+  rejection->barycentric = provenance.barycentric;
+  rejection->sourceEntityKind = support.kind;
+  rejection->sourceVertex = support.sourceVertex;
+  rejection->sourceEdge = {{support.sourceEdge.first, support.sourceEdge.second}};
+  rejection->candidateSupportedFaces = support.supportedFaces;
+  rejection->patchSourceFaces = patchSourceFaces;
+  rejection->sourceComponent = lineage.sourceComponent;
+  rejection->sourceSheet = lineage.sourceSheet;
+}
+
+bool validate_completion_domain_ownership(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    const int completionVariant,
+    const SurfacePointSourceSupportResolver *sourceSupportResolver,
+    const std::vector<int> *sourceFaceComponents,
+    const std::vector<int> *sourceFaceSheets, std::string &failure,
+    PureQuadCompletionOwnershipRejection *ownershipRejection) {
   if (mesh.vertices.size() != mesh.vertexProvenance.size() ||
       mesh.vertices.size() != mesh.vertexLineage.size()) {
     failure = "CompletionOwnershipIncompleteVertexLineage";
@@ -451,8 +538,13 @@ bool validate_completion_domain_ownership(const PureQuadPatch &patch,
       return false;
     }
   }
-  const std::set<int> sourceFaces(patch.sourceFaces.begin(),
-                                  patch.sourceFaces.end());
+  std::vector<int> patchSourceFaces = patch.sourceFaces;
+  std::sort(patchSourceFaces.begin(), patchSourceFaces.end());
+  patchSourceFaces.erase(
+      std::unique(patchSourceFaces.begin(), patchSourceFaces.end()),
+      patchSourceFaces.end());
+  const std::set<int> sourceFaces(patchSourceFaces.begin(),
+                                  patchSourceFaces.end());
 
   std::map<int, std::size_t> vertexRows;
   for (std::size_t row = 0; row < mesh.vertices.size(); ++row) {
@@ -477,7 +569,8 @@ bool validate_completion_domain_ownership(const PureQuadPatch &patch,
     }
 
     const auto boundary = boundaryRows.find(localVertex);
-    if (boundary != boundaryRows.end()) {
+    const bool boundaryVertex = boundary != boundaryRows.end();
+    if (boundaryVertex) {
       const std::size_t boundaryIndex = boundary->second;
       if (boundaryIndex < patch.boundaryNodeIdentities.size() &&
           patch.boundaryNodeIdentities[boundaryIndex].valid) {
@@ -508,8 +601,48 @@ bool validate_completion_domain_ownership(const PureQuadPatch &patch,
       failure = "CompletionOwnershipMissingSourcePoint";
       return false;
     }
-    if (!sourceFaces.empty() && sourceFaces.count(provenance.face) == 0U) {
-      failure = "CompletionOwnershipSourceSupportEscape";
+    if (sourceFaces.empty()) {
+      continue;
+    }
+
+    SurfacePointSourceSupport support;
+    if (boundaryVertex && sourceSupportResolver != nullptr &&
+        sourceSupportResolver->available()) {
+      support = sourceSupportResolver->resolve(provenance);
+      if (!support.valid()) {
+        set_completion_ownership_rejection(
+            ownershipRejection, "CompletionOwnershipInvalidSourceSupport",
+            mesh, lineage, provenance, true, completionVariant, support,
+            patchSourceFaces, failure);
+        return false;
+      }
+    } else {
+      support.kind = SurfacePointSourceEntityKind::FaceInterior;
+      support.supportedFaces = {provenance.face};
+    }
+
+    bool intersectsPatch = false;
+    bool compatibleFaceFound = false;
+    for (const int candidateFace : support.supportedFaces) {
+      if (sourceFaces.count(candidateFace) == 0U) {
+        continue;
+      }
+      intersectsPatch = true;
+      if (completion_ownership_face_matches_labels(
+              candidateFace, lineage, sourceFaceComponents,
+              sourceFaceSheets)) {
+        compatibleFaceFound = true;
+        break;
+      }
+    }
+    if (!compatibleFaceFound) {
+      const std::string failureCode =
+          intersectsPatch ? "CompletionOwnershipComponentSheetMismatch"
+                          : "CompletionOwnershipSourceSupportEscape";
+      set_completion_ownership_rejection(
+          ownershipRejection, failureCode, mesh, lineage, provenance,
+          boundaryVertex, completionVariant, support, patchSourceFaces,
+          failure);
       return false;
     }
   }
@@ -1028,10 +1161,18 @@ PureQuadCompletionResult complete_pure_quad_patch(
     return result;
   }
   std::unique_ptr<SurfaceProjectionBvh> projection;
+  std::unique_ptr<SurfacePointSourceSupportResolver> ownedSourceSupport;
+  const SurfacePointSourceSupportResolver *sourceSupportResolver =
+      options.sourceSupportResolver;
   std::vector<unsigned char> allowedFaces;
   if (options.sourceVertices != nullptr && options.sourceFaces != nullptr) {
     projection = std::make_unique<SurfaceProjectionBvh>(
         *options.sourceVertices, *options.sourceFaces);
+    if (sourceSupportResolver == nullptr) {
+      ownedSourceSupport = std::make_unique<SurfacePointSourceSupportResolver>(
+          *options.sourceFaces);
+      sourceSupportResolver = ownedSourceSupport.get();
+    }
     if (!patch.sourceFaces.empty()) {
       allowedFaces.assign(static_cast<std::size_t>(options.sourceFaces->rows()),
                           0);
@@ -1082,7 +1223,9 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   std::string ownershipFailure;
   if (!pure_quad_detail::validate_completion_domain_ownership(
-          patch, mesh, options.completionVariant, ownershipFailure)) {
+          patch, mesh, options.completionVariant, sourceSupportResolver,
+          options.sourceFaceComponents, options.sourceFaceSheets,
+          ownershipFailure, &result.ownershipRejection)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     result.failure = ownershipFailure;
     return result;
@@ -1169,6 +1312,17 @@ CompletedFaceOwnershipRecord make_completed_face_ownership(
   return record;
 }
 
+struct ConflictDiagnosticCornerKey {
+  PureQuadStitchIdentity stitchIdentity;
+  PureQuadStitchIdentity authoritativeIdentity;
+
+  friend bool operator<(const ConflictDiagnosticCornerKey &lhs,
+                        const ConflictDiagnosticCornerKey &rhs) {
+    return std::tie(lhs.stitchIdentity, lhs.authoritativeIdentity) <
+           std::tie(rhs.stitchIdentity, rhs.authoritativeIdentity);
+  }
+};
+
 void copy_conflict_corner_diagnostics(
     const CompletedFaceOwnershipRecord &record,
     std::array<int, 4> &kinds,
@@ -1176,7 +1330,20 @@ void copy_conflict_corner_diagnostics(
     std::array<std::uint64_t, 4> &authoritativeHashes,
     std::array<int, 4> &localVertices,
     std::array<int, 4> &globalVertices) {
-  const auto &order = record.stitchForward.sourceIndices;
+  std::array<ConflictDiagnosticCornerKey, 4> diagnosticCycle;
+  for (int corner = 0; corner < 4; ++corner) {
+    const CompletedFaceCornerRecord &source =
+        record.localCorners[static_cast<std::size_t>(corner)];
+    diagnosticCycle[static_cast<std::size_t>(corner)] = {
+        source.stitchIdentity, source.authoritativeIdentity};
+  }
+  const auto forward =
+      pure_quad_detail::canonical_quad_cycle(diagnosticCycle, false);
+  const auto reversed =
+      pure_quad_detail::canonical_quad_cycle(diagnosticCycle, true);
+  const auto &order = reversed.values < forward.values
+                          ? reversed.sourceIndices
+                          : forward.sourceIndices;
   for (int corner = 0; corner < 4; ++corner) {
     const int sourceIndex = order[static_cast<std::size_t>(corner)];
     const CompletedFaceCornerRecord &source =

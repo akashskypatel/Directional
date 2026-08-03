@@ -27,6 +27,7 @@
 
 #include <directional/meshing/PatchRegion.h>
 #include <directional/geometry/SurfacePoint.h>
+#include <directional/geometry/SurfacePointSupport.h>
 #include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/validation/MeshValidator.h>
 
@@ -180,6 +181,26 @@ struct PureQuadMesh {
   std::vector<PureQuadFaceLineage> quadLineage;
 };
 
+struct PureQuadCompletionOwnershipRejection {
+  bool active = false;
+  std::string failure;
+  int sourcePatch = -1;
+  int localVertex = -1;
+  bool boundaryVertex = false;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int completionVariant = 0;
+  int storedFace = -1;
+  Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+  SurfacePointSourceEntityKind sourceEntityKind =
+      SurfacePointSourceEntityKind::Invalid;
+  int sourceVertex = -1;
+  std::array<int, 2> sourceEdge{{-1, -1}};
+  std::vector<int> candidateSupportedFaces;
+  std::vector<int> patchSourceFaces;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+};
+
 struct PureQuadCompletionOptions {
   int sourcePatch = -1;
   int maxBoundaryEdges = 128;
@@ -190,6 +211,7 @@ struct PureQuadCompletionOptions {
   int completionVariant = 0;
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
+  const SurfacePointSourceSupportResolver *sourceSupportResolver = nullptr;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
 };
@@ -200,8 +222,21 @@ struct PureQuadCompletionResult {
   PureQuadMesh mesh;
   PureQuadPatchRejectReason failureReason = PureQuadPatchRejectReason::None;
   int exploredPatterns = 0;
+  PureQuadCompletionOwnershipRejection ownershipRejection;
   std::string failure;
 };
+
+namespace pure_quad_detail {
+
+bool validate_completion_domain_ownership(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    int completionVariant,
+    const SurfacePointSourceSupportResolver *sourceSupportResolver,
+    const std::vector<int> *sourceFaceComponents,
+    const std::vector<int> *sourceFaceSheets, std::string &failure,
+    PureQuadCompletionOwnershipRejection *ownershipRejection);
+
+} // namespace pure_quad_detail
 
 struct PureQuadAssemblyResult {
   bool success = false;

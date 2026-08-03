@@ -364,6 +364,9 @@ struct SurfaceCellPipelineContext {
   int completionSideHardFeatureSplits = 0;
   int completionAttemptedPatches = 0;
   int completionFailedPatches = 0;
+  int completionOwnershipRepairAttempts = 0;
+  geometry::PureQuadCompletionOwnershipRejection
+      firstCompletionOwnershipRejection;
   std::string completionFailure;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;

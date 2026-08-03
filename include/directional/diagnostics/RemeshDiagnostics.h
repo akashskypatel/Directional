@@ -10,6 +10,7 @@
 #ifndef DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -124,6 +125,24 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellArrangementCellCount = 0;
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRepairAttempts = 0;
+  bool surfaceCellCompletionOwnershipRejectionAvailable = false;
+  std::string surfaceCellCompletionOwnershipFailure;
+  int surfaceCellCompletionOwnershipSourcePatch = -1;
+  int surfaceCellCompletionOwnershipLocalVertex = -1;
+  bool surfaceCellCompletionOwnershipBoundaryVertex = false;
+  int surfaceCellCompletionOwnershipBackend = -1;
+  int surfaceCellCompletionOwnershipVariant = 0;
+  int surfaceCellCompletionOwnershipStoredFace = -1;
+  std::array<double, 3> surfaceCellCompletionOwnershipBarycentric{{0.0, 0.0,
+                                                                  0.0}};
+  int surfaceCellCompletionOwnershipEntityKind = 0;
+  int surfaceCellCompletionOwnershipSourceVertex = -1;
+  std::array<int, 2> surfaceCellCompletionOwnershipSourceEdge{{-1, -1}};
+  std::vector<int> surfaceCellCompletionOwnershipCandidateFaces;
+  std::vector<int> surfaceCellCompletionOwnershipPatchFaces;
+  int surfaceCellCompletionOwnershipComponent = -1;
+  int surfaceCellCompletionOwnershipSheet = -1;
   std::size_t surfaceCellOptimizationIterationCount = 0;
   bool surfaceCellValidationFailureCountAvailable = false;
   bool surfaceCellProvenanceVertexCountAvailable = false;
@@ -134,6 +153,7 @@ struct RemeshDiagnostics {
   bool surfaceCellArrangementCountAvailable = false;
   bool surfaceCellSimplifiedCountAvailable = false;
   bool surfaceCellCompletedQuadCountAvailable = false;
+  bool surfaceCellCompletionOwnershipRepairAttemptsAvailable = false;
   bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 

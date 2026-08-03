@@ -1972,6 +1972,9 @@ void clear_unavailable_surface_cell_counts(
   if (!diagnostics.surfaceCellCompletedQuadCountAvailable) {
     diagnostics.surfaceCellCompletedQuadCount = 0U;
   }
+  if (!diagnostics.surfaceCellCompletionOwnershipRepairAttemptsAvailable) {
+    diagnostics.surfaceCellCompletionOwnershipRepairAttempts = 0U;
+  }
   if (!diagnostics.surfaceCellOptimizationIterationCountAvailable) {
     diagnostics.surfaceCellOptimizationIterationCount = 0U;
   }
@@ -2007,6 +2010,40 @@ void copy_surface_cell_stage_diagnostics(
   target.surfaceCellSimplifiedCellCount =
       source.surfaceCellSimplifiedCellCount;
   target.surfaceCellCompletedQuadCount = source.surfaceCellCompletedQuadCount;
+  target.surfaceCellCompletionOwnershipRepairAttempts =
+      source.surfaceCellCompletionOwnershipRepairAttempts;
+  target.surfaceCellCompletionOwnershipRejectionAvailable =
+      source.surfaceCellCompletionOwnershipRejectionAvailable;
+  target.surfaceCellCompletionOwnershipFailure =
+      source.surfaceCellCompletionOwnershipFailure;
+  target.surfaceCellCompletionOwnershipSourcePatch =
+      source.surfaceCellCompletionOwnershipSourcePatch;
+  target.surfaceCellCompletionOwnershipLocalVertex =
+      source.surfaceCellCompletionOwnershipLocalVertex;
+  target.surfaceCellCompletionOwnershipBoundaryVertex =
+      source.surfaceCellCompletionOwnershipBoundaryVertex;
+  target.surfaceCellCompletionOwnershipBackend =
+      source.surfaceCellCompletionOwnershipBackend;
+  target.surfaceCellCompletionOwnershipVariant =
+      source.surfaceCellCompletionOwnershipVariant;
+  target.surfaceCellCompletionOwnershipStoredFace =
+      source.surfaceCellCompletionOwnershipStoredFace;
+  target.surfaceCellCompletionOwnershipBarycentric =
+      source.surfaceCellCompletionOwnershipBarycentric;
+  target.surfaceCellCompletionOwnershipEntityKind =
+      source.surfaceCellCompletionOwnershipEntityKind;
+  target.surfaceCellCompletionOwnershipSourceVertex =
+      source.surfaceCellCompletionOwnershipSourceVertex;
+  target.surfaceCellCompletionOwnershipSourceEdge =
+      source.surfaceCellCompletionOwnershipSourceEdge;
+  target.surfaceCellCompletionOwnershipCandidateFaces =
+      source.surfaceCellCompletionOwnershipCandidateFaces;
+  target.surfaceCellCompletionOwnershipPatchFaces =
+      source.surfaceCellCompletionOwnershipPatchFaces;
+  target.surfaceCellCompletionOwnershipComponent =
+      source.surfaceCellCompletionOwnershipComponent;
+  target.surfaceCellCompletionOwnershipSheet =
+      source.surfaceCellCompletionOwnershipSheet;
   target.surfaceCellOptimizationIterationCount =
       source.surfaceCellOptimizationIterationCount;
 
@@ -2027,6 +2064,8 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellSimplifiedCountAvailable;
   target.surfaceCellCompletedQuadCountAvailable =
       source.surfaceCellCompletedQuadCountAvailable;
+  target.surfaceCellCompletionOwnershipRepairAttemptsAvailable =
+      source.surfaceCellCompletionOwnershipRepairAttemptsAvailable;
   target.surfaceCellOptimizationIterationCountAvailable =
       source.surfaceCellOptimizationIterationCountAvailable;
 
@@ -4108,7 +4147,55 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.attemptedPatches;
     result.surfaceCellContext.completionFailedPatches =
         completionResult.failedPatches;
+    result.surfaceCellContext.completionOwnershipRepairAttempts =
+        completionResult.completionOwnershipRepairAttempts;
+    result.surfaceCellContext.firstCompletionOwnershipRejection =
+        completionResult.firstCompletionOwnershipRejection;
     result.surfaceCellContext.completionFailure = completionResult.failure;
+    result.diagnostics.surfaceCellCompletionOwnershipRepairAttempts =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipRepairAttempts);
+    result.diagnostics.surfaceCellCompletionOwnershipRepairAttemptsAvailable =
+        true;
+    const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
+        completionResult.firstCompletionOwnershipRejection;
+    if (ownershipRejection.active) {
+      result.diagnostics.surfaceCellCompletionOwnershipRejectionAvailable =
+          true;
+      result.diagnostics.surfaceCellCompletionOwnershipFailure =
+          ownershipRejection.failure;
+      result.diagnostics.surfaceCellCompletionOwnershipSourcePatch =
+          ownershipRejection.sourcePatch;
+      result.diagnostics.surfaceCellCompletionOwnershipLocalVertex =
+          ownershipRejection.localVertex;
+      result.diagnostics.surfaceCellCompletionOwnershipBoundaryVertex =
+          ownershipRejection.boundaryVertex;
+      result.diagnostics.surfaceCellCompletionOwnershipBackend =
+          static_cast<int>(ownershipRejection.backend);
+      result.diagnostics.surfaceCellCompletionOwnershipVariant =
+          ownershipRejection.completionVariant;
+      result.diagnostics.surfaceCellCompletionOwnershipStoredFace =
+          ownershipRejection.storedFace;
+      for (int coordinate = 0; coordinate < 3; ++coordinate) {
+        result.diagnostics.surfaceCellCompletionOwnershipBarycentric[
+            static_cast<std::size_t>(coordinate)] =
+            ownershipRejection.barycentric(coordinate);
+      }
+      result.diagnostics.surfaceCellCompletionOwnershipEntityKind =
+          static_cast<int>(ownershipRejection.sourceEntityKind);
+      result.diagnostics.surfaceCellCompletionOwnershipSourceVertex =
+          ownershipRejection.sourceVertex;
+      result.diagnostics.surfaceCellCompletionOwnershipSourceEdge =
+          ownershipRejection.sourceEdge;
+      result.diagnostics.surfaceCellCompletionOwnershipCandidateFaces =
+          ownershipRejection.candidateSupportedFaces;
+      result.diagnostics.surfaceCellCompletionOwnershipPatchFaces =
+          ownershipRejection.patchSourceFaces;
+      result.diagnostics.surfaceCellCompletionOwnershipComponent =
+          ownershipRejection.sourceComponent;
+      result.diagnostics.surfaceCellCompletionOwnershipSheet =
+          ownershipRejection.sourceSheet;
+    }
     if (completionResult.hasPreparedComplex) {
       result.surfaceCellContext.completionComplex =
           completionResult.preparedComplex;
@@ -4222,8 +4309,38 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.outputLineageValidation = lineageValidation;
     result.surfaceCellContext.hasCompletedPatches =
         !result.surfaceCellContext.completedPatches.empty();
-    const std::uint64_t completionHash = hash_completion_mesh(
+    std::uint64_t completionHash = hash_completion_mesh(
         completedVertices, completedQuads, completedProvenance);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionOwnershipRepairAttempts);
+    const geometry::PureQuadCompletionOwnershipRejection &hashRejection =
+        result.surfaceCellContext.firstCompletionOwnershipRejection;
+    hash_combine_i64(completionHash, hashRejection.active ? 1 : 0);
+    if (hashRejection.active) {
+      hash_combine_string(completionHash, hashRejection.failure);
+      hash_combine_i64(completionHash, hashRejection.sourcePatch);
+      hash_combine_i64(completionHash, hashRejection.localVertex);
+      hash_combine_i64(completionHash,
+                       hashRejection.boundaryVertex ? 1 : 0);
+      hash_combine_i64(completionHash,
+                       static_cast<int>(hashRejection.backend));
+      hash_combine_i64(completionHash, hashRejection.completionVariant);
+      hash_combine_i64(completionHash, hashRejection.storedFace);
+      for (int coordinate = 0; coordinate < 3; ++coordinate) {
+        hash_combine_double(completionHash,
+                            hashRejection.barycentric(coordinate));
+      }
+      hash_combine_i64(completionHash,
+                       static_cast<int>(hashRejection.sourceEntityKind));
+      hash_combine_i64(completionHash, hashRejection.sourceVertex);
+      hash_combine_i64(completionHash, hashRejection.sourceEdge[0]);
+      hash_combine_i64(completionHash, hashRejection.sourceEdge[1]);
+      hash_vector(completionHash, hashRejection.candidateSupportedFaces);
+      hash_vector(completionHash, hashRejection.patchSourceFaces);
+      hash_combine_i64(completionHash, hashRejection.sourceComponent);
+      hash_combine_i64(completionHash, hashRejection.sourceSheet);
+    }
     const SurfaceCellObjectIdentity completionIdentity = make_identity(
         "completion", completionHash, completedQuadCount);
     mark_stage_consumed("simplification", simplificationIdentity,
@@ -5454,6 +5571,44 @@ void accumulate_component_diagnostics(
               target.surfaceCellCompletedQuadCountAvailable,
               source.surfaceCellCompletedQuadCount,
               source.surfaceCellCompletedQuadCountAvailable);
+  merge_count(target.surfaceCellCompletionOwnershipRepairAttempts,
+              target.surfaceCellCompletionOwnershipRepairAttemptsAvailable,
+              source.surfaceCellCompletionOwnershipRepairAttempts,
+              source.surfaceCellCompletionOwnershipRepairAttemptsAvailable);
+  if (source.surfaceCellCompletionOwnershipRejectionAvailable &&
+      !target.surfaceCellCompletionOwnershipRejectionAvailable) {
+    target.surfaceCellCompletionOwnershipRejectionAvailable = true;
+    target.surfaceCellCompletionOwnershipFailure =
+        source.surfaceCellCompletionOwnershipFailure;
+    target.surfaceCellCompletionOwnershipSourcePatch =
+        source.surfaceCellCompletionOwnershipSourcePatch;
+    target.surfaceCellCompletionOwnershipLocalVertex =
+        source.surfaceCellCompletionOwnershipLocalVertex;
+    target.surfaceCellCompletionOwnershipBoundaryVertex =
+        source.surfaceCellCompletionOwnershipBoundaryVertex;
+    target.surfaceCellCompletionOwnershipBackend =
+        source.surfaceCellCompletionOwnershipBackend;
+    target.surfaceCellCompletionOwnershipVariant =
+        source.surfaceCellCompletionOwnershipVariant;
+    target.surfaceCellCompletionOwnershipStoredFace =
+        source.surfaceCellCompletionOwnershipStoredFace;
+    target.surfaceCellCompletionOwnershipBarycentric =
+        source.surfaceCellCompletionOwnershipBarycentric;
+    target.surfaceCellCompletionOwnershipEntityKind =
+        source.surfaceCellCompletionOwnershipEntityKind;
+    target.surfaceCellCompletionOwnershipSourceVertex =
+        source.surfaceCellCompletionOwnershipSourceVertex;
+    target.surfaceCellCompletionOwnershipSourceEdge =
+        source.surfaceCellCompletionOwnershipSourceEdge;
+    target.surfaceCellCompletionOwnershipCandidateFaces =
+        source.surfaceCellCompletionOwnershipCandidateFaces;
+    target.surfaceCellCompletionOwnershipPatchFaces =
+        source.surfaceCellCompletionOwnershipPatchFaces;
+    target.surfaceCellCompletionOwnershipComponent =
+        source.surfaceCellCompletionOwnershipComponent;
+    target.surfaceCellCompletionOwnershipSheet =
+        source.surfaceCellCompletionOwnershipSheet;
+  }
   merge_count(target.surfaceCellOptimizationIterationCount,
               target.surfaceCellOptimizationIterationCountAvailable,
               source.surfaceCellOptimizationIterationCount,

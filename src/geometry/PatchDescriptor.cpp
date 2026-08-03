@@ -867,6 +867,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     const Eigen::MatrixXi &F,
     const SurfaceCellComplexCompletionOptions &options) {
   SurfaceCellComplexCompletionResult result;
+  const SurfacePointSourceSupportResolver sourceSupportResolver(F);
   const SurfaceCellParityRepairResult parityRepair =
       repair_surface_cell_boundary_parity(complex);
   result.parityOddCellsBefore = parityRepair.oddCellsBefore;
@@ -977,6 +978,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     completionOptions.completionVariant = completionVariant;
     completionOptions.sourceVertices = &V;
     completionOptions.sourceFaces = &F;
+    completionOptions.sourceSupportResolver = &sourceSupportResolver;
     completionOptions.sourceFaceComponents = options.sourceFaceComponents;
     completionOptions.sourceFaceSheets = options.sourceFaceSheets;
     return complete_pure_quad_patch(descriptor.patch, completionOptions);
@@ -1003,6 +1005,11 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         completeDescriptor(descriptorIndex, 0);
     if (!completion.success || completion.mesh.quads.empty()) {
       ++result.failedPatches;
+      if (!result.firstCompletionOwnershipRejection.active &&
+          completion.ownershipRejection.active) {
+        result.firstCompletionOwnershipRejection =
+            completion.ownershipRejection;
+      }
       if (result.failure.empty() && !completion.failure.empty()) {
         result.failure = completion.failure;
       }
@@ -1052,6 +1059,11 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         const PureQuadCompletionResult alternative =
             completeDescriptor(descriptorIndex, variant);
         if (!alternative.success || alternative.mesh.quads.empty()) {
+          if (!result.firstCompletionOwnershipRejection.active &&
+              alternative.ownershipRejection.active) {
+            result.firstCompletionOwnershipRejection =
+                alternative.ownershipRejection;
+          }
           continue;
         }
         currentMesh = alternative.mesh;

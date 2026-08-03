@@ -26,6 +26,7 @@
 #include <Eigen/Geometry>
 
 #include <directional/geometry/SurfacePoint.h>
+#include <directional/geometry/SurfacePointSupport.h>
 #include <directional/validation/MeshValidator.h>
 
 namespace directional::validation {
@@ -266,94 +267,28 @@ struct SourcePointLabelSupport {
   const Eigen::MatrixXi *sourceFaces = nullptr;
   const std::vector<int> *components = nullptr;
   const std::vector<int> *sheets = nullptr;
-  std::vector<std::vector<int>> vertexFaces;
-  std::map<std::pair<int, int>, std::vector<int>> edgeFaces;
+  geometry::SurfacePointSourceSupportResolver sourceSupport;
 
   SourcePointLabelSupport(
       const Eigen::MatrixXi *faces,
       const std::vector<int> *sourceComponents,
       const std::vector<int> *sourceSheets)
-      : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets) {
-    if (sourceFaces == nullptr || sourceFaces->cols() != 3) {
-      return;
-    }
-    int maximumVertex = -1;
-    for (int face = 0; face < sourceFaces->rows(); ++face) {
-      for (int corner = 0; corner < 3; ++corner) {
-        maximumVertex = std::max(maximumVertex, (*sourceFaces)(face, corner));
-      }
-    }
-    vertexFaces.resize(static_cast<std::size_t>(std::max(0, maximumVertex + 1)));
-    for (int face = 0; face < sourceFaces->rows(); ++face) {
-      for (int corner = 0; corner < 3; ++corner) {
-        const int vertex = (*sourceFaces)(face, corner);
-        if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
-          vertexFaces[static_cast<std::size_t>(vertex)].push_back(face);
-        }
-        const int next = (*sourceFaces)(face, (corner + 1) % 3);
-        if (vertex >= 0 && next >= 0 && vertex != next) {
-          edgeFaces[canonical_edge(vertex, next)].push_back(face);
-        }
-      }
-    }
-    for (auto &facesAtVertex : vertexFaces) {
-      std::sort(facesAtVertex.begin(), facesAtVertex.end());
-      facesAtVertex.erase(
-          std::unique(facesAtVertex.begin(), facesAtVertex.end()),
-          facesAtVertex.end());
-    }
-    for (auto &[edge, facesAtEdge] : edgeFaces) {
-      (void)edge;
-      std::sort(facesAtEdge.begin(), facesAtEdge.end());
-      facesAtEdge.erase(std::unique(facesAtEdge.begin(), facesAtEdge.end()),
-                        facesAtEdge.end());
-    }
-  }
+      : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets),
+        sourceSupport(faces) {}
 
   [[nodiscard]] bool available() const {
-    return sourceFaces != nullptr && components != nullptr && sheets != nullptr &&
+    return sourceSupport.available() && components != nullptr &&
+           sheets != nullptr &&
            components->size() == static_cast<std::size_t>(sourceFaces->rows()) &&
            sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
   }
 
   [[nodiscard]] std::vector<int>
   supported_faces(const geometry::SurfacePoint &point) const {
-    std::vector<int> candidateFaces;
-    if (!available() || !point.valid() || point.face < 0 ||
-        point.face >= sourceFaces->rows() || !point.barycentric.allFinite()) {
-      return candidateFaces;
+    if (!available()) {
+      return {};
     }
-    std::vector<int> supportCorners;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (point.barycentric(corner) > 1.0e-8) {
-        supportCorners.push_back(corner);
-      }
-    }
-
-    if (supportCorners.size() == 1U) {
-      const int vertex = (*sourceFaces)(point.face, supportCorners.front());
-      if (vertex >= 0 && vertex < static_cast<int>(vertexFaces.size())) {
-        candidateFaces = vertexFaces[static_cast<std::size_t>(vertex)];
-      }
-    } else if (supportCorners.size() == 2U) {
-      const int first = (*sourceFaces)(point.face, supportCorners[0]);
-      const int second = (*sourceFaces)(point.face, supportCorners[1]);
-      const auto found = edgeFaces.find(canonical_edge(first, second));
-      if (found != edgeFaces.end()) {
-        candidateFaces = found->second;
-      }
-    }
-    if (candidateFaces.empty()) {
-      candidateFaces.push_back(point.face);
-    } else if (std::find(candidateFaces.begin(), candidateFaces.end(),
-                         point.face) == candidateFaces.end()) {
-      candidateFaces.push_back(point.face);
-    }
-    std::sort(candidateFaces.begin(), candidateFaces.end());
-    candidateFaces.erase(
-        std::unique(candidateFaces.begin(), candidateFaces.end()),
-        candidateFaces.end());
-    return candidateFaces;
+    return sourceSupport.resolve(point).supportedFaces;
   }
 
   [[nodiscard]] std::set<std::pair<int, int>>

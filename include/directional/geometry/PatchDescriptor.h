@@ -98,6 +98,7 @@ struct SurfaceCellComplexCompletionResult {
   int attemptedPatches = 0;
   int failedPatches = 0;
   int completionOwnershipRepairAttempts = 0;
+  PureQuadCompletionOwnershipRejection firstCompletionOwnershipRejection;
   std::string failure;
 };
 
