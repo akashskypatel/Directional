@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "turn": "P5-TB8",
+  "turnType": "test and benchmark without rebuilding",
+  "artifact": {
+    "id": 8842377256,
+    "name": "surface-cell-p5-same-corner-linux-release",
+    "digest": "sha256:669bf5d6f3e9b3738298b5985b6bb715668bce0715b0a68d880eb4aa0e80d6bc",
+    "sourceCommit": "1f4c3c2a014f0bc945b50f1bb5a837c438cec992",
+    "sourceStatusEmpty": true,
+    "checksumsPassed": 10
+  },
+  "tests": {
+    "focused": {"tests": 9, "failures": 0, "errors": 0, "disabled": 0},
+    "patchDescriptor": {"tests": 15, "failures": 0, "errors": 0, "disabled": 0},
+    "phase16And18": {"tests": 89, "failures": 0, "errors": 0, "disabled": 0},
+    "phase14Through18": {"tests": 229, "failures": 0, "errors": 0, "disabled": 0},
+    "p23AndPhase20": {"tests": 52, "failures": 0, "errors": 0, "disabled": 0}
+  },
+  "authoritativeUniqueTotal": {"tests": 296, "failures": 0},
+  "stage7Isolation": {
+    "success": false,
+    "wallSeconds": 19.260599,
+    "peakWorkingSetBytes": 343326720,
+    "terminalFailureCode": "InjectedStageFailure",
+    "terminalFailureStage": "simplification",
+    "arrangementCells": 21298,
+    "simplifiedCells": 21298,
+    "completionSeconds": 0,
+    "sourceGridRecoveryUsed": false,
+    "fallbackAttempted": false,
+    "outputOrigin": "None",
+    "stageLineage": [
+      {"stage":"feature","durationSeconds":0.002099,"objectCount":1500,"outputStructuralHash":13335273019780706697,"terminalFailureCode":"None"},
+      {"stage":"metric","durationSeconds":0.019734,"objectCount":502,"outputStructuralHash":16830978356707858388,"terminalFailureCode":"None"},
+      {"stage":"relief","durationSeconds":0.174575,"objectCount":493,"outputStructuralHash":15313338397659290031,"terminalFailureCode":"None"},
+      {"stage":"tracing","durationSeconds":4.948876,"objectCount":80862,"outputStructuralHash":17509532107879806215,"terminalFailureCode":"None"},
+      {"stage":"strands","durationSeconds":4.00426,"objectCount":16958,"outputStructuralHash":15818654043234526118,"terminalFailureCode":"None"},
+      {"stage":"embedding","durationSeconds":0.001285,"objectCount":16958,"outputStructuralHash":11224738497694146851,"terminalFailureCode":"None"},
+      {"stage":"arrangement","durationSeconds":9.422667,"objectCount":21298,"outputStructuralHash":4744180686925088712,"terminalFailureCode":"None"},
+      {"stage":"simplification","durationSeconds":0.517944,"objectCount":21298,"outputStructuralHash":15209892426726238631,"terminalFailureCode":"InjectedStageFailure"}
+    ]
+  },
+  "directBunny": {
+    "formalRuns": [
+      {"run":1,"guardSeconds":60,"exitCode":124,"elapsedSeconds":60.05,"userSeconds":56.28,"systemSeconds":5.21,"maximumResidentSetKilobytes":2676312,"outputJsonProduced":false},
+      {"run":2,"guardSeconds":60,"exitCode":124,"elapsedSeconds":60.05,"userSeconds":56.26,"systemSeconds":5.13,"maximumResidentSetKilobytes":2676276,"outputJsonProduced":false}
+    ],
+    "meanPeakWorkingSetBytesAtTimeout": 2740525056,
+    "meanPeakWorkingSetGiBAtTimeout": 2.5523128509521484,
+    "minimumWallRegressionVsArtifact8841726806Percent": 129.61740234540122,
+    "peakRegressionVsArtifact8841726806Percent": 207.12506971524053,
+    "minimumWallRegressionVsBaselinePercent": 161.2963457803947,
+    "peakRegressionVsBaselinePercent": 265.7078593955825,
+    "jsonProduced": false,
+    "terminalConflictObserved": false,
+    "previousClaimDisposition": "unresolved because completion did not terminate"
+  },
+  "classification": {
+    "result": "production-blocking deterministic completion-stage time and memory runaway",
+    "duplicateOrOverlapDisposition": "not reclassified because no terminal completion result was produced",
+    "likelyRootCause": "recursive same-corner candidate evaluation branches per depth with depth-local budgets, full complex copies, full descriptor/completion recomputation, and no global work ledger or canonical-state memoization",
+    "testCoverageGap": "no test invokes complete_surface_cell_complex and asserts bounded BoundarySectorSubdivision repair; existing new test covers only stitch-time SameCornerDistinctBoundaryClaim classification"
+  },
+  "status": {"p5Closed": false, "nextTurn": "code changes + compile-only build", "reviewPolicy": "never"},
+  "comparisons": {
+    "baseline": {"artifact":8838467442,"wallSeconds":22.981569,"peakWorkingSetBytes":749375488,"completionSeconds":4.16894},
+    "previousValidated": {"artifact":8841726806,"wallSeconds":26.152199,"peakWorkingSetBytes":892315648,"completionSeconds":6.475303}
+  }
+}
