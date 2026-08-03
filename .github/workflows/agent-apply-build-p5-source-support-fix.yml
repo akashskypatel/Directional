@@ -1,0 +1,172 @@
+# One-shot compile-only workflow for the P5 source-support checkpoint.
+# Applies the minimal benchmark JSON quoting fix, commits the exact source,
+# and compiles without executing tests, benchmarks, or custom mesh programs.
+name: Apply and Build P5 Source Support Fix
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-apply-build-p5-source-support-fix.yml
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-apply-build-p5-source-support-fix
+  cancel-in-progress: false
+
+jobs:
+  apply-and-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Apply minimal compile fix and commit exact source
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          payload=.agents/Directional/p5-benchmark-json-fix.patch.gz.b64
+          workflow=.github/workflows/agent-apply-build-p5-source-support-fix.yml
+          test -f "${payload}"
+          base64 --decode "${payload}" | gzip --decompress > /tmp/p5-benchmark-json-fix.patch
+          echo '9ad76b4f356b00ec74bb1d9aadb89bb2333cd0a12bd2380e01ed1e6566ab97f9  /tmp/p5-benchmark-json-fix.patch' | sha256sum --check -
+          git apply --check /tmp/p5-benchmark-json-fix.patch
+          git apply /tmp/p5-benchmark-json-fix.patch
+          git rm "${payload}" "${workflow}"
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/bench/DirectionalBenchmark.cpp
+          git diff --cached --check
+          git commit -m 'fix(bench): correct ownership diagnostic JSON keys'
+          source_sha=$(git rev-parse HEAD)
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
+          echo "${source_sha}" > /tmp/source-commit.txt
+
+      - name: Record exact source on draft PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
+        shell: bash
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5 source-support compile-only run ${RUN_ID} started for exact source ${SOURCE_SHA}. This workflow compiles and packages only; it executes no tests, benchmarks, or custom meshes."
+
+      - name: Fetch required submodules shallowly
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1
+
+      - name: Verify committed source checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ steps.source.outputs.source_sha }}"
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "$(git rev-parse HEAD)" = "${remote_sha}"
+          git diff --check
+          test -f TODO
+          test -f MILESTONE_G_TODO.md
+          test -f .agents/Directional/Milestone_G_P5_Source_Support_Code_Build_Plan.md
+          test -f benchmarks/fixtures/milestone-g/bunny_1k_random.obj
+          if git ls-files '.agents/Directional/wip/*' | grep -q .; then
+            echo 'Encoded WIP checkpoints remain tracked' >&2
+            exit 1
+          fi
+          if git ls-files '.github/build-overlays/*' | grep -q .; then
+            echo 'Build overlay patches remain tracked' >&2
+            exit 1
+          fi
+          git status --porcelain=v1 > /tmp/source-status.txt
+          if [[ -s /tmp/source-status.txt ]]; then
+            echo 'Source checkpoint is not clean:' >&2
+            cat /tmp/source-status.txt >&2
+            exit 1
+          fi
+
+      - name: Configure clean optimized static build
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf build/agent-p5-source-support-release
+          cmake -S . -B build/agent-p5-source-support-release -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee build/agent-p5-source-support-release/configure.log
+
+      - name: Compile required targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --build build/agent-p5-source-support-release \
+            --target directional_core directional_pipeline \
+                     directional_phase1_tests directional_benchmarks \
+            -j 4 \
+            2>&1 | tee build/agent-p5-source-support-release/build.log
+
+      - name: Package exact compiled checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain=v1 > /tmp/source-status.txt
+          if [[ -s /tmp/source-status.txt ]]; then
+            echo 'Source checkpoint changed during compilation:' >&2
+            cat /tmp/source-status.txt >&2
+            exit 1
+          fi
+          mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
+          cp -v build/agent-p5-source-support-release/directional_phase1_tests artifact/bin/
+          cp -v build/agent-p5-source-support-release/directional_benchmarks artifact/bin/
+          cp -v build/agent-p5-source-support-release/libdirectional_core.a artifact/lib/
+          cp -v build/agent-p5-source-support-release/libdirectional_pipeline.a artifact/lib/
+          git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
+          cp /tmp/source-commit.txt artifact/source-commit.txt
+          cp /tmp/source-status.txt artifact/source-status.txt
+          git submodule status --recursive > artifact/submodule-status.txt
+          cp build/agent-p5-source-support-release/configure.log artifact/logs/
+          cp build/agent-p5-source-support-release/build.log artifact/logs/
+          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 artifact/files.sha256
+
+      - name: Upload compiled checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-source-support-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record compile-only result on draft PR
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5 source-support compile-only run ${RUN_ID} finished with status ${JOB_STATUS} for exact source ${SOURCE_SHA}. No tests, benchmarks, or custom meshes were executed."
