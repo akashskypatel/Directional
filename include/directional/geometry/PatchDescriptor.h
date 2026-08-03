@@ -272,6 +272,20 @@ struct SurfaceCellComplexCompletionOptions {
   const std::vector<int> *sourceFaceSheets = nullptr;
 };
 
+struct PatchCompletionReuseMismatch {
+  int requestedCell = -1;
+  int cachedCell = -1;
+  bool hashMiss = false;
+  bool sourceDomain = false;
+  bool sideSubdivision = false;
+  bool boundarySourceCoordinates = false;
+  bool railCurveSupport = false;
+  bool singularityRequirements = false;
+  bool backendVariant = false;
+  bool topologyTemplate = false;
+  bool rebindValidation = false;
+};
+
 struct SurfaceCellComplexCompletionResult {
   bool success = false;
   SurfaceCellComplex preparedComplex;
@@ -280,6 +294,7 @@ struct SurfaceCellComplexCompletionResult {
   int parityOddCellsAfter = 0;
   int paritySplitEdges = 0;
   int parityHardFeatureSplits = 0;
+  SurfaceCellReplacementScopeFailure firstParityScopeFailure;
   int sideInfeasibleCellsBefore = 0;
   int sideInfeasibleCellsAfter = 0;
   int sideInitialEquationDefect = 0;
@@ -323,6 +338,8 @@ struct SurfaceCellComplexCompletionResult {
   int completionOwnershipRecomputedPatchCompletions = 0;
   int completionOwnershipProductCacheHashMisses = 0;
   int completionOwnershipProductCacheExactMismatches = 0;
+  std::vector<PatchCompletionReuseMismatch>
+      completionOwnershipProductCacheMismatchVector;
   std::uint64_t completionOwnershipPreConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipPostConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipConflictFrontierOwnedBytes = 0U;
@@ -340,6 +357,8 @@ struct SurfaceCellComplexCompletionResult {
   std::uint64_t completionOwnershipAssemblyOwnedBytes = 0U;
   std::uint64_t completionOwnershipCurrentStructuralOwnedBytes = 0U;
   std::uint64_t completionOwnershipPeakStructuralOwnedBytes = 0U;
+  std::uint64_t completionLogicalPayloadBytes = 0U;
+  std::uint64_t completionRetainedCapacityBytes = 0U;
   SurfaceCellStructuralRepairExhaustionReason
       completionOwnershipStructuralExhaustionReason =
           SurfaceCellStructuralRepairExhaustionReason::None;
