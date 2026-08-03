@@ -7,81 +7,113 @@ Last updated: 2026-08-02
 - Phase: P5 — direct-completion ownership remediation.
 - Active working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Base branch: `surface_cell_quad`.
-- Completed turn type: **code changes + compile-only build**.
-- Next authoritative turn type: **test and benchmark using artifact `8841726806` without rebuilding**.
+- Completed turn type: **test and benchmark** using artifact `8841726806` without rebuilding.
+- Next authoritative turn type: **code changes + compile-only build**.
 - Review policy: `never`.
 
-## Exact source-support checkpoint
+## Validated source-support artifact
 
-- Previous validated artifact: `8840866875`, source `dcef9fbf65930b20db93128deb193f10702dc9c7`.
-- Intrinsic source-support implementation commit: `9f6d266436574c7ba797ca42407684700e603bb2`.
-- Benchmark diagnostic JSON compile correction: `77d0a74177b9eed145c3055006ecfef7fc06de03`.
-- Exact compiled source commit: `053fe3816f585320e65526824f1107b8ccb1332d`.
-- Compile-only workflow run: `30774730933` — **success**.
+- Intrinsic source-support implementation: `9f6d266436574c7ba797ca42407684700e603bb2`.
+- Exact compiled source: `053fe3816f585320e65526824f1107b8ccb1332d`.
+- Compile-only run: `30774730933` — success.
 - Artifact: `8841726806` (`surface-cell-p5-branch-linux-release`).
-- Artifact digest: `sha256:9b9bf5ad23640dfe049d416a0b81649c2e8a3d0353e1bff475fa6ea58155a681`.
-- Required targets compiled: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Artifact `source-status.txt` is empty and all ten packaged checksums pass.
-- No test, benchmark, or custom mesh executable ran in this turn.
+- Digest: `sha256:9b9bf5ad23640dfe049d416a0b81649c2e8a3d0353e1bff475fa6ea58155a681`.
+- Packaged checksums passed and source status is empty.
+- Validation executed the packaged binaries directly; no rebuild occurred.
 
-## Implemented source-support checkpoint
+## P5-TB7 test evidence
 
-- [x] Added one reusable intrinsic `SurfacePoint` support resolver using exact source topology.
-- [x] Classify face-interior, canonical source-edge, and canonical source-vertex support from barycentric coordinates.
-- [x] Permit boundary chart aliases only when incident source-face support intersects the patch support.
-- [x] Preserve exact authoritative boundary identity and component/sheet compatibility.
-- [x] Keep generated patch-interior vertices strictly patch-local and stored-face confined.
-- [x] Add typed completion-ownership rejection details: patch, local vertex, backend, variant, provenance, barycentrics, source entity, candidate faces, allowed faces, component, and sheet.
-- [x] Canonicalize serialized duplicate-face corner diagnostics across cyclic rotation and reversal.
-- [x] Propagate completion ownership repair attempts and the first typed rejection through context products, remesh diagnostics, structural hashes, and benchmark JSON.
-- [x] Rebuild the shared-edge parity fixture as an explicit two-cell complex with a real shared interface and valid twin/cell incidence.
-- [x] Add source-edge/source-vertex chart-alias regressions and strict source-support escape regressions.
-- [x] Preserve the compact identity representation and construct source incidence once per completion invocation.
-- [x] Preserve transactional duplicate-domain, overlapping-boundary, inconsistent-geometry, and final `DuplicateStitchedQuad` checks.
+| Scope | Passed | Failed |
+|---|---:|---:|
+| Focused intrinsic-support/canonical/parity subset | 5 | 2 |
+| `PatchDescriptorMilestoneE.*` | 14 | 1 |
+| Phase 16 + Phase 18 | 86 | 1 |
+| Phase 14–18 aggregate | 226 | 1 |
+| Milestone G P23 + Phase 20 | 52 | 0 |
 
-## Compile-only evidence
+Authoritative non-overlapping total: **292/294 passed**, with two unique failures.
 
-The clean Release build used GCC 13.3.0 and completed **131/131** steps. The build log compiled the modified production and regression sources and linked all four required targets.
+### Invalid regression inputs requiring correction
 
-Artifact verification:
+- `PureQuadCompletionPhase18.CompletionRejectsGeneratedInteriorOutsidePatchSupport`
+  - The fixture supports source faces `{0, 1}` and mutates the generated interior to face `1`.
+  - Face `1` is still valid patch support, so the test does not create an escape.
+  - Correct the test with a valid third face outside patch support; do not weaken production validation.
+- `PatchDescriptorMilestoneE.SharedEdgeParityRepairConforminglyCompletesTwoOddCells`
+  - DCEL incidence is valid.
+  - Recomputed topology is invalid because the fixture omits embedding, orientation, source Euler/component/boundary, and area evidence.
+  - Build the fixture through production arrangement logic or populate all authoritative inputs; do not set `topologyValid` synthetically.
 
-- `source-commit.txt`: `053fe3816f585320e65526824f1107b8ccb1332d`;
-- `source-status.txt`: empty;
-- ten packaged checksums: all pass;
-- test and benchmark binaries: Linux x86-64 ELF executables;
-- core and pipeline libraries: valid static archives;
-- exact source archive, configure/build logs, and recursive submodule revisions: present.
+## Direct random-bunny evidence
 
-A first clean compile attempt exposed malformed benchmark JSON key literals. Those four literals were corrected surgically before the successful final build. No runtime behavior was inferred from compilation.
+Two independent direct runs used `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, zero warmups, and one measured run per process.
 
-## Required next test-and-benchmark turn
+Both completed all descriptors and reached global assembly. Both failed identically with:
 
-Use artifact `8841726806` directly; do not rebuild.
+```text
+DuplicateStitchedQuad:firstPatch=8595;firstLocalQuad=0;
+secondPatch=8573;secondLocalQuad=2;
+globalVertices=10764,16938,27456,27459;
+classification=completion-template
+```
 
-- [ ] Verify the exact source commit, empty source status, and packaged checksums.
-- [ ] Run intrinsic source-support and canonical conflict-diagnostic regressions.
-- [ ] Run corrected `PatchDescriptorMilestoneE.*`.
-- [ ] Run `SurfaceArrangementPhase16.*` and `PureQuadCompletionPhase18.*`.
-- [ ] Run the Phase 14–18 aggregate.
-- [ ] Run Milestone G P23 and Phase 20 fail-closed suites.
-- [ ] Run `bunny_1k_random.obj` at least twice with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
-- [ ] Record typed ownership rejection, repair attempts, descriptor/endpoint counts, output origin, accepted quads, and all structural hashes.
-- [ ] Determine whether assembly reaches and resolves or reclassifies the previous patches `378/394` conflict.
-- [ ] Compare runtime and peak memory with artifacts `8838467442`, `8840174777`, and `8840866875` on the same machine.
+- Arrangement cells: 21,298.
+- Descriptors attempted/completed/failed: 21,297 / 21,297 / 0.
+- Ownership repair attempts: 4.
+- Required unresolved endpoints: 0.
+- Accepted output quads: 0.
+- Output origin: `None`.
+- Both terminal owners: `closed-form`, variant `0`.
+- Domain and boundary identities differ.
+- Source support and all canonical stitch/authoritative corner identities match.
+- Fixture hash, failure payload, counts, context-product hashes, and stage structural hashes match across both runs.
+- No recovery or legacy fallback occurred.
+
+The previous source-support escape is resolved. The earlier `378/394` pair was not reproduced; a later deterministic same-corner completion claim at `8595/8573` remains.
+
+## Performance evidence
+
+Current two-run means:
+
+- wall time: 26.152199 s;
+- peak working set: 892,315,648 B;
+- completion stage: 6.475303 s.
+
+Compared with:
+
+- baseline `8838467442`: +13.80% wall, +19.07% memory, +55.32% completion;
+- artifact `8840174777`: -2.33% wall, -47.39% memory, +2.48% completion;
+- artifact `8840866875`: +5.30% wall, +2.24% memory, +25.09% completion.
+
+## Required next code/build turn
+
+Use `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md`.
+
+- [ ] Correct both invalid regression fixtures for their stated scenarios.
+- [ ] Add exact typed classification for equal authoritative corner cycles with distinct domain boundaries.
+- [ ] Record bounded deterministic variant/structural repair attempts.
+- [ ] Distinguish invalid overlapping domains from valid parallel boundary routes.
+- [ ] Repair valid same-corner parallel routes upstream with conforming transactional boundary-sector subdivision.
+- [ ] Fail closed before final assembly when ownership cannot be proven or repaired.
+- [ ] Do not count unavailable closed-form rotation variants as repair attempts.
+- [ ] Preserve all existing duplicate, geometry, provenance, component/sheet, and lineage validators.
+- [ ] Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- [ ] Run no tests, benchmarks, or custom meshes.
 
 ## P5 closure conditions
 
-- [ ] Direct completion reaches and passes assembly without duplicate ownership.
-- [ ] No recovery, legacy fallback, final-face deduplication, or source-triangle pairing.
-- [ ] Corrected fixtures test their stated contracts and pass for the correct reason.
-- [ ] Ownership diagnostics and repair-attempt counts are fully observable and deterministic.
+- [ ] Direct completion passes assembly without duplicate ownership.
+- [ ] No recovery, fallback, final-face deduplication, positional ownership, source-triangle pairing, or patch-ID special cases.
+- [ ] Corrected fixtures pass for their intended reasons.
+- [ ] Ownership classification and repair attempts are exact, observable, and deterministic.
 - [ ] Runtime and memory are acceptable relative to baseline.
 
 ## Authoritative evidence
 
-- Previous validation report: `.agents/Directional/Milestone_G_P5_Source_Support_Test_Benchmark_Report.md`.
-- Source-support code/build plan: `.agents/Directional/Milestone_G_P5_Source_Support_Code_Build_Plan.md`.
-- Code/build evidence addendum: `.agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Report.md`.
+- Current report: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md`.
+- Next code/build plan: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md`.
+- Machine-readable summary: `benchmark-results/p5-tb7-summary.json`.
+- Previous source-support report: `.agents/Directional/Milestone_G_P5_Source_Support_Test_Benchmark_Report.md`.
 
 ## Later production gates
 
