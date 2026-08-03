@@ -5,96 +5,46 @@ Last updated: 2026-08-03
 ## Active phase
 
 - Phase: P5 — global ownership-frontier remediation.
-- Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
-- Base branch: `surface_cell_quad`.
-- Completed turn: **P5-TB10 test and benchmark without rebuilding**.
-- Next authoritative turn: **code changes + compile-only build**.
+- Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
+- Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
+- Completed turn: **P5-CB42 through P5-CB50 code changes + compile-only build**.
+- Next turn: **P5-TB11 artifact-only test and benchmark**.
 
-## Validated route-complete artifact
+## Compile-only checkpoint
 
-- Implementation commit: `5dcc6da94977c733ada42967ecdafa566cbc5d0b`.
-- Exact compiled source: `76cf884a6890a23a6db7d7bda9bc77b85ec4505c`.
-- Artifact: `8844133680` (`surface-cell-p5-route-complete-linux-release`).
-- Digest: `sha256:1f32a4d3600d1a7be39e710d35273f80bed0c24850626d744ab15e7a748a34bb`.
-- Source status is empty and all ten packaged checksums pass.
-- P5-TB10 executed the packaged binaries directly; no rebuild or source edit occurred.
+- Implementation commit: `413660dba15fe1376adc13aa80aea0e1ba99194e`.
+- Exact compiled source: `643cc483e430d2cd161dde94a983aedac4be57dd`.
+- Run / job: `30794828420` / `91625965577` — success.
+- Artifact: `8848599037` (`surface-cell-p5-global-frontier-linux-release`).
+- Digest: `sha256:597c788ed3f34f09480857c910872ff0e6230120a13e57781ef58f3a8bed395d`.
+- Build: **131/131**; source status empty; checksums **11/11**.
+- No executable was run.
 
-## P5-TB10 tests
+Implementation and artifact details are recorded in `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Report.md` and `benchmark-results/p5-cb50-summary.json`.
 
-| Scope | Passed | Failed |
-|---|---:|---:|
-| Corrected route-complete subset | 6 | 0 |
-| `PatchDescriptorMilestoneE.*` | 21 | 0 |
-| Phase 16 + Phase 18 | 89 | 0 |
-| Phase 14–18 aggregate | 229 | 0 |
-| Milestone G P23 + Phase 20 | 52 | 0 |
+## P5 status
 
-Authoritative non-overlapping total: **302/302 passed**.
+- [x] P5-CB42 — executable-relative packaged fixture.
+- [x] P5-CB43 — complete compact exact conflict inventory.
+- [x] P5-CB44 — exact conflict-set progress classification.
+- [x] P5-CB45 — deterministic global ownership frontier.
+- [x] P5-CB46 — exact completion-product reuse and batched repair path.
+- [x] P5-CB47 — compact frontier/cache resource accounting.
+- [x] P5-CB48 — diagnostics and semantic hashes.
+- [x] P5-CB49 — regression sources compiled.
+- [x] P5-CB50 — exact compile-only artifact packaged and verified.
+- [ ] P5-TB11 — validate artifact without rebuilding.
 
-`BenchmarkManifestDispatchesBackends` initially failed because the packaged binary references the absolute compile-runner source path. Staging the exact packaged source archive at that path made the same binary pass. The test behavior is valid, but the artifact must package and resolve its fixture data without a CI-path workaround.
+## P5-TB11 closure gates
 
-## Random-bunny disposition
+- All global-frontier and prior suites pass from an arbitrary extraction path.
+- No source-path staging workaround is required.
+- At least two formal and two supplementary direct random-bunny processes exit cleanly.
+- Exact ownership inventory reaches zero deterministically.
+- Output is nonempty, pure quad, and production-valid.
+- No fallback, recovery, timeout, partial output, final-face deduplication, positional merge, source-triangle pairing, or ID-specific repair.
+- Wall time is at most `39.228299 s` in every process.
+- Peak memory is at most `1,115,394,560 B` in every process.
 
-Four independent clean-exit processes used `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
-
-| Run | Role | Wall | Peak working set | Completion | Result |
-|---|---|---:|---:|---:|---|
-| 1 | Formal | 66.704669 s | 1,094,594,560 B | 25.980217 s | failed closed |
-| 2 | Formal | 67.738376 s | 1,094,791,168 B | 25.623915 s | failed closed |
-| 3 | Supplementary | 66.756596 s | 1,094,737,920 B | 25.133695 s | failed closed |
-| 4 | Supplementary | 66.909710 s | 1,094,815,744 B | 25.683125 s | failed closed |
-
-All processes remained below the memory cap, with only 20,472,320 B of maximum-resident-set margin. Every process exceeded the 39.228299-second wall cap and produced no output.
-
-## Deterministic ownership evidence
-
-The initial active claim remains `4956/4954`, classified as `same-corner-distinct-boundary`.
-
-One topology-derived coupled route candidate is evaluated identically in all four runs:
-
-- route identity hash: `8326996045896577381`;
-- interval count: `8`;
-- halfedges: `22706, 23112, 22707, 22710, 22824, 23924, 23922, 23932`;
-- affected patches: `4952, 4954, 4955, 4956, 4957, 4958, 5184`;
-- inserted vertices / split edges: `8 / 8`;
-- route outcome: `introduced-ownership-claim`;
-- resulting first conflict: `14137/14136`, also `same-corner-distinct-boundary`;
-- full recomputation passes: `2`;
-- peak live candidate complexes: `1`;
-- peak structural-repair owned bytes: `210,773,020`.
-
-The resulting conflict patches are outside the route candidate's affected-patch set. This strongly suggests a latent subsequent conflict exposed by the first-failure assembly scan rather than a newly created claim. Complete before/after conflict inventories are required to prove that classification.
-
-## Required next code/build turn
-
-Use `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Plan.md`.
-
-- [ ] Make benchmark manifest-dispatch tests executable-relative and artifact-contained.
-- [ ] Collect a complete compact exact ownership-conflict inventory instead of returning after the first duplicate.
-- [ ] Distinguish latent, retained, removed, and introduced claims using exact before/after inventory membership.
-- [ ] Use strict conflict-set reduction as the progress contract.
-- [ ] Partition conflict claims into exact dependency components.
-- [ ] Batch pairwise-independent route candidates atomically without arbitrary subset search.
-- [ ] Reuse unchanged descriptor/completion products only under exact dependency identities, or otherwise batch repairs to avoid one full pass per claim.
-- [ ] Preserve fail-closed final output, one global ledger, exact state equality, all validators, and one live mutable candidate.
-- [ ] Recover wall time to at most 39.228299 s without consuming the remaining memory margin.
-- [ ] Compile only the four required targets and run no tests, benchmarks, help/list commands, or custom meshes.
-
-## P5 closure conditions
-
-- [x] Corrected route-complete tests pass for their intended scenarios.
-- [ ] Packaged tests run from an arbitrary extraction path without source-path staging.
-- [ ] Complete ownership frontier reaches zero deterministically.
-- [ ] Direct random-bunny completion succeeds with nonempty pure-quad output.
-- [ ] No timeout, fallback, recovery, final-face deduplication, positional ownership, source-triangle pairing, or ID special case.
-- [ ] Every formal and supplementary process remains within wall and memory caps.
-
-## Authoritative evidence
-
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_Global_Ownership_Frontier_Code_Build_Plan.md`
-- `benchmark-results/p5-tb10-summary.json`
-- `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Report.md`
-
-P5 remains open. PR #8 remains draft and unmerged.
+P5 remains open until P5-TB11 supplies runtime evidence.
