@@ -3,14 +3,6 @@
 name: Agent Build Surface Cell P5 CB58 Memory Frontier
 
 on:
-  push:
-    branches:
-      - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths-ignore:
-      - TODO
-      - MILESTONE_G_TODO.md
-      - '.agents/Directional/*.md'
-      - 'benchmark-results/*.json'
   workflow_dispatch:
 
 concurrency:
