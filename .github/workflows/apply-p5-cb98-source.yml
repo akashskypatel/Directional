@@ -8,6 +8,12 @@ on:
       - agent/p5-cb98-source-sync
     paths:
       - '.agents/Directional/patches/P5_CB98_APPLY_READY'
+  pull_request:
+    branches:
+      - agent/p5-cb98-source-sync
+    types:
+      - opened
+      - synchronize
 
 concurrency:
   group: apply-p5-cb98-source-${{ github.ref }}
@@ -19,6 +25,7 @@ permissions:
 
 jobs:
   apply-source:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'agent/p5-cb98-source-sync-trigger'
     runs-on: ubuntu-24.04
     steps:
       - name: Record start
