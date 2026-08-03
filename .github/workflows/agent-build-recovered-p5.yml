@@ -1,5 +1,5 @@
 # Compile-only workflow. It does not execute tests, benchmarks, or custom meshes.
-# P5 source-support checkpoint trigger.
+# P5 source-support corrected checkpoint trigger.
 name: Agent Build Surface Cell P5
 
 on:
