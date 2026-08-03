@@ -1,12 +1,16 @@
 # Milestone G P5 — Global Ownership Frontier Candidate-Budget Code + Build Plan
 
-**Next turn:** code changes + compile-only build  
-**Input:** P5-TB11 artifact `8848599037`  
+**Status:** P5-CB51 through P5-CB58 implemented and compiled  
+**Completed artifact:** `8852049639` (`surface-cell-p5-cb58-memory-frontier-linux-release`)  
+**Exact compiled source:** `0980c0912a2538314bb6bbb77dc7d4dbbcea5bc5`  
+**Next turn:** P5-TB12 artifact-only test and benchmark  
 **Review policy:** `never`
+
+The implementation and compile evidence are recorded in `.agents/Directional/Milestone_G_P5_Memory_Bounded_Frontier_Code_Build_Report.md` and `benchmark-results/p5-cb58-summary.json`. The plan below remains the scope authority for evaluating the implementation. Runtime correctness and actual RSS reduction are not claimed by the compile-only turn.
 
 ## Objective
 
-Make the exact global ownership frontier executable on production input, restore the regressed contracts, and package a genuinely self-contained test artifact. Do not run tests or benchmarks in this turn.
+Make the exact global ownership frontier executable on production input, restore the regressed contracts, package a genuinely self-contained test artifact, and reduce retained expanded state. P5-TB12 must validate this from the packaged artifact without rebuilding.
 
 ## P5-CB51 — Correct frontier budget semantics
 
@@ -17,11 +21,9 @@ Partition the exact frontier before applying work budgets.
 - Keep a separate diagnostic count for exact claims and route candidates.
 - Apply structural-attempt, inserted-vertex, full-pass, and visited-state budgets to actual committed/evaluated transactions.
 - Preserve deterministic component ordering and no arbitrary subset enumeration.
-- Add compile-only regression sources where 92 independent exact claims fit one permitted batch and a second transaction is rejected by a one-transaction budget.
+- Add regression sources where 92 independent exact claims fit one permitted batch and a second transaction is rejected by a one-transaction budget.
 
 ## P5-CB52 — Global completion-template ownership assignment
-
-The production pass currently performs 41 sequential completion-variant commits and full assembly scans.
 
 - Build the complete completion-template conflict graph before changing variants.
 - Solve deterministic variant assignment by connected component.
@@ -31,8 +33,6 @@ The production pass currently performs 41 sequential completion-variant commits 
 - Record initial/final inventory counts, component counts, changed patches, and assembly passes.
 
 ## P5-CB53 — Make exact reuse observable and correct
-
-Investigate the zero-reuse failures before changing tests.
 
 - Prove which patches are outside each transaction dependency closure.
 - Reuse only products whose exact semantic dependencies are unchanged.
@@ -61,22 +61,20 @@ Do not modify expectations merely to match current behavior. Correct fixture con
 
 ## P5-CB56 — Package the complete runtime fixture closure
 
-The artifact must support all packaged tests from any extraction path.
-
 - Package `milestone_g_manifest.json`, `repo_regressions.json`, and every transitively referenced mesh and field fixture required by compiled tests.
 - Resolve all test data relative to the executable or a deterministic packaged fixture root.
 - Remove all runtime dependence on `/home/runner/work/...`.
-- Add a test that scans the packaged test binary's required manifests from an arbitrary working directory.
+- Verify that the packaged test binary can resolve required manifests from an arbitrary working directory.
 
-## P5-CB57 — Recover wall time
-
-The target remains `39.228299 s` in every process.
+## P5-CB57 — Recover wall time and reduce retained memory
 
 - Eliminate repeated full assembly after each single completion-template variant.
 - Execute the same-corner frontier as the smallest number of deterministic atomic transactions.
 - Reuse unchanged exact completion products.
-- Retain one live mutable candidate and the existing memory cap.
-- Add stage/pass counters so P5-TB12 can prove the number of full and incremental assemblies.
+- Retain one live mutable candidate and one canonical rollback complex.
+- Release consumed production intermediates and move expanded stage payloads.
+- Compact ownership storage and defer final output/provenance/lineage allocation until zero conflicts.
+- Add stage/pass and owned-byte counters so P5-TB12 can attribute wall time and RSS.
 
 ## P5-CB58 — Compile-only gate
 
@@ -89,14 +87,17 @@ Compile only:
 
 Package exact pushed source, empty source status, complete executable-relative fixtures, binaries, libraries, logs, submodule revisions, and checksums. Execute no binary, test, benchmark, help/list command, discovery command, or custom mesh.
 
+This gate completed successfully in run `30803697079`, job `91654036551`: **131/131** build steps, empty source status, and **36/36** packaged checksums.
+
 ## P5-TB12 gates
 
-The following artifact-only turn must require:
+The artifact-only turn must require:
 
-- focused global-frontier tests pass;
+- focused global-frontier, memory-lifetime, budget, reuse, and fixture-portability tests pass;
 - authoritative non-overlapping P5 total passes;
 - full packaged binary runs without absolute-path fixture failures;
 - four independent random-bunny processes succeed with nonempty pure-quad output;
 - exact conflict inventory reaches zero deterministically;
 - no fallback or recovery;
-- wall `<= 39.228299 s` and memory `<= 1,115,394,560 B` in every process.
+- wall `<= 39.228299 s` and memory `<= 1,115,394,560 B` in every process;
+- direct comparison with the P5-TB11 peak of `936,484,864 B`, with stage-owned byte diagnostics used to explain process RSS.
