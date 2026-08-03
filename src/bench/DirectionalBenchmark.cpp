@@ -1618,6 +1618,59 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.completionFailedPatches << ","
       << "\"completionOwnershipRepairAttempts\":"
       << result.surfaceCellContext.completionOwnershipRepairAttempts << ","
+      << "\"completionOwnershipStructuralRepairAttempts\":"
+      << result.surfaceCellContext
+             .completionOwnershipStructuralRepairAttempts
+      << ","
+      << "\"completionOwnershipInsertedBoundaryVertices\":"
+      << result.surfaceCellContext
+             .completionOwnershipInsertedBoundaryVertices
+      << ","
+      << "\"completionOwnershipRepairLog\":[";
+  for (std::size_t attemptIndex = 0;
+       attemptIndex <
+       result.surfaceCellContext.completionOwnershipRepairLog.size();
+       ++attemptIndex) {
+    if (attemptIndex > 0U) out << ",";
+    const geometry::SurfaceCellOwnershipRepairAttempt &attempt =
+        result.surfaceCellContext
+            .completionOwnershipRepairLog[attemptIndex];
+    out << "{"
+        << "\"ordinal\":" << attempt.ordinal << ","
+        << "\"action\":\""
+        << geometry::surface_cell_ownership_repair_action_name(
+               attempt.action)
+        << "\","
+        << "\"conflictClass\":\""
+        << geometry::surface_cell_ownership_conflict_name(
+               attempt.conflictClass)
+        << "\","
+        << "\"resultingConflictClass\":\""
+        << geometry::surface_cell_ownership_conflict_name(
+               attempt.resultingConflictClass)
+        << "\","
+        << "\"firstPatch\":" << attempt.firstPatch << ","
+        << "\"secondPatch\":" << attempt.secondPatch << ","
+        << "\"selectedPatch\":" << attempt.selectedPatch << ","
+        << "\"selectedHalfedge\":" << attempt.selectedHalfedge
+        << ","
+        << "\"backend\":\""
+        << geometry::pure_quad_completion_backend_name(attempt.backend)
+        << "\","
+        << "\"fromVariant\":" << attempt.fromVariant << ","
+        << "\"toVariant\":" << attempt.toVariant << ","
+        << "\"insertedVertices\":" << attempt.insertedVertices
+        << ","
+        << "\"splitUndirectedEdges\":"
+        << attempt.splitUndirectedEdges << ","
+        << "\"completionSucceeded\":"
+        << (attempt.completionSucceeded ? "true" : "false") << ","
+        << "\"committed\":"
+        << (attempt.committed ? "true" : "false") << ","
+        << "\"failure\":\"" << escape_json(attempt.failure)
+        << "\"}";
+  }
+  out << "],"
       << "\"completionFailure\":\""
       << escape_json(result.surfaceCellContext.completionFailure) << "\","
       << "\"completionOwnershipRejectionAvailable\":"

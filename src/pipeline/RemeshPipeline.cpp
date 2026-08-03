@@ -4149,6 +4149,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.failedPatches;
     result.surfaceCellContext.completionOwnershipRepairAttempts =
         completionResult.completionOwnershipRepairAttempts;
+    result.surfaceCellContext.completionOwnershipStructuralRepairAttempts =
+        completionResult.completionOwnershipStructuralRepairAttempts;
+    result.surfaceCellContext.completionOwnershipInsertedBoundaryVertices =
+        completionResult.completionOwnershipInsertedBoundaryVertices;
+    result.surfaceCellContext.completionOwnershipRepairLog =
+        completionResult.ownershipRepairAttempts;
     result.surfaceCellContext.firstCompletionOwnershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     result.surfaceCellContext.completionFailure = completionResult.failure;
@@ -4157,6 +4163,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             completionResult.completionOwnershipRepairAttempts);
     result.diagnostics.surfaceCellCompletionOwnershipRepairAttemptsAvailable =
         true;
+    result.diagnostics
+        .surfaceCellCompletionOwnershipStructuralRepairAttempts =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipStructuralRepairAttempts);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipInsertedBoundaryVertices =
+        static_cast<std::size_t>(
+            completionResult.completionOwnershipInsertedBoundaryVertices);
+    result.diagnostics
+        .surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = true;
     const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     if (ownershipRejection.active) {
@@ -4314,6 +4330,40 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     hash_combine_i64(
         completionHash,
         result.surfaceCellContext.completionOwnershipRepairAttempts);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipStructuralRepairAttempts);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext
+            .completionOwnershipInsertedBoundaryVertices);
+    hash_combine_i64(
+        completionHash,
+        static_cast<std::int64_t>(
+            result.surfaceCellContext.completionOwnershipRepairLog.size()));
+    for (const geometry::SurfaceCellOwnershipRepairAttempt &attempt :
+         result.surfaceCellContext.completionOwnershipRepairLog) {
+      hash_combine_i64(completionHash, attempt.ordinal);
+      hash_combine_i64(completionHash, static_cast<int>(attempt.action));
+      hash_combine_i64(completionHash,
+                       static_cast<int>(attempt.conflictClass));
+      hash_combine_i64(completionHash,
+                       static_cast<int>(attempt.resultingConflictClass));
+      hash_combine_i64(completionHash, attempt.firstPatch);
+      hash_combine_i64(completionHash, attempt.secondPatch);
+      hash_combine_i64(completionHash, attempt.selectedPatch);
+      hash_combine_i64(completionHash, attempt.selectedHalfedge);
+      hash_combine_i64(completionHash, static_cast<int>(attempt.backend));
+      hash_combine_i64(completionHash, attempt.fromVariant);
+      hash_combine_i64(completionHash, attempt.toVariant);
+      hash_combine_i64(completionHash, attempt.insertedVertices);
+      hash_combine_i64(completionHash, attempt.splitUndirectedEdges);
+      hash_combine_i64(completionHash,
+                       attempt.completionSucceeded ? 1 : 0);
+      hash_combine_i64(completionHash, attempt.committed ? 1 : 0);
+      hash_combine_string(completionHash, attempt.failure);
+    }
     const geometry::PureQuadCompletionOwnershipRejection &hashRejection =
         result.surfaceCellContext.firstCompletionOwnershipRejection;
     hash_combine_i64(completionHash, hashRejection.active ? 1 : 0);

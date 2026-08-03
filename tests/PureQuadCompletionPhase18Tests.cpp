@@ -59,11 +59,18 @@ struct CompletionFixture {
 
 CompletionFixture generated_plane_patch() {
   CompletionFixture fixture;
-  fixture.vertices.resize(4, 3);
-  fixture.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
-      1.0, 1.0, 0.0, 0.0, 1.0, 0.0;
-  fixture.faces.resize(2, 3);
-  fixture.faces << 0, 1, 2, 0, 2, 3;
+  fixture.vertices.resize(7, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      1.0, 1.0, 0.0,
+                      0.0, 1.0, 0.0,
+                      2.0, 0.0, 0.0,
+                      3.0, 0.0, 0.0,
+                      2.0, 1.0, 0.0;
+  fixture.faces.resize(3, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3,
+                   4, 5, 6;
   fixture.patch.sideEdgeCounts = {2, 2, 2, 2};
   fixture.patch.turns = {1, 1, 1, 1};
   fixture.patch.sourceFaces = {0, 1};
@@ -96,6 +103,24 @@ void assign_distinct_domain_identity(
   identity.undirectedBoundary.values = {211, token};
   identity.sourceSupport.valid = true;
   identity.sourceSupport.values = {307, token};
+}
+
+
+void assign_same_support_distinct_boundary_identity(
+    directional::geometry::PureQuadMesh &mesh, const int boundaryToken) {
+  auto &identity = mesh.domainIdentity;
+  identity.valid = true;
+  identity.sourceComponent = 3;
+  identity.sourceSheet = 5;
+  identity.boundaryNodeCount = 4;
+  identity.boundaryHalfedgeCount = 4;
+  identity.sourceSupportCount = 2;
+  identity.orientedBoundary.valid = true;
+  identity.orientedBoundary.values = {101, boundaryToken};
+  identity.undirectedBoundary.valid = true;
+  identity.undirectedBoundary.values = {211, boundaryToken};
+  identity.sourceSupport.valid = true;
+  identity.sourceSupport.values = {307, 9};
 }
 
 std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
@@ -1056,6 +1081,42 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     CompletionAcceptsGeneratedInteriorOnEitherPatchFace) {
+  const CompletionFixture fixture = generated_plane_patch();
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 36;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.success) << completion.failure;
+
+  const auto interior = std::find_if(
+      completion.mesh.vertices.begin(), completion.mesh.vertices.end(),
+      [](const int vertex) { return vertex < 0; });
+  ASSERT_NE(interior, completion.mesh.vertices.end());
+  const std::size_t row = static_cast<std::size_t>(
+      std::distance(completion.mesh.vertices.begin(), interior));
+  directional::geometry::SurfacePointSourceSupportResolver resolver(
+      fixture.faces);
+  for (const int allowedFace : fixture.patch.sourceFaces) {
+    auto allowedMesh = completion.mesh;
+    allowedMesh.vertexProvenance[row].face = allowedFace;
+    allowedMesh.vertexProvenance[row].barycentric << 0.2, 0.3, 0.5;
+    allowedMesh.vertexLineage[row].sourcePoint =
+        allowedMesh.vertexProvenance[row];
+    directional::geometry::PureQuadCompletionOwnershipRejection rejection;
+    std::string failure;
+    EXPECT_TRUE(directional::geometry::pure_quad_detail::
+                    validate_completion_domain_ownership(
+                        fixture.patch, allowedMesh, 0, &resolver, nullptr,
+                        nullptr, failure, &rejection))
+        << "allowed face " << allowedFace << ": " << failure;
+    EXPECT_FALSE(rejection.active);
+  }
+}
+
+TEST(PureQuadCompletionPhase18,
      CompletionRejectsGeneratedInteriorOutsidePatchSupport) {
   const CompletionFixture fixture = generated_plane_patch();
   directional::geometry::PureQuadCompletionOptions options;
@@ -1073,8 +1134,12 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_NE(interior, escapedMesh.vertices.end());
   const std::size_t row = static_cast<std::size_t>(
       std::distance(escapedMesh.vertices.begin(), interior));
-  escapedMesh.vertexProvenance[row].face = 1;
+  escapedMesh.vertexProvenance[row].face = 2;
   escapedMesh.vertexProvenance[row].barycentric << 0.2, 0.3, 0.5;
+  escapedMesh.vertexProvenance[row].position =
+      0.2 * fixture.vertices.row(4).transpose() +
+      0.3 * fixture.vertices.row(5).transpose() +
+      0.5 * fixture.vertices.row(6).transpose();
   escapedMesh.vertexLineage[row].sourcePoint =
       escapedMesh.vertexProvenance[row];
 
@@ -1205,6 +1270,46 @@ TEST(PureQuadCompletionPhase18,
             assembly.failure.find(";firstBackend=closed-form;"));
   EXPECT_NE(std::string::npos,
             assembly.failure.find(";firstCornerKinds=arrangement-node,"));
+}
+
+
+TEST(PureQuadCompletionPhase18,
+     SameCornersWithEqualSourceSupportAndDistinctBoundariesAreTyped) {
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 101;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      patch({1, 1, 1, 1}), options);
+  ASSERT_TRUE(completion.success);
+
+  auto first = completion.mesh;
+  auto second = completion.mesh;
+  first.sourcePatch = 101;
+  second.sourcePatch = 202;
+  assign_same_support_distinct_boundary_identity(first, 1);
+  assign_same_support_distinct_boundary_identity(second, 2);
+  first.sourceSideEdgeCounts = {1, 1, 1, 1};
+  second.sourceSideEdgeCounts = {2, 1, 1, 2};
+  for (auto &lineage : first.quadLineage) {
+    lineage.sourcePatch = first.sourcePatch;
+  }
+  for (auto &lineage : second.quadLineage) {
+    lineage.sourcePatch = second.sourcePatch;
+  }
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {second, first});
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
+                SameCornerDistinctBoundaryClaim,
+            assembly.ownershipConflict.classification);
+  EXPECT_EQ(assembly.ownershipConflict.firstCornerAuthoritativeHashes,
+            assembly.ownershipConflict.secondCornerAuthoritativeHashes);
+  EXPECT_NE(assembly.ownershipConflict.firstBoundaryHalfedgeHash,
+            assembly.ownershipConflict.secondBoundaryHalfedgeHash);
+  EXPECT_NE(std::string::npos,
+            assembly.failure.find(
+                ";classification=same-corner-distinct-boundary;"));
 }
 
 TEST(PureQuadCompletionPhase18,

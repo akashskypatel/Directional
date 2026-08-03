@@ -160,8 +160,9 @@ enum class SurfaceCellOwnershipConflictClass : int {
   OverlappingUndirectedBoundary = 2,
   FalseVertexEquivalence = 3,
   CompletionTemplateOwnership = 4,
-  InvalidDomainIdentity = 5,
-  Unclassified = 6,
+  SameCornerDistinctBoundaryClaim = 5,
+  InvalidDomainIdentity = 6,
+  Unclassified = 7,
 };
 
 inline const char *surface_cell_ownership_conflict_name(
@@ -177,6 +178,8 @@ inline const char *surface_cell_ownership_conflict_name(
     return "false-merge";
   case SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership:
     return "completion-template";
+  case SurfaceCellOwnershipConflictClass::SameCornerDistinctBoundaryClaim:
+    return "same-corner-distinct-boundary";
   case SurfaceCellOwnershipConflictClass::InvalidDomainIdentity:
     return "invalid-domain";
   case SurfaceCellOwnershipConflictClass::Unclassified:
@@ -208,6 +211,16 @@ struct SurfaceCellOwnershipConflict {
   int secondSheet = -1;
   int firstCompletionBackend = -1;
   int secondCompletionBackend = -1;
+  int firstCompletionVariant = 0;
+  int secondCompletionVariant = 0;
+  int firstBoundaryNodeCount = 0;
+  int secondBoundaryNodeCount = 0;
+  int firstBoundaryHalfedgeCount = 0;
+  int secondBoundaryHalfedgeCount = 0;
+  int firstBoundaryVertexCount = 0;
+  int secondBoundaryVertexCount = 0;
+  std::vector<int> firstSideEdgeCounts;
+  std::vector<int> secondSideEdgeCounts;
   std::array<int, 4> firstCornerIdentityKinds{{0, 0, 0, 0}};
   std::array<int, 4> secondCornerIdentityKinds{{0, 0, 0, 0}};
   std::array<std::uint64_t, 4> firstCornerIdentityHashes{{0, 0, 0, 0}};

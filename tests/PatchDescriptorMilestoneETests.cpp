@@ -348,7 +348,22 @@ Fixture make_two_odd_cells_with_shared_interface() {
   configureCell(0, {0, 2, 4}, 0, false);
   configureCell(1, {5, 6, 8}, 1, false);
   configureCell(2, {1, 9, 7, 3}, -1, true);
+  fixture.complex.cells[0].signedArea = 0.5;
+  fixture.complex.cells[0].area = 0.5;
+  fixture.complex.cells[1].signedArea = 0.5;
+  fixture.complex.cells[1].area = 0.5;
+  fixture.complex.cells[2].signedArea = -1.0;
+  fixture.complex.cells[2].area = 1.0;
 
+  auto &diagnostics = fixture.complex.diagnostics;
+  diagnostics.embeddingValid = true;
+  diagnostics.sourceEulerCharacteristic = 1;
+  diagnostics.sourceConnectedComponentCount = 1;
+  diagnostics.sourceBoundaryLoopCount = 1;
+  diagnostics.supportedArea = 1.0;
+  diagnostics.inputMemoryBytes = 1;
+  diagnostics.unsplitCrossings = 0;
+  diagnostics.geometricTJunctions = 0;
   directional::geometry::surface_simplification_detail::
       recompute_rebuilt_diagnostics(fixture.complex);
   return fixture;

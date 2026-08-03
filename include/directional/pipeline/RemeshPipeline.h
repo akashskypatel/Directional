@@ -365,6 +365,10 @@ struct SurfaceCellPipelineContext {
   int completionAttemptedPatches = 0;
   int completionFailedPatches = 0;
   int completionOwnershipRepairAttempts = 0;
+  int completionOwnershipStructuralRepairAttempts = 0;
+  int completionOwnershipInsertedBoundaryVertices = 0;
+  std::vector<geometry::SurfaceCellOwnershipRepairAttempt>
+      completionOwnershipRepairLog;
   geometry::PureQuadCompletionOwnershipRejection
       firstCompletionOwnershipRejection;
   std::string completionFailure;

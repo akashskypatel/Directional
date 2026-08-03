@@ -177,6 +177,10 @@ struct PureQuadMesh {
   std::vector<std::vector<int>> boundaryLoops;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   bool usesCenterFan = false;
+  // Exact logical-side subdivision signature from the source patch. This is
+  // retained through completion so assembly conflicts can distinguish
+  // different boundary routes that happen to share the same four corners.
+  std::vector<int> sourceSideEdgeCounts;
   std::vector<PureQuadVertexLineage> vertexLineage;
   std::vector<PureQuadFaceLineage> quadLineage;
 };

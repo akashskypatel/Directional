@@ -66,11 +66,51 @@ struct PatchDescriptorSet {
   int rejected = 0;
 };
 
+enum class SurfaceCellOwnershipRepairAction : int {
+  CompletionVariant = 0,
+  BoundarySectorSubdivision = 1,
+};
+
+inline const char *surface_cell_ownership_repair_action_name(
+    const SurfaceCellOwnershipRepairAction action) {
+  switch (action) {
+  case SurfaceCellOwnershipRepairAction::CompletionVariant:
+    return "completion-variant";
+  case SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision:
+    return "boundary-sector-subdivision";
+  }
+  return "unknown";
+}
+
+struct SurfaceCellOwnershipRepairAttempt {
+  int ordinal = -1;
+  SurfaceCellOwnershipRepairAction action =
+      SurfaceCellOwnershipRepairAction::CompletionVariant;
+  SurfaceCellOwnershipConflictClass conflictClass =
+      SurfaceCellOwnershipConflictClass::None;
+  SurfaceCellOwnershipConflictClass resultingConflictClass =
+      SurfaceCellOwnershipConflictClass::None;
+  int firstPatch = -1;
+  int secondPatch = -1;
+  int selectedPatch = -1;
+  int selectedHalfedge = -1;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int fromVariant = 0;
+  int toVariant = 0;
+  int insertedVertices = 0;
+  int splitUndirectedEdges = 0;
+  bool completionSucceeded = false;
+  bool committed = false;
+  std::string failure;
+};
+
 struct SurfaceCellComplexCompletionOptions {
   PatchDescriptorOptions descriptorOptions;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
   int maxCompletionOwnershipRepairs = 256;
+  int maxSameCornerBoundaryRepairs = 8;
+  int maxSameCornerInsertedVertices = 8;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
 };
@@ -98,6 +138,9 @@ struct SurfaceCellComplexCompletionResult {
   int attemptedPatches = 0;
   int failedPatches = 0;
   int completionOwnershipRepairAttempts = 0;
+  int completionOwnershipStructuralRepairAttempts = 0;
+  int completionOwnershipInsertedBoundaryVertices = 0;
+  std::vector<SurfaceCellOwnershipRepairAttempt> ownershipRepairAttempts;
   PureQuadCompletionOwnershipRejection firstCompletionOwnershipRejection;
   std::string failure;
 };

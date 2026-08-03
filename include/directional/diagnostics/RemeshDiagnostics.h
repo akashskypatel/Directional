@@ -126,6 +126,8 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
   std::size_t surfaceCellCompletionOwnershipRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0;
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
   std::string surfaceCellCompletionOwnershipFailure;
   int surfaceCellCompletionOwnershipSourcePatch = -1;
@@ -154,6 +156,7 @@ struct RemeshDiagnostics {
   bool surfaceCellSimplifiedCountAvailable = false;
   bool surfaceCellCompletedQuadCountAvailable = false;
   bool surfaceCellCompletionOwnershipRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = false;
   bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 

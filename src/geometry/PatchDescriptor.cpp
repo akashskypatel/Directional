@@ -579,6 +579,123 @@ int completion_variant_count(const PureQuadPatch &patch,
   return 1;
 }
 
+
+const SurfaceArrangementCell *find_cell_by_id(
+    const SurfaceCellComplex &complex, const int cellId) {
+  if (cellId >= 0 && cellId < static_cast<int>(complex.cells.size()) &&
+      complex.cells[static_cast<std::size_t>(cellId)].id == cellId) {
+    return &complex.cells[static_cast<std::size_t>(cellId)];
+  }
+  const auto found = std::find_if(
+      complex.cells.begin(), complex.cells.end(),
+      [&](const SurfaceArrangementCell &cell) { return cell.id == cellId; });
+  return found == complex.cells.end() ? nullptr : &*found;
+}
+
+int canonical_complex_halfedge(const SurfaceCellComplex &complex,
+                               const int halfedgeId) {
+  if (halfedgeId < 0 ||
+      halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+    return -1;
+  }
+  const SurfaceArrangementHalfedge &edge =
+      complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+  if (edge.twin < 0 ||
+      edge.twin >= static_cast<int>(complex.halfedges.size())) {
+    return -1;
+  }
+  return std::min(edge.id, edge.twin);
+}
+
+std::set<int> canonical_cell_boundary(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell) {
+  std::set<int> result;
+  for (const int halfedgeId : cell.halfedges) {
+    const int canonical = canonical_complex_halfedge(complex, halfedgeId);
+    if (canonical < 0) {
+      return {};
+    }
+    result.insert(canonical);
+  }
+  return result;
+}
+
+struct SameCornerBoundaryCandidate {
+  int patch = -1;
+  int halfedge = -1;
+  bool hardFeature = false;
+
+  friend bool operator<(const SameCornerBoundaryCandidate &lhs,
+                        const SameCornerBoundaryCandidate &rhs) {
+    return std::tie(lhs.hardFeature, lhs.halfedge, lhs.patch) <
+           std::tie(rhs.hardFeature, rhs.halfedge, rhs.patch);
+  }
+};
+
+std::vector<SameCornerBoundaryCandidate> same_corner_boundary_candidates(
+    const SurfaceCellComplex &complex,
+    const SurfaceCellOwnershipConflict &conflict) {
+  const SurfaceArrangementCell *first =
+      find_cell_by_id(complex, conflict.firstPatch);
+  const SurfaceArrangementCell *second =
+      find_cell_by_id(complex, conflict.secondPatch);
+  if (first == nullptr || second == nullptr) {
+    return {};
+  }
+  const std::set<int> firstBoundary = canonical_cell_boundary(complex, *first);
+  const std::set<int> secondBoundary = canonical_cell_boundary(complex, *second);
+  if (firstBoundary.empty() || secondBoundary.empty()) {
+    return {};
+  }
+
+  std::vector<SameCornerBoundaryCandidate> candidates;
+  const auto appendDifference = [&](const std::set<int> &owned,
+                                    const std::set<int> &other,
+                                    const int patch) {
+    for (const int halfedge : owned) {
+      if (other.count(halfedge) != 0U) {
+        continue;
+      }
+      const SurfaceArrangementHalfedge &edge =
+          complex.halfedges[static_cast<std::size_t>(halfedge)];
+      const SurfaceArrangementHalfedge &twin =
+          complex.halfedges[static_cast<std::size_t>(edge.twin)];
+      candidates.push_back(
+          {patch, halfedge, edge.hardFeature || twin.hardFeature});
+    }
+  };
+  appendDifference(firstBoundary, secondBoundary, first->id);
+  appendDifference(secondBoundary, firstBoundary, second->id);
+  std::sort(candidates.begin(), candidates.end());
+  candidates.erase(
+      std::unique(candidates.begin(), candidates.end(),
+                  [](const SameCornerBoundaryCandidate &lhs,
+                     const SameCornerBoundaryCandidate &rhs) {
+                    return lhs.halfedge == rhs.halfedge;
+                  }),
+      candidates.end());
+  return candidates;
+}
+
+bool same_unordered_conflict_pair(const SurfaceCellOwnershipConflict &conflict,
+                                  const int firstPatch,
+                                  const int secondPatch) {
+  if (!conflict.active()) {
+    return false;
+  }
+  return (conflict.firstPatch == firstPatch &&
+          conflict.secondPatch == secondPatch) ||
+         (conflict.firstPatch == secondPatch &&
+          conflict.secondPatch == firstPatch);
+}
+
+void renumber_ownership_repair_attempts(
+    std::vector<SurfaceCellOwnershipRepairAttempt> &attempts) {
+  for (int index = 0; index < static_cast<int>(attempts.size()); ++index) {
+    attempts[static_cast<std::size_t>(index)].ordinal = index;
+  }
+}
+
 } // namespace directional::geometry::patch_descriptor_detail
 
 namespace directional::geometry {
@@ -1054,20 +1171,42 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       while (variant + 1 < variantCount &&
              result.completionOwnershipRepairAttempts <
                  options.maxCompletionOwnershipRepairs) {
+        SurfaceCellOwnershipRepairAttempt attempt;
+        attempt.action = SurfaceCellOwnershipRepairAction::CompletionVariant;
+        attempt.conflictClass = conflict.classification;
+        attempt.firstPatch = conflict.firstPatch;
+        attempt.secondPatch = conflict.secondPatch;
+        attempt.selectedPatch = patchId;
+        attempt.backend = currentMesh.backend;
+        attempt.fromVariant = variant;
         ++variant;
+        attempt.toVariant = variant;
         ++result.completionOwnershipRepairAttempts;
         const PureQuadCompletionResult alternative =
             completeDescriptor(descriptorIndex, variant);
-        if (!alternative.success || alternative.mesh.quads.empty()) {
+        attempt.completionSucceeded =
+            alternative.success && !alternative.mesh.quads.empty();
+        if (!attempt.completionSucceeded) {
+          attempt.failure = alternative.failure.empty()
+                                ? "CompletionVariantUnavailable"
+                                : alternative.failure;
           if (!result.firstCompletionOwnershipRejection.active &&
               alternative.ownershipRejection.active) {
             result.firstCompletionOwnershipRejection =
                 alternative.ownershipRejection;
           }
+          result.ownershipRepairAttempts.push_back(std::move(attempt));
           continue;
         }
         currentMesh = alternative.mesh;
         result.assembly = stitch_pure_quad_patches(result.completedPatches);
+        attempt.committed = true;
+        attempt.resultingConflictClass =
+            result.assembly.ownershipConflict.classification;
+        if (!result.assembly.success) {
+          attempt.failure = result.assembly.failure;
+        }
+        result.ownershipRepairAttempts.push_back(std::move(attempt));
         advanced = true;
         break;
       }
@@ -1079,10 +1218,135 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       break;
     }
   }
+
+  if (!result.assembly.success &&
+      result.assembly.ownershipConflict.classification ==
+          SurfaceCellOwnershipConflictClass::
+              SameCornerDistinctBoundaryClaim) {
+    const SurfaceCellOwnershipConflict originalConflict =
+        result.assembly.ownershipConflict;
+    const std::vector<patch_descriptor_detail::SameCornerBoundaryCandidate>
+        candidates = patch_descriptor_detail::same_corner_boundary_candidates(
+            prepared, originalConflict);
+    if (candidates.empty()) {
+      result.failure = "SameCornerDistinctBoundaryOverlap:" +
+                       result.assembly.failure;
+      result.assembly.failure = result.failure;
+      patch_descriptor_detail::renumber_ownership_repair_attempts(
+          result.ownershipRepairAttempts);
+      return result;
+    }
+
+    const int structuralBudget =
+        std::max(0, std::min(options.maxSameCornerBoundaryRepairs,
+                             options.maxSameCornerInsertedVertices));
+    int attemptedCandidates = 0;
+    for (const auto &candidate : candidates) {
+      if (attemptedCandidates >= structuralBudget) {
+        break;
+      }
+      ++attemptedCandidates;
+      ++result.completionOwnershipStructuralRepairAttempts;
+      SurfaceCellOwnershipRepairAttempt attempt;
+      attempt.action =
+          SurfaceCellOwnershipRepairAction::BoundarySectorSubdivision;
+      attempt.conflictClass = originalConflict.classification;
+      attempt.firstPatch = originalConflict.firstPatch;
+      attempt.secondPatch = originalConflict.secondPatch;
+      attempt.selectedPatch = candidate.patch;
+      attempt.selectedHalfedge = candidate.halfedge;
+      const int selectedBackend =
+          candidate.patch == originalConflict.firstPatch
+              ? originalConflict.firstCompletionBackend
+              : originalConflict.secondCompletionBackend;
+      attempt.backend =
+          selectedBackend >=
+                      static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
+                  selectedBackend <=
+                      static_cast<int>(PureQuadCompletionBackend::BoundedSearch)
+              ? static_cast<PureQuadCompletionBackend>(selectedBackend)
+              : PureQuadCompletionBackend::ClosedForm;
+
+      const SurfaceCellSubdivisionResult subdivision =
+          subdivide_surface_cell_complex_edges(
+              prepared, {{candidate.halfedge, 1}});
+      attempt.insertedVertices = subdivision.insertedVertices;
+      attempt.splitUndirectedEdges = subdivision.splitUndirectedEdges;
+      if (!subdivision.success) {
+        attempt.failure = "BoundarySectorSubdivision:" + subdivision.failure;
+        result.ownershipRepairAttempts.push_back(std::move(attempt));
+        continue;
+      }
+
+      SurfaceCellComplexCompletionOptions childOptions = options;
+      childOptions.maxSameCornerBoundaryRepairs =
+          std::max(0, options.maxSameCornerBoundaryRepairs - 1);
+      childOptions.maxSameCornerInsertedVertices =
+          std::max(0, options.maxSameCornerInsertedVertices -
+                          subdivision.insertedVertices);
+      SurfaceCellComplexCompletionResult repaired =
+          complete_surface_cell_complex(subdivision.complex, V, F,
+                                        childOptions);
+      const bool reachedAssembly = repaired.assembly.success ||
+                                   repaired.assembly.ownershipConflict.active();
+      const bool originalClaimPersists =
+          reachedAssembly &&
+          repaired.assembly.ownershipConflict.classification ==
+              SurfaceCellOwnershipConflictClass::
+                  SameCornerDistinctBoundaryClaim &&
+          patch_descriptor_detail::same_unordered_conflict_pair(
+              repaired.assembly.ownershipConflict, originalConflict.firstPatch,
+              originalConflict.secondPatch);
+      attempt.completionSucceeded = reachedAssembly;
+      attempt.resultingConflictClass =
+          repaired.assembly.ownershipConflict.classification;
+      attempt.committed = reachedAssembly && !originalClaimPersists;
+      if (!attempt.committed) {
+        attempt.failure = repaired.failure.empty()
+                              ? "SameCornerBoundarySubdivisionDidNotResolveClaim"
+                              : repaired.failure;
+        result.ownershipRepairAttempts.push_back(std::move(attempt));
+        continue;
+      }
+
+      std::vector<SurfaceCellOwnershipRepairAttempt> combined =
+          std::move(result.ownershipRepairAttempts);
+      combined.push_back(std::move(attempt));
+      combined.insert(combined.end(),
+                      repaired.ownershipRepairAttempts.begin(),
+                      repaired.ownershipRepairAttempts.end());
+      repaired.ownershipRepairAttempts = std::move(combined);
+      repaired.completionOwnershipRepairAttempts +=
+          result.completionOwnershipRepairAttempts;
+      repaired.completionOwnershipStructuralRepairAttempts +=
+          result.completionOwnershipStructuralRepairAttempts;
+      repaired.completionOwnershipInsertedBoundaryVertices +=
+          result.completionOwnershipInsertedBoundaryVertices +
+          subdivision.insertedVertices;
+      if (!repaired.firstCompletionOwnershipRejection.active &&
+          result.firstCompletionOwnershipRejection.active) {
+        repaired.firstCompletionOwnershipRejection =
+            result.firstCompletionOwnershipRejection;
+      }
+      patch_descriptor_detail::renumber_ownership_repair_attempts(
+          repaired.ownershipRepairAttempts);
+      return repaired;
+    }
+
+    result.failure = "SameCornerDistinctBoundaryUnresolved:" +
+                     result.assembly.failure;
+    result.assembly.failure = result.failure;
+    patch_descriptor_detail::renumber_ownership_repair_attempts(
+        result.ownershipRepairAttempts);
+    return result;
+  }
+
   result.success = result.assembly.success;
   if (!result.success) {
     result.failure = result.assembly.failure;
   }
+  patch_descriptor_detail::renumber_ownership_repair_attempts(
+      result.ownershipRepairAttempts);
   return result;
 }
 

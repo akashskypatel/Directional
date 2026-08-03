@@ -182,6 +182,17 @@ std::string identity_hash_list(
   return stream.str();
 }
 
+std::string integer_list(const std::vector<int> &values) {
+  std::ostringstream stream;
+  for (std::size_t index = 0; index < values.size(); ++index) {
+    if (index != 0U) {
+      stream << ',';
+    }
+    stream << values[index];
+  }
+  return stream.str();
+}
+
 std::string identity_kind_list(const std::array<int, 4> &kinds) {
   std::ostringstream stream;
   for (int corner = 0; corner < 4; ++corner) {
@@ -1155,6 +1166,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   PureQuadMesh mesh;
   mesh.sourcePatch = options.sourcePatch;
+  mesh.sourceSideEdgeCounts = patch.sideEdgeCounts;
   pure_quad_detail::initialize_boundary_embedding(patch, mesh);
   if ((options.sourceVertices == nullptr) != (options.sourceFaces == nullptr)) {
     result.failureReason = PureQuadPatchRejectReason::MissingBoundaryData;
@@ -1585,6 +1597,22 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
             static_cast<int>(firstOwner.backend);
         conflict.secondCompletionBackend =
             static_cast<int>(secondOwner.backend);
+        conflict.firstCompletionVariant = firstOwner.completionVariant;
+        conflict.secondCompletionVariant = secondOwner.completionVariant;
+        conflict.firstBoundaryNodeCount =
+            firstPatch.domainIdentity.boundaryNodeCount;
+        conflict.secondBoundaryNodeCount =
+            patch.domainIdentity.boundaryNodeCount;
+        conflict.firstBoundaryHalfedgeCount =
+            firstPatch.domainIdentity.boundaryHalfedgeCount;
+        conflict.secondBoundaryHalfedgeCount =
+            patch.domainIdentity.boundaryHalfedgeCount;
+        conflict.firstBoundaryVertexCount =
+            static_cast<int>(firstPatch.boundaryVertices.size());
+        conflict.secondBoundaryVertexCount =
+            static_cast<int>(patch.boundaryVertices.size());
+        conflict.firstSideEdgeCounts = firstPatch.sourceSideEdgeCounts;
+        conflict.secondSideEdgeCounts = patch.sourceSideEdgeCounts;
         copy_conflict_corner_diagnostics(
             firstOwner, conflict.firstCornerIdentityKinds,
             conflict.firstCornerIdentityHashes,
@@ -1608,8 +1636,25 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
                        firstOwner.authoritativeReversed,
                        secondOwner.authoritativeForward,
                        secondOwner.authoritativeReversed)) {
+          const bool sameSourceSupport =
+              firstPatch.domainIdentity.valid &&
+              patch.domainIdentity.valid &&
+              firstPatch.domainIdentity.sourceSupport.valid &&
+              patch.domainIdentity.sourceSupport.valid &&
+              firstPatch.domainIdentity.sourceSupport ==
+                  patch.domainIdentity.sourceSupport &&
+              firstPatch.domainIdentity.sourceSupportCount ==
+                  patch.domainIdentity.sourceSupportCount &&
+              firstPatch.domainIdentity.sourceComponent ==
+                  patch.domainIdentity.sourceComponent &&
+              firstPatch.domainIdentity.sourceSheet ==
+                  patch.domainIdentity.sourceSheet;
           conflict.classification =
-              SurfaceCellOwnershipConflictClass::CompletionTemplateOwnership;
+              sameSourceSupport
+                  ? SurfaceCellOwnershipConflictClass::
+                        SameCornerDistinctBoundaryClaim
+                  : SurfaceCellOwnershipConflictClass::
+                        CompletionTemplateOwnership;
         } else if (pure_quad_detail::same_unoriented_cycle(
                        firstOwner.stitchForward, firstOwner.stitchReversed,
                        secondOwner.stitchForward, secondOwner.stitchReversed)) {
@@ -1660,6 +1705,22 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
             std::to_string(firstOwner.completionVariant) +
             ";secondVariant=" +
             std::to_string(secondOwner.completionVariant) +
+            ";firstBoundaryNodeCount=" +
+            std::to_string(conflict.firstBoundaryNodeCount) +
+            ";secondBoundaryNodeCount=" +
+            std::to_string(conflict.secondBoundaryNodeCount) +
+            ";firstBoundaryHalfedgeCount=" +
+            std::to_string(conflict.firstBoundaryHalfedgeCount) +
+            ";secondBoundaryHalfedgeCount=" +
+            std::to_string(conflict.secondBoundaryHalfedgeCount) +
+            ";firstBoundaryVertexCount=" +
+            std::to_string(conflict.firstBoundaryVertexCount) +
+            ";secondBoundaryVertexCount=" +
+            std::to_string(conflict.secondBoundaryVertexCount) +
+            ";firstSideEdgeCounts=" +
+            pure_quad_detail::integer_list(conflict.firstSideEdgeCounts) +
+            ";secondSideEdgeCounts=" +
+            pure_quad_detail::integer_list(conflict.secondSideEdgeCounts) +
             ";firstCornerKinds=" +
             pure_quad_detail::identity_kind_list(
                 conflict.firstCornerIdentityKinds) +
