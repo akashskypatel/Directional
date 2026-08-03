@@ -1,0 +1,123 @@
+{
+  "schema": "directional.milestone-g.test-benchmark-summary.v1",
+  "phase": "P5",
+  "turn": "P5-TB15",
+  "date": "2026-08-03",
+  "review_policy": "never",
+  "artifact": {
+    "id": 8866222973,
+    "name": "surface-cell-p5-cb82-mixed-sheet-liveness-linux-release",
+    "digest": "sha256:c38649208b1586094f804895c39c1319b71eb0c5220e84d1d2514b04954c63fe",
+    "exact_source": "f4a6a392dc3d490efca4f94bd613aadaad2c1b01",
+    "source_status_bytes": 0,
+    "checksums_passed": 36,
+    "checksums_total": 36,
+    "fixture_files": 26,
+    "bunny_vertices": 502,
+    "bunny_faces": 1000,
+    "rebuilt": false
+  },
+  "tests": {
+    "focused_previous_failures": {"passed": 3, "failed": 10, "total": 13},
+    "focused_additional": {"passed": 3, "failed": 0, "total": 3},
+    "phase_14_to_18": {"passed": 230, "failed": 0, "total": 230},
+    "patch_descriptor_milestone_e": {"passed": 21, "failed": 3, "total": 24},
+    "p23_and_phase20": {"passed": 52, "failed": 2, "total": 54},
+    "milestone_d": {"passed": 6, "failed": 1, "total": 7},
+    "full_excluding_three_crash_tests": {"passed": 579, "failed": 10, "total": 589},
+    "complete_packaged_disposition": {
+      "passed": 579,
+      "assertion_failures": 10,
+      "signal_11": 3,
+      "total": 592
+    }
+  },
+  "fixed_since_tb14": [
+    "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
+    "MilestoneDClosure.PartialMultiEdgeInterfaceFailsClosed",
+    "MilestoneDClosure.CompleteInterfaceCommitsAndPreservesProtectedRails"
+  ],
+  "remaining_assertion_failures": [
+    "MilestoneGP26.PlaneAndMechanicalFixturesCompleteEndToEnd",
+    "MilestoneGP26.CylinderCompletesEndToEnd",
+    "MilestoneGP26.MultiFaceSeamCompletesEndToEnd",
+    "MilestoneGP26.TorusCompletesEndToEnd",
+    "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved",
+    "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+    "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse",
+    "PatchDescriptorMilestoneE.FailedSubdivisionReturnsBitExactCommittedComplex",
+    "SurfaceCellPipelinePhase20.LiveTracingConsumesAuthoritativeBoundaryAndHardFeatureRails",
+    "SurfaceCellPipelinePhase20.CylinderFixtureCompletesProductionOutput"
+  ],
+  "face_edges_random_bunny": {
+    "all_processes_terminated": true,
+    "structural_diagnostics_deterministic": true,
+    "all_successful": false,
+    "common_failure_code": "NotProductionReady",
+    "common_failure_stage": "completion",
+    "common_completion_failure": "BoundaryParityRepair:MixedCellSourceScope",
+    "trace_segments": 12130,
+    "arrangement_cells": 7405,
+    "simplified_cells": 7405,
+    "odd_cells_before_repair": 1860,
+    "odd_cells_after_rejected_repair": 0,
+    "patch_descriptors": 0,
+    "completed_patches": 0,
+    "completed_quads": 0,
+    "output_origin": "None",
+    "fallback_used": false,
+    "recovery_used": false,
+    "wall_seconds": [19.939944, 17.594136, 19.356339, 19.4208],
+    "peak_working_set_bytes": [137048064, 137109504, 137162752, 137039872],
+    "max_wall_seconds": 19.939944,
+    "mean_wall_seconds": 19.07780475,
+    "max_peak_working_set_bytes": 137162752,
+    "wall_limit_seconds": 39.228299,
+    "memory_limit_bytes": 1115394560,
+    "wall_gate_passed": true,
+    "memory_gate_passed": true,
+    "output_gate_passed": false,
+    "simplification": {
+      "generated_candidates": 3725,
+      "deduplicated_candidates": 0,
+      "invalidated_candidates": 2978,
+      "stale_generation_candidates": 0,
+      "frontier_generations": 5,
+      "peak_live_candidates": 747,
+      "evaluated_candidates": 762,
+      "committed": 4,
+      "rejected": 758,
+      "max_seconds": 9.721273
+    }
+  },
+  "smooth_field_crash_isolation": {
+    "exact_manifest_case_exit": 139,
+    "exact_manifest_case_json_produced": false,
+    "exact_manifest_case_elapsed_seconds": 8.71,
+    "exact_manifest_case_max_rss_kib": 40804,
+    "smooth_without_debug_exit": 139,
+    "face_edges_with_debug_exit": 0,
+    "injected_after_tracing_stage_3_exit": 0,
+    "injected_after_tracing_trace_segments": 80862,
+    "injected_after_tracing_trace_hash": "f2fe5aaec178f507",
+    "injected_after_strands_stage_4_exit": 139,
+    "isolated_stage": "strands",
+    "cause_dimension": "generated smooth field and 80862-segment trace graph; debug retention is not causal"
+  },
+  "resource_comparison_to_tb14": {
+    "max_wall_percent_change": -51.2769208902,
+    "max_peak_working_set_percent_change": -25.5381126034,
+    "max_simplification_seconds_percent_change": -68.2651307434
+  },
+  "memory_telemetry": {
+    "completion_current_structural_owned_bytes": 2200,
+    "completion_descriptor_owned_bytes": 1640,
+    "completion_assembly_owned_bytes": 360,
+    "completion_rollback_owned_bytes": 200,
+    "completion_side_rollback_undo_owned_bytes": 0,
+    "upstream_stage_owned_bytes_missing": true
+  },
+  "p5_closed": false,
+  "next_turn": "P5-CB83 through P5-CB90 code changes and compile-only build",
+  "pr": {"number": 8, "draft": true, "merged": false}
+}
