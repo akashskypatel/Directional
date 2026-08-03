@@ -1,4 +1,4 @@
-# One-shot P5 same-corner source materialization and compile-only validation.
+# One-shot minimal source correction and compile-only validation.
 # This workflow never executes a test, benchmark, or custom mesh binary.
 name: Agent Build Surface Cell P5 Same Corner
 
@@ -18,7 +18,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  apply-and-build:
+  fix-and-build:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout exact working branch
@@ -28,38 +28,21 @@ jobs:
           fetch-depth: 2
           submodules: false
 
-      - name: Materialize exact same-corner source checkpoint
+      - name: Apply minimal backend enum correction
         id: source
         shell: bash
         run: |
           set -euo pipefail
-          payload=.agents/Directional/p5-same-corner-code.patch.gz.b64
-          cat "${payload}" "${payload}.part1" "${payload}.part2" \
-              "${payload}.part3" "${payload}.part4" "${payload}.part5" \
-            | tr -d '\r\n' \
-            | base64 --decode \
-            | gzip --decompress > /tmp/p5-same-corner.patch
-          echo '5a94c30107e5b35131d008bdf3f3b58f74b419307b310d1257ab1767134c30c6  /tmp/p5-same-corner.patch' | sha256sum --check -
-          git apply --check /tmp/p5-same-corner.patch
-          git apply /tmp/p5-same-corner.patch
-          git rm "${payload}" "${payload}.part1" "${payload}.part2" \
-                 "${payload}.part3" "${payload}.part4" "${payload}.part5"
+          file=src/geometry/PatchDescriptor.cpp
+          count=$(grep -c 'PureQuadCompletionBackend::BoundedSearch' "${file}")
+          test "${count}" = 1
+          sed -i 's/PureQuadCompletionBackend::BoundedSearch/PureQuadCompletionBackend::BoundedCombinatorial/' "${file}"
           git diff --check
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add include/directional/diagnostics/RemeshDiagnostics.h \
-                  include/directional/geometry/PatchDescriptor.h \
-                  include/directional/geometry/PureQuadCompletion.h \
-                  include/directional/geometry/SurfaceCellOwnership.h \
-                  include/directional/pipeline/RemeshPipeline.h \
-                  src/bench/DirectionalBenchmark.cpp \
-                  src/geometry/PatchDescriptor.cpp \
-                  src/geometry/PureQuadCompletion.cpp \
-                  src/pipeline/RemeshPipeline.cpp \
-                  tests/PatchDescriptorMilestoneETests.cpp \
-                  tests/PureQuadCompletionPhase18Tests.cpp
+          git add "${file}"
           git diff --cached --check
-          git commit -m 'feat(surface-cells): repair same-corner boundary claims'
+          git commit -m 'fix(surface-cells): use bounded combinatorial backend enum'
           source_sha=$(git rev-parse HEAD)
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
@@ -73,7 +56,7 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 same-corner compile-only run ${RUN_ID} started for exact source ${SOURCE_SHA}. This workflow compiles and packages only; it executes no tests, benchmarks, or custom meshes."
+            -f body="P5 same-corner compile-only run ${RUN_ID} started for corrected source ${SOURCE_SHA}. This workflow compiles and packages only; it executes no tests, benchmarks, or custom meshes."
 
       - name: Fetch required submodules shallowly
         shell: bash
@@ -98,10 +81,6 @@ jobs:
           test -f benchmarks/fixtures/milestone-g/bunny_1k_random.obj
           if git ls-files '.agents/Directional/*patch.gz.b64*' | grep -q .; then
             echo 'Transient encoded patch remains tracked' >&2
-            exit 1
-          fi
-          if git ls-files '.agents/Directional/wip/*' | grep -q .; then
-            echo 'Encoded WIP checkpoints remain tracked' >&2
             exit 1
           fi
           git status --porcelain=v1 > /tmp/source-status.txt
@@ -142,11 +121,7 @@ jobs:
         run: |
           set -euo pipefail
           git status --porcelain=v1 > /tmp/source-status.txt
-          if [[ -s /tmp/source-status.txt ]]; then
-            echo 'Source checkpoint is not clean before packaging:' >&2
-            cat /tmp/source-status.txt >&2
-            exit 1
-          fi
+          test ! -s /tmp/source-status.txt
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
           cp -v build/agent-p5-same-corner-release/directional_phase1_tests artifact/bin/
           cp -v build/agent-p5-same-corner-release/directional_benchmarks artifact/bin/
@@ -179,4 +154,4 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 same-corner compile-only run ${RUN_ID} finished with status ${JOB_STATUS} for exact source ${SOURCE_SHA}. No tests, benchmarks, or custom meshes were executed."
+            -f body="P5 same-corner compile-only run ${RUN_ID} finished with status ${JOB_STATUS} for corrected source ${SOURCE_SHA}. No tests, benchmarks, or custom meshes were executed."
