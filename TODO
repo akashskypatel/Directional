@@ -46,6 +46,21 @@ Last updated: 2026-08-03
 - P5-CB98: compile-only gate passed for the four required targets; no binary was
   executed.
 
+## GitHub source synchronization
+
+- Verified target branch checkpoint: `7b4b699dac7567935f548a26a92336de5a496756`.
+- Workflow run `30863219431` reconstructed and checksum-verified the preserved
+  seven-file patch (`sha256:cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8`).
+- The workflow proved the patch contains exactly the seven declared source/test
+  paths and no `.github/workflows/**` path.
+- Three-way application resolved every file cleanly and produced no source diff
+  because all seven target blobs already matched the patch outputs exactly.
+- The other seven P5-CB98 implementation files also match the compiled local
+  source blobs, giving **14/14 exact implementation-file matches**.
+- Temporary transfer workflows and target-branch trigger markers were removed
+  through the GitHub connector; the workflow itself modified no workflow file.
+- The GitHub branch is now the direct source authority for P5-TB17.
+
 ## Compile-only result
 
 Built with Clang 17, Ninja, Release `-O2 -DNDEBUG`, GNU++20, static libraries,
