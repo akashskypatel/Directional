@@ -4,75 +4,75 @@ Last updated: 2026-08-02
 
 ## Active phase
 
-- Phase: P5 — direct-completion ownership remediation.
+- Phase: P5 — bounded same-corner structural repair.
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Base branch: `surface_cell_quad`.
-- Completed turn: **P5-TB8 test and benchmark without rebuilding**.
-- Next authoritative turn: **code changes + compile-only build**.
+- Completed turn: **code changes + compile-only build**.
+- Next authoritative turn: **P5-TB9 test and benchmark using artifact `8843206930` without rebuilding**.
 - Review policy: `never`.
 
-## Validated artifact
+## Exact bounded-repair checkpoint
 
-- Artifact: `8842377256` (`surface-cell-p5-same-corner-linux-release`).
-- Exact source: `1f4c3c2a014f0bc945b50f1bb5a837c438cec992`.
-- Digest: `sha256:669bf5d6f3e9b3738298b5985b6bb715668bce0715b0a68d880eb4aa0e80d6bc`.
-- Source status is empty and all ten packaged checksums pass.
-- No rebuild or implementation/test/benchmark/build-logic edit occurred in P5-TB8.
+- Exact implementation and compiled source: `bc95579be68d5de073de956022eec8fb89120ec0`.
+- Compile-only run: `30779430182` — **success**.
+- Job: `91581037642` — **success**.
+- Artifact: `8843206930` (`surface-cell-p5-bounded-repair-linux-release`).
+- Digest: `sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94`.
+- Build completed **131/131** steps.
+- Required targets compiled: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- Artifact source status is empty and all ten packaged checksums pass.
+- No test, benchmark, or custom mesh executable ran.
 
-## P5-TB8 test evidence
+## Implemented this turn
 
-| Scope | Passed | Failed |
-|---|---:|---:|
-| Corrected fixtures and focused ownership tests | 9 | 0 |
-| `PatchDescriptorMilestoneE.*` | 15 | 0 |
-| Phase 16 + Phase 18 | 89 | 0 |
-| Phase 14–18 aggregate | 229 | 0 |
-| Milestone G P23 + Phase 20 | 52 | 0 |
+- [x] Split recursive completion into a non-recursive completion pass and one invocation-owned transaction controller.
+- [x] Add global candidate, structural-attempt, inserted-vertex, full-pass, and exact visited-state budgets.
+- [x] Eliminate reset depth-local repair budgets and recursive candidate trees.
+- [x] Add collision-safe exact canonical repair-state deduplication.
+- [x] Keep one rollback complex and at most one mutable candidate complex live.
+- [x] Release rejected descriptor, patch-mesh, assembly, and candidate storage before continuing.
+- [x] Fail semantic-only same-corner overlap before candidate expansion.
+- [x] Commit structural repair only when assembly succeeds and the exact ownership claim count decreases to zero.
+- [x] Reject persistence of the original claim as `NoProgress`.
+- [x] Reject replacement ownership conflicts as `IntroducedOwnershipClaim`.
+- [x] Add typed overlap, repeated-state, validation, progress, and budget-exhaustion outcomes.
+- [x] Propagate the global ledger through pipeline diagnostics, semantic hashes, and benchmark JSON.
+- [x] Add whole-complex structural-repair, overlap, zero-budget, one-budget, and patch-order regression sources.
+- [x] Preserve all ownership, topology, provenance, source-support, geometry, component/sheet, and final duplicate validators.
+- [x] Introduce no final-face deduplication, positional merge, source-triangle pairing, source-grid recovery, fallback, patch-ID special case, or validator weakening.
 
-Authoritative non-overlapping total: **296/296 passed**.
+Full recomputation remains active because incremental equivalence has not been proven. It is globally bounded and explicitly reported; incremental recomputation remains zero.
 
-The generated-interior escape and two-odd-cell parity fixtures now pass for their intended scenarios.
+## Required P5-TB9 turn
 
-## Direct random-bunny disposition
+Use artifact `8843206930` directly and do not rebuild.
 
-Two independent direct processes used `SurfaceCells`, fallback `Fail`, recovery disabled, zero warmups, and one measured run. Both hit the 60-second guard before producing benchmark JSON:
-
-- run 1: 60.05 s, 2,740,543,488 B peak RSS;
-- run 2: 60.05 s, 2,740,506,624 B peak RSS;
-- mean peak at timeout: 2,740,525,056 B (2.552 GiB).
-
-A stage-7 injected run completed through simplification in 19.260599 s at 343,326,720 B with 21,298 arrangement and simplified cells. The production regression is therefore isolated to completion/ownership repair.
-
-The previous `8595/8573` claim cannot be declared removed or reclassified because completion did not terminate and emitted no terminal conflict record.
-
-## Diagnosis
-
-The recursive same-corner candidate path can branch at each depth, copy the full complex, and rerun parity, descriptor derivation, every patch completion, and assembly. Its limits are depth-local rather than one shared global work budget, and equivalent repair states are not memoized. The deterministic 60-second/2.74-GB behavior is a production-blocking completion-stage time and memory runaway.
-
-Test-integrity gap: current tests validate stitch-time `SameCornerDistinctBoundaryClaim` classification, but no test invokes `complete_surface_cell_complex()` and verifies bounded `BoundarySectorSubdivision` behavior or structural-attempt diagnostics.
-
-## Required next code/build turn
-
-Use `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md`.
-
-- [ ] Replace recursive candidate-tree expansion with one globally bounded deterministic repair ledger.
-- [ ] Add collision-safe canonical repair-state memoization.
-- [ ] Keep at most one candidate complex and rollback snapshot live at a time.
-- [ ] Require strict monotonic progress and prohibit replacing one ownership conflict with another.
-- [ ] Fail invalid overlap before candidate search.
-- [ ] Reuse unaffected descriptor/completion products where equivalence is provable.
-- [ ] Add real whole-complex structural-repair tests, budget tests, repeated-state tests, and diagnostics coverage.
-- [ ] Compile only the four required targets and run no tests, benchmarks, or custom meshes.
+- [ ] Verify exact source commit, empty source status, and all checksums.
+- [ ] Execute the five new whole-complex structural-repair and boundedness tests.
+- [ ] Run `PatchDescriptorMilestoneE.*`.
+- [ ] Run Phase 16 + Phase 18 and the full Phase 14–18 aggregate.
+- [ ] Run Milestone G P23 + Phase 20.
+- [ ] Run `bunny_1k_random.obj` in at least two independent direct processes with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
+- [ ] Require terminal success or a typed bounded fail-closed result without timeout.
+- [ ] Record candidate budget/consumption, structural attempts, inserted vertices, visited states, recomputation counts, live candidate counts, exhaustion reason, output origin, accepted quads, hashes, wall time, and peak memory.
+- [ ] Verify no recovery or legacy fallback.
+- [ ] Require peak memory ≤ 1,115,394,560 B.
+- [ ] Require wall time ≤ 39.228299 s unless a correctness-driven exception is independently reviewed.
 
 ## P5 closure conditions
 
-- [ ] Direct completion terminates and passes assembly without duplicate ownership.
-- [ ] Structural repair is exact, deterministic, globally bounded, conforming, and directly tested.
-- [ ] No recovery, fallback, final-face deduplication, positional ownership, source-triangle pairing, or patch-ID special case.
-- [ ] Runtime and memory return to acceptable production bounds.
+- [ ] Direct completion reaches a deterministic terminal result without timeout.
+- [ ] Direct completion passes assembly without duplicate ownership, or fails closed for an objectively invalid arrangement with complete typed evidence.
+- [ ] New whole-complex repair tests pass for their intended scenarios.
+- [ ] No fallback, recovery, final-face deduplication, positional ownership, source-triangle pairing, or patch-ID special case.
+- [ ] Runtime and memory satisfy the P5-TB9 gates.
 
 ## Authoritative evidence
 
-- `.agents/Directional/Milestone_G_P5_Structural_Repair_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md`
+- `.agents/Directional/Milestone_G_P5_Structural_Repair_Test_Benchmark_Report.md`
+- `benchmark-results/p5-cb33-summary.json`
 - `benchmark-results/p5-tb8-summary.json`
+
+P5 remains open. PR #8 remains draft and unmerged.
