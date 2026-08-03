@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "turn": "P5-TB7",
+  "artifact": {
+    "id": 8841726806,
+    "name": "surface-cell-p5-branch-linux-release",
+    "digest": "sha256:9b9bf5ad23640dfe049d416a0b81649c2e8a3d0353e1bff475fa6ea58155a681",
+    "sourceCommit": "053fe3816f585320e65526824f1107b8ccb1332d",
+    "rebuildPerformed": false,
+    "checksumsPassed": true,
+    "sourceStatusEmpty": true
+  },
+  "tests": {
+    "focused": {"passed": 5, "failed": 2},
+    "patchDescriptorMilestoneE": {"passed": 14, "failed": 1},
+    "phase16And18": {"passed": 86, "failed": 1},
+    "phase14Through18": {"passed": 226, "failed": 1},
+    "milestoneGP23AndPhase20": {"passed": 52, "failed": 0},
+    "authoritativeNonOverlappingTotals": {"passed": 292, "failed": 2},
+    "uniqueFailures": [
+      "PatchDescriptorMilestoneE.SharedEdgeParityRepairConforminglyCompletesTwoOddCells",
+      "PureQuadCompletionPhase18.CompletionRejectsGeneratedInteriorOutsidePatchSupport"
+    ]
+  },
+  "bunnyRuns": [
+    {
+      "run": 1,
+      "success": false,
+      "wallSeconds": 26.976277,
+      "peakWorkingSetBytes": 892391424,
+      "completionSeconds": 6.949674,
+      "arrangementCells": 21298,
+      "descriptorsAttempted": 21297,
+      "descriptorsCompleted": 21297,
+      "descriptorsFailed": 0,
+      "ownershipRepairAttempts": 4,
+      "requiredUnresolvedEndpoints": 0,
+      "acceptedQuads": 0,
+      "outputOrigin": "None"
+    },
+    {
+      "run": 2,
+      "success": false,
+      "wallSeconds": 25.328120,
+      "peakWorkingSetBytes": 892239872,
+      "completionSeconds": 6.000932,
+      "arrangementCells": 21298,
+      "descriptorsAttempted": 21297,
+      "descriptorsCompleted": 21297,
+      "descriptorsFailed": 0,
+      "ownershipRepairAttempts": 4,
+      "requiredUnresolvedEndpoints": 0,
+      "acceptedQuads": 0,
+      "outputOrigin": "None"
+    }
+  ],
+  "terminalConflict": {
+    "failureCode": "NotProductionReady",
+    "failureStage": "completion",
+    "classification": "completion-template",
+    "firstPatch": 8595,
+    "firstLocalQuad": 0,
+    "secondPatch": 8573,
+    "secondLocalQuad": 2,
+    "globalVertices": [10764, 16938, 27456, 27459],
+    "firstBackend": "closed-form",
+    "secondBackend": "closed-form",
+    "firstVariant": 0,
+    "secondVariant": 0,
+    "sameSourceSupport": true,
+    "sameCanonicalStitchCorners": true,
+    "sameCanonicalAuthoritativeCorners": true,
+    "differentDomainIdentity": true,
+    "differentBoundaryIdentity": true
+  },
+  "determinism": {
+    "fixtureHashMatched": true,
+    "terminalFailureMatched": true,
+    "countsMatched": true,
+    "contextProductHashesMatched": true,
+    "stageStructuralHashesMatched": true
+  },
+  "means": {
+    "wallSeconds": 26.152199,
+    "peakWorkingSetBytes": 892315648,
+    "completionSeconds": 6.475303
+  },
+  "comparisonsPercent": {
+    "baseline8838467442": {"wall": 13.80, "peakMemory": 19.07, "completion": 55.32},
+    "artifact8840174777": {"wall": -2.33, "peakMemory": -47.39, "completion": 2.48},
+    "artifact8840866875": {"wall": 5.30, "peakMemory": 2.24, "completion": 25.09}
+  },
+  "p5Closed": false,
+  "nextTurn": "code changes + compile-only build",
+  "reviewPolicy": "never"
+}
