@@ -1,0 +1,74 @@
+{
+  "schema": "directional.p5-code-build-summary.v1",
+  "date": "2026-08-03",
+  "phase": "P5",
+  "turn": "P5-CB91-P5-CB98",
+  "turn_type": "code-and-build",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "draft_pr": 8,
+  "review_policy": "never",
+  "implementation_commit": "34edce9e508fd81e28bbd6b68a064a2a57bacf03",
+  "source_status": "clean-except-untracked-external-snapshots",
+  "runtime_executed": false,
+  "implemented": {
+    "authoritative_parity_scope": true,
+    "typed_parity_failure": true,
+    "exact_completion_reuse_identity": true,
+    "reuse_mismatch_vector": true,
+    "invalid_midpoint_fixture": true,
+    "canonical_cylinder_fixture": true,
+    "first_invalid_output_producer": true,
+    "memory_ownership_timeline": true,
+    "benchmark_memory_serialization": true,
+    "regression_sources": true
+  },
+  "build": {
+    "generator": "Ninja",
+    "compiler": "Clang 17.0.0",
+    "build_type": "Release",
+    "cxx_standard": "gnu++20",
+    "build_shared_libs": false,
+    "unity_batch": 4,
+    "temporary_target_unity_batch": {
+      "directional_phase1_tests": 1,
+      "directional_benchmarks": 1,
+      "committed": false
+    },
+    "targets": {
+      "directional_core": "passed",
+      "directional_pipeline": "passed",
+      "directional_phase1_tests": "passed-not-executed",
+      "directional_benchmarks": "passed-not-executed"
+    },
+    "artifacts": [
+      {
+        "path": "libdirectional_core.a",
+        "bytes": 9295474,
+        "sha256": "b23bbb8658fd52970cd46f74732be2fec3ecf446046b1cb9d35ebbc8a4b2760e"
+      },
+      {
+        "path": "libdirectional_pipeline.a",
+        "bytes": 2879090,
+        "sha256": "9f4f90e739299d6a3c36cd7fc2681c88be1ff436175686882b974d23bd9fde60"
+      },
+      {
+        "path": "directional_phase1_tests",
+        "bytes": 10282632,
+        "sha256": "29b1b312be74d29553247e5e9a26e4c79c74a74de937efefb73274c383ceab1a"
+      },
+      {
+        "path": "directional_benchmarks",
+        "bytes": 5394400,
+        "sha256": "2cefa3896fdf24a9d40a2ee937f9b91312dd9dcb9a27cd816b6bec03925e6ece"
+      }
+    ]
+  },
+  "dependencies": {
+    "eigen": "769c72fd8019e389810d1de1e7c243521a43b594",
+    "googletest": "3940de91897160fea4815998e08d0fa3c2fb077e",
+    "polyscope": "59da72df6517cab8379865899bdffdbc96171301"
+  },
+  "next_turn": "P5-TB17-artifact-only-test-and-benchmark",
+  "runtime_status": "pending"
+}
