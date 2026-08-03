@@ -1,119 +1,144 @@
-# One-shot source synchronization for P5-CB98.
-# The workflow may modify only the seven declared source/test files.
-name: Agent Apply Surface Cell P5 CB98 Source Patch
+# Compile-only workflow for the clean P5-CB83 through P5-CB90 source checkpoint.
+# It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
+name: Agent Build Surface Cell P5 CB90
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/Directional/patches/P5_CB98_APPLY_READY
+      - CMakeLists.txt
+      - cmake/**
+      - include/**
+      - src/**
+      - tests/**
+      - benchmarks/**
       - .github/workflows/agent-build-recovered-p5.yml
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   issues: write
+  pull-requests: write
 
 concurrency:
-  group: agent-p5-cb98-source-sync-${{ github.ref }}
-  cancel-in-progress: false
+  group: agent-surface-cell-p5-cb90-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  apply:
+  build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout exact branch head
-        uses: actions/checkout@v4
-        with:
-          ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 0
-          persist-credentials: true
-
-      - name: Verify, apply, commit, and push source patch
-        shell: bash
+      - name: Record compile-only run start
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
           EVENT_SHA: ${{ github.sha }}
         run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5-CB83 through P5-CB90 compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes execute."
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Verify exact remote source
+        shell: bash
+        run: |
           set -euo pipefail
-          report_failure() {
-            status=$?
-            gh api repos/${{ github.repository }}/issues/8/comments \
-              -f body="P5-CB98 source synchronization workflow ${RUN_ID} failed for ${EVENT_SHA}. No workflow file was modified, staged, committed, or pushed by the workflow." >/dev/null 2>&1 || true
-            exit "${status}"
-          }
-          trap report_failure ERR
-
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source synchronization workflow ${RUN_ID} started for ${EVENT_SHA}. It is restricted to seven declared source/test files and will not modify, stage, commit, or push any workflow file."
-
-          test "$(git rev-parse HEAD)" = "${EVENT_SHA}"
+          local_sha=$(git rev-parse HEAD)
           remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
-          test "${remote_sha}" = "${EVENT_SHA}"
-          test -z "$(git status --porcelain=v1)"
+          test "${local_sha}" = "${remote_sha}"
+          echo "${local_sha}" > /tmp/source-commit.txt
 
-          root=.agents/Directional/patches
-          encoded=/tmp/p5-cb98.patch.gz.b64
-          compressed=/tmp/p5-cb98.patch.gz
-          patch=/tmp/p5-cb98.patch
-          expected=/tmp/p5-cb98.expected
-          actual=/tmp/p5-cb98.actual
+      - name: Fetch required submodules shallowly
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1
 
-          cat \
-            "${root}/p5-cb98-remaining.patch.gz.b64.part00" \
-            "${root}/p5-cb98-remaining.patch.gz.b64.part01" \
-            "${root}/p5-cb98-remaining.patch.gz.b64.part02" \
-            "${root}/p5-cb98-remaining.patch.gz.b64.part03" \
-            > "${encoded}"
-
-          printf '%s  %s\n' \
-            f41c94c0de85a1ab37a2b6cb8bfaa062623df482289c2f06eaf93bf2225512fb \
-            "${encoded}" | sha256sum --check
-          base64 --decode "${encoded}" > "${compressed}"
-          printf '%s  %s\n' \
-            ea4d16a2cef572c1ee8e245b88c51cdfe8ce780effa7b612cd5db2ad373da2e8 \
-            "${compressed}" | sha256sum --check
-          gzip --decompress --stdout "${compressed}" > "${patch}"
-          test "$(wc -c < "${patch}")" -eq 106126
-          printf '%s  %s\n' \
-            cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8 \
-            "${patch}" | sha256sum --check
-
-          printf '%s\n' \
-            src/bench/DirectionalBenchmark.cpp \
-            src/geometry/PatchDescriptor.cpp \
-            src/geometry/SurfaceArrangement.cpp \
-            src/geometry/SurfaceComplexSimplification.cpp \
-            src/pipeline/RemeshPipeline.cpp \
-            tests/PatchDescriptorMilestoneETests.cpp \
-            tests/SurfaceCellPipelinePhase20Tests.cpp \
-            > "${expected}"
-
-          git apply --numstat "${patch}" | cut -f3- | sort -u > "${actual}"
-          diff -u "${expected}" "${actual}"
-          ! grep -Eq '(^|/)\.github/workflows/' "${actual}"
-          ! grep -E '^(diff --git|--- |\+\+\+ )' "${patch}" | grep -F '.github/workflows/'
-
-          git apply --check "${patch}"
-          git apply "${patch}"
+      - name: Verify clean checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
           git diff --check
-          git diff --name-only | sort -u > "${actual}"
-          diff -u "${expected}" "${actual}"
-          test -z "$(git diff --name-only -- .github/workflows)"
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
 
-          git config user.name directional-agent
-          git config user.email directional-agent@users.noreply.github.com
-          xargs -d '\n' git add -- < "${expected}"
-          git diff --cached --name-only | sort -u > "${actual}"
-          diff -u "${expected}" "${actual}"
-          test -z "$(git diff --cached --name-only -- .github/workflows)"
+      - name: Configure clean optimized static build
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf build/agent-p5-cb90-release
+          mkdir -p build/agent-p5-cb90-release
+          cmake -S . -B build/agent-p5-cb90-release -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee build/agent-p5-cb90-release/configure.log
 
-          git commit -m 'fix(surface-cells): apply P5-CB98 remaining source patch'
-          applied_sha=$(git rev-parse HEAD)
-          git push origin HEAD:refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing
+      - name: Compile required targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmake --build build/agent-p5-cb90-release \
+            --target directional_core directional_pipeline directional_phase1_tests directional_benchmarks \
+            -j 4 2>&1 | tee build/agent-p5-cb90-release/build.log
 
-          trap - ERR
+      - name: Package exact compiled checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+          fixture_root=build/agent-p5-cb90-release/test-data/benchmarks/fixtures
+          test -f "${fixture_root}/manifest.example.json"
+          test -f "${fixture_root}/milestone_g_manifest.json"
+          test -f "${fixture_root}/repo_regressions.json"
+          test -f "${fixture_root}/milestone-g/bunny_1k_random.obj"
+          mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
+          cp build/agent-p5-cb90-release/directional_phase1_tests artifact/bin/
+          cp build/agent-p5-cb90-release/directional_benchmarks artifact/bin/
+          cp -a build/agent-p5-cb90-release/test-data artifact/bin/
+          cp build/agent-p5-cb90-release/libdirectional_core.a artifact/lib/
+          cp build/agent-p5-cb90-release/libdirectional_pipeline.a artifact/lib/
+          git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
+          cp /tmp/source-commit.txt artifact/source-commit.txt
+          cp /tmp/source-status.txt artifact/source-status.txt
+          git submodule status --recursive > artifact/submodule-status.txt
+          cp build/agent-p5-cb90-release/configure.log artifact/logs/
+          cp build/agent-p5-cb90-release/build.log artifact/logs/
+          find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 artifact/files.sha256
+
+      - name: Upload compiled checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-cb90-parity-flowrep-reuse-rail-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 6
+
+      - name: Record compile-only result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source synchronization workflow ${RUN_ID} finished success. Event commit: ${EVENT_SHA}. Applied source commit: ${applied_sha}. No workflow file was modified, staged, committed, or pushed by the workflow."
+            -f body="P5-CB83 through P5-CB90 compile-only run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, help/list commands, discovery commands, or custom meshes were executed."
