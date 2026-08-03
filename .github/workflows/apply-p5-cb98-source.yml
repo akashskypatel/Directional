@@ -8,6 +8,11 @@ on:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - '.agents/Directional/patches/P5_CB98_APPLY_READY'
+  pull_request:
+    branches:
+      - surface_cell_quad
+    types:
+      - synchronize
 
 concurrency:
   group: apply-p5-cb98-source-${{ github.ref }}
@@ -20,6 +25,7 @@ permissions:
 
 jobs:
   apply-source:
+    if: github.event_name == 'push' || github.event.pull_request.head.ref == 'agent/surface_cell_quad/p5-recover-bridge-healing'
     runs-on: ubuntu-24.04
     steps:
       - name: Record source transfer start
@@ -30,7 +36,7 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source transfer run ${RUN_ID} started for staging commit ${EVENT_SHA}. It applies only seven declared source/test files and does not modify, stage, commit, or push any workflow file."
+            -f body="P5-CB98 source transfer run ${RUN_ID} started for event commit ${EVENT_SHA}. It applies only seven declared source/test files and does not modify, stage, commit, or push any workflow file."
 
       - name: Checkout exact branch
         uses: actions/checkout@v4
@@ -118,4 +124,4 @@ jobs:
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB98 source transfer run ${RUN_ID} finished ${JOB_STATUS} for staging commit ${EVENT_SHA}. No workflow file was modified, staged, committed, or pushed by the workflow."
+            -f body="P5-CB98 source transfer run ${RUN_ID} finished ${JOB_STATUS} for event commit ${EVENT_SHA}. No workflow file was modified, staged, committed, or pushed by the workflow."
