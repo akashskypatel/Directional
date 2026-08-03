@@ -6,15 +6,14 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 
 ## Active checkpoint
 
-- Phase: P5 — bounded same-corner structural repair.
+- Phase: P5 — route-complete same-corner structural repair.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8.
-- Exact implementation and compiled source: `bc95579be68d5de073de956022eec8fb89120ec0`.
-- Compile-only run: `30779430182` — success.
-- Artifact: `8843206930` (`surface-cell-p5-bounded-repair-linux-release`).
+- Validated artifact: `8843206930`.
+- Exact source: `bc95579be68d5de073de956022eec8fb89120ec0`.
 - Digest: `sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94`.
-- Completed turn: P5-CB27 through P5-CB33 code changes + compile-only build.
-- Next turn: P5-TB9 artifact-only test and benchmark.
+- Completed turn: P5-TB9 artifact-only test and benchmark.
+- Next turn: code changes + compile-only build.
 - Review policy: `never`.
 
 ## Work phases
@@ -22,63 +21,92 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P0–P4 — reproducibility, diagnosis, singular traces, and regular-disk completion.
 - [ ] P5 — direct completion ownership remediation. **In progress**
 - [x] P5-CB1–P5-CB20 — canonical ownership, intrinsic support, diagnostics, and compaction.
-- [x] P5-TB7 — reach assembly and classify the deterministic `8595/8573` same-corner conflict.
-- [x] P5-CB21–P5-CB26 — same-corner classification, initial structural repair, corrected fixtures, and artifact `8842377256`.
-- [x] P5-TB8 — validate regressions and expose deterministic completion-stage resource runaway.
-- [x] P5-CB27 — replace recursive search with one global repair-work ledger.
-- [x] P5-CB28 — canonical exact repair-state deduplication and single-candidate memory discipline.
-- [x] P5-CB29 — strict success-only progress and fail-closed overlap/replacement-conflict routing.
-- [x] P5-CB30 — retain full recomputation where partial equivalence is unproven and bound it globally.
-- [x] P5-CB31 — add whole-complex structural-repair, overlap, budget, and order-invariance regression sources.
-- [x] P5-CB32 — expose candidate budget, state, recomputation, live-candidate, and exhaustion diagnostics.
-- [x] P5-CB33 — compile and package artifact `8843206930`.
-- [ ] P5-TB9 — validate artifact `8843206930` without rebuilding.
+- [x] P5-TB7 — reach assembly and classify deterministic same-corner ownership.
+- [x] P5-CB21–P5-CB26 — same-corner classification, initial structural repair, fixtures, and artifact `8842377256`.
+- [x] P5-TB8 — expose recursive completion-stage time and memory runaway.
+- [x] P5-CB27–P5-CB33 — global non-recursive ledger, exact state deduplication, bounded memory discipline, diagnostics, and artifact `8843206930`.
+- [x] P5-TB9 — verify bounded termination and identify single-interval repair insufficiency.
+- [ ] P5-CB34 — replace invalid structural fixtures with authoritative same-corner inputs.
+- [ ] P5-CB35 — route-complete candidate identity and deterministic route grouping.
+- [ ] P5-CB36 — atomic coupled-sector subdivision.
+- [ ] P5-CB37 — typed route progress and exhaustion semantics.
+- [ ] P5-CB38 — improve peak-memory safety margin.
+- [ ] P5-CB39 — route and owned-byte diagnostics/hashes.
+- [ ] P5-CB40 — compile corrected route-complete regression sources.
+- [ ] P5-CB41 — compile and package the route-complete checkpoint.
+- [ ] P5-TB10 — validate the route-complete artifact without rebuilding.
 - [ ] P6 — production topology/provenance/alignment/quality validation.
 - [ ] P7 — focused and full regression closure.
 - [ ] P8 — final bunny benchmark and production disposition.
 
-## Bounded structural-repair contract
+## P5-TB9 tests
 
-- One non-recursive completion pass and one invocation-owned transaction controller.
-- Global deterministic limits for candidate evaluations, structural attempts, inserted vertices, full completion passes, and exact visited states.
-- Collision-safe canonical repair-state equality; hashes remain diagnostic only.
-- One rollback complex and at most one live mutable candidate complex.
-- Rejected descriptor, patch, assembly, and candidate storage is released before continuing.
-- No geometrically distinct boundary route fails as typed same-corner overlap before search.
-- A structural candidate commits only when assembly succeeds and the ownership-claim count decreases to zero.
-- Persistent original claims fail as `NoProgress`.
-- Replacement ownership conflicts fail as `IntroducedOwnershipClaim`.
-- Repeated states and every global budget exhaustion are typed and fail closed.
-- Full recomputation is retained because incremental equivalence is unproven; it is globally bounded and separately reported.
-- No deduplication, positional merge, source-triangle pairing, fallback, recovery, validator weakening, or patch-ID special case.
+| Scope | Passed | Failed |
+|---|---:|---:|
+| New whole-complex structural subset | 2 | 3 |
+| `PatchDescriptorMilestoneE.*` | 17 | 3 |
+| Phase 16 + Phase 18 | 89 | 0 |
+| Phase 14–18 aggregate | 229 | 0 |
+| Milestone G P23 + Phase 20 | 52 | 0 |
 
-## Compile evidence
+Authoritative non-overlapping total: **298/301 passed**.
 
-- GCC 13.3.0 optimized static Release.
-- 131/131 build steps completed.
-- `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` linked.
-- Source status empty; 10/10 packaged checksums pass.
-- Packaged executables are Linux x86-64 ELF files and packaged libraries are valid static archives.
-- No tests, benchmarks, or custom meshes executed.
+The three failed tests use a fixture that assembles on the initial pass and never creates a same-corner conflict. The zero/one-budget and repair expectations are therefore invalid. The patch-order test also passes vacuously with an empty ledger. Correct the fixture; do not force production repair on successful assembly.
 
-## P5-TB9 requirements
+## Bounded production result
 
-1. Verify source commit, empty status, and all checksums.
-2. Execute all new whole-complex structural-repair tests.
-3. Run PatchDescriptor, Phase 16/18, Phase 14–18, and P23/Phase20 suites.
-4. Run at least two direct random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
-5. Require a terminal result without timeout.
-6. Record the complete deterministic global work ledger, output disposition, hashes, wall time, and peak memory.
-7. Verify no fallback or recovery.
-8. Require peak memory ≤ 1,115,394,560 B.
-9. Require wall time ≤ 39.228299 s unless a correctness-driven exception is independently reviewed.
+Two clean-exit random-bunny runs terminate below the formal limits:
+
+- 32.075226 s and 1,053,339,648 B;
+- 33.230250 s and 1,083,228,160 B.
+
+Two supplementary guarded probes produce identical completed JSON but peak near 1.242 GB. Memory compliance is not yet repeatably below the cap.
+
+Every completed record has the same terminal ledger:
+
+- initial exact same-corner claim: patches `4956/4954`;
+- candidate halfedges: `22706`, then `23112`;
+- candidate outcomes: `IntroducedOwnershipClaim`, `IntroducedOwnershipClaim`;
+- candidates/attempts: `2/2`;
+- inserted vertices: `2`;
+- visited states: `3`;
+- full/incremental passes: `3/0`;
+- peak live candidate complexes: `1`;
+- exhaustion: `candidate-budget`;
+- output origin/quads: `None / 0`;
+- fallback/recovery: `false / false`.
+
+The recursive runaway is fixed. Single-interval subdivision is insufficient: each candidate creates a replacement same-corner claim, and the controller correctly refuses to commit it.
+
+## Next code/build authority
+
+Use `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Plan.md`.
+
+Required implementation:
+
+1. construct real structural-repair test fixtures and assert the initial same-corner precondition;
+2. derive complete boundary routes between shared authoritative corners;
+3. represent a candidate as an exact interval set, not one halfedge;
+4. apply route-complete/coupled-sector subdivision atomically;
+5. preserve strict success-only commit and global budgets;
+6. add route identities, interval lists, affected domains, outcomes, and owned-byte diagnostics;
+7. reduce full-complex copy peaks and require repeatable memory compliance;
+8. compile only the four required targets;
+9. execute no tests, benchmarks, or custom meshes.
+
+## P5-TB10 gates
+
+- corrected route-complete and prior suites pass;
+- direct completion succeeds with nonempty pure-quad output;
+- at least two clean-exit deterministic random-bunny runs;
+- no timeout, fallback, or recovery;
+- wall ≤ 39.228299 s in every formal run;
+- peak memory ≤ 1,115,394,560 B in every formal and supplementary run.
 
 ## Evidence files
 
-- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_Structural_Repair_Test_Benchmark_Report.md`
-- `benchmark-results/p5-cb33-summary.json`
-- `benchmark-results/p5-tb8-summary.json`
+- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Plan.md`
+- `benchmark-results/p5-tb9-summary.json`
 
 P5 remains open. PR #8 remains draft and unmerged.
