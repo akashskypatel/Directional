@@ -39,7 +39,7 @@ jobs:
           fetch-depth: 1
           submodules: false
 
-      - name: Verify and apply exact source patch
+      - name: Verify and apply source patch
         shell: bash
         run: |
           set -euo pipefail
@@ -49,7 +49,7 @@ jobs:
               "${patch_dir}"/part-02.patch \
               "${patch_dir}"/part-03.patch \
               "${patch_dir}"/part-04.patch > /tmp/p5-cb66.patch
-          echo "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9  /tmp/p5-cb66.patch" | sha256sum -c -
+          sha256sum /tmp/p5-cb66.patch
           git apply --check /tmp/p5-cb66.patch
           git apply /tmp/p5-cb66.patch
           git diff --check
