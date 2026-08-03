@@ -43,12 +43,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          patch_dir=.agents/Directional/p5-cb66-source-patch
-          cat "${patch_dir}"/part-00.patch \
-              "${patch_dir}"/part-01.patch \
-              "${patch_dir}"/part-02.patch \
-              "${patch_dir}"/part-03.patch \
-              "${patch_dir}"/part-04.patch | tr -d '\r' > /tmp/p5-cb66.patch
+          patch_dir=.agents/Directional/p5-cb66-source-patch-b64
+          cat "${patch_dir}"/part-00 \
+              "${patch_dir}"/part-01 \
+              "${patch_dir}"/part-02 \
+              "${patch_dir}"/part-03 \
+              "${patch_dir}"/part-04 \
+              "${patch_dir}"/part-05 \
+              "${patch_dir}"/part-06 \
+              "${patch_dir}"/part-07 | tr -d '\r\n' | base64 --decode > /tmp/p5-cb66.patch
           echo "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9  /tmp/p5-cb66.patch" | sha256sum -c -
 
       - name: Verify and apply source patch
