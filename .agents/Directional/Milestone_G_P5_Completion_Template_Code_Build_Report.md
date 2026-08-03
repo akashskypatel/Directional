@@ -1,101 +1,93 @@
-# Milestone G P5 — Completion Ownership Code + Build Turn Report
+# Milestone G P5 — Completion Ownership and Source-Support Code + Build Report
 
 **Turn type:** Code changes + compile-only build  
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`  
-**Implementation commit:** `713eb310ec0afe6e2608cf3b0f3b8f6962b485e5`  
-**Exact compiled source commit:** `dcef9fbf65930b20db93128deb193f10702dc9c7`  
-**Workflow run:** `30771945124` — success  
-**Artifact:** `8840866875`, `surface-cell-p5-branch-linux-release`  
-**Artifact digest:** `sha256:d67a464b2f2c2f6d58bbb9fa15a0e87009176698f14d19a9054facfbcb97cd90`
+**Review policy:** `never`
 
-## Scope and assumptions
+## 1. Previous completion-ownership checkpoint
 
-This turn implemented the authoritative work packages in `Milestone_G_P5_Completion_Template_Code_Build_Plan.md`. The previous random-bunny diagnostic had ruled out duplicate-domain and overlapping-boundary ownership, but its false-merge versus completion-template classification was order-sensitive. This turn therefore repaired the ownership model and diagnostics before attempting any new runtime classification.
+- Implementation commit: `713eb310ec0afe6e2608cf3b0f3b8f6962b485e5`.
+- Exact compiled source: `dcef9fbf65930b20db93128deb193f10702dc9c7`.
+- Compile-only run: `30771945124` — success.
+- Artifact: `8840866875`.
+- Digest: `sha256:d67a464b2f2c2f6d58bbb9fa15a0e87009176698f14d19a9054facfbcb97cd90`.
 
-The turn intentionally executed no test, benchmark, or custom mesh binary. New and corrected test sources were compiled only. Runtime behavior remains unverified until the following test-and-benchmark turn uses artifact `8840866875` without rebuilding.
+That checkpoint added canonical completed-face ownership, false-merge versus completion-template classification, bounded completion variants, exact authoritative corner lineage, transactional duplicate validation, and compact ownership identities.
 
-## Implemented changes
+The following test-and-benchmark turn showed that its completion-domain proof was too strict for boundary points represented through an incident source-face chart. The deterministic random-bunny failure became `CompletionOwnershipSourceSupportEscape` before assembly.
 
-### Canonical completed-face ownership
+## 2. Source-support remediation scope
 
-- Added deterministic canonical quad cycles under cyclic rotation and reversed orientation.
-- Added exact stitch and source-authoritative corner identities to completed-face lineage.
-- Added completion backend, completion variant, boundary-only status, source patch, operation-local quad, local/global vertices, component/sheet scope, and canonical cycle hashes to ownership diagnostics.
-- Structural hashing now includes the expanded face-ownership and domain-count semantics.
-- Hashes remain diagnostics; exact identity records determine equality.
+The authoritative source-support turn implemented:
 
-### False-merge versus completion-template discrimination
+- a reusable intrinsic source-entity support resolver built once per completion invocation;
+- barycentric classification into face-interior, canonical source-edge, canonical source-vertex, or invalid support;
+- exact source topology for incident edge/vertex face support rather than positional adjacency;
+- boundary chart-alias acceptance only when intrinsic support intersects the descriptor's source-face support;
+- continued strict patch-local and stored-face confinement for generated interior vertices;
+- component/sheet compatibility where authoritative labels exist;
+- typed completion-ownership rejection details;
+- canonical unoriented serialization of conflict corners under rotation and reversal;
+- propagation of repair attempts and first ownership rejection through context products, diagnostics, semantic hashes, and benchmark JSON;
+- an explicit two-odd-cell parity fixture with shared interface and valid twin/cell incidence;
+- source-edge/source-vertex chart-alias regressions and strict source-support escape regressions.
 
-- Duplicate assembled quads now compare canonical stitch and source-authoritative cycles independently.
-- Equal compact stitch cycles with different authoritative cycles classify as false stitch equivalence.
-- Distinct domains with equal authoritative face ownership classify as completion-template ownership.
-- Duplicate-domain and overlapping-boundary classifications remain fail-closed.
-- The final `DuplicateStitchedQuad` validator remains transactional and active; no final-face deduplication was added.
+The implementation preserves exact boundary identities, duplicate-domain validation, overlapping-boundary validation, inconsistent-geometry rejection, and final transactional `DuplicateStitchedQuad` detection. No positional ownership, recovery, legacy fallback, final-face deduplication, or source-triangle pairing was added.
 
-### Completion-domain enforcement and repair
+## 3. Source checkpoints
 
-- Completion validates boundary ownership, generated-interior ownership, source support, and operation-local face ownership before assembly.
-- Added deterministic alternative completion variants for eligible completion backends.
-- Global completion may retry a bounded number of variants only for a proven completion-template conflict.
-- Recovery, legacy fallback, source-triangle pairing, and validator weakening were not introduced.
+- Intrinsic source-support implementation: `9f6d266436574c7ba797ca42407684700e603bb2`.
+- Minimal benchmark JSON key correction: `77d0a74177b9eed145c3055006ecfef7fc06de03`.
+- Exact compiled source: `053fe3816f585320e65526824f1107b8ccb1332d`.
 
-### Ownership compaction
+A first clean compile exposed four malformed benchmark JSON string literals introduced while adding the ownership diagnostic arrays. Only those literals were corrected before the final build. A separate one-shot workflow attempt configured successfully but failed because its log directory was not created before `tee`; it did not reveal a source defect and produced no artifact.
 
-- Exact variable-length ownership records are compacted into deterministic collision-free IDs after canonicalization.
-- Old vector capacity is released with `swap`, addressing the prior retained-capacity memory growth while preserving exact equality before compaction.
-- Domain identities retain explicit boundary-node, boundary-halfedge, and source-support counts to prevent ambiguous compact equality.
+## 4. Compile-only evidence
 
-### Test-source corrections and additions
-
-Compiled, but did not execute:
-
-- canonical cyclic/reversed completed-face ownership regression;
-- false stitch-equivalence classification regression;
-- completion-template classification and patch-order invariance regression;
-- corrected shared-edge parity fixture with a topology-valid shared interface;
-- corrected ambiguous-singularity fixture using distinct domains incident to the same singular source vertex;
-- corrected transactional partial-output fixture using distinct source support for valid and non-disk components.
-
-## Compile-only evidence
-
-The clean Release workflow configured with GCC 13.3.0 and compiled 131 build steps. Required targets completed successfully:
-
-- `directional_core`;
-- `directional_pipeline`;
-- `directional_phase1_tests`;
-- `directional_benchmarks`.
+- Workflow run: `30774730933` — **success**.
+- Artifact: `8841726806`, `surface-cell-p5-branch-linux-release`.
+- Artifact digest: `sha256:9b9bf5ad23640dfe049d416a0b81649c2e8a3d0353e1bff475fa6ea58155a681`.
+- Toolchain: GCC 13.3.0, Release, static libraries.
+- Build steps: **131/131 completed**.
+- Required targets:
+  - `directional_core` — compiled and linked;
+  - `directional_pipeline` — compiled and linked;
+  - `directional_phase1_tests` — compiled and linked;
+  - `directional_benchmarks` — compiled and linked.
 
 The build log explicitly compiled the modified production and regression sources, including:
 
 - `src/geometry/PatchDescriptor.cpp`;
 - `src/geometry/PureQuadCompletion.cpp`;
 - `src/pipeline/RemeshPipeline.cpp`;
+- `src/bench/DirectionalBenchmark.cpp`;
 - `tests/PatchDescriptorMilestoneETests.cpp`;
 - `tests/PureQuadCompletionPhase18Tests.cpp`.
 
 Artifact verification:
 
-- `source-commit.txt` is exactly `dcef9fbf65930b20db93128deb193f10702dc9c7`;
+- `source-commit.txt` is exactly `053fe3816f585320e65526824f1107b8ccb1332d`;
 - `source-status.txt` is empty;
-- all ten packaged file checksums pass;
+- all ten packaged checksums pass;
 - binaries are Linux x86-64 ELF executables;
 - libraries are valid static archives;
-- the exact source archive and submodule revisions are included.
+- exact source archive, configure/build logs, and recursive submodule revisions are included.
 
-No test, benchmark, or custom mesh command appears in the workflow. The binaries were compiled and packaged only.
+No test, benchmark, or custom mesh executable ran in this turn.
 
-## Status and handoff
+## 5. Status and handoff
 
-P5 remains open. The implementation is compile-valid, but the authoritative runtime result is not yet known.
+P5 remains open. Compilation proves source validity only; it does not establish runtime correctness.
 
-The next authoritative turn is **test and benchmark**, using artifact `8840866875` without rebuilding. It must:
+The next authoritative turn is **test and benchmark using artifact `8841726806` without rebuilding**. It must:
 
-1. run the new ownership discriminator regressions;
+1. run intrinsic source-support and canonical conflict-diagnostic regressions;
 2. run corrected `PatchDescriptorMilestoneE.*`;
 3. run `SurfaceArrangementPhase16.*` and `PureQuadCompletionPhase18.*`;
-4. run the Phase 14–18 aggregate plus Milestone G P23 and Phase 20 suites;
+4. run the Phase 14–18 aggregate plus Milestone G P23 and Phase 20;
 5. run `bunny_1k_random.obj` at least twice with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled;
-6. record the definitive ownership classification, repair attempts, descriptor/endpoint counts, structural hashes, runtime, and peak memory;
-7. compare performance with artifacts `8838467442` and `8840174777` on the same machine.
+6. report typed ownership rejection, repair attempts, descriptor/endpoint counts, output origin, accepted quads, and all structural hashes;
+7. determine whether assembly reaches, resolves, or reclassifies the previous patches `378/394` conflict;
+8. compare same-machine runtime and peak memory with artifacts `8838467442`, `8840174777`, and `8840866875`.
 
-PR #8 remains draft and unmerged. Review is skipped by project policy.
+PR #8 remains draft and unmerged.
