@@ -11,6 +11,12 @@
 
 P5-CB91 through P5-CB98 are implemented in source commit
 `34edce9e508fd81e28bbd6b68a064a2a57bacf03` and passed the compile-only gate.
+GitHub source synchronization was verified at branch checkpoint
+`7b4b699dac7567935f548a26a92336de5a496756`: workflow run `30863219431` reconstructed the exact preserved
+patch, proved its seven-file non-workflow scope, applied all files cleanly by
+three-way merge, and observed no diff because the branch already contained the
+expected output blobs. All 14 implementation files match the compiled source
+exactly. The branch is the direct source authority for P5-TB17.
 P5 remains open because the new runtime contracts have not been executed.
 
 Last runtime evidence is P5-TB16 on exact source
@@ -73,6 +79,17 @@ Clang 17 + Ninja + Release `-O2 -DNDEBUG` compiled and linked exactly:
 No binary, test, benchmark, custom mesh, help/list, or discovery command was
 executed. Test and benchmark targets temporarily used unity batch 1 to avoid
 pre-existing anonymous-namespace collisions; the CMake edit was removed.
+
+## Source synchronization lessons
+
+- Normal `git apply` can reject a patch that is already present because its old
+  context no longer matches; verify expected output blobs before treating this
+  as a missing-source failure.
+- `git apply --3way` stages successful results directly. Validate with
+  `git diff --cached`, not only the unstaged diff.
+- Source-transfer workflows must derive and compare the exact allowed path set,
+  reject `.github/workflows/**`, and stage only the declared source/test files.
+- Workflow-file creation, restoration, and deletion must remain connector-side.
 
 ## Required next turn
 
