@@ -13,6 +13,9 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Current implementation source:
   `34edce9e508fd81e28bbd6b68a064a2a57bacf03`.
 - Completed turn: P5-CB91 through P5-CB98 code changes + compile-only build.
+- GitHub source synchronization verified at branch checkpoint
+  `7b4b699dac7567935f548a26a92336de5a496756`; all 14 implementation files
+  match the compiled local source blobs exactly.
 - Next turn: P5-TB17 artifact-only test and benchmark.
 
 ## Work phases
@@ -34,8 +37,23 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P5-CB96 — complete stage-owned memory accounting and timeline.
 - [x] P5-CB97 — regression sources.
 - [x] P5-CB98 — compile-only build/package gate.
+- [x] P5-CB98-SYNC — workflow reconstructed and verified the exact seven-file
+      non-workflow patch; the branch already contained all patch outputs, and
+      14/14 implementation blobs match the compiled source.
 - [ ] P5-TB17 — artifact-only closure validation.
 - [ ] P6–P8 — final validation, regression closure, and production disposition.
+
+## GitHub source synchronization evidence
+
+- Verified branch checkpoint: `7b4b699dac7567935f548a26a92336de5a496756`.
+- Workflow run: `30863219431`.
+- Patch SHA-256: `cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8`.
+- Exact patch scope: seven declared source/test files; zero workflow paths.
+- Three-way application: all seven files clean; no resulting diff because the
+  branch blobs already equal the patch outputs.
+- Full P5-CB98 implementation parity: **14/14 exact blob matches**.
+- Temporary target-branch workflows and trigger markers removed by connector.
+- PR #8 remains open, draft, and unmerged.
 
 ## P5-TB16 runtime baseline
 
