@@ -9,61 +9,51 @@
 
 ## Current checkpoint
 
-P5-TB12 tested artifact `8852049639` directly without rebuilding. P5 remains open.
+P5-CB59 through P5-CB66 implemented rollback-integrity, result, reuse, lifetime-isolation, and regression changes, then completed a compile-only build. P5 remains open.
 
-- Exact source: `0980c0912a2538314bb6bbb77dc7d4dbbcea5bc5`.
-- Digest: `sha256:aeab9fc7d38dc65a29fec04a5635d8d63cbef46d7c872dbc17e46b26f3aaa34e`.
-- Source status empty; checksums **36/36**.
-- Authoritative P5 tests: **296/305 passed**.
-- Full packaged binary: **566/580 passed**, with 12 assertion failures and 2 deterministic SIGSEGVs.
-- Four random-bunny processes failed closed before descriptors.
-- Wall range: **32.390061–33.018193 s**.
-- Maximum peak working set: **158,949,376 B**, an **83.03%** reduction from P5-TB11's `936,484,864 B`.
-- Next turn: **P5-CB59 through P5-CB66 code changes + compile-only build**.
-
-The measured memory reduction is not successful-path evidence because every production process terminated at completion with zero descriptors and zero output quads.
+- Implementation: `4dcba533915aad116824f5e47e91a47a440e7718`.
+- Exact compiled source: `074ec5d125b531db03fcfbda9d6d3654bfc696b7`.
+- Run / job: `30824384650` / `91722103206` — success.
+- Artifact: `8860409984` (`surface-cell-p5-cb66-rollback-integrity-linux-release`).
+- Digest: `sha256:37c04eaa694a87ed9ab4f48b2123b54f52c0a0d16d8fb9672d367ebdfdbfcee3`.
+- Build **131/131**; source status empty; checksums **36/36**; fixture files **26**.
+- No executable ran.
+- Next turn: **P5-TB13 artifact-only test and benchmark**.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB12_Memory_Frontier_Test_Benchmark_Report.md`
+3. `.agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Report.md`
 4. `.agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb12-summary.json`
-6. `.agents/Directional/Milestone_G_P5_Memory_Bounded_Frontier_Code_Build_Report.md`
-7. `benchmark-results/p5-cb58-summary.json`
+5. `benchmark-results/p5-cb66-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB12_Memory_Frontier_Test_Benchmark_Report.md`
+7. `benchmark-results/p5-tb12-summary.json`
 
-## Primary production blocker
+## Implemented contracts to validate
 
-All four authoritative random-bunny processes fail identically:
+- Rejected subdivision and side-repair transactions restore the exact committed complex through a compact undo log and expose before/after identity hashes plus `rollbackEquivalent`.
+- Permitted general-completion handoff requires rollback equivalence.
+- Inserted nodes preserve source-face support, component, sheet, rail, and hard-barrier identity.
+- An initially successful assembly finalizes directly with descriptors, completed patches, quads, and no failure.
+- Failures preserve compact descriptors and typed diagnostics while releasing heavy geometry.
+- `SameCornerDistinctBoundaryOverlap:` remains typed.
+- Exact product reuse ignores allocation-local compact IDs but retains semantic dependencies.
+- Explicit simplification transactions do not append unrelated recomputed candidates.
+- P26/P27 cases are independently attributable and returned-result ownership is tested after temporary input destruction.
 
-```text
-InvalidArrangementDomainIdentity;firstPatch=2;secondPatch=-1
-```
-
-P5-CB58 changed completion ownership so the canonical parity-repaired complex is moved into side repair. On a permitted side-repair failure, the path now uses `sideRepair.complex` as rollback state. Previously it retained `parityRepair.complex` and never exposed an uncommitted side-repair trial.
-
-The exact source diff, descriptor-empty regressions, and deterministic domain failure strongly indicate that a partially mutated side-repair candidate is escaping as the prepared complex. Treat this as the leading diagnosis to verify and correct, not as a completed proof.
-
-Two additional blockers remain:
-
-- exact product reuse is still zero in fixtures with unaffected completion products;
-- `MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback` and `MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition` each terminate with signal 11 when run alone.
+None of these runtime outcomes is yet proven by this compile-only turn.
 
 ## Required next turn
 
-Implement P5-CB59 through P5-CB66 from the rollback-integrity plan.
+Use artifact `8860409984` directly from an arbitrary extraction path without rebuilding.
 
-Priorities:
-
-1. Give side repair an explicit exact rollback transaction contract without retaining two simultaneous full complexes.
-2. Restore valid arrangement-domain identity and descriptor production.
-3. Complete exact dependency-based reuse for genuinely unaffected patches.
-4. Isolate every production manifest case and eliminate moved-from/dangling result or context lifetime errors causing the two SIGSEGVs.
-5. Restore typed semantic overlap, authoritative rail/paired-boundary proof, and Milestone D interface/topology behavior.
-6. Preserve the memory-lifetime improvements and extend owned-byte diagnostics to the successful completion path.
-
-Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. Run no test, benchmark, custom mesh, compiled binary, help/list command, or test discovery.
+1. Verify exact source, empty status, all checksums, fixture closure, binaries, libraries, logs, source archive, and submodules.
+2. Run focused rollback, descriptor, reuse, semantic-overlap, simplification, lifetime, and matrix-isolation tests.
+3. Run all prior authoritative P5 suites, Milestone D, and the full packaged binary. The former P26/P27 signal-11 cases must terminate normally alone and in-suite.
+4. Run two formal and two supplementary fresh `bunny_1k_random.obj` processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
+5. Require authoritative descriptors, deterministic zero-conflict nonempty pure-quad output, valid lineage/provenance, no fallback/recovery, and positive unaffected-product reuse where expected.
+6. Require wall `<= 39.228299 s` and peak memory `<= 1,115,394,560 B` in every process. Compare successful-path RSS with P5-TB12's early-failure maximum `158,949,376 B` and explain the difference using owned-byte diagnostics.
 
 Preserve all prohibitions: no final-face deduplication, positional merge, source-triangle pairing, fallback, recovery, validator weakening, arbitrary subset search, or production ID special case.
 
