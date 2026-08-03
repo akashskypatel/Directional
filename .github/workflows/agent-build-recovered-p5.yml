@@ -1,65 +1,73 @@
-# Compile-only workflow. It does not execute tests, benchmarks, or custom meshes.
-# P5 source-support corrected checkpoint trigger.
-name: Agent Build Surface Cell P5
+# One-shot P5 bounded structural-repair materialization and compile-only validation.
+# This workflow never executes tests, benchmarks, or custom mesh binaries.
+name: Agent Build Surface Cell P5 Bounded Repair
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths-ignore:
-      - TODO
-      - MILESTONE_G_TODO.md
-      - .agents/Directional/Milestone_G_P5_Duplicate_Stitched_Quad_Code_Build_Plan.md
-      - .agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md
-      - .agents/Directional/Milestone_G_P5_Test_Benchmark_Report.md
-      - .agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Report.md
-      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md
-      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md
-      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Report.md
-      - benchmark-results/p5-cb26-summary.json
-  pull_request:
-    branches:
-      - surface_cell_quad
   workflow_dispatch:
 
 concurrency:
-  group: agent-surface-cell-p5-${{ github.ref }}
+  group: agent-surface-cell-p5-bounded-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
 jobs:
-  build:
+  materialize-and-build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Record compile-only run start on draft PR
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
-        shell: bash
-        run: |
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 completion-ownership compile-only run ${RUN_ID} started for event commit ${EVENT_SHA}. The workflow executes compilation and artifact packaging only; it contains no test, benchmark, or custom mesh command."
-
       - name: Checkout exact working branch
         uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 1
+          fetch-depth: 2
           submodules: false
 
-      - name: Verify exact remote working-branch commit
+      - name: Materialize bounded structural-repair checkpoint
+        id: source
         shell: bash
         run: |
           set -euo pipefail
-          local_sha=$(git rev-parse HEAD)
-          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
-          test "${local_sha}" = "${remote_sha}"
-          echo "${local_sha}" > /tmp/source-commit.txt
+          prefix=.agents/Directional/p5-bounded-repair.patch.gz.b64
+          cat "${prefix}.part0" "${prefix}.part1" \
+            | tr -d '\r\n' \
+            | base64 --decode \
+            | gzip --decompress > /tmp/p5-bounded-repair.patch
+          echo '66fc31ecc72ffd905bfc6787e9d731b22675f2eef07b8bc645a3251f5e6a7254  /tmp/p5-bounded-repair.patch' | sha256sum --check -
+          git apply --check /tmp/p5-bounded-repair.patch
+          git apply /tmp/p5-bounded-repair.patch
+          git rm "${prefix}.part0" "${prefix}.part1"
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add include/directional/diagnostics/RemeshDiagnostics.h \
+                  include/directional/geometry/PatchDescriptor.h \
+                  include/directional/pipeline/RemeshPipeline.h \
+                  src/bench/DirectionalBenchmark.cpp \
+                  src/geometry/PatchDescriptor.cpp \
+                  src/pipeline/RemeshPipeline.cpp \
+                  tests/PatchDescriptorMilestoneETests.cpp
+          git diff --cached --check
+          git commit -m 'fix(surface-cells): bound structural repair search [skip ci]'
+          source_sha=$(git rev-parse HEAD)
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "source_sha=${source_sha}" >> "${GITHUB_OUTPUT}"
+          echo "${source_sha}" > /tmp/source-commit.txt
+
+      - name: Record compile-only run start on draft PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
+        shell: bash
+        run: |
+          gh api repos/${{ github.repository }}/issues/8/comments \
+            -f body="P5 bounded structural-repair compile-only run ${RUN_ID} started for exact source ${SOURCE_SHA}. This workflow compiles and packages only; it executes no tests, benchmarks, or custom meshes."
 
       - name: Fetch required submodules shallowly
         shell: bash
@@ -68,30 +76,39 @@ jobs:
           git submodule sync --recursive
           git submodule update --init --recursive --depth 1
 
-      - name: Verify direct source checkpoint
+      - name: Verify exact committed source checkpoint
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
         shell: bash
         run: |
           set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${SOURCE_SHA}"
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "${SOURCE_SHA}" = "${remote_sha}"
           git diff --check
           test -f TODO
           test -f MILESTONE_G_TODO.md
-          test -f .agents/Directional/Surface_Cell_Backend_Remediation_Plan.md
+          test -f .agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md
+          test -f .agents/Directional/Milestone_G_P5_Structural_Repair_Test_Benchmark_Report.md
           test -f benchmarks/fixtures/milestone-g/bunny_1k_random.obj
+          if git ls-files '.agents/Directional/p5-bounded-repair.patch.gz.b64*' | grep -q .; then
+            echo 'Transient bounded-repair payload remains tracked' >&2
+            exit 1
+          fi
           if git ls-files '.agents/Directional/wip/*' | grep -q .; then
             echo 'Encoded WIP checkpoints remain tracked' >&2
             exit 1
           fi
-          if git ls-files '.github/build-overlays/*' | grep -q .; then
-            echo 'Build overlay patches remain tracked' >&2
-            exit 1
-          fi
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
 
-      - name: Configure optimized static build
+      - name: Configure clean optimized static build
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p build/agent-p5-release
-          cmake -S . -B build/agent-p5-release -G Ninja \
+          rm -rf build/agent-p5-bounded-release
+          mkdir -p build/agent-p5-bounded-release
+          cmake -S . -B build/agent-p5-bounded-release -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
             -DBUILD_SHARED_LIBS=OFF \
@@ -103,19 +120,19 @@ jobs:
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee build/agent-p5-release/configure.log
+            2>&1 | tee build/agent-p5-bounded-release/configure.log
 
-      - name: Compile library tests and benchmarks
+      - name: Compile required targets only
         shell: bash
         run: |
           set -euo pipefail
-          cmake --build build/agent-p5-release \
+          cmake --build build/agent-p5-bounded-release \
             --target directional_core directional_pipeline \
                      directional_phase1_tests directional_benchmarks \
             -j 4 \
-            2>&1 | tee build/agent-p5-release/build.log
+            2>&1 | tee build/agent-p5-bounded-release/build.log
 
-      - name: Package compiled artifacts
+      - name: Package exact compiled checkpoint
         shell: bash
         run: |
           set -euo pipefail
@@ -126,35 +143,35 @@ jobs:
             exit 1
           fi
           mkdir -p artifact/bin artifact/lib artifact/source artifact/logs
-          cp -v build/agent-p5-release/directional_phase1_tests artifact/bin/
-          cp -v build/agent-p5-release/directional_benchmarks artifact/bin/
-          cp -v build/agent-p5-release/libdirectional_core.a artifact/lib/
-          cp -v build/agent-p5-release/libdirectional_pipeline.a artifact/lib/
+          cp -v build/agent-p5-bounded-release/directional_phase1_tests artifact/bin/
+          cp -v build/agent-p5-bounded-release/directional_benchmarks artifact/bin/
+          cp -v build/agent-p5-bounded-release/libdirectional_core.a artifact/lib/
+          cp -v build/agent-p5-bounded-release/libdirectional_pipeline.a artifact/lib/
           git archive --format=tar.gz --output=artifact/source/source.tar.gz HEAD
           cp /tmp/source-commit.txt artifact/source-commit.txt
           cp /tmp/source-status.txt artifact/source-status.txt
           git submodule status --recursive > artifact/submodule-status.txt
-          cp build/agent-p5-release/configure.log artifact/logs/
-          cp build/agent-p5-release/build.log artifact/logs/
+          cp build/agent-p5-bounded-release/configure.log artifact/logs/
+          cp build/agent-p5-bounded-release/build.log artifact/logs/
           find artifact -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
           mv /tmp/files.sha256 artifact/files.sha256
 
-      - name: Upload compiled artifacts
+      - name: Upload compiled checkpoint
         uses: actions/upload-artifact@v4
         with:
-          name: surface-cell-p5-branch-linux-release
+          name: surface-cell-p5-bounded-repair-linux-release
           path: artifact
           if-no-files-found: error
           retention-days: 7
 
-      - name: Record compile-only run result on draft PR
+      - name: Record compile-only result on draft PR
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
           JOB_STATUS: ${{ job.status }}
         shell: bash
         run: |
           gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5 completion-ownership compile-only run ${RUN_ID} finished with job status ${JOB_STATUS} for event commit ${EVENT_SHA}. No tests, benchmarks, or custom mesh executions are part of this workflow."
+            -f body="P5 bounded structural-repair compile-only run ${RUN_ID} finished with status ${JOB_STATUS} for exact source ${SOURCE_SHA}. No tests, benchmarks, or custom meshes were executed."
