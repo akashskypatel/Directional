@@ -1642,7 +1642,7 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ownershipRejection.completionVariant << ","
       << "\"completionOwnershipStoredFace\":"
       << ownershipRejection.storedFace << ","
-      << "\"completionOwnershipBarycentric":["
+      << "\"completionOwnershipBarycentric\":["
       << ownershipRejection.barycentric(0) << ","
       << ownershipRejection.barycentric(1) << ","
       << ownershipRejection.barycentric(2) << "],"
@@ -1652,21 +1652,21 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\","
       << "\"completionOwnershipSourceVertex\":"
       << ownershipRejection.sourceVertex << ","
-      << "\"completionOwnershipSourceEdge":["
+      << "\"completionOwnershipSourceEdge\":["
       << ownershipRejection.sourceEdge[0] << ","
       << ownershipRejection.sourceEdge[1] << "],"
       << "\"completionOwnershipComponent\":"
       << ownershipRejection.sourceComponent << ","
       << "\"completionOwnershipSheet\":"
       << ownershipRejection.sourceSheet << ","
-      << "\"completionOwnershipCandidateFaces":[";
+      << "\"completionOwnershipCandidateFaces\":[";
   for (std::size_t faceIndex = 0;
        faceIndex < ownershipRejection.candidateSupportedFaces.size();
        ++faceIndex) {
     if (faceIndex > 0U) out << ",";
     out << ownershipRejection.candidateSupportedFaces[faceIndex];
   }
-  out << "],\"completionOwnershipPatchFaces":[";
+  out << "],\"completionOwnershipPatchFaces\":[";
   for (std::size_t faceIndex = 0;
        faceIndex < ownershipRejection.patchSourceFaces.size(); ++faceIndex) {
     if (faceIndex > 0U) out << ",";
