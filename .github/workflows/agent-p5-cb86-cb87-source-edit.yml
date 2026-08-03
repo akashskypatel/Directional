@@ -2,10 +2,9 @@ name: Agent P5 CB86-CB87 source edit
 
 on:
   push:
-    branches:
-      - agent/surface_cell_quad/p5-recover-bridge-healing
-    paths:
-      - .github/workflows/agent-p5-cb86-cb87-source-edit.yml
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.github/workflows/agent-p5-cb86-cb87-source-edit.yml]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,98 +15,68 @@ jobs:
   edit:
     runs-on: ubuntu-latest
     steps:
-      - name: Record edit start
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          EVENT_SHA: ${{ github.sha }}
-        run: |
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB86/87 source-edit run ${RUN_ID} started for ${EVENT_SHA}. Source and regression edits only; no project binary, test, benchmark, help/list, discovery, or custom mesh command."
-
       - uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
           fetch-depth: 1
-          submodules: false
-
-      - name: Preserve authoritative rail records and repair fixtures
+      - name: Apply source changes only
+        shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
 
-          arrangement_path = Path("src/geometry/SurfaceArrangement.cpp")
-          arrangement = arrangement_path.read_text()
-          anchor = """  for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-    std::sort("""
-          replacement = """  // Rebind rail records by immutable source-arc identity before
-  // selecting each oriented halfedge's primary provenance. This is an exact
-  // lineage repair: no positional or nearest-edge inference is permitted.
-  std::map<int, const SurfaceArrangementArc *> authoritativeArcsById;
+          def one(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{label}: expected 1 match, found {count}")
+              return text.replace(old, new, 1)
+
+          path = Path('src/geometry/SurfaceArrangement.cpp')
+          text = path.read_text()
+          old = "  for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {\n    std::sort("
+          new = """  // Restore authoritative rail lineage by immutable source-arc identity
+  // before primary provenance selection; never infer it from geometry.
+  std::map<int, const SurfaceArrangementArc *> railArcs;
   for (const SurfaceArrangementArc &arc : inputArcs) {
-    if (arc.id >= 0 && arc.railId >= 0) {
-      authoritativeArcsById.emplace(arc.id, &arc);
-    }
+    if (arc.id >= 0 && arc.railId >= 0) railArcs.emplace(arc.id, &arc);
   }
-  const auto restore_authoritative_rail =
-      [&](SurfaceArrangementProvenance &value) {
-        if (value.railId >= 0 || value.sourceArc < 0) {
-          return;
-        }
-        const auto found = authoritativeArcsById.find(value.sourceArc);
-        if (found == authoritativeArcsById.end()) {
-          return;
-        }
-        const SurfaceArrangementArc &arc = *found->second;
-        value.railId = arc.railId;
-        value.curveId = arc.curveId;
-        value.hardFeature = value.hardFeature || arc.hardFeature;
-        value.featureClass = arc.featureClass;
-        if (value.sourceComponent < 0) {
-          value.sourceComponent = arc.sourceComponent;
-        }
-        if (value.sourceSheet < 0) {
-          value.sourceSheet = arc.sourceSheet;
-        }
-        const double railRange = arc.railT1 - arc.railT0;
-        value.railT0 = arc.railT0 + value.sourceT0 * railRange;
-        value.railT1 = arc.railT0 + value.sourceT1 * railRange;
-      };
+  const auto restoreRail = [&](SurfaceArrangementProvenance &p) {
+    if (p.railId >= 0 || p.sourceArc < 0) return;
+    const auto found = railArcs.find(p.sourceArc);
+    if (found == railArcs.end()) return;
+    const SurfaceArrangementArc &arc = *found->second;
+    p.railId = arc.railId;
+    p.curveId = arc.curveId;
+    p.hardFeature = p.hardFeature || arc.hardFeature;
+    p.featureClass = arc.featureClass;
+    if (p.sourceComponent < 0) p.sourceComponent = arc.sourceComponent;
+    if (p.sourceSheet < 0) p.sourceSheet = arc.sourceSheet;
+    const double range = arc.railT1 - arc.railT0;
+    p.railT0 = arc.railT0 + p.sourceT0 * range;
+    p.railT1 = arc.railT0 + p.sourceT1 * range;
+  };
   for (SurfaceArrangementNode &node : complex.nodes) {
-    for (SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-      if (occurrence.railId >= 0 || occurrence.sourceArc < 0) {
-        continue;
-      }
-      const auto found = authoritativeArcsById.find(occurrence.sourceArc);
-      if (found == authoritativeArcsById.end()) {
-        continue;
-      }
+    for (SurfaceArrangementNodeOccurrence &p : node.occurrences) {
+      if (p.railId >= 0 || p.sourceArc < 0) continue;
+      const auto found = railArcs.find(p.sourceArc);
+      if (found == railArcs.end()) continue;
       const SurfaceArrangementArc &arc = *found->second;
-      occurrence.railId = arc.railId;
-      occurrence.curveId = arc.curveId;
-      if (occurrence.sourceComponent < 0) {
-        occurrence.sourceComponent = arc.sourceComponent;
-      }
-      if (occurrence.sourceSheet < 0) {
-        occurrence.sourceSheet = arc.sourceSheet;
-      }
-      const double railRange = arc.railT1 - arc.railT0;
-      occurrence.railT0 = arc.railT0 + occurrence.sourceT0 * railRange;
-      occurrence.railT1 = arc.railT0 + occurrence.sourceT1 * railRange;
+      p.railId = arc.railId;
+      p.curveId = arc.curveId;
+      if (p.sourceComponent < 0) p.sourceComponent = arc.sourceComponent;
+      if (p.sourceSheet < 0) p.sourceSheet = arc.sourceSheet;
+      const double range = arc.railT1 - arc.railT0;
+      p.railT0 = arc.railT0 + p.sourceT0 * range;
+      p.railT1 = arc.railT0 + p.sourceT1 * range;
     }
   }
-
   for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-    for (SurfaceArrangementProvenance &value : halfedge.provenance) {
-      restore_authoritative_rail(value);
-    }
+    for (SurfaceArrangementProvenance &p : halfedge.provenance) restoreRail(p);
     std::sort("""
-          if arrangement.count(anchor) != 1:
-              raise RuntimeError(f"rail primary anchor count={arrangement.count(anchor)}")
-          arrangement_path.write_text(arrangement.replace(anchor, replacement, 1))
+          path.write_text(one(text, old, new, 'rail lineage'))
 
-          patch_test_path = Path("tests/PatchDescriptorMilestoneETests.cpp")
-          tests = patch_test_path.read_text()
+          path = Path('tests/PatchDescriptorMilestoneETests.cpp')
+          text = path.read_text()
           old = """  // Keep edge 0 valid so the transaction appends a tentative node first.
   // Then remove common face support from edge 2's endpoint pair so its
   // midpoint embedding fails after mutation has begun.
@@ -123,11 +92,8 @@ jobs:
   badFrom.barycentric = Eigen::RowVector3d(0.2, 0.7, 0.1);
   badTo.barycentric = Eigen::RowVector3d(0.2, 0.1, 0.7);
 """
-          new = """  // Keep edge 0 valid so the transaction appends a tentative node first.
-  // Edge 2 still declares one exact common source chart and scope, but its
-  // finite endpoint coordinates interpolate to a zero-sum barycentric point.
-  // This reaches InvalidMidpointEmbedding after mutation has begun instead
-  // of testing the earlier MissingCommonSourceChart contract.
+          new = """  // Preserve one exact common chart and scope, but make the finite
+  // endpoint coordinates interpolate to a zero-sum barycentric midpoint.
   auto &badFrom =
       fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
   auto &badTo =
@@ -143,50 +109,37 @@ jobs:
   badFrom.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
   badTo.barycentric = Eigen::RowVector3d(-1.0, 0.0, 0.0);
 """
-          if tests.count(old) != 1:
-              raise RuntimeError(f"midpoint fixture anchor count={tests.count(old)}")
-          tests = tests.replace(old, new, 1)
-
-          marker = """TEST(PatchDescriptorMilestoneE,
-     FailedSubdivisionReturnsBitExactCommittedComplex) {"""
-          missing_chart_test = """TEST(PatchDescriptorMilestoneE,
+          text = one(text, old, new, 'invalid midpoint fixture')
+          marker = "TEST(PatchDescriptorMilestoneE,\n     FailedSubdivisionReturnsBitExactCommittedComplex) {"
+          extra = """TEST(PatchDescriptorMilestoneE,
      SubdivisionWithoutCommonSourceChartFailsBeforeMutation) {
   Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
   const auto &badEdge = fixture.complex.halfedges[2];
-  auto &badFrom =
-      fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
-  auto &badTo =
-      fixture.complex.nodes[static_cast<std::size_t>(badEdge.to)];
-  badFrom.occurrences.clear();
-  badTo.occurrences.clear();
-  badFrom.sourceFace = badEdge.sourceFace;
-  badTo.sourceFace =
-      (badEdge.sourceFace + 1) % static_cast<int>(fixture.F.rows());
-
+  auto &a = fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
+  auto &b = fixture.complex.nodes[static_cast<std::size_t>(badEdge.to)];
+  a.occurrences.clear();
+  b.occurrences.clear();
+  a.sourceFace = badEdge.sourceFace;
+  b.sourceFace = (badEdge.sourceFace + 1) % fixture.F.rows();
   const std::uint64_t before =
       directional::geometry::surface_simplification_detail::
           complex_structural_hash(fixture.complex);
-  const auto result =
-      directional::geometry::subdivide_surface_cell_complex_edges(
-          fixture.complex, {{2, 1}});
-
+  const auto result = directional::geometry::subdivide_surface_cell_complex_edges(
+      fixture.complex, {{2, 1}});
   ASSERT_FALSE(result.success);
   EXPECT_EQ("MissingCommonSourceChart", result.failure);
   EXPECT_TRUE(result.rollbackEquivalent);
-  EXPECT_EQ(before,
-            directional::geometry::surface_simplification_detail::
-                complex_structural_hash(result.complex));
+  EXPECT_EQ(before, directional::geometry::surface_simplification_detail::
+                        complex_structural_hash(result.complex));
 }
 
 """
-          if tests.count(marker) != 1:
-              raise RuntimeError(f"midpoint test marker count={tests.count(marker)}")
-          tests = tests.replace(marker, missing_chart_test + marker, 1)
-          patch_test_path.write_text(tests)
+          text = one(text, marker, extra + marker, 'missing chart test')
+          path.write_text(text)
 
-          cylinder_path = Path("tests/MilestoneDClosureTests.cpp")
-          cylinder = cylinder_path.read_text()
-          old_loop = """  for (const auto &[edge, metadata] : desired) {
+          path = Path('tests/MilestoneDClosureTests.cpp')
+          text = path.read_text()
+          old = """  for (const auto &[edge, metadata] : desired) {
     for (int face = 0; face < mesh.faces.rows(); ++face) {
       int localA = -1;
       int localB = -1;
@@ -203,46 +156,32 @@ jobs:
     }
   }
 """
-          new_loop = """  for (const auto &[edge, metadata] : desired) {
-    // Represent each source edge once. The arrangement's canonical source-edge
-    // node identity carries it across incident triangles; independently
-    // duplicating coincident arcs in every chart creates overlapping DCEL
-    // ownership before simplification is exercised.
-    int ownerFace = -1;
-    int localA = -1;
-    int localB = -1;
-    for (int face = 0; face < mesh.faces.rows() && ownerFace < 0; ++face) {
-      int candidateA = -1;
-      int candidateB = -1;
+          new = """  for (const auto &[edge, metadata] : desired) {
+    // One canonical source-edge entity owns all incident chart support.
+    int face = -1, localA = -1, localB = -1;
+    for (int candidate = 0; candidate < mesh.faces.rows() && face < 0;
+         ++candidate) {
+      int a = -1, b = -1;
       for (int corner = 0; corner < 3; ++corner) {
-        if (mesh.faces(face, corner) == edge.first) candidateA = corner;
-        if (mesh.faces(face, corner) == edge.second) candidateB = corner;
+        if (mesh.faces(candidate, corner) == edge.first) a = corner;
+        if (mesh.faces(candidate, corner) == edge.second) b = corner;
       }
-      if (candidateA >= 0 && candidateB >= 0) {
-        ownerFace = face;
-        localA = candidateA;
-        localB = candidateB;
-      }
+      if (a >= 0 && b >= 0) { face = candidate; localA = a; localB = b; }
     }
-    if (ownerFace < 0) {
-      continue;
-    }
+    if (face < 0) continue;
     Eigen::RowVector3d a = Eigen::RowVector3d::Zero();
     Eigen::RowVector3d b = Eigen::RowVector3d::Zero();
     a[localA] = 1.0;
     b[localB] = 1.0;
-    arcs.push_back(
-        arc(id++, ownerFace, a, b, metadata.first, metadata.second));
+    arcs.push_back(arc(id++, face, a, b, metadata.first, metadata.second));
   }
 """
-          if cylinder.count(old_loop) != 1:
-              raise RuntimeError(f"cylinder arc loop count={cylinder.count(old_loop)}")
-          cylinder = cylinder.replace(old_loop, new_loop, 1)
-          old_asserts = """  ASSERT_TRUE(complex.diagnostics.topologyValid);
+          text = one(text, old, new, 'cylinder canonical arcs')
+          old = """  ASSERT_TRUE(complex.diagnostics.topologyValid);
   ASSERT_EQ(complex.diagnostics.eulerCharacteristic, 0);
   ASSERT_EQ(complex.diagnostics.boundaryLoopCount, 2);
 """
-          new_asserts = """  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
+          new = """  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
                   validate_complex_incidence(complex));
   ASSERT_TRUE(complex.diagnostics.incidenceValid);
   ASSERT_TRUE(complex.diagnostics.embeddingValid);
@@ -253,27 +192,10 @@ jobs:
   ASSERT_EQ(complex.diagnostics.connectedComponentCount, 1);
   ASSERT_EQ(complex.diagnostics.boundaryLoopCount, 2);
 """
-          if cylinder.count(old_asserts) != 1:
-              raise RuntimeError(f"cylinder assertion anchor count={cylinder.count(old_asserts)}")
-          cylinder_path.write_text(cylinder.replace(old_asserts, new_asserts, 1))
+          path.write_text(one(text, old, new, 'cylinder invariants'))
           PY
-
-      - name: Commit source and regression changes
-        run: |
-          git config user.name "directional-agent"
-          git config user.email "directional-agent@users.noreply.github.com"
-          git add src/geometry/SurfaceArrangement.cpp \
-                  tests/PatchDescriptorMilestoneETests.cpp \
-                  tests/MilestoneDClosureTests.cpp
-          git commit -m "fix(surface-cells): preserve rail lineage and repair fixtures"
+          git config user.name directional-agent
+          git config user.email directional-agent@users.noreply.github.com
+          git add src/geometry/SurfaceArrangement.cpp tests/PatchDescriptorMilestoneETests.cpp tests/MilestoneDClosureTests.cpp
+          git commit -m 'fix(surface-cells): preserve rail lineage and repair fixtures'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
-
-      - name: Record edit result
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ github.run_id }}
-          JOB_STATUS: ${{ job.status }}
-        run: |
-          gh api repos/${{ github.repository }}/issues/8/comments \
-            -f body="P5-CB86/87 source-edit run ${RUN_ID} finished ${JOB_STATUS}. No project binary, test, benchmark, help/list, discovery, or custom mesh command executed."
