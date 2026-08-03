@@ -66,6 +66,14 @@ struct SurfaceCellObjectIdentity {
   std::size_t elementCount = 0;
 };
 
+struct SurfaceCellMemoryOwnershipEvent {
+  std::string stage;
+  std::string action;
+  std::uint64_t logicalPayloadBytes = 0U;
+  std::uint64_t retainedCapacityBytes = 0U;
+  std::uint64_t simultaneousOwnedBytes = 0U;
+};
+
 struct SurfaceCellStageLineage {
   std::string stage;
   SurfaceCellObjectIdentity inputObject;
@@ -127,6 +135,19 @@ struct RemeshDiagnostics {
   bool surfaceCellTraceStorageReleasedAfterFlowRep = false;
   bool surfaceCellFlowRepSelectionStorageReleasedAfterSelection = false;
   bool surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement = false;
+  std::uint64_t surfaceCellTracingLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellTracingRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellFlowRepLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellFlowRepRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellArrangementLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellArrangementRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellSimplificationLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellSimplificationRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellCompletionLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellCompletionRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellEstimatedPeakSimultaneousOwnedBytes = 0U;
+  std::vector<SurfaceCellMemoryOwnershipEvent>
+      surfaceCellMemoryOwnershipTimeline;
 
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;
@@ -173,6 +194,26 @@ struct RemeshDiagnostics {
   std::uint64_t surfaceCellCompletionOwnershipPeakStructuralOwnedBytes = 0U;
   std::string surfaceCellCompletionOwnershipStructuralExhaustionReason =
       "none";
+  bool surfaceCellCompletionParityScopeFailureAvailable = false;
+  int surfaceCellCompletionParityOriginalCell = -1;
+  int surfaceCellCompletionParityReplacementCell = -1;
+  int surfaceCellCompletionParityHalfedge = -1;
+  int surfaceCellCompletionParityTwin = -1;
+  int surfaceCellCompletionParitySelectedComponent = -1;
+  int surfaceCellCompletionParitySelectedSheet = -1;
+  std::vector<int> surfaceCellCompletionParityAvailableComponents;
+  std::vector<int> surfaceCellCompletionParityAvailableSheets;
+  std::string surfaceCellCompletionParityMutationPhase;
+  std::string surfaceCellFirstInvalidProducerStage;
+  std::string surfaceCellFirstInvalidProducerReason;
+  int surfaceCellFirstInvalidProducerCell = -1;
+  int surfaceCellFirstInvalidProducerHalfedge = -1;
+  int surfaceCellFirstInvalidProducerTwin = -1;
+  int surfaceCellFirstInvalidProducerNode = -1;
+  int surfaceCellFirstInvalidProducerFace = -1;
+  int surfaceCellFirstInvalidProducerVertex = -1;
+  int surfaceCellFirstInvalidProducerEdgeFirst = -1;
+  int surfaceCellFirstInvalidProducerEdgeSecond = -1;
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
   std::string surfaceCellCompletionOwnershipFailure;
   int surfaceCellCompletionOwnershipSourcePatch = -1;
