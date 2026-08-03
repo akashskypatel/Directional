@@ -9,11 +9,12 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — bounded same-corner structural repair.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8.
-- Validated artifact: `8842377256`.
-- Exact source: `1f4c3c2a014f0bc945b50f1bb5a837c438cec992`.
-- Digest: `sha256:669bf5d6f3e9b3738298b5985b6bb715668bce0715b0a68d880eb4aa0e80d6bc`.
-- Completed turn: P5-TB8 artifact-only test and benchmark.
-- Next turn: code changes + compile-only build.
+- Exact implementation and compiled source: `bc95579be68d5de073de956022eec8fb89120ec0`.
+- Compile-only run: `30779430182` — success.
+- Artifact: `8843206930` (`surface-cell-p5-bounded-repair-linux-release`).
+- Digest: `sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94`.
+- Completed turn: P5-CB27 through P5-CB33 code changes + compile-only build.
+- Next turn: P5-TB9 artifact-only test and benchmark.
 - Review policy: `never`.
 
 ## Work phases
@@ -24,72 +25,60 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P5-TB7 — reach assembly and classify the deterministic `8595/8573` same-corner conflict.
 - [x] P5-CB21–P5-CB26 — same-corner classification, initial structural repair, corrected fixtures, and artifact `8842377256`.
 - [x] P5-TB8 — validate regressions and expose deterministic completion-stage resource runaway.
-- [ ] P5-CB27 — replace recursive search with one global repair-work ledger.
-- [ ] P5-CB28 — canonical repair-state deduplication and single-candidate memory discipline.
-- [ ] P5-CB29 — strict monotonic progress and fail-closed overlap routing.
-- [ ] P5-CB30 — reuse unaffected products where equivalence is proven.
-- [ ] P5-CB31 — whole-complex structural-repair, budget, cycle, and order-invariance tests.
-- [ ] P5-CB32 — observable global-budget, visited-state, recomputation, and live-candidate diagnostics.
-- [ ] P5-CB33 — compile and package the bounded-repair checkpoint.
-- [ ] P5-TB9 — validate the bounded-repair artifact without rebuilding.
+- [x] P5-CB27 — replace recursive search with one global repair-work ledger.
+- [x] P5-CB28 — canonical exact repair-state deduplication and single-candidate memory discipline.
+- [x] P5-CB29 — strict success-only progress and fail-closed overlap/replacement-conflict routing.
+- [x] P5-CB30 — retain full recomputation where partial equivalence is unproven and bound it globally.
+- [x] P5-CB31 — add whole-complex structural-repair, overlap, budget, and order-invariance regression sources.
+- [x] P5-CB32 — expose candidate budget, state, recomputation, live-candidate, and exhaustion diagnostics.
+- [x] P5-CB33 — compile and package artifact `8843206930`.
+- [ ] P5-TB9 — validate artifact `8843206930` without rebuilding.
 - [ ] P6 — production topology/provenance/alignment/quality validation.
 - [ ] P7 — focused and full regression closure.
 - [ ] P8 — final bunny benchmark and production disposition.
 
-## P5-TB8 tests
+## Bounded structural-repair contract
 
-| Scope | Passed | Failed |
-|---|---:|---:|
-| Focused corrected fixtures and ownership tests | 9 | 0 |
-| `PatchDescriptorMilestoneE.*` | 15 | 0 |
-| Phase 16 + Phase 18 | 89 | 0 |
-| Phase 14–18 aggregate | 229 | 0 |
-| Milestone G P23 + Phase 20 | 52 | 0 |
+- One non-recursive completion pass and one invocation-owned transaction controller.
+- Global deterministic limits for candidate evaluations, structural attempts, inserted vertices, full completion passes, and exact visited states.
+- Collision-safe canonical repair-state equality; hashes remain diagnostic only.
+- One rollback complex and at most one live mutable candidate complex.
+- Rejected descriptor, patch, assembly, and candidate storage is released before continuing.
+- No geometrically distinct boundary route fails as typed same-corner overlap before search.
+- A structural candidate commits only when assembly succeeds and the ownership-claim count decreases to zero.
+- Persistent original claims fail as `NoProgress`.
+- Replacement ownership conflicts fail as `IntroducedOwnershipClaim`.
+- Repeated states and every global budget exhaustion are typed and fail closed.
+- Full recomputation is retained because incremental equivalence is unproven; it is globally bounded and separately reported.
+- No deduplication, positional merge, source-triangle pairing, fallback, recovery, validator weakening, or patch-ID special case.
 
-Authoritative non-overlapping total: **296/296 passed**.
+## Compile evidence
 
-## Production benchmark failure
+- GCC 13.3.0 optimized static Release.
+- 131/131 build steps completed.
+- `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` linked.
+- Source status empty; 10/10 packaged checksums pass.
+- Packaged executables are Linux x86-64 ELF files and packaged libraries are valid static archives.
+- No tests, benchmarks, or custom meshes executed.
 
-Two independent direct runs timed out at 60.05 seconds before benchmark JSON or a terminal conflict record was produced:
+## P5-TB9 requirements
 
-- peak RSS 2,740,543,488 B;
-- peak RSS 2,740,506,624 B;
-- mean 2,740,525,056 B (2.552 GiB).
+1. Verify source commit, empty status, and all checksums.
+2. Execute all new whole-complex structural-repair tests.
+3. Run PatchDescriptor, Phase 16/18, Phase 14–18, and P23/Phase20 suites.
+4. Run at least two direct random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
+5. Require a terminal result without timeout.
+6. Record the complete deterministic global work ledger, output disposition, hashes, wall time, and peak memory.
+7. Verify no fallback or recovery.
+8. Require peak memory ≤ 1,115,394,560 B.
+9. Require wall time ≤ 39.228299 s unless a correctness-driven exception is independently reviewed.
 
-A run injected after simplification completes in 19.260599 seconds at 343,326,720 B with 21,298 cells. The runaway begins in completion/ownership repair.
+## Evidence files
 
-Compared with artifact `8841726806`, the bounded lower regression is already +129.62% wall and +207.13% memory. The `8595/8573` claim disposition remains unresolved because completion never returned.
-
-## Root cause and test gap
-
-The current structural-repair implementation recursively evaluates multiple candidates, copies the full complex, and reruns complete descriptor/completion/assembly work at every depth. Budgets are depth-local, there is no shared global work ledger, and canonical repair states are not memoized.
-
-Existing tests cover the stitch-time conflict class only. They do not invoke whole-complex `BoundarySectorSubdivision`, assert global attempt limits, or exercise repeated-state termination. Passing tests therefore do not establish the intended production behavior.
-
-## Next code/build authority
-
-Use `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md`.
-
-The next implementation must:
-
-1. eliminate recursive candidate-tree expansion;
-2. share one deterministic global budget across all candidates;
-3. memoize exact canonical repair states;
-4. retain only one candidate and rollback snapshot;
-5. require strict progress and reject replacement ownership conflicts;
-6. fail unrepairable overlap before search;
-7. add actual whole-complex structural-repair and boundedness tests;
-8. expose global budget, visited states, recomputation, live-candidate, and exhaustion diagnostics;
-9. compile only the four required targets;
-10. execute no tests, benchmarks, or custom meshes.
-
-## P5-TB9 production gates
-
-- no direct-run timeout;
-- no fallback or recovery;
-- deterministic repair ledger and hashes;
-- peak memory ≤ 1,115,394,560 B;
-- wall time ≤ 39.228299 s unless a correctness-driven exception is independently reviewed;
-- all structural-repair and prior regression suites pass.
+- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Code_Build_Plan.md`
+- `.agents/Directional/Milestone_G_P5_Structural_Repair_Test_Benchmark_Report.md`
+- `benchmark-results/p5-cb33-summary.json`
+- `benchmark-results/p5-tb8-summary.json`
 
 P5 remains open. PR #8 remains draft and unmerged.
