@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "turn": "P5-CB33",
+  "turnType": "code changes + compile-only build",
+  "sourceCommit": "bc95579be68d5de073de956022eec8fb89120ec0",
+  "workflowRestoreCommit": "a7daaf8bb8ef63f8fee9cb7a1383e18e7e485595",
+  "workflowRun": 30779430182,
+  "jobId": 91581037642,
+  "artifact": {
+    "id": 8843206930,
+    "name": "surface-cell-p5-bounded-repair-linux-release",
+    "digest": "sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94",
+    "sourceStatusEmpty": true,
+    "checksumsPassed": 10
+  },
+  "build": {
+    "toolchain": "GCC 13.3.0",
+    "configuration": "Release static -O2 -DNDEBUG",
+    "stepsCompleted": 131,
+    "stepsTotal": 131,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ]
+  },
+  "implemented": [
+    "non-recursive completion pass with one invocation-owned structural work ledger",
+    "global candidate, attempt, inserted-vertex, full-pass, and visited-state budgets",
+    "collision-safe exact canonical repair-state deduplication",
+    "one rollback complex and at most one live mutable candidate complex",
+    "strict success-only structural commit and replacement-conflict rejection",
+    "typed overlap, repeated-state, no-progress, introduced-claim, and budget exhaustion",
+    "global ledger diagnostics, structural hashing, and benchmark JSON",
+    "whole-complex structural-repair and boundedness regression sources"
+  ],
+  "incrementalRecomputationImplemented": false,
+  "fullRecomputationGloballyBounded": true,
+  "testsExecuted": false,
+  "benchmarksExecuted": false,
+  "customMeshesExecuted": false,
+  "p5Closed": false,
+  "nextTurn": "P5-TB9 test and benchmark using artifact 8843206930 without rebuilding",
+  "reviewPolicy": "never"
+}
