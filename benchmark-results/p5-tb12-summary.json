@@ -1,0 +1,171 @@
+{
+  "schema": "directional.milestone-g.test-benchmark-summary.v1",
+  "phase": "P5",
+  "turn": "P5-TB12",
+  "date": "2026-08-03",
+  "review_policy": "never",
+  "artifact": {
+    "id": 8852049639,
+    "name": "surface-cell-p5-cb58-memory-frontier-linux-release",
+    "digest": "sha256:aeab9fc7d38dc65a29fec04a5635d8d63cbef46d7c872dbc17e46b26f3aaa34e",
+    "exact_source": "0980c0912a2538314bb6bbb77dc7d4dbbcea5bc5",
+    "source_status_bytes": 0,
+    "checksums_passed": 36,
+    "checksums_total": 36,
+    "fixture_files": 26,
+    "rebuilt": false,
+    "arbitrary_extraction_path": true,
+    "absolute_ci_fixture_dependency_observed": false
+  },
+  "tests": {
+    "focused_memory_frontier_fixture": {
+      "passed": 8,
+      "failed": 3,
+      "total": 11,
+      "failures": [
+        "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+        "PatchDescriptorMilestoneE.SemanticOnlySameCornerOverlapFailsBeforeCandidateExpansion",
+        "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse"
+      ]
+    },
+    "patch_descriptor_milestone_e": {
+      "passed": 15,
+      "failed": 6,
+      "total": 21
+    },
+    "phase_14_18": {
+      "passed": 230,
+      "failed": 0,
+      "total": 230
+    },
+    "p23_phase20": {
+      "passed": 51,
+      "failed": 3,
+      "total": 54
+    },
+    "authoritative_non_overlapping_p5": {
+      "passed": 296,
+      "failed": 9,
+      "total": 305
+    },
+    "milestone_d": {
+      "passed": 4,
+      "failed": 3,
+      "total": 7
+    },
+    "full_packaged_binary": {
+      "declared_total": 580,
+      "passed": 566,
+      "assertion_failures": 12,
+      "segmentation_faults": 2,
+      "completed": false,
+      "crashes": [
+        "MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback",
+        "MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition"
+      ]
+    }
+  },
+  "random_bunny": {
+    "case": "bunny_1k_random_medium",
+    "mesh_faces": 1000,
+    "generated_field": "face_edges",
+    "backend": "SurfaceCells",
+    "fallback": "Fail",
+    "recovery_enabled": false,
+    "processes": [
+      {
+        "role": "formal",
+        "wall_seconds": 32.432452,
+        "peak_working_set_bytes": 156839936,
+        "process_exit": 0,
+        "success": false
+      },
+      {
+        "role": "formal",
+        "wall_seconds": 32.793018,
+        "peak_working_set_bytes": 158949376,
+        "process_exit": 0,
+        "success": false
+      },
+      {
+        "role": "supplementary",
+        "wall_seconds": 32.390061,
+        "peak_working_set_bytes": 156999680,
+        "process_exit": 0,
+        "success": false
+      },
+      {
+        "role": "supplementary",
+        "wall_seconds": 33.018193,
+        "peak_working_set_bytes": 150765568,
+        "process_exit": 0,
+        "success": false
+      }
+    ],
+    "formal_wall_mean_seconds": 32.612735,
+    "all_wall_mean_seconds": 32.658431,
+    "all_peak_working_set_mean_bytes": 155888640,
+    "maximum_peak_working_set_bytes": 158949376,
+    "wall_cap_seconds": 39.228299,
+    "memory_cap_bytes": 1115394560,
+    "maximum_wall_margin_seconds": 6.210106,
+    "memory_cap_margin_bytes": 956445184,
+    "p5_tb11_maximum_peak_bytes": 936484864,
+    "reduction_from_p5_tb11_bytes": 777535488,
+    "reduction_from_p5_tb11_percent": 83.027021,
+    "success_path_validated": false,
+    "terminal_failure": "InvalidArrangementDomainIdentity;firstPatch=2;secondPatch=-1",
+    "terminal_code": "NotProductionReady",
+    "terminal_stage": "completion",
+    "output_origin": "None",
+    "descriptors": 0,
+    "completed_patches": 0,
+    "output_quads": 0,
+    "trace_segments": 12130,
+    "arrangement_cells": 7405,
+    "simplified_cells": 7405,
+    "parity_split_edges": 2213,
+    "side_inserted_vertices": 8074,
+    "full_recomputation_passes": 1,
+    "fallback_used": false,
+    "recovery_used": false,
+    "owned_bytes": {
+      "rollback": 21593612,
+      "descriptor": 17119880,
+      "assembly": 360,
+      "peak_structural": 38713852,
+      "frontier": 0,
+      "product_cache": 0
+    }
+  },
+  "diagnosis": {
+    "classification": "strongly_supported_inference",
+    "summary": "A permitted side-repair failure receives a moved parity-repaired complex and exposes sideRepair.complex as rollback state; deterministic invalid arrangement-domain identity and descriptor-empty regressions are consistent with partially mutated rollback topology.",
+    "exact_reuse_complete": false,
+    "production_matrix_lifetime_safe": false
+  },
+  "gates": {
+    "artifact_integrity": "pass",
+    "fixture_portability": "pass",
+    "focused_tests": "fail",
+    "authoritative_tests": "fail",
+    "full_binary": "fail",
+    "determinism": "pass_for_failure_state",
+    "pure_quad_output": "fail",
+    "zero_conflicts": "not_reached",
+    "no_fallback_recovery": "pass",
+    "wall": "pass_on_early_failure_path_only",
+    "memory": "pass_on_early_failure_path_only"
+  },
+  "next_turn": {
+    "type": "code changes + compile-only build",
+    "plan": ".agents/Directional/Milestone_G_P5_Rollback_Integrity_Code_Build_Plan.md",
+    "execute_binaries": false
+  },
+  "p5_closed": false,
+  "pr": {
+    "number": 8,
+    "draft": true,
+    "merged": false
+  }
+}
