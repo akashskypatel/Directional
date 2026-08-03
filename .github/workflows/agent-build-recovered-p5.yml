@@ -13,6 +13,10 @@ on:
       - .agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Plan.md
       - .agents/Directional/Milestone_G_P5_Test_Benchmark_Report.md
       - .agents/Directional/Milestone_G_P5_Completion_Template_Code_Build_Report.md
+      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md
+      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md
+      - .agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Report.md
+      - benchmark-results/p5-cb26-summary.json
   pull_request:
     branches:
       - surface_cell_quad
