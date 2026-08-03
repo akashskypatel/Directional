@@ -80,7 +80,7 @@ Use artifact `8842377256` directly and do not rebuild.
 - Code/build report: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Report.md`.
 - Input validation report: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md`.
 - Implementation plan: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md`.
-- Previous machine-readable result: `benchmark-results/p5-tb7-summary.json`.
+- Compile summary: `benchmark-results/p5-cb26-summary.json`.
 
 ## Later production gates
 
