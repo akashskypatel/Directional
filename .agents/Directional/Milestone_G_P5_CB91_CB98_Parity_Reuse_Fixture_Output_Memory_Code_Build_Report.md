@@ -17,6 +17,25 @@ the next artifact-only test and benchmark turn.
 
 The implementation changes 14 files with 1,780 insertions and 137 deletions.
 
+## GitHub source synchronization
+
+The GitHub working branch is now the direct source authority for the subsequent
+artifact-only test turn. At branch checkpoint `7b4b699dac7567935f548a26a92336de5a496756`:
+
+- workflow run `30863219431` reconstructed the preserved patch and verified
+  SHA-256 `cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8`;
+- its derived path set contained exactly the seven declared source/test files
+  and no workflow path;
+- three-way application resolved all seven files cleanly;
+- the resulting staged diff was empty because each target blob already matched
+  the patch output blob;
+- the seven directly synchronized companion files also match the local compiled
+  source, for **14/14 exact implementation-file blob matches**;
+- temporary transfer workflows and target-branch markers were removed through
+  the GitHub connector, not from inside a workflow.
+
+No runtime executable was invoked during synchronization.
+
 ## P5-CB91 — authoritative parity scope
 
 - `SurfaceArrangementCell` now persists one exact `sourceComponent` and
