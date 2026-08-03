@@ -1636,6 +1636,45 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << (result.surfaceCellContext
                   .embeddedArrangementStorageReleasedAfterArrangement
               ? "true" : "false") << ","
+      << "\"tracingLogicalPayloadBytes\":"
+      << result.surfaceCellContext.tracingLogicalPayloadBytes << ","
+      << "\"tracingRetainedCapacityBytes\":"
+      << result.surfaceCellContext.tracingRetainedCapacityBytes << ","
+      << "\"flowRepLogicalPayloadBytes\":"
+      << result.surfaceCellContext.flowRepLogicalPayloadBytes << ","
+      << "\"flowRepRetainedCapacityBytes\":"
+      << result.surfaceCellContext.flowRepRetainedCapacityBytes << ","
+      << "\"arrangementLogicalPayloadBytes\":"
+      << result.surfaceCellContext.arrangementLogicalPayloadBytes << ","
+      << "\"arrangementRetainedCapacityBytes\":"
+      << result.surfaceCellContext.arrangementRetainedCapacityBytes << ","
+      << "\"simplificationLogicalPayloadBytes\":"
+      << result.surfaceCellContext.simplificationLogicalPayloadBytes << ","
+      << "\"simplificationRetainedCapacityBytes\":"
+      << result.surfaceCellContext.simplificationRetainedCapacityBytes << ","
+      << "\"completionLogicalPayloadBytes\":"
+      << result.surfaceCellContext.completionLogicalPayloadBytes << ","
+      << "\"completionRetainedCapacityBytes\":"
+      << result.surfaceCellContext.completionRetainedCapacityBytes << ","
+      << "\"estimatedPeakSimultaneousOwnedBytes\":"
+      << result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes << ","
+      << "\"memoryOwnershipTimeline\":[";
+  for (std::size_t eventIndex = 0;
+       eventIndex < result.surfaceCellContext.memoryOwnershipTimeline.size();
+       ++eventIndex) {
+    if (eventIndex > 0U) out << ",";
+    const auto &event =
+        result.surfaceCellContext.memoryOwnershipTimeline[eventIndex];
+    out << "{\"stage\":\"" << escape_json(event.stage)
+        << "\",\"action\":\"" << escape_json(event.action)
+        << "\",\"logicalPayloadBytes\":"
+        << event.logicalPayloadBytes
+        << ",\"retainedCapacityBytes\":"
+        << event.retainedCapacityBytes
+        << ",\"simultaneousOwnedBytes\":"
+        << event.simultaneousOwnedBytes << "}";
+  }
+  out << "],"
       << "\"surfaceCellContextSourceGridRecoveryUsed\":"
       << (result.surfaceCellContext.sourceGridRecoveryUsed ? "true" : "false")
       << ","
@@ -1749,6 +1788,68 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext
              .completionOwnershipProductCacheExactMismatches
       << ","
+      << "\"completionOwnershipProductCacheMismatchVector\":[";
+  for (std::size_t mismatchIndex = 0;
+       mismatchIndex < result.surfaceCellContext
+                           .completionOwnershipProductCacheMismatchVector.size();
+       ++mismatchIndex) {
+    if (mismatchIndex > 0U) out << ",";
+    const auto &mismatch = result.surfaceCellContext
+        .completionOwnershipProductCacheMismatchVector[mismatchIndex];
+    out << "{\"requestedCell\":" << mismatch.requestedCell
+        << ",\"cachedCell\":" << mismatch.cachedCell
+        << ",\"hashMiss\":" << (mismatch.hashMiss ? "true" : "false")
+        << ",\"sourceDomain\":" << (mismatch.sourceDomain ? "true" : "false")
+        << ",\"sideSubdivision\":" << (mismatch.sideSubdivision ? "true" : "false")
+        << ",\"boundarySourceCoordinates\":"
+        << (mismatch.boundarySourceCoordinates ? "true" : "false")
+        << ",\"railCurveSupport\":" << (mismatch.railCurveSupport ? "true" : "false")
+        << ",\"singularityRequirements\":"
+        << (mismatch.singularityRequirements ? "true" : "false")
+        << ",\"backendVariant\":" << (mismatch.backendVariant ? "true" : "false")
+        << ",\"topologyTemplate\":" << (mismatch.topologyTemplate ? "true" : "false")
+        << ",\"rebindValidation\":" << (mismatch.rebindValidation ? "true" : "false")
+        << "}";
+  }
+  out << "],"
+      << "\"completionParityScopeFailureAvailable\":"
+      << (result.surfaceCellContext.hasCompletionParityScopeFailure
+              ? "true" : "false")
+      << ",\"completionParityOriginalCell\":"
+      << result.surfaceCellContext.completionParityScopeFailure.originalCell
+      << ",\"completionParityReplacementCell\":"
+      << result.surfaceCellContext.completionParityScopeFailure.replacementCell
+      << ",\"completionParityHalfedge\":"
+      << result.surfaceCellContext.completionParityScopeFailure.halfedge
+      << ",\"completionParityTwin\":"
+      << result.surfaceCellContext.completionParityScopeFailure.twin
+      << ",\"completionParitySelectedComponent\":"
+      << result.surfaceCellContext.completionParityScopeFailure.selectedComponent
+      << ",\"completionParitySelectedSheet\":"
+      << result.surfaceCellContext.completionParityScopeFailure.selectedSheet
+      << ",\"completionParityAvailableComponents\":[";
+  for (std::size_t componentIndex = 0;
+       componentIndex < result.surfaceCellContext.completionParityScopeFailure
+                            .availableComponents.size();
+       ++componentIndex) {
+    if (componentIndex > 0U) out << ",";
+    out << result.surfaceCellContext.completionParityScopeFailure
+               .availableComponents[componentIndex];
+  }
+  out << "],\"completionParityAvailableSheets\":[";
+  for (std::size_t sheetIndex = 0;
+       sheetIndex < result.surfaceCellContext.completionParityScopeFailure
+                        .availableSheets.size();
+       ++sheetIndex) {
+    if (sheetIndex > 0U) out << ",";
+    out << result.surfaceCellContext.completionParityScopeFailure
+               .availableSheets[sheetIndex];
+  }
+  out << "],"
+      << "\"completionParityMutationPhase\":\""
+      << escape_json(result.surfaceCellContext
+                         .completionParityScopeFailure.mutationPhase)
+      << "\","
       << "\"completionOwnershipPreConflictInventoryHash\":"
       << result.surfaceCellContext
              .completionOwnershipPreConflictInventoryHash
@@ -2521,6 +2622,133 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << diagnostics.surfaceCellOptimizationSeconds << ","
       << "\"surfaceCellValidationSeconds\":"
       << diagnostics.surfaceCellValidationSeconds << ","
+      << "\"surfaceCellTracingCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellTracingCurrentOwnedBytes << ","
+      << "\"surfaceCellTracingPeakOwnedBytes\":"
+      << diagnostics.surfaceCellTracingPeakOwnedBytes << ","
+      << "\"surfaceCellFlowRepCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellFlowRepCurrentOwnedBytes << ","
+      << "\"surfaceCellFlowRepPeakOwnedBytes\":"
+      << diagnostics.surfaceCellFlowRepPeakOwnedBytes << ","
+      << "\"surfaceCellArrangementCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellArrangementCurrentOwnedBytes << ","
+      << "\"surfaceCellArrangementPeakOwnedBytes\":"
+      << diagnostics.surfaceCellArrangementPeakOwnedBytes << ","
+      << "\"surfaceCellSimplificationCurrentOwnedBytes\":"
+      << diagnostics.surfaceCellSimplificationCurrentOwnedBytes << ","
+      << "\"surfaceCellSimplificationPeakOwnedBytes\":"
+      << diagnostics.surfaceCellSimplificationPeakOwnedBytes << ","
+      << "\"surfaceCellMaxSimultaneousLiveLargeStructures\":"
+      << diagnostics.surfaceCellMaxSimultaneousLiveLargeStructures << ","
+      << "\"surfaceCellTraceStorageReleasedAfterFlowRep\":"
+      << (diagnostics.surfaceCellTraceStorageReleasedAfterFlowRep ? "true"
+                                                                  : "false")
+      << ","
+      << "\"surfaceCellFlowRepSelectionStorageReleasedAfterSelection\":"
+      << (diagnostics.surfaceCellFlowRepSelectionStorageReleasedAfterSelection
+              ? "true"
+              : "false")
+      << ","
+      << "\"surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement\":"
+      << (diagnostics
+                  .surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement
+              ? "true"
+              : "false")
+      << ","
+      << "\"surfaceCellTracingLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellTracingLogicalPayloadBytes << ","
+      << "\"surfaceCellTracingRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellTracingRetainedCapacityBytes << ","
+      << "\"surfaceCellFlowRepLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellFlowRepLogicalPayloadBytes << ","
+      << "\"surfaceCellFlowRepRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellFlowRepRetainedCapacityBytes << ","
+      << "\"surfaceCellArrangementLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellArrangementLogicalPayloadBytes << ","
+      << "\"surfaceCellArrangementRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellArrangementRetainedCapacityBytes << ","
+      << "\"surfaceCellSimplificationLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellSimplificationLogicalPayloadBytes << ","
+      << "\"surfaceCellSimplificationRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellSimplificationRetainedCapacityBytes << ","
+      << "\"surfaceCellCompletionLogicalPayloadBytes\":"
+      << diagnostics.surfaceCellCompletionLogicalPayloadBytes << ","
+      << "\"surfaceCellCompletionRetainedCapacityBytes\":"
+      << diagnostics.surfaceCellCompletionRetainedCapacityBytes << ","
+      << "\"surfaceCellEstimatedPeakSimultaneousOwnedBytes\":"
+      << diagnostics.surfaceCellEstimatedPeakSimultaneousOwnedBytes << ","
+      << "\"surfaceCellMemoryOwnershipTimeline\":[";
+  for (std::size_t eventIndex = 0;
+       eventIndex < diagnostics.surfaceCellMemoryOwnershipTimeline.size();
+       ++eventIndex) {
+    if (eventIndex > 0U) out << ",";
+    const SurfaceCellMemoryOwnershipEvent &event =
+        diagnostics.surfaceCellMemoryOwnershipTimeline[eventIndex];
+    out << "{\"stage\":\"" << escape_json(event.stage)
+        << "\",\"action\":\"" << escape_json(event.action)
+        << "\",\"logicalPayloadBytes\":" << event.logicalPayloadBytes
+        << ",\"retainedCapacityBytes\":" << event.retainedCapacityBytes
+        << ",\"simultaneousOwnedBytes\":" << event.simultaneousOwnedBytes
+        << "}";
+  }
+  out << "],"
+      << "\"surfaceCellCompletionParityScopeFailureAvailable\":"
+      << (diagnostics.surfaceCellCompletionParityScopeFailureAvailable
+              ? "true"
+              : "false")
+      << ",\"surfaceCellCompletionParityOriginalCell\":"
+      << diagnostics.surfaceCellCompletionParityOriginalCell
+      << ",\"surfaceCellCompletionParityReplacementCell\":"
+      << diagnostics.surfaceCellCompletionParityReplacementCell
+      << ",\"surfaceCellCompletionParityHalfedge\":"
+      << diagnostics.surfaceCellCompletionParityHalfedge
+      << ",\"surfaceCellCompletionParityTwin\":"
+      << diagnostics.surfaceCellCompletionParityTwin
+      << ",\"surfaceCellCompletionParitySelectedComponent\":"
+      << diagnostics.surfaceCellCompletionParitySelectedComponent
+      << ",\"surfaceCellCompletionParitySelectedSheet\":"
+      << diagnostics.surfaceCellCompletionParitySelectedSheet
+      << ",\"surfaceCellCompletionParityAvailableComponents\":[";
+  for (std::size_t componentIndex = 0;
+       componentIndex <
+       diagnostics.surfaceCellCompletionParityAvailableComponents.size();
+       ++componentIndex) {
+    if (componentIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellCompletionParityAvailableComponents[
+        componentIndex];
+  }
+  out << "],\"surfaceCellCompletionParityAvailableSheets\":[";
+  for (std::size_t sheetIndex = 0;
+       sheetIndex < diagnostics.surfaceCellCompletionParityAvailableSheets.size();
+       ++sheetIndex) {
+    if (sheetIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellCompletionParityAvailableSheets[sheetIndex];
+  }
+  out << "],\"surfaceCellCompletionParityMutationPhase\":\""
+      << escape_json(diagnostics.surfaceCellCompletionParityMutationPhase)
+      << "\","
+      << "\"surfaceCellFirstInvalidProducerStage\":\""
+      << escape_json(diagnostics.surfaceCellFirstInvalidProducerStage)
+      << "\","
+      << "\"surfaceCellFirstInvalidProducerReason\":\""
+      << escape_json(diagnostics.surfaceCellFirstInvalidProducerReason)
+      << "\","
+      << "\"surfaceCellFirstInvalidProducerCell\":"
+      << diagnostics.surfaceCellFirstInvalidProducerCell << ","
+      << "\"surfaceCellFirstInvalidProducerHalfedge\":"
+      << diagnostics.surfaceCellFirstInvalidProducerHalfedge << ","
+      << "\"surfaceCellFirstInvalidProducerTwin\":"
+      << diagnostics.surfaceCellFirstInvalidProducerTwin << ","
+      << "\"surfaceCellFirstInvalidProducerNode\":"
+      << diagnostics.surfaceCellFirstInvalidProducerNode << ","
+      << "\"surfaceCellFirstInvalidProducerFace\":"
+      << diagnostics.surfaceCellFirstInvalidProducerFace << ","
+      << "\"surfaceCellFirstInvalidProducerVertex\":"
+      << diagnostics.surfaceCellFirstInvalidProducerVertex << ","
+      << "\"surfaceCellFirstInvalidProducerEdgeFirst\":"
+      << diagnostics.surfaceCellFirstInvalidProducerEdgeFirst << ","
+      << "\"surfaceCellFirstInvalidProducerEdgeSecond\":"
+      << diagnostics.surfaceCellFirstInvalidProducerEdgeSecond << ","
       << "\"surfaceCellValidationFailures\":"
       << diagnostics.surfaceCellValidationFailures << ","
       << "\"surfaceCellProvenanceVertexCount\":"
@@ -2825,7 +3053,26 @@ void write_results_json(const Options &options,
       out << "        {\"success\": " << (run.success ? "true" : "false")
           << ", \"wallSeconds\": " << run.wallSeconds
           << ", \"peakWorkingSetBytes\": " << run.peakWorkingSetBytes
-          << ", \"reviewImagePath\": \""
+          << ", \"estimatedPeakSimultaneousOwnedBytes\": "
+          << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
+          << ", \"unexplainedPeakWorkingSetBytes\": "
+          << (run.peakWorkingSetBytes >
+                      run.result.surfaceCellContext
+                          .estimatedPeakSimultaneousOwnedBytes
+                  ? run.peakWorkingSetBytes -
+                        run.result.surfaceCellContext
+                            .estimatedPeakSimultaneousOwnedBytes
+                  : 0U)
+          << ", \"ownedToPeakWorkingSetRatio\": ";
+      write_json_number(
+          out,
+          run.peakWorkingSetBytes > 0U
+              ? static_cast<double>(
+                    run.result.surfaceCellContext
+                        .estimatedPeakSimultaneousOwnedBytes) /
+                    static_cast<double>(run.peakWorkingSetBytes)
+              : 0.0);
+      out << ", \"reviewImagePath\": \""
           << escape_json(run.reviewImagePath) << "\""
           << ", \"diagnostics\": ";
       write_remesh_diagnostics_json(out, run.result);

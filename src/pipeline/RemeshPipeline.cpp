@@ -122,12 +122,28 @@ std::uint64_t vector_owned_bytes(const std::vector<T> &values) {
 }
 
 template <typename T>
+std::uint64_t vector_logical_bytes(const std::vector<T> &values) {
+  return static_cast<std::uint64_t>(values.size()) * sizeof(T);
+}
+
+template <typename Derived>
+std::uint64_t eigen_logical_bytes(const Eigen::MatrixBase<Derived> &values) {
+  return static_cast<std::uint64_t>(values.size()) *
+         sizeof(typename Derived::Scalar);
+}
+
+template <typename T>
 std::uint64_t set_payload_owned_bytes(const std::set<T> &values) {
   // std::set does not expose allocator node capacity. Count the payload plus
   // the three links owned by each balanced-tree node; allocator bookkeeping is
   // intentionally excluded, matching the capacity-based completion telemetry.
   return static_cast<std::uint64_t>(values.size()) *
          (sizeof(T) + 3U * sizeof(void *));
+}
+
+template <typename T>
+std::uint64_t set_payload_logical_bytes(const std::set<T> &values) {
+  return static_cast<std::uint64_t>(values.size()) * sizeof(T);
 }
 
 std::uint64_t surface_trace_result_owned_bytes(
@@ -172,11 +188,53 @@ std::uint64_t trace_network_owned_bytes(
   return bytes;
 }
 
+std::uint64_t trace_network_logical_bytes(
+    const geometry::SurfaceCellNetwork &network) {
+  std::uint64_t bytes = vector_logical_bytes(network.seeds) +
+                        vector_logical_bytes(network.traces) +
+                        vector_logical_bytes(network.singularSeparatrices) +
+                        vector_logical_bytes(network.proposals) +
+                        vector_logical_bytes(network.authoritativeRails) +
+                        vector_logical_bytes(network.sourceFaceComponents) +
+                        vector_logical_bytes(network.sourceFaceSheets) +
+                        vector_logical_bytes(network.reliefRootVertices) +
+                        eigen_logical_bytes(network.reliefRegionLabels) +
+                        set_payload_logical_bytes(network.reliefBarrierEdges);
+  for (const geometry::SurfaceTraceResult &trace : network.traces) {
+    bytes += vector_logical_bytes(trace.states) +
+             vector_logical_bytes(trace.segments);
+  }
+  for (const geometry::SurfaceSingularitySeparatrix &separatrix :
+       network.singularSeparatrices) {
+    bytes += vector_logical_bytes(separatrix.trace.states) +
+             vector_logical_bytes(separatrix.trace.segments);
+  }
+  for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
+    bytes += vector_logical_bytes(proposal.sides);
+    for (const auto &path : proposal.boundaryPaths) {
+      bytes += vector_logical_bytes(path);
+    }
+  }
+  for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
+    bytes += vector_logical_bytes(rail.samples);
+  }
+  return bytes;
+}
+
 std::uint64_t flow_rep_arc_vector_owned_bytes(
     const std::vector<geometry::FlowRepArc> &arcs) {
   std::uint64_t bytes = vector_owned_bytes(arcs);
   for (const geometry::FlowRepArc &arc : arcs) {
     bytes += vector_owned_bytes(arc.substitutions);
+  }
+  return bytes;
+}
+
+std::uint64_t flow_rep_arc_vector_logical_bytes(
+    const std::vector<geometry::FlowRepArc> &arcs) {
+  std::uint64_t bytes = vector_logical_bytes(arcs);
+  for (const geometry::FlowRepArc &arc : arcs) {
+    bytes += vector_logical_bytes(arc.substitutions);
   }
   return bytes;
 }
@@ -217,6 +275,14 @@ std::uint64_t sparse_flow_rep_owned_bytes(
          vector_owned_bytes(network.cycleEvaluations);
 }
 
+std::uint64_t sparse_flow_rep_logical_bytes(
+    const geometry::FlowRepSparseNetwork &network) {
+  return vector_logical_bytes(network.retainedArcIds) +
+         vector_logical_bytes(network.removedArcIds) +
+         vector_logical_bytes(network.endpointTags) +
+         vector_logical_bytes(network.cycleEvaluations);
+}
+
 std::uint64_t endpoint_completion_owned_bytes(
     const geometry::FlowRepEndpointCompletionResult &completion) {
   return flow_rep_arc_vector_owned_bytes(completion.arcs) +
@@ -245,6 +311,26 @@ std::uint64_t surface_complex_owned_bytes(
              vector_owned_bytes(cell.halfedges) +
              vector_owned_bytes(cell.sideFamilies) +
              vector_owned_bytes(cell.sideEdgeCounts);
+  }
+  return bytes;
+}
+
+std::uint64_t surface_complex_logical_bytes(
+    const geometry::SurfaceCellComplex &complex) {
+  std::uint64_t bytes = vector_logical_bytes(complex.nodes) +
+                        vector_logical_bytes(complex.halfedges) +
+                        vector_logical_bytes(complex.cells);
+  for (const geometry::SurfaceArrangementNode &node : complex.nodes) {
+    bytes += vector_logical_bytes(node.occurrences);
+  }
+  for (const geometry::SurfaceArrangementHalfedge &edge : complex.halfedges) {
+    bytes += vector_logical_bytes(edge.provenance);
+  }
+  for (const geometry::SurfaceArrangementCell &cell : complex.cells) {
+    bytes += vector_logical_bytes(cell.sourceFaces) +
+             vector_logical_bytes(cell.halfedges) +
+             vector_logical_bytes(cell.sideFamilies) +
+             vector_logical_bytes(cell.sideEdgeCounts);
   }
   return bytes;
 }
@@ -281,6 +367,36 @@ std::uint64_t simplification_transaction_vector_owned_bytes(
              vector_owned_bytes(transaction.affectedCellIds);
   }
   return bytes;
+}
+
+std::uint64_t simplification_candidate_vector_logical_bytes(
+    const std::vector<geometry::SurfaceSimplificationCandidate> &candidates) {
+  std::uint64_t bytes = vector_logical_bytes(candidates);
+  for (const geometry::SurfaceSimplificationCandidate &candidate : candidates) {
+    bytes += vector_logical_bytes(candidate.elementIds) +
+             vector_logical_bytes(candidate.affectedNodeIds) +
+             vector_logical_bytes(candidate.affectedCellIds) +
+             vector_logical_bytes(candidate.affectedStrandIds);
+  }
+  return bytes;
+}
+
+std::uint64_t simplification_transaction_vector_logical_bytes(
+    const std::vector<geometry::SurfaceSimplificationTransaction> &transactions) {
+  std::uint64_t bytes = vector_logical_bytes(transactions);
+  for (const geometry::SurfaceSimplificationTransaction &transaction :
+       transactions) {
+    bytes += vector_logical_bytes(transaction.elementIds) +
+             vector_logical_bytes(transaction.affectedCellIds);
+  }
+  return bytes;
+}
+
+std::uint64_t simplification_result_logical_bytes(
+    const geometry::SurfaceSimplificationResult &result) {
+  return vector_logical_bytes(result.elements) +
+         surface_complex_logical_bytes(result.complex) +
+         simplification_transaction_vector_logical_bytes(result.transactions);
 }
 
 std::uint64_t simplification_result_owned_bytes(
@@ -1073,6 +1189,8 @@ std::uint64_t hash_surface_complex(
   for (const geometry::SurfaceArrangementCell &cell : complex.cells) {
     hash_combine_i64(seed, cell.id);
     hash_combine_i64(seed, cell.sourceFace);
+    hash_combine_i64(seed, cell.sourceComponent);
+    hash_combine_i64(seed, cell.sourceSheet);
     hash_vector(seed, cell.sourceFaces);
     hash_vector(seed, cell.halfedges);
     hash_vector(seed, cell.sideFamilies);
@@ -2247,6 +2365,70 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionOwnershipLastAffectedPatches;
   target.surfaceCellCompletionOwnershipStructuralExhaustionReason =
       source.surfaceCellCompletionOwnershipStructuralExhaustionReason;
+  target.surfaceCellTracingLogicalPayloadBytes =
+      source.surfaceCellTracingLogicalPayloadBytes;
+  target.surfaceCellTracingRetainedCapacityBytes =
+      source.surfaceCellTracingRetainedCapacityBytes;
+  target.surfaceCellFlowRepLogicalPayloadBytes =
+      source.surfaceCellFlowRepLogicalPayloadBytes;
+  target.surfaceCellFlowRepRetainedCapacityBytes =
+      source.surfaceCellFlowRepRetainedCapacityBytes;
+  target.surfaceCellArrangementLogicalPayloadBytes =
+      source.surfaceCellArrangementLogicalPayloadBytes;
+  target.surfaceCellArrangementRetainedCapacityBytes =
+      source.surfaceCellArrangementRetainedCapacityBytes;
+  target.surfaceCellSimplificationLogicalPayloadBytes =
+      source.surfaceCellSimplificationLogicalPayloadBytes;
+  target.surfaceCellSimplificationRetainedCapacityBytes =
+      source.surfaceCellSimplificationRetainedCapacityBytes;
+  target.surfaceCellCompletionLogicalPayloadBytes =
+      source.surfaceCellCompletionLogicalPayloadBytes;
+  target.surfaceCellCompletionRetainedCapacityBytes =
+      source.surfaceCellCompletionRetainedCapacityBytes;
+  target.surfaceCellEstimatedPeakSimultaneousOwnedBytes =
+      source.surfaceCellEstimatedPeakSimultaneousOwnedBytes;
+  target.surfaceCellMemoryOwnershipTimeline =
+      source.surfaceCellMemoryOwnershipTimeline;
+  target.surfaceCellCompletionParityScopeFailureAvailable =
+      source.surfaceCellCompletionParityScopeFailureAvailable;
+  target.surfaceCellCompletionParityOriginalCell =
+      source.surfaceCellCompletionParityOriginalCell;
+  target.surfaceCellCompletionParityReplacementCell =
+      source.surfaceCellCompletionParityReplacementCell;
+  target.surfaceCellCompletionParityHalfedge =
+      source.surfaceCellCompletionParityHalfedge;
+  target.surfaceCellCompletionParityTwin =
+      source.surfaceCellCompletionParityTwin;
+  target.surfaceCellCompletionParitySelectedComponent =
+      source.surfaceCellCompletionParitySelectedComponent;
+  target.surfaceCellCompletionParitySelectedSheet =
+      source.surfaceCellCompletionParitySelectedSheet;
+  target.surfaceCellCompletionParityAvailableComponents =
+      source.surfaceCellCompletionParityAvailableComponents;
+  target.surfaceCellCompletionParityAvailableSheets =
+      source.surfaceCellCompletionParityAvailableSheets;
+  target.surfaceCellCompletionParityMutationPhase =
+      source.surfaceCellCompletionParityMutationPhase;
+  target.surfaceCellFirstInvalidProducerStage =
+      source.surfaceCellFirstInvalidProducerStage;
+  target.surfaceCellFirstInvalidProducerReason =
+      source.surfaceCellFirstInvalidProducerReason;
+  target.surfaceCellFirstInvalidProducerCell =
+      source.surfaceCellFirstInvalidProducerCell;
+  target.surfaceCellFirstInvalidProducerHalfedge =
+      source.surfaceCellFirstInvalidProducerHalfedge;
+  target.surfaceCellFirstInvalidProducerTwin =
+      source.surfaceCellFirstInvalidProducerTwin;
+  target.surfaceCellFirstInvalidProducerNode =
+      source.surfaceCellFirstInvalidProducerNode;
+  target.surfaceCellFirstInvalidProducerFace =
+      source.surfaceCellFirstInvalidProducerFace;
+  target.surfaceCellFirstInvalidProducerVertex =
+      source.surfaceCellFirstInvalidProducerVertex;
+  target.surfaceCellFirstInvalidProducerEdgeFirst =
+      source.surfaceCellFirstInvalidProducerEdgeFirst;
+  target.surfaceCellFirstInvalidProducerEdgeSecond =
+      source.surfaceCellFirstInvalidProducerEdgeSecond;
   target.surfaceCellCompletionOwnershipRejectionAvailable =
       source.surfaceCellCompletionOwnershipRejectionAvailable;
   target.surfaceCellCompletionOwnershipFailure =
@@ -2347,7 +2529,7 @@ void orient_quads_to_source_normals(
     const std::vector<geometry::SurfacePoint> &outputProvenance,
     Eigen::MatrixXi &quads,
     const std::vector<geometry::PureQuadFaceLineage> *quadLineage) {
-  (void)outputProvenance;
+  (void)quadLineage;
   if (outputVertices.cols() != 3 || sourceVertices.cols() != 3 ||
       sourceFaces.cols() != 3 || quads.cols() != 4) {
     return;
@@ -2368,17 +2550,32 @@ void orient_quads_to_source_normals(
     if (!valid) {
       continue;
     }
+    // PureQuadFaceLineage::sourcePatch identifies the arrangement patch that
+    // produced the quad.  It is not a source-triangle row and therefore must
+    // never be used to index sourceFaces.  Prefer an exact common source chart
+    // carried by the output-vertex provenance; otherwise use geometric
+    // projection as the orientation fallback.
     int authoritativeFace = -1;
-    if (quadLineage != nullptr &&
-        row < static_cast<int>(quadLineage->size())) {
-      const geometry::PureQuadFaceLineage &lineage =
-          (*quadLineage)[static_cast<std::size_t>(row)];
-      if (lineage.valid() && lineage.sourcePatch >= 0 &&
-          lineage.sourcePatch < sourceFaces.rows()) {
-        authoritativeFace = lineage.sourcePatch;
+    bool commonFace = true;
+    for (int col = 0; col < 4; ++col) {
+      const int vertex = quads(row, col);
+      if (vertex < 0 ||
+          vertex >= static_cast<int>(outputProvenance.size()) ||
+          !outputProvenance[static_cast<std::size_t>(vertex)].valid()) {
+        commonFace = false;
+        break;
+      }
+      const int face =
+          outputProvenance[static_cast<std::size_t>(vertex)].face;
+      if (authoritativeFace < 0) {
+        authoritativeFace = face;
+      } else if (authoritativeFace != face) {
+        commonFace = false;
+        break;
       }
     }
-    if (authoritativeFace >= 0) {
+    if (commonFace && authoritativeFace >= 0 &&
+        authoritativeFace < sourceFaces.rows()) {
       const Eigen::RowVector3d sa =
           sourceVertices.row(sourceFaces(authoritativeFace, 0));
       const Eigen::RowVector3d sb =
@@ -3668,6 +3865,36 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.sourceMesh = meshWhole;
     result.surfaceCellContext.hasSourceMesh = true;
     std::vector<std::string> completedSurfaceCellStages;
+    std::map<std::string, std::uint64_t> liveOwnedBytesByStage;
+    auto record_memory_ownership = [&](const std::string &stage,
+                                       const std::string &action,
+                                       const std::uint64_t logicalPayloadBytes,
+                                       const std::uint64_t retainedCapacityBytes) {
+      if (action == "release" || retainedCapacityBytes == 0U) {
+        liveOwnedBytesByStage.erase(stage);
+      } else {
+        liveOwnedBytesByStage[stage] = retainedCapacityBytes;
+      }
+      std::uint64_t simultaneousOwnedBytes = 0U;
+      for (const auto &[liveStage, bytes] : liveOwnedBytesByStage) {
+        (void)liveStage;
+        simultaneousOwnedBytes += bytes;
+      }
+      SurfaceCellMemoryOwnershipEvent event;
+      event.stage = stage;
+      event.action = action;
+      event.logicalPayloadBytes = logicalPayloadBytes;
+      event.retainedCapacityBytes = retainedCapacityBytes;
+      event.simultaneousOwnedBytes = simultaneousOwnedBytes;
+      result.surfaceCellContext.memoryOwnershipTimeline.push_back(event);
+      result.diagnostics.surfaceCellMemoryOwnershipTimeline.push_back(
+          std::move(event));
+      result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes = std::max(
+          result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes,
+          simultaneousOwnedBytes);
+      result.diagnostics.surfaceCellEstimatedPeakSimultaneousOwnedBytes =
+          result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes;
+    };
     auto update_overall_pipeline_time = [&]() {
       set_overall_pipeline_time(result, pipelineStart);
     };
@@ -4123,6 +4350,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellTraceCountAvailable = true;
     const std::uint64_t tracingOwnedBytes =
         trace_network_owned_bytes(traceNetwork);
+    const std::uint64_t tracingLogicalBytes =
+        trace_network_logical_bytes(traceNetwork);
+    result.surfaceCellContext.tracingLogicalPayloadBytes = tracingLogicalBytes;
+    result.surfaceCellContext.tracingRetainedCapacityBytes = tracingOwnedBytes;
+    result.diagnostics.surfaceCellTracingLogicalPayloadBytes =
+        tracingLogicalBytes;
+    result.diagnostics.surfaceCellTracingRetainedCapacityBytes =
+        tracingOwnedBytes;
+    record_memory_ownership("tracing", "acquire", tracingLogicalBytes,
+                            tracingOwnedBytes);
     result.surfaceCellContext.tracingCurrentOwnedBytes = tracingOwnedBytes;
     result.surfaceCellContext.tracingPeakOwnedBytes = tracingOwnedBytes;
     result.diagnostics.surfaceCellTracingCurrentOwnedBytes = tracingOwnedBytes;
@@ -4153,6 +4390,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             retainedTraceNetwork, tracingOptions.defaultTargetSize);
     const std::uint64_t flowRepInputOwnedBytes =
         flow_rep_selection_input_owned_bytes(flowRepInput);
+    record_memory_ownership("flowrep-selection", "acquire",
+                            flowRepInputOwnedBytes, flowRepInputOwnedBytes);
     result.surfaceCellContext.flowRepPeakOwnedBytes = flowRepInputOwnedBytes;
     result.diagnostics.surfaceCellFlowRepPeakOwnedBytes =
         flowRepInputOwnedBytes;
@@ -4167,6 +4406,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       // Source labels already live in sourceSurfaceLabels. Do not retain a
       // second copy merely to keep a consumed trace-stage shell alive.
       result.surfaceCellContext.traceNetwork = geometry::SurfaceCellNetwork{};
+      record_memory_ownership("tracing", "release", 0U, 0U);
+      result.surfaceCellContext.tracingRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellTracingRetainedCapacityBytes = 0U;
       result.surfaceCellContext.hasTraceNetwork = false;
       result.surfaceCellContext.traceStorageReleasedAfterFlowRep = true;
       result.diagnostics.surfaceCellTraceStorageReleasedAfterFlowRep = true;
@@ -4235,6 +4477,27 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         static_cast<std::uint64_t>(
             result.surfaceCellContext.flowRepEndpointCompletionFailure
                 .capacity());
+    const std::uint64_t flowRepLogicalBytes =
+        flow_rep_arc_vector_logical_bytes(flowRepArcs) +
+        sparse_flow_rep_logical_bytes(sparseFlowRep) +
+        vector_logical_bytes(endpointCompletion.arcs) +
+        vector_logical_bytes(endpointCompletion.retainedArcIds) +
+        vector_logical_bytes(endpointCompletion.endpointTags) +
+        vector_logical_bytes(endpointCompletion.diagnostics) +
+        static_cast<std::uint64_t>(endpointCompletion.failure.size()) +
+        vector_logical_bytes(
+            result.surfaceCellContext.flowRepEndpointDiagnostics) +
+        static_cast<std::uint64_t>(
+            result.surfaceCellContext.flowRepEndpointCompletionFailure.size());
+    result.surfaceCellContext.flowRepLogicalPayloadBytes = flowRepLogicalBytes;
+    result.surfaceCellContext.flowRepRetainedCapacityBytes =
+        flowRepCurrentOwnedBytes;
+    result.diagnostics.surfaceCellFlowRepLogicalPayloadBytes =
+        flowRepLogicalBytes;
+    result.diagnostics.surfaceCellFlowRepRetainedCapacityBytes =
+        flowRepCurrentOwnedBytes;
+    record_memory_ownership("flowrep", "acquire", flowRepLogicalBytes,
+                            flowRepCurrentOwnedBytes);
     result.surfaceCellContext.flowRepCurrentOwnedBytes =
         flowRepCurrentOwnedBytes;
     result.surfaceCellContext.flowRepPeakOwnedBytes =
@@ -4252,6 +4515,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     // Coverage/cycle evidence has now been consumed by selection and hashing.
     // Release it before arrangement and completion allocate their graphs.
     flowRepInput = geometry::FlowRepSelectionInput{};
+    record_memory_ownership("flowrep-selection", "release", 0U, 0U);
     result.surfaceCellContext.flowRepSelectionStorageReleasedAfterSelection =
         flowRepInput.arcs.empty() && flowRepInput.coverageSamples.empty() &&
         flowRepInput.cycles.empty();
@@ -4304,6 +4568,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       std::vector<geometry::FlowRepArc>().swap(flowRepArcs);
       sparseFlowRep = geometry::FlowRepSparseNetwork{};
       endpointCompletion = geometry::FlowRepEndpointCompletionResult{};
+      result.surfaceCellContext.flowRepRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellFlowRepRetainedCapacityBytes = 0U;
+      record_memory_ownership("flowrep", "release", 0U, 0U);
     }
     const double surfaceCellEmbeddingSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
@@ -4369,9 +4636,22 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellArrangementCountAvailable = true;
     const std::uint64_t arrangementOwnedBytes =
         surface_complex_owned_bytes(arrangementComplex);
+    const std::uint64_t arrangementLogicalBytes =
+        surface_complex_logical_bytes(arrangementComplex);
     const std::uint64_t arrangementCurrentOwnedBytes =
         arrangementOwnedBytes +
         (retainIntermediateGeometry ? arrangementArcOwnedBytes : 0U);
+    result.surfaceCellContext.arrangementLogicalPayloadBytes =
+        arrangementLogicalBytes;
+    result.surfaceCellContext.arrangementRetainedCapacityBytes =
+        arrangementCurrentOwnedBytes;
+    result.diagnostics.surfaceCellArrangementLogicalPayloadBytes =
+        arrangementLogicalBytes;
+    result.diagnostics.surfaceCellArrangementRetainedCapacityBytes =
+        arrangementCurrentOwnedBytes;
+    record_memory_ownership("arrangement", "acquire",
+                            arrangementLogicalBytes,
+                            arrangementCurrentOwnedBytes);
     result.surfaceCellContext.arrangementCurrentOwnedBytes =
         arrangementCurrentOwnedBytes;
     result.surfaceCellContext.arrangementPeakOwnedBytes = std::max(
@@ -4483,6 +4763,23 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             result.surfaceCellContext.simplificationTopologyHealingCandidates) +
         simplification_transaction_vector_owned_bytes(
             result.surfaceCellContext.simplificationTransactions);
+    const std::uint64_t simplificationLogicalBytes =
+        simplification_result_logical_bytes(simplified) +
+        simplification_candidate_vector_logical_bytes(
+            result.surfaceCellContext.simplificationTopologyHealingCandidates) +
+        simplification_transaction_vector_logical_bytes(
+            result.surfaceCellContext.simplificationTransactions);
+    result.surfaceCellContext.simplificationLogicalPayloadBytes =
+        simplificationLogicalBytes;
+    result.surfaceCellContext.simplificationRetainedCapacityBytes =
+        simplificationCurrentOwnedBytes;
+    result.diagnostics.surfaceCellSimplificationLogicalPayloadBytes =
+        simplificationLogicalBytes;
+    result.diagnostics.surfaceCellSimplificationRetainedCapacityBytes =
+        simplificationCurrentOwnedBytes;
+    record_memory_ownership("simplification", "acquire",
+                            simplificationLogicalBytes,
+                            simplificationCurrentOwnedBytes);
     result.surfaceCellContext.simplificationCurrentOwnedBytes =
         simplificationCurrentOwnedBytes;
     result.surfaceCellContext.simplificationPeakOwnedBytes = std::max(
@@ -4541,6 +4838,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       // stage. Its semantic hash and diagnostics are already recorded.
       arrangementComplex = geometry::SurfaceCellComplex{};
       simplified = geometry::SurfaceSimplificationResult{};
+      result.surfaceCellContext.arrangementRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellArrangementRetainedCapacityBytes = 0U;
+      record_memory_ownership("arrangement", "release", 0U, 0U);
+      result.surfaceCellContext.simplificationRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellSimplificationRetainedCapacityBytes = 0U;
+      record_memory_ownership("simplification", "release", 0U, 0U);
     }
     geometry::SurfaceCellComplexCompletionOptions completionOptions;
     completionOptions.descriptorOptions.singularCycles =
@@ -4643,6 +4946,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipProductCacheHashMisses;
     result.surfaceCellContext.completionOwnershipProductCacheExactMismatches =
         completionResult.completionOwnershipProductCacheExactMismatches;
+    result.surfaceCellContext.completionOwnershipProductCacheMismatchVector =
+        completionResult.completionOwnershipProductCacheMismatchVector;
+    result.surfaceCellContext.completionParityScopeFailure =
+        completionResult.firstParityScopeFailure;
+    result.surfaceCellContext.hasCompletionParityScopeFailure =
+        completionResult.firstParityScopeFailure.active;
     result.surfaceCellContext.completionOwnershipPreConflictInventoryHash =
         completionResult.completionOwnershipPreConflictInventoryHash;
     result.surfaceCellContext.completionOwnershipPostConflictInventoryHash =
@@ -4679,6 +4988,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipPeakStructuralOwnedBytes;
     result.surfaceCellContext.completionOwnershipStructuralExhaustionReason =
         completionResult.completionOwnershipStructuralExhaustionReason;
+    result.surfaceCellContext.completionLogicalPayloadBytes =
+        completionResult.completionLogicalPayloadBytes;
+    result.surfaceCellContext.completionRetainedCapacityBytes =
+        completionResult.completionRetainedCapacityBytes;
+    result.diagnostics.surfaceCellCompletionLogicalPayloadBytes =
+        completionResult.completionLogicalPayloadBytes;
+    result.diagnostics.surfaceCellCompletionRetainedCapacityBytes =
+        completionResult.completionRetainedCapacityBytes;
+    record_memory_ownership("completion", "acquire",
+                            completionResult.completionLogicalPayloadBytes,
+                            completionResult.completionRetainedCapacityBytes);
     result.surfaceCellContext.completionOwnershipRepairLog =
         std::move(completionResult.ownershipRepairAttempts);
     result.surfaceCellContext.firstCompletionOwnershipRejection =
@@ -4796,6 +5116,29 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         .surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = true;
     result.diagnostics.surfaceCellCompletionOwnershipStructuralLedgerAvailable =
         true;
+    const geometry::SurfaceCellReplacementScopeFailure &parityScopeFailure =
+        completionResult.firstParityScopeFailure;
+    if (parityScopeFailure.active) {
+      result.diagnostics.surfaceCellCompletionParityScopeFailureAvailable = true;
+      result.diagnostics.surfaceCellCompletionParityOriginalCell =
+          parityScopeFailure.originalCell;
+      result.diagnostics.surfaceCellCompletionParityReplacementCell =
+          parityScopeFailure.replacementCell;
+      result.diagnostics.surfaceCellCompletionParityHalfedge =
+          parityScopeFailure.halfedge;
+      result.diagnostics.surfaceCellCompletionParityTwin =
+          parityScopeFailure.twin;
+      result.diagnostics.surfaceCellCompletionParitySelectedComponent =
+          parityScopeFailure.selectedComponent;
+      result.diagnostics.surfaceCellCompletionParitySelectedSheet =
+          parityScopeFailure.selectedSheet;
+      result.diagnostics.surfaceCellCompletionParityAvailableComponents =
+          parityScopeFailure.availableComponents;
+      result.diagnostics.surfaceCellCompletionParityAvailableSheets =
+          parityScopeFailure.availableSheets;
+      result.diagnostics.surfaceCellCompletionParityMutationPhase =
+          parityScopeFailure.mutationPhase;
+    }
     const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     if (ownershipRejection.active) {
@@ -4869,6 +5212,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       // extracted. Release prepared topology, descriptors, patch completions,
       // and conflict workspaces before output validation/refinalization.
       completionResult = geometry::SurfaceCellComplexCompletionResult{};
+      result.surfaceCellContext.completionRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellCompletionRetainedCapacityBytes = 0U;
+      record_memory_ownership("completion", "release", 0U, 0U);
     }
 
     // A source-triangle pair may identify a valid source cell, but returning
@@ -5220,6 +5566,56 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                               completionIdentity, completionAccepted,
                               result.diagnostics.surfaceCellCompletionSeconds);
     if (!completionAccepted) {
+      if (completionResult.firstParityScopeFailure.active) {
+        const auto &failure = completionResult.firstParityScopeFailure;
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion/parity-repair";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            failure.mutationPhase;
+        result.diagnostics.surfaceCellFirstInvalidProducerCell =
+            failure.originalCell;
+        result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
+            failure.halfedge;
+        result.diagnostics.surfaceCellFirstInvalidProducerTwin = failure.twin;
+      } else if (completionResult.firstInvalidDomain.failure !=
+                 geometry::SurfaceCellDomainIdentityFailureKind::None) {
+        const auto &failure = completionResult.firstInvalidDomain;
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion/domain-identity";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            geometry::surface_cell_domain_identity_failure_name(
+                failure.failure);
+        result.diagnostics.surfaceCellFirstInvalidProducerCell = failure.cellId;
+        result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
+            failure.halfedgeId;
+        result.diagnostics.surfaceCellFirstInvalidProducerNode = failure.nodeId;
+        result.diagnostics.surfaceCellFirstInvalidProducerFace =
+            failure.sourceFace;
+      } else if (completionResult.firstCompletionOwnershipRejection.active) {
+        const auto &failure =
+            completionResult.firstCompletionOwnershipRejection;
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion/ownership";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            failure.failure;
+        result.diagnostics.surfaceCellFirstInvalidProducerCell =
+            failure.sourcePatch;
+        result.diagnostics.surfaceCellFirstInvalidProducerVertex =
+            failure.localVertex;
+        result.diagnostics.surfaceCellFirstInvalidProducerFace =
+            failure.storedFace;
+        result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+            failure.sourceEdge[0];
+        result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+            failure.sourceEdge[1];
+      } else {
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            completionResult.failure.empty()
+                ? result.surfaceCellContext.outputLineageValidation.failure
+                : completionResult.failure;
+      }
       return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "completion");
     }
@@ -5249,18 +5645,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           static_cast<std::size_t>(completedQuads.rows()), -1);
       constraints.constrainVerticesToProvenanceEntities =
           result.surfaceCellContext.sourceGridRecoveryUsed;
-      for (int quad = 0;
-           quad < completedQuads.rows() &&
-           quad < static_cast<int>(completedQuadLineage.size());
-           ++quad) {
-        const geometry::PureQuadFaceLineage &lineage =
-            completedQuadLineage[static_cast<std::size_t>(quad)];
-        if (lineage.valid() && lineage.sourcePatch >= 0 &&
-            lineage.sourcePatch < meshWhole.F.rows()) {
-          constraints.outputQuadSourceFaces[static_cast<std::size_t>(quad)] =
-              lineage.sourcePatch;
-        }
-      }
+      // PureQuadFaceLineage::sourcePatch is an arrangement patch identity,
+      // not a source-triangle row. Leaving these entries unset makes the
+      // optimizer derive each quad's exact compatible source chart from its
+      // four vertex provenance records instead of projecting onto an unrelated
+      // triangle that happens to share the same integer id.
       constraints.sourceVertexFaces.resize(
           static_cast<std::size_t>(meshWhole.V.rows()));
       for (int face = 0; face < meshWhole.F.rows(); ++face) {
@@ -5391,8 +5780,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                 optimizationOptions,
                                                 optimizationSeconds,
                                                 std::numeric_limits<double>::infinity());
-      if (!validation.accepted &&
-          result.surfaceCellContext.sourceGridRecoveryUsed) {
+      if (!validation.accepted) {
         geometry::SurfaceOptimizationResult recovered = optimization;
         recovered.vertices = completedVertices;
         recovered.quads = completedQuads;
@@ -5521,6 +5909,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
     }
 
+    if (result.surfaceCellContext.hasValidationResult &&
+        !result.surfaceCellContext.validationResult.strictValidationIssues.empty()) {
+      const validation::MeshValidationIssue &issue =
+          result.surfaceCellContext.validationResult.strictValidationIssues.front();
+      result.diagnostics.surfaceCellFirstInvalidProducerStage =
+          "optimization/output-validation";
+      result.diagnostics.surfaceCellFirstInvalidProducerReason =
+          std::string(validation::mesh_validation_failure_name(issue.code));
+      result.diagnostics.surfaceCellFirstInvalidProducerFace = issue.face;
+      result.diagnostics.surfaceCellFirstInvalidProducerVertex = issue.vertex;
+      result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+          issue.edgeFirst;
+      result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+          issue.edgeSecond;
+    } else if (result.diagnostics.surfaceCellFirstInvalidProducerStage.empty()) {
+      result.diagnostics.surfaceCellFirstInvalidProducerStage = "validation";
+      result.diagnostics.surfaceCellFirstInvalidProducerReason =
+          "AggregateValidationFailure";
+    }
     return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                               "validation");
   }
@@ -6401,6 +6808,36 @@ void accumulate_component_diagnostics(
       source.surfaceCellSimplificationCurrentOwnedBytes;
   target.surfaceCellSimplificationPeakOwnedBytes +=
       source.surfaceCellSimplificationPeakOwnedBytes;
+  target.surfaceCellTracingLogicalPayloadBytes +=
+      source.surfaceCellTracingLogicalPayloadBytes;
+  target.surfaceCellTracingRetainedCapacityBytes +=
+      source.surfaceCellTracingRetainedCapacityBytes;
+  target.surfaceCellFlowRepLogicalPayloadBytes +=
+      source.surfaceCellFlowRepLogicalPayloadBytes;
+  target.surfaceCellFlowRepRetainedCapacityBytes +=
+      source.surfaceCellFlowRepRetainedCapacityBytes;
+  target.surfaceCellArrangementLogicalPayloadBytes +=
+      source.surfaceCellArrangementLogicalPayloadBytes;
+  target.surfaceCellArrangementRetainedCapacityBytes +=
+      source.surfaceCellArrangementRetainedCapacityBytes;
+  target.surfaceCellSimplificationLogicalPayloadBytes +=
+      source.surfaceCellSimplificationLogicalPayloadBytes;
+  target.surfaceCellSimplificationRetainedCapacityBytes +=
+      source.surfaceCellSimplificationRetainedCapacityBytes;
+  target.surfaceCellCompletionLogicalPayloadBytes +=
+      source.surfaceCellCompletionLogicalPayloadBytes;
+  target.surfaceCellCompletionRetainedCapacityBytes +=
+      source.surfaceCellCompletionRetainedCapacityBytes;
+  target.surfaceCellEstimatedPeakSimultaneousOwnedBytes +=
+      source.surfaceCellEstimatedPeakSimultaneousOwnedBytes;
+  for (SurfaceCellMemoryOwnershipEvent event :
+       source.surfaceCellMemoryOwnershipTimeline) {
+    if (componentIndex != std::numeric_limits<std::size_t>::max()) {
+      event.stage = "component[" + std::to_string(componentIndex) + "]/" +
+                    event.stage;
+    }
+    target.surfaceCellMemoryOwnershipTimeline.push_back(std::move(event));
+  }
   target.surfaceCellMaxSimultaneousLiveLargeStructures = std::max(
       target.surfaceCellMaxSimultaneousLiveLargeStructures,
       source.surfaceCellMaxSimultaneousLiveLargeStructures);
@@ -6554,6 +6991,51 @@ void accumulate_component_diagnostics(
     target.surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
     target.surfaceCellCompletionOwnershipLastAffectedPatches.clear();
     target.surfaceCellCompletionOwnershipStructuralExhaustionReason = "none";
+  }
+  if (source.surfaceCellCompletionParityScopeFailureAvailable &&
+      !target.surfaceCellCompletionParityScopeFailureAvailable) {
+    target.surfaceCellCompletionParityScopeFailureAvailable = true;
+    target.surfaceCellCompletionParityOriginalCell =
+        source.surfaceCellCompletionParityOriginalCell;
+    target.surfaceCellCompletionParityReplacementCell =
+        source.surfaceCellCompletionParityReplacementCell;
+    target.surfaceCellCompletionParityHalfedge =
+        source.surfaceCellCompletionParityHalfedge;
+    target.surfaceCellCompletionParityTwin =
+        source.surfaceCellCompletionParityTwin;
+    target.surfaceCellCompletionParitySelectedComponent =
+        source.surfaceCellCompletionParitySelectedComponent;
+    target.surfaceCellCompletionParitySelectedSheet =
+        source.surfaceCellCompletionParitySelectedSheet;
+    target.surfaceCellCompletionParityAvailableComponents =
+        source.surfaceCellCompletionParityAvailableComponents;
+    target.surfaceCellCompletionParityAvailableSheets =
+        source.surfaceCellCompletionParityAvailableSheets;
+    target.surfaceCellCompletionParityMutationPhase =
+        source.surfaceCellCompletionParityMutationPhase;
+  }
+  if (!source.surfaceCellFirstInvalidProducerStage.empty() &&
+      target.surfaceCellFirstInvalidProducerStage.empty()) {
+    target.surfaceCellFirstInvalidProducerStage =
+        source.surfaceCellFirstInvalidProducerStage;
+    target.surfaceCellFirstInvalidProducerReason =
+        source.surfaceCellFirstInvalidProducerReason;
+    target.surfaceCellFirstInvalidProducerCell =
+        source.surfaceCellFirstInvalidProducerCell;
+    target.surfaceCellFirstInvalidProducerHalfedge =
+        source.surfaceCellFirstInvalidProducerHalfedge;
+    target.surfaceCellFirstInvalidProducerTwin =
+        source.surfaceCellFirstInvalidProducerTwin;
+    target.surfaceCellFirstInvalidProducerNode =
+        source.surfaceCellFirstInvalidProducerNode;
+    target.surfaceCellFirstInvalidProducerFace =
+        source.surfaceCellFirstInvalidProducerFace;
+    target.surfaceCellFirstInvalidProducerVertex =
+        source.surfaceCellFirstInvalidProducerVertex;
+    target.surfaceCellFirstInvalidProducerEdgeFirst =
+        source.surfaceCellFirstInvalidProducerEdgeFirst;
+    target.surfaceCellFirstInvalidProducerEdgeSecond =
+        source.surfaceCellFirstInvalidProducerEdgeSecond;
   }
   if (source.surfaceCellCompletionOwnershipRejectionAvailable &&
       !target.surfaceCellCompletionOwnershipRejectionAvailable) {
@@ -7057,6 +7539,34 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         componentResult.surfaceCellContext.simplificationCurrentOwnedBytes;
     merged.surfaceCellContext.simplificationPeakOwnedBytes +=
         componentResult.surfaceCellContext.simplificationPeakOwnedBytes;
+    merged.surfaceCellContext.tracingLogicalPayloadBytes +=
+        componentResult.surfaceCellContext.tracingLogicalPayloadBytes;
+    merged.surfaceCellContext.tracingRetainedCapacityBytes +=
+        componentResult.surfaceCellContext.tracingRetainedCapacityBytes;
+    merged.surfaceCellContext.flowRepLogicalPayloadBytes +=
+        componentResult.surfaceCellContext.flowRepLogicalPayloadBytes;
+    merged.surfaceCellContext.flowRepRetainedCapacityBytes +=
+        componentResult.surfaceCellContext.flowRepRetainedCapacityBytes;
+    merged.surfaceCellContext.arrangementLogicalPayloadBytes +=
+        componentResult.surfaceCellContext.arrangementLogicalPayloadBytes;
+    merged.surfaceCellContext.arrangementRetainedCapacityBytes +=
+        componentResult.surfaceCellContext.arrangementRetainedCapacityBytes;
+    merged.surfaceCellContext.simplificationLogicalPayloadBytes +=
+        componentResult.surfaceCellContext.simplificationLogicalPayloadBytes;
+    merged.surfaceCellContext.simplificationRetainedCapacityBytes +=
+        componentResult.surfaceCellContext.simplificationRetainedCapacityBytes;
+    merged.surfaceCellContext.completionLogicalPayloadBytes +=
+        componentResult.surfaceCellContext.completionLogicalPayloadBytes;
+    merged.surfaceCellContext.completionRetainedCapacityBytes +=
+        componentResult.surfaceCellContext.completionRetainedCapacityBytes;
+    merged.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes +=
+        componentResult.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes;
+    for (SurfaceCellMemoryOwnershipEvent event :
+         componentResult.surfaceCellContext.memoryOwnershipTimeline) {
+      event.stage = "component[" + std::to_string(index) + "]/" + event.stage;
+      merged.surfaceCellContext.memoryOwnershipTimeline.push_back(
+          std::move(event));
+    }
     merged.surfaceCellContext.maxSimultaneousLiveLargeStructures = std::max(
         merged.surfaceCellContext.maxSimultaneousLiveLargeStructures,
         componentResult.surfaceCellContext.maxSimultaneousLiveLargeStructures);

@@ -1605,6 +1605,28 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   EXPECT_GE(context.arrangementPeakOwnedBytes,
             context.arrangementCurrentOwnedBytes);
   EXPECT_GE(context.maxSimultaneousLiveLargeStructures, 2);
+  EXPECT_GT(context.tracingLogicalPayloadBytes, 0U);
+  EXPECT_GE(context.tracingRetainedCapacityBytes,
+            context.tracingLogicalPayloadBytes);
+  EXPECT_GT(context.flowRepLogicalPayloadBytes, 0U);
+  EXPECT_GE(context.flowRepRetainedCapacityBytes,
+            context.flowRepLogicalPayloadBytes);
+  EXPECT_GT(context.arrangementLogicalPayloadBytes, 0U);
+  EXPECT_GE(context.arrangementRetainedCapacityBytes,
+            context.arrangementLogicalPayloadBytes);
+  EXPECT_FALSE(context.memoryOwnershipTimeline.empty());
+  EXPECT_GT(context.estimatedPeakSimultaneousOwnedBytes, 0U);
+  for (const directional::SurfaceCellMemoryOwnershipEvent &event :
+       context.memoryOwnershipTimeline) {
+    EXPECT_FALSE(event.stage.empty());
+    EXPECT_TRUE(event.action == "acquire" || event.action == "release");
+    EXPECT_GE(event.retainedCapacityBytes, event.logicalPayloadBytes);
+    if (event.action == "acquire") {
+      EXPECT_GE(event.simultaneousOwnedBytes, event.retainedCapacityBytes);
+    } else {
+      EXPECT_EQ(0U, event.retainedCapacityBytes);
+    }
+  }
   bool sawHalfedgeRail = false;
   for (const directional::geometry::SurfaceArrangementHalfedge &halfedge :
        context.arrangement.halfedges) {

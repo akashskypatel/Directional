@@ -2171,42 +2171,93 @@ SurfaceCellComplex build_surface_cell_complex(
   }
 
   // Rebind every oriented halfedge to the exact source sheet of its incident
-  // cell. Coincident source-edge segments can contribute provenance from both
-  // local sheets; selecting one undirected primary record for both twins
-  // silently mixed sheets. The complete provenance remains attached, while
-  // each orientation chooses a deterministic record compatible with its cell.
+  // cell.  The cell scope is derived once from authoritative source-face
+  // labels when available, or from the intersection of all oriented boundary
+  // claims otherwise.  It is stored on the cell so later transactional
+  // subdivision never has to rediscover ownership by post-mutation voting.
   for (SurfaceArrangementCell &cell : complex.cells) {
-    std::map<std::pair<int, int>, int> scopeFrequency;
+    using SourceScope = std::pair<int, int>;
     const std::set<int> cellFaces(cell.sourceFaces.begin(),
                                   cell.sourceFaces.end());
+    SourceScope selectedScope{-1, -1};
+    bool sourceFaceScopeInitialized = false;
+    bool sourceFaceScopeValid = options.sourceFaceComponents != nullptr &&
+                                options.sourceFaceSheets != nullptr;
+    if (sourceFaceScopeValid) {
+      for (const int face : cell.sourceFaces) {
+        if (face < 0 ||
+            face >= static_cast<int>(options.sourceFaceComponents->size()) ||
+            face >= static_cast<int>(options.sourceFaceSheets->size())) {
+          sourceFaceScopeValid = false;
+          break;
+        }
+        const SourceScope scope{
+            (*options.sourceFaceComponents)[static_cast<std::size_t>(face)],
+            (*options.sourceFaceSheets)[static_cast<std::size_t>(face)]};
+        if (scope.first < 0 || scope.second < 0) {
+          sourceFaceScopeValid = false;
+          break;
+        }
+        if (!sourceFaceScopeInitialized) {
+          selectedScope = scope;
+          sourceFaceScopeInitialized = true;
+        } else if (scope != selectedScope) {
+          sourceFaceScopeValid = false;
+          break;
+        }
+      }
+      sourceFaceScopeValid = sourceFaceScopeValid && sourceFaceScopeInitialized;
+    }
+
+    std::set<SourceScope> sharedBoundaryScopes;
+    bool firstBoundary = true;
     for (const int halfedgeId : cell.halfedges) {
       const SurfaceArrangementHalfedge &edge =
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-      bool counted = false;
+      std::set<SourceScope> edgeScopes;
       for (const SurfaceArrangementProvenance &entry : edge.provenance) {
         if (entry.sourceComponent < 0 || entry.sourceSheet < 0 ||
             (!cellFaces.empty() &&
              cellFaces.count(entry.sourceFace) == 0U)) {
           continue;
         }
-        ++scopeFrequency[{entry.sourceComponent, entry.sourceSheet}];
-        counted = true;
+        edgeScopes.emplace(entry.sourceComponent, entry.sourceSheet);
       }
-      if (!counted && edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
-        ++scopeFrequency[{edge.sourceComponent, edge.sourceSheet}];
+      if (edgeScopes.empty()) {
+        for (const SurfaceArrangementProvenance &entry : edge.provenance) {
+          if (entry.sourceComponent >= 0 && entry.sourceSheet >= 0) {
+            edgeScopes.emplace(entry.sourceComponent, entry.sourceSheet);
+          }
+        }
+      }
+      if (edge.sourceComponent >= 0 && edge.sourceSheet >= 0) {
+        edgeScopes.emplace(edge.sourceComponent, edge.sourceSheet);
+      }
+      if (firstBoundary) {
+        sharedBoundaryScopes = std::move(edgeScopes);
+        firstBoundary = false;
+      } else {
+        std::set<SourceScope> intersection;
+        std::set_intersection(
+            sharedBoundaryScopes.begin(), sharedBoundaryScopes.end(),
+            edgeScopes.begin(), edgeScopes.end(),
+            std::inserter(intersection, intersection.end()));
+        sharedBoundaryScopes = std::move(intersection);
       }
     }
-    if (scopeFrequency.empty()) {
+    if (!sourceFaceScopeValid) {
+      if (sharedBoundaryScopes.size() != 1U) {
+        embeddingValid = false;
+        continue;
+      }
+      selectedScope = *sharedBoundaryScopes.begin();
+    }
+    if (selectedScope.first < 0 || selectedScope.second < 0) {
+      embeddingValid = false;
       continue;
     }
-    const auto selectedScope = std::max_element(
-        scopeFrequency.begin(), scopeFrequency.end(),
-        [](const auto &lhs, const auto &rhs) {
-          if (lhs.second != rhs.second) {
-            return lhs.second < rhs.second;
-          }
-          return lhs.first > rhs.first;
-        })->first;
+    cell.sourceComponent = selectedScope.first;
+    cell.sourceSheet = selectedScope.second;
 
     std::set<int> selectedFaces;
     for (const int halfedgeId : cell.halfedges) {
@@ -2229,6 +2280,7 @@ SurfaceCellComplex build_surface_cell_complex(
         }
       }
       if (compatible.empty()) {
+        embeddingValid = false;
         continue;
       }
       const auto key = [](const SurfaceArrangementProvenance *value) {
@@ -2302,6 +2354,50 @@ SurfaceCellComplex build_surface_cell_complex(
                                                  : primary.railT1;
       if (edge.sourceFace >= 0) {
         selectedFaces.insert(edge.sourceFace);
+      }
+
+      const auto ensureOccurrence = [&](const int nodeId,
+                                        const double sourceParameter,
+                                        const double railParameter) {
+        if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size())) {
+          return false;
+        }
+        SurfaceArrangementNode &node =
+            complex.nodes[static_cast<std::size_t>(nodeId)];
+        const auto existing = std::find_if(
+            node.occurrences.begin(), node.occurrences.end(),
+            [&](const SurfaceArrangementNodeOccurrence &occurrence) {
+              return occurrence.sourceFace == edge.sourceFace &&
+                     occurrence.sourceComponent == selectedScope.first &&
+                     occurrence.sourceSheet == selectedScope.second;
+            });
+        if (existing != node.occurrences.end()) {
+          return true;
+        }
+        const Eigen::RowVector3d barycentric =
+            node_barycentric_on_face(node, edge.sourceFace);
+        if (!barycentric.allFinite()) {
+          return false;
+        }
+        SurfaceArrangementNodeOccurrence occurrence;
+        occurrence.sourceFace = edge.sourceFace;
+        occurrence.barycentric = barycentric;
+        occurrence.sourceComponent = selectedScope.first;
+        occurrence.sourceSheet = selectedScope.second;
+        occurrence.sourceArc = edge.sourceArc;
+        occurrence.provenance = primary.provenance;
+        occurrence.railId = edge.railId;
+        occurrence.curveId = edge.curveId;
+        occurrence.sourceT0 = sourceParameter;
+        occurrence.sourceT1 = sourceParameter;
+        occurrence.railT0 = railParameter;
+        occurrence.railT1 = railParameter;
+        node.occurrences.push_back(std::move(occurrence));
+        return true;
+      };
+      if (!ensureOccurrence(edge.from, edge.sourceT0, edge.railT0) ||
+          !ensureOccurrence(edge.to, edge.sourceT1, edge.railT1)) {
+        embeddingValid = false;
       }
     }
     if (!selectedFaces.empty()) {

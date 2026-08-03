@@ -661,6 +661,17 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
     return audit;
   }
+  if (cell.sourceComponent >= 0 &&
+      cell.sourceComponent != *components.begin()) {
+    audit.sourceComponent = cell.sourceComponent;
+    audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceComponent;
+    return audit;
+  }
+  if (cell.sourceSheet >= 0 && cell.sourceSheet != *sheets.begin()) {
+    audit.sourceSheet = cell.sourceSheet;
+    audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
+    return audit;
+  }
 
   std::sort(undirected.begin(), undirected.end());
   audit.identity.orientedBoundary =
@@ -1530,6 +1541,33 @@ std::uint64_t exact_identity_hash(
   return canonical.hash();
 }
 
+std::uint64_t logical_complex_payload_bytes(
+    const SurfaceCellComplex &complex) {
+  std::uint64_t bytes = sizeof(SurfaceCellComplex);
+  bytes += static_cast<std::uint64_t>(complex.nodes.size()) *
+           sizeof(SurfaceArrangementNode);
+  bytes += static_cast<std::uint64_t>(complex.halfedges.size()) *
+           sizeof(SurfaceArrangementHalfedge);
+  bytes += static_cast<std::uint64_t>(complex.cells.size()) *
+           sizeof(SurfaceArrangementCell);
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    bytes += static_cast<std::uint64_t>(node.occurrences.size()) *
+             sizeof(SurfaceArrangementNodeOccurrence);
+  }
+  for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
+    bytes += static_cast<std::uint64_t>(edge.provenance.size()) *
+             sizeof(SurfaceArrangementProvenance);
+  }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += static_cast<std::uint64_t>(cell.sourceFaces.size()) * sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.halfedges.size()) * sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.sideFamilies.size()) * sizeof(int);
+    bytes += static_cast<std::uint64_t>(cell.sideEdgeCounts.size()) *
+             sizeof(int);
+  }
+  return bytes;
+}
+
 std::uint64_t estimated_complex_owned_bytes(
     const SurfaceCellComplex &complex) {
   std::uint64_t bytes = sizeof(SurfaceCellComplex);
@@ -1557,6 +1595,33 @@ std::uint64_t estimated_complex_owned_bytes(
     bytes += static_cast<std::uint64_t>(cell.sideEdgeCounts.capacity()) *
              sizeof(int);
   }
+  return bytes;
+}
+
+std::uint64_t logical_descriptor_payload_bytes(
+    const PatchDescriptor &descriptor) {
+  std::uint64_t bytes = 0U;
+  bytes += static_cast<std::uint64_t>(descriptor.sides.size()) *
+           sizeof(PatchSideDescriptor);
+  bytes += static_cast<std::uint64_t>(descriptor.singularSourceVertices.size()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(descriptor.singularNumerators.size()) *
+           sizeof(int);
+  for (const PatchSideDescriptor &side : descriptor.sides) {
+    bytes += static_cast<std::uint64_t>(side.halfedges.size()) * sizeof(int);
+    bytes += static_cast<std::uint64_t>(side.boundaryVertices.size()) *
+             sizeof(int);
+  }
+  const PureQuadPatch &patch = descriptor.patch;
+  bytes += static_cast<std::uint64_t>(patch.sideEdgeCounts.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.turns.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryVertices.size()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.size()) *
+           sizeof(SurfacePoint);
+  bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.sourceFaces.size()) * sizeof(int);
   return bytes;
 }
 
@@ -1594,6 +1659,19 @@ std::uint64_t estimated_descriptor_payload_owned_bytes(
   return bytes;
 }
 
+std::uint64_t logical_descriptor_bytes(
+    const PatchDescriptorSet &descriptors) {
+  std::uint64_t bytes = sizeof(PatchDescriptorSet);
+  bytes += static_cast<std::uint64_t>(descriptors.descriptors.size()) *
+           sizeof(PatchDescriptor);
+  bytes += static_cast<std::uint64_t>(
+               descriptors.unresolvedSingularVertices.size()) * sizeof(int);
+  for (const PatchDescriptor &descriptor : descriptors.descriptors) {
+    bytes += logical_descriptor_payload_bytes(descriptor);
+  }
+  return bytes;
+}
+
 std::uint64_t estimated_descriptor_owned_bytes(
     const PatchDescriptorSet &descriptors) {
   std::uint64_t bytes = sizeof(PatchDescriptorSet);
@@ -1605,6 +1683,34 @@ std::uint64_t estimated_descriptor_owned_bytes(
   for (const PatchDescriptor &descriptor : descriptors.descriptors) {
     bytes += estimated_descriptor_payload_owned_bytes(descriptor);
   }
+  return bytes;
+}
+
+std::uint64_t logical_mesh_payload_bytes(const PureQuadMesh &mesh) {
+  std::uint64_t bytes = sizeof(PureQuadMesh);
+  bytes += static_cast<std::uint64_t>(mesh.vertices.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.vertexPositions.size()) *
+           sizeof(double);
+  bytes += static_cast<std::uint64_t>(mesh.vertexProvenance.size()) *
+           sizeof(SurfacePoint);
+  bytes += static_cast<std::uint64_t>(mesh.quads.size()) *
+           sizeof(std::vector<int>);
+  for (const auto &quad : mesh.quads) {
+    bytes += static_cast<std::uint64_t>(quad.size()) * sizeof(int);
+  }
+  bytes += static_cast<std::uint64_t>(mesh.boundaryVertices.size()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.boundaryLoops.size()) *
+           sizeof(std::vector<int>);
+  for (const auto &loop : mesh.boundaryLoops) {
+    bytes += static_cast<std::uint64_t>(loop.size()) * sizeof(int);
+  }
+  bytes += static_cast<std::uint64_t>(mesh.sourceSideEdgeCounts.size()) *
+           sizeof(int);
+  bytes += static_cast<std::uint64_t>(mesh.vertexLineage.size()) *
+           sizeof(PureQuadVertexLineage);
+  bytes += static_cast<std::uint64_t>(mesh.quadLineage.size()) *
+           sizeof(PureQuadFaceLineage);
   return bytes;
 }
 
@@ -1633,6 +1739,16 @@ std::uint64_t estimated_mesh_owned_bytes(const PureQuadMesh &mesh) {
            sizeof(PureQuadVertexLineage);
   bytes += static_cast<std::uint64_t>(mesh.quadLineage.capacity()) *
            sizeof(PureQuadFaceLineage);
+  return bytes;
+}
+
+std::uint64_t logical_completed_patches_bytes(
+    const std::vector<PureQuadMesh> &patches) {
+  std::uint64_t bytes =
+      static_cast<std::uint64_t>(patches.size()) * sizeof(PureQuadMesh);
+  for (const PureQuadMesh &patch : patches) {
+    bytes += logical_mesh_payload_bytes(patch);
+  }
   return bytes;
 }
 
@@ -2051,6 +2167,49 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
   }
 
   PatchCompletionDependencyIdentity
+  canonical_side_subdivision_dependency(
+      const PatchDescriptor &descriptor) {
+    const PureQuadPatch &patch = descriptor.patch;
+    const int sideCount = static_cast<int>(descriptor.sides.size());
+    if (sideCount <= 0 ||
+        patch.sideEdgeCounts.size() != descriptor.sides.size()) {
+      return {-1};
+    }
+    PatchCompletionDependencyIdentity canonical;
+    bool initialized = false;
+    for (const bool reversed : {false, true}) {
+      for (int startSide = 0; startSide < sideCount; ++startSide) {
+        PatchCompletionDependencyIdentity candidate;
+        candidate.push_back(sideCount);
+        for (int step = 0; step < sideCount; ++step) {
+          const int sideIndex =
+              reversed ? (startSide - step + sideCount) % sideCount
+                       : (startSide + step) % sideCount;
+          const PatchSideDescriptor &side =
+              descriptor.sides[static_cast<std::size_t>(sideIndex)];
+          const int turn =
+              sideIndex < static_cast<int>(patch.turns.size())
+                  ? patch.turns[static_cast<std::size_t>(sideIndex)]
+                  : 0;
+          candidate.insert(
+              candidate.end(),
+              {side.family, side.subdivisionCount,
+               static_cast<std::int64_t>(side.halfedges.size()),
+               static_cast<std::int64_t>(side.boundaryVertices.size()),
+               side.hardFeature ? 1 : 0,
+               patch.sideEdgeCounts[static_cast<std::size_t>(sideIndex)],
+               reversed ? -turn : turn});
+        }
+        if (!initialized || candidate < canonical) {
+          canonical = std::move(candidate);
+          initialized = true;
+        }
+      }
+    }
+    return canonical;
+  }
+
+  PatchCompletionDependencyIdentity
   canonical_completion_boundary_dependency(
       const PatchDescriptor &descriptor) {
     const PureQuadPatch &patch = descriptor.patch;
@@ -2120,17 +2279,56 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     return canonical;
   }
 
-  PatchCompletionDependencyIdentity exact_patch_dependency_identity(
-      const PatchDescriptor &descriptor) {
-    PatchCompletionDependencyIdentity identity;
+  struct PatchCompletionDependencyFields {
+    PatchCompletionDependencyIdentity sourceDomain;
+    PatchCompletionDependencyIdentity sideSubdivision;
+    PatchCompletionDependencyIdentity boundarySourceCoordinates;
+    PatchCompletionDependencyIdentity railCurveSupport;
+    PatchCompletionDependencyIdentity singularityRequirements;
+    PatchCompletionDependencyIdentity topologyTemplate;
+    int backend = -1;
+    int variant = -1;
+  };
+
+  PatchCompletionDependencyFields completion_dependency_fields(
+      const PatchDescriptor &descriptor, const PureQuadMesh *mesh = nullptr) {
+    PatchCompletionDependencyFields fields;
     const PureQuadPatch &patch = descriptor.patch;
-    identity.insert(
-        identity.end(),
-        {descriptor.feasibility.admissible ? 1 : 0,
-         static_cast<int>(descriptor.feasibility.reason),
-         descriptor.feasibility.expectedInteriorValence,
-         descriptor.boundaryCycleValid ? 1 : 0,
-         descriptor.featureConstraintsValid ? 1 : 0});
+
+    fields.sourceDomain.insert(
+        fields.sourceDomain.end(),
+        {patch.domainIdentity.valid ? 1 : 0,
+         patch.domainIdentity.sourceComponent,
+         patch.domainIdentity.sourceSheet,
+         patch.domainIdentity.boundaryNodeCount,
+         patch.domainIdentity.boundaryHalfedgeCount,
+         patch.domainIdentity.sourceSupportCount});
+    std::vector<int> sourceFaces = patch.sourceFaces;
+    std::sort(sourceFaces.begin(), sourceFaces.end());
+    sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
+                      sourceFaces.end());
+    append_completion_dependency_values(fields.sourceDomain, sourceFaces);
+
+    fields.sideSubdivision =
+        canonical_side_subdivision_dependency(descriptor);
+
+    fields.boundarySourceCoordinates =
+        canonical_completion_boundary_dependency(descriptor);
+
+    std::set<int> railIds;
+    std::set<int> curveIds;
+    for (const int rail : patch.boundaryRailIds) {
+      if (rail >= 0) railIds.insert(rail);
+    }
+    for (const int curve : patch.boundaryCurveIds) {
+      if (curve >= 0) curveIds.insert(curve);
+    }
+    for (const PatchSideDescriptor &side : descriptor.sides) {
+      railIds.insert(side.railIds.begin(), side.railIds.end());
+      curveIds.insert(side.curveIds.begin(), side.curveIds.end());
+    }
+    append_completion_dependency_set(fields.railCurveSupport, railIds);
+    append_completion_dependency_set(fields.railCurveSupport, curveIds);
 
     std::vector<std::pair<int, int>> singularities;
     const std::size_t singularityCount = std::max(
@@ -2147,39 +2345,103 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
               : 0);
     }
     std::sort(singularities.begin(), singularities.end());
-    identity.push_back(
+    fields.singularityRequirements.push_back(
         static_cast<std::int64_t>(singularities.size()));
     for (const auto &[sourceVertex, numerator] : singularities) {
-      identity.push_back(sourceVertex);
-      identity.push_back(numerator);
+      fields.singularityRequirements.push_back(sourceVertex);
+      fields.singularityRequirements.push_back(numerator);
     }
+    fields.singularityRequirements.insert(
+        fields.singularityRequirements.end(),
+        {patch.singularityCount, patch.singularIndexNumerator,
+         patch.unmatchedInteriorSingularity ? 1 : 0});
 
-    PatchCompletionDependencyIdentity boundary =
-        canonical_completion_boundary_dependency(descriptor);
-    identity.push_back(static_cast<std::int64_t>(boundary.size()));
-    identity.insert(identity.end(), boundary.begin(), boundary.end());
-
-    std::vector<int> sourceFaces = patch.sourceFaces;
-    std::sort(sourceFaces.begin(), sourceFaces.end());
-    sourceFaces.erase(
-        std::unique(sourceFaces.begin(), sourceFaces.end()),
-        sourceFaces.end());
-    append_completion_dependency_values(identity, sourceFaces);
-    identity.insert(identity.end(),
-                    {patch.boundaryLoopCount,
-                     patch.diskTopology ? 1 : 0,
-                     patch.hardFeatureCrossing ? 1 : 0,
-                     patch.singularityCount,
-                     patch.singularIndexNumerator,
-                     patch.unmatchedInteriorSingularity ? 1 : 0,
-                     patch.simple ? 1 : 0});
-    return identity;
+    fields.topologyTemplate.insert(
+        fields.topologyTemplate.end(),
+        {descriptor.feasibility.admissible ? 1 : 0,
+         static_cast<int>(descriptor.feasibility.reason),
+         descriptor.feasibility.expectedInteriorValence,
+         descriptor.boundaryCycleValid ? 1 : 0,
+         descriptor.featureConstraintsValid ? 1 : 0,
+         patch.boundaryLoopCount, patch.diskTopology ? 1 : 0,
+         patch.hardFeatureCrossing ? 1 : 0, patch.simple ? 1 : 0});
+    const bool rectangular = patch.sideEdgeCounts.size() == 4U &&
+                             patch.sideEdgeCounts[0] > 0 &&
+                             patch.sideEdgeCounts[1] > 0 &&
+                             patch.sideEdgeCounts[0] ==
+                                 patch.sideEdgeCounts[2] &&
+                             patch.sideEdgeCounts[1] ==
+                                 patch.sideEdgeCounts[3];
+    if (patch.singularityCount != 0) {
+      fields.backend =
+          static_cast<int>(PureQuadCompletionBackend::PoleTemplate);
+    } else if (rectangular) {
+      fields.backend =
+          static_cast<int>(PureQuadCompletionBackend::ClosedForm);
+    } else if (patch.boundaryVertices.size() == 6U) {
+      fields.backend =
+          static_cast<int>(PureQuadCompletionBackend::TransitionTemplate);
+    } else if (patch.simple) {
+      fields.backend = static_cast<int>(PureQuadCompletionBackend::Pattern);
+    } else {
+      fields.backend =
+          static_cast<int>(PureQuadCompletionBackend::BoundedCombinatorial);
+    }
+    fields.variant = 0;
+    if (mesh != nullptr) {
+      fields.backend = static_cast<int>(mesh->backend);
+      fields.variant = !mesh->quadLineage.empty()
+                           ? mesh->quadLineage.front().completionVariant
+                           : 0;
+    }
+    return fields;
   }
 
-  bool exact_patch_dependency_equal(const PatchDescriptor &lhs,
-                                    const PatchDescriptor &rhs) {
-    return exact_patch_dependency_identity(lhs) ==
-           exact_patch_dependency_identity(rhs);
+  PatchCompletionReuseMismatch dependency_mismatch(
+      const PatchCompletionDependencyFields &requested,
+      const PatchCompletionDependencyFields &cached, const int requestedCell,
+      const int cachedCell) {
+    PatchCompletionReuseMismatch mismatch;
+    mismatch.requestedCell = requestedCell;
+    mismatch.cachedCell = cachedCell;
+    mismatch.sourceDomain = requested.sourceDomain != cached.sourceDomain;
+    mismatch.sideSubdivision =
+        requested.sideSubdivision != cached.sideSubdivision;
+    mismatch.boundarySourceCoordinates =
+        requested.boundarySourceCoordinates !=
+        cached.boundarySourceCoordinates;
+    mismatch.railCurveSupport =
+        requested.railCurveSupport != cached.railCurveSupport;
+    mismatch.singularityRequirements =
+        requested.singularityRequirements !=
+        cached.singularityRequirements;
+    mismatch.topologyTemplate =
+        requested.topologyTemplate != cached.topologyTemplate;
+    mismatch.backendVariant =
+        requested.backend >= 0 && cached.backend >= 0 &&
+        (requested.backend != cached.backend ||
+         requested.variant != cached.variant);
+    return mismatch;
+  }
+
+  PatchCompletionDependencyIdentity exact_patch_dependency_identity(
+      const PatchDescriptor &descriptor) {
+    const PatchCompletionDependencyFields fields =
+        completion_dependency_fields(descriptor);
+    PatchCompletionDependencyIdentity identity;
+    const auto appendField = [&](const PatchCompletionDependencyIdentity &field) {
+      identity.push_back(static_cast<std::int64_t>(field.size()));
+      identity.insert(identity.end(), field.begin(), field.end());
+    };
+    appendField(fields.sourceDomain);
+    appendField(fields.sideSubdivision);
+    appendField(fields.boundarySourceCoordinates);
+    appendField(fields.railCurveSupport);
+    appendField(fields.singularityRequirements);
+    appendField(fields.topologyTemplate);
+    identity.push_back(fields.backend);
+    identity.push_back(fields.variant);
+    return identity;
   }
 
   std::uint64_t
@@ -2196,6 +2458,7 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
 struct CachedCompletionProduct {
   PatchDescriptor descriptor;
   PureQuadMesh mesh;
+  PatchCompletionDependencyFields dependency;
   bool consumed = false;
 };
 
@@ -2248,6 +2511,8 @@ ReusableCompletionProducts take_reusable_completion_products(
     CachedCompletionProduct product;
     product.descriptor = std::move(descriptor);
     product.mesh = std::move(result.completedPatches[meshIndex]);
+    product.dependency =
+        completion_dependency_fields(product.descriptor, &product.mesh);
     const std::uint64_t semanticHash =
         exact_patch_dependency_hash(product.descriptor);
     cache.products[semanticHash].push_back(std::move(product));
@@ -2331,6 +2596,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   result.paritySplitEdges =
       static_cast<int>(parityRepair.splitHalfedges.size());
   result.parityHardFeatureSplits = parityRepair.hardFeatureSplits;
+  result.firstParityScopeFailure = parityRepair.firstScopeFailure;
   if (!parityRepair.success) {
     result.failure = "BoundaryParityRepair:" + parityRepair.failure;
     result.assembly.failure = result.failure;
@@ -2506,25 +2772,105 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     }
     ++result.attemptedPatches;
     if (reusableProducts != nullptr) {
+      const PatchCompletionDependencyFields requestedDependency =
+          completion_dependency_fields(descriptor);
       const std::uint64_t semanticHash =
           exact_patch_dependency_hash(descriptor);
       const auto cached = reusableProducts->products.find(semanticHash);
       if (cached == reusableProducts->products.end()) {
         ++result.completionOwnershipProductCacheHashMisses;
+        PatchCompletionReuseMismatch mismatch;
+        mismatch.requestedCell = descriptor.cellId;
+        mismatch.hashMiss = true;
+        int bestMismatchCount = std::numeric_limits<int>::max();
+        for (const auto &[candidateHash, products] :
+             reusableProducts->products) {
+          (void)candidateHash;
+          for (const CachedCompletionProduct &product : products) {
+            if (product.consumed) {
+              continue;
+            }
+            PatchCompletionReuseMismatch candidate = dependency_mismatch(
+                requestedDependency, product.dependency, descriptor.cellId,
+                product.descriptor.cellId);
+            candidate.hashMiss = true;
+            const int mismatchCount =
+                static_cast<int>(candidate.sourceDomain) +
+                static_cast<int>(candidate.sideSubdivision) +
+                static_cast<int>(candidate.boundarySourceCoordinates) +
+                static_cast<int>(candidate.railCurveSupport) +
+                static_cast<int>(candidate.singularityRequirements) +
+                static_cast<int>(candidate.backendVariant) +
+                static_cast<int>(candidate.topologyTemplate);
+            if (mismatchCount < bestMismatchCount ||
+                (mismatchCount == bestMismatchCount &&
+                 candidate.cachedCell < mismatch.cachedCell)) {
+              bestMismatchCount = mismatchCount;
+              mismatch = std::move(candidate);
+            }
+          }
+        }
+        result.completionOwnershipProductCacheMismatchVector.push_back(
+            std::move(mismatch));
       } else {
         auto &bucket = cached->second;
-        const auto exact = std::find_if(
-            bucket.begin(), bucket.end(),
-            [&](const CachedCompletionProduct &product) {
-              return !product.consumed && exact_patch_dependency_equal(
-                  descriptor, product.descriptor);
-            });
-        if (exact != bucket.end()) {
-          PureQuadMesh reused = std::move(exact->mesh);
-          exact->consumed = true;
+        bool reusedProduct = false;
+        for (CachedCompletionProduct &product : bucket) {
+          if (product.consumed) {
+            continue;
+          }
+          PatchCompletionReuseMismatch mismatch = dependency_mismatch(
+              requestedDependency, product.dependency, descriptor.cellId,
+              product.descriptor.cellId);
+          const bool exactDependency =
+              !mismatch.sourceDomain && !mismatch.sideSubdivision &&
+              !mismatch.boundarySourceCoordinates &&
+              !mismatch.railCurveSupport &&
+              !mismatch.singularityRequirements &&
+              !mismatch.backendVariant &&
+              !mismatch.topologyTemplate;
+          if (!exactDependency) {
+            result.completionOwnershipProductCacheMismatchVector.push_back(
+                std::move(mismatch));
+            continue;
+          }
+
+          PureQuadMesh reused = product.mesh;
           retarget_reused_completion_product(reused, descriptor);
+          std::string ownershipFailure;
+          PureQuadCompletionOwnershipRejection ownershipRejection;
+          const int completionVariant =
+              product.dependency.variant >= 0 ? product.dependency.variant : 0;
+          const bool ownershipValid =
+              pure_quad_detail::validate_completion_domain_ownership(
+                  descriptor.patch, reused, completionVariant,
+                  &sourceSupportResolver, options.sourceFaceComponents,
+                  options.sourceFaceSheets, ownershipFailure,
+                  &ownershipRejection);
+          const bool topologyValid = ownershipValid &&
+              pure_quad_topology_is_disk(reused) && !reused.quads.empty();
+          const PureQuadOutputLineageValidation lineage =
+              topologyValid
+                  ? validate_pure_quad_output_lineage(reused, F, true)
+                  : PureQuadOutputLineageValidation{};
+          if (!topologyValid || !lineage.valid) {
+            mismatch.rebindValidation = true;
+            result.completionOwnershipProductCacheMismatchVector.push_back(
+                std::move(mismatch));
+            if (!result.firstCompletionOwnershipRejection.active &&
+                ownershipRejection.active) {
+              result.firstCompletionOwnershipRejection = ownershipRejection;
+            }
+            continue;
+          }
+
+          product.consumed = true;
           result.completedPatches.push_back(std::move(reused));
           ++result.completionOwnershipReusedPatchCompletions;
+          reusedProduct = true;
+          break;
+        }
+        if (reusedProduct) {
           continue;
         }
         ++result.completionOwnershipProductCacheExactMismatches;
@@ -2892,6 +3238,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     int recomputedPatchCompletions = 0;
     int productCacheHashMisses = 0;
     int productCacheExactMismatches = 0;
+    std::vector<PatchCompletionReuseMismatch> productCacheMismatchVector;
     int completionTemplateInitialConflictCount = -1;
     int completionTemplateFinalConflictCount = 0;
     int completionTemplateConflictComponentCount = 0;
@@ -2949,6 +3296,13 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
             std::make_move_iterator(pass.ownershipRepairAttempts.begin()),
             std::make_move_iterator(pass.ownershipRepairAttempts.end()));
         pass.ownershipRepairAttempts.clear();
+        ledger.productCacheMismatchVector.insert(
+            ledger.productCacheMismatchVector.end(),
+            std::make_move_iterator(
+                pass.completionOwnershipProductCacheMismatchVector.begin()),
+            std::make_move_iterator(
+                pass.completionOwnershipProductCacheMismatchVector.end()));
+        pass.completionOwnershipProductCacheMismatchVector.clear();
         if (!firstOwnershipRejection.active &&
             pass.firstCompletionOwnershipRejection.active) {
           firstOwnershipRejection = pass.firstCompletionOwnershipRejection;
@@ -3001,6 +3355,8 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         ledger.productCacheHashMisses;
     pass.completionOwnershipProductCacheExactMismatches =
         ledger.productCacheExactMismatches;
+    pass.completionOwnershipProductCacheMismatchVector =
+        std::move(ledger.productCacheMismatchVector);
     pass.completionOwnershipPreConflictInventoryHash =
         ledger.preConflictInventoryHash;
     pass.completionOwnershipPostConflictInventoryHash =
@@ -3024,6 +3380,28 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
         ledger.currentStructuralOwnedBytes;
     pass.completionOwnershipPeakStructuralOwnedBytes =
         ledger.peakStructuralOwnedBytes;
+    pass.completionLogicalPayloadBytes =
+        patch_descriptor_detail::logical_complex_payload_bytes(
+            pass.preparedComplex) +
+        patch_descriptor_detail::logical_descriptor_bytes(pass.descriptors) +
+        patch_descriptor_detail::logical_completed_patches_bytes(
+            pass.completedPatches) +
+        patch_descriptor_detail::logical_mesh_payload_bytes(pass.assembly.mesh) +
+        static_cast<std::uint64_t>(pass.assembly.ownershipConflicts.size()) *
+            sizeof(SurfaceCellOwnershipConflict);
+    pass.completionRetainedCapacityBytes =
+        std::max(pass.completionOwnershipCurrentStructuralOwnedBytes,
+                 patch_descriptor_detail::estimated_complex_owned_bytes(
+                     pass.preparedComplex) +
+                 patch_descriptor_detail::estimated_descriptor_owned_bytes(
+                     pass.descriptors) +
+                 patch_descriptor_detail::estimated_completed_patches_owned_bytes(
+                     pass.completedPatches) +
+                 patch_descriptor_detail::estimated_mesh_owned_bytes(
+                     pass.assembly.mesh) +
+                 static_cast<std::uint64_t>(
+                     pass.assembly.ownershipConflicts.capacity()) *
+                     sizeof(SurfaceCellOwnershipConflict));
     pass.completionOwnershipStructuralExhaustionReason =
         ledger.exhaustionReason;
     pass.ownershipRepairAttempts = std::move(aggregateAttempts);

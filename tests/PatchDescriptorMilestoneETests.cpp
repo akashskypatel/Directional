@@ -54,6 +54,8 @@ Fixture make_patch(const std::vector<int> &sideCounts,
   directional::geometry::SurfaceArrangementCell cell;
   cell.id = 0;
   cell.sourceFace = 0;
+  cell.sourceComponent = 2;
+  cell.sourceSheet = 4;
   cell.sourceFaces.resize(boundaryCount);
   std::iota(cell.sourceFaces.begin(), cell.sourceFaces.end(), 0);
   cell.sideEdgeCounts = sideCounts;
@@ -1067,6 +1069,12 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_GE(completion.completionOwnershipIncrementalRecomputationPasses, 1);
   EXPECT_GT(completion.completionOwnershipReusedPatchCompletions, 0);
   EXPECT_GT(completion.completionOwnershipRecomputedPatchCompletions, 0);
+  EXPECT_TRUE(std::none_of(
+      completion.completionOwnershipProductCacheMismatchVector.begin(),
+      completion.completionOwnershipProductCacheMismatchVector.end(),
+      [](const directional::geometry::PatchCompletionReuseMismatch &mismatch) {
+        return mismatch.rebindValidation;
+      }));
   EXPECT_LE(completion.completionOwnershipVisitedStateCount, 5);
   EXPECT_LE(completion.completionOwnershipInsertedBoundaryVertices, 8);
   EXPECT_EQ(1, completion.completionOwnershipPeakLiveCandidateComplexes);
@@ -1161,6 +1169,12 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_EQ(1, completion.completionOwnershipIncrementalRecomputationPasses);
   EXPECT_GT(completion.completionOwnershipReusedPatchCompletions, 0);
   EXPECT_GT(completion.completionOwnershipRecomputedPatchCompletions, 0);
+  EXPECT_TRUE(std::none_of(
+      completion.completionOwnershipProductCacheMismatchVector.begin(),
+      completion.completionOwnershipProductCacheMismatchVector.end(),
+      [](const directional::geometry::PatchCompletionReuseMismatch &mismatch) {
+        return mismatch.rebindValidation;
+      }));
   EXPECT_LE(completion.completionOwnershipVisitedStateCount, 2);
   EXPECT_LE(completion.completionOwnershipPeakLiveCandidateComplexes, 1);
   EXPECT_EQ(0, completion.completionOwnershipCurrentLiveCandidateComplexes);
@@ -1229,6 +1243,69 @@ TEST(PatchDescriptorMilestoneE,
 }
 
 
+
+TEST(PatchDescriptorMilestoneE,
+     AuthoritativeCellScopeOverridesMultiScopeBoundaryDuringSubdivision) {
+  Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
+  auto &interior = fixture.complex.cells.front();
+  ASSERT_EQ(2, interior.sourceComponent);
+  ASSERT_EQ(4, interior.sourceSheet);
+  ASSERT_FALSE(interior.halfedges.empty());
+
+  const int selectedHalfedge = interior.halfedges.front();
+  auto &edge = fixture.complex.halfedges[
+      static_cast<std::size_t>(selectedHalfedge)];
+  directional::geometry::SurfaceArrangementProvenance alternate;
+  alternate.sourceFace = edge.sourceFace;
+  alternate.sourceComponent = 9;
+  alternate.sourceSheet = 11;
+  alternate.sourceArc = edge.sourceArc;
+  alternate.railId = edge.railId;
+  alternate.curveId = edge.curveId;
+  edge.provenance.push_back(alternate);
+  auto &twin = fixture.complex.halfedges[
+      static_cast<std::size_t>(edge.twin)];
+  twin.provenance.push_back(alternate);
+
+  const auto result =
+      directional::geometry::subdivide_surface_cell_complex_edges(
+          fixture.complex, {{selectedHalfedge, 1}});
+
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_FALSE(result.firstScopeFailure.active);
+  ASSERT_LT(static_cast<std::size_t>(interior.id), result.complex.cells.size());
+  const auto &replacement =
+      result.complex.cells[static_cast<std::size_t>(interior.id)];
+  EXPECT_EQ(2, replacement.sourceComponent);
+  EXPECT_EQ(4, replacement.sourceSheet);
+  for (const int halfedgeId : replacement.halfedges) {
+    ASSERT_GE(halfedgeId, 0);
+    ASSERT_LT(static_cast<std::size_t>(halfedgeId),
+              result.complex.halfedges.size());
+    const auto &replacementEdge =
+        result.complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    EXPECT_EQ(2, replacementEdge.sourceComponent);
+    EXPECT_EQ(4, replacementEdge.sourceSheet);
+    for (const auto &provenance : replacementEdge.provenance) {
+      EXPECT_EQ(2, provenance.sourceComponent);
+      EXPECT_EQ(4, provenance.sourceSheet);
+    }
+    for (const int nodeId : {replacementEdge.from, replacementEdge.to}) {
+      ASSERT_GE(nodeId, 0);
+      ASSERT_LT(static_cast<std::size_t>(nodeId), result.complex.nodes.size());
+      const auto &node = result.complex.nodes[static_cast<std::size_t>(nodeId)];
+      const bool hasAuthoritativeOccurrence = std::any_of(
+          node.occurrences.begin(), node.occurrences.end(),
+          [&](const auto &occurrence) {
+            return occurrence.sourceFace == replacementEdge.sourceFace &&
+                   occurrence.sourceComponent == 2 &&
+                   occurrence.sourceSheet == 4;
+          });
+      EXPECT_TRUE(hasAuthoritativeOccurrence);
+    }
+  }
+}
+
 TEST(PatchDescriptorMilestoneE,
      SubdivisionWithoutCommonSourceChartFailsBeforeMutation) {
   Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
@@ -1290,6 +1367,46 @@ TEST(PatchDescriptorMilestoneE,
   badFrom.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
   badTo.barycentric = Eigen::RowVector3d(-1.0, 0.0, 0.0);
 
+  const auto malformedOccurrence = [&](const Eigen::RowVector3d &barycentric) {
+    directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+    occurrence.sourceFace = badEdge.sourceFace;
+    occurrence.barycentric = barycentric;
+    occurrence.sourceComponent = badEdge.sourceComponent;
+    occurrence.sourceSheet = badEdge.sourceSheet;
+    occurrence.sourceArc = badEdge.sourceArc;
+    occurrence.provenance = badEdge.provenance.empty()
+                                ? -1
+                                : badEdge.provenance.front().provenance;
+    occurrence.railId = badEdge.railId;
+    occurrence.curveId = badEdge.curveId;
+    occurrence.sourceT0 = badEdge.sourceT0;
+    occurrence.sourceT1 = badEdge.sourceT1;
+    occurrence.railT0 = badEdge.railT0;
+    occurrence.railT1 = badEdge.railT1;
+    return occurrence;
+  };
+  badFrom.occurrences.push_back(
+      malformedOccurrence(Eigen::RowVector3d(1.0, 0.0, 0.0)));
+  badTo.occurrences.push_back(
+      malformedOccurrence(Eigen::RowVector3d(-1.0, 0.0, 0.0)));
+
+  const auto occurrenceCount = [](const auto &complex) {
+    return std::accumulate(
+        complex.nodes.begin(), complex.nodes.end(), std::size_t{0},
+        [](const std::size_t count, const auto &node) {
+          return count + node.occurrences.size();
+        });
+  };
+  const auto provenanceCount = [](const auto &complex) {
+    return std::accumulate(
+        complex.halfedges.begin(), complex.halfedges.end(), std::size_t{0},
+        [](const std::size_t count, const auto &edge) {
+          return count + edge.provenance.size();
+        });
+  };
+  const std::size_t originalOccurrenceCount = occurrenceCount(fixture.complex);
+  const std::size_t originalProvenanceCount = provenanceCount(fixture.complex);
+
   const std::uint64_t before =
       directional::geometry::surface_simplification_detail::
           complex_structural_hash(fixture.complex);
@@ -1309,6 +1426,8 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_EQ(fixture.complex.halfedges.size(),
             result.complex.halfedges.size());
   EXPECT_EQ(fixture.complex.cells.size(), result.complex.cells.size());
+  EXPECT_EQ(originalOccurrenceCount, occurrenceCount(result.complex));
+  EXPECT_EQ(originalProvenanceCount, provenanceCount(result.complex));
 }
 
 TEST(PatchDescriptorMilestoneE,

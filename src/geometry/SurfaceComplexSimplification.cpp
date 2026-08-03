@@ -132,6 +132,8 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   for (const SurfaceArrangementCell &cell : complex.cells) {
     mix(cell.id);
     mix(cell.sourceFace);
+    mix(cell.sourceComponent);
+    mix(cell.sourceSheet);
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
     }
@@ -810,6 +812,49 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.boundaryComponentCount = 1;
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
+    std::set<std::pair<int, int>> mergedScopes;
+    const auto authoritativeCellScope = [&](const SurfaceArrangementCell &cell) {
+      if (cell.sourceComponent >= 0 && cell.sourceSheet >= 0) {
+        return std::pair<int, int>{cell.sourceComponent, cell.sourceSheet};
+      }
+      std::set<std::pair<int, int>> shared;
+      bool first = true;
+      for (const int halfedgeId : cell.halfedges) {
+        if (halfedgeId < 0 ||
+            halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+          return std::pair<int, int>{-1, -1};
+        }
+        const SurfaceArrangementHalfedge &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        std::set<std::pair<int, int>> available;
+        if (halfedge.sourceComponent >= 0 && halfedge.sourceSheet >= 0) {
+          available.emplace(halfedge.sourceComponent, halfedge.sourceSheet);
+        }
+        for (const SurfaceArrangementProvenance &provenance :
+             halfedge.provenance) {
+          if (provenance.sourceComponent >= 0 &&
+              provenance.sourceSheet >= 0) {
+            available.emplace(provenance.sourceComponent,
+                              provenance.sourceSheet);
+          }
+        }
+        if (available.empty()) {
+          return std::pair<int, int>{-1, -1};
+        }
+        if (first) {
+          shared = std::move(available);
+          first = false;
+        } else {
+          std::set<std::pair<int, int>> intersection;
+          std::set_intersection(
+              shared.begin(), shared.end(), available.begin(), available.end(),
+              std::inserter(intersection, intersection.end()));
+          shared = std::move(intersection);
+        }
+      }
+      return shared.size() == 1U ? *shared.begin()
+                                 : std::pair<int, int>{-1, -1};
+    };
     double fallbackArea = 0.0;
     for (const int cellId : mergeComponent) {
       const SurfaceArrangementCell &cell =
@@ -817,7 +862,13 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       fallbackArea += cell.area;
       mergedSourceFaces.insert(cell.sourceFaces.begin(), cell.sourceFaces.end());
       if (cell.sourceFace >= 0) mergedSourceFaces.insert(cell.sourceFace);
+      const std::pair<int, int> scope = authoritativeCellScope(cell);
+      if (scope.first < 0 || scope.second < 0) return invalid;
+      mergedScopes.insert(scope);
     }
+    if (mergedScopes.size() != 1U) return invalid;
+    mergedCell.sourceComponent = mergedScopes.begin()->first;
+    mergedCell.sourceSheet = mergedScopes.begin()->second;
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
     mergedCell.sourceFace = mergedCell.sourceFaces.empty()
