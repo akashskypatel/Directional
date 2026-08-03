@@ -2,4 +2,4 @@ P5-CB98 remaining source patch
 patch-sha256=cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8
 expected-files=7
 workflows-in-patch=0
-trigger=temporary-branch-1
+trigger=temporary-branch-3way-2
