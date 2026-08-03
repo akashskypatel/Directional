@@ -1147,12 +1147,65 @@ TEST(PatchDescriptorMilestoneE,
   }
 }
 
+
+TEST(PatchDescriptorMilestoneE,
+     FailedSubdivisionReturnsBitExactCommittedComplex) {
+  Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
+  ASSERT_GE(fixture.complex.halfedges.size(), 4U);
+  const auto &badEdge = fixture.complex.halfedges[2];
+  ASSERT_GE(badEdge.from, 0);
+  ASSERT_GE(badEdge.to, 0);
+  ASSERT_LT(static_cast<std::size_t>(badEdge.from),
+            fixture.complex.nodes.size());
+  ASSERT_LT(static_cast<std::size_t>(badEdge.to),
+            fixture.complex.nodes.size());
+
+  // Keep edge 0 valid so the transaction appends a tentative node first.
+  // Then remove common face support from edge 2's endpoint pair so its
+  // midpoint embedding fails after mutation has begun.
+  auto &badFrom =
+      fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
+  auto &badTo =
+      fixture.complex.nodes[static_cast<std::size_t>(badEdge.to)];
+  badFrom.occurrences.clear();
+  badTo.occurrences.clear();
+  badFrom.sourceFace = badEdge.sourceFace;
+  badTo.sourceFace =
+      (badEdge.sourceFace + 1) % static_cast<int>(fixture.F.rows());
+  badFrom.barycentric = Eigen::RowVector3d(0.2, 0.7, 0.1);
+  badTo.barycentric = Eigen::RowVector3d(0.2, 0.1, 0.7);
+
+  const std::uint64_t before =
+      directional::geometry::surface_simplification_detail::
+          complex_structural_hash(fixture.complex);
+  const auto result =
+      directional::geometry::subdivide_surface_cell_complex_edges(
+          fixture.complex, {{0, 1}, {2, 1}});
+
+  ASSERT_FALSE(result.success);
+  EXPECT_EQ("InvalidMidpointEmbedding", result.failure);
+  EXPECT_TRUE(result.rollbackEquivalent);
+  EXPECT_EQ(result.rollbackIdentityHashBefore,
+            result.rollbackIdentityHashAfter);
+  EXPECT_EQ(before,
+            directional::geometry::surface_simplification_detail::
+                complex_structural_hash(result.complex));
+  EXPECT_EQ(fixture.complex.nodes.size(), result.complex.nodes.size());
+  EXPECT_EQ(fixture.complex.halfedges.size(),
+            result.complex.halfedges.size());
+  EXPECT_EQ(fixture.complex.cells.size(), result.complex.cells.size());
+}
+
 TEST(PatchDescriptorMilestoneE,
      AlreadySuccessfulComplexPerformsNoStructuralRepair) {
   const Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
   const auto completion = directional::geometry::complete_surface_cell_complex(
       fixture.complex, fixture.V, fixture.F);
   ASSERT_TRUE(completion.success) << completion.failure;
+  ASSERT_FALSE(completion.descriptors.descriptors.empty());
+  ASSERT_FALSE(completion.completedPatches.empty());
+  ASSERT_FALSE(completion.assembly.mesh.quads.empty());
+  EXPECT_TRUE(completion.assembly.failure.empty());
   EXPECT_EQ(0, completion.completionOwnershipStructuralRepairAttempts);
   EXPECT_EQ(0, completion.completionOwnershipStructuralCandidatesConsumed);
   EXPECT_EQ(0, completion.completionOwnershipRouteCandidateCount);

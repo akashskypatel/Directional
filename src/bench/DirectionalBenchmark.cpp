@@ -1612,6 +1612,17 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.completionSideFinalEquationDefect << ","
       << "\"completionSideInsertedVertices\":"
       << result.surfaceCellContext.completionSideInsertedVertices << ","
+      << "\"completionSideRollbackEquivalent\":"
+      << (result.surfaceCellContext.completionSideRollbackEquivalent
+              ? "true"
+              : "false")
+      << ","
+      << "\"completionSideRollbackIdentityHashBefore\":"
+      << result.surfaceCellContext.completionSideRollbackIdentityHashBefore
+      << ","
+      << "\"completionSideRollbackIdentityHashAfter\":"
+      << result.surfaceCellContext.completionSideRollbackIdentityHashAfter
+      << ","
       << "\"completionAttemptedPatches\":"
       << result.surfaceCellContext.completionAttemptedPatches << ","
       << "\"completionFailedPatches\":"

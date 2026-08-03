@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <numeric>
 #include <regex>
 #include <set>
@@ -843,7 +844,13 @@ TEST(MilestoneGP26, ProductionMatrixTerminatesWithoutHiddenFallback) {
   for (const auto &benchmarkCase : cases) {
     if (benchmarkCase.backend ==
         directional::pipeline::RemeshBackend::SurfaceCells) {
+      SCOPED_TRACE(::testing::Message()
+                   << "P26 surface-cell matrix case=" << benchmarkCase.name);
+      std::cerr << "[P5_P26_CASE_BEGIN] " << benchmarkCase.name
+                << std::endl;
       expect_truthful_surface_cells_outcome(benchmarkCase);
+      std::cerr << "[P5_P26_CASE_END] " << benchmarkCase.name
+                << std::endl;
     }
   }
 }

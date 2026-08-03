@@ -4260,6 +4260,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.sideSplitEdges;
     result.surfaceCellContext.completionSideHardFeatureSplits =
         completionResult.sideHardFeatureSplits;
+    result.surfaceCellContext.completionSideRollbackEquivalent =
+        completionResult.sideRollbackEquivalent;
+    result.surfaceCellContext.completionSideRollbackIdentityHashBefore =
+        completionResult.sideRollbackIdentityHashBefore;
+    result.surfaceCellContext.completionSideRollbackIdentityHashAfter =
+        completionResult.sideRollbackIdentityHashAfter;
     result.surfaceCellContext.completionAttemptedPatches =
         completionResult.attemptedPatches;
     result.surfaceCellContext.completionFailedPatches =

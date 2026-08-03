@@ -72,8 +72,7 @@ SurfaceCellComplex two_interface_complex(const MeshFixture &mesh) {
 std::vector<int> internal_interface(const SurfaceCellComplex &complex) {
   std::map<std::pair<int, int>, std::vector<int>> interfaces;
   for (const auto &halfedge : complex.halfedges) {
-    if (halfedge.id > halfedge.twin || halfedge.family < 0 ||
-        halfedge.hardFeature) {
+    if (halfedge.id > halfedge.twin || halfedge.hardFeature) {
       continue;
     }
     const int other =
@@ -256,20 +255,24 @@ TEST(MilestoneDClosure, CompleteInterfaceCommitsAndPreservesProtectedRails) {
   SurfaceCellComplex complex = two_interface_complex(mesh);
   const std::vector<int> interface = internal_interface(complex);
   ASSERT_GT(interface.size(), 1U);
-  for (auto &halfedge : complex.halfedges) {
-    if (halfedge.id < halfedge.twin && halfedge.family < 0) {
-      halfedge.hardFeature = true;
-      halfedge.railId = 77;
-      halfedge.railT0 = 0.125;
-      halfedge.railT1 = 0.875;
-      auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
-      twin.hardFeature = true;
-      twin.railId = 77;
-      twin.railT0 = 0.875;
-      twin.railT1 = 0.125;
-      break;
-    }
-  }
+  const int protectedHalfedge = interface.front();
+  ASSERT_GE(protectedHalfedge, 0);
+  ASSERT_LT(static_cast<std::size_t>(protectedHalfedge),
+            complex.halfedges.size());
+  auto &halfedge =
+      complex.halfedges[static_cast<std::size_t>(protectedHalfedge)];
+  ASSERT_GE(halfedge.twin, 0);
+  ASSERT_LT(static_cast<std::size_t>(halfedge.twin),
+            complex.halfedges.size());
+  halfedge.hardFeature = true;
+  halfedge.railId = 77;
+  halfedge.railT0 = 0.125;
+  halfedge.railT1 = 0.875;
+  auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+  twin.hardFeature = true;
+  twin.railId = 77;
+  twin.railT0 = 0.875;
+  twin.railT1 = 0.125;
   const auto protectedBefore =
       directional::geometry::surface_simplification_detail::protected_support(
           complex);
@@ -364,7 +367,8 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
 
   const auto result = directional::geometry::simplify_surface_cell_complex(
       complex, mesh.vertices, mesh.faces, {*candidate});
-  ASSERT_GE(result.committed, 1);
+  ASSERT_EQ(result.committed, 1);
+  EXPECT_EQ(result.recomputedCandidates, 0);
   EXPECT_LT(result.finalActiveElements, result.initialActiveElements);
   EXPECT_TRUE(result.complex.diagnostics.topologyValid);
   EXPECT_EQ(result.complex.diagnostics.eulerCharacteristic, 0);

@@ -285,6 +285,9 @@ struct SurfaceCellComplexCompletionResult {
   int sideInsertedVertices = 0;
   int sideSplitEdges = 0;
   int sideHardFeatureSplits = 0;
+  bool sideRollbackEquivalent = false;
+  std::uint64_t sideRollbackIdentityHashBefore = 0U;
+  std::uint64_t sideRollbackIdentityHashAfter = 0U;
   PatchDescriptorSet descriptors;
   std::vector<PureQuadMesh> completedPatches;
   PureQuadAssemblyResult assembly;

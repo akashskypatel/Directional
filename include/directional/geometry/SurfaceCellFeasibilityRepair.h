@@ -10,6 +10,7 @@
 #ifndef DIRECTIONAL_GEOMETRY_SURFACE_CELL_FEASIBILITY_REPAIR_H
 #define DIRECTIONAL_GEOMETRY_SURFACE_CELL_FEASIBILITY_REPAIR_H
 
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>
@@ -20,6 +21,12 @@ namespace directional::geometry {
 
 struct SurfaceCellSubdivisionResult {
   bool success = false;
+  // True only when a failed transaction returned the exact committed input
+  // complex. Callers may use the returned complex as rollback state only when
+  // this proof is present.
+  bool rollbackEquivalent = false;
+  std::uint64_t rollbackIdentityHashBefore = 0U;
+  std::uint64_t rollbackIdentityHashAfter = 0U;
   SurfaceCellComplex complex;
   int splitUndirectedEdges = 0;
   int insertedVertices = 0;
@@ -66,6 +73,11 @@ struct SurfaceCellSideRepairOptions {
 
 struct SurfaceCellSideRepairResult {
   bool success = false;
+  // A permitted failed solve may continue through the general completion
+  // backend only when this exact rollback proof is true.
+  bool rollbackEquivalent = false;
+  std::uint64_t rollbackIdentityHashBefore = 0U;
+  std::uint64_t rollbackIdentityHashAfter = 0U;
   SurfaceCellComplex complex;
   int infeasibleCellsBefore = 0;
   int infeasibleCellsAfter = 0;

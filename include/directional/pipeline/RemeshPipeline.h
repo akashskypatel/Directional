@@ -367,6 +367,9 @@ struct SurfaceCellPipelineContext {
   int completionSideInsertedVertices = 0;
   int completionSideSplitEdges = 0;
   int completionSideHardFeatureSplits = 0;
+  bool completionSideRollbackEquivalent = false;
+  std::uint64_t completionSideRollbackIdentityHashBefore = 0U;
+  std::uint64_t completionSideRollbackIdentityHashAfter = 0U;
   int completionAttemptedPatches = 0;
   int completionFailedPatches = 0;
   int completionOwnershipRepairAttempts = 0;

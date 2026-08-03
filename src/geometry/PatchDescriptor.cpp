@@ -1453,8 +1453,9 @@ void release_rejected_completion_storage(
     SurfaceCellComplexCompletionResult &result) {
   result.completedPatches.clear();
   result.completedPatches.shrink_to_fit();
-  result.descriptors.descriptors.clear();
-  result.descriptors.descriptors.shrink_to_fit();
+  // Preserve compact authoritative descriptors and their typed diagnostics on
+  // failure. They are required to identify the responsible stage and are
+  // released by production pipeline ownership after result transfer.
   result.preparedComplex = {};
   result.assembly.mesh = {};
 }
@@ -1805,8 +1806,10 @@ bool exact_patch_dependency_equal(const PatchDescriptor &lhs,
       a.boundaryCurveIds != b.boundaryCurveIds ||
       a.boundaryComponents != b.boundaryComponents ||
       a.boundarySheets != b.boundarySheets ||
-      a.boundaryNodeIdentities != b.boundaryNodeIdentities ||
-      a.domainIdentity != b.domainIdentity ||
+      // boundaryNodeIdentities and domainIdentity are compact registry IDs
+      // assigned after every rebuild. Their numeric values are allocation
+      // local and can shift when an unrelated patch is inserted or removed.
+      // The exact semantic support compared above and below is authoritative.
       a.sideEdgeCounts != b.sideEdgeCounts || a.turns != b.turns ||
       a.sourceFaces != b.sourceFaces ||
       a.boundaryLoopCount != b.boundaryLoopCount ||
@@ -1947,8 +1950,14 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   result.sideInsertedVertices = sideRepair.insertedVertices;
   result.sideSplitEdges = sideRepair.splitUndirectedEdges;
   result.sideHardFeatureSplits = sideRepair.hardFeatureSplits;
+  result.sideRollbackEquivalent = sideRepair.rollbackEquivalent;
+  result.sideRollbackIdentityHashBefore =
+      sideRepair.rollbackIdentityHashBefore;
+  result.sideRollbackIdentityHashAfter =
+      sideRepair.rollbackIdentityHashAfter;
   const bool mayUseGeneralFallback =
       options.allowBoundedCombinatorialFallback &&
+      sideRepair.rollbackEquivalent &&
       (sideRepair.failure == "CoupledSideRepairStalled" ||
        sideRepair.failure == "SideRepairInsertionLimit" ||
        sideRepair.failure == "SideRepairPropagationLimit" ||
@@ -2599,6 +2608,13 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
       ledger.conflictFrontierOwnedBytes;
   ledger.peakStructuralOwnedBytes = ledger.currentStructuralOwnedBytes;
 
+  // An initially valid assembly is already the authoritative terminal result.
+  // Do not route it through the structural-exhaustion epilogue, which would
+  // relabel success as a failure and clear the mesh while leaving success=true.
+  if (current.success) {
+    return finalize(std::move(current));
+  }
+
   struct FrontierCandidate {
     SurfaceCellOwnershipConflict conflict;
     patch_descriptor_detail::SameCornerRouteCandidate candidate;
@@ -2717,6 +2733,12 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
                   ? SurfaceCellStructuralRepairExhaustionReason::IncompleteRoute
                   : SurfaceCellStructuralRepairExhaustionReason::
                         NoRouteCompleteCandidate;
+        if (candidateSet.semanticOverlap) {
+          current.failure =
+              "SameCornerDistinctBoundaryOverlap:" +
+              current.assembly.failure;
+          current.assembly.failure = current.failure;
+        }
         invalidFrontier = true;
         break;
       }
@@ -3029,12 +3051,14 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     ledger.exhaustionReason =
         SurfaceCellStructuralRepairExhaustionReason::NoCandidate;
   }
-  current.failure =
-      std::string("SameCornerStructuralRepairExhausted:") +
-      surface_cell_structural_repair_exhaustion_reason_name(
-          ledger.exhaustionReason) +
-      ":" + current.assembly.failure;
-  current.assembly.failure = current.failure;
+  if (current.failure.rfind("SameCornerDistinctBoundaryOverlap:", 0) != 0U) {
+    current.failure =
+        std::string("SameCornerStructuralRepairExhausted:") +
+        surface_cell_structural_repair_exhaustion_reason_name(
+            ledger.exhaustionReason) +
+        ":" + current.assembly.failure;
+    current.assembly.failure = current.failure;
+  }
   patch_descriptor_detail::release_rejected_completion_storage(current);
   return finalize(std::move(current));
 }

@@ -1850,25 +1850,31 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
           other.invalidated = true;
           ++result.invalidatedCandidates;
         }
-        const SurfaceSimplificationCandidateSet refreshed =
-            vertices != nullptr && faces != nullptr
-                ? extract_surface_simplification_candidates(
-                      complex, *vertices, *faces)
-                : extract_surface_simplification_candidates(complex);
-        for (SurfaceSimplificationCandidate recomputedCandidate :
-             refreshed.candidates) {
-          if (options.topologyHealingOnly &&
-              !recomputedCandidate.topologyHealing) {
-            continue;
+        // Production topology healing is a live fixed-point process and must
+        // refresh candidates after each committed edit. The public explicit
+        // candidate API, however, is transactional over exactly the candidates
+        // supplied by the caller; silently appending unrelated edits can
+        // invalidate a topology-preserving commit after its stated transaction.
+        if (options.topologyHealingOnly) {
+          const SurfaceSimplificationCandidateSet refreshed =
+              vertices != nullptr && faces != nullptr
+                  ? extract_surface_simplification_candidates(
+                        complex, *vertices, *faces)
+                  : extract_surface_simplification_candidates(complex);
+          for (SurfaceSimplificationCandidate recomputedCandidate :
+               refreshed.candidates) {
+            if (!recomputedCandidate.topologyHealing) {
+              continue;
+            }
+            recomputedCandidate.stableId = nextStableBase++;
+            const int index = static_cast<int>(candidates.size());
+            const double recomputedCost =
+                objective_cost(recomputedCandidate, options.weights);
+            queue.push({recomputedCost, recomputedCandidate.type,
+                        recomputedCandidate.stableId, index});
+            candidates.push_back(std::move(recomputedCandidate));
+            ++result.recomputedCandidates;
           }
-          recomputedCandidate.stableId = nextStableBase++;
-          const int index = static_cast<int>(candidates.size());
-          const double recomputedCost =
-              objective_cost(recomputedCandidate, options.weights);
-          queue.push({recomputedCost, recomputedCandidate.type,
-                      recomputedCandidate.stableId, index});
-          candidates.push_back(std::move(recomputedCandidate));
-          ++result.recomputedCandidates;
         }
       }
     }

@@ -4,13 +4,162 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
 #include <limits>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <tuple>
 #include <utility>
 
 namespace directional::geometry::surface_cell_feasibility_detail {
+
+namespace {
+
+void append_rollback_word(std::vector<std::uint64_t> &identity,
+                          const std::int64_t value) {
+  identity.push_back(static_cast<std::uint64_t>(value));
+}
+
+void append_rollback_double(std::vector<std::uint64_t> &identity,
+                            const double value) {
+  std::uint64_t bits = 0U;
+  static_assert(sizeof(bits) == sizeof(value));
+  std::memcpy(&bits, &value, sizeof(bits));
+  identity.push_back(bits);
+}
+
+std::vector<std::uint64_t> exact_rollback_identity(
+    const SurfaceCellComplex &complex) {
+  std::vector<std::uint64_t> identity;
+  identity.reserve(complex.nodes.size() * 16U +
+                   complex.halfedges.size() * 32U +
+                   complex.cells.size() * 16U + 32U);
+  append_rollback_word(identity, static_cast<std::int64_t>(complex.nodes.size()));
+  for (const SurfaceArrangementNode &node : complex.nodes) {
+    append_rollback_word(identity, node.id);
+    append_rollback_word(identity, node.sourceFace);
+    append_rollback_word(identity, node.sourceComponent);
+    append_rollback_word(identity, node.sourceSheet);
+    append_rollback_word(identity, node.hardBarrierCrossing ? 1 : 0);
+    for (int corner = 0; corner < 3; ++corner) {
+      append_rollback_double(identity, node.barycentric[corner]);
+    }
+    append_rollback_word(identity, node.sourceEdge);
+    append_rollback_double(identity, node.sourceEdgeParameter);
+    append_rollback_word(identity,
+                         static_cast<std::int64_t>(node.occurrences.size()));
+    for (const SurfaceArrangementNodeOccurrence &occurrence :
+         node.occurrences) {
+      append_rollback_word(identity, occurrence.sourceFace);
+      for (int corner = 0; corner < 3; ++corner) {
+        append_rollback_double(identity, occurrence.barycentric[corner]);
+      }
+    }
+  }
+
+  append_rollback_word(
+      identity, static_cast<std::int64_t>(complex.halfedges.size()));
+  for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
+    for (const std::int64_t value :
+         {edge.id, edge.twin, edge.next, edge.from, edge.to, edge.sourceArc,
+          edge.family, edge.strand, edge.featureClass, edge.sourceFace,
+          edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
+          edge.singularitySupport ? 1 : 0, edge.railId, edge.curveId,
+          edge.sourceComponent, edge.sourceSheet, edge.proposalId,
+          edge.proposalSeedId, edge.proposalSide,
+          edge.proposalBoundarySegment, edge.cell}) {
+      append_rollback_word(identity, value);
+    }
+    append_rollback_double(identity, edge.sourceT0);
+    append_rollback_double(identity, edge.sourceT1);
+    append_rollback_double(identity, edge.railT0);
+    append_rollback_double(identity, edge.railT1);
+    append_rollback_word(
+        identity, static_cast<std::int64_t>(edge.provenance.size()));
+    for (const SurfaceArrangementProvenance &provenance : edge.provenance) {
+      for (const std::int64_t value :
+           {provenance.sourceArc, provenance.provenance,
+            provenance.sourceFace, provenance.family, provenance.strand,
+            provenance.featureClass, provenance.hardFeature ? 1 : 0,
+            provenance.layoutSupport ? 1 : 0,
+            provenance.singularitySupport ? 1 : 0, provenance.railId,
+            provenance.curveId, provenance.sourceComponent,
+            provenance.sourceSheet, provenance.proposalId,
+            provenance.proposalSeedId, provenance.proposalSide,
+            provenance.proposalBoundarySegment}) {
+        append_rollback_word(identity, value);
+      }
+      append_rollback_double(identity, provenance.sourceT0);
+      append_rollback_double(identity, provenance.sourceT1);
+      append_rollback_double(identity, provenance.railT0);
+      append_rollback_double(identity, provenance.railT1);
+    }
+  }
+
+  append_rollback_word(identity, static_cast<std::int64_t>(complex.cells.size()));
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    append_rollback_word(identity, cell.id);
+    append_rollback_word(identity, cell.sourceFace);
+    const auto appendVector = [&](const std::vector<int> &values) {
+      append_rollback_word(identity,
+                           static_cast<std::int64_t>(values.size()));
+      for (const int value : values) {
+        append_rollback_word(identity, value);
+      }
+    };
+    appendVector(cell.sourceFaces);
+    appendVector(cell.halfedges);
+    appendVector(cell.sideFamilies);
+    appendVector(cell.sideEdgeCounts);
+    append_rollback_double(identity, cell.signedArea);
+    append_rollback_double(identity, cell.area);
+    for (const std::int64_t value :
+         {cell.boundaryCycle ? 1 : 0, cell.closed ? 1 : 0,
+          cell.disk ? 1 : 0, cell.boundaryComponentCount,
+          cell.eulerCharacteristic, cell.quadReady ? 1 : 0,
+          static_cast<int>(cell.cellClass),
+          static_cast<int>(cell.rejectReason)}) {
+      append_rollback_word(identity, value);
+    }
+  }
+
+  const SurfaceArrangementDiagnostics &d = complex.diagnostics;
+  for (const std::int64_t value :
+       {d.plantedIntersections, d.uniqueIntersections, d.unsplitCrossings,
+        d.geometricTJunctions, d.incompleteArcChains,
+        d.hardBarrierCrossings, d.eulerCharacteristic,
+        d.sourceEulerCharacteristic, d.connectedComponentCount,
+        d.sourceConnectedComponentCount, d.boundaryLoopCount,
+        d.sourceBoundaryLoopCount, d.incidenceValid ? 1 : 0,
+        d.embeddingValid ? 1 : 0, d.orientationValid ? 1 : 0,
+        d.cellsDiskValid ? 1 : 0, d.boundaryLoopsValid ? 1 : 0,
+        d.eulerCharacteristicValid ? 1 : 0, d.topologyValid ? 1 : 0,
+        d.peakSegmentsPerFace}) {
+    append_rollback_word(identity, value);
+  }
+  append_rollback_double(identity, d.supportedArea);
+  append_rollback_double(identity, d.extractedArea);
+  append_rollback_double(identity, d.relativeAreaError);
+  append_rollback_double(identity, d.memoryRatioEstimate);
+  append_rollback_double(identity, d.measuredMemoryRatio);
+  identity.push_back(d.inputMemoryBytes);
+  identity.push_back(d.retainedMemoryBytes);
+  identity.push_back(d.peakMemoryBytes);
+  return identity;
+}
+
+std::uint64_t rollback_identity_hash(
+    const std::vector<std::uint64_t> &identity) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  for (const std::uint64_t word : identity) {
+    hash ^= word;
+    hash *= 1099511628211ULL;
+  }
+  return hash;
+}
+
+} // namespace
 
 int canonical_halfedge(const SurfaceCellComplex &complex, const int id) {
   if (id < 0 || id >= static_cast<int>(complex.halfedges.size())) {
@@ -447,46 +596,110 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     SurfaceCellComplex input,
     const std::map<int, int> &insertionsByHalfedge) {
   SurfaceCellSubdivisionResult result;
+  const std::vector<std::uint64_t> rollbackIdentity =
+      surface_cell_feasibility_detail::exact_rollback_identity(input);
+  result.rollbackIdentityHashBefore =
+      surface_cell_feasibility_detail::rollback_identity_hash(
+          rollbackIdentity);
+
+  const auto returnCommittedFailure =
+      [&](const std::string &failure) -> SurfaceCellSubdivisionResult {
+    result.failure = failure;
+    result.complex = std::move(input);
+    const std::vector<std::uint64_t> after =
+        surface_cell_feasibility_detail::exact_rollback_identity(
+            result.complex);
+    result.rollbackIdentityHashAfter =
+        surface_cell_feasibility_detail::rollback_identity_hash(after);
+    result.rollbackEquivalent = after == rollbackIdentity;
+    if (!result.rollbackEquivalent) {
+      result.failure = "SubdivisionRollbackMismatch:" + failure;
+    }
+    return std::move(result);
+  };
+
   if (!surface_cell_feasibility_detail::
           validate_incidence_allowing_nondisk(input)) {
-    result.failure = "InvalidInputIncidence";
-    return result;
+    return returnCommittedFailure("InvalidInputIncidence");
   }
 
   std::map<int, int> insertionCount;
   for (const auto &[id, count] : insertionsByHalfedge) {
     if (count <= 0) {
-      result.failure = "InvalidInsertionCount";
-      return result;
+      return returnCommittedFailure("InvalidInsertionCount");
     }
     const int canonical =
         surface_cell_feasibility_detail::canonical_halfedge(input, id);
     if (canonical < 0) {
-      result.failure = "InvalidHalfedge";
-      return result;
+      return returnCommittedFailure("InvalidHalfedge");
     }
     const auto [iterator, inserted] = insertionCount.emplace(canonical, count);
     if (!inserted && iterator->second != count) {
-      result.failure = "ConflictingTwinInsertionCount";
-      return result;
+      return returnCommittedFailure("ConflictingTwinInsertionCount");
     }
   }
   if (insertionCount.empty()) {
     result.complex = std::move(input);
     result.success = true;
+    result.rollbackEquivalent = true;
+    result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
     return result;
   }
 
   SurfaceCellComplex rebuilt;
   const bool inputTopologyValid = input.diagnostics.topologyValid;
-  // Nodes, cells, and diagnostics are not structurally duplicated by edge
-  // subdivision. Move them into the transaction workspace and retain only the
-  // input halfedges while their replacement chains are generated.
+  const std::size_t originalNodeCount = input.nodes.size();
+  const SurfaceArrangementDiagnostics originalDiagnostics = input.diagnostics;
+  // Keep the committed halfedge vector in `input`. Nodes and cells move into
+  // the mutable transaction and are restored through a compact undo log on
+  // every rejected path, avoiding a second full complex.
   rebuilt.nodes = std::move(input.nodes);
   rebuilt.cells = std::move(input.cells);
   rebuilt.diagnostics = std::move(input.diagnostics);
   std::vector<std::vector<int>> replacement(input.halfedges.size());
   std::vector<unsigned char> processed(input.halfedges.size(), 0);
+
+  struct CellUndo {
+    int index = -1;
+    std::vector<int> halfedges;
+    std::vector<int> sideFamilies;
+    std::vector<int> sideEdgeCounts;
+    int boundaryComponentCount = 0;
+    int eulerCharacteristic = 0;
+    bool disk = false;
+  };
+  std::vector<CellUndo> cellUndo;
+  cellUndo.reserve(rebuilt.cells.size());
+
+  const auto restoreCommitted =
+      [&](const std::string &failure) -> SurfaceCellSubdivisionResult {
+    for (auto undo = cellUndo.rbegin(); undo != cellUndo.rend(); ++undo) {
+      SurfaceArrangementCell &cell =
+          rebuilt.cells[static_cast<std::size_t>(undo->index)];
+      cell.halfedges = std::move(undo->halfedges);
+      cell.sideFamilies = std::move(undo->sideFamilies);
+      cell.sideEdgeCounts = std::move(undo->sideEdgeCounts);
+      cell.boundaryComponentCount = undo->boundaryComponentCount;
+      cell.eulerCharacteristic = undo->eulerCharacteristic;
+      cell.disk = undo->disk;
+    }
+    rebuilt.nodes.resize(originalNodeCount);
+    input.nodes = std::move(rebuilt.nodes);
+    input.cells = std::move(rebuilt.cells);
+    input.diagnostics = originalDiagnostics;
+    result.failure = failure;
+    result.complex = std::move(input);
+    const std::vector<std::uint64_t> after =
+        surface_cell_feasibility_detail::exact_rollback_identity(
+            result.complex);
+    result.rollbackIdentityHashAfter =
+        surface_cell_feasibility_detail::rollback_identity_hash(after);
+    result.rollbackEquivalent = after == rollbackIdentity;
+    if (!result.rollbackEquivalent) {
+      result.failure = "SubdivisionRollbackMismatch:" + failure;
+    }
+    return std::move(result);
+  };
 
   const auto append_halfedge = [&](SurfaceArrangementHalfedge value) {
     value.id = static_cast<int>(rebuilt.halfedges.size());
@@ -504,8 +717,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     const int twinId = forward.twin;
     if (twinId < 0 || twinId >= static_cast<int>(input.halfedges.size()) ||
         processed[static_cast<std::size_t>(twinId)] != 0U) {
-      result.failure = "InvalidTwinPair";
-      return result;
+      return restoreCommitted("InvalidTwinPair");
     }
     const SurfaceArrangementHalfedge &reverse =
         input.halfedges[static_cast<std::size_t>(twinId)];
@@ -525,39 +737,62 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
                            static_cast<double>(parts);
       SurfaceArrangementNode node;
       node.id = static_cast<int>(rebuilt.nodes.size());
-      node.sourceFace = forward.sourceFace;
-      node.barycentric =
-          surface_cell_feasibility_detail::interpolated_barycentric(
-              rebuilt, forward.from, forward.to, forward.sourceFace, alpha);
-      if (!node.barycentric.allFinite() ||
-          node.barycentric.minCoeff() < -1.0e-10 ||
-          node.barycentric.maxCoeff() > 1.0 + 1.0e-10) {
-        result.failure = "InvalidMidpointEmbedding";
-        return result;
-      }
-      std::set<int> occurrenceFaces;
-      for (const auto &occurrence :
-           rebuilt.nodes[static_cast<std::size_t>(forward.from)].occurrences) {
-        occurrenceFaces.insert(occurrence.sourceFace);
-      }
-      occurrenceFaces.insert(forward.sourceFace);
-      occurrenceFaces.insert(reverse.sourceFace);
-      for (const int face : occurrenceFaces) {
-        const Eigen::RowVector3d barycentric =
-            surface_cell_feasibility_detail::interpolated_barycentric(
-                rebuilt, forward.from, forward.to, face, alpha);
-        if (barycentric.allFinite() && barycentric.minCoeff() >= -1.0e-10 &&
-            barycentric.maxCoeff() <= 1.0 + 1.0e-10) {
-          node.occurrences.push_back({face, barycentric});
-        }
-      }
-      if (node.occurrences.empty()) {
-        node.occurrences.push_back({node.sourceFace, node.barycentric});
-      }
+      node.sourceComponent = forward.sourceComponent >= 0
+          ? forward.sourceComponent
+          : reverse.sourceComponent;
+      node.sourceSheet =
+          forward.sourceSheet >= 0 ? forward.sourceSheet : reverse.sourceSheet;
       const SurfaceArrangementNode &fromNode =
           rebuilt.nodes[static_cast<std::size_t>(forward.from)];
       const SurfaceArrangementNode &toNode =
           rebuilt.nodes[static_cast<std::size_t>(forward.to)];
+      node.hardBarrierCrossing =
+          fromNode.hardBarrierCrossing || toNode.hardBarrierCrossing;
+
+      std::set<int> occurrenceFaces;
+      for (const auto &occurrence : fromNode.occurrences) {
+        if (occurrence.sourceFace >= 0) {
+          occurrenceFaces.insert(occurrence.sourceFace);
+        }
+      }
+      for (const auto &occurrence : toNode.occurrences) {
+        if (occurrence.sourceFace >= 0) {
+          occurrenceFaces.insert(occurrence.sourceFace);
+        }
+      }
+      if (fromNode.sourceFace >= 0) {
+        occurrenceFaces.insert(fromNode.sourceFace);
+      }
+      if (toNode.sourceFace >= 0) {
+        occurrenceFaces.insert(toNode.sourceFace);
+      }
+      if (forward.sourceFace >= 0) {
+        occurrenceFaces.insert(forward.sourceFace);
+      }
+      if (reverse.sourceFace >= 0) {
+        occurrenceFaces.insert(reverse.sourceFace);
+      }
+
+      bool primarySet = false;
+      for (const int face : occurrenceFaces) {
+        const Eigen::RowVector3d barycentric =
+            surface_cell_feasibility_detail::interpolated_barycentric(
+                rebuilt, forward.from, forward.to, face, alpha);
+        if (!barycentric.allFinite() ||
+            barycentric.minCoeff() < -1.0e-10 ||
+            barycentric.maxCoeff() > 1.0 + 1.0e-10) {
+          continue;
+        }
+        node.occurrences.push_back({face, barycentric});
+        if (!primarySet) {
+          node.sourceFace = face;
+          node.barycentric = barycentric;
+          primarySet = true;
+        }
+      }
+      if (!primarySet) {
+        return restoreCommitted("InvalidMidpointEmbedding");
+      }
       if (fromNode.sourceEdge >= 0 &&
           fromNode.sourceEdge == toNode.sourceEdge) {
         node.sourceEdge = fromNode.sourceEdge;
@@ -627,7 +862,20 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     }
   }
 
-  for (SurfaceArrangementCell &cell : rebuilt.cells) {
+  for (int cellIndex = 0; cellIndex < static_cast<int>(rebuilt.cells.size());
+       ++cellIndex) {
+    SurfaceArrangementCell &cell =
+        rebuilt.cells[static_cast<std::size_t>(cellIndex)];
+    CellUndo undo;
+    undo.index = cellIndex;
+    undo.halfedges = cell.halfedges;
+    undo.sideFamilies = cell.sideFamilies;
+    undo.sideEdgeCounts = cell.sideEdgeCounts;
+    undo.boundaryComponentCount = cell.boundaryComponentCount;
+    undo.eulerCharacteristic = cell.eulerCharacteristic;
+    undo.disk = cell.disk;
+    cellUndo.push_back(std::move(undo));
+
     const std::vector<int> oldBoundary = cell.halfedges;
     std::vector<int> newBoundary;
     std::vector<int> newSideCounts(cell.sideEdgeCounts.size(), 0);
@@ -640,20 +888,19 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     for (const int oldId : oldBoundary) {
       if (oldId < 0 || oldId >= static_cast<int>(replacement.size()) ||
           replacement[static_cast<std::size_t>(oldId)].empty()) {
-        result.failure = "MissingHalfedgeReplacement";
-        return result;
+        return restoreCommitted("MissingHalfedgeReplacement");
       }
       const auto &pieces = replacement[static_cast<std::size_t>(oldId)];
       newBoundary.insert(newBoundary.end(), pieces.begin(), pieces.end());
       if (sideMetadataValid) {
         while (side < static_cast<int>(cell.sideEdgeCounts.size()) &&
-               usedOnSide >= cell.sideEdgeCounts[static_cast<std::size_t>(side)]) {
+               usedOnSide >=
+                   cell.sideEdgeCounts[static_cast<std::size_t>(side)]) {
           ++side;
           usedOnSide = 0;
         }
         if (side >= static_cast<int>(newSideCounts.size())) {
-          result.failure = "InvalidSideMetadata";
-          return result;
+          return restoreCommitted("InvalidSideMetadata");
         }
         newSideCounts[static_cast<std::size_t>(side)] +=
             static_cast<int>(pieces.size());
@@ -692,14 +939,17 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
 
   if (!surface_cell_feasibility_detail::
           validate_incidence_allowing_nondisk(rebuilt)) {
-    result.failure = "InvalidOutputIncidence";
-    return result;
+    return restoreCommitted("InvalidOutputIncidence");
   }
   rebuilt.diagnostics.incidenceValid = true;
   rebuilt.diagnostics.topologyValid =
       inputTopologyValid && rebuilt.diagnostics.incidenceValid;
   result.complex = std::move(rebuilt);
   result.success = true;
+  result.rollbackIdentityHashAfter =
+      surface_cell_feasibility_detail::rollback_identity_hash(
+          surface_cell_feasibility_detail::exact_rollback_identity(
+              result.complex));
   return result;
 }
 
@@ -878,18 +1128,34 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
   SurfaceCellComplex canonicalInput = std::move(input);
   surface_cell_feasibility_detail::canonicalize_logical_sides(
       canonicalInput, sourceVertices, sourceFaces);
+  const std::vector<std::uint64_t> rollbackIdentity =
+      surface_cell_feasibility_detail::exact_rollback_identity(canonicalInput);
+  result.rollbackIdentityHashBefore =
+      surface_cell_feasibility_detail::rollback_identity_hash(
+          rollbackIdentity);
+  const auto returnRollback =
+      [&](const std::string &failure) -> SurfaceCellSideRepairResult {
+    result.failure = failure;
+    result.complex = std::move(canonicalInput);
+    const std::vector<std::uint64_t> after =
+        surface_cell_feasibility_detail::exact_rollback_identity(
+            result.complex);
+    result.rollbackIdentityHashAfter =
+        surface_cell_feasibility_detail::rollback_identity_hash(after);
+    result.rollbackEquivalent = after == rollbackIdentity;
+    if (!result.rollbackEquivalent) {
+      result.failure = "SideRepairRollbackMismatch:" + failure;
+    }
+    return std::move(result);
+  };
   if (options.maxInsertedVertices < 0 ||
       options.maxLocalInsertedVertices < 0 ||
       options.maxPropagationPasses <= 0 || options.maxStagnantPasses <= 0) {
-    result.failure = "InvalidSideRepairOptions";
-    result.complex = std::move(canonicalInput);
-    return result;
+    return returnRollback("InvalidSideRepairOptions");
   }
   if (!surface_cell_feasibility_detail::
           validate_incidence_allowing_nondisk(canonicalInput)) {
-    result.failure = "InvalidInputIncidence";
-    result.complex = std::move(canonicalInput);
-    return result;
+    return returnRollback("InvalidInputIncidence");
   }
   std::map<int, int> insertions;
   result.infeasibleCellsBefore =
@@ -902,6 +1168,8 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
   if (result.infeasibleCellsBefore == 0) {
     result.complex = std::move(canonicalInput);
     result.success = true;
+    result.rollbackEquivalent = true;
+    result.rollbackIdentityHashAfter = result.rollbackIdentityHashBefore;
     return result;
   }
   std::vector<int> halfedgeSide(canonicalInput.halfedges.size(), -1);
@@ -939,11 +1207,9 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
           surface_cell_feasibility_detail::local_side_repair_delta(
               counts, options.maxLocalInsertedVertices);
       if (delta.size() != cell.sideEdgeCounts.size()) {
-        result.failure = "LocalSideInsertionLimit";
         result.propagationPasses = passes;
         result.attemptedInsertions = inserted;
-        result.complex = std::move(canonicalInput);
-        return result;
+        return returnRollback("LocalSideInsertionLimit");
       }
       const auto sideEdges =
           surface_cell_feasibility_detail::side_halfedges(cell);
@@ -1013,11 +1279,9 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
         }
       }
       if (selectedSide < 0 || selectedEdge < 0) {
-        result.failure = "MissingSideSubdivisionEdge";
         result.propagationPasses = passes;
         result.attemptedInsertions = inserted;
-        result.complex = std::move(canonicalInput);
-        return result;
+        return returnRollback("MissingSideSubdivisionEdge");
       }
       ++insertions[selectedEdge];
       ++inserted;
@@ -1044,22 +1308,17 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
       ++stagnantPasses;
     }
     if (!progress && !converged) {
-      result.failure = "SideRepairStalled";
-      result.complex = std::move(canonicalInput);
-      return result;
+      return returnRollback("SideRepairStalled");
     }
     if (!converged && stagnantPasses >= options.maxStagnantPasses) {
-      result.failure = "CoupledSideRepairStalled";
-      result.complex = std::move(canonicalInput);
-      return result;
+      return returnRollback("CoupledSideRepairStalled");
     }
   }
   if (!converged) {
-    result.failure = inserted >= options.maxInsertedVertices
-                         ? "SideRepairInsertionLimit"
-                         : "SideRepairPropagationLimit";
-    result.complex = std::move(canonicalInput);
-    return result;
+    return returnRollback(
+        inserted >= options.maxInsertedVertices
+            ? "SideRepairInsertionLimit"
+            : "SideRepairPropagationLimit");
   }
   SurfaceCellSubdivisionResult subdivision =
       subdivide_surface_cell_complex_edges(std::move(canonicalInput),
@@ -1067,6 +1326,14 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
   if (!subdivision.success) {
     result.failure = subdivision.failure;
     result.complex = std::move(subdivision.complex);
+    result.rollbackEquivalent = subdivision.rollbackEquivalent;
+    result.rollbackIdentityHashBefore =
+        subdivision.rollbackIdentityHashBefore;
+    result.rollbackIdentityHashAfter =
+        subdivision.rollbackIdentityHashAfter;
+    if (!result.rollbackEquivalent) {
+      result.failure = "SideSubdivisionTransaction:" + result.failure;
+    }
     return result;
   }
   result.complex = std::move(subdivision.complex);
@@ -1082,6 +1349,10 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
   if (!result.success) {
     result.failure = "SideRepairIncomplete";
   }
+  result.rollbackIdentityHashAfter =
+      surface_cell_feasibility_detail::rollback_identity_hash(
+          surface_cell_feasibility_detail::exact_rollback_identity(
+              result.complex));
   return result;
 }
 
