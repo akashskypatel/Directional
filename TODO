@@ -8,53 +8,90 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB75 through P5-CB82 code changes + compile-only build**.
-- Next turn: **P5-TB15 artifact-only test and benchmark**.
+- Completed turn: **P5-TB15 artifact-only test and benchmark**.
+- Next turn: **P5-CB83 through P5-CB90 code changes + compile-only build**.
 
-## Compile-only checkpoint
+## Tested checkpoint
 
-- Implementation: `1dab9a0e8915e7d9641c9b005bfa57eaefb4a8cc`.
-- Exact compiled source: `f4a6a392dc3d490efca4f94bd613aadaad2c1b01`.
-- Run / job: `30839059634` / `91771355792` — success.
+- Exact source: `f4a6a392dc3d490efca4f94bd613aadaad2c1b01`.
 - Artifact: `8866222973` (`surface-cell-p5-cb82-mixed-sheet-liveness-linux-release`).
 - Digest: `sha256:c38649208b1586094f804895c39c1319b71eb0c5220e84d1d2514b04954c63fe`.
-- Build: **131/131**; source status empty; checksums **36/36**.
-- Packaged fixture files: **26**; random bunny: **502 vertices / 1,000 faces**.
-- No executable was run.
+- Source status empty; checksums **36/36**; no rebuild.
+- Fixture closure valid from an arbitrary extraction path; 26 files; random bunny has 502 vertices and 1,000 faces.
 
-## Completed P5-CB75–P5-CB82 scope
+## P5-TB15 result
 
-- [x] Represent node occurrences with exact face, component, sheet, provenance, source interval, and rail interval identity.
-- [x] Rebind oriented halfedges and twins independently to compatible source-sheet provenance.
-- [x] Recompute affected cell scope from oriented boundaries and fail closed on mixed identity.
-- [x] Restore logical-side mutations before proving rollback and report compact undo-owned bytes.
-- [x] Preserve the intended malformed-midpoint rollback failure contract.
-- [x] Retain multiple reusable products per semantic bucket and consume exact matches once.
-- [x] Preserve authoritative rail/curve identity and complete provenance through arrangement rebinding.
-- [x] Replace invalid multi-edge-interface tests with an explicit valid two-cell DCEL.
-- [x] Emit cylinder source-edge arcs in every incident triangle chart.
-- [x] Replace stale simplification frontier accumulation with semantic generations, deduplication, stale rejection, monotone commits, and generation replacement.
-- [x] Propagate simplification and rollback memory diagnostics to benchmark JSON.
-- [x] Compile and package the exact source without executing a binary.
+- Phase 14–18: **230/230 passed**.
+- `PatchDescriptorMilestoneE.*`: **21/24 passed**.
+- P23 + Phase 20: **52/54 passed**.
+- Milestone D: **6/7 passed**.
+- Full binary excluding three crash tests: **579/589 passed**.
+- Complete packaged disposition: **579/592 passed**, with 10 assertion failures and 3 signal-11 tests.
 
-## P5-TB15 requirements
+Newly fixed:
 
-Use artifact `8866222973` directly without rebuilding.
+- exact real side-repair rollback;
+- partial multi-edge interface fixture;
+- complete protected-rail multi-edge interface fixture.
 
-- Verify exact source, empty status, all checksums, fixture closure, binaries, libraries, logs, source archive, and submodules from an arbitrary extraction path.
-- Run all 13 P5-TB14 assertion-failing tests, the three former signal-11 tests independently, focused mixed-sheet/rollback/reuse/rail/simplification/fixture regressions, all authoritative suites, and the full packaged binary.
-- Require exact rollback identity and structural hash equality on the real failed side-repair path.
-- Require positive exact reuse for unaffected completion products.
-- Run two formal and two supplementary fresh random-bunny processes with `SurfaceCells`, fallback `Fail`, and recovery disabled.
-- Require all four processes terminate deterministically with nonzero authoritative descriptors, zero ownership conflicts, nonempty pure-quad output, and valid lineage/provenance.
-- Require no fallback, recovery, final-face deduplication, positional merge, source-triangle pairing, validator weakening, or ID-specific repair.
-- Require wall time `<= 39.228299 s` and peak memory `<= 1,115,394,560 B` in every process.
-- Reconcile candidate-generation and rollback-undo owned-byte diagnostics with process RSS.
+## Face-edge random bunny
+
+Four independent processes terminate deterministically with identical non-timing stage hashes.
+
+- wall: `17.594136–19.939944 s`;
+- peak working set: `137,039,872–137,162,752 B`;
+- wall and memory caps: pass;
+- fallback/recovery: neither used;
+- output: none.
+
+Every process fails at:
+
+```text
+NotProductionReady/completion
+BoundaryParityRepair:MixedCellSourceScope
+```
+
+Common state:
+
+- trace segments: `12,130`;
+- arrangement/simplified cells: `7,405 / 7,405`;
+- odd cells: `1,860 -> 0` inside the rejected parity transaction;
+- descriptors/completed patches/quads: `0 / 0 / 0`;
+- exact reuse/recomputation: `0 / 0`.
+
+The simplification frontier is deterministic and bounded: five generations, 3,725 generated candidates, 2,978 invalidated, 747 peak live, 762 evaluated, four commits, and 758 rejections.
+
+## Generated-smooth-field crash
+
+The exact production-manifest bunny case still exits `139` and produces no JSON.
+
+Isolation:
+
+- generated `smooth` without debug retention: still crashes;
+- generated `face_edges` with debug retention: returns normally;
+- injected failure after tracing stage 3: returns normally with `80,862` trace segments and hash `f2fe5aaec178f507`;
+- injected failure after strands stage 4: crashes.
+
+The signal 11 is isolated to the FlowRep **strands** stage on the high-cardinality smooth-field trace graph. Debug retention is not causal.
+
+## Required next work
+
+Use `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Plan.md`.
+
+- [ ] Eliminate stale references, unsafe recursion, and ownership faults in high-cardinality FlowRep input, selection, and endpoint completion.
+- [ ] Replace parity source-scope frequency voting with one authoritative pre-transaction cell scope inherited by every replacement piece.
+- [ ] Add typed parity failure diagnostics identifying cell, halfedge, selected scope, and available scopes.
+- [ ] Define completion reuse identity only from authoritative source-domain dependencies and produce positive reuse.
+- [ ] Preserve authoritative rail/curve identity and complete provenance to final halfedges.
+- [ ] Correct the invalid midpoint fixture and topology-invalid cylinder fixture without weakening preconditions.
+- [ ] Repair remaining plane, cylinder, seam, torus, and mechanical-feature production output failures.
+- [ ] Add trace, FlowRep, arrangement, simplification, and completion stage-owned memory telemetry.
+- [ ] Compile only the four required targets and execute no binary.
 
 Evidence:
 
-- `.agents/Directional/Milestone_G_P5_Mixed_Sheet_Liveness_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Mixed_Sheet_Liveness_Code_Build_Plan.md`
-- `benchmark-results/p5-cb82-summary.json`
+- `.agents/Directional/Milestone_G_P5_TB15_Parity_Scope_Reuse_Rail_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Plan.md`
+- `benchmark-results/p5-tb15-summary.json`
 
-Runtime correctness, positive reuse, crash elimination, liveness, successful output, timing, and successful-path memory are not yet claimed. P5 remains open.
+P5 remains open.
