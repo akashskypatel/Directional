@@ -51,11 +51,12 @@ jobs:
           base64 --decode "${payload}" | gzip --decompress > /tmp/p5-global-frontier.patch
           echo "${PATCH_SHA256}  /tmp/p5-global-frontier.patch" | sha256sum --check -
 
+          cp .github/workflows/agent-build-recovered-p5.yml /tmp/p5-one-shot-workflow.yml
           git show "${BASELINE_SHA}:.github/workflows/agent-build-recovered-p5.yml" \
             > .github/workflows/agent-build-recovered-p5.yml
-          git rm -f .github/workflows/apply-p5-cb50-patch.yml
           git apply --check --whitespace=error /tmp/p5-global-frontier.patch
           git apply --whitespace=error /tmp/p5-global-frontier.patch
+          cp /tmp/p5-one-shot-workflow.yml .github/workflows/agent-build-recovered-p5.yml
           git rm -f \
             .agents/Directional/p5-global-frontier.patch.gz.b64.part1 \
             .agents/Directional/p5-global-frontier.patch.gz.b64.part2 \
@@ -66,6 +67,10 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add -A
           git diff --cached --check
+          git diff --cached --quiet -- .github/workflows || {
+            echo 'source materialization must not modify workflow files' >&2
+            exit 1
+          }
           git commit -m 'feat(surface-cells): add global ownership frontier [skip ci]'
           source_sha=$(git rev-parse HEAD)
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
@@ -101,7 +106,6 @@ jobs:
           for part in .agents/Directional/p5-global-frontier.patch.gz.b64.part*; do
             test ! -e "${part}"
           done
-          test ! -e .github/workflows/apply-p5-cb50-patch.yml
           git status --porcelain=v1 > /tmp/source-status.txt
           test ! -s /tmp/source-status.txt
 
