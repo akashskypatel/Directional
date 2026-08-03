@@ -7,98 +7,71 @@ Last updated: 2026-08-02
 - Phase: P5 — route-complete same-corner structural repair.
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Base branch: `surface_cell_quad`.
-- Completed turn: **P5-TB9 test and benchmark without rebuilding**.
-- Next authoritative turn: **code changes + compile-only build**.
+- Completed turn: **P5-CB34 through P5-CB41 code changes + compile-only build**.
+- Next authoritative turn: **P5-TB10 test and benchmark using artifact `8844133680` without rebuilding**.
 - Review policy: `never`.
 
-## Validated bounded-repair artifact
+## Route-complete checkpoint
 
-- Exact source: `bc95579be68d5de073de956022eec8fb89120ec0`.
-- Artifact: `8843206930` (`surface-cell-p5-bounded-repair-linux-release`).
-- Digest: `sha256:9b6ef73f2bd04eb49486cd7f0f28a1d2e9121a36791c7dd25fe1ffcc19d64f94`.
-- Source status is empty and all ten checksums pass.
-- P5-TB9 used only the packaged binaries; no rebuild or source edit occurred.
+- Implementation commit: `5dcc6da94977c733ada42967ecdafa566cbc5d0b`.
+- Exact compiled source: `76cf884a6890a23a6db7d7bda9bc77b85ec4505c`.
+- Compile-only run: `30782277625` — success.
+- Job: `91589158985` — success.
+- Artifact: `8844133680` (`surface-cell-p5-route-complete-linux-release`).
+- Digest: `sha256:1f32a4d3600d1a7be39e710d35273f80bed0c24850626d744ab15e7a748a34bb`.
+- Build completed 131/131 steps.
+- `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` compiled and linked.
+- Source status is empty and all ten packaged checksums pass.
+- No test, benchmark, or custom mesh executable ran.
 
-## P5-TB9 tests
+## Implemented route-complete contract
 
-| Scope | Passed | Failed |
-|---|---:|---:|
-| New whole-complex structural subset | 2 | 3 |
-| `PatchDescriptorMilestoneE.*` | 17 | 3 |
-| Phase 16 + Phase 18 | 89 | 0 |
-| Phase 14–18 aggregate | 229 | 0 |
-| Milestone G P23 + Phase 20 | 52 | 0 |
+- [x] Replace single-halfedge repair candidates with exact maximal route chains between shared authoritative corners.
+- [x] Include complete canonical interval identities, geometric support, affected patches/domains, and component/sheet scope.
+- [x] Generate a topology-derived coupled-sector interval union when multiple differing routes belong to one unresolved relationship.
+- [x] Evaluate the coupled candidate before individual complete routes without arbitrary subset enumeration.
+- [x] Subdivide every interval in one atomic twin-conforming transaction.
+- [x] Commit only when assembly succeeds and exact ownership conflicts reach zero.
+- [x] Reject persistent, replacement, repeated, incomplete, invalid, or exhausted route transactions fail-closed.
+- [x] Preserve one invocation-owned non-recursive ledger and exact repair-state equality.
+- [x] Release superseded descriptors, completed patches, assembly storage, candidate storage, and repeated failure strings.
+- [x] Keep at most one live mutable candidate complex.
+- [x] Add route identities, interval lists, compound insertion/split totals, affected domains, outcomes, and owned-byte diagnostics to pipeline hashes and benchmark JSON.
+- [x] Replace vacuous structural fixtures with an authoritative same-corner route fixture and assert the initial conflict precondition.
+- [x] Add an already-successful negative control that requires zero repair work.
 
-Authoritative non-overlapping total: **298/301 passed**.
+No final-face deduplication, positional vertex merge, source-triangle pairing, source-grid recovery, legacy fallback, arbitrary powerset search, patch/halfedge-ID special case, or validator weakening was introduced.
 
-### Invalid test inputs
+## Required P5-TB10 turn
 
-The same fixture backs all three failures. It is topologically valid but assembles successfully on the initial pass, so it never produces a `SameCornerDistinctBoundaryClaim` and never enters structural repair.
+Use artifact `8844133680` directly and do not rebuild.
 
-- `WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger`
-- `ZeroStructuralBudgetFailsBeforeCandidateExpansion`
-- `OneCandidateBudgetIsExactAndDoesNotRecurse`
-
-`StructuralRepairLedgerIsPatchOrderInvariant` also passes vacuously with zero attempts. Replace the fixture with an authoritative same-corner input and assert that precondition before budget or order checks. Do not weaken production behavior or force repair on an already successful complex.
-
-## Random-bunny disposition
-
-Two clean-exit direct runs used `SurfaceCells`, fallback `Fail`, and recovery disabled:
-
-- run 3: 32.075226 s, 1,053,339,648 B peak, 15.882026 s completion;
-- run 4: 33.230250 s, 1,083,228,160 B peak, 16.525224 s completion.
-
-Both terminate below the formal wall and memory caps. Two supplementary guarded probes produced identical completed JSON but measured approximately 1.242 GB each, so memory compliance does not yet have a robust margin.
-
-All four records have identical fixture hashes, terminal failure, repair ledger, context-product hashes, and stage structural hashes.
-
-Terminal result:
-
-```text
-SameCornerStructuralRepairExhausted:candidate-budget:
-DuplicateStitchedQuad:firstPatch=4956;secondPatch=4954;
-classification=same-corner-distinct-boundary
-```
-
-Ledger:
-
-- descriptors attempted/completed/failed: 21,297 / 21,297 / 0;
-- completion variant repairs: 6;
-- structural candidates/attempts: 2 / 2;
-- inserted boundary vertices: 2;
-- visited states: 3;
-- full/incremental passes: 3 / 0;
-- peak live candidate complexes: 1;
-- output origin: `None`;
-- accepted quads: 0;
-- fallback/recovery: false / false.
-
-Candidate halfedges `22706` and `23112` each remove the local pair but introduce another same-corner ownership claim. The controller correctly rejects both and fails closed.
-
-## Required next code/build turn
-
-Use `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Plan.md`.
-
-- [ ] Correct the structural-repair fixtures so the initial pass truly produces a same-corner claim.
-- [ ] Replace single-halfedge candidates with exact route-complete or coupled-sector interval sets.
-- [ ] Subdivide the complete route transactionally; do not enumerate arbitrary powersets.
-- [ ] Preserve one global ledger, exact state equality, and strict no-replacement-claim commit rules.
-- [ ] Add route candidate identity, interval-set, affected-domain, and owned-byte diagnostics.
-- [ ] Improve peak-memory margin by eliminating avoidable full-complex copies.
-- [ ] Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- [ ] Run no tests, benchmarks, or custom meshes.
+- [ ] Verify exact compiled source, empty source status, and all ten checksums.
+- [ ] Execute every corrected route-complete structural test.
+- [ ] Run `PatchDescriptorMilestoneE.*`.
+- [ ] Run Phase 16 + Phase 18 and the complete Phase 14–18 aggregate.
+- [ ] Run Milestone G P23 + Phase 20.
+- [ ] Run `bunny_1k_random.obj` in at least two independent clean-exit processes with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
+- [ ] Require direct completion success with nonempty pure-quad output.
+- [ ] Record exact route candidates, interval sets, shared corners, affected domains, compound insertions, structural hashes, and owned-byte diagnostics.
+- [ ] Verify no timeout, fallback, or recovery.
+- [ ] Require wall time ≤ 39.228299 s in every formal process.
+- [ ] Require peak memory ≤ 1,115,394,560 B in every formal and supplementary process.
 
 ## P5 closure conditions
 
 - [ ] Corrected route-complete tests pass for their intended scenarios.
 - [ ] Direct random-bunny completion succeeds with nonempty pure-quad output.
+- [ ] Route repair is exact, deterministic, conforming, transactional, and globally bounded.
 - [ ] No timeout, fallback, recovery, final-face deduplication, positional ownership, source-triangle pairing, or ID special case.
 - [ ] Every formal and supplementary process remains within the wall and memory caps.
 
 ## Authoritative evidence
 
-- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_Route_Complete_Structural_Repair_Code_Build_Plan.md`
+- `.agents/Directional/Milestone_G_P5_Bounded_Structural_Repair_Test_Benchmark_Report.md`
+- `benchmark-results/p5-cb41-summary.json`
 - `benchmark-results/p5-tb9-summary.json`
 
 P5 remains open. PR #8 remains draft and unmerged.
