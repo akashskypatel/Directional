@@ -8,6 +8,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 
 namespace {
 
@@ -101,8 +102,8 @@ TEST(RemeshRegressionPhase00, SyntheticOutputSatisfiesStructuralInvariants) {
 
 TEST(RemeshRegressionPhase00, BunnyBenchmarkFixtureHasMatchingField) {
   const std::filesystem::path manifestPath =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/repo_regressions.json";
+      directional::tests::benchmark_fixture_path(
+          "repo_regressions.json");
 
   const std::vector<directional::bench::BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifestPath);

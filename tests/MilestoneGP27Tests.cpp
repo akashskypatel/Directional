@@ -1,4 +1,5 @@
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 #include "BenchmarkQuality.h"
 
 #include <cmath>
@@ -213,8 +214,8 @@ TEST(MilestoneGP27, QualityCountsSelfIntersectingPolygon) {
 
 TEST(MilestoneGP27, ProductionManifestIsCanonicalCompleteAndPaired) {
   const std::filesystem::path manifest =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/milestone_g_manifest.json";
+      directional::tests::benchmark_fixture_path(
+          "milestone_g_manifest.json");
   const std::vector<BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifest);
   ASSERT_EQ(cases.size(), 18U);
@@ -237,8 +238,8 @@ TEST(MilestoneGP27, ProductionManifestIsCanonicalCompleteAndPaired) {
 
 TEST(MilestoneGP27, ProductionFeatureMapsBuildAuthoritativeRails) {
   const std::filesystem::path manifest =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/milestone_g_manifest.json";
+      directional::tests::benchmark_fixture_path(
+          "milestone_g_manifest.json");
   const std::vector<BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifest);
   for (const BenchmarkCase &benchmarkCase : cases) {
@@ -307,8 +308,8 @@ TEST(MilestoneGP27, ProductionFeatureMapsBuildAuthoritativeRails) {
 
 TEST(MilestoneGP27, ProductionSurfaceCellMatrixMatchesSupportedDisposition) {
   const std::filesystem::path manifest =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/milestone_g_manifest.json";
+      directional::tests::benchmark_fixture_path(
+          "milestone_g_manifest.json");
   const std::vector<BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifest);
   for (const BenchmarkCase &benchmarkCase : cases) {

@@ -1259,6 +1259,13 @@ TEST(PureQuadCompletionPhase18,
       {first, second});
 
   EXPECT_FALSE(assembly.success);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+  EXPECT_GT(assembly.estimatedOwnershipRegistryOwnedBytes, 0U);
+  EXPECT_GT(assembly.estimatedDeferredOutputOwnedBytes, 0U);
+  EXPECT_GE(assembly.estimatedWorkspaceOwnedBytes,
+            assembly.estimatedOwnershipRegistryOwnedBytes +
+                assembly.estimatedDeferredOutputOwnedBytes);
   EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
                 CompletionTemplateOwnership,
             assembly.ownershipConflict.classification);

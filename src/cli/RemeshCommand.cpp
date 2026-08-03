@@ -173,6 +173,7 @@ int run_remesh(const int argc, char **argv) {
           pipeline::parse_surface_cell_fallback_policy(argv[argument]);
     } else if (option == "--surface-cell-preserve-debug-artifacts") {
       options.surfaceCells.preserveDebugArtifacts = true;
+      options.surfaceCells.retainIntermediateGeometry = true;
     } else if (option == "--surface-cell-skeleton-hints") {
       options.surfaceCells.useSkeletonHints = true;
     } else if (option ==

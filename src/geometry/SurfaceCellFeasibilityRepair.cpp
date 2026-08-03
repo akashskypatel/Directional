@@ -444,10 +444,9 @@ int total_side_equation_defect(const SurfaceCellComplex &complex,
 namespace directional::geometry {
 
 SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
-    const SurfaceCellComplex &input,
+    SurfaceCellComplex input,
     const std::map<int, int> &insertionsByHalfedge) {
   SurfaceCellSubdivisionResult result;
-  result.complex = input;
   if (!surface_cell_feasibility_detail::
           validate_incidence_allowing_nondisk(input)) {
     result.failure = "InvalidInputIncidence";
@@ -473,14 +472,19 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     }
   }
   if (insertionCount.empty()) {
+    result.complex = std::move(input);
     result.success = true;
     return result;
   }
 
   SurfaceCellComplex rebuilt;
-  rebuilt.nodes = input.nodes;
-  rebuilt.cells = input.cells;
-  rebuilt.diagnostics = input.diagnostics;
+  const bool inputTopologyValid = input.diagnostics.topologyValid;
+  // Nodes, cells, and diagnostics are not structurally duplicated by edge
+  // subdivision. Move them into the transaction workspace and retain only the
+  // input halfedges while their replacement chains are generated.
+  rebuilt.nodes = std::move(input.nodes);
+  rebuilt.cells = std::move(input.cells);
+  rebuilt.diagnostics = std::move(input.diagnostics);
   std::vector<std::vector<int>> replacement(input.halfedges.size());
   std::vector<unsigned char> processed(input.halfedges.size(), 0);
 
@@ -524,7 +528,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       node.sourceFace = forward.sourceFace;
       node.barycentric =
           surface_cell_feasibility_detail::interpolated_barycentric(
-              input, forward.from, forward.to, forward.sourceFace, alpha);
+              rebuilt, forward.from, forward.to, forward.sourceFace, alpha);
       if (!node.barycentric.allFinite() ||
           node.barycentric.minCoeff() < -1.0e-10 ||
           node.barycentric.maxCoeff() > 1.0 + 1.0e-10) {
@@ -533,7 +537,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       }
       std::set<int> occurrenceFaces;
       for (const auto &occurrence :
-           input.nodes[static_cast<std::size_t>(forward.from)].occurrences) {
+           rebuilt.nodes[static_cast<std::size_t>(forward.from)].occurrences) {
         occurrenceFaces.insert(occurrence.sourceFace);
       }
       occurrenceFaces.insert(forward.sourceFace);
@@ -541,7 +545,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       for (const int face : occurrenceFaces) {
         const Eigen::RowVector3d barycentric =
             surface_cell_feasibility_detail::interpolated_barycentric(
-                input, forward.from, forward.to, face, alpha);
+                rebuilt, forward.from, forward.to, face, alpha);
         if (barycentric.allFinite() && barycentric.minCoeff() >= -1.0e-10 &&
             barycentric.maxCoeff() <= 1.0 + 1.0e-10) {
           node.occurrences.push_back({face, barycentric});
@@ -551,9 +555,9 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         node.occurrences.push_back({node.sourceFace, node.barycentric});
       }
       const SurfaceArrangementNode &fromNode =
-          input.nodes[static_cast<std::size_t>(forward.from)];
+          rebuilt.nodes[static_cast<std::size_t>(forward.from)];
       const SurfaceArrangementNode &toNode =
-          input.nodes[static_cast<std::size_t>(forward.to)];
+          rebuilt.nodes[static_cast<std::size_t>(forward.to)];
       if (fromNode.sourceEdge >= 0 &&
           fromNode.sourceEdge == toNode.sourceEdge) {
         node.sourceEdge = fromNode.sourceEdge;
@@ -693,19 +697,19 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
   }
   rebuilt.diagnostics.incidenceValid = true;
   rebuilt.diagnostics.topologyValid =
-      input.diagnostics.topologyValid && rebuilt.diagnostics.incidenceValid;
+      inputTopologyValid && rebuilt.diagnostics.incidenceValid;
   result.complex = std::move(rebuilt);
   result.success = true;
   return result;
 }
 
 SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
-    const SurfaceCellComplex &input) {
+    SurfaceCellComplex input) {
   SurfaceCellParityRepairResult result;
-  result.complex = input;
   result.oddCellsBefore =
       surface_cell_feasibility_detail::odd_bounded_cell_count(input);
   if (result.oddCellsBefore == 0) {
+    result.complex = std::move(input);
     result.success = true;
     return result;
   }
@@ -846,13 +850,14 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
   for (const int halfedge : selected) {
     insertions.emplace(halfedge, 1);
   }
-  const SurfaceCellSubdivisionResult subdivision =
-      subdivide_surface_cell_complex_edges(input, insertions);
+  SurfaceCellSubdivisionResult subdivision =
+      subdivide_surface_cell_complex_edges(std::move(input), insertions);
   if (!subdivision.success) {
     result.failure = subdivision.failure;
+    result.complex = std::move(subdivision.complex);
     return result;
   }
-  result.complex = subdivision.complex;
+  result.complex = std::move(subdivision.complex);
   result.hardFeatureSplits = subdivision.hardFeatureSplits;
   result.splitHalfedges.assign(selected.begin(), selected.end());
   result.oddCellsAfter =
@@ -865,24 +870,25 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
 }
 
 SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
-    const SurfaceCellComplex &input,
+    SurfaceCellComplex input,
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
     const SurfaceCellSideRepairOptions &options) {
   SurfaceCellSideRepairResult result;
-  SurfaceCellComplex canonicalInput = input;
+  SurfaceCellComplex canonicalInput = std::move(input);
   surface_cell_feasibility_detail::canonicalize_logical_sides(
       canonicalInput, sourceVertices, sourceFaces);
-  result.complex = canonicalInput;
   if (options.maxInsertedVertices < 0 ||
       options.maxLocalInsertedVertices < 0 ||
       options.maxPropagationPasses <= 0 || options.maxStagnantPasses <= 0) {
     result.failure = "InvalidSideRepairOptions";
+    result.complex = std::move(canonicalInput);
     return result;
   }
   if (!surface_cell_feasibility_detail::
           validate_incidence_allowing_nondisk(canonicalInput)) {
     result.failure = "InvalidInputIncidence";
+    result.complex = std::move(canonicalInput);
     return result;
   }
   std::map<int, int> insertions;
@@ -894,6 +900,7 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
           canonicalInput, insertions);
   result.finalEquationDefect = result.initialEquationDefect;
   if (result.infeasibleCellsBefore == 0) {
+    result.complex = std::move(canonicalInput);
     result.success = true;
     return result;
   }
@@ -935,6 +942,7 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
         result.failure = "LocalSideInsertionLimit";
         result.propagationPasses = passes;
         result.attemptedInsertions = inserted;
+        result.complex = std::move(canonicalInput);
         return result;
       }
       const auto sideEdges =
@@ -1008,6 +1016,7 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
         result.failure = "MissingSideSubdivisionEdge";
         result.propagationPasses = passes;
         result.attemptedInsertions = inserted;
+        result.complex = std::move(canonicalInput);
         return result;
       }
       ++insertions[selectedEdge];
@@ -1036,10 +1045,12 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     }
     if (!progress && !converged) {
       result.failure = "SideRepairStalled";
+      result.complex = std::move(canonicalInput);
       return result;
     }
     if (!converged && stagnantPasses >= options.maxStagnantPasses) {
       result.failure = "CoupledSideRepairStalled";
+      result.complex = std::move(canonicalInput);
       return result;
     }
   }
@@ -1047,15 +1058,18 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     result.failure = inserted >= options.maxInsertedVertices
                          ? "SideRepairInsertionLimit"
                          : "SideRepairPropagationLimit";
+    result.complex = std::move(canonicalInput);
     return result;
   }
-  const SurfaceCellSubdivisionResult subdivision =
-      subdivide_surface_cell_complex_edges(canonicalInput, insertions);
+  SurfaceCellSubdivisionResult subdivision =
+      subdivide_surface_cell_complex_edges(std::move(canonicalInput),
+                                           insertions);
   if (!subdivision.success) {
     result.failure = subdivision.failure;
+    result.complex = std::move(subdivision.complex);
     return result;
   }
-  result.complex = subdivision.complex;
+  result.complex = std::move(subdivision.complex);
   result.propagationPasses = passes;
   result.attemptedInsertions = inserted;
   result.insertedVertices = subdivision.insertedVertices;

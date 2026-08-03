@@ -134,6 +134,11 @@ struct SurfaceCellOptions {
   bool requireMatching = true;
   bool requireSingularities = true;
   bool preserveDebugArtifacts = false;
+  /// Retain heavyweight trace, arrangement, simplification, and completion
+  /// geometry in SurfaceCellPipelineContext. Disabled by default so production
+  /// callers receive scalar diagnostics and lineage without retaining every
+  /// consumed stage payload simultaneously.
+  bool retainIntermediateGeometry = false;
   /// Proof-fixture mode: skip source-grid recovery when completion returns
   /// only adjacent source-triangle pair boundaries. Pair-boundary-only output
   /// is never accepted as a production remesh; this option exposes that
@@ -365,6 +370,11 @@ struct SurfaceCellPipelineContext {
   int completionAttemptedPatches = 0;
   int completionFailedPatches = 0;
   int completionOwnershipRepairAttempts = 0;
+  int completionTemplateInitialConflictCount = 0;
+  int completionTemplateFinalConflictCount = 0;
+  int completionTemplateConflictComponentCount = 0;
+  int completionTemplateChangedPatchCount = 0;
+  int completionTemplateAssemblyPasses = 0;
   int completionOwnershipStructuralRepairAttempts = 0;
   int completionOwnershipInsertedBoundaryVertices = 0;
   int completionOwnershipStructuralCandidateBudget = 0;

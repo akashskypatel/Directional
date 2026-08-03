@@ -251,6 +251,13 @@ struct PureQuadAssemblyResult {
   int eulerCharacteristic = 0;
   SurfaceCellOwnershipConflict ownershipConflict;
   std::vector<SurfaceCellOwnershipConflict> ownershipConflicts;
+  // Deterministic capacity-based estimates of the transient stitching
+  // workspace. These exclude allocator bookkeeping but expose the dominant
+  // ownership registry and deferred-output payloads that are otherwise gone by
+  // the time pipeline-level memory diagnostics are recorded.
+  std::uint64_t estimatedOwnershipRegistryOwnedBytes = 0U;
+  std::uint64_t estimatedDeferredOutputOwnedBytes = 0U;
+  std::uint64_t estimatedWorkspaceOwnedBytes = 0U;
   std::string failure;
 };
 

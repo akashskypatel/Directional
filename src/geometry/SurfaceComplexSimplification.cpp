@@ -1602,7 +1602,9 @@ SurfaceSimplificationResult simplify_surface_complex(
       transaction.afterHash = structural_hash(elements);
       ++result.rejected;
     }
-    result.transactions.push_back(transaction);
+    if (options.retainTransactionDetails) {
+      result.transactions.push_back(std::move(transaction));
+    }
   }
 
   result.elements = std::move(elements);
@@ -1616,14 +1618,14 @@ SurfaceSimplificationResult simplify_surface_complex(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex_impl(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
     const SurfaceSimplificationOptions &options) {
   using namespace surface_simplification_detail;
   SurfaceSimplificationResult result;
   result.hasComplexOutput = true;
-  SurfaceCellComplex complex = inputComplex;
+  SurfaceCellComplex complex = std::move(inputComplex);
   result.initialActiveElements =
       static_cast<int>(complex.halfedges.size()) / 2;
 
@@ -1877,7 +1879,9 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
       transaction.afterHash = complex_structural_hash(complex);
       ++result.rejected;
     }
-    result.transactions.push_back(transaction);
+    if (options.retainTransactionDetails) {
+      result.transactions.push_back(std::move(transaction));
+    }
   }
 
   result.complex = std::move(complex);
@@ -1892,10 +1896,11 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options) {
-  return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
+  return simplify_surface_cell_complex_impl(std::move(inputComplex),
+                                             std::move(candidates),
                                              nullptr, nullptr, options);
 }
 
@@ -1904,12 +1909,13 @@ SurfaceSimplificationResult simplify_surface_cell_complex(
 namespace directional::geometry {
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
+    SurfaceCellComplex inputComplex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options) {
-  return simplify_surface_cell_complex_impl(inputComplex, std::move(candidates),
-                                             &vertices, &faces, options);
+  return simplify_surface_cell_complex_impl(std::move(inputComplex),
+                                             std::move(candidates), &vertices,
+                                             &faces, options);
 }
 
 } // namespace directional::geometry

@@ -13,13 +13,14 @@
 #include <gtest/gtest.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 #include <directional/geometry/GeneralGraphMatching.h>
 
 namespace {
 
 namespace fs = std::filesystem;
 
-fs::path source_root() { return fs::path(DIRECTIONAL_TEST_SOURCE_DIR); }
+fs::path source_root() { return directional::tests::test_data_root(); }
 
 fs::path fixture_manifest() {
   return source_root() / "benchmarks" / "fixtures" /

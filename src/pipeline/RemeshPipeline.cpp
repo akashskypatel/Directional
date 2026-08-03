@@ -694,11 +694,13 @@ std::uint64_t hash_sparse_network(
 
 namespace directional::pipeline {
 
-std::uint64_t hash_flow_rep_selection_input(
-    const geometry::FlowRepSelectionInput &input) {
+std::uint64_t hash_flow_rep_selection_input_components(
+    const std::vector<geometry::FlowRepArc> &arcs,
+    const std::vector<geometry::FlowRepCoverageSample> &coverageSamples,
+    const std::vector<geometry::FlowRepCycleInput> &cycles) {
   std::uint64_t seed = structural_hash_seed("flow-rep-selection-input");
-  hash_combine_u64(seed, input.arcs.size());
-  for (const geometry::FlowRepArc &arc : input.arcs) {
+  hash_combine_u64(seed, arcs.size());
+  for (const geometry::FlowRepArc &arc : arcs) {
     hash_combine_i64(seed, arc.id);
     hash_row_vector(seed, arc.start);
     hash_row_vector(seed, arc.end);
@@ -741,8 +743,8 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, arc.singularitySupport ? 1 : 0);
     hash_vector(seed, arc.substitutions);
   }
-  hash_combine_u64(seed, input.coverageSamples.size());
-  for (const geometry::FlowRepCoverageSample &sample : input.coverageSamples) {
+  hash_combine_u64(seed, coverageSamples.size());
+  for (const geometry::FlowRepCoverageSample &sample : coverageSamples) {
     hash_row_vector(seed, sample.position);
     hash_combine_i64(seed, sample.sourceFace);
     hash_row_vector(seed, sample.barycentric);
@@ -751,8 +753,8 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_double(seed, sample.targetSize);
     hash_combine_i64(seed, sample.sourceArcId);
   }
-  hash_combine_u64(seed, input.cycles.size());
-  for (const geometry::FlowRepCycleInput &cycle : input.cycles) {
+  hash_combine_u64(seed, cycles.size());
+  for (const geometry::FlowRepCycleInput &cycle : cycles) {
     hash_combine_i64(seed, cycle.id);
     hash_combine_i64(seed, cycle.proposalId);
     hash_combine_u64(seed, cycle.sideArcIds.size());
@@ -791,6 +793,12 @@ std::uint64_t hash_flow_rep_selection_input(
     hash_combine_i64(seed, cycle.impossibleSideCounts ? 1 : 0);
   }
   return seed;
+}
+
+std::uint64_t hash_flow_rep_selection_input(
+    const geometry::FlowRepSelectionInput &input) {
+  return hash_flow_rep_selection_input_components(
+      input.arcs, input.coverageSamples, input.cycles);
 }
 
 } // namespace directional::pipeline
@@ -3457,6 +3465,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   if (options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled) {
     RemeshResult result;
+    const bool retainIntermediateGeometry =
+        options.surfaceCells.retainIntermediateGeometry ||
+        options.surfaceCells.injectFailureAfterStage >= 0;
     result.diagnostics.remeshBackend =
         remesh_backend_name(RemeshBackend::SurfaceCells);
     result.diagnostics.requestedBackend =
@@ -3899,7 +3910,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         tracingOptions.reliefCriticalVertices.push_back(point.vertex);
       }
     }
-    const geometry::SurfaceCellNetwork traceNetwork =
+    geometry::SurfaceCellNetwork traceNetwork =
         geometry::build_surface_cell_network(
             meshWhole.V, meshWhole.F, result.surfaceCellContext.crossField,
             targetSize.targetSize, tracingOptions);
@@ -3922,9 +3933,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.surfaceCellTraceSegmentCount = traceSegmentCount;
     result.diagnostics.surfaceCellTraceCountAvailable = true;
-    result.surfaceCellContext.traceNetwork = traceNetwork;
-    result.surfaceCellContext.hasTraceNetwork = true;
     const std::uint64_t tracingHash = hash_trace_network(traceNetwork);
+    result.surfaceCellContext.traceNetwork = std::move(traceNetwork);
+    result.surfaceCellContext.hasTraceNetwork = true;
+    const geometry::SurfaceCellNetwork &retainedTraceNetwork =
+        result.surfaceCellContext.traceNetwork;
     const SurfaceCellObjectIdentity tracingIdentity = make_identity(
         "tracing", tracingHash, result.diagnostics.surfaceCellTraceSegmentCount);
     mark_stage_consumed("relief", reliefIdentity,
@@ -3938,14 +3951,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto strandsStart = Clock::now();
-    const geometry::FlowRepSelectionInput flowRepInput =
+    geometry::FlowRepSelectionInput flowRepInput =
         geometry::build_flow_rep_selection_input(
-            meshWhole.V, meshWhole.F, targetSize.targetSize, traceNetwork,
-            tracingOptions.defaultTargetSize);
-    std::vector<geometry::FlowRepArc> flowRepArcs = flowRepInput.arcs;
+            meshWhole.V, meshWhole.F, targetSize.targetSize,
+            retainedTraceNetwork, tracingOptions.defaultTargetSize);
+    if (!retainIntermediateGeometry) {
+      // Source labels already live in sourceSurfaceLabels. Do not retain a
+      // second copy merely to keep a consumed trace-stage shell alive.
+      result.surfaceCellContext.traceNetwork = geometry::SurfaceCellNetwork{};
+      result.surfaceCellContext.hasTraceNetwork = false;
+    }
     geometry::FlowRepSparseNetwork sparseFlowRep =
         geometry::select_sparse_flow_rep_network(
-            flowRepArcs, flowRepInput.coverageSamples, flowRepInput.cycles);
+            flowRepInput.arcs, flowRepInput.coverageSamples,
+            flowRepInput.cycles);
+    // Selection no longer needs ownership of the dense arc vector. Transfer it
+    // into endpoint completion instead of retaining two full copies of the
+    // expanded trace graph.
+    std::vector<geometry::FlowRepArc> flowRepArcs =
+        std::move(flowRepInput.arcs);
     geometry::FlowRepEndpointCompletionResult endpointCompletion;
     if (sparseFlowRep.selectionSucceeded) {
       geometry::FlowRepEndpointCompletionOptions endpointOptions;
@@ -3956,8 +3980,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       endpointOptions.requireAllEndpointsResolved = false;
       endpointCompletion = geometry::complete_flow_rep_endpoints(
           meshWhole.V, meshWhole.F, result.surfaceCellContext.crossField,
-          tracingOptions, flowRepArcs, sparseFlowRep.retainedArcIds,
-          endpointOptions);
+          tracingOptions, std::move(flowRepArcs),
+          std::move(sparseFlowRep.retainedArcIds), endpointOptions);
       result.surfaceCellContext.flowRepEndpointCompletionAttempted = true;
       result.surfaceCellContext.flowRepOpenEndpointsBeforeCompletion =
           endpointCompletion.openEndpointsBefore;
@@ -3971,14 +3995,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           endpointCompletion.addedArcs;
       result.surfaceCellContext.flowRepEndpointTerminationCounts =
           endpointCompletion.traceTerminationCounts;
-      result.surfaceCellContext.flowRepEndpointDiagnostics =
-          endpointCompletion.diagnostics;
+      if (retainIntermediateGeometry) {
+        result.surfaceCellContext.flowRepEndpointDiagnostics =
+            std::move(endpointCompletion.diagnostics);
+      }
       result.surfaceCellContext.flowRepEndpointCompletionFailure =
-          endpointCompletion.failure;
+          std::move(endpointCompletion.failure);
+      // Endpoint completion owns the only dense arc vector. Recover it for the
+      // embedding stage on both success and fail-closed outcomes.
+      flowRepArcs = std::move(endpointCompletion.arcs);
+      sparseFlowRep.retainedArcIds =
+          std::move(endpointCompletion.retainedArcIds);
       if (endpointCompletion.success) {
-        flowRepArcs = std::move(endpointCompletion.arcs);
-        sparseFlowRep.retainedArcIds =
-            std::move(endpointCompletion.retainedArcIds);
         sparseFlowRep.endpointTags =
             std::move(endpointCompletion.endpointTags);
       }
@@ -3988,14 +4016,19 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             Clock::now() - strandsStart)
             .count() /
         1.0e6;
-    result.surfaceCellContext.flowRepArcs = flowRepArcs;
-    result.surfaceCellContext.flowRepNetwork = sparseFlowRep;
-    result.surfaceCellContext.hasFlowRepNetwork = true;
+    if (retainIntermediateGeometry) {
+      result.surfaceCellContext.flowRepArcs = flowRepArcs;
+      result.surfaceCellContext.flowRepNetwork = sparseFlowRep;
+      result.surfaceCellContext.hasFlowRepNetwork = true;
+    }
     std::uint64_t strandsHash = hash_sparse_network(sparseFlowRep);
-    geometry::FlowRepSelectionInput embeddedFlowRepInput = flowRepInput;
-    embeddedFlowRepInput.arcs = flowRepArcs;
-    hash_combine_u64(strandsHash,
-                     hash_flow_rep_selection_input(embeddedFlowRepInput));
+    hash_combine_u64(
+        strandsHash,
+        hash_flow_rep_selection_input_components(
+            flowRepArcs, flowRepInput.coverageSamples, flowRepInput.cycles));
+    // Coverage/cycle evidence has now been consumed by selection and hashing.
+    // Release it before arrangement and completion allocate their graphs.
+    flowRepInput = geometry::FlowRepSelectionInput{};
     const SurfaceCellObjectIdentity strandsIdentity = make_identity(
         "strands", strandsHash, sparseFlowRep.retainedArcIds.size());
     mark_stage_consumed("tracing", tracingIdentity,
@@ -4015,8 +4048,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto embeddingStart = Clock::now();
-    const std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
+    std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
         surface_arrangement_arcs_from_flow_rep(flowRepArcs, sparseFlowRep);
+    if (!retainIntermediateGeometry) {
+      // Arrangement arcs are a compact projection of the retained FlowRep.
+      // Release the much larger dense arc graph before building the DCEL.
+      std::vector<geometry::FlowRepArc>().swap(flowRepArcs);
+      sparseFlowRep = geometry::FlowRepSparseNetwork{};
+      endpointCompletion = geometry::FlowRepEndpointCompletionResult{};
+    }
     const double surfaceCellEmbeddingSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - embeddingStart)
@@ -4024,8 +4064,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         1.0e6;
     result.diagnostics.surfaceCellArrangementCellCount = arrangementArcs.size();
     result.diagnostics.surfaceCellArrangementCountAvailable = true;
-    result.surfaceCellContext.embeddedArrangementArcs = arrangementArcs;
-    result.surfaceCellContext.hasEmbeddedArrangementArcs = true;
+    if (retainIntermediateGeometry) {
+      result.surfaceCellContext.embeddedArrangementArcs = arrangementArcs;
+      result.surfaceCellContext.hasEmbeddedArrangementArcs = true;
+    }
     const SurfaceCellObjectIdentity retainedNetworkIdentity = make_identity(
         "embedded-network", hash_arrangement_arcs(arrangementArcs),
         arrangementArcs.size());
@@ -4045,12 +4087,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     arrangementOptions.insertBoundaryRails = authoritativeRails.empty();
     arrangementOptions.hardFeatureEdges = hardFeatureRailEdges;
     arrangementOptions.sourceFaceComponents =
-        &result.surfaceCellContext.traceNetwork.sourceFaceComponents;
+        &result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
     arrangementOptions.sourceFaceSheets =
-        &result.surfaceCellContext.traceNetwork.sourceFaceSheets;
-    const geometry::SurfaceCellComplex arrangementComplex =
+        &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
+    geometry::SurfaceCellComplex arrangementComplex =
         geometry::build_surface_cell_complex(meshWhole.V, meshWhole.F,
                                              arrangementArcs, arrangementOptions);
+    if (!retainIntermediateGeometry) {
+      std::vector<geometry::SurfaceArrangementArc>().swap(arrangementArcs);
+    }
     result.diagnostics.surfaceCellArrangementSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
             Clock::now() - arrangementStart)
@@ -4059,8 +4104,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellArrangementCellCount =
         arrangementComplex.cells.size();
     result.diagnostics.surfaceCellArrangementCountAvailable = true;
-    result.surfaceCellContext.arrangement = arrangementComplex;
-    result.surfaceCellContext.hasArrangement = true;
     const std::uint64_t arrangementHash = hash_surface_complex(arrangementComplex);
     const SurfaceCellObjectIdentity arrangementIdentity = make_identity(
         "arrangement", arrangementHash,
@@ -4077,7 +4120,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     const auto simplificationStart = Clock::now();
-    const geometry::SurfaceSimplificationCandidateSet simplificationCandidates =
+    geometry::SurfaceSimplificationCandidateSet simplificationCandidates =
         geometry::extract_surface_simplification_candidates(
             arrangementComplex, meshWhole.V, meshWhole.F);
     geometry::SurfaceSimplificationOptions simplificationOptions;
@@ -4086,28 +4129,49 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     // pinch DCEL face walks. General FlowRep removals remain available to the
     // experimental API but require separate fidelity gates before integration.
     simplificationOptions.topologyHealingOnly = true;
-    const geometry::SurfaceSimplificationResult simplified =
-        geometry::simplify_surface_cell_complex(
-            arrangementComplex, meshWhole.V, meshWhole.F,
-            simplificationCandidates.candidates, simplificationOptions);
-    result.surfaceCellContext.simplificationCandidateCount =
+    simplificationOptions.retainTransactionDetails = retainIntermediateGeometry;
+    const int simplificationCandidateCount =
         static_cast<int>(simplificationCandidates.candidates.size());
-    result.surfaceCellContext.simplificationTopologyHealingCandidates.clear();
-    for (const geometry::SurfaceSimplificationCandidate &candidate :
-         simplificationCandidates.candidates) {
-      if (candidate.topologyHealing) {
-        result.surfaceCellContext.simplificationTopologyHealingCandidates
-            .push_back(candidate);
-      }
+    const int simplificationTopologyHealingCandidateCount =
+        static_cast<int>(std::count_if(
+            simplificationCandidates.candidates.begin(),
+            simplificationCandidates.candidates.end(),
+            [](const geometry::SurfaceSimplificationCandidate &candidate) {
+              return candidate.topologyHealing;
+            }));
+    geometry::SurfaceSimplificationResult simplified;
+    if (retainIntermediateGeometry) {
+      simplified = geometry::simplify_surface_cell_complex(
+          arrangementComplex, meshWhole.V, meshWhole.F,
+          simplificationCandidates.candidates, simplificationOptions);
+    } else {
+      simplified = geometry::simplify_surface_cell_complex(
+          std::move(arrangementComplex), meshWhole.V, meshWhole.F,
+          std::move(simplificationCandidates.candidates),
+          simplificationOptions);
     }
+    result.surfaceCellContext.simplificationCandidateCount =
+        simplificationCandidateCount;
     result.surfaceCellContext.simplificationTopologyHealingCandidateCount =
-        static_cast<int>(
-            result.surfaceCellContext.simplificationTopologyHealingCandidates
-                .size());
+        simplificationTopologyHealingCandidateCount;
+    if (retainIntermediateGeometry) {
+      result.surfaceCellContext.simplificationTopologyHealingCandidates.clear();
+      for (const geometry::SurfaceSimplificationCandidate &candidate :
+           simplificationCandidates.candidates) {
+        if (candidate.topologyHealing) {
+          result.surfaceCellContext.simplificationTopologyHealingCandidates
+              .push_back(candidate);
+        }
+      }
+      result.surfaceCellContext.simplificationTransactions =
+          std::move(simplified.transactions);
+    } else {
+      simplificationCandidates = geometry::SurfaceSimplificationCandidateSet{};
+      simplified.transactions.clear();
+      simplified.transactions.shrink_to_fit();
+    }
     result.surfaceCellContext.simplificationCommitted = simplified.committed;
     result.surfaceCellContext.simplificationRejected = simplified.rejected;
-    result.surfaceCellContext.simplificationTransactions =
-        simplified.transactions;
     result.surfaceCellContext.hasSimplificationDiagnostics = true;
     result.diagnostics.surfaceCellSimplificationSeconds =
         std::chrono::duration_cast<std::chrono::microseconds>(
@@ -4119,8 +4183,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellSimplifiedCountAvailable = true;
     const geometry::SurfaceCellComplex &simplifiedComplexForHash =
         simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
-    result.surfaceCellContext.simplifiedComplex = simplifiedComplexForHash;
-    result.surfaceCellContext.hasSimplifiedComplex = true;
     const std::uint64_t simplificationHash =
         hash_surface_complex(simplifiedComplexForHash);
     const SurfaceCellObjectIdentity simplificationIdentity = make_identity(
@@ -4144,22 +4206,34 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     std::vector<geometry::SurfacePoint> completedProvenance;
     std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
     std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
-    const geometry::SurfaceCellComplex &completionComplex =
-        simplified.hasComplexOutput ? simplified.complex : arrangementComplex;
+    geometry::SurfaceCellComplex completionComplex =
+        retainIntermediateGeometry
+            ? simplifiedComplexForHash
+            : (simplified.hasComplexOutput
+                   ? std::move(simplified.complex)
+                   : std::move(arrangementComplex));
+    if (!retainIntermediateGeometry) {
+      // If simplification produced a replacement complex, the input
+      // arrangement would otherwise remain live for the entire completion
+      // stage. Its semantic hash and diagnostics are already recorded.
+      arrangementComplex = geometry::SurfaceCellComplex{};
+      simplified = geometry::SurfaceSimplificationResult{};
+    }
     geometry::SurfaceCellComplexCompletionOptions completionOptions;
     completionOptions.descriptorOptions.singularCycles =
         result.surfaceCellContext.crossField.singularCycles;
     completionOptions.descriptorOptions.singularIndices =
         result.surfaceCellContext.crossField.singularIndices;
-    if (result.surfaceCellContext.hasTraceNetwork) {
+    if (result.surfaceCellContext.hasSourceSurfaceLabels) {
       completionOptions.sourceFaceComponents =
-          &result.surfaceCellContext.traceNetwork.sourceFaceComponents;
+          &result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
       completionOptions.sourceFaceSheets =
-          &result.surfaceCellContext.traceNetwork.sourceFaceSheets;
+          &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
     }
-    const geometry::SurfaceCellComplexCompletionResult completionResult =
+    geometry::SurfaceCellComplexCompletionResult completionResult =
         geometry::complete_surface_cell_complex(
-            completionComplex, meshWhole.V, meshWhole.F, completionOptions);
+            std::move(completionComplex), meshWhole.V, meshWhole.F,
+            completionOptions);
     result.surfaceCellContext.completionOddCellsBeforeRepair =
         completionResult.parityOddCellsBefore;
     result.surfaceCellContext.completionOddCellsAfterRepair =
@@ -4192,6 +4266,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.failedPatches;
     result.surfaceCellContext.completionOwnershipRepairAttempts =
         completionResult.completionOwnershipRepairAttempts;
+    result.surfaceCellContext.completionTemplateInitialConflictCount =
+        completionResult.completionTemplateInitialConflictCount;
+    result.surfaceCellContext.completionTemplateFinalConflictCount =
+        completionResult.completionTemplateFinalConflictCount;
+    result.surfaceCellContext.completionTemplateConflictComponentCount =
+        completionResult.completionTemplateConflictComponentCount;
+    result.surfaceCellContext.completionTemplateChangedPatchCount =
+        completionResult.completionTemplateChangedPatchCount;
+    result.surfaceCellContext.completionTemplateAssemblyPasses =
+        completionResult.completionTemplateAssemblyPasses;
     result.surfaceCellContext.completionOwnershipStructuralRepairAttempts =
         completionResult.completionOwnershipStructuralRepairAttempts;
     result.surfaceCellContext.completionOwnershipInsertedBoundaryVertices =
@@ -4261,7 +4345,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.completionOwnershipStructuralExhaustionReason =
         completionResult.completionOwnershipStructuralExhaustionReason;
     result.surfaceCellContext.completionOwnershipRepairLog =
-        completionResult.ownershipRepairAttempts;
+        std::move(completionResult.ownershipRepairAttempts);
     result.surfaceCellContext.firstCompletionOwnershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     result.surfaceCellContext.completionFailure = completionResult.failure;
@@ -4411,27 +4495,41 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       result.diagnostics.surfaceCellCompletionOwnershipSheet =
           ownershipRejection.sourceSheet;
     }
-    if (completionResult.hasPreparedComplex) {
-      result.surfaceCellContext.completionComplex =
-          completionResult.preparedComplex;
-      result.surfaceCellContext.hasCompletionComplex = true;
+    if (retainIntermediateGeometry) {
+      result.surfaceCellContext.arrangement = arrangementComplex;
+      result.surfaceCellContext.hasArrangement = true;
+      result.surfaceCellContext.simplifiedComplex = simplifiedComplexForHash;
+      result.surfaceCellContext.hasSimplifiedComplex = true;
+      if (completionResult.hasPreparedComplex) {
+        result.surfaceCellContext.completionComplex =
+            std::move(completionResult.preparedComplex);
+        result.surfaceCellContext.hasCompletionComplex = true;
+      }
+      result.surfaceCellContext.patchDescriptors =
+          std::move(completionResult.descriptors.descriptors);
+      result.surfaceCellContext.completionUnresolvedSingularVertices =
+          std::move(completionResult.descriptors.unresolvedSingularVertices);
+      result.surfaceCellContext.hasPatchDescriptors =
+          !result.surfaceCellContext.patchDescriptors.empty();
+      result.surfaceCellContext.completedPatches =
+          std::move(completionResult.completedPatches);
     }
-    result.surfaceCellContext.patchDescriptors =
-        completionResult.descriptors.descriptors;
-    result.surfaceCellContext.completionUnresolvedSingularVertices =
-        completionResult.descriptors.unresolvedSingularVertices;
-    result.surfaceCellContext.hasPatchDescriptors =
-        !completionResult.descriptors.descriptors.empty();
-    result.surfaceCellContext.completedPatches =
-        completionResult.completedPatches;
 
     geometry::PureQuadMesh aggregateLineageMesh;
     bool completionOnlyReusesSourceTrianglePairBoundaries = false;
     if (completionResult.success) {
-      aggregateLineageMesh = completionResult.assembly.mesh;
+      aggregateLineageMesh = retainIntermediateGeometry
+          ? completionResult.assembly.mesh
+          : std::move(completionResult.assembly.mesh);
       completionOnlyReusesSourceTrianglePairBoundaries =
           geometry::output_is_only_paired_source_triangle_boundaries(
               aggregateLineageMesh, meshWhole.F);
+    }
+    if (!retainIntermediateGeometry) {
+      // Scalar diagnostics and the authoritative assembled mesh have been
+      // extracted. Release prepared topology, descriptors, patch completions,
+      // and conflict workspaces before output validation/refinalization.
+      completionResult = geometry::SurfaceCellComplexCompletionResult{};
     }
 
     // A source-triangle pair may identify a valid source cell, but returning
@@ -4529,6 +4627,21 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     hash_combine_i64(
         completionHash,
         result.surfaceCellContext.completionOwnershipRepairAttempts);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionTemplateInitialConflictCount);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionTemplateFinalConflictCount);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionTemplateConflictComponentCount);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionTemplateChangedPatchCount);
+    hash_combine_i64(
+        completionHash,
+        result.surfaceCellContext.completionTemplateAssemblyPasses);
     hash_combine_i64(
         completionHash,
         result.surfaceCellContext

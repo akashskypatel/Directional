@@ -142,6 +142,10 @@ struct SurfaceSimplificationOptions {
   /// Production surface-cell integration uses this conservative mode until
   /// the general FlowRep edit operators have independent fidelity gates.
   bool topologyHealingOnly = false;
+  /// Preserve per-candidate transaction payloads. Production callers can
+  /// disable this after scalar counters/hashes are sufficient, avoiding one
+  /// retained vector-of-vectors record per evaluated simplification candidate.
+  bool retainTransactionDetails = true;
 };
 
 struct SurfaceSimplificationTransaction {
@@ -321,18 +325,18 @@ SurfaceSimplificationResult simplify_surface_complex(
     const SurfaceSimplificationOptions &options = {});
 
 SurfaceSimplificationResult simplify_surface_cell_complex_impl(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const Eigen::MatrixXd *vertices, const Eigen::MatrixXi *faces,
     const SurfaceSimplificationOptions &options);
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex,
+    SurfaceCellComplex inputComplex,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {});
 
 SurfaceSimplificationResult simplify_surface_cell_complex(
-    const SurfaceCellComplex &inputComplex, const Eigen::MatrixXd &vertices,
+    SurfaceCellComplex inputComplex, const Eigen::MatrixXd &vertices,
     const Eigen::MatrixXi &faces,
     std::vector<SurfaceSimplificationCandidate> candidates,
     const SurfaceSimplificationOptions &options = {});

@@ -381,14 +381,19 @@ if(DIRECTIONAL_BUILD_TESTS)
 
 
   function(directional_copy_manifest_fixture target_name)
+    # Package the complete transitive benchmark-fixture closure beside each
+    # test executable. Runtime tests resolve this directory first, so copied
+    # binaries remain self-contained when extracted outside the source tree.
     add_custom_command(
       TARGET ${target_name}
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E make_directory
+      COMMAND ${CMAKE_COMMAND} -E rm -rf
               "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks/fixtures"
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-              "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/fixtures/manifest.example.json"
-              "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks/fixtures/manifest.example.json"
+      COMMAND ${CMAKE_COMMAND} -E make_directory
+              "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks"
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+              "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/fixtures"
+              "$<TARGET_FILE_DIR:${target_name}>/test-data/benchmarks/fixtures"
       VERBATIM)
   endfunction()
 

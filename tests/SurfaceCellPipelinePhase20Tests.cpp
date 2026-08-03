@@ -21,6 +21,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 
 namespace {
 
@@ -29,36 +30,6 @@ struct SyntheticMesh {
   Eigen::MatrixXi faces;
 };
 
-std::filesystem::path test_executable_directory() {
-#if defined(_WIN32)
-  std::wstring buffer(32768, L'\0');
-  const DWORD length = GetModuleFileNameW(
-      nullptr, buffer.data(), static_cast<DWORD>(buffer.size()));
-  if (length == 0 || length == buffer.size()) {
-    return {};
-  }
-  buffer.resize(length);
-  return std::filesystem::path(buffer).parent_path();
-#elif defined(__APPLE__)
-  std::uint32_t size = 0;
-  _NSGetExecutablePath(nullptr, &size);
-  std::vector<char> buffer(size);
-  if (_NSGetExecutablePath(buffer.data(), &size) != 0) {
-    return {};
-  }
-  return std::filesystem::weakly_canonical(buffer.data()).parent_path();
-#else
-  std::vector<char> buffer(4096);
-  const ssize_t length =
-      readlink("/proc/self/exe", buffer.data(), buffer.size());
-  if (length <= 0 || static_cast<std::size_t>(length) == buffer.size()) {
-    return {};
-  }
-  return std::filesystem::path(
-             std::string(buffer.data(), static_cast<std::size_t>(length)))
-      .parent_path();
-#endif
-}
 
 
 const directional::SurfaceCellStageLineage *find_stage_lineage(
@@ -366,6 +337,9 @@ directional::pipeline::RemeshOptions surface_options() {
   directional::pipeline::RemeshOptions options;
   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
   options.surfaceCells.enabled = true;
+  // These tests inspect authoritative stage payloads. Production callers keep
+  // only scalar diagnostics unless this opt-in is explicitly enabled.
+  options.surfaceCells.retainIntermediateGeometry = true;
   // SurfaceCells honors the public target-length ratio when no explicit
   // adaptive base size is supplied. Keep the synthetic production fixtures
   // at the same coarse resolution used by the Milestone G matrix.
@@ -761,6 +735,33 @@ TEST(SurfaceCellPipelinePhase20, CompletionHashChangesWhenProvenanceChangesWitho
   EXPECT_NE(directional::pipeline::hash_completion(first),
             directional::pipeline::hash_completion(second));
 }
+TEST(SurfaceCellPipelinePhase20,
+     ProductionDefaultReleasesConsumedIntermediateGeometry) {
+  const SyntheticMesh mesh = make_planar_grid(1);
+  directional::pipeline::RemeshOptions options = surface_options();
+  options.surfaceCells.retainIntermediateGeometry = false;
+
+  const directional::pipeline::RemeshResult result =
+      directional::pipeline::remesh_from_raw_cross_field(
+          mesh.vertices, mesh.faces,
+          constant_raw_field(mesh.faces.rows()), options);
+
+  ASSERT_TRUE(result.success) << result.diagnostics.terminalFailureCode << "/"
+                              << result.diagnostics.terminalFailureStage;
+  EXPECT_FALSE(result.surfaceCellContext.hasTraceNetwork);
+  EXPECT_TRUE(result.surfaceCellContext.traceNetwork.traces.empty());
+  EXPECT_FALSE(result.surfaceCellContext.hasFlowRepNetwork);
+  EXPECT_FALSE(result.surfaceCellContext.hasEmbeddedArrangementArcs);
+  EXPECT_FALSE(result.surfaceCellContext.hasArrangement);
+  EXPECT_FALSE(result.surfaceCellContext.hasSimplifiedComplex);
+  EXPECT_FALSE(result.surfaceCellContext.hasCompletionComplex);
+  EXPECT_FALSE(result.surfaceCellContext.hasPatchDescriptors);
+  EXPECT_TRUE(result.diagnostics.surfaceCellTraceCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellArrangementCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellSimplifiedCountAvailable);
+  EXPECT_TRUE(result.diagnostics.surfaceCellCompletedQuadCountAvailable);
+}
+
 TEST(SurfaceCellPipelinePhase20, BackendNamesAndParsersExposeStableApi) {
   using directional::pipeline::RemeshBackend;
   using directional::pipeline::SurfaceCellFallbackPolicy;
@@ -2114,9 +2115,24 @@ TEST(SurfaceCellPipelinePhase20, SurfaceCellFallbackIsDeterministic) {
   }
 }
 
+TEST(SurfaceCellPipelinePhase20,
+     PackagedFixtureClosureIsExecutableRelative) {
+  const std::filesystem::path fixtureRoot =
+      directional::tests::test_executable_directory() /
+      "test-data/benchmarks/fixtures";
+  for (const char *manifest : {"manifest.example.json",
+                               "milestone_g_manifest.json",
+                               "repo_regressions.json"}) {
+    EXPECT_TRUE(std::filesystem::is_regular_file(fixtureRoot / manifest))
+        << (fixtureRoot / manifest).string();
+  }
+  EXPECT_TRUE(std::filesystem::is_regular_file(
+      fixtureRoot / "milestone-g/bunny_1k_random.obj"));
+}
+
 TEST(SurfaceCellPipelinePhase20, BenchmarkManifestDispatchesBackends) {
   const std::filesystem::path manifestPath =
-      test_executable_directory() /
+      directional::tests::test_executable_directory() /
       "test-data/benchmarks/fixtures/manifest.example.json";
   ASSERT_TRUE(std::filesystem::is_regular_file(manifestPath))
       << manifestPath.string();

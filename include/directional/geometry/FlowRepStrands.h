@@ -487,8 +487,8 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField,
     const SurfaceCellTracingOptions &tracingOptions,
-    const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &retainedArcIds,
+    std::vector<FlowRepArc> arcs,
+    std::vector<int> retainedArcIds,
     const FlowRepEndpointCompletionOptions &options = {});
 
 FlowRepOverlay make_flow_rep_overlay(

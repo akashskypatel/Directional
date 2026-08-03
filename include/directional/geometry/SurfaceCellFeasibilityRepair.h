@@ -36,7 +36,7 @@ struct SurfaceCellSubdivisionResult {
  * counts are updated together.
  */
 SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
-    const SurfaceCellComplex &input,
+    SurfaceCellComplex input,
     const std::map<int, int> &insertionsByHalfedge);
 
 struct SurfaceCellParityRepairResult {
@@ -55,7 +55,7 @@ struct SurfaceCellParityRepairResult {
  * them to an exterior boundary), then performs conforming shared-edge splits.
  */
 SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
-    const SurfaceCellComplex &input);
+    SurfaceCellComplex input);
 
 struct SurfaceCellSideRepairOptions {
   int maxInsertedVertices = 100000;
@@ -86,7 +86,7 @@ struct SurfaceCellSideRepairResult {
  * patches and the system is iterated until all coupled equations agree.
  */
 SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
-    const SurfaceCellComplex &input,
+    SurfaceCellComplex input,
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
     const SurfaceCellSideRepairOptions &options = {});

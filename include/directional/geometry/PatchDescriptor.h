@@ -291,6 +291,11 @@ struct SurfaceCellComplexCompletionResult {
   int attemptedPatches = 0;
   int failedPatches = 0;
   int completionOwnershipRepairAttempts = 0;
+  int completionTemplateInitialConflictCount = 0;
+  int completionTemplateFinalConflictCount = 0;
+  int completionTemplateConflictComponentCount = 0;
+  int completionTemplateChangedPatchCount = 0;
+  int completionTemplateAssemblyPasses = 0;
   int completionOwnershipStructuralRepairAttempts = 0;
   int completionOwnershipInsertedBoundaryVertices = 0;
   int completionOwnershipStructuralCandidateBudget = 0;
@@ -375,7 +380,7 @@ PatchDescriptorSet derive_patch_descriptors(
     const Eigen::MatrixXi &F, const PatchDescriptorOptions &options = {});
 
 SurfaceCellComplexCompletionResult complete_surface_cell_complex(
-    const SurfaceCellComplex &complex, const Eigen::MatrixXd &V,
+    SurfaceCellComplex complex, const Eigen::MatrixXd &V,
     const Eigen::MatrixXi &F,
     const SurfaceCellComplexCompletionOptions &options = {});
 

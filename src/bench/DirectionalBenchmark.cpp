@@ -1618,6 +1618,16 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.completionFailedPatches << ","
       << "\"completionOwnershipRepairAttempts\":"
       << result.surfaceCellContext.completionOwnershipRepairAttempts << ","
+      << "\"completionTemplateInitialConflictCount\":"
+      << result.surfaceCellContext.completionTemplateInitialConflictCount << ","
+      << "\"completionTemplateFinalConflictCount\":"
+      << result.surfaceCellContext.completionTemplateFinalConflictCount << ","
+      << "\"completionTemplateConflictComponentCount\":"
+      << result.surfaceCellContext.completionTemplateConflictComponentCount << ","
+      << "\"completionTemplateChangedPatchCount\":"
+      << result.surfaceCellContext.completionTemplateChangedPatchCount << ","
+      << "\"completionTemplateAssemblyPasses\":"
+      << result.surfaceCellContext.completionTemplateAssemblyPasses << ","
       << "\"completionOwnershipStructuralRepairAttempts\":"
       << result.surfaceCellContext
              .completionOwnershipStructuralRepairAttempts

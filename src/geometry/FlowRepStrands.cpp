@@ -2720,12 +2720,12 @@ FlowRepEndpointCompletionResult complete_flow_rep_endpoints(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &crossField,
     const SurfaceCellTracingOptions &tracingOptions,
-    const std::vector<FlowRepArc> &arcs,
-    const std::vector<int> &retainedArcIds,
+    std::vector<FlowRepArc> arcs,
+    std::vector<int> retainedArcIds,
     const FlowRepEndpointCompletionOptions &options) {
   FlowRepEndpointCompletionResult result;
-  result.arcs = arcs;
-  result.retainedArcIds = retainedArcIds;
+  result.arcs = std::move(arcs);
+  result.retainedArcIds = std::move(retainedArcIds);
   if (options.maxEndpointTraces < 0 || options.maxAddedArcs < 0 ||
       !std::isfinite(options.intersectionTolerance) ||
       options.intersectionTolerance <= 0.0) {
