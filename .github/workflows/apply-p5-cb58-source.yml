@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - '.agents/Directional/p5-cb58-source.patch.gz.b64.part07'
+      - '.agents/Directional/p5-cb58-source.patch.gz.b64.part15'
 
 permissions:
   contents: write
