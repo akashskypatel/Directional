@@ -44,15 +44,28 @@ jobs:
         run: |
           set -euo pipefail
           patch_dir=.agents/Directional/p5-cb66-source-patch-b64
-          cat "${patch_dir}"/part-00 \
-              "${patch_dir}"/part-01 \
-              "${patch_dir}"/part-02 \
-              "${patch_dir}"/part-03 \
-              "${patch_dir}"/part-04 \
-              "${patch_dir}"/part-05 \
-              "${patch_dir}"/part-06 \
-              "${patch_dir}"/part-07 | tr -d '\r\n' | base64 --decode > /tmp/p5-cb66.patch
-          echo "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9  /tmp/p5-cb66.patch" | sha256sum -c -
+          expected=(
+            140b1a03bb48cf7583674b6470976d421e3d2c622cf160dd7ea5757927704176
+            c0fe53b6ba945311851a20943ab95868e582db3a7a9e820d51715bf3a3fad8f7
+            72b565a4519b59f07768a411b3b6c6858162ee0d9ce62a47fd55cea2cdd690c8
+            ced9ba2867837ecf180660b1364abff8268ae9142b2f1f9974f6745d16c0d3b9
+            a4663bec77bd837bfc5f5058a66191bee3055dffa234290b527c9c00a319cd5b
+            d5641cbe4bd97c8cafa7e486ff32a968577d2a945f22d3737e467ceb3683777d
+            c5d7dbd6e9f0aded21ac1a460e6ff4a8ff57614dde4edaed814f94533fa87568
+            52345b0faa50d3c409b83d7260cb66f97108acb67e75941d1beb3cfa84927f58
+          )
+          : > /tmp/p5-cb66.b64
+          for index in $(seq -w 0 7); do
+            normalized=/tmp/part-${index}
+            tr -d '\r\n' < "${patch_dir}/part-${index}" > "${normalized}"
+            actual=$(sha256sum "${normalized}" | cut -d' ' -f1)
+            echo "part-${index} bytes=$(wc -c < "${normalized}") sha256=${actual} expected=${expected[10#${index}]}"
+            cat "${normalized}" >> /tmp/p5-cb66.b64
+          done
+          base64 --decode /tmp/p5-cb66.b64 > /tmp/p5-cb66.patch
+          actual_patch=$(sha256sum /tmp/p5-cb66.patch | cut -d' ' -f1)
+          echo "decoded bytes=$(wc -c < /tmp/p5-cb66.patch) sha256=${actual_patch}"
+          test "${actual_patch}" = "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9"
 
       - name: Verify and apply source patch
         shell: bash
@@ -61,7 +74,6 @@ jobs:
           git apply --check /tmp/p5-cb66.patch
           git apply /tmp/p5-cb66.patch
           git diff --check
-
           cat > /tmp/expected-files.txt <<'EOF'
           include/directional/geometry/PatchDescriptor.h
           include/directional/geometry/SurfaceCellFeasibilityRepair.h
