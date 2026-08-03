@@ -155,6 +155,74 @@ struct SurfaceCellDomainIdentity {
   }
 };
 
+enum class SurfaceCellDomainIdentityFailureKind : int {
+  None = 0,
+  EmptyBoundary = 1,
+  OpenBoundary = 2,
+  InvalidHalfedge = 3,
+  InvalidTwin = 4,
+  InvalidNext = 5,
+  InvalidCellIncidence = 6,
+  InvalidEndpointNode = 7,
+  MissingEndpointSourceOccurrence = 8,
+  InvalidEndpointBarycentric = 9,
+  MixedSourceComponent = 10,
+  MixedSourceSheet = 11,
+  InvalidSourceSupport = 12,
+  InvalidOrientedBoundaryIdentity = 13,
+  InvalidUndirectedBoundaryIdentity = 14,
+};
+
+inline const char *surface_cell_domain_identity_failure_name(
+    const SurfaceCellDomainIdentityFailureKind value) {
+  switch (value) {
+  case SurfaceCellDomainIdentityFailureKind::None:
+    return "none";
+  case SurfaceCellDomainIdentityFailureKind::EmptyBoundary:
+    return "empty-boundary";
+  case SurfaceCellDomainIdentityFailureKind::OpenBoundary:
+    return "open-boundary";
+  case SurfaceCellDomainIdentityFailureKind::InvalidHalfedge:
+    return "invalid-halfedge";
+  case SurfaceCellDomainIdentityFailureKind::InvalidTwin:
+    return "invalid-twin";
+  case SurfaceCellDomainIdentityFailureKind::InvalidNext:
+    return "invalid-next";
+  case SurfaceCellDomainIdentityFailureKind::InvalidCellIncidence:
+    return "invalid-cell-incidence";
+  case SurfaceCellDomainIdentityFailureKind::InvalidEndpointNode:
+    return "invalid-endpoint-node";
+  case SurfaceCellDomainIdentityFailureKind::MissingEndpointSourceOccurrence:
+    return "missing-endpoint-source-occurrence";
+  case SurfaceCellDomainIdentityFailureKind::InvalidEndpointBarycentric:
+    return "invalid-endpoint-barycentric";
+  case SurfaceCellDomainIdentityFailureKind::MixedSourceComponent:
+    return "mixed-source-component";
+  case SurfaceCellDomainIdentityFailureKind::MixedSourceSheet:
+    return "mixed-source-sheet";
+  case SurfaceCellDomainIdentityFailureKind::InvalidSourceSupport:
+    return "invalid-source-support";
+  case SurfaceCellDomainIdentityFailureKind::InvalidOrientedBoundaryIdentity:
+    return "invalid-oriented-boundary-identity";
+  case SurfaceCellDomainIdentityFailureKind::InvalidUndirectedBoundaryIdentity:
+    return "invalid-undirected-boundary-identity";
+  }
+  return "unknown";
+}
+
+struct SurfaceCellDomainIdentityAudit {
+  bool valid = false;
+  SurfaceCellDomainIdentity identity;
+  SurfaceCellDomainIdentityFailureKind failure =
+      SurfaceCellDomainIdentityFailureKind::None;
+  int cellId = -1;
+  int halfedgeId = -1;
+  int nodeId = -1;
+  int sourceFace = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+};
+
 enum class PureQuadStitchIdentityKind : int {
   Invalid = 0,
   ArrangementBoundaryNode = 1,

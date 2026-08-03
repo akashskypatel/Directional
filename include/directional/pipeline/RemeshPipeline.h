@@ -394,6 +394,8 @@ struct SurfaceCellPipelineContext {
   int completionOwnershipIndependentComponentCount = 0;
   int completionOwnershipReusedPatchCompletions = 0;
   int completionOwnershipRecomputedPatchCompletions = 0;
+  int completionOwnershipProductCacheHashMisses = 0;
+  int completionOwnershipProductCacheExactMismatches = 0;
   std::uint64_t completionOwnershipPreConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipPostConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipConflictFrontierOwnedBytes = 0U;
@@ -419,6 +421,8 @@ struct SurfaceCellPipelineContext {
   geometry::PureQuadCompletionOwnershipRejection
       firstCompletionOwnershipRejection;
   std::string completionFailure;
+  geometry::SurfaceCellDomainIdentityAudit completionDomainIdentityAudit;
+  bool hasCompletionDomainIdentityAudit = false;
 
   std::vector<geometry::PatchDescriptor> patchDescriptors;
   std::vector<int> completionUnresolvedSingularVertices;

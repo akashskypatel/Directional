@@ -321,23 +321,35 @@ TEST(MilestoneGP27, ProductionSurfaceCellMatrixMatchesSupportedDisposition) {
     SCOPED_TRACE(::testing::Message()
                  << "P27 surface-cell matrix case=" << benchmarkCase.name);
     std::cerr << "[P5_P27_CASE_BEGIN] " << benchmarkCase.name << std::endl;
-    const BenchmarkMesh mesh =
-        directional::bench::load_benchmark_mesh(benchmarkCase);
-    const BenchmarkField field = directional::bench::load_benchmark_field(
-        benchmarkCase, mesh.faces.rows());
-    directional::pipeline::RemeshOptions options =
-        directional::bench::make_remesh_options(benchmarkCase);
-    options.surfaceCells.fallbackPolicy =
-        directional::pipeline::SurfaceCellFallbackPolicy::Fail;
-    options.surfaceCells.enforceOptimizerTimeGate = false;
-    const directional::pipeline::RemeshResult result =
-        field.available
-            ? directional::pipeline::remesh_from_raw_cross_field(
-                  mesh.vertices, mesh.faces, field.raw, options)
-            : directional::pipeline::remesh_from_mesh(
-                  mesh.vertices, mesh.faces, options);
+    directional::pipeline::RemeshResult result;
+    {
+      const BenchmarkMesh mesh =
+          directional::bench::load_benchmark_mesh(benchmarkCase);
+      const BenchmarkField field = directional::bench::load_benchmark_field(
+          benchmarkCase, mesh.faces.rows());
+      directional::pipeline::RemeshOptions options =
+          directional::bench::make_remesh_options(benchmarkCase);
+      options.surfaceCells.fallbackPolicy =
+          directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+      options.surfaceCells.enforceOptimizerTimeGate = false;
+      std::cerr << "[P5_P27_BEFORE_PIPELINE] " << benchmarkCase.name
+                << std::endl;
+      result = field.available
+          ? directional::pipeline::remesh_from_raw_cross_field(
+                mesh.vertices, mesh.faces, field.raw, options)
+          : directional::pipeline::remesh_from_mesh(
+                mesh.vertices, mesh.faces, options);
+      std::cerr << "[P5_P27_AFTER_PIPELINE] " << benchmarkCase.name
+                << " success=" << result.success << std::endl;
+    }
+    std::cerr << "[P5_P27_AFTER_INPUT_DESTRUCTION] " << benchmarkCase.name
+              << std::endl;
     EXPECT_TRUE(result.success)
         << benchmarkCase.name << " " << validation_detail(result);
+    std::cerr << "[P5_P27_AFTER_DIAGNOSTIC_READS] " << benchmarkCase.name
+              << std::endl;
+    std::cerr << "[P5_P27_BEFORE_RESULT_DESTRUCTION] " << benchmarkCase.name
+              << std::endl;
     std::cerr << "[P5_P27_CASE_END] " << benchmarkCase.name << std::endl;
   }
 }
@@ -363,6 +375,8 @@ TEST_P(MilestoneGP27SurfaceCellCase,
 
   directional::pipeline::RemeshResult result;
   {
+    std::cerr << "[P5_P27_PARAM_BEFORE_INPUT_LOAD] " << caseName
+              << std::endl;
     const BenchmarkMesh mesh =
         directional::bench::load_benchmark_mesh(*found);
     const BenchmarkField field =
@@ -372,12 +386,18 @@ TEST_P(MilestoneGP27SurfaceCellCase,
     options.surfaceCells.fallbackPolicy =
         directional::pipeline::SurfaceCellFallbackPolicy::Fail;
     options.surfaceCells.enforceOptimizerTimeGate = false;
+    std::cerr << "[P5_P27_PARAM_BEFORE_PIPELINE] " << caseName
+              << std::endl;
     result = field.available
         ? directional::pipeline::remesh_from_raw_cross_field(
               mesh.vertices, mesh.faces, field.raw, options)
         : directional::pipeline::remesh_from_mesh(
               mesh.vertices, mesh.faces, options);
+    std::cerr << "[P5_P27_PARAM_AFTER_PIPELINE] " << caseName
+              << " success=" << result.success << std::endl;
   }
+  std::cerr << "[P5_P27_PARAM_AFTER_INPUT_DESTRUCTION] " << caseName
+            << std::endl;
 
   // Every public payload must remain owned after all source mesh, field,
   // options, and temporary pipeline contexts have been destroyed.
@@ -390,11 +410,15 @@ TEST_P(MilestoneGP27SurfaceCellCase,
   EXPECT_GE(result.surfaceCellContext.completionAttemptedPatches, 0);
   EXPECT_GE(result.surfaceCellContext.completionFailedPatches, 0);
   EXPECT_GE(result.surfaceCellContext.completionOwnershipRepairAttempts, 0);
+  std::cerr << "[P5_P27_PARAM_AFTER_DIAGNOSTIC_READS] " << caseName
+            << std::endl;
   if (result.success) {
     ASSERT_GT(result.vertices.rows(), 0) << caseName;
     ASSERT_GT(result.faces.rows(), 0) << caseName;
     ASSERT_EQ(result.degrees.size(), result.faces.rows()) << caseName;
   }
+  std::cerr << "[P5_P27_PARAM_BEFORE_RESULT_DESTRUCTION] " << caseName
+            << std::endl;
 }
 
 INSTANTIATE_TEST_SUITE_P(

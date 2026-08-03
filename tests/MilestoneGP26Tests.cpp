@@ -231,22 +231,30 @@ void expect_completed_surface_cells(
 
 void expect_truthful_surface_cells_outcome(
     const directional::bench::BenchmarkCase &benchmarkCase) {
-  const directional::bench::BenchmarkMesh mesh =
-      directional::bench::load_benchmark_mesh(benchmarkCase);
-  const directional::bench::BenchmarkField field =
-      directional::bench::load_benchmark_field(benchmarkCase,
-                                               mesh.faces.rows());
-  directional::pipeline::RemeshOptions options =
-      directional::bench::make_remesh_options(benchmarkCase);
-  options.surfaceCells.fallbackPolicy =
-      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
-  options.surfaceCells.allowSourceGridRecovery = true;
-  options.surfaceCells.enforceOptimizerTimeGate = false;
-  options.parallelizeComponents = true;
-  options.maxComponentThreads = 2;
+  directional::pipeline::RemeshResult result;
+  {
+    const directional::bench::BenchmarkMesh mesh =
+        directional::bench::load_benchmark_mesh(benchmarkCase);
+    const directional::bench::BenchmarkField field =
+        directional::bench::load_benchmark_field(benchmarkCase,
+                                                 mesh.faces.rows());
+    directional::pipeline::RemeshOptions options =
+        directional::bench::make_remesh_options(benchmarkCase);
+    options.surfaceCells.fallbackPolicy =
+        directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+    options.surfaceCells.allowSourceGridRecovery = true;
+    options.surfaceCells.enforceOptimizerTimeGate = false;
+    options.parallelizeComponents = true;
+    options.maxComponentThreads = 2;
 
-  const directional::pipeline::RemeshResult result =
-      run_surface_cell_case(mesh, field, options);
+    std::cerr << "[P5_P26_BEFORE_PIPELINE] " << benchmarkCase.name
+              << std::endl;
+    result = run_surface_cell_case(mesh, field, options);
+    std::cerr << "[P5_P26_AFTER_PIPELINE] " << benchmarkCase.name
+              << " success=" << result.success << std::endl;
+  }
+  std::cerr << "[P5_P26_AFTER_INPUT_DESTRUCTION] " << benchmarkCase.name
+            << std::endl;
 
   EXPECT_EQ("SurfaceCells", result.diagnostics.requestedBackend)
       << benchmarkCase.name;
@@ -294,6 +302,10 @@ void expect_truthful_surface_cells_outcome(
     EXPECT_EQ(0, result.vertices.rows()) << benchmarkCase.name;
     EXPECT_EQ(0, result.faces.rows()) << benchmarkCase.name;
   }
+  std::cerr << "[P5_P26_AFTER_DIAGNOSTIC_READS] " << benchmarkCase.name
+            << std::endl;
+  std::cerr << "[P5_P26_BEFORE_RESULT_DESTRUCTION] " << benchmarkCase.name
+            << std::endl;
 }
 
 TEST(MilestoneGP26, RecoveryTargetProjectionIsBoundedAndDeterministic) {

@@ -44,7 +44,8 @@ struct SurfaceCellSubdivisionResult {
  */
 SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     SurfaceCellComplex input,
-    const std::map<int, int> &insertionsByHalfedge);
+    const std::map<int, int> &insertionsByHalfedge,
+    const Eigen::MatrixXi *sourceFaces = nullptr);
 
 struct SurfaceCellParityRepairResult {
   bool success = false;

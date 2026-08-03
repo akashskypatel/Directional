@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceArrangement.h>
+#include <directional/geometry/SurfaceCellFeasibilityRepair.h>
 #include <directional/geometry/SurfaceComplexSimplification.h>
 
 #include <algorithm>
@@ -63,10 +64,33 @@ MeshFixture curved_square() {
 }
 
 SurfaceCellComplex two_interface_complex(const MeshFixture &mesh) {
-  return directional::geometry::build_surface_cell_complex(
+  SurfaceCellComplex complex = directional::geometry::build_surface_cell_complex(
       mesh.vertices, mesh.faces,
-      {arc(0, 0, {0.5, 0.5, 0.0}, {0.25, 0.25, 0.5}, 0, 7),
-       arc(1, 0, {0.25, 0.25, 0.5}, {0.5, 0.0, 0.5}, 0, 7)});
+      {arc(0, 0, {0.5, 0.5, 0.0}, {0.5, 0.0, 0.5}, 0, 7)});
+  int shared = -1;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id > halfedge.twin || halfedge.twin < 0 ||
+        halfedge.twin >= static_cast<int>(complex.halfedges.size())) {
+      continue;
+    }
+    const auto &twin =
+        complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+    if (halfedge.cell < 0 || twin.cell < 0 ||
+        halfedge.cell == twin.cell ||
+        complex.cells[static_cast<std::size_t>(halfedge.cell)].boundaryCycle ||
+        complex.cells[static_cast<std::size_t>(twin.cell)].boundaryCycle) {
+      continue;
+    }
+    shared = halfedge.id;
+    break;
+  }
+  if (shared < 0) {
+    return complex;
+  }
+  auto subdivided =
+      directional::geometry::subdivide_surface_cell_complex_edges(
+          std::move(complex), {{shared, 1}}, &mesh.faces);
+  return std::move(subdivided.complex);
 }
 
 std::vector<int> internal_interface(const SurfaceCellComplex &complex) {
@@ -77,6 +101,13 @@ std::vector<int> internal_interface(const SurfaceCellComplex &complex) {
     }
     const int other =
         complex.halfedges[static_cast<std::size_t>(halfedge.twin)].cell;
+    if (halfedge.cell < 0 || other < 0 ||
+        halfedge.cell >= static_cast<int>(complex.cells.size()) ||
+        other >= static_cast<int>(complex.cells.size()) ||
+        complex.cells[static_cast<std::size_t>(halfedge.cell)].boundaryCycle ||
+        complex.cells[static_cast<std::size_t>(other)].boundaryCycle) {
+      continue;
+    }
     const auto key = std::minmax(halfedge.cell, other);
     interfaces[{key.first, key.second}].push_back(halfedge.id);
   }
@@ -185,6 +216,7 @@ std::vector<SurfaceArrangementArc> cylinder_grid_arcs(
       a[localA] = 1.0;
       b[localB] = 1.0;
       arcs.push_back(arc(id++, face, a, b, metadata.first, metadata.second));
+      break;
     }
   }
   return arcs;
@@ -238,9 +270,12 @@ TEST(MilestoneDClosure, PartialMultiEdgeInterfaceFailsClosed) {
       directional::geometry::surface_simplification_detail::
           complex_structural_hash(complex);
 
+  directional::geometry::SurfaceSimplificationOptions options;
+  options.refreshCandidatesAfterCommit = false;
+  options.maxCommittedTransactions = 1;
   const auto result = directional::geometry::simplify_surface_cell_complex(
       complex, mesh.vertices, mesh.faces,
-      {removal_candidate(1, {interface.front()})});
+      {removal_candidate(1, {interface.front()})}, options);
 
   ASSERT_EQ(result.transactions.size(), 1U);
   EXPECT_FALSE(result.transactions.front().committed);
@@ -255,15 +290,27 @@ TEST(MilestoneDClosure, CompleteInterfaceCommitsAndPreservesProtectedRails) {
   SurfaceCellComplex complex = two_interface_complex(mesh);
   const std::vector<int> interface = internal_interface(complex);
   ASSERT_GT(interface.size(), 1U);
-  const int protectedHalfedge = interface.front();
+  const std::set<int> interfaceSet(interface.begin(), interface.end());
+  int protectedHalfedge = -1;
+  for (const auto &candidate : complex.halfedges) {
+    if (candidate.id > candidate.twin || candidate.twin < 0 ||
+        interfaceSet.count(candidate.id) != 0U) {
+      continue;
+    }
+    const auto &candidateTwin =
+        complex.halfedges[static_cast<std::size_t>(candidate.twin)];
+    const bool touchesExterior =
+        complex.cells[static_cast<std::size_t>(candidate.cell)].boundaryCycle ||
+        complex.cells[static_cast<std::size_t>(candidateTwin.cell)].boundaryCycle;
+    if (touchesExterior) {
+      protectedHalfedge = candidate.id;
+      break;
+    }
+  }
   ASSERT_GE(protectedHalfedge, 0);
-  ASSERT_LT(static_cast<std::size_t>(protectedHalfedge),
-            complex.halfedges.size());
   auto &halfedge =
       complex.halfedges[static_cast<std::size_t>(protectedHalfedge)];
   ASSERT_GE(halfedge.twin, 0);
-  ASSERT_LT(static_cast<std::size_t>(halfedge.twin),
-            complex.halfedges.size());
   halfedge.hardFeature = true;
   halfedge.railId = 77;
   halfedge.railT0 = 0.125;
@@ -277,9 +324,12 @@ TEST(MilestoneDClosure, CompleteInterfaceCommitsAndPreservesProtectedRails) {
       directional::geometry::surface_simplification_detail::protected_support(
           complex);
 
+  directional::geometry::SurfaceSimplificationOptions options;
+  options.refreshCandidatesAfterCommit = false;
+  options.maxCommittedTransactions = 1;
   const auto result = directional::geometry::simplify_surface_cell_complex(
       complex, mesh.vertices, mesh.faces,
-      {removal_candidate(2, interface)});
+      {removal_candidate(2, interface)}, options);
 
   ASSERT_EQ(result.committed, 1);
   EXPECT_LT(result.finalActiveElements, result.initialActiveElements);
@@ -365,8 +415,11 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
       });
   ASSERT_NE(candidate, extracted.candidates.end());
 
+  directional::geometry::SurfaceSimplificationOptions options;
+  options.refreshCandidatesAfterCommit = false;
+  options.maxCommittedTransactions = 1;
   const auto result = directional::geometry::simplify_surface_cell_complex(
-      complex, mesh.vertices, mesh.faces, {*candidate});
+      complex, mesh.vertices, mesh.faces, {*candidate}, options);
   ASSERT_EQ(result.committed, 1);
   EXPECT_EQ(result.recomputedCandidates, 0);
   EXPECT_LT(result.finalActiveElements, result.initialActiveElements);

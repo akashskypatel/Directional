@@ -4314,6 +4314,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.completionOwnershipReusedPatchCompletions;
     result.surfaceCellContext.completionOwnershipRecomputedPatchCompletions =
         completionResult.completionOwnershipRecomputedPatchCompletions;
+    result.surfaceCellContext.completionOwnershipProductCacheHashMisses =
+        completionResult.completionOwnershipProductCacheHashMisses;
+    result.surfaceCellContext.completionOwnershipProductCacheExactMismatches =
+        completionResult.completionOwnershipProductCacheExactMismatches;
     result.surfaceCellContext.completionOwnershipPreConflictInventoryHash =
         completionResult.completionOwnershipPreConflictInventoryHash;
     result.surfaceCellContext.completionOwnershipPostConflictInventoryHash =
@@ -4355,6 +4359,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.surfaceCellContext.firstCompletionOwnershipRejection =
         completionResult.firstCompletionOwnershipRejection;
     result.surfaceCellContext.completionFailure = completionResult.failure;
+    result.surfaceCellContext.completionDomainIdentityAudit =
+        completionResult.firstInvalidDomain;
+    result.surfaceCellContext.hasCompletionDomainIdentityAudit =
+        completionResult.firstInvalidDomain.failure !=
+        geometry::SurfaceCellDomainIdentityFailureKind::None;
     result.diagnostics.surfaceCellCompletionOwnershipRepairAttempts =
         static_cast<std::size_t>(
             completionResult.completionOwnershipRepairAttempts);
@@ -4522,8 +4531,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     }
 
     geometry::PureQuadMesh aggregateLineageMesh;
+    const bool completionSucceededForRecovery = completionResult.success;
     bool completionOnlyReusesSourceTrianglePairBoundaries = false;
-    if (completionResult.success) {
+    if (completionSucceededForRecovery) {
       aggregateLineageMesh = retainIntermediateGeometry
           ? completionResult.assembly.mesh
           : std::move(completionResult.assembly.mesh);
@@ -4545,6 +4555,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     // Pair-boundary-only output is rejected unconditionally by the lineage
     // gate below if recovery is disabled or fails.
     const bool shouldAttemptSourceGridRecovery =
+        completionSucceededForRecovery &&
+        completionOnlyReusesSourceTrianglePairBoundaries &&
         options.surfaceCells.allowSourceGridRecovery &&
         !options.surfaceCells.rejectPairedSourceTriangleBoundaryOutput;
     if (shouldAttemptSourceGridRecovery) {

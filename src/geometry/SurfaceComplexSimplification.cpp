@@ -1850,12 +1850,10 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
           other.invalidated = true;
           ++result.invalidatedCandidates;
         }
-        // Production topology healing is a live fixed-point process and must
-        // refresh candidates after each committed edit. The public explicit
-        // candidate API, however, is transactional over exactly the candidates
-        // supplied by the caller; silently appending unrelated edits can
-        // invalidate a topology-preserving commit after its stated transaction.
-        if (options.topologyHealingOnly) {
+        const bool commitLimitReached =
+            options.maxCommittedTransactions >= 0 &&
+            result.committed >= options.maxCommittedTransactions;
+        if (options.refreshCandidatesAfterCommit && !commitLimitReached) {
           const SurfaceSimplificationCandidateSet refreshed =
               vertices != nullptr && faces != nullptr
                   ? extract_surface_simplification_candidates(
@@ -1863,7 +1861,8 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                   : extract_surface_simplification_candidates(complex);
           for (SurfaceSimplificationCandidate recomputedCandidate :
                refreshed.candidates) {
-            if (!recomputedCandidate.topologyHealing) {
+            if (options.topologyHealingOnly &&
+                !recomputedCandidate.topologyHealing) {
               continue;
             }
             recomputedCandidate.stableId = nextStableBase++;

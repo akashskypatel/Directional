@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <map>
 #include <numeric>
 #include <set>
@@ -50,6 +51,7 @@ struct PatchSideDescriptor {
 struct PatchDescriptor {
   int cellId = -1;
   PureQuadPatch patch;
+  SurfaceCellDomainIdentityAudit domainIdentityAudit;
   PureQuadPatchAdmissibility feasibility;
   std::vector<PatchSideDescriptor> sides;
   std::vector<int> singularSourceVertices;
@@ -61,6 +63,7 @@ struct PatchDescriptor {
 struct PatchDescriptorSet {
   std::vector<PatchDescriptor> descriptors;
   SurfaceCellOwnershipConflict ownershipConflict;
+  SurfaceCellDomainIdentityAudit firstInvalidDomain;
   std::vector<int> unresolvedSingularVertices;
   int feasible = 0;
   int rejected = 0;
@@ -249,6 +252,7 @@ struct SurfaceCellOwnershipRepairAttempt {
 
 struct SurfaceCellComplexCompletionOptions {
   PatchDescriptorOptions descriptorOptions;
+  SurfaceCellSideRepairOptions sideRepairOptions;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
   int maxCompletionOwnershipRepairs = 256;
@@ -288,6 +292,7 @@ struct SurfaceCellComplexCompletionResult {
   bool sideRollbackEquivalent = false;
   std::uint64_t sideRollbackIdentityHashBefore = 0U;
   std::uint64_t sideRollbackIdentityHashAfter = 0U;
+  SurfaceCellDomainIdentityAudit firstInvalidDomain;
   PatchDescriptorSet descriptors;
   std::vector<PureQuadMesh> completedPatches;
   PureQuadAssemblyResult assembly;
@@ -315,6 +320,8 @@ struct SurfaceCellComplexCompletionResult {
   int completionOwnershipIndependentComponentCount = 0;
   int completionOwnershipReusedPatchCompletions = 0;
   int completionOwnershipRecomputedPatchCompletions = 0;
+  int completionOwnershipProductCacheHashMisses = 0;
+  int completionOwnershipProductCacheExactMismatches = 0;
   std::uint64_t completionOwnershipPreConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipPostConflictInventoryHash = 0U;
   std::uint64_t completionOwnershipConflictFrontierOwnedBytes = 0U;
@@ -372,6 +379,10 @@ bool source_vertex_is_in_cell(const int vertex,
                                      const Eigen::MatrixXi &F);
 
 } // namespace patch_descriptor_detail
+
+SurfaceCellDomainIdentityAudit audit_surface_cell_domain_identity(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
+    const std::vector<int> &boundary, const Eigen::MatrixXi &F);
 
 PatchDescriptor derive_patch_descriptor(
     const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,

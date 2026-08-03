@@ -717,6 +717,87 @@ TEST(PatchDescriptorMilestoneE,
   EXPECT_TRUE(after.feasibility.admissible);
 }
 
+
+TEST(PatchDescriptorMilestoneE,
+     SuccessfulSideSubdivisionPreservesCanonicalDomainIdentity) {
+  const Fixture fixture = make_authoritative_patch({20, 1, 1, 1, 1});
+  const auto repaired =
+      directional::geometry::repair_surface_cell_side_subdivisions(
+          fixture.complex, fixture.V, fixture.F);
+
+  ASSERT_TRUE(repaired.success) << repaired.failure;
+  ASSERT_GT(repaired.insertedVertices, 0);
+  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
+                  validate_complex_incidence(repaired.complex));
+
+  for (const auto &cell : repaired.complex.cells) {
+    if (cell.cellClass ==
+        directional::geometry::SurfaceArrangementCellClass::Exterior) {
+      continue;
+    }
+    const auto audit =
+        directional::geometry::audit_surface_cell_domain_identity(
+            repaired.complex, cell, cell.halfedges, fixture.F);
+    EXPECT_TRUE(audit.valid)
+        << directional::geometry::surface_cell_domain_identity_failure_name(
+               audit.failure)
+        << " cell=" << audit.cellId << " halfedge=" << audit.halfedgeId
+        << " node=" << audit.nodeId << " sourceFace=" << audit.sourceFace
+        << " component=" << audit.sourceComponent
+        << " sheet=" << audit.sourceSheet;
+  }
+
+  const auto descriptors = directional::geometry::derive_patch_descriptors(
+      repaired.complex, fixture.V, fixture.F);
+  ASSERT_FALSE(descriptors.ownershipConflict.active());
+  ASSERT_FALSE(descriptors.descriptors.empty());
+  for (const auto &descriptor : descriptors.descriptors) {
+    EXPECT_TRUE(descriptor.domainIdentityAudit.valid);
+    EXPECT_TRUE(descriptor.patch.domainIdentity.valid);
+  }
+}
+
+TEST(PatchDescriptorMilestoneE,
+     PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion) {
+  const Fixture fixture = make_authoritative_patch({20, 1, 1, 1, 1});
+  const std::uint64_t before =
+      directional::geometry::surface_simplification_detail::
+          complex_structural_hash(fixture.complex);
+
+  directional::geometry::SurfaceCellSideRepairOptions repairOptions;
+  repairOptions.maxInsertedVertices = 1;
+  repairOptions.maxLocalInsertedVertices = 512;
+  repairOptions.maxPropagationPasses = 4096;
+  repairOptions.maxStagnantPasses = 64;
+  const auto rejected =
+      directional::geometry::repair_surface_cell_side_subdivisions(
+          fixture.complex, fixture.V, fixture.F, repairOptions);
+
+  ASSERT_FALSE(rejected.success);
+  EXPECT_EQ("SideRepairInsertionLimit", rejected.failure);
+  EXPECT_GT(rejected.attemptedInsertions, 0);
+  EXPECT_TRUE(rejected.rollbackEquivalent);
+  EXPECT_EQ(rejected.rollbackIdentityHashBefore,
+            rejected.rollbackIdentityHashAfter);
+  EXPECT_EQ(before,
+            directional::geometry::surface_simplification_detail::
+                complex_structural_hash(rejected.complex));
+
+  directional::geometry::SurfaceCellComplexCompletionOptions options;
+  options.allowBoundedCombinatorialFallback = true;
+  options.sideRepairOptions = repairOptions;
+  const auto completion = directional::geometry::complete_surface_cell_complex(
+      fixture.complex, fixture.V, fixture.F, options);
+  EXPECT_TRUE(completion.sideRollbackEquivalent);
+  EXPECT_EQ(completion.sideRollbackIdentityHashBefore,
+            completion.sideRollbackIdentityHashAfter);
+  EXPECT_TRUE(completion.success) << completion.failure;
+  EXPECT_FALSE(completion.descriptors.descriptors.empty());
+  EXPECT_FALSE(completion.assembly.mesh.quads.empty());
+  EXPECT_EQ(std::string::npos,
+            completion.failure.find("RollbackMismatch"));
+}
+
 TEST(PatchDescriptorMilestoneE, RejectsNonDiskAndBrokenBoundaryCycle) {
   Fixture fixture = make_patch({2, 2, 2, 2});
   fixture.complex.cells.front().disk = false;

@@ -1695,6 +1695,14 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext
              .completionOwnershipRecomputedPatchCompletions
       << ","
+      << "\"completionOwnershipProductCacheHashMisses\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheHashMisses
+      << ","
+      << "\"completionOwnershipProductCacheExactMismatches\":"
+      << result.surfaceCellContext
+             .completionOwnershipProductCacheExactMismatches
+      << ","
       << "\"completionOwnershipPreConflictInventoryHash\":"
       << result.surfaceCellContext
              .completionOwnershipPreConflictInventoryHash
@@ -1898,6 +1906,33 @@ void write_remesh_diagnostics_json(std::ostream &out,
   out << "],"
       << "\"completionFailure\":\""
       << escape_json(result.surfaceCellContext.completionFailure) << "\","
+      << "\"completionDomainIdentityAuditAvailable\":"
+      << (result.surfaceCellContext.hasCompletionDomainIdentityAudit
+              ? "true"
+              : "false")
+      << ","
+      << "\"completionDomainIdentityFailure\":\""
+      << directional::geometry::surface_cell_domain_identity_failure_name(
+             result.surfaceCellContext.completionDomainIdentityAudit.failure)
+      << "\","
+      << "\"completionDomainIdentityCell\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.cellId
+      << ","
+      << "\"completionDomainIdentityHalfedge\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.halfedgeId
+      << ","
+      << "\"completionDomainIdentityNode\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.nodeId
+      << ","
+      << "\"completionDomainIdentitySourceFace\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceFace
+      << ","
+      << "\"completionDomainIdentityComponent\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceComponent
+      << ","
+      << "\"completionDomainIdentitySheet\":"
+      << result.surfaceCellContext.completionDomainIdentityAudit.sourceSheet
+      << ","
       << "\"completionOwnershipRejectionAvailable\":"
       << (result.surfaceCellContext.firstCompletionOwnershipRejection.active
               ? "true"

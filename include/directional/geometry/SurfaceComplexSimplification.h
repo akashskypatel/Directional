@@ -142,6 +142,12 @@ struct SurfaceSimplificationOptions {
   /// Production surface-cell integration uses this conservative mode until
   /// the general FlowRep edit operators have independent fidelity gates.
   bool topologyHealingOnly = false;
+  /// Refresh the candidate frontier after every committed edit. This is the
+  /// established fixed-point API contract. Set false only for an explicitly
+  /// bounded one-transaction diagnostic call.
+  bool refreshCandidatesAfterCommit = true;
+  /// Optional hard limit on committed transactions. Negative is unbounded.
+  int maxCommittedTransactions = -1;
   /// Preserve per-candidate transaction payloads. Production callers can
   /// disable this after scalar counters/hashes are sufficient, avoiding one
   /// retained vector-of-vectors record per evaluated simplification candidate.

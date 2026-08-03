@@ -1792,6 +1792,30 @@ SurfaceCellComplex build_surface_cell_complex(
       continue;
     }
     const SurfaceArrangementProvenance &primary = halfedge.provenance.front();
+    const auto railPrimary = std::min_element(
+        halfedge.provenance.begin(), halfedge.provenance.end(),
+        [](const SurfaceArrangementProvenance &lhs,
+           const SurfaceArrangementProvenance &rhs) {
+          const auto key = [](const SurfaceArrangementProvenance &value) {
+            return std::make_tuple(
+                value.railId >= 0 ? 0 : 1,
+                value.hardFeature ? 0 : 1,
+                value.railId, value.curveId, value.sourceComponent,
+                value.sourceSheet, value.sourceFace,
+                static_cast<std::int64_t>(
+                    std::llround(std::min(value.railT0, value.railT1) *
+                                 1.0e10)),
+                static_cast<std::int64_t>(
+                    std::llround(std::max(value.railT0, value.railT1) *
+                                 1.0e10)));
+          };
+          return key(lhs) < key(rhs);
+        });
+    const SurfaceArrangementProvenance *authoritativeRail =
+        railPrimary != halfedge.provenance.end() &&
+                railPrimary->railId >= 0
+            ? &*railPrimary
+            : nullptr;
     halfedge.sourceArc = primary.sourceArc;
     halfedge.family = primary.family;
     halfedge.strand = primary.strand;
@@ -1814,16 +1838,28 @@ SurfaceCellComplex build_surface_cell_complex(
                     [](const SurfaceArrangementProvenance &value) {
                       return value.singularitySupport;
                     });
-    halfedge.railId = primary.railId;
-    halfedge.curveId = primary.curveId;
-    halfedge.sourceComponent = primary.sourceComponent;
-    halfedge.sourceSheet = primary.sourceSheet;
+    halfedge.railId =
+        authoritativeRail != nullptr ? authoritativeRail->railId
+                                     : primary.railId;
+    halfedge.curveId =
+        authoritativeRail != nullptr ? authoritativeRail->curveId
+                                     : primary.curveId;
+    halfedge.sourceComponent =
+        authoritativeRail != nullptr ? authoritativeRail->sourceComponent
+                                     : primary.sourceComponent;
+    halfedge.sourceSheet =
+        authoritativeRail != nullptr ? authoritativeRail->sourceSheet
+                                     : primary.sourceSheet;
     halfedge.proposalId = primary.proposalId;
     halfedge.proposalSeedId = primary.proposalSeedId;
     halfedge.proposalSide = primary.proposalSide;
     halfedge.proposalBoundarySegment = primary.proposalBoundarySegment;
-    halfedge.railT0 = primary.railT0;
-    halfedge.railT1 = primary.railT1;
+    halfedge.railT0 =
+        authoritativeRail != nullptr ? authoritativeRail->railT0
+                                     : primary.railT0;
+    halfedge.railT1 =
+        authoritativeRail != nullptr ? authoritativeRail->railT1
+                                     : primary.railT1;
   }
 
   std::vector<std::vector<int>> outgoing(complex.nodes.size());
