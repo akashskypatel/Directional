@@ -38,19 +38,6 @@ Last updated: 2026-08-02
 - [x] Fail closed when ownership overlap or conforming repair cannot be proven.
 - [x] Preserve final duplicate validation and prohibit final-face deduplication, positional ownership, recovery, fallback, source-triangle pairing, and patch-ID special cases.
 
-## Previous authoritative runtime blocker
-
-Artifact `8841726806` completed all 21,297 descriptors and reached assembly, then failed deterministically on:
-
-```text
-DuplicateStitchedQuad:firstPatch=8595;firstLocalQuad=0;
-secondPatch=8573;secondLocalQuad=2;
-globalVertices=10764,16938,27456,27459;
-classification=completion-template
-```
-
-Both claims were closed-form variant zero. Their domain and boundary identities differed, while source support and canonical stitch/authoritative corner cycles matched. Runtime resolution is not claimed until the next artifact-only validation turn.
-
 ## Required next test-and-benchmark turn
 
 Use artifact `8842377256` directly and do not rebuild.
@@ -58,14 +45,10 @@ Use artifact `8842377256` directly and do not rebuild.
 - [ ] Verify exact source commit, empty source status, and all checksums.
 - [ ] Run corrected generated-interior and parity fixtures.
 - [ ] Run same-corner classification, overlap, closed-form routing, order-invariance, and attempt-ledger regressions.
-- [ ] Run `PatchDescriptorMilestoneE.*`.
-- [ ] Run Phase 16 and Phase 18 suites.
-- [ ] Run the Phase 14–18 aggregate.
-- [ ] Run Milestone G P23 and Phase 20 fail-closed suites.
+- [ ] Run `PatchDescriptorMilestoneE.*`, Phase 16/18, Phase 14–18, and Milestone G P23/Phase 20.
 - [ ] Run `bunny_1k_random.obj` at least twice with `SurfaceCells`, fallback `Fail`, and source-grid recovery disabled.
 - [ ] Determine whether the `8595/8573` claim is removed, reclassified upstream, or remains fail-closed.
 - [ ] Record all repair attempts, inserted intervals, descriptor/endpoint counts, output origin, accepted quads, stage hashes, runtime, and peak memory.
-- [ ] Compare performance with artifacts `8838467442`, `8840174777`, `8840866875`, and `8841726806`.
 
 ## P5 closure conditions
 
@@ -77,13 +60,7 @@ Use artifact `8842377256` directly and do not rebuild.
 
 ## Authoritative evidence
 
-- Code/build report: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Report.md`.
-- Input validation report: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md`.
-- Implementation plan: `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md`.
-- Compile summary: `benchmark-results/p5-cb26-summary.json`.
-
-## Later production gates
-
-- [ ] P6 — topology, provenance, source projection, field alignment, determinism, and quality validation.
-- [ ] P7 — focused and full regression closure.
-- [ ] P8 — final random-bunny benchmark evidence and production disposition.
+- `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_Assembly_Conflict_Code_Build_Plan.md`
+- `benchmark-results/p5-cb26-summary.json`
