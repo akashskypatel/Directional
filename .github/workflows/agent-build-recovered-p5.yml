@@ -1,9 +1,16 @@
 # Compile-only workflow for the P5 CB82 mixed-sheet/liveness checkpoint.
-# Push triggering is paused while the exact source checkpoint is assembled.
 # It never executes tests, benchmarks, help/list commands, discovery commands, or custom meshes.
 name: Agent Build Surface Cell P5 CB82 Mixed Sheet Liveness
 
 on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths-ignore:
+      - TODO
+      - MILESTONE_G_TODO.md
+      - '.agents/Directional/*.md'
+      - 'benchmark-results/*.json'
   workflow_dispatch:
 
 concurrency:
