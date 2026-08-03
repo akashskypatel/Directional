@@ -43,31 +43,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          patch_dir=.agents/Directional/p5-cb66-source-patch-b64
-          expected=(
-            140b1a03bb48cf7583674b6470976d421e3d2c622cf160dd7ea5757927704176
-            c0fe53b6ba945311851a20943ab95868e582db3a7a9e820d51715bf3a3fad8f7
-            72b565a4519b59f07768a411b3b6c6858162ee0d9ce62a47fd55cea2cdd690c8
-            ced9ba2867837ecf180660b1364abff8268ae9142b2f1f9974f6745d16c0d3b9
-            a4663bec77bd837bfc5f5058a66191bee3055dffa234290b527c9c00a319cd5b
-            d5641cbe4bd97c8cafa7e486ff32a968577d2a945f22d3737e467ceb3683777d
-            c5d7dbd6e9f0aded21ac1a460e6ff4a8ff57614dde4edaed814f94533fa87568
-            52345b0faa50d3c409b83d7260cb66f97108acb67e75941d1beb3cfa84927f58
-          )
-          : > /tmp/p5-cb66.b64
-          for number in $(seq 0 7); do
-            index=$(printf '%02d' "${number}")
-            normalized=/tmp/part-${index}
-            tr -d '\r\n' < "${patch_dir}/part-${index}" > "${normalized}"
-            actual=$(sha256sum "${normalized}" | cut -d' ' -f1)
-            echo "part-${index} bytes=$(wc -c < "${normalized}") sha256=${actual} expected=${expected[${number}]}"
-            test "${actual}" = "${expected[${number}]}"
-            cat "${normalized}" >> /tmp/p5-cb66.b64
-          done
-          base64 --decode /tmp/p5-cb66.b64 > /tmp/p5-cb66.patch
-          actual_patch=$(sha256sum /tmp/p5-cb66.patch | cut -d' ' -f1)
-          echo "decoded bytes=$(wc -c < /tmp/p5-cb66.patch) sha256=${actual_patch}"
-          test "${actual_patch}" = "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9"
+          encoded=.agents/Directional/p5-cb66-source-patch/p5-cb66.patch.gz.b64
+          tr -d '\r\n' < "${encoded}" > /tmp/p5-cb66.patch.gz.b64
+          echo "f40e6f7a43ac84aea00a9da3c10ac6954cecc73011bfb96ea88c5ef14573b879  /tmp/p5-cb66.patch.gz.b64" | sha256sum -c -
+          base64 --decode /tmp/p5-cb66.patch.gz.b64 | gzip -dc > /tmp/p5-cb66.patch
+          echo "9ac9833637c558da79daf52df676ec63793ef8ef17000b380156f8ad57a19ff9  /tmp/p5-cb66.patch" | sha256sum -c -
+          test "$(wc -c < /tmp/p5-cb66.patch)" = "45388"
 
       - name: Verify and apply source patch
         shell: bash
