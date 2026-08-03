@@ -1263,7 +1263,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
           selectedBackend >=
                       static_cast<int>(PureQuadCompletionBackend::ClosedForm) &&
                   selectedBackend <=
-                      static_cast<int>(PureQuadCompletionBackend::BoundedSearch)
+                      static_cast<int>(PureQuadCompletionBackend::BoundedCombinatorial)
               ? static_cast<PureQuadCompletionBackend>(selectedBackend)
               : PureQuadCompletionBackend::ClosedForm;
 
