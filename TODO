@@ -8,52 +8,70 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB83 through P5-CB90 code changes + compile-only build**.
-- Next turn: **P5-TB16 artifact-only test and benchmark; do not rebuild**.
+- Completed turn: **P5-TB16 artifact-only test and benchmark**.
+- Next turn: **P5-CB91 through P5-CB98 code changes + compile-only build**.
 
-## Compiled checkpoint
+## Tested checkpoint
 
 - Source implementation commit: `57be334c7a5d41538dcfd7011f429da525d2d2ca`.
-- Exact clean compiled source: `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`.
-- Compile-only run: `30849904147` — **success**.
+- Exact tested source: `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`.
 - Artifact: `8870351914` (`surface-cell-p5-cb90-parity-flowrep-reuse-rail-linux-release`).
 - Digest: `sha256:ce6ca28d8eb41562c3486077934302643100fab575f34ea8a341e3212964a7e4`.
-- Compiled targets: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Source status was clean; required fixtures and packaged checksums were produced.
-- No test, benchmark, custom mesh, help/list, or discovery command ran.
+- Source status empty; packaged checksums **36/36**; fixture files **26**.
+- Random bunny: **502 vertices / 1,000 triangle faces**.
+- No rebuild was performed.
 
-## Implemented in P5-CB83 through P5-CB90
+## P5-TB16 result
 
-- [x] Eliminate stale `FlowRepArc` references across vector growth and add a forced-reallocation regression source.
-- [x] Replace parity source-scope frequency voting with authoritative pre-transaction cell-scope inheritance.
-- [x] Add typed parity scope diagnostics.
-- [x] Define completion reuse from canonical authoritative source-domain dependencies rather than allocation-local cell IDs.
-- [x] Preserve final rail/curve identity, feature class, rail parameters, and complete provenance.
-- [x] Split missing-chart and invalid-midpoint fixtures into valid scenarios.
-- [x] Rebuild the cylinder simplification fixture without duplicate coincident per-face arcs.
-- [x] Apply source-supported producer corrections for plane, cylinder, seam, torus, and mechanical-feature paths.
-- [x] Add trace, FlowRep, arrangement, and simplification current/peak owned-byte telemetry, release flags, and live-large-structure bounds.
-- [x] Compile and package the clean checkpoint without executing a binary.
+- Complete suite: **583/593 passed**, 10 assertion failures, **0 signal-11 terminations**.
+- Phase 14–18: **230/230 passed**.
+- Former generated-smooth-field crash cases now terminate normally.
+- Final arrangement rail identity passes its focused regression.
+- Missing-common-chart regression passes as a distinct contract.
+- Four face-edge and four smooth-field bunny processes terminate with deterministic structural diagnostics.
+- All eight benchmark processes satisfy `39.228299 s` wall and `1,115,394,560 B` peak-memory limits.
 
-## P5-TB16 required validation
+Both bunny field paths still fail closed before descriptors with:
 
-Use artifact `8870351914` directly. Do not rebuild.
+```text
+NotProductionReady/completion
+BoundaryParityRepair:MixedCellSourceScope
+```
 
-- [ ] Verify generated-smooth-field random bunny no longer exits with signal 11.
-- [ ] Verify face-edge parity repair commits with one exact inherited source scope.
-- [ ] Verify both exact reusable-product regressions produce positive reuse without false reuse.
-- [ ] Verify final arrangement halfedges retain authoritative rail and curve lineage.
-- [ ] Verify missing-chart, invalid-midpoint, and cylinder simplification fixtures exercise their intended contracts.
-- [ ] Re-run plane, cylinder, seam, torus, mechanical-feature, Phase 20 cylinder, and production-matrix output contracts.
-- [ ] Verify deterministic hashes and diagnostics across independent processes.
-- [ ] Measure wall time, peak working set, stage-owned bytes, release flags, and simultaneous large-structure bounds.
-- [ ] Update P5 disposition from runtime evidence only.
+- face edges: `1,860 -> 0` odd cells inside rejected parity repair, `0` descriptors, `0` output;
+- smooth field: `959 -> 0` odd cells inside rejected parity repair, `0` descriptors, `0` output;
+- exact reused/recomputed completions: `0 / 0` on both paths;
+- fallback and source-grid recovery: neither used.
+
+## Runtime disposition of P5-CB83 through P5-CB90
+
+- [x] P5-CB83 — high-cardinality FlowRep ownership and signal-11 liveness closed by runtime evidence.
+- [ ] P5-CB84 — authoritative parity scope still fails with `MixedCellSourceScope`.
+- [ ] P5-CB85 — both positive exact-reuse regressions remain at zero reuse.
+- [x] P5-CB86 — focused final rail/curve and provenance propagation passes.
+- [ ] P5-CB87 — invalid-midpoint still reaches missing chart; cylinder fixture still has invalid incidence.
+- [ ] P5-CB88 — plane, cylinder, seam, torus, mechanical-feature, Phase 20 cylinder, and production-matrix output contracts remain open.
+- [ ] P5-CB89 — stage-owned telemetry is populated but explains only 32.65% of face-edge RSS and 42.70% of smooth-field RSS using current-byte sums.
+- [x] P5-CB90 — compile/package and artifact-integrity gate passed.
+
+## Next code + build turn
+
+Use `.agents/Directional/Milestone_G_P5_Post_TB16_Parity_Reuse_Fixture_Output_Memory_Code_Build_Plan.md`.
+
+- [ ] P5-CB91 — authoritative parity scope propagation and typed first-invalid replacement diagnostics.
+- [ ] P5-CB92 — field-level reuse-key mismatch diagnostics and positive exact reuse.
+- [ ] P5-CB93 — explicit compatible occurrences for the invalid-midpoint rollback fixture.
+- [ ] P5-CB94 — topology-valid canonical cylinder DCEL fixture.
+- [ ] P5-CB95 — earliest-invalid production producer repair without validator weakening.
+- [ ] P5-CB96 — Eigen, associative-container, retained-capacity, and overlapping-lifetime memory reconciliation.
+- [ ] P5-CB97 — regression sources for every corrected contract.
+- [ ] P5-CB98 — compile only the four required targets and package; execute no binary.
 
 ## Authority
 
-- `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Parity_Scope_FlowRep_Reuse_Rail_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_TB15_Parity_Scope_Reuse_Rail_Test_Benchmark_Report.md`
-- `benchmark-results/p5-tb15-summary.json`
+- `.agents/Directional/Milestone_G_P5_TB16_FlowRep_Parity_Reuse_Rail_Output_Memory_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb16-summary.json`
+- `.agents/Directional/Milestone_G_P5_Post_TB16_Parity_Reuse_Fixture_Output_Memory_Code_Build_Plan.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
 
-P5 remains open until P5-TB16 and later production gates pass.
+P5 remains open.
