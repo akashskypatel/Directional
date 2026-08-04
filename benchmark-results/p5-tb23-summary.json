@@ -1,0 +1,103 @@
+{
+  "schema": "directional.p5-tb23-summary.v1",
+  "date": "2026-08-04",
+  "turn": "P5-TB23",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "artifact": {
+    "id": 8902050372,
+    "name": "surface-cell-p5-r1-github-source-linux-release",
+    "sha256": "5d1e5ca4fa8bc74e0a30615725c79a8b491830ab1f4407152cf79bfe56f8880f",
+    "exactSource": "e31e5abd52ca9e673d1718f47d088d19296d1d22",
+    "implementationCommit": "ae0c09ed1290df75d1d2cc1d5af039fc1feb83a3",
+    "eventCommit": "233466e5b02c3762a3f2648518f5860a2a2fb014",
+    "reviewedPatchSha256": "a3898a847c6722a1f2d9b0de48e71ae71f08fcc0bc82b3d9396d8c842d9cad61",
+    "compileFixPatchSha256": "92162aa709134c86a355253416dc614817fecabebaeb60c58555061958d12162",
+    "sourceStatusEmpty": true,
+    "recursiveChecksums": "41/41",
+    "packageFiles": 43,
+    "fixtures": 26,
+    "recursiveSubmodules": 9
+  },
+  "runtime": {
+    "focusedR0R1": {"passed": 8, "tests": 12, "failures": 4},
+    "focusedRecovery": {"passed": 8, "tests": 9, "failures": 1},
+    "phase14To18": {"passed": 233, "tests": 242, "failures": 9},
+    "phase20": {"passed": 35, "tests": 48, "failures": 13},
+    "boundedSuite": {"passed": 553, "tests": 603, "failures": 50, "seconds": 4.943, "maxRssKiB": 21272},
+    "completeSuite": {
+      "discovered": 606,
+      "terminated": false,
+      "watchdogSeconds": 1200,
+      "completedTestsBeforeStall": 192,
+      "passedBeforeStall": 179,
+      "failedBeforeStall": 13,
+      "stalledTest": "MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback",
+      "stalledCase": "bunny_1k_random__surface_cells"
+    },
+    "validatorSpecificPackagedTests": {
+      "available": false,
+      "reason": "SourceAuthoritativeMeshValidatorPhase22Tests.cpp is not linked into packaged directional_phase1_tests and the dedicated validator executable was not packaged."
+    },
+    "analyticProduction": {
+      "plane__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.01322,
+        "peakWorkingSetBytes": 7991296,
+        "completedQuadCount": 12,
+        "validationFailures": 27,
+        "failureCode": "NotProductionReady",
+        "failureStage": "completion",
+        "firstInvalidStage": "completion/output-validation",
+        "firstInvalidReason": "LocalSheetMismatch",
+        "firstInvalidCell": 0,
+        "firstInvalidFace": 0,
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false
+      },
+      "multi_face_seam__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.02241,
+        "peakWorkingSetBytes": 8323072,
+        "completedQuadCount": 24,
+        "validationFailures": 46,
+        "failureCode": "NotProductionReady",
+        "failureStage": "completion",
+        "firstInvalidStage": "completion/output-validation",
+        "firstInvalidReason": "LocalSheetMismatch",
+        "firstInvalidCell": 0,
+        "firstInvalidFace": 0,
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false
+      },
+      "close_sheets__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.042241,
+        "peakWorkingSetBytes": 8417280,
+        "completedQuadCount": 34,
+        "validationFailures": 61,
+        "failureCode": "NotProductionReady",
+        "failureStage": "completion",
+        "firstInvalidStage": "completion/output-validation",
+        "firstInvalidReason": "LocalSheetMismatch",
+        "firstInvalidCell": 0,
+        "firstInvalidFace": 0,
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false
+      }
+    }
+  },
+  "disposition": {
+    "r0Closed": false,
+    "r1Closed": false,
+    "advanceToR2": false,
+    "earliestRootCause": "SourceChartTransitionGraph::edge_orientation reverses the valid and invalid shared-edge winding classification.",
+    "nextTurn": "P5-R1C code changes + compile-only build"
+  }
+}
