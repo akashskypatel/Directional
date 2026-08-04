@@ -9,94 +9,115 @@
 
 ## Current checkpoint
 
-P5-CB91 through P5-CB98 are implemented in source commit
-`34edce9e508fd81e28bbd6b68a064a2a57bacf03` and passed the compile-only gate.
-GitHub source synchronization was verified at branch checkpoint
-`7b4b699dac7567935f548a26a92336de5a496756`: workflow run `30863219431` reconstructed the exact preserved
-patch, proved its seven-file non-workflow scope, applied all files cleanly by
-three-way merge, and observed no diff because the branch already contained the
-expected output blobs. All 14 implementation files match the compiled source
-exactly. The branch is the direct source authority for P5-TB17.
-P5 remains open because the new runtime contracts have not been executed.
+P5-CB91 through P5-CB98 are implemented. The implementation authority is commit
+`34edce9e508fd81e28bbd6b68a064a2a57bacf03`; the exact GitHub source compiled
+for closeout is descendant commit
+`680d81c6946f45b1daed9dd477cfde565f8ac7a2`.
 
-Last runtime evidence is P5-TB16 on exact source
-`d268ca00014935770f3b7fd74c5186c3d9ef3ddf`:
-
-- complete suite **583/593**, ten assertion failures, zero signal 11;
-- all three prior crash cases terminate normally;
-- four face-edge and four smooth-field random-bunny processes are deterministic
-  and within wall/memory limits;
-- both field paths still fail closed at
-  `BoundaryParityRepair:MixedCellSourceScope` and emit no output;
-- exact reuse, intended invalid midpoint, cylinder topology/output, remaining
-  production outputs, and RSS reconciliation remained open.
-
-The next turn is **P5-TB17 artifact-only test and benchmark**. Do not rebuild.
-
-## Read first
-
-1. `TODO`
-2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB16_FlowRep_Parity_Reuse_Rail_Output_Memory_Test_Benchmark_Report.md`
-4. `benchmark-results/p5-tb16-summary.json`
-5. `.agents/Directional/Milestone_G_P5_CB91_CB98_Parity_Reuse_Fixture_Output_Memory_Code_Build_Report.md`
-6. `benchmark-results/p5-cb98-summary.json`
-7. `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`
-
-## Implemented in P5-CB91–P5-CB98
-
-- Exact authoritative cell component/sheet scope is captured from committed
-  state before parity subdivision.
-- Mixed/missing scope fails before mutation with typed original/replacement
-  cell, halfedge/twin, selected/available scope, and mutation-phase evidence.
-- Replacement halfedges, twins, node occurrences, provenance, and cells inherit
-  the authoritative scope before validation.
-- Completion reuse identity covers source domain, subdivision, source
-  coordinates, rail/curve support, singularities, backend/variant, and topology
-  template; local allocation IDs and transient ordering are excluded.
-- Cache mismatch vector and transactional rebind validation are available;
-  reuse/recompute counters represent actual product reuse.
-- Missing-chart and invalid-midpoint fixtures are separate; invalid midpoint has
-  compatible endpoint occurrences and requires exact rollback.
-- Cylinder fixture uses one canonical intrinsic entity per crossing and asserts
-  incidence, embedding, orientation, disk cells, Euler 0, one component, and
-  two boundary loops before simplification.
-- Source-chart/output ownership is derived from authoritative provenance;
-  invalid optimized output returns to the completed mesh, not fallback.
-- First-invalid producer diagnostics identify stage and entity.
-- Stage memory evidence separates logical payload, retained capacity, peak,
-  simultaneous ownership, and acquire/release events; benchmark JSON emits it.
-
-## Compile-only evidence
-
-Clang 17 + Ninja + Release `-O2 -DNDEBUG` compiled and linked exactly:
+GitHub Actions run `30864341083` completed successfully and compiled exactly:
 
 - `directional_core`
 - `directional_pipeline`
 - `directional_phase1_tests`
 - `directional_benchmarks`
 
-No binary, test, benchmark, custom mesh, help/list, or discovery command was
-executed. Test and benchmark targets temporarily used unity batch 1 to avoid
-pre-existing anonymous-namespace collisions; the CMake edit was removed.
+No test, benchmark, custom mesh, help/list, discovery, or compiled project binary
+was executed.
 
-## Source synchronization lessons
+Compiled artifact:
 
-- Normal `git apply` can reject a patch that is already present because its old
-  context no longer matches; verify expected output blobs before treating this
-  as a missing-source failure.
-- `git apply --3way` stages successful results directly. Validate with
-  `git diff --cached`, not only the unstaged diff.
-- Source-transfer workflows must derive and compare the exact allowed path set,
-  reject `.github/workflows/**`, and stage only the declared source/test files.
-- Workflow-file creation, restoration, and deletion must remain connector-side.
+- ID `8875627676`
+- `surface-cell-p5-cb98-github-source-linux-release`
+- SHA-256 `b9560c9438289e90e6acca3a0f4b7f1d46a5ad34663693c1243bf4176056c165`
+- checksums **38/38**
+- fixture files **26**
+- empty source status
+
+Dedicated detailed workflow log artifact:
+
+- ID `8875628150`
+- `surface-cell-p5-cb98-workflow-logs-30864341083`
+- SHA-256 `f31e7d57d137399634187edbac5902732e0226172bc80248c1abf41ff61513e8`
+
+The next turn is **P5-TB17 artifact-only test and benchmark** using artifact
+`8875627676`. Do not rebuild.
+
+P5 remains open because the new runtime contracts have not been executed.
+
+## Read first
+
+1. `TODO`
+2. `MILESTONE_G_TODO.md`
+3. `.agents/Directional/GitHub_Workflow_Policy.md`
+4. `.agents/Directional/Milestone_G_P5_TB16_FlowRep_Parity_Reuse_Rail_Output_Memory_Test_Benchmark_Report.md`
+5. `benchmark-results/p5-tb16-summary.json`
+6. `.agents/Directional/Milestone_G_P5_CB91_CB98_Parity_Reuse_Fixture_Output_Memory_Code_Build_Report.md`
+7. `benchmark-results/p5-cb98-summary.json`
+8. `.agents/Directional/Milestone_G_P5_CB98_GitHub_Compile_Closeout_Report.md`
+9. `benchmark-results/p5-cb98-github-closeout-summary.json`
+10. `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`
+
+## Last runtime evidence
+
+P5-TB16 tested exact source `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`:
+
+- complete suite **583/593**;
+- ten assertion failures;
+- zero signal-11 terminations;
+- all three prior crash cases terminate normally;
+- four face-edge and four smooth-field random-bunny runs are deterministic and
+  within wall/memory limits;
+- both field paths fail closed at
+  `BoundaryParityRepair:MixedCellSourceScope` and emit no output;
+- exact reuse, intended invalid midpoint, cylinder topology/output, remaining
+  production outputs, and RSS reconciliation remained open.
+
+## Implemented in P5-CB91–P5-CB98
+
+- Exact authoritative cell component/sheet scope is captured before parity
+  subdivision.
+- Mixed/missing scope fails before mutation with typed entity and mutation-phase
+  evidence.
+- Replacement halfedges, twins, node occurrences, provenance, and cells inherit
+  authoritative scope before validation.
+- Completion reuse identity covers authoritative source dependencies rather than
+  allocation-local IDs.
+- Cache mismatch vectors, transactional rebind validation, and actual reuse/
+  recompute accounting are present.
+- Missing-chart and invalid-midpoint fixtures are distinct and require exact
+  rollback.
+- Cylinder fixture uses canonical crossing entities and validates strict DCEL
+  topology before simplification.
+- Output source ownership derives from provenance; first-invalid producer
+  diagnostics identify the responsible stage/entity.
+- Memory evidence separates logical payload, retained capacity, peak,
+  simultaneous ownership, and acquire/release events.
+
+## Workflow policy and lessons
+
+All future workflows must follow
+`.agents/Directional/GitHub_Workflow_Policy.md`:
+
+- initialize detailed logging before fallible work;
+- preserve activity and command output for success and failure;
+- always upload a dedicated log artifact under `if: always()`;
+- use that artifact for failed-workflow diagnosis;
+- do not expose tokens or credentials in traced output;
+- preserve compile-only versus test/benchmark boundaries.
+
+The closeout workflow initially failed validation because workflow-level `env`
+used the step-only `${{ runner.temp }}` context. Fixed paths under `/tmp` were
+used instead. The corrected workflow parsed and completed successfully.
+
+Patch synchronization lesson: a normal patch failure can mean the output is
+already present. Verify output blobs before treating it as missing work.
 
 ## Required next turn
 
 Follow the post-CB98 artifact plan exactly:
 
-1. Validate package digest, checksums, source commit/status, dependency records,
-   binaries/libraries, and executable-relative fixture closure.
+1. Download artifact `8875627676`; verify digest, checksums, exact source,
+   dependencies, binaries/libraries, and fixture closure without rebuilding.
 2. Run the ten P5-TB16 failures plus focused parity/reuse/midpoint/cylinder/
    output/memory regressions.
 3. Run Phase 14–18, Milestone E, Milestone D, P23/P26/P27/Phase 20, the three
@@ -111,6 +132,5 @@ Preserve all prohibitions: no validator weakening, fallback/recovery
 substitution, synthetic counters, positional merging, source-triangle pairing,
 arbitrary subset search, fixture/ID special case, or timeout-as-correctness.
 
-If any gate remains open, the TB17 report must identify the first invalid
-producer/entity and provide one bounded next code/build plan. Otherwise advance
-to final P5 closeout.
+If a gate remains open, record the first invalid producer/entity and create one
+bounded next code/build plan. Otherwise advance to final P5 closeout.
