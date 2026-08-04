@@ -807,7 +807,8 @@ bool validate_completion_domain_ownership(
       }
       intersectsPatch = true;
       bool compatible = completion_ownership_face_matches_labels(
-          candidateFace, lineage, sourceFaceComponents, sourceFaceSheets);
+          candidateFace, lineage, sourceFaceComponents, sourceFaceSheets,
+          sourceHardFeatureEdges);
       if (compatible && transitionAuthorityAvailable) {
         SurfacePoint rebound;
         compatible = transitionGraph.rebind(provenance, candidateFace, rebound);
@@ -1936,7 +1937,8 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const double positionTolerance,
     const Eigen::MatrixXi *sourceFaces,
     const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets) {
+    const std::vector<int> *sourceFaceSheets,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
   PureQuadAssemblyResult result;
   if (patches.empty()) {
     result.failure = "NoCompletedPatches";
