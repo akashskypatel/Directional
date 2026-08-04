@@ -8,90 +8,76 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R2C directed boundary-sector and cycle-inventory correction + compile-only build**.
-- Next turn: **P5-TB27 artifact-only R2C validation**.
-- Remain on R2 until runtime validates complete cycle/cell ownership. Do not advance to R3 from compilation.
+- Completed turn: **P5-TB27 artifact-only R2C validation**.
+- Next turn: **P5-R2D authoritative orbit publication and structural cell classification + compile-only build**.
+- R2 remains open. Do not advance to R3.
 
-## Compiled checkpoint
+## P5-TB27 artifact authority
 
-- P5-TB26 tested source: `306fab5d440199cb090e1aa343fadb6112663edc`.
+- Exact tested source: `94b86c50c38a849a744f40b0a21c86ed19551769`.
 - Workflow event commit: `69e7486ad59bdec64e95bd1c6a5c3ac0289bf244`.
-- Exact compiled source: `94b86c50c38a849a744f40b0a21c86ed19551769`.
-- Reviewed source patch SHA-256: `7ed8df0b92da7719395a50fb8f4d93485e163345d7f11c82c5866bd7adabf79a`.
-- Applied commit-diff SHA-256: `ddb5a8ae90ac227afd3ce5f1deccecfb8f676314d0638e7b295c49a390fc0ec3`.
-- Compile-only run: `30959111826`; job `92158870810`.
 - Artifact: `8912374007`, `surface-cell-p5-r2c-github-source-linux-release`.
 - Artifact SHA-256: `ffe30c89655b60f5f7e90e509388c44b5a6c2c830508648348a4d01189ebb689`.
 - Workflow logs: `8912374385`; SHA-256 `e1f4ccd6d218b6505f6e97d04eef9533d71adb987cbca7ad4daf1f7357a66d6f`.
-- Empty source status; recursive checksums **41/41**; package files **43**; fixtures **26**; recursive submodules **9**.
-- All **132/132** Ninja actions completed.
-- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- No project binary executed.
+- Empty source status; recursive checksums **41/41**; package files **43**; fixtures **26**; recursive submodules **9**; all four target hashes verified.
+- No configure, rebuild, relink, patch, regeneration, or source modification occurred.
 
-## P5-R2C implementation
+## P5-TB27 runtime result
 
-- [x] Replace strict simple-cycle-only publication with deterministic bridge/core graph audit.
-- [x] Require every bridge to appear as one authoritative twin pair.
-- [x] Require every non-bridge component to form a directed node-simple and edge-simple cycle.
-- [x] Represent valid cut disks as `cutCellDisk` without decomposing their directed orbit.
-- [x] Represent dangling support trees as explicit `bridgeExcursion` non-disk candidates.
-- [x] Represent bridge-only twin support orbits as `supportOnlyCycle`.
-- [x] Exclude support-only cells from area and Euler accounting.
-- [x] Classify exterior cycles from authoritative source-boundary evidence rather than negative projection alone.
-- [x] Require every valid halfedge to receive exactly one audited orbit and one bounded cell ID.
-- [x] Publish cell assignment transactionally; clear cells and reset ownership on failure.
-- [x] Include R2C structural states in arrangement, simplification, feasibility-repair, and rollback hashes.
-- [x] Add focused dangling-bridge, support-only, hard-rail, and cylinder ownership contracts.
-- [x] Preserve typed R2 failures, R1 authority, row/orientation invariance, and no post-hoc decomposition.
-- [x] Keep R3–R11 deferred.
+- [x] source-chart R1 **11/11**;
+- [x] Phase 22 source validator **6/6**;
+- [x] recovery authority **9/9**;
+- [x] feature/barrier authority **8/8**;
+- [ ] graph-dependent **5/6**;
+- [ ] expanded R2/R2C focused **7/10**;
+- [ ] Milestone D **5/7**;
+- [ ] Phase 14–18 **231/242**;
+- [ ] Phase 16 **41/45**;
+- [ ] Phase 17 **20/26**;
+- [x] Phase 18 **57/57**;
+- [ ] Phase 20 **46/48**;
+- [ ] direct plane/seam/close sheets/cylinder **0/4**;
+- [ ] complete suite **593/623**, 30 failures, **161.786 seconds**.
 
-## Last runtime authority: P5-TB26
+Exact complete-suite maximum RSS is unavailable because the outer timing helper detached before final statistics; XML and complete logs finalized normally.
 
-- source-chart R1 **11/11**;
-- Phase 22 validator **6/6**;
-- recovery authority **9/9**;
-- feature/barrier authority **8/8**;
-- graph-dependent **5/6**;
-- R2 focused **6/7**;
-- Milestone D **4/7**;
-- Phase 14–18 **227/240**;
-- Phase 16 **39/43**;
-- Phase 17 **18/26**;
-- Phase 18 **57/57**;
-- Phase 20 **46/48**;
-- direct plane/seam/close sheets/cylinder **0/4**;
-- complete suite **588/621** in **74.763 seconds**.
+## R2C disposition
 
-No runtime improvement is claimed from P5-R2C compile evidence.
+- [x] dangling bridge ownership contract passes;
+- [x] isolated support-only ownership contract passes;
+- [x] branched-strand Milestone D contract restored;
+- [x] two Phase 17 bridge contracts restored;
+- [ ] planar Euler/boundary/area accounting;
+- [ ] nested two-boundary non-disk classification;
+- [ ] typed fail-closed nonmanifold source-edge rejection;
+- [ ] bunny singularity-fan embedding;
+- [ ] interior hard-rail final topology;
+- [ ] periodic open-cylinder final topology;
+- [ ] nonzero arrangement inventories for seam, close sheets, and cylinder.
 
-## Required next work: P5-TB27
+All direct cases used `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution. Plane retains 9 arrangement cells and 12 quads but fails 15 completion-validation checks. Seam, close sheets, and cylinder retain zero arrangement cells and fail `SideSubdivisionRepair:InvalidInputIncidence`.
 
-Follow `.agents/Directional/Milestone_G_P5_R2C_Test_Benchmark_Plan.md`:
+## Required next work: P5-R2D
 
-- [ ] verify exact artifact authority, source, **41/41** checksums, 43 files, 26 fixtures, nine submodules, and target hashes;
-- [ ] preserve source-chart **11/11**, Phase 22 **6/6**, recovery **9/9**, feature/barrier **8/8**, and graph-dependent **6/6**;
-- [ ] pass all R2 and R2C directed-incidence/cell-inventory contracts;
-- [ ] prove no runtime-valid halfedge has `cell == -1`;
-- [ ] close Milestone D to **7/7**;
-- [ ] restore Phase 16 and all eight P5-TB26 Phase 17 regressions;
-- [ ] keep Phase 18 clean and restore complete Phase 14–18;
-- [ ] run plane, seam, close sheets, cylinder, and any packaged disconnected-close-sheet case;
-- [ ] require seam, close sheets, and cylinder to retain nonzero valid arrangement inventories;
-- [ ] run complete Phase 20;
-- [ ] run the complete suite once and measure bunny duration and maximum RSS;
-- [ ] treat faster failure as failure, not performance progress.
+Follow `.agents/Directional/Milestone_G_P5_R2D_Authoritative_Orbit_Publication_Code_Build_Plan.md`:
 
-Execute artifact `8912374007` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
-
-Advance to R3 only after R2/R2C closes independently and remaining analytic failures have later typed completion evidence.
+- [ ] restore source nonmanifold preflight authority;
+- [ ] separate successor-orbit audit from bounded-cell topology and exterior classification;
+- [ ] derive boundary-component count and Euler characteristic from the audited structure;
+- [ ] preserve exact R2C bridge/support ownership while restoring planar, nested, hard-rail, singularity-fan, seam, close-sheet, and cylinder cell inventories;
+- [ ] require transactional complete halfedge-to-cell ownership;
+- [ ] preserve R1 transitions, hashes, row/orientation invariance, and fail-closed diagnostics;
+- [ ] keep R3–R11 deferred;
+- [ ] compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
+- [ ] execute no project binary.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_TB27_Artifact_Only_R2C_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2D_Authoritative_Orbit_Publication_Code_Build_Plan.md`
+- `benchmark-results/p5-tb27-summary.json`
 - `.agents/Directional/Milestone_G_P5_R2C_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_R2C_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2c-summary.json`
-- `.agents/Directional/Milestone_G_P5_TB26_Artifact_Only_R2_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2C_Directed_Boundary_Cycle_Code_Build_Plan.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/DESIGN.md`
 - `MILESTONE_G_TODO.md`
