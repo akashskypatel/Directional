@@ -8,84 +8,92 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB21 artifact-only test and benchmark**.
-- Next turn: **P5-CB135 through P5-CB142 code changes + compile-only build**.
+- Completed turn: **P5-CB135 through P5-CB142 code changes + compile-only build**.
+- Next turn: **P5-TB22 artifact-only test and benchmark**.
 
-## P5-TB21 tested checkpoint
+## P5-CB142 compiled checkpoint
 
-- Exact tested source: `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`.
-- Implementation commit: `01788193457e60bb8817a40b2c1551e672c4de5c`.
-- Artifact: `8890167812`, `surface-cell-p5-cb134-github-source-linux-release`.
-- Artifact SHA-256: `34a4da9a9c9e3374ed861c41b72493beefc90afbc85743fd25979484f3222bf1`.
-- Source status empty; checksums **41/41**; fixtures **26**; recursive submodules **9**.
-- No configure, build, relink, patch, regeneration, or source modification occurred.
+- Prior tested source: `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`.
+- Workflow event commit: `b7f8a9978764b77931ba6d299fdcbc65639235de`.
+- Implementation commit and exact compiled source: `aa2917e280fabd2272911a39cd0ecc327cce1cf3`.
+- Reviewed patch SHA-256: `890dd621cf549f32c55d44f52b85050bfdfa5ce15df5f2bda2f8ba3e33c8ed70`.
+- Compile-only run: `30912858764`; job `92003602916`.
+- Artifact: `8894034755`, `surface-cell-p5-cb142-github-source-linux-release`.
+- Artifact SHA-256: `ff77004f8893b9f993165ba685794faca52f5611c9f1c47deb3f1dd5d930cb55`.
+- Workflow-log artifact: `8894035556`, SHA-256 `b7b84ba230c873702ec548318a5cad6b43fe4e1ccaf5d437bcd535201020ab1b`.
+- Source status empty; internal checksums **40/40**; fixtures **26**; recursive submodules **9**; package files **42**.
+- All **131/131** Ninja actions completed.
+- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- No project binary, test, benchmark, custom mesh, help/list, or discovery command ran.
 
-## Runtime disposition
+## Implemented source checkpoint
+
+- [x] P5-CB135 — canonical finite alternative-state frontier, state deduplication/memoization, typed cycle/budget/all-invalid disposition, exact rollback evidence.
+- [x] P5-CB136 — repeated-node alternatives derived from all canonical incident interfaces rather than a small arbitrary prefix.
+- [x] P5-CB137 — deterministic valid split selection across repeated occurrences in pinched successor cycles.
+- [x] P5-CB138 — cyclic and reversed bounded completion variants with typed validation before authority.
+- [x] P5-CB139 — separate semantic-overlap/stitch-separation behavior and exact validated completion-cache retargeting.
+- [x] P5-CB140 — global intrinsic source-chart intersection and exact barycentric rebinding across shared completion vertices.
+- [x] P5-CB141 — parity-alternative execution evidence propagated through patch and pipeline contexts.
+- [x] P5-CB142 — typed incomplete reason names and actual same-sample working-set/owned-byte telemetry.
+
+## Last runtime authority: P5-TB21
 
 Closed or improved:
 
-- [x] Package authority.
-- [x] Phase 14–18: **236/236**.
-- [x] Phase 16: **39/39**.
-- [x] Phase 17: **26/26**.
-- [x] Valid provenance fixture.
-- [x] Explicit negative zig-zag embedding fixture.
-- [x] Shared-edge parity focused contract.
-- [x] Semantic-only duplicate route rejection.
-- [x] Typed local embedding producer evidence.
-- [x] Explicit torus incomplete inventory.
+- Phase 14–18 **236/236**;
+- Phase 16 **39/39**;
+- Phase 17 **26/26**;
+- valid provenance, negative zig-zag, focused shared parity, semantic duplicate rejection, typed embedding evidence, and torus inventory.
 
 Open or regressed:
 
-- [ ] Full suite termination: 600-test suite stalls on bunny aggregate cases beyond 1,200 s and 900 s attempts.
-- [ ] Bounded subset: **583/597**, 14 failures.
-- [ ] Milestone D: **6/7**; cylinder remains `non-disk-cell cell=0 halfedge=43 twin=42 next=29`.
-- [ ] Milestone E: **23/26**; invalid local variant, valid parallel route, and real reuse remain open.
-- [ ] GP23 + GP24: **10/14**; intended optimization/validation lineage is preempted by completion failure.
-- [ ] Phase 20: **46/48**.
-- [ ] Direct production: **0/8**.
-- [ ] Repeated-node alternatives: sphere, mechanical, and face-edge still fail before completion.
-- [ ] Positive completion reuse/recompute: `0/0`.
-- [ ] Plane/seam/close sheets still fail `LocalSheetMismatch` after 12/24/34 quads.
-- [ ] Torus remains incomplete at descriptor 22 / cell 23.
-- [ ] Face-edge determinism: three stable failed runs, fourth repetition did not terminate within the resource window.
-- [ ] Smooth resource gate: 40.090 s exceeds 39.228299 s.
-- [ ] Same-sample memory reconciliation: measurement unavailable; 75% gate not established.
+- full 600-test suite did not terminate on bunny aggregate cases;
+- bounded subset **583/597**;
+- Milestone D **6/7**;
+- Milestone E **23/26**;
+- GP23 + GP24 **10/14**;
+- Phase20 **46/48**;
+- direct production **0/8**;
+- repeated-node alternatives did not commit;
+- positive reuse/recompute remained `0/0`;
+- plane/seam/close sheets remained `LocalSheetMismatch`;
+- cylinder remained non-disk and produced a bow-tie completion variant;
+- thin tube and smooth bunny produced degenerate variants;
+- torus remained incomplete;
+- face-edge fourth repeat did not terminate;
+- smooth exceeded its wall limit;
+- same-sample measurement was unavailable.
 
-## Earliest producers
+No P5-CB142 runtime closure is claimed until P5-TB22 executes artifact `8894034755` directly.
 
-- cylinder DCEL: `non-disk-cell`, cell 0, halfedge 43, twin 42, next 29;
-- focused completion: bounded-combinatorial variant 23 produces a degenerate quad;
-- cylinder completion: pattern variant 25 produces a bow-tie quad;
-- thin tube: bounded-combinatorial variant 21 produces a degenerate quad;
-- smooth bunny: closed-form variant 0 produces a degenerate quad at patch 9181;
-- sphere/mechanical/face-edge: repeated-boundary-node with no valid bounded alternative;
-- valid parallel route: `same-corner-distinct-boundary` conflict remains;
-- plane/seam/close sheets: global source-chart agreement remains invalid;
-- pipeline lineage fixtures do not reach intended later stages;
-- alternative repair work is not deterministically bounded on bunny.
+## P5-TB22 required work
 
-## Required next work
+Follow `.agents/Directional/Milestone_G_P5_CB142_Test_Benchmark_Plan.md`:
 
-Follow `.agents/Directional/Milestone_G_P5_Post_TB21_Production_Termination_Code_Build_Plan.md`:
+- [ ] Verify archive, exact source, empty status, internal **40/40** checksums, **26** fixtures, **9** submodules, source contents, and target hashes.
+- [ ] Validate finite deterministic alternative-state budgets, cycle/exhaustion evidence, memoization, valid commit, and exact rollback.
+- [ ] Validate repeated-node alternatives on generalized sphere/mechanical/face-edge topologies.
+- [ ] Validate cylinder periodic DCEL incidence, Euler 0, two boundary loops, orientation, and protected topology.
+- [ ] Validate bounded local variants for focused, cylinder, thin-tube, and smooth producers.
+- [ ] Validate semantic duplicate rejection, annular route completion, duplicate-output prevention, and genuine reuse/recompute.
+- [ ] Validate global source-chart agreement for plane, seam, close sheets, and disconnected sheets.
+- [ ] Validate GP23/GP24/Phase20 stage, injection, fallback, and failure lineage.
+- [ ] Validate typed torus inventory and completion.
+- [ ] Run Phase 14–18, D, E, GP23/24, Phase20, and the complete unfiltered suite.
+- [ ] Run all eight direct production fixtures with `SurfaceCells`, fallback `Fail`, and recovery disabled.
+- [ ] Run resource-gated face-edge and smooth bunny processes.
+- [ ] Require available same-sample memory measurement and at least 75% categorized reconciliation.
 
-- [ ] P5-CB135 — topology-derived alternative-state budget, deduplication, memoization, typed exhaustion, exact rollback.
-- [ ] P5-CB136 — valid repeated-node alternative for sphere/mechanical/face-edge generalized sources.
-- [ ] P5-CB137 — canonical cylinder periodic DCEL repair.
-- [ ] P5-CB138 — reject invalid local variants and select only bounded valid alternatives.
-- [ ] P5-CB139 — valid parallel-route identity and genuine completion reuse/recompute.
-- [ ] P5-CB140 — global source-sheet chart equivalence and stitching agreement.
-- [ ] P5-CB141 — production-valid stage-injection and validation-lineage fixtures.
-- [ ] P5-CB142 — torus inventory repair, same-sample memory measurement, four-target compile/package gate.
-
-The next turn must compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
+P5-TB22 must not configure, rebuild, relink, patch, regenerate, or modify source.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_CB135_CB142_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_CB142_Test_Benchmark_Plan.md`
 - `.agents/Directional/Milestone_G_P5_TB21_Artifact_Only_Test_Benchmark_Report.md`
 - `benchmark-results/p5-tb21-summary.json`
 - `.agents/Directional/Milestone_G_P5_Post_TB21_Production_Termination_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_CB126_CB134_Code_Build_Report.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 
