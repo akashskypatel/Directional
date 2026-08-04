@@ -8,83 +8,67 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB99 through P5-CB107 code + compile-only build**.
-- Next turn: **P5-TB18 artifact-only test and benchmark**.
+- Completed turn: **P5-TB18 artifact-only test and benchmark**.
+- Next turn: **P5-CB108 through P5-CB116 code changes + compile-only build**.
 
-## P5-CB107 compiled checkpoint
+## P5-TB18 disposition
 
-- Implementation and exact compiled source:
-  `94bf8347b10eebcd8d3e777c6f5f0a2227283a2e`.
-- Compile-only run: `30867891341` — **success**.
-- Artifact: `8876934846`
-  (`surface-cell-p5-cb107-github-source-linux-release`).
-- Archive SHA-256:
-  `ba06737ab313f30e23c74f402114649ee2c9f9d7c3a7177c7e0ba3328749df47`.
-- Mandatory log artifact: `8876935182`; SHA-256
-  `465aad3a957b99fdb8e7bf76b2040facc25b1ea1b2c00bfdca1d58990f1498dd`.
-- Source status empty; checksums **39/39**; packaged fixture files **26**.
-- Compiled exactly `directional_core`, `directional_pipeline`,
-  `directional_phase1_tests`, and `directional_benchmarks`.
-- No test, benchmark, custom mesh, or compiled project binary executed.
+Artifact `8876934846` was executed directly without rebuilding or modifying
+source. Integrity passed: exact source `94bf8347b10eebcd8d3e777c6f5f0a2227283a2e`,
+empty status, checksums **39/39**, fixtures **26**.
 
-## Implemented source checkpoint
+Runtime closure failed:
 
-- [x] P5-CB99 — canonical physical cell-side ownership plus exact per-face
-      source-chart maps; no frequency voting or count/order selection.
-- [x] P5-CB100 — canonical ownership propagated through simplification,
-      structural hashes, and transactional merges.
-- [x] P5-CB101 — parity/subdivision preflight consumes canonical ownership and
-      validates exact edge charts while preserving typed rollback evidence.
-- [x] P5-CB102 — domain/conflict identities and completion dependency keys use
-      canonical ownership and exact chart maps.
-- [x] P5-CB103 — invalid-midpoint fixture establishes a valid common chart
-      before the malformed midpoint.
-- [x] P5-CB106 — ownership payload/capacity accounting includes canonical class
-      and chart-map storage.
-- [x] P5-CB107 — focused regressions added; exact four-target compile/package
-      gate passed with mandatory success/failure logs.
+- Phase 14–18: **223/232**;
+- Milestone D: **4/7**;
+- Milestone E: **23/26**;
+- Phase 20: **47/48**;
+- complete-minus-three-blocked-heavy-cases: **573/593**;
+- full 596-test binary does not terminate because the smooth bunny path is
+  killed at **3,801,161,728 B** RSS;
+- every direct production case fails;
+- face-edge bunny fails at
+  `InvalidArrangementDomainIdentity;firstPatch=2` after **98.613553 s** and
+  **2,513,285,120 B** peak RSS;
+- exact reuse remains `0/0`;
+- invalid midpoint still returns `MissingCommonSourceChart`;
+- no fallback or source-grid recovery was used.
 
-P5-CB104, P5-CB105, and the quantitative P5-CB106 closure gates require runtime
-evidence after the source-scope blocker is removed. They are not declared
-closed by compilation.
+The new adjacent-chart and disconnected-close-sheet ownership regressions pass,
+and the bunny singularity-fan regression is restored. This does not close the
+canonical ownership implementation.
 
 ## Required next work
 
-Use artifact `8876934846` directly without rebuilding or modifying source.
+Follow:
 
-- [ ] Run the focused ownership, simplification, parity, route-reuse,
-      invalid-midpoint, cylinder, output, and memory regressions.
-- [ ] Run Phase 14–18 and Milestone D closure and compare against P5-TB17's
-      **572/594** complete-suite baseline.
-- [ ] Confirm both guaranteed completion-reuse fixtures report real
-      `reused > 0` and `recomputed > 0`.
-- [ ] Validate the canonical cylinder DCEL before candidate extraction:
-      incidence, embedding, orientation, disk cells, Euler 0, one component,
-      and two boundary loops.
-- [ ] Run the production fixture matrix and require nonempty valid manifold
-      pure-quad output without fallback/recovery.
-- [ ] Run deterministic random-bunny face-edge and smooth paths; retain the
-      earliest typed invalid producer if either path fails closed.
-- [ ] Reconcile categorized simultaneous ownership against peak RSS and require
-      at least 75% coverage.
-- [ ] Use runtime evidence to close P5-CB104–P5-CB106 or define the next focused
-      code + build plan.
+`.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
 
-Preserve all prohibitions: no validator weakening, frequency-vote restoration,
-fallback/recovery substitution, synthetic counters, positional merging,
-source-triangle pairing, arbitrary subset search, fixture/ID special cases, or
-timeout-as-correctness.
+- [ ] P5-CB108 — compact exact ownership-class registry; eliminate per-cell
+      component-wide chart duplication.
+- [ ] P5-CB109 — derive intrinsic canonical charts when explicit labels are
+      absent.
+- [ ] P5-CB110 — centralize ownership propagation through simplification and
+      restore Phase 17.
+- [ ] P5-CB111 — typed prepared-domain validation and parity producer repair.
+- [ ] P5-CB112 — route validation and genuine completion reuse.
+- [ ] P5-CB113 — valid invalid-midpoint fixture precondition and exact rollback.
+- [ ] P5-CB114 — canonical open-cylinder DCEL.
+- [ ] P5-CB115 — valid completion checkpoint and optimizer rollback/output.
+- [ ] P5-CB116 — regressions, memory bounds, and exact four-target
+      compile/package gate.
 
-Any GitHub workflow must follow
-`.agents/Directional/GitHub_Workflow_Policy.md`, including detailed activity
-logging and an `if: always()` log artifact.
+Preserve all prohibitions: no validator weakening, frequency/count/order
+selection, fallback/recovery substitution, synthetic counters, positional
+merging, source-triangle pairing, arbitrary subset search, fixture/ID special
+cases, or timeout-as-correctness.
 
-## Current evidence
+## Current authority
 
-- `.agents/Directional/Milestone_G_P5_CB99_CB107_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_Post_TB17_Source_Scope_Topology_Reuse_Output_Memory_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_TB17_Parity_Reuse_Output_Memory_Test_Benchmark_Report.md`
-- `benchmark-results/p5-tb17-summary.json`
+- `.agents/Directional/Milestone_G_P5_TB18_Canonical_Ownership_Output_Memory_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb18-summary.json`
+- `.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
 
 P5 remains open.
