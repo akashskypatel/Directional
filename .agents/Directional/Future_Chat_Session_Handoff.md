@@ -9,168 +9,148 @@
 
 ## Current checkpoint
 
-P5-CB126 through P5-CB134 code changes and the exact compile-only gate are complete. P5 remains open.
+P5-TB21 artifact-only runtime validation is complete. P5 remains open.
 
-Compiled checkpoint:
+Tested checkpoint:
 
+- exact source `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`;
 - implementation commit `01788193457e60bb8817a40b2c1551e672c4de5c`;
-- exact compiled source after a test-only namespace fix:
-  `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`;
-- successful run `30903283158`, job `91972369451`;
-- artifact `8890167812`,
-  `surface-cell-p5-cb134-github-source-linux-release`;
-- artifact SHA-256
-  `34a4da9a9c9e3374ed861c41b72493beefc90afbc85743fd25979484f3222bf1`;
-- workflow-log artifact `8890168646`, SHA-256
-  `34da4a27f77c8e55e8a1369b535cf5230b8d3879dfa1da8f3768226943034191`;
+- artifact `8890167812`, `surface-cell-p5-cb134-github-source-linux-release`;
+- SHA-256 `34a4da9a9c9e3374ed861c41b72493beefc90afbc85743fd25979484f3222bf1`;
 - empty source status;
 - checksums **41/41**;
 - fixture files **26**;
-- recursive submodule records **9**;
-- all 131 Ninja actions complete.
+- recursive submodules **9**.
 
-The build compiled exactly `directional_core`, `directional_pipeline`,
-`directional_phase1_tests`, and `directional_benchmarks`. No project binary,
-test, benchmark, custom mesh, help/list, or discovery command executed.
+No configure, build, relink, patch, regeneration, or source modification occurred during P5-TB21.
 
-The next turn is **P5-TB21 artifact-only test and benchmark**. Execute artifact
-`8890167812` directly. Do not configure, rebuild, relink, patch, regenerate, or
-modify source.
+The next turn is **P5-CB135 through P5-CB142 code changes + compile-only build**. Execute no test, benchmark, custom mesh, help/list/discovery command, or compiled project binary.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_CB126_CB134_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_CB134_Test_Benchmark_Plan.md`
-5. `.agents/Directional/Milestone_G_P5_TB20_Topology_Route_Completion_Test_Benchmark_Report.md`
-6. `benchmark-results/p5-tb20-summary.json`
+3. `.agents/Directional/Milestone_G_P5_TB21_Artifact_Only_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb21-summary.json`
+5. `.agents/Directional/Milestone_G_P5_Post_TB21_Production_Termination_Code_Build_Plan.md`
+6. `.agents/Directional/Milestone_G_P5_CB126_CB134_Code_Build_Report.md`
 7. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Implemented in P5-CB126–P5-CB134
+## P5-TB21 runtime result
 
-### Provenance and local embedding
+Closed or improved:
 
-- The positive provenance test now uses a simple regular polygon on `z=1` while
-  retaining component, sheet, face, barycentric, and position assertions.
-- The former zig-zag geometry is preserved as a separate negative embedding
-  regression.
-- Local completion failures now report a typed classification, owning patch and
-  cell, backend, bounded variant, local quad and corners, component/sheet, and
-  source faces.
-
-### Parity, cylinder topology, and bounded alternatives
-
-- The shared-parity fixture has explicit node-occurrence and cell chart
-  ownership plus a typed incidence assertion before repair.
-- Parity cost deterministically favors bounded-to-bounded interfaces while
-  preserving hard-feature penalties.
-- Arrangement construction decomposes pinched successor cycles into
-  edge-disjoint simple directed cycles before cell assignment.
-- Parity/replacement repair may evaluate bounded single-edge exclusions incident
-  to the typed failing cell, recomputing and validating each alternative before
-  commit.
-
-These source changes are compile-valid, but shared-parity success, cylinder
-closure, and production alternatives remain runtime-open.
-
-### Same-corner ownership and reuse
-
-Routes with equal embedded geometric/source-route identity now count as semantic
-overlap even when raw rail/curve IDs differ. A genuinely distinct route uses
-canonical boundary and source-route identity, and one canonical route is refined
-to preserve unaffected completion-cache entries.
-
-Runtime must still prove renamed duplicate rejection, valid annular completion,
-no duplicate stitched output, and genuine `reused > 0` plus `recomputed > 0`.
-Counters were not synthesized.
-
-### Pipeline lineage
-
-`fail_surface_cells` preserves an already-recorded original surface-cell failure
-instead of overwriting it during later failure propagation. Completion
-validation was not bypassed. GP23/GP24/Phase20 stage and fallback lineage remain
-runtime-open.
-
-### Source-sheet ownership and incomplete inventory
-
-Completion ownership validation now receives the source face matrix and can
-rebind source-vertex/source-edge barycentric support to a compatible owning
-component/sheet chart using intrinsic source-vertex identity. Incomplete-complex
-diagnostics now report descriptor, cell, reason, and attempted/failed/total
-inventory counts.
-
-Runtime must establish whether `LocalSheetMismatch`, invalid global output,
-torus incompleteness, and thin-tube completion are resolved.
-
-### Telemetry
-
-Benchmark JSON now distinguishes categorized peak owned bytes, whether a
-same-sample measurement is available, and explicit reconciliation remainder. A
-false availability flag is an honest open gate. Do not infer 75% coverage from
-phase maxima.
-
-## Compile incident
-
-Run `30902693111` applied and pushed the implementation commit, then failed only
-while compiling `PatchDescriptorMilestoneETests.cpp`: the typed incidence audit
-was qualified from `directional::geometry` instead of
-`directional::geometry::surface_simplification_detail`.
-
-Failure-log artifact `8889884342` has SHA-256
-`b3f41643b614ff4caaf3f5973524663ea7f2c1933fe0518c0f4c891f00a71171`.
-The follow-up commit `247061b...` corrects only those two test qualifications.
-Run `30903283158` then compiled and packaged successfully. No project binary ran
-in either workflow.
-
-## Last runtime authority: P5-TB20
-
-Closed or preserved:
-
-- package integrity;
-- Phase 16 **39/39** and Phase 17 **26/26**;
-- canonical rollback baseline;
-- typed incidence/domain evidence;
-- invalid repeated-node/halfedge/non-simple commits reject and roll back;
-- full-suite termination;
-- no fallback or source-grid recovery;
-- four face-edge failed runs within wall/RSS limits.
+- package authority;
+- Phase 14–18 **236/236**;
+- Phase 16 **39/39**;
+- Phase 17 **26/26**;
+- corrected positive provenance fixture;
+- explicit negative zig-zag embedding fixture;
+- focused shared-edge parity transaction;
+- semantic-only duplicate route rejection;
+- typed local embedding evidence;
+- explicit torus incomplete inventory.
 
 Open or regressed:
 
-- Phase 14–18 **234/235**;
-- full suite **581/599**;
-- shared-edge parity baseline/transaction;
-- cylinder non-disk cell;
-- valid replacement after repeated-node rejection;
-- same-corner route correctness and reuse `0/0`;
-- pipeline injection/fallback/original-failure lineage;
-- all eight production fixtures;
-- smooth wall repeat and four-run determinism;
-- at least 75% same-sample memory reconciliation.
+- full suite does not terminate on bunny aggregate cases within 1,200 s and 900 s attempts;
+- bounded subset is **583/597** with 14 failures;
+- Milestone D **6/7**;
+- Milestone E **23/26**;
+- GP23 + GP24 **10/14**;
+- Phase 20 **46/48**;
+- production **0/8**;
+- positive completion reuse/recompute `0/0`;
+- face-edge fourth repetition does not terminate in the resource window;
+- smooth run 40.090 s exceeds the 39.228299 s limit;
+- same-sample memory measurement unavailable and 75% reconciliation open.
 
-Do not claim any P5-CB134 runtime closure before P5-TB21.
+## Earliest authoritative producers
 
-## P5-TB21 execution order
+### Alternative repair termination
 
-Follow the artifact-only test plan:
+Three face-edge runs complete in 20.191–22.047 s with the same repeated-node failure. A fourth repetition fails to produce a result within the remaining approximately 257 seconds of a 300-second batch. Full-suite aggregate bunny cases also stall.
 
-1. package authority and hashes;
-2. focused provenance/embedding tests;
-3. shared parity and rollback;
-4. cylinder topology;
-5. bounded replacement alternatives;
-6. semantic duplicate, annular route, duplicate output, and real reuse;
-7. GP23/GP24/Phase20 pipeline lineage;
-8. typed local embedding and source-sheet stitching;
-9. Phase 14–18, D, E, GP23/24, Phase20, full suite;
-10. eight direct production fixtures;
-11. resource-gated face-edge and smooth bunny processes;
-12. same-sample memory availability/reconciliation disposition.
+The next implementation must bound work by canonical topology states and unique incident alternatives, not elapsed time. Detect repeated states, memoize T-join and boundary validation, report typed exhaustion/cycle evidence, and preserve exact rollback.
 
-Start one bunny process per field. Continue repetition only after each preceding
-run stays within the established 39.228299 s wall and 1,115,394,560 B peak
-working-set limits. Stop smooth repetition after the first limit violation.
+### Repeated-node alternatives
+
+- sphere: cell 2, halfedge 37, node 13, source face 7;
+- mechanical: cell 2, halfedge 719, node 65, source face 109;
+- face-edge bunny: cell 2, halfedge 45, node 20, source face 0.
+
+The initial invalid cycle rejects correctly, but no valid bounded alternative commits.
+
+### Cylinder
+
+`CylindricalOpenStrandCommitsWithTopologyPreserved` remains:
+
+`non-disk-cell cell=0 halfedge=43 twin=42 next=29`
+
+Repair the directed periodic DCEL incidence; do not relabel invalid topology as disk.
+
+### Local completion variants
+
+Typed producers:
+
+- focused fallback: patch 0, bounded-combinatorial variant 23, `degenerate-normal`;
+- cylinder: patch 10, pattern variant 25, local quad 1, `bow-tie-intersection`;
+- thin tube: patch 108, bounded-combinatorial variant 21, `degenerate-normal`;
+- smooth bunny: patch 9181, closed-form variant 0, `degenerate-normal`, source face 406.
+
+Validate each candidate variant before authority and continue only through the existing bounded deterministic catalog.
+
+### Parallel route and reuse
+
+Renamed semantic duplicates reject, but the valid annular/parallel route still fails as `same-corner-distinct-boundary`. The one-candidate budget contract reports zero incremental recomputation and reuse/recompute `0/0`.
+
+Use separate semantic-overlap and stitch-separation identities. Invalidate only changed dependencies and count reuse/recompute only after real validated operations.
+
+### Source-sheet agreement
+
+- plane: 12 quads, `LocalSheetMismatch`, cell 4, face 7;
+- multi-face seam: 24 quads, cell 2, face 15;
+- close sheets: 34 quads, cell 3, face 13.
+
+Local rebinding is insufficient. Build a global intrinsic source-chart equivalence graph and require shared completed vertices/edges to agree before commit. Keep disconnected close sheets distinct.
+
+### Pipeline lineage
+
+GP23/GP24/Phase20 later-stage fixtures still encounter real completion failure before intended optimization or validation evidence. Correct invalid preceding-stage fixtures or producers; do not bypass completion or reorder production stages.
+
+### Torus and memory
+
+Torus reports:
+
+`IncompleteSurfaceCellComplex;descriptor=22;cell=23;reason=3;attempted=41;failed=2;total=43`
+
+Replace numeric public reason with a stable typed name and repair the missing/infeasible producer.
+
+Memory telemetry honestly reports `sameSampleOwnershipMeasurementAvailable=false`. Implement actual same-timestamp working-set and owned-byte sampling; never sum phase maxima.
+
+## Required next work
+
+Follow P5-CB135–P5-CB142 in the post-TB21 plan, in order:
+
+1. deterministic canonical alternative-state budget and cycle detection;
+2. valid repeated-node alternatives;
+3. cylinder periodic DCEL repair;
+4. valid local completion variants;
+5. parallel-route identity and genuine reuse;
+6. global source-sheet chart agreement;
+7. production-valid stage-injection and failure lineage;
+8. torus inventory, same-sample memory sampling, and exact compile/package gate.
+
+## Compile-only boundary
+
+Shallow-initialize recursive submodules and compile exactly:
+
+- `directional_core`;
+- `directional_pipeline`;
+- `directional_phase1_tests`;
+- `directional_benchmarks`.
+
+Do not run them. Initialize detailed workflow logging before fallible work and always upload a separate log artifact.
 
 ## Preserved prohibitions
 
@@ -185,12 +165,9 @@ working-set limits. Stop smooth repetition after the first limit violation.
 
 ## Key lessons
 
-- A test intended to prove provenance must use valid geometry; preserve malformed
-  geometry as a separate negative contract.
-- Typed rejection must be followed by a bounded, topologically justified valid
-  alternative; rejection alone is not completion.
-- Route identity requires both canonical boundary occurrence and embedded source
-  ownership; raw names and geometric position are insufficient.
-- Source-chart rebinding must preserve intrinsic geometry and lineage.
-- Compile-only success establishes build validity, not production
-  quadrangulation.
+- Typed rejection is not enough; the producer must find a valid topologically bounded alternative.
+- A search described as bounded can still be operationally unbounded without canonical state deduplication and topology-derived limits.
+- Full-suite termination is a production gate; a filtered subset is diagnostic evidence only.
+- Route semantic overlap and stitch separation are distinct identities.
+- Local source-chart validity does not imply global cross-patch chart agreement.
+- Honest unavailable memory measurement is preferable to unsupported coverage, but it does not satisfy reconciliation.
