@@ -9,107 +9,72 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — direct completion ownership remediation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`; keep open and unmerged.
-- Exact implementation and compiled source:
-  `9bff7d352f2751228d10ce72e2860c899f90de80`.
-- Compile-only run: `30871579432` — **success**.
-- Compiled artifact: `8878170954`.
-- Completed turn: **P5-CB108 through P5-CB116 code + compile-only build**.
-- Next turn: **P5-TB19 artifact-only test and benchmark**.
+- Tested source: `9bff7d352f2751228d10ce72e2860c899f90de80`.
+- Tested artifact: `8878170954`.
+- Completed turn: **P5-TB19 artifact-only test and benchmark**.
+- Next turn: **P5-CB117 through P5-CB125 code + compile-only build**.
 
 ## Work phases
 
 - [x] P0–P4 — earlier remediation.
 - [ ] P5 — direct completion ownership remediation. **In progress**
-- [x] P5-CB42–P5-CB107 — earlier implementation and compile/package turns.
-- [x] P5-TB11–P5-TB18 — runtime diagnosis through the canonical-ownership
-      resource regression.
-- [x] P5-CB108 — compact exact ownership registry and one-per-complex storage.
+- [x] P5-CB42–P5-CB116 — implementation and compile/package turns through
+      compact ownership.
+- [x] P5-TB11–P5-TB19 — runtime diagnosis through compact-ownership resource
+      closure and typed producer evidence.
+- [x] P5-CB108 — compact one-per-complex exact ownership registry.
 - [x] P5-CB109 — unlabeled intrinsic ownership derivation.
-- [x] P5-CB110 — registry-backed ownership through simplification and rollback.
-- [x] P5-CB111 — typed prepared-domain validation/audit groundwork.
-- [ ] P5-CB112 — completion dependency compaction implemented; route validation
-      and exact positive reuse require runtime closure.
-- [x] P5-CB113 — invalid-midpoint fixture precondition correction.
-- [ ] P5-CB114 — cylinder ownership preconditions implemented; canonical DCEL
-      runtime closure remains open.
-- [ ] P5-CB115 — valid completed-checkpoint/optimizer rollback implemented;
-      production-output runtime closure remains open.
-- [x] P5-CB116 — regression source and exact compile/package gate.
-- [ ] P5-TB19 — artifact-only runtime verification of the CB116 checkpoint.
+- [x] P5-CB110 — registry-backed simplification and rollback.
+- [x] P5-CB111 — typed prepared-domain validation.
+- [ ] P5-CB112 — completion dependencies compacted; positive reuse still open.
+- [x] P5-CB113 — invalid-midpoint contract closed at runtime.
+- [ ] P5-CB114 — cylinder ownership preconditions exist; incidence/DCEL open.
+- [ ] P5-CB115 — completed-checkpoint validation exists; valid output open.
+- [x] P5-CB116 — exact compile/package checkpoint.
+- [x] P5-TB19 — artifact-only runtime verification completed.
+- [ ] P5-CB117–P5-CB125 — next focused producer corrections.
 - [ ] P6–P8 — final validation, closure, and production disposition.
 
-## P5-CB116 artifact integrity
+## P5-TB19 evidence
 
-- Artifact ID: `8878170954`.
-- Name: `surface-cell-p5-cb116-github-source-linux-release`.
-- Exact source: `9bff7d352f2751228d10ce72e2860c899f90de80`.
-- Artifact SHA-256:
-  `c82a27122aaa3f3cc96f6cb3621248ed8eed4bdaf92df503b0f8deb06ec8f5d6`.
-- Mandatory workflow-log artifact: `8878171276`.
-- Log SHA-256:
-  `9f1531b930be97ceb674eb4f0f788cd5271673fbc77fc600df1f0768d36d28e6`.
-- Reviewed patch SHA-256:
-  `e35e2afc376e2cc34fe552f0e76bd7a7628f67255da4f5c44ab369830e0181cd`.
-- Packaged source status: empty.
-- Recursive checksums: **40/40**.
-- Fixture files: **26**.
-- Compiled targets:
-  - `directional_core`;
-  - `directional_pipeline`;
-  - `directional_phase1_tests`;
-  - `directional_benchmarks`.
-- No test, benchmark, custom mesh, help/list/discovery command, or compiled
-  project binary executed.
+- package integrity: source status empty, **40/40** checksums, **26** fixtures,
+  **9** submodule records;
+- Phase 14–18: **235/235**;
+- Phase 16: **39/39**;
+- Phase 17: **26/26**;
+- Milestone D: **5/7**;
+- Milestone E: **23/26**;
+- Phase 20: **46/48**;
+- complete suite: **583/599**, terminates in **100.312 s**, maximum RSS
+  **530,259,968 B**;
+- all three formerly blocked heavy cases terminate;
+- midpoint mutation/rollback and typed domain evidence pass;
+- four face-edge runs: 19.674–20.659 s, approximately 204.4 MB peak,
+  deterministic repeated-boundary-node failure;
+- four smooth runs: 31.469–32.522 s, approximately 451.1 MB peak,
+  deterministic completion-template duplicate failure;
+- every production fixture fails; no fallback/recovery;
+- reuse/recompute remains `0/0`;
+- memory reconciliation remains about 18.7% face-edge and 43.4% smooth.
 
-## Implemented correction model
+## P5-CB117–P5-CB125 requirements
 
-The exact physical ownership-class membership is now stored once in a sorted
-registry owned by `SurfaceCellComplex`. A cell carries only a compact
-`{component, ordinal}` key and its exact incident source charts. Registry
-membership remains collision-free and face-row independent; exact equality is
-not replaced by a hash.
-
-When explicit complete labels are absent, source connected components and
-default charts are derived from intrinsic source topology. Explicit labels
-remain authoritative. Simplification, parity/subdivision repair, descriptor
-audits, structural/rollback hashes, and memory accounting share the same
-registry-backed model.
-
-Prepared-domain failures now distinguish repeated nodes, repeated halfedges,
-non-simple boundaries, missing charts, and registry mismatches. The pipeline
-also validates and retains a completed output checkpoint before optimization so
-an invalid optimizer result can roll back to the last valid completed mesh.
-
-## P5-TB19 runtime requirements
-
-Use artifact `8878170954` directly. Do not configure, rebuild, relink, patch,
-regenerate, or modify source.
-
-- [ ] Verify package authority, all checksums, submodules, and fixture closure.
-- [ ] Run focused compact-registry, unlabeled topology, row-order, prepared-domain,
-      route/reuse, midpoint, cylinder, output, and memory regressions.
-- [ ] Run Phase 14–18, Milestone D, Milestone E, Phase 20, and the complete
-      suite; compare with P5-TB18's 573/593 completed aggregate and three heavy
-      blockers.
-- [ ] Require genuine positive reused and recomputed completion counts in both
-      guaranteed reuse scenarios.
-- [ ] Require malformed midpoint to reach `InvalidMidpointEmbedding` after
-      temporary mutation and prove exact rollback.
-- [ ] Validate the cylinder before simplification: incidence, embedding,
-      orientation, disk cells, Euler characteristic 0, one connected component,
-      two boundary loops, and protected strand/rail preservation.
-- [ ] Run plane, cylinder, multi-face seam, torus, mechanical feature, close
-      sheets, prescribed sphere, thin bent tube, and bunny direct production
-      cases with fallback and source-grid recovery disabled.
-- [ ] Require returned output itself to be nonempty, source-valid, manifold, and
-      pure quad for supported cases.
-- [ ] Run one face-edge and one smooth random-bunny process first; only perform
-      four-run determinism after each path completes within established wall and
-      RSS limits.
-- [ ] Reconcile categorized simultaneous ownership against the same peak-RSS
-      sample and require at least 75% coverage.
-- [ ] Preserve the first typed invalid producer and define the next focused
-      code/build turn for every unmet gate.
+- [ ] P5-CB117 — establish canonical transaction-entry baseline and correct the
+      legacy fixture rollback comparison without weakening identity.
+- [ ] P5-CB118 — typed incidence audit and topology-derived open-cylinder DCEL.
+- [ ] P5-CB119 — conforming shared-edge parity transaction and topology refresh.
+- [ ] P5-CB120 — prevent/repair repeated boundary nodes after successful side
+      subdivision.
+- [ ] P5-CB121 — topological same-corner route ownership and real completion
+      cache reuse/recompute.
+- [ ] P5-CB122 — preserve completion validation while restoring injected-stage,
+      fallback, original-failure, and last-valid-artifact semantics.
+- [ ] P5-CB123 — produce source-valid non-self-intersecting completed quads and
+      retain only valid checkpoints.
+- [ ] P5-CB124 — resolve smooth duplicate completion ownership and exact first
+      incomplete torus/thin-tube patches.
+- [ ] P5-CB125 — same-sample memory categories, regressions, and compile/package
+      the four required targets without executing binaries.
 
 ## Preserved prohibitions
 
@@ -124,10 +89,9 @@ regenerate, or modify source.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_CB108_CB116_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_TB18_Canonical_Ownership_Output_Memory_Test_Benchmark_Report.md`
-- `benchmark-results/p5-tb18-summary.json`
-- `.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
+- `.agents/Directional/Milestone_G_P5_TB19_Ownership_Compaction_Topology_Output_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb19-summary.json`
+- `.agents/Directional/Milestone_G_P5_Post_TB19_Completion_Topology_Reuse_Output_Code_Build_Plan.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `TODO`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
