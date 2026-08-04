@@ -1617,120 +1617,210 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
               });
   }
 
-  std::vector<unsigned char> globallyVisited(input.cells.size(), 0U);
-  std::set<int> selected;
-  for (int start = 0; start < static_cast<int>(input.cells.size()); ++start) {
-    if (globallyVisited[static_cast<std::size_t>(start)] != 0U) {
-      continue;
+  const auto computeSelected = [&](const std::set<int> &excluded,
+                                   std::set<int> &selected,
+                                   std::string &failure) {
+    selected.clear();
+    std::vector<unsigned char> globallyVisited(input.cells.size(), 0U);
+    for (int startCell = 0; startCell < static_cast<int>(input.cells.size());
+         ++startCell) {
+      if (globallyVisited[static_cast<std::size_t>(startCell)] != 0U) {
+        continue;
+      }
+      std::vector<int> component;
+      std::queue<int> discover;
+      discover.push(startCell);
+      globallyVisited[static_cast<std::size_t>(startCell)] = 1U;
+      while (!discover.empty()) {
+        const int cell = discover.front();
+        discover.pop();
+        component.push_back(cell);
+        for (const DualEdge &edge : adjacency[static_cast<std::size_t>(cell)]) {
+          if (excluded.count(edge.halfedge) != 0U) {
+            continue;
+          }
+          if (globallyVisited[static_cast<std::size_t>(edge.neighbor)] == 0U) {
+            globallyVisited[static_cast<std::size_t>(edge.neighbor)] = 1U;
+            discover.push(edge.neighbor);
+          }
+        }
+      }
+      int root = *std::min_element(component.begin(), component.end());
+      for (const int cell : component) {
+        if (input.cells[static_cast<std::size_t>(cell)].boundaryCycle) {
+          root = cell;
+          break;
+        }
+      }
+
+      using QueueEntry = std::tuple<std::int64_t, int, int>;
+      std::priority_queue<QueueEntry, std::vector<QueueEntry>,
+                          std::greater<QueueEntry>> queue;
+      std::vector<std::int64_t> distance(
+          input.cells.size(), std::numeric_limits<std::int64_t>::max());
+      std::vector<int> parent(input.cells.size(), -1);
+      std::vector<int> parentEdge(input.cells.size(), -1);
+      std::vector<int> order;
+      distance[static_cast<std::size_t>(root)] = 0;
+      queue.emplace(0, root, -1);
+      while (!queue.empty()) {
+        const auto [cost, cell, unused] = queue.top();
+        (void)unused;
+        queue.pop();
+        if (cost != distance[static_cast<std::size_t>(cell)]) {
+          continue;
+        }
+        order.push_back(cell);
+        for (const DualEdge &edge : adjacency[static_cast<std::size_t>(cell)]) {
+          if (excluded.count(edge.halfedge) != 0U) {
+            continue;
+          }
+          const bool bothBounded =
+              !input.cells[static_cast<std::size_t>(cell)].boundaryCycle &&
+              !input.cells[static_cast<std::size_t>(edge.neighbor)]
+                   .boundaryCycle;
+          const std::int64_t edgeCost =
+              (edge.hardFeature ? 1000000LL : 0LL) +
+              (bothBounded ? 1LL : 2LL);
+          const std::int64_t candidate = cost + edgeCost;
+          const auto candidateKey =
+              std::make_tuple(candidate, cell, edge.halfedge);
+          const auto previousKey = std::make_tuple(
+              distance[static_cast<std::size_t>(edge.neighbor)],
+              parent[static_cast<std::size_t>(edge.neighbor)],
+              parentEdge[static_cast<std::size_t>(edge.neighbor)]);
+          if (candidateKey < previousKey) {
+            distance[static_cast<std::size_t>(edge.neighbor)] = candidate;
+            parent[static_cast<std::size_t>(edge.neighbor)] = cell;
+            parentEdge[static_cast<std::size_t>(edge.neighbor)] =
+                edge.halfedge;
+            queue.emplace(candidate, edge.neighbor, edge.halfedge);
+          }
+        }
+      }
+      if (order.size() != component.size()) {
+        failure = "DisconnectedDualComponent";
+        return false;
+      }
+      std::vector<unsigned char> parity(input.cells.size(), 0U);
+      for (const int cell : component) {
+        if (!input.cells[static_cast<std::size_t>(cell)].boundaryCycle &&
+            input.cells[static_cast<std::size_t>(cell)].halfedges.size() % 2U !=
+                0U) {
+          parity[static_cast<std::size_t>(cell)] = 1U;
+        }
+      }
+      for (auto iterator = order.rbegin(); iterator != order.rend();
+           ++iterator) {
+        const int cell = *iterator;
+        if (cell == root || parity[static_cast<std::size_t>(cell)] == 0U) {
+          continue;
+        }
+        const int edge = parentEdge[static_cast<std::size_t>(cell)];
+        const int ancestor = parent[static_cast<std::size_t>(cell)];
+        if (edge < 0 || ancestor < 0) {
+          failure = "UnpairableOddCell";
+          return false;
+        }
+        selected.insert(edge);
+        parity[static_cast<std::size_t>(ancestor)] ^= 1U;
+      }
+      if (!input.cells[static_cast<std::size_t>(root)].boundaryCycle &&
+          parity[static_cast<std::size_t>(root)] != 0U) {
+        failure = "UnpairableClosedComponentParity";
+        return false;
+      }
     }
-    std::vector<int> component;
-    std::queue<int> discover;
-    discover.push(start);
-    globallyVisited[static_cast<std::size_t>(start)] = 1U;
-    while (!discover.empty()) {
-      const int cell = discover.front();
-      discover.pop();
-      component.push_back(cell);
-      for (const DualEdge &edge : adjacency[static_cast<std::size_t>(cell)]) {
-        if (globallyVisited[static_cast<std::size_t>(edge.neighbor)] == 0U) {
-          globallyVisited[static_cast<std::size_t>(edge.neighbor)] = 1U;
-          discover.push(edge.neighbor);
+    return true;
+  };
+
+  const auto attemptSubdivision = [&](const std::set<int> &selected) {
+    std::map<int, int> insertions;
+    for (const int halfedge : selected) {
+      insertions.emplace(halfedge, 1);
+    }
+    return subdivide_surface_cell_complex_edges(input, insertions);
+  };
+
+  std::set<int> selected;
+  std::string selectionFailure;
+  if (!computeSelected({}, selected, selectionFailure)) {
+    result.failure = selectionFailure;
+    return result;
+  }
+  SurfaceCellSubdivisionResult firstSubdivision =
+      attemptSubdivision(selected);
+  SurfaceCellSubdivisionResult acceptedSubdivision;
+  std::set<int> acceptedSelection;
+  if (firstSubdivision.success) {
+    acceptedSubdivision = std::move(firstSubdivision);
+    acceptedSelection = selected;
+  } else {
+    // A single deterministic T-join can cross a pinched local boundary even
+    // when another adjacent dual route is valid.  Retry only topology-implied
+    // single-edge exclusions incident to the typed failing cell.  This bounded
+    // local alternate set is not a powerset and never selects by fixture IDs,
+    // frequency, or input row order.
+    std::vector<int> localAlternatives;
+    const int failingCell = firstSubdivision.firstDomainFailure.cellId;
+    if (failingCell >= 0 &&
+        firstSubdivision.failure.rfind("InvalidReplacementBoundary:", 0) == 0) {
+      for (const int halfedge : selected) {
+        if (halfedge < 0 ||
+            halfedge >= static_cast<int>(input.halfedges.size())) {
+          continue;
+        }
+        const SurfaceArrangementHalfedge &edge =
+            input.halfedges[static_cast<std::size_t>(halfedge)];
+        const int twinCell = edge.twin >= 0 &&
+                                     edge.twin <
+                                         static_cast<int>(input.halfedges.size())
+                                 ? input.halfedges[
+                                       static_cast<std::size_t>(edge.twin)]
+                                       .cell
+                                 : -1;
+        if (edge.cell == failingCell || twinCell == failingCell) {
+          localAlternatives.push_back(halfedge);
         }
       }
     }
-    int root = *std::min_element(component.begin(), component.end());
-    for (const int cell : component) {
-      if (input.cells[static_cast<std::size_t>(cell)].boundaryCycle) {
-        root = cell;
+    std::sort(localAlternatives.begin(), localAlternatives.end());
+    localAlternatives.erase(
+        std::unique(localAlternatives.begin(), localAlternatives.end()),
+        localAlternatives.end());
+    constexpr std::size_t maxLocalAlternatives = 16U;
+    if (localAlternatives.size() > maxLocalAlternatives) {
+      localAlternatives.resize(maxLocalAlternatives);
+    }
+    for (const int excludedHalfedge : localAlternatives) {
+      std::set<int> retrySelection;
+      std::string retryFailure;
+      if (!computeSelected({excludedHalfedge}, retrySelection, retryFailure)) {
+        continue;
+      }
+      SurfaceCellSubdivisionResult retry =
+          attemptSubdivision(retrySelection);
+      if (retry.success) {
+        acceptedSubdivision = std::move(retry);
+        acceptedSelection = std::move(retrySelection);
         break;
       }
     }
-
-    using QueueEntry = std::tuple<std::int64_t, int, int>;
-    std::priority_queue<QueueEntry, std::vector<QueueEntry>,
-                        std::greater<QueueEntry>> queue;
-    std::vector<std::int64_t> distance(
-        input.cells.size(), std::numeric_limits<std::int64_t>::max());
-    std::vector<int> parent(input.cells.size(), -1);
-    std::vector<int> parentEdge(input.cells.size(), -1);
-    std::vector<int> order;
-    distance[static_cast<std::size_t>(root)] = 0;
-    queue.emplace(0, root, -1);
-    while (!queue.empty()) {
-      const auto [cost, cell, unused] = queue.top();
-      (void)unused;
-      queue.pop();
-      if (cost != distance[static_cast<std::size_t>(cell)]) {
-        continue;
-      }
-      order.push_back(cell);
-      for (const DualEdge &edge : adjacency[static_cast<std::size_t>(cell)]) {
-        const std::int64_t edgeCost =
-            edge.hardFeature ? 1000000LL : 1LL;
-        const std::int64_t candidate = cost + edgeCost;
-        const auto candidateKey =
-            std::make_tuple(candidate, cell, edge.halfedge);
-        const auto previousKey = std::make_tuple(
-            distance[static_cast<std::size_t>(edge.neighbor)],
-            parent[static_cast<std::size_t>(edge.neighbor)],
-            parentEdge[static_cast<std::size_t>(edge.neighbor)]);
-        if (candidateKey < previousKey) {
-          distance[static_cast<std::size_t>(edge.neighbor)] = candidate;
-          parent[static_cast<std::size_t>(edge.neighbor)] = cell;
-          parentEdge[static_cast<std::size_t>(edge.neighbor)] = edge.halfedge;
-          queue.emplace(candidate, edge.neighbor, edge.halfedge);
-        }
-      }
-    }
-    if (order.size() != component.size()) {
-      result.failure = "DisconnectedDualComponent";
-      return result;
-    }
-    std::vector<unsigned char> parity(input.cells.size(), 0U);
-    for (const int cell : component) {
-      if (!input.cells[static_cast<std::size_t>(cell)].boundaryCycle &&
-          input.cells[static_cast<std::size_t>(cell)].halfedges.size() % 2U !=
-              0U) {
-        parity[static_cast<std::size_t>(cell)] = 1U;
-      }
-    }
-    for (auto iterator = order.rbegin(); iterator != order.rend(); ++iterator) {
-      const int cell = *iterator;
-      if (cell == root || parity[static_cast<std::size_t>(cell)] == 0U) {
-        continue;
-      }
-      const int edge = parentEdge[static_cast<std::size_t>(cell)];
-      const int ancestor = parent[static_cast<std::size_t>(cell)];
-      if (edge < 0 || ancestor < 0) {
-        result.failure = "UnpairableOddCell";
-        return result;
-      }
-      selected.insert(edge);
-      parity[static_cast<std::size_t>(ancestor)] ^= 1U;
-    }
-    if (!input.cells[static_cast<std::size_t>(root)].boundaryCycle &&
-        parity[static_cast<std::size_t>(root)] != 0U) {
-      result.failure = "UnpairableClosedComponentParity";
+    if (!acceptedSubdivision.success) {
+      result.failure = firstSubdivision.failure;
+      result.firstScopeFailure =
+          std::move(firstSubdivision.firstScopeFailure);
+      result.firstDomainFailure =
+          std::move(firstSubdivision.firstDomainFailure);
+      result.complex = std::move(firstSubdivision.complex);
       return result;
     }
   }
 
-  std::map<int, int> insertions;
-  for (const int halfedge : selected) {
-    insertions.emplace(halfedge, 1);
-  }
-  SurfaceCellSubdivisionResult subdivision =
-      subdivide_surface_cell_complex_edges(std::move(input), insertions);
-  if (!subdivision.success) {
-    result.failure = subdivision.failure;
-    result.firstScopeFailure = std::move(subdivision.firstScopeFailure);
-    result.firstDomainFailure = std::move(subdivision.firstDomainFailure);
-    result.complex = std::move(subdivision.complex);
-    return result;
-  }
-  result.complex = std::move(subdivision.complex);
-  result.hardFeatureSplits = subdivision.hardFeatureSplits;
-  result.splitHalfedges.assign(selected.begin(), selected.end());
+  result.complex = std::move(acceptedSubdivision.complex);
+  result.hardFeatureSplits = acceptedSubdivision.hardFeatureSplits;
+  result.splitHalfedges.assign(acceptedSelection.begin(),
+                               acceptedSelection.end());
   result.oddCellsAfter =
       surface_cell_feasibility_detail::odd_bounded_cell_count(result.complex);
   result.success = result.oddCellsAfter == 0;

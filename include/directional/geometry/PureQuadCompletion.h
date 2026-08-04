@@ -81,6 +81,56 @@ inline const char *pure_quad_completion_backend_name(
   return "unknown";
 }
 
+enum class PureQuadEmbeddingFailureKind : int {
+  None = 0,
+  DuplicateMeshVertex = 1,
+  InvalidQuadCardinality = 2,
+  RepeatedQuadVertex = 3,
+  MissingVertexPosition = 4,
+  NonFinitePosition = 5,
+  DegenerateNormal = 6,
+  ZeroProjectedArea = 7,
+  BowTieIntersection = 8,
+};
+
+inline const char *pure_quad_embedding_failure_name(
+    const PureQuadEmbeddingFailureKind failure) {
+  switch (failure) {
+  case PureQuadEmbeddingFailureKind::None:
+    return "none";
+  case PureQuadEmbeddingFailureKind::DuplicateMeshVertex:
+    return "duplicate-mesh-vertex";
+  case PureQuadEmbeddingFailureKind::InvalidQuadCardinality:
+    return "invalid-quad-cardinality";
+  case PureQuadEmbeddingFailureKind::RepeatedQuadVertex:
+    return "repeated-quad-vertex";
+  case PureQuadEmbeddingFailureKind::MissingVertexPosition:
+    return "missing-vertex-position";
+  case PureQuadEmbeddingFailureKind::NonFinitePosition:
+    return "nonfinite-position";
+  case PureQuadEmbeddingFailureKind::DegenerateNormal:
+    return "degenerate-normal";
+  case PureQuadEmbeddingFailureKind::ZeroProjectedArea:
+    return "zero-projected-area";
+  case PureQuadEmbeddingFailureKind::BowTieIntersection:
+    return "bow-tie-intersection";
+  }
+  return "unknown";
+}
+
+struct PureQuadEmbeddingFailure {
+  bool active = false;
+  PureQuadEmbeddingFailureKind kind = PureQuadEmbeddingFailureKind::None;
+  int sourcePatch = -1;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int completionVariant = 0;
+  int localQuad = -1;
+  std::array<int, 4> localVertices{{-1, -1, -1, -1}};
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  std::vector<int> sourceFaces;
+};
+
 enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };
 
 struct PureQuadFeatureIntervalLineage {
@@ -227,6 +277,7 @@ struct PureQuadCompletionResult {
   PureQuadPatchRejectReason failureReason = PureQuadPatchRejectReason::None;
   int exploredPatterns = 0;
   PureQuadCompletionOwnershipRejection ownershipRejection;
+  PureQuadEmbeddingFailure embeddingFailure;
   std::string failure;
 };
 
@@ -236,6 +287,7 @@ bool validate_completion_domain_ownership(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     int completionVariant,
     const SurfacePointSourceSupportResolver *sourceSupportResolver,
+    const Eigen::MatrixXi *sourceFaces,
     const std::vector<int> *sourceFaceComponents,
     const std::vector<int> *sourceFaceSheets, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection);

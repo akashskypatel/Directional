@@ -2132,6 +2132,38 @@ void write_remesh_diagnostics_json(std::ostream &out,
     if (faceIndex > 0U) out << ",";
     out << ownershipRejection.patchSourceFaces[faceIndex];
   }
+  const geometry::PureQuadEmbeddingFailure &embeddingFailure =
+      result.surfaceCellContext.firstCompletionEmbeddingFailure;
+  out << "],"
+      << "\"completionEmbeddingFailureAvailable\":"
+      << (embeddingFailure.active ? "true" : "false") << ","
+      << "\"completionEmbeddingFailureKind\":\""
+      << geometry::pure_quad_embedding_failure_name(embeddingFailure.kind)
+      << "\","
+      << "\"completionEmbeddingSourcePatch\":"
+      << embeddingFailure.sourcePatch << ","
+      << "\"completionEmbeddingBackend\":\""
+      << geometry::pure_quad_completion_backend_name(embeddingFailure.backend)
+      << "\","
+      << "\"completionEmbeddingVariant\":"
+      << embeddingFailure.completionVariant << ","
+      << "\"completionEmbeddingLocalQuad\":"
+      << embeddingFailure.localQuad << ","
+      << "\"completionEmbeddingVertices\":["
+      << embeddingFailure.localVertices[0] << ","
+      << embeddingFailure.localVertices[1] << ","
+      << embeddingFailure.localVertices[2] << ","
+      << embeddingFailure.localVertices[3] << "],"
+      << "\"completionEmbeddingComponent\":"
+      << embeddingFailure.sourceComponent << ","
+      << "\"completionEmbeddingSheet\":"
+      << embeddingFailure.sourceSheet << ","
+      << "\"completionEmbeddingSourceFaces\":[";
+  for (std::size_t faceIndex = 0;
+       faceIndex < embeddingFailure.sourceFaces.size(); ++faceIndex) {
+    if (faceIndex > 0U) out << ",";
+    out << embeddingFailure.sourceFaces[faceIndex];
+  }
   out << "],"
       << "\"completionUnresolvedSingularVertexCount\":"
       << result.surfaceCellContext.completionUnresolvedSingularVertices.size()
@@ -3055,6 +3087,17 @@ void write_results_json(const Options &options,
           << ", \"peakWorkingSetBytes\": " << run.peakWorkingSetBytes
           << ", \"estimatedPeakSimultaneousOwnedBytes\": "
           << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
+          << ", \"categorizedPeakOwnedBytes\": "
+          << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
+          << ", \"sameSampleOwnershipMeasurementAvailable\": false"
+          << ", \"peakReconciliationRemainderBytes\": "
+          << (run.peakWorkingSetBytes >
+                      run.result.surfaceCellContext
+                          .estimatedPeakSimultaneousOwnedBytes
+                  ? run.peakWorkingSetBytes -
+                        run.result.surfaceCellContext
+                            .estimatedPeakSimultaneousOwnedBytes
+                  : 0U)
           << ", \"unexplainedPeakWorkingSetBytes\": "
           << (run.peakWorkingSetBytes >
                       run.result.surfaceCellContext

@@ -3927,8 +3927,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           remesh_backend_name(RemeshBackend::SurfaceCells);
       result.diagnostics.terminalFailureCode = failureCode;
       result.diagnostics.terminalFailureStage = stage;
-      result.diagnostics.originalSurfaceCellFailureCode = failureCode;
-      result.diagnostics.originalSurfaceCellFailureStage = stage;
+      const std::string noneFailure = surface_cell_failure_code_name(
+          SurfaceCellFailureCode::None);
+      if (result.diagnostics.originalSurfaceCellFailureCode.empty() ||
+          result.diagnostics.originalSurfaceCellFailureCode == noneFailure) {
+        result.diagnostics.originalSurfaceCellFailureCode = failureCode;
+        result.diagnostics.originalSurfaceCellFailureStage = stage;
+      }
       result.diagnostics.surfaceCellFallbackCause.clear();
       result.diagnostics.surfaceCellFallbackAttempted = false;
       result.diagnostics.surfaceCellUsedLegacyFallback = false;
@@ -5003,6 +5008,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         std::move(completionResult.ownershipRepairAttempts);
     result.surfaceCellContext.firstCompletionOwnershipRejection =
         completionResult.firstCompletionOwnershipRejection;
+    result.surfaceCellContext.firstCompletionEmbeddingFailure =
+        completionResult.firstCompletionEmbeddingFailure;
     result.surfaceCellContext.completionFailure = completionResult.failure;
     result.surfaceCellContext.completionDomainIdentityAudit =
         completionResult.firstInvalidDomain;

@@ -441,15 +441,60 @@ bool fill_positions(PureQuadMesh &mesh) {
   return true;
 }
 
-bool completed_quads_have_simple_embedding(const PureQuadMesh &mesh,
-                                           int &firstInvalidQuad) {
-  firstInvalidQuad = -1;
+bool completed_quads_have_simple_embedding(
+    const PureQuadMesh &mesh, const int completionVariant,
+    PureQuadEmbeddingFailure &failure) {
+  failure = {};
+  failure.sourcePatch = mesh.sourcePatch;
+  failure.backend = mesh.backend;
+  failure.completionVariant = completionVariant;
+  failure.sourceComponent = mesh.domainIdentity.sourceComponent;
+  failure.sourceSheet = mesh.domainIdentity.sourceSheet;
+  const auto reject = [&](const PureQuadEmbeddingFailureKind kind,
+                          const int localQuad) {
+    failure.active = true;
+    failure.kind = kind;
+    failure.localQuad = localQuad;
+    if (localQuad >= 0 &&
+        localQuad < static_cast<int>(mesh.quads.size())) {
+      const auto &quad = mesh.quads[static_cast<std::size_t>(localQuad)];
+      for (int corner = 0; corner < 4 &&
+                           corner < static_cast<int>(quad.size()); ++corner) {
+        failure.localVertices[static_cast<std::size_t>(corner)] =
+            quad[static_cast<std::size_t>(corner)];
+      }
+      std::set<int> sourceFaces;
+      for (const int vertex : quad) {
+        const auto row = std::find(mesh.vertices.begin(), mesh.vertices.end(),
+                                   vertex);
+        if (row == mesh.vertices.end()) {
+          continue;
+        }
+        const std::size_t index =
+            static_cast<std::size_t>(std::distance(mesh.vertices.begin(), row));
+        if (index < mesh.vertexProvenance.size()) {
+          const SurfacePoint &point = mesh.vertexProvenance[index];
+          if (point.face >= 0) {
+            sourceFaces.insert(point.face);
+          }
+          if (failure.sourceComponent < 0) {
+            failure.sourceComponent = point.component;
+          }
+          if (failure.sourceSheet < 0) {
+            failure.sourceSheet = point.sheet;
+          }
+        }
+      }
+      failure.sourceFaces.assign(sourceFaces.begin(), sourceFaces.end());
+    }
+    return false;
+  };
+
   std::map<int, int> rowByVertex;
   for (int row = 0; row < static_cast<int>(mesh.vertices.size()); ++row) {
     if (!rowByVertex.emplace(mesh.vertices[static_cast<std::size_t>(row)], row)
              .second) {
-      firstInvalidQuad = 0;
-      return false;
+      return reject(PureQuadEmbeddingFailureKind::DuplicateMeshVertex, 0);
     }
   }
   const auto orient2 = [](const Eigen::Vector2d &a,
@@ -475,20 +520,28 @@ bool completed_quads_have_simple_embedding(const PureQuadMesh &mesh,
        ++quadIndex) {
     const std::vector<int> &quad =
         mesh.quads[static_cast<std::size_t>(quadIndex)];
-    if (quad.size() != 4U || std::set<int>(quad.begin(), quad.end()).size() != 4U) {
-      firstInvalidQuad = quadIndex;
-      return false;
+    if (quad.size() != 4U) {
+      return reject(PureQuadEmbeddingFailureKind::InvalidQuadCardinality,
+                    quadIndex);
+    }
+    if (std::set<int>(quad.begin(), quad.end()).size() != 4U) {
+      return reject(PureQuadEmbeddingFailureKind::RepeatedQuadVertex,
+                    quadIndex);
     }
     std::array<Eigen::Vector3d, 4> p;
     for (int corner = 0; corner < 4; ++corner) {
       const auto row = rowByVertex.find(quad[static_cast<std::size_t>(corner)]);
       if (row == rowByVertex.end() || row->second < 0 ||
           row->second >= mesh.vertexPositions.rows()) {
-        firstInvalidQuad = quadIndex;
-        return false;
+        return reject(PureQuadEmbeddingFailureKind::MissingVertexPosition,
+                      quadIndex);
       }
       p[static_cast<std::size_t>(corner)] =
           mesh.vertexPositions.row(row->second).transpose();
+      if (!p[static_cast<std::size_t>(corner)].allFinite()) {
+        return reject(PureQuadEmbeddingFailureKind::NonFinitePosition,
+                      quadIndex);
+      }
     }
     Eigen::Vector3d normal = Eigen::Vector3d::Zero();
     for (int corner = 0; corner < 4; ++corner) {
@@ -500,8 +553,7 @@ bool completed_quads_have_simple_embedding(const PureQuadMesh &mesh,
       normal.z() += (current.x() - next.x()) * (current.y() + next.y());
     }
     if (!normal.allFinite() || normal.squaredNorm() <= 1.0e-24) {
-      firstInvalidQuad = quadIndex;
-      return false;
+      return reject(PureQuadEmbeddingFailureKind::DegenerateNormal, quadIndex);
     }
     Eigen::Index dropAxis = 0;
     normal.cwiseAbs().maxCoeff(&dropAxis);
@@ -526,18 +578,20 @@ bool completed_quads_have_simple_embedding(const PureQuadMesh &mesh,
           projected[static_cast<std::size_t>((corner + 1) % 4)];
       signedArea2 += a.x() * b.y() - a.y() * b.x();
     }
-    if (!std::isfinite(signedArea2) || std::abs(signedArea2) <= 1.0e-14 ||
-        oppositeEdgesIntersect(projected[0], projected[1], projected[2],
+    if (!std::isfinite(signedArea2) || std::abs(signedArea2) <= 1.0e-14) {
+      return reject(PureQuadEmbeddingFailureKind::ZeroProjectedArea,
+                    quadIndex);
+    }
+    if (oppositeEdgesIntersect(projected[0], projected[1], projected[2],
                                projected[3]) ||
         oppositeEdgesIntersect(projected[1], projected[2], projected[3],
                                projected[0])) {
-      firstInvalidQuad = quadIndex;
-      return false;
+      return reject(PureQuadEmbeddingFailureKind::BowTieIntersection,
+                    quadIndex);
     }
   }
   return true;
 }
-
 } // namespace directional::geometry::pure_quad_detail
 
 namespace directional::geometry::pure_quad_detail {
@@ -630,6 +684,7 @@ bool validate_completion_domain_ownership(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const int completionVariant,
     const SurfacePointSourceSupportResolver *sourceSupportResolver,
+    const Eigen::MatrixXi *sourceFaceMatrix,
     const std::vector<int> *sourceFaceComponents,
     const std::vector<int> *sourceFaceSheets, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection) {
@@ -707,12 +762,13 @@ bool validate_completion_domain_ownership(
       return false;
     }
 
-    const SurfacePoint &provenance = mesh.vertexProvenance[row];
+    SurfacePoint &provenance = mesh.vertexProvenance[row];
     if (!provenance.valid()) {
       failure = "CompletionOwnershipMissingSourcePoint";
       return false;
     }
     if (sourceFaces.empty()) {
+      lineage.sourcePoint = provenance;
       continue;
     }
 
@@ -733,7 +789,7 @@ bool validate_completion_domain_ownership(
     }
 
     bool intersectsPatch = false;
-    bool compatibleFaceFound = false;
+    std::vector<int> compatibleFaces;
     for (const int candidateFace : support.supportedFaces) {
       if (sourceFaces.count(candidateFace) == 0U) {
         continue;
@@ -742,11 +798,10 @@ bool validate_completion_domain_ownership(
       if (completion_ownership_face_matches_labels(
               candidateFace, lineage, sourceFaceComponents,
               sourceFaceSheets)) {
-        compatibleFaceFound = true;
-        break;
+        compatibleFaces.push_back(candidateFace);
       }
     }
-    if (!compatibleFaceFound) {
+    if (compatibleFaces.empty()) {
       const std::string failureCode =
           intersectsPatch ? "CompletionOwnershipComponentSheetMismatch"
                           : "CompletionOwnershipSourceSupportEscape";
@@ -756,6 +811,90 @@ bool validate_completion_domain_ownership(
           failure);
       return false;
     }
+
+    // Select the compatible source chart by intrinsic source-vertex identity,
+    // not source-face row order.  Boundary source-edge/source-vertex points can
+    // then be rebound to the owning patch sheet without changing geometry.
+    const auto faceKey = [&](const int face) {
+      std::array<int, 3> vertices{{-1, -1, -1}};
+      if (sourceFaceMatrix != nullptr && face >= 0 &&
+          face < sourceFaceMatrix->rows()) {
+        vertices = {{(*sourceFaceMatrix)(face, 0), (*sourceFaceMatrix)(face, 1),
+                     (*sourceFaceMatrix)(face, 2)}};
+        std::sort(vertices.begin(), vertices.end());
+      }
+      return std::make_pair(vertices, face);
+    };
+    const int selectedFace = *std::min_element(
+        compatibleFaces.begin(), compatibleFaces.end(),
+        [&](const int lhs, const int rhs) { return faceKey(lhs) < faceKey(rhs); });
+    if (boundaryVertex && selectedFace != provenance.face) {
+      if (sourceFaceMatrix == nullptr || provenance.face < 0 ||
+          provenance.face >= sourceFaceMatrix->rows() || selectedFace < 0 ||
+          selectedFace >= sourceFaceMatrix->rows()) {
+        failure = "CompletionOwnershipCannotRebindSourceChart";
+        return false;
+      }
+      Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
+      if (support.kind == SurfacePointSourceEntityKind::SourceVertex) {
+        bool found = false;
+        for (int corner = 0; corner < 3; ++corner) {
+          if ((*sourceFaceMatrix)(selectedFace, corner) == support.sourceVertex) {
+            rebound(corner) = 1.0;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          failure = "CompletionOwnershipCannotRebindSourceVertex";
+          return false;
+        }
+      } else if (support.kind == SurfacePointSourceEntityKind::SourceEdge) {
+        const int sourceA = support.sourceEdge.first;
+        const int sourceB = support.sourceEdge.second;
+        double weightA = 0.0;
+        double weightB = 0.0;
+        for (int corner = 0; corner < 3; ++corner) {
+          const int vertex = (*sourceFaceMatrix)(provenance.face, corner);
+          if (vertex == sourceA) {
+            weightA += provenance.barycentric(corner);
+          } else if (vertex == sourceB) {
+            weightB += provenance.barycentric(corner);
+          }
+        }
+        const double weightSum = weightA + weightB;
+        if (!std::isfinite(weightSum) || weightSum <= 1.0e-15) {
+          failure = "CompletionOwnershipCannotRebindSourceEdgeWeights";
+          return false;
+        }
+        weightA /= weightSum;
+        weightB /= weightSum;
+        bool foundA = false;
+        bool foundB = false;
+        for (int corner = 0; corner < 3; ++corner) {
+          const int vertex = (*sourceFaceMatrix)(selectedFace, corner);
+          if (vertex == sourceA) {
+            rebound(corner) = weightA;
+            foundA = true;
+          } else if (vertex == sourceB) {
+            rebound(corner) = weightB;
+            foundB = true;
+          }
+        }
+        if (!foundA || !foundB) {
+          failure = "CompletionOwnershipCannotRebindSourceEdge";
+          return false;
+        }
+      } else {
+        failure = "CompletionOwnershipFaceInteriorChartMismatch";
+        return false;
+      }
+      provenance.face = selectedFace;
+      provenance.barycentric = rebound;
+      provenance.component = lineage.sourceComponent;
+      provenance.sheet = lineage.sourceSheet;
+    }
+    lineage.sourcePoint = provenance;
   }
 
   mesh.quadLineage.clear();
@@ -1336,7 +1475,8 @@ PureQuadCompletionResult complete_pure_quad_patch(
   std::string ownershipFailure;
   if (!pure_quad_detail::validate_completion_domain_ownership(
           patch, mesh, options.completionVariant, sourceSupportResolver,
-          options.sourceFaceComponents, options.sourceFaceSheets,
+          options.sourceFaces, options.sourceFaceComponents,
+          options.sourceFaceSheets,
           ownershipFailure, &result.ownershipRejection)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     result.failure = ownershipFailure;
@@ -1346,12 +1486,30 @@ PureQuadCompletionResult complete_pure_quad_patch(
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     return result;
   }
-  int firstInvalidQuad = -1;
   if (!pure_quad_detail::completed_quads_have_simple_embedding(
-          mesh, firstInvalidQuad)) {
+          mesh, options.completionVariant, result.embeddingFailure)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
-    result.failure = "InvalidCompletionQuadEmbedding;localQuad=" +
-                     std::to_string(firstInvalidQuad);
+    const PureQuadEmbeddingFailure &failure = result.embeddingFailure;
+    std::ostringstream stream;
+    stream << "InvalidCompletionQuadEmbedding;patch=" << failure.sourcePatch
+           << ";backend="
+           << pure_quad_completion_backend_name(failure.backend)
+           << ";variant=" << failure.completionVariant
+           << ";localQuad=" << failure.localQuad
+           << ";classification="
+           << pure_quad_embedding_failure_name(failure.kind)
+           << ";vertices=" << failure.localVertices[0] << ','
+           << failure.localVertices[1] << ',' << failure.localVertices[2]
+           << ',' << failure.localVertices[3]
+           << ";component=" << failure.sourceComponent
+           << ";sheet=" << failure.sourceSheet << ";sourceFaces=";
+    for (std::size_t index = 0; index < failure.sourceFaces.size(); ++index) {
+      if (index != 0U) {
+        stream << ',';
+      }
+      stream << failure.sourceFaces[index];
+    }
+    result.failure = stream.str();
     return result;
   }
   result.mesh = std::move(mesh);

@@ -452,6 +452,7 @@ struct SurfaceCellPipelineContext {
       completionOwnershipRepairLog;
   geometry::PureQuadCompletionOwnershipRejection
       firstCompletionOwnershipRejection;
+  geometry::PureQuadEmbeddingFailure firstCompletionEmbeddingFailure;
   std::string completionFailure;
   geometry::SurfaceCellDomainIdentityAudit completionDomainIdentityAudit;
   bool hasCompletionDomainIdentityAudit = false;

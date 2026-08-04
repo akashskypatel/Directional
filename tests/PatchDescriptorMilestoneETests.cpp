@@ -267,16 +267,24 @@ Fixture make_two_odd_cells_with_shared_interface() {
     if (face0Bary[static_cast<std::size_t>(vertex)].allFinite()) {
       node.sourceFace = 0;
       node.barycentric = face0Bary[static_cast<std::size_t>(vertex)];
-      node.occurrences.push_back(
-          {0, face0Bary[static_cast<std::size_t>(vertex)]});
+      directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+      occurrence.sourceFace = 0;
+      occurrence.barycentric = face0Bary[static_cast<std::size_t>(vertex)];
+      occurrence.sourceComponent = 0;
+      occurrence.sourceSheet = 0;
+      node.occurrences.push_back(std::move(occurrence));
     }
     if (face1Bary[static_cast<std::size_t>(vertex)].allFinite()) {
       if (node.sourceFace < 0) {
         node.sourceFace = 1;
         node.barycentric = face1Bary[static_cast<std::size_t>(vertex)];
       }
-      node.occurrences.push_back(
-          {1, face1Bary[static_cast<std::size_t>(vertex)]});
+      directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+      occurrence.sourceFace = 1;
+      occurrence.barycentric = face1Bary[static_cast<std::size_t>(vertex)];
+      occurrence.sourceComponent = 0;
+      occurrence.sourceSheet = 0;
+      node.occurrences.push_back(std::move(occurrence));
     }
   }
 
@@ -332,7 +340,10 @@ Fixture make_two_odd_cells_with_shared_interface() {
     cell.id = id;
     cell.sourceFace = sourceFace;
     if (sourceFace >= 0) {
+      cell.sourceComponent = 0;
+      cell.sourceSheet = 0;
       cell.sourceFaces = {sourceFace};
+      cell.sourceCharts = {{0, sourceFace, 0}};
     }
     cell.halfedges = std::move(halfedges);
     cell.sideFamilies = boundaryCycle ? std::vector<int>{0, 1, 0, 1}
@@ -624,8 +635,15 @@ TEST(PatchDescriptorMilestoneE,
   const Eigen::MatrixXd &V = fixture.V;
   const Eigen::MatrixXi &F = fixture.F;
   const directional::geometry::SurfaceCellComplex &complex = fixture.complex;
-  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
-                  validate_complex_incidence(complex));
+  const auto initialIncidence =
+      directional::geometry::audit_complex_incidence(complex);
+  ASSERT_TRUE(initialIncidence.valid)
+      << directional::geometry::surface_cell_incidence_failure_name(
+             initialIncidence.failure)
+      << " cell=" << initialIncidence.cell
+      << " halfedge=" << initialIncidence.halfedge
+      << " twin=" << initialIncidence.twin
+      << " next=" << initialIncidence.next;
   ASSERT_TRUE(complex.diagnostics.topologyValid);
   const int oddBefore = static_cast<int>(std::count_if(
       complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
@@ -939,7 +957,7 @@ TEST(PatchDescriptorMilestoneE,
       fixture.complex, fixture.V, fixture.F);
 
   EXPECT_FALSE(completion.success);
-  EXPECT_EQ("IncompleteSurfaceCellComplex", completion.failure);
+  EXPECT_EQ(completion.failure.rfind("IncompleteSurfaceCellComplex", 0), 0U);
   EXPECT_EQ(1, completion.attemptedPatches);
   EXPECT_EQ(1, completion.failedPatches);
   EXPECT_EQ(1U, completion.completedPatches.size());

@@ -1267,47 +1267,36 @@ SameCornerRouteCandidateSet same_corner_route_candidates(
         continue;
       }
 
-      // Two topologically distinct boundary routes may project to the same
-      // geometric corner sector.  That is the positive same-corner repair
-      // case: exact boundary occurrence identity, not position alone, decides
-      // whether the routes overlap.  A shared exact interval remains a
-      // fail-closed semantic overlap, while disjoint exact intervals are a
-      // valid deterministic repair candidate even when their geometric support
-      // is identical.
-      std::set<std::vector<std::int64_t>> aExactIntervals(
-          a.boundaryIdentities.begin(), a.boundaryIdentities.end());
-      std::set<std::vector<std::int64_t>> bExactIntervals(
-          b.boundaryIdentities.begin(), b.boundaryIdentities.end());
-      bool sharesExactInterval = false;
-      for (const auto &identity : aExactIntervals) {
-        if (bExactIntervals.count(identity) != 0U) {
-          sharesExactInterval = true;
-          break;
-        }
-      }
-      if (a.geometricIdentity == b.geometricIdentity &&
-          sharesExactInterval) {
+      // Exact interval identities are necessary for rebinding, but numeric
+      // rail/curve labels cannot make two copies of the same embedded source
+      // route distinct.  Equal geometric/source-route identities are therefore
+      // a fail-closed semantic overlap even when exact interval labels differ.
+      if (a.geometricIdentity == b.geometricIdentity) {
         result.semanticOverlap = true;
         continue;
       }
 
-      std::map<std::vector<std::int64_t>, int> aIntervals;
-      std::map<std::vector<std::int64_t>, int> bIntervals;
-      for (std::size_t index = 0; index < a.boundaryIdentities.size(); ++index) {
-        aIntervals.emplace(a.boundaryIdentities[index], a.halfedges[index]);
+      // For genuinely distinct embedded routes, refine one canonical route,
+      // not the union of both.  Refining both changes every claimed patch and
+      // prevents exact completion-product reuse; it can also reproduce the
+      // same stitched face on the two new boundaries.  The route key is fully
+      // topology/source derived and independent of row order or numeric IDs.
+      const SameCornerBoundaryRoute *selected = &a;
+      const SameCornerBoundaryRoute *other = &b;
+      if (std::tie(a.geometricIdentity, a.exactIdentity, a.halfedges) <
+          std::tie(b.geometricIdentity, b.exactIdentity, b.halfedges)) {
+        selected = &b;
+        other = &a;
       }
-      for (std::size_t index = 0; index < b.boundaryIdentities.size(); ++index) {
-        bIntervals.emplace(b.boundaryIdentities[index], b.halfedges[index]);
-      }
+
+      std::set<std::vector<std::int64_t>> otherIntervals(
+          other->boundaryIdentities.begin(), other->boundaryIdentities.end());
       std::vector<std::pair<std::vector<std::int64_t>, int>> intervals;
-      for (const auto &[identity, halfedge] : aIntervals) {
-        if (bIntervals.count(identity) == 0U) {
-          intervals.emplace_back(identity, halfedge);
-        }
-      }
-      for (const auto &[identity, halfedge] : bIntervals) {
-        if (aIntervals.count(identity) == 0U) {
-          intervals.emplace_back(identity, halfedge);
+      for (std::size_t index = 0;
+           index < selected->boundaryIdentities.size(); ++index) {
+        const auto &identity = selected->boundaryIdentities[index];
+        if (otherIntervals.count(identity) == 0U) {
+          intervals.emplace_back(identity, selected->halfedges[index]);
         }
       }
       std::sort(intervals.begin(), intervals.end(),
@@ -1341,17 +1330,22 @@ SameCornerRouteCandidateSet same_corner_route_candidates(
         candidate.halfedges.push_back(halfedge);
       }
       candidate.identity = endpoint;
-      std::array<std::vector<std::int64_t>, 2> routeIdentities{
-          a.exactIdentity, b.exactIdentity};
-      if (routeIdentities[1] < routeIdentities[0]) {
-        std::swap(routeIdentities[0], routeIdentities[1]);
+      std::array<std::vector<std::int64_t>, 2> geometricIdentities{
+          a.geometricIdentity, b.geometricIdentity};
+      if (geometricIdentities[1] < geometricIdentities[0]) {
+        std::swap(geometricIdentities[0], geometricIdentities[1]);
       }
-      for (const auto &identity : routeIdentities) {
+      for (const auto &identity : geometricIdentities) {
         candidate.identity.push_back(
             static_cast<std::int64_t>(identity.size()));
         candidate.identity.insert(candidate.identity.end(), identity.begin(),
                                   identity.end());
       }
+      candidate.identity.push_back(
+          static_cast<std::int64_t>(selected->exactIdentity.size()));
+      candidate.identity.insert(candidate.identity.end(),
+                                selected->exactIdentity.begin(),
+                                selected->exactIdentity.end());
       candidate.identity.push_back(
           static_cast<std::int64_t>(intervals.size()));
       for (const auto &[identity, halfedge] : intervals) {
@@ -2937,6 +2931,10 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     return complete_pure_quad_patch(descriptor.patch, completionOptions);
   };
 
+  int firstFailedDescriptor = -1;
+  int firstFailedCell = -1;
+  PureQuadPatchRejectReason firstFailedReason =
+      PureQuadPatchRejectReason::None;
   for (int descriptorIndex = 0; descriptorIndex < descriptorCount;
        ++descriptorIndex) {
     const PatchDescriptor &descriptor = result.descriptors.descriptors[
@@ -2951,6 +2949,11 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
         (!descriptor.feasibility.admissible &&
          !boundedFallbackAdmissible)) {
       ++result.failedPatches;
+      if (firstFailedDescriptor < 0) {
+        firstFailedDescriptor = descriptorIndex;
+        firstFailedCell = descriptor.cellId;
+        firstFailedReason = descriptor.feasibility.reason;
+      }
       continue;
     }
     ++result.attemptedPatches;
@@ -3027,7 +3030,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
           const bool ownershipValid =
               pure_quad_detail::validate_completion_domain_ownership(
                   descriptor.patch, reused, completionVariant,
-                  &sourceSupportResolver, options.sourceFaceComponents,
+                  &sourceSupportResolver, &F, options.sourceFaceComponents,
                   options.sourceFaceSheets, ownershipFailure,
                   &ownershipRejection);
           const bool topologyValid = ownershipValid &&
@@ -3101,10 +3104,19 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
         selectedVariant;
     if (!completion.success || completion.mesh.quads.empty()) {
       ++result.failedPatches;
+      if (firstFailedDescriptor < 0) {
+        firstFailedDescriptor = descriptorIndex;
+        firstFailedCell = descriptor.cellId;
+        firstFailedReason = completion.failureReason;
+      }
       if (!result.firstCompletionOwnershipRejection.active &&
           completion.ownershipRejection.active) {
         result.firstCompletionOwnershipRejection =
             completion.ownershipRejection;
+      }
+      if (!result.firstCompletionEmbeddingFailure.active &&
+          completion.embeddingFailure.active) {
+        result.firstCompletionEmbeddingFailure = completion.embeddingFailure;
       }
       if (result.failure.empty() && !completion.failure.empty()) {
         result.failure = completion.failure;
@@ -3116,7 +3128,14 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   if (result.failedPatches != 0 ||
       result.completedPatches.size() != result.descriptors.descriptors.size()) {
     if (result.failure.empty()) {
-      result.failure = "IncompleteSurfaceCellComplex";
+      std::ostringstream stream;
+      stream << "IncompleteSurfaceCellComplex;descriptor="
+             << firstFailedDescriptor << ";cell=" << firstFailedCell
+             << ";reason=" << static_cast<int>(firstFailedReason)
+             << ";attempted=" << result.attemptedPatches
+             << ";failed=" << result.failedPatches
+             << ";total=" << result.descriptors.descriptors.size();
+      result.failure = stream.str();
     }
     result.assembly.failure = result.failure;
     return result;

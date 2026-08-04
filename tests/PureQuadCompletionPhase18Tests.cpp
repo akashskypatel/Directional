@@ -38,12 +38,15 @@ directional::geometry::PureQuadPatch patch(std::vector<int> sides) {
 directional::geometry::PureQuadPatch embedded_patch(std::vector<int> sides) {
   auto p = patch(std::move(sides));
   p.boundaryProvenance.clear();
-  for (int i = 0; i < static_cast<int>(p.boundaryVertices.size()); ++i) {
+  const int count = static_cast<int>(p.boundaryVertices.size());
+  for (int i = 0; i < count; ++i) {
     directional::geometry::SurfacePoint point;
     point.face = 7;
     point.component = 2;
     point.sheet = 3;
-    point.position << static_cast<double>(i), static_cast<double>(i % 2), 1.0;
+    const double angle = 2.0 * std::numbers::pi * static_cast<double>(i) /
+                         static_cast<double>(count);
+    point.position << std::cos(angle), std::sin(angle), 1.0;
     point.barycentric << 0.5, 0.25, 0.25;
     point.squaredDistance = 0.0;
     p.boundaryProvenance.push_back(point);
@@ -435,6 +438,18 @@ TEST(PureQuadCompletionPhase18, CompletionVerticesCarrySourceProvenance) {
     EXPECT_EQ(point.sheet, 3);
   }
   EXPECT_NEAR(completion.mesh.vertexPositions(0, 2), 1.0, 1.0e-12);
+}
+
+TEST(PureQuadCompletionPhase18, ZigZagBoundaryFailsEmbeddingValidation) {
+  auto invalid = embedded_patch({2, 2, 2});
+  for (int i = 0; i < static_cast<int>(invalid.boundaryProvenance.size()); ++i) {
+    invalid.boundaryProvenance[static_cast<std::size_t>(i)].position <<
+        static_cast<double>(i), static_cast<double>(i % 2), 1.0;
+  }
+  const auto completion =
+      directional::geometry::complete_pure_quad_patch(invalid);
+  EXPECT_FALSE(completion.success);
+  EXPECT_EQ(completion.failure.rfind("InvalidCompletionQuadEmbedding", 0), 0U);
 }
 
 TEST(PureQuadCompletionPhase18, EndpointResolutionChoosesExtensionRemovalTransition) {
@@ -1109,8 +1124,8 @@ TEST(PureQuadCompletionPhase18,
     std::string failure;
     EXPECT_TRUE(directional::geometry::pure_quad_detail::
                     validate_completion_domain_ownership(
-                        fixture.patch, allowedMesh, 0, &resolver, nullptr,
-                        nullptr, failure, &rejection))
+                        fixture.patch, allowedMesh, 0, &resolver,
+                        &fixture.faces, nullptr, nullptr, failure, &rejection))
         << "allowed face " << allowedFace << ": " << failure;
     EXPECT_FALSE(rejection.active);
   }
@@ -1149,8 +1164,8 @@ TEST(PureQuadCompletionPhase18,
   std::string failure;
   EXPECT_FALSE(directional::geometry::pure_quad_detail::
                    validate_completion_domain_ownership(
-                       fixture.patch, escapedMesh, 0, &resolver, nullptr,
-                       nullptr, failure, &rejection));
+                       fixture.patch, escapedMesh, 0, &resolver,
+                       &fixture.faces, nullptr, nullptr, failure, &rejection));
   EXPECT_TRUE(failure.starts_with(
       "CompletionOwnershipSourceSupportEscape:"));
   EXPECT_TRUE(rejection.active);

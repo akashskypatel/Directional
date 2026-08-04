@@ -364,6 +364,7 @@ struct SurfaceCellComplexCompletionResult {
           SurfaceCellStructuralRepairExhaustionReason::None;
   std::vector<SurfaceCellOwnershipRepairAttempt> ownershipRepairAttempts;
   PureQuadCompletionOwnershipRejection firstCompletionOwnershipRejection;
+  PureQuadEmbeddingFailure firstCompletionEmbeddingFailure;
   std::string failure;
 };
 

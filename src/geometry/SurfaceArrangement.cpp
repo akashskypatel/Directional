@@ -2331,6 +2331,89 @@ SurfaceCellComplex build_surface_cell_complex(
     h.next = list[static_cast<std::size_t>(nextPos)];
   }
 
+  // The radial successor permutation can contain a pinched closed walk when
+  // a periodic seam or multi-face vertex is represented by more than one
+  // topological sector.  Split such a walk at repeated boundary nodes into
+  // edge-disjoint simple cycles before assigning cells.  This is an incidence
+  // operation only: it uses the existing directed successor relation and is
+  // independent of positions, face-row order, or fixture identifiers.
+  std::vector<unsigned char> successorVisited(complex.halfedges.size(), 0);
+  for (int start = 0; start < static_cast<int>(complex.halfedges.size());
+       ++start) {
+    if (successorVisited[static_cast<std::size_t>(start)] != 0U) {
+      continue;
+    }
+    std::vector<int> rawCycle;
+    std::set<int> localHalfedges;
+    int current = start;
+    bool closed = false;
+    for (int guard = 0;
+         guard <= static_cast<int>(complex.halfedges.size()); ++guard) {
+      if (current < 0 || current >= static_cast<int>(complex.halfedges.size()) ||
+          !localHalfedges.insert(current).second) {
+        closed = current == start;
+        break;
+      }
+      rawCycle.push_back(current);
+      successorVisited[static_cast<std::size_t>(current)] = 1U;
+      current = complex.halfedges[static_cast<std::size_t>(current)].next;
+    }
+    if (!closed || rawCycle.size() < 3U) {
+      continue;
+    }
+
+    std::vector<std::vector<int>> pending{rawCycle};
+    std::vector<std::vector<int>> simpleCycles;
+    bool decompositionFailed = false;
+    while (!pending.empty()) {
+      std::vector<int> cycle = std::move(pending.back());
+      pending.pop_back();
+      std::map<int, int> firstOccurrence;
+      bool split = false;
+      for (int index = 0; index < static_cast<int>(cycle.size()); ++index) {
+        const int node = complex.halfedges[
+            static_cast<std::size_t>(cycle[static_cast<std::size_t>(index)])]
+                             .from;
+        const auto [it, inserted] = firstOccurrence.emplace(node, index);
+        if (inserted) {
+          continue;
+        }
+        const int firstIndex = it->second;
+        std::vector<int> inner(cycle.begin() + firstIndex,
+                               cycle.begin() + index);
+        std::vector<int> outer;
+        outer.reserve(cycle.size() - inner.size());
+        outer.insert(outer.end(), cycle.begin(), cycle.begin() + firstIndex);
+        outer.insert(outer.end(), cycle.begin() + index, cycle.end());
+        if (inner.size() < 3U || outer.size() < 3U) {
+          decompositionFailed = true;
+          split = true;
+          break;
+        }
+        pending.push_back(std::move(outer));
+        pending.push_back(std::move(inner));
+        split = true;
+        break;
+      }
+      if (decompositionFailed) {
+        break;
+      }
+      if (!split) {
+        simpleCycles.push_back(std::move(cycle));
+      }
+    }
+    if (decompositionFailed || simpleCycles.size() <= 1U) {
+      continue;
+    }
+    for (const std::vector<int> &cycle : simpleCycles) {
+      for (std::size_t index = 0; index < cycle.size(); ++index) {
+        const int halfedge = cycle[index];
+        const int next = cycle[(index + 1U) % cycle.size()];
+        complex.halfedges[static_cast<std::size_t>(halfedge)].next = next;
+      }
+    }
+  }
+
   std::vector<unsigned char> visited(complex.halfedges.size(), 0);
   for (int start = 0; start < static_cast<int>(complex.halfedges.size()); ++start) {
     if (visited[static_cast<std::size_t>(start)] != 0) {
