@@ -8,80 +8,74 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R1D adjacent local-sheet exact-adjacency correction + compile-only build**.
-- Next turn: **P5-TB25 artifact-only R1D validation**.
-- Remain on R1 until runtime acceptance. Do not advance to R2 from compile evidence.
+- Completed turn: **P5-TB25 artifact-only R1D validation**.
+- Next turn: **P5-R2 directed wedge/incidence reconstruction + compile-only build**.
 
-## Compiled checkpoint
+## Tested checkpoint
 
-- P5-TB24 tested source: `f4cce52006d21a248473e327ada1d66183af54e6`.
-- Workflow event commit: `6fc57831afc7f77e0cda9bd1f409aaaaece15bda`.
-- Exact compiled source: `a1fec970297739cfe23ade339b6a7b57071b7300`.
-- Applied source-diff SHA-256: `4488988dc877f1a0a001e27286b68f2752314bade361d59a11c1e7eae8a6cd89`.
-- Compile-only run: `30942950398`; job `92105699139`.
+- Exact source: `a1fec970297739cfe23ade339b6a7b57071b7300`.
 - Artifact: `8906115786`, `surface-cell-p5-r1d-github-source-linux-release`.
 - Artifact SHA-256: `361c06696c56234666f8ce18d018415715851b03e2225b04bdbdfc624a0bdd66`.
-- Workflow logs: `8906116758`; SHA-256 `c8ceb09ca4ea9f72148125466a9958366b51a52f8e02c229aa71d1852b2d1ec2`.
 - Empty source status; recursive checksums **40/40**; package files **42**; fixtures **26**; recursive submodules **9**.
-- All **132/132** Ninja actions completed.
-- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- No project binary executed.
+- P5-TB25 configured, rebuilt, relinked, patched, regenerated, and modified no source.
 
-## P5-R1D implementation
+## P5-TB25 runtime disposition
 
-- [x] Remove local-sheet equality from genuine manifold transition admission.
-- [x] Preserve equal source-component requirement.
-- [x] Preserve hard-rail, boundary, nonmanifold, disconnected-topology, and valid-winding barriers.
-- [x] Preserve declared local-sheet labels in chart IDs, transition records, rebound provenance, hashes, and diagnostics.
-- [x] Allow intrinsic source-vertex fans to cross adjacent local-sheet charts through exact manifold topology.
-- [x] Preserve same-sheet safety for non-topological proximity capture and projection.
-- [x] Add four focused adjacency/barrier contracts.
-- [x] Strengthen row-permutation and global-orientation contracts with different incident local-sheet labels.
-- [x] Keep R2–R11, recovery behavior, completion templates, cache, lineage, and memory work out of scope.
+- [x] Source-chart R1: **11/11**.
+- [x] Phase 22 source validator: **6/6**.
+- [x] Recovery authority: **9/9**.
+- [x] Graph-dependent focused: **6/6**.
+- [x] Feature-rail/barrier focused: **8/8**.
+- [x] Phase 14–18: **247/247**.
+- [x] Phase 16: **39/39**.
+- [ ] Phase 20: **46/48**.
+- [ ] Direct plane/seam/close sheets: **0/3**.
+- [x] Complete suite terminates: **598/617** in **333.444 seconds**.
+- [ ] Production performance: observed `VmHWM` at least **582,904 KiB** and suite duration **4.43×** P5-TB24.
 
-## Last runtime authority: P5-TB24
+R1 orientation, exact adjacent-local-sheet transitions, intrinsic source-vertex fans, feature-rail incident-sheet support, and completion aliases are closed. Local-sheet inequality is no longer the causal direct blocker.
 
-- source-chart orientation **7/7**;
-- Phase 22 validator **6/6**;
-- recovery authority **9/9**;
-- graph-dependent focused **3/6**;
-- Phase 14–18 **240/243**;
-- Phase 16 **37/39**;
-- Phase 20 **46/48**;
-- analytic plane/seam/close sheets **0/3**;
-- complete suite **590/613**, terminating in 75.260 seconds.
+## Earliest remaining producer: P5-R2
 
-No runtime improvement is claimed from P5-R1D compile evidence.
+`SurfaceArrangement.cpp` currently:
 
-## Required next work: P5-TB25
+1. globally sorts all outgoing halfedges at each node;
+2. assigns the radial predecessor of each incoming twin as its successor;
+3. splits repeated-node closed walks after the successor relation exists;
+4. assigns cells from the repaired cycles.
 
-Follow `.agents/Directional/Milestone_G_P5_R1D_Test_Benchmark_Plan.md`:
+This leaves:
 
-- [ ] verify exact artifact authority, source, **40/40** checksums, 42 files, 26 fixtures, nine submodules, and target hashes;
-- [ ] run all eleven `SourceChartTransitionsR1.*` contracts;
-- [ ] retain Phase 22 validator **6/6** and recovery authority **9/9**;
-- [ ] close the three P5-TB24 graph-dependent failures;
-- [ ] run `MilestoneGP26.FeatureRailVerticesSupportBothIncidentLocalSheets`;
-- [ ] run Phase 14–18 and Phase 16 independently;
-- [ ] run plane, seam, close sheets, and any packaged disconnected-close-sheet direct case;
-- [ ] run complete Phase 20;
-- [ ] run the complete suite once and treat any watchdog expiration as failure;
-- [ ] do not run the full direct bunny benchmark matrix solely for R1D.
+- `MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary`;
+- `MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved` with `non-disk-cell cell=0 halfedge=43 twin=42 next=29`;
+- plane/seam/close-sheet manifold and valence failures;
+- cylinder completion variant 51 bow-tie embedding.
 
-Execute artifact `8906115786` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
+## Required next work
 
-Advance to R2 only after R1 closes independently and evidence identifies a later directed wedge/incidence producer.
+Follow `.agents/Directional/Milestone_G_P5_R2_Directed_Wedge_Incidence_Code_Build_Plan.md`:
+
+- [ ] construct explicit directed source-chart wedges before radial ordering;
+- [ ] consume R1 transition/fan identity and preserve local-sheet provenance;
+- [ ] do not split solely on raw local-sheet inequality when R1 admits exact adjacency;
+- [ ] preserve component, hard-rail, source-boundary, nonmanifold, and disconnected-fan barriers;
+- [ ] assign exactly one successor and predecessor per halfedge within one admissible wedge;
+- [ ] audit twin symmetry, continuity, multiplicity, and complete permutation coverage;
+- [ ] remove post-hoc repeated-node cycle splitting;
+- [ ] reject repeated-node/repeated-edge cycles with typed producer diagnostics;
+- [ ] classify exterior cycles before assigning bounded cell IDs;
+- [ ] keep R3–R11 deferred.
+
+Compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. Execute no project binary.
 
 ## Current authority
 
-- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/Milestone_G_P5_TB25_Artifact_Only_R1D_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb25-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2_Directed_Wedge_Incidence_Code_Build_Plan.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
-- `.agents/Directional/Milestone_G_P5_TB24_Artifact_Only_R1C_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R1D_Adjacent_Local_Sheet_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_R1D_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R1D_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r1d-summary.json`
-- `.agents/Directional/GitHub_Workflow_Policy.md`
+- `.agents/Directional/DESIGN.md`
+- `MILESTONE_G_TODO.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 
 Preserve all prohibitions: no validator weakening, frequency/count/order selection, fallback/recovery substitution, synthetic counters, positional merging, source-triangle pairing, arbitrary subset search, fixture/ID special cases, or timeout-as-correctness.
