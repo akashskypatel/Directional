@@ -9,130 +9,106 @@
 
 ## Current checkpoint
 
-P5-CB99 through P5-CB107 code changes and the compile-only build are complete.
-P5 remains open.
+P5-TB18 artifact-only runtime validation is complete. P5 remains open.
 
-Exact compiled checkpoint:
+Tested checkpoint:
 
-- implementation/source commit:
-  `94bf8347b10eebcd8d3e777c6f5f0a2227283a2e`;
-- compile-only run: `30867891341` — **success**;
-- artifact: `8876934846`,
-  `surface-cell-p5-cb107-github-source-linux-release`;
-- artifact SHA-256:
-  `ba06737ab313f30e23c74f402114649ee2c9f9d7c3a7177c7e0ba3328749df47`;
-- mandatory workflow-log artifact: `8876935182`;
-- log SHA-256:
-  `465aad3a957b99fdb8e7bf76b2040facc25b1ea1b2c00bfdca1d58990f1498dd`;
-- source status empty;
-- recursive checksums **39/39**;
+- source `94bf8347b10eebcd8d3e777c6f5f0a2227283a2e`;
+- artifact `8876934846`;
+- SHA-256 `ba06737ab313f30e23c74f402114649ee2c9f9d7c3a7177c7e0ba3328749df47`;
+- empty source status;
+- checksums **39/39**;
 - fixture files **26**.
 
-The turn compiled exactly `directional_core`, `directional_pipeline`,
-`directional_phase1_tests`, and `directional_benchmarks`. It executed no test,
-benchmark, custom mesh, help/list command, or compiled project binary.
+No configure, build, relink, patch, regeneration, or source modification
+occurred during P5-TB18.
 
-The next turn is **P5-TB18 artifact-only test and benchmark**. Execute the
-packaged binaries directly from artifact `8876934846`. Do not configure, build,
-relink, patch, regenerate, or modify source during that turn.
+The next turn is **P5-CB108 through P5-CB116 code changes + compile-only
+build**. Execute no test, benchmark, custom mesh, compiled binary, help/list, or
+discovery command in that turn.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_CB99_CB107_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_TB17_Parity_Reuse_Output_Memory_Test_Benchmark_Report.md`
-5. `benchmark-results/p5-tb17-summary.json`
-6. `.agents/Directional/Milestone_G_P5_Post_TB17_Source_Scope_Topology_Reuse_Output_Memory_Code_Build_Plan.md`
-7. `.agents/Directional/GitHub_Workflow_Policy.md`
+3. `.agents/Directional/Milestone_G_P5_TB18_Canonical_Ownership_Output_Memory_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb18-summary.json`
+5. `.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
+6. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Implemented source model
+## Runtime result
 
-The code now separates:
+- Phase 14–18: **223/232**;
+- Milestone D: **4/7**;
+- Milestone E: **23/26**;
+- Phase 20: **47/48**;
+- complete-minus-three-heavy-blockers: **573/593**;
+- the full 596-test binary cannot complete because the smooth bunny path is
+  killed at 3.80 GB RSS;
+- all eight direct production cases fail;
+- exact reuse/recompute remains `0/0`;
+- invalid midpoint still returns `MissingCommonSourceChart`;
+- no fallback or source-grid recovery was used.
 
-- connected source component;
-- canonical physical cell-side ownership class;
-- exact per-source-face chart records
-  `(source component, source face, local sheet)`.
+Face-edge bunny now passes parity scope but fails at
+`InvalidArrangementDomainIdentity;firstPatch=2` after 98.613553 s and
+2,513,285,120 B peak RSS. Smooth bunny is SIGKILL/137 after 65.60 s with
+3,801,161,728 B maximum RSS and no JSON output.
 
-Canonical classes are derived from intrinsic source/DCEL adjacency. A cell can
-span adjacent face-local chart IDs only when the stitched topology proves one
-physical side. Same-face labels, disconnected components, and close/opposing
-sheets are not combined by frequency, count, order, position, or shared numeric
-labels. Rail lineage remains independent from the incident chart.
+## Earliest implementation defects
 
-The canonical ownership contract and exact chart map are propagated through:
+### Expanded ownership class on every cell
 
-- arrangement cells and structural hashes;
-- patch/domain identity audits;
-- simplification candidate compatibility and transactional merges;
-- parity/subdivision preflight, rebuilt records, and rollback identities;
-- completion ownership classification and exact reuse dependencies;
-- logical payload and retained-capacity accounting.
+`SurfaceArrangement.cpp::ownershipIdentity(root)` emits the complete sorted
+class membership into every `cell.sourceOwnershipClass`. For connected bunny
+components this duplicates roughly the whole source chart set across thousands
+of cells. The same data is copied into rollback/prepared/descriptor products,
+and patch compaction does not intern `sourceOwnershipClass` or
+`sourceChartMap`.
 
-Regression sources were added for adjacent chart equivalence, disconnected close
-sheet separation, and a malformed midpoint with a valid common-chart
-precondition.
+Fix this first with one exact registry per complex and fixed-size deterministic
+per-cell keys. Do not replace exact equality with a bare hash.
 
-## Runtime acceptance is not yet established
+### No-label arrangement path
 
-Compilation does not prove that the P5-TB17 runtime failures are corrected. In
-particular, do not assume closure of:
+When `sourceFaceComponents/sourceFaceSheets` are absent and arcs carry no
+scope, `allCharts` is empty, `selectedRoot` is `-1`, and embedding/topology is
+invalid. Derive intrinsic connected components and deterministic default charts
+from the source mesh. Do not skip ownership validation.
 
-- the 22 P5-TB17 assertions;
-- completion reuse and route repair;
-- the canonical cylinder DCEL;
-- production output for the full fixture matrix;
-- random-bunny direct output;
-- the 75% peak-RSS ownership-reconciliation gate.
+### Lost prepared-domain diagnostics
 
-P5-CB104, P5-CB105, and quantitative P5-CB106 remain runtime-gated until P5-TB18
-provides evidence.
+A descriptor can return before creating `domainIdentityAudit`, leaving failure
+`None` and producing an untyped `InvalidArrangementDomainIdentity`. Add typed
+simple-boundary failures and run them before descriptor construction.
 
-## P5-TB18 execution order
+### Remaining independent blockers
 
-1. Validate artifact source commit, empty status, submodules, fixture closure,
-   and all packaged checksums.
-2. Run the new P5-CB99–P5-CB107 focused regressions and all 22 P5-TB17 failing
-   cases.
-3. Run Phase 14–18 and Milestone D closure; compare against the P5-TB17 baseline
-   of 572/594 for the complete suite.
-4. Run both guaranteed exact-reuse scenarios. Require genuine positive reused
-   and recomputed completion counts; do not accept synthetic telemetry.
-5. Run missing-common-chart and malformed-midpoint cases separately. The latter
-   must reach `InvalidMidpointEmbedding` after temporary mutation and prove
-   bit-exact rollback.
-6. Validate the cylinder DCEL before simplification: incidence, embedding,
-   orientation, disk cells, Euler 0, one connected component, and two boundary
-   loops.
-7. Run the production fixture matrix with direct `SurfaceCells`, fallback
-   `Fail`, and source-grid recovery disabled.
-8. Run four independent random-bunny face-edge processes and four independent
-   smooth-field processes. Compare complete structural/result digests.
-9. Reconcile categorized simultaneous ownership against the same peak-RSS
-   sample and require at least 75% coverage.
-10. For every unmet gate, preserve the earliest typed stage/entity evidence and
-    write the next focused code/build plan. Do not patch source in the runtime
-    turn.
+- same-corner route validation prevents both positive reuse paths;
+- the midpoint fixture clears unrelated shared-node chart occurrences;
+- the cylinder fixture fails incidence before extraction;
+- four fixtures produce completed quads then become self-intersecting in
+  optimization/output validation without valid rollback;
+- torus/thin tube remain incomplete; sphere/mechanical fail domain identity.
 
-## Expected decision points
+## Required next work
 
-- If cells 19 and 45 no longer stop at
-  `BoundaryParityRepair:MixedCellSourceScope`, continue to the next earliest
-  failure rather than treating that as production closure.
-- If Phase 16 or Phase 17 still regresses, inspect the exact canonical class and
-  chart map before changing validation.
-- If reuse remains zero, inspect affected-patch discovery, dependency mismatch
-  vectors, rebind validation, and route ownership before modifying counters.
-- If output is invalid, distinguish a completion-produced invalid mesh from an
-  optimizer regression and retain the first invalid entity.
-- If memory reconciliation stays below 75%, report the categorized remainder;
-  do not inflate reported ownership.
+Follow the P5-CB108–P5-CB116 plan exactly. The order matters:
+
+1. compact ownership registry and memory lifecycle;
+2. restore unlabeled ownership/topology;
+3. propagate through simplification;
+4. repair prepared-domain/parity producer with typed evidence;
+5. route/reuse;
+6. midpoint fixture;
+7. cylinder DCEL;
+8. completion/optimizer/output rollback;
+9. compile-only regression/package gate.
 
 ## Preserved prohibitions
 
 - no validator weakening;
-- no frequency-vote or count/order scope restoration;
+- no frequency/count/order ownership selection;
 - no fallback/recovery substitution;
 - no synthetic counters;
 - no positional merging or source-triangle pairing;
@@ -142,26 +118,18 @@ provides evidence.
 
 ## Workflow policy
 
-Every GitHub workflow must follow
-`.agents/Directional/GitHub_Workflow_Policy.md`:
-
-- initialize detailed logging before fallible work;
-- retain complete success/failure activity;
-- always upload a separate log artifact under `if: always()`;
-- use that artifact for failure diagnosis;
-- do not expose secrets in traced output;
-- preserve the current turn boundary.
+Any GitHub workflow must initialize detailed logging before fallible work,
+always upload a separate log artifact under `if: always()`, avoid secret
+exposure, and preserve the compile-only turn boundary.
 
 ## Key lessons
 
-- A per-face local-sheet integer is a chart label, not a physical cell-side
-  identity across the source surface.
-- Canonical equivalence must be proved by intrinsic adjacency and preserved with
-  the exact chart map; selecting a representative by frequency or order is not
-  authoritative.
-- Compile success only establishes source/build validity. Runtime topology,
-  output, reuse, and resource gates remain independent acceptance criteria.
-- Keep fixture preconditions explicit so an intended late failure is not
-  preempted by an unrelated earlier validator.
-- Memory reconciliation must count retained capacity and concurrent owners
-  against the same RSS sample, without synthetic estimates.
+- A correct semantic model can still be unusable if its exact identity is
+  duplicated at the wrong ownership granularity.
+- Canonical class membership belongs in one registry; cells should reference it
+  and carry only their own incident charts.
+- New explicit-label regressions do not cover the no-label production and legacy
+  paths.
+- A typed validator must set a failure kind on every early return.
+- Stop repeated benchmark runs after a catastrophic OOM/resource failure; a
+  timeout or kill is evidence of failure, never a pass.
