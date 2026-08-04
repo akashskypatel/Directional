@@ -1031,6 +1031,69 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass) {
+  const auto fixture = unit_square_two_triangles();
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 1};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {}, options);
+
+  const auto cell = std::find_if(
+      complex.cells.begin(), complex.cells.end(), [](const auto &candidate) {
+        return !candidate.boundaryCycle && candidate.sourceFaces.size() == 2U;
+      });
+  ASSERT_NE(cell, complex.cells.end());
+  ASSERT_TRUE(cell->sourceOwnershipClass.valid);
+  ASSERT_EQ(2U, cell->sourceCharts.size());
+  EXPECT_EQ((std::set<int>{0, 1}),
+            (std::set<int>{cell->sourceCharts[0].localSheet,
+                           cell->sourceCharts[1].localSheet}));
+  for (const int halfedgeId : cell->halfedges) {
+    const auto &edge =
+        complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    EXPECT_TRUE(std::binary_search(
+        cell->sourceCharts.begin(), cell->sourceCharts.end(),
+        directional::geometry::SurfaceCellSourceChart{
+            edge.sourceComponent, edge.sourceFace, edge.sourceSheet}));
+  }
+}
+
+TEST(SurfaceArrangementPhase16,
+     DisconnectedCloseSheetsKeepDistinctCanonicalOwnershipClasses) {
+  TriangleFixture fixture;
+  fixture.vertices.resize(6, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                      0.0, 0.0, 1.0e-6,
+                      1.0, 0.0, 1.0e-6,
+                      0.0, 1.0, 1.0e-6;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2, 3, 4, 5;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 0};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {}, options);
+  std::vector<directional::geometry::SurfaceCellCanonicalIdentity> ownership;
+  for (const auto &cell : complex.cells) {
+    if (!cell.boundaryCycle) {
+      ASSERT_TRUE(cell.sourceOwnershipClass.valid);
+      ownership.push_back(cell.sourceOwnershipClass);
+    }
+  }
+  ASSERT_EQ(2U, ownership.size());
+  EXPECT_NE(ownership[0], ownership[1]);
+}
+
+TEST(SurfaceArrangementPhase16,
      BunnySingularityFanUsesIntrinsicSourceVertexRotation) {
   const BunnySingularityFanFixture fixture =
       bunny_singularity_fan_fixture();

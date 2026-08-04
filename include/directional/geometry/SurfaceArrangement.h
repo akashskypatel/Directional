@@ -25,6 +25,7 @@
 
 #include <Eigen/Dense>
 
+#include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 
 namespace directional::geometry {
@@ -167,7 +168,11 @@ struct SurfaceArrangementCell {
   // separately because one cell can span many source triangles while still
   // belonging to one connected component and one source sheet.
   int sourceComponent = -1;
+  // Legacy representative chart. Exact per-face charts are kept in
+  // sourceCharts and sourceOwnershipClass identifies their physical cell side.
   int sourceSheet = -1;
+  SurfaceCellCanonicalIdentity sourceOwnershipClass;
+  std::vector<SurfaceCellSourceChart> sourceCharts;
   std::vector<int> sourceFaces;
   std::vector<int> halfedges;
   std::vector<int> sideFamilies;

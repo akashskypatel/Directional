@@ -1367,28 +1367,35 @@ TEST(PatchDescriptorMilestoneE,
   badFrom.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
   badTo.barycentric = Eigen::RowVector3d(-1.0, 0.0, 0.0);
 
-  const auto malformedOccurrence = [&](const Eigen::RowVector3d &barycentric) {
+  const auto malformedOccurrence = [&](const auto &edge,
+                                         const Eigen::RowVector3d &barycentric) {
     directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
-    occurrence.sourceFace = badEdge.sourceFace;
+    occurrence.sourceFace = edge.sourceFace;
     occurrence.barycentric = barycentric;
-    occurrence.sourceComponent = badEdge.sourceComponent;
-    occurrence.sourceSheet = badEdge.sourceSheet;
-    occurrence.sourceArc = badEdge.sourceArc;
-    occurrence.provenance = badEdge.provenance.empty()
+    occurrence.sourceComponent = edge.sourceComponent;
+    occurrence.sourceSheet = edge.sourceSheet;
+    occurrence.sourceArc = edge.sourceArc;
+    occurrence.provenance = edge.provenance.empty()
                                 ? -1
-                                : badEdge.provenance.front().provenance;
-    occurrence.railId = badEdge.railId;
-    occurrence.curveId = badEdge.curveId;
-    occurrence.sourceT0 = badEdge.sourceT0;
-    occurrence.sourceT1 = badEdge.sourceT1;
-    occurrence.railT0 = badEdge.railT0;
-    occurrence.railT1 = badEdge.railT1;
+                                : edge.provenance.front().provenance;
+    occurrence.railId = edge.railId;
+    occurrence.curveId = edge.curveId;
+    occurrence.sourceT0 = edge.sourceT0;
+    occurrence.sourceT1 = edge.sourceT1;
+    occurrence.railT0 = edge.railT0;
+    occurrence.railT1 = edge.railT1;
     return occurrence;
   };
-  badFrom.occurrences.push_back(
-      malformedOccurrence(Eigen::RowVector3d(1.0, 0.0, 0.0)));
-  badTo.occurrences.push_back(
-      malformedOccurrence(Eigen::RowVector3d(-1.0, 0.0, 0.0)));
+  const auto &badTwin = fixture.complex.halfedges[
+      static_cast<std::size_t>(badEdge.twin)];
+  badFrom.occurrences.push_back(malformedOccurrence(
+      badEdge, Eigen::RowVector3d(1.0, 0.0, 0.0)));
+  badTo.occurrences.push_back(malformedOccurrence(
+      badEdge, Eigen::RowVector3d(-1.0, 0.0, 0.0)));
+  badFrom.occurrences.push_back(malformedOccurrence(
+      badTwin, Eigen::RowVector3d(1.0, 0.0, 0.0)));
+  badTo.occurrences.push_back(malformedOccurrence(
+      badTwin, Eigen::RowVector3d(-1.0, 0.0, 0.0)));
 
   const auto occurrenceCount = [](const auto &complex) {
     return std::accumulate(

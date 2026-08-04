@@ -55,11 +55,43 @@ struct SurfaceCellCanonicalIdentity {
   }
 };
 
+
+struct SurfaceCellSourceChart {
+  int sourceComponent = -1;
+  int sourceFace = -1;
+  int localSheet = -1;
+
+  [[nodiscard]] bool valid() const {
+    return sourceComponent >= 0 && sourceFace >= 0 && localSheet >= 0;
+  }
+
+  friend bool operator==(const SurfaceCellSourceChart &lhs,
+                         const SurfaceCellSourceChart &rhs) {
+    return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) ==
+           std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
+  }
+
+  friend bool operator!=(const SurfaceCellSourceChart &lhs,
+                         const SurfaceCellSourceChart &rhs) {
+    return !(lhs == rhs);
+  }
+
+  friend bool operator<(const SurfaceCellSourceChart &lhs,
+                        const SurfaceCellSourceChart &rhs) {
+    return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) <
+           std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
+  }
+};
+
 struct SurfaceCellDomainIdentity {
   bool valid = false;
   SurfaceCellCanonicalIdentity orientedBoundary;
   SurfaceCellCanonicalIdentity undirectedBoundary;
   SurfaceCellCanonicalIdentity sourceSupport;
+  // Canonical physical cell-side identity. It may contain several adjacent
+  // per-face local chart IDs. sourceChartMap preserves those exact chart IDs.
+  SurfaceCellCanonicalIdentity sourceOwnershipClass;
+  SurfaceCellCanonicalIdentity sourceChartMap;
   int boundaryNodeCount = 0;
   int boundaryHalfedgeCount = 0;
   int sourceSupportCount = 0;
@@ -76,6 +108,8 @@ struct SurfaceCellDomainIdentity {
     mix(orientedBoundary.hash());
     mix(undirectedBoundary.hash());
     mix(sourceSupport.hash());
+    mix(sourceOwnershipClass.hash());
+    mix(sourceChartMap.hash());
     mix(static_cast<std::uint64_t>(boundaryNodeCount));
     mix(static_cast<std::uint64_t>(boundaryHalfedgeCount));
     mix(static_cast<std::uint64_t>(sourceSupportCount));
@@ -84,11 +118,22 @@ struct SurfaceCellDomainIdentity {
     return seed;
   }
 
+  [[nodiscard]] bool same_source_ownership(
+      const SurfaceCellDomainIdentity &other) const {
+    if (!valid || !other.valid || sourceComponent != other.sourceComponent) {
+      return false;
+    }
+    if (sourceOwnershipClass.valid || other.sourceOwnershipClass.valid) {
+      return sourceOwnershipClass.valid && other.sourceOwnershipClass.valid &&
+             sourceOwnershipClass == other.sourceOwnershipClass;
+    }
+    return sourceSheet == other.sourceSheet;
+  }
+
   [[nodiscard]] bool same_oriented_domain(
       const SurfaceCellDomainIdentity &other) const {
-    return valid && other.valid &&
-           sourceComponent == other.sourceComponent &&
-           sourceSheet == other.sourceSheet &&
+    return same_source_ownership(other) &&
+           sourceChartMap == other.sourceChartMap &&
            boundaryNodeCount == other.boundaryNodeCount &&
            boundaryHalfedgeCount == other.boundaryHalfedgeCount &&
            sourceSupportCount == other.sourceSupportCount &&
@@ -98,9 +143,8 @@ struct SurfaceCellDomainIdentity {
 
   [[nodiscard]] bool same_undirected_support(
       const SurfaceCellDomainIdentity &other) const {
-    return valid && other.valid &&
-           sourceComponent == other.sourceComponent &&
-           sourceSheet == other.sourceSheet &&
+    return same_source_ownership(other) &&
+           sourceChartMap == other.sourceChartMap &&
            boundaryHalfedgeCount == other.boundaryHalfedgeCount &&
            sourceSupportCount == other.sourceSupportCount &&
            undirectedBoundary == other.undirectedBoundary &&
@@ -112,6 +156,8 @@ struct SurfaceCellDomainIdentity {
     return lhs.valid == rhs.valid &&
            lhs.sourceComponent == rhs.sourceComponent &&
            lhs.sourceSheet == rhs.sourceSheet &&
+           lhs.sourceOwnershipClass == rhs.sourceOwnershipClass &&
+           lhs.sourceChartMap == rhs.sourceChartMap &&
            lhs.boundaryNodeCount == rhs.boundaryNodeCount &&
            lhs.boundaryHalfedgeCount == rhs.boundaryHalfedgeCount &&
            lhs.sourceSupportCount == rhs.sourceSupportCount &&
@@ -132,6 +178,12 @@ struct SurfaceCellDomainIdentity {
     }
     if (lhs.sourceComponent != rhs.sourceComponent) {
       return lhs.sourceComponent < rhs.sourceComponent;
+    }
+    if (lhs.sourceOwnershipClass != rhs.sourceOwnershipClass) {
+      return lhs.sourceOwnershipClass < rhs.sourceOwnershipClass;
+    }
+    if (lhs.sourceChartMap != rhs.sourceChartMap) {
+      return lhs.sourceChartMap < rhs.sourceChartMap;
     }
     if (lhs.sourceSheet != rhs.sourceSheet) {
       return lhs.sourceSheet < rhs.sourceSheet;

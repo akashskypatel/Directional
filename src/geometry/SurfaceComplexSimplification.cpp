@@ -134,6 +134,15 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(cell.sourceFace);
     mix(cell.sourceComponent);
     mix(cell.sourceSheet);
+    mix(cell.sourceOwnershipClass.valid ? 1 : 0);
+    for (const std::int64_t value : cell.sourceOwnershipClass.values) {
+      mix(value);
+    }
+    for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+      mix(chart.sourceComponent);
+      mix(chart.sourceFace);
+      mix(chart.localSheet);
+    }
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
     }
@@ -812,7 +821,9 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.boundaryComponentCount = 1;
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
-    std::set<std::pair<int, int>> mergedScopes;
+    std::set<int> mergedComponents;
+    std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
+    std::set<SurfaceCellSourceChart> mergedCharts;
     const auto authoritativeCellScope = [&](const SurfaceArrangementCell &cell) {
       if (cell.sourceComponent >= 0 && cell.sourceSheet >= 0) {
         return std::pair<int, int>{cell.sourceComponent, cell.sourceSheet};
@@ -862,13 +873,30 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       fallbackArea += cell.area;
       mergedSourceFaces.insert(cell.sourceFaces.begin(), cell.sourceFaces.end());
       if (cell.sourceFace >= 0) mergedSourceFaces.insert(cell.sourceFace);
-      const std::pair<int, int> scope = authoritativeCellScope(cell);
-      if (scope.first < 0 || scope.second < 0) return invalid;
-      mergedScopes.insert(scope);
+      SurfaceCellCanonicalIdentity ownership = cell.sourceOwnershipClass;
+      if (ownership.valid) {
+        mergedComponents.insert(cell.sourceComponent);
+        mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
+      } else {
+        const std::pair<int, int> scope = authoritativeCellScope(cell);
+        if (scope.first < 0 || scope.second < 0) return invalid;
+        ownership.valid = true;
+        ownership.values = {scope.first, scope.second};
+        mergedComponents.insert(scope.first);
+        mergedCharts.insert({scope.first, cell.sourceFace, scope.second});
+      }
+      mergedOwnershipClasses.insert(std::move(ownership));
     }
-    if (mergedScopes.size() != 1U) return invalid;
-    mergedCell.sourceComponent = mergedScopes.begin()->first;
-    mergedCell.sourceSheet = mergedScopes.begin()->second;
+    if (mergedOwnershipClasses.size() != 1U ||
+        mergedComponents.size() != 1U) {
+      return invalid;
+    }
+    mergedCell.sourceOwnershipClass = *mergedOwnershipClasses.begin();
+    mergedCell.sourceCharts.assign(mergedCharts.begin(), mergedCharts.end());
+    mergedCell.sourceComponent = *mergedComponents.begin();
+    mergedCell.sourceSheet = !mergedCell.sourceCharts.empty()
+                                 ? mergedCell.sourceCharts.front().localSheet
+                                 : -1;
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
     mergedCell.sourceFace = mergedCell.sourceFaces.empty()
@@ -1046,7 +1074,7 @@ extract_surface_simplification_candidates_impl(
     int to = -1;
     int family = -1;
     int strand = -1;
-    std::set<int> sourceSheets;
+    std::set<SurfaceCellCanonicalIdentity> ownershipClasses;
     bool hardFeature = false;
     bool boundary = false;
     bool layoutSupport = false;
@@ -1082,22 +1110,36 @@ extract_surface_simplification_candidates_impl(
     record.boundary = halfedge.family < 0 || twin.family < 0 ||
                       cell_is_exterior(halfedge.cell) ||
                       cell_is_exterior(twin.cell);
-    if (halfedge.sourceSheet >= 0) record.sourceSheets.insert(halfedge.sourceSheet);
-    if (twin.sourceSheet >= 0) record.sourceSheets.insert(twin.sourceSheet);
     for (const SurfaceArrangementProvenance &value : halfedge.provenance) {
-      if (value.sourceSheet >= 0) record.sourceSheets.insert(value.sourceSheet);
       record.layoutSupport = record.layoutSupport || value.layoutSupport;
       record.singularitySupport =
           record.singularitySupport || value.singularitySupport;
     }
     for (const SurfaceArrangementProvenance &value : twin.provenance) {
-      if (value.sourceSheet >= 0) record.sourceSheets.insert(value.sourceSheet);
       record.layoutSupport = record.layoutSupport || value.layoutSupport;
       record.singularitySupport =
           record.singularitySupport || value.singularitySupport;
     }
-    if (halfedge.cell >= 0) record.cells.insert(halfedge.cell);
-    if (twin.cell >= 0) record.cells.insert(twin.cell);
+    const auto appendOwnership = [&](const int cellId,
+                                     const SurfaceArrangementHalfedge &edge) {
+      if (cellId < 0 || cellId >= static_cast<int>(complex.cells.size())) {
+        return;
+      }
+      record.cells.insert(cellId);
+      const SurfaceArrangementCell &cell =
+          complex.cells[static_cast<std::size_t>(cellId)];
+      SurfaceCellCanonicalIdentity ownership = cell.sourceOwnershipClass;
+      if (!ownership.valid && edge.sourceComponent >= 0 &&
+          edge.sourceSheet >= 0) {
+        ownership.valid = true;
+        ownership.values = {edge.sourceComponent, edge.sourceSheet};
+      }
+      if (ownership.valid) {
+        record.ownershipClasses.insert(std::move(ownership));
+      }
+    };
+    appendOwnership(halfedge.cell, halfedge);
+    appendOwnership(twin.cell, twin);
 
     if (vertices != nullptr && faces != nullptr && record.from >= 0 &&
         record.to >= 0 && record.from < static_cast<int>(complex.nodes.size()) &&
@@ -1150,7 +1192,7 @@ extract_surface_simplification_candidates_impl(
     std::set<int> nodes;
     std::set<int> cells;
     std::set<int> strands;
-    std::set<int> sheets;
+    std::set<SurfaceCellCanonicalIdentity> ownershipClasses;
     for (const int edgeIndex : edgeIndices) {
       const EdgeRecord &edge = edges[static_cast<std::size_t>(edgeIndex)];
       candidate.elementIds.push_back(edge.halfedge);
@@ -1158,7 +1200,8 @@ extract_surface_simplification_candidates_impl(
       nodes.insert(edge.to);
       cells.insert(edge.cells.begin(), edge.cells.end());
       if (edge.strand >= 0) strands.insert(edge.strand);
-      sheets.insert(edge.sourceSheets.begin(), edge.sourceSheets.end());
+      ownershipClasses.insert(edge.ownershipClasses.begin(),
+                              edge.ownershipClasses.end());
       candidate.touchesHardFeature =
           candidate.touchesHardFeature || edge.hardFeature;
       candidate.touchesSingularity =
@@ -1173,7 +1216,7 @@ extract_surface_simplification_candidates_impl(
     candidate.affectedNodeIds.assign(nodes.begin(), nodes.end());
     candidate.affectedCellIds.assign(cells.begin(), cells.end());
     candidate.affectedStrandIds.assign(strands.begin(), strands.end());
-    candidate.touchesLocalSheetBoundary = sheets.size() > 1U;
+    candidate.touchesLocalSheetBoundary = ownershipClasses.size() > 1U;
     if (!explicitSingularityOnly) {
       for (const int node : candidate.affectedNodeIds) {
         if (node >= 0 && node < static_cast<int>(singularNode.size()) &&
@@ -1340,8 +1383,8 @@ extract_surface_simplification_candidates_impl(
     // different sheets.
     candidate.touchesLocalSheetBoundary = std::any_of(
         group.begin(), group.end(), [&](const int edgeIndex) {
-          return edges[static_cast<std::size_t>(edgeIndex)].sourceSheets.size() >
-                 1U;
+          return edges[static_cast<std::size_t>(edgeIndex)]
+                     .ownershipClasses.size() > 1U;
         });
     candidate.changesTopology = candidate.touchesLocalSheetBoundary ||
                                 candidate.touchesSingularity;

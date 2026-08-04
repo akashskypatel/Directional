@@ -470,6 +470,31 @@ SurfaceCellCanonicalIdentity source_support_identity(
   return flatten_identities(faces);
 }
 
+SurfaceCellCanonicalIdentity source_chart_map_identity(
+    const SurfaceArrangementCell &cell, const Eigen::MatrixXi &F) {
+  std::vector<std::vector<std::int64_t>> charts;
+  for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+    if (!chart.valid() || chart.sourceFace >= F.rows() || F.cols() != 3) {
+      return {};
+    }
+    std::array<int, 3> vertices{{F(chart.sourceFace, 0),
+                                 F(chart.sourceFace, 1),
+                                 F(chart.sourceFace, 2)}};
+    std::sort(vertices.begin(), vertices.end());
+    charts.push_back({chart.sourceComponent, chart.localSheet, vertices[0],
+                      vertices[1], vertices[2]});
+  }
+  std::sort(charts.begin(), charts.end());
+  charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
+  return flatten_identities(charts);
+}
+
+bool cell_contains_source_chart(const SurfaceArrangementCell &cell,
+                                const SurfaceCellSourceChart &chart) {
+  return std::binary_search(cell.sourceCharts.begin(), cell.sourceCharts.end(),
+                            chart);
+}
+
 int source_support_count(const SurfaceArrangementCell &cell,
                          const Eigen::MatrixXi &F) {
   std::vector<std::array<int, 3>> faces;
@@ -508,6 +533,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   std::vector<std::vector<std::int64_t>> undirected;
   std::set<int> components;
   std::set<int> sheets;
+  std::set<SurfaceCellSourceChart> exactCharts;
   directed.reserve(boundary.size());
   undirected.reserve(boundary.size());
 
@@ -608,6 +634,8 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     audit.sourceFace = edge.sourceFace;
     components.insert(edge.sourceComponent);
     sheets.insert(edge.sourceSheet);
+    exactCharts.insert(
+        {edge.sourceComponent, edge.sourceFace, edge.sourceSheet});
 
     const SurfaceArrangementNode &from =
         complex.nodes[static_cast<std::size_t>(edge.from)];
@@ -657,7 +685,23 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
         SurfaceCellDomainIdentityFailureKind::MixedSourceComponent;
     return audit;
   }
-  if (sheets.size() != 1U) {
+  const bool hasCanonicalOwnership = cell.sourceOwnershipClass.valid;
+  if (hasCanonicalOwnership) {
+    if (cell.sourceCharts.empty() ||
+        !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
+      audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
+      return audit;
+    }
+    for (const SurfaceCellSourceChart &chart : exactCharts) {
+      if (!chart.valid() || !cell_contains_source_chart(cell, chart)) {
+        audit.sourceFace = chart.sourceFace;
+        audit.sourceComponent = chart.sourceComponent;
+        audit.sourceSheet = chart.localSheet;
+        audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
+        return audit;
+      }
+    }
+  } else if (sheets.size() != 1U) {
     audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
     return audit;
   }
@@ -667,7 +711,8 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceComponent;
     return audit;
   }
-  if (cell.sourceSheet >= 0 && cell.sourceSheet != *sheets.begin()) {
+  if (!hasCanonicalOwnership && cell.sourceSheet >= 0 &&
+      cell.sourceSheet != *sheets.begin()) {
     audit.sourceSheet = cell.sourceSheet;
     audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
     return audit;
@@ -678,11 +723,25 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
       flatten_identities(canonical_cycle_rotation(directed));
   audit.identity.undirectedBoundary = flatten_identities(undirected);
   audit.identity.sourceSupport = source_support_identity(cell, F);
+  audit.identity.sourceOwnershipClass = cell.sourceOwnershipClass;
+  if (!audit.identity.sourceOwnershipClass.valid) {
+    audit.identity.sourceOwnershipClass.valid = true;
+    audit.identity.sourceOwnershipClass.values = {
+        *components.begin(), *sheets.begin()};
+  }
+  audit.identity.sourceChartMap = source_chart_map_identity(cell, F);
+  if (!audit.identity.sourceChartMap.valid) {
+    audit.identity.sourceChartMap.valid = true;
+    audit.identity.sourceChartMap.values = {
+        *components.begin(), *sheets.begin()};
+  }
   audit.identity.boundaryNodeCount = static_cast<int>(boundary.size());
   audit.identity.boundaryHalfedgeCount = static_cast<int>(boundary.size());
   audit.identity.sourceSupportCount = source_support_count(cell, F);
   audit.identity.sourceComponent = *components.begin();
-  audit.identity.sourceSheet = *sheets.begin();
+  audit.identity.sourceSheet = cell.sourceSheet >= 0
+                                   ? cell.sourceSheet
+                                   : *sheets.begin();
   if (!audit.identity.sourceSupport.valid ||
       audit.identity.sourceSupportCount <= 0) {
     audit.failure = SurfaceCellDomainIdentityFailureKind::InvalidSourceSupport;
@@ -1337,6 +1396,8 @@ void append_repair_domain_identity(
   append_repair_identity(destination, identity.orientedBoundary);
   append_repair_identity(destination, identity.undirectedBoundary);
   append_repair_identity(destination, identity.sourceSupport);
+  append_repair_identity(destination, identity.sourceOwnershipClass);
+  append_repair_identity(destination, identity.sourceChartMap);
 }
 
 void append_repair_conflict_identity(
@@ -1559,6 +1620,11 @@ std::uint64_t logical_complex_payload_bytes(
              sizeof(SurfaceArrangementProvenance);
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += static_cast<std::uint64_t>(cell.sourceCharts.size()) *
+             sizeof(SurfaceCellSourceChart);
+    bytes += static_cast<std::uint64_t>(
+                 cell.sourceOwnershipClass.values.size()) *
+             sizeof(std::int64_t);
     bytes += static_cast<std::uint64_t>(cell.sourceFaces.size()) * sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.halfedges.size()) * sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.sideFamilies.size()) * sizeof(int);
@@ -1586,6 +1652,11 @@ std::uint64_t estimated_complex_owned_bytes(
              sizeof(SurfaceArrangementProvenance);
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    bytes += static_cast<std::uint64_t>(cell.sourceCharts.capacity()) *
+             sizeof(SurfaceCellSourceChart);
+    bytes += static_cast<std::uint64_t>(
+                 cell.sourceOwnershipClass.values.capacity()) *
+             sizeof(std::int64_t);
     bytes += static_cast<std::uint64_t>(cell.sourceFaces.capacity()) *
              sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.halfedges.capacity()) *
@@ -2308,6 +2379,15 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
                       sourceFaces.end());
     append_completion_dependency_values(fields.sourceDomain, sourceFaces);
+    const auto appendCanonical = [&](const SurfaceCellCanonicalIdentity &value) {
+      fields.sourceDomain.push_back(value.valid ? 1 : 0);
+      fields.sourceDomain.push_back(
+          static_cast<std::int64_t>(value.values.size()));
+      fields.sourceDomain.insert(fields.sourceDomain.end(), value.values.begin(),
+                                 value.values.end());
+    };
+    appendCanonical(patch.domainIdentity.sourceOwnershipClass);
+    appendCanonical(patch.domainIdentity.sourceChartMap);
 
     fields.sideSubdivision =
         canonical_side_subdivision_dependency(descriptor);
@@ -3505,8 +3585,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex(
     for (const auto *left : leftOwners) {
       for (const auto *right : rightOwners) {
         if (left->domain.same_undirected_support(right->domain) ||
-            (left->domain.sourceComponent == right->domain.sourceComponent &&
-             left->domain.sourceSheet == right->domain.sourceSheet &&
+            (left->domain.same_source_ownership(right->domain) &&
              left->domain.sourceSupport.valid &&
              right->domain.sourceSupport.valid &&
              left->domain.sourceSupport == right->domain.sourceSupport) ||

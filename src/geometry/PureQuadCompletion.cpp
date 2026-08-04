@@ -1563,10 +1563,8 @@ SurfaceCellOwnershipConflict make_ownership_conflict(
             secondMesh->domainIdentity.sourceSupport &&
         firstMesh->domainIdentity.sourceSupportCount ==
             secondMesh->domainIdentity.sourceSupportCount &&
-        firstMesh->domainIdentity.sourceComponent ==
-            secondMesh->domainIdentity.sourceComponent &&
-        firstMesh->domainIdentity.sourceSheet ==
-            secondMesh->domainIdentity.sourceSheet;
+        firstMesh->domainIdentity.same_source_ownership(
+            secondMesh->domainIdentity);
     conflict.classification =
         sameSourceSupport
             ? SurfaceCellOwnershipConflictClass::SameCornerDistinctBoundaryClaim
