@@ -4,12 +4,13 @@ Last updated: 2026-08-04
 
 ## Active phase
 
-- Phase: P5 — direct surface-cell completion remediation.
+- Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB22 artifact-only test and benchmark**.
-- Next turn: **P5-CB143 through P5-CB150 code changes + compile-only build**.
+- Completed runtime turn: **P5-TB22 artifact-only test and benchmark**.
+- Reorientation review: `.agents/Directional/REORIENTATION_PLAN.md` accepted as the authoritative remediation order.
+- Next turn: **P5-R0/R1 code changes + compile-only build**.
 
 ## Tested checkpoint
 
@@ -25,55 +26,76 @@ Last updated: 2026-08-04
 Closed or improved:
 
 - [x] Package authority.
-- [x] Complete suite now terminates: **585/600** in **103.441 s**.
+- [x] Complete suite terminates: **585/600** in **103.441 s**.
 - [x] `MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback`.
 - [x] Phase 14–18: **236/236**.
 - [x] Phase 16: **39/39**.
 - [x] Phase 17: **26/26**.
 - [x] Four face-edge runs terminate with one signature, 14/14 bounded states, and sequence hash `12658256849805696865`.
-- [x] Four smooth runs terminate within the established wall and peak limits.
+- [x] Four smooth runs terminate within established wall and peak limits.
 - [x] Torus reports stable typed reason `side-count-unsupported`.
 
 Open:
 
 - [ ] Full suite clean: **585/600**, 15 failures.
 - [ ] Milestone D: **6/7**; cylinder remains `non-disk-cell cell=0 halfedge=43 twin=42 next=29`.
-- [ ] Milestone E: **23/26**; general completion, valid parallel route, and real reuse remain open.
-- [ ] GP23 + GP24: **10/14**; intended optimization/validation lineage is preempted by completion.
+- [ ] Milestone E: **23/26**.
+- [ ] GP23 + GP24: **10/14**.
 - [ ] Phase20: **46/48**.
 - [ ] Direct production: **0/8**.
-- [ ] Repeated-node producer: sphere exhausts 68/68, mechanical 104/104, and face-edge 14/14 without a valid commit.
-- [ ] Positive completion reuse/recompute: `0/0`.
 - [ ] Plane/seam/close sheets retain `LocalSheetMismatch` at cell/face 4/7, 2/15, and 3/13.
-- [ ] Cylinder pattern variant 51 remains bow-tied.
-- [ ] Thin-tube bounded-combinatorial variant 43 remains degenerate.
-- [ ] Smooth patch 9181 closed-form variant 0 remains degenerate.
+- [ ] Repeated-node alternatives exhaust without a valid commit.
+- [ ] Cylinder, thin-tube, and smooth completion candidates remain bow-tied or degenerate.
+- [ ] Valid parallel route and real reuse/recompute remain open.
 - [ ] Torus remains incomplete at descriptor 22 / cell 23.
-- [ ] Same-sample memory availability is incorrectly true with zero categorized bytes and 0% coverage.
+- [ ] Same-sample memory availability is incorrectly true at 0% categorized coverage.
 
-## Required next work
+## Reorientation decision
 
-Follow `.agents/Directional/Milestone_G_P5_Post_TB22_Producer_Correction_Code_Build_Plan.md`:
+The prior CB143–CB150 plan diagnosed valid issues but combined foundational producer work with deferred operational hardening. Do not execute it as one turn.
 
-- [ ] P5-CB143 — topology-distinct repeated-node wedge/splice pairings; retain bounded state behavior.
-- [ ] P5-CB144 — reconstruct periodic cylinder cells from directed incidence before cell assignment.
-- [ ] P5-CB145 — topology-distinct valid local templates, not more rotations/reversals.
-- [ ] P5-CB146 — route separation in stitch keys and operation-derived cache reuse/recompute.
-- [ ] P5-CB147 — source-entity chart transition graph across adjacent face charts.
-- [ ] P5-CB148 — production-valid GP23/GP24/Phase20 stage-lineage fixtures and producers.
-- [ ] P5-CB149 — support the torus descriptor or repair its decomposition.
-- [ ] P5-CB150 — synchronize working-set and owned-byte sampling while categories are live.
+Authoritative order:
 
-The next turn must compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
+1. **R0** — freeze the repair surface and make recovery non-authoritative/default-off.
+2. **R1** — canonical source-entity chart transitions.
+3. **R2** — directed wedge/incidence reconstruction before cell assignment.
+4. **R3** — topology-distinct patch completion engine.
+5. **R4** — repeated-node wedge/splice producer.
+6. **R5** — explicit local lattice phase and front-event state.
+7. **R6** — torus decomposition/descriptor support.
+8. **R7** — adaptive dyadic 2:1 transitions.
+9. **R8** — direct production validation.
+10. **R9–R11** — cache reuse, stage-lineage fixtures, and memory telemetry only after direct geometry is substantially green.
+
+## Required next work: P5-R0/R1
+
+Follow `.agents/Directional/Milestone_G_P5_R0_R1_Reoriented_Code_Build_Plan.md`.
+
+- [ ] Preserve current typed failures, hashes, rollback, and fail-closed semantics; add no unnecessary diagnostics.
+- [ ] Make source-grid recovery default-off or a distinct non-authoritative backend/output origin.
+- [ ] Keep direct production at fallback `Fail`, recovery disabled, and no legacy execution.
+- [ ] Build orientation-aware transitions between adjacent source-face charts.
+- [ ] Partition source-vertex incidence into intrinsic fans respecting component, sheet, boundary, nonmanifold, and hard-rail barriers.
+- [ ] Resolve arrangement, completion, and stitched output provenance through canonical source entities.
+- [ ] Rebind barycentrics through exact source-edge/source-vertex transition maps.
+- [ ] Keep disconnected and opposite close sheets in separate transition components.
+- [ ] Add compile-valid tests for edge, vertex-fan, hard-rail, disconnected-sheet, permutation, inverse-transition, and rollback behavior.
+
+Explicitly defer R2–R11 in this turn. Do not add more completion rotations/reversals or single-interface exclusions.
+
+Compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
 
 ## Current authority
 
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Milestone_G_P5_R0_R1_Reoriented_Code_Build_Plan.md`
 - `.agents/Directional/Milestone_G_P5_TB22_Artifact_Only_Test_Benchmark_Report.md`
 - `benchmark-results/p5-tb22-summary.json`
-- `.agents/Directional/Milestone_G_P5_Post_TB22_Producer_Correction_Code_Build_Plan.md`
-- `.agents/Directional/Milestone_G_P5_CB135_CB142_Code_Build_Report.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
+
+The earlier `.agents/Directional/Milestone_G_P5_Post_TB22_Producer_Correction_Code_Build_Plan.md` is historical diagnosis; its execution order is superseded.
 
 Preserve all prohibitions: no validator weakening, frequency/count/order selection, fallback/recovery substitution, synthetic counters, positional merging, source-triangle pairing, arbitrary subset search, fixture/ID special cases, or timeout-as-correctness.
 
