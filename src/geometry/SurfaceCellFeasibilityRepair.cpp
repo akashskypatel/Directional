@@ -1756,58 +1756,155 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
     acceptedSubdivision = std::move(firstSubdivision);
     acceptedSelection = selected;
   } else {
-    // A single deterministic T-join can cross a pinched local boundary even
-    // when another adjacent dual route is valid.  Retry only topology-implied
-    // single-edge exclusions incident to the typed failing cell.  This bounded
-    // local alternate set is not a powerset and never selects by fixture IDs,
-    // frequency, or input row order.
-    std::vector<int> localAlternatives;
+    // The first deterministic T-join may cross a pinched local boundary. Build
+    // the retry frontier from every canonical dual interface incident to the
+    // typed failing cell, not only from interfaces selected by the failed
+    // T-join. Each topology-derived exclusion is attempted at most once.
+    // Canonical state hashes prevent repeated recomputation and make the work
+    // bound equal to the unique incident-interface count rather than elapsed
+    // time or an arbitrary subset cap.
+    struct AlternativeInterface {
+      int halfedge = -1;
+      std::tuple<int, int, int, int, int, int, int, int, int> key;
+    };
+    std::vector<AlternativeInterface> localAlternatives;
     const int failingCell = firstSubdivision.firstDomainFailure.cellId;
     if (failingCell >= 0 &&
+        failingCell < static_cast<int>(adjacency.size()) &&
         firstSubdivision.failure.rfind("InvalidReplacementBoundary:", 0) == 0) {
-      for (const int halfedge : selected) {
-        if (halfedge < 0 ||
-            halfedge >= static_cast<int>(input.halfedges.size())) {
+      for (const DualEdge &dual :
+           adjacency[static_cast<std::size_t>(failingCell)]) {
+        if (dual.halfedge < 0 ||
+            dual.halfedge >= static_cast<int>(input.halfedges.size())) {
           continue;
         }
         const SurfaceArrangementHalfedge &edge =
-            input.halfedges[static_cast<std::size_t>(halfedge)];
-        const int twinCell = edge.twin >= 0 &&
-                                     edge.twin <
-                                         static_cast<int>(input.halfedges.size())
-                                 ? input.halfedges[
-                                       static_cast<std::size_t>(edge.twin)]
-                                       .cell
-                                 : -1;
-        if (edge.cell == failingCell || twinCell == failingCell) {
-          localAlternatives.push_back(halfedge);
+            input.halfedges[static_cast<std::size_t>(dual.halfedge)];
+        if (edge.twin < 0 ||
+            edge.twin >= static_cast<int>(input.halfedges.size())) {
+          continue;
         }
+        const SurfaceArrangementHalfedge &twin =
+            input.halfedges[static_cast<std::size_t>(edge.twin)];
+        const int firstNode = std::min(edge.from, edge.to);
+        const int secondNode = std::max(edge.from, edge.to);
+        const int firstCell = std::min(edge.cell, twin.cell);
+        const int secondCell = std::max(edge.cell, twin.cell);
+        const bool exteriorInterface =
+            input.cells[static_cast<std::size_t>(edge.cell)].boundaryCycle ||
+            input.cells[static_cast<std::size_t>(twin.cell)].boundaryCycle;
+        AlternativeInterface candidate;
+        candidate.halfedge = std::min(edge.id, edge.twin);
+        candidate.key = std::make_tuple(
+            dual.hardFeature ? 1 : 0, exteriorInterface ? 1 : 0,
+            edge.sourceComponent, edge.sourceSheet, firstCell, secondCell,
+            firstNode, secondNode, candidate.halfedge);
+        localAlternatives.push_back(std::move(candidate));
       }
     }
-    std::sort(localAlternatives.begin(), localAlternatives.end());
+    std::sort(localAlternatives.begin(), localAlternatives.end(),
+              [](const AlternativeInterface &lhs,
+                 const AlternativeInterface &rhs) {
+                return lhs.key < rhs.key;
+              });
     localAlternatives.erase(
-        std::unique(localAlternatives.begin(), localAlternatives.end()),
+        std::unique(localAlternatives.begin(), localAlternatives.end(),
+                    [](const AlternativeInterface &lhs,
+                       const AlternativeInterface &rhs) {
+                      return lhs.halfedge == rhs.halfedge;
+                    }),
         localAlternatives.end());
-    constexpr std::size_t maxLocalAlternatives = 16U;
-    if (localAlternatives.size() > maxLocalAlternatives) {
-      localAlternatives.resize(maxLocalAlternatives);
+    result.alternativeCandidateBudget =
+        static_cast<int>(localAlternatives.size());
+    if (localAlternatives.empty()) {
+      result.alternativeDisposition =
+          SurfaceCellParityAlternativeDisposition::NoCandidate;
     }
-    for (const int excludedHalfedge : localAlternatives) {
-      std::set<int> retrySelection;
-      std::string retryFailure;
-      if (!computeSelected({excludedHalfedge}, retrySelection, retryFailure)) {
+
+    std::set<std::uint64_t> visitedStates;
+    std::map<std::uint64_t, std::pair<bool, std::set<int>>> selectionCache;
+    const auto stateHash = [&](const int excludedHalfedge) {
+      std::uint64_t seed = 1469598103934665603ULL;
+      const auto mix = [&](const std::uint64_t value) {
+        seed ^= value;
+        seed *= 1099511628211ULL;
+      };
+      mix(static_cast<std::uint64_t>(result.oddCellsBefore));
+      mix(static_cast<std::uint64_t>(failingCell + 1));
+      mix(static_cast<std::uint64_t>(
+          firstSubdivision.firstDomainFailure.failure));
+      mix(static_cast<std::uint64_t>(
+          firstSubdivision.firstDomainFailure.nodeId + 1));
+      mix(static_cast<std::uint64_t>(excludedHalfedge + 1));
+      for (const int halfedge : selected) {
+        mix(static_cast<std::uint64_t>(halfedge + 1));
+      }
+      return seed;
+    };
+    std::uint64_t sequenceHash = 1469598103934665603ULL;
+    for (const AlternativeInterface &alternative : localAlternatives) {
+      const std::uint64_t hash = stateHash(alternative.halfedge);
+      sequenceHash ^= hash;
+      sequenceHash *= 1099511628211ULL;
+      result.alternativeStateHashes.push_back(hash);
+      if (!visitedStates.insert(hash).second) {
+        result.alternativeDisposition =
+            SurfaceCellParityAlternativeDisposition::CycleDetected;
         continue;
       }
-      SurfaceCellSubdivisionResult retry =
-          attemptSubdivision(retrySelection);
+      ++result.alternativeCandidatesAttempted;
+      std::set<int> retrySelection;
+      std::string retryFailure;
+      const auto cached = selectionCache.find(hash);
+      bool selectionValid = false;
+      if (cached != selectionCache.end()) {
+        selectionValid = cached->second.first;
+        retrySelection = cached->second.second;
+      } else {
+        selectionValid =
+            computeSelected({alternative.halfedge}, retrySelection,
+                            retryFailure);
+        selectionCache.emplace(hash,
+                               std::make_pair(selectionValid, retrySelection));
+      }
+      if (!selectionValid) {
+        continue;
+      }
+      SurfaceCellSubdivisionResult retry = attemptSubdivision(retrySelection);
       if (retry.success) {
         acceptedSubdivision = std::move(retry);
         acceptedSelection = std::move(retrySelection);
+        result.alternativeSelectedExclusion = alternative.halfedge;
+        result.alternativeDisposition =
+            SurfaceCellParityAlternativeDisposition::Committed;
         break;
       }
     }
+    result.alternativeVisitedStates =
+        static_cast<int>(visitedStates.size());
+    result.alternativeStateSequenceHash = sequenceHash;
     if (!acceptedSubdivision.success) {
+      if (result.alternativeDisposition ==
+          SurfaceCellParityAlternativeDisposition::None) {
+        result.alternativeDisposition =
+            result.alternativeCandidatesAttempted >=
+                    result.alternativeCandidateBudget &&
+                result.alternativeCandidateBudget > 0
+                ? SurfaceCellParityAlternativeDisposition::BudgetExhausted
+                : SurfaceCellParityAlternativeDisposition::AllInvalid;
+      }
       result.failure = firstSubdivision.failure;
+      if (result.alternativeDisposition ==
+          SurfaceCellParityAlternativeDisposition::BudgetExhausted) {
+        result.failure += ";AlternativeRepairBudgetExhausted;attempted=" +
+                          std::to_string(result.alternativeCandidatesAttempted) +
+                          ";budget=" +
+                          std::to_string(result.alternativeCandidateBudget);
+      } else if (result.alternativeDisposition ==
+                 SurfaceCellParityAlternativeDisposition::CycleDetected) {
+        result.failure += ";AlternativeRepairCycleDetected;visited=" +
+                          std::to_string(result.alternativeVisitedStates);
+      }
       result.firstScopeFailure =
           std::move(firstSubdivision.firstScopeFailure);
       result.firstDomainFailure =
@@ -1816,6 +1913,7 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
       return result;
     }
   }
+
 
   result.complex = std::move(acceptedSubdivision.complex);
   result.hardFeatureSplits = acceptedSubdivision.hardFeatureSplits;

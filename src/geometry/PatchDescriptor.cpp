@@ -870,10 +870,10 @@ int completion_variant_count(const PureQuadPatch &patch,
                              const PureQuadCompletionBackend backend) {
   switch (backend) {
   case PureQuadCompletionBackend::TransitionTemplate:
-    return 3;
+    return 6;
   case PureQuadCompletionBackend::Pattern:
   case PureQuadCompletionBackend::BoundedCombinatorial:
-    return std::max(1, static_cast<int>(patch.boundaryVertices.size()));
+    return std::max(1, 2 * static_cast<int>(patch.boundaryVertices.size()));
   case PureQuadCompletionBackend::ClosedForm:
   case PureQuadCompletionBackend::PoleTemplate:
   case PureQuadCompletionBackend::SourceGridRecovery:
@@ -1360,13 +1360,12 @@ SameCornerRouteCandidateSet same_corner_route_candidates(
   }
 
   // When more than one differing route sector belongs to the same ownership
-  // claim, evaluate their union atomically before any individual sector.  A
-  // single-sector split can merely move the duplicate claim to an adjacent
-  // sector; the all-sector transaction is the unique topology-derived coupled
-  // candidate and does not enumerate a powerset.
+  // claim, retain their union as a final topology-derived candidate. Individual
+  // stitch-separation routes are evaluated first so a valid annular route does
+  // not unnecessarily invalidate every completion product in the sector.
   if (result.candidates.size() > 1U) {
     SameCornerRouteCandidate coupled;
-    coupled.priority = 0;
+    coupled.priority = 2;
     coupled.identity = {-1, static_cast<std::int64_t>(result.candidates.size())};
     for (const SameCornerRouteCandidate &candidate : result.candidates) {
       coupled.hardFeature = coupled.hardFeature || candidate.hardFeature;
@@ -2765,6 +2764,18 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   result.paritySplitEdges =
       static_cast<int>(parityRepair.splitHalfedges.size());
   result.parityHardFeatureSplits = parityRepair.hardFeatureSplits;
+  result.parityAlternativeCandidateBudget =
+      parityRepair.alternativeCandidateBudget;
+  result.parityAlternativeCandidatesAttempted =
+      parityRepair.alternativeCandidatesAttempted;
+  result.parityAlternativeVisitedStates =
+      parityRepair.alternativeVisitedStates;
+  result.parityAlternativeSelectedExclusion =
+      parityRepair.alternativeSelectedExclusion;
+  result.parityAlternativeStateSequenceHash =
+      parityRepair.alternativeStateSequenceHash;
+  result.parityAlternativeDisposition =
+      parityRepair.alternativeDisposition;
   result.firstParityScopeFailure = parityRepair.firstScopeFailure;
   if (parityRepair.firstDomainFailure.failure !=
       SurfaceCellDomainIdentityFailureKind::None) {
@@ -2963,105 +2974,119 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       const std::uint64_t semanticHash =
           exact_patch_dependency_hash(descriptor);
       const auto cached = reusableProducts->products.find(semanticHash);
-      if (cached == reusableProducts->products.end()) {
-        ++result.completionOwnershipProductCacheHashMisses;
-        PatchCompletionReuseMismatch mismatch;
-        mismatch.requestedCell = descriptor.cellId;
-        mismatch.hashMiss = true;
-        int bestMismatchCount = std::numeric_limits<int>::max();
-        for (const auto &[candidateHash, products] :
-             reusableProducts->products) {
-          (void)candidateHash;
-          for (const CachedCompletionProduct &product : products) {
-            if (product.consumed) {
-              continue;
-            }
-            PatchCompletionReuseMismatch candidate = dependency_mismatch(
-                requestedDependency, product.dependency, descriptor.cellId,
-                product.descriptor.cellId);
-            candidate.hashMiss = true;
-            const int mismatchCount =
-                static_cast<int>(candidate.sourceDomain) +
-                static_cast<int>(candidate.sideSubdivision) +
-                static_cast<int>(candidate.boundarySourceCoordinates) +
-                static_cast<int>(candidate.railCurveSupport) +
-                static_cast<int>(candidate.singularityRequirements) +
-                static_cast<int>(candidate.backendVariant) +
-                static_cast<int>(candidate.topologyTemplate);
-            if (mismatchCount < bestMismatchCount ||
-                (mismatchCount == bestMismatchCount &&
-                 candidate.cachedCell < mismatch.cachedCell)) {
-              bestMismatchCount = mismatchCount;
-              mismatch = std::move(candidate);
-            }
-          }
+      std::vector<CachedCompletionProduct *> candidates;
+      if (cached != reusableProducts->products.end()) {
+        for (CachedCompletionProduct &product : cached->second) {
+          candidates.push_back(&product);
         }
-        result.completionOwnershipProductCacheMismatchVector.push_back(
-            std::move(mismatch));
       } else {
-        auto &bucket = cached->second;
-        bool reusedProduct = false;
-        for (CachedCompletionProduct &product : bucket) {
-          if (product.consumed) {
-            continue;
+        ++result.completionOwnershipProductCacheHashMisses;
+        // Compact canonical identities can be re-interned after a structural
+        // transaction even when the exact dependency fields are unchanged.
+        // A hash miss therefore falls back to one deterministic exact-field
+        // scan over the finite cache. Reuse is counted only after exact
+        // dependency comparison, source-chart rebinding, topology, and lineage
+        // validation all succeed.
+        for (auto &[candidateHash, products] : reusableProducts->products) {
+          (void)candidateHash;
+          for (CachedCompletionProduct &product : products) {
+            candidates.push_back(&product);
           }
-          PatchCompletionReuseMismatch mismatch = dependency_mismatch(
-              requestedDependency, product.dependency, descriptor.cellId,
-              product.descriptor.cellId);
-          const bool exactDependency =
-              !mismatch.sourceDomain && !mismatch.sideSubdivision &&
-              !mismatch.boundarySourceCoordinates &&
-              !mismatch.railCurveSupport &&
-              !mismatch.singularityRequirements &&
-              !mismatch.backendVariant &&
-              !mismatch.topologyTemplate;
-          if (!exactDependency) {
-            result.completionOwnershipProductCacheMismatchVector.push_back(
-                std::move(mismatch));
-            continue;
-          }
-
-          PureQuadMesh reused = product.mesh;
-          retarget_reused_completion_product(reused, descriptor);
-          std::string ownershipFailure;
-          PureQuadCompletionOwnershipRejection ownershipRejection;
-          const int completionVariant =
-              product.dependency.variant >= 0 ? product.dependency.variant : 0;
-          const bool ownershipValid =
-              pure_quad_detail::validate_completion_domain_ownership(
-                  descriptor.patch, reused, completionVariant,
-                  &sourceSupportResolver, &F, options.sourceFaceComponents,
-                  options.sourceFaceSheets, ownershipFailure,
-                  &ownershipRejection);
-          const bool topologyValid = ownershipValid &&
-              pure_quad_topology_is_disk(reused) && !reused.quads.empty();
-          const PureQuadOutputLineageValidation lineage =
-              topologyValid
-                  ? validate_pure_quad_output_lineage(reused, F, true)
-                  : PureQuadOutputLineageValidation{};
-          if (!topologyValid || !lineage.valid) {
-            mismatch.rebindValidation = true;
-            result.completionOwnershipProductCacheMismatchVector.push_back(
-                std::move(mismatch));
-            if (!result.firstCompletionOwnershipRejection.active &&
-                ownershipRejection.active) {
-              result.firstCompletionOwnershipRejection = ownershipRejection;
-            }
-            continue;
-          }
-
-          product.consumed = true;
-          result.completedPatches.push_back(std::move(reused));
-          ++result.completionOwnershipReusedPatchCompletions;
-          reusedProduct = true;
-          break;
         }
-        if (reusedProduct) {
+      }
+      std::sort(candidates.begin(), candidates.end(),
+                [](const CachedCompletionProduct *lhs,
+                   const CachedCompletionProduct *rhs) {
+                  return std::tie(lhs->descriptor.cellId,
+                                  lhs->dependency.backend,
+                                  lhs->dependency.variant) <
+                         std::tie(rhs->descriptor.cellId,
+                                  rhs->dependency.backend,
+                                  rhs->dependency.variant);
+                });
+
+      bool reusedProduct = false;
+      PatchCompletionReuseMismatch bestMismatch;
+      bestMismatch.requestedCell = descriptor.cellId;
+      bestMismatch.hashMiss = cached == reusableProducts->products.end();
+      int bestMismatchCount = std::numeric_limits<int>::max();
+      for (CachedCompletionProduct *product : candidates) {
+        if (product == nullptr || product->consumed) {
           continue;
         }
-        ++result.completionOwnershipProductCacheExactMismatches;
+        PatchCompletionReuseMismatch mismatch = dependency_mismatch(
+            requestedDependency, product->dependency, descriptor.cellId,
+            product->descriptor.cellId);
+        mismatch.hashMiss = cached == reusableProducts->products.end();
+        const bool exactDependency =
+            !mismatch.sourceDomain && !mismatch.sideSubdivision &&
+            !mismatch.boundarySourceCoordinates &&
+            !mismatch.railCurveSupport &&
+            !mismatch.singularityRequirements &&
+            !mismatch.backendVariant && !mismatch.topologyTemplate;
+        if (!exactDependency) {
+          const int mismatchCount =
+              static_cast<int>(mismatch.sourceDomain) +
+              static_cast<int>(mismatch.sideSubdivision) +
+              static_cast<int>(mismatch.boundarySourceCoordinates) +
+              static_cast<int>(mismatch.railCurveSupport) +
+              static_cast<int>(mismatch.singularityRequirements) +
+              static_cast<int>(mismatch.backendVariant) +
+              static_cast<int>(mismatch.topologyTemplate);
+          if (mismatchCount < bestMismatchCount ||
+              (mismatchCount == bestMismatchCount &&
+               mismatch.cachedCell < bestMismatch.cachedCell)) {
+            bestMismatchCount = mismatchCount;
+            bestMismatch = mismatch;
+          }
+          continue;
+        }
+
+        PureQuadMesh reused = product->mesh;
+        retarget_reused_completion_product(reused, descriptor);
+        std::string ownershipFailure;
+        PureQuadCompletionOwnershipRejection ownershipRejection;
+        const int completionVariant =
+            product->dependency.variant >= 0 ? product->dependency.variant : 0;
+        const bool ownershipValid =
+            pure_quad_detail::validate_completion_domain_ownership(
+                descriptor.patch, reused, completionVariant,
+                &sourceSupportResolver, &F, options.sourceFaceComponents,
+                options.sourceFaceSheets, ownershipFailure,
+                &ownershipRejection);
+        const bool topologyValid =
+            ownershipValid && pure_quad_topology_is_disk(reused) &&
+            !reused.quads.empty();
+        const PureQuadOutputLineageValidation lineage =
+            topologyValid ? validate_pure_quad_output_lineage(reused, F, true)
+                          : PureQuadOutputLineageValidation{};
+        if (!topologyValid || !lineage.valid) {
+          mismatch.rebindValidation = true;
+          result.completionOwnershipProductCacheMismatchVector.push_back(
+              std::move(mismatch));
+          if (!result.firstCompletionOwnershipRejection.active &&
+              ownershipRejection.active) {
+            result.firstCompletionOwnershipRejection = ownershipRejection;
+          }
+          continue;
+        }
+
+        product->consumed = true;
+        result.completedPatches.push_back(std::move(reused));
+        ++result.completionOwnershipReusedPatchCompletions;
+        reusedProduct = true;
+        break;
       }
+      if (reusedProduct) {
+        continue;
+      }
+      if (bestMismatchCount != std::numeric_limits<int>::max()) {
+        result.completionOwnershipProductCacheMismatchVector.push_back(
+            std::move(bestMismatch));
+      }
+      ++result.completionOwnershipProductCacheExactMismatches;
     }
+
     ++result.completionOwnershipRecomputedPatchCompletions;
     PureQuadCompletionBackend expectedBackend =
         PureQuadCompletionBackend::BoundedCombinatorial;
@@ -3131,7 +3156,9 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       std::ostringstream stream;
       stream << "IncompleteSurfaceCellComplex;descriptor="
              << firstFailedDescriptor << ";cell=" << firstFailedCell
-             << ";reason=" << static_cast<int>(firstFailedReason)
+             << ";reason="
+             << pure_quad_patch_reject_reason_name(firstFailedReason)
+             << ";reasonCode=" << static_cast<int>(firstFailedReason)
              << ";attempted=" << result.attemptedPatches
              << ";failed=" << result.failedPatches
              << ";total=" << result.descriptors.descriptors.size();
@@ -3195,7 +3222,9 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     return components;
   };
 
-  result.assembly = stitch_pure_quad_patches(result.completedPatches);
+  result.assembly = stitch_pure_quad_patches(
+      result.completedPatches, 1.0e-9, &F, options.sourceFaceComponents,
+      options.sourceFaceSheets);
   result.completionTemplateAssemblyPasses = 1;
   std::vector<SurfaceCellOwnershipConflict> initialConflicts =
       normalizedConflicts(result.assembly);
@@ -3366,7 +3395,9 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
 
     PureQuadAssemblyResult previousAssembly = std::move(result.assembly);
     PureQuadAssemblyResult candidateAssembly =
-        stitch_pure_quad_patches(result.completedPatches);
+        stitch_pure_quad_patches(result.completedPatches, 1.0e-9, &F,
+                                 options.sourceFaceComponents,
+                                 options.sourceFaceSheets);
     ++result.completionTemplateAssemblyPasses;
     const std::vector<SurfaceCellOwnershipConflict> after =
         normalizedConflicts(candidateAssembly);

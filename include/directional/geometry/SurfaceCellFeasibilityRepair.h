@@ -63,6 +63,34 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     const std::map<int, int> &insertionsByHalfedge,
     const Eigen::MatrixXi *sourceFaces = nullptr);
 
+enum class SurfaceCellParityAlternativeDisposition : int {
+  None = 0,
+  Committed = 1,
+  NoCandidate = 2,
+  CycleDetected = 3,
+  BudgetExhausted = 4,
+  AllInvalid = 5,
+};
+
+inline const char *surface_cell_parity_alternative_disposition_name(
+    const SurfaceCellParityAlternativeDisposition disposition) {
+  switch (disposition) {
+  case SurfaceCellParityAlternativeDisposition::None:
+    return "none";
+  case SurfaceCellParityAlternativeDisposition::Committed:
+    return "committed";
+  case SurfaceCellParityAlternativeDisposition::NoCandidate:
+    return "no-candidate";
+  case SurfaceCellParityAlternativeDisposition::CycleDetected:
+    return "cycle-detected";
+  case SurfaceCellParityAlternativeDisposition::BudgetExhausted:
+    return "budget-exhausted";
+  case SurfaceCellParityAlternativeDisposition::AllInvalid:
+    return "all-invalid";
+  }
+  return "unknown";
+}
+
 struct SurfaceCellParityRepairResult {
   bool success = false;
   SurfaceCellComplex complex;
@@ -70,6 +98,14 @@ struct SurfaceCellParityRepairResult {
   int oddCellsBefore = 0;
   int oddCellsAfter = 0;
   int hardFeatureSplits = 0;
+  int alternativeCandidateBudget = 0;
+  int alternativeCandidatesAttempted = 0;
+  int alternativeVisitedStates = 0;
+  int alternativeSelectedExclusion = -1;
+  std::uint64_t alternativeStateSequenceHash = 0U;
+  std::vector<std::uint64_t> alternativeStateHashes;
+  SurfaceCellParityAlternativeDisposition alternativeDisposition =
+      SurfaceCellParityAlternativeDisposition::None;
   SurfaceCellReplacementScopeFailure firstScopeFailure;
   SurfaceCellDomainIdentityAudit firstDomainFailure;
   std::string failure;

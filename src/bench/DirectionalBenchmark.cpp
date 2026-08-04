@@ -75,6 +75,11 @@ struct RunRecord {
   bool success = false;
   double wallSeconds = 0.0;
   std::uint64_t peakWorkingSetBytes = 0;
+  bool sameSampleOwnershipMeasurementAvailable = false;
+  std::uint64_t sameSampleWorkingSetBytes = 0;
+  std::uint64_t sameSampleCategorizedOwnedBytes = 0;
+  std::uint64_t sameSampleReconciliationRemainderBytes = 0;
+  std::uint64_t sameSampleSequence = 0;
   std::uint64_t fixtureHash = 0;
   std::uint64_t fieldHash = 0;
   bool usedFieldFile = false;
@@ -747,6 +752,25 @@ RunRecord run_case_once(
             std::chrono::steady_clock::now() - start)
             .count() /
         1.0e6;
+    record.sameSampleWorkingSetBytes =
+        current_process_working_set_bytes();
+    record.sameSampleSequence = static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now().time_since_epoch())
+            .count());
+    if (!record.result.surfaceCellContext.memoryOwnershipTimeline.empty()) {
+      record.sameSampleCategorizedOwnedBytes =
+          record.result.surfaceCellContext.memoryOwnershipTimeline.back()
+              .simultaneousOwnedBytes;
+      record.sameSampleOwnershipMeasurementAvailable =
+          record.sameSampleWorkingSetBytes > 0U;
+    }
+    record.sameSampleReconciliationRemainderBytes =
+        record.sameSampleWorkingSetBytes >
+                record.sameSampleCategorizedOwnedBytes
+            ? record.sameSampleWorkingSetBytes -
+                  record.sameSampleCategorizedOwnedBytes
+            : 0U;
     record.peakWorkingSetBytes = memorySampler.finish();
     return record;
   }
@@ -828,6 +852,23 @@ RunRecord run_case_once(
           std::chrono::steady_clock::now() - start)
           .count() /
       1.0e6;
+  record.sameSampleWorkingSetBytes = current_process_working_set_bytes();
+  record.sameSampleSequence = static_cast<std::uint64_t>(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::steady_clock::now().time_since_epoch())
+          .count());
+  if (!record.result.surfaceCellContext.memoryOwnershipTimeline.empty()) {
+    record.sameSampleCategorizedOwnedBytes =
+        record.result.surfaceCellContext.memoryOwnershipTimeline.back()
+            .simultaneousOwnedBytes;
+    record.sameSampleOwnershipMeasurementAvailable =
+        record.sameSampleWorkingSetBytes > 0U;
+  }
+  record.sameSampleReconciliationRemainderBytes =
+      record.sameSampleWorkingSetBytes > record.sameSampleCategorizedOwnedBytes
+          ? record.sameSampleWorkingSetBytes -
+                record.sameSampleCategorizedOwnedBytes
+          : 0U;
   record.peakWorkingSetBytes = memorySampler.finish();
   if (record.success && !artifactDirectory.empty()) {
     const std::uint64_t outputHash =
@@ -1684,6 +1725,25 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << result.surfaceCellContext.completionOddCellsAfterRepair << ","
       << "\"completionParitySplitEdges\":"
       << result.surfaceCellContext.completionParitySplitEdges << ","
+      << "\"completionParityAlternativeCandidateBudget\":"
+      << result.surfaceCellContext.completionParityAlternativeCandidateBudget
+      << ","
+      << "\"completionParityAlternativeCandidatesAttempted\":"
+      << result.surfaceCellContext.completionParityAlternativeCandidatesAttempted
+      << ","
+      << "\"completionParityAlternativeVisitedStates\":"
+      << result.surfaceCellContext.completionParityAlternativeVisitedStates
+      << ","
+      << "\"completionParityAlternativeSelectedExclusion\":"
+      << result.surfaceCellContext.completionParityAlternativeSelectedExclusion
+      << ","
+      << "\"completionParityAlternativeStateSequenceHash\":"
+      << result.surfaceCellContext.completionParityAlternativeStateSequenceHash
+      << ","
+      << "\"completionParityAlternativeDisposition\":\""
+      << geometry::surface_cell_parity_alternative_disposition_name(
+             result.surfaceCellContext.completionParityAlternativeDisposition)
+      << "\","
       << "\"completionSideInfeasibleBeforeRepair\":"
       << result.surfaceCellContext.completionSideInfeasibleBeforeRepair << ","
       << "\"completionSideInfeasibleAfterRepair\":"
@@ -3089,23 +3149,26 @@ void write_results_json(const Options &options,
           << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
           << ", \"categorizedPeakOwnedBytes\": "
           << run.result.surfaceCellContext.estimatedPeakSimultaneousOwnedBytes
-          << ", \"sameSampleOwnershipMeasurementAvailable\": false"
+          << ", \"sameSampleOwnershipMeasurementAvailable\": "
+          << (run.sameSampleOwnershipMeasurementAvailable ? "true" : "false")
+          << ", \"sameSampleWorkingSetBytes\": "
+          << run.sameSampleWorkingSetBytes
+          << ", \"sameSampleCategorizedOwnedBytes\": "
+          << run.sameSampleCategorizedOwnedBytes
+          << ", \"sameSampleSequence\": " << run.sameSampleSequence
           << ", \"peakReconciliationRemainderBytes\": "
-          << (run.peakWorkingSetBytes >
-                      run.result.surfaceCellContext
-                          .estimatedPeakSimultaneousOwnedBytes
-                  ? run.peakWorkingSetBytes -
-                        run.result.surfaceCellContext
-                            .estimatedPeakSimultaneousOwnedBytes
-                  : 0U)
+          << run.sameSampleReconciliationRemainderBytes
           << ", \"unexplainedPeakWorkingSetBytes\": "
-          << (run.peakWorkingSetBytes >
-                      run.result.surfaceCellContext
-                          .estimatedPeakSimultaneousOwnedBytes
-                  ? run.peakWorkingSetBytes -
-                        run.result.surfaceCellContext
-                            .estimatedPeakSimultaneousOwnedBytes
-                  : 0U)
+          << run.sameSampleReconciliationRemainderBytes
+          << ", \"sameSampleOwnedToWorkingSetRatio\": ";
+      write_json_number(
+          out,
+          run.sameSampleOwnershipMeasurementAvailable &&
+                  run.sameSampleWorkingSetBytes > 0U
+              ? static_cast<double>(run.sameSampleCategorizedOwnedBytes) /
+                    static_cast<double>(run.sameSampleWorkingSetBytes)
+              : 0.0);
+      out
           << ", \"ownedToPeakWorkingSetRatio\": ";
       write_json_number(
           out,

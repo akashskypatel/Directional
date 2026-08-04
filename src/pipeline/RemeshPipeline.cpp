@@ -4873,6 +4873,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         completionResult.paritySplitEdges;
     result.surfaceCellContext.completionParityHardFeatureSplits =
         completionResult.parityHardFeatureSplits;
+    result.surfaceCellContext.completionParityAlternativeCandidateBudget =
+        completionResult.parityAlternativeCandidateBudget;
+    result.surfaceCellContext.completionParityAlternativeCandidatesAttempted =
+        completionResult.parityAlternativeCandidatesAttempted;
+    result.surfaceCellContext.completionParityAlternativeVisitedStates =
+        completionResult.parityAlternativeVisitedStates;
+    result.surfaceCellContext.completionParityAlternativeSelectedExclusion =
+        completionResult.parityAlternativeSelectedExclusion;
+    result.surfaceCellContext.completionParityAlternativeStateSequenceHash =
+        completionResult.parityAlternativeStateSequenceHash;
+    result.surfaceCellContext.completionParityAlternativeDisposition =
+        completionResult.parityAlternativeDisposition;
     result.surfaceCellContext.completionSideInfeasibleBeforeRepair =
         completionResult.sideInfeasibleCellsBefore;
     result.surfaceCellContext.completionSideInfeasibleAfterRepair =

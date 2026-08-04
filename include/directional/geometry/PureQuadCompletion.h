@@ -53,6 +53,47 @@ enum class PureQuadPatchRejectReason : int {
   RewriteValenceMismatch = 16,
 };
 
+inline const char *pure_quad_patch_reject_reason_name(
+    const PureQuadPatchRejectReason reason) {
+  switch (reason) {
+  case PureQuadPatchRejectReason::None:
+    return "none";
+  case PureQuadPatchRejectReason::NonDisk:
+    return "non-disk";
+  case PureQuadPatchRejectReason::BoundaryLoopCount:
+    return "boundary-loop-count";
+  case PureQuadPatchRejectReason::SideCountUnsupported:
+    return "side-count-unsupported";
+  case PureQuadPatchRejectReason::InvalidTurn:
+    return "invalid-turn";
+  case PureQuadPatchRejectReason::OddBoundary:
+    return "odd-boundary";
+  case PureQuadPatchRejectReason::HardFeatureCrossing:
+    return "hard-feature-crossing";
+  case PureQuadPatchRejectReason::SideInequality:
+    return "side-inequality";
+  case PureQuadPatchRejectReason::HexParity:
+    return "hex-parity";
+  case PureQuadPatchRejectReason::SingularityMismatch:
+    return "singularity-mismatch";
+  case PureQuadPatchRejectReason::MissingBoundaryData:
+    return "missing-boundary-data";
+  case PureQuadPatchRejectReason::UnsupportedSingularityCompletion:
+    return "unsupported-singularity-completion";
+  case PureQuadPatchRejectReason::SearchLimitExceeded:
+    return "search-limit-exceeded";
+  case PureQuadPatchRejectReason::TopologyValidationFailed:
+    return "topology-validation-failed";
+  case PureQuadPatchRejectReason::RewritePreconditionFailed:
+    return "rewrite-precondition-failed";
+  case PureQuadPatchRejectReason::RewriteFeatureViolation:
+    return "rewrite-feature-violation";
+  case PureQuadPatchRejectReason::RewriteValenceMismatch:
+    return "rewrite-valence-mismatch";
+  }
+  return "unknown";
+}
+
 enum class PureQuadCompletionBackend : int {
   ClosedForm = 0,
   TransitionTemplate = 1,
@@ -524,7 +565,10 @@ PureQuadCompletionResult complete_pure_quad_patch(
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
-    const double positionTolerance = 1.0e-9);
+    const double positionTolerance = 1.0e-9,
+    const Eigen::MatrixXi *sourceFaces = nullptr,
+    const std::vector<int> *sourceFaceComponents = nullptr,
+    const std::vector<int> *sourceFaceSheets = nullptr);
 
 EndpointResolutionResult resolve_completion_endpoints(
     std::vector<CompletionEndpoint> endpoints);

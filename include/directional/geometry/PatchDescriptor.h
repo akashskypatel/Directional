@@ -294,6 +294,13 @@ struct SurfaceCellComplexCompletionResult {
   int parityOddCellsAfter = 0;
   int paritySplitEdges = 0;
   int parityHardFeatureSplits = 0;
+  int parityAlternativeCandidateBudget = 0;
+  int parityAlternativeCandidatesAttempted = 0;
+  int parityAlternativeVisitedStates = 0;
+  int parityAlternativeSelectedExclusion = -1;
+  std::uint64_t parityAlternativeStateSequenceHash = 0U;
+  SurfaceCellParityAlternativeDisposition parityAlternativeDisposition =
+      SurfaceCellParityAlternativeDisposition::None;
   SurfaceCellReplacementScopeFailure firstParityScopeFailure;
   int sideInfeasibleCellsBefore = 0;
   int sideInfeasibleCellsAfter = 0;

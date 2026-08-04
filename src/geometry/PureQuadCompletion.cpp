@@ -111,13 +111,17 @@ std::vector<int> rotated_cycle(const std::vector<int> &cycle,
   if (cycle.empty()) {
     return {};
   }
-  const int start = normalized_completion_variant(
-      variant, static_cast<int>(cycle.size()));
+  const int count = static_cast<int>(cycle.size());
+  const int normalized = normalized_completion_variant(variant, 2 * count);
+  const int start = normalized % count;
+  const bool reversed = normalized >= count;
   std::vector<int> rotated;
   rotated.reserve(cycle.size());
-  for (int offset = 0; offset < static_cast<int>(cycle.size()); ++offset) {
-    rotated.push_back(cycle[static_cast<std::size_t>(
-        (start + offset) % static_cast<int>(cycle.size()))]);
+  for (int offset = 0; offset < count; ++offset) {
+    const int signedOffset = reversed ? -offset : offset;
+    const int index = normalized_completion_variant(start + signedOffset,
+                                                    count);
+    rotated.push_back(cycle[static_cast<std::size_t>(index)]);
   }
   return rotated;
 }
@@ -1234,9 +1238,13 @@ bool complete_six_vertex_transition(const PureQuadPatch &patch,
                                     const int completionVariant) {
   if (patch.boundaryVertices.size() != 6) return false;
   const auto &v = patch.boundaryVertices;
-  const int start = normalized_completion_variant(completionVariant, 3);
+  const int normalized = normalized_completion_variant(completionVariant, 6);
+  const int start = normalized % 3;
+  const bool reversed = normalized >= 3;
   const auto at = [&](const int offset) {
-    return v[static_cast<std::size_t>((start + offset) % 6)];
+    const int signedOffset = reversed ? -offset : offset;
+    return v[static_cast<std::size_t>(
+        normalized_completion_variant(start + signedOffset, 6))];
   };
   mesh.quads.push_back({at(0), at(1), at(2), at(3)});
   mesh.quads.push_back({at(0), at(3), at(4), at(5)});
@@ -1905,7 +1913,10 @@ std::string ownership_conflict_failure(
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
-    const double positionTolerance) {
+    const double positionTolerance,
+    const Eigen::MatrixXi *sourceFaces,
+    const std::vector<int> *sourceFaceComponents,
+    const std::vector<int> *sourceFaceSheets) {
   PureQuadAssemblyResult result;
   if (patches.empty()) {
     result.failure = "NoCompletedPatches";
@@ -1957,6 +1968,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     int provenanceLocalRow = -1;
     int lineagePatchIndex = -1;
     int lineageLocalRow = -1;
+    std::vector<std::pair<int, int>> provenanceCandidates;
   };
   std::size_t expectedVertexCount = 0;
   std::size_t expectedFaceCount = 0;
@@ -2061,8 +2073,14 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       if (existing == vertexRows.end()) {
         globalRow = static_cast<int>(pendingVertices.size());
         vertexRows.emplace(key, globalRow);
-        pendingVertices.push_back({position, patchIndex, localRow,
-                                   patchIndex, localRow});
+        PendingOutputVertex pending;
+        pending.position = position;
+        pending.provenancePatchIndex = patchIndex;
+        pending.provenanceLocalRow = localRow;
+        pending.lineagePatchIndex = patchIndex;
+        pending.lineageLocalRow = localRow;
+        pending.provenanceCandidates.emplace_back(patchIndex, localRow);
+        pendingVertices.push_back(std::move(pending));
       } else {
         globalRow = existing->second;
         PendingOutputVertex &stored =
@@ -2072,6 +2090,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           return result;
         }
         ++result.mergedBoundaryVertices;
+        stored.provenanceCandidates.emplace_back(patchIndex, localRow);
         const PureQuadVertexLineage &storedLineage =
             patches[static_cast<std::size_t>(stored.lineagePatchIndex)]
                 .vertexLineage[static_cast<std::size_t>(
@@ -2177,15 +2196,131 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       static_cast<int>(pendingVertices.size()), 3);
   result.mesh.vertexProvenance.reserve(pendingVertices.size());
   result.mesh.vertexLineage.reserve(pendingVertices.size());
+  const bool sourceAuthorityAvailable =
+      sourceFaces != nullptr && sourceFaces->cols() == 3 &&
+      sourceFaceComponents != nullptr && sourceFaceSheets != nullptr &&
+      sourceFaceComponents->size() ==
+          static_cast<std::size_t>(sourceFaces->rows()) &&
+      sourceFaceSheets->size() ==
+          static_cast<std::size_t>(sourceFaces->rows());
+  const SurfacePointSourceSupportResolver sourceSupport(sourceFaces);
+  const auto canonicalSharedProvenance = [&](const PendingOutputVertex &pending) {
+    const PureQuadMesh &fallbackPatch =
+        patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
+    SurfacePoint selected = fallbackPatch.vertexProvenance[
+        static_cast<std::size_t>(pending.provenanceLocalRow)];
+    if (!sourceAuthorityAvailable ||
+        pending.provenanceCandidates.size() < 2U) {
+      return selected;
+    }
+
+    SurfacePointSourceSupport commonSupport;
+    std::vector<int> commonFaces;
+    bool initialized = false;
+    for (const auto &[patchIndex, localRow] :
+         pending.provenanceCandidates) {
+      if (patchIndex < 0 ||
+          patchIndex >= static_cast<int>(patches.size()) || localRow < 0 ||
+          localRow >= static_cast<int>(
+                          patches[static_cast<std::size_t>(patchIndex)]
+                              .vertexProvenance.size())) {
+        return selected;
+      }
+      const SurfacePoint &candidate =
+          patches[static_cast<std::size_t>(patchIndex)]
+              .vertexProvenance[static_cast<std::size_t>(localRow)];
+      const SurfacePointSourceSupport support =
+          sourceSupport.resolve(candidate);
+      if (!support.valid()) {
+        return selected;
+      }
+      if (!initialized) {
+        commonSupport = support;
+        commonFaces = support.supportedFaces;
+        initialized = true;
+      } else {
+        if (support.kind != commonSupport.kind ||
+            support.sourceVertex != commonSupport.sourceVertex ||
+            support.sourceEdge != commonSupport.sourceEdge) {
+          return selected;
+        }
+        std::vector<int> intersection;
+        std::set_intersection(commonFaces.begin(), commonFaces.end(),
+                              support.supportedFaces.begin(),
+                              support.supportedFaces.end(),
+                              std::back_inserter(intersection));
+        commonFaces = std::move(intersection);
+      }
+    }
+    if (!initialized || commonFaces.empty()) {
+      return selected;
+    }
+    const int selectedFace = *std::min_element(commonFaces.begin(),
+                                               commonFaces.end());
+    if (selectedFace < 0 || selectedFace >= sourceFaces->rows()) {
+      return selected;
+    }
+
+    Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
+    if (commonSupport.kind == SurfacePointSourceEntityKind::SourceVertex) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if ((*sourceFaces)(selectedFace, corner) ==
+            commonSupport.sourceVertex) {
+          rebound(corner) = 1.0;
+        }
+      }
+    } else if (commonSupport.kind ==
+               SurfacePointSourceEntityKind::SourceEdge) {
+      double firstWeight = 0.0;
+      double secondWeight = 0.0;
+      for (int corner = 0; corner < 3; ++corner) {
+        const int sourceVertex = (*sourceFaces)(selected.face, corner);
+        if (sourceVertex == commonSupport.sourceEdge.first) {
+          firstWeight += selected.barycentric(corner);
+        } else if (sourceVertex == commonSupport.sourceEdge.second) {
+          secondWeight += selected.barycentric(corner);
+        }
+      }
+      const double sum = firstWeight + secondWeight;
+      if (!(sum > 0.0)) {
+        return selected;
+      }
+      firstWeight /= sum;
+      secondWeight /= sum;
+      for (int corner = 0; corner < 3; ++corner) {
+        const int sourceVertex = (*sourceFaces)(selectedFace, corner);
+        if (sourceVertex == commonSupport.sourceEdge.first) {
+          rebound(corner) = firstWeight;
+        } else if (sourceVertex == commonSupport.sourceEdge.second) {
+          rebound(corner) = secondWeight;
+        }
+      }
+    } else {
+      if (selectedFace != selected.face) {
+        return selected;
+      }
+      rebound = selected.barycentric;
+    }
+    if (std::abs(rebound.sum() - 1.0) > 1.0e-8) {
+      return selected;
+    }
+    selected.face = selectedFace;
+    selected.barycentric = rebound;
+    selected.component = (*sourceFaceComponents)[
+        static_cast<std::size_t>(selectedFace)];
+    selected.sheet =
+        (*sourceFaceSheets)[static_cast<std::size_t>(selectedFace)];
+    return selected;
+  };
   for (int row = 0; row < static_cast<int>(pendingVertices.size()); ++row) {
     const PendingOutputVertex &pending =
         pendingVertices[static_cast<std::size_t>(row)];
     result.mesh.vertexPositions.row(row) = pending.position;
     const PureQuadMesh &provenancePatch =
         patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
-    result.mesh.vertexProvenance.push_back(
-        provenancePatch.vertexProvenance[static_cast<std::size_t>(
-            pending.provenanceLocalRow)]);
+    const SurfacePoint canonicalProvenance =
+        canonicalSharedProvenance(pending);
+    result.mesh.vertexProvenance.push_back(canonicalProvenance);
 
     const PureQuadMesh &lineagePatch =
         patches[static_cast<std::size_t>(pending.lineagePatchIndex)];
@@ -2204,8 +2339,11 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     lineage.sourcePatch = lineagePatch.sourcePatch;
     lineage.localVertex = lineagePatch.vertices[static_cast<std::size_t>(
         pending.lineageLocalRow)];
-    lineage.sourceComponent = lineageProvenance.component;
-    lineage.sourceSheet = lineageProvenance.sheet;
+    lineage.sourceComponent = canonicalProvenance.component;
+    lineage.sourceSheet = canonicalProvenance.sheet;
+    if (lineage.kind == PureQuadVertexLineageKind::SourceTriangle) {
+      lineage.sourcePoint = canonicalProvenance;
+    }
     result.mesh.vertexLineage.push_back(std::move(lineage));
   }
 

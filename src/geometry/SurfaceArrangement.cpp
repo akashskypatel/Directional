@@ -2368,32 +2368,54 @@ SurfaceCellComplex build_surface_cell_complex(
     while (!pending.empty()) {
       std::vector<int> cycle = std::move(pending.back());
       pending.pop_back();
-      std::map<int, int> firstOccurrence;
-      bool split = false;
+      std::map<int, std::vector<int>> occurrencesByNode;
       for (int index = 0; index < static_cast<int>(cycle.size()); ++index) {
         const int node = complex.halfedges[
             static_cast<std::size_t>(cycle[static_cast<std::size_t>(index)])]
                              .from;
-        const auto [it, inserted] = firstOccurrence.emplace(node, index);
-        if (inserted) {
-          continue;
+        occurrencesByNode[node].push_back(index);
+      }
+      bool split = false;
+      std::tuple<int, int, int, int> bestSplit{
+          std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+          -1, -1};
+      for (const auto &[node, occurrences] : occurrencesByNode) {
+        for (std::size_t first = 0; first < occurrences.size(); ++first) {
+          for (std::size_t second = first + 1U; second < occurrences.size();
+               ++second) {
+            const int firstIndex = occurrences[first];
+            const int secondIndex = occurrences[second];
+            const int innerSize = secondIndex - firstIndex;
+            const int outerSize = static_cast<int>(cycle.size()) - innerSize;
+            if (innerSize < 3 || outerSize < 3) {
+              continue;
+            }
+            const auto key =
+                std::make_tuple(std::min(innerSize, outerSize), node,
+                                firstIndex, secondIndex);
+            if (key < bestSplit) {
+              bestSplit = key;
+            }
+          }
         }
-        const int firstIndex = it->second;
+      }
+      if (std::get<2>(bestSplit) >= 0) {
+        const int firstIndex = std::get<2>(bestSplit);
+        const int secondIndex = std::get<3>(bestSplit);
         std::vector<int> inner(cycle.begin() + firstIndex,
-                               cycle.begin() + index);
+                               cycle.begin() + secondIndex);
         std::vector<int> outer;
         outer.reserve(cycle.size() - inner.size());
         outer.insert(outer.end(), cycle.begin(), cycle.begin() + firstIndex);
-        outer.insert(outer.end(), cycle.begin() + index, cycle.end());
-        if (inner.size() < 3U || outer.size() < 3U) {
-          decompositionFailed = true;
-          split = true;
-          break;
-        }
+        outer.insert(outer.end(), cycle.begin() + secondIndex, cycle.end());
         pending.push_back(std::move(outer));
         pending.push_back(std::move(inner));
         split = true;
-        break;
+      } else if (std::any_of(
+                     occurrencesByNode.begin(), occurrencesByNode.end(),
+                     [](const auto &entry) { return entry.second.size() > 1U; })) {
+        decompositionFailed = true;
+        split = true;
       }
       if (decompositionFailed) {
         break;

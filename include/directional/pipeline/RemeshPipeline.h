@@ -389,6 +389,14 @@ struct SurfaceCellPipelineContext {
   int completionOddCellsAfterRepair = 0;
   int completionParitySplitEdges = 0;
   int completionParityHardFeatureSplits = 0;
+  int completionParityAlternativeCandidateBudget = 0;
+  int completionParityAlternativeCandidatesAttempted = 0;
+  int completionParityAlternativeVisitedStates = 0;
+  int completionParityAlternativeSelectedExclusion = -1;
+  std::uint64_t completionParityAlternativeStateSequenceHash = 0U;
+  geometry::SurfaceCellParityAlternativeDisposition
+      completionParityAlternativeDisposition =
+          geometry::SurfaceCellParityAlternativeDisposition::None;
   int completionSideInfeasibleBeforeRepair = 0;
   int completionSideInfeasibleAfterRepair = 0;
   int completionSideInitialEquationDefect = 0;
