@@ -9,38 +9,30 @@
 
 ## Current checkpoint
 
-P5-TB22 artifact-only runtime validation is complete. The recently added `.agents/Directional/REORIENTATION_PLAN.md` has been reviewed and adopted as the authoritative remediation order.
+P5-R0/R1 code changes and the exact compile-only package gate are complete. P5 remains open because runtime acceptance has not been executed for this source.
 
-The implementation should not proceed with CB143–CB150 as one broad turn. The next turn is **P5-R0/R1 code changes plus compile-only build**:
+Compiled checkpoint:
 
-- **R0:** freeze downstream repair expansion and make source-grid recovery non-authoritative/default-off.
-- **R1:** implement canonical source-entity chart transitions.
-
-P5 remains open.
-
-## Tested authority
-
-- exact source `aa2917e280fabd2272911a39cd0ecc327cce1cf3`;
-- artifact `8894034755`, `surface-cell-p5-cb142-github-source-linux-release`;
-- artifact SHA-256 `ff77004f8893b9f993165ba685794faca52f5611c9f1c47deb3f1dd5d930cb55`;
-- reviewed patch SHA-256 `890dd621cf549f32c55d44f52b85050bfdfa5ce15df5f2bda2f8ba3e33c8ed70`;
+- P5-TB22 baseline source `aa2917e280fabd2272911a39cd0ecc327cce1cf3`;
+- workflow event commit `233466e5b02c3762a3f2648518f5860a2a2fb014`;
+- R0/R1 implementation commit `ae0c09ed1290df75d1d2cc1d5af039fc1feb83a3`;
+- compile fix and exact compiled source `e31e5abd52ca9e673d1718f47d088d19296d1d22`;
+- reviewed patch SHA-256 `a3898a847c6722a1f2d9b0de48e71ae71f08fcc0bc82b3d9396d8c842d9cad61`;
+- compile-fix SHA-256 `92162aa709134c86a355253416dc614817fecabebaeb60c58555061958d12162`;
+- successful run `30932812460`, job `92071429858`;
+- artifact `8902050372`, `surface-cell-p5-r1-github-source-linux-release`;
+- artifact SHA-256 `5d1e5ca4fa8bc74e0a30615725c79a8b491830ab1f4407152cf79bfe56f8880f`;
+- workflow-log artifact `8902051026`, SHA-256 `dee5e429cb9a57ee9b45db42d27b512c7b096aed875147a01364e5a757f4b5a6`;
 - empty source status;
-- checksums **40/40**;
-- package files **42**;
+- recursive checksums **41/41**;
+- package files **43**;
 - fixtures **26**;
-- recursive submodules **9**.
+- recursive submodules **9**;
+- all **131/131** Ninja actions complete.
 
-P5-TB22 performed no configure, rebuild, relink, patch, regeneration, or source modification.
+The build compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. No project binary, test, benchmark, custom mesh, help/list, or discovery command executed.
 
-Runtime baseline:
-
-- complete suite **585/600**, terminating in **103.441 s**;
-- Phase 14–18 **236/236**;
-- Milestone D **6/7**;
-- Milestone E **23/26**;
-- GP23 + GP24 **10/14**;
-- Phase20 **46/48**;
-- direct production **0/8**.
+The next turn is **P5-TB23 artifact-only R0/R1 validation**. Execute artifact `8902050372` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
 
 ## Read first
 
@@ -48,141 +40,95 @@ Runtime baseline:
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/DESIGN.md`
 4. `.agents/Directional/REORIENTATION_PLAN.md`
-5. `.agents/Directional/Milestone_G_P5_R0_R1_Reoriented_Code_Build_Plan.md`
-6. `.agents/Directional/Milestone_G_P5_TB22_Artifact_Only_Test_Benchmark_Report.md`
-7. `benchmark-results/p5-tb22-summary.json`
-8. `.agents/Directional/GitHub_Workflow_Policy.md`
+5. `.agents/Directional/Milestone_G_P5_R0_R1_Code_Build_Report.md`
+6. `.agents/Directional/Milestone_G_P5_R1_Test_Benchmark_Plan.md`
+7. `benchmark-results/p5-r1-summary.json`
+8. `.agents/Directional/Milestone_G_P5_TB22_Artifact_Only_Test_Benchmark_Report.md`
+9. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-The earlier `.agents/Directional/Milestone_G_P5_Post_TB22_Producer_Correction_Code_Build_Plan.md` remains historical diagnosis only. Its CB143–CB150 execution order is superseded.
+The earlier post-TB22 CB143–CB150 plan is historical diagnosis only. Its execution order is superseded by R0–R11.
 
-## Reorientation review
+## Implemented in R0
 
-The plan’s central verdict is correct:
+- `allowSourceGridRecovery` defaults to `false`.
+- Recovery must be explicitly enabled.
+- Successful recovery reports `SourceGridRecovery`, distinct from direct `CompletedSurfaceCells` output.
+- Direct fallback `Fail` behavior remains fail-closed.
+- Existing typed failures, rollback, and validators remain authoritative.
+- Cache, lineage, memory, FlowRep, completion-search, and bunny-specific work remained out of scope.
 
-- do not rewrite the backend;
-- preserve source provenance, typed pipeline state, rollback, deterministic diagnostics, and strict validation;
-- stop expanding repair/observability infrastructure before the constructive producers work;
-- move source-chart identity, directed incidence, topology-distinct completion, and phase/front state ahead of cache, lineage, and memory work.
+## Implemented in R1
 
-One editorial inconsistency exists: some detailed section headings use R6/R7/R8 differently from the final revised task list. The authoritative execution sequence is:
+A canonical source-chart transition layer now models:
 
-1. R0 — freeze repair expansion and recovery authority;
-2. R1 — source-entity chart transitions;
-3. R2 — directed wedge/incidence reconstruction;
-4. R3 — topology-distinct patch completion;
-5. R4 — repeated-node wedge/splice producer;
-6. R5 — explicit local lattice phase and advancing-front events;
-7. R6 — torus decomposition/descriptor support;
-8. R7 — adaptive dyadic 2:1 transitions;
-9. R8 — direct production validation;
-10. R9 — real cache reuse;
-11. R10 — later-stage lineage fixtures;
-12. R11 — synchronized memory telemetry.
+- chart IDs `(component, localSheet, sourceFace)`;
+- canonical source vertex, edge, and face-interior entities;
+- orientation-aware source-edge transitions;
+- exact inverse endpoint and barycentric maps;
+- intrinsic source-vertex fans;
+- source boundary, component, sheet, hard-feature, and nonmanifold barriers;
+- deterministic canonical chart/entity representatives;
+- inconsistent source-winding rejection.
 
-Do not combine these into one turn. Validate each foundational producer before advancing.
+The graph is integrated into:
 
-## Why R1 is first
+- arrangement-node identity and exact missing-face rebinding;
+- completion generated-vertex ownership;
+- shared completed vertex/edge stitching;
+- optimizer and pipeline hard-feature propagation;
+- source-authoritative validation and chart-disagreement evidence.
 
-The simplest supported cases already generate substantial output and then fail source-chart ownership:
+World-space proximity and source-triangle pairing are not identity mechanisms.
 
-- plane: 12 quads, `LocalSheetMismatch`, cell 4 / face 7;
-- multi-face seam: 24 quads, cell 2 / face 15;
-- close sheets: 34 quads, cell 3 / face 13.
+## Compile history
 
-The current resolver requires literal common source-face support. That is invalid for one intrinsic source vertex or edge represented in adjacent source-face charts.
+The first run `30932407728` applied and committed the implementation, then failed on two mechanical propagation omissions in `PureQuadCompletion.cpp`:
 
-R1 must construct orientation-aware chart transitions and canonical source entities while preserving separate components, local sheets, hard-rail sectors, and nonmanifold vertex fans.
+- one call omitted the hard-feature barrier set;
+- one source definition omitted the new parameter declared in its header.
 
-## P5-R0/R1 implementation requirements
+Commit `e31e5abd52ca9e673d1718f47d088d19296d1d22` corrected only those call/signature omissions. Run `30932812460` then completed all four targets and packaging.
 
-Follow `.agents/Directional/Milestone_G_P5_R0_R1_Reoriented_Code_Build_Plan.md` exactly.
+## Last runtime authority: P5-TB22
 
-### R0
+- complete suite **585/600**, terminating in **103.441 s**;
+- Phase 14–18 **236/236**;
+- Milestone D **6/7**;
+- Milestone E **23/26**;
+- GP23 + GP24 **10/14**;
+- Phase20 **46/48**;
+- direct production **0/8**;
+- plane, seam, and close sheets fail `LocalSheetMismatch` in the tested baseline.
 
-- Preserve existing typed failures, structural hashes, exact rollback, and fail-closed behavior.
-- Add no new ownership classification unless existing categories cannot represent the earliest producer.
-- Keep direct production at fallback `Fail`, no legacy execution, and recovery disabled.
-- Make `allowSourceGridRecovery` default `false`, or expose recovery through a distinct non-authoritative backend/output origin.
-- Do not touch cache reuse, injected-stage lineage, memory telemetry, or general FlowRep simplification.
+Do not claim runtime improvement from the R1 compile result.
 
-### R1
+## P5-TB23 execution order
 
-Construct a graph whose chart nodes are `(component, localSheet, sourceFace)` and whose transitions are exact shared source-vertex/source-edge incidences with orientation-aware barycentric maps.
+1. Verify archive SHA, source commit, empty status, **41/41** checksums, 43 files, 26 fixtures, nine submodules, source contents, and target hashes.
+2. Run default-off recovery, distinct recovery origin, fallback `Fail`, and rollback contracts.
+3. Run adjacent-edge transition, inverse-map, and orientation-reversal contracts.
+4. Run intrinsic source-vertex fan, hard-rail, nonmanifold, component/sheet, and disconnected-sheet contracts.
+5. Run inconsistent transition-cycle failure and exact rollback contracts.
+6. Run focused arrangement, completion, stitching, optimizer, pipeline, and source-authoritative validator scopes.
+7. Run plane, multi-face seam, close sheets, and disconnected-close-sheet analytic direct cases with fallback `Fail` and recovery disabled.
+8. Run Phase 14–18 and the minimum required regression scopes.
+9. Run the complete suite once to confirm normal termination.
+10. Do not run the full bunny benchmark matrix solely for R1.
 
-At source vertices, partition incident charts into intrinsic fans. Split fans at:
+R1 closes only when the focused contracts pass and plane, seam, and close sheets complete directly without `LocalSheetMismatch` or cross-sheet leakage. Otherwise remain on R1 and record the earliest producer. Do not start R2 prematurely.
 
-- source boundaries;
-- component boundaries;
-- local-sheet boundaries;
-- hard rails;
-- nonmanifold sectors.
+## Subsequent authoritative order
 
-Use the graph for:
-
-- arrangement-node identity;
-- completion generated-vertex provenance;
-- shared completed vertices and edges;
-- global stitch/output assembly;
-- source-authoritative validation.
-
-World-space position and source-triangle pairing are forbidden as identity.
-
-Add compile-valid tests for:
-
-- shared source edge;
-- shared source vertex within one intrinsic fan;
-- hard-rail separation;
-- nonmanifold/disconnected fan separation;
-- close-sheet separation;
-- face-row permutation;
-- orientation inverse;
-- inconsistent transition-cycle rollback.
-
-Do not execute the tests in this turn.
-
-## Explicit non-goals
-
-Do not implement R2–R11 during P5-R0/R1.
-
-In particular, do not add:
-
-- more completion rotations/reversals;
-- more single-interface exclusions;
-- cylinder occurrence-splitting repair;
-- topology-distinct completion templates yet;
-- phase/front events yet;
-- torus or adaptive transition work;
-- cache, lineage, or memory changes;
-- bunny-specific conditions.
-
-## Compile-only boundary
-
-Shallow-initialize recursive submodules and compile exactly:
-
-- `directional_core`;
-- `directional_pipeline`;
-- `directional_phase1_tests`;
-- `directional_benchmarks`.
-
-Execute no project binary, test, benchmark, custom mesh, help/list/discovery command, or generated executable.
-
-Initialize detailed workflow logging before fallible work and upload the full log artifact regardless of success or failure.
-
-## Next runtime turn
-
-P5-TB23 must execute the packaged artifact directly with no rebuild or source modification.
-
-Run focused R0/R1 tests and analytic fixtures first:
-
-1. plane;
-2. multi-face seam;
-3. close sheets;
-4. disconnected close sheets;
-5. source orientation reversal;
-6. face-row/insertion-order permutations;
-7. transition-cycle inconsistency and rollback.
-
-Do not run the full bunny matrix solely for an R1 change. Proceed to R2 only after the R1 analytic gate is understood.
+1. R2 — directed wedge/incidence reconstruction;
+2. R3 — topology-distinct patch completion;
+3. R4 — repeated-node wedge/splice producer;
+4. R5 — explicit local lattice phase and advancing-front events;
+5. R6 — torus decomposition/descriptor support;
+6. R7 — adaptive dyadic 2:1 transitions;
+7. R8 — direct production validation;
+8. R9 — cache reuse;
+9. R10 — stage-lineage fixtures;
+10. R11 — synchronized memory telemetry.
 
 ## Preserved prohibitions
 
@@ -197,8 +143,7 @@ Do not run the full bunny matrix solely for an R1 change. Proceed to R2 only aft
 
 ## Key lessons
 
-- Deterministic failure is useful evidence, not a valid producer.
-- Adjacent source-face charts may describe one intrinsic source entity without sharing a literal face ID.
-- Directed incidence and patch topology must be constructed correctly rather than inferred through downstream repair.
-- Explicit phase/front state is a required architectural stage, but it should follow independent closure of the immediate source-chart producer.
-- Cache, lineage, and memory work should resume only after direct geometry succeeds on a meaningful analytic subset.
+- Recovery must remain distinct from direct surface-paving success.
+- Adjacent source-face charts may represent one intrinsic source entity without a literal common face ID.
+- Source-vertex fan topology must be partitioned by real intrinsic barriers, not position.
+- Compile success establishes integration consistency only; P5-TB23 determines whether R1 fixes the analytic source-chart producer.
