@@ -9,148 +9,119 @@
 
 ## Current checkpoint
 
-P5-TB21 artifact-only runtime validation is complete. P5 remains open.
+P5-CB135 through P5-CB142 code changes and the exact compile-only package gate are complete. P5 remains open because runtime acceptance has not been executed for this source.
 
-Tested checkpoint:
+Compiled checkpoint:
 
-- exact source `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`;
-- implementation commit `01788193457e60bb8817a40b2c1551e672c4de5c`;
-- artifact `8890167812`, `surface-cell-p5-cb134-github-source-linux-release`;
-- SHA-256 `34a4da9a9c9e3374ed861c41b72493beefc90afbc85743fd25979484f3222bf1`;
+- prior tested source `247061bbaa835e5e5bf9298cc5e2c4dd25d5c74f`;
+- workflow event commit `b7f8a9978764b77931ba6d299fdcbc65639235de`;
+- implementation/exact compiled source `aa2917e280fabd2272911a39cd0ecc327cce1cf3`;
+- reviewed patch SHA-256 `890dd621cf549f32c55d44f52b85050bfdfa5ce15df5f2bda2f8ba3e33c8ed70`;
+- successful run `30912858764`, job `92003602916`;
+- artifact `8894034755`, `surface-cell-p5-cb142-github-source-linux-release`;
+- artifact SHA-256 `ff77004f8893b9f993165ba685794faca52f5611c9f1c47deb3f1dd5d930cb55`;
+- workflow-log artifact `8894035556`, SHA-256 `b7b84ba230c873702ec548318a5cad6b43fe4e1ccaf5d437bcd535201020ab1b`;
 - empty source status;
-- checksums **41/41**;
-- fixture files **26**;
-- recursive submodules **9**.
+- internal checksums **40/40**;
+- package files **42**;
+- fixtures **26**;
+- recursive submodules **9**;
+- all **131/131** Ninja actions complete.
 
-No configure, build, relink, patch, regeneration, or source modification occurred during P5-TB21.
+The build compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. No project binary, test, benchmark, custom mesh, help/list, or discovery command executed.
 
-The next turn is **P5-CB135 through P5-CB142 code changes + compile-only build**. Execute no test, benchmark, custom mesh, help/list/discovery command, or compiled project binary.
+The next turn is **P5-TB22 artifact-only test and benchmark**. Execute artifact `8894034755` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB21_Artifact_Only_Test_Benchmark_Report.md`
-4. `benchmark-results/p5-tb21-summary.json`
-5. `.agents/Directional/Milestone_G_P5_Post_TB21_Production_Termination_Code_Build_Plan.md`
-6. `.agents/Directional/Milestone_G_P5_CB126_CB134_Code_Build_Report.md`
-7. `.agents/Directional/GitHub_Workflow_Policy.md`
+3. `.agents/Directional/Milestone_G_P5_CB135_CB142_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_CB142_Test_Benchmark_Plan.md`
+5. `.agents/Directional/Milestone_G_P5_TB21_Artifact_Only_Test_Benchmark_Report.md`
+6. `benchmark-results/p5-tb21-summary.json`
+7. `.agents/Directional/Milestone_G_P5_Post_TB21_Production_Termination_Code_Build_Plan.md`
+8. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB21 runtime result
+## Implemented in P5-CB135–P5-CB142
 
-Closed or improved:
+### Bounded alternative execution
 
-- package authority;
+Parity repair now has a finite canonical frontier derived from interfaces incident to the typed failing cell. Every state is canonically hashed and visited at most once. Results are memoized, and diagnostics expose candidate budget, attempts, visited states, selected interface, sequence/state hashes, and typed disposition.
+
+Terminal dispositions distinguish committed, no-candidate, cycle-detected, budget-exhausted, and all-invalid outcomes. The earliest typed domain failure and exact rollback remain authoritative.
+
+This is a topology-derived bound, not a wall-clock timeout or arbitrary subset search.
+
+### Repeated-node and cylinder producers
+
+The repeated-node retry frontier uses all canonical incident interfaces rather than an arbitrary small prefix. Arrangement cycle decomposition evaluates every repeated occurrence and accepts only deterministic splits where both directed cycles contain at least three edges.
+
+Runtime must still prove a valid sphere/mechanical/face-edge alternative and cylinder disk-cell closure. Compile success is not topology success.
+
+### Completion variants
+
+The existing bounded templates now expose cyclic rotations and reversed orientations. Transition completion has six variants; pattern and bounded-combinatorial completion have `2 * boundaryCount` finite variants. Every candidate must pass typed local embedding validation before authority.
+
+Runtime must establish valid focused, cylinder, thin-tube, and smooth outputs.
+
+### Parallel routes and cache reuse
+
+Semantic overlap and stitch separation are treated independently. Individual stitch-separation repair is considered before coupled refinement. Cache reuse first matches a canonical dependency hash and then requires finite exact-dependency, topology, ownership, lineage, and retarget validation.
+
+Reuse/recompute counters remain operation-derived. Runtime must prove valid annular completion, no duplicate stitched output, and positive real reuse/recompute.
+
+### Global source-chart agreement
+
+Stitching now receives source face/component/sheet authority. Shared output vertices retain all provenance candidates. A global intrinsic resolver intersects exact source support, chooses a canonical common face, and rebinds barycentric coordinates only under proven source-entity equivalence.
+
+No positional merge or source-triangle pairing is used. Runtime must close plane, seam, close-sheets, and disconnected-sheet contracts.
+
+### Pipeline, torus, and memory evidence
+
+Parity alternative diagnostics propagate through patch and pipeline contexts. Incomplete completion diagnostics expose a stable reason name plus explicit numeric reason code. Benchmark telemetry samples working set and categorized ownership at the same sequence and reports availability and reconciliation remainder separately from legacy peak ratios.
+
+Runtime must close GP23/GP24/Phase20 lineage, torus completion, and the 75% same-sample reconciliation gate.
+
+## Last runtime authority: P5-TB21
+
 - Phase 14–18 **236/236**;
-- Phase 16 **39/39**;
-- Phase 17 **26/26**;
-- corrected positive provenance fixture;
-- explicit negative zig-zag embedding fixture;
-- focused shared-edge parity transaction;
-- semantic-only duplicate route rejection;
-- typed local embedding evidence;
-- explicit torus incomplete inventory.
-
-Open or regressed:
-
-- full suite does not terminate on bunny aggregate cases within 1,200 s and 900 s attempts;
-- bounded subset is **583/597** with 14 failures;
 - Milestone D **6/7**;
 - Milestone E **23/26**;
 - GP23 + GP24 **10/14**;
-- Phase 20 **46/48**;
+- Phase20 **46/48**;
+- full suite did not terminate on bunny aggregates;
+- bounded subset **583/597**;
 - production **0/8**;
-- positive completion reuse/recompute `0/0`;
-- face-edge fourth repetition does not terminate in the resource window;
-- smooth run 40.090 s exceeds the 39.228299 s limit;
-- same-sample memory measurement unavailable and 75% reconciliation open.
+- repeated-node alternatives did not commit;
+- reuse/recompute `0/0`;
+- plane/seam/close sheets `LocalSheetMismatch`;
+- cylinder non-disk and invalid local variant;
+- thin tube/smooth invalid local variants;
+- torus incomplete;
+- face-edge fourth repeat nonterminating;
+- smooth above wall limit;
+- same-sample memory unavailable.
 
-## Earliest authoritative producers
+Do not claim any runtime closure from the CB142 compile result.
 
-### Alternative repair termination
+## P5-TB22 execution order
 
-Three face-edge runs complete in 20.191–22.047 s with the same repeated-node failure. A fourth repetition fails to produce a result within the remaining approximately 257 seconds of a 300-second batch. Full-suite aggregate bunny cases also stall.
+1. Verify archive SHA, source commit, empty status, internal **40/40** checksums, 26 fixtures, nine submodules, source contents, and target hashes.
+2. Run focused finite alternative-state, memoization, cycle/exhaustion, valid-commit, and rollback contracts.
+3. Run generalized repeated-node alternatives.
+4. Run cylinder periodic DCEL and permutation contracts.
+5. Run typed bounded local completion variants.
+6. Run semantic duplicate, annular route, duplicate-output, and exact cache reuse contracts.
+7. Run global source-chart reconciliation and disconnected-sheet contracts.
+8. Run GP23/GP24/Phase20 stage/fallback lineage.
+9. Run torus typed inventory and completion.
+10. Run Phase 14–18, D, E, GP23/24, Phase20, and the complete unfiltered suite.
+11. Run all eight direct production fixtures with fallback `Fail` and recovery disabled.
+12. Run isolated resource-gated face-edge and smooth bunny processes.
+13. Evaluate same-sample measurement availability and at least 75% categorized reconciliation.
 
-The next implementation must bound work by canonical topology states and unique incident alternatives, not elapsed time. Detect repeated states, memoize T-join and boundary validation, report typed exhaustion/cycle evidence, and preserve exact rollback.
-
-### Repeated-node alternatives
-
-- sphere: cell 2, halfedge 37, node 13, source face 7;
-- mechanical: cell 2, halfedge 719, node 65, source face 109;
-- face-edge bunny: cell 2, halfedge 45, node 20, source face 0.
-
-The initial invalid cycle rejects correctly, but no valid bounded alternative commits.
-
-### Cylinder
-
-`CylindricalOpenStrandCommitsWithTopologyPreserved` remains:
-
-`non-disk-cell cell=0 halfedge=43 twin=42 next=29`
-
-Repair the directed periodic DCEL incidence; do not relabel invalid topology as disk.
-
-### Local completion variants
-
-Typed producers:
-
-- focused fallback: patch 0, bounded-combinatorial variant 23, `degenerate-normal`;
-- cylinder: patch 10, pattern variant 25, local quad 1, `bow-tie-intersection`;
-- thin tube: patch 108, bounded-combinatorial variant 21, `degenerate-normal`;
-- smooth bunny: patch 9181, closed-form variant 0, `degenerate-normal`, source face 406.
-
-Validate each candidate variant before authority and continue only through the existing bounded deterministic catalog.
-
-### Parallel route and reuse
-
-Renamed semantic duplicates reject, but the valid annular/parallel route still fails as `same-corner-distinct-boundary`. The one-candidate budget contract reports zero incremental recomputation and reuse/recompute `0/0`.
-
-Use separate semantic-overlap and stitch-separation identities. Invalidate only changed dependencies and count reuse/recompute only after real validated operations.
-
-### Source-sheet agreement
-
-- plane: 12 quads, `LocalSheetMismatch`, cell 4, face 7;
-- multi-face seam: 24 quads, cell 2, face 15;
-- close sheets: 34 quads, cell 3, face 13.
-
-Local rebinding is insufficient. Build a global intrinsic source-chart equivalence graph and require shared completed vertices/edges to agree before commit. Keep disconnected close sheets distinct.
-
-### Pipeline lineage
-
-GP23/GP24/Phase20 later-stage fixtures still encounter real completion failure before intended optimization or validation evidence. Correct invalid preceding-stage fixtures or producers; do not bypass completion or reorder production stages.
-
-### Torus and memory
-
-Torus reports:
-
-`IncompleteSurfaceCellComplex;descriptor=22;cell=23;reason=3;attempted=41;failed=2;total=43`
-
-Replace numeric public reason with a stable typed name and repair the missing/infeasible producer.
-
-Memory telemetry honestly reports `sameSampleOwnershipMeasurementAvailable=false`. Implement actual same-timestamp working-set and owned-byte sampling; never sum phase maxima.
-
-## Required next work
-
-Follow P5-CB135–P5-CB142 in the post-TB21 plan, in order:
-
-1. deterministic canonical alternative-state budget and cycle detection;
-2. valid repeated-node alternatives;
-3. cylinder periodic DCEL repair;
-4. valid local completion variants;
-5. parallel-route identity and genuine reuse;
-6. global source-sheet chart agreement;
-7. production-valid stage-injection and failure lineage;
-8. torus inventory, same-sample memory sampling, and exact compile/package gate.
-
-## Compile-only boundary
-
-Shallow-initialize recursive submodules and compile exactly:
-
-- `directional_core`;
-- `directional_pipeline`;
-- `directional_phase1_tests`;
-- `directional_benchmarks`.
-
-Do not run them. Initialize detailed workflow logging before fallible work and always upload a separate log artifact.
+A process watchdog may protect the environment and record nontermination, but timeout is never correctness evidence and cannot make a test pass.
 
 ## Preserved prohibitions
 
@@ -165,9 +136,9 @@ Do not run them. Initialize detailed workflow logging before fallible work and a
 
 ## Key lessons
 
-- Typed rejection is not enough; the producer must find a valid topologically bounded alternative.
-- A search described as bounded can still be operationally unbounded without canonical state deduplication and topology-derived limits.
-- Full-suite termination is a production gate; a filtered subset is diagnostic evidence only.
-- Route semantic overlap and stitch separation are distinct identities.
-- Local source-chart validity does not imply global cross-patch chart agreement.
-- Honest unavailable memory measurement is preferable to unsupported coverage, but it does not satisfy reconciliation.
+- A finite source-level catalog is not operationally bounded until canonical states are deduplicated and attempted once.
+- Typed exhaustion and exact rollback are necessary evidence, but production still requires a valid alternative where one exists.
+- More template variants are acceptable only when every candidate remains validator-gated and the catalog is finite and deterministic.
+- Semantic overlap, stitch separation, and exact cache dependency are three distinct contracts.
+- Shared source-chart validity is a global intersection problem, not a local patch choice.
+- Same-sample memory coverage must use one measurement sequence; peak-to-peak ratios are not a substitute.
