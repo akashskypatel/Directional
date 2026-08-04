@@ -10,13 +10,10 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`; keep open and unmerged.
 - Last tested source: `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`.
-- Current implementation source:
-  `34edce9e508fd81e28bbd6b68a064a2a57bacf03`.
-- Completed turn: P5-CB91 through P5-CB98 code changes + compile-only build.
-- GitHub source synchronization verified at branch checkpoint
-  `7b4b699dac7567935f548a26a92336de5a496756`; all 14 implementation files
-  match the compiled local source blobs exactly.
-- Next turn: P5-TB17 artifact-only test and benchmark.
+- Implementation source: `34edce9e508fd81e28bbd6b68a064a2a57bacf03`.
+- Exact GitHub-compiled source: `680d81c6946f45b1daed9dd477cfde565f8ac7a2`.
+- Completed turn: P5-CB91 through P5-CB98 code changes + GitHub compile-only closeout.
+- Next turn: P5-TB17 artifact-only test and benchmark using artifact `8875627676` without rebuilding.
 
 ## Work phases
 
@@ -37,23 +34,44 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] P5-CB96 — complete stage-owned memory accounting and timeline.
 - [x] P5-CB97 — regression sources.
 - [x] P5-CB98 — compile-only build/package gate.
-- [x] P5-CB98-SYNC — workflow reconstructed and verified the exact seven-file
-      non-workflow patch; the branch already contained all patch outputs, and
-      14/14 implementation blobs match the compiled source.
+- [x] P5-CB98-SYNC — exact seven-file non-workflow patch and 14/14 implementation blob parity verified.
+- [x] P5-CB98-GITHUB-COMPILE — exact pushed GitHub source compiled successfully with mandatory detailed log artifact.
 - [ ] P5-TB17 — artifact-only closure validation.
 - [ ] P6–P8 — final validation, regression closure, and production disposition.
 
-## GitHub source synchronization evidence
+## P5-CB98 GitHub compile closeout evidence
 
-- Verified branch checkpoint: `7b4b699dac7567935f548a26a92336de5a496756`.
-- Workflow run: `30863219431`.
-- Patch SHA-256: `cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8`.
-- Exact patch scope: seven declared source/test files; zero workflow paths.
-- Three-way application: all seven files clean; no resulting diff because the
-  branch blobs already equal the patch outputs.
-- Full P5-CB98 implementation parity: **14/14 exact blob matches**.
-- Temporary target-branch workflows and trigger markers removed by connector.
-- PR #8 remains open, draft, and unmerged.
+- Workflow: `.github/workflows/agent-build-recovered-p5.yml`.
+- Run ID: `30864341083`; job ID: `91852874765`; conclusion: **success**.
+- Exact pushed source: `680d81c6946f45b1daed9dd477cfde565f8ac7a2`.
+- Local checkout SHA equaled remote branch SHA.
+- Source status was empty before and after compilation.
+- GNU C++ 13.3.0, CMake 3.31.6, Ninja 1.13.2, Release `-O2 -DNDEBUG`.
+- Ninja actions: **131/131**.
+- Required targets compiled and linked:
+  - `directional_core`
+  - `directional_pipeline`
+  - `directional_phase1_tests` — not executed
+  - `directional_benchmarks` — not executed
+- Compiled artifact ID: `8875627676`.
+- Compiled artifact digest: `sha256:b9560c9438289e90e6acca3a0f4b7f1d46a5ad34663693c1243bf4176056c165`.
+- Packaged checksums: **38/38**; packaged fixtures: **26**; source status bytes: **0**.
+- Dedicated log artifact ID: `8875628150`.
+- Log artifact digest: `sha256:f31e7d57d137399634187edbac5902732e0226172bc80248c1abf41ff61513e8`.
+- No test, benchmark, custom mesh, help/list, discovery, or compiled project binary command ran.
+
+## GitHub workflow policy
+
+All future workflows must follow `.agents/Directional/GitHub_Workflow_Policy.md`:
+
+- initialize detailed persistent logging before fallible work;
+- retain exact activity and command output on success and failure;
+- always upload a dedicated log artifact with `if: always()`;
+- diagnose failures from that artifact;
+- never expose secrets in command traces;
+- preserve compile-only versus test/benchmark turn boundaries.
+
+The malformed workflow-level `runner.temp` references were removed. The successful closeout run proves the corrected policy-compliant workflow is valid.
 
 ## P5-TB16 runtime baseline
 
@@ -65,84 +83,27 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 | Milestone D | 6 | 1 |
 | Complete suite | **583** | **10** |
 
-The complete suite had zero signal-11 terminations. The former crash cases all
-terminated normally; one P27 matrix case still failed assertions.
+The complete suite had zero signal-11 terminations. The former crash cases all terminated normally; one P27 matrix case still failed assertions.
 
-Remaining failures at that checkpoint:
-
-1. GP26 plane/mechanical output;
-2. GP26 cylinder output;
-3. GP26 multi-face seam output;
-4. GP26 torus output;
-5. GP27 supported-disposition matrix;
-6. Milestone D cylinder simplification;
-7. whole-complex parallel route repair;
-8. exact one-candidate budget/reuse;
-9. intended invalid-midpoint rollback;
-10. Phase 20 cylinder output.
-
-## Random-bunny baseline
-
-Eight independent benchmark processes terminate deterministically and remain
-inside the wall and memory limits.
-
-Face-edge:
-
-- wall `17.475780–19.086715 s`;
-- max working set `138,072,064 B`;
-- trace segments `12,130`;
-- arrangement/simplified cells `7,405 / 7,405`.
-
-Smooth field:
-
-- wall `23.280920–24.560557 s`;
-- max working set `283,557,888 B`;
-- trace segments `80,862`;
-- arrangement/simplified cells `21,298 / 21,298`.
-
-Both paths fail before descriptor acceptance at:
+Both random-bunny field paths failed before descriptor acceptance at:
 
 ```text
 NotProductionReady/completion
 BoundaryParityRepair:MixedCellSourceScope
 ```
 
-They use neither fallback nor source-grid recovery and emit no output. Memory
-telemetry is deterministic and populated, but explains only 32.65–47.28% of
-peak RSS depending on logical/current versus summed stage peaks.
-
-## P5-CB91–P5-CB98 implementation disposition
-
-- Exact source scope is persisted on cells and validated before mutation.
-- Replacement halfedges, twins, occurrences, and provenance are scope-stamped
-  before validation; failure evidence is typed.
-- Completion cache identity uses authoritative source dependencies and reports a
-  field-level mismatch vector.
-- Cached products are rebound and revalidated transactionally; counters are
-  based on actual reuse.
-- Missing-chart and invalid-midpoint scenarios are separate.
-- Cylinder crossing entities are canonical and topology is asserted before
-  candidate extraction.
-- Output source charts come from vertex provenance; invalid optimized output
-  rolls back to completed surface-cell output.
-- First-invalid producer diagnostics identify stage/entity.
-- Memory telemetry now includes logical bytes, retained capacity, stage peak,
-  simultaneous ownership, and acquire/release events.
-- Benchmark JSON serializes the new evidence.
-- All four required targets compile and link; no runtime binary was executed.
+They used neither fallback nor source-grid recovery and emitted no output.
 
 ## P5-TB17 closure gates
 
+- Validate artifact `8875627676` directly; do not rebuild.
 - All ten prior assertion failures pass for the intended reason.
 - Both guaranteed reuse scenarios report `reused > 0`.
-- Invalid midpoint is reached after valid common-chart setup and rollback is
-  bit-exact.
+- Invalid midpoint is reached after valid common-chart setup and rollback is bit-exact.
 - Cylinder topology and production output pass.
 - Plane, seam, torus, mechanical-feature, and Phase 20 output pass.
-- Four face-edge and four smooth-field runs are deterministic and return valid
-  nonempty pure-quad surface-cell output without fallback/recovery.
-- Stage-owned memory telemetry is internally consistent and reconciles the
-  dominant peak RSS ownership.
+- Four face-edge and four smooth-field runs are deterministic and return valid nonempty pure-quad surface-cell output without fallback/recovery.
+- Stage-owned memory telemetry is internally consistent and reconciles dominant peak RSS ownership.
 - Complete suite has no unexpected failure or abnormal termination.
 
 ## Current authority
@@ -151,6 +112,9 @@ peak RSS depending on logical/current versus summed stage peaks.
 - `benchmark-results/p5-tb16-summary.json`
 - `.agents/Directional/Milestone_G_P5_CB91_CB98_Parity_Reuse_Fixture_Output_Memory_Code_Build_Report.md`
 - `benchmark-results/p5-cb98-summary.json`
+- `.agents/Directional/Milestone_G_P5_CB98_GitHub_Compile_Closeout_Report.md`
+- `benchmark-results/p5-cb98-github-closeout-summary.json`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
 - `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`
 
 P5 remains open. PR #8 remains draft and unmerged.
