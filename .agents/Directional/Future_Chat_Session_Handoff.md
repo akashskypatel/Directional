@@ -9,137 +9,153 @@
 
 ## Current checkpoint
 
-P5-CB117 through P5-CB125 source changes and the compile-only package gate are
-complete. P5 remains open because runtime acceptance has not been executed for
-this checkpoint.
+P5-TB20 artifact-only runtime validation is complete. P5 remains open.
 
-Exact checkpoint:
+Tested checkpoint:
 
-- implementation commit:
-  `a8f8971766f55cf11828a1ae90daad3b98b50664`;
-- exact compiled source:
-  `bc8ed616adfe59d4a3e0d5dca8ef7503d3c00e83`;
-- reviewed patch SHA-256:
-  `5657eb0b64aed76a5718d40a5db61e21d0c8fce60bb620e8abcf359062e873b9`;
-- compile-only run: `30874916873` — **success**;
-- artifact: `8879272440`,
+- exact source `bc8ed616adfe59d4a3e0d5dca8ef7503d3c00e83`;
+- implementation commit `a8f8971766f55cf11828a1ae90daad3b98b50664`;
+- artifact `8879272440`,
   `surface-cell-p5-cb125-github-source-linux-release`;
-- artifact SHA-256:
+- SHA-256
   `bb9aca3881727093411f7f1012dbae9a65e1d62805a4c5a4900af58bd8f7fc76`;
-- mandatory workflow-log artifact: `8879272815`;
-- log SHA-256:
-  `03c91d91cec65de1682d40af9a20dc9a2900e954de200ce4dbb793b1532fd6b5`;
 - empty source status;
 - checksums **40/40**;
 - fixture files **26**;
 - recursive submodule records **9**.
 
-The turn compiled exactly `directional_core`, `directional_pipeline`,
-`directional_phase1_tests`, and `directional_benchmarks`. It executed no test,
-benchmark, custom mesh, help/list/discovery command, or compiled project binary.
+No configure, build, relink, patch, regeneration, or source modification
+occurred during P5-TB20.
 
-The next turn is **P5-TB20 artifact-only test and benchmark**. Execute packaged
-binaries directly from artifact `8879272440`. Do not configure, build, relink,
-patch, regenerate, or modify source.
+The next turn is **P5-CB126 through P5-CB134 code changes + compile-only
+build**. Execute no test, benchmark, custom mesh, help/list/discovery command, or
+compiled project binary.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_CB117_CB125_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_TB19_Ownership_Compaction_Topology_Output_Test_Benchmark_Report.md`
-5. `benchmark-results/p5-tb19-summary.json`
-6. `.agents/Directional/Milestone_G_P5_Post_TB19_Completion_Topology_Reuse_Output_Code_Build_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB20_Topology_Route_Completion_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb20-summary.json`
+5. `.agents/Directional/Milestone_G_P5_Post_TB20_Topology_Route_Completion_Code_Build_Plan.md`
+6. `.agents/Directional/Milestone_G_P5_CB117_CB125_Code_Build_Report.md`
 7. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Implemented model
+## Runtime result
 
-### Typed incidence evidence
+Closed:
 
-`audit_complex_incidence` now reports the exact first invalid node, halfedge,
-twin, next edge, cell, expected value, actual value, and typed reason. It covers
-ID consistency, endpoints, twin symmetry, cell-cycle closure, next/predecessor
-symmetry, directed multiplicity, use counts, side metadata, disk cells, and
-ownership registry validity.
+- package integrity;
+- Phase 16 **39/39** and Phase 17 **26/26**;
+- canonical rollback baseline;
+- typed cylinder incidence evidence;
+- rejection and exact rollback for repeated-node/halfedge/non-simple
+  replacement commits;
+- full-suite termination: **581/599** in 103.05 s, maximum RSS 529,739,776 B;
+- four stable face-edge failed runs within established wall/RSS limits;
+- no fallback or source-grid recovery.
 
-The cylinder fixture prints this audit when invalid. The cylinder DCEL producer
-is not yet claimed repaired.
+Open or regressed:
 
-### Fail-closed subdivision cycles
+- Phase 14–18 **234/235** because the provenance test fixture is geometrically
+  invalid;
+- 18 full-suite failures;
+- shared-edge parity fixture invalid before mutation;
+- cylinder DCEL `non-disk-cell`, cell 0, halfedge 43, twin 42, next 29;
+- repeated-node proposals reject but no valid alternate path is selected;
+- same-corner arbitration accepts renamed semantic duplicates and still does
+  not reach cache reuse (`0/0`);
+- pipeline stage/injection/fallback lineage;
+- all eight production fixtures;
+- smooth second run exceeds the wall limit, so four-run determinism is not
+  established;
+- at least 75% same-sample memory reconciliation.
 
-Subdivision, parity, and side-repair results carry typed domain failures. A
-replacement cycle that repeats a node/halfedge or is otherwise non-simple is
-rejected and rolled back before mutation is reported successful. This removes
-the P5-TB19 false-success contract, but a valid alternative producer path is
-still a runtime gate.
+## Earliest typed producers
 
-### Same-corner routes
+### Shared parity
 
-Geometric coincidence no longer proves route overlap. Exact canonical boundary
-interval overlap remains fail-closed; exact-disjoint routes at the same corner
-can enter deterministic repair arbitration. Actual validated cache reuse and
-recompute remain runtime gates.
+`SharedEdgeParityRepairConforminglyCompletesTwoOddCells` fails its initial
+`topologyValid` assertion. Audit the canonicalized manual fixture before parity
+mutation. Correct an invalid fixture field or production canonicalization;
+never allow parity repair to consume an invalid baseline.
 
-### Local completion embedding
+### Open cylinder
 
-Every completed patch quad is checked for unique vertices, valid rows,
-nondegenerate finite normal, nonzero projected area, and opposite-edge crossing.
-An invalid local embedding receives
-`InvalidCompletionQuadEmbedding;localQuad=<index>`. Only this failure permits
-trying another existing bounded deterministic completion variant.
+`CylindricalOpenStrandCommitsWithTopologyPreserved` reports:
 
-This does not prove global cross-patch output validity or duplicate ownership.
+`non-disk-cell cell=0 halfedge=43 twin=42 next=29`.
 
-### Canonical fixture baselines
+Rebuild the periodic cell cycle from directed DCEL adjacency while preserving
+Euler 0, two boundary loops, orientation, and protected rails.
 
-Manual rollback and shared-parity fixtures now enter canonical ownership before
-recording structural baselines or recomputing topology diagnostics. Full
-structural identity remains required.
+### Repeated-node replacement paths
 
-## Explicitly open
+- mechanical: cell 2, halfedge 719, node 65, source face 109;
+- sphere: cell 2, halfedge 37, node 13, source face 7;
+- face-edge bunny: cell 2, halfedge 45, node 20, source face 0.
 
-Do not assume compilation closes:
+False successful commit is fixed. Add a bounded deterministic conforming
+alternative rather than only rejecting the first invalid route.
 
-- P5-TB19 Phase 14–18 **235/235** preservation;
-- full-suite improvement from **583/599**;
-- the open-cylinder DCEL;
-- conforming shared-edge parity success;
-- a valid completion after repeated-node proposals are rejected;
-- positive exact reuse/recompute;
-- pipeline stage injection, fallback, original-failure, and output-origin
-  semantics — `RemeshPipeline.cpp` was not changed in this turn;
-- global source-valid non-self-intersecting output;
-- smooth duplicate completion ownership;
-- torus/thin incomplete complexes;
-- successful bunny output/determinism;
-- 75% same-sample memory reconciliation — telemetry expansion was not
-  implemented in this checkpoint.
+### Same-corner and reuse
 
-## P5-TB20 execution order
+The renamed duplicate-domain fixture is now incorrectly accepted. The valid
+annular route still fails with `same-corner-distinct-boundary` duplicate output.
+Use both exact boundary occurrences and canonical embedded source-route/domain
+ownership. Raw rail/curve IDs cannot distinguish semantic duplicates. Rebind
+and validate real cached completions before incrementing counters.
 
-1. Verify archive SHA, exact source, implementation ancestry, source status,
-   recursive checksums, submodules, fixtures, and built-target hashes.
-2. Run focused canonical rollback, typed incidence, cylinder, shared parity,
-   repeated-node domain, same-corner route/reuse, local completion embedding,
-   global output, and pipeline-lineage tests.
-3. Run Phase 14–18, Milestone D, Milestone E, GP23/GP24, Phase 20, and the full
-   suite; compare with P5-TB19.
-4. Require both guaranteed reuse scenarios to show actual `reused > 0` and
-   `recomputed > 0`; synthetic counters remain forbidden.
-5. Run the eight direct production fixtures with backend `SurfaceCells`, fallback
-   `Fail`, and source-grid recovery disabled. Validate the returned mesh itself.
-6. Run one face-edge and one smooth random-bunny process first. Repeat only if
-   each remains inside the established wall/RSS limits.
-7. Preserve the earliest typed failure for every unmet gate and write the next
-   focused code/build plan. Do not patch source during the runtime turn.
+### Completion geometry and provenance
 
-## Workflow note
+The provenance test uses `(i, i mod 2, 1)`, a non-simple boundary. Replace it
+with valid simple geometry and retain a separate negative regression.
 
-The first run, `30874823514`, applied and pushed the source patch but stopped
-before compilation because the workflow had not created its build directory
-before teeing `configure.log`. It uploaded mandatory failure logs as artifact
-`8879148483`. The workflow-only correction produced successful run
-`30874916873`. This was not a source compile failure.
+Real producer failures:
+
+- general fallback: invalid local quad 0;
+- cylinder: invalid local quad 1;
+- thin tube: invalid local quad 0;
+- smooth bunny: invalid local quad 0;
+- plane/seam/close sheets: `LocalSheetMismatch` after 12/24/34 quads;
+- torus: incomplete complex.
+
+Extend local embedding diagnostics with owning patch, backend, variant, corner
+identity, and exact classification before repairing bounded template output.
+
+### Pipeline and resources
+
+`RemeshPipeline.cpp` remains unchanged; GP23/GP24/Phase20 stage-lineage failures
+remain. Smooth runs complete with the same failed signature at 31.545 and
+45.549 s; the second exceeds the 39.228299 s limit. Face-edge peak working set
+is about 141 MB, improved from about 204 MB in TB19. Memory coverage is about
+27% face-edge and 39% smooth.
+
+## Required next work
+
+Follow P5-CB126–P5-CB134 in the post-TB20 plan, in order:
+
+1. valid provenance fixture plus negative zig-zag regression;
+2. typed shared-parity baseline and conforming transaction;
+3. cylinder non-disk periodic cycle repair;
+4. valid bounded alternative after repeated-node rejection;
+5. two-layer same-corner identity and genuine reuse;
+6. pipeline stage/injection/fallback lineage;
+7. typed local embedding producer repair;
+8. source-sheet-consistent stitching and incomplete inventory;
+9. memory telemetry, regression sources, and four-target compile/package gate.
+
+## Compile-only boundary
+
+Shallow-initialize recursive submodules and compile exactly:
+
+- `directional_core`;
+- `directional_pipeline`;
+- `directional_phase1_tests`;
+- `directional_benchmarks`.
+
+Do not run them. Initialize detailed workflow logging before fallible work and
+always upload a separate log artifact under `if: always()`.
 
 ## Preserved prohibitions
 
@@ -154,12 +170,11 @@ before teeing `configure.log`. It uploaded mandatory failure logs as artifact
 
 ## Key lessons
 
-- Typed incidence evidence must precede topology repair; a boolean invalid flag
-  is insufficient.
-- A transaction may report success only after both incidence and simple domain
-  identity pass.
-- Geometric corner coincidence is not authoritative topological route overlap.
-- Local patch embedding validation is necessary but does not replace global
-  source-authoritative validation.
-- Compile success proves source/build validity only; all topology, reuse,
-  output, pipeline-lineage, determinism, and telemetry gates remain separate.
+- A validator can expose an invalid test fixture; fix the fixture when its
+  geometry does not exercise the intended contract.
+- Rejecting an invalid transaction is necessary but does not complete the
+  producer; a valid bounded alternative is still required.
+- Geometric coincidence and renamed route IDs are insufficient ownership proof.
+- Local validity does not imply source-sheet-consistent global stitching.
+- Stable failed output and reduced memory are progress, not successful
+  quadrangulation.
