@@ -9,128 +9,115 @@
 
 ## Current checkpoint
 
-P5-TB24 artifact-only validation is complete against exact source `f4cce52006d21a248473e327ada1d66183af54e6` and artifact `8904835304`.
+P5-R1D code changes and the exact four-target compile/package gate are complete. Runtime acceptance has not been executed for this source. Remain on R1 until P5-TB25 is authoritative.
 
-R0 recovery authority is closed. The R1 shared-edge orientation predicate is closed. R1 remains open because exact manifold adjacency is still incorrectly split by unequal local-sheet labels.
+Compiled checkpoint:
 
-Do not advance to R2.
-
-Package authority:
-
-- artifact `8904835304`, `surface-cell-p5-r1c-github-source-linux-release`;
-- artifact SHA-256 `cf4d2532353d8f93848d01b51f9ee4d5ddbed0ff365e9acccab69688b3c4e2cc`;
-- source status empty;
+- P5-TB24 tested source `f4cce52006d21a248473e327ada1d66183af54e6`;
+- workflow event commit `6fc57831afc7f77e0cda9bd1f409aaaaece15bda`;
+- P5-R1D implementation and exact compiled source `a1fec970297739cfe23ade339b6a7b57071b7300`;
+- applied source-diff SHA-256 `4488988dc877f1a0a001e27286b68f2752314bade361d59a11c1e7eae8a6cd89`;
+- successful run `30942950398`, job `92105699139`;
+- artifact `8906115786`, `surface-cell-p5-r1d-github-source-linux-release`;
+- artifact SHA-256 `361c06696c56234666f8ce18d018415715851b03e2225b04bdbdfc624a0bdd66`;
+- workflow-log artifact `8906116758`, SHA-256 `c8ceb09ca4ea9f72148125466a9958366b51a52f8e02c229aa71d1852b2d1ec2`;
+- empty source status;
 - recursive checksums **40/40**;
 - package files **42**;
 - fixtures **26**;
-- recursive submodules **9**.
+- recursive submodules **9**;
+- all **132/132** Ninja actions complete.
 
-P5-TB24 configured, rebuilt, relinked, patched, regenerated, and modified no source.
+The build compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. No project binary executed.
 
-The next turn is **P5-R1D adjacent local-sheet exact-adjacency correction plus compile-only build**. Compile exactly four required targets and execute no project binary.
+The next turn is **P5-TB25 artifact-only R1D validation**. Execute artifact `8906115786` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB24_Artifact_Only_R1C_Test_Benchmark_Report.md`
-4. `benchmark-results/p5-tb24-summary.json`
-5. `.agents/Directional/Milestone_G_P5_R1D_Adjacent_Local_Sheet_Code_Build_Plan.md`
-6. `.agents/Directional/Milestone_G_P5_R1C_Code_Build_Report.md`
-7. `.agents/Directional/REORIENTATION_PLAN.md`
-8. `.agents/Directional/DESIGN.md`
-9. `.agents/Directional/GitHub_Workflow_Policy.md`
+3. `.agents/Directional/Milestone_G_P5_R1D_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R1D_Test_Benchmark_Plan.md`
+5. `benchmark-results/p5-r1d-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB24_Artifact_Only_R1C_Test_Benchmark_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R1D_Adjacent_Local_Sheet_Code_Build_Plan.md`
+8. `.agents/Directional/REORIENTATION_PLAN.md`
+9. `.agents/Directional/DESIGN.md`
+10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB24 results
+## P5-TB24 runtime authority
 
 - `SourceChartTransitionsR1.*`: **7/7**;
 - `SourceAuthoritativeMeshValidatorPhase22.*`: **6/6**;
-- focused recovery authority: **9/9**;
+- recovery authority: **9/9**;
 - graph-dependent focused: **3/6**;
 - Phase 14–18: **240/243**;
 - Phase 16: **37/39**;
 - Phase 20: **46/48**;
-- analytic direct plane/seam/close sheets: **0/3**;
-- complete suite: **590/613**, terminated normally in **75.260 seconds**;
-- complete-suite maximum resident set: **256,544 KiB**.
+- analytic plane/seam/close sheets: **0/3**;
+- complete suite: **590/613**, terminating in **75.260 seconds**;
+- maximum resident set: **256,544 KiB**.
 
-The P5-TB23 GP26 bunny nontermination regression is closed. The suite passes through GP26 and GP27 production cases.
+R0 recovery authority and the R1 shared-edge orientation predicate are closed. The remaining R1 issue was exact adjacency being split solely by unequal local-sheet labels.
 
-Analytic validation counts improved:
+## P5-R1D implementation
 
-- plane **27 → 15**;
-- seam **46 → 22**;
-- close sheets **61 → 27**.
+1. Removed local-sheet equality from exact manifold transition admission.
+2. Preserved equal source-component identity, valid opposite winding, exactly-two-face incidence, and hard-rail exclusion.
+3. Preserved each face's local-sheet label in chart IDs, transition records, rebound provenance, hashes, and diagnostics.
+4. Intrinsic source-vertex fans may cross adjacent local-sheet charts only through genuine source topology.
+5. Hard rails, source boundaries, nonmanifold sectors, different components, and disconnected topology remain barriers.
+6. Same-sheet safety remains for non-topological proximity capture and projection.
+7. Added four focused contracts:
+   - exact cross-local-sheet manifold adjacency;
+   - source-vertex fan cross-local-sheet rebinding;
+   - source-component mismatch rejection;
+   - nonmanifold shared-edge rejection.
+8. Strengthened face-row and whole-mesh orientation invariance tests with unequal incident local-sheet labels.
+9. Added no R2 work, completion template search, recovery behavior, cache, stage-lineage, or memory changes.
 
-All three still fail at `completion/output-validation: AggregateCompletionValidationFailure`, output origin `None`, with recovery, fallback, and legacy execution false.
+The first workflow attempt failed before source modification because of an exact-text transport mismatch. The successful workflow used a single-occurrence regex-bounded source transformation. Do not infer runtime success from the compile result.
 
-## Closed R1C and R0 contracts
+## P5-TB25 execution order
 
-1. Valid opposite source-edge traversal is accepted.
-2. Invalid equal-direction traversal is rejected.
-3. Endpoint and barycentric transition maps remain exact inverses.
-4. Face-row and whole-mesh orientation invariance pass.
-5. Packaged Phase 22 validator contracts pass.
-6. Explicit planar recovery succeeds with `SourceGridRecovery` origin.
-7. Recovery remains default-off and cannot masquerade as direct completion.
+1. Verify artifact SHA, exact source, empty status, **40/40** checksums, 42 files, 26 fixtures, nine submodules, source contents, and target hashes.
+2. Run all eleven `SourceChartTransitionsR1.*` tests.
+3. Run all packaged `SourceAuthoritativeMeshValidatorPhase22.*` tests.
+4. Run focused recovery authority and preserve **9/9** behavior.
+5. Run the three P5-TB24 graph-dependent failures explicitly.
+6. Run `MilestoneGP26.FeatureRailVerticesSupportBothIncidentLocalSheets` and relevant barrier regressions.
+7. Run Phase 14–18 aggregate and Phase 16 independently.
+8. Run plane, multi-face seam, close sheets, and any packaged disconnected-close-sheet direct case with fallback `Fail` and recovery disabled.
+9. Run complete Phase 20.
+10. Run the complete suite once with a watchdog used only as a safety mechanism.
+11. Do not run the full direct bunny benchmark matrix solely for R1D.
 
-## Earliest remaining R1 root cause
+## Decision rule
 
-`SourceChartTransitionGraph::build()` admits exact manifold adjacency only when incident faces share both source component and local-sheet label.
+Advance to R2 only when:
 
-Source-component equality is a true topology barrier. Local-sheet equality is not a valid barrier by itself for exact adjacency.
-
-The current condition causes:
-
-- `PureQuadCompletionPhase18.CompletionAcceptsBoundaryVertexAndEdgeChartAliases`;
-- `SurfaceArrangementPhase16.AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass`;
-- `SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation`;
-- `MilestoneGP26.FeatureRailVerticesSupportBothIncidentLocalSheets`.
-
-Required semantics:
-
-- local-sheet labels remain authoritative provenance;
-- local-sheet labels continue to block world-space/proximity capture, projection, and disconnected close-sheet reconciliation;
-- exact manifold source-edge adjacency and intrinsic source-vertex fans may cross local-sheet labels within one source component;
-- hard rails, boundaries, nonmanifold sectors, different components, and disconnected topology remain barriers.
-
-## P5-R1D required work
-
-1. Remove local-sheet equality from exact manifold transition admission.
-2. Preserve equal source-component identity, valid opposite winding, exactly-two-face incidence, and hard-rail exclusion.
-3. Preserve every face's local-sheet label in chart IDs, transition records, membership identities, provenance, diagnostics, and hashes.
-4. Restore intrinsic source-vertex fans from admissible exact adjacency across local charts.
-5. Preserve barriers for hard rails, source boundaries, nonmanifold sectors, components, and disconnected topology.
-6. Preserve same-sheet restrictions for proximity/capture/projection operations.
-7. Correct only immediate arrangement, completion-alias, validator, or explicit-recovery assumptions that still contradict exact adjacency.
-8. Add focused adjacency and barrier regressions without changing intended expectations.
-9. Keep R2–R11 deferred.
-
-## Compile-only boundary
-
-Compile exactly:
-
-- `directional_core`;
-- `directional_pipeline`;
-- `directional_phase1_tests`;
-- `directional_benchmarks`.
-
-Run no tests, benchmarks, custom meshes, help/list/discovery commands, or generated executables. Initialize detailed logging before fallible work and always upload the log artifact.
-
-## Next runtime gate
-
-The artifact-only turn after R1D must require:
-
-- source-chart tests remain clean;
-- packaged Phase 22 validator tests remain clean;
-- recovery remains **9/9**;
-- all three remaining graph-dependent focused tests pass;
-- the feature-rail incident-sheet contract passes;
+- all eleven source-chart contracts pass;
+- Phase 22 validator and recovery authority remain clean;
+- the three graph-dependent failures close;
+- feature-rail incident-sheet support passes;
 - Phase 14–18 is clean;
-- analytic cases are not rejected by local-sheet incompatibility;
+- analytic cases are no longer blocked by local-sheet incompatibility;
 - the complete suite still terminates.
 
-Advance to R2 only after these R1 gates close.
+A later analytic failure may justify R2 only after evidence shows source-chart orientation and local-sheet exact adjacency are no longer causal. Otherwise remain on R1 and make the smallest producer correction.
+
+## Subsequent authoritative order
+
+1. R2 — directed wedge/incidence reconstruction;
+2. R3 — topology-distinct patch completion;
+3. R4 — repeated-node wedge/splice producer;
+4. R5 — explicit local lattice phase and advancing-front events;
+5. R6 — torus decomposition/descriptor support;
+6. R7 — adaptive dyadic 2:1 transitions;
+7. R8 — direct production validation;
+8. R9 — cache reuse;
+9. R10 — stage-lineage fixtures;
+10. R11 — synchronized memory telemetry.
 
 ## Preserved prohibitions
 
@@ -145,6 +132,6 @@ Advance to R2 only after these R1 gates close.
 
 ## Key lessons
 
-- Source chart labels and exact topological connectivity are distinct concepts: provenance labels must not erase genuine manifold adjacency.
-- Keep local-sheet barriers for geometric capture while allowing exact source topology to establish adjacency.
-- The orientation fix materially reduced validation failures and restored termination, but the next correction must remain on the same earliest R1 producer.
+- Local-sheet provenance and exact topological adjacency are distinct: keep sheet labels while allowing exact source topology to establish connectivity.
+- Preserve sheet barriers for proximity capture and projection; only exact manifold adjacency crosses chart labels.
+- Compile success proves integration and packaging only. P5-TB25 determines whether R1D closes the remaining R1 runtime failures.
