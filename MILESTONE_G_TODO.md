@@ -9,20 +9,22 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`; keep open and unmerged.
-- Exact compiled source: `e31e5abd52ca9e673d1718f47d088d19296d1d22`.
+- Tested source: `e31e5abd52ca9e673d1718f47d088d19296d1d22`.
 - Artifact: `8902050372`, `surface-cell-p5-r1-github-source-linux-release`.
 - Artifact SHA-256: `5d1e5ca4fa8bc74e0a30615725c79a8b491830ab1f4407152cf79bfe56f8880f`.
-- Completed turn: **P5-R0/R1 code + compile-only build**.
-- Next turn: **P5-TB23 artifact-only R0/R1 validation**.
+- Completed turn: **P5-TB23 artifact-only R0/R1 validation**.
+- Next turn: **P5-R1C source-chart orientation correction + compile-only build**.
 
 ## Work phases
 
 - [x] P0–P4 — earlier remediation.
 - [ ] P5 — direct surface-paving producer remediation. **In progress**
-- [x] P5-TB22 — deterministic terminating runtime baseline, **585/600**, production **0/8**.
-- [x] R0 — recovery defaults off and reports a distinct non-authoritative output origin.
-- [x] R1 compile — canonical source-entity transition graph and integration compiled.
-- [ ] R1 runtime — focused transition, rollback, and analytic direct production acceptance.
+- [x] P5-TB22 — deterministic runtime baseline, **585/600**, production **0/8**.
+- [x] R0 compile — recovery defaults off and has distinct `SourceGridRecovery` origin.
+- [ ] R0 runtime — **8/9** focused recovery contracts; explicit planar recovery remains preempted.
+- [x] R1 compile — canonical source-entity transition graph integrated.
+- [ ] R1 runtime — orientation predicate is inverted; remain on R1.
+- [ ] R1C — correct shared-edge winding classification and restore graph-dependent behavior.
 - [ ] R2 — directed wedge/incidence reconstruction before cell assignment.
 - [ ] R3 — topology-distinct patch completion engine.
 - [ ] R4 — repeated-node wedge/splice producer.
@@ -35,92 +37,74 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [ ] R11 — truthful synchronized memory telemetry after geometry succeeds.
 - [ ] P6–P8 — final validation, closure, and production disposition.
 
-## P5-R0/R1 package evidence
+## P5-TB23 package authority
 
-- workflow event commit `233466e5b02c3762a3f2648518f5860a2a2fb014`;
-- implementation commit `ae0c09ed1290df75d1d2cc1d5af039fc1feb83a3`;
-- compile fix / exact source `e31e5abd52ca9e673d1718f47d088d19296d1d22`;
-- reviewed patch SHA-256 `a3898a847c6722a1f2d9b0de48e71ae71f08fcc0bc82b3d9396d8c842d9cad61`;
-- compile-fix patch SHA-256 `92162aa709134c86a355253416dc614817fecabebaeb60c58555061958d12162`;
-- successful run `30932812460`, job `92071429858`;
 - source status empty;
-- recursive checksum manifest **41/41**;
+- recursive checksums **41/41**;
 - package files **43**;
 - fixture files **26**;
 - recursive submodules **9**;
-- all **131/131** Ninja actions completed;
-- compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no project binary, test, benchmark, custom mesh, help/list, or discovery command executed;
-- workflow-log artifact `8902051026`, SHA-256 `dee5e429cb9a57ee9b45db42d27b512c7b096aed875147a01364e5a757f4b5a6`.
+- exact target hashes verified;
+- no configure, build, relink, patch, regeneration, or source modification.
 
-## R0 implementation
+## P5-TB23 runtime evidence
 
-- [x] `allowSourceGridRecovery` defaults to `false`.
-- [x] Recovery requires explicit opt-in.
-- [x] Successful recovery reports `SourceGridRecovery`, not `CompletedSurfaceCells`.
-- [x] Direct fallback `Fail` semantics remain fail-closed.
-- [x] No cache, lineage, memory, general FlowRep, or new completion-search work was added.
+- focused R0/R1 **8/12**;
+- focused recovery **8/9**;
+- Phase 14–18 **233/242**;
+- Phase20 **35/48**;
+- bounded diagnostic suite **553/603** in 4.943 seconds;
+- complete suite: 606 tests discovered, did not terminate within 1200 seconds;
+- stall: `MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback`, case `bunny_1k_random__surface_cells`;
+- analytic direct production plane/seam/close sheets **0/3**.
 
-## R1 implementation
+Direct analytic failures:
 
-- [x] explicit chart nodes `(component, localSheet, sourceFace)`;
-- [x] orientation-aware source-edge transitions and inverse maps;
-- [x] exact source-edge/source-vertex barycentric rebinding;
-- [x] intrinsic source-vertex fan partitioning;
-- [x] component, sheet, source-boundary, hard-rail, and nonmanifold barriers;
-- [x] deterministic canonical source entities;
-- [x] inconsistent source winding rejection;
-- [x] arrangement, completion, stitching, optimizer, pipeline, and validator integration;
-- [x] compile-valid focused tests for edge, fan, barrier, disconnected sheet, permutation, inverse, recovery authority, and rollback contracts.
+- plane: 12 quads, 27 validation failures, `LocalSheetMismatch` at 0/0;
+- multi-face seam: 24 quads, 46 validation failures, `LocalSheetMismatch` at 0/0;
+- close sheets: 34 quads, 61 validation failures, `LocalSheetMismatch` at 0/0;
+- recovery/fallback/legacy execution: none.
 
-## Last runtime evidence: P5-TB22
+## Earliest R1 producer
 
-- focused contracts **32/42**;
-- Phase 14–18 **236/236**;
-- Milestone D **6/7**;
-- Milestone E **23/26**;
-- GP23 + GP24 **10/14**;
-- Phase20 **46/48**;
-- complete suite **585/600** in **103.441 s**;
-- direct production **0/8**;
-- plane/seam/close sheets fail `LocalSheetMismatch` in the tested baseline.
+`SourceChartTransitionGraph::edge_orientation` accepts equal-direction shared-edge traversal and rejects the opposite traversal required by a consistently oriented manifold triangle pair.
 
-No runtime claim is made for R1 until P5-TB23.
+Consequences observed:
 
-## P5-TB23 requirements
+- valid transition graph unavailable;
+- exact shared-edge rebind fails;
+- source-vertex fan resolution fails;
+- invalid same-direction winding test is accepted;
+- graph-dependent arrangement ownership and completion alias contracts fail;
+- explicit planar recovery fails strict validation;
+- analytic `LocalSheetMismatch` counts increase;
+- full-suite termination regresses.
 
-Follow `.agents/Directional/Milestone_G_P5_R1_Test_Benchmark_Plan.md`:
+## P5-R1C requirements
 
-- [ ] verify exact artifact authority and packaged source;
-- [ ] prove default-off and non-authoritative recovery behavior;
-- [ ] pass exact adjacent-edge transition and inverse contracts;
-- [ ] pass intrinsic source-vertex fan and barrier contracts;
-- [ ] keep disconnected and opposite close sheets separate;
-- [ ] preserve canonical hashes under face-row permutation and source orientation reversal;
-- [ ] fail inconsistent transitions before global commit with exact rollback;
-- [ ] pass focused arrangement, completion, stitching, and source-authoritative validator scopes;
-- [ ] complete plane, multi-face seam, and close sheets directly without `LocalSheetMismatch` or leakage;
-- [ ] run Phase 14–18 and required analytic regression scopes;
-- [ ] confirm normal termination of the complete suite once;
-- [ ] do not run the full bunny benchmark matrix solely for R1.
+Follow `.agents/Directional/Milestone_G_P5_R1C_Source_Chart_Orientation_Correction_Code_Build_Plan.md`:
 
-P5-TB23 must execute artifact `8902050372` directly and must not configure, rebuild, relink, patch, regenerate, or modify source.
+- [ ] fix the orientation predicate, not the tests;
+- [ ] preserve exact endpoint/barycentric inverse maps;
+- [ ] preserve deterministic face-row and whole-mesh orientation invariance;
+- [ ] restore admissible source-vertex fan adjacency and hard-rail/nonmanifold barriers;
+- [ ] repair only graph-dependent arrangement, completion alias, validator, and explicit recovery behavior that remains invalid after the predicate fix;
+- [ ] include `SourceAuthoritativeMeshValidatorPhase22Tests.cpp` in `directional_phase1_tests` so the four-target artifact exposes validator contracts;
+- [ ] keep R2–R11 deferred.
 
-Proceed to R2 only after R1 runtime evidence is authoritative.
+Compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
 
 ## Current authority
 
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Milestone_G_P5_TB23_Artifact_Only_R0_R1_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb23-summary.json`
+- `.agents/Directional/Milestone_G_P5_R1C_Source_Chart_Orientation_Correction_Code_Build_Plan.md`
 - `.agents/Directional/Milestone_G_P5_R0_R1_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R1_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r1-summary.json`
-- `.agents/Directional/Milestone_G_P5_TB22_Artifact_Only_Test_Benchmark_Report.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `TODO`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
-
-The prior CB143–CB150 plan remains historical diagnosis; its broad execution order is superseded.
 
 Preserve all prohibitions: no validator weakening, frequency/count/order selection, fallback/recovery substitution, synthetic counters, positional merging, source-triangle pairing, arbitrary subset search, fixture/ID special cases, or timeout-as-correctness.
 
