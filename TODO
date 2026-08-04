@@ -8,77 +8,83 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB117 through P5-CB125 code + compile-only build**.
-- Next turn: **P5-TB20 artifact-only test and benchmark**.
+- Completed turn: **P5-TB20 artifact-only test and benchmark**.
+- Next turn: **P5-CB126 through P5-CB134 code changes + compile-only build**.
 
-## P5-CB125 compiled checkpoint
+## P5-TB20 tested checkpoint
 
-- Implementation commit:
-  `a8f8971766f55cf11828a1ae90daad3b98b50664`.
-- Exact compiled source:
-  `bc8ed616adfe59d4a3e0d5dca8ef7503d3c00e83`.
-- Successful compile-only run: `30874916873`.
+- Exact source: `bc8ed616adfe59d4a3e0d5dca8ef7503d3c00e83`.
+- Implementation commit: `a8f8971766f55cf11828a1ae90daad3b98b50664`.
 - Artifact: `8879272440`,
   `surface-cell-p5-cb125-github-source-linux-release`.
 - Artifact SHA-256:
   `bb9aca3881727093411f7f1012dbae9a65e1d62805a4c5a4900af58bd8f7fc76`.
-- Mandatory log artifact: `8879272815`; SHA-256
-  `03c91d91cec65de1682d40af9a20dc9a2900e954de200ce4dbb793b1532fd6b5`.
-- Reviewed patch SHA-256:
-  `5657eb0b64aed76a5718d40a5db61e21d0c8fce60bb620e8abcf359062e873b9`.
 - Source status empty; checksums **40/40**; fixtures **26**; recursive
   submodule records **9**.
-- Compiled exactly `directional_core`, `directional_pipeline`,
-  `directional_phase1_tests`, and `directional_benchmarks`.
-- No test, benchmark, custom mesh, help/list/discovery command, or compiled
-  project binary executed.
+- No configure, build, relink, patch, regeneration, or source modification.
 
-## Implemented checkpoint
+## Runtime disposition
 
-- [x] P5-CB117 — canonicalize the manual rollback fixture before recording the
-      transaction baseline; full structural rollback identity remains required.
-- [ ] P5-CB118 — typed incidence audit implemented; open-cylinder DCEL producer
-      still requires runtime localization and repair.
-- [ ] P5-CB119 — shared-edge parity fixture enters canonical ownership and
-      subdivision now audits committed cycles; successful conforming repair is
-      runtime-gated.
-- [ ] P5-CB120 — repeated-node/halfedge subdivision is rejected and rolled back
-      before false success; a valid alternative completion remains runtime-gated.
-- [ ] P5-CB121 — exact-disjoint same-corner routes can proceed despite geometric
-      coincidence; genuine validated reuse/recompute remains runtime-gated.
-- [ ] P5-CB122 — pipeline injection/fallback/failure lineage was not changed and
-      remains open.
-- [ ] P5-CB123 — local quad degeneracy, bow-tie, and crossing checks plus bounded
-      deterministic variant retry implemented; global valid output remains open.
-- [ ] P5-CB124 — smooth duplicate ownership and torus/thin completion remain
-      open.
-- [ ] P5-CB125 — regression sources and four-target package gate complete;
-      same-sample memory telemetry expansion remains open.
+- [x] Package integrity.
+- [x] Phase 16: **39/39**.
+- [x] Phase 17: **26/26**.
+- [x] Canonical rollback baseline.
+- [x] Typed cylinder incidence evidence.
+- [x] Invalid repeated-node/halfedge/non-simple commits reject and roll back.
+- [x] Full suite terminates: **581/599**, 103.05 s, maximum RSS
+      529,739,776 B.
+- [x] Face-edge bunny: four stable failed runs within resource limits.
+- [x] No fallback or source-grid recovery.
+- [ ] Phase 14–18 clean: **234/235**; provenance fixture geometry is invalid.
+- [ ] Full suite clean: 18 failures remain.
+- [ ] Shared-edge parity valid baseline and conforming repair.
+- [ ] Canonical cylinder DCEL: `non-disk-cell`, cell 0, halfedge 43.
+- [ ] Valid alternate after repeated-node rejection.
+- [ ] Positive exact reuse: still `0/0`.
+- [ ] Pipeline stage/injection/fallback semantics.
+- [ ] Valid nonempty source-valid manifold pure-quad production output.
+- [ ] Smooth resource repeat: second run 45.55 s exceeds 39.228299 s.
+- [ ] Same-sample memory reconciliation: face-edge about 27%, smooth about
+      39%; required at least 75%.
+
+## Earliest remaining producers
+
+- shared-parity fixture is topology-invalid before mutation;
+- open-cylinder cell 0 is non-disk at halfedge 43/twin 42/next 29;
+- mechanical, sphere, and face-edge bunny reject repeated-node replacement
+  cycles but have no valid bounded alternative;
+- same-corner arbitration accepts renamed semantic duplicates yet still blocks
+  the valid annular route before cache reuse;
+- completion provenance test uses a non-simple zig-zag fixture;
+- general fallback, cylinder, thin tube, and smooth bunny produce invalid local
+  quads;
+- plane, seam, and close sheets fail source `LocalSheetMismatch` after producing
+  12, 24, and 34 quads;
+- pipeline completion validation still preempts declared later-stage injection
+  and fallback lineage;
+- torus remains `IncompleteSurfaceCellComplex`.
 
 ## Required next work
 
-Use artifact `8879272440` directly. Do not rebuild or modify source during
-P5-TB20.
+Follow:
 
-- [ ] Verify package authority, implementation ancestry, all checksums,
-      submodules, fixtures, and target hashes.
-- [ ] Run focused canonical rollback, typed incidence, cylinder, shared parity,
-      subdivision-domain, route/reuse, completion-embedding, global output, and
-      pipeline-lineage contracts.
-- [ ] Require typed incidence to identify the exact first malformed cylinder
-      entity.
-- [ ] Require invalid repeated-node proposals to roll back without reporting
-      successful mutation; determine whether a valid alternative completes.
-- [ ] Require both guaranteed reuse scenarios to report actual `reused > 0` and
-      `recomputed > 0`.
-- [ ] Run Phase 14–18, Milestone D, Milestone E, GP23/GP24, Phase 20, and the
-      full suite; compare with P5-TB19's **583/599**.
-- [ ] Run the direct production matrix with fallback `Fail` and source-grid
-      recovery disabled; validate the returned mesh itself.
-- [ ] Run one face-edge and one smooth bunny process first; repeat only after a
-      path remains within established resource limits.
-- [ ] Preserve the earliest typed failing producer and create the next focused
-      code/build plan without modifying source in the runtime turn.
+`.agents/Directional/Milestone_G_P5_Post_TB20_Topology_Route_Completion_Code_Build_Plan.md`
+
+- [ ] P5-CB126 — valid provenance fixture plus negative zig-zag regression.
+- [ ] P5-CB127 — type and repair shared-parity precondition/transaction.
+- [ ] P5-CB128 — repair cylinder non-disk periodic cell cycle.
+- [ ] P5-CB129 — bounded valid alternative after repeated-node rejection.
+- [ ] P5-CB130 — two-layer same-corner ownership and genuine reuse.
+- [ ] P5-CB131 — pipeline stage, injection, fallback, and failure lineage.
+- [ ] P5-CB132 — typed local embedding producer repair.
+- [ ] P5-CB133 — source-sheet-consistent global stitching and completion
+      inventory.
+- [ ] P5-CB134 — memory telemetry, regressions, and exact four-target
+      compile/package gate.
+
+The next turn must compile exactly `directional_core`, `directional_pipeline`,
+`directional_phase1_tests`, and `directional_benchmarks`; execute no project
+binary.
 
 Preserve all prohibitions: no validator weakening, frequency/count/order
 selection, fallback/recovery substitution, synthetic counters, positional
@@ -87,10 +93,10 @@ cases, or timeout-as-correctness.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_TB20_Topology_Route_Completion_Test_Benchmark_Report.md`
+- `benchmark-results/p5-tb20-summary.json`
+- `.agents/Directional/Milestone_G_P5_Post_TB20_Topology_Route_Completion_Code_Build_Plan.md`
 - `.agents/Directional/Milestone_G_P5_CB117_CB125_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_TB19_Ownership_Compaction_Topology_Output_Test_Benchmark_Report.md`
-- `benchmark-results/p5-tb19-summary.json`
-- `.agents/Directional/Milestone_G_P5_Post_TB19_Completion_Topology_Reuse_Output_Code_Build_Plan.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 
