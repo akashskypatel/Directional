@@ -8,55 +8,75 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB18 artifact-only test and benchmark**.
-- Next turn: **P5-CB108 through P5-CB116 code changes + compile-only build**.
+- Completed turn: **P5-CB108 through P5-CB116 code + compile-only build**.
+- Next turn: **P5-TB19 artifact-only test and benchmark**.
 
-## P5-TB18 disposition
+## P5-CB116 compiled checkpoint
 
-Artifact `8876934846` was executed directly without rebuilding or modifying
-source. Integrity passed: exact source `94bf8347b10eebcd8d3e777c6f5f0a2227283a2e`,
-empty status, checksums **39/39**, fixtures **26**.
+- Exact source: `9bff7d352f2751228d10ce72e2860c899f90de80`.
+- Successful compile-only run: `30871579432`.
+- Artifact: `8878170954`,
+  `surface-cell-p5-cb116-github-source-linux-release`.
+- Artifact SHA-256:
+  `c82a27122aaa3f3cc96f6cb3621248ed8eed4bdaf92df503b0f8deb06ec8f5d6`.
+- Mandatory log artifact: `8878171276`; SHA-256
+  `9f1531b930be97ceb674eb4f0f788cd5271673fbc77fc600df1f0768d36d28e6`.
+- Source status empty; checksums **40/40**; fixtures **26**.
+- Compiled exactly `directional_core`, `directional_pipeline`,
+  `directional_phase1_tests`, and `directional_benchmarks`.
+- No test, benchmark, custom mesh, help/list/discovery command, or compiled
+  project binary executed.
 
-Runtime closure failed:
+## Implemented source checkpoint
 
-- Phase 14–18: **223/232**;
-- Milestone D: **4/7**;
-- Milestone E: **23/26**;
-- Phase 20: **47/48**;
-- complete-minus-three-blocked-heavy-cases: **573/593**;
-- full 596-test binary does not terminate because the smooth bunny path is
-  killed at **3,801,161,728 B** RSS;
-- every direct production case fails;
-- face-edge bunny fails at
-  `InvalidArrangementDomainIdentity;firstPatch=2` after **98.613553 s** and
-  **2,513,285,120 B** peak RSS;
-- exact reuse remains `0/0`;
-- invalid midpoint still returns `MissingCommonSourceChart`;
-- no fallback or source-grid recovery was used.
-
-The new adjacent-chart and disconnected-close-sheet ownership regressions pass,
-and the bunny singularity-fan regression is restored. This does not close the
-canonical ownership implementation.
+- [x] P5-CB108 — compact exact ownership registry stored once per complex;
+      cells retain a fixed-size class key and exact incident charts.
+- [x] P5-CB109 — intrinsic connected-component/default-chart derivation when
+      explicit labels are absent, with face-row-independent numbering.
+- [x] P5-CB110 — registry-backed ownership canonicalization through
+      simplification, feasibility repair, descriptor construction, hashing, and
+      rollback.
+- [x] P5-CB111 — typed prepared-domain audit for repeated nodes/halfedges,
+      non-simple boundary, missing chart, and registry mismatch.
+- [ ] P5-CB112 — compact completion dependency groundwork is implemented;
+      route repair and genuine positive reuse remain runtime-gated.
+- [x] P5-CB113 — malformed-midpoint fixture preserves unrelated shared-node
+      chart occurrences and replaces only the target occurrence.
+- [ ] P5-CB114 — ownership/cylinder fixture preconditions are implemented;
+      full canonical cylinder DCEL closure remains runtime-gated.
+- [ ] P5-CB115 — completed-checkpoint validation and optimizer rollback are
+      implemented; full production-output closure remains runtime-gated.
+- [x] P5-CB116 — focused regression sources and exact four-target
+      compile/package gate.
 
 ## Required next work
 
-Follow:
+Use artifact `8878170954` directly. Do not rebuild or modify source during
+P5-TB19.
 
-`.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
-
-- [ ] P5-CB108 — compact exact ownership-class registry; eliminate per-cell
-      component-wide chart duplication.
-- [ ] P5-CB109 — derive intrinsic canonical charts when explicit labels are
-      absent.
-- [ ] P5-CB110 — centralize ownership propagation through simplification and
-      restore Phase 17.
-- [ ] P5-CB111 — typed prepared-domain validation and parity producer repair.
-- [ ] P5-CB112 — route validation and genuine completion reuse.
-- [ ] P5-CB113 — valid invalid-midpoint fixture precondition and exact rollback.
-- [ ] P5-CB114 — canonical open-cylinder DCEL.
-- [ ] P5-CB115 — valid completion checkpoint and optimizer rollback/output.
-- [ ] P5-CB116 — regressions, memory bounds, and exact four-target
-      compile/package gate.
+- [ ] Validate artifact source, empty status, submodules, 26 fixtures, and all
+      packaged checksums.
+- [ ] Run the new compact-registry, unlabeled-ownership, row-order, domain-audit,
+      midpoint, cylinder, reuse, and output regressions.
+- [ ] Run Phase 14–18, Milestone D, Milestone E, Phase 20, and the complete
+      suite; compare with P5-TB18.
+- [ ] Require both positive completion-reuse fixtures to report real
+      `reused > 0` and `recomputed > 0`.
+- [ ] Require malformed midpoint to reach `InvalidMidpointEmbedding` after
+      temporary mutation and roll back bit-exactly.
+- [ ] Validate cylinder incidence, embedding, orientation, disk cells, Euler 0,
+      one component, two boundary loops, and strand/rail preservation before
+      simplification.
+- [ ] Run the direct production fixture matrix with fallback `Fail` and
+      source-grid recovery disabled; require valid nonempty manifold pure-quads
+      for supported cases.
+- [ ] Run random-bunny face-edge and smooth paths once; repeat four independent
+      processes only after a run completes within established resource limits.
+- [ ] Reconcile categorized simultaneous ownership against the same peak-RSS
+      sample and require at least 75% coverage.
+- [ ] For every failure, preserve the earliest typed invalid stage/entity and
+      define the next focused code/build plan without patching in the runtime
+      turn.
 
 Preserve all prohibitions: no validator weakening, frequency/count/order
 selection, fallback/recovery substitution, synthetic counters, positional
@@ -65,6 +85,7 @@ cases, or timeout-as-correctness.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_CB108_CB116_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_TB18_Canonical_Ownership_Output_Memory_Test_Benchmark_Report.md`
 - `benchmark-results/p5-tb18-summary.json`
 - `.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
