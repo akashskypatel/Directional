@@ -30,8 +30,9 @@
 
 namespace directional::geometry {
 
-/** Exact per-face projection chart. Intrinsic connectivity never crosses a
- * component, local-sheet, hard-rail, boundary, or nonmanifold barrier. */
+/** Exact per-face projection chart. Local-sheet remains authoritative
+ * provenance. Exact manifold adjacency may cross local-sheet labels, while
+ * component, hard-rail, boundary, and nonmanifold barriers remain authoritative. */
 struct SourceChartId {
   int component = -1;
   int localSheet = -1;
@@ -99,10 +100,11 @@ struct SourceChartTransition {
 /**
  * Canonical source-chart transition graph.
  *
- * Connectivity is derived only from exact source topology, component/sheet
+ * Connectivity is derived only from exact source topology, source-component
  * labels, and hard-edge barriers. World-space proximity and source-triangle
- * pairing never participate. A transition is admitted only across a manifold
- * source edge whose two charts have the same component and local-sheet labels.
+ * pairing never participate. Local-sheet labels remain in chart identity,
+ * provenance, and hashes, but do not split an otherwise admissible exact
+ * manifold transition within one source component.
  */
 class SourceChartTransitionGraph {
 public:
@@ -520,12 +522,13 @@ private:
       const int firstFace = incident[0].face;
       const int secondFace = incident[1].face;
       if ((*components_)[static_cast<std::size_t>(firstFace)] !=
-              (*components_)[static_cast<std::size_t>(secondFace)] ||
-          (*sheets_)[static_cast<std::size_t>(firstFace)] !=
-              (*sheets_)[static_cast<std::size_t>(secondFace)]) {
-        continue;
-      }
-      unite(firstFace, secondFace);
+    (*components_)[static_cast<std::size_t>(secondFace)]) {
+  continue;
+}
+// Exact manifold topology, not a local projection-chart label, owns
+// intrinsic adjacency. Local-sheet labels remain attached to each chart
+// and still constrain non-topological capture and projection consumers.
+unite(firstFace, secondFace);
       faceAdjacency[static_cast<std::size_t>(firstFace)].push_back(secondFace);
       faceAdjacency[static_cast<std::size_t>(secondFace)].push_back(firstFace);
 

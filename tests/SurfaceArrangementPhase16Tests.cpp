@@ -1288,6 +1288,98 @@ TEST(SourceChartTransitionsR1,
   EXPECT_EQ(forward.orientation, reverse->orientation);
 }
 
+TEST(SourceChartTransitionsR1,
+     ExactManifoldAdjacencyCrossesLocalSheetLabels) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {4, 9};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  ASSERT_TRUE(graph.available());
+  ASSERT_EQ(2U, graph.transitions().size());
+  EXPECT_EQ(graph.chart_component(0), graph.chart_component(1));
+
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 4;
+  point.barycentric << 0.0, 0.25, 0.75;
+  directional::geometry::SurfacePoint rebound;
+  ASSERT_TRUE(graph.rebind(point, 1, rebound));
+  EXPECT_EQ(1, rebound.face);
+  EXPECT_EQ(0, rebound.component);
+  EXPECT_EQ(9, rebound.sheet);
+  EXPECT_NEAR(0.75, rebound.barycentric(0), 1.0e-12);
+  EXPECT_NEAR(0.25, rebound.barycentric(1), 1.0e-12);
+  EXPECT_NEAR(0.0, rebound.barycentric(2), 1.0e-12);
+  EXPECT_EQ(graph.resolve_entity(point).canonical,
+            graph.resolve_entity(rebound).canonical);
+}
+
+TEST(SourceChartTransitionsR1,
+     SourceVertexFanCrossesAdjacentLocalSheetLabels) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {2, 6};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 2;
+  point.barycentric << 0.0, 1.0, 0.0;
+  directional::geometry::SurfacePoint rebound;
+  ASSERT_TRUE(graph.rebind(point, 1, rebound));
+  EXPECT_EQ(6, rebound.sheet);
+  EXPECT_EQ(graph.resolve_entity(point).canonical,
+            graph.resolve_entity(rebound).canonical);
+}
+
+TEST(SourceChartTransitionsR1,
+     ComponentMismatchBlocksExactManifoldAdjacency) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  const std::vector<int> components = {0, 1};
+  const std::vector<int> sheets = {4, 9};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  ASSERT_TRUE(graph.available());
+  EXPECT_TRUE(graph.transitions().empty());
+  EXPECT_NE(graph.chart_component(0), graph.chart_component(1));
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 4;
+  point.barycentric << 0.0, 0.5, 0.5;
+  directional::geometry::SurfacePoint rebound;
+  EXPECT_FALSE(graph.rebind(point, 1, rebound));
+}
+
+TEST(SourceChartTransitionsR1,
+     NonManifoldSharedEdgeDoesNotCreateTransition) {
+  Eigen::MatrixXi faces(3, 3);
+  faces << 0, 1, 2,
+           2, 1, 3,
+           1, 2, 4;
+  const std::vector<int> components = {0, 0, 0};
+  const std::vector<int> sheets = {0, 1, 2};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  ASSERT_TRUE(graph.available());
+  EXPECT_TRUE(graph.transitions().empty());
+  EXPECT_NE(graph.chart_component(0), graph.chart_component(1));
+  EXPECT_NE(graph.chart_component(1), graph.chart_component(2));
+}
+
 TEST(SourceChartTransitionsR1, HardRailSplitsAdjacentProjectionCharts) {
   Eigen::MatrixXi faces(2, 3);
   faces << 0, 1, 2,
@@ -1371,14 +1463,14 @@ TEST(SourceChartTransitionsR1,
   faces << 0, 1, 2,
            1, 3, 2;
   const std::vector<int> components = {0, 0};
-  const std::vector<int> sheets = {7, 7};
+  const std::vector<int> sheets = {7, 11};
   const directional::geometry::SourceChartTransitionGraph first(
       faces, components, sheets);
 
   Eigen::MatrixXi reordered = faces;
   reordered.row(0).swap(reordered.row(1));
   const std::vector<int> reorderedComponents = {0, 0};
-  const std::vector<int> reorderedSheets = {7, 7};
+  const std::vector<int> reorderedSheets = {11, 7};
   const directional::geometry::SourceChartTransitionGraph second(
       reordered, reorderedComponents, reorderedSheets);
 
@@ -1397,7 +1489,7 @@ TEST(SourceChartTransitionsR1,
   reversed << 0, 2, 1,
               2, 3, 1;
   const std::vector<int> components = {0, 0};
-  const std::vector<int> sheets = {5, 5};
+  const std::vector<int> sheets = {5, 9};
 
   const directional::geometry::SourceChartTransitionGraph forward(
       faces, components, sheets);
