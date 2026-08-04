@@ -173,26 +173,27 @@ std::vector<std::uint64_t> exact_rollback_identity(
   }
 
   const SurfaceArrangementDiagnostics &d = complex.diagnostics;
-  for (const std::int64_t value :
-       {d.plantedIntersections, d.uniqueIntersections, d.unsplitCrossings,
-        d.geometricTJunctions, d.incompleteArcChains,
-        d.hardBarrierCrossings, d.eulerCharacteristic,
-        d.sourceEulerCharacteristic, d.connectedComponentCount,
-        d.sourceConnectedComponentCount, d.boundaryLoopCount,
-        d.sourceBoundaryLoopCount, d.directedWedgeCount,
-        d.successorMissingCount, d.successorAmbiguityCount,
-        d.predecessorMultiplicityFailureCount, d.repeatedNodeCycleCount,
-        d.repeatedEdgeCycleCount, static_cast<int>(d.incidenceFailure),
-        d.incidenceFailureNode, d.incidenceFailureHalfedge,
-        d.incidenceFailureTwin, d.incidenceFailureNext,
-        static_cast<std::int64_t>(d.directedIncidenceHash),
-        d.incidenceValid ? 1 : 0,
-        d.embeddingValid ? 1 : 0, d.orientationValid ? 1 : 0,
-        d.cellsDiskValid ? 1 : 0, d.boundaryLoopsValid ? 1 : 0,
-        d.eulerCharacteristicValid ? 1 : 0, d.topologyValid ? 1 : 0,
-        d.peakSegmentsPerFace}) {
-    append_rollback_word(identity, value);
-  }
+const std::array<std::int64_t, 32> diagnosticsIdentity{{
+    d.plantedIntersections, d.uniqueIntersections, d.unsplitCrossings,
+    d.geometricTJunctions, d.incompleteArcChains,
+    d.hardBarrierCrossings, d.eulerCharacteristic,
+    d.sourceEulerCharacteristic, d.connectedComponentCount,
+    d.sourceConnectedComponentCount, d.boundaryLoopCount,
+    d.sourceBoundaryLoopCount, d.directedWedgeCount,
+    d.successorMissingCount, d.successorAmbiguityCount,
+    d.predecessorMultiplicityFailureCount, d.repeatedNodeCycleCount,
+    d.repeatedEdgeCycleCount, static_cast<int>(d.incidenceFailure),
+    d.incidenceFailureNode, d.incidenceFailureHalfedge,
+    d.incidenceFailureTwin, d.incidenceFailureNext,
+    static_cast<std::int64_t>(d.directedIncidenceHash),
+    d.incidenceValid ? 1 : 0, d.embeddingValid ? 1 : 0,
+    d.orientationValid ? 1 : 0, d.cellsDiskValid ? 1 : 0,
+    d.boundaryLoopsValid ? 1 : 0,
+    d.eulerCharacteristicValid ? 1 : 0,
+    d.topologyValid ? 1 : 0, d.peakSegmentsPerFace}};
+for (const std::int64_t value : diagnosticsIdentity) {
+  append_rollback_word(identity, value);
+}
   append_rollback_double(identity, d.supportedArea);
   append_rollback_double(identity, d.extractedArea);
   append_rollback_double(identity, d.relativeAreaError);
