@@ -234,6 +234,18 @@ struct SurfaceArrangementCell {
   bool boundaryCycle = false;
   bool closed = false;
   bool disk = false;
+  // A cut-cell disk has a complete face-boundary walk whose bridge tree joins
+  // two or more simple boundary cores. The bridge is traversed once on each
+  // side but is never decomposed after successor construction.
+  bool cutCellDisk = false;
+  // A bridge excursion is a dangling bridge tree attached to fewer than two
+  // simple boundary cores. It remains an explicit non-disk repair candidate
+  // and is never decomposed after successor construction.
+  bool bridgeExcursion = false;
+  // A support-only cycle has no non-bridge boundary core (for example an
+  // isolated open layout strand). It remains an explicit non-disk candidate
+  // so every directed halfedge has transactional cell ownership.
+  bool supportOnlyCycle = false;
   int boundaryComponentCount = 0;
   int eulerCharacteristic = 0;
   bool quadReady = false;

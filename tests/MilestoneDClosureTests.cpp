@@ -359,6 +359,12 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return !cell.boundaryCycle; }),
             2);
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
   EXPECT_NEAR(complex.diagnostics.extractedArea,
               complex.diagnostics.supportedArea, 1.0e-10);
 }
@@ -535,6 +541,15 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
+  EXPECT_TRUE(std::none_of(
+      complex.cells.begin(), complex.cells.end(),
+      [](const auto &cell) { return cell.supportOnlyCycle; }));
   ASSERT_TRUE(complex.diagnostics.embeddingValid);
   ASSERT_TRUE(complex.diagnostics.orientationValid);
   ASSERT_TRUE(complex.diagnostics.cellsDiskValid);

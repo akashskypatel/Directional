@@ -165,6 +165,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(cell.closed ? 1 : 0);
     mix(cell.boundaryCycle ? 1 : 0);
     mix(cell.disk ? 1 : 0);
+    mix(cell.cutCellDisk ? 1 : 0);
+    mix(cell.bridgeExcursion ? 1 : 0);
+    mix(cell.supportOnlyCycle ? 1 : 0);
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
     mix(cell.quadReady ? 1 : 0);
@@ -408,7 +411,13 @@ SurfaceCellIncidenceAudit audit_complex_incidence(
       audit.failure = SurfaceCellIncidenceFailureKind::CellNotClosed;
       return audit;
     }
-    if (cell.halfedges.size() < 3U) {
+    const bool validSupportOnlyCycle =
+        cell.supportOnlyCycle && cell.halfedges.size() == 2U &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[0])].twin ==
+            cell.halfedges[1] &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[1])].twin ==
+            cell.halfedges[0];
+    if (cell.halfedges.size() < 3U && !validSupportOnlyCycle) {
       audit.failure = SurfaceCellIncidenceFailureKind::CellTooSmall;
       audit.actual = static_cast<int>(cell.halfedges.size());
       return audit;
@@ -708,7 +717,9 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
   const int interiorCells = static_cast<int>(std::count_if(
       complex.cells.begin(), complex.cells.end(),
-      [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
+      [](const SurfaceArrangementCell &cell) {
+        return !cell.boundaryCycle && !cell.supportOnlyCycle;
+      }));
   complex.diagnostics.eulerCharacteristic =
       static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
 
@@ -740,8 +751,9 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
     if (!cell.boundaryCycle && !cell.disk) {
       cellsDiskValid = false;
     }
-    if (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
-                           : !(cell.signedArea > 1.0e-14)) {
+    if (!cell.supportOnlyCycle &&
+        (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
+                            : !(cell.signedArea > 1.0e-14))) {
       if (cell.rejectReason != SurfaceArrangementRejectReason::Sliver) {
         orientationValid = false;
       }
@@ -785,7 +797,7 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
       complex.diagnostics.boundaryLoopsValid;
   complex.diagnostics.extractedArea = 0.0;
   for (const SurfaceArrangementCell &cell : complex.cells) {
-    if (!cell.boundaryCycle) {
+    if (!cell.boundaryCycle && !cell.supportOnlyCycle) {
       complex.diagnostics.extractedArea += cell.area;
     }
   }
@@ -1112,6 +1124,9 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       uniqueNodes.insert(
           rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)].from);
     }
+    rebuiltCell.cutCellDisk = false;
+    rebuiltCell.bridgeExcursion = false;
+    rebuiltCell.supportOnlyCycle = false;
     rebuiltCell.closed = rebuiltCell.halfedges.size() >= 3U;
     rebuiltCell.boundaryComponentCount = rebuiltCell.closed ? 1 : 0;
     rebuiltCell.eulerCharacteristic =

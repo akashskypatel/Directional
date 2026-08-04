@@ -164,7 +164,9 @@ std::vector<std::uint64_t> exact_rollback_identity(
     append_rollback_double(identity, cell.area);
     for (const std::int64_t value :
          {cell.boundaryCycle ? 1 : 0, cell.closed ? 1 : 0,
-          cell.disk ? 1 : 0, cell.boundaryComponentCount,
+          cell.disk ? 1 : 0, cell.cutCellDisk ? 1 : 0,
+          cell.bridgeExcursion ? 1 : 0,
+          cell.supportOnlyCycle ? 1 : 0, cell.boundaryComponentCount,
           cell.eulerCharacteristic, cell.quadReady ? 1 : 0,
           static_cast<int>(cell.cellClass),
           static_cast<int>(cell.rejectReason)}) {

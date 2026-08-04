@@ -1065,6 +1065,71 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     DanglingBridgeRetainsCompleteCellOwnershipWithoutCycleDecomposition) {
+  const auto fixture = unit_triangle();
+  auto dangling = make_arc(500, {0.50, 0.50, 0.00},
+                           {0.40, 0.30, 0.30}, 0);
+  dangling.layoutSupport = true;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {dangling});
+
+  EXPECT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
+  EXPECT_TRUE(std::any_of(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return !cell.boundaryCycle && cell.bridgeExcursion && !cell.disk &&
+               cell.cellClass ==
+                   directional::geometry::SurfaceArrangementCellClass::NonDisk;
+      }));
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+}
+
+TEST(SurfaceArrangementPhase16,
+     IsolatedSupportBridgeReceivesTransactionalCellOwnership) {
+  const auto fixture = unit_triangle();
+  auto isolated = make_arc(501, {0.80, 0.10, 0.10},
+                           {0.60, 0.30, 0.10}, 0);
+  isolated.layoutSupport = true;
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {isolated});
+
+  EXPECT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  const auto support = std::find_if(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return cell.supportOnlyCycle;
+      });
+  ASSERT_NE(support, complex.cells.end());
+  EXPECT_FALSE(support->disk);
+  EXPECT_FALSE(support->boundaryCycle);
+  ASSERT_EQ(support->halfedges.size(), 2U);
+  EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(support->halfedges[0])]
+                .twin,
+            support->halfedges[1]);
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
+  EXPECT_TRUE(std::any_of(complex.cells.begin(), complex.cells.end(),
+                          [](const auto &cell) {
+                            return cell.boundaryCycle;
+                          }));
+}
+
+TEST(SurfaceArrangementPhase16,
      DirectedWedgeIncidenceFormsACompletePermutation) {
   const auto fixture = unit_square_two_triangles();
   const auto complex = directional::geometry::build_surface_cell_complex(

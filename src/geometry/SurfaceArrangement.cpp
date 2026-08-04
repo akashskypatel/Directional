@@ -1,6 +1,8 @@
 #include <directional/geometry/SurfaceArrangement.h>
 #include <directional/geometry/SourceChartTransitions.h>
 
+#include <functional>
+
 namespace directional::geometry::surface_arrangement_detail {
 
 template <typename T>
@@ -2867,7 +2869,371 @@ SurfaceCellComplex build_surface_cell_complex(
   }
   complex.diagnostics.directedIncidenceHash = directedIncidenceHash;
 
-  std::vector<std::vector<int>> auditedCycles;
+  struct AuditedCycle {
+    std::vector<int> halfedges;
+    std::vector<std::vector<int>> coreCycles;
+    bool cutCellDisk = false;
+    bool bridgeExcursion = false;
+    bool supportOnlyCycle = false;
+  };
+
+  const auto analyze_cycle =
+      [&](const std::vector<int> &cycle, AuditedCycle &audited,
+          SurfaceArrangementIncidenceFailure &failure, int &failureNode,
+          int &failureHalfedge, int &failureTwin, int &failureNext) {
+        audited = {};
+        audited.halfedges = cycle;
+        failure = SurfaceArrangementIncidenceFailure::None;
+        failureNode = failureHalfedge = failureTwin = failureNext = -1;
+        if (cycle.size() < 2U) {
+          failure = SurfaceArrangementIncidenceFailure::ShortCycle;
+          failureHalfedge = cycle.empty() ? -1 : cycle.front();
+          return false;
+        }
+
+        using UndirectedEdge = std::pair<int, int>;
+        std::map<UndirectedEdge, std::vector<int>> occurrences;
+        std::map<int, std::vector<std::pair<int, UndirectedEdge>>> adjacency;
+        const auto fail_from_halfedge =
+            [&](const SurfaceArrangementIncidenceFailure kind,
+                const int halfedgeId) {
+              failure = kind;
+              failureHalfedge = halfedgeId;
+              if (halfedgeId < 0 ||
+                  halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+                return;
+              }
+              const SurfaceArrangementHalfedge &edge =
+                  complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+              failureNode = edge.from;
+              failureTwin = edge.twin;
+              failureNext = edge.next;
+            };
+        for (const int halfedgeId : cycle) {
+          if (halfedgeId < 0 ||
+              halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::MissingSuccessor,
+                halfedgeId);
+            return false;
+          }
+          const SurfaceArrangementHalfedge &edge =
+              complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+          if (edge.from < 0 || edge.to < 0 ||
+              edge.from >= static_cast<int>(complex.nodes.size()) ||
+              edge.to >= static_cast<int>(complex.nodes.size()) ||
+              edge.from == edge.to) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::EndpointDiscontinuity,
+                halfedgeId);
+            return false;
+          }
+          const UndirectedEdge key{std::min(edge.from, edge.to),
+                                   std::max(edge.from, edge.to)};
+          occurrences[key].push_back(edge.id);
+        }
+        for (const auto &[key, ids] : occurrences) {
+          (void)ids;
+          adjacency[key.first].push_back({key.second, key});
+          adjacency[key.second].push_back({key.first, key});
+        }
+        for (auto &[node, incident] : adjacency) {
+          (void)node;
+          std::sort(incident.begin(), incident.end());
+        }
+
+        // Tarjan bridge classification is linear in the cycle graph. A bridge
+        // in a face boundary must appear exactly as its two directed twins.
+        std::map<int, int> discovery;
+        std::map<int, int> low;
+        std::set<UndirectedEdge> bridgeEdges;
+        int discoveryClock = 0;
+        const UndirectedEdge noParent{-1, -1};
+        std::function<void(int, const UndirectedEdge &)> visit =
+            [&](const int node, const UndirectedEdge &parentEdge) {
+              discovery[node] = low[node] = ++discoveryClock;
+              const auto found = adjacency.find(node);
+              if (found == adjacency.end()) {
+                return;
+              }
+              for (const auto &[neighbor, edgeKey] : found->second) {
+                if (edgeKey == parentEdge) {
+                  continue;
+                }
+                if (discovery.count(neighbor) == 0U) {
+                  visit(neighbor, edgeKey);
+                  low[node] = std::min(low[node], low[neighbor]);
+                  if (low[neighbor] > discovery[node]) {
+                    bridgeEdges.insert(edgeKey);
+                  }
+                } else {
+                  low[node] = std::min(low[node], discovery[neighbor]);
+                }
+              }
+            };
+        for (const auto &[node, incident] : adjacency) {
+          (void)incident;
+          if (discovery.count(node) == 0U) {
+            visit(node, noParent);
+          }
+        }
+
+        std::map<UndirectedEdge, int> coreHalfedge;
+        std::map<int, std::set<int>> coreAdjacency;
+        std::map<int, std::set<int>> bridgeAdjacency;
+        for (const auto &[key, ids] : occurrences) {
+          const bool isBridge = bridgeEdges.count(key) != 0U;
+          if (isBridge) {
+            if (ids.size() != 2U) {
+              fail_from_halfedge(
+                  SurfaceArrangementIncidenceFailure::IncompletePermutation,
+                  ids.empty() ? -1 : ids.front());
+              return false;
+            }
+            const SurfaceArrangementHalfedge &first =
+                complex.halfedges[static_cast<std::size_t>(ids[0])];
+            const SurfaceArrangementHalfedge &second =
+                complex.halfedges[static_cast<std::size_t>(ids[1])];
+            if (first.twin != second.id || second.twin != first.id) {
+              fail_from_halfedge(
+                  SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle,
+                  first.id);
+              return false;
+            }
+            bridgeAdjacency[key.first].insert(key.second);
+            bridgeAdjacency[key.second].insert(key.first);
+            continue;
+          }
+          if (ids.size() != 1U) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle,
+                ids.empty() ? -1 : ids.front());
+            return false;
+          }
+          coreHalfedge.emplace(key, ids.front());
+          coreAdjacency[key.first].insert(key.second);
+          coreAdjacency[key.second].insert(key.first);
+        }
+
+        // Every non-bridge component must be one directed simple cycle. This
+        // rejects figure-eights and theta graphs without rejecting bridge
+        // excursions that a valid planar/surface face walk traverses twice.
+        std::map<int, int> coreComponentByNode;
+        std::set<int> visitedCore;
+        for (const auto &[seed, seedNeighbors] : coreAdjacency) {
+          (void)seedNeighbors;
+          if (visitedCore.count(seed) != 0U) {
+            continue;
+          }
+          std::set<int> componentNodes;
+          std::set<UndirectedEdge> componentEdges;
+          std::vector<int> pending{seed};
+          visitedCore.insert(seed);
+          while (!pending.empty()) {
+            const int node = pending.back();
+            pending.pop_back();
+            componentNodes.insert(node);
+            const auto found = coreAdjacency.find(node);
+            if (found == coreAdjacency.end() || found->second.size() != 2U) {
+              const auto edge = found == coreAdjacency.end() ||
+                                        found->second.empty()
+                                    ? UndirectedEdge{node, node}
+                                    : UndirectedEdge{
+                                          std::min(node, *found->second.begin()),
+                                          std::max(node, *found->second.begin())};
+              const auto occurrence = coreHalfedge.find(edge);
+              fail_from_halfedge(
+                  SurfaceArrangementIncidenceFailure::RepeatedNodeCycle,
+                  occurrence == coreHalfedge.end() ? -1
+                                                   : occurrence->second);
+              failureNode = node;
+              return false;
+            }
+            for (const int neighbor : found->second) {
+              const UndirectedEdge edge{std::min(node, neighbor),
+                                        std::max(node, neighbor)};
+              componentEdges.insert(edge);
+              if (visitedCore.insert(neighbor).second) {
+                pending.push_back(neighbor);
+              }
+            }
+          }
+          if (componentEdges.size() < 3U ||
+              componentEdges.size() != componentNodes.size()) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::ShortCycle,
+                componentEdges.empty()
+                    ? -1
+                    : coreHalfedge.at(*componentEdges.begin()));
+            return false;
+          }
+
+          std::map<int, int> outgoingCore;
+          std::map<int, int> incomingUse;
+          for (const UndirectedEdge &key : componentEdges) {
+            const int halfedgeId = coreHalfedge.at(key);
+            const SurfaceArrangementHalfedge &edge =
+                complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+            if (componentNodes.count(edge.from) == 0U ||
+                componentNodes.count(edge.to) == 0U ||
+                !outgoingCore.emplace(edge.from, edge.id).second) {
+              fail_from_halfedge(
+                  SurfaceArrangementIncidenceFailure::RepeatedNodeCycle,
+                  edge.id);
+              return false;
+            }
+            ++incomingUse[edge.to];
+          }
+          if (outgoingCore.size() != componentNodes.size() ||
+              std::any_of(incomingUse.begin(), incomingUse.end(),
+                          [](const auto &entry) {
+                            return entry.second != 1;
+                          })) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::EndpointDiscontinuity,
+                coreHalfedge.at(*componentEdges.begin()));
+            return false;
+          }
+
+          const auto startEdge = std::min_element(
+              componentEdges.begin(), componentEdges.end(),
+              [&](const UndirectedEdge &lhs, const UndirectedEdge &rhs) {
+                return coreHalfedge.at(lhs) < coreHalfedge.at(rhs);
+              });
+          if (startEdge == componentEdges.end()) {
+            failure = SurfaceArrangementIncidenceFailure::ShortCycle;
+            return false;
+          }
+          const int startHalfedge = coreHalfedge.at(*startEdge);
+          std::vector<int> ordered;
+          std::set<int> used;
+          int current = startHalfedge;
+          for (std::size_t guard = 0; guard <= componentEdges.size(); ++guard) {
+            if (!used.insert(current).second) {
+              break;
+            }
+            ordered.push_back(current);
+            const SurfaceArrangementHalfedge &edge =
+                complex.halfedges[static_cast<std::size_t>(current)];
+            const auto next = outgoingCore.find(edge.to);
+            if (next == outgoingCore.end()) {
+              fail_from_halfedge(
+                  SurfaceArrangementIncidenceFailure::EndpointDiscontinuity,
+                  current);
+              return false;
+            }
+            current = next->second;
+          }
+          if (current != startHalfedge || used.size() != componentEdges.size()) {
+            fail_from_halfedge(
+                SurfaceArrangementIncidenceFailure::IncompletePermutation,
+                ordered.empty() ? -1 : ordered.back());
+            return false;
+          }
+          const int component =
+              static_cast<int>(audited.coreCycles.size());
+          for (const int node : componentNodes) {
+            coreComponentByNode.emplace(node, component);
+          }
+          audited.coreCycles.push_back(std::move(ordered));
+        }
+
+        audited.supportOnlyCycle = audited.coreCycles.empty();
+        if (bridgeEdges.empty()) {
+          if (audited.coreCycles.size() != 1U) {
+            failure = SurfaceArrangementIncidenceFailure::IncompletePermutation;
+            return false;
+          }
+          return true;
+        }
+        if (audited.supportOnlyCycle) {
+          return true;
+        }
+
+        std::vector<int> coreParent(audited.coreCycles.size());
+        std::iota(coreParent.begin(), coreParent.end(), 0);
+        const auto find_core = [&](int index) {
+          int root = index;
+          while (coreParent[static_cast<std::size_t>(root)] != root) {
+            root = coreParent[static_cast<std::size_t>(root)];
+          }
+          while (coreParent[static_cast<std::size_t>(index)] != index) {
+            const int next = coreParent[static_cast<std::size_t>(index)];
+            coreParent[static_cast<std::size_t>(index)] = root;
+            index = next;
+          }
+          return root;
+        };
+        const auto unite_core = [&](const int lhs, const int rhs) {
+          const int a = find_core(lhs);
+          const int b = find_core(rhs);
+          if (a != b) {
+            coreParent[static_cast<std::size_t>(std::max(a, b))] =
+                std::min(a, b);
+          }
+        };
+
+        bool danglingBridge = false;
+        std::set<int> visitedBridge;
+        for (const auto &[seed, seedNeighbors] : bridgeAdjacency) {
+          (void)seedNeighbors;
+          if (visitedBridge.count(seed) != 0U) {
+            continue;
+          }
+          std::set<int> attachedCoreComponents;
+          std::vector<int> pending{seed};
+          visitedBridge.insert(seed);
+          while (!pending.empty()) {
+            const int node = pending.back();
+            pending.pop_back();
+            const auto core = coreComponentByNode.find(node);
+            if (core != coreComponentByNode.end()) {
+              attachedCoreComponents.insert(core->second);
+            }
+            const auto found = bridgeAdjacency.find(node);
+            if (found == bridgeAdjacency.end()) {
+              continue;
+            }
+            if (found->second.size() == 1U &&
+                coreComponentByNode.count(node) == 0U) {
+              danglingBridge = true;
+            }
+            for (const int neighbor : found->second) {
+              if (visitedBridge.insert(neighbor).second) {
+                pending.push_back(neighbor);
+              }
+            }
+          }
+          if (attachedCoreComponents.size() < 2U) {
+            danglingBridge = true;
+          } else {
+            const int representative = *attachedCoreComponents.begin();
+            for (const int component : attachedCoreComponents) {
+              unite_core(representative, component);
+            }
+          }
+        }
+        if (danglingBridge) {
+          audited.bridgeExcursion = true;
+          return true;
+        }
+        const int root = find_core(0);
+        for (int component = 1;
+             component < static_cast<int>(audited.coreCycles.size());
+             ++component) {
+          if (find_core(component) != root) {
+            failure = SurfaceArrangementIncidenceFailure::IncompletePermutation;
+            return false;
+          }
+        }
+        audited.cutCellDisk = audited.coreCycles.size() >= 2U;
+        if (!audited.cutCellDisk) {
+          audited.bridgeExcursion = true;
+        }
+        return true;
+      };
+
+  std::vector<AuditedCycle> auditedCycles;
   if (directedIncidenceValid) {
     std::vector<unsigned char> visited(complex.halfedges.size(), 0U);
     for (int start = 0; start < static_cast<int>(complex.halfedges.size());
@@ -2877,10 +3243,7 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       std::vector<int> cycle;
       std::set<int> localHalfedges;
-      std::set<int> localNodes;
-      std::set<std::pair<int, int>> localEdges;
       int current = start;
-      bool closed = false;
       for (int guard = 0;
            guard <= static_cast<int>(complex.halfedges.size()); ++guard) {
         if (current < 0 ||
@@ -2891,64 +3254,61 @@ SurfaceCellComplex build_surface_cell_complex(
           break;
         }
         if (!localHalfedges.insert(current).second) {
-          closed = current == start;
-          if (!closed) {
+          if (current != start) {
+            const SurfaceArrangementHalfedge &edge =
+                complex.halfedges[static_cast<std::size_t>(current)];
             record_incidence_failure(
                 SurfaceArrangementIncidenceFailure::RepeatedHalfedgeCycle,
-                complex.halfedges[static_cast<std::size_t>(current)].from,
-                current,
-                complex.halfedges[static_cast<std::size_t>(current)].twin,
-                complex.halfedges[static_cast<std::size_t>(current)].next);
+                edge.from, edge.id, edge.twin, edge.next);
           }
           break;
         }
-        const SurfaceArrangementHalfedge &edge =
-            complex.halfedges[static_cast<std::size_t>(current)];
-        if (!localNodes.insert(edge.from).second) {
-          ++complex.diagnostics.repeatedNodeCycleCount;
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::RepeatedNodeCycle,
-              edge.from, edge.id, edge.twin, edge.next);
-          break;
-        }
-        const std::pair<int, int> undirected{
-            std::min(edge.from, edge.to), std::max(edge.from, edge.to)};
-        if (!localEdges.insert(undirected).second) {
-          ++complex.diagnostics.repeatedEdgeCycleCount;
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle,
-              edge.from, edge.id, edge.twin, edge.next);
-          break;
-        }
         cycle.push_back(current);
-        current = edge.next;
+        current =
+            complex.halfedges[static_cast<std::size_t>(current)].next;
       }
       if (!directedIncidenceValid) {
         break;
       }
-      if (!closed || cycle.size() < 3U) {
+      if (current != start) {
         record_incidence_failure(
-            cycle.size() < 3U ? SurfaceArrangementIncidenceFailure::ShortCycle
-                              : SurfaceArrangementIncidenceFailure::IncompletePermutation,
+            SurfaceArrangementIncidenceFailure::IncompletePermutation,
             cycle.empty()
                 ? -1
-                : complex.halfedges[static_cast<std::size_t>(cycle.front())]
-                      .from,
-            cycle.empty() ? start : cycle.front(),
-            cycle.empty()
-                ? -1
-                : complex.halfedges[static_cast<std::size_t>(cycle.front())]
-                      .twin,
+                : complex.halfedges[static_cast<std::size_t>(cycle.back())].to,
+            cycle.empty() ? start : cycle.back(),
             cycle.empty()
                 ? -1
                 : complex.halfedges[static_cast<std::size_t>(cycle.back())]
-                      .next);
+                      .twin,
+            current);
+        break;
+      }
+
+      AuditedCycle audited;
+      SurfaceArrangementIncidenceFailure cycleFailure =
+          SurfaceArrangementIncidenceFailure::None;
+      int failureNode = -1;
+      int failureHalfedge = -1;
+      int failureTwin = -1;
+      int failureNext = -1;
+      if (!analyze_cycle(cycle, audited, cycleFailure, failureNode,
+                         failureHalfedge, failureTwin, failureNext)) {
+        if (cycleFailure ==
+            SurfaceArrangementIncidenceFailure::RepeatedNodeCycle) {
+          ++complex.diagnostics.repeatedNodeCycleCount;
+        } else if (cycleFailure ==
+                   SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle) {
+          ++complex.diagnostics.repeatedEdgeCycleCount;
+        }
+        record_incidence_failure(cycleFailure, failureNode, failureHalfedge,
+                                 failureTwin, failureNext);
         break;
       }
       for (const int halfedgeId : cycle) {
         visited[static_cast<std::size_t>(halfedgeId)] = 1U;
       }
-      auditedCycles.push_back(std::move(cycle));
+      auditedCycles.push_back(std::move(audited));
     }
     if (directedIncidenceValid &&
         std::any_of(visited.begin(), visited.end(),
@@ -2963,11 +3323,14 @@ SurfaceCellComplex build_surface_cell_complex(
   if (!directedIncidenceValid) {
     auditedCycles.clear();
   }
-  for (const std::vector<int> &cycle : auditedCycles) {
+  for (const AuditedCycle &audited : auditedCycles) {
     SurfaceArrangementCell cell;
     cell.id = -1;
-    cell.halfedges = cycle;
+    cell.halfedges = audited.halfedges;
     cell.closed = true;
+    cell.cutCellDisk = audited.cutCellDisk;
+    cell.bridgeExcursion = audited.bridgeExcursion;
+    cell.supportOnlyCycle = audited.supportOnlyCycle;
     for (const int halfedgeId : cell.halfedges) {
       const auto &halfedge =
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
@@ -2976,43 +3339,81 @@ SurfaceCellComplex build_surface_cell_complex(
       }
     }
     std::set<int> uniqueNodes;
+    std::set<std::pair<int, int>> uniqueUndirectedEdges;
     for (const int halfedge : cell.halfedges) {
-      uniqueNodes.insert(
-          complex.halfedges[static_cast<std::size_t>(halfedge)].from);
+      const SurfaceArrangementHalfedge &edge =
+          complex.halfedges[static_cast<std::size_t>(halfedge)];
+      uniqueNodes.insert(edge.from);
+      uniqueUndirectedEdges.insert(
+          {std::min(edge.from, edge.to), std::max(edge.from, edge.to)});
     }
     cell.boundaryComponentCount = 1;
-    cell.eulerCharacteristic =
-        static_cast<int>(uniqueNodes.size()) -
-        static_cast<int>(cell.halfedges.size()) + 1;
-    cell.disk = uniqueNodes.size() == cell.halfedges.size() &&
-                cell.eulerCharacteristic == 1;
+    const bool simpleCycle =
+        !cell.cutCellDisk && !cell.bridgeExcursion &&
+        !cell.supportOnlyCycle &&
+        uniqueNodes.size() == cell.halfedges.size() &&
+        uniqueUndirectedEdges.size() == cell.halfedges.size();
+    cell.disk = simpleCycle || cell.cutCellDisk;
+    cell.eulerCharacteristic = cell.disk ? 1 : 0;
+
     const int boundaryVote = boundary_orientation_vote(
         cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
+    // Source-boundary incidence is authoritative. Interior hard rails and a
+    // negative geometric projection never manufacture an exterior cycle.
     cell.boundaryCycle = cell.closed && boundaryVote < 0;
-    if (!polygon_geometry(vertices, faces, cell.halfedges, complex.halfedges,
-                          complex.nodes, cell.signedArea, cell.area,
-                          cell.sourceFaces)) {
-      collect_cell_source_faces(cell.halfedges, complex.halfedges,
-                                cell.sourceFaces);
+
+    std::vector<int> supportSourceFaces;
+    collect_cell_source_faces(cell.halfedges, complex.halfedges,
+                              supportSourceFaces);
+    std::sort(supportSourceFaces.begin(), supportSourceFaces.end());
+    supportSourceFaces.erase(
+        std::unique(supportSourceFaces.begin(), supportSourceFaces.end()),
+        supportSourceFaces.end());
+    std::vector<int> geometrySourceFaces;
+    const bool geometryAvailable =
+        !cell.supportOnlyCycle &&
+        polygon_geometry(vertices, faces, cell.halfedges, complex.halfedges,
+                         complex.nodes, cell.signedArea, cell.area,
+                         geometrySourceFaces);
+    std::sort(geometrySourceFaces.begin(), geometrySourceFaces.end());
+    geometrySourceFaces.erase(
+        std::unique(geometrySourceFaces.begin(), geometrySourceFaces.end()),
+        geometrySourceFaces.end());
+    std::set_union(geometrySourceFaces.begin(), geometrySourceFaces.end(),
+                   supportSourceFaces.begin(), supportSourceFaces.end(),
+                   std::back_inserter(cell.sourceFaces));
+    if (!geometryAvailable) {
       if (cell.boundaryCycle) {
-        // An exterior cycle can wrap a curved open surface and therefore need
-        // not admit one non-degenerate global tangent-plane projection. It is
-        // excluded from extracted-area accounting; retain only its topological
-        // orientation contract here.
         cell.signedArea = -1.0;
+        cell.area = 0.0;
+      } else if (cell.cutCellDisk) {
+        // A curved periodic cut cell need not admit one global tangent-plane
+        // polygon. Its exact source-face support supplies the embedded surface
+        // area only after the full directed cycle has passed the R2 audit.
+        cell.area = 0.0;
+        for (const int sourceFace : cell.sourceFaces) {
+          cell.area += triangle_area_3d(vertices, faces, sourceFace);
+        }
+        cell.signedArea = cell.area;
+        if (!(cell.area > 1.0e-20) || !std::isfinite(cell.area)) {
+          embeddingValid = false;
+          cell.area = 0.0;
+          cell.signedArea = 0.0;
+        }
+      } else if (cell.bridgeExcursion || cell.supportOnlyCycle) {
+        cell.signedArea = 0.0;
         cell.area = 0.0;
       } else {
         embeddingValid = false;
         cell.signedArea = 0.0;
         cell.area = 0.0;
       }
-    } else if (boundaryVote != 0) {
-      cell.signedArea = boundaryVote < 0 ? -std::abs(cell.area)
-                                         : std::abs(cell.area);
-      cell.boundaryCycle = boundaryVote < 0;
+    } else if (cell.boundaryCycle) {
+      cell.signedArea = -std::abs(cell.area);
     } else {
-      cell.boundaryCycle = cell.closed && cell.signedArea < 0.0;
+      cell.signedArea = std::abs(cell.area);
     }
+
     for (int index = 0; index < static_cast<int>(cell.halfedges.size()); ++index) {
       const auto &current =
           complex.halfedges[static_cast<std::size_t>(cell.halfedges[index])];
@@ -3124,7 +3525,10 @@ SurfaceCellComplex build_surface_cell_complex(
     std::sort(sourceFaces.begin(), sourceFaces.end());
     sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
                       sourceFaces.end());
-    return std::make_tuple(cell.boundaryCycle ? 1 : 0, sourceFaces, edges,
+    return std::make_tuple(cell.boundaryCycle ? 1 : 0,
+                           cell.cutCellDisk ? 1 : 0,
+                           cell.supportOnlyCycle ? 1 : 0,
+                           cell.bridgeExcursion ? 1 : 0, sourceFaces, edges,
                            cell.halfedges.size());
   };
   std::sort(pendingCells.begin(), pendingCells.end(),
@@ -3137,9 +3541,34 @@ SurfaceCellComplex build_surface_cell_complex(
   for (SurfaceArrangementCell &cell : pendingCells) {
     cell.id = static_cast<int>(complex.cells.size());
     for (const int halfedgeId : cell.halfedges) {
-      complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell = cell.id;
+      SurfaceArrangementHalfedge &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      if (halfedge.cell >= 0) {
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::DuplicatePredecessor,
+            halfedge.from, halfedge.id, halfedge.twin, halfedge.next);
+        break;
+      }
+      halfedge.cell = cell.id;
     }
     complex.cells.push_back(std::move(cell));
+  }
+  if (directedIncidenceValid) {
+    for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+      if (halfedge.cell < 0 ||
+          halfedge.cell >= static_cast<int>(complex.cells.size())) {
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::IncompletePermutation,
+            halfedge.from, halfedge.id, halfedge.twin, halfedge.next);
+        break;
+      }
+    }
+  }
+  if (!directedIncidenceValid) {
+    complex.cells.clear();
+    for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+      halfedge.cell = -1;
+    }
   }
 
   // Build intrinsic equivalence classes for per-face local source charts.
@@ -3758,7 +4187,7 @@ SurfaceCellComplex build_surface_cell_complex(
     complex.diagnostics.supportedArea += triangle_area_3d(vertices, faces, face);
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
-    if (!cell.boundaryCycle) {
+    if (!cell.boundaryCycle && !cell.supportOnlyCycle) {
       complex.diagnostics.extractedArea += cell.area;
     }
   }
@@ -3769,7 +4198,9 @@ SurfaceCellComplex build_surface_cell_complex(
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
   const int interiorCells = static_cast<int>(std::count_if(
       complex.cells.begin(), complex.cells.end(),
-      [](const SurfaceArrangementCell &cell) { return !cell.boundaryCycle; }));
+      [](const SurfaceArrangementCell &cell) {
+        return !cell.boundaryCycle && !cell.supportOnlyCycle;
+      }));
   complex.diagnostics.eulerCharacteristic =
       static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
 
@@ -3817,11 +4248,15 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
-    if (!cell.closed || cell.halfedges.size() < 3U) {
+    const bool validSupportOnlyCycle =
+        cell.supportOnlyCycle && cell.halfedges.size() >= 2U;
+    if (!cell.closed ||
+        (cell.halfedges.size() < 3U && !validSupportOnlyCycle)) {
       incidenceValid = false;
     }
-    if (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
-                           : !(cell.signedArea > 1.0e-14)) {
+    if (!cell.supportOnlyCycle &&
+        (cell.boundaryCycle ? !(cell.signedArea < -1.0e-14)
+                            : !(cell.signedArea > 1.0e-14))) {
       if (cell.rejectReason != SurfaceArrangementRejectReason::Sliver) {
         orientationValid = false;
       }
@@ -4057,7 +4492,10 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     }
     mix(cell.closed ? 1 : 0);
     mix(cell.disk ? 1 : 0);
+    mix(cell.cutCellDisk ? 1 : 0);
     mix(cell.boundaryCycle ? 1 : 0);
+    mix(cell.bridgeExcursion ? 1 : 0);
+    mix(cell.supportOnlyCycle ? 1 : 0);
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
     for (const int sourceFace : cell.sourceFaces) {
