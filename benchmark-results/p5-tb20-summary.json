@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "turn": "P5-TB20",
+  "date": "2026-08-03",
+  "artifact": {
+    "id": 8879272440,
+    "name": "surface-cell-p5-cb125-github-source-linux-release",
+    "sha256": "bb9aca3881727093411f7f1012dbae9a65e1d62805a4c5a4900af58bd8f7fc76",
+    "source_commit": "bc8ed616adfe59d4a3e0d5dca8ef7503d3c00e83",
+    "implementation_commit": "a8f8971766f55cf11828a1ae90daad3b98b50664",
+    "source_status_bytes": 0,
+    "checksums": "40/40",
+    "fixtures": 26,
+    "recursive_submodules": 9
+  },
+  "tests": {
+    "focused": {"passed": 2, "failed": 6, "total": 8},
+    "phase14_18": {"passed": 234, "failed": 1, "total": 235},
+    "phase16": {"passed": 39, "failed": 0, "total": 39},
+    "phase17": {"passed": 26, "failed": 0, "total": 26},
+    "milestone_d": {"passed": 6, "failed": 1, "total": 7},
+    "milestone_e": {"passed": 21, "failed": 5, "total": 26},
+    "gp23_gp24": {"passed": 10, "failed": 4, "total": 14},
+    "phase20": {"passed": 46, "failed": 2, "total": 48},
+    "full": {
+      "passed": 581,
+      "failed": 18,
+      "total": 599,
+      "wall_seconds": 103.05,
+      "max_rss_bytes": 529739776
+    }
+  },
+  "production": {
+    "plane": {"success": false, "completed_quads": 12, "failure": "LocalSheetMismatch", "cell": 4, "face": 7},
+    "cylinder": {"success": false, "completed_quads": 0, "failure": "InvalidCompletionQuadEmbedding;localQuad=1"},
+    "multi_face_seam": {"success": false, "completed_quads": 24, "failure": "LocalSheetMismatch", "cell": 2, "face": 15},
+    "close_sheets": {"success": false, "completed_quads": 34, "failure": "LocalSheetMismatch", "cell": 3, "face": 13},
+    "mechanical_feature": {"success": false, "failure": "repeated-boundary-node", "cell": 2, "halfedge": 719, "node": 65, "source_face": 109},
+    "sphere_prescribed": {"success": false, "failure": "repeated-boundary-node", "cell": 2, "halfedge": 37, "node": 13, "source_face": 7},
+    "torus": {"success": false, "failure": "IncompleteSurfaceCellComplex"},
+    "thin_bent_tube": {"success": false, "failure": "InvalidCompletionQuadEmbedding;localQuad=0"}
+  },
+  "bunny": {
+    "face_edge": {
+      "runs": 4,
+      "unique_failed_result_signatures": 1,
+      "signature": "f2663c72dda805ffecf5415591180fecf14999a2d969a6e5b5411c3d6e5cdd1f",
+      "wall_seconds_range": [19.124283, 22.820833],
+      "peak_working_set_bytes_range": [141352960, 141701120],
+      "owned_bytes": 38216984,
+      "owned_ratio_range": [0.2697013545, 0.2703656436],
+      "failure": "repeated-boundary-node",
+      "cell": 2,
+      "halfedge": 45,
+      "node": 20
+    },
+    "smooth": {
+      "runs": 2,
+      "unique_failed_result_signatures": 1,
+      "signature": "eee229585de5ea08384677920e3cd989578e9e0dd899abda753610f50bea5718",
+      "wall_seconds": [31.54488, 45.549332],
+      "peak_working_set_bytes": [450207744, 450301952],
+      "owned_bytes": 176144432,
+      "owned_ratio_range": [0.3911695946, 0.3912514486],
+      "failure": "InvalidCompletionQuadEmbedding;localQuad=0",
+      "four_run_determinism": "not_evaluated_second_run_exceeded_wall_limit"
+    }
+  },
+  "resource_limits": {
+    "wall_seconds": 39.228299,
+    "peak_working_set_bytes": 1115394560
+  },
+  "gates": {
+    "package_integrity": "pass",
+    "canonical_rollback": "pass",
+    "typed_cylinder_incidence": "pass_evidence_topology_fail",
+    "full_suite_clean": "fail_581_of_599",
+    "positive_reuse": "fail_0_0",
+    "valid_production_output": "fail_0_of_8",
+    "no_fallback_recovery": "pass",
+    "face_edge_resources": "pass",
+    "smooth_resource_repeat": "fail_wall_limit",
+    "memory_reconciliation_75_percent": "fail"
+  }
+}
