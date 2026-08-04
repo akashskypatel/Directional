@@ -1,0 +1,97 @@
+{
+  "schema": "directional.p5.tb22.summary.v1",
+  "date": "2026-08-04",
+  "artifact": {
+    "id": 8894034755,
+    "name": "surface-cell-p5-cb142-github-source-linux-release",
+    "sha256": "ff77004f8893b9f993165ba685794faca52f5611c9f1c47deb3f1dd5d930cb55",
+    "sourceCommit": "aa2917e280fabd2272911a39cd0ecc327cce1cf3",
+    "workflowEventCommit": "b7f8a9978764b77931ba6d299fdcbc65639235de",
+    "reviewedPatchSha256": "890dd621cf549f32c55d44f52b85050bfdfa5ce15df5f2bda2f8ba3e33c8ed70",
+    "sourceStatusBytes": 0,
+    "checksumsPassed": 40,
+    "checksumsTotal": 40,
+    "packageFiles": 42,
+    "fixtures": 26,
+    "recursiveSubmodules": 9
+  },
+  "tests": {
+    "focused": {"passed": 32, "total": 42, "failed": 10},
+    "phase14Through18": {"passed": 236, "total": 236, "failed": 0},
+    "phase16": {"passed": 39, "total": 39, "failed": 0},
+    "phase17": {"passed": 26, "total": 26, "failed": 0},
+    "milestoneD": {"passed": 6, "total": 7, "failed": 1},
+    "milestoneE": {"passed": 23, "total": 26, "failed": 3},
+    "gp23Gp24": {"passed": 10, "total": 14, "failed": 4},
+    "phase20": {"passed": 46, "total": 48, "failed": 2},
+    "fullSuite": {"passed": 585, "total": 600, "failed": 15, "terminated": true, "wallSeconds": 103.441}
+  },
+  "production": {
+    "passed": 0,
+    "total": 8,
+    "fallbackUsed": false,
+    "sourceGridRecoveryUsed": false,
+    "cases": {
+      "plane__surface_cells": {"success": false, "completedQuads": 12, "failure": "LocalSheetMismatch", "cell": 4, "sourceFace": 7},
+      "cylinder__surface_cells": {"success": false, "failure": "InvalidCompletionQuadEmbedding", "classification": "bow-tie-intersection", "patch": 10, "backend": "pattern", "variant": 51, "localQuad": 3},
+      "torus__surface_cells": {"success": false, "failure": "IncompleteSurfaceCellComplex", "descriptor": 22, "cell": 23, "reason": "side-count-unsupported", "reasonCode": 3, "attempted": 41, "failed": 2, "total": 43},
+      "thin_bent_tube__surface_cells": {"success": false, "failure": "InvalidCompletionQuadEmbedding", "classification": "degenerate-normal", "patch": 108, "backend": "bounded-combinatorial", "variant": 43, "localQuad": 0},
+      "close_sheets__surface_cells": {"success": false, "completedQuads": 34, "failure": "LocalSheetMismatch", "cell": 3, "sourceFace": 13},
+      "sphere_prescribed__surface_cells": {"success": false, "failure": "AlternativeRepairBudgetExhausted", "attempted": 68, "budget": 68},
+      "multi_face_seam__surface_cells": {"success": false, "completedQuads": 24, "failure": "LocalSheetMismatch", "cell": 2, "sourceFace": 15},
+      "mechanical_feature__surface_cells": {"success": false, "failure": "AlternativeRepairBudgetExhausted", "attempted": 104, "budget": 104}
+    }
+  },
+  "bunny": {
+    "faceEdge": {
+      "completedRuns": 4,
+      "uniqueSignatures": 1,
+      "allTerminated": true,
+      "successes": 0,
+      "wallSecondsRange": [20.727018, 22.865405],
+      "peakWorkingSetBytesRange": [165543936, 165769216],
+      "alternativeDisposition": "budget-exhausted",
+      "alternativeAttempted": 14,
+      "alternativeBudget": 14,
+      "alternativeSequenceHash": 12658256849805696865,
+      "failure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted"
+    },
+    "smooth": {
+      "completedRuns": 4,
+      "uniqueSignatures": 1,
+      "allTerminated": true,
+      "successes": 0,
+      "wallSecondsRange": [31.051747, 35.587764],
+      "peakWorkingSetBytesRange": [452571136, 452689920],
+      "wallLimitSeconds": 39.228299,
+      "peakLimitBytes": 1115394560,
+      "failure": "InvalidCompletionQuadEmbedding;patch=9181;backend=closed-form;variant=0;localQuad=0;classification=degenerate-normal"
+    }
+  },
+  "memory": {
+    "sameSampleFieldsPresent": true,
+    "sameSampleSequencePresent": true,
+    "availabilityReported": true,
+    "sameSampleCategorizedOwnedBytes": 0,
+    "sameSampleCoverageRatio": 0,
+    "gatePassed": false,
+    "finding": "availability is incorrectly true at a zero-owned post-release or uncategorized sample"
+  },
+  "gates": {
+    "packageIntegrity": "pass",
+    "boundedTermination": "pass",
+    "fullSuiteClean": "fail",
+    "productionOutput": "fail",
+    "repeatedNodeAlternativeCommit": "fail",
+    "cylinderTopology": "fail",
+    "localCompletionTemplates": "fail",
+    "parallelRouteAndReuse": "fail",
+    "sourceChartAgreement": "fail",
+    "pipelineLineage": "fail",
+    "torusCompletion": "fail",
+    "bunnyResourceLimits": "pass",
+    "bunnyValidOutput": "fail",
+    "sameSampleMemoryCoverage": "fail"
+  },
+  "nextTurn": "P5-CB143 through P5-CB150 code changes and compile-only build"
+}
