@@ -4861,6 +4861,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       completionOptions.sourceFaceSheets =
           &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
     }
+    completionOptions.sourceHardFeatureEdges = &hardFeatureRailEdges;
     geometry::SurfaceCellComplexCompletionResult completionResult =
         geometry::complete_surface_cell_complex(
             std::move(completionComplex), meshWhole.V, meshWhole.F,
@@ -5660,6 +5661,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
       constraints.sourceFaceSheet =
           result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
+      constraints.sourceHardFeatureEdges = hardFeatureRailEdges;
       constraints.outputQuadSourceFaces.assign(
           static_cast<std::size_t>(completedQuads.rows()), -1);
       constraints.constrainVerticesToProvenanceEntities =
@@ -5943,7 +5945,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.diagnostics.surfaceCellRemeshOccurred = true;
         result.diagnostics.surfaceCellSourceGridRecoveryUsed =
             result.surfaceCellContext.sourceGridRecoveryUsed;
-        result.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::CompletedSurfaceCells;
+        result.diagnostics.surfaceCellOutputOrigin =
+            result.surfaceCellContext.sourceGridRecoveryUsed
+                ? SurfaceCellOutputOrigin::SourceGridRecovery
+                : SurfaceCellOutputOrigin::CompletedSurfaceCells;
         result.diagnostics.terminalFailureCode = "None";
         result.diagnostics.terminalFailureStage.clear();
 
@@ -7830,10 +7835,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           std::move(mergedProduct));
     }
 
+    const SurfaceCellOutputOrigin componentOrigin =
+        componentResult.diagnostics.surfaceCellOutputOrigin;
     allCompletedSurfaceCells =
         allCompletedSurfaceCells &&
-        componentResult.diagnostics.surfaceCellOutputOrigin ==
-            SurfaceCellOutputOrigin::CompletedSurfaceCells;
+        (componentOrigin == SurfaceCellOutputOrigin::CompletedSurfaceCells ||
+         componentOrigin == SurfaceCellOutputOrigin::SourceGridRecovery);
     const bool componentUsedSourceGridRecovery =
         componentResult.surfaceCellContext.sourceGridRecoveryUsed;
     merged.surfaceCellContext.sourceGridRecoveryUsed =

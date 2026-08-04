@@ -14,6 +14,7 @@
 #include <array>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 #include <iterator>
 #include <map>
@@ -25,6 +26,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
 #include <directional/validation/MeshValidator.h>
@@ -49,6 +51,7 @@ struct SourceAuthoritativeMeshValidatorOptions {
   const std::vector<int> *sourceFaceSheets = nullptr;
   const std::vector<geometry::SurfacePoint> *vertexProvenance = nullptr;
   const std::vector<int> *outputQuadSourceFaces = nullptr;
+  std::set<std::uint64_t> sourceHardFeatureEdges;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
@@ -268,17 +271,21 @@ struct SourcePointLabelSupport {
   const std::vector<int> *components = nullptr;
   const std::vector<int> *sheets = nullptr;
   geometry::SurfacePointSourceSupportResolver sourceSupport;
+  geometry::SourceChartTransitionGraph transitionGraph;
 
   SourcePointLabelSupport(
       const Eigen::MatrixXi *faces,
       const std::vector<int> *sourceComponents,
-      const std::vector<int> *sourceSheets)
+      const std::vector<int> *sourceSheets,
+      const std::set<std::uint64_t> *hardFeatureEdges = nullptr)
       : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets),
-        sourceSupport(faces) {}
+        sourceSupport(faces),
+        transitionGraph(faces, sourceComponents, sourceSheets,
+                        hardFeatureEdges) {}
 
   [[nodiscard]] bool available() const {
-    return sourceSupport.available() && components != nullptr &&
-           sheets != nullptr &&
+    return sourceSupport.available() && transitionGraph.available() &&
+           components != nullptr && sheets != nullptr &&
            components->size() == static_cast<std::size_t>(sourceFaces->rows()) &&
            sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
   }
@@ -333,65 +340,26 @@ struct SourcePointLabelSupport {
     if (!available() || points.empty()) {
       return {};
     }
-    std::vector<std::vector<int>> support;
-    support.reserve(points.size());
-    std::set<int> unionFaces;
+    // First preserve the strict per-point declared-chart contract. A point may
+    // be rebound only through an exact source-edge/source-vertex transition;
+    // proximity and triangle-row coincidence are never accepted as identity.
     for (const geometry::SurfacePoint *point : points) {
-      if (point == nullptr) {
+      if (point == nullptr || point->face < 0 ||
+          point->face >= sourceFaces->rows()) {
         return {};
       }
-      const std::set<std::pair<int, int>> labels = supported_labels(*point);
-      const bool declaredLabelSupported = std::any_of(
-          labels.begin(), labels.end(), [&](const std::pair<int, int> &label) {
-            const bool componentMatches =
-                point->component < 0 || label.first == point->component;
-            const bool sheetMatches =
-                point->sheet < 0 || label.second == point->sheet;
-            return componentMatches && sheetMatches;
-          });
-      if (!declaredLabelSupported) {
+      const geometry::SourceChartId declared = transitionGraph.chart(point->face);
+      if (!declared.valid() ||
+          (point->component >= 0 && point->component != declared.component) ||
+          (point->sheet >= 0 && point->sheet != declared.localSheet)) {
         return {};
       }
-      std::vector<int> faces = supported_faces(*point);
-      if (faces.empty()) {
-        return {};
-      }
-      unionFaces.insert(faces.begin(), faces.end());
-      support.push_back(std::move(faces));
     }
-
-    for (const int face : unionFaces) {
-      const bool coversAll = std::all_of(
-          support.begin(), support.end(), [&](const std::vector<int> &faces) {
-            return std::binary_search(faces.begin(), faces.end(), face);
-          });
-      if (coversAll) {
-        return {face};
-      }
+    const int component = transitionGraph.compatible_chart_component(points);
+    if (component < 0) {
+      return {};
     }
-
-    const std::vector<int> orderedFaces(unionFaces.begin(), unionFaces.end());
-    for (std::size_t first = 0; first < orderedFaces.size(); ++first) {
-      for (std::size_t second = first + 1U; second < orderedFaces.size();
-           ++second) {
-        const int firstFace = orderedFaces[first];
-        const int secondFace = orderedFaces[second];
-        if ((*components)[static_cast<std::size_t>(firstFace)] !=
-                (*components)[static_cast<std::size_t>(secondFace)] ||
-            !faces_share_source_edge(firstFace, secondFace)) {
-          continue;
-        }
-        const bool coversAll = std::all_of(
-            support.begin(), support.end(), [&](const std::vector<int> &faces) {
-              return std::binary_search(faces.begin(), faces.end(), firstFace) ||
-                     std::binary_search(faces.begin(), faces.end(), secondFace);
-            });
-        if (coversAll) {
-          return {firstFace, secondFace};
-        }
-      }
-    }
-    return {};
+    return transitionGraph.chart_component_faces(component);
   }
 
   [[nodiscard]] std::set<std::pair<int, int>> chart_labels(

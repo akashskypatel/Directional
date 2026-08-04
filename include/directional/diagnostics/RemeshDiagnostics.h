@@ -41,6 +41,7 @@ struct ComponentRemeshDiagnostics {
 enum class SurfaceCellOutputOrigin {
   None,
   CompletedSurfaceCells,
+  SourceGridRecovery,
   LegacyFallback,
   InputMeshFallback,
   Mixed

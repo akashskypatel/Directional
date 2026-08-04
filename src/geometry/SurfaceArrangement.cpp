@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceArrangement.h>
+#include <directional/geometry/SourceChartTransitions.h>
 
 namespace directional::geometry::surface_arrangement_detail {
 
@@ -2674,27 +2675,29 @@ SurfaceCellComplex build_surface_cell_complex(
       chartParent[static_cast<std::size_t>(rootB)] = rootA;
     }
   };
-  for (const SurfaceArrangementNode &node : complex.nodes) {
-    std::vector<SourceChart> nodeCharts;
-    const SourceChart primary{node.sourceComponent, node.sourceFace,
-                              node.sourceSheet};
-    if (primary.valid()) {
-      nodeCharts.push_back(primary);
-    }
-    for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-      const SourceChart chart{occurrence.sourceComponent,
-                              occurrence.sourceFace,
-                              occurrence.sourceSheet};
-      if (chart.valid()) {
-        nodeCharts.push_back(chart);
+  const SourceChartTransitionGraph transitionGraph(
+      faces, resolvedComponents, resolvedSheets,
+      &resolvedOptions.hardFeatureEdges);
+  if (!transitionGraph.available()) {
+    embeddingValid = false;
+  } else {
+    // Ownership equivalence is derived from exact source incidence before
+    // output-cell ownership is assigned.  A stitched node occurrence is
+    // evidence that charts meet geometrically, but it is not authority to
+    // cross a hard rail, nonmanifold sector, disconnected component, or
+    // intrinsic vertex-fan boundary.
+    std::map<int, SourceChart> representativeByTransitionComponent;
+    for (const SourceChart &chart : chartList) {
+      const int component = transitionGraph.chart_component(SourceChartId{
+          chart.sourceComponent, chart.localSheet, chart.sourceFace});
+      if (component < 0) {
+        embeddingValid = false;
+        continue;
       }
-    }
-    std::sort(nodeCharts.begin(), nodeCharts.end());
-    nodeCharts.erase(std::unique(nodeCharts.begin(), nodeCharts.end()),
-                     nodeCharts.end());
-    for (std::size_t a = 0; a < nodeCharts.size(); ++a) {
-      for (std::size_t b = a + 1U; b < nodeCharts.size(); ++b) {
-        unionCharts(nodeCharts[a], nodeCharts[b]);
+      const auto [found, inserted] =
+          representativeByTransitionComponent.emplace(component, chart);
+      if (!inserted) {
+        unionCharts(found->second, chart);
       }
     }
   }
@@ -2983,10 +2986,42 @@ SurfaceCellComplex build_surface_cell_complex(
         if (existing != node.occurrences.end()) {
           return true;
         }
-        const Eigen::RowVector3d barycentric =
+        Eigen::RowVector3d barycentric =
             node_barycentric_on_face(node, edge.sourceFace);
         if (!barycentric.allFinite()) {
-          return false;
+          const auto tryRebind = [&](const int sourceFace,
+                                     const int sourceComponent,
+                                     const int sourceSheet,
+                                     const Eigen::RowVector3d &sourceBarycentric) {
+            SurfacePoint sourcePoint;
+            sourcePoint.face = sourceFace;
+            sourcePoint.component = sourceComponent;
+            sourcePoint.sheet = sourceSheet;
+            sourcePoint.barycentric = sourceBarycentric.transpose();
+            SurfacePoint rebound;
+            if (!transitionGraph.rebind(sourcePoint, edge.sourceFace,
+                                        rebound)) {
+              return false;
+            }
+            barycentric = rebound.barycentric.transpose();
+            return barycentric.allFinite();
+          };
+          bool rebound = false;
+          for (const SurfaceArrangementNodeOccurrence &candidate :
+               node.occurrences) {
+            if (tryRebind(candidate.sourceFace, candidate.sourceComponent,
+                          candidate.sourceSheet, candidate.barycentric)) {
+              rebound = true;
+              break;
+            }
+          }
+          if (!rebound) {
+            rebound = tryRebind(node.sourceFace, node.sourceComponent,
+                                node.sourceSheet, node.barycentric);
+          }
+          if (!rebound) {
+            return false;
+          }
         }
         SurfaceArrangementNodeOccurrence occurrence;
         occurrence.sourceFace = edge.sourceFace;

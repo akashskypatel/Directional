@@ -309,6 +309,7 @@ struct PureQuadCompletionOptions {
   const SurfacePointSourceSupportResolver *sourceSupportResolver = nullptr;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
+  const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr;
 };
 
 struct PureQuadCompletionResult {
@@ -331,7 +332,8 @@ bool validate_completion_domain_ownership(
     const Eigen::MatrixXi *sourceFaces,
     const std::vector<int> *sourceFaceComponents,
     const std::vector<int> *sourceFaceSheets, std::string &failure,
-    PureQuadCompletionOwnershipRejection *ownershipRejection);
+    PureQuadCompletionOwnershipRejection *ownershipRejection,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
 } // namespace pure_quad_detail
 
@@ -568,7 +570,8 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const double positionTolerance = 1.0e-9,
     const Eigen::MatrixXi *sourceFaces = nullptr,
     const std::vector<int> *sourceFaceComponents = nullptr,
-    const std::vector<int> *sourceFaceSheets = nullptr);
+    const std::vector<int> *sourceFaceSheets = nullptr,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
 EndpointResolutionResult resolve_completion_endpoints(
     std::vector<CompletionEndpoint> endpoints);

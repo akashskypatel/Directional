@@ -1847,6 +1847,8 @@ make_source_authoritative_validator_options(
   validatorOptions.vertexProvenance = &provenance;
   validatorOptions.outputQuadSourceFaces =
       &constraints.outputQuadSourceFaces;
+  validatorOptions.sourceHardFeatureEdges =
+      constraints.sourceHardFeatureEdges;
   validatorOptions.authoritativeBoundaryEdges =
       constraints.authoritativeBoundaryEdges;
   validatorOptions.authoritativeBoundaryLoops =

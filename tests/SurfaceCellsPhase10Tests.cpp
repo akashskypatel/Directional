@@ -499,6 +499,7 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixtur
   directional::pipeline::RemeshOptions options;
   EXPECT_EQ(options.backend, directional::pipeline::RemeshBackend::Legacy);
   EXPECT_FALSE(options.surfaceCells.enabled);
+  EXPECT_FALSE(options.surfaceCells.allowSourceGridRecovery);
 
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0,
@@ -510,6 +511,7 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixtur
       0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0,
       0.0;
   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.allowSourceGridRecovery = true;
   options.lengthRatio = 0.2;
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
@@ -521,6 +523,8 @@ TEST(SurfaceCellsPhase10, SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixtur
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
   EXPECT_EQ(result.diagnostics.surfaceCellValidationFailures, 0U);
   EXPECT_TRUE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
+            result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ(result.faces.rows(), 4);
   ASSERT_EQ(result.degrees.size(), 4);
   EXPECT_TRUE((result.degrees.array() == 4).all());

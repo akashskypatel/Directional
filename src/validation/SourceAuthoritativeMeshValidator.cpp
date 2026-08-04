@@ -754,7 +754,7 @@ validate_source_authoritative_surface_mesh(
   const auto &provenance = *options.vertexProvenance;
   const SourcePointLabelSupport labelSupport(
       options.sourceFaces, options.sourceFaceComponents,
-      options.sourceFaceSheets);
+      options.sourceFaceSheets, &options.sourceHardFeatureEdges);
   const double sourceScale =
       options.sourceVertices->rows() == 0
           ? 1.0

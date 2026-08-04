@@ -1,4 +1,5 @@
 #include <directional/geometry/PureQuadCompletion.h>
+#include <directional/geometry/SourceChartTransitions.h>
 
 #include <sstream>
 #include <type_traits>
@@ -614,7 +615,8 @@ std::string completion_ownership_face_list(const std::vector<int> &faces) {
 bool completion_ownership_face_matches_labels(
     const int face, const PureQuadVertexLineage &lineage,
     const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets) {
+    const std::vector<int> *sourceFaceSheets,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
   if (face < 0) {
     return false;
   }
@@ -691,7 +693,8 @@ bool validate_completion_domain_ownership(
     const Eigen::MatrixXi *sourceFaceMatrix,
     const std::vector<int> *sourceFaceComponents,
     const std::vector<int> *sourceFaceSheets, std::string &failure,
-    PureQuadCompletionOwnershipRejection *ownershipRejection) {
+    PureQuadCompletionOwnershipRejection *ownershipRejection,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
   if (mesh.vertices.size() != mesh.vertexProvenance.size() ||
       mesh.vertices.size() != mesh.vertexLineage.size()) {
     failure = "CompletionOwnershipIncompleteVertexLineage";
@@ -715,6 +718,10 @@ bool validate_completion_domain_ownership(
       patchSourceFaces.end());
   const std::set<int> sourceFaces(patchSourceFaces.begin(),
                                   patchSourceFaces.end());
+  const SourceChartTransitionGraph transitionGraph(
+      sourceFaceMatrix, sourceFaceComponents, sourceFaceSheets,
+      sourceHardFeatureEdges);
+  const bool transitionAuthorityAvailable = transitionGraph.available();
 
   std::map<int, std::size_t> vertexRows;
   for (std::size_t row = 0; row < mesh.vertices.size(); ++row) {
@@ -799,9 +806,13 @@ bool validate_completion_domain_ownership(
         continue;
       }
       intersectsPatch = true;
-      if (completion_ownership_face_matches_labels(
-              candidateFace, lineage, sourceFaceComponents,
-              sourceFaceSheets)) {
+      bool compatible = completion_ownership_face_matches_labels(
+          candidateFace, lineage, sourceFaceComponents, sourceFaceSheets);
+      if (compatible && transitionAuthorityAvailable) {
+        SurfacePoint rebound;
+        compatible = transitionGraph.rebind(provenance, candidateFace, rebound);
+      }
+      if (compatible) {
         compatibleFaces.push_back(candidateFace);
       }
     }
@@ -833,70 +844,79 @@ bool validate_completion_domain_ownership(
         compatibleFaces.begin(), compatibleFaces.end(),
         [&](const int lhs, const int rhs) { return faceKey(lhs) < faceKey(rhs); });
     if (boundaryVertex && selectedFace != provenance.face) {
-      if (sourceFaceMatrix == nullptr || provenance.face < 0 ||
-          provenance.face >= sourceFaceMatrix->rows() || selectedFace < 0 ||
-          selectedFace >= sourceFaceMatrix->rows()) {
-        failure = "CompletionOwnershipCannotRebindSourceChart";
-        return false;
-      }
-      Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
-      if (support.kind == SurfacePointSourceEntityKind::SourceVertex) {
-        bool found = false;
-        for (int corner = 0; corner < 3; ++corner) {
-          if ((*sourceFaceMatrix)(selectedFace, corner) == support.sourceVertex) {
-            rebound(corner) = 1.0;
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          failure = "CompletionOwnershipCannotRebindSourceVertex";
+      if (transitionAuthorityAvailable) {
+        SurfacePoint rebound;
+        if (!transitionGraph.rebind(provenance, selectedFace, rebound)) {
+          failure = "CompletionOwnershipCannotRebindSourceChart";
           return false;
         }
-      } else if (support.kind == SurfacePointSourceEntityKind::SourceEdge) {
-        const int sourceA = support.sourceEdge.first;
-        const int sourceB = support.sourceEdge.second;
-        double weightA = 0.0;
-        double weightB = 0.0;
-        for (int corner = 0; corner < 3; ++corner) {
-          const int vertex = (*sourceFaceMatrix)(provenance.face, corner);
-          if (vertex == sourceA) {
-            weightA += provenance.barycentric(corner);
-          } else if (vertex == sourceB) {
-            weightB += provenance.barycentric(corner);
-          }
-        }
-        const double weightSum = weightA + weightB;
-        if (!std::isfinite(weightSum) || weightSum <= 1.0e-15) {
-          failure = "CompletionOwnershipCannotRebindSourceEdgeWeights";
-          return false;
-        }
-        weightA /= weightSum;
-        weightB /= weightSum;
-        bool foundA = false;
-        bool foundB = false;
-        for (int corner = 0; corner < 3; ++corner) {
-          const int vertex = (*sourceFaceMatrix)(selectedFace, corner);
-          if (vertex == sourceA) {
-            rebound(corner) = weightA;
-            foundA = true;
-          } else if (vertex == sourceB) {
-            rebound(corner) = weightB;
-            foundB = true;
-          }
-        }
-        if (!foundA || !foundB) {
-          failure = "CompletionOwnershipCannotRebindSourceEdge";
-          return false;
-        }
+        provenance = rebound;
       } else {
-        failure = "CompletionOwnershipFaceInteriorChartMismatch";
-        return false;
+        if (sourceFaceMatrix == nullptr || provenance.face < 0 ||
+            provenance.face >= sourceFaceMatrix->rows() || selectedFace < 0 ||
+            selectedFace >= sourceFaceMatrix->rows()) {
+          failure = "CompletionOwnershipCannotRebindSourceChart";
+          return false;
+        }
+        Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
+        if (support.kind == SurfacePointSourceEntityKind::SourceVertex) {
+          bool found = false;
+          for (int corner = 0; corner < 3; ++corner) {
+            if ((*sourceFaceMatrix)(selectedFace, corner) == support.sourceVertex) {
+              rebound(corner) = 1.0;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            failure = "CompletionOwnershipCannotRebindSourceVertex";
+            return false;
+          }
+        } else if (support.kind == SurfacePointSourceEntityKind::SourceEdge) {
+          const int sourceA = support.sourceEdge.first;
+          const int sourceB = support.sourceEdge.second;
+          double weightA = 0.0;
+          double weightB = 0.0;
+          for (int corner = 0; corner < 3; ++corner) {
+            const int vertex = (*sourceFaceMatrix)(provenance.face, corner);
+            if (vertex == sourceA) {
+              weightA += provenance.barycentric(corner);
+            } else if (vertex == sourceB) {
+              weightB += provenance.barycentric(corner);
+            }
+          }
+          const double weightSum = weightA + weightB;
+          if (!std::isfinite(weightSum) || weightSum <= 1.0e-15) {
+            failure = "CompletionOwnershipCannotRebindSourceEdgeWeights";
+            return false;
+          }
+          weightA /= weightSum;
+          weightB /= weightSum;
+          bool foundA = false;
+          bool foundB = false;
+          for (int corner = 0; corner < 3; ++corner) {
+            const int vertex = (*sourceFaceMatrix)(selectedFace, corner);
+            if (vertex == sourceA) {
+              rebound(corner) = weightA;
+              foundA = true;
+            } else if (vertex == sourceB) {
+              rebound(corner) = weightB;
+              foundB = true;
+            }
+          }
+          if (!foundA || !foundB) {
+            failure = "CompletionOwnershipCannotRebindSourceEdge";
+            return false;
+          }
+        } else {
+          failure = "CompletionOwnershipFaceInteriorChartMismatch";
+          return false;
+        }
+        provenance.face = selectedFace;
+        provenance.barycentric = rebound;
+        provenance.component = lineage.sourceComponent;
+        provenance.sheet = lineage.sourceSheet;
       }
-      provenance.face = selectedFace;
-      provenance.barycentric = rebound;
-      provenance.component = lineage.sourceComponent;
-      provenance.sheet = lineage.sourceSheet;
     }
     lineage.sourcePoint = provenance;
   }
@@ -1484,8 +1504,8 @@ PureQuadCompletionResult complete_pure_quad_patch(
   if (!pure_quad_detail::validate_completion_domain_ownership(
           patch, mesh, options.completionVariant, sourceSupportResolver,
           options.sourceFaces, options.sourceFaceComponents,
-          options.sourceFaceSheets,
-          ownershipFailure, &result.ownershipRejection)) {
+          options.sourceFaceSheets, ownershipFailure,
+          &result.ownershipRejection, options.sourceHardFeatureEdges)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     result.failure = ownershipFailure;
     return result;
@@ -2204,6 +2224,9 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       sourceFaceSheets->size() ==
           static_cast<std::size_t>(sourceFaces->rows());
   const SurfacePointSourceSupportResolver sourceSupport(sourceFaces);
+  const SourceChartTransitionGraph sourceTransitions(
+      sourceFaces, sourceFaceComponents, sourceFaceSheets,
+      sourceHardFeatureEdges);
   const auto canonicalSharedProvenance = [&](const PendingOutputVertex &pending) {
     const PureQuadMesh &fallbackPatch =
         patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
@@ -2211,6 +2234,78 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         static_cast<std::size_t>(pending.provenanceLocalRow)];
     if (!sourceAuthorityAvailable ||
         pending.provenanceCandidates.size() < 2U) {
+      return selected;
+    }
+
+    if (sourceTransitions.available()) {
+      std::vector<const SurfacePoint *> candidates;
+      candidates.reserve(pending.provenanceCandidates.size());
+      SourceEntityId commonEntity;
+      bool haveEntity = false;
+      for (const auto &[patchIndex, localRow] :
+           pending.provenanceCandidates) {
+        if (patchIndex < 0 || patchIndex >= static_cast<int>(patches.size()) ||
+            localRow < 0 ||
+            localRow >= static_cast<int>(
+                patches[static_cast<std::size_t>(patchIndex)]
+                    .vertexProvenance.size())) {
+          return selected;
+        }
+        const SurfacePoint &candidate =
+            patches[static_cast<std::size_t>(patchIndex)]
+                .vertexProvenance[static_cast<std::size_t>(localRow)];
+        const SourceEntityId entity = sourceTransitions.resolve_entity(candidate);
+        if (!entity.valid() ||
+            (haveEntity && entity.canonical != commonEntity.canonical)) {
+          return selected;
+        }
+        if (!haveEntity) {
+          commonEntity = entity;
+          haveEntity = true;
+        }
+        candidates.push_back(&candidate);
+      }
+      if (!haveEntity || candidates.empty()) {
+        return selected;
+      }
+      const SurfacePointSourceSupport firstSupport =
+          sourceSupport.resolve(*candidates.front());
+      if (!firstSupport.valid()) {
+        return selected;
+      }
+      std::vector<int> compatibleFaces;
+      for (const int face : firstSupport.supportedFaces) {
+        bool allCompatible = true;
+        for (const SurfacePoint *candidate : candidates) {
+          SurfacePoint rebound;
+          if (!sourceTransitions.rebind(*candidate, face, rebound)) {
+            allCompatible = false;
+            break;
+          }
+        }
+        if (allCompatible) {
+          compatibleFaces.push_back(face);
+        }
+      }
+      if (compatibleFaces.empty()) {
+        return selected;
+      }
+      const auto faceKey = [&](const int face) {
+        std::array<int, 3> vertices{{(*sourceFaces)(face, 0),
+                                     (*sourceFaces)(face, 1),
+                                     (*sourceFaces)(face, 2)}};
+        std::sort(vertices.begin(), vertices.end());
+        return std::make_pair(vertices, face);
+      };
+      const int selectedFace = *std::min_element(
+          compatibleFaces.begin(), compatibleFaces.end(),
+          [&](const int lhs, const int rhs) {
+            return faceKey(lhs) < faceKey(rhs);
+          });
+      SurfacePoint canonical;
+      if (sourceTransitions.rebind(selected, selectedFace, canonical)) {
+        return canonical;
+      }
       return selected;
     }
 

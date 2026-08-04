@@ -270,6 +270,7 @@ struct SurfaceCellComplexCompletionOptions {
   int maxSameCornerInsertedVertices = -1;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
+  const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr;
 };
 
 struct PatchCompletionReuseMismatch {

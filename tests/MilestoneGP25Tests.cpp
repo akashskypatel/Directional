@@ -52,6 +52,7 @@ directional::pipeline::RemeshOptions surface_options() {
   options.surfaceCells.enabled = true;
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = true;
   options.parallelizeComponents = true;
   options.lengthRatio = 0.2;
   return options;

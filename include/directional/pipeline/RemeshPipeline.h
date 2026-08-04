@@ -149,7 +149,7 @@ struct SurfaceCellOptions {
   /// accepted cell is refined into four new quads using source-edge midpoints
   /// and a source-surface center. Ambiguous or incomplete source-cell matching
   /// leaves general patch completion authoritative.
-  bool allowSourceGridRecovery = true;
+  bool allowSourceGridRecovery = false;
   /// Maximum factor by which the topology-constrained source-grid recovery
   /// may relax the requested final edge size. Recovery has fixed connectivity;
   /// requests outside this bound remain visible as validation failures.

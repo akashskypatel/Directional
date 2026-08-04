@@ -1,6 +1,8 @@
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <algorithm>
+#include <cstdint>
+#include <set>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -120,7 +122,7 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   Eigen::MatrixXi quads(1, 4);
   quads << 0, 1, 2, 3;
   const std::vector<int> components = {0, 0};
-  const std::vector<int> sheets = {0, 1};
+  const std::vector<int> sheets = {0, 0};
 
   std::vector<SurfacePoint> provenance(4);
   const auto assign = [&](const int outputVertex, const int sourceFace,
@@ -190,4 +192,56 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
     points.push_back(&point);
   }
   EXPECT_FALSE(support.have_compatible_chart(points));
+}
+
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     HardRailPreventsChartCompatibilityAcrossSharedSourceEdge) {
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 0};
+  const std::uint64_t hardEdge =
+      (static_cast<std::uint64_t>(1U) << 32U) | 2U;
+  const std::set<std::uint64_t> hardEdges = {hardEdge};
+
+  SurfacePoint first;
+  first.face = 0;
+  first.component = 0;
+  first.sheet = 0;
+  first.barycentric << 0.0, 0.5, 0.5;
+  SurfacePoint second = first;
+  second.face = 1;
+  second.barycentric << 0.5, 0.5, 0.0;
+
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&sourceFaces, &components, &sheets,
+                                      &hardEdges);
+  const std::vector<const SurfacePoint *> points = {&first, &second};
+  EXPECT_FALSE(support.have_compatible_chart(points));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     NonConsecutiveChartsReconcileThroughOneIntrinsicVertexFan) {
+  Eigen::MatrixXi sourceFaces(4, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3,
+      0, 3, 4,
+      0, 4, 1;
+  const std::vector<int> components = {0, 0, 0, 0};
+  const std::vector<int> sheets = {0, 0, 0, 0};
+
+  SurfacePoint first;
+  first.face = 0;
+  first.component = 0;
+  first.sheet = 0;
+  first.barycentric << 1.0, 0.0, 0.0;
+  SurfacePoint opposite = first;
+  opposite.face = 2;
+
+  const directional::validation::source_authoritative_detail::
+      SourcePointLabelSupport support(&sourceFaces, &components, &sheets);
+  const std::vector<const SurfacePoint *> points = {&first, &opposite};
+  EXPECT_TRUE(support.have_compatible_chart(points));
 }

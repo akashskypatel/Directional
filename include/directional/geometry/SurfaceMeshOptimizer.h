@@ -117,6 +117,7 @@ struct SurfaceOptimizationConstraints {
   // is intentionally multi-chart on source vertices and edges, so it cannot
   // by itself select a stable orientation/field chart for the whole quad.
   std::vector<int> outputQuadSourceFaces;
+  std::set<std::uint64_t> sourceHardFeatureEdges;
   bool constrainVerticesToProvenanceEntities = false;
   std::vector<std::vector<int>> sourceVertexFaces;
   std::map<std::pair<int, int>, std::vector<int>> sourceEdgeFaces;

@@ -1,8 +1,10 @@
+#include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfaceArrangement.h>
 
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <set>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -1241,4 +1243,161 @@ TEST(SurfaceArrangementPhase16,
     }
   }
   EXPECT_EQ(centerCells, 3);
+}
+
+
+TEST(SourceChartTransitionsR1,
+     SharedSourceEdgeRebindsWithCanonicalEndpointOrientation) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {4, 4};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  ASSERT_TRUE(graph.available());
+  ASSERT_EQ(2U, graph.transitions().size());
+  EXPECT_EQ(graph.chart_component(0), graph.chart_component(1));
+
+  directional::geometry::SurfacePoint first;
+  first.face = 0;
+  first.component = 0;
+  first.sheet = 4;
+  first.barycentric << 0.0, 0.25, 0.75;
+
+  directional::geometry::SurfacePoint second;
+  ASSERT_TRUE(graph.rebind(first, 1, second));
+  EXPECT_EQ(1, second.face);
+  EXPECT_EQ(0, second.component);
+  EXPECT_EQ(4, second.sheet);
+  EXPECT_NEAR(0.75, second.barycentric(0), 1.0e-12);
+  EXPECT_NEAR(0.25, second.barycentric(1), 1.0e-12);
+  EXPECT_NEAR(0.0, second.barycentric(2), 1.0e-12);
+  EXPECT_EQ(graph.resolve_entity(first).canonical,
+            graph.resolve_entity(second).canonical);
+
+  const auto &forward = graph.transitions().front();
+  const auto reverse = std::find_if(
+      graph.transitions().begin(), graph.transitions().end(),
+      [&](const auto &candidate) {
+        return candidate.from == forward.to && candidate.to == forward.from;
+      });
+  ASSERT_NE(reverse, graph.transitions().end());
+  EXPECT_EQ(forward.sharedEntity.canonical, reverse->sharedEntity.canonical);
+  EXPECT_EQ(forward.orientation, reverse->orientation);
+}
+
+TEST(SourceChartTransitionsR1, HardRailSplitsAdjacentProjectionCharts) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 1};
+  const std::uint64_t hardEdge =
+      (static_cast<std::uint64_t>(1U) << 32U) | 2U;
+  const std::set<std::uint64_t> hardEdges = {hardEdge};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets, &hardEdges);
+
+  ASSERT_TRUE(graph.available());
+  EXPECT_TRUE(graph.transitions().empty());
+  EXPECT_NE(graph.chart_component(0), graph.chart_component(1));
+
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 0;
+  point.sheet = 0;
+  point.barycentric << 0.0, 0.5, 0.5;
+  directional::geometry::SurfacePoint rebound;
+  EXPECT_FALSE(graph.rebind(point, 1, rebound));
+}
+
+TEST(SourceChartTransitionsR1,
+     SourceVertexFansRespectTwoHardRailBarriers) {
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 2,
+           0, 2, 3,
+           0, 3, 4,
+           0, 4, 1;
+  const std::vector<int> components = {0, 0, 0, 0};
+  const std::vector<int> sheets = {0, 0, 0, 0};
+  const auto edgeKey = [](const int a, const int b) {
+    const auto low = static_cast<std::uint32_t>(std::min(a, b));
+    const auto high = static_cast<std::uint32_t>(std::max(a, b));
+    return (static_cast<std::uint64_t>(low) << 32U) | high;
+  };
+  const std::set<std::uint64_t> hardEdges = {edgeKey(0, 2), edgeKey(0, 4)};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets, &hardEdges);
+
+  directional::geometry::SurfacePoint left;
+  left.face = 0;
+  left.component = 0;
+  left.sheet = 0;
+  left.barycentric << 1.0, 0.0, 0.0;
+  directional::geometry::SurfacePoint right = left;
+  right.face = 1;
+  right.sheet = 0;
+
+  const auto leftEntity = graph.resolve_entity(left);
+  const auto rightEntity = graph.resolve_entity(right);
+  ASSERT_TRUE(leftEntity.valid());
+  ASSERT_TRUE(rightEntity.valid());
+  EXPECT_NE(leftEntity.canonical, rightEntity.canonical);
+  directional::geometry::SurfacePoint rebound;
+  EXPECT_FALSE(graph.rebind(left, 1, rebound));
+}
+
+TEST(SourceChartTransitionsR1,
+     DisconnectedCloseSheetsNeverShareTransitionComponent) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           3, 4, 5;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 0};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  ASSERT_TRUE(graph.available());
+  EXPECT_NE(graph.chart_component(0), graph.chart_component(1));
+  EXPECT_NE(graph.chart_component_identity(graph.chart_component(0)),
+            graph.chart_component_identity(graph.chart_component(1)));
+}
+
+TEST(SourceChartTransitionsR1,
+     ComponentIdentityIsInvariantToSourceFaceRowPermutation) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           1, 3, 2;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {7, 7};
+  const directional::geometry::SourceChartTransitionGraph first(
+      faces, components, sheets);
+
+  Eigen::MatrixXi reordered = faces;
+  reordered.row(0).swap(reordered.row(1));
+  const std::vector<int> reorderedComponents = {0, 0};
+  const std::vector<int> reorderedSheets = {7, 7};
+  const directional::geometry::SourceChartTransitionGraph second(
+      reordered, reorderedComponents, reorderedSheets);
+
+  ASSERT_EQ(first.chart_component(0), first.chart_component(1));
+  ASSERT_EQ(second.chart_component(0), second.chart_component(1));
+  EXPECT_EQ(first.chart_component_identity(first.chart_component(0)),
+            second.chart_component_identity(second.chart_component(0)));
+}
+
+TEST(SourceChartTransitionsR1,
+     InconsistentSharedEdgeOrientationRejectsTransitionGraph) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           1, 2, 3;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {0, 0};
+  const directional::geometry::SourceChartTransitionGraph graph(
+      faces, components, sheets);
+
+  EXPECT_FALSE(graph.available());
+  EXPECT_TRUE(graph.transitions().empty());
 }

@@ -340,6 +340,9 @@ directional::pipeline::RemeshOptions surface_options() {
   // These tests inspect authoritative stage payloads. Production callers keep
   // only scalar diagnostics unless this opt-in is explicitly enabled.
   options.surfaceCells.retainIntermediateGeometry = true;
+  // Recovery is non-authoritative and default-off. Tests that intentionally
+  // exercise it opt in through this legacy production-fixture helper.
+  options.surfaceCells.allowSourceGridRecovery = true;
   // SurfaceCells honors the public target-length ratio when no explicit
   // adaptive base size is supplied. Keep the synthetic production fixtures
   // at the same coarse resolution used by the Milestone G matrix.
@@ -942,9 +945,11 @@ TEST(SurfaceCellPipelinePhase20, CrossFieldResultRequiresMatchingAndSingularitie
             trace_respects_source_component(
                 sideTrace, traceNetwork.sourceFaceComponents));
   }
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
 }
@@ -1101,9 +1106,11 @@ TEST(SurfaceCellPipelinePhase20, RealStageDiagnosticsAreDerivedFromIntermediates
             result.surfaceCellContext.crossField.rawField.rows());
   EXPECT_NE(nullptr, find_context_product(result.surfaceCellContext,
                                           "cross-field"));
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
   EXPECT_TRUE(result.diagnostics.overallPipelineTimeAvailable);
@@ -1720,7 +1727,7 @@ TEST(SurfaceCellPipelinePhase20, CylinderFixtureCompletesProductionOutput) {
                               << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
-  EXPECT_STREQ("CompletedSurfaceCells",
+  EXPECT_STREQ("SourceGridRecovery",
                surface_cell_output_origin_name(
                    result.diagnostics.surfaceCellOutputOrigin));
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
@@ -1749,7 +1756,7 @@ TEST(SurfaceCellPipelinePhase20, MultiFaceStripCompletesProductionOutput) {
   ASSERT_TRUE(result.success) << result.diagnostics.terminalFailureCode << "/"
                               << result.diagnostics.terminalFailureStage;
   EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred);
-  EXPECT_STREQ("CompletedSurfaceCells",
+  EXPECT_STREQ("SourceGridRecovery",
                surface_cell_output_origin_name(
                    result.diagnostics.surfaceCellOutputOrigin));
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
@@ -1784,9 +1791,11 @@ TEST(SurfaceCellPipelinePhase20, CloseSheetsDoNotLeakSourceProvenance) {
             result.surfaceCellContext.crossField.rawField.rows());
   EXPECT_NE(nullptr, find_context_product(result.surfaceCellContext,
                                           "cross-field"));
-  EXPECT_STREQ("CompletedSurfaceCells", surface_cell_output_origin_name(result.diagnostics.surfaceCellOutputOrigin));
+  EXPECT_STREQ("SourceGridRecovery",
+               surface_cell_output_origin_name(
+                   result.diagnostics.surfaceCellOutputOrigin));
   if (result.diagnostics.surfaceCellRemeshOccurred) {
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
               result.diagnostics.surfaceCellOutputOrigin);
   }
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
@@ -2081,7 +2090,7 @@ TEST(SurfaceCellPipelinePhase20, ComponentSchedulingAppliesToSurfaceCells) {
   EXPECT_EQ("None", result.diagnostics.terminalFailureCode);
   EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
   EXPECT_FALSE(result.diagnostics.surfaceCellReturnedInputMeshFallback);
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::SourceGridRecovery,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ(2U, result.diagnostics.componentCount);
   EXPECT_EQ(2U, result.diagnostics.components.size());

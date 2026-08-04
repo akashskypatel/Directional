@@ -214,7 +214,9 @@ void expect_completed_surface_cells(
   } else {
     EXPECT_GT(result.faces.rows(), 0);
   }
-  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+  EXPECT_EQ(expectSourceGridRecovery
+                ? directional::SurfaceCellOutputOrigin::SourceGridRecovery
+                : directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
             result.diagnostics.surfaceCellOutputOrigin);
   EXPECT_EQ("SurfaceCells", result.diagnostics.executedBackend);
   ASSERT_EQ(result.faces.rows(), result.degrees.size());
@@ -270,7 +272,9 @@ void expect_truthful_surface_cells_outcome(
   if (result.success) {
     EXPECT_TRUE(result.diagnostics.surfaceCellRemeshOccurred)
         << benchmarkCase.name;
-    EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+    EXPECT_EQ(result.surfaceCellContext.sourceGridRecoveryUsed
+                  ? directional::SurfaceCellOutputOrigin::SourceGridRecovery
+                  : directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
               result.diagnostics.surfaceCellOutputOrigin)
         << benchmarkCase.name;
     EXPECT_EQ("None", result.diagnostics.terminalFailureCode)
