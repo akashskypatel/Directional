@@ -9,128 +9,159 @@
 
 ## Current checkpoint
 
-P5-CB91 through P5-CB98 are implemented. The implementation authority is commit
-`34edce9e508fd81e28bbd6b68a064a2a57bacf03`; the exact GitHub source compiled
-for closeout is descendant commit
-`680d81c6946f45b1daed9dd477cfde565f8ac7a2`.
+P5-TB17 artifact-only test and benchmark is complete. P5 remains open.
 
-GitHub Actions run `30864341083` completed successfully and compiled exactly:
-
-- `directional_core`
-- `directional_pipeline`
-- `directional_phase1_tests`
-- `directional_benchmarks`
-
-No test, benchmark, custom mesh, help/list, discovery, or compiled project binary
-was executed.
-
-Compiled artifact:
+Tested artifact:
 
 - ID `8875627676`
 - `surface-cell-p5-cb98-github-source-linux-release`
+- exact source `680d81c6946f45b1daed9dd477cfde565f8ac7a2`
 - SHA-256 `b9560c9438289e90e6acca3a0f4b7f1d46a5ad34663693c1243bf4176056c165`
+- source status empty
 - checksums **38/38**
 - fixture files **26**
-- empty source status
+- bunny **502 vertices / 1,000 faces**
 
-Dedicated detailed workflow log artifact:
+No build, configure, relink, patch, or code regeneration occurred.
 
-- ID `8875628150`
-- `surface-cell-p5-cb98-workflow-logs-30864341083`
-- SHA-256 `f31e7d57d137399634187edbac5902732e0226172bc80248c1abf41ff61513e8`
+Runtime result:
 
-The next turn is **P5-TB17 artifact-only test and benchmark** using artifact
-`8875627676`. Do not rebuild.
+- complete suite **572/594**;
+- 22 assertion failures;
+- no abnormal termination;
+- all former signal-11 cases terminate normally;
+- four face-edge and four smooth-field runs are deterministic and inside wall/
+  memory limits;
+- both field paths fail closed at
+  `BoundaryParityRepair:MixedCellSourceScope` and emit no output;
+- exact reuse remains zero;
+- invalid midpoint still stops at `MissingCommonSourceChart`;
+- cylinder topology/output remains invalid;
+- memory ownership explains only **28.0–33.6%** of peak RSS.
 
-P5 remains open because the new runtime contracts have not been executed.
+The next turn is **P5-CB99 through P5-CB107 code changes + compile-only build**.
+Execute no test, benchmark, custom mesh, compiled binary, help/list, or discovery
+command in that turn.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/GitHub_Workflow_Policy.md`
-4. `.agents/Directional/Milestone_G_P5_TB16_FlowRep_Parity_Reuse_Rail_Output_Memory_Test_Benchmark_Report.md`
-5. `benchmark-results/p5-tb16-summary.json`
-6. `.agents/Directional/Milestone_G_P5_CB91_CB98_Parity_Reuse_Fixture_Output_Memory_Code_Build_Report.md`
-7. `benchmark-results/p5-cb98-summary.json`
-8. `.agents/Directional/Milestone_G_P5_CB98_GitHub_Compile_Closeout_Report.md`
-9. `benchmark-results/p5-cb98-github-closeout-summary.json`
-10. `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB17_Parity_Reuse_Output_Memory_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb17-summary.json`
+5. `.agents/Directional/Milestone_G_P5_Post_TB17_Source_Scope_Topology_Reuse_Output_Memory_Code_Build_Plan.md`
+6. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Last runtime evidence
+## New source regressions
 
-P5-TB16 tested exact source `d268ca00014935770f3b7fd74c5186c3d9ef3ddf`:
+P5-TB16 had Phase 14–18 at 230/230 and Milestone D at 6/7. P5-TB17 has twelve
+additional failures reproduced by both the GitHub GCC artifact and the
+independently compiled Clang artifact:
 
-- complete suite **583/593**;
-- ten assertion failures;
-- zero signal-11 terminations;
-- all three prior crash cases terminate normally;
-- four face-edge and four smooth-field random-bunny runs are deterministic and
-  within wall/memory limits;
-- both field paths fail closed at
-  `BoundaryParityRepair:MixedCellSourceScope` and emit no output;
-- exact reuse, intended invalid midpoint, cylinder topology/output, remaining
-  production outputs, and RSS reconciliation remained open.
+Phase 16:
 
-## Implemented in P5-CB91–P5-CB98
+- `AuthoritativeTopologyDiagnosticsMatchSingleDiskSource`
+- `AuthoritativeTopologyDiagnosticsHandleDisconnectedSourceComponents`
+- `CurvedMultiFaceFixturePreservesStitchedTopologyAndEulerCharacteristic`
+- `BunnySingularityFanUsesIntrinsicSourceVertexRotation`
 
-- Exact authoritative cell component/sheet scope is captured before parity
-  subdivision.
-- Mixed/missing scope fails before mutation with typed entity and mutation-phase
-  evidence.
-- Replacement halfedges, twins, node occurrences, provenance, and cells inherit
-  authoritative scope before validation.
-- Completion reuse identity covers authoritative source dependencies rather than
-  allocation-local IDs.
-- Cache mismatch vectors, transactional rebind validation, and actual reuse/
-  recompute accounting are present.
-- Missing-chart and invalid-midpoint fixtures are distinct and require exact
-  rollback.
-- Cylinder fixture uses canonical crossing entities and validates strict DCEL
-  topology before simplification.
-- Output source ownership derives from provenance; first-invalid producer
-  diagnostics identify the responsible stage/entity.
-- Memory evidence separates logical payload, retained capacity, peak,
-  simultaneous ownership, and acquire/release events.
+Phase 17:
 
-## Workflow policy and lessons
+- `SimplifySurfaceCellComplexReturnsMutatedComplex`
+- `ComplexCandidateRecomputationCreatesRealQueuedCandidates`
+- `TransactionalMutationCommitsExtractedOversampledCandidate`
+- `TransactionalMutationPreservesHardRailSupport`
+- `OptionalLayoutBridgeHealsPinchedCellTransactionally`
+- `MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies`
 
-All future workflows must follow
+Milestone D:
+
+- `CurvedStitchedCellUsesGlobalEmbeddingAndSourceFaces`
+- `InteriorHardRailIsNotClassifiedAsExteriorBoundary`
+
+The ten P5-TB16 failures also remain.
+
+## Root cause to address first
+
+P5-CB91 replaced oriented-cell scope selection with strict intersection of every
+boundary record's raw `(component, localSheetByFace)` pair. The trace contract,
+however, permits a valid cell to cross adjacent per-face local chart IDs through
+intrinsic source adjacency while remaining in one connected physical sheet and
+component.
+
+The code must distinguish:
+
+- connected source component;
+- canonical cell-side/sheet equivalence class;
+- exact per-source-face local chart on each oriented halfedge and occurrence.
+
+Accept adjacent chart IDs only when intrinsic adjacency proves they belong to
+the same canonical cell-side class. Continue to reject disconnected and close/
+opposing physical sheets. Do not restore frequency voting or choose by count or
+order.
+
+Benchmark evidence identifies the first cells:
+
+- face-edge: cell 19, halfedge/twin 21767/21766, component values `[0,0]`, local
+  chart values `[0,1]`, selected `-1/-1`;
+- smooth: cell 45, halfedge/twin 46451/46450, component values `[0,0]`, local
+  chart values `[0,1]`, selected `-1/-1`.
+
+## Required P5-CB99–P5-CB107 work
+
+- **CB99:** canonical ownership across adjacent local charts; restore four Phase
+  16 and two Milestone D regressions.
+- **CB100:** propagate canonical ownership through simplification; restore all
+  six Phase 17 regressions.
+- **CB101:** parity preflight validates canonical ownership, not raw chart-ID
+  equality; retain typed incompatibility evidence and exact rollback.
+- **CB102:** repair route validation and real exact reuse; both guaranteed cases
+  must reach cache lookup and later report positive reuse.
+- **CB103:** make the invalid-midpoint fixture prove a valid common chart first,
+  then fail at `InvalidMidpointEmbedding` after temporary mutation and roll back
+  bit-exactly.
+- **CB104:** rebuild the canonical cylinder DCEL with valid incidence,
+  embedding, orientation, Euler 0, one component, and two boundary loops.
+- **CB105:** correct the earliest invalid producer for production outputs.
+- **CB106:** account dominant retained/overlapping allocations and target at
+  least 75% peak-RSS reconciliation with categorized remainder.
+- **CB107:** add regressions; compile/package exactly `directional_core`,
+  `directional_pipeline`, `directional_phase1_tests`, and
+  `directional_benchmarks`; execute no binary.
+
+## Preserved prohibitions
+
+- no validator weakening;
+- no frequency-vote scope restoration;
+- no fallback/recovery substitution;
+- no synthetic counters;
+- no positional merging or source-triangle pairing;
+- no arbitrary subset search;
+- no fixture/ID special cases;
+- no timeout-as-correctness.
+
+## Workflow policy
+
+Every GitHub workflow must follow
 `.agents/Directional/GitHub_Workflow_Policy.md`:
 
 - initialize detailed logging before fallible work;
-- preserve activity and command output for success and failure;
-- always upload a dedicated log artifact under `if: always()`;
-- use that artifact for failed-workflow diagnosis;
-- do not expose tokens or credentials in traced output;
-- preserve compile-only versus test/benchmark boundaries.
+- retain complete success/failure activity;
+- always upload a separate log artifact under `if: always()`;
+- use that artifact for failure diagnosis;
+- do not expose secrets in traced output;
+- preserve the compile-only turn boundary.
 
-The closeout workflow initially failed validation because workflow-level `env`
-used the step-only `${{ runner.temp }}` context. Fixed paths under `/tmp` were
-used instead. The corrected workflow parsed and completed successfully.
+## Key lessons
 
-Patch synchronization lesson: a normal patch failure can mean the output is
-already present. Verify output blobs before treating it as missing work.
-
-## Required next turn
-
-Follow the post-CB98 artifact plan exactly:
-
-1. Download artifact `8875627676`; verify digest, checksums, exact source,
-   dependencies, binaries/libraries, and fixture closure without rebuilding.
-2. Run the ten P5-TB16 failures plus focused parity/reuse/midpoint/cylinder/
-   output/memory regressions.
-3. Run Phase 14–18, Milestone E, Milestone D, P23/P26/P27/Phase 20, the three
-   former crash cases, and the complete suite.
-4. Run four face-edge and four smooth-field random-bunny processes with zero
-   warmups, one measured run, fallback `Fail`, and source-grid recovery off.
-5. Require deterministic valid nonempty pure-quad output, positive exact reuse,
-   intended invalid-midpoint rollback, valid cylinder and production outputs,
-   and meaningful peak-RSS reconciliation.
-
-Preserve all prohibitions: no validator weakening, fallback/recovery
-substitution, synthetic counters, positional merging, source-triangle pairing,
-arbitrary subset search, fixture/ID special case, or timeout-as-correctness.
-
-If a gate remains open, record the first invalid producer/entity and create one
-bounded next code/build plan. Otherwise advance to final P5 closeout.
+- A raw `localSheetByFace` ID is a per-face chart label, not by itself the
+  canonical identity of a physical cell side across adjacent source faces.
+- A direct unit regression can pass while aggregate topology contracts regress;
+  always preserve Phase 14–18 and Milestone D closure when changing authority
+  semantics.
+- Compiler-independent reproduction is strong evidence of a source contract
+  regression rather than toolchain variance.
+- Typed first-invalid evidence is useful only when it represents the correct
+  ownership model; cells 19 and 45 currently expose the raw-chart mismatch.
+- Memory payload accounting is not sufficient; allocator capacity and concurrent
+  retained owners must be included against the same RSS sample.
