@@ -1,0 +1,133 @@
+{
+  "checkpoint": "P5-TB26",
+  "turn_type": "artifact_only_test_benchmark",
+  "date": "2026-08-04",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "pull_request": 8,
+  "artifact": {
+    "id": 8908691591,
+    "name": "surface-cell-p5-r2-final-github-source-linux-release",
+    "sha256": "7db07fc02a92ce08ce529e6f5175a961398c5a9708d4d6ad23dd7133e1407cec",
+    "source_commit": "306fab5d440199cb090e1aa343fadb6112663edc",
+    "workflow_event_commit": "b332bb3119a133b957b2f573a5bd447d4ca62d4e",
+    "source_status_empty": true,
+    "manifest_verified": 41,
+    "manifest_total": 41,
+    "package_files": 43,
+    "fixtures": 26,
+    "recursive_submodules": 9
+  },
+  "source_modification": false,
+  "scopes": {
+    "source_chart_r1": {"passed": 11, "tests": 11},
+    "source_validator_phase22": {"passed": 6, "tests": 6},
+    "recovery_authority": {"passed": 9, "tests": 9},
+    "feature_rail_barriers": {"passed": 8, "tests": 8},
+    "graph_dependent": {
+      "passed": 5,
+      "tests": 6,
+      "failed_tests": ["SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"]
+    },
+    "r2_focused": {
+      "passed": 6,
+      "tests": 7,
+      "failed_tests": ["MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary"]
+    },
+    "milestone_d": {
+      "passed": 4,
+      "tests": 7,
+      "failed_tests": [
+        "MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary",
+        "MilestoneDClosure.BranchedStrandIsTopologyChangingRegionCandidate",
+        "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved"
+      ]
+    },
+    "phase14_18": {"passed": 227, "tests": 240},
+    "phase16": {"passed": 39, "tests": 43},
+    "phase17": {"passed": 18, "tests": 26},
+    "phase18": {"passed": 57, "tests": 57},
+    "phase20": {
+      "passed": 46,
+      "tests": 48,
+      "failed_tests": [
+        "SurfaceCellPipelinePhase20.CylinderFixtureCompletesProductionOutput",
+        "SurfaceCellPipelinePhase20.ValidationRejectionCannotReportCompletedSurfaceCells"
+      ]
+    }
+  },
+  "analytic_cases": {
+    "plane": {
+      "success": false,
+      "wall_seconds": 0.013276,
+      "peak_working_set_bytes": 8519680,
+      "arrangement_cells": 9,
+      "completed_quads": 12,
+      "validation_failures": 15,
+      "first_invalid_producer": "completion/output-validation:AggregateCompletionValidationFailure",
+      "fallback_attempted": false,
+      "legacy_used": false,
+      "source_grid_recovery_used": false
+    },
+    "multi_face_seam": {
+      "success": false,
+      "wall_seconds": 0.013581,
+      "peak_working_set_bytes": 8384512,
+      "arrangement_cells": 0,
+      "completed_quads": 0,
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "fallback_attempted": false,
+      "legacy_used": false,
+      "source_grid_recovery_used": false
+    },
+    "close_sheets": {
+      "success": false,
+      "wall_seconds": 0.021626,
+      "peak_working_set_bytes": 8572928,
+      "arrangement_cells": 0,
+      "completed_quads": 0,
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "fallback_attempted": false,
+      "legacy_used": false,
+      "source_grid_recovery_used": false
+    },
+    "cylinder": {
+      "success": false,
+      "wall_seconds": 0.134687,
+      "peak_working_set_bytes": 9908224,
+      "arrangement_cells": 0,
+      "completed_quads": 0,
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "fallback_attempted": false,
+      "legacy_used": false,
+      "source_grid_recovery_used": false
+    }
+  },
+  "complete_suite": {
+    "tests": 621,
+    "passed": 588,
+    "failed": 33,
+    "seconds": 74.763,
+    "terminated_normally": true,
+    "watchdog_fired": false,
+    "maximum_rss_kib": null,
+    "maximum_rss_note": "Unavailable because the outer timing shell detached before final statistics; packaged XML and log prove normal completion.",
+    "slowest_tests_seconds": {
+      "MilestoneGP26.ProductionMatrixTerminatesWithoutHiddenFallback": 24.435,
+      "MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition": 23.575,
+      "ProductionManifestCases/MilestoneGP27SurfaceCellCase.RunsIndependentlyAndOwnsReturnedDiagnostics/7": 23.249
+    }
+  },
+  "comparison": {
+    "P5-TB24": {"passed": 590, "tests": 613, "failed": 23, "seconds": 75.260, "max_rss_kib": 256544},
+    "P5-TB25": {"passed": 598, "tests": 617, "failed": 19, "seconds": 333.444, "max_rss_kib_lower_bound": 582904},
+    "P5-TB26": {"passed": 588, "tests": 621, "failed": 33, "seconds": 74.763, "max_rss_kib": null}
+  },
+  "decision": {
+    "r1_transition_authority": "closed",
+    "r2_runtime": "open",
+    "advance_to_r3": false,
+    "next_turn": "P5-R2C directed boundary-sector and cycle-inventory correction plus compile-only build",
+    "reason": "Valid boundary, disconnected-component, singularity-fan, hard-rail, and periodic cycles are omitted from audited cycle/cell inventory, leaving halfedges with cell=-1 and regressing Phase 16/17 and direct analytic cases."
+  }
+}
