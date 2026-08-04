@@ -1,0 +1,238 @@
+name: Agent Build Surface Cell P5 CB134 Fix
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-p5-cb134-fix.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-surface-cell-p5-cb134-fix-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ACTIVE_BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  BUILD_DIR: build/agent-p5-cb134-release
+  PACKAGE_DIR: artifact
+  LOG_DIR: /tmp/p5-cb134-fix-workflow-logs
+  ACTIVITY_LOG: /tmp/p5-cb134-fix-workflow-logs/p5-cb134-fix-compile-activity.log
+  FIX_COMMENT_ID: '5178106844'
+  FIX_SHA256: 49ee91640fced0bf21a50fd614a40937ff5b261d4adee8e828262ba2d3e2dd29
+  REVIEWED_PATCH_SHA256: cb6b02838c08f68bb272b14a13b218572fcae88a58c9d3a73badbafd26b5421f
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent workflow log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          {
+            echo "P5-CB126 through P5-CB134 compile-only closeout after test namespace fix"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "${ACTIVITY_LOG}"
+
+      - name: Record compile-only run start
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          message="P5-CB126 through P5-CB134 corrected compile-only run ${GITHUB_RUN_ID} started for branch head ${GITHUB_SHA}. It applies only the reviewed test namespace fix and compiles the exact four targets. No project binary executes."
+          echo "start_comment=${message}" | tee -a "${ACTIVITY_LOG}"
+          gh api repos/${GITHUB_REPOSITORY}/issues/8/comments -f body="${message}"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 2
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply compile fix, compile, and package
+        id: compile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "${LOG_DIR}"
+          exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
+          PS4='+ ${BASH_SOURCE}:${LINENO}: '
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            {
+              echo "compile_step_exit_code=${rc}"
+              echo "compile_step_finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              git status --short --branch || true
+              df -h . || true
+              du -sh "${BUILD_DIR}" "${PACKAGE_DIR}" 2>/dev/null || true
+            } | tee -a "${ACTIVITY_LOG}"
+            exit "${rc}"
+          }
+          trap finish EXIT
+          set -x
+
+          initial_local_sha=$(git rev-parse HEAD)
+          initial_remote_sha=$(git ls-remote origin "refs/heads/${ACTIVE_BRANCH}" | cut -f1)
+          test "${initial_local_sha}" = "${initial_remote_sha}"
+          git status --porcelain=v1 > /tmp/pre-fix-status.txt
+          test ! -s /tmp/pre-fix-status.txt
+          grep -q 'enum class PureQuadEmbeddingFailureKind' include/directional/geometry/PureQuadCompletion.h
+
+          if grep -q 'directional::geometry::audit_complex_incidence(complex)' tests/PatchDescriptorMilestoneETests.cpp; then
+            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${FIX_COMMENT_ID}" --jq .body \
+              > "/tmp/p5-cb134-fix-comment-${FIX_COMMENT_ID}.txt"
+            python3 - <<'PY'
+          import base64
+          import gzip
+          import hashlib
+          import os
+          import pathlib
+          import re
+
+          comment_id = os.environ['FIX_COMMENT_ID']
+          body = pathlib.Path(f'/tmp/p5-cb134-fix-comment-{comment_id}.txt').read_text(encoding='utf-8')
+          match = re.search(r'```text\s*([A-Za-z0-9+/=\s]+?)\s*```', body, re.DOTALL)
+          if match is None:
+              raise SystemExit(f'compile-fix payload missing from comment {comment_id}')
+          patch = gzip.decompress(base64.b64decode(''.join(match.group(1).split()), validate=True))
+          expected = os.environ['FIX_SHA256']
+          actual = hashlib.sha256(patch).hexdigest()
+          if actual != expected:
+              raise SystemExit(f'compile-fix sha256 mismatch: expected {expected}, got {actual}')
+          pathlib.Path('/tmp/P5-CB134-compile-fix.patch').write_bytes(patch)
+          print(f'fix_patch_bytes={len(patch)}')
+          print(f'fix_patch_sha256={actual}')
+          PY
+            sha256sum /tmp/P5-CB134-compile-fix.patch
+            git apply --check /tmp/P5-CB134-compile-fix.patch
+            git apply /tmp/P5-CB134-compile-fix.patch
+            git diff --check
+            git config user.name directional-build-agent
+            git config user.email directional-build-agent@users.noreply.github.com
+            git add tests/PatchDescriptorMilestoneETests.cpp
+            git commit -m 'P5-CB134: qualify typed incidence audit in regression [skip ci]'
+            git push origin "HEAD:${ACTIVE_BRANCH}"
+          else
+            echo "P5-CB134 compile fix already present"
+          fi
+
+          source_sha=$(git rev-parse HEAD)
+          remote_sha=$(git ls-remote origin "refs/heads/${ACTIVE_BRANCH}" | cut -f1)
+          test "${source_sha}" = "${remote_sha}"
+          printf '%s\n' "${source_sha}" > /tmp/source-commit.txt
+          printf '%s\n' "${initial_local_sha}" > /tmp/workflow-event-commit.txt
+          printf '%s\n' "${REVIEWED_PATCH_SHA256}" > /tmp/reviewed-patch-sha256.txt
+          printf '%s\n' "${FIX_SHA256}" > /tmp/compile-fix-sha256.txt
+
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1 --jobs 4
+          git submodule status --recursive | tee /tmp/submodule-status.txt
+          git diff --check
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+
+          rm -rf "${BUILD_DIR}" "${PACKAGE_DIR}"
+          mkdir -p "${BUILD_DIR}" "${PACKAGE_DIR}/bin" "${PACKAGE_DIR}/lib" \
+            "${PACKAGE_DIR}/source" "${PACKAGE_DIR}/logs"
+
+          cmake -S . -B "${BUILD_DIR}" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_FLAGS_RELEASE='-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            |& tee "${BUILD_DIR}/configure.log"
+
+          cmake --build "${BUILD_DIR}" \
+            --target directional_core directional_pipeline directional_phase1_tests directional_benchmarks \
+            -j 4 |& tee "${BUILD_DIR}/build.log"
+
+          test -f "${BUILD_DIR}/libdirectional_core.a"
+          test -f "${BUILD_DIR}/libdirectional_pipeline.a"
+          test -x "${BUILD_DIR}/directional_phase1_tests"
+          test -x "${BUILD_DIR}/directional_benchmarks"
+
+          fixture_root="${BUILD_DIR}/test-data/benchmarks/fixtures"
+          find "${fixture_root}" -type f | sort | tee /tmp/fixture-files.txt
+          test "$(wc -l < /tmp/fixture-files.txt)" -eq 26
+          git status --porcelain=v1 > /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+
+          cp "${BUILD_DIR}/directional_phase1_tests" "${PACKAGE_DIR}/bin/"
+          cp "${BUILD_DIR}/directional_benchmarks" "${PACKAGE_DIR}/bin/"
+          cp -a "${BUILD_DIR}/test-data" "${PACKAGE_DIR}/bin/"
+          cp "${BUILD_DIR}/libdirectional_core.a" "${PACKAGE_DIR}/lib/"
+          cp "${BUILD_DIR}/libdirectional_pipeline.a" "${PACKAGE_DIR}/lib/"
+          git archive --format=tar.gz --output="${PACKAGE_DIR}/source/source.tar.gz" HEAD
+          cp /tmp/source-commit.txt /tmp/workflow-event-commit.txt \
+            /tmp/reviewed-patch-sha256.txt /tmp/compile-fix-sha256.txt \
+            /tmp/source-status.txt /tmp/submodule-status.txt /tmp/fixture-files.txt \
+            "${PACKAGE_DIR}/"
+          cp "${BUILD_DIR}/configure.log" "${BUILD_DIR}/build.log" \
+            "${ACTIVITY_LOG}" "${PACKAGE_DIR}/logs/"
+          find "${PACKAGE_DIR}" -type f -print0 | sort -z | xargs -0 sha256sum > /tmp/files.sha256
+          mv /tmp/files.sha256 "${PACKAGE_DIR}/files.sha256"
+          sha256sum "${PACKAGE_DIR}/bin/directional_phase1_tests" \
+            "${PACKAGE_DIR}/bin/directional_benchmarks" \
+            "${PACKAGE_DIR}/lib/libdirectional_core.a" \
+            "${PACKAGE_DIR}/lib/libdirectional_pipeline.a" \
+            | tee "${PACKAGE_DIR}/built-targets.sha256"
+
+      - name: Upload compiled checkpoint
+        if: steps.compile.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-cb134-github-source-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Record compile-only result
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMPILE_OUTCOME: ${{ steps.compile.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          source_sha=$(git rev-parse HEAD 2>/dev/null || printf '%s' unknown)
+          message="P5-CB126 through P5-CB134 corrected compile-only run ${GITHUB_RUN_ID} finished ${COMPILE_OUTCOME}. Event commit: ${GITHUB_SHA}; exact source head: ${source_sha}. No project binary executed."
+          echo "result_comment=${message}" | tee -a "${ACTIVITY_LOG}"
+          gh api repos/${GITHUB_REPOSITORY}/issues/8/comments -f body="${message}"
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-cb134-fix-workflow-logs-${{ github.run_id }}
+          path: /tmp/p5-cb134-fix-workflow-logs
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
