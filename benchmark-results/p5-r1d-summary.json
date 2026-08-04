@@ -1,0 +1,61 @@
+{
+  "checkpoint": "P5-R1D",
+  "turn_type": "code_changes_compile_only",
+  "date": "2026-08-04",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "pull_request": 8,
+  "workflow": {
+    "event_commit": "6fc57831afc7f77e0cda9bd1f409aaaaece15bda",
+    "source_commit": "a1fec970297739cfe23ade339b6a7b57071b7300",
+    "run_id": 30942950398,
+    "job_id": 92105699139,
+    "conclusion": "success",
+    "ninja_actions_completed": 132,
+    "ninja_actions_total": 132
+  },
+  "patch": {
+    "sha256": "4488988dc877f1a0a001e27286b68f2752314bade361d59a11c1e7eae8a6cd89"
+  },
+  "artifact": {
+    "id": 8906115786,
+    "name": "surface-cell-p5-r1d-github-source-linux-release",
+    "sha256": "361c06696c56234666f8ce18d018415715851b03e2225b04bdbdfc624a0bdd66",
+    "package_files": 42,
+    "manifest_verified": 40,
+    "manifest_total": 40,
+    "fixture_files": 26,
+    "recursive_submodules": 9,
+    "source_status_empty": true
+  },
+  "workflow_log_artifact": {
+    "id": 8906116758,
+    "name": "surface-cell-p5-r1d-fix-workflow-logs-30942950398",
+    "sha256": "c8ceb09ca4ea9f72148125466a9958366b51a52f8e02c229aa71d1852b2d1ec2"
+  },
+  "targets": {
+    "directional_phase1_tests": "452b546cc2202c741fa47701aa69c4b571b3f8836468d8b64a5130298e20a591",
+    "directional_benchmarks": "a3c15c1c7b05901cb8e2d815fbf43c4189e388f04be283a72a070d2ae40c2762",
+    "libdirectional_core.a": "c61fa1df41cef65ad46d72df8c013dad4a0932c00b77d4710e84e8a9d811f213",
+    "libdirectional_pipeline.a": "a25317b1dd713da2add62c7bde904d6c9e54dcd7160cef2767224a0a6d76fef8"
+  },
+  "implementation": {
+    "cross_local_sheet_exact_manifold_adjacency": true,
+    "local_sheet_provenance_preserved": true,
+    "component_barrier_preserved": true,
+    "hard_rail_barrier_preserved": true,
+    "boundary_barrier_preserved": true,
+    "nonmanifold_barrier_preserved": true,
+    "disconnected_topology_barrier_preserved": true,
+    "new_source_chart_contracts": 4,
+    "r2_work_included": false
+  },
+  "execution_boundary": {
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "meshes_executed": false,
+    "project_binaries_executed": false
+  },
+  "next_turn": "P5-TB25 artifact-only R1D validation",
+  "runtime_acceptance": "open"
+}
