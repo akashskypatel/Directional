@@ -636,9 +636,9 @@ TEST(PatchDescriptorMilestoneE,
   const Eigen::MatrixXi &F = fixture.F;
   const directional::geometry::SurfaceCellComplex &complex = fixture.complex;
   const auto initialIncidence =
-      directional::geometry::audit_complex_incidence(complex);
+      directional::geometry::surface_simplification_detail::audit_complex_incidence(complex);
   ASSERT_TRUE(initialIncidence.valid)
-      << directional::geometry::surface_cell_incidence_failure_name(
+      << directional::geometry::surface_simplification_detail::surface_cell_incidence_failure_name(
              initialIncidence.failure)
       << " cell=" << initialIncidence.cell
       << " halfedge=" << initialIncidence.halfedge
