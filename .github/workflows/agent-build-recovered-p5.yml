@@ -54,6 +54,19 @@ jobs:
             echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } | tee "${ACTIVITY_LOG}"
 
+      - name: Record compile-only run start
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EVENT_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          message="P5-CB91 through P5-CB98 GitHub-source compile-only closeout run ${RUN_ID} started for event commit ${EVENT_SHA}. Detailed success/failure activity will always be uploaded as a workflow log artifact. No test, benchmark, help/list, discovery, custom-mesh, or compiled project binary command executes."
+          echo "start_comment=${message}" | tee -a "${ACTIVITY_LOG}"
+          gh api repos/${{ github.repository }}/issues/8/comments -f body="${message}"
+
       - name: Checkout exact working branch
         uses: actions/checkout@v4
         with:
