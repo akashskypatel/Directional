@@ -1,5 +1,7 @@
 # Implementation review
 
+[Authoritative Design Document](DESIGN.md)
+
 ## Verdict
 
 **The implementation is pointed toward the intended architecture, but the current P5 effort has drifted into downstream repair, ownership diagnostics, and bounded failure handling before the core constructive producers are strong enough.**
