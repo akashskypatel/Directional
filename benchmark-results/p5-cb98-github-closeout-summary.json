@@ -1,0 +1,87 @@
+{
+  "schema": "directional.p5-github-compile-closeout-summary.v1",
+  "date": "2026-08-03",
+  "phase": "P5",
+  "turn": "P5-CB91-P5-CB98",
+  "turn_type": "code-and-build-closeout",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "draft_pr": 8,
+  "review_policy": "never",
+  "runtime_executed": false,
+  "implementation_commit": "34edce9e508fd81e28bbd6b68a064a2a57bacf03",
+  "exact_github_compiled_source": "680d81c6946f45b1daed9dd477cfde565f8ac7a2",
+  "source_status": "clean",
+  "workflow": {
+    "path": ".github/workflows/agent-build-recovered-p5.yml",
+    "run_id": 30864341083,
+    "job_id": 91852874765,
+    "conclusion": "success",
+    "compiler": "GNU C++ 13.3.0",
+    "cmake": "3.31.6",
+    "ninja": "1.13.2",
+    "build_type": "Release",
+    "release_flags": "-O2 -DNDEBUG",
+    "build_parallelism": 4,
+    "ninja_actions": {
+      "completed": 131,
+      "total": 131
+    },
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "custom_meshes_executed": false,
+    "compiled_binaries_executed": false
+  },
+  "targets": {
+    "directional_core": "passed",
+    "directional_pipeline": "passed",
+    "directional_phase1_tests": "passed-not-executed",
+    "directional_benchmarks": "passed-not-executed"
+  },
+  "compiled_artifact": {
+    "id": 8875627676,
+    "name": "surface-cell-p5-cb98-github-source-linux-release",
+    "size_bytes": 11603127,
+    "sha256": "b9560c9438289e90e6acca3a0f4b7f1d46a5ad34663693c1243bf4176056c165",
+    "checksum_entries_verified": 38,
+    "checksum_entries_total": 38,
+    "fixture_files": 26,
+    "source_status_bytes": 0,
+    "expires_at": "2026-08-18T00:09:12Z",
+    "built_targets": {
+      "directional_phase1_tests": {
+        "bytes": 10853888,
+        "sha256": "c4db631272d5a29a8a88a4fbd26112efb191a5c72017a2f2e9713d2a74276f17"
+      },
+      "directional_benchmarks": {
+        "bytes": 4865376,
+        "sha256": "153f29beebaa61d9da6f6104eef22271bfd1ba80376a8863d7053ed14ac2a341"
+      },
+      "libdirectional_core.a": {
+        "bytes": 9446970,
+        "sha256": "acaeeb97672b9956e125b6b40cf16e42dc4e2506518812b4478b292d27afa7f5"
+      },
+      "libdirectional_pipeline.a": {
+        "bytes": 2906420,
+        "sha256": "6c0c31499a2cd718f117c18abaf02e306aa2408746dc79b9fffafe0363402615"
+      }
+    }
+  },
+  "workflow_log_artifact": {
+    "id": 8875628150,
+    "name": "surface-cell-p5-cb98-workflow-logs-30864341083",
+    "size_bytes": 5588,
+    "sha256": "f31e7d57d137399634187edbac5902732e0226172bc80248c1abf41ff61513e8",
+    "uncompressed_activity_log_bytes": 31765,
+    "expires_at": "2026-09-03T00:09:14Z",
+    "always_uploaded": true
+  },
+  "workflow_policy": {
+    "path": ".agents/Directional/GitHub_Workflow_Policy.md",
+    "detailed_logging_required": true,
+    "log_artifact_always_required": true,
+    "use_log_artifact_for_failure_diagnosis": true
+  },
+  "next_turn": "P5-TB17-artifact-only-test-and-benchmark",
+  "runtime_status": "pending"
+}
