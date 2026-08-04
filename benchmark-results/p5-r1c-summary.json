@@ -1,0 +1,63 @@
+{
+  "checkpoint": "P5-R1C",
+  "turnType": "code-and-compile-only",
+  "date": "2026-08-04",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "pullRequest": 8,
+  "testedBaselineSource": "e31e5abd52ca9e673d1718f47d088d19296d1d22",
+  "workflowEventCommit": "f652e518152b2944b176464b2ea8cfd99d09ccda",
+  "implementationCommit": "f4cce52006d21a248473e327ada1d66183af54e6",
+  "appliedSourceDiffSha256": "b41f4a6ffc517d1547a6da777fe01fc55e18e0b09aad47db83843333f6bea99c",
+  "workflowRun": 30939748719,
+  "workflowJob": 92094837803,
+  "artifact": {
+    "id": 8904835304,
+    "name": "surface-cell-p5-r1c-github-source-linux-release",
+    "sha256": "cf4d2532353d8f93848d01b51f9ee4d5ddbed0ff365e9acccab69688b3c4e2cc",
+    "sizeBytes": 12135944,
+    "packageFiles": 42,
+    "manifestEntries": 40,
+    "manifestVerified": 40,
+    "fixtureFiles": 26,
+    "recursiveSubmodules": 9,
+    "sourceStatusEmpty": true
+  },
+  "workflowLogs": {
+    "id": 8904836090,
+    "name": "surface-cell-p5-r1c-direct-workflow-logs-30939748719",
+    "sha256": "c8ef21410b17971ff7a4d6366c5da5a4b8df157be7fab3068e4c4efa021d7db3",
+    "sizeBytes": 5654
+  },
+  "build": {
+    "generator": "Ninja",
+    "configuration": "Release",
+    "compiler": "GNU 13.3.0",
+    "cxxFlags": "-O2 -DNDEBUG",
+    "actionsCompleted": 132,
+    "actionsTotal": 132,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "targetSha256": {
+      "directional_phase1_tests": "c0b9f4f42439648a8310808035add730271eb63637e1eb1c16f55986cd20d67d",
+      "directional_benchmarks": "34c9bd8456c6bd34c2ae9976650b90585985122fe3792b2a4c24bd982b03d833",
+      "libdirectional_core.a": "98e807fc34a21f1b56520444a2345a3acfab75b1e351cd9090cfb2db91211ea9",
+      "libdirectional_pipeline.a": "a25317b1dd713da2add62c7bde904d6c9e54dcd7160cef2767224a0a6d76fef8"
+    },
+    "projectBinaryExecuted": false
+  },
+  "changes": {
+    "sharedEdgeOrientationPredicateCorrected": true,
+    "wholeMeshOrientationReversalContractAdded": true,
+    "phase22ValidatorTestsPackagedInPhase1Target": true,
+    "validatorWeakening": false,
+    "fallbackOrRecoverySubstitution": false,
+    "r2WorkStarted": false
+  },
+  "runtimeAcceptance": "not-run",
+  "nextTurn": "P5-TB24 artifact-only R1C validation"
+}
