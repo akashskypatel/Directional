@@ -9,151 +9,134 @@
 
 ## Current checkpoint
 
-P5-CB108 through P5-CB116 source changes and the compile-only build are
-complete. P5 remains open because runtime acceptance has not been run for this
-checkpoint.
+P5-TB19 artifact-only runtime validation is complete. P5 remains open.
 
-Exact compiled checkpoint:
+Tested checkpoint:
 
-- source: `9bff7d352f2751228d10ce72e2860c899f90de80`;
-- compile-only run: `30871579432` — **success**;
-- artifact: `8878170954`,
+- source `9bff7d352f2751228d10ce72e2860c899f90de80`;
+- artifact `8878170954`,
   `surface-cell-p5-cb116-github-source-linux-release`;
-- artifact SHA-256:
+- SHA-256
   `c82a27122aaa3f3cc96f6cb3621248ed8eed4bdaf92df503b0f8deb06ec8f5d6`;
-- mandatory workflow-log artifact: `8878171276`;
-- log SHA-256:
-  `9f1531b930be97ceb674eb4f0f788cd5271673fbc77fc600df1f0768d36d28e6`;
-- reviewed patch SHA-256:
-  `e35e2afc376e2cc34fe552f0e76bd7a7628f67255da4f5c44ab369830e0181cd`;
-- source status empty;
+- empty source status;
 - checksums **40/40**;
-- fixture files **26**.
+- fixture files **26**;
+- recursive submodule records **9**.
 
-The turn compiled exactly `directional_core`, `directional_pipeline`,
-`directional_phase1_tests`, and `directional_benchmarks`. It executed no test,
-benchmark, custom mesh, help/list/discovery command, or compiled project binary.
+No configure, build, relink, patch, regeneration, or source modification
+occurred during P5-TB19.
 
-The next turn is **P5-TB19 artifact-only test and benchmark**. Execute the
-packaged binaries directly from artifact `8878170954`. Do not configure, build,
-relink, patch, regenerate, or modify source.
+The next turn is **P5-CB117 through P5-CB125 code changes + compile-only
+build**. Execute no test, benchmark, custom mesh, help/list/discovery command, or
+compiled project binary.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_CB108_CB116_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_TB18_Canonical_Ownership_Output_Memory_Test_Benchmark_Report.md`
-5. `benchmark-results/p5-tb18-summary.json`
-6. `.agents/Directional/Milestone_G_P5_Post_TB18_Ownership_Compaction_Topology_Output_Code_Build_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB19_Ownership_Compaction_Topology_Output_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb19-summary.json`
+5. `.agents/Directional/Milestone_G_P5_Post_TB19_Completion_Topology_Reuse_Output_Code_Build_Plan.md`
+6. `.agents/Directional/Milestone_G_P5_CB108_CB116_Code_Build_Report.md`
 7. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Implemented model
+## Runtime result
 
-### Compact exact ownership
+Closed:
 
-`SurfaceCellComplex` now owns one sorted exact ownership registry. A cell stores
-only a fixed-size `{source component, registry ordinal}` key and its own exact
-incident `(component, source face, local sheet)` chart records. Canonical class
-membership is stored once, remains exact and collision-free, and is independent
-of source-face row and insertion order.
+- Phase 14–18 **235/235**;
+- Phase 16 **39/39**;
+- Phase 17 **26/26**;
+- typed prepared-domain evidence;
+- invalid-midpoint mutation and bit-exact rollback;
+- full-suite termination: **583/599** in 100.312 s, maximum RSS 530,259,968 B;
+- all formerly blocked heavy cases terminate;
+- both bunny paths complete inside established wall/RSS limits;
+- four independent processes per bunny path produce deterministic failed-result
+  signatures;
+- no fallback or source-grid recovery.
 
-The registry participates once in structural hashes, rollback identities,
-transactional copies/restoration, logical payload accounting, and retained
-capacity accounting. This removes the P5-TB18 `O(cells × component faces)`
-ownership duplication from the source model.
+Open:
 
-### Unlabeled topology
+- 16 full-suite assertions;
+- positive exact completion reuse (`0/0`);
+- cylinder incidence/DCEL;
+- shared-edge parity topology;
+- pipeline stage/injection/fallback lineage;
+- valid nonempty production output;
+- smooth duplicate completion and torus/thin incomplete complexes;
+- at least 75% same-sample memory reconciliation.
 
-When complete explicit labels are absent, intrinsic face adjacency derives
-source components and deterministic default charts. Complete explicit labels
-remain authoritative. Interior cells without valid registry ownership now fail
-closed instead of passing through an empty registry.
+## Earliest typed producers
 
-### Simplification and prepared-domain validation
+### Successful side subdivision
 
-Arrangement, simplification, feasibility repair, descriptors, and rollback use
-the same registry-backed ownership utility. Ad-hoc `{component, sheet}` merge
-fallbacks were removed.
+Mechanical feature, prescribed sphere, and face-edge bunny fail after a reported
+successful subdivision with `repeated-boundary-node`:
 
-Prepared-domain auditing now reports typed failures for repeated boundary node,
-repeated halfedge, non-simple boundary, missing source chart, and ownership
-registry mismatch. Descriptor early returns retain typed evidence.
+- mechanical: cell 24, halfedge 304, node 67;
+- sphere: cell 2, halfedge 59, node 13;
+- face-edge bunny: cell 2, halfedge 69, node 20.
 
-### Midpoint, cylinder, and output changes
+Repair replacement-path orientation/splicing and prove a simple boundary before
+commit. Do not special-case these IDs.
 
-- The malformed-midpoint fixture replaces only its target occurrence/chart and
-  preserves unrelated shared-node chart data.
-- The cylinder closure fixture supplies explicit consistent ownership labels so
-  classifier ambiguity does not preempt topology validation.
-- The pipeline validates completed output before optimization, retains a valid
-  completed checkpoint, identifies invalid completion at
-  `completion/output-validation`, and rolls back from invalid optimizer output
-  to the last valid checkpoint.
+### Open-cylinder incidence
 
-## Runtime acceptance is not established
+`CylindricalOpenStrandCommitsWithTopologyPreserved` fails boolean incidence
+validation before candidate extraction. Add a typed first-entity incidence audit
+and repair periodic seam/cell/boundary cycles from topology.
 
-Do not assume that compilation closes:
+### Route and reuse
 
-- the P5-TB18 Phase 14–18, Milestone D/E, Phase 20, or full-suite failures;
-- same-corner route repair or positive exact completion reuse;
-- malformed midpoint after valid common-chart setup and exact rollback;
-- canonical cylinder incidence/stitching/orientation/disk/Euler/boundary loops;
-- production output for any fixture;
-- random-bunny face-edge or smooth completion, determinism, wall time, or RSS;
-- the 75% same-sample memory reconciliation gate.
+The positive whole-complex route still stops at
+`same-corner-distinct-boundary`; cache lookup is not reached and counters remain
+zero. Define route ownership from canonical boundary occurrences and exact
+source charts, then count only validated actual reuse/recompute.
 
-P5-CB112, full P5-CB114/P5-CB115 runtime closure, and quantitative memory
-closure remain open until P5-TB19 evidence exists.
+### Completion and pipeline
 
-## P5-TB19 execution order
+Plane, cylinder, seam, and close-sheets completed buffers are already
+self-intersecting at `completion/output-validation`; optimizer rollback is not
+the producer fix. Separately, completion validation preempts injected
+optimization/validation tests and changes GP23/GP24/Phase20 lineage. Preserve
+validation and restore explicit stage semantics.
 
-1. Validate artifact SHA, exact source, empty source status, recursive submodules,
-   26 fixtures, and 40 packaged checksums.
-2. Run new compact-registry, unlabeled ownership, face-row invariance,
-   prepared-domain, midpoint, cylinder, route/reuse, output, and memory focused
-   regressions.
-3. Run the 20 P5-TB18 complete-suite failures and the three formerly blocked
-   heavy cases individually.
-4. Run Phase 14–18, Milestone D, Milestone E, Phase 20, and the complete suite;
-   compare with P5-TB18's 573/593 completed aggregate.
-5. Run both guaranteed reuse scenarios and require real `reused > 0` and
-   `recomputed > 0`; synthetic counters are forbidden.
-6. Run missing-common-chart and malformed-midpoint separately. The malformed
-   case must mutate temporarily, reach `InvalidMidpointEmbedding`, and roll back
-   bit-exactly.
-7. Validate cylinder incidence, embedding, orientation, disk cells, Euler 0,
-   one component, two boundary loops, and protected strand/rail preservation
-   before simplification.
-8. Run the full direct production matrix with fallback `Fail` and source-grid
-   recovery disabled. Require the returned mesh itself to be nonempty,
-   source-valid, manifold, and pure quad for supported cases.
-9. Run one random-bunny face-edge and one smooth process first. Repeat four
-   independent processes only after a path completes within the established
-   wall/RSS limits. Compare complete structural/result digests.
-10. Reconcile categorized simultaneous ownership against the same peak-RSS
-    sample and require at least 75% coverage.
-11. For every unmet gate, preserve the earliest typed stage/entity and write the
-    next focused code/build plan. Do not patch source in the runtime turn.
+Smooth bunny deterministically reports a completion-template duplicate stitched
+quad. Torus and thin tube remain `IncompleteSurfaceCellComplex`.
 
-## Expected decision points
+### Memory
 
-- If Phase 16 no-label topology remains invalid, inspect the derived registry,
-  component canonicalization, and exact incident charts before changing a
-  validator.
-- If Phase 17 still fails, inspect transaction-boundary canonicalization and
-  registry key preservation through merges and rollback.
-- If prepared cells fail, use the new typed domain failure and exact entity; do
-  not accept a non-simple disk.
-- If reuse stays zero, inspect same-corner route ownership, affected-patch
-  discovery, dependency mismatch vectors, cache lookup order, and rebind
-  validation before changing counters.
-- If a completed mesh is invalid before optimization, repair the completion
-  producer. If optimization invalidates a valid checkpoint, verify rollback and
-  accepted-step validation.
-- If memory remains excessive, distinguish registry membership, per-cell
-  incident charts, rollback/prepared copies, descriptor/cache lifetime, and
-  allocator/RSS remainder against the same sample.
+Ownership compaction is effective: face-edge falls from 2.513 GB to about
+204 MB and smooth from a 3.801 GB SIGKILL to about 451 MB. Categorized same-sample
+coverage is still only about 18.7% and 43.4%; extend telemetry rather than
+assuming the remainder.
+
+## Required next work
+
+Follow P5-CB117–P5-CB125 in the post-TB19 plan, in order:
+
+1. canonical transaction rollback baseline;
+2. typed incidence audit and cylinder DCEL;
+3. shared-edge parity topology;
+4. repeated-node subdivision producer;
+5. same-corner route and genuine reuse;
+6. pipeline stage/injection/fallback lineage;
+7. valid completion output;
+8. smooth duplicate plus torus/thin incomplete complexes;
+9. memory telemetry, regression sources, and four-target compile/package gate.
+
+## Compile-only boundary
+
+The next turn must shallow-initialize recursive submodules and compile exactly:
+
+- `directional_core`;
+- `directional_pipeline`;
+- `directional_phase1_tests`;
+- `directional_benchmarks`.
+
+Do not run them. Initialize detailed workflow logging before fallible work and
+always upload a separate log artifact under `if: always()`.
 
 ## Preserved prohibitions
 
@@ -166,22 +149,15 @@ closure remain open until P5-TB19 evidence exists.
 - no fixture/ID special cases;
 - no timeout-as-correctness.
 
-## Workflow policy
-
-Every GitHub workflow must initialize detailed logging before fallible work,
-always upload a separate log artifact under `if: always()`, avoid exposing
-secrets, and preserve the current turn boundary.
-
 ## Key lessons
 
-- Exact class membership belongs once per complex; cell-local keys and incident
-  charts must not duplicate component-wide payloads.
-- A compact ordinal is safe only when its registry is deterministic, exact, and
-  included in rollback and structural identity.
-- Missing labels require intrinsic derivation, not skipped validation or a
-  partial implicit/explicit ownership mixture.
-- Typed evidence must survive every descriptor early return.
-- A valid completed mesh is a transactional checkpoint; optimizer failure must
-  not discard it.
-- Compile success proves source/build validity only. Runtime topology, reuse,
-  output, determinism, and resource gates remain separate acceptance criteria.
+- Exact ownership compaction fixed the resource catastrophe and restored broad
+  topology coverage; preserve it.
+- A successful transaction must not be declared until incidence and simple
+  domain identity pass on the committed candidate.
+- A valid rollback baseline is the canonical transaction-entry state, not a
+  pre-canonical manual fixture representation.
+- Completion validation revealed that several buffers are invalid before
+  optimization; repair the completion producer.
+- Deterministic failure and resource compliance are progress, not successful
+  quadrangulation.
