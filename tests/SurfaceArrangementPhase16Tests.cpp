@@ -1389,6 +1389,40 @@ TEST(SourceChartTransitionsR1,
 }
 
 TEST(SourceChartTransitionsR1,
+     WholeMeshOrientationReversalPreservesCanonicalTransitions) {
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           2, 1, 3;
+  Eigen::MatrixXi reversed(2, 3);
+  reversed << 0, 2, 1,
+              2, 3, 1;
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {5, 5};
+
+  const directional::geometry::SourceChartTransitionGraph forward(
+      faces, components, sheets);
+  const directional::geometry::SourceChartTransitionGraph backward(
+      reversed, components, sheets);
+
+  ASSERT_TRUE(forward.available());
+  ASSERT_TRUE(backward.available());
+  ASSERT_EQ(2U, forward.transitions().size());
+  ASSERT_EQ(2U, backward.transitions().size());
+  EXPECT_EQ(forward.chart_component_identity(forward.chart_component(0)),
+            backward.chart_component_identity(backward.chart_component(0)));
+
+  std::vector<std::uint64_t> forwardHashes;
+  std::vector<std::uint64_t> backwardHashes;
+  for (const auto &transition : forward.transitions()) {
+    forwardHashes.push_back(transition.structuralHash);
+  }
+  for (const auto &transition : backward.transitions()) {
+    backwardHashes.push_back(transition.structuralHash);
+  }
+  EXPECT_EQ(forwardHashes, backwardHashes);
+}
+
+TEST(SourceChartTransitionsR1,
      InconsistentSharedEdgeOrientationRejectsTransitionGraph) {
   Eigen::MatrixXi faces(2, 3);
   faces << 0, 1, 2,

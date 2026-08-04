@@ -435,6 +435,7 @@ if(DIRECTIONAL_BUILD_TESTS)
     tests/SurfaceMeshOptimizerPhase20Tests.cpp
     tests/SurfaceMeshOptimizerPhase21Tests.cpp
     tests/SurfaceMeshOptimizerPhase22Tests.cpp
+    tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp
     tests/ReliefTopologyPhase13Tests.cpp
     tests/SurfaceCellTracingPhase14Tests.cpp
     tests/SurfaceCellsPhase10Tests.cpp

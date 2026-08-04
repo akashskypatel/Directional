@@ -717,7 +717,7 @@ private:
     // Consistently oriented manifold triangles traverse their shared edge in
     // opposite directions; the coordinate map still preserves canonical
     // low->high endpoint order.
-    return firstDirection == secondDirection ? -1 : 1;
+    return firstDirection == -secondDirection ? -1 : 1;
   }
 
   const Eigen::MatrixXi *faces_ = nullptr;
