@@ -1,0 +1,211 @@
+{
+  "schema": "directional.p5-tb24-summary.v1",
+  "date": "2026-08-04",
+  "turn": "P5-TB24",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "artifact": {
+    "id": 8904835304,
+    "name": "surface-cell-p5-r1c-github-source-linux-release",
+    "sha256": "cf4d2532353d8f93848d01b51f9ee4d5ddbed0ff365e9acccab69688b3c4e2cc",
+    "exactSource": "f4cce52006d21a248473e327ada1d66183af54e6",
+    "eventCommit": "f652e518152b2944b176464b2ea8cfd99d09ccda",
+    "appliedSourceDiffSha256": "b41f4a6ffc517d1547a6da777fe01fc55e18e0b09aad47db83843333f6bea99c",
+    "sourceStatusEmpty": true,
+    "recursiveChecksums": "40/40",
+    "packageFiles": 42,
+    "fixtures": 26,
+    "recursiveSubmodules": 9
+  },
+  "runtime": {
+    "sourceChartTransitions": {
+      "tests": 7,
+      "passed": 7,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 0.0,
+      "failedTests": []
+    },
+    "sourceAuthoritativeValidator": {
+      "tests": 6,
+      "passed": 6,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 0.0,
+      "failedTests": []
+    },
+    "focusedRecovery": {
+      "tests": 9,
+      "passed": 9,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 0.127,
+      "failedTests": []
+    },
+    "graphDependentFocused": {
+      "tests": 6,
+      "passed": 3,
+      "failures": 3,
+      "errors": 0,
+      "seconds": 0.0,
+      "failedTests": [
+        "PureQuadCompletionPhase18.CompletionAcceptsBoundaryVertexAndEdgeChartAliases",
+        "SurfaceArrangementPhase16.AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass",
+        "SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"
+      ]
+    },
+    "phase14To18": {
+      "tests": 243,
+      "passed": 240,
+      "failures": 3,
+      "errors": 0,
+      "seconds": 0.024,
+      "failedTests": [
+        "PureQuadCompletionPhase18.CompletionAcceptsBoundaryVertexAndEdgeChartAliases",
+        "SurfaceArrangementPhase16.AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass",
+        "SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"
+      ]
+    },
+    "phase16": {
+      "tests": 39,
+      "passed": 37,
+      "failures": 2,
+      "errors": 0,
+      "seconds": 0.004,
+      "failedTests": [
+        "SurfaceArrangementPhase16.AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass",
+        "SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"
+      ]
+    },
+    "phase20": {
+      "tests": 48,
+      "passed": 46,
+      "failures": 2,
+      "errors": 0,
+      "seconds": 0.309,
+      "failedTests": [
+        "SurfaceCellPipelinePhase20.CylinderFixtureCompletesProductionOutput",
+        "SurfaceCellPipelinePhase20.ValidationRejectionCannotReportCompletedSurfaceCells"
+      ]
+    },
+    "completeSuite": {
+      "tests": 613,
+      "passed": 590,
+      "failures": 23,
+      "errors": 0,
+      "seconds": 75.26,
+      "failedTests": [
+        "MilestoneGP23.FailReturnsNoMesh",
+        "MilestoneGP23.ReturnInputMeshIsCanonicalFallback",
+        "MilestoneGP23.SurfaceCellFailureTerminatesBeforeLegacyIntegration",
+        "MilestoneGP24.EverySurfaceCellCountHasAvailability",
+        "MilestoneGP24.ProvenanceCountComesFromOutput",
+        "MilestoneGP24.RealFailurePreservesLastValidStageArtifacts",
+        "MilestoneGP24.StageDurationsUseIndependentIntervals",
+        "MilestoneGP26.FeatureRailVerticesSupportBothIncidentLocalSheets",
+        "MilestoneGP26.PlaneAndMechanicalFixturesCompleteEndToEnd",
+        "MilestoneGP26.CylinderCompletesEndToEnd",
+        "MilestoneGP26.MultiFaceSeamCompletesEndToEnd",
+        "MilestoneGP26.TorusCompletesEndToEnd",
+        "MilestoneGP27.ProductionSurfaceCellMatrixMatchesSupportedDisposition",
+        "MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary",
+        "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved",
+        "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
+        "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+        "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse",
+        "PureQuadCompletionPhase18.CompletionAcceptsBoundaryVertexAndEdgeChartAliases",
+        "SurfaceArrangementPhase16.AdjacentPerFaceChartsShareOneCanonicalCellOwnershipClass",
+        "SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation",
+        "SurfaceCellPipelinePhase20.CylinderFixtureCompletesProductionOutput",
+        "SurfaceCellPipelinePhase20.ValidationRejectionCannotReportCompletedSurfaceCells"
+      ],
+      "maxRssKiB": 256544,
+      "terminated": true,
+      "watchdogSeconds": 1200,
+      "exitCode": 1
+    },
+    "analyticProduction": {
+      "plane__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.013002,
+        "peakWorkingSetBytes": 8491008,
+        "completedQuadCount": 12,
+        "validationFailures": 15,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "firstInvalidProducerStage": "completion/output-validation",
+        "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false,
+        "sameSampleOwnershipMeasurementAvailable": true,
+        "sameSampleWorkingSetBytes": 8491008,
+        "sameSampleCategorizedOwnedBytes": 0,
+        "sameSampleOwnedToWorkingSetRatio": 0
+      },
+      "multi_face_seam__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.022407,
+        "peakWorkingSetBytes": 8654848,
+        "completedQuadCount": 24,
+        "validationFailures": 22,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "firstInvalidProducerStage": "completion/output-validation",
+        "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false,
+        "sameSampleOwnershipMeasurementAvailable": true,
+        "sameSampleWorkingSetBytes": 8654848,
+        "sameSampleCategorizedOwnedBytes": 0,
+        "sameSampleOwnedToWorkingSetRatio": 0
+      },
+      "close_sheets__surface_cells": {
+        "success": false,
+        "wallSeconds": 0.034595,
+        "peakWorkingSetBytes": 8826880,
+        "completedQuadCount": 34,
+        "validationFailures": 27,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "firstInvalidProducerStage": "completion/output-validation",
+        "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+        "outputOrigin": "None",
+        "recoveryUsed": false,
+        "fallbackAttempted": false,
+        "legacyFallbackUsed": false,
+        "sameSampleOwnershipMeasurementAvailable": true,
+        "sameSampleWorkingSetBytes": 8826880,
+        "sameSampleCategorizedOwnedBytes": 0,
+        "sameSampleOwnedToWorkingSetRatio": 0
+      }
+    }
+  },
+  "comparisonToTB23": {
+    "completeSuiteNowTerminates": true,
+    "completeSuitePreviousTerminated": false,
+    "planeValidationFailures": {
+      "before": 27,
+      "after": 15
+    },
+    "multiFaceSeamValidationFailures": {
+      "before": 46,
+      "after": 22
+    },
+    "closeSheetsValidationFailures": {
+      "before": 61,
+      "after": 27
+    }
+  },
+  "disposition": {
+    "r0Closed": true,
+    "orientationPredicateClosed": true,
+    "r1Closed": false,
+    "advanceToR2": false,
+    "earliestRemainingRootCause": "SourceChartTransitionGraph still excludes exact manifold adjacency when incident faces have different local-sheet labels. This conflicts with the established adjacent-local-sheet tracing, ownership, completion-alias, feature-rail, and intrinsic-fan contracts.",
+    "nextTurn": "P5-R1D adjacent local-sheet exact-adjacency correction + compile-only build"
+  }
+}
