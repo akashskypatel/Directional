@@ -1094,6 +1094,95 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     UnlabelledTopologyDerivesCanonicalOwnershipRegistry) {
+  const auto fixture = unit_square_two_triangles();
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  EXPECT_TRUE(directional::geometry::validate_surface_cell_ownership_registry(
+      complex));
+  ASSERT_FALSE(complex.sourceOwnershipRegistry.empty());
+  const auto interior = std::find_if(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return !cell.boundaryCycle && cell.sourceFaces.size() == 2U;
+      });
+  ASSERT_NE(interior, complex.cells.end());
+  ASSERT_TRUE(interior->sourceOwnershipClass.valid);
+  EXPECT_EQ(2U, interior->sourceOwnershipClass.values.size());
+  ASSERT_EQ(2U, interior->sourceCharts.size());
+  EXPECT_EQ(0, interior->sourceCharts[0].localSheet);
+  EXPECT_EQ(0, interior->sourceCharts[1].localSheet);
+  EXPECT_NE(interior->sourceCharts[0].sourceFace,
+            interior->sourceCharts[1].sourceFace);
+  const auto *record = directional::geometry::find_surface_cell_ownership_class(
+      complex, interior->sourceOwnershipClass);
+  ASSERT_NE(nullptr, record);
+  EXPECT_EQ(2U, record->exactCharts.size());
+}
+
+TEST(SurfaceArrangementPhase16,
+     OwnershipRegistryStoresClassMembershipOnceForRepeatedCells) {
+  const auto fixture = unit_square_two_triangles();
+  auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+  const auto interior = std::find_if(
+      complex.cells.begin(), complex.cells.end(),
+      [](const auto &cell) { return !cell.boundaryCycle; });
+  ASSERT_NE(interior, complex.cells.end());
+  const auto prototype = *interior;
+  for (int copy = 0; copy < 128; ++copy) {
+    auto cell = prototype;
+    cell.id = static_cast<int>(complex.cells.size());
+    complex.cells.push_back(std::move(cell));
+  }
+
+  ASSERT_TRUE(directional::geometry::validate_surface_cell_ownership_registry(
+      complex));
+  std::size_t perCellOwnershipWords = 0U;
+  for (const auto &cell : complex.cells) {
+    if (cell.sourceOwnershipClass.valid) {
+      perCellOwnershipWords += cell.sourceOwnershipClass.values.size();
+      EXPECT_EQ(2U, cell.sourceOwnershipClass.values.size());
+    }
+  }
+  std::size_t registryMembershipWords = 0U;
+  for (const auto &record : complex.sourceOwnershipRegistry) {
+    registryMembershipWords += record.canonicalMembership.values.size();
+  }
+  EXPECT_LT(registryMembershipWords, perCellOwnershipWords);
+}
+
+TEST(SurfaceArrangementPhase16,
+     OwnershipClassOrdinalIsInvariantToSourceFaceRowOrder) {
+  const auto fixture = unit_square_two_triangles();
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {7, 11};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+  const auto first = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {}, options);
+
+  Eigen::MatrixXi reorderedFaces = fixture.faces;
+  reorderedFaces.row(0).swap(reorderedFaces.row(1));
+  const std::vector<int> reorderedComponents = {0, 0};
+  const std::vector<int> reorderedSheets = {11, 7};
+  directional::geometry::SurfaceArrangementOptions reorderedOptions;
+  reorderedOptions.sourceFaceComponents = &reorderedComponents;
+  reorderedOptions.sourceFaceSheets = &reorderedSheets;
+  const auto second = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, reorderedFaces, {}, reorderedOptions);
+
+  ASSERT_EQ(first.sourceOwnershipRegistry.size(),
+            second.sourceOwnershipRegistry.size());
+  for (std::size_t index = 0; index < first.sourceOwnershipRegistry.size();
+       ++index) {
+    EXPECT_EQ(first.sourceOwnershipRegistry[index].canonicalMembership,
+              second.sourceOwnershipRegistry[index].canonicalMembership);
+  }
+}
+
+TEST(SurfaceArrangementPhase16,
      BunnySingularityFanUsesIntrinsicSourceVertexRotation) {
   const BunnySingularityFanFixture fixture =
       bunny_singularity_fan_fixture();

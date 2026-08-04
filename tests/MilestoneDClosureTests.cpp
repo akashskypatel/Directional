@@ -485,9 +485,20 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   constexpr int axialCells = 2;
   const MeshFixture mesh = open_cylinder(segments, axialCells);
   const auto arcs = cylinder_grid_arcs(mesh, segments, axialCells);
+  // This fixture tests the open-cylinder DCEL and simplification contract, not
+  // classifier ambiguity. Stamp one explicit connected source component and
+  // one physical side before arrangement construction so every periodic seam
+  // occurrence participates in the same authoritative chart.
+  const std::vector<int> sourceComponents(
+      static_cast<std::size_t>(mesh.faces.rows()), 0);
+  const std::vector<int> sourceSheets(
+      static_cast<std::size_t>(mesh.faces.rows()), 0);
+  directional::geometry::SurfaceArrangementOptions arrangementOptions;
+  arrangementOptions.sourceFaceComponents = &sourceComponents;
+  arrangementOptions.sourceFaceSheets = &sourceSheets;
   const SurfaceCellComplex complex =
-      directional::geometry::build_surface_cell_complex(mesh.vertices,
-                                                         mesh.faces, arcs);
+      directional::geometry::build_surface_cell_complex(
+          mesh.vertices, mesh.faces, arcs, arrangementOptions);
   ASSERT_TRUE(directional::geometry::surface_simplification_detail::
                   validate_complex_incidence(complex));
   ASSERT_TRUE(complex.diagnostics.incidenceValid);

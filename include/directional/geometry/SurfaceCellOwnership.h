@@ -10,7 +10,9 @@
 #ifndef DIRECTIONAL_GEOMETRY_SURFACE_CELL_OWNERSHIP_H
 #define DIRECTIONAL_GEOMETRY_SURFACE_CELL_OWNERSHIP_H
 
+#include <algorithm>
 #include <array>
+#include <limits>
 #include <cstdint>
 #include <string>
 #include <tuple>
@@ -82,6 +84,70 @@ struct SurfaceCellSourceChart {
            std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
   }
 };
+
+
+struct SurfaceCellOwnershipClassRecord {
+  int sourceComponent = -1;
+  // Face-row-independent exact membership signature. Each member stores
+  // {component, localSheet, sorted source-triangle vertex ids}.
+  SurfaceCellCanonicalIdentity canonicalMembership;
+  // Runtime lookup table retaining the exact source-face chart records.
+  std::vector<SurfaceCellSourceChart> exactCharts;
+
+  [[nodiscard]] bool valid() const {
+    return sourceComponent >= 0 && canonicalMembership.valid &&
+           !exactCharts.empty() &&
+           std::is_sorted(exactCharts.begin(), exactCharts.end()) &&
+           std::all_of(exactCharts.begin(), exactCharts.end(),
+                       [&](const SurfaceCellSourceChart &chart) {
+                         return chart.valid() &&
+                                chart.sourceComponent == sourceComponent;
+                       });
+  }
+
+  friend bool operator==(const SurfaceCellOwnershipClassRecord &lhs,
+                         const SurfaceCellOwnershipClassRecord &rhs) {
+    return lhs.sourceComponent == rhs.sourceComponent &&
+           lhs.canonicalMembership == rhs.canonicalMembership &&
+           lhs.exactCharts == rhs.exactCharts;
+  }
+
+  friend bool operator<(const SurfaceCellOwnershipClassRecord &lhs,
+                        const SurfaceCellOwnershipClassRecord &rhs) {
+    return std::tie(lhs.sourceComponent, lhs.canonicalMembership,
+                    lhs.exactCharts) <
+           std::tie(rhs.sourceComponent, rhs.canonicalMembership,
+                    rhs.exactCharts);
+  }
+};
+
+inline SurfaceCellCanonicalIdentity
+make_surface_cell_ownership_key(const int sourceComponent,
+                                const int classOrdinal) {
+  SurfaceCellCanonicalIdentity identity;
+  if (sourceComponent < 0 || classOrdinal < 0) {
+    return identity;
+  }
+  identity.valid = true;
+  identity.values = {sourceComponent, classOrdinal};
+  return identity;
+}
+
+inline bool decode_surface_cell_ownership_key(
+    const SurfaceCellCanonicalIdentity &identity, int &sourceComponent,
+    int &classOrdinal) {
+  if (!identity.valid || identity.values.size() != 2U ||
+      identity.values[0] < 0 || identity.values[1] < 0 ||
+      identity.values[0] > std::numeric_limits<int>::max() ||
+      identity.values[1] > std::numeric_limits<int>::max()) {
+    sourceComponent = -1;
+    classOrdinal = -1;
+    return false;
+  }
+  sourceComponent = static_cast<int>(identity.values[0]);
+  classOrdinal = static_cast<int>(identity.values[1]);
+  return true;
+}
 
 struct SurfaceCellDomainIdentity {
   bool valid = false;
@@ -223,6 +289,11 @@ enum class SurfaceCellDomainIdentityFailureKind : int {
   InvalidSourceSupport = 12,
   InvalidOrientedBoundaryIdentity = 13,
   InvalidUndirectedBoundaryIdentity = 14,
+  RepeatedBoundaryNode = 15,
+  RepeatedBoundaryHalfedge = 16,
+  NonSimpleBoundary = 17,
+  MissingSourceChart = 18,
+  OwnershipRegistryMismatch = 19,
 };
 
 inline const char *surface_cell_domain_identity_failure_name(
@@ -258,6 +329,16 @@ inline const char *surface_cell_domain_identity_failure_name(
     return "invalid-oriented-boundary-identity";
   case SurfaceCellDomainIdentityFailureKind::InvalidUndirectedBoundaryIdentity:
     return "invalid-undirected-boundary-identity";
+  case SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryNode:
+    return "repeated-boundary-node";
+  case SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryHalfedge:
+    return "repeated-boundary-halfedge";
+  case SurfaceCellDomainIdentityFailureKind::NonSimpleBoundary:
+    return "non-simple-boundary";
+  case SurfaceCellDomainIdentityFailureKind::MissingSourceChart:
+    return "missing-source-chart";
+  case SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch:
+    return "ownership-registry-mismatch";
   }
   return "unknown";
 }

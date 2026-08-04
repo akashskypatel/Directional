@@ -35,6 +35,28 @@ std::vector<std::uint64_t> exact_rollback_identity(
   identity.reserve(complex.nodes.size() * 16U +
                    complex.halfedges.size() * 32U +
                    complex.cells.size() * 16U + 32U);
+  append_rollback_word(
+      identity,
+      static_cast<std::int64_t>(complex.sourceOwnershipRegistry.size()));
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    append_rollback_word(identity, record.sourceComponent);
+    append_rollback_word(identity, record.canonicalMembership.valid ? 1 : 0);
+    append_rollback_word(
+        identity,
+        static_cast<std::int64_t>(record.canonicalMembership.values.size()));
+    for (const std::int64_t value : record.canonicalMembership.values) {
+      append_rollback_word(identity, value);
+    }
+    append_rollback_word(
+        identity, static_cast<std::int64_t>(record.exactCharts.size()));
+    for (const SurfaceCellSourceChart &chart : record.exactCharts) {
+      append_rollback_word(identity, chart.sourceComponent);
+      append_rollback_word(identity, chart.sourceFace);
+      append_rollback_word(identity, chart.localSheet);
+    }
+  }
+
   append_rollback_word(identity, static_cast<std::int64_t>(complex.nodes.size()));
   for (const SurfaceArrangementNode &node : complex.nodes) {
     append_rollback_word(identity, node.id);
@@ -200,13 +222,29 @@ int canonical_halfedge(const SurfaceCellComplex &complex, const int id) {
 
 Eigen::RowVector3d interpolated_barycentric(
     const SurfaceCellComplex &complex, const int from, const int to,
-    const int face, const double alpha) {
+    const int face, const SurfaceArrangementHalfedge &edge,
+    const double alpha) {
+  const auto edge_barycentric = [&](const SurfaceArrangementNode &node) {
+    const int provenance = edge.provenance.empty()
+                               ? -1
+                               : edge.provenance.front().provenance;
+    for (const SurfaceArrangementNodeOccurrence &occurrence :
+         node.occurrences) {
+      if (occurrence.sourceFace == face &&
+          occurrence.sourceComponent == edge.sourceComponent &&
+          occurrence.sourceSheet == edge.sourceSheet &&
+          occurrence.sourceArc == edge.sourceArc &&
+          (provenance < 0 || occurrence.provenance == provenance)) {
+        return occurrence.barycentric;
+      }
+    }
+    return surface_arrangement_detail::node_barycentric_on_face(
+        node, face, edge.sourceComponent, edge.sourceSheet);
+  };
   const Eigen::RowVector3d a =
-      surface_arrangement_detail::node_barycentric_on_face(
-          complex.nodes[static_cast<std::size_t>(from)], face);
+      edge_barycentric(complex.nodes[static_cast<std::size_t>(from)]);
   const Eigen::RowVector3d b =
-      surface_arrangement_detail::node_barycentric_on_face(
-          complex.nodes[static_cast<std::size_t>(to)], face);
+      edge_barycentric(complex.nodes[static_cast<std::size_t>(to)]);
   if (!a.allFinite() || !b.allFinite()) {
     return Eigen::RowVector3d::Constant(
         std::numeric_limits<double>::quiet_NaN());
@@ -919,6 +957,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
   // Keep the committed halfedge vector in `input`. Nodes and cells move into
   // the mutable transaction and are restored through a compact undo log on
   // every rejected path, avoiding a second full complex.
+  rebuilt.sourceOwnershipRegistry =
+      std::move(input.sourceOwnershipRegistry);
   rebuilt.nodes = std::move(input.nodes);
   rebuilt.cells = std::move(input.cells);
   rebuilt.diagnostics = std::move(input.diagnostics);
@@ -958,6 +998,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       cell.disk = undo->disk;
     }
     rebuilt.nodes.resize(originalNodeCount);
+    input.sourceOwnershipRegistry =
+        std::move(rebuilt.sourceOwnershipRegistry);
     input.nodes = std::move(rebuilt.nodes);
     input.cells = std::move(rebuilt.cells);
     input.diagnostics = originalDiagnostics;
@@ -1069,7 +1111,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       for (const OccurrenceScope &scope : scopes) {
         const Eigen::RowVector3d barycentric =
             surface_cell_feasibility_detail::interpolated_barycentric(
-                rebuilt, forward.from, forward.to, scope.face, alpha);
+                rebuilt, forward.from, forward.to, scope.face,
+                *scope.edge, alpha);
         if (!barycentric.allFinite() ||
             barycentric.minCoeff() < -1.0e-10 ||
             barycentric.maxCoeff() > 1.0 + 1.0e-10) {
@@ -1180,6 +1223,20 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         ++result.hardFeatureSplits;
       }
     }
+  }
+
+  result.rollbackUndoOwnedBytes +=
+      static_cast<std::uint64_t>(
+          rebuilt.sourceOwnershipRegistry.capacity()) *
+      sizeof(SurfaceCellOwnershipClassRecord);
+  for (const SurfaceCellOwnershipClassRecord &record :
+       rebuilt.sourceOwnershipRegistry) {
+    result.rollbackUndoOwnedBytes +=
+        static_cast<std::uint64_t>(record.exactCharts.capacity()) *
+            sizeof(SurfaceCellSourceChart) +
+        static_cast<std::uint64_t>(
+            record.canonicalMembership.values.capacity()) *
+            sizeof(std::int64_t);
   }
 
   for (int cellIndex = 0; cellIndex < static_cast<int>(rebuilt.cells.size());

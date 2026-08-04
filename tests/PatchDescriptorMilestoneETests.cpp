@@ -1356,16 +1356,28 @@ TEST(PatchDescriptorMilestoneE,
       fixture.complex.nodes[static_cast<std::size_t>(badEdge.from)];
   auto &badTo =
       fixture.complex.nodes[static_cast<std::size_t>(badEdge.to)];
-  badFrom.occurrences.clear();
-  badTo.occurrences.clear();
-  badFrom.sourceFace = badEdge.sourceFace;
-  badTo.sourceFace = badEdge.sourceFace;
-  badFrom.sourceComponent = badEdge.sourceComponent;
-  badTo.sourceComponent = badEdge.sourceComponent;
-  badFrom.sourceSheet = badEdge.sourceSheet;
-  badTo.sourceSheet = badEdge.sourceSheet;
-  badFrom.barycentric = Eigen::RowVector3d(1.0, 0.0, 0.0);
-  badTo.barycentric = Eigen::RowVector3d(-1.0, 0.0, 0.0);
+  // Preserve all unrelated charts on these shared nodes. The subdivision
+  // implementation resolves an occurrence by exact edge provenance before
+  // falling back to a face chart, so only the target edge is malformed.
+  const int badProvenance = badEdge.provenance.empty()
+                                ? -1
+                                : badEdge.provenance.front().provenance;
+  const auto eraseTargetOccurrence = [&](auto &node, const auto &edge) {
+    node.occurrences.erase(
+        std::remove_if(node.occurrences.begin(), node.occurrences.end(),
+                       [&](const auto &occurrence) {
+                         return occurrence.sourceFace == edge.sourceFace &&
+                                occurrence.sourceComponent ==
+                                    edge.sourceComponent &&
+                                occurrence.sourceSheet == edge.sourceSheet &&
+                                occurrence.sourceArc == edge.sourceArc &&
+                                (badProvenance < 0 ||
+                                 occurrence.provenance == badProvenance);
+                       }),
+        node.occurrences.end());
+  };
+  eraseTargetOccurrence(badFrom, badEdge);
+  eraseTargetOccurrence(badTo, badEdge);
 
   const auto malformedOccurrence = [&](const auto &edge,
                                          const Eigen::RowVector3d &barycentric) {

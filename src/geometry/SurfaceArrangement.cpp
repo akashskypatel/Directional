@@ -959,9 +959,15 @@ bool proper_transverse_crossing(const Segment2 &a, const Segment2 &b,
 namespace directional::geometry::surface_arrangement_detail {
 
 std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
-  std::uint64_t bytes = vector_storage_bytes(complex.nodes) +
+  std::uint64_t bytes = vector_storage_bytes(complex.sourceOwnershipRegistry) +
+                        vector_storage_bytes(complex.nodes) +
                         vector_storage_bytes(complex.halfedges) +
                         vector_storage_bytes(complex.cells);
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    bytes += vector_storage_bytes(record.exactCharts);
+    bytes += vector_storage_bytes(record.canonicalMembership.values);
+  }
   for (const SurfaceArrangementNode &node : complex.nodes) {
     bytes += vector_storage_bytes(node.occurrences);
   }
@@ -1266,6 +1272,222 @@ bool same_logical_side(
 
 namespace directional::geometry {
 
+const SurfaceCellOwnershipClassRecord *find_surface_cell_ownership_class(
+    const SurfaceCellComplex &complex,
+    const SurfaceCellCanonicalIdentity &key) {
+  int component = -1;
+  int ordinal = -1;
+  if (!decode_surface_cell_ownership_key(key, component, ordinal) ||
+      ordinal < 0 ||
+      ordinal >= static_cast<int>(complex.sourceOwnershipRegistry.size())) {
+    return nullptr;
+  }
+  const SurfaceCellOwnershipClassRecord &record =
+      complex.sourceOwnershipRegistry[static_cast<std::size_t>(ordinal)];
+  return record.sourceComponent == component && record.valid() ? &record
+                                                               : nullptr;
+}
+
+bool validate_surface_cell_ownership_registry(
+    const SurfaceCellComplex &complex) {
+  if (!std::is_sorted(complex.sourceOwnershipRegistry.begin(),
+                      complex.sourceOwnershipRegistry.end()) ||
+      std::adjacent_find(complex.sourceOwnershipRegistry.begin(),
+                         complex.sourceOwnershipRegistry.end()) !=
+          complex.sourceOwnershipRegistry.end()) {
+    return false;
+  }
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    if (!record.valid()) {
+      return false;
+    }
+  }
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    if (!cell.sourceOwnershipClass.valid) {
+      if (!cell.boundaryCycle &&
+          cell.cellClass != SurfaceArrangementCellClass::Exterior) {
+        return false;
+      }
+      continue;
+    }
+    const SurfaceCellOwnershipClassRecord *record =
+        find_surface_cell_ownership_class(complex, cell.sourceOwnershipClass);
+    if (record == nullptr || cell.sourceComponent != record->sourceComponent ||
+        !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
+      return false;
+    }
+    for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+      if (!std::binary_search(record->exactCharts.begin(),
+                              record->exactCharts.end(), chart)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool canonicalize_surface_cell_ownership(
+    SurfaceCellComplex &complex, const Eigen::MatrixXi &faces) {
+  if (faces.cols() != 3) {
+    return false;
+  }
+  if (validate_surface_cell_ownership_registry(complex)) {
+    return true;
+  }
+
+  std::vector<SurfaceCellOwnershipClassRecord> records;
+  records.reserve(complex.cells.size());
+  const auto face_for_vertices = [&](const std::array<int, 3> &vertices) {
+    for (int face = 0; face < faces.rows(); ++face) {
+      std::array<int, 3> candidate{{faces(face, 0), faces(face, 1),
+                                    faces(face, 2)}};
+      std::sort(candidate.begin(), candidate.end());
+      if (candidate == vertices) {
+        return face;
+      }
+    }
+    return -1;
+  };
+  const auto membership_signature =
+      [&](const std::vector<SurfaceCellSourceChart> &charts) {
+        SurfaceCellCanonicalIdentity identity;
+        std::vector<std::array<std::int64_t, 5>> members;
+        members.reserve(charts.size());
+        for (const SurfaceCellSourceChart &chart : charts) {
+          if (!chart.valid()) {
+            return SurfaceCellCanonicalIdentity{};
+          }
+          if (faces.rows() == 0) {
+            members.push_back({chart.sourceComponent, chart.localSheet,
+                               chart.sourceFace, -1, -1});
+            continue;
+          }
+          if (chart.sourceFace >= faces.rows()) {
+            return SurfaceCellCanonicalIdentity{};
+          }
+          std::array<int, 3> vertices{{faces(chart.sourceFace, 0),
+                                       faces(chart.sourceFace, 1),
+                                       faces(chart.sourceFace, 2)}};
+          std::sort(vertices.begin(), vertices.end());
+          members.push_back({chart.sourceComponent, chart.localSheet,
+                             vertices[0], vertices[1], vertices[2]});
+        }
+        std::sort(members.begin(), members.end());
+        members.erase(std::unique(members.begin(), members.end()),
+                      members.end());
+        if (members.empty()) {
+          return identity;
+        }
+        identity.valid = true;
+        identity.values.push_back(static_cast<std::int64_t>(members.size()));
+        for (const auto &member : members) {
+          identity.values.insert(identity.values.end(), member.begin(),
+                                 member.end());
+        }
+        return identity;
+      };
+  const auto legacy_record = [&](const SurfaceArrangementCell &cell) {
+    SurfaceCellOwnershipClassRecord record;
+    record.sourceComponent = cell.sourceComponent;
+    record.exactCharts = cell.sourceCharts;
+    std::sort(record.exactCharts.begin(), record.exactCharts.end());
+    record.exactCharts.erase(
+        std::unique(record.exactCharts.begin(), record.exactCharts.end()),
+        record.exactCharts.end());
+
+    const auto &values = cell.sourceOwnershipClass.values;
+    if (cell.sourceOwnershipClass.valid && values.size() >= 6U &&
+        values[0] >= 1 &&
+        values.size() == 1U + static_cast<std::size_t>(values[0]) * 5U) {
+      record.exactCharts.clear();
+      for (std::size_t offset = 1U; offset < values.size(); offset += 5U) {
+        if (values[offset] < 0 || values[offset + 1U] < 0) {
+          return SurfaceCellOwnershipClassRecord{};
+        }
+        std::array<int, 3> vertices{{static_cast<int>(values[offset + 2U]),
+                                     static_cast<int>(values[offset + 3U]),
+                                     static_cast<int>(values[offset + 4U])}};
+        std::sort(vertices.begin(), vertices.end());
+        const int face = face_for_vertices(vertices);
+        if (face < 0) {
+          return SurfaceCellOwnershipClassRecord{};
+        }
+        record.sourceComponent = static_cast<int>(values[offset]);
+        record.exactCharts.push_back(
+            {record.sourceComponent, face, static_cast<int>(values[offset + 1U])});
+      }
+      std::sort(record.exactCharts.begin(), record.exactCharts.end());
+      record.exactCharts.erase(
+          std::unique(record.exactCharts.begin(), record.exactCharts.end()),
+          record.exactCharts.end());
+    }
+    if (record.exactCharts.empty() && cell.sourceComponent >= 0 &&
+        cell.sourceSheet >= 0) {
+      std::vector<int> sourceFaces = cell.sourceFaces;
+      if (sourceFaces.empty() && cell.sourceFace >= 0) {
+        sourceFaces.push_back(cell.sourceFace);
+      }
+      for (const int face : sourceFaces) {
+        record.exactCharts.push_back(
+            {cell.sourceComponent, face, cell.sourceSheet});
+      }
+      std::sort(record.exactCharts.begin(), record.exactCharts.end());
+      record.exactCharts.erase(
+          std::unique(record.exactCharts.begin(), record.exactCharts.end()),
+          record.exactCharts.end());
+    }
+    if (record.sourceComponent < 0 && !record.exactCharts.empty()) {
+      record.sourceComponent = record.exactCharts.front().sourceComponent;
+    }
+    record.canonicalMembership = membership_signature(record.exactCharts);
+    return record;
+  };
+
+  std::vector<SurfaceCellOwnershipClassRecord> cellRecords;
+  cellRecords.reserve(complex.cells.size());
+  for (const SurfaceArrangementCell &cell : complex.cells) {
+    SurfaceCellOwnershipClassRecord record = legacy_record(cell);
+    if (!record.valid()) {
+      if (cell.boundaryCycle || cell.cellClass ==
+                                    SurfaceArrangementCellClass::Exterior) {
+        cellRecords.push_back({});
+        continue;
+      }
+      return false;
+    }
+    records.push_back(record);
+    cellRecords.push_back(std::move(record));
+  }
+  std::sort(records.begin(), records.end());
+  records.erase(std::unique(records.begin(), records.end()), records.end());
+  complex.sourceOwnershipRegistry = records;
+  for (std::size_t cellIndex = 0; cellIndex < complex.cells.size(); ++cellIndex) {
+    SurfaceArrangementCell &cell = complex.cells[cellIndex];
+    const SurfaceCellOwnershipClassRecord &record = cellRecords[cellIndex];
+    if (!record.valid()) {
+      cell.sourceOwnershipClass = {};
+      continue;
+    }
+    const auto found = std::lower_bound(records.begin(), records.end(), record);
+    if (found == records.end() || !(*found == record)) {
+      return false;
+    }
+    const int ordinal = static_cast<int>(std::distance(records.begin(), found));
+    cell.sourceComponent = record.sourceComponent;
+    cell.sourceOwnershipClass =
+        make_surface_cell_ownership_key(record.sourceComponent, ordinal);
+    cell.sourceCharts.erase(
+        std::remove_if(cell.sourceCharts.begin(), cell.sourceCharts.end(),
+                       [&](const SurfaceCellSourceChart &chart) {
+                         return !std::binary_search(record.exactCharts.begin(),
+                                                    record.exactCharts.end(), chart);
+                       }),
+        cell.sourceCharts.end());
+  }
+  return validate_surface_cell_ownership_registry(complex);
+}
+
 SurfaceCellComplex build_surface_cell_complex(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<SurfaceArrangementArc> &inputArcs,
@@ -1283,6 +1505,102 @@ SurfaceCellComplex build_surface_cell_complex(
   };
   std::vector<Segment2> segments;
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+
+  // Ownership labels are optional at the public API boundary, but ownership
+  // itself is not. Derive deterministic intrinsic defaults so topology-only
+  // callers enter the same canonical path as fully labelled production calls.
+  std::vector<std::vector<int>> faceAdjacency(
+      static_cast<std::size_t>(faces.rows()));
+  for (const auto &[key, incident] : edgeFaces) {
+    (void)key;
+    if (incident[0] >= 0 && incident[1] >= 0) {
+      faceAdjacency[static_cast<std::size_t>(incident[0])].push_back(incident[1]);
+      faceAdjacency[static_cast<std::size_t>(incident[1])].push_back(incident[0]);
+    }
+  }
+
+  const bool hasExplicitComponents =
+      options.sourceFaceComponents != nullptr &&
+      options.sourceFaceComponents->size() ==
+          static_cast<std::size_t>(faces.rows()) &&
+      std::all_of(options.sourceFaceComponents->begin(),
+                  options.sourceFaceComponents->end(),
+                  [](const int component) { return component >= 0; });
+  std::vector<int> resolvedComponents(static_cast<std::size_t>(faces.rows()),
+                                      -1);
+  if (hasExplicitComponents) {
+    resolvedComponents = *options.sourceFaceComponents;
+  } else {
+    int rawComponentCount = 0;
+    for (int seed = 0; seed < faces.rows(); ++seed) {
+      if (resolvedComponents[static_cast<std::size_t>(seed)] >= 0) {
+        continue;
+      }
+      std::queue<int> pending;
+      pending.push(seed);
+      resolvedComponents[static_cast<std::size_t>(seed)] = rawComponentCount;
+      while (!pending.empty()) {
+        const int face = pending.front();
+        pending.pop();
+        for (const int neighbor :
+             faceAdjacency[static_cast<std::size_t>(face)]) {
+          if (resolvedComponents[static_cast<std::size_t>(neighbor)] >= 0) {
+            continue;
+          }
+          resolvedComponents[static_cast<std::size_t>(neighbor)] =
+              rawComponentCount;
+          pending.push(neighbor);
+        }
+      }
+      ++rawComponentCount;
+    }
+
+    // Remap components by their intrinsic minimum source-triangle signature so
+    // component ids do not depend on source-face row order.
+    std::vector<std::array<int, 3>> componentSignatures(
+        static_cast<std::size_t>(rawComponentCount),
+        std::array<int, 3>{{std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max(),
+                            std::numeric_limits<int>::max()}});
+    for (int face = 0; face < faces.rows(); ++face) {
+      std::array<int, 3> signature{{faces(face, 0), faces(face, 1),
+                                    faces(face, 2)}};
+      std::sort(signature.begin(), signature.end());
+      const int raw = resolvedComponents[static_cast<std::size_t>(face)];
+      componentSignatures[static_cast<std::size_t>(raw)] =
+          std::min(componentSignatures[static_cast<std::size_t>(raw)],
+                   signature);
+    }
+    std::vector<int> order(static_cast<std::size_t>(rawComponentCount));
+    std::iota(order.begin(), order.end(), 0);
+    std::sort(order.begin(), order.end(), [&](const int lhs, const int rhs) {
+      return componentSignatures[static_cast<std::size_t>(lhs)] <
+             componentSignatures[static_cast<std::size_t>(rhs)];
+    });
+    std::vector<int> remap(static_cast<std::size_t>(rawComponentCount), -1);
+    for (int ordinal = 0; ordinal < rawComponentCount; ++ordinal) {
+      remap[static_cast<std::size_t>(order[static_cast<std::size_t>(ordinal)])] =
+          ordinal;
+    }
+    for (int &component : resolvedComponents) {
+      component = remap[static_cast<std::size_t>(component)];
+    }
+  }
+
+  const bool hasExplicitSheets =
+      options.sourceFaceSheets != nullptr &&
+      options.sourceFaceSheets->size() ==
+          static_cast<std::size_t>(faces.rows()) &&
+      std::all_of(options.sourceFaceSheets->begin(),
+                  options.sourceFaceSheets->end(),
+                  [](const int sheet) { return sheet >= 0; });
+  std::vector<int> resolvedSheets(static_cast<std::size_t>(faces.rows()), 0);
+  if (hasExplicitSheets) {
+    resolvedSheets = *options.sourceFaceSheets;
+  }
+  SurfaceArrangementOptions resolvedOptions = options;
+  resolvedOptions.sourceFaceComponents = &resolvedComponents;
+  resolvedOptions.sourceFaceSheets = &resolvedSheets;
   VertexFanScopes vertexFanScopes;
   std::vector<std::vector<int>> incidentFacesByVertex(
       static_cast<std::size_t>(vertices.rows()));
@@ -1356,8 +1674,8 @@ SurfaceCellComplex build_surface_cell_complex(
       const bool boundaryEdge =
           found == edgeFaces.end() || found->second[1] < 0;
       const bool hardFeature =
-          options.hardFeatureEdges.count(key) != 0;
-      if ((!options.insertBoundaryRails || !boundaryEdge) && !hardFeature) {
+          resolvedOptions.hardFeatureEdges.count(key) != 0;
+      if ((!resolvedOptions.insertBoundaryRails || !boundaryEdge) && !hardFeature) {
         continue;
       }
       Segment2 boundary;
@@ -1368,7 +1686,7 @@ SurfaceCellComplex build_surface_cell_complex(
       boundary.family = -1;
       boundary.hardFeature = hardFeature || boundaryEdge;
       boundary.featureClass = edge;
-      complete_segment_scope(options, boundary);
+      complete_segment_scope(resolvedOptions, boundary);
       segments.push_back(boundary);
     }
   }
@@ -1399,7 +1717,7 @@ SurfaceCellComplex build_surface_cell_complex(
     segment.proposalBoundarySegment = arc.proposalBoundarySegment;
     segment.railT0 = arc.railT0;
     segment.railT1 = arc.railT1;
-    complete_segment_scope(options, segment);
+    complete_segment_scope(resolvedOptions, segment);
     if (clip_to_triangle(segment.start, segment.end, segment.sourceT0,
                          segment.sourceT1)) {
       segments.push_back(segment);
@@ -2187,14 +2505,14 @@ SurfaceCellComplex build_surface_cell_complex(
       allCharts.insert(chart);
     }
   };
-  if (options.sourceFaceComponents != nullptr &&
-      options.sourceFaceSheets != nullptr &&
-      options.sourceFaceComponents->size() == options.sourceFaceSheets->size()) {
+  if (resolvedOptions.sourceFaceComponents != nullptr &&
+      resolvedOptions.sourceFaceSheets != nullptr &&
+      resolvedOptions.sourceFaceComponents->size() == resolvedOptions.sourceFaceSheets->size()) {
     for (int face = 0;
-         face < static_cast<int>(options.sourceFaceComponents->size()); ++face) {
-      addChart((*options.sourceFaceComponents)[static_cast<std::size_t>(face)],
+         face < static_cast<int>(resolvedOptions.sourceFaceComponents->size()); ++face) {
+      addChart((*resolvedOptions.sourceFaceComponents)[static_cast<std::size_t>(face)],
                face,
-               (*options.sourceFaceSheets)[static_cast<std::size_t>(face)]);
+               (*resolvedOptions.sourceFaceSheets)[static_cast<std::size_t>(face)]);
     }
   }
   for (const SurfaceArrangementNode &node : complex.nodes) {
@@ -2279,38 +2597,82 @@ SurfaceCellComplex build_surface_cell_complex(
     const auto found = chartIndex.find(chart);
     return found == chartIndex.end() ? -1 : findChart(found->second);
   };
-  const auto ownershipIdentity = [&](const int root) {
-    SurfaceCellCanonicalIdentity identity;
-    if (root < 0) {
-      return identity;
+  struct OwnershipBuildRecord {
+    int root = -1;
+    SurfaceCellOwnershipClassRecord record;
+  };
+  std::map<int, std::vector<SourceChart>> chartsByRoot;
+  for (int index = 0; index < static_cast<int>(chartList.size()); ++index) {
+    chartsByRoot[findChart(index)].push_back(
+        chartList[static_cast<std::size_t>(index)]);
+  }
+  std::vector<OwnershipBuildRecord> ownershipRecords;
+  ownershipRecords.reserve(chartsByRoot.size());
+  for (auto &[root, charts] : chartsByRoot) {
+    std::sort(charts.begin(), charts.end());
+    charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
+    if (charts.empty()) {
+      continue;
     }
-    std::vector<std::vector<std::int64_t>> members;
-    for (int index = 0; index < static_cast<int>(chartList.size()); ++index) {
-      if (findChart(index) != root) {
-        continue;
-      }
-      const SourceChart &chart = chartList[static_cast<std::size_t>(index)];
-      if (chart.sourceFace < 0 || chart.sourceFace >= faces.rows()) {
-        return SurfaceCellCanonicalIdentity{};
+    SurfaceCellOwnershipClassRecord record;
+    record.sourceComponent = charts.front().sourceComponent;
+    record.exactCharts = charts;
+    std::vector<std::array<std::int64_t, 5>> members;
+    members.reserve(charts.size());
+    bool valid = true;
+    for (const SourceChart &chart : charts) {
+      if (chart.sourceComponent != record.sourceComponent ||
+          chart.sourceFace < 0 || chart.sourceFace >= faces.rows()) {
+        valid = false;
+        break;
       }
       std::array<int, 3> vertices{{faces(chart.sourceFace, 0),
-                                  faces(chart.sourceFace, 1),
-                                  faces(chart.sourceFace, 2)}};
+                                   faces(chart.sourceFace, 1),
+                                   faces(chart.sourceFace, 2)}};
       std::sort(vertices.begin(), vertices.end());
       members.push_back({chart.sourceComponent, chart.localSheet, vertices[0],
                          vertices[1], vertices[2]});
     }
+    if (!valid) {
+      continue;
+    }
     std::sort(members.begin(), members.end());
     members.erase(std::unique(members.begin(), members.end()), members.end());
-    if (members.empty()) {
-      return identity;
+    record.canonicalMembership.valid = !members.empty();
+    record.canonicalMembership.values.push_back(
+        static_cast<std::int64_t>(members.size()));
+    for (const auto &member : members) {
+      record.canonicalMembership.values.insert(
+          record.canonicalMembership.values.end(), member.begin(),
+          member.end());
     }
-    identity.valid = true;
-    identity.values.push_back(static_cast<std::int64_t>(members.size()));
-    for (const std::vector<std::int64_t> &member : members) {
-      identity.values.insert(identity.values.end(), member.begin(), member.end());
+    if (record.valid()) {
+      ownershipRecords.push_back({root, std::move(record)});
     }
-    return identity;
+  }
+  std::sort(ownershipRecords.begin(), ownershipRecords.end(),
+            [](const OwnershipBuildRecord &lhs,
+               const OwnershipBuildRecord &rhs) {
+              return lhs.record < rhs.record;
+            });
+  std::map<int, int> ownershipOrdinalByRoot;
+  complex.sourceOwnershipRegistry.clear();
+  complex.sourceOwnershipRegistry.reserve(ownershipRecords.size());
+  for (const OwnershipBuildRecord &build : ownershipRecords) {
+    const int ordinal =
+        static_cast<int>(complex.sourceOwnershipRegistry.size());
+    ownershipOrdinalByRoot.emplace(build.root, ordinal);
+    complex.sourceOwnershipRegistry.push_back(build.record);
+  }
+  const auto ownershipIdentity = [&](const int root) {
+    const auto found = ownershipOrdinalByRoot.find(root);
+    if (found == ownershipOrdinalByRoot.end()) {
+      return SurfaceCellCanonicalIdentity{};
+    }
+    const SurfaceCellOwnershipClassRecord &record =
+        complex.sourceOwnershipRegistry[static_cast<std::size_t>(found->second)];
+    return make_surface_cell_ownership_key(record.sourceComponent,
+                                           found->second);
   };
 
   for (SurfaceArrangementCell &cell : complex.cells) {
@@ -2370,19 +2732,19 @@ SurfaceCellComplex build_surface_cell_complex(
     // to one proven intrinsic class. Otherwise use the exact boundary-class
     // intersection above. Neither path chooses a class by frequency or order.
     std::set<int> faceRoots;
-    if (options.sourceFaceComponents != nullptr &&
-        options.sourceFaceSheets != nullptr) {
+    if (resolvedOptions.sourceFaceComponents != nullptr &&
+        resolvedOptions.sourceFaceSheets != nullptr) {
       for (const int face : cell.sourceFaces) {
         if (face < 0 ||
-            face >= static_cast<int>(options.sourceFaceComponents->size()) ||
-            face >= static_cast<int>(options.sourceFaceSheets->size())) {
+            face >= static_cast<int>(resolvedOptions.sourceFaceComponents->size()) ||
+            face >= static_cast<int>(resolvedOptions.sourceFaceSheets->size())) {
           faceRoots.clear();
           break;
         }
         const int root = chartRoot(
-            {(*options.sourceFaceComponents)[static_cast<std::size_t>(face)],
+            {(*resolvedOptions.sourceFaceComponents)[static_cast<std::size_t>(face)],
              face,
-             (*options.sourceFaceSheets)[static_cast<std::size_t>(face)]});
+             (*resolvedOptions.sourceFaceSheets)[static_cast<std::size_t>(face)]});
         if (root < 0) {
           faceRoots.clear();
           break;
@@ -2794,6 +3156,8 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
   complex.diagnostics.incidenceValid = incidenceValid;
+  embeddingValid = embeddingValid &&
+                   validate_surface_cell_ownership_registry(complex);
   complex.diagnostics.embeddingValid = embeddingValid;
   complex.diagnostics.orientationValid = orientationValid;
   complex.diagnostics.cellsDiskValid = cellsDiskValid;
@@ -2916,6 +3280,22 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     hash ^= static_cast<std::uint64_t>(value);
     hash *= 1099511628211ULL;
   };
+  mix(static_cast<std::int64_t>(complex.sourceOwnershipRegistry.size()));
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    mix(record.sourceComponent);
+    mix(record.canonicalMembership.valid ? 1 : 0);
+    mix(static_cast<std::int64_t>(record.canonicalMembership.values.size()));
+    for (const std::int64_t value : record.canonicalMembership.values) {
+      mix(value);
+    }
+    mix(static_cast<std::int64_t>(record.exactCharts.size()));
+    for (const SurfaceCellSourceChart &chart : record.exactCharts) {
+      mix(chart.sourceComponent);
+      mix(chart.sourceFace);
+      mix(chart.localSheet);
+    }
+  }
   mix(static_cast<int>(complex.nodes.size()));
   mix(static_cast<int>(complex.halfedges.size()));
   mix(static_cast<int>(complex.cells.size()));

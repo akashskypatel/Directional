@@ -534,6 +534,8 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   std::set<int> components;
   std::set<int> sheets;
   std::set<SurfaceCellSourceChart> exactCharts;
+  std::set<int> seenBoundaryHalfedges;
+  std::set<int> seenBoundaryNodes;
   directed.reserve(boundary.size());
   undirected.reserve(boundary.size());
 
@@ -586,6 +588,11 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
        ++boundaryIndex) {
     const int halfedgeId = boundary[boundaryIndex];
     audit.halfedgeId = halfedgeId;
+    if (!seenBoundaryHalfedges.insert(halfedgeId).second) {
+      audit.failure =
+          SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryHalfedge;
+      return audit;
+    }
     if (halfedgeId < 0 ||
         halfedgeId >= static_cast<int>(complex.halfedges.size())) {
       audit.failure = SurfaceCellDomainIdentityFailureKind::InvalidHalfedge;
@@ -626,6 +633,12 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
                          : edge.to;
       audit.failure =
           SurfaceCellDomainIdentityFailureKind::InvalidEndpointNode;
+      return audit;
+    }
+
+    if (!seenBoundaryNodes.insert(edge.from).second) {
+      audit.nodeId = edge.from;
+      audit.failure = SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryNode;
       return audit;
     }
 
@@ -687,9 +700,18 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   }
   const bool hasCanonicalOwnership = cell.sourceOwnershipClass.valid;
   if (hasCanonicalOwnership) {
+    const SurfaceCellOwnershipClassRecord *ownershipRecord =
+        find_surface_cell_ownership_class(complex,
+                                           cell.sourceOwnershipClass);
+    if (ownershipRecord == nullptr ||
+        ownershipRecord->sourceComponent != *components.begin()) {
+      audit.failure =
+          SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
+      return audit;
+    }
     if (cell.sourceCharts.empty() ||
         !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
-      audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
+      audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
       return audit;
     }
     for (const SurfaceCellSourceChart &chart : exactCharts) {
@@ -697,7 +719,18 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
         audit.sourceFace = chart.sourceFace;
         audit.sourceComponent = chart.sourceComponent;
         audit.sourceSheet = chart.localSheet;
-        audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
+        audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
+        return audit;
+      }
+    }
+    for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+      if (!std::binary_search(ownershipRecord->exactCharts.begin(),
+                              ownershipRecord->exactCharts.end(), chart)) {
+        audit.sourceFace = chart.sourceFace;
+        audit.sourceComponent = chart.sourceComponent;
+        audit.sourceSheet = chart.localSheet;
+        audit.failure =
+            SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
         return audit;
       }
     }
@@ -705,6 +738,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
     return audit;
   }
+
   if (cell.sourceComponent >= 0 &&
       cell.sourceComponent != *components.begin()) {
     audit.sourceComponent = cell.sourceComponent;
@@ -1605,6 +1639,17 @@ std::uint64_t exact_identity_hash(
 std::uint64_t logical_complex_payload_bytes(
     const SurfaceCellComplex &complex) {
   std::uint64_t bytes = sizeof(SurfaceCellComplex);
+  bytes += static_cast<std::uint64_t>(
+               complex.sourceOwnershipRegistry.size()) *
+           sizeof(SurfaceCellOwnershipClassRecord);
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    bytes += static_cast<std::uint64_t>(record.exactCharts.size()) *
+             sizeof(SurfaceCellSourceChart);
+    bytes += static_cast<std::uint64_t>(
+                 record.canonicalMembership.values.size()) *
+             sizeof(std::int64_t);
+  }
   bytes += static_cast<std::uint64_t>(complex.nodes.size()) *
            sizeof(SurfaceArrangementNode);
   bytes += static_cast<std::uint64_t>(complex.halfedges.size()) *
@@ -1637,6 +1682,17 @@ std::uint64_t logical_complex_payload_bytes(
 std::uint64_t estimated_complex_owned_bytes(
     const SurfaceCellComplex &complex) {
   std::uint64_t bytes = sizeof(SurfaceCellComplex);
+  bytes += static_cast<std::uint64_t>(
+               complex.sourceOwnershipRegistry.capacity()) *
+           sizeof(SurfaceCellOwnershipClassRecord);
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    bytes += static_cast<std::uint64_t>(record.exactCharts.capacity()) *
+             sizeof(SurfaceCellSourceChart);
+    bytes += static_cast<std::uint64_t>(
+                 record.canonicalMembership.values.capacity()) *
+             sizeof(std::int64_t);
+  }
   bytes += static_cast<std::uint64_t>(complex.nodes.capacity()) *
            sizeof(SurfaceArrangementNode);
   bytes += static_cast<std::uint64_t>(complex.halfedges.capacity()) *
@@ -1882,6 +1938,15 @@ PatchDescriptor derive_patch_descriptor(
       patch_descriptor_detail::ordered_boundary(complex, cell, boundary);
   if (!descriptor.boundaryCycleValid) {
     patch.diskTopology = false;
+    descriptor.domainIdentityAudit =
+        patch_descriptor_detail::build_domain_identity_audit(
+            complex, cell, cell.halfedges, F);
+    if (descriptor.domainIdentityAudit.failure ==
+        SurfaceCellDomainIdentityFailureKind::None) {
+      descriptor.domainIdentityAudit.cellId = cell.id;
+      descriptor.domainIdentityAudit.failure =
+          SurfaceCellDomainIdentityFailureKind::NonSimpleBoundary;
+    }
     descriptor.feasibility = check_pure_quad_patch_admissibility(patch);
     return descriptor;
   }
@@ -1907,6 +1972,16 @@ PatchDescriptor derive_patch_descriptor(
     if (node == nullptr) {
       patch.diskTopology = false;
       descriptor.boundaryCycleValid = false;
+      descriptor.domainIdentityAudit =
+          patch_descriptor_detail::build_domain_identity_audit(
+              complex, cell, boundary, F);
+      if (descriptor.domainIdentityAudit.failure ==
+          SurfaceCellDomainIdentityFailureKind::None) {
+        descriptor.domainIdentityAudit.cellId = cell.id;
+        descriptor.domainIdentityAudit.nodeId = edge.from;
+        descriptor.domainIdentityAudit.failure =
+            SurfaceCellDomainIdentityFailureKind::InvalidEndpointNode;
+      }
       descriptor.feasibility = check_pure_quad_patch_admissibility(patch);
       return descriptor;
     }

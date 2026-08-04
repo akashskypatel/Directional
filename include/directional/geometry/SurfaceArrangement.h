@@ -223,6 +223,10 @@ struct SurfaceArrangementDiagnostics {
 };
 
 struct SurfaceCellComplex {
+  // Exact canonical ownership memberships are stored once per complex. Cells
+  // retain only a fixed-size {component, ordinal} key and their incident chart
+  // map, preventing O(cells * component-faces) duplication.
+  std::vector<SurfaceCellOwnershipClassRecord> sourceOwnershipRegistry;
   std::vector<SurfaceArrangementNode> nodes;
   std::vector<SurfaceArrangementHalfedge> halfedges;
   std::vector<SurfaceArrangementCell> cells;
@@ -402,6 +406,17 @@ bool same_logical_side(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces);
 
 } // namespace surface_arrangement_detail
+
+
+const SurfaceCellOwnershipClassRecord *find_surface_cell_ownership_class(
+    const SurfaceCellComplex &complex,
+    const SurfaceCellCanonicalIdentity &key);
+
+bool validate_surface_cell_ownership_registry(
+    const SurfaceCellComplex &complex);
+
+bool canonicalize_surface_cell_ownership(
+    SurfaceCellComplex &complex, const Eigen::MatrixXi &faces);
 
 SurfaceCellComplex build_surface_cell_complex(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

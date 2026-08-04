@@ -44,6 +44,20 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   mix(static_cast<int>(complex.nodes.size()));
   mix(static_cast<int>(complex.halfedges.size()));
   mix(static_cast<int>(complex.cells.size()));
+  mix(static_cast<int>(complex.sourceOwnershipRegistry.size()));
+  for (const SurfaceCellOwnershipClassRecord &record :
+       complex.sourceOwnershipRegistry) {
+    mix(record.sourceComponent);
+    mix(record.canonicalMembership.valid ? 1 : 0);
+    for (const std::int64_t value : record.canonicalMembership.values) {
+      mix(value);
+    }
+    for (const SurfaceCellSourceChart &chart : record.exactCharts) {
+      mix(chart.sourceComponent);
+      mix(chart.sourceFace);
+      mix(chart.localSheet);
+    }
+  }
   for (const SurfaceArrangementNode &node : complex.nodes) {
     mix(node.id);
     mix(node.sourceFace);
@@ -597,6 +611,9 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   }
 
   complex.diagnostics.incidenceValid = validate_complex_incidence(complex);
+  complex.diagnostics.embeddingValid =
+      complex.diagnostics.embeddingValid &&
+      validate_surface_cell_ownership_registry(complex);
   complex.diagnostics.orientationValid = orientationValid;
   complex.diagnostics.cellsDiskValid = cellsDiskValid;
   complex.diagnostics.connectedComponentCount =
@@ -824,48 +841,6 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     std::set<int> mergedComponents;
     std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
     std::set<SurfaceCellSourceChart> mergedCharts;
-    const auto authoritativeCellScope = [&](const SurfaceArrangementCell &cell) {
-      if (cell.sourceComponent >= 0 && cell.sourceSheet >= 0) {
-        return std::pair<int, int>{cell.sourceComponent, cell.sourceSheet};
-      }
-      std::set<std::pair<int, int>> shared;
-      bool first = true;
-      for (const int halfedgeId : cell.halfedges) {
-        if (halfedgeId < 0 ||
-            halfedgeId >= static_cast<int>(complex.halfedges.size())) {
-          return std::pair<int, int>{-1, -1};
-        }
-        const SurfaceArrangementHalfedge &halfedge =
-            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-        std::set<std::pair<int, int>> available;
-        if (halfedge.sourceComponent >= 0 && halfedge.sourceSheet >= 0) {
-          available.emplace(halfedge.sourceComponent, halfedge.sourceSheet);
-        }
-        for (const SurfaceArrangementProvenance &provenance :
-             halfedge.provenance) {
-          if (provenance.sourceComponent >= 0 &&
-              provenance.sourceSheet >= 0) {
-            available.emplace(provenance.sourceComponent,
-                              provenance.sourceSheet);
-          }
-        }
-        if (available.empty()) {
-          return std::pair<int, int>{-1, -1};
-        }
-        if (first) {
-          shared = std::move(available);
-          first = false;
-        } else {
-          std::set<std::pair<int, int>> intersection;
-          std::set_intersection(
-              shared.begin(), shared.end(), available.begin(), available.end(),
-              std::inserter(intersection, intersection.end()));
-          shared = std::move(intersection);
-        }
-      }
-      return shared.size() == 1U ? *shared.begin()
-                                 : std::pair<int, int>{-1, -1};
-    };
     double fallbackArea = 0.0;
     for (const int cellId : mergeComponent) {
       const SurfaceArrangementCell &cell =
@@ -873,19 +848,15 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       fallbackArea += cell.area;
       mergedSourceFaces.insert(cell.sourceFaces.begin(), cell.sourceFaces.end());
       if (cell.sourceFace >= 0) mergedSourceFaces.insert(cell.sourceFace);
-      SurfaceCellCanonicalIdentity ownership = cell.sourceOwnershipClass;
-      if (ownership.valid) {
-        mergedComponents.insert(cell.sourceComponent);
-        mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
-      } else {
-        const std::pair<int, int> scope = authoritativeCellScope(cell);
-        if (scope.first < 0 || scope.second < 0) return invalid;
-        ownership.valid = true;
-        ownership.values = {scope.first, scope.second};
-        mergedComponents.insert(scope.first);
-        mergedCharts.insert({scope.first, cell.sourceFace, scope.second});
+      const SurfaceCellCanonicalIdentity ownership =
+          cell.sourceOwnershipClass;
+      if (!ownership.valid ||
+          find_surface_cell_ownership_class(complex, ownership) == nullptr) {
+        return invalid;
       }
-      mergedOwnershipClasses.insert(std::move(ownership));
+      mergedComponents.insert(cell.sourceComponent);
+      mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
+      mergedOwnershipClasses.insert(ownership);
     }
     if (mergedOwnershipClasses.size() != 1U ||
         mergedComponents.size() != 1U) {
@@ -1128,14 +1099,11 @@ extract_surface_simplification_candidates_impl(
       record.cells.insert(cellId);
       const SurfaceArrangementCell &cell =
           complex.cells[static_cast<std::size_t>(cellId)];
-      SurfaceCellCanonicalIdentity ownership = cell.sourceOwnershipClass;
-      if (!ownership.valid && edge.sourceComponent >= 0 &&
-          edge.sourceSheet >= 0) {
-        ownership.valid = true;
-        ownership.values = {edge.sourceComponent, edge.sourceSheet};
-      }
-      if (ownership.valid) {
-        record.ownershipClasses.insert(std::move(ownership));
+      const SurfaceCellCanonicalIdentity ownership =
+          cell.sourceOwnershipClass;
+      if (ownership.valid &&
+          find_surface_cell_ownership_class(complex, ownership) != nullptr) {
+        record.ownershipClasses.insert(ownership);
       }
     };
     appendOwnership(halfedge.cell, halfedge);
@@ -1734,6 +1702,18 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
   SurfaceSimplificationResult result;
   result.hasComplexOutput = true;
   SurfaceCellComplex complex = std::move(inputComplex);
+  Eigen::MatrixXi topologyOnlyFaces(0, 3);
+  const Eigen::MatrixXi &ownershipFaces =
+      faces != nullptr ? *faces : topologyOnlyFaces;
+  if (!canonicalize_surface_cell_ownership(complex, ownershipFaces)) {
+    result.complex = std::move(complex);
+    result.rejected = static_cast<int>(candidates.size());
+    result.initialActiveElements =
+        static_cast<int>(result.complex.halfedges.size()) / 2;
+    result.finalActiveElements = result.initialActiveElements;
+    result.finalHash = hash_surface_cell_complex(result.complex);
+    return result;
+  }
   result.initialActiveElements =
       static_cast<int>(complex.halfedges.size()) / 2;
 

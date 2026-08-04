@@ -5761,6 +5761,62 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           options.surfaceCells.enforceOptimizerTimeGate;
       optimizationOptions.maxOptimizerTimeRatio =
           options.surfaceCells.maxOptimizerTimeRatio;
+      geometry::SurfaceOptimizationResult completedCheckpoint;
+      completedCheckpoint.vertices = completedVertices;
+      completedCheckpoint.quads = completedQuads;
+      completedCheckpoint.vertexProvenance = completedProvenance;
+      completedCheckpoint.initialEnergy =
+          geometry::evaluate_surface_optimization_energy(
+              completedVertices, completedQuads, constraints,
+              optimizationOptions);
+      completedCheckpoint.finalEnergy = completedCheckpoint.initialEnergy;
+      const geometry::SurfaceFinalValidationReport completedValidation =
+          geometry::validate_final_surface_mesh(
+              completedCheckpoint.vertices, completedCheckpoint.quads,
+              constraints, completedCheckpoint, optimizationOptions, 0.0,
+              std::numeric_limits<double>::infinity());
+      if (!completedValidation.accepted) {
+        result.surfaceCellContext.optimizationResult = completedCheckpoint;
+        result.surfaceCellContext.hasOptimizationResult = true;
+        result.surfaceCellContext.validationResult = completedValidation;
+        result.surfaceCellContext.hasValidationResult = true;
+        result.diagnostics.surfaceCellOptimizationIterationCount = 0U;
+        result.diagnostics.surfaceCellOptimizationIterationCountAvailable =
+            true;
+        result.diagnostics.surfaceCellOptimizationSeconds = 0.0;
+        result.diagnostics.surfaceCellValidationFailureCountAvailable = true;
+        result.diagnostics.surfaceCellValidationFailures =
+            surface_cell_validation_failure_count(
+                completedValidation,
+                optimizationOptions.enforceOptimizerTimeGate);
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion/output-validation";
+        if (!completedValidation.strictValidationIssues.empty()) {
+          const validation::MeshValidationIssue &issue =
+              completedValidation.strictValidationIssues.front();
+          result.diagnostics.surfaceCellFirstInvalidProducerReason =
+              validation::mesh_validation_failure_name(issue.code);
+          result.diagnostics.surfaceCellFirstInvalidProducerFace = issue.face;
+          result.diagnostics.surfaceCellFirstInvalidProducerVertex =
+              issue.vertex;
+          result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+              issue.edgeFirst;
+          result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+              issue.edgeSecond;
+          if (issue.face >= 0 &&
+              issue.face < static_cast<int>(completedQuadLineage.size())) {
+            result.diagnostics.surfaceCellFirstInvalidProducerCell =
+                completedQuadLineage[static_cast<std::size_t>(issue.face)]
+                    .sourcePatch;
+          }
+        } else {
+          result.diagnostics.surfaceCellFirstInvalidProducerReason =
+              "AggregateCompletionValidationFailure";
+        }
+        return fail_surface_cells(
+            SurfaceCellFailureCode::NotProductionReady, "completion");
+      }
+
       geometry::SurfaceOptimizationResult optimization =
           geometry::optimize_projected_surface_mesh(completedVertices,
                                                     completedQuads,
@@ -5781,20 +5837,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                                 optimizationSeconds,
                                                 std::numeric_limits<double>::infinity());
       if (!validation.accepted) {
-        geometry::SurfaceOptimizationResult recovered = optimization;
-        recovered.vertices = completedVertices;
-        recovered.quads = completedQuads;
-        recovered.vertexProvenance = completedProvenance;
-        recovered.finalEnergy =
-            geometry::evaluate_surface_optimization_energy(
-                recovered.vertices, recovered.quads, constraints,
-                optimizationOptions);
+        geometry::SurfaceOptimizationResult recovered =
+            completedCheckpoint;
         recovered.rolledBackToInput = true;
         geometry::SurfaceFinalValidationReport recoveredValidation =
-            geometry::validate_final_surface_mesh(
-                recovered.vertices, recovered.quads, constraints, recovered,
-                optimizationOptions, optimizationSeconds,
-                std::numeric_limits<double>::infinity());
+            completedValidation;
+        recoveredValidation.optimizerTimeWithinGate = true;
         if (recoveredValidation.accepted) {
           optimization = std::move(recovered);
           validation = std::move(recoveredValidation);
