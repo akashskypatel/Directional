@@ -1065,6 +1065,120 @@ TEST(SurfaceArrangementPhase16,
 }
 
 TEST(SurfaceArrangementPhase16,
+     DirectedWedgeIncidenceFormsACompletePermutation) {
+  const auto fixture = unit_square_two_triangles();
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {});
+
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_GT(complex.diagnostics.directedWedgeCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorMissingCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorAmbiguityCount, 0);
+  EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+  EXPECT_NE(complex.diagnostics.directedIncidenceHash, 0U);
+
+  std::vector<int> predecessorCount(complex.halfedges.size(), 0);
+  for (const auto &halfedge : complex.halfedges) {
+    ASSERT_GE(halfedge.twin, 0);
+    ASSERT_LT(halfedge.twin, static_cast<int>(complex.halfedges.size()));
+    ASSERT_GE(halfedge.next, 0);
+    ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+    EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedge.twin)].twin,
+              halfedge.id);
+    EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedge.next)].from,
+              halfedge.to);
+    ++predecessorCount[static_cast<std::size_t>(halfedge.next)];
+  }
+  EXPECT_TRUE(std::all_of(predecessorCount.begin(), predecessorCount.end(),
+                          [](const int count) { return count == 1; }));
+
+  for (const auto &cell : complex.cells) {
+    std::set<int> nodes;
+    std::set<std::pair<int, int>> edges;
+    for (const int halfedgeId : cell.halfedges) {
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      EXPECT_TRUE(nodes.insert(halfedge.from).second);
+      EXPECT_TRUE(edges.insert({std::min(halfedge.from, halfedge.to),
+                                std::max(halfedge.from, halfedge.to)})
+                      .second);
+    }
+  }
+}
+
+TEST(SurfaceArrangementPhase16,
+     AdjacentLocalSheetChartsShareDirectedIntrinsicWedges) {
+  const auto fixture = unit_square_two_triangles();
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {3, 11};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {}, options);
+
+  EXPECT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_EQ(complex.diagnostics.successorMissingCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorAmbiguityCount, 0);
+  const auto interior = std::find_if(
+      complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
+        return !cell.boundaryCycle && cell.sourceFaces.size() == 2U;
+      });
+  ASSERT_NE(interior, complex.cells.end());
+  ASSERT_EQ(interior->sourceCharts.size(), 2U);
+  EXPECT_NE(interior->sourceCharts[0].localSheet,
+            interior->sourceCharts[1].localSheet);
+}
+
+TEST(SurfaceArrangementPhase16,
+     NonManifoldSourceEdgeFailsClosedWithTypedIncidenceEvidence) {
+  TriangleFixture fixture;
+  fixture.vertices.resize(5, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.5, 1.0, 0.0,
+                      0.5, -1.0, 0.0,
+                      0.5, 0.0, 1.0;
+  fixture.faces.resize(3, 3);
+  fixture.faces << 0, 1, 2,
+                   1, 0, 3,
+                   0, 1, 4;
+  const std::vector<int> components = {0, 0, 0};
+  const std::vector<int> sheets = {0, 1, 2};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+  const std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_face_arc(900, 0, {0.5, 0.5, 0.0},
+                    {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0}, 0),
+      make_face_arc(901, 1, {0.5, 0.5, 0.0},
+                    {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0}, 0),
+      make_face_arc(902, 2, {0.5, 0.5, 0.0},
+                    {1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0}, 0)};
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs, options);
+
+  EXPECT_FALSE(complex.diagnostics.topologyValid);
+  EXPECT_FALSE(complex.diagnostics.incidenceValid);
+  EXPECT_NE(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_TRUE(complex.cells.empty());
+}
+
+TEST(SurfaceArrangementPhase16,
      DisconnectedCloseSheetsKeepDistinctCanonicalOwnershipClasses) {
   TriangleFixture fixture;
   fixture.vertices.resize(6, 3);
@@ -1175,6 +1289,14 @@ TEST(SurfaceArrangementPhase16,
   const auto second = directional::geometry::build_surface_cell_complex(
       fixture.vertices, reorderedFaces, {}, reorderedOptions);
 
+  ASSERT_TRUE(first.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             first.diagnostics.incidenceFailure);
+  ASSERT_TRUE(second.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             second.diagnostics.incidenceFailure);
+  EXPECT_EQ(first.diagnostics.directedIncidenceHash,
+            second.diagnostics.directedIncidenceHash);
   ASSERT_EQ(first.sourceOwnershipRegistry.size(),
             second.sourceOwnershipRegistry.size());
   for (std::size_t index = 0; index < first.sourceOwnershipRegistry.size();
@@ -1182,6 +1304,35 @@ TEST(SurfaceArrangementPhase16,
     EXPECT_EQ(first.sourceOwnershipRegistry[index].canonicalMembership,
               second.sourceOwnershipRegistry[index].canonicalMembership);
   }
+}
+
+TEST(SurfaceArrangementPhase16,
+     WholeMeshOrientationReversalPreservesDirectedIncidence) {
+  const auto fixture = unit_square_two_triangles();
+  const std::vector<int> components = {0, 0};
+  const std::vector<int> sheets = {5, 9};
+  directional::geometry::SurfaceArrangementOptions options;
+  options.sourceFaceComponents = &components;
+  options.sourceFaceSheets = &sheets;
+  const auto forward = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, {}, options);
+
+  Eigen::MatrixXi reversed = fixture.faces;
+  for (int face = 0; face < reversed.rows(); ++face) {
+    std::swap(reversed(face, 1), reversed(face, 2));
+  }
+  const auto backward = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, reversed, {}, options);
+
+  ASSERT_TRUE(forward.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             forward.diagnostics.incidenceFailure);
+  ASSERT_TRUE(backward.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             backward.diagnostics.incidenceFailure);
+  EXPECT_EQ(forward.diagnostics.directedIncidenceHash,
+            backward.diagnostics.directedIncidenceHash);
+  EXPECT_EQ(forward.cells.size(), backward.cells.size());
 }
 
 TEST(SurfaceArrangementPhase16,

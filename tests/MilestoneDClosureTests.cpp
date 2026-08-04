@@ -341,6 +341,17 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
       directional::geometry::build_surface_cell_complex(
           mesh.vertices, mesh.faces, {}, options);
 
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_GT(complex.diagnostics.directedWedgeCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorMissingCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorAmbiguityCount, 0);
+  EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }),
@@ -513,7 +524,17 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
       << " twin=" << incidence.twin << " next=" << incidence.next
       << " node=" << incidence.node << " expected=" << incidence.expected
       << " actual=" << incidence.actual;
-  ASSERT_TRUE(complex.diagnostics.incidenceValid);
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(complex.diagnostics.incidenceFailure,
+            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_GT(complex.diagnostics.directedWedgeCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorMissingCount, 0);
+  EXPECT_EQ(complex.diagnostics.successorAmbiguityCount, 0);
+  EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   ASSERT_TRUE(complex.diagnostics.embeddingValid);
   ASSERT_TRUE(complex.diagnostics.orientationValid);
   ASSERT_TRUE(complex.diagnostics.cellsDiskValid);

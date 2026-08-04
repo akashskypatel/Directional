@@ -183,6 +183,18 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   mix(complex.diagnostics.eulerCharacteristic);
   mix(complex.diagnostics.connectedComponentCount);
   mix(complex.diagnostics.boundaryLoopCount);
+  mix(complex.diagnostics.directedWedgeCount);
+  mix(complex.diagnostics.successorMissingCount);
+  mix(complex.diagnostics.successorAmbiguityCount);
+  mix(complex.diagnostics.predecessorMultiplicityFailureCount);
+  mix(complex.diagnostics.repeatedNodeCycleCount);
+  mix(complex.diagnostics.repeatedEdgeCycleCount);
+  mix(static_cast<int>(complex.diagnostics.incidenceFailure));
+  mix(complex.diagnostics.incidenceFailureNode);
+  mix(complex.diagnostics.incidenceFailureHalfedge);
+  mix(complex.diagnostics.incidenceFailureTwin);
+  mix(complex.diagnostics.incidenceFailureNext);
+  mix(static_cast<std::int64_t>(complex.diagnostics.directedIncidenceHash));
   mix(complex.diagnostics.incidenceValid ? 1 : 0);
   mix(complex.diagnostics.embeddingValid ? 1 : 0);
   mix(complex.diagnostics.orientationValid ? 1 : 0);
@@ -737,6 +749,19 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   }
 
   complex.diagnostics.incidenceValid = validate_complex_incidence(complex);
+  if (complex.diagnostics.incidenceValid) {
+    complex.diagnostics.incidenceFailure =
+        SurfaceArrangementIncidenceFailure::None;
+    complex.diagnostics.incidenceFailureNode = -1;
+    complex.diagnostics.incidenceFailureHalfedge = -1;
+    complex.diagnostics.incidenceFailureTwin = -1;
+    complex.diagnostics.incidenceFailureNext = -1;
+    complex.diagnostics.successorMissingCount = 0;
+    complex.diagnostics.successorAmbiguityCount = 0;
+    complex.diagnostics.predecessorMultiplicityFailureCount = 0;
+    complex.diagnostics.repeatedNodeCycleCount = 0;
+    complex.diagnostics.repeatedEdgeCycleCount = 0;
+  }
   complex.diagnostics.embeddingValid =
       complex.diagnostics.embeddingValid &&
       validate_surface_cell_ownership_registry(complex);

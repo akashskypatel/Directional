@@ -1498,6 +1498,7 @@ SurfaceCellComplex build_surface_cell_complex(
   }
   using namespace surface_arrangement_detail;
   SurfaceCellComplex complex;
+  bool embeddingValid = true;
   std::uint64_t peakOwnedBytes = 0;
   const auto update_peak_memory = [&](const std::uint64_t temporaryBytes = 0) {
     peakOwnedBytes = std::max(
@@ -1602,9 +1603,24 @@ SurfaceCellComplex build_surface_cell_complex(
   SurfaceArrangementOptions resolvedOptions = options;
   resolvedOptions.sourceFaceComponents = &resolvedComponents;
   resolvedOptions.sourceFaceSheets = &resolvedSheets;
+
+  // R1 is the sole authority for source-chart connectivity. Build the graph
+  // before node identity or radial incidence so hard rails, boundaries,
+  // nonmanifold sectors, disconnected fans, and component barriers are never
+  // reconstructed from raw labels or geometric proximity.
+  const SourceChartTransitionGraph transitionGraph(
+      faces, resolvedComponents, resolvedSheets,
+      &resolvedOptions.hardFeatureEdges);
+  if (!transitionGraph.available()) {
+    embeddingValid = false;
+    complex.diagnostics.incidenceFailure =
+        SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable;
+  }
+
   VertexFanScopes vertexFanScopes;
-  std::vector<std::vector<int>> incidentFacesByVertex(
-      static_cast<std::size_t>(vertices.rows()));
+  std::vector<std::pair<SurfaceCellCanonicalIdentity, FaceVertexKey>>
+      vertexFanRecords;
+  vertexFanRecords.reserve(static_cast<std::size_t>(faces.rows()) * 3U);
   for (int face = 0; face < faces.rows(); ++face) {
     for (int corner = 0; corner < 3; ++corner) {
       const int vertex = faces(face, corner);
@@ -1612,57 +1628,44 @@ SurfaceCellComplex build_surface_cell_complex(
         throw std::invalid_argument(
             "surface arrangement received an invalid face index.");
       }
-      incidentFacesByVertex[static_cast<std::size_t>(vertex)].push_back(face);
-    }
-  }
-  int nextVertexFanScope = 0;
-  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
-    auto &incidentFaces =
-        incidentFacesByVertex[static_cast<std::size_t>(vertex)];
-    std::sort(incidentFaces.begin(), incidentFaces.end());
-    incidentFaces.erase(
-        std::unique(incidentFaces.begin(), incidentFaces.end()),
-        incidentFaces.end());
-    for (const int seedFace : incidentFaces) {
-      if (vertexFanScopes.count({seedFace, vertex}) != 0U) {
-        continue;
-      }
-      std::queue<int> pending;
-      pending.push(seedFace);
-      vertexFanScopes.emplace(FaceVertexKey{seedFace, vertex},
-                              nextVertexFanScope);
-      while (!pending.empty()) {
-        const int face = pending.front();
-        pending.pop();
-        for (int edge = 0; edge < 3; ++edge) {
-          const int a = faces(face, (edge + 1) % 3);
-          const int b = faces(face, (edge + 2) % 3);
-          if (a != vertex && b != vertex) {
-            continue;
-          }
-          const auto found = edgeFaces.find(source_edge_key(faces, face, edge));
-          if (found == edgeFaces.end()) {
-            continue;
-          }
-          for (const int neighbor : found->second) {
-            if (neighbor < 0 || neighbor == face ||
-                vertexFanScopes.count({neighbor, vertex}) != 0U) {
-              continue;
-            }
-            const bool containsVertex =
-                faces(neighbor, 0) == vertex || faces(neighbor, 1) == vertex ||
-                faces(neighbor, 2) == vertex;
-            if (!containsVertex) {
-              continue;
-            }
-            vertexFanScopes.emplace(FaceVertexKey{neighbor, vertex},
-                                    nextVertexFanScope);
-            pending.push(neighbor);
-          }
+      SurfaceCellCanonicalIdentity identity;
+      if (transitionGraph.available()) {
+        SurfacePoint point;
+        point.face = face;
+        point.component = resolvedComponents[static_cast<std::size_t>(face)];
+        point.sheet = resolvedSheets[static_cast<std::size_t>(face)];
+        point.barycentric = Eigen::Vector3d::Unit(corner);
+        const SourceEntityId entity = transitionGraph.resolve_entity(point);
+        if (entity.valid() && entity.kind == SourceEntityKind::SourceVertex &&
+            entity.firstSourceIndex == vertex) {
+          identity = entity.canonical;
         }
       }
-      ++nextVertexFanScope;
+      if (!identity.valid) {
+        // Preserve a deterministic fail-closed scope when R1 is unavailable.
+        // The topology-valid flag remains false; this only prevents unrelated
+        // source vertices from being merged while diagnostics are produced.
+        identity.valid = true;
+        identity.values = {
+            static_cast<std::int64_t>(SourceEntityKind::SourceVertex),
+            resolvedComponents[static_cast<std::size_t>(face)], vertex, face};
+      }
+      vertexFanRecords.push_back({std::move(identity), {face, vertex}});
     }
+  }
+  std::sort(vertexFanRecords.begin(), vertexFanRecords.end(),
+            [](const auto &lhs, const auto &rhs) {
+              return std::tie(lhs.first, lhs.second) <
+                     std::tie(rhs.first, rhs.second);
+            });
+  int nextVertexFanScope = -1;
+  SurfaceCellCanonicalIdentity previousFan;
+  for (const auto &[identity, faceVertex] : vertexFanRecords) {
+    if (nextVertexFanScope < 0 || identity != previousFan) {
+      ++nextVertexFanScope;
+      previousFan = identity;
+    }
+    vertexFanScopes.emplace(faceVertex, nextVertexFanScope);
   }
   const VertexFanWedges vertexFanWedges = build_vertex_fan_wedges(
       vertices, faces, edgeFaces, vertexFanScopes);
@@ -1901,7 +1904,6 @@ SurfaceCellComplex build_surface_cell_complex(
 
   std::map<ScopedNodeKey, int> nodeByKey;
   std::vector<std::pair<int, int>> nodeScopes;
-  bool embeddingValid = true;
   const double positionTolerance =
       1.0e-9 * std::max(1.0, (vertices.colwise().maxCoeff() -
                              vertices.colwise().minCoeff()).norm());
@@ -2250,244 +2252,739 @@ SurfaceCellComplex build_surface_cell_complex(
                                      : primary.railT1;
   }
 
-  std::vector<std::vector<int>> outgoing(complex.nodes.size());
-  for (const SurfaceArrangementHalfedge &h : complex.halfedges) {
-    outgoing[static_cast<std::size_t>(h.from)].push_back(h.id);
-  }
-  for (int nodeId = 0; nodeId < static_cast<int>(outgoing.size()); ++nodeId) {
-    auto &list = outgoing[static_cast<std::size_t>(nodeId)];
-    const int sourceVertex = node_source_vertex_id(
-        complex.nodes[static_cast<std::size_t>(nodeId)], faces);
-    std::map<int, double> intrinsicParameters;
-    bool useIntrinsicOrder = sourceVertex >= 0 && !list.empty();
-    if (useIntrinsicOrder) {
-      for (const int halfedgeId : list) {
-        double parameter = 0.0;
-        if (!intrinsic_vertex_outgoing_parameter(
-                vertices, faces, vertexFanWedges, complex.nodes,
-                complex.halfedges[static_cast<std::size_t>(halfedgeId)],
-                sourceVertex, parameter)) {
-          useIntrinsicOrder = false;
-          intrinsicParameters.clear();
-          break;
+  struct DirectedWedgeWitness {
+    int halfedge = -1;
+    int sourceFace = -1;
+    int sourceComponent = -1;
+    int sourceSheet = -1;
+    SourceEntityKind kind = SourceEntityKind::Invalid;
+    double localParameter = 0.0;
+    double leftScore = 0.0;
+  };
+  struct DirectedWedgeRay {
+    int halfedge = -1;
+    double parameter = 0.0;
+    std::vector<DirectedWedgeWitness> witnesses;
+  };
+
+  bool directedIncidenceValid = transitionGraph.available();
+  const auto record_incidence_failure =
+      [&](const SurfaceArrangementIncidenceFailure failure, const int node,
+          const int halfedge, const int twin, const int next) {
+        directedIncidenceValid = false;
+        embeddingValid = false;
+        if (complex.diagnostics.incidenceFailure ==
+            SurfaceArrangementIncidenceFailure::None) {
+          complex.diagnostics.incidenceFailure = failure;
+          complex.diagnostics.incidenceFailureNode = node;
+          complex.diagnostics.incidenceFailureHalfedge = halfedge;
+          complex.diagnostics.incidenceFailureTwin = twin;
+          complex.diagnostics.incidenceFailureNext = next;
         }
-        intrinsicParameters.emplace(halfedgeId, parameter);
-      }
-    }
-    if (useIntrinsicOrder) {
-      std::sort(list.begin(), list.end(), [&](const int lhs, const int rhs) {
-        const double a = intrinsicParameters.at(lhs);
-        const double b = intrinsicParameters.at(rhs);
-        if (std::abs(a - b) > 1.0e-14) {
-          return a < b;
+      };
+
+  const auto halfedge_source_charts =
+      [&](const SurfaceArrangementHalfedge &halfedge) {
+        std::set<SurfaceCellSourceChart> charts;
+        for (const SurfaceArrangementProvenance &entry : halfedge.provenance) {
+          const SurfaceCellSourceChart chart{entry.sourceComponent,
+                                             entry.sourceFace,
+                                             entry.sourceSheet};
+          if (chart.valid()) {
+            charts.insert(chart);
+          }
         }
-        return lhs < rhs;
-      });
-      continue;
-    }
+        const SurfaceCellSourceChart primary{halfedge.sourceComponent,
+                                             halfedge.sourceFace,
+                                             halfedge.sourceSheet};
+        if (primary.valid()) {
+          charts.insert(primary);
+        }
+        return std::vector<SurfaceCellSourceChart>(charts.begin(), charts.end());
+      };
 
-    Eigen::RowVector3d axisX = Eigen::RowVector3d::Zero();
-    Eigen::RowVector3d axisY = Eigen::RowVector3d::Zero();
-    const Eigen::RowVector3d normal = node_reference_normal(
-        vertices, faces, complex.nodes[static_cast<std::size_t>(nodeId)]);
-    if (!tangent_basis(normal, axisX, axisY)) {
-      embeddingValid = false;
-    }
-    const Eigen::RowVector3d origin = node_position(
-        vertices, faces, complex.nodes[static_cast<std::size_t>(nodeId)]);
-    std::sort(list.begin(), list.end(), [&](const int lhs, const int rhs) {
-      const auto &a = complex.halfedges[static_cast<std::size_t>(lhs)];
-      const auto &b = complex.halfedges[static_cast<std::size_t>(rhs)];
-      Eigen::RowVector3d au =
-          node_position(vertices, faces,
-                        complex.nodes[static_cast<std::size_t>(a.to)]) -
-          origin;
-      Eigen::RowVector3d bu =
-          node_position(vertices, faces,
-                        complex.nodes[static_cast<std::size_t>(b.to)]) -
-          origin;
-      au -= au.dot(normal) * normal;
-      bu -= bu.dot(normal) * normal;
-      const double aa = std::atan2(au.dot(axisY), au.dot(axisX));
-      const double ba = std::atan2(bu.dot(axisY), bu.dot(axisX));
-      if (std::abs(aa - ba) > 1.0e-14) {
-        return aa < ba;
-      }
-      return lhs < rhs;
-    });
-  }
-  for (SurfaceArrangementHalfedge &h : complex.halfedges) {
-    const int at = h.to;
-    const int twin = h.twin;
-    const auto &list = outgoing[static_cast<std::size_t>(at)];
-    const auto found = std::find(list.begin(), list.end(), twin);
-    if (list.empty() || found == list.end()) {
-      embeddingValid = false;
-      h.next = -1;
-      continue;
-    }
-    const int pos = static_cast<int>(std::distance(list.begin(), found));
-    const int nextPos = (pos - 1 + static_cast<int>(list.size())) %
-                        static_cast<int>(list.size());
-    h.next = list[static_cast<std::size_t>(nextPos)];
-  }
-
-  // The radial successor permutation can contain a pinched closed walk when
-  // a periodic seam or multi-face vertex is represented by more than one
-  // topological sector.  Split such a walk at repeated boundary nodes into
-  // edge-disjoint simple cycles before assigning cells.  This is an incidence
-  // operation only: it uses the existing directed successor relation and is
-  // independent of positions, face-row order, or fixture identifiers.
-  std::vector<unsigned char> successorVisited(complex.halfedges.size(), 0);
-  for (int start = 0; start < static_cast<int>(complex.halfedges.size());
-       ++start) {
-    if (successorVisited[static_cast<std::size_t>(start)] != 0U) {
-      continue;
-    }
-    std::vector<int> rawCycle;
-    std::set<int> localHalfedges;
-    int current = start;
-    bool closed = false;
-    for (int guard = 0;
-         guard <= static_cast<int>(complex.halfedges.size()); ++guard) {
-      if (current < 0 || current >= static_cast<int>(complex.halfedges.size()) ||
-          !localHalfedges.insert(current).second) {
-        closed = current == start;
-        break;
-      }
-      rawCycle.push_back(current);
-      successorVisited[static_cast<std::size_t>(current)] = 1U;
-      current = complex.halfedges[static_cast<std::size_t>(current)].next;
-    }
-    if (!closed || rawCycle.size() < 3U) {
-      continue;
-    }
-
-    std::vector<std::vector<int>> pending{rawCycle};
-    std::vector<std::vector<int>> simpleCycles;
-    bool decompositionFailed = false;
-    while (!pending.empty()) {
-      std::vector<int> cycle = std::move(pending.back());
-      pending.pop_back();
-      std::map<int, std::vector<int>> occurrencesByNode;
-      for (int index = 0; index < static_cast<int>(cycle.size()); ++index) {
-        const int node = complex.halfedges[
-            static_cast<std::size_t>(cycle[static_cast<std::size_t>(index)])]
-                             .from;
-        occurrencesByNode[node].push_back(index);
-      }
-      bool split = false;
-      std::tuple<int, int, int, int> bestSplit{
-          std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
-          -1, -1};
-      for (const auto &[node, occurrences] : occurrencesByNode) {
-        for (std::size_t first = 0; first < occurrences.size(); ++first) {
-          for (std::size_t second = first + 1U; second < occurrences.size();
-               ++second) {
-            const int firstIndex = occurrences[first];
-            const int secondIndex = occurrences[second];
-            const int innerSize = secondIndex - firstIndex;
-            const int outerSize = static_cast<int>(cycle.size()) - innerSize;
-            if (innerSize < 3 || outerSize < 3) {
-              continue;
-            }
-            const auto key =
-                std::make_tuple(std::min(innerSize, outerSize), node,
-                                firstIndex, secondIndex);
-            if (key < bestSplit) {
-              bestSplit = key;
+  const auto node_point_on_chart =
+      [&](const int nodeId, const SurfaceCellSourceChart &chart,
+          SurfacePoint &point) {
+        point = {};
+        if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size()) ||
+            !chart.valid()) {
+          return false;
+        }
+        const SurfaceArrangementNode &node =
+            complex.nodes[static_cast<std::size_t>(nodeId)];
+        Eigen::RowVector3d barycentric = node_barycentric_on_face(
+            node, chart.sourceFace, chart.sourceComponent, chart.localSheet);
+        if (!barycentric.allFinite()) {
+          for (const SurfaceArrangementNodeOccurrence &occurrence :
+               node.occurrences) {
+            SurfacePoint source;
+            source.face = occurrence.sourceFace;
+            source.component = occurrence.sourceComponent;
+            source.sheet = occurrence.sourceSheet;
+            source.barycentric = occurrence.barycentric.transpose();
+            SurfacePoint rebound;
+            if (transitionGraph.rebind(source, chart.sourceFace, rebound) &&
+                rebound.component == chart.sourceComponent &&
+                rebound.sheet == chart.localSheet) {
+              barycentric = rebound.barycentric.transpose();
+              break;
             }
           }
         }
-      }
-      if (std::get<2>(bestSplit) >= 0) {
-        const int firstIndex = std::get<2>(bestSplit);
-        const int secondIndex = std::get<3>(bestSplit);
-        std::vector<int> inner(cycle.begin() + firstIndex,
-                               cycle.begin() + secondIndex);
-        std::vector<int> outer;
-        outer.reserve(cycle.size() - inner.size());
-        outer.insert(outer.end(), cycle.begin(), cycle.begin() + firstIndex);
-        outer.insert(outer.end(), cycle.begin() + secondIndex, cycle.end());
-        pending.push_back(std::move(outer));
-        pending.push_back(std::move(inner));
-        split = true;
-      } else if (std::any_of(
-                     occurrencesByNode.begin(), occurrencesByNode.end(),
-                     [](const auto &entry) { return entry.second.size() > 1U; })) {
-        decompositionFailed = true;
-        split = true;
-      }
-      if (decompositionFailed) {
-        break;
-      }
-      if (!split) {
-        simpleCycles.push_back(std::move(cycle));
-      }
-    }
-    if (decompositionFailed || simpleCycles.size() <= 1U) {
+        if (!barycentric.allFinite()) {
+          return false;
+        }
+        point.face = chart.sourceFace;
+        point.component = chart.sourceComponent;
+        point.sheet = chart.localSheet;
+        point.barycentric = barycentric.transpose();
+        return true;
+      };
+
+  const auto face_signature = [&](const int face) {
+    std::array<int, 3> signature{{faces(face, 0), faces(face, 1),
+                                  faces(face, 2)}};
+    std::sort(signature.begin(), signature.end());
+    return signature;
+  };
+
+  const auto directed_chart_parameter =
+      [&](const SurfaceArrangementHalfedge &halfedge,
+          const SurfaceCellSourceChart &chart, const SourceEntityId &entity,
+          double &parameter, double &leftScore) {
+        SurfacePoint fromPoint;
+        SurfacePoint toPoint;
+        if (!node_point_on_chart(halfedge.from, chart, fromPoint) ||
+            !node_point_on_chart(halfedge.to, chart, toPoint)) {
+          return false;
+        }
+        const Eigen::RowVector3d fromBary = fromPoint.barycentric.transpose();
+        const Eigen::RowVector3d toBary = toPoint.barycentric.transpose();
+        const Eigen::Vector2d fromUv = bary_to_uv(fromBary);
+        const Eigen::Vector2d toUv = bary_to_uv(toBary);
+        const Eigen::Vector2d directionUv = toUv - fromUv;
+        if (!(directionUv.squaredNorm() > 1.0e-28) ||
+            !directionUv.allFinite()) {
+          return false;
+        }
+        const Eigen::Vector2d triangleCentroid(1.0 / 3.0, 1.0 / 3.0);
+        leftScore = cross2(directionUv,
+                           triangleCentroid - 0.5 * (fromUv + toUv));
+
+        if (entity.kind == SourceEntityKind::SourceVertex) {
+          SurfaceArrangementHalfedge chartHalfedge = halfedge;
+          chartHalfedge.sourceFace = chart.sourceFace;
+          chartHalfedge.sourceComponent = chart.sourceComponent;
+          chartHalfedge.sourceSheet = chart.localSheet;
+          return intrinsic_vertex_outgoing_parameter(
+              vertices, faces, vertexFanWedges, complex.nodes, chartHalfedge,
+              entity.firstSourceIndex, parameter);
+        }
+        if (entity.kind == SourceEntityKind::SourceEdge) {
+          const int lowVertex = entity.firstSourceIndex;
+          const int highVertex = entity.secondSourceIndex;
+          if (lowVertex < 0 || highVertex < 0 || lowVertex >= vertices.rows() ||
+              highVertex >= vertices.rows()) {
+            return false;
+          }
+          int thirdVertex = -1;
+          for (int corner = 0; corner < 3; ++corner) {
+            const int candidate = faces(chart.sourceFace, corner);
+            if (candidate != lowVertex && candidate != highVertex) {
+              thirdVertex = candidate;
+              break;
+            }
+          }
+          if (thirdVertex < 0) {
+            return false;
+          }
+          Eigen::RowVector3d edgeDirection =
+              vertices.row(highVertex) - vertices.row(lowVertex);
+          const double edgeNorm = edgeDirection.norm();
+          if (!(edgeNorm > 1.0e-14) || !std::isfinite(edgeNorm)) {
+            return false;
+          }
+          edgeDirection /= edgeNorm;
+          const Eigen::RowVector3d fromPosition = barycentric_position(
+              vertices, faces, chart.sourceFace, fromBary);
+          const Eigen::RowVector3d toPosition = barycentric_position(
+              vertices, faces, chart.sourceFace, toBary);
+          Eigen::RowVector3d direction = toPosition - fromPosition;
+          const double directionNorm = direction.norm();
+          if (!(directionNorm > 1.0e-14) || !std::isfinite(directionNorm)) {
+            return false;
+          }
+          direction /= directionNorm;
+          const Eigen::RowVector3d edgeOrigin = vertices.row(lowVertex);
+          Eigen::RowVector3d inward =
+              vertices.row(thirdVertex) - edgeOrigin;
+          inward -= inward.dot(edgeDirection) * edgeDirection;
+          const double inwardNorm = inward.norm();
+          if (!(inwardNorm > 1.0e-14) || !std::isfinite(inwardNorm)) {
+            return false;
+          }
+          inward /= inwardNorm;
+          double y = direction.dot(inward);
+          if (y < -1.0e-10) {
+            return false;
+          }
+          y = std::max(0.0, y);
+          parameter = std::atan2(y, direction.dot(edgeDirection));
+          return std::isfinite(parameter);
+        }
+        if (entity.kind == SourceEntityKind::FaceInterior) {
+          parameter = std::atan2(directionUv.y(), directionUv.x());
+          if (parameter < 0.0) {
+            parameter += 6.283185307179586476925286766559;
+          }
+          return std::isfinite(parameter);
+        }
+        return false;
+      };
+
+  using DirectedWedgeMap =
+      std::map<SurfaceCellCanonicalIdentity,
+               std::map<int, std::vector<DirectedWedgeWitness>>>;
+  std::vector<DirectedWedgeMap> wedgeWitnesses(complex.nodes.size());
+  std::vector<std::vector<int>> outgoing(complex.nodes.size());
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.from < 0 ||
+        halfedge.from >= static_cast<int>(complex.nodes.size())) {
+      record_incidence_failure(SurfaceArrangementIncidenceFailure::MissingWedge,
+                               halfedge.from, halfedge.id, halfedge.twin, -1);
       continue;
     }
-    for (const std::vector<int> &cycle : simpleCycles) {
-      for (std::size_t index = 0; index < cycle.size(); ++index) {
-        const int halfedge = cycle[index];
-        const int next = cycle[(index + 1U) % cycle.size()];
-        complex.halfedges[static_cast<std::size_t>(halfedge)].next = next;
+    outgoing[static_cast<std::size_t>(halfedge.from)].push_back(halfedge.id);
+    bool witnessed = false;
+    for (const SurfaceCellSourceChart &chart :
+         halfedge_source_charts(halfedge)) {
+      if (!transitionGraph.available() ||
+          transitionGraph.chart_component(SourceChartId{
+              chart.sourceComponent, chart.localSheet, chart.sourceFace}) < 0) {
+        continue;
       }
+      SurfacePoint point;
+      if (!node_point_on_chart(halfedge.from, chart, point)) {
+        continue;
+      }
+      const SourceEntityId entity = transitionGraph.resolve_entity(point);
+      if (!entity.valid()) {
+        continue;
+      }
+      double parameter = 0.0;
+      double leftScore = 0.0;
+      if (!directed_chart_parameter(halfedge, chart, entity, parameter,
+                                    leftScore)) {
+        continue;
+      }
+      DirectedWedgeWitness witness;
+      witness.halfedge = halfedge.id;
+      witness.sourceFace = chart.sourceFace;
+      witness.sourceComponent = chart.sourceComponent;
+      witness.sourceSheet = chart.localSheet;
+      witness.kind = entity.kind;
+      witness.localParameter = parameter;
+      witness.leftScore = leftScore;
+      wedgeWitnesses[static_cast<std::size_t>(halfedge.from)][entity.canonical]
+                    [halfedge.id]
+                        .push_back(std::move(witness));
+      witnessed = true;
+    }
+    if (!witnessed) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(SurfaceArrangementIncidenceFailure::MissingWedge,
+                               halfedge.from, halfedge.id, halfedge.twin, -1);
     }
   }
 
-  std::vector<unsigned char> visited(complex.halfedges.size(), 0);
-  for (int start = 0; start < static_cast<int>(complex.halfedges.size()); ++start) {
-    if (visited[static_cast<std::size_t>(start)] != 0) {
+  std::vector<std::map<SurfaceCellCanonicalIdentity,
+                       std::vector<DirectedWedgeRay>>>
+      orderedWedges(complex.nodes.size());
+  std::vector<std::vector<SurfaceCellCanonicalIdentity>>
+      halfedgeWedges(complex.halfedges.size());
+  constexpr double twoPi = 6.283185307179586476925286766559;
+  constexpr double parameterTolerance = 1.0e-10;
+  for (int nodeId = 0; nodeId < static_cast<int>(wedgeWitnesses.size());
+       ++nodeId) {
+    for (auto &[wedgeIdentity, raysByHalfedge] :
+         wedgeWitnesses[static_cast<std::size_t>(nodeId)]) {
+      ++complex.diagnostics.directedWedgeCount;
+      std::set<int> sourceFaceSet;
+      SourceEntityKind wedgeKind = SourceEntityKind::Invalid;
+      for (const auto &[halfedgeId, witnesses] : raysByHalfedge) {
+        (void)halfedgeId;
+        for (const DirectedWedgeWitness &witness : witnesses) {
+          sourceFaceSet.insert(witness.sourceFace);
+          if (wedgeKind == SourceEntityKind::Invalid) {
+            wedgeKind = witness.kind;
+          } else if (wedgeKind != witness.kind) {
+            ++complex.diagnostics.successorAmbiguityCount;
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::AmbiguousWedge, nodeId,
+                witness.halfedge,
+                complex.halfedges[static_cast<std::size_t>(witness.halfedge)]
+                    .twin,
+                -1);
+          }
+        }
+      }
+      std::vector<int> wedgeFaces(sourceFaceSet.begin(), sourceFaceSet.end());
+      std::sort(wedgeFaces.begin(), wedgeFaces.end(), [&](const int lhs,
+                                                           const int rhs) {
+        return std::make_tuple(face_signature(lhs), lhs) <
+               std::make_tuple(face_signature(rhs), rhs);
+      });
+      if (wedgeKind == SourceEntityKind::SourceEdge && wedgeFaces.size() > 2U) {
+        ++complex.diagnostics.successorAmbiguityCount;
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::AmbiguousWedge, nodeId, -1,
+            -1, -1);
+      }
+
+      std::vector<DirectedWedgeRay> rays;
+      rays.reserve(raysByHalfedge.size());
+      for (auto &[halfedgeId, witnesses] : raysByHalfedge) {
+        std::vector<double> parameters;
+        parameters.reserve(witnesses.size());
+        for (const DirectedWedgeWitness &witness : witnesses) {
+          double mapped = witness.localParameter;
+          if (wedgeKind == SourceEntityKind::SourceEdge &&
+              wedgeFaces.size() == 2U) {
+            const auto found = std::find(wedgeFaces.begin(), wedgeFaces.end(),
+                                         witness.sourceFace);
+            if (found == wedgeFaces.end()) {
+              continue;
+            }
+            const int side =
+                static_cast<int>(std::distance(wedgeFaces.begin(), found));
+            if (side == 1) {
+              mapped = twoPi - mapped;
+            }
+            if (std::abs(mapped - twoPi) <= parameterTolerance) {
+              mapped = 0.0;
+            }
+          }
+          parameters.push_back(mapped);
+        }
+        if (parameters.empty()) {
+          ++complex.diagnostics.successorMissingCount;
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::MissingWedge, nodeId,
+              halfedgeId,
+              complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+              -1);
+          continue;
+        }
+        std::sort(parameters.begin(), parameters.end());
+        double canonicalParameter = parameters.front();
+        for (const double parameter : parameters) {
+          double difference = std::abs(parameter - canonicalParameter);
+          if (wedgeKind == SourceEntityKind::SourceEdge) {
+            difference = std::min(difference, std::abs(twoPi - difference));
+          }
+          if (difference > parameterTolerance) {
+            ++complex.diagnostics.successorAmbiguityCount;
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::AmbiguousRayOrder, nodeId,
+                halfedgeId,
+                complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+                -1);
+          }
+        }
+        DirectedWedgeRay ray;
+        ray.halfedge = halfedgeId;
+        ray.parameter = canonicalParameter;
+        ray.witnesses = witnesses;
+        rays.push_back(std::move(ray));
+        halfedgeWedges[static_cast<std::size_t>(halfedgeId)].push_back(
+            wedgeIdentity);
+      }
+      std::sort(rays.begin(), rays.end(), [&](const DirectedWedgeRay &lhs,
+                                              const DirectedWedgeRay &rhs) {
+        if (std::abs(lhs.parameter - rhs.parameter) > parameterTolerance) {
+          return lhs.parameter < rhs.parameter;
+        }
+        return lhs.halfedge < rhs.halfedge;
+      });
+      for (std::size_t index = 1; index < rays.size(); ++index) {
+        if (std::abs(rays[index].parameter - rays[index - 1U].parameter) <=
+            parameterTolerance &&
+            rays[index].halfedge != rays[index - 1U].halfedge) {
+          ++complex.diagnostics.successorAmbiguityCount;
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::AmbiguousRayOrder, nodeId,
+              rays[index].halfedge,
+              complex.halfedges[static_cast<std::size_t>(rays[index].halfedge)]
+                  .twin,
+              rays[index - 1U].halfedge);
+        }
+      }
+      orderedWedges[static_cast<std::size_t>(nodeId)].emplace(
+          wedgeIdentity, std::move(rays));
+    }
+  }
+  for (auto &memberships : halfedgeWedges) {
+    std::sort(memberships.begin(), memberships.end());
+    memberships.erase(std::unique(memberships.begin(), memberships.end()),
+                      memberships.end());
+  }
+
+  std::vector<int> predecessorCount(complex.halfedges.size(), 0);
+  std::vector<SurfaceCellCanonicalIdentity> successorWedge(
+      complex.halfedges.size());
+  for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    halfedge.next = -1;
+    if (halfedge.twin < 0 ||
+        halfedge.twin >= static_cast<int>(complex.halfedges.size())) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(SurfaceArrangementIncidenceFailure::InvalidTwin,
+                               halfedge.to, halfedge.id, halfedge.twin, -1);
       continue;
     }
+    const SurfaceArrangementHalfedge &twin =
+        complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+    if (twin.twin != halfedge.id || twin.from != halfedge.to ||
+        twin.to != halfedge.from || halfedge.to < 0 ||
+        halfedge.to >= static_cast<int>(orderedWedges.size())) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(SurfaceArrangementIncidenceFailure::InvalidTwin,
+                               halfedge.to, halfedge.id, halfedge.twin, -1);
+      continue;
+    }
+
+    const auto &candidateWedges =
+        halfedgeWedges[static_cast<std::size_t>(halfedge.twin)];
+    if (candidateWedges.empty()) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::MissingSuccessor, halfedge.to,
+          halfedge.id, halfedge.twin, -1);
+      continue;
+    }
+    const SurfaceCellCanonicalIdentity *selectedWedge = nullptr;
+    if (candidateWedges.size() == 1U) {
+      selectedWedge = &candidateWedges.front();
+    } else {
+      std::vector<const SurfaceCellCanonicalIdentity *> leftCandidates;
+      for (const SurfaceCellCanonicalIdentity &candidate : candidateWedges) {
+        const auto wedgeFound =
+            orderedWedges[static_cast<std::size_t>(halfedge.to)].find(candidate);
+        if (wedgeFound ==
+            orderedWedges[static_cast<std::size_t>(halfedge.to)].end()) {
+          continue;
+        }
+        const auto rayFound = std::find_if(
+            wedgeFound->second.begin(), wedgeFound->second.end(),
+            [&](const DirectedWedgeRay &ray) {
+              return ray.halfedge == halfedge.twin;
+            });
+        if (rayFound == wedgeFound->second.end()) {
+          continue;
+        }
+        bool interiorOnLeft = false;
+        for (const DirectedWedgeWitness &witness : rayFound->witnesses) {
+          // The witness direction is the outgoing twin, opposite the incoming
+          // halfedge. Negating its oriented side score gives the left side of
+          // the incoming halfedge whose cell successor is being assigned.
+          interiorOnLeft = interiorOnLeft ||
+                           (-witness.leftScore > 1.0e-12);
+        }
+        if (interiorOnLeft) {
+          leftCandidates.push_back(&candidate);
+        }
+      }
+      if (leftCandidates.size() == 1U) {
+        selectedWedge = leftCandidates.front();
+      } else {
+        ++complex.diagnostics.successorAmbiguityCount;
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::AmbiguousWedge, halfedge.to,
+            halfedge.id, halfedge.twin, -1);
+        continue;
+      }
+    }
+
+    const auto wedgeFound =
+        orderedWedges[static_cast<std::size_t>(halfedge.to)].find(
+            *selectedWedge);
+    if (wedgeFound ==
+            orderedWedges[static_cast<std::size_t>(halfedge.to)].end() ||
+        wedgeFound->second.empty()) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::MissingSuccessor, halfedge.to,
+          halfedge.id, halfedge.twin, -1);
+      continue;
+    }
+    const auto rayFound = std::find_if(
+        wedgeFound->second.begin(), wedgeFound->second.end(),
+        [&](const DirectedWedgeRay &ray) {
+          return ray.halfedge == halfedge.twin;
+        });
+    if (rayFound == wedgeFound->second.end()) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::MissingSuccessor, halfedge.to,
+          halfedge.id, halfedge.twin, -1);
+      continue;
+    }
+    const int position =
+        static_cast<int>(std::distance(wedgeFound->second.begin(), rayFound));
+    const int predecessor =
+        (position - 1 + static_cast<int>(wedgeFound->second.size())) %
+        static_cast<int>(wedgeFound->second.size());
+    const int next =
+        wedgeFound->second[static_cast<std::size_t>(predecessor)].halfedge;
+    if (next < 0 || next >= static_cast<int>(complex.halfedges.size()) ||
+        complex.halfedges[static_cast<std::size_t>(next)].from != halfedge.to) {
+      ++complex.diagnostics.successorMissingCount;
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::EndpointDiscontinuity,
+          halfedge.to, halfedge.id, halfedge.twin, next);
+      continue;
+    }
+    halfedge.next = next;
+    successorWedge[static_cast<std::size_t>(halfedge.id)] = *selectedWedge;
+    ++predecessorCount[static_cast<std::size_t>(next)];
+  }
+
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.next < 0) {
+      continue;
+    }
+    const int multiplicity =
+        predecessorCount[static_cast<std::size_t>(halfedge.id)];
+    if (multiplicity != 1) {
+      ++complex.diagnostics.predecessorMultiplicityFailureCount;
+      record_incidence_failure(
+          multiplicity == 0
+              ? SurfaceArrangementIncidenceFailure::IncompletePermutation
+              : SurfaceArrangementIncidenceFailure::DuplicatePredecessor,
+          halfedge.from, halfedge.id, halfedge.twin, halfedge.next);
+    }
+  }
+  const auto canonical_node_identity = [&](const int nodeId) {
+    SurfaceCellCanonicalIdentity identity;
+    if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size()) ||
+        !transitionGraph.available()) {
+      return identity;
+    }
+    std::vector<SurfaceCellCanonicalIdentity> entities;
+    const SurfaceArrangementNode &node =
+        complex.nodes[static_cast<std::size_t>(nodeId)];
+    const auto add_entity = [&](const int face, const int component,
+                                const int sheet,
+                                const Eigen::RowVector3d &barycentric) {
+      SurfacePoint point;
+      point.face = face;
+      point.component = component;
+      point.sheet = sheet;
+      point.barycentric = barycentric.transpose();
+      const SourceEntityId entity = transitionGraph.resolve_entity(point);
+      if (entity.valid() && entity.canonical.valid) {
+        entities.push_back(entity.canonical);
+      }
+    };
+    for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
+      add_entity(occurrence.sourceFace, occurrence.sourceComponent,
+                 occurrence.sourceSheet, occurrence.barycentric);
+    }
+    add_entity(node.sourceFace, node.sourceComponent, node.sourceSheet,
+               node.barycentric);
+    std::sort(entities.begin(), entities.end());
+    entities.erase(std::unique(entities.begin(), entities.end()), entities.end());
+    if (entities.empty()) {
+      return identity;
+    }
+    identity.valid = true;
+    identity.values.push_back(static_cast<std::int64_t>(entities.size()));
+    for (const SurfaceCellCanonicalIdentity &entity : entities) {
+      identity.values.push_back(
+          static_cast<std::int64_t>(entity.values.size()));
+      identity.values.insert(identity.values.end(), entity.values.begin(),
+                             entity.values.end());
+    }
+    return identity;
+  };
+
+  // Hash the complete successor permutation from canonical source entities,
+  // not transient node or halfedge ordinals. This keeps diagnostics invariant
+  // under source-face row order, traversal starts, and whole-mesh orientation.
+  std::vector<std::vector<std::int64_t>> incidenceRecords;
+  incidenceRecords.reserve(complex.halfedges.size());
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.next < 0 ||
+        halfedge.next >= static_cast<int>(complex.halfedges.size()) ||
+        halfedge.id < 0 ||
+        halfedge.id >= static_cast<int>(successorWedge.size())) {
+      continue;
+    }
+    const SurfaceCellCanonicalIdentity from =
+        canonical_node_identity(halfedge.from);
+    const SurfaceCellCanonicalIdentity to =
+        canonical_node_identity(halfedge.to);
+    const SurfaceArrangementHalfedge &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    const SurfaceCellCanonicalIdentity nextTo =
+        canonical_node_identity(next.to);
+    const SurfaceCellCanonicalIdentity &wedge =
+        successorWedge[static_cast<std::size_t>(halfedge.id)];
+    if (!from.valid || !to.valid || !nextTo.valid || !wedge.valid) {
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::MissingWedge, halfedge.to,
+          halfedge.id, halfedge.twin, halfedge.next);
+      continue;
+    }
+    std::vector<std::int64_t> record;
+    const auto append_identity = [&](const SurfaceCellCanonicalIdentity &value) {
+      record.push_back(static_cast<std::int64_t>(value.values.size()));
+      record.insert(record.end(), value.values.begin(), value.values.end());
+    };
+    append_identity(wedge);
+    append_identity(from);
+    append_identity(to);
+    append_identity(nextTo);
+    record.push_back(halfedge.family);
+    record.push_back(halfedge.strand);
+    record.push_back(halfedge.hardFeature ? 1 : 0);
+    record.push_back(halfedge.railId);
+    record.push_back(halfedge.curveId);
+    incidenceRecords.push_back(std::move(record));
+  }
+  std::sort(incidenceRecords.begin(), incidenceRecords.end());
+  std::uint64_t directedIncidenceHash = 1469598103934665603ULL;
+  const auto mix_incidence = [&](const std::int64_t value) {
+    directedIncidenceHash ^= static_cast<std::uint64_t>(value);
+    directedIncidenceHash *= 1099511628211ULL;
+  };
+  mix_incidence(static_cast<std::int64_t>(incidenceRecords.size()));
+  for (const std::vector<std::int64_t> &record : incidenceRecords) {
+    mix_incidence(static_cast<std::int64_t>(record.size()));
+    for (const std::int64_t value : record) {
+      mix_incidence(value);
+    }
+  }
+  complex.diagnostics.directedIncidenceHash = directedIncidenceHash;
+
+  std::vector<std::vector<int>> auditedCycles;
+  if (directedIncidenceValid) {
+    std::vector<unsigned char> visited(complex.halfedges.size(), 0U);
+    for (int start = 0; start < static_cast<int>(complex.halfedges.size());
+         ++start) {
+      if (visited[static_cast<std::size_t>(start)] != 0U) {
+        continue;
+      }
+      std::vector<int> cycle;
+      std::set<int> localHalfedges;
+      std::set<int> localNodes;
+      std::set<std::pair<int, int>> localEdges;
+      int current = start;
+      bool closed = false;
+      for (int guard = 0;
+           guard <= static_cast<int>(complex.halfedges.size()); ++guard) {
+        if (current < 0 ||
+            current >= static_cast<int>(complex.halfedges.size())) {
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::MissingSuccessor, -1,
+              current, -1, -1);
+          break;
+        }
+        if (!localHalfedges.insert(current).second) {
+          closed = current == start;
+          if (!closed) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::RepeatedHalfedgeCycle,
+                complex.halfedges[static_cast<std::size_t>(current)].from,
+                current,
+                complex.halfedges[static_cast<std::size_t>(current)].twin,
+                complex.halfedges[static_cast<std::size_t>(current)].next);
+          }
+          break;
+        }
+        const SurfaceArrangementHalfedge &edge =
+            complex.halfedges[static_cast<std::size_t>(current)];
+        if (!localNodes.insert(edge.from).second) {
+          ++complex.diagnostics.repeatedNodeCycleCount;
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::RepeatedNodeCycle,
+              edge.from, edge.id, edge.twin, edge.next);
+          break;
+        }
+        const std::pair<int, int> undirected{
+            std::min(edge.from, edge.to), std::max(edge.from, edge.to)};
+        if (!localEdges.insert(undirected).second) {
+          ++complex.diagnostics.repeatedEdgeCycleCount;
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle,
+              edge.from, edge.id, edge.twin, edge.next);
+          break;
+        }
+        cycle.push_back(current);
+        current = edge.next;
+      }
+      if (!directedIncidenceValid) {
+        break;
+      }
+      if (!closed || cycle.size() < 3U) {
+        record_incidence_failure(
+            cycle.size() < 3U ? SurfaceArrangementIncidenceFailure::ShortCycle
+                              : SurfaceArrangementIncidenceFailure::IncompletePermutation,
+            cycle.empty()
+                ? -1
+                : complex.halfedges[static_cast<std::size_t>(cycle.front())]
+                      .from,
+            cycle.empty() ? start : cycle.front(),
+            cycle.empty()
+                ? -1
+                : complex.halfedges[static_cast<std::size_t>(cycle.front())]
+                      .twin,
+            cycle.empty()
+                ? -1
+                : complex.halfedges[static_cast<std::size_t>(cycle.back())]
+                      .next);
+        break;
+      }
+      for (const int halfedgeId : cycle) {
+        visited[static_cast<std::size_t>(halfedgeId)] = 1U;
+      }
+      auditedCycles.push_back(std::move(cycle));
+    }
+    if (directedIncidenceValid &&
+        std::any_of(visited.begin(), visited.end(),
+                    [](const unsigned char value) { return value == 0U; })) {
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::IncompletePermutation, -1, -1,
+          -1, -1);
+    }
+  }
+
+  std::vector<SurfaceArrangementCell> pendingCells;
+  if (!directedIncidenceValid) {
+    auditedCycles.clear();
+  }
+  for (const std::vector<int> &cycle : auditedCycles) {
     SurfaceArrangementCell cell;
-    cell.id = static_cast<int>(complex.cells.size());
-    int h = start;
-    for (int guard = 0; guard < static_cast<int>(complex.halfedges.size()) + 1;
-         ++guard) {
-      if (h < 0 || h >= static_cast<int>(complex.halfedges.size())) {
-        embeddingValid = false;
-        break;
-      }
-      if (visited[static_cast<std::size_t>(h)] != 0) {
-        break;
-      }
-      visited[static_cast<std::size_t>(h)] = 1;
-      cell.halfedges.push_back(h);
-      const auto &he = complex.halfedges[static_cast<std::size_t>(h)];
-      if (cell.sourceFace < 0) {
-        cell.sourceFace = he.sourceFace;
-      }
-      h = he.next;
-      if (h == start) {
-        break;
-      }
-    }
-    cell.closed = h == start;
-    if (cell.halfedges.size() < 3 || !cell.closed) {
-      embeddingValid = false;
-      continue;
-    }
+    cell.id = -1;
+    cell.halfedges = cycle;
+    cell.closed = true;
     for (const int halfedgeId : cell.halfedges) {
-      complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell = cell.id;
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      if (cell.sourceFace < 0) {
+        cell.sourceFace = halfedge.sourceFace;
+      }
     }
-    // Establish the topological disk invariant from incidence before any
-    // geometric area calculation. A curved multi-face cycle may not admit a
-    // nondegenerate single-plane projection, but that cannot turn a closed,
-    // simple DCEL cycle into a non-disk.
     std::set<int> uniqueNodes;
     for (const int halfedge : cell.halfedges) {
       uniqueNodes.insert(
           complex.halfedges[static_cast<std::size_t>(halfedge)].from);
     }
-    cell.boundaryComponentCount = cell.closed ? 1 : 0;
+    cell.boundaryComponentCount = 1;
     cell.eulerCharacteristic =
         static_cast<int>(uniqueNodes.size()) -
-        static_cast<int>(cell.halfedges.size()) + (cell.closed ? 1 : 0);
-    cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
-                uniqueNodes.size() == cell.halfedges.size() &&
+        static_cast<int>(cell.halfedges.size()) + 1;
+    cell.disk = uniqueNodes.size() == cell.halfedges.size() &&
                 cell.eulerCharacteristic == 1;
     const int boundaryVote = boundary_orientation_vote(
         cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
@@ -2593,7 +3090,56 @@ SurfaceCellComplex build_surface_cell_complex(
         }
       }
     }
-    complex.cells.push_back(cell);
+    pendingCells.push_back(std::move(cell));
+  }
+
+  // Cells are classified before ids are committed. Canonicalize the cycle
+  // inventory by its embedded undirected edge set so source-face row order and
+  // traversal start cannot change cell ordinals.
+  const auto cell_cycle_key = [&](const SurfaceArrangementCell &cell) {
+    using CanonicalEdge =
+        std::pair<SurfaceCellCanonicalIdentity, SurfaceCellCanonicalIdentity>;
+    std::vector<CanonicalEdge> edges;
+    edges.reserve(cell.halfedges.size());
+    for (const int halfedgeId : cell.halfedges) {
+      const SurfaceArrangementHalfedge &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      SurfaceCellCanonicalIdentity first =
+          canonical_node_identity(halfedge.from);
+      SurfaceCellCanonicalIdentity second =
+          canonical_node_identity(halfedge.to);
+      if (second < first) {
+        std::swap(first, second);
+      }
+      edges.emplace_back(std::move(first), std::move(second));
+    }
+    std::sort(edges.begin(), edges.end());
+    std::vector<std::array<int, 3>> sourceFaces;
+    sourceFaces.reserve(cell.sourceFaces.size());
+    for (const int face : cell.sourceFaces) {
+      if (face >= 0 && face < faces.rows()) {
+        sourceFaces.push_back(face_signature(face));
+      }
+    }
+    std::sort(sourceFaces.begin(), sourceFaces.end());
+    sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
+                      sourceFaces.end());
+    return std::make_tuple(cell.boundaryCycle ? 1 : 0, sourceFaces, edges,
+                           cell.halfedges.size());
+  };
+  std::sort(pendingCells.begin(), pendingCells.end(),
+            [&](const SurfaceArrangementCell &lhs,
+                const SurfaceArrangementCell &rhs) {
+              return cell_cycle_key(lhs) < cell_cycle_key(rhs);
+            });
+  complex.cells.clear();
+  complex.cells.reserve(pendingCells.size());
+  for (SurfaceArrangementCell &cell : pendingCells) {
+    cell.id = static_cast<int>(complex.cells.size());
+    for (const int halfedgeId : cell.halfedges) {
+      complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell = cell.id;
+    }
+    complex.cells.push_back(std::move(cell));
   }
 
   // Build intrinsic equivalence classes for per-face local source charts.
@@ -2675,9 +3221,6 @@ SurfaceCellComplex build_surface_cell_complex(
       chartParent[static_cast<std::size_t>(rootB)] = rootA;
     }
   };
-  const SourceChartTransitionGraph transitionGraph(
-      faces, resolvedComponents, resolvedSheets,
-      &resolvedOptions.hardFeatureEdges);
   if (!transitionGraph.available()) {
     embeddingValid = false;
   } else {
@@ -3233,7 +3776,7 @@ SurfaceCellComplex build_surface_cell_complex(
   std::vector<std::pair<int, int>> arrangementEdges;
   arrangementEdges.reserve(static_cast<std::size_t>(undirectedEdges));
   std::vector<std::pair<int, int>> arrangementBoundaryEdges;
-  bool incidenceValid = true;
+  bool incidenceValid = directedIncidenceValid;
   bool orientationValid = true;
   bool cellsDiskValid = true;
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {

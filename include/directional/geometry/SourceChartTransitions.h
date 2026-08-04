@@ -522,13 +522,13 @@ private:
       const int firstFace = incident[0].face;
       const int secondFace = incident[1].face;
       if ((*components_)[static_cast<std::size_t>(firstFace)] !=
-    (*components_)[static_cast<std::size_t>(secondFace)]) {
-  continue;
-}
-// Exact manifold topology, not a local projection-chart label, owns
-// intrinsic adjacency. Local-sheet labels remain attached to each chart
-// and still constrain non-topological capture and projection consumers.
-unite(firstFace, secondFace);
+          (*components_)[static_cast<std::size_t>(secondFace)]) {
+        continue;
+      }
+      // Exact manifold topology, not a local projection-chart label, owns
+      // intrinsic adjacency. Local-sheet labels remain attached to each chart
+      // and still constrain non-topological capture and projection consumers.
+      unite(firstFace, secondFace);
       faceAdjacency[static_cast<std::size_t>(firstFace)].push_back(secondFace);
       faceAdjacency[static_cast<std::size_t>(secondFace)].push_back(firstFace);
 

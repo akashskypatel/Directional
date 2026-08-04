@@ -179,7 +179,14 @@ std::vector<std::uint64_t> exact_rollback_identity(
         d.hardBarrierCrossings, d.eulerCharacteristic,
         d.sourceEulerCharacteristic, d.connectedComponentCount,
         d.sourceConnectedComponentCount, d.boundaryLoopCount,
-        d.sourceBoundaryLoopCount, d.incidenceValid ? 1 : 0,
+        d.sourceBoundaryLoopCount, d.directedWedgeCount,
+        d.successorMissingCount, d.successorAmbiguityCount,
+        d.predecessorMultiplicityFailureCount, d.repeatedNodeCycleCount,
+        d.repeatedEdgeCycleCount, static_cast<int>(d.incidenceFailure),
+        d.incidenceFailureNode, d.incidenceFailureHalfedge,
+        d.incidenceFailureTwin, d.incidenceFailureNext,
+        static_cast<std::int64_t>(d.directedIncidenceHash),
+        d.incidenceValid ? 1 : 0,
         d.embeddingValid ? 1 : 0, d.orientationValid ? 1 : 0,
         d.cellsDiskValid ? 1 : 0, d.boundaryLoopsValid ? 1 : 0,
         d.eulerCharacteristicValid ? 1 : 0, d.topologyValid ? 1 : 0,
@@ -1561,6 +1568,17 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     return restoreCommitted("InvalidOutputIncidence");
   }
   rebuilt.diagnostics.incidenceValid = true;
+  rebuilt.diagnostics.incidenceFailure =
+      SurfaceArrangementIncidenceFailure::None;
+  rebuilt.diagnostics.incidenceFailureNode = -1;
+  rebuilt.diagnostics.incidenceFailureHalfedge = -1;
+  rebuilt.diagnostics.incidenceFailureTwin = -1;
+  rebuilt.diagnostics.incidenceFailureNext = -1;
+  rebuilt.diagnostics.successorMissingCount = 0;
+  rebuilt.diagnostics.successorAmbiguityCount = 0;
+  rebuilt.diagnostics.predecessorMultiplicityFailureCount = 0;
+  rebuilt.diagnostics.repeatedNodeCycleCount = 0;
+  rebuilt.diagnostics.repeatedEdgeCycleCount = 0;
   rebuilt.diagnostics.topologyValid =
       inputTopologyValid && rebuilt.diagnostics.incidenceValid;
   result.complex = std::move(rebuilt);

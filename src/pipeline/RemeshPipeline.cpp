@@ -1218,6 +1218,21 @@ std::uint64_t hash_surface_complex(
   hash_combine_i64(seed, complex.diagnostics.sourceConnectedComponentCount);
   hash_combine_i64(seed, complex.diagnostics.boundaryLoopCount);
   hash_combine_i64(seed, complex.diagnostics.sourceBoundaryLoopCount);
+  hash_combine_i64(seed, complex.diagnostics.directedWedgeCount);
+  hash_combine_i64(seed, complex.diagnostics.successorMissingCount);
+  hash_combine_i64(seed, complex.diagnostics.successorAmbiguityCount);
+  hash_combine_i64(
+      seed, complex.diagnostics.predecessorMultiplicityFailureCount);
+  hash_combine_i64(seed, complex.diagnostics.repeatedNodeCycleCount);
+  hash_combine_i64(seed, complex.diagnostics.repeatedEdgeCycleCount);
+  hash_combine_i64(seed,
+                   static_cast<int>(complex.diagnostics.incidenceFailure));
+  hash_combine_i64(seed, complex.diagnostics.incidenceFailureNode);
+  hash_combine_i64(seed, complex.diagnostics.incidenceFailureHalfedge);
+  hash_combine_i64(seed, complex.diagnostics.incidenceFailureTwin);
+  hash_combine_i64(seed, complex.diagnostics.incidenceFailureNext);
+  hash_combine_i64(
+      seed, static_cast<std::int64_t>(complex.diagnostics.directedIncidenceHash));
   hash_combine_i64(seed, complex.diagnostics.incidenceValid ? 1 : 0);
   hash_combine_i64(seed, complex.diagnostics.embeddingValid ? 1 : 0);
   hash_combine_i64(seed, complex.diagnostics.orientationValid ? 1 : 0);

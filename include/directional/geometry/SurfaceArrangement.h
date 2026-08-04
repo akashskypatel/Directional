@@ -46,6 +46,58 @@ enum class SurfaceArrangementRejectReason : int {
   Sliver = 5,
 };
 
+enum class SurfaceArrangementIncidenceFailure : int {
+  None = 0,
+  SourceTransitionUnavailable = 1,
+  MissingWedge = 2,
+  AmbiguousWedge = 3,
+  AmbiguousRayOrder = 4,
+  InvalidTwin = 5,
+  MissingSuccessor = 6,
+  DuplicatePredecessor = 7,
+  EndpointDiscontinuity = 8,
+  IncompletePermutation = 9,
+  RepeatedHalfedgeCycle = 10,
+  RepeatedNodeCycle = 11,
+  RepeatedEdgeCycle = 12,
+  ShortCycle = 13,
+};
+
+inline const char *surface_arrangement_incidence_failure_name(
+    const SurfaceArrangementIncidenceFailure failure) {
+  switch (failure) {
+  case SurfaceArrangementIncidenceFailure::None:
+    return "None";
+  case SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable:
+    return "SourceTransitionUnavailable";
+  case SurfaceArrangementIncidenceFailure::MissingWedge:
+    return "MissingWedge";
+  case SurfaceArrangementIncidenceFailure::AmbiguousWedge:
+    return "AmbiguousWedge";
+  case SurfaceArrangementIncidenceFailure::AmbiguousRayOrder:
+    return "AmbiguousRayOrder";
+  case SurfaceArrangementIncidenceFailure::InvalidTwin:
+    return "InvalidTwin";
+  case SurfaceArrangementIncidenceFailure::MissingSuccessor:
+    return "MissingSuccessor";
+  case SurfaceArrangementIncidenceFailure::DuplicatePredecessor:
+    return "DuplicatePredecessor";
+  case SurfaceArrangementIncidenceFailure::EndpointDiscontinuity:
+    return "EndpointDiscontinuity";
+  case SurfaceArrangementIncidenceFailure::IncompletePermutation:
+    return "IncompletePermutation";
+  case SurfaceArrangementIncidenceFailure::RepeatedHalfedgeCycle:
+    return "RepeatedHalfedgeCycle";
+  case SurfaceArrangementIncidenceFailure::RepeatedNodeCycle:
+    return "RepeatedNodeCycle";
+  case SurfaceArrangementIncidenceFailure::RepeatedEdgeCycle:
+    return "RepeatedEdgeCycle";
+  case SurfaceArrangementIncidenceFailure::ShortCycle:
+    return "ShortCycle";
+  }
+  return "Unknown";
+}
+
 struct SurfaceArrangementOptions {
   bool insertBoundaryRails = true;
   std::set<std::uint64_t> hardFeatureEdges;
@@ -204,6 +256,19 @@ struct SurfaceArrangementDiagnostics {
   int sourceConnectedComponentCount = 0;
   int boundaryLoopCount = 0;
   int sourceBoundaryLoopCount = 0;
+  int directedWedgeCount = 0;
+  int successorMissingCount = 0;
+  int successorAmbiguityCount = 0;
+  int predecessorMultiplicityFailureCount = 0;
+  int repeatedNodeCycleCount = 0;
+  int repeatedEdgeCycleCount = 0;
+  SurfaceArrangementIncidenceFailure incidenceFailure =
+      SurfaceArrangementIncidenceFailure::None;
+  int incidenceFailureNode = -1;
+  int incidenceFailureHalfedge = -1;
+  int incidenceFailureTwin = -1;
+  int incidenceFailureNext = -1;
+  std::uint64_t directedIncidenceHash = 0U;
   bool incidenceValid = false;
   bool embeddingValid = false;
   bool orientationValid = false;
