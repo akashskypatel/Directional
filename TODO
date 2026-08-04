@@ -8,7 +8,7 @@ Last updated: 2026-08-03
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-CB91 through P5-CB98 code changes + compile-only build**.
+- Completed turn: **P5-CB91 through P5-CB98 code changes + GitHub compile-only closeout**.
 - Next turn: **P5-TB17 artifact-only test and benchmark**.
 
 ## Last runtime checkpoint: P5-TB16
@@ -38,48 +38,45 @@ Last updated: 2026-08-03
   contract.
 - P5-CB94: canonical open-cylinder intrinsic entities and strict topology
   preconditions.
-- P5-CB95: provenance-derived source charts, strict completed-mesh rollback,
-  and first-invalid producer diagnostics.
+- P5-CB95: provenance-derived output ownership and first-invalid producer
+  diagnostics.
 - P5-CB96: logical payload, retained capacity, peak, simultaneous ownership,
   acquire/release timeline, and benchmark serialization.
 - P5-CB97: focused regression sources for every corrected contract.
 - P5-CB98: compile-only gate passed for the four required targets; no binary was
   executed.
 
-## GitHub source synchronization
+## GitHub source and compile closeout
 
-- Verified target branch checkpoint: `7b4b699dac7567935f548a26a92336de5a496756`.
-- Workflow run `30863219431` reconstructed and checksum-verified the preserved
-  seven-file patch (`sha256:cbea5cf99ac2bf089a73ae0f698e1e92e613ab6218995fa62769d8dc3af737d8`).
-- The workflow proved the patch contains exactly the seven declared source/test
-  paths and no `.github/workflows/**` path.
-- Three-way application resolved every file cleanly and produced no source diff
-  because all seven target blobs already matched the patch outputs exactly.
-- The other seven P5-CB98 implementation files also match the compiled local
-  source blobs, giving **14/14 exact implementation-file matches**.
-- Temporary transfer workflows and target-branch trigger markers were removed
-  through the GitHub connector; the workflow itself modified no workflow file.
-- The GitHub branch is now the direct source authority for P5-TB17.
-
-## Compile-only result
-
-Built with Clang 17, Ninja, Release `-O2 -DNDEBUG`, GNU++20, static libraries,
-global unity batch 4, and temporary target-local unity batch 1 for the test and
-benchmark executables. The temporary CMake edit was removed.
-
-- [x] `directional_core`
-- [x] `directional_pipeline`
-- [x] `directional_phase1_tests` — linked, not executed
-- [x] `directional_benchmarks` — linked, not executed
-
-Only existing `PCFaceTangentBundle` missing-`override` warnings were emitted.
+- Exact GitHub-compiled source:
+  `680d81c6946f45b1daed9dd477cfde565f8ac7a2`.
+- Successful compile-only run: `30864341083`.
+- Required targets compiled and linked: `directional_core`,
+  `directional_pipeline`, `directional_phase1_tests`, and
+  `directional_benchmarks`.
+- No test, benchmark, custom mesh, help/list, discovery, or compiled project
+  binary command executed.
+- Compiled artifact: `8875627676`
+  (`surface-cell-p5-cb98-github-source-linux-release`).
+- Artifact digest:
+  `sha256:b9560c9438289e90e6acca3a0f4b7f1d46a5ad34663693c1243bf4176056c165`.
+- Packaged checksums: **38/38**; fixture files: **26**; source status empty.
+- Dedicated detailed log artifact: `8875628150`
+  (`surface-cell-p5-cb98-workflow-logs-30864341083`).
+- Log artifact digest:
+  `sha256:f31e7d57d137399634187edbac5902732e0226172bc80248c1abf41ff61513e8`.
+- The malformed workflow-level `runner.temp` references were removed; detailed
+  activity logging and `if: always()` log-artifact upload now pass.
+- Mandatory workflow policy is recorded in
+  `.agents/Directional/GitHub_Workflow_Policy.md`.
 
 ## Required next work
 
 Use `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`.
+Use artifact `8875627676` directly and do not rebuild.
 
-- [ ] Verify the P5-CB98 package, checksums, exact source, dependency revisions,
-      and fixture closure without rebuilding.
+- [ ] Verify package digest, checksums, exact source, dependency revisions, and
+      fixture closure.
 - [ ] Re-run the ten P5-TB16 assertion failures plus the new parity/reuse/
       midpoint/cylinder/output/memory regressions.
 - [ ] Run Phase 14–18, Milestone E, Milestone D, P23/P26/P27/Phase 20, the three
@@ -97,6 +94,9 @@ Evidence:
 - `benchmark-results/p5-tb16-summary.json`
 - `.agents/Directional/Milestone_G_P5_CB91_CB98_Parity_Reuse_Fixture_Output_Memory_Code_Build_Report.md`
 - `benchmark-results/p5-cb98-summary.json`
+- `.agents/Directional/Milestone_G_P5_CB98_GitHub_Compile_Closeout_Report.md`
+- `benchmark-results/p5-cb98-github-closeout-summary.json`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
 - `.agents/Directional/Milestone_G_P5_Post_CB98_Artifact_Test_Benchmark_Plan.md`
 
 P5 remains open pending artifact-only runtime evidence.
