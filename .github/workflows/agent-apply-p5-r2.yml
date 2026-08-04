@@ -1,0 +1,65 @@
+name: Agent Apply Surface Cell P5 R2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-apply-p5-r2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-apply-surface-cell-p5-r2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 2
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply reviewed P5-R2 patch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          event_sha=$(git rev-parse HEAD)
+          remote_sha=$(git ls-remote origin refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing | cut -f1)
+          test "${event_sha}" = "${remote_sha}"
+          test -z "$(git status --porcelain=v1)"
+
+          cat .agents/Directional/.p5-r2-patch/part* > /tmp/P5-R2.patch.gz.b64
+          base64 -d /tmp/P5-R2.patch.gz.b64 | gzip -d > /tmp/P5-R2.patch
+          printf '%s  %s\n' \
+            e4da79427d33a5fd7bf29b707ec0765974faf0bc67c2dc18e6f2e6e6dd9a8658 \
+            /tmp/P5-R2.patch | sha256sum -c -
+
+          git apply --check /tmp/P5-R2.patch
+          git apply /tmp/P5-R2.patch
+          git diff --check
+          git diff --binary > /tmp/P5-R2-applied.patch
+          test "$(sha256sum /tmp/P5-R2-applied.patch | cut -d' ' -f1)" = \
+            e4da79427d33a5fd7bf29b707ec0765974faf0bc67c2dc18e6f2e6e6dd9a8658
+
+          git config user.name directional-build-agent
+          git config user.email directional-build-agent@users.noreply.github.com
+          git rm -r .agents/Directional/.p5-r2-patch .github/workflows/agent-apply-p5-r2.yml
+          git add include src tests
+          git commit -m 'P5-R2: reconstruct directed wedge incidence [skip ci]'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+
+          source_sha=$(git rev-parse HEAD)
+          message="P5-R2 reviewed source patch applied at ${source_sha}. Patch SHA-256: e4da79427d33a5fd7bf29b707ec0765974faf0bc67c2dc18e6f2e6e6dd9a8658. This workflow executed no project binary."
+          gh api repos/${GITHUB_REPOSITORY}/issues/8/comments -f body="${message}"
