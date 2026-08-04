@@ -9,125 +9,123 @@
 
 ## Current checkpoint
 
-P5-R2 directed wedge/incidence code changes and the exact four-target compile/package gate are complete. Runtime acceptance has not been executed for this source.
+P5-TB26 artifact-only validation is complete against artifact `8908691591` and exact source `306fab5d440199cb090e1aa343fadb6112663edc`.
 
-Compiled checkpoint:
+R2 does **not** close. The new directed-wedge permutation contracts mostly pass, but valid boundary, disconnected-component, singularity-fan, hard-rail, and periodic-cylinder sectors are omitted from the audited cycle/cell inventory. Do not advance to R3.
 
-- P5-TB25 tested source `a1fec970297739cfe23ade339b6a7b57071b7300`;
-- R2 implementation commit `9ca13956e8872f5221bcaf51142ef3474232495b`;
-- rollback typing commit `eadfcd198adcbc6e960b89b3932510dcf71b15aa`;
-- exact compiled source `306fab5d440199cb090e1aa343fadb6112663edc`;
-- reviewed patch SHA-256 `e4da79427d33a5fd7bf29b707ec0765974faf0bc67c2dc18e6f2e6e6dd9a8658`;
-- formatting-fix SHA-256 `d0696338ecdf5cf9af57b9dca3d56260192c8fe12cf0122a98c45e8b31734522`;
-- successful run `30949473754`, job `92127660105`;
+Package authority:
+
 - artifact `8908691591`, `surface-cell-p5-r2-final-github-source-linux-release`;
-- artifact SHA-256 `7db07fc02a92ce08ce529e6f5175a961398c5a9708d4d6ad23dd7133e1407cec`;
-- workflow-log artifact `8908692488`, SHA-256 `1f3cc3630d89f4aacf419d60ece84f9f5c8d5a4e8fa2e59cbb314c79421b97f6`;
+- archive SHA-256 `7db07fc02a92ce08ce529e6f5175a961398c5a9708d4d6ad23dd7133e1407cec`;
+- workflow event `b332bb3119a133b957b2f573a5bd447d4ca62d4e`;
+- reviewed patch SHA `e4da79427d33a5fd7bf29b707ec0765974faf0bc67c2dc18e6f2e6e6dd9a8658`;
 - empty source status;
 - recursive checksums **41/41**;
 - package files **43**;
 - fixtures **26**;
 - recursive submodules **9**;
-- all **132/132** Ninja actions complete.
+- no configure, rebuild, relink, patch, regeneration, or source modification during P5-TB26.
 
-The build compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`. No project binary executed.
-
-The next turn is **P5-TB26 artifact-only R2 validation**. Execute artifact `8908691591` directly. Do not configure, rebuild, relink, patch, regenerate, or modify source.
+The next turn is **P5-R2C directed boundary-sector and cycle-inventory correction plus compile-only build**. Compile exactly the four required targets and execute no project binary.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_R2_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2_Test_Benchmark_Plan.md`
-5. `benchmark-results/p5-r2-summary.json`
-6. `.agents/Directional/Milestone_G_P5_TB25_Artifact_Only_R1D_Test_Benchmark_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2_Directed_Wedge_Incidence_Code_Build_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB26_Artifact_Only_R2_Test_Benchmark_Report.md`
+4. `benchmark-results/p5-tb26-summary.json`
+5. `.agents/Directional/Milestone_G_P5_R2C_Directed_Boundary_Cycle_Code_Build_Plan.md`
+6. `.agents/Directional/Milestone_G_P5_R2_Code_Build_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2_Test_Benchmark_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## Last runtime authority: P5-TB25
+## P5-TB26 runtime results
 
-- source-chart R1 **11/11**;
-- Phase 22 source validator **6/6**;
-- recovery authority **9/9**;
-- graph-dependent **6/6**;
-- feature-rail/barrier **8/8**;
-- Phase 14–18 **247/247**;
-- Phase 16 **39/39**;
-- Phase 20 **46/48**;
-- direct plane/seam/close sheets **0/3**;
-- complete suite **598/617**, terminating in **333.444 seconds**;
-- observed `VmHWM` at least **582,904 KiB**.
+- source-chart R1: **11/11**;
+- Phase 22 source validator: **6/6**;
+- recovery authority: **9/9**;
+- feature-rail/barrier authority: **8/8**;
+- graph-dependent: **5/6**;
+- R2 focused: **6/7**;
+- Milestone D: **4/7**;
+- Phase 14–18: **227/240**;
+- Phase 16: **39/43**;
+- Phase 17: **18/26**;
+- Phase 18: **57/57**;
+- Phase 20: **46/48**;
+- complete suite: **588/621**, terminated normally in **74.763 seconds**;
+- exact maximum RSS: unavailable because the outer timing shell detached before final statistics.
 
-R0 and R1 are closed. No P5-R2 runtime result is implied by compilation.
+The dominant bunny executions are approximately 23–24 seconds, versus 108–113 seconds in P5-TB25. Failures regress from 19 to 33. Treat this as faster early rejection, not performance success.
 
-## P5-R2 implementation
+## Direct analytic disposition
 
-1. Added typed arrangement-incidence failures and deterministic first-failure evidence.
-2. Added directed wedge, successor, predecessor, repeated-cycle, incidence-validity, and canonical incidence-hash diagnostics.
-3. Build and validate the R1 transition graph before radial successor construction.
-4. Derive canonical source-chart/source-vertex-fan wedges at each arrangement node.
-5. Preserve local-sheet provenance without using raw sheet equality as topology ownership.
-6. Retain component, hard-rail, source-boundary, nonmanifold, disconnected-fan, and transition-consistency barriers.
-7. Order outgoing halfedges only inside one admissible wedge using intrinsic source evidence.
-8. Assign exactly one successor and predecessor per halfedge.
-9. Audit twin symmetry, endpoint continuity, multiplicity, and complete permutation coverage before cycle enumeration.
-10. Remove post-hoc repeated-node cycle splitting.
-11. Reject repeated halfedge/node/edge cycles with typed producer evidence.
-12. Enumerate closed node-simple and edge-simple cycles, classify exterior cycles, and only then assign bounded cell IDs.
-13. Propagate `directedIncidenceHash` and typed evidence through immediate arrangement, simplification, repair, pipeline, and rollback consumers.
-14. Add focused R2 contracts for complete permutation, adjacent local-sheet wedges, nonmanifold rejection, orientation invariance, source-row invariance, hard-rail classification, and cylinder topology.
-15. Keep R3–R11 deferred.
+All cases used `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy output.
 
-## Build history
+- plane: 9 arrangement cells, 12 quads, 15 aggregate validation failures;
+- multi-face seam: 0 cells, 0 quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: 0 cells, 0 quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- cylinder: 0 cells, 0 quads, `SideSubdivisionRepair:InvalidInputIncidence`.
 
-- Run `30948906671` failed mechanically on a mixed-width rollback initializer after the new arrangement source compiled. No project binary executed.
-- Run `30949268532` failed before source modification because an exact multiline transport match was altered by YAML indentation. No project binary executed.
-- The final marker-bounded correction and formatting normalization compiled successfully in run `30949473754` from exact source `306fab5d440199cb090e1aa343fadb6112663edc`.
+Seam and close sheets regress from later output-validation failures to empty arrangement inventories. Cylinder regresses from a later pattern bow-tie to empty incidence. No fallback, recovery, or legacy execution occurred.
 
-## P5-TB26 execution order
+## Earliest R2 root cause
 
-1. Verify artifact SHA, exact source, empty status, **41/41** checksums, 43 files, 26 fixtures, nine submodules, source contents, and target hashes.
-2. Run all R1 authority scopes first.
-3. Run every new directed-incidence focused contract.
-4. Run all `MilestoneDClosure.*` tests and require both prior failures to close.
-5. Run Phase 14–18 aggregate and Phase 16, Phase 17, and Phase 18 entry scopes.
-6. Run plane, multi-face seam, close sheets, cylinder, and any packaged disconnected-close-sheet direct case with fallback `Fail` and recovery disabled.
-7. Run complete Phase 20.
-8. Run the complete suite once with a watchdog used only as a safety mechanism.
-9. Compare bunny duration and memory against P5-TB24 and P5-TB25.
-10. Do not run the full standalone bunny benchmark matrix unless focused and complete-suite evidence cannot identify the producer.
+The R2 implementation publishes cells only from `auditedCycles`. Valid sectors are rejected or omitted before cell assignment:
 
-## Decision rule
+- valid halfedges retain `cell == -1`;
+- cylinder reports `invalid-cell cell=-1 halfedge=0 twin=1 next=4`;
+- planar Euler is `-1`, area error is `1`, and no boundary cycle exists;
+- disconnected components produce zero interior cells;
+- an interior hard rail produces two exterior cycles;
+- the bunny singularity fan produces zero center cells instead of three;
+- eight Phase 17 contracts lose valid arrangement candidates.
 
-Advance to R3 only when:
+Phase 18 remains clean. R2 valid cycle/cell ownership is therefore earlier than R3 completion work.
 
-- R1 authority remains clean;
-- every valid arrangement has one successor and predecessor per halfedge;
-- all valid cycles are node-simple and edge-simple;
-- all new R2 contracts pass;
-- both Milestone D failures close;
-- cylinder arrangement incidence is valid before completion;
-- analytic incidence failures disappear or move to later typed completion evidence;
-- Phase 14–18 remains clean;
-- Phase 20 does not regress due to incidence;
-- the complete suite terminates.
+## P5-R2C required work
 
-If R2 remains causal, prepare the smallest incidence correction. If R2 closes and completion remains causal, prepare the focused R3 topology-distinct completion plan.
+1. Separate one-to-one successor/predecessor validity from interior/exterior cycle classification.
+2. Represent source-boundary sectors explicitly and close their exterior successor relation from exact source topology.
+3. Prevent interior hard rails from voting as source boundaries or producing extra exterior cycles.
+4. Require every valid halfedge to belong to exactly one audited cycle and receive exactly one cell ID.
+5. Preserve valid periodic seam closure across R1 chart transitions.
+6. Restore planar, disconnected-component, non-disk/candidate, singularity-fan, seam, close-sheet, and cylinder cycle inventories.
+7. Preserve typed fail-closed rejection for genuinely missing, ambiguous, nonmanifold, repeated-node, repeated-edge, short, or incomplete incidence.
+8. Preserve R1 exact adjacency, local-sheet provenance, `directedIncidenceHash`, source-row/orientation invariance, and rollback identity.
+9. Do not restore post-hoc repeated-node decomposition.
+10. Keep R3–R11 deferred.
 
-## Subsequent authoritative order
+## Compile-only boundary
 
-1. R3 — topology-distinct patch completion;
-2. R4 — repeated-node splice producer;
-3. R5 — explicit local lattice and advancing-front events;
-4. R6 — torus decomposition;
-5. R7 — adaptive dyadic transitions;
-6. R8 — direct production validation;
-7. R9 — cache reuse;
-8. R10 — stage-lineage fixtures;
-9. R11 — memory telemetry.
+Compile exactly:
+
+- `directional_core`;
+- `directional_pipeline`;
+- `directional_phase1_tests`;
+- `directional_benchmarks`.
+
+Run no tests, benchmarks, custom meshes, help/list/discovery commands, or generated executables. Initialize persistent logs before fallible work and always upload the logs and exact-source artifact.
+
+## P5-TB27 runtime gate
+
+The artifact-only turn after R2C must require:
+
+- all R1 authority remains clean;
+- all directed-incidence and new cell-inventory tests pass;
+- Milestone D **7/7**;
+- Phase 16 and Phase 17 return to the clean pre-R2 baseline plus new tests;
+- Phase 14–18 is clean;
+- seam, close sheets, and cylinder retain nonzero valid arrangement cell inventories;
+- no valid halfedge has `cell == -1`;
+- analytic failures improve or move to a later typed completion producer;
+- Phase 20 does not regress;
+- the complete suite terminates;
+- bunny duration and memory are measured without treating faster failure as correctness.
+
+Advance to R3 only after these R2 gates close.
 
 ## Preserved prohibitions
 
@@ -138,10 +136,11 @@ If R2 remains causal, prepare the smallest incidence correction. If R2 closes an
 - no positional merging or source-triangle pairing;
 - no arbitrary subset search;
 - no fixture/ID special cases;
+- no post-hoc cycle decomposition;
 - no timeout-as-correctness.
 
 ## Key lessons
 
-- Source-chart transition correctness does not imply valid cell incidence; successor ownership must be constructed and audited independently.
-- Repeated-node cycles are evidence of an invalid incidence producer, not objects to split after topology is assigned.
-- Compile success establishes integration and packaging only. P5-TB26 determines whether R2 closes the directed-incidence defects and whether the P5-TB25 bunny performance regression changes.
+- Passing narrow successor/permutation tests is insufficient when valid boundary sectors are absent from the published cycle/cell inventory.
+- Exterior classification must follow complete audited cycle construction; interior hard rails cannot substitute for source boundaries.
+- Faster rejection reduced bunny time but increased failures. Correctness remains the gate.
