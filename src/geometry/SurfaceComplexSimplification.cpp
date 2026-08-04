@@ -279,72 +279,198 @@ SurfaceSimplificationRejectionReason validate_candidate(
 
 namespace directional::geometry::surface_simplification_detail {
 
-bool validate_complex_incidence(const SurfaceCellComplex &complex,
-                                const bool requireDiskCells) {
+SurfaceCellIncidenceAudit audit_complex_incidence(
+    const SurfaceCellComplex &complex, const bool requireDiskCells) {
+  SurfaceCellIncidenceAudit audit;
   for (int i = 0; i < static_cast<int>(complex.nodes.size()); ++i) {
     if (complex.nodes[static_cast<std::size_t>(i)].id != i) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::NodeIdMismatch;
+      audit.node = i;
+      audit.expected = i;
+      audit.actual = complex.nodes[static_cast<std::size_t>(i)].id;
+      return audit;
     }
   }
+  if (!complex.sourceOwnershipRegistry.empty() &&
+      !validate_surface_cell_ownership_registry(complex)) {
+    audit.failure = SurfaceCellIncidenceFailureKind::OwnershipRegistryMismatch;
+    return audit;
+  }
+
   std::vector<int> halfedgeUse(complex.halfedges.size(), 0);
+  std::vector<int> predecessorUse(complex.halfedges.size(), 0);
+  std::set<std::tuple<int, int, int>> directedIncidence;
   for (int i = 0; i < static_cast<int>(complex.halfedges.size()); ++i) {
     const SurfaceArrangementHalfedge &halfedge =
         complex.halfedges[static_cast<std::size_t>(i)];
-    if (halfedge.id != i || halfedge.twin < 0 ||
-        halfedge.twin >= static_cast<int>(complex.halfedges.size()) ||
-        halfedge.next < 0 ||
-        halfedge.next >= static_cast<int>(complex.halfedges.size()) ||
-        halfedge.from < 0 ||
+    audit.halfedge = i;
+    audit.twin = halfedge.twin;
+    audit.next = halfedge.next;
+    audit.cell = halfedge.cell;
+    if (halfedge.id != i) {
+      audit.failure = SurfaceCellIncidenceFailureKind::HalfedgeIdMismatch;
+      audit.expected = i;
+      audit.actual = halfedge.id;
+      return audit;
+    }
+    if (halfedge.twin < 0 ||
+        halfedge.twin >= static_cast<int>(complex.halfedges.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidTwin;
+      return audit;
+    }
+    if (halfedge.from < 0 ||
         halfedge.from >= static_cast<int>(complex.nodes.size()) ||
-        halfedge.to < 0 || halfedge.to >= static_cast<int>(complex.nodes.size()) ||
-        halfedge.from == halfedge.to || halfedge.cell < 0 ||
+        halfedge.to < 0 ||
+        halfedge.to >= static_cast<int>(complex.nodes.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidEndpoint;
+      audit.node = halfedge.from < 0 ||
+                           halfedge.from >= static_cast<int>(complex.nodes.size())
+                       ? halfedge.from
+                       : halfedge.to;
+      return audit;
+    }
+    if (halfedge.from == halfedge.to) {
+      audit.failure = SurfaceCellIncidenceFailureKind::DegenerateEdge;
+      audit.node = halfedge.from;
+      return audit;
+    }
+    if (halfedge.cell < 0 ||
         halfedge.cell >= static_cast<int>(complex.cells.size())) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidCell;
+      return audit;
+    }
+    if (halfedge.next < 0 ||
+        halfedge.next >= static_cast<int>(complex.halfedges.size())) {
+      audit.failure = SurfaceCellIncidenceFailureKind::InvalidNext;
+      return audit;
     }
     const SurfaceArrangementHalfedge &twin =
         complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
     if (twin.twin != i || twin.from != halfedge.to ||
         twin.to != halfedge.from) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::TwinAsymmetry;
+      audit.expected = i;
+      audit.actual = twin.twin;
+      return audit;
+    }
+    const SurfaceArrangementHalfedge &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    if (next.from != halfedge.to) {
+      audit.failure = SurfaceCellIncidenceFailureKind::NextEndpointMismatch;
+      audit.node = halfedge.to;
+      audit.expected = halfedge.to;
+      audit.actual = next.from;
+      return audit;
+    }
+    ++predecessorUse[static_cast<std::size_t>(halfedge.next)];
+    if (!directedIncidence.emplace(halfedge.cell, halfedge.from,
+                                   halfedge.to)
+             .second) {
+      audit.failure =
+          SurfaceCellIncidenceFailureKind::DirectedEdgeMultiplicity;
+      return audit;
     }
   }
+
+  for (int i = 0; i < static_cast<int>(complex.halfedges.size()); ++i) {
+    if (predecessorUse[static_cast<std::size_t>(i)] != 1) {
+      audit.failure = SurfaceCellIncidenceFailureKind::PredecessorMultiplicity;
+      audit.halfedge = i;
+      audit.expected = 1;
+      audit.actual = predecessorUse[static_cast<std::size_t>(i)];
+      return audit;
+    }
+  }
+
   for (int i = 0; i < static_cast<int>(complex.cells.size()); ++i) {
-    const SurfaceArrangementCell &cell = complex.cells[static_cast<std::size_t>(i)];
-    if (cell.id != i || !cell.closed || cell.halfedges.size() < 3U) {
-      return false;
+    const SurfaceArrangementCell &cell =
+        complex.cells[static_cast<std::size_t>(i)];
+    audit.cell = i;
+    if (cell.id != i) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellIdMismatch;
+      audit.expected = i;
+      audit.actual = cell.id;
+      return audit;
+    }
+    if (!cell.closed) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellNotClosed;
+      return audit;
+    }
+    if (cell.halfedges.size() < 3U) {
+      audit.failure = SurfaceCellIncidenceFailureKind::CellTooSmall;
+      audit.actual = static_cast<int>(cell.halfedges.size());
+      return audit;
     }
     if (requireDiskCells && !cell.boundaryCycle &&
         (!cell.disk || cell.boundaryComponentCount != 1 ||
          cell.eulerCharacteristic != 1)) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::NonDiskCell;
+      return audit;
     }
     if (cell.sideFamilies.size() != cell.sideEdgeCounts.size()) {
-      return false;
+      audit.failure = SurfaceCellIncidenceFailureKind::SideMetadataMismatch;
+      return audit;
     }
     std::set<int> seen;
     for (std::size_t j = 0; j < cell.halfedges.size(); ++j) {
       const int halfedgeId = cell.halfedges[j];
+      audit.halfedge = halfedgeId;
       if (halfedgeId < 0 ||
-          halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
-          !seen.insert(halfedgeId).second) {
-        return false;
+          halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+        audit.failure = SurfaceCellIncidenceFailureKind::InvalidNext;
+        return audit;
+      }
+      if (!seen.insert(halfedgeId).second) {
+        audit.failure = SurfaceCellIncidenceFailureKind::RepeatedCellHalfedge;
+        return audit;
       }
       const SurfaceArrangementHalfedge &halfedge =
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
       const int expectedNext =
           cell.halfedges[(j + 1U) % cell.halfedges.size()];
-      if (halfedge.cell != i || halfedge.next != expectedNext ||
-          halfedge.to !=
-              complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
-        return false;
+      if (halfedge.cell != i) {
+        audit.failure = SurfaceCellIncidenceFailureKind::HalfedgeCellMismatch;
+        audit.expected = i;
+        audit.actual = halfedge.cell;
+        return audit;
+      }
+      if (halfedge.next != expectedNext) {
+        audit.failure = SurfaceCellIncidenceFailureKind::CellNextMismatch;
+        audit.expected = expectedNext;
+        audit.actual = halfedge.next;
+        return audit;
+      }
+      if (halfedge.to !=
+          complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
+        audit.failure = SurfaceCellIncidenceFailureKind::NextEndpointMismatch;
+        audit.expected = halfedge.to;
+        audit.actual =
+            complex.halfedges[static_cast<std::size_t>(expectedNext)].from;
+        return audit;
       }
       ++halfedgeUse[static_cast<std::size_t>(halfedgeId)];
     }
   }
-  return std::all_of(halfedgeUse.begin(), halfedgeUse.end(),
-                     [](const int count) { return count == 1; });
+  for (int i = 0; i < static_cast<int>(halfedgeUse.size()); ++i) {
+    if (halfedgeUse[static_cast<std::size_t>(i)] != 1) {
+      audit.failure = SurfaceCellIncidenceFailureKind::HalfedgeUseMismatch;
+      audit.halfedge = i;
+      audit.expected = 1;
+      audit.actual = halfedgeUse[static_cast<std::size_t>(i)];
+      return audit;
+    }
+  }
+  audit.valid = true;
+  audit.failure = SurfaceCellIncidenceFailureKind::None;
+  audit.node = audit.halfedge = audit.twin = audit.next = audit.cell = -1;
+  audit.expected = audit.actual = -1;
+  return audit;
 }
 
+bool validate_complex_incidence(const SurfaceCellComplex &complex,
+                                const bool requireDiskCells) {
+  return audit_complex_incidence(complex, requireDiskCells).valid;
+}
 } // namespace directional::geometry::surface_simplification_detail
 
 namespace directional::geometry::surface_simplification_detail {

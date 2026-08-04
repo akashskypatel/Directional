@@ -274,6 +274,98 @@ SurfaceSimplificationRejectionReason validate_candidate(
     const std::vector<SurfaceSimplificationElement> &elements,
     const SurfaceSimplificationOptions &options, const double cost);
 
+enum class SurfaceCellIncidenceFailureKind : int {
+  None = 0,
+  NodeIdMismatch = 1,
+  HalfedgeIdMismatch = 2,
+  InvalidTwin = 3,
+  TwinAsymmetry = 4,
+  InvalidEndpoint = 5,
+  DegenerateEdge = 6,
+  InvalidCell = 7,
+  InvalidNext = 8,
+  NextEndpointMismatch = 9,
+  CellIdMismatch = 10,
+  CellNotClosed = 11,
+  CellTooSmall = 12,
+  NonDiskCell = 13,
+  SideMetadataMismatch = 14,
+  RepeatedCellHalfedge = 15,
+  HalfedgeCellMismatch = 16,
+  CellNextMismatch = 17,
+  HalfedgeUseMismatch = 18,
+  DirectedEdgeMultiplicity = 19,
+  PredecessorMultiplicity = 20,
+  OwnershipRegistryMismatch = 21,
+};
+
+inline const char *surface_cell_incidence_failure_name(
+    const SurfaceCellIncidenceFailureKind failure) {
+  switch (failure) {
+  case SurfaceCellIncidenceFailureKind::None:
+    return "none";
+  case SurfaceCellIncidenceFailureKind::NodeIdMismatch:
+    return "node-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::HalfedgeIdMismatch:
+    return "halfedge-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::InvalidTwin:
+    return "invalid-twin";
+  case SurfaceCellIncidenceFailureKind::TwinAsymmetry:
+    return "twin-asymmetry";
+  case SurfaceCellIncidenceFailureKind::InvalidEndpoint:
+    return "invalid-endpoint";
+  case SurfaceCellIncidenceFailureKind::DegenerateEdge:
+    return "degenerate-edge";
+  case SurfaceCellIncidenceFailureKind::InvalidCell:
+    return "invalid-cell";
+  case SurfaceCellIncidenceFailureKind::InvalidNext:
+    return "invalid-next";
+  case SurfaceCellIncidenceFailureKind::NextEndpointMismatch:
+    return "next-endpoint-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellIdMismatch:
+    return "cell-id-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellNotClosed:
+    return "cell-not-closed";
+  case SurfaceCellIncidenceFailureKind::CellTooSmall:
+    return "cell-too-small";
+  case SurfaceCellIncidenceFailureKind::NonDiskCell:
+    return "non-disk-cell";
+  case SurfaceCellIncidenceFailureKind::SideMetadataMismatch:
+    return "side-metadata-mismatch";
+  case SurfaceCellIncidenceFailureKind::RepeatedCellHalfedge:
+    return "repeated-cell-halfedge";
+  case SurfaceCellIncidenceFailureKind::HalfedgeCellMismatch:
+    return "halfedge-cell-mismatch";
+  case SurfaceCellIncidenceFailureKind::CellNextMismatch:
+    return "cell-next-mismatch";
+  case SurfaceCellIncidenceFailureKind::HalfedgeUseMismatch:
+    return "halfedge-use-mismatch";
+  case SurfaceCellIncidenceFailureKind::DirectedEdgeMultiplicity:
+    return "directed-edge-multiplicity";
+  case SurfaceCellIncidenceFailureKind::PredecessorMultiplicity:
+    return "predecessor-multiplicity";
+  case SurfaceCellIncidenceFailureKind::OwnershipRegistryMismatch:
+    return "ownership-registry-mismatch";
+  }
+  return "unknown";
+}
+
+struct SurfaceCellIncidenceAudit {
+  bool valid = false;
+  SurfaceCellIncidenceFailureKind failure =
+      SurfaceCellIncidenceFailureKind::None;
+  int node = -1;
+  int halfedge = -1;
+  int twin = -1;
+  int next = -1;
+  int cell = -1;
+  int expected = -1;
+  int actual = -1;
+};
+
+SurfaceCellIncidenceAudit audit_complex_incidence(
+    const SurfaceCellComplex &complex, bool requireDiskCells = true);
+
 bool validate_complex_incidence(const SurfaceCellComplex &complex,
                                 bool requireDiskCells = true);
 

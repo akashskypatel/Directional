@@ -354,7 +354,11 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
 
 TEST(MilestoneDClosure, PartialMultiEdgeInterfaceFailsClosed) {
   const MeshFixture mesh = unit_triangle();
-  const SurfaceCellComplex complex = two_interface_complex(mesh);
+  SurfaceCellComplex complex = two_interface_complex(mesh);
+  ASSERT_TRUE(directional::geometry::canonicalize_surface_cell_ownership(
+      complex, mesh.faces));
+  directional::geometry::surface_simplification_detail::
+      recompute_rebuilt_diagnostics(complex);
   const std::vector<int> interface = internal_interface(complex);
   ASSERT_GT(interface.size(), 1U);
   const std::uint64_t before =
@@ -499,8 +503,16 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   const SurfaceCellComplex complex =
       directional::geometry::build_surface_cell_complex(
           mesh.vertices, mesh.faces, arcs, arrangementOptions);
-  ASSERT_TRUE(directional::geometry::surface_simplification_detail::
-                  validate_complex_incidence(complex));
+  const auto incidence =
+      directional::geometry::surface_simplification_detail::
+          audit_complex_incidence(complex);
+  ASSERT_TRUE(incidence.valid)
+      << directional::geometry::surface_simplification_detail::
+             surface_cell_incidence_failure_name(incidence.failure)
+      << " cell=" << incidence.cell << " halfedge=" << incidence.halfedge
+      << " twin=" << incidence.twin << " next=" << incidence.next
+      << " node=" << incidence.node << " expected=" << incidence.expected
+      << " actual=" << incidence.actual;
   ASSERT_TRUE(complex.diagnostics.incidenceValid);
   ASSERT_TRUE(complex.diagnostics.embeddingValid);
   ASSERT_TRUE(complex.diagnostics.orientationValid);

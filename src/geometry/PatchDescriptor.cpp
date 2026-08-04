@@ -1266,7 +1266,27 @@ SameCornerRouteCandidateSet same_corner_route_candidates(
       if (a.exactIdentity == b.exactIdentity) {
         continue;
       }
-      if (a.geometricIdentity == b.geometricIdentity) {
+
+      // Two topologically distinct boundary routes may project to the same
+      // geometric corner sector.  That is the positive same-corner repair
+      // case: exact boundary occurrence identity, not position alone, decides
+      // whether the routes overlap.  A shared exact interval remains a
+      // fail-closed semantic overlap, while disjoint exact intervals are a
+      // valid deterministic repair candidate even when their geometric support
+      // is identical.
+      std::set<std::vector<std::int64_t>> aExactIntervals(
+          a.boundaryIdentities.begin(), a.boundaryIdentities.end());
+      std::set<std::vector<std::int64_t>> bExactIntervals(
+          b.boundaryIdentities.begin(), b.boundaryIdentities.end());
+      bool sharesExactInterval = false;
+      for (const auto &identity : aExactIntervals) {
+        if (bExactIntervals.count(identity) != 0U) {
+          sharesExactInterval = true;
+          break;
+        }
+      }
+      if (a.geometricIdentity == b.geometricIdentity &&
+          sharesExactInterval) {
         result.semanticOverlap = true;
         continue;
       }
@@ -2752,6 +2772,10 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       static_cast<int>(parityRepair.splitHalfedges.size());
   result.parityHardFeatureSplits = parityRepair.hardFeatureSplits;
   result.firstParityScopeFailure = parityRepair.firstScopeFailure;
+  if (parityRepair.firstDomainFailure.failure !=
+      SurfaceCellDomainIdentityFailureKind::None) {
+    result.firstInvalidDomain = parityRepair.firstDomainFailure;
+  }
   if (!parityRepair.success) {
     result.failure = "BoundaryParityRepair:" + parityRepair.failure;
     result.assembly.failure = result.failure;
@@ -2775,6 +2799,10 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   result.sideRollbackIdentityHashAfter =
       sideRepair.rollbackIdentityHashAfter;
   result.sideRollbackUndoOwnedBytes = sideRepair.rollbackUndoOwnedBytes;
+  if (sideRepair.firstDomainFailure.failure !=
+      SurfaceCellDomainIdentityFailureKind::None) {
+    result.firstInvalidDomain = sideRepair.firstDomainFailure;
+  }
   const bool mayUseGeneralFallback =
       options.allowBoundedCombinatorialFallback &&
       sideRepair.rollbackEquivalent &&
@@ -3032,8 +3060,45 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
       }
     }
     ++result.completionOwnershipRecomputedPatchCompletions;
-    PureQuadCompletionResult completion =
-        completeDescriptor(descriptorIndex, 0);
+    PureQuadCompletionBackend expectedBackend =
+        PureQuadCompletionBackend::BoundedCombinatorial;
+    const bool rectangular = descriptor.patch.sideEdgeCounts.size() == 4U &&
+        descriptor.patch.sideEdgeCounts[0] > 0 &&
+        descriptor.patch.sideEdgeCounts[1] > 0 &&
+        descriptor.patch.sideEdgeCounts[0] == descriptor.patch.sideEdgeCounts[2] &&
+        descriptor.patch.sideEdgeCounts[1] == descriptor.patch.sideEdgeCounts[3];
+    if (descriptor.patch.singularityCount != 0) {
+      expectedBackend = PureQuadCompletionBackend::PoleTemplate;
+    } else if (rectangular) {
+      expectedBackend = PureQuadCompletionBackend::ClosedForm;
+    } else if (descriptor.patch.boundaryVertices.size() == 6U) {
+      expectedBackend = PureQuadCompletionBackend::TransitionTemplate;
+    } else if (descriptor.patch.simple) {
+      expectedBackend = PureQuadCompletionBackend::Pattern;
+    }
+    const int variantCount =
+        completion_variant_count(descriptor.patch, expectedBackend);
+    PureQuadCompletionResult completion;
+    int selectedVariant = 0;
+    for (int variant = 0; variant < variantCount; ++variant) {
+      PureQuadCompletionResult candidate =
+          completeDescriptor(descriptorIndex, variant);
+      const bool candidateSucceeded =
+          candidate.success && !candidate.mesh.quads.empty();
+      if (candidateSucceeded) {
+        completion = std::move(candidate);
+        selectedVariant = variant;
+        break;
+      }
+      const bool invalidEmbedding =
+          candidate.failure.rfind("InvalidCompletionQuadEmbedding", 0) == 0;
+      completion = std::move(candidate);
+      if (!invalidEmbedding) {
+        break;
+      }
+    }
+    completionVariants[static_cast<std::size_t>(descriptorIndex)] =
+        selectedVariant;
     if (!completion.success || completion.mesh.quads.empty()) {
       ++result.failedPatches;
       if (!result.firstCompletionOwnershipRejection.active &&

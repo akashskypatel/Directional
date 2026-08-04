@@ -422,6 +422,54 @@ bool validate_incidence_allowing_nondisk(const SurfaceCellComplex &complex) {
                      [](const int count) { return count == 1; });
 }
 
+SurfaceCellDomainIdentityAudit audit_simple_cell_boundary(
+    const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell) {
+  SurfaceCellDomainIdentityAudit audit;
+  audit.cellId = cell.id;
+  std::set<int> seenHalfedges;
+  std::set<int> seenNodes;
+  if (!cell.closed || cell.halfedges.size() < 3U) {
+    audit.failure = SurfaceCellDomainIdentityFailureKind::NonSimpleBoundary;
+    return audit;
+  }
+  for (std::size_t index = 0; index < cell.halfedges.size(); ++index) {
+    const int halfedgeId = cell.halfedges[index];
+    audit.halfedgeId = halfedgeId;
+    if (halfedgeId < 0 ||
+        halfedgeId >= static_cast<int>(complex.halfedges.size())) {
+      audit.failure = SurfaceCellDomainIdentityFailureKind::InvalidHalfedge;
+      return audit;
+    }
+    if (!seenHalfedges.insert(halfedgeId).second) {
+      audit.failure =
+          SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryHalfedge;
+      return audit;
+    }
+    const SurfaceArrangementHalfedge &edge =
+        complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    audit.nodeId = edge.from;
+    audit.sourceFace = edge.sourceFace;
+    audit.sourceComponent = edge.sourceComponent;
+    audit.sourceSheet = edge.sourceSheet;
+    if (!seenNodes.insert(edge.from).second) {
+      audit.failure = SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryNode;
+      return audit;
+    }
+    const int expectedNext =
+        cell.halfedges[(index + 1U) % cell.halfedges.size()];
+    if (edge.cell != cell.id || edge.next != expectedNext ||
+        edge.to != complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
+      audit.failure = SurfaceCellDomainIdentityFailureKind::NonSimpleBoundary;
+      return audit;
+    }
+  }
+  audit.valid = true;
+  audit.failure = SurfaceCellDomainIdentityFailureKind::None;
+  audit.halfedgeId = -1;
+  audit.nodeId = -1;
+  return audit;
+}
+
 bool supported_side_metadata(const SurfaceArrangementCell &cell) {
   const int sides = static_cast<int>(cell.sideEdgeCounts.size());
   return !cell.boundaryCycle && cell.disk && sides >= 3 && sides <= 6 &&
@@ -1497,6 +1545,15 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     cell.disk = cell.closed && cell.boundaryComponentCount == 1 &&
                 uniqueNodes.size() == cell.halfedges.size() &&
                 cell.eulerCharacteristic == 1;
+    const SurfaceCellDomainIdentityAudit boundaryAudit =
+        surface_cell_feasibility_detail::audit_simple_cell_boundary(rebuilt,
+                                                                    cell);
+    if (!boundaryAudit.valid) {
+      result.firstDomainFailure = boundaryAudit;
+      return restoreCommitted(
+          std::string("InvalidReplacementBoundary:") +
+          surface_cell_domain_identity_failure_name(boundaryAudit.failure));
+    }
   }
 
   if (!surface_cell_feasibility_detail::
@@ -1667,6 +1724,7 @@ SurfaceCellParityRepairResult repair_surface_cell_boundary_parity(
   if (!subdivision.success) {
     result.failure = subdivision.failure;
     result.firstScopeFailure = std::move(subdivision.firstScopeFailure);
+    result.firstDomainFailure = std::move(subdivision.firstDomainFailure);
     result.complex = std::move(subdivision.complex);
     return result;
   }
@@ -1915,6 +1973,7 @@ SurfaceCellSideRepairResult repair_surface_cell_side_subdivisions(
     result.rollbackIdentityHashAfter =
         subdivision.rollbackIdentityHashAfter;
     result.rollbackUndoOwnedBytes += subdivision.rollbackUndoOwnedBytes;
+    result.firstDomainFailure = std::move(subdivision.firstDomainFailure);
     if (!result.rollbackEquivalent) {
       result.failure = "SideSubdivisionTransaction:" + result.failure;
     }

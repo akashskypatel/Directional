@@ -441,6 +441,103 @@ bool fill_positions(PureQuadMesh &mesh) {
   return true;
 }
 
+bool completed_quads_have_simple_embedding(const PureQuadMesh &mesh,
+                                           int &firstInvalidQuad) {
+  firstInvalidQuad = -1;
+  std::map<int, int> rowByVertex;
+  for (int row = 0; row < static_cast<int>(mesh.vertices.size()); ++row) {
+    if (!rowByVertex.emplace(mesh.vertices[static_cast<std::size_t>(row)], row)
+             .second) {
+      firstInvalidQuad = 0;
+      return false;
+    }
+  }
+  const auto orient2 = [](const Eigen::Vector2d &a,
+                          const Eigen::Vector2d &b,
+                          const Eigen::Vector2d &c) {
+    return (b.x() - a.x()) * (c.y() - a.y()) -
+           (b.y() - a.y()) * (c.x() - a.x());
+  };
+  const auto oppositeEdgesIntersect = [&](const Eigen::Vector2d &a,
+                                          const Eigen::Vector2d &b,
+                                          const Eigen::Vector2d &c,
+                                          const Eigen::Vector2d &d) {
+    constexpr double eps = 1.0e-13;
+    const double o1 = orient2(a, b, c);
+    const double o2 = orient2(a, b, d);
+    const double o3 = orient2(c, d, a);
+    const double o4 = orient2(c, d, b);
+    return ((o1 > eps && o2 < -eps) || (o1 < -eps && o2 > eps)) &&
+           ((o3 > eps && o4 < -eps) || (o3 < -eps && o4 > eps));
+  };
+
+  for (int quadIndex = 0; quadIndex < static_cast<int>(mesh.quads.size());
+       ++quadIndex) {
+    const std::vector<int> &quad =
+        mesh.quads[static_cast<std::size_t>(quadIndex)];
+    if (quad.size() != 4U || std::set<int>(quad.begin(), quad.end()).size() != 4U) {
+      firstInvalidQuad = quadIndex;
+      return false;
+    }
+    std::array<Eigen::Vector3d, 4> p;
+    for (int corner = 0; corner < 4; ++corner) {
+      const auto row = rowByVertex.find(quad[static_cast<std::size_t>(corner)]);
+      if (row == rowByVertex.end() || row->second < 0 ||
+          row->second >= mesh.vertexPositions.rows()) {
+        firstInvalidQuad = quadIndex;
+        return false;
+      }
+      p[static_cast<std::size_t>(corner)] =
+          mesh.vertexPositions.row(row->second).transpose();
+    }
+    Eigen::Vector3d normal = Eigen::Vector3d::Zero();
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &current = p[static_cast<std::size_t>(corner)];
+      const Eigen::Vector3d &next =
+          p[static_cast<std::size_t>((corner + 1) % 4)];
+      normal.x() += (current.y() - next.y()) * (current.z() + next.z());
+      normal.y() += (current.z() - next.z()) * (current.x() + next.x());
+      normal.z() += (current.x() - next.x()) * (current.y() + next.y());
+    }
+    if (!normal.allFinite() || normal.squaredNorm() <= 1.0e-24) {
+      firstInvalidQuad = quadIndex;
+      return false;
+    }
+    Eigen::Index dropAxis = 0;
+    normal.cwiseAbs().maxCoeff(&dropAxis);
+    std::array<Eigen::Vector2d, 4> projected;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &value = p[static_cast<std::size_t>(corner)];
+      if (dropAxis == 0) {
+        projected[static_cast<std::size_t>(corner)] =
+            Eigen::Vector2d(value.y(), value.z());
+      } else if (dropAxis == 1) {
+        projected[static_cast<std::size_t>(corner)] =
+            Eigen::Vector2d(value.x(), value.z());
+      } else {
+        projected[static_cast<std::size_t>(corner)] =
+            Eigen::Vector2d(value.x(), value.y());
+      }
+    }
+    double signedArea2 = 0.0;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector2d &a = projected[static_cast<std::size_t>(corner)];
+      const Eigen::Vector2d &b =
+          projected[static_cast<std::size_t>((corner + 1) % 4)];
+      signedArea2 += a.x() * b.y() - a.y() * b.x();
+    }
+    if (!std::isfinite(signedArea2) || std::abs(signedArea2) <= 1.0e-14 ||
+        oppositeEdgesIntersect(projected[0], projected[1], projected[2],
+                               projected[3]) ||
+        oppositeEdgesIntersect(projected[1], projected[2], projected[3],
+                               projected[0])) {
+      firstInvalidQuad = quadIndex;
+      return false;
+    }
+  }
+  return true;
+}
+
 } // namespace directional::geometry::pure_quad_detail
 
 namespace directional::geometry::pure_quad_detail {
@@ -1247,6 +1344,14 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   if (!pure_quad_topology_is_disk(mesh)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
+    return result;
+  }
+  int firstInvalidQuad = -1;
+  if (!pure_quad_detail::completed_quads_have_simple_embedding(
+          mesh, firstInvalidQuad)) {
+    result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
+    result.failure = "InvalidCompletionQuadEmbedding;localQuad=" +
+                     std::to_string(firstInvalidQuad);
     return result;
   }
   result.mesh = std::move(mesh);

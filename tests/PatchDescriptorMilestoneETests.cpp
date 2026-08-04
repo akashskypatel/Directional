@@ -366,6 +366,15 @@ Fixture make_two_odd_cells_with_shared_interface() {
   diagnostics.inputMemoryBytes = 1;
   diagnostics.unsplitCrossings = 0;
   diagnostics.geometricTJunctions = 0;
+  // Manual DCEL fixtures enter production transactions through the same
+  // canonical ownership boundary as generated arrangements. Establish that
+  // baseline before deriving topology diagnostics so parity repair is tested
+  // against a valid committed complex rather than a legacy pre-canonical
+  // representation.
+  if (!directional::geometry::canonicalize_surface_cell_ownership(
+          fixture.complex, fixture.F)) {
+    diagnostics.embeddingValid = false;
+  }
   directional::geometry::surface_simplification_detail::
       recompute_rebuilt_diagnostics(fixture.complex);
   return fixture;

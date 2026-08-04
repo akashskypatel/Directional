@@ -46,6 +46,7 @@ struct SurfaceCellSubdivisionResult {
   int insertedVertices = 0;
   int hardFeatureSplits = 0;
   SurfaceCellReplacementScopeFailure firstScopeFailure;
+  SurfaceCellDomainIdentityAudit firstDomainFailure;
   std::string failure;
 };
 
@@ -70,6 +71,7 @@ struct SurfaceCellParityRepairResult {
   int oddCellsAfter = 0;
   int hardFeatureSplits = 0;
   SurfaceCellReplacementScopeFailure firstScopeFailure;
+  SurfaceCellDomainIdentityAudit firstDomainFailure;
   std::string failure;
 };
 
@@ -106,6 +108,7 @@ struct SurfaceCellSideRepairResult {
   int insertedVertices = 0;
   int splitUndirectedEdges = 0;
   int hardFeatureSplits = 0;
+  SurfaceCellDomainIdentityAudit firstDomainFailure;
   std::string failure;
 };
 
