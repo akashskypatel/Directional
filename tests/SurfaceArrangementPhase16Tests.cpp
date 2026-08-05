@@ -318,6 +318,37 @@ TEST(SurfaceArrangementPhase16, SourceEdgeAndVertexEventsAreCanonical) {
   EXPECT_TRUE(has_node_near(complex, Eigen::RowVector3d(1.0, 0.0, 0.0)));
 }
 
+TEST(SurfaceArrangementPhase16,
+     MultipleInteriorRaysAtBoundaryVertexUseAdjacentRotationalSectors) {
+  const auto fixture = unit_triangle();
+  std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
+      make_arc(20, {1.0, 0.0, 0.0}, {0.60, 0.25, 0.15}, 0),
+      make_arc(21, {1.0, 0.0, 0.0}, {0.55, 0.15, 0.30}, 1),
+      make_arc(22, {1.0, 0.0, 0.0}, {0.50, 0.35, 0.15}, 0)};
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  expect_node_local_successor_bijection(complex);
+  EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+  EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
+                          [](const auto &cell) { return cell.boundaryCycle; }),
+            1);
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
+}
+
 TEST(SurfaceArrangementPhase16, SharedSourceEdgeStitchesAcrossTwoFaces) {
   const auto fixture = unit_square_two_triangles();
   std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
@@ -456,6 +487,9 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   expect_node_local_successor_bijection(complex);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
+  EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
   EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
   EXPECT_LE(complex.diagnostics.relativeAreaError, 1.0e-8);

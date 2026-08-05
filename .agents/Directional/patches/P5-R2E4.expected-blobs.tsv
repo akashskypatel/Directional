@@ -1,4 +1,0 @@
-72ef66d0ed52a6f50824908be4dcb97e7a6851a9	include/directional/geometry/SurfaceArrangement.h
-8b89c6d89cea663836154322cc08300c52664d56	src/geometry/SurfaceArrangement.cpp
-8bb58b00fc93d2c397ecd4ac16d01376b86db541	tests/MilestoneDClosureTests.cpp
-396341cff7854eea34d62444d035f68d7ed39fb5	tests/SurfaceArrangementPhase16Tests.cpp

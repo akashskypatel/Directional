@@ -405,6 +405,7 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }),
@@ -613,6 +614,7 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_TRUE(std::all_of(
       complex.halfedges.begin(), complex.halfedges.end(),
       [&](const auto &halfedge) {
