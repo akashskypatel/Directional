@@ -8,66 +8,71 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB36 artifact-only R2E8 Test + Benchmark**.
-- Next turn: **P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build**.
+- Next turn: **P5-TB37 artifact-only R2E9 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB36 authority
+## P5-R2E9 compile authority
 
-- Exact source: `478d058ab2060a1a02a1e4ca3bfc0e6625fa8047`.
-- Artifact: `8944910920`, SHA-256 `5b93e86db0ddccf4ca3eba2e9b53e6523f02d7ef70809aa8eb67b91f6e9bef39`.
-- Manifest **13/13**; package files **14**; staged fixtures **26**; recursive submodules **9**.
-- Artifact-only execution; no configure, rebuild, relink, patch, regeneration, or repository source/test/fixture/validator/workflow modification.
-- Evidence SHA-256: `af3747b1238a01802a4fc158032451a505cbeb224c51601d888e390b6fd01096`.
+- Exact source: `a5b9382c2877ef72a3280ad9dbca2d5b20caaa1c`.
+- Workflow event: `29e71770a3c2ff001fa6daa687a2bdf957dd79c4`.
+- Run/job: `31046039110` / `92441663510`.
+- Artifact: `8946700183`, SHA-256 `bae182ef1e3e5fbbc9fff25ea60a56821e31e4e6fe81787137cdac58f30c6a3a`.
+- Log artifact: `8946700685`, SHA-256 `03e137c8af8c41a24595ba1176a3e575fe8da34c44c4605d352a2c9629117e37`.
+- Manifest **19/19**; package files **20**; recursive submodules **9**; compile/link actions **132/132**.
+- Built exactly four approved targets; no project binary was executed.
 
-## Results
+## R2E9 implementation status
 
-- [x] source chart + validator **17/17**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier **8/8**;
-- [ ] graph-dependent **5/6**;
-- [ ] R2 focused **13/16**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 16 **45/47**;
-- [x] Phase 17 **26/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 14–18 **241/244**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **603/625**, 22 failures.
+- [x] canonical cyclic R1 fan-pair inventory precedes chart filtering;
+- [x] vector-wrap pair is explicitly represented;
+- [x] every non-exterior pair requires one exact supporting chart corner;
+- [x] the independently proven exterior pair is excluded once and only once;
+- [x] local incoming/target publication remains transactional and bijective;
+- [x] canonical-pair, exterior-exclusion, and wrap diagnostics are derived from accepted records;
+- [x] each accepted hard-rail root is propagated over its complete bounded successor orbit;
+- [x] opposite hard-rail bounded sides retain distinct roots;
+- [x] one authoritative chart root is published per bounded orbit and materialized cell;
+- [x] full provenance remains separate from directed embedding authority;
+- [x] Phase 17 and downstream validators remain unchanged;
+- [x] compile-only gate passed;
+- [ ] runtime acceptance pending P5-TB37.
 
-Compared with P5-TB35, exactly six Phase 17 failures close naturally. No new failure appears and no other failure closes.
+## Last runtime baseline
 
-## R2 status
+- source chart + validator **17/17**;
+- recovery **9/9**;
+- feature/barrier **8/8**;
+- graph-dependent **5/6**;
+- R2 focused **13/16**;
+- Milestone D **5/7**;
+- Phase 16 **45/47**;
+- Phase 17 **26/26**;
+- Phase 18 **57/57**;
+- Phase 14–18 **241/244**;
+- Phase 20 **46/48**;
+- complete suite **603/625**, 22 failures.
 
-- [x] degree-two and genuine four-disk boundary partitions remain passing;
-- [x] source-row and whole-orientation identity remain passing;
-- [x] planar direct incidence now publishes and reaches topology validation;
-- [ ] planar omits the required cyclic-wrap interior sector and closes Euler `0` rather than `1`;
-- [x] hard rail retains one exterior and two bounded disks, complete ownership, and distinct bounded rail-twin owners;
-- [ ] hard-rail authoritative embedding/chart support remains invalid;
-- [x] Phase 17 restores from **20/26** to **26/26** without Phase 17 changes;
-- [ ] cylinder and bunny remain independent;
-- [ ] direct plane, seam, close-sheets, and cylinder production remain incomplete;
-- [ ] direct bunny remains deterministic but produces zero arrangement cells and zero quads.
+Planar previously published incidence but omitted the cyclic-wrap interior sector and produced Euler `0`. Hard rail previously had valid incidence, cell inventory, disk, loop, Euler, and ownership but invalid embedding/topology. Cylinder and bunny remain independently open.
 
-## Required P5-R2E9 work
+## Required P5-TB37 work
 
-- [ ] enumerate canonical cyclic R1 fan pairs independently of chart-filtered angle-list truncation;
-- [ ] include vector wrap and resolve every pair to one exact chart corner;
-- [ ] exclude the independently proven exterior pair once and only once;
-- [ ] require complete local incoming/target bijection and planar Euler-one disk closure;
-- [ ] carry each selected hard-rail root through the complete bounded orbit;
-- [ ] materialize bounded-cell authoritative source-chart support from the accepted orbit root;
-- [ ] retain full provenance separately and keep the embedding validator unchanged;
-- [ ] preserve all accepted R2 and Phase 17 authority;
-- [ ] leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, and downstream validators out of scope;
-- [ ] compile only the four approved targets and execute no project binary.
+- [ ] verify artifact archive and all 19 internal manifest entries exactly;
+- [ ] execute packaged binaries only, without configure, rebuild, relink, patch, or source modification;
+- [ ] run source-chart and validator prerequisites;
+- [ ] run the focused R2 set and require planar positive canonical-pair inventory, one exterior exclusion, positive wrap count, Euler `1`, and valid aggregate topology;
+- [ ] require one complete authoritative root per hard-rail bounded orbit, distinct opposite roots, valid embedding, and valid aggregate topology;
+- [ ] preserve degree-two, genuine four-disk, source-row, orientation, pinched-fan, close-sheet, bridge/support, nested, and nonmanifold authority;
+- [ ] preserve Phase 17 **26/26**;
+- [ ] run milestone/phase aggregates and the complete suite;
+- [ ] run deterministic direct production processes only after focused regressions, with fallback `Fail` and source-grid recovery disabled;
+- [ ] classify every changed result and produce the next plan from the earliest remaining producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB36_Artifact_Only_R2E8_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E9_Canonical_Wrap_Sector_Rail_Orbit_Chart_Code_Build_Plan.md`
-- `benchmark-results/p5-tb36-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E9_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e9-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `TODO`
