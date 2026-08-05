@@ -8,62 +8,54 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB32 artifact-only R2E4 validation**.
-- Next turn: **P5-R2E5 degree-two boundary rotational degeneracy Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E5 degree-two boundary-sector Code + Build**.
+- Next turn: **P5-TB33 artifact-only R2E5 validation**.
+- R2 runtime remains open. Do not advance to R2F or R3 from compilation.
 
-## P5-TB32 authority
+## P5-R2E5 compiled checkpoint
 
-- Exact tested source: `ec44ab7570f258f800a27086fca053c573878a13`.
-- Artifact: `8929111021`, SHA-256 `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`.
-- Package checksums **48/48**; files **49**; fixtures **26**; submodules **9**; target hashes verified.
-- Clean validation source: one base workflow and zero temporary payloads.
-- No configure, build, relink, patch, regeneration, fixture modification, or source modification during validation.
+- Starting documentation head: `e8f6c3f1641db916c53fc9dc938d0bc5d648a019`.
+- Workflow event: `15704d30fc478858284df89d372fa713f2d88576`.
+- Exact compiled source: `1eb9dc766bc6db74bd2c1ea4ced9c3cbeaae133b`.
+- Workflow cleanup: `790714bbe8dffd1efbe7860093027daf3e0e8d54`.
+- Reviewed/applied diff SHA-256: `b7648b0bf870d7a65a7715a11e58cc2e8258af0118826c843d013384d485cc29`.
+- Artifact: `8934315316`, SHA-256 `69436143d96749cc09c6da8dc8c301e63304c2d25f9252497d0e9d0259c46c5c`.
+- Workflow logs: `8934315771`, SHA-256 `3681d6b81d1251f3de17a5e004ddce42d3b204d636481ded4a390754ae4ebf34`.
+- Empty source status; manifest **48/48**; package files **49**; fixtures **26**; recursive submodules **9**.
+- Four target hashes verified; Ninja **132/132**.
+- Compiled only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- Executed zero tests, benchmarks, project binaries, custom meshes, or discovery commands.
 
-## P5-TB32 results
+## R2E5 implementation
 
-- [x] source-chart R1 **11/11**;
-- [x] Phase 22 validator **6/6**;
-- [x] recovery authority **9/9**;
-- [ ] feature/barrier **6/8**;
-- [ ] graph-dependent **2/6**;
-- [ ] R2 focused **2/15**;
-- [ ] Milestone D **3/7**;
-- [ ] Phase 14–18 **215/243**;
-- [ ] Phase 16 **27/46**;
-- [ ] Phase 17 **18/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **575/624**, 49 failures, 157.156 s;
-- [ ] direct production cases **0/4**.
+- [x] explicit complete two-ray boundary-sector branch;
+- [x] exact local inventory `{exteriorTwin, exteriorOutgoing}` required;
+- [x] authoritative exterior mapping `exteriorIncoming -> exteriorOutgoing`;
+- [x] complementary interior mapping `twin(exteriorOutgoing) -> exteriorTwin`;
+- [x] valid/distinct incoming twins, endpoint continuity, and exact target cardinality required;
+- [x] authoritative loop identity applied only to the exterior successor;
+- [x] canonical source-entity rotation identity retained for the interior successor;
+- [x] derived `boundaryDegreeTwoRotationalNodeCount` after successful local audit;
+- [x] canonical adjacent-ray reconstruction retained for `rayCount >= 3`;
+- [x] genuine malformed evidence still fails closed as `BoundaryRotationalSystemConflict`;
+- [x] canonical aliases, orientation identity, repeated-edge/node, disk, owner, and Euler validators unchanged;
+- [x] boundary-only triangle and strengthened planar/hard-rail/cylinder/high-valence contracts compiled without execution.
 
-Relative to P5-TB31, P5-TB32 adds one test, closes no failure, and introduces 21 regressions.
+## Required next work: P5-TB33
 
-## R2E4 disposition
+Follow `.agents/Directional/Milestone_G_P5_R2E5_Test_Benchmark_Plan.md`:
 
-- [x] artifact authority and transactional failure behavior preserved;
-- [x] source-chart, source-validator, recovery, and Phase 18 authorities preserved;
-- [ ] ordinary degree-two boundary nodes fail `BoundaryRotationalSystemConflict`;
-- [ ] planar unit arrangement fails before successor publication;
-- [ ] hard-rail arrangement fails before reaching the intended high-valence endpoint;
-- [ ] cylinder publication clears and independent audit reports `cell == -1`;
-- [ ] whole-orientation incidence-hash contract regresses because forward construction fails;
-- [ ] bridge, support, ownership, disconnected, close-sheet, and curved contracts regress transactionally;
-- [ ] seam, close sheets, and cylinder retain zero production arrangement inventory.
-
-## Required next work: P5-R2E5
-
-Follow `.agents/Directional/Milestone_G_P5_R2E5_Degree_Two_Boundary_Rotation_Code_Build_Plan.md`:
-
-- [ ] add an explicit two-ray boundary-sector branch;
-- [ ] map authoritative exterior incoming to authoritative exterior outgoing;
-- [ ] map the complementary incoming to the complementary outgoing as the interior sector;
-- [ ] do not infer a unique rotation direction from predecessor/successor ray identity when `rayCount == 2`;
-- [ ] retain canonical adjacent-ray reconstruction for `rayCount >= 3`;
-- [ ] restore all 21 P5-TB32 regressions without weakening tests or validators;
-- [ ] preserve canonical boundary aliases and paired incidence identity;
-- [ ] leave repeated-edge/node, disk, owner, Euler, FlowRep, simplification, completion, fallback, and recovery logic unchanged;
-- [ ] compile only the four authorized targets and execute no project binary.
+- [ ] verify exact artifact/source/package authority;
+- [ ] first restore every one of the 21 P5-TB32 regressions;
+- [ ] preserve source-chart **11/11**, validator **6/6**, recovery **9/9**, and Phase 18 **57/57**;
+- [ ] restore feature/barrier **8/8** and graph-dependent **5/6**, bunny only;
+- [ ] require the new boundary-only triangle and all degree-two mapping contracts to pass;
+- [ ] keep higher-valence rotation on the separate `rayCount >= 3` path;
+- [ ] preserve source-row and whole-orientation incidence-hash invariance;
+- [ ] require Phase 16 at least **45/47**, Phase 17 at least **20/26**, and Phase 20 **46/48**;
+- [ ] require the complete suite at least **597/625**, with no failure absent from the P5-TB31 failure set;
+- [ ] then evaluate planar, hard-rail, cylinder, seam, close-sheet, and ownership closure naturally;
+- [ ] run the complete suite exactly once with runtime and memory evidence.
 
 ## Standing process requirements
 
@@ -72,10 +64,10 @@ Follow `.agents/Directional/Milestone_G_P5_R2E5_Degree_Two_Boundary_Rotation_Cod
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_R2E5_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E5_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e5-summary.json`
 - `.agents/Directional/Milestone_G_P5_TB32_Artifact_Only_R2E4_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E5_Degree_Two_Boundary_Rotation_Code_Build_Plan.md`
-- `benchmark-results/p5-tb32-summary.json`
-- `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `MILESTONE_G_TODO.md`
 
