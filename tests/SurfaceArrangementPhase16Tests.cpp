@@ -424,8 +424,15 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
   EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
   EXPECT_LE(complex.diagnostics.relativeAreaError, 1.0e-8);
-  EXPECT_TRUE(std::any_of(complex.cells.begin(), complex.cells.end(),
-                          [](const auto &cell) { return cell.boundaryCycle; }));
+  const auto exterior = std::find_if(
+      complex.cells.begin(), complex.cells.end(),
+      [](const auto &cell) { return cell.boundaryCycle; });
+  ASSERT_NE(exterior, complex.cells.end());
+  EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
+                          [](const auto &cell) { return cell.boundaryCycle; }),
+            1);
+  EXPECT_EQ(exterior->sourceBoundarySide, -1);
+  EXPECT_EQ(exterior->sourceBoundaryLoopIds, (std::vector<int>{0}));
 }
 
 TEST(SurfaceArrangementPhase16, TopologyHashIgnoresInsertionOrder) {
@@ -1418,6 +1425,24 @@ TEST(SurfaceArrangementPhase16,
   EXPECT_EQ(forward.diagnostics.directedIncidenceHash,
             backward.diagnostics.directedIncidenceHash);
   EXPECT_EQ(forward.cells.size(), backward.cells.size());
+  EXPECT_TRUE(forward.diagnostics.topologyValid);
+  EXPECT_TRUE(backward.diagnostics.topologyValid);
+  EXPECT_EQ(forward.diagnostics.boundaryLoopCount, 1);
+  EXPECT_EQ(backward.diagnostics.boundaryLoopCount, 1);
+  const auto boundarySignature = [](const auto &complex) {
+    std::vector<std::pair<int, std::vector<int>>> signature;
+    for (const auto &cell : complex.cells) {
+      if (cell.boundaryCycle) {
+        signature.emplace_back(cell.sourceBoundarySide,
+                               cell.sourceBoundaryLoopIds);
+      }
+    }
+    std::sort(signature.begin(), signature.end());
+    return signature;
+  };
+  EXPECT_EQ(boundarySignature(forward), boundarySignature(backward));
+  EXPECT_EQ(boundarySignature(forward),
+            (std::vector<std::pair<int, std::vector<int>>>{{-1, {0}}}));
 }
 
 TEST(SurfaceArrangementPhase16,

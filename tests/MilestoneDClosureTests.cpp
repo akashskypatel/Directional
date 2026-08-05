@@ -367,6 +367,12 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
       }));
   EXPECT_NEAR(complex.diagnostics.extractedArea,
               complex.diagnostics.supportedArea, 1.0e-10);
+  const auto exterior = std::find_if(
+      complex.cells.begin(), complex.cells.end(),
+      [](const auto &cell) { return cell.boundaryCycle; });
+  ASSERT_NE(exterior, complex.cells.end());
+  EXPECT_EQ(exterior->sourceBoundarySide, -1);
+  EXPECT_EQ(exterior->sourceBoundaryLoopIds, (std::vector<int>{0}));
 }
 
 TEST(MilestoneDClosure, PartialMultiEdgeInterfaceFailsClosed) {
@@ -557,6 +563,19 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
   ASSERT_EQ(complex.diagnostics.eulerCharacteristic, 0);
   ASSERT_EQ(complex.diagnostics.connectedComponentCount, 1);
   ASSERT_EQ(complex.diagnostics.boundaryLoopCount, 2);
+  std::set<int> exteriorLoops;
+  int exteriorCells = 0;
+  for (const auto &cell : complex.cells) {
+    if (!cell.boundaryCycle) {
+      continue;
+    }
+    ++exteriorCells;
+    EXPECT_EQ(cell.sourceBoundarySide, -1);
+    exteriorLoops.insert(cell.sourceBoundaryLoopIds.begin(),
+                         cell.sourceBoundaryLoopIds.end());
+  }
+  EXPECT_EQ(exteriorCells, 2);
+  EXPECT_EQ(exteriorLoops, (std::set<int>{0, 1}));
 
   const auto extracted =
       directional::geometry::extract_surface_simplification_candidates(

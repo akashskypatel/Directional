@@ -168,6 +168,10 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(cell.cutCellDisk ? 1 : 0);
     mix(cell.bridgeExcursion ? 1 : 0);
     mix(cell.supportOnlyCycle ? 1 : 0);
+    mix(cell.sourceBoundarySide);
+    for (const int loop : cell.sourceBoundaryLoopIds) {
+      mix(loop);
+    }
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
     mix(cell.quadReady ? 1 : 0);
@@ -728,13 +732,16 @@ namespace directional::geometry::surface_simplification_detail {
 
 void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
-  const int interiorCells = static_cast<int>(std::count_if(
-      complex.cells.begin(), complex.cells.end(),
-      [](const SurfaceArrangementCell &cell) {
-        return !cell.boundaryCycle && !cell.supportOnlyCycle;
-      }));
+  const int boundedEulerContribution = std::accumulate(
+      complex.cells.begin(), complex.cells.end(), 0,
+      [](const int sum, const SurfaceArrangementCell &cell) {
+        return sum + (!cell.boundaryCycle && !cell.supportOnlyCycle
+                          ? cell.eulerCharacteristic
+                          : 0);
+      });
   complex.diagnostics.eulerCharacteristic =
-      static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
+      static_cast<int>(complex.nodes.size()) - undirectedEdges +
+      boundedEulerContribution;
 
   std::vector<std::pair<int, int>> arrangementEdges;
   std::vector<std::pair<int, int>> arrangementBoundaryEdges;
@@ -795,11 +802,49 @@ void recompute_rebuilt_diagnostics(SurfaceCellComplex &complex) {
   complex.diagnostics.connectedComponentCount =
       surface_arrangement_detail::graph_component_count(
           static_cast<int>(complex.nodes.size()), arrangementEdges);
-  const auto [boundaryLoops, boundaryValid] =
-      surface_arrangement_detail::boundary_loop_count(
-          static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
-  complex.diagnostics.boundaryLoopCount = boundaryLoops;
-  complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  const bool hasExplicitBoundaryEvidence =
+      complex.diagnostics.sourceBoundaryLoopCount == 0 ||
+      std::any_of(complex.cells.begin(), complex.cells.end(),
+                  [](const SurfaceArrangementCell &cell) {
+                    return !cell.sourceBoundaryLoopIds.empty();
+                  });
+  if (hasExplicitBoundaryEvidence) {
+    std::map<int, int> exteriorOwners;
+    bool boundaryValid = true;
+    for (const SurfaceArrangementCell &cell : complex.cells) {
+      if (cell.sourceBoundaryLoopIds.empty()) {
+        continue;
+      }
+      if (cell.sourceBoundarySide != (cell.boundaryCycle ? -1 : 1)) {
+        boundaryValid = false;
+      }
+      if (!cell.boundaryCycle) {
+        continue;
+      }
+      for (const int loop : cell.sourceBoundaryLoopIds) {
+        if (loop < 0) {
+          boundaryValid = false;
+          continue;
+        }
+        ++exteriorOwners[loop];
+      }
+    }
+    boundaryValid =
+        boundaryValid &&
+        static_cast<int>(exteriorOwners.size()) ==
+            complex.diagnostics.sourceBoundaryLoopCount &&
+        std::all_of(exteriorOwners.begin(), exteriorOwners.end(),
+                    [](const auto &entry) { return entry.second == 1; });
+    complex.diagnostics.boundaryLoopCount =
+        static_cast<int>(exteriorOwners.size());
+    complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  } else {
+    const auto [boundaryLoops, boundaryValid] =
+        surface_arrangement_detail::boundary_loop_count(
+            static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
+    complex.diagnostics.boundaryLoopCount = boundaryLoops;
+    complex.diagnostics.boundaryLoopsValid = boundaryValid;
+  }
   complex.diagnostics.eulerCharacteristicValid =
       complex.diagnostics.eulerCharacteristic ==
           complex.diagnostics.sourceEulerCharacteristic &&
@@ -1016,6 +1061,8 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
     std::set<int> mergedComponents;
+    std::set<int> mergedBoundaryLoops;
+    int mergedBoundarySide = 0;
     std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
     std::set<SurfaceCellSourceChart> mergedCharts;
     double fallbackArea = 0.0;
@@ -1032,6 +1079,15 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
         return invalid;
       }
       mergedComponents.insert(cell.sourceComponent);
+      mergedBoundaryLoops.insert(cell.sourceBoundaryLoopIds.begin(),
+                                 cell.sourceBoundaryLoopIds.end());
+      if (cell.sourceBoundarySide != 0) {
+        if (mergedBoundarySide != 0 &&
+            mergedBoundarySide != cell.sourceBoundarySide) {
+          return invalid;
+        }
+        mergedBoundarySide = cell.sourceBoundarySide;
+      }
       mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
       mergedOwnershipClasses.insert(ownership);
     }
@@ -1047,6 +1103,9 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
                                  : -1;
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
+    mergedCell.sourceBoundaryLoopIds.assign(mergedBoundaryLoops.begin(),
+                                            mergedBoundaryLoops.end());
+    mergedCell.sourceBoundarySide = mergedBoundarySide;
     mergedCell.sourceFace = mergedCell.sourceFaces.empty()
                                 ? -1
                                 : mergedCell.sourceFaces.front();

@@ -983,6 +983,7 @@ std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
     bytes += vector_storage_bytes(cell.sourceFaces);
     bytes += vector_storage_bytes(cell.halfedges);
     bytes += vector_storage_bytes(cell.boundaryCycleOffsets);
+    bytes += vector_storage_bytes(cell.sourceBoundaryLoopIds);
     bytes += vector_storage_bytes(cell.sideFamilies);
     bytes += vector_storage_bytes(cell.sideEdgeCounts);
   }
@@ -1067,69 +1068,183 @@ std::pair<int, bool> boundary_loop_count(
 
 namespace directional::geometry::surface_arrangement_detail {
 
-int boundary_orientation_vote(
+struct SourceBoundaryTopology {
+  std::map<std::uint64_t, int> loopByEdge;
+  int loopCount = 0;
+  bool valid = true;
+};
+
+SourceBoundaryTopology build_source_boundary_topology(
+    const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
+  SourceBoundaryTopology topology;
+  std::map<std::uint64_t, std::pair<int, int>> boundaryEdges;
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int edge = 0; edge < 3; ++edge) {
+      const std::uint64_t key = source_edge_key(faces, face, edge);
+      const auto found = edgeFaces.find(key);
+      if (found != edgeFaces.end() && found->second[1] >= 0) {
+        continue;
+      }
+      const int first = faces(face, (edge + 1) % 3);
+      const int second = faces(face, (edge + 2) % 3);
+      boundaryEdges.emplace(
+          key, std::make_pair(std::min(first, second), std::max(first, second)));
+    }
+  }
+  if (boundaryEdges.empty()) {
+    return topology;
+  }
+
+  std::map<int, std::vector<std::uint64_t>> incidentEdges;
+  for (const auto &[key, endpoints] : boundaryEdges) {
+    incidentEdges[endpoints.first].push_back(key);
+    incidentEdges[endpoints.second].push_back(key);
+  }
+  for (auto &[vertex, edges] : incidentEdges) {
+    (void)vertex;
+    std::sort(edges.begin(), edges.end());
+    edges.erase(std::unique(edges.begin(), edges.end()), edges.end());
+    if (edges.size() != 2U) {
+      topology.valid = false;
+      return topology;
+    }
+  }
+
+  std::set<std::uint64_t> unvisited;
+  for (const auto &[key, endpoints] : boundaryEdges) {
+    (void)endpoints;
+    unvisited.insert(key);
+  }
+  std::vector<std::vector<std::uint64_t>> loops;
+  while (!unvisited.empty()) {
+    std::vector<std::uint64_t> stack{*unvisited.begin()};
+    std::vector<std::uint64_t> component;
+    unvisited.erase(unvisited.begin());
+    while (!stack.empty()) {
+      const std::uint64_t key = stack.back();
+      stack.pop_back();
+      component.push_back(key);
+      const auto endpoints = boundaryEdges.at(key);
+      for (const int vertex : {endpoints.first, endpoints.second}) {
+        for (const std::uint64_t adjacent : incidentEdges.at(vertex)) {
+          const auto found = unvisited.find(adjacent);
+          if (found != unvisited.end()) {
+            stack.push_back(adjacent);
+            unvisited.erase(found);
+          }
+        }
+      }
+    }
+    std::sort(component.begin(), component.end());
+    loops.push_back(std::move(component));
+  }
+  std::sort(loops.begin(), loops.end(), [](const auto &lhs, const auto &rhs) {
+    return lhs.front() < rhs.front();
+  });
+  topology.loopCount = static_cast<int>(loops.size());
+  for (int loop = 0; loop < topology.loopCount; ++loop) {
+    for (const std::uint64_t edge : loops[static_cast<std::size_t>(loop)]) {
+      topology.loopByEdge.emplace(edge, loop);
+    }
+  }
+  return topology;
+}
+
+struct BoundarySideEvidence {
+  std::vector<int> loopIds;
+  int side = 0;
+  bool contradictory = false;
+  int failureHalfedge = -1;
+};
+
+BoundarySideEvidence boundary_side_evidence(
     const std::vector<int> &cellHalfedges,
     const std::vector<SurfaceArrangementHalfedge> &halfedges,
     const std::vector<SurfaceArrangementNode> &nodes,
     const Eigen::MatrixXi &faces,
-    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
-  int interiorVotes = 0;
-  int exteriorVotes = 0;
+    const SourceBoundaryTopology &topology) {
+  BoundarySideEvidence evidence;
   constexpr double epsilon = 1.0e-12;
   const Eigen::Vector2d triangleCentroid(1.0 / 3.0, 1.0 / 3.0);
+  std::map<int, int> sideByLoop;
   for (const int halfedgeId : cellHalfedges) {
     if (halfedgeId < 0 || halfedgeId >= static_cast<int>(halfedges.size())) {
       continue;
     }
     const SurfaceArrangementHalfedge &halfedge =
         halfedges[static_cast<std::size_t>(halfedgeId)];
-    if (halfedge.family >= 0 || halfedge.sourceFace < 0 ||
-        halfedge.from < 0 || halfedge.to < 0 ||
+    if (halfedge.from < 0 || halfedge.to < 0 ||
         halfedge.from >= static_cast<int>(nodes.size()) ||
         halfedge.to >= static_cast<int>(nodes.size())) {
       continue;
     }
-    const Eigen::RowVector3d fromBary = node_barycentric_on_face(
-        nodes[static_cast<std::size_t>(halfedge.from)], halfedge.sourceFace);
-    const Eigen::RowVector3d toBary = node_barycentric_on_face(
-        nodes[static_cast<std::size_t>(halfedge.to)], halfedge.sourceFace);
-    if (!fromBary.allFinite() || !toBary.allFinite()) {
-      continue;
+    std::set<int> candidateFaces;
+    if (halfedge.sourceFace >= 0) {
+      candidateFaces.insert(halfedge.sourceFace);
     }
-    int sourceEdge = -1;
-    for (int coordinate = 0; coordinate < 3; ++coordinate) {
-      if (std::abs(fromBary[coordinate]) <= epsilon &&
-          std::abs(toBary[coordinate]) <= epsilon) {
-        sourceEdge = coordinate;
-        break;
+    for (const SurfaceArrangementProvenance &entry : halfedge.provenance) {
+      if (entry.sourceFace >= 0) {
+        candidateFaces.insert(entry.sourceFace);
       }
     }
-    if (sourceEdge < 0) {
-      continue;
-    }
-    const auto found = edgeFaces.find(
-        source_edge_key(faces, halfedge.sourceFace, sourceEdge));
-    if (found == edgeFaces.end() || found->second[1] >= 0) {
-      // Interior hard-feature rails are not exterior boundaries.
-      continue;
-    }
-    const Eigen::Vector2d from = bary_to_uv(fromBary);
-    const Eigen::Vector2d to = bary_to_uv(toBary);
-    const Eigen::Vector2d direction = to - from;
-    const Eigen::Vector2d towardInterior =
-        triangleCentroid - 0.5 * (from + to);
-    const double side = direction.x() * towardInterior.y() -
-                        direction.y() * towardInterior.x();
-    if (side > epsilon) {
-      ++interiorVotes;
-    } else if (side < -epsilon) {
-      ++exteriorVotes;
+    for (const int sourceFace : candidateFaces) {
+      if (sourceFace < 0 || sourceFace >= faces.rows()) {
+        continue;
+      }
+      const Eigen::RowVector3d fromBary = node_barycentric_on_face(
+          nodes[static_cast<std::size_t>(halfedge.from)], sourceFace);
+      const Eigen::RowVector3d toBary = node_barycentric_on_face(
+          nodes[static_cast<std::size_t>(halfedge.to)], sourceFace);
+      if (!fromBary.allFinite() || !toBary.allFinite()) {
+        continue;
+      }
+      int sourceEdge = -1;
+      for (int coordinate = 0; coordinate < 3; ++coordinate) {
+        if (std::abs(fromBary[coordinate]) <= epsilon &&
+            std::abs(toBary[coordinate]) <= epsilon) {
+          sourceEdge = coordinate;
+          break;
+        }
+      }
+      if (sourceEdge < 0) {
+        continue;
+      }
+      const auto loop = topology.loopByEdge.find(
+          source_edge_key(faces, sourceFace, sourceEdge));
+      if (loop == topology.loopByEdge.end()) {
+        continue;
+      }
+      const Eigen::Vector2d from = bary_to_uv(fromBary);
+      const Eigen::Vector2d to = bary_to_uv(toBary);
+      const Eigen::Vector2d direction = to - from;
+      const Eigen::Vector2d towardInterior =
+          triangleCentroid - 0.5 * (from + to);
+      const double signedSide = cross2(direction, towardInterior);
+      const int side = signedSide > epsilon ? 1 :
+                       signedSide < -epsilon ? -1 : 0;
+      if (side == 0) {
+        continue;
+      }
+      const auto [found, inserted] = sideByLoop.emplace(loop->second, side);
+      if (!inserted && found->second != side) {
+        evidence.contradictory = true;
+        evidence.failureHalfedge = halfedgeId;
+      }
     }
   }
-  if (interiorVotes == 0 && exteriorVotes == 0) {
-    return 0;
+  for (const auto &[loop, side] : sideByLoop) {
+    evidence.loopIds.push_back(loop);
+    if (evidence.side == 0) {
+      evidence.side = side;
+    } else if (evidence.side != side) {
+      evidence.contradictory = true;
+      if (evidence.failureHalfedge < 0 && !cellHalfedges.empty()) {
+        evidence.failureHalfedge = cellHalfedges.front();
+      }
+    }
   }
-  return exteriorVotes > interiorVotes ? -1 : 1;
+  return evidence;
 }
 
 } // namespace directional::geometry::surface_arrangement_detail
@@ -1551,6 +1666,8 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     return complex;
   }
+  const SourceBoundaryTopology sourceBoundaryTopology =
+      build_source_boundary_topology(faces, edgeFaces);
 
   // Ownership labels are optional at the public API boundary, but ownership
   // itself is not. Derive deterministic intrinsic defaults so topology-only
@@ -3365,7 +3482,7 @@ SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementCell cell;
     std::vector<int> geometryHalfedges;
     std::vector<Eigen::Vector2d> polygon;
-    int sourceBoundaryVote = 0;
+    int sourceBoundarySide = 0;
     double rawSignedArea = 0.0;
     bool geometryAvailable = false;
     bool consumed = false;
@@ -3421,12 +3538,26 @@ SurfaceCellComplex build_surface_cell_complex(
       cell.eulerCharacteristic = cell.disk ? 1 : 0;
     }
 
-    record.sourceBoundaryVote = boundary_orientation_vote(
-        cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
-    // A negative source-boundary vote is authoritative exterior evidence.
-    // Zero-vote internal cycles are classified below from the complete
-    // containment inventory; projected sign alone never decides globally.
-    cell.boundaryCycle = cell.closed && record.sourceBoundaryVote < 0;
+    const BoundarySideEvidence boundaryEvidence = boundary_side_evidence(
+        cell.halfedges, complex.halfedges, complex.nodes, faces,
+        sourceBoundaryTopology);
+    cell.sourceBoundaryLoopIds = boundaryEvidence.loopIds;
+    cell.sourceBoundarySide = boundaryEvidence.side;
+    record.sourceBoundarySide = boundaryEvidence.side;
+    if (boundaryEvidence.contradictory) {
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::ContradictoryBoundarySide,
+          boundaryEvidence.failureHalfedge >= 0
+              ? complex.halfedges[static_cast<std::size_t>(
+                    boundaryEvidence.failureHalfedge)]
+                    .from
+              : -1,
+          boundaryEvidence.failureHalfedge, -1, -1);
+    }
+    // Exact oriented source-side evidence is authoritative. Geometry and
+    // traversal sign are never used to decide whether a source-boundary orbit
+    // is exterior.
+    cell.boundaryCycle = cell.closed && record.sourceBoundarySide < 0;
 
     std::vector<int> supportSourceFaces;
     collect_cell_source_faces(cell.halfedges, complex.halfedges,
@@ -3540,7 +3671,53 @@ SurfaceCellComplex build_surface_cell_complex(
     pendingRecords.push_back(std::move(record));
   }
 
-  // Resolve zero-vote internal cycles from the complete structural inventory.
+  // Every canonical source-boundary loop has exactly one arrangement orbit
+  // on its exterior side. Interior hard rails carry no source-boundary loop
+  // identity and therefore cannot manufacture additional exterior owners.
+  if (directedIncidenceValid && resolvedOptions.insertBoundaryRails) {
+    if (!sourceBoundaryTopology.valid) {
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount, -1, -1,
+          -1, -1);
+    } else {
+      std::vector<int> exteriorOwners(
+          static_cast<std::size_t>(sourceBoundaryTopology.loopCount), 0);
+      for (const PendingCellRecord &record : pendingRecords) {
+        if (record.sourceBoundarySide >= 0) {
+          continue;
+        }
+        for (const int loop : record.cell.sourceBoundaryLoopIds) {
+          if (loop < 0 || loop >= sourceBoundaryTopology.loopCount) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount,
+                -1, -1, -1, -1);
+            break;
+          }
+          ++exteriorOwners[static_cast<std::size_t>(loop)];
+        }
+        if (!directedIncidenceValid) {
+          break;
+        }
+      }
+      if (directedIncidenceValid) {
+        const auto invalidOwner = std::find_if(
+            exteriorOwners.begin(), exteriorOwners.end(),
+            [](const int count) { return count != 1; });
+        if (invalidOwner != exteriorOwners.end()) {
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount, -1,
+              -1, -1,
+              static_cast<int>(std::distance(exteriorOwners.begin(),
+                                             invalidOwner)));
+        }
+      }
+    }
+  }
+  if (!directedIncidenceValid) {
+    pendingRecords.clear();
+  }
+
+  // Resolve no-witness internal cycles from the complete structural inventory.
   // A negatively oriented cycle contained by the smallest larger positive
   // cycle is an additional boundary of that bounded cell. If no such bounded
   // owner exists it is the unbounded arrangement orbit. This uses exact
@@ -3550,7 +3727,7 @@ SurfaceCellComplex build_surface_cell_complex(
        ++holeIndex) {
     PendingCellRecord &hole = pendingRecords[holeIndex];
     if (hole.consumed || hole.cell.boundaryCycle ||
-        hole.sourceBoundaryVote != 0 || !hole.geometryAvailable ||
+        hole.sourceBoundarySide != 0 || !hole.geometryAvailable ||
         hole.rawSignedArea >= -1.0e-14 || hole.polygon.size() < 3U ||
         hole.cell.supportOnlyCycle || hole.cell.bridgeExcursion ||
         hole.cell.cutCellDisk) {
@@ -3713,6 +3890,7 @@ SurfaceCellComplex build_surface_cell_complex(
     return std::make_tuple(
         cell.boundaryCycle ? 1 : 0, cell.cutCellDisk ? 1 : 0,
         cell.supportOnlyCycle ? 1 : 0, cell.bridgeExcursion ? 1 : 0,
+        cell.sourceBoundarySide, cell.sourceBoundaryLoopIds,
         cell.boundaryComponentCount, sourceFaces, edges,
         cell.halfedges.size());
   };
@@ -4317,13 +4495,16 @@ SurfaceCellComplex build_surface_cell_complex(
                complex.diagnostics.supportedArea) /
       std::max(1.0e-20, complex.diagnostics.supportedArea);
   const int undirectedEdges = static_cast<int>(complex.halfedges.size()) / 2;
-  const int interiorCells = static_cast<int>(std::count_if(
-      complex.cells.begin(), complex.cells.end(),
-      [](const SurfaceArrangementCell &cell) {
-        return !cell.boundaryCycle && !cell.supportOnlyCycle;
-      }));
+  const int boundedEulerContribution = std::accumulate(
+      complex.cells.begin(), complex.cells.end(), 0,
+      [](const int sum, const SurfaceArrangementCell &cell) {
+        return sum + (!cell.boundaryCycle && !cell.supportOnlyCycle
+                          ? cell.eulerCharacteristic
+                          : 0);
+      });
   complex.diagnostics.eulerCharacteristic =
-      static_cast<int>(complex.nodes.size()) - undirectedEdges + interiorCells;
+      static_cast<int>(complex.nodes.size()) - undirectedEdges +
+      boundedEulerContribution;
 
   std::vector<std::pair<int, int>> arrangementEdges;
   arrangementEdges.reserve(static_cast<std::size_t>(undirectedEdges));
@@ -4424,14 +4605,44 @@ SurfaceCellComplex build_surface_cell_complex(
   complex.diagnostics.cellsDiskValid = cellsDiskValid;
   complex.diagnostics.connectedComponentCount = graph_component_count(
       static_cast<int>(complex.nodes.size()), arrangementEdges);
-  const auto [boundaryLoops, boundaryValid] = boundary_loop_count(
-      static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
-  complex.diagnostics.boundaryLoopCount = boundaryLoops;
+  bool boundaryValid = false;
+  if (resolvedOptions.insertBoundaryRails) {
+    std::vector<int> exteriorOwners(
+        static_cast<std::size_t>(sourceBoundaryTopology.loopCount), 0);
+    boundaryValid = sourceBoundaryTopology.valid;
+    for (const SurfaceArrangementCell &cell : complex.cells) {
+      if (!cell.boundaryCycle) {
+        continue;
+      }
+      if (cell.sourceBoundarySide != -1 ||
+          cell.sourceBoundaryLoopIds.empty()) {
+        boundaryValid = false;
+        continue;
+      }
+      for (const int loop : cell.sourceBoundaryLoopIds) {
+        if (loop < 0 || loop >= sourceBoundaryTopology.loopCount) {
+          boundaryValid = false;
+          continue;
+        }
+        ++exteriorOwners[static_cast<std::size_t>(loop)];
+      }
+    }
+    boundaryValid =
+        boundaryValid &&
+        std::all_of(exteriorOwners.begin(), exteriorOwners.end(),
+                    [](const int owners) { return owners == 1; });
+    complex.diagnostics.boundaryLoopCount =
+        sourceBoundaryTopology.loopCount;
+  } else {
+    const auto arrangementBoundary = boundary_loop_count(
+        static_cast<int>(complex.nodes.size()), arrangementBoundaryEdges);
+    complex.diagnostics.boundaryLoopCount = arrangementBoundary.first;
+    boundaryValid = arrangementBoundary.second;
+  }
   complex.diagnostics.boundaryLoopsValid = boundaryValid;
 
   std::set<std::uint64_t> sourceEdges;
   std::vector<std::pair<int, int>> sourceGraphEdges;
-  std::vector<std::pair<int, int>> sourceBoundaryEdges;
   std::vector<unsigned char> sourceVertexUsed(
       static_cast<std::size_t>(vertices.rows()), 0);
   for (int face = 0; face < faces.rows(); ++face) {
@@ -4444,10 +4655,6 @@ SurfaceCellComplex build_surface_cell_complex(
         const int a = faces(face, (edge + 1) % 3);
         const int b = faces(face, (edge + 2) % 3);
         sourceGraphEdges.emplace_back(a, b);
-        const auto found = edgeFaces.find(key);
-        if (found == edgeFaces.end() || found->second[1] < 0) {
-          sourceBoundaryEdges.emplace_back(a, b);
-        }
       }
     }
   }
@@ -4458,9 +4665,9 @@ SurfaceCellComplex build_surface_cell_complex(
       sourceVertexCount - static_cast<int>(sourceEdges.size()) + faces.rows();
   complex.diagnostics.sourceConnectedComponentCount = graph_component_count(
       static_cast<int>(vertices.rows()), sourceGraphEdges, &sourceVertexUsed);
-  const auto [sourceBoundaryLoops, sourceBoundaryValid] = boundary_loop_count(
-      static_cast<int>(vertices.rows()), sourceBoundaryEdges);
-  complex.diagnostics.sourceBoundaryLoopCount = sourceBoundaryLoops;
+  const bool sourceBoundaryValid = sourceBoundaryTopology.valid;
+  complex.diagnostics.sourceBoundaryLoopCount =
+      sourceBoundaryTopology.loopCount;
   complex.diagnostics.eulerCharacteristicValid =
       complex.diagnostics.eulerCharacteristic ==
           complex.diagnostics.sourceEulerCharacteristic &&
@@ -4639,6 +4846,10 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(cell.boundaryCycle ? 1 : 0);
     mix(cell.bridgeExcursion ? 1 : 0);
     mix(cell.supportOnlyCycle ? 1 : 0);
+    mix(cell.sourceBoundarySide);
+    for (const int loop : cell.sourceBoundaryLoopIds) {
+      mix(loop);
+    }
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
     std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;

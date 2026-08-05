@@ -159,6 +159,7 @@ std::vector<std::uint64_t> exact_rollback_identity(
     appendVector(cell.sourceFaces);
     appendVector(cell.halfedges);
     appendVector(cell.boundaryCycleOffsets);
+    appendVector(cell.sourceBoundaryLoopIds);
     appendVector(cell.sideFamilies);
     appendVector(cell.sideEdgeCounts);
     append_rollback_double(identity, cell.signedArea);
@@ -168,7 +169,8 @@ std::vector<std::uint64_t> exact_rollback_identity(
           cell.disk ? 1 : 0, cell.cutCellDisk ? 1 : 0,
           cell.bridgeExcursion ? 1 : 0,
           cell.supportOnlyCycle ? 1 : 0, cell.boundaryComponentCount,
-          cell.eulerCharacteristic, cell.quadReady ? 1 : 0,
+          cell.eulerCharacteristic, cell.sourceBoundarySide,
+          cell.quadReady ? 1 : 0,
           static_cast<int>(cell.cellClass),
           static_cast<int>(cell.rejectReason)}) {
       append_rollback_word(identity, value);
@@ -1036,12 +1038,14 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     int index = -1;
     std::vector<int> halfedges;
     std::vector<int> boundaryCycleOffsets;
+    std::vector<int> sourceBoundaryLoopIds;
     std::vector<int> sideFamilies;
     std::vector<int> sideEdgeCounts;
     std::vector<int> sourceFaces;
     int sourceFace = -1;
     int sourceComponent = -1;
     int sourceSheet = -1;
+    int sourceBoundarySide = 0;
     int boundaryComponentCount = 0;
     int eulerCharacteristic = 0;
     bool disk = false;
@@ -1057,12 +1061,15 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       cell.halfedges = std::move(undo->halfedges);
       cell.boundaryCycleOffsets =
           std::move(undo->boundaryCycleOffsets);
+      cell.sourceBoundaryLoopIds =
+          std::move(undo->sourceBoundaryLoopIds);
       cell.sideFamilies = std::move(undo->sideFamilies);
       cell.sideEdgeCounts = std::move(undo->sideEdgeCounts);
       cell.sourceFaces = std::move(undo->sourceFaces);
       cell.sourceFace = undo->sourceFace;
       cell.sourceComponent = undo->sourceComponent;
       cell.sourceSheet = undo->sourceSheet;
+      cell.sourceBoundarySide = undo->sourceBoundarySide;
       cell.boundaryComponentCount = undo->boundaryComponentCount;
       cell.eulerCharacteristic = undo->eulerCharacteristic;
       cell.disk = undo->disk;
@@ -1317,18 +1324,22 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     undo.index = cellIndex;
     undo.halfedges = cell.halfedges;
     undo.boundaryCycleOffsets = cell.boundaryCycleOffsets;
+    undo.sourceBoundaryLoopIds = cell.sourceBoundaryLoopIds;
     undo.sideFamilies = cell.sideFamilies;
     undo.sideEdgeCounts = cell.sideEdgeCounts;
     undo.sourceFaces = cell.sourceFaces;
     undo.sourceFace = cell.sourceFace;
     undo.sourceComponent = cell.sourceComponent;
     undo.sourceSheet = cell.sourceSheet;
+    undo.sourceBoundarySide = cell.sourceBoundarySide;
     undo.boundaryComponentCount = cell.boundaryComponentCount;
     undo.eulerCharacteristic = cell.eulerCharacteristic;
     undo.disk = cell.disk;
     result.rollbackUndoOwnedBytes +=
         static_cast<std::uint64_t>(undo.halfedges.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(undo.boundaryCycleOffsets.capacity()) *
+            sizeof(int) +
+        static_cast<std::uint64_t>(undo.sourceBoundaryLoopIds.capacity()) *
             sizeof(int) +
         static_cast<std::uint64_t>(undo.sideFamilies.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(undo.sideEdgeCounts.capacity()) * sizeof(int) +

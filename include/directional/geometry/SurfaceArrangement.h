@@ -62,6 +62,8 @@ enum class SurfaceArrangementIncidenceFailure : int {
   RepeatedEdgeCycle = 12,
   ShortCycle = 13,
   NonManifoldSourceEdge = 14,
+  ContradictoryBoundarySide = 15,
+  BoundaryLoopOwnerCount = 16,
 };
 
 inline const char *surface_arrangement_incidence_failure_name(
@@ -97,6 +99,10 @@ inline const char *surface_arrangement_incidence_failure_name(
     return "ShortCycle";
   case SurfaceArrangementIncidenceFailure::NonManifoldSourceEdge:
     return "NonManifoldSourceEdge";
+  case SurfaceArrangementIncidenceFailure::ContradictoryBoundarySide:
+    return "ContradictoryBoundarySide";
+  case SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount:
+    return "BoundaryLoopOwnerCount";
   }
   return "Unknown";
 }
@@ -234,6 +240,14 @@ struct SurfaceArrangementCell {
   // exactly one offset {0}; multiply connected bounded cells retain every
   // boundary cycle explicitly instead of flattening them into one fake walk.
   std::vector<int> boundaryCycleOffsets;
+  // Canonical source-boundary loops touched by this arrangement region.
+  // IDs are derived from exact source-edge connectivity and are independent
+  // of source-face row order, traversal start, and whole-mesh orientation.
+  std::vector<int> sourceBoundaryLoopIds;
+  // -1 means this region owns the exterior side of every recorded source
+  // boundary loop, +1 means it owns the interior side, and 0 means it has no
+  // authoritative source-boundary witness.
+  int sourceBoundarySide = 0;
   std::vector<int> sideFamilies;
   std::vector<int> sideEdgeCounts;
   double signedArea = 0.0;
