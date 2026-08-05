@@ -104,7 +104,8 @@ jobs:
             .agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md \
             .agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md \
             benchmark-results/p5-tb38-summary.json
-          git add TODO MILESTONE_G_TODO.md benchmark-results
+          git add TODO MILESTONE_G_TODO.md
+          git add -f benchmark-results/p5-r2e11-summary.json
           git add -f .agents/Directional
           git diff --cached --check
           git diff --cached --name-only | sort | tee /tmp/changed.txt
