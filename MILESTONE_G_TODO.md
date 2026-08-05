@@ -9,11 +9,11 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`; keep open, draft, and unmerged.
-- P5-TB31 tested source: `571ff9095ec06a8931fc54aafe1a70a38f80b4a1`.
-- Tested artifact: `8918054686`, SHA-256 `6491eaaaa2276b0d89ddcda5f94d1b8e1e6cf6fe251b2b6ec99d242d8e29534d`.
-- Completed turn: **P5-TB31 artifact-only R2E3 validation**.
-- Next turn: **P5-R2E4 authoritative boundary-node rotational-system Code + Build**.
-- R2 remains open; do not advance to R2F or R3.
+- Exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`.
+- Artifact: `8929111021`, SHA-256 `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`.
+- Completed turn: **P5-R2E4 Code + Build**.
+- Next turn: **P5-TB32 artifact-only R2E4 validation**.
+- R2 runtime remains open; do not advance to R2F or R3 from compile evidence.
 
 ## Work phases
 
@@ -25,56 +25,53 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [x] R2D — nonmanifold preflight and multi-boundary representation.
 - [x] R2E — source-side evidence and structural Euler accounting.
 - [x] R2E2 — ordered boundary loops and exterior continuation.
-- [x] R2E3 — canonical aliases, target bijection, and orientation identity; runtime still has wrong cyclic sector pairing.
-- [ ] R2E4 — authoritative node-local rotational-system construction.
+- [x] R2E3 — canonical aliases, target bijection, and orientation identity.
+- [x] R2E4 compile — authoritative local rotational-system construction.
+- [ ] R2E4 runtime — P5-TB32 must close rotational, orbit, disk, and Euler gates.
 - [ ] R2F — intrinsic singularity-fan embedding after boundary closure.
 - [ ] R3–R11 — later direct-paving remediation.
 - [ ] P6–P8 — final validation and production disposition.
 
-## P5-TB31 results
+## P5-R2E4 evidence
 
-| Scope | Result |
-|---|---:|
-| Source-chart R1 | **11/11** |
-| Source validator | **6/6** |
-| Recovery authority | **9/9** |
-| Feature/barrier | **8/8** |
-| Graph-dependent | **5/6** |
-| R2 focused | **11/14** |
-| Milestone D | **5/7** |
-| Phase 14–18 | **233/242** |
-| Phase 16 | **43/45** |
-| Phase 17 | **20/26** |
-| Phase 18 | **57/57** |
-| Phase 20 | **46/48** |
-| Complete suite | **595/623**, 142.550 s |
+- starting documentation head `fbec81c04d8134da81482e347389a5fde085feaf`;
+- workflow event `d81351aeb6bb7b728ceaf5bf468f924383167eb9`;
+- exact compiled source `ec44ab7570f258f800a27086fca053c573878a13`;
+- workflow cleanup `d59ddc2c72459287e4c3af5f6a6939443aae6f12`;
+- reviewed/applied diff SHA-256 `33ee4e40c7e5146abd732796b771d74ed28b7808bae6b0ed14bd327fd902aa01`;
+- successful run/job `31002566593` / `92294705089`;
+- artifact `8929111021`, SHA-256 `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`;
+- workflow logs `8929111261`, SHA-256 `a83b4533e6847976a1e942aff8a47b725a8ff468bc586477cc39fb3f45c206ba`;
+- source status empty; manifest **48/48**; files **49**; fixtures **26**; submodules **9**;
+- four target hashes verified; Ninja **132/132**; zero project binaries executed.
 
-R2E3 closes only `SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence`; no new failure appears.
+## R2E4 implementation
 
-## Earliest remaining producer
+- [x] complete canonical ray inventory per authoritative boundary node/fan;
+- [x] one common SourceVertex/SourceEdge wedge required for the full local inventory;
+- [x] exterior pair chooses canonical cyclic direction;
+- [x] complete incoming-to-adjacent-outgoing rotational mapping;
+- [x] one exterior wrap sector and hard-rail-separated interior sectors;
+- [x] typed `BoundaryRotationalSystemConflict` evidence;
+- [x] derived `boundaryRotationalNodeCount`;
+- [x] authoritative exterior-loop audit before global predecessor/orbit audit;
+- [x] orientation-invariant paired boundary identity preserved;
+- [x] repeated-edge/node, disk, owner, and Euler validators unchanged;
+- [x] generalized multi-ray boundary-node contract compiled but not executed.
 
-- planar: complete predecessor bijection but `RepeatedEdgeCycle` during orbit analysis;
-- interior hard rail: `BoundaryLocalPermutationConflict` before orbit publication;
-- cylinder: independent audit rejects bounded `NonDiskCell`;
-- direct seam, close sheets, and cylinder: zero arrangement cells;
-- bunny fan: independent embedding failure.
+## P5-TB32 requirements
 
-The two-target transposition preserves local cardinality but does not construct the authoritative cyclic rotational system. R2E4 must rebuild the entire affected node-local successor mapping directly from canonical ray/sector order.
-
-## P5-R2E4 requirements
-
-- [ ] canonical inventory of every incoming/outgoing ray per node and R1 fan;
-- [ ] explicit exterior and interior boundary-sector identification;
-- [ ] complete local successor reconstruction, not swaps or missing-target repair;
-- [ ] hard rails partition interior sectors without splitting exterior continuation;
-- [ ] pinched fans, close sheets, and components remain separate;
-- [ ] typed fail-closed rotational-system evidence;
-- [ ] one local and one global bijection audit before commit;
-- [ ] preserve paired boundary-twin identity and orientation hash closure;
-- [ ] keep repeated-edge, non-disk, owner, and Euler validators unchanged;
-- [ ] close planar, hard-rail, and cylinder naturally;
-- [ ] compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- [ ] execute no project binary.
+- [ ] verify artifact authority and target hashes;
+- [ ] preserve R0/R1 authority and all prior R2C/R2D/R2E closures;
+- [ ] preserve whole-orientation and source-row incidence-hash invariance;
+- [ ] pass complete local rotational-inventory and typed conflict contracts;
+- [ ] close planar repeated-edge, bounded-area, exterior-owner, Euler-one, and topology gates;
+- [ ] close hard-rail rotational mapping, exterior continuation, and two-bounded-cell partition;
+- [ ] close cylinder two-exterior-cycle, bounded-disk, Euler-zero, and complete-cell ownership;
+- [ ] require every non-bunny R2 contract to pass;
+- [ ] preserve Phase 18 **57/57**;
+- [ ] require nonzero seam, close-sheet, and cylinder arrangement inventories;
+- [ ] run Phase 20 and the complete suite once with runtime and memory evidence.
 
 ## Standing requirements
 
@@ -82,9 +79,10 @@ Every completed Code + Build, Test + Benchmark, and optional Review turn must en
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e4-summary.json`
 - `.agents/Directional/Milestone_G_P5_TB31_Artifact_Only_R2E3_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`
-- `benchmark-results/p5-tb31-summary.json`
 - `TODO`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 
