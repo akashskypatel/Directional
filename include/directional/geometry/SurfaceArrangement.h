@@ -70,6 +70,7 @@ enum class SurfaceArrangementIncidenceFailure : int {
   BoundaryAliasConflict = 20,
   BoundaryLocalPermutationConflict = 21,
   BoundaryRotationalSystemConflict = 22,
+  BoundaryFanSectorCoverConflict = 23,
 };
 
 inline const char *surface_arrangement_incidence_failure_name(
@@ -121,6 +122,8 @@ inline const char *surface_arrangement_incidence_failure_name(
     return "BoundaryLocalPermutationConflict";
   case SurfaceArrangementIncidenceFailure::BoundaryRotationalSystemConflict:
     return "BoundaryRotationalSystemConflict";
+  case SurfaceArrangementIncidenceFailure::BoundaryFanSectorCoverConflict:
+    return "BoundaryFanSectorCoverConflict";
   }
   return "Unknown";
 }
@@ -353,6 +356,9 @@ struct SurfaceArrangementDiagnostics {
   int repeatedEdgeCycleCount = 0;
   int boundaryRotationalNodeCount = 0;
   int boundaryDegreeTwoRotationalNodeCount = 0;
+  int boundaryFanSectorNodeCount = 0;
+  int boundaryInteriorSectorCount = 0;
+  int boundaryHardRailSeparatorCount = 0;
   SurfaceArrangementIncidenceFailure incidenceFailure =
       SurfaceArrangementIncidenceFailure::None;
   int incidenceFailureNode = -1;

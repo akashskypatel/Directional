@@ -3047,6 +3047,14 @@ SurfaceCellComplex build_surface_cell_complex(
     successorWedge[static_cast<std::size_t>(halfedge.id)] = *selectedWedge;
   }
 
+  // Preserve the R1-selected intrinsic sector relation before source-boundary
+  // exterior authority is installed. Higher-valence boundary nodes use these
+  // exact per-fan sectors as evidence for a complete local cover rather than
+  // inventing one cyclic permutation across unrelated fan scopes.
+  const std::vector<int> intrinsicCandidateNext = candidateNext;
+  const std::vector<SurfaceCellCanonicalIdentity> intrinsicSuccessorWedge =
+      successorWedge;
+
   // Source-boundary exterior continuation is authoritative source topology,
   // not a generic wedge choice. Build an exact subsegment inventory and install
   // the exterior successor permutation before the complete orbit audit. This
@@ -3452,13 +3460,11 @@ SurfaceCellComplex build_surface_cell_complex(
             make_boundary_segment_identity(witness);
       }
 
-      // Reconstruct the complete node-local rotational system directly from
-      // the canonical source-entity ray order.  The common SourceVertex or
-      // SourceEdge wedge contains every outgoing ray in one manifold boundary
-      // fan.  Its open intrinsic order spans the source interior; closing that
-      // order contributes exactly one exterior sector.  Selecting the cyclic
-      // direction from the authoritative exterior pair makes the construction
-      // independent of source-face row order and whole-mesh orientation.
+      // Reconstruct each boundary-node rotation transactionally. Degree-two
+      // nodes retain the audited explicit exterior/interior construction. Nodes
+      // with three or more rays are assembled from the complete set of R1-selected
+      // source-interior fan sectors plus the one authoritative exterior sector.
+      // No common wedge is required to span hard-rail-separated fan scopes.
       for (int node = 0;
            directedIncidenceValid &&
            node < static_cast<int>(exteriorIncomingByNode.size()); ++node) {
@@ -3512,107 +3518,93 @@ SurfaceCellComplex build_surface_cell_complex(
           break;
         }
 
-        std::vector<SurfaceCellCanonicalIdentity> commonWedges =
-            halfedgeWedges[static_cast<std::size_t>(localOutgoing.front())];
-        for (std::size_t index = 1;
-             index < localOutgoing.size() && !commonWedges.empty(); ++index) {
-          std::vector<SurfaceCellCanonicalIdentity> intersection;
-          const auto &memberships = halfedgeWedges[static_cast<std::size_t>(
-              localOutgoing[index])];
-          std::set_intersection(commonWedges.begin(), commonWedges.end(),
-                                memberships.begin(), memberships.end(),
-                                std::back_inserter(intersection));
-          commonWedges = std::move(intersection);
-        }
-
-        std::vector<const SurfaceCellCanonicalIdentity *> rotationCandidates;
         const auto &nodeWedges = orderedWedges[static_cast<std::size_t>(node)];
-        for (const SurfaceCellCanonicalIdentity &identity : commonWedges) {
-          const auto found = nodeWedges.find(identity);
-          if (found == nodeWedges.end() ||
-              found->second.size() != localOutgoing.size()) {
-            continue;
-          }
-          std::vector<int> candidateRays;
-          candidateRays.reserve(found->second.size());
-          bool intrinsicBoundaryEntity = true;
-          for (const DirectedWedgeRay &ray : found->second) {
-            candidateRays.push_back(ray.halfedge);
-            const bool rayHasBoundaryEntity = std::any_of(
-                ray.witnesses.begin(), ray.witnesses.end(),
-                [](const DirectedWedgeWitness &witness) {
-                  return witness.kind == SourceEntityKind::SourceVertex ||
-                         witness.kind == SourceEntityKind::SourceEdge;
-                });
-            intrinsicBoundaryEntity =
-                intrinsicBoundaryEntity && rayHasBoundaryEntity;
-          }
-          std::sort(candidateRays.begin(), candidateRays.end());
-          if (intrinsicBoundaryEntity && candidateRays == localOutgoing) {
-            rotationCandidates.push_back(&identity);
-          }
-        }
-        if (rotationCandidates.size() != 1U) {
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::
-                  BoundaryRotationalSystemConflict,
-              node, exteriorIncoming,
-              complex.halfedges[static_cast<std::size_t>(exteriorIncoming)].twin,
-              exteriorOutgoing);
-          break;
-        }
-
-        const SurfaceCellCanonicalIdentity &rotationIdentity =
-            *rotationCandidates.front();
-        const auto rotationFound = nodeWedges.find(rotationIdentity);
-        if (rotationFound == nodeWedges.end() || rotationFound->second.empty()) {
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::
-                  BoundaryRotationalSystemConflict,
-              node, exteriorIncoming,
-              complex.halfedges[static_cast<std::size_t>(exteriorIncoming)].twin,
-              exteriorOutgoing);
-          break;
-        }
-        const std::vector<DirectedWedgeRay> &rays = rotationFound->second;
         const int exteriorTwin =
             complex.halfedges[static_cast<std::size_t>(exteriorIncoming)].twin;
-        const auto exteriorTwinFound = std::find_if(
-            rays.begin(), rays.end(), [&](const DirectedWedgeRay &ray) {
-              return ray.halfedge == exteriorTwin;
-            });
-        const auto exteriorOutgoingFound = std::find_if(
-            rays.begin(), rays.end(), [&](const DirectedWedgeRay &ray) {
-              return ray.halfedge == exteriorOutgoing;
-            });
-        if (exteriorTwinFound == rays.end() ||
-            exteriorOutgoingFound == rays.end()) {
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::
-                  BoundaryRotationalSystemConflict,
-              node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
-          break;
-        }
-
-        const int rayCount = static_cast<int>(rays.size());
-        const bool degreeTwoRotation = rayCount == 2;
+        const bool degreeTwoRotation = localOutgoing.size() == 2U;
         std::map<int, int> localTargetCount;
         std::set<int> localIncoming;
 
         if (degreeTwoRotation) {
-          // A two-ray cyclic order has two distinct sectors but only one
-          // opposite ray ID: predecessor(exteriorTwin) and
-          // successor(exteriorTwin) are both exteriorOutgoing.  Represent the
-          // exterior and source-interior sectors explicitly instead of
-          // treating those equivalent cyclic positions as contradictory.
+          // Preserve the R2E5 degree-two producer exactly. One common
+          // SourceVertex/SourceEdge identity is still required for the exact
+          // two-ray inventory because no fan-scope cover is necessary.
+          std::vector<SurfaceCellCanonicalIdentity> commonWedges =
+              halfedgeWedges[static_cast<std::size_t>(localOutgoing.front())];
+          for (std::size_t index = 1;
+               index < localOutgoing.size() && !commonWedges.empty(); ++index) {
+            std::vector<SurfaceCellCanonicalIdentity> intersection;
+            const auto &memberships = halfedgeWedges[static_cast<std::size_t>(
+                localOutgoing[index])];
+            std::set_intersection(commonWedges.begin(), commonWedges.end(),
+                                  memberships.begin(), memberships.end(),
+                                  std::back_inserter(intersection));
+            commonWedges = std::move(intersection);
+          }
+
+          std::vector<const SurfaceCellCanonicalIdentity *> rotationCandidates;
+          for (const SurfaceCellCanonicalIdentity &identity : commonWedges) {
+            const auto found = nodeWedges.find(identity);
+            if (found == nodeWedges.end() ||
+                found->second.size() != localOutgoing.size()) {
+              continue;
+            }
+            std::vector<int> candidateRays;
+            candidateRays.reserve(found->second.size());
+            bool intrinsicBoundaryEntity = true;
+            for (const DirectedWedgeRay &ray : found->second) {
+              candidateRays.push_back(ray.halfedge);
+              const bool rayHasBoundaryEntity = std::any_of(
+                  ray.witnesses.begin(), ray.witnesses.end(),
+                  [](const DirectedWedgeWitness &witness) {
+                    return witness.kind == SourceEntityKind::SourceVertex ||
+                           witness.kind == SourceEntityKind::SourceEdge;
+                  });
+              intrinsicBoundaryEntity =
+                  intrinsicBoundaryEntity && rayHasBoundaryEntity;
+            }
+            std::sort(candidateRays.begin(), candidateRays.end());
+            if (intrinsicBoundaryEntity && candidateRays == localOutgoing) {
+              rotationCandidates.push_back(&identity);
+            }
+          }
+          if (rotationCandidates.size() != 1U) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryRotationalSystemConflict,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+
+          const SurfaceCellCanonicalIdentity &rotationIdentity =
+              *rotationCandidates.front();
+          const auto rotationFound = nodeWedges.find(rotationIdentity);
+          if (rotationFound == nodeWedges.end() ||
+              rotationFound->second.size() != 2U) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryRotationalSystemConflict,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+          const std::vector<DirectedWedgeRay> &rays = rotationFound->second;
+          const auto exteriorTwinFound = std::find_if(
+              rays.begin(), rays.end(), [&](const DirectedWedgeRay &ray) {
+                return ray.halfedge == exteriorTwin;
+              });
+          const auto exteriorOutgoingFound = std::find_if(
+              rays.begin(), rays.end(), [&](const DirectedWedgeRay &ray) {
+                return ray.halfedge == exteriorOutgoing;
+              });
           const int complementaryIncoming =
-              complex.halfedges[static_cast<std::size_t>(exteriorOutgoing)]
-                  .twin;
+              complex.halfedges[static_cast<std::size_t>(exteriorOutgoing)].twin;
           std::set<int> twoRayInventory;
           for (const DirectedWedgeRay &ray : rays) {
             twoRayInventory.insert(ray.halfedge);
           }
-          if (exteriorTwin == exteriorOutgoing ||
+          if (exteriorTwinFound == rays.end() ||
+              exteriorOutgoingFound == rays.end() ||
+              exteriorTwin == exteriorOutgoing ||
               twoRayInventory.size() != 2U ||
               twoRayInventory !=
                   std::set<int>{exteriorTwin, exteriorOutgoing} ||
@@ -3651,74 +3643,249 @@ SurfaceCellComplex build_surface_cell_complex(
           ++localTargetCount[exteriorOutgoing];
           ++localTargetCount[exteriorTwin];
         } else {
-          const int exteriorTwinPosition = static_cast<int>(
-              std::distance(rays.begin(), exteriorTwinFound));
-          const int predecessorPosition =
-              (exteriorTwinPosition - 1 + rayCount) % rayCount;
-          const int successorPosition =
-              (exteriorTwinPosition + 1) % rayCount;
-          int rotationStep = 0;
-          if (rays[static_cast<std::size_t>(predecessorPosition)].halfedge ==
-              exteriorOutgoing) {
-            rotationStep = -1;
-          }
-          if (rays[static_cast<std::size_t>(successorPosition)].halfedge ==
-              exteriorOutgoing) {
-            if (rotationStep != 0) {
-              record_incidence_failure(
-                  SurfaceArrangementIncidenceFailure::
-                      BoundaryRotationalSystemConflict,
-                  node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
-              break;
-            }
-            rotationStep = 1;
-          }
-          if (rotationStep == 0) {
+          struct BoundaryFanSector {
+            int incoming = -1;
+            int sourceRay = -1;
+            int target = -1;
+            SurfaceCellCanonicalIdentity fanIdentity;
+            bool exterior = false;
+          };
+
+          std::vector<BoundaryFanSector> sectors;
+          sectors.reserve(localOutgoing.size());
+          const int exteriorLoop = authoritativeBoundaryLoop
+              [static_cast<std::size_t>(exteriorIncoming)];
+          if (exteriorLoop < 0 ||
+              exteriorLoop >=
+                  static_cast<int>(sourceBoundaryTopology.loops.size()) ||
+              exteriorTwin < 0 ||
+              !std::binary_search(localOutgoing.begin(), localOutgoing.end(),
+                                  exteriorTwin) ||
+              !std::binary_search(localOutgoing.begin(), localOutgoing.end(),
+                                  exteriorOutgoing)) {
             record_incidence_failure(
                 SurfaceArrangementIncidenceFailure::
-                    BoundaryRotationalSystemConflict,
+                    BoundaryFanSectorCoverConflict,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
             break;
           }
+          sectors.push_back(
+              {exteriorIncoming, exteriorTwin, exteriorOutgoing,
+               sourceBoundaryTopology
+                   .loops[static_cast<std::size_t>(exteriorLoop)]
+                   .canonicalIdentity,
+               true});
 
-          for (int position = 0; position < rayCount; ++position) {
-            const int outgoing =
-                rays[static_cast<std::size_t>(position)].halfedge;
-            if (outgoing < 0 ||
-                outgoing >= static_cast<int>(complex.halfedges.size())) {
+          for (const int sourceRay : localOutgoing) {
+            if (sourceRay < 0 ||
+                sourceRay >= static_cast<int>(complex.halfedges.size())) {
               record_incidence_failure(
                   SurfaceArrangementIncidenceFailure::
-                      BoundaryRotationalSystemConflict,
-                  node, exteriorIncoming, exteriorTwin, outgoing);
+                      BoundaryFanSectorCoverConflict,
+                  node, exteriorIncoming, sourceRay, -1);
               break;
             }
-            const SurfaceArrangementHalfedge &outgoingHalfedge =
-                complex.halfedges[static_cast<std::size_t>(outgoing)];
-            const int incoming = outgoingHalfedge.twin;
-            const int targetPosition =
-                (position + rotationStep + rayCount) % rayCount;
-            const int target =
-                rays[static_cast<std::size_t>(targetPosition)].halfedge;
+            const int incoming =
+                complex.halfedges[static_cast<std::size_t>(sourceRay)].twin;
+            if (incoming == exteriorIncoming) {
+              continue;
+            }
             if (incoming < 0 ||
                 incoming >= static_cast<int>(complex.halfedges.size()) ||
-                complex.halfedges[static_cast<std::size_t>(incoming)].to != node ||
-                complex.halfedges[static_cast<std::size_t>(target)].from != node ||
-                !localIncoming.insert(incoming).second) {
+                complex.halfedges[static_cast<std::size_t>(incoming)].to != node) {
               record_incidence_failure(
                   SurfaceArrangementIncidenceFailure::
-                      BoundaryRotationalSystemConflict,
-                  node, incoming, outgoing, target);
+                      BoundaryFanSectorCoverConflict,
+                  node, incoming, sourceRay, -1);
               break;
             }
-            candidateNext[static_cast<std::size_t>(incoming)] = target;
-            successorWedge[static_cast<std::size_t>(incoming)] =
-                rotationIdentity;
-            ++localTargetCount[target];
+
+            const int target =
+                intrinsicCandidateNext[static_cast<std::size_t>(incoming)];
+            const SurfaceCellCanonicalIdentity &fanIdentity =
+                intrinsicSuccessorWedge[static_cast<std::size_t>(incoming)];
+            const auto wedgeFound = nodeWedges.find(fanIdentity);
+            if (target < 0 ||
+                target >= static_cast<int>(complex.halfedges.size()) ||
+                complex.halfedges[static_cast<std::size_t>(target)].from != node ||
+                !fanIdentity.valid || wedgeFound == nodeWedges.end() ||
+                wedgeFound->second.size() < 2U) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, incoming, sourceRay, target);
+              break;
+            }
+
+            const auto sourceFound = std::find_if(
+                wedgeFound->second.begin(), wedgeFound->second.end(),
+                [&](const DirectedWedgeRay &ray) {
+                  return ray.halfedge == sourceRay;
+                });
+            const auto targetFound = std::find_if(
+                wedgeFound->second.begin(), wedgeFound->second.end(),
+                [&](const DirectedWedgeRay &ray) {
+                  return ray.halfedge == target;
+                });
+            if (sourceFound == wedgeFound->second.end() ||
+                targetFound == wedgeFound->second.end()) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, incoming, sourceRay, target);
+              break;
+            }
+            const int sourcePosition = static_cast<int>(
+                std::distance(wedgeFound->second.begin(), sourceFound));
+            const int targetPosition = static_cast<int>(
+                std::distance(wedgeFound->second.begin(), targetFound));
+            const bool intrinsicBoundaryEntity = std::any_of(
+                sourceFound->witnesses.begin(), sourceFound->witnesses.end(),
+                [](const DirectedWedgeWitness &witness) {
+                  return witness.kind == SourceEntityKind::SourceVertex ||
+                         witness.kind == SourceEntityKind::SourceEdge;
+                });
+            const bool membershipPresent =
+                std::binary_search(
+                    halfedgeWedges[static_cast<std::size_t>(sourceRay)].begin(),
+                    halfedgeWedges[static_cast<std::size_t>(sourceRay)].end(),
+                    fanIdentity);
+            // R1's intrinsic successor is accepted only when it is a direct,
+            // non-wrapping adjacent sector inside one authoritative fan scope.
+            // A wrap belongs to either the source exterior or a different fan
+            // scope and therefore cannot be used as an interior sector.
+            if (!intrinsicBoundaryEntity || !membershipPresent ||
+                sourcePosition <= 0 || targetPosition != sourcePosition - 1) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, incoming, sourceRay, target);
+              break;
+            }
+            sectors.push_back(
+                {incoming, sourceRay, target, fanIdentity, false});
           }
           if (!directedIncidenceValid) {
             break;
           }
+
+          std::map<int, std::size_t> sectorByIncoming;
+          std::map<int, std::size_t> sectorByTarget;
+          std::set<std::tuple<int, int, SurfaceCellCanonicalIdentity>>
+              canonicalSectors;
+          for (std::size_t sectorIndex = 0; sectorIndex < sectors.size();
+               ++sectorIndex) {
+            const BoundaryFanSector &sector = sectors[sectorIndex];
+            if (!sectorByIncoming.emplace(sector.incoming, sectorIndex).second ||
+                !sectorByTarget.emplace(sector.target, sectorIndex).second ||
+                !canonicalSectors
+                     .emplace(sector.incoming, sector.target,
+                              sector.fanIdentity)
+                     .second) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, sector.incoming, sector.sourceRay, sector.target);
+              break;
+            }
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+
+          int hardRailSeparatorCount = 0;
+          const auto is_authoritative_source_rail =
+              [&](const int outgoingRay) {
+                if (outgoingRay < 0 || outgoingRay >=
+                                           static_cast<int>(complex.halfedges.size()) ||
+                    boundaryWitnesses[static_cast<std::size_t>(outgoingRay)]
+                        .valid) {
+                  return false;
+                }
+                const SurfaceArrangementHalfedge &halfedge =
+                    complex.halfedges[static_cast<std::size_t>(outgoingRay)];
+                return halfedge.hardFeature &&
+                       std::any_of(
+                           halfedge.provenance.begin(),
+                           halfedge.provenance.end(),
+                           [](const SurfaceArrangementProvenance &entry) {
+                             return entry.sourceArc < 0 && entry.family < 0 &&
+                                    entry.hardFeature;
+                           });
+              };
+          for (const int separatorRay : localOutgoing) {
+            if (!is_authoritative_source_rail(separatorRay)) {
+              continue;
+            }
+            const int separatorIncoming =
+                complex.halfedges[static_cast<std::size_t>(separatorRay)].twin;
+            const auto owned = sectorByIncoming.find(separatorIncoming);
+            const auto targeted = sectorByTarget.find(separatorRay);
+            if (owned == sectorByIncoming.end() ||
+                targeted == sectorByTarget.end() ||
+                sectors[owned->second].exterior ||
+                sectors[targeted->second].exterior ||
+                sectors[owned->second].fanIdentity ==
+                    sectors[targeted->second].fanIdentity) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, separatorIncoming, separatorRay,
+                  targeted == sectorByTarget.end()
+                      ? -1
+                      : sectors[targeted->second].incoming);
+              break;
+            }
+            ++hardRailSeparatorCount;
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+
+          if (sectors.size() != localOutgoing.size() ||
+              sectorByIncoming.size() != localOutgoing.size() ||
+              sectorByTarget.size() != localOutgoing.size() ||
+              sectorByIncoming.count(exteriorIncoming) != 1U ||
+              sectorByTarget.count(exteriorOutgoing) != 1U) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryFanSectorCoverConflict,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+          for (const int outgoingRay : localOutgoing) {
+            const int incoming =
+                complex.halfedges[static_cast<std::size_t>(outgoingRay)].twin;
+            if (sectorByIncoming.count(incoming) != 1U ||
+                sectorByTarget.count(outgoingRay) != 1U) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, incoming, outgoingRay, -1);
+              break;
+            }
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+
+          // Publish the complete local cover only after every incoming, target,
+          // fan identity, and hard-rail separator audit succeeds.
+          for (const BoundaryFanSector &sector : sectors) {
+            candidateNext[static_cast<std::size_t>(sector.incoming)] =
+                sector.target;
+            successorWedge[static_cast<std::size_t>(sector.incoming)] =
+                sector.fanIdentity;
+            localIncoming.insert(sector.incoming);
+            ++localTargetCount[sector.target];
+          }
+          ++complex.diagnostics.boundaryFanSectorNodeCount;
+          complex.diagnostics.boundaryInteriorSectorCount +=
+              static_cast<int>(sectors.size()) - 1;
+          complex.diagnostics.boundaryHardRailSeparatorCount +=
+              hardRailSeparatorCount;
         }
+
         if (candidateNext[static_cast<std::size_t>(exteriorIncoming)] !=
                 exteriorOutgoing ||
             localIncoming.size() != localOutgoing.size() ||
@@ -3726,8 +3893,11 @@ SurfaceCellComplex build_surface_cell_complex(
             std::any_of(localTargetCount.begin(), localTargetCount.end(),
                         [](const auto &entry) { return entry.second != 1; })) {
           record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::
-                  BoundaryRotationalSystemConflict,
+              degreeTwoRotation
+                  ? SurfaceArrangementIncidenceFailure::
+                        BoundaryRotationalSystemConflict
+                  : SurfaceArrangementIncidenceFailure::
+                        BoundaryFanSectorCoverConflict,
               node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
           break;
         }
@@ -3736,8 +3906,8 @@ SurfaceCellComplex build_surface_cell_complex(
           ++complex.diagnostics.boundaryDegreeTwoRotationalNodeCount;
         }
 
-        // Keep the exterior sector's semantic loop identity.  Interior sectors
-        // retain the canonical source-entity rotation identity assigned above.
+        // Keep the exterior sector's semantic loop identity. Interior sectors
+        // retain their canonical R1 fan identity assigned above.
         successorWedge[static_cast<std::size_t>(exteriorIncoming)] =
             sourceBoundaryTopology
                 .loops[static_cast<std::size_t>(

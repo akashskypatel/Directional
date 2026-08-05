@@ -362,6 +362,8 @@ TEST(SurfaceArrangementPhase16,
   expect_node_local_successor_bijection(complex);
   expect_degree_two_boundary_sectors(complex);
   EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
+  EXPECT_EQ(complex.diagnostics.boundaryFanSectorNodeCount, 0);
+  EXPECT_EQ(complex.diagnostics.boundaryInteriorSectorCount, 0);
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }),
             1);
@@ -392,10 +394,14 @@ TEST(SurfaceArrangementPhase16, SourceEdgeAndVertexEventsAreCanonical) {
 TEST(SurfaceArrangementPhase16,
      MultipleInteriorRaysAtBoundaryVertexUseAdjacentRotationalSectors) {
   const auto fixture = unit_triangle();
+  // Three non-crossing spokes terminate on the opposite source-boundary edge.
+  // This genuinely partitions the source disk into four bounded disks instead
+  // of creating dangling interior slits whose global disk contract would be
+  // ill-posed.
   std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
-      make_arc(20, {1.0, 0.0, 0.0}, {0.60, 0.25, 0.15}, 0),
-      make_arc(21, {1.0, 0.0, 0.0}, {0.55, 0.15, 0.30}, 1),
-      make_arc(22, {1.0, 0.0, 0.0}, {0.50, 0.35, 0.15}, 0)};
+      make_arc(20, {1.0, 0.0, 0.0}, {0.0, 0.80, 0.20}, 0),
+      make_arc(21, {1.0, 0.0, 0.0}, {0.0, 0.50, 0.50}, 1),
+      make_arc(22, {1.0, 0.0, 0.0}, {0.0, 0.20, 0.80}, 0)};
 
   const auto complex = directional::geometry::build_surface_cell_complex(
       fixture.vertices, fixture.faces, arcs);
@@ -407,6 +413,9 @@ TEST(SurfaceArrangementPhase16,
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount,
             complex.diagnostics.boundaryDegreeTwoRotationalNodeCount);
+  EXPECT_GT(complex.diagnostics.boundaryFanSectorNodeCount, 0);
+  EXPECT_GE(complex.diagnostics.boundaryInteriorSectorCount, 4);
+  EXPECT_EQ(complex.diagnostics.boundaryHardRailSeparatorCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
@@ -414,6 +423,7 @@ TEST(SurfaceArrangementPhase16,
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }),
             1);
+  EXPECT_EQ(interior_cell_count(complex), 4);
   EXPECT_TRUE(std::all_of(
       complex.halfedges.begin(), complex.halfedges.end(),
       [&](const auto &halfedge) {
