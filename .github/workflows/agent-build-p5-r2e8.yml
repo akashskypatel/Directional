@@ -1,0 +1,87 @@
+name: Agent Build Surface Cell P5 R2E8
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-p5-r2e8.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-surface-cell-p5-r2e8-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ACTIVE_BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  BUILD_DIR: build/agent-p5-r2e8-release
+  PACKAGE_DIR: artifact
+  LOG_DIR: /tmp/p5-r2e8-workflow-logs
+  ACTIVITY_LOG: /tmp/p5-r2e8-workflow-logs/p5-r2e8-compile-activity.log
+  APPLY_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.apply.py.gz.b64
+  BUILD_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.build.sh.gz.b64
+  EXPECTED_BLOBS: .agents/Directional/patches/P5-R2E8.expected-blobs.tsv
+  APPLY_SCRIPT_B64_SHA256: 1b86326a563d214ec02be874ddd5e572ab544cfc008d3c22987bbc94662ea3c3
+  APPLY_SCRIPT_SHA256: 985e33f138c38035557802a456fcd64768e79aa8ab70c926da6cc2dab1f31499
+  BUILD_SCRIPT_B64_SHA256: 5bd61737b3cc33e99b15767b29092eeef6cbd56dbf68b1b77c4a4bb17395f3f5
+  BUILD_SCRIPT_SHA256: b714f2acc13208cb50944fd09d48197e056b617bed1304759b8359a3de2ea417
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Initialize persistent workflow log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          {
+            echo "P5-R2E8 canonical boundary corner-sector and rail-chart embedding compile-only build"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "${ACTIVITY_LOG}"
+
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 4
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply reviewed R2E8 change, compile, and package
+        id: compile
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "${LOG_DIR}"
+          exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
+          test -f "${BUILD_SCRIPT_B64}"
+          echo "${BUILD_SCRIPT_B64_SHA256}  ${BUILD_SCRIPT_B64}" | sha256sum -c -
+          base64 -d "${BUILD_SCRIPT_B64}" | gzip -d > /tmp/p5-r2e8-build.sh
+          echo "${BUILD_SCRIPT_SHA256}  /tmp/p5-r2e8-build.sh" | sha256sum -c -
+          chmod +x /tmp/p5-r2e8-build.sh
+          /tmp/p5-r2e8-build.sh
+
+      - name: Upload compiled checkpoint
+        if: steps.compile.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e8-github-source-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e8-workflow-logs-${{ github.run_id }}
+          path: /tmp/p5-r2e8-workflow-logs
+          if-no-files-found: error
+          retention-days: 30
