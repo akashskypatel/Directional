@@ -9,84 +9,91 @@
 
 ## Current checkpoint
 
-P5-TB31 artifact-only R2E3 validation is complete against exact source `571ff9095ec06a8931fc54aafe1a70a38f80b4a1` and artifact `8918054686`.
+P5-R2E4 authoritative boundary-node rotational-system construction is implemented and compiles successfully.
 
-R2E3 closes `SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence`, but planar, interior-hard-rail, and open-cylinder boundary topology remain invalid. The complete suite is **595/623** with 28 failures, matching P5-TB29. The next turn is **P5-R2E4 authoritative boundary-node rotational-system Code + Build**. Do not advance to R2F or R3.
+- exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`;
+- artifact: `8929111021`;
+- workflow run/job: `31002566593` / `92294705089`;
+- post-build workflow cleanup: `d59ddc2c72459287e4c3af5f6a6939443aae6f12`.
+
+Runtime acceptance has not been executed for this source. The next turn is **P5-TB32 artifact-only R2E4 validation**. Do not configure, rebuild, relink, patch, regenerate, or modify source. Do not advance to R2F or R3 from compilation.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB31_Artifact_Only_R2E3_Test_Benchmark_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb31-summary.json`
-6. `.agents/Directional/Milestone_G_P5_R2E3_Code_Build_Report.md`
-7. `.agents/Directional/REORIENTATION_PLAN.md`
-8. `.agents/Directional/DESIGN.md`
-9. `.agents/Directional/GitHub_Workflow_Policy.md`
+3. `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`
+5. `benchmark-results/p5-r2e4-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB31_Artifact_Only_R2E3_Test_Benchmark_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`
+8. `.agents/Directional/REORIENTATION_PLAN.md`
+9. `.agents/Directional/DESIGN.md`
+10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB31 authority
+## P5-R2E4 package authority
 
-- exact tested source: `571ff9095ec06a8931fc54aafe1a70a38f80b4a1`;
-- workflow event commit: `2d1d616eaf6e5be025e1a190b995172954d3f102`;
-- artifact: `8918054686`, SHA-256 `6491eaaaa2276b0d89ddcda5f94d1b8e1e6cf6fe251b2b6ec99d242d8e29534d`;
-- reviewed/applied diff SHA-256: `f7a26c3b3869a59247532e86f4468e0d17bce7caa72cf31a5c315b620fac1ff3`;
-- source status empty; checksums **48/48**; files **49**; fixtures **26**; submodules **9**; target hashes verified;
-- cleaned source contains only `agent-source-snapshot.yml` and zero payloads;
-- no configure, build, relink, patch, regeneration, or source modification during validation;
-- evidence bundle: `directional-p5-tb31-8918054686-evidence.zip`, SHA-256 `14dcdbaddab36cf4175bcbec85175af3ce5e0f488ac6008e50f7b82a36929a72`.
+- starting documentation head: `fbec81c04d8134da81482e347389a5fde085feaf`;
+- workflow event commit: `d81351aeb6bb7b728ceaf5bf468f924383167eb9`;
+- exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`;
+- reviewed/applied source diff SHA-256: `33ee4e40c7e5146abd732796b771d74ed28b7808bae6b0ed14bd327fd902aa01`;
+- artifact: `8929111021`, `surface-cell-p5-r2e4-github-source-linux-release`;
+- artifact SHA-256: `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`;
+- workflow-log artifact: `8929111261`, SHA-256 `a83b4533e6847976a1e942aff8a47b725a8ff468bc586477cc39fb3f45c206ba`;
+- source status empty;
+- recursive checksums **48/48**;
+- package files **49**;
+- fixtures **26**;
+- recursive submodules **9**;
+- all four target hashes verified;
+- all **132/132** Ninja actions completed;
+- no project binary executed.
 
-## Runtime summary
+The cleaned validation source contains only `agent-source-snapshot.yml` and zero payloads. The exact-source archive retains the bounded compile workflow; `source-exclusions.txt` records its sole removal from the validation source. The final branch also contains only the base workflow and no patch payloads.
 
-- source-chart R1 **11/11**;
-- source validator **6/6**;
-- recovery **9/9**;
-- feature/barrier **8/8**;
-- graph-dependent **5/6**;
-- R2 focused **11/14**;
-- Milestone D **5/7**;
-- Phase 14–18 **233/242**;
-- Phase 16 **43/45**;
-- Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 20 **46/48**;
-- complete suite **595/623**, 28 failures, **142.550 s**;
-- sampled RSS at least **169,268 KiB**; exact max unavailable because the outer wrapper ended while the child continued to normal completion.
+## P5-R2E4 implementation
 
-Relative to P5-TB30, exactly one failure closes and no new failure appears.
+1. Discards the R2E3 two-target transposition and reconstructs every affected node-local mapping directly.
+2. Requires one canonical SourceVertex or SourceEdge wedge containing the complete local outgoing-ray inventory.
+3. Uses the authoritative exterior incoming/outgoing pair to select semantic cyclic direction.
+4. Maps every incoming twin to the adjacent outgoing ray in that canonical order exactly once.
+5. Treats the single wrap adjacency as the exterior sector and all other adjacencies as interior sectors, with hard rails and traces acting as separators.
+6. Adds typed `BoundaryRotationalSystemConflict` evidence and derived `boundaryRotationalNodeCount` diagnostics.
+7. Audits local rotational bijection and exact authoritative exterior-loop continuation before global predecessor and orbit audits.
+8. Preserves the passing orientation-invariant paired boundary-subsegment incidence identity.
+9. Leaves repeated-edge/node, non-disk, owner, and structural Euler validators unchanged.
+10. Adds a generalized multiple-interior-rays-at-one-boundary-vertex contract; compiled but not executed.
 
-## Earliest remaining producer
+This is not target swapping, missing-target repair, post-hoc cycle decomposition, or cell merging.
 
-R2E3 forces the exterior successor and swaps the displaced generic target to the generic owner of the forced exterior target. This guarantees cardinality in simple cases but does not construct the canonical cyclic rotational system.
+## P5-TB32 execution order
 
-Consequences:
-
-- planar: predecessor bijection passes, then orbit audit fails `RepeatedEdgeCycle`;
-- interior hard rail: local target swap fails `BoundaryLocalPermutationConflict`;
-- open cylinder: a bounded orbit is rejected as `NonDiskCell`;
-- direct seam, close sheets, and cylinder still publish zero arrangement cells.
-
-P5-R2E4 must discard all generic local assignments at affected boundary nodes and rebuild every local incoming-to-outgoing mapping directly from canonical cyclic ray and sector order. Do not patch missing predecessors, weaken orbit/disk validation, or merge cells after extraction.
-
-## First actions for P5-R2E4
-
-1. Confirm branch descends from this documentation handoff and contains one base workflow and no payload directory.
-2. Inspect canonical boundary aliases, ordered wedges/rays, the R2E3 target transposition, orbit analysis, and disk audit.
-3. Build one canonical rotational-system inventory per boundary node and R1 fan.
-4. Identify exactly one exterior sector per authoritative boundary-loop occurrence and all hard-rail-separated interior sectors.
-5. Reconstruct the complete local successor map transactionally from that rotational system.
-6. Preserve the passing paired boundary-twin identity and orientation hash.
-7. Keep bunny fan, FlowRep, simplification, completion, cache, optimizer, fallback, and lineage out of scope.
-8. Compile exactly the four approved targets and execute no project binary.
-9. Remove the bounded workflow and payloads after artifact upload.
+1. Verify artifact SHA, source commit, source status, **48/48** checksums, 49 files, 26 fixtures, nine submodules, target hashes, one cleaned base workflow, and zero payloads.
+2. Run source-chart, source-validator, recovery, and feature/barrier authority.
+3. Run graph-dependent and all R2/R2C/R2D/R2E/R2E2/R2E3/R2E4 contracts.
+4. Require complete canonical rotational inventories, typed rotational conflicts, and one-to-one local incoming/outgoing mappings.
+5. Preserve whole-orientation and source-row incidence-hash invariance.
+6. Require planar, hard-rail, and cylinder orbit/disk/Euler/owner closure.
+7. Run Milestone D, Phase 14–18, Phase 16, Phase 17, and Phase 18 independently.
+8. Run direct plane, seam, close sheets, disconnected close sheets, and cylinder with fallback `Fail` and recovery disabled.
+9. Require nonzero valid seam, close-sheet, and cylinder arrangement inventories.
+10. Run Phase 20 and the complete suite once with runtime and memory evidence.
+11. Advance to R2F only after every boundary rotational, orbit, disk, owner, and Euler gate closes; advance to R3 only after all R2 gates close.
 
 ## End-of-turn PR comment requirement
 
 At the end of every Code + Build, Test + Benchmark, and optional Review turn, post a **new final comment on PR #8** after all documentation commits. The comment must identify the exact evidence/source commit, turn result, remaining gates, authoritative next-turn plan, and final branch/documentation head. It must be the final repository write of the turn.
 
+## Known procedural lessons
+
+- A locally bijective target permutation can still encode the wrong cyclic sectors; construct the full rotation from one canonical wedge.
+- Exterior direction must be semantic and source-authoritative, not chosen from row order or raw chart direction.
+- Git source archives do not include initialized submodule worktrees; use the verified artifact and do not classify missing archived submodules as a source defect.
+- Never include a checksum manifest in its own input set.
+
 ## Mandatory working-branch hygiene
 
-At Code + Build turn start and end, remove superseded workflows, markers, patch fragments, patch READMEs, transfer files, and generated build artifacts. Retain only the base workflow plus one bounded active workflow/payload while remote work runs. Remove the bounded workflow and payloads immediately after artifact upload. Generate checksum manifests outside the package and never include a manifest in its own input set.
+At Code + Build turn start and end, remove superseded workflows, markers, patch fragments, patch READMEs, transfer files, and generated build artifacts. Retain only the base workflow plus one bounded active workflow/payload while remote work runs. Remove the bounded workflow and payloads immediately after artifact upload.
 
 ## Preserved prohibitions
 
