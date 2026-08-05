@@ -6,6 +6,7 @@ Last updated: 2026-08-05
 
 - Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
+- Documentation head: `f1e66d7efb40514188a28017cd65d4b5c06959a1`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 - Completed turn: **P5-TB36 artifact-only R2E8 Test + Benchmark**.
