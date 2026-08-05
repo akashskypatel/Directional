@@ -8,70 +8,72 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R2D authoritative orbit publication + compile-only build**.
-- Next turn: **P5-TB28 artifact-only R2D validation**.
-- R2 runtime remains open until artifact validation. Do not advance to R3 from compilation.
+- Completed turn: **P5-TB28 artifact-only R2D validation**.
+- Next turn: **P5-R2E source-boundary side ownership and Euler topology accounting + compile-only build**.
+- R2 remains open. Do not advance to R3.
 
-## P5-R2D compiled checkpoint
+## P5-TB28 authority
 
-- Workflow event commit: `6757e6e98aa90e5b5eefce1db9645fbf523f2650`.
-- Exact compiled source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
-- Reviewed patch SHA-256: `c7355a7de3998638f596fa927117584fce274920ca00fcd84f08773bf75935e8`.
-- Applied commit-diff SHA-256: `de9b6e9e30bf182d73082330d1ef2dbaceca07ffb7a2aa1a938d8e71896319a8`.
-- Successful run/job: `30963007513` / `92170817963`.
-- Artifact: `8913777837`, `surface-cell-p5-r2d-github-source-linux-release`.
-- Artifact SHA-256: `bcb9c6962677f2f638cf6a832eb25d88fdcd2a97e506a1435a7f936d4891416a`.
-- Workflow logs: `8913778202`; SHA-256 `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`.
-- Empty source status; recursive checksums **44/44**; package files **45**; fixtures **26**; recursive submodules **9**.
-- All **132/132** Ninja actions completed.
-- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Executed zero tests, benchmarks, project binaries, or discovery commands.
+- Exact tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
+- Artifact: `8913777837`, SHA-256 `bcb9c6962677f2f638cf6a832eb25d88fdcd2a97e506a1435a7f936d4891416a`.
+- Workflow logs: `8913778202`, SHA-256 `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`.
+- Empty source status; checksums **44/44**; package files **45**; fixtures **26**; submodules **9**; four target hashes verified.
+- Source archive contains one base workflow and zero temporary payloads.
+- No rebuild or source modification occurred during validation.
 
-## R2D implementation
+## P5-TB28 runtime result
 
-- [x] reject source edges with more than two incident faces using typed `NonManifoldSourceEdge` evidence;
-- [x] retain explicit directed boundary-cycle ranges through `boundaryCycleOffsets`;
-- [x] separate successor-orbit structural audit from cell-topology publication;
-- [x] derive nested inner boundaries from complete compatible containment inventory;
-- [x] retain source-boundary authority for exterior classification;
-- [x] derive multi-boundary cell count and Euler characteristic from stored cycles;
-- [x] audit every boundary cycle independently before transactional publication;
-- [x] propagate cycle structure through simplification, repair, descriptor memory, rollback identity, and pipeline hashes;
-- [x] compile strengthened Phase 16 contracts without executing them.
+- [x] source-chart R1 **11/11**;
+- [x] Phase 22 validator **6/6**;
+- [x] recovery authority **9/9**;
+- [x] feature/barrier authority **8/8**;
+- [ ] graph-dependent **5/6**;
+- [ ] R2/R2C/R2D focused **11/14**;
+- [ ] Milestone D **5/7**;
+- [ ] Phase 14–18 **233/242**;
+- [ ] Phase 16 **43/45**;
+- [ ] Phase 17 **20/26**;
+- [x] Phase 18 **57/57**;
+- [ ] Phase 20 **46/48**;
+- [ ] direct plane/seam/close sheets/cylinder **0/4**;
+- [ ] complete suite **595/623**, 28 failures, **192.964 seconds**.
 
-## Working-branch hygiene
+R2D closed the nested multi-boundary and typed nonmanifold contracts with no new failures.
 
-- [x] removed 18 superseded agent workflow files;
-- [x] removed five stale CB98 patch/README payload files;
-- [x] removed the active R2D workflow and two active patch parts from the exact compiled source;
-- [x] verified the source archive contains only `agent-source-snapshot.yml` and no agent patch payloads.
+## Remaining R2 blockers
 
-Every future Code + Build turn must remove superseded workflows, trigger markers, patch fragments, and temporary build artifacts before completion. Retain only base workflows plus one active bounded workflow while it runs; remove that active workflow and payload from the exact compiled source or the documentation-only handoff commit.
+- [ ] planar source-boundary exterior orbit, area, and Euler accounting;
+- [ ] exact one-exterior-owner mapping per source boundary loop;
+- [ ] interior hard rail must not create a second exterior owner;
+- [ ] cylinder aggregate topology after valid incidence and cell ownership;
+- [ ] bunny singularity-fan embedding and three center cells;
+- [ ] nonzero valid arrangement inventories for seam, close sheets, and cylinder;
+- [ ] six downstream Phase 17 candidate/mutation contracts;
+- [ ] Phase 20 cylinder and validation-lineage closure.
 
-## Required next work: P5-TB28
+## Required next work: P5-R2E
 
-Follow `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`:
+Follow `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`:
 
-- [ ] verify exact artifact authority, source, **44/44** checksums, 45 files, 26 fixtures, nine submodules, and target hashes;
-- [ ] preserve source-chart **11/11**, source validator **6/6**, recovery **9/9**, and feature/barrier **8/8**;
-- [ ] make graph-dependent and all R2/R2C/R2D focused contracts clean;
-- [ ] prove typed nonmanifold rejection and exact multi-boundary topology;
-- [ ] close Milestone D to **7/7**;
-- [ ] restore Phase 16, Phase 17, and Phase 14–18 while retaining Phase 18;
-- [ ] require nonzero valid arrangement inventories for seam, close sheets, and cylinder;
-- [ ] run complete Phase 20 and the complete suite once;
-- [ ] measure runtime and memory without treating faster rejection as progress.
+- [ ] replace source-boundary vote counts with exact oriented side witnesses;
+- [ ] require exactly one exterior arrangement owner per canonical source boundary loop;
+- [ ] derive global Euler from explicit bounded-cell Euler contributions;
+- [ ] derive arrangement boundary-loop diagnostics from canonical loop ownership;
+- [ ] preserve complete transactional halfedge/cell ownership;
+- [ ] preserve R1, R2C bridge/support, R2D nested, and R2D nonmanifold contracts;
+- [ ] restore planar, hard-rail, and cylinder topology without downstream bypasses;
+- [ ] keep bunny work conditional on static causal evidence;
+- [ ] remove stale agent artifacts before and after the CB turn;
+- [ ] compile only the four required targets and execute no binaries.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_TB28_Artifact_Only_R2D_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`
+- `benchmark-results/p5-tb28-summary.json`
 - `.agents/Directional/Milestone_G_P5_R2D_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2d-summary.json`
-- `.agents/Directional/Milestone_G_P5_TB27_Artifact_Only_R2C_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2D_Authoritative_Orbit_Publication_Code_Build_Plan.md`
 - `MILESTONE_G_TODO.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 
-Preserve all prohibitions: no validator weakening, frequency/count/order selection, fallback/recovery substitution, synthetic counters, positional merging, source-triangle pairing, arbitrary subset search, fixture/ID special cases, post-hoc cycle decomposition, or timeout-as-correctness.
-
-P5 remains open.
+Preserve all prohibitions and mandatory working-branch hygiene. P5 remains open.
