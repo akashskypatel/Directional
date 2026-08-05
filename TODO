@@ -9,78 +9,41 @@ Last updated: 2026-08-05
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 - Completed turn: **P5-TB37 artifact-only R2E9 Test + Benchmark**.
-- Next turn: **P5-R2E10 canonical wrap-pair chart-witness and unique boundary fan-cover reconciliation Code + Build**.
+- Active turn: **P5-R2E10 canonical wrap-pair chart-witness and unique boundary fan-cover reconciliation Code + Build**.
 - R2 remains open. Do not advance to R2F or R3.
 
 ## P5-TB37 authority
 
 - Exact tested source: `a5b9382c2877ef72a3280ad9dbca2d5b20caaa1c`.
 - Artifact: `8946700183`, SHA-256 `bae182ef1e3e5fbbc9fff25ea60a56821e31e4e6fe81787137cdac58f30c6a3a`.
-- Manifest: **19/19**; packaged files: **20**; staged fixtures: **26**; recursive submodules: **9**.
-- Artifact-only execution; no configure, rebuild, relink, patch, regeneration, or source/test/fixture/validator/workflow modification.
-- Evidence archive: `directional-p5-tb37-8946700183-evidence.zip`, SHA-256 `246debf82198c5369c27975886d30ce38dbd3a3d8c21ad46325dd1cfa022c614`.
+- R2 focused: **13/16**; planar and hard rail fail earlier with `BoundaryFanSectorCoverConflict`.
+- Phase 17: **20/26**; complete suite: **597/625**.
 
-## Results
+## Active P5-R2E10 work
 
-- [x] source chart + validator **17/17**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier **8/8**;
-- [ ] graph-dependent **5/6**, bunny only;
-- [ ] core R2E9 producers **0/3**;
-- [ ] R2 focused **13/16**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 16 **45/47**;
-- [ ] Phase 17 **20/26**, six regressions from R2E8;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 14–18 **235/244**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **597/625**, 28 failures, XML **70.736 s**, wall **70.74 s**, maximum RSS **281,668 KiB**.
+- [x] inspect start-of-turn workflow and temporary payload state;
+- [x] retain only durable `agent-source-snapshot.yml` before staging work;
+- [x] construct one node-level canonical directed pair inventory before chart filtering;
+- [x] normalize equivalent pair records by `(incoming, sourceRay, target)`;
+- [x] require agreeing canonical source entity and transition-root evidence;
+- [x] resolve canonical wrap witnesses in a continuous exact chart-corner interval;
+- [x] reject third-ray intrusion and conflicting chart/root witnesses;
+- [x] preserve complete hard-rail bounded-orbit root audit;
+- [x] strengthen the focused hard-rail canonical-pair/exterior-exclusion contract;
+- [ ] compile exactly the four approved targets;
+- [ ] publish and verify the exact source/build/log artifacts;
+- [ ] remove the bounded workflow and payload;
+- [ ] record P5-R2E10 compile authority and the next artifact-only test plan.
 
-The complete failure set is exactly P5-TB36's 22 failures plus the six regressed Phase 17 tests. No previous failure closed and no other new failure appeared.
+## Scope
 
-## R2E9 disposition
+Allowed changes remain limited to:
 
-- [x] artifact and compiled-source authority verified;
-- [x] source-chart, feature/barrier, recovery, degree-two, genuine four-disk, permutation, pinched-fan, close-sheet, bridge/support, nested, and nonmanifold authority preserved;
-- [ ] planar regressed from post-publication topology failure to `BoundaryFanSectorCoverConflict` before successor publication;
-- [ ] hard rail regressed from post-publication embedding failure to `BoundaryFanSectorCoverConflict` before successor publication;
-- [ ] the R2E9 hard-rail complete-orbit root audit is not reached by the target fixture;
-- [ ] all six Phase 17 natural restorations from R2E8 are lost;
-- [ ] cylinder and bunny remain independent;
-- [ ] no direct analytic production case closes;
-- [x] two bunny processes remain structurally deterministic and fail closed with zero arrangement cells and zero quads.
+- `src/geometry/SurfaceArrangement.cpp`;
+- focused arrangement contracts in `tests/MilestoneDClosureTests.cpp`.
 
-R2E9 is not accepted.
+Phase 17, cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, fixtures, source-authoritative validators, and unrelated tests remain unchanged.
 
-## Required P5-R2E10 work
-
-Follow `.agents/Directional/Milestone_G_P5_R2E10_Canonical_Wrap_Pair_Chart_Witness_Fan_Cover_Code_Build_Plan.md`:
-
-- [ ] normalize canonical boundary fan pairs at the node level by directed incidence key before chart resolution;
-- [ ] reconcile equivalent fan-identity records only when canonical source-entity, chart, and transition-root evidence agree;
-- [ ] resolve canonical wrap pairs in one continuous exact chart-corner interval, including the required `2*pi` lift where appropriate;
-- [ ] require exactly one normalized exterior relation and exclude it once;
-- [ ] require exactly one agreeing chart/root witness for every non-exterior pair;
-- [ ] publish only a complete one-to-one local incoming/target cover;
-- [ ] retain the R2E9 complete hard-rail bounded-orbit root audit and authoritative embedding-root materialization;
-- [ ] restore planar and hard-rail valid incidence and the six Phase 17 tests without Phase 17 changes;
-- [ ] preserve all accepted R2 authority;
-- [ ] leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, fixtures, and downstream validators unchanged;
-- [ ] compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- [ ] execute no project binary.
-
-## Current authority
-
-- `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E10_Canonical_Wrap_Pair_Chart_Witness_Fan_Cover_Code_Build_Plan.md`
-- `benchmark-results/p5-tb37-summary.json`
-- `.agents/Directional/Future_Chat_Session_Handoff.md`
-- `.agents/Directional/DESIGN.md`
-- `.agents/Directional/REORIENTATION_PLAN.md`
-- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/GitHub_Workflow_Policy.md`
-- `MILESTONE_G_TODO.md`
-
-Every completed turn ends with a new final PR #8 handoff comment after all documentation and PR metadata writes.
+Every completed turn ends with a final top-level PR #8 handoff comment after all documentation and PR metadata writes.
 
 P5 remains open.
