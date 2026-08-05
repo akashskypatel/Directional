@@ -8,71 +8,75 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R2E source-boundary side ownership + compile-only build**.
-- Next turn: **P5-TB29 artifact-only R2E validation**.
-- R2 runtime remains open until artifact validation. Do not advance to R3 from compilation.
+- Completed turn: **P5-TB29 artifact-only R2E validation**.
+- Next turn: **P5-R2E2 authoritative boundary-exterior successor construction + compile-only build**.
+- R2 remains open. Do not advance to intrinsic-fan R2F or R3.
 
-## P5-R2E compiled checkpoint
+## P5-TB29 authority
 
-- P5-TB28 tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
+- Exact tested source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`.
 - Implementation commit: `f5afd014cced8205d485bea4f1470725e1fd8be1`.
-- Exact compiled/package source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`.
-- Workflow event commit: `2a40add65b13137d4d7183e0715c6807dbd6a10a`.
 - Artifact: `8914900872`, SHA-256 `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`.
 - Workflow logs: `8914901042`, SHA-256 `351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3`.
 - Empty source status; checksums **45/45**; package files **46**; fixtures **26**; submodules **9**; four target hashes verified.
-- All **132/132** Ninja actions completed.
-- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Executed zero tests, benchmarks, project binaries, or discovery commands.
+- Source archive contains one base workflow and zero temporary payloads.
+- No rebuild or source modification occurred during validation.
 
-## R2E implementation
+## P5-TB29 runtime result
 
-- [x] canonical source boundary loops from exact edge connectivity;
-- [x] oriented exterior/interior side witnesses;
-- [x] typed contradictory-side rejection;
-- [x] exactly one exterior owner per canonical source boundary loop;
-- [x] interior hard rails cannot create source-boundary exterior owners;
-- [x] aggregate Euler from structural bounded-cell contributions;
-- [x] exterior/support-only exclusion from Euler face contributions;
-- [x] deterministic propagation through hashes, simplification, repair, descriptors, rollback, memory accounting, and pipeline identity;
-- [x] focused planar, reversal, hard-rail, and cylinder contracts compiled without execution.
+- [x] source-chart R1 **11/11**;
+- [x] Phase 22 validator **6/6**;
+- [x] recovery authority **9/9**;
+- [x] feature/barrier authority **8/8**;
+- [ ] graph-dependent **5/6**;
+- [ ] R2/R2C/R2D/R2E focused **11/14**;
+- [ ] Milestone D **5/7**;
+- [ ] Phase 14–18 **233/242**;
+- [ ] Phase 16 **43/45**;
+- [ ] Phase 17 **20/26**;
+- [x] Phase 18 **57/57**;
+- [ ] Phase 20 **46/48**;
+- [ ] direct plane/seam/close sheets/cylinder **0/4**;
+- [ ] complete suite **595/623**, 28 failures, **200.707 seconds**.
 
-## Package integrity
+The failure set is identical to P5-TB28. R2E closes no additional runtime test.
 
-The first successful compile artifact was rejected because its checksum manifest included itself and produced one mismatch. The corrected artifact verifies all **45/45** manifest entries before upload and is the only P5-TB29 authority.
+## R2E runtime disposition
 
-## Working-branch hygiene
+- [x] typed source-side evidence is present;
+- [x] hard-rail ambiguity fails closed as `BoundaryLoopOwnerCount`;
+- [ ] planar exterior orbit is still absent;
+- [ ] planar Euler remains `-1` and area error remains `1`;
+- [ ] hard rail still does not produce one exterior owner and two bounded cells;
+- [ ] cylinder publication clears cells and leaves invalid halfedge ownership;
+- [ ] seam, close sheets, and cylinder retain zero arrangement inventory;
+- [ ] bunny singularity-fan embedding remains invalid;
+- [ ] structural Euler runtime authority remains blocked by missing publication.
 
-- [x] active workflows self-removed from exact compiled source;
-- [x] all R2E patch fragments removed;
-- [x] final source contains only `agent-source-snapshot.yml`;
-- [x] final source contains zero temporary payloads.
+## Required next work: P5-R2E2
 
-Every future Code + Build turn must remove superseded workflows, trigger markers, patch fragments, and temporary build artifacts before completion.
+Follow `.agents/Directional/Milestone_G_P5_R2E2_Boundary_Exterior_Orbit_Code_Build_Plan.md`:
 
-## Required next work: P5-TB29
-
-Follow `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`:
-
-- [ ] verify exact artifact/source/package authority;
-- [ ] preserve R1, validator, recovery, and feature/barrier authority;
-- [ ] pass graph-dependent and all R2/R2C/R2D/R2E contracts;
-- [ ] prove exactly one exterior owner per source boundary loop;
-- [ ] close planar Euler/area/exterior behavior;
-- [ ] close hard-rail and open-cylinder aggregate topology;
-- [ ] preserve nested and nonmanifold closures;
-- [ ] restore Phase 16 and Milestone D;
-- [ ] evaluate Phase 17 only after arrangement inputs are valid;
-- [ ] require nonzero valid arrangement inventories for seam, close sheets, and cylinder;
-- [ ] run complete Phase 20 and complete suite;
-- [ ] measure runtime and memory without accepting early rejection as progress.
+- [ ] retain ordered canonical source-boundary loops, not unordered membership only;
+- [ ] inventory exact boundary subsegments, edge parameters, nodes, charts, and sides;
+- [ ] install exterior boundary-halfedge `next` pointers from authoritative loop order before orbit audit;
+- [ ] bypass interior hard-rail wedges only for exterior continuation;
+- [ ] require complete gap-free, overlap-free loop coverage;
+- [ ] publish exactly one exterior cell per source loop transactionally;
+- [ ] preserve interior wedge successors and all passing bridge, support, nested, and nonmanifold contracts;
+- [ ] preserve structural Euler formula and validate it after successful publication;
+- [ ] keep bunny fan work deferred;
+- [ ] remove stale workflows/payloads before and after the CB turn;
+- [ ] compile only the four required targets and execute no project binary.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_TB29_Artifact_Only_R2E_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E2_Boundary_Exterior_Orbit_Code_Build_Plan.md`
+- `benchmark-results/p5-tb29-summary.json`
 - `.agents/Directional/Milestone_G_P5_R2E_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2e-summary.json`
-- `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `MILESTONE_G_TODO.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
 
 Preserve all prohibitions and mandatory working-branch hygiene. P5 remains open.
