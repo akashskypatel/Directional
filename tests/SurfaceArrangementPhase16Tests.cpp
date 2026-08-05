@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <map>
 #include <set>
 #include <vector>
 
@@ -77,6 +78,34 @@ bool has_node_near(const directional::geometry::SurfaceCellComplex &complex,
     }
   }
   return false;
+}
+
+void expect_node_local_successor_bijection(
+    const directional::geometry::SurfaceCellComplex &complex) {
+  for (const auto &node : complex.nodes) {
+    std::set<int> outgoing;
+    std::map<int, int> targets;
+    int incoming = 0;
+    for (const auto &halfedge : complex.halfedges) {
+      if (halfedge.from == node.id) {
+        outgoing.insert(halfedge.id);
+      }
+      if (halfedge.to != node.id) {
+        continue;
+      }
+      ++incoming;
+      ASSERT_GE(halfedge.next, 0);
+      ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+      EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedge.next)].from,
+                node.id);
+      ++targets[halfedge.next];
+    }
+    EXPECT_EQ(incoming, static_cast<int>(outgoing.size()));
+    EXPECT_EQ(targets.size(), outgoing.size());
+    for (const int outgoingHalfedge : outgoing) {
+      EXPECT_EQ(targets[outgoingHalfedge], 1);
+    }
+  }
 }
 
 struct BunnySingularityFanFixture {
@@ -424,6 +453,7 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
              complex.diagnostics.incidenceFailure);
+  expect_node_local_successor_bijection(complex);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
@@ -1446,6 +1476,8 @@ TEST(SurfaceArrangementPhase16,
   ASSERT_TRUE(backward.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
              backward.diagnostics.incidenceFailure);
+  expect_node_local_successor_bijection(forward);
+  expect_node_local_successor_bijection(backward);
   EXPECT_EQ(forward.diagnostics.directedIncidenceHash,
             backward.diagnostics.directedIncidenceHash);
   EXPECT_EQ(forward.cells.size(), backward.cells.size());

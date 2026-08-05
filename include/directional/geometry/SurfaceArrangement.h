@@ -67,6 +67,8 @@ enum class SurfaceArrangementIncidenceFailure : int {
   BoundaryCoverageGap = 17,
   BoundaryCoverageOverlap = 18,
   BoundaryContinuationDiscontinuity = 19,
+  BoundaryAliasConflict = 20,
+  BoundaryLocalPermutationConflict = 21,
 };
 
 inline const char *surface_arrangement_incidence_failure_name(
@@ -112,6 +114,10 @@ inline const char *surface_arrangement_incidence_failure_name(
     return "BoundaryCoverageOverlap";
   case SurfaceArrangementIncidenceFailure::BoundaryContinuationDiscontinuity:
     return "BoundaryContinuationDiscontinuity";
+  case SurfaceArrangementIncidenceFailure::BoundaryAliasConflict:
+    return "BoundaryAliasConflict";
+  case SurfaceArrangementIncidenceFailure::BoundaryLocalPermutationConflict:
+    return "BoundaryLocalPermutationConflict";
   }
   return "Unknown";
 }

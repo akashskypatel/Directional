@@ -40,6 +40,56 @@ SurfaceArrangementArc arc(const int id, const int face,
   return value;
 }
 
+void expect_node_local_successor_bijection(
+    const SurfaceCellComplex &complex) {
+  for (const auto &node : complex.nodes) {
+    std::set<int> outgoing;
+    std::map<int, int> targetCounts;
+    int incomingCount = 0;
+    for (const auto &halfedge : complex.halfedges) {
+      if (halfedge.from == node.id) {
+        outgoing.insert(halfedge.id);
+      }
+      if (halfedge.to != node.id) {
+        continue;
+      }
+      ++incomingCount;
+      ASSERT_GE(halfedge.next, 0);
+      ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+      EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedge.next)].from,
+                node.id);
+      ++targetCounts[halfedge.next];
+    }
+    EXPECT_EQ(incomingCount, static_cast<int>(outgoing.size()));
+    EXPECT_EQ(targetCounts.size(), outgoing.size());
+    for (const int target : outgoing) {
+      EXPECT_EQ(targetCounts[target], 1);
+    }
+  }
+}
+
+int source_vertex_node_count(const SurfaceCellComplex &complex,
+                             const Eigen::MatrixXi &faces,
+                             const int sourceVertex) {
+  int count = 0;
+  for (const auto &node : complex.nodes) {
+    bool matches = false;
+    for (const auto &occurrence : node.occurrences) {
+      if (occurrence.sourceFace < 0 || occurrence.sourceFace >= faces.rows()) {
+        continue;
+      }
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(occurrence.sourceFace, corner) == sourceVertex &&
+            occurrence.barycentric[corner] >= 1.0 - 1.0e-10) {
+          matches = true;
+        }
+      }
+    }
+    count += matches ? 1 : 0;
+  }
+  return count;
+}
+
 MeshFixture unit_triangle() {
   MeshFixture fixture;
   fixture.vertices.resize(3, 3);
@@ -344,6 +394,9 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
              complex.diagnostics.incidenceFailure);
+  EXPECT_EQ(source_vertex_node_count(complex, mesh.faces, 1), 1);
+  EXPECT_EQ(source_vertex_node_count(complex, mesh.faces, 2), 1);
+  expect_node_local_successor_bijection(complex);
   EXPECT_EQ(complex.diagnostics.incidenceFailure,
             directional::geometry::SurfaceArrangementIncidenceFailure::None);
   EXPECT_GT(complex.diagnostics.directedWedgeCount, 0);
@@ -548,6 +601,7 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
       << " twin=" << incidence.twin << " next=" << incidence.next
       << " node=" << incidence.node << " expected=" << incidence.expected
       << " actual=" << incidence.actual;
+  expect_node_local_successor_bijection(complex);
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
              complex.diagnostics.incidenceFailure);
