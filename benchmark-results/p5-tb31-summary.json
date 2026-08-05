@@ -1,0 +1,72 @@
+{
+  "schema": "directional.milestone-g.test-benchmark-summary.v1",
+  "turn": "P5-TB31",
+  "turn_type": "artifact_only_test_benchmark",
+  "date": "2026-08-05",
+  "repository": "akashskypatel/Directional",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "pull_request": 8,
+  "review_policy": "never",
+  "authority": {
+    "artifact_id": 8918054686,
+    "artifact_sha256": "6491eaaaa2276b0d89ddcda5f94d1b8e1e6cf6fe251b2b6ec99d242d8e29534d",
+    "exact_source": "571ff9095ec06a8931fc54aafe1a70a38f80b4a1",
+    "workflow_event_commit": "2d1d616eaf6e5be025e1a190b995172954d3f102",
+    "reviewed_and_applied_diff_sha256": "f7a26c3b3869a59247532e86f4468e0d17bce7caa72cf31a5c315b620fac1ff3",
+    "manifest": "48/48",
+    "physical_files": 49,
+    "fixtures": 26,
+    "recursive_submodules": 9,
+    "source_status_empty": true,
+    "cleaned_source_workflows": ["agent-source-snapshot.yml"],
+    "cleaned_source_payload_count": 0
+  },
+  "scopes": {
+    "source_chart_r1": "11/11",
+    "source_validator": "6/6",
+    "recovery_authority": "9/9",
+    "feature_barrier": "8/8",
+    "graph_dependent": "5/6",
+    "r2_focused": "11/14",
+    "milestone_d": "5/7",
+    "phase14_18": "233/242",
+    "phase16": "43/45",
+    "phase17": "20/26",
+    "phase18": "57/57",
+    "phase20": "46/48",
+    "complete_suite": {
+      "tests": 623,
+      "passed": 595,
+      "failed": 28,
+      "time_seconds": 142.55,
+      "termination": "normal",
+      "max_rss_kib_sampled_lower_bound": 169268,
+      "exact_max_rss_available": false
+    }
+  },
+  "comparison_to_tb30": {
+    "closed_failures": [
+      "SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence"
+    ],
+    "new_failures": [],
+    "passed_delta": 1,
+    "failure_delta": -1,
+    "runtime_percent_change": 83.31811576497218
+  },
+  "boundary_failures": {
+    "planar": "RepeatedEdgeCycle",
+    "interior_hard_rail": "BoundaryLocalPermutationConflict",
+    "cylinder": "NonDiskCell cell=1 halfedge=30 twin=42 next=29",
+    "bunny": "embedding/topology invalid; centerCells=0 expected 3"
+  },
+  "direct_cases": {
+    "plane": {"success": false, "arrangement": 9, "simplified": 9, "completed_quads": 12, "wall_seconds": 0.030254, "peak_working_set_bytes": 8527872},
+    "multi_face_seam": {"success": false, "arrangement": 0, "simplified": 0, "completed_quads": 0, "wall_seconds": 0.017579, "peak_working_set_bytes": 8372224},
+    "close_sheets": {"success": false, "arrangement": 0, "simplified": 0, "completed_quads": 0, "wall_seconds": 0.030814, "peak_working_set_bytes": 8679424},
+    "cylinder": {"success": false, "arrangement": 0, "simplified": 0, "completed_quads": 0, "wall_seconds": 0.18358, "peak_working_set_bytes": 9969664}
+  },
+  "diagnosis": "The R2E3 two-target transposition preserves cardinality but does not construct the authoritative cyclic rotational system. A bijective endpoint-continuous map can still pair rays across incorrect sectors, producing repeated-edge and non-disk orbits.",
+  "next_turn": "P5-R2E4 authoritative boundary-node rotational-system Code + Build",
+  "end_of_turn_pr_comment_required": true
+}
