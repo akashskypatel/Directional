@@ -352,6 +352,7 @@ struct SurfaceArrangementDiagnostics {
   int repeatedNodeCycleCount = 0;
   int repeatedEdgeCycleCount = 0;
   int boundaryRotationalNodeCount = 0;
+  int boundaryDegreeTwoRotationalNodeCount = 0;
   SurfaceArrangementIncidenceFailure incidenceFailure =
       SurfaceArrangementIncidenceFailure::None;
   int incidenceFailureNode = -1;

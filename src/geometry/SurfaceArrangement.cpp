@@ -3595,72 +3595,129 @@ SurfaceCellComplex build_surface_cell_complex(
         }
 
         const int rayCount = static_cast<int>(rays.size());
-        const int exteriorTwinPosition = static_cast<int>(
-            std::distance(rays.begin(), exteriorTwinFound));
-        const int predecessorPosition =
-            (exteriorTwinPosition - 1 + rayCount) % rayCount;
-        const int successorPosition =
-            (exteriorTwinPosition + 1) % rayCount;
-        int rotationStep = 0;
-        if (rays[static_cast<std::size_t>(predecessorPosition)].halfedge ==
-            exteriorOutgoing) {
-          rotationStep = -1;
-        }
-        if (rays[static_cast<std::size_t>(successorPosition)].halfedge ==
-            exteriorOutgoing) {
-          if (rotationStep != 0) {
+        const bool degreeTwoRotation = rayCount == 2;
+        std::map<int, int> localTargetCount;
+        std::set<int> localIncoming;
+
+        if (degreeTwoRotation) {
+          // A two-ray cyclic order has two distinct sectors but only one
+          // opposite ray ID: predecessor(exteriorTwin) and
+          // successor(exteriorTwin) are both exteriorOutgoing.  Represent the
+          // exterior and source-interior sectors explicitly instead of
+          // treating those equivalent cyclic positions as contradictory.
+          const int complementaryIncoming =
+              complex.halfedges[static_cast<std::size_t>(exteriorOutgoing)]
+                  .twin;
+          std::set<int> twoRayInventory;
+          for (const DirectedWedgeRay &ray : rays) {
+            twoRayInventory.insert(ray.halfedge);
+          }
+          if (exteriorTwin == exteriorOutgoing ||
+              twoRayInventory.size() != 2U ||
+              twoRayInventory !=
+                  std::set<int>{exteriorTwin, exteriorOutgoing} ||
+              complementaryIncoming < 0 ||
+              complementaryIncoming >=
+                  static_cast<int>(complex.halfedges.size()) ||
+              complementaryIncoming == exteriorIncoming ||
+              complex.halfedges[static_cast<std::size_t>(exteriorIncoming)].to !=
+                  node ||
+              complex.halfedges[static_cast<std::size_t>(complementaryIncoming)]
+                      .to !=
+                  node ||
+              complex.halfedges[static_cast<std::size_t>(exteriorTwin)].from !=
+                  node ||
+              complex.halfedges[static_cast<std::size_t>(exteriorOutgoing)]
+                      .from !=
+                  node) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryRotationalSystemConflict,
+                node, exteriorIncoming, complementaryIncoming,
+                exteriorOutgoing);
+            break;
+          }
+
+          candidateNext[static_cast<std::size_t>(exteriorIncoming)] =
+              exteriorOutgoing;
+          candidateNext[static_cast<std::size_t>(complementaryIncoming)] =
+              exteriorTwin;
+          successorWedge[static_cast<std::size_t>(exteriorIncoming)] =
+              rotationIdentity;
+          successorWedge[static_cast<std::size_t>(complementaryIncoming)] =
+              rotationIdentity;
+          localIncoming.insert(exteriorIncoming);
+          localIncoming.insert(complementaryIncoming);
+          ++localTargetCount[exteriorOutgoing];
+          ++localTargetCount[exteriorTwin];
+        } else {
+          const int exteriorTwinPosition = static_cast<int>(
+              std::distance(rays.begin(), exteriorTwinFound));
+          const int predecessorPosition =
+              (exteriorTwinPosition - 1 + rayCount) % rayCount;
+          const int successorPosition =
+              (exteriorTwinPosition + 1) % rayCount;
+          int rotationStep = 0;
+          if (rays[static_cast<std::size_t>(predecessorPosition)].halfedge ==
+              exteriorOutgoing) {
+            rotationStep = -1;
+          }
+          if (rays[static_cast<std::size_t>(successorPosition)].halfedge ==
+              exteriorOutgoing) {
+            if (rotationStep != 0) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryRotationalSystemConflict,
+                  node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+              break;
+            }
+            rotationStep = 1;
+          }
+          if (rotationStep == 0) {
             record_incidence_failure(
                 SurfaceArrangementIncidenceFailure::
                     BoundaryRotationalSystemConflict,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
             break;
           }
-          rotationStep = 1;
-        }
-        if (rotationStep == 0) {
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::
-                  BoundaryRotationalSystemConflict,
-              node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
-          break;
-        }
 
-        std::map<int, int> localTargetCount;
-        std::set<int> localIncoming;
-        for (int position = 0; position < rayCount; ++position) {
-          const int outgoing = rays[static_cast<std::size_t>(position)].halfedge;
-          if (outgoing < 0 ||
-              outgoing >= static_cast<int>(complex.halfedges.size())) {
-            record_incidence_failure(
-                SurfaceArrangementIncidenceFailure::
-                    BoundaryRotationalSystemConflict,
-                node, exteriorIncoming, exteriorTwin, outgoing);
+          for (int position = 0; position < rayCount; ++position) {
+            const int outgoing =
+                rays[static_cast<std::size_t>(position)].halfedge;
+            if (outgoing < 0 ||
+                outgoing >= static_cast<int>(complex.halfedges.size())) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryRotationalSystemConflict,
+                  node, exteriorIncoming, exteriorTwin, outgoing);
+              break;
+            }
+            const SurfaceArrangementHalfedge &outgoingHalfedge =
+                complex.halfedges[static_cast<std::size_t>(outgoing)];
+            const int incoming = outgoingHalfedge.twin;
+            const int targetPosition =
+                (position + rotationStep + rayCount) % rayCount;
+            const int target =
+                rays[static_cast<std::size_t>(targetPosition)].halfedge;
+            if (incoming < 0 ||
+                incoming >= static_cast<int>(complex.halfedges.size()) ||
+                complex.halfedges[static_cast<std::size_t>(incoming)].to != node ||
+                complex.halfedges[static_cast<std::size_t>(target)].from != node ||
+                !localIncoming.insert(incoming).second) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryRotationalSystemConflict,
+                  node, incoming, outgoing, target);
+              break;
+            }
+            candidateNext[static_cast<std::size_t>(incoming)] = target;
+            successorWedge[static_cast<std::size_t>(incoming)] =
+                rotationIdentity;
+            ++localTargetCount[target];
+          }
+          if (!directedIncidenceValid) {
             break;
           }
-          const SurfaceArrangementHalfedge &outgoingHalfedge =
-              complex.halfedges[static_cast<std::size_t>(outgoing)];
-          const int incoming = outgoingHalfedge.twin;
-          const int targetPosition =
-              (position + rotationStep + rayCount) % rayCount;
-          const int target =
-              rays[static_cast<std::size_t>(targetPosition)].halfedge;
-          if (incoming < 0 ||
-              incoming >= static_cast<int>(complex.halfedges.size()) ||
-              complex.halfedges[static_cast<std::size_t>(incoming)].to != node ||
-              complex.halfedges[static_cast<std::size_t>(target)].from != node ||
-              !localIncoming.insert(incoming).second) {
-            record_incidence_failure(
-                SurfaceArrangementIncidenceFailure::
-                    BoundaryRotationalSystemConflict,
-                node, incoming, outgoing, target);
-            break;
-          }
-          candidateNext[static_cast<std::size_t>(incoming)] = target;
-          successorWedge[static_cast<std::size_t>(incoming)] = rotationIdentity;
-          ++localTargetCount[target];
-        }
-        if (!directedIncidenceValid) {
-          break;
         }
         if (candidateNext[static_cast<std::size_t>(exteriorIncoming)] !=
                 exteriorOutgoing ||
@@ -3673,6 +3730,10 @@ SurfaceCellComplex build_surface_cell_complex(
                   BoundaryRotationalSystemConflict,
               node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
           break;
+        }
+
+        if (degreeTwoRotation) {
+          ++complex.diagnostics.boundaryDegreeTwoRotationalNodeCount;
         }
 
         // Keep the exterior sector's semantic loop identity.  Interior sectors

@@ -108,6 +108,54 @@ void expect_node_local_successor_bijection(
   }
 }
 
+void expect_degree_two_boundary_sectors(
+    const directional::geometry::SurfaceCellComplex &complex) {
+  int checked = 0;
+  for (const auto &cell : complex.cells) {
+    if (!cell.boundaryCycle) {
+      continue;
+    }
+    for (const int exteriorIncomingId : cell.halfedges) {
+      ASSERT_GE(exteriorIncomingId, 0);
+      ASSERT_LT(exteriorIncomingId,
+                static_cast<int>(complex.halfedges.size()));
+      const auto &exteriorIncoming =
+          complex.halfedges[static_cast<std::size_t>(exteriorIncomingId)];
+      ASSERT_GE(exteriorIncoming.next, 0);
+      ASSERT_LT(exteriorIncoming.next,
+                static_cast<int>(complex.halfedges.size()));
+      const auto &exteriorOutgoing = complex.halfedges[static_cast<std::size_t>(
+          exteriorIncoming.next)];
+      std::vector<int> outgoingAtNode;
+      for (const auto &candidate : complex.halfedges) {
+        if (candidate.from == exteriorIncoming.to) {
+          outgoingAtNode.push_back(candidate.id);
+        }
+      }
+      if (outgoingAtNode.size() != 2U) {
+        continue;
+      }
+      ASSERT_GE(exteriorIncoming.twin, 0);
+      ASSERT_LT(exteriorIncoming.twin,
+                static_cast<int>(complex.halfedges.size()));
+      ASSERT_GE(exteriorOutgoing.twin, 0);
+      ASSERT_LT(exteriorOutgoing.twin,
+                static_cast<int>(complex.halfedges.size()));
+      const auto &complementaryIncoming =
+          complex.halfedges[static_cast<std::size_t>(exteriorOutgoing.twin)];
+      EXPECT_NE(complementaryIncoming.id, exteriorIncoming.id);
+      EXPECT_EQ(complementaryIncoming.to, exteriorIncoming.to);
+      EXPECT_EQ(complementaryIncoming.next, exteriorIncoming.twin);
+      EXPECT_EQ(
+          complex.halfedges[static_cast<std::size_t>(exteriorIncoming.twin)]
+              .from,
+          exteriorIncoming.to);
+      ++checked;
+    }
+  }
+  EXPECT_GT(checked, 0);
+}
+
 struct BunnySingularityFanFixture {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
@@ -300,6 +348,29 @@ TEST(SurfaceArrangementPhase16, ThreeWayIntersectionAppearsOnce) {
   EXPECT_EQ(complex.diagnostics.unsplitCrossings, 0);
 }
 
+TEST(SurfaceArrangementPhase16,
+     DegreeTwoBoundaryNodesPublishExteriorAndInteriorSectors) {
+  const auto fixture = unit_triangle();
+  const std::vector<directional::geometry::SurfaceArrangementArc> arcs;
+
+  const auto complex = directional::geometry::build_surface_cell_complex(
+      fixture.vertices, fixture.faces, arcs);
+
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  expect_node_local_successor_bijection(complex);
+  expect_degree_two_boundary_sectors(complex);
+  EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
+  EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
+                          [](const auto &cell) { return cell.boundaryCycle; }),
+            1);
+  EXPECT_EQ(interior_cell_count(complex), 1);
+  EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
+}
+
 TEST(SurfaceArrangementPhase16, SourceEdgeAndVertexEventsAreCanonical) {
   const auto fixture = unit_triangle();
   std::vector<directional::geometry::SurfaceArrangementArc> arcs = {
@@ -334,6 +405,8 @@ TEST(SurfaceArrangementPhase16,
              complex.diagnostics.incidenceFailure);
   expect_node_local_successor_bijection(complex);
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount,
+            complex.diagnostics.boundaryDegreeTwoRotationalNodeCount);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
@@ -488,6 +561,8 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
+  expect_degree_two_boundary_sectors(complex);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
