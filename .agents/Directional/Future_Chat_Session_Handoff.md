@@ -33,7 +33,8 @@ R2E2 does not close planar, hard-rail, or cylinder boundary publication and intr
 - workflow logs: `8916209511`, SHA-256 `45606d385ffacdfc621c85d21316dca31bfd84cdc0421d16b6f990b817b47007`;
 - source status empty; checksums **48/48**; files **49**; fixtures **26**; submodules **9**; target hashes verified;
 - cleaned source contains only `agent-source-snapshot.yml` and zero payloads;
-- no configure, build, relink, patch, regeneration, or source modification during validation.
+- no configure, build, relink, patch, regeneration, or source modification during validation;
+- evidence bundle: `directional-p5-tb30-8916209271-evidence.zip`, SHA-256 `320eba47f76fd9320ffdaf4eb956f54bf74f771dcc133bc62a68a739597b6b53`.
 
 ## Runtime summary
 
