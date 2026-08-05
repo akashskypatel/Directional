@@ -1,0 +1,86 @@
+{
+  "turn": "P5-TB35",
+  "type": "artifact_only_test_benchmark",
+  "date": "2026-08-05",
+  "repository": "akashskypatel/Directional",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "exact_source": "31c8d9a212f649df7c70fe9291d1fac8c4db7132",
+  "workflow_event_commit": "7d5450cb6411722818844548de59a09c8f4451d5",
+  "reviewed_applied_diff_sha256": "711286a519d39c18b074caae3b999ec15a7202a9b9454e0eb04a8eb642cc2745",
+  "artifact": {
+    "id": 8938299309,
+    "name": "surface-cell-p5-r2e7-github-source-linux-release",
+    "sha256": "af34097d6579ff07eafbe24e75ed05db3dfec98170ef7576ce30a12b538f063e",
+    "manifest_verified": 48,
+    "manifest_total": 48,
+    "physical_files": 49,
+    "fixtures": 26,
+    "recursive_submodules": 9
+  },
+  "artifact_only": true,
+  "configured": false,
+  "built": false,
+  "relinked": false,
+  "source_modified": false,
+  "fixtures_modified": false,
+  "focused": {
+    "source_chart_r1": {"passed": 11, "total": 11},
+    "source_validator": {"passed": 6, "total": 6},
+    "recovery_authority": {"passed": 9, "total": 9},
+    "feature_barrier": {"passed": 8, "total": 8},
+    "graph_dependent": {"passed": 5, "total": 6, "failures": ["SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"]},
+    "r2_focused": {"passed": 13, "total": 16, "failures": ["MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary", "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved", "SurfaceArrangementPhase16.EulerBoundaryAndAreaChecksPassOnPlanarFixture"]},
+    "milestone_d": {"passed": 5, "total": 7},
+    "phase14_18": {"passed": 235, "total": 244},
+    "phase16": {"passed": 45, "total": 47},
+    "phase17": {"passed": 20, "total": 26},
+    "phase18": {"passed": 57, "total": 57},
+    "phase20": {"passed": 46, "total": 48}
+  },
+  "hard_rail_disposition": {
+    "incidence_valid": true,
+    "orientation_valid": true,
+    "cells_disk_valid": true,
+    "boundary_loops_valid": true,
+    "euler_valid": true,
+    "one_exterior_two_bounded_cells": true,
+    "complete_ownership": true,
+    "distinct_bounded_rail_twin_owners": true,
+    "directed_side_pair_evidence": true,
+    "embedding_valid": false,
+    "topology_valid": false
+  },
+  "direct_cases": {
+    "plane__surface_cells": {"success": false, "arrangement_cells": 9, "simplified_cells": 9, "completed_quads": 12, "first_invalid_stage": "completion/output-validation", "first_invalid_reason": "AggregateCompletionValidationFailure", "max_rss_kib": 10408},
+    "multi_face_seam__surface_cells": {"success": false, "arrangement_cells": 0, "simplified_cells": 0, "completed_quads": 0, "first_invalid_stage": "completion", "max_rss_kib": 10156},
+    "close_sheets__surface_cells": {"success": false, "arrangement_cells": 0, "simplified_cells": 0, "completed_quads": 0, "first_invalid_stage": "completion", "max_rss_kib": 10208},
+    "cylinder__surface_cells": {"success": false, "arrangement_cells": 0, "simplified_cells": 0, "completed_quads": 0, "first_invalid_stage": "completion", "max_rss_kib": 11416}
+  },
+  "complete_suite": {
+    "tests": 625,
+    "passed": 597,
+    "failures": 28,
+    "errors": 0,
+    "disabled": 0,
+    "time_seconds": 206.053,
+    "normal_termination": true,
+    "exit_code_captured": false,
+    "max_rss_kib": null,
+    "max_rss_note": "outer execution wrapper detached while the packaged test process continued to normal XML and Google Test completion; exact max RSS unavailable"
+  },
+  "comparison_to_tb34": {
+    "same_failure_set": true,
+    "closed_failures": [],
+    "new_failures": [],
+    "runtime_seconds_tb34": 73.085,
+    "runtime_seconds_tb35": 206.053
+  },
+  "evidence": {
+    "name": "directional-p5-tb35-8938299309-evidence.zip",
+    "sha256": "c9e4a77b2b9709921a445fb8295a6eff16e62268325a844c1a886deff08e595b",
+    "entries": 224
+  },
+  "disposition": "not_accepted",
+  "next_turn": "P5-R2E8 canonical boundary corner-sector and rail-chart embedding Code + Build"
+}
