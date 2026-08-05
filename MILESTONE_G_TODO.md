@@ -9,12 +9,11 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; review policy `never`; keep open, draft, and unmerged.
-- P5-R2E implementation: `f5afd014cced8205d485bea4f1470725e1fd8be1`.
-- Exact compiled/package source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`.
-- Artifact: `8914900872`, SHA-256 `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`.
-- Completed turn: **P5-R2E code + compile-only build**.
-- Next turn: **P5-TB29 artifact-only R2E validation**.
-- R2 runtime remains open; do not advance to R3 from compile evidence.
+- P5-TB29 tested source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`.
+- Tested artifact: `8914900872`, SHA-256 `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`.
+- Completed turn: **P5-TB29 artifact-only R2E validation**.
+- Next turn: **P5-R2E2 authoritative boundary-exterior successor construction + compile-only build**.
+- R2 remains open; do not advance to intrinsic-fan R2F or R3.
 
 ## Work phases
 
@@ -22,85 +21,84 @@ Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
 - [ ] P5 — direct surface-paving producer remediation. **In progress**
 - [x] R0 — recovery authority closed.
 - [x] R1 — source transitions and validator authority closed.
-- [x] R2 — typed directed incidence and permutation audit.
-- [x] R2C — bridge/core orbit classification and transactional ownership.
-- [x] R2D — source nonmanifold preflight and explicit multi-boundary representation.
-- [x] R2E compile — exact source-boundary side ownership and structural Euler accounting.
-- [ ] R2/R2C/R2D/R2E runtime — P5-TB29 must close arrangement gates.
-- [ ] R2F singularity-fan embedding, only if independent after R2E.
+- [x] R2 directed incidence narrow contracts.
+- [x] R2C bridge/core ownership narrow contracts.
+- [x] R2D source nonmanifold preflight and nested multi-boundary representation.
+- [x] R2E compile — exact source-side evidence and structural Euler accounting.
+- [ ] R2E runtime — raw orbit cardinality does not construct authoritative exterior continuation.
+- [ ] R2E2 — ordered source-loop exterior successor construction.
+- [ ] R2F — intrinsic singularity-fan embedding, only after boundary topology closes.
 - [ ] R3 — topology-distinct patch completion engine.
 - [ ] R4 — repeated-node wedge/splice producer.
 - [ ] R5 — explicit local lattice and advancing-front state.
 - [ ] R6 — torus decomposition/descriptor support.
 - [ ] R7 — adaptive dyadic 2:1 transitions.
 - [ ] R8 — direct analytic production validation.
-- [ ] R9 — completion-cache reuse.
+- [ ] R9 — completion-cache reuse after geometry succeeds.
 - [ ] R10 — production-valid later-stage lineage fixtures.
 - [ ] R11 — synchronized memory telemetry.
-- [ ] P6–P8 — final validation and production disposition.
+- [ ] P6–P8 — final validation, closure, and production disposition.
 
-## P5-R2E package evidence
+## P5-TB29 results
 
-- tested predecessor `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`;
-- implementation commit `f5afd014cced8205d485bea4f1470725e1fd8be1`;
-- workflow event commit `2a40add65b13137d4d7183e0715c6807dbd6a10a`;
-- exact compiled/package source `de0aa1a58a5861954dc9e14e731e681b5e5feb87`;
-- reviewed patch SHA-256 `3ca1d3b940989e1fbda9e0f8f4b0b8c5971643575550ff9e34501e219651d628`;
-- applied diff SHA-256 `abf671a365ab97ba3075962528bcf76b71901f6dc06a7d0b877499561c89814e`;
-- successful run/job `30966134727` / `92180382387`;
-- artifact `8914900872`, SHA-256 `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`;
-- workflow logs `8914901042`, SHA-256 `351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3`;
-- source status empty;
-- recursive checksums **45/45**;
-- package files **46**;
-- fixtures **26**;
-- recursive submodule records **9**;
-- four target hashes verified;
-- **132/132** Ninja actions completed;
-- zero project binaries executed.
+| Scope | Result |
+|---|---:|
+| Source-chart R1 | **11/11** |
+| Source validator | **6/6** |
+| Recovery authority | **9/9** |
+| Feature/barriers | **8/8** |
+| Graph-dependent | **5/6** |
+| R2/R2C/R2D/R2E focused | **11/14** |
+| Milestone D | **5/7** |
+| Phase 14–18 | **233/242** |
+| Phase 16 | **43/45** |
+| Phase 17 | **20/26** |
+| Phase 18 | **57/57** |
+| Phase 20 | **46/48** |
+| Direct plane/seam/close sheets/cylinder | **0/4** |
+| Complete suite | **595/623**, 200.707 s |
 
-## R2E implementation
+The complete-suite failure set is unchanged from P5-TB28.
 
-- [x] exact canonical source boundary loops;
-- [x] oriented source-side witnesses;
-- [x] typed contradictory witness failure;
-- [x] exactly one exterior orbit per source boundary loop;
-- [x] structural Euler contribution summation;
-- [x] cycle/side identity propagation through deterministic consumers;
-- [x] planar, reversal, hard-rail, and cylinder contracts compiled;
-- [x] active workflows and payloads removed from exact source.
+## R2E evidence
 
-## Packaging correction
+- [x] artifact integrity **45/45** and four target hashes;
+- [x] typed `BoundaryLoopOwnerCount` now exposes hard-rail exterior fragmentation;
+- [x] nonmanifold and nested multi-boundary closures remain passing;
+- [x] dangling bridge and support-only closures remain passing;
+- [ ] planar fixture still has no exterior cell, Euler `-1`, and area error `1`;
+- [ ] hard rail fails source-loop owner cardinality instead of publishing valid topology;
+- [ ] cylinder clears pending publication and leaves halfedge `cell == -1`;
+- [ ] bunny fan embedding remains invalid and independent;
+- [ ] seam, close sheets, and cylinder publish zero arrangement cells;
+- [ ] six Phase 17 failures remain downstream;
+- [ ] Phase 20 remains 46/48.
 
-The first compile artifact contained an invalid self-referential checksum entry and was rejected. The corrected artifact verifies every manifest entry before upload and is the only authority for P5-TB29.
+## P5-R2E2 requirements
 
-## P5-TB29 requirements
-
-- [ ] verify exact artifact and package authority;
-- [ ] preserve R0/R1 authority;
-- [ ] pass graph-dependent and all R2 focused contracts;
-- [ ] prove exact loop-to-exterior-owner cardinality;
-- [ ] close planar area/Euler/topology;
-- [ ] close hard-rail and cylinder aggregate topology;
-- [ ] preserve R2D nonmanifold/nested closures;
-- [ ] close Milestone D and Phase 16;
-- [ ] evaluate Phase 17 after valid arrangement inputs;
-- [ ] retain nonzero seam, close-sheet, and cylinder inventories;
-- [ ] run Phase 20 and complete suite;
-- [ ] measure runtime and memory.
-
-## Mandatory working-branch hygiene
-
-Every Code + Build turn must remove all superseded workflows, trigger markers, patch fragments, READMEs, transfer files, and temporary build artifacts. During a build retain only the base workflow plus one bounded active workflow/payload; remove the active resources from the exact source or immediate handoff commit. Never leave historical workflow YAML on the branch.
+- [ ] retain deterministic ordered source-boundary loops with operational face orientation and canonical orientation-insensitive identity;
+- [ ] map each boundary arrangement subsegment to exact loop, source edge, parameter interval, chart, and side;
+- [ ] reject coverage gaps, overlaps, duplicates, and endpoint discontinuities with typed evidence;
+- [ ] set exterior-halfedge successors from authoritative loop order before generic orbit audit;
+- [ ] connect exterior continuation across boundary vertices independently of interior hard rails;
+- [ ] retain intrinsic wedge successors for interior and non-boundary halfedges;
+- [ ] audit one complete permutation and publish one exterior cell per source loop;
+- [ ] preserve complete transactional halfedge ownership;
+- [ ] preserve structural Euler accounting without synthetic correction;
+- [ ] restore planar, hard-rail, and cylinder topology;
+- [ ] avoid FlowRep, simplification, completion, cache, lineage, and optimizer special cases;
+- [ ] keep bunny changes deferred until boundary closure is proven;
+- [ ] remove all stale workflows/payloads before and after build;
+- [ ] compile only four required targets and execute no project binary.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_R2E_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2e-summary.json`
+- `.agents/Directional/Milestone_G_P5_TB29_Artifact_Only_R2E_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E2_Boundary_Exterior_Orbit_Code_Build_Plan.md`
+- `benchmark-results/p5-tb29-summary.json`
 - `TODO`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/DESIGN.md`
 
-Preserve all prohibitions: no validator weakening, frequency/count/order selection, fallback/recovery substitution, synthetic counters, positional merging, source-triangle pairing, arbitrary subset search, fixture/ID special cases, post-hoc cycle decomposition, or timeout-as-correctness.
-
-P5 remains open. PR #8 remains draft and unmerged.
+Preserve all prohibitions and mandatory working-branch hygiene. P5 remains open. PR #8 remains draft and unmerged.
