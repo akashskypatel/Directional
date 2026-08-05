@@ -67,6 +67,6 @@ Follow `.agents/Directional/Milestone_G_P5_R2E7_Test_Benchmark_Plan.md`:
 - `benchmark-results/p5-r2e7-summary.json`
 - `.agents/Directional/Milestone_G_P5_TB34_Artifact_Only_R2E6_Test_Benchmark_Report.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
-- `MILESTONE_G_TODO.md`
+- `TODO`
 
 P5 remains open.
