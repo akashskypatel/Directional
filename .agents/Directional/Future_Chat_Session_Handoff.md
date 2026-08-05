@@ -9,93 +9,107 @@
 
 ## Current checkpoint
 
-P5-R2D source-topology preflight, explicit boundary-cycle structure, source-authoritative exterior classification, and transactional orbit publication are implemented and compile successfully.
+P5-TB28 artifact-only validation is complete against exact source `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760` and artifact `8913777837`.
 
-Exact compiled source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
+R2D closes typed nonmanifold source-edge rejection and explicit nested two-boundary non-disk representation. No new complete-suite failure was introduced. R2 remains open because source-boundary side ownership, aggregate Euler/topology, planar exterior publication, hard-rail exterior classification, cylinder topology, and bunny singularity-fan embedding remain invalid.
 
-Runtime acceptance has not been executed for this source. Remain on R2. The next turn is **P5-TB28 artifact-only R2D validation** using artifact `8913777837`. Do not configure, rebuild, relink, patch, regenerate, or modify source.
+The next turn is **P5-R2E source-boundary side ownership and Euler topology accounting plus compile-only build**. Do not advance to R3.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_R2D_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`
-5. `benchmark-results/p5-r2d-summary.json`
-6. `.agents/Directional/Milestone_G_P5_TB27_Artifact_Only_R2C_Test_Benchmark_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2D_Authoritative_Orbit_Publication_Code_Build_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB28_Artifact_Only_R2D_Test_Benchmark_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`
+5. `benchmark-results/p5-tb28-summary.json`
+6. `.agents/Directional/Milestone_G_P5_R2D_Code_Build_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-R2D authority
+## P5-TB28 package authority
 
-- previous tested source: `94b86c50c38a849a744f40b0a21c86ed19551769`;
+- exact tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`;
 - workflow event commit: `6757e6e98aa90e5b5eefce1db9645fbf523f2650`;
-- exact compiled source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`;
-- reviewed patch SHA-256: `c7355a7de3998638f596fa927117584fce274920ca00fcd84f08773bf75935e8`;
-- applied commit-diff SHA-256: `de9b6e9e30bf182d73082330d1ef2dbaceca07ffb7a2aa1a938d8e71896319a8`;
-- successful run/job: `30963007513` / `92170817963`;
 - artifact: `8913777837`, `surface-cell-p5-r2d-github-source-linux-release`;
 - artifact SHA-256: `bcb9c6962677f2f638cf6a832eb25d88fdcd2a97e506a1435a7f936d4891416a`;
-- workflow-log artifact: `8913778202`;
-- workflow-log SHA-256: `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`;
+- workflow-log artifact: `8913778202`, SHA-256 `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`;
 - empty source status;
 - recursive checksums **44/44**;
 - package files **45**;
 - fixtures **26**;
 - recursive submodules **9**;
 - all four target hashes verified;
-- all **132/132** Ninja actions completed;
-- no project binary executed.
+- one base workflow and zero temporary patch payloads;
+- no configure, rebuild, relink, patch, regeneration, or source modification during validation.
 
-## P5-R2D implementation
+## Runtime summary
 
-1. Rejects source edges with more than two incident faces before publishing valid incidence, using typed `NonManifoldSourceEdge` evidence.
-2. Stores explicit `boundaryCycleOffsets` so a bounded cell can retain multiple directed boundary cycles.
-3. Separates complete successor-orbit audit from bounded-cell topology and exterior classification.
-4. Computes geometry from core cycles rather than treating bridge excursions as one simple polygon.
-5. Uses source-boundary evidence as authoritative exterior ownership.
-6. Assigns compatible contained cycles as explicit inner boundaries of the smallest bounded owner, deriving boundary count, Euler characteristic, disk state, and area.
-7. Audits every boundary cycle independently before committing cell ownership.
-8. Propagates boundary-cycle identity through simplification, feasibility repair, descriptor memory, rollback state, and pipeline hashes.
-9. Includes focused nested-topology and typed nonmanifold contracts; they were compiled but not executed.
+- source-chart R1 **11/11**;
+- Phase 22 validator **6/6**;
+- recovery authority **9/9**;
+- feature/barrier authority **8/8**;
+- graph-dependent **5/6**;
+- expanded R2/R2C/R2D focused **11/14**;
+- Milestone D **5/7**;
+- Phase 14–18 **233/242**;
+- Phase 16 **43/45**;
+- Phase 17 **20/26**;
+- Phase 18 **57/57**;
+- Phase 20 **46/48**;
+- direct plane/seam/close sheets/cylinder **0/4**;
+- complete suite **595/623**, 28 failures, **192.964 seconds**.
 
-## P5-TB28 execution order
+Exact complete-suite maximum RSS was not emitted after the outer timing wrapper detached; the highest sampled process RSS was at least **204,532 KiB**. The suite completed normally and finalized XML and logs.
 
-1. Verify artifact SHA, exact source, empty status, **44/44** checksums, 45 files, 26 fixtures, nine submodules, target hashes, source contents, one base workflow, and zero patch payloads.
-2. Run source-chart, source-validator, recovery, feature/barrier, and graph-dependent authority scopes.
-3. Run all R2/R2C/R2D incidence, bridge, multi-boundary, and transactional-publication contracts.
-4. Require typed nonmanifold rejection and no valid halfedge with `cell == -1`.
-5. Run all `MilestoneDClosure.*` tests and require **7/7**.
-6. Run Phase 14–18 aggregate plus Phase 16, Phase 17, and Phase 18 independently.
-7. Run direct plane, seam, close sheets, cylinder, and packaged disconnected-close-sheet cases with fallback `Fail` and recovery disabled.
-8. Require seam, close sheets, and cylinder to retain nonzero valid arrangement inventories.
-9. Run complete Phase 20.
-10. Run the complete suite once with a watchdog used only as a safety mechanism; measure runtime, bunny duration, and maximum RSS.
-11. Do not run the full standalone bunny matrix unless focused and complete-suite evidence cannot identify the producer.
+R2D closed exactly:
 
-Advance to R3 only if all R2 gates close and remaining failures move to later typed completion evidence.
+- `NestedCyclesAreClassifiedAsNonDiskInsteadOfDefaultDisk`;
+- `NonManifoldSourceEdgeFailsClosedWithTypedIncidenceEvidence`.
+
+No new failures were introduced.
+
+## Direct analytic disposition
+
+All cases used `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution.
+
+- plane: 9 arrangement cells, 12 quads, 15 output-validation failures;
+- multi-face seam: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- cylinder: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`.
+
+## First actions for P5-R2E
+
+1. Confirm the branch descends from this documentation commit and remains free of stale workflows/payloads.
+2. Read the P5-TB28 report and R2E plan.
+3. Replace per-orbit source-boundary voting with exact oriented boundary-side witnesses.
+4. Require exactly one exterior owner per authoritative source boundary loop.
+5. Compute aggregate Euler from each bounded cell’s explicit structural Euler contribution, not one face per cell.
+6. Preserve complete transactional halfedge/cell ownership and the passing R2C/R2D contracts.
+7. Treat bunny fan embedding as conditional: change it only if static analysis proves the same source-side/topology defect is causal.
+8. Commit and push before compiling.
+9. Compile exactly the four required targets and execute no project binary.
+10. Always upload a separate detailed workflow-log artifact.
 
 ## Mandatory working-branch hygiene
 
-At the start and end of every Code + Build turn, compare the working branch’s temporary agent resources with the base branch and the current turn.
+At the start and end of every Code + Build turn:
 
-- Remove every superseded agent workflow, trigger marker, patch fragment, patch README, generated transfer file, and temporary build artifact.
-- While a remote build is active, retain only base workflows plus the single bounded workflow and payload required for that turn.
-- Remove the active workflow and payload from the exact compiled source whenever the workflow can self-clean; otherwise delete them in the documentation-only handoff commit immediately after the run.
-- Verify the final branch and packaged source contain no stale temporary artifacts before declaring the CB turn complete.
-- Never leave historical workflow YAML on the branch: even an unrelated stale syntax error can emit a failing check on later commits.
-
-P5-R2D removed 18 stale workflows and five old payload files before the run. The exact compiled source then removed its active workflow and two active patch parts. The source now contains only `.github/workflows/agent-source-snapshot.yml` and no agent patch payloads.
+- remove every superseded workflow, trigger marker, patch fragment, patch README, generated transfer file, and temporary build artifact;
+- retain only base workflows plus the single bounded active workflow/payload while a remote build is running;
+- self-remove the active workflow/payload from the exact compiled source or delete them immediately in the handoff commit;
+- verify the final branch and packaged source contain no stale temporary artifacts;
+- never leave historical workflow YAML on the working branch.
 
 ## Key lessons
 
-- A valid successor permutation does not prove admissible source topology, disk topology, or exterior ownership.
-- Multiple boundary cycles must remain explicit; flattening them destroys Euler and incidence meaning.
-- Bridge/support ownership and area-bearing topology are separate, but support classifications cannot hide nonmanifold source topology.
-- Compile success proves integration and packaging only. P5-TB28 determines whether R2D fixes runtime behavior.
-- Stale workflows are active failure sources, not harmless history. Remove them as part of every CB transition.
+- Explicit multi-boundary storage and source nonmanifold preflight were necessary and are now validated.
+- Source-boundary membership is not enough to identify exterior ownership; the directed side of each exact source boundary edge is authoritative.
+- Global Euler must sum structural cell Euler contributions; counting every bounded cell as one face discards the new multi-boundary descriptor.
+- Complete incidence and cell ownership can still end in invalid aggregate topology, as shown by the cylinder contract.
+- Phase 17 remains downstream of R2 topology and should not be patched independently yet.
+- Stale workflows are active failure sources and must be removed every CB turn.
 
 ## Preserved prohibitions
 
