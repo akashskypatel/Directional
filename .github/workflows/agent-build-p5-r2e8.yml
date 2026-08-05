@@ -20,13 +20,15 @@ env:
   PACKAGE_DIR: artifact
   LOG_DIR: /tmp/p5-r2e8-workflow-logs
   ACTIVITY_LOG: /tmp/p5-r2e8-workflow-logs/p5-r2e8-compile-activity.log
-  APPLY_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.apply.py.gz.b64
-  BUILD_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.build.sh.gz.b64
-  EXPECTED_BLOBS: .agents/Directional/patches/P5-R2E8.expected-blobs.tsv
-  APPLY_SCRIPT_B64_SHA256: 1b86326a563d214ec02be874ddd5e572ab544cfc008d3c22987bbc94662ea3c3
-  APPLY_SCRIPT_SHA256: 985e33f138c38035557802a456fcd64768e79aa8ab70c926da6cc2dab1f31499
-  BUILD_SCRIPT_B64_SHA256: 5bd61737b3cc33e99b15767b29092eeef6cbd56dbf68b1b77c4a4bb17395f3f5
-  BUILD_SCRIPT_SHA256: b714f2acc13208cb50944fd09d48197e056b617bed1304759b8359a3de2ea417
+  FIX_SCRIPT: .agents/Directional/patches/P5-R2E8.scope-fix.py
+  RETRY_BUILD_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.retry-build.sh.gz.b64
+  FIX_SCRIPT_SHA256: 3f3f67028d0ba42483f079875bab4a51dfe3f91ee396398f0685030f0111bd43
+  RETRY_BUILD_SCRIPT_B64_SHA256: 64ae3b747105d8f335f2e3c50f1a6dac6f423fd0ab2399570eae3fbb8f970552
+  RETRY_BUILD_SCRIPT_SHA256: 6d53402f48a62fc03a9927bc66f8e9d459ac372020d1c74c0f15d06186482301
+  PRE_FIX_SOURCE_BLOB: 7ad3f098cf951a0a6f1333b2b2f29578cfc8b2c1
+  MILESTONE_D_BLOB: 54aa7eada44aec9afa08df71a425e7d325cf8388
+  HEADER_BLOB: fe1cd8963299dc22510de47e640a8145a03c2820
+  PHASE16_BLOB: 97cf0ecd2753fddb022744bd4d9059cafd844fb2
 
 jobs:
   build:
@@ -39,7 +41,7 @@ jobs:
           set -euo pipefail
           mkdir -p "${LOG_DIR}"
           {
-            echo "P5-R2E8 canonical boundary corner-sector and rail-chart embedding compile-only build"
+            echo "P5-R2E8 corrected canonical boundary corner-sector compile-only build"
             echo "run_id=${GITHUB_RUN_ID}"
             echo "event_sha=${GITHUB_SHA}"
             echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -53,19 +55,19 @@ jobs:
           submodules: false
           persist-credentials: true
 
-      - name: Apply reviewed R2E8 change, compile, and package
+      - name: Apply exact scope correction, compile, and package
         id: compile
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p "${LOG_DIR}"
           exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
-          test -f "${BUILD_SCRIPT_B64}"
-          echo "${BUILD_SCRIPT_B64_SHA256}  ${BUILD_SCRIPT_B64}" | sha256sum -c -
-          base64 -d "${BUILD_SCRIPT_B64}" | gzip -d > /tmp/p5-r2e8-build.sh
-          echo "${BUILD_SCRIPT_SHA256}  /tmp/p5-r2e8-build.sh" | sha256sum -c -
-          chmod +x /tmp/p5-r2e8-build.sh
-          /tmp/p5-r2e8-build.sh
+          test -f "${RETRY_BUILD_SCRIPT_B64}"
+          echo "${RETRY_BUILD_SCRIPT_B64_SHA256}  ${RETRY_BUILD_SCRIPT_B64}" | sha256sum -c -
+          base64 -d "${RETRY_BUILD_SCRIPT_B64}" | gzip -d > /tmp/p5-r2e8-retry-build.sh
+          echo "${RETRY_BUILD_SCRIPT_SHA256}  /tmp/p5-r2e8-retry-build.sh" | sha256sum -c -
+          chmod +x /tmp/p5-r2e8-retry-build.sh
+          /tmp/p5-r2e8-retry-build.sh
 
       - name: Upload compiled checkpoint
         if: steps.compile.outcome == 'success'
