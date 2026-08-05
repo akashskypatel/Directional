@@ -9,106 +9,91 @@
 
 ## Current checkpoint
 
-P5-TB28 artifact-only validation is complete against exact source `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760` and artifact `8913777837`.
+P5-R2E exact source-boundary side ownership and structural Euler topology changes are implemented and compile successfully.
 
-R2D closes typed nonmanifold source-edge rejection and explicit nested two-boundary non-disk representation. No new complete-suite failure was introduced. R2 remains open because source-boundary side ownership, aggregate Euler/topology, planar exterior publication, hard-rail exterior classification, cylinder topology, and bunny singularity-fan embedding remain invalid.
+- implementation commit: `f5afd014cced8205d485bea4f1470725e1fd8be1`;
+- exact compiled/package source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`;
+- authoritative artifact: `8914900872`.
 
-The next turn is **P5-R2E source-boundary side ownership and Euler topology accounting plus compile-only build**. Do not advance to R3.
+Runtime acceptance has not been executed for this source. Remain on R2. The next turn is **P5-TB29 artifact-only R2E validation**. Do not configure, rebuild, relink, patch, regenerate, or modify source. Do not advance to R3 from compile evidence.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB28_Artifact_Only_R2D_Test_Benchmark_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb28-summary.json`
-6. `.agents/Directional/Milestone_G_P5_R2D_Code_Build_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_R2E_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`
+5. `benchmark-results/p5-r2e-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB28_Artifact_Only_R2D_Test_Benchmark_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB28 package authority
+## P5-R2E authority
 
-- exact tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`;
-- workflow event commit: `6757e6e98aa90e5b5eefce1db9645fbf523f2650`;
-- artifact: `8913777837`, `surface-cell-p5-r2d-github-source-linux-release`;
-- artifact SHA-256: `bcb9c6962677f2f638cf6a832eb25d88fdcd2a97e506a1435a7f936d4891416a`;
-- workflow-log artifact: `8913778202`, SHA-256 `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`;
+- P5-TB28 tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`;
+- implementation commit: `f5afd014cced8205d485bea4f1470725e1fd8be1`;
+- workflow event commit: `2a40add65b13137d4d7183e0715c6807dbd6a10a`;
+- exact compiled/package source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`;
+- reviewed patch SHA-256: `3ca1d3b940989e1fbda9e0f8f4b0b8c5971643575550ff9e34501e219651d628`;
+- applied diff SHA-256: `abf671a365ab97ba3075962528bcf76b71901f6dc06a7d0b877499561c89814e`;
+- successful run/job: `30966134727` / `92180382387`;
+- artifact: `8914900872`, `surface-cell-p5-r2e-corrected-github-source-linux-release`;
+- artifact SHA-256: `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`;
+- workflow-log artifact: `8914901042`, SHA-256 `351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3`;
 - empty source status;
-- recursive checksums **44/44**;
-- package files **45**;
+- recursive checksums **45/45**;
+- package files **46**;
 - fixtures **26**;
 - recursive submodules **9**;
 - all four target hashes verified;
-- one base workflow and zero temporary patch payloads;
-- no configure, rebuild, relink, patch, regeneration, or source modification during validation.
+- all **132/132** Ninja actions completed;
+- no project binary executed.
 
-## Runtime summary
+The first R2E artifact was rejected because its recursive manifest included itself, yielding 43 passing entries and one self-check mismatch. The corrected artifact above is authoritative.
 
-- source-chart R1 **11/11**;
-- Phase 22 validator **6/6**;
-- recovery authority **9/9**;
-- feature/barrier authority **8/8**;
-- graph-dependent **5/6**;
-- expanded R2/R2C/R2D focused **11/14**;
-- Milestone D **5/7**;
-- Phase 14–18 **233/242**;
-- Phase 16 **43/45**;
-- Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 20 **46/48**;
-- direct plane/seam/close sheets/cylinder **0/4**;
-- complete suite **595/623**, 28 failures, **192.964 seconds**.
+## P5-R2E implementation
 
-Exact complete-suite maximum RSS was not emitted after the outer timing wrapper detached; the highest sampled process RSS was at least **204,532 KiB**. The suite completed normally and finalized XML and logs.
+1. Builds canonical source boundary loops from exact boundary-edge connectivity.
+2. Records oriented source-side evidence: exterior `-1`, interior `+1`, none `0`.
+3. Fails closed on contradictory side evidence.
+4. Requires exactly one exterior arrangement owner per canonical source boundary loop.
+5. Prevents interior hard rails from creating exterior source-boundary owners.
+6. Computes global Euler from structural bounded-cell Euler contributions and excludes exterior/support-only ownership.
+7. Propagates loop identity and side evidence through hashes, simplification, repair, descriptors, rollback, memory accounting, and pipeline identity.
+8. Strengthens planar, orientation-reversal, hard-rail, and open-cylinder contracts; compiled but not executed.
 
-R2D closed exactly:
+## P5-TB29 execution order
 
-- `NestedCyclesAreClassifiedAsNonDiskInsteadOfDefaultDisk`;
-- `NonManifoldSourceEdgeFailsClosedWithTypedIncidenceEvidence`.
-
-No new failures were introduced.
-
-## Direct analytic disposition
-
-All cases used `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution.
-
-- plane: 9 arrangement cells, 12 quads, 15 output-validation failures;
-- multi-face seam: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
-- close sheets: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
-- cylinder: 0 cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`.
-
-## First actions for P5-R2E
-
-1. Confirm the branch descends from this documentation commit and remains free of stale workflows/payloads.
-2. Read the P5-TB28 report and R2E plan.
-3. Replace per-orbit source-boundary voting with exact oriented boundary-side witnesses.
-4. Require exactly one exterior owner per authoritative source boundary loop.
-5. Compute aggregate Euler from each bounded cell’s explicit structural Euler contribution, not one face per cell.
-6. Preserve complete transactional halfedge/cell ownership and the passing R2C/R2D contracts.
-7. Treat bunny fan embedding as conditional: change it only if static analysis proves the same source-side/topology defect is causal.
-8. Commit and push before compiling.
-9. Compile exactly the four required targets and execute no project binary.
-10. Always upload a separate detailed workflow-log artifact.
+1. Verify artifact SHA, exact source, implementation commit, empty status, **45/45** checksums, 46 files, 26 fixtures, nine submodules, target hashes, one base workflow, and zero payloads.
+2. Run source-chart, source-validator, recovery, and feature/barrier authority.
+3. Run graph-dependent and all R2/R2C/R2D/R2E contracts.
+4. Require exact one-owner-per-source-boundary-loop behavior and typed contradiction failure.
+5. Run Milestone D, Phase 14–18, Phase 16, Phase 17, and Phase 18.
+6. Run direct plane, seam, close sheets, cylinder, and disconnected-close-sheet cases with fallback `Fail` and recovery disabled.
+7. Require nonzero valid arrangement inventories for seam, close sheets, and cylinder.
+8. Run complete Phase 20 and the complete suite once with runtime and memory evidence.
+9. Advance to R3 only if all R2 gates close.
 
 ## Mandatory working-branch hygiene
 
 At the start and end of every Code + Build turn:
 
 - remove every superseded workflow, trigger marker, patch fragment, patch README, generated transfer file, and temporary build artifact;
-- retain only base workflows plus the single bounded active workflow/payload while a remote build is running;
-- self-remove the active workflow/payload from the exact compiled source or delete them immediately in the handoff commit;
+- retain only base workflows plus one active bounded workflow/payload while a remote build is active;
+- self-remove the active workflow/payload from the exact compiled source or delete it immediately in the handoff commit;
 - verify the final branch and packaged source contain no stale temporary artifacts;
 - never leave historical workflow YAML on the working branch.
 
+P5-R2E ends with only `.github/workflows/agent-source-snapshot.yml` and zero patch payloads.
+
 ## Key lessons
 
-- Explicit multi-boundary storage and source nonmanifold preflight were necessary and are now validated.
-- Source-boundary membership is not enough to identify exterior ownership; the directed side of each exact source boundary edge is authoritative.
-- Global Euler must sum structural cell Euler contributions; counting every bounded cell as one face discards the new multi-boundary descriptor.
-- Complete incidence and cell ownership can still end in invalid aggregate topology, as shown by the cylinder contract.
-- Phase 17 remains downstream of R2 topology and should not be patched independently yet.
+- Exact oriented source-side evidence, not boundary membership or voting, is authoritative for exterior ownership.
+- Global Euler must sum structural cell contributions.
+- A compiled artifact is not authoritative when its integrity manifest cannot verify; reject and regenerate it.
+- Compile success proves integration only. P5-TB29 decides runtime behavior.
 - Stale workflows are active failure sources and must be removed every CB turn.
 
 ## Preserved prohibitions
