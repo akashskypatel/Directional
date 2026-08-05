@@ -1,0 +1,155 @@
+{
+  "turn": "P5-TB36",
+  "type": "artifact_only_test_benchmark",
+  "date": "2026-08-05",
+  "repository": "akashskypatel/Directional",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "review_policy": "never",
+  "artifact": {
+    "id": 8944910920,
+    "name": "surface-cell-p5-r2e8-github-source-linux-release",
+    "sha256": "5b93e86db0ddccf4ca3eba2e9b53e6523f02d7ef70809aa8eb67b91f6e9bef39",
+    "source_commit": "478d058ab2060a1a02a1e4ca3bfc0e6625fa8047",
+    "workflow_event_commit": "89423d0a49d7e1c2020cda87ee2333f35a3abe98",
+    "source_arrangement_blob": "76e57fef36f9322598387b6b5e968a14b885b755",
+    "manifest_verified": 13,
+    "manifest_total": 13,
+    "original_physical_files": 14,
+    "fixture_files_staged": 26,
+    "recursive_submodules": 9
+  },
+  "artifact_only": true,
+  "configured": false,
+  "built": false,
+  "relinked": false,
+  "source_modified": false,
+  "tests_modified": false,
+  "fixtures_modified": false,
+  "focused": {
+    "source_chart_and_validator": {"passed": 17, "total": 17},
+    "recovery_authority": {"passed": 9, "total": 9},
+    "feature_barrier": {"passed": 8, "total": 8},
+    "graph_dependent": {
+      "passed": 5,
+      "total": 6,
+      "failures": ["SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"]
+    },
+    "r2_focused": {
+      "passed": 13,
+      "total": 16,
+      "failures": [
+        "MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary",
+        "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved",
+        "SurfaceArrangementPhase16.EulerBoundaryAndAreaChecksPassOnPlanarFixture"
+      ]
+    },
+    "milestone_d": {"passed": 5, "total": 7},
+    "phase16": {"passed": 45, "total": 47},
+    "phase17": {"passed": 26, "total": 26},
+    "phase18": {"passed": 57, "total": 57},
+    "phase14_18": {"passed": 241, "total": 244},
+    "phase20": {"passed": 46, "total": 48}
+  },
+  "direct_cases": {
+    "plane__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.013367,
+      "peak_working_set_bytes": 8519680,
+      "arrangement_cells": 9,
+      "simplified_cells": 9,
+      "completed_quads": 12,
+      "failure": "completion/output-validation:AggregateCompletionValidationFailure"
+    },
+    "multi_face_seam__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.013747,
+      "peak_working_set_bytes": 8454144,
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "failure": "completion:SideSubdivisionRepair:InvalidInputIncidence"
+    },
+    "close_sheets__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.021018,
+      "peak_working_set_bytes": 8716288,
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "failure": "completion:SideSubdivisionRepair:InvalidInputIncidence"
+    },
+    "cylinder__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.135752,
+      "peak_working_set_bytes": 9920512,
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "failure": "completion:SideSubdivisionRepair:InvalidInputIncidence"
+    }
+  },
+  "bunny_production": {
+    "deterministic_structural_evidence": true,
+    "stage_hashes_identical": true,
+    "stage_counts_identical": true,
+    "runs": [
+      {
+        "wall_seconds": 24.995377,
+        "peak_working_set_bytes": 270729216,
+        "arrangement_cells": 0,
+        "completed_quads": 0,
+        "failure": "NotProductionReady/completion:SideSubdivisionRepair:InvalidInputIncidence"
+      },
+      {
+        "wall_seconds": 25.475514,
+        "peak_working_set_bytes": 270667776,
+        "arrangement_cells": 0,
+        "completed_quads": 0,
+        "failure": "NotProductionReady/completion:SideSubdivisionRepair:InvalidInputIncidence"
+      }
+    ]
+  },
+  "complete_suite": {
+    "tests": 625,
+    "passed": 603,
+    "failures": 22,
+    "errors": 0,
+    "disabled": 0,
+    "xml_time_seconds": 72.397,
+    "wall_seconds": 72.40,
+    "max_rss_kib": 281112,
+    "normal_termination": true,
+    "exit_code": 1
+  },
+  "comparison_to_tb35": {
+    "baseline": "597/625",
+    "current": "603/625",
+    "closed_failures": [
+      "SurfaceComplexSimplificationPhase17.SimplifySurfaceCellComplexReturnsMutatedComplex",
+      "SurfaceComplexSimplificationPhase17.ComplexCandidateRecomputationCreatesRealQueuedCandidates",
+      "SurfaceComplexSimplificationPhase17.TransactionalMutationCommitsExtractedOversampledCandidate",
+      "SurfaceComplexSimplificationPhase17.TransactionalMutationPreservesHardRailSupport",
+      "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
+      "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
+    ],
+    "new_failures": []
+  },
+  "r2e8_disposition": {
+    "accepted": false,
+    "planar_incidence_published": true,
+    "planar_topology_valid": false,
+    "planar_cyclic_wrap_interior_sector_count": 0,
+    "planar_euler_characteristic": 0,
+    "hard_rail_embedding_valid": false,
+    "hard_rail_topology_valid": false,
+    "phase17_naturally_restored": true
+  },
+  "evidence": {
+    "name": "directional-p5-tb36-8944910920-evidence.zip",
+    "sha256": "af3747b1238a01802a4fc158032451a505cbeb224c51601d888e390b6fd01096",
+    "entries": 118,
+    "size_bytes": 395396
+  },
+  "next_turn": "P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build"
+}
