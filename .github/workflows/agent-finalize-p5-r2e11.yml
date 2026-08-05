@@ -93,6 +93,9 @@ jobs:
           cp /tmp/p5-r2e11-final-docs/.agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md .agents/Directional/
           cp /tmp/p5-r2e11-final-docs/.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md .agents/Directional/
           cp /tmp/p5-r2e11-final-docs/benchmark-results/p5-r2e11-summary.json benchmark-results/
+          sed -i 's/[[:space:]]\+$//' \
+            .agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md \
+            .agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md
 
           git rm -f \
             .github/workflows/agent-build-p5-r2e11.yml \
