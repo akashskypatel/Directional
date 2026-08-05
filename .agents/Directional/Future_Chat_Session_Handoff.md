@@ -77,6 +77,10 @@ This is not a post-hoc merge or cycle decomposition.
 8. Run Phase 20 and the complete suite once with runtime and memory evidence.
 9. Advance to R2F only after all boundary-exterior and structural Euler gates close; advance to R3 only after all R2 gates close.
 
+## End-of-turn PR comment requirement
+
+At the end of every Code + Build, Test + Benchmark, and optional Review turn, post a new final comment on draft PR #8 containing the concise handoff summary. The comment must identify the exact evidence/source commit, the turn result, open gates, the authoritative next-turn plan, and the branch/documentation head. Post this comment after all turn documentation is committed so it is the final repository-facing handoff action for the turn.
+
 ## Known procedural lesson
 
 A Git source archive does not include initialized submodule worktrees. Local configure from the prior artifact source therefore failed before compilation because `external/googletest` was empty. Do not classify that as a source compile defect. The authoritative workflow initialized and verified all nine submodules and compiled successfully.
