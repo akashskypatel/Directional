@@ -73,6 +73,7 @@ Planar previously published incidence but omitted the cyclic-wrap interior secto
 - `.agents/Directional/Milestone_G_P5_R2E9_Code_Build_Report.md`
 - `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`
 - `benchmark-results/p5-r2e9-summary.json`
+- `benchmark-results/p5-tb36-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `TODO`
