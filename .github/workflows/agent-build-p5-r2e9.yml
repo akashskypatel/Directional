@@ -1,0 +1,251 @@
+name: Agent Build Surface Cell P5 R2E9
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-p5-r2e9.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-surface-cell-p5-r2e9-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ACTIVE_BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  BUILD_DIR: build/agent-p5-r2e9-release
+  PACKAGE_DIR: artifact
+  LOG_DIR: /tmp/p5-r2e9-workflow-logs
+  ACTIVITY_LOG: /tmp/p5-r2e9-workflow-logs/p5-r2e9-compile-activity.log
+  PATCH_PAYLOAD: .agents/Directional/patches/P5-R2E9.patch.gz.b64
+  PATCH_PAYLOAD_SHA256: 50d7fc6c545f2bd41fea0404df301607ef1cbb08fbee4fe0510690a39f36644b
+  PATCH_SHA256: bc67078f54d12345f58372e79daa93e75c47e4f379bd7f65b76bbf4d6e2054fc
+  PRE_SOURCE_BLOB: 76e57fef36f9322598387b6b5e968a14b885b755
+  PRE_HEADER_BLOB: fe1cd8963299dc22510de47e640a8145a03c2820
+  PRE_PHASE16_BLOB: 97cf0ecd2753fddb022744bd4d9059cafd844fb2
+  PRE_MILESTONE_D_BLOB: 54aa7eada44aec9afa08df71a425e7d325cf8388
+  POST_SOURCE_BLOB: fec7b37c0692a0e23d28727d8fad60215bd7fa6c
+  POST_HEADER_BLOB: b172625cd82862d16b81b6f3b8d52686b5fda41c
+  POST_PHASE16_BLOB: e58bceda098f7768b8a7203cca00564f82a7d831
+  POST_MILESTONE_D_BLOB: e673e60133a39ddfc657fc9bc65ce538a5147930
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - name: Initialize persistent workflow log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "${LOG_DIR}"
+          {
+            echo "P5-R2E9 canonical wrap-sector and rail-orbit chart compile-only build"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "${ACTIVITY_LOG}"
+
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 8
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply bounded patch, compile, and package
+        id: compile
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "${LOG_DIR}"
+          exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
+
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            echo "compile_step_exit_code=${rc}"
+            echo "compile_step_finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "final_git_status_begin"
+            git status --short --branch || true
+            echo "final_git_status_end"
+            df -h . || true
+            du -sh "${BUILD_DIR}" "${PACKAGE_DIR}" 2>/dev/null || true
+            exit "${rc}"
+          }
+          trap finish EXIT
+          set -x
+
+          event_sha=$(git rev-parse HEAD)
+          test "${event_sha}" = "${GITHUB_SHA}"
+          remote_sha=$(git ls-remote origin "refs/heads/${ACTIVE_BRANCH}" | cut -f1)
+          test "${remote_sha}" = "${event_sha}"
+          test -z "$(git status --porcelain=v1)"
+
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "${PRE_SOURCE_BLOB}"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "${PRE_HEADER_BLOB}"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "${PRE_PHASE16_BLOB}"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "${PRE_MILESTONE_D_BLOB}"
+          test "$(sha256sum "${PATCH_PAYLOAD}" | cut -d' ' -f1)" = "${PATCH_PAYLOAD_SHA256}"
+
+          base64 --decode "${PATCH_PAYLOAD}" | gzip --decompress > /tmp/p5-r2e9.patch
+          test "$(sha256sum /tmp/p5-r2e9.patch | cut -d' ' -f1)" = "${PATCH_SHA256}"
+          if grep -Eq '^\+\+\+ b/\.github/workflows/' /tmp/p5-r2e9.patch; then
+            echo 'patch must not modify workflow files' >&2
+            exit 1
+          fi
+          git apply --check /tmp/p5-r2e9.patch
+          git apply /tmp/p5-r2e9.patch
+          git diff --check
+
+          mapfile -t modified_files < <(git diff --name-only | sort)
+          printf '%s\n' "${modified_files[@]}" | tee /tmp/modified-source-files.txt
+          test "${#modified_files[@]}" -eq 4
+          grep -Fx 'include/directional/geometry/SurfaceArrangement.h' /tmp/modified-source-files.txt
+          grep -Fx 'src/geometry/SurfaceArrangement.cpp' /tmp/modified-source-files.txt
+          grep -Fx 'tests/MilestoneDClosureTests.cpp' /tmp/modified-source-files.txt
+          grep -Fx 'tests/SurfaceArrangementPhase16Tests.cpp' /tmp/modified-source-files.txt
+
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "${POST_SOURCE_BLOB}"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "${POST_HEADER_BLOB}"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "${POST_PHASE16_BLOB}"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "${POST_MILESTONE_D_BLOB}"
+
+          git rm -f "${PATCH_PAYLOAD}"
+          git add \
+            include/directional/geometry/SurfaceArrangement.h \
+            src/geometry/SurfaceArrangement.cpp \
+            tests/MilestoneDClosureTests.cpp \
+            tests/SurfaceArrangementPhase16Tests.cpp
+          git diff --cached --check
+          git config user.name directional-build-agent
+          git config user.email directional-build-agent@users.noreply.github.com
+          git commit -m 'P5-R2E9: publish canonical fan and rail orbit roots [skip ci]'
+          git push origin "HEAD:${ACTIVE_BRANCH}"
+
+          source_sha=$(git rev-parse HEAD)
+          test "$(git ls-remote origin "refs/heads/${ACTIVE_BRANCH}" | cut -f1)" = "${source_sha}"
+          test "$(git rev-parse HEAD^)" = "${event_sha}"
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "${POST_SOURCE_BLOB}"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "${POST_HEADER_BLOB}"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "${POST_PHASE16_BLOB}"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "${POST_MILESTONE_D_BLOB}"
+
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1 --jobs 4
+          git submodule status --recursive | tee /tmp/submodule-status.txt
+          test "$(wc -l < /tmp/submodule-status.txt)" -eq 9
+          git diff --check
+          git status --porcelain=v1 | tee /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+
+          rm -rf "${BUILD_DIR}" "${PACKAGE_DIR}"
+          mkdir -p "${BUILD_DIR}" "${PACKAGE_DIR}/bin" "${PACKAGE_DIR}/lib" \
+            "${PACKAGE_DIR}/source" "${PACKAGE_DIR}/logs" "${PACKAGE_DIR}/metadata"
+
+          cmake -S . -B "${BUILD_DIR}" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            '-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "${BUILD_DIR}/configure.log"
+
+          cmake --build "${BUILD_DIR}" --target \
+            directional_core \
+            directional_pipeline \
+            directional_phase1_tests \
+            directional_benchmarks \
+            -j 4 2>&1 | tee "${BUILD_DIR}/build.log"
+
+          test_bin=$(find "${BUILD_DIR}" -type f -name directional_phase1_tests -perm -111 | head -n 1)
+          benchmark_bin=$(find "${BUILD_DIR}" -type f -name directional_benchmarks -perm -111 | head -n 1)
+          test -n "${test_bin}"
+          test -n "${benchmark_bin}"
+          cp "${test_bin}" "${PACKAGE_DIR}/bin/"
+          cp "${benchmark_bin}" "${PACKAGE_DIR}/bin/"
+          find "${BUILD_DIR}" -maxdepth 3 -type f \( -name 'libdirectional_core.a' -o -name 'libdirectional_pipeline.a' \) \
+            -exec cp '{}' "${PACKAGE_DIR}/lib/" ';'
+          test -f "${PACKAGE_DIR}/lib/libdirectional_core.a"
+          test -f "${PACKAGE_DIR}/lib/libdirectional_pipeline.a"
+
+          cp "${BUILD_DIR}/configure.log" "${PACKAGE_DIR}/logs/"
+          cp "${BUILD_DIR}/build.log" "${PACKAGE_DIR}/logs/"
+          cp "${ACTIVITY_LOG}" "${PACKAGE_DIR}/logs/activity.log"
+          cp /tmp/submodule-status.txt "${PACKAGE_DIR}/metadata/"
+          cp /tmp/source-status.txt "${PACKAGE_DIR}/metadata/"
+          printf '%s\n' "${source_sha}" > "${PACKAGE_DIR}/SOURCE_COMMIT"
+          printf '%s\n' "${event_sha}" > "${PACKAGE_DIR}/WORKFLOW_EVENT_COMMIT"
+          printf '%s\n' "${POST_SOURCE_BLOB}" > "${PACKAGE_DIR}/metadata/source-arrangement-blob.txt"
+          printf '%s\n' "${POST_HEADER_BLOB}" > "${PACKAGE_DIR}/metadata/surface-arrangement-header-blob.txt"
+          printf '%s\n' "${POST_PHASE16_BLOB}" > "${PACKAGE_DIR}/metadata/phase16-test-blob.txt"
+          printf '%s\n' "${POST_MILESTONE_D_BLOB}" > "${PACKAGE_DIR}/metadata/milestone-d-test-blob.txt"
+          printf '%s\n' 'compile-only: no test, benchmark, help, list, discovery, CLI, GUI, or project binary was executed' \
+            > "${PACKAGE_DIR}/metadata/EXECUTION_POLICY.txt"
+
+          tar --exclude='./.git' --exclude='./external' --exclude="./${BUILD_DIR}" \
+            --exclude="./${PACKAGE_DIR}" -czf \
+            "${PACKAGE_DIR}/source/directional-source-${source_sha}.tar.gz" .
+
+          cat > "${PACKAGE_DIR}/metadata/build-summary.json" <<JSON
+          {
+            "turn": "P5-R2E9",
+            "workflow_run_id": ${GITHUB_RUN_ID},
+            "workflow_event_commit": "${event_sha}",
+            "source_commit": "${source_sha}",
+            "source_arrangement_blob": "${POST_SOURCE_BLOB}",
+            "surface_arrangement_header_blob": "${POST_HEADER_BLOB}",
+            "phase16_test_blob": "${POST_PHASE16_BLOB}",
+            "milestone_d_test_blob": "${POST_MILESTONE_D_BLOB}",
+            "configuration": "Release -O2 -DNDEBUG",
+            "targets": [
+              "directional_core",
+              "directional_pipeline",
+              "directional_phase1_tests",
+              "directional_benchmarks"
+            ],
+            "tests_executed": false,
+            "benchmarks_executed": false
+          }
+          JSON
+
+          sha256sum \
+            "${PACKAGE_DIR}/bin/directional_phase1_tests" \
+            "${PACKAGE_DIR}/bin/directional_benchmarks" \
+            "${PACKAGE_DIR}/lib/libdirectional_core.a" \
+            "${PACKAGE_DIR}/lib/libdirectional_pipeline.a" \
+            > "${PACKAGE_DIR}/metadata/target-sha256.txt"
+          find "${PACKAGE_DIR}" -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > "${PACKAGE_DIR}/SHA256SUMS"
+          sha256sum -c "${PACKAGE_DIR}/SHA256SUMS"
+          find "${PACKAGE_DIR}" -maxdepth 3 -type f -printf '%P\n' | sort
+
+      - name: Upload compiled checkpoint
+        if: steps.compile.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e9-github-source-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e9-workflow-logs-${{ github.run_id }}
+          path: /tmp/p5-r2e9-workflow-logs
+          if-no-files-found: error
+          retention-days: 30
