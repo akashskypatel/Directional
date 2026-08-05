@@ -8,72 +8,71 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB28 artifact-only R2D validation**.
-- Next turn: **P5-R2E source-boundary side ownership and Euler topology accounting + compile-only build**.
-- R2 remains open. Do not advance to R3.
+- Completed turn: **P5-R2E source-boundary side ownership + compile-only build**.
+- Next turn: **P5-TB29 artifact-only R2E validation**.
+- R2 runtime remains open until artifact validation. Do not advance to R3 from compilation.
 
-## P5-TB28 authority
+## P5-R2E compiled checkpoint
 
-- Exact tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
-- Artifact: `8913777837`, SHA-256 `bcb9c6962677f2f638cf6a832eb25d88fdcd2a97e506a1435a7f936d4891416a`.
-- Workflow logs: `8913778202`, SHA-256 `04ba6f577b4d76519c365b564762b72844fa5b3f17e71c80bd7d292acf760384`.
-- Empty source status; checksums **44/44**; package files **45**; fixtures **26**; submodules **9**; four target hashes verified.
-- Source archive contains one base workflow and zero temporary payloads.
-- No rebuild or source modification occurred during validation.
+- P5-TB28 tested source: `0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760`.
+- Implementation commit: `f5afd014cced8205d485bea4f1470725e1fd8be1`.
+- Exact compiled/package source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`.
+- Workflow event commit: `2a40add65b13137d4d7183e0715c6807dbd6a10a`.
+- Artifact: `8914900872`, SHA-256 `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`.
+- Workflow logs: `8914901042`, SHA-256 `351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3`.
+- Empty source status; checksums **45/45**; package files **46**; fixtures **26**; submodules **9**; four target hashes verified.
+- All **132/132** Ninja actions completed.
+- Compiled exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- Executed zero tests, benchmarks, project binaries, or discovery commands.
 
-## P5-TB28 runtime result
+## R2E implementation
 
-- [x] source-chart R1 **11/11**;
-- [x] Phase 22 validator **6/6**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier authority **8/8**;
-- [ ] graph-dependent **5/6**;
-- [ ] R2/R2C/R2D focused **11/14**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 14–18 **233/242**;
-- [ ] Phase 16 **43/45**;
-- [ ] Phase 17 **20/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 20 **46/48**;
-- [ ] direct plane/seam/close sheets/cylinder **0/4**;
-- [ ] complete suite **595/623**, 28 failures, **192.964 seconds**.
+- [x] canonical source boundary loops from exact edge connectivity;
+- [x] oriented exterior/interior side witnesses;
+- [x] typed contradictory-side rejection;
+- [x] exactly one exterior owner per canonical source boundary loop;
+- [x] interior hard rails cannot create source-boundary exterior owners;
+- [x] aggregate Euler from structural bounded-cell contributions;
+- [x] exterior/support-only exclusion from Euler face contributions;
+- [x] deterministic propagation through hashes, simplification, repair, descriptors, rollback, memory accounting, and pipeline identity;
+- [x] focused planar, reversal, hard-rail, and cylinder contracts compiled without execution.
 
-R2D closed the nested multi-boundary and typed nonmanifold contracts with no new failures.
+## Package integrity
 
-## Remaining R2 blockers
+The first successful compile artifact was rejected because its checksum manifest included itself and produced one mismatch. The corrected artifact verifies all **45/45** manifest entries before upload and is the only P5-TB29 authority.
 
-- [ ] planar source-boundary exterior orbit, area, and Euler accounting;
-- [ ] exact one-exterior-owner mapping per source boundary loop;
-- [ ] interior hard rail must not create a second exterior owner;
-- [ ] cylinder aggregate topology after valid incidence and cell ownership;
-- [ ] bunny singularity-fan embedding and three center cells;
-- [ ] nonzero valid arrangement inventories for seam, close sheets, and cylinder;
-- [ ] six downstream Phase 17 candidate/mutation contracts;
-- [ ] Phase 20 cylinder and validation-lineage closure.
+## Working-branch hygiene
 
-## Required next work: P5-R2E
+- [x] active workflows self-removed from exact compiled source;
+- [x] all R2E patch fragments removed;
+- [x] final source contains only `agent-source-snapshot.yml`;
+- [x] final source contains zero temporary payloads.
 
-Follow `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`:
+Every future Code + Build turn must remove superseded workflows, trigger markers, patch fragments, and temporary build artifacts before completion.
 
-- [ ] replace source-boundary vote counts with exact oriented side witnesses;
-- [ ] require exactly one exterior arrangement owner per canonical source boundary loop;
-- [ ] derive global Euler from explicit bounded-cell Euler contributions;
-- [ ] derive arrangement boundary-loop diagnostics from canonical loop ownership;
-- [ ] preserve complete transactional halfedge/cell ownership;
-- [ ] preserve R1, R2C bridge/support, R2D nested, and R2D nonmanifold contracts;
-- [ ] restore planar, hard-rail, and cylinder topology without downstream bypasses;
-- [ ] keep bunny work conditional on static causal evidence;
-- [ ] remove stale agent artifacts before and after the CB turn;
-- [ ] compile only the four required targets and execute no binaries.
+## Required next work: P5-TB29
+
+Follow `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`:
+
+- [ ] verify exact artifact/source/package authority;
+- [ ] preserve R1, validator, recovery, and feature/barrier authority;
+- [ ] pass graph-dependent and all R2/R2C/R2D/R2E contracts;
+- [ ] prove exactly one exterior owner per source boundary loop;
+- [ ] close planar Euler/area/exterior behavior;
+- [ ] close hard-rail and open-cylinder aggregate topology;
+- [ ] preserve nested and nonmanifold closures;
+- [ ] restore Phase 16 and Milestone D;
+- [ ] evaluate Phase 17 only after arrangement inputs are valid;
+- [ ] require nonzero valid arrangement inventories for seam, close sheets, and cylinder;
+- [ ] run complete Phase 20 and complete suite;
+- [ ] measure runtime and memory without accepting early rejection as progress.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB28_Artifact_Only_R2D_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E_Source_Boundary_Topology_Code_Build_Plan.md`
-- `benchmark-results/p5-tb28-summary.json`
-- `.agents/Directional/Milestone_G_P5_R2D_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2D_Test_Benchmark_Plan.md`
-- `MILESTONE_G_TODO.md`
+- `.agents/Directional/Milestone_G_P5_R2E_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `MILESTONE_G_TODO.md`
 
 Preserve all prohibitions and mandatory working-branch hygiene. P5 remains open.
