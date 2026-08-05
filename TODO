@@ -8,73 +8,63 @@ Last updated: 2026-08-04
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB30 artifact-only R2E2 validation**.
-- Next turn: **P5-R2E3 boundary-node permutation splice + compile-only build**.
-- R2 remains open. Do not advance to intrinsic-fan R2F or R3.
+- Completed turn: **P5-R2E3 boundary-node permutation splice + compile-only build**.
+- Next turn: **P5-TB31 artifact-only R2E3 validation**.
+- R2 runtime remains open. Do not advance to R2F or R3 from compilation.
 
-## P5-TB30 authority
+## P5-R2E3 compiled checkpoint
 
-- Exact tested source: `f5305ade5bf5360df36b681d135e5299322f5fdb`.
-- Artifact: `8916209271`, SHA-256 `2117cc2b99bc82a197bb7ee94f3e21a9c8f71b48f735c15c878515dabd4915df`.
-- Package checksums **48/48**; files **49**; fixtures **26**; submodules **9**; all four target hashes verified.
-- Clean validation source: one base workflow and zero temporary payloads.
-- No configure, build, relink, patch, regeneration, or source modification during validation.
+- Starting documentation head: `31b17ff6abb4965e5d506c35b38ca772d7591a5b`.
+- Workflow event: `2d1d616eaf6e5be025e1a190b995172954d3f102`.
+- Exact compiled source: `571ff9095ec06a8931fc54aafe1a70a38f80b4a1`.
+- Workflow cleanup: `3d805eca6f1dfbc857c023a6f509d9310e9577dc`.
+- Artifact: `8918054686`, SHA-256 `6491eaaaa2276b0d89ddcda5f94d1b8e1e6cf6fe251b2b6ec99d242d8e29534d`.
+- Workflow logs: `8918054984`, SHA-256 `01578b07c754dd3eef0fc1aa63272b4fe5934565ddf0e48647ed3bf50aff7007`.
+- Empty source status; manifest **48/48**; package files **49**; fixtures **26**; recursive submodules **9**.
+- Four target hashes verified; Ninja **132/132**.
+- Compiled only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- Executed zero tests, benchmarks, project binaries, custom meshes, or discovery commands.
 
-## P5-TB30 results
+## R2E3 implementation
 
-- [x] source-chart R1 **11/11**;
-- [x] Phase 22 validator **6/6**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier authority **8/8**;
-- [ ] graph-dependent **5/6** — bunny fan remains;
-- [ ] R2 focused **10/14** — planar, hard rail, cylinder, and orientation hash;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 14–18 **232/242**;
-- [ ] Phase 16 **42/45**;
-- [ ] Phase 17 **20/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **594/623**, 29 failures, 77.761 s;
-- [ ] direct plane/seam/close sheets/cylinder **0/4**.
+- [x] transactional candidate successor map;
+- [x] canonical manifold boundary classes keyed by source vertex, loop, component, and R1 fan scope;
+- [x] hard-rail endpoint chart aliases collapse without merging pinched fans or close sheets;
+- [x] typed `BoundaryAliasConflict`;
+- [x] canonical source-edge interval and operational loop orientation;
+- [x] exterior and complementary interior successors spliced as one node-local bijection;
+- [x] typed `BoundaryLocalPermutationConflict`;
+- [x] one global candidate endpoint/predecessor audit before successor commit;
+- [x] orientation-invariant canonical boundary-twin incidence hashing;
+- [x] focused planar, hard-rail, cylinder, orientation, and local-bijection contracts compiled without execution.
 
-Relative to P5-TB29, no failure closed and `SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence` newly fails.
+## Required next work: P5-TB31
 
-## R2E2 disposition
+Follow `.agents/Directional/Milestone_G_P5_R2E3_Test_Benchmark_Plan.md`:
 
-- [x] ordered source-boundary loops and exact subsegment inventory compile and execute;
-- [x] hard-rail failure is typed as `BoundaryContinuationDiscontinuity`;
-- [ ] planar fails `IncompletePermutation` before topology publication;
-- [ ] hard-rail boundary endpoint nodes are not continuous across the authoritative loop;
-- [ ] cylinder publication clears and leaves `cell == -1`;
-- [ ] authoritative/generic twin hashing is not orientation invariant;
-- [ ] seam, close sheets, and cylinder retain zero arrangement inventory;
-- [ ] structural Euler remains blocked by invalid publication.
-
-## Required next work: P5-R2E3
-
-Follow `.agents/Directional/Milestone_G_P5_R2E3_Boundary_Node_Permutation_Code_Build_Plan.md`:
-
-- [ ] build a complete transactional candidate successor array;
-- [ ] establish canonical manifold boundary-vertex classes without merging close or pinched sheets;
-- [ ] rebuild exterior and complementary interior node-local successor partitions together;
-- [ ] require one incoming/one outgoing use for every local ray;
-- [ ] use canonical source-edge parameters for orientation-independent subsegment identity;
-- [ ] audit complete global successor/predecessor bijection before commit;
-- [ ] encode boundary twin incidence orientation-invariantly;
-- [ ] preserve all R0/R1/R2C/R2D closures and Phase 18;
-- [ ] leave bunny fan, FlowRep, simplification, and completion changes out of scope;
-- [ ] compile only the four authorized targets and execute no project binary.
+- [ ] verify exact artifact/source/package authority;
+- [ ] preserve source-chart **11/11**, validator **6/6**, recovery **9/9**, and feature/barrier **8/8**;
+- [ ] require R2 focused at least **13/14**, with only bunny allowed to remain;
+- [ ] require Milestone D **7/7** and Phase 16 at least **44/45**;
+- [ ] close planar, hard-rail, and cylinder structural contracts;
+- [ ] restore whole-orientation directed-incidence hash equality;
+- [ ] require no valid halfedge with `cell == -1`;
+- [ ] preserve nested, nonmanifold, bridge, support-only, pinched-fan, and close-sheet separation;
+- [ ] keep Phase 18 **57/57**;
+- [ ] require nonzero valid seam, close-sheet, and cylinder arrangement inventories;
+- [ ] run Phase 20 and the complete suite once with runtime and memory evidence.
 
 ## Standing process requirements
 
 - Remove stale workflows, triggers, patch payloads, transfer files, and temporary artifacts at every Code + Build turn start and end.
-- Every turn ends with a new final PR #8 comment containing the handoff summary after documentation commits are complete.
+- Every completed turn ends with a new final PR #8 comment containing the handoff summary after all documentation commits.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_R2E3_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E3_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e3-summary.json`
 - `.agents/Directional/Milestone_G_P5_TB30_Artifact_Only_R2E2_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E3_Boundary_Node_Permutation_Code_Build_Plan.md`
-- `benchmark-results/p5-tb30-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `MILESTONE_G_TODO.md`
 
