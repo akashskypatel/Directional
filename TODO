@@ -8,60 +8,53 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB31 artifact-only R2E3 validation**.
-- Next turn: **P5-R2E4 authoritative boundary-node rotational-system Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E4 authoritative boundary-node rotational-system Code + Build**.
+- Next turn: **P5-TB32 artifact-only R2E4 validation**.
+- R2 runtime remains open. Do not advance to R2F or R3 from compilation.
 
-## P5-TB31 authority
+## P5-R2E4 compiled checkpoint
 
-- Exact tested source: `571ff9095ec06a8931fc54aafe1a70a38f80b4a1`.
-- Artifact: `8918054686`, SHA-256 `6491eaaaa2276b0d89ddcda5f94d1b8e1e6cf6fe251b2b6ec99d242d8e29534d`.
-- Package checksums **48/48**; files **49**; fixtures **26**; submodules **9**; target hashes verified.
-- Clean validation source: one base workflow and zero temporary payloads.
-- No configure, build, relink, patch, regeneration, or source modification during validation.
+- Starting documentation head: `fbec81c04d8134da81482e347389a5fde085feaf`.
+- Workflow event: `d81351aeb6bb7b728ceaf5bf468f924383167eb9`.
+- Exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`.
+- Workflow cleanup: `d59ddc2c72459287e4c3af5f6a6939443aae6f12`.
+- Artifact: `8929111021`, SHA-256 `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`.
+- Workflow logs: `8929111261`, SHA-256 `a83b4533e6847976a1e942aff8a47b725a8ff468bc586477cc39fb3f45c206ba`.
+- Empty source status; manifest **48/48**; package files **49**; fixtures **26**; recursive submodules **9**.
+- Four target hashes verified; Ninja **132/132**.
+- Compiled only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- Executed zero tests, benchmarks, project binaries, custom meshes, or discovery commands.
 
-## P5-TB31 results
+## R2E4 implementation
 
-- [x] source-chart R1 **11/11**;
-- [x] Phase 22 validator **6/6**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier authority **8/8**;
-- [ ] graph-dependent **5/6** — bunny fan remains;
-- [ ] R2 focused **11/14**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 14–18 **233/242**;
-- [ ] Phase 16 **43/45**;
-- [ ] Phase 17 **20/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **595/623**, 28 failures, 142.550 s;
-- [ ] direct plane/seam/close sheets/cylinder **0/4**.
+- [x] replaces R2E3 target transposition with complete local rotational reconstruction;
+- [x] requires one canonical SourceVertex/SourceEdge wedge containing the complete local ray inventory;
+- [x] selects canonical rotation direction from the authoritative exterior incoming/outgoing pair;
+- [x] maps every incoming twin to the adjacent outgoing ray exactly once;
+- [x] preserves one exterior wrap sector and all hard-rail-separated interior sectors;
+- [x] adds typed `BoundaryRotationalSystemConflict` evidence;
+- [x] adds derived `boundaryRotationalNodeCount` diagnostics;
+- [x] audits authoritative exterior-loop continuation before global predecessor/orbit audit;
+- [x] preserves orientation-invariant paired boundary incidence identity;
+- [x] leaves repeated-edge, repeated-node, non-disk, owner, and Euler validators unchanged;
+- [x] generalized multi-ray boundary-node contracts compiled without execution.
 
-Relative to P5-TB30, `WholeMeshOrientationReversalPreservesDirectedIncidence` closes and no new failure appears. The remaining 28-failure set matches P5-TB29.
+## Required next work: P5-TB32
 
-## R2E3 disposition
+Follow `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`:
 
-- [x] orientation-invariant paired boundary incidence hashing is valid;
-- [x] global predecessor cardinality closes on the planar fixture;
-- [ ] planar fails orbit analysis as `RepeatedEdgeCycle`;
-- [ ] interior hard rail fails `BoundaryLocalPermutationConflict`;
-- [ ] open cylinder publishes a `NonDiskCell`;
-- [ ] seam, close sheets, and cylinder retain zero production arrangement inventory;
-- [ ] bunny singularity fan remains independently invalid.
-
-## Required next work: P5-R2E4
-
-Follow `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`:
-
-- [ ] replace target transposition with a complete canonical node-local rotational system;
-- [ ] derive every affected incoming-to-outgoing mapping directly from cyclic ray and sector order;
-- [ ] preserve one authoritative exterior sector per source-boundary loop occurrence;
-- [ ] preserve hard rails as interior sector separators;
-- [ ] preserve pinched fans, close sheets, and components as separate rotational systems;
-- [ ] audit local/global bijection before successor commit;
-- [ ] retain orientation-invariant paired boundary identity;
-- [ ] leave orbit, disk, and Euler validators unchanged;
-- [ ] compile only the four authorized targets and execute no project binary.
+- [ ] verify exact artifact/source/package authority;
+- [ ] preserve source-chart **11/11**, validator **6/6**, recovery **9/9**, and feature/barrier **8/8**;
+- [ ] preserve the passing whole-orientation incidence-hash contract;
+- [ ] require every non-bunny R2 contract to pass;
+- [ ] close planar repeated-edge, area, exterior-owner, Euler, and topology gates;
+- [ ] close hard-rail local rotation and two-cell partition gates;
+- [ ] close cylinder two-exterior-cycle, bounded-disk, Euler-zero, and ownership gates;
+- [ ] require no valid halfedge with `cell == -1`;
+- [ ] preserve nested, nonmanifold, bridge, support-only, pinched-fan, and close-sheet separation;
+- [ ] keep Phase 18 **57/57**;
+- [ ] require nonzero valid seam, close-sheet, and cylinder arrangement inventories;
+- [ ] run Phase 20 and the complete suite once with runtime and memory evidence.
 
 ## Standing process requirements
 
@@ -70,9 +63,10 @@ Follow `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Buil
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e4-summary.json`
 - `.agents/Directional/Milestone_G_P5_TB31_Artifact_Only_R2E3_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`
-- `benchmark-results/p5-tb31-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `MILESTONE_G_TODO.md`
 
