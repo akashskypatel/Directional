@@ -8,64 +8,56 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R2E6 authoritative boundary fan-sector cover Code + Build**.
-- Next turn: **P5-TB34 artifact-only R2E6 validation**.
-- R2 runtime remains open. Do not advance to R2F or R3 from compilation.
+- Completed turn: **P5-TB34 artifact-only R2E6 validation**.
+- Next turn: **P5-R2E7 cyclic fan-sector cover and hard-rail side closure Code + Build**.
+- R2 remains open. Do not advance to R2F or R3.
 
-## P5-R2E6 compiled checkpoint
+## P5-TB34 authority
 
-- Starting documentation head: `2d21e3996d8872b2732892b0f5077643b06e87f2`.
-- Workflow event: `6cd5a5c10aa0f15eb5e1312145425395b8a8372d`.
-- Exact compiled source: `2444c38b8216656b636f4dad9f8acfa70b86bd41`.
-- Workflow cleanup: `3c4e5bf4a2a40b4f34c39a53e789884383217a5e`.
-- Reviewed/applied diff SHA-256: `e4196fd4ed1a68d31ba6310af8e8a4822533fac3c1f0248f75721521785f8d3d`.
+- Exact source: `2444c38b8216656b636f4dad9f8acfa70b86bd41`.
 - Artifact: `8936470245`, SHA-256 `bcc2c0d81e4382368a7fcafe7818c79a2e5bdb23d9a044232a4f3294f4554bf5`.
-- Workflow logs: `8936470828`, SHA-256 `ea700280dc89f4a0e8ed4189aa8db9f760f1cd3210d6f5ce7918e10736ae7e07`.
-- Empty source status; manifest **48/48**; package files **49**; fixtures **26**; recursive submodules **9**.
-- Four target hashes verified; Ninja **132/132**.
-- Compiled only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-- Executed zero tests, benchmarks, project binaries, custom meshes, or discovery commands.
+- Manifest **48/48**; files **49**; fixtures **26**; submodules **9**.
+- Clean source: one base workflow, zero payloads.
+- No configure, build, relink, patch, regeneration, or source/test/fixture modification.
 
-## R2E6 implementation
+## Results
 
-- [x] preserve the complete R2E5 degree-two sector branch unchanged;
-- [x] preserve R1 intrinsic successor and fan identity before exterior override;
-- [x] remove the higher-valence one-common-wedge requirement;
-- [x] assemble one exterior sector plus all authoritative non-wrapping adjacent R1 interior sectors;
-- [x] require every local incoming and outgoing ray exactly once before publication;
-- [x] require distinct fan identities on both sides of authoritative hard rails;
-- [x] add typed `BoundaryFanSectorCoverConflict` evidence;
-- [x] add fan-sector node, interior-sector, and hard-rail-separator diagnostics;
-- [x] replace the invalid dangling-slit higher-valence input with a genuine four-disk boundary partition;
-- [x] preserve predecessor, repeated-cycle, disk, owner, Euler, orientation, and area validators unchanged.
+- [x] source chart **11/11**;
+- [x] validator **6/6**;
+- [x] recovery **9/9**;
+- [x] feature/barrier **8/8**;
+- [x] graph-dependent **5/6**, bunny only;
+- [ ] R2 focused **13/16**;
+- [ ] Milestone D **5/7**;
+- [ ] Phase 14–18 **235/244**;
+- [ ] Phase 16 **45/47**;
+- [ ] Phase 17 **20/26**;
+- [x] Phase 18 **57/57**;
+- [ ] Phase 20 **46/48**;
+- [ ] complete suite **597/625**, 28 failures, XML 73.085 s; exact RSS unavailable after wrapper detachment.
 
-## Required next work: P5-TB34
+## Accepted R2E6 result
 
-Follow `.agents/Directional/Milestone_G_P5_R2E6_Test_Benchmark_Plan.md`:
+- [x] corrected genuine higher-valence four-disk partition passes;
+- [x] R2E5 degree-two partition remains passing;
+- [x] orientation/source-row hash authority preserved.
 
-- [ ] verify exact artifact/source/package authority before runtime;
-- [ ] preserve source-chart **11/11**, validator **6/6**, recovery **9/9**, feature/barrier **8/8**, and graph-dependent **5/6** with bunny only;
-- [ ] preserve the exact passing degree-two topology contract;
-- [ ] require the corrected higher-valence partition to publish one exterior and four bounded disks;
-- [ ] require the interior hard rail to publish one exterior and two bounded disks with at least two audited rail separators;
-- [ ] require R2 focused at least **14/16**, with only planar and bunny allowed;
-- [ ] require Milestone D at least **6/7**, with cylinder only allowed;
-- [ ] preserve Phase 17 **26/26** and Phase 18 **57/57**;
-- [ ] require complete suite at least **604/625** with no unrelated regression;
-- [ ] run direct plane, seam, close sheets, and cylinder without fallback, recovery, or legacy substitution;
-- [ ] execute the complete suite exactly once with runtime and RSS evidence.
+## Required P5-R2E7 work
 
-## Standing process requirements
-
-- Remove bounded workflows and payloads immediately after artifact upload.
-- Every completed turn ends with a new final PR #8 handoff comment after all documentation commits.
+- [ ] enumerate R1 fan sectors cyclically, including vector wrap;
+- [ ] classify exterior only from authoritative boundary-loop evidence;
+- [ ] accept every other valid cyclic adjacency as source interior;
+- [ ] prove directed hard-rail side/fan adjacency, not only unequal fan IDs;
+- [ ] restore planar incidence and all six Phase 17 contracts naturally;
+- [ ] preserve higher-valence and degree-two closure;
+- [ ] leave global validators and downstream phases unchanged;
+- [ ] compile only the four approved targets and execute no project binary.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_R2E6_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E6_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2e6-summary.json`
-- `.agents/Directional/Milestone_G_P5_TB33_Artifact_Only_R2E5_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB34_Artifact_Only_R2E6_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E7_Cyclic_Fan_Sector_Cover_Code_Build_Plan.md`
+- `benchmark-results/p5-tb34-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `MILESTONE_G_TODO.md`
 
