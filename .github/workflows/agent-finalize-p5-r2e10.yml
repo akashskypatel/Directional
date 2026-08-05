@@ -1,0 +1,102 @@
+name: Agent Finalize Surface Cell P5 R2E10
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-finalize-p5-r2e10.yml
+
+permissions:
+  contents: write
+
+env:
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  PAYLOAD: .agents/Directional/patches/P5-R2E10-docs.patch.gz.b64
+  PAYLOAD_SHA256: 0311b924f1c198279f16a732618de6824a9e94de2718d9324726b01d7831f2be
+  PATCH_SHA256: c7bce94c97ec4c596eedf108849f95cedefe64c385525e7022e2090aff8218e4
+  LOG_DIR: /tmp/p5-r2e10-finalize-logs
+  LOG: /tmp/p5-r2e10-finalize-logs/activity.log
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo 'P5-R2E10 documentation finalization'
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event_sha=$GITHUB_SHA"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$LOG"
+
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 4
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply current documentation and clean bounded files
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            echo "exit_code=$rc"
+            echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git status --short --branch || true
+            exit "$rc"
+          }
+          trap finish EXIT
+          set -x
+
+          event_sha=$(git rev-parse HEAD)
+          test "$event_sha" = "$GITHUB_SHA"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$event_sha"
+          test -z "$(git status --porcelain=v1)"
+          test "$(sha256sum "$PAYLOAD" | awk '{print $1}')" = "$PAYLOAD_SHA256"
+
+          base64 -d "$PAYLOAD" | gzip -d > /tmp/p5-r2e10-docs.patch
+          test "$(sha256sum /tmp/p5-r2e10-docs.patch | awk '{print $1}')" = "$PATCH_SHA256"
+          ! grep -Eq '^\+\+\+ b/(src|include|tests|test-data|CMakeLists\.txt)' /tmp/p5-r2e10-docs.patch
+          git apply --check /tmp/p5-r2e10-docs.patch
+          git apply /tmp/p5-r2e10-docs.patch
+          git diff --check
+
+          git rm -f "$PAYLOAD" .github/workflows/agent-finalize-p5-r2e10.yml
+          git add TODO MILESTONE_G_TODO.md .agents/Directional benchmark-results
+          git diff --cached --check
+          git config user.name directional-doc-agent
+          git config user.email directional-doc-agent@users.noreply.github.com
+          git commit -m 'P5-R2E10: record compile authority and TB38 plan [skip ci]'
+          git push origin "HEAD:$BRANCH"
+          final_sha=$(git rev-parse HEAD)
+          test "$(git rev-parse HEAD^)" = "$event_sha"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$final_sha"
+          test ! -e "$PAYLOAD"
+          test ! -e .github/workflows/agent-finalize-p5-r2e10.yml
+          test -f .github/workflows/agent-source-snapshot.yml
+          test -f .agents/Directional/Milestone_G_P5_R2E10_Code_Build_Report.md
+          test -f .agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Plan.md
+          test -f benchmark-results/p5-r2e10-summary.json
+          test ! -e .agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Report.md
+          test ! -e .agents/Directional/Milestone_G_P5_R2E10_Canonical_Wrap_Pair_Chart_Witness_Fan_Cover_Code_Build_Plan.md
+          test ! -e benchmark-results/p5-tb37-summary.json
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e10-finalization-logs-${{ github.run_id }}
+          path: /tmp/p5-r2e10-finalize-logs
+          if-no-files-found: error
+          retention-days: 30
