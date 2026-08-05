@@ -128,6 +128,49 @@ inline const char *surface_arrangement_incidence_failure_name(
   return "Unknown";
 }
 
+enum class SurfaceArrangementBoundaryFanConflict : int {
+  None = 0,
+  MissingCanonicalPair = 1,
+  ExteriorPairMismatch = 2,
+  ZeroChartWitness = 3,
+  MultipleChartWitnesses = 4,
+  NormalizedChartEntityMismatch = 5,
+  TransitionRootMismatch = 6,
+  ConflictingDuplicateWitnessScores = 7,
+  InvalidOrientedInterval = 8,
+  IncompleteIncomingTargetCover = 9,
+  HardRailSeparatorOrOrbitConflict = 10,
+};
+
+inline const char *surface_arrangement_boundary_fan_conflict_name(
+    const SurfaceArrangementBoundaryFanConflict conflict) {
+  switch (conflict) {
+  case SurfaceArrangementBoundaryFanConflict::None:
+    return "None";
+  case SurfaceArrangementBoundaryFanConflict::MissingCanonicalPair:
+    return "MissingCanonicalPair";
+  case SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch:
+    return "ExteriorPairMismatch";
+  case SurfaceArrangementBoundaryFanConflict::ZeroChartWitness:
+    return "ZeroChartWitness";
+  case SurfaceArrangementBoundaryFanConflict::MultipleChartWitnesses:
+    return "MultipleChartWitnesses";
+  case SurfaceArrangementBoundaryFanConflict::NormalizedChartEntityMismatch:
+    return "NormalizedChartEntityMismatch";
+  case SurfaceArrangementBoundaryFanConflict::TransitionRootMismatch:
+    return "TransitionRootMismatch";
+  case SurfaceArrangementBoundaryFanConflict::ConflictingDuplicateWitnessScores:
+    return "ConflictingDuplicateWitnessScores";
+  case SurfaceArrangementBoundaryFanConflict::InvalidOrientedInterval:
+    return "InvalidOrientedInterval";
+  case SurfaceArrangementBoundaryFanConflict::IncompleteIncomingTargetCover:
+    return "IncompleteIncomingTargetCover";
+  case SurfaceArrangementBoundaryFanConflict::HardRailSeparatorOrOrbitConflict:
+    return "HardRailSeparatorOrOrbitConflict";
+  }
+  return "Unknown";
+}
+
 struct SurfaceArrangementOptions {
   bool insertBoundaryRails = true;
   std::set<std::uint64_t> hardFeatureEdges;
@@ -367,6 +410,12 @@ struct SurfaceArrangementDiagnostics {
   int boundaryHardRailSeparatorCount = 0;
   int boundaryCyclicWrapInteriorSectorCount = 0;
   int boundaryHardRailSidePairCount = 0;
+  SurfaceArrangementBoundaryFanConflict boundaryFanConflict =
+      SurfaceArrangementBoundaryFanConflict::None;
+  int boundaryFanConflictNode = -1;
+  int boundaryFanConflictIncoming = -1;
+  int boundaryFanConflictSourceRay = -1;
+  int boundaryFanConflictTarget = -1;
   SurfaceArrangementIncidenceFailure incidenceFailure =
       SurfaceArrangementIncidenceFailure::None;
   int incidenceFailureNode = -1;
