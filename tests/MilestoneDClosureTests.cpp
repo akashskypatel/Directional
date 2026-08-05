@@ -446,6 +446,15 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
     if (!left.boundaryCycle && !right.boundaryCycle) {
       ++boundedHardRailTwinPairs;
       EXPECT_NE(left.id, right.id);
+      EXPECT_TRUE(left.sourceOwnershipClass.valid);
+      EXPECT_TRUE(right.sourceOwnershipClass.valid);
+      EXPECT_FALSE(left.sourceOwnershipClass == right.sourceOwnershipClass);
+      ASSERT_EQ(left.sourceCharts.size(), 1U);
+      ASSERT_EQ(right.sourceCharts.size(), 1U);
+      EXPECT_NE(left.sourceCharts.front().sourceFace,
+                right.sourceCharts.front().sourceFace);
+      EXPECT_EQ(left.sourceCharts.front().sourceComponent,
+                right.sourceCharts.front().sourceComponent);
     }
   }
   EXPECT_EQ(boundedHardRailTwinPairs, 1);
