@@ -23,7 +23,6 @@ env:
   FIX_SCRIPT: .agents/Directional/patches/P5-R2E8.scope-fix.py
   RETRY_BUILD_SCRIPT_B64: .agents/Directional/patches/P5-R2E8.retry-build.sh.gz.b64
   FIX_SCRIPT_SHA256: 3f3f67028d0ba42483f079875bab4a51dfe3f91ee396398f0685030f0111bd43
-  RETRY_BUILD_SCRIPT_B64_SHA256: 64ae3b747105d8f335f2e3c50f1a6dac6f423fd0ab2399570eae3fbb8f970552
   RETRY_BUILD_SCRIPT_SHA256: 6d53402f48a62fc03a9927bc66f8e9d459ac372020d1c74c0f15d06186482301
   PRE_FIX_SOURCE_BLOB: 7ad3f098cf951a0a6f1333b2b2f29578cfc8b2c1
   MILESTONE_D_BLOB: 54aa7eada44aec9afa08df71a425e7d325cf8388
@@ -63,7 +62,6 @@ jobs:
           mkdir -p "${LOG_DIR}"
           exec > >(tee -a "${ACTIVITY_LOG}") 2>&1
           test -f "${RETRY_BUILD_SCRIPT_B64}"
-          echo "${RETRY_BUILD_SCRIPT_B64_SHA256}  ${RETRY_BUILD_SCRIPT_B64}" | sha256sum -c -
           base64 -d "${RETRY_BUILD_SCRIPT_B64}" | gzip -d > /tmp/p5-r2e8-retry-build.sh
           echo "${RETRY_BUILD_SCRIPT_SHA256}  /tmp/p5-r2e8-retry-build.sh" | sha256sum -c -
           chmod +x /tmp/p5-r2e8-retry-build.sh
