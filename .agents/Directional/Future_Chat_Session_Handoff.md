@@ -9,7 +9,27 @@
 
 ## Current checkpoint
 
-P5-TB36 artifact-only R2E8 Test + Benchmark is complete against compiled source `478d058ab2060a1a02a1e4ca3bfc0e6625fa8047` and artifact `8944910920`.
+P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build is complete.
+
+- workflow event commit: `29e71770a3c2ff001fa6daa687a2bdf957dd79c4`;
+- exact compiled source: `a5b9382c2877ef72a3280ad9dbca2d5b20caaa1c`;
+- workflow run/job: `31046039110` / `92441663510`;
+- compiled artifact: `8946700183`;
+- artifact SHA-256: `bae182ef1e3e5fbbc9fff25ea60a56821e31e4e6fe81787137cdac58f30c6a3a`;
+- log artifact: `8946700685`;
+- log artifact SHA-256: `03e137c8af8c41a24595ba1176a3e575fe8da34c44c4605d352a2c9629117e37`;
+- compile/link actions: **132/132**;
+- artifact manifest: **19/19**, package files **20**, recursive submodules **9**, source status empty;
+- exact approved targets: `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
+- no test, benchmark, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+
+R2E9 now enumerates canonical cyclic R1 fan pairs before chart filtering, including vector wrap; excludes the independently proven exterior pair exactly once; publishes only a complete incoming/target bijection; propagates each selected hard-rail chart root through its complete bounded successor orbit; and materializes one authoritative bounded-cell embedding root while retaining full provenance separately. Phase 17 and downstream validators remain unchanged.
+
+The next turn is **P5-TB37 artifact-only R2E9 Test + Benchmark** using artifact `8946700183`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
+
+## Last runtime baseline
+
+The last completed runtime checkpoint is P5-TB36:
 
 - source chart + validator: **17/17**;
 - recovery authority: **9/9**;
@@ -22,31 +42,17 @@ P5-TB36 artifact-only R2E8 Test + Benchmark is complete against compiled source 
 - Phase 18: **57/57**;
 - Phase 14–18: **241/244**;
 - Phase 20: **46/48**;
-- complete suite: **603/625**, 22 failures, XML **72.397 s**, wall **72.40 s**, maximum RSS **281,112 KiB**;
-- exact failure set: P5-TB35 minus the six restored Phase 17 tests, with no new failures.
+- complete suite: **603/625**, 22 failures, wall **72.40 s**, maximum RSS **281,112 KiB**.
 
-R2E8 is not accepted. Planar now publishes incidence and reaches unchanged topology validators, but has no accepted cyclic-wrap interior sector and closes Euler `0` instead of `1`. Hard rail retains its passing incidence, ownership, disk, loop, Euler, and cell-count authority but still fails embedding and aggregate topology.
-
-The next turn is **P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build**. Do not advance to R2F or R3.
-
-## Evidence authority
-
-- artifact SHA-256: `5b93e86db0ddccf4ca3eba2e9b53e6523f02d7ef70809aa8eb67b91f6e9bef39`;
-- `SurfaceArrangement.cpp` blob: `76e57fef36f9322598387b6b5e968a14b885b755`;
-- workflow run: `31041383154`;
-- evidence archive: `directional-p5-tb36-8944910920-evidence.zip`;
-- evidence SHA-256: `af3747b1238a01802a4fc158032451a505cbeb224c51601d888e390b6fd01096`;
-- artifact-only: no configure, rebuild, relink, patch, regeneration, or repository source/test/fixture/validator/workflow modification.
-
-Two independent direct bunny processes are structurally identical. They fail closed at `completion` with `SideSubdivisionRepair:InvalidInputIncidence`, zero arrangement cells, and zero output quads in 24.995377 s and 25.475514 s.
+At that checkpoint, planar incidence published but no cyclic-wrap interior sector was accepted, Euler remained `0` instead of `1`, and aggregate topology was invalid. Hard rail passed incidence, one-exterior/two-bounded cell count, disk, loop, Euler, ownership, and distinct bounded rail-twin ownership, but failed embedding and aggregate topology. Cylinder and bunny remained independent.
 
 ## Retained authoritative documentation
 
 Only current, durable documentation is retained under `.agents/Directional`:
 
 1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_TB36_Artifact_Only_R2E8_Test_Benchmark_Report.md` — latest runtime evidence and producer diagnosis;
-3. `Milestone_G_P5_R2E9_Canonical_Wrap_Sector_Rail_Orbit_Chart_Code_Build_Plan.md` — next executable plan;
+2. `Milestone_G_P5_R2E9_Code_Build_Report.md` — exact implementation and compile authority;
+3. `Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md` — next executable plan;
 4. `DESIGN.md` — durable design authority;
 5. `REORIENTATION_PLAN.md` — durable reorientation authority;
 6. `Surface_Cell_Backend_Remediation_Plan.md` — milestone and remediation authority;
@@ -59,33 +65,34 @@ Superseded per-turn plans, reports, closure notes, and evidence indexes are remo
 Only current or durable result files are retained under `benchmark-results`:
 
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-tb36-summary.json` — latest runtime and exact source/artifact authority.
+- `p5-r2e9-summary.json` — exact compiled-source/package authority for the active source.
 
 Older P5 checkpoint summaries and superseded runtime snapshots are removed after their current conclusions are carried into this handoff and the active trackers.
 
-## Read first for P5-R2E9
+## Read first for P5-TB37
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_TB36_Artifact_Only_R2E8_Test_Benchmark_Report.md`
-5. `.agents/Directional/Milestone_G_P5_R2E9_Canonical_Wrap_Sector_Rail_Orbit_Chart_Code_Build_Plan.md`
-6. `benchmark-results/p5-tb36-summary.json`
+4. `.agents/Directional/Milestone_G_P5_R2E9_Code_Build_Report.md`
+5. `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`
+6. `benchmark-results/p5-r2e9-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-R2E9 objective
+## P5-TB37 objective
 
-1. Enumerate every canonical cyclic adjacent R1 fan pair before chart filtering, including vector wrap.
-2. Resolve each pair to exactly one authoritative chart corner and exclude the independently proven exterior pair once.
-3. Restore planar cyclic-wrap evidence and Euler-one disk topology without arbitrary selection.
-4. Propagate each accepted hard-rail chart root through its complete predicted bounded orbit.
-5. Publish the selected orbit root as authoritative bounded-cell embedding support while retaining full provenance separately.
-6. Preserve degree-two, genuine four-disk, row-order, orientation, pinched-fan, close-sheet, bridge/support, nested, nonmanifold, and Phase 17 **26/26** authority.
-7. Leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, memory, and downstream validators unchanged.
-8. Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
+1. Download artifact `8946700183` and verify archive SHA-256 plus all 19 internal manifest entries.
+2. Execute only packaged binaries; do not configure, rebuild, relink, patch, regenerate, or modify source/tests/fixtures/validators/workflows.
+3. Run source-chart and source-authoritative validator prerequisites first.
+4. Run the focused R2 set and prove planar positive canonical pair inventory, exact exterior exclusion, positive cyclic-wrap count, Euler-one disk topology, and unchanged aggregate validation—or record the earliest typed failure.
+5. Prove one complete authoritative chart root per hard-rail bounded orbit, distinct roots on opposite sides, valid bounded-cell embedding, and valid aggregate topology—or record the earliest typed failure.
+6. Preserve degree-two, genuine four-disk, source-row, whole-orientation, pinched-fan, close-sheet, bridge/support, nested, nonmanifold, and Phase 17 **26/26** authority.
+7. Run Milestone D, Phase 16, Phase 17, Phase 18, Phase 14–18, Phase 20, graph-dependent, and complete-suite scopes.
+8. Run deterministic direct production processes only after focused regressions, with fallback `Fail`, source-grid recovery disabled, and no legacy execution.
+9. Produce the next Code + Build plan from the earliest remaining authoritative producer.
 
 ## Lessons from P5-R2E8
 
@@ -101,6 +108,13 @@ Older P5 checkpoint summaries and superseded runtime snapshots are removed after
 - Hard-rail provenance may legitimately contain both incident charts, while one bounded directed orbit requires one authoritative embedding root. Preserve full provenance and publish selected orbit support as distinct concepts.
 - R2E8 restored all six Phase 17 failures without changing Phase 17. Preserve that upstream improvement and do not patch downstream tests or implementation.
 - A green benchmark process exit only means the benchmark harness wrote a result; each direct case still reports `success=false` and must remain classified as failed production output.
+
+## Lessons from P5-R2E9
+
+- GitHub contents writes preserve exactly the supplied text; omitting one final newline changes the payload SHA-256 even when base64 decoding would yield identical bytes. Verify the repository blob's exact digest before triggering a bounded workflow.
+- The first R2E9 workflow failed at the payload precondition before applying source changes. Its log is infrastructure evidence only; the successful run and exact compiled source are the only compile authority.
+- Canonical topology inventory and chart witness resolution must remain separate stages. Chart evidence can validate a canonical pair but must not decide which canonical pairs exist.
+- A hard-rail root is authoritative only after the complete bounded orbit closes and every directed halfedge supports the same root. Do not publish partial-orbit evidence.
 
 ## Mandatory turn hygiene and instruction preservation
 
