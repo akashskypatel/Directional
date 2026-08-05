@@ -1068,8 +1068,24 @@ std::pair<int, bool> boundary_loop_count(
 
 namespace directional::geometry::surface_arrangement_detail {
 
+struct SourceBoundaryEdgeRecord {
+  std::uint64_t key = 0U;
+  int sourceFace = -1;
+  int sourceEdge = -1;
+  int fromVertex = -1;
+  int toVertex = -1;
+};
+
+struct SourceBoundaryLoopRecord {
+  int id = -1;
+  std::vector<SourceBoundaryEdgeRecord> edges;
+  SurfaceCellCanonicalIdentity canonicalIdentity;
+};
+
 struct SourceBoundaryTopology {
   std::map<std::uint64_t, int> loopByEdge;
+  std::map<std::uint64_t, int> edgeOrderByEdge;
+  std::vector<SourceBoundaryLoopRecord> loops;
   int loopCount = 0;
   bool valid = true;
 };
@@ -1078,7 +1094,7 @@ SourceBoundaryTopology build_source_boundary_topology(
     const Eigen::MatrixXi &faces,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
   SourceBoundaryTopology topology;
-  std::map<std::uint64_t, std::pair<int, int>> boundaryEdges;
+  std::map<std::uint64_t, SourceBoundaryEdgeRecord> boundaryEdges;
   for (int face = 0; face < faces.rows(); ++face) {
     for (int edge = 0; edge < 3; ++edge) {
       const std::uint64_t key = source_edge_key(faces, face, edge);
@@ -1086,66 +1102,121 @@ SourceBoundaryTopology build_source_boundary_topology(
       if (found != edgeFaces.end() && found->second[1] >= 0) {
         continue;
       }
-      const int first = faces(face, (edge + 1) % 3);
-      const int second = faces(face, (edge + 2) % 3);
-      boundaryEdges.emplace(
-          key, std::make_pair(std::min(first, second), std::max(first, second)));
+      SourceBoundaryEdgeRecord record;
+      record.key = key;
+      record.sourceFace = face;
+      record.sourceEdge = edge;
+      // This is the oriented triangle-boundary direction. The incident source
+      // face lies on its left, so the twin direction is the exact exterior
+      // side used below for authoritative boundary continuation.
+      record.fromVertex = faces(face, (edge + 1) % 3);
+      record.toVertex = faces(face, (edge + 2) % 3);
+      if (!boundaryEdges.emplace(key, record).second) {
+        topology.valid = false;
+        return topology;
+      }
     }
   }
   if (boundaryEdges.empty()) {
     return topology;
   }
 
-  std::map<int, std::vector<std::uint64_t>> incidentEdges;
-  for (const auto &[key, endpoints] : boundaryEdges) {
-    incidentEdges[endpoints.first].push_back(key);
-    incidentEdges[endpoints.second].push_back(key);
+  std::map<int, std::uint64_t> outgoingByVertex;
+  std::map<int, std::uint64_t> incomingByVertex;
+  for (const auto &[key, edge] : boundaryEdges) {
+    if (edge.fromVertex < 0 || edge.toVertex < 0 ||
+        edge.fromVertex == edge.toVertex ||
+        !outgoingByVertex.emplace(edge.fromVertex, key).second ||
+        !incomingByVertex.emplace(edge.toVertex, key).second) {
+      topology.valid = false;
+      return topology;
+    }
   }
-  for (auto &[vertex, edges] : incidentEdges) {
-    (void)vertex;
-    std::sort(edges.begin(), edges.end());
-    edges.erase(std::unique(edges.begin(), edges.end()), edges.end());
-    if (edges.size() != 2U) {
+  if (outgoingByVertex.size() != incomingByVertex.size()) {
+    topology.valid = false;
+    return topology;
+  }
+  for (const auto &[vertex, outgoing] : outgoingByVertex) {
+    (void)outgoing;
+    if (incomingByVertex.count(vertex) != 1U) {
       topology.valid = false;
       return topology;
     }
   }
 
   std::set<std::uint64_t> unvisited;
-  for (const auto &[key, endpoints] : boundaryEdges) {
-    (void)endpoints;
+  for (const auto &[key, edge] : boundaryEdges) {
+    (void)edge;
     unvisited.insert(key);
   }
-  std::vector<std::vector<std::uint64_t>> loops;
   while (!unvisited.empty()) {
-    std::vector<std::uint64_t> stack{*unvisited.begin()};
-    std::vector<std::uint64_t> component;
-    unvisited.erase(unvisited.begin());
-    while (!stack.empty()) {
-      const std::uint64_t key = stack.back();
-      stack.pop_back();
-      component.push_back(key);
-      const auto endpoints = boundaryEdges.at(key);
-      for (const int vertex : {endpoints.first, endpoints.second}) {
-        for (const std::uint64_t adjacent : incidentEdges.at(vertex)) {
-          const auto found = unvisited.find(adjacent);
-          if (found != unvisited.end()) {
-            stack.push_back(adjacent);
-            unvisited.erase(found);
-          }
-        }
+    const std::uint64_t start = *unvisited.begin();
+    std::uint64_t current = start;
+    SourceBoundaryLoopRecord loop;
+    std::size_t guard = 0U;
+    do {
+      const auto currentEdge = boundaryEdges.find(current);
+      if (currentEdge == boundaryEdges.end() ||
+          unvisited.erase(current) != 1U) {
+        topology.valid = false;
+        return topology;
       }
+      loop.edges.push_back(currentEdge->second);
+      const auto next = outgoingByVertex.find(currentEdge->second.toVertex);
+      if (next == outgoingByVertex.end()) {
+        topology.valid = false;
+        return topology;
+      }
+      current = next->second;
+      ++guard;
+      if (guard > boundaryEdges.size()) {
+        topology.valid = false;
+        return topology;
+      }
+    } while (current != start);
+
+    if (loop.edges.size() < 3U) {
+      topology.valid = false;
+      return topology;
     }
-    std::sort(component.begin(), component.end());
-    loops.push_back(std::move(component));
+    std::vector<std::uint64_t> canonicalEdges;
+    canonicalEdges.reserve(loop.edges.size());
+    for (const SourceBoundaryEdgeRecord &edge : loop.edges) {
+      canonicalEdges.push_back(edge.key);
+    }
+    std::sort(canonicalEdges.begin(), canonicalEdges.end());
+    loop.canonicalIdentity.valid = true;
+    loop.canonicalIdentity.values = {
+        0x424f554e44415259LL,
+        static_cast<std::int64_t>(canonicalEdges.size())};
+    for (const std::uint64_t key : canonicalEdges) {
+      loop.canonicalIdentity.values.push_back(
+          static_cast<std::int64_t>((key >> 32U) & 0xffffffffULL));
+      loop.canonicalIdentity.values.push_back(
+          static_cast<std::int64_t>(key & 0xffffffffULL));
+    }
+    topology.loops.push_back(std::move(loop));
   }
-  std::sort(loops.begin(), loops.end(), [](const auto &lhs, const auto &rhs) {
-    return lhs.front() < rhs.front();
-  });
-  topology.loopCount = static_cast<int>(loops.size());
-  for (int loop = 0; loop < topology.loopCount; ++loop) {
-    for (const std::uint64_t edge : loops[static_cast<std::size_t>(loop)]) {
-      topology.loopByEdge.emplace(edge, loop);
+
+  std::sort(topology.loops.begin(), topology.loops.end(),
+            [](const SourceBoundaryLoopRecord &lhs,
+               const SourceBoundaryLoopRecord &rhs) {
+              return lhs.canonicalIdentity < rhs.canonicalIdentity;
+            });
+  topology.loopCount = static_cast<int>(topology.loops.size());
+  for (int loopId = 0; loopId < topology.loopCount; ++loopId) {
+    SourceBoundaryLoopRecord &loop =
+        topology.loops[static_cast<std::size_t>(loopId)];
+    loop.id = loopId;
+    for (int edgeOrder = 0;
+         edgeOrder < static_cast<int>(loop.edges.size()); ++edgeOrder) {
+      const std::uint64_t key =
+          loop.edges[static_cast<std::size_t>(edgeOrder)].key;
+      if (!topology.loopByEdge.emplace(key, loopId).second ||
+          !topology.edgeOrderByEdge.emplace(key, edgeOrder).second) {
+        topology.valid = false;
+        return topology;
+      }
     }
   }
   return topology;
@@ -2794,6 +2865,11 @@ SurfaceCellComplex build_surface_cell_complex(
   std::vector<int> predecessorCount(complex.halfedges.size(), 0);
   std::vector<SurfaceCellCanonicalIdentity> successorWedge(
       complex.halfedges.size());
+  std::vector<unsigned char> authoritativeBoundaryExterior(
+      complex.halfedges.size(), 0U);
+  std::vector<int> authoritativeBoundaryLoop(complex.halfedges.size(), -1);
+  std::vector<SurfaceCellCanonicalIdentity> authoritativeBoundarySegment(
+      complex.halfedges.size());
   for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     halfedge.next = -1;
     if (halfedge.twin < 0 ||
@@ -2910,6 +2986,375 @@ SurfaceCellComplex build_surface_cell_complex(
     ++predecessorCount[static_cast<std::size_t>(next)];
   }
 
+  // Source-boundary exterior continuation is authoritative source topology,
+  // not a generic wedge choice. Build an exact subsegment inventory and install
+  // the exterior successor permutation before the complete orbit audit. This
+  // prevents boundary-ending traces and interior hard rails from partitioning
+  // the unbounded side of one source boundary loop.
+  if (directedIncidenceValid && resolvedOptions.insertBoundaryRails) {
+    if (!sourceBoundaryTopology.valid) {
+      record_incidence_failure(
+          SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount, -1, -1,
+          -1, -1);
+    } else {
+      struct BoundarySubsegmentWitness {
+        bool valid = false;
+        int halfedge = -1;
+        int loop = -1;
+        int edgeOrder = -1;
+        std::uint64_t sourceEdgeKey = 0U;
+        int sourceFace = -1;
+        int sourceEdge = -1;
+        int side = 0;
+        double parameter0 = 0.0;
+        double parameter1 = 0.0;
+        double low = 0.0;
+        double high = 0.0;
+      };
+
+      constexpr double boundaryParameterTolerance = 1.0e-10;
+      std::vector<BoundarySubsegmentWitness> boundaryWitnesses(
+          complex.halfedges.size());
+      using SideBuckets = std::array<std::vector<int>, 2>;
+      std::vector<std::vector<SideBuckets>> boundaryByLoopEdge;
+      boundaryByLoopEdge.reserve(sourceBoundaryTopology.loops.size());
+      for (const SourceBoundaryLoopRecord &loop :
+           sourceBoundaryTopology.loops) {
+        boundaryByLoopEdge.emplace_back(loop.edges.size());
+      }
+
+      const auto quantized_parameter = [](const double value) {
+        return static_cast<std::int64_t>(std::llround(value * 1.0e12));
+      };
+      const auto witness_key = [&](const BoundarySubsegmentWitness &witness) {
+        return std::make_tuple(
+            witness.loop, witness.edgeOrder, witness.sourceEdgeKey,
+            witness.sourceFace, witness.sourceEdge, witness.side,
+            quantized_parameter(witness.parameter0),
+            quantized_parameter(witness.parameter1));
+      };
+
+      for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+        std::vector<BoundarySubsegmentWitness> candidates;
+        for (const SurfaceArrangementProvenance &entry : halfedge.provenance) {
+          if (entry.sourceArc >= 0 || entry.family >= 0 ||
+              !entry.hardFeature || entry.sourceFace < 0 ||
+              entry.sourceFace >= faces.rows()) {
+            continue;
+          }
+          if (halfedge.from < 0 || halfedge.to < 0 ||
+              halfedge.from >= static_cast<int>(complex.nodes.size()) ||
+              halfedge.to >= static_cast<int>(complex.nodes.size())) {
+            continue;
+          }
+          const Eigen::RowVector3d fromBary = node_barycentric_on_face(
+              complex.nodes[static_cast<std::size_t>(halfedge.from)],
+              entry.sourceFace);
+          const Eigen::RowVector3d toBary = node_barycentric_on_face(
+              complex.nodes[static_cast<std::size_t>(halfedge.to)],
+              entry.sourceFace);
+          if (!fromBary.allFinite() || !toBary.allFinite()) {
+            continue;
+          }
+          int sourceEdge = -1;
+          for (int coordinate = 0; coordinate < 3; ++coordinate) {
+            if (std::abs(fromBary[coordinate]) <= 1.0e-12 &&
+                std::abs(toBary[coordinate]) <= 1.0e-12) {
+              sourceEdge = coordinate;
+              break;
+            }
+          }
+          if (sourceEdge < 0 || entry.featureClass != sourceEdge ||
+              !std::isfinite(entry.sourceT0) ||
+              !std::isfinite(entry.sourceT1)) {
+            continue;
+          }
+          const std::uint64_t edgeKey =
+              source_edge_key(faces, entry.sourceFace, sourceEdge);
+          const auto loopFound = sourceBoundaryTopology.loopByEdge.find(edgeKey);
+          const auto orderFound =
+              sourceBoundaryTopology.edgeOrderByEdge.find(edgeKey);
+          if (loopFound == sourceBoundaryTopology.loopByEdge.end() ||
+              orderFound == sourceBoundaryTopology.edgeOrderByEdge.end()) {
+            continue;
+          }
+          double parameter0 = entry.sourceT0;
+          double parameter1 = entry.sourceT1;
+          if (parameter0 < -boundaryParameterTolerance ||
+              parameter0 > 1.0 + boundaryParameterTolerance ||
+              parameter1 < -boundaryParameterTolerance ||
+              parameter1 > 1.0 + boundaryParameterTolerance ||
+              std::abs(parameter1 - parameter0) <=
+                  boundaryParameterTolerance) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::BoundaryCoverageOverlap,
+                halfedge.from, halfedge.id, halfedge.twin, -1);
+            break;
+          }
+          parameter0 = std::clamp(parameter0, 0.0, 1.0);
+          parameter1 = std::clamp(parameter1, 0.0, 1.0);
+          BoundarySubsegmentWitness witness;
+          witness.valid = true;
+          witness.halfedge = halfedge.id;
+          witness.loop = loopFound->second;
+          witness.edgeOrder = orderFound->second;
+          witness.sourceEdgeKey = edgeKey;
+          witness.sourceFace = entry.sourceFace;
+          witness.sourceEdge = sourceEdge;
+          // Boundary rails are inserted in the oriented source-face boundary
+          // direction, with source interior on the left. The reverse interval
+          // is therefore exactly the exterior-side halfedge.
+          witness.side = parameter1 > parameter0 ? 1 : -1;
+          witness.parameter0 = parameter0;
+          witness.parameter1 = parameter1;
+          witness.low = std::min(parameter0, parameter1);
+          witness.high = std::max(parameter0, parameter1);
+          candidates.push_back(std::move(witness));
+        }
+        if (!directedIncidenceValid) {
+          break;
+        }
+        if (candidates.empty()) {
+          continue;
+        }
+        std::sort(candidates.begin(), candidates.end(),
+                  [&](const BoundarySubsegmentWitness &lhs,
+                      const BoundarySubsegmentWitness &rhs) {
+                    return witness_key(lhs) < witness_key(rhs);
+                  });
+        candidates.erase(
+            std::unique(candidates.begin(), candidates.end(),
+                        [&](const BoundarySubsegmentWitness &lhs,
+                            const BoundarySubsegmentWitness &rhs) {
+                          return witness_key(lhs) == witness_key(rhs);
+                        }),
+            candidates.end());
+        if (candidates.size() != 1U) {
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::ContradictoryBoundarySide,
+              halfedge.from, halfedge.id, halfedge.twin, -1);
+          break;
+        }
+        const BoundarySubsegmentWitness &witness = candidates.front();
+        if (witness.loop < 0 ||
+            witness.loop >= static_cast<int>(boundaryByLoopEdge.size()) ||
+            witness.edgeOrder < 0 ||
+            witness.edgeOrder >= static_cast<int>(
+                                     boundaryByLoopEdge[static_cast<std::size_t>(
+                                         witness.loop)]
+                                         .size())) {
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::BoundaryCoverageGap,
+              halfedge.from, halfedge.id, halfedge.twin, -1);
+          break;
+        }
+        boundaryWitnesses[static_cast<std::size_t>(halfedge.id)] = witness;
+        const int sideIndex = witness.side < 0 ? 0 : 1;
+        boundaryByLoopEdge[static_cast<std::size_t>(witness.loop)]
+                          [static_cast<std::size_t>(witness.edgeOrder)]
+                              [static_cast<std::size_t>(sideIndex)]
+                                  .push_back(halfedge.id);
+      }
+
+      const auto validate_boundary_coverage =
+          [&](std::vector<int> &bucket, const int loop, const int edgeOrder,
+              const int side) {
+            if (bucket.empty()) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::BoundaryCoverageGap,
+                  -1, -1, -1, loop);
+              return false;
+            }
+            std::sort(bucket.begin(), bucket.end(), [&](const int lhs,
+                                                        const int rhs) {
+              const BoundarySubsegmentWitness &a =
+                  boundaryWitnesses[static_cast<std::size_t>(lhs)];
+              const BoundarySubsegmentWitness &b =
+                  boundaryWitnesses[static_cast<std::size_t>(rhs)];
+              return std::tie(a.low, a.high, a.halfedge) <
+                     std::tie(b.low, b.high, b.halfedge);
+            });
+            double covered = 0.0;
+            for (const int halfedgeId : bucket) {
+              const BoundarySubsegmentWitness &witness =
+                  boundaryWitnesses[static_cast<std::size_t>(halfedgeId)];
+              if (witness.loop != loop || witness.edgeOrder != edgeOrder ||
+                  witness.side != side) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::BoundaryCoverageOverlap,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].from,
+                    halfedgeId,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+                    -1);
+                return false;
+              }
+              if (witness.low > covered + boundaryParameterTolerance) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::BoundaryCoverageGap,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].from,
+                    halfedgeId,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+                    loop);
+                return false;
+              }
+              if (witness.low < covered - boundaryParameterTolerance) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::BoundaryCoverageOverlap,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].from,
+                    halfedgeId,
+                    complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+                    loop);
+                return false;
+              }
+              covered = std::max(covered, witness.high);
+            }
+            if (covered < 1.0 - boundaryParameterTolerance) {
+              const int last = bucket.back();
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::BoundaryCoverageGap,
+                  complex.halfedges[static_cast<std::size_t>(last)].to, last,
+                  complex.halfedges[static_cast<std::size_t>(last)].twin, loop);
+              return false;
+            }
+            return true;
+          };
+
+      for (int loop = 0;
+           directedIncidenceValid &&
+           loop < static_cast<int>(boundaryByLoopEdge.size());
+           ++loop) {
+        for (int edgeOrder = 0;
+             directedIncidenceValid &&
+             edgeOrder < static_cast<int>(
+                             boundaryByLoopEdge[static_cast<std::size_t>(loop)]
+                                 .size());
+             ++edgeOrder) {
+          for (int sideIndex = 0; sideIndex < 2; ++sideIndex) {
+            const int side = sideIndex == 0 ? -1 : 1;
+            validate_boundary_coverage(
+                boundaryByLoopEdge[static_cast<std::size_t>(loop)]
+                                  [static_cast<std::size_t>(edgeOrder)]
+                                  [static_cast<std::size_t>(sideIndex)],
+                loop, edgeOrder, side);
+            if (!directedIncidenceValid) {
+              break;
+            }
+          }
+        }
+      }
+
+      const auto make_boundary_segment_identity =
+          [&](const BoundarySubsegmentWitness &witness) {
+            SurfaceCellCanonicalIdentity identity;
+            if (!witness.valid || witness.loop < 0 ||
+                witness.loop >=
+                    static_cast<int>(sourceBoundaryTopology.loops.size())) {
+              return identity;
+            }
+            identity = sourceBoundaryTopology
+                           .loops[static_cast<std::size_t>(witness.loop)]
+                           .canonicalIdentity;
+            identity.values.push_back(0x5345474d454e54LL);
+            identity.values.push_back(static_cast<std::int64_t>(
+                (witness.sourceEdgeKey >> 32U) & 0xffffffffULL));
+            identity.values.push_back(static_cast<std::int64_t>(
+                witness.sourceEdgeKey & 0xffffffffULL));
+            identity.values.push_back(quantized_parameter(witness.low));
+            identity.values.push_back(quantized_parameter(witness.high));
+            return identity;
+          };
+
+      for (int loop = 0;
+           directedIncidenceValid &&
+           loop < static_cast<int>(sourceBoundaryTopology.loops.size());
+           ++loop) {
+        const SourceBoundaryLoopRecord &loopRecord =
+            sourceBoundaryTopology.loops[static_cast<std::size_t>(loop)];
+        std::vector<int> exteriorSequence;
+        exteriorSequence.reserve(loopRecord.edges.size());
+        // Exterior halfedges traverse opposite the face-oriented source loop.
+        // Visit source edges in reverse order and each edge interval from high
+        // parameter to low parameter.
+        for (int reverseIndex = static_cast<int>(loopRecord.edges.size()) - 1;
+             reverseIndex >= 0; --reverseIndex) {
+          std::vector<int> edgeSegments =
+              boundaryByLoopEdge[static_cast<std::size_t>(loop)]
+                                [static_cast<std::size_t>(reverseIndex)][0];
+          std::sort(edgeSegments.begin(), edgeSegments.end(),
+                    [&](const int lhs, const int rhs) {
+                      const BoundarySubsegmentWitness &a =
+                          boundaryWitnesses[static_cast<std::size_t>(lhs)];
+                      const BoundarySubsegmentWitness &b =
+                          boundaryWitnesses[static_cast<std::size_t>(rhs)];
+                      return std::tie(a.parameter0, a.parameter1, a.halfedge) >
+                             std::tie(b.parameter0, b.parameter1, b.halfedge);
+                    });
+          for (const int halfedgeId : edgeSegments) {
+            const BoundarySubsegmentWitness &witness =
+                boundaryWitnesses[static_cast<std::size_t>(halfedgeId)];
+            if (witness.side != -1 ||
+                witness.parameter0 <= witness.parameter1 +
+                                          boundaryParameterTolerance) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::ContradictoryBoundarySide,
+                  complex.halfedges[static_cast<std::size_t>(halfedgeId)].from,
+                  halfedgeId,
+                  complex.halfedges[static_cast<std::size_t>(halfedgeId)].twin,
+                  loop);
+              break;
+            }
+            exteriorSequence.push_back(halfedgeId);
+          }
+        }
+        if (!directedIncidenceValid) {
+          break;
+        }
+        if (exteriorSequence.size() < 3U) {
+          record_incidence_failure(
+              SurfaceArrangementIncidenceFailure::BoundaryCoverageGap, -1, -1,
+              -1, loop);
+          break;
+        }
+        for (std::size_t index = 0; index < exteriorSequence.size(); ++index) {
+          const int currentId = exteriorSequence[index];
+          const int nextId =
+              exteriorSequence[(index + 1U) % exteriorSequence.size()];
+          SurfaceArrangementHalfedge &current =
+              complex.halfedges[static_cast<std::size_t>(currentId)];
+          const SurfaceArrangementHalfedge &next =
+              complex.halfedges[static_cast<std::size_t>(nextId)];
+          if (current.to != next.from) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryContinuationDiscontinuity,
+                current.to, currentId, current.twin, nextId);
+            break;
+          }
+          current.next = nextId;
+          authoritativeBoundaryExterior[static_cast<std::size_t>(currentId)] =
+              1U;
+          authoritativeBoundaryLoop[static_cast<std::size_t>(currentId)] = loop;
+          authoritativeBoundarySegment[static_cast<std::size_t>(currentId)] =
+              make_boundary_segment_identity(
+                  boundaryWitnesses[static_cast<std::size_t>(currentId)]);
+          successorWedge[static_cast<std::size_t>(currentId)] =
+              loopRecord.canonicalIdentity;
+        }
+      }
+    }
+  }
+
+  // Predecessor multiplicity is audited from the final successor relation,
+  // after authoritative exterior continuation has replaced the generic wedge
+  // choice. Never validate counts accumulated from the superseded relation.
+  std::fill(predecessorCount.begin(), predecessorCount.end(), 0);
+  for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
+    if (halfedge.next >= 0 &&
+        halfedge.next < static_cast<int>(complex.halfedges.size())) {
+      ++predecessorCount[static_cast<std::size_t>(halfedge.next)];
+    }
+  }
+
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     if (halfedge.next < 0) {
       continue;
@@ -2981,31 +3426,64 @@ SurfaceCellComplex build_surface_cell_complex(
         halfedge.id >= static_cast<int>(successorWedge.size())) {
       continue;
     }
-    const SurfaceCellCanonicalIdentity from =
-        canonical_node_identity(halfedge.from);
-    const SurfaceCellCanonicalIdentity to =
-        canonical_node_identity(halfedge.to);
-    const SurfaceArrangementHalfedge &next =
-        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
-    const SurfaceCellCanonicalIdentity nextTo =
-        canonical_node_identity(next.to);
-    const SurfaceCellCanonicalIdentity &wedge =
-        successorWedge[static_cast<std::size_t>(halfedge.id)];
-    if (!from.valid || !to.valid || !nextTo.valid || !wedge.valid) {
-      record_incidence_failure(
-          SurfaceArrangementIncidenceFailure::MissingWedge, halfedge.to,
-          halfedge.id, halfedge.twin, halfedge.next);
-      continue;
-    }
     std::vector<std::int64_t> record;
     const auto append_identity = [&](const SurfaceCellCanonicalIdentity &value) {
       record.push_back(static_cast<std::int64_t>(value.values.size()));
       record.insert(record.end(), value.values.begin(), value.values.end());
     };
-    append_identity(wedge);
-    append_identity(from);
-    append_identity(to);
-    append_identity(nextTo);
+    if (authoritativeBoundaryExterior[static_cast<std::size_t>(halfedge.id)] !=
+        0U) {
+      const int loop =
+          authoritativeBoundaryLoop[static_cast<std::size_t>(halfedge.id)];
+      const SurfaceCellCanonicalIdentity &segment =
+          authoritativeBoundarySegment[static_cast<std::size_t>(halfedge.id)];
+      const SurfaceCellCanonicalIdentity &nextSegment =
+          authoritativeBoundarySegment[static_cast<std::size_t>(halfedge.next)];
+      if (loop < 0 ||
+          loop >= static_cast<int>(sourceBoundaryTopology.loops.size()) ||
+          !segment.valid || !nextSegment.valid) {
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::MissingWedge, halfedge.to,
+            halfedge.id, halfedge.twin, halfedge.next);
+        continue;
+      }
+      // Hash undirected adjacency between canonical boundary subsegments. A
+      // whole-mesh orientation reversal swaps the directed exterior halfedges
+      // and reverses the loop, but preserves this exact adjacency multiset.
+      record.push_back(0x424f554e44415259LL);
+      append_identity(sourceBoundaryTopology
+                          .loops[static_cast<std::size_t>(loop)]
+                          .canonicalIdentity);
+      if (nextSegment < segment) {
+        append_identity(nextSegment);
+        append_identity(segment);
+      } else {
+        append_identity(segment);
+        append_identity(nextSegment);
+      }
+    } else {
+      const SurfaceCellCanonicalIdentity from =
+          canonical_node_identity(halfedge.from);
+      const SurfaceCellCanonicalIdentity to =
+          canonical_node_identity(halfedge.to);
+      const SurfaceArrangementHalfedge &next =
+          complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+      const SurfaceCellCanonicalIdentity nextTo =
+          canonical_node_identity(next.to);
+      const SurfaceCellCanonicalIdentity &wedge =
+          successorWedge[static_cast<std::size_t>(halfedge.id)];
+      if (!from.valid || !to.valid || !nextTo.valid || !wedge.valid) {
+        record_incidence_failure(
+            SurfaceArrangementIncidenceFailure::MissingWedge, halfedge.to,
+            halfedge.id, halfedge.twin, halfedge.next);
+        continue;
+      }
+      record.push_back(0x5745444745LL);
+      append_identity(wedge);
+      append_identity(from);
+      append_identity(to);
+      append_identity(nextTo);
+    }
     record.push_back(halfedge.family);
     record.push_back(halfedge.strand);
     record.push_back(halfedge.hardFeature ? 1 : 0);

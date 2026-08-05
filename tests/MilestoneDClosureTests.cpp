@@ -373,6 +373,18 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   ASSERT_NE(exterior, complex.cells.end());
   EXPECT_EQ(exterior->sourceBoundarySide, -1);
   EXPECT_EQ(exterior->sourceBoundaryLoopIds, (std::vector<int>{0}));
+  for (const int halfedgeId : exterior->halfedges) {
+    ASSERT_GE(halfedgeId, 0);
+    ASSERT_LT(halfedgeId, static_cast<int>(complex.halfedges.size()));
+    const auto &halfedge =
+        complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    ASSERT_GE(halfedge.next, 0);
+    ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+    const auto &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    EXPECT_EQ(halfedge.to, next.from);
+    EXPECT_EQ(next.cell, exterior->id);
+  }
 }
 
 TEST(MilestoneDClosure, PartialMultiEdgeInterfaceFailsClosed) {
@@ -573,6 +585,18 @@ TEST(MilestoneDClosure, CylindricalOpenStrandCommitsWithTopologyPreserved) {
     EXPECT_EQ(cell.sourceBoundarySide, -1);
     exteriorLoops.insert(cell.sourceBoundaryLoopIds.begin(),
                          cell.sourceBoundaryLoopIds.end());
+    for (const int halfedgeId : cell.halfedges) {
+      ASSERT_GE(halfedgeId, 0);
+      ASSERT_LT(halfedgeId, static_cast<int>(complex.halfedges.size()));
+      const auto &halfedge =
+          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+      ASSERT_GE(halfedge.next, 0);
+      ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+      const auto &next =
+          complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+      EXPECT_EQ(halfedge.to, next.from);
+      EXPECT_EQ(next.cell, cell.id);
+    }
   }
   EXPECT_EQ(exteriorCells, 2);
   EXPECT_EQ(exteriorLoops, (std::set<int>{0, 1}));

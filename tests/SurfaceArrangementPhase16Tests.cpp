@@ -421,6 +421,11 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   const auto complex = directional::geometry::build_surface_cell_complex(
       fixture.vertices, fixture.faces, arcs);
 
+  ASSERT_TRUE(complex.diagnostics.incidenceValid)
+      << directional::geometry::surface_arrangement_incidence_failure_name(
+             complex.diagnostics.incidenceFailure);
+  EXPECT_TRUE(complex.diagnostics.topologyValid);
+  EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_EQ(complex.diagnostics.eulerCharacteristic, 1);
   EXPECT_EQ(complex.diagnostics.sourceEulerCharacteristic, 1);
   EXPECT_LE(complex.diagnostics.relativeAreaError, 1.0e-8);
@@ -433,6 +438,25 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
             1);
   EXPECT_EQ(exterior->sourceBoundarySide, -1);
   EXPECT_EQ(exterior->sourceBoundaryLoopIds, (std::vector<int>{0}));
+  ASSERT_FALSE(exterior->halfedges.empty());
+  for (const int halfedgeId : exterior->halfedges) {
+    ASSERT_GE(halfedgeId, 0);
+    ASSERT_LT(halfedgeId, static_cast<int>(complex.halfedges.size()));
+    const auto &halfedge =
+        complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+    ASSERT_GE(halfedge.next, 0);
+    ASSERT_LT(halfedge.next, static_cast<int>(complex.halfedges.size()));
+    const auto &next =
+        complex.halfedges[static_cast<std::size_t>(halfedge.next)];
+    EXPECT_EQ(halfedge.to, next.from);
+    EXPECT_EQ(next.cell, exterior->id);
+  }
+  EXPECT_TRUE(std::all_of(
+      complex.halfedges.begin(), complex.halfedges.end(),
+      [&](const auto &halfedge) {
+        return halfedge.cell >= 0 &&
+               halfedge.cell < static_cast<int>(complex.cells.size());
+      }));
 }
 
 TEST(SurfaceArrangementPhase16, TopologyHashIgnoresInsertionOrder) {

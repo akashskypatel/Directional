@@ -64,6 +64,9 @@ enum class SurfaceArrangementIncidenceFailure : int {
   NonManifoldSourceEdge = 14,
   ContradictoryBoundarySide = 15,
   BoundaryLoopOwnerCount = 16,
+  BoundaryCoverageGap = 17,
+  BoundaryCoverageOverlap = 18,
+  BoundaryContinuationDiscontinuity = 19,
 };
 
 inline const char *surface_arrangement_incidence_failure_name(
@@ -103,6 +106,12 @@ inline const char *surface_arrangement_incidence_failure_name(
     return "ContradictoryBoundarySide";
   case SurfaceArrangementIncidenceFailure::BoundaryLoopOwnerCount:
     return "BoundaryLoopOwnerCount";
+  case SurfaceArrangementIncidenceFailure::BoundaryCoverageGap:
+    return "BoundaryCoverageGap";
+  case SurfaceArrangementIncidenceFailure::BoundaryCoverageOverlap:
+    return "BoundaryCoverageOverlap";
+  case SurfaceArrangementIncidenceFailure::BoundaryContinuationDiscontinuity:
+    return "BoundaryContinuationDiscontinuity";
   }
   return "Unknown";
 }
