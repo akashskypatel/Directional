@@ -1,0 +1,148 @@
+name: Agent Finalize Surface Cell P5 R2E11
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-finalize-p5-r2e11.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: surface-cell-p5-r2e11-finalize-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  PAYLOAD: .agents/Directional/patches/P5-R2E11-final-docs.tar.gz.b64
+  PAYLOAD_SHA256: 94e5efdf62a79b39ed7e87bc4976d2ee0e7144369ba761e1c003736dedd1f7b9
+  TAR_SHA256: 7debba097ebf6e9c8b2b262362d82d0a6b93e07d3653fa24e88152a74585ac90
+  LOG_DIR: /tmp/p5-r2e11-finalize-logs
+  LOG: /tmp/p5-r2e11-finalize-logs/activity.log
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo 'P5-R2E11 documentation finalization'
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event_sha=$GITHUB_SHA"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$LOG"
+
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 8
+          submodules: false
+          persist-credentials: true
+
+      - name: Publish current authority and clean bounded files
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            echo "exit_code=$rc"
+            echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git status --short --branch || true
+            exit "$rc"
+          }
+          trap finish EXIT
+          set -x
+
+          event_sha=$(git rev-parse HEAD)
+          test "$event_sha" = "$GITHUB_SHA"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$event_sha"
+          test -z "$(git status --porcelain=v1)"
+          test "$(sha256sum "$PAYLOAD" | awk '{print $1}')" = "$PAYLOAD_SHA256"
+
+          base64 -d "$PAYLOAD" > /tmp/p5-r2e11-final-docs.tar.gz
+          test "$(sha256sum /tmp/p5-r2e11-final-docs.tar.gz | awk '{print $1}')" = "$TAR_SHA256"
+          rm -rf /tmp/p5-r2e11-final-docs
+          mkdir -p /tmp/p5-r2e11-final-docs
+          tar -xzf /tmp/p5-r2e11-final-docs.tar.gz -C /tmp/p5-r2e11-final-docs
+          tar -tzf /tmp/p5-r2e11-final-docs.tar.gz | sort | tee /tmp/payload-files.txt
+          ! grep -Eq '^\./(src|include|tests|benchmarks/fixtures|CMakeLists\.txt|\.github)/' /tmp/payload-files.txt
+
+          python3 - <<'PY'
+          from pathlib import Path
+          marker = '## Mandatory turn hygiene and instruction preservation'
+          old = Path('.agents/Directional/Future_Chat_Session_Handoff.md').read_text()
+          new = Path('/tmp/p5-r2e11-final-docs/.agents/Directional/Future_Chat_Session_Handoff.md').read_text()
+          assert marker in old and marker in new
+          assert old[old.index(marker):] == new[new.index(marker):]
+          PY
+
+          cp /tmp/p5-r2e11-final-docs/TODO TODO
+          cp /tmp/p5-r2e11-final-docs/MILESTONE_G_TODO.md MILESTONE_G_TODO.md
+          cp /tmp/p5-r2e11-final-docs/.agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/
+          cp /tmp/p5-r2e11-final-docs/.agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md .agents/Directional/
+          cp /tmp/p5-r2e11-final-docs/.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md .agents/Directional/
+          cp /tmp/p5-r2e11-final-docs/benchmark-results/p5-r2e11-summary.json benchmark-results/
+
+          git rm -f \
+            .github/workflows/agent-build-p5-r2e11.yml \
+            .github/workflows/agent-finalize-p5-r2e11.yml \
+            "$PAYLOAD" \
+            .agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md \
+            .agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md \
+            benchmark-results/p5-tb38-summary.json
+          git add TODO MILESTONE_G_TODO.md benchmark-results
+          git add -f .agents/Directional
+          git diff --cached --check
+          git diff --cached --name-only | sort | tee /tmp/changed.txt
+          diff -u <(printf '%s\n' \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md \
+            .agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md \
+            .agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md \
+            .agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md \
+            .agents/Directional/patches/P5-R2E11-final-docs.tar.gz.b64 \
+            .github/workflows/agent-build-p5-r2e11.yml \
+            .github/workflows/agent-finalize-p5-r2e11.yml \
+            MILESTONE_G_TODO.md \
+            TODO \
+            benchmark-results/p5-r2e11-summary.json \
+            benchmark-results/p5-tb38-summary.json | sort) /tmp/changed.txt
+
+          git config user.name directional-doc-agent
+          git config user.email directional-doc-agent@users.noreply.github.com
+          git commit -m 'P5-R2E11: record compile authority and TB39 plan [skip ci]'
+          git push origin "HEAD:$BRANCH"
+
+          final_sha=$(git rev-parse HEAD)
+          test "$(git rev-parse HEAD^)" = "$event_sha"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$final_sha"
+          test ! -e "$PAYLOAD"
+          test ! -e .github/workflows/agent-build-p5-r2e11.yml
+          test ! -e .github/workflows/agent-finalize-p5-r2e11.yml
+          test -f .github/workflows/agent-source-snapshot.yml
+          test -f .agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md
+          test -f .agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md
+          test -f benchmark-results/p5-r2e11-summary.json
+          test ! -e .agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md
+          test ! -e .agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md
+          test ! -e benchmark-results/p5-tb38-summary.json
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e11-finalization-logs-${{ github.run_id }}
+          path: /tmp/p5-r2e11-finalize-logs
+          if-no-files-found: error
+          retention-days: 30
