@@ -1,0 +1,72 @@
+{
+  "turn": "P5-R2E10",
+  "turn_type": "Code + Build",
+  "date": "2026-08-05",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "review_policy": "never",
+  "source": {
+    "workflow_event_commit": "4831349b3d8c996a44bbd804f12ad01be9e3446f",
+    "compiled_commit": "bf33049157dfee51a1b6c48dff35a97ce980e49f",
+    "surface_arrangement_blob": "359ae620448e777731d2d2292eda3d0050c42c61",
+    "header_blob": "b172625cd82862d16b81b6f3b8d52686b5fda41c",
+    "phase16_test_blob": "e58bceda098f7768b8a7203cca00564f82a7d831",
+    "milestone_d_test_blob": "015a9f02354a91ca07d0e0c6bf6b2632055436ae"
+  },
+  "workflow": {
+    "run_id": 31051610854,
+    "job_id": 92459824013,
+    "conclusion": "success",
+    "compile_link_actions": 132,
+    "recursive_submodules": 9
+  },
+  "artifact": {
+    "id": "8948771075",
+    "name": "surface-cell-p5-r2e10-github-source-linux-release",
+    "sha256": "d0815a8423cd71758eb4f1033c0d3f19fd34261df4ea5c32efcf80b2069c3210",
+    "manifest_entries": "19",
+    "package_files_including_manifest": "20"
+  },
+  "log_artifact": {
+    "id": "8948771526",
+    "sha256": "e2a8b1ab9399952f3ffd029e747cc09271bb64906b5a8509e2ed6447e9f8bf20"
+  },
+  "configuration": {
+    "build_type": "Release",
+    "flags": "-O2 -DNDEBUG",
+    "generator": "Ninja",
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "project_binary_executed": false
+  },
+  "implementation": {
+    "normalized_node_level_canonical_pair_inventory": true,
+    "directed_pair_key": ["incoming", "sourceRay", "target"],
+    "equivalent_fan_identity_reconciliation": "canonical source entity and transition root must agree",
+    "continuous_wrap_chart_corner_interval": true,
+    "third_ray_intrusion_rejected": true,
+    "exact_exterior_relation_excluded_once": true,
+    "complete_incoming_target_bijection_required": true,
+    "hard_rail_complete_orbit_root_audit_retained": true,
+    "phase17_modified": false,
+    "downstream_validators_modified": false
+  },
+  "last_runtime_baseline": {
+    "turn": "P5-TB37",
+    "r2_focused": "13/16",
+    "phase17": "20/26",
+    "complete_suite": "597/625",
+    "failure_count": 28,
+    "planar_first_failure": "BoundaryFanSectorCoverConflict",
+    "hard_rail_first_failure": "BoundaryFanSectorCoverConflict"
+  },
+  "runtime_acceptance": "pending P5-TB38",
+  "next_turn": "P5-TB38 artifact-only R2E10 Test + Benchmark",
+  "r2_status": "open"
+}
