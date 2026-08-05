@@ -4188,7 +4188,6 @@ SurfaceCellComplex build_surface_cell_complex(
                     return !sector.exterior && sector.cyclicWrap;
                   }));
         }
-        }
 
         if (candidateNext[static_cast<std::size_t>(exteriorIncoming)] !=
                 exteriorOutgoing ||
