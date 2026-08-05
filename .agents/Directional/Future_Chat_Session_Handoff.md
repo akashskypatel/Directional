@@ -9,76 +9,80 @@
 
 ## Current checkpoint
 
-P5-R2E4 authoritative boundary-node rotational-system construction is implemented and compiles successfully.
+P5-TB32 artifact-only R2E4 validation is complete against exact source `ec44ab7570f258f800a27086fca053c573878a13` and artifact `8929111021`.
 
-- exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`;
-- artifact: `8929111021`;
-- workflow run/job: `31002566593` / `92294705089`;
-- post-build workflow cleanup: `d59ddc2c72459287e4c3af5f6a6939443aae6f12`.
+R2E4 introduces a broad fail-closed regression at ordinary degree-two boundary nodes. The complete suite is **575/624** with 49 failures. Relative to P5-TB31, one new test was added, no failure closed, and 21 failures regressed.
 
-Runtime acceptance has not been executed for this source. The next turn is **P5-TB32 artifact-only R2E4 validation**. Do not configure, rebuild, relink, patch, regenerate, or modify source. Do not advance to R2F or R3 from compilation.
+The next turn is **P5-R2E5 degree-two boundary rotational degeneracy Code + Build**. Do not advance to R2F or R3.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`
-5. `benchmark-results/p5-r2e4-summary.json`
-6. `.agents/Directional/Milestone_G_P5_TB31_Artifact_Only_R2E3_Test_Benchmark_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2E4_Boundary_Node_Rotation_Code_Build_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_TB32_Artifact_Only_R2E4_Test_Benchmark_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E5_Degree_Two_Boundary_Rotation_Code_Build_Plan.md`
+5. `benchmark-results/p5-tb32-summary.json`
+6. `.agents/Directional/Milestone_G_P5_R2E4_Code_Build_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2E4_Test_Benchmark_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-R2E4 package authority
+## P5-TB32 authority
 
-- starting documentation head: `fbec81c04d8134da81482e347389a5fde085feaf`;
+- exact tested source: `ec44ab7570f258f800a27086fca053c573878a13`;
 - workflow event commit: `d81351aeb6bb7b728ceaf5bf468f924383167eb9`;
-- exact compiled source: `ec44ab7570f258f800a27086fca053c573878a13`;
-- reviewed/applied source diff SHA-256: `33ee4e40c7e5146abd732796b771d74ed28b7808bae6b0ed14bd327fd902aa01`;
-- artifact: `8929111021`, `surface-cell-p5-r2e4-github-source-linux-release`;
-- artifact SHA-256: `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`;
-- workflow-log artifact: `8929111261`, SHA-256 `a83b4533e6847976a1e942aff8a47b725a8ff468bc586477cc39fb3f45c206ba`;
-- source status empty;
-- recursive checksums **48/48**;
-- package files **49**;
-- fixtures **26**;
-- recursive submodules **9**;
-- all four target hashes verified;
-- all **132/132** Ninja actions completed;
-- no project binary executed.
+- artifact: `8929111021`, SHA-256 `dcb3dcca095a62efde3bc534a8eafca1a5a3976f3e98b649845c6ca47c682450`;
+- reviewed/applied diff SHA-256: `33ee4e40c7e5146abd732796b771d74ed28b7808bae6b0ed14bd327fd902aa01`;
+- source status empty; checksums **48/48**; files **49**; fixtures **26**; submodules **9**; target hashes verified;
+- cleaned source contains only `agent-source-snapshot.yml` and zero payloads;
+- no configure, build, relink, patch, regeneration, fixture modification, or source modification during validation;
+- evidence bundle: `directional-p5-tb32-8929111021-evidence.zip`, SHA-256 `b31a0259b313332b6234dc3aacd85593b5703f42d2707fbbd5b0ade2f0355aca`.
 
-The cleaned validation source contains only `agent-source-snapshot.yml` and zero payloads. The exact-source archive retains the bounded compile workflow; `source-exclusions.txt` records its sole removal from the validation source. The final branch also contains only the base workflow and no patch payloads.
+## Runtime summary
 
-## P5-R2E4 implementation
+- source-chart R1 **11/11**;
+- source validator **6/6**;
+- recovery **9/9**;
+- feature/barrier **6/8**;
+- graph-dependent **2/6**;
+- R2 focused **2/15**;
+- Milestone D **3/7**;
+- Phase 14–18 **215/243**;
+- Phase 16 **27/46**;
+- Phase 17 **18/26**;
+- Phase 18 **57/57**;
+- Phase 20 **46/48**;
+- complete suite **575/624**, 49 failures, **157.156 s**.
 
-1. Discards the R2E3 two-target transposition and reconstructs every affected node-local mapping directly.
-2. Requires one canonical SourceVertex or SourceEdge wedge containing the complete local outgoing-ray inventory.
-3. Uses the authoritative exterior incoming/outgoing pair to select semantic cyclic direction.
-4. Maps every incoming twin to the adjacent outgoing ray in that canonical order exactly once.
-5. Treats the single wrap adjacency as the exterior sector and all other adjacencies as interior sectors, with hard rails and traces acting as separators.
-6. Adds typed `BoundaryRotationalSystemConflict` evidence and derived `boundaryRotationalNodeCount` diagnostics.
-7. Audits local rotational bijection and exact authoritative exterior-loop continuation before global predecessor and orbit audits.
-8. Preserves the passing orientation-invariant paired boundary-subsegment incidence identity.
-9. Leaves repeated-edge/node, non-disk, owner, and structural Euler validators unchanged.
-10. Adds a generalized multiple-interior-rays-at-one-boundary-vertex contract; compiled but not executed.
+A reliable complete-suite RSS measurement is unavailable because the outer wrapper detached while the single allowed run continued to normal XML completion. Focused and direct runs retain individual memory evidence.
 
-This is not target swapping, missing-target repair, post-hoc cycle decomposition, or cell merging.
+## Earliest producer
 
-## P5-TB32 execution order
+R2E4 chooses cyclic direction by testing whether the authoritative exterior outgoing is the predecessor or successor of the exterior twin in the canonical ray order.
 
-1. Verify artifact SHA, source commit, source status, **48/48** checksums, 49 files, 26 fixtures, nine submodules, target hashes, one cleaned base workflow, and zero payloads.
-2. Run source-chart, source-validator, recovery, and feature/barrier authority.
-3. Run graph-dependent and all R2/R2C/R2D/R2E/R2E2/R2E3/R2E4 contracts.
-4. Require complete canonical rotational inventories, typed rotational conflicts, and one-to-one local incoming/outgoing mappings.
-5. Preserve whole-orientation and source-row incidence-hash invariance.
-6. Require planar, hard-rail, and cylinder orbit/disk/Euler/owner closure.
-7. Run Milestone D, Phase 14–18, Phase 16, Phase 17, and Phase 18 independently.
-8. Run direct plane, seam, close sheets, disconnected close sheets, and cylinder with fallback `Fail` and recovery disabled.
-9. Require nonzero valid seam, close-sheet, and cylinder arrangement inventories.
-10. Run Phase 20 and the complete suite once with runtime and memory evidence.
-11. Advance to R2F only after every boundary rotational, orbit, disk, owner, and Euler gate closes; advance to R3 only after all R2 gates close.
+For exactly two rays, predecessor and successor are the same opposite ray. The implementation therefore sees both checks succeed and classifies the equivalent degree-two cyclic directions as contradictory `BoundaryRotationalSystemConflict` evidence.
+
+This rejects ordinary source-boundary vertices before successor publication. It causes the 21 regressions in planar, curved, bridge, support, ownership, disconnected, close-sheet, source-row, orientation, Milestone D, and downstream Phase 17 contracts.
+
+The correct degree-two rotation contains two distinct sectors bounded by the same ray pair:
+
+- authoritative exterior: `exteriorIncoming -> exteriorOutgoing`;
+- complementary interior: `twin(exteriorOutgoing) -> exteriorTwin`.
+
+Sector identity comes from authoritative source-boundary side, not from uniqueness of the neighboring ray ID.
+
+## First actions for P5-R2E5
+
+1. Confirm the branch descends from this handoff and contains only the base workflow with no payload directory.
+2. Inspect the R2E4 `rayCount`, predecessor/successor, `rotationStep`, and local target-cardinality logic.
+3. Add an explicit `rayCount == 2` complete two-sector branch.
+4. Retain the existing canonical adjacency branch only for `rayCount >= 3`.
+5. Restore all 21 P5-TB32 regressions without weakening any test or validator.
+6. Preserve canonical aliases, ordered boundary loops, and paired boundary incidence hashing.
+7. Keep FlowRep, tracing, simplification, completion, fallback, recovery, optimizer, cache, lineage, and memory out of scope.
+8. Compile exactly the four approved targets and execute no project binary.
+9. Remove the bounded workflow and payloads after artifact upload.
 
 ## End-of-turn PR comment requirement
 
@@ -86,9 +90,10 @@ At the end of every Code + Build, Test + Benchmark, and optional Review turn, po
 
 ## Known procedural lessons
 
-- A locally bijective target permutation can still encode the wrong cyclic sectors; construct the full rotation from one canonical wedge.
-- Exterior direction must be semantic and source-authoritative, not chosen from row order or raw chart direction.
-- Git source archives do not include initialized submodule worktrees; use the verified artifact and do not classify missing archived submodules as a source defect.
+- A two-ray cyclic order has two semantic sectors even though predecessor and successor ray IDs coincide.
+- Do not infer sector identity solely from neighboring ray uniqueness at valence two.
+- Transactional fail-closed behavior is correct, but a typed failure does not make an incorrect producer acceptable.
+- Git source archives do not include initialized submodule worktrees; validate from the verified artifact.
 - Never include a checksum manifest in its own input set.
 
 ## Mandatory working-branch hygiene
