@@ -8,70 +8,75 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB36 artifact-only R2E8 Test + Benchmark**.
-- Next turn: **P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E9 canonical boundary wrap-sector and bounded rail-orbit chart publication Code + Build**.
+- Next turn: **P5-TB37 artifact-only R2E9 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB36 authority
+## P5-R2E9 compile authority
 
-- Exact tested source: `478d058ab2060a1a02a1e4ca3bfc0e6625fa8047`.
-- `SurfaceArrangement.cpp` blob: `76e57fef36f9322598387b6b5e968a14b885b755`.
-- Workflow run: `31041383154`.
-- Artifact: `8944910920`, SHA-256 `5b93e86db0ddccf4ca3eba2e9b53e6523f02d7ef70809aa8eb67b91f6e9bef39`.
-- Manifest: **13/13**; original package files: **14**; staged fixtures: **26**; recursive submodules: **9**.
-- No configure, build, relink, patch, regeneration, source/test/fixture/validator/workflow modification, or replacement binary.
-- Evidence: `directional-p5-tb36-8944910920-evidence.zip`, SHA-256 `af3747b1238a01802a4fc158032451a505cbeb224c51601d888e390b6fd01096`.
+- Exact compiled source: `a5b9382c2877ef72a3280ad9dbca2d5b20caaa1c`.
+- Workflow event commit: `29e71770a3c2ff001fa6daa687a2bdf957dd79c4`.
+- Workflow run/job: `31046039110` / `92441663510`.
+- Artifact: `8946700183`, SHA-256 `bae182ef1e3e5fbbc9fff25ea60a56821e31e4e6fe81787137cdac58f30c6a3a`.
+- Log artifact: `8946700685`, SHA-256 `03e137c8af8c41a24595ba1176a3e575fe8da34c44c4605d352a2c9629117e37`.
+- Manifest: **19/19**; packaged files: **20**; recursive submodules: **9**; source status empty.
+- Compile/link actions: **132/132**.
+- Built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
+- No test, benchmark, help/list/discovery command, CLI, GUI, or generated project binary was executed.
 
-## Results
+## Implemented in P5-R2E9
 
-- [x] source chart + validator **17/17**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier **8/8**;
-- [ ] graph-dependent **5/6**, bunny only;
-- [ ] R2 focused **13/16**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 16 **45/47**;
-- [x] Phase 17 **26/26**, six natural restorations;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 14–18 **241/244**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **603/625**, 22 failures, XML **72.397 s**, wall **72.40 s**, maximum RSS **281,112 KiB**.
+- [x] enumerate canonical cyclic R1 adjacent fan pairs before chart filtering, including vector wrap;
+- [x] resolve every non-exterior pair to one exact source-face/chart corner;
+- [x] exclude the independently proven exterior pair exactly once;
+- [x] require complete incoming/target bijection before publishing the local relation;
+- [x] publish canonical-pair, exterior-exclusion, and accepted wrap-sector diagnostics only from audited records;
+- [x] carry each accepted hard-rail chart root through its complete bounded successor orbit;
+- [x] reject root loss, root change, exterior entry, hard-barrier crossing, or conflicting orbit ownership transactionally;
+- [x] publish one authoritative chart root per bounded orbit while retaining full provenance separately;
+- [x] materialize bounded-cell embedding support from the accepted orbit root;
+- [x] strengthen focused planar and hard-rail regression contracts;
+- [x] leave Phase 17 and downstream validators unchanged;
+- [x] remove the bounded workflow and transfer payload after artifact publication;
+- [ ] validate runtime behavior from artifact `8946700183`.
 
-The complete failure set is exactly P5-TB35 minus the six restored Phase 17 upstream-input failures. There are no new failures and no other closures.
+## Last runtime baseline: P5-TB36
 
-## R2E8 disposition
+- source chart + validator **17/17**;
+- recovery authority **9/9**;
+- feature/barrier **8/8**;
+- graph-dependent **5/6**, bunny only;
+- R2 focused **13/16**;
+- Milestone D **5/7**;
+- Phase 16 **45/47**;
+- Phase 17 **26/26**;
+- Phase 18 **57/57**;
+- Phase 14–18 **241/244**;
+- Phase 20 **46/48**;
+- complete suite **603/625**, 22 failures.
 
-- [x] planar no longer fails typed boundary-sector incidence before publication;
-- [x] planar reaches unchanged topology validators;
-- [ ] planar still has `topologyValid=false`;
-- [ ] planar cyclic-wrap interior-sector count remains `0`;
-- [ ] planar Euler characteristic remains `0` instead of `1`;
-- [x] hard rail preserves incidence, cell count, disk, loop, Euler, ownership, and distinct bounded rail-twin owners;
-- [ ] hard-rail embedding and aggregate topology remain invalid;
-- [x] all six Phase 17 upstream-input failures restore naturally;
-- [ ] cylinder and bunny remain independent R2 producers;
-- [ ] no direct analytic production case closes;
-- [x] two direct bunny processes are structurally deterministic and fail closed at `completion` with zero arrangement cells and zero quads.
+At P5-TB36, planar incidence published but the wrap count remained `0`, Euler remained `0` instead of `1`, and aggregate topology was invalid. Hard rail retained valid incidence, ownership, disk, loop, Euler, and one-exterior/two-bounded cell count, but embedding and aggregate topology remained invalid. Cylinder and bunny remained independent.
 
-## Required P5-R2E9 work
+## Required P5-TB37 work
 
-Follow `.agents/Directional/Milestone_G_P5_R2E9_Canonical_Wrap_Sector_Rail_Orbit_Chart_Code_Build_Plan.md`:
+Follow `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`:
 
-- [ ] enumerate every canonical cyclic adjacent R1 fan pair before chart filtering, including wrap;
-- [ ] resolve each pair to one exact chart corner and exclude the authoritative exterior pair exactly once;
-- [ ] restore the planar interior-wrap sector and Euler-one disk topology without arbitrary selection;
-- [ ] propagate each accepted hard-rail chart root across its complete bounded successor orbit;
-- [ ] publish the selected orbit root as authoritative bounded-cell embedding support while retaining full provenance separately;
-- [ ] preserve degree-two, genuine four-disk, row-order, orientation, pinched-fan, close-sheet, bridge/support, nested, nonmanifold, and Phase 17 **26/26** authority;
-- [ ] leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, memory, and downstream validators unchanged;
-- [ ] compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- [ ] execute no project binary.
+- [ ] download and verify artifact `8946700183` and all 19 internal manifest entries;
+- [ ] execute packaged binaries only, without configure, rebuild, relink, patch, regeneration, or source/test/fixture/validator/workflow modification;
+- [ ] run source-chart and source-authoritative validator prerequisites;
+- [ ] run the focused R2 arrangement set and prove planar canonical wrap/Euler-one topology or record the earliest typed failure;
+- [ ] prove hard-rail complete-orbit roots, bounded-cell embedding, and aggregate topology or record the earliest typed failure;
+- [ ] preserve degree-two, genuine four-disk, row-order, whole-orientation, pinched-fan, close-sheet, bridge/support, nested, and nonmanifold authority;
+- [ ] preserve Phase 17 **26/26** without Phase 17 changes;
+- [ ] run Milestone D, Phase 16, Phase 17, Phase 18, Phase 14–18, Phase 20, graph-dependent, and complete-suite scopes;
+- [ ] run independent direct production processes only after focused evidence, with fallback `Fail`, source-grid recovery disabled, and no legacy execution;
+- [ ] classify every changed result against P5-TB36 and produce the next plan from the earliest remaining authoritative producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB36_Artifact_Only_R2E8_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E9_Canonical_Wrap_Sector_Rail_Orbit_Chart_Code_Build_Plan.md`
-- `benchmark-results/p5-tb36-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E9_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e9-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
