@@ -1,0 +1,61 @@
+{
+  "turn": "P5-R2E",
+  "type": "code-build",
+  "date": "2026-08-04",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "previous_tested_source": "0ba0aa9f7a07d5ca6ba67280d705ee8439e1d760",
+  "implementation_commit": "f5afd014cced8205d485bea4f1470725e1fd8be1",
+  "compiled_source": "de0aa1a58a5861954dc9e14e731e681b5e5feb87",
+  "workflow_event_commit": "2a40add65b13137d4d7183e0715c6807dbd6a10a",
+  "reviewed_patch_sha256": "3ca1d3b940989e1fbda9e0f8f4b0b8c5971643575550ff9e34501e219651d628",
+  "applied_diff_sha256": "abf671a365ab97ba3075962528bcf76b71901f6dc06a7d0b877499561c89814e",
+  "run_id": 30966134727,
+  "job_id": 92180382387,
+  "artifact": {
+    "id": 8914900872,
+    "name": "surface-cell-p5-r2e-corrected-github-source-linux-release",
+    "sha256": "418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c"
+  },
+  "workflow_logs": {
+    "id": 8914901042,
+    "sha256": "351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3"
+  },
+  "package": {
+    "checksum_passed": 45,
+    "checksum_total": 45,
+    "files": 46,
+    "fixtures": 26,
+    "submodules": 9,
+    "source_status_empty": true,
+    "source_workflows": ["agent-source-snapshot.yml"],
+    "temporary_payloads": 0
+  },
+  "build": {
+    "ninja_actions_completed": 132,
+    "ninja_actions_total": 132,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "executed_project_binaries": 0
+  },
+  "implementation": {
+    "canonical_source_boundary_loops": true,
+    "oriented_source_side_witnesses": true,
+    "typed_contradictory_side_failure": true,
+    "exact_one_exterior_owner_per_source_loop": true,
+    "structural_euler_accounting": true,
+    "deterministic_propagation": true
+  },
+  "initial_artifact_rejected": {
+    "run_id": 30965657962,
+    "artifact_id": 8914740347,
+    "reason": "files.sha256 included itself; 43 entries passed and one self-check mismatched"
+  },
+  "runtime_acceptance": "not_run",
+  "next_turn": "P5-TB29 artifact-only R2E validation",
+  "advance_to_r3": false
+}
