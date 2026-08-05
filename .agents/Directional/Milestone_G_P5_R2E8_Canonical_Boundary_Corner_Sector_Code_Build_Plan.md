@@ -21,11 +21,10 @@ Do not address cylinder, bunny, completion, or Phase 17 in this turn.
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
 4. `.agents/Directional/Milestone_G_P5_TB35_Artifact_Only_R2E7_Test_Benchmark_Report.md`
 5. `benchmark-results/p5-tb35-summary.json`
-6. `.agents/Directional/Milestone_G_P5_R2E7_Code_Build_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2E7_Test_Benchmark_Plan.md`
-8. `.agents/Directional/REORIENTATION_PLAN.md`
-9. `.agents/Directional/DESIGN.md`
-10. `.agents/Directional/GitHub_Workflow_Policy.md`
+6. `.agents/Directional/REORIENTATION_PLAN.md`
+7. `.agents/Directional/DESIGN.md`
+8. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+9. `.agents/Directional/GitHub_Workflow_Policy.md`
 
 ## Allowed scope
 
@@ -56,7 +55,13 @@ At each affected boundary node with three or more outgoing rays:
 
 1. inventory every R1 `orderedWedges` fan independently;
 2. enumerate every cyclic adjacent pair in that fan, including vector wrap;
-3. convert each adjacent pair into a directed sector record containing incoming twin, source ray, target ray, canonical fan identity, source component/sheet/face/entity, and exact witness/corner identity;
+3. convert each adjacent pair into a directed sector record:
+   - incoming twin of the source ray;
+   - source outgoing ray;
+   - target outgoing ray;
+   - canonical fan identity;
+   - source component, sheet, face, and source entity;
+   - exact witness/corner identity;
 4. canonicalize and deduplicate only records that are semantically identical;
 5. remove exactly the one authoritative exterior `(incoming,target)` pair proven by the source-boundary loop;
 6. require every remaining local incoming and outgoing target exactly once.
@@ -95,7 +100,7 @@ If the incident chart/corner evidence is missing, duplicated, cross-sheet, endpo
 
 ### 5. Transactional local and global audits
 
-Before writing `halfedge.next` require:
+Before writing `halfedge.next`:
 
 - one sector per local incoming;
 - one use per local outgoing target;
@@ -110,11 +115,36 @@ Publish the full candidate relation only after all audits pass. Run all existing
 
 ## Required tests
 
-1. **Planar boundary fixture:** incidence valid; direct corner-sector count positive; accepted cyclic-wrap interior sector; exact exterior exclusion once; complete local bijection; no repeated cycles; reach topology/Euler validation and preferably close Euler one naturally.
-2. **Degree-two fixture:** exact existing mapping unchanged; one exterior plus one bounded disk.
-3. **Genuine three-spoke fixture:** one exterior plus four bounded disks; complete ownership and topology validity.
-4. **Interior hard rail:** two incident face-local side records; two distinct chart roots; at least two endpoint side-pair audits; one exterior plus two bounded disks; distinct rail-twin bounded owners; embedding, orientation, disk, loop, Euler, ownership, area, and topology valid.
-5. **Malformed corner authority:** duplicate, missing, cross-fan, or wrong-chart rail-side evidence fails typed and transactionally.
+Strengthen semantic tests without adding fixture-specific IDs:
+
+1. **Planar single-spoke/two-spoke boundary fixture**
+   - incidence valid;
+   - direct canonical corner-sector count positive;
+   - at least one accepted cyclic-wrap interior sector;
+   - exact exterior exclusion once;
+   - complete local bijection;
+   - no repeated cycles;
+   - reach topology/Euler validation and preferably close Euler one naturally.
+
+2. **Degree-two boundary fixture**
+   - exact existing mapping unchanged;
+   - one exterior plus one bounded disk.
+
+3. **Genuine three-spoke fixture**
+   - one exterior plus four bounded disks;
+   - complete ownership and topology validity.
+
+4. **Interior hard rail**
+   - two incident face-local rail-side corner records;
+   - two distinct chart roots;
+   - at least two side-pair audits across endpoints;
+   - one exterior plus two bounded disks;
+   - distinct bounded owners for rail twins;
+   - embedding, orientation, disk, loop, Euler, ownership, area, and topology valid.
+
+5. **Malformed corner authority**
+   - duplicate/missing/cross-fan/wrong-chart rail-side evidence fails typed and transactionally.
+
 6. Preserve source-row permutation, whole-orientation reversal, pinched fans, disconnected close sheets, bridge/support, nested non-disk, and nonmanifold tests.
 
 Do not modify Phase 17 tests. Their restoration must occur naturally in P5-TB36.
@@ -132,14 +162,25 @@ Execute no test, benchmark, custom mesh, CLI, GUI, help/list/discovery command, 
 
 ## Artifact requirements
 
-Package exact source, both test/benchmark binaries, both static libraries, all fixtures, configure/build/activity logs, target hashes, an external recursive checksum manifest, workflow/source/diff authority, and recursive submodule records.
+Package:
+
+- exact source snapshot;
+- `directional_phase1_tests` and `directional_benchmarks`;
+- `libdirectional_core.a` and `libdirectional_pipeline.a`;
+- all packaged fixtures;
+- configure/build/activity logs;
+- target hashes;
+- recursive checksum manifest excluding itself;
+- source/workflow/diff authority and recursive submodule records.
 
 ## Hygiene
+
+At start and end:
 
 - remove stale bounded workflows, triggers, payloads, transfer files, and build artifacts;
 - retain only base workflows plus one bounded active workflow/payload during remote compilation;
 - remove the bounded workflow and payload immediately after artifact upload;
-- final branch and cleaned source contain only base workflows and zero payloads.
+- final branch and cleaned source must contain only base workflows and zero payloads.
 
 ## End-of-turn outputs
 
