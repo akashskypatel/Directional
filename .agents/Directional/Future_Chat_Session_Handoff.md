@@ -9,119 +9,87 @@
 
 ## Current checkpoint
 
-P5-TB29 artifact-only validation is complete against exact source `de0aa1a58a5861954dc9e14e731e681b5e5feb87` and artifact `8914900872`.
+P5-R2E2 authoritative boundary-exterior successor construction is implemented and compiles successfully.
 
-R2E does not close an additional runtime gate. The complete suite remains **595/623** with the same 28 failures as P5-TB28. Exact source-side evidence now fails the hard-rail case closed with `BoundaryLoopOwnerCount`, but the implementation still applies source-loop cardinality to generic raw successor orbits rather than constructing the authoritative exterior continuation.
+- exact compiled source: `f5305ade5bf5360df36b681d135e5299322f5fdb`;
+- artifact: `8916209271`;
+- workflow run/job: `30969860018` / `92191640303`;
+- post-build workflow cleanup commit: `2d2a04d34e077a910db36af1409c3114108918f1`.
 
-The next turn is **P5-R2E2 authoritative boundary-exterior successor construction plus compile-only build**. Do not advance to intrinsic-fan R2F or R3.
+Runtime acceptance has not been executed for this source. The next turn is **P5-TB30 artifact-only R2E2 validation**. Do not configure, rebuild, relink, patch, regenerate, or modify source. Do not advance to R2F or R3 from compilation.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB29_Artifact_Only_R2E_Test_Benchmark_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2E2_Boundary_Exterior_Orbit_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb29-summary.json`
-6. `.agents/Directional/Milestone_G_P5_R2E_Code_Build_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2E_Test_Benchmark_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_R2E2_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E2_Test_Benchmark_Plan.md`
+5. `benchmark-results/p5-r2e2-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB29_Artifact_Only_R2E_Test_Benchmark_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2E2_Boundary_Exterior_Orbit_Code_Build_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB29 package authority
+## P5-R2E2 package authority
 
-- exact tested source: `de0aa1a58a5861954dc9e14e731e681b5e5feb87`;
-- implementation commit: `f5afd014cced8205d485bea4f1470725e1fd8be1`;
-- workflow event commit: `2a40add65b13137d4d7183e0715c6807dbd6a10a`;
-- artifact: `8914900872`, `surface-cell-p5-r2e-corrected-github-source-linux-release`;
-- artifact SHA-256: `418518d879ec8686296ed3dd30d24e3b9e3b9df4280278996292fa1eba4d1d1c`;
-- workflow-log artifact: `8914901042`, SHA-256 `351462cc5e3c72440fd2933bb31e3c2c63ee8560b61af20b9de8361a6713e0a3`;
-- empty source status;
-- recursive checksums **45/45**;
-- package files **46**;
+- starting handoff commit: `eab14c9a26d2ebaedf16e359a03b983c90180275`;
+- workflow event commit: `517735a53e4554d74cab14845cb8e26edb90de37`;
+- exact compiled source: `f5305ade5bf5360df36b681d135e5299322f5fdb`;
+- reviewed/applied source diff SHA-256: `526c01714d6d11ca8c4e60458b176f0057d386a6d163e406bb89fb04c86a83ec`;
+- artifact: `8916209271`, `surface-cell-p5-r2e2-github-source-linux-release`;
+- artifact SHA-256: `2117cc2b99bc82a197bb7ee94f3e21a9c8f71b48f735c15c878515dabd4915df`;
+- workflow-log artifact: `8916209511`, SHA-256 `45606d385ffacdfc621c85d21316dca31bfd84cdc0421d16b6f990b817b47007`;
+- source status empty;
+- recursive checksums **48/48**;
+- package files **49**;
 - fixtures **26**;
 - recursive submodules **9**;
 - all four target hashes verified;
-- one base workflow and zero temporary patch payloads;
-- no configure, rebuild, relink, patch, regeneration, or source modification during validation.
+- all **132/132** Ninja actions completed;
+- no project binary executed.
 
-## Runtime summary
+The cleaned validation source contains only `agent-source-snapshot.yml` and zero payloads. The exact-source archive transparently retains the active bounded workflow used for compilation; `source-exclusions.txt` records its removal from the validation source. The branch now contains only the base workflow and no patch payload directory.
 
-- source-chart R1 **11/11**;
-- Phase 22 validator **6/6**;
-- recovery authority **9/9**;
-- feature/barrier authority **8/8**;
-- graph-dependent **5/6**;
-- R2/R2C/R2D/R2E focused **11/14**;
-- Milestone D **5/7**;
-- Phase 14–18 **233/242**;
-- Phase 16 **43/45**;
-- Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 20 **46/48**;
-- direct plane/seam/close sheets/cylinder **0/4**;
-- complete suite **595/623**, 28 failures, **200.707 seconds**.
+## P5-R2E2 implementation
 
-The full-suite failure set is identical to P5-TB28. Exact maximum RSS is unavailable because the outer timing wrapper detached; sampled RSS reached at least **204,108 KiB**. XML and complete logs finalized normally.
+1. Retains ordered canonical source-boundary loops with exact edge/face records.
+2. Separates operational face-oriented direction from orientation-insensitive loop identity.
+3. Inventories exact boundary subsegments and parameter intervals from source provenance.
+4. Audits complete exterior/interior coverage and emits typed gap, overlap, or continuation-discontinuity evidence.
+5. Installs exterior boundary-halfedge successors from source-loop order before orbit extraction.
+6. Preserves intrinsic wedge successors for interior and non-boundary halfedges.
+7. Recomputes predecessor multiplicity from the final successor relation before one complete permutation audit.
+8. Includes authoritative exterior adjacency in deterministic hashing.
+9. Strengthens planar, hard-rail, and cylinder ownership contracts; compiled but not executed.
 
-## Earliest remaining producer
+This is not a post-hoc merge or cycle decomposition.
 
-`SourceBoundaryTopology` currently stores unordered edge membership only. The implementation first forms generic directed-wedge successor orbits, labels those raw orbits with source-side evidence, and then requires one negative-side raw orbit per source loop.
+## P5-TB30 execution order
 
-This is invalid when boundary-ending traces or hard rails split the exterior continuation at a source-boundary vertex. The hard-rail test now exposes the issue as `BoundaryLoopOwnerCount`; cylinder publication is cleared and leaves `cell == -1`; planar still has no exterior orbit, Euler `-1`, and area error `1`.
+1. Verify artifact SHA, source commit, source status, **48/48** checksums, 49 files, 26 fixtures, nine submodules, target hashes, one cleaned base workflow, and zero payloads.
+2. Run source-chart, source-validator, recovery, and feature/barrier authority.
+3. Run graph-dependent and all R2/R2C/R2D/R2E/R2E2 contracts.
+4. Require typed coverage failures and one endpoint-continuous exterior cycle per source boundary loop.
+5. Run Milestone D, Phase 14–18, Phase 16, Phase 17, and Phase 18 independently.
+6. Run direct plane, seam, close sheets, disconnected close sheets, and cylinder with fallback `Fail` and recovery disabled.
+7. Require nonzero valid seam, close-sheet, and cylinder arrangement inventories.
+8. Run Phase 20 and the complete suite once with runtime and memory evidence.
+9. Advance to R2F only after all boundary-exterior and structural Euler gates close; advance to R3 only after all R2 gates close.
 
-P5-R2E2 must:
+## Known procedural lesson
 
-1. retain ordered authoritative source-boundary loops;
-2. inventory exact boundary subsegments and their edge parameters;
-3. construct exterior `next` pointers directly from source-loop order before orbit audit;
-4. bypass interior hard-rail wedges only for the exterior-side continuation;
-5. audit and publish exactly one exterior cell per source loop transactionally;
-6. preserve R2E structural Euler accounting after valid publication.
-
-Do not merge or decompose cells after orbit extraction.
-
-## Direct analytic disposition
-
-All cases used `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution.
-
-- plane: 9 arrangement cells, 12 quads, 15 output-validation failures;
-- multi-face seam: 0 cells/quads, `NotProductionReady/completion`;
-- close sheets: 0 cells/quads, `NotProductionReady/completion`;
-- cylinder: 0 cells/quads, `NotProductionReady/completion`.
-
-## First actions for P5-R2E2
-
-1. Confirm the branch descends from this documentation commit and contains only base workflows and no patch payloads.
-2. Read the P5-TB29 report and R2E2 plan.
-3. Inspect `SourceBoundaryTopology`, boundary rail subdivision/provenance, directed-wedge successor assignment, and pre-publication orbit audit.
-4. Add ordered source-loop and exact subsegment continuation authority.
-5. Override only exterior boundary-halfedge successors before complete orbit audit.
-6. Preserve interior wedge successors and every passing R2C/R2D/R2E contract.
-7. Keep bunny singularity-fan work deferred because its fixture disables boundary rails.
-8. Commit and push before compiling.
-9. Compile exactly the four required targets and execute no project binary.
-10. Always upload a separate detailed workflow-log artifact and verify the recursive manifest before upload.
+A Git source archive does not include initialized submodule worktrees. Local configure from the prior artifact source therefore failed before compilation because `external/googletest` was empty. Do not classify that as a source compile defect. The authoritative workflow initialized and verified all nine submodules and compiled successfully.
 
 ## Mandatory working-branch hygiene
 
 At the start and end of every Code + Build turn:
 
-- remove every superseded workflow, trigger marker, patch fragment, patch README, generated transfer file, and temporary build artifact;
-- retain only base workflows plus the single bounded active workflow/payload while a remote build is running;
-- self-remove the active workflow/payload from the exact compiled source or delete it immediately in the handoff commit;
-- verify the final branch and packaged source contain no stale temporary artifacts;
-- never leave historical workflow YAML on the working branch;
+- remove superseded workflows, trigger markers, patch fragments, patch READMEs, transfer files, and temporary build artifacts;
+- retain only the base workflow plus one bounded active workflow/payload while remote work runs;
+- remove the active workflow and payloads immediately after artifact upload;
+- verify final branch and validation source contain only base workflows and zero temporary payloads;
 - generate checksum manifests outside the package and never include a manifest in its own checksum input.
-
-## Key lessons
-
-- Fail-closed owner-count evidence is useful, but cardinality cannot repair an incorrect raw successor partition.
-- Exterior continuation is authoritative source topology and must be installed before generic orbit audit.
-- Interior hard rails may partition bounded cells but cannot partition the exterior of a source boundary loop.
-- Structural Euler accounting cannot be validated while publication is cleared.
-- The bunny fan remains an independent R2 producer and must not broaden the boundary turn.
-- Stale workflows and malformed artifact manifests are active failure sources; remove and verify them every CB turn.
 
 ## Preserved prohibitions
 
