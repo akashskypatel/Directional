@@ -73,7 +73,8 @@ jobs:
           git diff --check
 
           git rm -f "$PAYLOAD" .github/workflows/agent-finalize-p5-r2e10.yml
-          git add TODO MILESTONE_G_TODO.md .agents/Directional benchmark-results
+          git add TODO MILESTONE_G_TODO.md benchmark-results
+          git add -f .agents/Directional
           git diff --cached --check
           git config user.name directional-doc-agent
           git config user.email directional-doc-agent@users.noreply.github.com
