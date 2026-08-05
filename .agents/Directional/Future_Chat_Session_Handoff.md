@@ -87,6 +87,13 @@ Older P5 checkpoint summaries and superseded runtime snapshots are removed after
 7. Leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, memory, and downstream validators unchanged.
 8. Compile only `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`; execute no project binary.
 
+## Lessons from P5-R2E8
+
+- Generated whole-file transformations can hide a one-brace scope error even when the intended semantic change is narrow. Inspect the exact transformed hunk and compile before treating the source commit as authoritative.
+- Large base64 workflow payloads are fragile when transferred through repository writes. Prefer a bounded inline transformation with exact pre-image blob checks, one-file scope verification, `git diff --check`, and a compile-only gate.
+- Build-orchestration failures are not implementation acceptance evidence. Preserve their logs, correct the mechanism narrowly, and claim only the final verified source/artifact.
+- The final successful workflow must push the exact compiled source commit before building, then package that same commit and record both workflow-event and source authority.
+
 ## Lessons from P5-TB36
 
 - A producer can pass the typed local incidence gate while still publishing the wrong global cell topology. Planar must be judged by the derived cyclic-wrap inventory and Euler-one closure, not incidence validity alone.
