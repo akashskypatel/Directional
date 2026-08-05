@@ -3649,6 +3649,7 @@ SurfaceCellComplex build_surface_cell_complex(
             int target = -1;
             SurfaceCellCanonicalIdentity fanIdentity;
             bool exterior = false;
+            bool cyclicWrap = false;
           };
 
           std::vector<BoundaryFanSector> sectors;
@@ -3674,7 +3675,7 @@ SurfaceCellComplex build_surface_cell_complex(
                sourceBoundaryTopology
                    .loops[static_cast<std::size_t>(exteriorLoop)]
                    .canonicalIdentity,
-               true});
+               true, false});
 
           for (const int sourceRay : localOutgoing) {
             if (sourceRay < 0 ||
@@ -3750,12 +3751,19 @@ SurfaceCellComplex build_surface_cell_complex(
                     halfedgeWedges[static_cast<std::size_t>(sourceRay)].begin(),
                     halfedgeWedges[static_cast<std::size_t>(sourceRay)].end(),
                     fanIdentity);
-            // R1's intrinsic successor is accepted only when it is a direct,
-            // non-wrapping adjacent sector inside one authoritative fan scope.
-            // A wrap belongs to either the source exterior or a different fan
-            // scope and therefore cannot be used as an interior sector.
+            const int fanRayCount =
+                static_cast<int>(wedgeFound->second.size());
+            const int expectedTargetPosition =
+                (sourcePosition - 1 + fanRayCount) % fanRayCount;
+            const bool cyclicWrap = sourcePosition == 0 &&
+                                    targetPosition == fanRayCount - 1;
+            // R1 fan order is cyclic. A stored-vector wrap is an ordinary
+            // source-interior sector unless it is the independently proven
+            // exterior pair installed above. Interior/exterior authority never
+            // comes from the vector index at which the fan happens to start.
             if (!intrinsicBoundaryEntity || !membershipPresent ||
-                sourcePosition <= 0 || targetPosition != sourcePosition - 1) {
+                targetPosition != expectedTargetPosition ||
+                (incoming == exteriorIncoming && target == exteriorOutgoing)) {
               record_incidence_failure(
                   SurfaceArrangementIncidenceFailure::
                       BoundaryFanSectorCoverConflict,
@@ -3763,7 +3771,177 @@ SurfaceCellComplex build_surface_cell_complex(
               break;
             }
             sectors.push_back(
-                {incoming, sourceRay, target, fanIdentity, false});
+                {incoming, sourceRay, target, fanIdentity, false, cyclicWrap});
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+
+          const auto is_authoritative_source_rail =
+              [&](const int outgoingRay) {
+                if (outgoingRay < 0 ||
+                    outgoingRay >= static_cast<int>(complex.halfedges.size()) ||
+                    boundaryWitnesses[static_cast<std::size_t>(outgoingRay)]
+                        .valid) {
+                  return false;
+                }
+                const SurfaceArrangementHalfedge &halfedge =
+                    complex.halfedges[static_cast<std::size_t>(outgoingRay)];
+                return halfedge.hardFeature &&
+                       std::any_of(
+                           halfedge.provenance.begin(),
+                           halfedge.provenance.end(),
+                           [](const SurfaceArrangementProvenance &entry) {
+                             return entry.sourceArc < 0 && entry.family < 0 &&
+                                    entry.hardFeature;
+                           });
+              };
+
+          const auto ray_side_in_fan =
+              [&](const SurfaceCellCanonicalIdentity &fanIdentity,
+                  const int ray, const int sign) {
+                const auto fan = nodeWedges.find(fanIdentity);
+                if (fan == nodeWedges.end()) {
+                  return false;
+                }
+                const auto found = std::find_if(
+                    fan->second.begin(), fan->second.end(),
+                    [&](const DirectedWedgeRay &candidate) {
+                      return candidate.halfedge == ray;
+                    });
+                if (found == fan->second.end()) {
+                  return false;
+                }
+                return std::any_of(
+                    found->witnesses.begin(), found->witnesses.end(),
+                    [&](const DirectedWedgeWitness &witness) {
+                      return sign < 0 ? witness.leftScore < -1.0e-12
+                                      : witness.leftScore > 1.0e-12;
+                    });
+              };
+
+          const auto cyclic_predecessor =
+              [&](const SurfaceCellCanonicalIdentity &fanIdentity,
+                  const int sourceRay, int &target, bool &wrap) {
+                target = -1;
+                wrap = false;
+                const auto fan = nodeWedges.find(fanIdentity);
+                if (fan == nodeWedges.end() || fan->second.size() < 2U) {
+                  return false;
+                }
+                const auto source = std::find_if(
+                    fan->second.begin(), fan->second.end(),
+                    [&](const DirectedWedgeRay &candidate) {
+                      return candidate.halfedge == sourceRay;
+                    });
+                if (source == fan->second.end()) {
+                  return false;
+                }
+                const int sourcePosition = static_cast<int>(
+                    std::distance(fan->second.begin(), source));
+                const int targetPosition =
+                    (sourcePosition - 1 + static_cast<int>(fan->second.size())) %
+                    static_cast<int>(fan->second.size());
+                target = fan->second[static_cast<std::size_t>(targetPosition)]
+                             .halfedge;
+                wrap = sourcePosition == 0;
+                return true;
+              };
+
+          int hardRailSeparatorCount = 0;
+          int hardRailSidePairCount = 0;
+          // A source hard rail is a shared separator. Derive each of its two
+          // directed sides from the fan witnesses themselves instead of merely
+          // checking that the already-selected fan IDs differ. The incoming
+          // twin of the rail owns the fan on the right of the outgoing rail;
+          // the sector targeting the rail belongs to the fan on its left.
+          for (const int separatorRay : localOutgoing) {
+            if (!is_authoritative_source_rail(separatorRay)) {
+              continue;
+            }
+            const int separatorIncoming =
+                complex.halfedges[static_cast<std::size_t>(separatorRay)].twin;
+            std::vector<BoundaryFanSector> ownedCandidates;
+            std::vector<BoundaryFanSector> targetedCandidates;
+            for (const SurfaceCellCanonicalIdentity &fanIdentity :
+                 halfedgeWedges[static_cast<std::size_t>(separatorRay)]) {
+              int ownedTarget = -1;
+              bool ownedWrap = false;
+              if (ray_side_in_fan(fanIdentity, separatorRay, -1) &&
+                  cyclic_predecessor(fanIdentity, separatorRay, ownedTarget,
+                                     ownedWrap)) {
+                ownedCandidates.push_back({separatorIncoming, separatorRay,
+                                           ownedTarget, fanIdentity, false,
+                                           ownedWrap});
+              }
+
+              const auto fan = nodeWedges.find(fanIdentity);
+              if (!ray_side_in_fan(fanIdentity, separatorRay, 1) ||
+                  fan == nodeWedges.end() || fan->second.size() < 2U) {
+                continue;
+              }
+              const auto separator = std::find_if(
+                  fan->second.begin(), fan->second.end(),
+                  [&](const DirectedWedgeRay &candidate) {
+                    return candidate.halfedge == separatorRay;
+                  });
+              if (separator == fan->second.end()) {
+                continue;
+              }
+              const int separatorPosition = static_cast<int>(
+                  std::distance(fan->second.begin(), separator));
+              const int sourcePosition =
+                  (separatorPosition + 1) % static_cast<int>(fan->second.size());
+              const int sourceRay =
+                  fan->second[static_cast<std::size_t>(sourcePosition)].halfedge;
+              const int incoming =
+                  complex.halfedges[static_cast<std::size_t>(sourceRay)].twin;
+              targetedCandidates.push_back(
+                  {incoming, sourceRay, separatorRay, fanIdentity, false,
+                   sourcePosition == 0});
+            }
+            if (ownedCandidates.size() != 1U ||
+                targetedCandidates.size() != 1U ||
+                ownedCandidates.front().fanIdentity ==
+                    targetedCandidates.front().fanIdentity ||
+                ownedCandidates.front().incoming == exteriorIncoming ||
+                targetedCandidates.front().incoming == exteriorIncoming ||
+                ownedCandidates.front().target == exteriorOutgoing ||
+                targetedCandidates.front().target == exteriorOutgoing) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, separatorIncoming, separatorRay,
+                  targetedCandidates.empty()
+                      ? -1
+                      : targetedCandidates.front().incoming);
+              break;
+            }
+
+            const auto replace_sector =
+                [&](const BoundaryFanSector &replacement) {
+                  const auto found = std::find_if(
+                      sectors.begin(), sectors.end(),
+                      [&](const BoundaryFanSector &sector) {
+                        return sector.incoming == replacement.incoming &&
+                               !sector.exterior;
+                      });
+                  if (found == sectors.end()) {
+                    return false;
+                  }
+                  *found = replacement;
+                  return true;
+                };
+            if (!replace_sector(ownedCandidates.front()) ||
+                !replace_sector(targetedCandidates.front())) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, separatorIncoming, separatorRay, -1);
+              break;
+            }
+            ++hardRailSeparatorCount;
+            ++hardRailSidePairCount;
           }
           if (!directedIncidenceValid) {
             break;
@@ -3793,26 +3971,8 @@ SurfaceCellComplex build_surface_cell_complex(
             break;
           }
 
-          int hardRailSeparatorCount = 0;
-          const auto is_authoritative_source_rail =
-              [&](const int outgoingRay) {
-                if (outgoingRay < 0 || outgoingRay >=
-                                           static_cast<int>(complex.halfedges.size()) ||
-                    boundaryWitnesses[static_cast<std::size_t>(outgoingRay)]
-                        .valid) {
-                  return false;
-                }
-                const SurfaceArrangementHalfedge &halfedge =
-                    complex.halfedges[static_cast<std::size_t>(outgoingRay)];
-                return halfedge.hardFeature &&
-                       std::any_of(
-                           halfedge.provenance.begin(),
-                           halfedge.provenance.end(),
-                           [](const SurfaceArrangementProvenance &entry) {
-                             return entry.sourceArc < 0 && entry.family < 0 &&
-                                    entry.hardFeature;
-                           });
-              };
+          // Re-audit the committed rail-side pair against the exact cyclic fan
+          // adjacency. This catches a complete but directionally swapped cover.
           for (const int separatorRay : localOutgoing) {
             if (!is_authoritative_source_rail(separatorRay)) {
               continue;
@@ -3825,8 +3985,14 @@ SurfaceCellComplex build_surface_cell_complex(
                 targeted == sectorByTarget.end() ||
                 sectors[owned->second].exterior ||
                 sectors[targeted->second].exterior ||
+                sectors[owned->second].sourceRay != separatorRay ||
+                sectors[targeted->second].target != separatorRay ||
                 sectors[owned->second].fanIdentity ==
-                    sectors[targeted->second].fanIdentity) {
+                    sectors[targeted->second].fanIdentity ||
+                !ray_side_in_fan(sectors[owned->second].fanIdentity,
+                                 separatorRay, -1) ||
+                !ray_side_in_fan(sectors[targeted->second].fanIdentity,
+                                 separatorRay, 1)) {
               record_incidence_failure(
                   SurfaceArrangementIncidenceFailure::
                       BoundaryFanSectorCoverConflict,
@@ -3836,7 +4002,6 @@ SurfaceCellComplex build_surface_cell_complex(
                       : sectors[targeted->second].incoming);
               break;
             }
-            ++hardRailSeparatorCount;
           }
           if (!directedIncidenceValid) {
             break;
@@ -3884,6 +4049,14 @@ SurfaceCellComplex build_surface_cell_complex(
               static_cast<int>(sectors.size()) - 1;
           complex.diagnostics.boundaryHardRailSeparatorCount +=
               hardRailSeparatorCount;
+          complex.diagnostics.boundaryHardRailSidePairCount +=
+              hardRailSidePairCount;
+          complex.diagnostics.boundaryCyclicWrapInteriorSectorCount +=
+              static_cast<int>(std::count_if(
+                  sectors.begin(), sectors.end(),
+                  [](const BoundaryFanSector &sector) {
+                    return !sector.exterior && sector.cyclicWrap;
+                  }));
         }
 
         if (candidateNext[static_cast<std::size_t>(exteriorIncoming)] !=

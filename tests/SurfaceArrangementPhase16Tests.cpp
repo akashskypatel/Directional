@@ -416,6 +416,8 @@ TEST(SurfaceArrangementPhase16,
   EXPECT_GT(complex.diagnostics.boundaryFanSectorNodeCount, 0);
   EXPECT_GE(complex.diagnostics.boundaryInteriorSectorCount, 4);
   EXPECT_EQ(complex.diagnostics.boundaryHardRailSeparatorCount, 0);
+  EXPECT_EQ(complex.diagnostics.boundaryHardRailSidePairCount, 0);
+  EXPECT_GE(complex.diagnostics.boundaryCyclicWrapInteriorSectorCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);
   EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
@@ -572,6 +574,7 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryCyclicWrapInteriorSectorCount, 0);
   expect_degree_two_boundary_sectors(complex);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
   EXPECT_EQ(complex.diagnostics.repeatedEdgeCycleCount, 0);

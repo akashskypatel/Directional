@@ -410,6 +410,12 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   EXPECT_GT(complex.diagnostics.boundaryFanSectorNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryInteriorSectorCount, 0);
   EXPECT_GE(complex.diagnostics.boundaryHardRailSeparatorCount, 2);
+  EXPECT_GE(complex.diagnostics.boundaryHardRailSidePairCount, 2);
+  EXPECT_TRUE(complex.diagnostics.embeddingValid);
+  EXPECT_TRUE(complex.diagnostics.orientationValid);
+  EXPECT_TRUE(complex.diagnostics.cellsDiskValid);
+  EXPECT_TRUE(complex.diagnostics.boundaryLoopsValid);
+  EXPECT_TRUE(complex.diagnostics.eulerCharacteristicValid);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(std::count_if(complex.cells.begin(), complex.cells.end(),
                           [](const auto &cell) { return cell.boundaryCycle; }),
@@ -423,6 +429,26 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
         return halfedge.cell >= 0 &&
                halfedge.cell < static_cast<int>(complex.cells.size());
       }));
+  int boundedHardRailTwinPairs = 0;
+  for (const auto &halfedge : complex.halfedges) {
+    if (halfedge.id >= halfedge.twin || !halfedge.hardFeature) {
+      continue;
+    }
+    const auto &twin =
+        complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
+    if (halfedge.cell < 0 || twin.cell < 0 ||
+        halfedge.cell >= static_cast<int>(complex.cells.size()) ||
+        twin.cell >= static_cast<int>(complex.cells.size())) {
+      continue;
+    }
+    const auto &left = complex.cells[static_cast<std::size_t>(halfedge.cell)];
+    const auto &right = complex.cells[static_cast<std::size_t>(twin.cell)];
+    if (!left.boundaryCycle && !right.boundaryCycle) {
+      ++boundedHardRailTwinPairs;
+      EXPECT_NE(left.id, right.id);
+    }
+  }
+  EXPECT_EQ(boundedHardRailTwinPairs, 1);
   EXPECT_NEAR(complex.diagnostics.extractedArea,
               complex.diagnostics.supportedArea, 1.0e-10);
   const auto exterior = std::find_if(

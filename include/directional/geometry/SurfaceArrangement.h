@@ -359,6 +359,8 @@ struct SurfaceArrangementDiagnostics {
   int boundaryFanSectorNodeCount = 0;
   int boundaryInteriorSectorCount = 0;
   int boundaryHardRailSeparatorCount = 0;
+  int boundaryCyclicWrapInteriorSectorCount = 0;
+  int boundaryHardRailSidePairCount = 0;
   SurfaceArrangementIncidenceFailure incidenceFailure =
       SurfaceArrangementIncidenceFailure::None;
   int incidenceFailureNode = -1;
