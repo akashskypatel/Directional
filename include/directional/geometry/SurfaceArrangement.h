@@ -61,6 +61,7 @@ enum class SurfaceArrangementIncidenceFailure : int {
   RepeatedNodeCycle = 11,
   RepeatedEdgeCycle = 12,
   ShortCycle = 13,
+  NonManifoldSourceEdge = 14,
 };
 
 inline const char *surface_arrangement_incidence_failure_name(
@@ -94,6 +95,8 @@ inline const char *surface_arrangement_incidence_failure_name(
     return "RepeatedEdgeCycle";
   case SurfaceArrangementIncidenceFailure::ShortCycle:
     return "ShortCycle";
+  case SurfaceArrangementIncidenceFailure::NonManifoldSourceEdge:
+    return "NonManifoldSourceEdge";
   }
   return "Unknown";
 }
@@ -227,6 +230,10 @@ struct SurfaceArrangementCell {
   std::vector<SurfaceCellSourceChart> sourceCharts;
   std::vector<int> sourceFaces;
   std::vector<int> halfedges;
+  // Start offsets of each directed boundary cycle in halfedges. A disk has
+  // exactly one offset {0}; multiply connected bounded cells retain every
+  // boundary cycle explicitly instead of flattening them into one fake walk.
+  std::vector<int> boundaryCycleOffsets;
   std::vector<int> sideFamilies;
   std::vector<int> sideEdgeCounts;
   double signedArea = 0.0;
@@ -254,6 +261,44 @@ struct SurfaceArrangementCell {
   SurfaceArrangementRejectReason rejectReason =
       SurfaceArrangementRejectReason::None;
 };
+
+inline bool surface_arrangement_boundary_cycle_ranges(
+    const SurfaceArrangementCell &cell,
+    std::vector<std::pair<std::size_t, std::size_t>> &ranges) {
+  ranges.clear();
+  if (cell.halfedges.empty()) {
+    return false;
+  }
+  std::vector<int> offsets = cell.boundaryCycleOffsets;
+  if (offsets.empty()) {
+    offsets.push_back(0);
+  }
+  if (offsets.front() != 0) {
+    return false;
+  }
+  for (std::size_t index = 0; index < offsets.size(); ++index) {
+    const int begin = offsets[index];
+    const int end = index + 1U < offsets.size()
+                        ? offsets[index + 1U]
+                        : static_cast<int>(cell.halfedges.size());
+    if (begin < 0 || end <= begin ||
+        end > static_cast<int>(cell.halfedges.size()) ||
+        (index > 0U && offsets[index - 1U] >= begin)) {
+      ranges.clear();
+      return false;
+    }
+    const int minimum = cell.supportOnlyCycle ? 2 : 3;
+    if (end - begin < minimum) {
+      ranges.clear();
+      return false;
+    }
+    ranges.emplace_back(static_cast<std::size_t>(begin),
+                        static_cast<std::size_t>(end));
+  }
+  return static_cast<int>(ranges.size()) == cell.boundaryComponentCount ||
+         (cell.supportOnlyCycle && ranges.size() == 1U &&
+          cell.boundaryComponentCount == 0);
+}
 
 struct SurfaceArrangementDiagnostics {
   int plantedIntersections = 0;

@@ -158,6 +158,7 @@ std::vector<std::uint64_t> exact_rollback_identity(
     };
     appendVector(cell.sourceFaces);
     appendVector(cell.halfedges);
+    appendVector(cell.boundaryCycleOffsets);
     appendVector(cell.sideFamilies);
     appendVector(cell.sideEdgeCounts);
     append_rollback_double(identity, cell.signedArea);
@@ -409,23 +410,30 @@ bool validate_incidence_allowing_nondisk(const SurfaceCellComplex &complex) {
         cell.sideFamilies.size() != cell.sideEdgeCounts.size()) {
       return false;
     }
+    std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
+    if (!surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges)) {
+      return false;
+    }
     std::set<int> seenHalfedges;
-    for (int index = 0; index < static_cast<int>(cell.halfedges.size());
-         ++index) {
-      const int edgeId = cell.halfedges[static_cast<std::size_t>(index)];
-      if (edgeId < 0 || edgeId >= static_cast<int>(complex.halfedges.size()) ||
-          !seenHalfedges.insert(edgeId).second) {
-        return false;
+    for (const auto &[begin, end] : boundaryRanges) {
+      for (std::size_t index = begin; index < end; ++index) {
+        const int edgeId = cell.halfedges[index];
+        if (edgeId < 0 ||
+            edgeId >= static_cast<int>(complex.halfedges.size()) ||
+            !seenHalfedges.insert(edgeId).second) {
+          return false;
+        }
+        const SurfaceArrangementHalfedge &edge =
+            complex.halfedges[static_cast<std::size_t>(edgeId)];
+        const int nextId =
+            cell.halfedges[index + 1U < end ? index + 1U : begin];
+        if (edge.cell != id || edge.next != nextId ||
+            edge.to !=
+                complex.halfedges[static_cast<std::size_t>(nextId)].from) {
+          return false;
+        }
+        ++useCount[static_cast<std::size_t>(edgeId)];
       }
-      const SurfaceArrangementHalfedge &edge =
-          complex.halfedges[static_cast<std::size_t>(edgeId)];
-      const int nextId = cell.halfedges[static_cast<std::size_t>(
-          (index + 1) % static_cast<int>(cell.halfedges.size()))];
-      if (edge.cell != id || edge.next != nextId ||
-          edge.to != complex.halfedges[static_cast<std::size_t>(nextId)].from) {
-        return false;
-      }
-      ++useCount[static_cast<std::size_t>(edgeId)];
     }
   }
   return std::all_of(useCount.begin(), useCount.end(),
@@ -438,7 +446,8 @@ SurfaceCellDomainIdentityAudit audit_simple_cell_boundary(
   audit.cellId = cell.id;
   std::set<int> seenHalfedges;
   std::set<int> seenNodes;
-  if (!cell.closed || cell.halfedges.size() < 3U) {
+  if (!cell.closed || cell.boundaryComponentCount != 1 ||
+      cell.halfedges.size() < 3U) {
     audit.failure = SurfaceCellDomainIdentityFailureKind::NonSimpleBoundary;
     return audit;
   }
@@ -1026,6 +1035,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
   struct CellUndo {
     int index = -1;
     std::vector<int> halfedges;
+    std::vector<int> boundaryCycleOffsets;
     std::vector<int> sideFamilies;
     std::vector<int> sideEdgeCounts;
     std::vector<int> sourceFaces;
@@ -1045,6 +1055,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       SurfaceArrangementCell &cell =
           rebuilt.cells[static_cast<std::size_t>(undo->index)];
       cell.halfedges = std::move(undo->halfedges);
+      cell.boundaryCycleOffsets =
+          std::move(undo->boundaryCycleOffsets);
       cell.sideFamilies = std::move(undo->sideFamilies);
       cell.sideEdgeCounts = std::move(undo->sideEdgeCounts);
       cell.sourceFaces = std::move(undo->sourceFaces);
@@ -1304,6 +1316,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     CellUndo undo;
     undo.index = cellIndex;
     undo.halfedges = cell.halfedges;
+    undo.boundaryCycleOffsets = cell.boundaryCycleOffsets;
     undo.sideFamilies = cell.sideFamilies;
     undo.sideEdgeCounts = cell.sideEdgeCounts;
     undo.sourceFaces = cell.sourceFaces;
@@ -1315,6 +1328,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
     undo.disk = cell.disk;
     result.rollbackUndoOwnedBytes +=
         static_cast<std::uint64_t>(undo.halfedges.capacity()) * sizeof(int) +
+        static_cast<std::uint64_t>(undo.boundaryCycleOffsets.capacity()) *
+            sizeof(int) +
         static_cast<std::uint64_t>(undo.sideFamilies.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(undo.sideEdgeCounts.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(undo.sourceFaces.capacity()) * sizeof(int) +
@@ -1548,6 +1563,8 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
       uniqueNodes.insert(
           rebuilt.halfedges[static_cast<std::size_t>(halfedgeId)].from);
     }
+    cell.boundaryCycleOffsets =
+        cell.closed ? std::vector<int>{0} : std::vector<int>{};
     cell.boundaryComponentCount = cell.closed ? 1 : 0;
     cell.eulerCharacteristic =
         static_cast<int>(uniqueNodes.size()) -

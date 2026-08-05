@@ -982,6 +982,7 @@ std::uint64_t complex_storage_bytes(const SurfaceCellComplex &complex) {
     bytes += vector_storage_bytes(cell.sourceOwnershipClass.values);
     bytes += vector_storage_bytes(cell.sourceFaces);
     bytes += vector_storage_bytes(cell.halfedges);
+    bytes += vector_storage_bytes(cell.boundaryCycleOffsets);
     bytes += vector_storage_bytes(cell.sideFamilies);
     bytes += vector_storage_bytes(cell.sideEdgeCounts);
   }
@@ -1509,6 +1510,47 @@ SurfaceCellComplex build_surface_cell_complex(
   };
   std::vector<Segment2> segments;
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
+
+  // The compact edge_faces helper stores at most two incident faces. Perform
+  // an authoritative full source-topology preflight before constructing chart
+  // transitions so a third incident face can never be hidden by local-sheet
+  // labels or by the two-entry compatibility map.
+  std::map<std::uint64_t, int> sourceEdgeIncidenceCount;
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int edge = 0; edge < 3; ++edge) {
+      ++sourceEdgeIncidenceCount[source_edge_key(faces, face, edge)];
+    }
+  }
+  const auto nonManifoldSourceEdge = std::find_if(
+      sourceEdgeIncidenceCount.begin(), sourceEdgeIncidenceCount.end(),
+      [](const auto &entry) { return entry.second > 2; });
+  if (nonManifoldSourceEdge != sourceEdgeIncidenceCount.end()) {
+    complex.diagnostics.incidenceFailure =
+        SurfaceArrangementIncidenceFailure::NonManifoldSourceEdge;
+    complex.diagnostics.incidenceValid = false;
+    complex.diagnostics.embeddingValid = false;
+    complex.diagnostics.orientationValid = false;
+    complex.diagnostics.cellsDiskValid = false;
+    complex.diagnostics.boundaryLoopsValid = false;
+    complex.diagnostics.eulerCharacteristicValid = false;
+    complex.diagnostics.topologyValid = false;
+    complex.diagnostics.inputMemoryBytes =
+        static_cast<std::uint64_t>(vertices.size()) * sizeof(double) +
+        static_cast<std::uint64_t>(faces.size()) * sizeof(int) +
+        static_cast<std::uint64_t>(inputArcs.capacity()) *
+            sizeof(SurfaceArrangementArc);
+    complex.diagnostics.retainedMemoryBytes = complex_storage_bytes(complex);
+    complex.diagnostics.peakMemoryBytes =
+        complex.diagnostics.retainedMemoryBytes;
+    if (complex.diagnostics.inputMemoryBytes > 0U) {
+      complex.diagnostics.measuredMemoryRatio =
+          static_cast<double>(complex.diagnostics.peakMemoryBytes) /
+          static_cast<double>(complex.diagnostics.inputMemoryBytes);
+      complex.diagnostics.memoryRatioEstimate =
+          complex.diagnostics.measuredMemoryRatio;
+    }
+    return complex;
+  }
 
   // Ownership labels are optional at the public API boundary, but ownership
   // itself is not. Derive deterministic intrinsic defaults so topology-only
@@ -3319,18 +3361,34 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
 
-  std::vector<SurfaceArrangementCell> pendingCells;
+  struct PendingCellRecord {
+    SurfaceArrangementCell cell;
+    std::vector<int> geometryHalfedges;
+    std::vector<Eigen::Vector2d> polygon;
+    int sourceBoundaryVote = 0;
+    double rawSignedArea = 0.0;
+    bool geometryAvailable = false;
+    bool consumed = false;
+  };
+
+  std::vector<PendingCellRecord> pendingRecords;
   if (!directedIncidenceValid) {
     auditedCycles.clear();
   }
+  pendingRecords.reserve(auditedCycles.size());
   for (const AuditedCycle &audited : auditedCycles) {
-    SurfaceArrangementCell cell;
+    PendingCellRecord record;
+    SurfaceArrangementCell &cell = record.cell;
     cell.id = -1;
     cell.halfedges = audited.halfedges;
+    cell.boundaryCycleOffsets = {0};
     cell.closed = true;
     cell.cutCellDisk = audited.cutCellDisk;
     cell.bridgeExcursion = audited.bridgeExcursion;
     cell.supportOnlyCycle = audited.supportOnlyCycle;
+    record.geometryHalfedges =
+        audited.coreCycles.size() == 1U ? audited.coreCycles.front()
+                                        : cell.halfedges;
     for (const int halfedgeId : cell.halfedges) {
       const auto &halfedge =
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
@@ -3338,6 +3396,7 @@ SurfaceCellComplex build_surface_cell_complex(
         cell.sourceFace = halfedge.sourceFace;
       }
     }
+
     std::set<int> uniqueNodes;
     std::set<std::pair<int, int>> uniqueUndirectedEdges;
     for (const int halfedge : cell.halfedges) {
@@ -3347,20 +3406,27 @@ SurfaceCellComplex build_surface_cell_complex(
       uniqueUndirectedEdges.insert(
           {std::min(edge.from, edge.to), std::max(edge.from, edge.to)});
     }
-    cell.boundaryComponentCount = 1;
     const bool simpleCycle =
         !cell.cutCellDisk && !cell.bridgeExcursion &&
-        !cell.supportOnlyCycle &&
+        !cell.supportOnlyCycle && audited.coreCycles.size() == 1U &&
         uniqueNodes.size() == cell.halfedges.size() &&
         uniqueUndirectedEdges.size() == cell.halfedges.size();
-    cell.disk = simpleCycle || cell.cutCellDisk;
-    cell.eulerCharacteristic = cell.disk ? 1 : 0;
+    if (cell.supportOnlyCycle) {
+      cell.boundaryComponentCount = 0;
+      cell.eulerCharacteristic = 0;
+      cell.disk = false;
+    } else {
+      cell.boundaryComponentCount = 1;
+      cell.disk = simpleCycle || cell.cutCellDisk;
+      cell.eulerCharacteristic = cell.disk ? 1 : 0;
+    }
 
-    const int boundaryVote = boundary_orientation_vote(
+    record.sourceBoundaryVote = boundary_orientation_vote(
         cell.halfedges, complex.halfedges, complex.nodes, faces, edgeFaces);
-    // Source-boundary incidence is authoritative. Interior hard rails and a
-    // negative geometric projection never manufacture an exterior cycle.
-    cell.boundaryCycle = cell.closed && boundaryVote < 0;
+    // A negative source-boundary vote is authoritative exterior evidence.
+    // Zero-vote internal cycles are classified below from the complete
+    // containment inventory; projected sign alone never decides globally.
+    cell.boundaryCycle = cell.closed && record.sourceBoundaryVote < 0;
 
     std::vector<int> supportSourceFaces;
     collect_cell_source_faces(cell.halfedges, complex.halfedges,
@@ -3370,11 +3436,12 @@ SurfaceCellComplex build_surface_cell_complex(
         std::unique(supportSourceFaces.begin(), supportSourceFaces.end()),
         supportSourceFaces.end());
     std::vector<int> geometrySourceFaces;
-    const bool geometryAvailable =
-        !cell.supportOnlyCycle &&
-        polygon_geometry(vertices, faces, cell.halfedges, complex.halfedges,
-                         complex.nodes, cell.signedArea, cell.area,
-                         geometrySourceFaces);
+    record.geometryAvailable =
+        !cell.supportOnlyCycle && !record.geometryHalfedges.empty() &&
+        polygon_geometry(vertices, faces, record.geometryHalfedges,
+                         complex.halfedges, complex.nodes, cell.signedArea,
+                         cell.area, geometrySourceFaces);
+    record.rawSignedArea = cell.signedArea;
     std::sort(geometrySourceFaces.begin(), geometrySourceFaces.end());
     geometrySourceFaces.erase(
         std::unique(geometrySourceFaces.begin(), geometrySourceFaces.end()),
@@ -3382,46 +3449,72 @@ SurfaceCellComplex build_surface_cell_complex(
     std::set_union(geometrySourceFaces.begin(), geometrySourceFaces.end(),
                    supportSourceFaces.begin(), supportSourceFaces.end(),
                    std::back_inserter(cell.sourceFaces));
-    if (!geometryAvailable) {
+
+    if (!record.geometryAvailable) {
       if (cell.boundaryCycle) {
         cell.signedArea = -1.0;
         cell.area = 0.0;
+        record.rawSignedArea = -1.0;
       } else if (cell.cutCellDisk) {
-        // A curved periodic cut cell need not admit one global tangent-plane
-        // polygon. Its exact source-face support supplies the embedded surface
-        // area only after the full directed cycle has passed the R2 audit.
+        // A curved cut disk can span charts without one global projection.
+        // Its audited source support supplies area only after the complete
+        // bridge/core descriptor has passed structural validation.
         cell.area = 0.0;
         for (const int sourceFace : cell.sourceFaces) {
           cell.area += triangle_area_3d(vertices, faces, sourceFace);
         }
         cell.signedArea = cell.area;
+        record.rawSignedArea = cell.signedArea;
         if (!(cell.area > 1.0e-20) || !std::isfinite(cell.area)) {
           embeddingValid = false;
           cell.area = 0.0;
           cell.signedArea = 0.0;
+          record.rawSignedArea = 0.0;
         }
       } else if (cell.bridgeExcursion || cell.supportOnlyCycle) {
         cell.signedArea = 0.0;
         cell.area = 0.0;
+        record.rawSignedArea = 0.0;
       } else {
         embeddingValid = false;
         cell.signedArea = 0.0;
         cell.area = 0.0;
+        record.rawSignedArea = 0.0;
       }
-    } else if (cell.boundaryCycle) {
-      cell.signedArea = -std::abs(cell.area);
-    } else {
-      cell.signedArea = std::abs(cell.area);
     }
 
-    for (int index = 0; index < static_cast<int>(cell.halfedges.size()); ++index) {
-      const auto &current =
-          complex.halfedges[static_cast<std::size_t>(cell.halfedges[index])];
+    if (record.geometryAvailable && cell.sourceFaces.size() == 1U) {
+      const int polygonFace = cell.sourceFaces.front();
+      record.polygon.reserve(record.geometryHalfedges.size());
+      for (const int halfedgeId : record.geometryHalfedges) {
+        const SurfaceArrangementHalfedge &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        const Eigen::RowVector3d barycentric = node_barycentric_on_face(
+            complex.nodes[static_cast<std::size_t>(halfedge.from)],
+            polygonFace);
+        if (!barycentric.allFinite()) {
+          record.polygon.clear();
+          break;
+        }
+        record.polygon.push_back(bary_to_uv(barycentric));
+      }
+    }
+
+    // Side metadata describes one logical boundary. Bridge excursions use
+    // their single area-bearing core; multiply connected cells clear this
+    // metadata after their additional boundaries are attached below.
+    const std::vector<int> &sideBoundary = record.geometryHalfedges.empty()
+                                               ? cell.halfedges
+                                               : record.geometryHalfedges;
+    for (int index = 0; index < static_cast<int>(sideBoundary.size());
+         ++index) {
+      const auto &current = complex.halfedges[static_cast<std::size_t>(
+          sideBoundary[static_cast<std::size_t>(index)])];
       bool continuesPrevious = false;
       if (index > 0 && !cell.sideFamilies.empty() &&
           cell.sideFamilies.back() == current.family) {
         const auto &previous = complex.halfedges[static_cast<std::size_t>(
-            cell.halfedges[static_cast<std::size_t>(index - 1)])];
+            sideBoundary[static_cast<std::size_t>(index - 1)])];
         continuesPrevious = same_logical_side(
             previous, current, complex.nodes, vertices, faces);
       }
@@ -3435,68 +3528,160 @@ SurfaceCellComplex build_surface_cell_complex(
     if (cell.sideFamilies.size() > 1U &&
         cell.sideFamilies.front() == cell.sideFamilies.back()) {
       const auto &last = complex.halfedges[static_cast<std::size_t>(
-          cell.halfedges.back())];
+          sideBoundary.back())];
       const auto &first = complex.halfedges[static_cast<std::size_t>(
-          cell.halfedges.front())];
+          sideBoundary.front())];
       if (same_logical_side(last, first, complex.nodes, vertices, faces)) {
         cell.sideEdgeCounts.front() += cell.sideEdgeCounts.back();
         cell.sideEdgeCounts.pop_back();
         cell.sideFamilies.pop_back();
       }
     }
+    pendingRecords.push_back(std::move(record));
+  }
+
+  // Resolve zero-vote internal cycles from the complete structural inventory.
+  // A negatively oriented cycle contained by the smallest larger positive
+  // cycle is an additional boundary of that bounded cell. If no such bounded
+  // owner exists it is the unbounded arrangement orbit. This uses exact
+  // successor cycles plus containment, rather than treating negative area as
+  // source-topology exterior evidence.
+  for (std::size_t holeIndex = 0; holeIndex < pendingRecords.size();
+       ++holeIndex) {
+    PendingCellRecord &hole = pendingRecords[holeIndex];
+    if (hole.consumed || hole.cell.boundaryCycle ||
+        hole.sourceBoundaryVote != 0 || !hole.geometryAvailable ||
+        hole.rawSignedArea >= -1.0e-14 || hole.polygon.size() < 3U ||
+        hole.cell.supportOnlyCycle || hole.cell.bridgeExcursion ||
+        hole.cell.cutCellDisk) {
+      continue;
+    }
+    Eigen::Vector2d sample = Eigen::Vector2d::Zero();
+    for (const Eigen::Vector2d &point : hole.polygon) {
+      sample += point;
+    }
+    sample /= static_cast<double>(hole.polygon.size());
+
+    int ownerIndex = -1;
+    double ownerArea = std::numeric_limits<double>::infinity();
+    for (std::size_t candidateIndex = 0;
+         candidateIndex < pendingRecords.size(); ++candidateIndex) {
+      if (candidateIndex == holeIndex) {
+        continue;
+      }
+      PendingCellRecord &candidate = pendingRecords[candidateIndex];
+      if (candidate.consumed || candidate.cell.boundaryCycle ||
+          !candidate.geometryAvailable ||
+          candidate.rawSignedArea <= 1.0e-14 ||
+          candidate.cell.sourceFaces != hole.cell.sourceFaces ||
+          candidate.polygon.size() < 3U ||
+          candidate.cell.area <= hole.cell.area + 1.0e-14 ||
+          !point_in_polygon(sample, candidate.polygon)) {
+        continue;
+      }
+      if (candidate.cell.area < ownerArea) {
+        ownerArea = candidate.cell.area;
+        ownerIndex = static_cast<int>(candidateIndex);
+      }
+    }
+
+    if (ownerIndex < 0) {
+      hole.cell.boundaryCycle = true;
+      continue;
+    }
+
+    PendingCellRecord &owner =
+        pendingRecords[static_cast<std::size_t>(ownerIndex)];
+    owner.cell.boundaryCycleOffsets.push_back(
+        static_cast<int>(owner.cell.halfedges.size()));
+    owner.cell.halfedges.insert(owner.cell.halfedges.end(),
+                                hole.cell.halfedges.begin(),
+                                hole.cell.halfedges.end());
+    ++owner.cell.boundaryComponentCount;
+    owner.cell.eulerCharacteristic = 2 - owner.cell.boundaryComponentCount;
+    owner.cell.disk = false;
+    owner.cell.quadReady = false;
+    owner.cell.sideFamilies.clear();
+    owner.cell.sideEdgeCounts.clear();
+    owner.cell.area = std::max(0.0, owner.cell.area - hole.cell.area);
+    owner.rawSignedArea = owner.cell.area;
+    owner.cell.signedArea = owner.cell.area;
+    hole.consumed = true;
+  }
+
+  std::vector<SurfaceArrangementCell> pendingCells;
+  pendingCells.reserve(pendingRecords.size());
+  for (PendingCellRecord &record : pendingRecords) {
+    if (record.consumed) {
+      continue;
+    }
+    SurfaceArrangementCell &cell = record.cell;
     if (cell.boundaryCycle) {
+      cell.signedArea = -std::max(cell.area, 1.0e-12);
       cell.cellClass = SurfaceArrangementCellClass::Exterior;
-    } else if (!cell.disk) {
-      cell.cellClass = SurfaceArrangementCellClass::NonDisk;
-      cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
-    } else if (cell.area <= 1.0e-14) {
-      cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
-      cell.rejectReason = SurfaceArrangementRejectReason::Sliver;
+      cell.quadReady = false;
     } else {
-      const bool crossesHardBarrier = std::any_of(
-          cell.halfedges.begin(), cell.halfedges.end(), [&](const int edge) {
-            const SurfaceArrangementHalfedge &halfedge =
-                complex.halfedges[static_cast<std::size_t>(edge)];
-            return complex.nodes[static_cast<std::size_t>(halfedge.from)]
-                       .hardBarrierCrossing ||
-                   complex.nodes[static_cast<std::size_t>(halfedge.to)]
-                       .hardBarrierCrossing;
-          });
-      if (crossesHardBarrier) {
-        cell.rejectReason = SurfaceArrangementRejectReason::HardFeatureCrossing;
-      }
-      bool alternating = true;
-      for (int i = 0; i < static_cast<int>(cell.sideFamilies.size()); ++i) {
-        const int a = cell.sideFamilies[static_cast<std::size_t>(i)];
-        const int b =
-            cell.sideFamilies[static_cast<std::size_t>((i + 1) % cell.sideFamilies.size())];
-        if (a >= 0 && b >= 0 && a == b) {
-          alternating = false;
-        }
-      }
-      const int boundaryCount = std::accumulate(cell.sideEdgeCounts.begin(),
-                                                cell.sideEdgeCounts.end(), 0);
-      if (cell.sideFamilies.size() == 4 && alternating &&
-          cell.rejectReason != SurfaceArrangementRejectReason::HardFeatureCrossing) {
-        cell.quadReady = true;
-        cell.cellClass = SurfaceArrangementCellClass::RegularQuad;
-      } else {
+      cell.signedArea = std::abs(cell.area);
+      if (!cell.disk) {
+        cell.cellClass = SurfaceArrangementCellClass::NonDisk;
+        cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
+        cell.quadReady = false;
+      } else if (cell.area <= 1.0e-14) {
         cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
-        if (cell.rejectReason != SurfaceArrangementRejectReason::HardFeatureCrossing) {
-          cell.rejectReason = !alternating
-                                  ? SurfaceArrangementRejectReason::NonAlternatingFamilies
-                                  : (boundaryCount % 2 != 0
-                                         ? SurfaceArrangementRejectReason::OddBoundaryParity
-                                         : SurfaceArrangementRejectReason::NotFourSided);
+        cell.rejectReason = SurfaceArrangementRejectReason::Sliver;
+      } else {
+        const bool crossesHardBarrier = std::any_of(
+            cell.halfedges.begin(), cell.halfedges.end(),
+            [&](const int edge) {
+              const SurfaceArrangementHalfedge &halfedge =
+                  complex.halfedges[static_cast<std::size_t>(edge)];
+              return complex.nodes[static_cast<std::size_t>(halfedge.from)]
+                         .hardBarrierCrossing ||
+                     complex.nodes[static_cast<std::size_t>(halfedge.to)]
+                         .hardBarrierCrossing;
+            });
+        if (crossesHardBarrier) {
+          cell.rejectReason =
+              SurfaceArrangementRejectReason::HardFeatureCrossing;
+        }
+        bool alternating = true;
+        for (int side = 0;
+             side < static_cast<int>(cell.sideFamilies.size()); ++side) {
+          const int first =
+              cell.sideFamilies[static_cast<std::size_t>(side)];
+          const int second = cell.sideFamilies[static_cast<std::size_t>(
+              (side + 1) % static_cast<int>(cell.sideFamilies.size()))];
+          if (first >= 0 && second >= 0 && first == second) {
+            alternating = false;
+          }
+        }
+        const int boundaryCount = std::accumulate(
+            cell.sideEdgeCounts.begin(), cell.sideEdgeCounts.end(), 0);
+        if (cell.sideFamilies.size() == 4U && alternating &&
+            cell.rejectReason !=
+                SurfaceArrangementRejectReason::HardFeatureCrossing) {
+          cell.quadReady = true;
+          cell.cellClass = SurfaceArrangementCellClass::RegularQuad;
+        } else {
+          cell.cellClass = SurfaceArrangementCellClass::PatchCandidate;
+          if (cell.rejectReason !=
+              SurfaceArrangementRejectReason::HardFeatureCrossing) {
+            cell.rejectReason =
+                !alternating
+                    ? SurfaceArrangementRejectReason::NonAlternatingFamilies
+                    : (boundaryCount % 2 != 0
+                           ? SurfaceArrangementRejectReason::OddBoundaryParity
+                           : SurfaceArrangementRejectReason::NotFourSided);
+          }
         }
       }
     }
     pendingCells.push_back(std::move(cell));
   }
 
-  // Cells are classified before ids are committed. Canonicalize the cycle
-  // inventory by its embedded undirected edge set so source-face row order and
-  // traversal start cannot change cell ordinals.
+  // Cells are classified before ids are committed. Canonicalize the complete
+  // boundary-cycle inventory by embedded undirected edges so source-face row
+  // order and traversal starts cannot change cell ordinals.
   const auto cell_cycle_key = [&](const SurfaceArrangementCell &cell) {
     using CanonicalEdge =
         std::pair<SurfaceCellCanonicalIdentity, SurfaceCellCanonicalIdentity>;
@@ -3525,11 +3710,11 @@ SurfaceCellComplex build_surface_cell_complex(
     std::sort(sourceFaces.begin(), sourceFaces.end());
     sourceFaces.erase(std::unique(sourceFaces.begin(), sourceFaces.end()),
                       sourceFaces.end());
-    return std::make_tuple(cell.boundaryCycle ? 1 : 0,
-                           cell.cutCellDisk ? 1 : 0,
-                           cell.supportOnlyCycle ? 1 : 0,
-                           cell.bridgeExcursion ? 1 : 0, sourceFaces, edges,
-                           cell.halfedges.size());
+    return std::make_tuple(
+        cell.boundaryCycle ? 1 : 0, cell.cutCellDisk ? 1 : 0,
+        cell.supportOnlyCycle ? 1 : 0, cell.bridgeExcursion ? 1 : 0,
+        cell.boundaryComponentCount, sourceFaces, edges,
+        cell.halfedges.size());
   };
   std::sort(pendingCells.begin(), pendingCells.end(),
             [&](const SurfaceArrangementCell &lhs,
@@ -4027,74 +4212,10 @@ SurfaceCellComplex build_surface_cell_complex(
     cell.sourceFace = cell.sourceFaces.empty() ? -1 : cell.sourceFaces.front();
   }
 
-  // A DCEL walk yields one oriented cycle at a time.  A bounded region may
-  // nevertheless have nested, oppositely oriented cycles (holes).  Detect
-  // those components explicitly so annular and multiply connected cells are
-  // not silently reported as disks.
-  std::vector<std::vector<Eigen::Vector2d>> cellPolygons(complex.cells.size());
-  for (const SurfaceArrangementCell &cell : complex.cells) {
-    auto &polygon = cellPolygons[static_cast<std::size_t>(cell.id)];
-    if (cell.sourceFaces.size() != 1U) {
-      continue;
-    }
-    const int polygonFace = cell.sourceFaces.front();
-    polygon.reserve(cell.halfedges.size());
-    for (const int halfedgeId : cell.halfedges) {
-      const SurfaceArrangementHalfedge &halfedge =
-          complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-      const Eigen::RowVector3d barycentric = node_barycentric_on_face(
-          complex.nodes[static_cast<std::size_t>(halfedge.from)], polygonFace);
-      if (!barycentric.allFinite()) {
-        polygon.clear();
-        break;
-      }
-      polygon.push_back(bary_to_uv(barycentric));
-    }
-  }
-  for (SurfaceArrangementCell &cell : complex.cells) {
-    // The nesting pass may only disprove a disk. It must never erase the
-    // repeated-node/self-touch evidence established by the DCEL incidence
-    // walk above. The previous assignment of `disk` from boundary count alone
-    // accidentally made pinched cycles topologically valid while leaving
-    // their stale NonDisk class behind.
-    if (cell.boundaryCycle || !cell.disk || !cell.closed ||
-        cell.area <= 1.0e-14) {
-      continue;
-    }
-    int nestedBoundaryCount = 0;
-    const auto &outer = cellPolygons[static_cast<std::size_t>(cell.id)];
-    for (const SurfaceArrangementCell &candidate : complex.cells) {
-      if (!candidate.boundaryCycle || !candidate.closed ||
-          cell.sourceFaces.size() != 1U ||
-          candidate.sourceFaces != cell.sourceFaces || outer.empty() ||
-          candidate.area >= cell.area - 1.0e-14) {
-        continue;
-      }
-      const auto &hole =
-          cellPolygons[static_cast<std::size_t>(candidate.id)];
-      if (hole.empty()) {
-        continue;
-      }
-      Eigen::Vector2d centroid = Eigen::Vector2d::Zero();
-      for (const Eigen::Vector2d &point : hole) {
-        centroid += point;
-      }
-      centroid /= static_cast<double>(std::max<std::size_t>(1U, hole.size()));
-      if (point_in_polygon(centroid, outer)) {
-        ++nestedBoundaryCount;
-      }
-    }
-    if (nestedBoundaryCount > 0) {
-      cell.boundaryComponentCount = 1 + nestedBoundaryCount;
-      cell.eulerCharacteristic = 2 - cell.boundaryComponentCount;
-      cell.disk = false;
-      cell.quadReady = false;
-      cell.cellClass = SurfaceArrangementCellClass::NonDisk;
-      cell.rejectReason = SurfaceArrangementRejectReason::NotFourSided;
-    }
-  }
-  update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes() +
-                     vector_storage_bytes(cellPolygons));
+  // Multiply connected bounded cells were assembled transactionally from the
+  // complete successor-orbit inventory before cell ids were published. No
+  // post-publication cycle decomposition or topology relabeling is permitted.
+  update_peak_memory(vector_storage_bytes(segments) + split_storage_bytes());
 
   for (int i = 0; i < static_cast<int>(segments.size()); ++i) {
     const Segment2 &a = segments[static_cast<std::size_t>(i)];
@@ -4249,8 +4370,15 @@ SurfaceCellComplex build_surface_cell_complex(
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
     const bool validSupportOnlyCycle =
-        cell.supportOnlyCycle && cell.halfedges.size() >= 2U;
-    if (!cell.closed ||
+        cell.supportOnlyCycle && cell.halfedges.size() == 2U &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[0])].twin ==
+            cell.halfedges[1] &&
+        complex.halfedges[static_cast<std::size_t>(cell.halfedges[1])].twin ==
+            cell.halfedges[0];
+    std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
+    const bool validBoundaryRanges =
+        surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges);
+    if (!cell.closed || !validBoundaryRanges ||
         (cell.halfedges.size() < 3U && !validSupportOnlyCycle)) {
       incidenceValid = false;
     }
@@ -4264,12 +4392,27 @@ SurfaceCellComplex build_surface_cell_complex(
     if (!cell.boundaryCycle && !cell.disk) {
       cellsDiskValid = false;
     }
-    for (const int halfedgeId : cell.halfedges) {
-      if (halfedgeId < 0 ||
-          halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
-          complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell !=
-              cell.id) {
-        incidenceValid = false;
+    std::set<int> seenCellHalfedges;
+    for (const auto &[begin, end] : boundaryRanges) {
+      for (std::size_t index = begin; index < end; ++index) {
+        const int halfedgeId = cell.halfedges[index];
+        if (halfedgeId < 0 ||
+            halfedgeId >= static_cast<int>(complex.halfedges.size()) ||
+            !seenCellHalfedges.insert(halfedgeId).second ||
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell !=
+                cell.id) {
+          incidenceValid = false;
+          continue;
+        }
+        const int expectedNext =
+            cell.halfedges[index + 1U < end ? index + 1U : begin];
+        const SurfaceArrangementHalfedge &halfedge =
+            complex.halfedges[static_cast<std::size_t>(halfedgeId)];
+        if (halfedge.next != expectedNext ||
+            halfedge.to !=
+                complex.halfedges[static_cast<std::size_t>(expectedNext)].from) {
+          incidenceValid = false;
+        }
       }
     }
   }
@@ -4498,6 +4641,15 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(cell.supportOnlyCycle ? 1 : 0);
     mix(cell.boundaryComponentCount);
     mix(cell.eulerCharacteristic);
+    std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
+    if (surface_arrangement_boundary_cycle_ranges(cell, boundaryRanges)) {
+      mix(static_cast<std::int64_t>(boundaryRanges.size()));
+      for (const auto &[begin, end] : boundaryRanges) {
+        mix(static_cast<std::int64_t>(end - begin));
+      }
+    } else {
+      mix(-1);
+    }
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
     }

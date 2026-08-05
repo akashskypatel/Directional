@@ -1730,6 +1730,9 @@ std::uint64_t estimated_complex_owned_bytes(
              sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.halfedges.capacity()) *
              sizeof(int);
+    bytes += static_cast<std::uint64_t>(
+                 cell.boundaryCycleOffsets.capacity()) *
+             sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.sideFamilies.capacity()) *
              sizeof(int);
     bytes += static_cast<std::uint64_t>(cell.sideEdgeCounts.capacity()) *

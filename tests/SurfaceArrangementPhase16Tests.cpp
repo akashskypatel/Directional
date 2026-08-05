@@ -887,14 +887,32 @@ TEST(SurfaceArrangementPhase16,
   const auto complex = directional::geometry::build_surface_cell_complex(
       fixture.vertices, fixture.faces, arcs, options);
 
-  EXPECT_TRUE(std::any_of(
+  const auto annulus = std::find_if(
       complex.cells.begin(), complex.cells.end(), [](const auto &cell) {
         return !cell.boundaryCycle && !cell.disk &&
                cell.boundaryComponentCount == 2 &&
                cell.eulerCharacteristic == 0 &&
                cell.cellClass == directional::geometry::
                    SurfaceArrangementCellClass::NonDisk;
-      }));
+      });
+  ASSERT_NE(annulus, complex.cells.end());
+  std::vector<std::pair<std::size_t, std::size_t>> boundaryRanges;
+  ASSERT_TRUE(directional::geometry::
+                  surface_arrangement_boundary_cycle_ranges(
+                      *annulus, boundaryRanges));
+  ASSERT_EQ(boundaryRanges.size(), 2U);
+  for (const auto &[begin, end] : boundaryRanges) {
+    ASSERT_GE(end - begin, 3U);
+    for (std::size_t index = begin; index < end; ++index) {
+      const int halfedgeId = annulus->halfedges[index];
+      const int expectedNext =
+          annulus->halfedges[index + 1U < end ? index + 1U : begin];
+      EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedgeId)].cell,
+                annulus->id);
+      EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(halfedgeId)].next,
+                expectedNext);
+    }
+  }
 }
 
 TEST(SurfaceArrangementPhase16,
@@ -1238,8 +1256,10 @@ TEST(SurfaceArrangementPhase16,
 
   EXPECT_FALSE(complex.diagnostics.topologyValid);
   EXPECT_FALSE(complex.diagnostics.incidenceValid);
-  EXPECT_NE(complex.diagnostics.incidenceFailure,
-            directional::geometry::SurfaceArrangementIncidenceFailure::None);
+  EXPECT_EQ(
+      complex.diagnostics.incidenceFailure,
+      directional::geometry::
+          SurfaceArrangementIncidenceFailure::NonManifoldSourceEdge);
   EXPECT_TRUE(complex.cells.empty());
 }
 

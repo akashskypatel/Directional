@@ -1193,6 +1193,7 @@ std::uint64_t hash_surface_complex(
     hash_combine_i64(seed, cell.sourceSheet);
     hash_vector(seed, cell.sourceFaces);
     hash_vector(seed, cell.halfedges);
+    hash_vector(seed, cell.boundaryCycleOffsets);
     hash_vector(seed, cell.sideFamilies);
     hash_vector(seed, cell.sideEdgeCounts);
     hash_combine_double(seed, cell.signedArea);
