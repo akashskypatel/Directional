@@ -446,6 +446,24 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
     if (!left.boundaryCycle && !right.boundaryCycle) {
       ++boundedHardRailTwinPairs;
       EXPECT_NE(left.id, right.id);
+      ASSERT_GE(halfedge.authoritativeChartRoot, 0);
+      ASSERT_GE(twin.authoritativeChartRoot, 0);
+      EXPECT_NE(halfedge.authoritativeChartRoot,
+                twin.authoritativeChartRoot);
+      for (const int edgeId : left.halfedges) {
+        ASSERT_GE(edgeId, 0);
+        ASSERT_LT(edgeId, static_cast<int>(complex.halfedges.size()));
+        EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(edgeId)]
+                      .authoritativeChartRoot,
+                  halfedge.authoritativeChartRoot);
+      }
+      for (const int edgeId : right.halfedges) {
+        ASSERT_GE(edgeId, 0);
+        ASSERT_LT(edgeId, static_cast<int>(complex.halfedges.size()));
+        EXPECT_EQ(complex.halfedges[static_cast<std::size_t>(edgeId)]
+                      .authoritativeChartRoot,
+                  twin.authoritativeChartRoot);
+      }
       EXPECT_TRUE(left.sourceOwnershipClass.valid);
       EXPECT_TRUE(right.sourceOwnershipClass.valid);
       EXPECT_FALSE(left.sourceOwnershipClass == right.sourceOwnershipClass);

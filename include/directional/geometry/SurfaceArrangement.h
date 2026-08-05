@@ -237,6 +237,10 @@ struct SurfaceArrangementHalfedge {
   int proposalSeedId = -1;
   int proposalSide = -1;
   int proposalBoundarySegment = -1;
+  // Exact transition-component root proven for the complete directed bounded
+  // orbit. This is distinct from the halfedge's full provenance, which may
+  // legitimately contain charts from both sides of a hard rail.
+  int authoritativeChartRoot = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
   std::vector<SurfaceArrangementProvenance> provenance;
@@ -357,6 +361,8 @@ struct SurfaceArrangementDiagnostics {
   int boundaryRotationalNodeCount = 0;
   int boundaryDegreeTwoRotationalNodeCount = 0;
   int boundaryFanSectorNodeCount = 0;
+  int boundaryCanonicalFanPairCount = 0;
+  int boundaryExteriorSectorExclusionCount = 0;
   int boundaryInteriorSectorCount = 0;
   int boundaryHardRailSeparatorCount = 0;
   int boundaryCyclicWrapInteriorSectorCount = 0;

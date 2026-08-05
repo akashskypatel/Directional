@@ -574,6 +574,9 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryCanonicalFanPairCount, 0);
+  EXPECT_EQ(complex.diagnostics.boundaryExteriorSectorExclusionCount,
+            complex.diagnostics.boundaryFanSectorNodeCount);
   EXPECT_GT(complex.diagnostics.boundaryCyclicWrapInteriorSectorCount, 0);
   expect_degree_two_boundary_sectors(complex);
   EXPECT_EQ(complex.diagnostics.repeatedNodeCycleCount, 0);
