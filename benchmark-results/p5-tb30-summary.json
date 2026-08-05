@@ -1,0 +1,145 @@
+{
+  "turn": "P5-TB30",
+  "type": "artifact-only-test-benchmark",
+  "date": "2026-08-04",
+  "repository": "akashskypatel/Directional",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "pr": 8,
+  "review_policy": "never",
+  "authority": {
+    "artifact_id": 8916209271,
+    "artifact_name": "surface-cell-p5-r2e2-github-source-linux-release",
+    "artifact_sha256": "2117cc2b99bc82a197bb7ee94f3e21a9c8f71b48f735c15c878515dabd4915df",
+    "exact_compiled_source": "f5305ade5bf5360df36b681d135e5299322f5fdb",
+    "workflow_event_commit": "517735a53e4554d74cab14845cb8e26edb90de37",
+    "reviewed_diff_sha256": "526c01714d6d11ca8c4e60458b176f0057d386a6d163e406bb89fb04c86a83ec",
+    "workflow_log_artifact_id": 8916209511,
+    "workflow_log_sha256": "45606d385ffacdfc621c85d21316dca31bfd84cdc0421d16b6f990b817b47007",
+    "recursive_checksums": "48/48",
+    "package_files": 49,
+    "fixtures": 26,
+    "submodules": 9,
+    "clean_source_workflows": ["agent-source-snapshot.yml"],
+    "clean_source_payloads": 0,
+    "source_exclusions": [".github/workflows/agent-build-p5-r2e2.yml"],
+    "source_modified_during_validation": false,
+    "configured_or_built_during_validation": false
+  },
+  "scopes": {
+    "source-chart-r1": {"passed": 11, "tests": 11, "failures": 0},
+    "source-validator": {"passed": 6, "tests": 6, "failures": 0},
+    "recovery-authority": {"passed": 9, "tests": 9, "failures": 0},
+    "feature-barrier": {"passed": 8, "tests": 8, "failures": 0},
+    "graph-dependent": {
+      "passed": 5,
+      "tests": 6,
+      "failures": 1,
+      "failed_tests": ["SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"]
+    },
+    "r2-focused": {
+      "passed": 10,
+      "tests": 14,
+      "failures": 4,
+      "failed_tests": [
+        "MilestoneDClosure.InteriorHardRailIsNotClassifiedAsExteriorBoundary",
+        "MilestoneDClosure.CylindricalOpenStrandCommitsWithTopologyPreserved",
+        "SurfaceArrangementPhase16.EulerBoundaryAndAreaChecksPassOnPlanarFixture",
+        "SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence"
+      ]
+    },
+    "milestone-d": {"passed": 5, "tests": 7, "failures": 2},
+    "phase14-18": {"passed": 232, "tests": 242, "failures": 10},
+    "phase16": {
+      "passed": 42,
+      "tests": 45,
+      "failures": 3,
+      "failed_tests": [
+        "SurfaceArrangementPhase16.EulerBoundaryAndAreaChecksPassOnPlanarFixture",
+        "SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence",
+        "SurfaceArrangementPhase16.BunnySingularityFanUsesIntrinsicSourceVertexRotation"
+      ]
+    },
+    "phase17": {"passed": 20, "tests": 26, "failures": 6},
+    "phase18": {"passed": 57, "tests": 57, "failures": 0},
+    "phase20": {"passed": 46, "tests": 48, "failures": 2},
+    "complete-suite": {
+      "passed": 594,
+      "tests": 623,
+      "failures": 29,
+      "errors": 0,
+      "disabled": 0,
+      "time_seconds": 77.761,
+      "sampled_max_rss_kib": 220348,
+      "exact_max_rss_available": false,
+      "new_failures_vs_tb29": ["SurfaceArrangementPhase16.WholeMeshOrientationReversalPreservesDirectedIncidence"],
+      "closed_failures_vs_tb29": []
+    }
+  },
+  "direct_benchmarks": {
+    "plane__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.013597,
+      "peak_working_set_bytes": 8388608,
+      "failure": "NotProductionReady/completion",
+      "first_invalid": "completion/output-validation:AggregateCompletionValidationFailure",
+      "arrangement_cells": 9,
+      "simplified_cells": 9,
+      "completed_quads": 12,
+      "validation_failures": 15,
+      "fallback_attempted": false,
+      "recovery_used": false,
+      "legacy_used": false
+    },
+    "multi_face_seam__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.0154,
+      "peak_working_set_bytes": 8359936,
+      "failure": "NotProductionReady/completion",
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "fallback_attempted": false,
+      "recovery_used": false,
+      "legacy_used": false
+    },
+    "close_sheets__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.020989,
+      "peak_working_set_bytes": 8605696,
+      "failure": "NotProductionReady/completion",
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "fallback_attempted": false,
+      "recovery_used": false,
+      "legacy_used": false
+    },
+    "cylinder__surface_cells": {
+      "success": false,
+      "wall_seconds": 0.134064,
+      "peak_working_set_bytes": 10579968,
+      "failure": "NotProductionReady/completion",
+      "completion_failure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "arrangement_cells": 0,
+      "simplified_cells": 0,
+      "completed_quads": 0,
+      "fallback_attempted": false,
+      "recovery_used": false,
+      "legacy_used": false
+    }
+  },
+  "diagnosis": {
+    "disposition": "R2E2 does not close the boundary producer and introduces an orientation-hash regression.",
+    "earliest_producer": "R2E2 overwrites only exterior halfedge outgoing successors after constructing the generic permutation. It does not rebuild the complementary interior boundary-node mapping, so predecessor bijection and node continuity can fail.",
+    "planar": "IncompletePermutation",
+    "hard_rail": "BoundaryContinuationDiscontinuity",
+    "cylinder": "publication cleared; independent audit sees cell=-1",
+    "orientation_regression": "directed incidence hash differs under whole-mesh orientation reversal",
+    "bunny": "unchanged independent singularity-fan embedding failure"
+  },
+  "next_turn": "P5-R2E3 boundary-node permutation splice and orientation-invariant boundary identity Code + Build",
+  "end_of_turn_pr_comment_required": true
+}
