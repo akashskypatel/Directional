@@ -408,6 +408,9 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
   EXPECT_GT(complex.diagnostics.boundaryRotationalNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryDegreeTwoRotationalNodeCount, 0);
   EXPECT_GT(complex.diagnostics.boundaryFanSectorNodeCount, 0);
+  EXPECT_GT(complex.diagnostics.boundaryCanonicalFanPairCount, 0);
+  EXPECT_EQ(complex.diagnostics.boundaryExteriorSectorExclusionCount,
+            complex.diagnostics.boundaryFanSectorNodeCount);
   EXPECT_GT(complex.diagnostics.boundaryInteriorSectorCount, 0);
   EXPECT_GE(complex.diagnostics.boundaryHardRailSeparatorCount, 2);
   EXPECT_GE(complex.diagnostics.boundaryHardRailSidePairCount, 2);

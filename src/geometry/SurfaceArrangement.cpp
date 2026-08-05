@@ -3710,53 +3710,202 @@ SurfaceCellComplex build_surface_cell_complex(
                            });
               };
 
+          struct CanonicalFanPairKey {
+            int incoming = -1;
+            int sourceRay = -1;
+            int target = -1;
+
+            bool operator<(const CanonicalFanPairKey &other) const {
+              return std::tie(incoming, sourceRay, target) <
+                     std::tie(other.incoming, other.sourceRay, other.target);
+            }
+          };
+          struct CanonicalFanPairRecord {
+            CanonicalFanPairKey key;
+            std::vector<std::int64_t> canonicalEntityKey;
+            int transitionRoot = -1;
+            std::vector<SurfaceCellCanonicalIdentity> fanIdentities;
+            bool cyclicWrap = false;
+          };
+
           std::vector<BoundaryFanSector> interiorSectors;
-          int canonicalFanPairCount = 0;
-          int exteriorExclusionCount = 0;
+          std::map<CanonicalFanPairKey, CanonicalFanPairRecord>
+              canonicalPairInventory;
+          std::map<CanonicalFanPairKey, std::vector<BoundaryFanSector>>
+              candidatesByPair;
           constexpr double cornerAngleTolerance = 1.0e-10;
+
+          const auto canonical_entity_key = [](
+                                                const SurfaceCellCanonicalIdentity
+                                                    &identity) {
+            std::vector<std::int64_t> key = identity.values;
+            if (key.empty()) {
+              return std::vector<std::int64_t>{};
+            }
+            const auto kind = static_cast<SourceEntityKind>(key.front());
+            if ((kind == SourceEntityKind::SourceVertex ||
+                 kind == SourceEntityKind::SourceEdge) &&
+                key.size() >= 2U) {
+              key.pop_back();
+            }
+            return key;
+          };
+          const auto ray_transition_roots = [&](const DirectedWedgeRay &ray) {
+            std::set<int> roots;
+            for (const DirectedWedgeWitness &witness : ray.witnesses) {
+              if (witness.kind != SourceEntityKind::SourceVertex &&
+                  witness.kind != SourceEntityKind::SourceEdge) {
+                continue;
+              }
+              const SurfaceCellSourceChart chart{
+                  witness.sourceComponent, witness.sourceFace,
+                  witness.sourceSheet};
+              const int root =
+                  chart.valid()
+                      ? transitionGraph.chart_component(SourceChartId{
+                            chart.sourceComponent, chart.localSheet,
+                            chart.sourceFace})
+                      : -1;
+              if (root >= 0) {
+                roots.insert(root);
+              }
+            }
+            return roots;
+          };
+
+          // Build one node-level canonical pair inventory before chart-corner
+          // filtering. Equivalent fan records may contribute provenance to one
+          // directed key, but conflicting source entities or transition roots
+          // fail closed rather than selecting a subset.
+          for (const auto &[fanIdentity, fanRays] : nodeWedges) {
+            if (!fanIdentity.valid || fanRays.size() < 2U) {
+              continue;
+            }
+            const std::vector<std::int64_t> entityKey =
+                canonical_entity_key(fanIdentity);
+            if (entityKey.empty()) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+              break;
+            }
+            for (std::size_t targetIndex = 0; targetIndex < fanRays.size();
+                 ++targetIndex) {
+              const std::size_t sourceIndex =
+                  (targetIndex + 1U) % fanRays.size();
+              const DirectedWedgeRay &source = fanRays[sourceIndex];
+              const DirectedWedgeRay &target = fanRays[targetIndex];
+              if (source.halfedge < 0 || target.halfedge < 0 ||
+                  source.halfedge >=
+                      static_cast<int>(complex.halfedges.size()) ||
+                  target.halfedge >=
+                      static_cast<int>(complex.halfedges.size()) ||
+                  source.halfedge == target.halfedge) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::
+                        BoundaryFanSectorCoverConflict,
+                    node, -1, source.halfedge, target.halfedge);
+                break;
+              }
+              const int incoming =
+                  complex.halfedges[static_cast<std::size_t>(source.halfedge)]
+                      .twin;
+              if (incoming < 0 ||
+                  incoming >= static_cast<int>(complex.halfedges.size()) ||
+                  complex.halfedges[static_cast<std::size_t>(incoming)].to !=
+                      node) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::
+                        BoundaryFanSectorCoverConflict,
+                    node, incoming, source.halfedge, target.halfedge);
+                break;
+              }
+
+              const std::set<int> sourceRoots =
+                  ray_transition_roots(source);
+              const std::set<int> targetRoots =
+                  ray_transition_roots(target);
+              std::set<int> commonRoots;
+              std::set_intersection(sourceRoots.begin(), sourceRoots.end(),
+                                    targetRoots.begin(), targetRoots.end(),
+                                    std::inserter(commonRoots,
+                                                  commonRoots.end()));
+              if (commonRoots.size() != 1U) {
+                record_incidence_failure(
+                    SurfaceArrangementIncidenceFailure::
+                        BoundaryFanSectorCoverConflict,
+                    node, incoming, source.halfedge, target.halfedge);
+                break;
+              }
+
+              const CanonicalFanPairKey key{incoming, source.halfedge,
+                                            target.halfedge};
+              const bool cyclicWrap = sourceIndex == 0U;
+              const int transitionRoot = *commonRoots.begin();
+              auto [found, inserted] = canonicalPairInventory.emplace(
+                  key, CanonicalFanPairRecord{key, entityKey, transitionRoot,
+                                              {fanIdentity}, cyclicWrap});
+              if (!inserted) {
+                CanonicalFanPairRecord &record = found->second;
+                if (record.canonicalEntityKey != entityKey ||
+                    record.transitionRoot != transitionRoot) {
+                  record_incidence_failure(
+                      SurfaceArrangementIncidenceFailure::
+                          BoundaryFanSectorCoverConflict,
+                      node, incoming, source.halfedge, target.halfedge);
+                  break;
+                }
+                record.fanIdentities.push_back(fanIdentity);
+                record.cyclicWrap = record.cyclicWrap || cyclicWrap;
+              }
+            }
+            if (!directedIncidenceValid) {
+              break;
+            }
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+          for (auto &[key, record] : canonicalPairInventory) {
+            (void)key;
+            std::sort(record.fanIdentities.begin(),
+                      record.fanIdentities.end());
+            record.fanIdentities.erase(
+                std::unique(record.fanIdentities.begin(),
+                            record.fanIdentities.end()),
+                record.fanIdentities.end());
+            if (record.fanIdentities.empty()) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, record.key.incoming, record.key.sourceRay,
+                  record.key.target);
+              break;
+            }
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
+
+          const CanonicalFanPairKey exteriorPairKey{
+              exteriorIncoming, exteriorTwin, exteriorOutgoing};
+          if (canonicalPairInventory.count(exteriorPairKey) != 1U) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    BoundaryFanSectorCoverConflict,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+
+          // Resolve exact chart-corner witnesses only after the normalized
+          // node inventory is complete. Charts validate a canonical pair; they
+          // never create, delete, or reorder canonical adjacency.
           for (const auto &[fanIdentity, fanRays] : nodeWedges) {
             if (!fanIdentity.valid || fanRays.size() < 2U) {
               continue;
             }
 
-            // Enumerate the authoritative R1 fan pairs before consulting any
-            // source chart.  Chart-local angles prove which exact source corner
-            // embeds a canonical pair; they never define or truncate the cyclic
-            // pair inventory itself.
-            struct CanonicalFanPair {
-              int sourceRay = -1;
-              int targetRay = -1;
-              bool cyclicWrap = false;
-            };
-            std::vector<CanonicalFanPair> canonicalPairs;
-            canonicalPairs.reserve(fanRays.size());
-            for (std::size_t targetIndex = 0; targetIndex < fanRays.size();
-                 ++targetIndex) {
-              const std::size_t sourceIndex =
-                  (targetIndex + 1U) % fanRays.size();
-              const int sourceRay = fanRays[sourceIndex].halfedge;
-              const int targetRay = fanRays[targetIndex].halfedge;
-              if (sourceRay < 0 || targetRay < 0 ||
-                  sourceRay >= static_cast<int>(complex.halfedges.size()) ||
-                  targetRay >= static_cast<int>(complex.halfedges.size()) ||
-                  sourceRay == targetRay) {
-                record_incidence_failure(
-                    SurfaceArrangementIncidenceFailure::
-                        BoundaryFanSectorCoverConflict,
-                    node, -1, sourceRay, targetRay);
-                break;
-              }
-              canonicalPairs.push_back(
-                  {sourceRay, targetRay, sourceIndex == 0U});
-            }
-            if (!directedIncidenceValid) {
-              break;
-            }
-
-            // A direct R1 corner is an exact source face/chart plus the rays
-            // supported by that chart.  One chart may prove several adjacent
-            // canonical pairs, but every non-exterior pair must resolve to
-            // exactly one chart corner after all chart evidence is collected.
             std::map<SurfaceCellSourceChart,
                      std::map<int, const DirectedWedgeWitness *>>
                 raysByChart;
@@ -3805,8 +3954,6 @@ SurfaceCellComplex build_surface_cell_complex(
               break;
             }
 
-            std::map<std::pair<int, int>, std::vector<BoundaryFanSector>>
-                candidatesByPair;
             for (const auto &[chart, chartWitnesses] : raysByChart) {
               SurfacePoint nodePoint;
               if (!node_point_on_chart(node, chart, nodePoint)) {
@@ -3843,8 +3990,6 @@ SurfaceCellComplex build_surface_cell_complex(
                   const int second = faces(chart.sourceFace, (edge + 2) % 3);
                   if (std::min(first, second) == entity.firstSourceIndex &&
                       std::max(first, second) == entity.secondSourceIndex) {
-                    // In the canonical face chart, the CCW half-plane from
-                    // edge+2 to edge+1 is the exact triangle-interior wedge.
                     startCorner = (edge + 2) % 3;
                     endCorner = (edge + 1) % 3;
                     break;
@@ -3876,7 +4021,8 @@ SurfaceCellComplex build_surface_cell_complex(
               }
               double wedgeStart =
                   std::atan2(startDirection.y(), startDirection.x());
-              double wedgeEnd = std::atan2(endDirection.y(), endDirection.x());
+              double wedgeEnd =
+                  std::atan2(endDirection.y(), endDirection.x());
               while (wedgeEnd <= wedgeStart + cornerAngleTolerance) {
                 wedgeEnd += twoPi;
               }
@@ -4016,45 +4162,80 @@ SurfaceCellComplex build_surface_cell_complex(
 
               const int root = transitionGraph.chart_component(SourceChartId{
                   chart.sourceComponent, chart.localSheet, chart.sourceFace});
-              for (const CanonicalFanPair &pair : canonicalPairs) {
-                const auto source = chartRayByHalfedge.find(pair.sourceRay);
-                const auto target = chartRayByHalfedge.find(pair.targetRay);
+              for (std::size_t targetIndex = 0;
+                   targetIndex < fanRays.size(); ++targetIndex) {
+                const std::size_t sourceIndex =
+                    (targetIndex + 1U) % fanRays.size();
+                const int sourceRay = fanRays[sourceIndex].halfedge;
+                const int targetRay = fanRays[targetIndex].halfedge;
+                const int incoming =
+                    complex.halfedges[static_cast<std::size_t>(sourceRay)]
+                        .twin;
+                const CanonicalFanPairKey key{incoming, sourceRay, targetRay};
+                const auto recordFound = canonicalPairInventory.find(key);
+                if (recordFound == canonicalPairInventory.end()) {
+                  record_incidence_failure(
+                      SurfaceArrangementIncidenceFailure::
+                          BoundaryFanSectorCoverConflict,
+                      node, incoming, sourceRay, targetRay);
+                  break;
+                }
+                const CanonicalFanPairRecord &record = recordFound->second;
+                if (!std::binary_search(record.fanIdentities.begin(),
+                                        record.fanIdentities.end(),
+                                        fanIdentity)) {
+                  continue;
+                }
+                const auto source = chartRayByHalfedge.find(sourceRay);
+                const auto target = chartRayByHalfedge.find(targetRay);
                 if (source == chartRayByHalfedge.end() ||
                     target == chartRayByHalfedge.end()) {
                   continue;
                 }
-                // The canonical source ray must follow the target ray through
-                // the exact CCW chart corner.  For a vector-wrap pair, its
-                // source angle is lifted by 2*pi into this same interval.
-                if (!(source->second.angle >
-                      target->second.angle + cornerAngleTolerance)) {
+
+                double targetAngle = target->second.angle;
+                double sourceAngle = source->second.angle;
+                if (sourceAngle <= targetAngle + cornerAngleTolerance &&
+                    record.cyclicWrap) {
+                  sourceAngle += twoPi;
+                }
+                const double orientedSpan = sourceAngle - targetAngle;
+                if (!(orientedSpan > cornerAngleTolerance) ||
+                    orientedSpan > wedgeSpan + cornerAngleTolerance ||
+                    root != record.transitionRoot) {
                   continue;
                 }
-                const int incoming =
-                    complex
-                        .halfedges[static_cast<std::size_t>(pair.sourceRay)]
-                        .twin;
-                if (incoming < 0 ||
-                    incoming >= static_cast<int>(complex.halfedges.size()) ||
-                    complex.halfedges[static_cast<std::size_t>(incoming)].to !=
-                        node ||
-                    complex.halfedges[static_cast<std::size_t>(pair.sourceRay)]
-                            .from !=
-                        node ||
-                    complex.halfedges[static_cast<std::size_t>(pair.targetRay)]
-                            .from !=
-                        node ||
-                    root < 0) {
-                  record_incidence_failure(
-                      SurfaceArrangementIncidenceFailure::
-                          BoundaryFanSectorCoverConflict,
-                      node, incoming, pair.sourceRay, pair.targetRay);
-                  break;
+
+                bool thirdRayInside = false;
+                for (const ChartCornerRay &other : chartRays) {
+                  if (other.halfedge == sourceRay ||
+                      other.halfedge == targetRay) {
+                    continue;
+                  }
+                  double otherAngle = other.angle;
+                  if (record.cyclicWrap &&
+                      sourceAngle > wedgeEnd + cornerAngleTolerance) {
+                    while (otherAngle <=
+                           targetAngle + cornerAngleTolerance) {
+                      otherAngle += twoPi;
+                    }
+                  }
+                  if (otherAngle > targetAngle + cornerAngleTolerance &&
+                      otherAngle < sourceAngle - cornerAngleTolerance) {
+                    thirdRayInside = true;
+                    break;
+                  }
                 }
-                candidatesByPair[{pair.sourceRay, pair.targetRay}].push_back(
-                    {incoming, pair.sourceRay, pair.targetRay, fanIdentity,
+                if (thirdRayInside) {
+                  continue;
+                }
+
+                const SurfaceCellCanonicalIdentity &publicationIdentity =
+                    record.fanIdentities.front();
+                candidatesByPair[key].push_back(
+                    {incoming, sourceRay, targetRay, publicationIdentity,
                      chart, root, source->second.leftScore,
-                     target->second.leftScore, false, pair.cyclicWrap});
+                     target->second.leftScore, false, record.cyclicWrap});
               }
               if (!directedIncidenceValid) {
                 break;
@@ -4063,54 +4244,64 @@ SurfaceCellComplex build_surface_cell_complex(
             if (!directedIncidenceValid) {
               break;
             }
+          }
+          if (!directedIncidenceValid) {
+            break;
+          }
 
-            for (const CanonicalFanPair &pair : canonicalPairs) {
-              const int incoming =
-                  complex.halfedges[static_cast<std::size_t>(pair.sourceRay)]
-                      .twin;
-              const bool exteriorPair =
-                  incoming == exteriorIncoming &&
-                  pair.sourceRay == exteriorTwin &&
-                  pair.targetRay == exteriorOutgoing;
-              if (exteriorPair) {
-                ++exteriorExclusionCount;
-                ++canonicalFanPairCount;
+          int exteriorExclusionCount = 0;
+          for (const auto &[key, record] : canonicalPairInventory) {
+            if (!(key < exteriorPairKey) && !(exteriorPairKey < key)) {
+              ++exteriorExclusionCount;
+              continue;
+            }
+
+            auto candidates = candidatesByPair[key];
+            const auto witness_key = [](const BoundaryFanSector &sector) {
+              return std::tie(sector.incoming, sector.sourceRay,
+                              sector.target, sector.chart,
+                              sector.chartRoot);
+            };
+            std::sort(candidates.begin(), candidates.end(),
+                      [&](const BoundaryFanSector &lhs,
+                          const BoundaryFanSector &rhs) {
+                        return witness_key(lhs) < witness_key(rhs);
+                      });
+            std::vector<BoundaryFanSector> agreeingCandidates;
+            for (const BoundaryFanSector &candidate : candidates) {
+              if (!agreeingCandidates.empty() &&
+                  witness_key(agreeingCandidates.back()) ==
+                      witness_key(candidate)) {
+                if (std::abs(agreeingCandidates.back().sourceLeftScore -
+                             candidate.sourceLeftScore) > 1.0e-10 ||
+                    std::abs(agreeingCandidates.back().targetLeftScore -
+                             candidate.targetLeftScore) > 1.0e-10) {
+                  record_incidence_failure(
+                      SurfaceArrangementIncidenceFailure::
+                          BoundaryFanSectorCoverConflict,
+                      node, key.incoming, key.sourceRay, key.target);
+                  break;
+                }
+                agreeingCandidates.back().cyclicWrap =
+                    agreeingCandidates.back().cyclicWrap ||
+                    candidate.cyclicWrap;
                 continue;
               }
-
-              auto candidates =
-                  candidatesByPair[{pair.sourceRay, pair.targetRay}];
-              const auto candidate_key = [](const BoundaryFanSector &sector) {
-                return std::tie(sector.incoming, sector.sourceRay,
-                                sector.target, sector.fanIdentity, sector.chart,
-                                sector.chartRoot);
-              };
-              std::sort(candidates.begin(), candidates.end(),
-                        [&](const BoundaryFanSector &lhs,
-                            const BoundaryFanSector &rhs) {
-                          return candidate_key(lhs) < candidate_key(rhs);
-                        });
-              candidates.erase(
-                  std::unique(candidates.begin(), candidates.end(),
-                              [&](const BoundaryFanSector &lhs,
-                                  const BoundaryFanSector &rhs) {
-                                return candidate_key(lhs) ==
-                                       candidate_key(rhs);
-                              }),
-                  candidates.end());
-              if (candidates.size() != 1U) {
-                record_incidence_failure(
-                    SurfaceArrangementIncidenceFailure::
-                        BoundaryFanSectorCoverConflict,
-                    node, incoming, pair.sourceRay, pair.targetRay);
-                break;
-              }
-              interiorSectors.push_back(candidates.front());
-              ++canonicalFanPairCount;
+              agreeingCandidates.push_back(candidate);
             }
             if (!directedIncidenceValid) {
               break;
             }
+            if (agreeingCandidates.size() != 1U ||
+                agreeingCandidates.front().chartRoot !=
+                    record.transitionRoot) {
+              record_incidence_failure(
+                  SurfaceArrangementIncidenceFailure::
+                      BoundaryFanSectorCoverConflict,
+                  node, key.incoming, key.sourceRay, key.target);
+              break;
+            }
+            interiorSectors.push_back(agreeingCandidates.front());
           }
           if (!directedIncidenceValid) {
             break;
@@ -4122,6 +4313,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
             break;
           }
+          const int canonicalFanPairCount =
+              static_cast<int>(canonicalPairInventory.size());
 
           const auto sector_key = [](const BoundaryFanSector &sector) {
             return std::tie(sector.incoming, sector.sourceRay, sector.target,
