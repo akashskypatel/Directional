@@ -1,90 +1,78 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-05  
-Base branch: `surface_cell_quad`  
-Target fixture: `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`
+Last updated: 2026-08-05
 
-## Active checkpoint
+## Active phase
 
 - Phase: P5 — producer-correct direct surface paving.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
-- Draft PR: #8; review policy `never`; keep open, draft, and unmerged.
-- Exact compiled source: `1eb9dc766bc6db74bd2c1ea4ced9c3cbeaae133b`.
+- Draft PR: #8; keep open, draft, and unmerged.
+- Review policy: `never`.
+- Completed turn: **P5-TB33 artifact-only R2E5 validation**.
+- Next turn: **P5-R2E6 authoritative boundary fan-sector cover Code + Build**.
+- R2 remains open. Do not advance to R2F or R3.
+
+## P5-TB33 authority
+
+- Exact tested source: `1eb9dc766bc6db74bd2c1ea4ced9c3cbeaae133b`.
 - Artifact: `8934315316`, SHA-256 `69436143d96749cc09c6da8dc8c301e63304c2d25f9252497d0e9d0259c46c5c`.
-- Completed turn: **P5-R2E5 Code + Build**.
-- Next turn: **P5-TB33 artifact-only R2E5 validation**.
-- R2 runtime remains open; do not advance to R2F or R3 from compile evidence.
+- Package manifest **48/48**; files **49**; fixtures **26**; recursive submodules **9**.
+- Cleaned source: one base workflow and zero payloads.
+- No configure, build, relink, patch, regeneration, fixture modification, or source modification.
+- Evidence: `directional-p5-tb33-8934315316-evidence.zip`, SHA-256 `1a4f1a780e29f09e0d93f75f0c01a818358029d6044839f32ffdff53aa340ec7`.
 
-## Work phases
+## Results
 
-- [x] P0–P4 — earlier remediation.
-- [ ] P5 — direct surface-paving producer remediation. **In progress**
-- [x] R0 — recovery authority.
-- [x] R1 — source transitions and validator authority.
-- [x] R2C — bridge/core ownership narrow contracts.
-- [x] R2D — nonmanifold preflight and multi-boundary representation.
-- [x] R2E — source-side evidence and structural Euler accounting.
-- [x] R2E2 — ordered boundary loops and exterior continuation.
-- [x] R2E3 — canonical aliases, target bijection, and orientation identity.
-- [x] R2E4 — canonical higher-valence rotational construction; runtime exposed degree-two degeneracy.
-- [x] R2E5 compile — explicit two-ray exterior/interior sector construction.
-- [ ] R2E5 runtime — P5-TB33 must restore every P5-TB32 regression before further advancement.
-- [ ] R2F — intrinsic singularity-fan embedding after boundary closure.
-- [ ] R3–R11 — later direct-paving remediation.
-- [ ] P6–P8 — final validation and production disposition.
+- [x] source-chart R1 **11/11**;
+- [x] source validator **6/6**;
+- [x] recovery **9/9**;
+- [x] feature/barrier **8/8**;
+- [x] graph-dependent **5/6**, bunny only;
+- [ ] R2 focused **12/16**;
+- [ ] Milestone D **5/7**;
+- [ ] Phase 14–18 **240/244**;
+- [ ] Phase 16 **44/47**;
+- [x] Phase 17 **26/26**;
+- [x] Phase 18 **57/57**;
+- [ ] Phase 20 **46/48**;
+- [ ] complete suite **602/625**, 23 failures, 84.132 s, max RSS 280,640 KiB;
+- [ ] direct production cases **0/4**.
 
-## P5-R2E5 evidence
+## Accepted closure
 
-- starting documentation head `e8f6c3f1641db916c53fc9dc938d0bc5d648a019`;
-- workflow event `15704d30fc478858284df89d372fa713f2d88576`;
-- exact compiled source `1eb9dc766bc6db74bd2c1ea4ced9c3cbeaae133b`;
-- workflow cleanup `790714bbe8dffd1efbe7860093027daf3e0e8d54`;
-- reviewed/applied diff SHA-256 `b7648b0bf870d7a65a7715a11e58cc2e8258af0118826c843d013384d485cc29`;
-- successful run/job `31014985061` / `92336594420`;
-- artifact `8934315316`, SHA-256 `69436143d96749cc09c6da8dc8c301e63304c2d25f9252497d0e9d0259c46c5c`;
-- workflow logs `8934315771`, SHA-256 `3681d6b81d1251f3de17a5e004ddce42d3b204d636481ded4a390754ae4ebf34`;
-- source status empty; manifest **48/48**; files **49**; fixtures **26**; submodules **9**;
-- four target hashes verified; Ninja **132/132**; zero project binaries executed.
+- [x] degree-two boundary sectors publish one exterior and one bounded disk;
+- [x] exact exterior and complementary interior successor mappings;
+- [x] all 21 P5-TB32 regressions restored;
+- [x] six pre-existing P5-TB31 Phase 17 failures closed naturally;
+- [x] source-row and whole-orientation incidence identity preserved;
+- [x] no validator weakening or fallback substitution.
 
-## R2E5 implementation
+## Required next work: P5-R2E6
 
-- [x] identifies the degree-two degeneracy by exact two-ray local inventory;
-- [x] requires `{exteriorTwin, exteriorOutgoing}` and valid reciprocal twins;
-- [x] maps the exterior incoming to exact source-loop continuation;
-- [x] maps the complementary incoming to the complementary outgoing;
-- [x] requires distinct incoming ownership, endpoint continuity, and target bijection;
-- [x] separates exterior loop identity from interior canonical rotation identity;
-- [x] adds derived `boundaryDegreeTwoRotationalNodeCount`;
-- [x] preserves the `rayCount >= 3` canonical adjacent-ray branch;
-- [x] retains typed fail-closed rotational conflict evidence for genuinely invalid inputs;
-- [x] preserves canonical aliases, paired incidence hashing, repeated-edge/node, disk, owner, and Euler validation;
-- [x] adds a generalized boundary-only two-sector disk contract and strengthens existing topology contracts.
+Follow `.agents/Directional/Milestone_G_P5_R2E6_Boundary_Fan_Sector_Cover_Code_Build_Plan.md`:
 
-## P5-TB33 requirements
-
-- [ ] verify artifact authority and target hashes;
-- [ ] restore all 21 failures introduced by P5-R2E4 before claiming progress;
-- [ ] require source-chart **11/11**, validator **6/6**, recovery **9/9**, feature/barrier **8/8**, and Phase 18 **57/57**;
-- [ ] require graph-dependent **5/6**, with only bunny allowed;
-- [ ] require exact two-sector mapping, target cardinality, identity, and malformed-evidence contracts;
-- [ ] preserve higher-valence rotational construction independently;
-- [ ] preserve source-row and orientation incidence hashes;
-- [ ] require Phase 16 at least **45/47**, Phase 17 at least **20/26**, and Phase 20 **46/48**;
-- [ ] require the complete suite at least **597/625**, with no failure absent from the P5-TB31 failure set;
-- [ ] preserve plane inventory and do not regress seam, close-sheet, or cylinder direct cases;
-- [ ] after regression restoration, classify remaining planar, hard-rail, cylinder, and bunny producers independently.
+- [ ] retain the passing R2E5 degree-two branch;
+- [ ] replace the one-common-wedge requirement for `rayCount >= 3`;
+- [ ] construct a complete non-overlapping cover of authoritative R1 fan sectors;
+- [ ] add exactly one exterior sector from ordered source-boundary continuation;
+- [ ] use hard rails as fan-sector separators, never crossings;
+- [ ] require every incoming and outgoing ray exactly once;
+- [ ] add typed `BoundaryFanSectorCoverConflict` evidence;
+- [ ] close the higher-valence non-disk contract and interior-hard-rail rotational conflict;
+- [ ] preserve planar, cylinder, bunny, degree-two, orientation, ownership, bridge, support, nested, nonmanifold, pinched-fan, and close-sheet authority;
+- [ ] compile only the four approved targets and execute no project binary.
 
 ## Standing requirements
 
-Every completed Code + Build, Test + Benchmark, and optional Review turn must end with a new final PR #8 comment containing the concise handoff summary after all documentation commits. Code + Build turns must remove bounded workflows and payloads after artifact upload.
+Every completed Code + Build, Test + Benchmark, and optional Review turn must end with a new final PR #8 comment after all documentation commits. Code + Build turns must remove bounded workflows and payloads after artifact upload.
 
 ## Current authority
 
+- `.agents/Directional/Milestone_G_P5_TB33_Artifact_Only_R2E5_Test_Benchmark_Report.md`
+- `.agents/Directional/Milestone_G_P5_R2E6_Boundary_Fan_Sector_Cover_Code_Build_Plan.md`
+- `benchmark-results/p5-tb33-summary.json`
 - `.agents/Directional/Milestone_G_P5_R2E5_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E5_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2e5-summary.json`
-- `.agents/Directional/Milestone_G_P5_TB32_Artifact_Only_R2E4_Test_Benchmark_Report.md`
-- `TODO`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `TODO`
 
-P5 remains open. PR #8 remains draft and unmerged.
+P5 remains open.
