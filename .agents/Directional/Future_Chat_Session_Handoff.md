@@ -9,33 +9,27 @@
 
 ## Current checkpoint
 
-P5-TB38 artifact-only R2E10 Test + Benchmark is complete. R2E10 is not accepted.
+P5-R2E11 normalized chart-entity ownership and pair-first witness reconciliation Code + Build is complete and compile-valid.
 
-- exact tested source: `bf33049157dfee51a1b6c48dff35a97ce980e49f`;
-- workflow event commit: `4831349b3d8c996a44bbd804f12ad01be9e3446f`;
-- workflow run/job: `31051610854` / `92459824013`;
-- build artifact: `8948771075`;
-- build artifact SHA-256: `d0815a8423cd71758eb4f1033c0d3f19fd34261df4ea5c32efcf80b2069c3210`;
-- log artifact: `8948771526`;
-- log artifact SHA-256: `e2a8b1ab9399952f3ffd029e747cc09271bb64906b5a8509e2ed6447e9f8bf20`;
-- internal manifest: **19/19**; package files: **20**; staged fixtures: **26**; recursive submodules: **9**;
-- evidence archive: `directional-p5-tb38-8948771075-evidence.zip`;
-- evidence SHA-256: `e5991d8a3fd58a16e9b62366e6a83b1953f2164806f7de9952db2d38d3853b19`;
-- evidence entries: **140**; evidence size: **438,425 bytes**;
-- no configure, rebuild, relink, patch, regeneration, or repository source/test/fixture/validator/workflow modification occurred.
+- workflow event commit: `5e96846a55acc8fd085836db886fcddbb5cd1dac`;
+- exact compiled source: `b3010a36f762bb7317f2201d94733226b418c2c0`;
+- workflow run/job: `31056835353` / `92476050630`;
+- build artifact: `8950709981`;
+- build artifact SHA-256: `012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c`;
+- log artifact: `8950710191`;
+- log artifact SHA-256: `06061e79fd11fdbc8683f8f01e4405f1248455782029e082df38771263fbffb6`;
+- compile/link actions: **132/132**;
+- manifest: **20/20**; package files: **21**; recursive submodules: **9**;
+- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
+- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
 
-Runtime remains at the P5-TB37/R2E9 regression baseline:
+R2E11 applies one normalized canonical entity contract end to end, resolves chart evidence pair-first, preserves exact identities as provenance, reconciles semantically identical candidates before uniqueness, and records derived boundary-cover conflict subreasons while retaining the aggregate fail-closed failure. The exact exterior and hard-rail complete-orbit authority remain intact. Phase 16, Milestone D, and Phase 17 tests are unchanged.
 
-- planar fails `BoundaryFanSectorCoverConflict` at its first incidence assertion before successor publication;
-- interior hard rail fails the same typed failure before bounded-orbit root validation;
-- Phase 17 remains **20/26**;
-- complete suite remains **597/625**, 28 failures.
+The next turn is **P5-TB39 artifact-only R2E11 Test + Benchmark** using artifact `8950709981`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
 
-The next turn is **P5-R2E11 normalized chart-entity ownership and pair-first witness reconciliation Code + Build**. R2 remains open. Do not advance to R2F or R3.
+## Last runtime baseline
 
-## Latest runtime authority
-
-P5-TB38 results:
+The latest runtime authority remains P5-TB38 against R2E10:
 
 - source chart + validator: **17/17**;
 - recovery authority: **9/9**;
@@ -50,83 +44,53 @@ P5-TB38 results:
 - Phase 20: **46/48**;
 - complete suite: **597/625**, 28 failures, XML **72.587 s**, wall **72.60 s**, maximum RSS **281,456 KiB**.
 
-The six Phase 17 tests restored naturally by R2E8 still fail without Phase 17 changes. Treat them as upstream arrangement consequences and do not patch Phase 17.
-
-Direct analytic production remains incomplete:
-
-- plane: arrangement/simplified/quads `9/9/12`, fails `AggregateCompletionValidationFailure`;
-- multi-face seam, close sheets, cylinder: `0/0/0`, fail `SideSubdivisionRepair:InvalidInputIncidence`;
-- all measured runs report `success=false` and deterministic structural lineage.
-
-Two independent bunny processes report `0` arrangement cells and `0` quads, fail `SideSubdivisionRepair:InvalidInputIncidence`, and have identical stage hashes/counts.
-
-## Earliest current producer diagnosis
-
-Current diagnostics expose only `BoundaryFanSectorCoverConflict`; the following is a source-supported inference.
-
-R2E10 normalizes equivalent fan identities while creating `canonicalPairInventory`, but chart resolution later iterates each original fan identity and requires the chart-resolved canonical entity to equal that exact original identity. This is stricter than the normalized ownership contract and can reject an otherwise agreeing normalized entity/root witness. Candidate gathering also remains fan-identity-first rather than pair-first.
-
-R2E11 must:
-
-1. retain the node-level canonical pair inventory;
-2. build chart evidence independently of one original provenance identity;
-3. normalize chart-resolved entities with the same `canonical_entity_key` contract;
-4. require normalized entity and transition-root agreement with the pair record;
-5. preserve exact original identities only as provenance;
-6. reconcile all agreeing provenance witnesses before requiring one authoritative chart/root witness per pair;
-7. retain exact exterior exclusion, complete transactional cover publication, and hard-rail complete-orbit root audit;
-8. add derived conflict subreasons without weakening `BoundaryFanSectorCoverConflict`;
-9. restore planar/hard-rail incidence and Phase 17 **26/26** without Phase 17 changes;
-10. leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, fixtures, and downstream validators unchanged.
+At P5-TB38, planar and hard rail both failed `BoundaryFanSectorCoverConflict` before successor publication. The new derived diagnostics have not yet been executed.
 
 ## Retained authoritative documentation
 
 Only current, durable documentation is retained under `.agents/Directional`:
 
 1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md` — latest runtime authority;
-3. `Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md` — next executable plan;
+2. `Milestone_G_P5_R2E11_Code_Build_Report.md` — exact implementation and compile authority;
+3. `Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md` — next executable plan;
 4. `DESIGN.md` — durable design authority;
 5. `REORIENTATION_PLAN.md` — durable reorientation authority;
 6. `Surface_Cell_Backend_Remediation_Plan.md` — milestone and remediation authority;
 7. `GitHub_Workflow_Policy.md` — remote build and repository-write policy.
 
-Superseded per-turn plans, reports, closure notes, and evidence indexes are removed after replacement. Their historical commit data remains available through Git history and PR #8.
+Superseded per-turn plans, reports, closure notes, and evidence indexes are removed after replacement. Git history and PR #8 retain historical authority.
 
 ## Retained benchmark results
 
 Only current or durable result files are retained under `benchmark-results`:
 
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-tb38-summary.json` — exact artifact/runtime authority and next-turn disposition.
+- `p5-r2e11-summary.json` — exact compiled-source/package authority and retained P5-TB38 runtime baseline.
 
-Older P5 checkpoint summaries and superseded runtime snapshots are removed after their current conclusions are carried into this handoff and the active trackers.
-
-## Read first for P5-R2E11
+## Read first for P5-TB39
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md`
-5. `.agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md`
-6. `benchmark-results/p5-tb38-summary.json`
+4. `.agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md`
+5. `.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md`
+6. `benchmark-results/p5-r2e11-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-R2E11 objective
+## P5-TB39 objective
 
-1. Implement normalized chart-entity ownership and pair-first witness reconciliation in the boundary fan-cover producer.
-2. Add derived, deterministic conflict subreasons while retaining the aggregate fail-closed typed failure.
-3. Preserve exact exterior exclusion, complete incoming/target bijection, and hard-rail complete-orbit root authority.
-4. Strengthen only focused Phase 16/Milestone D contracts when needed; do not modify Phase 17.
-5. Leave all independent producers and downstream validators unchanged.
-6. Push the exact source commit before compiling.
-7. Compile exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`.
-8. Execute no test, benchmark, custom input, CLI, GUI, help/list/discovery command, or generated project binary.
-9. Package source/binaries/libraries/fixtures/metadata/checksums and separately upload complete logs.
-10. Produce the P5-TB39 artifact-only validation plan.
+1. Download artifact `8950709981` and verify the archive digest plus all 20 manifest entries.
+2. Execute only packaged binaries; do not configure, rebuild, relink, patch, regenerate, or modify source/tests/fixtures/validators/workflows.
+3. Validate that every boundary-cover rejection retains `BoundaryFanSectorCoverConflict` and supplies an accurate derived `boundaryFanConflict` subreason.
+4. Determine whether planar and hard-rail successor publication is restored; record aggregate and derived failures otherwise.
+5. Prove planar positive normalized pair inventory, exact exterior exclusion, positive wrap count, Euler-one valid disk topology, and unchanged aggregate validation.
+6. Prove one complete authoritative chart root per hard-rail bounded orbit, distinct opposite roots, valid embedding, and valid aggregate topology.
+7. Restore Phase 17 **26/26** without Phase 17 changes and preserve all accepted R2, recovery, feature/barrier, permutation, close-sheet, bridge/support, nested, and nonmanifold authority.
+8. Run milestone/phase aggregates, complete suite, and deterministic direct production processes with fallback `Fail`, source-grid recovery disabled, and no legacy execution.
+9. Produce the next Code + Build plan from the earliest remaining authoritative producer.
 
 ## Lessons from P5-R2E8
 
@@ -170,6 +134,14 @@ Older P5 checkpoint summaries and superseded runtime snapshots are removed after
 - Aggregate typed failures need derived subreasons. Preserve fail-closed behavior while recording whether rejection came from zero candidates, multiple candidates, entity mismatch, root mismatch, score conflict, interval invalidity, or cover incompleteness.
 - Wrapper or orchestration interruption is not product timeout evidence. Retain raw attempts, run one authoritative process to normal completion, and report that process only for correctness, wall time, and RSS.
 - The unchanged 597/625 total confirms no broad new regression, but also no target closure. Failure stage remains the deciding evidence.
+
+## Lessons from P5-R2E11
+
+- One normalization contract must govern both canonical pair construction and chart witness admission. Exact provenance variants cannot become a second ownership gate after normalized equivalence is proven.
+- Witness uniqueness is meaningful only after all agreeing provenance contributions are reconciled at the canonical pair level.
+- Derived failure subreasons can improve diagnosis without weakening fail-closed semantics when they are recorded at the same rejection site as the aggregate failure.
+- A compile-only turn may package test and benchmark executables but must not execute them; their mere existence is not runtime acceptance evidence.
+- Artifact manifests generated from a package directory may retain an `artifact/` path prefix. Verify them against the matching package-root path rather than rewriting the recorded manifest.
 
 ## Mandatory turn hygiene and instruction preservation
 

@@ -8,69 +8,67 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB38 artifact-only R2E10 Test + Benchmark**.
-- Next turn: **P5-R2E11 normalized chart-entity ownership and pair-first witness reconciliation Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E11 normalized chart-entity ownership and pair-first witness reconciliation Code + Build**.
+- Next turn: **P5-TB39 artifact-only R2E11 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB38 artifact authority
+## P5-R2E11 compile authority
 
-- Exact tested source: `bf33049157dfee51a1b6c48dff35a97ce980e49f`.
-- Workflow event: `4831349b3d8c996a44bbd804f12ad01be9e3446f`.
-- Workflow run/job: `31051610854` / `92459824013`.
-- Artifact: `8948771075`, SHA-256 `d0815a8423cd71758eb4f1033c0d3f19fd34261df4ea5c32efcf80b2069c3210`.
-- Manifest **19/19**; package files **20**; fixtures **26**; recursive submodules **9**; source status empty.
-- Evidence archive: `directional-p5-tb38-8948771075-evidence.zip`, SHA-256 `e5991d8a3fd58a16e9b62366e6a83b1953f2164806f7de9952db2d38d3853b19`, **140** entries.
-- Packaged binaries only; no configure, rebuild, relink, patch, regeneration, or repository implementation/test/fixture/validator/workflow modification.
+- Exact compiled source: `b3010a36f762bb7317f2201d94733226b418c2c0`.
+- Workflow event: `5e96846a55acc8fd085836db886fcddbb5cd1dac`.
+- Workflow run/job: `31056835353` / `92476050630`.
+- Artifact: `8950709981`, SHA-256 `012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c`.
+- Log artifact: `8950710191`, SHA-256 `06061e79fd11fdbc8683f8f01e4405f1248455782029e082df38771263fbffb6`.
+- Manifest **20/20**; package files **21**; recursive submodules **9**; compile/link actions **132/132**.
+- Built exactly four approved targets; no project binary was executed.
 
-## P5-TB38 results
+## Implemented in P5-R2E11
+
+- [x] retained normalized node-level canonical directed-pair inventory;
+- [x] aggregated node/chart ray evidence independently of one provenance fan identity;
+- [x] normalized chart-resolved entities with the same canonical entity-key contract;
+- [x] required normalized entity and transition-root agreement;
+- [x] preserved exact fan identities as provenance only;
+- [x] reconciled candidates per pair before uniqueness;
+- [x] retained exact exterior exclusion once;
+- [x] retained complete incoming/target publication gate;
+- [x] retained hard-rail complete-orbit root audit;
+- [x] added derived boundary-cover conflict subreasons without weakening aggregate failure;
+- [x] left Phase 16, Milestone D, and Phase 17 tests unchanged;
+- [x] compile-only gate passed;
+- [ ] runtime acceptance pending P5-TB39.
+
+## Last runtime baseline: P5-TB38
 
 - source chart + validator **17/17**;
-- recovery authority **9/9**;
+- recovery **9/9**;
 - feature/barrier **8/8**;
-- graph-dependent **5/6**, bunny only;
+- graph-dependent **5/6**;
 - R2 focused **13/16**;
-- Milestone D **5/7**;
-- Phase 16 **45/47**;
 - Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 14–18 **235/244**;
-- Phase 20 **46/48**;
-- complete suite **597/625**, 28 failures, XML **72.587 s**, wall **72.60 s**, maximum RSS **281,456 KiB**.
+- complete suite **597/625**, 28 failures.
 
-## P5-R2E10 disposition
+Planar and hard rail failed `BoundaryFanSectorCoverConflict` before publication. P5-TB39 must record both the aggregate failure and new derived `boundaryFanConflict` evidence.
 
-- [x] artifact integrity and fixture closure verified;
-- [x] packaged focused, aggregate, complete-suite, analytic, and bunny processes executed;
-- [x] accepted source-chart, recovery, feature/barrier, permutation, close-sheet, bridge/support, nested, and nonmanifold authority preserved;
-- [x] direct analytic and bunny structural lineage remains deterministic;
-- [ ] planar successor publication restored — fails `BoundaryFanSectorCoverConflict` at first incidence assertion;
-- [ ] hard-rail successor publication restored — same typed pre-publication failure;
-- [ ] planar cyclic-wrap/Euler-one topology reached;
-- [ ] hard-rail complete-orbit root/embedding validation reached;
-- [ ] Phase 17 restored to **26/26**;
-- [ ] direct analytic or bunny production output completed.
+## Required P5-TB39 work
 
-R2E10 is not accepted. Runtime results are unchanged from P5-TB37 and remain regressed relative to R2E8.
-
-## Required P5-R2E11 work
-
-- [ ] retain one normalized node-level canonical directed-pair inventory;
-- [ ] resolve chart witnesses pair-first rather than fan-identity-first;
-- [ ] normalize chart-resolved entities with the same `canonical_entity_key` contract;
-- [ ] require normalized entity and transition-root agreement while preserving exact identities as provenance;
-- [ ] reconcile all agreeing provenance witnesses before requiring one authoritative witness per pair;
-- [ ] exclude the exact exterior relation once;
-- [ ] publish only a complete incoming/target bijection after all witness and hard-rail orbit audits;
-- [ ] add derived boundary-cover failure subreasons without weakening the aggregate typed failure;
-- [ ] restore planar/hard-rail incidence and Phase 17 **26/26** without Phase 17 changes;
-- [ ] leave cylinder, bunny, FlowRep, completion, optimizer, fallback/recovery, fixtures, and downstream validators unchanged;
-- [ ] compile exactly four approved targets and execute no project binary.
+- [ ] verify artifact `8950709981` and all 20 internal manifest entries;
+- [ ] execute packaged binaries only, without configure/rebuild/relink/patch/regeneration;
+- [ ] require source-chart and validator prerequisite authority;
+- [ ] validate derived boundary-cover subreason accuracy and determinism;
+- [ ] determine whether planar and hard rail restore successor publication;
+- [ ] require planar exact exterior exclusion, positive wrap count, Euler `1`, and valid aggregate topology;
+- [ ] require one complete authoritative root per hard-rail bounded orbit, distinct opposite roots, valid embedding, and valid aggregate topology;
+- [ ] restore Phase 17 **26/26** without Phase 17 changes;
+- [ ] preserve accepted R2, recovery, feature/barrier, permutation, close-sheet, bridge/support, nested, and nonmanifold authority;
+- [ ] run aggregates, complete suite, and deterministic direct production processes under fail-closed settings;
+- [ ] produce the next plan from the earliest remaining authoritative producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB38_Artifact_Only_R2E10_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E11_Normalized_Chart_Entity_Pair_First_Witness_Code_Build_Plan.md`
-- `benchmark-results/p5-tb38-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e11-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `MILESTONE_G_TODO.md`

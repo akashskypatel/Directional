@@ -1,0 +1,89 @@
+{
+  "turn": "P5-R2E11",
+  "date": "2026-08-05",
+  "turn_type": "Code + Build",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "review_policy": "never",
+  "source_authority": {
+    "workflow_event_commit": "5e96846a55acc8fd085836db886fcddbb5cd1dac",
+    "compiled_source_commit": "b3010a36f762bb7317f2201d94733226b418c2c0",
+    "changed_files": [
+      "include/directional/geometry/SurfaceArrangement.h",
+      "src/geometry/SurfaceArrangement.cpp"
+    ],
+    "source_arrangement_blob": "22f607ec6d2326edceb8264240b22b5a46da3083",
+    "header_blob": "b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8",
+    "phase16_test_blob": "e58bceda098f7768b8a7203cca00564f82a7d831",
+    "milestone_d_test_blob": "015a9f02354a91ca07d0e0c6bf6b2632055436ae",
+    "transform_script_sha256": "5e60b48059367a53f28f20869c551029b92242b6dfa2f812aa5f538895e26746"
+  },
+  "build": {
+    "workflow_run_id": 31056835353,
+    "workflow_job_id": 92476050630,
+    "configuration": "Release -O2 -DNDEBUG",
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "compile_link_actions": "132/132",
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "project_binary_executed": false
+  },
+  "artifact": {
+    "id": 8950709981,
+    "name": "surface-cell-p5-r2e11-github-source-linux-release",
+    "sha256": "012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c",
+    "size_bytes": 12281580,
+    "manifest": "20/20",
+    "package_files_including_manifest": 21,
+    "recursive_submodules": 9,
+    "source_status": "empty"
+  },
+  "log_artifact": {
+    "id": 8950710191,
+    "name": "surface-cell-p5-r2e11-workflow-logs-31056835353",
+    "sha256": "06061e79fd11fdbc8683f8f01e4405f1248455782029e082df38771263fbffb6",
+    "size_bytes": 5538
+  },
+  "implementation": {
+    "pair_first_chart_witness_resolution": true,
+    "normalized_entity_contract_end_to_end": true,
+    "exact_provenance_identity_is_ownership_gate": false,
+    "exact_exterior_exclusion_once": true,
+    "transactional_cover_publication": true,
+    "hard_rail_complete_orbit_audit_retained": true,
+    "derived_boundary_conflicts": [
+      "MissingCanonicalPair",
+      "ExteriorPairMismatch",
+      "ZeroChartWitness",
+      "MultipleChartWitnesses",
+      "NormalizedChartEntityMismatch",
+      "TransitionRootMismatch",
+      "ConflictingDuplicateWitnessScores",
+      "InvalidOrientedInterval",
+      "IncompleteIncomingTargetCover",
+      "HardRailSeparatorOrOrbitConflict"
+    ],
+    "aggregate_failure_retained": "BoundaryFanSectorCoverConflict"
+  },
+  "last_runtime_baseline": {
+    "turn": "P5-TB38",
+    "source_commit": "bf33049157dfee51a1b6c48dff35a97ce980e49f",
+    "phase17": "20/26",
+    "complete_suite": "597/625",
+    "failures": 28,
+    "planar": "BoundaryFanSectorCoverConflict before publication",
+    "hard_rail": "BoundaryFanSectorCoverConflict before publication"
+  },
+  "disposition": {
+    "compile_valid": true,
+    "runtime_acceptance": false,
+    "r2_status": "open",
+    "next_turn": "P5-TB39 artifact-only R2E11 Test + Benchmark",
+    "artifact_id": 8950709981
+  }
+}
