@@ -62,10 +62,11 @@ Superseded per-turn plans, reports, closure notes, and evidence indexes are remo
 
 ## Retained benchmark results
 
-Only current or durable result files are retained under `benchmark-results`:
+The minimum current evidence chain under `benchmark-results` is:
 
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e9-summary.json` — exact compiled-source/package authority for the active source.
+- `p5-tb36-summary.json` — latest completed runtime baseline;
+- `p5-r2e9-summary.json` — exact compiled-source and package authority for the active source.
 
 Older P5 checkpoint summaries and superseded runtime snapshots are removed after their current conclusions are carried into this handoff and the active trackers.
 
@@ -77,10 +78,11 @@ Older P5 checkpoint summaries and superseded runtime snapshots are removed after
 4. `.agents/Directional/Milestone_G_P5_R2E9_Code_Build_Report.md`
 5. `.agents/Directional/Milestone_G_P5_TB37_Artifact_Only_R2E9_Test_Benchmark_Plan.md`
 6. `benchmark-results/p5-r2e9-summary.json`
-7. `.agents/Directional/REORIENTATION_PLAN.md`
-8. `.agents/Directional/DESIGN.md`
-9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-10. `.agents/Directional/GitHub_Workflow_Policy.md`
+7. `benchmark-results/p5-tb36-summary.json`
+8. `.agents/Directional/REORIENTATION_PLAN.md`
+9. `.agents/Directional/DESIGN.md`
+10. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+11. `.agents/Directional/GitHub_Workflow_Policy.md`
 
 ## P5-TB37 objective
 
