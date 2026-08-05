@@ -9,77 +9,91 @@
 
 ## Current checkpoint
 
-P5-TB33 artifact-only R2E5 validation is complete against exact source `1eb9dc766bc6db74bd2c1ea4ced9c3cbeaae133b` and artifact `8934315316`.
+P5-R2E6 authoritative boundary fan-sector cover is implemented and compiles successfully.
 
-R2E5 correctly closes the degree-two boundary rotational degeneracy, restores all 21 P5-TB32 regressions, and closes six pre-existing Phase 17 failures. The complete suite is **602/625** with 23 failures. R2 remains open.
+- exact compiled source: `2444c38b8216656b636f4dad9f8acfa70b86bd41`;
+- artifact: `8936470245`;
+- workflow run/job: `31020098349` / `92354282522`;
+- post-build workflow cleanup: `3c4e5bf4a2a40b4f34c39a53e789884383217a5e`.
 
-The next turn is **P5-R2E6 authoritative boundary fan-sector cover Code + Build**. Do not advance to R2F or R3.
+Runtime acceptance has not been executed for this source. The next turn is **P5-TB34 artifact-only R2E6 validation**. Do not configure, rebuild, relink, patch, regenerate, or modify source. Do not advance to R2F or R3 from compilation.
 
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
-3. `.agents/Directional/Milestone_G_P5_TB33_Artifact_Only_R2E5_Test_Benchmark_Report.md`
-4. `.agents/Directional/Milestone_G_P5_R2E6_Boundary_Fan_Sector_Cover_Code_Build_Plan.md`
-5. `benchmark-results/p5-tb33-summary.json`
-6. `.agents/Directional/Milestone_G_P5_R2E5_Code_Build_Report.md`
-7. `.agents/Directional/Milestone_G_P5_R2E5_Test_Benchmark_Plan.md`
+3. `.agents/Directional/Milestone_G_P5_R2E6_Code_Build_Report.md`
+4. `.agents/Directional/Milestone_G_P5_R2E6_Test_Benchmark_Plan.md`
+5. `benchmark-results/p5-r2e6-summary.json`
+6. `.agents/Directional/Milestone_G_P5_TB33_Artifact_Only_R2E5_Test_Benchmark_Report.md`
+7. `.agents/Directional/Milestone_G_P5_R2E6_Boundary_Fan_Sector_Cover_Code_Build_Plan.md`
 8. `.agents/Directional/REORIENTATION_PLAN.md`
 9. `.agents/Directional/DESIGN.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB33 authority
+## P5-R2E6 package authority
 
-- artifact SHA-256 `69436143d96749cc09c6da8dc8c301e63304c2d25f9252497d0e9d0259c46c5c`;
-- workflow event `15704d30fc478858284df89d372fa713f2d88576`;
-- reviewed/applied diff `b7648b0bf870d7a65a7715a11e58cc2e8258af0118826c843d013384d485cc29`;
-- source status empty; checksums **48/48**; files **49**; fixtures **26**; submodules **9**;
-- cleaned source contains only `agent-source-snapshot.yml` and zero payloads;
-- no configure, build, relink, patch, regeneration, fixture modification, or source modification;
-- complete suite executed exactly once;
-- evidence SHA-256 `1a4f1a780e29f09e0d93f75f0c01a818358029d6044839f32ffdff53aa340ec7`.
+- starting documentation head: `2d21e3996d8872b2732892b0f5077643b06e87f2`;
+- workflow event commit: `6cd5a5c10aa0f15eb5e1312145425395b8a8372d`;
+- exact compiled source: `2444c38b8216656b636f4dad9f8acfa70b86bd41`;
+- reviewed/applied source diff SHA-256: `e4196fd4ed1a68d31ba6310af8e8a4822533fac3c1f0248f75721521785f8d3d`;
+- artifact: `8936470245`, `surface-cell-p5-r2e6-github-source-linux-release`;
+- artifact SHA-256: `bcc2c0d81e4382368a7fcafe7818c79a2e5bdb23d9a044232a4f3294f4554bf5`;
+- workflow-log artifact: `8936470828`, SHA-256 `ea700280dc89f4a0e8ed4189aa8db9f760f1cd3210d6f5ce7918e10736ae7e07`;
+- source status empty;
+- recursive checksums **48/48**;
+- package files **49**;
+- fixtures **26**;
+- recursive submodules **9**;
+- all four target hashes verified;
+- all **132/132** Ninja actions completed;
+- no project binary executed.
 
-## Runtime summary
+The cleaned validation source contains only `agent-source-snapshot.yml` and zero payloads. The exact-source archive retains the bounded compile workflow; `source-exclusions.txt` records its sole removal. The final branch contains only the base workflow and no patch payloads.
 
-- source chart **11/11**;
-- validator **6/6**;
-- recovery **9/9**;
-- feature/barrier **8/8**;
-- graph-dependent **5/6**;
-- R2 focused **12/16**;
-- Milestone D **5/7**;
-- Phase 14–18 **240/244**;
-- Phase 16 **44/47**;
-- Phase 17 **26/26**;
-- Phase 18 **57/57**;
-- Phase 20 **46/48**;
-- complete suite **602/625**, 23 failures, **84.132 s**, max RSS **280,640 KiB**.
+Evidence bundle: `directional-p5-r2e6-8936470245-evidence.zip`, SHA-256 `c2487786ca7984896cb0d202aac1e3093700b37f01e129713731ca6475938bbc`.
 
-## Confirmed remaining producers
+## P5-R2E6 implementation
 
-1. **Higher-valence boundary fan:** incidence-valid but `cellsDiskValid` and `topologyValid` fail. One cyclic target permutation does not prove an authoritative source-interior sector cover.
-2. **Interior hard rail:** fails `BoundaryRotationalSystemConflict` because the producer incorrectly requires one common wedge identity across R1 fan scopes split by the hard rail.
-3. **Planar:** incidence and repeated-cycle audits pass, but arrangement Euler characteristic is zero instead of one.
-4. **Cylinder:** completion remains invalid and direct arrangement inventory remains zero.
-5. **Bunny:** separate intrinsic singularity-fan embedding producer.
+1. Preserves the exact R2E5 degree-two exterior/interior sector construction.
+2. Preserves R1-selected intrinsic successors and canonical fan identities before exterior-loop authority is installed.
+3. Removes the higher-valence requirement that one common wedge contain the full ray inventory.
+4. Builds each `rayCount >= 3` node from one ordered exterior sector plus the complete set of R1-selected source-interior sectors.
+5. Accepts interior sectors only when source and target are direct, non-wrapping adjacent rays in the same SourceVertex or SourceEdge fan identity.
+6. Requires every local incoming and outgoing ray exactly once before publishing any successor.
+7. Requires each authoritative hard-rail ray to have distinct interior fan identities on its two sides; rails separate sectors and never become crossings.
+8. Adds typed `BoundaryFanSectorCoverConflict` and derived fan-sector/interior-sector/hard-rail-separator diagnostics.
+9. Leaves global predecessor, repeated-edge/node, disk, ownership, Euler, orientation, and area validators unchanged.
+10. Replaces the invalid dangling-spoke higher-valence test with three non-crossing boundary-to-boundary spokes that genuinely partition a disk into four bounded disks.
 
-## First actions for P5-R2E6
+This is direct producer-level fan-sector assembly, not target swapping, arbitrary subset search, post-hoc cycle decomposition, or cell merging.
 
-1. Confirm the branch descends from this handoff and contains only the base workflow with zero payloads.
-2. Preserve the exact R2E5 degree-two path.
-3. Inventory all local outoing rays and every R1 canonical wedge membership at `rayCount >= 3` nodes.
-4. Build directed adjacent interior-sector records per fan scope.
-5. Use hard rails as shared sector boundaries rather than requiring one wedge across both sides.
-6. Add one authoritative exterior sector from ordered loop continuation.
-7. Require a complete non-overlapping incoming/outgoing sector cover before publishing successors.
-8. Add typed `BoundaryFanSectorCoverConflict` evidence.
-9. Leave global predecessor, repeated-cycle, disk, ownership, Euler, orientation, and area validators unchanged.
-10. Compile exactly the four approved targets and execute no project binary.
-11. Remove bounded workflow and payloads after artifact upload.
+## P5-TB34 execution order
+
+1. Verify artifact SHA, source commit, source status, **48/48** checksums, 49 files, 26 fixtures, nine submodules, target hashes, one cleaned base workflow, and zero payloads.
+2. Preserve source-chart **11/11**, validator **6/6**, recovery **9/9**, feature/barrier **8/8**, and graph-dependent **5/6** with bunny only.
+3. Run all R2 through R2E6 contracts and preserve the exact degree-two branch.
+4. Require the corrected higher-valence fixture to publish one exterior and four bounded disks with complete ownership and valid topology.
+5. Require the interior hard rail to publish one exterior and two bounded disks with at least two audited hard-rail separators.
+6. Preserve source-face-row and whole-orientation incidence-hash invariance.
+7. Require R2 focused at least **14/16**, Milestone D at least **6/7**, Phase 16 at least **45/47**, Phase 17 **26/26**, Phase 18 **57/57**, and complete suite at least **604/625**.
+8. Run direct plane, seam, close sheets, disconnected close sheets when packaged, and cylinder with fallback `Fail`, recovery disabled, and no legacy execution.
+9. Run Phase 20 and the complete suite exactly once with raw runtime and RSS evidence.
+10. If fan-sector and hard-rail gates close, diagnose planar Euler and cylinder independently and prepare the smallest coherent next Code + Build plan.
+11. Do not advance to R2F until planar, hard rail, cylinder, and all boundary/orbit/disk/owner/Euler gates close and bunny is the sole remaining R2 producer.
 
 ## End-of-turn PR comment requirement
 
 At the end of every Code + Build, Test + Benchmark, and optional Review turn, post a **new final comment on PR #8** after all documentation commits. It must identify exact source/evidence, result, remaining gates, next-turn plan, and final documentation head. It must be the final repository write.
+
+## Known procedural lessons
+
+- A complete local bijection is not proof of a valid fan-sector cover.
+- Higher-valence test inputs must create actual bounded partitions; dangling interior slits are not valid evidence for multiple disk cells.
+- Hard rails divide authoritative R1 fan scopes and must be represented as shared sector boundaries, not crossed by a single common wedge.
+- Preserve intrinsic sector evidence before installing exterior-loop successors.
+- Git source archives do not include initialized submodule worktrees; validate from the verified artifact.
+- Never include a checksum manifest in its own input set.
 
 ## Preserved prohibitions
 
