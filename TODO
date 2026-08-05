@@ -8,71 +8,47 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB35 artifact-only R2E7 validation**.
+- Completed turn: **documentation-retention cleanup**.
 - Next turn: **P5-R2E8 canonical boundary corner-sector and rail-chart embedding Code + Build**.
 - R2 remains open. Do not advance to R2F or R3.
 
-## P5-TB35 authority
+## Current runtime checkpoint
 
-- Exact source: `31c8d9a212f649df7c70fe9291d1fac8c4db7132`.
-- Artifact: `8938299309`, SHA-256 `af34097d6579ff07eafbe24e75ed05db3dfec98170ef7576ce30a12b538f063e`.
-- Manifest **48/48**; files **49**; fixtures **26**; recursive submodules **9**.
-- Clean source: one base workflow and zero payloads.
-- No configure, build, relink, patch, regeneration, source/test/build-logic modification, or fixture modification.
-- Evidence: `directional-p5-tb35-8938299309-evidence.zip`, SHA-256 `c9e4a77b2b9709921a445fb8295a6eff16e62268325a844c1a886deff08e595b`.
+P5-TB35 validated exact source `31c8d9a212f649df7c70fe9291d1fac8c4db7132` and artifact `8938299309`.
 
-## Results
+- complete suite **597/625**;
+- R2 focused **13/16**;
+- Phase 16 **45/47**;
+- Phase 17 **20/26**;
+- Phase 18 **57/57**;
+- hard-rail producer narrowed to embedding validity;
+- planar boundary node remains blocked by `BoundaryFanSectorCoverConflict`.
 
-- [x] source chart **11/11**;
-- [x] validator **6/6**;
-- [x] recovery **9/9**;
-- [x] feature/barrier **8/8**;
-- [x] graph-dependent **5/6**, bunny only;
-- [ ] R2 focused **13/16**;
-- [ ] Milestone D **5/7**;
-- [ ] Phase 14–18 **235/244**;
-- [ ] Phase 16 **45/47**;
-- [ ] Phase 17 **20/26**;
-- [x] Phase 18 **57/57**;
-- [ ] Phase 20 **46/48**;
-- [ ] complete suite **597/625**, 28 failures, XML **206.053 s**; exact RSS unavailable after wrapper detachment.
+## Retained documentation authority
 
-The complete failure set is identical to P5-TB34.
-
-## Accepted authority
-
-- [x] R2E5 degree-two mapping remains passing;
-- [x] genuine R2E6 four-disk higher-valence partition remains passing;
-- [x] source-row and whole-orientation incidence identity remains passing;
-- [x] hard rail now passes incidence, side-pair, disk, loop, Euler, cell-count, and ownership checks;
-- [x] hard rail has exactly one exterior and two bounded cells with distinct bounded rail-twin owners;
-- [ ] hard-rail embedding/topology remains invalid;
-- [ ] planar still fails `BoundaryFanSectorCoverConflict` before publication;
-- [ ] six Phase 17 upstream-input failures remain.
-
-## Required P5-R2E8 work
-
-Follow `.agents/Directional/Milestone_G_P5_R2E8_Canonical_Boundary_Corner_Sector_Code_Build_Plan.md`:
-
-- [ ] construct the complete boundary-node sector inventory directly from canonical cyclic R1 corner pairs;
-- [ ] stop using `intrinsicCandidateNext` or `intrinsicSuccessorWedge` as complete boundary-sector authority;
-- [ ] remove exactly one independently proven exterior pair;
-- [ ] require one authoritative sector per incoming and target without count/order/frequency selection or subset search;
-- [ ] derive hard-rail sides from exact incident source-face/chart corners, not `leftScore` alone;
-- [ ] prove a common chart/ownership root for each bounded rail-side orbit before publication;
-- [ ] preserve degree-two, four-disk, orientation, row-order, bridge/support, pinched-fan, close-sheet, nested, and nonmanifold authority;
-- [ ] leave Phase 17 and downstream validators unchanged;
-- [ ] compile only the four approved targets and execute no project binary.
-
-## Current authority
-
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `.agents/Directional/Milestone_G_P5_TB35_Artifact_Only_R2E7_Test_Benchmark_Report.md`
 - `.agents/Directional/Milestone_G_P5_R2E8_Canonical_Boundary_Corner_Sector_Code_Build_Plan.md`
-- `benchmark-results/p5-tb35-summary.json`
-- `.agents/Directional/Milestone_G_P5_R2E7_Code_Build_Report.md`
-- `.agents/Directional/Future_Chat_Session_Handoff.md`
-- `MILESTONE_G_TODO.md`
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
 
-Every completed turn ends with a new final PR #8 handoff comment after all documentation commits.
+All superseded per-turn agent documents and historical result snapshots were removed. Git history and PR #8 retain historical provenance.
+
+## Retained benchmark results
+
+- `benchmark-results/baseline_synthetic_grid_2.json`
+- `benchmark-results/p5-r2e7-summary.json`
+- `benchmark-results/p5-tb35-summary.json`
+
+## Required next work
+
+Follow `.agents/Directional/Milestone_G_P5_R2E8_Canonical_Boundary_Corner_Sector_Code_Build_Plan.md` exactly. Compile only the four approved targets and execute no project binary.
+
+## Standing process requirements
+
+- Remove temporary workflows and payloads at the end of every Code + Build turn.
+- Every completed turn ends with a new final PR #8 comment after all repository and PR metadata writes.
 
 P5 remains open.
