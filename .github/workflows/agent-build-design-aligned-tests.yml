@@ -1,0 +1,56 @@
+name: Agent Build Design-Aligned Surface Cell Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-design-aligned-tests.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: surface-cell-g1-manual-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout selected checkpoint and recursive submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 50
+          submodules: recursive
+          persist-credentials: true
+
+      - name: Apply Gate 1 implementation and compile approved targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode .agents/Directional/turn-payloads/g1-build.sh.gz.b64 \
+            | gzip --decompress > /tmp/g1-build.sh
+          chmod +x /tmp/g1-build.sh
+          /tmp/g1-build.sh
+
+      - name: Upload compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-g1-uniform-phase-front-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-g1-uniform-phase-front-build-logs-${{ github.run_id }}
+          path: /tmp/g1-phase-front-build-logs
+          if-no-files-found: error
+          retention-days: 30
