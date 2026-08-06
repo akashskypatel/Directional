@@ -20,6 +20,7 @@ Last updated: 2026-08-06
 - Manifest **20/20**; package files **21**; recursive submodules **9**; source status empty; executable-relative fixtures **26**.
 - Only packaged binaries executed. No configure, rebuild, relink, patch, regeneration, implementation/test/fixture/validator/workflow/build change, or binary replacement.
 - Evidence archive SHA-256: `41a2a7b58cc16ac96944a796a67d6a42ec00559b86a6cdb6991e0e9b04500fa3`.
+- Documentation transition head: `f193158f0166ab618dcff684cdef5d07965b1b21`.
 
 ## P5-TB42 focused disposition
 
