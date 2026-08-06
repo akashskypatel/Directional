@@ -30,7 +30,9 @@ The tested implementation is represented by exact base source plus an exact vers
 
 Do not describe `5649cbe6...` as the implementation source commit.
 
-### Remote source synchronization backlog — keep until outage resolves
+### Ordered remote source synchronization backlog — keep until outage resolves
+
+Layer 1 — current tested phase-front patch:
 
 - [ ] Confirm GitHub write/Actions service recovery.
 - [ ] Apply the exact existing patch without regeneration or modification.
@@ -45,9 +47,16 @@ a2eaa6008a0fbb4ad9dc12d16ce0820ee940ac67  src/geometry/SurfaceArrangement.cpp
 a4a06dc214e4a567b90ea6d87e4fef2d62a4de62  src/pipeline/RemeshPipeline.cpp
 ```
 
-- [ ] Remove the current patch/build payloads only after the applied source commit and all five blobs are verified.
-- [ ] Keep the next orientation/direct-cell implementation as a separate versioned patch while the outage persists.
-- [ ] After current-patch synchronization, apply the orientation/direct-cell patch as a separate coherent source commit and verify its blobs/build authority before removing its payload.
+Layer 2 — next orientation/direct-cell patch:
+
+- [ ] Reconstruct Layer 1 exactly from the recorded base and patch.
+- [ ] Express orientation/direct-cell changes as a separate immutable incremental patch.
+- [ ] Record Layer 2 digest, expected final blobs, local build artifact, logs, and dependency closure.
+- [ ] After Layer 1 is synchronized and verified, apply Layer 2 as a separate coherent commit and verify it.
+
+Cleanup:
+
+- [ ] Remove a payload only after its corresponding source commit and expected blobs are verified.
 
 ## Latest direct runtime result
 
@@ -104,7 +113,7 @@ Use `.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`.
 - [ ] correct the two stale producer tests without weakening the four direct gates;
 - [ ] compile and package the seven approved targets;
 - [ ] execute no tests or benchmarks in the Code + Build turn;
-- [ ] leave remote source synchronization backlog open until the outage resolves.
+- [ ] preserve ordered unsynchronized patch layers until service recovery.
 
 ## Gate 1 exit criteria
 
