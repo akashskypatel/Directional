@@ -2,71 +2,156 @@
 
 ## Purpose
 
-The default test suite protects the constructive path defined by
-`.agents/Directional/DESIGN.md`:
+The test suite protects the constructive path in `.agents/Directional/DESIGN.md` and enforces its gate order.
 
-1. Prepare source-attached field, feature, and metric inputs.
-2. Construct a coherent direct surface paving.
-3. Complete and simplify valid embedded cells.
-4. Optimize on the source surface.
-5. Pass source-authoritative validation.
+The default suite answers one primary question:
 
-A diagnostic change, ownership-classification change, cache result, or failure
-hash change is not production progress by itself.
+> Does the direct `SurfaceCells` producer construct valid source-authoritative pure-quad output for the earliest active design gate?
+
+A diagnostic change, ownership classification, counter, hash, cache result, memory metric, or aggregate pass-count increase is not production progress by itself.
+
+## Gate-first execution policy
+
+Only one direct design gate is active at a time.
+
+Current active gate:
+
+```text
+Gate 1 — Uniform phase-front plane
+```
+
+Every Test + Benchmark turn must:
+
+1. run the active direct fixture first in a fresh process;
+2. report its terminal stage and constructive counts before aggregate totals;
+3. determine whether the gate exit criteria passed;
+4. run later analytic fixtures only after the active fixture evidence is recorded;
+5. classify downstream unit failures separately from direct producer acceptance.
+
+Do not skip a red analytic gate to run a more complex acceptance fixture as the main progress signal.
+
+## Direct gate sequence
+
+```text
+Gate 1: plane
+Gate 2: multi-face seam → close sheets
+Gate 3: cylinder
+Gate 4: prescribed sphere and torus/reduced topology cases
+Gate 5: thin bent tube and mechanical feature
+Gate 6: bunny_1k_random
+Gate 7: production benchmark and hardening matrix
+```
+
+Each direct acceptance case requires:
+
+- requested and executed backend `SurfaceCells`;
+- fallback policy `Fail`;
+- no fallback attempt;
+- source-grid recovery disabled;
+- output origin `CompletedSurfaceCells`;
+- non-empty pure-quad output;
+- complete source provenance;
+- strict source-authoritative validation;
+- deterministic structural output.
+
+Fallback, recovery, partial cells, legacy output, input return, and timeout do not satisfy a gate.
 
 ## Default suites
 
 ### `directional_surface_cell_producer_tests`
 
-Protects the current critical path:
+Protects:
 
 - bounded source-mesh preconditioning;
-- cross-field construction and transfer;
-- shared adaptive feature and target-size fields;
-- direct `SurfaceCells` acceptance on plane, multi-face seam, close sheets, and
-  cylinder.
+- cross-field construction, matching, and transport;
+- source-chart, component, and local-sheet authority;
+- local lattice phase and directed front ownership;
+- direct design-gate acceptance.
 
-The four acceptance fixtures must use:
-
-- backend `SurfaceCells`;
-- fallback policy `Fail`;
-- source-grid recovery disabled;
-- optional skeleton guidance disabled;
-- direct `CompletedSurfaceCells` output;
-- non-empty pure-quad output.
-
-The acceptance order is intentional:
-
-```text
-plane
-→ multi-face seam
-→ close sheets
-→ cylinder
-```
-
-Do not advance the authoritative producer gate to torus, prescribed sphere,
-adaptive thin-tube, mechanical-feature, or random-bunny acceptance until these
-four fixtures pass directly.
+The producer suite is the primary correctness authority.
 
 ### `directional_surface_cell_completion_tests`
 
-Protects FlowRep strand/cycle selection, embedded-complex simplification,
-patch descriptor feasibility, and pure-quad completion. These tests do not
-substitute for producer success.
+Protects:
+
+- FlowRep strand and cycle selection on valid embedded input;
+- transactional complex simplification;
+- patch descriptor feasibility;
+- topology-distinct pure-quad completion.
+
+Completion tests do not substitute for producer success. A completion unit test may pass while the active direct producer gate remains red.
 
 ### `directional_surface_cell_validation_tests`
 
-Protects source-constrained optimization and final source-authoritative mesh
-validation.
+Protects source-constrained optimization and strict source-authoritative validation.
+
+Validation must remain fail closed. Test failures may not be resolved by weakening topology, provenance, feature, sheet, or quality requirements.
 
 ### `directional_compiled_api_tests`
 
-Protects the public compiled-library surface independently of meshing quality.
+Protects the compiled public API independently of meshing quality.
+
+## Gate-specific required tests
+
+### Gate 1 — Uniform phase-front plane
+
+Protect:
+
+- first-class phase and integer lattice coordinates;
+- deterministic front-edge ownership;
+- one filled side or explicit exterior side per directed front edge;
+- intrinsic source walking;
+- four ordered phase-compatible sides per accepted cell;
+- arrangement materialization of already-decided cells;
+- absence of fan-sector inference on the new producer path.
+
+### Gate 2 — Cross-chart and close-sheet propagation
+
+Protect:
+
+- phase and lattice transport across source edges and vertices;
+- quarter-turn matching and orientation correction;
+- deterministic face-row/orientation permutations;
+- zero cross-sheet capture, merge, or projection.
+
+### Gate 3 — Periodic closure
+
+Protect:
+
+- explicit phase holonomy;
+- deterministic periodic reconciliation;
+- valid predecessor/successor incidence;
+- disk-cell and seam closure.
+
+### Gate 4 — Topology-distinct completion
+
+Protect:
+
+- distinct topology graphs rather than rotations/reversals;
+- strip routing and pole placement;
+- 3–6-sided feasibility;
+- intentional singularity-index accounting;
+- no center-fan production fallback.
+
+### Gate 5 — Adaptive transitions and features
+
+Protect:
+
+- dyadic levels and 2:1 grading;
+- validated pure-quad transition templates;
+- structural hard-feature rails;
+- no final T-junctions or sheet jumps.
+
+### Gates 6–7 — General production and hardening
+
+Protect:
+
+- deterministic bunny success;
+- complete production fixture matrix;
+- component scheduling and parallel equivalence;
+- performance, memory, and benchmark stability only after constructive correctness.
 
 ## Non-default suites
-
-The following tests remain available but no longer run as part of the default
-surface-cell gate.
 
 ### Historical tests
 
@@ -76,11 +161,7 @@ Enable with:
 -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=ON
 ```
 
-This group contains milestone closure tests, broad diagnostic/lineage tests,
-component scheduling, and detailed tracing/arrangement implementation tests.
-They are useful for targeted regression investigation, but they must not
-outweigh direct producer acceptance or duplicate the same translation units in
-multiple default CTest targets.
+Historical tests may protect milestone closure, exact diagnostics, route-repair machinery, cache accounting, or implementation details. They are useful for targeted investigation but cannot block or outweigh the active direct design gate unless they expose a currently required production invariant.
 
 ### Legacy integration tests
 
@@ -90,10 +171,7 @@ Enable with:
 -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=ON
 ```
 
-This group contains the mixed-integer integration path, integer batching and
-transition-basis tests, targeted stiffening, legacy patch fallback, and legacy
-remesh regression coverage. These remain valid for the legacy backend but do
-not define acceptance of direct surface paving.
+These remain valid for the legacy backend but do not establish direct surface-paving correctness.
 
 ### Optional guidance tests
 
@@ -103,34 +181,58 @@ Enable with:
 -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=ON
 ```
 
-Relief guidance remains optional and must not block the uniform phase-front
-proof.
+Relief, skeleton, and other optional guidance must not block the uniform phase-front proof.
 
 ## Test validity rules
 
-Keep a test in the default suite only when failure means at least one of the
-following production contracts is broken:
+Keep a test in the default suite only when its failure means a current or already-passed production contract is broken:
 
-- source topology, boundary, feature, component, or local-sheet authority;
-- cross-field matching or singular-index consistency;
-- phase/front construction or direct cell ownership;
+- source topology, boundaries, features, components, or local sheets;
+- cross-field matching, phase transport, or singularity budget;
+- front construction or direct cell ownership;
 - manifold directed incidence and disk-cell extraction;
-- topology-distinct pure-quad completion;
+- topology-distinct completion;
 - source-constrained geometric validity;
-- deterministic output for equivalent input ordering.
+- deterministic output for equivalent inputs.
 
-Demote or remove a default test when it only checks:
+Demote, reconstruct, or remove a default test when it only checks:
 
 - a superseded milestone number;
-- an exact diagnostic string, counter, hash, ordinal, cache layout, or memory
-  accounting implementation;
-- repeated execution of a test already present in another default target;
-- fallback or recovery output as evidence of direct `SurfaceCells` success;
-- a synthetic fixture that is invalid before reaching the behavior it claims
-  to test.
+- an exact diagnostic string, counter, ordinal, cache layout, memory inventory, or recomputation count;
+- repeated execution already covered elsewhere;
+- fallback or recovery as direct success;
+- scheduler-sensitive wall-clock ratios;
+- an invalid synthetic fixture that does not create the stated precondition.
 
-Performance and memory tests are benchmark/closeout gates. They become blocking
-only after the direct analytic fixtures produce valid output.
+Fixtures must create valid source-supported geometry and reach the behavior they claim to test. Do not synthesize counters or weaken assertions to preserve an invalid fixture.
+
+## Progress classification
+
+A test turn shows material progress only when at least one is true:
+
+- the active direct fixture passes;
+- the earliest direct failure advances because a missing design contract is live and consumed;
+- a general front/phase/topology invariant replaces an underdetermined repair;
+- a previously equivalent ambiguity is removed without an equivalent downstream failure.
+
+The following are not sufficient:
+
+- different failure wording;
+- different diagnostic hash;
+- a higher aggregate pass count caused by demotion;
+- faster failure;
+- stable cache or memory counters;
+- fixture-specific behavior.
+
+## No-progress escalation
+
+When two consecutive Code + Build turns do not materially advance the active gate, the next turn must be a design review or bounded producer replacement proof. Tests should then compare the implementation directly to the stage contracts in `DESIGN.md`, not add more implementation-coupled diagnostics.
+
+## Performance and memory
+
+Performance and memory are benchmark/closeout gates. They become blocking only after the applicable constructive fixtures pass.
+
+Do not optimize a failing producer unless the optimization is required to execute the active correctness fixture within an explicit bounded resource limit.
 
 ## Verification commands
 
@@ -144,7 +246,7 @@ cmake -S . -B build -G Ninja \
   -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF
 ```
 
-Build the three surface-cell gates and API test:
+Build:
 
 ```text
 cmake --build build --target \
@@ -154,13 +256,10 @@ cmake --build build --target \
   directional_surface_cell_validation_tests
 ```
 
-Run only the design-aligned tests:
+Run:
 
 ```text
-ctest --test-dir build --output-on-failure \
-  -L "api|surface-cell"
+ctest --test-dir build --output-on-failure -L "api|surface-cell"
 ```
 
-A turn must report the direct acceptance result separately from unit-test totals.
-A higher pass count caused by demoting duplicated or obsolete tests is not an
-implementation success claim.
+Every report must state the active gate result separately from the complete non-overlapping inventory.
