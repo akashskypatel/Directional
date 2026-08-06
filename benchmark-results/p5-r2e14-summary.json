@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "turn": "P5-R2E14",
+  "date": "2026-08-05",
+  "status": "compile_valid_runtime_pending",
+  "r2e14Accepted": null,
+  "authority": {
+    "workflow_event_commit": "c35fd7a4ca44946a233be4e18f175d4aa88bc03d",
+    "source_commit": "2a8b9870b8e3854ae77a7e4eeae6da29a7899968",
+    "workflow_run_id": 31077891125,
+    "workflow_job_id": 92539833523,
+    "artifact_id": 8958361834,
+    "artifact_name": "surface-cell-p5-r2e14-github-source-linux-release",
+    "artifact_sha256": "1f2607859ecf84d2cb82597f2c4f8f9341491df62d99b694510241f8df719db6",
+    "artifact_size_bytes": 12307622,
+    "log_artifact_id": 8958362185,
+    "log_artifact_sha256": "d7b499c3a9a69a6702ca96bff4dd1b3241f7db2051113d88b05320165e9323cb",
+    "log_artifact_size_bytes": 5776,
+    "configuration": "Release -O2 -DNDEBUG",
+    "manifest_verified": "20/20",
+    "package_files": 21,
+    "recursive_submodules": 9,
+    "source_status_empty": true,
+    "compile_link_actions": "132/132"
+  },
+  "blobs": {
+    "surface_arrangement": "bea11b3b24149c552e3569669d170419532f527e",
+    "header": "b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8",
+    "phase16_test": "de5b7c4f3d7c53f8488bc7de5d883ac72429e894",
+    "milestone_d_test": "1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2"
+  },
+  "patch": {
+    "decoded_sha256": "c09ce5e87b4ab7e9a23cdcd2dde6bec05cdd9a62f983917526df1471b3e5dfa1",
+    "transport_sha256": "ff17a771c4b01bab46bb402266cec5728666b49f9ac269db841fe8e457558005",
+    "files_changed": ["src/geometry/SurfaceArrangement.cpp"]
+  },
+  "implementation": {
+    "two_sided_exterior_roots": true,
+    "exterior_endpoint_charts_and_sides": true,
+    "exterior_common_entity_required": true,
+    "exterior_common_root_required": false,
+    "non_exterior_common_root_required": true,
+    "generic_exterior_endpoint_reconciliation": true,
+    "unrelated_memberships_preserved": true,
+    "projected_chart_contradictions_fail_closed": true,
+    "chart_seam_after_pair_authority": true,
+    "unique_circular_adjacency_required": true,
+    "third_ray_intrusion_rejected": true,
+    "outside_wedge_rejected": true,
+    "raw_fan_index_wrap_authority_removed": true
+  },
+  "execution": {
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "custom_inputs_executed": false,
+    "project_binary_executed": false,
+    "cli_executed": false,
+    "gui_executed": false
+  },
+  "runtime_baseline": {
+    "source_chart_validator": "17/17",
+    "recovery_authority": "9/9",
+    "feature_barrier": "8/8",
+    "graph_dependent": "5/6",
+    "r2_focused": "13/16",
+    "milestone_d": "5/7",
+    "phase16": "45/47",
+    "phase17": "20/26",
+    "phase18": "57/57",
+    "phase14_18": "235/244",
+    "phase20": "46/48",
+    "complete_split_inventory": "597/625",
+    "failures": 28,
+    "planar_first_failure": "BoundaryFanSectorCoverConflict/InvalidOrientedInterval(8) tuple 3/5/4/9",
+    "hard_rail_first_failure": "BoundaryFanSectorCoverConflict/ExteriorPairMismatch(2) tuple 1/7/6/1"
+  },
+  "next_turn": "P5-TB42 artifact-only R2E14 Test + Benchmark",
+  "review_policy": "never",
+  "r2_status": "open"
+}
