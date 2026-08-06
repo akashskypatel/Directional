@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "turn": "design-aligned-artifact-only-test-benchmark",
+  "artifactId": 8974081923,
+  "artifactSha256": "4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de",
+  "sourceCommit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
+  "workflowEventCommit": "b412c8f78a7b597b204b52efbb64afc9899d6517",
+  "workflowRun": 31118705108,
+  "workflowJob": 92674426941,
+  "package": {
+    "internalChecksumsPassed": 49,
+    "internalChecksumsTotal": 49,
+    "submodules": 9,
+    "fixtureInputs": 26,
+    "trackedSourceClean": true
+  },
+  "directAcceptance": {
+    "passed": 0,
+    "failed": 4,
+    "total": 4,
+    "cases": {
+      "plane": {
+        "terminal": "NotProductionReady/completion",
+        "completionFailure": "",
+        "firstInvalidProducer": "completion/output-validation:AggregateCompletionValidationFailure",
+        "traceSegments": 106,
+        "arrangementCells": 9,
+        "completedQuads": 12,
+        "validationFailures": 15,
+        "threeProcessHashesEqual": true,
+        "wallSeconds": [0.045617, 0.037224, 0.037022]
+      },
+      "multiFaceSeam": {
+        "terminal": "NotProductionReady/completion",
+        "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
+        "traceSegments": 137,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "threeProcessHashesEqual": true,
+        "wallSeconds": [0.040049, 0.039861, 0.036478]
+      },
+      "closeSheets": {
+        "terminal": "NotProductionReady/completion",
+        "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
+        "traceSegments": 158,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "threeProcessHashesEqual": true,
+        "wallSeconds": [0.073110, 0.058266, 0.059616]
+      },
+      "cylinder": {
+        "terminal": "NotProductionReady/completion",
+        "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
+        "traceSegments": 732,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "threeProcessHashesEqual": true,
+        "wallSeconds": [0.426269, 0.412653, 0.450793]
+      }
+    },
+    "fallbackAttempted": false,
+    "sourceGridRecoveryUsed": false,
+    "outputOrigin": "None"
+  },
+  "defaultSuites": {
+    "remainingProducer": {"passed": 79, "failed": 0, "total": 79},
+    "completion": {"passed": 154, "failed": 10, "total": 164},
+    "validation": {"passed": 60, "failed": 0, "total": 60},
+    "compiledApi": {"passed": 8, "failed": 0, "total": 8},
+    "combined": {"passed": 301, "failed": 14, "total": 315}
+  },
+  "testSuiteFindings": {
+    "flakyBenchmarkTest": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent",
+    "demoteHistorical": [
+      "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+      "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse"
+    ],
+    "invalidFixtureOrExpectation": [
+      "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
+      "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
+      "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
+    ]
+  },
+  "testsRebuilt": false,
+  "sourceModifiedDuringExecution": false
+}
