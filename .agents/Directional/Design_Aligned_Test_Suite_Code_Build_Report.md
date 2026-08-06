@@ -90,6 +90,14 @@ fixture closure beside the packaged binaries.
 Neither attempt is package authority. Packaging was corrected without changing
 source, tests, fixtures, libraries, or target selection.
 
+## Repository hygiene
+
+The bounded build workflow was removed after artifact and log verification.
+Only the durable `agent-source-snapshot.yml` workflow remains. Superseded R2E16
+build/test documents were removed after this report and the current artifact-only
+plan were committed. No generated build output or temporary payload remains in
+the branch.
+
 ## Runtime status
 
 Compile validity is established. Runtime acceptance is **not claimed**. The next
