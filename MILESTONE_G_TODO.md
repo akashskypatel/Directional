@@ -8,35 +8,38 @@ Last updated: 2026-08-06
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB42 artifact-only R2E14 Test + Benchmark**.
-- Next turn: **P5-R2E15 chart-local lifted interval authority Code + Build**.
-- P5-R2E14 is not accepted.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E15 chart-local lifted interval authority Code + Build**.
+- Next turn: **P5-TB43 artifact-only R2E15 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB42 runtime authority
+## P5-R2E15 compile authority
 
-- Exact tested source: `2a8b9870b8e3854ae77a7e4eeae6da29a7899968`.
-- Artifact `8958361834`, SHA-256 `1f2607859ecf84d2cb82597f2c4f8f9341491df62d99b694510241f8df719db6`, size **12,307,622 bytes**.
-- Manifest **20/20**; package files **21**; recursive submodules **9**; source status empty; executable-relative fixtures **26**.
-- Only packaged binaries executed. No configure, rebuild, relink, patch, regeneration, implementation/test/fixture/validator/workflow/build change, or binary replacement.
-- Evidence archive SHA-256: `41a2a7b58cc16ac96944a796a67d6a42ec00559b86a6cdb6991e0e9b04500fa3`.
+- Workflow event commit: `47a5bf7a93fca3f63d9c54e09a1becd22251caef`.
+- Exact compiled source: `f14f1d416a9cb1b7afdf8109d22a76895e22fced`.
+- Workflow run/job: `31096815851` / `92600707664`.
+- Artifact `8965975937`, SHA-256 `2ea192b2be7496aa104948171d509d0f422b63afcf4ce296d4b35c60e2a28315`, size **12,306,846 bytes**.
+- Log artifact `8965976454`, SHA-256 `68a5c352a618f594c757a1904ea1e9df31706dcb0706adabf6f4e9d87de3f0e9`.
+- Manifest **20/20**; package files **21**; recursive submodules **9**; fixture closure **26**; source status empty; compile/link actions **132/132**.
+- Built exactly the four approved targets; no test, benchmark, custom input, discovery command, CLI, GUI, or generated project binary was executed.
 
-## P5-TB42 focused disposition
+## Implemented in P5-R2E15
 
-- Planar, three byte-identical runs:
-  - `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`;
-  - tuple `3/5/4/9`;
-  - canonical pairs **3**;
-  - exterior exclusions **1**;
-  - cyclic-wrap sectors **0**.
-- Interior hard rail, three byte-identical runs:
-  - advanced from P5-TB41 `ExteriorPairMismatch(2)` to `InvalidOrientedInterval(8)`;
-  - tuple `1/5/4/1`;
-  - publication counters remain zero because interval resolution fails before candidate publication.
-- The earliest common remaining producer is chart interval normalization for an already-authoritative non-exterior pair.
-- Do not infer separator, orbit, Euler, or topology validity beyond the first rejection.
+- [x] retained node-level canonical pair existence and exact normalized entity/root ownership;
+- [x] retained R2E14 endpoint-specific exterior chart/root/side authority;
+- [x] retained one exact common transition root for every non-exterior pair;
+- [x] recorded one integer lift turn with each unique wedge-local ray angle;
+- [x] rejected absent, multiple, non-finite, or non-integral lifted representatives;
+- [x] removed the second raw global-angle adjacency inventory;
+- [x] required source to be the immediate successor of target in lifted chart order;
+- [x] computed span and third-ray intrusion from lifted angles only;
+- [x] classified a seam wrap only from exact lift-turn difference `1`;
+- [x] rejected reverse order and unsupported turn differences;
+- [x] preserved complete cover, predecessor, hard-rail, orbit, embedding, Euler, ownership, and aggregate-topology gates;
+- [x] left the public header, all tests, Phase 17, P27, fixtures, validators, thresholds, fallback/recovery, and unrelated pipeline stages unchanged;
+- [x] compile-only gate passed;
+- [ ] runtime acceptance pending P5-TB43.
 
-## Current runtime results
+## Last runtime baseline: P5-TB42
 
 - source chart + validator **17/17**;
 - recovery **9/9**;
@@ -49,35 +52,29 @@ Last updated: 2026-08-06
 - Phase 18 **57/57**;
 - Phase 14–18 **235/244**;
 - Phase 20 **46/48**;
-- normal single-process full suite **597/625**, 28 failures, 0 errors, 0 disabled;
-- complete split inventory **597/625**, exact same 28 failures as P5-TB41.
+- complete suite and split inventory **597/625**, 28 failures.
 
-The single-process 625-test run completed normally in **74.23 s** with maximum RSS **282,848 KiB**. The prior P27/bunny cumulative-state stop was not reproduced and remains historical performance evidence, not correctness evidence.
+Planar failed `InvalidOrientedInterval(8)` at tuple `3/5/4/9`. Hard rail failed the same derived producer at tuple `1/5/4/1`. P5-TB43 must prove progression or classify the first newly observable producer. Direct production remained fail-closed and deterministic.
 
-All direct plane, seam, close-sheet, cylinder, and bunny processes remain `success=false` under backend `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy execution. Structural lineage is deterministic within each measured case.
+## Required P5-TB43 work
 
-## Required P5-R2E15 work
-
-- [ ] preserve node-level canonical pair existence and exact normalized entity/root ownership;
-- [ ] preserve R2E14 endpoint-specific excluded exterior charts, roots, sides, and provenance;
-- [ ] keep every non-exterior pair's one exact common transition root;
-- [ ] use the existing unique wedge-local lifted angle as the sole chart interval coordinate;
-- [ ] retain and validate the integer lift turn for each ray;
-- [ ] remove the second raw-global-angle adjacency authority;
-- [ ] require exact directed adjacency in lifted chart order;
-- [ ] reject reverse order, non-adjacency, third-ray intrusion, unsupported turn differences, non-positive span, and span outside the chart wedge;
-- [ ] set `cyclicWrap` only from an exact one-turn source/target lift difference for a valid adjacent pair;
-- [ ] keep raw angle only as diagnostic provenance;
-- [ ] preserve complete witness, cover, predecessor, exterior exclusion, hard-rail separator, bounded-orbit, embedding, disk, Euler, orientation, area, ownership, and aggregate topology gates;
-- [ ] compile exactly the four approved targets;
-- [ ] execute no project binary in the Code + Build turn;
-- [ ] produce P5-TB43 artifact-only validation authority.
+- [ ] verify exact artifact, digest, internal manifest, source/header/test blobs, submodules, fixtures, and source status;
+- [ ] execute packaged binaries only without configure, rebuild, relink, patch, or regeneration;
+- [ ] require accepted source-chart/validator, recovery, and feature/barrier prerequisites;
+- [ ] run planar and hard rail at least three independent times with deterministic derived context;
+- [ ] require planar one exact lifted-coordinate seam crossing, complete successor/predecessor bijection, Euler `1`, and valid topology;
+- [ ] require hard rail progress beyond interval rejection, one two-sided exterior exclusion, two exact non-exterior roots, complete bounded orbits, and valid topology;
+- [ ] restore Phase 17 **26/26** naturally;
+- [ ] preserve accepted focused and aggregate authority;
+- [ ] run one complete single-process suite and complete split inventory if necessary;
+- [ ] run direct production cases under fail-closed settings;
+- [ ] produce the next plan from the earliest remaining authoritative producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E15_Chart_Local_Lifted_Interval_Authority_Code_Build_Plan.md`
-- `benchmark-results/p5-tb42-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E15_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e15-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `MILESTONE_G_TODO.md`
