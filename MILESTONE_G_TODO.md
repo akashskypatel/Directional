@@ -5,78 +5,170 @@ Last updated: 2026-08-06
 ## Active phase
 
 - Phase: P5 — producer-correct direct surface paving.
+- Active gate: **G1 — Uniform phase-front plane**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 - Completed turn: **Design-Aligned Artifact-Only Test + Benchmark**.
 - Next turn: **Design-Aligned Uniform Phase-Front Code + Build**.
-- P5 remains open. Do not advance to adaptive, feature-complete, or bunny work.
 
-## Artifact-only test authority
+Milestone G is now governed by the gate order in `.agents/Directional/DESIGN.md`. Later fixture, performance, memory, cache, scheduling, or production-disposition work is blocked until the earlier constructive gates pass.
+
+## Artifact-only runtime authority
 
 - artifact: `8974081923`;
-- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
 - exact source: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
-- workflow event: `b412c8f78a7b597b204b52efbb64afc9899d6517`;
-- workflow run/job: `31118705108` / `92674426941`;
+- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
 - internal checksums: **49/49**;
 - recursive submodules: **9/9**;
 - fixture/input closure: **26/26**;
 - tracked source status: empty;
-- no configure, compile, relink, patch, regeneration, source edit, test edit, fixture edit, or validator edit occurred.
+- no rebuild or source/test/fixture/validator modification occurred.
 
-## Direct producer acceptance
+## Direct producer baseline
 
-- [ ] plane — failed `NotProductionReady/completion`; 106 traces, 9 arrangement cells, 12 quads; `completion/output-validation:AggregateCompletionValidationFailure`; 15 validation failures;
-- [ ] multi-face seam — failed `NotProductionReady/completion`; 137 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`;
-- [ ] close sheets — failed `NotProductionReady/completion`; 158 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`;
-- [ ] cylinder — failed `NotProductionReady/completion`; 732 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`.
+- [ ] plane — completion validation failure after 106 traces, 9 arrangement cells, and 12 candidate quads;
+- [ ] multi-face seam — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads;
+- [ ] close sheets — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads;
+- [ ] cylinder — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads.
 
-All four used requested and executed backend `SurfaceCells`, fallback `Fail`, no fallback attempt, source-grid recovery disabled, no remesh output, and output origin `None`. Three independent benchmark processes per fixture produced identical stage hashes, terminal state, and structural counts.
+All four used requested and executed backend `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, and output origin `None`.
 
-## Default-suite result
+Default-suite result:
 
-- direct producer acceptance: **0/4**;
-- remaining producer tests: **79/79**;
-- completion tests: **154/164**;
-- validation tests: **60/60**;
-- compiled API tests: **8/8**;
-- non-overlapping total: **301/315**, 14 failures.
+- direct acceptance: **0/4**;
+- remaining producer: **79/79**;
+- completion: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- non-overlapping total: **301/315**.
 
-## Test validity corrections still required
+## High-level production gates
 
-- [ ] move `StrictValidatorOverheadStaysBelowFivePercent` to optional benchmark/closeout coverage; it failed once and passed in the full run plus five isolated repeats;
-- [ ] demote `WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger` to historical coverage;
-- [ ] demote `OneCandidateBudgetIsExactAndDoesNotRecurse` to historical coverage;
-- [ ] correct `PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion` so invalid degenerate embedding is not expected to succeed;
-- [ ] reconstruct Phase 17 fixtures whose `beforeDefect` precondition is currently zero;
-- [ ] reconstruct candidate/mutation fixtures from valid oversampled embedded complexes instead of obsolete topology-invalid synthetic inputs.
+### G0 — Truthful authority
 
-No direct acceptance assertion may be weakened while correcting these tests.
+- [x] direct `SurfaceCells` requests fail closed;
+- [x] fallback `Fail` is used for acceptance;
+- [x] source-grid recovery is disabled for acceptance;
+- [x] only `CompletedSurfaceCells` can satisfy success;
+- [x] strict source-authoritative validation remains mandatory.
 
-## Uniform phase-front proof
+### G1 — Uniform phase-front plane
 
-- [ ] add authoritative local phase, integer lattice coordinate, branch rotation, and scale level;
-- [ ] add directed front-edge ownership with one unfilled side or explicit exterior side;
-- [ ] transport phase and lattice identity through source-chart transitions;
-- [ ] implement compatible merge, boundary termination, hard-rail capture, phase mismatch, and periodic holonomy conflict events;
-- [ ] construct plane cells directly from phase-compatible fronts;
-- [ ] feed already-decided cells to arrangement;
-- [ ] prohibit arrangement from inventing connectivity through pair-local fan-sector inference on the new path;
-- [ ] preserve exact source provenance, fail-closed validation, and close-sheet barriers;
-- [ ] compile only the approved seven targets and package a self-contained artifact;
-- [ ] execute no tests or benchmarks during the Code + Build turn.
+Status: **active**.
+
+- [ ] authoritative local phase and integer lattice coordinates;
+- [ ] authoritative directed front-edge ownership;
+- [ ] deterministic phase/front serialization and hashing;
+- [ ] intrinsic uniform boundary seeding and front advancement;
+- [ ] bounded merge, boundary, hard-rail, phase-mismatch, and holonomy events;
+- [ ] four source-attached phase-compatible corners and ordered sides per accepted cell;
+- [ ] already-decided cells consumed by arrangement;
+- [ ] no fan-sector inference on the new producer path;
+- [ ] plane direct acceptance passes strict validation.
+
+### G2 — Cross-chart and close-sheet propagation
+
+Blocked by G1.
+
+- [ ] phase and lattice transport through authoritative source-chart transitions;
+- [ ] multi-face seam direct acceptance;
+- [ ] deterministic source-row/orientation permutations;
+- [ ] close sheets direct acceptance;
+- [ ] zero cross-sheet captures, merges, or projections.
+
+### G3 — Periodic closure and holonomy
+
+Blocked by G2.
+
+- [ ] explicit periodic phase holonomy;
+- [ ] complete directed incidence before cell assignment;
+- [ ] deterministic periodic event sequence;
+- [ ] cylinder direct acceptance with no seam break or invalid incidence.
+
+### G4 — Topology-distinct completion and singularities
+
+Blocked by G3.
+
+- [ ] finite topology graph catalog;
+- [ ] rotations/reflections canonicalized rather than counted as alternatives;
+- [ ] intentional valence-3/5 structures;
+- [ ] supported 3–6-sided patch completion;
+- [ ] prescribed sphere and torus/reduced cases pass;
+- [ ] no generic center-fan production fallback.
+
+### G5 — Adaptive scale and hard features
+
+Blocked by G4.
+
+- [ ] dyadic target levels and 2:1 grading;
+- [ ] validated pure-quad transition templates;
+- [ ] hard features seeded as structural rails;
+- [ ] thin bent tube and mechanical fixtures pass;
+- [ ] no T-junctions, feature loss, or opposite-sheet jumps.
+
+### G6 — General production geometry
+
+Blocked by G5.
+
+- [ ] `bunny_1k_random.obj` passes direct validated surface paving;
+- [ ] supplied/generated field modes are deterministic;
+- [ ] no fallback or recovery substitution;
+- [ ] topology, provenance, features, and quality gates pass.
+
+### G7 — Operational hardening and default-on decision
+
+Blocked by G6.
+
+- [ ] cache and incremental recomputation;
+- [ ] component parallelism and scheduling;
+- [ ] spatial indices and exact predicates;
+- [ ] memory compaction and telemetry;
+- [ ] production benchmark and qualitative matrix;
+- [ ] complete suite and fixture matrix green;
+- [ ] explicit default-on decision supported by evidence.
+
+## Next Code + Build checklist
+
+Only G1 work is authorized:
+
+- [ ] add phase/lattice/front types;
+- [ ] consume source-chart matching in phase transport;
+- [ ] seed and advance the uniform plane front;
+- [ ] emit already-decided cells;
+- [ ] isolate arrangement materialization from fan-sector inference;
+- [ ] preserve provenance, rails, sheet barriers, and fail-closed behavior;
+- [ ] compile and package the seven approved targets;
+- [ ] run no generated binary.
+
+## Deferred test-suite cleanup
+
+The following remains valid cleanup work, but it is not the main G1 objective and should be done only when required to compile or package the design-aligned targets:
+
+- move the scheduler-sensitive validator wall-time test to benchmark/closeout coverage;
+- demote exact route-ledger and recomputation-counter tests to historical coverage;
+- reconstruct invalid completion and Phase 17 fixtures without weakening assertions.
+
+## Progress-control rules
+
+- Every turn must name the active gate and material-progress condition.
+- Direct gate results are reported before aggregate totals.
+- A new diagnostic subtype, counter, hash, or ownership class is not progress by itself.
+- Two consecutive Code + Build turns without material gate progress trigger a design review or bounded replacement proof.
+- Do not work on a blocked gate.
 
 ## Current authority
 
-- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
-- `benchmark-results/design-aligned-runtime-summary.json`
-- `tests/TESTING_STRATEGY.md`
-- `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/GitHub_Workflow_Policy.md`
+- `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
+- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `tests/TESTING_STRATEGY.md`
+- `benchmark-results/design-aligned-runtime-summary.json`
+- `TODO`
 
 Every completed turn ends with a new top-level PR #8 handoff comment after all documentation and PR metadata writes. That comment is the final repository write.
+
+P5 remains open.
