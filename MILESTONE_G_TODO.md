@@ -62,17 +62,24 @@ The plane phase-front path is live and deterministic, but its winding/incidence 
 - [ ] compile only the seven approved targets;
 - [ ] run no generated binary.
 
-## Remote source synchronization backlog
+## Ordered remote source synchronization backlog
 
-Keep this open until GitHub service recovery:
+Layer 1 — current tested phase-front patch:
 
-- [ ] apply and commit the exact existing Gate 1 five-file patch;
+- [ ] apply and commit the exact existing five-file patch after service recovery;
 - [ ] verify each resulting blob against `TODO`;
-- [ ] do not use a workflow while the outage persists;
-- [ ] keep the exact current patch payload versioned until synchronization is complete;
-- [ ] keep the next orientation/direct-cell implementation as a separate versioned patch during the outage;
-- [ ] after current-patch synchronization, apply the orientation/direct-cell patch as a separate coherent commit and verify it;
-- [ ] remove payloads only after every referenced source state is committed and verified.
+- [ ] do not use a workflow while the outage persists.
+
+Layer 2 — next orientation/direct-cell patch:
+
+- [ ] implement as a separate immutable incremental patch on exact Layer 1 source;
+- [ ] record digest, expected final blobs, local build artifact, logs, and dependency closure;
+- [ ] apply as a separate coherent source commit after Layer 1 is synchronized and verified.
+
+Cleanup:
+
+- [ ] retain every patch layer in order until its source commit and expected blobs are verified;
+- [ ] remove only the payload corresponding to a verified source commit.
 
 ## Gate order
 
