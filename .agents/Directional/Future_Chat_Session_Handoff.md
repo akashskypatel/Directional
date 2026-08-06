@@ -1,6 +1,6 @@
 # Directional Surface-Cell Quadrangulation — Session Handoff
 
-**Updated:** 2026-08-05  
+**Updated:** 2026-08-06  
 **Repository:** `akashskypatel/Directional`  
 **Base:** `surface_cell_quad`  
 **Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`  
@@ -9,33 +9,37 @@
 
 ## Current checkpoint
 
-P5-R2E14 two-sided exterior-root authority and chart-seam interval normalization Code + Build is complete and compile-valid.
+P5-TB42 artifact-only R2E14 Test + Benchmark is complete. P5-R2E14 is **not accepted**.
 
-- workflow event commit: `c35fd7a4ca44946a233be4e18f175d4aa88bc03d`;
-- exact compiled source: `2a8b9870b8e3854ae77a7e4eeae6da29a7899968`;
-- workflow run/job: `31077891125` / `92539833523`;
-- build artifact: `8958361834`, SHA-256 `1f2607859ecf84d2cb82597f2c4f8f9341491df62d99b694510241f8df719db6`, size **12,307,622 bytes**;
-- log artifact: `8958362185`, SHA-256 `d7b499c3a9a69a6702ca96bff4dd1b3241f7db2051113d88b05320165e9323cb`;
-- compile/link actions: **132/132**;
-- manifest: **20/20**; package files: **21**; recursive submodules: **9**; source status empty;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+- exact tested source: `2a8b9870b8e3854ae77a7e4eeae6da29a7899968`;
+- artifact: `8958361834`, SHA-256 `1f2607859ecf84d2cb82597f2c4f8f9341491df62d99b694510241f8df719db6`, size **12,307,622 bytes**;
+- manifest: **20/20**; package files: **21**; recursive submodules: **9**; source status empty; fixtures staged: **26**;
+- evidence archive: `directional-p5-tb42-8958361834-evidence.zip`;
+- evidence SHA-256: `41a2a7b58cc16ac96944a796a67d6a42ec00559b86a6cdb6991e0e9b04500fa3`;
+- evidence files: **214**.
 
-R2E14 retains endpoint-specific exterior source/target chart roots and sides while preserving one common normalized boundary entity. The two excluded exterior roots may differ across an authoritative hard rail and are not interior bounded-orbit root authority. Non-exterior pairs continue to require exactly one common root.
+Only packaged binaries were executed. No configure, rebuild, relink, regeneration, patch, binary replacement, or implementation/test/fixture/validator/workflow/build change occurred.
 
-For an already-authoritative non-exterior pair, chart geometry now uses the complete raw-angle circular inventory. A wrap is published only for unique exact seam adjacency; ambiguous angular positions, non-adjacency, third-ray intrusion, non-positive spans, and spans outside the chart wedge fail closed. Chart-local evidence cannot create or choose pair ownership.
+The next turn is **P5-R2E15 chart-local lifted interval authority Code + Build**. R2 remains open. Do not advance to R2F or R3.
 
-The next turn is **P5-TB42 artifact-only R2E14 Test + Benchmark** using artifact `8958361834`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
+## Exact runtime disposition
 
-## Exact implementation authority
+Planar remains deterministic across three byte-identical processes:
 
-- `src/geometry/SurfaceArrangement.cpp`: `bea11b3b24149c552e3569669d170419532f527e`;
-- unchanged `include/directional/geometry/SurfaceArrangement.h`: `b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8`;
-- unchanged `tests/SurfaceArrangementPhase16Tests.cpp`: `de5b7c4f3d7c53f8488bc7de5d883ac72429e894`;
-- unchanged `tests/MilestoneDClosureTests.cpp`: `1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2`;
-- patch SHA-256: `c09ce5e87b4ab7e9a23cdcd2dde6bec05cdd9a62f983917526df1471b3e5dfa1`.
+- `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`;
+- tuple `3/5/4/9`;
+- canonical pairs **3**;
+- exterior exclusions **1**;
+- cyclic-wrap interior sectors **0**.
 
-## Last runtime baseline: P5-TB41
+Interior hard rail advances deterministically across three byte-identical processes:
+
+- P5-TB41: `ExteriorPairMismatch(2)` at tuple `1/7/6/1`;
+- P5-TB42: `InvalidOrientedInterval(8)` at tuple `1/5/4/1`.
+
+The prior exterior-root equality mismatch is no longer the first observable hard-rail producer. Publication counters remain zero because chart interval resolution fails before candidate publication, so do not infer later exterior, separator, orbit, Euler, or topology validity from those counters.
+
+Current aggregate authority:
 
 - source chart + validator **17/17**;
 - recovery **9/9**;
@@ -48,19 +52,36 @@ The next turn is **P5-TB42 artifact-only R2E14 Test + Benchmark** using artifact
 - Phase 18 **57/57**;
 - Phase 14–18 **235/244**;
 - Phase 20 **46/48**;
-- complete non-overlapping split inventory **597/625**, 28 failures.
+- full single-process suite **597/625**, exact 28 failures;
+- complete split inventory **597/625**, the same exact 28 failures.
 
-Planar had already inserted three canonical pairs and excluded one exterior pair, then failed `InvalidOrientedInterval(8)` at tuple `3/5/4/9` with zero wraps. Hard rail failed `ExteriorPairMismatch(2)` at tuple `1/7/6/1` before canonical-pair insertion. P5-TB42 must prove exact progression or report the first newly observable producer.
+The single-process complete suite finished normally in **74.23 s**, maximum RSS **282,848 KiB**. The prior P27/bunny cumulative-state stop was not reproduced in TB42. Preserve it only as historical performance/nontermination evidence; timeout is never correctness evidence.
 
-A bounded single-process full suite again stopped when P27 entered bunny after prior suite state. This remains separate performance/nontermination evidence, never correctness evidence.
+Direct plane, multi-face seam, close sheets, cylinder, and bunny remain `success=false` under backend `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy execution. Structural lineage remains deterministic.
+
+## Earliest remaining producer
+
+The exact source computes a unique lifted angle for each chart ray inside the authoritative entity wedge, then creates a second inventory sorted by raw global `atan2` angle and uses that second ordering for adjacency and interval resolution.
+
+The next implementation must make the already-computed wedge-local lifted coordinate authoritative:
+
+- pair existence and normalized entity/root ownership remain node-level;
+- each ray must have one exact integer-turn lift inside the chart wedge;
+- source must be the immediate directed successor of target in lifted order;
+- span and third-ray checks use lifted angles;
+- `cyclicWrap` is true only for an exact one-turn source/target lift difference;
+- raw angle remains diagnostic provenance only;
+- chart-local evidence never creates or chooses a pair.
+
+See `.agents/Directional/Milestone_G_P5_R2E15_Chart_Local_Lifted_Interval_Authority_Code_Build_Plan.md`.
 
 ## Retained authoritative documentation
 
 Only current and durable documents must remain under `.agents/Directional`:
 
 1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E14_Code_Build_Report.md` — implementation and compile authority;
-3. `Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Plan.md` — next executable plan;
+2. `Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Report.md` — exact runtime authority;
+3. `Milestone_G_P5_R2E15_Chart_Local_Lifted_Interval_Authority_Code_Build_Plan.md` — next executable plan;
 4. `DESIGN.md`;
 5. `REORIENTATION_PLAN.md`;
 6. `Surface_Cell_Backend_Remediation_Plan.md`;
@@ -71,40 +92,45 @@ Superseded per-turn plans, reports, closure notes, and summaries are removed aft
 ## Retained benchmark results
 
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e14-summary.json` — exact source/package authority and retained P5-TB41 runtime baseline.
+- `p5-tb42-summary.json` — exact source, runtime, failure inventory, and next-producer authority.
 
-## Read first for P5-TB42
+## Read first for P5-R2E15
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E14_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e14-summary.json`
+4. `.agents/Directional/Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Report.md`
+5. `.agents/Directional/Milestone_G_P5_R2E15_Chart_Local_Lifted_Interval_Authority_Code_Build_Plan.md`
+6. `benchmark-results/p5-tb42-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB42 first actions
+## P5-R2E15 first actions
 
-1. Download artifact `8958361834` through the GitHub connector and verify outer digest `1f2607859ecf84d2cb82597f2c4f8f9341491df62d99b694510241f8df719db6`.
-2. Verify all internal manifest entries, exact source/event commits, production/header/test blobs, empty source status, nine recursive submodules, and executable-relative fixture closure.
-3. Extract into an arbitrary clean directory and execute only packaged binaries; do not configure, compile, relink, patch, or regenerate.
-4. Run source-chart/validator prerequisites first.
-5. Run planar and hard rail in at least three independent processes, retaining full deterministic diagnostics.
-6. Apply the exact gates in `.agents/Directional/Milestone_G_P5_TB42_Artifact_Only_R2E14_Test_Benchmark_Plan.md`.
-7. Treat any cumulative-state P27/bunny stop separately and use a complete non-overlapping split inventory if needed.
-8. Produce the next Code + Build plan from the first authoritative remaining producer; review remains skipped.
+1. Inspect `.github/workflows` and temporary payload locations; only the durable source-snapshot workflow should remain.
+2. Confirm PR #8 is open, draft, unmerged and the branch starts at the current documentation checkpoint.
+3. Re-read the P5-TB42 report and authoritative R2E15 plan.
+4. Verify exact preimage blobs before modifying any approved file.
+5. Implement only chart-local lifted interval authority while preserving canonical pair, two-sided exterior, common-root, and downstream validation contracts.
+6. Push the exact source commit before configuration or compilation.
+7. Build exactly the four approved targets in Release `-O2 -DNDEBUG`.
+8. Execute no test, benchmark, project binary, custom input, help/list/discovery command, CLI, or GUI.
+9. Package and verify exact source, binaries, libraries, fixtures, submodules, metadata, checksums, and separate detailed logs.
+10. Remove the bounded workflow and every temporary payload after artifact verification.
+11. Prepare P5-TB43 artifact-only validation and update the live handoff without removing any mandatory instruction.
+12. Make the final top-level PR #8 comment the final repository write.
 
-## Lessons from P5-R2E14
+## Lessons from P5-TB42
 
-- The excluded exterior continuation is a two-sided boundary relation; forcing its endpoint charts to share one root destroys valid hard-rail separation.
-- Exterior endpoint roots must be retained as provenance but must not be reused as interior complete-orbit authority.
-- Non-exterior ownership still requires one exact common root; the two-sided exception is limited to the excluded exterior relation.
-- Raw fan-vector index is not circular chart-seam authority. Unique raw-angle adjacency on the matched chart is required.
+- Passing the old first failure does not establish complete exterior publication; stop at the first newly observable producer.
+- Zero publication counters after an interval rejection cannot be used to infer whether pre-publication exterior construction succeeded or failed.
+- A global raw-angle sort is not authoritative for a bounded chart wedge whose rays already have unique lifted coordinates.
+- The lifted coordinate should encode the branch-cut turn; do not add `2π` later as a heuristic.
 - Chart-local evidence resolves geometry only after canonical pair existence and ownership are established.
-- A temporary transfer fragment that is deleted before any bounded workflow executes carries no source, build, or runtime authority.
+- Normal full-suite completion in this turn supersedes the need for split correctness authority, but the retained split still cross-checks the exact inventory.
+- A prior timeout remains historical performance evidence; it must not be silently converted into correctness evidence or erased.
 - The exact source commit must be pushed before compilation and packaged unchanged.
 
 ## Mandatory turn hygiene and instruction preservation
