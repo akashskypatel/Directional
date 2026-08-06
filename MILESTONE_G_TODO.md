@@ -8,82 +8,75 @@ Last updated: 2026-08-06
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-R2E16 Pair-Local Authoritative Fan-Chart Interval Projection Code + Build**.
-- Next turn: **P5-TB44 artifact-only R2E16 Test + Benchmark**.
-- R2 remains open. Do not advance to R2F or R3 from compile evidence.
+- Completed turn: **Design-Aligned Artifact-Only Test + Benchmark**.
+- Next turn: **Design-Aligned Uniform Phase-Front Code + Build**.
+- P5 remains open. Do not advance to adaptive, feature-complete, or bunny work.
 
-## P5-R2E16 compile disposition
+## Artifact-only test authority
 
-- [x] retained node-level canonical pair existence and exact normalized entity/root ownership;
-- [x] retained R2E14 endpoint-specific exterior chart/root/side authority;
-- [x] retained one exact common transition root for every non-exterior pair;
-- [x] required the complete deduplicated `record.fanIdentities` set for each pair;
-- [x] projected interval evidence from the union of every exact recorded identity;
-- [x] used no identity ranking, single-identity choice, or arbitrary subset search;
-- [x] required all identities to reconcile on chart, entity, root, lifted interval, and turn classification;
-- [x] excluded unrelated identities from pair-local adjacency and third-ray intrusion while preserving their independent authority;
-- [x] retained immediate lifted adjacency, positive span, wedge bounds, exact turn difference, and third-ray checks;
-- [x] added deterministic non-weakening interval failure subtype/context;
-- [x] modified only approved source/header/two-target-test scope;
-- [x] exact source pushed before compilation;
-- [x] compile/link **132/132** in Release `-O2 -DNDEBUG`;
-- [x] built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- [x] artifact outer digests and internal manifest **20/20** verified;
-- [x] exact source/header/test blobs, source status, nine submodules, and 26 fixture/input files verified;
-- [x] no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary executed;
-- [ ] runtime acceptance pending P5-TB44.
+- artifact: `8974081923`;
+- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
+- exact source: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
+- workflow event: `b412c8f78a7b597b204b52efbb64afc9899d6517`;
+- workflow run/job: `31118705108` / `92674426941`;
+- internal checksums: **49/49**;
+- recursive submodules: **9/9**;
+- fixture/input closure: **26/26**;
+- tracked source status: empty;
+- no configure, compile, relink, patch, regeneration, source edit, test edit, fixture edit, or validator edit occurred.
 
-## Compile authority
+## Direct producer acceptance
 
-- workflow event commit: `a882dec6321ae632578b40aca6282015ac5284d2`;
-- exact compiled source: `9db5531913195b255ea4c86ad50f609772527604`;
-- workflow run/job: `31110167386` / `92645562024`;
-- artifact `8971571147`, SHA-256 `a0f18f8f4d544f8dd8e1a0f3ebb2b558188beed485294019c68f56ab2f4c2da3`, size **12,343,344 bytes**;
-- log artifact `8971571865`, SHA-256 `4b2404a68368ae7eef3445f8c1db7c43ef8b05fcbb929a7768ea20b270d16358`, size **5,803 bytes**;
-- manifest **20/20**; package files **21**; recursive submodules **9**; fixture/input closure **26/26**; source status empty.
+- [ ] plane — failed `NotProductionReady/completion`; 106 traces, 9 arrangement cells, 12 quads; `completion/output-validation:AggregateCompletionValidationFailure`; 15 validation failures;
+- [ ] multi-face seam — failed `NotProductionReady/completion`; 137 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`;
+- [ ] close sheets — failed `NotProductionReady/completion`; 158 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`;
+- [ ] cylinder — failed `NotProductionReady/completion`; 732 traces, zero arrangement cells and quads; `SideSubdivisionRepair:InvalidInputIncidence`.
 
-## Last runtime baseline: P5-TB43
+All four used requested and executed backend `SurfaceCells`, fallback `Fail`, no fallback attempt, source-grid recovery disabled, no remesh output, and output origin `None`. Three independent benchmark processes per fixture produced identical stage hashes, terminal state, and structural counts.
 
-- planar: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `3/5/4/9`, three canonical pairs, one exterior exclusion, zero wraps;
-- hard rail: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `1/5/4/1`, zero publication counters;
-- source chart + validator **17/17**;
-- recovery **9/9**;
-- feature/barrier **8/8**;
-- graph-dependent **5/6**;
-- R2 focused **13/16**;
-- Milestone D **5/7**;
-- Phase 16 **45/47**;
-- Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 14–18 **235/244**;
-- Phase 20 **46/48**;
-- complete suite **597/625**, 28 failures.
+## Default-suite result
 
-## Required P5-TB44 work
+- direct producer acceptance: **0/4**;
+- remaining producer tests: **79/79**;
+- completion tests: **154/164**;
+- validation tests: **60/60**;
+- compiled API tests: **8/8**;
+- non-overlapping total: **301/315**, 14 failures.
 
-- [ ] verify exact artifact, outer digest, internal manifest, source/header/test blobs, submodules, fixtures, and source status;
-- [ ] execute packaged binaries only without configure, rebuild, relink, patch, or regeneration;
-- [ ] require accepted source-chart/validator, recovery, and feature/barrier prerequisites;
-- [ ] run planar and hard rail at least three independent times with deterministic subtype/context;
-- [ ] prove complete exact-identity reconciliation without identity or subset selection;
-- [ ] prove unrelated identities do not enter pair-local interval geometry;
-- [ ] require planar progression through successor/predecessor, one genuine wrap when required, Euler `1`, and valid topology;
-- [ ] require hard-rail progression through exterior, separator, roots, bounded orbits, and valid topology;
-- [ ] restore Phase 17 **26/26** naturally;
-- [ ] preserve accepted focused and aggregate authority;
-- [ ] run one complete single-process suite and complete split inventory if necessary;
-- [ ] run direct production cases under fail-closed settings;
-- [ ] produce the next plan from the earliest remaining authoritative producer.
+## Test validity corrections still required
+
+- [ ] move `StrictValidatorOverheadStaysBelowFivePercent` to optional benchmark/closeout coverage; it failed once and passed in the full run plus five isolated repeats;
+- [ ] demote `WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger` to historical coverage;
+- [ ] demote `OneCandidateBudgetIsExactAndDoesNotRecurse` to historical coverage;
+- [ ] correct `PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion` so invalid degenerate embedding is not expected to succeed;
+- [ ] reconstruct Phase 17 fixtures whose `beforeDefect` precondition is currently zero;
+- [ ] reconstruct candidate/mutation fixtures from valid oversampled embedded complexes instead of obsolete topology-invalid synthetic inputs.
+
+No direct acceptance assertion may be weakened while correcting these tests.
+
+## Uniform phase-front proof
+
+- [ ] add authoritative local phase, integer lattice coordinate, branch rotation, and scale level;
+- [ ] add directed front-edge ownership with one unfilled side or explicit exterior side;
+- [ ] transport phase and lattice identity through source-chart transitions;
+- [ ] implement compatible merge, boundary termination, hard-rail capture, phase mismatch, and periodic holonomy conflict events;
+- [ ] construct plane cells directly from phase-compatible fronts;
+- [ ] feed already-decided cells to arrangement;
+- [ ] prohibit arrangement from inventing connectivity through pair-local fan-sector inference on the new path;
+- [ ] preserve exact source provenance, fail-closed validation, and close-sheet barriers;
+- [ ] compile only the approved seven targets and package a self-contained artifact;
+- [ ] execute no tests or benchmarks during the Code + Build turn.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_R2E16_Code_Build_Report.md`
-- `.agents/Directional/Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md`
-- `benchmark-results/p5-r2e16-summary.json`
+- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
+- `benchmark-results/design-aligned-runtime-summary.json`
+- `tests/TESTING_STRATEGY.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
-- durable design, reorientation, remediation, and workflow-policy documents
-- `MILESTONE_G_TODO.md`
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
 
 Every completed turn ends with a new top-level PR #8 handoff comment after all documentation and PR metadata writes. That comment is the final repository write.
-
-P5 remains open.
