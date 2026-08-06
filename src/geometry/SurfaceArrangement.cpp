@@ -3745,6 +3745,8 @@ SurfaceCellComplex build_surface_cell_complex(
             std::vector<std::int64_t> canonicalEntityKey;
             int transitionRoot = -1;
             std::vector<SurfaceCellCanonicalIdentity> fanIdentities;
+            SurfaceCellCanonicalIdentity sourceBoundaryIdentity;
+            bool exterior = false;
             bool cyclicWrap = false;
           };
 
@@ -3792,6 +3794,106 @@ SurfaceCellComplex build_surface_cell_complex(
             }
             return roots;
           };
+
+          using CanonicalEntityRootKey =
+              std::pair<std::vector<std::int64_t>, int>;
+          const auto collect_ray_entity_root_evidence =
+              [&](const int outgoingRay) {
+                std::map<CanonicalEntityRootKey,
+                         std::vector<SurfaceCellCanonicalIdentity>> evidence;
+                for (const auto &[fanIdentity, fanRays] : nodeWedges) {
+                  if (!fanIdentity.valid) {
+                    continue;
+                  }
+                  const auto rayFound = std::find_if(
+                      fanRays.begin(), fanRays.end(),
+                      [&](const DirectedWedgeRay &ray) {
+                        return ray.halfedge == outgoingRay;
+                      });
+                  if (rayFound == fanRays.end()) {
+                    continue;
+                  }
+                  const std::vector<std::int64_t> entityKey =
+                      canonical_entity_key(fanIdentity);
+                  if (entityKey.empty()) {
+                    continue;
+                  }
+                  for (const int root : ray_transition_roots(*rayFound)) {
+                    evidence[{entityKey, root}].push_back(fanIdentity);
+                  }
+                }
+                for (auto &[key, identities] : evidence) {
+                  (void)key;
+                  std::sort(identities.begin(), identities.end());
+                  identities.erase(
+                      std::unique(identities.begin(), identities.end()),
+                      identities.end());
+                }
+                return evidence;
+              };
+
+          const CanonicalFanPairKey exteriorPairKey{
+              exteriorIncoming, exteriorTwin, exteriorOutgoing};
+          const SurfaceCellCanonicalIdentity exteriorBoundaryIdentity =
+              sourceBoundaryTopology
+                  .loops[static_cast<std::size_t>(exteriorLoop)]
+                  .canonicalIdentity;
+          const BoundarySubsegmentWitness &exteriorSourceWitness =
+              boundaryWitnesses[static_cast<std::size_t>(exteriorTwin)];
+          const BoundarySubsegmentWitness &exteriorTargetWitness =
+              boundaryWitnesses[static_cast<std::size_t>(exteriorOutgoing)];
+          if (!exteriorBoundaryIdentity.valid ||
+              !exteriorSourceWitness.valid ||
+              !exteriorTargetWitness.valid ||
+              exteriorSourceWitness.loop != exteriorLoop ||
+              exteriorTargetWitness.loop != exteriorLoop ||
+              exteriorSourceWitness.side != 1 ||
+              exteriorTargetWitness.side != -1) {
+            record_boundary_fan_conflict(
+                SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+
+          const auto exteriorSourceEvidence =
+              collect_ray_entity_root_evidence(exteriorTwin);
+          const auto exteriorTargetEvidence =
+              collect_ray_entity_root_evidence(exteriorOutgoing);
+          if (exteriorSourceEvidence.size() != 1U ||
+              exteriorTargetEvidence.size() != 1U ||
+              exteriorSourceEvidence.begin()->first !=
+                  exteriorTargetEvidence.begin()->first) {
+            record_boundary_fan_conflict(
+                SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+          std::vector<SurfaceCellCanonicalIdentity> exteriorFanIdentities =
+              exteriorSourceEvidence.begin()->second;
+          exteriorFanIdentities.insert(
+              exteriorFanIdentities.end(),
+              exteriorTargetEvidence.begin()->second.begin(),
+              exteriorTargetEvidence.begin()->second.end());
+          std::sort(exteriorFanIdentities.begin(),
+                    exteriorFanIdentities.end());
+          exteriorFanIdentities.erase(
+              std::unique(exteriorFanIdentities.begin(),
+                          exteriorFanIdentities.end()),
+              exteriorFanIdentities.end());
+          if (exteriorFanIdentities.empty()) {
+            record_boundary_fan_conflict(
+                SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+          canonicalPairInventory.emplace(
+              exteriorPairKey,
+              CanonicalFanPairRecord{
+                  exteriorPairKey,
+                  exteriorSourceEvidence.begin()->first.first,
+                  exteriorSourceEvidence.begin()->first.second,
+                  exteriorFanIdentities, exteriorBoundaryIdentity, true,
+                  false});
 
           // Build one node-level canonical pair inventory before chart-corner
           // filtering. Equivalent fan records may contribute provenance to one
@@ -3864,9 +3966,34 @@ SurfaceCellComplex build_surface_cell_complex(
               const int transitionRoot = *commonRoots.begin();
               auto [found, inserted] = canonicalPairInventory.emplace(
                   key, CanonicalFanPairRecord{key, entityKey, transitionRoot,
-                                              {fanIdentity}, cyclicWrap});
+                                              {fanIdentity}, {}, false,
+                                              cyclicWrap});
               if (!inserted) {
                 CanonicalFanPairRecord &record = found->second;
+                if (record.exterior) {
+                  const BoundarySubsegmentWitness &sourceBoundary =
+                      boundaryWitnesses[static_cast<std::size_t>(
+                          source.halfedge)];
+                  const BoundarySubsegmentWitness &targetBoundary =
+                      boundaryWitnesses[static_cast<std::size_t>(
+                          target.halfedge)];
+                  if (!(key.incoming == exteriorIncoming &&
+                        key.sourceRay == exteriorTwin &&
+                        key.target == exteriorOutgoing) ||
+                      !sourceBoundary.valid || !targetBoundary.valid ||
+                      sourceBoundary.loop != exteriorLoop ||
+                      targetBoundary.loop != exteriorLoop ||
+                      sourceBoundary.side != 1 ||
+                      targetBoundary.side != -1 ||
+                      record.sourceBoundaryIdentity !=
+                          exteriorBoundaryIdentity) {
+                    record_boundary_fan_conflict(
+                        SurfaceArrangementBoundaryFanConflict::
+                            ExteriorPairMismatch,
+                        node, incoming, source.halfedge, target.halfedge);
+                    break;
+                  }
+                }
                 if (record.canonicalEntityKey != entityKey) {
                   record_boundary_fan_conflict(
                       SurfaceArrangementBoundaryFanConflict::
@@ -3912,9 +4039,12 @@ SurfaceCellComplex build_surface_cell_complex(
             break;
           }
 
-          const CanonicalFanPairKey exteriorPairKey{
-              exteriorIncoming, exteriorTwin, exteriorOutgoing};
-          if (canonicalPairInventory.count(exteriorPairKey) != 1U) {
+          const auto exteriorRecord =
+              canonicalPairInventory.find(exteriorPairKey);
+          if (exteriorRecord == canonicalPairInventory.end() ||
+              !exteriorRecord->second.exterior ||
+              exteriorRecord->second.sourceBoundaryIdentity !=
+                  exteriorBoundaryIdentity) {
             record_boundary_fan_conflict(
                 SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
@@ -4140,7 +4270,7 @@ SurfaceCellComplex build_surface_cell_complex(
             // and transition-root ownership is known. No exact provenance
             // identity is used as an independent ownership gate.
             for (const auto &[key, record] : canonicalPairInventory) {
-              if (!(key < exteriorPairKey) && !(exteriorPairKey < key)) {
+              if (record.exterior) {
                 continue;
               }
               if (chartWitnesses.count(key.sourceRay) == 0U ||
@@ -4221,7 +4351,18 @@ SurfaceCellComplex build_surface_cell_complex(
 
           int exteriorExclusionCount = 0;
           for (const auto &[key, record] : canonicalPairInventory) {
-            if (!(key < exteriorPairKey) && !(exteriorPairKey < key)) {
+            if (record.exterior) {
+              if (!(key.incoming == exteriorIncoming &&
+                    key.sourceRay == exteriorTwin &&
+                    key.target == exteriorOutgoing) ||
+                  record.sourceBoundaryIdentity !=
+                      exteriorBoundaryIdentity) {
+                record_boundary_fan_conflict(
+                    SurfaceArrangementBoundaryFanConflict::
+                        ExteriorPairMismatch,
+                    node, key.incoming, key.sourceRay, key.target);
+                break;
+              }
               ++exteriorExclusionCount;
               continue;
             }
