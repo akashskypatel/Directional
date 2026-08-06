@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "updated": "2026-08-06",
+  "active_gate": "G1 Uniform phase-front plane",
+  "completed_turn": "Gate 1 Uniform Phase-Front Local Code + Build",
+  "next_turn": "Gate 1 Uniform Phase-Front Artifact-Only Test + Benchmark",
+  "source_authority": {
+    "base_commit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
+    "branch_payload_checkpoint": "5649cbe6b2ee353955a39db6ceb7fc0d67ee72ce",
+    "patch_blob": "aa18d454877ccf40d16f71f173fdaf765f5f1086",
+    "patch_sha256": "48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7",
+    "remote_implementation_commit": null
+  },
+  "build": {
+    "configuration": "Release -O2 -DNDEBUG static",
+    "compile_link_steps": 112,
+    "compile_link_total": 112,
+    "approved_targets": 7,
+    "duration_seconds": 435,
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "project_binary_executed": false
+  },
+  "artifact": {
+    "name": "directional-g1-local-build-artifact.zip",
+    "sha256": "7e520acda5d402300711d1803a666e505ce4a03c0b92d969f5ae2ba3ca2d1f28",
+    "executables": 5,
+    "static_libraries": 2,
+    "fixtures": 26,
+    "internal_checksums": 47,
+    "github_actions_artifact": false
+  },
+  "pre_patch_runtime_baseline": {
+    "direct_acceptance_passed": 0,
+    "direct_acceptance_total": 4,
+    "plane_terminal": "completion/output-validation:AggregateCompletionValidationFailure",
+    "seam_terminal": "SideSubdivisionRepair:InvalidInputIncidence",
+    "close_sheets_terminal": "SideSubdivisionRepair:InvalidInputIncidence",
+    "cylinder_terminal": "SideSubdivisionRepair:InvalidInputIncidence"
+  }
+}

@@ -9,39 +9,35 @@ Last updated: 2026-08-06
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **Design-Aligned Artifact-Only Test + Benchmark**.
-- Next turn: **Design-Aligned Uniform Phase-Front Code + Build**.
+- Completed turn: **Gate 1 Uniform Phase-Front Local Code + Build**.
+- Next turn: **Gate 1 Uniform Phase-Front Artifact-Only Test + Benchmark**.
 
-Milestone G is now governed by the gate order in `.agents/Directional/DESIGN.md`. Later fixture, performance, memory, cache, scheduling, or production-disposition work is blocked until the earlier constructive gates pass.
+Milestone G is governed by the gate order in `.agents/Directional/DESIGN.md`. Later fixture, performance, memory, cache, scheduling, or production-disposition work remains blocked until the earlier constructive gates pass.
 
-## Artifact-only runtime authority
+## Current Gate 1 build authority
 
-- artifact: `8974081923`;
-- exact source: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
-- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
-- internal checksums: **49/49**;
-- recursive submodules: **9/9**;
-- fixture/input closure: **26/26**;
-- tracked source status: empty;
-- no rebuild or source/test/fixture/validator modification occurred.
+- base source: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
+- branch payload checkpoint: `5649cbe6b2ee353955a39db6ceb7fc0d67ee72ce`;
+- exact patch Git blob: `aa18d454877ccf40d16f71f173fdaf765f5f1086`;
+- uncompressed patch SHA-256: `48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7`;
+- local compile: **112/112**;
+- approved targets: **7/7**;
+- compile duration: **435 seconds**;
+- package closure: 5 executables, 2 static libraries, 26 fixtures, 47 checksums;
+- artifact SHA-256: `7e520acda5d402300711d1803a666e505ce4a03c0b92d969f5ae2ba3ca2d1f28`;
+- tests/benchmarks during build: none;
+- remote implementation commit: pending because the Actions apply job was cancelled during the outage.
 
-## Direct producer baseline
+Do not call `5649cbe6...` the implementation commit. It contains the exact patch payload and trigger state, not the five applied source files.
+
+## Direct producer baseline before Gate 1 patch
 
 - [ ] plane — completion validation failure after 106 traces, 9 arrangement cells, and 12 candidate quads;
 - [ ] multi-face seam — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads;
 - [ ] close sheets — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads;
 - [ ] cylinder — `SideSubdivisionRepair:InvalidInputIncidence`, zero cells/quads.
 
-All four used requested and executed backend `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, and output origin `None`.
-
-Default-suite result:
-
-- direct acceptance: **0/4**;
-- remaining producer: **79/79**;
-- completion: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- non-overlapping total: **301/315**.
+All four used direct `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, and output origin `None`.
 
 ## High-level production gates
 
@@ -49,7 +45,7 @@ Default-suite result:
 
 - [x] direct `SurfaceCells` requests fail closed;
 - [x] fallback `Fail` is used for acceptance;
-- [x] source-grid recovery is disabled for acceptance;
+- [x] source-grid recovery is disabled;
 - [x] only `CompletedSurfaceCells` can satisfy success;
 - [x] strict source-authoritative validation remains mandatory.
 
@@ -57,21 +53,24 @@ Default-suite result:
 
 Status: **active**.
 
-- [ ] authoritative local phase and integer lattice coordinates;
-- [ ] authoritative directed front-edge ownership;
-- [ ] deterministic phase/front serialization and hashing;
-- [ ] intrinsic uniform boundary seeding and front advancement;
-- [ ] bounded merge, boundary, hard-rail, phase-mismatch, and holonomy events;
-- [ ] four source-attached phase-compatible corners and ordered sides per accepted cell;
-- [ ] already-decided cells consumed by arrangement;
-- [ ] no fan-sector inference on the new producer path;
-- [ ] plane direct acceptance passes strict validation.
+- [x] authoritative local phase and integer lattice coordinates represented;
+- [x] directed front-edge ownership represented;
+- [x] deterministic phase/front hashing and pipeline accounting;
+- [x] bounded planar uniform grid and source-attached side paths;
+- [x] compatible interior-edge merge events;
+- [x] explicit boundary termination events;
+- [x] authoritative proposal-cycle arrangement path;
+- [x] fan-sector connectivity inference bypassed on that path;
+- [x] all approved targets compile and link;
+- [ ] exact five source blobs committed to the working branch;
+- [ ] plane direct acceptance passes strict validation or reaches a materially later first invalid stage;
+- [ ] non-empty pure-quad `CompletedSurfaceCells` output with no fallback/recovery.
 
 ### G2 — Cross-chart and close-sheet propagation
 
 Blocked by G1.
 
-- [ ] phase and lattice transport through authoritative source-chart transitions;
+- [ ] authoritative chart-transition phase transport;
 - [ ] multi-face seam direct acceptance;
 - [ ] deterministic source-row/orientation permutations;
 - [ ] close sheets direct acceptance;
@@ -128,33 +127,25 @@ Blocked by G6.
 - [ ] complete suite and fixture matrix green;
 - [ ] explicit default-on decision supported by evidence.
 
-## Next Code + Build checklist
+## Next Test + Benchmark checklist
 
-Only G1 work is authorized:
+Use `.agents/Directional/Gate_1_Uniform_Phase_Front_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- [ ] add phase/lattice/front types;
-- [ ] consume source-chart matching in phase transport;
-- [ ] seed and advance the uniform plane front;
-- [ ] emit already-decided cells;
-- [ ] isolate arrangement materialization from fan-sector inference;
-- [ ] preserve provenance, rails, sheet barriers, and fail-closed behavior;
-- [ ] compile and package the seven approved targets;
-- [ ] run no generated binary.
-
-## Deferred test-suite cleanup
-
-The following remains valid cleanup work, but it is not the main G1 objective and should be done only when required to compile or package the design-aligned targets:
-
-- move the scheduler-sensitive validator wall-time test to benchmark/closeout coverage;
-- demote exact route-ledger and recomputation-counter tests to historical coverage;
-- reconstruct invalid completion and Phase 17 fixtures without weakening assertions.
+- [ ] verify outer artifact SHA-256;
+- [ ] verify all 47 internal checksums;
+- [ ] verify source-authority and final-blob manifests;
+- [ ] run plane in a fresh process;
+- [ ] run seam, close sheets, and cylinder in that order;
+- [ ] run remaining default suites;
+- [ ] run three independent bounded benchmark processes per analytic fixture;
+- [ ] perform no rebuild or source/test/fixture/validator edit.
 
 ## Progress-control rules
 
-- Every turn must name the active gate and material-progress condition.
+- Every turn names the active gate and material-progress condition.
 - Direct gate results are reported before aggregate totals.
-- A new diagnostic subtype, counter, hash, or ownership class is not progress by itself.
-- Two consecutive Code + Build turns without material gate progress trigger a design review or bounded replacement proof.
+- A diagnostic subtype, counter, hash, or ownership class is not progress by itself.
+- Two consecutive Code + Build turns without material progress trigger a design review or bounded replacement proof.
 - Do not work on a blocked gate.
 
 ## Current authority
@@ -162,7 +153,8 @@ The following remains valid cleanup work, but it is not the main G1 objective an
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
+- `.agents/Directional/Gate_1_Uniform_Phase_Front_Local_Code_Build_Report.md`
+- `.agents/Directional/Gate_1_Uniform_Phase_Front_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `tests/TESTING_STRATEGY.md`
