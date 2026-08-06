@@ -66,11 +66,12 @@ The plane phase-front path is live and deterministic, but its winding/incidence 
 
 Keep this open until GitHub service recovery:
 
-- [ ] commit the exact five current implementation blobs;
-- [ ] verify each blob against `TODO`;
+- [ ] apply and commit the exact existing Gate 1 five-file patch;
+- [ ] verify each resulting blob against `TODO`;
 - [ ] do not use a workflow while the outage persists;
 - [ ] keep the exact patch payload versioned until synchronization is complete;
-- [ ] remove payloads only after exact verification.
+- [ ] layer the orientation/direct-cell changes as a separate coherent patch/commit;
+- [ ] remove payloads only after every referenced source state is committed and verified.
 
 ## Gate order
 
