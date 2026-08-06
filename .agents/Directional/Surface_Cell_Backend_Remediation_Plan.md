@@ -2,7 +2,7 @@
 
 ## Production objective
 
-Produce deterministic, direct, source-authoritative cross-field-aligned quad meshes for arbitrary triangle meshes. Success requires validated `CompletedSurfaceCells` output from the requested `SurfaceCells` backend with fallback `Fail` and source-grid recovery disabled.
+Produce deterministic, direct, source-authoritative cross-field-aligned quad meshes for arbitrary triangle meshes. Production success must come directly from the requested `SurfaceCells` backend. Fallback, source-grid recovery, synthetic topology repair, or validator relaxation cannot satisfy acceptance.
 
 ## Gate policy
 
@@ -53,7 +53,7 @@ For every phase-front cell, validate before arrangement/completion:
 - coherent route provenance and family/sign state;
 - exactly one filled side or explicit exterior classification per directed front edge.
 
-When winding is opposite, reverse the entire cycle transactionally: corner order, lattice states, boundary paths, edge directions, family/sign state, and ownership. Do not reorder using positional proximity or index heuristics.
+When winding is opposite, reverse the entire cycle transactionally: corner order, lattice states, side routes, edge directions, family/sign state, and ownership. Do not reorder using positional proximity or index heuristics.
 
 ### 2. Direct cell materialization
 
@@ -94,9 +94,19 @@ Use `.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`. Com
 
 Progress requires plane success or a structurally later failure with one-to-one cell materialization and a reduced invalid-output burden. New diagnostics, counters, hashes, or unrelated test passes are insufficient.
 
-## Source synchronization during outage
+## Layered source authority during outage
 
-The tested implementation is base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus exact patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. The exact five-file remote source commit remains on both TODO files until GitHub service recovery. Do not use workflows for repository updates while the outage persists. After recovery, apply the existing patch exactly, verify all expected Git blobs, and only then remove the payload.
+The tested implementation is base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus exact patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep its five-file synchronization on both TODO files until service recovery.
+
+While the outage persists:
+
+1. do not use workflows for source application, build, or repository updates;
+2. reconstruct the tested source exactly from base plus the existing patch;
+3. express the orientation/direct-cell change as a separate incremental patch;
+4. record its digest, expected output blobs, local build artifact, and logs;
+5. keep both patch layers versioned and ordered.
+
+After recovery, apply and verify the existing patch first, then the orientation/direct-cell patch as a second coherent commit. Remove each payload only after its corresponding source commit and expected blobs are verified.
 
 ## Preserved prohibitions
 
