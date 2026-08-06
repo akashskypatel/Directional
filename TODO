@@ -2,67 +2,105 @@
 
 Last updated: 2026-08-06
 
-## Active phase
+## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
+- Active design gate: **Gate 1 — Uniform phase-front plane**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 - Completed turn: **Design-Aligned Artifact-Only Test + Benchmark**.
 - Next turn: **Design-Aligned Uniform Phase-Front Code + Build**.
-- Do not resume pair-local fan-interval micro-repair.
 
-## Runtime disposition
+The project must always advance the earliest incomplete gate in `.agents/Directional/DESIGN.md`. Do not replace constructive work with diagnostics, repair classifications, cache work, memory accounting, scheduling, performance tuning, or historical milestone cleanup.
 
-Artifact `8974081923` was verified and executed directly from exact source `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` without rebuilding or modifying source, tests, fixtures, validators, or build logic.
+## Runtime authority
 
-- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
-- internal checksums: **49/49**;
-- recursive submodules: **9/9**;
-- fixture/input closure: **26/26**;
-- tracked source status: empty.
+Artifact `8974081923` was executed directly from source `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`.
 
-### Direct acceptance
-
-| Fixture | Result | Terminal | Traces | Arrangement | Quads |
-|---|---:|---|---:|---:|---:|
-| Plane | failed | `NotProductionReady/completion` | 106 | 9 | 12 |
-| Multi-face seam | failed | `NotProductionReady/completion` | 137 | 0 | 0 |
-| Close sheets | failed | `NotProductionReady/completion` | 158 | 0 | 0 |
-| Cylinder | failed | `NotProductionReady/completion` | 732 | 0 | 0 |
-
-Plane failed at `completion/output-validation` with `AggregateCompletionValidationFailure` and 15 validation failures. The other three failed with `SideSubdivisionRepair:InvalidInputIncidence`. Three independent benchmark processes per fixture produced identical stage hashes and counts. No fallback or source-grid recovery was used.
-
-### Default suite
+| Fixture | Result | Earliest authoritative failure |
+|---|---:|---|
+| Plane | failed | completion validation after 9 cells / 12 quads |
+| Multi-face seam | failed | `SideSubdivisionRepair:InvalidInputIncidence` |
+| Close sheets | failed | `SideSubdivisionRepair:InvalidInputIncidence` |
+| Cylinder | failed | `SideSubdivisionRepair:InvalidInputIncidence` |
 
 - direct acceptance: **0/4**;
 - remaining producer: **79/79**;
 - completion: **154/164**;
 - validation: **60/60**;
 - compiled API: **8/8**;
-- non-overlapping total: **301/315**, 14 failures.
+- non-overlapping total: **301/315**.
+
+Aggregate totals do not offset the failed direct gate.
+
+## Gate progression
+
+- [x] **Gate 0 — Truthful authority.** Direct `SurfaceCells`, fallback `Fail`, recovery disabled, strict output origin and validation.
+- [ ] **Gate 1 — Uniform phase-front plane.** Active.
+- [ ] **Gate 2 — Cross-chart and close-sheet propagation.** Blocked by Gate 1.
+- [ ] **Gate 3 — Periodic cylinder closure and holonomy.** Blocked by Gate 2.
+- [ ] **Gate 4 — Topology-distinct completion and singularities.** Blocked by Gate 3.
+- [ ] **Gate 5 — Adaptive 2:1 transitions and hard features.** Blocked by Gate 4.
+- [ ] **Gate 6 — General production geometry on `bunny_1k_random.obj`.** Blocked by Gate 5.
+- [ ] **Gate 7 — Performance, memory, parallelism, and default-on decision.** Blocked by Gate 6.
+
+Do not begin a blocked gate.
 
 ## Required next Code + Build work
 
-- [ ] move the scheduler-sensitive validator-overhead microbenchmark out of the default correctness target;
-- [ ] demote exact route-ledger and incremental-recomputation-counter tests to historical coverage;
-- [ ] repair invalid completion and Phase 17 fixtures without weakening assertions;
-- [ ] add first-class local lattice phase and integer lattice-coordinate state;
+- [ ] add first-class local phase, integer lattice coordinate, branch rotation, and scale level;
+- [ ] add authoritative directed front-edge ownership;
+- [ ] make phase/front state serializable and deterministically hashable;
 - [ ] transport phase through source-chart transitions and cross-field matching;
-- [ ] implement bounded uniform front events: compatible merge, boundary termination, hard-rail capture, phase mismatch, and periodic holonomy conflict;
-- [ ] construct source-attached quads from explicit front ownership;
-- [ ] make arrangement materialize already-decided cells rather than infer connectivity from fan-sector intervals;
-- [ ] compile only the approved seven targets and package a new artifact;
+- [ ] seed the authoritative uniform plane boundary;
+- [ ] advance source-attached front edges intrinsically;
+- [ ] implement `CompatibleFrontMerge`, `BoundaryTermination`, `HardRailCapture`, `PhaseMismatch`, and `PeriodicHolonomyConflict`;
+- [ ] construct quads only from four phase-compatible source-attached corners and ordered sides;
+- [ ] pass already-decided cells to arrangement;
+- [ ] prohibit fan-sector inference on the new producer path;
+- [ ] compile and package the approved seven targets;
 - [ ] execute no tests or benchmarks during the Code + Build turn.
+
+## Gate 1 exit criteria
+
+- [ ] plane direct acceptance passes;
+- [ ] output origin is `CompletedSurfaceCells`;
+- [ ] output is non-empty and pure quad;
+- [ ] strict source-authoritative validation passes;
+- [ ] no fallback or recovery is used;
+- [ ] arrangement does not invent connectivity through pair-local fan intervals;
+- [ ] no positional merge or post-hoc cycle decomposition is used.
+
+## Explicitly deferred
+
+Until Gate 1 exits, do not spend the implementation turn on:
+
+- pair-local fan interval projection, ranking, or exclusion variants;
+- new ownership or diagnostic taxonomies for existing failures;
+- broad test-hygiene cleanup unless it is a compile blocker;
+- FlowRep expansion or general patch catalogs;
+- seam, close-sheet, cylinder, torus, sphere, thin-tube, mechanical, or bunny-specific logic;
+- adaptivity or 2:1 transitions;
+- cache, recomputation, memory, scheduler, parallelism, or performance work;
+- source-grid recovery enhancement.
+
+## No-progress rule
+
+If two consecutive Code + Build turns do not materially advance the active gate, stop the micro-fix sequence. The next turn must compare the implementation to `DESIGN.md` and produce a bounded design review or replacement proof.
+
+A new diagnostic string, counter, hash, ownership class, or higher aggregate pass count is not material progress by itself.
 
 ## Current authority
 
-- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 - `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
-- `benchmark-results/design-aligned-runtime-summary.json`
-- `tests/TESTING_STRATEGY.md`
+- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
-- durable design, reorientation, remediation, and workflow-policy documents
+- `tests/TESTING_STRATEGY.md`
+- `benchmark-results/design-aligned-runtime-summary.json`
 - `MILESTONE_G_TODO.md`
 
 Every completed turn ends with a new top-level PR #8 handoff comment after all documentation and PR metadata writes. That comment is the final repository write.
