@@ -1,97 +1,178 @@
 {
-  "schema": 2,
-  "turn": "design-aligned-artifact-only-test-benchmark",
-  "artifactId": 8974081923,
-  "artifactSha256": "4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de",
-  "sourceCommit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
-  "workflowEventCommit": "b412c8f78a7b597b204b52efbb64afc9899d6517",
-  "workflowRun": 31118705108,
-  "workflowJob": 92674426941,
+  "schema": 3,
+  "turn": "gate1-uniform-phase-front-artifact-only-test-benchmark",
+  "date": "2026-08-06",
+  "executionPlane": "local-container",
+  "workflowUsed": false,
+  "artifact": {
+    "sha256": "7e520acda5d402300711d1803a666e505ce4a03c0b92d969f5ae2ba3ca2d1f28",
+    "internalChecksums": "47/47",
+    "executables": 5,
+    "libraries": 2,
+    "fixtures": 26
+  },
+  "sourceAuthority": {
+    "baseCommit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
+    "patchGitBlob": "aa18d454877ccf40d16f71f173fdaf765f5f1086",
+    "uncompressedPatchSha256": "48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7",
+    "remoteImplementationCommit": "pending GitHub outage"
+  },
   "directionControl": {
     "activeGate": "G1 Uniform phase-front plane",
     "earliestFailingFixture": "plane",
-    "missingDesignContract": "authoritative local lattice phase and directed front ownership",
-    "nextTurn": "Design-Aligned Uniform Phase-Front Code + Build",
+    "missingContract": "source-normal cell orientation and one-to-one direct-cell materialization",
+    "nextTurn": "Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build",
     "blockedGates": ["G2", "G3", "G4", "G5", "G6", "G7"],
-    "fanIntervalMicroRepairDeferred": true,
-    "performanceHardeningDeferred": true,
-    "twoCodeTurnsWithoutMaterialProgressTriggerDesignReview": true
-  },
-  "package": {
-    "internalChecksumsPassed": 49,
-    "internalChecksumsTotal": 49,
-    "submodules": 9,
-    "fixtureInputs": 26,
-    "trackedSourceClean": true
+    "remotePatchSyncPending": true,
+    "noWorkflowUpdatesWhileOutagePersists": true
   },
   "directAcceptance": {
     "passed": 0,
-    "failed": 4,
     "total": 4,
     "cases": {
-      "plane": {
-        "terminal": "NotProductionReady/completion",
+      "plane__surface_cells": {
+        "success": false,
+        "terminal": "NotProductionReady:completion",
+        "firstInvalidProducerStage": "completion/output-validation",
+        "firstInvalidProducerReason": "FlippedFace",
         "completionFailure": "",
-        "firstInvalidProducer": "completion/output-validation:AggregateCompletionValidationFailure",
-        "traceSegments": 106,
-        "arrangementCells": 9,
-        "completedQuads": 12,
-        "validationFailures": 15,
-        "threeProcessHashesEqual": true,
-        "wallSeconds": [0.045617, 0.037224, 0.037022]
+        "traceSegments": 352,
+        "arrangementCells": 65,
+        "simplifiedCells": 65,
+        "completedQuads": 409,
+        "validationFailures": 100,
+        "fallbackAttempted": false,
+        "sourceGridRecoveryUsed": false,
+        "outputOrigin": "None",
+        "wallSeconds": [0.130857, 0.124152, 0.128165],
+        "structurallyStableAcrossProcesses": true,
+        "stageHashes": {
+          "feature": 15837917217366003725,
+          "metric": 12310735438697840477,
+          "relief": 12975878495738645211,
+          "tracing": 1969094362712199761,
+          "strands": 11016164487918426752,
+          "embedding": 6210654106774290587,
+          "arrangement": 9413000919176527123,
+          "simplification": 9413000919176527123,
+          "completion": 13892503365517048481
+        }
       },
-      "multiFaceSeam": {
-        "terminal": "NotProductionReady/completion",
+      "multi_face_seam__surface_cells": {
+        "success": false,
+        "terminal": "NotProductionReady:completion",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 137,
         "arrangementCells": 0,
+        "simplifiedCells": 0,
         "completedQuads": 0,
-        "threeProcessHashesEqual": true,
-        "wallSeconds": [0.040049, 0.039861, 0.036478]
+        "validationFailures": 0,
+        "fallbackAttempted": false,
+        "sourceGridRecoveryUsed": false,
+        "outputOrigin": "None",
+        "wallSeconds": [0.013736, 0.014004, 0.013375],
+        "structurallyStableAcrossProcesses": true,
+        "stageHashes": {
+          "feature": 10043339388768771058,
+          "metric": 15725691979283085103,
+          "relief": 1803968670775905678,
+          "tracing": 17065119186331566982,
+          "strands": 16192109536594419768,
+          "embedding": 7585770117887133613,
+          "arrangement": 16038410778453039208,
+          "simplification": 16038410778453039208,
+          "completion": 13037891342798052391
+        }
       },
-      "closeSheets": {
-        "terminal": "NotProductionReady/completion",
+      "close_sheets__surface_cells": {
+        "success": false,
+        "terminal": "NotProductionReady:completion",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 158,
         "arrangementCells": 0,
+        "simplifiedCells": 0,
         "completedQuads": 0,
-        "threeProcessHashesEqual": true,
-        "wallSeconds": [0.073110, 0.058266, 0.059616]
+        "validationFailures": 0,
+        "fallbackAttempted": false,
+        "sourceGridRecoveryUsed": false,
+        "outputOrigin": "None",
+        "wallSeconds": [0.021108, 0.02088, 0.026107],
+        "structurallyStableAcrossProcesses": true,
+        "stageHashes": {
+          "feature": 17036816782803457069,
+          "metric": 18065707922684113147,
+          "relief": 1504575786038191573,
+          "tracing": 8774856881363847215,
+          "strands": 17525658243627173500,
+          "embedding": 1257883418592669555,
+          "arrangement": 7397947494958406252,
+          "simplification": 7397947494958406252,
+          "completion": 13037891342798052391
+        }
       },
-      "cylinder": {
-        "terminal": "NotProductionReady/completion",
+      "cylinder__surface_cells": {
+        "success": false,
+        "terminal": "NotProductionReady:completion",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 732,
         "arrangementCells": 0,
+        "simplifiedCells": 0,
         "completedQuads": 0,
-        "threeProcessHashesEqual": true,
-        "wallSeconds": [0.426269, 0.412653, 0.450793]
+        "validationFailures": 0,
+        "fallbackAttempted": false,
+        "sourceGridRecoveryUsed": false,
+        "outputOrigin": "None",
+        "wallSeconds": [0.153768, 0.148326, 0.131007],
+        "structurallyStableAcrossProcesses": true,
+        "stageHashes": {
+          "feature": 5125337073125197889,
+          "metric": 10039730987020057059,
+          "relief": 14294850497345382324,
+          "tracing": 6929766310355919288,
+          "strands": 918423092608559194,
+          "embedding": 1533957620657595549,
+          "arrangement": 14893908217482103086,
+          "simplification": 14893908217482103086,
+          "completion": 13037891342798052391
+        }
       }
-    },
-    "fallbackAttempted": false,
-    "sourceGridRecoveryUsed": false,
-    "outputOrigin": "None"
+    }
   },
   "defaultSuites": {
-    "remainingProducer": {"passed": 79, "failed": 0, "total": 79},
-    "completion": {"passed": 154, "failed": 10, "total": 164},
-    "validation": {"passed": 60, "failed": 0, "total": 60},
-    "compiledApi": {"passed": 8, "failed": 0, "total": 8},
-    "combined": {"passed": 301, "failed": 14, "total": 315}
+    "producer": {
+      "passed": 77,
+      "total": 83,
+      "failures": 6,
+      "failedTests": [
+        "AdaptiveTargetSizePhase12.SurfaceCellScaffoldPopulatesSizeDiagnostics",
+        "SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder"
+      ]
+    },
+    "completion": {
+      "passed": 154,
+      "total": 164,
+      "failures": 10,
+      "failedTests": [
+        "FlowRepStrandsPhase15.PreRingReturnRerootsRetainedSingularityContinuation",
+        "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
+        "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+        "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse",
+        "SurfaceComplexSimplificationPhase17.SimplifySurfaceCellComplexReturnsMutatedComplex",
+        "SurfaceComplexSimplificationPhase17.ComplexCandidateRecomputationCreatesRealQueuedCandidates",
+        "SurfaceComplexSimplificationPhase17.TransactionalMutationCommitsExtractedOversampledCandidate",
+        "SurfaceComplexSimplificationPhase17.TransactionalMutationPreservesHardRailSupport",
+        "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
+        "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
+      ]
+    },
+    "validation": {"passed": 60, "total": 60, "failures": 0, "failedTests": []},
+    "compiled_api": {"passed": 8, "total": 8, "failures": 0, "failedTests": []}
   },
-  "testSuiteFindings": {
-    "flakyBenchmarkTest": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent",
-    "demoteHistorical": [
-      "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
-      "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse"
-    ],
-    "invalidFixtureOrExpectation": [
-      "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
-      "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
-      "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
-    ],
-    "disposition": "deferred unless required to compile the active G1 targets"
-  },
-  "testsRebuilt": false,
-  "sourceModifiedDuringExecution": false
+  "nonOverlappingTotal": {"passed": 299, "total": 315, "failed": 16},
+  "rebuildPerformed": false,
+  "sourceOrValidationEdited": false
 }
