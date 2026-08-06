@@ -9,92 +9,108 @@
 
 ## Current checkpoint
 
-The design-aligned surface-cell test suite is **compile-valid** and packaged for
-an artifact-only Test + Benchmark turn.
+The **Design-Aligned Artifact-Only Test + Benchmark** turn is complete.
 
-Exact source authority:
+Artifact `8974081923` was executed directly from exact source `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`. No configure, compile, relink, patch, regeneration, source edit, test edit, fixture edit, validator edit, CLI, or GUI operation occurred.
 
-- source checkpoint: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
-- `CMakeLists.txt`: `680e1d1fc1cfe6fa7c5ef846bed2d3afc20fb4d2`;
-- `cmake/DirectionalTests.cmake`: `9846b5d25e2bec16b77c2f4f658552cc9c4ded82`;
-- `tests/SurfaceCellDesignAcceptanceTests.cpp`:
-  `6a5faa1a03486720f04907efef6efd78688a0ab9`;
-- `tests/TESTING_STRATEGY.md`:
-  `cffdf515735d5c76a9a8d3883bac824b35cfca76`.
-
-Compile and package authority:
+Package authority:
 
 - workflow event commit: `b412c8f78a7b597b204b52efbb64afc9899d6517`;
 - workflow run/job: `31118705108` / `92674426941`;
 - build artifact: `8974081923`;
-- artifact location:
-  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`;
-- build artifact SHA-256:
-  `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
-- build artifact size: **15,128,734 bytes**;
+- artifact location: `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`;
+- artifact SHA-256: `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
 - log artifact: `8974081997`;
-- log artifact location:
-  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081997`;
-- log artifact SHA-256:
-  `920eeff4e5909c2661773b845b325579fdd8c40a1dbf9e2be2351ff2760bb69a`;
-- log artifact size: **4,726 bytes**;
-- compile/link actions: **112/112**;
+- log artifact location: `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081997`;
+- internal checksums: **49/49**;
 - recursive submodules: **9/9**;
 - packaged fixture/input files: **26/26**;
-- internal checksum entries: **49/49**;
-- packaged files including checksum manifest: **50**;
 - tracked source status: empty.
 
-The artifact contains:
+## Direct acceptance result
 
-1. `directional_compiled_api_tests`;
-2. `directional_surface_cell_producer_tests`;
-3. `directional_surface_cell_completion_tests`;
-4. `directional_surface_cell_validation_tests`;
-5. `directional_benchmarks`;
-6. `libdirectional_core.a` and `libdirectional_pipeline.a`;
-7. the complete benchmark-fixture closure, exact source archive, compile
-   database, logs, source/blob markers, and checksum manifest.
+All four direct `SurfaceCells` cases used fallback `Fail`, source-grid recovery disabled, no fallback attempt, no remesh output, and output origin `None`.
 
-No test, benchmark, custom input, help/list/discovery command, CLI, GUI, or
-generated project binary was executed. Compile validity is established; runtime
-acceptance is not claimed.
+| Fixture | Result | Terminal | Traces | Arrangement | Quads |
+|---|---:|---|---:|---:|---:|
+| Plane | failed | `NotProductionReady/completion` | 106 | 9 | 12 |
+| Multi-face seam | failed | `NotProductionReady/completion` | 137 | 0 | 0 |
+| Close sheets | failed | `NotProductionReady/completion` | 158 | 0 | 0 |
+| Cylinder | failed | `NotProductionReady/completion` | 732 | 0 | 0 |
 
-## Test-suite authority
-
-The default test configuration contains only four authoritative targets:
-
-1. `directional_compiled_api_tests`;
-2. `directional_surface_cell_producer_tests`;
-3. `directional_surface_cell_completion_tests`;
-4. `directional_surface_cell_validation_tests`.
-
-The direct producer gate requires direct, source-authoritative, pure-quad
-`CompletedSurfaceCells` output on:
+The plane is the first authoritative producer failure. It produced nine arrangement cells and twelve completed quads, then failed before optimization at:
 
 ```text
-plane
-→ multi-face seam
-→ close sheets
-→ cylinder
+completion/output-validation:AggregateCompletionValidationFailure
 ```
 
-All four cases use `SurfaceCells`, fallback `Fail`, source-grid recovery
-disabled, and optional skeleton guidance disabled. These acceptance tests are
-expected to expose the current producer failure; they must not be weakened or
-made to pass through fallback, recovery, synthetic fixtures, or diagnostic-only
-success.
+The completion validation failure count is **15**.
 
-Historical, legacy-integration, and optional-guidance tests remain available
-through separate default-off CMake options. No test source was deleted solely
-to improve the pass count.
+Multi-face seam, close sheets, and cylinder failed with:
+
+```text
+SideSubdivisionRepair:InvalidInputIncidence
+```
+
+Each bounded benchmark was repeated in three independent processes. Stage structural hashes, terminal state, trace count, arrangement count, and quad count were identical for every fixture.
+
+Do not expand acceptance to torus, sphere, thin tube, mechanical feature, or random bunny while these four fixtures fail.
+
+## Default-suite result
+
+- direct acceptance: **0/4**;
+- remaining producer tests: **79/79**;
+- completion tests: **154/164**;
+- validation tests: **60/60**;
+- compiled API tests: **8/8**;
+- complete non-overlapping default inventory: **301/315**, 14 failures.
+
+Aggregate totals do not offset the failed direct producer gate.
+
+## Residual test-suite findings
+
+The default suite is substantially better aligned than the former milestone inventory, but four categories still require correction:
+
+1. `SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent` is a scheduler-sensitive wall-clock microbenchmark. It failed once, then passed in the full run and five isolated repeats. Move it to optional benchmark or closeout coverage.
+2. `PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger` protects superseded post-hoc route-repair machinery. Move it to historical coverage.
+3. `PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse` asserts exact cache and recomputation counters. Move it to historical coverage.
+4. Correct invalid or obsolete completion and Phase 17 fixtures. Do not weaken assertions or synthesize counters. Fixtures must create valid source-supported embedded complexes and reach the behavior they claim to test.
+
+`FlowRepStrandsPhase15.PreRingReturnRerootsRetainedSingularityContinuation` may remain a valid directed-incidence regression, but it is downstream and is not the next producer target.
+
+## Next authoritative turn
+
+Execute the **Design-Aligned Uniform Phase-Front Code + Build** plan:
+
+`.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
+
+This is a compile-only turn. Do not execute tests, benchmarks, CLI, GUI, discovery, or generated project binaries.
+
+Required work:
+
+1. Finish the bounded default-test hygiene corrections listed above without weakening direct acceptance.
+2. Add first-class local lattice phase, integer lattice coordinate, branch rotation, and scale level.
+3. Add directed front-edge ownership with one unfilled side or explicit exterior classification.
+4. Transport phase and lattice identity through source-chart transitions and cross-field matching.
+5. Implement only these uniform events:
+   - `CompatibleFrontMerge`;
+   - `BoundaryTermination`;
+   - `HardRailCapture`;
+   - `PhaseMismatch`;
+   - `PeriodicHolonomyConflict`.
+6. Seed and advance the plane front intrinsically and construct a quad only after all four source-attached corners and sides are phase compatible.
+7. Feed already-decided embedded cells or front cycles into arrangement.
+8. Do not let arrangement invent new-path connectivity from pair-local fan-sector intervals.
+9. Preserve the existing implementation behind an internal path while the proof is incomplete.
+10. Compile and package only the approved seven targets.
+
+Do not resume pair-local fan-interval micro-repair.
 
 ## Current authoritative documents
 
-- `.agents/Directional/Design_Aligned_Test_Suite_Code_Build_Report.md` — exact
-  compile/package authority;
-- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Plan.md` —
-  next executable turn;
+- `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md` — latest runtime authority;
+- `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md` — next executable plan;
+- `benchmark-results/design-aligned-runtime-summary.json` — machine-readable runtime summary;
 - `tests/TESTING_STRATEGY.md` — test-selection and validity policy;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
@@ -102,77 +118,36 @@ to improve the pass count.
 - `.agents/Directional/GitHub_Workflow_Policy.md`;
 - this live handoff.
 
-`benchmark-results/p5-r2e16-summary.json` remains only as the latest historical
-runtime baseline until the design-aligned artifact-only turn publishes its
-replacement. Artifact `8971571147` does not contain the current test suite and
-must not be used for current runtime authority.
-
-## Next authoritative turn
-
-Execute the **artifact-only design-aligned Test + Benchmark turn** using artifact
-`8974081923` and the exact plan:
-
-`.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Plan.md`
-
-Required order:
-
-1. Verify the outer artifact SHA-256, source/event commits, all 49 internal
-   checksums, empty tracked source status, nine submodules, five executables,
-   two libraries, and 26 fixture/input files.
-2. Run the four direct acceptance cases individually in fresh processes and in
-   this order: plane, multi-face seam, close sheets, cylinder.
-3. Report those four results separately before any aggregate totals.
-4. Run the remaining producer tests, then completion, validation, and API suites
-   as a complete non-overlapping default inventory.
-5. Run only a bounded benchmark needed to capture the first authoritative
-   producer failure; benchmark results cannot substitute for correctness.
-6. Do not configure, compile, relink, patch, regenerate, or modify tests,
-   fixtures, validators, CMake, workflow logic, or implementation.
-7. Produce the next Code + Build plan from the first authoritative direct
-   producer failure, following `DESIGN.md`, `REORIENTATION_PLAN.md`, and
-   `tests/TESTING_STRATEGY.md`.
-
-Do not resume pair-local fan-interval micro-repair merely because a demoted
-historical test remains available.
-
 ## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Design_Aligned_Test_Suite_Code_Build_Report.md`
-5. `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Plan.md`
-6. `tests/TESTING_STRATEGY.md`
-7. `.agents/Directional/DESIGN.md`
-8. `.agents/Directional/REORIENTATION_PLAN.md`
-9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-10. `.agents/Directional/GitHub_Workflow_Policy.md`
-11. `turn-based-coding-agent/SKILL.md` and the relevant Test + Benchmark,
-    testing-integrity, artifact, status, handoff, and GitHub connector references.
+4. `.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Report.md`
+5. `.agents/Directional/Design_Aligned_Uniform_Phase_Front_Code_Build_Plan.md`
+6. `benchmark-results/design-aligned-runtime-summary.json`
+7. `tests/TESTING_STRATEGY.md`
+8. `.agents/Directional/DESIGN.md`
+9. `.agents/Directional/REORIENTATION_PLAN.md`
+10. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+11. `.agents/Directional/GitHub_Workflow_Policy.md`
+12. `turn-based-coding-agent/SKILL.md` and the relevant Code + Build, testing-integrity, artifact, status, handoff, and GitHub connector references.
 
 ## Durable lessons
 
-- A cross field supplies orientation but not authoritative lattice phase or
-  connectivity.
-- Arrangement and extraction tests remain necessary, but they cannot substitute
-  for a phase-labelled advancing-front producer.
-- A high aggregate pass count is misleading when plane, seam, close-sheet, and
-  cylinder direct acceptance all fail.
-- Diagnostic strings, counters, hashes, cache layouts, memory inventories, and
-  milestone numbers are secondary observability contracts, not the primary
-  production gate.
-- Legacy MIQ/integration tests remain valid for the legacy backend but do not
-  establish direct `SurfaceCells` correctness.
-- QEx-style sanitation, FlowRep simplification, completion, optimization, and
-  topology cleanup are downstream of a coherent producer.
-- Tests must reject fallback and source-grid recovery as substitutes for direct
-  surface-paving output.
-- `CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST` prevents post-build test
-  discovery from executing packaged GoogleTest binaries during compile-only
-  turns.
-- Artifact packaging must ignore the newly created untracked artifact directory
-  when checking tracked source cleanliness, and checksum paths must be generated
-  relative to the artifact root.
+- A cross field supplies orientation but not authoritative lattice phase or connectivity.
+- The current producer can materialize partial plane quads, but partial output is not acceptance when source-authoritative completion validation fails.
+- Zero-cell `SideSubdivisionRepair:InvalidInputIncidence` on seam, close sheets, and cylinder indicates missing authoritative incidence before completion, not a reason to weaken completion.
+- Arrangement and extraction tests remain necessary, but they cannot substitute for a phase-labelled advancing-front producer.
+- A high aggregate pass count is misleading when plane, seam, close-sheet, and cylinder direct acceptance all fail.
+- Diagnostic strings, counters, hashes, cache layouts, memory inventories, and milestone numbers are secondary observability contracts, not the primary production gate.
+- Scheduler-sensitive wall-clock ratios do not belong in default correctness tests.
+- A test fixture is invalid when its setup does not create the precondition it claims to test.
+- Legacy MIQ and integration tests remain valid for the legacy backend but do not establish direct `SurfaceCells` correctness.
+- QEx-style sanitation, FlowRep simplification, completion, optimization, and topology cleanup are downstream of a coherent producer.
+- Tests must reject fallback and source-grid recovery as substitutes for direct surface-paving output.
+- `CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST` prevents post-build test discovery from executing packaged GoogleTest binaries during compile-only turns.
+- Artifact packaging must ignore the newly created untracked artifact directory when checking tracked source cleanliness, and checksum paths must be generated relative to the artifact root.
 
 ## Mandatory turn hygiene and instruction preservation
 
