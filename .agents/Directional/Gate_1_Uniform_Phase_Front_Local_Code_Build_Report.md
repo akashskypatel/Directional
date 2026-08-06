@@ -22,7 +22,7 @@ GitHub Actions was unavailable for the apply-and-build workflow, so the local bu
 - uncompressed patch SHA-256: `48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7`;
 - recursive dependency revisions: exact match to artifact `8974081923`, 9/9 submodules.
 
-The remote five-file implementation commit is still pending. Do not represent the branch payload checkpoint as the implementation source commit. Once GitHub Actions or another authenticated write path recovers, apply the exact patch and verify the five output blobs before pushing.
+The remote five-file implementation commit remains pending on the project TODO while the GitHub outage persists. Do not represent the branch payload checkpoint as the implementation source commit. Once the remote write path recovers, apply the exact patch and verify all five output blobs before accepting the source commit. Do not use a workflow for this synchronization while the outage persists.
 
 ## Implemented Gate 1 slice
 
@@ -93,24 +93,16 @@ These five hashes are the authoritative post-patch outputs. The recovered remote
 - archive SHA-256: `7e520acda5d402300711d1803a666e505ce4a03c0b92d969f5ae2ba3ca2d1f28`;
 - contents: five executables, two libraries, 26 fixtures, exact base source archive, exact patch payload and uncompressed patch, reconstructed modified source, compile commands, source/dependency authority, logs, and checksums.
 
-The archive currently exists only in the active ChatGPT sandbox. It is not a GitHub Actions artifact. A future session must use a re-uploaded copy or a recovered Actions artifact rather than assume the sandbox path persists.
+The archive currently exists only in the active ChatGPT sandbox. It is not a GitHub Actions artifact. A future session must use a re-uploaded copy or a recovered artifact rather than assume the sandbox path persists.
 
 ## Failed remote execution record
 
 Default-branch dispatcher run `31124584060`, job `92692478156`, ended cancelled during the Actions outage. It did not establish source or build authority and produced no accepted implementation commit.
 
-## Next authoritative turn
+## Subsequent runtime authority
 
-Proceed to the artifact-only Gate 1 Test + Benchmark turn using the local archive while preserving the source authority above.
+The compiled artifact has now been exercised by `.agents/Directional/Gate_1_Uniform_Phase_Front_Artifact_Only_Test_Benchmark_Report.md`.
 
-Order:
-
-1. verify outer SHA-256 and all internal checksums;
-2. verify 5 executables, 2 libraries, 26 fixtures, source-authority manifest, patch blob, and final implementation blob manifest;
-3. run direct plane acceptance in a fresh process;
-4. only then run multi-face seam, close sheets, and cylinder;
-5. run remaining default suites only after the four direct cases;
-6. run bounded benchmark repetitions for the four analytic fixtures only;
-7. do not rebuild or edit source, tests, fixtures, build logic, or validators.
+The plane reached 352 traces, 65 arrangement cells, and 409 completed quads, then failed strict output validation with `FlippedFace`. The next turn is governed by `.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`.
 
 Gate 1 remains active until the plane produces direct non-empty pure-quad `CompletedSurfaceCells` output that passes strict source-authoritative validation with no fallback or recovery.
