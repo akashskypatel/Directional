@@ -149,9 +149,19 @@ Material progress requires plane success or a structurally later failure with on
 
 If the next Code + Build turn does not materially improve this contract, the following turn must perform a bounded design review or producer replacement proof.
 
-## Source synchronization during GitHub outage
+## Layered source authority during GitHub outage
 
-The tested implementation is exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep five-file synchronization on the TODO until service recovery. Do not use workflows for repository updates while the outage persists. After recovery, apply the existing patch exactly through direct Git objects or an authenticated client and verify every expected output blob before removing the payload.
+The tested implementation is exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep its five-file synchronization on the TODO until service recovery.
+
+While the outage persists:
+
+1. do not use workflows for source application, builds, or repository updates;
+2. reconstruct current tested source exactly from base plus the existing patch;
+3. represent the next orientation/direct-cell change as a separate incremental patch with recorded digest and expected blobs;
+4. build locally from the ordered patch stack and preserve exact artifact/log authority;
+5. retain every unsynchronized patch layer in order.
+
+After recovery, apply and verify each patch as a separate coherent source commit in order. Remove a payload only after its corresponding source state and expected blobs are verified.
 
 ## Non-negotiable prohibitions
 
