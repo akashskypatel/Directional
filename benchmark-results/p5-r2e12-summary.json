@@ -1,0 +1,78 @@
+{
+  "turn": "P5-R2E12",
+  "date": "2026-08-05",
+  "turn_type": "Code + Build",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "review_policy": "never",
+  "source_authority": {
+    "workflow_event_commit": "50d5db4280a5008764f73e5ba0a1827ce63eab1e",
+    "source_commit": "556efab8c26e012a6019e0b0a10fb847fc8e2ace",
+    "source_arrangement_blob": "3c1855ebaa6a67b1be09956a90906fc269056146",
+    "header_blob": "b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8",
+    "phase16_test_blob": "e58bceda098f7768b8a7203cca00564f82a7d831",
+    "milestone_d_test_blob": "015a9f02354a91ca07d0e0c6bf6b2632055436ae",
+    "changed_production_files": [
+      "src/geometry/SurfaceArrangement.cpp"
+    ],
+    "tests_changed": false
+  },
+  "build_authority": {
+    "workflow_run_id": 31060329035,
+    "workflow_job_id": 92486695630,
+    "artifact_id": 8951981127,
+    "artifact_name": "surface-cell-p5-r2e12-github-source-linux-release",
+    "artifact_sha256": "7472441fb8b4f82d7e7bc5a62066a8a3db2022851f72c809bb45244bb1b996f0",
+    "artifact_size_bytes": 12295549,
+    "log_artifact_id": 8951981453,
+    "log_artifact_sha256": "5a8731736441dae7a9a869f8854178071c0588640e2a3f94139c4c917167b3a6",
+    "log_artifact_size_bytes": 8878,
+    "manifest": "20/20",
+    "package_files": 21,
+    "recursive_submodules": 9,
+    "compile_link_actions": "132/132",
+    "source_status": "empty",
+    "configuration": "Release -O2 -DNDEBUG",
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "project_binary_executed": false
+  },
+  "implementation": [
+    "preinsert exact exterior directed triple as one canonical pair",
+    "require authoritative loop identity and +1/-1 boundary side evidence",
+    "reconcile one normalized entity/root authority across both exterior rays",
+    "retain agreeing exact fan identities as provenance",
+    "reconcile any generic exact-key contribution fail-closed",
+    "mark exterior state explicitly and exclude it once from interior chart witnesses",
+    "preserve complete local cover and hard-rail orbit audits"
+  ],
+  "retained_runtime_baseline": {
+    "turn": "P5-TB39",
+    "r2_focused": "13/16",
+    "phase17": "20/26",
+    "complete_split_inventory": "597/625",
+    "failures": 28,
+    "planar": {
+      "failure": "BoundaryFanSectorCoverConflict/ExteriorPairMismatch",
+      "tuple": [3, 11, 10, 9]
+    },
+    "hard_rail": {
+      "failure": "BoundaryFanSectorCoverConflict/ExteriorPairMismatch",
+      "tuple": [1, 7, 6, 1]
+    },
+    "single_process_stall": "P27 bunny case after prior suite state; separate nontermination/performance evidence"
+  },
+  "disposition": {
+    "compile_valid": true,
+    "runtime_accepted": false,
+    "r2_status": "open",
+    "next_turn": "P5-TB40 artifact-only R2E12 Test + Benchmark",
+    "next_artifact_id": 8951981127
+  }
+}
