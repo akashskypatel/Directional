@@ -157,57 +157,6 @@ struct SurfaceTraceResult {
   double length = 0.0;
 };
 
-/** Authoritative local lattice state carried by the constructive front. */
-struct LocalLatticeState {
-  Eigen::Vector2d phase = Eigen::Vector2d::Zero();
-  Eigen::Vector2i latticeCoordinate = Eigen::Vector2i::Zero();
-  int branchRotation = 0;
-  int scaleLevel = 0;
-};
-
-enum class SurfaceFrontEventKind : int {
-  CompatibleFrontMerge = 0,
-  BoundaryTermination = 1,
-  HardRailCapture = 2,
-  PhaseMismatch = 3,
-  PeriodicHolonomyConflict = 4,
-};
-
-struct SurfaceFrontEdge {
-  SurfaceTracePoint from;
-  SurfaceTracePoint to;
-  int family = 0;
-  int advanceSign = 1;
-  LocalLatticeState fromLattice;
-  LocalLatticeState toLattice;
-  int unfilledSide = 0;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
-};
-
-struct SurfaceFrontEvent {
-  SurfaceFrontEventKind kind = SurfaceFrontEventKind::BoundaryTermination;
-  int firstEdge = -1;
-  int secondEdge = -1;
-};
-
-struct SurfacePhaseFrontCell {
-  int id = -1;
-  std::array<SurfaceTracePoint, 4> corners;
-  std::array<LocalLatticeState, 4> lattice;
-  std::array<std::vector<SurfaceTraceSegment>, 4> boundaryPaths;
-};
-
-struct SurfacePhaseFrontResult {
-  bool attempted = false;
-  bool succeeded = false;
-  int gridU = 0;
-  int gridV = 0;
-  std::vector<SurfaceFrontEdge> edges;
-  std::vector<SurfaceFrontEvent> events;
-  std::vector<SurfacePhaseFrontCell> cells;
-};
-
 /**
  * One cross-field separatrix emitted by a source-field singularity.
  *
@@ -304,8 +253,6 @@ struct SourceSurfaceClassifierOptions {
 };
 
 struct SurfaceCellTracingOptions {
-  /// Enable the bounded uniform phase-labelled advancing-front proof.
-  bool enableUniformPhaseFront = true;
   double defaultTargetSize = 1.0;
   double coverageRadiusFactor = 1.0;
   double maxTraceLength = 1.0;
@@ -338,7 +285,6 @@ struct SurfaceCellTracingOptions {
 };
 
 struct SurfaceCellNetwork {
-  SurfacePhaseFrontResult phaseFront;
   std::vector<SurfaceTraceSeed> seeds;
   std::vector<SurfaceTraceResult> traces;
   std::vector<SurfaceSingularitySeparatrix> singularSeparatrices;

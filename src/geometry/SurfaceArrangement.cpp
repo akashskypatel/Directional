@@ -2753,156 +2753,6 @@ SurfaceCellComplex build_surface_cell_complex(
         return false;
       };
 
-  std::vector<int> candidateNext(complex.halfedges.size(), -1);
-  std::vector<int> predecessorCount(complex.halfedges.size(), 0);
-  std::vector<SurfaceCellCanonicalIdentity> successorWedge(
-      complex.halfedges.size());
-  std::vector<unsigned char> authoritativeBoundaryExterior(
-      complex.halfedges.size(), 0U);
-  std::vector<int> authoritativeBoundaryLoop(complex.halfedges.size(), -1);
-  std::vector<int> authoritativeBoundarySide(complex.halfedges.size(), 0);
-  std::vector<SurfaceCellCanonicalIdentity> authoritativeBoundarySegment(
-      complex.halfedges.size());
-  std::vector<BoundarySubsegmentWitness> boundaryWitnesses(
-      complex.halfedges.size());
-  std::vector<int> successorChartRoot(complex.halfedges.size(), -1);
-  std::vector<int> candidateOrbitChartRoot(complex.halfedges.size(), -1);
-  std::vector<std::pair<int, int>> hardRailOrbitSeeds;
-
-  if (resolvedOptions.useAuthoritativeProposalCycles) {
-    struct ProposalOccurrence {
-      int halfedge = -1;
-      int side = -1;
-      int segment = -1;
-      double sourceT0 = 0.0;
-      double sourceT1 = 0.0;
-    };
-    std::map<int, std::vector<ProposalOccurrence>> occurrencesByProposal;
-    for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-      halfedge.next = -1;
-      halfedge.authoritativeChartRoot = -1;
-      if (halfedge.twin < 0 ||
-          halfedge.twin >= static_cast<int>(complex.halfedges.size()) ||
-          complex.halfedges[static_cast<std::size_t>(halfedge.twin)].twin !=
-              halfedge.id) {
-        record_incidence_failure(SurfaceArrangementIncidenceFailure::InvalidTwin,
-                                 halfedge.to, halfedge.id, halfedge.twin, -1);
-        continue;
-      }
-      for (const SurfaceArrangementProvenance &entry : halfedge.provenance) {
-        if (entry.proposalId < 0 || entry.proposalSide < 0 ||
-            entry.proposalBoundarySegment < 0 ||
-            !(entry.sourceT1 > entry.sourceT0 + 1.0e-12)) {
-          continue;
-        }
-        occurrencesByProposal[entry.proposalId].push_back(
-            {halfedge.id, entry.proposalSide,
-             entry.proposalBoundarySegment, entry.sourceT0, entry.sourceT1});
-      }
-    }
-    if (occurrencesByProposal.empty()) {
-      record_incidence_failure(
-          SurfaceArrangementIncidenceFailure::MissingSuccessor, -1, -1, -1,
-          -1);
-    }
-    for (auto &[proposalId, occurrences] : occurrencesByProposal) {
-      std::sort(occurrences.begin(), occurrences.end(),
-                [](const ProposalOccurrence &lhs,
-                   const ProposalOccurrence &rhs) {
-                  return std::tie(lhs.side, lhs.segment, lhs.sourceT0,
-                                  lhs.sourceT1, lhs.halfedge) <
-                         std::tie(rhs.side, rhs.segment, rhs.sourceT0,
-                                  rhs.sourceT1, rhs.halfedge);
-                });
-      occurrences.erase(
-          std::unique(occurrences.begin(), occurrences.end(),
-                      [](const ProposalOccurrence &lhs,
-                         const ProposalOccurrence &rhs) {
-                        return lhs.halfedge == rhs.halfedge;
-                      }),
-          occurrences.end());
-      std::set<int> sides;
-      for (const ProposalOccurrence &occurrence : occurrences) {
-        sides.insert(occurrence.side);
-      }
-      if (occurrences.size() < 4U || sides != std::set<int>({0, 1, 2, 3})) {
-        record_incidence_failure(
-            SurfaceArrangementIncidenceFailure::IncompletePermutation, -1,
-            occurrences.empty() ? -1 : occurrences.front().halfedge, -1, -1);
-        break;
-      }
-      SurfaceCellCanonicalIdentity proposalIdentity;
-      proposalIdentity.valid = true;
-      proposalIdentity.values = {0x50524f504f53414cLL, proposalId};
-      for (std::size_t index = 0; index < occurrences.size(); ++index) {
-        const int current = occurrences[index].halfedge;
-        const int next = occurrences[(index + 1U) % occurrences.size()].halfedge;
-        if (current < 0 || next < 0 ||
-            complex.halfedges[static_cast<std::size_t>(current)].to !=
-                complex.halfedges[static_cast<std::size_t>(next)].from ||
-            (candidateNext[static_cast<std::size_t>(current)] >= 0 &&
-             candidateNext[static_cast<std::size_t>(current)] != next)) {
-          record_incidence_failure(
-              SurfaceArrangementIncidenceFailure::EndpointDiscontinuity,
-              current >= 0
-                  ? complex.halfedges[static_cast<std::size_t>(current)].to
-                  : -1,
-              current, current >= 0
-                           ? complex.halfedges[static_cast<std::size_t>(current)]
-                                 .twin
-                           : -1,
-              next);
-          break;
-        }
-        candidateNext[static_cast<std::size_t>(current)] = next;
-        successorWedge[static_cast<std::size_t>(current)] = proposalIdentity;
-      }
-      if (!directedIncidenceValid) {
-        break;
-      }
-    }
-
-    if (directedIncidenceValid) {
-      std::vector<std::vector<int>> unassignedOutgoing(complex.nodes.size());
-      for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-        if (candidateNext[static_cast<std::size_t>(halfedge.id)] < 0 &&
-            halfedge.from >= 0 &&
-            halfedge.from < static_cast<int>(unassignedOutgoing.size())) {
-          unassignedOutgoing[static_cast<std::size_t>(halfedge.from)]
-              .push_back(halfedge.id);
-        }
-      }
-      SurfaceCellCanonicalIdentity exteriorIdentity;
-      exteriorIdentity.valid = true;
-      exteriorIdentity.values = {0x4558544552494f52LL};
-      for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
-        if (candidateNext[static_cast<std::size_t>(halfedge.id)] >= 0) {
-          continue;
-        }
-        std::vector<int> candidates;
-        if (halfedge.to >= 0 &&
-            halfedge.to < static_cast<int>(unassignedOutgoing.size())) {
-          for (const int candidate :
-               unassignedOutgoing[static_cast<std::size_t>(halfedge.to)]) {
-            if (candidate != halfedge.twin) {
-              candidates.push_back(candidate);
-            }
-          }
-        }
-        if (candidates.size() != 1U) {
-          record_incidence_failure(
-              candidates.empty()
-                  ? SurfaceArrangementIncidenceFailure::MissingSuccessor
-                  : SurfaceArrangementIncidenceFailure::DuplicatePredecessor,
-              halfedge.to, halfedge.id, halfedge.twin,
-              candidates.empty() ? -1 : candidates.front());
-          break;
-        }
-        candidateNext[static_cast<std::size_t>(halfedge.id)] = candidates.front();
-        successorWedge[static_cast<std::size_t>(halfedge.id)] = exteriorIdentity;
-      }
-    }
-  } else {
   using DirectedWedgeMap =
       std::map<SurfaceCellCanonicalIdentity,
                std::map<int, std::vector<DirectedWedgeWitness>>>;
@@ -3090,6 +2940,28 @@ SurfaceCellComplex build_surface_cell_complex(
                       memberships.end());
   }
 
+  std::vector<int> candidateNext(complex.halfedges.size(), -1);
+  std::vector<int> predecessorCount(complex.halfedges.size(), 0);
+  std::vector<SurfaceCellCanonicalIdentity> successorWedge(
+      complex.halfedges.size());
+  std::vector<unsigned char> authoritativeBoundaryExterior(
+      complex.halfedges.size(), 0U);
+  std::vector<int> authoritativeBoundaryLoop(complex.halfedges.size(), -1);
+  std::vector<int> authoritativeBoundarySide(complex.halfedges.size(), 0);
+  std::vector<SurfaceCellCanonicalIdentity> authoritativeBoundarySegment(
+      complex.halfedges.size());
+  std::vector<BoundarySubsegmentWitness> boundaryWitnesses(
+      complex.halfedges.size());
+  // Exact source-chart evidence for a boundary successor is retained until
+  // the complete predicted orbit has been audited. Generic interior-node
+  // successors intentionally leave this unset because their R1 fan already
+  // spans one transition component.
+  std::vector<int> successorChartRoot(complex.halfedges.size(), -1);
+  // Transactional authoritative root for each complete hard-rail bounded
+  // successor orbit. It is published to the halfedge only after every orbit
+  // and the global predecessor permutation have been proven.
+  std::vector<int> candidateOrbitChartRoot(complex.halfedges.size(), -1);
+  std::vector<std::pair<int, int>> hardRailOrbitSeeds;
   for (SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
     halfedge.next = -1;
     halfedge.authoritativeChartRoot = -1;
@@ -5768,8 +5640,6 @@ SurfaceCellComplex build_surface_cell_complex(
         }
       }
     }
-  }
-
   }
 
   // Audit the complete transactional candidate relation once. No successor is
