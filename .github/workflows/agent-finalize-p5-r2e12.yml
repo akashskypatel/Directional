@@ -19,7 +19,7 @@ env:
   BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
   SOURCE_COMMIT: 556efab8c26e012a6019e0b0a10fb847fc8e2ace
   PAYLOAD: .agents/Directional/patches/P5-R2E12-final-docs.tar.gz.b64
-  PAYLOAD_B64_SHA256: a805eacb9e912868321ece9ed366e62b81ac8bb88eb010a6d75cbc4b0d335c1b
+  PAYLOAD_B64_SHA256: dfc5623ad26d04c58309a771f997a157c8c531727172576f82034247e9f1749f
   PAYLOAD_SHA256: 4377f48f28823255898ffb52785b0f9a73ba97369719f77d02aea10d18f7b8be
   LOG_DIR: /tmp/p5-r2e12-finalize-logs
   LOG: /tmp/p5-r2e12-finalize-logs/activity.log
