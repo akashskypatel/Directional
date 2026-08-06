@@ -9,121 +9,98 @@
 
 ## Current checkpoint
 
-P5-R2E12 normalized authoritative exterior-pair inventory Code + Build is complete and compile-valid.
+P5-TB40 artifact-only R2E12 Test + Benchmark is complete.
 
-- workflow event commit: `50d5db4280a5008764f73e5ba0a1827ce63eab1e`;
-- exact compiled source: `556efab8c26e012a6019e0b0a10fb847fc8e2ace`;
-- workflow run/job: `31060329035` / `92486695630`;
-- build artifact: `8951981127`;
-- build artifact SHA-256: `7472441fb8b4f82d7e7bc5a62066a8a3db2022851f72c809bb45244bb1b996f0`;
-- log artifact: `8951981453`;
-- log artifact SHA-256: `5a8731736441dae7a9a869f8854178071c0588640e2a3f94139c4c917167b3a6`;
-- compile/link actions: **132/132**;
-- manifest: **20/20**; package files: **21**; recursive submodules: **9**;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+P5-R2E12 is **not accepted**. Runtime behavior is unchanged from P5-TB39:
 
-R2E12 inserts one explicit normalized authoritative exterior pair before generic pair enumeration, proves its source-boundary loop identity and directed side evidence, reconciles normalized entity/root authority across both rays, and excludes the explicit record once from interior chart-corner witness resolution. All complete-cover, predecessor, separator, and bounded-orbit audits remain fail-closed and transactional.
+- exact tested source: `556efab8c26e012a6019e0b0a10fb847fc8e2ace`;
+- artifact `8951981127`, SHA-256 `7472441fb8b4f82d7e7bc5a62066a8a3db2022851f72c809bb45244bb1b996f0`;
+- manifest **20/20**, package files **21**, recursive submodules **9**, fixtures **26**, source status empty;
+- planar and hard rail still reject before successor publication with aggregate `BoundaryFanSectorCoverConflict`;
+- source chart + validator **17/17**;
+- recovery authority **9/9**;
+- feature/barrier **8/8**;
+- graph-dependent **5/6**;
+- R2 focused **13/16**;
+- Milestone D **5/7**;
+- Phase 16 **45/47**;
+- Phase 17 **20/26**;
+- Phase 18 **57/57**;
+- Phase 14–18 **235/244**;
+- Phase 20 **46/48**;
+- complete non-overlapping split inventory **597/625**, 28 failures, exact P5-TB39 failure set.
 
-The next turn is **P5-TB40 artifact-only R2E12 Test + Benchmark** using artifact `8951981127`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
+The next turn is **P5-R2E13 authoritative boundary-witness projected exterior-ray evidence Code + Build**. R2 remains open. Do not advance to R2F or R3.
 
-## Last runtime baseline
+## P5-TB40 focused evidence
 
-P5-TB39 against R2E11 remains the runtime authority:
+- Planar was run three times; byte-identical failure log SHA-256 `f36b6d762047152019b28c6898fd51995530c2337c28cf7aface952f8c4ca33a`.
+- Hard rail was run three times; byte-identical failure log SHA-256 `8a4beb40039ae1840df95178648ab46f0c8ef6a338ca230070dc50f23e512e65`.
+- Both stop at `incidenceValid == true`; no wrap/Euler or hard-rail orbit/embedding assertions are reached.
+- The unchanged assertions expose only the aggregate failure, not `boundaryFanConflict` or its tuple. Do not claim an R2E12 derived subtype/tuple that the packaged runtime did not emit.
 
-- source chart + validator: **17/17**;
-- recovery authority: **9/9**;
-- feature/barrier: **8/8**;
-- graph-dependent: **5/6**;
-- R2 focused: **13/16**;
-- Milestone D: **5/7**;
-- Phase 16: **45/47**;
-- Phase 17: **20/26**;
-- Phase 18: **57/57**;
-- Phase 14–18: **235/244**;
-- Phase 20: **46/48**;
-- complete non-overlapping split inventory: **597/625**, 28 failures.
+## Complete-suite and production evidence
 
-At P5-TB39:
+- One full process produced complete XML **597/625** in **71.675 s**, but its wrapper exit/time files were lost; use it only as corroboration.
+- A second bounded full process again stopped at the P27 bunny `BEFORE_PIPELINE` marker and was terminated after 180 s. This is nontermination/performance evidence only.
+- Authoritative split: **596/623** plus P27 matrix **0/1** plus isolated bunny parameter **1/1** = **597/625**.
+- Direct plane: `9 / 9 / 12`, failed completion/output validation.
+- Direct seam, close sheets, cylinder, and two completed bunny processes: `0 / 0 / 0`, failed `SideSubdivisionRepair:InvalidInputIncidence`.
+- All direct runs used backend `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution.
 
-- planar failed `BoundaryFanSectorCoverConflict / ExteriorPairMismatch`, tuple `3/11/10/9`;
-- interior hard rail failed the same aggregate/derived failure, tuple `1/7/6/1`;
-- two single-process full-suite attempts stalled when P27 entered the bunny case after prior suite state; this is separate nontermination/performance evidence, not correctness evidence.
+## Source-supported next producer
+
+R2E12 collects every source-vertex/source-edge fan membership containing each exterior ray and then requires each complete evidence map to have exactly one normalized entity/root entry and both maps to be identical before the explicit exterior record is inserted.
+
+This can reject a valid boundary ray with multiple legitimate fan memberships even though the exact boundary witness already fixes the authoritative loop, side, chart, source entity, and transition root. This is a source-supported inference because the current target assertions do not emit the derived subtype.
+
+P5-R2E13 must:
+
+1. project exterior entity/root authority directly from exact boundary witnesses;
+2. reconcile all fan provenance that exactly agrees with that projection;
+3. retain unrelated fan memberships for interior authority;
+4. fail closed on contradictory claims to the same boundary identity/side;
+5. preserve exact generic-pair reconciliation and every publication/orbit gate;
+6. add deterministic non-weakening assertion context for the derived failure and tuple.
 
 ## Retained authoritative documentation
 
-Only current, durable documentation is retained under `.agents/Directional`:
+Only current and durable documents remain under `.agents/Directional`:
 
-1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E12_Code_Build_Report.md` — exact implementation and compile authority;
-3. `Milestone_G_P5_TB40_Artifact_Only_R2E12_Test_Benchmark_Plan.md` — next executable plan;
-4. `DESIGN.md` — durable design authority;
-5. `REORIENTATION_PLAN.md` — durable reorientation authority;
-6. `Surface_Cell_Backend_Remediation_Plan.md` — milestone and remediation authority;
-7. `GitHub_Workflow_Policy.md` — remote build and repository-write policy.
-
-Superseded per-turn plans, reports, closure notes, and summaries are removed after replacement. Git history and PR #8 retain historical authority.
+1. `Future_Chat_Session_Handoff.md`;
+2. `Milestone_G_P5_TB40_Artifact_Only_R2E12_Test_Benchmark_Report.md`;
+3. `Milestone_G_P5_R2E13_Authoritative_Boundary_Witness_Projected_Exterior_Ray_Evidence_Code_Build_Plan.md`;
+4. `DESIGN.md`;
+5. `REORIENTATION_PLAN.md`;
+6. `Surface_Cell_Backend_Remediation_Plan.md`;
+7. `GitHub_Workflow_Policy.md`.
 
 ## Retained benchmark results
 
-Only current or durable result files are retained under `benchmark-results`:
+- `baseline_synthetic_grid_2.json`;
+- `p5-tb40-summary.json`.
 
-- `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e12-summary.json` — exact compiled-source/package authority and retained P5-TB39 runtime baseline.
-
-## Read first for P5-TB40
+## Read first for P5-R2E13
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E12_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB40_Artifact_Only_R2E12_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e12-summary.json`
+4. `.agents/Directional/Milestone_G_P5_TB40_Artifact_Only_R2E12_Test_Benchmark_Report.md`
+5. `.agents/Directional/Milestone_G_P5_R2E13_Authoritative_Boundary_Witness_Projected_Exterior_Ray_Evidence_Code_Build_Plan.md`
+6. `benchmark-results/p5-tb40-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB40 objective
+## Lessons from P5-TB40
 
-1. Verify artifact `8951981127`, its exact digest, all 20 manifest entries, source/test blobs, fixture closure, submodules, and clean source status.
-2. Execute only packaged binaries; do not configure, rebuild, relink, patch, regenerate, or modify implementation/tests/fixtures/validators/workflows.
-3. Repeat planar and hard-rail diagnostics and determine whether their P5-TB39 `ExteriorPairMismatch` tuples are removed.
-4. Require exactly one explicit authoritative exterior pair and exclusion per boundary-fan node.
-5. Determine whether planar reaches genuine wrap publication, Euler `1`, and valid aggregate topology.
-6. Determine whether hard rail reaches distinct complete-orbit roots and valid embedding/topology.
-7. Restore Phase 17 **26/26** without Phase 17 changes and preserve all accepted authority groups.
-8. Record the P27/bunny cumulative-state stall separately from correctness and use a complete split inventory if a single-process suite does not terminate normally.
-9. Run direct analytic and bunny production processes with fallback `Fail`, source-grid recovery disabled, and no legacy execution.
-10. Produce the next Code + Build plan from the earliest remaining authoritative producer.
-
-## Lessons from P5-R2E8
-
-- Generated whole-file transformations can hide a one-brace scope error even when the intended semantic change is narrow. Inspect the exact transformed hunk and compile before treating the source commit as authoritative.
-- Large base64 workflow payloads are fragile when transferred through repository writes. Prefer a bounded transformation with exact pre-image/post-image checks and a compile-only gate.
-- Build-orchestration failures are not implementation acceptance evidence. Preserve their logs, correct the mechanism narrowly, and claim only the final verified source/artifact.
-- The successful workflow must push the exact compiled source commit before building and package that same commit.
-
-## Lessons from P5-TB36 through P5-TB39
-
-- Compare first failure stage and derived diagnostics, not only pass totals.
-- Canonical topology inventory and chart witness resolution must remain separate; charts validate pairs but do not define pair existence.
-- Normalize equivalent fan identities once and use the same ownership contract end to end; exact identity variants remain provenance.
-- The exterior continuation is independent source-boundary topology and must not be inferred from chart ordering.
-- A wrap witness is an oriented interval problem and must reject intervening rays.
-- Hard-rail bounded support is authoritative only after a complete orbit closes with one root on every directed halfedge and distinct roots on opposite sides.
-- The six Phase 17 regressions are upstream arrangement consequences; do not patch Phase 17.
-- Aggregate failures need deterministic derived subreasons without weakening fail-closed semantics.
-- Timeout or wrapper interruption is not correctness evidence. Preserve it separately as infrastructure or nontermination/performance evidence.
-
-## Lessons from P5-R2E12
-
-- An independently proven exterior relation must be represented explicitly in the same canonical inventory that is later audited; requiring generic fan enumeration to rediscover it is not equivalent.
-- Source-boundary loop identity and directed side witnesses provide exterior ownership evidence that interior chart corners cannot supply.
-- Exterior ray authority must be reconciled through a unique normalized entity/root pair on both rays; never choose among conflicting authorities by order or frequency.
-- Explicit record state is safer than re-inferring exterior ownership from map-key equality at later stages.
-- Self-removing bounded workflows keep the exact source commit free of turn-specific execution infrastructure while still pushing source before compilation.
-- For documentation-only cleanup, prefer direct GitHub connector writes over large encoded workflow payloads; repeated payload transport failures did not affect source or build authority in this turn.
+- A first-class record can still fail before insertion when its authority collector is over-constrained.
+- Raw evidence-map cardinality is not ownership authority; exact boundary witnesses must define the projection first.
+- Unrelated fan memberships must not be discarded, selected by heuristic, or allowed to veto unrelated authority.
+- Artifact-only acceptance must state observability limits when unchanged tests do not emit newly needed derived fields.
+- A complete XML without wrapper exit/time is corroborative, not full process-state evidence.
+- Repeated P27 bunny stalls remain independent performance/nontermination evidence; never use timeout as correctness.
 
 ## Mandatory turn hygiene and instruction preservation
 
