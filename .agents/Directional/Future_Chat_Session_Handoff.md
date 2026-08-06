@@ -33,6 +33,8 @@ Compile and package authority:
   `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
 - build artifact size: **15,128,734 bytes**;
 - log artifact: `8974081997`;
+- log artifact location:
+  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081997`;
 - log artifact SHA-256:
   `920eeff4e5909c2661773b845b325579fdd8c40a1dbf9e2be2351ff2760bb69a`;
 - log artifact size: **4,726 bytes**;
