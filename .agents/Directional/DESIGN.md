@@ -1,413 +1,166 @@
-# Adaptive cross-field-aligned surface-cell quadrangulation
+# Direct Surface-Cell Quadrangulation Design
 
-## 1. Authoritative design thesis
+## Product contract
 
-The backend is **adaptive cross-field-aligned surface paving**.
+Given an arbitrary triangle mesh and a supplied or generated cross field, produce a deterministic, source-authoritative, cross-field-aligned pure-quad surface mesh. Production success must come directly from the requested `SurfaceCells` backend. Fallback, source-grid recovery, synthetic topology repair, or validator relaxation cannot satisfy acceptance.
 
-It constructs a conforming pure-quad cell complex directly on the source triangle mesh. Every generated point, arc, front edge, cell, patch, and topology edit remains intrinsically attached to authoritative source triangles, components, and local sheets.
+## Design-first operating rule
 
-The architectural claim is:
+Implementation always advances the earliest incomplete gate. A later fixture, downstream completion catalog, diagnostic taxonomy, cache, scheduler, memory optimization, or benchmark cannot become the principal objective while an earlier constructive gate is red.
 
-> Replace global mixed-integer coordinate integration with local source-surface construction plus explicit, bounded topology reconciliation.
-
-This is not an integer-free method. The required discrete decisions move into:
-
-- 4-RoSy branch matching;
-- local lattice phase and integer lattice offsets;
-- advancing-front ownership;
-- periodic phase holonomy;
-- adaptive 2:1 transitions;
-- patch side subdivisions and parity;
-- extraordinary-vertex placement;
-- bounded hole and non-disk closure.
-
-A cross field supplies orientation and singularity information. It does **not** supply authoritative grid position, phase, or connectivity. The implementation must therefore construct those values explicitly before arrangement and completion.
-
-## 2. Development direction is part of the design
-
-The implementation must always advance the earliest incomplete constructive gate in this document. Local diagnostics, repair classifications, caches, memory accounting, benchmark infrastructure, and historical milestone coverage are supporting work only. They must not become the active implementation objective while an earlier constructive gate is red.
-
-Every implementation task must state:
-
-1. the active design gate;
-2. the design contract being implemented;
-3. the earliest currently failing fixture;
-4. the observable result that would constitute material progress;
-5. why the change cannot be deferred to a later gate.
-
-A task that cannot answer all five items is not on the critical path and must be deferred.
-
-### Material progress
-
-Material progress requires at least one of:
-
-- the active gate passes its direct acceptance fixture;
-- the earliest invalid producer advances to a later named design stage because a general invariant was implemented;
-- a missing first-class design value becomes authoritative and is consumed by the next constructive stage;
-- a general structural defect is removed without replacing it with an equivalent downstream ambiguity.
-
-The following are not material progress by themselves:
-
-- a new diagnostic subtype, string, counter, hash, or ownership class;
-- movement between equivalent repair failures;
-- a higher aggregate unit-test count while the direct gate remains red;
-- faster execution of a failing producer;
-- a cache, memory, or scheduling improvement that does not change constructive validity;
-- fixture-specific success or fallback/recovery output.
-
-### No-progress stop rule
-
-If two consecutive Code + Build turns fail to advance the earliest active gate materially, the next turn must be a design review or bounded replacement proof. It must not continue the same micro-repair sequence without explicit evidence that the design contract is now better represented.
-
-## 3. Required production pipeline
+Every implementation turn declares:
 
 ```text
-Source triangle mesh
-  ↓
-Input validation and bounded preconditioning
-  ↓
-Cross-field normalization, matching, and singularity analysis
-  ↓
-Shared feature map and uniform/adaptive target metric
-  ↓
-Locally compatible tangent-lattice phase field
-  ↓
-Boundary, feature, singularity, and regular front seeds
-  ↓
-Intrinsic phase-labelled advancing-front construction
-  ↓
-Collision, phase, periodic, scale, and singularity reconciliation
-  ↓
-Materialization of already-decided cells into a global arrangement
-  ↓
-FlowRep-style whole-strand and cycle simplification
-  ↓
-Topology-distinct patch completion
-  ↓
-Pole, strip, and loop topology optimization
-  ↓
-Source-constrained geometric optimization
-  ↓
-Strict source-authoritative validation
+Active design gate
+Earliest failing fixture
+Missing design contract
+Smallest general implementation change
+Observable material-progress condition
+Explicitly deferred work
 ```
 
-The order is mandatory. A downstream stage may validate or reject upstream topology, but it must not invent missing upstream phase, front ownership, or cell connectivity.
+## Architecture
 
-## 4. Core authoritative data contracts
+### 1. Source authority
 
-```cpp
-struct SurfacePoint {
-    int sourceFace;
-    Eigen::Vector3d barycentric;
-    int componentId;
-    int localSheetId;
-};
+All geometric and topological decisions retain source triangle, chart, component, local-sheet, route, and feature provenance. World-space proximity is never sufficient to select a sheet, chart, or connectivity relation.
 
-struct LocalLatticeState {
-    Eigen::Vector2d phase;
-    Eigen::Vector2i latticeCoordinate;
-    int branchRotation;
-    int scaleLevel;
-};
+### 2. Cross-field orientation plus lattice phase
 
-struct SurfaceFrontEdge {
-    SurfacePoint from;
-    SurfacePoint to;
-    int fieldFamily;
-    int advanceSign;
-    LocalLatticeState lattice;
-    int unfilledSide;
-    SourceRouteIdentity route;
-};
+The cross field supplies local orientation, not connectivity. The producer therefore carries first-class:
 
-struct SurfaceCell {
-    std::array<SurfacePoint, 4> corners;
-    std::array<EmbeddedArc, 4> orderedBoundaryArcs;
-    LocalLatticeState lattice;
-    int scaleLevel;
-    Provenance provenance;
-};
-```
+- local phase;
+- integer lattice coordinate;
+- branch rotation;
+- scale level;
+- field family and advance sign;
+- component, source-chart, and local-sheet identity.
 
-Equivalent project-specific types are acceptable, but the information must be first-class, serializable, deterministic, and consumed by the constructive pipeline.
+This state is deterministic, hashable, and transported only through authoritative source transitions.
 
-World-space position is never authoritative identity. Nearby points may lie on opposing sheets; one intrinsic source point may have multiple adjacent triangle-chart representations.
+### 3. Directed phase front
 
-## 5. Stage responsibilities
+A front edge owns:
 
-### 5.1 Cross-field preparation
+- source-attached endpoints and ordered source route;
+- lattice state;
+- field family/sign;
+- one unfilled side or explicit exterior classification.
 
-- Represent the cross modulo quarter turns.
-- Apply authoritative matching at every source-edge transition.
-- Track singularity index as a topology budget.
-- Do not average one arbitrarily selected cross arm as an ordinary vector field.
+Bounded event classes are:
 
-### 5.2 Local phase field
+- `CompatibleFrontMerge`;
+- `BoundaryTermination`;
+- `HardRailCapture`;
+- `PhaseMismatch`;
+- `PeriodicHolonomyConflict`.
 
-For adjacent charts, transport a state of the form:
+Missing or inconsistent transition, ownership, phase, route, component, or sheet state fails closed.
 
-```text
-phase_j = rotate90(phase_i, branchRotation) + integerOffset
-```
+### 4. Authoritative cell contract
 
-The transition must preserve component, local sheet, source entity, orientation, field family, and route provenance. Missing or inconsistent transport fails closed.
+A phase-front cell becomes authoritative only when it has:
 
-Noncontractible cycles must record explicit phase holonomy. Residual phase must not emerge later as duplicate ownership or ambiguous fan-sector pairing.
+1. exactly four distinct source-attached corners;
+2. four ordered side paths with endpoint continuity;
+3. nonzero intrinsic signed area;
+4. winding consistent with the authoritative source normal;
+5. coherent phase, lattice, family/sign, component, chart, sheet, and route state;
+6. exactly one filled side or explicit exterior classification on every directed front edge.
 
-### 5.3 Intrinsic front construction
+Opposite winding is corrected only by transactionally reversing the complete cycle, including corners, lattice states, side routes, directions, family/sign state, and ownership. Positional sorting or index heuristics are prohibited.
 
-The front is the constructive authority. It must:
+### 5. Arrangement materialization boundary
 
-- seed source boundaries and hard rails first;
-- advance by intrinsic surface walking;
-- construct four source-attached corners and four ordered sides;
-- create a quad only after phase, family, scale, ownership, and provenance are compatible;
-- give each directed front edge one filled side or an explicit exterior classification;
-- resolve collisions through typed events.
-
-Initial uniform event types:
-
-```text
-CompatibleFrontMerge
-BoundaryTermination
-HardRailCapture
-PhaseMismatch
-PeriodicHolonomyConflict
-```
-
-Later adaptive event types:
-
-```text
-TwoToOneScaleTransition
-SingularityTermination
-BoundedClosurePatch
-```
-
-### 5.4 Arrangement
+An accepted four-sided phase-front cell already defines its intended topology and maps to one quad-domain cell.
 
 Arrangement may:
 
-- canonicalize source identities;
+- canonicalize equivalent source identities;
 - split exact geometric crossings;
-- stitch adjacent source-chart representations;
-- materialize twins, next links, cycles, and cells;
-- classify exterior and non-disk regions;
+- materialize halfedges, twins, next links, cycles, and cell IDs;
 - validate topology and provenance.
 
-Arrangement must not infer intended cell connectivity from unrelated fan identities, angular interval ranking, count/frequency rules, positional proximity, or post-hoc cycle decomposition.
+Arrangement and completion must not:
 
-### 5.5 FlowRep simplification
+- infer cell connectivity through fan-sector ranking;
+- select topology by count, order, or frequency;
+- merge unrelated sheets by position;
+- expand an already-decided four-sided cell through generic patch completion;
+- decompose or merge cycles post hoc to obtain desired output.
 
-FlowRep-inspired work acts on a valid embedded network. It removes or substitutes complete logical strands transactionally while preserving:
+### 6. Downstream stages
 
-- hard rails;
-- intrinsic coverage;
-- cycle and patch feasibility;
-- source provenance;
-- topology and singularity budgets.
+Only after valid direct cells exist may later stages perform bounded simplification, topology-distinct completion where the producer intentionally emits a supported non-four-sided region, source-surface optimization, validation, and cleanup. Downstream machinery cannot substitute for a missing producer contract.
 
-It is downstream of a coherent producer and must not be used to manufacture missing initial incidence.
+## Ordered high-level gates
 
-### 5.6 Patch completion
+### G0 — Truthful authority
 
-Completion candidates must be topology-distinct. Candidate identity includes:
+Passed and continuously enforced:
 
-- quad adjacency graph;
-- strip routing;
-- boundary-to-interior incidence;
-- pole valences and placement;
-- generated source-supported vertices and arcs.
+- requested/executed backend `SurfaceCells`;
+- fallback `Fail` for acceptance;
+- source-grid recovery disabled;
+- only valid `CompletedSurfaceCells` output can succeed;
+- strict source-authoritative validation.
 
-Rotations and reversals of one topology canonicalize to one candidate. A generic center fan is not a production solution.
+### G1 — Uniform phase-front plane
 
-### 5.7 Optimization and validation
+**Active.** Required:
 
-Optimization moves vertices only through source-constrained intrinsic or provenance-aware operations. Final validation requires:
+- first-class lattice/front state;
+- uniform planar source-attached front;
+- authoritative oriented four-sided cells;
+- one-to-one direct quad-domain materialization;
+- non-empty pure-quad plane output passing strict validation without fallback/recovery.
 
-- pure quads with four distinct vertices;
-- manifold incidence;
-- no T-junctions, hanging nodes, duplicate faces, or self-intersections;
-- correct components, Euler characteristic, and ordered boundary loops;
-- complete source provenance and same-sheet safety;
-- hard-feature preservation;
-- correct singularity-index budget;
-- deterministic structural output.
+Current evidence: 352 traces, 65 arrangement cells, 409 completed quads, then `completion/output-validation:FlippedFace` with 100 validation failures. The phase front is live, but orientation and materialization are invalid.
 
-The backend fails closed on incomplete or invalid output.
+### G2 — Cross-chart and close-sheet propagation
 
-## 6. High-level implementation gates
+Blocked by G1. Add authoritative transition transport, seam success, deterministic permutations, close-sheet success, and zero cross-sheet capture/merge.
 
-Only one gate is active at a time. A later gate may not become the implementation focus until the earlier gate exits.
+### G3 — Periodic closure and holonomy
 
-### Gate 0 — Truthful authority and direct acceptance
+Blocked by G2. Add explicit periodic phase reconciliation, complete directed incidence, and cylinder success.
 
-Exit criteria:
+### G4 — Topology-distinct completion and singularities
 
-- direct tests use `SurfaceCells`, fallback `Fail`, and recovery disabled;
-- only `CompletedSurfaceCells` can satisfy success;
-- source provenance and fail-closed validation remain authoritative;
-- the active gate is named in TODO, milestone, handoff, plan, and PR status.
+Blocked by G3. Add finite topology graph templates, intentional singularities, and supported 3–6-sided completion without generic center-fan fallback.
 
-Status: **passed and continuously enforced**.
+### G5 — Adaptive scale and hard features
 
-### Gate 1 — Uniform phase-front plane
+Blocked by G4. Add dyadic scale levels, 2:1 transitions, hard feature rails, and thin/mechanical cases without T-junctions or feature loss.
 
-Required implementation:
+### G6 — General production geometry
 
-- first-class local phase and lattice coordinates;
-- directed front ownership;
-- intrinsic uniform front advancement;
-- already-decided cells passed to arrangement.
+Blocked by G5. Direct deterministic validated success on `bunny_1k_random.obj` for supplied and generated fields.
 
-Exit criteria:
+### G7 — Operational hardening and default-on decision
 
-- plane produces non-empty pure-quad `CompletedSurfaceCells` output;
-- no fallback or source-grid recovery;
-- strict source-authoritative validation passes;
-- arrangement does not invent connectivity through fan-sector inference.
+Blocked by G6. Exact predicates, spatial indices, caches, parallelism, memory, performance, full matrix, and explicit production-default decision.
 
-Status: **active**.
+## Current Gate 1 subgate
 
-### Gate 2 — Cross-chart and close-sheet propagation
+The next Code + Build turn implements source-normal orientation and one-to-one direct-cell materialization. It must not add seam, periodic, adaptive, feature, singularity, or bunny logic.
 
-Fixtures: multi-face seam, then close sheets.
+Material progress requires plane success or a structurally later failure with one-to-one materialization and reduced invalid-output burden. A diagnostic change alone is not progress.
 
-Exit criteria:
+If the next Code + Build turn does not materially improve this contract, the following turn must perform a bounded design review or producer replacement proof.
 
-- phase and lattice identity transport through source-chart transitions;
-- source-face row and orientation permutations are deterministic;
-- close sheets produce zero cross-sheet merges or captures;
-- both fixtures pass direct acceptance.
+## Source synchronization during GitHub outage
 
-Status: blocked by Gate 1.
+The tested implementation is exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep five-file synchronization on the TODO until service recovery. Do not use workflows for repository updates while the outage persists. After recovery, apply the existing patch exactly through direct Git objects or an authenticated client and verify every expected output blob before removing the payload.
 
-### Gate 3 — Periodic closure and holonomy
+## Non-negotiable prohibitions
 
-Fixture: cylinder.
-
-Exit criteria:
-
-- periodic phase holonomy is recorded and reconciled explicitly;
-- every directed front edge has one filled or exterior side;
-- no `InvalidInputIncidence`, seam break, or non-disk cell remains;
-- cylinder passes direct acceptance.
-
-Status: blocked by Gate 2.
-
-### Gate 4 — Topology-distinct completion and singularities
-
-Fixtures: prescribed sphere and torus/reduced patch cases.
-
-Exit criteria:
-
-- topology-distinct completion graphs exist;
-- required valence-3/5 structures are represented intentionally;
-- 3–6-sided supported patches complete without center fans;
-- rotations/reversals do not consume separate candidate budget;
-- strict topology and source validation pass.
-
-Status: blocked by Gate 3.
-
-### Gate 5 — Adaptive scale and feature structure
-
-Fixtures: thin bent tube and mechanical feature fixture.
-
-Exit criteria:
-
-- dyadic target levels with adjacent 2:1 grading;
-- explicit pure-quad transition templates;
-- hard features are structural rails from construction;
-- no final T-junctions or opposite-sheet jumps;
-- both fixtures pass direct acceptance.
-
-Status: blocked by Gate 4.
-
-### Gate 6 — General production geometry
-
-Fixture: `bunny_1k_random.obj` with generated and supplied fields as applicable.
-
-Exit criteria:
-
-- deterministic direct pure-quad success;
-- complete topology, feature, provenance, and quality validation;
-- no fallback or recovery substitution;
-- repeated structural hashes agree.
-
-Status: blocked by Gate 5.
-
-### Gate 7 — Production hardening and default-on decision
-
-Allowed only after Gates 1–6 pass.
-
-Work includes:
-
-- cache and incremental recomputation;
-- component parallelism;
-- spatial indices;
-- memory compaction and telemetry;
-- exact-predicate hardening;
-- full benchmark and qualitative matrix;
-- default-on production decision.
-
-Exit criteria:
-
-- complete design-aligned suite green;
-- production fixture matrix green;
-- deterministic repeated results;
-- performance and memory within documented budgets;
-- no validator or fallback gate weakened.
-
-## 7. Critical invariants
-
-1. Every generated entity has authoritative source provenance.
-2. No operation crosses source components or local sheets without an explicit valid transition.
-3. Every source-edge crossing applies authoritative cross-field matching.
-4. Boundary and hard-feature rails are never silently dropped.
-5. Every accepted cell has a complete ordered boundary and authoritative front ownership.
-6. No topology mutation commits before complete local validation.
-7. Every topology event records its singularity-index effect.
-8. Temporary T-junctions are resolved before final output.
-9. Stable identities, traversal order, event order, and stopping rules are deterministic.
-10. Missing evidence or unresolved topology produces typed failure, never synthetic success.
-
-## 8. Prohibited implementation detours
-
-Until Gate 3 passes, do not make the following the active implementation work:
-
-- additional fan-interval projection or ranking schemes;
-- additional ownership classifications not required by the phase-front producer;
-- post-hoc repeated-cycle splitting or cell merging;
-- cache, recomputation, memory, or scheduler optimization;
-- general FlowRep simplification expansion;
-- general patch catalog expansion beyond what the active gate consumes;
-- torus, sphere, adaptive, mechanical, or bunny acceptance work;
-- broad benchmark tuning.
-
-At all gates, prohibit:
-
-- validator weakening;
-- fallback or recovery substitution;
-- fixture, face, vertex, ID, or expected-count special cases;
-- arbitrary subset search;
-- count/order/frequency ownership selection;
-- positional merging across unrelated sheets;
-- synthetic counters or Euler correction;
-- timeout-as-correctness.
-
-## 9. Fixture progression
-
-```text
-plane
-→ multi-face seam
-→ close sheets
-→ cylinder
-→ prescribed sphere and torus
-→ thin bent tube and mechanical feature
-→ bunny_1k_random
-```
-
-The fixture order is causal. Do not skip a red analytic gate to work on a more complex fixture.
-
-## 10. Distilled contribution
-
-> A source-attached adaptive tangent lattice that creates a phase-labelled advancing-front cell complex, reconciles local phase, periodicity, scale, and singularities through bounded topology events, simplifies coherent strands transactionally, and completes valid disk patches into a strictly validated pure-quad mesh without constructing a global MIQ parameterization.
+- no validator weakening;
+- no count/order/frequency ownership selection;
+- no arbitrary subset search;
+- no fallback/recovery substitution;
+- no synthetic counters or Euler correction;
+- no positional merging across unrelated sheets;
+- no fixture/ID special cases;
+- no post-hoc cycle decomposition or cell merging;
+- no timeout-as-correctness.
