@@ -40,7 +40,54 @@ std::string boundary_fan_diagnostic_context(
          << " hardRailSeparators="
          << diagnostics.boundaryHardRailSeparatorCount
          << " hardRailSidePairs="
-         << diagnostics.boundaryHardRailSidePairCount;
+         << diagnostics.boundaryHardRailSidePairCount
+         << " intervalFailure="
+         << directional::geometry::surface_arrangement_interval_failure_name(
+                diagnostics.boundaryFanIntervalFailure)
+         << '(' << static_cast<int>(diagnostics.boundaryFanIntervalFailure)
+         << ')'
+         << " intervalChart="
+         << diagnostics.boundaryFanIntervalSourceComponent << '/'
+         << diagnostics.boundaryFanIntervalSourceSheet << '/'
+         << diagnostics.boundaryFanIntervalSourceFace
+         << " intervalRoot="
+         << diagnostics.boundaryFanIntervalTransitionRoot
+         << " intervalIdentityCount="
+         << diagnostics.boundaryFanIntervalIdentityCount
+         << " intervalPositions="
+         << diagnostics.boundaryFanIntervalTargetPosition << "->"
+         << diagnostics.boundaryFanIntervalSourcePosition
+         << " intervalRawAngles="
+         << diagnostics.boundaryFanIntervalTargetRawAngle << "->"
+         << diagnostics.boundaryFanIntervalSourceRawAngle
+         << " intervalLiftedAngles="
+         << diagnostics.boundaryFanIntervalTargetLiftedAngle << "->"
+         << diagnostics.boundaryFanIntervalSourceLiftedAngle
+         << " intervalLiftTurns="
+         << diagnostics.boundaryFanIntervalTargetLiftTurn << "->"
+         << diagnostics.boundaryFanIntervalSourceLiftTurn
+         << " intervalTurnDifference="
+         << diagnostics.boundaryFanIntervalLiftTurnDifference
+         << " intervalWedge="
+         << diagnostics.boundaryFanIntervalWedgeStart << '/'
+         << diagnostics.boundaryFanIntervalWedgeEnd << '/'
+         << diagnostics.boundaryFanIntervalWedgeSpan
+         << " intervalIntruder="
+         << diagnostics.boundaryFanIntervalIntrudingHalfedge
+         << " intervalIdentityHash="
+         << diagnostics.boundaryFanIntervalIdentity.hash()
+         << " intervalIntrudingIdentityHash="
+         << diagnostics.boundaryFanIntervalIntrudingIdentity.hash()
+         << " intervalEntityKey=";
+  stream << '[';
+  for (std::size_t index = 0;
+       index < diagnostics.boundaryFanIntervalEntityKey.size(); ++index) {
+    if (index > 0U) {
+      stream << ',';
+    }
+    stream << diagnostics.boundaryFanIntervalEntityKey[index];
+  }
+  stream << ']';
   return stream.str();
 }
 
@@ -593,6 +640,11 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
   const auto complex = directional::geometry::build_surface_cell_complex(
       fixture.vertices, fixture.faces, arcs);
 
+  if (!complex.diagnostics.incidenceValid) {
+    EXPECT_NE(complex.diagnostics.boundaryFanIntervalFailure,
+              directional::geometry::SurfaceArrangementIntervalFailure::None)
+        << boundary_fan_diagnostic_context(complex);
+  }
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
              complex.diagnostics.incidenceFailure)

@@ -142,6 +142,29 @@ enum class SurfaceArrangementBoundaryFanConflict : int {
   HardRailSeparatorOrOrbitConflict = 10,
 };
 
+enum class SurfaceArrangementIntervalFailure : int {
+  None = 0,
+  MissingFanIdentity = 1,
+  MissingIdentityWedge = 2,
+  MissingDirectedProvenance = 3,
+  MissingChartWitness = 4,
+  EntityMismatch = 5,
+  RootMismatch = 6,
+  NoAdmissibleLift = 7,
+  MultipleAdmissibleLifts = 8,
+  NonIntegralLiftTurn = 9,
+  DuplicateLiftedAngle = 10,
+  MissingSourceRay = 11,
+  MissingTargetRay = 12,
+  ReverseLiftedOrder = 13,
+  NonAdjacentLiftedPair = 14,
+  ThirdRayIntrusion = 15,
+  InvalidLiftTurnDifference = 16,
+  NonPositiveSpan = 17,
+  SpanOutsideWedge = 18,
+  IdentityIntervalConflict = 19,
+};
+
 inline const char *surface_arrangement_boundary_fan_conflict_name(
     const SurfaceArrangementBoundaryFanConflict conflict) {
   switch (conflict) {
@@ -167,6 +190,53 @@ inline const char *surface_arrangement_boundary_fan_conflict_name(
     return "IncompleteIncomingTargetCover";
   case SurfaceArrangementBoundaryFanConflict::HardRailSeparatorOrOrbitConflict:
     return "HardRailSeparatorOrOrbitConflict";
+  }
+  return "Unknown";
+}
+
+inline const char *surface_arrangement_interval_failure_name(
+    const SurfaceArrangementIntervalFailure failure) {
+  switch (failure) {
+  case SurfaceArrangementIntervalFailure::None:
+    return "None";
+  case SurfaceArrangementIntervalFailure::MissingFanIdentity:
+    return "MissingFanIdentity";
+  case SurfaceArrangementIntervalFailure::MissingIdentityWedge:
+    return "MissingIdentityWedge";
+  case SurfaceArrangementIntervalFailure::MissingDirectedProvenance:
+    return "MissingDirectedProvenance";
+  case SurfaceArrangementIntervalFailure::MissingChartWitness:
+    return "MissingChartWitness";
+  case SurfaceArrangementIntervalFailure::EntityMismatch:
+    return "EntityMismatch";
+  case SurfaceArrangementIntervalFailure::RootMismatch:
+    return "RootMismatch";
+  case SurfaceArrangementIntervalFailure::NoAdmissibleLift:
+    return "NoAdmissibleLift";
+  case SurfaceArrangementIntervalFailure::MultipleAdmissibleLifts:
+    return "MultipleAdmissibleLifts";
+  case SurfaceArrangementIntervalFailure::NonIntegralLiftTurn:
+    return "NonIntegralLiftTurn";
+  case SurfaceArrangementIntervalFailure::DuplicateLiftedAngle:
+    return "DuplicateLiftedAngle";
+  case SurfaceArrangementIntervalFailure::MissingSourceRay:
+    return "MissingSourceRay";
+  case SurfaceArrangementIntervalFailure::MissingTargetRay:
+    return "MissingTargetRay";
+  case SurfaceArrangementIntervalFailure::ReverseLiftedOrder:
+    return "ReverseLiftedOrder";
+  case SurfaceArrangementIntervalFailure::NonAdjacentLiftedPair:
+    return "NonAdjacentLiftedPair";
+  case SurfaceArrangementIntervalFailure::ThirdRayIntrusion:
+    return "ThirdRayIntrusion";
+  case SurfaceArrangementIntervalFailure::InvalidLiftTurnDifference:
+    return "InvalidLiftTurnDifference";
+  case SurfaceArrangementIntervalFailure::NonPositiveSpan:
+    return "NonPositiveSpan";
+  case SurfaceArrangementIntervalFailure::SpanOutsideWedge:
+    return "SpanOutsideWedge";
+  case SurfaceArrangementIntervalFailure::IdentityIntervalConflict:
+    return "IdentityIntervalConflict";
   }
   return "Unknown";
 }
@@ -416,6 +486,36 @@ struct SurfaceArrangementDiagnostics {
   int boundaryFanConflictIncoming = -1;
   int boundaryFanConflictSourceRay = -1;
   int boundaryFanConflictTarget = -1;
+  SurfaceArrangementIntervalFailure boundaryFanIntervalFailure =
+      SurfaceArrangementIntervalFailure::None;
+  int boundaryFanIntervalSourceComponent = -1;
+  int boundaryFanIntervalSourceFace = -1;
+  int boundaryFanIntervalSourceSheet = -1;
+  std::vector<std::int64_t> boundaryFanIntervalEntityKey;
+  int boundaryFanIntervalTransitionRoot = -1;
+  int boundaryFanIntervalIdentityCount = 0;
+  int boundaryFanIntervalSourcePosition = -1;
+  int boundaryFanIntervalTargetPosition = -1;
+  double boundaryFanIntervalSourceRawAngle =
+      std::numeric_limits<double>::quiet_NaN();
+  double boundaryFanIntervalTargetRawAngle =
+      std::numeric_limits<double>::quiet_NaN();
+  double boundaryFanIntervalSourceLiftedAngle =
+      std::numeric_limits<double>::quiet_NaN();
+  double boundaryFanIntervalTargetLiftedAngle =
+      std::numeric_limits<double>::quiet_NaN();
+  int boundaryFanIntervalSourceLiftTurn = 0;
+  int boundaryFanIntervalTargetLiftTurn = 0;
+  int boundaryFanIntervalLiftTurnDifference = 0;
+  double boundaryFanIntervalWedgeStart =
+      std::numeric_limits<double>::quiet_NaN();
+  double boundaryFanIntervalWedgeEnd =
+      std::numeric_limits<double>::quiet_NaN();
+  double boundaryFanIntervalWedgeSpan =
+      std::numeric_limits<double>::quiet_NaN();
+  int boundaryFanIntervalIntrudingHalfedge = -1;
+  SurfaceCellCanonicalIdentity boundaryFanIntervalIdentity;
+  SurfaceCellCanonicalIdentity boundaryFanIntervalIntrudingIdentity;
   SurfaceArrangementIncidenceFailure incidenceFailure =
       SurfaceArrangementIncidenceFailure::None;
   int incidenceFailureNode = -1;
