@@ -1,5 +1,6 @@
 name: Agent Build Surface Cell P5 R2E16
 
+# Staged rerun after verified compressed patch payload.
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
