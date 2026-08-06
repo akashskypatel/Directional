@@ -1,0 +1,201 @@
+name: Agent Build Design-Aligned Surface Cell Tests
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.github/workflows/agent-build-design-aligned-tests.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: surface-cell-design-aligned-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  SOURCE_COMMIT: e82fb47dccbefa1b878bc9ddff0ae63745f6efe9
+  BUILD_DIR: build/agent-design-aligned-release
+  ARTIFACT_DIR: artifact
+  LOG_DIR: /tmp/design-aligned-build-logs
+  LOG: /tmp/design-aligned-build-logs/activity.log
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Initialize compile-only activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo 'Design-aligned surface-cell compile-only build'
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event_sha=$GITHUB_SHA"
+            echo "source_commit=$SOURCE_COMMIT"
+            echo "ref=$GITHUB_REF"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$LOG"
+
+      - name: Checkout exact workflow event and recursive submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Verify exact source checkpoint and workflow-only delta
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG") 2>&1
+          set -x
+
+          event_sha=$(git rev-parse HEAD)
+          test "$event_sha" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
+          git diff --name-only "$SOURCE_COMMIT" "$event_sha" | sort > /tmp/event-files.txt
+          diff -u <(printf '%s\n' .github/workflows/agent-build-design-aligned-tests.yml) /tmp/event-files.txt
+          test -z "$(git status --porcelain=v1)"
+
+          git submodule status --recursive | tee /tmp/submodules.txt
+          test "$(git submodule status --recursive | wc -l)" -eq 9
+
+          git rev-parse "$SOURCE_COMMIT:CMakeLists.txt" > /tmp/cmake-root-blob.txt
+          git rev-parse "$SOURCE_COMMIT:cmake/DirectionalTests.cmake" > /tmp/test-cmake-blob.txt
+          git rev-parse "$SOURCE_COMMIT:tests/SurfaceCellDesignAcceptanceTests.cpp" > /tmp/acceptance-test-blob.txt
+          git rev-parse "$SOURCE_COMMIT:tests/TESTING_STRATEGY.md" > /tmp/testing-strategy-blob.txt
+          git rev-parse "$SOURCE_COMMIT:.agents/Directional/Future_Chat_Session_Handoff.md" > /tmp/handoff-blob.txt
+
+          cmake --version
+          ninja --version
+          c++ --version
+
+      - name: Configure and compile exact approved targets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            echo "build_exit_code=$rc"
+            echo "build_finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git status --short --branch || true
+            df -h . || true
+            du -sh "$BUILD_DIR" "$ARTIFACT_DIR" 2>/dev/null || true
+            exit "$rc"
+          }
+          trap finish EXIT
+          set -x
+
+          rm -rf "$BUILD_DIR" "$ARTIFACT_DIR"
+          mkdir -p "$BUILD_DIR" "$ARTIFACT_DIR"/{bin,lib,logs,metadata,source}
+
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            '-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG' \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$BUILD_DIR/configure.log"
+
+          cmake --build "$BUILD_DIR" --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            -j 4 2>&1 | tee "$BUILD_DIR/build.log"
+
+          ! grep -E -- '--gtest_list_tests|--gtest_filter|Running main\(\)|\[==========\]' "$BUILD_DIR/build.log"
+
+          for target in \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks; do
+            target_path=$(find "$BUILD_DIR" -type f -name "$target" -perm -111 | head -1)
+            test -n "$target_path"
+            cp "$target_path" "$ARTIFACT_DIR/bin/"
+          done
+
+          find "$BUILD_DIR" -maxdepth 3 -type f \
+            \( -name libdirectional_core.a -o -name libdirectional_pipeline.a \) \
+            -exec cp {} "$ARTIFACT_DIR/lib/" \;
+          test -f "$ARTIFACT_DIR/lib/libdirectional_core.a"
+          test -f "$ARTIFACT_DIR/lib/libdirectional_pipeline.a"
+
+          test -d "$BUILD_DIR/test-data/benchmarks/fixtures"
+          mkdir -p "$ARTIFACT_DIR/bin/test-data/benchmarks"
+          cp -a "$BUILD_DIR/test-data/benchmarks/fixtures" \
+            "$ARTIFACT_DIR/bin/test-data/benchmarks/"
+
+          cp "$BUILD_DIR/configure.log" "$BUILD_DIR/build.log" "$LOG" \
+            "$ARTIFACT_DIR/logs/"
+          cp /tmp/submodules.txt \
+            /tmp/cmake-root-blob.txt \
+            /tmp/test-cmake-blob.txt \
+            /tmp/acceptance-test-blob.txt \
+            /tmp/testing-strategy-blob.txt \
+            /tmp/handoff-blob.txt \
+            "$ARTIFACT_DIR/metadata/"
+          git status --porcelain=v1 > "$ARTIFACT_DIR/metadata/source-status.txt"
+          test ! -s "$ARTIFACT_DIR/metadata/source-status.txt"
+
+          printf '%s\n' "$SOURCE_COMMIT" > "$ARTIFACT_DIR/SOURCE_COMMIT"
+          printf '%s\n' "$GITHUB_SHA" > "$ARTIFACT_DIR/WORKFLOW_EVENT_COMMIT"
+          printf '%s\n' \
+            'No test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.' \
+            > "$ARTIFACT_DIR/metadata/EXECUTION_POLICY.txt"
+
+          git archive --format=tar.gz \
+            --output="$ARTIFACT_DIR/source/directional-source-$SOURCE_COMMIT.tar.gz" \
+            "$SOURCE_COMMIT"
+          cp "$BUILD_DIR/compile_commands.json" "$ARTIFACT_DIR/metadata/"
+
+          cat > "$ARTIFACT_DIR/metadata/build-summary.json" <<JSON
+          {"turn":"design-aligned-test-suite-code-build","workflow_run":"$GITHUB_RUN_ID","workflow_event_commit":"$GITHUB_SHA","source_commit":"$SOURCE_COMMIT","configuration":"Release -O2 -DNDEBUG, static","targets":["directional_core","directional_pipeline","directional_compiled_api_tests","directional_surface_cell_producer_tests","directional_surface_cell_completion_tests","directional_surface_cell_validation_tests","directional_benchmarks"],"gtest_discovery_mode":"PRE_TEST","tests_executed":false,"benchmarks_executed":false,"project_binary_executed":false}
+          JSON
+
+          find "$ARTIFACT_DIR" -type f ! -name SHA256SUMS -print0 \
+            | sort -z | xargs -0 sha256sum > "$ARTIFACT_DIR/SHA256SUMS"
+          (cd "$ARTIFACT_DIR" && sha256sum -c SHA256SUMS)
+
+      - name: Upload compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-design-aligned-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-design-aligned-build-logs-${{ github.run_id }}
+          path: /tmp/design-aligned-build-logs
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
