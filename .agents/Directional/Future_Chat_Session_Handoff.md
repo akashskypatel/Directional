@@ -9,34 +9,44 @@
 
 ## Current checkpoint
 
-P5-R2E15 chart-local lifted interval authority Code + Build is complete and compile-valid.
+P5-TB43 artifact-only R2E15 Test + Benchmark is complete.
+
+**P5-R2E15 is not accepted. R2 remains open. Do not advance to R2F or R3.**
+
+Exact runtime authority:
 
 - workflow event commit: `47a5bf7a93fca3f63d9c54e09a1becd22251caef`;
-- exact compiled source: `f14f1d416a9cb1b7afdf8109d22a76895e22fced`;
+- exact tested source: `f14f1d416a9cb1b7afdf8109d22a76895e22fced`;
 - workflow run/job: `31096815851` / `92600707664`;
 - build artifact: `8965975937`, SHA-256 `2ea192b2be7496aa104948171d509d0f422b63afcf4ce296d4b35c60e2a28315`, size **12,306,846 bytes**;
 - log artifact: `8965976454`, SHA-256 `68a5c352a618f594c757a1904ea1e9df31706dcb0706adabf6f4e9d87de3f0e9`;
-- compile/link actions: **132/132**;
-- manifest: **20/20**; package files: **21**; recursive submodules: **9**; fixture closure: **26**; source status empty;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+- manifest **20/20**; artifact package files **21**; recursive submodules **9**; fixture closure **26/26**; source status empty;
+- only packaged binaries were executed; no configure, build, relink, patch, regeneration, source/test/fixture/validator/workflow/build change, or binary replacement occurred.
 
-P5-R2E15 retains node-level pair ownership, one exact common root for every non-exterior pair, and R2E14 two-sided exterior authority. Every participating chart ray now retains one exact wedge-local lifted coordinate and integer turn. Directed adjacency, span, and third-ray checks use the lifted order only. A seam wrap is published only for valid immediate adjacency with source lift turn exactly one greater than target. Raw global angle remains diagnostic provenance only.
+Focused runtime disposition:
 
-The next turn is **P5-TB43 artifact-only R2E15 Test + Benchmark** using artifact `8965975937`. Runtime acceptance is not claimed. R2 remains open. Do not advance to R2F or R3.
+- planar: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `3/5/4/9`, three canonical pairs, one exterior exclusion, zero wraps; three independent logs are byte-identical with SHA-256 `3498659bc601e18794fc90fe2d3b87349f66e4c172d9f57a9312b9d049887ade`;
+- interior hard rail: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `1/5/4/1`, zero publication counters; three independent logs are byte-identical with SHA-256 `fc7c65f89c71d707f7cf2df8873ec28147788d6b203307f39b0150194819f5cf`.
 
-## Exact implementation authority
+Neither target advances from P5-TB42. The complete suite is still **597/625** with the exact same 28 failures. Phase 17 remains **20/26**. The authoritative full process completed normally in **75.894 s** XML / **1:15.90** wall with **279,568 KiB** maximum RSS.
+
+Direct plane, multi-face seam, close-sheet, cylinder, and `bunny_1k_random.obj` processes remain `success=false` under backend `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy execution. Structural lineage is deterministic.
+
+The next turn is **P5-R2E16 Pair-Local Authoritative Fan-Chart Interval Projection Code + Build**. The authoritative plan is:
+
+`.agents/Directional/Milestone_G_P5_R2E16_Pair_Local_Authoritative_Fan_Chart_Interval_Projection_Code_Build_Plan.md`
+
+## Exact source authority
 
 - `src/geometry/SurfaceArrangement.cpp`: `bc14dff449151f7925cb39e03cdc9d089f161558`;
-- unchanged `include/directional/geometry/SurfaceArrangement.h`: `b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8`;
-- unchanged `tests/SurfaceArrangementPhase16Tests.cpp`: `de5b7c4f3d7c53f8488bc7de5d883ac72429e894`;
-- unchanged `tests/MilestoneDClosureTests.cpp`: `1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2`;
-- decoded patch SHA-256: `b500beffbcb7a414fff2f265a730916a6a600d90d2ee797a72348f1480fad3e0`.
+- `include/directional/geometry/SurfaceArrangement.h`: `b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8`;
+- `tests/SurfaceArrangementPhase16Tests.cpp`: `de5b7c4f3d7c53f8488bc7de5d883ac72429e894`;
+- `tests/MilestoneDClosureTests.cpp`: `1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2`.
 
-## Last runtime baseline: P5-TB42
+## Current runtime inventory
 
 - source chart + validator **17/17**;
-- recovery **9/9**;
+- recovery authority **9/9**;
 - feature/barrier **8/8**;
 - graph-dependent **5/6**;
 - R2 focused **13/16**;
@@ -46,17 +56,34 @@ The next turn is **P5-TB43 artifact-only R2E15 Test + Benchmark** using artifact
 - Phase 18 **57/57**;
 - Phase 14–18 **235/244**;
 - Phase 20 **46/48**;
-- complete suite and split inventory **597/625**, 28 failures.
+- complete suite **597/625**, 28 failures, 0 errors, 0 disabled;
+- exact failure-set change from P5-TB42: 0 closed, 0 new.
 
-Planar failed `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)` at tuple `3/5/4/9`, with three canonical pairs, one exterior exclusion, and zero wraps. Hard rail advanced beyond exterior mismatch and failed `InvalidOrientedInterval(8)` at tuple `1/5/4/1`. The full 625-test process completed normally in 74.23 seconds with maximum RSS 282,848 KiB. Direct production remained fail-closed and deterministic.
+## Source-supported next producer
+
+This is an inference from the exact source and deterministic P5-TB43 evidence; current runtime diagnostics do not emit the exact interval-rejection subtype.
+
+The implementation still builds one node-wide same-chart ray inventory from every fan identity, then resolves each already-authoritative canonical pair against all same-kind rays in that chart. It does not project interval geometry from the complete exact identity set stored on that pair in `record.fanIdentities`. An unrelated identity sharing the node/chart can therefore affect immediate adjacency or third-ray intrusion for a pair it does not own.
+
+R2E16 must:
+
+- retain node-level pair existence, normalized entity, and exact common non-exterior root;
+- retain R2E14 two-sided exterior authority;
+- project interval geometry from the union of **every exact identity** in `record.fanIdentities`;
+- never choose one identity or arbitrary subset;
+- require all contributing identities to agree on chart, source/target lifted interval, and turn classification;
+- prevent unrelated identities from intruding while preserving them for their own pairs;
+- fail closed on missing, ambiguous, incomplete, or contradictory evidence;
+- expose a deterministic first interval-rejection subtype and exact chart/entity/root/position/angle/turn/wedge context;
+- preserve complete cover, predecessor, hard-rail, bounded-orbit, embedding, Euler, ownership, and aggregate-topology gates.
 
 ## Retained authoritative documentation
 
 Only current and durable documents must remain under `.agents/Directional`:
 
 1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E15_Code_Build_Report.md` — implementation and compile authority;
-3. `Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Plan.md` — next executable plan;
+2. `Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Report.md` — exact runtime authority;
+3. `Milestone_G_P5_R2E16_Pair_Local_Authoritative_Fan_Chart_Interval_Projection_Code_Build_Plan.md` — authoritative next plan;
 4. `DESIGN.md`;
 5. `REORIENTATION_PLAN.md`;
 6. `Surface_Cell_Backend_Remediation_Plan.md`;
@@ -67,41 +94,51 @@ Superseded per-turn plans, reports, closure notes, and summaries are removed aft
 ## Retained benchmark results
 
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e15-summary.json` — exact source/package authority and retained P5-TB42 runtime baseline.
+- `p5-tb43-summary.json` — exact artifact/runtime/failure/direct-process authority.
 
-## Read first for P5-TB43
+Evidence archive outside the repository:
+
+- `directional-p5-tb43-8965975937-evidence.zip`;
+- SHA-256 `a905452fc0061344b21b61aba386be4c8084c1919a0b5398145f0c19dc5ec3b5`;
+- **296** entries, **474,775 bytes**.
+
+## Read first for P5-R2E16
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E15_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e15-summary.json`
+4. `.agents/Directional/Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Report.md`
+5. `.agents/Directional/Milestone_G_P5_R2E16_Pair_Local_Authoritative_Fan_Chart_Interval_Projection_Code_Build_Plan.md`
+6. `benchmark-results/p5-tb43-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
+11. `turn-based-coding-agent/SKILL.md` and Code + Build/testing-integrity/status/handoff/GitHub connector references.
 
-## P5-TB43 first actions
+## P5-R2E16 first actions
 
-1. Download artifact `8965975937` through the GitHub connector and verify outer digest `2ea192b2be7496aa104948171d509d0f422b63afcf4ce296d4b35c60e2a28315`.
-2. Verify all internal manifest entries, exact source/event commits, production/header/test blobs, empty source status, nine recursive submodules, and 26-file executable-relative fixture closure.
-3. Extract into an arbitrary clean directory and execute only packaged binaries; do not configure, compile, relink, patch, or regenerate.
-4. Run source-chart/validator prerequisites first.
-5. Run planar and hard rail in at least three independent processes, retaining full deterministic diagnostics.
-6. Apply the exact gates in `.agents/Directional/Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Plan.md`.
-7. Run one normal single-process complete suite; if it does not complete, preserve process evidence and use a complete non-overlapping split inventory.
-8. Produce the next Code + Build plan from the first authoritative remaining producer; review remains skipped.
+1. Inspect `.github/workflows`, temporary trigger locations, `.agents/Directional/patches`, and generated artifacts; remove stale bounded payloads before work.
+2. Resolve and record the current branch head, PR #8 state, exact source/header/test preimage blobs, and allowed scope.
+3. Re-read the P5-TB43 source excerpt around `raysByChart`, `chartWitnesses`, `record.fanIdentities`, lifted adjacency, and `invalidIntervalCount`.
+4. Implement complete pair-local exact-identity projection without changing node-level pair ownership or exterior/root contracts.
+5. Add only non-weakening diagnostic context and generalized regressions in the approved two target test files.
+6. Push the exact source commit before compilation.
+7. Use one bounded compile-only workflow to build exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks` in Release `-O2 -DNDEBUG`.
+8. Do not execute tests, benchmarks, custom inputs, help/list/discovery commands, CLI, GUI, or generated project binaries.
+9. Package and verify exact source/test blobs, source status, submodules, fixtures, binaries/libraries, logs, and manifest.
+10. Remove the bounded workflow and every temporary trigger/patch/payload after verification.
+11. Produce P5-R2E16 Code + Build authority and the P5-TB44 artifact-only validation plan.
 
-## Lessons from P5-R2E15
+## Lessons from P5-TB43
 
-- A validated bounded source-entity wedge is not circular. Its unique lifted coordinate, not global raw-angle order, is authoritative for interval geometry.
-- Immediate lifted successor is a witness for an already-owned pair; it is never an ownership-selection rule.
-- Seam observability must come from exact integer lift-turn provenance, not heuristic `2π` addition.
-- The R2E14 two-sided exterior exception remains limited to the excluded exterior relation; non-exterior pairs still require one common root.
-- The first workflow attempt staged extra bytes in one transfer fragment. The checksum gate correctly stopped before patch decode. Compare remote fragment blob hashes and sizes with local expected values before triggering future workflows.
-- A failed transfer/checksum attempt has no source, build, or runtime authority. Use only successful run `31096815851` and source `f14f1d416a9cb1b7afdf8109d22a76895e22fced`.
-- The exact source commit must be pushed before compilation and packaged unchanged.
+- Replacing raw-angle order with lifted order was necessary but not sufficient; neither deterministic focused tuple changed.
+- A node-wide chart inventory can contain valid rays belonging to unrelated exact fan identities. Those rays must not become pair-local interval intruders merely because they share the node/chart.
+- Pair-local projection is not subset selection: every exact identity recorded on the pair must be reconciled, and any contradiction must fail closed.
+- Current `InvalidOrientedInterval` diagnostics are too coarse to identify the exact remaining branch. Add subtype/context without weakening aggregate failure or assertions.
+- Publication counters equal to zero prove only that publication was not reached; they do not prove later exterior, root, orbit, Euler, or topology behavior.
+- A complete process that exits normally with test failures is authoritative failure evidence. A clean benchmark process with `success=false` is still a production failure.
+- Incomplete local orchestration attempts are not correctness or performance authority; remove their incomplete outputs and identify one exact authoritative run.
 
 ## Mandatory turn hygiene and instruction preservation
 
