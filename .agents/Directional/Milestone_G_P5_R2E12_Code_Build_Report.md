@@ -134,11 +134,11 @@ No test, benchmark, custom input, help/list/discovery command, CLI, GUI, or gene
 
 - The workflow checked exact preimage and postimage blobs before committing.
 - The exact source commit was pushed before compilation.
-- The bounded workflow removed itself in the exact source commit.
+- The bounded build workflow removed itself in the exact source commit.
 - The detailed activity log was initialized before checkout and uploaded separately on success.
-- No temporary patch/payload file or generated build artifact remains in the repository.
+- No temporary patch/payload file or generated build artifact remains in the final repository state.
 - Only the durable `.github/workflows/agent-source-snapshot.yml` remains after final documentation cleanup.
-- Several bounded documentation-finalization attempts failed on payload-transfer integrity checks; none changed the compiled source or package authority. Final documentation and cleanup were committed through direct GitHub connector writes.
+- Several bounded documentation-finalization attempts failed on payload-transfer integrity checks; none changed the compiled source or package authority. Final documentation and cleanup were completed through direct GitHub connector writes.
 
 ## Next turn
 
