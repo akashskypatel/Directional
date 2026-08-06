@@ -148,10 +148,10 @@ The GitHub outage is still active for this project workflow path. Do not use wor
 
 - Keep the exact current patch payload versioned.
 - Keep the five-blob synchronization task on `TODO` and `MILESTONE_G_TODO.md`.
-- Use direct Git objects or an authenticated local client after service recovery.
-- Verify all five blobs before calling synchronization complete.
-- Layer the orientation/direct-cell changes as a separate coherent patch/commit.
-- Remove payload files only after every referenced source state is committed and verified.
+- Keep the next orientation/direct-cell implementation as a separate versioned patch while the outage persists.
+- After service recovery, use direct Git objects or an authenticated local client to apply and verify the current five-file patch first.
+- Apply the orientation/direct-cell patch as a separate coherent source commit second.
+- Verify every referenced source blob and build authority before removing either payload.
 
 ## Current authoritative documents
 
@@ -207,7 +207,7 @@ These requirements apply to every Code + Build, Test + Benchmark, optional Revie
 4. Immediately after the artifact and logs are verified, remove bounded workflows, triggers, and payloads no longer required.
 5. Final branch state must contain only approved durable workflows and no stale trigger or generated build artifact.
 6. Do not remove a durable dependency explicitly consumed by an approved retained workflow.
-7. For this checkpoint, retain the exact Gate 1 patch and build-script payloads only until the five remote source blobs are committed and verified; then remove both.
+7. Retain each exact Gate 1 patch/build payload only until its remote source commit and expected blobs are committed and verified; then remove that payload.
 8. While the current outage persists, do not create, trigger, or use GitHub Actions workflows for repository updates.
 
 ### Documentation and result cleanup
