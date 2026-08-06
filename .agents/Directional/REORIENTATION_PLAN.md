@@ -96,9 +96,19 @@ Until G1 exits, do not make the principal objective:
 - source-grid recovery enhancement;
 - historical completion-fixture cleanup unrelated to the current compile path.
 
-## GitHub outage and source synchronization
+## Layered patch authority during GitHub outage
 
-The tested source remains exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep exact five-file source synchronization on both TODO files until service recovery. While the outage persists, do not use workflows for repository updates. After recovery, apply the existing patch exactly through direct Git objects or an authenticated client and verify all expected blobs before removing the payload.
+The tested implementation is exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep its five-file synchronization on both TODO files until service recovery.
+
+While the outage persists:
+
+- do not use workflows for repository updates or builds;
+- reconstruct current tested source exactly from the recorded base and patch;
+- express the next orientation/direct-cell change as a separate incremental patch;
+- record patch digest, expected output blobs, local build artifact, logs, and dependency closure;
+- retain both patch layers in order.
+
+After recovery, apply and verify the current patch first and the orientation/direct-cell patch second as separate coherent commits. Remove each payload only after its corresponding source state is committed and verified.
 
 ## Next plan
 
