@@ -3698,8 +3698,12 @@ SurfaceCellComplex build_surface_cell_complex(
           struct ChartCornerRay {
             int halfedge = -1;
             int fanPosition = -1;
+            // Authoritative chart-local coordinate. This is the unique
+            // rawAngle + liftTurn * 2pi representative inside the validated
+            // source-entity wedge.
             double angle = 0.0;
             double rawAngle = 0.0;
+            int liftTurn = 0;
             double leftScore = 0.0;
           };
 
@@ -4475,21 +4479,35 @@ SurfaceCellComplex build_surface_cell_complex(
                 }
                 const double rawAngle =
                     std::atan2(direction.y(), direction.x());
-                std::vector<double> admissibleAngles;
+                struct AdmissibleLift {
+                  double angle = 0.0;
+                  int turn = 0;
+                };
+                std::vector<AdmissibleLift> admissibleLifts;
                 for (int turn = -2; turn <= 2; ++turn) {
                   const double candidate = rawAngle + turn * twoPi;
                   if (candidate >= wedgeStart - cornerAngleTolerance &&
                       candidate <= wedgeEnd + cornerAngleTolerance) {
-                    admissibleAngles.push_back(candidate);
+                    const double reconstructedTurn =
+                        (candidate - rawAngle) / twoPi;
+                    if (!std::isfinite(candidate) ||
+                        !std::isfinite(reconstructedTurn) ||
+                        std::abs(reconstructedTurn -
+                                 static_cast<double>(turn)) >
+                            cornerAngleTolerance) {
+                      chartGeometryValid = false;
+                      break;
+                    }
+                    admissibleLifts.push_back({candidate, turn});
                   }
                 }
-                if (admissibleAngles.size() != 1U) {
+                if (!chartGeometryValid || admissibleLifts.size() != 1U) {
                   chartGeometryValid = false;
                   break;
                 }
                 chartRays.push_back(
-                    {halfedgeId, -1, admissibleAngles.front(), rawAngle,
-                     witness.leftScore});
+                    {halfedgeId, -1, admissibleLifts.front().angle, rawAngle,
+                     admissibleLifts.front().turn, witness.leftScore});
               }
               if (chartGeometryValid) {
                 std::sort(chartRays.begin(), chartRays.end(),
@@ -4522,38 +4540,14 @@ SurfaceCellComplex build_surface_cell_complex(
               }
             }
 
-            std::vector<ChartCornerRay> circularChartRays = chartRays;
-            std::map<int, std::size_t> circularPositionByHalfedge;
+            std::map<int, std::size_t> liftedPositionByHalfedge;
             if (chartGeometryValid) {
-              std::sort(circularChartRays.begin(), circularChartRays.end(),
-                        [&](const ChartCornerRay &lhs,
-                            const ChartCornerRay &rhs) {
-                          if (std::abs(lhs.rawAngle - rhs.rawAngle) >
-                              cornerAngleTolerance) {
-                            return lhs.rawAngle < rhs.rawAngle;
-                          }
-                          return lhs.halfedge < rhs.halfedge;
-                        });
-              for (std::size_t index = 1;
-                   index < circularChartRays.size(); ++index) {
-                if (std::abs(circularChartRays[index].rawAngle -
-                             circularChartRays[index - 1U].rawAngle) <=
-                        cornerAngleTolerance &&
-                    circularChartRays[index].halfedge !=
-                        circularChartRays[index - 1U].halfedge) {
+              for (std::size_t index = 0; index < chartRays.size(); ++index) {
+                if (!liftedPositionByHalfedge
+                         .emplace(chartRays[index].halfedge, index)
+                         .second) {
                   chartGeometryValid = false;
                   break;
-                }
-              }
-              if (chartGeometryValid) {
-                for (std::size_t index = 0;
-                     index < circularChartRays.size(); ++index) {
-                  if (!circularPositionByHalfedge
-                           .emplace(circularChartRays[index].halfedge, index)
-                           .second) {
-                    chartGeometryValid = false;
-                    break;
-                  }
                 }
               }
             }
@@ -4619,58 +4613,57 @@ SurfaceCellComplex build_surface_cell_complex(
                 }
               }
               const auto sourcePosition =
-                  circularPositionByHalfedge.find(key.sourceRay);
+                  liftedPositionByHalfedge.find(key.sourceRay);
               const auto targetPosition =
-                  circularPositionByHalfedge.find(key.target);
+                  liftedPositionByHalfedge.find(key.target);
               if (!provenanceDirectedPair ||
-                  sourcePosition == circularPositionByHalfedge.end() ||
-                  targetPosition == circularPositionByHalfedge.end() ||
-                  circularChartRays.size() < 2U) {
+                  sourcePosition == liftedPositionByHalfedge.end() ||
+                  targetPosition == liftedPositionByHalfedge.end() ||
+                  chartRays.size() < 2U) {
                 ++stats.invalidIntervalCount;
                 continue;
               }
 
-              double targetAngle = targetRay->second.rawAngle;
-              double sourceAngle = sourceRay->second.rawAngle;
-              const bool directAdjacent =
-                  sourcePosition->second == targetPosition->second + 1U;
-              const bool seamAdjacent =
-                  targetPosition->second + 1U == circularChartRays.size() &&
-                  sourcePosition->second == 0U;
-              bool cyclicWrap = false;
-              if (sourceAngle > targetAngle + cornerAngleTolerance) {
-                if (!directAdjacent) {
+              // The source-entity wedge is bounded, not circular. The
+              // already-authoritative source ray must be the immediate
+              // directed successor of the target in the unique lifted chart
+              // coordinate. A first/last raw-angle relation is not adjacency.
+              if (sourcePosition->second != targetPosition->second + 1U) {
+                if (sourcePosition->second > targetPosition->second + 1U) {
                   ++stats.thirdRayIntrusionCount;
-                  continue;
-                }
-              } else {
-                if (!seamAdjacent) {
+                } else {
                   ++stats.invalidIntervalCount;
-                  continue;
                 }
-                sourceAngle += twoPi;
-                cyclicWrap = true;
+                continue;
               }
+
+              const double targetAngle = targetRay->second.angle;
+              const double sourceAngle = sourceRay->second.angle;
               const double orientedSpan = sourceAngle - targetAngle;
               if (!(orientedSpan > cornerAngleTolerance) ||
-                  orientedSpan > wedgeSpan + cornerAngleTolerance) {
+                  orientedSpan > wedgeSpan + cornerAngleTolerance ||
+                  targetAngle < wedgeStart - cornerAngleTolerance ||
+                  sourceAngle > wedgeEnd + cornerAngleTolerance) {
                 ++stats.invalidIntervalCount;
                 continue;
               }
 
+              const int liftTurnDifference =
+                  sourceRay->second.liftTurn - targetRay->second.liftTurn;
+              if (liftTurnDifference != 0 && liftTurnDifference != 1) {
+                ++stats.invalidIntervalCount;
+                continue;
+              }
+              const bool cyclicWrap = liftTurnDifference == 1;
+
               bool thirdRayInside = false;
-              for (const ChartCornerRay &other : circularChartRays) {
+              for (const ChartCornerRay &other : chartRays) {
                 if (other.halfedge == key.sourceRay ||
                     other.halfedge == key.target) {
                   continue;
                 }
-                double otherAngle = other.rawAngle;
-                if (cyclicWrap &&
-                    otherAngle <= targetAngle + cornerAngleTolerance) {
-                  otherAngle += twoPi;
-                }
-                if (otherAngle > targetAngle + cornerAngleTolerance &&
-                    otherAngle < sourceAngle - cornerAngleTolerance) {
+                if (other.angle > targetAngle + cornerAngleTolerance &&
+                    other.angle < sourceAngle - cornerAngleTolerance) {
                   thirdRayInside = true;
                   break;
                 }
