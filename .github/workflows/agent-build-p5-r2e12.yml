@@ -1,0 +1,199 @@
+name: Agent Build Surface Cell P5 R2E12
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .github/workflows/agent-build-p5-r2e12.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: surface-cell-p5-r2e12-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  PATCH_B64: LS0tIGEvc3JjL2dlb21ldHJ5L1N1cmZhY2VBcnJhbmdlbWVudC5jcHAKKysrIGIvc3JjL2dlb21ldHJ5L1N1cmZhY2VBcnJhbmdlbWVudC5jcHAKQEAgLTM3NDUsNiArMzc0NSw4IEBACiAgICAgICAgICAgICBzdGQ6OnZlY3RvcjxzdGQ6OmludDY0X3Q+IGNhbm9uaWNhbEVudGl0eUtleTsKICAgICAgICAgICAgIGludCB0cmFuc2l0aW9uUm9vdCA9IC0xOwogICAgICAgICAgICAgc3RkOjp2ZWN0b3I8U3VyZmFjZUNlbGxDYW5vbmljYWxJZGVudGl0eT4gZmFuSWRlbnRpdGllczsKKyAgICAgICAgICAgIFN1cmZhY2VDZWxsQ2Fub25pY2FsSWRlbnRpdHkgc291cmNlQm91bmRhcnlJZGVudGl0eTsKKyAgICAgICAgICAgIGJvb2wgZXh0ZXJpb3IgPSBmYWxzZTsKICAgICAgICAgICAgIGJvb2wgY3ljbGljV3JhcCA9IGZhbHNlOwogICAgICAgICAgIH07CiAKQEAgLTM3OTMsNiArMzc5NSwxMDYgQEAKICAgICAgICAgICAgIHJldHVybiByb290czsKICAgICAgICAgICB9OwogCisgICAgICAgICAgdXNpbmcgQ2Fub25pY2FsRW50aXR5Um9vdEtleSA9CisgICAgICAgICAgICAgIHN0ZDo6cGFpcjxzdGQ6OnZlY3RvcjxzdGQ6OmludDY0X3Q+LCBpbnQ+OworICAgICAgICAgIGNvbnN0IGF1dG8gY29sbGVjdF9yYXlfZW50aXR5X3Jvb3RfZXZpZGVuY2UgPQorICAgICAgICAgICAgICBbJl0oY29uc3QgaW50IG91dGdvaW5nUmF5KSB7CisgICAgICAgICAgICAgICAgc3RkOjptYXA8Q2Fub25pY2FsRW50aXR5Um9vdEtleSwKKyAgICAgICAgICAgICAgICAgICAgICAgICBzdGQ6OnZlY3RvcjxTdXJmYWNlQ2VsbENhbm9uaWNhbElkZW50aXR5Pj4gZXZpZGVuY2U7CisgICAgICAgICAgICAgICAgZm9yIChjb25zdCBhdXRvICZbZmFuSWRlbnRpdHksIGZhblJheXNdIDogbm9kZVdlZGdlcykgeworICAgICAgICAgICAgICAgICAgaWYgKCFmYW5JZGVudGl0eS52YWxpZCkgeworICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsKKyAgICAgICAgICAgICAgICAgIH0KKyAgICAgICAgICAgICAgICAgIGNvbnN0IGF1dG8gcmF5Rm91bmQgPSBzdGQ6OmZpbmRfaWYoCisgICAgICAgICAgICAgICAgICAgICAgZmFuUmF5cy5iZWdpbigpLCBmYW5SYXlzLmVuZCgpLAorICAgICAgICAgICAgICAgICAgICAgIFsmXShjb25zdCBEaXJlY3RlZFdlZGdlUmF5ICZyYXkpIHsKKyAgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiByYXkuaGFsZmVkZ2UgPT0gb3V0Z29pbmdSYXk7CisgICAgICAgICAgICAgICAgICAgICAgfSk7CisgICAgICAgICAgICAgICAgICBpZiAocmF5Rm91bmQgPT0gZmFuUmF5cy5lbmQoKSkgeworICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsKKyAgICAgICAgICAgICAgICAgIH0KKyAgICAgICAgICAgICAgICAgIGNvbnN0IHN0ZDo6dmVjdG9yPHN0ZDo6aW50NjRfdD4gZW50aXR5S2V5ID0KKyAgICAgICAgICAgICAgICAgICAgICBjYW5vbmljYWxfZW50aXR5X2tleShmYW5JZGVudGl0eSk7CisgICAgICAgICAgICAgICAgICBpZiAoZW50aXR5S2V5LmVtcHR5KCkpIHsKKyAgICAgICAgICAgICAgICAgICAgY29udGludWU7CisgICAgICAgICAgICAgICAgICB9CisgICAgICAgICAgICAgICAgICBmb3IgKGNvbnN0IGludCByb290IDogcmF5X3RyYW5zaXRpb25fcm9vdHMoKnJheUZvdW5kKSkgeworICAgICAgICAgICAgICAgICAgICBldmlkZW5jZVt7ZW50aXR5S2V5LCByb290fV0ucHVzaF9iYWNrKGZhbklkZW50aXR5KTsKKyAgICAgICAgICAgICAgICAgIH0KKyAgICAgICAgICAgICAgICB9CisgICAgICAgICAgICAgICAgZm9yIChhdXRvICZba2V5LCBpZGVudGl0aWVzXSA6IGV2aWRlbmNlKSB7CisgICAgICAgICAgICAgICAgICAodm9pZClrZXk7CisgICAgICAgICAgICAgICAgICBzdGQ6OnNvcnQoaWRlbnRpdGllcy5iZWdpbigpLCBpZGVudGl0aWVzLmVuZCgpKTsKKyAgICAgICAgICAgICAgICAgIGlkZW50aXRpZXMuZXJhc2UoCisgICAgICAgICAgICAgICAgICAgICAgc3RkOjp1bmlxdWUoaWRlbnRpdGllcy5iZWdpbigpLCBpZGVudGl0aWVzLmVuZCgpKSwKKyAgICAgICAgICAgICAgICAgICAgICBpZGVudGl0aWVzLmVuZCgpKTsKKyAgICAgICAgICAgICAgICB9CisgICAgICAgICAgICAgICAgcmV0dXJuIGV2aWRlbmNlOworICAgICAgICAgICAgICB9OworCisgICAgICAgICAgY29uc3QgQ2Fub25pY2FsRmFuUGFpcktleSBleHRlcmlvclBhaXJLZXl7CisgICAgICAgICAgICAgIGV4dGVyaW9ySW5jb21pbmcsIGV4dGVyaW9yVHdpbiwgZXh0ZXJpb3JPdXRnb2luZ307CisgICAgICAgICAgY29uc3QgU3VyZmFjZUNlbGxDYW5vbmljYWxJZGVudGl0eSBleHRlcmlvckJvdW5kYXJ5SWRlbnRpdHkgPQorICAgICAgICAgICAgICBzb3VyY2VCb3VuZGFyeVRvcG9sb2d5CisgICAgICAgICAgICAgICAgICAubG9vcHNbc3RhdGljX2Nhc3Q8c3RkOjpzaXplX3Q+KGV4dGVyaW9yTG9vcCldCisgICAgICAgICAgICAgICAgICAuY2Fub25pY2FsSWRlbnRpdHk7CisgICAgICAgICAgY29uc3QgQm91bmRhcnlTdWJzZWdtZW50V2l0bmVzcyAmZXh0ZXJpb3JTb3VyY2VXaXRuZXNzID0KKyAgICAgICAgICAgICAgYm91bmRhcnlXaXRuZXNzZXNbc3RhdGljX2Nhc3Q8c3RkOjpzaXplX3Q+KGV4dGVyaW9yVHdpbildOworICAgICAgICAgIGNvbnN0IEJvdW5kYXJ5U3Vic2VnbWVudFdpdG5lc3MgJmV4dGVyaW9yVGFyZ2V0V2l0bmVzcyA9CisgICAgICAgICAgICAgIGJvdW5kYXJ5V2l0bmVzc2VzW3N0YXRpY19jYXN0PHN0ZDo6c2l6ZV90PihleHRlcmlvck91dGdvaW5nKV07CisgICAgICAgICAgaWYgKCFleHRlcmlvckJvdW5kYXJ5SWRlbnRpdHkudmFsaWQgfHwKKyAgICAgICAgICAgICAgIWV4dGVyaW9yU291cmNlV2l0bmVzcy52YWxpZCB8fAorICAgICAgICAgICAgICAhZXh0ZXJpb3JUYXJnZXRXaXRuZXNzLnZhbGlkIHx8CisgICAgICAgICAgICAgIGV4dGVyaW9yU291cmNlV2l0bmVzcy5sb29wICE9IGV4dGVyaW9yTG9vcCB8fAorICAgICAgICAgICAgICBleHRlcmlvclRhcmdldFdpdG5lc3MubG9vcCAhPSBleHRlcmlvckxvb3AgfHwKKyAgICAgICAgICAgICAgZXh0ZXJpb3JTb3VyY2VXaXRuZXNzLnNpZGUgIT0gMSB8fAorICAgICAgICAgICAgICBleHRlcmlvclRhcmdldFdpdG5lc3Muc2lkZSAhPSAtMSkgeworICAgICAgICAgICAgcmVjb3JkX2JvdW5kYXJ5X2Zhbl9jb25mbGljdCgKKyAgICAgICAgICAgICAgICBTdXJmYWNlQXJyYW5nZW1lbnRCb3VuZGFyeUZhbkNvbmZsaWN0OjpFeHRlcmlvclBhaXJNaXNtYXRjaCwKKyAgICAgICAgICAgICAgICBub2RlLCBleHRlcmlvckluY29taW5nLCBleHRlcmlvclR3aW4sIGV4dGVyaW9yT3V0Z29pbmcpOworICAgICAgICAgICAgYnJlYWs7CisgICAgICAgICAgfQorCisgICAgICAgICAgY29uc3QgYXV0byBleHRlcmlvclNvdXJjZUV2aWRlbmNlID0KKyAgICAgICAgICAgICAgY29sbGVjdF9yYXlfZW50aXR5X3Jvb3RfZXZpZGVuY2UoZXh0ZXJpb3JUd2luKTsKKyAgICAgICAgICBjb25zdCBhdXRvIGV4dGVyaW9yVGFyZ2V0RXZpZGVuY2UgPQorICAgICAgICAgICAgICBjb2xsZWN0X3JheV9lbnRpdHlfcm9vdF9ldmlkZW5jZShleHRlcmlvck91dGdvaW5nKTsKKyAgICAgICAgICBpZiAoZXh0ZXJpb3JTb3VyY2VFdmlkZW5jZS5zaXplKCkgIT0gMVUgfHwKKyAgICAgICAgICAgICAgZXh0ZXJpb3JUYXJnZXRFdmlkZW5jZS5zaXplKCkgIT0gMVUgfHwKKyAgICAgICAgICAgICAgZXh0ZXJpb3JTb3VyY2VFdmlkZW5jZS5iZWdpbigpLT5maXJzdCAhPQorICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JUYXJnZXRFdmlkZW5jZS5iZWdpbigpLT5maXJzdCkgeworICAgICAgICAgICAgcmVjb3JkX2JvdW5kYXJ5X2Zhbl9jb25mbGljdCgKKyAgICAgICAgICAgICAgICBTdXJmYWNlQXJyYW5nZW1lbnRCb3VuZGFyeUZhbkNvbmZsaWN0OjpFeHRlcmlvclBhaXJNaXNtYXRjaCwKKyAgICAgICAgICAgICAgICBub2RlLCBleHRlcmlvckluY29taW5nLCBleHRlcmlvclR3aW4sIGV4dGVyaW9yT3V0Z29pbmcpOworICAgICAgICAgICAgYnJlYWs7CisgICAgICAgICAgfQorICAgICAgICAgIHN0ZDo6dmVjdG9yPFN1cmZhY2VDZWxsQ2Fub25pY2FsSWRlbnRpdHk+IGV4dGVyaW9yRmFuSWRlbnRpdGllcyA9CisgICAgICAgICAgICAgIGV4dGVyaW9yU291cmNlRXZpZGVuY2UuYmVnaW4oKS0+c2Vjb25kOworICAgICAgICAgIGV4dGVyaW9yRmFuSWRlbnRpdGllcy5pbnNlcnQoCisgICAgICAgICAgICAgIGV4dGVyaW9yRmFuSWRlbnRpdGllcy5lbmQoKSwKKyAgICAgICAgICAgICAgZXh0ZXJpb3JUYXJnZXRFdmlkZW5jZS5iZWdpbigpLT5zZWNvbmQuYmVnaW4oKSwKKyAgICAgICAgICAgICAgZXh0ZXJpb3JUYXJnZXRFdmlkZW5jZS5iZWdpbigpLT5zZWNvbmQuZW5kKCkpOworICAgICAgICAgIHN0ZDo6c29ydChleHRlcmlvckZhbklkZW50aXRpZXMuYmVnaW4oKSwKKyAgICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JGYW5JZGVudGl0aWVzLmVuZCgpKTsKKyAgICAgICAgICBleHRlcmlvckZhbklkZW50aXRpZXMuZXJhc2UoCisgICAgICAgICAgICAgIHN0ZDo6dW5pcXVlKGV4dGVyaW9yRmFuSWRlbnRpdGllcy5iZWdpbigpLAorICAgICAgICAgICAgICAgICAgICAgICAgICBleHRlcmlvckZhbklkZW50aXRpZXMuZW5kKCkpLAorICAgICAgICAgICAgICBleHRlcmlvckZhbklkZW50aXRpZXMuZW5kKCkpOworICAgICAgICAgIGlmIChleHRlcmlvckZhbklkZW50aXRpZXMuZW1wdHkoKSkgeworICAgICAgICAgICAgcmVjb3JkX2JvdW5kYXJ5X2Zhbl9jb25mbGljdCgKKyAgICAgICAgICAgICAgICBTdXJmYWNlQXJyYW5nZW1lbnRCb3VuZGFyeUZhbkNvbmZsaWN0OjpFeHRlcmlvclBhaXJNaXNtYXRjaCwKKyAgICAgICAgICAgICAgICBub2RlLCBleHRlcmlvckluY29taW5nLCBleHRlcmlvclR3aW4sIGV4dGVyaW9yT3V0Z29pbmcpOworICAgICAgICAgICAgYnJlYWs7CisgICAgICAgICAgfQorICAgICAgICAgIGNhbm9uaWNhbFBhaXJJbnZlbnRvcnkuZW1wbGFjZSgKKyAgICAgICAgICAgICAgZXh0ZXJpb3JQYWlyS2V5LAorICAgICAgICAgICAgICBDYW5vbmljYWxGYW5QYWlyUmVjb3JkeworICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JQYWlyS2V5LAorICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JTb3VyY2VFdmlkZW5jZS5iZWdpbigpLT5maXJzdC5maXJzdCwKKyAgICAgICAgICAgICAgICAgIGV4dGVyaW9yU291cmNlRXZpZGVuY2UuYmVnaW4oKS0+Zmlyc3Quc2Vjb25kLAorICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JGYW5JZGVudGl0aWVzLCBleHRlcmlvckJvdW5kYXJ5SWRlbnRpdHksIHRydWUsCisgICAgICAgICAgICAgICAgICBmYWxzZX0pOworCiAgICAgICAgICAgLy8gQnVpbGQgb25lIG5vZGUtbGV2ZWwgY2Fub25pY2FsIHBhaXIgaW52ZW50b3J5IGJlZm9yZSBjaGFydC1jb3JuZXIKICAgICAgICAgICAvLyBmaWx0ZXJpbmcuIEVxdWl2YWxlbnQgZmFuIHJlY29yZHMgbWF5IGNvbnRyaWJ1dGUgcHJvdmVuYW5jZSB0byBvbmUKICAgICAgICAgICAvLyBkaXJlY3RlZCBrZXksIGJ1dCBjb25mbGljdGluZyBub3JtYWxpemVkIHNvdXJjZSBlbnRpdGllcyBvcgpAQCAtMzg2NCw5ICszOTY2LDM0IEBACiAgICAgICAgICAgICAgIGNvbnN0IGludCB0cmFuc2l0aW9uUm9vdCA9ICpjb21tb25Sb290cy5iZWdpbigpOwogICAgICAgICAgICAgICBhdXRvIFtmb3VuZCwgaW5zZXJ0ZWRdID0gY2Fub25pY2FsUGFpckludmVudG9yeS5lbXBsYWNlKAogICAgICAgICAgICAgICAgICAga2V5LCBDYW5vbmljYWxGYW5QYWlyUmVjb3Jke2tleSwgZW50aXR5S2V5LCB0cmFuc2l0aW9uUm9vdCwKLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB7ZmFuSWRlbnRpdHl9LCBjeWNsaWNXcmFwfSk7CisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAge2ZhbklkZW50aXR5fSwge30sIGZhbHNlLAorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGN5Y2xpY1dyYXB9KTsKICAgICAgICAgICAgICAgaWYgKCFpbnNlcnRlZCkgewogICAgICAgICAgICAgICAgIENhbm9uaWNhbEZhblBhaXJSZWNvcmQgJnJlY29yZCA9IGZvdW5kLT5zZWNvbmQ7CisgICAgICAgICAgICAgICAgaWYgKHJlY29yZC5leHRlcmlvcikgeworICAgICAgICAgICAgICAgICAgY29uc3QgQm91bmRhcnlTdWJzZWdtZW50V2l0bmVzcyAmc291cmNlQm91bmRhcnkgPQorICAgICAgICAgICAgICAgICAgICAgIGJvdW5kYXJ5V2l0bmVzc2VzW3N0YXRpY19jYXN0PHN0ZDo6c2l6ZV90PigKKyAgICAgICAgICAgICAgICAgICAgICAgICAgc291cmNlLmhhbGZlZGdlKV07CisgICAgICAgICAgICAgICAgICBjb25zdCBCb3VuZGFyeVN1YnNlZ21lbnRXaXRuZXNzICZ0YXJnZXRCb3VuZGFyeSA9CisgICAgICAgICAgICAgICAgICAgICAgYm91bmRhcnlXaXRuZXNzZXNbc3RhdGljX2Nhc3Q8c3RkOjpzaXplX3Q+KAorICAgICAgICAgICAgICAgICAgICAgICAgICB0YXJnZXQuaGFsZmVkZ2UpXTsKKyAgICAgICAgICAgICAgICAgIGlmICghKGtleS5pbmNvbWluZyA9PSBleHRlcmlvckluY29taW5nICYmCisgICAgICAgICAgICAgICAgICAgICAgICBrZXkuc291cmNlUmF5ID09IGV4dGVyaW9yVHdpbiAmJgorICAgICAgICAgICAgICAgICAgICAgICAga2V5LnRhcmdldCA9PSBleHRlcmlvck91dGdvaW5nKSB8fAorICAgICAgICAgICAgICAgICAgICAgICFzb3VyY2VCb3VuZGFyeS52YWxpZCB8fCAhdGFyZ2V0Qm91bmRhcnkudmFsaWQgfHwKKyAgICAgICAgICAgICAgICAgICAgICBzb3VyY2VCb3VuZGFyeS5sb29wICE9IGV4dGVyaW9yTG9vcCB8fAorICAgICAgICAgICAgICAgICAgICAgIHRhcmdldEJvdW5kYXJ5Lmxvb3AgIT0gZXh0ZXJpb3JMb29wIHx8CisgICAgICAgICAgICAgICAgICAgICAgc291cmNlQm91bmRhcnkuc2lkZSAhPSAxIHx8CisgICAgICAgICAgICAgICAgICAgICAgdGFyZ2V0Qm91bmRhcnkuc2lkZSAhPSAtMSB8fAorICAgICAgICAgICAgICAgICAgICAgIHJlY29yZC5zb3VyY2VCb3VuZGFyeUlkZW50aXR5ICE9CisgICAgICAgICAgICAgICAgICAgICAgICAgIGV4dGVyaW9yQm91bmRhcnlJZGVudGl0eSkgeworICAgICAgICAgICAgICAgICAgICByZWNvcmRfYm91bmRhcnlfZmFuX2NvbmZsaWN0KAorICAgICAgICAgICAgICAgICAgICAgICAgU3VyZmFjZUFycmFuZ2VtZW50Qm91bmRhcnlGYW5Db25mbGljdDo6CisgICAgICAgICAgICAgICAgICAgICAgICAgICAgRXh0ZXJpb3JQYWlyTWlzbWF0Y2gsCisgICAgICAgICAgICAgICAgICAgICAgICBub2RlLCBpbmNvbWluZywgc291cmNlLmhhbGZlZGdlLCB0YXJnZXQuaGFsZmVkZ2UpOworICAgICAgICAgICAgICAgICAgICBicmVhazsKKyAgICAgICAgICAgICAgICAgIH0KKyAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgaWYgKHJlY29yZC5jYW5vbmljYWxFbnRpdHlLZXkgIT0gZW50aXR5S2V5KSB7CiAgICAgICAgICAgICAgICAgICByZWNvcmRfYm91bmRhcnlfZmFuX2NvbmZsaWN0KAogICAgICAgICAgICAgICAgICAgICAgIFN1cmZhY2VBcnJhbmdlbWVudEJvdW5kYXJ5RmFuQ29uZmxpY3Q6OgpAQCAtMzkxMiw5ICs0MDM5LDEyIEBACiAgICAgICAgICAgICBicmVhazsKICAgICAgICAgICB9CiAKLSAgICAgICAgICBjb25zdCBDYW5vbmljYWxGYW5QYWlyS2V5IGV4dGVyaW9yUGFpcktleXsKLSAgICAgICAgICAgICAgZXh0ZXJpb3JJbmNvbWluZywgZXh0ZXJpb3JUd2luLCBleHRlcmlvck91dGdvaW5nfTsKLSAgICAgICAgICBpZiAoY2Fub25pY2FsUGFpckludmVudG9yeS5jb3VudChleHRlcmlvclBhaXJLZXkpICE9IDFVKSB7CisgICAgICAgICAgY29uc3QgYXV0byBleHRlcmlvclJlY29yZCA9CisgICAgICAgICAgICAgIGNhbm9uaWNhbFBhaXJJbnZlbnRvcnkuZmluZChleHRlcmlvclBhaXJLZXkpOworICAgICAgICAgIGlmIChleHRlcmlvclJlY29yZCA9PSBjYW5vbmljYWxQYWlySW52ZW50b3J5LmVuZCgpIHx8CisgICAgICAgICAgICAgICFleHRlcmlvclJlY29yZC0+c2Vjb25kLmV4dGVyaW9yIHx8CisgICAgICAgICAgICAgIGV4dGVyaW9yUmVjb3JkLT5zZWNvbmQuc291cmNlQm91bmRhcnlJZGVudGl0eSAhPQorICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JCb3VuZGFyeUlkZW50aXR5KSB7CiAgICAgICAgICAgICByZWNvcmRfYm91bmRhcnlfZmFuX2NvbmZsaWN0KAogICAgICAgICAgICAgICAgIFN1cmZhY2VBcnJhbmdlbWVudEJvdW5kYXJ5RmFuQ29uZmxpY3Q6OkV4dGVyaW9yUGFpck1pc21hdGNoLAogICAgICAgICAgICAgICAgIG5vZGUsIGV4dGVyaW9ySW5jb21pbmcsIGV4dGVyaW9yVHdpbiwgZXh0ZXJpb3JPdXRnb2luZyk7CkBAIC00MTQwLDcgKzQyNzAsNyBAQAogICAgICAgICAgICAgLy8gYW5kIHRyYW5zaXRpb24tcm9vdCBvd25lcnNoaXAgaXMga25vd24uIE5vIGV4YWN0IHByb3ZlbmFuY2UKICAgICAgICAgICAgIC8vIGlkZW50aXR5IGlzIHVzZWQgYXMgYW4gaW5kZXBlbmRlbnQgb3duZXJzaGlwIGdhdGUuCiAgICAgICAgICAgICBmb3IgKGNvbnN0IGF1dG8gJltrZXksIHJlY29yZF0gOiBjYW5vbmljYWxQYWlySW52ZW50b3J5KSB7Ci0gICAgICAgICAgICAgIGlmICghKGtleSA8IGV4dGVyaW9yUGFpcktleSkgJiYgIShleHRlcmlvclBhaXJLZXkgPCBrZXkpKSB7CisgICAgICAgICAgICAgIGlmIChyZWNvcmQuZXh0ZXJpb3IpIHsKICAgICAgICAgICAgICAgICBjb250aW51ZTsKICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICBpZiAoY2hhcnRXaXRuZXNzZXMuY291bnQoa2V5LnNvdXJjZVJheSkgPT0gMFUgfHwKQEAgLTQyMjEsNyArNDM1MSwxOCBAQAogCiAgICAgICAgICAgaW50IGV4dGVyaW9yRXhjbHVzaW9uQ291bnQgPSAwOwogICAgICAgICAgIGZvciAoY29uc3QgYXV0byAmW2tleSwgcmVjb3JkXSA6IGNhbm9uaWNhbFBhaXJJbnZlbnRvcnkpIHsKLSAgICAgICAgICAgIGlmICghKGtleSA8IGV4dGVyaW9yUGFpcktleSkgJiYgIShleHRlcmlvclBhaXJLZXkgPCBrZXkpKSB7CisgICAgICAgICAgICBpZiAocmVjb3JkLmV4dGVyaW9yKSB7CisgICAgICAgICAgICAgIGlmICghKGtleS5pbmNvbWluZyA9PSBleHRlcmlvckluY29taW5nICYmCisgICAgICAgICAgICAgICAgICAgIGtleS5zb3VyY2VSYXkgPT0gZXh0ZXJpb3JUd2luICYmCisgICAgICAgICAgICAgICAgICAgIGtleS50YXJnZXQgPT0gZXh0ZXJpb3JPdXRnb2luZykgfHwKKyAgICAgICAgICAgICAgICAgIHJlY29yZC5zb3VyY2VCb3VuZGFyeUlkZW50aXR5ICE9CisgICAgICAgICAgICAgICAgICAgICAgZXh0ZXJpb3JCb3VuZGFyeUlkZW50aXR5KSB7CisgICAgICAgICAgICAgICAgcmVjb3JkX2JvdW5kYXJ5X2Zhbl9jb25mbGljdCgKKyAgICAgICAgICAgICAgICAgICAgU3VyZmFjZUFycmFuZ2VtZW50Qm91bmRhcnlGYW5Db25mbGljdDo6CisgICAgICAgICAgICAgICAgICAgICAgICBFeHRlcmlvclBhaXJNaXNtYXRjaCwKKyAgICAgICAgICAgICAgICAgICAgbm9kZSwga2V5LmluY29taW5nLCBrZXkuc291cmNlUmF5LCBrZXkudGFyZ2V0KTsKKyAgICAgICAgICAgICAgICBicmVhazsKKyAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICArK2V4dGVyaW9yRXhjbHVzaW9uQ291bnQ7CiAgICAgICAgICAgICAgIGNvbnRpbnVlOwogICAgICAgICAgICAgfQo=
+  PATCH_SHA256: 9df5bfcb8da63a336f30c3c6a2a37f4e1803db6cb3b8f619cd9b1f99044320b8
+  PRE_CPP: 22f607ec6d2326edceb8264240b22b5a46da3083
+  PRE_HEADER: b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8
+  PRE_PHASE16: e58bceda098f7768b8a7203cca00564f82a7d831
+  PRE_MILESTONE_D: 015a9f02354a91ca07d0e0c6bf6b2632055436ae
+  POST_CPP: 3c1855ebaa6a67b1be09956a90906fc269056146
+  POST_HEADER: b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8
+  POST_PHASE16: e58bceda098f7768b8a7203cca00564f82a7d831
+  POST_MILESTONE_D: 015a9f02354a91ca07d0e0c6bf6b2632055436ae
+  BUILD_DIR: build/agent-p5-r2e12-release
+  PACKAGE_DIR: artifact
+  LOG_DIR: /tmp/p5-r2e12-logs
+  LOG: /tmp/p5-r2e12-logs/activity.log
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo 'P5-R2E12 compile-only build'
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "runner_os=$RUNNER_OS"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$LOG"
+
+      - name: Checkout exact event commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 8
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply authoritative exterior-pair patch and compile approved targets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            set +x
+            echo "exit_code=$rc"
+            echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo 'git_status_begin'
+            git status --short --branch || true
+            echo 'git_status_end'
+            df -h . || true
+            du -sh "$BUILD_DIR" "$PACKAGE_DIR" 2>/dev/null || true
+            exit "$rc"
+          }
+          trap finish EXIT
+          set -x
+
+          event_sha=$(git rev-parse HEAD)
+          test "$event_sha" = "$GITHUB_SHA"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$event_sha"
+          test -z "$(git status --porcelain=v1)"
+
+          git --version
+          cmake --version
+          ninja --version
+          c++ --version
+          python3 --version
+
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "$PRE_CPP"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "$PRE_HEADER"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "$PRE_PHASE16"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "$PRE_MILESTONE_D"
+
+          printf '%s' "$PATCH_B64" | base64 -d > /tmp/p5-r2e12.patch
+          test "$(sha256sum /tmp/p5-r2e12.patch | awk '{print $1}')" = "$PATCH_SHA256"
+          git apply --check /tmp/p5-r2e12.patch
+          git apply /tmp/p5-r2e12.patch
+          git diff --check
+          git diff --name-only | sort > /tmp/changed.txt
+          diff -u <(printf '%s\n' src/geometry/SurfaceArrangement.cpp) /tmp/changed.txt
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "$POST_CPP"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "$POST_HEADER"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "$POST_PHASE16"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "$POST_MILESTONE_D"
+
+          git rm -f .github/workflows/agent-build-p5-r2e12.yml
+          git add src/geometry/SurfaceArrangement.cpp
+          git diff --cached --check
+          git config user.name directional-build-agent
+          git config user.email directional-build-agent@users.noreply.github.com
+          git commit -m 'P5-R2E12: add normalized authoritative exterior pair [skip ci]'
+          git push origin "HEAD:$BRANCH"
+
+          source_sha=$(git rev-parse HEAD)
+          test "$(git rev-parse HEAD^)" = "$event_sha"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)" = "$source_sha"
+          test "$(git hash-object src/geometry/SurfaceArrangement.cpp)" = "$POST_CPP"
+          test "$(git hash-object include/directional/geometry/SurfaceArrangement.h)" = "$POST_HEADER"
+          test "$(git hash-object tests/SurfaceArrangementPhase16Tests.cpp)" = "$POST_PHASE16"
+          test "$(git hash-object tests/MilestoneDClosureTests.cpp)" = "$POST_MILESTONE_D"
+          test ! -e .github/workflows/agent-build-p5-r2e12.yml
+
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1 --jobs 4
+          git submodule status --recursive | tee /tmp/submodules.txt
+          test "$(wc -l < /tmp/submodules.txt)" -eq 9
+          git status --porcelain=v1 | tee /tmp/source-status.txt
+          test ! -s /tmp/source-status.txt
+
+          rm -rf "$BUILD_DIR" "$PACKAGE_DIR"
+          mkdir -p "$BUILD_DIR" "$PACKAGE_DIR"/{bin,lib,logs,metadata,source}
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            '-DCMAKE_CXX_FLAGS_RELEASE=-O2 -DNDEBUG' \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$BUILD_DIR/configure.log"
+          cmake --build "$BUILD_DIR" --target \
+            directional_core directional_pipeline \
+            directional_phase1_tests directional_benchmarks \
+            -j 4 2>&1 | tee "$BUILD_DIR/build.log"
+
+          test_bin=$(find "$BUILD_DIR" -type f -name directional_phase1_tests -perm -111 | head -1)
+          bench_bin=$(find "$BUILD_DIR" -type f -name directional_benchmarks -perm -111 | head -1)
+          test -n "$test_bin" && test -n "$bench_bin"
+          cp "$test_bin" "$bench_bin" "$PACKAGE_DIR/bin/"
+          find "$BUILD_DIR" -maxdepth 3 -type f \
+            \( -name libdirectional_core.a -o -name libdirectional_pipeline.a \) \
+            -exec cp '{}' "$PACKAGE_DIR/lib/" ';'
+          test -f "$PACKAGE_DIR/lib/libdirectional_core.a"
+          test -f "$PACKAGE_DIR/lib/libdirectional_pipeline.a"
+
+          cp "$BUILD_DIR/configure.log" "$BUILD_DIR/build.log" "$LOG" "$PACKAGE_DIR/logs/"
+          cp /tmp/submodules.txt /tmp/source-status.txt "$PACKAGE_DIR/metadata/"
+          printf '%s\n' "$source_sha" > "$PACKAGE_DIR/SOURCE_COMMIT"
+          printf '%s\n' "$event_sha" > "$PACKAGE_DIR/WORKFLOW_EVENT_COMMIT"
+          printf '%s\n' "$POST_CPP" > "$PACKAGE_DIR/metadata/source-arrangement-blob.txt"
+          printf '%s\n' "$POST_HEADER" > "$PACKAGE_DIR/metadata/header-blob.txt"
+          printf '%s\n' "$POST_PHASE16" > "$PACKAGE_DIR/metadata/phase16-test-blob.txt"
+          printf '%s\n' "$POST_MILESTONE_D" > "$PACKAGE_DIR/metadata/milestone-d-test-blob.txt"
+          printf '%s\n' "$PATCH_SHA256" > "$PACKAGE_DIR/metadata/patch-sha256.txt"
+          printf '%s\n' 'No test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.' > "$PACKAGE_DIR/metadata/EXECUTION_POLICY.txt"
+          tar --exclude=.git --exclude=external --exclude="$BUILD_DIR" --exclude="$PACKAGE_DIR" \
+            -czf "$PACKAGE_DIR/source/directional-source-$source_sha.tar.gz" .
+          cat > "$PACKAGE_DIR/metadata/build-summary.json" <<JSON
+          {"turn":"P5-R2E12","workflow_run_id":$GITHUB_RUN_ID,"workflow_event_commit":"$event_sha","source_commit":"$source_sha","configuration":"Release -O2 -DNDEBUG","targets":["directional_core","directional_pipeline","directional_phase1_tests","directional_benchmarks"],"tests_executed":false,"benchmarks_executed":false,"project_binary_executed":false}
+          JSON
+          sha256sum "$PACKAGE_DIR/bin/"* "$PACKAGE_DIR/lib/"* > "$PACKAGE_DIR/metadata/target-sha256.txt"
+          find "$PACKAGE_DIR" -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > "$PACKAGE_DIR/SHA256SUMS"
+          sha256sum -c "$PACKAGE_DIR/SHA256SUMS"
+
+      - name: Upload compiled checkpoint
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e12-github-source-linux-release
+          path: artifact
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-cell-p5-r2e12-workflow-logs-${{ github.run_id }}
+          path: /tmp/p5-r2e12-logs
+          if-no-files-found: error
+          retention-days: 30
