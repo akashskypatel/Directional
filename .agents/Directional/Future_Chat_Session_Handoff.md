@@ -9,60 +9,30 @@
 
 ## Current checkpoint
 
-P5-R2E13 authoritative boundary-witness projected exterior-ray evidence Code + Build is complete and compile-valid.
+P5-TB41 artifact-only R2E13 Test + Benchmark is complete.
 
+P5-R2E13 is **not accepted**. Runtime counts and the complete failure set are unchanged from P5-TB40, but the enhanced diagnostics identify two distinct first producers:
+
+- planar: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `3/5/4/9`, canonical pairs **3**, exterior exclusions **1**, fan-sector nodes **1**, cyclic-wrap sectors **0**;
+- interior hard rail: `BoundaryFanSectorCoverConflict / ExteriorPairMismatch(2)`, tuple `1/7/6/1`, canonical pairs **0**, exterior exclusions **0**.
+
+Each target was executed three times independently with byte-identical logs. The next turn is **P5-R2E14 two-sided exterior-root authority and chart-seam interval normalization Code + Build**. R2 remains open. Do not advance to R2F or R3.
+
+## P5-TB41 authority
+
+- exact tested source: `39b60e66d72f412c1d648ffef213beca93bd19dc`;
 - workflow event commit: `45a4c1031cccd3e814b2cf8e24209662dbfdae87`;
-- exact compiled source: `39b60e66d72f412c1d648ffef213beca93bd19dc`;
 - workflow run/job: `31064914809` / `92500525659`;
-- build artifact: `8953600942`;
-- build artifact SHA-256: `9144cde751377199a8df135ac0871e75e65c44b5d8efce07ea42a0732ae6f7d1`;
-- build artifact size: **12,295,987 bytes**;
-- log artifact: `8953601264`;
-- log artifact SHA-256: `6fd241cb97616e7a349e427f1130373d5b7e1e212eb63f56b3eea0e196e836ba`;
-- compile/link actions: **132/132**;
-- manifest: **20/20**; package files: **21**; recursive submodules: **9**; source status empty;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+- artifact: `8953600942`;
+- artifact SHA-256: `9144cde751377199a8df135ac0871e75e65c44b5d8efce07ea42a0732ae6f7d1`;
+- manifest **20/20**; package files **21**; recursive submodules **9**; staged fixtures **26**; source status empty;
+- evidence archive: `directional-p5-tb41-8953600942-evidence.zip`;
+- evidence SHA-256: `20d4f87c21c3789a1ade6eb8da84fca69b5cff6dc83bc2808bee6848bf89d825`;
+- evidence entries **140**, size **358,161 bytes**.
 
-R2E13 projects exterior chart/entity/root/loop/side authority from exact boundary witnesses before fan reconciliation. A fan identity contributes exterior provenance only when the exact directed witness occupies that projected chart and resolves to the same normalized entity/root. Unrelated memberships remain available for interior authority. Contradictions on the projected chart fail closed.
+Only packaged binaries were executed. No configure, rebuild, relink, patch, regeneration, implementation/test/fixture/validator/workflow/build change, or binary replacement occurred.
 
-The two target assertions retain their original acceptance criteria and now append deterministic boundary-fan diagnostic context on failure.
-
-The next turn is **P5-TB41 artifact-only R2E13 Test + Benchmark** using artifact `8953600942`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
-
-## Exact implementation authority
-
-Production blob:
-
-- `src/geometry/SurfaceArrangement.cpp`: `afeb0f1931ee80fdb0d617be9e5bece02fa179b6`.
-
-Focused diagnostic-test blobs:
-
-- `tests/SurfaceArrangementPhase16Tests.cpp`: `de5b7c4f3d7c53f8488bc7de5d883ac72429e894`;
-- `tests/MilestoneDClosureTests.cpp`: `1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2`.
-
-Unchanged public header:
-
-- `include/directional/geometry/SurfaceArrangement.h`: `b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8`.
-
-Patch SHA-256: `b2a068ba41b0a170d227c2320921ccc3cf6a94883803fba6b06b3a7e87947094`.
-
-## P5-R2E13 behavior
-
-1. `BoundarySubsegmentWitness` retains resolved source component and sheet.
-2. Canonical boundary-witness identity includes component and sheet.
-3. Stored and resolved boundary chart provenance must agree exactly; disagreement remains fail-closed.
-4. Exact exterior source and target witnesses project chart, normalized entity, transition root, loop, and side.
-5. Source and target projections must agree on normalized entity/root, authoritative loop, and exact `+1/-1` sides.
-6. Fan provenance is accepted only from the same projected chart with the same normalized entity/root.
-7. Unrelated fan memberships do not veto the exterior projection and remain available for independent interior pairs.
-8. A conflicting claim on the projected chart is a deterministic contradiction, not a candidate for heuristic selection.
-9. The explicit exterior record still reconciles with any generic exact-key contribution and is excluded exactly once.
-10. Pair-cover, predecessor, separator, complete-orbit, embedding, disk, Euler, orientation, area, ownership, and aggregate topology gates remain unchanged.
-
-## Last runtime baseline
-
-P5-TB40 against R2E12 remains the runtime authority:
+## Runtime results
 
 - source chart + validator: **17/17**;
 - recovery authority: **9/9**;
@@ -75,69 +45,89 @@ P5-TB40 against R2E12 remains the runtime authority:
 - Phase 18: **57/57**;
 - Phase 14–18: **235/244**;
 - Phase 20: **46/48**;
-- complete non-overlapping split inventory: **597/625**, 28 failures.
+- complete non-overlapping split inventory: **597/625**, 28 failures, exact P5-TB40 failure set.
 
-Planar and hard rail still stopped before successor publication with aggregate `BoundaryFanSectorCoverConflict`. Their R2E12 assertions did not expose the derived subtype or tuple. R2E13's non-weakening context must make the exact first remaining producer observable if the aggregate failure persists.
+The split inventory consists of **596/623**, isolated P27 matrix **0/1**, and isolated P27 bunny parameter **1/1**. A cumulative-state process again reached the P27 bunny `BEFORE_PIPELINE` marker after prior suite state and was externally terminated. This is performance/nontermination evidence only; timeout or termination is not correctness evidence.
 
-A bounded single-process full suite again stalled when P27 entered the bunny case after prior suite state. This is separate performance/nontermination evidence, not correctness evidence.
+## Direct production evidence
+
+All direct processes used backend `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy execution.
+
+- plane: five measured runs, median **0.012994 s**, deterministic lineage, `9 / 9 / 12`, `success=false` at completion/output validity;
+- multi-face seam: five runs, median **0.013283 s**, deterministic lineage, `0 / 0 / 0`, `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: five runs, median **0.020511 s**, same disposition;
+- cylinder: five runs, median **0.133303 s**, same disposition;
+- bunny run 1: **21.659158 s**, **272,052,224 B** peak, `0 / 0 / 0`;
+- bunny run 2: **21.925100 s**, **272,048,128 B** peak, identical lineage and disposition.
+
+## Source-supported next producers
+
+These are source-supported inferences from deterministic runtime evidence and the exact packaged source. Do not present them as additional emitted runtime fields.
+
+### Hard-rail exterior root authority
+
+R2E13 projects source and target boundary rays independently, then requires their transition roots to be equal before inserting the excluded exterior pair. At a boundary vertex separated by an authoritative interior hard rail, the incident boundary-side charts may correctly have distinct transition roots. The exterior continuation is source-boundary topology and should retain source-side and target-side projected roots independently.
+
+P5-R2E14 must preserve a common authoritative boundary entity/loop and exact `+1/-1` sides, reconcile each endpoint against its own chart/root, and keep non-exterior pairs on one exact common root. It must not select, merge, rank, or count roots.
+
+### Planar chart-seam interval authority
+
+Planar proves that pair inventory and explicit exterior exclusion now succeed. The remaining non-exterior pair fails `InvalidOrientedInterval` with zero wrap evidence. Generic inventory currently assigns `cyclicWrap` from raw fan-vector index, while chart resolution needs an exact circular chart-seam interval.
+
+P5-R2E14 must keep pair existence node-level and normalized. For an already-authoritative pair, chart evidence may normalize its oriented interval only when the source and target are the unique adjacent rays across the chart seam, with no third-ray intrusion and a span inside the chart wedge. Chart-local evidence must not create or select a pair.
 
 ## Retained authoritative documentation
 
-Only current and durable documents must remain under `.agents/Directional`:
+Only current and durable documents remain under `.agents/Directional`:
 
-1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E13_Code_Build_Report.md` — exact implementation and compile authority;
-3. `Milestone_G_P5_TB41_Artifact_Only_R2E13_Test_Benchmark_Plan.md` — next executable plan;
-4. `DESIGN.md` — durable design authority;
-5. `REORIENTATION_PLAN.md` — durable reorientation authority;
-6. `Surface_Cell_Backend_Remediation_Plan.md` — milestone and remediation authority;
-7. `GitHub_Workflow_Policy.md` — remote build and repository-write policy.
-
-Superseded per-turn plans, reports, closure notes, and summaries are removed after replacement. Git history and PR #8 retain historical authority.
+1. `Future_Chat_Session_Handoff.md`;
+2. `Milestone_G_P5_TB41_Artifact_Only_R2E13_Test_Benchmark_Report.md`;
+3. `Milestone_G_P5_R2E14_Two_Sided_Exterior_Root_Chart_Seam_Interval_Code_Build_Plan.md`;
+4. `DESIGN.md`;
+5. `REORIENTATION_PLAN.md`;
+6. `Surface_Cell_Backend_Remediation_Plan.md`;
+7. `GitHub_Workflow_Policy.md`.
 
 ## Retained benchmark results
 
-Only current or durable result files remain under `benchmark-results`:
+- `baseline_synthetic_grid_2.json`;
+- `p5-tb41-summary.json`.
 
-- `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e13-summary.json` — exact source/package authority and retained P5-TB40 runtime baseline.
-
-## Read first for P5-TB41
+## Read first for P5-R2E14
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E13_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB41_Artifact_Only_R2E13_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e13-summary.json`
+4. `.agents/Directional/Milestone_G_P5_TB41_Artifact_Only_R2E13_Test_Benchmark_Report.md`
+5. `.agents/Directional/Milestone_G_P5_R2E14_Two_Sided_Exterior_Root_Chart_Seam_Interval_Code_Build_Plan.md`
+6. `benchmark-results/p5-tb41-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB41 objective
+## P5-R2E14 objective
 
-1. Verify artifact `8953600942`, its exact digest, all 20 manifest entries, source/header/test blobs, fixture closure, submodules, and clean source status.
-2. Execute only packaged binaries; do not configure, rebuild, relink, patch, regenerate, or modify implementation/tests/fixtures/validators/workflows.
-3. Run planar and hard rail at least three independent times and retain the full enhanced diagnostic context.
-4. Determine whether exact boundary-witness projection now inserts and excludes one exterior record per boundary-fan node.
-5. Require all non-exterior pairs to receive exactly one authoritative chart witness with complete incoming/target cover.
-6. Determine whether planar reaches genuine wrap publication, Euler `1`, and valid aggregate topology.
-7. Determine whether hard rail reaches distinct complete-orbit roots and valid embedding/topology.
-8. Restore Phase 17 **26/26** without Phase 17 changes and preserve all accepted authority groups.
-9. Record the P27/bunny cumulative-state stall separately from correctness and use a complete split inventory if a single process does not terminate normally.
-10. Run direct analytic and bunny production processes with fallback `Fail`, source-grid recovery disabled, and no legacy execution.
-11. Produce the next Code + Build plan from the earliest remaining authoritative producer.
+1. Retain exact source and target projected roots separately for the excluded exterior pair.
+2. Permit distinct endpoint roots only when exact boundary-side chart authority proves them; do not select or merge roots.
+3. Reconcile generic exterior evidence against the corresponding endpoint chart/root/side.
+4. Keep every non-exterior pair on one exact common transition root.
+5. Preserve node-level canonical pair inventory as pair-existence authority.
+6. Normalize an existing pair's chart-seam interval from exact circular adjacency, not raw fan-vector index.
+7. Reject ambiguous seam wraps, third-ray intrusion, and spans outside the chart wedge.
+8. Preserve complete incoming/target cover, predecessor, separator, orbit, embedding, Euler, ownership, and topology gates.
+9. Add only non-weakening diagnostic context where needed.
+10. Compile exactly the four approved targets without executing a project binary.
 
-## Lessons from P5-R2E13
+## Lessons from P5-TB41
 
-- Boundary provenance must carry enough chart identity to distinguish source component and sheet before entity/root authority is projected.
-- An exact boundary witness can define ownership authority while broader fan memberships remain valid evidence for other interior relations.
-- Reconciliation means proving agreement with projected authority; it does not mean selecting a convenient subset from conflicting evidence.
-- A contradictory claim on the same projected chart is materially different from an unrelated membership on another chart.
-- Diagnostic context can be strengthened without weakening an assertion or changing its acceptance semantics.
-- Transfer-integrity failures before patch application are infrastructure failures only; correct the transport narrowly and preserve the intended patch and postimage authority.
-- The exact source commit must be pushed before compilation and packaged unchanged.
+- Improved diagnostics can prove that an upstream producer advanced even when the overall failure set is unchanged.
+- An excluded exterior continuation may need endpoint-specific chart roots; forcing one interior root can erase valid hard-rail separation.
+- Pair ownership and chart geometry are separate authorities: node-level evidence establishes the pair, while chart evidence resolves its oriented interval.
+- A wrap flag based on container position is not equivalent to exact circular adjacency on a source chart.
+- Fixture staging must be byte-identical and executable-relative before authoritative artifact-only results are recorded.
+- A complete split inventory remains correctness authority when cumulative-state execution stalls.
+- Direct `success=false` with a clean process exit remains a product failure.
 
 ## Mandatory turn hygiene and instruction preservation
 
