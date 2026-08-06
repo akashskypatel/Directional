@@ -151,9 +151,20 @@ Different wording, a new hash, a higher aggregate count caused by demotion, fast
 
 If two consecutive Code + Build turns do not materially advance the active gate, the next turn must be a design review or bounded producer replacement proof.
 
-## GitHub outage rule
+## Ordered patch-stack testing during GitHub outage
 
-While the current GitHub workflow outage persists, do not use Actions workflows for repository updates. Keep exact source-patch synchronization on project TODOs. Local artifact testing is authoritative only when artifact, source, patch, dependency, fixture, and checksum closure are verified.
+While the current GitHub workflow outage persists, do not use Actions workflows for repository updates or builds. Keep each unsynchronized source change as an immutable ordered patch layer on project TODOs.
+
+A local artifact is authoritative only when it records:
+
+- exact base source;
+- ordered patch blobs and digests;
+- expected final source blobs;
+- dependency and fixture closure;
+- build logs and artifact checksum;
+- no prohibited turn-boundary execution.
+
+After service recovery, apply and verify patch layers as separate coherent commits in order. Remove a payload only after its corresponding source state is verified.
 
 ## Preserved prohibitions
 
