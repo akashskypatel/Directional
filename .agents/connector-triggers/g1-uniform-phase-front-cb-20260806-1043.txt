@@ -1,0 +1,7 @@
+trigger_id=g1-uniform-phase-front-cb-20260806-1043
+turn=Code+Build
+active_gate=G1 uniform phase-front plane
+workflow=.github/workflows/agent-build-design-aligned-tests.yml
+workflow_commit=e05ba050d6aa9911db1200c11a667a3107b00ba3
+policy=compile-only; no tests, benchmarks, discovery, CLI, GUI, or generated binary execution
+created_utc=2026-08-06T17:43:00Z
