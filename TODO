@@ -16,7 +16,7 @@ Always advance the earliest incomplete gate in `.agents/Directional/DESIGN.md`. 
 
 ## Exact source and artifact authority
 
-The tested implementation is still represented by exact base source plus an exact version-controlled patch because the GitHub workflow outage prevented the remote apply-and-push step:
+The tested implementation is represented by exact base source plus an exact version-controlled patch because the GitHub workflow outage prevented the remote apply-and-push step:
 
 - base source: `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9`;
 - payload checkpoint: `5649cbe6b2ee353955a39db6ceb7fc0d67ee72ce`;
@@ -46,6 +46,7 @@ a4a06dc214e4a567b90ea6d87e4fef2d62a4de62  src/pipeline/RemeshPipeline.cpp
 ```
 
 - [ ] Remove the patch/build payloads only after the applied source commit and all five blobs are verified.
+- [ ] Layer the next orientation/direct-cell patch as a separate coherent source commit after the current patch is synchronized.
 
 ## Latest direct runtime result
 
