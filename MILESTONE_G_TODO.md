@@ -8,64 +8,68 @@ Last updated: 2026-08-05
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB39 artifact-only R2E11 Test + Benchmark**.
-- Next turn: **P5-R2E12 normalized authoritative exterior-pair inventory Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E12 normalized authoritative exterior-pair inventory Code + Build**.
+- Next turn: **P5-TB40 artifact-only R2E12 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB39 authority
+## P5-R2E12 compile authority
 
-- Exact tested source: `b3010a36f762bb7317f2201d94733226b418c2c0`.
-- Artifact `8950709981`, SHA-256 `012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c`.
-- Manifest **20/20**; package files **21**; recursive submodules **9**; staged fixtures **26**.
-- Evidence archive SHA-256 `ff423c6ebd77acfd16c9558f26f3dd08574c92e510fdc0eb815a7d34b8854803`, entries **169**, size **387,229 bytes**.
-- No source, test, fixture, validator, workflow, or build modification occurred.
+- Exact compiled source: `556efab8c26e012a6019e0b0a10fb847fc8e2ace`.
+- Workflow event: `50d5db4280a5008764f73e5ba0a1827ce63eab1e`.
+- Workflow run/job: `31060329035` / `92486695630`.
+- Artifact: `8951981127`, SHA-256 `7472441fb8b4f82d7e7bc5a62066a8a3db2022851f72c809bb45244bb1b996f0`.
+- Log artifact: `8951981453`, SHA-256 `5a8731736441dae7a9a869f8854178071c0588640e2a3f94139c4c917167b3a6`.
+- Manifest **20/20**; package files **21**; recursive submodules **9**; compile/link actions **132/132**.
+- Built exactly four approved targets; no project binary was executed.
 
-## P5-R2E11 runtime disposition
+## Implemented in P5-R2E12
 
-- [x] derived boundary-cover diagnostics are non-`None`, accurate, and deterministic;
-- [x] aggregate fail-closed `BoundaryFanSectorCoverConflict` is preserved;
-- [ ] planar successor publication restored — still `ExteriorPairMismatch` at `3/11/10/9`;
-- [ ] hard-rail successor publication restored — still `ExteriorPairMismatch` at `1/7/6/1`;
-- [ ] planar wrap/Euler-one topology restored;
-- [ ] hard-rail complete-orbit embedding restored;
-- [ ] Phase 17 restored — remains **20/26**;
-- [ ] R2E11 accepted — **not accepted**.
+- [x] created the exact authoritative exterior directed triple before generic pair enumeration;
+- [x] required canonical source-boundary loop identity and exact `+1/-1` side witnesses;
+- [x] normalized exterior source and target ray entity/root evidence through one shared contract;
+- [x] required each ray to have one authority and both rays to agree exactly;
+- [x] retained all agreeing fan identities as provenance;
+- [x] marked exterior authority explicitly in the canonical pair record;
+- [x] reconciled any generic exact-key contribution through entity/root/boundary agreement;
+- [x] excluded the explicit exterior record once from interior chart-witness resolution;
+- [x] retained transactional pair-cover, predecessor, hard-rail separator, and complete-orbit gates;
+- [x] left header, tests, Phase 17, P27, bunny, cylinder, FlowRep, completion, fallback/recovery, fixtures, and validators unchanged;
+- [x] compile-only gate passed;
+- [ ] runtime acceptance pending P5-TB40.
 
-## Runtime results
+## Last runtime baseline: P5-TB39
 
 - source chart + validator **17/17**;
 - recovery **9/9**;
 - feature/barrier **8/8**;
 - graph-dependent **5/6**;
 - R2 focused **13/16**;
-- Milestone D **5/7**;
-- Phase 16 **45/47**;
 - Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 14–18 **235/244**;
-- Phase 20 **46/48**;
-- complete split inventory **597/625**, 28 failures, 0 errors, 0 disabled.
+- complete split inventory **597/625**, 28 failures.
 
-Two single-process complete-suite attempts stalled in the P27 bunny case after prior suite state. This is retained as an independent nontermination/performance regression; timeout is not correctness evidence.
+Planar and hard rail failed `BoundaryFanSectorCoverConflict / ExteriorPairMismatch` before publication. P5-TB40 must establish whether the explicit exterior record removes that gate and reaches unchanged downstream topology authority.
 
-All direct analytic and bunny processes remain failed under backend `SurfaceCells`, fallback `Fail`, recovery disabled, and no legacy execution. Completed repeated runs have deterministic structural lineage.
+## Required P5-TB40 work
 
-## Required P5-R2E12 work
-
-- [ ] construct the exact authoritative exterior triple in the normalized canonical-pair inventory before chart filtering;
-- [ ] reconcile any generic fan contribution only through exact directed-key, normalized entity, root, and boundary identity agreement;
-- [ ] mark exterior authority explicitly and exclude it exactly once;
-- [ ] require a complete one-to-one incoming/target pair cover before publication;
-- [ ] preserve genuine cyclic-wrap metadata and all derived diagnostics;
-- [ ] preserve hard-rail complete-orbit root audit without bypass;
-- [ ] leave Phase 17, P27, bunny, cylinder, FlowRep, completion, fallback/recovery, fixtures, and validators unchanged;
-- [ ] compile exactly the four approved targets without executing a project binary.
+- [ ] verify artifact `8951981127` and all 20 internal manifest entries;
+- [ ] execute packaged binaries only, without configure/rebuild/relink/patch/regeneration;
+- [ ] require source-chart and validator prerequisite authority;
+- [ ] repeat planar and hard-rail diagnostics and compare their exact prior tuples;
+- [ ] require one explicit exterior pair and one exclusion per boundary-fan node;
+- [ ] determine whether planar and hard rail restore successor publication;
+- [ ] require planar positive wrap count, Euler `1`, and valid aggregate topology;
+- [ ] require distinct complete-orbit roots and valid hard-rail embedding/topology;
+- [ ] restore Phase 17 **26/26** without Phase 17 changes;
+- [ ] preserve accepted R2, recovery, feature/barrier, permutation, close-sheet, bridge/support, nested, and nonmanifold authority;
+- [ ] assess the P5-TB39 cumulative-state P27/bunny stall separately from correctness;
+- [ ] run aggregates, complete split inventory, and deterministic direct production processes under fail-closed settings;
+- [ ] produce the next plan from the earliest remaining authoritative producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E12_Normalized_Authoritative_Exterior_Pair_Code_Build_Plan.md`
-- `benchmark-results/p5-tb39-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E12_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB40_Artifact_Only_R2E12_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e12-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `MILESTONE_G_TODO.md`
