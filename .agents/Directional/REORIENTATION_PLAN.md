@@ -1,49 +1,15 @@
-# Surface-cell implementation reorientation plan
+# Surface-Cell Producer Reorientation Plan
 
-[Authoritative design](DESIGN.md)
+## Purpose
 
-## 1. Current disposition
+Keep implementation work aligned with production-ready direct cross-field surface paving. The active objective is not to improve diagnostic detail or preserve historical repair machinery; it is to implement the earliest missing constructive design contract and prove it on the ordered direct fixtures.
 
-The implementation has strong provenance, deterministic diagnostics, fail-closed semantics, source-chart infrastructure, arrangement machinery, completion infrastructure, optimization, and validation. It does not yet have a coherent phase-labelled advancing-front producer.
+## Mandatory direction control
 
-The design-aligned runtime baseline is:
-
-- plane: partial arrangement and 12 candidate quads, then completion validation failure;
-- multi-face seam: zero arrangement cells, `SideSubdivisionRepair:InvalidInputIncidence`;
-- close sheets: zero arrangement cells, `SideSubdivisionRepair:InvalidInputIncidence`;
-- cylinder: zero arrangement cells, `SideSubdivisionRepair:InvalidInputIncidence`;
-- direct acceptance: **0/4**;
-- default non-overlapping suite: **301/315**.
-
-The aggregate unit-test result is secondary. The direct analytic producer gate is authoritative.
-
-## 2. Reorientation decision
-
-Do not rewrite the entire backend. Preserve:
-
-- typed pipeline context;
-- source-face, component, and local-sheet provenance;
-- cross-field matching and singularity data;
-- source-chart transitions;
-- boundary and hard-rail authority;
-- canonical embedded identities;
-- arrangement materialization and validation;
-- transactional mutation framework;
-- strict source-authoritative validator;
-- fail-closed backend and fallback semantics.
-
-Replace or isolate the constructive core that currently asks arrangement and completion to infer missing connectivity from an overlaid trace network.
-
-The active objective is not another repair of pair-local angular intervals. It is a bounded uniform phase-front proof.
-
-## 3. Mandatory operating rule
-
-Every future agent must work from the earliest incomplete gate in `DESIGN.md`.
-
-Before modifying code, the agent must record:
+Every turn must declare:
 
 ```text
-Active gate:
+Active design gate:
 Earliest failing fixture:
 Missing design contract:
 Smallest general implementation change:
@@ -51,242 +17,89 @@ Observable material-progress condition:
 Explicitly deferred work:
 ```
 
-A change that primarily improves diagnostics, caches, counters, memory accounting, scheduler behavior, historical test coverage, or downstream repair is not permitted as the main turn objective while the active gate remains red.
+A later gate, downstream repair, performance task, or historical cleanup item cannot displace an earlier red constructive gate.
 
-If two consecutive Code + Build turns do not produce material progress at the active gate, stop the micro-fix sequence and perform a design review or bounded replacement proof.
+## Ordered gates
 
-## 4. Gate-oriented execution plan
+1. **G0 — Truthful authority**: direct `SurfaceCells`, fallback `Fail`, recovery disabled, strict `CompletedSurfaceCells` validation. Passed and continuously enforced.
+2. **G1 — Uniform phase-front plane**: authoritative lattice phase, front ownership, oriented source-attached cells, direct one-to-one quad-domain materialization. **Active.**
+3. **G2 — Cross-chart and close-sheet propagation**: seam and close-sheet cases with authoritative chart transport and no cross-sheet merging.
+4. **G3 — Periodic closure and holonomy**: cylinder closure and complete incidence.
+5. **G4 — Topology-distinct completion and singularities**.
+6. **G5 — Adaptive 2:1 transitions and hard features**.
+7. **G6 — General production geometry on `bunny_1k_random.obj`**.
+8. **G7 — Operational hardening and default-on decision**.
 
-### R0 — Preserve truthful authority
+Do not begin a blocked gate.
 
-Status: continuously enforced.
+## Current G1 evidence
 
-Requirements:
+The bounded phase-front implementation is live and deterministically consumed:
 
-- `SurfaceCells` direct acceptance uses fallback `Fail`;
-- source-grid recovery is disabled;
-- only `CompletedSurfaceCells` can satisfy success;
-- partial output and fallback output remain failures;
-- source provenance and strict validation remain authoritative.
+- baseline plane: 106 traces, 9 arrangement cells, 12 quads;
+- current plane: 352 traces, 65 arrangement cells, 409 quads;
+- current first invalid record: `completion/output-validation:FlippedFace`, cell 38, source face 41;
+- 100 strict validation failures;
+- tracing, arrangement, and completion structural hashes stable across three independent processes.
 
-No implementation turn may weaken R0 to obtain progress.
+This is material progress, not gate completion. The current producer creates authoritative four-sided cells but then sends them through generic patch completion, which expands their topology and emits flipped output.
 
-### R1 — Uniform phase-front plane proof
+## Active G1 subgate
 
-Status: **active**.
+The next implementation must establish **source-normal orientation and direct-cell materialization**:
 
-Implement first-class values:
+1. Four distinct source-attached corners.
+2. Ordered side endpoint continuity.
+3. Nonzero intrinsic signed area.
+4. Winding consistent with the authoritative source normal.
+5. Component and local-sheet consistency.
+6. Exactly one filled side or explicit exterior classification per directed front edge.
+7. Transactional whole-cycle reversal when winding is opposite.
+8. One accepted four-sided phase-front cell materializes as one intended quad-domain cell.
+9. Fail closed before completion on any orientation, incidence, route, component, or sheet inconsistency.
 
-```cpp
-struct LocalLatticeState {
-    Eigen::Vector2d phase;
-    Eigen::Vector2i latticeCoordinate;
-    int branchRotation;
-    int scaleLevel;
-};
+Arrangement may canonicalize identities and split exact crossings. It must not infer connectivity through fan-sector ranking or expand already-decided cells through generic patch completion.
 
-struct SurfaceFrontEdge {
-    SurfacePoint from;
-    SurfacePoint to;
-    int fieldFamily;
-    int advanceSign;
-    LocalLatticeState lattice;
-    int unfilledSide;
-    SourceRouteIdentity route;
-};
-```
+## Valid test maintenance
 
-Required behavior:
+Two producer tests contain obsolete expectations after the new path began succeeding on their planar inputs:
 
-1. Seed the authoritative plane boundary.
-2. Advance front edges intrinsically by one uniform target size.
-3. Construct four source-attached corners and ordered sides.
-4. Create a cell only when phase, family, orientation, ownership, and provenance agree.
-5. Classify each directed front edge as one filled side or explicit exterior.
-6. Pass already-decided cells to arrangement.
-7. Prohibit fan-sector inference on the new producer path.
+- a scaffold diagnostic test assumes production must fail;
+- a recovery test assumes recovery must run even when direct production succeeds.
 
-Exit gate:
+Correct these by using valid scenarios or by separating direct-success and recovery-only assertions. Never weaken the four direct acceptance tests or recovery validation.
 
-- plane direct acceptance passes through strict validation;
-- output origin is `CompletedSurfaceCells`;
-- output is non-empty and pure quad;
-- no fallback, recovery, post-hoc cycle decomposition, or positional merge is used.
+## Material-progress gate
 
-### R2 — Source-chart and close-sheet propagation
+The next artifact must do at least one of:
 
-Blocked by R1.
+- pass plane direct acceptance;
+- advance beyond `completion/output-validation:FlippedFace` with one-to-one cell materialization and a lower structural validation burden;
+- expose and enforce a general orientation/incidence invariant before invalid cells reach completion.
 
-Required behavior:
+A renamed diagnostic, new counter, new hash, or higher unrelated pass count is not progress.
 
-- transport branch rotation, phase, integer lattice coordinate, component, sheet, and route through authoritative source-chart transitions;
-- canonicalize equivalent edge and vertex chart representations;
-- reject missing or inconsistent transitions;
-- preserve deterministic results under source-face row and orientation permutations.
+## No-progress stop rule
 
-Exit gate:
+If the next Code + Build turn does not materially improve the orientation/direct-cell contract, the following turn must perform a bounded design review or producer replacement proof. Do not continue equivalent micro-repairs.
 
-- multi-face seam direct acceptance passes;
-- close sheets direct acceptance passes;
-- no cross-sheet capture, merge, or projection occurs.
+## Explicitly deferred
 
-### R3 — Periodic closure and holonomy
+Until G1 exits, do not make the principal objective:
 
-Blocked by R2.
+- fan-interval ranking or repair variants;
+- new diagnostic/ownership taxonomies;
+- seam, close-sheet, cylinder, torus, sphere, thin-tube, mechanical, or bunny-specific logic;
+- adaptivity or 2:1 transitions;
+- general FlowRep or patch catalogs;
+- cache, memory, scheduler, parallelism, or performance work;
+- source-grid recovery enhancement;
+- historical completion-fixture cleanup unrelated to the current compile path.
 
-Required behavior:
+## GitHub outage and source synchronization
 
-- record phase holonomy around periodic cycles;
-- reconcile compatible periodic fronts explicitly;
-- produce valid directed incidence before arrangement assigns cells;
-- classify incompatible periodic closure as a typed phase event.
+The tested source remains exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep exact five-file source synchronization on both TODO files until service recovery. While the outage persists, do not use workflows for repository updates. After recovery, apply the existing patch exactly through direct Git objects or an authenticated client and verify all expected blobs before removing the payload.
 
-Exit gate:
+## Next plan
 
-- cylinder direct acceptance passes;
-- no seam break, invalid input incidence, repeated-node cycle, or non-disk cell remains;
-- repeated runs produce identical event and structural hashes.
-
-### R4 — Topology-distinct completion
-
-Blocked by R3.
-
-Separate:
-
-```text
-PatchTopologySolver
-PatchTopologyEmbedding
-CompletedPatchValidator
-CompletedPatchAssembler
-```
-
-Candidate identity must include adjacency, strip routing, boundary-to-interior incidence, pole valences, and generated source support. Rotations and reflections canonicalize to one candidate.
-
-Exit gate:
-
-- supported 3–6-sided patches complete through genuinely distinct topology;
-- required valence-3/5 structures are intentional;
-- no generic center fan or rotation-only candidate budget is used;
-- prescribed sphere and torus/reduced topology cases pass.
-
-### R5 — Adaptive scale and feature structure
-
-Blocked by R4.
-
-Required behavior:
-
-- dyadic target-size levels;
-- adjacent levels differ by at most one;
-- named 2:1 pure-quad transition events;
-- hard features are structural rails from seeding onward;
-- transition edits preserve index and provenance.
-
-Exit gate:
-
-- thin bent tube and mechanical fixtures pass;
-- no T-junctions, hanging nodes, feature loss, or opposite-sheet jumps.
-
-### R6 — General production geometry
-
-Blocked by R5.
-
-Required behavior:
-
-- run the complete direct path on `bunny_1k_random.obj`;
-- support supplied and generated cross fields as defined by the production matrix;
-- preserve topology, provenance, feature rails, and deterministic output.
-
-Exit gate:
-
-- bunny direct acceptance passes repeatedly without fallback or recovery.
-
-### R7 — Production hardening
-
-Blocked by R6.
-
-Only now resume:
-
-- cache reuse and incremental recomputation;
-- component parallelism;
-- spatial indices;
-- memory compaction and telemetry;
-- exact-predicate hardening;
-- general performance optimization;
-- full production benchmark and default-on decision.
-
-## 5. Active-turn scope
-
-The next Code + Build turn implements R1 only.
-
-Allowed:
-
-- first-class phase/lattice/front types;
-- deterministic serialization and hashing required to make them authoritative;
-- source-chart transport used by the R1 proof;
-- uniform front seeding and advancement;
-- bounded R1 event handling;
-- arrangement entry that consumes already-decided cells;
-- minimal test-target movement required to compile the design-aligned suite.
-
-Deferred:
-
-- general test-hygiene cleanup that does not block R1 compilation;
-- fan-interval micro-repair;
-- additional ownership diagnostics;
-- general completion variants;
-- FlowRep expansion;
-- adaptivity and features beyond plane boundaries;
-- cylinder, torus, sphere, thin tube, mechanical, or bunny implementation;
-- cache, memory, scheduler, and performance work.
-
-## 6. Material-progress review
-
-At the end of every Test + Benchmark turn, answer in order:
-
-1. Did the active direct fixture pass?
-2. Did the first invalid stage move later because a missing design contract was implemented?
-3. Is the new state first-class and consumed by the next constructive stage?
-4. Did the change eliminate a general ambiguity rather than rename it?
-5. Does the next turn remain on the same gate, or has the exit gate been achieved?
-
-A “no” to all first four questions means the turn did not materially advance the design.
-
-## 7. Prohibited detours
-
-Until plane, seam, close sheets, and cylinder pass, do not make these the active objective:
-
-- pair-local fan identity ranking, interval projection, or exclusion variants;
-- post-hoc cycle splitting, cell merging, or ownership selection;
-- new diagnostic taxonomies for already represented failures;
-- cache and recomputation accounting;
-- memory and scheduler optimization;
-- broad historical milestone restoration;
-- complex-fixture benchmarking;
-- fallback or recovery enhancement.
-
-Permanent prohibitions:
-
-- validator weakening;
-- fallback/recovery substitution;
-- fixture, ID, count, or geometry special cases;
-- arbitrary subset search;
-- count/order/frequency ownership selection;
-- positional merging across unrelated sheets;
-- synthetic counters or Euler correction;
-- timeout-as-correctness.
-
-## 8. Final disposition
-
-The implementation has a valuable validated shell but an underdeveloped constructive heart. The project must now prove the design in causal order:
-
-```text
-uniform phase-front
-→ cross-chart and sheet-safe propagation
-→ periodic holonomy
-→ topology-distinct completion
-→ adaptive features and transitions
-→ general production geometry
-→ operational hardening
-```
-
-No later concern may displace the earliest red gate.
+`.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`
