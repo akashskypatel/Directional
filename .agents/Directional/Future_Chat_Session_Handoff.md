@@ -1,96 +1,80 @@
 # Directional Surface-Cell Quadrangulation — Session Handoff
 
-**Updated:** 2026-08-05  
-**Repository:** `akashskypatel/Directional`  
-**Base:** `surface_cell_quad`  
-**Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`  
-**Draft PR:** #8 — keep open, draft, and unmerged  
+**Updated:** 2026-08-05
+**Repository:** `akashskypatel/Directional`
+**Base:** `surface_cell_quad`
+**Working branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`
+**Draft PR:** #8 — keep open, draft, and unmerged
 **Review policy:** `never`
 
 ## Current checkpoint
 
-P5-R2E11 normalized chart-entity ownership and pair-first witness reconciliation Code + Build is complete and compile-valid.
+P5-TB39 artifact-only R2E11 Test + Benchmark is complete. R2E11 is not accepted.
 
-- workflow event commit: `5e96846a55acc8fd085836db886fcddbb5cd1dac`;
-- exact compiled source: `b3010a36f762bb7317f2201d94733226b418c2c0`;
-- workflow run/job: `31056835353` / `92476050630`;
-- build artifact: `8950709981`;
-- build artifact SHA-256: `012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c`;
-- log artifact: `8950710191`;
-- log artifact SHA-256: `06061e79fd11fdbc8683f8f01e4405f1248455782029e082df38771263fbffb6`;
-- compile/link actions: **132/132**;
-- manifest: **20/20**; package files: **21**; recursive submodules: **9**;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+- exact tested source: `b3010a36f762bb7317f2201d94733226b418c2c0`;
+- artifact: `8950709981`, SHA-256 `012a7782726b849ece1aa72286ae2ae9eb98b6a803106813b87caf348939a31c`;
+- integrity: manifest **20/20**, package files **21**, submodules **9**, staged fixtures **26**;
+- evidence: `directional-p5-tb39-8950709981-evidence.zip`, SHA-256 `ff423c6ebd77acfd16c9558f26f3dd08574c92e510fdc0eb815a7d34b8854803`, entries **169**, size **387,229 bytes**.
 
-R2E11 applies one normalized canonical entity contract end to end, resolves chart evidence pair-first, preserves exact identities as provenance, reconciles semantically identical candidates before uniqueness, and records derived boundary-cover conflict subreasons while retaining the aggregate fail-closed failure. The exact exterior and hard-rail complete-orbit authority remain intact. Phase 16, Milestone D, and Phase 17 tests are unchanged.
+R2E11's derived diagnostic is valid and deterministic, but both target fixtures still reject before publication:
 
-The next turn is **P5-TB39 artifact-only R2E11 Test + Benchmark** using artifact `8950709981`. Runtime acceptance is not yet claimed. R2 remains open. Do not advance to R2F or R3.
+- planar: aggregate `BoundaryFanSectorCoverConflict`, derived `ExteriorPairMismatch`, tuple `3/11/10/9`;
+- hard rail: same aggregate/derived failure, tuple `1/7/6/1`.
 
-## Last runtime baseline
+The complete split inventory is **597/625** with the same 28 failures as P5-TB38; Phase 17 remains **20/26**. Two single-process full-suite attempts stalled when P27 entered the bunny case after prior suite state. Preserve this as independent nontermination/performance evidence; never treat timeout as correctness.
 
-The latest runtime authority remains P5-TB38 against R2E10:
+The next turn is **P5-R2E12 normalized authoritative exterior-pair inventory Code + Build**. R2 remains open. Do not advance to R2F or R3.
 
-- source chart + validator: **17/17**;
-- recovery authority: **9/9**;
-- feature/barrier: **8/8**;
-- graph-dependent: **5/6**, bunny only;
-- R2 focused: **13/16**;
-- Milestone D: **5/7**;
-- Phase 16: **45/47**;
-- Phase 17: **20/26**;
-- Phase 18: **57/57**;
-- Phase 14–18: **235/244**;
-- Phase 20: **46/48**;
-- complete suite: **597/625**, 28 failures, XML **72.587 s**, wall **72.60 s**, maximum RSS **281,456 KiB**.
+## Current runtime authority
 
-At P5-TB38, planar and hard rail both failed `BoundaryFanSectorCoverConflict` before successor publication. The new derived diagnostics have not yet been executed.
+- source chart + validator **17/17**;
+- recovery **9/9**;
+- feature/barrier **8/8**;
+- graph-dependent **5/6**;
+- R2 focused **13/16**;
+- Milestone D **5/7**;
+- Phase 16 **45/47**;
+- Phase 17 **20/26**;
+- Phase 18 **57/57**;
+- Phase 14–18 **235/244**;
+- Phase 20 **46/48**;
+- complete split inventory **597/625**, 28 failures.
+
+All direct analytic and completed bunny runs report `success=false` under backend `SurfaceCells`, fallback `Fail`, source-grid recovery disabled, and no legacy execution. Completed repeated runs retain deterministic structural lineage.
 
 ## Retained authoritative documentation
 
-Only current, durable documentation is retained under `.agents/Directional`:
-
 1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E11_Code_Build_Report.md` — exact implementation and compile authority;
-3. `Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md` — next executable plan;
-4. `DESIGN.md` — durable design authority;
-5. `REORIENTATION_PLAN.md` — durable reorientation authority;
-6. `Surface_Cell_Backend_Remediation_Plan.md` — milestone and remediation authority;
-7. `GitHub_Workflow_Policy.md` — remote build and repository-write policy.
-
-Superseded per-turn plans, reports, closure notes, and evidence indexes are removed after replacement. Git history and PR #8 retain historical authority.
+2. `Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Report.md` — latest runtime authority;
+3. `Milestone_G_P5_R2E12_Normalized_Authoritative_Exterior_Pair_Code_Build_Plan.md` — next executable plan;
+4. `DESIGN.md`;
+5. `REORIENTATION_PLAN.md`;
+6. `Surface_Cell_Backend_Remediation_Plan.md`;
+7. `GitHub_Workflow_Policy.md`.
 
 ## Retained benchmark results
 
-Only current or durable result files are retained under `benchmark-results`:
-
 - `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e11-summary.json` — exact compiled-source/package authority and retained P5-TB38 runtime baseline.
+- `p5-tb39-summary.json` — current machine-readable runtime authority.
 
-## Read first for P5-TB39
+## Read first for P5-R2E12
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E11_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e11-summary.json`
+4. `.agents/Directional/Milestone_G_P5_TB39_Artifact_Only_R2E11_Test_Benchmark_Report.md`
+5. `.agents/Directional/Milestone_G_P5_R2E12_Normalized_Authoritative_Exterior_Pair_Code_Build_Plan.md`
+6. `benchmark-results/p5-tb39-summary.json`
 7. `.agents/Directional/REORIENTATION_PLAN.md`
 8. `.agents/Directional/DESIGN.md`
 9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 10. `.agents/Directional/GitHub_Workflow_Policy.md`
 
-## P5-TB39 objective
+## P5-R2E12 objective
 
-1. Download artifact `8950709981` and verify the archive digest plus all 20 manifest entries.
-2. Execute only packaged binaries; do not configure, rebuild, relink, patch, regenerate, or modify source/tests/fixtures/validators/workflows.
-3. Validate that every boundary-cover rejection retains `BoundaryFanSectorCoverConflict` and supplies an accurate derived `boundaryFanConflict` subreason.
-4. Determine whether planar and hard-rail successor publication is restored; record aggregate and derived failures otherwise.
-5. Prove planar positive normalized pair inventory, exact exterior exclusion, positive wrap count, Euler-one valid disk topology, and unchanged aggregate validation.
-6. Prove one complete authoritative chart root per hard-rail bounded orbit, distinct opposite roots, valid embedding, and valid aggregate topology.
-7. Restore Phase 17 **26/26** without Phase 17 changes and preserve all accepted R2, recovery, feature/barrier, permutation, close-sheet, bridge/support, nested, and nonmanifold authority.
-8. Run milestone/phase aggregates, complete suite, and deterministic direct production processes with fallback `Fail`, source-grid recovery disabled, and no legacy execution.
-9. Produce the next Code + Build plan from the earliest remaining authoritative producer.
+Construct and reconcile the exact independently proven exterior triple as one normalized canonical pair before interior chart-corner witness resolution. Require exact boundary identity, normalized source entity, transition root, incoming/target coverage, and one exterior exclusion. Preserve transactional publication, genuine wrap evidence, hard-rail complete-orbit root validation, all unchanged validators, and the full prohibition set.
+
+Do not include the independent P27/bunny nontermination investigation, Phase 17, cylinder, FlowRep, completion, fallback/recovery, or validator changes in R2E12.
 
 ## Lessons from P5-R2E8
 
@@ -139,9 +123,16 @@ Only current or durable result files are retained under `benchmark-results`:
 
 - One normalization contract must govern both canonical pair construction and chart witness admission. Exact provenance variants cannot become a second ownership gate after normalized equivalence is proven.
 - Witness uniqueness is meaningful only after all agreeing provenance contributions are reconciled at the canonical pair level.
-- Derived failure subreasons can improve diagnosis without weakening fail-closed semantics when they are recorded at the same rejection site as the aggregate failure.
-- A compile-only turn may package test and benchmark executables but must not execute them; their mere existence is not runtime acceptance evidence.
-- Artifact manifests generated from a package directory may retain an `artifact/` path prefix. Verify them against the matching package-root path rather than rewriting the recorded manifest.
+- Derived failure subreasons improve diagnosis without weakening fail-closed semantics when recorded at the same rejection site as the aggregate failure.
+- Compile-only package authority is not runtime acceptance evidence.
+
+## Lessons from P5-TB39
+
+- The independently proven exterior relation must be a first-class record in the normalized pair inventory; checking for it after generic fan-pair construction is too late when no generic identity creates that exact triple.
+- Exterior authority and interior chart-corner authority are different. The unbounded side must be excluded exactly once without requiring an interior face-corner witness.
+- A derived diagnostic is accepted only when it preserves the aggregate failure and deterministically identifies the exact rejected record; R2E11 satisfies this diagnostic requirement even though product topology remains failed.
+- A complete split test inventory can establish the failure set, but it cannot erase a reproducible single-process nontermination regression. Record both independently.
+- Intermittent or cumulative bunny stalls are performance/nontermination evidence, not correctness evidence; completed independent processes remain the authority for output and structural determinism.
 
 ## Mandatory turn hygiene and instruction preservation
 
