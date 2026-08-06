@@ -116,6 +116,7 @@ micro-repair merely because a demoted historical test remains available.
 
 ## Artifact location
 
-GitHub Actions artifact URL:
-
-`https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`
+- build artifact:
+  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`;
+- compile logs:
+  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081997`.
