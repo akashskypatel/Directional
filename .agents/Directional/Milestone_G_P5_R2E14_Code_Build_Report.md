@@ -21,6 +21,7 @@ R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
 - workflow event commit: `c35fd7a4ca44946a233be4e18f175d4aa88bc03d`;
 - exact compiled source: `2a8b9870b8e3854ae77a7e4eeae6da29a7899968`;
+- documentation checkpoint: `2e807e9fb9ad33dc6a4c183a9b1096a3716c2398`;
 - workflow run/job: `31077891125` / `92539833523`;
 - build artifact: `8958361834`;
 - build artifact name: `surface-cell-p5-r2e14-github-source-linux-release`;
