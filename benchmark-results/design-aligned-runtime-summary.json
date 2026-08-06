@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "turn": "design-aligned-artifact-only-test-benchmark",
   "artifactId": 8974081923,
   "artifactSha256": "4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de",
@@ -7,6 +7,16 @@
   "workflowEventCommit": "b412c8f78a7b597b204b52efbb64afc9899d6517",
   "workflowRun": 31118705108,
   "workflowJob": 92674426941,
+  "directionControl": {
+    "activeGate": "G1 Uniform phase-front plane",
+    "earliestFailingFixture": "plane",
+    "missingDesignContract": "authoritative local lattice phase and directed front ownership",
+    "nextTurn": "Design-Aligned Uniform Phase-Front Code + Build",
+    "blockedGates": ["G2", "G3", "G4", "G5", "G6", "G7"],
+    "fanIntervalMicroRepairDeferred": true,
+    "performanceHardeningDeferred": true,
+    "twoCodeTurnsWithoutMaterialProgressTriggerDesignReview": true
+  },
   "package": {
     "internalChecksumsPassed": 49,
     "internalChecksumsTotal": 49,
@@ -79,7 +89,8 @@
       "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
       "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
       "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
-    ]
+    ],
+    "disposition": "deferred unless required to compile the active G1 targets"
   },
   "testsRebuilt": false,
   "sourceModifiedDuringExecution": false
