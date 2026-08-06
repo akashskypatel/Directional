@@ -164,10 +164,3 @@ ctest --test-dir build --output-on-failure \
 A turn must report the direct acceptance result separately from unit-test totals.
 A higher pass count caused by demoting duplicated or obsolete tests is not an
 implementation success claim.
-
-## Current compile authority
-
-The design-aligned targets are compile-valid at source checkpoint
-`e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` in artifact `8974081923`.
-Runtime acceptance is intentionally deferred to the artifact-only plan in
-`.agents/Directional/Design_Aligned_Artifact_Only_Test_Benchmark_Plan.md`.
