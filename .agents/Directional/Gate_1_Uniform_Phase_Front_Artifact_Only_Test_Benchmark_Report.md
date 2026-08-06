@@ -14,6 +14,8 @@
 - Remote applied-source commit: pending while the GitHub workflow/write path is unavailable
 - Package closure: five executables, two static libraries, 26 fixtures
 
+The exact five-file source synchronization remains on `TODO` and `MILESTONE_G_TODO.md`. No workflow may be used for that synchronization while the outage persists.
+
 ## Direct acceptance
 
 | Fixture | Result | Traces | Arrangement cells | Completed quads | Earliest authoritative failure |
@@ -29,10 +31,10 @@ All four requested and executed `SurfaceCells`, attempted no fallback, used no s
 
 - Previous baseline: 106 traces, 9 arrangement cells, 12 completed quads, 15 completion-validation failures.
 - Gate 1 patch: **352 traces, 65 arrangement cells, 409 completed quads, 100 validation failures**.
-- The first invalid producer record is now `completion/output-validation:FlippedFace`, cell 38, source face 41.
-- The phase-front tracing hash, arrangement hash, and completion hash are identical across all three independent benchmark processes.
-- This proves the new phase-front state is live and consumed by arrangement and completion, but the emitted cell orientation/incidence is not yet production-valid.
-- The next Code + Build turn must correct orientation and direct-cell materialization; it must not add more diagnostics or route the already-decided cells through generic patch expansion that turns 65 cells into 409 quads.
+- The first invalid producer record is `completion/output-validation:FlippedFace`, cell 38, source face 41.
+- The phase-front tracing hash, arrangement hash, completion hash, and structural counts are identical across all three independent benchmark processes.
+- This proves the new phase-front state is live and consumed by arrangement and completion, but the emitted cell orientation/incidence is not production-valid.
+- The next Code + Build turn must correct orientation and direct-cell materialization; it must not add more diagnostics or route already-decided cells through generic patch expansion that turns 65 cells into 409 quads.
 
 ## Default-suite result
 
@@ -73,6 +75,6 @@ Proceed with **Gate 1 Phase-Front Orientation and Direct-Cell Materialization Co
 5. Fail closed on orientation, incidence, route, component, or sheet inconsistency.
 6. Correct the two stale producer tests without weakening direct acceptance or recovery validation.
 7. Compile only; execute no tests or benchmarks.
-8. Keep exact five-file remote source synchronization on the TODO until the GitHub outage is resolved.
+8. Keep the exact existing five-file remote source synchronization on the TODO until the GitHub outage is resolved, then layer the orientation/direct-cell changes as a separate coherent commit.
 
 Gate 1 remains open.
