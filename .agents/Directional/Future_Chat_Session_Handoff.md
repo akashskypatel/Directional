@@ -74,7 +74,7 @@ The **Gate 1 Uniform Phase-Front Artifact-Only Test + Benchmark** turn is comple
 
 Do not call `5649cbe6...` the implementation commit. It contains the payload checkpoint, not the applied five source files.
 
-### Required final source blobs
+### Required Layer 1 source blobs
 
 ```text
 a1ff3fa4c97af4f1fe55baa475c7e83c48f655f9  include/directional/geometry/SurfaceCellTracing.h
@@ -84,7 +84,7 @@ a2eaa6008a0fbb4ad9dc12d16ce0820ee940ac67  src/geometry/SurfaceArrangement.cpp
 a4a06dc214e4a567b90ea6d87e4fef2d62a4de62  src/pipeline/RemeshPipeline.cpp
 ```
 
-When GitHub service recovers, apply the existing patch exactly and accept the source commit only when all five blobs match. Do not regenerate, approximately reproduce, or silently alter the patch.
+When GitHub service recovers, apply Layer 1 exactly and accept its source commit only when all five blobs match. Do not regenerate, approximately reproduce, or silently alter the patch.
 
 ## Direct acceptance result
 
@@ -142,16 +142,27 @@ Required implementation direction:
 
 The next artifact must either pass the plane or materially advance beyond `completion/output-validation:FlippedFace` with one-to-one direct-cell materialization and fewer structural validation failures. A new diagnostic alone is not progress.
 
-## Remote source synchronization backlog
+## Ordered source synchronization backlog during outage
 
-The GitHub outage is still active for this project workflow path. Do not use workflows for repository updates while it persists.
+The GitHub outage is still active for this project workflow path. Do not use workflows for repository updates or builds while it persists.
 
-- Keep the exact current patch payload versioned.
-- Keep the five-blob synchronization task on `TODO` and `MILESTONE_G_TODO.md`.
-- Keep the next orientation/direct-cell implementation as a separate versioned patch while the outage persists.
-- After service recovery, use direct Git objects or an authenticated local client to apply and verify the current five-file patch first.
-- Apply the orientation/direct-cell patch as a separate coherent source commit second.
-- Verify every referenced source blob and build authority before removing either payload.
+### Layer 1 — current tested phase-front patch
+
+- Keep the exact existing patch immutable and versioned.
+- Keep its five-blob synchronization task on both TODO files.
+- After recovery, apply it through direct Git objects or an authenticated local client and verify every expected blob.
+
+### Layer 2 — next orientation/direct-cell patch
+
+- Reconstruct Layer 1 exactly from the recorded base and patch.
+- Implement orientation/direct-cell changes as a separate incremental patch.
+- Record Layer 2 digest, expected final blobs, local build artifact, logs, and dependency closure.
+- Apply Layer 2 as a separate coherent source commit only after Layer 1 is synchronized and verified.
+
+### Cleanup
+
+- Preserve every unsynchronized patch layer in order.
+- Remove a payload only after its corresponding source commit, expected blobs, and build authority are verified.
 
 ## Current authoritative documents
 
@@ -207,8 +218,8 @@ These requirements apply to every Code + Build, Test + Benchmark, optional Revie
 4. Immediately after the artifact and logs are verified, remove bounded workflows, triggers, and payloads no longer required.
 5. Final branch state must contain only approved durable workflows and no stale trigger or generated build artifact.
 6. Do not remove a durable dependency explicitly consumed by an approved retained workflow.
-7. Retain each exact Gate 1 patch/build payload only until its remote source commit and expected blobs are committed and verified; then remove that payload.
-8. While the current outage persists, do not create, trigger, or use GitHub Actions workflows for repository updates.
+7. Retain every exact Gate 1 patch/build payload until its corresponding remote source commit, expected blobs, and build authority are committed and verified; then remove that payload.
+8. While the current outage persists, do not create, trigger, or use GitHub Actions workflows for repository updates or builds.
 
 ### Documentation and result cleanup
 
