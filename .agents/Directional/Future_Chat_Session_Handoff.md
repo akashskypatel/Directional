@@ -17,7 +17,7 @@ P5-TB42 artifact-only R2E14 Test + Benchmark is complete. P5-R2E14 is **not acce
 - evidence archive: `directional-p5-tb42-8958361834-evidence.zip`;
 - evidence SHA-256: `41a2a7b58cc16ac96944a796a67d6a42ec00559b86a6cdb6991e0e9b04500fa3`;
 - evidence files: **214**;
-- current documentation checkpoint: `cf6ba68b478e9fdfaeabce0a428ff9afd5f9abd0`.
+- report/summary transition checkpoint: `cf6ba68b478e9fdfaeabce0a428ff9afd5f9abd0`.
 
 Only packaged binaries were executed. No configure, rebuild, relink, regeneration, patch, binary replacement, or implementation/test/fixture/validator/workflow/build change occurred.
 
