@@ -69,8 +69,9 @@ Keep this open until GitHub service recovery:
 - [ ] apply and commit the exact existing Gate 1 five-file patch;
 - [ ] verify each resulting blob against `TODO`;
 - [ ] do not use a workflow while the outage persists;
-- [ ] keep the exact patch payload versioned until synchronization is complete;
-- [ ] layer the orientation/direct-cell changes as a separate coherent patch/commit;
+- [ ] keep the exact current patch payload versioned until synchronization is complete;
+- [ ] keep the next orientation/direct-cell implementation as a separate versioned patch during the outage;
+- [ ] after current-patch synchronization, apply the orientation/direct-cell patch as a separate coherent commit and verify it;
 - [ ] remove payloads only after every referenced source state is committed and verified.
 
 ## Gate order
