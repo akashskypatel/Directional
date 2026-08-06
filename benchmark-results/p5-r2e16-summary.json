@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "turn": "P5-R2E16",
+  "date": "2026-08-06",
+  "status": "compile_valid_runtime_pending",
+  "r2e16Accepted": null,
+  "authority": {
+    "workflow_event_commit": "a882dec6321ae632578b40aca6282015ac5284d2",
+    "source_commit": "9db5531913195b255ea4c86ad50f609772527604",
+    "workflow_run_id": 31110167386,
+    "workflow_job_id": 92645562024,
+    "artifact_id": 8971571147,
+    "artifact_name": "surface-cell-p5-r2e16-github-source-linux-release",
+    "artifact_sha256": "a0f18f8f4d544f8dd8e1a0f3ebb2b558188beed485294019c68f56ab2f4c2da3",
+    "artifact_size_bytes": 12343344,
+    "log_artifact_id": 8971571865,
+    "log_artifact_name": "surface-cell-p5-r2e16-workflow-logs-31110167386",
+    "log_artifact_sha256": "4b2404a68368ae7eef3445f8c1db7c43ef8b05fcbb929a7768ea20b270d16358",
+    "log_artifact_size_bytes": 5803,
+    "configuration": "Release -O2 -DNDEBUG",
+    "manifest_verified": "20/20",
+    "package_files": 21,
+    "recursive_submodules": 9,
+    "fixture_input_closure": "26/26",
+    "source_status_empty": true,
+    "compile_link_actions": "132/132"
+  },
+  "blobs": {
+    "surface_arrangement": "ed26133b36673be28f70e91ea3e281c4cdd85441",
+    "header": "43484706abcc54cf68e5d3ec7092487d07e0cf8c",
+    "phase16_test": "7f2dbddd3e45ee98d5ac37bfe18b7970f41a6d06",
+    "milestone_d_test": "6887608b5aea173d6e6b5eaaee60150c4db17924"
+  },
+  "targets": {
+    "directional_benchmarks_sha256": "c61fac7e13f9b8d3ef40a0052d69d85c074fcbea67e7047144632170d0d81f05",
+    "directional_phase1_tests_sha256": "253d24019700e0477d55ba9f0411b291f31533620b539b51a51c47e18732e45e",
+    "libdirectional_core_sha256": "bde7b4b3759168e5499a6ca409cca0034f5ea638b1969c40206058af1ff77973",
+    "libdirectional_pipeline_sha256": "79463fe011b6715732e47f0eefa585d73f3a239529c7fe5ec151c02267d62795"
+  },
+  "patch": {
+    "decoded_sha256": "c8f281c966c7a2fcb102c8079b2ff4cc3b460ca5b0d94c978104dd5fc954f47c",
+    "files_changed": [
+      "include/directional/geometry/SurfaceArrangement.h",
+      "src/geometry/SurfaceArrangement.cpp",
+      "tests/MilestoneDClosureTests.cpp",
+      "tests/SurfaceArrangementPhase16Tests.cpp"
+    ]
+  },
+  "implementation": {
+    "node_level_pair_authority_preserved": true,
+    "two_sided_exterior_authority_preserved": true,
+    "non_exterior_common_root_required": true,
+    "complete_record_fan_identities_required": true,
+    "identity_selection_used": false,
+    "arbitrary_subset_search_used": false,
+    "pair_local_ray_union_from_all_exact_identities": true,
+    "unrelated_identity_intrusion_excluded": true,
+    "all_identities_must_reconcile": true,
+    "lifted_order_remains_interval_authority": true,
+    "deterministic_interval_failure_subtype_added": true,
+    "diagnostic_context_added": true,
+    "publication_and_topology_gates_unchanged": true
+  },
+  "execution": {
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "custom_inputs_executed": false,
+    "project_binary_executed": false,
+    "help_list_discovery_executed": false,
+    "cli_executed": false,
+    "gui_executed": false
+  },
+  "non_authoritative_staging_attempts": [
+    {
+      "workflow_run_id": 31109651905,
+      "event_commit": "12473a926ba7963de085329d40f83dfd68255a80",
+      "classification": "missing_patch_payload_at_turn_file_closure_gate",
+      "patch_decoded": false,
+      "source_commit_created": false,
+      "build_executed": false,
+      "runtime_executed": false
+    },
+    {
+      "workflow_run_id": 31109796879,
+      "event_commit": "9da04dcf5f3851bb4dc2015c0c077fb8ef6c62a3",
+      "classification": "missing_patch_payload_at_turn_file_closure_gate",
+      "patch_decoded": false,
+      "source_commit_created": false,
+      "build_executed": false,
+      "runtime_executed": false
+    }
+  ],
+  "runtime_baseline": {
+    "authority_turn": "P5-TB43",
+    "source_chart_validator": "17/17",
+    "recovery_authority": "9/9",
+    "feature_barrier": "8/8",
+    "graph_dependent": "5/6",
+    "r2_focused": "13/16",
+    "milestone_d": "5/7",
+    "phase16": "45/47",
+    "phase17": "20/26",
+    "phase18": "57/57",
+    "phase14_18": "235/244",
+    "phase20": "46/48",
+    "complete_inventory": "597/625",
+    "failures": 28,
+    "planar_first_failure": "BoundaryFanSectorCoverConflict/InvalidOrientedInterval(8) tuple 3/5/4/9",
+    "hard_rail_first_failure": "BoundaryFanSectorCoverConflict/InvalidOrientedInterval(8) tuple 1/5/4/1"
+  },
+  "next_turn": "P5-TB44 artifact-only R2E16 Test + Benchmark",
+  "review_policy": "never",
+  "r2_status": "open"
+}

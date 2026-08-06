@@ -8,50 +8,44 @@ Last updated: 2026-08-06
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **P5-TB43 artifact-only R2E15 Test + Benchmark**.
-- Next turn: **P5-R2E16 Pair-Local Authoritative Fan-Chart Interval Projection Code + Build**.
-- R2 remains open. Do not advance to R2F or R3.
+- Completed turn: **P5-R2E16 Pair-Local Authoritative Fan-Chart Interval Projection Code + Build**.
+- Next turn: **P5-TB44 artifact-only R2E16 Test + Benchmark**.
+- R2 remains open. Do not advance to R2F or R3 from compile evidence.
 
-## P5-TB43 runtime disposition
+## P5-R2E16 compile disposition
 
-- [x] exact artifact `8965975937` verified;
-- [x] outer SHA-256 `2ea192b2be7496aa104948171d509d0f422b63afcf4ce296d4b35c60e2a28315` verified;
-- [x] internal manifest **20/20** verified;
-- [x] exact source/event commits and source/header/test blobs verified;
-- [x] recursive submodules **9**, source status empty, executable-relative fixtures **26/26**;
-- [x] packaged binaries only; no configure, rebuild, relink, patch, regeneration, or binary replacement;
-- [x] source chart + validator **17/17**;
-- [x] recovery authority **9/9**;
-- [x] feature/barrier authority **8/8**;
-- [x] focused planar and hard-rail targets run three independent times each with byte-identical logs;
-- [x] one normal complete 625-test process completed;
-- [x] direct plane, multi-face seam, close-sheet, cylinder, and bunny processes executed under fail-closed settings;
-- [ ] P5-R2E15 runtime acceptance — **rejected**.
+- [x] retained node-level canonical pair existence and exact normalized entity/root ownership;
+- [x] retained R2E14 endpoint-specific exterior chart/root/side authority;
+- [x] retained one exact common transition root for every non-exterior pair;
+- [x] required the complete deduplicated `record.fanIdentities` set for each pair;
+- [x] projected interval evidence from the union of every exact recorded identity;
+- [x] used no identity ranking, single-identity choice, or arbitrary subset search;
+- [x] required all identities to reconcile on chart, entity, root, lifted interval, and turn classification;
+- [x] excluded unrelated identities from pair-local adjacency and third-ray intrusion while preserving their independent authority;
+- [x] retained immediate lifted adjacency, positive span, wedge bounds, exact turn difference, and third-ray checks;
+- [x] added deterministic non-weakening interval failure subtype/context;
+- [x] modified only approved source/header/two-target-test scope;
+- [x] exact source pushed before compilation;
+- [x] compile/link **132/132** in Release `-O2 -DNDEBUG`;
+- [x] built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
+- [x] artifact outer digests and internal manifest **20/20** verified;
+- [x] exact source/header/test blobs, source status, nine submodules, and 26 fixture/input files verified;
+- [x] no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary executed;
+- [ ] runtime acceptance pending P5-TB44.
 
-## Focused deterministic failures
+## Compile authority
 
-### Planar
+- workflow event commit: `a882dec6321ae632578b40aca6282015ac5284d2`;
+- exact compiled source: `9db5531913195b255ea4c86ad50f609772527604`;
+- workflow run/job: `31110167386` / `92645562024`;
+- artifact `8971571147`, SHA-256 `a0f18f8f4d544f8dd8e1a0f3ebb2b558188beed485294019c68f56ab2f4c2da3`, size **12,343,344 bytes**;
+- log artifact `8971571865`, SHA-256 `4b2404a68368ae7eef3445f8c1db7c43ef8b05fcbb929a7768ea20b270d16358`, size **5,803 bytes**;
+- manifest **20/20**; package files **21**; recursive submodules **9**; fixture/input closure **26/26**; source status empty.
 
-- aggregate: `BoundaryFanSectorCoverConflict`;
-- derived: `InvalidOrientedInterval(8)`;
-- tuple: `3/5/4/9`;
-- canonical pairs: **3**;
-- exterior exclusions: **1**;
-- cyclic-wrap sectors: **0**;
-- three-run log SHA-256: `3498659bc601e18794fc90fe2d3b87349f66e4c172d9f57a9312b9d049887ade`;
-- unchanged from P5-TB42; successor/predecessor, wrap, Euler-one, and topology gates not reached.
+## Last runtime baseline: P5-TB43
 
-### Interior hard rail
-
-- aggregate: `BoundaryFanSectorCoverConflict`;
-- derived: `InvalidOrientedInterval(8)`;
-- tuple: `1/5/4/1`;
-- publication counters: **0**;
-- three-run log SHA-256: `fc7c65f89c71d707f7cf2df8873ec28147788d6b203307f39b0150194819f5cf`;
-- unchanged from P5-TB42; exterior, separator, roots, bounded-orbit, and topology gates not reached.
-
-## Aggregate results
-
+- planar: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `3/5/4/9`, three canonical pairs, one exterior exclusion, zero wraps;
+- hard rail: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `1/5/4/1`, zero publication counters;
 - source chart + validator **17/17**;
 - recovery **9/9**;
 - feature/barrier **8/8**;
@@ -63,55 +57,32 @@ Last updated: 2026-08-06
 - Phase 18 **57/57**;
 - Phase 14–18 **235/244**;
 - Phase 20 **46/48**;
-- complete suite **597/625**, 28 failures, 0 errors, 0 disabled;
-- exact failure inventory unchanged: 0 closed, 0 new.
+- complete suite **597/625**, 28 failures.
 
-Full-suite authority: **75.894 s** XML, **1:15.90** wall, **279,568 KiB** maximum RSS.
+## Required P5-TB44 work
 
-Direct production remains `success=false`, fail-closed, and structurally deterministic for all measured plane, multi-face seam, close-sheet, cylinder, and `bunny_1k_random.obj` processes. No fallback, legacy, or source-grid recovery path was used.
-
-## Source-supported next producer
-
-The following is an inference from exact source and deterministic runtime evidence:
-
-- R2E15 removed raw-angle interval ordering but did not change either focused failure or tuple;
-- current interval resolution still uses one node-wide same-chart ray inventory assembled from all fan identities;
-- it does not project interval geometry from every exact identity in `record.fanIdentities` for the pair;
-- unrelated fan memberships can therefore affect adjacency or third-ray checks for a pair they do not own;
-- current diagnostics collapse interval subtypes into `InvalidOrientedInterval`, so R2E16 must add deterministic non-weakening subtype/context.
-
-## Required P5-R2E16 work
-
-- [ ] retain node-level canonical pair existence and exact normalized entity/root ownership;
-- [ ] retain R2E14 endpoint-specific exterior authority;
-- [ ] retain one exact common root for every non-exterior pair;
-- [ ] project interval evidence from the union of **every** exact identity in `record.fanIdentities`;
-- [ ] do not choose one identity or arbitrary subset;
-- [ ] require all contributing identities to reconcile to the same lifted interval and turn classification;
-- [ ] prevent unrelated identities from intruding while retaining them for their own pairs;
-- [ ] fail closed on missing, ambiguous, incomplete, or contradictory identity evidence;
-- [ ] expose deterministic first interval-rejection subtype and exact chart/entity/root/position/angle/turn/wedge context;
-- [ ] preserve complete cover, predecessor, exterior, hard-rail, bounded-orbit, embedding, Euler, ownership, and aggregate-topology gates;
-- [ ] modify only approved source/header/two-target-test scope;
-- [ ] compile exactly the four approved targets in Release `-O2 -DNDEBUG`;
-- [ ] execute no project binary, test, benchmark, custom input, help/list/discovery command, CLI, or GUI;
-- [ ] package and verify exact source/build/log authority;
-- [ ] prepare P5-TB44 artifact-only R2E16 validation plan.
+- [ ] verify exact artifact, outer digest, internal manifest, source/header/test blobs, submodules, fixtures, and source status;
+- [ ] execute packaged binaries only without configure, rebuild, relink, patch, or regeneration;
+- [ ] require accepted source-chart/validator, recovery, and feature/barrier prerequisites;
+- [ ] run planar and hard rail at least three independent times with deterministic subtype/context;
+- [ ] prove complete exact-identity reconciliation without identity or subset selection;
+- [ ] prove unrelated identities do not enter pair-local interval geometry;
+- [ ] require planar progression through successor/predecessor, one genuine wrap when required, Euler `1`, and valid topology;
+- [ ] require hard-rail progression through exterior, separator, roots, bounded orbits, and valid topology;
+- [ ] restore Phase 17 **26/26** naturally;
+- [ ] preserve accepted focused and aggregate authority;
+- [ ] run one complete single-process suite and complete split inventory if necessary;
+- [ ] run direct production cases under fail-closed settings;
+- [ ] produce the next plan from the earliest remaining authoritative producer.
 
 ## Current authority
 
-- `.agents/Directional/Milestone_G_P5_TB43_Artifact_Only_R2E15_Test_Benchmark_Report.md`
-- `.agents/Directional/Milestone_G_P5_R2E16_Pair_Local_Authoritative_Fan_Chart_Interval_Projection_Code_Build_Plan.md`
-- `benchmark-results/p5-tb43-summary.json`
+- `.agents/Directional/Milestone_G_P5_R2E16_Code_Build_Report.md`
+- `.agents/Directional/Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md`
+- `benchmark-results/p5-r2e16-summary.json`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - durable design, reorientation, remediation, and workflow-policy documents
 - `MILESTONE_G_TODO.md`
-
-Evidence archive:
-
-- `directional-p5-tb43-8965975937-evidence.zip`;
-- SHA-256 `a905452fc0061344b21b61aba386be4c8084c1919a0b5398145f0c19dc5ec3b5`;
-- **296** entries, **474,775 bytes**.
 
 Every completed turn ends with a new top-level PR #8 handoff comment after all documentation and PR metadata writes. That comment is the final repository write.
 
