@@ -159,7 +159,8 @@ jobs:
             /tmp/testing-strategy-blob.txt \
             /tmp/handoff-blob.txt \
             "$ARTIFACT_DIR/metadata/"
-          git status --porcelain=v1 > "$ARTIFACT_DIR/metadata/source-status.txt"
+          git status --porcelain=v1 --untracked-files=no \
+            > "$ARTIFACT_DIR/metadata/source-status.txt"
           test ! -s "$ARTIFACT_DIR/metadata/source-status.txt"
 
           printf '%s\n' "$SOURCE_COMMIT" > "$ARTIFACT_DIR/SOURCE_COMMIT"
@@ -177,9 +178,12 @@ jobs:
           {"turn":"design-aligned-test-suite-code-build","workflow_run":"$GITHUB_RUN_ID","workflow_event_commit":"$GITHUB_SHA","source_commit":"$SOURCE_COMMIT","configuration":"Release -O2 -DNDEBUG, static","targets":["directional_core","directional_pipeline","directional_compiled_api_tests","directional_surface_cell_producer_tests","directional_surface_cell_completion_tests","directional_surface_cell_validation_tests","directional_benchmarks"],"gtest_discovery_mode":"PRE_TEST","tests_executed":false,"benchmarks_executed":false,"project_binary_executed":false}
           JSON
 
-          find "$ARTIFACT_DIR" -type f ! -name SHA256SUMS -print0 \
-            | sort -z | xargs -0 sha256sum > "$ARTIFACT_DIR/SHA256SUMS"
-          (cd "$ARTIFACT_DIR" && sha256sum -c SHA256SUMS)
+          (
+            cd "$ARTIFACT_DIR"
+            find . -type f ! -name SHA256SUMS -print0 \
+              | sort -z | xargs -0 sha256sum > SHA256SUMS
+            sha256sum -c SHA256SUMS
+          )
 
       - name: Upload compile artifact
         uses: actions/upload-artifact@v4
