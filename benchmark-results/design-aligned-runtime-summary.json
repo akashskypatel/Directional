@@ -15,7 +15,8 @@
     "baseCommit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
     "patchGitBlob": "aa18d454877ccf40d16f71f173fdaf765f5f1086",
     "uncompressedPatchSha256": "48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7",
-    "remoteImplementationCommit": "pending GitHub outage"
+    "remoteImplementationCommit": "pending GitHub outage",
+    "orientationPatchMustBeLayeredSeparately": true
   },
   "directionControl": {
     "activeGate": "G1 Uniform phase-front plane",
