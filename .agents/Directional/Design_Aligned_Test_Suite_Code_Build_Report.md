@@ -74,14 +74,17 @@ fixture closure beside the packaged binaries.
 9. Verified configure/build logs contain no GoogleTest execution/listing markers
    and no benchmark-result output.
 
-## Non-authoritative attempt
+## Non-authoritative attempts
 
-Run `31118196069`, job `92672936612`, also compiled and linked all 112 actions,
-but failed after compilation because its packaging check treated the newly
-created artifact directory as an untracked source change. It uploaded only log
-artifact `8974043605`. That attempt is not package authority. The packaging check
-was corrected without changing source, tests, fixtures, libraries, or target
-selection.
+- Run `31117694687` remained queued and was cancelled by the corrected bounded
+  workflow's concurrency policy before source checkout or compilation.
+- Run `31118196069`, job `92672936612`, compiled and linked all 112 actions but
+  failed after compilation because its packaging check treated the newly
+  created artifact directory as an untracked source change. It uploaded only
+  log artifact `8974043605`.
+
+Neither attempt is package authority. Packaging was corrected without changing
+source, tests, fixtures, libraries, or target selection.
 
 ## Runtime status
 
