@@ -104,17 +104,25 @@ GitHub Actions remains unavailable for this project workflow path. Build locally
 
 Do not use a workflow for source application, build, or repository updates while the outage persists.
 
-## Remote synchronization backlog
+## Layered patch authority during outage
 
-The current exact Gate 1 patch remains pending on `TODO` and `MILESTONE_G_TODO.md` until GitHub service recovery. Do not modify or replace it while implementing the next incremental patch.
+The current exact Gate 1 patch remains pending on `TODO` and `MILESTONE_G_TODO.md` until GitHub service recovery. Do not modify or replace it while implementing the next change.
+
+For this next Code + Build turn:
+
+1. reconstruct the current tested source from the exact base and existing patch;
+2. implement orientation/direct-cell changes on top;
+3. produce a **separate** versioned patch containing only the incremental change;
+4. record its base authority, digest, expected output blobs, build artifact, and logs;
+5. keep both patches on the synchronization backlog.
 
 After recovery:
 
 1. apply and commit the current exact five-file patch through direct Git objects or an authenticated local client;
 2. verify all five expected Git blobs;
-3. layer the orientation/direct-materialization patch as a separate coherent commit;
-4. verify its source and build authority;
-5. remove payload files only after all referenced source state is committed and verified.
+3. apply the orientation/direct-materialization patch as a separate coherent commit;
+4. verify its expected output blobs and build authority;
+5. remove each payload only after its corresponding source commit is verified.
 
 ## Exit criteria
 
@@ -124,7 +132,7 @@ The Code + Build turn is complete only when:
 - accepted four-sided cells bypass generic patch expansion;
 - all seven targets compile and link;
 - no generated binary executes;
-- exact source and artifact evidence is packaged;
+- exact layered source and artifact evidence is packaged;
 - the next artifact-only plan tests plane first.
 
 Gate 1 is not complete until direct plane acceptance passes strict validation with non-empty pure-quad `CompletedSurfaceCells` output and no fallback/recovery.
