@@ -1,0 +1,92 @@
+{
+  "turn": "P5-R2E13",
+  "date": "2026-08-05",
+  "turn_type": "Code + Build",
+  "branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "base": "surface_cell_quad",
+  "review_policy": "never",
+  "disposition": "compile-valid; runtime acceptance pending P5-TB41",
+  "source_authority": {
+    "workflow_event_commit": "45a4c1031cccd3e814b2cf8e24209662dbfdae87",
+    "exact_compiled_source": "39b60e66d72f412c1d648ffef213beca93bd19dc",
+    "workflow_run": 31064914809,
+    "workflow_job": 92500525659,
+    "source_arrangement_blob": "afeb0f1931ee80fdb0d617be9e5bece02fa179b6",
+    "header_blob": "b9ed2d969b7de2d4df9639d53ff2e9b35e3475d8",
+    "phase16_test_blob": "de5b7c4f3d7c53f8488bc7de5d883ac72429e894",
+    "milestone_d_test_blob": "1625b8139a9da8e2a6cfddd1bb026ae69ba47ed2",
+    "patch_sha256": "b2a068ba41b0a170d227c2320921ccc3cf6a94883803fba6b06b3a7e87947094"
+  },
+  "build_artifact": {
+    "id": 8953600942,
+    "name": "surface-cell-p5-r2e13-github-source-linux-release",
+    "sha256": "9144cde751377199a8df135ac0871e75e65c44b5d8efce07ea42a0732ae6f7d1",
+    "size_bytes": 12295987,
+    "manifest_entries_verified": 20,
+    "package_files_including_manifest": 21,
+    "recursive_submodules": 9,
+    "source_status_empty": true
+  },
+  "log_artifact": {
+    "id": 8953601264,
+    "name": "surface-cell-p5-r2e13-workflow-logs-31064914809",
+    "sha256": "6fd241cb97616e7a349e427f1130373d5b7e1e212eb63f56b3eea0e196e836ba",
+    "size_bytes": 5806
+  },
+  "compile_gate": {
+    "configuration": "Release -O2 -DNDEBUG",
+    "generator": "Ninja",
+    "compiler": "GNU C++ 13.3.0",
+    "compile_link_actions_completed": 132,
+    "compile_link_actions_total": 132,
+    "targets": [
+      "directional_core",
+      "directional_pipeline",
+      "directional_phase1_tests",
+      "directional_benchmarks"
+    ],
+    "tests_executed": false,
+    "benchmarks_executed": false,
+    "project_binary_executed": false
+  },
+  "implementation": {
+    "production_files": [
+      "src/geometry/SurfaceArrangement.cpp"
+    ],
+    "diagnostic_test_files": [
+      "tests/SurfaceArrangementPhase16Tests.cpp",
+      "tests/MilestoneDClosureTests.cpp"
+    ],
+    "public_header_changed": false,
+    "boundary_witness_retains_component_sheet": true,
+    "exterior_authority_projected_from_boundary_witness": true,
+    "fan_provenance_reconciled_against_projection": true,
+    "unrelated_memberships_preserved_for_interior_authority": true,
+    "contradictory_projected_chart_claims_fail_closed": true,
+    "acceptance_assertions_weakened": false
+  },
+  "last_runtime_baseline": {
+    "turn": "P5-TB40",
+    "exact_tested_source": "556efab8c26e012a6019e0b0a10fb847fc8e2ace",
+    "source_chart_validator": "17/17",
+    "recovery": "9/9",
+    "feature_barrier": "8/8",
+    "graph_dependent": "5/6",
+    "r2_focused": "13/16",
+    "milestone_d": "5/7",
+    "phase16": "45/47",
+    "phase17": "20/26",
+    "phase18": "57/57",
+    "phase14_18": "235/244",
+    "phase20": "46/48",
+    "complete_split_inventory": "597/625",
+    "failures": 28,
+    "p27_bunny_cumulative_state_stall": true
+  },
+  "next_turn": {
+    "name": "P5-TB41 artifact-only R2E13 Test + Benchmark",
+    "artifact_id": 8953600942,
+    "rebuild_forbidden": true,
+    "r2_remains_open": true
+  }
+}
