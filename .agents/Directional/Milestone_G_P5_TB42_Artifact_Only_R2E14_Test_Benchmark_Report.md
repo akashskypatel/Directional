@@ -203,6 +203,11 @@ Chart-local evidence must continue to resolve geometry only after canonical pair
 
 The archive contains artifact integrity records, source/test blob verification, submodule and fixture closure, machine context, exact filters, raw focused/group/full logs, XML, timing/RSS, process exit and progress evidence, direct benchmark JSON and logs, deterministic hashes, source excerpts, the complete failure inventory, and the machine-readable summary.
 
+## Documentation authority
+
+- documentation transition parent: `5f68180187e0f2a6afd3eb617d7e85a5329d70e8`;
+- machine-readable summary finalization commit: `aba267bc1b211c8b6144ce6e03998e86d2fc07d1`.
+
 ## Next turn
 
 Execute **P5-R2E15 chart-local lifted interval authority Code + Build**.
