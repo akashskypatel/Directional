@@ -117,7 +117,7 @@ This is material architectural progress because first-class phase-front state is
 Two new producer failures are stale expectations:
 
 1. `AdaptiveTargetSizePhase12.SurfaceCellScaffoldPopulatesSizeDiagnostics` assumes the scaffold must fail, but the new tiny planar path succeeds.
-2. `SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture` assumes recovery must run even when direct SurfaceCells succeeds. Replace it with a true recovery-only fixture or accept direct validated output while retaining separate recovery coverage.
+2. `SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture` assumes recovery must run even when direct SurfaceCells succeeds. Replace it with a true recovery-only fixture or separate direct-success and recovery-only assertions.
 
 The ten completion failures are unchanged from the prior artifact and remain downstream/historical fixture work. They must not displace the active Gate 1 objective.
 
@@ -150,7 +150,8 @@ The GitHub outage is still active for this project workflow path. Do not use wor
 - Keep the five-blob synchronization task on `TODO` and `MILESTONE_G_TODO.md`.
 - Use direct Git objects or an authenticated local client after service recovery.
 - Verify all five blobs before calling synchronization complete.
-- Remove patch/build payloads only after verified source synchronization.
+- Layer the orientation/direct-cell changes as a separate coherent patch/commit.
+- Remove payload files only after every referenced source state is committed and verified.
 
 ## Current authoritative documents
 
