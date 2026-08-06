@@ -27,6 +27,8 @@ Compile and package authority:
 - workflow event commit: `b412c8f78a7b597b204b52efbb64afc9899d6517`;
 - workflow run/job: `31118705108` / `92674426941`;
 - build artifact: `8974081923`;
+- artifact location:
+  `https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`;
 - build artifact SHA-256:
   `4166325a2f38fa17d05d0d7e71cb147760a1e5208a6e971f60c35665bf3671de`;
 - build artifact size: **15,128,734 bytes**;
