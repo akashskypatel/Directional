@@ -7,6 +7,7 @@
   "authority": {
     "workflow_event_commit": "c35fd7a4ca44946a233be4e18f175d4aa88bc03d",
     "source_commit": "2a8b9870b8e3854ae77a7e4eeae6da29a7899968",
+    "documentation_checkpoint": "5a776a84eb4b41ec1698e4245e4a4c1e9694c0a1",
     "workflow_run_id": 31077891125,
     "workflow_job_id": 92539833523,
     "artifact_id": 8958361834,
