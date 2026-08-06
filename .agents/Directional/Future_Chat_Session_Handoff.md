@@ -9,111 +9,139 @@
 
 ## Current checkpoint
 
-P5-R2E16 Pair-Local Authoritative Fan-Chart Interval Projection Code + Build is complete and compile-valid.
+The surface-cell test suite has been reviewed and realigned with
+`.agents/Directional/DESIGN.md`.
 
-Runtime acceptance is not claimed. **R2 remains open. Do not advance to R2F or R3.**
+Current branch head at handoff preparation:
 
-Compile authority:
+- `d629733c5e3a759e7b68678232b6210016384c91`
 
-- workflow event commit: `a882dec6321ae632578b40aca6282015ac5284d2`;
-- exact compiled source: `9db5531913195b255ea4c86ad50f609772527604`;
-- workflow run/job: `31110167386` / `92645562024`;
-- build artifact: `8971571147`, SHA-256 `a0f18f8f4d544f8dd8e1a0f3ebb2b558188beed485294019c68f56ab2f4c2da3`, size **12,343,344 bytes**;
-- log artifact: `8971571865`, SHA-256 `4b2404a68368ae7eef3445f8c1db7c43ef8b05fcbb929a7768ea20b270d16358`, size **5,803 bytes**;
-- compile/link actions **132/132**;
-- manifest **20/20**; package files **21**; recursive submodules **9**; fixture/input closure **26/26**; source status empty;
-- built exactly `directional_core`, `directional_pipeline`, `directional_phase1_tests`, and `directional_benchmarks`;
-- no test, benchmark, custom input, help/list/discovery command, CLI, GUI, or generated project binary was executed.
+The previous default suite mixed the direct surface-paving backend with legacy
+mixed-integer integration tests, historical milestone closure tests, detailed
+diagnostic/memory accounting tests, and duplicated translation units across
+multiple CTest executables. It could therefore report a high aggregate pass
+count while every direct production fixture still failed.
 
-P5-R2E16 retains node-level canonical pair ownership, exact normalized entity, one common non-exterior root, and R2E14 two-sided exterior authority. Interval geometry now uses the union of every exact identity recorded in `record.fanIdentities`; all identities must reconcile, unrelated identities cannot intrude, and no identity ranking or arbitrary subset search is used. A deterministic non-weakening interval failure subtype/context is available to P5-TB44.
+The default test configuration now contains only four authoritative targets:
 
-The next turn is **P5-TB44 artifact-only R2E16 Test + Benchmark** using artifact `8971571147`. The authoritative plan is:
+1. `directional_compiled_api_tests`;
+2. `directional_surface_cell_producer_tests`;
+3. `directional_surface_cell_completion_tests`;
+4. `directional_surface_cell_validation_tests`.
 
-`.agents/Directional/Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md`
+The direct producer gate now explicitly requires direct, source-authoritative,
+pure-quad `CompletedSurfaceCells` output on:
 
-## Exact implementation authority
+```text
+plane
+→ multi-face seam
+→ close sheets
+→ cylinder
+```
 
-- `src/geometry/SurfaceArrangement.cpp`: `ed26133b36673be28f70e91ea3e281c4cdd85441`;
-- `include/directional/geometry/SurfaceArrangement.h`: `43484706abcc54cf68e5d3ec7092487d07e0cf8c`;
-- `tests/SurfaceArrangementPhase16Tests.cpp`: `7f2dbddd3e45ee98d5ac37bfe18b7970f41a6d06`;
-- `tests/MilestoneDClosureTests.cpp`: `6887608b5aea173d6e6b5eaaee60150c4db17924`;
-- decoded patch SHA-256: `c8f281c966c7a2fcb102c8079b2ff4cc3b460ca5b0d94c978104dd5fc954f47c`.
+All four cases use `SurfaceCells`, fallback `Fail`, source-grid recovery
+disabled, and optional skeleton guidance disabled. These acceptance tests are
+expected to expose the current producer failure; they must not be weakened or
+made to pass through fallback, recovery, synthetic fixtures, or diagnostic-only
+success.
 
-## Last runtime baseline: P5-TB43
+Historical, legacy-integration, and optional-guidance tests remain available
+through separate default-off CMake options. No test source was deleted solely
+to improve the pass count.
 
-- planar: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `3/5/4/9`, three canonical pairs, one exterior exclusion, zero wraps;
-- hard rail: `BoundaryFanSectorCoverConflict / InvalidOrientedInterval(8)`, tuple `1/5/4/1`, zero publication counters;
-- source chart + validator **17/17**;
-- recovery authority **9/9**;
-- feature/barrier **8/8**;
-- graph-dependent **5/6**;
-- R2 focused **13/16**;
-- Milestone D **5/7**;
-- Phase 16 **45/47**;
-- Phase 17 **20/26**;
-- Phase 18 **57/57**;
-- Phase 14–18 **235/244**;
-- Phase 20 **46/48**;
-- complete suite **597/625**, 28 failures, 0 errors, 0 disabled.
+## Files changed
 
-## Retained authoritative documentation
+- `CMakeLists.txt` — delegates test configuration to the design-aligned module;
+- `cmake/DirectionalTests.cmake` — defines default and opt-in test groups;
+- `tests/SurfaceCellDesignAcceptanceTests.cpp` — four direct producer gates;
+- `tests/TESTING_STRATEGY.md` — authoritative test-selection and validity rules.
 
-Only current and durable documents must remain under `.agents/Directional`:
+## Verification status
 
-1. `Future_Chat_Session_Handoff.md` — this live entry point;
-2. `Milestone_G_P5_R2E16_Code_Build_Report.md` — implementation and compile authority;
-3. `Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md` — next executable plan;
-4. `DESIGN.md`;
-5. `REORIENTATION_PLAN.md`;
-6. `Surface_Cell_Backend_Remediation_Plan.md`;
-7. `GitHub_Workflow_Policy.md`.
+This review turn performed repository inspection and static source validation
+only. No CMake configure, compile, test, benchmark, CLI, GUI, or generated
+project binary was executed. Compile validity and runtime results are therefore
+**not claimed**.
 
-Superseded per-turn plans, reports, closure notes, and summaries are removed after their replacements are verified. Git history and PR #8 retain historical authority.
+The old R2E16 artifact `8971571147` remains valid only as historical evidence
+for source commit `9db5531913195b255ea4c86ad50f609772527604`. It does not contain
+the realigned test suite and must not be used to claim current branch-head test
+authority.
 
-## Retained benchmark results
+## Next authoritative turn
 
-- `baseline_synthetic_grid_2.json` — durable baseline;
-- `p5-r2e16-summary.json` — exact source/package authority and retained P5-TB43 runtime baseline.
+The next turn is a **Code + Build compile-only turn** for the test-suite
+realignment.
 
-## Read first for P5-TB44
+Build exactly:
+
+```text
+directional_compiled_api_tests
+directional_surface_cell_producer_tests
+directional_surface_cell_completion_tests
+directional_surface_cell_validation_tests
+```
+
+Requirements:
+
+1. Configure with `DIRECTIONAL_BUILD_TESTS=ON`.
+2. Keep `DIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF`.
+3. Keep `DIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF`.
+4. Keep `DIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF`.
+5. Compile and link only; execute no test, benchmark, discovery/listing,
+   generated project binary, CLI, or GUI.
+6. Package the four executables, required runtime libraries, source snapshot,
+   complete benchmark-fixture closure, checksums, and full workflow logs.
+7. If compilation fails, make only the minimum test/CMake correction required;
+   do not change production implementation in that turn.
+
+After a compile-valid artifact exists, perform an artifact-only Test + Benchmark
+turn:
+
+1. Run the four direct design acceptance cases first and report them separately.
+2. Run the remaining default producer, completion, validation, and API tests.
+3. Do not count demoted test removal as implementation progress.
+4. Do not run legacy or historical suites unless a specific failure requires
+   targeted comparison.
+5. Preserve the first authoritative direct producer failure and use it to plan
+   the uniform phase-front producer; do not resume fan-interval micro-repair
+   merely because a detailed historical test still exists.
+
+## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. `.agents/Directional/Future_Chat_Session_Handoff.md`
-4. `.agents/Directional/Milestone_G_P5_R2E16_Code_Build_Report.md`
-5. `.agents/Directional/Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md`
-6. `benchmark-results/p5-r2e16-summary.json`
-7. `.agents/Directional/REORIENTATION_PLAN.md`
-8. `.agents/Directional/DESIGN.md`
-9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-10. `.agents/Directional/GitHub_Workflow_Policy.md`
-11. `turn-based-coding-agent/SKILL.md` and Test + Benchmark/testing-integrity/status/handoff/GitHub connector references.
+4. `tests/TESTING_STRATEGY.md`
+5. `.agents/Directional/DESIGN.md`
+6. `.agents/Directional/REORIENTATION_PLAN.md`
+7. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+8. `.agents/Directional/GitHub_Workflow_Policy.md`
+9. `turn-based-coding-agent/SKILL.md` and the relevant Code + Build or Test +
+   Benchmark references.
 
-## P5-TB44 first actions
+## Durable lessons
 
-1. Inspect `.github/workflows`, temporary trigger locations, `.agents/Directional/patches`, and generated artifacts; final branch should contain only the durable source-snapshot workflow and no payload directory.
-2. Download artifact `8971571147` through the GitHub connector and verify outer SHA-256 `a0f18f8f4d544f8dd8e1a0f3ebb2b558188beed485294019c68f56ab2f4c2da3`.
-3. Verify all internal manifest entries, exact source/event commits, four production/header/test blobs, empty source status, nine recursive submodules, required binaries/libraries, and 26 fixture/input files.
-4. Extract into an arbitrary clean directory and execute only packaged binaries; do not configure, compile, relink, patch, or regenerate.
-5. Run source-chart/validator prerequisites first.
-6. Run planar and hard rail in at least three independent processes, retaining the exact interval subtype/context and deterministic log hashes.
-7. Apply the exact gates in `.agents/Directional/Milestone_G_P5_TB44_Artifact_Only_R2E16_Test_Benchmark_Plan.md`.
-8. Run one normal single-process complete suite; if it does not complete, preserve process evidence and use a complete non-overlapping split inventory.
-9. Produce the next Code + Build plan from the first authoritative remaining producer; review remains skipped.
-
-## Lessons from P5-R2E16
-
-- Pair-local projection is the complete union of every exact identity recorded on the pair; it is not identity choice or subset search.
-- A ray belonging only to another exact fan identity must remain available for its own pair but cannot become an interval intruder for this pair.
-- Multiple identities contributing the same ray must agree exactly on chart, lifted angle, turn, and provenance.
-- Diagnostic detail must classify the first failure without changing the existing aggregate acceptance gate.
-- Two workflow runs (`31109651905`, `31109796879`) correctly stopped at the turn-file closure gate because the payload had not yet landed. They created no source commit and executed no build or runtime command.
-- Stage and verify the payload commit before changing the unique workflow trigger path. A workflow-only trigger commit is not evidence that the payload exists.
-- Use only successful run `31110167386`, event `a882dec6321ae632578b40aca6282015ac5284d2`, and source `9db5531913195b255ea4c86ad50f609772527604` as P5-R2E16 authority.
+- A cross field supplies orientation but not authoritative lattice phase or
+  connectivity.
+- Arrangement and extraction tests remain necessary, but they cannot substitute
+  for a phase-labelled advancing-front producer.
+- A high aggregate pass count is misleading when plane, seam, close-sheet, and
+  cylinder direct acceptance all fail.
+- Diagnostic strings, counters, hashes, cache layouts, memory inventories, and
+  milestone numbers are secondary observability contracts, not the primary
+  production gate.
+- Legacy MIQ/integration tests remain valid for the legacy backend but do not
+  establish direct `SurfaceCells` correctness.
+- QEx-style sanitation, FlowRep simplification, completion, optimization, and
+  topology cleanup are downstream of a coherent producer.
+- Tests must reject fallback and source-grid recovery as substitutes for direct
+  surface-paving output.
 
 ## Mandatory turn hygiene and instruction preservation
 
-These requirements apply to every Code + Build, Test + Benchmark, optional Review, and documentation-maintenance turn.
+These requirements apply to every Code + Build, Test + Benchmark, optional
+Review, and documentation-maintenance turn.
 
 ### Workflow and temporary payload cleanup
 
@@ -142,7 +170,10 @@ These requirements apply to every Code + Build, Test + Benchmark, optional Revie
 
 ## End-of-turn requirement
 
-Every completed Code + Build, Test + Benchmark, optional Review, or documentation-maintenance turn ends with a **new top-level PR #8 comment** after all documentation and PR metadata updates. That comment must be the final repository write.
+Every completed Code + Build, Test + Benchmark, optional Review, or
+documentation-maintenance turn ends with a **new top-level PR #8 comment** after
+all documentation and PR metadata updates. That comment must be the final
+repository write.
 
 ## Preserved prohibitions
 
