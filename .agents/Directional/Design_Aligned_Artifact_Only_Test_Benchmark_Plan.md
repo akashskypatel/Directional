@@ -113,3 +113,9 @@ Produce a concise runtime summary containing:
 The next implementation plan must follow `DESIGN.md`, `REORIENTATION_PLAN.md`,
 and `tests/TESTING_STRATEGY.md`. Do not resume pair-local fan-interval
 micro-repair merely because a demoted historical test remains available.
+
+## Artifact location
+
+GitHub Actions artifact URL:
+
+`https://github.com/akashskypatel/Directional/actions/runs/31118705108/artifacts/8974081923`
