@@ -3699,6 +3699,7 @@ SurfaceCellComplex build_surface_cell_complex(
             int halfedge = -1;
             int fanPosition = -1;
             double angle = 0.0;
+            double rawAngle = 0.0;
             double leftScore = 0.0;
           };
 
@@ -3760,11 +3761,25 @@ SurfaceCellComplex build_surface_cell_complex(
           struct CanonicalFanPairRecord {
             CanonicalFanPairKey key;
             std::vector<std::int64_t> canonicalEntityKey;
+            // Non-exterior pairs require one exact common root. The excluded
+            // exterior continuation instead retains endpoint-specific chart
+            // roots because an authoritative hard rail may separate its two
+            // incident boundary-side charts.
             int transitionRoot = -1;
             std::vector<SurfaceCellCanonicalIdentity> fanIdentities;
             SurfaceCellCanonicalIdentity sourceBoundaryIdentity;
             bool exterior = false;
             bool cyclicWrap = false;
+            SurfaceCellSourceChart exteriorSourceChart;
+            SurfaceCellSourceChart exteriorTargetChart;
+            int exteriorSourceRoot = -1;
+            int exteriorTargetRoot = -1;
+            int exteriorSourceSide = 0;
+            int exteriorTargetSide = 0;
+            std::vector<SurfaceCellCanonicalIdentity>
+                exteriorSourceFanIdentities;
+            std::vector<SurfaceCellCanonicalIdentity>
+                exteriorTargetFanIdentities;
           };
 
           std::vector<BoundaryFanSector> interiorSectors;
@@ -3958,9 +3973,7 @@ SurfaceCellComplex build_surface_cell_complex(
               exteriorSourceProjection.side != 1 ||
               exteriorTargetProjection.side != -1 ||
               exteriorSourceProjection.canonicalEntityKey !=
-                  exteriorTargetProjection.canonicalEntityKey ||
-              exteriorSourceProjection.transitionRoot !=
-                  exteriorTargetProjection.transitionRoot) {
+                  exteriorTargetProjection.canonicalEntityKey) {
             record_boundary_fan_conflict(
                 SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
@@ -3994,14 +4007,34 @@ SurfaceCellComplex build_surface_cell_complex(
               std::unique(exteriorFanIdentities.begin(),
                           exteriorFanIdentities.end()),
               exteriorFanIdentities.end());
-          canonicalPairInventory.emplace(
-              exteriorPairKey,
-              CanonicalFanPairRecord{
-                  exteriorPairKey,
-                  exteriorSourceProjection.canonicalEntityKey,
-                  exteriorSourceProjection.transitionRoot,
-                  exteriorFanIdentities, exteriorBoundaryIdentity, true,
-                  false});
+          CanonicalFanPairRecord exteriorPairRecord;
+          exteriorPairRecord.key = exteriorPairKey;
+          exteriorPairRecord.canonicalEntityKey =
+              exteriorSourceProjection.canonicalEntityKey;
+          exteriorPairRecord.transitionRoot = -1;
+          exteriorPairRecord.fanIdentities = exteriorFanIdentities;
+          exteriorPairRecord.sourceBoundaryIdentity =
+              exteriorBoundaryIdentity;
+          exteriorPairRecord.exterior = true;
+          exteriorPairRecord.cyclicWrap = false;
+          exteriorPairRecord.exteriorSourceChart =
+              exteriorSourceProjection.chart;
+          exteriorPairRecord.exteriorTargetChart =
+              exteriorTargetProjection.chart;
+          exteriorPairRecord.exteriorSourceRoot =
+              exteriorSourceProjection.transitionRoot;
+          exteriorPairRecord.exteriorTargetRoot =
+              exteriorTargetProjection.transitionRoot;
+          exteriorPairRecord.exteriorSourceSide =
+              exteriorSourceProjection.side;
+          exteriorPairRecord.exteriorTargetSide =
+              exteriorTargetProjection.side;
+          exteriorPairRecord.exteriorSourceFanIdentities =
+              exteriorSourceProvenance.agreeingIdentities;
+          exteriorPairRecord.exteriorTargetFanIdentities =
+              exteriorTargetProvenance.agreeingIdentities;
+          canonicalPairInventory.emplace(exteriorPairKey,
+                                         std::move(exteriorPairRecord));
 
           // Build one node-level canonical pair inventory before chart-corner
           // filtering. Equivalent fan records may contribute provenance to one
@@ -4051,6 +4084,111 @@ SurfaceCellComplex build_surface_cell_complex(
                 break;
               }
 
+              const CanonicalFanPairKey key{incoming, source.halfedge,
+                                            target.halfedge};
+
+              // The excluded exterior continuation is authoritative before
+              // generic fan enumeration. Reconcile each endpoint against its
+              // independently projected boundary chart/root/side rather than
+              // forcing the two sides to share one transition root.
+              if (!(key < exteriorPairKey) &&
+                  !(exteriorPairKey < key)) {
+                auto exteriorFound = canonicalPairInventory.find(key);
+                if (exteriorFound == canonicalPairInventory.end() ||
+                    !exteriorFound->second.exterior) {
+                  record_boundary_fan_conflict(
+                      SurfaceArrangementBoundaryFanConflict::
+                          ExteriorPairMismatch,
+                      node, incoming, source.halfedge, target.halfedge);
+                  break;
+                }
+                CanonicalFanPairRecord &record = exteriorFound->second;
+                const BoundarySubsegmentWitness &sourceBoundary =
+                    boundaryWitnesses[static_cast<std::size_t>(
+                        source.halfedge)];
+                const BoundarySubsegmentWitness &targetBoundary =
+                    boundaryWitnesses[static_cast<std::size_t>(
+                        target.halfedge)];
+                if (!sourceBoundary.valid || !targetBoundary.valid ||
+                    sourceBoundary.loop != exteriorLoop ||
+                    targetBoundary.loop != exteriorLoop ||
+                    sourceBoundary.side != 1 ||
+                    targetBoundary.side != -1 ||
+                    record.sourceBoundaryIdentity !=
+                        exteriorBoundaryIdentity ||
+                    record.canonicalEntityKey !=
+                        exteriorSourceProjection.canonicalEntityKey ||
+                    record.exteriorSourceChart !=
+                        exteriorSourceProjection.chart ||
+                    record.exteriorTargetChart !=
+                        exteriorTargetProjection.chart ||
+                    record.exteriorSourceRoot !=
+                        exteriorSourceProjection.transitionRoot ||
+                    record.exteriorTargetRoot !=
+                        exteriorTargetProjection.transitionRoot ||
+                    record.exteriorSourceSide != 1 ||
+                    record.exteriorTargetSide != -1) {
+                  record_boundary_fan_conflict(
+                      SurfaceArrangementBoundaryFanConflict::
+                          ExteriorPairMismatch,
+                      node, incoming, source.halfedge, target.halfedge);
+                  break;
+                }
+
+                const auto reconcile_endpoint_claim =
+                    [&](const DirectedWedgeRay &ray,
+                        const BoundaryAuthoritativeRayProjection &projection) {
+                      std::pair<bool, bool> result{false, false};
+                      for (const DirectedWedgeWitness &witness :
+                           ray.witnesses) {
+                        if (witness.kind !=
+                                SourceEntityKind::SourceVertex &&
+                            witness.kind != SourceEntityKind::SourceEdge) {
+                          continue;
+                        }
+                        const SurfaceCellSourceChart witnessChart{
+                            witness.sourceComponent, witness.sourceFace,
+                            witness.sourceSheet};
+                        if (witnessChart != projection.chart) {
+                          continue;
+                        }
+                        const int witnessRoot =
+                            transitionGraph.chart_component(SourceChartId{
+                                witness.sourceComponent,
+                                witness.sourceSheet,
+                                witness.sourceFace});
+                        if (entityKey != projection.canonicalEntityKey ||
+                            witnessRoot != projection.transitionRoot) {
+                          result.second = true;
+                        } else {
+                          result.first = true;
+                        }
+                      }
+                      return result;
+                    };
+                const auto [sourceAgrees, sourceContradicts] =
+                    reconcile_endpoint_claim(source,
+                                             exteriorSourceProjection);
+                const auto [targetAgrees, targetContradicts] =
+                    reconcile_endpoint_claim(target,
+                                             exteriorTargetProjection);
+                if (sourceContradicts || targetContradicts) {
+                  record_boundary_fan_conflict(
+                      SurfaceArrangementBoundaryFanConflict::
+                          ExteriorPairMismatch,
+                      node, incoming, source.halfedge, target.halfedge);
+                  break;
+                }
+                if (sourceAgrees && targetAgrees) {
+                  record.fanIdentities.push_back(fanIdentity);
+                  record.exteriorSourceFanIdentities.push_back(fanIdentity);
+                  record.exteriorTargetFanIdentities.push_back(fanIdentity);
+                }
+                // A membership on an unrelated chart is not exterior
+                // authority and must not veto or replace the projected pair.
+                continue;
+              }
+
               const std::set<int> sourceRoots =
                   ray_transition_roots(source);
               const std::set<int> targetRoots =
@@ -4068,39 +4206,19 @@ SurfaceCellComplex build_surface_cell_complex(
                 break;
               }
 
-              const CanonicalFanPairKey key{incoming, source.halfedge,
-                                            target.halfedge};
-              const bool cyclicWrap = sourceIndex == 0U;
               const int transitionRoot = *commonRoots.begin();
               auto [found, inserted] = canonicalPairInventory.emplace(
                   key, CanonicalFanPairRecord{key, entityKey, transitionRoot,
                                               {fanIdentity}, {}, false,
-                                              cyclicWrap});
+                                              false});
               if (!inserted) {
                 CanonicalFanPairRecord &record = found->second;
                 if (record.exterior) {
-                  const BoundarySubsegmentWitness &sourceBoundary =
-                      boundaryWitnesses[static_cast<std::size_t>(
-                          source.halfedge)];
-                  const BoundarySubsegmentWitness &targetBoundary =
-                      boundaryWitnesses[static_cast<std::size_t>(
-                          target.halfedge)];
-                  if (!(key.incoming == exteriorIncoming &&
-                        key.sourceRay == exteriorTwin &&
-                        key.target == exteriorOutgoing) ||
-                      !sourceBoundary.valid || !targetBoundary.valid ||
-                      sourceBoundary.loop != exteriorLoop ||
-                      targetBoundary.loop != exteriorLoop ||
-                      sourceBoundary.side != 1 ||
-                      targetBoundary.side != -1 ||
-                      record.sourceBoundaryIdentity !=
-                          exteriorBoundaryIdentity) {
-                    record_boundary_fan_conflict(
-                        SurfaceArrangementBoundaryFanConflict::
-                            ExteriorPairMismatch,
-                        node, incoming, source.halfedge, target.halfedge);
-                    break;
-                  }
+                  record_boundary_fan_conflict(
+                      SurfaceArrangementBoundaryFanConflict::
+                          ExteriorPairMismatch,
+                      node, incoming, source.halfedge, target.halfedge);
+                  break;
                 }
                 if (record.canonicalEntityKey != entityKey) {
                   record_boundary_fan_conflict(
@@ -4117,7 +4235,6 @@ SurfaceCellComplex build_surface_cell_complex(
                   break;
                 }
                 record.fanIdentities.push_back(fanIdentity);
-                record.cyclicWrap = record.cyclicWrap || cyclicWrap;
               }
             }
             if (!directedIncidenceValid) {
@@ -4135,7 +4252,24 @@ SurfaceCellComplex build_surface_cell_complex(
                 std::unique(record.fanIdentities.begin(),
                             record.fanIdentities.end()),
                 record.fanIdentities.end());
-            if (record.fanIdentities.empty()) {
+            if (record.exterior) {
+              std::sort(record.exteriorSourceFanIdentities.begin(),
+                        record.exteriorSourceFanIdentities.end());
+              record.exteriorSourceFanIdentities.erase(
+                  std::unique(record.exteriorSourceFanIdentities.begin(),
+                              record.exteriorSourceFanIdentities.end()),
+                  record.exteriorSourceFanIdentities.end());
+              std::sort(record.exteriorTargetFanIdentities.begin(),
+                        record.exteriorTargetFanIdentities.end());
+              record.exteriorTargetFanIdentities.erase(
+                  std::unique(record.exteriorTargetFanIdentities.begin(),
+                              record.exteriorTargetFanIdentities.end()),
+                  record.exteriorTargetFanIdentities.end());
+            }
+            if (record.fanIdentities.empty() ||
+                (record.exterior &&
+                 (record.exteriorSourceFanIdentities.empty() ||
+                  record.exteriorTargetFanIdentities.empty()))) {
               record_boundary_fan_conflict(
                   SurfaceArrangementBoundaryFanConflict::MissingCanonicalPair,
                   node, record.key.incoming, record.key.sourceRay,
@@ -4152,7 +4286,21 @@ SurfaceCellComplex build_surface_cell_complex(
           if (exteriorRecord == canonicalPairInventory.end() ||
               !exteriorRecord->second.exterior ||
               exteriorRecord->second.sourceBoundaryIdentity !=
-                  exteriorBoundaryIdentity) {
+                  exteriorBoundaryIdentity ||
+              exteriorRecord->second.canonicalEntityKey !=
+                  exteriorSourceProjection.canonicalEntityKey ||
+              exteriorRecord->second.exteriorSourceChart !=
+                  exteriorSourceProjection.chart ||
+              exteriorRecord->second.exteriorTargetChart !=
+                  exteriorTargetProjection.chart ||
+              exteriorRecord->second.exteriorSourceRoot !=
+                  exteriorSourceProjection.transitionRoot ||
+              exteriorRecord->second.exteriorTargetRoot !=
+                  exteriorTargetProjection.transitionRoot ||
+              exteriorRecord->second.exteriorSourceSide != 1 ||
+              exteriorRecord->second.exteriorTargetSide != -1 ||
+              exteriorRecord->second.exteriorSourceFanIdentities.empty() ||
+              exteriorRecord->second.exteriorTargetFanIdentities.empty()) {
             record_boundary_fan_conflict(
                 SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
@@ -4340,7 +4488,7 @@ SurfaceCellComplex build_surface_cell_complex(
                   break;
                 }
                 chartRays.push_back(
-                    {halfedgeId, -1, admissibleAngles.front(),
+                    {halfedgeId, -1, admissibleAngles.front(), rawAngle,
                      witness.leftScore});
               }
               if (chartGeometryValid) {
@@ -4367,6 +4515,42 @@ SurfaceCellComplex build_surface_cell_complex(
               if (chartGeometryValid) {
                 for (const ChartCornerRay &ray : chartRays) {
                   if (!chartRayByHalfedge.emplace(ray.halfedge, ray).second) {
+                    chartGeometryValid = false;
+                    break;
+                  }
+                }
+              }
+            }
+
+            std::vector<ChartCornerRay> circularChartRays = chartRays;
+            std::map<int, std::size_t> circularPositionByHalfedge;
+            if (chartGeometryValid) {
+              std::sort(circularChartRays.begin(), circularChartRays.end(),
+                        [&](const ChartCornerRay &lhs,
+                            const ChartCornerRay &rhs) {
+                          if (std::abs(lhs.rawAngle - rhs.rawAngle) >
+                              cornerAngleTolerance) {
+                            return lhs.rawAngle < rhs.rawAngle;
+                          }
+                          return lhs.halfedge < rhs.halfedge;
+                        });
+              for (std::size_t index = 1;
+                   index < circularChartRays.size(); ++index) {
+                if (std::abs(circularChartRays[index].rawAngle -
+                             circularChartRays[index - 1U].rawAngle) <=
+                        cornerAngleTolerance &&
+                    circularChartRays[index].halfedge !=
+                        circularChartRays[index - 1U].halfedge) {
+                  chartGeometryValid = false;
+                  break;
+                }
+              }
+              if (chartGeometryValid) {
+                for (std::size_t index = 0;
+                     index < circularChartRays.size(); ++index) {
+                  if (!circularPositionByHalfedge
+                           .emplace(circularChartRays[index].halfedge, index)
+                           .second) {
                     chartGeometryValid = false;
                     break;
                   }
@@ -4408,11 +4592,64 @@ SurfaceCellComplex build_surface_cell_complex(
                 continue;
               }
 
-              double targetAngle = targetRay->second.angle;
-              double sourceAngle = sourceRay->second.angle;
-              if (sourceAngle <= targetAngle + cornerAngleTolerance &&
-                  record.cyclicWrap) {
+              // Pair existence and ownership are already fixed by the
+              // node-level inventory. Chart-local evidence may only resolve
+              // the exact oriented interval of that pair.
+              bool provenanceDirectedPair = false;
+              for (const SurfaceCellCanonicalIdentity &identity :
+                   record.fanIdentities) {
+                const auto fanFound = nodeWedges.find(identity);
+                if (fanFound == nodeWedges.end()) {
+                  continue;
+                }
+                const std::vector<DirectedWedgeRay> &fanRays =
+                    fanFound->second;
+                for (std::size_t targetIndex = 0;
+                     targetIndex < fanRays.size(); ++targetIndex) {
+                  const std::size_t sourceIndex =
+                      (targetIndex + 1U) % fanRays.size();
+                  if (fanRays[sourceIndex].halfedge == key.sourceRay &&
+                      fanRays[targetIndex].halfedge == key.target) {
+                    provenanceDirectedPair = true;
+                    break;
+                  }
+                }
+                if (provenanceDirectedPair) {
+                  break;
+                }
+              }
+              const auto sourcePosition =
+                  circularPositionByHalfedge.find(key.sourceRay);
+              const auto targetPosition =
+                  circularPositionByHalfedge.find(key.target);
+              if (!provenanceDirectedPair ||
+                  sourcePosition == circularPositionByHalfedge.end() ||
+                  targetPosition == circularPositionByHalfedge.end() ||
+                  circularChartRays.size() < 2U) {
+                ++stats.invalidIntervalCount;
+                continue;
+              }
+
+              double targetAngle = targetRay->second.rawAngle;
+              double sourceAngle = sourceRay->second.rawAngle;
+              const bool directAdjacent =
+                  sourcePosition->second == targetPosition->second + 1U;
+              const bool seamAdjacent =
+                  targetPosition->second + 1U == circularChartRays.size() &&
+                  sourcePosition->second == 0U;
+              bool cyclicWrap = false;
+              if (sourceAngle > targetAngle + cornerAngleTolerance) {
+                if (!directAdjacent) {
+                  ++stats.thirdRayIntrusionCount;
+                  continue;
+                }
+              } else {
+                if (!seamAdjacent) {
+                  ++stats.invalidIntervalCount;
+                  continue;
+                }
                 sourceAngle += twoPi;
+                cyclicWrap = true;
               }
               const double orientedSpan = sourceAngle - targetAngle;
               if (!(orientedSpan > cornerAngleTolerance) ||
@@ -4422,18 +4659,15 @@ SurfaceCellComplex build_surface_cell_complex(
               }
 
               bool thirdRayInside = false;
-              for (const ChartCornerRay &other : chartRays) {
+              for (const ChartCornerRay &other : circularChartRays) {
                 if (other.halfedge == key.sourceRay ||
                     other.halfedge == key.target) {
                   continue;
                 }
-                double otherAngle = other.angle;
-                if (record.cyclicWrap &&
-                    sourceAngle > wedgeEnd + cornerAngleTolerance) {
-                  while (otherAngle <=
-                         targetAngle + cornerAngleTolerance) {
-                    otherAngle += twoPi;
-                  }
+                double otherAngle = other.rawAngle;
+                if (cyclicWrap &&
+                    otherAngle <= targetAngle + cornerAngleTolerance) {
+                  otherAngle += twoPi;
                 }
                 if (otherAngle > targetAngle + cornerAngleTolerance &&
                     otherAngle < sourceAngle - cornerAngleTolerance) {
@@ -4450,7 +4684,7 @@ SurfaceCellComplex build_surface_cell_complex(
                   {key.incoming, key.sourceRay, key.target,
                    record.fanIdentities.front(), chart, root,
                    sourceRay->second.leftScore, targetRay->second.leftScore,
-                   targetAngle, sourceAngle, false, record.cyclicWrap});
+                   targetAngle, sourceAngle, false, cyclicWrap});
             }
           }
           if (!directedIncidenceValid) {
@@ -4464,7 +4698,19 @@ SurfaceCellComplex build_surface_cell_complex(
                     key.sourceRay == exteriorTwin &&
                     key.target == exteriorOutgoing) ||
                   record.sourceBoundaryIdentity !=
-                      exteriorBoundaryIdentity) {
+                      exteriorBoundaryIdentity ||
+                  record.canonicalEntityKey !=
+                      exteriorSourceProjection.canonicalEntityKey ||
+                  record.exteriorSourceChart !=
+                      exteriorSourceProjection.chart ||
+                  record.exteriorTargetChart !=
+                      exteriorTargetProjection.chart ||
+                  record.exteriorSourceRoot !=
+                      exteriorSourceProjection.transitionRoot ||
+                  record.exteriorTargetRoot !=
+                      exteriorTargetProjection.transitionRoot ||
+                  record.exteriorSourceSide != 1 ||
+                  record.exteriorTargetSide != -1) {
                 record_boundary_fan_conflict(
                     SurfaceArrangementBoundaryFanConflict::
                         ExteriorPairMismatch,
