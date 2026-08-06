@@ -7,6 +7,7 @@
 #include <cmath>
 #include <map>
 #include <set>
+#include <sstream>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -22,6 +23,31 @@ struct MeshFixture {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
 };
+
+std::string boundary_fan_diagnostic_context(const SurfaceCellComplex &complex) {
+  const auto &diagnostics = complex.diagnostics;
+  std::ostringstream stream;
+  stream << " boundaryFanConflict="
+         << directional::geometry::surface_arrangement_boundary_fan_conflict_name(
+                diagnostics.boundaryFanConflict)
+         << '(' << static_cast<int>(diagnostics.boundaryFanConflict) << ')'
+         << " tuple=" << diagnostics.boundaryFanConflictNode << '/'
+         << diagnostics.boundaryFanConflictIncoming << '/'
+         << diagnostics.boundaryFanConflictSourceRay << '/'
+         << diagnostics.boundaryFanConflictTarget
+         << " canonicalPairs="
+         << diagnostics.boundaryCanonicalFanPairCount
+         << " exteriorExclusions="
+         << diagnostics.boundaryExteriorSectorExclusionCount
+         << " fanSectorNodes=" << diagnostics.boundaryFanSectorNodeCount
+         << " cyclicWrapInteriorSectors="
+         << diagnostics.boundaryCyclicWrapInteriorSectorCount
+         << " hardRailSeparators="
+         << diagnostics.boundaryHardRailSeparatorCount
+         << " hardRailSidePairs="
+         << diagnostics.boundaryHardRailSidePairCount;
+  return stream.str();
+}
 
 SurfaceArrangementArc arc(const int id, const int face,
                           const Eigen::RowVector3d &a,
@@ -393,7 +419,8 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
 
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
-             complex.diagnostics.incidenceFailure);
+             complex.diagnostics.incidenceFailure)
+      << boundary_fan_diagnostic_context(complex);
   EXPECT_EQ(source_vertex_node_count(complex, mesh.faces, 1), 1);
   EXPECT_EQ(source_vertex_node_count(complex, mesh.faces, 2), 1);
   expect_node_local_successor_bijection(complex);

@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <map>
 #include <set>
+#include <sstream>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -16,6 +17,32 @@ struct TriangleFixture {
   Eigen::MatrixXd vertices;
   Eigen::MatrixXi faces;
 };
+
+std::string boundary_fan_diagnostic_context(
+    const directional::geometry::SurfaceCellComplex &complex) {
+  const auto &diagnostics = complex.diagnostics;
+  std::ostringstream stream;
+  stream << " boundaryFanConflict="
+         << directional::geometry::surface_arrangement_boundary_fan_conflict_name(
+                diagnostics.boundaryFanConflict)
+         << '(' << static_cast<int>(diagnostics.boundaryFanConflict) << ')'
+         << " tuple=" << diagnostics.boundaryFanConflictNode << '/'
+         << diagnostics.boundaryFanConflictIncoming << '/'
+         << diagnostics.boundaryFanConflictSourceRay << '/'
+         << diagnostics.boundaryFanConflictTarget
+         << " canonicalPairs="
+         << diagnostics.boundaryCanonicalFanPairCount
+         << " exteriorExclusions="
+         << diagnostics.boundaryExteriorSectorExclusionCount
+         << " fanSectorNodes=" << diagnostics.boundaryFanSectorNodeCount
+         << " cyclicWrapInteriorSectors="
+         << diagnostics.boundaryCyclicWrapInteriorSectorCount
+         << " hardRailSeparators="
+         << diagnostics.boundaryHardRailSeparatorCount
+         << " hardRailSidePairs="
+         << diagnostics.boundaryHardRailSidePairCount;
+  return stream.str();
+}
 
 TriangleFixture unit_triangle() {
   TriangleFixture fixture;
@@ -568,7 +595,8 @@ TEST(SurfaceArrangementPhase16, EulerBoundaryAndAreaChecksPassOnPlanarFixture) {
 
   ASSERT_TRUE(complex.diagnostics.incidenceValid)
       << directional::geometry::surface_arrangement_incidence_failure_name(
-             complex.diagnostics.incidenceFailure);
+             complex.diagnostics.incidenceFailure)
+      << boundary_fan_diagnostic_context(complex);
   expect_node_local_successor_bijection(complex);
   EXPECT_TRUE(complex.diagnostics.topologyValid);
   EXPECT_EQ(complex.diagnostics.predecessorMultiplicityFailureCount, 0);

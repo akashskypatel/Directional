@@ -1111,6 +1111,8 @@ struct BoundarySubsegmentWitness {
   std::uint64_t sourceEdgeKey = 0U;
   int sourceFace = -1;
   int sourceEdge = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
   int side = 0;
   double parameter0 = 0.0;
   double parameter1 = 0.0;
@@ -3105,7 +3107,8 @@ SurfaceCellComplex build_surface_cell_complex(
       const auto witness_key = [&](const BoundarySubsegmentWitness &witness) {
         return std::make_tuple(
             witness.loop, witness.edgeOrder, witness.sourceEdgeKey,
-            witness.sourceFace, witness.sourceEdge, witness.side,
+            witness.sourceFace, witness.sourceEdge, witness.sourceComponent,
+            witness.sourceSheet, witness.side,
             quantized_parameter(witness.parameter0),
             quantized_parameter(witness.parameter1));
       };
@@ -3187,6 +3190,20 @@ SurfaceCellComplex build_surface_cell_complex(
           witness.sourceEdgeKey = edgeKey;
           witness.sourceFace = entry.sourceFace;
           witness.sourceEdge = sourceEdge;
+          witness.sourceComponent =
+              resolvedComponents[static_cast<std::size_t>(entry.sourceFace)];
+          witness.sourceSheet =
+              resolvedSheets[static_cast<std::size_t>(entry.sourceFace)];
+          if ((entry.sourceComponent >= 0 &&
+               entry.sourceComponent != witness.sourceComponent) ||
+              (entry.sourceSheet >= 0 &&
+               entry.sourceSheet != witness.sourceSheet)) {
+            record_incidence_failure(
+                SurfaceArrangementIncidenceFailure::
+                    ContradictoryBoundarySide,
+                halfedge.from, halfedge.id, halfedge.twin, -1);
+            break;
+          }
           // Canonical edge parameters are orientation independent. The
           // operational side is derived separately by comparing the directed
           // halfedge with the ordered face-oriented source-boundary edge.
@@ -3795,12 +3812,73 @@ SurfaceCellComplex build_surface_cell_complex(
             return roots;
           };
 
-          using CanonicalEntityRootKey =
-              std::pair<std::vector<std::int64_t>, int>;
-          const auto collect_ray_entity_root_evidence =
-              [&](const int outgoingRay) {
-                std::map<CanonicalEntityRootKey,
-                         std::vector<SurfaceCellCanonicalIdentity>> evidence;
+          struct BoundaryAuthoritativeRayProjection {
+            bool valid = false;
+            SurfaceCellSourceChart chart;
+            std::vector<std::int64_t> canonicalEntityKey;
+            int transitionRoot = -1;
+            int sourceBoundaryLoop = -1;
+            int side = 0;
+          };
+          const auto project_boundary_authoritative_ray =
+              [&](const int outgoingRay,
+                  const BoundarySubsegmentWitness &boundaryWitness) {
+                BoundaryAuthoritativeRayProjection projection;
+                if (!boundaryWitness.valid ||
+                    boundaryWitness.halfedge != outgoingRay ||
+                    boundaryWitness.sourceFace < 0 ||
+                    boundaryWitness.sourceFace >= faces.rows() ||
+                    boundaryWitness.sourceComponent < 0 ||
+                    boundaryWitness.sourceSheet < 0) {
+                  return projection;
+                }
+                projection.chart = {boundaryWitness.sourceComponent,
+                                    boundaryWitness.sourceFace,
+                                    boundaryWitness.sourceSheet};
+                if (!projection.chart.valid() ||
+                    resolvedComponents[static_cast<std::size_t>(
+                        boundaryWitness.sourceFace)] !=
+                        projection.chart.sourceComponent ||
+                    resolvedSheets[static_cast<std::size_t>(
+                        boundaryWitness.sourceFace)] !=
+                        projection.chart.localSheet) {
+                  return projection;
+                }
+                SurfacePoint nodePoint;
+                if (!node_point_on_chart(node, projection.chart, nodePoint)) {
+                  return projection;
+                }
+                const SourceEntityId entity =
+                    transitionGraph.resolve_entity(nodePoint);
+                if (!entity.valid() ||
+                    (entity.kind != SourceEntityKind::SourceVertex &&
+                     entity.kind != SourceEntityKind::SourceEdge)) {
+                  return projection;
+                }
+                projection.canonicalEntityKey =
+                    canonical_entity_key(entity.canonical);
+                projection.transitionRoot = transitionGraph.chart_component(
+                    SourceChartId{projection.chart.sourceComponent,
+                                  projection.chart.localSheet,
+                                  projection.chart.sourceFace});
+                projection.sourceBoundaryLoop = boundaryWitness.loop;
+                projection.side = boundaryWitness.side;
+                projection.valid =
+                    !projection.canonicalEntityKey.empty() &&
+                    projection.transitionRoot >= 0 &&
+                    projection.sourceBoundaryLoop >= 0 &&
+                    projection.side != 0;
+                return projection;
+              };
+
+          struct BoundaryRayProvenanceReconciliation {
+            std::vector<SurfaceCellCanonicalIdentity> agreeingIdentities;
+            bool contradictoryBoundaryClaim = false;
+          };
+          const auto reconcile_boundary_ray_provenance =
+              [&](const int outgoingRay,
+                  const BoundaryAuthoritativeRayProjection &projection) {
+                BoundaryRayProvenanceReconciliation reconciliation;
                 for (const auto &[fanIdentity, fanRays] : nodeWedges) {
                   if (!fanIdentity.valid) {
                     continue;
@@ -3815,21 +3893,33 @@ SurfaceCellComplex build_surface_cell_complex(
                   }
                   const std::vector<std::int64_t> entityKey =
                       canonical_entity_key(fanIdentity);
-                  if (entityKey.empty()) {
-                    continue;
-                  }
-                  for (const int root : ray_transition_roots(*rayFound)) {
-                    evidence[{entityKey, root}].push_back(fanIdentity);
+                  for (const DirectedWedgeWitness &witness :
+                       rayFound->witnesses) {
+                    const SurfaceCellSourceChart witnessChart{
+                        witness.sourceComponent, witness.sourceFace,
+                        witness.sourceSheet};
+                    if (witnessChart != projection.chart) {
+                      continue;
+                    }
+                    const int witnessRoot = transitionGraph.chart_component(
+                        SourceChartId{witness.sourceComponent,
+                                      witness.sourceSheet,
+                                      witness.sourceFace});
+                    if (entityKey != projection.canonicalEntityKey ||
+                        witnessRoot != projection.transitionRoot) {
+                      reconciliation.contradictoryBoundaryClaim = true;
+                      continue;
+                    }
+                    reconciliation.agreeingIdentities.push_back(fanIdentity);
                   }
                 }
-                for (auto &[key, identities] : evidence) {
-                  (void)key;
-                  std::sort(identities.begin(), identities.end());
-                  identities.erase(
-                      std::unique(identities.begin(), identities.end()),
-                      identities.end());
-                }
-                return evidence;
+                std::sort(reconciliation.agreeingIdentities.begin(),
+                          reconciliation.agreeingIdentities.end());
+                reconciliation.agreeingIdentities.erase(
+                    std::unique(reconciliation.agreeingIdentities.begin(),
+                                reconciliation.agreeingIdentities.end()),
+                    reconciliation.agreeingIdentities.end());
+                return reconciliation;
               };
 
           const CanonicalFanPairKey exteriorPairKey{
@@ -3855,43 +3945,61 @@ SurfaceCellComplex build_surface_cell_complex(
             break;
           }
 
-          const auto exteriorSourceEvidence =
-              collect_ray_entity_root_evidence(exteriorTwin);
-          const auto exteriorTargetEvidence =
-              collect_ray_entity_root_evidence(exteriorOutgoing);
-          if (exteriorSourceEvidence.size() != 1U ||
-              exteriorTargetEvidence.size() != 1U ||
-              exteriorSourceEvidence.begin()->first !=
-                  exteriorTargetEvidence.begin()->first) {
+          const BoundaryAuthoritativeRayProjection exteriorSourceProjection =
+              project_boundary_authoritative_ray(exteriorTwin,
+                                                 exteriorSourceWitness);
+          const BoundaryAuthoritativeRayProjection exteriorTargetProjection =
+              project_boundary_authoritative_ray(exteriorOutgoing,
+                                                 exteriorTargetWitness);
+          if (!exteriorSourceProjection.valid ||
+              !exteriorTargetProjection.valid ||
+              exteriorSourceProjection.sourceBoundaryLoop != exteriorLoop ||
+              exteriorTargetProjection.sourceBoundaryLoop != exteriorLoop ||
+              exteriorSourceProjection.side != 1 ||
+              exteriorTargetProjection.side != -1 ||
+              exteriorSourceProjection.canonicalEntityKey !=
+                  exteriorTargetProjection.canonicalEntityKey ||
+              exteriorSourceProjection.transitionRoot !=
+                  exteriorTargetProjection.transitionRoot) {
+            record_boundary_fan_conflict(
+                SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
+                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
+            break;
+          }
+
+          const BoundaryRayProvenanceReconciliation
+              exteriorSourceProvenance = reconcile_boundary_ray_provenance(
+                  exteriorTwin, exteriorSourceProjection);
+          const BoundaryRayProvenanceReconciliation
+              exteriorTargetProvenance = reconcile_boundary_ray_provenance(
+                  exteriorOutgoing, exteriorTargetProjection);
+          if (exteriorSourceProvenance.contradictoryBoundaryClaim ||
+              exteriorTargetProvenance.contradictoryBoundaryClaim ||
+              exteriorSourceProvenance.agreeingIdentities.empty() ||
+              exteriorTargetProvenance.agreeingIdentities.empty()) {
             record_boundary_fan_conflict(
                 SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
             break;
           }
           std::vector<SurfaceCellCanonicalIdentity> exteriorFanIdentities =
-              exteriorSourceEvidence.begin()->second;
+              exteriorSourceProvenance.agreeingIdentities;
           exteriorFanIdentities.insert(
               exteriorFanIdentities.end(),
-              exteriorTargetEvidence.begin()->second.begin(),
-              exteriorTargetEvidence.begin()->second.end());
+              exteriorTargetProvenance.agreeingIdentities.begin(),
+              exteriorTargetProvenance.agreeingIdentities.end());
           std::sort(exteriorFanIdentities.begin(),
                     exteriorFanIdentities.end());
           exteriorFanIdentities.erase(
               std::unique(exteriorFanIdentities.begin(),
                           exteriorFanIdentities.end()),
               exteriorFanIdentities.end());
-          if (exteriorFanIdentities.empty()) {
-            record_boundary_fan_conflict(
-                SurfaceArrangementBoundaryFanConflict::ExteriorPairMismatch,
-                node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
-            break;
-          }
           canonicalPairInventory.emplace(
               exteriorPairKey,
               CanonicalFanPairRecord{
                   exteriorPairKey,
-                  exteriorSourceEvidence.begin()->first.first,
-                  exteriorSourceEvidence.begin()->first.second,
+                  exteriorSourceProjection.canonicalEntityKey,
+                  exteriorSourceProjection.transitionRoot,
                   exteriorFanIdentities, exteriorBoundaryIdentity, true,
                   false});
 
