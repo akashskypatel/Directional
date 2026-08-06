@@ -164,7 +164,7 @@
     "size_bytes": 431852,
     "file_count": 214
   },
-  "documentation_checkpoint": "5f68180187e0f2a6afd3eb617d7e85a5329d70e8",
+  "documentation_transition_parent": "5f68180187e0f2a6afd3eb617d7e85a5329d70e8",
   "nextTurn": "P5-R2E15 chart-local lifted interval authority Code + Build",
   "reviewPolicy": "never",
   "r2Status": "open"
