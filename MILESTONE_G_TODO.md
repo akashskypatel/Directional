@@ -29,10 +29,12 @@ Implemented contracts:
 - periodic holonomy is first-class `(quarter-turn rotation, integer lattice translation, ordered source route)` and the deterministic cut route is retained separately;
 - duplicate/missing/incompatible holonomy fails closed with typed periodic authority;
 - artificial-cut fronts use explicit `PeriodicFrontMerge` ownership rather than exterior-boundary or proximity semantics;
-- only genuine annulus boundaries remain exterior in the periodic front state;
+- only genuine annulus boundaries remain exterior in the bounded periodic front;
 - materialization quotients duplicate cut-chart lattice vertices through exact periodic identity rather than Euclidean welding;
 - holonomy contributes to structural hashing and diagnostics;
 - five focused periodic regression sources were added and compiled, not executed.
+
+The implementation is intentionally bounded to a canonical equal-cardinality ring annulus class. Runtime artifact validation must determine whether the exact production cylinder is handled correctly; compile success is not runtime proof.
 
 ## Build authority
 
