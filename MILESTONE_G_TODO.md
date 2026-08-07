@@ -4,73 +4,78 @@ Last updated: 2026-08-07 UTC
 
 ## Current gate
 
-G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → **G3 cylinder / periodic holonomy [active]** → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → **G3 cylinder / periodic holonomy [active; compile-valid, runtime verification pending]** → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## G2 closed
+## G3 Code + Build complete
 
-Artifact-only validation of exact artifact `8994541137` closes Gate 2.
+The bounded periodic-annulus producer is implemented and compile-verified.
 
-Authority:
+Source authority:
 
-- source `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
-- artifact SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- recursive checksums **45/45**;
-- focused producer contracts **7/7 passed**;
-- no rebuild or source/test/fixture/validator/build edit during the test turn.
+- source commit `56f823273cad041a01ebb4d0772c3265ff248f4a`;
+- patch SHA-256 `d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f`;
+- changed blobs:
+  - `SurfaceCellTracing.h` `931669018a986096cf78d66a2aed9de5aa8e0fe1`;
+  - `RemeshDiagnostics.h` `a51215982318e77581efa4fa7887d0406a9d4bf0`;
+  - `SurfaceCellTracing.cpp` `b1a2c6d4051cc17b79e342170285d69552cad16d`;
+  - `RemeshPipeline.cpp` `7674ed3fe40c5f43c668c931c01b59f6c7829df8`;
+  - `DirectionalBenchmark.cpp` `18955ca8ef72812c9c70ed522bb578409e6a176f`;
+  - `SurfaceCellsPhase10Tests.cpp` `bccd6abf3e31b8096c471c515b1949d08dcfde59`.
 
-Direct mandatory results:
+Implemented contracts:
 
-- plane: `Produced`, 64 pure quads, zero validation failures, hash `730caeae49ec872c`, deterministic 3/3;
-- seam: `Produced`, 64 pure quads, zero validation failures, hash `5bdf34d7802e9fb0`, deterministic 3/3;
-- close sheets: `Produced`, 200 pure quads, 242 vertices, two connected components, zero validation failures, hash `89b052762f52a5af`, deterministic 3/3;
-- no fallback or source-grid recovery on any passing fixture.
+- annulus applicability derives from source topology and singularity-free state rather than fixture identity;
+- deterministic source boundary/ring structure defines a cut-open intrinsic chart without world-space planarity;
+- periodic holonomy is first-class `(quarter-turn rotation, integer lattice translation, ordered source route)` and the deterministic cut route is retained separately;
+- duplicate/missing/incompatible holonomy fails closed with typed periodic authority;
+- artificial-cut fronts use explicit `PeriodicFrontMerge` ownership rather than exterior-boundary or proximity semantics;
+- only genuine annulus boundaries remain exterior in the periodic front state;
+- materialization quotients duplicate cut-chart lattice vertices through exact periodic identity rather than Euclidean welding;
+- holonomy contributes to structural hashing and diagnostics;
+- five focused periodic regression sources were added and compiled, not executed.
 
-The close-sheet producer contract verifies source keys `{(0,0), (1,1)}` and requires every twinned phase-front edge to retain the same source component/local-sheet identity. The exact production output remains two disconnected 121-vertex sheets at `z=-0.035` and `z=+0.035`, proving no cross-sheet connectivity.
+## Build authority
 
-G2 is therefore complete. Plane, seam, and close sheets are mandatory regressions for every later gate.
+Successful compile-only authority:
 
-## Active G3 blocker
+- run/job `31196268841` / `92925122791`;
+- artifact `9001168379` (`g3-periodic-cylinder-code-build`);
+- artifact SHA-256 `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`;
+- detailed log artifact `9001167184`, SHA-256 `fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4`;
+- recursive checksums **44/44 passed**;
+- compile/link actions **111/111**;
+- approved targets **7/7**;
+- five executables, two project libraries, 27 fixture/input files packaged;
+- no generated project binary/test/benchmark executed.
 
-Cylinder remains:
+This is compile evidence only. G3 remains runtime-unverified.
 
-- authoritative producer disposition `NotApplicable`;
-- 732 generic traces;
-- zero arrangement cells;
-- zero completed quads;
-- terminal `NotProductionReady:completion`;
-- no fallback/recovery.
+## Passed-gate runtime authority
 
-The active missing contract is periodic phase/front construction on a singularity-free annulus.
+Latest executed artifact evidence remains:
+
+- plane: direct valid `Produced`, 64 pure quads, hash `730caeae49ec872c`;
+- seam: direct valid `Produced`, 64 pure quads, hash `5bdf34d7802e9fb0`;
+- close sheets: direct valid `Produced`, 200 pure quads, two isolated components, hash `89b052762f52a5af`;
+- cylinder: prior `NotApplicable`, 732 generic traces, zero arrangement/completion;
+- no fallback/recovery on passed fixtures.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md` as a **Code + Build only** turn.
+Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9001168379`.
 
-Required bounded implementation:
+Priority order:
 
-1. derive annulus applicability from source topology, not fixture identity;
-2. construct a deterministic intrinsic cut between the two source boundary cycles;
-3. build an intrinsic cut-open phase chart without requiring world-space planarity;
-4. record first-class periodic holonomy as quarter-turn rotation + integer lattice translation + ordered source route;
-5. reject malformed/non-integral/branch-incompatible holonomy with a typed authoritative reason;
-6. pair periodic front edges across the artificial cut through exact source/phase equivalence;
-7. materialize periodic lattice duplicates through exact holonomy identity, never Euclidean seam welding;
-8. preserve only the two real cylinder boundary loops as exterior boundaries;
-9. compile the required regression sources but execute no generated project binary;
-10. preserve G0–G2 direct successes.
+1. verify artifact/source/patch/blob/checksum authority;
+2. execute the five focused G3 periodic producer contracts;
+3. preserve plane, seam, and close sheets mandatory regressions;
+4. execute exact production cylinder as G3 acceptance;
+5. prove first-class holonomy, reciprocal artificial-cut pairing, and no false exterior seam;
+6. run bounded determinism and non-overlapping default suites;
+7. observe bunny/vase only after the active G3 decision.
 
-If cylinder becomes compile-valid for the periodic producer, package an immutable artifact for the following artifact-only Test + Benchmark turn. If runtime later shows only a new exact typed periodic rejection, fix that general rejection next. Do not broaden to torus, singularities, adaptivity, or bunny/vase production during G3.
+G3 closes only through direct deterministic strict-valid `Produced` cylinder output with correct periodic quotient/holonomy and retained G0–G2 successes. A new typed periodic `Rejected` result with zero generic substitution is material progress but leaves G3 active.
 
-## Deferred evidence
-
-Current non-overlapping suites:
-
-- focused G2 contracts: **7/7**;
-- remaining producer executable: **82/86**;
-- completion/simplification: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**.
-
-The remaining producer failures are cylinder/bunny/vase acceptance plus the scheduler-sensitive validator timing ratio. The ten completion/simplification failures remain deferred to later ordered gates.
+Do not broaden the next turn into torus/general genus, singularity topology, adaptivity/features, bunny/vase remediation, timing, or unrelated completion work.
 
 Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
