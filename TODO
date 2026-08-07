@@ -5,51 +5,46 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 producer architecture design review**.
+- Active gate: **G1 authoritative producer boundary**.
 - Earliest failing fixture: `plane__surface_cells`.
 - Proven retained sub-contract: G2 multi-face seam direct success.
-- Completed turn: Gate 1 live-transition artifact-only Test + Benchmark.
-- Next turn: `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Plan.md`.
+- Completed turn: mandatory Gate 1 producer architecture Review.
+- Review outcome: **B — bounded producer replacement proof**.
+- Next turn: `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact tested authority
+## Exact runtime authority
 
 - source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
-- payload cleanup: `591ada601843237a709d2d6e133a438ca403f042`;
 - artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
-- artifact checksums: 45/45;
 - evidence SHA-256: `99a4922767d567830f202b440504f2b48d07fdb02bb117668baf846e7eeb9b64`;
-- evidence files covered by checksums: 118;
-- no rebuild or source/test/fixture/validator edit during the artifact-only turn.
+- explicit source-vertex/topology tests: 4/4;
+- direct acceptance: 1/6;
+- plane: fail, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures;
+- seam: pass, 81 vertices, 64 pure quads, hash `a8972efd7c4900a4`;
+- close sheets/cylinder/bunny/vase: deterministic direct failures before output;
+- non-overlapping total: 305/321.
 
-## Runtime authority
+## Review conclusion
 
-- explicit source-vertex/topology contract tests: **4/4**;
-- direct acceptance: **1/6**;
-- plane: fail, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures, no output;
-- seam: pass, 81 vertices, 64 pure quads, output hash `a8972efd7c4900a4`, zero validation failures;
-- close sheets: fail, 158 traces, zero cells;
-- cylinder: fail, 732 traces, zero cells;
-- bunny: fail, 80,862 traces, zero cells;
-- vase: fail, 116,922 traces, zero cells;
-- remaining producer: 78/79;
-- completion: 154/164;
-- validation: 60/60;
-- compiled API: 8/8;
-- non-overlapping total: **305/321**.
+The plane regression is now treated as a producer-authority problem, not another isolated transition predicate.
 
-All required benchmark cases were structurally deterministic. The plane tracing structural hash changed, but the constructive 106/9/12 signature did not; this is not material progress.
+Current control flow conflates an authoritative producer being **not applicable** with that producer **rejecting** an applicable input. Both become `phaseFront.succeeded == false`, after which a different generic seed/trace/proposal producer runs automatically. Completion diagnostics can then overwrite the typed phase-front failure.
 
-## Mandatory review checklist
+The exact production plane also uses preprocessing state absent from the passing reconstructed fan tests. A proven semantic inconsistency exists where phase-front transport treats relief edges as hard barriers even when `reliefBarriersEmbedded == false`.
 
-- [ ] compare successful Gate 1 `aea10409...` with Gate 2 and current producer control flow;
-- [ ] trace exact committed `plane.obj` / `plane.rawfield` through production target size, source labels, finalized cross-field metadata, and tracing options;
-- [ ] explain why isolated source-vertex contract tests pass while the production plane does not enter direct phase-front output;
-- [ ] determine whether phase-front non-success may legally substitute the generic tracing/completion producer path;
-- [ ] audit loss/overwrite of typed phase-front failure authority;
-- [ ] choose one bounded architectural correction or bounded producer replacement proof;
-- [ ] produce exactly one next Code + Build plan;
-- [ ] do not make another local predicate repair during review.
+## Next Code + Build checklist
 
-GitHub workflows are operational again. Future authorized Code + Build turns may use GitHub Actions for normal compilation/artifact creation under `.agents/Directional/GitHub_Workflow_Policy.md`. Test turns remain artifact-only. P5 remains open.
+- [ ] introduce explicit `NotApplicable / Produced / Rejected` authoritative producer disposition;
+- [ ] decide applicability before execution from general topology/field state, never fixture identity;
+- [ ] prevent `Rejected` from generating generic seeds/traces/proposals;
+- [ ] preserve immutable typed producer failure authority;
+- [ ] make relief-barrier transport obey `reliefBarriersEmbedded`;
+- [ ] retain ordinary-edge, ordered vertex-fan, reciprocal seam, sheet/provenance, and one-cell→one-quad contracts;
+- [ ] add exact committed `plane.obj` + `plane.rawfield` producer-level production-route coverage;
+- [ ] preserve seam direct acceptance and mandatory bunny/vase coverage;
+- [ ] compile approved seven targets without executing generated project binaries;
+- [ ] package a fresh immutable artifact for plane-first testing.
+
+A third isolated predicate repair is prohibited. Gate 1 remains open until the plane produces direct valid output. GitHub workflows may be used for the authorized Code + Build compile/artifact turn under the workflow policy.
