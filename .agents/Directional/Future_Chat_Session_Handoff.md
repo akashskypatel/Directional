@@ -67,6 +67,7 @@ The **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark** turn is co
 - payload cleanup commit: `54a79a17f48bd3974367c3e043507d0550fb8daa`;
 - artifact: `directional-g1-orientation-local-build-artifact.zip`;
 - artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- evidence archive SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`;
 - internal checksums: **45/45**;
 - package closure: five executables, two static libraries, 26 fixture/input files.
 
