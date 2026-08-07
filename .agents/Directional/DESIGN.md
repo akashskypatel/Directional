@@ -41,7 +41,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
 3. **G2 — Cross-chart and close-sheet propagation:** **passed.**
-4. **G3 — Periodic closure and holonomy:** **active.**
+4. **G3 — Periodic closure and holonomy:** **active; periodic-annulus implementation is compile-valid and runtime verification is pending.**
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
@@ -95,11 +95,17 @@ Required invariants:
 - direct materialization quotients periodic chart duplicates by exact periodic identity and preserves one accepted cell → one quad;
 - source-face row ordering cannot change the periodic construction except canonical renumbering.
 
-The current exact cylinder remains `NotApplicable`, 732 generic traces, zero arrangement/completion, terminal `NotProductionReady:completion`. G3 closes only when it becomes direct deterministic strict-valid `Produced` output while plane, seam, and close sheets remain green.
+## G3 compile-valid checkpoint
+
+Source `56f823273cad041a01ebb4d0772c3265ff248f4a` implements the bounded periodic-annulus contract with explicit periodic holonomy state, deterministic intrinsic source cut/chart, typed periodic rejection reasons, `PeriodicFrontMerge` ownership, periodic structural hashing/diagnostics, and exact quotient materialization. The compile-only artifact is `9001168379`, SHA-256 `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`, with **44/44** recursive checksums and **111/111** compile/link actions across seven approved targets. No generated project binary was executed.
+
+Therefore this checkpoint makes no cylinder runtime-success claim. The latest executed cylinder remains `NotApplicable`, 732 generic traces, zero arrangement/completion, terminal `NotProductionReady:completion` until artifact `9001168379` is tested.
+
+G3 closes only when exact cylinder artifact execution proves direct deterministic strict-valid `Produced` output with correct periodic holonomy/quotient while plane, seam, and close sheets remain green. A new typed periodic `Rejected` result with zero generic substitution is material progress but does not close G3.
 
 ## Next implementation authority
 
-Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md` as a Code + Build only turn. Compile the new periodic producer and contract tests, execute no generated project binary, and package an immutable artifact for the following artifact-only Test + Benchmark turn.
+Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9001168379`. This is a Test + Benchmark turn: do not edit or rebuild. If G3 closes, the next implementation gate is G4 topology-distinct completion and singularities. If G3 remains open, the next Code + Build turn addresses only the exact general periodic rejection established by artifact evidence.
 
 Do not broaden G3 into torus/general genus, singularity topology, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production, or performance hardening.
 
