@@ -82,6 +82,10 @@ Implemented bounded G3 contracts:
 10. holonomy contributes to structural hashing and benchmark diagnostics;
 11. five focused G3 periodic regression sources were added and compiled, not executed.
 
+### Bounded implementation limitation to preserve as runtime evidence
+
+The G3 source is a bounded periodic-annulus proof, not a general annulus/genus solver. Its intrinsic chart assumes a canonical equal-cardinality source-ring structure suitable for the committed cylinder class. Per-cell chart side paths retain source face/barycentric subdivision, while the complete cross-cut periodic transport is carried by the first-class holonomy route rather than reproducing the full planar `segment_on_source` transition-route representation on every chart interval. Do not broaden or silently reinterpret this limitation during the Test + Benchmark turn. Artifact execution must establish whether the exact production cylinder satisfies the intended bounded contract. If it reaches a typed periodic rejection, use that evidence for the next Code + Build plan instead of weakening acceptance.
+
 ### Compile authority
 
 - workflow run/job: `31196268841` / `92925122791`;
