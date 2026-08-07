@@ -12,7 +12,7 @@ The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge
 
 Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-At the G3 periodic ring-correspondence Code + Build closeout on 2026-08-07, the successful artifact/log/source authority was verified and the bounded build workflow was removed **before** deleting its exact marker, preventing cleanup from retriggering the path-filtered workflow. The retry trigger and payload were then removed; final branch verification must show only the durable workflow above and no turn-specific trigger/payload directories.
+At the G3 periodic ring-correspondence Code + Build closeout on 2026-08-07, artifact/log/source authority was verified, the bounded build workflow was removed **before** deleting its exact marker, then the retry trigger and payload were removed. Final verification showed only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent.
 
 ## Mandatory workflow requirements
 
@@ -32,64 +32,35 @@ Every workflow created or modified for agent work must:
 
 ## Code + Build execution boundary
 
-Compile-only workflows may:
+Compile-only workflows may checkout exact bounded source, apply a pre-verified source/test patch, install compile dependencies, initialize shallow submodules, configure with `PRE_TEST` or equivalent compile-only-safe discovery, compile/link explicitly approved targets, and package binaries/libraries/fixtures/source/logs/metadata/checksums.
 
-- checkout the exact bounded branch/source;
-- apply a pre-verified source/test patch when required;
-- install compile dependencies;
-- initialize shallow submodules;
-- configure with `PRE_TEST` or an equivalent compile-only-safe test-discovery mode;
-- compile/link only explicitly approved targets;
-- package binaries/libraries, fixtures, exact source closure, logs, metadata, and recursive checksums.
-
-They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution.
-
-Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
+They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution. Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
 
 ## Test + Benchmark execution boundary
 
-Artifact-only Test + Benchmark turns:
+Artifact-only Test + Benchmark turns download the exact declared build artifact, verify outer digest/recursive checksums/source/blobs/dependency/fixture closure/command-boundary metadata before runtime execution, extract into a fresh arbitrary directory, may create runtime-only symlinks only for immutable packaged fixture paths, and execute validation only from packaged binaries/inputs.
 
-- download the exact declared successfully built artifact;
-- verify outer digest, recursive checksums, source commit, changed blobs, source/dependency/fixture closure, and command-boundary metadata before runtime execution;
-- extract into an arbitrary fresh directory;
-- may create runtime-only symlinks solely to expose immutable packaged fixture paths expected by compiled binaries;
-- execute validation only from packaged binaries and inputs;
-- preserve raw logs, machine-readable results, determinism records, and evidence archives.
-
-They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic.
-
-An invalid artifact is an infrastructure failure. Do not create a replacement build inside the Test + Benchmark turn.
+They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic. An invalid artifact is an infrastructure failure; do not create a replacement build inside Test + Benchmark.
 
 ## Trigger/payload lifecycle
 
 When dispatch is unavailable and a temporary exact-path push trigger is required:
 
 1. create one bounded workflow with an exact unique marker path;
-2. create only the payload/patch files required by that workflow;
-3. trigger it exactly once unless a diagnosed retry is required;
-4. verify the source/result/log artifacts and exact output authority;
+2. create only payload/patch files required by that workflow;
+3. trigger exactly once unless a diagnosed retry is required;
+4. verify source/result/log artifacts and exact output authority;
 5. **remove or disable the bounded path-filtered workflow before deleting its trigger marker**, so marker cleanup cannot retrigger the same workflow;
-6. remove the marker and payload after the workflow is no longer triggerable;
-7. verify the final workflow directory and temporary directories afterward.
+6. remove marker/payload after the workflow is no longer triggerable;
+7. verify final workflow and temporary directories afterward.
 
 Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 
 ## Artifact evidence requirements
 
-A Code + Build artifact should contain, when applicable:
+A Code + Build artifact should contain, when applicable, exact source commit/blob IDs, source patches/archive, dependency/submodule authority, five required test/benchmark executables and project libraries, production fixture closure, configure/build/toolchain logs, compile database where useful, command-boundary metadata and recursive checksum manifest.
 
-- exact source commit and changed blob IDs;
-- source patch(es) and source archive;
-- dependency/submodule authority;
-- five required test/benchmark executables and project libraries for the surface-cell closure;
-- production fixtures/input closure;
-- configure/build/toolchain logs;
-- compile database where useful;
-- command-boundary metadata;
-- recursive checksum manifest.
-
-Record the GitHub workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digests, and retention metadata when available.
+Record workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digests and retention metadata when available.
 
 ## Failure handling
 
@@ -103,11 +74,4 @@ Record the GitHub workflow run/job IDs, artifact IDs/names/digests, log artifact
 
 ## End-of-turn hygiene
 
-At both start and end of every turn:
-
-- inspect `.github/workflows`;
-- inspect temporary connector triggers and payload/patch directories;
-- remove stale turn-specific workflow state;
-- preserve the durable snapshot workflow;
-- ensure retained documentation references only files that still exist;
-- make the mandatory top-level PR #8 closeout comment the final repository write after all documentation and PR metadata updates.
+At both start and end of every turn inspect `.github/workflows`, temporary connector triggers and payload/patch directories; remove stale turn-specific state; preserve the durable snapshot workflow; ensure retained documentation references only files that still exist; and make the mandatory top-level PR #8 closeout comment the final repository write after all documentation and PR metadata updates.
