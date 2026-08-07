@@ -1,39 +1,58 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07 UTC
 
 ## Current gate
 
-G0 truthful authority [passed] → **G1 authoritative producer boundary [active]** → G2 seam proven/close sheets incomplete → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed] → **G1 authoritative producer-boundary verification [active]** → G2 seam proven/close sheets incomplete → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## Completed mandatory Review
+## Completed Code + Build
 
-The no-progress stop rule was triggered after two bounded Gate 1 Code + Build attempts failed to materially advance the exact production plane.
+The bounded producer replacement selected by the mandatory architecture Review is implemented and compile-verified.
 
-Review evidence:
+Source/build authority:
 
-- exact plane remains 106 traces / 9 arrangement / 12 completion candidates / 15 validation failures;
+- source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
+- payload cleanup `bcf934d34e9a15f5d0929628ffd26f6833643214`;
+- patch SHA-256 `a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef`;
+- workflow run/job/artifact `31154489371` / `92790924907` / `8984760467`;
+- 111/111 compile/link actions;
+- 7/7 approved targets;
+- artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
+- 44/44 internal checksums;
+- no generated project binary executed.
+
+Implemented producer authority:
+
+- `NotApplicable / Produced / Rejected` are distinct first-class states;
+- only `NotApplicable` may continue to a separately selected generic producer;
+- `Rejected` produces no generic seeds/traces/proposals and stops at tracing;
+- typed phase-front rejection remains first-invalid producer authority;
+- producer disposition/rejection identity is included in diagnostics and structural hashing;
+- relief guidance is hard only when `reliefBarriersEmbedded` is true;
+- exact committed `plane.obj` + `plane.rawfield` production-route regression was added and compiled.
+
+No runtime claim is made from this turn.
+
+## Latest executed runtime — unchanged
+
+- plane remains 106 traces / 9 arrangement / 12 completion candidates / 15 validation failures;
 - seam remains direct 64 pure quads, 81 vertices, hash `a8972efd7c4900a4`;
-- narrow source-vertex/topology contracts pass 4/4;
 - direct acceptance remains 1/6;
 - non-overlapping total remains 305/321.
 
-## Review outcome
-
-**Outcome B — bounded producer replacement proof.**
-
-The mixed producer architecture currently collapses authoritative `NotApplicable` and authoritative `Rejected` into `phaseFront.succeeded == false`, then silently starts the generic seed/trace/proposal producer. Later completion diagnostics can overwrite the typed phase-front failure. This explains persistence of the generic 106/9/12 signature despite local phase-front changes.
-
-The exact production plane also consumes preprocessing state absent from reconstructed fan tests. Phase-front relief transport additionally violates the documented authority boundary by treating `reliefBarrierEdges` as hard even when `reliefBarriersEmbedded == false`.
-
 ## Required next turn
 
-Use `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md`.
+Use `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md` against the exact artifact.
 
-The next Code + Build must implement explicit `NotApplicable / Produced / Rejected` producer disposition, forbid generic producer substitution after `Rejected`, retain immutable typed rejection, align relief barrier semantics, add exact production-plane producer coverage, preserve seam direct success, compile the approved seven targets without executing project binaries, and package a new immutable artifact.
+Run the explicit producer contracts first, then plane, seam, close sheets, cylinder, bunny, vase, bounded determinism, and non-overlapping default suites without rebuild.
 
-Gate 1 passes only with direct validated plane output. Explicit rejection without 106/9/12 substitution is material architecture progress but not Gate 1 closure.
+Acceptance hierarchy:
 
-GitHub workflows are operational and may be used for the authorized compile/artifact turn under the workflow policy.
+1. direct valid `Produced` plane + retained seam direct success closes G1;
+2. explicit immutable `Rejected` plane with no generic 106/9/12 substitution is material architecture proof but G1 remains open;
+3. old substitution, overwritten rejection, or seam regression is no progress and requires architecture Review before further local repair.
+
+GitHub workflows are operational for authorized Code + Build turns. Test + Benchmark remains artifact-only.
 
 Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
