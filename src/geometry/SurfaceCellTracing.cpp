@@ -5129,7 +5129,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   if (source_label_arrays_enabled(options)) {
     for (int face = 0; face < faces.rows(); ++face) {
       facesBySheet[{options.sourceFaceComponents[static_cast<std::size_t>(face)],
-                    options.sourceFaceSheets[static_cast<std::size_t>(face)]]]
+                    options.sourceFaceSheets[static_cast<std::size_t>(face)]}]
           .push_back(face);
     }
   } else {
