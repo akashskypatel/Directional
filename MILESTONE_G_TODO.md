@@ -4,75 +4,73 @@ Last updated: 2026-08-07 UTC
 
 ## Current gate
 
-G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → **G2 cross-chart / close-sheet isolation [active; compile-valid, runtime verification pending]** → G3 cylinder/periodic holonomy → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → **G3 cylinder / periodic holonomy [active]** → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## G2 Code + Build complete
+## G2 closed
 
-The bounded G2 source-sheet extension is implemented and compile-verified.
+Artifact-only validation of exact artifact `8994541137` closes Gate 2.
 
-Source authority:
+Authority:
 
-- source commit `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
-- architecture patch SHA-256 `7b99d8a7ff227c2e4f07a1498805eb7fd34b542b772d3bd0c1bb1e455e31fa8c`;
-- source blobs:
-  - `SurfaceCellTracing.cpp` `c9570ecb4a9557eebaf0e30b751e2ccca90b2973`;
-  - `RemeshPipeline.cpp` `55af3205fd7cdb8f21357ac69516ffa29cf8a6d3`;
-  - `SurfaceCellsPhase10Tests.cpp` `7151077d7d4e0a10dad388dd008479f96fc1aae8`.
-
-Implemented contracts:
-
-- authoritative uniform phase/front work is partitioned by source component/local-sheet before construction;
-- active-sheet geometry, incidence, boundary, transport, and frame checks do not inspect unrelated spatially close sheets;
-- proven reciprocal edge and ordered source-vertex-fan transport remains sheet-local;
-- independent produced sheets are concatenated only after each sheet is valid;
-- an applicable sheet rejection remains authoritative `Rejected`;
-- unsupported/periodic topology remains `NotApplicable` for later gates;
-- direct materialization uses `(component, sheet, u, v)` lattice identity rather than spatially ambiguous `(u, v)` alone;
-- boundary loops are generated per source sheet;
-- disconnected-sheet isolation and face-row-order invariance tests were added and compiled.
-
-## Build authority
-
-The first bounded compile exposed a one-line syntax error and failed before linking. The exact syntax defect was corrected without changing the design contract, then the full approved compile scope passed.
-
-Successful authority:
-
-- run/job/artifact `31179899458` / `92870408341` / `8994541137`;
+- source `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
 - artifact SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- detailed log artifact `8994539982`, SHA-256 `c7d67285ca6b980111a53fe017b3de5800abccb2a3146352135c0d674ca0acc8`;
-- recursive checksums **45/45 passed**;
-- compile/link actions **111/111**;
-- approved targets **7/7**;
-- five executables, two project libraries, 27 fixture/input files packaged;
-- no generated project binary/test/benchmark executed.
+- recursive checksums **45/45**;
+- focused producer contracts **7/7 passed**;
+- no rebuild or source/test/fixture/validator/build edit during the test turn.
 
-The failed compile log is retained as artifact `8994261249` and records the corrected syntax failure.
+Direct mandatory results:
 
-## Latest runtime authority — unchanged
+- plane: `Produced`, 64 pure quads, zero validation failures, hash `730caeae49ec872c`, deterministic 3/3;
+- seam: `Produced`, 64 pure quads, zero validation failures, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets: `Produced`, 200 pure quads, 242 vertices, two connected components, zero validation failures, hash `89b052762f52a5af`, deterministic 3/3;
+- no fallback or source-grid recovery on any passing fixture.
 
-No runtime validation was executed in the current Code + Build turn. Latest artifact-tested direct state remains:
+The close-sheet producer contract verifies source keys `{(0,0), (1,1)}` and requires every twinned phase-front edge to retain the same source component/local-sheet identity. The exact production output remains two disconnected 121-vertex sheets at `z=-0.035` and `z=+0.035`, proving no cross-sheet connectivity.
 
-- plane: direct valid `Produced`, 64 pure quads;
-- seam: direct valid `Produced`, 64 pure quads;
-- close sheets: `NotApplicable`, 158 generic traces, zero arrangement/completion;
-- cylinder: `NotApplicable`, 732 traces;
-- bunny: `NotApplicable`, 80,862 traces;
-- vase: prior bounded timeout/failure observation.
+G2 is therefore complete. Plane, seam, and close sheets are mandatory regressions for every later gate.
+
+## Active G3 blocker
+
+Cylinder remains:
+
+- authoritative producer disposition `NotApplicable`;
+- 732 generic traces;
+- zero arrangement cells;
+- zero completed quads;
+- terminal `NotProductionReady:completion`;
+- no fallback/recovery.
+
+The active missing contract is periodic phase/front construction on a singularity-free annulus.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `8994541137`.
+Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md` as a **Code + Build only** turn.
 
-Priority order:
+Required bounded implementation:
 
-1. verify artifact/source/checksum authority;
-2. run the two new disconnected-sheet producer contracts;
-3. preserve plane and seam mandatory regressions;
-4. execute exact production close sheets as G2 acceptance;
-5. prove component/local-sheet isolation and no cross-sheet output identity merge;
-6. run bounded determinism and non-overlapping default suites;
-7. observe cylinder/bunny/vase only after the active G2 decision.
+1. derive annulus applicability from source topology, not fixture identity;
+2. construct a deterministic intrinsic cut between the two source boundary cycles;
+3. build an intrinsic cut-open phase chart without requiring world-space planarity;
+4. record first-class periodic holonomy as quarter-turn rotation + integer lattice translation + ordered source route;
+5. reject malformed/non-integral/branch-incompatible holonomy with a typed authoritative reason;
+6. pair periodic front edges across the artificial cut through exact source/phase equivalence;
+7. materialize periodic lattice duplicates through exact holonomy identity, never Euclidean seam welding;
+8. preserve only the two real cylinder boundary loops as exterior boundaries;
+9. compile the required regression sources but execute no generated project binary;
+10. preserve G0–G2 direct successes.
 
-G2 closes only if close sheets becomes direct deterministic strict-valid `Produced` output without cross-sheet coupling and plane/seam remain valid. If so, the next Code + Build gate becomes G3 periodic cylinder/holonomy.
+If cylinder becomes compile-valid for the periodic producer, package an immutable artifact for the following artifact-only Test + Benchmark turn. If runtime later shows only a new exact typed periodic rejection, fix that general rejection next. Do not broaden to torus, singularities, adaptivity, or bunny/vase production during G3.
+
+## Deferred evidence
+
+Current non-overlapping suites:
+
+- focused G2 contracts: **7/7**;
+- remaining producer executable: **82/86**;
+- completion/simplification: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**.
+
+The remaining producer failures are cylinder/bunny/vase acceptance plus the scheduler-sensitive validator timing ratio. The ten completion/simplification failures remain deferred to later ordered gates.
 
 Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
