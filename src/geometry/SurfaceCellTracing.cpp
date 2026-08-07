@@ -5588,7 +5588,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   const double period = s.back();
   const double height = t.back();
   double target = options.defaultTargetSize;
-  if (targetSize.size() > 0 && targetSize.allFinite() && targetSize.minCoeff() > 0.0) {
+  if (targetSize.size() > 0 && targetSize.allFinite() &&
+      targetSize.minCoeff() > 0.0) {
     target = targetSize.mean();
   }
   if (!(period > 0.0) || !(height > 0.0) || !(target > 0.0) ||
@@ -5598,8 +5599,99 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                             SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
     return result;
   }
-  result.gridU = std::max(3, static_cast<int>(std::llround(period / target)));
+
+  // Every canonical annulus strip boundary is a mandatory periodic lattice
+  // breakpoint.  Subdivide each strip independently from its intrinsic length
+  // and local target field so no accepted cell side bridges a source-ring
+  // corner merely because a globally uniform period/target count misses it.
+  std::vector<int> stripSubdivisions(static_cast<std::size_t>(ringSize), 1);
+  int periodicSubdivisionCount = 0;
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    const double stripLength =
+        s[static_cast<std::size_t>(u + 1)] - s[static_cast<std::size_t>(u)];
+    double localTargetSum = 0.0;
+    int localTargetSamples = 0;
+    for (const auto &ring : rings) {
+      const int a = ring[static_cast<std::size_t>(u)];
+      const int b = ring[static_cast<std::size_t>(next)];
+      for (const int vertex : {a, b}) {
+        const double sample = target_size_at_vertex(targetSize, vertex, target);
+        if (!(sample > 0.0) || !std::isfinite(sample)) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+          return result;
+        }
+        localTargetSum += sample;
+        ++localTargetSamples;
+      }
+    }
+    const double localTarget =
+        localTargetSum / static_cast<double>(localTargetSamples);
+    if (!(stripLength > 0.0) || !std::isfinite(stripLength) ||
+        !(localTarget > 0.0) || !std::isfinite(localTarget)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    const double subdivisionRatio = stripLength / localTarget;
+    if (!std::isfinite(subdivisionRatio) ||
+        subdivisionRatio > static_cast<double>(std::numeric_limits<int>::max())) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    const int subdivisions = std::max(
+        1, static_cast<int>(std::llround(subdivisionRatio)));
+    if (periodicSubdivisionCount >
+        std::numeric_limits<int>::max() - subdivisions) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    stripSubdivisions[static_cast<std::size_t>(u)] = subdivisions;
+    periodicSubdivisionCount += subdivisions;
+  }
+  result.gridU = periodicSubdivisionCount;
   result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+
+  std::vector<double> periodicCoordinates;
+  periodicCoordinates.reserve(static_cast<std::size_t>(result.gridU + 1));
+  periodicCoordinates.push_back(0.0);
+  for (int u = 0; u < ringSize; ++u) {
+    const double stripStart = s[static_cast<std::size_t>(u)];
+    const double stripEnd = s[static_cast<std::size_t>(u + 1)];
+    const int subdivisions = stripSubdivisions[static_cast<std::size_t>(u)];
+    for (int division = 1; division <= subdivisions; ++division) {
+      const double coordinate =
+          division == subdivisions
+              ? stripEnd
+              : stripStart + (stripEnd - stripStart) *
+                                 (static_cast<double>(division) /
+                                  static_cast<double>(subdivisions));
+      if (!std::isfinite(coordinate) ||
+          coordinate <= periodicCoordinates.back()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+        return result;
+      }
+      periodicCoordinates.push_back(coordinate);
+    }
+  }
+  if (periodicCoordinates.size() !=
+          static_cast<std::size_t>(result.gridU + 1) ||
+      std::abs(periodicCoordinates.back() - period) >
+          1.0e-12 * std::max(1.0, period)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+    return result;
+  }
 
   std::map<int, std::pair<int, int>> vertexChartIndex;
   for (int layer = 0; layer <= maxDistance; ++layer) {
@@ -5814,7 +5906,6 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     result.periodicHolonomy.cutSourceEdges.push_back(sourceEdge);
   }
 
-  const double stepU = period / static_cast<double>(result.gridU);
   const double stepV = height / static_cast<double>(result.gridV);
   const int columns = result.gridU + 1;
   const int rows = result.gridV + 1;
@@ -5822,7 +5913,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   const auto node_index = [columns](int u, int v) { return v * columns + u; };
   for (int v = 0; v < rows; ++v) {
     for (int u = 0; u < columns; ++u) {
-      const Eigen::Vector2d uv(stepU * u, stepV * v);
+      const Eigen::Vector2d uv(
+          periodicCoordinates[static_cast<std::size_t>(u)], stepV * v);
       if (!point_on_periodic_chart(chartTriangles, uv,
                                    points[static_cast<std::size_t>(node_index(u, v))])) {
         set_phase_front_failure(result.failure,
@@ -5845,11 +5937,13 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       const std::array<int, 4> nodeIds{
           node_index(u, v), node_index(u + 1, v),
           node_index(u + 1, v + 1), node_index(u, v + 1)};
+      const double u0 = periodicCoordinates[static_cast<std::size_t>(u)];
+      const double u1 = periodicCoordinates[static_cast<std::size_t>(u + 1)];
       const std::array<Eigen::Vector2d, 4> uv{
-          Eigen::Vector2d(stepU * u, stepV * v),
-          Eigen::Vector2d(stepU * (u + 1), stepV * v),
-          Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
-          Eigen::Vector2d(stepU * u, stepV * (v + 1))};
+          Eigen::Vector2d(u0, stepV * v),
+          Eigen::Vector2d(u1, stepV * v),
+          Eigen::Vector2d(u1, stepV * (v + 1)),
+          Eigen::Vector2d(u0, stepV * (v + 1))};
       SurfacePhaseFrontCell cell;
       cell.id = static_cast<int>(result.cells.size());
       cell.sourceComponent = component;
@@ -5882,7 +5976,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
           return result;
         }
       }
-      const double tolerance = 1.0e-7 * std::max({1.0, stepU, stepV});
+      const double tolerance =
+          1.0e-7 * std::max({1.0, u1 - u0, stepV});
       if (validate_closed_boundary_paths(vertices, faces, cell.corners,
                                          cell.boundaryPaths, tolerance) !=
           CellRejectionReason::Accepted) {

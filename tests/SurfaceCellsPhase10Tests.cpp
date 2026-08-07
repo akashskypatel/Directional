@@ -1014,10 +1014,94 @@ TEST(SurfaceCellsPhase10,
             reverse.phaseFront.periodicHolonomy.quarterTurnRotation);
   EXPECT_EQ(forward.phaseFront.periodicHolonomy.latticeTranslation,
             reverse.phaseFront.periodicHolonomy.latticeTranslation);
-  EXPECT_EQ(forward.phaseFront.periodicHolonomy.sourceRouteEdges,
-            reverse.phaseFront.periodicHolonomy.sourceRouteEdges);
-  EXPECT_EQ(forward.phaseFront.periodicHolonomy.cutSourceEdges,
-            reverse.phaseFront.periodicHolonomy.cutSourceEdges);
+  const auto canonicalEdgeRoute = [](
+      const directional::TriMesh &mesh, const std::vector<int> &sourceEdges) {
+    std::vector<std::pair<int, int>> route;
+    route.reserve(sourceEdges.size());
+    for (const int sourceEdge : sourceEdges) {
+      if (sourceEdge < 0 || sourceEdge >= mesh.EV.rows()) {
+        return std::vector<std::pair<int, int>>{};
+      }
+      route.emplace_back(
+          std::min(mesh.EV(sourceEdge, 0), mesh.EV(sourceEdge, 1)),
+          std::max(mesh.EV(sourceEdge, 0), mesh.EV(sourceEdge, 1)));
+    }
+    return route;
+  };
+  const auto forwardRoute = canonicalEdgeRoute(
+      forwardMesh, forward.phaseFront.periodicHolonomy.sourceRouteEdges);
+  const auto reverseRoute = canonicalEdgeRoute(
+      reverseMesh, reverse.phaseFront.periodicHolonomy.sourceRouteEdges);
+  const auto forwardCut = canonicalEdgeRoute(
+      forwardMesh, forward.phaseFront.periodicHolonomy.cutSourceEdges);
+  const auto reverseCut = canonicalEdgeRoute(
+      reverseMesh, reverse.phaseFront.periodicHolonomy.cutSourceEdges);
+  ASSERT_EQ(forward.phaseFront.periodicHolonomy.sourceRouteEdges.size(),
+            forwardRoute.size());
+  ASSERT_EQ(reverse.phaseFront.periodicHolonomy.sourceRouteEdges.size(),
+            reverseRoute.size());
+  ASSERT_EQ(forward.phaseFront.periodicHolonomy.cutSourceEdges.size(),
+            forwardCut.size());
+  ASSERT_EQ(reverse.phaseFront.periodicHolonomy.cutSourceEdges.size(),
+            reverseCut.size());
+  EXPECT_EQ(forwardRoute, reverseRoute);
+  EXPECT_EQ(forwardCut, reverseCut);
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontRetainsCanonicalBoundaryStripBreakpoints) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition);
+
+  std::set<int> sourceBoundaryVertices;
+  for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
+    if (mesh.EF(edge, 0) >= 0 && mesh.EF(edge, 1) >= 0) {
+      continue;
+    }
+    sourceBoundaryVertices.insert(mesh.EV(edge, 0));
+    sourceBoundaryVertices.insert(mesh.EV(edge, 1));
+  }
+  ASSERT_FALSE(sourceBoundaryVertices.empty());
+
+  std::set<int> phaseBoundaryVertices;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (int corner = 0; corner < 4; ++corner) {
+      const auto &state = cell.lattice[static_cast<std::size_t>(corner)];
+      if (state.latticeCoordinate.y() != 0 &&
+          state.latticeCoordinate.y() != network.phaseFront.gridV) {
+        continue;
+      }
+      const auto &point = cell.corners[static_cast<std::size_t>(corner)];
+      ASSERT_GE(point.face, 0);
+      ASSERT_LT(point.face, mesh.F.rows());
+      int sourceCorner = -1;
+      for (int coordinate = 0; coordinate < 3; ++coordinate) {
+        if (std::abs(point.barycentric[coordinate] - 1.0) <= 1.0e-10) {
+          sourceCorner = coordinate;
+          break;
+        }
+      }
+      if (sourceCorner >= 0) {
+        phaseBoundaryVertices.insert(mesh.F(point.face, sourceCorner));
+      }
+    }
+  }
+  EXPECT_EQ(sourceBoundaryVertices, phaseBoundaryVertices);
 }
 
 TEST(SurfaceCellsPhase10,
