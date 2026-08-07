@@ -9,9 +9,9 @@
 
 ## Mandatory design-first operating mandate
 
-Every future agent must prioritize `.agents/Directional/DESIGN.md` and the earliest incomplete/regressed high-level gate over local repair activity. Diagnostics, counters, taxonomies, caching, scheduling, performance, historical cleanup and downstream repair machinery must not become the principal objective while an earlier constructive gate is red.
+Every future agent must prioritize `.agents/Directional/DESIGN.md` and the earliest incomplete/regressed high-level gate over local repair, diagnostics, cache/memory work, scheduling, performance, historical cleanup, or downstream machinery.
 
-Before any Code + Build change, record exactly:
+Before any code change, write:
 
 ```text
 Active design gate:
@@ -22,160 +22,41 @@ Observable material-progress condition:
 Explicitly deferred work:
 ```
 
-Material progress means an active direct fixture passes, a missing first-class design contract becomes live and consumed, or a general structural ambiguity is removed. New diagnostics, counters, hashes, equivalent failure movement, aggregate gains, performance work, fallback/recovery or fixture-specific behavior are not material progress alone.
+Material progress means an active direct fixture passes, a missing first-class contract becomes live and consumed, or a general structural ambiguity is removed. New diagnostics, counters, hashes, equivalent failure movement, aggregate gains, performance work, fallback/recovery, or fixture-specific behavior are not material progress alone.
 
 ### Mandatory no-progress stop rule
 
-If **two consecutive Code + Build turns** fail to materially advance the earliest active gate after artifact-only runtime validation, the following turn must be a design review or bounded producer replacement proof.
+If two consecutive Code + Build turns do not materially advance the earliest active gate when their following artifact-only runtime results are considered, the next turn must be a design review or bounded producer replacement proof.
 
-G1 previously triggered this rule and used the bounded producer replacement outcome successfully. For current G3, the ring-correspondence Code + Build plus this artifact-only turn is the **first runtime-no-progress Code + Build result since the prior source-strip material-progress turn**. The rule is therefore not yet triggered. If the next endpoint-canonicalization Code + Build also fails its following artifact-only acceptance without material progress, the next turn after that must be the mandated review/replacement proof.
+This rule was previously triggered for Gate 1; the mandatory Review selected **Outcome B — bounded producer replacement proof**, which subsequently passed.
 
-## Strict turn cadence
+For current G3 accounting:
 
-Use the turn-based coding-agent cadence exactly:
-
-`Code + Build -> Test + Benchmark -> [Optional Review] -> Code + Build`
-
-Do not combine turn types.
-
-- **Code + Build:** source/tests/build logic may change; configure/compile/link approved targets; execute no generated Directional binary, test, benchmark, ctest discovery, CLI/GUI/help/list/runtime. Use `PRE_TEST` or equivalent.
-- **Test + Benchmark:** execute only the exact immutable built artifact; no rebuild, relink, source/test/fixture/manifest/validator/benchmark/build edit.
-- **Review:** independent design/implementation review; may alter the next action plan, not silently turn into a Code + Build or Test + Benchmark turn.
+- the source-strip turn established material progress;
+- the subsequent ring-correspondence Code + Build was classified **runtime no-progress** by artifact `9008118764` because cylinder regressed to `InvalidPeriodicChart` cell 29;
+- the just-completed endpoint-canonicalization Code + Build is compile-valid but not yet runtime-tested;
+- **if artifact `9010838200` also produces no material G3 progress, the turn immediately after that Test + Benchmark must be the mandated design review or bounded producer replacement proof. Do not take another ordinary isolated Code + Build turn.**
 
 ## Gate state
 
 1. G0 truthful authority — **passed**.
 2. G1 uniform authoritative phase-front plane — **passed**.
 3. G2 cross-chart / close-sheet isolation — **passed**.
-4. G3 periodic closure / holonomy — **active; regression at periodic chart endpoint representation**.
+4. G3 periodic closure / holonomy — **active; field-authoritative correspondence retained, endpoint-canonicalization correction compile-valid, artifact runtime validation pending**.
 5. G4 topology/singularities — blocked.
 6. G5 adaptive scale/hard features — blocked.
 7. G6 full production geometry — blocked as success gate; bunny/vase remain mandatory later observations.
 8. G7 hardening/default-on — blocked.
 
-Earliest failing fixture: `cylinder__surface_cells` at `tracing/phase-front`, `Rejected/InvalidPeriodicChart`, cell 29.
+## Completed turn
 
-## Just-completed turn
-
-**G3 Periodic Ring Correspondence — artifact-only Test + Benchmark.**
+The **G3 Periodic Chart Endpoint Canonicalization Code + Build** turn is complete.
 
 Authoritative report:
 
-- `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Report.md`.
 
-Exact tested authority:
-
-- source/test commit `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`;
-- artifact `9008118764`, `g3-periodic-ring-correspondence-code-build`;
-- artifact SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
-- build run/job `31214404170 / 92984429773`;
-- build log artifact `9008117677`, SHA-256 `a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77`;
-- recursive checksums **44/44**;
-- five executables, two project libraries, 27 fixture/input files;
-- Release/Ninja/static/`PRE_TEST`, seven approved targets, build **111/111**;
-- packaged pre-test command boundary `runtimeExecution=false`;
-- no rebuild/relink/source/test/fixture/manifest/validator/build edit in the Test + Benchmark turn.
-
-Final changed blobs in that artifact:
-
-- `include/directional/geometry/SurfaceCellTracing.h` → `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
-- `src/geometry/SurfaceCellTracing.cpp` → `6980850bd32d40b1da9350ebbe3f601b8ce5e07b`;
-- `tests/SurfaceCellsPhase10Tests.cpp` → `c4671ef674228d74b96e80499abbb6846bcdf3e3`.
-
-## Runtime decision
-
-**G3 does not close. Classification: regression / no-progress.**
-
-Focused/retained producer contracts: **9/15**.
-
-Passed:
-
-- `PeriodicPhaseFrontFieldAmbiguousRingCorrespondenceFailsClosed`;
-- `ExactCommittedCylinderReachesAuthoritativePeriodicProducerBoundary` as a typed producer-boundary contract;
-- all seven retained G1/G2 producer contracts.
-
-Failed because the nominal periodic chart now rejects `InvalidPeriodicChart` before the intended assertion:
-
-1. `PeriodicPhaseFrontDerivesAnnulusFromSourceTopology`;
-2. `PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration`;
-3. `PeriodicPhaseFrontRetainsCanonicalBoundaryStripBreakpoints`;
-4. `PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`;
-5. `PeriodicPhaseFrontPairsArtificialCutWithoutExteriorSeam`;
-6. `PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason` because its valid precondition chart rejects first.
-
-The typed ambiguity contract remains real authority. The exact-cylinder boundary test intentionally permits typed rejection and therefore does not override the failed nominal G3 contracts/direct acceptance.
-
-## Direct fixture authority
-
-| Fixture | Result | Producer | Traces | Direct quads | Output | Determinism |
-|---|---|---:|---:|---:|---|---|
-| plane | **pass** | `Produced` | 352 | 64 | 81 V / 64 Q, `730caeae49ec872c` | 3/3 |
-| seam | **pass** | `Produced` | 256 | 64 | 81 V / 64 Q, `5bdf34d7802e9fb0` | 3/3 |
-| close sheets | **pass** | `Produced` | 1,104 | 200 | 242 V / 200 Q / 2 comps, `89b052762f52a5af` | 3/3 |
-| cylinder | **fail/regression** | `Rejected/InvalidPeriodicChart` | 0 | 0 | none, `NotProductionReady:tracing` | 3/3 |
-| bunny | later gate | `NotApplicable` | 80,862 | 0 | `NotProductionReady:completion` | 1 bounded |
-| vase | later gate | bounded timeout | — | — | 45 s timeout, failure only | 1 bounded |
-
-Cylinder is stable 3/3 at:
-
-- `surfaceCellFirstInvalidProducerStage = tracing/phase-front`;
-- `surfaceCellFirstInvalidProducerReason = InvalidPeriodicChart`;
-- `surfaceCellFirstInvalidProducerCell = 29`;
-- no terminal holonomy, trace, arrangement, completion, provenance or output;
-- no fallback or source-grid recovery;
-- about 0.0116–0.0120 s/process.
-
-This supersedes the previous artifact `9004509871` as latest executed runtime authority, even though it is a regression. That preceding artifact had reached periodic `Produced`, `r=0`, `t=(32,0)`, route 32, cut 4, 2,237 traces and 320 direct quads before completed quality validation failed.
-
-## Important retained field-authority lesson
-
-Do **not** restore the former lexicographic/diagonal adjacent-ring correspondence simply because it progressed farther.
-
-Immutable fixture reconstruction confirms:
-
-- the intended same-column source correspondence is axial/field-aligned;
-- the competing diagonal mapping is shifted 22.5 degrees in angle and is exactly `37.9670987281°` away from the axial field family;
-- that value matched the former cylinder field-P95 defect;
-- genuinely field-equivalent candidates still fail closed with typed `AmbiguousPeriodicRingCorrespondence`.
-
-The reciprocal field-authoritative correspondence direction remains correct.
-
-## Exact structural root cause now
-
-Independent numerical reconstruction from only the immutable packaged source and cylinder fixture reproduces the runtime's first rejected cell exactly at **29**.
-
-The defect is in producer-emitted periodic chart endpoints:
-
-1. `periodic_chart_segment()` uses approximately `1e-10` tolerance to classify triangle occupancy along a chart segment;
-2. interval limits at the tolerance-expanded simplex boundary are emitted directly as barycentric geometry;
-3. two adjacent boundary paths that mathematically share an exact source vertex can therefore acquire microscopic tails on the same source face;
-4. at cell 29/source face 30 the reproduced tails are approximately `(-9.9999e-11,0)->(0,0)` and `(0,0)->(-1e-10,1e-10)` in barycentric 2D;
-5. the unchanged `segments_intersect_beyond_shared_endpoint_2d()` correctly sees those emitted tails as overlap beyond an exact shared endpoint;
-6. `validate_closed_boundary_paths()` rejects and the caller records `InvalidPeriodicChart` for cell 29.
-
-Required architectural principle: **coverage tolerance may determine ownership, but emitted geometry must be canonical source-simplex geometry**.
-
-Do not repair this by relaxing validator tolerance or ignoring small intersections.
-
-## Suite evidence
-
-- bounded producer: **91/99**; six periodic regressions + scheduler-sensitive timing + cylinder direct design acceptance fail;
-- completion/simplification: **154/164**, same historical ten deferred failures;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- bounded aggregate: **313/331**.
-
-Bunny completed one bounded observation in 41.60769 s, peak working set 247,566,336 bytes, `NotApplicable`. Vase exceeded the 45-second bounded observation; timeout is failure only, never correctness evidence.
-
-## Next authoritative turn
-
-**Code + Build — G3 Periodic Chart Endpoint Canonicalization.**
-
-Execute:
-
-- `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md`
-
-Mandatory declaration:
+### Design declaration used
 
 ```text
 Active design gate: G3 periodic closure / holonomy
@@ -186,88 +67,229 @@ Observable material-progress condition: the six currently regressed nominal G3 p
 Explicitly deferred work: completed-output normal/field/warpage remediation after phase-front authority is restored, G4 singularities/topology-distinct completion, G5 adaptive transitions/features, G6 bunny/vase production, scheduler timing, historical completion/simplification failures, validator changes and unrelated optimization
 ```
 
-### Code + Build requirements
+## Latest executed runtime authority — unchanged by Code + Build
 
-- start from source/test commit `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a` plus current documentation-only branch head;
-- preserve field-authoritative correspondence and typed ambiguity/invalid correspondence rejection;
-- canonicalize/renormalize periodic chart endpoint barycentrics near exact simplex boundaries;
-- preserve one exact shared breakpoint identity across consecutive intervals;
-- remove zero-length/tolerance-only segments;
-- retain rejection of real out-of-simplex geometry and real self-intersections;
-- do not alter strict boundary/self-intersection validators to make the fixture pass;
-- do not weaken the six currently failing G3 tests to accept `InvalidPeriodicChart`;
-- compile the same seven approved targets with `PRE_TEST` unless a narrower set proves every modified translation unit;
-- execute no generated Directional runtime;
-- package exact source/patch/blob authority, binaries/libs/fixtures/logs/compile commands, `runtimeExecution=false`, recursive checksums and outer SHA.
+Artifact `9008118764`, source/test `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`:
 
-## Workflow and repository hygiene — mandatory
+- focused/retained producer contracts **9/15**;
+- plane `Produced`, 352 traces, 81 V / 64 strict-valid quads, hash `730caeae49ec872c`, deterministic 3/3;
+- seam `Produced`, 256 traces, 81 V / 64 strict-valid quads, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets `Produced`, 1,104 traces, 242 V / 200 strict-valid quads / two isolated components, hash `89b052762f52a5af`, deterministic 3/3;
+- cylinder **`Rejected/InvalidPeriodicChart`**, `tracing/phase-front`, cell 29, zero traces/arrangement/completion/output, no terminal holonomy, deterministic 3/3, no fallback/recovery;
+- bunny later-gate `NotApplicable`, 80,862 traces in one bounded run;
+- vase later-gate bounded timeout; timeout is failure only.
 
-Only `.github/workflows/agent-source-snapshot.yml` is approved as a durable workflow.
+Six nominal G3 periodic contracts regress because the valid field-aligned chart rejects before their intended assertions. All seven retained G1/G2 contracts and the typed genuinely ambiguous ring-correspondence contract pass.
 
-Temporary Code + Build workflows, trigger markers and payloads are allowed only for bounded remote execution. After verifying artifact/log/source authority:
+### Why the field-authoritative correspondence must remain
 
-1. remove/disable the bounded path-filtered workflow **before** deleting its trigger marker;
-2. remove trigger/payload debris;
-3. verify only durable `agent-source-snapshot.yml` remains;
-4. verify temporary trigger/payload directories are absent.
+Do not restore the prior diagonal/lexicographic adjacent-ring mapping merely because it progressed farther. Immutable reconstruction proves:
 
-Every workflow must emit detailed success/failure logs and always upload the log artifact.
+- the intended same-column correspondence is axial;
+- the discarded diagonal mapping is exactly `37.9670987281°` from the axial field;
+- that angle matched the prior field-P95 failure.
 
-## Documentation hygiene — mandatory
+## Reproduced endpoint defect
 
-At every turn end:
+Artifact `9008118764` was independently reconstructed from immutable packaged source/fixtures. The first rejection reproduces at **cell 29**.
 
-- update this handoff, `TODO`, `MILESTONE_G_TODO.md`, latest runtime summary and any live design/remediation plan materially affected;
-- retain the latest useful report and next action plan;
-- remove superseded turn plans/reports when no longer needed, rather than accumulating stale contradictory instructions;
-- ensure every retained reference exists.
+The old `periodic_chart_segment()` behavior used approximately `1e-10` tolerance both to decide source-triangle coverage and to define emitted interval endpoints. At cell 29, two sides that mathematically share one source vertex therefore acquire microscopic source-face tails near the tolerance boundary. The unchanged strict `segments_intersect_beyond_shared_endpoint_2d()` correctly recognizes overlap beyond a shared endpoint and `validate_closed_boundary_paths()` rejects the cell.
 
-## Mandatory instruction preservation
+Therefore the repair target is producer endpoint representation, not validator tolerance.
 
-Do not silently drop process constraints from this handoff. Any future rewrite must preserve:
+## Compile-valid endpoint-canonicalization implementation
 
-- strict turn separation;
-- design-first/earliest-gate policy;
-- material-progress definition;
-- two-consecutive-Code+Build no-progress stop rule;
-- exact artifact/source authority requirements;
-- bounded workflow/log/artifact policy and cleanup ordering;
-- docs cleanup/live handoff requirements;
-- review policy `never`;
-- PR #8 stays open/draft/unmerged;
-- final top-level PR comment requirement;
-- all prohibitions below.
+Final source/test commit:
 
-## End-of-turn PR requirement
+- `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
 
-Every completed turn must add a **new top-level PR #8 Conversation comment after all other repository writes**. That comment is the final repository write of the turn. Perform no GitHub mutation after it.
+Patch:
 
-## Prohibitions
+- SHA-256 `f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8`.
 
-- no validator weakening;
-- no source-ID/count/order/frequency ownership selection;
-- no arbitrary subset search;
-- no fixture/ID special cases;
-- no generic producer substitution after `Rejected`;
-- no fallback/recovery substitution;
-- no Euclidean/nearest-point periodic seam welding;
-- no positional merging across unrelated sheets;
-- no synthetic counters/Euler/topology correction;
-- no post-hoc cycle decomposition/cell split/merge used as construction authority;
-- no timeout-as-correctness.
+Final blobs:
+
+- `include/directional/geometry/SurfaceCellTracing.h` → unchanged `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
+- `src/geometry/SurfaceCellTracing.cpp` → `63e5ee427f675077f710db51ffb56d91838d3519`;
+- `tests/SurfaceCellsPhase10Tests.cpp` → `bef95b04c95c9a213c634e604d004b3d7d22646e`.
+
+### Constructive correction
+
+1. The existing chart tolerance remains triangle-coverage/ownership evidence only.
+2. Emitted chart breakpoints come from exact zero-barycentric simplex crossings, not `-tolerance` expanded bounds.
+3. Periodic lattice-point and segment-endpoint barycentrics share a canonicalization helper.
+4. Finite values materially outside the simplex reject.
+5. In-tolerance coordinates snap exactly to `0` / `1`.
+6. Source-vertex endpoints become exact one-hot barycentrics.
+7. Remaining valid barycentrics are renormalized while preserving exact zero coordinates.
+8. Segments collapsing after canonicalization are omitted instead of emitted as tolerance-only tails.
+9. Same-face merging preserves canonical endpoints.
+10. Strict closed-boundary/self-intersection validator code and thresholds are unchanged.
+
+Preserved: reciprocal field-authoritative ring correspondence, typed `InvalidPeriodicRingCorrespondence` / `AmbiguousPeriodicRingCorrespondence`, annulus applicability, deterministic cut, first-class holonomy, source-strip breakpoints/subdivisions, artificial-cut ownership/exact quotient, provenance, one accepted cell → one quad, G0-G2 and no fallback/recovery.
+
+### New compile-only regression source
+
+- `SurfaceCellsPhase10.PeriodicPhaseFrontCanonicalizesSourceSimplexEndpoints` — requires exact simplex endpoints, exact shared source breakpoints, no tolerance-only segments and unchanged strict boundary validation acceptance on the cylinder phase front.
+- `SurfaceCellsPhase10.PeriodicChartEndpointCanonicalizationKeepsGenuineOverlapRejected` — allows a true shared endpoint but requires real collinear overlap beyond it to remain rejected.
+
+These tests were **compiled only; not executed**.
+
+## Compile-only authority
+
+- workflow run/job `31221873296 / 93007996817`;
+- source commit `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`;
+- artifact `9010838200` (`g3-periodic-chart-endpoint-canonicalization-code-build`);
+- artifact SHA-256 `b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db`;
+- detailed log artifact `9010837410`, SHA-256 `2b994f158e8a28ecdc52fd3c532b48edf936aeaaf8284053a728b56a58979973`;
+- recursive checksums **44/44**;
+- compile/link **111/111**;
+- approved targets **7/7**;
+- five executables, two project libraries, 27 fixture/input files;
+- GNU C++ 13.3.0 / CMake 3.31.6 / Ninja / Release static / `PRE_TEST`;
+- packaged command boundary `runtimeExecution=false`;
+- generated Directional binary/test/benchmark/CLI/GUI/help/list/discovery execution: **none**.
+
+Cylinder fixture hashes in the artifact:
+
+- `cylinder.obj` `59ed6d736410dbef6bc751136ba0eb1d557a43c9df63fb2a570daf85c79419ae`;
+- `cylinder.rawfield` `6e861e06fa5d3dd6ed84c48bf7d459df701acd7f6ab241cc2adbde66d829084d`.
+
+## Next authoritative turn
+
+**Artifact-only Test + Benchmark — G3 Periodic Chart Endpoint Canonicalization.**
+
+Execute:
+
+- `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Artifact_Only_Test_Benchmark_Plan.md`.
+
+Exact artifact authority:
+
+- artifact ID `9010838200`;
+- SHA-256 `b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db`;
+- source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`;
+- patch SHA-256 `f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8`;
+- log artifact `9010837410`, SHA-256 `2b994f158e8a28ecdc52fd3c532b48edf936aeaaf8284053a728b56a58979973`;
+- expected checksums **44/44**.
+
+### Test + Benchmark boundary
+
+1. Do not configure, compile, relink, regenerate discovery, or edit source/tests/fixtures/manifests/validators/benchmark/build logic.
+2. A runtime-only symlink may expose immutable packaged fixture paths; record it and do not alter packaged bytes.
+3. Verify artifact digest, 44/44 checksums, source/patch/blobs, five executables, two libraries, 27 fixtures, build logs and `runtimeExecution=false` before runtime.
+4. If integrity fails, classify infrastructure invalid and stop; do not build a replacement artifact.
+5. Run **17 focused/retained contracts first**: the two new endpoint tests, field-authoritative/typed-ambiguity tests, six retained G3 periodic tests, and seven retained G1/G2 tests.
+6. Revalidate plane, seam, close sheets, then exact cylinder.
+7. Material progress requires all six nominal G3 periodic regressions restored and cylinder advancing beyond cell 29 with field authority and G0-G2 intact.
+8. `Rejected` must not fall through to generic substitution; fallback/recovery remain disabled.
+9. G3 closes only with direct deterministic strict-valid periodic `CompletedSurfaceCells`, zero validation failures, field/normal P95 <= 15°, warpage P95 <= 30°, exact cut/holonomy/quotient/provenance and no false exterior cut seam.
+10. Historical translation/grid/output/provenance counts are not acceptance constants.
+11. Run independent-process determinism and default suites after the direct gate decision.
+12. Bunny/vase remain later-gate observations only.
+13. Timeout is failure only, never correctness evidence.
+14. If the artifact is again no-progress, the **next turn must be the mandatory design review or bounded producer replacement proof**.
 
 ## Current authoritative documents
 
-Read in this order:
+- `TODO`
+- `MILESTONE_G_TODO.md`
+- this handoff
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+- `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Artifact_Only_Test_Benchmark_Plan.md`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
+- `benchmark-results/design-aligned-runtime-summary.json`
+- `tests/TESTING_STRATEGY.md`
+
+## Read first
 
 1. `TODO`
 2. `MILESTONE_G_TODO.md`
 3. this handoff
 4. `.agents/Directional/DESIGN.md`
 5. `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Report.md`
-6. `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md`
-7. `.agents/Directional/REORIENTATION_PLAN.md`
-8. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-9. `benchmark-results/design-aligned-runtime-summary.json`
-10. `tests/TESTING_STRATEGY.md`
-11. `.agents/Directional/GitHub_Workflow_Policy.md`
+6. `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Report.md`
+7. `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Artifact_Only_Test_Benchmark_Plan.md`
+8. `.agents/Directional/REORIENTATION_PLAN.md`
+9. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+10. `benchmark-results/design-aligned-runtime-summary.json`
+11. `tests/TESTING_STRATEGY.md`
+12. `.agents/Directional/GitHub_Workflow_Policy.md`
+13. the turn-based coding-agent skill and the relevant turn/testing-integrity/recovery/handoff/connector-workflow/unit-testing references.
+
+## Durable lessons
+
+- Passed earlier gates are mandatory regressions and become active immediately when broken.
+- A cross field supplies orientation, not global lattice phase/connectivity.
+- Exact production preprocessing is producer authority; reconstructed fixtures are not automatically execution-equivalent.
+- Source-vertex crossings require ordered source-topology fans, never positional jumps or arbitrary subsets.
+- `NotApplicable` and `Rejected` must remain distinct; authoritative `Rejected` cannot silently invoke another producer.
+- Relief barriers become hard only when explicitly embedded.
+- Plane proves bounded authoritative phase/front construction on a connected planar domain.
+- Seam proves reciprocal cross-chart transport.
+- Spatial proximity must never replace component/local-sheet authority; close sheets prove isolation.
+- Periodic topology requires first-class holonomy; an artificial chart cut is not a real exterior boundary.
+- Periodic seam identification uses exact source/phase/lattice authority, never Euclidean welding.
+- Source-route provenance alone does not justify skipping mandatory source topological corners; canonical source-strip breakpoints are upstream authority.
+- Multiple topology-compatible annulus-ring bijections are resolved by reciprocal cross-field transport authority, not IDs/order/count/frequency.
+- Coverage tolerance may select chart ownership, but emitted geometry must be canonical source geometry; tolerance-expanded ownership bounds must not become geometric tails.
+- Strict validator rejection of producer-emitted overlap is not a reason to weaken the validator.
+- Raw DCEL edge integers are incidental under face-row re-enumeration; compare canonical endpoint identity where renumbering is allowed.
+- Compile-valid source is not runtime proof; exact artifact execution decides gate closure.
+- Real bunny/vase fixtures remain mandatory later observations and may not be simplified/bypassed.
+- Direct gates outrank aggregate totals.
+- Scheduler timing ratios are closeout/performance evidence, not functional correctness.
+- `PRE_TEST` preserves compile-only build boundaries.
+- Timeout is failure only, never correctness evidence.
+
+## Mandatory turn hygiene and instruction preservation
+
+These requirements apply to every Code + Build, Test + Benchmark, optional Review, and documentation-maintenance turn.
+
+### Workflow and temporary payload cleanup
+
+1. At the start and end of every turn, inspect `.github/workflows` and all temporary triggers, transfer files, payload/patch directories, and generated artifacts.
+2. Remove stale bounded/turn-specific workflows before work begins.
+3. During remote compile, retain only approved durable workflows plus at most one bounded workflow and its exact payload.
+4. After source/build/log/artifact verification, **remove or disable the bounded path-filtered workflow before deleting its trigger marker**, so cleanup cannot retrigger it.
+5. Then remove the marker and payload.
+6. Final branch state must contain only approved durable workflows and no stale generated artifact.
+7. Do not remove a durable dependency consumed by an approved retained workflow.
+8. Retain exact payloads until source commit, expected blobs, build authority and artifacts are verified; then remove them.
+
+### Documentation and result cleanup
+
+1. End every turn by removing stale/superseded plans, reports, closure notes, evidence indexes, and results from `.agents` and `benchmark-results`.
+2. Retain only the live handoff, latest report(s) required for current runtime/build authority, next executable plan, current runtime summary, durable baselines, and durable design/remediation/workflow-policy documents.
+3. Retained documents may reference only files that exist.
+4. Git history and PR conversation are the historical archive.
+5. Never delete latest evidence or next-turn instructions before verified replacements exist.
+
+### Mandatory instruction preservation
+
+1. **Never remove, weaken, consolidate away, reinterpret, or silently replace an existing mandatory instruction in this handoff unless the user explicitly requests it.**
+2. Handoff edits are additive or narrowly corrective by default; preserve all procedural, safety, scope, cleanup, validation, repository-write, and turn-boundary requirements.
+3. Compare handoff updates with the prior version and verify every pre-existing mandatory instruction remains materially present.
+4. If a new instruction conflicts, preserve both and request user direction rather than deleting either.
+5. Documentation cleanup never authorizes removal of mandatory handoff rules.
+
+## End-of-turn requirement
+
+Every completed turn ends with a new **top-level PR #8 comment** after all documentation and PR metadata updates. That comment is the **final repository write**.
+
+## Preserved prohibitions
+
+- no validator weakening;
+- no count/order/frequency ownership selection;
+- no arbitrary subset search;
+- no fallback/recovery substitution;
+- no synthetic counters or Euler correction;
+- no positional merging across unrelated sheets;
+- no Euclidean periodic seam welding;
+- no fixture/ID special cases;
+- no post-hoc cycle decomposition or cell merging;
+- no timeout-as-correctness.
