@@ -6,7 +6,7 @@ This is the mandatory **Review turn** triggered by the no-progress stop rule aft
 
 Do not make production source, test, fixture, manifest, validator, fallback, recovery, or build-system changes during the review. The review may update the next Code + Build action plan and design/handoff documentation only.
 
-GitHub workflow operations are available again. A later authorized Code + Build turn may use GitHub Actions for normal compilation/artifact production, subject to the existing workflow/payload hygiene rules. The review itself does not need a build.
+GitHub workflow operations are available normally again. A later authorized Code + Build turn may use GitHub Actions for normal configure/compile/link and artifact production under `.agents/Directional/GitHub_Workflow_Policy.md`. The review itself does not require a build.
 
 ## Review declaration
 
