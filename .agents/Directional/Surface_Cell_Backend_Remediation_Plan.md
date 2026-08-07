@@ -2,20 +2,20 @@
 
 ## Current blocker
 
-G0, G1, and G2 are closed. G3 periodic authority is now live on the exact production cylinder, but G3 remains incomplete at **completed output validation**.
+G0, G1, and G2 are closed. G3 periodic authority is runtime-proven on the exact production cylinder, but the latest executed artifact remains incomplete at **completed output validation**.
 
 Exact artifact `9001168379` from source `56f823273cad041a01ebb4d0772c3265ff248f4a` produces:
 
-- authoritative `Produced`;
-- periodic holonomy `r=0`, `t=(29,0)`, route 32 edges, cut four edges;
+- authoritative periodic `Produced`;
+- holonomy `r=0`, `t=(29,0)`, ordered route 32 edges, cut four edges;
 - 2,163 source-attached traces;
 - zero generic arrangement cells;
-- 290 completed direct quads;
+- 290 direct completed quads;
 - 319 provenance vertices;
 - no fallback/recovery;
 - deterministic 3/3.
 
-The completed checkpoint then reports exactly two validation failures at `completion/output-validation:AggregateCompletionValidationFailure`. Final output is therefore correctly withheld. The benchmark record does not expose the two individual failed validation fields, so no threshold-specific diagnosis is authoritative yet.
+The completed checkpoint then reports exactly two validation failures at `completion/output-validation:AggregateCompletionValidationFailure`. Final output is correctly withheld. The benchmark record does not expose the two individual failed validation fields, so they must not be guessed or relaxed.
 
 ## Proven producer foundation
 
@@ -35,53 +35,79 @@ Retain without redesign:
 - direct one-cell-to-one-quad materialization;
 - fail-closed source-authoritative validation.
 
-Plane, seam, and close sheets remain mandatory direct regressions and are green in the G3 artifact.
+Plane, seam, and close sheets remain mandatory direct regressions and were green in the latest executed G3 artifact.
 
-## Active structural correction
+## Source-strip correction — compile-valid
 
-Execute `.agents/Directional/Gate_3_Periodic_Output_Validation_Code_Build_Plan.md`.
+Source `2783ea718ffb15f8fb3868795173472ab8636c1c` implements the bounded structural correction upstream of validation.
 
 ### Source-strip-conforming periodic lattice
 
-The current periodic chart may choose a global target-size column count whose lattice columns do not coincide with every canonical source-ring corner. Direct straight-sided cell materialization can therefore shortcut a source strip boundary even when the corresponding phase-front route remains source-attached.
+The periodic producer now uses the canonical annulus ring/strip ordering already derived from topology and:
 
-Correct this upstream:
+1. makes every source-ring strip boundary a mandatory intrinsic periodic lattice breakpoint;
+2. computes each strip's positive deterministic subdivision count from transported intrinsic strip length and local endpoint target-size samples;
+3. chooses nearest positive integer subdivisions without fixture IDs, expected totals, source-row order, or hard-coded ring/grid counts;
+4. accumulates those strip subdivisions into the periodic lattice coordinate and integer holonomy translation;
+5. inserts every exact strip endpoint into the cumulative periodic coordinate sequence;
+6. builds authoritative chart samples, cells, source-attached boundary paths, and intrinsic cell validation directly from those nonuniform coordinates;
+7. preserves the exact periodic quotient and one accepted cell → one output quad;
+8. leaves axial construction and the two genuine annulus boundaries unchanged;
+9. fails closed as `InvalidPeriodicChart` for non-finite/overflowing subdivision state.
 
-1. use the canonical annulus ring/strip ordering already derived from topology;
-2. make every source-ring strip boundary a mandatory intrinsic lattice breakpoint;
-3. compute a positive deterministic subdivision count independently for each strip from intrinsic strip length and target size;
-4. accumulate those subdivisions into the periodic lattice coordinate so holonomy translation remains integral and source-topology-compatible;
-5. preserve cut duplicates and periodic ownership through exact lattice identity;
-6. ensure each output side lies inside one source strip or terminates at a canonical strip breakpoint;
-7. keep one accepted cell → one quad.
+No output cell split/merge, Euclidean seam weld, nearest-point repair, validator change, fallback/recovery, or fixture/count special case was added.
 
-Do not special-case the committed cylinder's source-ring count, the observed translation `29`, or expected output counts. Do not repair the result after materialization.
+The prior runtime translation `29` is not a required constant. The artifact test must accept a different deterministic integral periodic translation when it follows the source-strip contract.
 
 ### Row-order regression correction
 
-`PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration` compares raw DCEL edge IDs even though DCEL edge numbering depends on face-row traversal. Artifact evidence proves the ordered source-edge endpoint routes/cuts are identical after canonical mapping.
+The row-order test now maps each mesh's raw route/cut source-edge IDs through that mesh's authoritative `EV` table to ordered endpoint keys `(min(v0,v1), max(v0,v1))` and compares the ordered sequences. It does not sort away route order or alter production DCEL numbering. Existing grid, rotation, translation, disposition, and periodic semantic assertions remain.
 
-During the next Code + Build turn, change the test to map each mesh's route/cut edge IDs through its own EV table to `(min(v0,v1), max(v0,v1))` and compare those ordered key sequences. Preserve grid, rotation, translation, cardinality, and route-order assertions. Production code must not be changed merely to stabilize incidental DCEL IDs.
+A new compiled structural regression derives the genuine source-boundary vertices from `EV/EF` and requires every one to occur as an exact phase-front corner on the two annulus boundaries, without encoding the committed cylinder ring count or expected output count.
 
-## Verification sequence
+## Compile authority
 
-The next turn is Code + Build only:
+- source commit `2783ea718ffb15f8fb3868795173472ab8636c1c`;
+- patch SHA-256 `74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e`;
+- `SurfaceCellTracing.cpp` blob `9df9a9759c761293fef1278f97b82fbb0aee0600`;
+- `SurfaceCellsPhase10Tests.cpp` blob `c9dcbe9f67ba239c061ddb295f40c9b82ebafb49`;
+- run/job `31204848178` / `92953250176`;
+- build artifact `9004509871`, SHA-256 `2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe`;
+- detailed log artifact `9004508508`, SHA-256 `80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b`;
+- recursive checksums **44/44**;
+- compile/link actions **111/111** across seven approved targets;
+- five executables, two project libraries, 27 fixture/input files;
+- Release static / Ninja / GNU C++ 13.3.0 / CMake 3.31.6 / `PRE_TEST`;
+- packaged `runtimeExecution=false`; no generated project binary/test/benchmark executed.
 
-1. make the minimum source-strip-conforming producer correction;
-2. correct the structurally invalid raw-ID test expectation;
-3. preserve existing G0–G3 authority and cylinder acceptance assertions;
-4. configure with `PRE_TEST` and compile the seven approved targets;
-5. execute no generated project binary;
-6. package the exact artifact for the following artifact-only Test + Benchmark turn;
-7. remove temporary workflow/trigger/payload after artifact/log verification.
+This is compile evidence only. It does not establish that the cylinder's completed validation is fixed.
+
+## Required verification sequence
+
+Execute `.agents/Directional/Gate_3_Periodic_Output_Validation_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9004509871`.
+
+The next turn is artifact-only Test + Benchmark:
+
+1. verify outer digest, all 44 recursive checksums, exact source/patch/blobs, fixture closure, and command-boundary metadata;
+2. execute the six focused periodic/output-validation contracts first, including the corrected canonical row-order route identity and source-strip breakpoint contract;
+3. revalidate plane, seam, and close sheets;
+4. execute exact production cylinder as active G3 acceptance;
+5. require periodic `Produced`, direct pure-quad `CompletedSurfaceCells`, exact periodic quotient, retained canonical source-strip breakpoints, complete provenance, and zero completed-checkpoint validation failures;
+6. allow periodic translation/grid cardinality to differ from the old `29` when determined by the source-strip subdivisions;
+7. execute bounded determinism/default suites only after the direct gate decision;
+8. observe bunny/vase only as later-gate evidence.
+
+No rebuild or source/test/fixture/validator/build edit is allowed during that turn.
 
 ## G3 acceptance
 
-G3 closes only if the following artifact-only validation proves exact cylinder is direct deterministic strict-valid `Produced` `CompletedSurfaceCells` pure-quad output with correct periodic quotient, complete provenance, zero validation failures, no fallback/recovery, and retained plane/seam/close-sheet success.
+G3 closes only if artifact-only validation proves the exact cylinder remains authoritative periodic `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with correct source-strip-conforming periodic quotient, complete provenance, zero completed-checkpoint validation failures, no fallback/recovery, and retained plane/seam/close-sheet success.
+
+If another exact source-authoritative structural/validation failure is reached, preserve it and address only that general failure in the next Code + Build turn.
 
 ## Deferred work
 
-Do not broaden the active correction into:
+Do not broaden G3 into:
 
 - torus/general genus;
 - singularities or G4 topology-distinct completion;
