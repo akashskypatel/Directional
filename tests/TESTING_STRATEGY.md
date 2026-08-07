@@ -103,6 +103,10 @@ May edit implementation, tests, and build logic required by the active gate. Com
 
 Use an exact packaged artifact. Perform no configure, compile, relink, regeneration, or source/test/fixture/validator edit. Preserve raw logs and machine-readable results. Run each direct case in a fresh process and report direct results before aggregate totals.
 
+## Current inventory
+
+The latest exact artifact produced direct acceptance **1/4**, remaining producer **78/79**, completion **154/164**, validation **60/60**, compiled API **8/8**, and a non-overlapping total of **301/315**. The plane passed; seam and close sheets define active Gate 2.
+
 ## Material-progress classification
 
 A test turn shows material progress only when the active direct fixture passes, the earliest failure advances because a missing first-class contract is live, or a structural ambiguity is removed without an equivalent downstream ambiguity.
