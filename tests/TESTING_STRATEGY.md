@@ -15,13 +15,26 @@ Both use generated smooth fields through production extraction. Replacing, simpl
 
 ## Current regression authority
 
-The Gate 2 artifact produced:
+The last executed artifact produced:
 
-- plane: failure, 106 traces, 9 arrangement cells, 12 invalid completion quads, 15 validation failures;
+- plane: failure, 106 traces, 9 arrangement cells, 12 invalid completion quads, no output;
 - seam: success, 256 traces, 65 arrangement cells, 64 pure output quads, hash `a8972efd7c4900a4`;
 - close sheets/cylinder/bunny/vase: deterministic zero-arrangement failures.
 
-Plane is now the earliest active regression. A Code + Build change must preserve the seam pass while restoring plane direct success.
+Plane remains the earliest active regression. The new compile-only artifact must preserve the seam pass while restoring or materially advancing plane direct construction.
+
+## Source-vertex transition contracts
+
+The plane triangulation contains phase-front sides that pass exactly through source vertices. Mandatory producer coverage now includes:
+
+- ordinary authoritative shared-edge transport;
+- unique ordered multi-edge source-vertex fan transport;
+- full ordered source-edge provenance;
+- invariance under face-row reordering;
+- typed fail-closed rejection for duplicate, malformed, disconnected, non-manifold, ambiguous, nonreciprocal, or branch-mismatched transition data;
+- one accepted authoritative cell mapping to exactly one output quad.
+
+A positional face jump, arbitrary fan subset, shortest-path selection, fixture-specific route, or typed diagnostic without constructive advancement does not satisfy the contract.
 
 ## Default suites
 
@@ -29,7 +42,9 @@ Report direct separately. Then run remaining producer, completion, validation, a
 
 ## Turn boundaries
 
-Code + Build may edit active-gate implementation/tests/fixtures and compile approved targets, but executes no project binary. Test + Benchmark uses one exact artifact, performs no rebuild or source/test/fixture/validator edit, and preserves raw commands/logs/results.
+Code + Build may edit active-gate implementation and contract tests and compile approved targets, but executes no project binary. Test + Benchmark uses one exact artifact, performs no rebuild or source/test/fixture/validator edit, and preserves raw commands/logs/results.
+
+The current artifact follows the second bounded Gate 1 Code + Build attempt. If artifact-only verification does not materially advance beyond the 106/9/12 plane signature, the next turn must be a design review or bounded producer replacement proof.
 
 ## Validity and prohibitions
 
