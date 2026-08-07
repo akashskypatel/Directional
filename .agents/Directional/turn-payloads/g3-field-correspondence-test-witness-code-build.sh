@@ -5,156 +5,20 @@ LOG="/tmp/g3-field-correspondence-test-witness-code-build.log"
 exec > >(tee -a "$LOG") 2>&1
 trap 'rc=$?; echo "payload_exit=$rc"; echo "payload_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; exit $rc' EXIT
 
-echo "checkout_sha=$(git rev-parse HEAD)"
-test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "bef95b04c95c9a213c634e604d004b3d7d22646e"
-test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "63e5ee427f675077f710db51ffb56d91838d3519"
-test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = "c1b816a584d67a3f74c2d7389962bd92d52244c9"
+SOURCE_COMMIT="117620ec2da2083ce11b205835e58fa404f163ef"
+EXPECTED_TEST_BLOB="80a0b58339102279ab863d9112e243a557cd270d"
+EXPECTED_PROD_BLOB="63e5ee427f675077f710db51ffb56d91838d3519"
+EXPECTED_HEADER_BLOB="c1b816a584d67a3f74c2d7389962bd92d52244c9"
 
-python3 - <<'PY'
-from pathlib import Path
-path = Path('tests/SurfaceCellsPhase10Tests.cpp')
-text = path.read_text()
-old = r'''  const auto exactSourceVertex = [&](const directional::geometry::SurfaceTracePoint &point) {
-    if (point.face < 0 || point.face >= mesh.F.rows()) return -1;
-    int sourceCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      const double weight = point.barycentric[corner];
-      if (std::abs(weight - 1.0) <= 1.0e-10) {
-        if (sourceCorner >= 0) return -1;
-        sourceCorner = corner;
-      } else if (std::abs(weight) > 1.0e-10) {
-        return -1;
-      }
-    }
-    return sourceCorner >= 0 ? mesh.F(point.face, sourceCorner) : -1;
-  };
-  const auto faceNormal = [&](const int face) -> Eigen::RowVector3d {
-    const Eigen::RowVector3d edge01 =
-        mesh.V.row(mesh.F(face, 1)) - mesh.V.row(mesh.F(face, 0));
-    const Eigen::RowVector3d edge02 =
-        mesh.V.row(mesh.F(face, 2)) - mesh.V.row(mesh.F(face, 0));
-    Eigen::RowVector3d normal = edge01.cross(edge02);
-    const double norm = normal.norm();
-    if (norm > 0.0) return Eigen::RowVector3d(normal / norm);
-    return Eigen::RowVector3d(0.0, 0.0, 0.0);
-  };
-  const auto tangent = [&](Eigen::RowVector3d direction,
-                           const int face) -> Eigen::RowVector3d {
-    const Eigen::RowVector3d normal = faceNormal(face);
-    direction -= direction.dot(normal) * normal;
-    const double norm = direction.norm();
-    if (norm > 0.0) return Eigen::RowVector3d(direction / norm);
-    return Eigen::RowVector3d(0.0, 0.0, 0.0);
-  };
+echo "trigger_checkout_sha=$(git rev-parse HEAD)"
+git fetch --no-tags --depth=1 origin "$SOURCE_COMMIT"
+git checkout --detach "$SOURCE_COMMIT"
+echo "source_commit=$(git rev-parse HEAD)"
+test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "$EXPECTED_TEST_BLOB"
+test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "$EXPECTED_PROD_BLOB"
+test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = "$EXPECTED_HEADER_BLOB"
 
-  int exactInterRingEdges = 0;
-  for (const auto &edge : network.phaseFront.edges) {
-    if (edge.family != 1) continue;
-    const int fromVertex = exactSourceVertex(edge.from);
-    const int toVertex = exactSourceVertex(edge.to);
-    if (fromVertex < 0 || toVertex < 0 || fromVertex == toVertex) continue;
-    const int face = edge.from.face;
-    const Eigen::RowVector3d edgeDirection =
-        tangent(mesh.V.row(toVertex) - mesh.V.row(fromVertex), face);
-    const Eigen::RowVector3d authoritativeV = tangent(faceAxisY.row(face), face);
-    ASSERT_GT(edgeDirection.squaredNorm(), 0.0);
-    ASSERT_GT(authoritativeV.squaredNorm(), 0.0);
-    EXPECT_NEAR(1.0, std::abs(edgeDirection.dot(authoritativeV)), 1.0e-10)
-        << "phase-front V edge must consume the exact axial field-family "
-           "source correspondence rather than a diagonal strip edge";
-    ++exactInterRingEdges;
-  }
-  EXPECT_GT(exactInterRingEdges, 0);
-'''
-new = r'''  const auto faceNormal = [&](const int face) -> Eigen::RowVector3d {
-    const Eigen::RowVector3d edge01 =
-        mesh.V.row(mesh.F(face, 1)) - mesh.V.row(mesh.F(face, 0));
-    const Eigen::RowVector3d edge02 =
-        mesh.V.row(mesh.F(face, 2)) - mesh.V.row(mesh.F(face, 0));
-    Eigen::RowVector3d normal = edge01.cross(edge02);
-    const double norm = normal.norm();
-    if (norm > 0.0) return Eigen::RowVector3d(normal / norm);
-    return Eigen::RowVector3d(0.0, 0.0, 0.0);
-  };
-  const auto tangent = [&](Eigen::RowVector3d direction,
-                           const int face) -> Eigen::RowVector3d {
-    const Eigen::RowVector3d normal = faceNormal(face);
-    direction -= direction.dot(normal) * normal;
-    const double norm = direction.norm();
-    if (norm > 0.0) return Eigen::RowVector3d(direction / norm);
-    return Eigen::RowVector3d(0.0, 0.0, 0.0);
-  };
-  const auto segmentPoint = [&mesh](
-      const directional::geometry::SurfaceTraceSegment &segment,
-      const Eigen::RowVector3d &barycentric) -> Eigen::RowVector3d {
-    Eigen::RowVector3d point = Eigen::RowVector3d::Zero();
-    for (int coordinate = 0; coordinate < 3; ++coordinate) {
-      point += barycentric[coordinate] *
-          Eigen::RowVector3d(mesh.V.row(mesh.F(segment.face, coordinate)));
-    }
-    return point;
-  };
-
-  int observedVSegments = 0;
-  for (const auto &cell : network.phaseFront.cells) {
-    for (const auto &path : cell.boundaryPaths) {
-      for (const auto &segment : path) {
-        if (segment.family != 1) continue;
-        ASSERT_GE(segment.face, 0);
-        ASSERT_LT(segment.face, mesh.F.rows());
-        const Eigen::RowVector3d start = segment.startBarycentric;
-        const Eigen::RowVector3d end = segment.endBarycentric;
-        ASSERT_TRUE(start.allFinite());
-        ASSERT_TRUE(end.allFinite());
-        EXPECT_NEAR(1.0, start.sum(), 1.0e-12);
-        EXPECT_NEAR(1.0, end.sum(), 1.0e-12);
-        for (int coordinate = 0; coordinate < 3; ++coordinate) {
-          EXPECT_GE(start[coordinate], -1.0e-12);
-          EXPECT_LE(start[coordinate], 1.0 + 1.0e-12);
-          EXPECT_GE(end[coordinate], -1.0e-12);
-          EXPECT_LE(end[coordinate], 1.0 + 1.0e-12);
-        }
-
-        const Eigen::RowVector3d sourceDirection =
-            segmentPoint(segment, end) - segmentPoint(segment, start);
-        if (sourceDirection.norm() <= 1.0e-14) continue;
-        const Eigen::RowVector3d segmentDirection =
-            tangent(sourceDirection, segment.face);
-        const Eigen::RowVector3d authoritativeV =
-            tangent(faceAxisY.row(segment.face), segment.face);
-        ASSERT_GT(segmentDirection.squaredNorm(), 0.0);
-        ASSERT_GT(authoritativeV.squaredNorm(), 0.0);
-        EXPECT_NEAR(1.0, std::abs(segmentDirection.dot(authoritativeV)), 1.0e-10)
-            << "source-attached phase-front V path segments must consume the "
-               "axial field family independent of target subdivision";
-        ++observedVSegments;
-      }
-    }
-  }
-  EXPECT_GT(observedVSegments, 0)
-      << "field-authoritative correspondence requires a nonempty V-family "
-         "source-attached path witness";
-'''
-if text.count(old) != 1:
-    raise SystemExit(f'expected exactly one old witness block, found {text.count(old)}')
-path.write_text(text.replace(old, new))
-PY
-
-git diff --check
-test "$(git diff --name-only)" = "tests/SurfaceCellsPhase10Tests.cpp"
-git diff --stat
-
-git config user.name "Directional Agent"
-git config user.email "directional-agent@users.noreply.github.com"
-git add tests/SurfaceCellsPhase10Tests.cpp
-git commit -m "test(surface-cells): make field witness subdivision invariant"
-git push origin "HEAD:${GITHUB_REF_NAME}"
-
-SOURCE_COMMIT=$(git rev-parse HEAD)
-echo "source_commit=$SOURCE_COMMIT"
-echo "phase10_tests_blob=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
-echo "surface_cell_tracing_blob=$(git hash-object src/geometry/SurfaceCellTracing.cpp)"
-echo "surface_cell_tracing_header_blob=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)"
+git diff --check HEAD^
 
 sudo apt-get update
 sudo apt-get install -y ninja-build libgmp-dev
@@ -167,7 +31,8 @@ ninja --version
 cmake -S . -B agent-build -G Ninja \
   -DCMAKE_BUILD_TYPE=Release \
   -DBUILD_SHARED_LIBS=OFF \
-  -DBUILD_TESTING=ON \
+  -DDIRECTIONAL_BUILD_TESTS=ON \
+  -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
   -DGTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
   2>&1 | tee agent-configure.log
