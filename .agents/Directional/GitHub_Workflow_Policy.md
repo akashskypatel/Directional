@@ -1,53 +1,101 @@
-# GitHub Workflow Policy
+# Directional GitHub Workflow Policy
 
 ## Purpose
 
-Use GitHub Actions only when it materially helps an authorized turn and keep workflow state bounded, auditable, and removable.
+GitHub Actions is a bounded remote execution plane for Directional agent work when the GitHub connector can manage repository state but cannot directly run compilers, tests, benchmarks, or other repository tools. It never relaxes the active turn boundary.
 
-## Current operational status
+## Turn boundaries
 
-GitHub workflow operations are available normally again. Future **authorized Code + Build** turns may use GitHub Actions to configure/compile approved targets and publish immutable build artifacts. Test + Benchmark turns remain artifact-only and must not rebuild. Review turns do not compile unless a later explicitly authorized review plan requires evidence that cannot be obtained otherwise.
+### Code + Build
 
-## Durable workflow policy
+Allowed:
 
-1. Keep only approved durable workflows on the working branch. The current durable workflow is `.github/workflows/agent-source-snapshot.yml`.
-2. At the start and end of every turn, inspect `.github/workflows`, temporary triggers, payload/patch directories, and generated artifacts.
-3. A Code + Build turn may add at most one bounded build/synchronization workflow at a time when needed.
-4. Bounded workflows must use exact source authority, explicit approved targets, bounded timeouts, and artifact checksums.
-5. Compile-only workflows may configure and compile/link approved targets but must not execute generated project binaries/tests/benchmarks/discovery/CLI/GUI/help/list commands.
-6. Test + Benchmark turns must execute only the exact immutable build artifact selected by the plan and may not configure, compile, or relink.
-7. Retain exact transfer payloads until their source commit, expected blobs, and build artifact authority are verified; then remove them.
-8. After a bounded workflow completes and its artifact/logs are verified, remove the workflow, trigger marker, payload, and other turn-specific transfer files.
-9. Final branch state must contain only approved durable workflows and no stale generated artifacts or payloads.
-10. Do not remove a durable dependency consumed by an approved retained workflow.
+- apply an exact verified source/test patch;
+- configure with compile-only-safe discovery such as `PRE_TEST`;
+- compile/link only approved targets;
+- package exact source authority, binaries/libraries, fixtures, logs, metadata, and checksums.
 
-## Build workflow requirements
+Forbidden:
 
-An authorized build workflow must record or make recoverable:
+- executing generated Directional binaries;
+- running unit tests, benchmarks, custom meshes, CLI/GUI, help/list, or discovery commands;
+- hiding runtime validation inside packaging or build scripts.
 
-- exact branch/base/source commit;
-- configuration and generator;
-- compiler/toolchain identity;
-- approved build targets;
-- compile/link result;
-- no-runtime-execution policy;
-- packaged executable/library/fixture closure;
-- recursive artifact checksums and outer artifact digest;
-- workflow run/job/artifact identifiers.
+### Test + Benchmark
 
-Use shallow checkout/submodule fetch where practical. Do not download unrelated Git history.
+Use the exact immutable Code + Build artifact. Do not configure, compile, relink, regenerate discovery, or edit implementation/test/benchmark/fixture/validator/build logic.
 
-## Source synchronization
+### Review
 
-Prefer ordinary GitHub connector file/tree/commit operations when they can safely express the exact change. A temporary synchronization workflow is allowed for large immutable patches or other connector limitations, but it must:
+Inspect source, PR, plans, logs, artifacts, and evidence. Do not modify production implementation or validation logic.
 
-- verify payload digests before application;
-- verify exact expected changed paths and Git blobs;
-- create a coherent source commit;
-- remove the payload afterward;
-- publish a small evidence artifact/log;
-- perform no unrelated build or runtime execution unless the active Code + Build plan explicitly combines those operations.
+## Mandatory bounded-workflow properties
 
-## Cleanup and final-write rule
+Every temporary/bounded workflow must:
 
-Repository cleanup and PR metadata updates occur before the final handoff comment. Every completed turn ends with a new top-level PR #8 comment as the **final repository write**.
+1. initialize a persistent activity log before checkout or other fallible work;
+2. record exact event/ref/source identity, tool versions, command output, and final repository status;
+3. stream task output to both the Actions console and the persistent log;
+4. upload the detailed log artifact under `if: always()` and `if-no-files-found: error`;
+5. keep diagnostic logs separate from successful build/result artifacts;
+6. use a narrow trigger path or explicit dispatch and a task-specific concurrency group;
+7. use only required permissions and never expose secrets or authenticated URLs;
+8. never modify its own `.github/workflows/**` file from inside the workflow;
+9. verify expected source/blob/patch authority before applying changes or compiling;
+10. preserve the turn boundary explicitly in packaged command metadata;
+11. package exact source/fixture closure and recursive checksums for any artifact that will be executed later;
+12. upload a result/build artifact only after successful completion of its declared task.
+
+## Connector-first control plane
+
+Use the GitHub connector to:
+
+- resolve branch/PR/head authority;
+- read and write source/plans/documentation;
+- create and remove bounded workflows, payloads, and triggers;
+- inspect workflow run/job/artifact metadata;
+- download result and log artifacts;
+- update PR metadata and post final handoff comments.
+
+Actions should perform computation only where the connector cannot.
+
+## Trigger discipline
+
+When explicit workflow dispatch is unavailable, use one unique marker under `.agents/connector-triggers/` and make the workflow `push.paths` match only that exact marker. The workflow output commit must not modify the trigger marker, preventing loops.
+
+Retain a turn payload only until:
+
+- source commit is known;
+- expected changed blobs are known;
+- compile/build artifact and log artifact are verified;
+- the payload digest and packaged source authority are confirmed.
+
+Then remove the bounded workflow, trigger, and payload before turn closeout.
+
+## Artifact verification
+
+Before claiming Code + Build completion:
+
+- verify workflow/job conclusion;
+- verify exact compiled source commit;
+- download build/result and detailed-log artifacts;
+- verify outer artifact digests;
+- verify recursive internal checksums;
+- verify expected executables/libraries/fixtures/source metadata;
+- verify packaged command-boundary metadata records that prohibited runtime execution did not occur.
+
+Before Test + Benchmark execution, repeat artifact/source/checksum verification in a fresh extraction directory.
+
+A successful Actions summary alone is never sufficient gate evidence.
+
+## Repository hygiene
+
+At the start and end of every turn:
+
+- inspect `.github/workflows`;
+- inspect `.agents/connector-triggers` and turn-payload directories;
+- remove stale bounded workflows, markers, payloads, transfer files, and generated repository artifacts;
+- retain only approved durable workflows and dependencies;
+- never remove the latest executable next-turn plan or current evidence before replacements exist.
+
+Git history and PR conversation are the historical archive; temporary execution mechanics do not remain in the active branch after their evidence is verified.
