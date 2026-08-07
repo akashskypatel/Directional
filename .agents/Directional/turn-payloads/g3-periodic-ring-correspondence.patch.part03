@@ -1,0 +1,140 @@
++          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
++      return result;
++    }
++
++    std::vector<RingCandidateAuthority> authoritativeCandidates;
++    authoritativeCandidates.reserve(topologyCandidates.size());
++    for (const auto &[candidateVertices, stripFaces] : topologyCandidates) {
++      RingCandidateAuthority candidate;
++      candidate.vertices = candidateVertices;
++      candidate.stripFaces = stripFaces;
++      if (score_ring_candidate(candidate, previous)) {
++        authoritativeCandidates.push_back(std::move(candidate));
++      }
++    }
++    if (authoritativeCandidates.empty()) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure,
++          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
++      return result;
++    }
++
++    double bestScore = std::numeric_limits<double>::infinity();
++    int bestCandidate = -1;
++    bool ambiguous = false;
++    for (int index = 0;
++         index < static_cast<int>(authoritativeCandidates.size()); ++index) {
++      const RingCandidateAuthority &candidate =
++          authoritativeCandidates[static_cast<std::size_t>(index)];
++      if (candidate.score < bestScore &&
++          !score_equal(candidate.score, bestScore)) {
++        bestScore = candidate.score;
++        bestCandidate = index;
++        ambiguous = candidate.branchAmbiguous;
++      } else if (score_equal(candidate.score, bestScore)) {
++        ambiguous = true;
++      }
++    }
++    if (bestCandidate < 0 || ambiguous) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure,
++          SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence);
++      return result;
++    }
++    rings[static_cast<std::size_t>(layer)] =
++        authoritativeCandidates[static_cast<std::size_t>(bestCandidate)].vertices;
+   }
+ 
+   std::vector<double> s(static_cast<std::size_t>(ringSize + 1), 0.0);
+@@ -5731,18 +6012,6 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
+               return a.vertices < b.vertices;
+             });
+ 
+-  const auto incident = edge_faces(faces, activeFaces);
+-  const auto matchingIndices = edge_matching_indices(incident);
+-  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
+-  const EdgeTransitionLookup transitionLookup =
+-      hasTransitions ? edge_transition_lookup(*edgeTransitions) : EdgeTransitionLookup{};
+-  if (hasTransitions && transitionLookup.duplicate) {
+-    result.disposition = SurfaceCellProducerDisposition::Rejected;
+-    set_phase_front_failure(result.failure,
+-                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+-    return result;
+-  }
+-
+   // Derive one complete periodic source route from the first topological strip.
+   std::set<int> firstStripFaces;
+   for (int u = 0; u < ringSize; ++u) {
+@@ -6298,6 +6567,8 @@ const char *surface_phase_front_failure_reason_name(
+   case SurfacePhaseFrontFailureReason::InvalidPeriodicChart: return "InvalidPeriodicChart";
+   case SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch: return "PeriodicHolonomyMismatch";
+   case SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing: return "InvalidPeriodicFrontPairing";
++  case SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence: return "InvalidPeriodicRingCorrespondence";
++  case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence: return "AmbiguousPeriodicRingCorrespondence";
+   }
+   return "Unknown";
+ }
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index c9dcbe9..4aeff8c 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -1104,6 +1104,147 @@ TEST(SurfaceCellsPhase10,
+   EXPECT_EQ(sourceBoundaryVertices, phaseBoundaryVertices);
+ }
+ 
++TEST(SurfaceCellsPhase10,
++     PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence) {
++  const auto meshPath = directional::tests::benchmark_fixture_path(
++      "milestone-g/cylinder.obj");
++  const auto fieldPath = directional::tests::benchmark_fixture_path(
++      "milestone-g/cylinder.rawfield");
++  directional::TriMesh mesh;
++  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
++  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
++  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
++      mesh, rawField);
++  Eigen::MatrixXd faceAxisX;
++  Eigen::MatrixXd faceAxisY;
++  directional::geometry::cross_field_axes(crossField, faceAxisX, faceAxisY);
++  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
++  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
++  const auto network = directional::geometry::build_surface_cell_network(
++      mesh.V, mesh.F, crossField, targetSize, options);
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            network.phaseFront.disposition)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++
++  const auto exactSourceVertex = [&](const directional::geometry::SurfaceTracePoint &point) {
++    if (point.face < 0 || point.face >= mesh.F.rows()) return -1;
++    int sourceCorner = -1;
++    for (int corner = 0; corner < 3; ++corner) {
++      const double weight = point.barycentric[corner];
++      if (std::abs(weight - 1.0) <= 1.0e-10) {
++        if (sourceCorner >= 0) return -1;
++        sourceCorner = corner;
++      } else if (std::abs(weight) > 1.0e-10) {
++        return -1;
++      }
++    }
++    return sourceCorner >= 0 ? mesh.F(point.face, sourceCorner) : -1;
++  };
++  const auto faceNormal = [&](const int face) {
++    Eigen::RowVector3d normal =
++        (mesh.V.row(mesh.F(face, 1)) - mesh.V.row(mesh.F(face, 0)))
++            .cross(mesh.V.row(mesh.F(face, 2)) - mesh.V.row(mesh.F(face, 0)));
++    const double norm = normal.norm();
++    if (norm > 0.0) return Eigen::RowVector3d(normal / norm);
++    return Eigen::RowVector3d::Zero();
++  };
++  const auto tangent = [&](Eigen::RowVector3d direction, const int face) {
++    const Eigen::RowVector3d normal = faceNormal(face);
++    direction -= direction.dot(normal) * normal;
++    const double norm = direction.norm();
++    if (norm > 0.0) return Eigen::RowVector3d(direction / norm);
++    return Eigen::RowVector3d::Zero();
++  };
