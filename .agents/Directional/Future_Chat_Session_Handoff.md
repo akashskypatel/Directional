@@ -35,7 +35,7 @@ This rule was triggered for Gate 1. The mandatory Review selected **Outcome B �
 1. G0 truthful authority — **passed**.
 2. G1 uniform authoritative phase-front plane — **passed**.
 3. G2 cross-chart / close-sheet isolation — **passed**.
-4. G3 periodic closure / holonomy — **active**.
+4. G3 periodic closure / holonomy — **active; implementation is compile-valid, runtime verification pending**.
 5. G4 topology/singularities — blocked.
 6. G5 adaptive scale/hard features — blocked.
 7. G6 full production geometry — blocked as success gate; bunny/vase remain mandatory observations.
@@ -43,125 +43,9 @@ This rule was triggered for Gate 1. The mandatory Review selected **Outcome B �
 
 ## Completed turn
 
-The **G2 Close-Sheet Authoritative Producer artifact-only Test + Benchmark** turn is complete.
+The **G3 Periodic Cylinder / Holonomy Code + Build** turn is complete.
 
-### Exact tested authority
-
-- source commit: `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
-- artifact: `8994541137` (`g2-close-sheet-code-build`);
-- artifact SHA-256: `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- build run/job: `31179899458` / `92870408341`;
-- recursive checksums: **45/45 passed**;
-- packaged closure: five executables, two project libraries, 27 fixture/input files;
-- changed blobs verified from packaged source:
-  - `SurfaceCellTracing.cpp` `c9570ecb4a9557eebaf0e30b751e2ccca90b2973`;
-  - `RemeshPipeline.cpp` `55af3205fd7cdb8f21357ac69516ffa29cf8a6d3`;
-  - `SurfaceCellsPhase10Tests.cpp` `7151077d7d4e0a10dad388dd008479f96fc1aae8`;
-- Code + Build command metadata confirmed `runtimeExecution=false`.
-
-The Test + Benchmark turn did not configure, compile, relink, regenerate discovery, or edit source/tests/fixtures/manifests/validators/benchmark/build logic. A runtime-only `bin/test-data -> ../test-data` symlink exposed the packaged immutable fixtures at the path expected by the compiled tests.
-
-### Focused producer contracts
-
-All seven required focused contracts passed:
-
-1. `SurfaceCellsPhase10.UniformPhaseFrontPartitionsDisconnectedCloseSheetsBySourceAuthority`;
-2. `SurfaceCellsPhase10.UniformPhaseFrontCloseSheetsIgnoresFaceRowEnumeration`;
-3. `SurfaceCellsPhase10.ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary`;
-4. `SurfaceCellsPhase10.UniformPhaseFrontTraversesOrderedAuthoritativeSourceVertexFans`;
-5. `SurfaceCellsPhase10.UniformPhaseFrontVertexFanIsInvariantToFaceRowOrdering`;
-6. `SurfaceCellsPhase10.UniformPhaseFrontDuplicateTransitionMetadataFailsClosedWithTypedReason`;
-7. `SurfaceCellMandatoryProductionFixtures.BunnyAndVaseAreNontrivialManifoldProductionInputs`.
-
-Result: **7/7 passed**.
-
-The close-sheet contract directly verifies phase-front source keys `{(0,0), (1,1)}` and requires each twinned front edge to have matching component/local-sheet identity on both sides. The reversed face-row case preserves phase-front cell/edge/event cardinalities.
-
-## Gate 2 closure
-
-The exact production close-sheet fixture is now a direct success:
-
-- disposition `Produced`;
-- `CompletedSurfaceCells` output;
-- 1,104 traces;
-- 202 arrangement cells;
-- 200 pure quads / zero non-quads;
-- 242 provenance/output vertices;
-- exactly two connected output components;
-- zero strict validation failures;
-- no non-manifold edges, T-junctions, duplicate faces, or self-intersections;
-- topology/boundary preservation true;
-- no fallback/recovery;
-- deterministic output hash `89b052762f52a5af` in 3/3 independent processes.
-
-The output components contain 121 vertices each and lie independently at `z=-0.035` and `z=+0.035` while sharing the same XY footprint. Combined with the authoritative front-twin contract, this proves the bounded G2 source-sheet isolation requirement.
-
-Therefore **G2 is closed**.
-
-## Mandatory passed-gate regressions
-
-| Fixture | Result | Producer | Traces | Arrangement | Quads | Components | Hash |
-|---|---:|---|---:|---:|---:|---:|---|
-| Plane | **pass** | `Produced` | 352 | 65 | 64 | 1 | `730caeae49ec872c` |
-| Seam | **pass** | `Produced` | 256 | 65 | 64 | 1 | `5bdf34d7802e9fb0` |
-| Close sheets | **pass** | `Produced` | 1,104 | 202 | 200 | 2 | `89b052762f52a5af` |
-
-All three are strict-valid direct outputs and deterministic 3/3.
-
-The seam's prior Gate 1 hash was `a8972efd7c4900a4`. The current artifact remains geometrically equivalent to that baseline within approximately `2.065e-9` symmetric Hausdorff distance, with unchanged 81 vertices / 64 quads and all strict validity checks passing. `5bdf34d7802e9fb0` is the current tested deterministic authority.
-
-## Latest later-gate observations
-
-### Cylinder — active G3 blocker
-
-- disposition `NotApplicable`;
-- 732 generic traces;
-- zero arrangement/completion;
-- terminal `NotProductionReady:completion`;
-- no fallback/recovery;
-- deterministic 3/3 failure signature;
-- wall range 0.146–0.148 s.
-
-### Bunny
-
-- disposition `NotApplicable`;
-- 80,862 traces;
-- zero arrangement/completion;
-- terminal `NotProductionReady:completion`;
-- wall 23.408649 s;
-- peak working set 247,545,856 B.
-
-### Vase
-
-- disposition `NotApplicable`;
-- 116,922 traces;
-- zero arrangement/completion;
-- terminal `NotProductionReady:completion`;
-- wall 52.096160 s;
-- peak working set 141,316,096 B.
-
-Bunny/vase remain later mandatory observations and cannot supersede G3.
-
-## Default-suite evidence
-
-- focused producer contracts: **7/7**;
-- remaining producer executable: **82/86**;
-  - cylinder/bunny/vase direct design-acceptance failures are later-gate failures;
-  - `StrictValidatorOverheadStaysBelowFivePercent` remains scheduler-sensitive closeout evidence;
-- completion/simplification: **154/164** — same ten deferred failures;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- non-overlapping total including focused contracts: **311/325**.
-
-Direct gate ordering outranks aggregate totals.
-
-## Next authoritative turn
-
-**Code + Build — G3 periodic cylinder / holonomy.**
-
-Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md`.
-
-Before editing, write exactly:
+### Design declaration used by the turn
 
 ```text
 Active design gate: G3 periodic closure / holonomy
@@ -172,25 +56,153 @@ Observable material-progress condition: exact production cylinder becomes author
 Explicitly deferred work: torus/non-annular topology, singularities/topology-distinct completion, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production/performance, scheduler timing, downstream completion/simplification failures
 ```
 
-### Required G3 implementation constraints
+### G3 source authority
 
-1. Determine annulus applicability from source topology, never fixture identity, geometry counts, names, or expected output.
-2. Limit this bounded producer to connected orientable singularity-free annular sheets with two true source boundary loops.
-3. Construct one deterministic intrinsic source-topology cut joining the two boundary loops.
-4. Build the cut-open phase chart through reciprocal source-topology/tangent transport; do not require global world-space planarity.
-5. Preserve authoritative source provenance on both copies of cut-chart entities.
-6. Make periodic holonomy first-class as quarter-turn rotation in `Z4`, integer lattice translation in `Z2`, and ordered canonical source route.
-7. Non-integral, nonreciprocal, ambiguous, branch-incompatible, or missing-provenance holonomy must be typed authoritative `Rejected` and stop; no generic substitution.
-8. Pair periodic front counterparts through exact source-route/lattice-holonomy equivalence, never Euclidean proximity or nearest projection.
-9. The artificial cut is not an exterior output boundary; preserve only the two genuine cylinder boundary cycles.
-10. Materialize periodic chart duplicates through exact periodic identity; no post-hoc seam welding or cell merging.
-11. Add only minimum contract tests for annulus applicability, row-invariant cut/holonomy, periodic front pairing, typed invalid holonomy, and exact production cylinder boundary. Compile them but execute none during Code + Build.
-12. Preserve plane, seam, and close sheets as mandatory compiled regressions.
-13. Configure/compile approved targets with `PRE_TEST` or equivalent compile-only-safe discovery; execute no generated project binary, test, benchmark, CLI, help/list, or discovery command.
-14. Package an immutable artifact with source authority, changed blobs, binaries/libraries, fixtures, logs, checksums, and command-boundary metadata for the next artifact-only Test + Benchmark turn.
-15. Remove bounded workflow/trigger/payload after artifact/log verification.
+- production source commit: `56f823273cad041a01ebb4d0772c3265ff248f4a`;
+- patch SHA-256: `d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f`;
+- changed blobs:
+  - `include/directional/geometry/SurfaceCellTracing.h` → `931669018a986096cf78d66a2aed9de5aa8e0fe1`;
+  - `include/directional/diagnostics/RemeshDiagnostics.h` → `a51215982318e77581efa4fa7887d0406a9d4bf0`;
+  - `src/geometry/SurfaceCellTracing.cpp` → `b1a2c6d4051cc17b79e342170285d69552cad16d`;
+  - `src/pipeline/RemeshPipeline.cpp` → `7674ed3fe40c5f43c668c931c01b59f6c7829df8`;
+  - `src/bench/DirectionalBenchmark.cpp` → `18955ca8ef72812c9c70ed522bb578409e6a176f`;
+  - `tests/SurfaceCellsPhase10Tests.cpp` → `bccd6abf3e31b8096c471c515b1949d08dcfde59`.
 
-G3 closes only through direct deterministic strict-valid cylinder output with explicit periodic closure and all earlier gates retained. A new exact typed periodic rejection is material progress but does not close G3.
+Implemented bounded G3 contracts:
+
+1. the periodic producer is attempted only after the connected planar producer is structurally `NotApplicable`;
+2. annulus applicability derives from source manifold topology, Euler state, two source boundary cycles, source connectivity, and singularity-free state rather than fixture identity;
+3. deterministic source boundary/ring ordering defines one cut-open intrinsic `(s,t)` chart without global world-space planarity;
+4. chart samples and cell boundaries retain exact source face/barycentric attachment;
+5. periodic holonomy is first-class as `(Z4 quarter-turn rotation, Z2 integer lattice translation, ordered source route)` and the deterministic boundary-to-boundary source cut is retained separately;
+6. duplicate, missing, or incompatible periodic transport is typed `Rejected` and cannot silently launch the generic producer;
+7. artificial-cut front copies pair through intrinsic periodic lattice identity with explicit `PeriodicFrontMerge` events rather than exterior-boundary or Euclidean semantics;
+8. only genuine annulus boundary directions may remain exterior in the bounded periodic front;
+9. materialization quotients duplicated cut-chart lattice identities exactly; no nearest-point/Euclidean seam welding or post-hoc cell merge was added;
+10. holonomy contributes to structural hashing and benchmark diagnostics;
+11. five focused G3 periodic regression sources were added and compiled, not executed.
+
+### Compile authority
+
+- workflow run/job: `31196268841` / `92925122791`;
+- artifact: `9001168379` (`g3-periodic-cylinder-code-build`);
+- artifact SHA-256: `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`;
+- detailed log artifact: `9001167184` (`g3-periodic-cylinder-code-build-logs`);
+- log SHA-256: `fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4`;
+- recursive build-artifact checksums: **44/44 passed**;
+- compile/link actions: **111/111**;
+- approved targets: **7/7**;
+- packaged closure: five executables, two project libraries, 27 fixture/input files;
+- compiler/toolchain: GNU C++ 13.3.0, CMake 3.31.6, Ninja 1.13.2, Release static, `PRE_TEST`;
+- generated project binary/test/benchmark execution: **none**.
+
+The downloaded build and log archives matched the GitHub outer digests. Packaged command-boundary metadata records `runtimeExecution=false`.
+
+This is compile evidence only. **G3 runtime success is not claimed.**
+
+## Passed-gate runtime authority — mandatory regressions
+
+Latest executed authority is the preceding G2 artifact `8994541137`:
+
+| Fixture | Result | Producer | Traces | Arrangement | Quads | Components | Hash |
+|---|---:|---|---:|---:|---:|---:|---|
+| Plane | **pass** | `Produced` | 352 | 65 | 64 | 1 | `730caeae49ec872c` |
+| Seam | **pass** | `Produced` | 256 | 65 | 64 | 1 | `5bdf34d7802e9fb0` |
+| Close sheets | **pass** | `Produced` | 1,104 | 202 | 200 | 2 | `89b052762f52a5af` |
+
+All three are direct `CompletedSurfaceCells` outputs, strict-valid, deterministic 3/3, and use no fallback/recovery.
+
+The close-sheet output has two isolated 121-vertex components at `z=-0.035` and `z=+0.035` with the same XY footprint. Spatial proximity is therefore proven not to substitute for source component/local-sheet authority.
+
+## Latest later-gate runtime observations — unchanged by Code + Build
+
+### Cylinder — active G3 blocker until artifact execution
+
+- disposition `NotApplicable`;
+- 732 generic traces;
+- zero arrangement/completion;
+- terminal `NotProductionReady:completion`;
+- no fallback/recovery;
+- deterministic 3/3 prior signature.
+
+### Bunny
+
+- disposition `NotApplicable`;
+- 80,862 traces;
+- zero arrangement/completion;
+- terminal `NotProductionReady:completion`.
+
+### Vase
+
+- disposition `NotApplicable`;
+- 116,922 traces;
+- zero arrangement/completion;
+- terminal `NotProductionReady:completion`.
+
+Bunny/vase remain later mandatory observations and cannot supersede G3.
+
+## Latest executed default-suite evidence
+
+- focused G2 producer contracts: **7/7**;
+- remaining producer executable: **82/86**;
+- completion/simplification: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- non-overlapping total including focused contracts: **311/325**.
+
+The G3 Code + Build turn did not execute these suites. Direct gate ordering outranks aggregate totals.
+
+## Next authoritative turn
+
+**Artifact-only Test + Benchmark — G3 Periodic Cylinder / Holonomy.**
+
+Execute exactly `.agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9001168379`.
+
+### Mandatory artifact authority
+
+- artifact ID: `9001168379`;
+- artifact name: `g3-periodic-cylinder-code-build`;
+- artifact SHA-256: `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`;
+- source commit: `56f823273cad041a01ebb4d0772c3265ff248f4a`;
+- source patch SHA-256: `d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f`;
+- expected recursive checksums: **44/44**;
+- build run/job: `31196268841` / `92925122791`;
+- log artifact: `9001167184`, SHA-256 `fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4`.
+
+### Test + Benchmark turn boundary
+
+1. Do not configure, compile, relink, regenerate discovery, or edit source, tests, fixtures, manifests, validators, benchmark logic, or build logic.
+2. Runtime-only fixture symlinks are allowed only to expose packaged fixture paths without modifying packaged bytes.
+3. Verify outer artifact digest, all 44 recursive checksums, exact source authority, patch, changed blobs, five executables, two project libraries, and 27 fixture/input files before executing any project binary.
+4. If integrity fails, classify infrastructure invalid and stop; do not repair packaged source or inputs.
+5. Execute the five new G3 periodic producer contracts first.
+6. Revalidate plane, seam, and close sheets as mandatory passed-gate regressions.
+7. Execute exact production cylinder as the active G3 acceptance fixture.
+8. Prove first-class holonomy, reciprocal artificial-cut pairing, and absence of a false exterior seam or Euclidean seam welding.
+9. Run bounded determinism and non-overlapping default suites only after the active acceptance cases.
+10. Observe bunny/vase only after the G3 decision; later cases cannot make G3 pass.
+11. For `Rejected`, verify generic producer substitution does not occur. For `NotApplicable`, record it separately and never reinterpret it as success.
+12. Timeout is failure only, never correctness evidence.
+
+### Focused G3 contracts
+
+Run first:
+
+1. `SurfaceCellsPhase10.PeriodicPhaseFrontDerivesAnnulusFromSourceTopology`;
+2. `SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration`;
+3. `SurfaceCellsPhase10.PeriodicPhaseFrontPairsArtificialCutWithoutExteriorSeam`;
+4. `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`;
+5. `SurfaceCellsPhase10.ExactCommittedCylinderReachesAuthoritativePeriodicProducerBoundary`.
+
+Then run retained plane/source-fan/close-sheet contracts required by the exact G3 plan.
+
+### G3 acceptance hierarchy
+
+**G3 closure:** exact cylinder is direct deterministic strict-valid `Produced` pure-quad `CompletedSurfaceCells` output with correct periodic holonomy/quotient, artificial cut absent from exterior output, and plane/seam/close sheets remain valid. Next implementation gate becomes G4 topology-distinct completion and singularities.
+
+**Material progress, G3 still open:** cylinder becomes applicable to the periodic producer and reaches a new exact typed `Rejected` periodic topology/chart/holonomy/front state with zero generic substitution while G0–G2 remain green. The next Code + Build turn addresses only that exact general rejection.
+
+**No material progress/regression:** cylinder remains on the same generic `NotApplicable` path, periodic cut is treated as exterior output, periodic pairing relies on proximity, `Rejected` substitutes generic work, or any passed G0–G2 fixture regresses.
 
 ## Current authoritative documents
 
@@ -201,9 +213,8 @@ G3 closes only through direct deterministic strict-valid cylinder output with ex
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
 - `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md`
-- `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Report.md`
+- `.agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
 - `benchmark-results/design-aligned-runtime-summary.json`
 - `tests/TESTING_STRATEGY.md`
@@ -215,12 +226,13 @@ G3 closes only through direct deterministic strict-valid cylinder output with ex
 3. this handoff
 4. `.agents/Directional/DESIGN.md`
 5. `.agents/Directional/REORIENTATION_PLAN.md`
-6. `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Report.md`
-7. `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md`
-8. latest runtime summary
-9. `tests/TESTING_STRATEGY.md`
-10. `.agents/Directional/GitHub_Workflow_Policy.md`
-11. the turn-based coding-agent skill and relevant Code + Build, testing-integrity, recovery, handoff, connector-workflow, and unit-testing references.
+6. `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Report.md`
+7. `.agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md`
+8. `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Report.md`
+9. latest runtime summary
+10. `tests/TESTING_STRATEGY.md`
+11. `.agents/Directional/GitHub_Workflow_Policy.md`
+12. the turn-based coding-agent skill and relevant Test + Benchmark, testing-integrity, recovery, handoff, connector-workflow, and unit-testing references.
 
 ## Durable lessons
 
@@ -235,9 +247,10 @@ G3 closes only through direct deterministic strict-valid cylinder output with ex
 - Relief barriers become hard only when their embedded-authority flag says so.
 - Plane proves the bounded authoritative phase/front on a connected planar domain.
 - Seam proves reciprocal cross-chart transport.
-- Spatial proximity must never substitute for source component/local-sheet identity; close sheets now prove this at production runtime.
+- Spatial proximity must never substitute for source component/local-sheet identity; close sheets prove this at production runtime.
 - Periodic topology requires explicit holonomy and cannot be represented by declaring an artificial chart cut to be a real boundary.
-- Periodic seam identification must use exact source/phase authority, never Euclidean welding.
+- Periodic seam identification must use exact source/phase/lattice authority, never Euclidean welding.
+- Compile-valid periodic state is not runtime proof; artifact execution must establish whether the cylinder becomes `Produced`, typed `Rejected`, or remains `NotApplicable`.
 - Real bunny/vase fixtures remain mandatory and may not be simplified or bypassed.
 - Direct gates outrank aggregate totals.
 - Scheduler timing ratios are closeout evidence, not functional correctness.
