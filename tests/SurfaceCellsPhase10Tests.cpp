@@ -1236,20 +1236,6 @@ TEST(SurfaceCellsPhase10,
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
 
-  const auto exactSourceVertex = [&](const directional::geometry::SurfaceTracePoint &point) {
-    if (point.face < 0 || point.face >= mesh.F.rows()) return -1;
-    int sourceCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      const double weight = point.barycentric[corner];
-      if (std::abs(weight - 1.0) <= 1.0e-10) {
-        if (sourceCorner >= 0) return -1;
-        sourceCorner = corner;
-      } else if (std::abs(weight) > 1.0e-10) {
-        return -1;
-      }
-    }
-    return sourceCorner >= 0 ? mesh.F(point.face, sourceCorner) : -1;
-  };
   const auto faceNormal = [&](const int face) -> Eigen::RowVector3d {
     const Eigen::RowVector3d edge01 =
         mesh.V.row(mesh.F(face, 1)) - mesh.V.row(mesh.F(face, 0));
@@ -1268,25 +1254,56 @@ TEST(SurfaceCellsPhase10,
     if (norm > 0.0) return Eigen::RowVector3d(direction / norm);
     return Eigen::RowVector3d(0.0, 0.0, 0.0);
   };
+  const auto segmentPoint = [&mesh](
+      const directional::geometry::SurfaceTraceSegment &segment,
+      const Eigen::RowVector3d &barycentric) -> Eigen::RowVector3d {
+    Eigen::RowVector3d point = Eigen::RowVector3d::Zero();
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      point += barycentric[coordinate] *
+          Eigen::RowVector3d(mesh.V.row(mesh.F(segment.face, coordinate)));
+    }
+    return point;
+  };
 
-  int exactInterRingEdges = 0;
-  for (const auto &edge : network.phaseFront.edges) {
-    if (edge.family != 1) continue;
-    const int fromVertex = exactSourceVertex(edge.from);
-    const int toVertex = exactSourceVertex(edge.to);
-    if (fromVertex < 0 || toVertex < 0 || fromVertex == toVertex) continue;
-    const int face = edge.from.face;
-    const Eigen::RowVector3d edgeDirection =
-        tangent(mesh.V.row(toVertex) - mesh.V.row(fromVertex), face);
-    const Eigen::RowVector3d authoritativeV = tangent(faceAxisY.row(face), face);
-    ASSERT_GT(edgeDirection.squaredNorm(), 0.0);
-    ASSERT_GT(authoritativeV.squaredNorm(), 0.0);
-    EXPECT_NEAR(1.0, std::abs(edgeDirection.dot(authoritativeV)), 1.0e-10)
-        << "phase-front V edge must consume the exact axial field-family "
-           "source correspondence rather than a diagonal strip edge";
-    ++exactInterRingEdges;
+  int observedVSegments = 0;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (const auto &segment : path) {
+        if (segment.family != 1) continue;
+        ASSERT_GE(segment.face, 0);
+        ASSERT_LT(segment.face, mesh.F.rows());
+        const Eigen::RowVector3d start = segment.startBarycentric;
+        const Eigen::RowVector3d end = segment.endBarycentric;
+        ASSERT_TRUE(start.allFinite());
+        ASSERT_TRUE(end.allFinite());
+        EXPECT_NEAR(1.0, start.sum(), 1.0e-12);
+        EXPECT_NEAR(1.0, end.sum(), 1.0e-12);
+        for (int coordinate = 0; coordinate < 3; ++coordinate) {
+          EXPECT_GE(start[coordinate], -1.0e-12);
+          EXPECT_LE(start[coordinate], 1.0 + 1.0e-12);
+          EXPECT_GE(end[coordinate], -1.0e-12);
+          EXPECT_LE(end[coordinate], 1.0 + 1.0e-12);
+        }
+
+        const Eigen::RowVector3d sourceDirection =
+            segmentPoint(segment, end) - segmentPoint(segment, start);
+        if (sourceDirection.norm() <= 1.0e-14) continue;
+        const Eigen::RowVector3d segmentDirection =
+            tangent(sourceDirection, segment.face);
+        const Eigen::RowVector3d authoritativeV =
+            tangent(faceAxisY.row(segment.face), segment.face);
+        ASSERT_GT(segmentDirection.squaredNorm(), 0.0);
+        ASSERT_GT(authoritativeV.squaredNorm(), 0.0);
+        EXPECT_NEAR(1.0, std::abs(segmentDirection.dot(authoritativeV)), 1.0e-10)
+            << "source-attached phase-front V path segments must consume the "
+               "axial field family independent of target subdivision";
+        ++observedVSegments;
+      }
+    }
   }
-  EXPECT_GT(exactInterRingEdges, 0);
+  EXPECT_GT(observedVSegments, 0)
+      << "field-authoritative correspondence requires a nonempty V-family "
+         "source-attached path witness";
 }
 
 TEST(SurfaceCellsPhase10,
