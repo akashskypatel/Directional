@@ -1,13 +1,61 @@
 {
   "schema": "directional.design-aligned-runtime-summary.v3",
-  "updatedUtc": "2026-08-07T05:27:00Z",
+  "updatedUtc": "2026-08-07T06:46:00Z",
   "directionControl": {
-    "activeGate": "G1 authoritative producer boundary",
+    "activeGate": "G1 authoritative producer-boundary verification",
     "earliestFailingFixture": "plane__surface_cells",
     "retainedRegression": "multi_face_seam__surface_cells",
     "reviewOutcome": "B: bounded producer replacement proof",
-    "nextPlan": ".agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md",
+    "nextPlan": ".agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md",
     "thirdPredicateRepairAuthorized": false
+  },
+  "latestCodeBuild": {
+    "sourceCommit": "0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3",
+    "payloadCleanup": "bcf934d34e9a15f5d0929628ffd26f6833643214",
+    "patchSha256": "a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef",
+    "workflow": {
+      "runId": 31154489371,
+      "jobId": 92790924907,
+      "artifactId": 8984760467,
+      "conclusion": "success"
+    },
+    "compile": {
+      "actions": "111/111",
+      "approvedTargets": "7/7",
+      "configuration": "Release",
+      "generator": "Ninja",
+      "compiler": "GNU C++ 13.3.0",
+      "cmake": "3.31.6",
+      "ninja": "1.13.2",
+      "gtestDiscoveryMode": "PRE_TEST",
+      "runtimeExecution": false
+    },
+    "artifact": {
+      "file": "directional-g1-authoritative-producer-boundary-build-artifact.zip",
+      "sha256": "4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031",
+      "internalChecksums": "44/44",
+      "executables": 5,
+      "libraries": 2,
+      "fixtures": 27
+    },
+    "changedFileBlobs": {
+      "include/directional/geometry/SurfaceCellTracing.h": "b33c2118e65812d4b0a4a65fe9f46b7a8766bb59",
+      "src/geometry/SurfaceCellTracing.cpp": "c9877d8ffa8aa5fbb59c83a1ab4b94eed5421431",
+      "include/directional/diagnostics/RemeshDiagnostics.h": "8ddb4bcdf26a1caacdf927e74e56d3fe11b3e3b7",
+      "src/pipeline/RemeshPipeline.cpp": "533648a1b1fd008286f3ef3292813817ad1f1146",
+      "src/bench/DirectionalBenchmark.cpp": "73d9d29e49107073a44c2e9a6fe0e89331412737",
+      "tests/SurfaceCellsPhase10Tests.cpp": "b726b85d189c5018d53c8561888dcda0ab55fa58"
+    },
+    "implementedContracts": {
+      "explicitProducerDisposition": ["NotApplicable", "Produced", "Rejected"],
+      "rejectedCannotLaunchGenericProducer": true,
+      "rejectedStopsPipelineAtTracing": true,
+      "typedProducerRejectionRetained": true,
+      "producerDispositionHashedAndSerialized": true,
+      "reliefBarrierHonorsEmbeddedAuthority": true,
+      "exactCommittedPlaneProductionRegressionAdded": true
+    },
+    "runtimeClaimsFromCurrentTurn": false
   },
   "testedAuthority": {
     "sourceCommit": "364a20e12165af7dbfe213bb6d075e3fe25b1574",
@@ -32,7 +80,7 @@
     "passed": 4,
     "total": 4,
     "productionRouteAuthority": false,
-    "note": "Existing fan/topology tests prove isolated contracts but do not reproduce exact plane production preprocessing."
+    "note": "Latest executed contract tests predate the newly compiled exact committed-plane producer-boundary regression. Current Code + Build tests have not been executed."
   },
   "directAcceptance": {
     "passed": 1,
@@ -79,22 +127,11 @@
     "compiled_api": {"tests": 8, "passed": 8, "failed": 0}
   },
   "nonOverlappingTotal": {"passed": 305, "total": 321, "failed": 16},
-  "materialProgress": false,
-  "architectureReview": {
-    "completed": true,
-    "selectedOutcome": "bounded producer replacement proof",
-    "provenFindings": {
-      "successfulParentGenericProducerWasLatent": true,
-      "gate2MadePhaseFrontTransitionAware": true,
-      "phaseFrontNonSuccessAutomaticallyLaunchesGenericProducer": true,
-      "notApplicableAndRejectedAreConflated": true,
-      "laterCompletionCanOverwriteTypedPhaseFrontFailure": true,
-      "syntheticFanTestsDoNotReproduceProductionPlaneInputs": true,
-      "phaseFrontReliefBarrierSemanticsIgnoreReliefBarriersEmbedded": true
-    },
-    "unprovenAsFirstFailure": "The exact current first phase-front predicate is not claimed; final diagnostics did not preserve it and exact relief-barrier membership was not serialized.",
-    "replacementDisposition": ["NotApplicable", "Produced", "Rejected"],
-    "minimumNextArtifactProgress": "An applicable Rejected plane cannot launch the generic producer, so the 106/9/12 substitution disappears and typed producer authority remains immutable.",
-    "gate1Closure": "Direct deterministic valid plane output with retained seam direct success."
+  "materialProgress": null,
+  "materialProgressNote": "Current turn is compile-only. Runtime material progress must be assigned only after testing the exact new artifact.",
+  "nextArtifactAcceptance": {
+    "gate1Closure": "Plane disposition Produced with direct deterministic valid pure-quad output and retained seam direct success.",
+    "minimumArchitectureProof": "Plane disposition Rejected with immutable typed tracing/phase-front authority, zero generic substitution, and disappearance of the prior 106/9/12 path. G1 remains red.",
+    "noProgress": "Plane NotApplicable/generic fall-through, rejected producer still substitutes generic work, typed rejection overwritten, seam regression, or weakened acceptance."
   }
 }
