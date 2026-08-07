@@ -12,7 +12,7 @@ The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge
 
 Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-At the G3 periodic ring-correspondence Code + Build closeout on 2026-08-07, artifact/log/source authority was verified, the bounded build workflow was removed **before** deleting its exact marker, then the retry trigger and payload were removed. Final verification showed only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent.
+At the G3 periodic chart endpoint-canonicalization artifact-only Test + Benchmark closeout on 2026-08-07, final verification again showed only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent. No workflow or payload was created during that artifact-only validation turn.
 
 ## Mandatory workflow requirements
 
