@@ -1,137 +1,134 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v3",
-  "updatedUtc": "2026-08-07T06:46:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v4",
+  "updatedUtc": "2026-08-07T14:20:00Z",
   "directionControl": {
-    "activeGate": "G1 authoritative producer-boundary verification",
-    "earliestFailingFixture": "plane__surface_cells",
-    "retainedRegression": "multi_face_seam__surface_cells",
-    "reviewOutcome": "B: bounded producer replacement proof",
-    "nextPlan": ".agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md",
-    "thirdPredicateRepairAuthorized": false
-  },
-  "latestCodeBuild": {
-    "sourceCommit": "0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3",
-    "payloadCleanup": "bcf934d34e9a15f5d0929628ffd26f6833643214",
-    "patchSha256": "a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef",
-    "workflow": {
-      "runId": 31154489371,
-      "jobId": 92790924907,
-      "artifactId": 8984760467,
-      "conclusion": "success"
-    },
-    "compile": {
-      "actions": "111/111",
-      "approvedTargets": "7/7",
-      "configuration": "Release",
-      "generator": "Ninja",
-      "compiler": "GNU C++ 13.3.0",
-      "cmake": "3.31.6",
-      "ninja": "1.13.2",
-      "gtestDiscoveryMode": "PRE_TEST",
-      "runtimeExecution": false
-    },
-    "artifact": {
-      "file": "directional-g1-authoritative-producer-boundary-build-artifact.zip",
-      "sha256": "4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031",
-      "internalChecksums": "44/44",
-      "executables": 5,
-      "libraries": 2,
-      "fixtures": 27
-    },
-    "changedFileBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "b33c2118e65812d4b0a4a65fe9f46b7a8766bb59",
-      "src/geometry/SurfaceCellTracing.cpp": "c9877d8ffa8aa5fbb59c83a1ab4b94eed5421431",
-      "include/directional/diagnostics/RemeshDiagnostics.h": "8ddb4bcdf26a1caacdf927e74e56d3fe11b3e3b7",
-      "src/pipeline/RemeshPipeline.cpp": "533648a1b1fd008286f3ef3292813817ad1f1146",
-      "src/bench/DirectionalBenchmark.cpp": "73d9d29e49107073a44c2e9a6fe0e89331412737",
-      "tests/SurfaceCellsPhase10Tests.cpp": "b726b85d189c5018d53c8561888dcda0ab55fa58"
-    },
-    "implementedContracts": {
-      "explicitProducerDisposition": ["NotApplicable", "Produced", "Rejected"],
-      "rejectedCannotLaunchGenericProducer": true,
-      "rejectedStopsPipelineAtTracing": true,
-      "typedProducerRejectionRetained": true,
-      "producerDispositionHashedAndSerialized": true,
-      "reliefBarrierHonorsEmbeddedAuthority": true,
-      "exactCommittedPlaneProductionRegressionAdded": true
-    },
-    "runtimeClaimsFromCurrentTurn": false
+    "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
+    "activeGate": "G3 periodic closure/holonomy",
+    "earliestFailingFixture": "cylinder__surface_cells",
+    "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md"
   },
   "testedAuthority": {
-    "sourceCommit": "364a20e12165af7dbfe213bb6d075e3fe25b1574",
-    "payloadCleanup": "591ada601843237a709d2d6e133a438ca403f042",
-    "artifact": {
-      "file": "directional-g1-live-transition-local-build-artifact.zip",
-      "sha256": "922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741",
-      "internalChecksums": "45/45",
-      "executables": 5,
-      "libraries": 2,
-      "fixtures": 27
-    },
-    "evidenceArchive": {
-      "file": "directional-g1-live-transition-artifact-only-test-evidence.zip",
-      "sha256": "99a4922767d567830f202b440504f2b48d07fdb02bb117668baf846e7eeb9b64",
-      "checksummedFiles": 118
-    },
+    "sourceCommit": "218dd3ec3f6399dc82183390720a4ba4d3a70b42",
+    "workflowRunId": 31179899458,
+    "workflowJobId": 92870408341,
+    "artifactId": 8994541137,
+    "artifactName": "g2-close-sheet-code-build",
+    "artifactSha256": "f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791",
+    "internalChecksums": "45/45",
+    "executables": 5,
+    "libraries": 2,
+    "fixtures": 27,
     "rebuildPerformed": false,
-    "sourceOrValidationEditedDuringTest": false
+    "sourceOrValidationEditedDuringTest": false,
+    "changedFileBlobs": {
+      "src/geometry/SurfaceCellTracing.cpp": "c9570ecb4a9557eebaf0e30b751e2ccca90b2973",
+      "src/pipeline/RemeshPipeline.cpp": "55af3205fd7cdb8f21357ac69516ffa29cf8a6d3",
+      "tests/SurfaceCellsPhase10Tests.cpp": "7151077d7d4e0a10dad388dd008479f96fc1aae8"
+    }
   },
   "contractTests": {
-    "passed": 4,
-    "total": 4,
-    "productionRouteAuthority": false,
-    "note": "Latest executed contract tests predate the newly compiled exact committed-plane producer-boundary regression. Current Code + Build tests have not been executed."
+    "passed": 7,
+    "total": 7,
+    "closeSheetKeys": [[0, 0], [1, 1]],
+    "crossSheetTwinOwnershipObserved": false,
+    "faceRowEnumerationInvariant": true,
+    "exactProductionPlaneRegressionPassed": true
   },
   "directAcceptance": {
-    "passed": 1,
+    "passed": 3,
     "total": 6,
     "cases": {
       "plane": {
-        "success": false,
+        "success": true,
+        "producerDisposition": "Produced",
         "runs": 3,
-        "structurallyStableAcrossProcesses": true,
-        "traceSegments": 106,
-        "arrangementCells": 9,
-        "completedQuads": 12,
-        "validationFailures": 15,
-        "outputOrigin": "None",
-        "terminalFailureCode": "NotProductionReady",
-        "terminalFailureStage": "completion",
-        "firstInvalidStageObserved": "completion/output-validation",
-        "firstInvalidReasonObserved": "AggregateCompletionValidationFailure",
-        "tracingStructuralHash": 18291124109639474708
+        "traceSegments": 352,
+        "arrangementCells": 65,
+        "completedQuads": 64,
+        "outputVertices": 81,
+        "connectedComponents": 1,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputStructuralHash": "730caeae49ec872c",
+        "wallSecondsRange": [0.343229, 0.357320]
       },
       "multi_face_seam": {
         "success": true,
+        "producerDisposition": "Produced",
         "runs": 3,
-        "structurallyStableAcrossProcesses": true,
         "traceSegments": 256,
         "arrangementCells": 65,
         "completedQuads": 64,
+        "outputVertices": 81,
+        "connectedComponents": 1,
         "validationFailures": 0,
         "outputOrigin": "CompletedSurfaceCells",
-        "outputVertices": 81,
-        "outputFaces": 64,
-        "outputStructuralHash": "a8972efd7c4900a4"
+        "outputStructuralHash": "5bdf34d7802e9fb0",
+        "previousGate1Hash": "a8972efd7c4900a4",
+        "previousArtifactGeometricHausdorff": 2.0648414089663447e-9,
+        "wallSecondsRange": [0.533237, 0.546025]
       },
-      "close_sheets": {"success": false, "runs": 3, "traceSegments": 158, "arrangementCells": 0, "outputQuads": 0},
-      "cylinder": {"success": false, "runs": 3, "traceSegments": 732, "arrangementCells": 0, "outputQuads": 0},
-      "bunny_1k_random": {"success": false, "runs": 2, "traceSegments": 80862, "arrangementCells": 0, "outputQuads": 0},
-      "vase": {"success": false, "runs": 2, "traceSegments": 116922, "arrangementCells": 0, "outputQuads": 0}
+      "close_sheets": {
+        "success": true,
+        "producerDisposition": "Produced",
+        "runs": 3,
+        "traceSegments": 1104,
+        "arrangementCells": 202,
+        "completedQuads": 200,
+        "outputVertices": 242,
+        "connectedComponents": 2,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputStructuralHash": "89b052762f52a5af",
+        "componentVertexCounts": [121, 121],
+        "componentZLayers": [-0.035, 0.035],
+        "wallSecondsRange": [3.005340, 3.151501]
+      },
+      "cylinder": {
+        "success": false,
+        "producerDisposition": "NotApplicable",
+        "runs": 3,
+        "traceSegments": 732,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "wallSecondsRange": [0.146054, 0.147918]
+      },
+      "bunny_1k_random": {
+        "success": false,
+        "producerDisposition": "NotApplicable",
+        "runs": 1,
+        "traceSegments": 80862,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "wallSeconds": 23.408649,
+        "peakWorkingSetBytes": 247545856
+      },
+      "vase": {
+        "success": false,
+        "producerDisposition": "NotApplicable",
+        "runs": 1,
+        "traceSegments": 116922,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "wallSeconds": 52.096160,
+        "peakWorkingSetBytes": 141316096
+      }
     }
   },
   "defaultSuites": {
-    "producer_remaining": {"tests": 79, "passed": 78, "failed": 1},
+    "focusedProducerContracts": {"tests": 7, "passed": 7, "failed": 0},
+    "producerRemaining": {"tests": 86, "passed": 82, "failed": 4},
     "completion": {"tests": 164, "passed": 154, "failed": 10},
     "validation": {"tests": 60, "passed": 60, "failed": 0},
-    "compiled_api": {"tests": 8, "passed": 8, "failed": 0}
+    "compiledApi": {"tests": 8, "passed": 8, "failed": 0}
   },
-  "nonOverlappingTotal": {"passed": 305, "total": 321, "failed": 16},
-  "materialProgress": null,
-  "materialProgressNote": "Current turn is compile-only. Runtime material progress must be assigned only after testing the exact new artifact.",
-  "nextArtifactAcceptance": {
-    "gate1Closure": "Plane disposition Produced with direct deterministic valid pure-quad output and retained seam direct success.",
-    "minimumArchitectureProof": "Plane disposition Rejected with immutable typed tracing/phase-front authority, zero generic substitution, and disappearance of the prior 106/9/12 path. G1 remains red.",
-    "noProgress": "Plane NotApplicable/generic fall-through, rejected producer still substitutes generic work, typed rejection overwritten, seam regression, or weakened acceptance."
+  "nonOverlappingTotal": {"passed": 311, "total": 325, "failed": 14},
+  "gateDecision": {
+    "g2Closed": true,
+    "reason": "Exact close sheets is direct deterministic strict-valid Produced output with two isolated source-sheet components while plane and seam remain valid.",
+    "nextGate": "G3 periodic cylinder/holonomy"
   }
 }
