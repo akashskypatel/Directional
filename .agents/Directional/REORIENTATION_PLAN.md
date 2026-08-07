@@ -40,7 +40,8 @@ The exact orientation artifact produced deterministic direct plane success:
 - 81 output vertices;
 - zero non-quads and zero strict validation failures;
 - `CompletedSurfaceCells`, no fallback, no recovery;
-- stable output hash `730caeae49ec872c` across three independent processes.
+- stable output hash `730caeae49ec872c` across three independent processes;
+- evidence archive SHA-256 `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`.
 
 The previous 65-to-409 expansion and `FlippedFace` failure are eliminated. Gate 1 remains a permanent regression gate.
 
@@ -62,7 +63,8 @@ The producer must move from one planar phase frame to authoritative multi-chart 
 Current direct evidence:
 
 - multi-face seam: 137 traces, zero cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
-- close sheets: 158 traces, zero cells/quads, the same failure.
+- close sheets: 158 traces, zero cells/quads, the same failure;
+- both deterministic across three artifact processes.
 
 The next implementation must replace this zero-cell downstream failure with first-class cross-chart construction or a truthful earlier transport failure.
 
