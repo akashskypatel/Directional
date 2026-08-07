@@ -1,0 +1,203 @@
+name: Agent G3 Periodic Chart Endpoint Canonicalization Code Build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/g3-periodic-chart-endpoint-canonicalization-code-build-20260807.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-g3-periodic-chart-endpoint-canonicalization-code-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      WORK_BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+      PAYLOAD: .agents/Directional/turn-payloads/g3-periodic-chart-endpoint-canonicalization.patch
+      PATCH_SHA256: f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8
+      BASE_SOURCE_COMMIT: c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a
+    steps:
+      - name: Initialize activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG_FILE="$RUNNER_TEMP/g3-periodic-chart-endpoint-canonicalization-code-build.log"
+          echo "LOG_FILE=$LOG_FILE" >> "$GITHUB_ENV"
+          {
+            echo "task=G3 periodic chart endpoint canonicalization Code + Build"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
+          } > "$LOG_FILE"
+
+      - name: Checkout bounded source
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Apply verified endpoint canonicalization patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "apply_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          echo "checkout_sha=$(git rev-parse HEAD)"
+          test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = "c1b816a584d67a3f74c2d7389962bd92d52244c9"
+          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "6980850bd32d40b1da9350ebbe3f601b8ce5e07b"
+          test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "c4671ef674228d74b96e80499abbb6846bcdf3e3"
+          echo "$PATCH_SHA256  $PAYLOAD" | sha256sum -c -
+          git apply --check "$PAYLOAD"
+          git apply "$PAYLOAD"
+          git diff --check
+          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "63e5ee427f675077f710db51ffb56d91838d3519"
+          test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "bef95b04c95c9a213c634e604d004b3d7d22646e"
+          test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = "c1b816a584d67a3f74c2d7389962bd92d52244c9"
+          git diff --stat
+          git config user.name directional-agent
+          git config user.email directional-agent@users.noreply.github.com
+          git add src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m "fix(surface-cells): canonicalize periodic chart endpoints"
+          SOURCE_COMMIT=$(git rev-parse HEAD)
+          echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
+          git push origin HEAD:"$WORK_BRANCH"
+          echo "source_commit=$SOURCE_COMMIT"
+          echo "surface_cell_tracing_blob=$(git hash-object src/geometry/SurfaceCellTracing.cpp)"
+          echo "phase10_tests_blob=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
+
+      - name: Install compile dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "dependency_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev
+
+      - name: Initialize shallow submodules
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "submodule_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          git submodule update --init --depth 1
+          git submodule status
+
+      - name: Configure compile-only build
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "configure_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          mkdir -p agent-build-logs
+          { echo "source_commit=$SOURCE_COMMIT"; cmake --version; c++ --version; ninja --version; } | tee agent-build-logs/toolchain.txt
+          cmake -S . -B agent-build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee agent-build-logs/configure.log
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "build_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          cmake --build agent-build --parallel 2 --target \
+            directional_core directional_pipeline directional_compiled_api_tests \
+            directional_surface_cell_producer_tests directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests directional_benchmarks \
+            2>&1 | tee agent-build-logs/build.log
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+      - name: Package immutable build artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'status=$?; echo "package_exit=$status" | tee -a "$LOG_FILE"; exit $status' EXIT
+          exec > >(tee -a "$LOG_FILE") 2>&1
+          root="$GITHUB_WORKSPACE/g3-periodic-chart-endpoint-canonicalization-code-build-artifact"
+          rm -rf "$root"
+          mkdir -p "$root"/{bin,lib,test-data/benchmarks,logs,metadata,source}
+          cp agent-build/directional_benchmarks agent-build/directional_compiled_api_tests \
+             agent-build/directional_surface_cell_producer_tests \
+             agent-build/directional_surface_cell_completion_tests \
+             agent-build/directional_surface_cell_validation_tests "$root/bin/"
+          cp agent-build/libdirectional_core.a agent-build/libdirectional_pipeline.a "$root/lib/"
+          cp -a benchmarks/fixtures "$root/test-data/benchmarks/"
+          cp agent-build-logs/configure.log agent-build-logs/build.log agent-build-logs/toolchain.txt "$root/logs/"
+          cp agent-build/compile_commands.json "$root/source/"
+          cp "$PAYLOAD" "$root/source/g3-periodic-chart-endpoint-canonicalization.patch"
+          tar --exclude=.git --exclude=external --exclude=agent-build \
+              --exclude=g3-periodic-chart-endpoint-canonicalization-code-build-artifact \
+              -cJf "$root/source/directional-g3-periodic-chart-endpoint-canonicalization-source-no-deps.tar.xz" .
+          cat > "$root/metadata/source-authority.json" <<EOF
+          {
+            "sourceCommit": "$SOURCE_COMMIT",
+            "baseProductionSourceCommit": "$BASE_SOURCE_COMMIT",
+            "patchSha256": "$PATCH_SHA256",
+            "changedFileBlobs": {
+              "include/directional/geometry/SurfaceCellTracing.h": "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)",
+              "src/geometry/SurfaceCellTracing.cpp": "$(git hash-object src/geometry/SurfaceCellTracing.cpp)",
+              "tests/SurfaceCellsPhase10Tests.cpp": "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
+            }
+          }
+          EOF
+          cat > "$root/metadata/command-boundary.txt" <<'EOF'
+          Code + Build turn only. No generated Directional binary/test/benchmark/CLI/GUI/help/list/discovery command was executed.
+          EOF
+          cat > "$root/metadata/build-authority.json" <<'EOF'
+          {"configuration":"Release","generator":"Ninja","buildSharedLibs":false,"gtestDiscoveryMode":"PRE_TEST","approvedTargets":7,"runtimeExecution":false}
+          EOF
+          printf '# Gate 3 Periodic Chart Endpoint Canonicalization Code + Build Artifact\n\nSource commit: %s\nCompile-only artifact.\n' "$SOURCE_COMMIT" > "$root/README.md"
+          (cd "$root" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          echo "artifact_files=$(wc -l < "$root/SHA256SUMS")"
+          test "$(wc -l < "$root/SHA256SUMS")" -ge 40
+
+      - name: Record final repository state
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          { echo "final_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; echo "final_head=$(git rev-parse HEAD 2>/dev/null)"; git status --short 2>&1; } | tee -a "$LOG_FILE"
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g3-periodic-chart-endpoint-canonicalization-code-build-logs
+          path: ${{ env.LOG_FILE }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload build artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g3-periodic-chart-endpoint-canonicalization-code-build
+          path: g3-periodic-chart-endpoint-canonicalization-code-build-artifact
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
