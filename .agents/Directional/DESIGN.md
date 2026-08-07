@@ -10,20 +10,22 @@ Always advance the earliest incomplete or regressed design gate. Every implement
 
 ## Architecture
 
-The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component/local-sheet, transition edge, route, feature, and ownership state. Fronts advance only through exact source topology and reciprocal field transitions. An authoritative cell has four ordered source-attached corners and sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, and exact directed ownership. One accepted cell maps to one quad. Arrangement may canonicalize exact identities and crossings but may not infer topology by count/order/frequency, position, fallback, or post-hoc decomposition.
+The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component/local-sheet, transition edge, route, feature, and ownership state. Fronts advance only through exact source topology and reciprocal field transport. Authoritative metadata is strict and fail-closed when present. A coherent prescribed raw field may omit precomputed matching/transition containers; in that case, a planar phase-front proof may use exact physical forward/reverse transport, but never proximity, fixture identity, or arbitrary branch choice.
+
+An authoritative cell has four ordered source-attached corners and sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, and exact directed ownership. One accepted cell maps to one quad. Arrangement may canonicalize exact identities and crossings but may not infer topology by count/order/frequency, position, fallback, or post-hoc decomposition.
 
 ## Ordered gates
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** **regressed; active restoration gate.** Previous artifact passed 64/64, but Gate 2 artifact regressed to 106 traces, 9 arrangement cells, 12 invalid completion quads, and 15 validation failures.
-3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 restoration and close-sheet failure. Seam now produces 64 deterministic direct quads with output hash `a8972efd7c4900a4`.
+2. **G1 — Uniform phase-front plane:** **active restoration verification.** The restoration build is complete; artifact-only proof is pending.
+3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 verification and close-sheet failure.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Current evidence
+## Last runtime evidence
 
 | Fixture | Result | Traces | Arrangement | Output quads |
 |---|---:|---:|---:|---:|
@@ -34,11 +36,13 @@ The producer carries first-class phase, integer lattice coordinate, branch rotat
 | bunny | fail | 80,862 | 0 | 0 |
 | vase | fail | 116,922 | 0 | 0 |
 
-All results are deterministic and direct, with fallback `Fail` and no recovery.
+All results were deterministic and direct, with fallback `Fail` and no recovery. The new restoration artifact has not yet been executed.
 
 ## Active restoration contract
 
-Restore the constant prescribed-field plane to the authoritative phase-front path without reverting or bypassing exact reciprocal chart transitions. Material progress requires plane direct success while retaining seam direct success. Diagnostics alone, a different legacy failure, or higher aggregate totals are insufficient.
+The source now distinguishes absent metadata from present authoritative metadata. Empty prescribed-field containers use exact physical planar transport with reciprocal proof and canonical source-edge provenance. Non-empty transition metadata retains exact lookup, topology, and reciprocal quarter-turn validation.
+
+Material progress requires plane direct success while retaining seam direct success. Diagnostics alone, a different legacy failure, or higher aggregate totals are insufficient.
 
 ## Non-negotiable prohibitions
 

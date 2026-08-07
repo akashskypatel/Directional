@@ -5,38 +5,41 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 plane regression restoration**.
-- Proven retained sub-contract: G2 multi-face seam direct success.
-- Next turn: Code + Build using `.agents/Directional/Gate_1_Regression_Restoration_Code_Build_Plan.md`.
+- Active gate: **G1 plane regression restoration** pending artifact-only verification.
+- Proven retained sub-contract requiring regression protection: G2 multi-face seam direct success.
+- Completed turn: Gate 1 regression-restoration Code + Build.
+- Next turn: artifact-only testing using `.agents/Directional/Gate_1_Regression_Restoration_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact authority
+## Exact build authority
 
-- source commit: `21f081b330418a0f34709f61d857f54a03d2fd48`;
-- build artifact SHA-256: `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`;
+- source commit: `a90f6b9de83dba4aeac359b2f63d735e2049b54e`;
+- cleanup commit: `d0ffebf4ef0239563f46dbb7485144bb581e80f1`;
+- source blob: `850971a60b75dd84a81ddd4d260998f7ec9c326a`;
+- patch SHA-256: `53c402e8d9740c057f70bfc64912fef3f3e2c4d41b57c38710875f17fc4172d8`;
+- build artifact SHA-256: `c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20`;
+- internal checksums: 44/44;
+- approved targets: 7/7;
+- generated project binaries executed: none.
+
+## Last runtime authority
+
 - test evidence SHA-256: `8762750ffc13c339e44ce0a2ffac8639f456d16cacc480b7da44b2fedc0ed251`;
-- artifact checksums 45/45; evidence checksums 84/84.
+- plane regressed: 106 traces, 9 arrangement cells, 12 completion quads, 15 validation failures;
+- seam passed: 64 direct pure quads, `CompletedSurfaceCells`, hash `a8972efd7c4900a4`;
+- close sheets, cylinder, bunny, and vase remained deterministic direct failures before output.
 
-## Direct gates
+The new compile-only artifact has not yet been executed.
 
-- [ ] plane — regressed: 106 traces, 9 arrangement cells, 12 completion quads, 15 validation failures;
-- [x] multi-face seam — 64 direct pure quads, `CompletedSurfaceCells`, hash `a8972efd7c4900a4`;
-- [ ] close sheets — 158 traces, zero arrangement/output;
-- [ ] cylinder — 732 traces, zero arrangement/output;
-- [ ] bunny — 80,862 traces, zero arrangement/output;
-- [ ] vase — 116,922 traces, zero arrangement/output.
+## Next artifact-only checklist
 
-All are deterministic, direct `SurfaceCells`, fallback `Fail`, and no recovery.
-
-## Next implementation checklist
-
-- [ ] identify the exact fail-closed phase-front exit for the plane;
-- [ ] repair general zero-turn prescribed-field branch/route transport;
-- [ ] preserve reciprocal quarter-turn seam transport;
-- [ ] preserve source chart/component/sheet/transition/route provenance;
-- [ ] preserve one authoritative cell → one quad;
-- [ ] compile seven approved targets and execute none;
-- [ ] package exact artifact for plane-first testing.
+- [ ] verify outer artifact SHA-256 and all 44 internal checksums;
+- [ ] run plane first and reject generic completion substitution;
+- [ ] run seam second and preserve reciprocal quarter-turn direct success;
+- [ ] run close sheets, cylinder, bunny, and vase;
+- [ ] run non-overlapping default suites;
+- [ ] collect bounded independent determinism evidence;
+- [ ] perform no rebuild or source/test/fixture/validator edit.
 
 P5 remains open.

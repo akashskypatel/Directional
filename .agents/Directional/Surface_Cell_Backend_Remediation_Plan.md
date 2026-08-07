@@ -2,13 +2,13 @@
 
 ## Current blocker
 
-Gate 2 chart transport produced a real seam success but regressed the previously passed uniform plane. The earliest blocker is therefore Gate 1 restoration, not close-sheet repair or later production geometry.
+The Gate 1 restoration implementation and compile are complete, but runtime authority is still the prior artifact where the plane regressed and the seam passed. The earliest blocker remains Gate 1 until the new artifact proves plane success without losing the seam.
 
 ## Remediation sequence
 
-1. Restore constant prescribed-field plane phase-front activation.
-2. Preserve seam reciprocal quarter-turn chart transport and deterministic 64-quad output.
-3. Re-run the full six-fixture mandatory matrix artifact-only.
+1. Artifact-only test plane, then seam, from the exact restoration build.
+2. Accept restoration only when both direct contracts pass without generic completion, fallback, recovery, or validator changes.
+3. Continue the full mandatory matrix and default suites.
 4. Resume close-sheet isolation only after plane and seam both pass.
 5. Continue cylinder, topology, adaptivity/features, bunny/vase success, and operational hardening in gate order.
 

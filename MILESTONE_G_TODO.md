@@ -4,23 +4,23 @@ Last updated: 2026-08-06
 
 ## Current gate
 
-G0 truthful authority [passed] → **G1 plane restoration [active]** → G2 seam proven/close sheets incomplete → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed] → **G1 plane restoration [active, build complete, runtime pending]** → G2 seam proven/close sheets incomplete → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## Artifact-only result
+## Completed Code + Build
 
-- direct acceptance: **1/6**;
-- remaining producer: **78/79**;
-- completion: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- non-overlapping total: **301/317**.
+- source commit `a90f6b9de83dba4aeac359b2f63d735e2049b54e`;
+- final source blob `850971a60b75dd84a81ddd4d260998f7ec9c326a`;
+- build artifact SHA-256 `c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20`;
+- 44/44 internal checksums;
+- 7/7 approved targets;
+- no generated project binary executed.
 
-The seam now passes directly and deterministically. Plane regressed and is the earliest blocker. Close sheets, cylinder, bunny, and vase remain deterministic failures before arrangement/output.
+The implementation distinguishes absent prescribed-field metadata from present authoritative metadata. Metadata-free planar transport must still prove exact forward/reverse physical branch consistency; non-empty authoritative metadata remains strict and fail-closed.
 
 ## Required next turn
 
-Use `.agents/Directional/Gate_1_Regression_Restoration_Code_Build_Plan.md`.
+Use `.agents/Directional/Gate_1_Regression_Restoration_Artifact_Only_Test_Benchmark_Plan.md`.
 
-Compile only the approved seven targets. Execute no generated binary. Success requires a general implementation that can restore plane without losing the seam; fixture-specific behavior, legacy completion substitution, fallback/recovery, or validator changes are forbidden.
+Run plane first and seam second. Gate 1 is restored only if the plane returns direct validated `CompletedSurfaceCells` output without the previous generic completion signature. The change is accepted only if the seam also retains direct deterministic reciprocal-transition output. Continue through the full mandatory six-fixture matrix and default suites without rebuilding.
 
 Every completed turn ends with a new top-level PR #8 comment after all other repository writes.

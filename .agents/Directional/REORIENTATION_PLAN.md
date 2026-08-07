@@ -2,13 +2,11 @@
 
 ## Current orientation
 
-The project is not a sequence of downstream repair milestones. It is an ordered constructive implementation of direct, source-authoritative, cross-field-aligned quadrangulation.
-
-Current order:
+The project is an ordered constructive implementation of direct, source-authoritative, cross-field-aligned quadrangulation:
 
 ```text
 G0 truthful authority [passed]
-→ G1 plane regression restoration [active]
+→ G1 plane restoration [active; build complete, runtime pending]
 → G2 seam proven / close-sheet isolation incomplete
 → G3 periodic holonomy
 → G4 topology and singularities
@@ -19,7 +17,7 @@ G0 truthful authority [passed]
 
 ## Immediate objective
 
-Restore authoritative uniform phase-front activation for the constant prescribed-field plane while preserving the deterministic multi-face seam pass. The plane must not return to generic trace/completion output.
+Artifact-only verify that absent prescribed-field transition metadata now uses exact reciprocal physical transport and restores the plane, while complete seam metadata continues using strict reciprocal quarter-turn transport.
 
 ## Evidence discipline
 

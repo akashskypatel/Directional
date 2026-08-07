@@ -1,6 +1,6 @@
 {
   "schema": "directional.design-aligned-runtime-summary.v2",
-  "updatedUtc": "2026-08-07T02:40:00Z",
+  "updatedUtc": "2026-08-07T03:06:00Z",
   "artifact": {
     "file": "directional-g2-cross-chart-mandatory-fixtures-local-build-artifact.zip",
     "sha256": "f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755",
@@ -485,5 +485,38 @@
     "closeSheetsPassed": false,
     "materialProgress": "multi-face seam now succeeds directly with deterministic 64-quad output, but Gate 1 plane regressed and blocks progression",
     "nextTurn": "Code + Build: restore prescribed-field Gate 1 phase-front activation while preserving Gate 2 seam transport"
+  },
+  "latestCodeBuild": {
+    "turn": "Gate 1 regression restoration Code + Build",
+    "runtimeExecuted": false,
+    "sourceCommit": "a90f6b9de83dba4aeac359b2f63d735e2049b54e",
+    "payloadCleanupCommit": "d0ffebf4ef0239563f46dbb7485144bb581e80f1",
+    "sourceBlob": "850971a60b75dd84a81ddd4d260998f7ec9c326a",
+    "patchSha256": "53c402e8d9740c057f70bfc64912fef3f3e2c4d41b57c38710875f17fc4172d8",
+    "artifact": {
+      "file": "directional-g1-regression-restoration-local-build-artifact.zip",
+      "sha256": "c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20",
+      "internalChecksums": {
+        "passed": 44,
+        "total": 44
+      },
+      "executables": 5,
+      "projectLibraries": 2,
+      "fixtureInputs": 27
+    },
+    "build": {
+      "approvedTargets": 7,
+      "compileLinkActions": 7,
+      "wallSeconds": 16.51,
+      "peakRssKiB": 1152172,
+      "configuration": "Release -O3 -DNDEBUG static PRE_TEST"
+    },
+    "sourceSync": {
+      "run": 31143208487,
+      "job": 92757246121,
+      "artifact": 8980516098,
+      "artifactSha256": "2f8561fc8b5937be6bf05a6e010379bd5241ec13a7ced26c7e20a970a07b4766"
+    },
+    "nextPlan": ".agents/Directional/Gate_1_Regression_Restoration_Artifact_Only_Test_Benchmark_Plan.md"
   }
 }
