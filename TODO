@@ -7,72 +7,66 @@ Last updated: 2026-08-07 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
-- Active gate: **G2 cross-chart / close-sheet isolation**.
-- Earliest failing runtime fixture from latest executed evidence: `close_sheets__surface_cells`.
-- Proven retained regressions: exact production plane and multi-face seam direct success.
-- Completed turn: **G2 Close-Sheet Authoritative Producer Code + Build**.
-- Next turn: `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md`.
+- G2 cross-chart / close-sheet isolation: **passed**.
+- Active gate: **G3 periodic closure / holonomy**.
+- Earliest failing direct fixture: `cylinder__surface_cells`.
+- Proven retained regressions: plane, multi-face seam, and close sheets direct success.
+- Completed turn: **G2 Close-Sheet Artifact-Only Test + Benchmark**.
+- Next turn: `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Latest Code + Build authority
+## G2 runtime closure authority
 
-Source:
+Exact tested artifact:
 
-- production source commit: `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
-- architecture patch SHA-256: `7b99d8a7ff227c2e4f07a1498805eb7fd34b542b772d3bd0c1bb1e455e31fa8c`;
-- `SurfaceCellTracing.cpp` blob: `c9570ecb4a9557eebaf0e30b751e2ccca90b2973`;
-- `RemeshPipeline.cpp` blob: `55af3205fd7cdb8f21357ac69516ffa29cf8a6d3`;
-- `SurfaceCellsPhase10Tests.cpp` blob: `7151077d7d4e0a10dad388dd008479f96fc1aae8`.
+- source commit `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
+- artifact `8994541137` (`g2-close-sheet-code-build`);
+- SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
+- recursive checksums **45/45**;
+- no rebuild/configure/relink/source/test/validator edit during the Test + Benchmark turn.
 
-Successful compile artifact:
+Focused producer contracts: **7/7 passed**.
 
-- run/job/artifact: `31179899458` / `92870408341` / `8994541137`;
-- artifact SHA-256: `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- detailed log artifact: `8994539982`, SHA-256 `c7d67285ca6b980111a53fe017b3de5800abccb2a3146352135c0d674ca0acc8`;
-- recursive artifact checksums: **45/45 passed**;
-- compile/link actions: **111/111**;
-- approved targets: **7/7**;
-- packaged executables/libraries/fixture files: **5 / 2 / 27**;
-- generated project binary execution: **none**.
+Direct results:
 
-The first compile attempt exposed one syntax error in the new sheet-map key and failed before link; it was corrected surgically and the same approved build scope then completed successfully. No runtime validation was performed in this turn.
+| Fixture | Result | Disposition | Traces | Arrangement | Quads | Components | Hash |
+|---|---:|---|---:|---:|---:|---:|---|
+| Plane | **pass** | `Produced` | 352 | 65 | 64 | 1 | `730caeae49ec872c` |
+| Seam | **pass** | `Produced` | 256 | 65 | 64 | 1 | `5bdf34d7802e9fb0` |
+| Close sheets | **pass** | `Produced` | 1,104 | 202 | 200 | 2 | `89b052762f52a5af` |
+| Cylinder | fail | `NotApplicable` | 732 | 0 | 0 | — | — |
+| Bunny | fail | `NotApplicable` | 80,862 | 0 | 0 | — | — |
+| Vase | fail | `NotApplicable` | 116,922 | 0 | 0 | — | — |
 
-## Implemented G2 producer contract
+Close sheets has 242 output/provenance vertices, 200 pure quads, exactly two connected output components, zero strict validation failures, no fallback/recovery, and stable output hash in 3/3 processes. The two output components remain on independent source layers at `z=-0.035` and `z=+0.035`; no cross-sheet connectivity exists.
 
-- [x] Partition uniform phase/front construction by authoritative `(source component, local sheet)` before planar phase-frame construction.
-- [x] Restrict source lookup, edge incidence, boundary classification, and frame checks to each active sheet.
-- [x] Reuse existing reciprocal edge-transition and ordered source-vertex-fan transport independently per sheet.
-- [x] Propagate an applicable sheet invariant failure as authoritative `Rejected`; do not silently substitute generic work.
-- [x] Keep unsupported/periodic topology outside the bounded producer as `NotApplicable`.
-- [x] Key direct materialization vertices by `(component, sheet, u, v)` so coincident lattice coordinates on unrelated sheets cannot merge.
-- [x] Construct authoritative boundary loops per source sheet.
-- [x] Add compile-verified disconnected-sheet isolation and face-row-order invariance regressions.
-- [ ] Execute the new contracts and exact production close-sheet route from immutable artifact `8994541137`.
-- [ ] Determine whether G2 closes or the producer reaches a new authoritative rejection.
+Plane, seam, and close sheets are now mandatory regressions for every later gate.
 
-## Latest executed runtime authority — unchanged by this Code + Build turn
+## G3 objective
 
-| Fixture | Result | Producer disposition | Traces | Arrangement | Completed quads |
-|---|---:|---|---:|---:|---:|
-| Plane | **pass** | `Produced` | 352 | 65 | 64 |
-| Seam | **pass** | `Produced` | 256 | 65 | 64 |
-| Close sheets | fail | `NotApplicable` | 158 | 0 | 0 |
-| Cylinder | fail | `NotApplicable` | 732 | 0 | 0 |
-| Bunny | fail | `NotApplicable` | 80,862 | 0 | 0 |
-| Vase | timeout/fail | not fully observed | — | — | — |
+Extend the authoritative phase/front producer to the singularity-free annular cylinder domain using:
 
-No result in this table changed during the current compile-only turn.
+- topology-derived annulus applicability;
+- one deterministic intrinsic cut between the two real boundary cycles;
+- an intrinsic unwrapped phase chart that does not require world-space planarity;
+- first-class periodic holonomy `(quarter-turn rotation, integer lattice translation, ordered source route)`;
+- exact periodic front pairing across the artificial cut;
+- direct periodic materialization without Euclidean seam welding or post-hoc merging.
 
-## Next artifact-only checklist
+Current cylinder authority is `NotApplicable`, 732 generic traces, zero arrangement/completion, terminal `NotProductionReady:completion`.
 
-- [ ] verify outer SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- [ ] verify 45/45 internal checksums and exact source/blobs;
-- [ ] execute the two new close-sheet producer contracts first;
-- [ ] verify plane and seam mandatory regressions;
-- [ ] run exact close sheets as the active G2 acceptance fixture;
-- [ ] prove output source component/local-sheet separation and absence of cross-sheet merges;
-- [ ] run bounded determinism and remaining non-overlapping suites without rebuild;
-- [ ] keep cylinder G3 and later production cases subordinate to the G2 decision.
+G3 materially advances only if cylinder becomes authoritative `Produced` or reaches a new typed periodic-holonomy `Rejected` state with no generic substitution while G0–G2 remain green.
 
-G2 closes only through direct deterministic valid `Produced` close-sheet output with strict source-sheet isolation while plane and seam remain valid.
+## Current test evidence
+
+- focused G2 contracts: **7/7**;
+- remaining producer executable: **82/86**;
+  - later-gate cylinder/bunny/vase design-acceptance failures;
+  - scheduler-sensitive `StrictValidatorOverheadStaysBelowFivePercent` failure;
+- completion/simplification: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- non-overlapping total including focused contracts: **311/325**.
+
+Direct gates outrank aggregate totals. The ten completion/simplification failures, timing ratio, broad performance work, bunny/vase production, adaptivity, and singularity topology remain deferred until their ordered gates.
