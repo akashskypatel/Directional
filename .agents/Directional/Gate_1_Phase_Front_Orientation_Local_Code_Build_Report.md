@@ -1,34 +1,18 @@
-# Gate 1 Phase-Front Orientation and Direct-Cell Materialization — Code + Build Report
+# Gate 1 Phase-Front Orientation — Local Code + Build Report
 
-Date: 2026-08-06
+## Status
 
-## Turn declaration
+The Gate 1 orientation/direct-cell implementation was compiled successfully and subsequently validated by the exact artifact-only test turn.
 
-```text
-Active design gate: Gate 1 — Uniform phase-front plane
-Earliest failing fixture: Plane
-Missing design contract: source-normal-consistent four-sided cell orientation and one-to-one direct-cell materialization
-Smallest general implementation change: validate and orient complete phase-front cycles, then directly materialize accepted four-sided cells
-Observable material-progress condition: invalid cells fail before completion, or valid cells preserve one phase-front cell to one quad-domain cell
-Explicitly deferred work: Gates 2–7, later fixtures, adaptivity, features, performance, cache work, and unrelated cleanup
-```
+This report is retained as the current build/package authority for the artifact that passed Gate 1.
 
-## Source synchronization
+## Source authority
 
-The previously compiled uniform phase-front layer was synchronized first:
+- uniform phase-front source commit: `4842911b6134c60410c92496d85d1152164a73c7`;
+- orientation/direct-cell source commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
+- payload cleanup commit: `54a79a17f48bd3974367c3e043507d0550fb8daa`.
 
-- source commit: `4842911b6134c60410c92496d85d1152164a73c7`;
-- all five expected Layer 1 blobs matched exactly.
-
-The orientation/direct-cell implementation was then applied as a separate exact layer:
-
-- incremental patch SHA-256: `cb06890449bc56b2e5bc25d7033260bc9c180deccb38b545bd5ab6e56efff9ab`;
-- source commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- payload cleanup commit: `54a79a17f48bd3974367c3e043507d0550fb8daa`;
-- source-sync run/job: `31135783371` / `92734653996`;
-- evidence artifact: `8977861759`.
-
-Final source blobs:
+Final verified blobs:
 
 ```text
 074bd7692b95202a9f6733cd58d5c958d30845b9  include/directional/geometry/SurfaceCellTracing.h
@@ -38,77 +22,59 @@ Final source blobs:
 c95f27211394de1c238649062ab4d173f4bfe220  tests/AdaptiveTargetSizePhase12Tests.cpp
 ```
 
-All temporary Gate 1 patch/build payloads were removed only after both source layers and their expected blobs were verified.
+## Build authority
 
-## Implemented contracts
-
-### Phase-front cell validity
-
-- four distinct authoritative corners;
-- ordered side endpoint continuity;
-- consistent source component and local sheet;
-- nonzero loop normal and valid quad-loop classification;
-- source-normal-consistent winding;
-- transactional reversal of the complete cycle when winding is opposite;
-- one filled cell per directed edge and exactly one of reciprocal opposite edge or explicit exterior.
-
-### Direct-cell materialization
-
-- authoritative integer lattice coordinates canonicalize direct vertices;
-- repeated lattice coordinates must agree in position, component, and sheet;
-- one accepted four-sided phase-front cell becomes one output quad-domain cell;
-- complete vertex and face lineage is emitted;
-- the authoritative path bypasses generic patch completion that previously expanded 65 phase-front cells into 409 quads;
-- invalid orientation, incidence, component, sheet, or ownership fails closed at `tracing/phase-front-materialization` before completion.
-
-### Test integrity corrections
-
-- the planar backend test now distinguishes direct success from recovery behavior and keeps recovery disabled for the direct proof;
-- the adaptive target-size diagnostic test no longer requires the producer to fail when its intended diagnostics are populated;
-- no direct acceptance assertion or validator was weakened.
-
-## Local compile authority
-
-Environment:
-
-- GNU C++ 14.2.0;
-- CMake 3.31.6;
-- Ninja 1.12.1;
-- Release `-O2 -DNDEBUG`;
-- static libraries;
-- GoogleTest discovery mode `PRE_TEST`;
-- two compiler jobs.
-
-Result:
-
-- configure: success;
+- compiler: GNU C++ 14.2.0;
+- CMake: 3.31.6;
+- Ninja: 1.12.1;
+- configuration: Release, static, `-O2 -DNDEBUG`;
+- GoogleTest discovery mode: `PRE_TEST`;
+- compiler jobs: 2;
 - approved targets: **7/7**;
-- Ninja graph completed and `ninja -n` reported no work to do;
-- wall-clock interval including incremental wrapper resumptions: **577 seconds**;
-- packaged executables: **5**;
-- packaged libraries: **2**;
-- packaged fixture/input files: **26**;
-- internal artifact checksums: **45/45**.
+- wall-clock interval including wrapper resumptions: **577 seconds**.
 
-Artifact:
+Compiled targets:
 
-- `directional-g1-orientation-local-build-artifact.zip`;
-- SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`.
+- `directional_core`;
+- `directional_pipeline`;
+- `directional_compiled_api_tests`;
+- `directional_surface_cell_producer_tests`;
+- `directional_surface_cell_completion_tests`;
+- `directional_surface_cell_validation_tests`;
+- `directional_benchmarks`.
 
-## Compile-only boundary
+## Package authority
 
-No generated project binary was executed. No test, benchmark, GoogleTest discovery, CLI, GUI, help, list, or project runtime command was executed.
+- archive: `directional-g1-orientation-local-build-artifact.zip`;
+- archive SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- internal checksums: **45/45**;
+- package closure: five executables, two static libraries, 26 fixture/input files.
 
-## Runtime status
+No generated project binary, test, benchmark, discovery command, CLI, GUI, help, or list command was executed during Code + Build.
 
-This turn makes no runtime-success claim. The latest runtime authority remains the preceding artifact-only report: plane failed with 352 traces, 65 arrangement cells, 409 quads, and `completion/output-validation:FlippedFace`.
+## Implemented Gate 1 contracts
 
-## Next turn
+- four distinct authoritative corners and ordered side continuity;
+- consistent source component and local sheet;
+- nonzero loop normal and source-normal-consistent winding;
+- transactional reversal of the complete cell cycle;
+- one filled cell per directed edge and one reciprocal opposite edge or explicit exterior;
+- deterministic direct-vertex canonicalization from integer lattice coordinates;
+- one accepted four-sided phase-front cell maps to one quad-domain cell;
+- direct lineage and boundary-loop construction;
+- fail-closed `tracing/phase-front-materialization` boundary;
+- bypass of generic completion for valid authoritative phase-front cells;
+- correction of two stale non-direct producer tests without weakening direct acceptance or validators.
 
-Execute `.agents/Directional/Gate_1_Phase_Front_Orientation_Artifact_Only_Test_Benchmark_Plan.md` directly from the new artifact.
+## Subsequent runtime validation
 
-The first required observation is whether the plane now:
+The exact package passed the plane direct gate:
 
-1. passes direct acceptance with one-to-one phase-front cell materialization; or
-2. fails earlier at `tracing/phase-front-materialization` under a truthful orientation/incidence invariant; or
-3. reaches a later strict-validation boundary without generic completion expansion.
+- 64 authoritative cells → 64 pure output quads;
+- 81 vertices;
+- zero strict validation failures;
+- output origin `CompletedSurfaceCells`;
+- no fallback or recovery;
+- stable output hash `730caeae49ec872c` across three processes.
+
+See `.agents/Directional/Gate_1_Phase_Front_Orientation_Artifact_Only_Test_Benchmark_Report.md` for runtime evidence. Gate 2 is now active.
