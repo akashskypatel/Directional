@@ -59,7 +59,7 @@ Then run the retained passed-gate producer contracts needed to prove no G1/G2 re
 - `SurfaceCellsPhase10.ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary`
 - `SurfaceCellsPhase10.UniformPhaseFrontPartitionsDisconnectedCloseSheetsBySourceAuthority`
 - `SurfaceCellsPhase10.UniformPhaseFrontCloseSheetsIgnoresFaceRowEnumeration`
-- the ordered source-vertex-fan and seam/transition contracts used by the G1/G2 artifact turns.
+- the ordered source-vertex-fan and seam/transition contracts used by the current passed-gate evidence.
 
 Record every exact result. Do not weaken or replace a failing contract.
 
@@ -85,9 +85,9 @@ G3 closes only if the exact production cylinder demonstrates all of the followin
 - non-empty pure-quadrilateral output and zero non-quads;
 - first-class periodic holonomy available;
 - holonomy quarter-turn rotation is compatible with the singularity-free annulus and, for the committed cylinder, equals zero;
-- integer periodic lattice translation is nonzero in exactly the periodic lattice direction and zero in the axial direction;
+- periodic lattice translation is integral and nonzero in the single periodic lattice direction, with no unsupported transverse periodic component;
 - ordered periodic source route and deterministic source cut are non-empty and source-authoritative;
-- artificial cut front edges pair reciprocally through periodic ownership and are not emitted as output exterior seam edges;
+- artificial-cut front edges pair reciprocally through periodic ownership and are not emitted as output exterior seam edges;
 - the two genuine source boundary loops remain the only annulus exterior boundaries;
 - periodic quotient materialization creates no Euclidean/nearest-point seam welding;
 - complete source provenance;
