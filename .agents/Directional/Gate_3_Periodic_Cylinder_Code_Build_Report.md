@@ -48,17 +48,19 @@ For an active source sheet, the periodic producer:
 4. retains exact source face/barycentric attachment for chart samples and cell boundaries;
 5. computes one complete periodic source route and records first-class holonomy as `(Z4 quarter-turn rotation, Z2 lattice translation, ordered source route)`;
 6. records the deterministic boundary-to-boundary source cut separately from the holonomy route;
-7. rejects duplicate, missing, non-reciprocal, or non-zero bounded cylinder holonomy with typed periodic producer authority;
+7. rejects duplicate, missing, non-reciprocal, or incompatible bounded-cylinder holonomy with typed periodic producer authority;
 8. pairs artificial-cut front edges by intrinsic periodic lattice identity and emits explicit `PeriodicFrontMerge` events rather than exterior seam edges;
 9. leaves only the two genuine annulus boundaries exterior;
 10. materializes periodic output by exact lattice quotient identity rather than Euclidean seam welding;
 11. preserves `Rejected` as terminal authority and leaves unsupported topology `NotApplicable`.
 
-Periodic holonomy is included in structural hashing and serialized diagnostics. The materializer now recognizes the one-direction periodic quotient while retaining the existing non-periodic plane/seam/close-sheet path.
+Periodic holonomy is included in structural hashing and serialized diagnostics. The materializer recognizes the one-direction periodic quotient while retaining the existing non-periodic plane/seam/close-sheet path.
+
+The bounded implementation is intentionally not a general genus or arbitrary-annulus solution. Artifact execution must determine whether its source-route/chart assumptions are sufficient for the exact production cylinder. Compile validity alone does not establish this.
 
 ## Compile-verified regression sources
 
-The producer test source now contains, but did not execute, focused contracts for:
+The producer test source contains, but did not execute, focused contracts for:
 
 1. `SurfaceCellsPhase10.PeriodicPhaseFrontDerivesAnnulusFromSourceTopology`
 2. `SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration`
