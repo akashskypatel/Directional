@@ -1,14 +1,51 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v6",
-  "updatedUtc": "2026-08-07T17:07:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v7",
+  "updatedUtc": "2026-08-07T18:08:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "materially advanced; periodic authority proven; completed output validation remains",
+    "gateState": "periodic authority runtime-proven; source-strip output-validation correction compile-valid; runtime revalidation pending",
     "earliestFailingExecutedFixture": "cylinder__surface_cells",
-    "earliestFailure": "completion/output-validation:AggregateCompletionValidationFailure",
+    "earliestExecutedFailure": "completion/output-validation:AggregateCompletionValidationFailure",
     "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Output_Validation_Code_Build_Plan.md"
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Output_Validation_Artifact_Only_Test_Benchmark_Plan.md"
+  },
+  "latestCodeBuild": {
+    "sourceCommit": "2783ea718ffb15f8fb3868795173472ab8636c1c",
+    "patchSha256": "74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e",
+    "workflowRunId": 31204848178,
+    "workflowJobId": 92953250176,
+    "artifactId": 9004509871,
+    "artifactName": "g3-periodic-output-validation-code-build",
+    "artifactSha256": "2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe",
+    "logArtifactId": 9004508508,
+    "logArtifactSha256": "80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b",
+    "internalChecksums": "44/44",
+    "compileActions": "111/111",
+    "approvedTargets": "7/7",
+    "executables": 5,
+    "libraries": 2,
+    "fixtures": 27,
+    "runtimeExecution": false,
+    "changedFileBlobs": {
+      "src/geometry/SurfaceCellTracing.cpp": "9df9a9759c761293fef1278f97b82fbb0aee0600",
+      "tests/SurfaceCellsPhase10Tests.cpp": "c9dcbe9f67ba239c061ddb295f40c9b82ebafb49"
+    },
+    "implementedContracts": {
+      "canonicalSourceStripBreakpointsMandatory": true,
+      "perStripSubdivisionFromIntrinsicLengthAndLocalTarget": true,
+      "periodicCoordinatesNonuniformAndStripConforming": true,
+      "periodicTranslationFromSummedStripSubdivisions": true,
+      "oneAcceptedCellToOneQuadPreserved": true,
+      "axialConstructionUnchanged": true,
+      "euclideanSeamWelding": false,
+      "postHocCellSplitMerge": false,
+      "fallbackRecoveryAdded": false,
+      "rowOrderRouteIdentityUsesOrderedCanonicalEndpointKeys": true,
+      "boundaryStripBreakpointRegressionCompiledNotExecuted": true,
+      "validatorsChanged": false
+    },
+    "runtimeVerificationPending": true
   },
   "testedAuthority": {
     "sourceCommit": "56f823273cad041a01ebb4d0772c3265ff248f4a",
@@ -28,12 +65,15 @@
     "sourceOrValidationEditedDuringTest": false
   },
   "focusedContracts": {
-    "passed": 11,
-    "total": 12,
-    "failed": ["SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration"],
+    "latestExecutedPassed": 11,
+    "latestExecutedTotal": 12,
+    "latestExecutedFailed": ["SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration"],
     "failureClassification": "incorrect expectation: raw DCEL sourceEdge IDs are face-row-enumeration-dependent; ordered canonical source-vertex endpoint routes and cuts are identical",
     "canonicalHolonomyRouteInvariant": true,
-    "canonicalCutInvariant": true
+    "canonicalCutInvariant": true,
+    "nextArtifactFocusedContracts": 6,
+    "rowOrderExpectationCorrectedInLatestCodeBuild": true,
+    "sourceStripBreakpointContractAddedInLatestCodeBuild": true
   },
   "directAcceptance": {
     "passed": 3,
@@ -99,7 +139,8 @@
         "fallbackUsed": false,
         "sourceGridRecoveryUsed": false,
         "deterministicFailureSignature": true,
-        "wallSecondsRange": [0.921602, 1.062596]
+        "wallSecondsRange": [0.921602, 1.062596],
+        "note": "This is the latest executed runtime authority. The latest Code + Build artifact is unexecuted; its periodic translation/grid cardinality may legitimately differ from 29 due to source-strip-conforming subdivision."
       },
       "bunny_1k_random": {
         "success": false,
@@ -131,9 +172,10 @@
   "nonOverlappingTotal": {"passed": 315, "total": 330, "failed": 15},
   "gateDecision": {
     "g3Closed": false,
-    "materialProgress": true,
-    "reason": "Exact cylinder now consumes deterministic authoritative periodic Produced state and reaches 290 direct quads, but two pre-optimization completed-checkpoint validation failures prevent direct output.",
+    "periodicAuthorityRuntimeProven": true,
+    "latestCodeBuildRuntimeVerified": false,
+    "reason": "The latest executed cylinder consumes deterministic authoritative periodic Produced state but has two pre-optimization completed-checkpoint validation failures. A source-strip-conforming periodic lattice correction is now compile-valid and awaits exact artifact-only execution.",
     "validationThresholdDetailsSerialized": false,
-    "nextTurn": "Code + Build — source-strip-conforming periodic materialization plus canonical row-order test identity"
+    "nextTurn": "Artifact-only Test + Benchmark — G3 periodic output validation"
   }
 }
