@@ -102,7 +102,7 @@ Default/non-overlapping evidence:
 
 ## Workflow status
 
-GitHub workflow operations have returned to normal. Future **authorized Code + Build turns may use GitHub Actions to compile binaries and create artifacts again**, while still following all workflow/payload hygiene rules below. The next mandatory Review turn does not require a build.
+GitHub workflow operations have returned to normal. Future **authorized Code + Build turns may use GitHub Actions to compile binaries and create artifacts again**, while still following `.agents/Directional/GitHub_Workflow_Policy.md` and all workflow/payload hygiene rules below. Test + Benchmark turns remain artifact-only. The next mandatory Review turn does not require a build.
 
 ## Next authoritative turn
 
