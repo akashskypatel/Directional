@@ -40,7 +40,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
-3. **G2 — Cross-chart and close-sheet propagation:** **active.** Multi-face seam is proven; disconnected close sheets are the earliest failing direct fixture.
+3. **G2 — Cross-chart and close-sheet propagation:** **active; bounded source-sheet producer extension is compile-valid and runtime verification is pending.** Multi-face seam is proven; disconnected close sheets remain the earliest failing runtime fixture until artifact validation executes.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
@@ -60,9 +60,7 @@ Artifact-only validation of source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa
 | bunny | fail | `NotApplicable` | 80,862 | 0 | 0 | none |
 | vase | timeout/fail | not fully observed | — | — | — | none |
 
-Plane and seam both have 81 provenance/output vertices, 64 pure quads, zero strict validation failures, no fallback/recovery, and deterministic output hashes across three independent benchmark processes. Plane hash suffix is `730caeae49ec872c`; seam remains `a8972efd7c4900a4`.
-
-The former plane 106/9/12 generic failing signature is eliminated. G1 is closed.
+Plane and seam both have 81 provenance/output vertices, 64 pure quads, zero strict validation failures, no fallback/recovery, and deterministic output hashes across three independent benchmark processes. The former plane 106/9/12 generic failing signature is eliminated. G1 is closed.
 
 ## Active G2 contract
 
@@ -75,15 +73,21 @@ Required invariants:
 - phase, ownership, route, capture, and collision state are sheet-local unless exact source topology establishes a connection;
 - each authoritative sheet uses the same proven ordinary-edge and ordered source-vertex-fan transport contracts independently;
 - concatenating independent authoritative sheet outputs preserves source provenance and produces one accepted cell → one quad;
+- materialization identity includes source component/local-sheet authority so equal lattice coordinates on unrelated sheets do not merge;
+- boundary loops remain source-sheet-local;
 - source component/local-sheet ordering or source-face row ordering cannot change structural output except for canonical renumbering;
 - failure of one applicable sheet is `Rejected` for the selected authoritative producer, never silent generic substitution for that sheet;
 - periodic domains such as the cylinder remain outside G2 and may remain `NotApplicable` until G3 holonomy support.
 
-G2 closes only when the close-sheet fixture becomes direct deterministic valid `Produced` output with no cross-sheet provenance/merge violation while plane and seam remain unchanged mandatory regressions.
+## G2 compile-valid checkpoint
+
+Source commit `218dd3ec3f6399dc82183390720a4ba4d3a70b42` implements the bounded G2 contract above. The compile-only artifact is `8994541137`, SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`, with 45/45 internal checksums and 111/111 compile/link actions across seven approved targets. No project binary was executed, so this checkpoint does **not** claim G2 runtime success.
+
+G2 closes only when the exact close-sheet production fixture becomes direct deterministic valid `Produced` output with no cross-sheet provenance/merge violation while plane and seam remain unchanged mandatory regressions.
 
 ## Next implementation authority
 
-The next turn is Code + Build and must address only the smallest general G2 producer extension necessary to satisfy the contract above. It must not broaden into cylinder holonomy, singularity topology, adaptive transitions, bunny/vase performance, or downstream completion/simplification cleanup.
+The next turn is **artifact-only Test + Benchmark** using `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md`. Do not edit implementation or validation logic and do not rebuild. If G2 closes, the next Code + Build gate becomes G3 periodic cylinder/holonomy. If G2 remains open, address only the exact general G2 failure established by artifact evidence.
 
 ## Non-negotiable prohibitions
 
