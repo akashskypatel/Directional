@@ -97,7 +97,9 @@ Required invariants:
 
 ## G3 compile-valid checkpoint
 
-Source `56f823273cad041a01ebb4d0772c3265ff248f4a` implements the bounded periodic-annulus contract with explicit periodic holonomy state, deterministic intrinsic source cut/chart, typed periodic rejection reasons, `PeriodicFrontMerge` ownership, periodic structural hashing/diagnostics, and exact quotient materialization. The compile-only artifact is `9001168379`, SHA-256 `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`, with **44/44** recursive checksums and **111/111** compile/link actions across seven approved targets. No generated project binary was executed.
+Source `56f823273cad041a01ebb4d0772c3265ff248f4a` implements a bounded canonical-ring periodic-annulus producer with explicit periodic holonomy state, deterministic intrinsic source cut/chart, typed periodic rejection reasons, `PeriodicFrontMerge` ownership, periodic structural hashing/diagnostics, and exact quotient materialization. The compile-only artifact is `9001168379`, SHA-256 `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`, with **44/44** recursive checksums and **111/111** compile/link actions across seven approved targets. No generated project binary was executed.
+
+The bounded implementation assumes a canonical equal-cardinality source-ring structure; it is not a general arbitrary-annulus/genus solver. That limitation is explicit rather than inferred away. Artifact execution must establish whether the exact production cylinder satisfies the bounded contract.
 
 Therefore this checkpoint makes no cylinder runtime-success claim. The latest executed cylinder remains `NotApplicable`, 732 generic traces, zero arrangement/completion, terminal `NotProductionReady:completion` until artifact `9001168379` is tested.
 
