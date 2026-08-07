@@ -25,6 +25,7 @@
     "libraries": 2,
     "fixtures": 27,
     "runtimeExecution": false,
+    "boundedDomain": "canonical equal-cardinality singularity-free ring annulus",
     "changedFileBlobs": {
       "include/directional/geometry/SurfaceCellTracing.h": "931669018a986096cf78d66a2aed9de5aa8e0fe1",
       "include/directional/diagnostics/RemeshDiagnostics.h": "a51215982318e77581efa4fa7887d0406a9d4bf0",
@@ -67,56 +68,10 @@
     "passed": 3,
     "total": 6,
     "cases": {
-      "plane": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 352,
-        "arrangementCells": 65,
-        "completedQuads": 64,
-        "outputVertices": 81,
-        "connectedComponents": 1,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "730caeae49ec872c"
-      },
-      "multi_face_seam": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 256,
-        "arrangementCells": 65,
-        "completedQuads": 64,
-        "outputVertices": 81,
-        "connectedComponents": 1,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "5bdf34d7802e9fb0"
-      },
-      "close_sheets": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 1104,
-        "arrangementCells": 202,
-        "completedQuads": 200,
-        "outputVertices": 242,
-        "connectedComponents": 2,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "89b052762f52a5af"
-      },
-      "cylinder": {
-        "success": false,
-        "producerDisposition": "NotApplicable",
-        "runs": 3,
-        "traceSegments": 732,
-        "arrangementCells": 0,
-        "completedQuads": 0,
-        "terminalFailureCode": "NotProductionReady",
-        "terminalFailureStage": "completion",
-        "note": "Latest executed authority predates the compile-valid G3 periodic producer."
-      },
+      "plane": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 352, "arrangementCells": 65, "completedQuads": 64, "outputVertices": 81, "connectedComponents": 1, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "730caeae49ec872c"},
+      "multi_face_seam": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 256, "arrangementCells": 65, "completedQuads": 64, "outputVertices": 81, "connectedComponents": 1, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "5bdf34d7802e9fb0"},
+      "close_sheets": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 1104, "arrangementCells": 202, "completedQuads": 200, "outputVertices": 242, "connectedComponents": 2, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "89b052762f52a5af"},
+      "cylinder": {"success": false, "producerDisposition": "NotApplicable", "runs": 3, "traceSegments": 732, "arrangementCells": 0, "completedQuads": 0, "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "note": "Latest executed authority predates the compile-valid G3 periodic producer."},
       "bunny_1k_random": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 80862, "arrangementCells": 0, "completedQuads": 0},
       "vase": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 116922, "arrangementCells": 0, "completedQuads": 0}
     }
