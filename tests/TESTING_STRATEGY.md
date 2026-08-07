@@ -13,19 +13,31 @@ Every direct case requires requested/executed `SurfaceCells`, fallback `Fail`, n
 
 Both use generated smooth fields through production extraction. Replacing, simplifying, or special-casing either fixture is prohibited.
 
-## Current regression authority
+## Current runtime authority
 
-The last executed artifact produced:
+The latest exact artifact produced:
 
-- plane: failure, 106 traces, 9 arrangement cells, 12 invalid completion quads, no output;
+- plane: failure, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures, no output;
 - seam: success, 256 traces, 65 arrangement cells, 64 pure output quads, hash `a8972efd7c4900a4`;
-- close sheets/cylinder/bunny/vase: deterministic zero-arrangement failures.
+- close sheets/cylinder/bunny/vase: deterministic zero-arrangement failures;
+- explicit source-vertex/topology guards: 4/4;
+- non-overlapping total: 305/321.
 
-Plane remains the earliest active regression. The new compile-only artifact must preserve the seam pass while restoring or materially advancing plane direct construction.
+Plane remains the earliest active regression and is now under mandatory producer-architecture review.
+
+## Contract tests versus production fixtures
+
+Narrow synthetic/reconstructed fixtures are valid for isolating one invariant, but they are not acceptance authority for a production route.
+
+The source-vertex fan tests reconstruct a 5x4 rectangular plane with different vertex/face indexing and inject a constant target size directly into `build_surface_cell_network`. Their pass proves the isolated fan algorithm but does **not** prove the exact committed `plane.obj` route after production cross-field finalization, target-size computation, source component/sheet classification, feature/barrier state, and tracing-option construction.
+
+Future Gate 1 Code + Build work must therefore retain the narrow fan tests **and** add producer-level coverage that loads the exact committed `plane.obj` and `plane.rawfield`, derives the same production inputs as `RemeshPipeline`, and asserts the authoritative phase-front outcome before downstream generic stages can obscure it.
+
+A test that recreates expected 64-quad behavior by injecting convenient target size, labels, metadata, or fixture-specific state is insufficient.
 
 ## Source-vertex transition contracts
 
-The plane triangulation contains phase-front sides that pass exactly through source vertices. Mandatory producer coverage now includes:
+Mandatory producer coverage includes:
 
 - ordinary authoritative shared-edge transport;
 - unique ordered multi-edge source-vertex fan transport;
@@ -38,13 +50,13 @@ A positional face jump, arbitrary fan subset, shortest-path selection, fixture-s
 
 ## Default suites
 
-Report direct separately. Then run remaining producer, completion, validation, and compiled API suites. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence, not functional correctness.
+Report direct acceptance separately. Explicitly executed contract/direct tests must be excluded from the remaining producer aggregate so totals are non-overlapping. Then run completion, validation, and compiled API suites. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence, not functional correctness.
 
 ## Turn boundaries
 
-Code + Build may edit active-gate implementation and contract tests and compile approved targets, but executes no project binary. Test + Benchmark uses one exact artifact, performs no rebuild or source/test/fixture/validator edit, and preserves raw commands/logs/results.
+Code + Build may edit active-gate implementation and valid contract/production regression tests and compile approved targets, but executes no project binary. Test + Benchmark uses one exact artifact, performs no rebuild or source/test/fixture/validator edit, and preserves raw commands/logs/results. Review turns do not edit production source/tests and must produce one evidence-backed next implementation plan.
 
-The current artifact follows the second bounded Gate 1 Code + Build attempt. If artifact-only verification does not materially advance beyond the 106/9/12 plane signature, the next turn must be a design review or bounded producer replacement proof.
+The no-progress stop rule is active. The next turn is `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Plan.md`; a third local predicate-repair turn is prohibited.
 
 ## Validity and prohibitions
 
