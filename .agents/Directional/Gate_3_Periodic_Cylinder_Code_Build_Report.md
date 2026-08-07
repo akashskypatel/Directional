@@ -56,7 +56,7 @@ For an active source sheet, the periodic producer:
 
 Periodic holonomy is included in structural hashing and serialized diagnostics. The materializer recognizes the one-direction periodic quotient while retaining the existing non-periodic plane/seam/close-sheet path.
 
-The bounded implementation is intentionally not a general genus or arbitrary-annulus solution. Artifact execution must determine whether its source-route/chart assumptions are sufficient for the exact production cylinder. Compile validity alone does not establish this.
+The bounded implementation is intentionally not a general genus or arbitrary-annulus solution. Its canonical chart assumes equal-cardinality source rings. Artifact execution must determine whether its source-route/chart assumptions are sufficient for the exact production cylinder. Compile validity alone does not establish this.
 
 ## Compile-verified regression sources
 
