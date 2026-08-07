@@ -1,69 +1,489 @@
 {
-  "schema": 5,
-  "turn": "gate2-cross-chart-mandatory-fixtures-code-build",
-  "date": "2026-08-06",
-  "activeGate": "G2 Cross-chart and close-sheet propagation",
-  "earliestFailingFixture": "multi_face_seam__surface_cells",
-  "sourceAuthority": {
+  "schema": "directional.design-aligned-runtime-summary.v2",
+  "updatedUtc": "2026-08-07T02:40:00Z",
+  "artifact": {
+    "file": "directional-g2-cross-chart-mandatory-fixtures-local-build-artifact.zip",
+    "sha256": "f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755",
+    "internalChecksums": {
+      "passed": 45,
+      "total": 45
+    },
     "sourceCommit": "21f081b330418a0f34709f61d857f54a03d2fd48",
     "payloadCleanupCommit": "98fe525bb46f348cddcad91b0525353796b9e061",
-    "patchSha256": "512d2cda4f9799d5600af277b9d63bbce76ace334b076bb922e762d0059f1b9c"
+    "runtimeLayoutSymlink": "bin/test-data -> ../test-data"
   },
-  "compileAuthority": {
-    "artifactSha256": "f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755",
-    "internalChecksums": "45/45",
-    "targets": "7/7",
-    "actions": "95/95",
-    "executables": 5,
-    "libraries": 2,
-    "fixtureFiles": 27,
-    "projectBinaryExecuted": false
+  "evidence": {
+    "archive": "directional-g2-mandatory-fixtures-artifact-only-test-evidence.zip",
+    "sha256": "8762750ffc13c339e44ce0a2ffac8639f456d16cacc480b7da44b2fedc0ed251",
+    "checksums": "84/84"
   },
-  "mandatoryDirectOrder": [
-    "plane",
-    "multi_face_seam",
-    "close_sheets",
-    "cylinder",
-    "bunny_1k_random",
-    "vase"
-  ],
-  "mandatoryProductionFixtures": {
+  "fixtureIntegrity": {
+    "testPassed": true,
     "bunny_1k_random": {
       "sha256": "865d864f7afbd90283526d914e0d4d9718d83e9679943029060bde439b10ab05",
       "vertices": 502,
       "triangles": 1000,
-      "closed": true,
-      "generatedField": "smooth",
-      "runtimeStatus": "pending"
+      "edges": 1500,
+      "components": 1,
+      "boundaryEdges": 0,
+      "boundaryLoops": 0,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0,
+      "generatedField": "smooth"
     },
     "vase": {
       "sha256": "5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868",
       "vertices": 1274,
       "triangles": 2404,
-      "boundaryLoops": 1,
+      "edges": 3677,
+      "components": 1,
       "boundaryEdges": 142,
-      "generatedField": "smooth",
-      "runtimeStatus": "pending"
+      "boundaryLoops": 1,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0,
+      "generatedField": "smooth"
     }
   },
-  "latestExecutedRuntime": {
-    "artifactSha256": "e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca",
-    "executedDirect": 4,
-    "passedDirect": 1,
+  "direct": {
     "plane": {
-      "success": true,
-      "traceSegments": 352,
-      "authoritativeCells": 64,
-      "outputQuads": 64,
-      "validationFailures": 0,
-      "outputOrigin": "CompletedSurfaceCells",
-      "outputHash": "730caeae49ec872c"
+      "passed": false,
+      "gtestExitCode": 1,
+      "processCount": 3,
+      "deterministic": true,
+      "wallSeconds": 0.014422,
+      "terminal": "NotProductionReady:completion",
+      "firstInvalidProducer": "completion/output-validation:AggregateCompletionValidationFailure",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "None",
+      "counts": {
+        "traces": 106,
+        "arrangement": 9,
+        "simplified": 9,
+        "completedQuads": 12,
+        "validationFailures": 15,
+        "outputVertices": 0,
+        "outputFaces": 0,
+        "quads": 0,
+        "nonQuads": 0
+      },
+      "outputHash": "",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=dbcb95cbdb24d00d;count=43",
+          "count": 43
+        },
+        "metric": {
+          "hash": "metric:hash=aad884a80b65bf5d;count=20",
+          "count": 20
+        },
+        "relief": {
+          "hash": "relief:hash=b41394be2321cadb;count=24",
+          "count": 24
+        },
+        "tracing": {
+          "hash": "tracing:hash=9a3bc6f1202818b1;count=106",
+          "count": 106
+        },
+        "strands": {
+          "hash": "strands:hash=6e5a5774bd948e54;count=46",
+          "count": 46
+        },
+        "embedding": {
+          "hash": "embedded-network:hash=3b751ab8dd34e73e;count=46",
+          "count": 46
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=6e42bc969e9d7fba;count=9",
+          "count": 9
+        },
+        "simplification": {
+          "hash": "arrangement:hash=6e42bc969e9d7fba;count=9",
+          "count": 9
+        },
+        "completion": {
+          "hash": "completion:hash=c538eeec73e84d2d;count=12",
+          "count": 12
+        }
+      }
     },
-    "multi_face_seam": {"success": false, "traceSegments": 137, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
-    "close_sheets": {"success": false, "traceSegments": 158, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
-    "cylinder": {"success": false, "traceSegments": 732, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
-    "defaultInventory": {"passed": 301, "total": 315}
+    "multi_face_seam": {
+      "passed": true,
+      "gtestExitCode": 0,
+      "processCount": 3,
+      "deterministic": true,
+      "wallSeconds": 0.31212,
+      "terminal": "None:",
+      "firstInvalidProducer": ":",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "CompletedSurfaceCells",
+      "counts": {
+        "traces": 256,
+        "arrangement": 65,
+        "simplified": 65,
+        "completedQuads": 64,
+        "validationFailures": 0,
+        "outputVertices": 81,
+        "outputFaces": 64,
+        "quads": 64,
+        "nonQuads": 0
+      },
+      "outputHash": "a8972efd7c4900a4",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=8b611bf652405bf2;count=56",
+          "count": 56
+        },
+        "metric": {
+          "hash": "metric:hash=da3ce1897060b72f;count=25",
+          "count": 25
+        },
+        "relief": {
+          "hash": "relief:hash=1908fbf2bf880d8e;count=19",
+          "count": 19
+        },
+        "tracing": {
+          "hash": "tracing:hash=4b0c672ea08103d2;count=256",
+          "count": 256
+        },
+        "strands": {
+          "hash": "strands:hash=a80fa62edb67bd15;count=272",
+          "count": 272
+        },
+        "embedding": {
+          "hash": "embedded-network:hash=c9644cdb43efca6a;count=272",
+          "count": 272
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=08e490c95b70fc70;count=65",
+          "count": 65
+        },
+        "simplification": {
+          "hash": "arrangement:hash=08e490c95b70fc70;count=65",
+          "count": 65
+        },
+        "completion": {
+          "hash": "completion:hash=5b926355cfde2db9;count=64",
+          "count": 64
+        },
+        "optimization": {
+          "hash": "optimization:hash=a71624529ba81b01;count=64",
+          "count": 64
+        },
+        "validation": {
+          "hash": "validation:hash=1510f433da23a020;count=64",
+          "count": 64
+        }
+      }
+    },
+    "close_sheets": {
+      "passed": false,
+      "gtestExitCode": 1,
+      "processCount": 3,
+      "deterministic": true,
+      "wallSeconds": 0.02029,
+      "terminal": "NotProductionReady:completion",
+      "firstInvalidProducer": "completion:",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "None",
+      "counts": {
+        "traces": 158,
+        "arrangement": 0,
+        "simplified": 0,
+        "completedQuads": 0,
+        "validationFailures": 0,
+        "outputVertices": 0,
+        "outputFaces": 0,
+        "quads": 0,
+        "nonQuads": 0
+      },
+      "outputHash": "",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=ec6eee995a69d42d;count=66",
+          "count": 66
+        },
+        "metric": {
+          "hash": "metric:hash=fab649a3b38bf0fb;count=32",
+          "count": 32
+        },
+        "relief": {
+          "hash": "relief:hash=14e153b4b075e5d5;count=40",
+          "count": 40
+        },
+        "tracing": {
+          "hash": "tracing:hash=01d009274d0f2ee6;count=158",
+          "count": 158
+        },
+        "strands": {
+          "hash": "strands:hash=f337a551524b467c;count=92",
+          "count": 92
+        },
+        "embedding": {
+          "hash": "embedded-network:hash=1174e64dfe11ef73;count=92",
+          "count": 92
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=66aaca0cf7fc9a6c;count=0",
+          "count": 0
+        },
+        "simplification": {
+          "hash": "arrangement:hash=66aaca0cf7fc9a6c;count=0",
+          "count": 0
+        },
+        "completion": {
+          "hash": "completion:hash=b4efe5193b9e5c27;count=0",
+          "count": 0
+        }
+      }
+    },
+    "cylinder": {
+      "passed": false,
+      "gtestExitCode": 1,
+      "processCount": 3,
+      "deterministic": true,
+      "wallSeconds": 0.131934,
+      "terminal": "NotProductionReady:completion",
+      "firstInvalidProducer": "completion:",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "None",
+      "counts": {
+        "traces": 732,
+        "arrangement": 0,
+        "simplified": 0,
+        "completedQuads": 0,
+        "validationFailures": 0,
+        "outputVertices": 0,
+        "outputFaces": 0,
+        "quads": 0,
+        "nonQuads": 0
+      },
+      "outputHash": "",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=4720dae9adc48841;count=208",
+          "count": 208
+        },
+        "metric": {
+          "hash": "metric:hash=8b544a23d1cff9e3;count=80",
+          "count": 80
+        },
+        "relief": {
+          "hash": "relief:hash=c66182ca3b9667b4;count=44",
+          "count": 44
+        },
+        "tracing": {
+          "hash": "tracing:hash=a5bd3428456109c2;count=732",
+          "count": 732
+        },
+        "strands": {
+          "hash": "strands:hash=0cbee4efcc72e85a;count=287",
+          "count": 287
+        },
+        "embedding": {
+          "hash": "embdded-network:hash=1549b65427cca49d;count=287",
+          "count": 287
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=ceb1ca9ccc4ac92e;count=0",
+          "count": 0
+        },
+        "simplification": {
+          "hash": "arrangement:hash=ceb1ca9ccc4ac92e;count=0",
+          "count": 0
+        },
+        "completion": {
+          "hash": "completion:hash=b4efe5193b9e5c27;count=0",
+          "count": 0
+        }
+      }
+    },
+    "bunny_1k_random": {
+      "passed": false,
+      "gtestExitCode": 1,
+      "processCount": 2,
+      "deterministic": true,
+      "wallSeconds": 25.341852,
+      "terminal": "NotProductionReady:completion",
+      "firstInvalidProducer": "completion:",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "None",
+      "counts": {
+        "traces": 80862,
+        "arrangement": 0,
+        "simplified": 0,
+        "completedQuads": 0,
+        "validationFailures": 0,
+        "outputVertices": 0,
+        "outputFaces": 0,
+        "quads": 0,
+        "nonQuads": 0
+      },
+      "outputHash": "",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=b91068287ee13189;count=1500",
+          "count": 1500
+        },
+        "metric": {
+          "hash": "metric:hash=e993a5a41ddc17d4;count=502",
+          "count": 502
+        },
+        "relief": {
+          "hash": "relief:hash=d483e8239dd4d9af;count=493",
+          "count": 493
+        },
+        "tracing": {
+          "hash": "tracing:hash=01e14fea7e26d9b0;count=80862",
+          "count": 80862
+        },
+        "strands": {
+          "hash": "strands:hash=db87260a9fca63a6;count=16958",
+          "count": 16958
+        },
+        "embedding": {
+          "hash": "embedded-network:hash=9bc6483143b62123;count=16958",
+          "count": 16958
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=1d298f7d5433f9c0;count=0",
+          "count": 0
+        },
+        "simplification": {
+          "hash": "arrangement:hash=1d298f7d5433f9c0;count=0",
+          "count": 0
+        },
+        "completion": {
+          "hash": "completion:hash=b4efe5193b9e5c27;count=0",
+          "count": 0
+        }
+      }
+    },
+    "vase": {
+      "passed": false,
+      "gtestExitCode": 1,
+      "processCount": 2,
+      "deterministic": true,
+      "wallSeconds": 51.712926,
+      "terminal": "NotProductionReady:completion",
+      "firstInvalidProducer": "completion:",
+      "backend": "SurfaceCells",
+      "fallbackPolicy": "Fail",
+      "fallbackAttempted": false,
+      "recoveryUsed": false,
+      "outputOrigin": "None",
+      "counts": {
+        "traces": 116922,
+        "arrangement": 0,
+        "simplified": 0,
+        "completedQuads": 0,
+        "validationFailures": 0,
+        "outputVertices": 0,
+        "outputFaces": 0,
+        "quads": 0,
+        "nonQuads": 0
+      },
+      "outputHash": "",
+      "stages": {
+        "feature": {
+          "hash": "feature:hash=116dae2abefd55cb;count=3677",
+          "count": 3677
+        },
+        "metric": {
+          "hash": "metric:hash=46e5eb6de00adb8b;count=1274",
+          "count": 1274
+        },
+        "relief": {
+          "hash": "relief:hash=88c04e58d9413be9;count=453",
+          "count": 453
+        },
+        "tracing": {
+          "hash": "tracing:hash=94c8c2f7470b536d;count=116922",
+          "count": 116922
+        },
+        "strands": {
+          "hash": "strands:hash=5dc80353a2dffc31;count=12225",
+          "count": 12225
+        },
+        "embedding": {
+          "hash": "embedded-network:hash=4409050443513b20;count=12225",
+          "count": 12225
+        },
+        "arrangement": {
+          "hash": "arrangement:hash=47e6eb18f3aea6ea;count=0",
+          "count": 0
+        },
+        "simplification": {
+          "hash": "arrangement:hash=47e6eb18f3aea6ea;count=0",
+          "count": 0
+        },
+        "completion": {
+          "hash": "completion:hash=b4efe5193b9e5c27;count=0",
+          "count": 0
+        }
+      }
+    }
   },
-  "runtimeClaimsFromCurrentTurn": false,
-  "nextTurn": "Gate 2 Cross-Chart Mandatory Fixtures Artifact-Only Test + Benchmark"
+  "suites": {
+    "producer_remaining": {
+      "tests": 79,
+      "passed": 78,
+      "failures": 1,
+      "failureNames": [
+        "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"
+      ]
+    },
+    "completion": {
+      "tests": 164,
+      "passed": 154,
+      "failures": 10,
+      "failureNames": [
+        "FlowRepStrandsPhase15.PreRingReturnRerootsRetainedSingularityContinuation",
+        "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
+        "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
+        "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse",
+        "SurfaceComplexSimplificationPhase17.SimplifySurfaceCellComplexReturnsMutatedComplex",
+        "SurfaceComplexSimplificationPhase17.ComplexCandidateRecomputationCreatesRealQueuedCandidates",
+        "SurfaceComplexSimplificationPhase17.TransactionalMutationCommitsExtractedOversampledCandidate",
+        "SurfaceComplexSimplificationPhase17.TransactionalMutationPreservesHardRailSupport",
+        "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
+        "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
+      ]
+    },
+    "validation": {
+      "tests": 60,
+      "passed": 60,
+      "failures": 0,
+      "failureNames": []
+    },
+    "compiled_api": {
+      "tests": 8,
+      "passed": 8,
+      "failures": 0,
+      "failureNames": []
+    }
+  },
+  "conclusion": {
+    "directPassed": 1,
+    "directTotal": 6,
+    "gate1Regression": true,
+    "gate2SeamPassed": true,
+    "closeSheetsPassed": false,
+    "materialProgress": "multi-face seam now succeeds directly with deterministic 64-quad output, but Gate 1 plane regressed and blocks progression",
+    "nextTurn": "Code + Build: restore prescribed-field Gate 1 phase-front activation while preserving Gate 2 seam transport"
+  }
 }

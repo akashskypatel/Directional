@@ -9,7 +9,7 @@
 
 ## Mandatory design-first operating mandate
 
-Every future agent must prioritize the overall architecture in `.agents/Directional/DESIGN.md` over local repair activity. Always work on the **earliest incomplete high-level design gate**. Diagnostics, ownership taxonomies, cache behavior, memory accounting, scheduling, performance, historical cleanup, or downstream repair machinery must not become the principal objective while an earlier constructive gate is red.
+Every future agent must prioritize `.agents/Directional/DESIGN.md` over local repair activity and work on the earliest incomplete or regressed high-level gate. Diagnostics, taxonomies, cache/memory work, scheduling, performance, historical cleanup, or downstream repair machinery must not become the principal objective while an earlier constructive gate is red.
 
 Before any code change, write:
 
@@ -22,161 +22,77 @@ Observable material-progress condition:
 Explicitly deferred work:
 ```
 
-A task that cannot identify the active gate and observable material-progress condition must be deferred.
-
-Material progress means at least one of:
-
-- the active direct fixture passes;
-- the first invalid producer advances because a missing first-class contract was implemented;
-- authoritative phase/front/topology state becomes live and is consumed by the next constructive stage;
-- a general structural ambiguity is removed without replacing it with an equivalent downstream ambiguity.
-
-The following are not material progress by themselves:
-
-- new diagnostics, subtypes, counters, hashes, or ownership classes;
-- movement between equivalent fan-interval or repair failures;
-- higher aggregate pass counts while the direct gate remains red;
-- cache, memory, scheduling, or performance changes to a failing producer;
-- fixture-specific behavior, fallback, or recovery output.
+Material progress means an active direct fixture passes, a missing first-class contract becomes live and consumed, or a general structural ambiguity is removed. New diagnostics, counters, hashes, equivalent failure movement, aggregate gains, performance work, fallback/recovery, or fixture-specific behavior are not material progress alone.
 
 ### Mandatory no-progress stop rule
 
-If two consecutive Code + Build turns do not materially advance the earliest active gate, the next turn must be a design review or bounded producer replacement proof. Do not continue an equivalent micro-repair sequence without evidence that it implements the missing design contract.
+If two consecutive Code + Build turns do not materially advance the earliest active gate, the next turn must be a design review or bounded producer replacement proof.
 
-## High-level gates
+## Gate state
 
-1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** passed.
-3. **G2 — Cross-chart and close-sheet propagation:** **active**.
-4. **G3 — Periodic closure and holonomy:** blocked by G2.
-5. **G4 — Topology-distinct completion and singularities:** blocked by G3.
-6. **G5 — Adaptive scale and hard features:** blocked by G4.
-7. **G6 — Full production geometry:** blocked by G5 as a success gate; bunny and vase remain mandatory observations now.
-8. **G7 — Operational hardening and default-on decision:** blocked by G6.
+1. G0 truthful authority — passed.
+2. G1 uniform phase-front plane — **regressed; active restoration gate**.
+3. G2 cross-chart/close sheets — seam sub-contract proven; blocked by G1 and close-sheet failure.
+4. G3 periodic closure/holonomy — blocked.
+5. G4 topology/singularities — blocked.
+6. G5 adaptive scale/hard features — blocked.
+7. G6 full production geometry — blocked as success gate; bunny/vase remain mandatory observations.
+8. G7 hardening/default-on — blocked.
 
-Do not work on a blocked gate as the principal objective.
+## Completed turn
 
-## Current checkpoint
+The Gate 2 mandatory-fixture artifact-only Test + Benchmark turn is complete.
 
-The **Gate 2 Cross-Chart Transport and Mandatory Production Fixtures Code + Build** turn is complete.
+### Exact authority
 
-### Source authority
+- source commit: `21f081b330418a0f34709f61d857f54a03d2fd48`;
+- payload cleanup: `98fe525bb46f348cddcad91b0525353796b9e061`;
+- input artifact SHA-256: `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`;
+- artifact checksums: 45/45;
+- evidence archive SHA-256: `8762750ffc13c339e44ce0a2ffac8639f456d16cacc480b7da44b2fedc0ed251`;
+- evidence checksums: 84/84.
 
-- Gate 1 orientation/direct-cell source commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- Gate 2 payload checkpoint: `aea10409c73c490b92f78760b73191641ef823c6`;
-- Gate 2 patch SHA-256: `512d2cda4f9799d5600af277b9d63bbce76ace334b076bb922e762d0059f1b9c`;
-- compressed patch SHA-256: `29bd156ad17198b610614956489d50114d10ac96faf4b3bd907e8a09adcc712f`;
-- Gate 2 source commit: `21f081b330418a0f34709f61d857f54a03d2fd48`;
-- payload cleanup commit: `98fe525bb46f348cddcad91b0525353796b9e061`;
-- source-sync run/job: `31140198130` / `92748287591`;
-- source-sync evidence artifact: `8979516674`;
-- source-sync evidence digest: `9789218c72628dead864881838716a6b3fd9070eb0f277c32c2cadf71da1eaa4`.
+No configure, compile, relink, regeneration, source/test/fixture/manifest/validator edit, or discovery regeneration occurred. A runtime-only `bin/test-data -> ../test-data` symlink corrected the artifact's packaged fixture lookup layout without changing packaged bytes.
 
-All 16 expected source, test, manifest, and fixture blobs were verified before commit. The temporary payload was removed only after source verification.
+### Mandatory direct evidence
 
-### Compile artifact
+| Fixture | Result | Traces | Arrangement | Completed/output quads | First invalid producer |
+|---|---:|---:|---:|---:|---|
+| Plane | fail | 106 | 9 | 12 / 0 | `completion/output-validation:AggregateCompletionValidationFailure`; 15 validation failures |
+| Seam | **pass** | 256 | 65 | 64 / 64 | none |
+| Close sheets | fail | 158 | 0 | 0 / 0 | completion |
+| Cylinder | fail | 732 | 0 | 0 / 0 | completion |
+| Bunny | fail | 80,862 | 0 | 0 / 0 | completion |
+| Vase | fail | 116,922 | 0 | 0 / 0 | completion |
 
-- archive: `directional-g2-cross-chart-mandatory-fixtures-local-build-artifact.zip`;
-- SHA-256: `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`;
-- internal checksums: **45/45**;
-- five executables, two project static libraries, 27 fixture/input files;
-- GNU C++ 14.2.0, CMake 3.31.6, Ninja, Release `-O2 -DNDEBUG`, static, `PRE_TEST`;
-- approved targets: **7/7**;
-- compile/link actions: **95/95**;
-- wall time: 385.09 seconds;
-- peak RSS: 1,529,528 KiB.
+All requested/executed `SurfaceCells`, fallback `Fail`, no fallback attempt, no source-grid recovery. Seam output is 81 vertices, 64 pure quads, zero validation failures, `CompletedSurfaceCells`, and hash `a8972efd7c4900a4`.
 
-No generated project binary, test, benchmark, GoogleTest discovery command, CLI, GUI, help, list, or project runtime command was executed. This Code + Build turn makes no runtime-success claim.
+Plane/seam/close/cylinder were deterministic across three processes. Bunny/vase were deterministic across two. The seam is real G2 progress, but the plane regression immediately reactivates G1.
 
-## Implemented Gate 2 slice
+### Default suites
 
-- source-chart identity is first-class on trace intervals and lattice state;
-- each trace interval records the exact source edge crossed to enter it;
-- per-face branch rotation identifies the local branch corresponding to global lattice `+U`;
-- interior transitions validate exact cross-field quarter-turn matching and reciprocal inverse metadata;
-- deterministic source charts are connected regions of equal transported branch orientation;
-- intrinsic source intervals carry local family/sign, chart, transition edge, component, sheet, and route provenance;
-- missing, non-adjacent, ambiguous, or non-reciprocal transitions fail closed;
-- structural hashes include chart and transition state;
-- Gate 1 source-normal orientation and one-cell-to-one-quad materialization are preserved;
-- fieldless production fixtures can request generated smooth cross fields through the ordinary production extractor.
+- direct 1/6;
+- remaining producer 78/79;
+- completion 154/164;
+- validation 60/60;
+- compiled API 8/8;
+- non-overlapping total 301/317.
 
-No implementation behavior branches on fixture name, path, ID, vertex count, face count, or expected output count.
-
-## Mandatory fixture expansion
-
-The mandatory direct matrix is now:
-
-1. plane;
-2. multi-face seam;
-3. close sheets;
-4. cylinder;
-5. `bunny_1k_random`;
-6. vase.
-
-All six must execute in Test + Benchmark turns. Later fixtures cannot be used to bypass an earlier failed gate.
-
-### Randomized bunny
-
-- SHA-256 `865d864f7afbd90283526d914e0d4d9718d83e9679943029060bde439b10ab05`;
-- 502 vertices, 1,000 triangles, 1,500 edges;
-- closed, one component, no boundary/non-manifold/degenerate elements;
-- same geometric bunny as the prior asset under a different vertex/face permutation;
-- generated smooth cross field.
-
-### Vase
-
-- SHA-256 `5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868`;
-- 1,274 vertices, 2,404 triangles, 3,677 edges;
-- one component, one boundary loop, 142 boundary edges;
-- no non-manifold or degenerate elements;
-- generated smooth cross field.
-
-Tests assert the exact topology and hashes so neither fixture can be silently simplified or replaced to make the implementation appear functional.
-
-## Latest runtime authority
-
-The latest executed evidence remains the preceding Gate 1 artifact:
-
-| Fixture | Result | Traces | Direct cells / quads | Earliest failure |
-|---|---:|---:|---:|---|
-| Plane | pass | 352 | 64 / 64 | none |
-| Multi-face seam | fail | 137 | 0 / 0 | `SideSubdivisionRepair:InvalidInputIncidence` |
-| Close sheets | fail | 158 | 0 / 0 | `SideSubdivisionRepair:InvalidInputIncidence` |
-| Cylinder | fail | 732 | 0 / 0 | `SideSubdivisionRepair:InvalidInputIncidence` |
-| Bunny | not yet executed in mandatory matrix | — | — | pending artifact turn |
-| Vase | not yet executed | — | — | pending artifact turn |
-
-The last executed default inventory was 301/315. Do not reinterpret the compile-only fixture additions as runtime passes.
+The producer failure is the scheduler-sensitive validator timing ratio. The ten completion failures are unchanged historical/downstream tests. Neither displaces the direct plane regression.
 
 ## Next authoritative turn
 
-Execute:
+Execute `.agents/Directional/Gate_1_Regression_Restoration_Code_Build_Plan.md`.
 
-`.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md`
-
-Required order:
-
-1. verify artifact SHA-256 and 45 internal checksums;
-2. verify source commits and all expected blobs;
-3. verify bunny and vase hashes/topology;
-4. run plane, seam, close sheets, cylinder, bunny, and vase in separate processes;
-5. run all six even if an earlier gate fails, but preserve gate-order interpretation;
-6. run remaining default suites;
-7. run bounded independent determinism processes;
-8. perform no rebuild or source/test/fixture/manifest/validator edit.
-
-### Material-progress condition
-
-Gate 2 material progress requires seam success or nonzero deterministic authoritative cross-chart cells reaching a first-class chart-transport/direct-materialization boundary. Unchanged zero-cell completion failure, fixture-specific success, or new diagnostics alone is not progress.
+Required objective: restore the constant prescribed-field plane to the authoritative phase-front path while preserving reciprocal quarter-turn seam transport and its 64-quad deterministic output. Do not special-case fixtures or route plane through generic completion.
 
 ## Current authoritative documents
 
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Local_Code_Build_Report.md`
-- `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md`
+- `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Gate_1_Regression_Restoration_Code_Build_Plan.md`
 - `benchmark-results/design-aligned-runtime-summary.json`
 - `tests/TESTING_STRATEGY.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
@@ -190,28 +106,23 @@ Gate 2 material progress requires seam success or nonzero deterministic authorit
 2. `MILESTONE_G_TODO.md`
 3. this handoff
 4. `.agents/Directional/DESIGN.md`
-5. `.agents/Directional/REORIENTATION_PLAN.md`
-6. `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-7. latest Code + Build report
-8. next artifact-only plan
-9. latest runtime summary
-10. `tests/TESTING_STRATEGY.md`
-11. `.agents/Directional/GitHub_Workflow_Policy.md`
-12. the turn-based coding-agent skill and relevant Code + Build, testing-integrity, recovery, handoff, and connector-workflow references.
+5. latest Test + Benchmark report
+6. next Code + Build plan
+7. latest runtime summary
+8. `tests/TESTING_STRATEGY.md`
+9. `.agents/Directional/GitHub_Workflow_Policy.md`
+10. the turn-based coding-agent skill and relevant Code + Build, testing-integrity, recovery, handoff, and connector-workflow references.
 
 ## Durable lessons
 
-- A cross field supplies orientation but not authoritative lattice phase or connectivity.
-- Gate 1 proves source-normal orientation and one-cell-to-one-quad materialization on a planar domain.
-- Gate 2 must use exact source topology, reciprocal transition metadata, and chart/sheet provenance rather than global projection or proximity.
-- Analytic fixtures isolate contracts but cannot establish production readiness alone.
-- Real production fixtures must remain mandatory even while they expose blocked later contracts.
-- Fixture topology and hashes must be asserted to prevent synthetic simplification.
-- Generated smooth fields exercise the production field extractor; synthetic face-edge fields are not sufficient for bunny/vase acceptance.
+- Passed earlier gates are mandatory regressions and become active immediately when broken.
+- A cross field supplies orientation, not authoritative lattice phase/connectivity.
+- Exact reciprocal chart transport can succeed on the seam while a zero-turn prescribed-field route still regresses; both must share one general physical transport contract.
+- Analytic fixtures isolate contracts but real bunny/vase fixtures remain mandatory.
+- Fixture hashes/topology prevent synthetic simplification.
 - Direct gates outrank aggregate totals.
-- Scheduler-sensitive timing ratios are benchmark/closeout evidence, not default functional correctness.
-- `PRE_TEST` discovery preserves compile-only boundaries.
-- Persistent mounted volumes may severely slow template compilation; local ephemeral storage is acceptable when source, logs, and artifacts remain exact and externally preserved.
+- Scheduler timing ratios are closeout evidence, not functional correctness.
+- `PRE_TEST` preserves compile-only boundaries.
 
 ## Mandatory turn hygiene and instruction preservation
 
@@ -219,33 +130,33 @@ These requirements apply to every Code + Build, Test + Benchmark, optional Revie
 
 ### Workflow and temporary payload cleanup
 
-1. At the **start and end of every turn**, inspect `.github/workflows` and temporary support locations, including triggers, transfer files, patch/payload directories, and generated build artifacts.
-2. Remove stale bounded or turn-specific workflows before beginning work so they cannot run or conflict.
-3. During a remote compile turn, retain only approved durable base workflows plus at most one bounded workflow and exact payloads required for that turn.
-4. Immediately after the artifact and logs are verified, remove bounded workflows, triggers, and payloads no longer required.
-5. Final branch state must contain only approved durable workflows and no stale trigger or generated build artifact.
-6. Do not remove a durable dependency explicitly consumed by an approved retained workflow.
-7. Retain every exact patch/build payload until its corresponding remote source commit, expected blobs, and build authority are committed and verified; then remove that payload.
+1. At the start and end of every turn, inspect `.github/workflows` and all temporary triggers, transfer files, payload/patch directories, and generated artifacts.
+2. Remove stale bounded or turn-specific workflows before work begins.
+3. During remote compile, retain only approved durable workflows plus at most one bounded workflow and its exact payload.
+4. After artifact/log verification, remove bounded workflows, triggers, and payloads.
+5. Final branch state must contain only approved durable workflows and no stale generated artifact.
+6. Do not remove a durable dependency consumed by an approved retained workflow.
+7. Retain exact payloads until their source commit, expected blobs, and build authority are verified; then remove them.
 
 ### Documentation and result cleanup
 
-1. At the end of every turn, remove stale or superseded plans, reports, closure notes, evidence indexes, and results from `.agents` and `benchmark-results`.
-2. Retain only the live handoff, latest completed report, next executable plan, current source/package authority, latest runtime summary, durable baselines, and durable design/remediation/workflow-policy documents.
-3. Update retained documents so they reference only existing files.
-4. Git history and the PR conversation are the historical archive; do not keep duplicate snapshots merely for provenance.
-5. Never delete the latest evidence or next-turn instructions before replacements are committed and verified.
+1. End every turn by removing stale/superseded plans, reports, closure notes, evidence indexes, and results from `.agents` and `benchmark-results`.
+2. Retain only the live handoff, latest report, next executable plan, current authority, latest runtime summary, durable baselines, and durable design/remediation/workflow-policy documents.
+3. Retained documents may reference only existing files.
+4. Git history and PR conversation are the historical archive.
+5. Never delete latest evidence or next-turn instructions before verified replacements exist.
 
 ### Mandatory instruction preservation
 
-1. **Never remove, weaken, consolidate away, reinterpret, or silently replace an existing mandatory instruction in this handoff unless the user explicitly instructs its removal or replacement.**
-2. Handoff edits are additive or narrowly corrective by default. Preserve all procedural, safety, scope, cleanup, validation, repository-write, and turn-boundary requirements.
-3. Before committing a handoff update, compare it with the prior version and verify every pre-existing mandatory instruction remains materially present.
-4. When a new instruction conflicts with an existing mandatory instruction, preserve both, identify the conflict, and request user direction rather than deleting either.
+1. **Never remove, weaken, consolidate away, reinterpret, or silently replace an existing mandatory instruction in this handoff unless the user explicitly requests it.**
+2. Handoff edits are additive or narrowly corrective by default; preserve all procedural, safety, scope, cleanup, validation, repository-write, and turn-boundary requirements.
+3. Compare handoff updates with the prior version and verify every pre-existing mandatory instruction remains materially present.
+4. If a new instruction conflicts, preserve both and request user direction rather than deleting either.
 5. Documentation cleanup never authorizes removal of mandatory handoff rules.
 
 ## End-of-turn requirement
 
-Every completed Code + Build, Test + Benchmark, optional Review, or documentation-maintenance turn ends with a **new top-level PR #8 comment** after all documentation and PR metadata updates. That comment is the final repository write.
+Every completed turn ends with a new top-level PR #8 comment after all documentation and PR metadata updates. That comment is the final repository write.
 
 ## Preserved prohibitions
 

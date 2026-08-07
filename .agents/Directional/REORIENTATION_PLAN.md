@@ -1,43 +1,34 @@
-# Surface-Cell Producer Reorientation Plan
+# Directional Reorientation Plan
 
-## Direction control
+## Current orientation
 
-Always work on the earliest incomplete gate and declare the active gate, earliest fixture, missing contract, smallest general change, material-progress condition, and deferred work.
+The project is not a sequence of downstream repair milestones. It is an ordered constructive implementation of direct, source-authoritative, cross-field-aligned quadrangulation.
 
-G0 truthful authority and G1 plane are passed. G2 cross-chart and close-sheet propagation is active. G3–G7 remain blocked as principal implementation objectives.
+Current order:
 
-## Current G2 implementation
+```text
+G0 truthful authority [passed]
+→ G1 plane regression restoration [active]
+→ G2 seam proven / close-sheet isolation incomplete
+→ G3 periodic holonomy
+→ G4 topology and singularities
+→ G5 adaptivity and hard features
+→ G6 bunny and vase production success
+→ G7 hardening/default-on
+```
 
-The first compile-valid transport slice now carries source-chart identity and transition-edge provenance, computes per-face branch rotation, validates reciprocal quarter-turn transitions, builds deterministic equal-branch charts, and hashes that state. Gate 1 direct materialization remains intact.
+## Immediate objective
 
-The next artifact must determine whether this creates nonzero authoritative seam cells or direct seam success. Unchanged zero-cell completion failure is not progress.
+Restore authoritative uniform phase-front activation for the constant prescribed-field plane while preserving the deterministic multi-face seam pass. The plane must not return to generic trace/completion output.
 
-## Mandatory production fixtures
+## Evidence discipline
 
-Bunny and vase are now mandatory direct observations in every Test + Benchmark turn. Their exact topology and hashes are asserted and both use generated smooth cross fields. They expose curved closed and open-boundary behavior without replacing the ordered seam and close-sheet gates.
+- Direct mandatory fixtures outrank aggregate totals.
+- Passed earlier gates are mandatory regressions and become active immediately when broken.
+- Real fixtures remain mandatory and may not be simplified, replaced, or bypassed.
+- Later success never compensates for an earlier red gate.
+- Test turns use exact artifacts only; Code + Build turns compile but execute nothing.
 
-Implementation must never special-case a fixture identity or reduce fixture complexity to match current behavior.
+## Stop rule
 
-## Next turn
-
-Use `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md` with artifact SHA-256 `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`.
-
-## No-progress rule
-
-If two consecutive Code + Build turns do not materially advance G2, the next turn must perform a bounded design review or producer replacement proof.
-
-## Explicitly deferred
-
-Periodic holonomy, topology catalogs, adaptivity, hard-feature completion, performance, cache, scheduler, parallelism, and unrelated historical cleanup remain deferred unless required to preserve an already-passed contract.
-
-## Preserved prohibitions
-
-- no validator weakening;
-- no count/order/frequency ownership selection;
-- no arbitrary subset search;
-- no fallback/recovery substitution;
-- no synthetic counters or Euler correction;
-- no positional merging across unrelated sheets;
-- no fixture/ID special cases;
-- no post-hoc cycle decomposition or cell merging;
-- no timeout-as-correctness.
+Two consecutive Code + Build turns without material improvement of the active direct gate require a design review or bounded producer replacement proof.
