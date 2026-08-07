@@ -30,7 +30,7 @@ jobs:
           LOG_FILE="$RUNNER_TEMP/g2-close-sheet-code-build.log"
           echo "LOG_FILE=$LOG_FILE" >> "$GITHUB_ENV"
           {
-            echo "task=G2 close-sheet Code + Build"
+            echo "task=G2 close-sheet Code + Build compile retry"
             echo "event_sha=$GITHUB_SHA"
             echo "ref=$GITHUB_REF"
             date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
@@ -43,33 +43,33 @@ jobs:
           fetch-depth: 1
           submodules: false
 
-      - name: Verify and apply exact patch
+      - name: Apply compile correction to exact source
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "$LOG_FILE") 2>&1
           echo "checkout_sha=$(git rev-parse HEAD)"
-          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "c9877d8ffa8aa5fbb59c83a1ab4b94eed5421431"
-          test "$(git hash-object src/pipeline/RemeshPipeline.cpp)" = "533648a1b1fd008286f3ef3292813817ad1f1146"
-          test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "b726b85d189c5018d53c8561888dcda0ab55fa58"
-          test -f "$PAYLOAD"
-          base64 -d "$PAYLOAD" > /tmp/g2-close-sheet.patch.xz
-          xz -dc /tmp/g2-close-sheet.patch.xz > /tmp/g2-close-sheet.patch
-          echo "$PATCH_SHA256  /tmp/g2-close-sheet.patch" | sha256sum -c -
-          git apply --check /tmp/g2-close-sheet.patch
-          git apply /tmp/g2-close-sheet.patch
-          mapfile -t changed < <(git diff --name-only | sort)
-          expected=(src/geometry/SurfaceCellTracing.cpp src/pipeline/RemeshPipeline.cpp tests/SurfaceCellsPhase10Tests.cpp)
-          test "${#changed[@]}" -eq "${#expected[@]}"
-          for i in "${!expected[@]}"; do test "${changed[$i]}" = "${expected[$i]}"; done
           test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "a60d9502cb425303648685468d3307a773259416"
           test "$(git hash-object src/pipeline/RemeshPipeline.cpp)" = "55af3205fd7cdb8f21357ac69516ffa29cf8a6d3"
           test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "7151077d7d4e0a10dad388dd008479f96fc1aae8"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/geometry/SurfaceCellTracing.cpp')
+          s = p.read_text()
+          old = '''      facesBySheet[{options.sourceFaceComponents[static_cast<std::size_t>(face)],\n                    options.sourceFaceSheets[static_cast<std::size_t>(face)]]]\n          .push_back(face);'''
+          new = '''      facesBySheet[{options.sourceFaceComponents[static_cast<std::size_t>(face)],\n                    options.sourceFaceSheets[static_cast<std::size_t>(face)]}]\n          .push_back(face);'''
+          if s.count(old) != 1:
+              raise SystemExit('expected exact compile-correction site not found once')
+          p.write_text(s.replace(old, new, 1))
+          PY
+          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = "c9570ecb4a9557eebaf0e30b751e2ccca90b2973"
           git diff --check
+          git diff -- src/geometry/SurfaceCellTracing.cpp > /tmp/g2-close-sheet-compile-fix.patch
+          test -s /tmp/g2-close-sheet-compile-fix.patch
           git config user.name directional-agent
           git config user.email directional-agent@users.noreply.github.com
-          git add -- "${expected[@]}"
-          git commit -m "feat(surface-cells): isolate authoritative close sheets"
+          git add src/geometry/SurfaceCellTracing.cpp
+          git commit -m "fix(surface-cells): correct close-sheet partition key"
           SOURCE_COMMIT=$(git rev-parse HEAD)
           echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
           git push origin HEAD:"$WORK_BRANCH"
@@ -158,15 +158,18 @@ jobs:
           cp -a benchmarks/fixtures "$root/test-data/benchmarks/"
           cp agent-build-logs/configure.log agent-build-logs/build.log agent-build-logs/toolchain.txt "$root/logs/"
           cp agent-build/compile_commands.json "$root/source/"
-          cp /tmp/g2-close-sheet.patch "$root/source/g2-close-sheet-authoritative-producer.patch"
+          base64 -d "$PAYLOAD" > /tmp/g2-close-sheet.patch.xz
+          xz -dc /tmp/g2-close-sheet.patch.xz > "$root/source/g2-close-sheet-authoritative-producer.patch"
+          echo "$PATCH_SHA256  $root/source/g2-close-sheet-authoritative-producer.patch" | sha256sum -c -
+          cp /tmp/g2-close-sheet-compile-fix.patch "$root/source/"
           tar --exclude=.git --exclude=external --exclude=agent-build --exclude=g2-close-sheet-code-build-artifact \
               -cJf "$root/source/directional-g2-close-sheet-source-no-deps.tar.xz" .
           cat > "$root/metadata/source-authority.json" <<EOF
           {
             "sourceCommit": "$SOURCE_COMMIT",
-            "patchSha256": "$PATCH_SHA256",
+            "architecturePatchSha256": "$PATCH_SHA256",
             "changedFileBlobs": {
-              "src/geometry/SurfaceCellTracing.cpp": "a60d9502cb425303648685468d3307a773259416",
+              "src/geometry/SurfaceCellTracing.cpp": "c9570ecb4a9557eebaf0e30b751e2ccca90b2973",
               "src/pipeline/RemeshPipeline.cpp": "55af3205fd7cdb8f21357ac69516ffa29cf8a6d3",
               "tests/SurfaceCellsPhase10Tests.cpp": "7151077d7d4e0a10dad388dd008479f96fc1aae8"
             }
@@ -174,7 +177,7 @@ jobs:
           EOF
           cat > "$root/metadata/command-boundary.txt" <<'EOF'
           Code + Build turn only.
-          Allowed: exact patch verification/application, configure, compile/link approved targets, packaging/checksums.
+          Allowed: exact compile correction, configure, compile/link approved targets, packaging/checksums.
           Prohibited and not executed: generated project binaries, tests, benchmarks, ctest discovery, CLI, GUI, help, list.
           EOF
           cat > "$root/metadata/build-authority.json" <<'EOF'
