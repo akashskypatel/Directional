@@ -20,7 +20,8 @@ Current exact evidence:
 - terminal: `NotProductionReady:completion`;
 - completion reason: `SideSubdivisionRepair:InvalidInputIncidence`;
 - fallback attempted: false;
-- source-grid recovery used: false.
+- source-grid recovery used: false;
+- deterministic across three independent artifact processes.
 
 `close_sheets__surface_cells` is the second Gate 2 fixture and remains at the same zero-cell completion boundary with 158 trace segments.
 
