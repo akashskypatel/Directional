@@ -4,7 +4,7 @@
 
 G0, G1, and G2 are closed. The earliest incomplete design gate remains **G3 periodic cylinder / holonomy**.
 
-The periodic-annulus producer is now implemented and compile-valid. Runtime verification is pending, so the latest executed cylinder evidence remains:
+The periodic-annulus producer is implemented and compile-valid. Runtime verification is pending, so the latest executed cylinder evidence remains:
 
 - producer disposition `NotApplicable`;
 - 732 generic traces;
@@ -49,6 +49,8 @@ Source `56f823273cad041a01ebb4d0772c3265ff248f4a` implements the bounded periodi
 - builds a cut-open intrinsic chart without requiring global world-space planarity;
 - keeps source face/barycentric attachment for chart samples and cell boundaries.
 
+This is intentionally a bounded canonical equal-cardinality ring-annulus producer, not a general arbitrary-annulus/genus solution. Runtime evidence, not compile success, determines whether the exact production cylinder belongs to the supported domain.
+
 ### Periodic holonomy
 
 The periodic cycle is first-class:
@@ -59,11 +61,11 @@ r ∈ Z4 quarter-turn rotation
 +ordered canonical source route
 ```
 
-The source also records the deterministic cut route. Duplicate, missing, incompatible, or non-zero unsupported cylinder holonomy returns typed periodic `Rejected` authority rather than generic substitution.
+The source also records the deterministic cut route. Duplicate, missing, incompatible, or unsupported periodic transport returns typed periodic `Rejected` authority rather than generic substitution.
 
 ### Periodic front ownership
 
-Artificial-cut front copies are paired using exact periodic lattice identity and explicit `PeriodicFrontMerge` events. The cut is not treated as a genuine exterior boundary; only the two annulus boundary directions are allowed to remain exterior in the bounded periodic front.
+Artificial-cut front copies are paired using exact periodic lattice identity and explicit `PeriodicFrontMerge` events. The cut is not treated as a genuine exterior boundary; only the annulus boundary directions are allowed to remain exterior in the bounded periodic front.
 
 ### Materialization
 
