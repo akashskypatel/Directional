@@ -1,0 +1,140 @@
++              branch_from_family_sign(forward.family, forward.sign);
++          int targetFamily = 0;
++          int targetSign = 1;
++          family_sign_from_branch(targetBranch, targetFamily, targetSign);
++          const Eigen::RowVector3d targetDirection = project_tangent(
++              axis_for_family(faceAxisX, faceAxisY, neighbor.face, targetFamily,
++                              targetSign),
++              face_normal(vertices, faces, neighbor.face));
++          const BranchTransitionResult reverse = resolve_branch_transition(
++              vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
++              transitionLookup, neighbor.edge, neighbor.face, sourceFace,
++              targetFamily, targetSign, targetDirection, edgeMatching,
++              edgeEffort, hasTransitions ? edgeTransitions : nullptr);
++          if (!reverse.valid ||
++              branch_from_family_sign(reverse.family, reverse.sign) !=
++                  sourceBranch ||
++              normalized_branch(forward.matching + reverse.matching) != 0) {
++            validBranch = false;
++            break;
++          }
++          branchByFace[neighbor.face] = targetBranch;
++          pending.push(neighbor.face);
++        }
++      }
++      if (!validBranch || branchByFace.size() != candidate.stripFaces.size()) {
++        continue;
++      }
++
++      double score = 0.0;
++      int observations = 0;
++      const auto accumulate_edge_score = [&](const int a, const int b,
++                                             const int branchOffset,
++                                             const bool oriented) {
++        const auto found = incident.find(edge_key(a, b));
++        if (found == incident.end()) return false;
++        bool observed = false;
++        for (const int face : found->second) {
++          if (face < 0 || candidate.stripFaces.count(face) == 0U) continue;
++          const auto branchFound = branchByFace.find(face);
++          if (branchFound == branchByFace.end()) return false;
++          const int expectedBranch =
++              normalized_branch(branchFound->second + branchOffset);
++          int family = 0;
++          int sign = 1;
++          family_sign_from_branch(expectedBranch, family, sign);
++          const Eigen::RowVector3d fieldDirection = project_tangent(
++              axis_for_family(faceAxisX, faceAxisY, face, family, sign),
++              face_normal(vertices, faces, face));
++          const Eigen::RowVector3d edgeDirection =
++              edge_direction_in_face(a, b, face);
++          if (fieldDirection.squaredNorm() == 0.0 ||
++              edgeDirection.squaredNorm() == 0.0) {
++            return false;
++          }
++          double cosine = fieldDirection.dot(edgeDirection);
++          if (!oriented) cosine = std::abs(cosine);
++          const double angle = std::acos(std::clamp(cosine, -1.0, 1.0));
++          if (!std::isfinite(angle)) return false;
++          score += angle * angle;
++          ++observations;
++          observed = true;
++        }
++        return observed;
++      };
++
++      for (int u = 0; u < ringSize && validBranch; ++u) {
++        const int next = (u + 1) % ringSize;
++        // The V-family is oriented from the previous source ring to the next.
++        if (!accumulate_edge_score(
++                previous[static_cast<std::size_t>(u)],
++                candidate.vertices[static_cast<std::size_t>(u)], 0, true)) {
++          validBranch = false;
++          break;
++        }
++        // The periodic U-family is the reciprocal orthogonal family.  Its line
++        // orientation is intentionally sign-free because 4-RoSy family lines
++        // are unoriented around the annulus.
++        if (!accumulate_edge_score(
++                previous[static_cast<std::size_t>(u)],
++                previous[static_cast<std::size_t>(next)], 1, false) ||
++            !accumulate_edge_score(
++                candidate.vertices[static_cast<std::size_t>(u)],
++                candidate.vertices[static_cast<std::size_t>(next)], 1, false)) {
++          validBranch = false;
++          break;
++        }
++      }
++      if (!validBranch || observations <= 0) continue;
++      branchScores[static_cast<std::size_t>(seedBranch)] =
++          score / static_cast<double>(observations);
++    }
++
++    double bestScore = std::numeric_limits<double>::infinity();
++    int bestBranch = -1;
++    bool ambiguousBranch = false;
++    for (int branch = 0; branch < 4; ++branch) {
++      const double score = branchScores[static_cast<std::size_t>(branch)];
++      if (!std::isfinite(score)) continue;
++      if (score < bestScore && !score_equal(score, bestScore)) {
++        bestScore = score;
++        bestBranch = branch;
++        ambiguousBranch = false;
++      } else if (score_equal(score, bestScore)) {
++        ambiguousBranch = true;
++      }
++    }
++    if (bestBranch < 0 || !std::isfinite(bestScore)) return false;
++    candidate.score = bestScore;
++    candidate.seedBranch = bestBranch;
++    candidate.branchAmbiguous = ambiguousBranch;
++    return true;
++  };
++
+   for (int layer = 1; layer <= maxDistance; ++layer) {
+     const std::vector<int> previous = rings[static_cast<std::size_t>(layer - 1)];
+     const std::vector<int> raw = rings[static_cast<std::size_t>(layer)];
+-    std::vector<std::vector<int>> valid;
++    std::map<std::vector<int>, std::set<int>> topologyCandidates;
+     for (int direction : {1, -1}) {
+       for (int offset = 0; offset < ringSize; ++offset) {
+         std::vector<int> candidate(static_cast<std::size_t>(ringSize));
+@@ -5549,14 +5781,63 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
+           }
+           stripFaces.insert(pair.begin(), pair.end());
+         }
+-        if (compatible && stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
+-          valid.push_back(std::move(candidate));
++        if (compatible &&
++            stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
++          topologyCandidates.emplace(std::move(candidate), std::move(stripFaces));
+         }
+       }
+     }
+-    if (valid.empty()) return result;
+-    std::sort(valid.begin(), valid.end());
+-    rings[static_cast<std::size_t>(layer)] = valid.front();
++    if (topologyCandidates.empty()) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure,
