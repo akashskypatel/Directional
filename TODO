@@ -1,20 +1,46 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07 UTC
 
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 authoritative producer boundary**.
-- Earliest failing fixture: `plane__surface_cells`.
+- Active gate: **G1 authoritative producer-boundary verification**.
+- Earliest failing fixture from latest executed runtime: `plane__surface_cells`.
 - Proven retained sub-contract: G2 multi-face seam direct success.
-- Completed turn: mandatory Gate 1 producer architecture Review.
-- Review outcome: **B — bounded producer replacement proof**.
-- Next turn: `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md`.
+- Completed turn: Gate 1 Authoritative Producer Boundary Code + Build.
+- Architecture outcome: **B — bounded producer replacement proof, now implemented compile-only**.
+- Next turn: `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact runtime authority
+## Latest compile-only authority
+
+- source commit: `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
+- payload cleanup: `bcf934d34e9a15f5d0929628ffd26f6833643214`;
+- patch SHA-256: `a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef`;
+- workflow run/job/artifact: `31154489371` / `92790924907` / `8984760467`;
+- compile/link: 111/111;
+- approved targets: 7/7;
+- artifact SHA-256: `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
+- artifact internal checksums: 44/44;
+- generated project binary execution: none.
+
+Implemented contracts:
+
+- [x] explicit `NotApplicable / Produced / Rejected` disposition;
+- [x] applicability determined before authoritative metadata execution;
+- [x] `Rejected` cannot generate generic seeds/traces/proposals;
+- [x] pipeline stops `Rejected` at tracing and retains typed first-invalid authority;
+- [x] disposition/rejection included in diagnostics and structural hash;
+- [x] relief-barrier transport obeys `reliefBarriersEmbedded`;
+- [x] ordinary-edge, ordered vertex-fan, reciprocal seam, sheet/provenance, and one-cell→one-quad contracts preserved in source;
+- [x] exact committed `plane.obj` + `plane.rawfield` production-route regression added;
+- [x] approved seven targets compile;
+- [ ] execute new contracts and exact production route from immutable artifact;
+- [ ] determine whether G1 closes or only minimum architecture proof is achieved.
+
+## Latest executed runtime authority — unchanged by Code + Build
 
 - source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
 - artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
@@ -26,25 +52,16 @@ Last updated: 2026-08-06
 - close sheets/cylinder/bunny/vase: deterministic direct failures before output;
 - non-overlapping total: 305/321.
 
-## Review conclusion
+## Next artifact-only checklist
 
-The plane regression is now treated as a producer-authority problem, not another isolated transition predicate.
+- [ ] verify outer SHA-256 and 44/44 internal checksums;
+- [ ] verify source authority and six changed blobs;
+- [ ] verify exact bunny/vase hashes and topology;
+- [ ] run new producer-contract tests first;
+- [ ] run plane first, seam second, then close sheets/cylinder/bunny/vase;
+- [ ] record `surfaceCellAuthoritativeProducerDisposition` and typed producer failure;
+- [ ] confirm `Rejected` generates no generic traces/arrangement/completion;
+- [ ] run bounded determinism processes;
+- [ ] run remaining producer, completion, validation, compiled-API suites without rebuild.
 
-Current control flow conflates an authoritative producer being **not applicable** with that producer **rejecting** an applicable input. Both become `phaseFront.succeeded == false`, after which a different generic seed/trace/proposal producer runs automatically. Completion diagnostics can then overwrite the typed phase-front failure.
-
-The exact production plane also uses preprocessing state absent from the passing reconstructed fan tests. A proven semantic inconsistency exists where phase-front transport treats relief edges as hard barriers even when `reliefBarriersEmbedded == false`.
-
-## Next Code + Build checklist
-
-- [ ] introduce explicit `NotApplicable / Produced / Rejected` authoritative producer disposition;
-- [ ] decide applicability before execution from general topology/field state, never fixture identity;
-- [ ] prevent `Rejected` from generating generic seeds/traces/proposals;
-- [ ] preserve immutable typed producer failure authority;
-- [ ] make relief-barrier transport obey `reliefBarriersEmbedded`;
-- [ ] retain ordinary-edge, ordered vertex-fan, reciprocal seam, sheet/provenance, and one-cell→one-quad contracts;
-- [ ] add exact committed `plane.obj` + `plane.rawfield` producer-level production-route coverage;
-- [ ] preserve seam direct acceptance and mandatory bunny/vase coverage;
-- [ ] compile approved seven targets without executing generated project binaries;
-- [ ] package a fresh immutable artifact for plane-first testing.
-
-A third isolated predicate repair is prohibited. Gate 1 remains open until the plane produces direct valid output. GitHub workflows may be used for the authorized Code + Build compile/artifact turn under the workflow policy.
+Gate 1 closes only with direct valid plane output and retained seam success. Explicit immutable `Rejected` behavior without the old 106/9/12 substitution is material architectural progress but not Gate 1 closure.
