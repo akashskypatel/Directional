@@ -4077,6 +4077,140 @@ bool segment_on_source(const Eigen::MatrixXd &vertices,
   return !segments.empty();
 }
 
+
+
+std::array<Eigen::RowVector3d, 4> phase_front_corner_positions(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfacePhaseFrontCell &cell) {
+  std::array<Eigen::RowVector3d, 4> positions;
+  for (int corner = 0; corner < 4; ++corner) {
+    positions[static_cast<std::size_t>(corner)] = point_position(
+        vertices, faces, cell.corners[static_cast<std::size_t>(corner)]);
+  }
+  return positions;
+}
+
+Eigen::RowVector3d phase_front_loop_normal(
+    const std::array<Eigen::RowVector3d, 4> &positions) {
+  Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
+  for (int corner = 0; corner < 4; ++corner) {
+    normal += cross3(positions[static_cast<std::size_t>(corner)],
+                     positions[static_cast<std::size_t>((corner + 1) % 4)]);
+  }
+  return normal;
+}
+
+void reverse_phase_front_cell_cycle(SurfacePhaseFrontCell &cell) {
+  const SurfacePhaseFrontCell original = cell;
+  constexpr std::array<int, 4> reverseCorners{0, 3, 2, 1};
+  constexpr std::array<int, 4> reversePaths{3, 2, 1, 0};
+  for (int corner = 0; corner < 4; ++corner) {
+    cell.corners[static_cast<std::size_t>(corner)] =
+        original.corners[static_cast<std::size_t>(reverseCorners[corner])];
+    cell.lattice[static_cast<std::size_t>(corner)] =
+        original.lattice[static_cast<std::size_t>(reverseCorners[corner])];
+    cell.boundaryPaths[static_cast<std::size_t>(corner)] = reverse_trace_path(
+        original.boundaryPaths[static_cast<std::size_t>(reversePaths[corner])]);
+  }
+}
+
+bool phase_front_cell_source_labels(
+    const SurfacePhaseFrontCell &cell,
+    const SurfaceCellTracingOptions &options, int &component, int &sheet) {
+  component = -1;
+  sheet = -1;
+  const auto consume_face = [&](const int face) {
+    if (face < 0) {
+      return false;
+    }
+    const int candidateComponent =
+        face_label_or_default(options.sourceFaceComponents, face, 0);
+    const int candidateSheet =
+        face_label_or_default(options.sourceFaceSheets, face,
+                              candidateComponent);
+    if (candidateComponent < 0 || candidateSheet < 0) {
+      return false;
+    }
+    if (component < 0) {
+      component = candidateComponent;
+      sheet = candidateSheet;
+      return true;
+    }
+    return component == candidateComponent && sheet == candidateSheet;
+  };
+  for (const SurfaceTracePoint &corner : cell.corners) {
+    if (!consume_face(corner.face)) {
+      return false;
+    }
+  }
+  for (const auto &path : cell.boundaryPaths) {
+    if (path.empty()) {
+      return false;
+    }
+    for (const SurfaceTraceSegment &segment : path) {
+      if (!consume_face(segment.face)) {
+        return false;
+      }
+    }
+  }
+  return component >= 0 && sheet >= 0;
+}
+
+bool orient_and_validate_phase_front_cell(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const UniformPhaseFrame &frame, const double target,
+    const SurfaceCellTracingOptions &options, SurfacePhaseFrontCell &cell) {
+  if (!(target > 0.0) || !std::isfinite(target)) {
+    return false;
+  }
+  for (const SurfaceTracePoint &corner : cell.corners) {
+    if (!trace_point_is_valid(corner, faces)) {
+      return false;
+    }
+  }
+  const double pointTolerance = std::max(1.0e-12, 1.0e-9 * target);
+  auto positions = phase_front_corner_positions(vertices, faces, cell);
+  for (int first = 0; first < 4; ++first) {
+    for (int second = first + 1; second < 4; ++second) {
+      if ((positions[static_cast<std::size_t>(first)] -
+           positions[static_cast<std::size_t>(second)])
+              .norm() <= pointTolerance) {
+        return false;
+      }
+    }
+  }
+  if (validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                     cell.boundaryPaths,
+                                     pointTolerance) !=
+      CellRejectionReason::Accepted) {
+    return false;
+  }
+  Eigen::RowVector3d loopNormal = phase_front_loop_normal(positions);
+  if (!loopNormal.allFinite() || loopNormal.squaredNorm() <= 1.0e-24) {
+    return false;
+  }
+  if (loopNormal.dot(frame.normal) < 0.0) {
+    reverse_phase_front_cell_cycle(cell);
+    positions = phase_front_corner_positions(vertices, faces, cell);
+    loopNormal = phase_front_loop_normal(positions);
+  }
+  if (loopNormal.dot(frame.normal) <= 0.0 ||
+      classify_quad_loop(positions, target, frame.normal, options) !=
+          CellRejectionReason::Accepted ||
+      validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                     cell.boundaryPaths,
+                                     pointTolerance) !=
+          CellRejectionReason::Accepted) {
+    return false;
+  }
+  if (!phase_front_cell_source_labels(cell, options, cell.sourceComponent,
+                                      cell.sourceSheet)) {
+    return false;
+  }
+  cell.orientationValidated = true;
+  return true;
+}
+
 } // namespace
 
 SurfacePhaseFrontResult build_uniform_phase_front(
@@ -4166,28 +4300,57 @@ SurfacePhaseFrontResult build_uniform_phase_front(
                                cell.boundaryPaths[static_cast<std::size_t>(side)])) {
           return SurfacePhaseFrontResult{true};
         }
+      }
+      if (!orient_and_validate_phase_front_cell(
+              vertices, faces, frame, std::min(stepU, stepV), options, cell)) {
+        return SurfacePhaseFrontResult{true};
+      }
+
+      const int cellId = cell.id;
+      for (int side = 0; side < 4; ++side) {
+        const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
         SurfaceFrontEdge edge;
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
-        edge.family = families[side];
-        edge.advanceSign = signs[side];
+        edge.family = path.front().family;
+        edge.advanceSign = path.front().sign;
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
         edge.toLattice =
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
-        if (!options.sourceFaceComponents.empty()) {
-          edge.sourceComponent = options.sourceFaceComponents[static_cast<std::size_t>(edge.from.face)];
-        }
-        if (!options.sourceFaceSheets.empty()) {
-          edge.sourceSheet = options.sourceFaceSheets[static_cast<std::size_t>(edge.from.face)];
-        }
+        edge.filledCell = cellId;
+        edge.sourceComponent = cell.sourceComponent;
+        edge.sourceSheet = cell.sourceSheet;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
-        const auto key = std::minmax(nodeIds[side], nodeIds[(side + 1) % 4]);
+        const Eigen::Vector2i from = edge.fromLattice.latticeCoordinate;
+        const Eigen::Vector2i to = edge.toLattice.latticeCoordinate;
+        const int fromNode = node_index(from.x(), from.y());
+        const int toNode = node_index(to.x(), to.y());
+        const auto key = std::minmax(fromNode, toNode);
         const std::pair<int, int> canonical{key.first, key.second};
         const auto found = openEdges.find(canonical);
         if (found == openEdges.end()) {
-          openEdges.emplace(canonical, EdgeOwner{edgeId, cell.id});
+          openEdges.emplace(canonical, EdgeOwner{edgeId, cellId});
         } else {
+          SurfaceFrontEdge &first =
+              result.edges[static_cast<std::size_t>(found->second.edge)];
+          SurfaceFrontEdge &second =
+              result.edges[static_cast<std::size_t>(edgeId)];
+          if (first.filledCell == second.filledCell ||
+              first.fromLattice.latticeCoordinate !=
+                  second.toLattice.latticeCoordinate ||
+              first.toLattice.latticeCoordinate !=
+                  second.fromLattice.latticeCoordinate ||
+              first.family != second.family ||
+              first.advanceSign == second.advanceSign ||
+              first.sourceComponent != second.sourceComponent ||
+              first.sourceSheet != second.sourceSheet) {
+            return SurfacePhaseFrontResult{true};
+          }
+          first.oppositeEdge = edgeId;
+          second.oppositeEdge = found->second.edge;
+          first.unfilledSide = 0;
+          second.unfilledSide = 0;
           SurfaceFrontEvent event;
           event.kind = SurfaceFrontEventKind::CompatibleFrontMerge;
           event.firstEdge = found->second.edge;
@@ -4201,12 +4364,36 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   }
   for (const auto &[key, owner] : openEdges) {
     (void)key;
+    SurfaceFrontEdge &edge =
+        result.edges[static_cast<std::size_t>(owner.edge)];
+    edge.exterior = true;
+    edge.unfilledSide = 0;
     SurfaceFrontEvent event;
     event.kind = SurfaceFrontEventKind::BoundaryTermination;
     event.firstEdge = owner.edge;
     result.events.push_back(event);
   }
-  result.succeeded = !result.cells.empty();
+  for (const SurfacePhaseFrontCell &cell : result.cells) {
+    if (!cell.orientationValidated || cell.sourceComponent < 0 ||
+        cell.sourceSheet < 0) {
+      return SurfacePhaseFrontResult{true};
+    }
+  }
+  for (const SurfaceFrontEdge &edge : result.edges) {
+    const bool hasTwin = edge.oppositeEdge >= 0;
+    if (edge.filledCell < 0 || edge.unfilledSide != 0 ||
+        hasTwin == edge.exterior ||
+        (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
+                     result.edges[static_cast<std::size_t>(edge.oppositeEdge)]
+                             .oppositeEdge !=
+                         static_cast<int>(&edge - result.edges.data())))) {
+      return SurfacePhaseFrontResult{true};
+    }
+  }
+  result.succeeded =
+      !result.cells.empty() &&
+      result.cells.size() ==
+          static_cast<std::size_t>(result.gridU * result.gridV);
   return result;
 }
 

@@ -899,7 +899,10 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, edge.advanceSign);
     hash_lattice_state(edge.fromLattice);
     hash_lattice_state(edge.toLattice);
+    hash_combine_i64(seed, edge.filledCell);
+    hash_combine_i64(seed, edge.oppositeEdge);
     hash_combine_i64(seed, edge.unfilledSide);
+    hash_combine_i64(seed, edge.exterior ? 1 : 0);
     hash_combine_i64(seed, edge.sourceComponent);
     hash_combine_i64(seed, edge.sourceSheet);
   }
@@ -912,6 +915,9 @@ std::uint64_t hash_trace_network(
   hash_combine_u64(seed, network.phaseFront.cells.size());
   for (const geometry::SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
     hash_combine_i64(seed, cell.id);
+    hash_combine_i64(seed, cell.sourceComponent);
+    hash_combine_i64(seed, cell.sourceSheet);
+    hash_combine_i64(seed, cell.orientationValidated ? 1 : 0);
     for (const geometry::SurfaceTracePoint &corner : cell.corners) {
       hash_trace_point(seed, corner);
     }
@@ -1612,6 +1618,245 @@ std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
   const int hi = std::max(a, b);
   return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(lo)) << 32u) |
          static_cast<std::uint32_t>(hi);
+}
+
+} // namespace directional::pipeline
+
+namespace directional::pipeline {
+
+struct AuthoritativePhaseFrontMeshResult {
+  bool success = false;
+  int invalidCell = -1;
+  int invalidEdge = -1;
+  std::string failure;
+  geometry::PureQuadMesh mesh;
+};
+
+AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontResult &phaseFront,
+    const std::vector<int> &sourceFaceComponents,
+    const std::vector<int> &sourceFaceSheets) {
+  AuthoritativePhaseFrontMeshResult result;
+  if (!phaseFront.succeeded || phaseFront.gridU <= 0 ||
+      phaseFront.gridV <= 0 || phaseFront.cells.empty()) {
+    result.failure = "MissingAuthoritativePhaseFront";
+    return result;
+  }
+  if (sourceVertices.cols() != 3 || sourceFaces.cols() != 3 ||
+      sourceFaceComponents.size() !=
+          static_cast<std::size_t>(sourceFaces.rows()) ||
+      sourceFaceSheets.size() !=
+          static_cast<std::size_t>(sourceFaces.rows())) {
+    result.failure = "InvalidAuthoritativePhaseFrontSource";
+    return result;
+  }
+
+  result.mesh.sourcePatch = 0;
+  result.mesh.backend = geometry::PureQuadCompletionBackend::ClosedForm;
+  result.mesh.usesCenterFan = false;
+  result.mesh.sourceSideEdgeCounts = {phaseFront.gridU, phaseFront.gridV,
+                                      phaseFront.gridU, phaseFront.gridV};
+  std::map<std::pair<int, int>, int> vertexByLattice;
+  std::vector<Eigen::RowVector3d> positions;
+
+  const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace,
+                                      const int component,
+                                      const int sheet) {
+    geometry::SurfacePoint point;
+    if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
+        !trace.barycentric.allFinite() ||
+        std::abs(trace.barycentric.sum() - 1.0) > 1.0e-8 ||
+        trace.barycentric.minCoeff() < -1.0e-8) {
+      return point;
+    }
+    point.face = trace.face;
+    point.component = component;
+    point.sheet = sheet;
+    point.barycentric = trace.barycentric.transpose();
+    point.position =
+        point.barycentric(0) *
+            sourceVertices.row(sourceFaces(trace.face, 0)).transpose() +
+        point.barycentric(1) *
+            sourceVertices.row(sourceFaces(trace.face, 1)).transpose() +
+        point.barycentric(2) *
+            sourceVertices.row(sourceFaces(trace.face, 2)).transpose();
+    point.squaredDistance = 0.0;
+    return point;
+  };
+
+  const auto append_vertex = [&](const std::pair<int, int> &lattice,
+                                 const geometry::SurfacePoint &point,
+                                 int &outputVertex) {
+    const auto found = vertexByLattice.find(lattice);
+    if (found != vertexByLattice.end()) {
+      outputVertex = found->second;
+      const geometry::SurfacePoint &stored =
+          result.mesh.vertexProvenance[static_cast<std::size_t>(outputVertex)];
+      const double tolerance = 1.0e-9 *
+          std::max({1.0, stored.position.norm(), point.position.norm()});
+      return stored.component == point.component && stored.sheet == point.sheet &&
+             (stored.position - point.position).norm() <= tolerance;
+    }
+    outputVertex = static_cast<int>(positions.size());
+    vertexByLattice.emplace(lattice, outputVertex);
+    positions.push_back(point.position.transpose());
+    result.mesh.vertices.push_back(outputVertex);
+    result.mesh.vertexProvenance.push_back(point);
+    geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = outputVertex;
+    lineage.kind = geometry::PureQuadVertexLineageKind::SourceTriangle;
+    lineage.sourcePoint = point;
+    lineage.sourcePatch = 0;
+    lineage.localVertex = outputVertex;
+    lineage.sourceComponent = point.component;
+    lineage.sourceSheet = point.sheet;
+    result.mesh.vertexLineage.push_back(std::move(lineage));
+    return true;
+  };
+
+  std::set<int> cellIds;
+  for (const geometry::SurfacePhaseFrontCell &cell : phaseFront.cells) {
+    result.invalidCell = cell.id;
+    if (cell.id < 0 || !cellIds.insert(cell.id).second ||
+        !cell.orientationValidated || cell.sourceComponent < 0 ||
+        cell.sourceSheet < 0) {
+      result.failure = "InvalidAuthoritativePhaseFrontCell";
+      return result;
+    }
+    std::vector<int> quad(4, -1);
+    std::array<Eigen::RowVector3d, 4> quadPositions;
+    Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 4; ++corner) {
+      const geometry::SurfaceTracePoint &trace =
+          cell.corners[static_cast<std::size_t>(corner)];
+      const int component =
+          trace.face >= 0 && trace.face < sourceFaces.rows()
+              ? sourceFaceComponents[static_cast<std::size_t>(trace.face)]
+              : -1;
+      const int sheet =
+          trace.face >= 0 && trace.face < sourceFaces.rows()
+              ? sourceFaceSheets[static_cast<std::size_t>(trace.face)]
+              : -1;
+      if (component != cell.sourceComponent || sheet != cell.sourceSheet) {
+        result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
+        return result;
+      }
+      const geometry::SurfacePoint point =
+          make_surface_point(trace, component, sheet);
+      if (!point.valid() || !point.position.allFinite()) {
+        result.failure = "InvalidAuthoritativePhaseFrontCorner";
+        return result;
+      }
+      const Eigen::Vector2i coordinate =
+          cell.lattice[static_cast<std::size_t>(corner)].latticeCoordinate;
+      if (coordinate.x() < 0 || coordinate.x() > phaseFront.gridU ||
+          coordinate.y() < 0 || coordinate.y() > phaseFront.gridV ||
+          !append_vertex({coordinate.x(), coordinate.y()}, point,
+                         quad[static_cast<std::size_t>(corner)])) {
+        result.failure = "AuthoritativePhaseFrontVertexConflict";
+        return result;
+      }
+      quadPositions[static_cast<std::size_t>(corner)] =
+          point.position.transpose();
+      const Eigen::RowVector3d a =
+          sourceVertices.row(sourceFaces(trace.face, 0));
+      const Eigen::RowVector3d b =
+          sourceVertices.row(sourceFaces(trace.face, 1));
+      const Eigen::RowVector3d c =
+          sourceVertices.row(sourceFaces(trace.face, 2));
+      expectedNormal += (b - a).cross(c - a);
+    }
+    std::set<int> uniqueQuad(quad.begin(), quad.end());
+    if (uniqueQuad.size() != 4U || expectedNormal.squaredNorm() <= 1.0e-24) {
+      result.failure = "DegenerateAuthoritativePhaseFrontQuad";
+      return result;
+    }
+    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 4; ++corner) {
+      quadNormal += quadPositions[static_cast<std::size_t>(corner)].cross(
+          quadPositions[static_cast<std::size_t>((corner + 1) % 4)]);
+    }
+    if (!quadNormal.allFinite() || quadNormal.squaredNorm() <= 1.0e-24 ||
+        quadNormal.dot(expectedNormal) <= 0.0) {
+      result.failure = "InvertedAuthoritativePhaseFrontQuad";
+      return result;
+    }
+    const int outputQuad = static_cast<int>(result.mesh.quads.size());
+    result.mesh.quads.push_back(std::move(quad));
+    geometry::PureQuadFaceLineage lineage;
+    lineage.outputQuad = outputQuad;
+    lineage.sourcePatch = 0;
+    lineage.operation = geometry::PureQuadCompletionBackend::ClosedForm;
+    lineage.operationLocalQuad = cell.id;
+    lineage.completionVariant = 0;
+    lineage.boundaryOnly = false;
+    result.mesh.quadLineage.push_back(std::move(lineage));
+  }
+
+  if (result.mesh.quads.size() != phaseFront.cells.size() ||
+      positions.size() !=
+          static_cast<std::size_t>((phaseFront.gridU + 1) *
+                                   (phaseFront.gridV + 1))) {
+    result.failure = "IncompleteAuthoritativePhaseFrontMaterialization";
+    return result;
+  }
+  result.mesh.vertexPositions.resize(static_cast<int>(positions.size()), 3);
+  for (int vertex = 0; vertex < static_cast<int>(positions.size()); ++vertex) {
+    result.mesh.vertexPositions.row(vertex) =
+        positions[static_cast<std::size_t>(vertex)];
+  }
+
+  const auto boundary_vertex = [&](const int u, const int v) {
+    const auto found = vertexByLattice.find({u, v});
+    return found == vertexByLattice.end() ? -1 : found->second;
+  };
+  std::vector<int> boundary;
+  for (int u = 0; u <= phaseFront.gridU; ++u) {
+    boundary.push_back(boundary_vertex(u, 0));
+  }
+  for (int v = 1; v <= phaseFront.gridV; ++v) {
+    boundary.push_back(boundary_vertex(phaseFront.gridU, v));
+  }
+  for (int u = phaseFront.gridU - 1; u >= 0; --u) {
+    boundary.push_back(boundary_vertex(u, phaseFront.gridV));
+  }
+  for (int v = phaseFront.gridV - 1; v > 0; --v) {
+    boundary.push_back(boundary_vertex(0, v));
+  }
+  if (boundary.empty() ||
+      std::any_of(boundary.begin(), boundary.end(),
+                  [](const int vertex) { return vertex < 0; }) ||
+      std::set<int>(boundary.begin(), boundary.end()).size() !=
+          boundary.size()) {
+    result.failure = "InvalidAuthoritativePhaseFrontBoundary";
+    return result;
+  }
+  result.mesh.boundaryVertices = boundary;
+  result.mesh.boundaryLoops = {boundary};
+
+  for (int edgeIndex = 0;
+       edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {
+    result.invalidEdge = edgeIndex;
+    const geometry::SurfaceFrontEdge &edge =
+        phaseFront.edges[static_cast<std::size_t>(edgeIndex)];
+    const bool hasOpposite = edge.oppositeEdge >= 0;
+    if (edge.filledCell < 0 || edge.unfilledSide != 0 ||
+        hasOpposite == edge.exterior ||
+        (hasOpposite &&
+         (edge.oppositeEdge >= static_cast<int>(phaseFront.edges.size()) ||
+          phaseFront.edges[static_cast<std::size_t>(edge.oppositeEdge)]
+                  .oppositeEdge != edgeIndex))) {
+      result.failure = "InvalidAuthoritativePhaseFrontOwnership";
+      return result;
+    }
+  }
+
+  result.invalidCell = -1;
+  result.invalidEdge = -1;
+  result.success = true;
+  return result;
 }
 
 } // namespace directional::pipeline
@@ -4419,6 +4664,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             targetSize.targetSize, tracingOptions);
     const bool useAuthoritativePhaseFront =
         traceNetwork.phaseFront.succeeded;
+    AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;
+    if (useAuthoritativePhaseFront) {
+      authoritativePhaseFrontMesh = build_authoritative_phase_front_mesh(
+          meshWhole.V, meshWhole.F, traceNetwork.phaseFront,
+          sourceSurfaceLabels.componentByFace,
+          sourceSurfaceLabels.localSheetByFace);
+      if (!authoritativePhaseFrontMesh.success) {
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "tracing/phase-front-materialization";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            authoritativePhaseFrontMesh.failure;
+        result.diagnostics.surfaceCellFirstInvalidProducerCell =
+            authoritativePhaseFrontMesh.invalidCell;
+        result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
+            authoritativePhaseFrontMesh.invalidEdge;
+        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                  "tracing");
+      }
+    }
     std::size_t traceSegmentCount = 0U;
     for (const geometry::SurfaceTraceResult &trace : traceNetwork.traces) {
       traceSegmentCount += trace.segments.size();
@@ -4949,10 +5213,24 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
     }
     completionOptions.sourceHardFeatureEdges = &hardFeatureRailEdges;
-    geometry::SurfaceCellComplexCompletionResult completionResult =
-        geometry::complete_surface_cell_complex(
-            std::move(completionComplex), meshWhole.V, meshWhole.F,
-            completionOptions);
+    geometry::SurfaceCellComplexCompletionResult completionResult;
+    if (useAuthoritativePhaseFront) {
+      completionResult.success = true;
+      completionResult.attemptedPatches =
+          static_cast<int>(authoritativePhaseFrontMesh.mesh.quads.size());
+      completionResult.failedPatches = 0;
+      completionResult.completedPatches = {authoritativePhaseFrontMesh.mesh};
+      completionResult.assembly.success = true;
+      completionResult.assembly.mesh = authoritativePhaseFrontMesh.mesh;
+      completionResult.assembly.connectedComponents = 1;
+      completionResult.assembly.boundaryLoopCount =
+          static_cast<int>(authoritativePhaseFrontMesh.mesh.boundaryLoops.size());
+      completionResult.assembly.eulerCharacteristic = 1;
+    } else {
+      completionResult = geometry::complete_surface_cell_complex(
+          std::move(completionComplex), meshWhole.V, meshWhole.F,
+          completionOptions);
+    }
     result.surfaceCellContext.completionOddCellsBeforeRepair =
         completionResult.parityOddCellsBefore;
     result.surfaceCellContext.completionOddCellsAfterRepair =
@@ -5306,7 +5584,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     geometry::PureQuadMesh aggregateLineageMesh;
     const bool completionSucceededForRecovery = completionResult.success;
     bool completionOnlyReusesSourceTrianglePairBoundaries = false;
-    if (completionSucceededForRecovery) {
+    if (useAuthoritativePhaseFront) {
+      aggregateLineageMesh = authoritativePhaseFrontMesh.mesh;
+      result.surfaceCellContext.completedPatches = {aggregateLineageMesh};
+    } else if (completionSucceededForRecovery) {
       aggregateLineageMesh = retainIntermediateGeometry
           ? completionResult.assembly.mesh
           : std::move(completionResult.assembly.mesh);
@@ -5752,7 +6033,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       constraints.outputQuadSourceFaces.assign(
           static_cast<std::size_t>(completedQuads.rows()), -1);
       constraints.constrainVerticesToProvenanceEntities =
-          result.surfaceCellContext.sourceGridRecoveryUsed;
+          result.surfaceCellContext.sourceGridRecoveryUsed ||
+          useAuthoritativePhaseFront;
       // PureQuadFaceLineage::sourcePatch is an arrangement patch identity,
       // not a source-triangle row. Leaving these entries unset makes the
       // optimizer derive each quad's exact compatible source chart from its
@@ -5815,7 +6097,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       constraints.vertexProvenance = completedProvenance;
       fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
                                          completedProvenance, constraints);
-      if (result.surfaceCellContext.sourceGridRecoveryUsed &&
+      if ((result.surfaceCellContext.sourceGridRecoveryUsed ||
+           useAuthoritativePhaseFront) &&
           !aggregateLineageMesh.boundaryLoops.empty()) {
         constraints.authoritativeBoundaryEdges.clear();
         constraints.authoritativeBoundaryLoops =

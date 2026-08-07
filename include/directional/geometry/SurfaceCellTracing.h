@@ -180,7 +180,10 @@ struct SurfaceFrontEdge {
   int advanceSign = 1;
   LocalLatticeState fromLattice;
   LocalLatticeState toLattice;
-  int unfilledSide = 0;
+  int filledCell = -1;
+  int oppositeEdge = -1;
+  int unfilledSide = 1;
+  bool exterior = false;
   int sourceComponent = -1;
   int sourceSheet = -1;
 };
@@ -193,6 +196,9 @@ struct SurfaceFrontEvent {
 
 struct SurfacePhaseFrontCell {
   int id = -1;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  bool orientationValidated = false;
   std::array<SurfaceTracePoint, 4> corners;
   std::array<LocalLatticeState, 4> lattice;
   std::array<std::vector<SurfaceTraceSegment>, 4> boundaryPaths;
