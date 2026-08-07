@@ -10,7 +10,7 @@ Always advance the earliest incomplete or regressed design gate. Every implement
 
 ## Producer authority model
 
-The bounded producer-selection replacement is now implemented at compile time. An authoritative producer returns one of three semantically distinct outcomes:
+An authoritative producer returns one of three semantically distinct outcomes:
 
 ```text
 NotApplicable
@@ -24,7 +24,7 @@ Rejected
 
 Applicability is decided from general topology/field state before authoritative metadata execution, never from fixture identity or from whether a producer happened to fail.
 
-The implementation now prevents generic producer substitution after `Rejected`, preserves typed rejection at the tracing producer boundary, serializes/hashes producer disposition, and lets only `NotApplicable` continue to a separately selected producer. Runtime verification of these semantics is pending the next artifact-only turn.
+The implementation prevents generic producer substitution after `Rejected`, preserves typed rejection at the tracing producer boundary, serializes/hashes producer disposition, and lets only `NotApplicable` continue to a separately selected producer.
 
 ## Authoritative phase/front representation
 
@@ -32,58 +32,58 @@ The producer carries first-class phase, integer lattice coordinate, branch rotat
 
 A source-vertex crossing is an ordered incident-face fan, never a positional jump. Every crossed canonical source edge is recorded and transported through strict reciprocal transition logic. Ambiguous, disconnected, repeated, non-manifold, nonreciprocal, missing-provenance, or branch-mismatched routes fail closed.
 
-Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`, matching the tracing-option contract. This consistency is now implemented compile-time but awaits runtime verification.
+Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`, matching the tracing-option contract.
 
 An authoritative cell has four ordered source-attached corners/sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, exact component/sheet ownership, and complete route provenance. One accepted cell maps to one quad.
 
 ## Ordered gates
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** **active; authoritative producer-boundary implementation compiled, runtime verification pending.**
-3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 and close-sheet failure.
+2. **G1 — Uniform phase-front plane:** **passed.**
+3. **G2 — Cross-chart and close-sheet propagation:** **active.** Multi-face seam is proven; disconnected close sheets are the earliest failing direct fixture.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Latest executed runtime authority
+## Gate 1 runtime closure authority
 
-No runtime was executed in the current Code + Build turn. The latest artifact-tested matrix remains:
+Artifact-only validation of source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3` using artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031` established:
 
-| Fixture | Result | Traces | Arrangement | Output quads |
-|---|---:|---:|---:|---:|
-| plane | fail | 106 | 9 | 0 |
-| seam | **pass** | 256 | 65 | 64 |
-| close sheets | fail | 158 | 0 | 0 |
-| cylinder | fail | 732 | 0 | 0 |
-| bunny | fail | 80,862 | 0 | 0 |
-| vase | fail | 116,922 | 0 | 0 |
+| Fixture | Result | Producer | Traces | Arrangement | Completed quads | Output |
+|---|---:|---|---:|---:|---:|---|
+| plane | **pass** | `Produced` | 352 | 65 | 64 | `CompletedSurfaceCells` |
+| seam | **pass** | `Produced` | 256 | 65 | 64 | `CompletedSurfaceCells` |
+| close sheets | fail | `NotApplicable` | 158 | 0 | 0 | none |
+| cylinder | fail | `NotApplicable` | 732 | 0 | 0 | none |
+| bunny | fail | `NotApplicable` | 80,862 | 0 | 0 | none |
+| vase | timeout/fail | not fully observed | — | — | — | none |
 
-Direct acceptance remains 1/6. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, no fallback/recovery, hash `a8972efd7c4900a4`.
+Plane and seam both have 81 provenance/output vertices, 64 pure quads, zero strict validation failures, no fallback/recovery, and deterministic output hashes across three independent benchmark processes. Plane hash suffix is `730caeae49ec872c`; seam remains `a8972efd7c4900a4`.
 
-## Latest compile-only authority
+The former plane 106/9/12 generic failing signature is eliminated. G1 is closed.
 
-- source commit: `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
-- payload cleanup: `bcf934d34e9a15f5d0929628ffd26f6833643214`;
-- patch SHA-256: `a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef`;
-- approved targets: 7/7;
-- compile/link actions: 111/111;
-- artifact SHA-256: `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
-- internal checksums: 44/44;
-- runtime claims from current turn: none.
+## Active G2 contract
 
-The source also contains an exact committed `plane.obj` + `plane.rawfield` production-route regression. It compiled but was not executed.
+The authoritative uniform phase/front producer must operate correctly across multiple disconnected or distinct local sheets that may be arbitrarily close in world space.
+
+Required invariants:
+
+- source component and local-sheet identity partition producer state before front construction;
+- world-space distance, nearest projection, or overlap may not join unrelated sheets;
+- phase, ownership, route, capture, and collision state are sheet-local unless exact source topology establishes a connection;
+- each authoritative sheet uses the same proven ordinary-edge and ordered source-vertex-fan transport contracts independently;
+- concatenating independent authoritative sheet outputs preserves source provenance and produces one accepted cell → one quad;
+- source component/local-sheet ordering or source-face row ordering cannot change structural output except for canonical renumbering;
+- failure of one applicable sheet is `Rejected` for the selected authoritative producer, never silent generic substitution for that sheet;
+- periodic domains such as the cylinder remain outside G2 and may remain `NotApplicable` until G3 holonomy support.
+
+G2 closes only when the close-sheet fixture becomes direct deterministic valid `Produced` output with no cross-sheet provenance/merge violation while plane and seam remain unchanged mandatory regressions.
 
 ## Next implementation authority
 
-Use `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md` against the exact artifact above.
-
-Acceptance hierarchy:
-
-1. Gate 1 closure: plane is `Produced` with direct deterministic valid pure-quads and seam retains direct success.
-2. Minimum architecture proof: plane is explicit immutable `Rejected`, stops at tracing, and the old 106/9/12 generic substitution disappears. G1 remains red.
-3. No progress: `NotApplicable`/generic fall-through persists, rejection is overwritten, seam regresses, or acceptance is weakened.
+The next turn is Code + Build and must address only the smallest general G2 producer extension necessary to satisfy the contract above. It must not broaden into cylinder holonomy, singularity topology, adaptive transitions, bunny/vase performance, or downstream completion/simplification cleanup.
 
 ## Non-negotiable prohibitions
 
