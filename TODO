@@ -5,50 +5,51 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 plane live-transition verification**.
+- Active gate: **G1 producer architecture design review**.
+- Earliest failing fixture: `plane__surface_cells`.
 - Proven retained sub-contract: G2 multi-face seam direct success.
-- Completed turn: Gate 1 live-transition Code + Build.
-- Next turn: artifact-only testing using `.agents/Directional/Gate_1_Live_Transition_Artifact_Only_Test_Benchmark_Plan.md`.
+- Completed turn: Gate 1 live-transition artifact-only Test + Benchmark.
+- Next turn: `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact build authority
+## Exact tested authority
 
 - source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
-- cleanup commit: `591ada601843237a709d2d6e133a438ca403f042`;
-- patch SHA-256: `b45802f0ede3cfd490fae5453ad60041e991a9f5ba2715e53566fd8db0fb79ba`;
-- build artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
-- internal checksums: 45/45;
-- approved targets: 7/7;
-- five executables, two project static libraries, 27 fixture/input files;
-- generated project binaries executed: none.
+- payload cleanup: `591ada601843237a709d2d6e133a438ca403f042`;
+- artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
+- artifact checksums: 45/45;
+- evidence SHA-256: `99a4922767d567830f202b440504f2b48d07fdb02bb117668baf846e7eeb9b64`;
+- evidence files covered by checksums: 118;
+- no rebuild or source/test/fixture/validator edit during the artifact-only turn.
 
-## Implemented contract
+## Runtime authority
 
-- typed first phase-front rejection with source topology context;
-- exact shared-vertex classification;
-- unique ordered manifold source-vertex fan traversal;
-- every fan edge transported through authoritative reciprocal transition logic;
-- complete ordered source-edge provenance, hashing, and memory accounting;
-- ordinary shared-edge route unchanged;
-- typed fail-closed behavior for malformed or ambiguous topology/metadata.
+- explicit source-vertex/topology contract tests: **4/4**;
+- direct acceptance: **1/6**;
+- plane: fail, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures, no output;
+- seam: pass, 81 vertices, 64 pure quads, output hash `a8972efd7c4900a4`, zero validation failures;
+- close sheets: fail, 158 traces, zero cells;
+- cylinder: fail, 732 traces, zero cells;
+- bunny: fail, 80,862 traces, zero cells;
+- vase: fail, 116,922 traces, zero cells;
+- remaining producer: 78/79;
+- completion: 154/164;
+- validation: 60/60;
+- compiled API: 8/8;
+- non-overlapping total: **305/321**.
 
-## Last runtime authority
+All required benchmark cases were structurally deterministic. The plane tracing structural hash changed, but the constructive 106/9/12 signature did not; this is not material progress.
 
-- plane: deterministic 106 traces, 9 arrangement cells, 12 completion candidates, no output;
-- seam: deterministic 64 direct pure quads, hash `a8972efd7c4900a4`;
-- close sheets, cylinder, bunny, and vase: deterministic direct failures before output.
+## Mandatory review checklist
 
-The new compile-only artifact has not been executed.
+- [ ] compare successful Gate 1 `aea10409...` with Gate 2 and current producer control flow;
+- [ ] trace exact committed `plane.obj` / `plane.rawfield` through production target size, source labels, finalized cross-field metadata, and tracing options;
+- [ ] explain why isolated source-vertex contract tests pass while the production plane does not enter direct phase-front output;
+- [ ] determine whether phase-front non-success may legally substitute the generic tracing/completion producer path;
+- [ ] audit loss/overwrite of typed phase-front failure authority;
+- [ ] choose one bounded architectural correction or bounded producer replacement proof;
+- [ ] produce exactly one next Code + Build plan;
+- [ ] do not make another local predicate repair during review.
 
-## Next artifact-only checklist
-
-- [ ] verify outer artifact SHA-256 and all 45 internal checksums;
-- [ ] run the new source-vertex contract tests without rewriting them;
-- [ ] run plane first and capture typed failure context if still red;
-- [ ] run seam second and preserve reciprocal quarter-turn direct success;
-- [ ] run close sheets, cylinder, bunny, and vase;
-- [ ] run non-overlapping default suites and bounded determinism processes;
-- [ ] perform no rebuild or source/test/fixture/validator edit.
-
-If Gate 1 does not materially advance beyond 106/9/12, the next turn is a design review or bounded producer replacement proof. P5 remains open.
+GitHub workflows are available again for future authorized Code + Build compilation/artifact creation. P5 remains open.
