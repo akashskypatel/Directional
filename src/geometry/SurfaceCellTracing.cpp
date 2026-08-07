@@ -2567,6 +2567,11 @@ SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
   segment.sign = -segment.sign;
   segment.railSideSign = -segment.railSideSign;
   segment.matching = (4 - (segment.matching % 4) + 4) % 4;
+  std::reverse(segment.transitionSourceEdges.begin(),
+               segment.transitionSourceEdges.end());
+  segment.transitionSourceEdge = segment.transitionSourceEdges.empty()
+                                     ? -1
+                                     : segment.transitionSourceEdges.back();
   return segment;
 }
 
@@ -3772,6 +3777,25 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 namespace {
 
+void set_phase_front_failure(
+    SurfacePhaseFrontFailure &failure,
+    const SurfacePhaseFrontFailureReason reason, const int cell = -1,
+    const int side = -1, const int face = -1, const int targetFace = -1,
+    const int sourceVertex = -1, const int sourceEdge = -1,
+    const int secondarySourceEdge = -1) {
+  if (failure.reason != SurfacePhaseFrontFailureReason::None) {
+    return;
+  }
+  failure.reason = reason;
+  failure.cell = cell;
+  failure.side = side;
+  failure.face = face;
+  failure.targetFace = targetFace;
+  failure.sourceVertex = sourceVertex;
+  failure.sourceEdge = sourceEdge;
+  failure.secondarySourceEdge = secondarySourceEdge;
+}
+
 struct UniformPhaseFrame {
   Eigen::RowVector3d origin = Eigen::RowVector3d::Zero();
   Eigen::RowVector3d axisU = Eigen::RowVector3d::Zero();
@@ -3852,25 +3876,35 @@ bool point_on_source(const Eigen::MatrixXd &vertices,
   return false;
 }
 
+bool source_edge_provenance(
+    std::uint64_t edgeKey,
+    const std::map<std::uint64_t, int> &matchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge);
+
 bool build_planar_phase_frame(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
-    UniformPhaseFrame &frame) {
+    SurfacePhaseFrontFailure &failure, UniformPhaseFrame &frame) {
   if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
       faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows()) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
     return false;
   }
   frame.origin = row3(vertices, faces(0, 0));
   frame.normal = face_normal(vertices, faces, 0);
   if (!(frame.normal.norm() > 0.0)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
     return false;
   }
   frame.axisU = project_tangent(faceAxisX.row(0), frame.normal);
   frame.axisV = project_tangent(faceAxisY.row(0), frame.normal);
   frame.axisV -= frame.axisV.dot(frame.axisU) * frame.axisU;
   if (!(frame.axisU.norm() > 0.0) || !(frame.axisV.norm() > 0.0)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
     return false;
   }
   frame.axisU.normalize();
@@ -3887,6 +3921,7 @@ bool build_planar_phase_frame(
   for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
     if (std::abs((row3(vertices, vertex) - frame.origin).dot(frame.normal)) >
         planeTolerance) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonPlanarSource, -1, -1, -1, -1, vertex);
       return false;
     }
   }
@@ -3895,6 +3930,7 @@ bool build_planar_phase_frame(
   for (int face = 0; face < faces.rows(); ++face) {
     const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
     if (normal.dot(frame.normal) < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InconsistentFaceOrientation, -1, -1, face);
       return false;
     }
     int bestBranch = -1;
@@ -3912,6 +3948,7 @@ bool build_planar_phase_frame(
       }
     }
     if (bestBranch < 0 || bestAlignment < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::IncompatibleFaceBranch, -1, -1, face);
       return false;
     }
     int vFamily = 0;
@@ -3920,6 +3957,7 @@ bool build_planar_phase_frame(
     const Eigen::RowVector3d localV = project_tangent(
         axis_for_family(faceAxisX, faceAxisY, face, vFamily, vSign), normal);
     if (localV.dot(frame.axisV) < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::IncompatibleSecondaryBranch, -1, -1, face);
       return false;
     }
     frame.faceBranchRotation[static_cast<std::size_t>(face)] = bestBranch;
@@ -3946,6 +3984,7 @@ bool build_planar_phase_frame(
           ? edge_transition_lookup(*effectiveTransitions)
           : EdgeTransitionLookup{};
   if (effectiveTransitions != nullptr && transitionLookup.duplicate) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata);
     return false;
   }
 
@@ -3979,6 +4018,9 @@ bool build_planar_phase_frame(
       if (!forward.valid ||
           branch_from_family_sign(forward.family, forward.sign) !=
               expectedTargetBranch) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+        set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition, -1, -1, first, second, -1, sourceEdge);
         return false;
       }
 
@@ -3998,6 +4040,9 @@ bool build_planar_phase_frame(
           branch_from_family_sign(reverse.family, reverse.sign) !=
               sourceBranch ||
           normalized_branch(forward.matching + reverse.matching) != 0) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+        set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition, -1, -1, first, second, -1, sourceEdge);
         return false;
       }
     }
@@ -4046,6 +4091,7 @@ bool build_planar_phase_frame(
   const double width = frame.maxU - frame.minU;
   const double height = frame.maxV - frame.minV;
   if (!(width > planeTolerance) || !(height > planeTolerance)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain);
     return false;
   }
 
@@ -4062,6 +4108,7 @@ bool build_planar_phase_frame(
   }
   if (std::abs(projectedArea - width * height) >
       1.0e-8 * std::max(1.0, width * height)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain);
     return false;
   }
 
@@ -4079,6 +4126,7 @@ bool build_planar_phase_frame(
       }
     }
     if (localEdge < 0) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain, -1, -1, face);
       return false;
     }
     const Eigen::Vector2d a = phase_uv(
@@ -4096,9 +4144,221 @@ bool build_planar_phase_frame(
         (std::abs(a.y() - frame.maxV) <= boundaryTolerance &&
          std::abs(b.y() - frame.maxV) <= boundaryTolerance);
     if (!onU && !onV) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain, -1, -1, face);
       return false;
     }
   }
+  return true;
+}
+
+enum class OrderedVertexFanStatus : int {
+  Found = 0,
+  Disconnected = 1,
+  NonManifold = 2,
+  Ambiguous = 3,
+};
+
+struct OrderedVertexFanResult {
+  OrderedVertexFanStatus status = OrderedVertexFanStatus::Disconnected;
+  std::vector<VertexPathStep> steps;
+};
+
+int shared_transition_vertex(const Eigen::MatrixXi &faces,
+                             const SurfaceTraceSegment &previous,
+                             const SurfaceTraceSegment &current) {
+  constexpr double tolerance = 1.0e-10;
+  int previousVertex = -1;
+  int currentVertex = -1;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (previous.endBarycentric[corner] >= 1.0 - tolerance) {
+      if (previousVertex >= 0) {
+        return -1;
+      }
+      previousVertex = faces(previous.face, corner);
+    }
+    if (current.startBarycentric[corner] >= 1.0 - tolerance) {
+      if (currentVertex >= 0) {
+        return -1;
+      }
+      currentVertex = faces(current.face, corner);
+    }
+  }
+  return previousVertex >= 0 && previousVertex == currentVertex
+             ? previousVertex
+             : -1;
+}
+
+int directed_face_side(const Eigen::MatrixXd &vertices,
+                       const Eigen::MatrixXi &faces, const int face,
+                       const int sourceVertex,
+                       const Eigen::RowVector3d &direction,
+                       const Eigen::RowVector3d &normal,
+                       const double tolerance) {
+  bool positive = false;
+  bool negative = false;
+  const Eigen::RowVector3d origin = row3(vertices, sourceVertex);
+  for (int corner = 0; corner < 3; ++corner) {
+    const int vertex = faces(face, corner);
+    if (vertex == sourceVertex) {
+      continue;
+    }
+    const double side = normal.dot(cross3(direction, row3(vertices, vertex) - origin));
+    positive = positive || side > tolerance;
+    negative = negative || side < -tolerance;
+  }
+  if (positive && negative) {
+    return 2;
+  }
+  if (positive) {
+    return 1;
+  }
+  if (negative) {
+    return -1;
+  }
+  return 0;
+}
+
+OrderedVertexFanResult ordered_vertex_fan_path(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
+    const int sourceVertex, const int sourceFace, const int targetFace,
+    const Eigen::RowVector3d &segmentDirection,
+    const Eigen::RowVector3d &sourceNormal) {
+  OrderedVertexFanResult result;
+  if (sourceVertex < 0 || sourceVertex >= vertices.rows() ||
+      sourceFace < 0 || sourceFace >= faces.rows() || targetFace < 0 ||
+      targetFace >= faces.rows() || sourceFace == targetFace ||
+      segmentDirection.squaredNorm() == 0.0 ||
+      sourceNormal.squaredNorm() == 0.0) {
+    return result;
+  }
+  const auto adjacency = vertex_face_adjacency(sourceVertex, edgeFaces);
+  const auto sourceFound = adjacency.find(sourceFace);
+  const auto targetFound = adjacency.find(targetFace);
+  if (sourceFound == adjacency.end() || targetFound == adjacency.end()) {
+    return result;
+  }
+  for (const auto &[face, neighbors] : adjacency) {
+    (void)face;
+    std::set<std::pair<int, std::uint64_t>> unique;
+    for (const VertexPathStep &step : neighbors) {
+      unique.emplace(step.face, step.edgeKey);
+    }
+    if (unique.size() != neighbors.size() || neighbors.size() > 2U) {
+      result.status = OrderedVertexFanStatus::NonManifold;
+      return result;
+    }
+  }
+
+  std::vector<std::vector<VertexPathStep>> candidates;
+  for (const VertexPathStep &first : sourceFound->second) {
+    std::vector<VertexPathStep> path;
+    std::set<int> visited{sourceFace};
+    int previous = sourceFace;
+    VertexPathStep current = first;
+    bool valid = true;
+    while (true) {
+      if (!visited.insert(current.face).second) {
+        valid = false;
+        break;
+      }
+      path.push_back(current);
+      if (current.face == targetFace) {
+        break;
+      }
+      const auto found = adjacency.find(current.face);
+      if (found == adjacency.end()) {
+        valid = false;
+        break;
+      }
+      std::vector<VertexPathStep> forward;
+      for (const VertexPathStep &candidate : found->second) {
+        if (candidate.face != previous) {
+          forward.push_back(candidate);
+        }
+      }
+      if (forward.size() != 1U) {
+        valid = false;
+        break;
+      }
+      previous = current.face;
+      current = forward.front();
+    }
+    if (valid && !path.empty() && path.back().face == targetFace) {
+      candidates.push_back(std::move(path));
+    }
+  }
+  if (candidates.empty()) {
+    return result;
+  }
+
+  const double scale = std::max(1.0, segmentDirection.norm());
+  const double tolerance = 1.0e-12 * scale;
+  const int sourceSide = directed_face_side(
+      vertices, faces, sourceFace, sourceVertex, segmentDirection,
+      sourceNormal, tolerance);
+  const int targetSide = directed_face_side(
+      vertices, faces, targetFace, sourceVertex, segmentDirection,
+      sourceNormal, tolerance);
+  if (sourceSide == 2 || targetSide == 2 || sourceSide == 0 ||
+      targetSide == 0 || sourceSide != targetSide) {
+    result.status = OrderedVertexFanStatus::Ambiguous;
+    return result;
+  }
+
+  std::vector<std::vector<VertexPathStep>> sideCompatible;
+  for (const auto &path : candidates) {
+    bool compatible = true;
+    int face = sourceFace;
+    if (directed_face_side(vertices, faces, face, sourceVertex,
+                           segmentDirection, sourceNormal, tolerance) !=
+        sourceSide) {
+      compatible = false;
+    }
+    for (const VertexPathStep &step : path) {
+      const int side = directed_face_side(vertices, faces, step.face,
+                                          sourceVertex, segmentDirection,
+                                          sourceNormal, tolerance);
+      if (side == 2 || (side != 0 && side != sourceSide)) {
+        compatible = false;
+        break;
+      }
+      face = step.face;
+    }
+    if (compatible && face == targetFace) {
+      sideCompatible.push_back(path);
+    }
+  }
+  if (sideCompatible.size() != 1U) {
+    result.status = sideCompatible.empty() ? OrderedVertexFanStatus::Disconnected
+                                           : OrderedVertexFanStatus::Ambiguous;
+    return result;
+  }
+  result.status = OrderedVertexFanStatus::Found;
+  result.steps = std::move(sideCompatible.front());
+  return result;
+}
+
+bool source_edge_provenance(
+    const std::uint64_t edgeKey,
+    const std::map<std::uint64_t, int> &matchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge) {
+  sourceEdge = -1;
+  if (edgeTransitions != nullptr) {
+    const auto found = transitionLookup.byEdge.find(edgeKey);
+    if (found == transitionLookup.byEdge.end() || found->second.sourceEdge < 0) {
+      return false;
+    }
+    sourceEdge = found->second.sourceEdge;
+    return true;
+  }
+  const auto found = matchingIndices.find(edgeKey);
+  if (found == matchingIndices.end() || found->second < 0) {
+    return false;
+  }
+  sourceEdge = found->second;
   return true;
 }
 
@@ -4109,6 +4369,8 @@ bool segment_on_source(
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    const SurfaceCellTracingOptions &options, const int cellId,
+    const int sideId, SurfacePhaseFrontFailure &failure,
     std::vector<SurfaceTraceSegment> &segments) {
   struct Interval {
     double begin = 0.0;
@@ -4176,11 +4438,19 @@ bool segment_on_source(
         selectedFace = interval.face;
       }
     }
-    if (selectedFace < 0 ||
-        selectedFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
+    if (selectedFace < 0) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::MissingSegmentCoverage,
+                              cellId, sideId);
+      return false;
+    }
+    if (selectedFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
         frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] < 0 ||
         selectedFace >= static_cast<int>(frame.faceChart.size()) ||
         frame.faceChart[static_cast<std::size_t>(selectedFace)] < 0) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::MissingFaceState,
+                              cellId, sideId, selectedFace);
       return false;
     }
     const Eigen::Vector2d uv0 = start + low * (end - start);
@@ -4191,6 +4461,9 @@ bool segment_on_source(
                                   bary0) ||
         !face_barycentric_from_uv(vertices, faces, frame, selectedFace, uv1,
                                   bary1)) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::PointProjectionFailure,
+                              cellId, sideId, selectedFace);
       return false;
     }
     for (int corner = 0; corner < 3; ++corner) {
@@ -4224,9 +4497,12 @@ bool segment_on_source(
     segment.sign = sign;
     segment.sourceChart =
         frame.faceChart[static_cast<std::size_t>(selectedFace)];
-    segments.push_back(segment);
+    segments.push_back(std::move(segment));
   }
   if (segments.empty()) {
+    set_phase_front_failure(failure,
+                            SurfacePhaseFrontFailureReason::MissingSegmentCoverage,
+                            cellId, sideId);
     return false;
   }
 
@@ -4234,11 +4510,9 @@ bool segment_on_source(
   const auto matchingIndices = edge_matching_indices(incident);
   const bool hasEdgeTransitions =
       edgeTransitions != nullptr && !edgeTransitions->empty();
-  const bool hasEdgeMatching =
-      edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEdgeMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
   const bool hasEdgeEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
-  const auto *effectiveTransitions =
-      hasEdgeTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveTransitions = hasEdgeTransitions ? edgeTransitions : nullptr;
   const auto *effectiveMatching = hasEdgeMatching ? edgeMatching : nullptr;
   const auto *effectiveEffort = hasEdgeEffort ? edgeEffort : nullptr;
   const EdgeTransitionLookup transitionLookup =
@@ -4246,59 +4520,145 @@ bool segment_on_source(
           ? edge_transition_lookup(*effectiveTransitions)
           : EdgeTransitionLookup{};
   if (effectiveTransitions != nullptr && transitionLookup.duplicate) {
+    set_phase_front_failure(
+        failure, SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata,
+        cellId, sideId);
     return false;
   }
+  const Eigen::RowVector3d segmentDirection =
+      (end.x() - start.x()) * frame.axisU +
+      (end.y() - start.y()) * frame.axisV;
   for (std::size_t index = 1; index < segments.size(); ++index) {
     SurfaceTraceSegment &previous = segments[index - 1U];
     SurfaceTraceSegment &current = segments[index];
+    std::vector<VertexPathStep> route;
     std::uint64_t sharedKey = 0;
     int previousEdge = -1;
     int currentEdge = -1;
     for (int firstEdge = 0; firstEdge < 3 && previousEdge < 0; ++firstEdge) {
-      const std::uint64_t firstKey =
-          local_edge_key(faces, previous.face, firstEdge);
+      const std::uint64_t firstKey = local_edge_key(faces, previous.face, firstEdge);
       for (int secondEdge = 0; secondEdge < 3; ++secondEdge) {
         if (firstKey == local_edge_key(faces, current.face, secondEdge)) {
           sharedKey = firstKey;
           previousEdge = firstEdge;
           currentEdge = secondEdge;
+          route.push_back({current.face, sharedKey});
           break;
         }
       }
     }
-    if (previousEdge < 0 || currentEdge < 0) {
-      return false;
+
+    int sourceVertex = -1;
+    if (route.empty()) {
+      sourceVertex = shared_transition_vertex(faces, previous, current);
+      if (sourceVertex < 0) {
+        set_phase_front_failure(
+            failure,
+            SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment,
+            cellId, sideId, previous.face, current.face);
+        return false;
+      }
+      const OrderedVertexFanResult fan = ordered_vertex_fan_path(
+          vertices, faces, incident, sourceVertex, previous.face, current.face,
+          segmentDirection, frame.normal);
+      if (fan.status != OrderedVertexFanStatus::Found) {
+        const auto reason =
+            fan.status == OrderedVertexFanStatus::NonManifold
+                ? SurfacePhaseFrontFailureReason::NonManifoldVertexFan
+                : fan.status == OrderedVertexFanStatus::Ambiguous
+                      ? SurfacePhaseFrontFailureReason::AmbiguousVertexFan
+                      : SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment;
+        set_phase_front_failure(failure, reason, cellId, sideId, previous.face,
+                                current.face, sourceVertex);
+        return false;
+      }
+      route = fan.steps;
+      previousEdge = local_edge_for_key(faces, previous.face, route.front().edgeKey);
+      currentEdge = local_edge_for_key(faces, current.face, route.back().edgeKey);
+      if (previousEdge < 0 || currentEdge < 0) {
+        set_phase_front_failure(
+            failure,
+            SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment,
+            cellId, sideId, previous.face, current.face, sourceVertex);
+        return false;
+      }
     }
-    const Eigen::RowVector3d sourceDirection = project_tangent(
-        axis_for_family(faceAxisX, faceAxisY, previous.face, previous.family,
-                        previous.sign),
-        face_normal(vertices, faces, previous.face));
-    const BranchTransitionResult transition = resolve_branch_transition(
-        vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
-        transitionLookup, sharedKey, previous.face, current.face,
-        previous.family, previous.sign, sourceDirection, effectiveMatching,
-        effectiveEffort, effectiveTransitions);
-    if (!transition.valid || transition.family != current.family ||
-        transition.sign != current.sign) {
+
+    int transitFace = previous.face;
+    int transitFamily = previous.family;
+    int transitSign = previous.sign;
+    Eigen::RowVector3d transitDirection = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, transitFace, transitFamily,
+                        transitSign),
+        face_normal(vertices, faces, transitFace));
+    int totalMatching = 0;
+    double totalEffort = 0.0;
+    std::vector<int> sourceEdges;
+    sourceEdges.reserve(route.size());
+    for (const VertexPathStep &step : route) {
+      if (!source_faces_compatible(options, transitFace, step.face) ||
+          options.hardFeatureEdges.count(step.edgeKey) != 0 ||
+          options.reliefBarrierEdges.count(step.edgeKey) != 0) {
+        set_phase_front_failure(
+            failure,
+            sourceVertex >= 0
+                ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
+                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      const BranchTransitionResult transition = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, step.edgeKey, transitFace, step.face,
+          transitFamily, transitSign, transitDirection, effectiveMatching,
+          effectiveEffort, effectiveTransitions);
+      if (!transition.valid) {
+        set_phase_front_failure(
+            failure,
+            sourceVertex >= 0
+                ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
+                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      int sourceEdge = -1;
+      if (!source_edge_provenance(step.edgeKey, matchingIndices,
+                                  transitionLookup, effectiveTransitions,
+                                  sourceEdge)) {
+        set_phase_front_failure(
+            failure,
+            SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      sourceEdges.push_back(sourceEdge);
+      totalMatching += transition.matching;
+      totalEffort += std::abs(transition.effort);
+      transitFace = step.face;
+      transitFamily = transition.family;
+      transitSign = transition.sign;
+      transitDirection = transition.direction;
+    }
+    if (transitFace != current.face || transitFamily != current.family ||
+        transitSign != current.sign) {
+      set_phase_front_failure(
+          failure,
+          sourceVertex >= 0
+              ? SurfacePhaseFrontFailureReason::VertexFanBranchMismatch
+              : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
+          cellId, sideId, previous.face, current.face, sourceVertex,
+          sourceEdges.empty() ? -1 : sourceEdges.front(),
+          sourceEdges.empty() ? -1 : sourceEdges.back());
       return false;
     }
     previous.exitEdge = previousEdge;
     current.entryEdge = currentEdge;
-    current.matching = transition.matching;
-    current.matchingEffort = transition.effort;
-    if (effectiveTransitions != nullptr) {
-      const auto found = transitionLookup.byEdge.find(sharedKey);
-      if (found == transitionLookup.byEdge.end()) {
-        return false;
-      }
-      current.transitionSourceEdge = found->second.sourceEdge;
-    } else {
-      const auto matchingIndex = matchingIndices.find(sharedKey);
-      if (matchingIndex == matchingIndices.end() || matchingIndex->second < 0) {
-        return false;
-      }
-      current.transitionSourceEdge = matchingIndex->second;
-    }
+    current.matching = normalized_branch(totalMatching);
+    current.matchingEffort = totalEffort;
+    current.transitionSourceEdges = std::move(sourceEdges);
+    current.transitionSourceEdge = current.transitionSourceEdges.empty()
+                                       ? -1
+                                       : current.transitionSourceEdges.back();
   }
   return true;
 }
@@ -4454,7 +4814,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   UniformPhaseFrame frame;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
                                 edgeMatching, edgeEffort, edgeTransitions,
-                                frame)) {
+                                result.failure, frame)) {
     return result;
   }
   double target = options.defaultTargetSize;
@@ -4463,6 +4823,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     target = targetSize.mean();
   }
   if (!(target > 0.0) || !std::isfinite(target)) {
+    set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidTargetSize);
     return result;
   }
   const double width = frame.maxU - frame.minU;
@@ -4472,6 +4833,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   const double stepU = width / static_cast<double>(result.gridU);
   const double stepV = height / static_cast<double>(result.gridV);
   if (!(stepU > 0.0) || !(stepV > 0.0)) {
+    set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidGridStep);
     return result;
   }
 
@@ -4488,7 +4850,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
                                frame.minV + stepV * v);
       if (!point_on_source(vertices, faces, frame, uv,
                            points[static_cast<std::size_t>(node_index(u, v))])) {
-        return SurfacePhaseFrontResult{true};
+        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::PointProjectionFailure);
+        return result;
       }
     }
   }
@@ -4525,7 +4888,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         if (sourceFace < 0 ||
             sourceFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
             sourceFace >= static_cast<int>(frame.faceChart.size())) {
-          return SurfacePhaseFrontResult{true};
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::MissingFaceState, cell.id, corner, sourceFace);
+          return result;
         }
         state.branchRotation =
             frame.faceBranchRotation[static_cast<std::size_t>(sourceFace)];
@@ -4541,14 +4905,16 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         if (!segment_on_source(
                 vertices, faces, frame, uv[side], uv[(side + 1) % 4],
                 globalBranches[static_cast<std::size_t>(side)], faceAxisX,
-                faceAxisY, edgeMatching, edgeEffort, edgeTransitions,
+                faceAxisY, edgeMatching, edgeEffort, edgeTransitions, options,
+                cell.id, side, result.failure,
                 cell.boundaryPaths[static_cast<std::size_t>(side)])) {
-          return SurfacePhaseFrontResult{true};
+          return result;
         }
       }
       if (!orient_and_validate_phase_front_cell(
               vertices, faces, frame, std::min(stepU, stepV), options, cell)) {
-        return SurfacePhaseFrontResult{true};
+        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation, cell.id);
+        return result;
       }
 
       const int cellId = cell.id;
@@ -4574,7 +4940,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
           edge.family = 1;
           edge.advanceSign = -1;
         } else {
-          return SurfacePhaseFrontResult{true};
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge, cell.id, side);
+          return result;
         }
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
         edge.toLattice =
@@ -4607,7 +4974,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
               first.advanceSign == second.advanceSign ||
               first.sourceComponent != second.sourceComponent ||
               first.sourceSheet != second.sourceSheet) {
-            return SurfacePhaseFrontResult{true};
+            set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::FrontOwnershipConflict, cell.id, side);
+            return result;
           }
           first.oppositeEdge = edgeId;
           second.oppositeEdge = found->second.edge;
@@ -4638,7 +5006,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   for (const SurfacePhaseFrontCell &cell : result.cells) {
     if (!cell.orientationValidated || cell.sourceComponent < 0 ||
         cell.sourceSheet < 0) {
-      return SurfacePhaseFrontResult{true};
+      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, cell.id);
+      return result;
     }
   }
   for (const SurfaceFrontEdge &edge : result.edges) {
@@ -4649,7 +5018,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
                      result.edges[static_cast<std::size_t>(edge.oppositeEdge)]
                              .oppositeEdge !=
                          static_cast<int>(&edge - result.edges.data())))) {
-      return SurfacePhaseFrontResult{true};
+      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalEdgeState, -1, static_cast<int>(&edge - result.edges.data()));
+      return result;
     }
   }
   result.succeeded =
@@ -4662,6 +5032,40 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry {
+
+const char *surface_phase_front_failure_reason_name(
+    const SurfacePhaseFrontFailureReason reason) {
+  switch (reason) {
+  case SurfacePhaseFrontFailureReason::None: return "None";
+  case SurfacePhaseFrontFailureReason::InvalidInput: return "InvalidInput";
+  case SurfacePhaseFrontFailureReason::DegenerateReferenceFrame: return "DegenerateReferenceFrame";
+  case SurfacePhaseFrontFailureReason::NonPlanarSource: return "NonPlanarSource";
+  case SurfacePhaseFrontFailureReason::InconsistentFaceOrientation: return "InconsistentFaceOrientation";
+  case SurfacePhaseFrontFailureReason::IncompatibleFaceBranch: return "IncompatibleFaceBranch";
+  case SurfacePhaseFrontFailureReason::IncompatibleSecondaryBranch: return "IncompatibleSecondaryBranch";
+  case SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata: return "DuplicateTransitionMetadata";
+  case SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition: return "InvalidOrdinaryTransition";
+  case SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition: return "NonReciprocalOrdinaryTransition";
+  case SurfacePhaseFrontFailureReason::NonRectangularDomain: return "NonRectangularDomain";
+  case SurfacePhaseFrontFailureReason::InvalidTargetSize: return "InvalidTargetSize";
+  case SurfacePhaseFrontFailureReason::InvalidGridStep: return "InvalidGridStep";
+  case SurfacePhaseFrontFailureReason::PointProjectionFailure: return "PointProjectionFailure";
+  case SurfacePhaseFrontFailureReason::MissingFaceState: return "MissingFaceState";
+  case SurfacePhaseFrontFailureReason::MissingSegmentCoverage: return "MissingSegmentCoverage";
+  case SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment: return "DisconnectedSegmentAttachment";
+  case SurfacePhaseFrontFailureReason::NonManifoldVertexFan: return "NonManifoldVertexFan";
+  case SurfacePhaseFrontFailureReason::AmbiguousVertexFan: return "AmbiguousVertexFan";
+  case SurfacePhaseFrontFailureReason::InvalidVertexFanTransition: return "InvalidVertexFanTransition";
+  case SurfacePhaseFrontFailureReason::VertexFanBranchMismatch: return "VertexFanBranchMismatch";
+  case SurfacePhaseFrontFailureReason::MissingTransitionProvenance: return "MissingTransitionProvenance";
+  case SurfacePhaseFrontFailureReason::InvalidCellOrientation: return "InvalidCellOrientation";
+  case SurfacePhaseFrontFailureReason::InvalidLatticeEdge: return "InvalidLatticeEdge";
+  case SurfacePhaseFrontFailureReason::FrontOwnershipConflict: return "FrontOwnershipConflict";
+  case SurfacePhaseFrontFailureReason::InvalidFinalCellState: return "InvalidFinalCellState";
+  case SurfacePhaseFrontFailureReason::InvalidFinalEdgeState: return "InvalidFinalEdgeState";
+  }
+  return "Unknown";
+}
 
 SurfaceCellNetwork build_surface_cell_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

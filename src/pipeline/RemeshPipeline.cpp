@@ -146,9 +146,38 @@ std::uint64_t set_payload_logical_bytes(const std::set<T> &values) {
   return static_cast<std::uint64_t>(values.size()) * sizeof(T);
 }
 
+std::uint64_t surface_trace_segment_owned_bytes(
+    const geometry::SurfaceTraceSegment &segment) {
+  return vector_owned_bytes(segment.transitionSourceEdges);
+}
+
+std::uint64_t surface_trace_segment_logical_bytes(
+    const geometry::SurfaceTraceSegment &segment) {
+  return vector_logical_bytes(segment.transitionSourceEdges);
+}
+
+std::uint64_t surface_trace_path_owned_bytes(
+    const std::vector<geometry::SurfaceTraceSegment> &path) {
+  std::uint64_t bytes = vector_owned_bytes(path);
+  for (const geometry::SurfaceTraceSegment &segment : path) {
+    bytes += surface_trace_segment_owned_bytes(segment);
+  }
+  return bytes;
+}
+
+std::uint64_t surface_trace_path_logical_bytes(
+    const std::vector<geometry::SurfaceTraceSegment> &path) {
+  std::uint64_t bytes = vector_logical_bytes(path);
+  for (const geometry::SurfaceTraceSegment &segment : path) {
+    bytes += surface_trace_segment_logical_bytes(segment);
+  }
+  return bytes;
+}
+
 std::uint64_t surface_trace_result_owned_bytes(
     const geometry::SurfaceTraceResult &trace) {
-  return vector_owned_bytes(trace.states) + vector_owned_bytes(trace.segments);
+  return vector_owned_bytes(trace.states) +
+         surface_trace_path_owned_bytes(trace.segments);
 }
 
 std::uint64_t surface_cell_rail_owned_bytes(
@@ -175,7 +204,7 @@ std::uint64_t trace_network_owned_bytes(
   for (const geometry::SurfacePhaseFrontCell &cell :
        network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
-      bytes += vector_owned_bytes(path);
+      bytes += surface_trace_path_owned_bytes(path);
     }
   }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
@@ -186,9 +215,9 @@ std::uint64_t trace_network_owned_bytes(
     bytes += surface_trace_result_owned_bytes(separatrix.trace);
   }
   for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
-    bytes += vector_owned_bytes(proposal.sides);
+    bytes += surface_trace_path_owned_bytes(proposal.sides);
     for (const auto &path : proposal.boundaryPaths) {
-      bytes += vector_owned_bytes(path);
+      bytes += surface_trace_path_owned_bytes(path);
     }
   }
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
@@ -215,22 +244,22 @@ std::uint64_t trace_network_logical_bytes(
   for (const geometry::SurfacePhaseFrontCell &cell :
        network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
-      bytes += vector_logical_bytes(path);
+      bytes += surface_trace_path_logical_bytes(path);
     }
   }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
     bytes += vector_logical_bytes(trace.states) +
-             vector_logical_bytes(trace.segments);
+             surface_trace_path_logical_bytes(trace.segments);
   }
   for (const geometry::SurfaceSingularitySeparatrix &separatrix :
        network.singularSeparatrices) {
     bytes += vector_logical_bytes(separatrix.trace.states) +
-             vector_logical_bytes(separatrix.trace.segments);
+             surface_trace_path_logical_bytes(separatrix.trace.segments);
   }
   for (const geometry::SurfaceCellProposal &proposal : network.proposals) {
-    bytes += vector_logical_bytes(proposal.sides);
+    bytes += surface_trace_path_logical_bytes(proposal.sides);
     for (const auto &path : proposal.boundaryPaths) {
-      bytes += vector_logical_bytes(path);
+      bytes += surface_trace_path_logical_bytes(path);
     }
   }
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
@@ -825,6 +854,7 @@ void hash_trace_segment(std::uint64_t &seed,
   hash_combine_double(seed, segment.matchingEffort);
   hash_combine_i64(seed, segment.sourceChart);
   hash_combine_i64(seed, segment.transitionSourceEdge);
+  hash_vector(seed, segment.transitionSourceEdges);
   hash_combine_i64(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
@@ -882,6 +912,14 @@ std::uint64_t hash_trace_network(
   }
   hash_combine_i64(seed, network.phaseFront.attempted ? 1 : 0);
   hash_combine_i64(seed, network.phaseFront.succeeded ? 1 : 0);
+  hash_combine_i64(seed, static_cast<int>(network.phaseFront.failure.reason));
+  hash_combine_i64(seed, network.phaseFront.failure.cell);
+  hash_combine_i64(seed, network.phaseFront.failure.side);
+  hash_combine_i64(seed, network.phaseFront.failure.face);
+  hash_combine_i64(seed, network.phaseFront.failure.targetFace);
+  hash_combine_i64(seed, network.phaseFront.failure.sourceVertex);
+  hash_combine_i64(seed, network.phaseFront.failure.sourceEdge);
+  hash_combine_i64(seed, network.phaseFront.failure.secondarySourceEdge);
   hash_combine_i64(seed, network.phaseFront.gridU);
   hash_combine_i64(seed, network.phaseFront.gridV);
   const auto hash_lattice_state = [&](
@@ -4665,6 +4703,28 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::build_surface_cell_network(
             meshWhole.V, meshWhole.F, result.surfaceCellContext.crossField,
             targetSize.targetSize, tracingOptions);
+    if (traceNetwork.phaseFront.attempted &&
+        !traceNetwork.phaseFront.succeeded &&
+        traceNetwork.phaseFront.failure.reason !=
+            geometry::SurfacePhaseFrontFailureReason::None &&
+        result.diagnostics.surfaceCellFirstInvalidProducerStage.empty()) {
+      const geometry::SurfacePhaseFrontFailure &failure =
+          traceNetwork.phaseFront.failure;
+      result.diagnostics.surfaceCellFirstInvalidProducerStage =
+          "tracing/phase-front";
+      result.diagnostics.surfaceCellFirstInvalidProducerReason =
+          geometry::surface_phase_front_failure_reason_name(failure.reason);
+      result.diagnostics.surfaceCellFirstInvalidProducerCell = failure.cell;
+      result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
+          failure.side;
+      result.diagnostics.surfaceCellFirstInvalidProducerFace = failure.face;
+      result.diagnostics.surfaceCellFirstInvalidProducerVertex =
+          failure.sourceVertex;
+      result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+          failure.sourceEdge;
+      result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+          failure.secondarySourceEdge;
+    }
     const bool useAuthoritativePhaseFront =
         traceNetwork.phaseFront.succeeded;
     AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;

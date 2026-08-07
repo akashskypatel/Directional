@@ -599,4 +599,154 @@ TEST(SurfaceCellsPhase10, LegacySyntheticOutputHashIsStableAcrossTenRuns) {
   }
 }
 
+
+directional::TriMesh make_vertex_fan_plane_mesh(bool reverseFaces = false) {
+  constexpr int columns = 5;
+  constexpr int rows = 4;
+  Eigen::MatrixXd vertices(columns * rows, 3);
+  for (int y = 0; y < rows; ++y) {
+    for (int x = 0; x < columns; ++x) {
+      const int vertex = y * columns + x;
+      vertices.row(vertex) << static_cast<double>(x) / 4.0,
+          static_cast<double>(y) / 3.0, 0.0;
+    }
+  }
+  Eigen::MatrixXi faces(2 * (columns - 1) * (rows - 1), 3);
+  int face = 0;
+  for (int y = 0; y + 1 < rows; ++y) {
+    for (int x = 0; x + 1 < columns; ++x) {
+      const int v00 = y * columns + x;
+      const int v10 = v00 + 1;
+      const int v01 = v00 + columns;
+      const int v11 = v01 + 1;
+      faces.row(face++) << v00, v10, v11;
+      faces.row(face++) << v00, v11, v01;
+    }
+  }
+  if (reverseFaces) {
+    Eigen::MatrixXi reversed = faces.colwise().reverse().eval();
+    faces = reversed;
+  }
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+Eigen::MatrixXd constant_xy_raw_field(const int faceCount) {
+  Eigen::MatrixXd field(faceCount, 12);
+  for (int face = 0; face < faceCount; ++face) {
+    field.row(face) << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0,
+        0.0, 0.0, -1.0, 0.0;
+  }
+  return field;
+}
+
+std::size_t multi_edge_transition_count(
+    const directional::geometry::SurfaceCellNetwork &network) {
+  std::size_t count = 0;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (const auto &segment : path) {
+        if (segment.transitionSourceEdges.size() > 1U) {
+          ++count;
+        }
+      }
+    }
+  }
+  return count;
+}
+
+TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontTraversesOrderedAuthoritativeSourceVertexFans) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_TRUE(network.phaseFront.succeeded)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  EXPECT_EQ(8, network.phaseFront.gridU);
+  EXPECT_EQ(8, network.phaseFront.gridV);
+  EXPECT_EQ(64U, network.phaseFront.cells.size());
+  EXPECT_GT(multi_edge_transition_count(network), 0U);
+  for (const auto &cell : network.phaseFront.cells) {
+    EXPECT_TRUE(cell.orientationValidated);
+    for (const auto &path : cell.boundaryPaths) {
+      ASSERT_FALSE(path.empty());
+      for (const auto &segment : path) {
+        if (!segment.transitionSourceEdges.empty()) {
+          EXPECT_EQ(segment.transitionSourceEdge,
+                    segment.transitionSourceEdges.back());
+        }
+      }
+    }
+  }
+}
+
+TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontVertexFanIsInvariantToFaceRowOrdering) {
+  const directional::TriMesh forwardMesh = make_vertex_fan_plane_mesh(false);
+  const directional::TriMesh reverseMesh = make_vertex_fan_plane_mesh(true);
+  const auto forwardField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          forwardMesh, constant_xy_raw_field(forwardMesh.F.rows()));
+  const auto reverseField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reverseMesh, constant_xy_raw_field(reverseMesh.F.rows()));
+  Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(forwardMesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions forwardOptions;
+  forwardOptions.sourceFaceComponents.assign(
+      static_cast<std::size_t>(forwardMesh.F.rows()), 0);
+  forwardOptions.sourceFaceSheets.assign(
+      static_cast<std::size_t>(forwardMesh.F.rows()), 0);
+  directional::geometry::SurfaceCellTracingOptions reverseOptions =
+      forwardOptions;
+
+  const auto forward = directional::geometry::build_surface_cell_network(
+      forwardMesh.V, forwardMesh.F, forwardField, targetSize, forwardOptions);
+  const auto reverse = directional::geometry::build_surface_cell_network(
+      reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
+
+  ASSERT_TRUE(forward.phaseFront.succeeded);
+  ASSERT_TRUE(reverse.phaseFront.succeeded);
+  EXPECT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
+  EXPECT_EQ(forward.phaseFront.edges.size(), reverse.phaseFront.edges.size());
+  EXPECT_EQ(multi_edge_transition_count(forward),
+            multi_edge_transition_count(reverse));
+}
+
+TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontDuplicateTransitionMetadataFailsClosedWithTypedReason) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, constant_xy_raw_field(mesh.F.rows()));
+  ASSERT_FALSE(crossField.edgeTransitions.empty());
+  crossField.edgeTransitions.push_back(crossField.edgeTransitions.front());
+  Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  EXPECT_FALSE(network.phaseFront.succeeded);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                DuplicateTransitionMetadata,
+            network.phaseFront.failure.reason);
+}
+
 } // namespace

@@ -116,8 +116,12 @@ struct SurfaceTraceSegment {
   double matchingEffort = 0.0;
   /// Connected chart of equal branch orientation containing this segment.
   int sourceChart = -1;
-  /// Source edge crossed to enter this segment, or -1 for the first interval.
+  /// Last source edge crossed to enter this segment, or -1 for the first interval.
   int transitionSourceEdge = -1;
+  /// Ordered canonical source-edge route crossed to enter this segment.
+  /// Ordinary crossings contain one entry; exact source-vertex fan crossings
+  /// retain every authoritative edge in traversal order.
+  std::vector<int> transitionSourceEdges;
   int railId = -1;
   int curveId = -1;
   int railIntervalIndex = -1;
@@ -211,11 +215,56 @@ struct SurfacePhaseFrontCell {
   std::array<std::vector<SurfaceTraceSegment>, 4> boundaryPaths;
 };
 
+enum class SurfacePhaseFrontFailureReason : int {
+  None = 0,
+  InvalidInput = 1,
+  DegenerateReferenceFrame = 2,
+  NonPlanarSource = 3,
+  InconsistentFaceOrientation = 4,
+  IncompatibleFaceBranch = 5,
+  IncompatibleSecondaryBranch = 6,
+  DuplicateTransitionMetadata = 7,
+  InvalidOrdinaryTransition = 8,
+  NonReciprocalOrdinaryTransition = 9,
+  NonRectangularDomain = 10,
+  InvalidTargetSize = 11,
+  InvalidGridStep = 12,
+  PointProjectionFailure = 13,
+  MissingFaceState = 14,
+  MissingSegmentCoverage = 15,
+  DisconnectedSegmentAttachment = 16,
+  NonManifoldVertexFan = 17,
+  AmbiguousVertexFan = 18,
+  InvalidVertexFanTransition = 19,
+  VertexFanBranchMismatch = 20,
+  MissingTransitionProvenance = 21,
+  InvalidCellOrientation = 22,
+  InvalidLatticeEdge = 23,
+  FrontOwnershipConflict = 24,
+  InvalidFinalCellState = 25,
+  InvalidFinalEdgeState = 26,
+};
+
+struct SurfacePhaseFrontFailure {
+  SurfacePhaseFrontFailureReason reason = SurfacePhaseFrontFailureReason::None;
+  int cell = -1;
+  int side = -1;
+  int face = -1;
+  int targetFace = -1;
+  int sourceVertex = -1;
+  int sourceEdge = -1;
+  int secondarySourceEdge = -1;
+};
+
+const char *surface_phase_front_failure_reason_name(
+    SurfacePhaseFrontFailureReason reason);
+
 struct SurfacePhaseFrontResult {
   bool attempted = false;
   bool succeeded = false;
   int gridU = 0;
   int gridV = 0;
+  SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
   std::vector<SurfacePhaseFrontCell> cells;
