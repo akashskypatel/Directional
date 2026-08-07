@@ -1,6 +1,6 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v9",
-  "updatedUtc": "2026-08-07T20:16:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v10",
+  "updatedUtc": "2026-08-07T20:50:00Z",
   "directionControl": {
     "passedGates": [
       "G0 truthful authority",
@@ -8,72 +8,52 @@
       "G2 cross-chart/close-sheet isolation"
     ],
     "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "periodic topology/source-strip authority runtime-proven; field-authoritative adjacent-ring correspondence compile-valid; runtime revalidation pending",
+    "gateState": "regression/no-progress: field-authoritative ring correspondence reaches a periodic chart endpoint representation defect",
     "earliestFailingExecutedFixture": "cylinder__surface_cells",
-    "earliestExecutedFailure": "completion/output-validation:AggregateCompletionValidationFailure",
+    "earliestExecutedFailure": "tracing/phase-front:InvalidPeriodicChart:cell=29",
     "retainedRegressions": [
       "plane__surface_cells",
       "multi_face_seam__surface_cells",
       "close_sheets__surface_cells"
     ],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md"
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md",
+    "noProgressCodeBuildCountSinceLastMaterialProgress": 1,
+    "reviewRequiredNextTurn": false
   },
-  "latestCodeBuild": {
+  "testedAuthority": {
     "sourceCommit": "c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a",
-    "initialImplementationCommit": "18f2c880f1714d8c41c9e11dadd53169756629fe",
-    "initialImplementationPatchSha256": "49cd71bc5aafc33ccdfd5e5104e5a23c7452e72074aac3c7775794f55737d6de",
-    "compileCorrectionPatchSha256": "8c96fa983990ab6c3f3ace5b24b8af59678aa7d6a0b7ed4f57b06f1397d1cd56",
-    "workflowRunId": 31214404170,
-    "workflowJobId": 92984429773,
     "artifactId": 9008118764,
     "artifactName": "g3-periodic-ring-correspondence-code-build",
     "artifactSha256": "11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562",
-    "logArtifactId": 9008117677,
-    "logArtifactSha256": "a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77",
+    "buildRunId": 31214404170,
+    "buildJobId": 92984429773,
+    "buildLogArtifactId": 9008117677,
+    "buildLogSha256": "a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77",
     "internalChecksums": "44/44",
     "compileActions": "111/111",
-    "approvedTargets": "7/7",
-    "executables": 5,
-    "libraries": 2,
-    "fixtures": 27,
-    "runtimeExecution": false,
+    "artifactExecutables": 5,
+    "artifactLibraries": 2,
+    "artifactFixtures": 27,
+    "artifactPreTestRuntimeExecution": false,
+    "artifactOnlyTestBenchmark": true,
+    "rebuildDuringTestBenchmark": false,
     "changedFileBlobs": {
       "include/directional/geometry/SurfaceCellTracing.h": "c1b816a584d67a3f74c2d7389962bd92d52244c9",
       "src/geometry/SurfaceCellTracing.cpp": "6980850bd32d40b1da9350ebbe3f601b8ce5e07b",
       "tests/SurfaceCellsPhase10Tests.cpp": "c4671ef674228d74b96e80499abbb6846bcdf3e3"
-    },
-    "implementedContracts": {
-      "topologyCompatibleRingCandidatesRetained": true,
-      "lexicographicCandidateOwnershipRemoved": true,
-      "reciprocalTransportedFieldAuthority": true,
-      "uniqueFieldAuthoritativeCandidateRequired": true,
-      "invalidCorrespondenceTypedReject": "InvalidPeriodicRingCorrespondence",
-      "ambiguousCorrespondenceTypedReject": "AmbiguousPeriodicRingCorrespondence",
-      "canonicalSourceStripBreakpointsPreserved": true,
-      "periodicCutHolonomyQuotientPreserved": true,
-      "oneAcceptedCellToOneQuadPreserved": true,
-      "validatorsChanged": false,
-      "fallbackRecoveryAdded": false,
-      "fixtureSpecificSelection": false,
-      "runtimeVerificationPending": true
-    },
-    "firstCompileAttempt": {
-      "workflowRunId": 31213727511,
-      "workflowJobId": 92982293325,
-      "implementationSourceCommit": "18f2c880f1714d8c41c9e11dadd53169756629fe",
-      "result": "test-source compile failure after production source compiled",
-      "failureLogArtifactId": 9007820580,
-      "failureLogSha256": "ee5d9d3ae3f69c88983652495013a2742fa4c4e1bf8c0a90a65bc392d1a0cbec",
-      "projectRuntimeExecuted": false,
-      "correctionScope": "new test helper Eigen concrete vector return/expression types only"
     }
   },
-  "testedAuthority": {
-    "sourceCommit": "2783ea718ffb15f8fb3868795173472ab8636c1c",
-    "artifactId": 9004509871,
-    "artifactSha256": "2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe",
-    "focusedRetainedContracts": "13/13",
-    "runtimeStillAuthoritativeUntilNextArtifactTest": true
+  "focusedProducer": {
+    "passed": 9,
+    "total": 15,
+    "passedContracts": {
+      "fieldAmbiguousRingCorrespondenceTypedReject": true,
+      "exactCylinderTypedProducerBoundary": true,
+      "retainedG1G2Contracts": "7/7"
+    },
+    "regressedNominalG3Contracts": 6,
+    "commonFailureDisposition": "Rejected",
+    "commonFailureReason": "InvalidPeriodicChart"
   },
   "directAcceptance": {
     "plane": {
@@ -81,7 +61,9 @@
       "producerDisposition": "Produced",
       "runs": 3,
       "traceSegments": 352,
+      "arrangementCells": 65,
       "completedQuads": 64,
+      "outputVertices": 81,
       "validationFailures": 0,
       "outputOrigin": "CompletedSurfaceCells",
       "outputStructuralHash": "730caeae49ec872c"
@@ -91,7 +73,9 @@
       "producerDisposition": "Produced",
       "runs": 3,
       "traceSegments": 256,
+      "arrangementCells": 65,
       "completedQuads": 64,
+      "outputVertices": 81,
       "validationFailures": 0,
       "outputOrigin": "CompletedSurfaceCells",
       "outputStructuralHash": "5bdf34d7802e9fb0"
@@ -101,46 +85,78 @@
       "producerDisposition": "Produced",
       "runs": 3,
       "traceSegments": 1104,
+      "arrangementCells": 202,
       "completedQuads": 200,
       "outputVertices": 242,
       "connectedComponents": 2,
+      "boundaryEdges": 80,
       "validationFailures": 0,
       "outputOrigin": "CompletedSurfaceCells",
       "outputStructuralHash": "89b052762f52a5af"
     },
     "cylinder": {
       "success": false,
-      "producerDisposition": "Produced",
+      "producerDisposition": "Rejected",
       "runs": 3,
-      "periodicHolonomyAvailable": true,
-      "periodicHolonomyQuarterTurnRotation": 0,
-      "periodicHolonomyTranslation": [32, 0],
-      "periodicHolonomyRouteEdgeCount": 32,
-      "periodicCutEdgeCount": 4,
-      "traceSegments": 2237,
-      "completedQuads": 320,
-      "provenanceVertices": 352,
-      "validationFailures": 3,
-      "terminalFailureStage": "completion/output-validation",
-      "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+      "firstInvalidProducerStage": "tracing/phase-front",
+      "firstInvalidProducerReason": "InvalidPeriodicChart",
+      "firstInvalidProducerCell": 29,
+      "periodicHolonomyAvailable": false,
+      "traceSegments": 0,
+      "arrangementCells": 0,
+      "completedQuads": 0,
+      "provenanceVertices": 0,
+      "terminalFailureStage": "tracing",
+      "terminalFailureReason": "NotProductionReady",
       "outputOrigin": "None",
       "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
-      "completedValidation": {
-        "normalP95Degrees": 16.627273436620403,
-        "fieldP95Degrees": 37.96709872810172,
-        "warpageP95Degrees": 30.621379281060747,
-        "normalP95Limit": 15.0,
-        "fieldP95Limit": 15.0,
-        "warpageP95Limit": 30.0,
-        "discreteStrictSourceAuthoritativeChecksGreen": true
-      }
+      "deterministic": "3/3",
+      "wallSecondsRange": [0.011589, 0.012041],
+      "peakWorkingSetBytesApproxRange": [8330000, 8430000]
+    },
+    "bunny": {
+      "success": false,
+      "producerDisposition": "NotApplicable",
+      "runs": 1,
+      "traceSegments": 80862,
+      "completedQuads": 0,
+      "terminalFailureStage": "completion",
+      "wallSeconds": 41.60769,
+      "peakWorkingSetBytes": 247566336,
+      "fallbackUsed": false,
+      "sourceGridRecoveryUsed": false
+    },
+    "vase": {
+      "success": false,
+      "runs": 1,
+      "boundedTimeoutSeconds": 45,
+      "timeoutIsCorrectnessEvidence": false
     }
+  },
+  "regressionDiagnosis": {
+    "formerDiagonalFieldDeviationDegrees": 37.9670987281,
+    "fieldAlignedCorrespondenceStillRequired": true,
+    "reproducedFirstInvalidCell": 29,
+    "sourceFaceAtFalseOverlap": 30,
+    "periodicChartCoverageToleranceApprox": 1e-10,
+    "cause": "tolerance-expanded periodic chart clipping endpoints are emitted as barycentric geometry instead of being canonicalized to exact source-simplex boundaries, creating microscopic tails that the strict shared-endpoint self-intersection validator correctly rejects",
+    "validatorWeakeningRequired": false,
+    "nextCorrection": "canonicalize and renormalize producer-emitted periodic chart barycentric endpoints; preserve exact shared breakpoints; drop tolerance-only zero-length segments"
+  },
+  "suiteEvidence": {
+    "boundedProducer": "91/99",
+    "completionSimplification": "154/164",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "boundedAggregate": "313/331"
   },
   "gateDecision": {
     "g3Closed": false,
-    "latestCodeBuildRuntimeVerified": false,
-    "reason": "Field-authoritative adjacent-ring correspondence and typed ambiguity rejection are compile-valid, but artifact 9008118764 has not yet been executed. The previous artifact remains runtime authority with normal/field/warpage P95 failures.",
-    "nextTurn": "Artifact-only Test + Benchmark — G3 periodic ring correspondence"
+    "materialRuntimeProgress": false,
+    "classification": "regression/no-progress",
+    "g0ToG2Green": true,
+    "reason": "Cylinder lost periodic Produced authority and now rejects at InvalidPeriodicChart cell 29 before traces. The new typed ambiguity contract remains valid, but six nominal G3 contracts regress. Exact reproduction identifies producer endpoint canonicalization as the next bounded defect.",
+    "nextTurn": "Code + Build — G3 periodic chart endpoint canonicalization"
   }
 }
