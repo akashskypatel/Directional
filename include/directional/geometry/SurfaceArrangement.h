@@ -243,6 +243,9 @@ inline const char *surface_arrangement_interval_failure_name(
 
 struct SurfaceArrangementOptions {
   bool insertBoundaryRails = true;
+  /// Use complete proposal cycles as authoritative directed cell incidence.
+  /// This bypasses fan-sector inference for the phase-front producer path.
+  bool useAuthoritativeProposalCycles = false;
   std::set<std::uint64_t> hardFeatureEdges;
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
