@@ -5516,10 +5516,242 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     return candidates;
   };
 
+  // Adjacent graph-distance rings can admit more than one source-topologically
+  // valid bijection through a triangulated strip (for example, the two
+  // diagonals of the same logical strip).  Source vertex numbering is not an
+  // authority for choosing between them.  Build the same reciprocal field
+  // transition authority used by tracing/holonomy before selecting any ring
+  // correspondence, then choose the unique candidate with minimum transported
+  // cross-field alignment energy.  Exact/effectively-equal field candidates
+  // are rejected rather than tie-broken by source IDs or enumeration order.
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto matchingIndices = edge_matching_indices(incident);
+  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
+  const EdgeTransitionLookup transitionLookup =
+      hasTransitions ? edge_transition_lookup(*edgeTransitions) : EdgeTransitionLookup{};
+  if (hasTransitions && transitionLookup.duplicate) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+
+  struct RingCandidateAuthority {
+    std::vector<int> vertices;
+    std::set<int> stripFaces;
+    double score = std::numeric_limits<double>::infinity();
+    int seedBranch = -1;
+    bool branchAmbiguous = false;
+  };
+  struct DualNeighbor {
+    int face = -1;
+    std::uint64_t edge = 0;
+  };
+  const auto score_equal = [](const double a, const double b) {
+    if (!std::isfinite(a) || !std::isfinite(b)) return false;
+    const double scale = std::max({1.0, std::abs(a), std::abs(b)});
+    return std::abs(a - b) <=
+           256.0 * std::numeric_limits<double>::epsilon() * scale;
+  };
+  const auto edge_direction_in_face = [&](const int a, const int b,
+                                          const int face) {
+    return project_tangent(row3(vertices, b) - row3(vertices, a),
+                           face_normal(vertices, faces, face));
+  };
+  const auto score_ring_candidate = [&](RingCandidateAuthority &candidate,
+                                        const std::vector<int> &previous) {
+    std::map<int, std::vector<DualNeighbor>> dual;
+    for (const int face : candidate.stripFaces) dual[face] = {};
+    for (const auto &[key, pair] : incident) {
+      if (pair[0] < 0 || pair[1] < 0 ||
+          candidate.stripFaces.count(pair[0]) == 0U ||
+          candidate.stripFaces.count(pair[1]) == 0U) {
+        continue;
+      }
+      dual[pair[0]].push_back({pair[1], key});
+      dual[pair[1]].push_back({pair[0], key});
+    }
+    if (dual.size() != candidate.stripFaces.size()) return false;
+    for (auto &[face, neighbors] : dual) {
+      (void)face;
+      std::sort(neighbors.begin(), neighbors.end(), [&](const DualNeighbor &a,
+                                                        const DualNeighbor &b) {
+        const auto aKey = canonical_face_vertices(faces, a.face);
+        const auto bKey = canonical_face_vertices(faces, b.face);
+        if (aKey != bKey) return aKey < bKey;
+        return a.edge < b.edge;
+      });
+    }
+    int startFace = -1;
+    std::array<int, 3> startKey{std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max()};
+    for (const int face : candidate.stripFaces) {
+      const auto key = canonical_face_vertices(faces, face);
+      if (key < startKey) {
+        startKey = key;
+        startFace = face;
+      }
+    }
+    if (startFace < 0) return false;
+
+    std::array<double, 4> branchScores{
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity()};
+    for (int seedBranch = 0; seedBranch < 4; ++seedBranch) {
+      std::map<int, int> branchByFace;
+      std::queue<int> pending;
+      branchByFace[startFace] = seedBranch;
+      pending.push(startFace);
+      bool validBranch = true;
+      while (!pending.empty() && validBranch) {
+        const int sourceFace = pending.front();
+        pending.pop();
+        const int sourceBranch = branchByFace[sourceFace];
+        int sourceFamily = 0;
+        int sourceSign = 1;
+        family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+        const Eigen::RowVector3d sourceDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, sourceFace, sourceFamily,
+                            sourceSign),
+            face_normal(vertices, faces, sourceFace));
+        if (sourceDirection.squaredNorm() == 0.0) {
+          validBranch = false;
+          break;
+        }
+        for (const DualNeighbor &neighbor : dual[sourceFace]) {
+          if (branchByFace.find(neighbor.face) != branchByFace.end()) {
+            continue; // Cycle closure is validated by periodic holonomy below.
+          }
+          const BranchTransitionResult forward = resolve_branch_transition(
+              vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+              transitionLookup, neighbor.edge, sourceFace, neighbor.face,
+              sourceFamily, sourceSign, sourceDirection, edgeMatching,
+              edgeEffort, hasTransitions ? edgeTransitions : nullptr);
+          if (!forward.valid) {
+            validBranch = false;
+            break;
+          }
+          const int targetBranch =
+              branch_from_family_sign(forward.family, forward.sign);
+          int targetFamily = 0;
+          int targetSign = 1;
+          family_sign_from_branch(targetBranch, targetFamily, targetSign);
+          const Eigen::RowVector3d targetDirection = project_tangent(
+              axis_for_family(faceAxisX, faceAxisY, neighbor.face, targetFamily,
+                              targetSign),
+              face_normal(vertices, faces, neighbor.face));
+          const BranchTransitionResult reverse = resolve_branch_transition(
+              vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+              transitionLookup, neighbor.edge, neighbor.face, sourceFace,
+              targetFamily, targetSign, targetDirection, edgeMatching,
+              edgeEffort, hasTransitions ? edgeTransitions : nullptr);
+          if (!reverse.valid ||
+              branch_from_family_sign(reverse.family, reverse.sign) !=
+                  sourceBranch ||
+              normalized_branch(forward.matching + reverse.matching) != 0) {
+            validBranch = false;
+            break;
+          }
+          branchByFace[neighbor.face] = targetBranch;
+          pending.push(neighbor.face);
+        }
+      }
+      if (!validBranch || branchByFace.size() != candidate.stripFaces.size()) {
+        continue;
+      }
+
+      double score = 0.0;
+      int observations = 0;
+      const auto accumulate_edge_score = [&](const int a, const int b,
+                                             const int branchOffset,
+                                             const bool oriented) {
+        const auto found = incident.find(edge_key(a, b));
+        if (found == incident.end()) return false;
+        bool observed = false;
+        for (const int face : found->second) {
+          if (face < 0 || candidate.stripFaces.count(face) == 0U) continue;
+          const auto branchFound = branchByFace.find(face);
+          if (branchFound == branchByFace.end()) return false;
+          const int expectedBranch =
+              normalized_branch(branchFound->second + branchOffset);
+          int family = 0;
+          int sign = 1;
+          family_sign_from_branch(expectedBranch, family, sign);
+          const Eigen::RowVector3d fieldDirection = project_tangent(
+              axis_for_family(faceAxisX, faceAxisY, face, family, sign),
+              face_normal(vertices, faces, face));
+          const Eigen::RowVector3d edgeDirection =
+              edge_direction_in_face(a, b, face);
+          if (fieldDirection.squaredNorm() == 0.0 ||
+              edgeDirection.squaredNorm() == 0.0) {
+            return false;
+          }
+          double cosine = fieldDirection.dot(edgeDirection);
+          if (!oriented) cosine = std::abs(cosine);
+          const double angle = std::acos(std::clamp(cosine, -1.0, 1.0));
+          if (!std::isfinite(angle)) return false;
+          score += angle * angle;
+          ++observations;
+          observed = true;
+        }
+        return observed;
+      };
+
+      for (int u = 0; u < ringSize && validBranch; ++u) {
+        const int next = (u + 1) % ringSize;
+        // The V-family is oriented from the previous source ring to the next.
+        if (!accumulate_edge_score(
+                previous[static_cast<std::size_t>(u)],
+                candidate.vertices[static_cast<std::size_t>(u)], 0, true)) {
+          validBranch = false;
+          break;
+        }
+        // The periodic U-family is the reciprocal orthogonal family.  Its line
+        // orientation is intentionally sign-free because 4-RoSy family lines
+        // are unoriented around the annulus.
+        if (!accumulate_edge_score(
+                previous[static_cast<std::size_t>(u)],
+                previous[static_cast<std::size_t>(next)], 1, false) ||
+            !accumulate_edge_score(
+                candidate.vertices[static_cast<std::size_t>(u)],
+                candidate.vertices[static_cast<std::size_t>(next)], 1, false)) {
+          validBranch = false;
+          break;
+        }
+      }
+      if (!validBranch || observations <= 0) continue;
+      branchScores[static_cast<std::size_t>(seedBranch)] =
+          score / static_cast<double>(observations);
+    }
+
+    double bestScore = std::numeric_limits<double>::infinity();
+    int bestBranch = -1;
+    bool ambiguousBranch = false;
+    for (int branch = 0; branch < 4; ++branch) {
+      const double score = branchScores[static_cast<std::size_t>(branch)];
+      if (!std::isfinite(score)) continue;
+      if (score < bestScore && !score_equal(score, bestScore)) {
+        bestScore = score;
+        bestBranch = branch;
+        ambiguousBranch = false;
+      } else if (score_equal(score, bestScore)) {
+        ambiguousBranch = true;
+      }
+    }
+    if (bestBranch < 0 || !std::isfinite(bestScore)) return false;
+    candidate.score = bestScore;
+    candidate.seedBranch = bestBranch;
+    candidate.branchAmbiguous = ambiguousBranch;
+    return true;
+  };
+
   for (int layer = 1; layer <= maxDistance; ++layer) {
     const std::vector<int> previous = rings[static_cast<std::size_t>(layer - 1)];
     const std::vector<int> raw = rings[static_cast<std::size_t>(layer)];
-    std::vector<std::vector<int>> valid;
+    std::map<std::vector<int>, std::set<int>> topologyCandidates;
     for (int direction : {1, -1}) {
       for (int offset = 0; offset < ringSize; ++offset) {
         std::vector<int> candidate(static_cast<std::size_t>(ringSize));
@@ -5549,14 +5781,63 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
           }
           stripFaces.insert(pair.begin(), pair.end());
         }
-        if (compatible && stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
-          valid.push_back(std::move(candidate));
+        if (compatible &&
+            stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
+          topologyCandidates.emplace(std::move(candidate), std::move(stripFaces));
         }
       }
     }
-    if (valid.empty()) return result;
-    std::sort(valid.begin(), valid.end());
-    rings[static_cast<std::size_t>(layer)] = valid.front();
+    if (topologyCandidates.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
+      return result;
+    }
+
+    std::vector<RingCandidateAuthority> authoritativeCandidates;
+    authoritativeCandidates.reserve(topologyCandidates.size());
+    for (const auto &[candidateVertices, stripFaces] : topologyCandidates) {
+      RingCandidateAuthority candidate;
+      candidate.vertices = candidateVertices;
+      candidate.stripFaces = stripFaces;
+      if (score_ring_candidate(candidate, previous)) {
+        authoritativeCandidates.push_back(std::move(candidate));
+      }
+    }
+    if (authoritativeCandidates.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
+      return result;
+    }
+
+    double bestScore = std::numeric_limits<double>::infinity();
+    int bestCandidate = -1;
+    bool ambiguous = false;
+    for (int index = 0;
+         index < static_cast<int>(authoritativeCandidates.size()); ++index) {
+      const RingCandidateAuthority &candidate =
+          authoritativeCandidates[static_cast<std::size_t>(index)];
+      if (candidate.score < bestScore &&
+          !score_equal(candidate.score, bestScore)) {
+        bestScore = candidate.score;
+        bestCandidate = index;
+        ambiguous = candidate.branchAmbiguous;
+      } else if (score_equal(candidate.score, bestScore)) {
+        ambiguous = true;
+      }
+    }
+    if (bestCandidate < 0 || ambiguous) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence);
+      return result;
+    }
+    rings[static_cast<std::size_t>(layer)] =
+        authoritativeCandidates[static_cast<std::size_t>(bestCandidate)].vertices;
   }
 
   std::vector<double> s(static_cast<std::size_t>(ringSize + 1), 0.0);
@@ -5730,18 +6011,6 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
             [](const PeriodicChartTriangle &a, const PeriodicChartTriangle &b) {
               return a.vertices < b.vertices;
             });
-
-  const auto incident = edge_faces(faces, activeFaces);
-  const auto matchingIndices = edge_matching_indices(incident);
-  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
-  const EdgeTransitionLookup transitionLookup =
-      hasTransitions ? edge_transition_lookup(*edgeTransitions) : EdgeTransitionLookup{};
-  if (hasTransitions && transitionLookup.duplicate) {
-    result.disposition = SurfaceCellProducerDisposition::Rejected;
-    set_phase_front_failure(result.failure,
-                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
-    return result;
-  }
 
   // Derive one complete periodic source route from the first topological strip.
   std::set<int> firstStripFaces;
@@ -6298,6 +6567,8 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidPeriodicChart: return "InvalidPeriodicChart";
   case SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch: return "PeriodicHolonomyMismatch";
   case SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing: return "InvalidPeriodicFrontPairing";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence: return "InvalidPeriodicRingCorrespondence";
+  case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence: return "AmbiguousPeriodicRingCorrespondence";
   }
   return "Unknown";
 }

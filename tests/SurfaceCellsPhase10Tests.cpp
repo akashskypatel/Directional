@@ -1105,6 +1105,147 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  Eigen::MatrixXd faceAxisX;
+  Eigen::MatrixXd faceAxisY;
+  directional::geometry::cross_field_axes(crossField, faceAxisX, faceAxisY);
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+
+  const auto exactSourceVertex = [&](const directional::geometry::SurfaceTracePoint &point) {
+    if (point.face < 0 || point.face >= mesh.F.rows()) return -1;
+    int sourceCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      const double weight = point.barycentric[corner];
+      if (std::abs(weight - 1.0) <= 1.0e-10) {
+        if (sourceCorner >= 0) return -1;
+        sourceCorner = corner;
+      } else if (std::abs(weight) > 1.0e-10) {
+        return -1;
+      }
+    }
+    return sourceCorner >= 0 ? mesh.F(point.face, sourceCorner) : -1;
+  };
+  const auto faceNormal = [&](const int face) {
+    Eigen::RowVector3d normal =
+        (mesh.V.row(mesh.F(face, 1)) - mesh.V.row(mesh.F(face, 0)))
+            .cross(mesh.V.row(mesh.F(face, 2)) - mesh.V.row(mesh.F(face, 0)));
+    const double norm = normal.norm();
+    if (norm > 0.0) return Eigen::RowVector3d(normal / norm);
+    return Eigen::RowVector3d::Zero();
+  };
+  const auto tangent = [&](Eigen::RowVector3d direction, const int face) {
+    const Eigen::RowVector3d normal = faceNormal(face);
+    direction -= direction.dot(normal) * normal;
+    const double norm = direction.norm();
+    if (norm > 0.0) return Eigen::RowVector3d(direction / norm);
+    return Eigen::RowVector3d::Zero();
+  };
+
+  int exactInterRingEdges = 0;
+  for (const auto &edge : network.phaseFront.edges) {
+    if (edge.family != 1) continue;
+    const int fromVertex = exactSourceVertex(edge.from);
+    const int toVertex = exactSourceVertex(edge.to);
+    if (fromVertex < 0 || toVertex < 0 || fromVertex == toVertex) continue;
+    const int face = edge.from.face;
+    const Eigen::RowVector3d edgeDirection =
+        tangent(mesh.V.row(toVertex) - mesh.V.row(fromVertex), face);
+    const Eigen::RowVector3d authoritativeV = tangent(faceAxisY.row(face), face);
+    ASSERT_GT(edgeDirection.squaredNorm(), 0.0);
+    ASSERT_GT(authoritativeV.squaredNorm(), 0.0);
+    EXPECT_NEAR(1.0, std::abs(edgeDirection.dot(authoritativeV)), 1.0e-10)
+        << "phase-front V edge must consume the exact axial field-family "
+           "source correspondence rather than a diagonal strip edge";
+    ++exactInterRingEdges;
+  }
+  EXPECT_GT(exactInterRingEdges, 0);
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontFieldAmbiguousRingCorrespondenceFailsClosed) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+
+  // Every cylinder source triangle contains one same-height ring edge and two
+  // upward inter-ring edges: the axial edge and the strip diagonal.  Define a
+  // synthetic 4-RoSy whose V family is their exact tangent bisector.  Both
+  // topology-compatible ring bijections are then genuinely field-equivalent,
+  // so production must reject ambiguity rather than recover the old
+  // lexicographic source-vertex tie-break.
+  Eigen::MatrixXd faceAxisX(mesh.F.rows(), 3);
+  Eigen::MatrixXd faceAxisY(mesh.F.rows(), 3);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d p0 = mesh.V.row(mesh.F(face, 0));
+    const Eigen::RowVector3d p1 = mesh.V.row(mesh.F(face, 1));
+    const Eigen::RowVector3d p2 = mesh.V.row(mesh.F(face, 2));
+    Eigen::RowVector3d normal = (p1 - p0).cross(p2 - p0);
+    ASSERT_GT(normal.norm(), 0.0);
+    normal.normalize();
+
+    std::vector<Eigen::RowVector3d> rising;
+    for (const auto &edgeVertices :
+         {std::pair<int, int>{mesh.F(face, 0), mesh.F(face, 1)},
+          std::pair<int, int>{mesh.F(face, 1), mesh.F(face, 2)},
+          std::pair<int, int>{mesh.F(face, 2), mesh.F(face, 0)}}) {
+      Eigen::RowVector3d direction =
+          mesh.V.row(edgeVertices.second) - mesh.V.row(edgeVertices.first);
+      if (std::abs(direction.z()) <= 1.0e-12) continue;
+      if (direction.z() < 0.0) direction *= -1.0;
+      direction -= direction.dot(normal) * normal;
+      ASSERT_GT(direction.norm(), 0.0);
+      rising.push_back(direction.normalized());
+    }
+    ASSERT_EQ(2U, rising.size());
+    if (rising[0].dot(rising[1]) < 0.0) rising[1] *= -1.0;
+    Eigen::RowVector3d vAxis = rising[0] + rising[1];
+    ASSERT_GT(vAxis.norm(), 0.0);
+    vAxis.normalize();
+    Eigen::RowVector3d uAxis = normal.cross(vAxis);
+    ASSERT_GT(uAxis.norm(), 0.0);
+    uAxis.normalize();
+    faceAxisX.row(face) = uAxis;
+    faceAxisY.row(face) = vAxis;
+  }
+
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, faceAxisX, faceAxisY, targetSize, options);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            network.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                AmbiguousPeriodicRingCorrespondence,
+            network.phaseFront.failure.reason)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  EXPECT_TRUE(network.seeds.empty());
+  EXPECT_TRUE(network.traces.empty());
+  EXPECT_TRUE(network.proposals.empty());
+}
+
+TEST(SurfaceCellsPhase10,
      PeriodicPhaseFrontPairsArtificialCutWithoutExteriorSeam) {
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/cylinder.obj");
@@ -1225,7 +1366,13 @@ TEST(SurfaceCellsPhase10,
                         InvalidPeriodicChart ||
                 network.phaseFront.failure.reason ==
                     directional::geometry::SurfacePhaseFrontFailureReason::
-                        InvalidPeriodicFrontPairing);
+                        InvalidPeriodicFrontPairing ||
+                network.phaseFront.failure.reason ==
+                    directional::geometry::SurfacePhaseFrontFailureReason::
+                        InvalidPeriodicRingCorrespondence ||
+                network.phaseFront.failure.reason ==
+                    directional::geometry::SurfacePhaseFrontFailureReason::
+                        AmbiguousPeriodicRingCorrespondence);
   }
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
