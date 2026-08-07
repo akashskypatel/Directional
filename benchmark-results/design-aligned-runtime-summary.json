@@ -1,12 +1,51 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v4",
-  "updatedUtc": "2026-08-07T14:20:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v5",
+  "updatedUtc": "2026-08-07T16:20:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
-    "earliestFailingFixture": "cylinder__surface_cells",
+    "earliestFailingExecutedFixture": "cylinder__surface_cells",
     "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md"
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md"
+  },
+  "latestCodeBuild": {
+    "sourceCommit": "56f823273cad041a01ebb4d0772c3265ff248f4a",
+    "patchSha256": "d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f",
+    "workflowRunId": 31196268841,
+    "workflowJobId": 92925122791,
+    "artifactId": 9001168379,
+    "artifactName": "g3-periodic-cylinder-code-build",
+    "artifactSha256": "0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c",
+    "logArtifactId": 9001167184,
+    "logArtifactSha256": "fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4",
+    "internalChecksums": "44/44",
+    "compileActions": "111/111",
+    "approvedTargets": "7/7",
+    "executables": 5,
+    "libraries": 2,
+    "fixtures": 27,
+    "runtimeExecution": false,
+    "changedFileBlobs": {
+      "include/directional/geometry/SurfaceCellTracing.h": "931669018a986096cf78d66a2aed9de5aa8e0fe1",
+      "include/directional/diagnostics/RemeshDiagnostics.h": "a51215982318e77581efa4fa7887d0406a9d4bf0",
+      "src/geometry/SurfaceCellTracing.cpp": "b1a2c6d4051cc17b79e342170285d69552cad16d",
+      "src/pipeline/RemeshPipeline.cpp": "7674ed3fe40c5f43c668c931c01b59f6c7829df8",
+      "src/bench/DirectionalBenchmark.cpp": "18955ca8ef72812c9c70ed522bb578409e6a176f",
+      "tests/SurfaceCellsPhase10Tests.cpp": "bccd6abf3e31b8096c471c515b1949d08dcfde59"
+    },
+    "implementedContracts": {
+      "topologyDerivedAnnulusApplicability": true,
+      "intrinsicCutOpenChart": true,
+      "firstClassPeriodicHolonomy": true,
+      "periodicHolonomyComponents": ["Z4 rotation", "Z2 lattice translation", "ordered source route"],
+      "explicitCutRoute": true,
+      "typedPeriodicRejection": true,
+      "periodicFrontMerge": true,
+      "euclideanSeamWelding": false,
+      "periodicQuotientMaterialization": true,
+      "holonomyHashedAndSerialized": true,
+      "focusedPeriodicTestsCompiledNotExecuted": 5
+    }
   },
   "testedAuthority": {
     "sourceCommit": "218dd3ec3f6399dc82183390720a4ba4d3a70b42",
@@ -16,24 +55,13 @@
     "artifactName": "g2-close-sheet-code-build",
     "artifactSha256": "f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791",
     "internalChecksums": "45/45",
-    "executables": 5,
-    "libraries": 2,
-    "fixtures": 27,
     "rebuildPerformed": false,
-    "sourceOrValidationEditedDuringTest": false,
-    "changedFileBlobs": {
-      "src/geometry/SurfaceCellTracing.cpp": "c9570ecb4a9557eebaf0e30b751e2ccca90b2973",
-      "src/pipeline/RemeshPipeline.cpp": "55af3205fd7cdb8f21357ac69516ffa29cf8a6d3",
-      "tests/SurfaceCellsPhase10Tests.cpp": "7151077d7d4e0a10dad388dd008479f96fc1aae8"
-    }
+    "sourceOrValidationEditedDuringTest": false
   },
   "contractTests": {
-    "passed": 7,
-    "total": 7,
-    "closeSheetKeys": [[0, 0], [1, 1]],
-    "crossSheetTwinOwnershipObserved": false,
-    "faceRowEnumerationInvariant": true,
-    "exactProductionPlaneRegressionPassed": true
+    "latestExecutedPassed": 7,
+    "latestExecutedTotal": 7,
+    "g3PeriodicContractsCompiledNotExecuted": 5
   },
   "directAcceptance": {
     "passed": 3,
@@ -50,8 +78,7 @@
         "connectedComponents": 1,
         "validationFailures": 0,
         "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "730caeae49ec872c",
-        "wallSecondsRange": [0.343229, 0.357320]
+        "outputStructuralHash": "730caeae49ec872c"
       },
       "multi_face_seam": {
         "success": true,
@@ -64,10 +91,7 @@
         "connectedComponents": 1,
         "validationFailures": 0,
         "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "5bdf34d7802e9fb0",
-        "previousGate1Hash": "a8972efd7c4900a4",
-        "previousArtifactGeometricHausdorff": 2.0648414089663447e-9,
-        "wallSecondsRange": [0.533237, 0.546025]
+        "outputStructuralHash": "5bdf34d7802e9fb0"
       },
       "close_sheets": {
         "success": true,
@@ -80,10 +104,7 @@
         "connectedComponents": 2,
         "validationFailures": 0,
         "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "89b052762f52a5af",
-        "componentVertexCounts": [121, 121],
-        "componentZLayers": [-0.035, 0.035],
-        "wallSecondsRange": [3.005340, 3.151501]
+        "outputStructuralHash": "89b052762f52a5af"
       },
       "cylinder": {
         "success": false,
@@ -94,28 +115,10 @@
         "completedQuads": 0,
         "terminalFailureCode": "NotProductionReady",
         "terminalFailureStage": "completion",
-        "wallSecondsRange": [0.146054, 0.147918]
+        "note": "Latest executed authority predates the compile-valid G3 periodic producer."
       },
-      "bunny_1k_random": {
-        "success": false,
-        "producerDisposition": "NotApplicable",
-        "runs": 1,
-        "traceSegments": 80862,
-        "arrangementCells": 0,
-        "completedQuads": 0,
-        "wallSeconds": 23.408649,
-        "peakWorkingSetBytes": 247545856
-      },
-      "vase": {
-        "success": false,
-        "producerDisposition": "NotApplicable",
-        "runs": 1,
-        "traceSegments": 116922,
-        "arrangementCells": 0,
-        "completedQuads": 0,
-        "wallSeconds": 52.096160,
-        "peakWorkingSetBytes": 141316096
-      }
+      "bunny_1k_random": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 80862, "arrangementCells": 0, "completedQuads": 0},
+      "vase": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 116922, "arrangementCells": 0, "completedQuads": 0}
     }
   },
   "defaultSuites": {
@@ -128,7 +131,8 @@
   "nonOverlappingTotal": {"passed": 311, "total": 325, "failed": 14},
   "gateDecision": {
     "g2Closed": true,
-    "reason": "Exact close sheets is direct deterministic strict-valid Produced output with two isolated source-sheet components while plane and seam remain valid.",
-    "nextGate": "G3 periodic cylinder/holonomy"
+    "g3RuntimeVerified": false,
+    "reason": "G3 is compile-valid only. Exact artifact execution decides whether cylinder becomes Produced, typed periodic Rejected, or remains NotApplicable.",
+    "nextTurn": "artifact-only G3 Test + Benchmark"
   }
 }
