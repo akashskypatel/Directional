@@ -2819,6 +2819,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
   out << "],\"surfaceCellCompletionParityMutationPhase\":\""
       << escape_json(diagnostics.surfaceCellCompletionParityMutationPhase)
       << "\","
+      << "\"surfaceCellAuthoritativeProducerDisposition\":\""
+      << escape_json(diagnostics.surfaceCellAuthoritativeProducerDisposition)
+      << "\","
       << "\"surfaceCellFirstInvalidProducerStage\":\""
       << escape_json(diagnostics.surfaceCellFirstInvalidProducerStage)
       << "\","

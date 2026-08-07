@@ -1,12 +1,18 @@
 #include <directional/fields/PointSampledCrossField.h>
+#include <directional/io/ReadOBJ.h>
 #include <directional/meshing/PatchQuadrangulator.h>
 #include <directional/pipeline/RemeshPipeline.h>
+
+#include "TestFixturePaths.h"
 #include <directional/validation/MeshValidator.h>
 #include <directional/validation/ValidationVisualizer.h>
 
 #include <cmath>
 #include <chrono>
 #include <cstdint>
+#include <filesystem>
+#include <fstream>
+#include <stdexcept>
 
 #include <gtest/gtest.h>
 
@@ -641,6 +647,45 @@ Eigen::MatrixXd constant_xy_raw_field(const int faceCount) {
   return field;
 }
 
+Eigen::MatrixXd read_rawfield_fixture(
+    const std::filesystem::path &path, const int expectedFaces) {
+  std::ifstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open rawfield fixture: " +
+                             path.string());
+  }
+  int degree = 0;
+  int faceCount = 0;
+  if (!(stream >> degree >> faceCount) || degree != 4 ||
+      faceCount != expectedFaces) {
+    throw std::runtime_error("Invalid rawfield fixture header: " +
+                             path.string());
+  }
+  Eigen::MatrixXd field(faceCount, 3 * degree);
+  for (int face = 0; face < faceCount; ++face) {
+    for (int column = 0; column < field.cols(); ++column) {
+      if (!(stream >> field(face, column))) {
+        throw std::runtime_error("Invalid rawfield fixture payload: " +
+                                 path.string());
+      }
+    }
+  }
+  return field;
+}
+
+std::set<std::uint64_t> interior_source_edges(
+    const directional::TriMesh &mesh) {
+  std::set<std::uint64_t> edges;
+  for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
+    if (mesh.EF(edge, 0) < 0 || mesh.EF(edge, 1) < 0) {
+      continue;
+    }
+    edges.insert(directional::pipeline::surface_cell_source_edge_key(
+        mesh.EV(edge, 0), mesh.EV(edge, 1)));
+  }
+  return edges;
+}
+
 std::size_t multi_edge_transition_count(
     const directional::geometry::SurfaceCellNetwork &network) {
   std::size_t count = 0;
@@ -744,9 +789,94 @@ TEST(SurfaceCellsPhase10,
       mesh.V, mesh.F, crossField, targetSize, options);
 
   EXPECT_FALSE(network.phaseFront.succeeded);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            network.phaseFront.disposition);
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 DuplicateTransitionMetadata,
             network.phaseFront.failure.reason);
+  EXPECT_TRUE(network.seeds.empty());
+  EXPECT_TRUE(network.traces.empty());
+  EXPECT_TRUE(network.proposals.empty());
+}
+
+TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions guidanceOptions;
+  guidanceOptions.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  guidanceOptions.sourceFaceSheets.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  guidanceOptions.reliefBarrierEdges = interior_source_edges(mesh);
+  ASSERT_FALSE(guidanceOptions.reliefBarrierEdges.empty());
+  guidanceOptions.reliefBarriersEmbedded = false;
+
+  const auto guidance = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, guidanceOptions);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            guidance.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             guidance.phaseFront.failure.reason);
+  EXPECT_TRUE(guidance.phaseFront.succeeded);
+
+  auto embeddedOptions = guidanceOptions;
+  embeddedOptions.reliefBarriersEmbedded = true;
+  const auto embedded = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, embeddedOptions);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            embedded.phaseFront.disposition);
+  EXPECT_FALSE(embedded.phaseFront.succeeded);
+  EXPECT_TRUE(embedded.seeds.empty());
+  EXPECT_TRUE(embedded.traces.empty());
+  EXPECT_TRUE(embedded.proposals.empty());
+}
+
+TEST(SurfaceCellsPhase10,
+     ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/plane.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/plane.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField =
+      read_rawfield_fixture(fieldPath, mesh.F.rows());
+
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.preserveDebugArtifacts = true;
+  options.surfaceCells.retainIntermediateGeometry = true;
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, rawField, options);
+
+  ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
+  const auto &network = result.surfaceCellContext.traceNetwork;
+  EXPECT_EQ("Produced",
+            result.diagnostics.surfaceCellAuthoritativeProducerDisposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  EXPECT_TRUE(network.phaseFront.succeeded);
+  EXPECT_EQ(64U, network.phaseFront.cells.size());
+  EXPECT_TRUE(network.seeds.empty());
+  EXPECT_TRUE(network.traces.empty());
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ":"
+      << result.diagnostics.terminalFailureStage;
+  EXPECT_EQ(64U, result.diagnostics.surfaceCellCompletedQuadCount);
 }
 
 } // namespace

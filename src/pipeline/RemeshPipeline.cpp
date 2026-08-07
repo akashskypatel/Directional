@@ -911,6 +911,8 @@ std::uint64_t hash_trace_network(
     }
   }
   hash_combine_i64(seed, network.phaseFront.attempted ? 1 : 0);
+  hash_combine_i64(seed,
+                   static_cast<int>(network.phaseFront.disposition));
   hash_combine_i64(seed, network.phaseFront.succeeded ? 1 : 0);
   hash_combine_i64(seed, static_cast<int>(network.phaseFront.failure.reason));
   hash_combine_i64(seed, network.phaseFront.failure.cell);
@@ -2778,6 +2780,8 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionParityAvailableSheets;
   target.surfaceCellCompletionParityMutationPhase =
       source.surfaceCellCompletionParityMutationPhase;
+  target.surfaceCellAuthoritativeProducerDisposition =
+      source.surfaceCellAuthoritativeProducerDisposition;
   target.surfaceCellFirstInvalidProducerStage =
       source.surfaceCellFirstInvalidProducerStage;
   target.surfaceCellFirstInvalidProducerReason =
@@ -4703,8 +4707,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::build_surface_cell_network(
             meshWhole.V, meshWhole.F, result.surfaceCellContext.crossField,
             targetSize.targetSize, tracingOptions);
-    if (traceNetwork.phaseFront.attempted &&
-        !traceNetwork.phaseFront.succeeded &&
+    result.diagnostics.surfaceCellAuthoritativeProducerDisposition =
+        geometry::surface_cell_producer_disposition_name(
+            traceNetwork.phaseFront.disposition);
+    if (traceNetwork.phaseFront.disposition ==
+            geometry::SurfaceCellProducerDisposition::Rejected &&
         traceNetwork.phaseFront.failure.reason !=
             geometry::SurfacePhaseFrontFailureReason::None &&
         result.diagnostics.surfaceCellFirstInvalidProducerStage.empty()) {
@@ -4726,7 +4733,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           failure.secondarySourceEdge;
     }
     const bool useAuthoritativePhaseFront =
-        traceNetwork.phaseFront.succeeded;
+        traceNetwork.phaseFront.disposition ==
+        geometry::SurfaceCellProducerDisposition::Produced;
     AuthoritativePhaseFrontMeshResult authoritativePhaseFrontMesh;
     if (useAuthoritativePhaseFront) {
       authoritativePhaseFrontMesh = build_authoritative_phase_front_mesh(
@@ -4795,6 +4803,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     record_surface_cell_stage("tracing", reliefIdentity, tracingIdentity, true,
                               result.diagnostics.surfaceCellTracingSeconds);
     completedSurfaceCellStages.push_back("tracing");
+    if (retainedTraceNetwork.phaseFront.disposition ==
+        geometry::SurfaceCellProducerDisposition::Rejected) {
+      return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                "tracing");
+    }
     if (options.surfaceCells.injectFailureAfterStage == 3) {
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "tracing");
@@ -7518,6 +7531,11 @@ void accumulate_component_diagnostics(
         source.surfaceCellCompletionParityAvailableSheets;
     target.surfaceCellCompletionParityMutationPhase =
         source.surfaceCellCompletionParityMutationPhase;
+  }
+  if (!source.surfaceCellAuthoritativeProducerDisposition.empty() &&
+      target.surfaceCellAuthoritativeProducerDisposition.empty()) {
+    target.surfaceCellAuthoritativeProducerDisposition =
+        source.surfaceCellAuthoritativeProducerDisposition;
   }
   if (!source.surfaceCellFirstInvalidProducerStage.empty() &&
       target.surfaceCellFirstInvalidProducerStage.empty()) {

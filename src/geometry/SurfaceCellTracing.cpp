@@ -4598,7 +4598,8 @@ bool segment_on_source(
     for (const VertexPathStep &step : route) {
       if (!source_faces_compatible(options, transitFace, step.face) ||
           options.hardFeatureEdges.count(step.edgeKey) != 0 ||
-          options.reliefBarrierEdges.count(step.edgeKey) != 0) {
+          (options.reliefBarriersEmbedded &&
+           options.reliefBarrierEdges.count(step.edgeKey) != 0)) {
         set_phase_front_failure(
             failure,
             sourceVertex >= 0
@@ -4811,6 +4812,36 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   if (!result.attempted) {
     return result;
   }
+
+  // Applicability is decided before authoritative transition metadata is
+  // consumed. The bounded uniform producer currently covers planar,
+  // rectangular, globally phase-compatible domains without singularities.
+  // Unsupported topology is NotApplicable; malformed authoritative metadata
+  // on an applicable domain is Rejected and must remain fail-closed.
+  if (!options.singularityVertices.empty()) {
+    return result;
+  }
+  UniformPhaseFrame applicabilityFrame;
+  SurfacePhaseFrontFailure applicabilityFailure;
+  if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
+                                nullptr, nullptr, nullptr,
+                                applicabilityFailure, applicabilityFrame)) {
+    switch (applicabilityFailure.reason) {
+    case SurfacePhaseFrontFailureReason::InvalidInput:
+    case SurfacePhaseFrontFailureReason::DegenerateReferenceFrame:
+    case SurfacePhaseFrontFailureReason::InconsistentFaceOrientation:
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      result.failure = applicabilityFailure;
+      break;
+    default:
+      // Non-planar, non-rectangular, or globally non-uniform phase domains are
+      // outside this bounded producer. A separately selected producer may run.
+      break;
+    }
+    return result;
+  }
+
+  result.disposition = SurfaceCellProducerDisposition::Rejected;
   UniformPhaseFrame frame;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
                                 edgeMatching, edgeEffort, edgeTransitions,
@@ -5026,12 +5057,28 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       !result.cells.empty() &&
       result.cells.size() ==
           static_cast<std::size_t>(result.gridU * result.gridV);
+  if (result.succeeded) {
+    result.disposition = SurfaceCellProducerDisposition::Produced;
+  } else {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+  }
   return result;
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry {
+
+const char *surface_cell_producer_disposition_name(
+    const SurfaceCellProducerDisposition disposition) {
+  switch (disposition) {
+  case SurfaceCellProducerDisposition::NotApplicable: return "NotApplicable";
+  case SurfaceCellProducerDisposition::Produced: return "Produced";
+  case SurfaceCellProducerDisposition::Rejected: return "Rejected";
+  }
+  return "Unknown";
+}
 
 const char *surface_phase_front_failure_reason_name(
     const SurfacePhaseFrontFailureReason reason) {
@@ -5086,7 +5133,8 @@ SurfaceCellNetwork build_surface_cell_network(
       surface_cell_tracing_detail::build_uniform_phase_front(
           vertices, faces, faceAxisX, faceAxisY, targetSize, options,
           edgeMatching, edgeEffort, edgeTransitions);
-  if (network.phaseFront.succeeded) {
+  if (network.phaseFront.disposition ==
+      SurfaceCellProducerDisposition::Produced) {
     network.proposals.reserve(network.phaseFront.cells.size());
     for (const SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
       SurfaceCellProposal proposal;
@@ -5102,6 +5150,10 @@ SurfaceCellNetwork build_surface_cell_network(
     }
     network.stats.attempted = static_cast<int>(network.proposals.size());
     network.stats.accepted = static_cast<int>(network.proposals.size());
+    return network;
+  }
+  if (network.phaseFront.disposition ==
+      SurfaceCellProducerDisposition::Rejected) {
     return network;
   }
   network.seeds =

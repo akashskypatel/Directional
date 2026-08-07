@@ -259,7 +259,18 @@ struct SurfacePhaseFrontFailure {
 const char *surface_phase_front_failure_reason_name(
     SurfacePhaseFrontFailureReason reason);
 
+enum class SurfaceCellProducerDisposition : int {
+  NotApplicable = 0,
+  Produced = 1,
+  Rejected = 2,
+};
+
+const char *surface_cell_producer_disposition_name(
+    SurfaceCellProducerDisposition disposition);
+
 struct SurfacePhaseFrontResult {
+  SurfaceCellProducerDisposition disposition =
+      SurfaceCellProducerDisposition::NotApplicable;
   bool attempted = false;
   bool succeeded = false;
   int gridU = 0;

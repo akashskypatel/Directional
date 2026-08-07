@@ -205,6 +205,7 @@ struct RemeshDiagnostics {
   std::vector<int> surfaceCellCompletionParityAvailableComponents;
   std::vector<int> surfaceCellCompletionParityAvailableSheets;
   std::string surfaceCellCompletionParityMutationPhase;
+  std::string surfaceCellAuthoritativeProducerDisposition;
   std::string surfaceCellFirstInvalidProducerStage;
   std::string surfaceCellFirstInvalidProducerReason;
   int surfaceCellFirstInvalidProducerCell = -1;
