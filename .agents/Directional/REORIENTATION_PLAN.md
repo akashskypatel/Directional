@@ -4,8 +4,8 @@
 
 ```text
 G0 truthful authority [passed]
-→ G1 authoritative producer boundary [active; runtime verification pending]
-→ G2 seam proven / close-sheet isolation incomplete
+→ G1 uniform authoritative phase-front plane [passed]
+→ G2 cross-chart / close-sheet isolation [ACTIVE]
 → G3 periodic holonomy
 → G4 topology and singularities
 → G5 adaptivity and hard features
@@ -15,24 +15,65 @@ G0 truthful authority [passed]
 
 ## Current disposition
 
-The mandatory no-progress review selected **Outcome B — bounded producer replacement proof**. The bounded replacement is now implemented and compile-verified.
+The mandatory no-progress review selected **Outcome B — bounded producer replacement proof** for Gate 1. That replacement has now passed artifact-only runtime validation.
 
-The source explicitly distinguishes `NotApplicable / Produced / Rejected`. An applicable `Rejected` producer returns before generic seeds/traces/proposals, and the pipeline stops at tracing before FlowRep/arrangement/completion can substitute authority. Relief barriers now become hard only when `reliefBarriersEmbedded` is true.
+The source explicitly distinguishes `NotApplicable / Produced / Rejected`. An applicable `Rejected` producer returns before generic seeds/traces/proposals, and the pipeline stops at tracing before downstream substitution. The exact committed production plane now reaches `Produced`, and the multi-face seam remains a proven direct `Produced` regression.
 
-The exact committed production-plane regression was added and compiled, but no project binary was executed. Runtime authority therefore remains the preceding 1/6 direct matrix.
+## Gate 1 closure
 
-## Immediate objective
+Validated artifact:
 
-Execute `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md` against artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`.
+- source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
+- artifact ID `8984760467`;
+- artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
+- 44/44 internal checksums;
+- six explicit producer/topology contracts: 6/6 passed.
 
-Verify:
+Direct results:
 
-- exact producer-contract tests first;
-- plane first, seam second, then close sheets/cylinder/bunny/vase;
-- producer disposition and immutable typed failure;
-- no generic substitution after `Rejected`;
-- deterministic hashes across independent processes;
-- remaining producer/completion/validation/compiled-API suites without rebuild.
+- plane: `Produced`, 81 provenance vertices, 64 pure quads, zero validation failures, no fallback/recovery, deterministic hash suffix `730caeae49ec872c`;
+- seam: `Produced`, 81 vertices, 64 pure quads, zero validation failures, no fallback/recovery, deterministic hash `a8972efd7c4900a4`.
+
+Both reproduced identically across three independent benchmark processes. G1 is closed.
+
+## Immediate objective — G2
+
+The earliest failing direct fixture is `close_sheets__surface_cells`:
+
+- disposition `NotApplicable`;
+- 158 traces;
+- zero arrangement cells;
+- zero completed quads;
+- `NotProductionReady:completion`;
+- no fallback/recovery.
+
+The next Code + Build turn must extend the authoritative uniform phase/front producer to independent disconnected but spatially close source sheets. The implementation must use source component/local-sheet authority, not Euclidean proximity, nearest projection, fixture identity, or count/order heuristics.
+
+### Required producer extension
+
+1. Partition authoritative producer work by source component/local-sheet before front construction.
+2. Run the proven ordinary-edge and ordered source-vertex-fan transport independently within each authoritative sheet.
+3. Keep phase, route, capture, collision, and ownership state sheet-local unless exact source topology provides connectivity.
+4. Concatenate accepted sheet cells only after each retains complete source provenance and satisfies the existing one-cell→one-quad invariant.
+5. Preserve deterministic canonical ordering independent of source component enumeration and source-face row order.
+6. Preserve `Rejected` as terminal producer authority for an applicable sheet; never substitute generic work after rejection.
+7. Keep periodic cylinder topology outside this turn; G3 may remain `NotApplicable`.
+
+### Material-progress condition
+
+G2 materially advances only if close sheets becomes `Produced` with direct deterministic valid pure-quads and zero cross-sheet provenance/merge violations while plane and seam remain unchanged mandatory regressions.
+
+## Explicitly deferred work
+
+Until G2 passes, do not prioritize:
+
+- cylinder periodic holonomy;
+- singularity topology and topology-distinct completion;
+- adaptive 2:1 transitions and hard-feature expansion;
+- bunny/vase production or performance remediation;
+- scheduler-sensitive timing ratios;
+- the ten existing downstream completion/simplification failures;
+- cache, memory, ownership-compaction, or general diagnostics unless essential to G2 correctness.
 
 ## Evidence discipline
 
@@ -40,6 +81,5 @@ Verify:
 - Passed earlier gates are mandatory regressions.
 - Narrow synthetic fixtures isolate contracts but cannot replace exact production-route tests.
 - Bunny and vase remain mandatory production observations and may not be simplified, bypassed, or special-cased.
-- Explicit rejection without generic substitution is material architecture evidence but not Gate 1 success.
-- Gate 1 closes only through direct validated plane output while retaining seam direct success.
 - Test turns remain artifact-only; Code + Build turns may use GitHub workflow compilation under the workflow policy.
+- Timeout is failure only and never correctness evidence.
