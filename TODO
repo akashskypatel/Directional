@@ -8,65 +8,82 @@ Last updated: 2026-08-07 UTC
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - G2 cross-chart / close-sheet isolation: **passed**.
-- Active gate: **G3 periodic closure / holonomy — field-authoritative adjacent-ring correspondence is compile-valid; artifact runtime verification pending**.
-- Earliest executed failing fixture remains `cylinder__surface_cells` at `completion/output-validation` from artifact `9004509871`.
-- Completed turn: **G3 Periodic Ring Correspondence Code + Build**.
-- Next turn: `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md`.
+- Active gate: **G3 periodic closure / holonomy — regression at periodic chart endpoint construction**.
+- Earliest failing fixture: `cylinder__surface_cells` at `tracing/phase-front`, `Rejected/InvalidPeriodicChart`, cell 29.
+- Completed turn: **G3 Periodic Ring Correspondence artifact-only Test + Benchmark**.
+- Next turn: `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Latest executed runtime authority
+## Exact tested authority
 
-Artifact `9004509871`, source `2783ea718ffb15f8fb3868795173472ab8636c1c`:
+Artifact-only validation used exact artifact `9008118764` (`g3-periodic-ring-correspondence-code-build`) from source/test commit `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`.
 
-- focused/retained contracts: **13/13**;
-- plane: direct strict-valid `Produced`, 64 quads, hash `730caeae49ec872c`, deterministic 3/3;
-- seam: direct strict-valid `Produced`, 64 quads, hash `5bdf34d7802e9fb0`, deterministic 3/3;
-- close sheets: direct strict-valid `Produced`, 200 quads in two isolated components, hash `89b052762f52a5af`, deterministic 3/3;
-- cylinder: periodic `Produced`, `r=0`, `t=(32,0)`, route 32, cut 4, 2,237 traces, 320 direct quads / 352 provenance vertices, no fallback/recovery, deterministic 3/3, then `completion/output-validation:AggregateCompletionValidationFailure`;
-- exact cylinder failures: normal P95 `16.6272734366° > 15°`, field P95 `37.9670987281° > 15°`, warpage P95 `30.6213792811° > 30°`.
-
-This remains runtime authority until the new artifact is executed.
-
-## G3 ring-correspondence Code + Build authority
-
-Final source/test commit:
-
-- `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`.
-
-Implementation authority:
-
-- initial implementation commit `18f2c880f1714d8c41c9e11dadd53169756629fe`;
-- initial patch SHA-256 `49cd71bc5aafc33ccdfd5e5104e5a23c7452e72074aac3c7775794f55737d6de`;
-- compile-only test correction patch SHA-256 `8c96fa983990ab6c3f3ace5b24b8af59678aa7d6a0b7ed4f57b06f1397d1cd56`;
-- final blobs:
-  - `SurfaceCellTracing.h` `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
-  - `SurfaceCellTracing.cpp` `6980850bd32d40b1da9350ebbe3f601b8ce5e07b`;
-  - `SurfaceCellsPhase10Tests.cpp` `c4671ef674228d74b96e80499abbb6846bcdf3e3`.
-
-The bounded implementation removes lexicographic `valid.front()` authority from adjacent-ring selection. Topology-compatible candidates are now evaluated through reciprocal transported cross-field branch/family authority over the strip. A unique field-authoritative candidate is required; no candidate yields typed `InvalidPeriodicRingCorrespondence`, and effectively equal best candidates yield typed `AmbiguousPeriodicRingCorrespondence`. Source-strip breakpoints, annulus cut, holonomy, exact periodic quotient, provenance and one accepted cell → one quad remain intact.
-
-New compiled contracts cover exact field-authoritative axial correspondence and fail-closed genuinely field-ambiguous correspondence. No validator, fallback/recovery, fixture-specific or post-hoc repair behavior changed.
-
-## Compile-only build authority
-
-- successful run/job `31214404170` / `92984429773`;
-- artifact `9008118764` (`g3-periodic-ring-correspondence-code-build`);
-- artifact SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
-- detailed log artifact `9008117677`, SHA-256 `a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77`;
+- outer SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
 - recursive checksums **44/44**;
-- compile/link **111/111** across seven approved targets;
-- five executables, two project libraries, 27 fixture/input files packaged;
-- Release static / Ninja / GNU C++ 13.3.0 / CMake 3.31.6 / `PRE_TEST`;
-- packaged command boundary `runtimeExecution=false`;
-- generated Directional binary/test/benchmark execution: **none**.
+- final source blobs verified exactly;
+- five executables, two project libraries, 27 fixture/input files;
+- build authority **111/111**, Release/Ninja/static/`PRE_TEST`;
+- packaged pre-test command boundary `runtimeExecution=false`;
+- no rebuild, relink, source/test/fixture/manifest/validator/build edit, or replacement artifact during Test + Benchmark.
 
-The first bounded attempt `31213727511 / 92982293325` compiled production source but failed compiling the new Eigen test helpers. The correction was test-source-only; the successful retry above is authoritative.
+## Focused producer result
+
+Focused/retained producer contracts: **9/15 passed, 6 failed**.
+
+Passed:
+
+- typed genuinely ambiguous ring correspondence fails closed as `AmbiguousPeriodicRingCorrespondence`;
+- exact cylinder reaches a typed authoritative producer boundary;
+- all seven retained G1/G2 contracts.
+
+Six nominal G3 periodic contracts regress because their valid periodic chart now returns `Rejected/InvalidPeriodicChart` before the intended downstream assertion.
+
+## Direct acceptance
+
+| Fixture | Result | Producer | Traces | Direct quads | Output | Determinism |
+|---|---|---:|---:|---:|---|---|
+| plane | **pass** | `Produced` | 352 | 64 | `CompletedSurfaceCells`, `730caeae49ec872c` | 3/3 |
+| seam | **pass** | `Produced` | 256 | 64 | `CompletedSurfaceCells`, `5bdf34d7802e9fb0` | 3/3 |
+| close sheets | **pass** | `Produced` | 1,104 | 200 | 242 V / 200 Q / 2 components, `89b052762f52a5af` | 3/3 |
+| cylinder | **fail / regression** | `Rejected/InvalidPeriodicChart` | 0 | 0 | none; `NotProductionReady:tracing` | 3/3 |
+| bunny | later gate | `NotApplicable` | 80,862 | 0 | `NotProductionReady:completion` | 1 bounded |
+| vase | later gate | bounded timeout | — | — | 45 s timeout; failure only | 1 bounded |
+
+Cylinder terminal producer diagnostics are stable 3/3:
+
+- `surfaceCellFirstInvalidProducerStage = tracing/phase-front`;
+- `surfaceCellFirstInvalidProducerReason = InvalidPeriodicChart`;
+- `surfaceCellFirstInvalidProducerCell = 29`;
+- no exposed terminal holonomy, traces, arrangement, completed quads, provenance or output;
+- no fallback/recovery.
+
+This is a regression from artifact `9004509871`, where cylinder was periodic `Produced` and reached completed output validation.
+
+## Reproduced structural defect
+
+The field-authoritative correspondence itself selects the intended same-column axial source mapping; the competing diagonal mapping remains `37.9670987281°` from the axial field and must not be restored.
+
+The new failure is downstream in `periodic_chart_segment()`. Coverage clipping uses `1e-10` tolerance but emitted barycentric interval endpoints retain the tolerance-expanded values instead of being canonicalized onto the exact source simplex. At cylinder cell 29 two sides that geometrically share a source vertex acquire microscopic source-face-30 tails near `-1e-10`. The unchanged strict shared-endpoint/self-intersection predicate therefore sees overlap beyond the exact endpoint and correctly rejects the emitted chart.
+
+Independent reconstruction from the immutable packaged source/fixture reproduces the first rejection at **cell 29**, matching runtime diagnostics.
+
+The next fix is producer endpoint canonicalization, **not validator tolerance relaxation**.
+
+## Suite evidence
+
+- bounded producer coverage: **91/99**;
+- completion/simplification: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- bounded aggregate: **313/331**.
+
+Direct gate status outranks aggregate totals. Scheduler-sensitive timing and historical completion failures remain deferred.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9008118764` without rebuilding or editing source/tests/fixtures/validators/build logic.
+Execute `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md` as **Code + Build only**.
 
-Run the eight focused periodic/ring-correspondence contracts first, then retained G1/G2 contracts, direct plane/seam/close-sheet regressions, and exact cylinder acceptance. G3 closes only if cylinder remains periodic `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with zero validation failures, field/normal P95 <= 15°, warpage P95 <= 30°, correct periodic quotient/provenance, no false cut seam, no fallback/recovery, and G0–G2 green.
+Canonicalize tolerance-derived periodic chart barycentric endpoints onto exact source-simplex boundaries, renormalize them, remove zero-length tolerance-only segments, and preserve exact shared breakpoints. Do not weaken `validate_closed_boundary_paths()` or `segments_intersect_beyond_shared_endpoint_2d()`. Preserve field-authoritative ring correspondence, typed ambiguity rejection, cut/holonomy/quotient/source-strip authority, G0-G2 and no fallback/recovery.
 
-Do not require historical translation/grid/output counts; correctness and field authority decide acceptance.
+This is the first runtime-no-progress Code + Build result since the prior material-progress turn, so the two-consecutive-Code+Build review rule is not yet triggered. If the next Code + Build also fails following artifact-only runtime acceptance without material progress, the following turn must be the mandated design review or bounded producer replacement proof.
