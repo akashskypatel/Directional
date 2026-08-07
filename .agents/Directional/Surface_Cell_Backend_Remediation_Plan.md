@@ -2,31 +2,35 @@
 
 ## Current blocker
 
-Gate 1 remains the earliest blocker. The last executed artifact left the plane on the deterministic 106-trace / 9-arrangement / 12-completion generic path while the seam passed directly with 64 pure quads.
+Gate 1 remains the earliest blocker. The second bounded live-transition artifact was tested exactly and did **not** materially advance the production plane: it remains deterministic at 106 traces / 9 arrangement cells / 12 completion candidates / 15 validation failures / no output.
 
-The second bounded Code + Build has now corrected the confirmed live-path topology defect: exact source-vertex crossings where consecutive selected intervals do not share one edge. Runtime authority remains pending artifact-only execution.
+The seam remains a valid direct 64-quad regression. All newly added source-vertex fan contract tests pass, but isolated contract success did not become production plane output.
 
-## Implemented remediation
+## No-progress conclusion
 
-- typed first phase-front failure reason and source context;
-- exact shared-vertex attachment classification;
-- unique ordered manifold fan selection from source topology and directed segment geometry;
-- authoritative transition resolution across every fan edge;
-- full ordered source-edge provenance, hash coverage, and memory accounting;
-- strict fail-closed handling for disconnected, non-manifold, repeated, ambiguous, invalid, missing-provenance, or branch-mismatched fans;
-- unchanged ordinary shared-edge path and no fallback/recovery or validator changes.
+Local predicate remediation is stopped. A third Gate 1 predicate-repair turn is not authorized.
 
-## Remediation sequence
+The current evidence shows two architectural questions that must be resolved first:
 
-1. Artifact-only run the new contract tests.
-2. Test plane first and reject generic completion substitution.
-3. Test seam second and preserve reciprocal quarter-turn direct success.
-4. Complete close sheets, cylinder, bunny, vase, default suites, and determinism runs.
-5. Resume close-sheet isolation only when plane and seam both pass.
-6. If plane does not materially advance, stop local repairs and perform a design review or bounded producer replacement proof.
+1. the contract fixture reconstructs the plane with different indexing and directly injected target state rather than exercising the exact committed production route;
+2. a typed phase-front failure can be overwritten by later generic completion diagnostics, while the pipeline continues from phase-front non-success into the older tracing/arrangement/completion path.
+
+The next review must determine whether the regression is a bounded production-input/control-flow error or evidence that the mixed producer architecture needs a bounded replacement boundary.
+
+## Required sequence
+
+1. Execute `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Plan.md` with no production source/test changes.
+2. Reconstruct the exact `plane.obj` + `plane.rawfield` production authority path.
+3. Compare the last successful Gate 1 source `aea10409c73c490b92f78760b73191641ef823c6` against Gate 2 and current sources.
+4. Explain why the exact plane does not produce direct phase-front output while the isolated fan test passes.
+5. Decide whether applicable phase-front failure may legally continue into the generic producer path or must remain a first-class fail-closed producer outcome.
+6. Choose exactly one bounded architectural correction or bounded producer replacement proof.
+7. Only then authorize a new Code + Build turn.
 
 ## Acceptance discipline
 
-Every success requires direct `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete provenance, strict validation, and deterministic hashes.
+Every eventual success still requires direct `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete provenance, strict validation, and deterministic hashes.
 
-The historical completion failures and scheduler-sensitive validator timing ratio are not the active constructive blocker.
+Bunny and vase remain mandatory production fixtures. Historical completion-suite failures and scheduler-sensitive validator timing remain secondary while Gate 1 is red.
+
+GitHub workflow operations are available again for future authorized Code + Build compilation/artifact production, subject to the existing cleanup policy.
