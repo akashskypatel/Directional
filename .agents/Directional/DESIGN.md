@@ -19,7 +19,7 @@ An authoritative cell has four ordered source-attached corners and sides, cohere
 ## Ordered gates
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** **active; second bounded Code + Build complete, artifact-only verification pending.**
+2. **G1 — Uniform phase-front plane:** **active mandatory architecture review.** Two bounded Code + Build attempts failed to materially advance the production plane; a third local predicate repair is prohibited.
 3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 and close-sheet failure.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
@@ -27,26 +27,34 @@ An authoritative cell has four ordered source-attached corners and sides, cohere
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Last runtime evidence
+## Current runtime evidence
 
-| Fixture | Result | Traces | Arrangement | Output quads |
-|---|---:|---:|---:|---:|
-| plane | fail | 106 | 9 | 0 |
-| seam | **pass** | 256 | 65 | 64 |
-| close sheets | fail | 158 | 0 | 0 |
-| cylinder | fail | 732 | 0 | 0 |
-| bunny | fail | 80,862 | 0 | 0 |
-| vase | fail | 116,922 | 0 | 0 |
+| Fixture | Result | Traces | Arrangement | Completed | Output quads |
+|---|---:|---:|---:|---:|---:|
+| plane | fail | 106 | 9 | 12 | 0 |
+| seam | **pass** | 256 | 65 | 64 | 64 |
+| close sheets | fail | 158 | 0 | 0 | 0 |
+| cylinder | fail | 732 | 0 | 0 | 0 |
+| bunny | fail | 80,862 | 0 | 0 | 0 |
+| vase | fail | 116,922 | 0 | 0 | 0 |
 
-All executed cases were structurally deterministic, used direct `SurfaceCells`, fallback `Fail`, and no recovery. The seam output hash is `a8972efd7c4900a4`. Direct acceptance remains 1/6 until the new artifact is tested.
+The tested source-vertex artifact was structurally deterministic, used direct `SurfaceCells`, fallback `Fail`, and no recovery. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, hash `a8972efd7c4900a4`. Direct acceptance is 1/6.
 
-## Current Gate 1 implementation authority
+## Gate 1 no-progress finding
 
-Static emulation of the exact committed plane triangulation and phase-front grid confirmed 16 transitions where consecutive selected intervals meet at a source vertex without sharing an edge. The implementation now has typed first-rejection state and deterministic ordered authoritative fan traversal while retaining the ordinary shared-edge path.
+All new source-vertex contract tests passed, but the production plane retained the exact 106/9/12 generic completion signature. Its tracing structural hash changed, which proves the new route/provenance state affected tracing identity, but this is not constructive progress because no authoritative phase-front output was produced.
 
-Artifact-only acceptance requires plane direct construction or material advancement beyond the 106/9/12 generic signature while retaining seam direct success. Diagnostics alone, a different legacy failure, or aggregate gains are insufficient.
+The isolated contract fixture reconstructs the same rectangular geometry with different indexing and a directly injected constant target size. It does not prove equivalence to the exact committed `plane.obj` after production target-size computation, source labeling, cross-field finalization, and tracing-option construction.
 
-This is the second bounded Code + Build attempt. If the artifact-only turn does not materially advance Gate 1, the next mandatory turn is a design review or bounded producer replacement proof.
+The pipeline also reuses one mutable `surfaceCellFirstInvalidProducer*` diagnostic channel: a typed `tracing/phase-front` failure can be overwritten by later generic completion failure. The mandatory review must determine whether the deeper semantic problem is diagnostic loss only or whether an applicable authoritative phase-front failure is being silently substituted by a distinct generic producer path.
+
+## Mandatory next direction
+
+Execute `.agents/Directional/Gate_1_Producer_Architecture_Design_Review_Plan.md`.
+
+The review must compare the last successful Gate 1 source `aea10409c73c490b92f78760b73191641ef823c6` against Gate 2 and current sources, reconstruct the exact production-plane authority path, explain why isolated contract success does not become production output, and select exactly one bounded architectural correction or bounded producer replacement proof.
+
+No third isolated predicate repair is authorized.
 
 ## Non-negotiable prohibitions
 
