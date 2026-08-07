@@ -5,106 +5,92 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active design gate: **Gate 2 — Cross-chart and close-sheet propagation**.
+- Active gate: **G2 — Cross-chart and close-sheet propagation**.
 - Earliest failing fixture: `multi_face_seam__surface_cells`.
+- Completed turn: **Gate 2 Cross-Chart Transport and Mandatory Production Fixtures Code + Build**.
+- Next turn: **Gate 2 Cross-Chart Transport and Mandatory Production Fixtures Artifact-Only Test + Benchmark**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
-- Completed turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
-- Next turn: **Gate 2 Cross-Chart and Close-Sheet Propagation Code + Build**.
 
-Always advance the earliest incomplete gate in `.agents/Directional/DESIGN.md`. Do not replace constructive implementation with diagnostics, repair classifications, cache work, memory accounting, scheduling, performance tuning, or historical cleanup.
+Always advance the earliest incomplete gate. Complex fixtures strengthen production evidence but cannot conceal an earlier failed analytic contract.
 
-## Exact source and artifact authority
+## Current compile authority
 
-- uniform phase-front source commit: `4842911b6134c60410c92496d85d1152164a73c7`;
-- orientation/direct-cell source commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- payload cleanup commit: `54a79a17f48bd3974367c3e043507d0550fb8daa`;
-- tested artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- Gate 2 source commit: `21f081b330418a0f34709f61d857f54a03d2fd48`;
+- payload cleanup commit: `98fe525bb46f348cddcad91b0525353796b9e061`;
+- artifact SHA-256: `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`;
 - internal checksums: **45/45**;
-- package closure: five executables, two static libraries, 26 fixture/input files;
-- evidence archive SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`;
-- no rebuild or source/test/fixture/validator edit occurred in the completed Test + Benchmark turn.
+- package: five executables, two project libraries, 27 fixture/input files;
+- approved targets: **7/7**;
+- compile/link actions: **95/95**;
+- generated project binaries executed: **none**.
 
-## Direct runtime result
+No runtime-success claim is made by this Code + Build turn.
 
-| Fixture | Result | Traces | Arrangement cells | Direct cells / quads | Validation failures | Earliest failure |
-|---|---:|---:|---:|---:|---:|---|
-| Plane | **pass** | 352 | 65 | 64 / 64 | 0 | none |
-| Multi-face seam | fail | 137 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
-| Close sheets | fail | 158 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
-| Cylinder | fail | 732 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
+## Latest runtime authority
 
-Plane uses direct `SurfaceCells`, fallback `Fail`, no fallback attempt, no source-grid recovery, output origin `CompletedSurfaceCells`, 81 vertices, 64 pure quads, and stable output hash `730caeae49ec872c` across three processes.
+The preceding Gate 1 artifact remains the latest executed evidence:
 
-The prior 65-to-409 generic completion expansion and `FlippedFace` failure are eliminated.
+- plane: pass, 64 authoritative cells → 64 pure quads, zero validation failures;
+- multi-face seam: zero-cell `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: zero-cell `SideSubdivisionRepair:InvalidInputIncidence`;
+- cylinder: zero-cell `SideSubdivisionRepair:InvalidInputIncidence`.
 
-## Default-suite result
+Direct execution was 1/4. The mandatory matrix is now six cases; bunny and vase are compile-wired but not yet executed.
 
-- direct acceptance: **1/4**;
-- remaining producer: **78/79**;
-- completion: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- non-overlapping total: **301/315**, 14 failures.
+## Mandatory direct matrix
 
-The sole remaining producer failure is the known scheduler-sensitive wall-clock ratio test `StrictValidatorOverheadStaysBelowFivePercent`. It is optional benchmark/closeout coverage, not a functional Gate 2 objective.
+- [x] plane is an established Gate 1 regression;
+- [ ] multi-face seam;
+- [ ] close sheets;
+- [ ] cylinder;
+- [ ] `bunny_1k_random` — 502 vertices / 1,000 triangles, closed irregular production mesh;
+- [ ] vase — 1,274 vertices / 2,404 triangles, one open boundary loop.
 
-## Gate progression
+Every case requires direct `SurfaceCells`, fallback `Fail`, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete provenance, strict validation, and determinism.
 
-- [x] **Gate 0 — Truthful authority.**
-- [x] **Gate 1 — Uniform phase-front plane.** Passed by exact artifact evidence.
-- [ ] **Gate 2 — Cross-chart and close-sheet propagation.** Active.
-- [ ] **Gate 3 — Periodic closure and holonomy.** Blocked.
-- [ ] **Gate 4 — Topology-distinct completion and singularities.** Blocked.
-- [ ] **Gate 5 — Adaptive 2:1 transitions and hard features.** Blocked.
-- [ ] **Gate 6 — General production geometry on `bunny_1k_random.obj`.** Blocked.
-- [ ] **Gate 7 — Operational hardening and default-on decision.** Blocked.
+## Gate 2 implementation state
 
-## Gate 2 checklist
+- [x] source-chart identity carried by trace and lattice state;
+- [x] exact transition source edge recorded per trace interval;
+- [x] per-face branch rotation relative to global lattice axes;
+- [x] reciprocal quarter-turn transition validation on planar multi-face domains;
+- [x] deterministic equal-branch chart construction;
+- [x] chart/transition state included in structural hashing;
+- [x] mandatory bunny and vase topology-integrity tests;
+- [x] production smooth cross-field extraction for fieldless benchmark fixtures;
+- [ ] artifact evidence of nonzero authoritative cross-chart cells on seam;
+- [ ] seam direct success;
+- [ ] close-sheet direct success with zero cross-sheet capture;
+- [ ] non-planar general chart transport required by bunny/vase;
 
-Use `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`.
+## Next turn
 
-- [ ] carry authoritative `SourceChartId` or equivalent in lattice/front state;
-- [ ] transport selected branch and quarter-turn matching across exact source transitions;
-- [ ] transport phase, integer lattice coordinates, family/sign, component, local sheet, and route provenance;
-- [ ] require exact inverse transition consistency;
-- [ ] advance the phase front intrinsically through multiple source faces;
-- [ ] merge fronts only under canonical reciprocal transport and phase compatibility;
-- [ ] fail closed on missing, ambiguous, or inconsistent transition state;
-- [ ] produce nonzero authoritative cross-chart cells for the multi-face seam;
-- [ ] prevent all positional capture or merging across unrelated close sheets;
-- [ ] preserve Gate 1 direct orientation and one-cell-to-one-quad materialization;
-- [ ] compile and package the seven approved targets;
-- [ ] execute no generated binary in the Code + Build turn.
+Use `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md`.
 
-## Gate 2 exit criteria
+Run all six mandatory direct cases without rebuilding. Report ordered gate results separately from aggregate totals.
 
-- [ ] multi-face seam direct acceptance passes;
-- [ ] close sheets direct acceptance passes;
-- [ ] both produce non-empty pure-quad `CompletedSurfaceCells` output;
-- [ ] strict source-authoritative validation passes;
-- [ ] no fallback or recovery is used;
-- [ ] chart/phase transport is deterministic under source permutations;
-- [ ] no cross-sheet capture, positional merge, or generic completion substitution occurs.
+## Gate order
+
+G0 truthful authority [passed] → G1 plane [passed] → G2 seam/close sheets [active] → G3 periodic cylinder → G4 topology/singularities → G5 adaptivity/features → G6 full production geometry → G7 hardening.
 
 ## No-progress rule
 
-If two consecutive Code + Build turns do not materially advance the earliest active gate, the next turn must perform a design review or bounded producer replacement proof rather than continue equivalent micro-repairs.
+If two consecutive Code + Build turns do not materially advance the earliest active gate, the next turn must perform a design review or bounded producer replacement proof.
 
 ## Current authority
 
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/Gate_1_Phase_Front_Orientation_Local_Code_Build_Report.md`
-- `.agents/Directional/Gate_1_Phase_Front_Orientation_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`
+- `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Local_Code_Build_Report.md`
+- `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
 - `tests/TESTING_STRATEGY.md`
 - `benchmark-results/design-aligned-runtime-summary.json`
 - `MILESTONE_G_TODO.md`
 
-Every completed turn ends with a new top-level PR #8 handoff comment after all other repository writes.
+Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
 
 P5 remains open.

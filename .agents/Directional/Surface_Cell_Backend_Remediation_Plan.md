@@ -2,75 +2,39 @@
 
 ## Production objective
 
-Produce deterministic, direct, source-authoritative cross-field-aligned quad meshes for arbitrary triangle meshes. Production success must come directly from the requested `SurfaceCells` backend. Fallback, source-grid recovery, synthetic topology repair, or validator relaxation cannot satisfy acceptance.
+Produce deterministic direct source-authoritative cross-field-aligned pure-quad meshes for arbitrary triangle meshes. Fallback, recovery, synthetic topology repair, fixture-specific bypass, and validator relaxation cannot satisfy acceptance.
 
-## Gate policy
-
-Remediation follows the ordered design gates in `.agents/Directional/DESIGN.md`. Only the earliest incomplete gate may be the principal implementation objective.
+## Gate status
 
 - G0 truthful authority — passed.
 - G1 uniform phase-front plane — passed.
-- G2 cross-chart and close-sheet propagation — **active**.
-- G3 periodic closure and holonomy — blocked.
-- G4 topology-distinct completion and singularities — blocked.
-- G5 adaptive scale and hard features — blocked.
-- G6 general production geometry — blocked.
-- G7 operational hardening — blocked.
+- G2 cross-chart and close-sheet propagation — active.
+- G3–G7 — blocked as principal objectives.
 
-## Closed Gate 1 state
+## Current G2 source state
 
-The producer now has runtime-validated first-class phase/lattice state, directed front ownership, source-normal winding, transactional whole-cycle reversal, component/sheet/edge-incidence validation, deterministic direct vertex canonicalization, one-cell-to-one-quad materialization, and pure-quad plane success with strict validation and no fallback/recovery.
+Source commit `21f081b330418a0f34709f61d857f54a03d2fd48` adds:
 
-Exact evidence archive SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`.
+- trace and lattice source-chart identity;
+- exact transition source-edge provenance;
+- per-face branch rotation;
+- reciprocal quarter-turn transition validation;
+- deterministic chart construction for the first planar multi-face slice;
+- transition/chart hashing;
+- mandatory bunny and vase direct fixtures using generated smooth cross fields;
+- fixture topology assertions preventing synthetic simplification.
 
-Gate 1 remains protected while remediation advances.
+The compile artifact SHA-256 is `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`. No runtime success is claimed yet.
 
-## Current Gate 2 state
+## Mandatory remediation evidence
 
-Artifact evidence:
+The direct matrix is plane, seam, close sheets, cylinder, bunny, and vase. All require `SurfaceCells`, fallback `Fail`, no recovery, non-empty pure-quads, `CompletedSurfaceCells`, strict validation, and determinism.
 
-- multi-face seam: 137 traces, zero arrangement cells, zero quads, `SideSubdivisionRepair:InvalidInputIncidence`;
-- close sheets: 158 traces, zero arrangement cells, zero quads, the same failure;
-- stage hashes are stable across three processes;
-- no fallback or source-grid recovery is used.
+Bunny and vase must remain in mandatory coverage even when they expose blocked later contracts. Their failures guide general implementation; they are never removed, simplified, or special-cased to improve pass counts.
 
-The producer still falls back from the planar phase-front attempt to the older trace/proposal path on multi-chart inputs. The remediation target is authoritative cross-chart phase-front transport, not another completion repair.
+## Next boundary
 
-## Required Gate 2 remediation
-
-### 1. Authoritative chart identity
-
-Carry `SourceChartId` or an equivalent exact chart identity in lattice/front/cell state. Include component, local sheet, source face, and transition witness in deterministic hashes.
-
-### 2. Transition transport
-
-Use `SourceChartTransitionGraph`, exact source topology, hard-feature barriers, and cross-field edge matching/transition data. Transport barycentric support and route, selected branch and quarter-turn rotation, phase and integer lattice coordinate, family/sign, component, and local-sheet provenance.
-
-Require an exact inverse transition. Missing, ambiguous, or inconsistent state fails closed.
-
-### 3. Multi-chart front construction
-
-Advance each front side intrinsically through adjacent source faces. Construct cells from transported chart state rather than a global planar projection. The multi-face seam fixture must exercise the general path.
-
-### 4. Compatible cross-chart merge
-
-Merge only when reciprocal route, canonical transition, phase/lattice coordinate, branch/family/sign, component, sheet, and directed ownership agree. Do not select by distance, count, order, or frequency.
-
-### 5. Close-sheet isolation
-
-Retain local-sheet identity through every transition and merge. Exact manifold adjacency may cross face boundaries, but geometrically close unrelated sheets must never canonicalize, capture, or merge by position.
-
-### 6. Preserve direct materialization
-
-Accepted four-sided cross-chart cells use the Gate 1 orientation/incidence and one-cell-to-one-quad path. Generic completion cannot invent or expand their topology.
-
-## Next compile gate
-
-Use `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`. Compile the approved seven targets only. Do not execute generated binaries, tests, benchmarks, discovery, CLI, GUI, or help/list commands.
-
-## Material progress
-
-Progress requires seam success or nonzero deterministic authoritative cross-chart cells that reach a new first-class transport/materialization boundary. Unchanged zero-cell completion failure, diagnostics, counters, hashes, or unrelated passes are insufficient.
+Execute the artifact-only plan. Gate 2 material progress requires seam success or nonzero deterministic cross-chart authoritative cells reaching a first-class transport/materialization boundary. Close sheets must show zero positional capture.
 
 ## Preserved prohibitions
 

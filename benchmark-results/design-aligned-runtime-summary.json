@@ -1,229 +1,69 @@
 {
-  "schema": 4,
-  "turn": "gate1-phase-front-orientation-artifact-only-test-benchmark",
+  "schema": 5,
+  "turn": "gate2-cross-chart-mandatory-fixtures-code-build",
   "date": "2026-08-06",
-  "executionPlane": "local-container",
-  "artifact": {
-    "path": "directional-g1-orientation-local-build-artifact.zip",
-    "sha256": "e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca",
+  "activeGate": "G2 Cross-chart and close-sheet propagation",
+  "earliestFailingFixture": "multi_face_seam__surface_cells",
+  "sourceAuthority": {
+    "sourceCommit": "21f081b330418a0f34709f61d857f54a03d2fd48",
+    "payloadCleanupCommit": "98fe525bb46f348cddcad91b0525353796b9e061",
+    "patchSha256": "512d2cda4f9799d5600af277b9d63bbce76ace334b076bb922e762d0059f1b9c"
+  },
+  "compileAuthority": {
+    "artifactSha256": "f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755",
     "internalChecksums": "45/45",
+    "targets": "7/7",
+    "actions": "95/95",
     "executables": 5,
     "libraries": 2,
-    "fixtures": 26
+    "fixtureFiles": 27,
+    "projectBinaryExecuted": false
   },
-  "sourceAuthority": {
-    "phaseFrontCommit": "4842911b6134c60410c92496d85d1152164a73c7",
-    "orientationCommit": "b2b826eeb975e913f31516c5dd3e6d0a0b554d9e",
-    "payloadCleanupCommit": "54a79a17f48bd3974367c3e043507d0550fb8daa",
-    "finalBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "074bd7692b95202a9f6733cd58d5c958d30845b9",
-      "src/geometry/SurfaceCellTracing.cpp": "6f3aa122fc9ed9faed19b37ad59a1124be68b4e5",
-      "src/pipeline/RemeshPipeline.cpp": "056d9d533b4885a9df78e45b279b1a41a153ad3a",
-      "tests/SurfaceCellsPhase10Tests.cpp": "56da480a41f7d96ac5bd4470202e3e49a9eef745",
-      "tests/AdaptiveTargetSizePhase12Tests.cpp": "c95f27211394de1c238649062ab4d173f4bfe220"
+  "mandatoryDirectOrder": [
+    "plane",
+    "multi_face_seam",
+    "close_sheets",
+    "cylinder",
+    "bunny_1k_random",
+    "vase"
+  ],
+  "mandatoryProductionFixtures": {
+    "bunny_1k_random": {
+      "sha256": "865d864f7afbd90283526d914e0d4d9718d83e9679943029060bde439b10ab05",
+      "vertices": 502,
+      "triangles": 1000,
+      "closed": true,
+      "generatedField": "smooth",
+      "runtimeStatus": "pending"
+    },
+    "vase": {
+      "sha256": "5f7bedc1783486589a8721a7b9be881064f361e4a07fd8c5278d8b8f55b2c868",
+      "vertices": 1274,
+      "triangles": 2404,
+      "boundaryLoops": 1,
+      "boundaryEdges": 142,
+      "generatedField": "smooth",
+      "runtimeStatus": "pending"
     }
   },
-  "directionControl": {
-    "passedGate": "G1 Uniform phase-front plane",
-    "activeGate": "G2 Cross-chart and close-sheet propagation",
-    "earliestFailingFixture": "multi_face_seam",
-    "missingContract": "authoritative cross-chart phase/lattice transport with source-sheet isolation",
-    "blockedGates": ["G3", "G4", "G5", "G6", "G7"]
-  },
-  "directAcceptance": {
-    "passed": 1,
-    "total": 4,
-    "cases": {
-      "plane": {"passed": 1, "failed": 0, "wallSeconds": 0.37, "exitCode": 0},
-      "multi_face_seam": {"passed": 0, "failed": 1, "wallSeconds": 0.03, "exitCode": 1},
-      "close_sheets": {"passed": 0, "failed": 1, "wallSeconds": 0.05, "exitCode": 1},
-      "cylinder": {"passed": 0, "failed": 1, "wallSeconds": 0.15, "exitCode": 1}
-    }
-  },
-  "benchmarkCases": {
-    "plane__surface_cells": {
-      "successes": 3,
-      "runs": 3,
-      "wallSeconds": [0.361926, 0.363952, 0.364536],
-      "structurallyStableAcrossProcesses": true,
-      "requestedBackend": "SurfaceCells",
-      "executedBackend": "SurfaceCells",
-      "fallbackPolicy": "Fail",
-      "fallbackAttempted": false,
-      "recoveryUsed": false,
-      "outputOrigin": "CompletedSurfaceCells",
-      "terminalFailureCode": "None",
-      "terminalFailureStage": "",
-      "completionFailure": "",
+  "latestExecutedRuntime": {
+    "artifactSha256": "e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca",
+    "executedDirect": 4,
+    "passedDirect": 1,
+    "plane": {
+      "success": true,
       "traceSegments": 352,
-      "arrangementCells": 65,
-      "simplifiedCells": 65,
-      "directCellCount": 64,
-      "completedQuads": 64,
+      "authoritativeCells": 64,
+      "outputQuads": 64,
       "validationFailures": 0,
-      "outputVertices": 81,
-      "outputFaces": 64,
-      "quadCount": 64,
-      "nonQuadFaces": 0,
-      "outputStructuralHash": "730caeae49ec872c",
-      "topologyPreserved": true,
-      "boundaryPreserved": true,
-      "stageHashes": {
-        "feature": 15837917217366003725,
-        "metric": 12310735438697840477,
-        "relief": 12975878495738645211,
-        "tracing": 11537474972185340672,
-        "strands": 11016164487918426752,
-        "embedding": 6210654106774290587,
-        "arrangement": 9413000919176527123,
-        "simplification": 9413000919176527123,
-        "completion": 8896684287599584894,
-        "optimization": 12358043334611775578,
-        "validation": 1850561488623276858
-      },
-      "stageCounts": {
-        "feature": 43,
-        "metric": 20,
-        "relief": 24,
-        "tracing": 352,
-        "strands": 366,
-        "embedding": 366,
-        "arrangement": 65,
-        "simplification": 65,
-        "completion": 64,
-        "optimization": 64,
-        "validation": 64
-      }
+      "outputOrigin": "CompletedSurfaceCells",
+      "outputHash": "730caeae49ec872c"
     },
-    "multi_face_seam__surface_cells": {
-      "successes": 0,
-      "runs": 3,
-      "wallSeconds": [0.01414, 0.014165, 0.014137],
-      "structurallyStableAcrossProcesses": true,
-      "requestedBackend": "SurfaceCells",
-      "executedBackend": "SurfaceCells",
-      "fallbackPolicy": "Fail",
-      "fallbackAttempted": false,
-      "recoveryUsed": false,
-      "outputOrigin": "None",
-      "terminalFailureCode": "NotProductionReady",
-      "terminalFailureStage": "completion",
-      "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
-      "traceSegments": 137,
-      "arrangementCells": 0,
-      "simplifiedCells": 0,
-      "directCellCount": 0,
-      "completedQuads": 0,
-      "validationFailures": 0,
-      "stageHashes": {
-        "feature": 10043339388768771058,
-        "metric": 15725691979283085103,
-        "relief": 1803968670775905678,
-        "tracing": 17065119186331566982,
-        "strands": 16192109536594419768,
-        "embedding": 7585770117887133613,
-        "arrangement": 16038410778453039208,
-        "simplification": 16038410778453039208,
-        "completion": 13037891342798052391
-      },
-      "stageCounts": {"feature": 56, "metric": 25, "relief": 19, "tracing": 137, "strands": 72, "embedding": 72, "arrangement": 0, "simplification": 0, "completion": 0}
-    },
-    "close_sheets__surface_cells": {
-      "successes": 0,
-      "runs": 3,
-      "wallSeconds": [0.026904, 0.0212, 0.021025],
-      "structurallyStableAcrossProcesses": true,
-      "requestedBackend": "SurfaceCells",
-      "executedBackend": "SurfaceCells",
-      "fallbackPolicy": "Fail",
-      "fallbackAttempted": false,
-      "recoveryUsed": false,
-      "outputOrigin": "None",
-      "terminalFailureCode": "NotProductionReady",
-      "terminalFailureStage": "completion",
-      "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
-      "traceSegments": 158,
-      "arrangementCells": 0,
-      "simplifiedCells": 0,
-      "directCellCount": 0,
-      "completedQuads": 0,
-      "validationFailures": 0,
-      "stageHashes": {
-        "feature": 17036816782803457069,
-        "metric": 18065707922684113147,
-        "relief": 1504575786038191573,
-        "tracing": 8774856881363847215,
-        "strands": 17525658243627173500,
-        "embedding": 1257883418592669555,
-        "arrangement": 7397947494958406252,
-        "simplification": 7397947494958406252,
-        "completion": 13037891342798052391
-      },
-      "stageCounts": {"feature": 66, "metric": 32, "relief": 40, "tracing": 158, "strands": 92, "embedding": 92, "arrangement": 0, "simplification": 0, "completion": 0}
-    },
-    "cylinder__surface_cells": {
-      "successes": 0,
-      "runs": 3,
-      "wallSeconds": [0.139942, 0.14048, 0.138154],
-      "structurallyStableAcrossProcesses": true,
-      "requestedBackend": "SurfaceCells",
-      "executedBackend": "SurfaceCells",
-      "fallbackPolicy": "Fail",
-      "fallbackAttempted": false,
-      "recoveryUsed": false,
-      "outputOrigin": "None",
-      "terminalFailureCode": "NotProductionReady",
-      "terminalFailureStage": "completion",
-      "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
-      "traceSegments": 732,
-      "arrangementCells": 0,
-      "simplifiedCells": 0,
-      "directCellCount": 0,
-      "completedQuads": 0,
-      "validationFailures": 0,
-      "stageHashes": {
-        "feature": 5125337073125197889,
-        "metric": 10039730987020057059,
-        "relief": 14294850497345382324,
-        "tracing": 6929766310355919288,
-        "strands": 918423092608559194,
-        "embedding": 1533957620657595549,
-        "arrangement": 14893908217482103086,
-        "simplification": 14893908217482103086,
-        "completion": 13037891342798052391
-      },
-      "stageCounts": {"feature": 208, "metric": 80, "relief": 44, "tracing": 732, "strands": 287, "embedding": 287, "arrangement": 0, "simplification": 0, "completion": 0}
-    }
+    "multi_face_seam": {"success": false, "traceSegments": 137, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
+    "close_sheets": {"success": false, "traceSegments": 158, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
+    "cylinder": {"success": false, "traceSegments": 732, "cells": 0, "reason": "SideSubdivisionRepair:InvalidInputIncidence"},
+    "defaultInventory": {"passed": 301, "total": 315}
   },
-  "defaultSuites": {
-    "producer_remaining": {"total": 79, "passed": 78, "failed": 1, "failedTests": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"], "wallSeconds": 1.46, "exitCode": 1},
-    "completion": {
-      "total": 164,
-      "passed": 154,
-      "failed": 10,
-      "failedTests": [
-        "FlowRepStrandsPhase15.PreRingReturnRerootsRetainedSingularityContinuation",
-        "PatchDescriptorMilestoneE.PermittedSideRepairFailureReturnsExactRollbackForGeneralCompletion",
-        "PatchDescriptorMilestoneE.WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger",
-        "PatchDescriptorMilestoneE.OneCandidateBudgetIsExactAndDoesNotRecurse",
-        "SurfaceComplexSimplificationPhase17.SimplifySurfaceCellComplexReturnsMutatedComplex",
-        "SurfaceComplexSimplificationPhase17.ComplexCandidateRecomputationCreatesRealQueuedCandidates",
-        "SurfaceComplexSimplificationPhase17.TransactionalMutationCommitsExtractedOversampledCandidate",
-        "SurfaceComplexSimplificationPhase17.TransactionalMutationPreservesHardRailSupport",
-        "SurfaceComplexSimplificationPhase17.MultipleOptionalBridgeExcursionsHealAtomicallyAcrossFamilies",
-        "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
-      ],
-      "wallSeconds": 0.01,
-      "exitCode": 1
-    },
-    "validation": {"total": 60, "passed": 60, "failed": 0, "failedTests": [], "wallSeconds": 0.01, "exitCode": 0},
-    "compiled_api": {"total": 8, "passed": 8, "failed": 0, "failedTests": [], "wallSeconds": 0.0, "exitCode": 0}
-  },
-  "nonOverlappingTotal": {"passed": 301, "total": 315, "failed": 14},
-  "rebuildPerformed": false,
-  "sourceOrValidationEdited": false,
-  "evidenceArchive": {
-    "path": "directional-g1-orientation-artifact-test-evidence.zip",
-    "sha256": "458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074"
-  }
+  "runtimeClaimsFromCurrentTurn": false,
+  "nextTurn": "Gate 2 Cross-Chart Mandatory Fixtures Artifact-Only Test + Benchmark"
 }

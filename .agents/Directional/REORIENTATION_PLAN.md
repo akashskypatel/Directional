@@ -1,87 +1,43 @@
 # Surface-Cell Producer Reorientation Plan
 
-## Purpose
+## Direction control
 
-Keep implementation aligned with production-ready direct cross-field surface paving. The active objective is to implement the earliest missing constructive contract, not to improve diagnostics or preserve historical repair machinery.
+Always work on the earliest incomplete gate and declare the active gate, earliest fixture, missing contract, smallest general change, material-progress condition, and deferred work.
 
-## Mandatory direction control
+G0 truthful authority and G1 plane are passed. G2 cross-chart and close-sheet propagation is active. G3–G7 remain blocked as principal implementation objectives.
 
-Every turn declares:
+## Current G2 implementation
 
-```text
-Active design gate:
-Earliest failing fixture:
-Missing design contract:
-Smallest general implementation change:
-Observable material-progress condition:
-Explicitly deferred work:
-```
+The first compile-valid transport slice now carries source-chart identity and transition-edge provenance, computes per-face branch rotation, validates reciprocal quarter-turn transitions, builds deterministic equal-branch charts, and hashes that state. Gate 1 direct materialization remains intact.
 
-A later gate, downstream repair, performance task, or historical cleanup item cannot displace an earlier red constructive gate.
+The next artifact must determine whether this creates nonzero authoritative seam cells or direct seam success. Unchanged zero-cell completion failure is not progress.
 
-## Ordered gates
+## Mandatory production fixtures
 
-1. G0 truthful authority — passed.
-2. G1 uniform phase-front plane — **passed**.
-3. G2 cross-chart and close-sheet propagation — **active**.
-4. G3 periodic closure and holonomy — blocked.
-5. G4 topology-distinct completion and singularities — blocked.
-6. G5 adaptive 2:1 transitions and hard features — blocked.
-7. G6 general production geometry on `bunny_1k_random.obj` — blocked.
-8. G7 operational hardening and default-on decision — blocked.
+Bunny and vase are now mandatory direct observations in every Test + Benchmark turn. Their exact topology and hashes are asserted and both use generated smooth cross fields. They expose curved closed and open-boundary behavior without replacing the ordered seam and close-sheet gates.
 
-Do not begin a blocked gate.
+Implementation must never special-case a fixture identity or reduce fixture complexity to match current behavior.
 
-## Gate 1 closure evidence
+## Next turn
 
-The exact orientation artifact produced deterministic direct plane success:
+Use `.agents/Directional/Gate_2_Cross_Chart_Mandatory_Fixtures_Artifact_Only_Test_Benchmark_Plan.md` with artifact SHA-256 `f5c2be0e2131dbce7a6460e3c61da2de57f7d256c00a5401ac6285d6a0145755`.
 
-- 64 authoritative cells and 64 output quads;
-- 81 output vertices;
-- zero non-quads and zero strict validation failures;
-- `CompletedSurfaceCells`, no fallback, no recovery;
-- stable output hash `730caeae49ec872c` across three independent processes;
-- evidence archive SHA-256 `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`.
+## No-progress rule
 
-The previous 65-to-409 expansion and `FlippedFace` failure are eliminated. Gate 1 remains a permanent regression gate.
-
-## Active Gate 2 subgate
-
-The producer must move from one planar phase frame to authoritative multi-chart transport:
-
-1. Carry exact source-chart identity in lattice and front state.
-2. Use exact source-topology transitions and hard-feature barriers.
-3. Transport the selected cross-field branch by authoritative quarter-turn matching.
-4. Transport phase, integer lattice coordinate, family/sign, component, local sheet, and route provenance.
-5. Require exact forward/reverse transition consistency.
-6. Advance front sides intrinsically through multiple faces.
-7. Merge fronts only when reciprocal chart/route/phase state agrees.
-8. Fail closed on missing, ambiguous, or inconsistent transitions.
-9. Prevent positional capture or merging across unrelated close sheets.
-10. Preserve Gate 1 orientation and one-cell-to-one-quad materialization.
-
-Current direct evidence:
-
-- multi-face seam: 137 traces, zero cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
-- close sheets: 158 traces, zero cells/quads, the same failure;
-- both deterministic across three artifact processes.
-
-The next implementation must replace this zero-cell downstream failure with first-class cross-chart construction or a truthful earlier transport failure.
-
-## Material-progress gate
-
-The next artifact must pass the multi-face seam, construct nonzero deterministic authoritative cross-chart cells that reach direct materialization/validation, or fail closed at an explicit chart-transition invariant before generic completion.
-
-A renamed diagnostic, new counter/hash, or unchanged zero-cell result is not progress.
-
-## No-progress stop rule
-
-If two consecutive Code + Build turns do not materially advance Gate 2, the next turn must perform a bounded design review or producer replacement proof. Do not continue equivalent micro-repairs.
+If two consecutive Code + Build turns do not materially advance G2, the next turn must perform a bounded design review or producer replacement proof.
 
 ## Explicitly deferred
 
-Until Gate 2 exits, do not make the principal objective cylinder periodic holonomy; fan-interval ranking; new diagnostic taxonomies; topology-distinct completion catalogs; singularity, adaptive, hard-feature, sphere, torus, thin-tube, mechanical, or bunny logic; cache, memory, scheduler, parallelism, or performance work; source-grid recovery enhancement; or unrelated historical completion-fixture cleanup.
+Periodic holonomy, topology catalogs, adaptivity, hard-feature completion, performance, cache, scheduler, parallelism, and unrelated historical cleanup remain deferred unless required to preserve an already-passed contract.
 
-## Next plan
+## Preserved prohibitions
 
-`.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`
+- no validator weakening;
+- no count/order/frequency ownership selection;
+- no arbitrary subset search;
+- no fallback/recovery substitution;
+- no synthetic counters or Euler correction;
+- no positional merging across unrelated sheets;
+- no fixture/ID special cases;
+- no post-hoc cycle decomposition or cell merging;
+- no timeout-as-correctness.
