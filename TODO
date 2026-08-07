@@ -5,104 +5,105 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **Gate 1 — Uniform phase-front plane**.
-- Completed turn: **Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build**.
-- Next turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
+- Active design gate: **Gate 2 — Cross-chart and close-sheet propagation**.
+- Earliest failing fixture: `multi_face_seam__surface_cells`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
+- Completed turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
+- Next turn: **Gate 2 Cross-Chart and Close-Sheet Propagation Code + Build**.
 
-Always advance the earliest incomplete gate in `.agents/Directional/DESIGN.md`. Do not substitute diagnostics, repair taxonomies, cache/memory work, scheduling, performance tuning, or blocked fixtures for constructive Gate 1 progress.
+Always advance the earliest incomplete gate in `.agents/Directional/DESIGN.md`. Do not replace constructive implementation with diagnostics, repair classifications, cache work, memory accounting, scheduling, performance tuning, or historical cleanup.
 
-## Synchronized source authority
+## Exact source and artifact authority
 
-Layer 1 — uniform phase-front producer:
+- uniform phase-front source commit: `4842911b6134c60410c92496d85d1152164a73c7`;
+- orientation/direct-cell source commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
+- payload cleanup commit: `54a79a17f48bd3974367c3e043507d0550fb8daa`;
+- tested artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- internal checksums: **45/45**;
+- package closure: five executables, two static libraries, 26 fixture/input files;
+- no rebuild or source/test/fixture/validator edit occurred in the completed Test + Benchmark turn.
 
-- [x] synchronized source commit `4842911b6134c60410c92496d85d1152164a73c7`;
-- [x] verified all five previously compiled source blobs.
+## Direct runtime result
 
-Layer 2 — orientation/direct-cell materialization:
+| Fixture | Result | Traces | Arrangement cells | Direct cells / quads | Validation failures | Earliest failure |
+|---|---:|---:|---:|---:|---:|---|
+| Plane | **pass** | 352 | 65 | 64 / 64 | 0 | none |
+| Multi-face seam | fail | 137 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
+| Close sheets | fail | 158 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
+| Cylinder | fail | 732 | 0 | 0 / 0 | 0 | `completion:SideSubdivisionRepair:InvalidInputIncidence` |
 
-- [x] incremental patch SHA-256 `cb06890449bc56b2e5bc25d7033260bc9c180deccb38b545bd5ab6e56efff9ab`;
-- [x] source commit `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- [x] verified final source/test blobs;
-- [x] removed all synchronized Gate 1 patch/build payloads in cleanup commit `54a79a17f48bd3974367c3e043507d0550fb8daa`;
-- [x] removed temporary source-sync workflows and trigger markers.
+Plane uses direct `SurfaceCells`, fallback `Fail`, no fallback attempt, no source-grid recovery, output origin `CompletedSurfaceCells`, 81 vertices, 64 pure quads, and stable output hash `730caeae49ec872c` across three processes.
 
-Final Layer 2 blobs:
+The prior 65-to-409 generic completion expansion and `FlippedFace` failure are eliminated.
 
-```text
-074bd7692b95202a9f6733cd58d5c958d30845b9  include/directional/geometry/SurfaceCellTracing.h
-6f3aa122fc9ed9faed19b37ad59a1124be68b4e5  src/geometry/SurfaceCellTracing.cpp
-056d9d533b4885a9df78e45b279b1a41a153ad3a  src/pipeline/RemeshPipeline.cpp
-56da480a41f7d96ac5bd4470202e3e49a9eef745  tests/SurfaceCellsPhase10Tests.cpp
-c95f27211394de1c238649062ab4d173f4bfe220  tests/AdaptiveTargetSizePhase12Tests.cpp
-```
+## Default-suite result
 
-## Latest compile authority
+- direct acceptance: **1/4**;
+- remaining producer: **78/79**;
+- completion: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- non-overlapping total: **301/315**, 14 failures.
 
-- Release `-O2 -DNDEBUG`, static;
-- GNU C++ 14.2.0, CMake 3.31.6, Ninja 1.12.1;
-- configure: success;
-- approved targets: **7/7**;
-- package: five executables, two libraries, 26 fixtures, **45/45** checksums;
-- artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
-- generated project binaries executed: none.
-
-## Latest runtime authority
-
-The preceding artifact-only result remains authoritative until the next turn:
-
-- direct acceptance: **0/4**;
-- plane: 352 traces, 65 arrangement cells, 409 quads;
-- first invalid record: `completion/output-validation:FlippedFace`;
-- strict validation failures: 100;
-- default non-overlapping suite: **299/315**.
-
-## Implemented Gate 1 subcontracts
-
-- [x] first-class phase/lattice/front state;
-- [x] authoritative proposal-cycle arrangement path;
-- [x] four distinct corners and ordered side continuity;
-- [x] component/sheet consistency;
-- [x] source-normal winding and transactional full-cycle reversal;
-- [x] one-filled-cell plus reciprocal-opposite-or-exterior edge ownership;
-- [x] direct one-cell-to-one-quad materialization path;
-- [x] fail-closed `tracing/phase-front-materialization` boundary;
-- [x] corrected two stale non-direct producer tests without validator weakening;
-- [ ] prove plane direct acceptance from the new artifact.
-
-## Next artifact-only checklist
-
-Use `.agents/Directional/Gate_1_Phase_Front_Orientation_Artifact_Only_Test_Benchmark_Plan.md`.
-
-- [ ] verify outer artifact and all 45 checksums;
-- [ ] verify source commits and five final blobs;
-- [ ] run plane first in a fresh process;
-- [ ] determine whether generic completion expansion and `FlippedFace` are eliminated;
-- [ ] run seam, close sheets, and cylinder in order after plane evidence;
-- [ ] run remaining default suites;
-- [ ] run three-process deterministic benchmarks for the four analytic fixtures;
-- [ ] perform no rebuild or source/test/fixture/validator edit.
+The sole remaining producer failure is the known scheduler-sensitive wall-clock ratio test `StrictValidatorOverheadStaysBelowFivePercent`. It is optional benchmark/closeout coverage, not a functional Gate 2 objective.
 
 ## Gate progression
 
-G0 truthful authority [passed] → **G1 plane [active]** → G2 seam/close sheets → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny → G7 hardening.
+- [x] **Gate 0 — Truthful authority.**
+- [x] **Gate 1 — Uniform phase-front plane.** Passed by exact artifact evidence.
+- [ ] **Gate 2 — Cross-chart and close-sheet propagation.** Active.
+- [ ] **Gate 3 — Periodic closure and holonomy.** Blocked.
+- [ ] **Gate 4 — Topology-distinct completion and singularities.** Blocked.
+- [ ] **Gate 5 — Adaptive 2:1 transitions and hard features.** Blocked.
+- [ ] **Gate 6 — General production geometry on `bunny_1k_random.obj`.** Blocked.
+- [ ] **Gate 7 — Operational hardening and default-on decision.** Blocked.
 
-Do not begin a blocked gate.
+## Gate 2 checklist
 
-## Preserved prohibitions
+Use `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`.
 
-- no validator weakening;
-- no count/order/frequency ownership selection;
-- no arbitrary subset search;
-- no fallback/recovery substitution;
-- no synthetic counters or Euler correction;
-- no positional merging across unrelated sheets;
-- no fixture/ID special cases;
-- no post-hoc cycle decomposition or cell merging;
-- no timeout-as-correctness.
+- [ ] carry authoritative `SourceChartId` or equivalent in lattice/front state;
+- [ ] transport selected branch and quarter-turn matching across exact source transitions;
+- [ ] transport phase, integer lattice coordinates, family/sign, component, local sheet, and route provenance;
+- [ ] require exact inverse transition consistency;
+- [ ] advance the phase front intrinsically through multiple source faces;
+- [ ] merge fronts only under canonical reciprocal transport and phase compatibility;
+- [ ] fail closed on missing, ambiguous, or inconsistent transition state;
+- [ ] produce nonzero authoritative cross-chart cells for the multi-face seam;
+- [ ] prevent all positional capture or merging across unrelated close sheets;
+- [ ] preserve Gate 1 direct orientation and one-cell-to-one-quad materialization;
+- [ ] compile and package the seven approved targets;
+- [ ] execute no generated binary in the Code + Build turn.
 
-Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
+## Gate 2 exit criteria
+
+- [ ] multi-face seam direct acceptance passes;
+- [ ] close sheets direct acceptance passes;
+- [ ] both produce non-empty pure-quad `CompletedSurfaceCells` output;
+- [ ] strict source-authoritative validation passes;
+- [ ] no fallback or recovery is used;
+- [ ] chart/phase transport is deterministic under source permutations;
+- [ ] no cross-sheet capture, positional merge, or generic completion substitution occurs.
+
+## No-progress rule
+
+If two consecutive Code + Build turns do not materially advance the earliest active gate, the next turn must perform a design review or bounded producer replacement proof rather than continue equivalent micro-repairs.
+
+## Current authority
+
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
+- `.agents/Directional/Gate_1_Phase_Front_Orientation_Local_Code_Build_Report.md`
+- `.agents/Directional/Gate_1_Phase_Front_Orientation_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `tests/TESTING_STRATEGY.md`
+- `benchmark-results/design-aligned-runtime-summary.json`
+- `MILESTONE_G_TODO.md`
+
+Every completed turn ends with a new top-level PR #8 handoff comment after all other repository writes.
 
 P5 remains open.
