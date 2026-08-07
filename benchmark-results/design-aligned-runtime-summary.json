@@ -1,5 +1,5 @@
 {
-  "schema": 3,
+  "schema": 4,
   "turn": "gate1-uniform-phase-front-artifact-only-test-benchmark",
   "date": "2026-08-06",
   "executionPlane": "local-container",
@@ -12,20 +12,26 @@
     "fixtures": 26
   },
   "sourceAuthority": {
-    "baseCommit": "e82fb47dccbefa1b878bc9ddff0ae63745f6efe9",
-    "patchGitBlob": "aa18d454877ccf40d16f71f173fdaf765f5f1086",
-    "uncompressedPatchSha256": "48a01a37b038c59af18f2fca8904642f23bf8ea54f8ff8c3c784191dc99b8bf7",
-    "remoteImplementationCommit": "pending GitHub outage",
-    "orientationPatchMustBeLayeredSeparately": true
+    "uniformPhaseFrontCommit": "4842911b6134c60410c92496d85d1152164a73c7",
+    "orientationDirectCellCommit": "b2b826eeb975e913f31516c5dd3e6d0a0b554d9e",
+    "payloadCleanupCommit": "54a79a17f48bd3974367c3e043507d0550fb8daa",
+    "finalBlobs": {
+      "include/directional/geometry/SurfaceCellTracing.h": "074bd7692b95202a9f6733cd58d5c958d30845b9",
+      "src/geometry/SurfaceCellTracing.cpp": "6f3aa122fc9ed9faed19b37ad59a1124be68b4e5",
+      "src/pipeline/RemeshPipeline.cpp": "056d9d533b4885a9df78e45b279b1a41a153ad3a",
+      "tests/SurfaceCellsPhase10Tests.cpp": "56da480a41f7d96ac5bd4470202e3e49a9eef745",
+      "tests/AdaptiveTargetSizePhase12Tests.cpp": "c95f27211394de1c238649062ab4d173f4bfe220"
+    },
+    "remotePatchSyncPending": false
   },
   "directionControl": {
     "activeGate": "G1 Uniform phase-front plane",
     "earliestFailingFixture": "plane",
     "missingContract": "source-normal cell orientation and one-to-one direct-cell materialization",
-    "nextTurn": "Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build",
+    "nextTurn": "Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark",
     "blockedGates": ["G2", "G3", "G4", "G5", "G6", "G7"],
-    "remotePatchSyncPending": true,
-    "noWorkflowUpdatesWhileOutagePersists": true
+    "remotePatchSyncPending": false,
+    "runtimeNotYetExecutedForLatestBuild": true
   },
   "directAcceptance": {
     "passed": 0,
@@ -62,6 +68,8 @@
       "multi_face_seam__surface_cells": {
         "success": false,
         "terminal": "NotProductionReady:completion",
+        "firstInvalidProducerStage": "completion",
+        "firstInvalidProducerReason": "",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 137,
         "arrangementCells": 0,
@@ -88,6 +96,8 @@
       "close_sheets__surface_cells": {
         "success": false,
         "terminal": "NotProductionReady:completion",
+        "firstInvalidProducerStage": "completion",
+        "firstInvalidProducerReason": "",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 158,
         "arrangementCells": 0,
@@ -114,6 +124,8 @@
       "cylinder__surface_cells": {
         "success": false,
         "terminal": "NotProductionReady:completion",
+        "firstInvalidProducerStage": "completion",
+        "firstInvalidProducerReason": "",
         "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
         "traceSegments": 732,
         "arrangementCells": 0,
@@ -140,19 +152,7 @@
     }
   },
   "defaultSuites": {
-    "producer": {
-      "passed": 77,
-      "total": 83,
-      "failures": 6,
-      "failedTests": [
-        "AdaptiveTargetSizePhase12.SurfaceCellScaffoldPopulatesSizeDiagnostics",
-        "SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture",
-        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane",
-        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam",
-        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets",
-        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder"
-      ]
-    },
+    "compiled_api": {"passed": 8, "total": 8, "failures": 0, "failedTests": []},
     "completion": {
       "passed": 154,
       "total": 164,
@@ -170,10 +170,32 @@
         "SurfaceComplexSimplificationPhase17.OptionalCellHealingCommitsWhileUnrelatedRequiredDefectRemains"
       ]
     },
-    "validation": {"passed": 60, "total": 60, "failures": 0, "failedTests": []},
-    "compiled_api": {"passed": 8, "total": 8, "failures": 0, "failedTests": []}
+    "producer": {
+      "passed": 77,
+      "total": 83,
+      "failures": 6,
+      "failedTests": [
+        "AdaptiveTargetSizePhase12.SurfaceCellScaffoldPopulatesSizeDiagnostics",
+        "SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets",
+        "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder"
+      ]
+    },
+    "validation": {"passed": 60, "total": 60, "failures": 0, "failedTests": []}
   },
   "nonOverlappingTotal": {"passed": 299, "total": 315, "failed": 16},
   "rebuildPerformed": false,
-  "sourceOrValidationEdited": false
+  "sourceOrValidationEdited": false,
+  "runtimeTurn": "gate1-uniform-phase-front-artifact-only-test-benchmark",
+  "latestCodeBuild": {
+    "turn": "gate1-phase-front-orientation-direct-cell-code-build",
+    "sourceCommit": "b2b826eeb975e913f31516c5dd3e6d0a0b554d9e",
+    "payloadCleanupCommit": "54a79a17f48bd3974367c3e043507d0550fb8daa",
+    "artifactSha256": "e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca",
+    "internalChecksums": "45/45",
+    "approvedTargets": "7/7",
+    "generatedProjectBinariesExecuted": false
+  }
 }
