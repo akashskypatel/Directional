@@ -10,16 +10,16 @@ Always advance the earliest incomplete or regressed design gate. Every implement
 
 ## Architecture
 
-The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component/local-sheet, transition edge, route, feature, and ownership state. Fronts advance only through exact source topology and reciprocal field transport. Authoritative metadata is strict and fail-closed when present. A coherent prescribed raw field may omit precomputed matching/transition containers; in that case, a planar phase-front proof may use exact physical forward/reverse transport, but never proximity, fixture identity, or arbitrary branch choice.
+The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component/local-sheet, transition edge, route, feature, and ownership state. Fronts advance only through exact source topology and reciprocal field transport. Authoritative metadata is strict and fail-closed when present. A coherent prescribed raw field may omit precomputed matching/transition containers; in that case, a planar proof may use exact reciprocal physical transport, never proximity, fixture identity, or arbitrary branch choice.
 
-When a phase-front segment meets a source vertex, continuity is not a positional jump. A valid route must traverse a unique ordered incident-face fan and apply every crossed authoritative edge transition. Ambiguous, non-manifold, disconnected, or nonreciprocal fans fail closed.
+When a phase-front segment meets a source vertex, continuity is not a positional jump. A valid route traverses exactly one directed incident-face fan selected from source topology and segment geometry, applies every authoritative edge transition, and records every canonical source-edge ID. Disconnected, repeated, non-manifold, ambiguous, missing-provenance, nonreciprocal, or branch-mismatched fans fail closed.
 
 An authoritative cell has four ordered source-attached corners and sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, and exact directed ownership. One accepted cell maps to one quad. Arrangement may canonicalize exact identities and crossings but may not infer topology by count/order/frequency, position, fallback, or post-hoc decomposition.
 
 ## Ordered gates
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** **active.** The first restoration artifact was tested and rejected because the live complete-metadata path remained unchanged.
+2. **G1 — Uniform phase-front plane:** **active; second bounded Code + Build complete, artifact-only verification pending.**
 3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 and close-sheet failure.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
@@ -27,7 +27,7 @@ An authoritative cell has four ordered source-attached corners and sides, cohere
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Current runtime evidence
+## Last runtime evidence
 
 | Fixture | Result | Traces | Arrangement | Output quads |
 |---|---:|---:|---:|---:|
@@ -38,15 +38,15 @@ An authoritative cell has four ordered source-attached corners and sides, cohere
 | bunny | fail | 80,862 | 0 | 0 |
 | vase | fail | 116,922 | 0 | 0 |
 
-All cases were structurally deterministic, used direct `SurfaceCells`, fallback `Fail`, and no recovery. The seam output hash is `a8972efd7c4900a4`. Direct acceptance is 1/6.
+All executed cases were structurally deterministic, used direct `SurfaceCells`, fallback `Fail`, and no recovery. The seam output hash is `a8972efd7c4900a4`. Direct acceptance remains 1/6 until the new artifact is tested.
 
-## Active Gate 1 contract
+## Current Gate 1 implementation authority
 
-The prescribed plane enters tracing with populated matching, effort, and edge-transition metadata. Gate 1 therefore requires the uniform phase-front producer to consume complete zero-turn authoritative metadata, including exact source-topology transitions at segment endpoints and source vertices.
+Static emulation of the exact committed plane triangulation and phase-front grid confirmed 16 transitions where consecutive selected intervals meet at a source vertex without sharing an edge. The implementation now has typed first-rejection state and deterministic ordered authoritative fan traversal while retaining the ordinary shared-edge path.
 
-The next Code + Build turn must make the first phase-front rejection typed and observable, then repair only the confirmed general predicate. The leading candidate is the shared-edge-only assumption between consecutive selected intervals; it is not yet runtime-proven.
+Artifact-only acceptance requires plane direct construction or material advancement beyond the 106/9/12 generic signature while retaining seam direct success. Diagnostics alone, a different legacy failure, or aggregate gains are insufficient.
 
-Material progress requires a live consumed producer contract and, in the following artifact-only turn, plane direct success while retaining seam direct success. Diagnostics alone, a different legacy failure, or higher aggregate totals are insufficient.
+This is the second bounded Code + Build attempt. If the artifact-only turn does not materially advance Gate 1, the next mandatory turn is a design review or bounded producer replacement proof.
 
 ## Non-negotiable prohibitions
 
