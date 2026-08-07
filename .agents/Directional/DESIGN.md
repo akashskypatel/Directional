@@ -40,54 +40,68 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
-3. **G2 — Cross-chart and close-sheet propagation:** **active; bounded source-sheet producer extension is compile-valid and runtime verification is pending.** Multi-face seam is proven; disconnected close sheets remain the earliest failing runtime fixture until artifact validation executes.
-4. **G3 — Periodic closure and holonomy:** blocked.
+3. **G2 — Cross-chart and close-sheet propagation:** **passed.**
+4. **G3 — Periodic closure and holonomy:** **active.**
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Gate 1 runtime closure authority
+## Passed-gate runtime authority
 
-Artifact-only validation of source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3` using artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031` established:
+Artifact-only validation of source `218dd3ec3f6399dc82183390720a4ba4d3a70b42` using artifact `8994541137`, SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`, established:
 
-| Fixture | Result | Producer | Traces | Arrangement | Completed quads | Output |
-|---|---:|---|---:|---:|---:|---|
-| plane | **pass** | `Produced` | 352 | 65 | 64 | `CompletedSurfaceCells` |
-| seam | **pass** | `Produced` | 256 | 65 | 64 | `CompletedSurfaceCells` |
-| close sheets | fail | `NotApplicable` | 158 | 0 | 0 | none |
-| cylinder | fail | `NotApplicable` | 732 | 0 | 0 | none |
-| bunny | fail | `NotApplicable` | 80,862 | 0 | 0 | none |
-| vase | timeout/fail | not fully observed | — | — | — | none |
+| Fixture | Result | Producer | Traces | Arrangement | Quads | Components | Output hash |
+|---|---:|---|---:|---:|---:|---:|---|
+| plane | **pass** | `Produced` | 352 | 65 | 64 | 1 | `730caeae49ec872c` |
+| seam | **pass** | `Produced` | 256 | 65 | 64 | 1 | `5bdf34d7802e9fb0` |
+| close sheets | **pass** | `Produced` | 1,104 | 202 | 200 | 2 | `89b052762f52a5af` |
+| cylinder | fail | `NotApplicable` | 732 | 0 | 0 | — | — |
+| bunny | fail | `NotApplicable` | 80,862 | 0 | 0 | — | — |
+| vase | fail | `NotApplicable` | 116,922 | 0 | 0 | — | — |
 
-Plane and seam both have 81 provenance/output vertices, 64 pure quads, zero strict validation failures, no fallback/recovery, and deterministic output hashes across three independent benchmark processes. The former plane 106/9/12 generic failing signature is eliminated. G1 is closed.
+Plane, seam, and close sheets are direct `CompletedSurfaceCells` pure-quad outputs with zero strict validation failures and no fallback/recovery. Each is deterministic across three independent processes. G0–G2 are closed.
 
-## Active G2 contract
+## G2 source-sheet contract — retained invariant
 
-The authoritative uniform phase/front producer must operate correctly across multiple disconnected or distinct local sheets that may be arbitrarily close in world space.
+The authoritative producer partitions state by `(source component, local sheet)` before front construction. World-space distance, nearest projection, or overlap may not join unrelated sheets. Phase, ownership, route, capture, collision, boundary loops, and materialization identity remain sheet-local unless exact source topology establishes a connection.
+
+The exact close-sheet output contains two disconnected 121-vertex components at `z=-0.035` and `z=+0.035`; the focused producer contract verifies both source sheet keys and requires every twinned front edge to retain the same component/local-sheet identity.
+
+## Active G3 contract
+
+The authoritative phase/front producer must support a connected, orientable, singularity-free annular sheet with one periodic lattice direction without treating an artificial chart cut as a real output boundary.
+
+Required first-class periodic authority:
+
+```text
+periodic holonomy =
+  quarter-turn rotation r in Z4
+  + integer lattice translation t in Z2
+  + ordered canonical source route
+```
 
 Required invariants:
 
-- source component and local-sheet identity partition producer state before front construction;
-- world-space distance, nearest projection, or overlap may not join unrelated sheets;
-- phase, ownership, route, capture, and collision state are sheet-local unless exact source topology establishes a connection;
-- each authoritative sheet uses the same proven ordinary-edge and ordered source-vertex-fan transport contracts independently;
-- concatenating independent authoritative sheet outputs preserves source provenance and produces one accepted cell → one quad;
-- materialization identity includes source component/local-sheet authority so equal lattice coordinates on unrelated sheets do not merge;
-- boundary loops remain source-sheet-local;
-- source component/local-sheet ordering or source-face row ordering cannot change structural output except for canonical renumbering;
-- failure of one applicable sheet is `Rejected` for the selected authoritative producer, never silent generic substitution for that sheet;
-- periodic domains such as the cylinder remain outside G2 and may remain `NotApplicable` until G3 holonomy support.
+- applicability is derived from source topology, never fixture identity;
+- the annulus is cut open through one deterministic source-topology route joining its two true boundary cycles;
+- the cut-open phase chart is intrinsic and does not require world-space planarity;
+- chart duplicates on the two cut sides retain one authoritative underlying source identity;
+- transported phase/branch state around the periodic cycle closes through explicit reciprocal holonomy;
+- non-integral, nonreciprocal, branch-incompatible, ambiguous, or missing-provenance holonomy is typed `Rejected` and cannot fall through to generic tracing;
+- periodic front counterparts are paired through exact source-route/lattice-holonomy equivalence, never Euclidean welding;
+- the artificial cut is not an output boundary;
+- the two genuine cylinder boundary loops remain exterior boundaries;
+- direct materialization quotients periodic chart duplicates by exact periodic identity and preserves one accepted cell → one quad;
+- source-face row ordering cannot change the periodic construction except canonical renumbering.
 
-## G2 compile-valid checkpoint
-
-Source commit `218dd3ec3f6399dc82183390720a4ba4d3a70b42` implements the bounded G2 contract above. The compile-only artifact is `8994541137`, SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`, with 45/45 internal checksums and 111/111 compile/link actions across seven approved targets. No project binary was executed, so this checkpoint does **not** claim G2 runtime success.
-
-G2 closes only when the exact close-sheet production fixture becomes direct deterministic valid `Produced` output with no cross-sheet provenance/merge violation while plane and seam remain unchanged mandatory regressions.
+The current exact cylinder remains `NotApplicable`, 732 generic traces, zero arrangement/completion, terminal `NotProductionReady:completion`. G3 closes only when it becomes direct deterministic strict-valid `Produced` output while plane, seam, and close sheets remain green.
 
 ## Next implementation authority
 
-The next turn is **artifact-only Test + Benchmark** using `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md`. Do not edit implementation or validation logic and do not rebuild. If G2 closes, the next Code + Build gate becomes G3 periodic cylinder/holonomy. If G2 remains open, address only the exact general G2 failure established by artifact evidence.
+Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md` as a Code + Build only turn. Compile the new periodic producer and contract tests, execute no generated project binary, and package an immutable artifact for the following artifact-only Test + Benchmark turn.
+
+Do not broaden G3 into torus/general genus, singularity topology, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production, or performance hardening.
 
 ## Non-negotiable prohibitions
 
@@ -97,6 +111,7 @@ The next turn is **artifact-only Test + Benchmark** using `.agents/Directional/G
 - no fallback/recovery substitution;
 - no synthetic counters or Euler correction;
 - no positional merging across unrelated sheets;
+- no Euclidean periodic seam welding;
 - no fixture/ID special cases;
 - no post-hoc cycle decomposition or cell merging;
 - no timeout-as-correctness.
