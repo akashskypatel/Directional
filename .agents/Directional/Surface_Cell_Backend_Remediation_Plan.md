@@ -9,104 +9,66 @@ Produce deterministic, direct, source-authoritative cross-field-aligned quad mes
 Remediation follows the ordered design gates in `.agents/Directional/DESIGN.md`. Only the earliest incomplete gate may be the principal implementation objective.
 
 - G0 truthful authority — passed.
-- G1 uniform phase-front plane — **active**.
-- G2 cross-chart and close-sheet propagation — blocked.
+- G1 uniform phase-front plane — passed.
+- G2 cross-chart and close-sheet propagation — **active**.
 - G3 periodic closure and holonomy — blocked.
 - G4 topology-distinct completion and singularities — blocked.
 - G5 adaptive scale and hard features — blocked.
 - G6 general production geometry — blocked.
 - G7 operational hardening — blocked.
 
-## Current G1 state
+## Closed Gate 1 state
 
-Implemented and compile-valid:
+The producer now has runtime-validated first-class phase/lattice state, directed front ownership, source-normal winding, transactional whole-cycle reversal, component/sheet/edge-incidence validation, deterministic direct vertex canonicalization, one-cell-to-one-quad materialization, and pure-quad plane success with strict validation and no fallback/recovery.
 
-- first-class lattice phase and integer coordinates;
-- directed front ownership and typed events;
-- bounded planar uniform phase-front production;
-- source-attached corners and ordered side routes;
-- compatible interior merges and exterior termination;
-- deterministic phase-front hashes/accounting;
-- authoritative proposal-cycle arrangement materialization without fan-sector inference.
+Gate 1 remains protected while remediation advances.
 
-Artifact-only runtime evidence:
+## Current Gate 2 state
 
-- plane: 352 traces, 65 arrangement cells, 409 completed quads;
-- first invalid record: `completion/output-validation:FlippedFace`, cell 38, source face 41;
-- validation failures: 100;
-- structural stage hashes and counts stable across three processes;
-- seam, close sheets, and cylinder remain at zero-cell `SideSubdivisionRepair:InvalidInputIncidence` and are blocked by the plane gate.
+Artifact evidence:
 
-The phase-front architecture is live. The current remediation target is not another tracing or fan-interval adjustment. It is an authoritative orientation/incidence contract and direct one-to-one cell materialization.
+- multi-face seam: 137 traces, zero arrangement cells, zero quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: 158 traces, zero arrangement cells, zero quads, the same failure;
+- stage hashes are stable across three processes;
+- no fallback or source-grid recovery is used.
 
-## Required G1 remediation
+The producer still falls back from the planar phase-front attempt to the older trace/proposal path on multi-chart inputs. The remediation target is authoritative cross-chart phase-front transport, not another completion repair.
 
-### 1. Authoritative cell orientation
+## Required Gate 2 remediation
 
-For every phase-front cell, validate before arrangement/completion:
+### 1. Authoritative chart identity
 
-- exactly four distinct source-attached corners;
-- ordered side endpoint continuity;
-- nonzero intrinsic signed area;
-- winding consistent with the authoritative source normal;
-- coherent component, source chart, and local-sheet identity;
-- coherent route provenance and family/sign state;
-- exactly one filled side or explicit exterior classification per directed front edge.
+Carry `SourceChartId` or an equivalent exact chart identity in lattice/front/cell state. Include component, local sheet, source face, and transition witness in deterministic hashes.
 
-When winding is opposite, reverse the entire cycle transactionally: corner order, lattice states, side routes, edge directions, family/sign state, and ownership. Do not reorder using positional proximity or index heuristics.
+### 2. Transition transport
 
-### 2. Direct cell materialization
+Use `SourceChartTransitionGraph`, exact source topology, hard-feature barriers, and cross-field edge matching/transition data. Transport barycentric support and route, selected branch and quarter-turn rotation, phase and integer lattice coordinate, family/sign, component, and local-sheet provenance.
 
-An accepted four-sided phase-front cell already defines topology. Materialize it as one intended quad-domain cell.
+Require an exact inverse transition. Missing, ambiguous, or inconsistent state fails closed.
 
-Arrangement may:
+### 3. Multi-chart front construction
 
-- canonicalize equivalent source identities;
-- split exact crossings;
-- materialize halfedges/twins/next links;
-- validate provenance and topology.
+Advance each front side intrinsically through adjacent source faces. Construct cells from transported chart state rather than a global planar projection. The multi-face seam fixture must exercise the general path.
 
-Arrangement/completion must not:
+### 4. Compatible cross-chart merge
 
-- choose connectivity through fan-sector interval ranking;
-- merge unrelated sheets by position;
-- expand one accepted four-sided cell through generic patch completion;
-- decompose or merge cycles post hoc to obtain a desired count.
+Merge only when reciprocal route, canonical transition, phase/lattice coordinate, branch/family/sign, component, sheet, and directed ownership agree. Do not select by distance, count, order, or frequency.
 
-### 3. Fail-closed boundary
+### 5. Close-sheet isolation
 
-Reject the cell before completion when orientation, incidence, route, component, sheet, or ownership is inconsistent. Preserve the first invalid producer record and deterministic state hashes.
+Retain local-sheet identity through every transition and merge. Exact manifold adjacency may cross face boundaries, but geometrically close unrelated sheets must never canonicalize, capture, or merge by position.
 
-### 4. Test correction
+### 6. Preserve direct materialization
 
-Correct two obsolete producer expectations:
-
-- scaffold diagnostics must not assume production failure;
-- recovery coverage must use a true recovery-required input or separate direct-success and recovery-only assertions.
-
-The four direct acceptance tests remain unchanged in strength.
+Accepted four-sided cross-chart cells use the Gate 1 orientation/incidence and one-cell-to-one-quad path. Generic completion cannot invent or expand their topology.
 
 ## Next compile gate
 
-Use `.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`. Compile the approved seven targets only. Do not execute generated binaries, tests, benchmarks, discovery, CLI, GUI, or help/list commands.
+Use `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`. Compile the approved seven targets only. Do not execute generated binaries, tests, benchmarks, discovery, CLI, GUI, or help/list commands.
 
 ## Material progress
 
-Progress requires plane success or a structurally later failure with one-to-one cell materialization and a reduced invalid-output burden. New diagnostics, counters, hashes, or unrelated test passes are insufficient.
-
-## Layered source authority during outage
-
-The tested implementation is base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus exact patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep its five-file synchronization on both TODO files until service recovery.
-
-While the outage persists:
-
-1. do not use workflows for source application, build, or repository updates;
-2. reconstruct the tested source exactly from base plus the existing patch;
-3. express the orientation/direct-cell change as a separate incremental patch;
-4. record its digest, expected output blobs, local build artifact, and logs;
-5. keep both patch layers versioned and ordered.
-
-After recovery, apply and verify the existing patch first, then the orientation/direct-cell patch as a second coherent commit. Remove each payload only after its corresponding source commit and expected blobs are verified.
+Progress requires seam success or nonzero deterministic authoritative cross-chart cells that reach a new first-class transport/materialization boundary. Unchanged zero-cell completion failure, diagnostics, counters, hashes, or unrelated passes are insufficient.
 
 ## Preserved prohibitions
 
