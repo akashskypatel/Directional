@@ -6,7 +6,7 @@ The project is an ordered constructive implementation of direct, source-authorit
 
 ```text
 G0 truthful authority [passed]
-→ G1 plane restoration [active; first restoration artifact rejected]
+→ G1 live-transition artifact verification [active]
 → G2 seam proven / close-sheet isolation incomplete
 → G3 periodic holonomy
 → G4 topology and singularities
@@ -17,19 +17,19 @@ G0 truthful authority [passed]
 
 ## Immediate objective
 
-Repair the live complete-metadata planar phase-front transition path. First expose the exact first rejection predicate; then implement only the confirmed general source-topology transition rule while preserving the direct reciprocal-transition seam.
+Artifact-only verify that complete zero-turn metadata can traverse exact source-vertex fans while ordinary shared-edge and reciprocal quarter-turn seam transport remain unchanged.
 
-The current leading candidate is a source-vertex crossing where consecutive selected intervals meet at a vertex rather than sharing one edge. This is an inference from the Gate 1 versus Gate 2 source delta and must be confirmed before implementation.
+The source now exposes typed first phase-front failure context and records every edge in a multi-edge vertex-fan route. The build is compile-only authority; no runtime success is claimed until the exact artifact is tested.
 
 ## Evidence discipline
 
 - Direct mandatory fixtures outrank aggregate totals.
 - Passed earlier gates are mandatory regressions and become active immediately when broken.
-- Real fixtures remain mandatory and may not be simplified, replaced, or bypassed.
+- Real bunny/vase fixtures remain mandatory and may not be simplified, replaced, or bypassed.
+- A typed diagnostic is useful authority but is not constructive success by itself.
 - Later success never compensates for an earlier red gate.
 - Test turns use exact artifacts only; Code + Build turns compile but execute nothing.
-- A typed rejection reason is evidence infrastructure, not material progress unless a first-class producer contract is also made live and consumed.
 
 ## Stop rule
 
-The completed restoration Code + Build did not materially advance Gate 1. The next Code + Build is the second bounded attempt. If its artifact-only verification does not materially advance the plane, the following turn must be a design review or bounded producer replacement proof, not another local repair attempt.
+This is the second bounded Gate 1 Code + Build attempt. If the next artifact-only turn does not materially advance beyond the 106/9/12 plane signature, the following turn must be a design review or bounded producer replacement proof. A third local predicate-repair turn is not authorized.
