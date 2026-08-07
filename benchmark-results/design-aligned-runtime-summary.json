@@ -1,191 +1,146 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v8",
-  "updatedUtc": "2026-08-07T19:00:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v9",
+  "updatedUtc": "2026-08-07T20:16:00Z",
   "directionControl": {
-    "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
+    "passedGates": [
+      "G0 truthful authority",
+      "G1 uniform phase-front plane",
+      "G2 cross-chart/close-sheet isolation"
+    ],
     "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "periodic topology and source-strip authority runtime-proven; field-authoritative adjacent-ring correspondence remains",
+    "gateState": "periodic topology/source-strip authority runtime-proven; field-authoritative adjacent-ring correspondence compile-valid; runtime revalidation pending",
     "earliestFailingExecutedFixture": "cylinder__surface_cells",
     "earliestExecutedFailure": "completion/output-validation:AggregateCompletionValidationFailure",
-    "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md"
+    "retainedRegressions": [
+      "plane__surface_cells",
+      "multi_face_seam__surface_cells",
+      "close_sheets__surface_cells"
+    ],
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md"
   },
-  "testedAuthority": {
-    "sourceCommit": "2783ea718ffb15f8fb3868795173472ab8636c1c",
-    "workflowRunId": 31204848178,
-    "workflowJobId": 92953250176,
-    "artifactId": 9004509871,
-    "artifactName": "g3-periodic-output-validation-code-build",
-    "artifactSha256": "2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe",
-    "logArtifactId": 9004508508,
-    "logArtifactSha256": "80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b",
-    "patchSha256": "74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e",
+  "latestCodeBuild": {
+    "sourceCommit": "c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a",
+    "initialImplementationCommit": "18f2c880f1714d8c41c9e11dadd53169756629fe",
+    "initialImplementationPatchSha256": "49cd71bc5aafc33ccdfd5e5104e5a23c7452e72074aac3c7775794f55737d6de",
+    "compileCorrectionPatchSha256": "8c96fa983990ab6c3f3ace5b24b8af59678aa7d6a0b7ed4f57b06f1397d1cd56",
+    "workflowRunId": 31214404170,
+    "workflowJobId": 92984429773,
+    "artifactId": 9008118764,
+    "artifactName": "g3-periodic-ring-correspondence-code-build",
+    "artifactSha256": "11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562",
+    "logArtifactId": 9008117677,
+    "logArtifactSha256": "a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77",
     "internalChecksums": "44/44",
+    "compileActions": "111/111",
+    "approvedTargets": "7/7",
     "executables": 5,
     "libraries": 2,
     "fixtures": 27,
-    "rebuildPerformedDuringTest": false,
-    "sourceOrValidationEditedDuringTest": false,
-    "runtimeOnlyFixtureSymlink": true
+    "runtimeExecution": false,
+    "changedFileBlobs": {
+      "include/directional/geometry/SurfaceCellTracing.h": "c1b816a584d67a3f74c2d7389962bd92d52244c9",
+      "src/geometry/SurfaceCellTracing.cpp": "6980850bd32d40b1da9350ebbe3f601b8ce5e07b",
+      "tests/SurfaceCellsPhase10Tests.cpp": "c4671ef674228d74b96e80499abbb6846bcdf3e3"
+    },
+    "implementedContracts": {
+      "topologyCompatibleRingCandidatesRetained": true,
+      "lexicographicCandidateOwnershipRemoved": true,
+      "reciprocalTransportedFieldAuthority": true,
+      "uniqueFieldAuthoritativeCandidateRequired": true,
+      "invalidCorrespondenceTypedReject": "InvalidPeriodicRingCorrespondence",
+      "ambiguousCorrespondenceTypedReject": "AmbiguousPeriodicRingCorrespondence",
+      "canonicalSourceStripBreakpointsPreserved": true,
+      "periodicCutHolonomyQuotientPreserved": true,
+      "oneAcceptedCellToOneQuadPreserved": true,
+      "validatorsChanged": false,
+      "fallbackRecoveryAdded": false,
+      "fixtureSpecificSelection": false,
+      "runtimeVerificationPending": true
+    },
+    "firstCompileAttempt": {
+      "workflowRunId": 31213727511,
+      "workflowJobId": 92982293325,
+      "implementationSourceCommit": "18f2c880f1714d8c41c9e11dadd53169756629fe",
+      "result": "test-source compile failure after production source compiled",
+      "failureLogArtifactId": 9007820580,
+      "failureLogSha256": "ee5d9d3ae3f69c88983652495013a2742fa4c4e1bf8c0a90a65bc392d1a0cbec",
+      "projectRuntimeExecuted": false,
+      "correctionScope": "new test helper Eigen concrete vector return/expression types only"
+    }
   },
-  "focusedContracts": {
-    "passed": 13,
-    "total": 13,
-    "failed": [],
-    "periodicOutputValidationFocused": "6/6",
-    "retainedG1G2": "7/7",
-    "canonicalHolonomyRouteInvariant": true,
-    "canonicalCutInvariant": true,
-    "canonicalSourceStripBreakpointsRetained": true
+  "testedAuthority": {
+    "sourceCommit": "2783ea718ffb15f8fb3868795173472ab8636c1c",
+    "artifactId": 9004509871,
+    "artifactSha256": "2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe",
+    "focusedRetainedContracts": "13/13",
+    "runtimeStillAuthoritativeUntilNextArtifactTest": true
   },
   "directAcceptance": {
-    "passed": 3,
-    "totalMandatoryCurrentGateCases": 4,
-    "cases": {
-      "plane": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 352,
-        "arrangementCells": 65,
-        "completedQuads": 64,
-        "outputVertices": 81,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "730caeae49ec872c"
-      },
-      "multi_face_seam": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 256,
-        "arrangementCells": 65,
-        "completedQuads": 64,
-        "outputVertices": 81,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "5bdf34d7802e9fb0"
-      },
-      "close_sheets": {
-        "success": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "traceSegments": 1104,
-        "arrangementCells": 202,
-        "completedQuads": 200,
-        "outputVertices": 242,
-        "connectedComponents": 2,
-        "validationFailures": 0,
-        "outputOrigin": "CompletedSurfaceCells",
-        "outputStructuralHash": "89b052762f52a5af"
-      },
-      "cylinder": {
-        "success": false,
-        "materialProgress": true,
-        "producerDisposition": "Produced",
-        "runs": 3,
-        "periodicHolonomyAvailable": true,
-        "periodicHolonomyQuarterTurnRotation": 0,
-        "periodicHolonomyTranslation": [32, 0],
-        "periodicHolonomyRouteEdgeCount": 32,
-        "periodicCutEdgeCount": 4,
-        "traceSegments": 2237,
-        "arrangementCells": 0,
-        "completedQuads": 320,
-        "provenanceVertices": 352,
-        "validationFailures": 3,
-        "terminalFailureCode": "NotProductionReady",
-        "terminalFailureStage": "completion",
-        "firstInvalidProducerStage": "completion/output-validation",
-        "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
-        "outputOrigin": "None",
-        "fallbackUsed": false,
-        "sourceGridRecoveryUsed": false,
-        "deterministicFailureSignature": true,
-        "completedValidation": {
-          "failedThresholds": [
-            {"field": "normalP95Degrees", "value": 16.627273436620403, "limit": 15.0},
-            {"field": "fieldP95Degrees", "value": 37.96709872810172, "limit": 15.0},
-            {"field": "warpageP95Degrees", "value": 30.621379281060747, "limit": 30.0}
-          ],
-          "thresholdDetailsSource": "non-invasive inspection of exact packaged runtime in-memory SurfaceFinalValidationReport",
-          "discreteStrictSourceAuthoritativeChecksGreen": true,
-          "quadToSourceP95": 0.0312811149611,
-          "quadToSourceMax": 0.06678447636,
-          "sourceToOutputP95": 0.00817358891,
-          "sourceToOutputMax": 0.06573736727,
-          "fieldMedianDegrees": 0.0,
-          "warpageMaxDegrees": 31.9329,
-          "aspectP95": 1.11277,
-          "scaledJacobianMin": 0.760829
-        }
-      },
-      "bunny_1k_random": {
-        "success": false,
-        "producerDisposition": "NotApplicable",
-        "runs": 1,
-        "traceSegments": 80862,
-        "arrangementCells": 0,
-        "completedQuads": 0,
-        "wallSeconds": 41.73037,
-        "laterGateObservation": true
-      },
-      "vase": {
-        "success": false,
-        "producerDisposition": "NoCompletedRecord",
-        "runs": 1,
-        "timeoutSeconds": 180,
-        "laterGateObservation": true,
-        "timeoutIsCorrectnessEvidence": false
+    "plane": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "runs": 3,
+      "traceSegments": 352,
+      "completedQuads": 64,
+      "validationFailures": 0,
+      "outputOrigin": "CompletedSurfaceCells",
+      "outputStructuralHash": "730caeae49ec872c"
+    },
+    "multi_face_seam": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "runs": 3,
+      "traceSegments": 256,
+      "completedQuads": 64,
+      "validationFailures": 0,
+      "outputOrigin": "CompletedSurfaceCells",
+      "outputStructuralHash": "5bdf34d7802e9fb0"
+    },
+    "close_sheets": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "runs": 3,
+      "traceSegments": 1104,
+      "completedQuads": 200,
+      "outputVertices": 242,
+      "connectedComponents": 2,
+      "validationFailures": 0,
+      "outputOrigin": "CompletedSurfaceCells",
+      "outputStructuralHash": "89b052762f52a5af"
+    },
+    "cylinder": {
+      "success": false,
+      "producerDisposition": "Produced",
+      "runs": 3,
+      "periodicHolonomyAvailable": true,
+      "periodicHolonomyQuarterTurnRotation": 0,
+      "periodicHolonomyTranslation": [32, 0],
+      "periodicHolonomyRouteEdgeCount": 32,
+      "periodicCutEdgeCount": 4,
+      "traceSegments": 2237,
+      "completedQuads": 320,
+      "provenanceVertices": 352,
+      "validationFailures": 3,
+      "terminalFailureStage": "completion/output-validation",
+      "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+      "outputOrigin": "None",
+      "fallbackUsed": false,
+      "sourceGridRecoveryUsed": false,
+      "completedValidation": {
+        "normalP95Degrees": 16.627273436620403,
+        "fieldP95Degrees": 37.96709872810172,
+        "warpageP95Degrees": 30.621379281060747,
+        "normalP95Limit": 15.0,
+        "fieldP95Limit": 15.0,
+        "warpageP95Limit": 30.0,
+        "discreteStrictSourceAuthoritativeChecksGreen": true
       }
     }
   },
-  "comparisonWithPreviousG3Artifact": {
-    "previousArtifactId": 9001168379,
-    "previousTranslation": [29, 0],
-    "currentTranslation": [32, 0],
-    "previousTraceSegments": 2163,
-    "currentTraceSegments": 2237,
-    "previousCompletedQuads": 290,
-    "currentCompletedQuads": 320,
-    "previousProvenanceVertices": 319,
-    "currentProvenanceVertices": 352,
-    "previousValidationFailures": 2,
-    "currentValidationFailures": 3,
-    "previousNormalP95Degrees": 15.7659579535,
-    "currentNormalP95Degrees": 16.627273436620403,
-    "previousFieldP95Degrees": 37.96709872810172,
-    "currentFieldP95Degrees": 37.96709872810172,
-    "previousWarpageP95Degrees": 29.33561954,
-    "currentWarpageP95Degrees": 30.621379281060747,
-    "previousQuadToSourceP95": 0.0683280663,
-    "currentQuadToSourceP95": 0.0312811149611,
-    "previousSourceToOutputP95": 0.104463816,
-    "currentSourceToOutputP95": 0.00817358891
-  },
-  "rootCause": {
-    "class": "field-authority ambiguity in adjacent canonical annulus-ring correspondence",
-    "topologyCompatibleCandidatesPerRingPair": 2,
-    "currentSelectionMechanism": "sort valid source-vertex sequences lexicographically and select valid.front()",
-    "selectedCandidate": "diagonal/sheared inter-ring correspondence",
-    "alternativeCandidate": "same-column axial correspondence",
-    "selectedInterRingFieldDeviationDegrees": 37.96709872810172,
-    "matchesFieldP95Failure": true,
-    "nextRequiredAuthority": "reciprocal transported cross-field family/sign correspondence; typed fail-closed on zero or multiple field-authoritative candidates"
-  },
-  "defaultSuites": {
-    "focusedRetainedProducer": {"tests": 13, "passed": 13, "failed": 0},
-    "producerRemainingBoundedExcludingLongBunnyVaseCases": {"tests": 84, "passed": 82, "failed": 2, "failures": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent", "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder"]},
-    "fullProducerRemainingAttemptCompleted": false,
-    "completion": {"tests": 164, "passed": 154, "failed": 10},
-    "validation": {"tests": 60, "passed": 60, "failed": 0},
-    "compiledApi": {"tests": 8, "passed": 8, "failed": 0}
-  },
   "gateDecision": {
     "g3Closed": false,
-    "materialProgress": true,
-    "reason": "Source-strip conformity and canonical row-order identity are runtime-proven and improve source coverage, but the exact cylinder deterministically fails field, normal, and marginal warpage P95 thresholds because adjacent ring correspondence is selected by incidental lexicographic source-vertex order rather than reciprocal cross-field family authority.",
-    "validatorsChanged": false,
-    "nextTurn": "Code + Build — G3 periodic field-authoritative ring correspondence"
+    "latestCodeBuildRuntimeVerified": false,
+    "reason": "Field-authoritative adjacent-ring correspondence and typed ambiguity rejection are compile-valid, but artifact 9008118764 has not yet been executed. The previous artifact remains runtime authority with normal/field/warpage P95 failures.",
+    "nextTurn": "Artifact-only Test + Benchmark — G3 periodic ring correspondence"
   }
 }
