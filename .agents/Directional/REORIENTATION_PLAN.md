@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Keep implementation work aligned with production-ready direct cross-field surface paving. The active objective is not to improve diagnostic detail or preserve historical repair machinery; it is to implement the earliest missing constructive design contract and prove it on the ordered direct fixtures.
+Keep implementation aligned with production-ready direct cross-field surface paving. The active objective is to implement the earliest missing constructive contract, not to improve diagnostics or preserve historical repair machinery.
 
 ## Mandatory direction control
 
-Every turn must declare:
+Every turn declares:
 
 ```text
 Active design gate:
@@ -21,95 +21,65 @@ A later gate, downstream repair, performance task, or historical cleanup item ca
 
 ## Ordered gates
 
-1. **G0 — Truthful authority**: direct `SurfaceCells`, fallback `Fail`, recovery disabled, strict `CompletedSurfaceCells` validation. Passed and continuously enforced.
-2. **G1 — Uniform phase-front plane**: authoritative lattice phase, front ownership, oriented source-attached cells, direct one-to-one quad-domain materialization. **Active.**
-3. **G2 — Cross-chart and close-sheet propagation**: seam and close-sheet cases with authoritative chart transport and no cross-sheet merging.
-4. **G3 — Periodic closure and holonomy**: cylinder closure and complete incidence.
-5. **G4 — Topology-distinct completion and singularities**.
-6. **G5 — Adaptive 2:1 transitions and hard features**.
-7. **G6 — General production geometry on `bunny_1k_random.obj`**.
-8. **G7 — Operational hardening and default-on decision**.
+1. G0 truthful authority — passed.
+2. G1 uniform phase-front plane — **passed**.
+3. G2 cross-chart and close-sheet propagation — **active**.
+4. G3 periodic closure and holonomy — blocked.
+5. G4 topology-distinct completion and singularities — blocked.
+6. G5 adaptive 2:1 transitions and hard features — blocked.
+7. G6 general production geometry on `bunny_1k_random.obj` — blocked.
+8. G7 operational hardening and default-on decision — blocked.
 
 Do not begin a blocked gate.
 
-## Current G1 evidence
+## Gate 1 closure evidence
 
-The bounded phase-front implementation is live and deterministically consumed:
+The exact orientation artifact produced deterministic direct plane success:
 
-- baseline plane: 106 traces, 9 arrangement cells, 12 quads;
-- current plane: 352 traces, 65 arrangement cells, 409 quads;
-- current first invalid record: `completion/output-validation:FlippedFace`, cell 38, source face 41;
-- 100 strict validation failures;
-- tracing, arrangement, and completion structural hashes stable across three independent processes.
+- 64 authoritative cells and 64 output quads;
+- 81 output vertices;
+- zero non-quads and zero strict validation failures;
+- `CompletedSurfaceCells`, no fallback, no recovery;
+- stable output hash `730caeae49ec872c` across three independent processes.
 
-This is material progress, not gate completion. The current producer creates authoritative four-sided cells but then sends them through generic patch completion, which expands their topology and emits flipped output.
+The previous 65-to-409 expansion and `FlippedFace` failure are eliminated. Gate 1 remains a permanent regression gate.
 
-## Active G1 subgate
+## Active Gate 2 subgate
 
-The next implementation must establish **source-normal orientation and direct-cell materialization**:
+The producer must move from one planar phase frame to authoritative multi-chart transport:
 
-1. Four distinct source-attached corners.
-2. Ordered side endpoint continuity.
-3. Nonzero intrinsic signed area.
-4. Winding consistent with the authoritative source normal.
-5. Component and local-sheet consistency.
-6. Exactly one filled side or explicit exterior classification per directed front edge.
-7. Transactional whole-cycle reversal when winding is opposite.
-8. One accepted four-sided phase-front cell materializes as one intended quad-domain cell.
-9. Fail closed before completion on any orientation, incidence, route, component, or sheet inconsistency.
+1. Carry exact source-chart identity in lattice and front state.
+2. Use exact source-topology transitions and hard-feature barriers.
+3. Transport the selected cross-field branch by authoritative quarter-turn matching.
+4. Transport phase, integer lattice coordinate, family/sign, component, local sheet, and route provenance.
+5. Require exact forward/reverse transition consistency.
+6. Advance front sides intrinsically through multiple faces.
+7. Merge fronts only when reciprocal chart/route/phase state agrees.
+8. Fail closed on missing, ambiguous, or inconsistent transitions.
+9. Prevent positional capture or merging across unrelated close sheets.
+10. Preserve Gate 1 orientation and one-cell-to-one-quad materialization.
 
-Arrangement may canonicalize identities and split exact crossings. It must not infer connectivity through fan-sector ranking or expand already-decided cells through generic patch completion.
+Current direct evidence:
 
-## Valid test maintenance
+- multi-face seam: 137 traces, zero cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
+- close sheets: 158 traces, zero cells/quads, the same failure.
 
-Two producer tests contain obsolete expectations after the new path began succeeding on their planar inputs:
-
-- a scaffold diagnostic test assumes production must fail;
-- a recovery test assumes recovery must run even when direct production succeeds.
-
-Correct these by using valid scenarios or by separating direct-success and recovery-only assertions. Never weaken the four direct acceptance tests or recovery validation.
+The next implementation must replace this zero-cell downstream failure with first-class cross-chart construction or a truthful earlier transport failure.
 
 ## Material-progress gate
 
-The next artifact must do at least one of:
+The next artifact must pass the multi-face seam, construct nonzero deterministic authoritative cross-chart cells that reach direct materialization/validation, or fail closed at an explicit chart-transition invariant before generic completion.
 
-- pass plane direct acceptance;
-- advance beyond `completion/output-validation:FlippedFace` with one-to-one cell materialization and a lower structural validation burden;
-- expose and enforce a general orientation/incidence invariant before invalid cells reach completion.
-
-A renamed diagnostic, new counter, new hash, or higher unrelated pass count is not progress.
+A renamed diagnostic, new counter/hash, or unchanged zero-cell result is not progress.
 
 ## No-progress stop rule
 
-If the next Code + Build turn does not materially improve the orientation/direct-cell contract, the following turn must perform a bounded design review or producer replacement proof. Do not continue equivalent micro-repairs.
+If two consecutive Code + Build turns do not materially advance Gate 2, the next turn must perform a bounded design review or producer replacement proof. Do not continue equivalent micro-repairs.
 
 ## Explicitly deferred
 
-Until G1 exits, do not make the principal objective:
-
-- fan-interval ranking or repair variants;
-- new diagnostic/ownership taxonomies;
-- seam, close-sheet, cylinder, torus, sphere, thin-tube, mechanical, or bunny-specific logic;
-- adaptivity or 2:1 transitions;
-- general FlowRep or patch catalogs;
-- cache, memory, scheduler, parallelism, or performance work;
-- source-grid recovery enhancement;
-- historical completion-fixture cleanup unrelated to the current compile path.
-
-## Layered patch authority during GitHub outage
-
-The tested implementation is exact base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`. Keep its five-file synchronization on both TODO files until service recovery.
-
-While the outage persists:
-
-- do not use workflows for repository updates or builds;
-- reconstruct current tested source exactly from the recorded base and patch;
-- express the next orientation/direct-cell change as a separate incremental patch;
-- record patch digest, expected output blobs, local build artifact, logs, and dependency closure;
-- retain both patch layers in order.
-
-After recovery, apply and verify the current patch first and the orientation/direct-cell patch second as separate coherent commits. Remove each payload only after its corresponding source state is committed and verified.
+Until Gate 2 exits, do not make the principal objective cylinder periodic holonomy; fan-interval ranking; new diagnostic taxonomies; topology-distinct completion catalogs; singularity, adaptive, hard-feature, sphere, torus, thin-tube, mechanical, or bunny logic; cache, memory, scheduler, parallelism, or performance work; source-grid recovery enhancement; or unrelated historical completion-fixture cleanup.
 
 ## Next plan
 
-`.agents/Directional/Gate_1_Phase_Front_Orientation_Code_Build_Plan.md`
+`.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`
