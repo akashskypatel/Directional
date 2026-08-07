@@ -5,67 +5,74 @@ Last updated: 2026-08-06
 ## Active phase
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 — Uniform phase-front plane**.
-- Completed turn: **Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build**.
-- Next turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
+- Active gate: **G2 — Cross-chart and close-sheet propagation**.
+- Completed turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
+- Next turn: **Gate 2 Cross-Chart and Close-Sheet Propagation Code + Build**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 
-## Source and build authority
+## Runtime authority
 
-- [x] uniform phase-front source synchronized at `4842911b6134c60410c92496d85d1152164a73c7`;
-- [x] orientation/direct-cell source synchronized at `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- [x] payload cleanup commit `54a79a17f48bd3974367c3e043507d0550fb8daa`;
-- [x] final five source/test blobs verified;
-- [x] Release static compile: **7/7** approved targets;
-- [x] artifact SHA-256 `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
-- [x] package closure: 5 executables, 2 libraries, 26 fixtures, 45 checksums;
-- [x] no generated binary executed during Code + Build;
-- [x] temporary workflows, markers, and synchronized payloads removed.
+- tested artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- internal checksums: **45/45**;
+- source commits: `4842911b6134c60410c92496d85d1152164a73c7` then `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
+- no rebuild or source/test/fixture/validator edit occurred;
+- all direct and benchmark processes executed the packaged artifact directly.
 
-## G1 implementation checkpoint
+## Gate result
+
+- [x] plane — direct success; 352 traces, 65 arrangement cells including exterior, 64 direct cells, 64 pure output quads, zero validation failures, `CompletedSurfaceCells`, no fallback/recovery;
+- [ ] multi-face seam — 137 traces, zero cells/quads; `SideSubdivisionRepair:InvalidInputIncidence`;
+- [ ] close sheets — 158 traces, zero cells/quads; `SideSubdivisionRepair:InvalidInputIncidence`;
+- [ ] cylinder — 732 traces, zero cells/quads; blocked by Gate 2.
+
+Plane stage counts, stage hashes, and output hash `730caeae49ec872c` were identical across three independent processes.
+
+## Default-suite result
+
+- direct acceptance: **1/4**;
+- remaining producer: **78/79**;
+- completion: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**;
+- total: **301/315**.
+
+## G1 closure
 
 - [x] first-class phase, lattice coordinates, branch rotation, and scale level;
-- [x] directed front ownership and typed events;
-- [x] authoritative proposal-cycle arrangement path;
-- [x] four distinct corners and ordered side continuity;
-- [x] component/sheet consistency;
-- [x] source-normal winding and transactional complete-cycle reversal;
-- [x] exactly one filled cell and reciprocal-opposite-or-exterior classification per directed edge;
-- [x] one accepted four-sided phase-front cell directly materializes as one quad-domain cell;
-- [x] generic completion bypass for authoritative direct cells;
-- [x] fail-closed orientation/incidence boundary before completion;
-- [x] two stale non-direct producer tests corrected without weakening validation;
-- [ ] plane direct acceptance proven by artifact-only execution;
-- [ ] pure-quad `CompletedSurfaceCells` output with no fallback/recovery.
+- [x] directed front-edge state and bounded planar grid;
+- [x] source-normal-consistent winding and whole-cycle reversal;
+- [x] four-corner/side/component/sheet/ownership validation;
+- [x] exactly one filled side or exterior classification per directed edge;
+- [x] one accepted four-sided cell maps to one output quad;
+- [x] plane direct strict validation;
+- [x] pure-quad `CompletedSurfaceCells` success without fallback/recovery.
 
-## Latest runtime baseline
+## G2 current subgate
 
-The preceding artifact remains the runtime comparison authority:
+- [ ] carry exact source-chart identity in the constructive state;
+- [ ] use exact source-topology transitions rather than global planar projection;
+- [ ] transport cross-field quarter-turn branch matching;
+- [ ] transport phase and integer lattice coordinates across faces;
+- [ ] preserve component, local-sheet, family/sign, and source-route provenance;
+- [ ] require reciprocal inverse transitions;
+- [ ] construct nonzero authoritative cells on the multi-face seam;
+- [ ] merge only phase-compatible reciprocal fronts;
+- [ ] prevent cross-sheet capture on close sheets;
+- [ ] preserve direct one-cell-to-one-quad materialization;
+- [ ] multi-face seam direct success;
+- [ ] close sheets direct success.
 
-- plane: 352 traces, 65 arrangement cells, 409 quads, `completion/output-validation:FlippedFace`, 100 validation failures;
-- seam/close sheets/cylinder: zero cells, `SideSubdivisionRepair:InvalidInputIncidence`;
-- direct acceptance: **0/4**;
-- non-overlapping default total: **299/315**.
+## Next Code + Build
 
-## Next Test + Benchmark
+Use `.agents/Directional/Gate_2_Cross_Chart_Close_Sheet_Code_Build_Plan.md`.
 
-- [ ] verify new artifact SHA-256 and all 45 checksums;
-- [ ] verify synchronized source commits and five final blobs;
-- [ ] run plane first in a fresh process;
-- [ ] report whether one-to-one direct materialization replaces the prior 65-to-409 expansion;
-- [ ] report whether `FlippedFace` is eliminated or invalid incidence fails earlier;
-- [ ] run seam, close sheets, and cylinder only after plane evidence;
-- [ ] run remaining default suites;
-- [ ] run three independent bounded benchmark processes per analytic fixture;
-- [ ] perform no rebuild or source/test/fixture/validator edit.
+Compile only the approved seven targets and execute no generated binary. Keep Gate 3 cylinder periodic logic and all later gates deferred.
 
 ## Gate order
 
-G0 truthful authority [passed] → G1 plane [active] → G2 seam/close sheets → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny → G7 hardening.
-
-Do not begin a blocked gate.
+G0 truthful authority [passed] → G1 plane [passed] → G2 seam/close sheets [active] → G3 cylinder → G4 topology/singularities → G5 adaptivity/features → G6 bunny → G7 hardening.
 
 Every completed turn ends with a new top-level PR #8 comment after all other writes.
 
