@@ -21,6 +21,8 @@ Remediation follows the ordered design gates in `.agents/Directional/DESIGN.md`.
 
 The producer now has runtime-validated first-class phase/lattice state, directed front ownership, source-normal winding, transactional whole-cycle reversal, component/sheet/edge-incidence validation, deterministic direct vertex canonicalization, one-cell-to-one-quad materialization, and pure-quad plane success with strict validation and no fallback/recovery.
 
+Exact evidence archive SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`.
+
 Gate 1 remains protected while remediation advances.
 
 ## Current Gate 2 state
