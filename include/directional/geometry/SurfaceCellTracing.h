@@ -114,6 +114,10 @@ struct SurfaceTraceSegment {
   int exitEdge = -1;
   int matching = 0;
   double matchingEffort = 0.0;
+  /// Connected chart of equal branch orientation containing this segment.
+  int sourceChart = -1;
+  /// Source edge crossed to enter this segment, or -1 for the first interval.
+  int transitionSourceEdge = -1;
   int railId = -1;
   int curveId = -1;
   int railIntervalIndex = -1;
@@ -161,8 +165,11 @@ struct SurfaceTraceResult {
 struct LocalLatticeState {
   Eigen::Vector2d phase = Eigen::Vector2d::Zero();
   Eigen::Vector2i latticeCoordinate = Eigen::Vector2i::Zero();
+  /// Local branch index that represents the domain +U lattice direction.
   int branchRotation = 0;
   int scaleLevel = 0;
+  /// Authoritative source chart owning this point's selected source face.
+  int sourceChart = -1;
 };
 
 enum class SurfaceFrontEventKind : int {

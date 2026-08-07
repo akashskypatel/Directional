@@ -3781,6 +3781,10 @@ struct UniformPhaseFrame {
   double maxU = 0.0;
   double minV = 0.0;
   double maxV = 0.0;
+  /// Per-face local branch that represents the global +U lattice direction.
+  std::vector<int> faceBranchRotation;
+  /// Connected source chart of equal branch orientation.
+  std::vector<int> faceChart;
 };
 
 Eigen::Vector2d phase_uv(const UniformPhaseFrame &frame,
@@ -3848,11 +3852,12 @@ bool point_on_source(const Eigen::MatrixXd &vertices,
   return false;
 }
 
-bool build_planar_phase_frame(const Eigen::MatrixXd &vertices,
-                              const Eigen::MatrixXi &faces,
-                              const Eigen::MatrixXd &faceAxisX,
-                              const Eigen::MatrixXd &faceAxisY,
-                              UniformPhaseFrame &frame) {
+bool build_planar_phase_frame(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    UniformPhaseFrame &frame) {
   if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
       faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows()) {
     return false;
@@ -3885,19 +3890,134 @@ bool build_planar_phase_frame(const Eigen::MatrixXd &vertices,
       return false;
     }
   }
+
+  frame.faceBranchRotation.assign(static_cast<std::size_t>(faces.rows()), -1);
   for (int face = 0; face < faces.rows(); ++face) {
     const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
     if (normal.dot(frame.normal) < 1.0 - 1.0e-8) {
       return false;
     }
-    const Eigen::RowVector3d localU =
-        project_tangent(faceAxisX.row(face), frame.normal);
-    const Eigen::RowVector3d localV =
-        project_tangent(faceAxisY.row(face), frame.normal);
-    if (std::abs(localU.dot(frame.axisU)) < 1.0 - 1.0e-8 ||
-        std::abs(localV.dot(frame.axisV)) < 1.0 - 1.0e-8) {
+    int bestBranch = -1;
+    double bestAlignment = -std::numeric_limits<double>::infinity();
+    for (int branch = 0; branch < 4; ++branch) {
+      int family = 0;
+      int sign = 1;
+      family_sign_from_branch(branch, family, sign);
+      const Eigen::RowVector3d direction = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
+      const double alignment = direction.dot(frame.axisU);
+      if (alignment > bestAlignment) {
+        bestAlignment = alignment;
+        bestBranch = branch;
+      }
+    }
+    if (bestBranch < 0 || bestAlignment < 1.0 - 1.0e-8) {
       return false;
     }
+    int vFamily = 0;
+    int vSign = 1;
+    family_sign_from_branch(normalized_branch(bestBranch + 1), vFamily, vSign);
+    const Eigen::RowVector3d localV = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, face, vFamily, vSign), normal);
+    if (localV.dot(frame.axisV) < 1.0 - 1.0e-8) {
+      return false;
+    }
+    frame.faceBranchRotation[static_cast<std::size_t>(face)] = bestBranch;
+  }
+
+  const auto incident = edge_faces(faces);
+  const auto matchingIndices = edge_matching_indices(incident);
+  const EdgeTransitionLookup transitionLookup =
+      edgeTransitions != nullptr ? edge_transition_lookup(*edgeTransitions)
+                                 : EdgeTransitionLookup{};
+  if (edgeTransitions != nullptr && transitionLookup.duplicate) {
+    return false;
+  }
+  if (edgeTransitions == nullptr && edgeMatching == nullptr) {
+    return false;
+  }
+
+  std::vector<std::vector<int>> equalOrientationAdjacency(
+      static_cast<std::size_t>(faces.rows()));
+  for (const auto &[key, pair] : incident) {
+    if (pair[0] < 0 || pair[1] < 0) {
+      continue;
+    }
+    const int first = pair[0];
+    const int second = pair[1];
+    for (int globalBranch = 0; globalBranch < 2; ++globalBranch) {
+      const int sourceBranch = normalized_branch(
+          frame.faceBranchRotation[static_cast<std::size_t>(first)] +
+          globalBranch);
+      int sourceFamily = 0;
+      int sourceSign = 1;
+      family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+      const Eigen::RowVector3d sourceDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, first, sourceFamily,
+                          sourceSign),
+          face_normal(vertices, faces, first));
+      const BranchTransitionResult forward = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, first, second, sourceFamily, sourceSign,
+          sourceDirection, edgeMatching, edgeEffort, edgeTransitions);
+      const int expectedTargetBranch = normalized_branch(
+          frame.faceBranchRotation[static_cast<std::size_t>(second)] +
+          globalBranch);
+      if (!forward.valid ||
+          branch_from_family_sign(forward.family, forward.sign) !=
+              expectedTargetBranch) {
+        return false;
+      }
+
+      int targetFamily = 0;
+      int targetSign = 1;
+      family_sign_from_branch(expectedTargetBranch, targetFamily, targetSign);
+      const Eigen::RowVector3d targetDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, second, targetFamily,
+                          targetSign),
+          face_normal(vertices, faces, second));
+      const BranchTransitionResult reverse = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, second, first, targetFamily, targetSign,
+          targetDirection, edgeMatching, edgeEffort, edgeTransitions);
+      if (!reverse.valid ||
+          branch_from_family_sign(reverse.family, reverse.sign) !=
+              sourceBranch ||
+          normalized_branch(forward.matching + reverse.matching) != 0) {
+        return false;
+      }
+    }
+    if (frame.faceBranchRotation[static_cast<std::size_t>(first)] ==
+        frame.faceBranchRotation[static_cast<std::size_t>(second)]) {
+      equalOrientationAdjacency[static_cast<std::size_t>(first)].push_back(
+          second);
+      equalOrientationAdjacency[static_cast<std::size_t>(second)].push_back(
+          first);
+    }
+  }
+
+  frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), -1);
+  int nextChart = 0;
+  for (int seed = 0; seed < faces.rows(); ++seed) {
+    if (frame.faceChart[static_cast<std::size_t>(seed)] >= 0) {
+      continue;
+    }
+    std::queue<int> queue;
+    queue.push(seed);
+    frame.faceChart[static_cast<std::size_t>(seed)] = nextChart;
+    while (!queue.empty()) {
+      const int face = queue.front();
+      queue.pop();
+      for (const int adjacent :
+           equalOrientationAdjacency[static_cast<std::size_t>(face)]) {
+        if (frame.faceChart[static_cast<std::size_t>(adjacent)] >= 0) {
+          continue;
+        }
+        frame.faceChart[static_cast<std::size_t>(adjacent)] = nextChart;
+        queue.push(adjacent);
+      }
+    }
+    ++nextChart;
   }
 
   frame.minU = frame.minV = std::numeric_limits<double>::infinity();
@@ -3931,7 +4051,6 @@ bool build_planar_phase_frame(const Eigen::MatrixXd &vertices,
     return false;
   }
 
-  const auto incident = edge_faces(faces);
   const double boundaryTolerance = 1.0e-8 * std::max(width, height);
   for (const auto &[key, pair] : incident) {
     if (pair[1] >= 0) {
@@ -3969,13 +4088,14 @@ bool build_planar_phase_frame(const Eigen::MatrixXd &vertices,
   return true;
 }
 
-bool segment_on_source(const Eigen::MatrixXd &vertices,
-                       const Eigen::MatrixXi &faces,
-                       const UniformPhaseFrame &frame,
-                       const Eigen::Vector2d &start,
-                       const Eigen::Vector2d &end, const int family,
-                       const int sign,
-                       std::vector<SurfaceTraceSegment> &segments) {
+bool segment_on_source(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const UniformPhaseFrame &frame, const Eigen::Vector2d &start,
+    const Eigen::Vector2d &end, const int globalBranch,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    std::vector<SurfaceTraceSegment> &segments) {
   struct Interval {
     double begin = 0.0;
     double end = 0.0;
@@ -4042,7 +4162,11 @@ bool segment_on_source(const Eigen::MatrixXd &vertices,
         selectedFace = interval.face;
       }
     }
-    if (selectedFace < 0) {
+    if (selectedFace < 0 ||
+        selectedFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
+        frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] < 0 ||
+        selectedFace >= static_cast<int>(frame.faceChart.size()) ||
+        frame.faceChart[static_cast<std::size_t>(selectedFace)] < 0) {
       return false;
     }
     const Eigen::Vector2d uv0 = start + low * (end - start);
@@ -4056,12 +4180,24 @@ bool segment_on_source(const Eigen::MatrixXd &vertices,
       return false;
     }
     for (int corner = 0; corner < 3; ++corner) {
-      if (std::abs(bary0[corner]) <= 1.0e-10) bary0[corner] = 0.0;
-      if (std::abs(bary1[corner]) <= 1.0e-10) bary1[corner] = 0.0;
+      if (std::abs(bary0[corner]) <= 1.0e-10) {
+        bary0[corner] = 0.0;
+      }
+      if (std::abs(bary1[corner]) <= 1.0e-10) {
+        bary1[corner] = 0.0;
+      }
     }
     bary0 /= bary0.sum();
     bary1 /= bary1.sum();
+
+    const int localBranch = normalized_branch(
+        frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] +
+        globalBranch);
+    int family = 0;
+    int sign = 1;
+    family_sign_from_branch(localBranch, family, sign);
     if (!segments.empty() && segments.back().face == selectedFace &&
+        segments.back().family == family && segments.back().sign == sign &&
         (segments.back().endBarycentric - bary0).norm() <= 1.0e-10) {
       segments.back().endBarycentric = bary1;
       continue;
@@ -4072,11 +4208,70 @@ bool segment_on_source(const Eigen::MatrixXd &vertices,
     segment.endBarycentric = bary1;
     segment.family = family;
     segment.sign = sign;
+    segment.sourceChart =
+        frame.faceChart[static_cast<std::size_t>(selectedFace)];
     segments.push_back(segment);
   }
-  return !segments.empty();
-}
+  if (segments.empty()) {
+    return false;
+  }
 
+  const auto incident = edge_faces(faces);
+  const auto matchingIndices = edge_matching_indices(incident);
+  const EdgeTransitionLookup transitionLookup =
+      edgeTransitions != nullptr ? edge_transition_lookup(*edgeTransitions)
+                                 : EdgeTransitionLookup{};
+  if (edgeTransitions != nullptr && transitionLookup.duplicate) {
+    return false;
+  }
+  for (std::size_t index = 1; index < segments.size(); ++index) {
+    SurfaceTraceSegment &previous = segments[index - 1U];
+    SurfaceTraceSegment &current = segments[index];
+    std::uint64_t sharedKey = 0;
+    int previousEdge = -1;
+    int currentEdge = -1;
+    for (int firstEdge = 0; firstEdge < 3 && previousEdge < 0; ++firstEdge) {
+      const std::uint64_t firstKey =
+          local_edge_key(faces, previous.face, firstEdge);
+      for (int secondEdge = 0; secondEdge < 3; ++secondEdge) {
+        if (firstKey == local_edge_key(faces, current.face, secondEdge)) {
+          sharedKey = firstKey;
+          previousEdge = firstEdge;
+          currentEdge = secondEdge;
+          break;
+        }
+      }
+    }
+    if (previousEdge < 0 || currentEdge < 0) {
+      return false;
+    }
+    const Eigen::RowVector3d sourceDirection = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, previous.face, previous.family,
+                        previous.sign),
+        face_normal(vertices, faces, previous.face));
+    const BranchTransitionResult transition = resolve_branch_transition(
+        vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+        transitionLookup, sharedKey, previous.face, current.face,
+        previous.family, previous.sign, sourceDirection, edgeMatching,
+        edgeEffort, edgeTransitions);
+    if (!transition.valid || transition.family != current.family ||
+        transition.sign != current.sign) {
+      return false;
+    }
+    previous.exitEdge = previousEdge;
+    current.entryEdge = currentEdge;
+    current.matching = transition.matching;
+    current.matchingEffort = transition.effort;
+    if (edgeTransitions != nullptr) {
+      const auto found = transitionLookup.byEdge.find(sharedKey);
+      if (found == transitionLookup.byEdge.end()) {
+        return false;
+      }
+      current.transitionSourceEdge = found->second.sourceEdge;
+    }
+  }
+  return true;
+}
 
 
 std::array<Eigen::RowVector3d, 4> phase_front_corner_positions(
@@ -4217,14 +4412,19 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize,
-    const SurfaceCellTracingOptions &options) {
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching,
+    const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
   SurfacePhaseFrontResult result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted) {
     return result;
   }
   UniformPhaseFrame frame;
-  if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY, frame)) {
+  if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
+                                edgeMatching, edgeEffort, edgeTransitions,
+                                frame)) {
     return result;
   }
   double target = options.defaultTargetSize;
@@ -4286,18 +4486,33 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
-        cell.lattice[static_cast<std::size_t>(corner)].phase.setZero();
+        LocalLatticeState &state =
+            cell.lattice[static_cast<std::size_t>(corner)];
+        state.phase = uv[static_cast<std::size_t>(corner)] -
+                      Eigen::Vector2d(frame.minU, frame.minV);
+        const int sourceFace =
+            cell.corners[static_cast<std::size_t>(corner)].face;
+        if (sourceFace < 0 ||
+            sourceFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
+            sourceFace >= static_cast<int>(frame.faceChart.size())) {
+          return SurfacePhaseFrontResult{true};
+        }
+        state.branchRotation =
+            frame.faceBranchRotation[static_cast<std::size_t>(sourceFace)];
+        state.sourceChart =
+            frame.faceChart[static_cast<std::size_t>(sourceFace)];
       }
       cell.lattice[0].latticeCoordinate = {u, v};
       cell.lattice[1].latticeCoordinate = {u + 1, v};
       cell.lattice[2].latticeCoordinate = {u + 1, v + 1};
       cell.lattice[3].latticeCoordinate = {u, v + 1};
-      const std::array<int, 4> families{0, 1, 0, 1};
-      const std::array<int, 4> signs{1, 1, -1, -1};
+      const std::array<int, 4> globalBranches{0, 1, 2, 3};
       for (int side = 0; side < 4; ++side) {
-        if (!segment_on_source(vertices, faces, frame, uv[side],
-                               uv[(side + 1) % 4], families[side], signs[side],
-                               cell.boundaryPaths[static_cast<std::size_t>(side)])) {
+        if (!segment_on_source(
+                vertices, faces, frame, uv[side], uv[(side + 1) % 4],
+                globalBranches[static_cast<std::size_t>(side)], faceAxisX,
+                faceAxisY, edgeMatching, edgeEffort, edgeTransitions,
+                cell.boundaryPaths[static_cast<std::size_t>(side)])) {
           return SurfacePhaseFrontResult{true};
         }
       }
@@ -4312,8 +4527,25 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         SurfaceFrontEdge edge;
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
-        edge.family = path.front().family;
-        edge.advanceSign = path.front().sign;
+        const Eigen::Vector2i latticeDelta =
+            cell.lattice[static_cast<std::size_t>((side + 1) % 4)]
+                .latticeCoordinate -
+            cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate;
+        if (latticeDelta == Eigen::Vector2i(1, 0)) {
+          edge.family = 0;
+          edge.advanceSign = 1;
+        } else if (latticeDelta == Eigen::Vector2i(0, 1)) {
+          edge.family = 1;
+          edge.advanceSign = 1;
+        } else if (latticeDelta == Eigen::Vector2i(-1, 0)) {
+          edge.family = 0;
+          edge.advanceSign = -1;
+        } else if (latticeDelta == Eigen::Vector2i(0, -1)) {
+          edge.family = 1;
+          edge.advanceSign = -1;
+        } else {
+          return SurfacePhaseFrontResult{true};
+        }
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
         edge.toLattice =
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
@@ -4418,7 +4650,8 @@ SurfaceCellNetwork build_surface_cell_network(
   network.reliefBarrierEdges = options.reliefBarrierEdges;
   network.phaseFront =
       surface_cell_tracing_detail::build_uniform_phase_front(
-          vertices, faces, faceAxisX, faceAxisY, targetSize, options);
+          vertices, faces, faceAxisX, faceAxisY, targetSize, options,
+          edgeMatching, edgeEffort, edgeTransitions);
   if (network.phaseFront.succeeded) {
     network.proposals.reserve(network.phaseFront.cells.size());
     for (const SurfacePhaseFrontCell &cell : network.phaseFront.cells) {

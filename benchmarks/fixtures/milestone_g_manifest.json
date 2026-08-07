@@ -178,7 +178,8 @@
       "length_ratio": 0.08,
       "integral_seamless": false,
       "round_seams": false,
-      "surface_cell_preserve_debug_artifacts": true
+      "surface_cell_preserve_debug_artifacts": true,
+      "generated_field": "smooth"
     },
     {
       "name": "bunny_1k_random__legacy_integer",
@@ -186,6 +187,29 @@
       "backend": "LegacyInteger",
       "surface_cell_fallback": "Fail",
       "length_ratio": 0.08,
+      "integral_seamless": false,
+      "round_seams": false,
+      "surface_cell_preserve_debug_artifacts": true,
+      "generated_field": "smooth"
+    },
+    {
+      "name": "vase__surface_cells",
+      "mesh": "milestone-g/vase.off",
+      "generated_field": "smooth",
+      "backend": "SurfaceCells",
+      "surface_cell_fallback": "Fail",
+      "length_ratio": 0.05,
+      "integral_seamless": false,
+      "round_seams": false,
+      "surface_cell_preserve_debug_artifacts": true
+    },
+    {
+      "name": "vase__legacy_integer",
+      "mesh": "milestone-g/vase.off",
+      "generated_field": "smooth",
+      "backend": "LegacyInteger",
+      "surface_cell_fallback": "Fail",
+      "length_ratio": 0.05,
       "integral_seamless": false,
       "round_seams": false,
       "surface_cell_preserve_debug_artifacts": true
@@ -216,4 +240,3 @@
     }
   ]
 }
-

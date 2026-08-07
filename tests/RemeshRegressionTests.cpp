@@ -115,7 +115,7 @@ TEST(RemeshRegressionPhase00, RandomBunnyBenchmarkFixtureHasUsableField) {
 
   ASSERT_NE(bunny, cases.end());
   EXPECT_EQ(bunny->meshPath.filename(), "bunny_1k_random.obj");
-  EXPECT_EQ(bunny->generatedField, "face_edges");
+  EXPECT_EQ(bunny->generatedField, "smooth");
 
   const directional::bench::BenchmarkMesh mesh =
       directional::bench::load_benchmark_mesh(*bunny);

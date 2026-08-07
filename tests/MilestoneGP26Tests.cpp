@@ -526,12 +526,13 @@ TEST(MilestoneGP26, FeatureRailAssemblyAcceptsIncidentSheetCharts) {
 TEST(MilestoneGP26, ManifestContainsCompletePairedProductionMatrix) {
   const auto cases =
       directional::bench::load_benchmark_manifest(fixture_manifest());
-  ASSERT_EQ(18U, cases.size());
+  ASSERT_EQ(20U, cases.size());
 
   const std::vector<std::string> fixtures = {
       "plane",           "cylinder",     "torus",
       "thin_bent_tube",  "close_sheets", "sphere_prescribed",
-      "multi_face_seam", "bunny_1k_random", "mechanical_feature"};
+      "multi_face_seam", "bunny_1k_random", "vase",
+      "mechanical_feature"};
   for (const std::string &fixture : fixtures) {
     const auto &surface = find_case(cases, fixture + "__surface_cells");
     const auto &legacy = find_case(cases, fixture + "__legacy_integer");
@@ -579,7 +580,7 @@ TEST(MilestoneGP26, ProductionAssetsAndFieldSourcesAreValid) {
     }
   }
   EXPECT_EQ(8, prescribedFieldCases);
-  EXPECT_EQ(1, calculatedFieldCases);
+  EXPECT_EQ(2, calculatedFieldCases);
 }
 
 TEST(MilestoneGP26, ProductionFieldFilesFinalizeAuthoritatively) {

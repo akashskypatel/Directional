@@ -219,7 +219,7 @@ TEST(MilestoneGP27, ProductionManifestIsCanonicalCompleteAndPaired) {
           "milestone_g_manifest.json");
   const std::vector<BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifest);
-  ASSERT_EQ(cases.size(), 18U);
+  ASSERT_EQ(cases.size(), 20U);
 
   std::set<std::string> names;
   for (const BenchmarkCase &benchmarkCase : cases) {
@@ -230,7 +230,7 @@ TEST(MilestoneGP27, ProductionManifestIsCanonicalCompleteAndPaired) {
   for (const std::string &fixture :
        {"plane", "cylinder", "torus", "thin_bent_tube", "close_sheets",
         "sphere_prescribed", "multi_face_seam", "bunny_1k_random",
-        "mechanical_feature"}) {
+        "vase", "mechanical_feature"}) {
     EXPECT_EQ(names.count(fixture + "__surface_cells"), 1U) << fixture;
     EXPECT_EQ(names.count(fixture + "__legacy_integer"), 1U) << fixture;
   }

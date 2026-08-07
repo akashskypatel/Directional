@@ -4,7 +4,7 @@
     {
       "name": "bunny_1k_random_medium",
       "mesh": "milestone-g/bunny_1k_random.obj",
-      "generated_field": "face_edges",
+      "generated_field": "smooth",
       "length_ratio": 0.08,
       "integral_seamless": false,
       "round_seams": false,

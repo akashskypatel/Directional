@@ -823,6 +823,8 @@ void hash_trace_segment(std::uint64_t &seed,
   hash_combine_i64(seed, segment.exitEdge);
   hash_combine_i64(seed, segment.matching);
   hash_combine_double(seed, segment.matchingEffort);
+  hash_combine_i64(seed, segment.sourceChart);
+  hash_combine_i64(seed, segment.transitionSourceEdge);
   hash_combine_i64(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
@@ -890,6 +892,7 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, state.latticeCoordinate.y());
     hash_combine_i64(seed, state.branchRotation);
     hash_combine_i64(seed, state.scaleLevel);
+    hash_combine_i64(seed, state.sourceChart);
   };
   hash_combine_u64(seed, network.phaseFront.edges.size());
   for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
