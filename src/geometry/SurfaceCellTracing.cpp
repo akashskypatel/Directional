@@ -5187,10 +5187,75 @@ bool chart_barycentric(const PeriodicChartTriangle &triangle,
   return barycentric.allFinite();
 }
 
+constexpr double kPeriodicChartCoverageTolerance = 1.0e-10;
+
+bool canonicalize_periodic_chart_barycentric(
+    Eigen::RowVector3d &barycentric) {
+  if (!barycentric.allFinite()) {
+    return false;
+  }
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (barycentric[coordinate] < -kPeriodicChartCoverageTolerance ||
+        barycentric[coordinate] > 1.0 + kPeriodicChartCoverageTolerance) {
+      return false;
+    }
+    if (std::abs(barycentric[coordinate]) <=
+        kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 0.0;
+    } else if (std::abs(barycentric[coordinate] - 1.0) <=
+               kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 1.0;
+    } else {
+      barycentric[coordinate] =
+          std::clamp(barycentric[coordinate], 0.0, 1.0);
+    }
+  }
+
+  int exactVertex = -1;
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (barycentric[coordinate] == 1.0) {
+      if (exactVertex >= 0) {
+        return false;
+      }
+      exactVertex = coordinate;
+    }
+  }
+  if (exactVertex >= 0) {
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      barycentric[coordinate] = coordinate == exactVertex ? 1.0 : 0.0;
+    }
+    return true;
+  }
+
+  const double sum = barycentric.sum();
+  if (!std::isfinite(sum) || sum <= 1.0e-18) {
+    return false;
+  }
+  barycentric /= sum;
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (std::abs(barycentric[coordinate]) <=
+        kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 0.0;
+    } else if (std::abs(barycentric[coordinate] - 1.0) <=
+               kPeriodicChartCoverageTolerance) {
+      for (int other = 0; other < 3; ++other) {
+        barycentric[other] = other == coordinate ? 1.0 : 0.0;
+      }
+      return true;
+    }
+  }
+  const double canonicalSum = barycentric.sum();
+  if (!std::isfinite(canonicalSum) || canonicalSum <= 1.0e-18) {
+    return false;
+  }
+  barycentric /= canonicalSum;
+  return barycentric.allFinite();
+}
+
 bool point_on_periodic_chart(const std::vector<PeriodicChartTriangle> &triangles,
                              const Eigen::Vector2d &uv,
                              SurfaceTracePoint &point) {
-  constexpr double tolerance = 1.0e-10;
+  constexpr double tolerance = kPeriodicChartCoverageTolerance;
   bool found = false;
   std::array<int, 3> bestKey{
       std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
@@ -5215,19 +5280,11 @@ bool point_on_periodic_chart(const std::vector<PeriodicChartTriangle> &triangles
   if (!found) {
     return false;
   }
-  for (int corner = 0; corner < 3; ++corner) {
-    if (std::abs(bestBarycentric[corner]) <= tolerance) {
-      bestBarycentric[corner] = 0.0;
-    } else if (std::abs(bestBarycentric[corner] - 1.0) <= tolerance) {
-      bestBarycentric[corner] = 1.0;
-    }
-  }
-  const double sum = bestBarycentric.sum();
-  if (!(std::abs(sum) > 1.0e-18)) {
+  if (!canonicalize_periodic_chart_barycentric(bestBarycentric)) {
     return false;
   }
   point.face = bestFace;
-  point.barycentric = bestBarycentric / sum;
+  point.barycentric = bestBarycentric;
   return true;
 }
 
@@ -5245,7 +5302,7 @@ std::vector<SurfaceTraceSegment> periodic_chart_segment(
   };
   std::vector<Interval> intervals;
   std::vector<double> breaks{0.0, 1.0};
-  constexpr double tolerance = 1.0e-10;
+  constexpr double tolerance = kPeriodicChartCoverageTolerance;
   for (const PeriodicChartTriangle &triangle : triangles) {
     Eigen::RowVector3d b0;
     Eigen::RowVector3d b1;
@@ -5263,19 +5320,27 @@ std::vector<SurfaceTraceSegment> periodic_chart_segment(
         if (a < -tolerance) valid = false;
         continue;
       }
-      const double bound = (-tolerance - a) / d;
+
+      // Coverage may extend by tolerance so a segment exactly on a source
+      // triangle boundary remains owned.  Emitted geometry must not inherit
+      // that expansion: exact zero-barycentric crossings are the canonical
+      // chart breakpoints.
+      const double coverageBound = (-tolerance - a) / d;
       if (d > 0.0) {
-        lo = std::max(lo, bound);
+        lo = std::max(lo, coverageBound);
       } else {
-        hi = std::min(hi, bound);
+        hi = std::min(hi, coverageBound);
+      }
+      double exactBound = -a / d;
+      if (exactBound >= -tolerance && exactBound <= 1.0 + tolerance) {
+        exactBound = std::clamp(exactBound, 0.0, 1.0);
+        breaks.push_back(exactBound);
       }
     }
     lo = std::clamp(lo, 0.0, 1.0);
     hi = std::clamp(hi, 0.0, 1.0);
     if (valid && hi - lo > 1.0e-12) {
       intervals.push_back({lo, hi, &triangle});
-      breaks.push_back(lo);
-      breaks.push_back(hi);
     }
   }
   std::sort(breaks.begin(), breaks.end());
@@ -5306,8 +5371,13 @@ std::vector<SurfaceTraceSegment> periodic_chart_segment(
     Eigen::RowVector3d bary0;
     Eigen::RowVector3d bary1;
     if (!chart_barycentric(*selected, uv0, bary0) ||
-        !chart_barycentric(*selected, uv1, bary1)) {
+        !chart_barycentric(*selected, uv1, bary1) ||
+        !canonicalize_periodic_chart_barycentric(bary0) ||
+        !canonicalize_periodic_chart_barycentric(bary1)) {
       return {};
+    }
+    if ((bary1 - bary0).cwiseAbs().maxCoeff() <= 1.0e-12) {
+      continue;
     }
     SurfaceTraceSegment segment;
     segment.face = selected->face;

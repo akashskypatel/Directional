@@ -1105,6 +1105,113 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontCanonicalizesSourceSimplexEndpoints) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+
+  const auto segmentPoint = [&mesh](
+      const directional::geometry::SurfaceTraceSegment &segment,
+      const bool end) -> Eigen::RowVector3d {
+    const Eigen::RowVector3d barycentric =
+        end ? segment.endBarycentric : segment.startBarycentric;
+    Eigen::RowVector3d point = Eigen::RowVector3d::Zero();
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      point += barycentric[coordinate] *
+               Eigen::RowVector3d(mesh.V.row(mesh.F(segment.face, coordinate)));
+    }
+    return point;
+  };
+
+  int exactSourceVertexEndpoints = 0;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (int side = 0; side < 4; ++side) {
+      const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
+      ASSERT_FALSE(path.empty());
+      for (const auto &segment : path) {
+        ASSERT_GE(segment.face, 0);
+        ASSERT_LT(segment.face, mesh.F.rows());
+        const std::array<Eigen::RowVector3d, 2> endpointBarycentrics{
+            segment.startBarycentric, segment.endBarycentric};
+        for (const Eigen::RowVector3d &barycentric : endpointBarycentrics) {
+          EXPECT_TRUE(barycentric.allFinite());
+          EXPECT_NEAR(1.0, barycentric.sum(), 1.0e-14);
+          for (int coordinate = 0; coordinate < 3; ++coordinate) {
+            EXPECT_GE(barycentric[coordinate], 0.0);
+            EXPECT_LE(barycentric[coordinate], 1.0);
+          }
+          int dominant = -1;
+          for (int coordinate = 0; coordinate < 3; ++coordinate) {
+            if (barycentric[coordinate] >= 1.0 - 1.0e-10) {
+              dominant = coordinate;
+              break;
+            }
+          }
+          if (dominant >= 0) {
+            EXPECT_DOUBLE_EQ(1.0, barycentric[dominant]);
+            for (int coordinate = 0; coordinate < 3; ++coordinate) {
+              if (coordinate != dominant) {
+                EXPECT_DOUBLE_EQ(0.0, barycentric[coordinate]);
+              }
+            }
+            ++exactSourceVertexEndpoints;
+          }
+        }
+        EXPECT_GT((segmentPoint(segment, true) - segmentPoint(segment, false)).norm(),
+                  1.0e-14)
+            << "tolerance-only periodic chart segments must not be emitted";
+      }
+
+      const auto &next =
+          cell.boundaryPaths[static_cast<std::size_t>((side + 1) % 4)];
+      ASSERT_FALSE(next.empty());
+      EXPECT_NEAR(0.0,
+                  (segmentPoint(path.back(), true) -
+                   segmentPoint(next.front(), false))
+                      .norm(),
+                  1.0e-12)
+          << "adjacent periodic sides must share the exact source breakpoint";
+    }
+    EXPECT_EQ(directional::geometry::CellRejectionReason::Accepted,
+              directional::geometry::surface_cell_tracing_detail::
+                  validate_closed_boundary_paths(mesh.V, mesh.F, cell.corners,
+                                                 cell.boundaryPaths, 1.0e-7));
+  }
+  EXPECT_GT(exactSourceVertexEndpoints, 0);
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicChartEndpointCanonicalizationKeepsGenuineOverlapRejected) {
+  using directional::geometry::surface_cell_tracing_detail::
+      segments_intersect_beyond_shared_endpoint_2d;
+  const Eigen::Vector2d a(0.0, 0.0);
+  const Eigen::Vector2d b(1.0, 0.0);
+  const Eigen::Vector2d c(1.0, 0.0);
+  const Eigen::Vector2d d(2.0, 0.0);
+  const Eigen::Vector2d overlap(0.5, 0.0);
+
+  EXPECT_FALSE(segments_intersect_beyond_shared_endpoint_2d(a, b, c, d));
+  EXPECT_TRUE(segments_intersect_beyond_shared_endpoint_2d(a, b, c, overlap));
+}
+
+TEST(SurfaceCellsPhase10,
      PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence) {
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/cylinder.obj");
