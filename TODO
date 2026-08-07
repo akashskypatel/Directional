@@ -8,34 +8,50 @@ Last updated: 2026-08-07 UTC
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - Active gate: **G2 cross-chart / close-sheet isolation**.
-- Earliest failing fixture: `close_sheets__surface_cells`.
+- Earliest failing runtime fixture from latest executed evidence: `close_sheets__surface_cells`.
 - Proven retained regressions: exact production plane and multi-face seam direct success.
-- Completed turn: Gate 1 Authoritative Producer Boundary artifact-only Test + Benchmark.
-- Next turn: **Code + Build** for bounded G2 close-sheet authoritative producer extension.
+- Completed turn: **G2 Close-Sheet Authoritative Producer Code + Build**.
+- Next turn: `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Gate 1 closure authority
+## Latest Code + Build authority
 
-Artifact/source:
+Source:
 
-- source commit: `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
-- payload cleanup: `bcf934d34e9a15f5d0929628ffd26f6833643214`;
-- workflow run/job/artifact: `31154489371` / `92790924907` / `8984760467`;
-- artifact SHA-256: `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
-- internal checksums: **44/44 passed**;
-- six explicit producer/topology contract checks: **6/6 passed**.
+- production source commit: `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
+- architecture patch SHA-256: `7b99d8a7ff227c2e4f07a1498805eb7fd34b542b772d3bd0c1bb1e455e31fa8c`;
+- `SurfaceCellTracing.cpp` blob: `c9570ecb4a9557eebaf0e30b751e2ccca90b2973`;
+- `RemeshPipeline.cpp` blob: `55af3205fd7cdb8f21357ac69516ffa29cf8a6d3`;
+- `SurfaceCellsPhase10Tests.cpp` blob: `7151077d7d4e0a10dad388dd008479f96fc1aae8`.
 
-Direct Gate 1 results:
+Successful compile artifact:
 
-- plane: **pass**, `Produced`, 81 provenance vertices, 64 pure quads, 0 validation failures, no fallback/recovery, output hash suffix `730caeae49ec872c`;
-- seam: **pass**, `Produced`, 81 vertices, 64 pure quads, 0 validation failures, no fallback/recovery, output hash `a8972efd7c4900a4`;
-- plane determinism: 3/3 same disposition/counts/output hash;
-- seam determinism: 3/3 same disposition/counts/output hash.
+- run/job/artifact: `31179899458` / `92870408341` / `8994541137`;
+- artifact SHA-256: `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
+- detailed log artifact: `8994539982`, SHA-256 `c7d67285ca6b980111a53fe017b3de5800abccb2a3146352135c0d674ca0acc8`;
+- recursive artifact checksums: **45/45 passed**;
+- compile/link actions: **111/111**;
+- approved targets: **7/7**;
+- packaged executables/libraries/fixture files: **5 / 2 / 27**;
+- generated project binary execution: **none**.
 
-The old plane 106 traces / 9 arrangement / 12 completion / no-output signature is eliminated. G1 is closed.
+The first compile attempt exposed one syntax error in the new sheet-map key and failed before link; it was corrected surgically and the same approved build scope then completed successfully. No runtime validation was performed in this turn.
 
-## Current failing direct frontier
+## Implemented G2 producer contract
+
+- [x] Partition uniform phase/front construction by authoritative `(source component, local sheet)` before planar phase-frame construction.
+- [x] Restrict source lookup, edge incidence, boundary classification, and frame checks to each active sheet.
+- [x] Reuse existing reciprocal edge-transition and ordered source-vertex-fan transport independently per sheet.
+- [x] Propagate an applicable sheet invariant failure as authoritative `Rejected`; do not silently substitute generic work.
+- [x] Keep unsupported/periodic topology outside the bounded producer as `NotApplicable`.
+- [x] Key direct materialization vertices by `(component, sheet, u, v)` so coincident lattice coordinates on unrelated sheets cannot merge.
+- [x] Construct authoritative boundary loops per source sheet.
+- [x] Add compile-verified disconnected-sheet isolation and face-row-order invariance regressions.
+- [ ] Execute the new contracts and exact production close-sheet route from immutable artifact `8994541137`.
+- [ ] Determine whether G2 closes or the producer reaches a new authoritative rejection.
+
+## Latest executed runtime authority — unchanged by this Code + Build turn
 
 | Fixture | Result | Producer disposition | Traces | Arrangement | Completed quads |
 |---|---:|---|---:|---:|---:|
@@ -46,35 +62,17 @@ The old plane 106 traces / 9 arrangement / 12 completion / no-output signature i
 | Bunny | fail | `NotApplicable` | 80,862 | 0 | 0 |
 | Vase | timeout/fail | not fully observed | — | — | — |
 
-Close sheets is the earliest incomplete gate and therefore has priority over cylinder, bunny/vase, completion cleanup, performance, and timing work.
+No result in this table changed during the current compile-only turn.
 
-## Next Code + Build declaration
+## Next artifact-only checklist
 
-```text
-Active design gate: G2 cross-chart/close-sheet isolation
-Earliest failing fixture: close_sheets__surface_cells
-Missing design contract: authoritative uniform phase/front applicability and construction across multiple disconnected but spatially close source sheets without positional cross-sheet coupling
-Smallest general implementation change: extend the existing authoritative phase/front producer from the proven plane/seam domain to independent same-topology sheet components using source component/local-sheet authority and exact per-component transition/fan routing; do not alter periodic topology
-Observable material-progress condition: close_sheets disposition becomes Produced and yields direct deterministic valid pure quads with zero cross-sheet provenance/merge violations while plane and seam remain unchanged regressions
-Explicitly deferred work: cylinder holonomy, singularities, topology-distinct completion, adaptive scale/features, bunny/vase production/performance, scheduler timing, downstream completion/simplification failures
-```
+- [ ] verify outer SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
+- [ ] verify 45/45 internal checksums and exact source/blobs;
+- [ ] execute the two new close-sheet producer contracts first;
+- [ ] verify plane and seam mandatory regressions;
+- [ ] run exact close sheets as the active G2 acceptance fixture;
+- [ ] prove output source component/local-sheet separation and absence of cross-sheet merges;
+- [ ] run bounded determinism and remaining non-overlapping suites without rebuild;
+- [ ] keep cylinder G3 and later production cases subordinate to the G2 decision.
 
-## Next Code + Build checklist
-
-- [ ] Preserve `NotApplicable / Produced / Rejected` producer semantics.
-- [ ] Partition authoritative producer state by source component/local-sheet before front construction.
-- [ ] Prevent any world-space/proximity coupling across disconnected close sheets.
-- [ ] Reuse ordinary-edge and ordered source-vertex-fan transport independently inside each sheet.
-- [ ] Keep cylinder/periodic domains `NotApplicable` for G3.
-- [ ] Add or strengthen generalized disconnected-sheet and ordering-invariance unit tests only as necessary.
-- [ ] Compile approved targets only; execute no generated project binary/test/benchmark.
-- [ ] Package immutable artifact with exact source/blobs/logs/checksums for the following Test + Benchmark turn.
-
-## Latest default-suite evidence
-
-- remaining producer: 23/24; only scheduler-sensitive `StrictValidatorOverheadStaysBelowFivePercent` failed;
-- completion/simplification: 154/164, same ten downstream failures;
-- validation: 60/60;
-- compiled API: 8/8.
-
-These results do not supersede direct gate ordering.
+G2 closes only through direct deterministic valid `Produced` close-sheet output with strict source-sheet isolation while plane and seam remain valid.
