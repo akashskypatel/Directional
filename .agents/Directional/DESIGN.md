@@ -39,7 +39,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
 3. **G2 — Cross-chart and close-sheet propagation:** **passed.**
-4. **G3 — Periodic closure and holonomy:** **active; periodic authority is runtime-proven, completed output validation remains.**
+4. **G3 — Periodic closure and holonomy:** **active; periodic authority is runtime-proven and the source-strip output-validation correction is compile-valid, runtime verification pending.**
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
@@ -61,7 +61,7 @@ All three are direct `CompletedSurfaceCells` pure-quad outputs, deterministic 3/
 
 The authoritative producer partitions state by `(source component, local sheet)` before front construction. World-space distance, nearest projection, or overlap may not join unrelated sheets. Phase, ownership, route, capture, collision, boundary loops, and materialization identity remain sheet-local unless exact source topology establishes a connection.
 
-## G3 periodic contract — now runtime consumed
+## G3 periodic contract — runtime consumed
 
 A connected singularity-free annulus has first-class periodic authority:
 
@@ -86,7 +86,7 @@ Required invariants remain:
 - direct materialization quotients periodic duplicates exactly and preserves one accepted cell → one quad;
 - source-face row ordering may change incidental DCEL numbering but not canonical source-route/cut identity or holonomy semantics.
 
-Artifact-only execution of source `56f823273cad041a01ebb4d0772c3265ff248f4a`, artifact `9001168379`, SHA-256 `0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c`, proved the exact cylinder now consumes this authority:
+Artifact-only execution of source `56f823273cad041a01ebb4d0772c3265ff248f4a`, artifact `9001168379`, proved the exact cylinder consumes this authority:
 
 - disposition `Produced`;
 - holonomy `r=0`, `t=(29,0)`, ordered route 32 edges, cut four edges;
@@ -101,35 +101,65 @@ This is material progress over the prior `NotApplicable` generic path.
 
 ## Active G3 output-materialization contract
 
-G3 remains open because the direct cylinder completed checkpoint reports two validation failures and terminates at `completion/output-validation:AggregateCompletionValidationFailure` before final output. The benchmark record does not expose the two individual validator threshold fields; they must not be guessed or relaxed.
+The latest executed cylinder remains red because the direct completed checkpoint reports two validation failures and terminates at `completion/output-validation:AggregateCompletionValidationFailure` before final output. The benchmark record does not expose the two individual validator threshold fields; they must not be guessed or relaxed.
 
-The next constructive invariant is:
+The constructive invariant is:
 
 > A periodic phase-front that is authoritative `Produced` must materialize a source-strip-conforming annular lattice. Every canonical source-ring strip boundary is a mandatory intrinsic lattice breakpoint, so a direct output side cannot shortcut a source topological corner merely because a global target-size count places a column across it.
 
-Implementation requirements:
+Validation remains authoritative and unchanged.
 
-- derive the ordered source-ring strips from canonical annulus topology already used by the periodic chart;
-- assign each source strip a deterministic positive integer subdivision count from intrinsic strip length and local target size;
-- preserve every strip boundary as an exact lattice column;
-- define periodic translation as the cumulative integer strip subdivisions;
-- preserve the exact cut quotient, source provenance, periodic ownership, and one-cell-to-one-quad mapping;
-- fail closed if a reciprocal source-strip-conforming chart cannot be built;
-- never special-case the committed ring count, current translation `29`, fixture name, or expected output counts.
+## G3 source-strip correction — compile-valid checkpoint
 
-This correction is upstream of validation. Validation remains authoritative and unchanged.
+Source commit `2783ea718ffb15f8fb3868795173472ab8636c1c` implements the bounded correction without changing validators or materialization repair behavior.
 
-## Row-order semantic identity
+For every already-authoritative canonical source strip around the annulus, the periodic producer now:
 
-The focused `PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration` test currently compares raw DCEL source-edge integer IDs from independently enumerated meshes. DCEL edge numbering changes with face-row traversal. Artifact evidence maps both raw holonomy routes and cuts to identical ordered canonical source-vertex endpoint sequences.
+1. retains the strip endpoint as an exact intrinsic periodic lattice breakpoint;
+2. derives strip length from the transported canonical ring structure already used by the periodic chart;
+3. samples local target size from both strip endpoints on every ring;
+4. chooses a deterministic positive nearest-integer subdivision count from strip length / local target;
+5. fails closed as `InvalidPeriodicChart` for non-finite or overflowing subdivision state;
+6. builds the cumulative periodic chart coordinate sequence strip by strip, using each exact strip endpoint as the final coordinate of that strip;
+7. defines `gridU` and the periodic lattice translation from the sum of strip-local subdivisions;
+8. constructs phase-front points, cell corners, side paths, and intrinsic cell validation from those nonuniform strip-conforming coordinates.
 
-The intended test contract is ordered **canonical source-edge endpoint identity**, not raw DCEL numbering. Correct the test in the next Code + Build turn while retaining route order, route/cut cardinality, grid dimensions, rotation, and lattice translation assertions. Production code must not normalize incidental DCEL IDs merely to satisfy a test.
+The axial subdivision and genuine annulus boundaries remain unchanged. The exact periodic quotient, periodic ownership, source provenance, and one-cell-to-one-quad mapping remain upstream invariants. No post-hoc splitting/merging, proximity seam weld, nearest-point repair, fallback/recovery, fixture identity, or expected output count was added.
+
+The previous translation `t=(29,0)` is runtime history, not a required future constant. A deterministic source-strip-conforming translation may differ; semantic holonomy/quotient correctness decides acceptance.
+
+## Row-order semantic identity — corrected in source
+
+Artifact evidence established that raw DCEL source-edge integer IDs can change after face-row reversal while ordered canonical source-edge endpoint identities remain equal.
+
+The compiled row-order contract now maps each route/cut source-edge ID through that mesh's authoritative `EV` table to ordered canonical endpoint keys `(min(v0,v1), max(v0,v1))` and compares the **ordered key sequences**. It does not sort away route order or normalize production DCEL IDs.
+
+Grid dimensions, rotation, lattice translation, route/cut cardinality, disposition, and the existing periodic semantic assertions remain in the test.
+
+A new compiled structural contract also requires all genuine source-boundary vertices derived from authoritative boundary edges to occur as exact phase-front corners. It does not encode the committed cylinder ring count or expected output count.
+
+These tests are compile-valid only until artifact execution.
+
+## Compile authority
+
+- source `2783ea718ffb15f8fb3868795173472ab8636c1c`;
+- patch SHA-256 `74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e`;
+- build run/job `31204848178` / `92953250176`;
+- artifact `9004509871`, SHA-256 `2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe`;
+- detailed log artifact `9004508508`, SHA-256 `80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b`;
+- recursive checksums **44/44**;
+- compile/link **111/111** across seven approved targets;
+- packaged command boundary `runtimeExecution=false`.
+
+No generated project binary was executed during this Code + Build turn.
 
 ## Next implementation authority
 
-Execute `.agents/Directional/Gate_3_Periodic_Output_Validation_Code_Build_Plan.md` as Code + Build only.
+Execute `.agents/Directional/Gate_3_Periodic_Output_Validation_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9004509871` as Test + Benchmark only. Do not rebuild or edit.
 
-G3 closes only when exact cylinder remains authoritative `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with correct periodic quotient while plane, seam, and close sheets remain green. Then advance to G4.
+G3 closes only when exact cylinder remains authoritative periodic `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with source-strip-conforming periodic lattice/quotient, zero completed-checkpoint validation failures, no false periodic exterior seam, complete provenance, no fallback/recovery, and plane/seam/close sheets green. Then advance to G4.
+
+If artifact execution exposes another exact source-authoritative G3 structural/validation failure, remain in G3 and address only that general failure next.
 
 Do not broaden G3 into torus/general genus, singularity topology, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production, or performance hardening.
 
