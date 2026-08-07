@@ -13,7 +13,9 @@ Every direct success requires requested/executed `SurfaceCells`, fallback `Fail`
 
 Both use generated smooth fields through production extraction. Replacing, simplifying, bypassing, or special-casing either fixture is prohibited.
 
-## Current runtime authority
+## Latest executed runtime authority
+
+The current Code + Build artifact has not yet been executed. Latest runtime remains:
 
 - plane: failure, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures, no output;
 - seam: success, 256 traces, 65 arrangement cells, 64 pure output quads, hash `a8972efd7c4900a4`;
@@ -23,19 +25,9 @@ Both use generated smooth fields through production extraction. Replacing, simpl
 
 Plane remains the earliest active regression.
 
-## Contract tests versus production authority
+## Current producer-authority contracts
 
-Narrow synthetic/reconstructed fixtures remain useful for isolating one invariant, but they are not acceptance authority for the real pipeline.
-
-The passing source-vertex tests reconstruct a geometrically equivalent plane, use different indexing, inject a constant target size, and omit substantial production preprocessing state. They must remain as contract tests, but Gate 1 additionally requires producer-level regression coverage using the exact committed `plane.obj` and `plane.rawfield`.
-
-That production-level test must use the same general input construction as the real pipeline, including field finalization, adaptive target size, source component/sheet labels, feature/relief state, and tracing options. It must assert the authoritative producer disposition before downstream generic stages.
-
-It may not inject fixture-specific target size, labels, transition IDs, expected cell count, or other convenient state merely to recreate 64 quads.
-
-## Producer-authority contracts
-
-The next implementation must distinguish:
+The source now distinguishes:
 
 ```text
 NotApplicable
@@ -43,11 +35,12 @@ Produced
 Rejected
 ```
 
-Mandatory tests:
+Mandatory behavior:
 
-- applicable valid plane/seam can reach `Produced`;
+- applicable valid plane/seam may reach `Produced`;
 - applicable invalid metadata reaches `Rejected`, not `NotApplicable`;
-- `Rejected` cannot generate generic seeds/traces/proposals or completion substitution;
+- `Rejected` generates no generic seeds/traces/proposals;
+- `Rejected` terminates at the tracing producer boundary before FlowRep/arrangement/completion substitution;
 - typed rejection remains first-invalid authority;
 - non-embedded relief guidance does not veto transport;
 - embedded relief barriers block according to the existing relief contract;
@@ -57,7 +50,29 @@ Mandatory tests:
 - source component/sheet identity prevents unrelated capture;
 - one accepted authoritative cell maps to exactly one quad.
 
-A typed rejection without direct plane success is material architecture evidence, not Gate 1 acceptance.
+Producer disposition and typed rejection identity must be present in deterministic diagnostic/structural evidence.
+
+## Contract tests versus production authority
+
+Narrow synthetic/reconstructed fixtures remain useful for isolating one invariant, but they are not acceptance authority for the real pipeline.
+
+The source now also contains `SurfaceCellsPhase10.ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary`, which loads the exact committed `plane.obj` and `plane.rawfield` and enters the real `remesh_from_raw_cross_field` production path rather than injecting a convenient target, labels, or transitions.
+
+The test compiled in the latest Code + Build turn but has **not** yet run. Its runtime result is part of the next artifact-only gate.
+
+## Next artifact-only acceptance
+
+Use artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031` under `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md`.
+
+Run explicit producer-contract tests first, then all six direct cases.
+
+For every direct case additionally record `surfaceCellAuthoritativeProducerDisposition`, typed phase-front failure/context, generic trace count, arrangement/completion counts, terminal stage, stage/structural hashes, output hash, fallback/recovery state, and strict validation.
+
+Gate 1 acceptance hierarchy:
+
+1. `Produced` plane with direct deterministic valid pure-quads and retained seam direct success closes G1.
+2. Immutable `Rejected` plane terminating at tracing with zero generic traces/arrangement/completion and disappearance of the old 106/9/12 signature is material architecture proof but not G1 closure.
+3. `NotApplicable`/generic substitution, overwritten rejection, seam regression, or weakened acceptance is no progress.
 
 ## Default suites
 
