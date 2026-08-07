@@ -12,7 +12,7 @@ The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge
 
 Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-At the G3 periodic output-validation Test + Benchmark closeout on 2026-08-07, the branch was verified to contain only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent.
+At the G3 periodic ring-correspondence Code + Build closeout on 2026-08-07, the successful artifact/log/source authority was verified and the bounded build workflow was removed **before** deleting its exact marker, preventing cleanup from retriggering the path-filtered workflow. The retry trigger and payload were then removed; final branch verification must show only the durable workflow above and no turn-specific trigger/payload directories.
 
 ## Mandatory workflow requirements
 
@@ -69,8 +69,9 @@ When dispatch is unavailable and a temporary exact-path push trigger is required
 2. create only the payload/patch files required by that workflow;
 3. trigger it exactly once unless a diagnosed retry is required;
 4. verify the source/result/log artifacts and exact output authority;
-5. remove the bounded workflow, marker, and payload from the work branch;
-6. verify the final workflow directory and temporary directories afterward.
+5. **remove or disable the bounded path-filtered workflow before deleting its trigger marker**, so marker cleanup cannot retrigger the same workflow;
+6. remove the marker and payload after the workflow is no longer triggerable;
+7. verify the final workflow directory and temporary directories afterward.
 
 Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 
@@ -98,6 +99,7 @@ Record the GitHub workflow run/job IDs, artifact IDs/names/digests, log artifact
 - Never weaken tests/validators to obtain a green workflow.
 - Never force-push merely to bypass a moving branch or stale content SHA.
 - Compare exact blobs/hashes before deciding a patch is absent or already applied.
+- A compile-only failure may be corrected in the same Code + Build turn when the correction is bounded to the diagnosed compile/source issue and no generated project runtime is executed.
 
 ## End-of-turn hygiene
 
