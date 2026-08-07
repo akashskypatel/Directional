@@ -2,16 +2,11 @@
 
 ## Current blocker
 
-G0, G1 and G2 are closed. G3 periodic topology, cut/holonomy, exact quotient and source-strip conformity are runtime-consumed. The latest executed cylinder still fails completed quality validation because adjacent annulus-ring correspondence was selected by incidental lexicographic source-vertex ordering rather than reciprocal cross-field authority.
+G0, G1 and G2 are closed. G3 periodic topology/cut/holonomy, source-strip conformity, exact quotient and field-authoritative ring-correspondence design remain the active constructive direction.
 
-Current executed artifact `9004509871` / source `2783ea718ffb15f8fb3868795173472ab8636c1c`:
+Exact artifact-only execution of `9008118764` / source `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a` reveals a new earlier runtime blocker: exact cylinder now deterministically returns `Rejected/InvalidPeriodicChart` at `tracing/phase-front`, cell 29, before traces. Six nominal G3 periodic contracts regress at the same chart stage; the typed genuinely ambiguous correspondence contract and all retained G1/G2 contracts pass.
 
-- cylinder periodic `Produced`, `r=0`, `t=(32,0)`, route 32, cut four;
-- 2,237 traces, 320 direct quads, 352 provenance vertices;
-- no fallback/recovery, deterministic 3/3;
-- validation failures: normal P95 `16.6272734366°`, field P95 `37.9670987281°`, warpage P95 `30.6213792811°`.
-
-All represented discrete source-authoritative topology, boundary, provenance, local-sheet, manifold, inversion, self-intersection, convexity, valence, Euler, feature and component checks pass.
+This is a regression/no-progress result for G3. Do not restore the old lexicographic diagonal correspondence: it was independently proven to be `37.9670987281°` away from the axial field and was the prior field-P95 defect.
 
 ## Proven producer foundation
 
@@ -25,79 +20,84 @@ Retain without redesign:
 - component/local-sheet isolation;
 - topology-derived singularity-free annulus applicability;
 - deterministic intrinsic cut between true boundaries;
-- periodic holonomy `(Z4 rotation, Z2 translation, ordered source route)`;
+- periodic holonomy `(Z4 rotation, Z2 translation, ordered source route)` design;
 - explicit artificial-cut periodic ownership and exact quotient identity;
 - canonical source-strip breakpoints and per-strip target subdivisions;
+- reciprocal field-authoritative adjacent-ring candidate selection;
+- typed `InvalidPeriodicRingCorrespondence` / `AmbiguousPeriodicRingCorrespondence` fail-closed behavior;
 - direct one-cell-to-one-quad materialization;
 - fail-closed source-authoritative validation.
 
-Plane, seam and close sheets remain mandatory direct regressions.
+Plane, seam and close sheets remain mandatory direct regressions and are green 3/3 on the latest artifact.
 
-## Field-authoritative ring correspondence — compile-valid
+## Reproduced chart endpoint defect
 
-Source `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a` implements the bounded correction required by the exact field-P95 diagnosis.
+Independent reconstruction using only the immutable packaged cylinder fixture and source reproduces the runtime's first rejected periodic cell exactly at **cell 29**.
 
-For each adjacent canonical annulus ring pair:
+`periodic_chart_segment()` uses approximately `1e-10` tolerance while clipping a chart segment against source-triangle barycentric domains. The tolerance is valid for coverage classification, but the same tolerance-expanded interval limits are then emitted directly as geometric barycentric endpoints.
 
-1. retain only source-topology-compatible candidate bijections;
-2. propagate one 4-RoSy branch assignment through the candidate strip using `resolve_branch_transition()` and reciprocal forward/reverse transition authority;
-3. evaluate inter-ring connections against one transported cross-field family and circumferential connections against its orthogonal family;
-4. choose only a unique field-authoritative optimum;
-5. typed-reject no valid field candidate as `InvalidPeriodicRingCorrespondence`;
-6. typed-reject genuinely field-equivalent best candidates as `AmbiguousPeriodicRingCorrespondence` rather than source-ID/lexicographic tie-breaking;
-7. preserve source-edge provenance, annulus cut/holonomy, source-strip subdivisions, periodic ownership/quotient and one accepted cell → one quad.
+At cell 29, two sides that mathematically share one exact source vertex contain microscopic source-face-30 tails:
 
-The implementation does not use fixture names, expected counts, source vertex ordering, candidate frequency, arbitrary subset search, Euclidean seam welding, fallback/recovery or validator changes.
+- approximately `(-9.9999e-11, 0) -> (0, 0)`;
+- approximately `(0, 0) -> (-1e-10, 1e-10)`.
 
-New compile-valid regression source requires the exact cylinder's exact-source inter-ring V edges to follow the authoritative axial field family and requires a deliberately field-equivalent two-candidate strip to fail closed as `AmbiguousPeriodicRingCorrespondence` with no generic traces/proposals.
+The unchanged `segments_intersect_beyond_shared_endpoint_2d()` predicate therefore observes emitted overlap beyond an exact shared endpoint, and `validate_closed_boundary_paths()` correctly rejects the emitted geometry. The caller records `InvalidPeriodicChart` for cell 29.
 
-## Compile authority
+The remediation must therefore canonicalize producer-emitted endpoints upstream. **Do not weaken the validator or broadly increase its tolerance.**
 
-Final source/test commit and blobs:
+## Required bounded correction
 
-- `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`;
-- header `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
-- tracing source `6980850bd32d40b1da9350ebbe3f601b8ce5e07b`;
-- Phase10 tests `c4671ef674228d74b96e80499abbb6846bcdf3e3`.
+Execute `.agents/Directional/Gate_3_Periodic_Chart_Endpoint_Canonicalization_Code_Build_Plan.md`.
 
-Build authority:
+Required implementation behavior:
 
-- run/job `31214404170` / `92984429773`;
-- artifact `9008118764`, SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
-- log artifact `9008117677`, SHA-256 `a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77`;
-- **44/44** recursive checksums;
-- **111/111** compile/link actions across seven approved targets;
-- five executables, two project libraries, 27 fixture/input files;
-- Release static, Ninja, `PRE_TEST`, `runtimeExecution=false`.
+1. separate coverage tolerance from emitted geometry;
+2. canonicalize barycentric endpoint coordinates within the clipping tolerance of an exact simplex boundary to exact `0/1` values;
+3. renormalize accepted barycentrics robustly to the source simplex;
+4. reject materially invalid/out-of-simplex values;
+5. make adjacent intervals that share one mathematical chart breakpoint consume the same exact canonical source point;
+6. remove zero-length/tolerance-only segments after canonicalization;
+7. preserve canonical endpoints when merging same-face consecutive segments;
+8. keep real beyond-shared-endpoint intersections rejected;
+9. keep `Rejected` terminal with no generic/fallback/recovery substitution.
 
-The first bounded compile `31213727511` failed only in the newly added Eigen test-helper types after production source compiled. A test-source-only correction produced the successful build above. No generated project binary was executed in either attempt.
+No cylinder ID, cell-29, vertex-number, expected-count, source ordering, angular-position or arbitrary subset special case is permitted.
 
-## Required verification sequence
+## Required compile-only regressions
 
-Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9008118764`.
+Retain the current field-authoritative correspondence and ambiguity tests and add/compile focused coverage proving:
 
-The next turn is Test + Benchmark only:
+- exact source-vertex periodic endpoints emit canonical barycentrics;
+- adjacent cell sides share the same exact source point and avoid false self-intersection;
+- genuine shared-face overlap remains rejected by the existing strict validator;
+- the six currently regressed nominal G3 periodic contracts are not weakened;
+- G1/G2 producer contracts remain unchanged.
 
-1. verify outer artifact digest, all 44 recursive checksums, final source/patch/blob authority, packaged fixtures and `runtimeExecution=false` metadata;
-2. execute the two new field-correspondence contracts plus six retained G3 periodic contracts first;
-3. execute retained G1/G2 producer contracts;
-4. revalidate plane, seam and close sheets;
-5. execute exact cylinder as active G3 acceptance;
-6. require periodic `Produced`, direct pure-quad `CompletedSurfaceCells`, exact cut/holonomy/quotient, source-strip authority, complete provenance, zero validation failures, field/normal P95 <= 15°, warpage P95 <= 30°, no fallback/recovery;
-7. execute bounded determinism/default suites after direct gate decision;
-8. observe bunny/vase only as later-gate evidence.
+Code + Build executes no generated Directional binary. Compile the seven approved targets with `PRE_TEST`, package exact source/blob/patch authority and a `runtimeExecution=false` artifact.
 
-No rebuild or source/test/fixture/validator/build edit is allowed during that turn.
+## Latest runtime evidence
 
-## G3 acceptance
+Artifact `9008118764`:
 
-G3 closes only if artifact-only validation proves exact cylinder is direct deterministic strict-valid `Produced` `CompletedSurfaceCells` pure-quad output with the field-authoritative ring correspondence consumed, zero validation failures, all current quality thresholds within existing limits, correct periodic quotient/provenance, no false exterior cut seam, no fallback/recovery, and retained plane/seam/close-sheet success.
+- focused/retained producer: **9/15**;
+- plane: `Produced`, 64 quads, hash `730caeae49ec872c`, 3/3;
+- seam: `Produced`, 64 quads, hash `5bdf34d7802e9fb0`, 3/3;
+- close sheets: `Produced`, 200 quads / two components, hash `89b052762f52a5af`, 3/3;
+- cylinder: `Rejected/InvalidPeriodicChart`, cell 29, zero traces/output, 3/3, no fallback/recovery;
+- bounded producer suite: **91/99**;
+- completion/simplification: **154/164**;
+- validation: **60/60**;
+- compiled API: **8/8**.
 
-If correspondence authority is consumed but another exact later G3 failure remains, preserve it and address only that general failure next. Historical translation/grid/output counts are not acceptance constants.
+The latest direct cylinder runtime supersedes artifact `9004509871` as current execution authority even though it is a regression.
+
+## No-progress discipline
+
+This is the first runtime-no-progress Code + Build result since the prior source-strip material-progress turn. The two-consecutive-Code+Build review rule is not yet triggered. If the endpoint-canonicalization Code + Build also fails its following artifact-only acceptance without material progress, the next turn must be a design review or bounded producer replacement proof.
 
 ## Deferred work
 
-Do not broaden G3 into torus/general genus, singularities/G4 topology-distinct completion, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production/performance, scheduler timing, historical downstream completion/simplification repair, validator changes or unrelated broad diagnostics.
+Do not broaden the next turn into completed-output quality tuning, torus/general genus, singularities/G4 topology-distinct completion, G5 adaptive transitions/features, G6 bunny/vase production/performance, scheduler timing, historical completion/simplification repair, validator changes or unrelated diagnostics/optimization.
 
 ## Acceptance discipline
 
