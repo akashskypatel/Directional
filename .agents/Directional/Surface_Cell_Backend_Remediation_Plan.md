@@ -2,25 +2,31 @@
 
 ## Current blocker
 
-The exact restoration artifact was tested and rejected. The plane remained on the unchanged 106-trace / 9-arrangement / 12-candidate generic completion path, while the seam retained direct deterministic 64-quad output.
+Gate 1 remains the earliest blocker. The last executed artifact left the plane on the deterministic 106-trace / 9-arrangement / 12-completion generic path while the seam passed directly with 64 pure quads.
 
-Static review established that the plane's prescribed raw field is finalized into nonempty matching, effort, and edge-transition containers before tracing. The attempted metadata-free branch was therefore unreachable.
+The second bounded Code + Build has now corrected the confirmed live-path topology defect: exact source-vertex crossings where consecutive selected intervals do not share one edge. Runtime authority remains pending artifact-only execution.
+
+## Implemented remediation
+
+- typed first phase-front failure reason and source context;
+- exact shared-vertex attachment classification;
+- unique ordered manifold fan selection from source topology and directed segment geometry;
+- authoritative transition resolution across every fan edge;
+- full ordered source-edge provenance, hash coverage, and memory accounting;
+- strict fail-closed handling for disconnected, non-manifold, repeated, ambiguous, invalid, missing-provenance, or branch-mismatched fans;
+- unchanged ordinary shared-edge path and no fallback/recovery or validator changes.
 
 ## Remediation sequence
 
-1. In the next Code + Build turn, make the first uniform phase-front rejection typed and observable without changing success semantics.
-2. Compare the successful Gate 1 parent with the Gate 2 transition changes and confirm the first rejected invariant on the exact plane route.
-3. Repair only that general invariant. The leading candidate is an exact source-vertex crossing that requires a unique ordered incident-face fan rather than a single shared edge.
-4. Preserve strict reciprocal ordinary-edge transport and the direct seam regression.
-5. Compile the approved seven targets and package a fresh artifact without executing project binaries.
-6. Artifact-only test plane first and seam second, then the full mandatory matrix and default suites.
-7. Resume close-sheet isolation only after plane and seam both pass.
-8. Continue cylinder, topology, adaptivity/features, bunny/vase success, and operational hardening in gate order.
+1. Artifact-only run the new contract tests.
+2. Test plane first and reject generic completion substitution.
+3. Test seam second and preserve reciprocal quarter-turn direct success.
+4. Complete close sheets, cylinder, bunny, vase, default suites, and determinism runs.
+5. Resume close-sheet isolation only when plane and seam both pass.
+6. If plane does not materially advance, stop local repairs and perform a design review or bounded producer replacement proof.
 
 ## Acceptance discipline
 
 Every success requires direct `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete provenance, strict validation, and deterministic hashes.
 
-Diagnostics alone, the historical completion failures, and the scheduler-sensitive validator timing ratio are not the active constructive objective.
-
-If the next artifact does not materially advance Gate 1, invoke the mandatory design review or bounded producer replacement proof.
+The historical completion failures and scheduler-sensitive validator timing ratio are not the active constructive blocker.
