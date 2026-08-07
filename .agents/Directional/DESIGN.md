@@ -10,7 +10,7 @@ Always advance the earliest incomplete or regressed design gate. Every implement
 
 ## Producer authority model
 
-The current mixed `phaseFront.succeeded`/generic fall-through model is being replaced at a bounded boundary. An authoritative producer must return one of three semantically distinct outcomes:
+The bounded producer-selection replacement is now implemented at compile time. An authoritative producer returns one of three semantically distinct outcomes:
 
 ```text
 NotApplicable
@@ -22,7 +22,9 @@ Rejected
 - `Produced`: authoritative cells/fronts are complete and materialize directly one cell to one quad.
 - `Rejected`: the producer was applicable but a fail-closed invariant failed; retain the typed reason and stop this backend request. Do not silently launch generic seeds/traces/proposals.
 
-Applicability is decided from general topology/field state before execution, never from fixture identity or from whether a producer happened to fail.
+Applicability is decided from general topology/field state before authoritative metadata execution, never from fixture identity or from whether a producer happened to fail.
+
+The implementation now prevents generic producer substitution after `Rejected`, preserves typed rejection at the tracing producer boundary, serializes/hashes producer disposition, and lets only `NotApplicable` continue to a separately selected producer. Runtime verification of these semantics is pending the next artifact-only turn.
 
 ## Authoritative phase/front representation
 
@@ -30,14 +32,14 @@ The producer carries first-class phase, integer lattice coordinate, branch rotat
 
 A source-vertex crossing is an ordered incident-face fan, never a positional jump. Every crossed canonical source edge is recorded and transported through strict reciprocal transition logic. Ambiguous, disconnected, repeated, non-manifold, nonreciprocal, missing-provenance, or branch-mismatched routes fail closed.
 
-Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`, matching the tracing-option contract.
+Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`, matching the tracing-option contract. This consistency is now implemented compile-time but awaits runtime verification.
 
 An authoritative cell has four ordered source-attached corners/sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, exact component/sheet ownership, and complete route provenance. One accepted cell maps to one quad.
 
 ## Ordered gates
 
 1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** **active; bounded producer replacement proof selected.**
+2. **G1 — Uniform phase-front plane:** **active; authoritative producer-boundary implementation compiled, runtime verification pending.**
 3. **G2 — Cross-chart and close-sheet propagation:** seam sub-contract proven; blocked by G1 and close-sheet failure.
 4. **G3 — Periodic closure and holonomy:** blocked.
 5. **G4 — Topology-distinct completion and singularities:** blocked.
@@ -45,7 +47,9 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Runtime authority
+## Latest executed runtime authority
+
+No runtime was executed in the current Code + Build turn. The latest artifact-tested matrix remains:
 
 | Fixture | Result | Traces | Arrangement | Output quads |
 |---|---:|---:|---:|---:|
@@ -56,23 +60,30 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 | bunny | fail | 80,862 | 0 | 0 |
 | vase | fail | 116,922 | 0 | 0 |
 
-Direct acceptance is 1/6. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, no fallback/recovery, hash `a8972efd7c4900a4`.
+Direct acceptance remains 1/6. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, no fallback/recovery, hash `a8972efd7c4900a4`.
 
-The plane has remained at 106 traces / 9 arrangement cells / 12 completion candidates across two bounded implementation attempts. Contract tests passed but did not materially advance the exact production route.
+## Latest compile-only authority
 
-## Review conclusion
+- source commit: `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
+- payload cleanup: `bcf934d34e9a15f5d0929628ffd26f6833643214`;
+- patch SHA-256: `a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef`;
+- approved targets: 7/7;
+- compile/link actions: 111/111;
+- artifact SHA-256: `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
+- internal checksums: 44/44;
+- runtime claims from current turn: none.
 
-The successful Gate 1 parent already contained the generic producer, but the plane never reached it because direct phase-front construction succeeded. Gate 2 made phase-front construction transition-aware; once it rejected the production plane, `build_surface_cell_network()` silently substituted the generic producer. Later completion diagnostics then overwrote the typed phase-front rejection.
-
-This is the controlling architecture defect: `NotApplicable` and `Rejected` are currently collapsed into one Boolean non-success state.
-
-The exact production plane also consumes preprocessing state absent from the synthetic fan tests, including finalized matching/transitions, adaptive target size, source labels, and feature/relief state. A proven semantic inconsistency additionally exists where phase-front transport treats relief edges as hard barriers even when `reliefBarriersEmbedded == false`.
+The source also contains an exact committed `plane.obj` + `plane.rawfield` production-route regression. It compiled but was not executed.
 
 ## Next implementation authority
 
-Use `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md`.
+Use `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md` against the exact artifact above.
 
-Minimum architectural progress in the following artifact is removal of the silent 106/9/12 generic substitution after authoritative rejection. Gate 1 itself still requires direct valid plane output while preserving seam direct success.
+Acceptance hierarchy:
+
+1. Gate 1 closure: plane is `Produced` with direct deterministic valid pure-quads and seam retains direct success.
+2. Minimum architecture proof: plane is explicit immutable `Rejected`, stops at tracing, and the old 106/9/12 generic substitution disappears. G1 remains red.
+3. No progress: `NotApplicable`/generic fall-through persists, rejection is overwritten, seam regresses, or acceptance is weakened.
 
 ## Non-negotiable prohibitions
 
