@@ -5,63 +5,76 @@ Last updated: 2026-08-07 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 authoritative producer-boundary verification**.
-- Earliest failing fixture from latest executed runtime: `plane__surface_cells`.
-- Proven retained sub-contract: G2 multi-face seam direct success.
-- Completed turn: Gate 1 Authoritative Producer Boundary Code + Build.
-- Architecture outcome: **B — bounded producer replacement proof, now implemented compile-only**.
-- Next turn: `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md`.
+- G0 truthful authority: **passed**.
+- G1 uniform authoritative phase-front plane: **passed**.
+- Active gate: **G2 cross-chart / close-sheet isolation**.
+- Earliest failing fixture: `close_sheets__surface_cells`.
+- Proven retained regressions: exact production plane and multi-face seam direct success.
+- Completed turn: Gate 1 Authoritative Producer Boundary artifact-only Test + Benchmark.
+- Next turn: **Code + Build** for bounded G2 close-sheet authoritative producer extension.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Latest compile-only authority
+## Gate 1 closure authority
+
+Artifact/source:
 
 - source commit: `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
 - payload cleanup: `bcf934d34e9a15f5d0929628ffd26f6833643214`;
-- patch SHA-256: `a9af7d502a237a3f0a58324639f0fe77129de5fe5f147ea14b1e077545c5ccef`;
 - workflow run/job/artifact: `31154489371` / `92790924907` / `8984760467`;
-- compile/link: 111/111;
-- approved targets: 7/7;
 - artifact SHA-256: `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`;
-- artifact internal checksums: 44/44;
-- generated project binary execution: none.
+- internal checksums: **44/44 passed**;
+- six explicit producer/topology contract checks: **6/6 passed**.
 
-Implemented contracts:
+Direct Gate 1 results:
 
-- [x] explicit `NotApplicable / Produced / Rejected` disposition;
-- [x] applicability determined before authoritative metadata execution;
-- [x] `Rejected` cannot generate generic seeds/traces/proposals;
-- [x] pipeline stops `Rejected` at tracing and retains typed first-invalid authority;
-- [x] disposition/rejection included in diagnostics and structural hash;
-- [x] relief-barrier transport obeys `reliefBarriersEmbedded`;
-- [x] ordinary-edge, ordered vertex-fan, reciprocal seam, sheet/provenance, and one-cell→one-quad contracts preserved in source;
-- [x] exact committed `plane.obj` + `plane.rawfield` production-route regression added;
-- [x] approved seven targets compile;
-- [ ] execute new contracts and exact production route from immutable artifact;
-- [ ] determine whether G1 closes or only minimum architecture proof is achieved.
+- plane: **pass**, `Produced`, 81 provenance vertices, 64 pure quads, 0 validation failures, no fallback/recovery, output hash suffix `730caeae49ec872c`;
+- seam: **pass**, `Produced`, 81 vertices, 64 pure quads, 0 validation failures, no fallback/recovery, output hash `a8972efd7c4900a4`;
+- plane determinism: 3/3 same disposition/counts/output hash;
+- seam determinism: 3/3 same disposition/counts/output hash.
 
-## Latest executed runtime authority — unchanged by Code + Build
+The old plane 106 traces / 9 arrangement / 12 completion / no-output signature is eliminated. G1 is closed.
 
-- source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
-- artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
-- evidence SHA-256: `99a4922767d567830f202b440504f2b48d07fdb02bb117668baf846e7eeb9b64`;
-- explicit source-vertex/topology tests: 4/4;
-- direct acceptance: 1/6;
-- plane: fail, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures;
-- seam: pass, 81 vertices, 64 pure quads, hash `a8972efd7c4900a4`;
-- close sheets/cylinder/bunny/vase: deterministic direct failures before output;
-- non-overlapping total: 305/321.
+## Current failing direct frontier
 
-## Next artifact-only checklist
+| Fixture | Result | Producer disposition | Traces | Arrangement | Completed quads |
+|---|---:|---|---:|---:|---:|
+| Plane | **pass** | `Produced` | 352 | 65 | 64 |
+| Seam | **pass** | `Produced` | 256 | 65 | 64 |
+| Close sheets | fail | `NotApplicable` | 158 | 0 | 0 |
+| Cylinder | fail | `NotApplicable` | 732 | 0 | 0 |
+| Bunny | fail | `NotApplicable` | 80,862 | 0 | 0 |
+| Vase | timeout/fail | not fully observed | — | — | — |
 
-- [ ] verify outer SHA-256 and 44/44 internal checksums;
-- [ ] verify source authority and six changed blobs;
-- [ ] verify exact bunny/vase hashes and topology;
-- [ ] run new producer-contract tests first;
-- [ ] run plane first, seam second, then close sheets/cylinder/bunny/vase;
-- [ ] record `surfaceCellAuthoritativeProducerDisposition` and typed producer failure;
-- [ ] confirm `Rejected` generates no generic traces/arrangement/completion;
-- [ ] run bounded determinism processes;
-- [ ] run remaining producer, completion, validation, compiled-API suites without rebuild.
+Close sheets is the earliest incomplete gate and therefore has priority over cylinder, bunny/vase, completion cleanup, performance, and timing work.
 
-Gate 1 closes only with direct valid plane output and retained seam success. Explicit immutable `Rejected` behavior without the old 106/9/12 substitution is material architectural progress but not Gate 1 closure.
+## Next Code + Build declaration
+
+```text
+Active design gate: G2 cross-chart/close-sheet isolation
+Earliest failing fixture: close_sheets__surface_cells
+Missing design contract: authoritative uniform phase/front applicability and construction across multiple disconnected but spatially close source sheets without positional cross-sheet coupling
+Smallest general implementation change: extend the existing authoritative phase/front producer from the proven plane/seam domain to independent same-topology sheet components using source component/local-sheet authority and exact per-component transition/fan routing; do not alter periodic topology
+Observable material-progress condition: close_sheets disposition becomes Produced and yields direct deterministic valid pure quads with zero cross-sheet provenance/merge violations while plane and seam remain unchanged regressions
+Explicitly deferred work: cylinder holonomy, singularities, topology-distinct completion, adaptive scale/features, bunny/vase production/performance, scheduler timing, downstream completion/simplification failures
+```
+
+## Next Code + Build checklist
+
+- [ ] Preserve `NotApplicable / Produced / Rejected` producer semantics.
+- [ ] Partition authoritative producer state by source component/local-sheet before front construction.
+- [ ] Prevent any world-space/proximity coupling across disconnected close sheets.
+- [ ] Reuse ordinary-edge and ordered source-vertex-fan transport independently inside each sheet.
+- [ ] Keep cylinder/periodic domains `NotApplicable` for G3.
+- [ ] Add or strengthen generalized disconnected-sheet and ordering-invariance unit tests only as necessary.
+- [ ] Compile approved targets only; execute no generated project binary/test/benchmark.
+- [ ] Package immutable artifact with exact source/blobs/logs/checksums for the following Test + Benchmark turn.
+
+## Latest default-suite evidence
+
+- remaining producer: 23/24; only scheduler-sensitive `StrictValidatorOverheadStaysBelowFivePercent` failed;
+- completion/simplification: 154/164, same ten downstream failures;
+- validation: 60/60;
+- compiled API: 8/8.
+
+These results do not supersede direct gate ordering.
