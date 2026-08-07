@@ -1,101 +1,111 @@
-# Directional GitHub Workflow Policy
+# GitHub Workflow Policy
 
 ## Purpose
 
-GitHub Actions is a bounded remote execution plane for Directional agent work when the GitHub connector can manage repository state but cannot directly run compilers, tests, benchmarks, or other repository tools. It never relaxes the active turn boundary.
+Use GitHub Actions only as the bounded remote execution plane when the connected GitHub control plane cannot perform the required computation. The turn-based workflow remains authoritative: Actions never relax Code + Build, Test + Benchmark, or Review boundaries.
 
-## Turn boundaries
+## Durable workflow state
 
-### Code + Build
+The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge-healing` is:
 
-Allowed:
+- `.github/workflows/agent-source-snapshot.yml`
 
-- apply an exact verified source/test patch;
-- configure with compile-only-safe discovery such as `PRE_TEST`;
-- compile/link only approved targets;
-- package exact source authority, binaries/libraries, fixtures, logs, metadata, and checksums.
+Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-Forbidden:
+At the G3 artifact-only Test + Benchmark closeout on 2026-08-07, the branch was verified to contain only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent.
 
-- executing generated Directional binaries;
-- running unit tests, benchmarks, custom meshes, CLI/GUI, help/list, or discovery commands;
-- hiding runtime validation inside packaging or build scripts.
+## Mandatory workflow requirements
 
-### Test + Benchmark
+Every workflow created or modified for agent work must:
 
-Use the exact immutable Code + Build artifact. Do not configure, compile, relink, regenerate discovery, or edit implementation/test/benchmark/fixture/validator/build logic.
+1. initialize a persistent detailed activity log before checkout or any other fallible work;
+2. capture event/ref/source identity, tool versions, commands/output, exit context, final repository status, and relevant resource information;
+3. stream command output to both the Actions console and the persistent activity log;
+4. use an `EXIT` trap or equivalent failure-safe logging where appropriate;
+5. upload the dedicated diagnostic log artifact under `if: always()` with `if-no-files-found: error`;
+6. keep the diagnostic log artifact separate from successful build/result artifacts;
+7. avoid printing tokens, secrets, credentials, authenticated URLs, or secret-bearing arguments;
+8. never modify `.github/workflows/**` from inside a workflow;
+9. use narrow triggers and `concurrency` so unrelated commits cannot retrigger bounded work;
+10. use least-privilege permissions;
+11. preserve exact source authority and fail closed on unexpected input hashes.
 
-### Review
+## Code + Build execution boundary
 
-Inspect source, PR, plans, logs, artifacts, and evidence. Do not modify production implementation or validation logic.
+Compile-only workflows may:
 
-## Mandatory bounded-workflow properties
+- checkout the exact bounded branch/source;
+- apply a pre-verified source/test patch when required;
+- install compile dependencies;
+- initialize shallow submodules;
+- configure with `PRE_TEST` or an equivalent compile-only-safe test-discovery mode;
+- compile/link only explicitly approved targets;
+- package binaries/libraries, fixtures, exact source closure, logs, metadata, and recursive checksums.
 
-Every temporary/bounded workflow must:
+They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution.
 
-1. initialize a persistent activity log before checkout or other fallible work;
-2. record exact event/ref/source identity, tool versions, command output, and final repository status;
-3. stream task output to both the Actions console and the persistent log;
-4. upload the detailed log artifact under `if: always()` and `if-no-files-found: error`;
-5. keep diagnostic logs separate from successful build/result artifacts;
-6. use a narrow trigger path or explicit dispatch and a task-specific concurrency group;
-7. use only required permissions and never expose secrets or authenticated URLs;
-8. never modify its own `.github/workflows/**` file from inside the workflow;
-9. verify expected source/blob/patch authority before applying changes or compiling;
-10. preserve the turn boundary explicitly in packaged command metadata;
-11. package exact source/fixture closure and recursive checksums for any artifact that will be executed later;
-12. upload a result/build artifact only after successful completion of its declared task.
+Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
 
-## Connector-first control plane
+## Test + Benchmark execution boundary
 
-Use the GitHub connector to:
+Artifact-only Test + Benchmark turns:
 
-- resolve branch/PR/head authority;
-- read and write source/plans/documentation;
-- create and remove bounded workflows, payloads, and triggers;
-- inspect workflow run/job/artifact metadata;
-- download result and log artifacts;
-- update PR metadata and post final handoff comments.
+- download the exact declared successfully built artifact;
+- verify outer digest, recursive checksums, source commit, changed blobs, source/dependency/fixture closure, and command-boundary metadata before runtime execution;
+- extract into an arbitrary fresh directory;
+- may create runtime-only symlinks solely to expose immutable packaged fixture paths expected by compiled binaries;
+- execute validation only from packaged binaries and inputs;
+- preserve raw logs, machine-readable results, determinism records, and evidence archives.
 
-Actions should perform computation only where the connector cannot.
+They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic.
 
-## Trigger discipline
+An invalid artifact is an infrastructure failure. Do not create a replacement build inside the Test + Benchmark turn.
 
-When explicit workflow dispatch is unavailable, use one unique marker under `.agents/connector-triggers/` and make the workflow `push.paths` match only that exact marker. The workflow output commit must not modify the trigger marker, preventing loops.
+## Trigger/payload lifecycle
 
-Retain a turn payload only until:
+When dispatch is unavailable and a temporary exact-path push trigger is required:
 
-- source commit is known;
-- expected changed blobs are known;
-- compile/build artifact and log artifact are verified;
-- the payload digest and packaged source authority are confirmed.
+1. create one bounded workflow with an exact unique marker path;
+2. create only the payload/patch files required by that workflow;
+3. trigger it exactly once unless a diagnosed retry is required;
+4. verify the source/result/log artifacts and exact output authority;
+5. remove the bounded workflow, marker, and payload from the work branch;
+6. verify the final workflow directory and temporary directories afterward.
 
-Then remove the bounded workflow, trigger, and payload before turn closeout.
+Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 
-## Artifact verification
+## Artifact evidence requirements
 
-Before claiming Code + Build completion:
+A Code + Build artifact should contain, when applicable:
 
-- verify workflow/job conclusion;
-- verify exact compiled source commit;
-- download build/result and detailed-log artifacts;
-- verify outer artifact digests;
-- verify recursive internal checksums;
-- verify expected executables/libraries/fixtures/source metadata;
-- verify packaged command-boundary metadata records that prohibited runtime execution did not occur.
+- exact source commit and changed blob IDs;
+- source patch(es) and source archive;
+- dependency/submodule authority;
+- five required test/benchmark executables and project libraries for the surface-cell closure;
+- production fixtures/input closure;
+- configure/build/toolchain logs;
+- compile database where useful;
+- command-boundary metadata;
+- recursive checksum manifest.
 
-Before Test + Benchmark execution, repeat artifact/source/checksum verification in a fresh extraction directory.
+Record the GitHub workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digests, and retention metadata when available.
 
-A successful Actions summary alone is never sufficient gate evidence.
+## Failure handling
 
-## Repository hygiene
+- Diagnose failed workflows from the dedicated detailed log artifact, not only step summaries.
+- Do not rerun a deterministic malformed workflow without fixing it first.
+- Never synthesize success from a failed command.
+- Never weaken tests/validators to obtain a green workflow.
+- Never force-push merely to bypass a moving branch or stale content SHA.
+- Compare exact blobs/hashes before deciding a patch is absent or already applied.
 
-At the start and end of every turn:
+## End-of-turn hygiene
+
+At both start and end of every turn:
 
 - inspect `.github/workflows`;
-- inspect `.agents/connector-triggers` and turn-payload directories;
-- remove stale bounded workflows, markers, payloads, transfer files, and generated repository artifacts;
-- retain only approved durable workflows and dependencies;
-- never remove the latest executable next-turn plan or current evidence before replacements exist.
-
-Git history and PR conversation are the historical archive; temporary execution mechanics do not remain in the active branch after their evidence is verified.
+- inspect temporary connector triggers and payload/patch directories;
+- remove stale turn-specific workflow state;
+- preserve the durable snapshot workflow;
+- ensure retained documentation references only files that still exist;
+- make the mandatory top-level PR #8 closeout comment the final repository write after all documentation and PR metadata updates.
