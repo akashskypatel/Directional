@@ -1,1 +1,0 @@
-trigger G3 periodic ring correspondence Code + Build
