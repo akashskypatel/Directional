@@ -1,11 +1,13 @@
 {
   "schema": "directional.design-aligned-runtime-summary.v3",
-  "updatedUtc": "2026-08-07T04:56:00Z",
+  "updatedUtc": "2026-08-07T05:27:00Z",
   "directionControl": {
-    "activeGate": "G1 producer architecture design review",
+    "activeGate": "G1 authoritative producer boundary",
     "earliestFailingFixture": "plane__surface_cells",
     "retainedRegression": "multi_face_seam__surface_cells",
-    "mandatoryNextAction": "Gate 1 producer architecture design review; no third local predicate repair"
+    "reviewOutcome": "B: bounded producer replacement proof",
+    "nextPlan": ".agents/Directional/Gate_1_Authoritative_Producer_Boundary_Code_Build_Plan.md",
+    "thirdPredicateRepairAuthorized": false
   },
   "testedAuthority": {
     "sourceCommit": "364a20e12165af7dbfe213bb6d075e3fe25b1574",
@@ -24,41 +26,75 @@
       "checksummedFiles": 118
     },
     "rebuildPerformed": false,
-    "sourceOrValidationEdited": false
+    "sourceOrValidationEditedDuringTest": false
   },
   "contractTests": {
-    "vertex_fan": {"tests": 1, "passed": 1, "failed": 0},
-    "face_row_invariance": {"tests": 1, "passed": 1, "failed": 0},
-    "duplicate_metadata": {"tests": 1, "passed": 1, "failed": 0},
-    "production_fixture_topology": {"tests": 1, "passed": 1, "failed": 0}
+    "passed": 4,
+    "total": 4,
+    "productionRouteAuthority": false,
+    "note": "Existing fan/topology tests prove isolated contracts but do not reproduce exact plane production preprocessing."
   },
   "directAcceptance": {
     "passed": 1,
     "total": 6,
     "cases": {
-      "plane": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 106, "arrangementCells": 9, "completedQuads": 12, "validationFailures": 15, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false, "firstInvalidStage": "completion/output-validation", "firstInvalidReason": "AggregateCompletionValidationFailure", "tracingStructuralHash": 18291124109639474708},
-      "multi_face_seam": {"success": true, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 256, "arrangementCells": 65, "completedQuads": 64, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "terminalFailureCode": "None", "fallbackAttempted": false, "recoveryUsed": false, "outputVertices": 81, "outputFaces": 64, "quadCount": 64, "nonQuadFaces": 0, "outputStructuralHash": "a8972efd7c4900a4"},
-      "close_sheets": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 158, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
-      "cylinder": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 732, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
-      "bunny_1k_random": {"success": false, "runs": 2, "structurallyStableAcrossProcesses": true, "traceSegments": 80862, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
-      "vase": {"success": false, "runs": 2, "structurallyStableAcrossProcesses": true, "traceSegments": 116922, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false}
+      "plane": {
+        "success": false,
+        "runs": 3,
+        "structurallyStableAcrossProcesses": true,
+        "traceSegments": 106,
+        "arrangementCells": 9,
+        "completedQuads": 12,
+        "validationFailures": 15,
+        "outputOrigin": "None",
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "firstInvalidStageObserved": "completion/output-validation",
+        "firstInvalidReasonObserved": "AggregateCompletionValidationFailure",
+        "tracingStructuralHash": 18291124109639474708
+      },
+      "multi_face_seam": {
+        "success": true,
+        "runs": 3,
+        "structurallyStableAcrossProcesses": true,
+        "traceSegments": 256,
+        "arrangementCells": 65,
+        "completedQuads": 64,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputVertices": 81,
+        "outputFaces": 64,
+        "outputStructuralHash": "a8972efd7c4900a4"
+      },
+      "close_sheets": {"success": false, "runs": 3, "traceSegments": 158, "arrangementCells": 0, "outputQuads": 0},
+      "cylinder": {"success": false, "runs": 3, "traceSegments": 732, "arrangementCells": 0, "outputQuads": 0},
+      "bunny_1k_random": {"success": false, "runs": 2, "traceSegments": 80862, "arrangementCells": 0, "outputQuads": 0},
+      "vase": {"success": false, "runs": 2, "traceSegments": 116922, "arrangementCells": 0, "outputQuads": 0}
     }
   },
   "defaultSuites": {
-    "producer_remaining": {"tests": 79, "passed": 78, "failed": 1, "failedTests": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"]},
+    "producer_remaining": {"tests": 79, "passed": 78, "failed": 1},
     "completion": {"tests": 164, "passed": 154, "failed": 10},
     "validation": {"tests": 60, "passed": 60, "failed": 0},
     "compiled_api": {"tests": 8, "passed": 8, "failed": 0}
   },
   "nonOverlappingTotal": {"passed": 305, "total": 321, "failed": 16},
   "materialProgress": false,
-  "materialProgressReason": "Plane retained the exact 106 trace / 9 arrangement / 12 completion generic signature. New contract tests passed and tracing structural hash changed, but the authoritative phase-front path did not become production output.",
-  "reviewFindings": {
-    "planePriorSignatureRetained": true,
-    "planeTracingStructuralHashChanged": true,
-    "planeTracingStructuralHash": 18291124109639474708,
-    "typedPhaseFrontFailureNotPreservedInFinalDiagnostics": true,
-    "contractFixtureUsesSyntheticReconstructedPlane": true,
-    "mandatoryNextTurn": "Gate 1 producer architecture design review"
+  "architectureReview": {
+    "completed": true,
+    "selectedOutcome": "bounded producer replacement proof",
+    "provenFindings": {
+      "successfulParentGenericProducerWasLatent": true,
+      "gate2MadePhaseFrontTransitionAware": true,
+      "phaseFrontNonSuccessAutomaticallyLaunchesGenericProducer": true,
+      "notApplicableAndRejectedAreConflated": true,
+      "laterCompletionCanOverwriteTypedPhaseFrontFailure": true,
+      "syntheticFanTestsDoNotReproduceProductionPlaneInputs": true,
+      "phaseFrontReliefBarrierSemanticsIgnoreReliefBarriersEmbedded": true
+    },
+    "unprovenAsFirstFailure": "The exact current first phase-front predicate is not claimed; final diagnostics did not preserve it and exact relief-barrier membership was not serialized.",
+    "replacementDisposition": ["NotApplicable", "Produced", "Rejected"],
+    "minimumNextArtifactProgress": "An applicable Rejected plane cannot launch the generic producer, so the 106/9/12 substitution disappears and typed producer authority remains immutable.",
+    "gate1Closure": "Direct deterministic valid plane output with retained seam direct success."
   }
 }
