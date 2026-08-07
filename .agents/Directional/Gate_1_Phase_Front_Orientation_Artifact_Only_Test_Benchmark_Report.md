@@ -73,6 +73,12 @@ The ten completion failures are unchanged historical/downstream fixtures and do 
 
 Gate 2 begins with the multi-face seam. The next implementation must transport phase, integer lattice coordinates, branch rotation, field family/sign, source-chart identity, component, local-sheet, and route provenance through exact source-chart transitions and cross-field matching. It must fail closed on missing or inconsistent transitions and must prevent cross-sheet capture or positional merging.
 
+## Evidence archive
+
+- archive: `directional-g1-orientation-artifact-test-evidence.zip`;
+- SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`;
+- contents: raw per-process logs, JSON results, exit codes, command inventory, report, machine-readable runtime summary, and evidence checksums.
+
 ## Integrity
 
 Every direct case and benchmark process executed the packaged artifact in a fresh bounded process. No process timed out. No rebuild, discovery regeneration, source edit, fixture edit, test edit, validator edit, fallback substitution, recovery substitution, synthetic topology correction, or acceptance weakening occurred.
