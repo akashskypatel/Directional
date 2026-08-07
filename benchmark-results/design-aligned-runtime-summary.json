@@ -126,17 +126,7 @@
         "simplification": 16038410778453039208,
         "completion": 13037891342798052391
       },
-      "stageCounts": {
-        "feature": 56,
-        "metric": 25,
-        "relief": 19,
-        "tracing": 137,
-        "strands": 72,
-        "embedding": 72,
-        "arrangement": 0,
-        "simplification": 0,
-        "completion": 0
-      }
+      "stageCounts": {"feature": 56, "metric": 25, "relief": 19, "tracing": 137, "strands": 72, "embedding": 72, "arrangement": 0, "simplification": 0, "completion": 0}
     },
     "close_sheets__surface_cells": {
       "successes": 0,
@@ -169,17 +159,7 @@
         "simplification": 7397947494958406252,
         "completion": 13037891342798052391
       },
-      "stageCounts": {
-        "feature": 66,
-        "metric": 32,
-        "relief": 40,
-        "tracing": 158,
-        "strands": 92,
-        "embedding": 92,
-        "arrangement": 0,
-        "simplification": 0,
-        "completion": 0
-      }
+      "stageCounts": {"feature": 66, "metric": 32, "relief": 40, "tracing": 158, "strands": 92, "embedding": 92, "arrangement": 0, "simplification": 0, "completion": 0}
     },
     "cylinder__surface_cells": {
       "successes": 0,
@@ -212,28 +192,11 @@
         "simplification": 14893908217482103086,
         "completion": 13037891342798052391
       },
-      "stageCounts": {
-        "feature": 208,
-        "metric": 80,
-        "relief": 44,
-        "tracing": 732,
-        "strands": 287,
-        "embedding": 287,
-        "arrangement": 0,
-        "simplification": 0,
-        "completion": 0
-      }
+      "stageCounts": {"feature": 208, "metric": 80, "relief": 44, "tracing": 732, "strands": 287, "embedding": 287, "arrangement": 0, "simplification": 0, "completion": 0}
     }
   },
   "defaultSuites": {
-    "producer_remaining": {
-      "total": 79,
-      "passed": 78,
-      "failed": 1,
-      "failedTests": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"],
-      "wallSeconds": 1.46,
-      "exitCode": 1
-    },
+    "producer_remaining": {"total": 79, "passed": 78, "failed": 1, "failedTests": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"], "wallSeconds": 1.46, "exitCode": 1},
     "completion": {
       "total": 164,
       "passed": 154,
