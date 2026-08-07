@@ -8,69 +8,65 @@ Last updated: 2026-08-07 UTC
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - G2 cross-chart / close-sheet isolation: **passed**.
-- Active gate: **G3 periodic closure / holonomy — periodic authority and source-strip conformity proven; ring correspondence remains defective**.
-- Earliest failing fixture: `cylinder__surface_cells` at `completion/output-validation`.
-- Completed turn: **G3 Periodic Output Validation artifact-only Test + Benchmark**.
-- Next turn: `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md`.
+- Active gate: **G3 periodic closure / holonomy — field-authoritative adjacent-ring correspondence is compile-valid; artifact runtime verification pending**.
+- Earliest executed failing fixture remains `cylinder__surface_cells` at `completion/output-validation` from artifact `9004509871`.
+- Completed turn: **G3 Periodic Ring Correspondence Code + Build**.
+- Next turn: `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact tested authority
+## Latest executed runtime authority
 
-Artifact-only validation used source `2783ea718ffb15f8fb3868795173472ab8636c1c` and artifact `9004509871` (`g3-periodic-output-validation-code-build`).
+Artifact `9004509871`, source `2783ea718ffb15f8fb3868795173472ab8636c1c`:
 
-- artifact SHA-256 `2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe`;
-- source patch SHA-256 `74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e`;
+- focused/retained contracts: **13/13**;
+- plane: direct strict-valid `Produced`, 64 quads, hash `730caeae49ec872c`, deterministic 3/3;
+- seam: direct strict-valid `Produced`, 64 quads, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets: direct strict-valid `Produced`, 200 quads in two isolated components, hash `89b052762f52a5af`, deterministic 3/3;
+- cylinder: periodic `Produced`, `r=0`, `t=(32,0)`, route 32, cut 4, 2,237 traces, 320 direct quads / 352 provenance vertices, no fallback/recovery, deterministic 3/3, then `completion/output-validation:AggregateCompletionValidationFailure`;
+- exact cylinder failures: normal P95 `16.6272734366° > 15°`, field P95 `37.9670987281° > 15°`, warpage P95 `30.6213792811° > 30°`.
+
+This remains runtime authority until the new artifact is executed.
+
+## G3 ring-correspondence Code + Build authority
+
+Final source/test commit:
+
+- `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a`.
+
+Implementation authority:
+
+- initial implementation commit `18f2c880f1714d8c41c9e11dadd53169756629fe`;
+- initial patch SHA-256 `49cd71bc5aafc33ccdfd5e5104e5a23c7452e72074aac3c7775794f55737d6de`;
+- compile-only test correction patch SHA-256 `8c96fa983990ab6c3f3ace5b24b8af59678aa7d6a0b7ed4f57b06f1397d1cd56`;
+- final blobs:
+  - `SurfaceCellTracing.h` `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
+  - `SurfaceCellTracing.cpp` `6980850bd32d40b1da9350ebbe3f601b8ce5e07b`;
+  - `SurfaceCellsPhase10Tests.cpp` `c4671ef674228d74b96e80499abbb6846bcdf3e3`.
+
+The bounded implementation removes lexicographic `valid.front()` authority from adjacent-ring selection. Topology-compatible candidates are now evaluated through reciprocal transported cross-field branch/family authority over the strip. A unique field-authoritative candidate is required; no candidate yields typed `InvalidPeriodicRingCorrespondence`, and effectively equal best candidates yield typed `AmbiguousPeriodicRingCorrespondence`. Source-strip breakpoints, annulus cut, holonomy, exact periodic quotient, provenance and one accepted cell → one quad remain intact.
+
+New compiled contracts cover exact field-authoritative axial correspondence and fail-closed genuinely field-ambiguous correspondence. No validator, fallback/recovery, fixture-specific or post-hoc repair behavior changed.
+
+## Compile-only build authority
+
+- successful run/job `31214404170` / `92984429773`;
+- artifact `9008118764` (`g3-periodic-ring-correspondence-code-build`);
+- artifact SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
+- detailed log artifact `9008117677`, SHA-256 `a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77`;
 - recursive checksums **44/44**;
-- no rebuild or source/test/fixture/validator/build edit during Test + Benchmark.
+- compile/link **111/111** across seven approved targets;
+- five executables, two project libraries, 27 fixture/input files packaged;
+- Release static / Ninja / GNU C++ 13.3.0 / CMake 3.31.6 / `PRE_TEST`;
+- packaged command boundary `runtimeExecution=false`;
+- generated Directional binary/test/benchmark execution: **none**.
 
-Focused/retained producer contracts: **13/13 passed**. The corrected ordered canonical endpoint-route test passes, and the source-strip breakpoint contract is live and consumed.
-
-## Direct acceptance
-
-| Fixture | Result | Producer | Holonomy | Traces | Quads | Validation | Output |
-|---|---|---|---|---:|---:|---:|---|
-| plane | **pass** | `Produced` | — | 352 | 64 | 0 | `CompletedSurfaceCells`, `730caeae49ec872c` |
-| seam | **pass** | `Produced` | — | 256 | 64 | 0 | `CompletedSurfaceCells`, `5bdf34d7802e9fb0` |
-| close sheets | **pass** | `Produced` | — | 1,104 | 200 | 0 | `CompletedSurfaceCells`, `89b052762f52a5af` |
-| cylinder | **fail / material progress** | `Produced` | `r=0, t=(32,0), route=32, cut=4` | 2,237 | 320 | **3** | withheld at completed validation |
-| bunny | later gate | `NotApplicable` | — | 80,862 | 0 | 0 | `NotProductionReady:completion` |
-| vase | later gate | bounded timeout | — | — | — | — | >180 s; failure only |
-
-Plane, seam, close sheets, and cylinder semantic state are deterministic **3/3**. No fallback or source-grid recovery is used.
-
-## Exact cylinder validation failures
-
-Non-invasive inspection of the exact packaged runtime's in-memory `SurfaceFinalValidationReport` identifies exactly three failed scalar thresholds:
-
-1. `normalP95Degrees = 16.6272734366` > `15.0`;
-2. `fieldP95Degrees = 37.9670987281` > `15.0`;
-3. `warpageP95Degrees = 30.6213792811` > `30.0`.
-
-All represented discrete strict/source-authoritative topology, boundary, feature-rail, provenance, local-sheet, degeneracy, manifold, inversion, self-intersection, convexity, valence, Euler, and component checks are green. Validation remains unchanged and authoritative.
-
-The source-strip correction improved geometric source coverage substantially, including source-to-output P95 `0.104464 -> 0.008174`, but field P95 remained exactly `37.9671°` and warpage moved marginally over threshold.
-
-## Root structural blocker
-
-Adjacent canonical annulus rings admit two source-topologically valid one-to-one correspondences because each triangulated strip contains both same-column axial edges and diagonal inter-ring edges. Current production source sorts valid candidate vertex sequences lexicographically and selects `valid.front()`.
-
-On the committed cylinder this chooses the diagonal/sheared correspondence. The selected inter-ring edge is **37.9670987281°** away from the axial cross-field family, exactly matching the failed field P95. This is a general field-authority ambiguity, not a fixture-count defect.
+The first bounded attempt `31213727511 / 92982293325` compiled production source but failed compiling the new Eigen test helpers. The correction was test-source-only; the successful retry above is authoritative.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9008118764` without rebuilding or editing source/tests/fixtures/validators/build logic.
 
-The bounded correction must replace incidental lexicographic ring correspondence with an exact reciprocal cross-field-family-consistent correspondence while preserving annulus applicability, cut, holonomy, source-strip breakpoints, periodic quotient, provenance, and one-cell-to-one-quad materialization. Zero or genuinely ambiguous field-authoritative candidates must fail closed with typed periodic authority.
+Run the eight focused periodic/ring-correspondence contracts first, then retained G1/G2 contracts, direct plane/seam/close-sheet regressions, and exact cylinder acceptance. G3 closes only if cylinder remains periodic `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with zero validation failures, field/normal P95 <= 15°, warpage P95 <= 30°, correct periodic quotient/provenance, no false cut seam, no fallback/recovery, and G0–G2 green.
 
-Do not relax validators, choose candidates by source ID/count/order/frequency, add fixture-specific logic, reintroduce fallback/recovery, use Euclidean seam welding, or broaden into G4/later work.
-
-## Suite evidence
-
-- focused/retained producer: **13/13**;
-- bounded producer remainder excluding long Bunny/Vase design-acceptance cases: **82/84**; failures are the known scheduler-sensitive timing check and cylinder direct design acceptance;
-- completion/simplification: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**.
-
-Direct gate status outranks aggregate totals.
+Do not require historical translation/grid/output counts; correctness and field authority decide acceptance.
