@@ -39,7 +39,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
 3. **G2 — Cross-chart and close-sheet propagation:** **passed.**
-4. **G3 — Periodic closure and holonomy:** **active; periodic topology, source-strip conformity, and quotient authority are runtime-proven; adjacent-ring field correspondence remains ambiguous.**
+4. **G3 — Periodic closure and holonomy:** **active; periodic topology/source-strip authority is runtime-proven and field-authoritative adjacent-ring correspondence is compile-valid, runtime verification pending.**
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
@@ -61,7 +61,7 @@ All three are direct `CompletedSurfaceCells` pure-quad outputs, deterministic 3/
 
 The authoritative producer partitions state by `(source component, local sheet)` before front construction. World-space distance, nearest projection, or overlap may not join unrelated sheets. Phase, ownership, route, capture, collision, boundary loops, and materialization identity remain sheet-local unless exact source topology establishes a connection.
 
-## G3 periodic contract — runtime consumed
+## G3 periodic contract — retained invariant
 
 A connected singularity-free annulus has first-class periodic authority:
 
@@ -78,7 +78,7 @@ Required invariants:
 - one deterministic intrinsic source cut joins the two true annulus boundaries;
 - the cut-open chart does not require global world-space planarity;
 - chart duplicates retain authoritative underlying source identity;
-- periodic transport is reciprocal, integral, branch-compatible, and source-routed;
+- periodic transport is reciprocal, integral, branch-compatible and source-routed;
 - invalid periodic state is typed `Rejected` and cannot fall through to generic tracing;
 - artificial-cut front counterparts pair through exact source/phase/lattice authority, never Euclidean welding;
 - the artificial cut is not an exterior output boundary;
@@ -87,60 +87,61 @@ Required invariants:
 - source-face row ordering may change incidental DCEL numbering but not canonical source-route/cut identity or holonomy semantics;
 - every canonical source-ring strip boundary is a mandatory intrinsic periodic lattice breakpoint.
 
-Artifact `9004509871` proves these bounded contracts are consumed on the exact cylinder:
+Artifact `9004509871` proves periodic `Produced`, source-strip authority, canonical route/cut identity and deterministic holonomy on the exact cylinder, but its completed output is still runtime-red with normal/field/warpage P95 failures.
 
-- disposition `Produced`;
-- holonomy `r=0`, `t=(32,0)`, ordered route 32 edges, cut four edges;
-- 2,237 source-attached traces;
-- zero generic arrangement cells;
-- 320 direct completed quads;
-- 352 provenance vertices;
-- source-strip breakpoint and canonical row-order contracts pass;
-- no fallback/recovery;
-- deterministic 3/3.
+## Field-authoritative adjacent-ring correspondence contract
 
-## Active G3 failure authority
+A triangulated annulus strip can admit more than one source-topologically valid one-to-one bijection between adjacent canonical rings. Source vertex numbering, lexicographic order, candidate count or discovery frequency are not authority for choosing one.
 
-The cylinder remains red at `completion/output-validation:AggregateCompletionValidationFailure`. Non-invasive inspection of the exact packaged runtime's in-memory `SurfaceFinalValidationReport` identifies three failed scalar thresholds:
+The required contract is:
 
-- `normalP95Degrees = 16.6272734366` > `15.0`;
-- `fieldP95Degrees = 37.9670987281` > `15.0`;
-- `warpageP95Degrees = 30.6213792811` > `30.0`.
+> Adjacent canonical annulus-ring correspondence is resolved from reciprocal transported cross-field family/sign authority over the complete source strip. Exactly one field-authoritative topology-compatible candidate may be consumed. Zero valid field candidates or genuinely field-equivalent best candidates fail closed with typed periodic authority.
 
-All represented discrete strict/source-authoritative topology, boundary, provenance, component/sheet, manifold, inversion, self-intersection, convexity, valence, Euler, feature-rail, and boundary-cycle checks pass. Validators are unchanged.
+The implementation must preserve source-topology compatibility first, then field authority:
 
-The source-strip correction is retained: it improves source-to-output P95 approximately `0.104464 -> 0.008174` and quad-to-source P95 approximately `0.068328 -> 0.031281`. It does not solve cross-field alignment; field P95 remains exactly `37.9670987281°`.
+1. enumerate only source-topologically compatible ring bijections;
+2. propagate branch/family state across the candidate strip through reciprocal source-edge transition authority;
+3. require forward/reverse branch consistency;
+4. evaluate inter-ring connections against one transported cross-field family and circumferential source-ring connections against its orthogonal family;
+5. select only a unique field-authoritative optimum;
+6. never resolve ambiguity by source ID, lexicographic sequence, count, frequency, fixture identity, arbitrary subset search or proximity;
+7. typed-reject no valid correspondence as `InvalidPeriodicRingCorrespondence`;
+8. typed-reject genuinely field-equivalent best correspondences as `AmbiguousPeriodicRingCorrespondence`;
+9. retain the annulus cut, holonomy, source-strip breakpoints/subdivisions, periodic quotient, provenance and one accepted cell → one quad.
 
-## Active G3 ring-correspondence contract
+## Compile-valid G3 correspondence checkpoint
 
-A triangulated annulus strip can admit more than one source-topologically valid bijection between adjacent canonical rings. On the exact cylinder each ring pair permits both:
+Source/test commit `c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a` implements that bounded contract.
 
-- a same-column axial correspondence aligned with the intended cross-field family; and
-- a diagonal/sheared correspondence through the strip triangulation.
+Final source blobs:
 
-Current source enumerates topology-compatible candidates, sorts their source-vertex sequences lexicographically, and chooses `valid.front()`. That incidental source-ID ordering is not authoritative topology or field semantics. On the committed cylinder it selects the diagonal correspondence. The selected inter-ring source edge is exactly `37.9670987281°` away from the axial cross-field family, matching the failed field P95.
+- `SurfaceCellTracing.h`: `c1b816a584d67a3f74c2d7389962bd92d52244c9`;
+- `SurfaceCellTracing.cpp`: `6980850bd32d40b1da9350ebbe3f601b8ce5e07b`;
+- `SurfaceCellsPhase10Tests.cpp`: `c4671ef674228d74b96e80499abbb6846bcdf3e3`.
 
-The next design invariant is therefore:
+New regression source requires:
 
-> Adjacent canonical annulus-ring correspondence must be selected from reciprocal transported cross-field family/sign authority over the complete ring, not source vertex ID, lexicographic order, count, frequency, or Euclidean proximity. Exactly one field-authoritative correspondence may be consumed. Zero or genuinely multiple field-equivalent candidates fail closed with typed periodic authority.
+- the exact cylinder's exact-source-vertex V-family phase-front edges to follow the authoritative axial field family rather than the topology-compatible diagonal strip edge;
+- a synthetic field where the two topology-compatible ring candidates are truly field-equivalent to return typed `Rejected/AmbiguousPeriodicRingCorrespondence` with no generic seeds/traces/proposals.
 
-Implementation must preserve:
+Compile-only artifact authority:
 
-- topology-derived annulus applicability;
-- deterministic true boundaries and cut;
-- first-class holonomy and ordered route;
-- canonical source-strip breakpoints and per-strip target subdivisions;
-- exact periodic quotient and artificial-cut ownership;
-- source provenance;
-- one accepted cell → one output quad.
+- run/job `31214404170` / `92984429773`;
+- artifact `9008118764`, SHA-256 `11e9e50e59aaf71149594f791c5f4c6465ab452111427760cb2f0c9065fea562`;
+- log artifact `9008117677`, SHA-256 `a4cd22bb4662edc290ad558d76e09af4b34a440f5803a5474af5dc68421a1a77`;
+- **44/44** recursive checksums;
+- **111/111** compile/link actions across seven approved targets;
+- command boundary `runtimeExecution=false`.
 
-Do not normalize or choose a candidate solely because it minimizes a world-space angle without reciprocal cross-field transport semantics. Do not use source ID/count/order/frequency as ownership authority.
+The first bounded compile attempt failed only in the new test helpers due Eigen expression-template typing after production source compiled. A test-source-only correction produced the successful compile authority above. No generated project binary was executed in either build attempt.
 
-## Next implementation authority
+## Next authority
 
-Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md` as Code + Build only.
+Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9008118764` as Test + Benchmark only.
 
-G3 closes only when artifact validation proves the exact cylinder is direct deterministic strict-valid `Produced` `CompletedSurfaceCells` pure-quad output with zero validation failures, field P95 <= 15°, normal P95 <= 15°, warpage P95 <= 30°, correct periodic quotient/provenance, no false exterior cut seam, no fallback/recovery, and plane/seam/close sheets green. Then advance to G4.
+G3 closes only when artifact execution proves exact cylinder is direct deterministic strict-valid periodic `Produced` `CompletedSurfaceCells` pure-quad output with zero validation failures, field/normal P95 <= 15°, warpage P95 <= 30°, correct periodic cut/holonomy/quotient/provenance, no false exterior seam, no fallback/recovery, and plane/seam/close sheets green. Then advance to G4.
+
+If the field-authoritative correspondence is consumed but another exact later G3 defect remains, preserve it and address only that general failure next.
 
 Do not broaden G3 into torus/general genus, singularity topology, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production, or performance hardening.
 
