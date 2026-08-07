@@ -54,7 +54,7 @@ Current evidence:
 
 - multi-face seam: 137 traces, zero cells/quads, `SideSubdivisionRepair:InvalidInputIncidence`;
 - close sheets: 158 traces, zero cells/quads, the same failure;
-- both are deterministic and use no fallback/recovery.
+- both are deterministic across three artifact processes and use no fallback/recovery.
 
 ### G3 — Periodic closure and holonomy
 
@@ -88,7 +88,8 @@ If two consecutive Code + Build turns do not materially improve the active gate,
 
 - phase-front source commit: `4842911b6134c60410c92496d85d1152164a73c7`;
 - orientation/direct-cell commit: `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
-- tested artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`.
+- tested artifact SHA-256: `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- evidence archive SHA-256: `458afe01241e8bf0c4623b5064f00eb294b17ffe99b9e34188625c14fbd0f074`.
 
 ## Non-negotiable prohibitions
 
