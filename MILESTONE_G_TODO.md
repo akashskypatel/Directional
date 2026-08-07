@@ -6,80 +6,60 @@ Last updated: 2026-08-06
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G1 — Uniform phase-front plane**.
-- Completed turn: **Gate 1 Uniform Phase-Front Artifact-Only Test + Benchmark**.
-- Next turn: **Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build**.
+- Completed turn: **Gate 1 Phase-Front Orientation and Direct-Cell Materialization Code + Build**.
+- Next turn: **Gate 1 Phase-Front Orientation Artifact-Only Test + Benchmark**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR: #8; keep open, draft, and unmerged.
 - Review policy: `never`.
 
-## Runtime authority
+## Source and build authority
 
-- tested artifact SHA-256: `7e520acda5d402300711d1803a666e505ce4a03c0b92d969f5ae2ba3ca2d1f28`;
-- internal checksums: **47/47**;
-- exact source composition: base `e82fb47dccbefa1b878bc9ddff0ae63745f6efe9` plus patch blob `aa18d454877ccf40d16f71f173fdaf765f5f1086`;
-- no rebuild or source/test/fixture/validator edit occurred;
-- GitHub workflow usage during this turn: none.
+- [x] uniform phase-front source synchronized at `4842911b6134c60410c92496d85d1152164a73c7`;
+- [x] orientation/direct-cell source synchronized at `b2b826eeb975e913f31516c5dd3e6d0a0b554d9e`;
+- [x] payload cleanup commit `54a79a17f48bd3974367c3e043507d0550fb8daa`;
+- [x] final five source/test blobs verified;
+- [x] Release static compile: **7/7** approved targets;
+- [x] artifact SHA-256 `e2f81db0a7d84367e052e1ed82c7d5d22c5ef40279d5ef3cd10858761a0a36ca`;
+- [x] package closure: 5 executables, 2 libraries, 26 fixtures, 45 checksums;
+- [x] no generated binary executed during Code + Build;
+- [x] temporary workflows, markers, and synchronized payloads removed.
 
-## Direct gate result
-
-- [ ] plane — 352 traces, 65 arrangement cells, 409 quads; `completion/output-validation:FlippedFace`, cell 38, source face 41, 100 validation failures;
-- [ ] multi-face seam — 137 traces, zero cells/quads; `SideSubdivisionRepair:InvalidInputIncidence`;
-- [ ] close sheets — 158 traces, zero cells/quads; `SideSubdivisionRepair:InvalidInputIncidence`;
-- [ ] cylinder — 732 traces, zero cells/quads; `SideSubdivisionRepair:InvalidInputIncidence`.
-
-The plane phase-front path is live and deterministic, but its winding/incidence and direct-cell materialization are not valid.
-
-## Default-suite result
-
-- direct acceptance: **0/4**;
-- remaining producer: **77/79**;
-- completion: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- total: **299/315**.
-
-## G1 current subgate
+## G1 implementation checkpoint
 
 - [x] first-class phase, lattice coordinates, branch rotation, and scale level;
-- [x] directed front-edge state and bounded planar grid;
-- [x] compatible merge and boundary termination events;
-- [x] deterministic phase-front hashing;
+- [x] directed front ownership and typed events;
 - [x] authoritative proposal-cycle arrangement path;
-- [x] phase-front data consumed by arrangement and completion;
-- [ ] source-normal-consistent cell winding;
-- [ ] ordered side and corner incidence validation before materialization;
-- [ ] exactly one filled side or exterior classification per directed edge;
-- [ ] one accepted four-sided phase-front cell materializes as one quad-domain cell;
-- [ ] plane direct strict validation;
-- [ ] pure-quad `CompletedSurfaceCells` success without fallback/recovery.
+- [x] four distinct corners and ordered side continuity;
+- [x] component/sheet consistency;
+- [x] source-normal winding and transactional complete-cycle reversal;
+- [x] exactly one filled cell and reciprocal-opposite-or-exterior classification per directed edge;
+- [x] one accepted four-sided phase-front cell directly materializes as one quad-domain cell;
+- [x] generic completion bypass for authoritative direct cells;
+- [x] fail-closed orientation/incidence boundary before completion;
+- [x] two stale non-direct producer tests corrected without weakening validation;
+- [ ] plane direct acceptance proven by artifact-only execution;
+- [ ] pure-quad `CompletedSurfaceCells` output with no fallback/recovery.
 
-## Next Code + Build
+## Latest runtime baseline
 
-- [ ] implement the orientation/incidence contract;
-- [ ] reverse complete cell cycles transactionally when required;
-- [ ] bypass generic patch expansion for authoritative four-sided phase-front cells;
-- [ ] correct the two stale producer tests while preserving real recovery coverage;
-- [ ] compile only the seven approved targets;
-- [ ] run no generated binary.
+The preceding artifact remains the runtime comparison authority:
 
-## Ordered remote source synchronization backlog
+- plane: 352 traces, 65 arrangement cells, 409 quads, `completion/output-validation:FlippedFace`, 100 validation failures;
+- seam/close sheets/cylinder: zero cells, `SideSubdivisionRepair:InvalidInputIncidence`;
+- direct acceptance: **0/4**;
+- non-overlapping default total: **299/315**.
 
-Layer 1 — current tested phase-front patch:
+## Next Test + Benchmark
 
-- [ ] apply and commit the exact existing five-file patch after service recovery;
-- [ ] verify each resulting blob against `TODO`;
-- [ ] do not use a workflow while the outage persists.
-
-Layer 2 — next orientation/direct-cell patch:
-
-- [ ] implement as a separate immutable incremental patch on exact Layer 1 source;
-- [ ] record digest, expected final blobs, local build artifact, logs, and dependency closure;
-- [ ] apply as a separate coherent source commit after Layer 1 is synchronized and verified.
-
-Cleanup:
-
-- [ ] retain every patch layer in order until its source commit and expected blobs are verified;
-- [ ] remove only the payload corresponding to a verified source commit.
+- [ ] verify new artifact SHA-256 and all 45 checksums;
+- [ ] verify synchronized source commits and five final blobs;
+- [ ] run plane first in a fresh process;
+- [ ] report whether one-to-one direct materialization replaces the prior 65-to-409 expansion;
+- [ ] report whether `FlippedFace` is eliminated or invalid incidence fails earlier;
+- [ ] run seam, close sheets, and cylinder only after plane evidence;
+- [ ] run remaining default suites;
+- [ ] run three independent bounded benchmark processes per analytic fixture;
+- [ ] perform no rebuild or source/test/fixture/validator edit.
 
 ## Gate order
 
