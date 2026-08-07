@@ -1,18 +1,17 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v7",
-  "updatedUtc": "2026-08-07T18:08:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v8",
+  "updatedUtc": "2026-08-07T19:00:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "periodic authority runtime-proven; source-strip output-validation correction compile-valid; runtime revalidation pending",
+    "gateState": "periodic topology and source-strip authority runtime-proven; field-authoritative adjacent-ring correspondence remains",
     "earliestFailingExecutedFixture": "cylinder__surface_cells",
     "earliestExecutedFailure": "completion/output-validation:AggregateCompletionValidationFailure",
     "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Output_Validation_Artifact_Only_Test_Benchmark_Plan.md"
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md"
   },
-  "latestCodeBuild": {
+  "testedAuthority": {
     "sourceCommit": "2783ea718ffb15f8fb3868795173472ab8636c1c",
-    "patchSha256": "74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e",
     "workflowRunId": 31204848178,
     "workflowJobId": 92953250176,
     "artifactId": 9004509871,
@@ -20,64 +19,28 @@
     "artifactSha256": "2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe",
     "logArtifactId": 9004508508,
     "logArtifactSha256": "80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b",
-    "internalChecksums": "44/44",
-    "compileActions": "111/111",
-    "approvedTargets": "7/7",
-    "executables": 5,
-    "libraries": 2,
-    "fixtures": 27,
-    "runtimeExecution": false,
-    "changedFileBlobs": {
-      "src/geometry/SurfaceCellTracing.cpp": "9df9a9759c761293fef1278f97b82fbb0aee0600",
-      "tests/SurfaceCellsPhase10Tests.cpp": "c9dcbe9f67ba239c061ddb295f40c9b82ebafb49"
-    },
-    "implementedContracts": {
-      "canonicalSourceStripBreakpointsMandatory": true,
-      "perStripSubdivisionFromIntrinsicLengthAndLocalTarget": true,
-      "periodicCoordinatesNonuniformAndStripConforming": true,
-      "periodicTranslationFromSummedStripSubdivisions": true,
-      "oneAcceptedCellToOneQuadPreserved": true,
-      "axialConstructionUnchanged": true,
-      "euclideanSeamWelding": false,
-      "postHocCellSplitMerge": false,
-      "fallbackRecoveryAdded": false,
-      "rowOrderRouteIdentityUsesOrderedCanonicalEndpointKeys": true,
-      "boundaryStripBreakpointRegressionCompiledNotExecuted": true,
-      "validatorsChanged": false
-    },
-    "runtimeVerificationPending": true
-  },
-  "testedAuthority": {
-    "sourceCommit": "56f823273cad041a01ebb4d0772c3265ff248f4a",
-    "workflowRunId": 31196268841,
-    "workflowJobId": 92925122791,
-    "artifactId": 9001168379,
-    "artifactName": "g3-periodic-cylinder-code-build",
-    "artifactSha256": "0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c",
-    "logArtifactId": 9001167184,
-    "logArtifactSha256": "fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4",
-    "patchSha256": "d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f",
+    "patchSha256": "74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e",
     "internalChecksums": "44/44",
     "executables": 5,
     "libraries": 2,
     "fixtures": 27,
     "rebuildPerformedDuringTest": false,
-    "sourceOrValidationEditedDuringTest": false
+    "sourceOrValidationEditedDuringTest": false,
+    "runtimeOnlyFixtureSymlink": true
   },
   "focusedContracts": {
-    "latestExecutedPassed": 11,
-    "latestExecutedTotal": 12,
-    "latestExecutedFailed": ["SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration"],
-    "failureClassification": "incorrect expectation: raw DCEL sourceEdge IDs are face-row-enumeration-dependent; ordered canonical source-vertex endpoint routes and cuts are identical",
+    "passed": 13,
+    "total": 13,
+    "failed": [],
+    "periodicOutputValidationFocused": "6/6",
+    "retainedG1G2": "7/7",
     "canonicalHolonomyRouteInvariant": true,
     "canonicalCutInvariant": true,
-    "nextArtifactFocusedContracts": 6,
-    "rowOrderExpectationCorrectedInLatestCodeBuild": true,
-    "sourceStripBreakpointContractAddedInLatestCodeBuild": true
+    "canonicalSourceStripBreakpointsRetained": true
   },
   "directAcceptance": {
     "passed": 3,
-    "total": 6,
+    "totalMandatoryCurrentGateCases": 4,
     "cases": {
       "plane": {
         "success": true,
@@ -123,14 +86,14 @@
         "runs": 3,
         "periodicHolonomyAvailable": true,
         "periodicHolonomyQuarterTurnRotation": 0,
-        "periodicHolonomyTranslation": [29, 0],
+        "periodicHolonomyTranslation": [32, 0],
         "periodicHolonomyRouteEdgeCount": 32,
         "periodicCutEdgeCount": 4,
-        "traceSegments": 2163,
+        "traceSegments": 2237,
         "arrangementCells": 0,
-        "completedQuads": 290,
-        "provenanceVertices": 319,
-        "validationFailures": 2,
+        "completedQuads": 320,
+        "provenanceVertices": 352,
+        "validationFailures": 3,
         "terminalFailureCode": "NotProductionReady",
         "terminalFailureStage": "completion",
         "firstInvalidProducerStage": "completion/output-validation",
@@ -139,8 +102,23 @@
         "fallbackUsed": false,
         "sourceGridRecoveryUsed": false,
         "deterministicFailureSignature": true,
-        "wallSecondsRange": [0.921602, 1.062596],
-        "note": "This is the latest executed runtime authority. The latest Code + Build artifact is unexecuted; its periodic translation/grid cardinality may legitimately differ from 29 due to source-strip-conforming subdivision."
+        "completedValidation": {
+          "failedThresholds": [
+            {"field": "normalP95Degrees", "value": 16.627273436620403, "limit": 15.0},
+            {"field": "fieldP95Degrees", "value": 37.96709872810172, "limit": 15.0},
+            {"field": "warpageP95Degrees", "value": 30.621379281060747, "limit": 30.0}
+          ],
+          "thresholdDetailsSource": "non-invasive inspection of exact packaged runtime in-memory SurfaceFinalValidationReport",
+          "discreteStrictSourceAuthoritativeChecksGreen": true,
+          "quadToSourceP95": 0.0312811149611,
+          "quadToSourceMax": 0.06678447636,
+          "sourceToOutputP95": 0.00817358891,
+          "sourceToOutputMax": 0.06573736727,
+          "fieldMedianDegrees": 0.0,
+          "warpageMaxDegrees": 31.9329,
+          "aspectP95": 1.11277,
+          "scaledJacobianMin": 0.760829
+        }
       },
       "bunny_1k_random": {
         "success": false,
@@ -149,33 +127,65 @@
         "traceSegments": 80862,
         "arrangementCells": 0,
         "completedQuads": 0,
-        "wallSeconds": 28.606104
+        "wallSeconds": 41.73037,
+        "laterGateObservation": true
       },
       "vase": {
         "success": false,
-        "producerDisposition": "NotApplicable",
+        "producerDisposition": "NoCompletedRecord",
         "runs": 1,
-        "traceSegments": 116922,
-        "arrangementCells": 0,
-        "completedQuads": 0,
-        "wallSeconds": 51.925637
+        "timeoutSeconds": 180,
+        "laterGateObservation": true,
+        "timeoutIsCorrectnessEvidence": false
       }
     }
   },
+  "comparisonWithPreviousG3Artifact": {
+    "previousArtifactId": 9001168379,
+    "previousTranslation": [29, 0],
+    "currentTranslation": [32, 0],
+    "previousTraceSegments": 2163,
+    "currentTraceSegments": 2237,
+    "previousCompletedQuads": 290,
+    "currentCompletedQuads": 320,
+    "previousProvenanceVertices": 319,
+    "currentProvenanceVertices": 352,
+    "previousValidationFailures": 2,
+    "currentValidationFailures": 3,
+    "previousNormalP95Degrees": 15.7659579535,
+    "currentNormalP95Degrees": 16.627273436620403,
+    "previousFieldP95Degrees": 37.96709872810172,
+    "currentFieldP95Degrees": 37.96709872810172,
+    "previousWarpageP95Degrees": 29.33561954,
+    "currentWarpageP95Degrees": 30.621379281060747,
+    "previousQuadToSourceP95": 0.0683280663,
+    "currentQuadToSourceP95": 0.0312811149611,
+    "previousSourceToOutputP95": 0.104463816,
+    "currentSourceToOutputP95": 0.00817358891
+  },
+  "rootCause": {
+    "class": "field-authority ambiguity in adjacent canonical annulus-ring correspondence",
+    "topologyCompatibleCandidatesPerRingPair": 2,
+    "currentSelectionMechanism": "sort valid source-vertex sequences lexicographically and select valid.front()",
+    "selectedCandidate": "diagonal/sheared inter-ring correspondence",
+    "alternativeCandidate": "same-column axial correspondence",
+    "selectedInterRingFieldDeviationDegrees": 37.96709872810172,
+    "matchesFieldP95Failure": true,
+    "nextRequiredAuthority": "reciprocal transported cross-field family/sign correspondence; typed fail-closed on zero or multiple field-authoritative candidates"
+  },
   "defaultSuites": {
-    "focusedRetainedProducer": {"tests": 12, "passed": 11, "failed": 1},
-    "producerRemaining": {"tests": 86, "passed": 82, "failed": 4},
+    "focusedRetainedProducer": {"tests": 13, "passed": 13, "failed": 0},
+    "producerRemainingBoundedExcludingLongBunnyVaseCases": {"tests": 84, "passed": 82, "failed": 2, "failures": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent", "UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder"]},
+    "fullProducerRemainingAttemptCompleted": false,
     "completion": {"tests": 164, "passed": 154, "failed": 10},
     "validation": {"tests": 60, "passed": 60, "failed": 0},
     "compiledApi": {"tests": 8, "passed": 8, "failed": 0}
   },
-  "nonOverlappingTotal": {"passed": 315, "total": 330, "failed": 15},
   "gateDecision": {
     "g3Closed": false,
-    "periodicAuthorityRuntimeProven": true,
-    "latestCodeBuildRuntimeVerified": false,
-    "reason": "The latest executed cylinder consumes deterministic authoritative periodic Produced state but has two pre-optimization completed-checkpoint validation failures. A source-strip-conforming periodic lattice correction is now compile-valid and awaits exact artifact-only execution.",
-    "validationThresholdDetailsSerialized": false,
-    "nextTurn": "Artifact-only Test + Benchmark — G3 periodic output validation"
+    "materialProgress": true,
+    "reason": "Source-strip conformity and canonical row-order identity are runtime-proven and improve source coverage, but the exact cylinder deterministically fails field, normal, and marginal warpage P95 thresholds because adjacent ring correspondence is selected by incidental lexicographic source-vertex order rather than reciprocal cross-field family authority.",
+    "validatorsChanged": false,
+    "nextTurn": "Code + Build — G3 periodic field-authoritative ring correspondence"
   }
 }
