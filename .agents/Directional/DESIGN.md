@@ -39,7 +39,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** **passed.**
 3. **G2 — Cross-chart and close-sheet propagation:** **passed.**
-4. **G3 — Periodic closure and holonomy:** **active; periodic authority is runtime-proven and the source-strip output-validation correction is compile-valid, runtime verification pending.**
+4. **G3 — Periodic closure and holonomy:** **active; periodic topology, source-strip conformity, and quotient authority are runtime-proven; adjacent-ring field correspondence remains ambiguous.**
 5. **G4 — Topology-distinct completion and singularities:** blocked.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as a success gate; randomized bunny and vase remain mandatory observations.
@@ -47,7 +47,7 @@ An authoritative cell has four ordered source-attached corners/sides, coherent t
 
 ## Passed-gate runtime authority
 
-Artifact `9001168379` preserves the direct passed gates:
+Artifact `9004509871`, source `2783ea718ffb15f8fb3868795173472ab8636c1c`, preserves the direct passed gates:
 
 | Fixture | Result | Producer | Traces | Quads | Validation | Output hash |
 |---|---:|---|---:|---:|---:|---|
@@ -72,7 +72,7 @@ periodic holonomy =
   + ordered canonical source route
 ```
 
-Required invariants remain:
+Required invariants:
 
 - applicability derives from source topology, never fixture identity;
 - one deterministic intrinsic source cut joins the two true annulus boundaries;
@@ -84,82 +84,63 @@ Required invariants remain:
 - the artificial cut is not an exterior output boundary;
 - the two genuine annulus boundaries remain exterior;
 - direct materialization quotients periodic duplicates exactly and preserves one accepted cell → one quad;
-- source-face row ordering may change incidental DCEL numbering but not canonical source-route/cut identity or holonomy semantics.
+- source-face row ordering may change incidental DCEL numbering but not canonical source-route/cut identity or holonomy semantics;
+- every canonical source-ring strip boundary is a mandatory intrinsic periodic lattice breakpoint.
 
-Artifact-only execution of source `56f823273cad041a01ebb4d0772c3265ff248f4a`, artifact `9001168379`, proved the exact cylinder consumes this authority:
+Artifact `9004509871` proves these bounded contracts are consumed on the exact cylinder:
 
 - disposition `Produced`;
-- holonomy `r=0`, `t=(29,0)`, ordered route 32 edges, cut four edges;
-- 2,163 source-attached traces;
+- holonomy `r=0`, `t=(32,0)`, ordered route 32 edges, cut four edges;
+- 2,237 source-attached traces;
 - zero generic arrangement cells;
-- 290 direct completed quads;
-- 319 provenance vertices;
+- 320 direct completed quads;
+- 352 provenance vertices;
+- source-strip breakpoint and canonical row-order contracts pass;
 - no fallback/recovery;
 - deterministic 3/3.
 
-This is material progress over the prior `NotApplicable` generic path.
+## Active G3 failure authority
 
-## Active G3 output-materialization contract
+The cylinder remains red at `completion/output-validation:AggregateCompletionValidationFailure`. Non-invasive inspection of the exact packaged runtime's in-memory `SurfaceFinalValidationReport` identifies three failed scalar thresholds:
 
-The latest executed cylinder remains red because the direct completed checkpoint reports two validation failures and terminates at `completion/output-validation:AggregateCompletionValidationFailure` before final output. The benchmark record does not expose the two individual validator threshold fields; they must not be guessed or relaxed.
+- `normalP95Degrees = 16.6272734366` > `15.0`;
+- `fieldP95Degrees = 37.9670987281` > `15.0`;
+- `warpageP95Degrees = 30.6213792811` > `30.0`.
 
-The constructive invariant is:
+All represented discrete strict/source-authoritative topology, boundary, provenance, component/sheet, manifold, inversion, self-intersection, convexity, valence, Euler, feature-rail, and boundary-cycle checks pass. Validators are unchanged.
 
-> A periodic phase-front that is authoritative `Produced` must materialize a source-strip-conforming annular lattice. Every canonical source-ring strip boundary is a mandatory intrinsic lattice breakpoint, so a direct output side cannot shortcut a source topological corner merely because a global target-size count places a column across it.
+The source-strip correction is retained: it improves source-to-output P95 approximately `0.104464 -> 0.008174` and quad-to-source P95 approximately `0.068328 -> 0.031281`. It does not solve cross-field alignment; field P95 remains exactly `37.9670987281°`.
 
-Validation remains authoritative and unchanged.
+## Active G3 ring-correspondence contract
 
-## G3 source-strip correction — compile-valid checkpoint
+A triangulated annulus strip can admit more than one source-topologically valid bijection between adjacent canonical rings. On the exact cylinder each ring pair permits both:
 
-Source commit `2783ea718ffb15f8fb3868795173472ab8636c1c` implements the bounded correction without changing validators or materialization repair behavior.
+- a same-column axial correspondence aligned with the intended cross-field family; and
+- a diagonal/sheared correspondence through the strip triangulation.
 
-For every already-authoritative canonical source strip around the annulus, the periodic producer now:
+Current source enumerates topology-compatible candidates, sorts their source-vertex sequences lexicographically, and chooses `valid.front()`. That incidental source-ID ordering is not authoritative topology or field semantics. On the committed cylinder it selects the diagonal correspondence. The selected inter-ring source edge is exactly `37.9670987281°` away from the axial cross-field family, matching the failed field P95.
 
-1. retains the strip endpoint as an exact intrinsic periodic lattice breakpoint;
-2. derives strip length from the transported canonical ring structure already used by the periodic chart;
-3. samples local target size from both strip endpoints on every ring;
-4. chooses a deterministic positive nearest-integer subdivision count from strip length / local target;
-5. fails closed as `InvalidPeriodicChart` for non-finite or overflowing subdivision state;
-6. builds the cumulative periodic chart coordinate sequence strip by strip, using each exact strip endpoint as the final coordinate of that strip;
-7. defines `gridU` and the periodic lattice translation from the sum of strip-local subdivisions;
-8. constructs phase-front points, cell corners, side paths, and intrinsic cell validation from those nonuniform strip-conforming coordinates.
+The next design invariant is therefore:
 
-The axial subdivision and genuine annulus boundaries remain unchanged. The exact periodic quotient, periodic ownership, source provenance, and one-cell-to-one-quad mapping remain upstream invariants. No post-hoc splitting/merging, proximity seam weld, nearest-point repair, fallback/recovery, fixture identity, or expected output count was added.
+> Adjacent canonical annulus-ring correspondence must be selected from reciprocal transported cross-field family/sign authority over the complete ring, not source vertex ID, lexicographic order, count, frequency, or Euclidean proximity. Exactly one field-authoritative correspondence may be consumed. Zero or genuinely multiple field-equivalent candidates fail closed with typed periodic authority.
 
-The previous translation `t=(29,0)` is runtime history, not a required future constant. A deterministic source-strip-conforming translation may differ; semantic holonomy/quotient correctness decides acceptance.
+Implementation must preserve:
 
-## Row-order semantic identity — corrected in source
+- topology-derived annulus applicability;
+- deterministic true boundaries and cut;
+- first-class holonomy and ordered route;
+- canonical source-strip breakpoints and per-strip target subdivisions;
+- exact periodic quotient and artificial-cut ownership;
+- source provenance;
+- one accepted cell → one output quad.
 
-Artifact evidence established that raw DCEL source-edge integer IDs can change after face-row reversal while ordered canonical source-edge endpoint identities remain equal.
-
-The compiled row-order contract now maps each route/cut source-edge ID through that mesh's authoritative `EV` table to ordered canonical endpoint keys `(min(v0,v1), max(v0,v1))` and compares the **ordered key sequences**. It does not sort away route order or normalize production DCEL IDs.
-
-Grid dimensions, rotation, lattice translation, route/cut cardinality, disposition, and the existing periodic semantic assertions remain in the test.
-
-A new compiled structural contract also requires all genuine source-boundary vertices derived from authoritative boundary edges to occur as exact phase-front corners. It does not encode the committed cylinder ring count or expected output count.
-
-These tests are compile-valid only until artifact execution.
-
-## Compile authority
-
-- source `2783ea718ffb15f8fb3868795173472ab8636c1c`;
-- patch SHA-256 `74dc044caf0f05c108a1b2dc062927bc5a4bbfac6fb34584d20010f5d2d6fe9e`;
-- build run/job `31204848178` / `92953250176`;
-- artifact `9004509871`, SHA-256 `2ebc543d15bc5a134d664016b6437487de0ce73267bff2986d09ba1423b382fe`;
-- detailed log artifact `9004508508`, SHA-256 `80c6ab8997caafb49306adf3496a9dd20f1e2c029f63f8a71237e9b7e68a292b`;
-- recursive checksums **44/44**;
-- compile/link **111/111** across seven approved targets;
-- packaged command boundary `runtimeExecution=false`.
-
-No generated project binary was executed during this Code + Build turn.
+Do not normalize or choose a candidate solely because it minimizes a world-space angle without reciprocal cross-field transport semantics. Do not use source ID/count/order/frequency as ownership authority.
 
 ## Next implementation authority
 
-Execute `.agents/Directional/Gate_3_Periodic_Output_Validation_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9004509871` as Test + Benchmark only. Do not rebuild or edit.
+Execute `.agents/Directional/Gate_3_Periodic_Ring_Correspondence_Code_Build_Plan.md` as Code + Build only.
 
-G3 closes only when exact cylinder remains authoritative periodic `Produced` and becomes direct deterministic strict-valid `CompletedSurfaceCells` pure-quad output with source-strip-conforming periodic lattice/quotient, zero completed-checkpoint validation failures, no false periodic exterior seam, complete provenance, no fallback/recovery, and plane/seam/close sheets green. Then advance to G4.
-
-If artifact execution exposes another exact source-authoritative G3 structural/validation failure, remain in G3 and address only that general failure next.
+G3 closes only when artifact validation proves the exact cylinder is direct deterministic strict-valid `Produced` `CompletedSurfaceCells` pure-quad output with zero validation failures, field P95 <= 15°, normal P95 <= 15°, warpage P95 <= 30°, correct periodic quotient/provenance, no false exterior cut seam, no fallback/recovery, and plane/seam/close sheets green. Then advance to G4.
 
 Do not broaden G3 into torus/general genus, singularity topology, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production, or performance hardening.
 
