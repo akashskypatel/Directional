@@ -52,4 +52,4 @@ All required benchmark cases were structurally deterministic. The plane tracing 
 - [ ] produce exactly one next Code + Build plan;
 - [ ] do not make another local predicate repair during review.
 
-GitHub workflows are available again for future authorized Code + Build compilation/artifact creation. P5 remains open.
+GitHub workflows are operational again. Future authorized Code + Build turns may use GitHub Actions for normal compilation/artifact creation under `.agents/Directional/GitHub_Workflow_Policy.md`. Test turns remain artifact-only. P5 remains open.
