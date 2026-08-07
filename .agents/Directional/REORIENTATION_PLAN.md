@@ -21,7 +21,9 @@ The bounded authoritative producer is runtime-proven on three progressively stro
 2. multi-face seam — reciprocal cross-chart transport;
 3. close sheets — independent disconnected spatially close source sheets.
 
-The G3 periodic-annulus extension is now implemented and compile-valid at source `56f823273cad041a01ebb4d0772c3265ff248f4a`. It derives annular topology and a deterministic cut-open intrinsic chart, records first-class periodic holonomy, pairs artificial-cut fronts through periodic lattice identity, and materializes the quotient without Euclidean seam welding. Runtime evidence for this new path does not yet exist.
+The G3 periodic-annulus extension is implemented and compile-valid at source `56f823273cad041a01ebb4d0772c3265ff248f4a`. It derives annular topology and a deterministic cut-open intrinsic chart, records first-class periodic holonomy, pairs artificial-cut fronts through periodic lattice identity, and materializes the quotient without Euclidean seam welding. Runtime evidence for this new path does not yet exist.
+
+The current implementation is a bounded canonical-ring annulus proof rather than a general arbitrary-annulus/genus solver. Exact artifact execution must determine whether the committed cylinder satisfies the intended domain assumptions. Do not expand scope before that evidence exists.
 
 ## Passed-gate authority
 
