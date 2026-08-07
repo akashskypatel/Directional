@@ -5,8 +5,8 @@
 ```text
 G0 truthful authority [passed]
 → G1 uniform authoritative phase-front plane [passed]
-→ G2 cross-chart / close-sheet isolation [ACTIVE; compile-valid, runtime verification pending]
-→ G3 periodic holonomy
+→ G2 cross-chart / close-sheet isolation [passed]
+→ G3 periodic holonomy [ACTIVE]
 → G4 topology and singularities
 → G5 adaptivity and hard features
 → G6 bunny and vase production success
@@ -15,86 +15,83 @@ G0 truthful authority [passed]
 
 ## Current disposition
 
-The Gate 1 bounded producer replacement is runtime-proven. The source distinguishes `NotApplicable / Produced / Rejected`, prevents generic producer substitution after authoritative rejection, and directly produces the exact plane and multi-face seam.
+The bounded authoritative producer is now runtime-proven on three progressively stronger domains:
 
-The bounded Gate 2 extension is now implemented and compile-valid. It partitions authoritative phase/front construction by source component/local-sheet and prevents direct materialization from merging equal lattice coordinates across unrelated sheets. Runtime evidence for that change does not yet exist.
+1. plane — connected planar uniform phase/front;
+2. multi-face seam — reciprocal cross-chart transport;
+3. close sheets — independent disconnected spatially close source sheets.
 
-## Gate 1 closure authority
+Gate 2 artifact validation closes the prior source-sheet blocker. The next earliest failure is the singularity-free cylinder, which remains outside the current bounded producer and falls to the generic path as `NotApplicable`.
 
-Validated artifact:
+## Passed-gate authority
 
-- source commit `0e96ceb62f85353c9cd8a1eeed7c560babeaa7c3`;
-- artifact ID `8984760467`;
-- artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031`.
+Tested artifact:
+
+- source commit `218dd3ec3f6399dc82183390720a4ba4d3a70b42`;
+- artifact `8994541137`;
+- SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
+- recursive checksums **45/45**;
+- focused contracts **7/7 passed**.
 
 Direct proven regressions:
 
-- plane: `Produced`, 81 provenance vertices, 64 pure quads, zero validation failures, no fallback/recovery, deterministic hash suffix `730caeae49ec872c`;
-- seam: `Produced`, 81 vertices, 64 pure quads, zero validation failures, no fallback/recovery, deterministic hash `a8972efd7c4900a4`.
+- plane: `Produced`, 81 vertices, 64 pure quads, zero validation failures, hash `730caeae49ec872c`;
+- seam: `Produced`, 81 vertices, 64 pure quads, zero validation failures, hash `5bdf34d7802e9fb0`;
+- close sheets: `Produced`, 242 vertices, 200 pure quads, exactly two connected components, zero validation failures, hash `89b052762f52a5af`.
 
-## G2 compile-valid checkpoint
+All three are deterministic across three independent processes and use no fallback/recovery.
 
-Source commit:
+## Immediate objective — G3 periodic cylinder
 
-- `218dd3ec3f6399dc82183390720a4ba4d3a70b42`
+Current exact cylinder:
 
-Implemented bounded changes:
+- producer disposition `NotApplicable`;
+- 732 generic traces;
+- zero arrangement/completion;
+- terminal `NotProductionReady:completion`;
+- no fallback/recovery.
 
-1. partition uniform phase/front input faces by authoritative `(source component, local sheet)` before phase-frame construction;
-2. restrict source point lookup, edge incidence, boundary classification, and planar-frame checks to the active sheet;
-3. preserve existing reciprocal edge-transition and ordered source-vertex-fan transport independently inside each sheet;
-4. concatenate only sheet results that independently reach `Produced`;
-5. retain an applicable per-sheet invariant failure as authoritative `Rejected`;
-6. keep unsupported/periodic topology `NotApplicable`;
-7. key direct output lattice vertices by `(component, sheet, u, v)` and construct source-sheet-local boundary loops;
-8. add compile-verified disconnected-sheet and face-row-order regressions.
+Execute `.agents/Directional/Gate_3_Periodic_Cylinder_Code_Build_Plan.md`.
 
-Successful build evidence:
+The bounded implementation must add only the missing periodic contract:
 
-- run/job/artifact `31179899458` / `92870408341` / `8994541137`;
-- artifact SHA-256 `f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791`;
-- detailed log artifact `8994539982`, SHA-256 `c7d67285ca6b980111a53fe017b3de5800abccb2a3146352135c0d674ca0acc8`;
-- recursive checksums 45/45;
-- compile/link 111/111 across seven approved targets;
-- no generated project binary executed.
-
-A first compile attempt exposed one ordinary syntax error; it was corrected surgically and the same scope then compiled successfully. This is build evidence only, not runtime progress.
-
-## Immediate objective — artifact-only G2 verification
-
-Execute `.agents/Directional/Gate_2_Close_Sheet_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `8994541137`.
-
-Validation priority:
-
-1. integrity/source/blob verification;
-2. two new disconnected-sheet producer contracts;
-3. plane and seam mandatory regressions;
-4. exact close-sheet production acceptance;
-5. proof of source component/local-sheet isolation and no cross-sheet output identity merge;
-6. bounded determinism and remaining non-overlapping suites;
-7. cylinder/bunny/vase only as later-gate observations after the G2 decision.
+1. recognize a connected orientable singularity-free annulus from source topology;
+2. choose one deterministic intrinsic cut joining the two source boundary cycles;
+3. construct a cut-open phase chart through reciprocal source-topology transport rather than global world-space planarity;
+4. record periodic holonomy as `(Z4 rotation, Z2 lattice translation, ordered source route)`;
+5. fail closed with a typed periodic reason when holonomy is invalid;
+6. pair periodic front edges through exact source/phase equivalence;
+7. quotient duplicated cut-chart lattice vertices during materialization without Euclidean seam welding;
+8. preserve only the two genuine cylinder boundary loops as exterior boundaries;
+9. keep `Rejected` terminal and prevent generic substitution;
+10. retain plane, seam, and close sheets as mandatory regressions.
 
 ### Material-progress condition
 
-G2 closes only if close sheets becomes direct deterministic valid `Produced` pure-quads with zero cross-sheet provenance/merge violations while plane and seam remain valid. If G2 closes, the next implementation objective is G3 periodic cylinder/holonomy. If not, the next Code + Build turn addresses only the exact general G2 failure established by artifact evidence.
+G3 materially advances only when cylinder either:
+
+- becomes direct authoritative `Produced`; or
+- reaches a new exact typed periodic-holonomy `Rejected` state without generic substitution.
+
+Changing only diagnostics, hashes, timing, or later downstream failures is not material progress.
 
 ## Explicitly deferred work
 
-Until G2 passes, do not prioritize:
+Until G3 passes, do not prioritize:
 
-- cylinder periodic holonomy;
-- singularity topology and topology-distinct completion;
+- torus/general-genus periodic topology;
+- singularity topology or topology-distinct patch completion;
 - adaptive 2:1 transitions and hard-feature expansion;
 - bunny/vase production or performance remediation;
 - scheduler-sensitive timing ratios;
-- the existing downstream completion/simplification failures;
-- cache, memory, ownership-compaction, or general diagnostics unless essential to G2 correctness.
+- the ten existing downstream completion/simplification failures;
+- cache, memory, ownership compaction, or broad diagnostics unless essential to G3 correctness.
 
 ## Evidence discipline
 
 - Direct mandatory fixtures outrank aggregate totals.
 - Passed earlier gates are mandatory regressions.
-- Narrow synthetic fixtures isolate contracts but cannot replace exact production-route tests.
+- Narrow contract fixtures isolate algorithms but exact production-route acceptance decides gate closure.
 - Bunny and vase remain mandatory production observations and may not be simplified, bypassed, or special-cased.
 - Test turns remain artifact-only; Code + Build turns may use GitHub workflow compilation under the workflow policy.
 - Timeout is failure only and never correctness evidence.
