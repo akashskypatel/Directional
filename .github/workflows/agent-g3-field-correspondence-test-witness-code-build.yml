@@ -1,0 +1,60 @@
+name: Agent G3 Field Correspondence Test Witness Code Build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/g3-field-correspondence-test-witness-code-build.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-g3-field-correspondence-test-witness-code-build
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > /tmp/g3-field-correspondence-test-witness-code-build.log
+          {
+            echo "task=G3 field-correspondence test witness Code + Build"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a /tmp/g3-field-correspondence-test-witness-code-build.log
+
+      - name: Checkout bounded branch source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          submodules: false
+          persist-credentials: true
+
+      - name: Apply test-only correction, compile, and package
+        shell: bash
+        run: bash .agents/Directional/turn-payloads/g3-field-correspondence-test-witness-code-build.sh
+
+      - name: Upload compile-only build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: g3-field-correspondence-test-witness-code-build
+          path: agent-artifact/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g3-field-correspondence-test-witness-code-build-logs
+          path: /tmp/g3-field-correspondence-test-witness-code-build.log
+          if-no-files-found: error
+          retention-days: 14
