@@ -1,16 +1,17 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v5",
-  "updatedUtc": "2026-08-07T16:20:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v6",
+  "updatedUtc": "2026-08-07T17:07:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
+    "gateState": "materially advanced; periodic authority proven; completed output validation remains",
     "earliestFailingExecutedFixture": "cylinder__surface_cells",
+    "earliestFailure": "completion/output-validation:AggregateCompletionValidationFailure",
     "retainedRegressions": ["plane__surface_cells", "multi_face_seam__surface_cells", "close_sheets__surface_cells"],
-    "nextPlan": ".agents/Directional/Gate_3_Periodic_Cylinder_Artifact_Only_Test_Benchmark_Plan.md"
+    "nextPlan": ".agents/Directional/Gate_3_Periodic_Output_Validation_Code_Build_Plan.md"
   },
-  "latestCodeBuild": {
+  "testedAuthority": {
     "sourceCommit": "56f823273cad041a01ebb4d0772c3265ff248f4a",
-    "patchSha256": "d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f",
     "workflowRunId": 31196268841,
     "workflowJobId": 92925122791,
     "artifactId": 9001168379,
@@ -18,76 +19,121 @@
     "artifactSha256": "0b4ef04bd7d9641588a6f9d23882501d551367fdee56b9b99954becc19780b8c",
     "logArtifactId": 9001167184,
     "logArtifactSha256": "fdd873fe4e0980ddf8613bd04b3be8f795730928bd73844cd92aec75c41031a4",
+    "patchSha256": "d93cc65f86ea402111af3b409e73d08c72be37fdee1f2758538033fc7525802f",
     "internalChecksums": "44/44",
-    "compileActions": "111/111",
-    "approvedTargets": "7/7",
     "executables": 5,
     "libraries": 2,
     "fixtures": 27,
-    "runtimeExecution": false,
-    "boundedDomain": "canonical equal-cardinality singularity-free ring annulus",
-    "changedFileBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "931669018a986096cf78d66a2aed9de5aa8e0fe1",
-      "include/directional/diagnostics/RemeshDiagnostics.h": "a51215982318e77581efa4fa7887d0406a9d4bf0",
-      "src/geometry/SurfaceCellTracing.cpp": "b1a2c6d4051cc17b79e342170285d69552cad16d",
-      "src/pipeline/RemeshPipeline.cpp": "7674ed3fe40c5f43c668c931c01b59f6c7829df8",
-      "src/bench/DirectionalBenchmark.cpp": "18955ca8ef72812c9c70ed522bb578409e6a176f",
-      "tests/SurfaceCellsPhase10Tests.cpp": "bccd6abf3e31b8096c471c515b1949d08dcfde59"
-    },
-    "implementedContracts": {
-      "topologyDerivedAnnulusApplicability": true,
-      "intrinsicCutOpenChart": true,
-      "firstClassPeriodicHolonomy": true,
-      "periodicHolonomyComponents": ["Z4 rotation", "Z2 lattice translation", "ordered source route"],
-      "explicitCutRoute": true,
-      "typedPeriodicRejection": true,
-      "periodicFrontMerge": true,
-      "euclideanSeamWelding": false,
-      "periodicQuotientMaterialization": true,
-      "holonomyHashedAndSerialized": true,
-      "focusedPeriodicTestsCompiledNotExecuted": 5
-    }
-  },
-  "testedAuthority": {
-    "sourceCommit": "218dd3ec3f6399dc82183390720a4ba4d3a70b42",
-    "workflowRunId": 31179899458,
-    "workflowJobId": 92870408341,
-    "artifactId": 8994541137,
-    "artifactName": "g2-close-sheet-code-build",
-    "artifactSha256": "f1efaeec80ede729439a1a16e0cadf56db2a1dee2c3380b2ffb4d2da8211f791",
-    "internalChecksums": "45/45",
-    "rebuildPerformed": false,
+    "rebuildPerformedDuringTest": false,
     "sourceOrValidationEditedDuringTest": false
   },
-  "contractTests": {
-    "latestExecutedPassed": 7,
-    "latestExecutedTotal": 7,
-    "g3PeriodicContractsCompiledNotExecuted": 5
+  "focusedContracts": {
+    "passed": 11,
+    "total": 12,
+    "failed": ["SurfaceCellsPhase10.PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration"],
+    "failureClassification": "incorrect expectation: raw DCEL sourceEdge IDs are face-row-enumeration-dependent; ordered canonical source-vertex endpoint routes and cuts are identical",
+    "canonicalHolonomyRouteInvariant": true,
+    "canonicalCutInvariant": true
   },
   "directAcceptance": {
     "passed": 3,
     "total": 6,
     "cases": {
-      "plane": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 352, "arrangementCells": 65, "completedQuads": 64, "outputVertices": 81, "connectedComponents": 1, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "730caeae49ec872c"},
-      "multi_face_seam": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 256, "arrangementCells": 65, "completedQuads": 64, "outputVertices": 81, "connectedComponents": 1, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "5bdf34d7802e9fb0"},
-      "close_sheets": {"success": true, "producerDisposition": "Produced", "runs": 3, "traceSegments": 1104, "arrangementCells": 202, "completedQuads": 200, "outputVertices": 242, "connectedComponents": 2, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "outputStructuralHash": "89b052762f52a5af"},
-      "cylinder": {"success": false, "producerDisposition": "NotApplicable", "runs": 3, "traceSegments": 732, "arrangementCells": 0, "completedQuads": 0, "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "note": "Latest executed authority predates the compile-valid G3 periodic producer."},
-      "bunny_1k_random": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 80862, "arrangementCells": 0, "completedQuads": 0},
-      "vase": {"success": false, "producerDisposition": "NotApplicable", "traceSegments": 116922, "arrangementCells": 0, "completedQuads": 0}
+      "plane": {
+        "success": true,
+        "producerDisposition": "Produced",
+        "runs": 3,
+        "traceSegments": 352,
+        "arrangementCells": 65,
+        "completedQuads": 64,
+        "outputVertices": 81,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputStructuralHash": "730caeae49ec872c"
+      },
+      "multi_face_seam": {
+        "success": true,
+        "producerDisposition": "Produced",
+        "runs": 3,
+        "traceSegments": 256,
+        "arrangementCells": 65,
+        "completedQuads": 64,
+        "outputVertices": 81,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputStructuralHash": "5bdf34d7802e9fb0"
+      },
+      "close_sheets": {
+        "success": true,
+        "producerDisposition": "Produced",
+        "runs": 3,
+        "traceSegments": 1104,
+        "arrangementCells": 202,
+        "completedQuads": 200,
+        "outputVertices": 242,
+        "connectedComponents": 2,
+        "validationFailures": 0,
+        "outputOrigin": "CompletedSurfaceCells",
+        "outputStructuralHash": "89b052762f52a5af"
+      },
+      "cylinder": {
+        "success": false,
+        "materialProgress": true,
+        "producerDisposition": "Produced",
+        "runs": 3,
+        "periodicHolonomyAvailable": true,
+        "periodicHolonomyQuarterTurnRotation": 0,
+        "periodicHolonomyTranslation": [29, 0],
+        "periodicHolonomyRouteEdgeCount": 32,
+        "periodicCutEdgeCount": 4,
+        "traceSegments": 2163,
+        "arrangementCells": 0,
+        "completedQuads": 290,
+        "provenanceVertices": 319,
+        "validationFailures": 2,
+        "terminalFailureCode": "NotProductionReady",
+        "terminalFailureStage": "completion",
+        "firstInvalidProducerStage": "completion/output-validation",
+        "firstInvalidProducerReason": "AggregateCompletionValidationFailure",
+        "outputOrigin": "None",
+        "fallbackUsed": false,
+        "sourceGridRecoveryUsed": false,
+        "deterministicFailureSignature": true,
+        "wallSecondsRange": [0.921602, 1.062596]
+      },
+      "bunny_1k_random": {
+        "success": false,
+        "producerDisposition": "NotApplicable",
+        "runs": 1,
+        "traceSegments": 80862,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "wallSeconds": 28.606104
+      },
+      "vase": {
+        "success": false,
+        "producerDisposition": "NotApplicable",
+        "runs": 1,
+        "traceSegments": 116922,
+        "arrangementCells": 0,
+        "completedQuads": 0,
+        "wallSeconds": 51.925637
+      }
     }
   },
   "defaultSuites": {
-    "focusedProducerContracts": {"tests": 7, "passed": 7, "failed": 0},
+    "focusedRetainedProducer": {"tests": 12, "passed": 11, "failed": 1},
     "producerRemaining": {"tests": 86, "passed": 82, "failed": 4},
     "completion": {"tests": 164, "passed": 154, "failed": 10},
     "validation": {"tests": 60, "passed": 60, "failed": 0},
     "compiledApi": {"tests": 8, "passed": 8, "failed": 0}
   },
-  "nonOverlappingTotal": {"passed": 311, "total": 325, "failed": 14},
+  "nonOverlappingTotal": {"passed": 315, "total": 330, "failed": 15},
   "gateDecision": {
-    "g2Closed": true,
-    "g3RuntimeVerified": false,
-    "reason": "G3 is compile-valid only. Exact artifact execution decides whether cylinder becomes Produced, typed periodic Rejected, or remains NotApplicable.",
-    "nextTurn": "artifact-only G3 Test + Benchmark"
+    "g3Closed": false,
+    "materialProgress": true,
+    "reason": "Exact cylinder now consumes deterministic authoritative periodic Produced state and reaches 290 direct quads, but two pre-optimization completed-checkpoint validation failures prevent direct output.",
+    "validationThresholdDetailsSerialized": false,
+    "nextTurn": "Code + Build — source-strip-conforming periodic materialization plus canonical row-order test identity"
   }
 }
