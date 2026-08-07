@@ -924,6 +924,14 @@ std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.phaseFront.failure.secondarySourceEdge);
   hash_combine_i64(seed, network.phaseFront.gridU);
   hash_combine_i64(seed, network.phaseFront.gridV);
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.enabled ? 1 : 0);
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.sourceComponent);
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.sourceSheet);
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.quarterTurnRotation);
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.latticeTranslation.x());
+  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.latticeTranslation.y());
+  hash_vector(seed, network.phaseFront.periodicHolonomy.sourceRouteEdges);
+  hash_vector(seed, network.phaseFront.periodicHolonomy.cutSourceEdges);
   const auto hash_lattice_state = [&](
       const geometry::LocalLatticeState &state) {
     hash_combine_double(seed, state.phase.x());
@@ -1705,6 +1713,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     int maxU = -1;
     int maxV = -1;
     int cellCount = 0;
+    bool periodicU = false;
     std::set<std::pair<int, int>> cellOrigins;
   };
   std::map<SheetLatticeKey, int> vertexByLattice;
@@ -1736,11 +1745,29 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return point;
   };
 
+  const auto canonical_lattice = [&](const int component, const int sheet,
+                                     Eigen::Vector2i lattice) {
+    if (phaseFront.periodicHolonomy.enabled &&
+        phaseFront.periodicHolonomy.sourceComponent == component &&
+        phaseFront.periodicHolonomy.sourceSheet == sheet) {
+      const Eigen::Vector2i translation =
+          phaseFront.periodicHolonomy.latticeTranslation;
+      if (phaseFront.periodicHolonomy.quarterTurnRotation != 0 ||
+          translation.x() <= 0 || translation.y() != 0) {
+        return Eigen::Vector2i{-1, -1};
+      }
+      if (lattice.x() == translation.x()) lattice.x() = 0;
+    }
+    return lattice;
+  };
+
   const auto append_vertex = [&](const int component, const int sheet,
                                  const Eigen::Vector2i &lattice,
                                  const geometry::SurfacePoint &point,
                                  int &outputVertex) {
-    const SheetLatticeKey key{component, sheet, lattice.x(), lattice.y()};
+    const Eigen::Vector2i canonical = canonical_lattice(component, sheet, lattice);
+    if (canonical.x() < 0 || canonical.y() < 0) return false;
+    const SheetLatticeKey key{component, sheet, canonical.x(), canonical.y()};
     const auto found = vertexByLattice.find(key);
     if (found != vertexByLattice.end()) {
       outputVertex = found->second;
@@ -1811,6 +1838,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       SheetGridState &grid =
           gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
+      grid.periodicU =
+          phaseFront.periodicHolonomy.enabled &&
+          phaseFront.periodicHolonomy.sourceComponent == cell.sourceComponent &&
+          phaseFront.periodicHolonomy.sourceSheet == cell.sourceSheet;
       grid.maxU = std::max(grid.maxU, coordinate.x());
       grid.maxV = std::max(grid.maxV, coordinate.y());
       quadPositions[static_cast<std::size_t>(corner)] =
@@ -1877,8 +1908,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       result.failure = "IncompleteAuthoritativePhaseFrontSheet";
       return result;
     }
-    expectedVertexCount += static_cast<std::size_t>(grid.maxU + 1) *
-                           static_cast<std::size_t>(grid.maxV + 1);
+    expectedVertexCount +=
+        static_cast<std::size_t>(grid.periodicU ? grid.maxU : grid.maxU + 1) *
+        static_cast<std::size_t>(grid.maxV + 1);
     result.mesh.sourceSideEdgeCounts.insert(
         result.mesh.sourceSideEdgeCounts.end(),
         {grid.maxU, grid.maxV, grid.maxU, grid.maxV});
@@ -1895,34 +1927,59 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
 
   for (const auto &[sheetKey, grid] : gridBySheet) {
     const auto boundary_vertex = [&](const int u, const int v) {
-      const SheetLatticeKey key{sheetKey.first, sheetKey.second, u, v};
+      const Eigen::Vector2i canonical =
+          canonical_lattice(sheetKey.first, sheetKey.second, {u, v});
+      const SheetLatticeKey key{sheetKey.first, sheetKey.second,
+                                canonical.x(), canonical.y()};
       const auto found = vertexByLattice.find(key);
       return found == vertexByLattice.end() ? -1 : found->second;
     };
-    std::vector<int> boundary;
-    for (int u = 0; u <= grid.maxU; ++u) {
-      boundary.push_back(boundary_vertex(u, 0));
+    if (grid.periodicU) {
+      std::vector<int> lower;
+      std::vector<int> upper;
+      for (int u = 0; u < grid.maxU; ++u) {
+        lower.push_back(boundary_vertex(u, 0));
+        upper.push_back(boundary_vertex(grid.maxU - 1 - u, grid.maxV));
+      }
+      for (const auto &boundary : {lower, upper}) {
+        if (boundary.empty() ||
+            std::any_of(boundary.begin(), boundary.end(),
+                        [](const int vertex) { return vertex < 0; }) ||
+            std::set<int>(boundary.begin(), boundary.end()).size() !=
+                boundary.size()) {
+          result.failure = "InvalidAuthoritativePeriodicBoundary";
+          return result;
+        }
+        result.mesh.boundaryLoops.push_back(boundary);
+        result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
+                                            boundary.begin(), boundary.end());
+      }
+    } else {
+      std::vector<int> boundary;
+      for (int u = 0; u <= grid.maxU; ++u) {
+        boundary.push_back(boundary_vertex(u, 0));
+      }
+      for (int v = 1; v <= grid.maxV; ++v) {
+        boundary.push_back(boundary_vertex(grid.maxU, v));
+      }
+      for (int u = grid.maxU - 1; u >= 0; --u) {
+        boundary.push_back(boundary_vertex(u, grid.maxV));
+      }
+      for (int v = grid.maxV - 1; v > 0; --v) {
+        boundary.push_back(boundary_vertex(0, v));
+      }
+      if (boundary.empty() ||
+          std::any_of(boundary.begin(), boundary.end(),
+                      [](const int vertex) { return vertex < 0; }) ||
+          std::set<int>(boundary.begin(), boundary.end()).size() !=
+              boundary.size()) {
+        result.failure = "InvalidAuthoritativePhaseFrontBoundary";
+        return result;
+      }
+      result.mesh.boundaryLoops.push_back(boundary);
+      result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
+                                          boundary.begin(), boundary.end());
     }
-    for (int v = 1; v <= grid.maxV; ++v) {
-      boundary.push_back(boundary_vertex(grid.maxU, v));
-    }
-    for (int u = grid.maxU - 1; u >= 0; --u) {
-      boundary.push_back(boundary_vertex(u, grid.maxV));
-    }
-    for (int v = grid.maxV - 1; v > 0; --v) {
-      boundary.push_back(boundary_vertex(0, v));
-    }
-    if (boundary.empty() ||
-        std::any_of(boundary.begin(), boundary.end(),
-                    [](const int vertex) { return vertex < 0; }) ||
-        std::set<int>(boundary.begin(), boundary.end()).size() !=
-            boundary.size()) {
-      result.failure = "InvalidAuthoritativePhaseFrontBoundary";
-      return result;
-    }
-    result.mesh.boundaryLoops.push_back(boundary);
-    result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
-                                        boundary.begin(), boundary.end());
   }
 
   for (int edgeIndex = 0;
@@ -2828,6 +2885,18 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionParityMutationPhase;
   target.surfaceCellAuthoritativeProducerDisposition =
       source.surfaceCellAuthoritativeProducerDisposition;
+  target.surfaceCellPeriodicHolonomyAvailable =
+      source.surfaceCellPeriodicHolonomyAvailable;
+  target.surfaceCellPeriodicHolonomyQuarterTurnRotation =
+      source.surfaceCellPeriodicHolonomyQuarterTurnRotation;
+  target.surfaceCellPeriodicHolonomyTranslationU =
+      source.surfaceCellPeriodicHolonomyTranslationU;
+  target.surfaceCellPeriodicHolonomyTranslationV =
+      source.surfaceCellPeriodicHolonomyTranslationV;
+  target.surfaceCellPeriodicHolonomyRouteEdgeCount =
+      source.surfaceCellPeriodicHolonomyRouteEdgeCount;
+  target.surfaceCellPeriodicCutEdgeCount =
+      source.surfaceCellPeriodicCutEdgeCount;
   target.surfaceCellFirstInvalidProducerStage =
       source.surfaceCellFirstInvalidProducerStage;
   target.surfaceCellFirstInvalidProducerReason =
@@ -4756,6 +4825,18 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellAuthoritativeProducerDisposition =
         geometry::surface_cell_producer_disposition_name(
             traceNetwork.phaseFront.disposition);
+    result.diagnostics.surfaceCellPeriodicHolonomyAvailable =
+        traceNetwork.phaseFront.periodicHolonomy.enabled;
+    result.diagnostics.surfaceCellPeriodicHolonomyQuarterTurnRotation =
+        traceNetwork.phaseFront.periodicHolonomy.quarterTurnRotation;
+    result.diagnostics.surfaceCellPeriodicHolonomyTranslationU =
+        traceNetwork.phaseFront.periodicHolonomy.latticeTranslation.x();
+    result.diagnostics.surfaceCellPeriodicHolonomyTranslationV =
+        traceNetwork.phaseFront.periodicHolonomy.latticeTranslation.y();
+    result.diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount =
+        traceNetwork.phaseFront.periodicHolonomy.sourceRouteEdges.size();
+    result.diagnostics.surfaceCellPeriodicCutEdgeCount =
+        traceNetwork.phaseFront.periodicHolonomy.cutSourceEdges.size();
     if (traceNetwork.phaseFront.disposition ==
             geometry::SurfaceCellProducerDisposition::Rejected &&
         traceNetwork.phaseFront.failure.reason !=
@@ -7582,6 +7663,19 @@ void accumulate_component_diagnostics(
       target.surfaceCellAuthoritativeProducerDisposition.empty()) {
     target.surfaceCellAuthoritativeProducerDisposition =
         source.surfaceCellAuthoritativeProducerDisposition;
+  }
+  if (source.surfaceCellPeriodicHolonomyAvailable) {
+    target.surfaceCellPeriodicHolonomyAvailable = true;
+    target.surfaceCellPeriodicHolonomyQuarterTurnRotation =
+        source.surfaceCellPeriodicHolonomyQuarterTurnRotation;
+    target.surfaceCellPeriodicHolonomyTranslationU =
+        source.surfaceCellPeriodicHolonomyTranslationU;
+    target.surfaceCellPeriodicHolonomyTranslationV =
+        source.surfaceCellPeriodicHolonomyTranslationV;
+    target.surfaceCellPeriodicHolonomyRouteEdgeCount =
+        source.surfaceCellPeriodicHolonomyRouteEdgeCount;
+    target.surfaceCellPeriodicCutEdgeCount =
+        source.surfaceCellPeriodicCutEdgeCount;
   }
   if (!source.surfaceCellFirstInvalidProducerStage.empty() &&
       target.surfaceCellFirstInvalidProducerStage.empty()) {

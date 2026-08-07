@@ -2822,6 +2822,18 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\"surfaceCellAuthoritativeProducerDisposition\":\""
       << escape_json(diagnostics.surfaceCellAuthoritativeProducerDisposition)
       << "\","
+      << "\"surfaceCellPeriodicHolonomyAvailable\":"
+      << (diagnostics.surfaceCellPeriodicHolonomyAvailable ? "true" : "false") << ","
+      << "\"surfaceCellPeriodicHolonomyQuarterTurnRotation\":"
+      << diagnostics.surfaceCellPeriodicHolonomyQuarterTurnRotation << ","
+      << "\"surfaceCellPeriodicHolonomyTranslationU\":"
+      << diagnostics.surfaceCellPeriodicHolonomyTranslationU << ","
+      << "\"surfaceCellPeriodicHolonomyTranslationV\":"
+      << diagnostics.surfaceCellPeriodicHolonomyTranslationV << ","
+      << "\"surfaceCellPeriodicHolonomyRouteEdgeCount\":"
+      << diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount << ","
+      << "\"surfaceCellPeriodicCutEdgeCount\":"
+      << diagnostics.surfaceCellPeriodicCutEdgeCount << ","
       << "\"surfaceCellFirstInvalidProducerStage\":\""
       << escape_json(diagnostics.surfaceCellFirstInvalidProducerStage)
       << "\","

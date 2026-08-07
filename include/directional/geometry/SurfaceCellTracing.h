@@ -182,6 +182,7 @@ enum class SurfaceFrontEventKind : int {
   HardRailCapture = 2,
   PhaseMismatch = 3,
   PeriodicHolonomyConflict = 4,
+  PeriodicFrontMerge = 5,
 };
 
 struct SurfaceFrontEdge {
@@ -203,6 +204,19 @@ struct SurfaceFrontEvent {
   SurfaceFrontEventKind kind = SurfaceFrontEventKind::BoundaryTermination;
   int firstEdge = -1;
   int secondEdge = -1;
+};
+
+/** Exact quotient relation between the two copies of an intrinsic annulus cut. */
+struct SurfacePeriodicHolonomy {
+  bool enabled = false;
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  int quarterTurnRotation = 0;
+  Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
+  /// Ordered interior source-edge route for one complete periodic transport.
+  std::vector<int> sourceRouteEdges;
+  /// Ordered source edges forming the deterministic boundary-to-boundary cut.
+  std::vector<int> cutSourceEdges;
 };
 
 struct SurfacePhaseFrontCell {
@@ -243,6 +257,10 @@ enum class SurfacePhaseFrontFailureReason : int {
   FrontOwnershipConflict = 24,
   InvalidFinalCellState = 25,
   InvalidFinalEdgeState = 26,
+  InvalidPeriodicTopology = 27,
+  InvalidPeriodicChart = 28,
+  PeriodicHolonomyMismatch = 29,
+  InvalidPeriodicFrontPairing = 30,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -275,6 +293,7 @@ struct SurfacePhaseFrontResult {
   bool succeeded = false;
   int gridU = 0;
   int gridV = 0;
+  SurfacePeriodicHolonomy periodicHolonomy;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;

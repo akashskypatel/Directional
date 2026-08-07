@@ -206,6 +206,12 @@ struct RemeshDiagnostics {
   std::vector<int> surfaceCellCompletionParityAvailableSheets;
   std::string surfaceCellCompletionParityMutationPhase;
   std::string surfaceCellAuthoritativeProducerDisposition;
+  bool surfaceCellPeriodicHolonomyAvailable = false;
+  int surfaceCellPeriodicHolonomyQuarterTurnRotation = 0;
+  int surfaceCellPeriodicHolonomyTranslationU = 0;
+  int surfaceCellPeriodicHolonomyTranslationV = 0;
+  std::size_t surfaceCellPeriodicHolonomyRouteEdgeCount = 0U;
+  std::size_t surfaceCellPeriodicCutEdgeCount = 0U;
   std::string surfaceCellFirstInvalidProducerStage;
   std::string surfaceCellFirstInvalidProducerReason;
   int surfaceCellFirstInvalidProducerCell = -1;

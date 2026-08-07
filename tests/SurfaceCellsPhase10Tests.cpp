@@ -936,6 +936,219 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontDerivesAnnulusFromSourceTopology) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_TRUE(network.phaseFront.periodicHolonomy.enabled);
+  EXPECT_EQ(0, network.phaseFront.periodicHolonomy.quarterTurnRotation);
+  EXPECT_EQ(network.phaseFront.gridU,
+            network.phaseFront.periodicHolonomy.latticeTranslation.x());
+  EXPECT_EQ(0, network.phaseFront.periodicHolonomy.latticeTranslation.y());
+  EXPECT_GT(network.phaseFront.gridU, 2);
+  EXPECT_GT(network.phaseFront.gridV, 0);
+  EXPECT_EQ(static_cast<std::size_t>(network.phaseFront.gridU *
+                                     network.phaseFront.gridV),
+            network.phaseFront.cells.size());
+  EXPECT_FALSE(network.phaseFront.periodicHolonomy.sourceRouteEdges.empty());
+  EXPECT_FALSE(network.phaseFront.periodicHolonomy.cutSourceEdges.empty());
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh forwardMesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), forwardMesh));
+  const Eigen::MatrixXd forwardRaw =
+      read_rawfield_fixture(fieldPath, forwardMesh.F.rows());
+  Eigen::MatrixXi reversedFaces = forwardMesh.F.colwise().reverse().eval();
+  Eigen::MatrixXd reversedRaw = forwardRaw.colwise().reverse().eval();
+  directional::TriMesh reverseMesh;
+  reverseMesh.set_mesh(forwardMesh.V, reversedFaces);
+
+  const auto build = [](const directional::TriMesh &mesh,
+                        const Eigen::MatrixXd &rawField) {
+    const auto crossField =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh,
+                                                                      rawField);
+    const Eigen::VectorXd targetSize =
+        Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+    directional::geometry::SurfaceCellTracingOptions options;
+    options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+    options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+    return directional::geometry::build_surface_cell_network(
+        mesh.V, mesh.F, crossField, targetSize, options);
+  };
+
+  const auto forward = build(forwardMesh, forwardRaw);
+  const auto reverse = build(reverseMesh, reversedRaw);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forward.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reverse.phaseFront.disposition);
+  EXPECT_EQ(forward.phaseFront.gridU, reverse.phaseFront.gridU);
+  EXPECT_EQ(forward.phaseFront.gridV, reverse.phaseFront.gridV);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomy.quarterTurnRotation,
+            reverse.phaseFront.periodicHolonomy.quarterTurnRotation);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomy.latticeTranslation,
+            reverse.phaseFront.periodicHolonomy.latticeTranslation);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomy.sourceRouteEdges,
+            reverse.phaseFront.periodicHolonomy.sourceRouteEdges);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomy.cutSourceEdges,
+            reverse.phaseFront.periodicHolonomy.cutSourceEdges);
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontPairsArtificialCutWithoutExteriorSeam) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition);
+
+  int periodicMergeCount = 0;
+  for (const auto &event : network.phaseFront.events) {
+    if (event.kind == directional::geometry::SurfaceFrontEventKind::PeriodicFrontMerge) {
+      ++periodicMergeCount;
+    }
+  }
+  EXPECT_EQ(network.phaseFront.gridV, periodicMergeCount);
+  for (const auto &edge : network.phaseFront.edges) {
+    const int fromU = edge.fromLattice.latticeCoordinate.x();
+    const int toU = edge.toLattice.latticeCoordinate.x();
+    const bool cutEdge = edge.family == 1 &&
+        ((fromU == 0 && toU == 0) ||
+         (fromU == network.phaseFront.gridU &&
+          toU == network.phaseFront.gridU));
+    if (cutEdge) {
+      EXPECT_FALSE(edge.exterior);
+      EXPECT_GE(edge.oppositeEdge, 0);
+    }
+  }
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
+      mesh, rawField);
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto valid = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            valid.phaseFront.disposition);
+  ASSERT_FALSE(valid.phaseFront.periodicHolonomy.sourceRouteEdges.empty());
+  const int tamperedEdge = valid.phaseFront.periodicHolonomy.sourceRouteEdges.front();
+  auto transition = std::find_if(
+      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
+      [&](const auto &candidate) { return candidate.sourceEdge == tamperedEdge; });
+  ASSERT_NE(crossField.edgeTransitions.end(), transition);
+  transition->matching += 1;
+
+  const auto malformed = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            malformed.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                PeriodicHolonomyMismatch,
+            malformed.phaseFront.failure.reason);
+  EXPECT_TRUE(malformed.seeds.empty());
+  EXPECT_TRUE(malformed.traces.empty());
+  EXPECT_TRUE(malformed.proposals.empty());
+}
+
+TEST(SurfaceCellsPhase10,
+     ExactCommittedCylinderReachesAuthoritativePeriodicProducerBoundary) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.preserveDebugArtifacts = true;
+  options.surfaceCells.retainIntermediateGeometry = true;
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, rawField, options);
+  ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
+  const auto &network = result.surfaceCellContext.traceNetwork;
+  EXPECT_NE(directional::geometry::SurfaceCellProducerDisposition::NotApplicable,
+            network.phaseFront.disposition);
+  if (network.phaseFront.disposition ==
+      directional::geometry::SurfaceCellProducerDisposition::Produced) {
+    EXPECT_TRUE(network.phaseFront.periodicHolonomy.enabled);
+    EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
+  } else {
+    EXPECT_TRUE(network.phaseFront.failure.reason ==
+                    directional::geometry::SurfacePhaseFrontFailureReason::
+                        PeriodicHolonomyMismatch ||
+                network.phaseFront.failure.reason ==
+                    directional::geometry::SurfacePhaseFrontFailureReason::
+                        InvalidPeriodicChart ||
+                network.phaseFront.failure.reason ==
+                    directional::geometry::SurfacePhaseFrontFailureReason::
+                        InvalidPeriodicFrontPairing);
+  }
+  EXPECT_TRUE(network.seeds.empty());
+  EXPECT_TRUE(network.traces.empty());
+}
+
+
+TEST(SurfaceCellsPhase10,
      ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary) {
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/plane.obj");

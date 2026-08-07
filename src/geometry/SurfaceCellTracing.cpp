@@ -5105,6 +5105,914 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
   return result;
 }
 
+namespace {
+
+struct PeriodicChartTriangle {
+  int face = -1;
+  std::array<Eigen::Vector2d, 3> uv;
+  std::array<int, 3> vertices{{-1, -1, -1}};
+};
+
+std::array<int, 3> canonical_face_vertices(const Eigen::MatrixXi &faces,
+                                           const int face) {
+  std::array<int, 3> key{faces(face, 0), faces(face, 1), faces(face, 2)};
+  std::sort(key.begin(), key.end());
+  return key;
+}
+
+std::vector<int> canonical_cycle(const std::map<int, std::vector<int>> &adjacency) {
+  if (adjacency.size() < 3U) {
+    return {};
+  }
+  const int start = adjacency.begin()->first;
+  const auto found = adjacency.find(start);
+  if (found == adjacency.end() || found->second.size() != 2U) {
+    return {};
+  }
+  const auto walk = [&](const int first) {
+    std::vector<int> cycle;
+    cycle.reserve(adjacency.size());
+    int previous = start;
+    int current = first;
+    cycle.push_back(start);
+    while (current != start && cycle.size() <= adjacency.size()) {
+      cycle.push_back(current);
+      const auto neighbors = adjacency.find(current);
+      if (neighbors == adjacency.end() || neighbors->second.size() != 2U) {
+        return std::vector<int>{};
+      }
+      const int next = neighbors->second[0] == previous
+                           ? neighbors->second[1]
+                           : neighbors->second[0];
+      previous = current;
+      current = next;
+    }
+    if (current != start || cycle.size() != adjacency.size()) {
+      return std::vector<int>{};
+    }
+    return cycle;
+  };
+  std::vector<int> first = walk(found->second[0]);
+  std::vector<int> second = walk(found->second[1]);
+  if (first.empty()) return second;
+  if (second.empty()) return first;
+  return second < first ? second : first;
+}
+
+bool face_contains_only(const Eigen::MatrixXi &faces, const int face,
+                        const std::set<int> &vertices) {
+  for (int corner = 0; corner < 3; ++corner) {
+    if (vertices.count(faces(face, corner)) == 0U) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool chart_barycentric(const PeriodicChartTriangle &triangle,
+                       const Eigen::Vector2d &uv,
+                       Eigen::RowVector3d &barycentric) {
+  Eigen::Matrix2d matrix;
+  matrix.col(0) = triangle.uv[1] - triangle.uv[0];
+  matrix.col(1) = triangle.uv[2] - triangle.uv[0];
+  const double determinant = matrix.determinant();
+  if (!std::isfinite(determinant) || std::abs(determinant) <= 1.0e-18) {
+    return false;
+  }
+  const Eigen::Vector2d local = matrix.inverse() * (uv - triangle.uv[0]);
+  if (!local.allFinite()) {
+    return false;
+  }
+  barycentric << 1.0 - local.x() - local.y(), local.x(), local.y();
+  return barycentric.allFinite();
+}
+
+bool point_on_periodic_chart(const std::vector<PeriodicChartTriangle> &triangles,
+                             const Eigen::Vector2d &uv,
+                             SurfaceTracePoint &point) {
+  constexpr double tolerance = 1.0e-10;
+  bool found = false;
+  std::array<int, 3> bestKey{
+      std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+      std::numeric_limits<int>::max()};
+  Eigen::RowVector3d bestBarycentric = Eigen::RowVector3d::Zero();
+  int bestFace = -1;
+  for (const PeriodicChartTriangle &triangle : triangles) {
+    Eigen::RowVector3d barycentric;
+    if (!chart_barycentric(triangle, uv, barycentric) ||
+        barycentric.minCoeff() < -tolerance ||
+        barycentric.maxCoeff() > 1.0 + tolerance) {
+      continue;
+    }
+    const std::array<int, 3> key = triangle.vertices;
+    if (!found || key < bestKey) {
+      found = true;
+      bestKey = key;
+      bestBarycentric = barycentric;
+      bestFace = triangle.face;
+    }
+  }
+  if (!found) {
+    return false;
+  }
+  for (int corner = 0; corner < 3; ++corner) {
+    if (std::abs(bestBarycentric[corner]) <= tolerance) {
+      bestBarycentric[corner] = 0.0;
+    } else if (std::abs(bestBarycentric[corner] - 1.0) <= tolerance) {
+      bestBarycentric[corner] = 1.0;
+    }
+  }
+  const double sum = bestBarycentric.sum();
+  if (!(std::abs(sum) > 1.0e-18)) {
+    return false;
+  }
+  point.face = bestFace;
+  point.barycentric = bestBarycentric / sum;
+  return true;
+}
+
+std::vector<SurfaceTraceSegment> periodic_chart_segment(
+    const std::vector<PeriodicChartTriangle> &triangles,
+    const Eigen::Vector2d &start, const Eigen::Vector2d &end,
+    const int family, const int sign,
+    const std::map<std::uint64_t, int> &matchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  struct Interval {
+    double lo = 0.0;
+    double hi = 0.0;
+    const PeriodicChartTriangle *triangle = nullptr;
+  };
+  std::vector<Interval> intervals;
+  std::vector<double> breaks{0.0, 1.0};
+  constexpr double tolerance = 1.0e-10;
+  for (const PeriodicChartTriangle &triangle : triangles) {
+    Eigen::RowVector3d b0;
+    Eigen::RowVector3d b1;
+    if (!chart_barycentric(triangle, start, b0) ||
+        !chart_barycentric(triangle, end, b1)) {
+      continue;
+    }
+    double lo = 0.0;
+    double hi = 1.0;
+    bool valid = true;
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      const double a = b0[coordinate];
+      const double d = b1[coordinate] - b0[coordinate];
+      if (std::abs(d) <= 1.0e-15) {
+        if (a < -tolerance) valid = false;
+        continue;
+      }
+      const double bound = (-tolerance - a) / d;
+      if (d > 0.0) {
+        lo = std::max(lo, bound);
+      } else {
+        hi = std::min(hi, bound);
+      }
+    }
+    lo = std::clamp(lo, 0.0, 1.0);
+    hi = std::clamp(hi, 0.0, 1.0);
+    if (valid && hi - lo > 1.0e-12) {
+      intervals.push_back({lo, hi, &triangle});
+      breaks.push_back(lo);
+      breaks.push_back(hi);
+    }
+  }
+  std::sort(breaks.begin(), breaks.end());
+  breaks.erase(std::unique(breaks.begin(), breaks.end(), [](double a, double b) {
+                 return std::abs(a - b) <= 1.0e-10;
+               }),
+               breaks.end());
+  std::vector<SurfaceTraceSegment> path;
+  for (std::size_t index = 0; index + 1U < breaks.size(); ++index) {
+    const double lo = breaks[index];
+    const double hi = breaks[index + 1U];
+    if (hi - lo <= 1.0e-12) continue;
+    const double mid = 0.5 * (lo + hi);
+    const PeriodicChartTriangle *selected = nullptr;
+    for (const Interval &interval : intervals) {
+      if (mid < interval.lo - tolerance || mid > interval.hi + tolerance) {
+        continue;
+      }
+      if (selected == nullptr || interval.triangle->vertices < selected->vertices) {
+        selected = interval.triangle;
+      }
+    }
+    if (selected == nullptr) {
+      return {};
+    }
+    const Eigen::Vector2d uv0 = start + lo * (end - start);
+    const Eigen::Vector2d uv1 = start + hi * (end - start);
+    Eigen::RowVector3d bary0;
+    Eigen::RowVector3d bary1;
+    if (!chart_barycentric(*selected, uv0, bary0) ||
+        !chart_barycentric(*selected, uv1, bary1)) {
+      return {};
+    }
+    SurfaceTraceSegment segment;
+    segment.face = selected->face;
+    segment.startBarycentric = bary0;
+    segment.endBarycentric = bary1;
+    segment.family = family;
+    segment.sign = sign;
+    segment.sourceChart = 0;
+    if (!path.empty() && path.back().face == segment.face) {
+      path.back().endBarycentric = segment.endBarycentric;
+      continue;
+    }
+    path.push_back(std::move(segment));
+  }
+  if (path.empty()) {
+    return {};
+  }
+  // Each chart segment is source-attached. Cross-face transition provenance
+  // is authoritative in the periodic holonomy route; individual side paths
+  // remain geometric subdivisions of that same cut-open chart.
+  (void)matchingIndices;
+  (void)transitionLookup;
+  (void)edgeTransitions;
+  return path;
+}
+
+} // namespace
+
+SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const std::vector<int> &activeFaces,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontResult result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted || !options.singularityVertices.empty() ||
+      activeFaces.empty()) {
+    return result;
+  }
+
+  std::set<int> activeVertices;
+  std::map<std::uint64_t, std::vector<int>> edgeFaces;
+  std::map<std::uint64_t, std::pair<int, int>> edgeVertices;
+  std::map<int, std::set<int>> vertexAdjacency;
+  for (const int face : activeFaces) {
+    if (face < 0 || face >= faces.rows()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = faces(face, corner);
+      const int b = faces(face, (corner + 1) % 3);
+      if (a < 0 || b < 0 || a >= vertices.rows() || b >= vertices.rows() || a == b) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
+                                -1, -1, face);
+        return result;
+      }
+      activeVertices.insert(a);
+      activeVertices.insert(b);
+      const std::uint64_t key = edge_key(a, b);
+      edgeFaces[key].push_back(face);
+      edgeVertices[key] = {std::min(a, b), std::max(a, b)};
+      vertexAdjacency[a].insert(b);
+      vertexAdjacency[b].insert(a);
+    }
+  }
+  for (const auto &[key, incident] : edgeFaces) {
+    (void)key;
+    if (incident.empty() || incident.size() > 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+  }
+  const int euler = static_cast<int>(activeVertices.size()) -
+                    static_cast<int>(edgeFaces.size()) +
+                    static_cast<int>(activeFaces.size());
+  if (euler != 0) {
+    return result;
+  }
+
+  std::map<int, std::vector<int>> boundaryAdjacency;
+  for (const auto &[key, incident] : edgeFaces) {
+    if (incident.size() != 1U) continue;
+    const auto endpoints = edgeVertices[key];
+    boundaryAdjacency[endpoints.first].push_back(endpoints.second);
+    boundaryAdjacency[endpoints.second].push_back(endpoints.first);
+  }
+  for (auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)vertex;
+    std::sort(neighbors.begin(), neighbors.end());
+    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+  }
+  std::vector<std::vector<int>> boundaryCycles;
+  std::set<int> remainingBoundary;
+  for (const auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)neighbors;
+    remainingBoundary.insert(vertex);
+  }
+  while (!remainingBoundary.empty()) {
+    const int seed = *remainingBoundary.begin();
+    std::map<int, std::vector<int>> component;
+    std::vector<int> stack{seed};
+    std::set<int> seen;
+    while (!stack.empty()) {
+      const int vertex = stack.back();
+      stack.pop_back();
+      if (!seen.insert(vertex).second) continue;
+      component[vertex] = boundaryAdjacency[vertex];
+      for (const int neighbor : boundaryAdjacency[vertex]) {
+        if (seen.count(neighbor) == 0U) stack.push_back(neighbor);
+      }
+    }
+    std::vector<int> cycle = canonical_cycle(component);
+    if (cycle.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+    for (const int vertex : cycle) remainingBoundary.erase(vertex);
+    boundaryCycles.push_back(std::move(cycle));
+  }
+  if (boundaryCycles.size() != 2U ||
+      boundaryCycles[0].size() != boundaryCycles[1].size()) {
+    return result;
+  }
+  std::sort(boundaryCycles.begin(), boundaryCycles.end());
+  const std::vector<int> &firstBoundary = boundaryCycles.front();
+  const std::set<int> secondBoundary(boundaryCycles.back().begin(),
+                                     boundaryCycles.back().end());
+  const int ringSize = static_cast<int>(firstBoundary.size());
+  if (ringSize < 3) return result;
+
+  std::map<int, int> distance;
+  std::queue<int> queue;
+  for (const int vertex : firstBoundary) {
+    distance[vertex] = 0;
+    queue.push(vertex);
+  }
+  while (!queue.empty()) {
+    const int vertex = queue.front();
+    queue.pop();
+    for (const int neighbor : vertexAdjacency[vertex]) {
+      if (distance.find(neighbor) == distance.end()) {
+        distance[neighbor] = distance[vertex] + 1;
+        queue.push(neighbor);
+      }
+    }
+  }
+  if (distance.size() != activeVertices.size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+    return result;
+  }
+  int maxDistance = 0;
+  for (const auto &[vertex, value] : distance) {
+    (void)vertex;
+    maxDistance = std::max(maxDistance, value);
+  }
+  if (maxDistance < 1) return result;
+  for (const int vertex : secondBoundary) {
+    if (distance[vertex] != maxDistance) return result;
+  }
+
+  std::vector<std::vector<int>> rings(static_cast<std::size_t>(maxDistance + 1));
+  rings.front() = firstBoundary;
+  for (int layer = 1; layer <= maxDistance; ++layer) {
+    std::map<int, std::vector<int>> ringAdjacency;
+    for (const auto &[vertex, value] : distance) {
+      if (value != layer) continue;
+      for (const int neighbor : vertexAdjacency[vertex]) {
+        if (distance[neighbor] == layer) ringAdjacency[vertex].push_back(neighbor);
+      }
+      std::sort(ringAdjacency[vertex].begin(), ringAdjacency[vertex].end());
+    }
+    if (ringAdjacency.size() != static_cast<std::size_t>(ringSize)) return result;
+    std::vector<int> ring = canonical_cycle(ringAdjacency);
+    if (ring.size() != static_cast<std::size_t>(ringSize)) return result;
+    rings[static_cast<std::size_t>(layer)] = std::move(ring);
+  }
+
+  auto quad_faces = [&](const std::array<int, 4> &quad) {
+    std::set<int> quadVertices(quad.begin(), quad.end());
+    std::vector<int> candidates;
+    for (const int face : activeFaces) {
+      if (face_contains_only(faces, face, quadVertices)) candidates.push_back(face);
+    }
+    std::sort(candidates.begin(), candidates.end(), [&](int a, int b) {
+      return canonical_face_vertices(faces, a) < canonical_face_vertices(faces, b);
+    });
+    return candidates;
+  };
+
+  for (int layer = 1; layer <= maxDistance; ++layer) {
+    const std::vector<int> previous = rings[static_cast<std::size_t>(layer - 1)];
+    const std::vector<int> raw = rings[static_cast<std::size_t>(layer)];
+    std::vector<std::vector<int>> valid;
+    for (int direction : {1, -1}) {
+      for (int offset = 0; offset < ringSize; ++offset) {
+        std::vector<int> candidate(static_cast<std::size_t>(ringSize));
+        for (int u = 0; u < ringSize; ++u) {
+          const int index = (offset + direction * u) % ringSize;
+          candidate[static_cast<std::size_t>(u)] =
+              raw[static_cast<std::size_t>((index + ringSize) % ringSize)];
+        }
+        bool compatible = true;
+        std::set<int> stripFaces;
+        for (int u = 0; u < ringSize && compatible; ++u) {
+          const int next = (u + 1) % ringSize;
+          if (edgeFaces.count(edge_key(previous[static_cast<std::size_t>(u)],
+                                       candidate[static_cast<std::size_t>(u)])) == 0U) {
+            compatible = false;
+            break;
+          }
+          const std::array<int, 4> quad{
+              previous[static_cast<std::size_t>(u)],
+              previous[static_cast<std::size_t>(next)],
+              candidate[static_cast<std::size_t>(next)],
+              candidate[static_cast<std::size_t>(u)]};
+          const std::vector<int> pair = quad_faces(quad);
+          if (pair.size() != 2U) {
+            compatible = false;
+            break;
+          }
+          stripFaces.insert(pair.begin(), pair.end());
+        }
+        if (compatible && stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
+          valid.push_back(std::move(candidate));
+        }
+      }
+    }
+    if (valid.empty()) return result;
+    std::sort(valid.begin(), valid.end());
+    rings[static_cast<std::size_t>(layer)] = valid.front();
+  }
+
+  std::vector<double> s(static_cast<std::size_t>(ringSize + 1), 0.0);
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    double length = 0.0;
+    for (const auto &ring : rings) {
+      length += (row3(vertices, ring[static_cast<std::size_t>(next)]) -
+                 row3(vertices, ring[static_cast<std::size_t>(u)])).norm();
+    }
+    length /= static_cast<double>(rings.size());
+    if (!(length > 0.0) || !std::isfinite(length)) return result;
+    s[static_cast<std::size_t>(u + 1)] = s[static_cast<std::size_t>(u)] + length;
+  }
+  std::vector<double> t(rings.size(), 0.0);
+  for (int layer = 0; layer < maxDistance; ++layer) {
+    double length = 0.0;
+    for (int u = 0; u < ringSize; ++u) {
+      const int a = rings[static_cast<std::size_t>(layer)][static_cast<std::size_t>(u)];
+      const int b = rings[static_cast<std::size_t>(layer + 1)][static_cast<std::size_t>(u)];
+      if (edgeFaces.count(edge_key(a, b)) == 0U) return result;
+      length += (row3(vertices, b) - row3(vertices, a)).norm();
+    }
+    length /= static_cast<double>(ringSize);
+    if (!(length > 0.0) || !std::isfinite(length)) return result;
+    t[static_cast<std::size_t>(layer + 1)] =
+        t[static_cast<std::size_t>(layer)] + length;
+  }
+  const double period = s.back();
+  const double height = t.back();
+  double target = options.defaultTargetSize;
+  if (targetSize.size() > 0 && targetSize.allFinite() && targetSize.minCoeff() > 0.0) {
+    target = targetSize.mean();
+  }
+  if (!(period > 0.0) || !(height > 0.0) || !(target > 0.0) ||
+      !std::isfinite(target)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+    return result;
+  }
+  result.gridU = std::max(3, static_cast<int>(std::llround(period / target)));
+  result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+
+  std::map<int, std::pair<int, int>> vertexChartIndex;
+  for (int layer = 0; layer <= maxDistance; ++layer) {
+    for (int u = 0; u < ringSize; ++u) {
+      vertexChartIndex[rings[static_cast<std::size_t>(layer)][static_cast<std::size_t>(u)]] = {u, layer};
+    }
+  }
+  std::vector<PeriodicChartTriangle> chartTriangles;
+  chartTriangles.reserve(activeFaces.size());
+  for (const int face : activeFaces) {
+    PeriodicChartTriangle triangle;
+    triangle.face = face;
+    triangle.vertices = canonical_face_vertices(faces, face);
+    std::array<int, 3> columns{};
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      const auto found = vertexChartIndex.find(vertex);
+      if (found == vertexChartIndex.end()) return result;
+      columns[static_cast<std::size_t>(corner)] = found->second.first;
+      triangle.uv[static_cast<std::size_t>(corner)] = {
+          s[static_cast<std::size_t>(found->second.first)],
+          t[static_cast<std::size_t>(found->second.second)]};
+    }
+    const int minColumn = *std::min_element(columns.begin(), columns.end());
+    const int maxColumn = *std::max_element(columns.begin(), columns.end());
+    if (minColumn == 0 && maxColumn == ringSize - 1) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (columns[static_cast<std::size_t>(corner)] == 0) {
+          triangle.uv[static_cast<std::size_t>(corner)].x() = period;
+        }
+      }
+    }
+    chartTriangles.push_back(std::move(triangle));
+  }
+  std::sort(chartTriangles.begin(), chartTriangles.end(),
+            [](const PeriodicChartTriangle &a, const PeriodicChartTriangle &b) {
+              return a.vertices < b.vertices;
+            });
+
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto matchingIndices = edge_matching_indices(incident);
+  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
+  const EdgeTransitionLookup transitionLookup =
+      hasTransitions ? edge_transition_lookup(*edgeTransitions) : EdgeTransitionLookup{};
+  if (hasTransitions && transitionLookup.duplicate) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+
+  // Derive one complete periodic source route from the first topological strip.
+  std::set<int> firstStripFaces;
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    const std::array<int, 4> quad{
+        rings[0][static_cast<std::size_t>(u)],
+        rings[0][static_cast<std::size_t>(next)],
+        rings[1][static_cast<std::size_t>(next)],
+        rings[1][static_cast<std::size_t>(u)]};
+    const auto pair = quad_faces(quad);
+    firstStripFaces.insert(pair.begin(), pair.end());
+  }
+  std::map<int, std::vector<int>> dual;
+  for (const int face : firstStripFaces) dual[face] = {};
+  for (const auto &[key, pair] : incident) {
+    if (pair[0] >= 0 && pair[1] >= 0 && firstStripFaces.count(pair[0]) != 0U &&
+        firstStripFaces.count(pair[1]) != 0U) {
+      dual[pair[0]].push_back(pair[1]);
+      dual[pair[1]].push_back(pair[0]);
+    }
+  }
+  for (auto &[face, neighbors] : dual) {
+    (void)face;
+    std::sort(neighbors.begin(), neighbors.end(), [&](int a, int b) {
+      return canonical_face_vertices(faces, a) < canonical_face_vertices(faces, b);
+    });
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+  }
+  auto canonical_face_cycle = [&](int firstNeighborIndex) {
+    int startFace = -1;
+    std::array<int, 3> startKey{std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max()};
+    for (const auto &[face, neighbors] : dual) {
+      (void)neighbors;
+      const auto key = canonical_face_vertices(faces, face);
+      if (key < startKey) { startKey = key; startFace = face; }
+    }
+    std::vector<int> cycle;
+    cycle.reserve(dual.size());
+    cycle.push_back(startFace);
+    int previous = startFace;
+    int current = dual[startFace][static_cast<std::size_t>(firstNeighborIndex)];
+    while (current != startFace && cycle.size() <= dual.size()) {
+      cycle.push_back(current);
+      const auto &neighbors = dual[current];
+      const int next = neighbors[0] == previous ? neighbors[1] : neighbors[0];
+      previous = current;
+      current = next;
+    }
+    if (current != startFace || cycle.size() != dual.size()) return std::vector<int>{};
+    return cycle;
+  };
+  std::vector<int> faceCycleA = canonical_face_cycle(0);
+  std::vector<int> faceCycleB = canonical_face_cycle(1);
+  auto face_cycle_key = [&](const std::vector<int> &cycle) {
+    std::vector<std::array<int, 3>> key;
+    for (const int face : cycle) key.push_back(canonical_face_vertices(faces, face));
+    return key;
+  };
+  const std::vector<int> faceCycle =
+      face_cycle_key(faceCycleB) < face_cycle_key(faceCycleA) ? faceCycleB : faceCycleA;
+  if (faceCycle.empty()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+  int totalMatching = 0;
+  std::vector<int> holonomyRoute;
+  for (std::size_t index = 0; index < faceCycle.size(); ++index) {
+    const int sourceFace = faceCycle[index];
+    const int targetFace = faceCycle[(index + 1U) % faceCycle.size()];
+    std::uint64_t sharedKey = 0;
+    for (int a = 0; a < 3 && sharedKey == 0; ++a) {
+      const std::uint64_t key = local_edge_key(faces, sourceFace, a);
+      if (local_edge_for_key(faces, targetFace, key) >= 0) sharedKey = key;
+    }
+    if (sharedKey == 0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace);
+      return result;
+    }
+    int sourceEdge = -1;
+    if (!source_edge_provenance(sharedKey, matchingIndices, transitionLookup,
+                                hasTransitions ? edgeTransitions : nullptr,
+                                sourceEdge)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    holonomyRoute.push_back(sourceEdge);
+    if (hasTransitions) {
+      const auto found = transitionLookup.byEdge.find(sharedKey);
+      if (found == transitionLookup.byEdge.end() ||
+          !transition_faces_match(found->second, sourceFace, targetFace)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                                -1, -1, sourceFace, targetFace, -1, sourceEdge);
+        return result;
+      }
+      int matching = found->second.matching;
+      if (found->second.secondFace == sourceFace) matching = -matching;
+      totalMatching += matching;
+    } else if (edgeMatching != nullptr && edgeMatching->size() > 0) {
+      const auto matchingIndex = matchingIndices.find(sharedKey);
+      if (matchingIndex == matchingIndices.end() ||
+          matchingIndex->second >= edgeMatching->size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                                -1, -1, sourceFace, targetFace, -1, sourceEdge);
+        return result;
+      }
+      int matching = (*edgeMatching)[matchingIndex->second];
+      const auto topology = incident.find(sharedKey);
+      if (topology != incident.end() && topology->second[1] == sourceFace) matching = -matching;
+      totalMatching += matching;
+    }
+  }
+  if (normalized_branch(totalMatching) != 0) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+
+  result.disposition = SurfaceCellProducerDisposition::Rejected;
+  result.periodicHolonomy.enabled = true;
+  result.periodicHolonomy.quarterTurnRotation = 0;
+  result.periodicHolonomy.latticeTranslation = {result.gridU, 0};
+  result.periodicHolonomy.sourceRouteEdges = std::move(holonomyRoute);
+  const int component = face_label_or_default(options.sourceFaceComponents,
+                                               activeFaces.front(), 0);
+  const int sheet = face_label_or_default(options.sourceFaceSheets,
+                                           activeFaces.front(), component);
+  result.periodicHolonomy.sourceComponent = component;
+  result.periodicHolonomy.sourceSheet = sheet;
+  for (int layer = 0; layer < maxDistance; ++layer) {
+    const std::uint64_t key = edge_key(
+        rings[static_cast<std::size_t>(layer)][0],
+        rings[static_cast<std::size_t>(layer + 1)][0]);
+    int sourceEdge = -1;
+    if (!source_edge_provenance(key, matchingIndices, transitionLookup,
+                                hasTransitions ? edgeTransitions : nullptr,
+                                sourceEdge)) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    result.periodicHolonomy.cutSourceEdges.push_back(sourceEdge);
+  }
+
+  const double stepU = period / static_cast<double>(result.gridU);
+  const double stepV = height / static_cast<double>(result.gridV);
+  const int columns = result.gridU + 1;
+  const int rows = result.gridV + 1;
+  std::vector<SurfaceTracePoint> points(static_cast<std::size_t>(columns * rows));
+  const auto node_index = [columns](int u, int v) { return v * columns + u; };
+  for (int v = 0; v < rows; ++v) {
+    for (int u = 0; u < columns; ++u) {
+      const Eigen::Vector2d uv(stepU * u, stepV * v);
+      if (!point_on_periodic_chart(chartTriangles, uv,
+                                   points[static_cast<std::size_t>(node_index(u, v))])) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                -1, -1, -1, -1, -1);
+        return result;
+      }
+    }
+  }
+
+  struct EdgeOwner { int edge = -1; };
+  std::map<std::pair<int, int>, EdgeOwner> openEdges;
+  const auto canonical_node = [&](const Eigen::Vector2i &coordinate) {
+    int u = coordinate.x();
+    if (u == result.gridU) u = 0;
+    return coordinate.y() * result.gridU + u;
+  };
+  for (int v = 0; v < result.gridV; ++v) {
+    for (int u = 0; u < result.gridU; ++u) {
+      const std::array<int, 4> nodeIds{
+          node_index(u, v), node_index(u + 1, v),
+          node_index(u + 1, v + 1), node_index(u, v + 1)};
+      const std::array<Eigen::Vector2d, 4> uv{
+          Eigen::Vector2d(stepU * u, stepV * v),
+          Eigen::Vector2d(stepU * (u + 1), stepV * v),
+          Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
+          Eigen::Vector2d(stepU * u, stepV * (v + 1))};
+      SurfacePhaseFrontCell cell;
+      cell.id = static_cast<int>(result.cells.size());
+      cell.sourceComponent = component;
+      cell.sourceSheet = sheet;
+      for (int corner = 0; corner < 4; ++corner) {
+        cell.corners[static_cast<std::size_t>(corner)] =
+            points[static_cast<std::size_t>(nodeIds[corner])];
+        auto &state = cell.lattice[static_cast<std::size_t>(corner)];
+        state.phase = uv[static_cast<std::size_t>(corner)];
+        state.latticeCoordinate = {
+            corner == 1 || corner == 2 ? u + 1 : u,
+            corner >= 2 ? v + 1 : v};
+        state.sourceChart = 0;
+      }
+      for (int side = 0; side < 4; ++side) {
+        const Eigen::Vector2i delta =
+            cell.lattice[static_cast<std::size_t>((side + 1) % 4)].latticeCoordinate -
+            cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate;
+        const int family = delta.x() != 0 ? 0 : 1;
+        const int sign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
+        cell.boundaryPaths[static_cast<std::size_t>(side)] = periodic_chart_segment(
+            chartTriangles, uv[static_cast<std::size_t>(side)],
+            uv[static_cast<std::size_t>((side + 1) % 4)], family, sign,
+            matchingIndices, transitionLookup,
+            hasTransitions ? edgeTransitions : nullptr);
+        if (cell.boundaryPaths[static_cast<std::size_t>(side)].empty()) {
+          set_phase_front_failure(result.failure,
+                                  SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                  cell.id, side);
+          return result;
+        }
+      }
+      const double tolerance = 1.0e-7 * std::max({1.0, stepU, stepV});
+      if (validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                         cell.boundaryPaths, tolerance) !=
+          CellRejectionReason::Accepted) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                cell.id);
+        return result;
+      }
+      std::array<Eigen::RowVector3d, 4> positions =
+          phase_front_corner_positions(vertices, faces, cell);
+      Eigen::RowVector3d loopNormal = phase_front_loop_normal(positions);
+      Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+      for (const auto &corner : cell.corners) expectedNormal += face_normal(vertices, faces, corner.face);
+      if (!loopNormal.allFinite() || !expectedNormal.allFinite() ||
+          loopNormal.squaredNorm() <= 1.0e-24 || expectedNormal.squaredNorm() <= 1.0e-24) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+                                cell.id);
+        return result;
+      }
+      if (loopNormal.dot(expectedNormal) < 0.0) {
+        reverse_phase_front_cell_cycle(cell);
+        positions = phase_front_corner_positions(vertices, faces, cell);
+        loopNormal = phase_front_loop_normal(positions);
+      }
+      if (loopNormal.dot(expectedNormal) <= 0.0 ||
+          !phase_front_cell_source_labels(cell, options, cell.sourceComponent,
+                                          cell.sourceSheet)) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+                                cell.id);
+        return result;
+      }
+      cell.orientationValidated = true;
+
+      for (int side = 0; side < 4; ++side) {
+        SurfaceFrontEdge edge;
+        edge.from = cell.corners[static_cast<std::size_t>(side)];
+        edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
+        edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
+        edge.toLattice = cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
+        const Eigen::Vector2i delta = edge.toLattice.latticeCoordinate -
+                                      edge.fromLattice.latticeCoordinate;
+        edge.family = delta.x() != 0 ? 0 : 1;
+        edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
+        edge.filledCell = cell.id;
+        edge.sourceComponent = component;
+        edge.sourceSheet = sheet;
+        const int edgeId = static_cast<int>(result.edges.size());
+        result.edges.push_back(edge);
+        const int a = canonical_node(edge.fromLattice.latticeCoordinate);
+        const int b = canonical_node(edge.toLattice.latticeCoordinate);
+        const auto ordered = std::minmax(a, b);
+        const std::pair<int, int> key{ordered.first, ordered.second};
+        const auto found = openEdges.find(key);
+        if (found == openEdges.end()) {
+          openEdges.emplace(key, EdgeOwner{edgeId});
+        } else {
+          auto &first = result.edges[static_cast<std::size_t>(found->second.edge)];
+          auto &second = result.edges[static_cast<std::size_t>(edgeId)];
+          if (first.filledCell == second.filledCell || first.family != second.family ||
+              first.advanceSign == second.advanceSign) {
+            set_phase_front_failure(result.failure,
+                                    SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                                    cell.id, side);
+            return result;
+          }
+          first.oppositeEdge = edgeId;
+          second.oppositeEdge = found->second.edge;
+          first.unfilledSide = 0;
+          second.unfilledSide = 0;
+          const bool periodic =
+              first.fromLattice.latticeCoordinate.x() !=
+                  second.toLattice.latticeCoordinate.x() ||
+              first.toLattice.latticeCoordinate.x() !=
+                  second.fromLattice.latticeCoordinate.x();
+          SurfaceFrontEvent event;
+          event.kind = periodic ? SurfaceFrontEventKind::PeriodicFrontMerge
+                                : SurfaceFrontEventKind::CompatibleFrontMerge;
+          event.firstEdge = found->second.edge;
+          event.secondEdge = edgeId;
+          result.events.push_back(event);
+          openEdges.erase(found);
+        }
+      }
+      result.cells.push_back(std::move(cell));
+    }
+  }
+  for (const auto &[key, owner] : openEdges) {
+    (void)key;
+    auto &edge = result.edges[static_cast<std::size_t>(owner.edge)];
+    if (edge.family != 0 ||
+        (edge.fromLattice.latticeCoordinate.y() != 0 &&
+         edge.fromLattice.latticeCoordinate.y() != result.gridV)) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                              edge.filledCell, owner.edge);
+      return result;
+    }
+    edge.exterior = true;
+    edge.unfilledSide = 0;
+    SurfaceFrontEvent event;
+    event.kind = SurfaceFrontEventKind::BoundaryTermination;
+    event.firstEdge = owner.edge;
+    result.events.push_back(event);
+  }
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size()); ++edgeIndex) {
+    const auto &edge = result.edges[static_cast<std::size_t>(edgeIndex)];
+    const bool hasTwin = edge.oppositeEdge >= 0;
+    if (edge.filledCell < 0 || edge.unfilledSide != 0 || hasTwin == edge.exterior ||
+        (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
+                     result.edges[static_cast<std::size_t>(edge.oppositeEdge)].oppositeEdge != edgeIndex))) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                              -1, edgeIndex);
+      return result;
+    }
+  }
+  result.succeeded = !result.cells.empty() &&
+                     result.cells.size() == static_cast<std::size_t>(result.gridU * result.gridV);
+  if (!result.succeeded) {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  result.disposition = SurfaceCellProducerDisposition::Produced;
+  return result;
+}
+
+
 SurfacePhaseFrontResult build_uniform_phase_front(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
@@ -5181,6 +6089,11 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces, options,
         edgeMatching, edgeEffort, edgeTransitions);
+    if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+      local = build_periodic_annulus_phase_front_for_faces(
+          vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces,
+          options, edgeMatching, edgeEffort, edgeTransitions);
+    }
     if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       result.failure = local.failure;
@@ -5202,6 +6115,15 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 
     result.gridU = std::max(result.gridU, local.gridU);
     result.gridV = std::max(result.gridV, local.gridV);
+    if (local.periodicHolonomy.enabled) {
+      if (result.periodicHolonomy.enabled) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+        return result;
+      }
+      result.periodicHolonomy = local.periodicHolonomy;
+    }
     for (SurfacePhaseFrontCell &cell : local.cells) {
       cell.id += cellOffset;
       result.cells.push_back(std::move(cell));
@@ -5277,6 +6199,10 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::FrontOwnershipConflict: return "FrontOwnershipConflict";
   case SurfacePhaseFrontFailureReason::InvalidFinalCellState: return "InvalidFinalCellState";
   case SurfacePhaseFrontFailureReason::InvalidFinalEdgeState: return "InvalidFinalEdgeState";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicTopology: return "InvalidPeriodicTopology";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicChart: return "InvalidPeriodicChart";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch: return "PeriodicHolonomyMismatch";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing: return "InvalidPeriodicFrontPairing";
   }
   return "Unknown";
 }
