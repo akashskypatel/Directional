@@ -1699,9 +1699,16 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   result.mesh.sourcePatch = 0;
   result.mesh.backend = geometry::PureQuadCompletionBackend::ClosedForm;
   result.mesh.usesCenterFan = false;
-  result.mesh.sourceSideEdgeCounts = {phaseFront.gridU, phaseFront.gridV,
-                                      phaseFront.gridU, phaseFront.gridV};
-  std::map<std::pair<int, int>, int> vertexByLattice;
+  using SheetKey = std::pair<int, int>;
+  using SheetLatticeKey = std::tuple<int, int, int, int>;
+  struct SheetGridState {
+    int maxU = -1;
+    int maxV = -1;
+    int cellCount = 0;
+    std::set<std::pair<int, int>> cellOrigins;
+  };
+  std::map<SheetLatticeKey, int> vertexByLattice;
+  std::map<SheetKey, SheetGridState> gridBySheet;
   std::vector<Eigen::RowVector3d> positions;
 
   const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace,
@@ -1729,10 +1736,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return point;
   };
 
-  const auto append_vertex = [&](const std::pair<int, int> &lattice,
+  const auto append_vertex = [&](const int component, const int sheet,
+                                 const Eigen::Vector2i &lattice,
                                  const geometry::SurfacePoint &point,
                                  int &outputVertex) {
-    const auto found = vertexByLattice.find(lattice);
+    const SheetLatticeKey key{component, sheet, lattice.x(), lattice.y()};
+    const auto found = vertexByLattice.find(key);
     if (found != vertexByLattice.end()) {
       outputVertex = found->second;
       const geometry::SurfacePoint &stored =
@@ -1743,7 +1752,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
              (stored.position - point.position).norm() <= tolerance;
     }
     outputVertex = static_cast<int>(positions.size());
-    vertexByLattice.emplace(lattice, outputVertex);
+    vertexByLattice.emplace(key, outputVertex);
     positions.push_back(point.position.transpose());
     result.mesh.vertices.push_back(outputVertex);
     result.mesh.vertexProvenance.push_back(point);
@@ -1794,13 +1803,16 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       const Eigen::Vector2i coordinate =
           cell.lattice[static_cast<std::size_t>(corner)].latticeCoordinate;
-      if (coordinate.x() < 0 || coordinate.x() > phaseFront.gridU ||
-          coordinate.y() < 0 || coordinate.y() > phaseFront.gridV ||
-          !append_vertex({coordinate.x(), coordinate.y()}, point,
-                         quad[static_cast<std::size_t>(corner)])) {
+      if (coordinate.x() < 0 || coordinate.y() < 0 ||
+          !append_vertex(cell.sourceComponent, cell.sourceSheet, coordinate,
+                         point, quad[static_cast<std::size_t>(corner)])) {
         result.failure = "AuthoritativePhaseFrontVertexConflict";
         return result;
       }
+      SheetGridState &grid =
+          gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
+      grid.maxU = std::max(grid.maxU, coordinate.x());
+      grid.maxV = std::max(grid.maxV, coordinate.y());
       quadPositions[static_cast<std::size_t>(corner)] =
           point.position.transpose();
       const Eigen::RowVector3d a =
@@ -1836,12 +1848,42 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.completionVariant = 0;
     lineage.boundaryOnly = false;
     result.mesh.quadLineage.push_back(std::move(lineage));
+    SheetGridState &grid =
+        gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
+    int originU = std::numeric_limits<int>::max();
+    int originV = std::numeric_limits<int>::max();
+    for (const geometry::LocalLatticeState &state : cell.lattice) {
+      originU = std::min(originU, state.latticeCoordinate.x());
+      originV = std::min(originV, state.latticeCoordinate.y());
+    }
+    if (!grid.cellOrigins.insert({originU, originV}).second) {
+      result.failure = "DuplicateAuthoritativePhaseFrontCell";
+      return result;
+    }
+    ++grid.cellCount;
   }
 
   if (result.mesh.quads.size() != phaseFront.cells.size() ||
-      positions.size() !=
-          static_cast<std::size_t>((phaseFront.gridU + 1) *
-                                   (phaseFront.gridV + 1))) {
+      gridBySheet.empty()) {
+    result.failure = "IncompleteAuthoritativePhaseFrontMaterialization";
+    return result;
+  }
+  std::size_t expectedVertexCount = 0U;
+  for (const auto &[sheet, grid] : gridBySheet) {
+    (void)sheet;
+    if (grid.maxU <= 0 || grid.maxV <= 0 ||
+        grid.cellCount != grid.maxU * grid.maxV ||
+        grid.cellOrigins.size() != static_cast<std::size_t>(grid.cellCount)) {
+      result.failure = "IncompleteAuthoritativePhaseFrontSheet";
+      return result;
+    }
+    expectedVertexCount += static_cast<std::size_t>(grid.maxU + 1) *
+                           static_cast<std::size_t>(grid.maxV + 1);
+    result.mesh.sourceSideEdgeCounts.insert(
+        result.mesh.sourceSideEdgeCounts.end(),
+        {grid.maxU, grid.maxV, grid.maxU, grid.maxV});
+  }
+  if (positions.size() != expectedVertexCount) {
     result.failure = "IncompleteAuthoritativePhaseFrontMaterialization";
     return result;
   }
@@ -1851,33 +1893,37 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         positions[static_cast<std::size_t>(vertex)];
   }
 
-  const auto boundary_vertex = [&](const int u, const int v) {
-    const auto found = vertexByLattice.find({u, v});
-    return found == vertexByLattice.end() ? -1 : found->second;
-  };
-  std::vector<int> boundary;
-  for (int u = 0; u <= phaseFront.gridU; ++u) {
-    boundary.push_back(boundary_vertex(u, 0));
+  for (const auto &[sheetKey, grid] : gridBySheet) {
+    const auto boundary_vertex = [&](const int u, const int v) {
+      const SheetLatticeKey key{sheetKey.first, sheetKey.second, u, v};
+      const auto found = vertexByLattice.find(key);
+      return found == vertexByLattice.end() ? -1 : found->second;
+    };
+    std::vector<int> boundary;
+    for (int u = 0; u <= grid.maxU; ++u) {
+      boundary.push_back(boundary_vertex(u, 0));
+    }
+    for (int v = 1; v <= grid.maxV; ++v) {
+      boundary.push_back(boundary_vertex(grid.maxU, v));
+    }
+    for (int u = grid.maxU - 1; u >= 0; --u) {
+      boundary.push_back(boundary_vertex(u, grid.maxV));
+    }
+    for (int v = grid.maxV - 1; v > 0; --v) {
+      boundary.push_back(boundary_vertex(0, v));
+    }
+    if (boundary.empty() ||
+        std::any_of(boundary.begin(), boundary.end(),
+                    [](const int vertex) { return vertex < 0; }) ||
+        std::set<int>(boundary.begin(), boundary.end()).size() !=
+            boundary.size()) {
+      result.failure = "InvalidAuthoritativePhaseFrontBoundary";
+      return result;
+    }
+    result.mesh.boundaryLoops.push_back(boundary);
+    result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
+                                        boundary.begin(), boundary.end());
   }
-  for (int v = 1; v <= phaseFront.gridV; ++v) {
-    boundary.push_back(boundary_vertex(phaseFront.gridU, v));
-  }
-  for (int u = phaseFront.gridU - 1; u >= 0; --u) {
-    boundary.push_back(boundary_vertex(u, phaseFront.gridV));
-  }
-  for (int v = phaseFront.gridV - 1; v > 0; --v) {
-    boundary.push_back(boundary_vertex(0, v));
-  }
-  if (boundary.empty() ||
-      std::any_of(boundary.begin(), boundary.end(),
-                  [](const int vertex) { return vertex < 0; }) ||
-      std::set<int>(boundary.begin(), boundary.end()).size() !=
-          boundary.size()) {
-    result.failure = "InvalidAuthoritativePhaseFrontBoundary";
-    return result;
-  }
-  result.mesh.boundaryVertices = boundary;
-  result.mesh.boundaryLoops = {boundary};
 
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {

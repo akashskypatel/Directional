@@ -93,6 +93,27 @@ edge_faces(const Eigen::MatrixXi &faces) {
   return result;
 }
 
+std::map<std::uint64_t, std::array<int, 2>>
+edge_faces(const Eigen::MatrixXi &faces, const std::vector<int> &activeFaces) {
+  std::map<std::uint64_t, std::array<int, 2>> result;
+  for (const int face : activeFaces) {
+    if (face < 0 || face >= faces.rows()) {
+      continue;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      const std::uint64_t key =
+          edge_key(faces(face, corner), faces(face, (corner + 1) % 3));
+      auto found = result.find(key);
+      if (found == result.end()) {
+        result.emplace(key, std::array<int, 2>{face, -1});
+      } else if (found->second[1] < 0) {
+        found->second[1] = face;
+      }
+    }
+  }
+  return result;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -3847,9 +3868,10 @@ bool face_barycentric_from_uv(const Eigen::MatrixXd &vertices,
 bool point_on_source(const Eigen::MatrixXd &vertices,
                      const Eigen::MatrixXi &faces,
                      const UniformPhaseFrame &frame,
+                     const std::vector<int> &activeFaces,
                      const Eigen::Vector2d &uv, SurfaceTracePoint &point) {
   constexpr double tolerance = 1.0e-10;
-  for (int face = 0; face < faces.rows(); ++face) {
+  for (const int face : activeFaces) {
     Eigen::RowVector3d barycentric;
     if (!face_barycentric_from_uv(vertices, faces, frame, face, uv,
                                   barycentric) ||
@@ -3886,22 +3908,31 @@ bool source_edge_provenance(
 bool build_planar_phase_frame(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::vector<int> &activeFaces,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     SurfacePhaseFrontFailure &failure, UniformPhaseFrame &frame) {
   if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
-      faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows()) {
+      faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows() ||
+      activeFaces.empty()) {
     set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
     return false;
   }
-  frame.origin = row3(vertices, faces(0, 0));
-  frame.normal = face_normal(vertices, faces, 0);
+  for (const int face : activeFaces) {
+    if (face < 0 || face >= faces.rows()) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
+      return false;
+    }
+  }
+  const int referenceFace = activeFaces.front();
+  frame.origin = row3(vertices, faces(referenceFace, 0));
+  frame.normal = face_normal(vertices, faces, referenceFace);
   if (!(frame.normal.norm() > 0.0)) {
     set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
     return false;
   }
-  frame.axisU = project_tangent(faceAxisX.row(0), frame.normal);
-  frame.axisV = project_tangent(faceAxisY.row(0), frame.normal);
+  frame.axisU = project_tangent(faceAxisX.row(referenceFace), frame.normal);
+  frame.axisV = project_tangent(faceAxisY.row(referenceFace), frame.normal);
   frame.axisV -= frame.axisV.dot(frame.axisU) * frame.axisU;
   if (!(frame.axisU.norm() > 0.0) || !(frame.axisV.norm() > 0.0)) {
     set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
@@ -3913,12 +3944,18 @@ bool build_planar_phase_frame(
     frame.axisV *= -1.0;
   }
 
+  std::set<int> activeVertices;
+  for (const int face : activeFaces) {
+    for (int corner = 0; corner < 3; ++corner) {
+      activeVertices.insert(faces(face, corner));
+    }
+  }
   double scale = 0.0;
-  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
+  for (const int vertex : activeVertices) {
     scale = std::max(scale, (row3(vertices, vertex) - frame.origin).norm());
   }
   const double planeTolerance = std::max(1.0e-10, 1.0e-9 * scale);
-  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
+  for (const int vertex : activeVertices) {
     if (std::abs((row3(vertices, vertex) - frame.origin).dot(frame.normal)) >
         planeTolerance) {
       set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonPlanarSource, -1, -1, -1, -1, vertex);
@@ -3927,7 +3964,7 @@ bool build_planar_phase_frame(
   }
 
   frame.faceBranchRotation.assign(static_cast<std::size_t>(faces.rows()), -1);
-  for (int face = 0; face < faces.rows(); ++face) {
+  for (const int face : activeFaces) {
     const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
     if (normal.dot(frame.normal) < 1.0 - 1.0e-8) {
       set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InconsistentFaceOrientation, -1, -1, face);
@@ -3963,7 +4000,7 @@ bool build_planar_phase_frame(
     frame.faceBranchRotation[static_cast<std::size_t>(face)] = bestBranch;
   }
 
-  const auto incident = edge_faces(faces);
+  const auto incident = edge_faces(faces, activeFaces);
   const auto matchingIndices = edge_matching_indices(incident);
   // A prescribed raw field may intentionally omit precomputed matching and
   // transition containers. Treat empty containers as absent metadata so the
@@ -4057,7 +4094,7 @@ bool build_planar_phase_frame(
 
   frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), -1);
   int nextChart = 0;
-  for (int seed = 0; seed < faces.rows(); ++seed) {
+  for (const int seed : activeFaces) {
     if (frame.faceChart[static_cast<std::size_t>(seed)] >= 0) {
       continue;
     }
@@ -4081,7 +4118,7 @@ bool build_planar_phase_frame(
 
   frame.minU = frame.minV = std::numeric_limits<double>::infinity();
   frame.maxU = frame.maxV = -std::numeric_limits<double>::infinity();
-  for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
+  for (const int vertex : activeVertices) {
     const Eigen::Vector2d uv = phase_uv(frame, row3(vertices, vertex));
     frame.minU = std::min(frame.minU, uv.x());
     frame.maxU = std::max(frame.maxU, uv.x());
@@ -4096,7 +4133,7 @@ bool build_planar_phase_frame(
   }
 
   double projectedArea = 0.0;
-  for (int face = 0; face < faces.rows(); ++face) {
+  for (const int face : activeFaces) {
     const Eigen::Vector2d a =
         phase_uv(frame, row3(vertices, faces(face, 0)));
     const Eigen::Vector2d b =
@@ -4364,7 +4401,8 @@ bool source_edge_provenance(
 
 bool segment_on_source(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const UniformPhaseFrame &frame, const Eigen::Vector2d &start,
+    const UniformPhaseFrame &frame, const std::vector<int> &activeFaces,
+    const Eigen::Vector2d &start,
     const Eigen::Vector2d &end, const int globalBranch,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
@@ -4380,7 +4418,7 @@ bool segment_on_source(
   std::vector<double> breaks{0.0, 1.0};
   std::vector<Interval> intervals;
   constexpr double tolerance = 1.0e-12;
-  for (int face = 0; face < faces.rows(); ++face) {
+  for (const int face : activeFaces) {
     Eigen::RowVector3d baryStart;
     Eigen::RowVector3d baryEnd;
     if (!face_barycentric_from_uv(vertices, faces, frame, face, start,
@@ -4506,7 +4544,7 @@ bool segment_on_source(
     return false;
   }
 
-  const auto incident = edge_faces(faces);
+  const auto incident = edge_faces(faces, activeFaces);
   const auto matchingIndices = edge_matching_indices(incident);
   const bool hasEdgeTransitions =
       edgeTransitions != nullptr && !edgeTransitions->empty();
@@ -4799,10 +4837,10 @@ bool orient_and_validate_phase_front_cell(
 
 } // namespace
 
-SurfacePhaseFrontResult build_uniform_phase_front(
+SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
-    const Eigen::VectorXd &targetSize,
+    const Eigen::VectorXd &targetSize, const std::vector<int> &activeFaces,
     const SurfaceCellTracingOptions &options,
     const Eigen::VectorXi *edgeMatching,
     const Eigen::VectorXd *edgeEffort,
@@ -4824,7 +4862,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   UniformPhaseFrame applicabilityFrame;
   SurfacePhaseFrontFailure applicabilityFailure;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
-                                nullptr, nullptr, nullptr,
+                                activeFaces, nullptr, nullptr, nullptr,
                                 applicabilityFailure, applicabilityFrame)) {
     switch (applicabilityFailure.reason) {
     case SurfacePhaseFrontFailureReason::InvalidInput:
@@ -4844,7 +4882,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   result.disposition = SurfaceCellProducerDisposition::Rejected;
   UniformPhaseFrame frame;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
-                                edgeMatching, edgeEffort, edgeTransitions,
+                                activeFaces, edgeMatching, edgeEffort, edgeTransitions,
                                 result.failure, frame)) {
     return result;
   }
@@ -4879,7 +4917,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     for (int u = 0; u < nodeColumns; ++u) {
       const Eigen::Vector2d uv(frame.minU + stepU * u,
                                frame.minV + stepV * v);
-      if (!point_on_source(vertices, faces, frame, uv,
+      if (!point_on_source(vertices, faces, frame, activeFaces, uv,
                            points[static_cast<std::size_t>(node_index(u, v))])) {
         set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::PointProjectionFailure);
         return result;
@@ -4934,7 +4972,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       const std::array<int, 4> globalBranches{0, 1, 2, 3};
       for (int side = 0; side < 4; ++side) {
         if (!segment_on_source(
-                vertices, faces, frame, uv[side], uv[(side + 1) % 4],
+                vertices, faces, frame, activeFaces, uv[side],
+                uv[(side + 1) % 4],
                 globalBranches[static_cast<std::size_t>(side)], faceAxisX,
                 faceAxisY, edgeMatching, edgeEffort, edgeTransitions, options,
                 cell.id, side, result.failure,
@@ -5062,6 +5101,134 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   } else {
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+  }
+  return result;
+}
+
+SurfacePhaseFrontResult build_uniform_phase_front(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontResult result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted) {
+    return result;
+  }
+  if (!source_label_arrays_valid(options, faces.rows())) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidInput);
+    return result;
+  }
+
+  using SheetKey = std::pair<int, int>;
+  std::map<SheetKey, std::vector<int>> facesBySheet;
+  if (source_label_arrays_enabled(options)) {
+    for (int face = 0; face < faces.rows(); ++face) {
+      facesBySheet[{options.sourceFaceComponents[static_cast<std::size_t>(face)],
+                    options.sourceFaceSheets[static_cast<std::size_t>(face)]]]
+          .push_back(face);
+    }
+  } else {
+    std::vector<int> allFaces;
+    allFaces.reserve(static_cast<std::size_t>(faces.rows()));
+    for (int face = 0; face < faces.rows(); ++face) {
+      allFaces.push_back(face);
+    }
+    facesBySheet[{0, 0}] = std::move(allFaces);
+  }
+
+  struct SheetWork {
+    SheetKey key;
+    std::vector<int> faces;
+    std::vector<int> canonicalVertices;
+  };
+  std::vector<SheetWork> sheets;
+  sheets.reserve(facesBySheet.size());
+  for (auto &[key, sheetFaces] : facesBySheet) {
+    SheetWork work;
+    work.key = key;
+    work.faces = std::move(sheetFaces);
+    std::sort(work.faces.begin(), work.faces.end(), [&](const int a, const int b) {
+      std::array<int, 3> av{faces(a, 0), faces(a, 1), faces(a, 2)};
+      std::array<int, 3> bv{faces(b, 0), faces(b, 1), faces(b, 2)};
+      std::sort(av.begin(), av.end());
+      std::sort(bv.begin(), bv.end());
+      return std::tie(av, a) < std::tie(bv, b);
+    });
+    std::set<int> uniqueVertices;
+    for (const int face : work.faces) {
+      for (int corner = 0; corner < 3; ++corner) {
+        uniqueVertices.insert(faces(face, corner));
+      }
+    }
+    work.canonicalVertices.assign(uniqueVertices.begin(), uniqueVertices.end());
+    sheets.push_back(std::move(work));
+  }
+  std::sort(sheets.begin(), sheets.end(), [](const SheetWork &a, const SheetWork &b) {
+    if (a.canonicalVertices != b.canonicalVertices) {
+      return a.canonicalVertices < b.canonicalVertices;
+    }
+    return a.key < b.key;
+  });
+
+  int cellOffset = 0;
+  int edgeOffset = 0;
+  for (const SheetWork &sheet : sheets) {
+    SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
+        vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces, options,
+        edgeMatching, edgeEffort, edgeTransitions);
+    if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      result.failure = local.failure;
+      if (result.failure.cell >= 0) {
+        result.failure.cell += cellOffset;
+      }
+      return result;
+    }
+    if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+      return result;
+    }
+    if (!local.succeeded || local.cells.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      result.failure = local.failure;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+      return result;
+    }
+
+    result.gridU = std::max(result.gridU, local.gridU);
+    result.gridV = std::max(result.gridV, local.gridV);
+    for (SurfacePhaseFrontCell &cell : local.cells) {
+      cell.id += cellOffset;
+      result.cells.push_back(std::move(cell));
+    }
+    for (SurfaceFrontEdge &edge : local.edges) {
+      edge.filledCell += cellOffset;
+      if (edge.oppositeEdge >= 0) {
+        edge.oppositeEdge += edgeOffset;
+      }
+      result.edges.push_back(std::move(edge));
+    }
+    for (SurfaceFrontEvent &event : local.events) {
+      if (event.firstEdge >= 0) {
+        event.firstEdge += edgeOffset;
+      }
+      if (event.secondEdge >= 0) {
+        event.secondEdge += edgeOffset;
+      }
+      result.events.push_back(std::move(event));
+    }
+    cellOffset = static_cast<int>(result.cells.size());
+    edgeOffset = static_cast<int>(result.edges.size());
+  }
+
+  result.succeeded = !result.cells.empty();
+  if (result.succeeded) {
+    result.disposition = SurfaceCellProducerDisposition::Produced;
   }
   return result;
 }

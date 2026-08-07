@@ -837,6 +837,105 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontPartitionsDisconnectedCloseSheetsBySourceAuthority) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/close_sheets.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/close_sheets.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField =
+      read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, rawField);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.resize(static_cast<std::size_t>(mesh.F.rows()));
+  options.sourceFaceSheets.resize(static_cast<std::size_t>(mesh.F.rows()));
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const int component = mesh.F(face, 0) < 16 ? 0 : 1;
+    options.sourceFaceComponents[static_cast<std::size_t>(face)] = component;
+    options.sourceFaceSheets[static_cast<std::size_t>(face)] = component;
+  }
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_TRUE(network.phaseFront.succeeded);
+  EXPECT_EQ(128U, network.phaseFront.cells.size());
+  std::set<std::pair<int, int>> sheetKeys;
+  for (const auto &cell : network.phaseFront.cells) {
+    sheetKeys.emplace(cell.sourceComponent, cell.sourceSheet);
+  }
+  EXPECT_EQ((std::set<std::pair<int, int>>{{0, 0}, {1, 1}}), sheetKeys);
+  for (const auto &edge : network.phaseFront.edges) {
+    if (edge.oppositeEdge < 0) {
+      continue;
+    }
+    ASSERT_LT(edge.oppositeEdge,
+              static_cast<int>(network.phaseFront.edges.size()));
+    const auto &opposite = network.phaseFront.edges[
+        static_cast<std::size_t>(edge.oppositeEdge)];
+    EXPECT_EQ(edge.sourceComponent, opposite.sourceComponent);
+    EXPECT_EQ(edge.sourceSheet, opposite.sourceSheet);
+  }
+}
+
+TEST(SurfaceCellsPhase10,
+     UniformPhaseFrontCloseSheetsIgnoresFaceRowEnumeration) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/close_sheets.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/close_sheets.rawfield");
+  directional::TriMesh forwardMesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), forwardMesh));
+  const Eigen::MatrixXd forwardRaw =
+      read_rawfield_fixture(fieldPath, forwardMesh.F.rows());
+
+  Eigen::MatrixXi reversedFaces = forwardMesh.F.colwise().reverse().eval();
+  Eigen::MatrixXd reversedRaw = forwardRaw.colwise().reverse().eval();
+  directional::TriMesh reverseMesh;
+  reverseMesh.set_mesh(forwardMesh.V, reversedFaces);
+
+  const auto build = [](const directional::TriMesh &mesh,
+                        const Eigen::MatrixXd &rawField) {
+    const auto crossField =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(
+            mesh, rawField);
+    const Eigen::VectorXd targetSize =
+        Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+    directional::geometry::SurfaceCellTracingOptions options;
+    options.sourceFaceComponents.resize(
+        static_cast<std::size_t>(mesh.F.rows()));
+    options.sourceFaceSheets.resize(static_cast<std::size_t>(mesh.F.rows()));
+    for (int face = 0; face < mesh.F.rows(); ++face) {
+      const int component = mesh.F(face, 0) < 16 ? 0 : 1;
+      options.sourceFaceComponents[static_cast<std::size_t>(face)] = component;
+      options.sourceFaceSheets[static_cast<std::size_t>(face)] = component;
+    }
+    return directional::geometry::build_surface_cell_network(
+        mesh.V, mesh.F, crossField, targetSize, options);
+  };
+
+  const auto forward = build(forwardMesh, forwardRaw);
+  const auto reverse = build(reverseMesh, reversedRaw);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forward.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reverse.phaseFront.disposition);
+  EXPECT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
+  EXPECT_EQ(forward.phaseFront.edges.size(), reverse.phaseFront.edges.size());
+  EXPECT_EQ(forward.phaseFront.events.size(), reverse.phaseFront.events.size());
+}
+
+TEST(SurfaceCellsPhase10,
      ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary) {
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/plane.obj");
