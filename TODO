@@ -5,43 +5,50 @@ Last updated: 2026-08-06
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G1 uniform phase-front plane restoration**.
-- Earliest failure: `plane__surface_cells` remains on the unchanged 106-trace / 9-arrangement / 12-candidate generic completion path.
-- Retained mandatory regression: G2 multi-face seam remains direct, deterministic, and valid with 64 pure quads.
-- Completed turn: Gate 1 restoration artifact-only Test + Benchmark.
-- Next turn: `.agents/Directional/Gate_1_Live_Transition_Path_Code_Build_Plan.md`.
+- Active gate: **G1 plane live-transition verification**.
+- Proven retained sub-contract: G2 multi-face seam direct success.
+- Completed turn: Gate 1 live-transition Code + Build.
+- Next turn: artifact-only testing using `.agents/Directional/Gate_1_Live_Transition_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact tested authority
+## Exact build authority
 
-- source commit: `a90f6b9de83dba4aeac359b2f63d735e2049b54e`;
-- source blob: `850971a60b75dd84a81ddd4d260998f7ec9c326a`;
-- artifact SHA-256: `c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20`;
-- artifact checksums: 44/44;
-- test evidence SHA-256: `57e2f247dbf1cb7ad4c2470f30fa8ec7705b888ec891515ce61b76c329cd2591`;
-- evidence checksums: 114 files;
-- rebuild or source/test/fixture/validator edit during test turn: none.
+- source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
+- cleanup commit: `591ada601843237a709d2d6e133a438ca403f042`;
+- patch SHA-256: `b45802f0ede3cfd490fae5453ad60041e991a9f5ba2715e53566fd8db0fb79ba`;
+- build artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
+- internal checksums: 45/45;
+- approved targets: 7/7;
+- five executables, two project static libraries, 27 fixture/input files;
+- generated project binaries executed: none.
 
-## Runtime authority
+## Implemented contract
 
-- direct acceptance: **1/6**;
-- plane: fail, 106 traces, 9 arrangement cells, 12 candidates, 15 validation failures, no output;
-- seam: pass, 81 vertices, 64 pure quads, output hash `a8972efd7c4900a4`, zero validation failures;
-- close sheets: fail, 158 traces, zero cells;
-- cylinder: fail, 732 traces, zero cells;
-- bunny: fail, 80,862 traces, zero cells;
-- vase: fail, 116,922 traces, zero cells;
-- default suites: **301/312**; validation 60/60 and compiled API 8/8.
+- typed first phase-front rejection with source topology context;
+- exact shared-vertex classification;
+- unique ordered manifold source-vertex fan traversal;
+- every fan edge transported through authoritative reciprocal transition logic;
+- complete ordered source-edge provenance, hashing, and memory accounting;
+- ordinary shared-edge route unchanged;
+- typed fail-closed behavior for malformed or ambiguous topology/metadata.
 
-## Next Code + Build checklist
+## Last runtime authority
 
-- [ ] prove the first Gate 2 phase-front rejection on the exact plane route;
-- [ ] add a typed fail-closed phase-front rejection result and consume it in diagnostics;
-- [ ] repair only the confirmed general source-topology transition predicate;
-- [ ] preserve ordinary reciprocal edge transport and the seam contract;
-- [ ] add contract-level tests for edge and source-vertex transition routes;
-- [ ] compile the approved seven targets without executing project binaries;
-- [ ] package a fresh immutable artifact for plane-first verification.
+- plane: deterministic 106 traces, 9 arrangement cells, 12 completion candidates, no output;
+- seam: deterministic 64 direct pure quads, hash `a8972efd7c4900a4`;
+- close sheets, cylinder, bunny, and vase: deterministic direct failures before output.
 
-P5 remains open. If the next artifact does not materially advance Gate 1, stop local repair and perform the mandated design review or bounded producer replacement proof.
+The new compile-only artifact has not been executed.
+
+## Next artifact-only checklist
+
+- [ ] verify outer artifact SHA-256 and all 45 internal checksums;
+- [ ] run the new source-vertex contract tests without rewriting them;
+- [ ] run plane first and capture typed failure context if still red;
+- [ ] run seam second and preserve reciprocal quarter-turn direct success;
+- [ ] run close sheets, cylinder, bunny, and vase;
+- [ ] run non-overlapping default suites and bounded determinism processes;
+- [ ] perform no rebuild or source/test/fixture/validator edit.
+
+If Gate 1 does not materially advance beyond 106/9/12, the next turn is a design review or bounded producer replacement proof. P5 remains open.
