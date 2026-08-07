@@ -1,58 +1,64 @@
 {
   "schema": "directional.design-aligned-runtime-summary.v3",
-  "updatedUtc": "2026-08-07T04:40:00Z",
+  "updatedUtc": "2026-08-07T04:56:00Z",
   "directionControl": {
-    "activeGate": "G1 uniform phase-front plane live-transition verification",
+    "activeGate": "G1 producer architecture design review",
     "earliestFailingFixture": "plane__surface_cells",
     "retainedRegression": "multi_face_seam__surface_cells",
-    "mandatoryNextActionOnNoProgress": "design review or bounded producer replacement proof"
+    "mandatoryNextAction": "Gate 1 producer architecture design review; no third local predicate repair"
   },
-  "lastRuntimeAuthority": {
-    "testedSourceCommit": "a90f6b9de83dba4aeac359b2f63d735e2049b54e",
-    "artifactSha256": "c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20",
-    "evidenceSha256": "57e2f247dbf1cb7ad4c2470f30fa8ec7705b888ec891515ce61b76c329cd2591",
-    "directAcceptance": "1/6",
-    "defaultSuites": "301/312",
-    "cases": {
-      "plane": {"passed": false, "traces": 106, "arrangement": 9, "completed": 12, "outputQuads": 0},
-      "multi_face_seam": {"passed": true, "traces": 256, "arrangement": 65, "completed": 64, "outputQuads": 64, "outputHash": "a8972efd7c4900a4"},
-      "close_sheets": {"passed": false, "traces": 158, "arrangement": 0, "outputQuads": 0},
-      "cylinder": {"passed": false, "traces": 732, "arrangement": 0, "outputQuads": 0},
-      "bunny_1k_random": {"passed": false, "traces": 80862, "arrangement": 0, "outputQuads": 0},
-      "vase": {"passed": false, "traces": 116922, "arrangement": 0, "outputQuads": 0}
-    }
-  },
-  "latestCodeBuild": {
-    "runtimeExecuted": false,
-    "testedParentCommit": "a90f6b9de83dba4aeac359b2f63d735e2049b54e",
+  "testedAuthority": {
     "sourceCommit": "364a20e12165af7dbfe213bb6d075e3fe25b1574",
-    "payloadCleanupCommit": "591ada601843237a709d2d6e133a438ca403f042",
-    "patchSha256": "b45802f0ede3cfd490fae5453ad60041e991a9f5ba2715e53566fd8db0fb79ba",
-    "artifact": "directional-g1-live-transition-local-build-artifact.zip",
-    "artifactSha256": "922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741",
-    "internalChecksums": "45/45",
-    "approvedTargets": "7/7",
-    "executables": 5,
-    "projectStaticLibraries": 2,
-    "fixtureInputFiles": 27,
-    "sourceSync": {
-      "run": 31147985555,
-      "job": 92771436461,
-      "artifact": 8982197509,
-      "artifactSha256": "27c7f435a2c26b4b6c6df2ccc0ff258f297ddea129df657d1af2d795ba3a43e4"
+    "payloadCleanup": "591ada601843237a709d2d6e133a438ca403f042",
+    "artifact": {
+      "file": "directional-g1-live-transition-local-build-artifact.zip",
+      "sha256": "922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741",
+      "internalChecksums": "45/45",
+      "executables": 5,
+      "libraries": 2,
+      "fixtures": 27
     },
-    "confirmedSourceTopology": {
-      "vertexOnlyIntervalTransitions": 16,
-      "ordinarySharedEdgePathChanged": false,
-      "typedFailureStateAdded": true,
-      "orderedVertexFanTransportAdded": true,
-      "fullTransitionRouteProvenanceAdded": true
+    "evidenceArchive": {
+      "file": "directional-g1-live-transition-artifact-only-test-evidence.zip",
+      "sha256": "99a4922767d567830f202b440504f2b48d07fdb02bb117668baf846e7eeb9b64",
+      "checksummedFiles": 118
     },
-    "finalBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "f04bc39c8b83f6ac673c19560296c2f4041c38c8",
-      "src/geometry/SurfaceCellTracing.cpp": "d604348b895c797ab2f5cf59885894cff3961fe6",
-      "src/pipeline/RemeshPipeline.cpp": "e4ab7f9aa236c6719a3b0ba13cd63a08dc4845a5",
-      "tests/SurfaceCellsPhase10Tests.cpp": "44f68df797e988c678194cb3ac3072081ff3424c"
+    "rebuildPerformed": false,
+    "sourceOrValidationEdited": false
+  },
+  "contractTests": {
+    "vertex_fan": {"tests": 1, "passed": 1, "failed": 0},
+    "face_row_invariance": {"tests": 1, "passed": 1, "failed": 0},
+    "duplicate_metadata": {"tests": 1, "passed": 1, "failed": 0},
+    "production_fixture_topology": {"tests": 1, "passed": 1, "failed": 0}
+  },
+  "directAcceptance": {
+    "passed": 1,
+    "total": 6,
+    "cases": {
+      "plane": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 106, "arrangementCells": 9, "completedQuads": 12, "validationFailures": 15, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false, "firstInvalidStage": "completion/output-validation", "firstInvalidReason": "AggregateCompletionValidationFailure", "tracingStructuralHash": 18291124109639474708},
+      "multi_face_seam": {"success": true, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 256, "arrangementCells": 65, "completedQuads": 64, "validationFailures": 0, "outputOrigin": "CompletedSurfaceCells", "terminalFailureCode": "None", "fallbackAttempted": false, "recoveryUsed": false, "outputVertices": 81, "outputFaces": 64, "quadCount": 64, "nonQuadFaces": 0, "outputStructuralHash": "a8972efd7c4900a4"},
+      "close_sheets": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 158, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
+      "cylinder": {"success": false, "runs": 3, "structurallyStableAcrossProcesses": true, "traceSegments": 732, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
+      "bunny_1k_random": {"success": false, "runs": 2, "structurallyStableAcrossProcesses": true, "traceSegments": 80862, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false},
+      "vase": {"success": false, "runs": 2, "structurallyStableAcrossProcesses": true, "traceSegments": 116922, "arrangementCells": 0, "completedQuads": 0, "validationFailures": 0, "outputOrigin": "None", "terminalFailureCode": "NotProductionReady", "terminalFailureStage": "completion", "fallbackAttempted": false, "recoveryUsed": false}
     }
+  },
+  "defaultSuites": {
+    "producer_remaining": {"tests": 79, "passed": 78, "failed": 1, "failedTests": ["SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent"]},
+    "completion": {"tests": 164, "passed": 154, "failed": 10},
+    "validation": {"tests": 60, "passed": 60, "failed": 0},
+    "compiled_api": {"tests": 8, "passed": 8, "failed": 0}
+  },
+  "nonOverlappingTotal": {"passed": 305, "total": 321, "failed": 16},
+  "materialProgress": false,
+  "materialProgressReason": "Plane retained the exact 106 trace / 9 arrangement / 12 completion generic signature. New contract tests passed and tracing structural hash changed, but the authoritative phase-front path did not become production output.",
+  "reviewFindings": {
+    "planePriorSignatureRetained": true,
+    "planeTracingStructuralHashChanged": true,
+    "planeTracingStructuralHash": 18291124109639474708,
+    "typedPhaseFrontFailureNotPreservedInFinalDiagnostics": true,
+    "contractFixtureUsesSyntheticReconstructedPlane": true,
+    "mandatoryNextTurn": "Gate 1 producer architecture design review"
   }
 }
