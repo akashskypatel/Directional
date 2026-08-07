@@ -31,7 +31,7 @@ If two consecutive Code + Build turns do not materially advance the earliest act
 ## Gate state
 
 1. G0 truthful authority — passed.
-2. G1 uniform phase-front plane — **active; first restoration artifact tested and rejected**.
+2. G1 uniform phase-front plane — **active; second bounded Code + Build complete, artifact-only verification pending**.
 3. G2 cross-chart/close sheets — seam sub-contract proven; blocked by G1 and close-sheet failure.
 4. G3 periodic closure/holonomy — blocked.
 5. G4 topology/singularities — blocked.
@@ -41,23 +41,58 @@ If two consecutive Code + Build turns do not materially advance the earliest act
 
 ## Completed turn
 
-The Gate 1 regression-restoration artifact-only Test + Benchmark turn is complete.
+The Gate 1 live-transition Code + Build turn is complete.
 
-### Exact artifact and evidence authority
+### Exact source and build authority
 
-- tested source commit: `a90f6b9de83dba4aeac359b2f63d735e2049b54e`;
-- tested source blob: `850971a60b75dd84a81ddd4d260998f7ec9c326a`;
-- artifact: `directional-g1-regression-restoration-local-build-artifact.zip`;
-- artifact SHA-256: `c516af42f6aa388ef219408ef63e939490176385e976885f1ea9176ec3609e20`;
-- internal checksums: 44/44;
+- tested parent source: `a90f6b9de83dba4aeac359b2f63d735e2049b54e`;
+- payload checkpoint: `5b9892bd9f3a3e51cf8af49b0d492450529ff765`;
+- patch SHA-256: `b45802f0ede3cfd490fae5453ad60041e991a9f5ba2715e53566fd8db0fb79ba`;
+- source commit: `364a20e12165af7dbfe213bb6d075e3fe25b1574`;
+- payload cleanup: `591ada601843237a709d2d6e133a438ca403f042`;
+- source-sync run/job: `31147985555` / `92771436461`;
+- source-sync evidence artifact: `8982197509`, SHA-256 `27c7f435a2c26b4b6c6df2ccc0ff258f297ddea129df657d1af2d795ba3a43e4`;
+- local build artifact: `directional-g1-live-transition-local-build-artifact.zip`;
+- artifact SHA-256: `922be37c4ee849152dee40168e3e8604357af46189d6491124b7b83dce7ca741`;
+- internal checksums: 45/45;
 - five executables, two project static libraries, 27 fixture/input files;
-- evidence archive: `directional-g1-regression-restoration-artifact-only-test-evidence.zip`;
-- evidence SHA-256: `57e2f247dbf1cb7ad4c2470f30fa8ec7705b888ec891515ce61b76c329cd2591`;
-- evidence files covered by checksums: 114;
-- rebuild performed: no;
-- source, test, fixture, manifest, validator, fallback, or recovery edit: no.
+- approved targets: 7/7;
+- archived changed-file blobs: 4/4 exact.
 
-### Runtime authority
+Final source blobs:
+
+```text
+f04bc39c8b83f6ac673c19560296c2f4041c38c8  include/directional/geometry/SurfaceCellTracing.h
+d604348b895c797ab2f5cf59885894cff3961fe6  src/geometry/SurfaceCellTracing.cpp
+e4ab7f9aa236c6719a3b0ba13cd63a08dc4845a5  src/pipeline/RemeshPipeline.cpp
+44f68df797e988c678194cb3ac3072081ff3424c  tests/SurfaceCellsPhase10Tests.cpp
+```
+
+No generated project binary, test, benchmark, discovery command, CLI, GUI, help command, or list command was executed. This turn makes no plane or seam runtime-success claim.
+
+### Confirmed implementation contract
+
+Static emulation of the exact committed plane triangulation and 8x8 phase-front grid found 16 transitions where consecutive selected source-face intervals meet at one source vertex without sharing an edge. The former Gate 2 shared-edge-only predicate rejected the first such transition before authoritative phase-front construction.
+
+The source now:
+
+- exposes typed first phase-front rejection state and source cell/side/face/vertex/edge context;
+- propagates that state into existing first-invalid-producer diagnostics;
+- leaves ordinary shared-edge transition handling unchanged;
+- classifies exact shared-vertex attachment from source barycentric endpoints;
+- derives at most the two manifold fan directions from source topology;
+- selects exactly one route by the directed geometric side of the lattice segment;
+- traverses every route edge through authoritative `resolve_branch_transition`;
+- requires component/sheet compatibility, no hard/relief barrier, final face/family/sign agreement, and complete canonical source-edge provenance;
+- records the ordered edge route in hashing and memory accounting;
+- fails closed for disconnected, repeated, non-manifold, ambiguous, invalid, missing-provenance, or branch-mismatched fans;
+- contains no fixture-specific condition, arbitrary subset search, positional jump, fallback, recovery, or validator weakening.
+
+Contract-level tests were added for valid multi-edge source-vertex traversal, face-row reordering invariance, duplicate metadata typed failure, and one-cell-to-one-quad construction. They compiled but were not executed.
+
+### Last runtime authority
+
+The last executed artifact remains the rejected restoration package:
 
 | Fixture | Result | Traces | Arrangement | Completed | Output quads |
 |---|---:|---:|---:|---:|---:|
@@ -68,47 +103,31 @@ The Gate 1 regression-restoration artifact-only Test + Benchmark turn is complet
 | Bunny | fail | 80,862 | 0 | 0 | 0 |
 | Vase | fail | 116,922 | 0 | 0 | 0 |
 
-Direct acceptance is 1/6. All benchmark cases were structurally deterministic across independent processes. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, output hash `a8972efd7c4900a4`, fallback `Fail`, and no recovery.
-
-Default suites are 301/312: remaining producer 79/80, completion 154/164, validation 60/60, compiled API 8/8. Direct gates remain separate and authoritative.
-
-### Durable root-cause correction
-
-The rejected patch treated empty matching/effort/transition containers as absent metadata. That condition is not reached by the actual prescribed-plane pipeline:
-
-1. `finalize_surface_cell_raw_cross_field()` computes principal matching;
-2. it copies matching and effort into `CrossFieldResult`;
-3. it populates edge transitions;
-4. those nonempty containers are passed into the phase-front producer.
-
-The compiled patch was therefore behaviorally unreachable on the plane, which is consistent with unchanged stage hashes and counts.
-
-The leading next-failure candidate is the Gate 2 requirement that consecutive selected segment intervals share one source edge. A segment can pass exactly through a triangulation vertex, causing consecutive intervals to meet at the vertex without one shared edge. This is a source-review inference, not a runtime-proven diagnosis, because the current producer exposes only Boolean failure.
+Direct acceptance is 1/6. The seam remains direct `CompletedSurfaceCells`, 81 vertices, 64 pure quads, zero validation failures, output hash `a8972efd7c4900a4`, fallback `Fail`, and no recovery. The new artifact must not be described as successful until artifact-only execution proves it.
 
 ## Next authoritative turn
 
-Execute `.agents/Directional/Gate_1_Live_Transition_Path_Code_Build_Plan.md`.
+Execute `.agents/Directional/Gate_1_Live_Transition_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The next turn must:
+Required order:
 
-1. compare the successful Gate 1 parent `aea10409c73c490b92f78760b73191641ef823c6` with the tested source;
-2. expose a typed first phase-front rejection result and consume it in diagnostics;
-3. confirm the first rejected invariant on the exact complete-metadata plane route;
-4. implement only the confirmed general topology transition correction;
-5. preserve ordinary reciprocal edge transitions, chart/sheet ownership, and the seam contract;
-6. add contract-level tests without weakening existing tests;
-7. compile the approved seven targets and execute no generated project binary;
-8. package a fresh immutable artifact for plane-first testing.
+1. verify the artifact and 45 checksums;
+2. run the new source-vertex contract tests without changing them;
+3. run plane first and capture typed rejection context if it remains red;
+4. run seam second and preserve direct reciprocal quarter-turn output;
+5. continue close sheets, cylinder, bunny, and vase;
+6. run non-overlapping default suites and bounded determinism processes;
+7. rebuild nothing and edit nothing.
 
-This is the second bounded Code + Build attempt after one non-advancing restoration. If its artifact-only verification does not materially advance Gate 1, the mandatory following turn is a design review or bounded producer replacement proof.
+If artifact-only evidence does not materially advance Gate 1 beyond the prior 106/9/12 signature, the mandatory following turn is a design review or bounded producer replacement proof. A third local predicate-repair turn is not authorized.
 
 ## Current authoritative documents
 
 - `.agents/Directional/DESIGN.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md`
-- `.agents/Directional/Gate_1_Regression_Restoration_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Gate_1_Live_Transition_Path_Code_Build_Plan.md`
+- `.agents/Directional/Gate_1_Live_Transition_Local_Code_Build_Report.md`
+- `.agents/Directional/Gate_1_Live_Transition_Artifact_Only_Test_Benchmark_Plan.md`
 - `benchmark-results/design-aligned-runtime-summary.json`
 - `tests/TESTING_STRATEGY.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
@@ -122,8 +141,8 @@ This is the second bounded Code + Build attempt after one non-advancing restorat
 2. `MILESTONE_G_TODO.md`
 3. this handoff
 4. `.agents/Directional/DESIGN.md`
-5. latest Test + Benchmark report
-6. next Code + Build plan
+5. latest Code + Build report
+6. next artifact-only Test + Benchmark plan
 7. latest runtime summary
 8. `tests/TESTING_STRATEGY.md`
 9. `.agents/Directional/GitHub_Workflow_Policy.md`
@@ -135,7 +154,8 @@ This is the second bounded Code + Build attempt after one non-advancing restorat
 - A cross field supplies orientation, not authoritative lattice phase/connectivity.
 - Empty prescribed-field metadata is absence, but the ordinary raw-field finalization path populates matching, effort, and transitions before tracing.
 - Complete zero-turn metadata and reciprocal quarter-turn metadata must use one general source-topology transport contract.
-- A source-vertex crossing must be represented by a unique ordered incident-edge fan, never a positional face jump; this candidate must be confirmed by typed rejection evidence before implementation.
+- A source-vertex crossing is represented by a unique ordered incident-edge fan, never a positional face jump or arbitrary subset.
+- Typed first-rejection state is necessary authority but does not replace constructive success.
 - Analytic fixtures isolate contracts but real bunny/vase fixtures remain mandatory.
 - Fixture hashes/topology prevent synthetic simplification.
 - Direct gates outrank aggregate totals.
