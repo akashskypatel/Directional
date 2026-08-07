@@ -12,57 +12,57 @@ The primary question is:
 
 Run and report direct fixtures before aggregate totals:
 
-1. plane;
-2. multi-face seam;
-3. close sheets;
-4. cylinder;
+1. plane — passed and retained as a regression gate;
+2. multi-face seam — active first Gate 2 fixture;
+3. close sheets — active second Gate 2 fixture;
+4. cylinder — blocked until Gate 2 passes;
 5. later topology, feature, adaptive, and production fixtures only after preceding gates pass.
 
-Do not skip a red analytic gate and use a more complex fixture as the main progress signal.
-
-Each direct acceptance case requires:
-
-- requested and executed backend `SurfaceCells`;
-- fallback policy `Fail`;
-- no fallback attempt;
-- source-grid recovery disabled;
-- output origin `CompletedSurfaceCells`;
-- non-empty pure-quad output;
-- complete source provenance;
-- strict source-authoritative validation;
-- deterministic structural output.
+Each direct acceptance case requires requested/executed `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, `CompletedSurfaceCells`, non-empty pure quads, complete source provenance, strict validation, and deterministic structural output.
 
 Fallback, recovery, partial cells, legacy output, input return, and timeout do not satisfy a direct gate.
 
-## Active Gate 1 contract
+## Passed Gate 1 contract
 
-The plane now exercises first-class phase-front production. Current evidence is 352 traces, 65 arrangement cells, and 409 completed quads, followed by `completion/output-validation:FlippedFace`.
-
-Gate 1 tests must protect:
+The plane now protects:
 
 - first-class phase and integer lattice coordinates;
 - deterministic directed front ownership;
-- exactly one filled side or explicit exterior classification per directed front edge;
-- four distinct source-attached corners;
-- four ordered side paths with endpoint continuity;
-- nonzero intrinsic signed area;
-- source-normal-consistent winding;
-- coherent component, chart, local-sheet, route, phase, family, and sign state;
-- transactional whole-cycle reversal when winding is opposite;
-- one accepted four-sided phase-front cell mapping to one intended quad-domain cell;
-- fail-closed behavior before completion on invalid orientation or incidence;
-- arrangement materialization of already-decided topology;
-- no fan-sector inference, positional merge, or generic patch expansion of an authoritative cell.
+- exactly one filled side or explicit exterior classification per edge;
+- four distinct source-attached corners and ordered side paths;
+- source-normal-consistent winding and transactional whole-cycle reversal;
+- coherent component, local-sheet, phase, family/sign, and route state;
+- one accepted four-sided cell mapping to one output quad;
+- direct materialization without generic patch expansion;
+- zero strict validation failures and deterministic output.
+
+Exact evidence: 64 direct cells, 64 pure quads, 81 vertices, output hash `730caeae49ec872c`, no fallback/recovery.
+
+## Active Gate 2 contract
+
+Gate 2 tests must protect:
+
+- exact source-chart identity in constructive state;
+- exact source-topology transition witnesses;
+- forward/reverse transition round trips;
+- authoritative cross-field quarter-turn branch transport;
+- phase and integer lattice-coordinate transport across source faces;
+- component, local-sheet, family/sign, and route preservation;
+- compatible reciprocal front merging across charts;
+- fail-closed missing/ambiguous/inconsistent transitions;
+- deterministic results under face/edge/source permutations;
+- zero positional capture or merging across close unrelated sheets;
+- preservation of Gate 1 direct orientation and one-cell-to-one-quad materialization.
 
 ## Default suites
 
 ### `directional_surface_cell_producer_tests`
 
-Protects bounded source preconditioning, field construction and matching, source-chart/component/sheet authority, lattice/front construction, direct cell ownership, and direct design-gate acceptance. This is the primary production correctness authority.
+Primary production correctness authority for source topology, field construction/matching, chart/component/sheet authority, lattice/front construction, direct ownership, and direct design-gate acceptance.
 
 ### `directional_surface_cell_completion_tests`
 
-Protects valid FlowRep selection, transactional simplification, patch feasibility, and topology-distinct completion. Completion tests cannot substitute for producer success.
+Protects valid FlowRep selection, transactional simplification, patch feasibility, and intentionally topology-distinct completion. Completion tests cannot substitute for producer success.
 
 ### `directional_surface_cell_validation_tests`
 
@@ -72,54 +72,24 @@ Protects source-constrained optimization and strict source-authoritative validat
 
 Protects the compiled public API independently of meshing quality.
 
-## Correct stale producer expectations
-
-Two current producer tests must be corrected in the next Code + Build turn:
-
-1. `AdaptiveTargetSizePhase12.SurfaceCellScaffoldPopulatesSizeDiagnostics` must verify meaningful sizing diagnostics without assuming production failure.
-2. `SurfaceCellsPhase10.SurfaceCellsBackendIsDefaultOffAndSupportsPlanarFixture` must not require recovery when direct SurfaceCells succeeds. Use a true recovery-required fixture or separate direct-success and recovery-only scenarios.
-
-These corrections must not weaken the four direct acceptance tests or remove genuine recovery coverage.
-
-## Later gate coverage
-
-### Gate 2 — Cross-chart and close-sheet propagation
-
-Protect authoritative phase/lattice transport, quarter-turn matching, deterministic source permutations, and zero cross-sheet capture or merge.
-
-### Gate 3 — Periodic closure
-
-Protect explicit phase holonomy, deterministic periodic reconciliation, complete directed incidence, and cylinder closure.
-
-### Gate 4 — Topology-distinct completion
-
-Protect distinct topology graphs, intentional singularity placement, supported 3–6-sided completion, and rejection of generic center-fan production fallback.
-
-### Gate 5 — Adaptive transitions and features
-
-Protect dyadic scale levels, 2:1 grading, validated pure-quad transitions, structural hard-feature rails, and absence of T-junctions or sheet jumps.
-
-### Gates 6–7 — General production and hardening
-
-Protect deterministic bunny success, complete production fixtures, parallel equivalence, performance, and memory only after constructive correctness.
-
 ## Non-default coverage
-
-Historical, legacy-integration, and optional-guidance suites may be enabled for focused investigation, but they cannot block or outweigh the active direct design gate unless they expose a currently required production invariant.
 
 Scheduler-sensitive wall-clock ratios, exact cache/recomputation counters, superseded route-repair machinery, and milestone bookkeeping belong in benchmark, closeout, or historical coverage rather than default correctness.
 
+`SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent` is scheduler-sensitive and should be optional benchmark/closeout coverage. Its failure cannot outweigh valid direct gate evidence.
+
+The historical implementation-detail tests `WholeComplexParallelRouteRepairCompletesWithinOneGlobalLedger` and `OneCandidateBudgetIsExactAndDoesNotRecurse` should remain non-default; they do not define current production behavior.
+
+## Later gate coverage
+
+- Gate 3: explicit phase holonomy, deterministic periodic reconciliation, complete directed incidence, cylinder closure.
+- Gate 4: distinct topology graphs, intentional singularities, supported 3–6-sided completion, no generic center-fan production fallback.
+- Gate 5: dyadic scale levels, 2:1 grading, hard-feature rails, no T-junctions or sheet jumps.
+- Gates 6–7: deterministic bunny success, complete production fixtures, parallel equivalence, performance, and memory only after constructive correctness.
+
 ## Test validity rules
 
-A default test is valid when its failure means a current or already-passed production contract is broken: source topology, boundaries, features, components, sheets, field transport, front construction, directed incidence, direct cell ownership, topology-distinct completion, source validity, or determinism.
-
-Demote, reconstruct, or remove a default test when it only checks:
-
-- a superseded milestone;
-- an exact diagnostic, counter, ordinal, cache layout, memory inventory, or recomputation count;
-- fallback or recovery as direct success;
-- scheduler-sensitive timing;
-- an invalid synthetic fixture that does not create its claimed precondition.
+A default test is valid when its failure means a current or already-passed production contract is broken. Demote, reconstruct, or remove tests that only check a superseded milestone; exact diagnostics, counters, ordinals, cache layouts, memory inventories, or recomputation counts; fallback/recovery as success; scheduler-sensitive timing; or invalid fixtures that do not create their claimed precondition.
 
 Fixtures must create valid source-supported geometry and reach the behavior they claim to test. Do not synthesize counters, weaken assertions, or special-case fixture identifiers.
 
@@ -127,44 +97,19 @@ Fixtures must create valid source-supported geometry and reach the behavior they
 
 ### Code + Build
 
-- May edit implementation, tests, and build logic required by the active gate.
-- Compiles only approved targets.
-- Executes no test, benchmark, discovery, CLI, GUI, help/list, or generated project binary.
+May edit implementation, tests, and build logic required by the active gate. Compile only approved targets. Execute no generated project binary, test, benchmark, discovery, CLI, GUI, help, or list command.
 
 ### Test + Benchmark
 
-- Uses an exact packaged artifact.
-- Performs no configure, compile, relink, regeneration, or source/test/fixture/validator edit.
-- Preserves raw logs and machine-readable results.
-- Runs each direct case in a fresh process and reports direct results before aggregate totals.
+Use an exact packaged artifact. Perform no configure, compile, relink, regeneration, or source/test/fixture/validator edit. Preserve raw logs and machine-readable results. Run each direct case in a fresh process and report direct results before aggregate totals.
 
 ## Material-progress classification
 
-A test turn shows material progress only when at least one is true:
+A test turn shows material progress only when the active direct fixture passes, the earliest failure advances because a missing first-class contract is live, or a structural ambiguity is removed without an equivalent downstream ambiguity.
 
-- the active direct fixture passes;
-- the earliest direct failure advances because a missing design contract is live and consumed;
-- a general phase/front/topology invariant replaces an underdetermined repair;
-- a structural ambiguity is removed without an equivalent downstream ambiguity.
-
-Different wording, a new hash, a higher aggregate count caused by demotion, faster failure, stable cache metrics, or fixture-specific behavior are not sufficient.
+Different wording, a new hash, higher aggregate counts, faster failure, or fixture-specific behavior are insufficient.
 
 If two consecutive Code + Build turns do not materially advance the active gate, the next turn must be a design review or bounded producer replacement proof.
-
-## Ordered patch-stack testing during GitHub outage
-
-While the current GitHub workflow outage persists, do not use Actions workflows for repository updates or builds. Keep each unsynchronized source change as an immutable ordered patch layer on project TODOs.
-
-A local artifact is authoritative only when it records:
-
-- exact base source;
-- ordered patch blobs and digests;
-- expected final source blobs;
-- dependency and fixture closure;
-- build logs and artifact checksum;
-- no prohibited turn-boundary execution.
-
-After service recovery, apply and verify patch layers as separate coherent commits in order. Remove a payload only after its corresponding source state is verified.
 
 ## Preserved prohibitions
 
