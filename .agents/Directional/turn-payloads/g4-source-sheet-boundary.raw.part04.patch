@@ -1,0 +1,47 @@
++  fixture.faceAxisY.conservativeResize(fixture.faces.rows(), 3);
++  for (int face = diskFaceCount; face < fixture.faces.rows(); ++face) {
++    const Eigen::RowVector3d a =
++        fixture.vertices.row(fixture.faces(face, 0));
++    const Eigen::RowVector3d b =
++        fixture.vertices.row(fixture.faces(face, 1));
++    const Eigen::RowVector3d c =
++        fixture.vertices.row(fixture.faces(face, 2));
++    Eigen::RowVector3d normal = (b - a).cross(c - a);
++    normal.normalize();
++    Eigen::RowVector3d axisX(1.0, 0.0, 0.0);
++    axisX -= axisX.dot(normal) * normal;
++    axisX.normalize();
++    Eigen::RowVector3d axisY = normal.cross(axisX);
++    axisY.normalize();
++    fixture.faceAxisX.row(face) = axisX;
++    fixture.faceAxisY.row(face) = axisY;
++  }
++
++  fixture.targetSize = Eigen::VectorXd::Constant(fixture.vertices.rows(), 0.25);
++  fixture.options.sourceFaceComponents.resize(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  fixture.options.sourceFaceSheets.resize(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  const int adjacentSheet = distinctSourceSheets ? 1 : 0;
++  for (int face = diskFaceCount; face < fixture.faces.rows(); ++face) {
++    fixture.options.sourceFaceComponents[static_cast<std::size_t>(face)] = 0;
++    fixture.options.sourceFaceSheets[static_cast<std::size_t>(face)] =
++        adjacentSheet;
++  }
++  return fixture;
++}
++
++TEST(SurfaceCellsPhase10,
++     CurvedBoundedDiskAcceptsNonHardAuthoritativeSourceSheetBoundary) {
++  const CurvedDiskFixture fixture =
++      make_curved_disk_with_adjacent_source_sheet(false, true);
++  const std::uint64_t sharedEdge =
++      directional::pipeline::surface_cell_source_edge_key(0, 1);
++  ASSERT_EQ(0U, fixture.options.hardFeatureEdges.count(sharedEdge));
++
++  const auto fullIncident =
++      directional::geometry::surface_cell_tracing_detail::edge_faces(fixture.faces);
++  const auto found = fullIncident.find(sharedEdge);
++  ASSERT_NE(fullIncident.end(), found);
++  int diskFace = -1;
++  for (const int face : found->second) {
