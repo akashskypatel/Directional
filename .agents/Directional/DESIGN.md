@@ -80,20 +80,22 @@ The implementation must preserve both identities. Never overwrite a local isolat
 7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Current runtime-proven G0-G3 authority
+## Current runtime authority and retained baseline
 
-Exact runtime artifact **`9021175280`** preserves:
+Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is the current artifact-only runtime observation for the topology-region architecture. It proves the new region/seam model is live, but it is **not an accepted retained-authority closure** because two prior contracts regress.
 
-| Fixture | Producer | Direct output | Hash | Determinism |
+| Fixture | Candidate result | Candidate hash | Accepted hash | Decision |
 |---|---|---|---|---|
-| plane | `Produced` | 81 V / 64 strict-valid quads | `730caeae49ec872c` | 3/3 |
-| seam | `Produced` | 81 V / 64 strict-valid quads | `5bdf34d7802e9fb0` | 3/3 |
-| close sheets | `Produced` | 242 V / 200 strict-valid quads / 2 isolated components | `89b052762f52a5af` | 3/3 |
-| cylinder | `Produced` | 320 V / 288 strict-valid quads | `32135be51d7a0a26` | 3/3 |
+| plane | 81 V / 64 strict-valid quads | `730caeae49ec872c` | same | exact pass |
+| seam | 81 V / 64 strict-valid quads | `5bdf34d7802e9fb0` | same | exact pass |
+| close sheets | 242 V / 200 strict-valid quads / 2 isolated components | `aaec5574aa2e52f9` | `89b052762f52a5af` | deterministic ordering regression pending review |
+| cylinder | 320 V / 288 strict-valid quads | `32135be51d7a0a26` | same | exact pass |
 
 Cylinder periodic authority remains `r=0`, `t=(32,0)`, route 32, cut 4; validation failures are zero; exactly two genuine annulus exterior loops remain and the artificial cut is not exterior. No passing direct case uses fallback or source-grid recovery.
 
-Retained G0-G3 focused contracts are **17/17**.
+Retained G0-G3 focused contracts are **16/17** on the candidate because embedded relief barriers can decompose topology regions into all-`NotApplicable` subregions and permit generic tracing instead of the established fail-closed `Rejected` behavior.
+
+The accepted deterministic close-sheets hash remains `89b052762f52a5af` until mandatory review independently resolves whether exact component ordering is product authority or an incidental hash detail. Candidate geometry and face-geometry multisets are identical; only component emission order changed.
 
 ## G2 isolation invariant
 
@@ -175,12 +177,12 @@ Read-only exact-source reconstruction shows the apparent disk is created by loca
 
 Boundary turn/index/alignment validation must **not** be relaxed to hide this partition error.
 
-### Topology-region / isolation-sheet candidate — compile-valid, runtime pending
+### Topology-region / isolation-sheet architecture — runtime-live, retained regressions unresolved
 
-Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, packaged as exact artifact **`9022061741`**, introduces first-class `SurfaceTopologyRegion` authority:
+Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, exact artifact **`9022061741`**, validates first-class `SurfaceTopologyRegion` authority **9/9**:
 
 - regions are built from exact source adjacency;
-- different source components, hard features, and embedded relief barriers stop region continuity;
+- different source components and hard features stop region continuity;
 - local-isolation disagreement alone does not;
 - region state retains exact source faces, Euler characteristic, genuine boundary-loop count, exact boundary topology, internal isolation-seam topology, local isolation labels, and a structural hash;
 - non-hard exact-adjacent cross-sheet seams are internal when they lie in one region;
@@ -189,7 +191,16 @@ Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, packaged as exact
 - periodic relation identity carries topology-region scope;
 - trace-network hashing and runtime diagnostics consume region/seam authority.
 
-This candidate compiled all **111/111** approved Release/static/Ninja actions with `runtimeExecution=false`. It is **not** runtime authority until artifact-only validation executes.
+Exact torus now has four annular topology regions, eight internal isolation seams, local-isolation cardinalities `[1,1,2,1]`, and four periodic relations. Phase-front authority reaches `Produced` and the former `InvalidBoundedDiskBoundaryTurn` no longer occurs. The next failure is **`tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`**.
+
+The materializer has not yet adopted the same authority model: multi-isolation region cells normalize to `sourceSheet=-1`, while `build_authoritative_phase_front_mesh()` still rejects negative `sourceSheet` and keys lattice/periodic materialization by `(component, sheet, lattice)`. A future approved design must use topology-region phase/lattice authority while preserving exact local-isolation provenance; it may not weld or choose provenance by position, ID, count, or order.
+
+Two regressions prevent accepted progress:
+
+1. embedded relief barrier semantics are ambiguous under region decomposition and currently regress fail-closed authority;
+2. structural-hash-first region ordering reverses close-sheets component emission and violates the accepted exact deterministic hash.
+
+The exact torus regression test also contains a likely over-coupled `hasTraceNetwork` assertion because materialization fails before trace-network context retention. Its scope must be independently reviewed rather than silently weakened.
 
 Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
@@ -201,9 +212,11 @@ The prescribed sphere remains deferred until exact torus reaches direct strict-v
 
 ## Current next authority
 
-Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact **`9022061741`**.
+Accepted material progress required topology-region runtime progress **and preservation of all retained authority**. Artifact `9022061741` advances torus structurally but regresses embedded-relief fail-closed behavior and the accepted close-sheets deterministic identity. The no-progress count is therefore **2**.
 
-The preceding artifact-only turn established one Code + Build without material runtime progress. Compile success does not reset the counter. If validation of artifact `9022061741` also fails to establish material progress, no further ordinary Code + Build is authorized until mandatory design review or bounded producer-replacement proof is completed.
+**No further ordinary Code + Build is authorized.** Execute `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md` as a mandatory independent **Review** turn. The pending `.agents/Directional/Gate_4_Topology_Region_Materialization_And_Regressions_Code_Build_Proposal.md` is `proposed_pending_review` and is not executable until the reviewer approves, amends, or replaces it.
+
+The mandatory reviewer must resolve topology-region soundness, embedded relief semantics, deterministic multi-region output identity, multi-isolation materialization, and torus test scope before publishing exactly one authoritative implementation/evidence plan.
 
 ## Non-negotiable prohibitions
 
