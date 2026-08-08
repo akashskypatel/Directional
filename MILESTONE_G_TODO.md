@@ -6,67 +6,70 @@ Last updated: 2026-08-08 UTC
 
 G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 cylinder / periodic holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## Runtime authority — artifact 9015931928
+## Runtime authority — artifact 9016834575
 
-Current runtime-proven authority remains artifact **`9015931928`** until the curved-disk candidate executes artifact-only.
+The curved-disk candidate is now runtime-proven artifact-only:
 
-- sheet coverage **3/3**;
-- G4 relation semantics **5/5**;
-- retained G0-G3 **17/17**;
-- direct plane/seam/close-sheets/cylinder exact deterministic baselines unchanged;
-- no fallback/recovery.
-
-Exact torus currently rejects directly at `tracing/phase-front` as `UnsupportedSourceSheetTopology` after retaining three periodic-annulus relations. The old partial `NotApplicable -> generic zero-cell arrangement/completion` path is gone.
-
-Read-only source/topology authority identifies the missing class as non-planar χ=1 source-sheet disks with one genuine source/hard-feature boundary. Observed face IDs, sheet counts, relation counts, and loop lengths are diagnostics only.
-
-Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Report.md`.
-
-## Curved bounded disk Code + Build complete
-
-Artifact **`9016834575`** (`g4-curved-disk-code-build`):
-
+- artifact `9016834575`, workflow run/job `31240168780 / 93059691196`;
 - implementation `90046be649a0fd051e6c44eceec07198dc542c29`;
 - cleanup `508211936b790dfb40cdbece7900bb0522368b76`;
-- workflow run/job `31240168780 / 93059691196`;
 - ZIP SHA-256 `6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67`;
 - internal manifest SHA-256 `e0ec3737e23fbb5c21b6c0be6acb3aa8b3f538b954c566867b6c309a6f5f4736`;
 - recursive checksums **48/48**;
-- 49 total package files / 27 fixtures / five executables / two project libraries;
-- approved targets **111/111**;
-- log artifact `9016834752`, SHA-256 `6e0ed0906bc9f935ac80b6d8fd40f0654f203020a7b7c6cde6d9a4e49b067db1`;
-- `runtimeExecution=false`.
+- curved-disk semantics **6/6**;
+- sheet coverage **3/3**;
+- G4 relation semantics **5/5**;
+- retained G0-G3 **17/17**.
 
-The implementation adds a generalized intrinsic curved bounded disk-sheet phase-front producer:
+Direct three-process authority remains unchanged:
 
-1. structural applicability from connected χ=1 / one authoritative boundary rather than fixture IDs;
-2. reciprocal 4-RoSy gauge transport validated over the simply connected sheet;
-3. boundary U+/V+/U-/V- phase classification from transported field alignment;
-4. intrinsic boundary arc-length coordinates plus harmonic/Tutte interior parameterization;
-5. source-triangle-owned lattice/front/cell provenance and exact hard/source boundary termination;
-6. structural composition after existing planar bounded and periodic-annulus producers;
-7. typed fail-closed reasons for disk topology, transport, boundary phase, chart and front pairing.
+- plane hash `730caeae49ec872c`, 64 quads / 81 V;
+- seam hash `5bdf34d7802e9fb0`, 64 quads / 81 V;
+- close sheets hash `89b052762f52a5af`, 200 quads / 242 V / two components;
+- cylinder hash `32135be51d7a0a26`, 288 pure quads / 320 V, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, zero validation failures, two genuine exterior annulus loops;
+- no fallback/recovery.
 
-No hard-feature demotion, annulus coercion, Euclidean seam welding, fallback/recovery, generic completion repair, or validator change was introduced.
+Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Artifact_Only_Test_Benchmark_Report.md`.
 
-Compile-only regressions were added for curved-disk applicability, row-order invariance, hard-boundary preservation, invalid reciprocal transport, mixed planar/periodic/curved composition, and exact torus producer advancement. They have **not executed yet**.
+## G4 curved-disk decision
 
-Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Code_Build_Report.md`.
+The curved bounded disk producer is runtime-live. Exact torus advances beyond `UnsupportedSourceSheetTopology` and now fails directly at the authoritative producer boundary:
 
-## Next turn
+- disposition `Rejected`;
+- stage `tracing/phase-front`;
+- reason `InvalidBoundedDiskTopology`;
+- first invalid source face 52;
+- two periodic relations reached before rejection;
+- trace/arrangement/completion counts remain zero after rejection;
+- terminal `NotProductionReady:tracing`;
+- no fallback/recovery.
 
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact `9016834575`.
+Face 52 and relation count 2 are diagnostic evidence only, never implementation or acceptance keys.
 
-Required order:
+## Active G4 blocker — non-hard authoritative source-sheet boundaries
 
-1. verify exact artifact/source/blob/checksum authority;
-2. run new curved-disk focused semantics;
-3. retain sheet-coverage 3/3, relation 5/5 and G0-G3 17/17;
-4. retain exact deterministic direct plane/seam/close-sheets/cylinder baselines;
-5. classify exact torus in at least three independent processes.
+Immutable source inspection identifies the exact contract mismatch.
 
-The prior `UnsupportedSourceSheetTopology` terminal result is no longer sufficient. Preferred result is complete five-sheet authoritative coverage/materialization and strict-valid direct torus output. A deeper deterministic typed bounded-disk or materialization invariant is acceptable material progress only if curved-disk applicability is live, canonical periodic authority remains intact, and no generic/fallback path substitutes for producer authority.
+The curved-disk producer currently treats an internal local boundary edge as valid only when it is listed in `hardFeatureEdges`. But authoritative local sheets are created by `classify_source_surface_labels()`, which can also stop traversal across a non-hard internal source edge because of normal incompatibility or close/opposing-sheet separation.
 
-Entering bounded-suite baseline remains producer **107/108**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **329/340**. Record actual new totals after runtime rather than predicting them.
+Required next contract:
 
-Prescribed sphere remains deferred unless torus reaches direct strict-valid production. Review policy remains `never`. Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
+1. genuine source boundary remains valid;
+2. hard-feature internal boundary remains valid;
+3. a non-hard internal local boundary is valid when the opposite source face has a different authoritative component/sheet label;
+4. a non-hard internal edge whose two source incident faces have the same component/sheet remains an invalid hidden cut;
+5. use existing source-label helpers/authority rather than raw IDs/order/counts/proximity;
+6. preserve exact source edge/face/component/sheet provenance and do not mutate hard-feature labels to force acceptance;
+7. advance the exact torus beyond this boundary-authority failure or expose the next truthful typed invariant.
+
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Plan.md` as **Code + Build only**.
+
+## Bounded suites
+
+- producer **112/113**; only `SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent` fails and remains classified as the existing sub-millisecond performance threshold;
+- completion/simplification **154/164**, unchanged historical ten failures;
+- validation **60/60**;
+- compiled API **8/8**;
+- aggregate **334/345**.
+
+Prescribed sphere remains deferred until torus reaches authoritative materialization/direct strict-valid production. Review policy remains `never`. Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
