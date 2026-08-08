@@ -244,3 +244,5 @@ This proposal is not authorized for implementation until mandatory Review valida
 - Review authority: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`
 
 PR #8 must remain open, draft, and unmerged.
+
+Documentation/handoff content authority: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`.

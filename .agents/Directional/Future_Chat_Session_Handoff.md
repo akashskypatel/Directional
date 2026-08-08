@@ -17,7 +17,7 @@
 - Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
 - Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
 - Entering branch head: `3568f59d3cd9fe77f6afa731f885d991fdbcbdeb`
-- Handoff content commit: **pending documentation publication**
+- Handoff content commit: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`
 
 Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest runtime report, the mandatory Review plan, the prior review report, the latest compile report, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Review/testing-integrity/recovery/handoff/GitHub-workflow references.
 
