@@ -1,6 +1,6 @@
 {
   "schema": "directional.design-aligned-runtime-summary.v13",
-  "updatedUtc": "2026-08-08T00:10:00Z",
+  "updatedUtc": "2026-08-08T00:15:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
@@ -63,6 +63,11 @@
     "executables": 5,
     "libraries": 2,
     "fixtures": 27,
+    "configuration": "Release",
+    "generator": "Ninja",
+    "directionalBuildTests": true,
+    "directionalBuildBenchmarks": true,
+    "generatedTestDiscoveryExecuted": false,
     "runtimeExecution": false,
     "changedFileBlobs": {
       "tests/SurfaceCellsPhase10Tests.cpp": "80a0b58339102279ab863d9112e243a557cd270d",
