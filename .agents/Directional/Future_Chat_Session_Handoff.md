@@ -18,6 +18,8 @@ G0, G1, G2, and **G3 are passed**.
 
 G3 formal closure is artifact `9013161456` (`g3-field-correspondence-test-witness-code-build`), source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`.
 
+Local evidence archive: `directional-g3-field-correspondence-witness-tb-evidence.tar.gz`, SHA-256 `cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8`.
+
 - corrected field-correspondence witness passes;
 - focused/retained G0-G3 contracts **17/17**;
 - plane direct hash `730caeae49ec872c`, 3/3;
