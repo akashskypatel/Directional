@@ -7,96 +7,143 @@ Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 Draft PR: #8 — keep **open, draft, unmerged**  
 Review policy: `never`  
 Active gate: **G4 topology-distinct completion and singularities**  
-Next turn: **Test + Benchmark — artifact-only G4 torus sheet-coverage validation**  
-Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Plan.md`
+Next turn: **Code + Build — G4 curved bounded disk-sheet phase-front producer**  
+Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Code_Build_Plan.md`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest G4 artifact-only runtime report, the latest G4 Code + Build report, the authoritative artifact-only Test + Benchmark plan, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest sheet-coverage runtime report, the latest sheet-coverage Code + Build report, the authoritative curved-disk Code + Build plan, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references.
 
 ## Current tested authority
 
-G0, G1, G2, and **G3 are passed**. G4 is **active**. Current runtime artifact `9014730437` proves G4 periodic-relation semantics **5/5**, retained G0-G3 focused contracts **17/17**, and unchanged direct deterministic plane/seam/close-sheets/cylinder hashes. Exact torus retains two periodic relations but the aggregate phase-front remains `NotApplicable`, then reaches 670 generic traces / 113 embedded arcs / zero arrangement cells and `SideSubdivisionRepair:InvalidInputIncidence`. No fallback/recovery is used.
+G0, G1, G2, and **G3 are passed**. G4 remains **active**.
 
-Latest detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Report.md`.
-
-## Completed G4 sheet-coverage Code + Build candidate
-
-Exact compile artifact: **`9015931928`** (`g4-sheet-coverage-code-build`)  
+Exact current runtime artifact: **`9015931928`** (`g4-sheet-coverage-code-build`)  
 Workflow run/job: `31237248211 / 93051938159`  
-Implementation commit: `856554ce648e5df09ac50f5c94e3e8f098181524`  
+Implementation: `856554ce648e5df09ac50f5c94e3e8f098181524`  
 Final compile-source commit: `a647215b4993338b054f04d4c8e54e7ef5370001`  
-Payload cleanup: `e46a6d99a45f22f31672c8e5a3367735427d827e`  
-Log artifact: `9015932044`
+Payload cleanup: `e46a6d99a45f22f31672c8e5a3367735427d827e`
 
 Artifact authority:
 
-- exact GitHub/downloaded ZIP SHA-256 `108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4`;
-- internal `SHA256SUMS` digest `c801b0bb157ba2e1b4537c636306d300ab289db2b89e915718efc73394c03635`;
+- ZIP SHA-256 `108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4`;
+- internal `SHA256SUMS` SHA-256 `c801b0bb157ba2e1b4537c636306d300ab289db2b89e915718efc73394c03635`;
 - recursive checksums **47/47**;
 - 48 files / 27 fixtures / five executables / two static libraries;
-- seven approved targets built Release/static/Ninja **111/111**;
-- artifact metadata `runtimeExecution=false`;
-- no generated Directional executable/test/benchmark/ctest/CLI/GUI/help/list/custom-input command executed.
+- validation made no configure/compile/link/rebuild or source/test/fixture/validator/benchmark/build edit.
 
-Final source blobs:
+Focused/runtime authority:
 
-- `include/directional/geometry/SurfaceCellTracing.h` `6ebe8f3324be580fc4838b97e5fb449572709236`;
-- `src/geometry/SurfaceCellTracing.cpp` `6b32b48141c16e2d51f1932462566083a7bc3355`;
-- `src/pipeline/RemeshPipeline.cpp` `b42681b61e2564fa55a2b67e7c7ae4890aa23d81`;
-- `tests/SurfaceCellsPhase10Tests.cpp` `c038567898f0da7efd6519392c37cbace02b8c1c`.
+- sheet-coverage semantics **3/3**;
+- G4 periodic-relation semantics **5/5**;
+- retained G0-G3 focused contracts **17/17**;
+- plane hash `730caeae49ec872c`, deterministic 3/3;
+- seam hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close-sheets hash `89b052762f52a5af`, 200 quads / 242 vertices / two components, deterministic 3/3;
+- cylinder `Produced / CompletedSurfaceCells`, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 vertices, zero validation failures, exactly two genuine 32-edge exterior loops, hash `32135be51d7a0a26`, deterministic 3/3;
+- no passing direct case uses fallback or source-grid recovery.
 
-Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Report.md`.
+Bounded suites:
 
-## Candidate implementation contract
+- producer **107/108**, only the existing sub-millisecond `StrictValidatorOverheadStaysBelowFivePercent` performance threshold fails;
+- completion/simplification **154/164**, exact same ten historical failures;
+- validation **60/60**;
+- compiled API **8/8**;
+- aggregate **329/340**.
 
-`build_uniform_phase_front()` now evaluates every deterministic authoritative `(component, sheet)` work item before exposing whole-surface authority.
+Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Report.md`.
 
-- existing bounded producer is tried first per sheet;
-- existing periodic-annulus producer is tried second when bounded is `NotApplicable`;
-- local typed rejection still propagates immediately;
-- supported sheets retain canonical periodic-relation insertion during the evaluation pass;
-- if every sheet succeeds, cells/edges/events are composed only after exact source component/sheet ownership and exact-once sheet coverage are verified;
-- if **no** sheet is applicable, the generic whole-surface `NotApplicable` contract is preserved;
-- if at least one sheet has produced authority but a later sheet is unsupported, the result is `Rejected / UnsupportedSourceSheetTopology` rather than partial `NotApplicable`;
-- aggregate ownership/coverage mismatch rejects as `IncompleteSourceSheetCoverage`;
-- no hard feature or source-sheet barrier is weakened.
+Latest compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Code_Build_Report.md`.
 
-Compile-only regressions cover mixed bounded+periodic composition, later unsupported-sheet fail-closed behavior under face-order reversal, and the exact torus producer boundary. They are not runtime authority until artifact `9015931928` executes.
+Local evidence archive: `directional-g4-sheet-coverage-artifact-only-evidence.tar.gz`, SHA-256 `4bb8e5235adbffc05411c54d378511ae4eea63bf314d7caf0e50f043d5532b47`.
 
-## Exact next-turn execution declaration
+## Exact current G4 torus evidence
 
-Before runtime execution state:
+The partial-authority defect is closed. Three independent exact torus runs now deterministically report:
+
+- `surfaceCellAuthoritativeProducerDisposition = Rejected`;
+- first invalid stage `tracing/phase-front`;
+- reason `UnsupportedSourceSheetTopology`;
+- first invalid source face 48;
+- periodic relation count **3**;
+- trace/arrangement/completion output counts 0 after authoritative rejection;
+- terminal `NotProductionReady:tracing`;
+- no output/fallback/legacy substitution/input return/source-grid recovery.
+
+Stable stage hashes: feature `f15e4f3be07d3c7f`, metric `34cb872327c9b0c6`, relief `8ccb10d25b69edb9`, tracing `a99e1237a1fe6596`.
+
+This is material progress over artifact `9014730437`: the old `partial NotApplicable -> 670 generic traces -> 113 embedded arcs -> 0 arrangement cells -> SideSubdivisionRepair` path no longer executes.
+
+## Exact source diagnosis — missing curved bounded disk producer
+
+Read-only packaged-source/topology analysis reproduces the current **48 hard feature edges / four closed feature curves** and the authoritative source-sheet classification:
+
+- three χ=0 sheets have two equal boundary loops and are valid periodic annuli; they naturally account for the three retained periodic relations;
+- two sheets are non-planar χ=1 topological disks with one genuine source/hard-feature boundary loop; these are unsupported by the current producer family.
+
+The first unsupported disk contains face 48 and has one 22-edge boundary loop; the second has one 18-edge boundary loop. **These IDs/counts are diagnostic evidence only. Never use them for fixture recognition, ownership, ordering, or success branching.**
+
+Current producer applicability explains the failure:
+
+- the bounded uniform producer is planar/rectangular and correctly treats the strongly non-planar disk as outside its contract;
+- the periodic-annulus producer requires χ=0 and exactly two compatible boundary cycles, so it correctly treats a χ=1 one-boundary disk as outside its contract.
+
+The next missing design contract is therefore a generalized **intrinsic curved bounded disk-sheet phase-front producer** derived from source topology and reciprocal cross-field transport.
+
+Do not repair the torus by demoting its hard-feature rails, forcing a disk through annulus logic, inventing an artificial exterior cut, Euclidean seam welding, or skipping to generic arrangement/completion.
+
+## Exact next-turn design declaration
+
+Before any source edit emit:
 
 ```text
-Turn type: Test + Benchmark only
-Exact artifact: 9015931928 (g4-sheet-coverage-code-build), workflow run/job 31237248211 / 93051938159
-Runtime candidate source authority: implementation 856554ce648e5df09ac50f5c94e3e8f098181524 plus final compile source a647215b4993338b054f04d4c8e54e7ef5370001
-No-build boundary: do not edit source/tests/fixtures/validators/benchmarks/build files and do not configure, compile, link, or rebuild
-First correctness check: run the new sheet-coverage semantic tests, then retain all five prior G4 periodic-relation tests and all 17 G0-G3 focused contracts
-Direct regression gate: plane, seam, close sheets, cylinder must retain direct strict-valid deterministic prior authority and exact hashes with no fallback/recovery
-Primary G4 observation: exact torus must no longer follow partial NotApplicable -> zero arrangement -> SideSubdivisionRepair; record Produced/materialization authority or the exact typed unsupported-sheet/materialization failure
-Acceptable material progress: direct strict-valid torus output, or a deeper/earlier truthful typed producer failure only when canonical relation authority remains live and the old generic zero-cell path is eliminated
-Deferred: prescribed sphere unless torus producer coverage closes; G5 adaptivity/features; G6 bunny/vase production; historical completion/simplification repair unrelated to the new earliest failure
+Active design gate: G4 topology-distinct completion and singularities
+Earliest failing fixture/contract: exact torus now fails deterministically at tracing/phase-front as Rejected / UnsupportedSourceSheetTopology on the first curved disk source sheet; three annular sheets retain periodic relations and the old partial NotApplicable -> generic zero-cell path is gone
+Missing design contract: current sheet-local producer family covers planar rectangular bounded sheets and Euler-0 two-boundary periodic annuli, but torus hard-feature/source-sheet authority also yields curved topological disks (chi=1, one genuine boundary loop) that have no authoritative phase-front producer
+Smallest general implementation change: add a topology-derived curved bounded disk-sheet phase-front producer that respects source-sheet/hard-feature boundary authority and reciprocal field transport, composes with existing planar/annulus producers, and fails typed on exact unsupported field/topology invariants without fixture/order/ID ownership
+Observable material-progress condition: both curved disk sheets obtain deterministic authoritative cell coverage and complete mixed-sheet aggregate reaches Produced/materialization, or the new disk producer identifies a deeper typed structural blocker; prior sheet-coverage 3/3, relation 5/5, G0-G3 17/17 and direct hashes remain unchanged
+Explicitly deferred: generic arrangement/completion repair, prescribed sphere until torus sheet coverage/materialization closes, G5 adaptive scale/hard-feature expansion, G6 bunny/vase production, historical completion/simplification failures, validator changes, feature demotion, Euclidean welding, and unrelated optimization
 ```
 
-Follow `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Plan.md` exactly.
+## Next-turn execution
+
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Code_Build_Plan.md` as **Code + Build only**.
+
+Required properties:
+
+- add a generalized producer for connected simply connected non-planar source sheets with one genuine source/hard-feature boundary;
+- derive bounded chart/phase authority from source topology and reciprocal cross-field transport, not a global plane fit;
+- preserve exact source-simplex, source-sheet, and hard-feature ownership;
+- preserve existing planar bounded and periodic-annulus producers;
+- dispatch to the curved-disk producer by structural applicability, never torus IDs/counts/order;
+- preserve complete exact-once source-sheet aggregation and the canonical periodic relation collection;
+- fail typed at the next genuine transport/singularity/boundary-phase/incidence invariant if the disk cannot be produced;
+- add compile-only semantic regressions for non-planar disk applicability, row-order invariance, hard-boundary preservation, invalid reciprocal transport, mixed producer composition, exact torus boundary, and all retained prior contracts;
+- compile/package the same seven approved Release/static/Ninja targets;
+- **execute no generated Directional binary/test/benchmark/ctest/CLI/GUI/help/list/discovery command**.
+
+The following Test + Benchmark turn must first retain new curved-disk semantics, sheet-coverage 3/3, G4 relation 5/5, G0-G3 17/17, and direct plane/seam/close-sheets/cylinder exact hashes before exact torus decides progress.
+
+Preferred torus result is complete five-sheet authoritative phase-front `Produced`, exact materialization, and strict-valid pure-quad closed output. A deeper deterministic typed field/chart/materialization failure is acceptable material progress only if both curved disks are no longer rejected as unsupported topology and no generic fallback path substitutes for authority.
+
+Prescribed sphere remains deferred until torus sheet coverage/materialization closes.
 
 ## Lessons that must not be repeated
 
-- A test expectation is not automatically production authority; verify that the fixture naturally creates the claimed witness.
-- Raw DCEL/source numeric IDs are not stable semantic identities. Compare canonical source endpoint/route authority.
-- A source-topologically valid periodic candidate is not field-authoritative merely because it is first/lexicographically minimal.
-- Endpoint ownership tolerance may not emit tolerance-expanded geometry; canonicalize to exact source-simplex geometry.
-- GitHub build workflows must use this repository's `DIRECTIONAL_BUILD_TESTS` / `DIRECTIONAL_BUILD_BENCHMARKS` options and enough fetch depth to verify/package the exact source parent.
-- Packaged tests may retain Actions absolute fixture paths. Artifact-only validation may expose immutable packaged fixtures through a recorded runtime-only symlink; never rebuild or patch packaged source to solve that path issue.
-- Timeout is failure only; do not infer a disposition from an incomplete run.
-- Canonical periodic topology signatures are 64-bit and structural hashing must retain the `std::vector<std::uint64_t>` path introduced by the first G4 compile fix.
-- Multiple current periodic relations may belong to distinct authoritative source sheets. Do not infer a generic same-sheet torus homology basis unless source topology proves it; unresolved same-sheet basis remains fail-closed.
-- A partially accumulated phase-front result with real cells/relations is not whole-surface authority. Never repair that by flipping the aggregate disposition to `Produced`; first prove complete sheet coverage.
-- A downstream completion failure is not automatically the next implementation target. The current runtime baseline proves the earlier producer coverage failure causes the generic zero-cell arrangement path.
-- Connector-created text payloads must be verified by committed Git blob; do not assume a locally predicted text SHA-256 survives connector serialization. Record the runtime SHA-256 separately.
-- GoogleTest macro arguments containing template commas require an extra parenthesized expression. The `a647215...` compile correction is test syntax only and does not alter production semantics.
+- A test expectation is not automatically production authority; verify that its fixture naturally creates the claimed witness.
+- Raw source/DCEL numeric IDs are not stable semantic identities; use canonical topology/source ownership.
+- A topologically plausible periodic route is not field-authoritative merely because it is first or lexicographically minimal.
+- Endpoint tolerance may not emit tolerance-expanded geometry; canonicalize to exact source-simplex geometry.
+- Connector-created text payload authority is the committed Git blob; do not assume a locally predicted SHA-256 survives connector serialization.
+- GoogleTest macro expressions containing template commas require extra expression parentheses; do not confuse this syntax issue with production semantics.
+- Packaged tests may carry Actions absolute paths; if needed in a future artifact-only turn, expose immutable packaged fixtures through a recorded runtime-only symlink rather than patching artifact bytes.
+- Canonical periodic topology signatures are 64-bit; preserve the `std::vector<std::uint64_t>` structural-hash path.
+- Multiple current periodic relations can belong to distinct authoritative sheets; do not invent a same-sheet homology basis without source-topology evidence.
+- A partially accumulated phase-front is not whole-surface authority. Do not fix coverage by merely flipping disposition to `Produced`.
+- The torus's 48 hard edges / four closed feature curves are source-derived current authority; do not demote them to avoid implementing the missing disk class.
+- The observed face 48, five sheets, three relations, and 22/18 boundary lengths are diagnostics, not implementation keys.
+- A downstream completion failure is not automatically the next target; current evidence proves producer topology is earlier.
+- Timeout is failure only; never infer correctness or a disposition from incomplete execution.
 
-## Turn boundary
+## Turn boundary — mandatory
 
 Authoritative cadence:
 
@@ -106,16 +153,16 @@ Never combine turn types.
 
 - Code + Build may edit/configure/compile/link approved targets, but may not execute generated project binaries/tests/benchmarks/ctest/CLI/GUI/help/list/discovery.
 - Test + Benchmark executes the exact built artifact and may not edit production/test/fixture/validator/benchmark/build source or configure/compile/relink a replacement.
-- Review is optional. Review policy is currently `never`, so the Test + Benchmark plan is authoritative.
+- Review is optional. Review policy is currently `never`, so this Test + Benchmark turn's next Code + Build plan is authoritative.
 - Build and runtime claims require exact pushed/evidence commit and artifact authority.
 - Direct mandatory fixture/gate evidence outranks aggregate totals.
-- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. One Code + Build turn has occurred since the last runtime-proven material progress; artifact-only validation is now next, so the stop threshold is not reached.
+- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. The just-completed artifact-only turn established material progress, so this counter resets to 0.
 
 ## Workflow/temp cleanup — mandatory
 
 1. inspect `.github/workflows`, `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` at start and end;
 2. remove stale bounded workflows;
-3. during remote execution retain the durable workflow plus at most one bounded workflow/payload when such a workflow is genuinely needed;
+3. during remote execution retain the durable workflow plus at most one bounded workflow/payload when genuinely needed;
 4. after artifact/log/source/blobs/build or runtime authority is verified remove the bounded workflow, trigger, and payload;
 5. final workflow state must contain only approved durable workflow state and no stale artifact/trigger debris;
 6. do not remove a durable dependency required by normal repository operation;
