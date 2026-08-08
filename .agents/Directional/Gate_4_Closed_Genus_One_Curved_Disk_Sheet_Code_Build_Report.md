@@ -17,13 +17,7 @@ Exact artifact **`9016834575`** is the only candidate for the following artifact
 
 Runtime-proven authority remains artifact `9015931928` / source `a647215b4993338b054f04d4c8e54e7ef5370001` until the new artifact executes.
 
-That authority proves:
-
-- sheet-coverage semantics **3/3**;
-- G4 periodic relations **5/5**;
-- retained G0-G3 focused contracts **17/17**;
-- exact deterministic plane/seam/close-sheets/cylinder baselines;
-- torus `Rejected / UnsupportedSourceSheetTopology` at `tracing/phase-front`, three retained periodic relations, no downstream generic tracing/arrangement/completion, and no fallback/recovery.
+That authority proves sheet-coverage semantics **3/3**, G4 periodic relations **5/5**, retained G0-G3 focused contracts **17/17**, exact deterministic plane/seam/close-sheets/cylinder baselines, and torus `Rejected / UnsupportedSourceSheetTopology` with three retained periodic relations and no fallback/recovery.
 
 The source-derived missing class entering this turn was the non-planar χ=1 single-boundary disk produced by the torus's authoritative hard-feature/source-sheet partition. Face IDs, sheet counts, relation counts, and observed loop lengths remain diagnostic evidence only.
 
@@ -56,13 +50,7 @@ Final packaged source blobs:
 
 ### Structural applicability and typed failures
 
-`SurfacePhaseFrontFailureReason` now includes curved bounded-disk structural failures:
-
-- `InvalidBoundedDiskTopology`;
-- `InvalidBoundedDiskTransport`;
-- `InvalidBoundedDiskBoundaryPhase`;
-- `InvalidBoundedDiskChart`;
-- `InvalidBoundedDiskFrontPairing`.
+`SurfacePhaseFrontFailureReason` now includes `InvalidBoundedDiskTopology`, `InvalidBoundedDiskTransport`, `InvalidBoundedDiskBoundaryPhase`, `InvalidBoundedDiskChart`, and `InvalidBoundedDiskFrontPairing`.
 
 The new producer applies from source topology rather than fixture identity: a connected χ=1 manifold source sheet with one genuine local boundary. A local boundary edge must be a true source-mesh boundary or an authoritative hard-feature rail when the sheet is created by feature partitioning.
 
@@ -88,11 +76,7 @@ No periodic relation is invented for a disk. Existing annulus relations remain t
 
 ### Sheet-local composition
 
-Sheet-local dispatch now tries, in order:
-
-1. existing planar bounded producer;
-2. existing periodic-annulus producer;
-3. curved bounded-disk producer when the earlier producers are `NotApplicable`.
+Sheet-local dispatch now tries the existing planar bounded producer, then the existing periodic-annulus producer, then the curved bounded-disk producer when the earlier producers are `NotApplicable`.
 
 Existing exact-once aggregate source-sheet coverage remains authoritative. The change does not mark partial coverage `Produced`, demote hard features, reinterpret a disk as an annulus, weld seams geometrically, or modify generic arrangement/completion.
 
@@ -111,31 +95,11 @@ The prior sheet-coverage, periodic-relation, and G0-G3 contracts remain compiled
 
 ## Successful compile-only build
 
-Workflow run/job:
+Workflow run/job `31240168780 / 93059691196`, event commit `add5709d0a9bd8a22d10e47a6c4b72d7af51ce48`.
 
-- run **`31240168780`**;
-- job **`93059691196`**;
-- event commit `add5709d0a9bd8a22d10e47a6c4b72d7af51ce48`.
+Configuration: Ubuntu 24.04, Release/static, Ninja, GMP enabled, `CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST`, tests/benchmarks compiled, CLI/GUI/PARDISO/cuDSS/SuiteSparse disabled.
 
-Configuration:
-
-- Ubuntu 24.04;
-- Release/static;
-- Ninja;
-- GMP enabled;
-- `CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST`;
-- tests/benchmarks compiled;
-- CLI/GUI, PARDISO, cuDSS, and SuiteSparse disabled.
-
-Seven approved targets compiled/linked successfully, **111/111** build actions:
-
-1. `directional_core`;
-2. `directional_pipeline`;
-3. `directional_compiled_api_tests`;
-4. `directional_surface_cell_producer_tests`;
-5. `directional_surface_cell_completion_tests`;
-6. `directional_surface_cell_validation_tests`;
-7. `directional_benchmarks`.
+Seven approved targets compiled/linked successfully, **111/111** build actions: `directional_core`, `directional_pipeline`, `directional_compiled_api_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, and `directional_benchmarks`.
 
 No generated Directional executable, test, benchmark, `ctest`/discovery command, CLI/GUI command, help/list command, or custom input executed. Artifact metadata records `runtimeExecution=false`.
 
@@ -145,7 +109,7 @@ Main compile artifact:
 
 - artifact ID **`9016834575`**;
 - name `g4-curved-disk-code-build`;
-- workflow/downloaded ZIP SHA-256 **`6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67`**;
+- ZIP SHA-256 **`6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67`**;
 - internal `SHA256SUMS` SHA-256 **`e0ec3737e23fbb5c21b6c0be6acb3aa8b3f538b954c566867b6c309a6f5f4736`**;
 - recursive packaged checksum verification **48/48**;
 - total package files **49** including the checksum manifest;
@@ -153,17 +117,7 @@ Main compile artifact:
 - five executables;
 - two project static libraries.
 
-Packaged executables/libraries:
-
-- `directional_benchmarks`;
-- `directional_compiled_api_tests`;
-- `directional_surface_cell_producer_tests`;
-- `directional_surface_cell_completion_tests`;
-- `directional_surface_cell_validation_tests`;
-- `libdirectional_core.a`;
-- `libdirectional_pipeline.a`.
-
-The artifact also contains the exact source patch, no-dependency source archive, compile database, fixture tree, source/build/command-boundary metadata, toolchain/configure/build logs, submodule authority, and recursive checksums.
+The artifact contains the exact binaries/libraries, source patch/no-dependency source archive, compile database, fixture tree, source/build/command-boundary metadata, toolchain/configure/build logs, submodule authority, and recursive checksums.
 
 Detailed log artifact:
 
@@ -173,29 +127,20 @@ Detailed log artifact:
 
 ## Repository hygiene
 
-After exact source/artifact/log authority was established:
+After exact source/artifact/log authority was established, bounded workflow `.github/workflows/g4-curved-disk-code-build.yml` was removed first (`8d7bfa669ceedbb4d6f1ef99071feabb3a69c338`), then trigger `.github/agent-triggers/g4-curved-disk-code-build` was removed (`18a3010cdac0b29ec474ded0c2c9356320786cce`); the patch payload had already been removed by `508211...`.
 
-- bounded workflow `.github/workflows/g4-curved-disk-code-build.yml` was removed first (`8d7bfa669ceedbb4d6f1ef99071feabb3a69c338`);
-- trigger `.github/agent-triggers/g4-curved-disk-code-build` was removed afterward (`18a3010cdac0b29ec474ded0c2c9356320786cce`);
-- the patch payload had already been removed by cleanup commit `508211...`.
+Final verification showed `.github/workflows` contains only durable `agent-source-snapshot.yml`, and `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent.
 
-Final workflow/temp hygiene must be verified again after documentation cleanup.
+The completed executable Code + Build plan was removed. A minimal compatibility pointer remains at its historical path solely because the current runtime-authority report records that path as its then-next step; the pointer explicitly redirects to the current artifact-only plan and is not executable authority.
 
 ## Runtime authority remains unchanged
 
 This turn proves compilation and packaging only. Until artifact `9016834575` executes artifact-only, current runtime authority remains artifact `9015931928` and its torus `UnsupportedSourceSheetTopology` result.
 
-Do not claim from this Code + Build turn that:
-
-- the curved-disk focused tests pass;
-- either exact torus disk is successfully charted;
-- torus phase-front reaches `Produced`;
-- torus materialization/output succeeds;
-- prescribed sphere is improved;
-- G4 is closed.
+Do not claim that the curved-disk focused tests pass, either exact torus disk is successfully charted, torus reaches `Produced`, torus materialization/output succeeds, prescribed sphere improves, or G4 closes.
 
 ## Next turn
 
 Execute `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact **`9016834575`**.
 
-The runtime turn must first prove the new curved-disk semantics, retain sheet-coverage 3/3, G4 relation 5/5, G0-G3 17/17, and exact direct plane/seam/close-sheets/cylinder baselines. Exact torus must then no longer terminate as `UnsupportedSourceSheetTopology`. Direct strict-valid torus output is preferred; a deeper deterministic typed transport/boundary-phase/chart/front-pairing/materialization invariant is acceptable material progress if curved-disk applicability is live and no generic/fallback path substitutes for authoritative failure.
+First prove the new curved-disk semantics, retain sheet-coverage 3/3, G4 relation 5/5, G0-G3 17/17, and exact direct plane/seam/close-sheets/cylinder baselines. Exact torus must then no longer terminate as `UnsupportedSourceSheetTopology`. Direct strict-valid torus output is preferred; a deeper deterministic typed transport/boundary-phase/chart/front-pairing/materialization invariant is acceptable material progress if curved-disk applicability is live and no generic/fallback path substitutes for authoritative failure.
