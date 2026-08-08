@@ -1,0 +1,47 @@
++    if (face >= 0 &&
++        fixture.options.sourceFaceSheets[static_cast<std::size_t>(face)] == 0) {
++      diskFace = face;
++    }
++  }
++  ASSERT_GE(diskFace, 0);
++  EXPECT_TRUE(
++      directional::geometry::surface_cell_tracing_detail::
++          source_edge_is_authoritative_local_boundary(
++              fixture.options, fixture.faces.rows(), diskFace, found->second,
++              sharedEdge));
++
++  const auto network = directional::geometry::build_surface_cell_network(
++      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
++      fixture.targetSize, fixture.options);
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            network.phaseFront.disposition)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++
++  std::map<std::pair<int, int>, int> cellsBySheet;
++  for (const auto &cell : network.phaseFront.cells) {
++    ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
++  }
++  EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
++  EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 1}]), 0);
++}
++
++TEST(SurfaceCellsPhase10, CurvedBoundedDiskRejectsHiddenSameSheetBoundaryCut) {
++  const CurvedDiskFixture fixture =
++      make_curved_disk_with_adjacent_source_sheet(false, false);
++  const std::uint64_t sharedEdge =
++      directional::pipeline::surface_cell_source_edge_key(0, 1);
++  ASSERT_EQ(0U, fixture.options.hardFeatureEdges.count(sharedEdge));
++
++  const auto fullIncident =
++      directional::geometry::surface_cell_tracing_detail::edge_faces(fixture.faces);
++  const auto found = fullIncident.find(sharedEdge);
++  ASSERT_NE(fullIncident.end(), found);
++  ASSERT_GE(found->second[0], 0);
++  ASSERT_GE(found->second[1], 0);
++  ASSERT_TRUE(directional::geometry::surface_cell_tracing_detail::
++                  source_faces_compatible(fixture.options, found->second[0],
++                                          found->second[1]));
++  EXPECT_FALSE(
++      directional::geometry::surface_cell_tracing_detail::
++          source_edge_is_authoritative_local_boundary(
