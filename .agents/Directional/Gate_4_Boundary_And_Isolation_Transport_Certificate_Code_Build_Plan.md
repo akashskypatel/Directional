@@ -1,10 +1,12 @@
 # Gate 4 Boundary and Isolation-Transport Certificate - Code + Build Plan
 
-Status: **authoritative next turn**
+Status: **executed; not authoritative for a future turn**
 Turn type: **Code + Build only**
 Validated source: `7f486632b154a303789df6c4dd44f602c8c71281`
 Review decision: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
 Planning commit: `a54f5d00ef5ae3ac59de0f5a7d7e0b42e74ca045`
+
+Implementation `82151bf51bce9af9859282b2a03e295a0ee5a309` compiled and packaged without project runtime execution as immutable artifact `9026181778`; exact evidence is recorded in `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Report.md`. The authoritative next turn is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`. This completed plan must not be re-executed.
 
 ## Turn objective
 

@@ -5,18 +5,32 @@ Last updated: 2026-08-08 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- G0-G3: **accepted baselines remain authoritative; current candidate regresses their direct boundary authority**.
-- G4 topology-distinct completion and singularities: **active, regressed and blocked**.
-- Completed turn: **mandatory independent Review — transition-quotient runtime regression**.
+- G0-G3: **accepted baselines remain authoritative; the new compile-valid candidate is runtime-unproven**.
+- G4 topology-distinct completion and singularities: **active; immutable runtime validation pending**.
+- Completed turn: **Code + Build — boundary and isolation-transport certificate**.
 - Review decision: **Approved with amendments**.
-- Next turn: **Code + Build only**.
-- Authoritative plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
+- Next turn: **artifact-only Test + Benchmark**.
+- Authoritative plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`.
 - Review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`.
 - Runtime report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
-- Compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
+- Compile report: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Report.md`.
 - Prior review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, unmerged.
+
+## Exact compile-valid candidate — artifact 9026181778
+
+- implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`;
+- cleanup/build `846b23a1175f541d86e880c993784715c995ef20`;
+- workflow run/job `31272661747 / 93141125742`;
+- build/log outer SHA-256 `0682ae9fe6e98eefac8e4ddb2ccc8db8407326d7b872ec6da1d945aa8a59b79d` / `d53a060c2b3b20205ce71b3cf44f0fe9f14a2a207a176ec74faf9a8d57e9c890`;
+- internal manifest `c63931f3cd9c6261710bd9db255a49aa03029a39d062fe21c714529c4b31fdb1`, recursive **48/48**;
+- package **49 files / 27 fixtures / five executables / two project static libraries**;
+- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`, `runtimeExecution=false`;
+- exact six source blobs and no-runtime logs verified;
+- default producer executable now compiles 33 independently named transition-quotient counterfactuals.
+
+Compile success makes no runtime claim. Artifact `9026181778` is the sole input to the next turn and may not be rebuilt or patched.
 
 ## Exact tested candidate — artifact 9024549134
 
@@ -66,12 +80,14 @@ Exact torus deterministically reaches:
 
 Sphere remains deferred because torus does not close.
 
-## Source-bounded blockers
+## Prior source-bounded blockers addressed in the compile candidate
 
 1. `assign_open_front_boundary_authority()` requires an entry from `edge_matching_indices()` before classifying a boundary edge. That index intentionally contains only two-face interior edges, so a genuine one-face source boundary is rejected by construction.
 2. Materialization counts an internal isolation seam as consumed only when it appears in cell-boundary `transitionSourceEdges`, then requires every retained region seam. The completed Review replaces that impossible witness with an exact reciprocal seam-transport certificate and validated local-sheet connectivity; unconditional marking or count/order/ID/proximity inference remains forbidden.
 3. The two semantic-digest counterfactual tests live only in `tests/MilestoneGP27Tests.cpp`, which belongs to the disabled historical target. They are absent from the immutable package.
 4. Several mandated quotient and retention counterfactuals have no independently discoverable default packaged test; retention has positive `true` evidence but no `false` counterpart.
+
+Candidate `82151bf5` implements the reviewed representation and packages the missing counterfactuals. These blockers remain open until artifact `9026181778` proves the behavior at runtime.
 
 ## Reviewed remediation contract
 
@@ -83,10 +99,10 @@ Sphere remains deferred because torus does not close.
 
 ## Process decision
 
-The mandatory Review is complete with decision **Approved with amendments**. The runtime report's `proposed_pending_review` scope and the completed Review plan are superseded. The only authorized implementation authority is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
+The mandatory Review and reviewed Code + Build are complete. The only authorized next authority is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Turn boundary
 
-The next Code + Build may edit only its exact file allowlist and compile/package the existing seven approved targets. It may not execute generated project binaries, tests, benchmarks, list/discovery commands, CLI/GUI commands, or custom inputs. The following turn is immutable artifact-only Test + Benchmark.
+The next turn must verify and execute only immutable artifact `9026181778`. It may not edit source/tests/build/fixtures/validators, configure, rebuild, relink, regenerate discovery, or substitute another artifact.
 
 Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes. PR #8 remains open, draft, unmerged.

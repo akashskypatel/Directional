@@ -8,22 +8,22 @@
 - Configured optional review policy: `never`
 - Mandatory review override: **completed - Approved with amendments**
 - Active gate: **G4 topology-distinct completion and singularities**
-- Completed turn: **mandatory independent Review - transition-quotient runtime regression**
-- Next turn: **Code + Build only**
-- Authoritative next plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`
+- Completed turn: **Code + Build - boundary and isolation-transport certificate**
+- Next turn: **artifact-only Test + Benchmark**
+- Authoritative next plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`
 - Current review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
 - Latest runtime report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`
-- Latest compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`
+- Latest compile report: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Report.md`
 - Prior independent review: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`
-- Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
-- Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
+- Implementation commit: `82151bf51bce9af9859282b2a03e295a0ee5a309`
+- Build/cleanup commit: `846b23a1175f541d86e880c993784715c995ef20`
 - Review entry branch head: `cd9543f83a525f0d6cb668b22dfca2f0199358d2`
 - Review planning commit: `a54f5d00ef5ae3ac59de0f5a7d7e0b42e74ca045`
 - Prior handoff content commit: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the current review report, the authoritative Code + Build plan, the latest runtime/compile reports, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/GitHub-workflow references.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the authoritative artifact-only plan, the latest compile/runtime/review reports, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent testing-integrity/recovery/GitHub-workflow references.
 
-The next Code + Build may edit only its exact production/test/CMake allowlist and compile/package the existing seven targets. It must not execute generated project binaries, tests, benchmarks, `ctest`, discovery/list/help/version commands, CLI/GUI commands, or custom inputs.
+The next turn must use exactly immutable artifact `9026181778`. It may discover and execute packaged tests/benchmarks, but may not edit source/tests/build/fixtures/validators, configure, rebuild, relink, regenerate discovery, or substitute another artifact.
 
 ## Review decision and exact correction
 
@@ -35,38 +35,35 @@ Decision: **Approved with amendments**.
 4. A cell-side `transitionSourceEdges` entry remains an exact crossing witness but is not required for every seam. Metadata-only or unconditional seam consumption is forbidden.
 5. Compile all active counterfactuals into the existing default producer-test executable; keep the historical suite off.
 
-## Exact artifact-only authority
+## Exact artifact-only authority for the next turn
 
-- Build artifact: **`9024549134`** (`g4-transition-quotient-code-build`)
-- Log artifact: **`9024549261`**
-- Workflow run/job: **`31267020112 / 93126709005`**
-- Workflow event: `fbf95650919865832ca93c60caaee9d001c95ffd`
-- Implementation: `7f486632b154a303789df6c4dd44f602c8c71281`
-- Build/cleanup: `718b978dcd0fab66da67810e00661468fc11038f`
+- Build artifact: **`9026181778`** (`g4-boundary-isolation-certificate-code-build`)
+- Log artifact: **`9026181889`**
+- Workflow run/job: **`31272661747 / 93141125742`**
+- Workflow event: `9f0e6de3e4a1f70eb02d2946072305c7b8c9b5ad`
+- Implementation: `82151bf51bce9af9859282b2a03e295a0ee5a309`
+- Build/cleanup: `846b23a1175f541d86e880c993784715c995ef20`
 
-Verified before runtime:
+Verified without runtime:
 
-- build outer SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
-- internal manifest SHA-256 `d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5`;
+- build outer SHA-256 `0682ae9fe6e98eefac8e4ddb2ccc8db8407326d7b872ec6da1d945aa8a59b79d`;
+- internal manifest SHA-256 `c63931f3cd9c6261710bd9db255a49aa03029a39d062fe21c714529c4b31fdb1`;
 - recursive checksums **48/48**;
 - package **49 files / 27 fixtures / five executables / two project static libraries**;
-- packaged source archive SHA-256 `a1f0f3b9cb19e01742138a3ccc9b58f91e6e885e5bcaaf4c61856cce01bb54cb`;
-- packaged patch SHA-256 `7de1ad7c6599d858709cbaea8f21fc2f29674f5821c4d93dcbdcdae5a8c904e0`;
-- decoded patch SHA-256 `bf297294431183f9eda53d80b8ce174c33471fd96f2a9ccb446beba407915172`;
-- log artifact SHA-256 `7e17330cb10e2c0fff9e55a7511998f4ec1d6666c3dccbb981eb7b105776ebc1`;
-- Release/static/Ninja **111/111**, GoogleTest discovery `PRE_TEST`, seven approved targets;
+- packaged source archive SHA-256 `08fa7f4403145216c1316240a4494c7fa069d77f2518ddbc6346812bcb91bdba`;
+- packaged patch SHA-256 `b092219704f360e2f013cdeab83a12c870ac8e804f52f325edcfca2d2a17faac`;
+- decoded patch SHA-256 `b93f420d7f9c8139663f8ff573613eeb23dd3c30073ff76c8b563c537fd07f10`;
+- log artifact SHA-256 `d53a060c2b3b20205ce71b3cf44f0fe9f14a2a207a176ec74faf9a8d57e9c890`;
+- Release/static/Ninja **113/113**, GoogleTest discovery `PRE_TEST`, seven approved targets;
 - metadata `runtimeExecution=false`, review policy `never`;
-- all eleven source blobs, dependency revisions, fixture hashes, library resolution, and dedicated logs match;
+- all six source blobs, dependency revisions, fixture hashes, library resolution, and dedicated logs match;
 - Code + Build logs contain no generated Directional runtime/test/benchmark/`ctest`/discovery/CLI/GUI/help/list/custom-input command;
-- source closure contains only `.github/workflows/agent-source-snapshot.yml` and no temporary trigger/payload state.
+- source closure contains only `.github/workflows/agent-source-snapshot.yml` and no temporary trigger/payload state;
+- the default producer executable compiles 33 independently named transition-quotient counterfactuals.
 
-Runtime-only fixture lookup symlink:
+The next turn may create `artifact/bin/test-data -> ../test-data` only as a separately recorded runtime lookup symlink inside the extracted copy. Artifact and fixture bytes must remain unchanged.
 
-`artifact/bin/test-data -> ../test-data`
-
-Artifact and fixture bytes were unchanged. Local evidence archive SHA-256: `a3ec6c7acb6133693012733983dcc5ac42264e427aa0ea8c9ca6c95e6cd81e9e`.
-
-## Runtime result — candidate regressed and blocked
+## Prior runtime result — artifact 9024549134 regressed and blocked
 
 Focused groups:
 
@@ -142,9 +139,9 @@ No independent packaged test was found for every required multi-isolation/chart-
 
 The prior compile report's focused-coverage statement therefore exceeds the executable artifact closure. Review must map every required contract to a default packaged test target.
 
-## Authoritative next Code + Build
+## Completed reviewed Code + Build
 
-Execute only `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
+The completed implementation followed `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md` exactly.
 
 Exact source/test/build allowlist:
 
@@ -155,11 +152,11 @@ Exact source/test/build allowlist:
 - `tests/SurfaceCellTransitionQuotientTests.cpp` (new)
 - `cmake/DirectionalTests.cmake`
 
-Any required production/test/build edit outside this list stops the turn for review. The CB must publish a checksum-verified Release/static/Ninja artifact with `runtimeExecution=false`, then clean temporary workflow/trigger/payload state.
+All six allowlisted paths match the immutable artifact's recorded blobs. Any new production/test/build change requires a future reviewed Code + Build and is forbidden in the next artifact-only turn.
 
-## Future acceptance after reviewed implementation
+## Authoritative next artifact-only acceptance
 
-A future artifact-only turn must require:
+Execute `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md` and require:
 
 - every review-mandated focused counterfactual discoverable and passing;
 - retained topology/polygonal/curved/mixed/periodic/G0-G3 authority restored;
@@ -176,8 +173,8 @@ Prescribed sphere, G5/G6, bunny/vase runtime, historical completion repair, vali
 Never combine turn types.
 
 - The completed Review changed documentation/PR metadata only; it did not edit production/tests/build files, build, or run project binaries.
-- Code + Build is now authorized only under the exact successor plan and may not execute generated project runtime.
-- Test + Benchmark executes one exact immutable artifact and may not rebuild or edit source/test/build authority.
+- Code + Build is complete and made no runtime claim.
+- Test + Benchmark executes exactly artifact `9026181778` and may not rebuild or edit source/test/build authority.
 - Material progress requires direct product/contract state, not failure movement, counters, aggregate gains, or compile success.
 - PR #8 remains open, draft, and unmerged.
 

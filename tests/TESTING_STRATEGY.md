@@ -19,6 +19,8 @@ Both use generated smooth fields through production extraction. Replacing, simpl
 
 Exact artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, is the latest immutable artifact-only runtime authority. Static/source/checksum/dependency/fixture/log verification passed, but product validation is **regressed and blocked**.
 
+Exact artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`, is the current compile-valid candidate. It compiled Release/static/Ninja **113/113**, packages five executables/two project libraries/27 fixtures, passes exact six-blob and recursive **48/48** authority, and records `runtimeExecution=false`. It has not been discovered or executed.
+
 Focused results:
 
 - transition quotient / retained authority **3/7**;
@@ -46,7 +48,7 @@ Detailed current runtime authority:
 
 Retained direct regression, zero quotient consumption, and incomplete executable counterfactual coverage activated the mandatory process guard. Independent Review is now complete with decision **Approved with amendments** under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`.
 
-The next turn is Code + Build only under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`; a following immutable artifact-only Test + Benchmark is mandatory.
+The next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`. It must use exactly artifact `9026181778` without edit, configure, rebuild, relink, discovery regeneration, or substitution.
 
 ## Producer-authority contracts
 
@@ -115,7 +117,7 @@ Equal integer coordinates are not output vertex identity because charts may over
 
 Counterfactual coverage must reject a representative-sheet substitution, unconditional topology-region lattice merge, Euclidean seam weld, first-relation selection, missing/ambiguous rail counterpart, unconsumed relation, repeated cell corner, and synthetic output topology.
 
-Every active counterfactual must be independently discoverable in a default packaged artifact. The reviewed CB plan adds `tests/SurfaceCellTransitionQuotientTests.cpp` and the existing benchmark-quality implementation to `directional_surface_cell_producer_tests`; `DIRECTIONAL_BUILD_HISTORICAL_TESTS` stays off. Product checks without a broken-counterfactual test are not executable validation authority.
+Every active counterfactual must be independently discoverable in a default packaged artifact. Candidate `82151bf5` compiles `tests/SurfaceCellTransitionQuotientTests.cpp` and the existing benchmark-quality implementation into `directional_surface_cell_producer_tests`; `DIRECTIONAL_BUILD_HISTORICAL_TESTS` stays off. The artifact-only turn must prove all 33 independently named tests are discovered and passing; compile presence alone is not executable validation authority.
 
 Genuine source-boundary routes retain canonical source-edge topology even when no two-face interior matching index exists. An interior transition/matching index remains mandatory wherever transport semantics require it; absence cannot be accepted generically.
 
@@ -150,7 +152,7 @@ A changed error name is not progress by itself; real gate progress requires firs
 
 ## Exact torus and failure-path retention contracts — review approved
 
-Artifact `9024549134` positively proves `hasTraceNetwork=true` on the torus materialization failure when `retainIntermediateGeometry=true`. The torus still fails at `UnconsumedAuthoritativeIsolationSeam`, and no independently packaged `retainIntermediateGeometry=false` counterpart exists.
+Artifact `9024549134` positively proves `hasTraceNetwork=true` on the torus materialization failure when `retainIntermediateGeometry=true`. Candidate artifact `9026181778` packages a focused true/false counterpart on the identical injected failure; runtime must prove the if-and-only-if contract.
 
 Required test separation remains:
 
@@ -184,7 +186,7 @@ Tests verify semantic source/topology/transport identities instead of raw DCEL/s
 
 Report direct acceptance separately. Explicitly executed focused/direct tests should be excluded from remaining aggregate totals where practical. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only and cannot override semantic gate authority.
 
-Current artifact `9024549134` bounded totals:
+Prior runtime artifact `9024549134` bounded totals:
 
 - producer **99/128**;
 - completion/simplification **154/164**;
@@ -198,7 +200,7 @@ Artifact `9022061741` entering totals were producer **124/127**, completion/simp
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`. It may edit only the reviewed file allowlist and compile/package the existing seven targets. It may not run generated project binaries, tests, benchmarks, discovery/list commands, CLI/GUI commands, or custom inputs.
+The current next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`. It may execute only immutable artifact `9026181778` and may not edit source/tests/build/fixtures/validators, configure, rebuild, relink, or substitute authority.
 
 ## Validity and prohibitions
 

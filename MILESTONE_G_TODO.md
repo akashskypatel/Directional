@@ -4,7 +4,21 @@ Last updated: 2026-08-08 UTC
 
 ## Current gate
 
-G0 truthful authority [accepted baseline; candidate regressed] → G1 uniform phase-front plane [accepted baseline; candidate regressed] → G2 cross-chart / close-sheet isolation [accepted baseline; candidate regressed] → G3 periodic closure / holonomy [accepted baseline; candidate regressed] → **G4 topology-distinct completion and singularities [active, blocked]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [accepted baseline] → G1 uniform phase-front plane [accepted baseline] → G2 cross-chart / close-sheet isolation [accepted baseline] → G3 periodic closure / holonomy [accepted baseline] → **G4 topology-distinct completion and singularities [active; new candidate runtime pending]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+
+## Completed boundary/certificate Code + Build
+
+Exact compile-valid candidate artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`:
+
+- workflow run/job `31272661747 / 93141125742`;
+- cleanup/build `846b23a1175f541d86e880c993784715c995ef20`;
+- build/log outer SHA-256 `0682ae9fe6e98eefac8e4ddb2ccc8db8407326d7b872ec6da1d945aa8a59b79d` / `d53a060c2b3b20205ce71b3cf44f0fe9f14a2a207a176ec74faf9a8d57e9c890`;
+- internal manifest `c63931f3cd9c6261710bd9db255a49aa03029a39d062fe21c714529c4b31fdb1`, recursive **48/48**;
+- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`, five executables, two project libraries, 27 fixtures;
+- exact six source blobs verified; `runtimeExecution=false` and no generated project runtime command;
+- 33 independently named boundary/certificate/quotient/retention/digest counterfactuals compiled in the default producer executable.
+
+Compile success is not G4 acceptance. The sole authoritative next turn is immutable artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Completed artifact-only Test + Benchmark
 
@@ -80,7 +94,7 @@ Compile success and source inspection cannot substitute for executing them from 
 Decision: **Approved with amendments**.
 
 - review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`;
-- authoritative next plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`;
+- completed implementation plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`;
 - validated source remains `7f486632b154a303789df6c4dd44f602c8c71281`;
 - no source/test/build edit, configure/build, or project runtime occurred in Review.
 
@@ -88,11 +102,11 @@ The approved representation keeps genuine one-face boundary topology separate fr
 
 ## Mandatory next turn
 
-**Code + Build only** under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
+**Artifact-only Test + Benchmark** under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The CB turn is bounded to the reviewed production/test/CMake file allowlist, compiles the existing seven targets, packages the default producer counterfactuals, and executes no generated binary. A following immutable artifact-only Test + Benchmark is mandatory.
+Use only artifact `9026181778`; verify its exact digests/source/dependency/fixture/log authority before runtime, then prove discovery and execute the focused, retained, direct deterministic, bounded, and benchmark matrix. Do not edit, configure, rebuild, relink, or substitute artifacts.
 
-## Acceptance after a future reviewed Code + Build
+## Acceptance from immutable artifact 9026181778
 
 A future immutable artifact-only turn must require:
 

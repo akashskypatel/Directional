@@ -28,9 +28,11 @@ G3 is formally closed.
 
 Artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, has now been executed under immutable artifact-only authority. It regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. Exact torus reaches phase-front `Produced` with four annular topology regions, eight internal isolation seams, and four periodic relations, then fails at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
-Mandatory Review is complete with decision **Approved with amendments**. Execute `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md` next.
+Mandatory Review is complete with decision **Approved with amendments**. Its correction is compile-valid in artifact `9026181778`, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`: Release/static/Ninja **113/113**, 33 default counterfactuals, exact recursive/source authority, and `runtimeExecution=false`.
 
-Reviewed implementation priority:
+Execute `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md` next using exactly artifact `9026181778`; no editing, configure, rebuild, relink, or artifact substitution is permitted.
+
+Implemented, runtime-unproven priority:
 
 1. represent genuine one-face boundaries by canonical topology with no invented interior matching index;
 2. retain strict indices for actual two-face ordinary/cut/rail/periodic transport;

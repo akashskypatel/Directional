@@ -96,11 +96,13 @@ Artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71
 | cylinder | deterministic failure | `InvalidFrontBoundaryAuthority` | none |
 | torus | phase-front `Produced`, then deterministic failure | `UnconsumedAuthoritativeIsolationSeam` | none |
 
+Artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`, is the current compile-valid candidate. Release/static/Ninja compiled **113/113** with exact source and recursive artifact authority, `PRE_TEST`, and `runtimeExecution=false`. It has not been executed and therefore does not supersede the runtime observations above.
+
 The accepted older raw hashes remain same-artifact baseline evidence only. Artifact `9024549134` emits no candidate raw or semantic hash because all direct fixtures fail before output.
 
-The semantic-digest permutation/mutation tests exist only in `tests/MilestoneGP27Tests.cpp`, under disabled `DIRECTIONAL_BUILD_HISTORICAL_TESTS`; they are absent from the five packaged executables. The digest contract therefore remains unvalidated despite source and compile presence.
+The current artifact compiles 33 independently named boundary/certificate/quotient/retention/digest counterfactuals into the default producer executable, including semantic-digest permutation and mutation cases. Discovery and runtime behavior remain unvalidated until the artifact-only turn.
 
-The common boundary regression is representational: `edge_matching_indices()` maps only two-face interior source edges, but `assign_open_front_boundary_authority()` requires that index before classifying a one-face edge as `GenuineSourceBoundary`. Canonical source topology identity and optional interior transition index must be separated.
+The prior common boundary regression was representational: `edge_matching_indices()` maps only two-face interior source edges, while `assign_open_front_boundary_authority()` required that index before classifying a one-face edge as `GenuineSourceBoundary`. Candidate `82151bf5` separates canonical source topology from the optional interior transition index; runtime must prove the correction.
 
 Mandatory independent Review is complete with decision **Approved with amendments**. A genuine one-face source boundary is represented by non-empty canonical `sourceRouteTopology` and an empty interior-index route. `edge_matching_indices()` remains interior-only; actual two-face ordinary, hard-rail, embedded-relief, and periodic transport retains strict index provenance.
 
@@ -226,18 +228,18 @@ In runtime artifact `9022061741`, the materializer had not adopted the same auth
 
 Artifact `9024549134` executes the explicit occurrence quotient far enough for torus phase-front `Produced`, then stops at **`tracing/phase-front-materialization / UnconsumedAuthoritativeIsolationSeam`**. It retains the same four regions/eight seams/four relations but records consumed regions/seams/relations `0/0/0`.
 
-The materializer currently defines seam consumption only through `SurfaceTraceSegment.transitionSourceEdges` on cell boundary paths and requires every `internalIsolationSeamTopology` entry to appear. Mandatory Review determines that this observes the wrong event: a local-isolation seam is chart-transport authority and need not intersect an output side. The reviewed successor adds one reciprocal seam-transport certificate per retained seam and consumes it as the exact local-sheet connectivity graph. It does not remove seam validation or mark metadata consumed unconditionally.
+Artifact `9024549134` defined seam consumption only through `SurfaceTraceSegment.transitionSourceEdges` on cell boundary paths. Candidate `82151bf5` instead emits one reciprocal seam-transport certificate per retained seam, validates the exact bijection/source authority, and consumes the certificates as the local-sheet connectivity graph. It retains explicit crossing validation and does not mark metadata consumed unconditionally.
 
-Current runtime acceptance under artifact `9024549134` remains blocked by:
+The prior runtime acceptance under artifact `9024549134` remains blocked by:
 
 1. genuine source boundaries are rejected because topology identity is incorrectly coupled to an interior matching index;
 2. internal-isolation-seam consumption ownership remains unresolved and torus consumes zero quotient authority;
 3. broad retained producer authority regresses before relief, rail, polygonal, curved, mixed, and periodic contracts can execute;
 4. semantic-digest tests and several quotient/retention counterfactuals are absent from default packaged executables.
 
-The sole authorized correction is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`. It preserves the explicit occurrence quotient and adds default executable counterfactual closure without enabling the broad historical suite.
+That reviewed correction is now compile-valid in artifact `9026181778`. The sole authorized next authority is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The exact torus fixture and retention expectation remain valid. Artifact `9024549134` positively retains trace context when requested, but no independently packaged `retainIntermediateGeometry=false` counterpart proves the required if-and-only-if contract.
+The exact torus fixture and retention expectation remain valid. Artifact `9026181778` compiles an independently named `retainIntermediateGeometry=true/false` counterfactual, but only runtime can prove the if-and-only-if contract.
 
 Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
@@ -253,7 +255,7 @@ Artifact-only runtime evidence is recorded in `.agents/Directional/Gate_4_Transi
 
 Mandatory Review is complete under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md` with decision **Approved with amendments**.
 
-The only authorized next turn is **Code + Build** under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`. It is compile-only and bounded to the reviewed production/test/CMake allowlist. The following turn must validate one immutable artifact without rebuilding.
+The only authorized next turn is **artifact-only Test + Benchmark** under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md`. It must validate and execute exactly artifact `9026181778` without editing, configuring, rebuilding, relinking, or substituting authority.
 
 ## Non-negotiable prohibitions
 

@@ -6,7 +6,9 @@ G0-G3 are closed. **G4 topology-distinct completion and singularities is active.
 
 Current tested authority: artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`. Static authority passes, but topology-region/isolation focused semantics fall to **8/9** and exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations before failing at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
-G3 closure remains historical baseline authority, but the current candidate regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. No current direct case produces output/hash or uses fallback/recovery.
+G3 closure remains historical baseline authority, but tested artifact `9024549134` regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. No case in that artifact produces output/hash or uses fallback/recovery.
+
+Current compile-valid authority is artifact `9026181778`, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`. It implements the reviewed topology-only genuine boundary and reciprocal isolation-certificate contract, compiles all 33 default counterfactuals, and passes Release/static/Ninja **113/113** with `runtimeExecution=false`. It remains runtime-unproven.
 
 ## Proven producer foundation
 
@@ -75,13 +77,15 @@ Artifact-only validation of `9024549134` is complete and recorded in `.agents/Di
 
 Mandatory Review is complete under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md` with decision **Approved with amendments**.
 
-Next Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`:
+Completed Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`:
 
 1. restore topology-only genuine boundaries without changing interior index identity;
 2. add and consume reciprocal seam-transport certificates;
 3. package every quotient/topology/retention/digest counterfactual in the default producer executable;
 4. compile/package only, with no generated runtime;
 5. hand one immutable artifact to the following Test + Benchmark turn.
+
+Next artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md` must execute exactly artifact `9026181778`, prove all focused counterfactuals, restore direct G0-G3, and require exact torus strict-valid closure with all `4/8/4` authority consumed. No edit, configure, rebuild, relink, or artifact substitution is allowed.
 
 ## Deferred work
 
