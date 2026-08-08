@@ -148,12 +148,14 @@ std::uint64_t set_payload_logical_bytes(const std::set<T> &values) {
 
 std::uint64_t surface_trace_segment_owned_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_owned_bytes(segment.transitionSourceEdges);
+  return vector_owned_bytes(segment.transitionSourceEdges) +
+         vector_owned_bytes(segment.transitionSourceTopology);
 }
 
 std::uint64_t surface_trace_segment_logical_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_logical_bytes(segment.transitionSourceEdges);
+  return vector_logical_bytes(segment.transitionSourceEdges) +
+         vector_logical_bytes(segment.transitionSourceTopology);
 }
 
 std::uint64_t surface_trace_path_owned_bytes(
@@ -895,6 +897,7 @@ void hash_trace_segment(std::uint64_t &seed,
   hash_combine_i64(seed, segment.sourceChart);
   hash_combine_i64(seed, segment.transitionSourceEdge);
   hash_vector(seed, segment.transitionSourceEdges);
+  hash_vector(seed, segment.transitionSourceTopology);
   hash_combine_i64(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
@@ -1999,13 +2002,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   const auto sourceEdgeIndices =
       geometry::surface_cell_tracing_detail::edge_matching_indices(
           exactSourceIncidence);
-  std::map<int, std::uint64_t> topologyBySourceEdge;
-  for (const auto &[topology, sourceEdge] : sourceEdgeIndices) {
-    if (!topologyBySourceEdge.emplace(sourceEdge, topology).second) {
-      result.failure = "InvalidAuthoritativeSourceEdgeIndex";
-      return result;
-    }
-  }
   const auto canonical_source_face = [&](const int face) {
     std::array<int, 3> topology{
         sourceFaces(face, 0), sourceFaces(face, 1), sourceFaces(face, 2)};
@@ -2343,21 +2339,40 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
     for (const auto &segment :
          owner.boundaryPaths[static_cast<std::size_t>(edge.filledSide)]) {
-      for (const int transitionSourceEdge : segment.transitionSourceEdges) {
-        const auto topology = topologyBySourceEdge.find(transitionSourceEdge);
-        if (topology == topologyBySourceEdge.end()) {
+      const int expectedLastSourceEdge =
+          segment.transitionSourceEdges.empty()
+              ? -1
+              : segment.transitionSourceEdges.back();
+      if (segment.transitionSourceEdges.size() !=
+              segment.transitionSourceTopology.size() ||
+          segment.transitionSourceEdge != expectedLastSourceEdge) {
+        result.failure = "InvalidAuthoritativeTransitionSourceEdge";
+        return result;
+      }
+      for (std::size_t routeIndex = 0;
+           routeIndex < segment.transitionSourceEdges.size(); ++routeIndex) {
+        const int transitionSourceEdge =
+            segment.transitionSourceEdges[routeIndex];
+        const std::uint64_t topology =
+            segment.transitionSourceTopology[routeIndex];
+        const auto incidence = exactSourceIncidence.find(topology);
+        const auto sourceEdge = sourceEdgeIndices.find(topology);
+        if (incidence == exactSourceIncidence.end() ||
+            incidence->second[0] < 0 || incidence->second[1] < 0 ||
+            sourceEdge == sourceEdgeIndices.end() ||
+            sourceEdge->second != transitionSourceEdge) {
           result.failure = "InvalidAuthoritativeTransitionSourceEdge";
           return result;
         }
         if (isolationCertificateBySeam.count(
-                {edge.sourceTopologyRegion, topology->second}) != 0U) {
-          crossedIsolationSeams.push_back(topology->second);
+                {edge.sourceTopologyRegion, topology}) != 0U) {
+          crossedIsolationSeams.push_back(topology);
           continue;
         }
         const bool belongsToOtherRegion = std::any_of(
             isolationCertificateBySeam.begin(),
             isolationCertificateBySeam.end(), [&](const auto &entry) {
-              return entry.first.second == topology->second;
+              return entry.first.second == topology;
             });
         if (belongsToOtherRegion) {
           result.failure = "IsolationSeamTransitionOwnerMismatch";
@@ -5445,9 +5460,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
   if (options.backend == RemeshBackend::SurfaceCells ||
       options.surfaceCells.enabled) {
     RemeshResult result;
-    const bool retainIntermediateGeometry =
-        options.surfaceCells.retainIntermediateGeometry ||
-        options.surfaceCells.injectFailureAfterStage >= 0;
+    const bool retainRequested =
+        options.surfaceCells.retainIntermediateGeometry;
+    const bool retainForExecution =
+        retainRequested || options.surfaceCells.injectFailureAfterStage >= 0;
     result.diagnostics.remeshBackend =
         remesh_backend_name(RemeshBackend::SurfaceCells);
     result.diagnostics.requestedBackend =
@@ -5503,6 +5519,36 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.diagnostics.surfaceCellDebugArtifacts.clear();
       }
     };
+    auto clear_unrequested_intermediate_context = [&]() {
+      if (retainRequested) return;
+
+      result.surfaceCellContext.traceNetwork =
+          geometry::SurfaceCellNetwork{};
+      result.surfaceCellContext.hasTraceNetwork = false;
+      result.surfaceCellContext.flowRepArcs =
+          std::vector<geometry::FlowRepArc>{};
+      result.surfaceCellContext.flowRepNetwork =
+          geometry::FlowRepSparseNetwork{};
+      result.surfaceCellContext.hasFlowRepNetwork = false;
+      result.surfaceCellContext.embeddedArrangementArcs =
+          std::vector<geometry::SurfaceArrangementArc>{};
+      result.surfaceCellContext.hasEmbeddedArrangementArcs = false;
+      result.surfaceCellContext.arrangement = geometry::SurfaceCellComplex{};
+      result.surfaceCellContext.hasArrangement = false;
+
+      result.surfaceCellContext.tracingCurrentOwnedBytes = 0U;
+      result.surfaceCellContext.flowRepCurrentOwnedBytes = 0U;
+      result.surfaceCellContext.arrangementCurrentOwnedBytes = 0U;
+      result.surfaceCellContext.tracingRetainedCapacityBytes = 0U;
+      result.surfaceCellContext.flowRepRetainedCapacityBytes = 0U;
+      result.surfaceCellContext.arrangementRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellTracingCurrentOwnedBytes = 0U;
+      result.diagnostics.surfaceCellFlowRepCurrentOwnedBytes = 0U;
+      result.diagnostics.surfaceCellArrangementCurrentOwnedBytes = 0U;
+      result.diagnostics.surfaceCellTracingRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellFlowRepRetainedCapacityBytes = 0U;
+      result.diagnostics.surfaceCellArrangementRetainedCapacityBytes = 0U;
+    };
     auto fail_surface_cells = [&](const SurfaceCellFailureCode code,
                                   const std::string &stage) {
       const std::string failureCode = surface_cell_failure_code_name(code);
@@ -5548,6 +5594,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       clear_unavailable_surface_cell_counts(result.diagnostics);
       preserve_completed_debug_artifacts();
       update_overall_pipeline_time();
+      clear_unrequested_intermediate_context();
 
       if (options.surfaceCells.fallbackPolicy ==
           SurfaceCellFallbackPolicy::ReturnInputMesh) {
@@ -6041,7 +6088,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             authoritativePhaseFrontMesh.invalidCell;
         result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
             authoritativePhaseFrontMesh.invalidEdge;
-        if (retainIntermediateGeometry) {
+        if (retainForExecution) {
           result.surfaceCellContext.traceNetwork = std::move(traceNetwork);
           result.surfaceCellContext.hasTraceNetwork = true;
         }
@@ -6112,7 +6159,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     completedSurfaceCellStages.push_back("tracing");
     if (retainedTraceNetwork.phaseFront.disposition ==
         geometry::SurfaceCellProducerDisposition::Rejected) {
-      if (!retainIntermediateGeometry) {
+      if (!retainForExecution) {
         result.surfaceCellContext.traceNetwork =
             geometry::SurfaceCellNetwork{};
         result.surfaceCellContext.hasTraceNetwork = false;
@@ -6121,7 +6168,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                                 "tracing");
     }
     if (options.surfaceCells.injectFailureAfterStage == 3) {
-      if (!retainIntermediateGeometry) {
+      if (!retainForExecution) {
         result.surfaceCellContext.traceNetwork =
             geometry::SurfaceCellNetwork{};
         result.surfaceCellContext.hasTraceNetwork = false;
@@ -6149,7 +6196,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         std::max<std::size_t>(
             result.diagnostics.surfaceCellMaxSimultaneousLiveLargeStructures,
             2U);
-    if (!retainIntermediateGeometry) {
+    if (!retainForExecution) {
       // Source labels already live in sourceSurfaceLabels. Do not retain a
       // second copy merely to keep a consumed trace-stage shell alive.
       result.surfaceCellContext.traceNetwork = geometry::SurfaceCellNetwork{};
@@ -6194,7 +6241,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           endpointCompletion.addedArcs;
       result.surfaceCellContext.flowRepEndpointTerminationCounts =
           endpointCompletion.traceTerminationCounts;
-      if (retainIntermediateGeometry) {
+      if (retainForExecution) {
         result.surfaceCellContext.flowRepEndpointDiagnostics =
             std::move(endpointCompletion.diagnostics);
       }
@@ -6275,7 +6322,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         sparseFlowRep.failureCode;
     const std::size_t retainedFlowRepArcCount =
         sparseFlowRep.retainedArcIds.size();
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       // The retained debug context becomes the sole owner of the dense graph.
       // Embedding reads it in place instead of keeping a second vector copy.
       result.surfaceCellContext.flowRepArcs = std::move(flowRepArcs);
@@ -6301,15 +6348,15 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
     const auto embeddingStart = Clock::now();
     const std::vector<geometry::FlowRepArc> &embeddingFlowRepArcs =
-        retainIntermediateGeometry ? result.surfaceCellContext.flowRepArcs
+        retainForExecution ? result.surfaceCellContext.flowRepArcs
                                    : flowRepArcs;
     const geometry::FlowRepSparseNetwork &embeddingSparseFlowRep =
-        retainIntermediateGeometry ? result.surfaceCellContext.flowRepNetwork
+        retainForExecution ? result.surfaceCellContext.flowRepNetwork
                                    : sparseFlowRep;
     std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
         surface_arrangement_arcs_from_flow_rep(embeddingFlowRepArcs,
                                                embeddingSparseFlowRep);
-    if (!retainIntermediateGeometry) {
+    if (!retainForExecution) {
       // Arrangement arcs are a compact projection of the retained FlowRep.
       // Release the much larger dense arc graph before building the DCEL.
       std::vector<geometry::FlowRepArc>().swap(flowRepArcs);
@@ -6331,7 +6378,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     const std::uint64_t arrangementArcHash =
         hash_arrangement_arcs(arrangementArcs);
     const std::size_t arrangementArcCount = arrangementArcs.size();
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       result.surfaceCellContext.embeddedArrangementArcs =
           std::move(arrangementArcs);
       result.surfaceCellContext.hasEmbeddedArrangementArcs = true;
@@ -6360,14 +6407,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     arrangementOptions.sourceFaceSheets =
         &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
     const std::vector<geometry::SurfaceArrangementArc> &arrangementInputArcs =
-        retainIntermediateGeometry
+        retainForExecution
             ? result.surfaceCellContext.embeddedArrangementArcs
             : arrangementArcs;
     geometry::SurfaceCellComplex arrangementComplex =
         geometry::build_surface_cell_complex(meshWhole.V, meshWhole.F,
                                              arrangementInputArcs,
                                              arrangementOptions);
-    if (!retainIntermediateGeometry) {
+    if (!retainForExecution) {
       std::vector<geometry::SurfaceArrangementArc>().swap(arrangementArcs);
       result.surfaceCellContext
           .embeddedArrangementStorageReleasedAfterArrangement = true;
@@ -6389,7 +6436,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         surface_complex_logical_bytes(arrangementComplex);
     const std::uint64_t arrangementCurrentOwnedBytes =
         arrangementOwnedBytes +
-        (retainIntermediateGeometry ? arrangementArcOwnedBytes : 0U);
+        (retainForExecution ? arrangementArcOwnedBytes : 0U);
     result.surfaceCellContext.arrangementLogicalPayloadBytes =
         arrangementLogicalBytes;
     result.surfaceCellContext.arrangementRetainedCapacityBytes =
@@ -6411,7 +6458,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellArrangementPeakOwnedBytes =
         result.surfaceCellContext.arrangementPeakOwnedBytes;
     const std::uint64_t arrangementHash = hash_surface_complex(arrangementComplex);
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       // Retain the exact stage-six output before an injected failure can
       // return. The context is also the sole owner used by simplification.
       result.surfaceCellContext.arrangement = std::move(arrangementComplex);
@@ -6433,7 +6480,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
     const auto simplificationStart = Clock::now();
     const geometry::SurfaceCellComplex &arrangementForSimplification =
-        retainIntermediateGeometry ? result.surfaceCellContext.arrangement
+        retainForExecution ? result.surfaceCellContext.arrangement
                                    : arrangementComplex;
     geometry::SurfaceSimplificationCandidateSet simplificationCandidates =
         geometry::extract_surface_simplification_candidates(
@@ -6446,7 +6493,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     // pinch DCEL face walks. General FlowRep removals remain available to the
     // experimental API but require separate fidelity gates before integration.
     simplificationOptions.topologyHealingOnly = true;
-    simplificationOptions.retainTransactionDetails = retainIntermediateGeometry;
+    simplificationOptions.retainTransactionDetails = retainForExecution;
     const int simplificationCandidateCount =
         static_cast<int>(simplificationCandidates.candidates.size());
     const int simplificationTopologyHealingCandidateCount =
@@ -6457,7 +6504,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
               return candidate.topologyHealing;
             }));
     geometry::SurfaceSimplificationResult simplified;
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       simplified = geometry::simplify_surface_cell_complex(
           result.surfaceCellContext.arrangement, meshWhole.V, meshWhole.F,
           simplificationCandidates.candidates, simplificationOptions);
@@ -6471,7 +6518,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         simplificationCandidateCount;
     result.surfaceCellContext.simplificationTopologyHealingCandidateCount =
         simplificationTopologyHealingCandidateCount;
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       result.surfaceCellContext.simplificationTopologyHealingCandidates.clear();
       for (const geometry::SurfaceSimplificationCandidate &candidate :
            simplificationCandidates.candidates) {
@@ -6549,7 +6596,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     const geometry::SurfaceCellComplex &simplifiedComplexForHash =
         simplified.hasComplexOutput
             ? simplified.complex
-            : (retainIntermediateGeometry
+            : (retainForExecution
                    ? result.surfaceCellContext.arrangement
                    : arrangementComplex);
     const std::uint64_t simplificationHash =
@@ -6576,12 +6623,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     std::vector<geometry::PureQuadVertexLineage> completedVertexLineage;
     std::vector<geometry::PureQuadFaceLineage> completedQuadLineage;
     geometry::SurfaceCellComplex completionComplex =
-        retainIntermediateGeometry
+        retainForExecution
             ? simplifiedComplexForHash
             : (simplified.hasComplexOutput
                    ? std::move(simplified.complex)
                    : std::move(arrangementComplex));
-    if (!retainIntermediateGeometry) {
+    if (!retainForExecution) {
       // If simplification produced a replacement complex, the input
       // arrangement would otherwise remain live for the entire completion
       // stage. Its semantic hash and diagnostics are already recorded.
@@ -6958,7 +7005,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       result.diagnostics.surfaceCellCompletionOwnershipSheet =
           ownershipRejection.sourceSheet;
     }
-    if (retainIntermediateGeometry) {
+    if (retainForExecution) {
       result.surfaceCellContext.simplifiedComplex = simplifiedComplexForHash;
       result.surfaceCellContext.hasSimplifiedComplex = true;
       if (completionResult.hasPreparedComplex) {
@@ -6983,14 +7030,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       aggregateLineageMesh = authoritativePhaseFrontMesh.mesh;
       result.surfaceCellContext.completedPatches = {aggregateLineageMesh};
     } else if (completionSucceededForRecovery) {
-      aggregateLineageMesh = retainIntermediateGeometry
+      aggregateLineageMesh = retainForExecution
           ? completionResult.assembly.mesh
           : std::move(completionResult.assembly.mesh);
       completionOnlyReusesSourceTrianglePairBoundaries =
           geometry::output_is_only_paired_source_triangle_boundaries(
               aggregateLineageMesh, meshWhole.F);
     }
-    if (!retainIntermediateGeometry) {
+    if (!retainForExecution) {
       // Scalar diagnostics and the authoritative assembled mesh have been
       // extracted. Release prepared topology, descriptors, patch completions,
       // and conflict workspaces before output validation/refinalization.
@@ -7719,6 +7766,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
 
         update_overall_pipeline_time();
         record_face_degree_histogram(result);
+        clear_unrequested_intermediate_context();
         return result;
       }
     } else {
