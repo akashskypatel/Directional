@@ -1,85 +1,70 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-07 UTC
+Last updated: 2026-08-08 UTC
 
 ## Current gate
 
-G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → **G3 cylinder / periodic holonomy [production runtime contract satisfied; formal closure pending test witness]** → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → **G3 cylinder / periodic holonomy [production runtime closure satisfied; formal closure pending corrected witness artifact validation]** → G4 topology/singularities → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## G3 endpoint artifact validation complete
+## Production G3 runtime closure already demonstrated
 
-Exact tested authority:
+Artifact `9010838200`, source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
 
-- source/test commit `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`;
-- artifact `9010838200`;
-- artifact SHA-256 `b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db`;
-- patch SHA-256 `f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8`;
-- recursive checksums **44/44**;
-- artifact-only execution with no rebuild or implementation/test/fixture/validator/build edits.
-
-Raw focused/retained contracts: **16/17**. Both endpoint-canonicalization contracts pass; typed field ambiguity passes; all six previously regressed nominal G3 periodic contracts are restored; all seven G1/G2 retained contracts pass.
-
-## Exact cylinder — production G3 closure contract satisfied
-
-The exact cylinder now produces direct authoritative output:
-
-- producer `Produced`;
-- output origin `CompletedSurfaceCells`;
+- exact cylinder `Produced / CompletedSurfaceCells`;
 - holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
-- 1,728 traces;
-- 290 arrangement / 290 simplified cells;
-- 288 completed/output quads;
-- 320 provenance/output vertices;
-- zero non-quads;
-- validation failures **0**;
-- field P95 `8.537736463e-07°`;
-- surface approximation P95 `2.832791574e-16`;
+- 288 pure quads / 320 vertices;
+- zero strict/completed validation failures;
+- field P95 approximately `8.54e-7°`;
+- two genuine annulus boundary loops; artificial cut not exterior;
+- deterministic output hash `32135be51d7a0a26` 3/3;
 - no fallback/recovery;
-- output hash `32135be51d7a0a26`, deterministic 3/3.
+- plane/seam/close sheets retain passed direct output.
 
-Independent topology inspection shows exactly 64 boundary edges forming two 32-edge degree-2 loops, one at z=-1 and one at z=+1. The artificial cut is therefore not an exterior seam. Complete provenance is retained (`320 == 320`), and one direct completed cell maps to one output quad (`288 == 288`).
+Focused/retained contracts were **16/17**. The sole failure was an invalid subdivision-dependent test witness, not a production runtime failure.
 
-`surfaceCellValidationFailures=0` authoritatively proves the existing normal/field/warpage and other strict validation gates pass. Raw normal/warpage P95 are not serialized by the benchmark JSON; independent serialized-geometry cross-checks report zero warpage and ~`8.54e-7°` nearest-source normal error.
+## G3 field-correspondence witness Code + Build complete
 
-This is material progress over artifact `9008118764`, which rejected at `InvalidPeriodicChart` cell 29 with zero traces/output. The no-progress counter resets; mandatory Review is not triggered.
+Test-only evidence commit:
 
-## Sole formal closure blocker — incorrect unit-test witness
+- `117620ec2da2083ce11b205835e58fa404f163ef`;
+- patch SHA-256 `f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb`;
+- changed test blob `80a0b58339102279ab863d9112e243a557cd270d`.
 
-`SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence` reaches `Produced` but fails only:
+Production blobs are unchanged from the runtime-proven source:
 
-```text
-Expected: exactInterRingEdges > 0
-Actual:   0
-```
+- tracing source `63e5ee427f675077f710db51ffb56d91838d3519`;
+- tracing header `c1b816a584d67a3f74c2d7389962bd92d52244c9`.
 
-Classification: **incorrect expectation / invalid witness precondition**, not production failure.
+The corrected witness observes nonzero source-attached V-family boundary-path segments rather than requiring one whole source inter-ring edge to survive target subdivision. It reconstructs source points from face+barycentric provenance, validates finite normalized simplex coordinates, projects the segment and local V field into the source tangent plane, requires axial V-family alignment, and retains a nonempty witness requirement.
 
-The test only counts a V-family phase-front edge when both endpoints are distinct exact source vertices. Its fixture has 0.5 source-ring spacing and its target is 0.25, so production uses two V steps per source inter-ring edge. Such an un-subdivided phase-front witness cannot exist even for the correct axial correspondence.
+No validator, fixture, production, ambiguity, endpoint, periodic, or passed-gate logic changed.
 
-The fixture remains valid. Correct the witness to inspect nonzero source-attached V boundary-path segments, reconstruct their source-space direction from face+barycentric provenance, compare against the local authoritative V cross-field family, and require a nonempty observation set. Do not rely on source IDs, historical grid/count values, or exact un-subdivided source-edge cardinality.
+## Compile authority
+
+- run/job `31228899303 / 93028533210`;
+- artifact `9013161456`, SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
+- log artifact `9013161584`, SHA-256 `baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f`;
+- recursive checksums **44/44**;
+- compile/link **111/111**;
+- seven approved targets;
+- five executables, two libraries, 27 fixture/input files;
+- `runtimeExecution=false`.
+
+Three preceding bounded remote attempts failed only in temporary workflow/build-evidence setup and executed no generated Directional binary. The successful run is the only build artifact authority for this turn.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9013161456`.
 
-1. Expected production source change: none.
-2. Replace only the invalid `exactInterRingEdges` witness with subdivision-invariant source-attached V segment evidence.
-3. Preserve the field-ambiguous typed-rejection test unchanged.
-4. Preserve endpoint, annulus, cut/holonomy, source-strip, artificial-cut, malformed-holonomy and G1/G2 tests unchanged.
-5. Compile/package the established seven approved targets with `PRE_TEST`.
-6. Execute no generated Directional binary.
-7. Remove bounded workflow/trigger/payload after artifact verification.
+Required decision:
 
-The following artifact-only turn must obtain 17/17 focused/retained contracts and revalidate exact cylinder/G0-G2. If cylinder retains the strict-valid direct periodic output above, mark G3 passed and activate G4.
+1. verify exact artifact/source/patch/blob/checksum/command-boundary authority;
+2. run the corrected field witness first;
+3. run all endpoint/ambiguity/G3 periodic/G1-G2 retained contracts — target **17/17**;
+4. revalidate plane, seam, close sheets and exact cylinder;
+5. require direct deterministic cylinder `Produced / CompletedSurfaceCells`, zero validation failures, valid periodic authority and existing quality thresholds, with no fallback/recovery;
+6. if all hold, formally mark **G3 passed** and activate **G4 topology-distinct completion and singularities**.
 
-## Supporting suites
+Historical output cardinalities are evidence, not fixture constants. Test-only source is nevertheless expected to preserve the prior runtime state exactly or semantically equivalently.
 
-- bounded producer: **99/101**; failures are the incorrect field witness and known scheduler-sensitive validator-overhead performance check;
-- completion/simplification: **154/164**;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- bounded aggregate: **321/333**;
-- bunny: later-gate `NotApplicable`, 80,862 traces, ~22.42 s;
-- vase: later-gate 45 s bounded timeout; failure only.
-
-Direct gate status outranks aggregate totals. Review policy remains `never`. Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
+Review policy remains `never`. Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
