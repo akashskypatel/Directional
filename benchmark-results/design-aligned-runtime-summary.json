@@ -16,7 +16,9 @@
     "artifactSha256": "fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62",
     "focusedRetainedContracts": "17/17",
     "g3FormallyClosed": true,
-    "productionSourceChangedByEvidenceCommit": false
+    "productionSourceChangedByEvidenceCommit": false,
+    "localEvidenceArchive": "directional-g3-field-correspondence-witness-tb-evidence.tar.gz",
+    "localEvidenceArchiveSha256": "cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8"
   },
   "directAcceptance": {
     "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003109408068, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
