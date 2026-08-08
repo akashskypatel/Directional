@@ -265,3 +265,25 @@ The only authorized next turn is **Code + Build** under `.agents/Directional/Gat
 - no fixture/ID special cases;
 - no post-hoc cycle decomposition or cell merging;
 - no timeout-as-correctness.
+
+## G4 canonical materializer transition-index contract
+
+Materializer-facing interior transition indices have exactly one numeric domain: the source-wide compact table returned by `edge_matching_indices(edge_faces(full source faces))`.
+
+- Regional incidence and region-local compact tables are traversal authority only and must never define serialized route numbers.
+- A two-face transition route carries equal-length numeric and canonical-topology sequences. Every topology entry must resolve to the numeric entry at the same position in the source-wide compact table.
+- A full `mesh.EF` row is CrossField validation identity, not a materializer-facing compact index.
+- Supplied CrossField authority remains fail-closed for missing, duplicate, wrong-edge, wrong-face, or nonreciprocal transitions.
+- Genuine one-face boundaries remain topology-only; no synthetic interior index is invented.
+- Materialization rejects a full-`EF` or region-local numeric substitution as `InvalidAuthoritativeTransitionSourceEdge`, even if topology is otherwise present.
+
+`SurfaceTraceSegment.transitionSourceTopology` is parallel authority for `transitionSourceEdges`; reversal and concatenation preserve positional pairing. Front, periodic, cut, boundary, and certificate producers use the same source-wide compact contract.
+
+Pipeline retention has two distinct meanings:
+
+- `retainRequested` controls observable returned trace/flow/arrangement authority;
+- `retainForExecution` may keep internal state alive long enough for later stages or deterministic failure injection.
+
+Every success or failure return exposes public intermediate geometry iff `retainRequested` is true. Clearing unrequested public context must not alter the terminal code or stage.
+
+Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` has compile-only authority in artifact `9028103772`; runtime acceptance remains pending under the canonical transition-index artifact-only plan. The source-wide contract does not authorize fallback, route repair, topology-only acceptance for a required two-face index, fixture-specific behavior, predicted counts, or validator relaxation.
