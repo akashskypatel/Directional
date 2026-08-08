@@ -1,12 +1,12 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v17",
-  "updatedUtc": "2026-08-08T04:05:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v18",
+  "updatedUtc": "2026-08-08T04:56:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation", "G3 periodic closure/holonomy"],
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "sheet-coverage fail-closed runtime-proven; curved bounded disk-sheet producer active",
-    "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Code_Build_Plan.md",
-    "noProgressCodeBuildCountSinceLastMaterialProgress": 0,
+    "gateState": "sheet-coverage fail-closed runtime-proven; intrinsic curved bounded disk-sheet candidate compile-valid and awaiting artifact-only validation",
+    "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Artifact_Only_Test_Benchmark_Plan.md",
+    "noProgressCodeBuildCountSinceLastMaterialProgress": 1,
     "reviewRequired": false
   },
   "testedAuthority": {
@@ -38,7 +38,8 @@
     "completionSimplification": "154/164",
     "validation": "60/60",
     "compiledApi": "8/8",
-    "boundedAggregate": "329/340"
+    "boundedAggregate": "329/340",
+    "classification": "runtime baseline from artifact 9015931928; new curved-disk tests have not executed"
   },
   "g4Observation": {
     "torus": {
@@ -70,30 +71,51 @@
         "curvedDiskBoundaryLoops": [22, 18],
         "classification": "diagnostic evidence only; IDs/counts are not production ownership authority"
       },
-      "activeContract": "generalized intrinsic curved bounded disk-sheet phase-front producer for non-planar chi=1 single-boundary source sheets, preserving hard-feature/source-sheet authority and reciprocal field transport"
+      "activeRuntimeContract": "artifact 9015931928 lacks curved bounded disk-sheet phase-front construction"
     },
     "spherePrescribed": {"currentArtifactObserved": false, "deferredUntilAfterTorusSheetCoverageMaterialization": true, "priorTraceSegments": 766, "priorArrangementCells": 30, "priorCompletedQuads": 0}
   },
   "latestCodeBuild": {
-    "implementationCommit": "856554ce648e5df09ac50f5c94e3e8f098181524",
-    "finalCompileSourceCommit": "a647215b4993338b054f04d4c8e54e7ef5370001",
-    "cleanupCommit": "e46a6d99a45f22f31672c8e5a3367735427d827e",
-    "workflowRunId": 31237248211,
-    "workflowJobId": 93051938159,
-    "artifactId": 9015931928,
-    "artifactName": "g4-sheet-coverage-code-build",
-    "artifactSha256": "108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4",
-    "logArtifactId": 9015932044,
+    "implementationCommit": "90046be649a0fd051e6c44eceec07198dc542c29",
+    "cleanupCommit": "508211936b790dfb40cdbece7900bb0522368b76",
+    "enteringRuntimeSourceCommit": "a647215b4993338b054f04d4c8e54e7ef5370001",
+    "workflowEventCommit": "add5709d0a9bd8a22d10e47a6c4b72d7af51ce48",
+    "workflowRunId": 31240168780,
+    "workflowJobId": 93059691196,
+    "artifactId": 9016834575,
+    "artifactName": "g4-curved-disk-code-build",
+    "artifactSha256": "6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67",
+    "internalChecksumManifestSha256": "e0ec3737e23fbb5c21b6c0be6acb3aa8b3f538b954c566867b6c309a6f5f4736",
+    "internalChecksums": "48/48",
+    "packageFiles": 49,
+    "fixtureFiles": 27,
     "compileActions": "111/111",
     "approvedTargets": "7/7",
+    "logArtifactId": 9016834752,
+    "logArtifactSha256": "6e0ed0906bc9f935ac80b6d8fd40f0654f203020a7b7c6cde6d9a4e49b067db1",
+    "payloadGitBlob": "2436d0fe3c1f8bad2e8614f118af70ecda2ac12d",
+    "decodedPatchSha256": "ae0b6efe3db697b22c36e2a348cb7be6a058f9e29bde5ac36231db8439f3eb91",
     "runtimeExecutionDuringBuild": false,
-    "artifactRuntimeVerified": true
+    "artifactRuntimeVerified": false,
+    "finalBlobs": {
+      "include/directional/geometry/SurfaceCellTracing.h": "998d8bc46faf6d590cb1674c4f5b2e290f94c48e",
+      "src/geometry/SurfaceCellTracing.cpp": "3363e20c33a6850c192249877e7cb4488fc36597",
+      "src/pipeline/RemeshPipeline.cpp": "b42681b61e2564fa55a2b67e7c7ae4890aa23d81",
+      "tests/SurfaceCellsPhase10Tests.cpp": "fe7ce43466cc3bc852b36c0ea8b8de6aac0c5b64"
+    }
+  },
+  "candidateContract": {
+    "producer": "intrinsic curved bounded disk-sheet phase-front",
+    "applicability": "connected chi=1 source sheet with one authoritative source/hard-feature boundary",
+    "authority": "reciprocal 4-RoSy transport, source topology, intrinsic boundary arc length, harmonic/Tutte chart, exact source-simplex provenance",
+    "typedFailures": ["InvalidBoundedDiskTopology", "InvalidBoundedDiskTransport", "InvalidBoundedDiskBoundaryPhase", "InvalidBoundedDiskChart", "InvalidBoundedDiskFrontPairing"],
+    "runtimeStatus": "compile-valid only; focused semantics and exact torus behavior pending artifact-only execution"
   },
   "gateDecision": {
     "g3FormallyClosed": true,
     "g4SheetCoverageSliceMaterialProgress": true,
     "g4Passed": false,
-    "activeG4Contract": "curved bounded disk source-sheet phase-front construction",
-    "nextTurn": "Code + Build — G4 curved bounded disk-sheet phase-front producer"
+    "activeG4Contract": "artifact-only validate intrinsic curved bounded disk-sheet phase-front construction",
+    "nextTurn": "Test + Benchmark — exact artifact 9016834575 G4 curved-disk validation"
   }
 }
