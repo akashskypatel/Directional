@@ -1,10 +1,16 @@
 # Gate 4 Canonical Transition Index and Failure Retention — Code + Build Plan
 
-Status: **authoritative next turn**  
+Status: **completed by compile artifact `9028103772`**  
 Turn type: **Code + Build only**  
 Active design gate: **G4 topology-distinct completion and singularities**  
 Review policy: `never`  
 Mandatory review guard: **not active; artifact 9026181778 made material progress**
+
+## Completion authority
+
+Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` compiled all seven approved targets in [workflow run 31279574458](https://github.com/akashskypatel/Directional/actions/runs/31279574458). Compile artifact `9028103772` has GitHub SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a`; its 48-entry recursive manifest verifies. `runtimeExecution=false`; this completed turn makes no runtime claim.
+
+See `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Report.md`. The authoritative next turn is `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Entering authority
 
