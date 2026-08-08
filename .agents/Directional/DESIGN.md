@@ -82,7 +82,7 @@ The implementation must preserve both identities. Never overwrite a local isolat
 7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Current runtime authority and retained baseline
+## Previous runtime authority and retained baseline
 
 Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, remains the last candidate that directly produced all accepted plane/seam/close-sheets/cylinder baselines.
 
@@ -245,7 +245,7 @@ G4 is not passed until required topology and singularity fixtures complete direc
 
 The prescribed sphere remains deferred until exact torus reaches direct strict-valid production. A downstream sphere completion observation must never preempt the earlier torus producer/topology invariant.
 
-## Current next authority
+## Previous next authority before artifact 9028103772
 
 Latest runtime evidence is recorded in `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Report.md`.
 
@@ -287,3 +287,13 @@ Pipeline retention has two distinct meanings:
 Every success or failure return exposes public intermediate geometry iff `retainRequested` is true. Clearing unrequested public context must not alter the terminal code or stage.
 
 Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` has compile-only authority in artifact `9028103772`; runtime acceptance remains pending under the canonical transition-index artifact-only plan. The source-wide contract does not authorize fallback, route repair, topology-only acceptance for a required two-face index, fixture-specific behavior, predicted counts, or validator relaxation.
+
+## Current runtime authority — canonical transition artifact
+
+Artifact `9028103772` at implementation `edc14d38f862b94941b249f564050e2e1f8f5287` supersedes earlier runtime-authority statements for current planning.
+
+The source-wide compact route and retain/release patch materially advances production behavior: plane, multi-face seam, close sheets, and cylinder complete directly **3/3** each; direct torus consumes all four topology regions, eight isolation seams, and four periodic relations and materializes one component with zero boundary loops and Euler zero. Torus still fails strict completion validation at `LocalSheetMismatch` with 74 issues, so G4 remains active and sphere remains deferred.
+
+Canonical counterfactual acceptance is not yet complete because the new synthetic witness is not present in a serialized route. Two Phase10 tests also retain the obsolete assumption that compact route indices are full source-edge rows. The next authoritative Code + Build turn repairs only this test authority under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Plan.md`.
+
+This does not authorize a validator relaxation. The downstream torus correction must preserve exact quotient identity, full lineage, hard-rail/periodic equivalence provenance, and strict local-chart compatibility. Nonzero `Z4` rotation, shared hard-rail scheduling, and positive multi-isolation lineage remain separate blockers.
