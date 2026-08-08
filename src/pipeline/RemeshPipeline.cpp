@@ -758,6 +758,14 @@ void hash_vector(std::uint64_t &seed, const std::vector<int> &values) {
   }
 }
 
+void hash_vector(std::uint64_t &seed,
+                 const std::vector<std::uint64_t> &values) {
+  hash_combine_u64(seed, values.size());
+  for (const std::uint64_t value : values) {
+    hash_combine_u64(seed, value);
+  }
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
