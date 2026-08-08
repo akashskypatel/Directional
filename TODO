@@ -10,56 +10,62 @@ Last updated: 2026-08-08 UTC
 - G2 cross-chart / close-sheet isolation: **passed**.
 - G3 periodic closure / holonomy: **passed**.
 - G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **G4 Closed-Genus-One Holonomy Basis Code + Build**.
-- Next turn: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Plan.md`.
+- Completed turn: **G4 Closed-Genus-One Holonomy Basis Artifact-Only Test + Benchmark**.
+- Next turn: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Current runtime authority — G3 remains formal until the new artifact executes
+## Current runtime authority
 
-Exact G3 artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
+Exact artifact **`9014730437`** (`g4-holonomy-basis-code-build`) is now runtime-validated artifact-only.
 
-- artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
-- recursive checksums **44/44**;
-- corrected subdivision-independent field-correspondence witness passes;
-- focused/retained G0-G3 contracts **17/17**;
-- plane: direct 64 quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
-- seam: direct 64 quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
-- close sheets: direct 200 quads / 242 V / two isolated components, hash `89b052762f52a5af`, deterministic 3/3;
-- cylinder: direct `Produced / CompletedSurfaceCells`, holonomy `r=0`, `t=(32,0)`, route 32, cut 4, 288 pure quads / 320 V, zero validation failures, field P95 `8.537736463e-7°`, exactly two genuine annulus boundary loops, hash `32135be51d7a0a26`, deterministic 3/3;
-- no passing case uses fallback or source-grid recovery.
+Authority:
 
-Bounded G3 suites: producer **100/101** (sole known timing-only validator-overhead failure), completion/simplification **154/164**, validation **60/60**, compiled API **8/8**, aggregate **322/333**.
+- workflow run/job `31233594490 / 93042009574`;
+- primary implementation `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`;
+- final compile source `6e754bdd64482582d39e71184805fbb053c99f86`;
+- ZIP SHA-256 `14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
+- internal checksum manifest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
+- recursive checksums **46/46**;
+- no rebuild/reconfigure/relink/source/test/fixture/validator/benchmark/build edit during validation.
 
-## G4 compile-valid candidate
+Focused authority:
 
-The closed-genus periodic-authority Code + Build turn produced exact artifact **`9014730437`** (`g4-holonomy-basis-code-build`) from primary implementation `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba` plus surgical compile-fix source `6e754bdd64482582d39e71184805fbb053c99f86`.
+- new G4 periodic-relation semantics **5/5**;
+- retained G0-G3 focused contracts **17/17**;
+- plane direct 64 quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
+- seam direct 64 quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets direct 200 quads / 242 V / two components, hash `89b052762f52a5af`, deterministic 3/3;
+- cylinder direct `Produced / CompletedSurfaceCells`, one periodic relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 V, zero validation failures, hash `32135be51d7a0a26`, deterministic 3/3, exactly two genuine exterior annulus loops;
+- no passing direct case uses fallback or source-grid recovery.
 
-- successful workflow run `31233594490`, job `93042009574`;
-- Release/static/Ninja approved targets compiled and linked **111/111**;
-- workflow ZIP digest `sha256:14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
-- internal checksum-manifest digest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
-- independently verified packaged checksums **46/46**, 47 files, 27 fixtures;
-- detailed log artifact `9014730651`;
-- `runtimeExecution=false`: no generated project binary/test/benchmark was executed.
+Bounded suites:
 
-Implementation replaces the singular result-level periodic-holonomy authority with a canonical relation collection, adds stable source-topology signatures, typed equivalent/ambiguous/incompatible insertion semantics, and collection-aware hashing/diagnostics/benchmark reporting/materialization. New semantic tests were compiled only.
+- producer **105/106**; sole failure remains the scheduler/environment-sensitive `StrictValidatorOverheadStaysBelowFivePercent` timing check;
+- completion/simplification **154/164**, unchanged historical ten failures;
+- validation **60/60**;
+- compiled API **8/8**;
+- bounded aggregate **327/338**.
 
-Detailed build record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Report.md`.
+Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Report.md`.
 
-## Active G4 runtime decision — exact torus
+## Active G4 blocker — complete torus phase-front sheet coverage
 
-The old G3 artifact rejects the connected closed genus-one torus (72 V / 144 triangles / Euler characteristic 0 / no boundary) at `tracing/phase-front / InvalidPeriodicTopology` solely after one periodic relation was already retained.
+The previous scalar periodic-holonomy representation barrier is closed as a first slice. Exact torus no longer rejects at `tracing/phase-front / InvalidPeriodicTopology`.
 
-The next artifact-only turn must determine whether artifact `9014730437` removes that scalar representation barrier truthfully:
+Three deterministic torus runs now report:
 
-1. new periodic-relation semantic tests pass;
-2. all 17 focused G0-G3 contracts remain passing;
-3. plane/seam/close-sheets/cylinder retain their direct deterministic strict-valid outputs and hashes;
-4. torus no longer rejects merely because a second compatible periodic relation exists;
-5. the relation collection is live in diagnostics/structural/materialization authority;
-6. no fallback/recovery or order/ID/count/frequency/proximity selection is used.
+- `surfaceCellAuthoritativeProducerDisposition = NotApplicable`;
+- periodic relation count **2**;
+- 670 trace segments;
+- 113 retained strands / 113 embedded arrangement arcs;
+- zero arrangement cells;
+- terminal `NotProductionReady:completion`;
+- completion failure `SideSubdivisionRepair:InvalidInputIncidence`;
+- no output, fallback, legacy substitution, input return, or source-grid recovery.
 
-Direct strict-valid torus production is preferred. A deeper truthful torus failure is material progress only when the new collection is demonstrably retained and consumed.
+Packaged-source inspection identifies the earlier cause: `build_uniform_phase_front()` accumulates successful sheet-local cells/relations, but if any later local sheet remains `NotApplicable`, it immediately returns the partially accumulated aggregate without `Produced` status. The pipeline correctly refuses authoritative materialization, then the generic path yields a zero-cell arrangement; the completion incidence error is downstream.
 
-Prescribed-sphere singularity completion remains the next G4 slice after the torus topology contract; its prior failure is later at completion (`repeated-boundary-node` plus parity-alternative budget exhaustion).
+The next Code + Build must make authoritative phase-front coverage complete across every torus source sheet by composing supported bounded and periodic chart producers, or fail closed at the exact unsupported sheet with a typed phase-front reason. It must **not** mark partial coverage produced, remove the torus's 48 hard-feature edges / four closed feature curves, or repair the downstream completion symptom first.
+
+Prescribed-sphere singularity completion remains deferred until this earlier torus producer contract is closed.
