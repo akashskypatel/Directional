@@ -32,6 +32,7 @@ jobs:
             echo "entering_runtime_artifact=9016834575"
             echo "runtimeExecution=false"
             echo "reviewPolicy=never"
+            echo "transport=multipart verified base64 gzip"
             echo "allowed=apply verified boundary-authority patch, configure, compile/link seven approved targets, package/checksum"
             echo "prohibited=tests, benchmarks, generated Directional binaries, ctest/discovery, CLI, GUI, help/list/custom-input execution"
           } | tee "$LOG_DIR/activity.log"
@@ -40,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 30
+          fetch-depth: 40
           submodules: false
 
       - name: Verify and apply source-sheet boundary patch
@@ -51,22 +52,34 @@ jobs:
           echo "checkout_sha=$(git rev-parse HEAD)"
           git status --short
 
-          payload=.agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64
-          test -f "$payload"
-          PAYLOAD_BLOB=$(git hash-object "$payload")
+          legacy_payload=.agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64
+          parts=(
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part01
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part02
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part03
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part04
+          )
+          for part in "${parts[@]}"; do test -f "$part"; done
+          test "$(git hash-object "${parts[0]}")" = "d6d260fd98ca1dfb608e891bbdeb9834fec21ad0"
+          test "$(git hash-object "${parts[1]}")" = "35835d61cd4e7fd17c6ec01bcdf28821bfc7e849"
+          test "$(git hash-object "${parts[2]}")" = "175a99aa6e3eb6002034d11fdadd16b1daf811ac"
+          test "$(git hash-object "${parts[3]}")" = "19b690f91f9a2aa9b39b4731ea0037a29fca081a"
+
           INPUT_HEADER_BLOB=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)
           INPUT_SOURCE_BLOB=$(git hash-object src/geometry/SurfaceCellTracing.cpp)
           INPUT_TEST_BLOB=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)
-          echo "payload_blob=$PAYLOAD_BLOB"
           echo "input_header_blob=$INPUT_HEADER_BLOB"
           echo "input_source_blob=$INPUT_SOURCE_BLOB"
           echo "input_test_blob=$INPUT_TEST_BLOB"
-          test "$PAYLOAD_BLOB" = "f3bd4d80f87e8a100f9c4cd4c97e506ac937670b"
           test "$INPUT_HEADER_BLOB" = "998d8bc46faf6d590cb1674c4f5b2e290f94c48e"
           test "$INPUT_SOURCE_BLOB" = "3363e20c33a6850c192249877e7cb4488fc36597"
           test "$INPUT_TEST_BLOB" = "fe7ce43466cc3bc852b36c0ea8b8de6aac0c5b64"
 
-          base64 -d "$payload" | gzip -dc > /tmp/g4-source-sheet-boundary.patch
+          cat "${parts[@]}" > /tmp/g4-source-sheet-boundary.patch.gz.b64
+          ENCODED_SHA256=$(sha256sum /tmp/g4-source-sheet-boundary.patch.gz.b64 | awk '{print $1}')
+          echo "encoded_payload_sha256=$ENCODED_SHA256"
+          test "$ENCODED_SHA256" = "1709635a2e30c33f5d07f370b7ef74c1a1118cdd6289ec54e10659c2019c21ab"
+          base64 -d /tmp/g4-source-sheet-boundary.patch.gz.b64 | gzip -dc > /tmp/g4-source-sheet-boundary.patch
           PATCH_SHA256=$(sha256sum /tmp/g4-source-sheet-boundary.patch | awk '{print $1}')
           echo "decoded_patch_sha256=$PATCH_SHA256"
           test "$PATCH_SHA256" = "c96b3d73f16f4b9391505380bc3f2cf9ec95ff5783fe843b556e95a534a6e75b"
@@ -97,10 +110,11 @@ jobs:
           IMPLEMENTATION_COMMIT=$(git rev-parse HEAD)
           echo "IMPLEMENTATION_COMMIT=$IMPLEMENTATION_COMMIT" >> "$GITHUB_ENV"
           echo "PATCH_SHA256=$PATCH_SHA256" >> "$GITHUB_ENV"
+          echo "ENCODED_SHA256=$ENCODED_SHA256" >> "$GITHUB_ENV"
           echo "implementation_commit=$IMPLEMENTATION_COMMIT"
 
-          git rm "$payload"
-          git commit -m 'chore(agent): remove G4 source-sheet boundary payload'
+          git rm "$legacy_payload" "${parts[@]}"
+          git commit -m 'chore(agent): remove G4 source-sheet boundary payloads'
           CLEANUP_COMMIT=$(git rev-parse HEAD)
           echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
           echo "cleanup_commit=$CLEANUP_COMMIT"
@@ -210,7 +224,13 @@ jobs:
             "implementationCommit": "$IMPLEMENTATION_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
             "enteringRuntimeArtifact": 9016834575,
-            "payloadGitBlob": "f3bd4d80f87e8a100f9c4cd4c97e506ac937670b",
+            "payloadPartGitBlobs": [
+              "d6d260fd98ca1dfb608e891bbdeb9834fec21ad0",
+              "35835d61cd4e7fd17c6ec01bcdf28821bfc7e849",
+              "175a99aa6e3eb6002034d11fdadd16b1daf811ac",
+              "19b690f91f9a2aa9b39b4731ea0037a29fca081a"
+            ],
+            "encodedPayloadSha256": "$ENCODED_SHA256",
             "decodedPatchSha256": "$PATCH_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
