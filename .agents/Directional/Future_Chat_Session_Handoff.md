@@ -14,53 +14,9 @@ Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directiona
 
 ## Current tested authority
 
-G0, G1, G2, and **G3 are passed**. G4 is **active**. The first G4 multi-relation periodic-authority slice is runtime-proven material progress but does not close the gate.
-
-Exact current runtime artifact: **`9014730437`** (`g4-holonomy-basis-code-build`)  
-Workflow run/job: `31233594490 / 93042009574`  
-Primary implementation: `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`  
-Final compile-source commit: `6e754bdd64482582d39e71184805fbb053c99f86`
-
-Runtime authority:
-
-- exact ZIP SHA-256 `14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
-- G4 periodic-relation semantics **5/5**;
-- G0-G3 retained focused contracts **17/17**;
-- plane direct hash `730caeae49ec872c`, 3/3;
-- seam direct hash `5bdf34d7802e9fb0`, 3/3;
-- close sheets direct hash `89b052762f52a5af`, 3/3;
-- cylinder direct `Produced / CompletedSurfaceCells`, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 vertices, zero validation failures, exactly two genuine annulus exterior loops, output hash `32135be51d7a0a26`, deterministic 3/3, no fallback/recovery;
-- bounded producer **105/106** with only the known timing-only validator-overhead failure;
-- completion/simplification **154/164** with the same ten historical failures;
-- validation **60/60**;
-- API **8/8**.
+G0, G1, G2, and **G3 are passed**. G4 is **active**. Current runtime artifact `9014730437` proves G4 periodic-relation semantics **5/5**, retained G0-G3 focused contracts **17/17**, and unchanged direct deterministic plane/seam/close-sheets/cylinder hashes. Exact torus retains two periodic relations but the aggregate phase-front remains `NotApplicable`, then reaches 670 generic traces / 113 embedded arcs / zero arrangement cells and `SideSubdivisionRepair:InvalidInputIncidence`. No fallback/recovery is used.
 
 Latest detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Report.md`.
-
-Local prior runtime evidence archive: `directional-g4-holonomy-basis-artifact-only-evidence.tar.gz`, SHA-256 `6c8f20252d7a616924b388e5643dba994dd5b26cf610794c21e602029c352cb2`.
-
-## Active G4 torus runtime baseline
-
-The scalar periodic representation blocker is removed. Exact torus no longer terminates at `InvalidPeriodicTopology` when another relation appears.
-
-Three independent direct runs of artifact `9014730437` are deterministic:
-
-- `surfaceCellAuthoritativeProducerDisposition = NotApplicable`;
-- periodic relation count **2**;
-- compatibility projection of the first relation `r=0`, `t=(24,0)`, route 24, cut 2;
-- 670 trace segments;
-- 113 retained strands;
-- 113 embedded arrangement arcs;
-- zero arrangement cells;
-- terminal `NotProductionReady:completion`;
-- completion failure `SideSubdivisionRepair:InvalidInputIncidence`;
-- no output/fallback/legacy substitution/input return/source-grid recovery.
-
-Stage hashes are stable 3/3: tracing `0539b306563dbe25`, strands `618d7ed18d1f3daa`, embedded network `33d00772feecc2f7`, arrangement `1ee6b9f9fd044d71`, completion `b4efe5193b9e5c27`.
-
-The benchmark JSON exposes relation cardinality plus a compatibility projection of the first relation, but not the complete per-relation vector. Do not synthesize unexposed component/sheet/topology-signature details.
-
-Torus feature authority reports 48 hard edges in four closed feature curves. They are real current producer barriers and must not be removed/demoted or Euclidean-welded to force a torus result.
 
 ## Completed G4 sheet-coverage Code + Build candidate
 
@@ -104,7 +60,7 @@ Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_B
 - aggregate ownership/coverage mismatch rejects as `IncompleteSourceSheetCoverage`;
 - no hard feature or source-sheet barrier is weakened.
 
-Compile-only regressions were added for mixed bounded+periodic composition, later unsupported-sheet fail-closed behavior under face-order reversal, and the exact torus producer boundary. They are not runtime authority until artifact `9015931928` executes.
+Compile-only regressions cover mixed bounded+periodic composition, later unsupported-sheet fail-closed behavior under face-order reversal, and the exact torus producer boundary. They are not runtime authority until artifact `9015931928` executes.
 
 ## Exact next-turn execution declaration
 
@@ -126,7 +82,7 @@ Follow `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only
 
 ## Lessons that must not be repeated
 
-- A test expectation is not automatically production authority; verify that the fixture naturally creates the claimed witness. The G3 field witness originally failed only because 0.25 target subdivision made a whole 0.5 source inter-ring edge impossible as one front edge.
+- A test expectation is not automatically production authority; verify that the fixture naturally creates the claimed witness.
 - Raw DCEL/source numeric IDs are not stable semantic identities. Compare canonical source endpoint/route authority.
 - A source-topologically valid periodic candidate is not field-authoritative merely because it is first/lexicographically minimal.
 - Endpoint ownership tolerance may not emit tolerance-expanded geometry; canonicalize to exact source-simplex geometry.
