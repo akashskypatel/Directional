@@ -31,6 +31,8 @@ Exact artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58
 
 Default-suite evidence: bounded producer **100/101** (sole failure is the known timing-only validator-overhead check), completion/simplification **154/164**, validation **60/60**, compiled API **8/8**, bounded aggregate **322/333**.
 
+Local evidence archive: `directional-g3-field-correspondence-witness-tb-evidence.tar.gz`, SHA-256 `cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8`.
+
 Later mandatory observations do not affect G3: bunny remains `NotApplicable` with 80,862 traces and no output; current vase observation exceeded 45 seconds and produced no complete record, so timeout carries no correctness inference.
 
 ## Active G4 blocker
