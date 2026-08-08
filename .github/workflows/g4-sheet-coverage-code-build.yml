@@ -1,0 +1,246 @@
+name: g4-sheet-coverage-code-build
+
+on:
+  push:
+    paths:
+      - '.github/agent-triggers/g4-sheet-coverage-code-build'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: g4-sheet-coverage-code-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LOG_DIR: ${{ runner.temp }}/g4-sheet-coverage-logs
+    steps:
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo "turn=G4 torus complete phase-front sheet coverage Code+Build"
+            echo "event_sha=$GITHUB_SHA"
+            echo "event_ref=$GITHUB_REF"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=apply bounded source/test patch, configure, compile/link seven approved targets, package/checksum"
+            echo "prohibited=tests, benchmarks, generated Directional binaries, ctest/discovery, CLI, GUI, help/list/custom-input execution"
+          } | tee "$LOG_DIR/activity.log"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 16
+          submodules: false
+
+      - name: Apply sheet-coverage patch and commit source
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "checkout_sha=$(git rev-parse HEAD)"
+          echo "initial_status_begin"
+          git status --short
+          echo "initial_status_end"
+
+          payload=.agents/Directional/turn-payloads/g4-sheet-coverage.patch
+          test -f "$payload"
+          test "$(sha256sum "$payload" | awk '{print $1}')" = \
+            "05b9e3906b8db7be8c2c2518565659081ace12d8b89540c228c3448cea3e4a92"
+          test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = \
+            "00d849c21a5af9b871b4ad56bf31c4c74bd705b5"
+          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = \
+            "cf1d17d5966b3d6904c823046c7dbded017e35ad"
+          test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = \
+            "99976a4481bfa9daaf197e15a3b53b70336e8218"
+          if grep -q '^+++ b/.github/workflows/' "$payload"; then
+            echo "payload attempts to modify workflow files" >&2
+            exit 1
+          fi
+          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
+          echo "payload_sha256=$PAYLOAD_SHA256"
+
+          git apply --check "$payload"
+          git apply "$payload"
+          mapfile -t changed < <(git diff --name-only | sort)
+          test "${#changed[@]}" -eq 3
+          test "${changed[0]}" = "include/directional/geometry/SurfaceCellTracing.h"
+          test "${changed[1]}" = "src/geometry/SurfaceCellTracing.cpp"
+          test "${changed[2]}" = "tests/SurfaceCellsPhase10Tests.cpp"
+
+          git config user.name 'directional-agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add include/directional/geometry/SurfaceCellTracing.h \
+                  src/geometry/SurfaceCellTracing.cpp \
+                  tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m 'fix(surface-cells): fail closed on incomplete sheet coverage'
+          SOURCE_COMMIT=$(git rev-parse HEAD)
+          echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
+          echo "source_commit=$SOURCE_COMMIT"
+          echo "tracing_header_blob=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)"
+          echo "tracing_source_blob=$(git hash-object src/geometry/SurfaceCellTracing.cpp)"
+          echo "phase10_tests_blob=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
+
+          git rm "$payload"
+          git commit -m 'chore(agent): remove G4 sheet-coverage payload'
+          CLEANUP_COMMIT=$(git rev-parse HEAD)
+          echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
+          echo "cleanup_commit=$CLEANUP_COMMIT"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "post_source_push_status_begin"
+          git status --short
+          echo "post_source_push_status_end"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          git submodule update --init --depth 1
+          git submodule status
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          {
+            echo "source_commit=$SOURCE_COMMIT"
+            echo "cleanup_commit=$CLEANUP_COMMIT"
+            echo "compile_head=$(git rev-parse HEAD)"
+            cmake --version
+            c++ --version
+            ninja --version
+          } | tee "$LOG_DIR/toolchain.txt"
+          cmake -S . -B agent-build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile seven approved targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          cmake --build agent-build --parallel 2 --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+          echo "compile_only_gate=passed" | tee -a "$LOG_DIR/activity.log"
+          echo "final_source_status_begin" | tee -a "$LOG_DIR/activity.log"
+          git status --short | tee -a "$LOG_DIR/activity.log"
+          echo "final_source_status_end" | tee -a "$LOG_DIR/activity.log"
+
+      - name: Package immutable compile artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          root="$GITHUB_WORKSPACE/g4-sheet-coverage-artifact"
+          rm -rf "$root"
+          mkdir -p "$root"/{bin,lib,test-data/benchmarks,logs,metadata,source}
+          cp agent-build/directional_benchmarks "$root/bin/"
+          cp agent-build/directional_compiled_api_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_producer_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_completion_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_validation_tests "$root/bin/"
+          cp agent-build/libdirectional_core.a "$root/lib/"
+          cp agent-build/libdirectional_pipeline.a "$root/lib/"
+          cp -a benchmarks/fixtures "$root/test-data/benchmarks/"
+          cp "$LOG_DIR/activity.log" "$LOG_DIR/configure.log" \
+             "$LOG_DIR/build.log" "$LOG_DIR/toolchain.txt" "$root/logs/"
+          cp agent-build/compile_commands.json "$root/source/"
+
+          git show "$SOURCE_COMMIT" --format=fuller --stat --patch -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp > \
+            "$root/source/g4-sheet-coverage.patch"
+          tar --exclude=.git --exclude=external --exclude=agent-build \
+              --exclude=g4-sheet-coverage-artifact \
+              -cJf "$root/source/directional-g4-sheet-coverage-source-no-deps.tar.xz" .
+
+          cat > "$root/metadata/source-authority.json" <<EOF
+          {
+            "eventCommit": "$GITHUB_SHA",
+            "sourceCommit": "$SOURCE_COMMIT",
+            "cleanupCommit": "$CLEANUP_COMMIT",
+            "patchSha256": "$PAYLOAD_SHA256",
+            "runtimeExecution": false,
+            "reviewPolicy": "never"
+          }
+          EOF
+          cat > "$root/metadata/build-authority.json" <<'EOF'
+          {"configuration":"Release","generator":"Ninja","buildSharedLibs":false,"gtestDiscoveryMode":"PRE_TEST","approvedTargets":7,"runtimeExecution":false}
+          EOF
+          cat > "$root/metadata/command-boundary.txt" <<'EOF'
+          G4 Code + Build only.
+          Executed: bounded source/test patch application, configure, compile/link seven approved targets, package/checksum.
+          Not executed: generated Directional binaries, tests, benchmarks, ctest/discovery, CLI, GUI, help/list/custom-input commands.
+          EOF
+          git ls-tree -r "$SOURCE_COMMIT" -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp > "$root/metadata/final-blobs.txt"
+          git submodule status > "$root/metadata/submodules.txt"
+          find benchmarks/fixtures -type f | sort > "$root/metadata/fixture-files.txt"
+          (cd "$root" && find . -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > SHA256SUMS)
+          sha256sum "$root/SHA256SUMS" | tee "$LOG_DIR/artifact-checksum.txt"
+
+      - name: Upload immutable compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-sheet-coverage-code-build
+          path: g4-sheet-coverage-artifact
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-sheet-coverage-code-build-logs
+          path: ${{ runner.temp }}/g4-sheet-coverage-logs
+          if-no-files-found: error
+          retention-days: 14
