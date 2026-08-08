@@ -6,70 +6,55 @@
 G0 truthful authority [passed]
 → G1 uniform authoritative phase-front plane [passed]
 → G2 cross-chart / close-sheet isolation [passed]
-→ G3 periodic holonomy [production runtime closure satisfied; formal witness validation pending]
-→ G4 topology and singularities
+→ G3 periodic holonomy [passed]
+→ G4 topology-distinct completion and singularities [active]
 → G5 adaptivity and hard features
 → G6 bunny and vase production success
 → G7 hardening/default-on
 ```
 
-## Current executed authority
+## G3 closure authority
 
-Artifact `9010838200`, source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, already proves the exact cylinder's production G3 closure contract:
+Artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
 
-- direct `Produced / CompletedSurfaceCells`;
-- valid periodic holonomy/cut/quotient and field-authoritative correspondence;
-- 288 pure quads / 320 vertices;
-- zero validation failures;
-- field P95 approximately `8.54e-7°`;
-- two genuine exterior annulus loops only;
+- corrected field-authority witness passes;
+- focused/retained contracts **17/17**;
+- plane/seam/close sheets remain direct strict-valid deterministic passes;
+- exact cylinder direct `Produced / CompletedSurfaceCells`, `r=0`, `t=(32,0)`, route 32, cut 4, 288 pure quads / 320 vertices, validation failures 0, field P95 `8.537736463e-7°`, two genuine exterior annulus loops only, no fallback/recovery, output hash `32135be51d7a0a26` 3/3.
+
+G3 is formally closed.
+
+## Immediate G4 objective
+
+Exact torus is the earliest structural G4 failure:
+
+- connected closed genus-one source, Euler characteristic 0;
+- producer `Rejected` at `tracing/phase-front`;
+- typed reason `InvalidPeriodicTopology`;
+- zero traces/output;
 - no fallback/recovery;
-- deterministic output hash `32135be51d7a0a26` 3/3;
-- plane/seam/close sheets remain green.
+- one periodic relation is already retained in partial diagnostics.
 
-The preceding focused result was 16/17 solely because a test incorrectly required an un-subdivided front edge across a source inter-ring connection that the target size legitimately subdivides.
+Source inspection shows `SurfacePhaseFrontResult` owns one scalar `SurfacePeriodicHolonomy`; aggregation rejects any second enabled local periodic relation and hashing/diagnostics/materialization likewise consume only one relation.
 
-## Compile-valid final G3 test correction
-
-Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` changes only `tests/SurfaceCellsPhase10Tests.cpp`.
-
-The corrected field-authority witness:
-
-1. observes `family == 1` segments from authoritative phase-front boundary paths;
-2. requires valid source face and finite normalized simplex barycentrics;
-3. reconstructs source-space endpoints from face+barycentric provenance;
-4. ignores only genuine zero-length segments;
-5. compares tangent source-segment direction to the local V cross-field axis;
-6. requires axial alignment and a nonempty observation set;
-7. does not depend on target subdivision, source vertex ID, output counts or discovery order.
-
-Production source is byte-identical to the runtime-proven G3 implementation.
-
-Compile authority:
-
-- artifact `9013161456`, SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
-- run/job `31228899303 / 93028533210`;
-- log artifact `9013161584`, SHA-256 `baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f`;
-- 44/44 recursive checksums;
-- 111/111 compile/link;
-- `runtimeExecution=false`.
-
-## Immediate objective
-
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md`.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md`.
 
 Priority:
 
-1. verify exact artifact/source/patch/blob/checksum/build boundary;
-2. run the corrected field witness first;
-3. require all endpoint/ambiguity/G3 periodic/G1-G2 focused contracts — **17/17** total;
-4. retain plane, seam and close sheets;
-5. retain direct deterministic strict-valid cylinder closure with no fallback/recovery;
-6. if green, mark G3 passed and activate G4.
+1. replace singular result-level periodic authority with a canonical collection of source-topology/reciprocal-transport periodic relations;
+2. canonicalize equivalent/reversed descriptions and reject conflicting/ambiguous/dependent authority without discovery-order selection;
+3. make every retained relation live in hashing, diagnostics, provenance, and exact lattice quotient materialization;
+4. preserve G2 source-sheet isolation and all G3 annulus behavior;
+5. compile/package the seven approved targets without executing generated project binaries;
+6. next artifact-only turn must retain **17/17** G3 contracts and prove exact torus no longer rejects merely because a second compatible relation exists.
+
+## Later G4 singularity objective
+
+The prescribed sphere reaches completion with 766 traces and 30 arrangement cells but no completed output; its current first detailed defect is `repeated-boundary-node` followed by parity-alternative budget exhaustion. Return to this case after the earlier torus topology slice.
 
 ## Explicitly deferred work
 
-Until formal G3 closure, do not prioritize torus/general-genus topology, G4 singularity completion, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production remediation, scheduler timing, historical completion/simplification failures, validator changes, or unrelated optimization.
+Do not broaden the first G4 slice into G5 adaptive 2:1 transitions/feature expansion, G6 bunny/vase production remediation, scheduler timing, historical completion/simplification repairs unrelated to exact active evidence, validator changes, or unrelated optimization.
 
 ## Evidence discipline
 
