@@ -31,70 +31,10 @@
     "localEvidenceArchiveSha256": "6c8f20252d7a616924b388e5643dba994dd5b26cf610794c21e602029c352cb2"
   },
   "directAcceptance": {
-    "plane": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "outputOrigin": "CompletedSurfaceCells",
-      "traceSegments": 352,
-      "arrangementCells": 65,
-      "outputVertices": 81,
-      "completedQuads": 64,
-      "validationFailures": 0,
-      "fieldP95Degrees": 0.00003109408068,
-      "outputHash": "730caeae49ec872c",
-      "deterministic": "3/3"
-    },
-    "multiFaceSeam": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "outputOrigin": "CompletedSurfaceCells",
-      "traceSegments": 256,
-      "arrangementCells": 65,
-      "outputVertices": 81,
-      "completedQuads": 64,
-      "validationFailures": 0,
-      "fieldP95Degrees": 0.00003490194651,
-      "outputHash": "5bdf34d7802e9fb0",
-      "deterministic": "3/3"
-    },
-    "closeSheets": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "outputOrigin": "CompletedSurfaceCells",
-      "traceSegments": 1104,
-      "arrangementCells": 202,
-      "outputVertices": 242,
-      "completedQuads": 200,
-      "connectedComponents": 2,
-      "validationFailures": 0,
-      "fieldP95Degrees": 1.651908724,
-      "outputHash": "89b052762f52a5af",
-      "deterministic": "3/3"
-    },
-    "cylinder": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "outputOrigin": "CompletedSurfaceCells",
-      "periodicHolonomyRelationCount": 1,
-      "periodicHolonomyAvailable": true,
-      "periodicHolonomyQuarterTurnRotation": 0,
-      "periodicHolonomyTranslation": [32, 0],
-      "periodicHolonomyRouteEdgeCount": 32,
-      "periodicCutEdgeCount": 4,
-      "traceSegments": 1728,
-      "arrangementCells": 290,
-      "simplifiedCells": 290,
-      "completedQuads": 288,
-      "outputVertices": 320,
-      "validationFailures": 0,
-      "fieldP95Degrees": 0.0000008537736463,
-      "trueExteriorBoundaryLoops": 2,
-      "artificialCutExterior": false,
-      "fallbackUsed": false,
-      "sourceGridRecoveryUsed": false,
-      "outputHash": "32135be51d7a0a26",
-      "deterministic": "3/3"
-    }
+    "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 352, "arrangementCells": 65, "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003109408068, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
+    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 256, "arrangementCells": 65, "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003490194651, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
+    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 1104, "arrangementCells": 202, "outputVertices": 242, "completedQuads": 200, "connectedComponents": 2, "validationFailures": 0, "fieldP95Degrees": 1.651908724, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
+    "cylinder": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "periodicHolonomyRelationCount": 1, "periodicHolonomyAvailable": true, "periodicHolonomyQuarterTurnRotation": 0, "periodicHolonomyTranslation": [32, 0], "periodicHolonomyRouteEdgeCount": 32, "periodicCutEdgeCount": 4, "traceSegments": 1728, "arrangementCells": 290, "simplifiedCells": 290, "completedQuads": 288, "outputVertices": 320, "validationFailures": 0, "fieldP95Degrees": 0.0000008537736463, "trueExteriorBoundaryLoops": 2, "artificialCutExterior": false, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "32135be51d7a0a26", "deterministic": "3/3"}
   },
   "defaultSuites": {
     "focusedG4PeriodicRelations": "5/5",
@@ -112,14 +52,7 @@
       "success": false,
       "authoritativeProducerDisposition": "NotApplicable",
       "periodicHolonomyRelationCount": 2,
-      "compatibilityPeriodicAuthority": {
-        "available": true,
-        "rotation": 0,
-        "translation": [24, 0],
-        "routeEdgeCount": 24,
-        "cutEdgeCount": 2,
-        "note": "benchmark serialization exposes only the compatibility projection of the first retained relation; full relation metadata is not synthesized"
-      },
+      "compatibilityPeriodicAuthority": {"available": true, "rotation": 0, "translation": [24, 0], "routeEdgeCount": 24, "cutEdgeCount": 2, "note": "benchmark serialization exposes only the compatibility projection of the first retained relation; full relation metadata is not synthesized"},
       "traceSegments": 670,
       "retainedStrands": 113,
       "embeddedArrangementArcs": 113,
@@ -132,23 +65,10 @@
       "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
       "deterministic": "3/3",
-      "stageHashes": {
-        "tracing": "0539b306563dbe25",
-        "strands": "618d7ed18d1f3daa",
-        "embeddedNetwork": "33d00772feecc2f7",
-        "arrangement": "1ee6b9f9fd044d71",
-        "completion": "b4efe5193b9e5c27"
-      },
+      "stageHashes": {"tracing": "0539b306563dbe25", "strands": "618d7ed18d1f3daa", "embeddedNetwork": "33d00772feecc2f7", "arrangement": "1ee6b9f9fd044d71", "completion": "b4efe5193b9e5c27"},
       "activeContract": "complete authoritative phase-front coverage/composition across every source sheet; partial NotApplicable after prior produced authority is not whole-surface authority"
     },
-    "spherePrescribed": {
-      "currentArtifactObserved": false,
-      "deferredUntilAfterTorusProducerCoverage": true,
-      "priorTraceSegments": 766,
-      "priorArrangementCells": 30,
-      "priorCompletedQuads": 0,
-      "priorCompletionFailure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68"
-    }
+    "spherePrescribed": {"currentArtifactObserved": false, "deferredUntilAfterTorusProducerCoverage": true, "priorTraceSegments": 766, "priorArrangementCells": 30, "priorCompletedQuads": 0, "priorCompletionFailure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68"}
   },
   "latestCodeBuild": {
     "implementationCommit": "856554ce648e5df09ac50f5c94e3e8f098181524",
@@ -169,12 +89,7 @@
     "logArtifactSha256": "b05c1ef0bf7c5a52ff5dc8158d02c00d11d9cb7637c0a93b0c385a202ad46c50",
     "runtimeExecutionDuringBuild": false,
     "artifactRuntimeVerified": false,
-    "finalBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "6ebe8f3324be580fc4838b97e5fb449572709236",
-      "src/geometry/SurfaceCellTracing.cpp": "6b32b48141c16e2d51f1932462566083a7bc3355",
-      "src/pipeline/RemeshPipeline.cpp": "b42681b61e2564fa55a2b67e7c7ae4890aa23d81",
-      "tests/SurfaceCellsPhase10Tests.cpp": "c038567898f0da7efd6519392c37cbace02b8c1c"
-    }
+    "finalBlobs": {"include/directional/geometry/SurfaceCellTracing.h": "6ebe8f3324be580fc4838b97e5fb449572709236", "src/geometry/SurfaceCellTracing.cpp": "6b32b48141c16e2d51f1932462566083a7bc3355", "src/pipeline/RemeshPipeline.cpp": "b42681b61e2564fa55a2b67e7c7ae4890aa23d81", "tests/SurfaceCellsPhase10Tests.cpp": "c038567898f0da7efd6519392c37cbace02b8c1c"}
   },
   "gateDecision": {
     "g3ProductionRuntimeClosureSatisfied": true,
