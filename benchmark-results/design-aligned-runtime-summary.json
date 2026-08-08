@@ -1,12 +1,12 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v19",
-  "updatedUtc": "2026-08-08T06:42:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v20",
+  "updatedUtc": "2026-08-08T08:12:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation", "G3 periodic closure/holonomy"],
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "curved bounded disk producer runtime-live; non-hard authoritative source-sheet boundary validation is first-blocking",
-    "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Plan.md",
-    "noProgressCodeBuildCountSinceLastMaterialProgress": 0,
+    "gateState": "curved bounded disk producer runtime-live; source-sheet boundary authority correction compile-valid and awaiting artifact-only validation",
+    "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Artifact_Only_Test_Benchmark_Plan.md",
+    "noProgressCodeBuildCountSinceLastMaterialProgress": 1,
     "reviewRequired": false
   },
   "testedAuthority": {
@@ -30,19 +30,19 @@
     "localEvidenceArchiveSha256": "7e51df90e935f6e393808c1d47e1ad5570fa8125cbf3fb9f736ba90a17d13efd"
   },
   "directAcceptance": {
-    "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 352, "arrangementCells": 65, "simplifiedCells": 65, "completedQuads": 64, "outputVertices": 81, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "730caeae49ec872c", "deterministic": "3/3", "internalWallSeconds": [0.417679, 0.643571, 0.481130]},
-    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 256, "arrangementCells": 65, "simplifiedCells": 65, "completedQuads": 64, "outputVertices": 81, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3", "internalWallSeconds": [0.632654, 0.675839, 0.697466]},
-    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 1104, "arrangementCells": 202, "simplifiedCells": 202, "completedQuads": 200, "outputVertices": 242, "connectedComponents": 2, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "89b052762f52a5af", "deterministic": "3/3", "internalWallSeconds": [4.824734, 3.437435, 3.486830]},
-    "cylinder": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "periodicHolonomyRelationCount": 1, "periodicHolonomyQuarterTurnRotation": 0, "periodicHolonomyTranslation": [32, 0], "periodicHolonomyRouteEdgeCount": 32, "periodicCutEdgeCount": 4, "traceSegments": 1728, "arrangementCells": 290, "simplifiedCells": 290, "completedQuads": 288, "outputVertices": 320, "validationFailures": 0, "trueExteriorBoundaryLoops": 2, "trueExteriorBoundaryLoopSizes": [32, 32], "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "32135be51d7a0a26", "deterministic": "3/3", "internalWallSeconds": [3.744148, 3.621149, 3.760931]}
+    "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 352, "arrangementCells": 65, "simplifiedCells": 65, "completedQuads": 64, "outputVertices": 81, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
+    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 256, "arrangementCells": 65, "simplifiedCells": 65, "completedQuads": 64, "outputVertices": 81, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
+    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "traceSegments": 1104, "arrangementCells": 202, "simplifiedCells": 202, "completedQuads": 200, "outputVertices": 242, "connectedComponents": 2, "validationFailures": 0, "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
+    "cylinder": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "periodicHolonomyRelationCount": 1, "periodicHolonomyQuarterTurnRotation": 0, "periodicHolonomyTranslation": [32, 0], "periodicHolonomyRouteEdgeCount": 32, "periodicCutEdgeCount": 4, "traceSegments": 1728, "arrangementCells": 290, "simplifiedCells": 290, "completedQuads": 288, "outputVertices": 320, "validationFailures": 0, "trueExteriorBoundaryLoops": 2, "trueExteriorBoundaryLoopSizes": [32, 32], "fallbackUsed": false, "sourceGridRecoveryUsed": false, "outputHash": "32135be51d7a0a26", "deterministic": "3/3"}
   },
   "defaultSuites": {
     "boundedProducerTotal": "112/113",
-    "producerSoleFailure": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent (existing sub-millisecond performance threshold; observed validation 0.000152236 s versus threshold 0.00009186355 s)",
+    "producerSoleFailure": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent (existing sub-millisecond performance threshold)",
     "completionSimplification": "154/164",
     "validation": "60/60",
     "compiledApi": "8/8",
     "boundedAggregate": "334/345",
-    "classification": "five net new curved-disk tests pass; prior semantic failure set unchanged"
+    "classification": "runtime baseline from artifact 9016834575; three new source-sheet-boundary tests are compile-only pending artifact validation"
   },
   "g4Observation": {
     "torus": {
@@ -65,8 +65,6 @@
       "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
       "deterministic": "3/3",
-      "internalWallSeconds": [0.013927, 0.009857, 0.009618],
-      "peakWorkingSetBytes": [8654848, 8835072, 8699904],
       "stageHashes": {"feature": "f15e4f3be07d3c7f", "metric": "34cb872327c9b0c6", "relief": "8ccb10d25b69edb9", "sourceLabels": "e48c84177faf6e2c", "tracing": "4e27fcfa18a602b1"},
       "diagnosticOnlyValues": ["face 52", "relation count 2"],
       "activeRuntimeContract": "curved-disk local boundary validation must recognize non-hard internal edges separating different authoritative source component/sheet labels"
@@ -74,46 +72,50 @@
     "spherePrescribed": {"currentArtifactObserved": false, "deferredUntilAfterTorusSheetCoverageMaterialization": true, "priorTraceSegments": 766, "priorArrangementCells": 30, "priorCompletedQuads": 0}
   },
   "latestCodeBuild": {
-    "implementationCommit": "90046be649a0fd051e6c44eceec07198dc542c29",
-    "cleanupCommit": "508211936b790dfb40cdbece7900bb0522368b76",
-    "enteringRuntimeSourceCommit": "a647215b4993338b054f04d4c8e54e7ef5370001",
-    "workflowEventCommit": "add5709d0a9bd8a22d10e47a6c4b72d7af51ce48",
-    "workflowRunId": 31240168780,
-    "workflowJobId": 93059691196,
-    "artifactId": 9016834575,
-    "artifactName": "g4-curved-disk-code-build",
-    "artifactSha256": "6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67",
-    "internalChecksumManifestSha256": "e0ec3737e23fbb5c21b6c0be6acb3aa8b3f538b954c566867b6c309a6f5f4736",
+    "implementationCommit": "b425898fa7367406fa0c07e8f4441a37efc01315",
+    "cleanupCommit": "3fcfd2cf2996919eed5c951a9148d83deb5aa6f8",
+    "enteringRuntimeArtifactId": 9016834575,
+    "workflowEventCommit": "ccb9aa0db15a575f31b802a354ccf8b0aabe111c",
+    "workflowRunId": 31247546780,
+    "workflowJobId": 93078496378,
+    "artifactId": 9019024467,
+    "artifactName": "g4-source-sheet-boundary-code-build",
+    "artifactSha256": "a26f8acc7301d50cb232e192aa7ffecfda5e84c403d4224a8f1f99f315bd990f",
+    "internalChecksumManifestSha256": "7bffb8dbf76c1532af0a2c1701db4dcb25df581e233cf18312e62d2c1bca7975",
     "internalChecksums": "48/48",
     "packageFiles": 49,
     "fixtureFiles": 27,
     "compileActions": "111/111",
     "approvedTargets": "7/7",
-    "logArtifactId": 9016834752,
-    "logArtifactSha256": "6e0ed0906bc9f935ac80b6d8fd40f0654f203020a7b7c6cde6d9a4e49b067db1",
-    "payloadGitBlob": "2436d0fe3c1f8bad2e8614f118af70ecda2ac12d",
-    "decodedPatchSha256": "ae0b6efe3db697b22c36e2a348cb7be6a058f9e29bde5ac36231db8439f3eb91",
+    "logArtifactId": 9019024673,
+    "logArtifactSha256": "243943268324a24e5fd04a42fed706b274a8525f5c2f157bf246b5028e42f03c",
+    "decodedPatchSha256": "c96b3d73f16f4b9391505380bc3f2cf9ec95ff5783fe843b556e95a534a6e75b",
     "runtimeExecutionDuringBuild": false,
-    "artifactRuntimeVerified": true,
+    "artifactRuntimeVerified": false,
     "finalBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "998d8bc46faf6d590cb1674c4f5b2e290f94c48e",
-      "src/geometry/SurfaceCellTracing.cpp": "3363e20c33a6850c192249877e7cb4488fc36597",
+      "include/directional/geometry/SurfaceCellTracing.h": "ddb8e211f073d15fcfcc6782f964f88c4dedfc5e",
+      "src/geometry/SurfaceCellTracing.cpp": "14cf7f3a3301e9e3f10ec48a480d3f6e5efee7ed",
       "src/pipeline/RemeshPipeline.cpp": "b42681b61e2564fa55a2b67e7c7ae4890aa23d81",
-      "tests/SurfaceCellsPhase10Tests.cpp": "fe7ce43466cc3bc852b36c0ea8b8de6aac0c5b64"
+      "tests/SurfaceCellsPhase10Tests.cpp": "31322acea5227a8e3692887fad1ec4a9e6d8c101"
     }
   },
-  "failureDiagnosis": {
-    "classification": "production implementation incompleteness",
-    "producerCheck": "an internal local disk boundary currently requires hardFeatureEdges membership",
-    "classifierAuthority": "source sheets may also split across non-hard edges because normal compatibility or close/opposing-sheet conflict blocks traversal",
-    "existingHelper": "source_faces_compatible(options, a, b)",
-    "requiredCorrection": "accept non-hard internal local boundaries only when opposite source face belongs to a different authoritative component/sheet; continue rejecting same-component/same-sheet hidden cuts"
+  "candidateContract": {
+    "classification": "source-sheet boundary authority correction",
+    "validLocalBoundaries": ["genuine source boundary", "hard-feature internal boundary", "non-hard internal boundary separating different authoritative source component/sheet labels"],
+    "invalidLocalBoundary": "non-hard internal edge whose two incident faces share the same authoritative component/sheet",
+    "newCompileOnlySemantics": ["CurvedBoundedDiskAcceptsNonHardAuthoritativeSourceSheetBoundary", "CurvedBoundedDiskRejectsHiddenSameSheetBoundaryCut", "CurvedBoundedDiskCrossSheetBoundaryIsInvariantToFaceRowEnumeration"],
+    "runtimeStatus": "compile-valid only; exact artifact 9019024467 awaiting artifact-only validation"
+  },
+  "transportEvidence": {
+    "failedEncodedAttempts": [31247308268, 31247402955],
+    "classification": "infrastructure transfer failures before source modification or compilation",
+    "successfulStrategy": "six plain raw unified-patch text chunks verified by Git blob and SHA-256 before concatenation"
   },
   "gateDecision": {
     "g3FormallyClosed": true,
     "g4CurvedDiskSliceMaterialProgress": true,
     "g4Passed": false,
-    "activeG4Contract": "curved-disk non-hard source-sheet boundary authority",
-    "nextTurn": "Code + Build — G4 curved-disk source-sheet boundary authority"
+    "activeG4Contract": "artifact-only validate curved-disk source-sheet boundary authority",
+    "nextTurn": "Test + Benchmark — exact artifact 9019024467 source-sheet-boundary validation"
   }
 }
