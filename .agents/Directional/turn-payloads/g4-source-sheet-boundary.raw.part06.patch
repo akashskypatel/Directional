@@ -1,0 +1,47 @@
++              fixture.options, fixture.faces.rows(), found->second[0],
++              found->second, sharedEdge));
++}
++
++TEST(SurfaceCellsPhase10,
++     CurvedBoundedDiskCrossSheetBoundaryIsInvariantToFaceRowEnumeration) {
++  const CurvedDiskFixture forward =
++      make_curved_disk_with_adjacent_source_sheet(false, true);
++  const CurvedDiskFixture reversed =
++      make_curved_disk_with_adjacent_source_sheet(true, true);
++  const auto forwardNetwork = directional::geometry::build_surface_cell_network(
++      forward.vertices, forward.faces, forward.faceAxisX, forward.faceAxisY,
++      forward.targetSize, forward.options);
++  const auto reversedNetwork = directional::geometry::build_surface_cell_network(
++      reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
++      reversed.targetSize, reversed.options);
++
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            forwardNetwork.phaseFront.disposition)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             forwardNetwork.phaseFront.failure.reason);
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            reversedNetwork.phaseFront.disposition)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             reversedNetwork.phaseFront.failure.reason);
++  EXPECT_EQ(forwardNetwork.phaseFront.cells.size(),
++            reversedNetwork.phaseFront.cells.size());
++  EXPECT_EQ(phase_front_geometry_hash(forward.vertices, forward.faces,
++                                      forwardNetwork),
++            phase_front_geometry_hash(reversed.vertices, reversed.faces,
++                                      reversedNetwork));
++}
++
+ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
+   const CurvedDiskFixture fixture = make_curved_disk_fixture();
+   const auto network = directional::geometry::build_surface_cell_network(
+@@ -2057,6 +2209,10 @@
+                 UnsupportedSourceSheetTopology,
+             phaseFront.failure.reason)
+       << "curved topological disks now have a structural producer";
++  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskTopology,
++            phaseFront.failure.reason)
++      << "non-hard cross-sheet boundaries are authoritative source-sheet rails";
+   if (phaseFront.disposition ==
+       directional::geometry::SurfaceCellProducerDisposition::Rejected) {
+     EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::None,
