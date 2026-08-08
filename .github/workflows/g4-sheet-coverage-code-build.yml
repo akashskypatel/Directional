@@ -26,12 +26,14 @@ jobs:
           set -euo pipefail
           mkdir -p "$LOG_DIR"
           {
-            echo "turn=G4 torus complete phase-front sheet coverage Code+Build"
+            echo "turn=G4 torus complete phase-front sheet coverage Code+Build compile-fix iteration"
             echo "event_sha=$GITHUB_SHA"
             echo "event_ref=$GITHUB_REF"
+            echo "implementation_commit=856554ce648e5df09ac50f5c94e3e8f098181524"
+            echo "prior_compile_failure=GoogleTest EXPECT_GT macro parsed std::pair commas as arguments"
             echo "runtimeExecution=false"
             echo "reviewPolicy=never"
-            echo "allowed=apply bounded source/test patch, configure, compile/link seven approved targets, package/checksum"
+            echo "allowed=surgical test compile fix, configure, compile/link seven approved targets, package/checksum"
             echo "prohibited=tests, benchmarks, generated Directional binaries, ctest/discovery, CLI, GUI, help/list/custom-input execution"
           } | tee "$LOG_DIR/activity.log"
 
@@ -39,72 +41,64 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 16
+          fetch-depth: 20
           submodules: false
 
-      - name: Apply sheet-coverage patch and commit source
+      - name: Apply surgical test compile fix and commit source
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           echo "checkout_sha=$(git rev-parse HEAD)"
-          echo "initial_status_begin"
           git status --short
-          echo "initial_status_end"
 
-          payload=.agents/Directional/turn-payloads/g4-sheet-coverage.patch
+          payload=.agents/Directional/turn-payloads/g4-sheet-coverage-compile-fix.patch
           test -f "$payload"
           PAYLOAD_BLOB=$(git hash-object "$payload")
           PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
           HEADER_BLOB=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)
           SOURCE_BLOB=$(git hash-object src/geometry/SurfaceCellTracing.cpp)
           TEST_BLOB=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)
-          echo "payload_blob=$PAYLOAD_BLOB"
-          echo "payload_sha256=$PAYLOAD_SHA256"
+          echo "compile_fix_payload_blob=$PAYLOAD_BLOB"
+          echo "compile_fix_payload_sha256=$PAYLOAD_SHA256"
           echo "input_tracing_header_blob=$HEADER_BLOB"
           echo "input_tracing_source_blob=$SOURCE_BLOB"
           echo "input_phase10_tests_blob=$TEST_BLOB"
-          test "$PAYLOAD_BLOB" = "5980a71a0d38068fb2bb2dc86d16b4448e95b561"
-          test "$HEADER_BLOB" = "00d849c21a5af9b871b4ad56bf31c4c74bd705b5"
-          test "$SOURCE_BLOB" = "cf1d17d5966b3d6904c823046c7dbded017e35ad"
-          test "$TEST_BLOB" = "99976a4481bfa9daaf197e15a3b53b70336e8218"
+          test "$PAYLOAD_BLOB" = "fa0e9bc4ad751cfab5448bfae65c225137fd4a19"
+          test "$HEADER_BLOB" = "6ebe8f3324be580fc4838b97e5fb449572709236"
+          test "$SOURCE_BLOB" = "6b32b48141c16e2d51f1932462566083a7bc3355"
+          test "$TEST_BLOB" = "5102d8749580d8a866b57674cb05b8f46993644f"
           if grep -q '^+++ b/.github/workflows/' "$payload"; then
             echo "payload attempts to modify workflow files" >&2
             exit 1
           fi
-          echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
+          echo "COMPILE_FIX_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
 
           git apply --check "$payload"
           git apply "$payload"
           mapfile -t changed < <(git diff --name-only | sort)
-          test "${#changed[@]}" -eq 3
-          test "${changed[0]}" = "include/directional/geometry/SurfaceCellTracing.h"
-          test "${changed[1]}" = "src/geometry/SurfaceCellTracing.cpp"
-          test "${changed[2]}" = "tests/SurfaceCellsPhase10Tests.cpp"
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "tests/SurfaceCellsPhase10Tests.cpp"
 
           git config user.name 'directional-agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add include/directional/geometry/SurfaceCellTracing.h \
-                  src/geometry/SurfaceCellTracing.cpp \
-                  tests/SurfaceCellsPhase10Tests.cpp
-          git commit -m 'fix(surface-cells): fail closed on incomplete sheet coverage'
-          SOURCE_COMMIT=$(git rev-parse HEAD)
-          echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
-          echo "source_commit=$SOURCE_COMMIT"
-          echo "tracing_header_blob=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)"
-          echo "tracing_source_blob=$(git hash-object src/geometry/SurfaceCellTracing.cpp)"
-          echo "phase10_tests_blob=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
+          git add tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m 'fix(tests): parenthesize sheet map keys'
+          FINAL_SOURCE_COMMIT=$(git rev-parse HEAD)
+          echo "FINAL_SOURCE_COMMIT=$FINAL_SOURCE_COMMIT" >> "$GITHUB_ENV"
+          echo "final_source_commit=$FINAL_SOURCE_COMMIT"
+          echo "final_tracing_header_blob=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)"
+          echo "final_tracing_source_blob=$(git hash-object src/geometry/SurfaceCellTracing.cpp)"
+          echo "final_phase10_tests_blob=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)"
 
           git rm "$payload"
-          git commit -m 'chore(agent): remove G4 sheet-coverage payload'
+          git commit -m 'chore(agent): remove G4 sheet-coverage compile-fix payload'
           CLEANUP_COMMIT=$(git rev-parse HEAD)
           echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
           echo "cleanup_commit=$CLEANUP_COMMIT"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
-          echo "post_source_push_status_begin"
           git status --short
-          echo "post_source_push_status_end"
 
       - name: Install compile prerequisites
         shell: bash
@@ -128,7 +122,8 @@ jobs:
           set -euo pipefail
           exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
           {
-            echo "source_commit=$SOURCE_COMMIT"
+            echo "implementation_commit=856554ce648e5df09ac50f5c94e3e8f098181524"
+            echo "final_source_commit=$FINAL_SOURCE_COMMIT"
             echo "cleanup_commit=$CLEANUP_COMMIT"
             echo "compile_head=$(git rev-parse HEAD)"
             cmake --version
@@ -194,11 +189,12 @@ jobs:
              "$LOG_DIR/build.log" "$LOG_DIR/toolchain.txt" "$root/logs/"
           cp agent-build/compile_commands.json "$root/source/"
 
-          git show "$SOURCE_COMMIT" --format=fuller --stat --patch -- \
+          git show 856554ce648e5df09ac50f5c94e3e8f098181524 --format=fuller --stat --patch -- \
             include/directional/geometry/SurfaceCellTracing.h \
             src/geometry/SurfaceCellTracing.cpp \
-            tests/SurfaceCellsPhase10Tests.cpp > \
-            "$root/source/g4-sheet-coverage.patch"
+            tests/SurfaceCellsPhase10Tests.cpp > "$root/source/g4-sheet-coverage.patch"
+          git show "$FINAL_SOURCE_COMMIT" --format=fuller --stat --patch -- \
+            tests/SurfaceCellsPhase10Tests.cpp >> "$root/source/g4-sheet-coverage.patch"
           tar --exclude=.git --exclude=external --exclude=agent-build \
               --exclude=g4-sheet-coverage-artifact \
               -cJf "$root/source/directional-g4-sheet-coverage-source-no-deps.tar.xz" .
@@ -206,10 +202,13 @@ jobs:
           cat > "$root/metadata/source-authority.json" <<EOF
           {
             "eventCommit": "$GITHUB_SHA",
-            "sourceCommit": "$SOURCE_COMMIT",
+            "implementationCommit": "856554ce648e5df09ac50f5c94e3e8f098181524",
+            "finalCompileSourceCommit": "$FINAL_SOURCE_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
-            "patchBlob": "5980a71a0d38068fb2bb2dc86d16b4448e95b561",
-            "patchSha256": "$PAYLOAD_SHA256",
+            "implementationPatchBlob": "5980a71a0d38068fb2bb2dc86d16b4448e95b561",
+            "implementationPatchSha256": "00aadd3db37cb6db4e61309a56ae8cd7d68559e65938056994f908bb600df384",
+            "compileFixPatchBlob": "fa0e9bc4ad751cfab5448bfae65c225137fd4a19",
+            "compileFixPatchSha256": "$COMPILE_FIX_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
           }
@@ -219,10 +218,10 @@ jobs:
           EOF
           cat > "$root/metadata/command-boundary.txt" <<'EOF'
           G4 Code + Build only.
-          Executed: bounded source/test patch application, configure, compile/link seven approved targets, package/checksum.
+          Executed: surgical test compile fix, configure, compile/link seven approved targets, package/checksum.
           Not executed: generated Directional binaries, tests, benchmarks, ctest/discovery, CLI, GUI, help/list/custom-input commands.
           EOF
-          git ls-tree -r "$SOURCE_COMMIT" -- \
+          git ls-tree -r "$FINAL_SOURCE_COMMIT" -- \
             include/directional/geometry/SurfaceCellTracing.h \
             src/geometry/SurfaceCellTracing.cpp \
             src/pipeline/RemeshPipeline.cpp \
