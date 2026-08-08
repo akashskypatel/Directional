@@ -1,6 +1,6 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-07 UTC
+Last updated: 2026-08-08 UTC
 
 ## Active direction
 
@@ -8,91 +8,67 @@ Last updated: 2026-08-07 UTC
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - G2 cross-chart / close-sheet isolation: **passed**.
-- Active gate: **G3 periodic closure / holonomy — production runtime closure contract satisfied; formal closure pending one test-witness correction**.
-- Completed turn: **G3 Periodic Chart Endpoint Canonicalization artifact-only Test + Benchmark**.
-- Next turn: `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md`.
+- G3 periodic closure / holonomy: **production runtime closure contract satisfied; formal closure pending artifact validation of corrected field-correspondence test witness**.
+- Completed turn: **G3 Field-Correspondence Test Witness Code + Build**.
+- Next turn: `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Exact tested authority
+## Current executed G3 runtime authority
 
-Artifact-only validation used exact artifact `9010838200` (`g3-periodic-chart-endpoint-canonicalization-code-build`) from source/test commit `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
+Artifact `9010838200`, production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, already satisfies the production G3 runtime closure contract:
 
-- artifact SHA-256 `b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db`;
-- patch SHA-256 `f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8`;
-- build run/job `31221873296 / 93007996817`;
-- log artifact `9010837410`, SHA-256 `2b994f158e8a28ecdc52fd3c532b48edf936aeaaf8284053a728b56a58979973`;
+- exact cylinder `Produced / CompletedSurfaceCells`;
+- periodic holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
+- 288 pure output quads / 320 output vertices;
+- zero validation failures;
+- field P95 approximately `8.54e-7°`;
+- exactly two genuine annulus exterior loops and no artificial-cut exterior seam;
+- deterministic output hash `32135be51d7a0a26` across 3/3 processes;
+- no fallback or source-grid recovery;
+- plane, seam and close sheets remain direct strict-valid deterministic passed gates.
+
+The preceding artifact-only focused result was **16/17**. The sole failure, `PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`, was classified as an incorrect expectation: target 0.25 subdivides each 0.5 source inter-ring connection, so requiring one V front edge with two exact source-ring-vertex endpoints is not a valid witness.
+
+## Corrected test-only Code + Build
+
+Evidence commit:
+
+- `117620ec2da2083ce11b205835e58fa404f163ef`.
+
+Only `tests/SurfaceCellsPhase10Tests.cpp` changed:
+
+- test blob `80a0b58339102279ab863d9112e243a557cd270d`;
+- test-only patch SHA-256 `f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb`.
+
+Production remains byte-identical:
+
+- `SurfaceCellTracing.cpp` `63e5ee427f675077f710db51ffb56d91838d3519`;
+- `SurfaceCellTracing.h` `c1b816a584d67a3f74c2d7389962bd92d52244c9`.
+
+The corrected witness iterates nonzero source-attached `family == 1` boundary-path segments, reconstructs their source geometry from authoritative face+barycentric provenance, validates barycentric source-simplex state, checks each segment against the local V field family, and requires nonempty observations. It is independent of how the target size subdivides a source inter-ring connection.
+
+## Compile-only artifact authority
+
+- workflow run/job `31228899303 / 93028533210`;
+- artifact `9013161456` (`g3-field-correspondence-test-witness-code-build`);
+- artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
+- log artifact `9013161584`, SHA-256 `baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f`;
 - recursive checksums **44/44**;
+- compile/link **111/111**, seven approved targets;
 - five executables, two project libraries, 27 fixture/input files;
-- build metadata `Release / Ninja / PRE_TEST / runtimeExecution=false`;
-- no rebuild, relink, source/test/fixture/manifest/validator/benchmark/build edit during Test + Benchmark.
-
-## Focused producer result
-
-Raw focused/retained result: **16/17**.
-
-Passing evidence includes both endpoint-canonicalization contracts, typed ambiguous ring-correspondence rejection, all six previously regressed nominal G3 periodic contracts, and all seven retained G1/G2 contracts.
-
-The sole failure is `SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`, and it is classified **incorrect expectation / invalid witness precondition**. Production reaches `Produced`; only `exactInterRingEdges > 0` fails.
-
-Why the witness is invalid:
-
-- source inter-ring spacing is `0.5`;
-- the test target size is `0.25`;
-- production therefore uses two V-family phase-front steps per source inter-ring edge;
-- no one V edge can have both endpoints at distinct exact source-ring vertices;
-- the fixture remains valid; only the un-subdivided-edge witness is impossible.
-
-The correction must observe nonzero source-attached V-family boundary-path segments reconstructed from face+barycentric provenance and assert alignment with the local authoritative V family, with a nonempty observation requirement. Do not weaken the intended field-authority assertion.
-
-## Direct acceptance
-
-| Fixture | Result | Producer | Traces | Quads | Validation | Output |
-|---|---|---:|---:|---:|---:|---|
-| plane | **pass** | `Produced` | 352 | 64 | 0 | `CompletedSurfaceCells`, hash `730caeae49ec872c` |
-| seam | **pass** | `Produced` | 256 | 64 | 0 | `CompletedSurfaceCells`, hash `5bdf34d7802e9fb0` |
-| close sheets | **pass** | `Produced` | 1,104 | 200 | 0 | 242 V / two isolated components, hash `89b052762f52a5af` |
-| cylinder | **pass** | **`Produced`** | **1,728** | **288** | **0** | **320 V / 288 pure Q, `CompletedSurfaceCells`, hash `32135be51d7a0a26`** |
-| bunny | later gate | `NotApplicable` | 80,862 | 0 | — | `NotProductionReady:completion` |
-| vase | later gate | bounded timeout | — | — | — | no completed record in 45 s |
-
-Plane, seam, close sheets and cylinder are deterministic **3/3**. No active case uses fallback or source-grid recovery.
-
-### Cylinder production G3 closure evidence
-
-- periodic holonomy available, `r=0`, `t=(32,0)`, route 32, cut 4;
-- 290 arrangement / 290 simplified cells;
-- 288 completed/output quads and 320 provenance/output vertices;
-- zero non-quads;
-- validation failures **0**;
-- field P95 `8.537736463e-07°`;
-- surface approximation P95 `2.832791574e-16`;
-- zero nonmanifold edges, T-junctions, duplicate faces, self-intersections and degenerate output faces;
-- topology/boundary preserved;
-- exactly two 32-edge degree-2 boundary loops, one at z=-1 and one at z=+1; the artificial periodic cut is not exterior;
-- no fallback/recovery;
-- output hash `32135be51d7a0a26` stable 3/3.
-
-The benchmark does not serialize raw normal/warpage P95 values. Authoritative `surfaceCellValidationFailures=0` proves the existing normal <=15° and warpage <=30° gates passed because those fields are included in production validation failure counting. Independent serialized-geometry cross-checks report zero warpage and ~`8.54e-7°` nearest-source normal error.
-
-This is material progress from artifact `9008118764`, which rejected at `InvalidPeriodicChart` cell 29 with zero traces/output. The no-progress counter resets to zero; mandatory Review is **not** triggered.
-
-## Suite evidence
-
-- focused/retained: **16/17** raw, sole failure incorrect expectation;
-- bounded producer excluding only long Bunny/Vase parameter cases: **99/101**;
-  - failures: the incorrect field-witness expectation and known scheduler/environment-sensitive `StrictValidatorOverheadStaysBelowFivePercent` performance gate;
-- completion/simplification: **154/164**, same historical ten failures;
-- validation: **60/60**;
-- compiled API: **8/8**;
-- bounded aggregate: **321/333**.
-
-Direct gate status outranks aggregate totals.
+- Release / Ninja;
+- `runtimeExecution=false` — no generated Directional binary executed.
 
 ## Required next turn
 
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9013161456` with no rebuild or source/test/fixture/validator/build edits.
 
-Expected production-source change: **none**. Correct only the invalid test witness so field-authoritative correspondence is checked through subdivision-invariant source-attached V-family geometry. Compile/package the seven approved targets with `PRE_TEST`; execute no generated project binary.
+Formal G3 closure requires:
 
-The following artifact-only turn must rerun the 17 focused/retained contracts plus plane/seam/close sheets/exact cylinder. If the corrected test passes and the cylinder retains the direct strict-valid periodic output above, formally mark G3 passed and advance to G4.
+1. **17/17** focused/retained contracts, including the corrected subdivision-invariant field witness;
+2. exact cylinder retains direct deterministic strict-valid periodic `CompletedSurfaceCells` with zero validation failures and existing quality limits;
+3. plane, seam and close sheets remain green;
+4. no fallback/recovery.
+
+On that evidence, mark G3 passed and activate G4 topology-distinct completion and singularities.
