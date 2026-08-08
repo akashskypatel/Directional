@@ -2,25 +2,19 @@
 
 ## Current blocker
 
-G0, G1 and G2 are closed. The production G3 periodic cylinder contract is now runtime-satisfied on artifact `9010838200`. Formal G3 closure is blocked only by one incorrect unit-test witness requirement, not by production behavior.
+G0, G1 and G2 are closed. Exact cylinder production runtime now satisfies the G3 periodic closure contract. Formal G3 closure is blocked only by artifact validation of the corrected subdivision-independent field-correspondence test witness.
 
-Current runtime authority: source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, artifact `9010838200`.
+Current runtime authority: artifact `9010838200`, source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
 
-Exact cylinder:
-
-- `Produced` / direct `CompletedSurfaceCells`;
-- holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
-- 1,728 traces;
-- 290 arrangement / 290 simplified cells;
-- 288 completed/output pure quads;
-- 320 provenance/output vertices;
-- validation failures 0;
-- field P95 `8.537736463e-07°`;
-- output hash `32135be51d7a0a26`, deterministic 3/3;
-- exactly two true 32-edge annulus boundary loops;
-- no fallback/recovery.
-
-This restores periodic `Produced` authority from the preceding `InvalidPeriodicChart` cell-29 regression and improves the earlier 37.967° field-P95 failure to effectively zero.
+- cylinder `Produced / CompletedSurfaceCells`;
+- valid field-authoritative ring correspondence and periodic holonomy/cut/quotient;
+- 288 pure quads / 320 vertices;
+- zero validation failures;
+- field P95 approximately `8.54e-7°`;
+- two genuine exterior annulus loops only;
+- deterministic 3/3;
+- no fallback/recovery;
+- plane/seam/close sheets remain direct strict-valid passes.
 
 ## Proven producer foundation
 
@@ -28,88 +22,63 @@ Retain without redesign:
 
 - first-class `NotApplicable / Produced / Rejected` authority;
 - no generic substitution after `Rejected`;
-- local phase/integer lattice state;
-- reciprocal source-edge and ordered source-vertex transport;
-- complete source-route provenance;
+- reciprocal source-edge/source-vertex transport and source-route provenance;
 - component/local-sheet isolation;
-- topology-derived singularity-free annulus applicability;
-- deterministic intrinsic cut between true boundaries;
+- topology-derived annulus applicability and intrinsic cut;
 - periodic holonomy `(Z4 rotation, Z2 translation, ordered source route)`;
-- explicit artificial-cut ownership and exact quotient identity;
-- canonical source-strip breakpoints/per-strip target subdivisions;
-- field-authoritative adjacent-ring correspondence with typed ambiguity rejection;
-- canonical periodic-chart source-simplex endpoint representation;
+- exact artificial-cut ownership/quotient;
+- canonical source-strip breakpoints and per-strip subdivisions;
+- reciprocal field-authoritative adjacent-ring correspondence with typed ambiguity rejection;
+- canonical source-simplex chart endpoints;
 - direct one-cell-to-one-quad materialization;
 - strict source-authoritative validation.
 
-Plane, seam and close sheets remain mandatory direct regressions and are green.
+## Remaining G3 correction — test witness only
 
-## G3 endpoint canonicalization — runtime proven
+The earlier `PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence` expectation required one V front edge whose endpoints were two exact source-ring vertices. The fixture target is 0.25 while source inter-ring spacing is 0.5, so a correct phase front subdivides that connection and the precondition is structurally absent.
 
-Artifact `9010838200` proves:
+Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` corrects the test without changing production source.
 
-- tolerance-based chart ownership no longer emits tolerance-expanded source-geometry tails;
-- exact source-simplex endpoint canonicalization contract passes;
-- genuine overlap beyond a shared endpoint remains rejected by the unchanged strict predicate;
-- all six nominal G3 periodic contracts previously blocked by `InvalidPeriodicChart` are restored;
-- direct cylinder passes existing strict validation with zero failures.
+The replacement witness:
 
-Do not change `validate_closed_boundary_paths()` or `segments_intersect_beyond_shared_endpoint_2d()`.
+1. iterates source-attached `family == 1` boundary-path segments;
+2. verifies source-face and finite normalized barycentric provenance;
+3. reconstructs source-space endpoints from `(face, barycentric)`;
+4. skips only genuine zero-length segments;
+5. projects the segment and local V field family into the source tangent plane;
+6. requires V-family alignment and nonempty observations;
+7. is independent of target subdivision and incidental source identifiers/counts/order.
 
-## Formal closure blocker — test witness correction only
+Production blobs remain exactly those of runtime-proven G3 source.
 
-Raw focused result is **16/17**. The sole failure is `PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`, which reaches `Produced` and then asserts `exactInterRingEdges > 0`.
+## Compile authority
 
-That expectation is invalid for its own target subdivision:
+- evidence source/test `117620ec2da2083ce11b205835e58fa404f163ef`;
+- test-only patch SHA-256 `f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb`;
+- artifact `9013161456`, SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
+- run/job `31228899303 / 93028533210`;
+- log artifact `9013161584`, SHA-256 `baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f`;
+- 44/44 recursive checksums;
+- 111/111 compile/link;
+- five executables, two libraries, 27 fixtures;
+- `runtimeExecution=false`.
 
-- source ring spacing `0.5`;
-- target `0.25`;
-- two V-family front steps per source inter-ring edge;
-- no one front edge can have two distinct exact source-ring-vertex endpoints.
+## Required verification sequence
 
-The fixture still creates the intended axial-versus-diagonal correspondence scenario and must be retained. The witness must become subdivision-invariant.
+Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9013161456`.
 
-Required corrected test contract:
+1. verify artifact/source/patch/blob/checksum/build boundary;
+2. run corrected field witness first;
+3. run all endpoint/ambiguity/G3 periodic/G1-G2 retained contracts — **17/17 required**;
+4. revalidate plane/seam/close sheets;
+5. revalidate exact cylinder direct strict-valid periodic closure;
+6. if all pass, mark G3 closed and activate G4.
 
-1. inspect nonzero source-attached V-family phase-front boundary-path segments;
-2. require valid face+barycentric source provenance;
-3. reconstruct source-space start/end positions;
-4. reconstruct/project the local authoritative V cross-field axis in the same source face;
-5. assert absolute directional alignment within a justified numerical tolerance;
-6. require at least one qualifying segment;
-7. ignore only truly zero-length segments;
-8. retain the typed genuinely field-equivalent ambiguity test unchanged;
-9. do not depend on source IDs, DCEL IDs, gridV, output counts, discovery order, or exact segment cardinality.
-
-The known diagonal/sheared correspondence remains ~37.967° from the axial family and must fail this semantic contract.
-
-## Required next turn
-
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md` as Code + Build only.
-
-Expected production source change: none.
-
-- Correct the invalid test witness only.
-- Compile the same seven approved targets with Release static / Ninja / `PRE_TEST`.
-- Execute no generated project binary.
-- Package exact source/test/blob/patch/log/checksum authority.
-- Remove temporary workflow/trigger/payload after verification.
-
-The following artifact-only validation must rerun the 17 focused/retained contracts and exact plane/seam/close-sheet/cylinder direct cases. If the corrected test passes and cylinder retains the strict-valid runtime closure above, formally close G3 and activate G4.
-
-## Supporting evidence
-
-- focused/retained: 16/17 raw; sole failure incorrect expectation;
-- bounded producer: 99/101, with only the incorrect witness and scheduler-sensitive validator-overhead performance check;
-- completion/simplification: 154/164;
-- validation: 60/60;
-- compiled API: 8/8.
-
-The current turn is material progress, so the no-progress counter resets and mandatory Review is not triggered.
+No rebuild or source/test/fixture/validator/build edit is allowed in that Test + Benchmark turn.
 
 ## Deferred work
 
-Do not broaden the formal G3 closeout into torus/general genus, G4 singularities/topology-distinct completion, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production/performance, scheduler timing, historical downstream completion/simplification repair, validator changes or unrelated diagnostics/optimization.
+Do not broaden this final G3 closeout into torus/general genus, G4 singularities/topology-distinct completion, adaptive 2:1 transitions, hard-feature expansion, bunny/vase production/performance, scheduler timing, historical completion/simplification repair, validator changes or unrelated optimization.
 
 ## Acceptance discipline
 
