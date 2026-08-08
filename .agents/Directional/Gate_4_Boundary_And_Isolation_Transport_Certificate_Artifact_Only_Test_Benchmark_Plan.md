@@ -1,7 +1,9 @@
 # Gate 4 Boundary and Isolation-Transport Certificate — Artifact-Only Test + Benchmark Plan
 
-Status: **authoritative next turn**
+Status: **completed — blocked with material progress**
 Turn type: **Test + Benchmark only**
+Outcome report: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Report.md`
+Successor: `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Plan.md`
 Active design gate: **G4 topology-distinct completion and singularities**
 Review policy: `never`
 
