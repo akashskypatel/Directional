@@ -4,9 +4,9 @@
 
 G0-G3 are closed. **G4 topology-distinct completion and singularities is active.**
 
-Current tested authority: artifact `9022061741`, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, topology-region/isolation-seam semantics **9/9**. Exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations and then fails at `InvalidAuthoritativePhaseFrontCell`.
+Current tested authority: artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`. Static authority passes, but topology-region/isolation focused semantics fall to **8/9** and exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations before failing at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
-G3 closure remains complete. The current candidate is **16/17** only because embedded-relief terminal behavior regressed. Plane/seam/close sheets/cylinder remain direct strict-valid deterministic; close-sheets raw component order differs but semantic geometry/topology/source separation is unchanged.
+G3 closure remains historical baseline authority, but the current candidate regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. No current direct case produces output/hash or uses fallback/recovery.
 
 ## Proven producer foundation
 
@@ -27,28 +27,29 @@ Retain without redesign:
 
 ## G4-A — closed genus-one / transition-quotient extraction
 
-Exact torus runtime on artifact `9022061741`:
+Exact torus runtime on artifact `9024549134`:
 
 - source topology: connected, closed, genus one, Euler characteristic 0;
 - producer phase-front `Produced`;
 - four annular topology regions, eight internal isolation seams, one region spanning two local isolation sheets, four periodic relations;
-- first invalid `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`;
+- first invalid `tracing/phase-front-materialization / UnconsumedAuthoritativeIsolationSeam`;
+- consumed topology regions/internal seams/periodic relations `0/0/0`;
 - zero completion/output;
 - no fallback/recovery;
 - compatibility diagnostics retain `r=0`, `t=(24,0)`, route 24, cut 2.
 
-Review diagnosis: multi-relation representation is now live, but direct extraction still assumes one local sheet, a rectangular positive-U periodic grid, and global lattice-coordinate identity. Equal lattice coordinates do not establish output vertex identity when charts overlap. Front edges also lack exact owning-side/rail/relation state, and direct completion hard-codes topology metadata.
+The prior review-approved quotient representation is source-live, but runtime exposes two new blocking contracts. Genuine source boundaries are rejected because their canonical topology is incorrectly required to have a two-face interior matching index. Torus seam consumption is defined only through cell-boundary transition records, which witness none of the eight required internal seams.
 
-Required remediation:
+Proposed remediation pending mandatory Review:
 
-1. retain topology regions and internal isolation seams;
-2. model embedded relief internally and audit all embedded-flag checks;
-3. expose explicit cell-side/rail/source-route/periodic relation ownership;
-4. build the output as an equivalence quotient over explicit cell-corner occurrences using reciprocal ordinary, rail, and full Z4/Z2 periodic connectivity;
-5. retain all exact charts/local sheets/topology region in lineage;
-6. derive output topology from incidence and preserve trace context on requested failure paths;
-7. consume every retained relation and preserve G2 isolation/G3 annulus behavior;
-8. use a canonical semantic digest, not raw component order, for cross-version close-sheets equivalence.
+1. represent a genuine one-face source boundary by canonical source-edge topology without inventing an interior transition index;
+2. keep interior ordinary/isolation/periodic/hard-rail transport provenance strict;
+3. define seam consumption through reviewed exact quotient/transition/lineage ownership rather than unconditional metadata presence;
+4. preserve the explicit occurrence quotient, complete chart/local-isolation/topology-region lineage, computed output incidence, and requested failure retention;
+5. package independent positive/broken counterfactuals for every active contract in default executables;
+6. move semantic-digest invariance/mutation tests out of the disabled historical-only closure or explicitly approve/package a focused target;
+7. preserve G2 isolation/G3 annulus behavior and consume every owned region/seam/relation;
+8. use the canonical semantic digest only after its executable invariance/sensitivity tests pass.
 
 The first G4 slice counts as material progress when this missing contract is live and consumed and the exact torus no longer rejects merely because a second compatible relation exists. Direct strict-valid torus output is preferred; a deeper truthful invariant may become the next G4 slice.
 
@@ -70,16 +71,15 @@ Do not repair the ten historical completion/simplification failures merely becau
 
 ## Required verification sequence
 
-The transition-quotient Code + Build is complete: exact artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, Release/static/Ninja **111/111**, `runtimeExecution=false`.
+Artifact-only validation of `9024549134` is complete and recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-Next artifact-only validation under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`:
+Next mandatory Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`:
 
-1. verify exact artifact/source/checksum/build boundary;
-2. restore and rerun all 17 G0-G3 focused/retained contracts;
-3. rerun plane/seam/close sheets/cylinder direct determinism/quality as required;
-4. run exact torus in three independent processes and require direct strict-valid one-component/zero-boundary/Euler-zero output with every region/relation consumed;
-5. reject any ID/order/count/frequency/proximity shortcut;
-6. preserve no-fallback/no-recovery semantics.
+1. approve the boundary topology/index representation;
+2. approve the seam-consumption witness;
+3. map every quotient/topology/retention/digest counterfactual to an executable packaged test;
+4. approve, amend, or replace the proposed next Code + Build scope;
+5. preserve turn separation and no-fallback/no-recovery semantics.
 
 ## Deferred work
 

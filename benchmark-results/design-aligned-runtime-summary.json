@@ -1,6 +1,6 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v26",
-  "updatedUtc": "2026-08-08T14:44:03Z",
+  "schema": "directional.design-aligned-runtime-summary.v27",
+  "updatedUtc": "2026-08-08T17:30:00Z",
   "directionControl": {
     "passedGatesBaseline": [
       "G0 truthful authority",
@@ -8,193 +8,179 @@
       "G2 cross-chart/close-sheet isolation",
       "G3 periodic closure/holonomy"
     ],
+    "currentCandidateRetainsPassedGates": false,
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "mandatory review approved topology regions with amendments; transition-quotient materialization, retained relief, computed topology, and failure-path retention are next",
-    "nextTurn": "Code + Build",
-    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md",
-    "reviewReport": ".agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md",
-    "reviewDecision": "Approved with amendments",
-    "reviewPlanningCommit": "d1805cac76535f326720bb86b845117e92e59e21",
-    "supersededProposalStatus": "superseded_and_removed_by_mandatory_review",
-    "noProgressCodeBuildCountSinceLastAcceptedMaterialProgress": 2,
-    "mandatoryReviewRequired": false,
-    "mandatoryReviewCompleted": true,
-    "ordinaryCodeBuildAuthorized": true,
-    "configuredOptionalReviewPolicy": "never"
+    "gateState": "artifact 9024549134 regresses genuine source-boundary authority, consumes no torus quotient authority, and lacks complete executable counterfactual closure",
+    "nextTurn": "Mandatory independent Review",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md",
+    "runtimeReport": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md",
+    "priorReviewReport": ".agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md",
+    "configuredOptionalReviewPolicy": "never",
+    "mandatoryReviewRequired": true,
+    "mandatoryReviewCompletedForCurrentEvidence": false,
+    "ordinaryCodeBuildAuthorized": false
   },
   "runtimeAuthority": {
-    "artifactId": 9022061741,
-    "artifactName": "g4-topology-region-code-build",
-    "workflowRunId": 31258107220,
-    "workflowJobId": 93104542559,
-    "eventCommit": "806a557c39170d12b172ef6930794711e00e63bc",
-    "implementationCommit": "3ca89ab55efff461b050fb12033174be70e7464f",
-    "cleanupCommit": "b188dd37f01181ece2173879fc7e0accf23d1bad",
-    "artifactSha256": "df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306",
-    "internalChecksumManifestSha256": "d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703",
+    "artifactId": 9024549134,
+    "artifactName": "g4-transition-quotient-code-build",
+    "workflowRunId": 31267020112,
+    "workflowJobId": 93126709005,
+    "eventCommit": "fbf95650919865832ca93c60caaee9d001c95ffd",
+    "implementationCommit": "7f486632b154a303789df6c4dd44f602c8c71281",
+    "cleanupCommit": "718b978dcd0fab66da67810e00661468fc11038f",
+    "artifactSha256": "4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd",
+    "internalChecksumManifestSha256": "d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5",
     "internalChecksums": "48/48",
     "packageFiles": 49,
     "fixtureFiles": 27,
     "executables": 5,
     "projectStaticLibraries": 2,
     "runtimeExecutionDuringBuild": false,
-    "runtimeOnlyFixtureSymlink": "/home/runner/work/Directional/Directional/benchmarks/fixtures -> /mnt/data/g4_topology_runtime_9022061741/test-data/benchmarks/fixtures",
-    "localEvidenceArchive": "directional-g4-topology-region-artifact-only-evidence.tar.gz",
-    "localEvidenceArchiveSha256": "8f9666620d4fe732bce3319bcaa1a6c47cb85fcc5f453fd52b495100cf952265"
+    "runtimeOnlyFixtureSymlink": "artifact/bin/test-data -> ../test-data",
+    "localEvidenceArchive": "directional-g4-transition-quotient-artifact-only-evidence.tar.gz",
+    "localEvidenceArchiveSha256": "a3ec6c7acb6133693012733983dcc5ac42264e427aa0ea8c9ca6c95e6cd81e9e"
   },
   "focusedAuthority": {
-    "topologyRegionIsolationSeam": "9/9",
-    "polygonalBoundaryPhase": "5/5",
-    "retainedNonTorusCurvedDisk": "5/5",
-    "nonTorusSheetCoverage": "2/2",
-    "g4PeriodicRelations": "5/5",
-    "retainedG0G3": "16/17",
-    "retainedG0G3Regression": "SurfaceCellsPhase10.UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded"
+    "transitionQuotientRetainedAuthority": "3/7",
+    "topologyRegionIsolationSeam": "8/9",
+    "polygonalBoundaryPhase": "3/5",
+    "retainedNonTorusCurvedDisk": "2/5",
+    "nonTorusSheetCoverage": "0/2",
+    "g4PeriodicRelations": "4/5",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "commonProducerFailure": "InvalidFrontBoundaryAuthority"
   },
   "directAcceptance": {
     "plane": {
-      "success": true,
-      "completedQuads": 64,
-      "outputVertices": 81,
-      "hash": "730caeae49ec872c",
+      "success": false,
       "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
       "fallback": false,
-      "internalWallSeconds": [0.345271, 0.347217, 0.343723],
-      "peakWorkingSetBytes": [9641984, 9773056, 9744384]
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.005798, 0.009275, 0.005919]
     },
     "multiFaceSeam": {
-      "success": true,
-      "completedQuads": 64,
-      "outputVertices": 81,
-      "hash": "5bdf34d7802e9fb0",
+      "success": false,
       "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
       "fallback": false,
-      "internalWallSeconds": [0.527115, 0.527181, 0.530817],
-      "peakWorkingSetBytes": [9637888, 9535488, 9564160]
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.007614, 0.009109, 0.006516]
     },
     "closeSheets": {
-      "success": true,
-      "completedQuads": 200,
-      "outputVertices": 242,
-      "connectedComponents": 2,
-      "acceptedBaselineHash": "89b052762f52a5af",
-      "candidateHash": "aaec5574aa2e52f9",
-      "rawHashIsCrossVersionSemanticGate": false,
-      "observedDifference": "component emission order reversed; vertex and face-geometry multisets unchanged",
-      "reviewDisposition": "semantic behavior accepted; canonical component-order-independent connectivity/provenance digest required before cross-version hash acceptance",
+      "success": false,
       "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 2,
       "fallback": false,
-      "internalWallSeconds": [2.956799, 2.990175, 3.014684],
-      "peakWorkingSetBytes": [12029952, 12091392, 12111872]
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.008035, 0.018038, 0.009387]
     },
     "cylinder": {
-      "success": true,
-      "completedQuads": 288,
-      "outputVertices": 320,
-      "periodicRotation": 0,
-      "periodicTranslation": [32, 0],
-      "routeEdgeCount": 32,
-      "cutEdgeCount": 4,
-      "traceSegments": 1728,
-      "arrangementCells": 290,
-      "trueExteriorBoundaryLoops": 2,
-      "trueExteriorBoundaryLoopSizes": [32, 32],
-      "hash": "32135be51d7a0a26",
+      "success": false,
       "deterministic": "3/3",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidFrontBoundaryAuthority",
+      "topologyRegionCount": 1,
+      "topologyRegionEulerCharacteristics": [0],
+      "topologyRegionBoundaryLoopCounts": [2],
       "fallback": false,
-      "internalWallSeconds": [2.616528, 3.030077, 2.760699],
-      "peakWorkingSetBytes": [13430784, 13258752, 13312000]
-    }
+      "sourceGridRecovery": false,
+      "internalWallSeconds": [0.031741, 0.032139, 0.030215]
+    },
+    "acceptedBaselineArtifact": 9022061741,
+    "acceptedBaselineHashes": {
+      "plane": "730caeae49ec872c",
+      "multiFaceSeam": "5bdf34d7802e9fb0",
+      "closeSheets": "aaec5574aa2e52f9",
+      "cylinder": "32135be51d7a0a26"
+    },
+    "acceptedBaselineHashesAreCurrentCandidateResults": false
   },
   "g4Observation": {
     "torus": {
       "success": false,
       "phaseFrontDisposition": "Produced",
       "firstInvalidStage": "tracing/phase-front-materialization",
-      "firstInvalidReason": "InvalidAuthoritativePhaseFrontCell",
-      "firstInvalidCellDiagnostic": 128,
-      "firstInvalidFace": -1,
+      "firstInvalidReason": "UnconsumedAuthoritativeIsolationSeam",
+      "firstInvalidCellDiagnostic": 191,
+      "firstInvalidHalfedge": 762,
       "topologyRegionCount": 4,
       "internalIsolationSeamCount": 8,
+      "consumedTopologyRegionCount": 0,
+      "consumedInternalIsolationSeamCount": 0,
+      "periodicHolonomyRelationCount": 4,
+      "consumedPeriodicHolonomyCount": 0,
       "topologyRegionHashes": [
-        "aacdb82f66e64feb",
-        "0ac0c9d11cce9783",
-        "bd53675ac7b8a834",
-        "90d3892bb8a8a879"
+        12307695870402777067,
+        774841035876374403,
+        13642361335830849588,
+        10435835582422231161
       ],
       "topologyRegionEulerCharacteristics": [0, 0, 0, 0],
       "topologyRegionBoundaryLoopCounts": [2, 2, 2, 2],
       "topologyRegionIsolationSheetCounts": [1, 1, 2, 1],
-      "periodicHolonomyRelationCount": 4,
       "compatibilityPeriodicAuthority": {
         "rotation": 0,
         "translation": [24, 0],
         "routeEdgeCount": 24,
         "cutEdgeCount": 2
       },
-      "boundedDiskBoundaryPhaseCount": 0,
-      "boundedDiskBoundaryRunCount": 0,
-      "polygonalBoundedDiskBoundaryPhaseCount": 0,
-      "boundedDiskConstructedChartCount": 0,
       "fallbackAttempted": false,
       "sourceGridRecoveryUsed": false,
       "deterministic": "3/3",
-      "internalWallSeconds": [0.012517, 0.014511, 0.011389],
-      "peakWorkingSetBytes": [9605120, 9719808, 9732096],
-      "stageHashes": {
-        "feature": "f15e4f3be07d3c7f",
-        "metric": "34cb872327c9b0c6",
-        "relief": "8ccb10d25b69edb9",
-        "sourceLabels": "e48c84177faf6e2c"
-      },
-      "architectureProgress": true,
-      "acceptedMaterialProgress": false,
-      "materializationDiagnosis": "multi-isolation cells normalize to sourceSheet=-1, but the deeper contract defect is that output equivalence is keyed by component+sheet+lattice and position instead of explicit reciprocal ordinary/rail/periodic cell-corner connectivity"
+      "internalWallSeconds": [0.031355, 0.031467, 0.036461],
+      "acceptedMaterialProgress": false
     },
     "spherePrescribed": {
       "observedOnCurrentArtifact": false,
       "deferredUntilTorusDirectStrictValidProduction": true
     }
   },
+  "coverageAudit": {
+    "semanticDigestPermutationTestPackaged": false,
+    "semanticDigestMutationTestPackaged": false,
+    "semanticDigestTestsLocation": "tests/MilestoneGP27Tests.cpp",
+    "semanticDigestTargetEnabled": false,
+    "retainTrueEvidence": true,
+    "retainFalseCounterpartPackaged": false,
+    "allReviewMandatedCounterfactualsIndependentlyDiscoverable": false
+  },
   "regressions": {
-    "embeddedRelief": {
-      "classification": "production implementation regression",
-      "behavior": "topology-region splitting leaves unsupported subregions NotApplicable and permits generic tracing instead of terminal Rejected"
+    "genuineSourceBoundaryAuthority": {
+      "classification": "product implementation regression",
+      "behavior": "assign_open_front_boundary_authority requires an edge_matching_indices entry, but that table intentionally excludes one-face genuine source boundaries"
     },
-    "closeSheetsDeterminism": {
-      "classification": "invalid cross-version raw-hash baseline assumption",
-      "behavior": "region worklist ordering reverses two output components while semantic geometry/topology/source separation remain equal; raw hashes remain same-artifact repeatability diagnostics"
+    "isolationSeamConsumption": {
+      "classification": "product/contract design blocker",
+      "behavior": "materializer witnesses seam consumption only through cell-boundary transitionSourceEdges and torus witnesses none of eight retained seams"
     },
-    "torusContractTest": {
-      "classification": "valid retention expectation with weak fatal-assertion ordering",
-      "behavior": "public retention documentation requires trace context, but the pipeline returns before retention and the first fatal assertion masks topology-region diagnostics"
-    },
-    "phaseFrontMaterialization": {
-      "classification": "blocking producer-consumer contract mismatch",
-      "behavior": "single-sheet rectangular lattice/position key cannot consume multi-isolation, overlapping-chart, full Z4/Z2, exact hard-rail, or multi-relation authority"
-    },
-    "directCompletionTopology": {
-      "classification": "synthetic topology metadata defect",
-      "behavior": "direct phase-front completion hard-codes connectedComponents=1 and eulerCharacteristic=1 instead of deriving incidence"
+    "executableCoverage": {
+      "classification": "build/test packaging and coverage defect",
+      "behavior": "semantic digest tests are historical-only and several required quotient/retention counterfactuals lack default packaged tests"
     }
   },
   "defaultSuites": {
-    "producer": "124/127",
+    "producer": "99/128",
     "completionSimplification": "154/164",
     "validation": "60/60",
     "compiledApi": "8/8",
-    "aggregate": "346/359"
+    "aggregate": "321/360"
   },
   "gateDecision": {
     "g4Passed": false,
-    "topologyRegionArchitectureRuntimeValidated": true,
     "acceptedMaterialProgress": false,
     "mandatoryDesignReviewActivated": true,
-    "mandatoryDesignReviewCompleted": true,
-    "reviewDecision": "Approved with amendments",
-    "ordinaryCodeBuildBlocked": false,
-    "nextTurn": "Code + Build",
-    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md",
-    "followingTurn": "Artifact-only Test + Benchmark"
+    "mandatoryDesignReviewCompletedForCurrentEvidence": false,
+    "ordinaryCodeBuildBlocked": true,
+    "nextTurn": "Mandatory independent Review",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md",
+    "proposedCodeBuildPlanStatus": "proposed_pending_review"
   }
 }

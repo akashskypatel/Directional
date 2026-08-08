@@ -26,19 +26,19 @@ G3 is formally closed.
 
 ## Immediate G4 objective
 
-Artifact `9022061741`, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, advances exact torus to four annular topology regions, eight internal isolation seams, four periodic relations, and phase-front `Produced`. The current first invalid stage is `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell` because one region spans two local isolation sheets.
+Artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, has now been executed under immutable artifact-only authority. It regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. Exact torus reaches phase-front `Produced` with four annular topology regions, eight internal isolation seams, and four periodic relations, then fails at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
-Mandatory independent review is complete **Approved with amendments**. Its authorized correction compiled as exact artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, with Release/static/Ninja **111/111** and `runtimeExecution=false`. Execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md` next.
+The mandatory process guard is active again. Execute `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md` next. No ordinary Code + Build is authorized before Review.
 
-Priority:
+Review priority:
 
-1. retain parent source-topology regions while moving embedded relief to internal cut/transport authority and restoring terminal/guidance semantics;
-2. expose owning side, rail/boundary kind, exact source route, and explicit periodic relation on phase-front pairs;
-3. replace sheet/lattice/position merging with an explicit equivalence quotient over cell-corner occurrences induced by reciprocal ordinary, rail, and periodic connectivity;
-4. preserve complete chart/local-isolation/topology-region lineage while keeping scalar `SurfacePoint`;
-5. compute manifold/components/boundary/Euler facts from incidence and honor failure-path intermediate retention;
-6. add a component-order-independent semantic digest while retaining raw same-artifact determinism;
-7. verify and execute only immutable artifact `9024549134`; restore **17/17** retained contracts and require a connected, closed, Euler-zero, strict-valid direct torus.
+1. separate genuine source-edge topology identity from the optional two-face transition/matching index;
+2. define an exact, complete internal-isolation-seam consumption witness;
+3. audit the explicit quotient, lineage, computed topology, and retention contracts against broken counterfactuals;
+4. move every active semantic test into an approved default packaged target—the semantic digest tests are currently historical-only and unexecutable;
+5. approve, amend, or replace the runtime report's `proposed_pending_review` implementation scope;
+6. retain parent topology regions/local isolation safety and all prior no-weld/no-fallback/no-synthetic-topology constraints;
+7. require a future immutable artifact to restore direct G0-G3 and close exact torus with one component, no boundary, Euler zero, and all 4/8/4 authority consumed.
 
 ## Later G4 singularity objective
 

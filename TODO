@@ -5,101 +5,80 @@ Last updated: 2026-08-08 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- G0 truthful authority: **passed baseline; embedded-relief correction compiled in the new candidate and awaits runtime validation**.
-- G1 uniform authoritative phase-front plane: **passed**.
-- G2 cross-chart / close-sheet isolation: **passed**; raw component serialization order is not cross-version semantic authority.
-- G3 periodic closure / holonomy: **passed**.
-- G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **Code + Build — transition-quotient materialization and retained authority**.
-- Next turn: **artifact-only Test + Benchmark**.
-- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
+- G0-G3: **accepted baselines remain authoritative; current candidate regresses their direct boundary authority**.
+- G4 topology-distinct completion and singularities: **active, regressed and blocked**.
+- Completed turn: **artifact-only Test + Benchmark — transition quotient and retained authority**.
+- Next turn: **mandatory independent Review**.
+- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.
+- Runtime report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 - Compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
-- Review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
+- Prior review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, unmerged.
 
-## Current runtime evidence — artifact 9022061741
+## Exact tested candidate — artifact 9024549134
 
-Exact artifact **`9022061741`** remains the current immutable runtime observation:
-
-- implementation `3ca89ab55efff461b050fb12033174be70e7464f`;
-- cleanup `b188dd37f01181ece2173879fc7e0accf23d1bad`;
-- workflow run/job `31258107220 / 93104542559`;
-- ZIP SHA-256 `df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306`;
-- recursive checksums **48/48**;
-- topology-region/isolation-seam **9/9**;
-- retained G0-G3 **16/17**;
-- producer **124/127**, completion/simplification **154/164**, validation **60/60**, API **8/8**.
-
-No new runtime claim is made by the completed Code + Build. Artifact `9022061741` remains the entering runtime observation, not accepted G4 closure.
-
-## New compile-valid candidate — artifact 9024549134
-
-The review-approved migration is compiled and packaged without runtime execution:
+Immutable authority passed before runtime:
 
 - implementation `7f486632b154a303789df6c4dd44f602c8c71281`;
-- cleanup/build authority `718b978dcd0fab66da67810e00661468fc11038f`;
+- cleanup/build `718b978dcd0fab66da67810e00661468fc11038f`;
 - workflow run/job `31267020112 / 93126709005`;
-- outer ZIP SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
+- outer SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
 - internal manifest `d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5`;
 - recursive checksums **48/48**;
-- Release/static/Ninja build **111/111**, metadata `runtimeExecution=false`;
-- temporary workflow, trigger, and payloads removed after evidence verification.
+- package **49 files / 27 fixtures / five executables / two project static libraries**;
+- Release/static/Ninja **111/111**, `runtimeExecution=false`;
+- log artifact `9024549261`, SHA-256 `7e17330cb10e2c0fff9e55a7511998f4ec1d6666c3dccbb981eb7b105776ebc1`.
 
-The candidate adds explicit side/boundary/relation ownership, exact hard-rail pairing, a transition-aware cell-corner quotient, complete equivalence lineage, incidence-derived topology, failure-path intermediate retention, corrected relief ownership, and a component-order-independent semantic output digest. Compilation is not runtime acceptance.
+No artifact substitution, source/test/build edit, configure, compile, relink, or discovery regeneration occurred during validation.
 
-## Independent review disposition
+## Runtime decision
 
-Decision: **Approved with amendments**.
+The candidate is **regressed and blocked**:
 
-Retain:
+- focused transition quotient **3/7**;
+- topology-region/isolation **8/9**;
+- polygonal **3/5**;
+- non-torus curved disk **2/5**;
+- mixed sheet coverage **0/2**;
+- periodic relations **4/5**;
+- producer bounded **99/128**;
+- completion/simplification **154/164**, exact same ten historical failures;
+- validation **60/60**;
+- compiled API **8/8**;
+- aggregate bounded **321/360**.
 
-- exact-source-adjacent `SurfaceTopologyRegion` as parent producer authority;
-- local isolation labels as proximity/capture safety authority;
-- exact reciprocal transport across internal isolation seams;
-- one accepted authoritative cell to one output quad;
-- full Z4/Z2 periodic relation authority.
+Plane, multi-face seam, close sheets, and cylinder fail deterministically 3/3 at:
 
-Correct next:
+`tracing/phase-front / InvalidFrontBoundaryAuthority`
 
-1. Treat embedded relief as internal cut/transport authority under a parent topology region; gate every relief traversal check by embedded state and preserve terminal `Rejected` behavior.
-2. Add explicit owning side, boundary/rail kind, source route, and periodic-relation ownership to phase-front connectivity.
-3. Replace global `(component,sheet,lattice)` vertex merging with an equivalence quotient over cell-corner occurrences induced only by reciprocal ordinary, hard-rail, and periodic pairs.
-4. Preserve scalar `SurfacePoint`; add complete topology-region/local-isolation/source-chart equivalence lineage.
-5. Compute connected components, boundary loops, manifoldness, and Euler characteristic from assembled quad incidence; remove direct-path constants.
-6. Retain trace-network context before materialization can fail when `retainIntermediateGeometry=true`.
-7. Add a component-order-independent exact semantic digest for cross-version output acceptance; keep raw hashes for same-artifact determinism.
+All four have no output, fallback, or recovery.
 
-## Exact torus — current and required next state
-
-Current deterministic observation:
+Exact torus deterministically reaches:
 
 - phase-front `Produced`;
-- first invalid stage/reason `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`;
-- four annular topology regions;
-- eight internal isolation seams;
-- local-isolation cardinalities `[1,1,2,1]`;
-- four periodic relations;
-- no fallback/recovery or partial output.
+- `tracing/phase-front-materialization / UnconsumedAuthoritativeIsolationSeam`;
+- four topology regions, eight internal isolation seams, four periodic relations;
+- consumed regions/seams/relations `0/0/0`;
+- no output, fallback, or recovery.
 
-Required next artifact-only Test + Benchmark result:
+Sphere remains deferred because torus does not close.
 
-- direct success in at least three independent processes;
-- strict-valid pure quads, complete lineage, all four regions/relations consumed;
-- one connected component, zero boundary loops, Euler characteristic zero;
-- no predicted/golden torus vertex or quad count;
-- no fallback or source-grid recovery.
+## Source-bounded blockers
 
-Prescribed sphere remains deferred until this torus slice closes.
+1. `assign_open_front_boundary_authority()` requires an entry from `edge_matching_indices()` before classifying a boundary edge. That index intentionally contains only two-face interior edges, so a genuine one-face source boundary is rejected by construction.
+2. Materialization counts an internal isolation seam as consumed only when it appears in cell-boundary `transitionSourceEdges`, then requires every retained region seam. Review must decide a complete exact consumption witness; unconditional marking or count/order/ID/proximity inference is forbidden.
+3. The two semantic-digest counterfactual tests live only in `tests/MilestoneGP27Tests.cpp`, which belongs to the disabled historical target. They are absent from the immutable package.
+4. Several mandated quotient and retention counterfactuals have no independently discoverable default packaged test; retention has positive `true` evidence but no `false` counterpart.
 
-## Close-sheets acceptance correction
+## Process decision
 
-The raw hashes `89b052762f52a5af` and `aaec5574aa2e52f9` differ only by connected-component emission order. Both are deterministic on their own artifacts; geometry, connectivity, and source separation are equivalent. Neither is a cross-version semantic golden.
+The optional review policy remains `never`, but the mandatory process guard overrides it. Retained direct authority regressed and the quotient consumed no region/seam/relation authority after the review-approved Code + Build. **No ordinary Code + Build is authorized until Review approves, amends, or replaces the proposed remediation architecture.**
 
-The new candidate adds a canonical component-order-independent connectivity/provenance digest. The artifact-only turn must require its focused permutation/mutation proofs, compare all exact accepted/candidate authority available from immutable artifacts, and separately require 3/3 repeatability of each candidate raw hash. It may not fabricate a field absent from the older artifact.
+The proposed implementation scope in the runtime report is `proposed_pending_review`. It may not be executed directly.
 
 ## Turn boundary
 
-The next Test + Benchmark may execute only artifact `9024549134` and immutable packaged inputs after exact checksum/source verification. It may not edit production/test/fixture/validator/benchmark/build source, configure, compile, relink, regenerate discovery, or create a replacement artifact.
+The next Review may inspect source, tests, build wiring, reports, and immutable evidence read-only. It may not edit production/tests/build files, configure, compile, run tests/benchmarks, or regenerate discovery.
 
 Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes. PR #8 remains open, draft, unmerged.

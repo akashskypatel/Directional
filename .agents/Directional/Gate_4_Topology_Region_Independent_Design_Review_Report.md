@@ -108,4 +108,8 @@ Static source inspection, checksum verification, PDF extraction/rendering, and a
 
 ## Subsequent execution status
 
-The review-approved Code + Build is complete. Implementation `7f486632b154a303789df6c4dd44f602c8c71281` compiled **111/111** and is packaged as exact immutable artifact `9024549134` with `runtimeExecution=false`. The current authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`; this review report makes no runtime acceptance claim for that candidate.
+The review-approved Code + Build is complete. Implementation `7f486632b154a303789df6c4dd44f602c8c71281` compiled **111/111** and was packaged as exact immutable artifact `9024549134` with `runtimeExecution=false`.
+
+Subsequent artifact-only validation is recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`. The candidate regresses plane/seam/close-sheets/cylinder at `InvalidFrontBoundaryAuthority`, exact torus stops at `UnconsumedAuthoritativeIsolationSeam` with zero 4/8/4 quotient consumption, and required semantic/counterfactual tests are not all present in default packaged executables.
+
+These results reactivate the mandatory process guard. Current next authority is Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.

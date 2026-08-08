@@ -17,33 +17,34 @@ Both use generated smooth fields through production extraction. Replacing, simpl
 
 ## Current runtime authority and review disposition
 
-Exact artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is artifact-only runtime validated.
+Exact artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, is the latest immutable artifact-only runtime authority. Static/source/checksum/dependency/fixture/log verification passed, but product validation is **regressed and blocked**.
 
-Validated focused authority:
+Focused results:
 
-- topology-region / isolation-seam semantics **9/9**;
-- generalized polygonal boundary phase **5/5**;
-- retained non-torus curved-disk semantics **5/5**;
-- non-torus sheet coverage **2/2**;
-- G4 periodic-relation semantics **5/5**;
-- retained G0-G3 **16/17** because `UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded` regressed.
+- transition quotient / retained authority **3/7**;
+- topology-region / isolation-seam semantics **8/9**;
+- generalized polygonal boundary phase **3/5**;
+- retained non-torus curved-disk semantics **2/5**;
+- non-torus sheet coverage **0/2**;
+- G4 periodic-relation semantics **4/5**;
+- validation **60/60**;
+- compiled API **8/8**.
 
-Direct candidate results:
+Direct artifact `9024549134` results:
 
-- plane `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
-- seam `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
-- close sheets `Produced / CompletedSurfaceCells`, 200 quads / 242 V / two components, strict-valid but candidate hash `aaec5574aa2e52f9` versus accepted baseline `89b052762f52a5af`; geometry is identical and component emission order is reversed;
-- cylinder `Produced / CompletedSurfaceCells`, periodic `r=0`, `t=(32,0)`, route 32, cut 4, 288 quads / 320 V, zero validation failures, exactly two genuine exterior 32-edge loops, hash `32135be51d7a0a26`, deterministic 3/3;
-- no passing direct case uses fallback or source-grid recovery.
+- plane, seam, close sheets, and cylinder reject deterministically 3/3 at `tracing/phase-front / InvalidFrontBoundaryAuthority`;
+- exact torus reaches phase-front `Produced`, then rejects deterministically 3/3 at `tracing/phase-front-materialization / UnconsumedAuthoritativeIsolationSeam`;
+- torus retains four topology regions, eight internal isolation seams, one multi-isolation region, and four periodic relations, but consumed region/seam/relation counters are `0/0/0`;
+- no direct case emits output/hash, attempts fallback, or uses source-grid recovery.
 
-Exact torus now proves topology-region authority and reaches `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`: four annular topology regions, eight internal isolation seams, one region spanning two local isolation labels, four periodic relations, no fallback/recovery. The former `InvalidBoundedDiskBoundaryTurn` partition defect is gone.
+Bounded suites: producer **99/128**, completion/simplification **154/164**, validation **60/60**, compiled API **8/8**, aggregate **321/360**.
 
-Bounded suites: producer **124/127**, completion/simplification **154/164**, validation **60/60**, compiled API **8/8**.
+Artifact `9022061741` remains the last candidate that produced the accepted direct G0-G3 outputs. Its raw hashes remain same-artifact baselines, not cross-version semantic goldens.
 
-Detailed runtime authority:
-`.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
+Detailed current runtime authority:
+`.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-Mandatory independent review is complete with decision **Approved with amendments**. Its authorized implementation compiled as exact artifact **`9024549134`**, commit `7f486632b154a303789df6c4dd44f602c8c71281`, Release/static/Ninja **111/111**, with `runtimeExecution=false`. The next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
+Retained direct regression, zero quotient consumption, and incomplete executable counterfactual coverage activate the mandatory process guard. The next turn is Review only under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.
 
 ## Producer-authority contracts
 
@@ -95,7 +96,7 @@ Do not union local labels by counts, IDs, frequency, discovery order, topology s
 
 ## Transition-quotient materialization contract — review approved
 
-Runtime artifact `9022061741` proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but its materializer still requires one representative `sourceSheet` and keys identity by `(component, sheet, lattice)` plus a position check. Candidate artifact `9024549134` compiles the explicit transition quotient below; this contract is not accepted until artifact-only execution proves it is consumed.
+Runtime artifact `9022061741` proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but its materializer still requires one representative `sourceSheet` and keys identity by `(component, sheet, lattice)` plus a position check. Artifact `9024549134` executes the explicit transition quotient below, but exact torus stops at `UnconsumedAuthoritativeIsolationSeam` before any region/seam/relation consumption commits. The contract is not accepted.
 
 Equal integer coordinates are not output vertex identity because charts may overlap. Approved tests must require:
 
@@ -111,6 +112,12 @@ Equal integer coordinates are not output vertex identity because charts may over
 - retain cylinder periodic quotient semantics exactly.
 
 Counterfactual coverage must reject a representative-sheet substitution, unconditional topology-region lattice merge, Euclidean seam weld, first-relation selection, missing/ambiguous rail counterpart, unconsumed relation, repeated cell corner, and synthetic output topology.
+
+Every active counterfactual must be independently discoverable in a default packaged artifact. `MilestoneGP27` semantic-digest tests currently live only in the disabled historical target and do not satisfy this requirement. Product checks without a broken-counterfactual test are not executable validation authority.
+
+Genuine source-boundary routes retain canonical source-edge topology even when no two-face interior matching index exists. An interior transition/matching index remains mandatory wherever transport semantics require it; absence cannot be accepted generically.
+
+Internal-isolation-seam consumption requires a reviewed exact witness. Current cell-boundary `transitionSourceEdges` coverage is insufficient on torus; unconditional marking, representative-sheet selection, and count/order/ID/proximity/position/lattice inference are prohibited.
 
 ## Deterministic output identity — review approved
 
@@ -139,14 +146,14 @@ A changed error name is not progress by itself; real gate progress requires firs
 
 ## Exact torus and failure-path retention contracts — review approved
 
-Under runtime artifact `9022061741`, `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior, and the public `retainIntermediateGeometry` documentation makes the retention expectation valid. Candidate artifact `9024549134` compiles the retention-order correction and separated assertions; runtime proof is pending.
+Artifact `9024549134` positively proves `hasTraceNetwork=true` on the torus materialization failure when `retainIntermediateGeometry=true`. The torus still fails at `UnconsumedAuthoritativeIsolationSeam`, and no independently packaged `retainIntermediateGeometry=false` counterpart exists.
 
-Fix production retention before a materialization failure, then separate the assertions:
+Required test separation remains:
 
 - the torus topology test checks public region/seam diagnostics before any fatal context dereference and, after the quotient change, requires direct strict-valid success;
 - a focused deterministic materialization-failure test checks trace context is retained iff requested;
 - no permissive torus `Rejected` branch remains once the quotient implementation is compiled;
-- following artifact-only acceptance requires one component, zero boundary loops, Euler zero, full region/relation consumption, and no predicted output count.
+- following artifact-only acceptance requires one component, zero boundary loops, Euler zero, all four regions/eight seams/four relations consumed, and no predicted output count.
 
 Assertions may not be weakened merely to obtain a pass.
 
@@ -173,19 +180,21 @@ Tests verify semantic source/topology/transport identities instead of raw DCEL/s
 
 Report direct acceptance separately. Explicitly executed focused/direct tests should be excluded from remaining aggregate totals where practical. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only and cannot override semantic gate authority.
 
-Current artifact `9022061741` bounded totals:
+Current artifact `9024549134` bounded totals:
 
-- producer **124/127**;
+- producer **99/128**;
 - completion/simplification **154/164**;
 - validation **60/60**;
 - compiled API **8/8**;
-- aggregate **346/359**.
+- aggregate **321/360**.
+
+Artifact `9022061741` entering totals were producer **124/127**, completion/simplification **154/164**, validation **60/60**, API **8/8**. The current producer decrease is a regression, not an aggregate-count reclassification.
 
 ## Turn boundaries
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is immutable artifact-only Test + Benchmark using only exact artifact `9024549134` after checksum/source verification. No rebuild or source/test/fixture/validator edit is permitted.
+The current next turn is mandatory independent Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`. Review may inspect exact evidence/source/tests/build wiring read-only; it may not edit production/tests/build files, configure, compile, or run project binaries.
 
 ## Validity and prohibitions
 

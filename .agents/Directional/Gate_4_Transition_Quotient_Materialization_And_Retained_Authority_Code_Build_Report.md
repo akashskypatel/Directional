@@ -1,6 +1,6 @@
 # Gate 4 Transition-Quotient Materialization and Retained Authority — Code + Build Report
 
-Status: **compile-valid candidate; awaiting artifact-only runtime validation**
+Status: **compile-valid candidate; artifact-only runtime validation completed with regression/blocker**
 Turn type: **Code + Build only**
 Active design gate: **G4 topology-distinct completion and singularities**
 Review policy: `never`
@@ -45,7 +45,9 @@ The candidate performs the review-approved producer/materializer migration:
 - retains the trace/phase-front network before materialization failure when `retainIntermediateGeometry=true`;
 - adds a component/row-order-invariant semantic output digest over geometry, connectivity, and lineage while retaining the raw structural hash as same-artifact serialization evidence.
 
-Focused compile-time regressions cover relief ownership, explicit periodic ownership and cylinder topology, reciprocal hard-rail stitching, multi-isolation quotient materialization, retained failure authority, and semantic-digest permutation invariance and mutation sensitivity. They were compiled only; they were not executed in this turn.
+Focused source additions cover relief ownership, explicit periodic ownership and cylinder topology, reciprocal hard-rail stitching, multi-isolation quotient materialization, retained failure authority, and semantic-digest permutation invariance and mutation sensitivity. They were not executed in this turn.
+
+Subsequent packaged discovery showed that the two semantic-digest tests reside only in `tests/MilestoneGP27Tests.cpp` under disabled `DIRECTIONAL_BUILD_HISTORICAL_TESTS`; they were therefore not present in the immutable artifact's executable closure. Several other review-mandated counterfactuals also lacked an independently discoverable packaged test. Compile presence must not be read as executable coverage.
 
 ## Source authority
 
@@ -69,9 +71,11 @@ Final implementation blobs:
 
 ## Runtime status and next authority
 
-This turn makes no runtime or G4-acceptance claim. The exact torus remains unclassified under this candidate until the immutable compile artifact is exercised in the mandatory following artifact-only Test + Benchmark turn.
+This Code + Build turn itself made no runtime claim. Subsequent exact artifact-only validation is complete under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-The following turn must first verify exact artifact/source/checksum authority, then execute the new transition-quotient, relief, retention, topology, and semantic-digest cases; retained topology-region/polygonal/curved/sheet/periodic/G0-G3/validation/API authority; deterministic direct plane/seam/close-sheets/cylinder observations; and exact torus in at least three independent processes. Direct strict-valid torus acceptance requires one component, no boundary loops, Euler zero, complete lineage, all four topology regions/eight internal isolation seams/four periodic relations consumed, and no fallback/recovery. No torus output count is predicted or golden-filed.
+Artifact `9024549134` regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`; exact torus reaches phase-front `Produced` and then rejects at `UnconsumedAuthoritativeIsolationSeam` with all four topology regions/eight internal isolation seams/four periodic relations unconsumed. Producer bounded falls to **99/128**; validation **60/60** and API **8/8** remain.
+
+The mandatory process guard is active. The next turn is Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`; no ordinary implementation loop is authorized before that decision.
 
 Prescribed sphere, G5/G6, historical completion/simplification failures, validator-threshold changes, fallback/recovery, and unrelated optimization remain deferred.
 

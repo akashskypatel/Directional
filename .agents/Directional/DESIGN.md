@@ -84,22 +84,23 @@ The implementation must preserve both identities. Never overwrite a local isolat
 
 ## Current runtime authority and retained baseline
 
-Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is the current artifact-only runtime observation for the topology-region architecture. It proves the new region/seam model is live, but it is **not an accepted retained-authority closure** because two prior contracts regress.
+Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, remains the last candidate that directly produced the accepted plane/seam/close-sheets/cylinder outputs. It validates topology-region/isolation authority **9/9**, but did not close G4 and retained only **16/17** G0-G3 contracts.
 
-New compile-valid candidate artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, implements the review-approved transition quotient and retained-authority correction. Its Release/static/Ninja build completed **111/111** with `runtimeExecution=false`; therefore it changes no runtime conclusion until the mandatory artifact-only turn executes it.
+Artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, is now the latest exact artifact-only runtime observation. Its immutable authority passes, but its product state is **regressed and blocked**:
 
-| Fixture | Candidate result | Candidate hash | Accepted hash | Decision |
-|---|---|---|---|---|
-| plane | 81 V / 64 strict-valid quads | `730caeae49ec872c` | same | exact pass |
-| seam | 81 V / 64 strict-valid quads | `5bdf34d7802e9fb0` | same | exact pass |
-| close sheets | 242 V / 200 strict-valid quads / 2 isolated components | `aaec5574aa2e52f9` | prior raw serialization `89b052762f52a5af` | semantic pass; raw component order differs |
-| cylinder | 320 V / 288 strict-valid quads | `32135be51d7a0a26` | same | exact pass |
+| Fixture | Artifact `9024549134` result, 3/3 | First invalid authority | Output |
+|---|---|---|---|
+| plane | deterministic failure | `InvalidFrontBoundaryAuthority` | none |
+| seam | deterministic failure | `InvalidFrontBoundaryAuthority` | none |
+| close sheets | deterministic failure | `InvalidFrontBoundaryAuthority` | none |
+| cylinder | deterministic failure | `InvalidFrontBoundaryAuthority` | none |
+| torus | phase-front `Produced`, then deterministic failure | `UnconsumedAuthoritativeIsolationSeam` | none |
 
-Cylinder periodic authority remains `r=0`, `t=(32,0)`, route 32, cut 4; validation failures are zero; exactly two genuine annulus exterior loops remain and the artificial cut is not exterior. No passing direct case uses fallback or source-grid recovery.
+The accepted older raw hashes remain same-artifact baseline evidence only. Artifact `9024549134` emits no candidate raw or semantic hash because all direct fixtures fail before output.
 
-Retained G0-G3 focused contracts are **16/17** on the candidate because embedded relief barriers can decompose topology regions into all-`NotApplicable` subregions and permit generic tracing instead of the established fail-closed `Rejected` behavior.
+The semantic-digest permutation/mutation tests exist only in `tests/MilestoneGP27Tests.cpp`, under disabled `DIRECTIONAL_BUILD_HISTORICAL_TESTS`; they are absent from the five packaged executables. The digest contract therefore remains unvalidated despite source and compile presence.
 
-Independent review resolves the close-sheets raw-hash question as an invalid semantic baseline assumption. Candidate geometry, connectivity, source separation, and face-geometry multisets are unchanged and both artifacts are internally deterministic; only component emission order changed. Raw serialization hashes remain same-artifact repeatability diagnostics. Cross-version acceptance requires a component-order-independent canonical digest of connectivity plus exact source-authoritative lineage; neither raw hash may substitute for that digest.
+The common boundary regression is representational: `edge_matching_indices()` maps only two-face interior source edges, but `assign_open_front_boundary_authority()` requires that index before classifying a one-face edge as `GenuineSourceBoundary`. Canonical source topology identity and optional interior transition index must be separated.
 
 ## G2 isolation invariant
 
@@ -197,7 +198,7 @@ Read-only exact-source reconstruction shows the apparent disk is created by loca
 
 Boundary turn/index/alignment validation must **not** be relaxed to hide this partition error.
 
-### Topology-region / isolation-sheet architecture — runtime-live, retained regressions unresolved
+### Topology-region / isolation-sheet architecture — runtime-live, quotient consumption blocked
 
 Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, exact artifact **`9022061741`**, validates first-class `SurfaceTopologyRegion` authority **9/9**:
 
@@ -211,18 +212,22 @@ Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, exact artifact **
 - periodic relation identity carries topology-region scope;
 - trace-network hashing and runtime diagnostics consume region/seam authority.
 
-Exact torus now has four annular topology regions, eight internal isolation seams, local-isolation cardinalities `[1,1,2,1]`, and four periodic relations. Phase-front authority reaches `Produced` and the former `InvalidBoundedDiskBoundaryTurn` no longer occurs. The next failure is **`tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`**.
+Under artifact `9022061741`, exact torus has four annular topology regions, eight internal isolation seams, local-isolation cardinalities `[1,1,2,1]`, and four periodic relations. Phase-front authority reaches `Produced` and the former `InvalidBoundedDiskBoundaryTurn` no longer occurs; materialization then fails at `InvalidAuthoritativePhaseFrontCell`.
 
-In runtime artifact `9022061741`, the materializer had not adopted the same authority model: multi-isolation region cells normalized to `sourceSheet=-1`, while `build_authoritative_phase_front_mesh()` rejected negative `sourceSheet` and keyed lattice/periodic materialization by `(component, sheet, lattice)`. Independent review rejected a simple replacement with `(component, topologyRegion, lattice)` because charts can overlap. Candidate artifact `9024549134` compiles the explicit transition quotient above; its runtime consumption remains to be proven.
+In runtime artifact `9022061741`, the materializer had not adopted the same authority model: multi-isolation region cells normalized to `sourceSheet=-1`, while `build_authoritative_phase_front_mesh()` rejected negative `sourceSheet` and keyed lattice/periodic materialization by `(component, sheet, lattice)`. Independent review rejected a simple replacement with `(component, topologyRegion, lattice)` because charts can overlap.
 
-Entering runtime acceptance under artifact `9022061741` remains blocked by:
+Artifact `9024549134` executes the explicit occurrence quotient far enough for torus phase-front `Produced`, then stops at **`tracing/phase-front-materialization / UnconsumedAuthoritativeIsolationSeam`**. It retains the same four regions/eight seams/four relations but records consumed regions/seams/relations `0/0/0`.
 
-1. embedded relief barrier semantics currently regress fail-closed authority, and one vertex-fan path can treat non-embedded relief as blocking;
-2. direct materialization lacks multi-isolation, exact rail, full periodic-transform, and chart-overlap-safe quotient authority;
-3. `retainIntermediateGeometry` loses the trace network on a materialization failure despite its public contract;
-4. direct completion hard-codes component/Euler metadata rather than computing it.
+The materializer currently defines seam consumption only through `SurfaceTraceSegment.transitionSourceEdges` on cell boundary paths and requires every `internalIsolationSeamTopology` entry to appear. This may be incomplete for a seam internal to a multi-isolation producer region. Independent Review must define the exact witness; neither unconditional marking nor inference by counts, IDs, position, lattice coordinates, or representative sheet is acceptable.
 
-The exact torus fixture and retention expectation are valid. Its fatal `hasTraceNetwork` assertion is ordered poorly because it masks already available topology diagnostics. Candidate artifact `9024549134` separates public topology/seam assertions from a focused failure-path retention test and fixes the production retention order; runtime verification is pending.
+Current runtime acceptance under artifact `9024549134` remains blocked by:
+
+1. genuine source boundaries are rejected because topology identity is incorrectly coupled to an interior matching index;
+2. internal-isolation-seam consumption ownership remains unresolved and torus consumes zero quotient authority;
+3. broad retained producer authority regresses before relief, rail, polygonal, curved, mixed, and periodic contracts can execute;
+4. semantic-digest tests and several quotient/retention counterfactuals are absent from default packaged executables.
+
+The exact torus fixture and retention expectation remain valid. Artifact `9024549134` positively retains trace context when requested, but no independently packaged `retainIntermediateGeometry=false` counterpart proves the required if-and-only-if contract.
 
 Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
@@ -234,9 +239,11 @@ The prescribed sphere remains deferred until exact torus reaches direct strict-v
 
 ## Current next authority
 
-Mandatory independent review is complete with decision **Approved with amendments**. The authorized Code + Build has now produced exact artifact **`9024549134`** from implementation `7f486632b154a303789df6c4dd44f602c8c71281`; its source/checksum/build evidence is recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
+Artifact-only runtime evidence is recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-The only authorized next turn is **artifact-only Test + Benchmark** under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`. It must verify immutable authority first, then execute focused quotient/relief/retention/digest cases, retained suites, deterministic direct G0-G3 fixtures, and exact torus in at least three independent processes. It may not edit source or configure/compile/relink/regenerate a replacement.
+The optional review policy remains `never`, but retained direct regressions, zero quotient consumption, and incomplete executable coverage activate the mandatory process guard. The only authorized next turn is **independent Review** under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.
+
+Review must decide the boundary topology/index representation, exact seam-consumption witness, default executable counterfactual closure, and whether to approve, amend, or replace the runtime report's `proposed_pending_review` Code + Build scope. No ordinary implementation turn is authorized before that decision.
 
 ## Non-negotiable prohibitions
 
