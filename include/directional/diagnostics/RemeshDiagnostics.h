@@ -75,6 +75,18 @@ struct SurfaceCellMemoryOwnershipEvent {
   std::uint64_t simultaneousOwnedBytes = 0U;
 };
 
+struct SurfaceCellPeriodicHolonomyDiagnostics {
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  int quarterTurnRotation = 0;
+  int translationU = 0;
+  int translationV = 0;
+  std::vector<int> sourceRouteEdges;
+  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<int> cutSourceEdges;
+  std::vector<std::uint64_t> cutSourceTopology;
+};
+
 struct SurfaceCellStageLineage {
   std::string stage;
   SurfaceCellObjectIdentity inputObject;
@@ -206,6 +218,8 @@ struct RemeshDiagnostics {
   std::vector<int> surfaceCellCompletionParityAvailableSheets;
   std::string surfaceCellCompletionParityMutationPhase;
   std::string surfaceCellAuthoritativeProducerDisposition;
+  std::vector<SurfaceCellPeriodicHolonomyDiagnostics>
+      surfaceCellPeriodicHolonomies;
   bool surfaceCellPeriodicHolonomyAvailable = false;
   int surfaceCellPeriodicHolonomyQuarterTurnRotation = 0;
   int surfaceCellPeriodicHolonomyTranslationU = 0;

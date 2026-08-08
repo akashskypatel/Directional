@@ -924,14 +924,16 @@ std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.phaseFront.failure.secondarySourceEdge);
   hash_combine_i64(seed, network.phaseFront.gridU);
   hash_combine_i64(seed, network.phaseFront.gridV);
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.enabled ? 1 : 0);
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.sourceComponent);
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.sourceSheet);
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.quarterTurnRotation);
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.latticeTranslation.x());
-  hash_combine_i64(seed, network.phaseFront.periodicHolonomy.latticeTranslation.y());
-  hash_vector(seed, network.phaseFront.periodicHolonomy.sourceRouteEdges);
-  hash_vector(seed, network.phaseFront.periodicHolonomy.cutSourceEdges);
+  hash_combine_u64(seed, network.phaseFront.periodicHolonomies.size());
+  for (const auto &relation : network.phaseFront.periodicHolonomies) {
+    hash_combine_i64(seed, relation.sourceComponent);
+    hash_combine_i64(seed, relation.sourceSheet);
+    hash_combine_i64(seed, relation.quarterTurnRotation);
+    hash_combine_i64(seed, relation.latticeTranslation.x());
+    hash_combine_i64(seed, relation.latticeTranslation.y());
+    hash_vector(seed, relation.sourceRouteTopology);
+    hash_vector(seed, relation.cutSourceTopology);
+  }
   const auto hash_lattice_state = [&](
       const geometry::LocalLatticeState &state) {
     hash_combine_double(seed, state.phase.x());
@@ -1747,13 +1749,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
 
   const auto canonical_lattice = [&](const int component, const int sheet,
                                      Eigen::Vector2i lattice) {
-    if (phaseFront.periodicHolonomy.enabled &&
-        phaseFront.periodicHolonomy.sourceComponent == component &&
-        phaseFront.periodicHolonomy.sourceSheet == sheet) {
-      const Eigen::Vector2i translation =
-          phaseFront.periodicHolonomy.latticeTranslation;
-      if (phaseFront.periodicHolonomy.quarterTurnRotation != 0 ||
-          translation.x() <= 0 || translation.y() != 0) {
+    for (const auto &relation : phaseFront.periodicHolonomies) {
+      if (relation.sourceComponent != component ||
+          relation.sourceSheet != sheet) {
+        continue;
+      }
+      const Eigen::Vector2i translation = relation.latticeTranslation;
+      if (relation.quarterTurnRotation != 0 || translation.x() <= 0 ||
+          translation.y() != 0) {
         return Eigen::Vector2i{-1, -1};
       }
       if (lattice.x() == translation.x()) lattice.x() = 0;
@@ -1838,10 +1841,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       SheetGridState &grid =
           gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
-      grid.periodicU =
-          phaseFront.periodicHolonomy.enabled &&
-          phaseFront.periodicHolonomy.sourceComponent == cell.sourceComponent &&
-          phaseFront.periodicHolonomy.sourceSheet == cell.sourceSheet;
+      grid.periodicU = std::any_of(
+          phaseFront.periodicHolonomies.begin(),
+          phaseFront.periodicHolonomies.end(), [&](const auto &relation) {
+            return relation.sourceComponent == cell.sourceComponent &&
+                   relation.sourceSheet == cell.sourceSheet &&
+                   relation.quarterTurnRotation == 0 &&
+                   relation.latticeTranslation.x() > 0 &&
+                   relation.latticeTranslation.y() == 0;
+          });
       grid.maxU = std::max(grid.maxU, coordinate.x());
       grid.maxV = std::max(grid.maxV, coordinate.y());
       quadPositions[static_cast<std::size_t>(corner)] =
@@ -2885,6 +2893,7 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionParityMutationPhase;
   target.surfaceCellAuthoritativeProducerDisposition =
       source.surfaceCellAuthoritativeProducerDisposition;
+  target.surfaceCellPeriodicHolonomies = source.surfaceCellPeriodicHolonomies;
   target.surfaceCellPeriodicHolonomyAvailable =
       source.surfaceCellPeriodicHolonomyAvailable;
   target.surfaceCellPeriodicHolonomyQuarterTurnRotation =
@@ -4825,18 +4834,36 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellAuthoritativeProducerDisposition =
         geometry::surface_cell_producer_disposition_name(
             traceNetwork.phaseFront.disposition);
+    result.diagnostics.surfaceCellPeriodicHolonomies.clear();
+    for (const auto &relation : traceNetwork.phaseFront.periodicHolonomies) {
+      SurfaceCellPeriodicHolonomyDiagnostics diagnostic;
+      diagnostic.sourceComponent = relation.sourceComponent;
+      diagnostic.sourceSheet = relation.sourceSheet;
+      diagnostic.quarterTurnRotation = relation.quarterTurnRotation;
+      diagnostic.translationU = relation.latticeTranslation.x();
+      diagnostic.translationV = relation.latticeTranslation.y();
+      diagnostic.sourceRouteEdges = relation.sourceRouteEdges;
+      diagnostic.sourceRouteTopology = relation.sourceRouteTopology;
+      diagnostic.cutSourceEdges = relation.cutSourceEdges;
+      diagnostic.cutSourceTopology = relation.cutSourceTopology;
+      result.diagnostics.surfaceCellPeriodicHolonomies.push_back(
+          std::move(diagnostic));
+    }
     result.diagnostics.surfaceCellPeriodicHolonomyAvailable =
-        traceNetwork.phaseFront.periodicHolonomy.enabled;
-    result.diagnostics.surfaceCellPeriodicHolonomyQuarterTurnRotation =
-        traceNetwork.phaseFront.periodicHolonomy.quarterTurnRotation;
-    result.diagnostics.surfaceCellPeriodicHolonomyTranslationU =
-        traceNetwork.phaseFront.periodicHolonomy.latticeTranslation.x();
-    result.diagnostics.surfaceCellPeriodicHolonomyTranslationV =
-        traceNetwork.phaseFront.periodicHolonomy.latticeTranslation.y();
-    result.diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount =
-        traceNetwork.phaseFront.periodicHolonomy.sourceRouteEdges.size();
-    result.diagnostics.surfaceCellPeriodicCutEdgeCount =
-        traceNetwork.phaseFront.periodicHolonomy.cutSourceEdges.size();
+        !traceNetwork.phaseFront.periodicHolonomies.empty();
+    if (!traceNetwork.phaseFront.periodicHolonomies.empty()) {
+      const auto &primary = traceNetwork.phaseFront.periodicHolonomies.front();
+      result.diagnostics.surfaceCellPeriodicHolonomyQuarterTurnRotation =
+          primary.quarterTurnRotation;
+      result.diagnostics.surfaceCellPeriodicHolonomyTranslationU =
+          primary.latticeTranslation.x();
+      result.diagnostics.surfaceCellPeriodicHolonomyTranslationV =
+          primary.latticeTranslation.y();
+      result.diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount =
+          primary.sourceRouteEdges.size();
+      result.diagnostics.surfaceCellPeriodicCutEdgeCount =
+          primary.cutSourceEdges.size();
+    }
     if (traceNetwork.phaseFront.disposition ==
             geometry::SurfaceCellProducerDisposition::Rejected &&
         traceNetwork.phaseFront.failure.reason !=
@@ -7665,6 +7692,10 @@ void accumulate_component_diagnostics(
         source.surfaceCellAuthoritativeProducerDisposition;
   }
   if (source.surfaceCellPeriodicHolonomyAvailable) {
+    target.surfaceCellPeriodicHolonomies.insert(
+        target.surfaceCellPeriodicHolonomies.end(),
+        source.surfaceCellPeriodicHolonomies.begin(),
+        source.surfaceCellPeriodicHolonomies.end());
     target.surfaceCellPeriodicHolonomyAvailable = true;
     target.surfaceCellPeriodicHolonomyQuarterTurnRotation =
         source.surfaceCellPeriodicHolonomyQuarterTurnRotation;

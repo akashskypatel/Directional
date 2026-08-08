@@ -208,15 +208,25 @@ struct SurfaceFrontEvent {
 
 /** Exact quotient relation between the two copies of an intrinsic annulus cut. */
 struct SurfacePeriodicHolonomy {
-  bool enabled = false;
   int sourceComponent = -1;
   int sourceSheet = -1;
   int quarterTurnRotation = 0;
   Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
   /// Ordered interior source-edge route for one complete periodic transport.
   std::vector<int> sourceRouteEdges;
+  /// Canonical source-edge endpoint keys parallel to sourceRouteEdges.
+  std::vector<std::uint64_t> sourceRouteTopology;
   /// Ordered source edges forming the deterministic boundary-to-boundary cut.
   std::vector<int> cutSourceEdges;
+  /// Canonical source-edge endpoint keys parallel to cutSourceEdges.
+  std::vector<std::uint64_t> cutSourceTopology;
+};
+
+enum class SurfacePeriodicHolonomyInsertStatus : int {
+  Inserted = 0,
+  Equivalent = 1,
+  AmbiguousBasis = 2,
+  Incompatible = 3,
 };
 
 struct SurfacePhaseFrontCell {
@@ -263,6 +273,8 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidPeriodicFrontPairing = 30,
   InvalidPeriodicRingCorrespondence = 31,
   AmbiguousPeriodicRingCorrespondence = 32,
+  AmbiguousPeriodicRelationBasis = 33,
+  IncompatiblePeriodicRelation = 34,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -295,7 +307,7 @@ struct SurfacePhaseFrontResult {
   bool succeeded = false;
   int gridU = 0;
   int gridV = 0;
-  SurfacePeriodicHolonomy periodicHolonomy;
+  std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
@@ -670,6 +682,13 @@ SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
                                           const int sign);
 
 int normalized_branch(const int branch);
+
+SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
+    SurfacePeriodicHolonomy relation);
+
+SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
+    std::vector<SurfacePeriodicHolonomy> &relations,
+    SurfacePeriodicHolonomy relation);
 
 Eigen::RowVector3d transport_direction_between_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,

@@ -959,18 +959,18 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_TRUE(network.phaseFront.periodicHolonomy.enabled);
-  EXPECT_EQ(0, network.phaseFront.periodicHolonomy.quarterTurnRotation);
+  ASSERT_TRUE(!network.phaseFront.periodicHolonomies.empty());
+  EXPECT_EQ(0, network.phaseFront.periodicHolonomies.front().quarterTurnRotation);
   EXPECT_EQ(network.phaseFront.gridU,
-            network.phaseFront.periodicHolonomy.latticeTranslation.x());
-  EXPECT_EQ(0, network.phaseFront.periodicHolonomy.latticeTranslation.y());
+            network.phaseFront.periodicHolonomies.front().latticeTranslation.x());
+  EXPECT_EQ(0, network.phaseFront.periodicHolonomies.front().latticeTranslation.y());
   EXPECT_GT(network.phaseFront.gridU, 2);
   EXPECT_GT(network.phaseFront.gridV, 0);
   EXPECT_EQ(static_cast<std::size_t>(network.phaseFront.gridU *
                                      network.phaseFront.gridV),
             network.phaseFront.cells.size());
-  EXPECT_FALSE(network.phaseFront.periodicHolonomy.sourceRouteEdges.empty());
-  EXPECT_FALSE(network.phaseFront.periodicHolonomy.cutSourceEdges.empty());
+  EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
+  EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().cutSourceEdges.empty());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -1010,10 +1010,10 @@ TEST(SurfaceCellsPhase10,
             reverse.phaseFront.disposition);
   EXPECT_EQ(forward.phaseFront.gridU, reverse.phaseFront.gridU);
   EXPECT_EQ(forward.phaseFront.gridV, reverse.phaseFront.gridV);
-  EXPECT_EQ(forward.phaseFront.periodicHolonomy.quarterTurnRotation,
-            reverse.phaseFront.periodicHolonomy.quarterTurnRotation);
-  EXPECT_EQ(forward.phaseFront.periodicHolonomy.latticeTranslation,
-            reverse.phaseFront.periodicHolonomy.latticeTranslation);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomies.front().quarterTurnRotation,
+            reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation);
+  EXPECT_EQ(forward.phaseFront.periodicHolonomies.front().latticeTranslation,
+            reverse.phaseFront.periodicHolonomies.front().latticeTranslation);
   const auto canonicalEdgeRoute = [](
       const directional::TriMesh &mesh, const std::vector<int> &sourceEdges) {
     std::vector<std::pair<int, int>> route;
@@ -1029,20 +1029,20 @@ TEST(SurfaceCellsPhase10,
     return route;
   };
   const auto forwardRoute = canonicalEdgeRoute(
-      forwardMesh, forward.phaseFront.periodicHolonomy.sourceRouteEdges);
+      forwardMesh, forward.phaseFront.periodicHolonomies.front().sourceRouteEdges);
   const auto reverseRoute = canonicalEdgeRoute(
-      reverseMesh, reverse.phaseFront.periodicHolonomy.sourceRouteEdges);
+      reverseMesh, reverse.phaseFront.periodicHolonomies.front().sourceRouteEdges);
   const auto forwardCut = canonicalEdgeRoute(
-      forwardMesh, forward.phaseFront.periodicHolonomy.cutSourceEdges);
+      forwardMesh, forward.phaseFront.periodicHolonomies.front().cutSourceEdges);
   const auto reverseCut = canonicalEdgeRoute(
-      reverseMesh, reverse.phaseFront.periodicHolonomy.cutSourceEdges);
-  ASSERT_EQ(forward.phaseFront.periodicHolonomy.sourceRouteEdges.size(),
+      reverseMesh, reverse.phaseFront.periodicHolonomies.front().cutSourceEdges);
+  ASSERT_EQ(forward.phaseFront.periodicHolonomies.front().sourceRouteEdges.size(),
             forwardRoute.size());
-  ASSERT_EQ(reverse.phaseFront.periodicHolonomy.sourceRouteEdges.size(),
+  ASSERT_EQ(reverse.phaseFront.periodicHolonomies.front().sourceRouteEdges.size(),
             reverseRoute.size());
-  ASSERT_EQ(forward.phaseFront.periodicHolonomy.cutSourceEdges.size(),
+  ASSERT_EQ(forward.phaseFront.periodicHolonomies.front().cutSourceEdges.size(),
             forwardCut.size());
-  ASSERT_EQ(reverse.phaseFront.periodicHolonomy.cutSourceEdges.size(),
+  ASSERT_EQ(reverse.phaseFront.periodicHolonomies.front().cutSourceEdges.size(),
             reverseCut.size());
   EXPECT_EQ(forwardRoute, reverseRoute);
   EXPECT_EQ(forwardCut, reverseCut);
@@ -1414,6 +1414,160 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     PeriodicHolonomyReverseDescriptionCanonicalizesWithoutDuplicateGenerator) {
+  using directional::geometry::SurfacePeriodicHolonomy;
+  using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
+  using directional::geometry::surface_cell_tracing_detail::insert_periodic_holonomy;
+
+  SurfacePeriodicHolonomy forward;
+  forward.sourceComponent = 2;
+  forward.sourceSheet = 7;
+  forward.quarterTurnRotation = 0;
+  forward.latticeTranslation = Eigen::Vector2i(8, 0);
+  forward.sourceRouteEdges = {4, 6, 8, 10};
+  forward.sourceRouteTopology = {40, 60, 80, 100};
+  forward.cutSourceEdges = {12, 14};
+  forward.cutSourceTopology = {120, 140};
+
+  SurfacePeriodicHolonomy reverse = forward;
+  reverse.latticeTranslation = Eigen::Vector2i(-8, 0);
+  std::reverse(reverse.sourceRouteEdges.begin(), reverse.sourceRouteEdges.end());
+  std::reverse(reverse.sourceRouteTopology.begin(), reverse.sourceRouteTopology.end());
+  std::reverse(reverse.cutSourceEdges.begin(), reverse.cutSourceEdges.end());
+  std::reverse(reverse.cutSourceTopology.begin(), reverse.cutSourceTopology.end());
+
+  std::vector<SurfacePeriodicHolonomy> relations;
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
+            insert_periodic_holonomy(relations, forward));
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Equivalent,
+            insert_periodic_holonomy(relations, reverse));
+  ASSERT_EQ(1U, relations.size());
+  EXPECT_EQ(8, relations.front().latticeTranslation.x());
+  EXPECT_EQ(0, relations.front().latticeTranslation.y());
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicHolonomyDistinctAuthoritativeSheetsRetainEveryRelation) {
+  using directional::geometry::SurfacePeriodicHolonomy;
+  using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
+  using directional::geometry::surface_cell_tracing_detail::insert_periodic_holonomy;
+
+  const auto makeRelation = [](const int sheet, const std::uint64_t routeKey,
+                               const std::uint64_t cutKey) {
+    SurfacePeriodicHolonomy relation;
+    relation.sourceComponent = 0;
+    relation.sourceSheet = sheet;
+    relation.latticeTranslation = Eigen::Vector2i(6, 0);
+    relation.sourceRouteEdges = {sheet * 10 + 1};
+    relation.sourceRouteTopology = {routeKey};
+    relation.cutSourceEdges = {sheet * 10 + 2};
+    relation.cutSourceTopology = {cutKey};
+    return relation;
+  };
+
+  std::vector<SurfacePeriodicHolonomy> relations;
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
+            insert_periodic_holonomy(relations, makeRelation(3, 300, 301)));
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
+            insert_periodic_holonomy(relations, makeRelation(1, 100, 101)));
+  ASSERT_EQ(2U, relations.size());
+  EXPECT_EQ(1, relations[0].sourceSheet);
+  EXPECT_EQ(3, relations[1].sourceSheet);
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicHolonomySameSheetDependentBasisFailsClosedWithoutOrderChoice) {
+  using directional::geometry::SurfacePeriodicHolonomy;
+  using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
+  using directional::geometry::surface_cell_tracing_detail::insert_periodic_holonomy;
+
+  const auto makeRelation = [](const int edge, const std::uint64_t topology) {
+    SurfacePeriodicHolonomy relation;
+    relation.sourceComponent = 0;
+    relation.sourceSheet = 0;
+    relation.latticeTranslation = Eigen::Vector2i(4, 0);
+    relation.sourceRouteEdges = {edge};
+    relation.sourceRouteTopology = {topology};
+    relation.cutSourceEdges = {edge + 1};
+    relation.cutSourceTopology = {topology + 1};
+    return relation;
+  };
+
+  for (const bool reversed : {false, true}) {
+    std::vector<SurfacePeriodicHolonomy> relations;
+    auto first = makeRelation(1, 10);
+    auto second = makeRelation(3, 30);
+    if (reversed) std::swap(first, second);
+    EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
+              insert_periodic_holonomy(relations, first));
+    EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis,
+              insert_periodic_holonomy(relations, second));
+    ASSERT_EQ(1U, relations.size());
+  }
+}
+
+TEST(SurfaceCellsPhase10,
+     PeriodicHolonomyConflictingTransportFailsClosed) {
+  using directional::geometry::SurfacePeriodicHolonomy;
+  using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
+  using directional::geometry::surface_cell_tracing_detail::insert_periodic_holonomy;
+
+  SurfacePeriodicHolonomy first;
+  first.sourceComponent = 0;
+  first.sourceSheet = 0;
+  first.latticeTranslation = Eigen::Vector2i(4, 0);
+  first.sourceRouteEdges = {1, 2};
+  first.sourceRouteTopology = {10, 20};
+  first.cutSourceEdges = {3};
+  first.cutSourceTopology = {30};
+  SurfacePeriodicHolonomy conflicting = first;
+  conflicting.quarterTurnRotation = 1;
+  conflicting.latticeTranslation = Eigen::Vector2i(0, 4);
+
+  std::vector<SurfacePeriodicHolonomy> relations;
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Inserted,
+            insert_periodic_holonomy(relations, first));
+  EXPECT_EQ(SurfacePeriodicHolonomyInsertStatus::Incompatible,
+            insert_periodic_holonomy(relations, conflicting));
+}
+
+TEST(SurfaceCellsPhase10,
+     ExactCommittedTorusDoesNotRejectOnlyBecauseAnotherPeriodicSheetExists) {
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField = read_rawfield_fixture(fieldPath, mesh.F.rows());
+
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.preserveDebugArtifacts = true;
+  options.surfaceCells.retainIntermediateGeometry = true;
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, rawField, options);
+  ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
+  const auto &phaseFront = result.surfaceCellContext.traceNetwork.phaseFront;
+  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
+            phaseFront.failure.reason);
+  if (phaseFront.disposition ==
+      directional::geometry::SurfaceCellProducerDisposition::Produced) {
+    EXPECT_GT(phaseFront.periodicHolonomies.size(), 1U);
+    EXPECT_EQ(phaseFront.periodicHolonomies.size(),
+              result.diagnostics.surfaceCellPeriodicHolonomies.size());
+  }
+}
+
+TEST(SurfaceCellsPhase10,
      PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason) {
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/cylinder.obj");
@@ -1433,8 +1587,8 @@ TEST(SurfaceCellsPhase10,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             valid.phaseFront.disposition);
-  ASSERT_FALSE(valid.phaseFront.periodicHolonomy.sourceRouteEdges.empty());
-  const int tamperedEdge = valid.phaseFront.periodicHolonomy.sourceRouteEdges.front();
+  ASSERT_FALSE(valid.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
+  const int tamperedEdge = valid.phaseFront.periodicHolonomies.front().sourceRouteEdges.front();
   auto transition = std::find_if(
       crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
       [&](const auto &candidate) { return candidate.sourceEdge == tamperedEdge; });
@@ -1482,7 +1636,7 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition);
   if (network.phaseFront.disposition ==
       directional::geometry::SurfaceCellProducerDisposition::Produced) {
-    EXPECT_TRUE(network.phaseFront.periodicHolonomy.enabled);
+    EXPECT_TRUE(!network.phaseFront.periodicHolonomies.empty());
     EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
   } else {
     EXPECT_TRUE(network.phaseFront.failure.reason ==

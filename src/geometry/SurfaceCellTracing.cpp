@@ -955,6 +955,140 @@ int normalized_branch(const int branch) {
   return ((branch % 4) + 4) % 4;
 }
 
+namespace {
+
+std::vector<std::uint64_t> canonical_cycle_topology(
+    const std::vector<std::uint64_t> &values) {
+  if (values.empty()) return {};
+  std::vector<std::uint64_t> best;
+  const auto consider = [&](const std::vector<std::uint64_t> &candidate,
+                            std::vector<std::uint64_t> &currentBest) {
+    for (std::size_t offset = 0; offset < candidate.size(); ++offset) {
+      std::vector<std::uint64_t> rotated;
+      rotated.reserve(candidate.size());
+      for (std::size_t i = 0; i < candidate.size(); ++i) {
+        rotated.push_back(candidate[(offset + i) % candidate.size()]);
+      }
+      if (currentBest.empty() || rotated < currentBest) {
+        currentBest = std::move(rotated);
+      }
+    }
+  };
+  consider(values, best);
+  std::vector<std::uint64_t> reversed(values.rbegin(), values.rend());
+  consider(reversed, best);
+  return best;
+}
+
+std::vector<std::uint64_t> canonical_path_topology(
+    const std::vector<std::uint64_t> &values) {
+  std::vector<std::uint64_t> reversed(values.rbegin(), values.rend());
+  return reversed < values ? reversed : values;
+}
+
+Eigen::Vector2i rotate_lattice_quarter_turn(const Eigen::Vector2i &value,
+                                             const int quarterTurns) {
+  switch (normalized_branch(quarterTurns)) {
+  case 0: return value;
+  case 1: return Eigen::Vector2i(-value.y(), value.x());
+  case 2: return Eigen::Vector2i(-value.x(), -value.y());
+  case 3: return Eigen::Vector2i(value.y(), -value.x());
+  }
+  return value;
+}
+
+int translation_orientation_rank(const Eigen::Vector2i &translation) {
+  if (translation.x() != 0) return translation.x() > 0 ? 0 : 1;
+  if (translation.y() != 0) return translation.y() > 0 ? 0 : 1;
+  return 2;
+}
+
+auto periodic_relation_key(const SurfacePeriodicHolonomy &relation) {
+  return std::tuple{
+      relation.sourceComponent,
+      relation.sourceSheet,
+      relation.quarterTurnRotation,
+      relation.latticeTranslation.x(),
+      relation.latticeTranslation.y(),
+      relation.sourceRouteTopology,
+      relation.cutSourceTopology};
+}
+
+bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
+  return relation.sourceComponent >= 0 && relation.sourceSheet >= 0 &&
+         relation.latticeTranslation.squaredNorm() > 0 &&
+         !relation.sourceRouteEdges.empty() &&
+         relation.sourceRouteEdges.size() == relation.sourceRouteTopology.size() &&
+         !relation.cutSourceEdges.empty() &&
+         relation.cutSourceEdges.size() == relation.cutSourceTopology.size();
+}
+
+} // namespace
+
+SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
+    SurfacePeriodicHolonomy relation) {
+  relation.quarterTurnRotation = normalized_branch(relation.quarterTurnRotation);
+  relation.sourceRouteTopology =
+      canonical_cycle_topology(relation.sourceRouteTopology);
+  relation.cutSourceTopology = canonical_path_topology(relation.cutSourceTopology);
+
+  SurfacePeriodicHolonomy inverse = relation;
+  inverse.quarterTurnRotation = normalized_branch(-relation.quarterTurnRotation);
+  inverse.latticeTranslation = -rotate_lattice_quarter_turn(
+      relation.latticeTranslation, inverse.quarterTurnRotation);
+
+  const auto action_key = [](const SurfacePeriodicHolonomy &candidate) {
+    return std::tuple{translation_orientation_rank(candidate.latticeTranslation),
+                      candidate.quarterTurnRotation,
+                      std::abs(candidate.latticeTranslation.x()),
+                      std::abs(candidate.latticeTranslation.y()),
+                      candidate.latticeTranslation.x(),
+                      candidate.latticeTranslation.y()};
+  };
+  if (action_key(inverse) < action_key(relation)) {
+    relation.quarterTurnRotation = inverse.quarterTurnRotation;
+    relation.latticeTranslation = inverse.latticeTranslation;
+  }
+  return relation;
+}
+
+SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
+    std::vector<SurfacePeriodicHolonomy> &relations,
+    SurfacePeriodicHolonomy relation) {
+  relation = canonicalize_periodic_holonomy(std::move(relation));
+  if (!periodic_relation_shape_valid(relation)) {
+    return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+  }
+
+  for (const SurfacePeriodicHolonomy &existing : relations) {
+    if (periodic_relation_key(existing) == periodic_relation_key(relation)) {
+      return SurfacePeriodicHolonomyInsertStatus::Equivalent;
+    }
+    if (existing.sourceComponent != relation.sourceComponent ||
+        existing.sourceSheet != relation.sourceSheet) {
+      continue;
+    }
+    if (existing.sourceRouteTopology == relation.sourceRouteTopology ||
+        existing.cutSourceTopology == relation.cutSourceTopology) {
+      return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+    }
+
+    // This G4 slice intentionally does not guess a basis inside one source
+    // sheet. Distinct same-sheet cycles require a later topology-basis solver;
+    // retaining one by discovery order would be unsound. Multiple relations
+    // on distinct authoritative sheets/components remain valid and are kept.
+    return SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis;
+  }
+
+  relations.push_back(std::move(relation));
+  std::sort(relations.begin(), relations.end(),
+            [](const SurfacePeriodicHolonomy &a,
+               const SurfacePeriodicHolonomy &b) {
+              return periodic_relation_key(a) < periodic_relation_key(b);
+            });
+  return SurfacePeriodicHolonomyInsertStatus::Inserted;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -6157,6 +6291,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   }
   int totalMatching = 0;
   std::vector<int> holonomyRoute;
+  std::vector<std::uint64_t> holonomyRouteTopology;
   for (std::size_t index = 0; index < faceCycle.size(); ++index) {
     const int sourceFace = faceCycle[index];
     const int targetFace = faceCycle[(index + 1U) % faceCycle.size()];
@@ -6183,6 +6318,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       return result;
     }
     holonomyRoute.push_back(sourceEdge);
+    holonomyRouteTopology.push_back(sharedKey);
     if (hasTransitions) {
       const auto found = transitionLookup.byEdge.find(sharedKey);
       if (found == transitionLookup.byEdge.end() ||
@@ -6220,16 +6356,18 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   }
 
   result.disposition = SurfaceCellProducerDisposition::Rejected;
-  result.periodicHolonomy.enabled = true;
-  result.periodicHolonomy.quarterTurnRotation = 0;
-  result.periodicHolonomy.latticeTranslation = {result.gridU, 0};
-  result.periodicHolonomy.sourceRouteEdges = std::move(holonomyRoute);
+  result.periodicHolonomies.emplace_back();
+  SurfacePeriodicHolonomy &periodicHolonomy = result.periodicHolonomies.back();
+  periodicHolonomy.quarterTurnRotation = 0;
+  periodicHolonomy.latticeTranslation = {result.gridU, 0};
+  periodicHolonomy.sourceRouteEdges = std::move(holonomyRoute);
+  periodicHolonomy.sourceRouteTopology = std::move(holonomyRouteTopology);
   const int component = face_label_or_default(options.sourceFaceComponents,
                                                activeFaces.front(), 0);
   const int sheet = face_label_or_default(options.sourceFaceSheets,
                                            activeFaces.front(), component);
-  result.periodicHolonomy.sourceComponent = component;
-  result.periodicHolonomy.sourceSheet = sheet;
+  periodicHolonomy.sourceComponent = component;
+  periodicHolonomy.sourceSheet = sheet;
   for (int layer = 0; layer < maxDistance; ++layer) {
     const std::uint64_t key = edge_key(
         rings[static_cast<std::size_t>(layer)][0],
@@ -6242,8 +6380,12 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                               SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
       return result;
     }
-    result.periodicHolonomy.cutSourceEdges.push_back(sourceEdge);
+    periodicHolonomy.cutSourceEdges.push_back(sourceEdge);
+    periodicHolonomy.cutSourceTopology.push_back(key);
   }
+  periodicHolonomy =
+      surface_cell_tracing_detail::canonicalize_periodic_holonomy(
+          std::move(periodicHolonomy));
 
   const double stepV = height / static_cast<double>(result.gridV);
   const int columns = result.gridU + 1;
@@ -6549,14 +6691,24 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 
     result.gridU = std::max(result.gridU, local.gridU);
     result.gridV = std::max(result.gridV, local.gridV);
-    if (local.periodicHolonomy.enabled) {
-      if (result.periodicHolonomy.enabled) {
+    for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
+      const auto insertion =
+          surface_cell_tracing_detail::insert_periodic_holonomy(
+              result.periodicHolonomies, std::move(relation));
+      if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
-        set_phase_front_failure(result.failure,
-                                SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis);
         return result;
       }
-      result.periodicHolonomy = local.periodicHolonomy;
+      if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation);
+        return result;
+      }
     }
     for (SurfacePhaseFrontCell &cell : local.cells) {
       cell.id += cellOffset;
@@ -6639,6 +6791,8 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing: return "InvalidPeriodicFrontPairing";
   case SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence: return "InvalidPeriodicRingCorrespondence";
   case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence: return "AmbiguousPeriodicRingCorrespondence";
+  case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis: return "AmbiguousPeriodicRelationBasis";
+  case SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation: return "IncompatiblePeriodicRelation";
   }
   return "Unknown";
 }
