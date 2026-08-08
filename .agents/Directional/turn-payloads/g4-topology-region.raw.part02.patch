@@ -1,0 +1,300 @@
++  for (int seed = 0; seed < faceCount; ++seed) {
++    if (visited[static_cast<std::size_t>(seed)]) continue;
++    ProvisionalRegion region;
++    std::queue<int> queue;
++    queue.push(seed);
++    visited[static_cast<std::size_t>(seed)] = true;
++    while (!queue.empty()) {
++      const int face = queue.front();
++      queue.pop();
++      region.faces.push_back(face);
++      for (const auto &[neighbor, key] : adjacency[static_cast<std::size_t>(face)]) {
++        (void)key;
++        if (!visited[static_cast<std::size_t>(neighbor)]) {
++          visited[static_cast<std::size_t>(neighbor)] = true;
++          queue.push(neighbor);
++        }
++      }
++    }
++    std::sort(region.faces.begin(), region.faces.end(), [&](const int a, const int b) {
++      const auto ca = canonical_face(a);
++      const auto cb = canonical_face(b);
++      return ca != cb ? ca < cb : a < b;
++    });
++    for (const int face : region.faces) {
++      const auto key = canonical_face(face);
++      region.canonicalFaceTopology.insert(region.canonicalFaceTopology.end(),
++                                          key.begin(), key.end());
++    }
++    provisional.push_back(std::move(region));
++  }
++  std::sort(provisional.begin(), provisional.end(),
++            [](const ProvisionalRegion &a, const ProvisionalRegion &b) {
++              return a.canonicalFaceTopology < b.canonicalFaceTopology;
++            });
++
++  result.regions.reserve(provisional.size());
++  for (int regionId = 0; regionId < static_cast<int>(provisional.size()); ++regionId) {
++    const ProvisionalRegion &source = provisional[static_cast<std::size_t>(regionId)];
++    SurfaceTopologyRegion region;
++    region.id = regionId;
++    region.sourceFaces = source.faces;
++    if (region.sourceFaces.empty()) {
++      result.valid = false;
++      return result;
++    }
++    region.sourceComponent = face_label_or_default(
++        options.sourceFaceComponents, region.sourceFaces.front(), 0);
++    std::set<int> isolationSheets;
++    for (const int face : region.sourceFaces) {
++      result.regionByFace[static_cast<std::size_t>(face)] = regionId;
++      if (face_label_or_default(options.sourceFaceComponents, face, 0) !=
++          region.sourceComponent) {
++        result.valid = false;
++        return result;
++      }
++      const int sheet = face_label_or_default(options.sourceFaceSheets, face,
++                                               region.sourceComponent);
++      if (sheet < 0) {
++        result.valid = false;
++        return result;
++      }
++      isolationSheets.insert(sheet);
++    }
++    region.isolationSheets.assign(isolationSheets.begin(), isolationSheets.end());
++    result.regions.push_back(std::move(region));
++  }
++
++  // Region topology is evaluated from exact source incidence. A local-sheet
++  // transition inside the same region is recorded as an internal isolation
++  // seam but never as an exterior producer boundary.
++  for (SurfaceTopologyRegion &region : result.regions) {
++    std::set<int> regionFaces(region.sourceFaces.begin(), region.sourceFaces.end());
++    std::set<int> regionVertices;
++    std::set<std::uint64_t> regionEdges;
++    std::map<int, std::vector<int>> boundaryAdjacency;
++    for (const int face : region.sourceFaces) {
++      for (int corner = 0; corner < 3; ++corner) {
++        regionVertices.insert(faces(face, corner));
++        const int a = faces(face, corner);
++        const int b = faces(face, (corner + 1) % 3);
++        const std::uint64_t key = edge_key(a, b);
++        regionEdges.insert(key);
++        const auto incident = fullIncident.find(key);
++        if (incident == fullIncident.end()) {
++          result.valid = false;
++          return result;
++        }
++        const int first = incident->second[0];
++        const int second = incident->second[1];
++        const int opposite = first == face ? second : (second == face ? first : -2);
++        if (opposite == -2) {
++          result.valid = false;
++          return result;
++        }
++        if (opposite >= 0 && regionFaces.count(opposite) != 0U) {
++          if (face < opposite &&
++              source_edge_is_internal_isolation_seam(
++                  options, faceCount, result.regionByFace, face, opposite, key)) {
++            region.internalIsolationSeamTopology.push_back(key);
++          }
++          continue;
++        }
++        region.boundaryEdgeTopology.push_back(key);
++        boundaryAdjacency[a].push_back(b);
++        boundaryAdjacency[b].push_back(a);
++      }
++    }
++    std::sort(region.boundaryEdgeTopology.begin(), region.boundaryEdgeTopology.end());
++    region.boundaryEdgeTopology.erase(
++        std::unique(region.boundaryEdgeTopology.begin(),
++                    region.boundaryEdgeTopology.end()),
++        region.boundaryEdgeTopology.end());
++    std::sort(region.internalIsolationSeamTopology.begin(),
++              region.internalIsolationSeamTopology.end());
++    region.internalIsolationSeamTopology.erase(
++        std::unique(region.internalIsolationSeamTopology.begin(),
++                    region.internalIsolationSeamTopology.end()),
++        region.internalIsolationSeamTopology.end());
++    region.eulerCharacteristic = static_cast<int>(regionVertices.size()) -
++                                 static_cast<int>(regionEdges.size()) +
++                                 static_cast<int>(region.sourceFaces.size());
++    std::set<int> unvisitedBoundary;
++    for (auto &[vertex, neighbors] : boundaryAdjacency) {
++      std::sort(neighbors.begin(), neighbors.end());
++      neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
++      if (neighbors.size() != 2U) {
++        result.valid = false;
++        return result;
++      }
++      unvisitedBoundary.insert(vertex);
++    }
++    while (!unvisitedBoundary.empty()) {
++      ++region.boundaryLoopCount;
++      std::vector<int> stack{*unvisitedBoundary.begin()};
++      while (!stack.empty()) {
++        const int vertex = stack.back();
++        stack.pop_back();
++        if (unvisitedBoundary.erase(vertex) == 0U) continue;
++        for (const int neighbor : boundaryAdjacency[vertex]) {
++          if (unvisitedBoundary.count(neighbor) != 0U) stack.push_back(neighbor);
++        }
++      }
++    }
++
++    std::uint64_t hash = 1469598103934665603ULL;
++    const auto consume = [&](const std::uint64_t value) {
++      hash ^= value;
++      hash *= 1099511628211ULL;
++    };
++    consume(static_cast<std::uint64_t>(region.eulerCharacteristic));
++    consume(static_cast<std::uint64_t>(region.boundaryLoopCount));
++    for (const int face : region.sourceFaces) {
++      const auto key = canonical_face(face);
++      consume(static_cast<std::uint64_t>(key[0]));
++      consume(static_cast<std::uint64_t>(key[1]));
++      consume(static_cast<std::uint64_t>(key[2]));
++    }
++    for (const std::uint64_t key : region.boundaryEdgeTopology) consume(key);
++    for (const std::uint64_t key : region.internalIsolationSeamTopology) consume(key);
++    region.structuralHash = hash;
++  }
++  return result;
++}
++
++bool source_edge_is_internal_isolation_seam(
++    const SurfaceCellTracingOptions &options, const int faceCount,
++    const std::vector<int> &regionByFace, const int firstFace,
++    const int secondFace, const std::uint64_t edgeKey) {
++  if (faceCount <= 0 || firstFace < 0 || secondFace < 0 ||
++      firstFace >= faceCount || secondFace >= faceCount ||
++      static_cast<int>(regionByFace.size()) != faceCount ||
++      regionByFace[static_cast<std::size_t>(firstFace)] < 0 ||
++      regionByFace[static_cast<std::size_t>(firstFace)] !=
++          regionByFace[static_cast<std::size_t>(secondFace)] ||
++      !source_label_arrays_valid(options, faceCount) ||
++      !source_faces_share_component(options, firstFace, secondFace) ||
++      source_faces_compatible(options, firstFace, secondFace) ||
++      options.hardFeatureEdges.count(edgeKey) != 0U ||
++      (options.reliefBarriersEmbedded &&
++       options.reliefBarrierEdges.count(edgeKey) != 0U)) {
++    return false;
++  }
++  return true;
++}
++
++} // namespace directional::geometry::surface_cell_tracing_detail
++
++namespace directional::geometry::surface_cell_tracing_detail {
++
+ bool trace_point_is_valid(const SurfaceTracePoint &point,
+                                  const Eigen::MatrixXi &faces) {
+   return point.face >= 0 && point.face < faces.rows() &&
+@@ -4099,6 +4351,7 @@ bool build_planar_phase_frame(
+     const std::vector<int> &activeFaces,
+     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
++    const SurfaceCellTracingOptions *tracingOptions,
+     SurfacePhaseFrontFailure &failure, UniformPhaseFrame &frame) {
+   if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
+       faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows() ||
+@@ -4245,7 +4498,12 @@ bool build_planar_phase_frame(
+               expectedTargetBranch) {
+         int sourceEdge = -1;
+         source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+-        set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition, -1, -1, first, second, -1, sourceEdge);
++        const auto reason =
++            tracingOptions != nullptr &&
++                    !source_faces_compatible(*tracingOptions, first, second)
++                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
++                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition;
++        set_phase_front_failure(failure, reason, -1, -1, first, second, -1, sourceEdge);
+         return false;
+       }
+ 
+@@ -4267,7 +4525,12 @@ bool build_planar_phase_frame(
+           normalized_branch(forward.matching + reverse.matching) != 0) {
+         int sourceEdge = -1;
+         source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+-        set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition, -1, -1, first, second, -1, sourceEdge);
++        const auto reason =
++            tracingOptions != nullptr &&
++                    !source_faces_compatible(*tracingOptions, first, second)
++                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
++                : SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition;
++        set_phase_front_failure(failure, reason, -1, -1, first, second, -1, sourceEdge);
+         return false;
+       }
+     }
+@@ -4822,7 +5085,9 @@ bool segment_on_source(
+     std::vector<int> sourceEdges;
+     sourceEdges.reserve(route.size());
+     for (const VertexPathStep &step : route) {
+-      if (!source_faces_compatible(options, transitFace, step.face) ||
++      const bool crossesIsolationSheet =
++          !source_faces_compatible(options, transitFace, step.face);
++      if (!source_faces_share_component(options, transitFace, step.face) ||
+           options.hardFeatureEdges.count(step.edgeKey) != 0 ||
+           (options.reliefBarriersEmbedded &&
+            options.reliefBarrierEdges.count(step.edgeKey) != 0)) {
+@@ -4842,9 +5107,11 @@ bool segment_on_source(
+       if (!transition.valid) {
+         set_phase_front_failure(
+             failure,
+-            sourceVertex >= 0
+-                ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
+-                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
++            crossesIsolationSheet
++                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
++                : (sourceVertex >= 0
++                       ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
++                       : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition),
+             cellId, sideId, transitFace, step.face, sourceVertex);
+         return false;
+       }
+@@ -4854,7 +5121,9 @@ bool segment_on_source(
+                                   sourceEdge)) {
+         set_phase_front_failure(
+             failure,
+-            SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
++            crossesIsolationSheet
++                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
++                : SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
+             cellId, sideId, transitFace, step.face, sourceVertex);
+         return false;
+       }
+@@ -4926,46 +5195,37 @@ void reverse_phase_front_cell_cycle(SurfacePhaseFrontCell &cell) {
+   }
+ }
+ 
+-bool phase_front_cell_source_labels(
++bool phase_front_cell_source_scope(
+     const SurfacePhaseFrontCell &cell,
+-    const SurfaceCellTracingOptions &options, int &component, int &sheet) {
++    const SurfaceCellTracingOptions &options, int &component, int &sheet,
++    std::vector<int> &isolationSheets) {
+   component = -1;
+   sheet = -1;
++  std::set<int> sheets;
+   const auto consume_face = [&](const int face) {
+-    if (face < 0) {
+-      return false;
+-    }
++    if (face < 0) return false;
+     const int candidateComponent =
+         face_label_or_default(options.sourceFaceComponents, face, 0);
+     const int candidateSheet =
+-        face_label_or_default(options.sourceFaceSheets, face,
+-                              candidateComponent);
+-    if (candidateComponent < 0 || candidateSheet < 0) {
+-      return false;
+-    }
+-    if (component < 0) {
+-      component = candidateComponent;
+-      sheet = candidateSheet;
+-      return true;
+-    }
+-    return component == candidateComponent && sheet == candidateSheet;
++        face_label_or_default(options.sourceFaceSheets, face, candidateComponent);
++    if (candidateComponent < 0 || candidateSheet < 0) return false;
++    if (component < 0) component = candidateComponent;
