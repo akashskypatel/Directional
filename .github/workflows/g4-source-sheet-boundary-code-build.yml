@@ -32,7 +32,7 @@ jobs:
             echo "entering_runtime_artifact=9016834575"
             echo "runtimeExecution=false"
             echo "reviewPolicy=never"
-            echo "transport=multipart verified base64 gzip"
+            echo "transport=six verified raw unified-patch parts"
             echo "allowed=apply verified boundary-authority patch, configure, compile/link seven approved targets, package/checksum"
             echo "prohibited=tests, benchmarks, generated Directional binaries, ctest/discovery, CLI, GUI, help/list/custom-input execution"
           } | tee "$LOG_DIR/activity.log"
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 40
+          fetch-depth: 50
           submodules: false
 
       - name: Verify and apply source-sheet boundary patch
@@ -52,18 +52,27 @@ jobs:
           echo "checkout_sha=$(git rev-parse HEAD)"
           git status --short
 
-          legacy_payload=.agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64
-          parts=(
-            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part01
-            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part02
-            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part03
-            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part04
+          raw_parts=(
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part01.patch
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part02.patch
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part03.patch
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part04.patch
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part05.patch
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.raw.part06.patch
           )
-          for part in "${parts[@]}"; do test -f "$part"; done
-          test "$(git hash-object "${parts[0]}")" = "d6d260fd98ca1dfb608e891bbdeb9834fec21ad0"
-          test "$(git hash-object "${parts[1]}")" = "35835d61cd4e7fd17c6ec01bcdf28821bfc7e849"
-          test "$(git hash-object "${parts[2]}")" = "175a99aa6e3eb6002034d11fdadd16b1daf811ac"
-          test "$(git hash-object "${parts[3]}")" = "19b690f91f9a2aa9b39b4731ea0037a29fca081a"
+          for part in "${raw_parts[@]}"; do test -f "$part"; done
+          test "$(git hash-object "${raw_parts[0]}")" = "5740d314c16d253c4e1d3f3c60808b97d76c103f"
+          test "$(git hash-object "${raw_parts[1]}")" = "b6c8db4d63b9c8799bd7aff4d60edfcf4ac79c2a"
+          test "$(git hash-object "${raw_parts[2]}")" = "74cc12adcd6b864b172c441e496363822aa27f6c"
+          test "$(git hash-object "${raw_parts[3]}")" = "221a07748efb846e4012488b5f28884efb58553b"
+          test "$(git hash-object "${raw_parts[4]}")" = "59e3060c9b2300e7ea430334350d189ba9262aa0"
+          test "$(git hash-object "${raw_parts[5]}")" = "208573561765a7a75542995d574e2da11d273599"
+          test "$(sha256sum "${raw_parts[0]}" | awk '{print $1}')" = "e60ca85cca6e8d727c4e841aef3700de9f29cab826ac77615a41f984c691425f"
+          test "$(sha256sum "${raw_parts[1]}" | awk '{print $1}')" = "f471c4ac850a81055a0e5b9c273fc7f8012c7c9d35b2b1b44b3fd59324aa4921"
+          test "$(sha256sum "${raw_parts[2]}" | awk '{print $1}')" = "356af28859d2034850d154016c06b0bd51428507261d9cb863fd8399d8727907"
+          test "$(sha256sum "${raw_parts[3]}" | awk '{print $1}')" = "fe28b9011eb509fc299daf74dc28415db370d0e248a44ddf43b367c59c0a059f"
+          test "$(sha256sum "${raw_parts[4]}" | awk '{print $1}')" = "96cebc5893849f40a498b989356688ddd4cd29bda5dd406f9ca6b0c6f194152e"
+          test "$(sha256sum "${raw_parts[5]}" | awk '{print $1}')" = "d558c3bd241dd9366f0211de109fa13f1d4dc23f8925fab93cd40df5c6cd830c"
 
           INPUT_HEADER_BLOB=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)
           INPUT_SOURCE_BLOB=$(git hash-object src/geometry/SurfaceCellTracing.cpp)
@@ -75,11 +84,7 @@ jobs:
           test "$INPUT_SOURCE_BLOB" = "3363e20c33a6850c192249877e7cb4488fc36597"
           test "$INPUT_TEST_BLOB" = "fe7ce43466cc3bc852b36c0ea8b8de6aac0c5b64"
 
-          cat "${parts[@]}" > /tmp/g4-source-sheet-boundary.patch.gz.b64
-          ENCODED_SHA256=$(sha256sum /tmp/g4-source-sheet-boundary.patch.gz.b64 | awk '{print $1}')
-          echo "encoded_payload_sha256=$ENCODED_SHA256"
-          test "$ENCODED_SHA256" = "1709635a2e30c33f5d07f370b7ef74c1a1118cdd6289ec54e10659c2019c21ab"
-          base64 -d /tmp/g4-source-sheet-boundary.patch.gz.b64 | gzip -dc > /tmp/g4-source-sheet-boundary.patch
+          cat "${raw_parts[@]}" > /tmp/g4-source-sheet-boundary.patch
           PATCH_SHA256=$(sha256sum /tmp/g4-source-sheet-boundary.patch | awk '{print $1}')
           echo "decoded_patch_sha256=$PATCH_SHA256"
           test "$PATCH_SHA256" = "c96b3d73f16f4b9391505380bc3f2cf9ec95ff5783fe843b556e95a534a6e75b"
@@ -110,10 +115,15 @@ jobs:
           IMPLEMENTATION_COMMIT=$(git rev-parse HEAD)
           echo "IMPLEMENTATION_COMMIT=$IMPLEMENTATION_COMMIT" >> "$GITHUB_ENV"
           echo "PATCH_SHA256=$PATCH_SHA256" >> "$GITHUB_ENV"
-          echo "ENCODED_SHA256=$ENCODED_SHA256" >> "$GITHUB_ENV"
           echo "implementation_commit=$IMPLEMENTATION_COMMIT"
 
-          git rm "$legacy_payload" "${parts[@]}"
+          git rm \
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64 \
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part01 \
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part02 \
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part03 \
+            .agents/Directional/turn-payloads/g4-source-sheet-boundary.patch.gz.b64.part04 \
+            "${raw_parts[@]}"
           git commit -m 'chore(agent): remove G4 source-sheet boundary payloads'
           CLEANUP_COMMIT=$(git rev-parse HEAD)
           echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
@@ -224,13 +234,14 @@ jobs:
             "implementationCommit": "$IMPLEMENTATION_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
             "enteringRuntimeArtifact": 9016834575,
-            "payloadPartGitBlobs": [
-              "d6d260fd98ca1dfb608e891bbdeb9834fec21ad0",
-              "35835d61cd4e7fd17c6ec01bcdf28821bfc7e849",
-              "175a99aa6e3eb6002034d11fdadd16b1daf811ac",
-              "19b690f91f9a2aa9b39b4731ea0037a29fca081a"
+            "rawPatchPartGitBlobs": [
+              "5740d314c16d253c4e1d3f3c60808b97d76c103f",
+              "b6c8db4d63b9c8799bd7aff4d60edfcf4ac79c2a",
+              "74cc12adcd6b864b172c441e496363822aa27f6c",
+              "221a07748efb846e4012488b5f28884efb58553b",
+              "59e3060c9b2300e7ea430334350d189ba9262aa0",
+              "208573561765a7a75542995d574e2da11d273599"
             ],
-            "encodedPayloadSha256": "$ENCODED_SHA256",
             "decodedPatchSha256": "$PATCH_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
