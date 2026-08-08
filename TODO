@@ -87,3 +87,13 @@ The next Code + Build is deliberately limited to canonicalizing every materializ
 Execute only `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Plan.md`. Edit only its allowlist, compile/package the approved targets, and execute no generated project binary, test, benchmark, `ctest`, discovery/list/help/version command, CLI/GUI command, or custom input.
 
 Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
+
+## 2026-08-08 Gate 4 canonical transition-index Code + Build
+
+The bounded Code + Build turn completed at implementation `edc14d38f862b94941b249f564050e2e1f8f5287`. It establishes one source-wide compact interior-transition domain from producer through materializer and separates internal execution ownership from public retain/release semantics.
+
+Workflow run `31279574458` compiled exactly seven approved Release/static/Ninja targets at `113/113` with `runtimeExecution=false`. Compile artifact `9028103772` has outer SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a`; all 48 recursive manifest entries verify. This is compile authority only.
+
+Runtime acceptance is pending under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Plan.md`. G4 remains active. Do not mark canonical-domain behavior accepted until that exact artifact proves the three focused index tests, exact retain iff requested behavior, prior-green regressions, and ordered direct-fixture movement.
+
+Nonzero periodic rotation, shared hard-rail breakpoint scheduling, and the positive multi-isolation lineage witness remain explicit later blockers. PR #8 remains open, draft, and unmerged. The next turn is Test + Benchmark only: consume artifact `9028103772` without rebuilding or editing source/tests/fixtures/validators.
