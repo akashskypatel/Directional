@@ -1069,38 +1069,37 @@ TEST(SurfaceCellsPhase10,
             reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation);
   EXPECT_EQ(forward.phaseFront.periodicHolonomies.front().latticeTranslation,
             reverse.phaseFront.periodicHolonomies.front().latticeTranslation);
-  const auto canonicalEdgeRoute = [](
-      const directional::TriMesh &mesh, const std::vector<int> &sourceEdges) {
-    std::vector<std::pair<int, int>> route;
-    route.reserve(sourceEdges.size());
-    for (const int sourceEdge : sourceEdges) {
-      if (sourceEdge < 0 || sourceEdge >= mesh.EV.rows()) {
-        return std::vector<std::pair<int, int>>{};
-      }
-      route.emplace_back(
-          std::min(mesh.EV(sourceEdge, 0), mesh.EV(sourceEdge, 1)),
-          std::max(mesh.EV(sourceEdge, 0), mesh.EV(sourceEdge, 1)));
+  const auto expectCanonicalCompactRoute = [](
+      const directional::TriMesh &mesh, const std::vector<int> &sourceEdges,
+      const std::vector<std::uint64_t> &sourceTopology) {
+    ASSERT_EQ(sourceEdges.size(), sourceTopology.size());
+    const auto sourceIncidence = directional::geometry::
+        surface_cell_tracing_detail::edge_faces(mesh.F);
+    const auto sourceWide = directional::geometry::
+        surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+    for (std::size_t route = 0; route < sourceTopology.size(); ++route) {
+      const auto expected = sourceWide.find(sourceTopology[route]);
+      ASSERT_NE(expected, sourceWide.end());
+      EXPECT_EQ(expected->second, sourceEdges[route]);
     }
-    return route;
   };
-  const auto forwardRoute = canonicalEdgeRoute(
-      forwardMesh, forward.phaseFront.periodicHolonomies.front().sourceRouteEdges);
-  const auto reverseRoute = canonicalEdgeRoute(
-      reverseMesh, reverse.phaseFront.periodicHolonomies.front().sourceRouteEdges);
-  const auto forwardCut = canonicalEdgeRoute(
-      forwardMesh, forward.phaseFront.periodicHolonomies.front().cutSourceEdges);
-  const auto reverseCut = canonicalEdgeRoute(
-      reverseMesh, reverse.phaseFront.periodicHolonomies.front().cutSourceEdges);
-  ASSERT_EQ(forward.phaseFront.periodicHolonomies.front().sourceRouteEdges.size(),
-            forwardRoute.size());
-  ASSERT_EQ(reverse.phaseFront.periodicHolonomies.front().sourceRouteEdges.size(),
-            reverseRoute.size());
-  ASSERT_EQ(forward.phaseFront.periodicHolonomies.front().cutSourceEdges.size(),
-            forwardCut.size());
-  ASSERT_EQ(reverse.phaseFront.periodicHolonomies.front().cutSourceEdges.size(),
-            reverseCut.size());
-  EXPECT_EQ(forwardRoute, reverseRoute);
-  EXPECT_EQ(forwardCut, reverseCut);
+  const auto &forwardHolonomy = forward.phaseFront.periodicHolonomies.front();
+  const auto &reverseHolonomy = reverse.phaseFront.periodicHolonomies.front();
+  EXPECT_EQ(forwardHolonomy.sourceRouteTopology,
+            reverseHolonomy.sourceRouteTopology);
+  EXPECT_EQ(forwardHolonomy.cutSourceTopology,
+            reverseHolonomy.cutSourceTopology);
+  EXPECT_EQ(forwardHolonomy.sourceRouteEdges,
+            reverseHolonomy.sourceRouteEdges);
+  EXPECT_EQ(forwardHolonomy.cutSourceEdges, reverseHolonomy.cutSourceEdges);
+  expectCanonicalCompactRoute(forwardMesh, forwardHolonomy.sourceRouteEdges,
+                              forwardHolonomy.sourceRouteTopology);
+  expectCanonicalCompactRoute(reverseMesh, reverseHolonomy.sourceRouteEdges,
+                              reverseHolonomy.sourceRouteTopology);
+  expectCanonicalCompactRoute(forwardMesh, forwardHolonomy.cutSourceEdges,
+                              forwardHolonomy.cutSourceTopology);
+  expectCanonicalCompactRoute(reverseMesh, reverseHolonomy.cutSourceEdges,
+                              reverseHolonomy.cutSourceTopology);
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2937,11 +2936,53 @@ TEST(SurfaceCellsPhase10,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             valid.phaseFront.disposition);
   ASSERT_FALSE(valid.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
-  const int tamperedEdge = valid.phaseFront.periodicHolonomies.front().sourceRouteEdges.front();
-  auto transition = std::find_if(
-      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
-      [&](const auto &candidate) { return candidate.sourceEdge == tamperedEdge; });
+  const auto &holonomy = valid.phaseFront.periodicHolonomies.front();
+  ASSERT_EQ(holonomy.sourceRouteEdges.size(),
+            holonomy.sourceRouteTopology.size());
+  const std::uint64_t tamperedTopology = holonomy.sourceRouteTopology.front();
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(mesh.F);
+  const auto incident = sourceIncidence.find(tamperedTopology);
+  ASSERT_NE(sourceIncidence.end(), incident);
+  ASSERT_GE(incident->second[0], 0);
+  ASSERT_GE(incident->second[1], 0);
+  const auto sourceWide = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const auto expectedRouteIndex = sourceWide.find(tamperedTopology);
+  ASSERT_NE(sourceWide.end(), expectedRouteIndex);
+  EXPECT_EQ(expectedRouteIndex->second, holonomy.sourceRouteEdges.front());
+
+  auto transition = crossField.edgeTransitions.end();
+  int transitionCount = 0;
+  for (auto candidate = crossField.edgeTransitions.begin();
+       candidate != crossField.edgeTransitions.end(); ++candidate) {
+    const bool sameTopology =
+        directional::pipeline::surface_cell_source_edge_key(
+            candidate->sourceVertex0, candidate->sourceVertex1) ==
+        tamperedTopology;
+    const bool reciprocalFaces =
+        (candidate->firstFace == incident->second[0] &&
+         candidate->secondFace == incident->second[1]) ||
+        (candidate->firstFace == incident->second[1] &&
+         candidate->secondFace == incident->second[0]);
+    if (!sameTopology || !reciprocalFaces) continue;
+    ++transitionCount;
+    transition = candidate;
+  }
+  ASSERT_EQ(1, transitionCount);
   ASSERT_NE(crossField.edgeTransitions.end(), transition);
+  ASSERT_GE(transition->sourceEdge, 0);
+  ASSERT_LT(transition->sourceEdge, mesh.EV.rows());
+  ASSERT_EQ(tamperedTopology,
+            directional::pipeline::surface_cell_source_edge_key(
+                mesh.EV(transition->sourceEdge, 0),
+                mesh.EV(transition->sourceEdge, 1)));
+  const bool reciprocalEfFaces =
+      (mesh.EF(transition->sourceEdge, 0) == incident->second[0] &&
+       mesh.EF(transition->sourceEdge, 1) == incident->second[1]) ||
+      (mesh.EF(transition->sourceEdge, 0) == incident->second[1] &&
+       mesh.EF(transition->sourceEdge, 1) == incident->second[0]);
+  ASSERT_TRUE(reciprocalEfFaces);
   transition->matching += 1;
 
   const auto malformed = directional::geometry::build_surface_cell_network(
