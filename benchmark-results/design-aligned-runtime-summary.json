@@ -1,26 +1,27 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v13",
-  "updatedUtc": "2026-08-08T00:15:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v14",
+  "updatedUtc": "2026-08-08T01:02:00Z",
   "directionControl": {
-    "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
-    "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "production runtime closure contract satisfied; formal closure pending corrected field-correspondence witness artifact validation",
-    "nextPlan": ".agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md",
+    "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation", "G3 periodic closure/holonomy"],
+    "activeGate": "G4 topology-distinct completion and singularities",
+    "gateState": "G3 formally closed; G4-A closed-genus-one multi-periodic authority active on exact torus",
+    "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md",
     "noProgressCodeBuildCountSinceLastMaterialProgress": 0,
     "reviewRequired": false
   },
   "testedAuthority": {
-    "sourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
-    "artifactId": 9010838200,
-    "artifactSha256": "b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db",
-    "focusedRetainedContracts": "16/17",
-    "soleFocusedFailureClassification": "incorrect expectation / subdivision-dependent field-correspondence witness",
-    "productionRuntimeClosureSatisfied": true
+    "sourceTestEvidenceCommit": "117620ec2da2083ce11b205835e58fa404f163ef",
+    "runtimeProvenProductionSourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
+    "artifactId": 9013161456,
+    "artifactSha256": "fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62",
+    "focusedRetainedContracts": "17/17",
+    "g3FormallyClosed": true,
+    "productionSourceChangedByEvidenceCommit": false
   },
   "directAcceptance": {
-    "plane": {"success": true, "producerDisposition": "Produced", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
-    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
-    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputVertices": 242, "completedQuads": 200, "connectedComponents": 2, "validationFailures": 0, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
+    "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003109408068, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
+    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003490194651, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
+    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 242, "completedQuads": 200, "connectedComponents": 2, "validationFailures": 0, "fieldP95Degrees": 1.651908724, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
     "cylinder": {
       "success": true,
       "producerDisposition": "Produced",
@@ -36,13 +37,53 @@
       "completedQuads": 288,
       "outputVertices": 320,
       "validationFailures": 0,
-      "fieldP95Degrees": 8.537736463e-7,
+      "fieldP95Degrees": 0.0000008537736463,
       "trueExteriorBoundaryLoops": 2,
       "artificialCutExterior": false,
       "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
       "outputHash": "32135be51d7a0a26",
       "deterministic": "3/3"
+    }
+  },
+  "defaultSuites": {
+    "focusedProducer": "17/17",
+    "remainingBoundedProducer": "83/84",
+    "boundedProducerTotal": "100/101",
+    "producerSoleFailure": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent (scheduler/environment-sensitive performance evidence)",
+    "completionSimplification": "154/164",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "boundedAggregate": "322/333"
+  },
+  "laterGateObservations": {
+    "bunny": {"completedObservation": true, "success": false, "producerDisposition": "NotApplicable", "traceSegments": 80862, "completedQuads": 0, "wallSeconds": 22.636191, "peakWorkingSetBytes": 236716032, "terminal": "NotProductionReady:completion", "fallbackUsed": false, "sourceGridRecoveryUsed": false},
+    "vase": {"completedObservation": false, "timeoutSeconds": 45, "classification": "timeout failure only; no current-artifact disposition or correctness inference"}
+  },
+  "g4Observation": {
+    "torus": {
+      "sourceTopology": {"vertices": 72, "triangles": 144, "edges": 216, "boundaryEdges": 0, "eulerCharacteristic": 0, "closedOrientableGenus": 1},
+      "success": false,
+      "producerDisposition": "Rejected",
+      "firstInvalidStage": "tracing/phase-front",
+      "firstInvalidReason": "InvalidPeriodicTopology",
+      "terminal": "NotProductionReady:tracing",
+      "traceSegments": 0,
+      "completedQuads": 0,
+      "partialPeriodicAuthority": {"available": true, "rotation": 0, "translation": [24, 0], "routeEdgeCount": 24, "cutEdgeCount": 2},
+      "fallbackUsed": false,
+      "sourceGridRecoveryUsed": false,
+      "sourceDiagnosis": "SurfacePhaseFrontResult stores one scalar periodicHolonomy; sheet aggregation rejects a second enabled relation and hashing/diagnostics/materialization consume only one relation"
+    },
+    "spherePrescribed": {
+      "success": false,
+      "producerDisposition": "NotApplicable",
+      "terminal": "NotProductionReady:completion",
+      "traceSegments": 766,
+      "arrangementCells": 30,
+      "completedQuads": 0,
+      "completionFailure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68",
+      "deferredUntilAfterTorusSlice": true
     }
   },
   "latestCodeBuild": {
@@ -60,32 +101,13 @@
     "internalChecksums": "44/44",
     "compileActions": "111/111",
     "approvedTargets": "7/7",
-    "executables": 5,
-    "libraries": 2,
-    "fixtures": 27,
-    "configuration": "Release",
-    "generator": "Ninja",
-    "directionalBuildTests": true,
-    "directionalBuildBenchmarks": true,
-    "generatedTestDiscoveryExecuted": false,
-    "runtimeExecution": false,
-    "changedFileBlobs": {
-      "tests/SurfaceCellsPhase10Tests.cpp": "80a0b58339102279ab863d9112e243a557cd270d",
-      "src/geometry/SurfaceCellTracing.cpp": "63e5ee427f675077f710db51ffb56d91838d3519",
-      "include/directional/geometry/SurfaceCellTracing.h": "c1b816a584d67a3f74c2d7389962bd92d52244c9"
-    },
-    "correctedTestContract": "nonzero source-attached V-family boundary-path segments reconstructed from face+barycentric provenance must align with local authoritative V field family independent of target subdivision"
-  },
-  "nextArtifactValidation": {
-    "artifactId": 9013161456,
-    "requiredFocusedRetained": "17/17",
-    "requiredDirectResult": "retain exact cylinder deterministic strict-valid periodic CompletedSurfaceCells production closure and G0-G2",
-    "successConsequence": "formally close G3 and activate G4 topology-distinct completion and singularities"
+    "runtimeExecutionDuringBuild": false,
+    "artifactRuntimeVerified": true
   },
   "gateDecision": {
     "g3ProductionRuntimeClosureSatisfied": true,
-    "g3FormallyClosed": false,
-    "latestCodeBuildRuntimeVerified": false,
-    "nextTurn": "Artifact-only Test + Benchmark — G3 corrected field-correspondence witness"
+    "g3FormallyClosed": true,
+    "activeG4Contract": "replace singular result-level periodic relation with deterministic multi-relation source-topology/transport authority consumed by hashing, diagnostics, provenance and exact lattice quotient",
+    "nextTurn": "Code + Build — G4 closed-genus-one holonomy basis"
   }
 }
