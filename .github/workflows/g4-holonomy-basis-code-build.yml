@@ -44,9 +44,8 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           payload=.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py
           test -f "$payload"
-          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
-          echo "payload_sha256=$PAYLOAD_SHA256"
-          echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
+          ORIGINAL_PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          echo "original_payload_sha256=$ORIGINAL_PAYLOAD_SHA256"
 
           declare -A before=(
             [include/directional/geometry/SurfaceCellTracing.h]=c1b816a584d67a3f74c2d7389962bd92d52244c9
@@ -62,10 +61,28 @@ jobs:
             test "$actual" = "${before[$path]}"
           done
 
+          # Correct only the transform's guard: the original fixed-string check
+          # treated the intended plural member `.periodicHolonomies` as the old
+          # scalar `.periodicHolonomy` because the latter is its prefix.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py')
+          text = p.read_text()
+          old = '    if ".periodicHolonomy" in text:\n'
+          new = '    if re.search(r"\\.periodicHolonomy(?!ies)", text):\n'
+          if text.count(old) != 1:
+              raise SystemExit('unexpected scalar guard shape')
+          p.write_text(text.replace(old, new, 1))
+          PY
+          EFFECTIVE_PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          echo "effective_payload_sha256=$EFFECTIVE_PAYLOAD_SHA256"
+          echo "ORIGINAL_PAYLOAD_SHA256=$ORIGINAL_PAYLOAD_SHA256" >> "$GITHUB_ENV"
+          echo "EFFECTIVE_PAYLOAD_SHA256=$EFFECTIVE_PAYLOAD_SHA256" >> "$GITHUB_ENV"
+
           python3 "$payload"
           git diff --check
 
-          mapfile -t changed < <(git diff --name-only | sort)
+          mapfile -t changed < <(git diff --name-only | grep -v '^.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py$' | sort)
           expected=(
             include/directional/diagnostics/RemeshDiagnostics.h
             include/directional/geometry/SurfaceCellTracing.h
@@ -80,9 +97,7 @@ jobs:
             test "${changed[$i]}" = "${expected[$i]}"
           done
 
-          # The authority migration is intentionally complete: no result-level
-          # scalar member access may survive in source or tests.
-          ! grep -R --line-number --fixed-string '.periodicHolonomy' \
+          ! grep -RP --line-number '\.periodicHolonomy(?!ies)' \
               include/directional/geometry/SurfaceCellTracing.h \
               src/geometry/SurfaceCellTracing.cpp \
               src/pipeline/RemeshPipeline.cpp \
@@ -95,11 +110,13 @@ jobs:
           SOURCE_COMMIT=$(git rev-parse HEAD)
           echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
           echo "source_commit=$SOURCE_COMMIT"
-
           for path in "${expected[@]}"; do
             echo "after $path $(git hash-object "$path")"
           done
 
+          # Remove the repository payload (including the local guard correction)
+          # without making it part of production source authority.
+          git checkout -- "$payload"
           git rm "$payload"
           git commit -m 'chore(agent): remove G4 holonomy transform payload'
           CLEANUP_COMMIT=$(git rev-parse HEAD)
@@ -134,7 +151,6 @@ jobs:
             c++ --version
             ninja --version
           } | tee agent-build-logs/toolchain.txt
-
           cmake -S . -B agent-build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
@@ -179,7 +195,6 @@ jobs:
           root="$GITHUB_WORKSPACE/g4-holonomy-basis-artifact"
           rm -rf "$root"
           mkdir -p "$root"/{bin,lib,test-data/benchmarks,logs,metadata,source}
-
           cp agent-build/directional_benchmarks "$root/bin/"
           cp agent-build/directional_compiled_api_tests "$root/bin/"
           cp agent-build/directional_surface_cell_producer_tests "$root/bin/"
@@ -196,26 +211,19 @@ jobs:
           tar --exclude=.git --exclude=external --exclude=agent-build \
               --exclude=g4-holonomy-basis-artifact \
               -cJf "$root/source/directional-g4-holonomy-basis-source-no-deps.tar.xz" .
-
           cat > "$root/metadata/source-authority.json" <<EOF
           {
             "eventCommit": "$GITHUB_SHA",
             "sourceCommit": "$SOURCE_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
-            "transformSha256": "$PAYLOAD_SHA256",
+            "originalTransformSha256": "$ORIGINAL_PAYLOAD_SHA256",
+            "effectiveTransformSha256": "$EFFECTIVE_PAYLOAD_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
           }
           EOF
           cat > "$root/metadata/build-authority.json" <<'EOF'
-          {
-            "configuration": "Release",
-            "generator": "Ninja",
-            "buildSharedLibs": false,
-            "gtestDiscoveryMode": "PRE_TEST",
-            "approvedTargets": 7,
-            "runtimeExecution": false
-          }
+          {"configuration":"Release","generator":"Ninja","buildSharedLibs":false,"gtestDiscoveryMode":"PRE_TEST","approvedTargets":7,"runtimeExecution":false}
           EOF
           cat > "$root/metadata/command-boundary.txt" <<'EOF'
           G4 Code + Build only.
@@ -228,8 +236,7 @@ jobs:
             include/directional/diagnostics/RemeshDiagnostics.h \
             src/pipeline/RemeshPipeline.cpp \
             src/bench/DirectionalBenchmark.cpp \
-            tests/SurfaceCellsPhase10Tests.cpp > \
-            "$root/metadata/final-blobs.txt"
+            tests/SurfaceCellsPhase10Tests.cpp > "$root/metadata/final-blobs.txt"
           find benchmarks/fixtures -type f | sort > "$root/metadata/fixture-files.txt"
           (cd "$root" && find . -type f ! -name SHA256SUMS -print0 | sort -z | \
             xargs -0 sha256sum > SHA256SUMS)
