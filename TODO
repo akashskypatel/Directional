@@ -10,88 +10,72 @@ Last updated: 2026-08-08 UTC
 - G2 cross-chart / close-sheet isolation: **passed**.
 - G3 periodic closure / holonomy: **passed**.
 - G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **G4 polygonal bounded-disk boundary-phase Artifact-Only Test + Benchmark**.
-- Next turn: **Code + Build — source-topology-region / isolation-sheet decoupling**.
-- Authoritative plan: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md`.
+- Completed turn: **Code + Build — source-topology-region / isolation-sheet decoupling**.
+- Next turn: **Test + Benchmark — exact topology-region artifact-only validation**.
+- Authoritative plan: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, unmerged; review policy `never`.
 
 ## Current runtime authority — artifact 9021175280
 
-Exact artifact **`9021175280`** (`g4-polygonal-boundary-phase-code-build`) is runtime-proven artifact-only.
+Exact artifact **`9021175280`** remains the runtime-proven authority until the new candidate executes.
 
-Authority:
+Runtime-proven contracts:
 
-- implementation `085db9ec23ffaa509b1f5a29e72968229efa103d`;
-- cleanup `c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc`;
-- workflow run/job `31254896323 / 93096734152`;
-- ZIP SHA-256 `16191e84bcfcebb2cfc1401b4aae7d5d8de2a02444f189a54d68164c1327a646`;
-- internal manifest SHA-256 `a8161eb579e1c06e63b5c7bc6203f610693f3e6259f56d8ce2c6ba78e424d3b5`;
-- recursive checksums **48/48**;
-- no source/test/fixture/validator/benchmark/build edit or configure/compile/relink/discovery regeneration occurred during validation.
-
-Focused authority:
-
-- new polygonal boundary-phase semantics **5/5**;
-- source-sheet/isolation semantics **3/3**;
+- polygonal boundary-phase semantics **5/5**;
+- preceding local-isolation/source-sheet semantics **3/3**;
 - retained non-torus curved-disk semantics **5/5**;
-- strengthened exact-torus advancement contract currently fails, so that retained combined group is **8/9**;
 - sheet coverage **3/3**;
 - G4 periodic relations **5/5**;
-- retained G0-G3 **17/17**.
-
-Direct deterministic authority remains exact 3/3:
-
-- plane: 64 quads / 81 V, hash `730caeae49ec872c`;
-- seam: 64 quads / 81 V, hash `5bdf34d7802e9fb0`;
-- close sheets: 200 quads / 242 V / 2 components, hash `89b052762f52a5af`;
-- cylinder: 288 pure quads / 320 V, hash `32135be51d7a0a26`, one periodic relation `r=0`, `t=(32,0)`, route 32, cut 4, exactly two genuine 32-edge exterior loops;
-- all direct validation failures zero; no passing direct fallback/recovery.
+- retained G0-G3 **17/17**;
+- exact direct hashes remain plane `730caeae49ec872c`, seam `5bdf34d7802e9fb0`, close sheets `89b052762f52a5af`, cylinder `32135be51d7a0a26`, deterministic 3/3 with no fallback/recovery;
+- exact torus remains deterministic `Rejected / InvalidBoundedDiskBoundaryTurn` with zero retained boundary-phase state;
+- bounded suites remain producer **119/121**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **341/353**.
 
 Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`.
 
-Local evidence archive: `directional-g4-polygonal-boundary-phase-artifact-only-evidence.tar.gz`, SHA-256 `3da110e6b8f4a0ef4759cacbcb5da109b65b85cb62607dcde4955e8203346f9b`.
+## New compile candidate — artifact 9022061741
 
-## G4 decision — polygonal representation works, torus exposes upstream partition defect
+Exact artifact **`9022061741`** (`g4-topology-region-code-build`) is compile-valid and awaiting artifact-only runtime validation:
 
-The five new polygonal cases prove the first-class run/turn/index/polygon/chart representation is structurally live on valid witnesses.
+- event commit `806a557c39170d12b172ef6930794711e00e63bc`;
+- implementation `3ca89ab55efff461b050fb12033174be70e7464f`;
+- cleanup `b188dd37f01181ece2173879fc7e0accf23d1bad`;
+- workflow run/job `31258107220 / 93104542559`;
+- ZIP SHA-256 `df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306`;
+- internal manifest SHA-256 `d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703`;
+- recursive checksums **48/48**;
+- package 49 files / 27 fixtures / five executables / two libraries;
+- approved Release/static/Ninja build **111/111**;
+- log artifact `9022061947`, SHA-256 `8a7c5271791a1e8182d4ff2b0d5d32ebfe6e47f6e36661ba5b431f00f898256d`;
+- `runtimeExecution=false`.
 
-Exact torus nevertheless fails deterministically 3/3 at `tracing/phase-front` as **`InvalidBoundedDiskBoundaryTurn`** before a bounded-disk phase record is retained:
+Detailed compile record: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`.
 
-- phase count 0;
-- run count 0;
-- polygonal phase count 0;
-- constructed-chart count 0;
-- phase hashes empty;
-- periodic authority remains live before rejection;
-- zero downstream cells/output;
-- no fallback/recovery.
+## Candidate contract
 
-Because the controlling plan required exact torus to retain and consume the generalized boundary representation, this is **not** material progress. The no-progress Code + Build count is **1**.
+The candidate now distinguishes:
 
-Read-only structural reconstruction identifies the upstream contract error: `sourceFaceSheets` is a local close/opposing-sheet isolation partition, not automatically a producer-topology partition. The torus has two classifier-local disk labels whose exact source-adjacent union is one annular hard-feature region; their separating edges are non-hard classifier cuts. Treating those cuts as exterior bounded-disk rails creates the invalid corner now caught by the turn validator.
+1. **source-topological producer regions** — connected only through exact source adjacency and split by genuine source boundary, hard-feature, or embedded relief-barrier authority; and
+2. **local isolation sheets** — retained separately for proximity/capture/projection safety and provenance.
 
-Do not relax the boundary-turn/index contract. The next correction is to distinguish:
+A non-hard cross-sheet exact shared edge can be an **internal isolation seam** within one topology region. Crossing it still requires exact source routing and reciprocal field transport. Invalid seam transport fails typed `InvalidTopologyRegionTransport`.
 
-1. **source-topological producer regions** — exact source adjacency split by genuine hard/barrier/source-boundary authority; and
-2. **local isolation sheets** — retained for proximity/capture/projection safety and provenance.
+Producer topology/applicability, Euler characteristic, boundary-loop classification, and exact-once ownership now operate on topology regions. Local isolation labels remain attached as provenance. No Euclidean joining, local-sheet count/ID/frequency selection, arbitrary subset search, feature demotion, boundary-turn relaxation, or fallback/recovery is introduced.
 
-A non-hard cross-sheet edge may be an internal isolation seam when exact shared-edge adjacency and reciprocal field transport prove continuity. No Euclidean or positional sheet merge is authorized.
+New/corrected compile-only structural regressions cover annular region reconstruction, row-order invariance, hard barriers, disconnected close sheets, reciprocal/nonreciprocal seam transport, corrected cross-sheet semantics, and exact torus advancement. **They have not executed yet.**
 
-## Bounded suites
+## No-progress rule
 
-- producer **119/121**; failures are the historical sub-millisecond `StrictValidatorOverheadStaysBelowFivePercent` threshold and the strengthened exact-torus advancement contract;
-- completion/simplification **154/164**, same historical ten failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **341/353**.
+The preceding artifact-only turn established one Code + Build without material runtime progress. Compile success does not reset that count.
+
+The next artifact-only validation decides the process transition:
+
+- material progress → continue from the next truthful G4 runtime invariant;
+- no material progress → no further ordinary Code + Build; mandatory design review or bounded producer-replacement proof is required first.
 
 ## Next turn
 
-Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact `9022061741`.
 
-Preserve the polygonal 5/5 semantics, all G0-G3 direct hashes, exact-once aggregation, hard-feature authority, and G2 close-sheet isolation. Do not use local sheet counts, torus IDs, diagnostic source vertex 32, relation counts, analytical fixture coordinates, or arbitrary subset search to decide region ownership.
-
-Prescribed sphere remains deferred until the torus topology slice reaches direct strict-valid production. G5/G6, historical completion/simplification repair, validator threshold changes, fallback/recovery, and unrelated optimization remain deferred.
-
-If the next Code + Build's following artifact-only validation also demonstrates no material progress, mandatory design review or bounded producer-replacement proof is required before another ordinary Code + Build iteration.
+Prescribed sphere remains deferred until exact torus reaches direct strict-valid production. G5/G6, historical completion/simplification repair, validator-threshold changes, fallback/recovery, and unrelated optimization remain deferred.
