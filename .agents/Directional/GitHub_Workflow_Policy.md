@@ -12,7 +12,7 @@ The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge
 
 Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-At the G3 field-correspondence witness Code + Build closeout on 2026-08-08, successful artifact/log/source authority was verified and the bounded workflow was removed **before** its trigger marker; the marker and payload were then removed. Final verification again showed only the durable workflow above, with connector-trigger and turn-payload directories absent.
+At the G3 field-correspondence witness artifact-only Test + Benchmark closeout on 2026-08-08, final verification again showed only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent. No workflow or payload was created during that artifact-only validation turn.
 
 ## Mandatory workflow requirements
 
@@ -32,11 +32,9 @@ Every workflow created or modified for agent work must:
 
 ## Code + Build execution boundary
 
-Compile-only workflows may checkout exact bounded source, apply a pre-verified source/test patch, install compile dependencies, initialize shallow submodules, configure with compile-only-safe test discovery, compile/link explicitly approved targets, and package binaries/libraries/fixtures/source/logs/metadata/checksums.
+Compile-only workflows may checkout exact bounded source, apply a pre-verified source/test patch, install compile dependencies, initialize shallow submodules, configure with `PRE_TEST` or equivalent compile-only-safe discovery, compile/link explicitly approved targets, and package binaries/libraries/fixtures/source/logs/metadata/checksums.
 
 They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution. Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
-
-For Directional specifically, use the repository's actual build options (`DIRECTIONAL_BUILD_TESTS=ON` and `DIRECTIONAL_BUILD_BENCHMARKS=ON`) when those targets are required. Do not assume generic `BUILD_TESTING` creates them. If artifact packaging needs `HEAD^`, fetch the exact evidence commit with enough history to include its parent.
 
 ## Test + Benchmark execution boundary
 
@@ -72,7 +70,7 @@ Record workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digest
 - Never weaken tests/validators to obtain a green workflow.
 - Never force-push merely to bypass a moving branch or stale content SHA.
 - Compare exact blobs/hashes before deciding a patch is absent or already applied.
-- A compile-only workflow/configuration failure may be corrected in the same Code + Build turn when the correction is bounded to diagnosed build/evidence mechanics and no generated project runtime is executed.
+- A compile-only failure may be corrected in the same Code + Build turn when the correction is bounded to the diagnosed compile/source issue and no generated project runtime is executed.
 
 ## End-of-turn hygiene
 
