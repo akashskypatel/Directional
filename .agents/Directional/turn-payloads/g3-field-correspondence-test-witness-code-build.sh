@@ -11,7 +11,7 @@ EXPECTED_PROD_BLOB="63e5ee427f675077f710db51ffb56d91838d3519"
 EXPECTED_HEADER_BLOB="c1b816a584d67a3f74c2d7389962bd92d52244c9"
 
 echo "trigger_checkout_sha=$(git rev-parse HEAD)"
-git fetch --no-tags --depth=1 origin "$SOURCE_COMMIT"
+git fetch --no-tags --depth=2 origin "$SOURCE_COMMIT"
 git checkout --detach "$SOURCE_COMMIT"
 echo "source_commit=$(git rev-parse HEAD)"
 test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = "$EXPECTED_TEST_BLOB"
