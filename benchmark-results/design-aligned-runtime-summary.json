@@ -1,33 +1,76 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v14",
-  "updatedUtc": "2026-08-08T01:02:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v15",
+  "updatedUtc": "2026-08-08T02:34:00Z",
   "directionControl": {
     "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation", "G3 periodic closure/holonomy"],
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "G3 formally closed; G4-A closed-genus-one multi-periodic authority active on exact torus",
+    "gateState": "G4 multi-relation periodic authority runtime-proven; torus complete authoritative phase-front source-sheet coverage active",
     "nextPlan": ".agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md",
     "noProgressCodeBuildCountSinceLastMaterialProgress": 0,
     "reviewRequired": false
   },
   "testedAuthority": {
-    "sourceTestEvidenceCommit": "117620ec2da2083ce11b205835e58fa404f163ef",
-    "runtimeProvenProductionSourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
-    "artifactId": 9013161456,
-    "artifactSha256": "fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62",
-    "focusedRetainedContracts": "17/17",
+    "primaryImplementationCommit": "aa0f115c19fc8a5afd8487ebb561e2de2b8551ba",
+    "runtimeProvenProductionSourceCommit": "6e754bdd64482582d39e71184805fbb053c99f86",
+    "artifactId": 9014730437,
+    "artifactName": "g4-holonomy-basis-code-build",
+    "artifactSha256": "14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec",
+    "internalChecksumManifestSha256": "41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f",
+    "internalChecksums": "46/46",
+    "focusedG4PeriodicRelations": "5/5",
+    "focusedRetainedG0G3": "17/17",
     "g3FormallyClosed": true,
-    "productionSourceChangedByEvidenceCommit": false,
-    "localEvidenceArchive": "directional-g3-field-correspondence-witness-tb-evidence.tar.gz",
-    "localEvidenceArchiveSha256": "cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8"
+    "g4Passed": false,
+    "g4MultiRelationSliceMaterialProgress": true,
+    "localEvidenceArchive": "directional-g4-holonomy-basis-artifact-only-evidence.tar.gz",
+    "localEvidenceArchiveSha256": "6c8f20252d7a616924b388e5643dba994dd5b26cf610794c21e602029c352cb2"
   },
   "directAcceptance": {
-    "plane": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003109408068, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
-    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "fieldP95Degrees": 0.00003490194651, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
-    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputOrigin": "CompletedSurfaceCells", "outputVertices": 242, "completedQuads": 200, "connectedComponents": 2, "validationFailures": 0, "fieldP95Degrees": 1.651908724, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
+    "plane": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "outputOrigin": "CompletedSurfaceCells",
+      "traceSegments": 352,
+      "arrangementCells": 65,
+      "outputVertices": 81,
+      "completedQuads": 64,
+      "validationFailures": 0,
+      "fieldP95Degrees": 0.00003109408068,
+      "outputHash": "730caeae49ec872c",
+      "deterministic": "3/3"
+    },
+    "multiFaceSeam": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "outputOrigin": "CompletedSurfaceCells",
+      "traceSegments": 256,
+      "arrangementCells": 65,
+      "outputVertices": 81,
+      "completedQuads": 64,
+      "validationFailures": 0,
+      "fieldP95Degrees": 0.00003490194651,
+      "outputHash": "5bdf34d7802e9fb0",
+      "deterministic": "3/3"
+    },
+    "closeSheets": {
+      "success": true,
+      "producerDisposition": "Produced",
+      "outputOrigin": "CompletedSurfaceCells",
+      "traceSegments": 1104,
+      "arrangementCells": 202,
+      "outputVertices": 242,
+      "completedQuads": 200,
+      "connectedComponents": 2,
+      "validationFailures": 0,
+      "fieldP95Degrees": 1.651908724,
+      "outputHash": "89b052762f52a5af",
+      "deterministic": "3/3"
+    },
     "cylinder": {
       "success": true,
       "producerDisposition": "Produced",
       "outputOrigin": "CompletedSurfaceCells",
+      "periodicHolonomyRelationCount": 1,
       "periodicHolonomyAvailable": true,
       "periodicHolonomyQuarterTurnRotation": 0,
       "periodicHolonomyTranslation": [32, 0],
@@ -49,58 +92,98 @@
     }
   },
   "defaultSuites": {
-    "focusedProducer": "17/17",
-    "remainingBoundedProducer": "83/84",
-    "boundedProducerTotal": "100/101",
+    "focusedG4PeriodicRelations": "5/5",
+    "focusedRetainedG0G3": "17/17",
+    "boundedProducerTotal": "105/106",
     "producerSoleFailure": "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent (scheduler/environment-sensitive performance evidence)",
     "completionSimplification": "154/164",
     "validation": "60/60",
     "compiledApi": "8/8",
-    "boundedAggregate": "322/333"
+    "boundedAggregate": "327/338"
   },
   "laterGateObservations": {
-    "bunny": {"completedObservation": true, "success": false, "producerDisposition": "NotApplicable", "traceSegments": 80862, "completedQuads": 0, "wallSeconds": 22.636191, "peakWorkingSetBytes": 236716032, "terminal": "NotProductionReady:completion", "fallbackUsed": false, "sourceGridRecoveryUsed": false},
-    "vase": {"completedObservation": false, "timeoutSeconds": 45, "classification": "timeout failure only; no current-artifact disposition or correctness inference"}
+    "bunny": {
+      "currentArtifactObserved": false,
+      "priorCompletedObservation": true,
+      "priorSuccess": false,
+      "priorProducerDisposition": "NotApplicable",
+      "priorTraceSegments": 80862,
+      "priorCompletedQuads": 0,
+      "priorTerminal": "NotProductionReady:completion",
+      "classification": "deferred later-gate evidence; not rerun for current G4 decision"
+    },
+    "vase": {
+      "currentArtifactObserved": false,
+      "priorCompletedObservation": false,
+      "priorTimeoutSeconds": 45,
+      "classification": "deferred later-gate evidence; timeout remains failure only with no disposition or correctness inference"
+    }
   },
   "g4Observation": {
     "torus": {
-      "sourceTopology": {"vertices": 72, "triangles": 144, "edges": 216, "boundaryEdges": 0, "eulerCharacteristic": 0, "closedOrientableGenus": 1},
+      "sourceTopology": {
+        "vertices": 72,
+        "triangles": 144,
+        "edges": 216,
+        "boundaryEdges": 0,
+        "eulerCharacteristic": 0,
+        "closedOrientableGenus": 1
+      },
       "success": false,
-      "producerDisposition": "Rejected",
-      "firstInvalidStage": "tracing/phase-front",
-      "firstInvalidReason": "InvalidPeriodicTopology",
-      "terminal": "NotProductionReady:tracing",
-      "traceSegments": 0,
+      "authoritativeProducerDisposition": "NotApplicable",
+      "periodicHolonomyRelationCount": 2,
+      "compatibilityPeriodicAuthority": {
+        "available": true,
+        "rotation": 0,
+        "translation": [24, 0],
+        "routeEdgeCount": 24,
+        "cutEdgeCount": 2,
+        "note": "benchmark serialization exposes only the compatibility projection of the first retained relation; full relation metadata is not synthesized"
+      },
+      "traceSegments": 670,
+      "retainedStrands": 113,
+      "embeddedArrangementArcs": 113,
+      "arrangementCells": 0,
       "completedQuads": 0,
-      "partialPeriodicAuthority": {"available": true, "rotation": 0, "translation": [24, 0], "routeEdgeCount": 24, "cutEdgeCount": 2},
+      "terminal": "NotProductionReady:completion",
+      "completionFailure": "SideSubdivisionRepair:InvalidInputIncidence",
+      "hardFeatureEdges": 48,
+      "closedFeatureCurves": 4,
       "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
-      "sourceDiagnosis": "SurfacePhaseFrontResult stores one scalar periodicHolonomy; sheet aggregation rejects a second enabled relation and hashing/diagnostics/materialization consume only one relation"
+      "deterministic": "3/3",
+      "internalWallSeconds": [0.205964, 0.198859, 0.200510],
+      "peakWorkingSetBytes": [10350592, 10665984, 10268672],
+      "stageHashes": {
+        "tracing": "0539b306563dbe25",
+        "strands": "618d7ed18d1f3daa",
+        "embeddedNetwork": "33d00772feecc2f7",
+        "arrangement": "1ee6b9f9fd044d71",
+        "completion": "b4efe5193b9e5c27"
+      },
+      "sourceDiagnosis": "build_uniform_phase_front accumulates produced sheet-local cells and canonical periodic relations, but any later local sheet that remains NotApplicable causes an immediate return before aggregate Produced status; the pipeline therefore skips authoritative phase-front materialization and the generic path yields zero arrangement cells before downstream SideSubdivisionRepair failure",
+      "activeContract": "complete authoritative phase-front coverage/composition across every source sheet; once any authoritative sheet has produced content, a later unsupported sheet must be structurally supported or fail closed with a typed phase-front reason rather than return a partial NotApplicable aggregate"
     },
     "spherePrescribed": {
-      "success": false,
-      "producerDisposition": "NotApplicable",
-      "terminal": "NotProductionReady:completion",
-      "traceSegments": 766,
-      "arrangementCells": 30,
-      "completedQuads": 0,
-      "completionFailure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68",
-      "deferredUntilAfterTorusSlice": true
+      "currentArtifactObserved": false,
+      "deferredUntilAfterTorusProducerCoverage": true,
+      "priorTraceSegments": 766,
+      "priorArrangementCells": 30,
+      "priorCompletedQuads": 0,
+      "priorCompletionFailure": "BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68"
     }
   },
   "latestCodeBuild": {
-    "sourceCommit": "117620ec2da2083ce11b205835e58fa404f163ef",
-    "runtimeProvenProductionSourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
-    "productionSourceChanged": false,
-    "testOnlyPatchSha256": "f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb",
-    "workflowRunId": 31228899303,
-    "workflowJobId": 93028533210,
-    "artifactId": 9013161456,
-    "artifactName": "g3-field-correspondence-test-witness-code-build",
-    "artifactSha256": "fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62",
-    "logArtifactId": 9013161584,
-    "logArtifactSha256": "baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f",
-    "internalChecksums": "44/44",
+    "primaryImplementationCommit": "aa0f115c19fc8a5afd8487ebb561e2de2b8551ba",
+    "sourceCommit": "6e754bdd64482582d39e71184805fbb053c99f86",
+    "cleanupCommit": "8304ba30b0f85bc69deebbf55922f05846d2d5b2",
+    "workflowRunId": 31233594490,
+    "workflowJobId": 93042009574,
+    "artifactId": 9014730437,
+    "artifactName": "g4-holonomy-basis-code-build",
+    "artifactSha256": "14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec",
+    "logArtifactId": 9014730651,
+    "internalChecksums": "46/46",
     "compileActions": "111/111",
     "approvedTargets": "7/7",
     "runtimeExecutionDuringBuild": false,
@@ -109,7 +192,9 @@
   "gateDecision": {
     "g3ProductionRuntimeClosureSatisfied": true,
     "g3FormallyClosed": true,
-    "activeG4Contract": "replace singular result-level periodic relation with deterministic multi-relation source-topology/transport authority consumed by hashing, diagnostics, provenance and exact lattice quotient",
-    "nextTurn": "Code + Build — G4 closed-genus-one holonomy basis"
+    "g4MultiRelationSliceMaterialProgress": true,
+    "g4Passed": false,
+    "activeG4Contract": "complete authoritative phase-front coverage/composition across every source sheet; eliminate partial NotApplicable aggregate before zero-cell generic arrangement",
+    "nextTurn": "Code + Build — G4 torus complete phase-front sheet coverage"
   }
 }
