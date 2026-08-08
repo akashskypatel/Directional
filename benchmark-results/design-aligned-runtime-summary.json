@@ -1,48 +1,52 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v24",
-  "updatedUtc": "2026-08-08T12:58:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v25",
+  "updatedUtc": "2026-08-08T13:17:00Z",
   "directionControl": {
-    "passedGates": [
+    "passedGatesBaseline": [
       "G0 truthful authority",
       "G1 uniform phase-front plane",
       "G2 cross-chart/close-sheet isolation",
       "G3 periodic closure/holonomy"
     ],
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "topology-region / isolation-sheet decoupling compile-valid; runtime authority remains prior polygonal artifact until exact candidate validation",
-    "nextPlan": ".agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md",
-    "nextTurn": "Test + Benchmark — source-topology-region / isolation-sheet decoupling artifact-only validation",
-    "noProgressCodeBuildCountSinceLastMaterialProgress": 1,
-    "noProgressDecisionPendingArtifactValidation": true,
-    "reviewRequired": false,
-    "reviewPolicy": "never"
+    "gateState": "topology-region architecture runtime-live and torus advanced to phase-front materialization, but retained relief and close-sheets deterministic authority regressed",
+    "nextTurn": "Mandatory independent Design Review",
+    "nextPlan": ".agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md",
+    "pendingProposal": ".agents/Directional/Gate_4_Topology_Region_Materialization_And_Regressions_Code_Build_Proposal.md",
+    "pendingProposalStatus": "proposed_pending_review",
+    "noProgressCodeBuildCountSinceLastAcceptedMaterialProgress": 2,
+    "mandatoryReviewRequired": true,
+    "ordinaryCodeBuildAuthorized": false,
+    "configuredOptionalReviewPolicy": "never"
   },
-  "testedAuthority": {
-    "implementationCommit": "085db9ec23ffaa509b1f5a29e72968229efa103d",
-    "cleanupCommit": "c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc",
-    "runtimeProvenProductionSourceCommit": "085db9ec23ffaa509b1f5a29e72968229efa103d",
-    "artifactId": 9021175280,
-    "artifactName": "g4-polygonal-boundary-phase-code-build",
-    "workflowRunId": 31254896323,
-    "workflowJobId": 93096734152,
-    "artifactSha256": "16191e84bcfcebb2cfc1401b4aae7d5d8de2a02444f189a54d68164c1327a646",
-    "internalChecksumManifestSha256": "a8161eb579e1c06e63b5c7bc6203f610693f3e6259f56d8ce2c6ba78e424d3b5",
+  "runtimeAuthority": {
+    "artifactId": 9022061741,
+    "artifactName": "g4-topology-region-code-build",
+    "workflowRunId": 31258107220,
+    "workflowJobId": 93104542559,
+    "eventCommit": "806a557c39170d12b172ef6930794711e00e63bc",
+    "implementationCommit": "3ca89ab55efff461b050fb12033174be70e7464f",
+    "cleanupCommit": "b188dd37f01181ece2173879fc7e0accf23d1bad",
+    "artifactSha256": "df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306",
+    "internalChecksumManifestSha256": "d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703",
     "internalChecksums": "48/48",
-    "focused": {
-      "polygonalBoundaryPhase": "5/5",
-      "sourceSheetIsolation": "3/3",
-      "retainedNonTorusCurvedDisk": "5/5",
-      "sheetCoverage": "3/3",
-      "g4PeriodicRelations": "5/5",
-      "retainedG0G3": "17/17"
-    },
-    "boundedSuites": {
-      "producer": "119/121",
-      "completionSimplification": "154/164",
-      "validation": "60/60",
-      "compiledApi": "8/8",
-      "aggregate": "341/353"
-    }
+    "packageFiles": 49,
+    "fixtureFiles": 27,
+    "executables": 5,
+    "projectStaticLibraries": 2,
+    "runtimeExecutionDuringBuild": false,
+    "runtimeOnlyFixtureSymlink": "/home/runner/work/Directional/Directional/benchmarks/fixtures -> /mnt/data/g4_topology_runtime_9022061741/test-data/benchmarks/fixtures",
+    "localEvidenceArchive": "directional-g4-topology-region-artifact-only-evidence.tar.gz",
+    "localEvidenceArchiveSha256": "8f9666620d4fe732bce3319bcaa1a6c47cb85fcc5f453fd52b495100cf952265"
+  },
+  "focusedAuthority": {
+    "topologyRegionIsolationSeam": "9/9",
+    "polygonalBoundaryPhase": "5/5",
+    "retainedNonTorusCurvedDisk": "5/5",
+    "nonTorusSheetCoverage": "2/2",
+    "g4PeriodicRelations": "5/5",
+    "retainedG0G3": "16/17",
+    "retainedG0G3Regression": "SurfaceCellsPhase10.UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded"
   },
   "directAcceptance": {
     "plane": {
@@ -51,7 +55,9 @@
       "outputVertices": 81,
       "hash": "730caeae49ec872c",
       "deterministic": "3/3",
-      "fallback": false
+      "fallback": false,
+      "internalWallSeconds": [0.345271, 0.347217, 0.343723],
+      "peakWorkingSetBytes": [9641984, 9773056, 9744384]
     },
     "multiFaceSeam": {
       "success": true,
@@ -59,107 +65,120 @@
       "outputVertices": 81,
       "hash": "5bdf34d7802e9fb0",
       "deterministic": "3/3",
-      "fallback": false
+      "fallback": false,
+      "internalWallSeconds": [0.527115, 0.527181, 0.530817],
+      "peakWorkingSetBytes": [9637888, 9535488, 9564160]
     },
     "closeSheets": {
       "success": true,
       "completedQuads": 200,
       "outputVertices": 242,
       "connectedComponents": 2,
-      "hash": "89b052762f52a5af",
+      "acceptedBaselineHash": "89b052762f52a5af",
+      "candidateHash": "aaec5574aa2e52f9",
+      "hashAccepted": false,
+      "observedDifference": "component emission order reversed; vertex and face-geometry multisets unchanged",
       "deterministic": "3/3",
-      "fallback": false
+      "fallback": false,
+      "internalWallSeconds": [2.956799, 2.990175, 3.014684],
+      "peakWorkingSetBytes": [12029952, 12091392, 12111872]
     },
     "cylinder": {
       "success": true,
       "completedQuads": 288,
       "outputVertices": 320,
       "periodicRotation": 0,
-      "periodicTranslation": [
-        32,
-        0
-      ],
+      "periodicTranslation": [32, 0],
       "routeEdgeCount": 32,
       "cutEdgeCount": 4,
       "traceSegments": 1728,
       "arrangementCells": 290,
       "trueExteriorBoundaryLoops": 2,
-      "trueExteriorBoundaryLoopSizes": [
-        32,
-        32
-      ],
+      "trueExteriorBoundaryLoopSizes": [32, 32],
       "hash": "32135be51d7a0a26",
       "deterministic": "3/3",
-      "fallback": false
+      "fallback": false,
+      "internalWallSeconds": [2.616528, 3.030077, 2.760699],
+      "peakWorkingSetBytes": [13430784, 13258752, 13312000]
     }
   },
   "g4Observation": {
     "torus": {
-      "runtimeArtifactId": 9021175280,
       "success": false,
-      "producerDisposition": "Rejected",
-      "firstInvalidStage": "tracing/phase-front",
-      "firstInvalidReason": "InvalidBoundedDiskBoundaryTurn",
+      "phaseFrontDisposition": "Produced",
+      "firstInvalidStage": "tracing/phase-front-materialization",
+      "firstInvalidReason": "InvalidAuthoritativePhaseFrontCell",
+      "firstInvalidCellDiagnostic": 128,
+      "firstInvalidFace": -1,
+      "topologyRegionCount": 4,
+      "internalIsolationSeamCount": 8,
+      "topologyRegionHashes": [
+        "aacdb82f66e64feb",
+        "0ac0c9d11cce9783",
+        "bd53675ac7b8a834",
+        "90d3892bb8a8a879"
+      ],
+      "topologyRegionEulerCharacteristics": [0, 0, 0, 0],
+      "topologyRegionBoundaryLoopCounts": [2, 2, 2, 2],
+      "topologyRegionIsolationSheetCounts": [1, 1, 2, 1],
+      "periodicHolonomyRelationCount": 4,
+      "compatibilityPeriodicAuthority": {
+        "rotation": 0,
+        "translation": [24, 0],
+        "routeEdgeCount": 24,
+        "cutEdgeCount": 2
+      },
       "boundedDiskBoundaryPhaseCount": 0,
       "boundedDiskBoundaryRunCount": 0,
       "polygonalBoundedDiskBoundaryPhaseCount": 0,
       "boundedDiskConstructedChartCount": 0,
-      "periodicAuthorityLive": true,
-      "fallback": false,
-      "plannedMaterialProgressSatisfied": false,
-      "classification": "producer-domain partition defect: local isolation sheet used as topology boundary"
+      "fallbackAttempted": false,
+      "sourceGridRecoveryUsed": false,
+      "deterministic": "3/3",
+      "internalWallSeconds": [0.012517, 0.014511, 0.011389],
+      "peakWorkingSetBytes": [9605120, 9719808, 9732096],
+      "stageHashes": {
+        "feature": "f15e4f3be07d3c7f",
+        "metric": "34cb872327c9b0c6",
+        "relief": "8ccb10d25b69edb9",
+        "sourceLabels": "e48c84177faf6e2c"
+      },
+      "architectureProgress": true,
+      "acceptedMaterialProgress": false,
+      "materializationDiagnosis": "multi-isolation topology-region cells normalize to sourceSheet=-1 while authoritative materialization still requires one sourceSheet and keys lattice/periodic identity by component+sheet"
     },
     "spherePrescribed": {
       "observedOnCurrentArtifact": false,
-      "deferredUntilTorusTopologySliceCloses": true
+      "deferredUntilTorusDirectStrictValidProduction": true
     }
   },
-  "latestCodeBuild": {
-    "eventCommit": "806a557c39170d12b172ef6930794711e00e63bc",
-    "implementationCommit": "3ca89ab55efff461b050fb12033174be70e7464f",
-    "cleanupCommit": "b188dd37f01181ece2173879fc7e0accf23d1bad",
-    "workflowRunId": 31258107220,
-    "workflowJobId": 93104542559,
-    "artifactId": 9022061741,
-    "artifactName": "g4-topology-region-code-build",
-    "artifactSha256": "df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306",
-    "internalChecksumManifestSha256": "d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703",
-    "internalChecksums": "48/48",
-    "packageFiles": 49,
-    "fixtureFiles": 27,
-    "executables": 5,
-    "projectStaticLibraries": 2,
-    "compileActions": "111/111",
-    "approvedTargets": "7/7",
-    "logArtifactId": 9022061947,
-    "logArtifactSha256": "8a7c5271791a1e8182d4ff2b0d5d32ebfe6e47f6e36661ba5b431f00f898256d",
-    "decodedPatchSha256": "1c3488b672e25c698451df46081fa951d8c4d883136ff30f88cece0dcadd194b",
-    "runtimeExecutionDuringBuild": false,
-    "artifactRuntimeVerified": false,
-    "finalBlobs": {
-      "include/directional/diagnostics/RemeshDiagnostics.h": "ba33d8396bd26f8190f8d552aafd9c950e9a3842",
-      "include/directional/geometry/SurfaceCellTracing.h": "e966a9ab9dc33f23de9cecb3fd9b61ddd75fde7f",
-      "src/bench/DirectionalBenchmark.cpp": "ba3eb47bfe9f3f78ce1dcbab32bfb3a773658cfc",
-      "src/geometry/SurfaceCellTracing.cpp": "b3f0ea3b82cf64f3a2ba312f9622172c64bc3e83",
-      "src/pipeline/RemeshPipeline.cpp": "97a20e41338b616d6bb5cafaa5f3d3851c52c583",
-      "tests/SurfaceCellsPhase10Tests.cpp": "441ba7fe2066355ce2a2239380f45029ea139346"
+  "regressions": {
+    "embeddedRelief": {
+      "classification": "production implementation regression",
+      "behavior": "topology-region splitting leaves unsupported subregions NotApplicable and permits generic tracing instead of terminal Rejected"
     },
-    "workflowCleanupCommit": "02677344b413ce8b17f7d5174b94f1e4e3491657",
-    "triggerCleanupCommit": "a763d784ae67a0db39cd0e7b7ec9dc1a552b5ed3"
+    "closeSheetsDeterminism": {
+      "classification": "accepted exact-output identity regression pending mandatory review",
+      "behavior": "region worklist structural-hash-first ordering reverses two output components"
+    },
+    "torusContractTest": {
+      "classification": "incorrect/over-coupled expectation pending mandatory review",
+      "behavior": "ASSERT_TRUE(hasTraceNetwork) aborts before public topology-region diagnostics because materialization fails before trace-network context retention"
+    }
   },
-  "candidateContract": {
-    "topologyRegion": "exact source adjacency split by genuine source boundary, hard feature, or embedded relief barrier authority",
-    "localIsolationSheet": "geometric proximity/capture/projection isolation and provenance",
-    "internalIsolationSeam": "non-hard exact shared source edge whose local isolation labels differ inside one topology region",
-    "transport": "exact source route plus reciprocal transition authority; malformed seam transport fails InvalidTopologyRegionTransport",
-    "aggregation": "producer applicability/topology and exact-once ownership by topology region with complete local-isolation provenance",
-    "forbidden": "no Euclidean joining, count/ID/frequency ownership selection, arbitrary subset search, feature demotion, boundary-turn relaxation, synthetic topology repair, or fallback/recovery"
+  "defaultSuites": {
+    "producer": "124/127",
+    "completionSimplification": "154/164",
+    "validation": "60/60",
+    "compiledApi": "8/8",
+    "aggregate": "346/359"
   },
   "gateDecision": {
-    "g3FormallyClosed": true,
     "g4Passed": false,
-    "activeG4Contract": "source-topology-region / local-isolation-sheet decoupling",
-    "nextTurn": "Test + Benchmark — exact artifact 9022061741",
-    "ifNoMaterialProgress": "mandatory design review or bounded producer-replacement proof before another ordinary Code + Build"
+    "topologyRegionArchitectureRuntimeValidated": true,
+    "acceptedMaterialProgress": false,
+    "mandatoryDesignReviewActivated": true,
+    "ordinaryCodeBuildBlocked": true,
+    "nextTurn": "Mandatory independent Design Review"
   }
 }
