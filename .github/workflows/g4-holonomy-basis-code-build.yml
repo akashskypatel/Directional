@@ -61,18 +61,61 @@ jobs:
             test "$actual" = "${before[$path]}"
           done
 
-          # Correct only the transform's guard: the original fixed-string check
-          # treated the intended plural member `.periodicHolonomies` as the old
-          # scalar `.periodicHolonomy` because the latter is its prefix.
+          # Repair only bounded transform defects found by the two setup-only
+          # attempts. No production source was committed by either failed run.
           python3 - <<'PY'
           from pathlib import Path
           p = Path('.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py')
           text = p.read_text()
-          old = '    if ".periodicHolonomy" in text:\n'
-          new = '    if re.search(r"\\.periodicHolonomy(?!ies)", text):\n'
-          if text.count(old) != 1:
+
+          old_guard = '    if ".periodicHolonomy" in text:\n'
+          new_guard = '    if re.search(r"\\.periodicHolonomy(?!ies)", text):\n'
+          if text.count(old_guard) != 1:
               raise SystemExit('unexpected scalar guard shape')
-          p.write_text(text.replace(old, new, 1))
+          text = text.replace(old_guard, new_guard, 1)
+
+          # Eigen fixed-size vector inequality is not used as a scalar boolean.
+          old_shape = '         relation.latticeTranslation != Eigen::Vector2i::Zero() &&\n'
+          new_shape = '         relation.latticeTranslation.squaredNorm() > 0 &&\n'
+          if text.count(old_shape) != 1:
+              raise SystemExit('unexpected periodic relation shape guard')
+          text = text.replace(old_shape, new_shape, 1)
+
+          compile_anchor = '# Compile guard: no consumer may still treat the result as one scalar relation.\n'
+          if text.count(compile_anchor) != 1:
+              raise SystemExit('unexpected compile guard anchor')
+          scalar_fixups = r'''
+          # Complete the enumeration-order regression migration. These four
+          # scalar action references are intentionally converted after the
+          # route/cut replacements above so the old authority cannot survive.
+          p = Path("tests/SurfaceCellsPhase10Tests.cpp")
+          test_text = p.read_text()
+          for old, new in [
+              ("forward.phaseFront.periodicHolonomy.quarterTurnRotation",
+               "forward.phaseFront.periodicHolonomies.front().quarterTurnRotation"),
+              ("reverse.phaseFront.periodicHolonomy.quarterTurnRotation",
+               "reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation"),
+              ("forward.phaseFront.periodicHolonomy.latticeTranslation",
+               "forward.phaseFront.periodicHolonomies.front().latticeTranslation"),
+              ("reverse.phaseFront.periodicHolonomy.latticeTranslation",
+               "reverse.phaseFront.periodicHolonomies.front().latticeTranslation"),
+          ]:
+              if test_text.count(old) != 1:
+                  raise RuntimeError(f"unexpected scalar test authority occurrence: {old}")
+              test_text = test_text.replace(old, new, 1)
+          eigen_expect = "  EXPECT_EQ(Eigen::Vector2i(8, 0), relations.front().latticeTranslation);\n"
+          if test_text.count(eigen_expect) != 1:
+              raise RuntimeError("unexpected Eigen periodic-relation assertion")
+          test_text = test_text.replace(
+              eigen_expect,
+              "  EXPECT_EQ(8, relations.front().latticeTranslation.x());\n"
+              "  EXPECT_EQ(0, relations.front().latticeTranslation.y());\n",
+              1)
+          p.write_text(test_text)
+
+          '''
+          text = text.replace(compile_anchor, scalar_fixups + compile_anchor, 1)
+          p.write_text(text)
           PY
           EFFECTIVE_PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
           echo "effective_payload_sha256=$EFFECTIVE_PAYLOAD_SHA256"
@@ -114,7 +157,7 @@ jobs:
             echo "after $path $(git hash-object "$path")"
           done
 
-          # Remove the repository payload (including the local guard correction)
+          # Remove the repository payload (including the local transform fixes)
           # without making it part of production source authority.
           git checkout -- "$payload"
           git rm "$payload"
