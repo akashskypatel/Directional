@@ -125,35 +125,45 @@ Required test contract:
 
 Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` implements only this test correction; artifact `9013161456` proves it passes together with the other 16 retained contracts and unchanged direct cylinder output.
 
-## G4 closed-topology periodic authority
+## G4 closed-topology progression and current boundary-phase authority
 
-The exact torus is connected, closed, and genus one: 72 vertices, 144 triangles, 216 edges, zero boundary edges, Euler characteristic 0. Artifact `9013161456` rejects it at `tracing/phase-front` with typed `InvalidPeriodicTopology`, before traces or output. Partial diagnostics already contain one valid-looking periodic relation `r=0`, `t=(24,0)`, route 24, cut 2.
+The exact torus is connected, closed, and genus one: 72 vertices, 144 triangles, 216 edges, zero boundary edges, Euler characteristic 0. G4 has advanced through several first-class sub-contracts while retaining G0-G3 authority.
 
-Current first-class representation is structurally singular:
+### Multi-relation periodic authority — implemented and runtime-live
 
-- `SurfacePhaseFrontResult` owns one scalar `SurfacePeriodicHolonomy periodicHolonomy`;
-- sheet aggregation rejects a second enabled local periodic relation solely because the result already owns one;
-- structural hashing serializes one relation;
-- diagnostics expose one relation;
-- phase-front materialization looks up one relation and supports one periodic-U quotient per matching sheet.
+A topology/component may expose multiple compatible periodic relations. Every retained relation derives from exact source topology and reciprocal 4-RoSy transport, has canonical route/cut/lattice identity, is deterministic independent of face-row or producer discovery order, and is consumed by structural hashing, diagnostics, provenance, and exact lattice quotient materialization. Equivalent/reversed descriptions canonicalize; conflicting or genuinely ambiguous/dependent relation authority fails closed with a typed reason.
 
-This is the earliest active G4 design contract.
-
-### Required multi-relation invariant
-
-> A topology/component may expose multiple compatible periodic relations. Every retained relation must derive from exact source topology and reciprocal 4-RoSy transport, have canonical route/cut/lattice identity, be deterministic independent of face-row or producer discovery order, and be consumed by structural hashing, diagnostics, provenance, and exact lattice quotient materialization. Equivalent/reversed descriptions canonicalize; conflicting or genuinely ambiguous/dependent relation authority fails closed with a typed reason.
-
-Important constraints:
+Important constraints remain:
 
 - a second relation is not accepted merely because it exists;
 - relation ownership/basis selection may not use source numeric ID alone, discovery order, count/frequency, arbitrary subset search, or Euclidean proximity;
 - multiple local-sheet relations do not weaken G2 sheet isolation;
-- current hard-feature/source-sheet barriers are not removed merely to avoid multi-relation topology;
+- hard-feature/source-sheet barriers are not removed merely to avoid multi-relation topology;
 - exact quotient remains source/phase/lattice-based, never Euclidean seam welding;
 - a stored relation that is not consumed by materialization/hashing is not first-class progress;
-- the single-annulus G3 behavior must remain semantically unchanged.
+- the single-annulus G3 behavior remains semantically unchanged.
 
-The first G4 slice may stop at a deeper truthful torus invariant after this multi-relation authority is demonstrably live and consumed; that is material architectural progress. G4 itself is not passed until required topology and prescribed-singularity fixtures complete directly.
+### Curved bounded-disk producer — implemented and runtime-live
+
+The producer recognizes connected source-sheet disks with Euler characteristic 1 and one manifold boundary, propagates reciprocal 4-RoSy branch gauge across the source-face dual graph, and builds an intrinsic source-attached chart/front. Topology, transport, boundary phase, chart and front-pairing failures are typed and fail closed. The planar bounded and periodic-annulus producers remain separate first-class paths and exact-once source-sheet aggregation remains authoritative.
+
+### Source-sheet boundary authority — runtime-proven
+
+Artifact `9019024467` proves that local curved-disk boundary authority is not synonymous with hard-feature membership. A local edge is authoritative when it is a genuine source boundary, a hard-feature internal boundary, or a non-hard internal edge whose opposite source face belongs to a different authoritative `(component, sheet)`. A non-hard internal edge whose incident faces share the same authoritative component/sheet remains an invalid hidden cut.
+
+This contract is runtime-proven by 3/3 focused boundary cases while the combined curved-disk group is 9/9, sheet coverage 3/3, G4 periodic relations 5/5, retained G0-G3 17/17, and all direct G0-G3 hashes remain unchanged.
+
+### Current G4 blocker — field-authoritative disk boundary phase
+
+Exact torus now deterministically reaches `Rejected / InvalidBoundedDiskBoundaryPhase` at `tracing/phase-front`, first invalid face `-1`, with periodic authority still live and no fallback/recovery. The current curved-disk boundary stage classifies ordered boundary edges against transported branch/family/sign state, groups equal labels into runs, then globally requires exactly four runs in a rectangular `U+`, `V+`, `U-`, `V-` cycle before mapping the disk to a rectangle. Existing runtime diagnostics do not expose which global four-run/canonical-order check fired, so no unobserved torus run count or branch sequence is authority.
+
+Required current contract:
+
+> Ordered source-attached boundary runs/corners and their transported 4-RoSy turn/index closure are first-class phase authority. Preserve the exact four-run rectangle as a fast path, but support a valid non-rectangular field-compatible orthogonal/polygonal disk through a deterministic intrinsic polygonal/singularity-compatible chart. Ambiguous boundary phase, invalid cyclic turn/index closure, chart fold, or front pairing fails closed with a typed reason.
+
+The generalized representation may not manufacture four sides by arbitrary run merge/split, lower alignment thresholds to fit a fixture, demote features/source-sheet rails, select corners by raw IDs/count/frequency/order/proximity, create synthetic Euler corrections, or use Euclidean welding/post-hoc cell merging. One accepted authoritative cell still maps directly to one quad.
+
+G4 itself is not passed until the required torus topology and prescribed-singularity fixtures complete directly.
 
 ## G4 prescribed-singularity observation
 
@@ -161,7 +171,7 @@ The prescribed sphere currently reaches completion: producer `NotApplicable`, 76
 
 ## Next authority
 
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` as Code + Build only. No generated project binary may execute. The following artifact-only turn must retain all G0-G3 authority and prove that the new multi-relation periodic contract is live/consumed on exact torus without ID/order/count/frequency/proximity selection.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Plan.md` as **Code + Build only**. No generated project binary may execute. The following artifact-only turn must retain source-sheet-boundary 3/3, combined curved-disk authority, sheet coverage 3/3, G4 periodic relations 5/5, retained G0-G3 17/17 and exact direct hashes, then prove exact torus advances beyond `InvalidBoundedDiskBoundaryPhase` through a real consumed generalized boundary-phase representation or reaches direct strict-valid production.
 
 ## Non-negotiable prohibitions
 
