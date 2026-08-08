@@ -3061,6 +3061,8 @@ SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
   segment.matching = (4 - (segment.matching % 4) + 4) % 4;
   std::reverse(segment.transitionSourceEdges.begin(),
                segment.transitionSourceEdges.end());
+  std::reverse(segment.transitionSourceTopology.begin(),
+               segment.transitionSourceTopology.end());
   segment.transitionSourceEdge = segment.transitionSourceEdges.empty()
                                      ? -1
                                      : segment.transitionSourceEdges.back();
@@ -4371,7 +4373,8 @@ bool point_on_source(const Eigen::MatrixXd &vertices,
 
 bool source_edge_provenance(
     std::uint64_t edgeKey,
-    const std::map<std::uint64_t, int> &matchingIndices,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const EdgeTransitionLookup &transitionLookup,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     int &sourceEdge);
@@ -4380,6 +4383,8 @@ bool build_planar_phase_frame(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const std::vector<int> &activeFaces,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     const SurfaceCellTracingOptions *tracingOptions,
@@ -4473,7 +4478,7 @@ bool build_planar_phase_frame(
   }
 
   const auto incident = edge_faces(faces, activeFaces);
-  const auto matchingIndices = edge_matching_indices(incident);
+  const auto &matchingIndices = sourceMatchingIndices;
   // A prescribed raw field may intentionally omit precomputed matching and
   // transition containers. Treat empty containers as absent metadata so the
   // planar phase front can prove an exact physical zero-turn transport. Once
@@ -4528,7 +4533,9 @@ bool build_planar_phase_frame(
           branch_from_family_sign(forward.family, forward.sign) !=
               expectedTargetBranch) {
         int sourceEdge = -1;
-        source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
         const auto reason =
             tracingOptions != nullptr &&
                     !source_faces_compatible(*tracingOptions, first, second)
@@ -4555,7 +4562,9 @@ bool build_planar_phase_frame(
               sourceBranch ||
           normalized_branch(forward.matching + reverse.matching) != 0) {
         int sourceEdge = -1;
-        source_edge_provenance(key, matchingIndices, transitionLookup, effectiveTransitions, sourceEdge);
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
         const auto reason =
             tracingOptions != nullptr &&
                     !source_faces_compatible(*tracingOptions, first, second)
@@ -4860,24 +4869,31 @@ OrderedVertexFanResult ordered_vertex_fan_path(
 
 bool source_edge_provenance(
     const std::uint64_t edgeKey,
-    const std::map<std::uint64_t, int> &matchingIndices,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const EdgeTransitionLookup &transitionLookup,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     int &sourceEdge) {
   sourceEdge = -1;
-  if (edgeTransitions != nullptr) {
-    const auto found = transitionLookup.byEdge.find(edgeKey);
-    if (found == transitionLookup.byEdge.end() || found->second.sourceEdge < 0) {
-      return false;
-    }
-    sourceEdge = found->second.sourceEdge;
-    return true;
-  }
-  const auto found = matchingIndices.find(edgeKey);
-  if (found == matchingIndices.end() || found->second < 0) {
+  const auto incidence = sourceEdgeFaces.find(edgeKey);
+  const auto compactIndex = sourceMatchingIndices.find(edgeKey);
+  if (incidence == sourceEdgeFaces.end() || incidence->second[0] < 0 ||
+      incidence->second[1] < 0 ||
+      compactIndex == sourceMatchingIndices.end() ||
+      compactIndex->second < 0) {
     return false;
   }
-  sourceEdge = found->second;
+  if (edgeTransitions != nullptr) {
+    const auto found = transitionLookup.byEdge.find(edgeKey);
+    if (found == transitionLookup.byEdge.end() || found->second.sourceEdge < 0 ||
+        edge_key(found->second.sourceVertex0,
+                 found->second.sourceVertex1) != edgeKey ||
+        !transition_faces_match(found->second, incidence->second[0],
+                                incidence->second[1])) {
+      return false;
+    }
+  }
+  sourceEdge = compactIndex->second;
   return true;
 }
 
@@ -4887,6 +4903,8 @@ bool segment_on_source(
     const Eigen::Vector2d &start,
     const Eigen::Vector2d &end, const int globalBranch,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     const SurfaceCellTracingOptions &options, const int cellId,
@@ -5027,7 +5045,7 @@ bool segment_on_source(
   }
 
   const auto incident = edge_faces(faces, activeFaces);
-  const auto matchingIndices = edge_matching_indices(incident);
+  const auto &matchingIndices = sourceMatchingIndices;
   const bool hasEdgeTransitions =
       edgeTransitions != nullptr && !edgeTransitions->empty();
   const bool hasEdgeMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
@@ -5114,7 +5132,9 @@ bool segment_on_source(
     int totalMatching = 0;
     double totalEffort = 0.0;
     std::vector<int> sourceEdges;
+    std::vector<std::uint64_t> sourceTopology;
     sourceEdges.reserve(route.size());
+    sourceTopology.reserve(route.size());
     for (const VertexPathStep &step : route) {
       const bool crossesIsolationSheet =
           !source_faces_compatible(options, transitFace, step.face);
@@ -5147,9 +5167,9 @@ bool segment_on_source(
         return false;
       }
       int sourceEdge = -1;
-      if (!source_edge_provenance(step.edgeKey, matchingIndices,
-                                  transitionLookup, effectiveTransitions,
-                                  sourceEdge)) {
+      if (!source_edge_provenance(
+              step.edgeKey, sourceEdgeFaces, sourceMatchingIndices,
+              transitionLookup, effectiveTransitions, sourceEdge)) {
         set_phase_front_failure(
             failure,
             crossesIsolationSheet
@@ -5159,6 +5179,7 @@ bool segment_on_source(
         return false;
       }
       sourceEdges.push_back(sourceEdge);
+      sourceTopology.push_back(step.edgeKey);
       totalMatching += transition.matching;
       totalEffort += std::abs(transition.effort);
       transitFace = step.face;
@@ -5183,6 +5204,7 @@ bool segment_on_source(
     current.matching = normalized_branch(totalMatching);
     current.matchingEffort = totalEffort;
     current.transitionSourceEdges = std::move(sourceEdges);
+    current.transitionSourceTopology = std::move(sourceTopology);
     current.transitionSourceEdge = current.transitionSourceEdges.empty()
                                        ? -1
                                        : current.transitionSourceEdges.back();
@@ -5261,13 +5283,15 @@ bool phase_front_cell_source_scope(
 
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const std::vector<SurfaceTraceSegment> &path, SurfaceFrontEdge &edge) {
   if (faces.cols() != 3 || path.empty() ||
       !edge.sourceRouteEdges.empty() || !edge.sourceRouteTopology.empty()) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
-  const auto incident = edge_faces(faces);
-  const auto sourceEdgeIndices = edge_matching_indices(incident);
+  const auto &incident = sourceEdgeFaces;
+  const auto &sourceEdgeIndices = sourceMatchingIndices;
   std::optional<SurfaceFrontBoundaryKind> kind;
   std::set<std::uint64_t> seenTopology;
   int railId = -1;
@@ -5423,6 +5447,8 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<int> &activeFaces,
     const SurfaceCellTracingOptions &options,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching,
     const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
@@ -5443,8 +5469,10 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
   UniformPhaseFrame applicabilityFrame;
   SurfacePhaseFrontFailure applicabilityFailure;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
-                                activeFaces, nullptr, nullptr, nullptr, &options,
-                                applicabilityFailure, applicabilityFrame)) {
+                                activeFaces, sourceEdgeFaces,
+                                sourceMatchingIndices, nullptr, nullptr,
+                                nullptr, &options, applicabilityFailure,
+                                applicabilityFrame)) {
     switch (applicabilityFailure.reason) {
     case SurfacePhaseFrontFailureReason::InvalidInput:
     case SurfacePhaseFrontFailureReason::DegenerateReferenceFrame:
@@ -5463,8 +5491,10 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
   result.disposition = SurfaceCellProducerDisposition::Rejected;
   UniformPhaseFrame frame;
   if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
-                                activeFaces, edgeMatching, edgeEffort, edgeTransitions,
-                                &options, result.failure, frame)) {
+                                activeFaces, sourceEdgeFaces,
+                                sourceMatchingIndices, edgeMatching, edgeEffort,
+                                edgeTransitions, &options, result.failure,
+                                frame)) {
     return result;
   }
   double target = options.defaultTargetSize;
@@ -5556,8 +5586,9 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
                 vertices, faces, frame, activeFaces, uv[side],
                 uv[(side + 1) % 4],
                 globalBranches[static_cast<std::size_t>(side)], faceAxisX,
-                faceAxisY, edgeMatching, edgeEffort, edgeTransitions, options,
-                cell.id, side, result.failure,
+                faceAxisY, sourceEdgeFaces, sourceMatchingIndices,
+                edgeMatching, edgeEffort, edgeTransitions, options, cell.id,
+                side, result.failure,
                 cell.boundaryPaths[static_cast<std::size_t>(side)])) {
           return result;
         }
@@ -5658,7 +5689,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
-        faces, options,
+        faces, options, sourceEdgeFaces, sourceMatchingIndices,
         result.cells[static_cast<std::size_t>(edge.filledCell)]
             .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
         edge);
@@ -6123,6 +6154,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<int> &activeFaces,
     const SurfaceCellTracingOptions &options,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
   SurfacePhaseFrontResult result;
@@ -6307,7 +6340,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   // cross-field alignment energy.  Exact/effectively-equal field candidates
   // are rejected rather than tie-broken by source IDs or enumeration order.
   const auto incident = edge_faces(faces, activeFaces);
-  const auto matchingIndices = edge_matching_indices(incident);
+  const auto &matchingIndices = sourceMatchingIndices;
   const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
   const EdgeTransitionLookup transitionLookup =
       hasTransitions ? edge_transition_lookup(*edgeTransitions) : EdgeTransitionLookup{};
@@ -6886,9 +6919,10 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       return result;
     }
     int sourceEdge = -1;
-    if (!source_edge_provenance(sharedKey, matchingIndices, transitionLookup,
-                                hasTransitions ? edgeTransitions : nullptr,
-                                sourceEdge)) {
+    if (!source_edge_provenance(
+            sharedKey, sourceEdgeFaces, sourceMatchingIndices,
+            transitionLookup, hasTransitions ? edgeTransitions : nullptr,
+            sourceEdge)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(result.failure,
                               SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
@@ -6951,9 +6985,9 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         rings[static_cast<std::size_t>(layer)][0],
         rings[static_cast<std::size_t>(layer + 1)][0]);
     int sourceEdge = -1;
-    if (!source_edge_provenance(key, matchingIndices, transitionLookup,
-                                hasTransitions ? edgeTransitions : nullptr,
-                                sourceEdge)) {
+    if (!source_edge_provenance(
+            key, sourceEdgeFaces, sourceMatchingIndices, transitionLookup,
+            hasTransitions ? edgeTransitions : nullptr, sourceEdge)) {
       set_phase_front_failure(result.failure,
                               SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
       return result;
@@ -7159,7 +7193,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
-        faces, options,
+        faces, options, sourceEdgeFaces, sourceMatchingIndices,
         result.cells[static_cast<std::size_t>(edge.filledCell)]
             .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
         edge);
@@ -7204,6 +7238,8 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<int> &activeFaces,
     const SurfaceCellTracingOptions &options,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
   SurfacePhaseFrontResult result;
@@ -7221,7 +7257,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
   }
 
   const auto incident = edge_faces(faces, activeFaces);
-  const auto fullIncident = edge_faces(faces);
+  const auto &fullIncident = sourceEdgeFaces;
   std::set<int> activeVertices;
   std::map<int, std::set<int>> vertexAdjacency;
   for (const int face : activeFaces) {
@@ -7474,7 +7510,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     return result;
   }
 
-  const auto matchingIndices = edge_matching_indices(incident);
+  const auto &matchingIndices = sourceMatchingIndices;
   const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
   const bool hasMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
   const bool hasEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
@@ -7542,7 +7578,8 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           effectiveEffort, effectiveTransitions);
       if (!forward.valid) {
         int sourceEdge = -1;
-        source_edge_provenance(neighbor.edge, matchingIndices, transitionLookup,
+        source_edge_provenance(neighbor.edge, sourceEdgeFaces,
+                               sourceMatchingIndices, transitionLookup,
                                effectiveTransitions, sourceEdge);
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
@@ -7601,8 +7638,9 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           branch_from_family_sign(forward.family, forward.sign) !=
               expectedTargetBranch) {
         int sourceEdge = -1;
-        source_edge_provenance(key, matchingIndices, transitionLookup,
-                               effectiveTransitions, sourceEdge);
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
@@ -7625,8 +7663,9 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           branch_from_family_sign(reverse.family, reverse.sign) != sourceBranch ||
           normalized_branch(forward.matching + reverse.matching) != 0) {
         int sourceEdge = -1;
-        source_edge_provenance(key, matchingIndices, transitionLookup,
-                               effectiveTransitions, sourceEdge);
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
@@ -8513,8 +8552,8 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
-        faces, options, cell.boundaryPaths[static_cast<std::size_t>(side)],
-        edge);
+        faces, options, sourceEdgeFaces, sourceMatchingIndices,
+        cell.boundaryPaths[static_cast<std::size_t>(side)], edge);
     if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
       set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
                               side);
@@ -8561,6 +8600,8 @@ bool build_isolation_seam_transport_certificates(
     const SurfaceCellTracingOptions &options,
     const std::vector<int> &topologyRegionByFace,
     const std::vector<SurfaceTopologyRegion> &topologyRegions,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
     std::vector<SurfaceIsolationSeamTransportCertificate> &certificates) {
@@ -8573,8 +8614,8 @@ bool build_isolation_seam_transport_certificates(
     return false;
   }
 
-  const auto incident = edge_faces(faces);
-  const auto matchingIndices = edge_matching_indices(incident);
+  const auto &incident = sourceEdgeFaces;
+  const auto &matchingIndices = sourceMatchingIndices;
   const bool hasTransitions =
       edgeTransitions != nullptr && !edgeTransitions->empty();
   const bool hasMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
@@ -8737,6 +8778,12 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     return result;
   }
 
+  // All materializer-facing numeric routes share this single source-wide
+  // compact interior-transition domain. Regional producers retain their local
+  // incidence for traversal only; they never rebuild serialized indices.
+  const auto sourceEdgeFaces = edge_faces(faces);
+  const auto sourceMatchingIndices = edge_matching_indices(sourceEdgeFaces);
+
   const SourceTopologyRegions topology =
       build_source_topology_regions(faces, options);
   if (!topology.valid || topology.regionByFace.size() !=
@@ -8847,16 +8894,19 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const SurfaceTopologyRegion &region = *work.region;
     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-        options, edgeMatching, edgeEffort, edgeTransitions);
+        options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+        edgeEffort, edgeTransitions);
     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
       local = build_periodic_annulus_phase_front_for_faces(
           vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-          options, edgeMatching, edgeEffort, edgeTransitions);
+          options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          edgeEffort, edgeTransitions);
     }
     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
       local = build_curved_bounded_disk_phase_front_for_faces(
           vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-          options, edgeMatching, edgeEffort, edgeTransitions);
+          options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          edgeEffort, edgeTransitions);
     }
     if (!normalize_scope(local, region)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -9157,7 +9207,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   if (!build_isolation_seam_transport_certificates(
           vertices, faces, faceAxisX, faceAxisY, options,
           result.sourceTopologyRegionByFace, result.topologyRegions,
-          edgeMatching, edgeEffort, edgeTransitions,
+          sourceEdgeFaces, sourceMatchingIndices, edgeMatching, edgeEffort,
+          edgeTransitions,
           result.isolationSeamTransportCertificates)) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     result.succeeded = false;
