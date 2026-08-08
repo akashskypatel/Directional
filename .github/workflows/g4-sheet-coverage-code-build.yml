@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
-      LOG_DIR: ${{ runner.temp }}/g4-sheet-coverage-logs
+      LOG_DIR: /tmp/g4-sheet-coverage-logs
     steps:
       - name: Initialize unconditional activity log
         shell: bash
@@ -241,6 +241,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: g4-sheet-coverage-code-build-logs
-          path: ${{ runner.temp }}/g4-sheet-coverage-logs
+          path: /tmp/g4-sheet-coverage-logs
           if-no-files-found: error
           retention-days: 14
