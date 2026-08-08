@@ -2826,6 +2826,18 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << diagnostics.surfaceCellTopologyRegionCount << ","
       << "\"surfaceCellInternalIsolationSeamCount\":"
       << diagnostics.surfaceCellInternalIsolationSeamCount << ","
+      << "\"surfaceCellConsumedTopologyRegionCount\":"
+      << diagnostics.surfaceCellConsumedTopologyRegionCount << ","
+      << "\"surfaceCellConsumedInternalIsolationSeamCount\":"
+      << diagnostics.surfaceCellConsumedInternalIsolationSeamCount << ","
+      << "\"surfaceCellConsumedPeriodicHolonomyCount\":"
+      << diagnostics.surfaceCellConsumedPeriodicHolonomyCount << ","
+      << "\"surfaceCellMaterializedConnectedComponentCount\":"
+      << diagnostics.surfaceCellMaterializedConnectedComponentCount << ","
+      << "\"surfaceCellMaterializedBoundaryLoopCount\":"
+      << diagnostics.surfaceCellMaterializedBoundaryLoopCount << ","
+      << "\"surfaceCellMaterializedEulerCharacteristic\":"
+      << diagnostics.surfaceCellMaterializedEulerCharacteristic << ","
       << "\"surfaceCellTopologyRegionHashes\":[";
   for (std::size_t regionIndex = 0;
        regionIndex < diagnostics.surfaceCellTopologyRegionHashes.size();

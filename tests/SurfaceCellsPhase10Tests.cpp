@@ -823,6 +823,30 @@ TEST(SurfaceCellsPhase10,
       << directional::geometry::surface_phase_front_failure_reason_name(
              guidance.phaseFront.failure.reason);
   EXPECT_TRUE(guidance.phaseFront.succeeded);
+  for (const auto &edge : guidance.phaseFront.edges) {
+    EXPECT_GE(edge.filledSide, 0);
+    EXPECT_LT(edge.filledSide, 4);
+    EXPECT_NE(edge.boundaryKind,
+              directional::geometry::SurfaceFrontBoundaryKind::
+                  EmbeddedReliefCut);
+    if (edge.oppositeEdge < 0) {
+      EXPECT_EQ(edge.boundaryKind,
+                directional::geometry::SurfaceFrontBoundaryKind::
+                    GenuineSourceBoundary);
+      EXPECT_FALSE(edge.sourceRouteTopology.empty());
+    }
+  }
+  const auto materialized =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          mesh.V, mesh.F, guidance.phaseFront,
+          guidanceOptions.sourceFaceComponents,
+          guidanceOptions.sourceFaceSheets);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  EXPECT_EQ(materialized.connectedComponents, 1);
+  EXPECT_EQ(materialized.boundaryLoopCount, 1);
+  EXPECT_EQ(materialized.eulerCharacteristic, 1);
+  EXPECT_EQ(materialized.consumedTopologyRegions,
+            guidance.phaseFront.topologyRegions.size());
 
   auto embeddedOptions = guidanceOptions;
   embeddedOptions.reliefBarriersEmbedded = true;
@@ -834,6 +858,13 @@ TEST(SurfaceCellsPhase10,
   EXPECT_TRUE(embedded.seeds.empty());
   EXPECT_TRUE(embedded.traces.empty());
   EXPECT_TRUE(embedded.proposals.empty());
+  ASSERT_EQ(guidance.phaseFront.topologyRegions.size(),
+            embedded.phaseFront.topologyRegions.size());
+  ASSERT_EQ(1U, embedded.phaseFront.topologyRegions.size());
+  EXPECT_EQ(guidance.phaseFront.topologyRegions.front().structuralHash,
+            embedded.phaseFront.topologyRegions.front().structuralHash);
+  EXPECT_NE(embedded.phaseFront.failure.reason,
+            directional::geometry::SurfacePhaseFrontFailureReason::None);
 }
 
 TEST(SurfaceCellsPhase10,
@@ -971,6 +1002,29 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.cells.size());
   EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
   EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().cutSourceEdges.empty());
+  int periodicEdgeCount = 0;
+  for (const auto &edge : network.phaseFront.edges) {
+    EXPECT_GE(edge.filledSide, 0);
+    EXPECT_LT(edge.filledSide, 4);
+    if (edge.boundaryKind ==
+        directional::geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
+      ++periodicEdgeCount;
+      EXPECT_EQ(edge.periodicRelation, 0);
+      EXPECT_GE(edge.oppositeEdge, 0);
+      EXPECT_FALSE(edge.sourceRouteTopology.empty());
+    }
+  }
+  EXPECT_GT(periodicEdgeCount, 0);
+  const auto materialized =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          mesh.V, mesh.F, network.phaseFront, options.sourceFaceComponents,
+          options.sourceFaceSheets);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  EXPECT_EQ(materialized.connectedComponents, 1);
+  EXPECT_EQ(materialized.boundaryLoopCount, 2);
+  EXPECT_EQ(materialized.eulerCharacteristic, 0);
+  EXPECT_EQ(materialized.consumedPeriodicHolonomies,
+            network.phaseFront.periodicHolonomies.size());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -1972,6 +2026,80 @@ TEST(SurfaceCellsPhase10,
                    source_edge_is_internal_isolation_seam(
                        options, faces.rows(), topology.regionByFace, 0, 1,
                        sharedEdge));
+}
+
+TEST(SurfaceCellsPhase10,
+     HardRailRegionCopiesPairReciprocallyBeforeQuotientMaterialization) {
+  Eigen::MatrixXd vertices(6, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              2.0, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+              1.0, 1.0, 0.0,
+              2.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(4, 3);
+  faces << 0, 1, 4,
+           0, 4, 3,
+           1, 2, 5,
+           1, 5, 4;
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(faces.rows()));
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.defaultTargetSize = 0.5;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(faces.rows()),
+                                      0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(faces.rows()), 0);
+  options.hardFeatureEdges.insert(
+      directional::pipeline::surface_cell_source_edge_key(1, 4));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(vertices.rows(), 0.5);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      vertices, faces, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  int hardEdges = 0;
+  int hardMerges = 0;
+  for (const auto &edge : network.phaseFront.edges) {
+    if (edge.boundaryKind !=
+        directional::geometry::SurfaceFrontBoundaryKind::HardRail) {
+      continue;
+    }
+    ++hardEdges;
+    ASSERT_GE(edge.oppositeEdge, 0);
+    EXPECT_FALSE(edge.exterior);
+    EXPECT_FALSE(edge.sourceRouteTopology.empty());
+    const auto &opposite = network.phaseFront.edges[static_cast<std::size_t>(
+        edge.oppositeEdge)];
+    EXPECT_EQ(opposite.oppositeEdge,
+              static_cast<int>(&edge - network.phaseFront.edges.data()));
+    EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
+  }
+  for (const auto &event : network.phaseFront.events) {
+    hardMerges += event.kind ==
+                      directional::geometry::SurfaceFrontEventKind::
+                          HardRailMerge
+                      ? 1
+                      : 0;
+  }
+  EXPECT_GT(hardEdges, 0);
+  EXPECT_EQ(hardEdges, hardMerges * 2);
+
+  const auto materialized =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          vertices, faces, network.phaseFront, options.sourceFaceComponents,
+          options.sourceFaceSheets);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  EXPECT_EQ(materialized.connectedComponents, 1);
+  EXPECT_EQ(materialized.boundaryLoopCount, 1);
+  EXPECT_EQ(materialized.eulerCharacteristic, 1);
+  EXPECT_EQ(materialized.consumedTopologyRegions, 2U);
 }
 
 TEST(SurfaceCellsPhase10,

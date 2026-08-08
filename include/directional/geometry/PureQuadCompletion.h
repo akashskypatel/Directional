@@ -178,6 +178,51 @@ struct PureQuadFeatureIntervalLineage {
   int railId = -1; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
   [[nodiscard]] bool valid() const { return (railId >= 0 || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
 };
+
+enum class PureQuadEquivalenceKind : int {
+  OrdinaryFront = 0,
+  HardRail = 1,
+  PeriodicHolonomy = 2,
+};
+
+/** Exact relation that joined two source-corner occurrences. */
+struct PureQuadEquivalenceProvenance {
+  PureQuadEquivalenceKind kind = PureQuadEquivalenceKind::OrdinaryFront;
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  int periodicRelation = -1;
+  int railId = -1;
+  int quarterTurnRotation = 0;
+  Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
+  std::vector<std::uint64_t> sourceRouteTopology;
+
+  friend bool operator<(const PureQuadEquivalenceProvenance &lhs,
+                        const PureQuadEquivalenceProvenance &rhs) {
+    return std::make_tuple(
+               lhs.kind, lhs.quarterTurnRotation,
+               lhs.latticeTranslation.x(), lhs.latticeTranslation.y(),
+               lhs.railId, lhs.sourceRouteTopology, lhs.firstFrontEdge,
+               lhs.secondFrontEdge, lhs.periodicRelation) <
+           std::make_tuple(
+               rhs.kind, rhs.quarterTurnRotation,
+               rhs.latticeTranslation.x(), rhs.latticeTranslation.y(),
+               rhs.railId, rhs.sourceRouteTopology, rhs.firstFrontEdge,
+               rhs.secondFrontEdge, rhs.periodicRelation);
+  }
+
+  friend bool operator==(const PureQuadEquivalenceProvenance &lhs,
+                         const PureQuadEquivalenceProvenance &rhs) {
+    return lhs.kind == rhs.kind &&
+           lhs.firstFrontEdge == rhs.firstFrontEdge &&
+           lhs.secondFrontEdge == rhs.secondFrontEdge &&
+           lhs.periodicRelation == rhs.periodicRelation &&
+           lhs.railId == rhs.railId &&
+           lhs.quarterTurnRotation == rhs.quarterTurnRotation &&
+           lhs.latticeTranslation == rhs.latticeTranslation &&
+           lhs.sourceRouteTopology == rhs.sourceRouteTopology;
+  }
+};
+
 struct PureQuadVertexLineage {
   int outputVertex = -1;
   PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle;
@@ -192,6 +237,12 @@ struct PureQuadVertexLineage {
   int localVertex = -1;
   int sourceComponent = -1;
   int sourceSheet = -1;
+  /// Full retained authority for quotient-materialized vertices.
+  std::vector<int> sourceTopologyRegions;
+  std::vector<SurfaceCellSourceChart> sourceCharts;
+  std::vector<int> sourceIsolationSheets;
+  SurfaceCellCanonicalIdentity sourceSupportIdentity;
+  std::vector<PureQuadEquivalenceProvenance> equivalences;
   [[nodiscard]] bool valid() const {
     return outputVertex >= 0 &&
            ((kind == PureQuadVertexLineageKind::SourceTriangle &&

@@ -550,6 +550,28 @@ struct RemeshResult {
   directional::RemeshDiagnostics diagnostics;
 };
 
+/** Compile-visible result of explicit constructive-front quotient assembly. */
+struct AuthoritativePhaseFrontMeshResult {
+  bool success = false;
+  int invalidCell = -1;
+  int invalidEdge = -1;
+  int connectedComponents = 0;
+  int boundaryLoopCount = 0;
+  int eulerCharacteristic = 0;
+  std::size_t consumedTopologyRegions = 0U;
+  std::size_t consumedInternalIsolationSeams = 0U;
+  std::size_t consumedPeriodicHolonomies = 0U;
+  std::string failure;
+  geometry::PureQuadMesh mesh;
+};
+
+AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
+    const Eigen::MatrixXd &sourceVertices,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SurfacePhaseFrontResult &phaseFront,
+    const std::vector<int> &sourceFaceComponents,
+    const std::vector<int> &sourceFaceSheets);
+
 using RemeshPipelineClock = std::chrono::steady_clock;
 
 double remesh_elapsed_seconds(

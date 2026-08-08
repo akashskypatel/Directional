@@ -209,6 +209,11 @@ std::uint64_t trace_network_owned_bytes(
       bytes += surface_trace_path_owned_bytes(path);
     }
   }
+  for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
+    bytes += vector_owned_bytes(edge.sourceIsolationSheets) +
+             vector_owned_bytes(edge.sourceRouteEdges) +
+             vector_owned_bytes(edge.sourceRouteTopology);
+  }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
     bytes += surface_trace_result_owned_bytes(trace);
   }
@@ -256,6 +261,11 @@ std::uint64_t trace_network_logical_bytes(
     for (const auto &path : cell.boundaryPaths) {
       bytes += surface_trace_path_logical_bytes(path);
     }
+  }
+  for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
+    bytes += vector_logical_bytes(edge.sourceIsolationSheets) +
+             vector_logical_bytes(edge.sourceRouteEdges) +
+             vector_logical_bytes(edge.sourceRouteTopology);
   }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
     bytes += vector_logical_bytes(trace.states) +
@@ -969,7 +979,9 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, relation.quarterTurnRotation);
     hash_combine_i64(seed, relation.latticeTranslation.x());
     hash_combine_i64(seed, relation.latticeTranslation.y());
+    hash_vector(seed, relation.sourceRouteEdges);
     hash_vector(seed, relation.sourceRouteTopology);
+    hash_vector(seed, relation.cutSourceEdges);
     hash_vector(seed, relation.cutSourceTopology);
   }
   if (!network.phaseFront.boundedDiskBoundaryPhases.empty()) {
@@ -1027,6 +1039,7 @@ std::uint64_t hash_trace_network(
     hash_lattice_state(edge.fromLattice);
     hash_lattice_state(edge.toLattice);
     hash_combine_i64(seed, edge.filledCell);
+    hash_combine_i64(seed, edge.filledSide);
     hash_combine_i64(seed, edge.oppositeEdge);
     hash_combine_i64(seed, edge.unfilledSide);
     hash_combine_i64(seed, edge.exterior ? 1 : 0);
@@ -1034,6 +1047,11 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, edge.sourceTopologyRegion);
     hash_combine_i64(seed, edge.sourceSheet);
     hash_vector(seed, edge.sourceIsolationSheets);
+    hash_combine_i64(seed, static_cast<int>(edge.boundaryKind));
+    hash_combine_i64(seed, edge.periodicRelation);
+    hash_combine_i64(seed, edge.railId);
+    hash_vector(seed, edge.sourceRouteEdges);
+    hash_vector(seed, edge.sourceRouteTopology);
   }
   hash_combine_u64(seed, network.phaseFront.events.size());
   for (const geometry::SurfaceFrontEvent &event : network.phaseFront.events) {
@@ -1500,6 +1518,32 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
     hash_combine_i64(seed,
                      static_cast<int>(lineage.authoritativeIdentity.kind));
     hash_combine_u64(seed, lineage.authoritativeIdentity.hash());
+    hash_vector(seed, lineage.sourceTopologyRegions);
+    hash_vector(seed, lineage.sourceIsolationSheets);
+    hash_combine_i64(seed, lineage.sourceSupportIdentity.valid ? 1 : 0);
+    hash_combine_u64(seed, lineage.sourceSupportIdentity.values.size());
+    for (const std::int64_t value :
+         lineage.sourceSupportIdentity.values) {
+      hash_combine_i64(seed, value);
+    }
+    hash_combine_u64(seed, lineage.sourceCharts.size());
+    for (const auto &chart : lineage.sourceCharts) {
+      hash_combine_i64(seed, chart.sourceComponent);
+      hash_combine_i64(seed, chart.sourceFace);
+      hash_combine_i64(seed, chart.localSheet);
+    }
+    hash_combine_u64(seed, lineage.equivalences.size());
+    for (const auto &equivalence : lineage.equivalences) {
+      hash_combine_i64(seed, static_cast<int>(equivalence.kind));
+      hash_combine_i64(seed, equivalence.firstFrontEdge);
+      hash_combine_i64(seed, equivalence.secondFrontEdge);
+      hash_combine_i64(seed, equivalence.periodicRelation);
+      hash_combine_i64(seed, equivalence.railId);
+      hash_combine_i64(seed, equivalence.quarterTurnRotation);
+      hash_combine_i64(seed, equivalence.latticeTranslation.x());
+      hash_combine_i64(seed, equivalence.latticeTranslation.y());
+      hash_vector(seed, equivalence.sourceRouteTopology);
+    }
   }
   hash_combine_u64(seed, mesh.quadLineage.size());
   for (const geometry::PureQuadFaceLineage &lineage : mesh.quadLineage) {
@@ -1755,14 +1799,6 @@ std::uint64_t surface_cell_source_edge_key(const int a, const int b) {
 
 namespace directional::pipeline {
 
-struct AuthoritativePhaseFrontMeshResult {
-  bool success = false;
-  int invalidCell = -1;
-  int invalidEdge = -1;
-  std::string failure;
-  geometry::PureQuadMesh mesh;
-};
-
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
@@ -1770,8 +1806,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const std::vector<int> &sourceFaceComponents,
     const std::vector<int> &sourceFaceSheets) {
   AuthoritativePhaseFrontMeshResult result;
-  if (!phaseFront.succeeded || phaseFront.gridU <= 0 ||
-      phaseFront.gridV <= 0 || phaseFront.cells.empty()) {
+  if (!phaseFront.succeeded || phaseFront.cells.empty() ||
+      phaseFront.edges.empty()) {
     result.failure = "MissingAuthoritativePhaseFront";
     return result;
   }
@@ -1787,22 +1823,36 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   result.mesh.sourcePatch = 0;
   result.mesh.backend = geometry::PureQuadCompletionBackend::ClosedForm;
   result.mesh.usesCenterFan = false;
-  using SheetKey = std::pair<int, int>;
-  using SheetLatticeKey = std::tuple<int, int, int, int>;
-  struct SheetGridState {
-    int maxU = -1;
-    int maxV = -1;
-    int cellCount = 0;
-    bool periodicU = false;
-    std::set<std::pair<int, int>> cellOrigins;
-  };
-  std::map<SheetLatticeKey, int> vertexByLattice;
-  std::map<SheetKey, SheetGridState> gridBySheet;
-  std::vector<Eigen::RowVector3d> positions;
 
+  const auto normalized_rotation = [](const int rotation) {
+    const int remainder = rotation % 4;
+    return remainder < 0 ? remainder + 4 : remainder;
+  };
+  const auto rotate_lattice = [&](const Eigen::Vector2i &value,
+                                  const int rotation) {
+    switch (normalized_rotation(rotation)) {
+    case 0: return value;
+    case 1: return Eigen::Vector2i(-value.y(), value.x());
+    case 2: return Eigen::Vector2i(-value.x(), -value.y());
+    case 3: return Eigen::Vector2i(value.y(), -value.x());
+    }
+    return value;
+  };
+  const auto trace_equal = [](const geometry::SurfaceTracePoint &first,
+                              const geometry::SurfaceTracePoint &second) {
+    return first.face == second.face &&
+           (first.barycentric - second.barycentric).norm() <= 1.0e-10;
+  };
+  const auto lattice_equal = [](const geometry::LocalLatticeState &first,
+                                const geometry::LocalLatticeState &second) {
+    return first.latticeCoordinate == second.latticeCoordinate &&
+           first.branchRotation == second.branchRotation &&
+           first.scaleLevel == second.scaleLevel &&
+           first.sourceChart == second.sourceChart &&
+           (first.phase - second.phase).norm() <= 1.0e-10;
+  };
   const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace,
-                                      const int component,
-                                      const int sheet) {
+                                      const int component, const int sheet) {
     geometry::SurfacePoint point;
     if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
         !trace.barycentric.allFinite() ||
@@ -1824,73 +1874,162 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     point.squaredDistance = 0.0;
     return point;
   };
-
-  const auto canonical_lattice = [&](const int component, const int sheet,
-                                     Eigen::Vector2i lattice) {
-    for (const auto &relation : phaseFront.periodicHolonomies) {
-      if (relation.sourceComponent != component ||
-          relation.sourceSheet != sheet) {
-        continue;
-      }
-      const Eigen::Vector2i translation = relation.latticeTranslation;
-      if (relation.quarterTurnRotation != 0 || translation.x() <= 0 ||
-          translation.y() != 0) {
-        return Eigen::Vector2i{-1, -1};
-      }
-      if (lattice.x() == translation.x()) lattice.x() = 0;
+  const auto support_identity = [&](const geometry::SurfaceTracePoint &trace,
+                                    const int component) {
+    geometry::SurfaceCellCanonicalIdentity identity;
+    if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
+        !trace.barycentric.allFinite()) {
+      return identity;
     }
-    return lattice;
+    constexpr double tolerance = 1.0e-9;
+    constexpr double scale = 1.0e12;
+    identity.valid = true;
+    identity.values = {component};
+    int vertexCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(trace.barycentric[corner] - 1.0) <= tolerance) {
+        vertexCorner = corner;
+      }
+    }
+    if (vertexCorner >= 0) {
+      identity.values.insert(identity.values.end(),
+                             {0, sourceFaces(trace.face, vertexCorner)});
+      return identity;
+    }
+    int zeroCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(trace.barycentric[corner]) <= tolerance) {
+        if (zeroCorner >= 0) {
+          identity.valid = false;
+          identity.values.clear();
+          return identity;
+        }
+        zeroCorner = corner;
+      }
+    }
+    if (zeroCorner >= 0) {
+      const int firstCorner = (zeroCorner + 1) % 3;
+      const int secondCorner = (zeroCorner + 2) % 3;
+      const int firstVertex = sourceFaces(trace.face, firstCorner);
+      const int secondVertex = sourceFaces(trace.face, secondCorner);
+      const int low = std::min(firstVertex, secondVertex);
+      const int high = std::max(firstVertex, secondVertex);
+      const double highWeight = firstVertex == high
+                                    ? trace.barycentric[firstCorner]
+                                    : trace.barycentric[secondCorner];
+      identity.values.insert(
+          identity.values.end(),
+          {1, low, high,
+           static_cast<std::int64_t>(std::llround(
+               std::clamp(highWeight, 0.0, 1.0) * scale))});
+      return identity;
+    }
+    std::array<std::pair<int, double>, 3> weightedVertices;
+    for (int corner = 0; corner < 3; ++corner) {
+      weightedVertices[static_cast<std::size_t>(corner)] =
+          {sourceFaces(trace.face, corner), trace.barycentric[corner]};
+    }
+    std::sort(weightedVertices.begin(), weightedVertices.end());
+    identity.values.push_back(2);
+    for (const auto &[vertex, weight] : weightedVertices) {
+      identity.values.push_back(vertex);
+      identity.values.push_back(static_cast<std::int64_t>(std::llround(
+          std::clamp(weight, 0.0, 1.0) * scale)));
+    }
+    return identity;
   };
 
-  const auto append_vertex = [&](const int component, const int sheet,
-                                 const Eigen::Vector2i &lattice,
-                                 const geometry::SurfacePoint &point,
-                                 int &outputVertex) {
-    const Eigen::Vector2i canonical = canonical_lattice(component, sheet, lattice);
-    if (canonical.x() < 0 || canonical.y() < 0) return false;
-    const SheetLatticeKey key{component, sheet, canonical.x(), canonical.y()};
-    const auto found = vertexByLattice.find(key);
-    if (found != vertexByLattice.end()) {
-      outputVertex = found->second;
-      const geometry::SurfacePoint &stored =
-          result.mesh.vertexProvenance[static_cast<std::size_t>(outputVertex)];
-      const double tolerance = 1.0e-9 *
-          std::max({1.0, stored.position.norm(), point.position.norm()});
-      return stored.component == point.component && stored.sheet == point.sheet &&
-             (stored.position - point.position).norm() <= tolerance;
+  std::map<int, const geometry::SurfaceTopologyRegion *> topologyRegionById;
+  std::vector<int> topologyRegionByFace(
+      static_cast<std::size_t>(sourceFaces.rows()), -1);
+  for (const auto &region : phaseFront.topologyRegions) {
+    if (region.id < 0 || region.sourceComponent < 0 ||
+        region.sourceFaces.empty() ||
+        !topologyRegionById.emplace(region.id, &region).second) {
+      result.failure = "InvalidAuthoritativeTopologyRegion";
+      return result;
     }
-    outputVertex = static_cast<int>(positions.size());
-    vertexByLattice.emplace(key, outputVertex);
-    positions.push_back(point.position.transpose());
-    result.mesh.vertices.push_back(outputVertex);
-    result.mesh.vertexProvenance.push_back(point);
-    geometry::PureQuadVertexLineage lineage;
-    lineage.outputVertex = outputVertex;
-    lineage.kind = geometry::PureQuadVertexLineageKind::SourceTriangle;
-    lineage.sourcePoint = point;
-    lineage.sourcePatch = 0;
-    lineage.localVertex = outputVertex;
-    lineage.sourceComponent = point.component;
-    lineage.sourceSheet = point.sheet;
-    result.mesh.vertexLineage.push_back(std::move(lineage));
-    return true;
+    for (const int face : region.sourceFaces) {
+      if (face < 0 || face >= sourceFaces.rows() ||
+          topologyRegionByFace[static_cast<std::size_t>(face)] >= 0) {
+        result.failure = "InvalidAuthoritativeTopologyRegion";
+        return result;
+      }
+      topologyRegionByFace[static_cast<std::size_t>(face)] = region.id;
+    }
+  }
+  if (topologyRegionById.empty()) {
+    result.failure = "MissingAuthoritativeTopologyRegions";
+    return result;
+  }
+  if (!phaseFront.sourceTopologyRegionByFace.empty() &&
+      phaseFront.sourceTopologyRegionByFace != topologyRegionByFace) {
+    result.failure = "AuthoritativeTopologyRegionMapMismatch";
+    return result;
+  }
+
+  struct OccurrenceData {
+    geometry::SurfacePoint point;
+    geometry::SurfaceCellCanonicalIdentity support;
+    geometry::SurfaceCellSourceChart chart;
+    geometry::LocalLatticeState lattice;
+    int topologyRegion = -1;
+    int cellId = -1;
+    int corner = -1;
+  };
+  const int occurrenceCount = static_cast<int>(phaseFront.cells.size()) * 4;
+  std::vector<OccurrenceData> occurrences(
+      static_cast<std::size_t>(occurrenceCount));
+  std::vector<int> parents(static_cast<std::size_t>(occurrenceCount));
+  std::vector<int> ranks(static_cast<std::size_t>(occurrenceCount), 0);
+  std::iota(parents.begin(), parents.end(), 0);
+  const auto find_root = [&](int value) {
+    int root = value;
+    while (parents[static_cast<std::size_t>(root)] != root) {
+      root = parents[static_cast<std::size_t>(root)];
+    }
+    while (parents[static_cast<std::size_t>(value)] != value) {
+      const int next = parents[static_cast<std::size_t>(value)];
+      parents[static_cast<std::size_t>(value)] = root;
+      value = next;
+    }
+    return root;
+  };
+  const auto unite = [&](int first, int second) {
+    int firstRoot = find_root(first);
+    int secondRoot = find_root(second);
+    if (firstRoot == secondRoot) return;
+    if (ranks[static_cast<std::size_t>(firstRoot)] <
+        ranks[static_cast<std::size_t>(secondRoot)]) {
+      std::swap(firstRoot, secondRoot);
+    }
+    parents[static_cast<std::size_t>(secondRoot)] = firstRoot;
+    if (ranks[static_cast<std::size_t>(firstRoot)] ==
+        ranks[static_cast<std::size_t>(secondRoot)]) {
+      ++ranks[static_cast<std::size_t>(firstRoot)];
+    }
   };
 
-  std::set<int> cellIds;
-  for (const geometry::SurfacePhaseFrontCell &cell : phaseFront.cells) {
+  std::map<int, int> cellIndexById;
+  std::set<int> consumedTopologyRegions;
+  for (int cellIndex = 0;
+       cellIndex < static_cast<int>(phaseFront.cells.size()); ++cellIndex) {
+    const auto &cell = phaseFront.cells[static_cast<std::size_t>(cellIndex)];
     result.invalidCell = cell.id;
-    if (cell.id < 0 || !cellIds.insert(cell.id).second ||
+    const auto region = topologyRegionById.find(cell.sourceTopologyRegion);
+    if (cell.id < 0 || !cellIndexById.emplace(cell.id, cellIndex).second ||
         !cell.orientationValidated || cell.sourceComponent < 0 ||
-        cell.sourceSheet < 0) {
+        region == topologyRegionById.end() ||
+        region->second->sourceComponent != cell.sourceComponent ||
+        cell.sourceIsolationSheets.empty() ||
+        !std::is_sorted(cell.sourceIsolationSheets.begin(),
+                        cell.sourceIsolationSheets.end())) {
       result.failure = "InvalidAuthoritativePhaseFrontCell";
       return result;
     }
-    std::vector<int> quad(4, -1);
-    std::array<Eigen::RowVector3d, 4> quadPositions;
-    Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+    consumedTopologyRegions.insert(cell.sourceTopologyRegion);
     for (int corner = 0; corner < 4; ++corner) {
-      const geometry::SurfaceTracePoint &trace =
-          cell.corners[static_cast<std::size_t>(corner)];
+      const auto &trace = cell.corners[static_cast<std::size_t>(corner)];
       const int component =
           trace.face >= 0 && trace.face < sourceFaces.rows()
               ? sourceFaceComponents[static_cast<std::size_t>(trace.face)]
@@ -1899,183 +2038,72 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           trace.face >= 0 && trace.face < sourceFaces.rows()
               ? sourceFaceSheets[static_cast<std::size_t>(trace.face)]
               : -1;
-      if (component != cell.sourceComponent || sheet != cell.sourceSheet) {
+      if (component != cell.sourceComponent || sheet < 0 ||
+          trace.face < 0 || trace.face >= sourceFaces.rows() ||
+          topologyRegionByFace[static_cast<std::size_t>(trace.face)] !=
+              cell.sourceTopologyRegion ||
+          !std::binary_search(cell.sourceIsolationSheets.begin(),
+                              cell.sourceIsolationSheets.end(), sheet)) {
         result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
         return result;
       }
-      const geometry::SurfacePoint point =
-          make_surface_point(trace, component, sheet);
-      if (!point.valid() || !point.position.allFinite()) {
+      OccurrenceData &occurrence = occurrences[static_cast<std::size_t>(
+          cellIndex * 4 + corner)];
+      occurrence.point = make_surface_point(trace, component, sheet);
+      occurrence.support = support_identity(trace, component);
+      occurrence.chart = {component, trace.face, sheet};
+      occurrence.lattice = cell.lattice[static_cast<std::size_t>(corner)];
+      occurrence.topologyRegion = cell.sourceTopologyRegion;
+      occurrence.cellId = cell.id;
+      occurrence.corner = corner;
+      if (!occurrence.point.valid() || !occurrence.point.position.allFinite() ||
+          !occurrence.support.valid || !occurrence.chart.valid()) {
         result.failure = "InvalidAuthoritativePhaseFrontCorner";
         return result;
       }
-      const Eigen::Vector2i coordinate =
-          cell.lattice[static_cast<std::size_t>(corner)].latticeCoordinate;
-      if (coordinate.x() < 0 || coordinate.y() < 0 ||
-          !append_vertex(cell.sourceComponent, cell.sourceSheet, coordinate,
-                         point, quad[static_cast<std::size_t>(corner)])) {
-        result.failure = "AuthoritativePhaseFrontVertexConflict";
-        return result;
-      }
-      SheetGridState &grid =
-          gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
-      grid.periodicU = std::any_of(
-          phaseFront.periodicHolonomies.begin(),
-          phaseFront.periodicHolonomies.end(), [&](const auto &relation) {
-            return relation.sourceComponent == cell.sourceComponent &&
-                   relation.sourceSheet == cell.sourceSheet &&
-                   relation.quarterTurnRotation == 0 &&
-                   relation.latticeTranslation.x() > 0 &&
-                   relation.latticeTranslation.y() == 0;
-          });
-      grid.maxU = std::max(grid.maxU, coordinate.x());
-      grid.maxV = std::max(grid.maxV, coordinate.y());
-      quadPositions[static_cast<std::size_t>(corner)] =
-          point.position.transpose();
-      const Eigen::RowVector3d a =
-          sourceVertices.row(sourceFaces(trace.face, 0));
-      const Eigen::RowVector3d b =
-          sourceVertices.row(sourceFaces(trace.face, 1));
-      const Eigen::RowVector3d c =
-          sourceVertices.row(sourceFaces(trace.face, 2));
-      expectedNormal += (b - a).cross(c - a);
     }
-    std::set<int> uniqueQuad(quad.begin(), quad.end());
-    if (uniqueQuad.size() != 4U || expectedNormal.squaredNorm() <= 1.0e-24) {
-      result.failure = "DegenerateAuthoritativePhaseFrontQuad";
-      return result;
-    }
-    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
-    for (int corner = 0; corner < 4; ++corner) {
-      quadNormal += quadPositions[static_cast<std::size_t>(corner)].cross(
-          quadPositions[static_cast<std::size_t>((corner + 1) % 4)]);
-    }
-    if (!quadNormal.allFinite() || quadNormal.squaredNorm() <= 1.0e-24 ||
-        quadNormal.dot(expectedNormal) <= 0.0) {
-      result.failure = "InvertedAuthoritativePhaseFrontQuad";
-      return result;
-    }
-    const int outputQuad = static_cast<int>(result.mesh.quads.size());
-    result.mesh.quads.push_back(std::move(quad));
-    geometry::PureQuadFaceLineage lineage;
-    lineage.outputQuad = outputQuad;
-    lineage.sourcePatch = 0;
-    lineage.operation = geometry::PureQuadCompletionBackend::ClosedForm;
-    lineage.operationLocalQuad = cell.id;
-    lineage.completionVariant = 0;
-    lineage.boundaryOnly = false;
-    result.mesh.quadLineage.push_back(std::move(lineage));
-    SheetGridState &grid =
-        gridBySheet[{cell.sourceComponent, cell.sourceSheet}];
-    int originU = std::numeric_limits<int>::max();
-    int originV = std::numeric_limits<int>::max();
-    for (const geometry::LocalLatticeState &state : cell.lattice) {
-      originU = std::min(originU, state.latticeCoordinate.x());
-      originV = std::min(originV, state.latticeCoordinate.y());
-    }
-    if (!grid.cellOrigins.insert({originU, originV}).second) {
-      result.failure = "DuplicateAuthoritativePhaseFrontCell";
-      return result;
-    }
-    ++grid.cellCount;
   }
-
-  if (result.mesh.quads.size() != phaseFront.cells.size() ||
-      gridBySheet.empty()) {
-    result.failure = "IncompleteAuthoritativePhaseFrontMaterialization";
+  if (consumedTopologyRegions.size() != topologyRegionById.size()) {
+    result.failure = "IncompleteAuthoritativeTopologyRegionConsumption";
     return result;
   }
-  std::size_t expectedVertexCount = 0U;
-  for (const auto &[sheet, grid] : gridBySheet) {
-    (void)sheet;
-    if (grid.maxU <= 0 || grid.maxV <= 0 ||
-        grid.cellCount != grid.maxU * grid.maxV ||
-        grid.cellOrigins.size() != static_cast<std::size_t>(grid.cellCount)) {
-      result.failure = "IncompleteAuthoritativePhaseFrontSheet";
-      return result;
-    }
-    expectedVertexCount +=
-        static_cast<std::size_t>(grid.periodicU ? grid.maxU : grid.maxU + 1) *
-        static_cast<std::size_t>(grid.maxV + 1);
-    result.mesh.sourceSideEdgeCounts.insert(
-        result.mesh.sourceSideEdgeCounts.end(),
-        {grid.maxU, grid.maxV, grid.maxU, grid.maxV});
-  }
-  if (positions.size() != expectedVertexCount) {
-    result.failure = "IncompleteAuthoritativePhaseFrontMaterialization";
-    return result;
-  }
-  result.mesh.vertexPositions.resize(static_cast<int>(positions.size()), 3);
-  for (int vertex = 0; vertex < static_cast<int>(positions.size()); ++vertex) {
-    result.mesh.vertexPositions.row(vertex) =
-        positions[static_cast<std::size_t>(vertex)];
-  }
 
-  for (const auto &[sheetKey, grid] : gridBySheet) {
-    const auto boundary_vertex = [&](const int u, const int v) {
-      const Eigen::Vector2i canonical =
-          canonical_lattice(sheetKey.first, sheetKey.second, {u, v});
-      const SheetLatticeKey key{sheetKey.first, sheetKey.second,
-                                canonical.x(), canonical.y()};
-      const auto found = vertexByLattice.find(key);
-      return found == vertexByLattice.end() ? -1 : found->second;
-    };
-    if (grid.periodicU) {
-      std::vector<int> lower;
-      std::vector<int> upper;
-      for (int u = 0; u < grid.maxU; ++u) {
-        lower.push_back(boundary_vertex(u, 0));
-        upper.push_back(boundary_vertex(grid.maxU - 1 - u, grid.maxV));
-      }
-      for (const auto &boundary : {lower, upper}) {
-        if (boundary.empty() ||
-            std::any_of(boundary.begin(), boundary.end(),
-                        [](const int vertex) { return vertex < 0; }) ||
-            std::set<int>(boundary.begin(), boundary.end()).size() !=
-                boundary.size()) {
-          result.failure = "InvalidAuthoritativePeriodicBoundary";
-          return result;
-        }
-        result.mesh.boundaryLoops.push_back(boundary);
-        result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
-                                            boundary.begin(), boundary.end());
-      }
-    } else {
-      std::vector<int> boundary;
-      for (int u = 0; u <= grid.maxU; ++u) {
-        boundary.push_back(boundary_vertex(u, 0));
-      }
-      for (int v = 1; v <= grid.maxV; ++v) {
-        boundary.push_back(boundary_vertex(grid.maxU, v));
-      }
-      for (int u = grid.maxU - 1; u >= 0; --u) {
-        boundary.push_back(boundary_vertex(u, grid.maxV));
-      }
-      for (int v = grid.maxV - 1; v > 0; --v) {
-        boundary.push_back(boundary_vertex(0, v));
-      }
-      if (boundary.empty() ||
-          std::any_of(boundary.begin(), boundary.end(),
-                      [](const int vertex) { return vertex < 0; }) ||
-          std::set<int>(boundary.begin(), boundary.end()).size() !=
-              boundary.size()) {
-        result.failure = "InvalidAuthoritativePhaseFrontBoundary";
-        return result;
-      }
-      result.mesh.boundaryLoops.push_back(boundary);
-      result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
-                                          boundary.begin(), boundary.end());
-    }
-  }
-
+  std::vector<int> edgeByCellSide(
+      static_cast<std::size_t>(occurrenceCount), -1);
+  const auto exactSourceIncidence =
+      geometry::surface_cell_tracing_detail::edge_faces(sourceFaces);
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {
     result.invalidEdge = edgeIndex;
-    const geometry::SurfaceFrontEdge &edge =
-        phaseFront.edges[static_cast<std::size_t>(edgeIndex)];
+    const auto &edge = phaseFront.edges[static_cast<std::size_t>(edgeIndex)];
+    const auto cell = cellIndexById.find(edge.filledCell);
+    if (cell == cellIndexById.end() || edge.filledSide < 0 ||
+        edge.filledSide >= 4 || edge.unfilledSide != 0) {
+      result.failure = "InvalidAuthoritativePhaseFrontOwnership";
+      return result;
+    }
+    const auto &owner =
+        phaseFront.cells[static_cast<std::size_t>(cell->second)];
+    const int slot = cell->second * 4 + edge.filledSide;
+    if (edgeByCellSide[static_cast<std::size_t>(slot)] >= 0 ||
+        edge.sourceComponent != owner.sourceComponent ||
+        edge.sourceTopologyRegion != owner.sourceTopologyRegion ||
+        !trace_equal(edge.from,
+                     owner.corners[static_cast<std::size_t>(edge.filledSide)]) ||
+        !trace_equal(edge.to, owner.corners[static_cast<std::size_t>(
+                                  (edge.filledSide + 1) % 4)]) ||
+        !lattice_equal(edge.fromLattice,
+                       owner.lattice[static_cast<std::size_t>(
+                           edge.filledSide)]) ||
+        !lattice_equal(edge.toLattice,
+                       owner.lattice[static_cast<std::size_t>(
+                           (edge.filledSide + 1) % 4)])) {
+      result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
+      return result;
+    }
+    edgeByCellSide[static_cast<std::size_t>(slot)] = edgeIndex;
     const bool hasOpposite = edge.oppositeEdge >= 0;
-    if (edge.filledCell < 0 || edge.unfilledSide != 0 ||
-        hasOpposite == edge.exterior ||
+    if (hasOpposite == edge.exterior ||
         (hasOpposite &&
          (edge.oppositeEdge >= static_cast<int>(phaseFront.edges.size()) ||
           phaseFront.edges[static_cast<std::size_t>(edge.oppositeEdge)]
@@ -2083,8 +2111,677 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       result.failure = "InvalidAuthoritativePhaseFrontOwnership";
       return result;
     }
+    switch (edge.boundaryKind) {
+    case geometry::SurfaceFrontBoundaryKind::OrdinaryInterior:
+      if (!hasOpposite || edge.periodicRelation >= 0 || edge.exterior) {
+        result.failure = "InvalidOrdinaryFrontRelation";
+        return result;
+      }
+      break;
+    case geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary:
+      if (hasOpposite || !edge.exterior || edge.periodicRelation >= 0 ||
+          edge.sourceRouteTopology.empty()) {
+        result.failure = "InvalidSourceBoundaryAuthority";
+        return result;
+      }
+      for (const std::uint64_t topology : edge.sourceRouteTopology) {
+        const auto sourceEdge = exactSourceIncidence.find(topology);
+        if (sourceEdge == exactSourceIncidence.end() ||
+            sourceEdge->second[1] >= 0) {
+          result.failure = "FalseAuthoritativeSourceBoundary";
+          return result;
+        }
+      }
+      break;
+    case geometry::SurfaceFrontBoundaryKind::HardRail:
+      if (!hasOpposite || edge.exterior || edge.sourceRouteTopology.empty()) {
+        result.failure = "InvalidHardRailAuthority";
+        return result;
+      }
+      break;
+    case geometry::SurfaceFrontBoundaryKind::EmbeddedReliefCut:
+      result.failure = "UnsupportedEmbeddedReliefCut";
+      return result;
+    case geometry::SurfaceFrontBoundaryKind::PeriodicCut:
+      if (!hasOpposite || edge.exterior || edge.periodicRelation < 0 ||
+          edge.sourceRouteTopology.empty()) {
+        result.failure = "InvalidPeriodicCutAuthority";
+        return result;
+      }
+      break;
+    }
+  }
+  if (std::any_of(edgeByCellSide.begin(), edgeByCellSide.end(),
+                  [](const int edge) { return edge < 0; })) {
+    result.failure = "IncompleteAuthoritativePhaseFrontSides";
+    return result;
   }
 
+  std::vector<char> consumedPeriodicRelations(
+      phaseFront.periodicHolonomies.size(), 0);
+  std::vector<std::vector<geometry::PureQuadEquivalenceProvenance>>
+      occurrenceEquivalences(static_cast<std::size_t>(occurrenceCount));
+  const auto canonical_route = [](std::vector<std::uint64_t> route) {
+    std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
+    return reversed < route ? reversed : route;
+  };
+  const auto action_matches = [&](const geometry::LocalLatticeState &first,
+                                  const geometry::LocalLatticeState &second,
+                                  const int rotation,
+                                  const Eigen::Vector2i &translation) {
+    return rotate_lattice(first.latticeCoordinate, rotation) + translation ==
+               second.latticeCoordinate &&
+           normalized_rotation(first.branchRotation + rotation) ==
+               normalized_rotation(second.branchRotation) &&
+           first.scaleLevel == second.scaleLevel;
+  };
+  for (int edgeIndex = 0;
+       edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {
+    const auto &first = phaseFront.edges[static_cast<std::size_t>(edgeIndex)];
+    if (first.oppositeEdge < 0 || edgeIndex > first.oppositeEdge) continue;
+    result.invalidEdge = edgeIndex;
+    const int secondIndex = first.oppositeEdge;
+    const auto &second =
+        phaseFront.edges[static_cast<std::size_t>(secondIndex)];
+    const bool periodicPair =
+        first.boundaryKind ==
+        geometry::SurfaceFrontBoundaryKind::PeriodicCut;
+    if (first.boundaryKind != second.boundaryKind ||
+        (!periodicPair &&
+         (first.family != second.family ||
+          first.advanceSign == second.advanceSign))) {
+      result.failure = "IncompatibleAuthoritativeFrontPair";
+      return result;
+    }
+    const int firstCell = cellIndexById[first.filledCell];
+    const int secondCell = cellIndexById[second.filledCell];
+    const int firstFrom = firstCell * 4 + first.filledSide;
+    const int firstTo = firstCell * 4 + (first.filledSide + 1) % 4;
+    const int secondFrom = secondCell * 4 + second.filledSide;
+    const int secondTo = secondCell * 4 + (second.filledSide + 1) % 4;
+    if (occurrences[static_cast<std::size_t>(firstFrom)].support !=
+            occurrences[static_cast<std::size_t>(secondTo)].support ||
+        occurrences[static_cast<std::size_t>(firstTo)].support !=
+            occurrences[static_cast<std::size_t>(secondFrom)].support) {
+      result.failure = "AuthoritativeFrontPairSourceSupportMismatch";
+      return result;
+    }
+
+    geometry::PureQuadEquivalenceProvenance equivalence;
+    equivalence.firstFrontEdge = edgeIndex;
+    equivalence.secondFrontEdge = secondIndex;
+    if (first.boundaryKind ==
+        geometry::SurfaceFrontBoundaryKind::OrdinaryInterior) {
+      if (!lattice_equal(first.fromLattice, second.toLattice) ||
+          !lattice_equal(first.toLattice, second.fromLattice)) {
+        result.failure = "InvalidOrdinaryFrontTransport";
+        return result;
+      }
+      equivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
+    } else if (first.boundaryKind ==
+               geometry::SurfaceFrontBoundaryKind::HardRail) {
+      if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
+          (first.railId >= 0 && second.railId >= 0 &&
+           first.railId != second.railId) ||
+          canonical_route(first.sourceRouteTopology) !=
+              canonical_route(second.sourceRouteTopology)) {
+        result.failure = "InvalidHardRailTransport";
+        return result;
+      }
+      equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
+      equivalence.railId = first.railId >= 0 ? first.railId : second.railId;
+      equivalence.sourceRouteTopology =
+          canonical_route(first.sourceRouteTopology);
+    } else if (first.boundaryKind ==
+               geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
+      if (first.periodicRelation != second.periodicRelation ||
+          first.periodicRelation < 0 ||
+          first.periodicRelation >=
+              static_cast<int>(phaseFront.periodicHolonomies.size())) {
+        result.failure = "InvalidPeriodicRelationOwner";
+        return result;
+      }
+      const auto &relation = phaseFront.periodicHolonomies[
+          static_cast<std::size_t>(first.periodicRelation)];
+      if (relation.sourceComponent != first.sourceComponent ||
+          relation.sourceTopologyRegion != first.sourceTopologyRegion ||
+          relation.latticeTranslation.squaredNorm() == 0 ||
+          relation.sourceRouteEdges.empty() ||
+          relation.cutSourceEdges.empty() ||
+          relation.sourceRouteEdges.size() !=
+              relation.sourceRouteTopology.size() ||
+          relation.cutSourceEdges.size() != relation.cutSourceTopology.size() ||
+          canonical_route(first.sourceRouteTopology) !=
+              canonical_route(relation.cutSourceTopology) ||
+          canonical_route(second.sourceRouteTopology) !=
+              canonical_route(relation.cutSourceTopology)) {
+        result.failure = "InvalidPeriodicRelation";
+        return result;
+      }
+      const int rotation = normalized_rotation(relation.quarterTurnRotation);
+      const Eigen::Vector2i translation = relation.latticeTranslation;
+      const int inverseRotation = normalized_rotation(-rotation);
+      const Eigen::Vector2i inverseTranslation =
+          -rotate_lattice(translation, inverseRotation);
+      const bool forward =
+          action_matches(first.fromLattice, second.toLattice, rotation,
+                         translation) &&
+          action_matches(first.toLattice, second.fromLattice, rotation,
+                         translation);
+      const bool inverse =
+          action_matches(first.fromLattice, second.toLattice, inverseRotation,
+                         inverseTranslation) &&
+          action_matches(first.toLattice, second.fromLattice, inverseRotation,
+                         inverseTranslation);
+      if (!forward && !inverse) {
+        result.failure = "InvalidPeriodicFrontTransport";
+        return result;
+      }
+      consumedPeriodicRelations[static_cast<std::size_t>(
+          first.periodicRelation)] = 1;
+      equivalence.kind =
+          geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
+      equivalence.periodicRelation = first.periodicRelation;
+      equivalence.quarterTurnRotation = relation.quarterTurnRotation;
+      equivalence.latticeTranslation = relation.latticeTranslation;
+      equivalence.sourceRouteTopology = relation.sourceRouteTopology;
+    } else {
+      result.failure = "InvalidPairedBoundaryKind";
+      return result;
+    }
+    unite(firstFrom, secondTo);
+    unite(firstTo, secondFrom);
+    for (const int occurrence : {firstFrom, firstTo, secondFrom, secondTo}) {
+      occurrenceEquivalences[static_cast<std::size_t>(occurrence)].push_back(
+          equivalence);
+    }
+  }
+  if (std::any_of(consumedPeriodicRelations.begin(),
+                  consumedPeriodicRelations.end(),
+                  [](const char consumed) { return consumed == 0; })) {
+    result.failure = "UnconsumedAuthoritativePeriodicRelation";
+    return result;
+  }
+
+  std::map<int, std::vector<int>> membersByRoot;
+  for (int occurrence = 0; occurrence < occurrenceCount; ++occurrence) {
+    membersByRoot[find_root(occurrence)].push_back(occurrence);
+  }
+  struct QuotientClass {
+    int root = -1;
+    std::vector<int> members;
+    std::vector<std::int64_t> orderingKey;
+  };
+  std::vector<QuotientClass> quotientClasses;
+  std::set<std::vector<std::int64_t>> uniqueClassKeys;
+  for (auto &[root, members] : membersByRoot) {
+    const auto &support =
+        occurrences[static_cast<std::size_t>(members.front())].support;
+    std::vector<std::array<std::int64_t, 7>> domainStates;
+    for (const int member : members) {
+      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
+      if (occurrence.support != support) {
+        result.failure = "QuotientSourceSupportConflict";
+        return result;
+      }
+      domainStates.push_back(
+          {occurrence.topologyRegion, occurrence.point.sheet,
+           occurrence.lattice.latticeCoordinate.x(),
+           occurrence.lattice.latticeCoordinate.y(),
+           occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
+           occurrence.lattice.sourceChart});
+    }
+    std::sort(domainStates.begin(), domainStates.end());
+    domainStates.erase(std::unique(domainStates.begin(), domainStates.end()),
+                       domainStates.end());
+    QuotientClass quotient;
+    quotient.root = root;
+    quotient.members = std::move(members);
+    quotient.orderingKey.push_back(
+        static_cast<std::int64_t>(support.values.size()));
+    quotient.orderingKey.insert(quotient.orderingKey.end(),
+                                support.values.begin(), support.values.end());
+    quotient.orderingKey.push_back(
+        static_cast<std::int64_t>(domainStates.size()));
+    for (const auto &state : domainStates) {
+      quotient.orderingKey.insert(quotient.orderingKey.end(), state.begin(),
+                                  state.end());
+    }
+    if (!uniqueClassKeys.insert(quotient.orderingKey).second) {
+      result.failure = "UnpairedDuplicateAuthoritativeCorner";
+      return result;
+    }
+    quotientClasses.push_back(std::move(quotient));
+  }
+  std::sort(quotientClasses.begin(), quotientClasses.end(),
+            [](const QuotientClass &first, const QuotientClass &second) {
+              return first.orderingKey < second.orderingKey;
+            });
+
+  result.mesh.vertexPositions.resize(
+      static_cast<int>(quotientClasses.size()), 3);
+  std::map<int, int> outputVertexByRoot;
+  for (int outputVertex = 0;
+       outputVertex < static_cast<int>(quotientClasses.size());
+       ++outputVertex) {
+    QuotientClass &quotient =
+        quotientClasses[static_cast<std::size_t>(outputVertex)];
+    outputVertexByRoot[quotient.root] = outputVertex;
+    const auto representative_key = [&](const int member) {
+      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
+      std::array<std::pair<int, std::int64_t>, 3> weightedVertices;
+      for (int corner = 0; corner < 3; ++corner) {
+        weightedVertices[static_cast<std::size_t>(corner)] = {
+            sourceFaces(occurrence.point.face, corner),
+            static_cast<std::int64_t>(std::llround(
+                occurrence.point.barycentric(corner) * 1.0e12))};
+      }
+      std::sort(weightedVertices.begin(), weightedVertices.end());
+      // Source triangle topology and exact barycentric chart select the
+      // representative. The face row is only a final lookup tie-break for an
+      // already identical chart; it is never a merge or provenance policy.
+      return std::tuple{weightedVertices, occurrence.point.sheet,
+                        occurrence.lattice.sourceChart,
+                        occurrence.topologyRegion, occurrence.point.face};
+    };
+    const int representative = *std::min_element(
+        quotient.members.begin(), quotient.members.end(),
+        [&](const int first, const int second) {
+          return representative_key(first) < representative_key(second);
+        });
+    const auto &representativeOccurrence =
+        occurrences[static_cast<std::size_t>(representative)];
+    std::set<geometry::SurfaceCellSourceChart> charts;
+    std::set<int> topologyRegions;
+    std::set<int> isolationSheets;
+    std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
+    for (const int member : quotient.members) {
+      const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
+      const double tolerance = 1.0e-9 * std::max(
+          {1.0, representativeOccurrence.point.position.norm(),
+           occurrence.point.position.norm()});
+      if ((representativeOccurrence.point.position - occurrence.point.position)
+              .norm() > tolerance) {
+        result.failure = "QuotientGeometryConsistencyFailure";
+        return result;
+      }
+      charts.insert(occurrence.chart);
+      topologyRegions.insert(occurrence.topologyRegion);
+      isolationSheets.insert(occurrence.point.sheet);
+      const auto &memberEquivalences =
+          occurrenceEquivalences[static_cast<std::size_t>(member)];
+      equivalences.insert(equivalences.end(), memberEquivalences.begin(),
+                          memberEquivalences.end());
+    }
+    std::sort(equivalences.begin(), equivalences.end());
+    equivalences.erase(
+        std::unique(equivalences.begin(), equivalences.end()),
+        equivalences.end());
+    result.mesh.vertices.push_back(outputVertex);
+    result.mesh.vertexPositions.row(outputVertex) =
+        representativeOccurrence.point.position.transpose();
+    result.mesh.vertexProvenance.push_back(representativeOccurrence.point);
+    geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = outputVertex;
+    lineage.kind = geometry::PureQuadVertexLineageKind::SourceTriangle;
+    lineage.sourcePoint = representativeOccurrence.point;
+    lineage.sourcePatch = 0;
+    lineage.localVertex = outputVertex;
+    lineage.sourceComponent = representativeOccurrence.point.component;
+    lineage.sourceSheet = isolationSheets.size() == 1U
+                              ? *isolationSheets.begin()
+                              : -1;
+    lineage.sourceTopologyRegions.assign(topologyRegions.begin(),
+                                         topologyRegions.end());
+    lineage.sourceCharts.assign(charts.begin(), charts.end());
+    lineage.sourceIsolationSheets.assign(isolationSheets.begin(),
+                                         isolationSheets.end());
+    lineage.sourceSupportIdentity = representativeOccurrence.support;
+    lineage.equivalences = std::move(equivalences);
+    result.mesh.vertexLineage.push_back(std::move(lineage));
+  }
+
+  struct PendingQuad {
+    std::vector<int> vertices;
+    std::vector<int> canonicalCycle;
+    std::vector<int> duplicateKey;
+    int cellIndex = -1;
+  };
+  const auto canonical_cycle = [](const std::vector<int> &cycle,
+                                  const bool allowReverse) {
+    std::vector<int> best;
+    const auto consume = [&](const std::vector<int> &candidate,
+                             std::vector<int> &target) {
+      for (std::size_t offset = 0; offset < candidate.size(); ++offset) {
+        std::vector<int> rotated;
+        for (std::size_t index = 0; index < candidate.size(); ++index) {
+          rotated.push_back(candidate[(offset + index) % candidate.size()]);
+        }
+        if (target.empty() || rotated < target) target = std::move(rotated);
+      }
+    };
+    consume(cycle, best);
+    if (allowReverse) {
+      std::vector<int> reversed(cycle.rbegin(), cycle.rend());
+      consume(reversed, best);
+    }
+    return best;
+  };
+  std::vector<PendingQuad> pendingQuads;
+  std::set<std::vector<int>> duplicateFaces;
+  for (int cellIndex = 0;
+       cellIndex < static_cast<int>(phaseFront.cells.size()); ++cellIndex) {
+    const auto &cell = phaseFront.cells[static_cast<std::size_t>(cellIndex)];
+    PendingQuad pending;
+    pending.cellIndex = cellIndex;
+    std::array<Eigen::RowVector3d, 4> positions;
+    Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 4; ++corner) {
+      const int root = find_root(cellIndex * 4 + corner);
+      pending.vertices.push_back(outputVertexByRoot[root]);
+      positions[static_cast<std::size_t>(corner)] =
+          result.mesh.vertexPositions.row(pending.vertices.back());
+      const int face = cell.corners[static_cast<std::size_t>(corner)].face;
+      const Eigen::RowVector3d a = sourceVertices.row(sourceFaces(face, 0));
+      const Eigen::RowVector3d b = sourceVertices.row(sourceFaces(face, 1));
+      const Eigen::RowVector3d c = sourceVertices.row(sourceFaces(face, 2));
+      expectedNormal += (b - a).cross(c - a);
+    }
+    if (std::set<int>(pending.vertices.begin(), pending.vertices.end()).size() !=
+            4U ||
+        expectedNormal.squaredNorm() <= 1.0e-24) {
+      result.failure = "DegenerateAuthoritativePhaseFrontQuad";
+      return result;
+    }
+    Eigen::RowVector3d quadNormal = Eigen::RowVector3d::Zero();
+    for (int corner = 0; corner < 4; ++corner) {
+      quadNormal += positions[static_cast<std::size_t>(corner)].cross(
+          positions[static_cast<std::size_t>((corner + 1) % 4)]);
+    }
+    if (!quadNormal.allFinite() || quadNormal.squaredNorm() <= 1.0e-24 ||
+        quadNormal.dot(expectedNormal) <= 0.0) {
+      result.failure = "InvertedAuthoritativePhaseFrontQuad";
+      return result;
+    }
+    pending.canonicalCycle = canonical_cycle(pending.vertices, false);
+    pending.duplicateKey = canonical_cycle(pending.vertices, true);
+    if (!duplicateFaces.insert(pending.duplicateKey).second) {
+      result.failure = "DuplicateAuthoritativePhaseFrontQuad";
+      return result;
+    }
+    pendingQuads.push_back(std::move(pending));
+  }
+  std::sort(pendingQuads.begin(), pendingQuads.end(),
+            [](const PendingQuad &first, const PendingQuad &second) {
+              return first.canonicalCycle < second.canonicalCycle;
+            });
+  std::vector<int> outputQuadByCell(phaseFront.cells.size(), -1);
+  for (int outputQuad = 0;
+       outputQuad < static_cast<int>(pendingQuads.size()); ++outputQuad) {
+    const PendingQuad &pending =
+        pendingQuads[static_cast<std::size_t>(outputQuad)];
+    result.mesh.quads.push_back(pending.vertices);
+    outputQuadByCell[static_cast<std::size_t>(pending.cellIndex)] = outputQuad;
+    geometry::PureQuadFaceLineage lineage;
+    lineage.outputQuad = outputQuad;
+    lineage.sourcePatch = 0;
+    lineage.operation = geometry::PureQuadCompletionBackend::ClosedForm;
+    lineage.operationLocalQuad =
+        phaseFront.cells[static_cast<std::size_t>(pending.cellIndex)].id;
+    lineage.completionVariant = 0;
+    lineage.boundaryOnly = false;
+    result.mesh.quadLineage.push_back(std::move(lineage));
+  }
+
+  struct MeshSideRef {
+    int quad = -1;
+    int side = -1;
+    int frontEdge = -1;
+    int from = -1;
+    int to = -1;
+  };
+  std::map<std::pair<int, int>, std::vector<MeshSideRef>> meshEdges;
+  for (const PendingQuad &pending : pendingQuads) {
+    const int outputQuad =
+        outputQuadByCell[static_cast<std::size_t>(pending.cellIndex)];
+    for (int side = 0; side < 4; ++side) {
+      const int from = pending.vertices[static_cast<std::size_t>(side)];
+      const int to = pending.vertices[static_cast<std::size_t>((side + 1) % 4)];
+      if (from == to) {
+        result.failure = "CollapsedAuthoritativeMeshEdge";
+        return result;
+      }
+      meshEdges[std::minmax(from, to)].push_back(
+          {outputQuad, side,
+           edgeByCellSide[static_cast<std::size_t>(pending.cellIndex * 4 + side)],
+           from, to});
+    }
+  }
+  std::vector<std::set<int>> quadAdjacency(pendingQuads.size());
+  std::vector<std::pair<int, int>> directedBoundary;
+  for (const auto &[edgeKey, incidence] : meshEdges) {
+    (void)edgeKey;
+    if (incidence.empty() || incidence.size() > 2U) {
+      result.failure = "NonManifoldAuthoritativeMeshEdge";
+      return result;
+    }
+    if (incidence.size() == 1U) {
+      const auto &front = phaseFront.edges[static_cast<std::size_t>(
+          incidence.front().frontEdge)];
+      if (front.boundaryKind !=
+              geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary ||
+          !front.exterior || front.oppositeEdge >= 0) {
+        result.failure = "UnjustifiedAuthoritativeMeshBoundary";
+        return result;
+      }
+      directedBoundary.emplace_back(incidence.front().from,
+                                    incidence.front().to);
+    } else {
+      const auto &firstFront = phaseFront.edges[static_cast<std::size_t>(
+          incidence[0].frontEdge)];
+      const auto &secondFront = phaseFront.edges[static_cast<std::size_t>(
+          incidence[1].frontEdge)];
+      if (firstFront.oppositeEdge != incidence[1].frontEdge ||
+          secondFront.oppositeEdge != incidence[0].frontEdge ||
+          incidence[0].from != incidence[1].to ||
+          incidence[0].to != incidence[1].from) {
+        result.failure = "AuthoritativeMeshEdgeRelationMismatch";
+        return result;
+      }
+      quadAdjacency[static_cast<std::size_t>(incidence[0].quad)].insert(
+          incidence[1].quad);
+      quadAdjacency[static_cast<std::size_t>(incidence[1].quad)].insert(
+          incidence[0].quad);
+    }
+  }
+
+  std::set<int> unvisitedQuads;
+  for (int quad = 0; quad < static_cast<int>(pendingQuads.size()); ++quad) {
+    unvisitedQuads.insert(quad);
+  }
+  while (!unvisitedQuads.empty()) {
+    ++result.connectedComponents;
+    std::vector<int> stack{*unvisitedQuads.begin()};
+    while (!stack.empty()) {
+      const int quad = stack.back();
+      stack.pop_back();
+      if (unvisitedQuads.erase(quad) == 0U) continue;
+      for (const int adjacent :
+           quadAdjacency[static_cast<std::size_t>(quad)]) {
+        if (unvisitedQuads.count(adjacent) != 0U) stack.push_back(adjacent);
+      }
+    }
+  }
+
+  std::map<int, int> boundaryNext;
+  std::map<int, int> boundaryPrevious;
+  std::set<std::pair<int, int>> unvisitedBoundary(directedBoundary.begin(),
+                                                  directedBoundary.end());
+  for (const auto &[from, to] : directedBoundary) {
+    if (!boundaryNext.emplace(from, to).second ||
+        !boundaryPrevious.emplace(to, from).second) {
+      result.failure = "NonManifoldAuthoritativeBoundaryVertex";
+      return result;
+    }
+  }
+  if (boundaryNext.size() != boundaryPrevious.size()) {
+    result.failure = "OpenAuthoritativeBoundary";
+    return result;
+  }
+  while (!unvisitedBoundary.empty()) {
+    const int start = unvisitedBoundary.begin()->first;
+    int current = start;
+    std::vector<int> loop;
+    do {
+      const auto next = boundaryNext.find(current);
+      if (next == boundaryNext.end() ||
+          unvisitedBoundary.erase({current, next->second}) == 0U) {
+        result.failure = "InvalidAuthoritativeBoundaryLoop";
+        return result;
+      }
+      loop.push_back(current);
+      current = next->second;
+      if (loop.size() > directedBoundary.size()) {
+        result.failure = "InvalidAuthoritativeBoundaryLoop";
+        return result;
+      }
+    } while (current != start);
+    if (loop.size() < 3U) {
+      result.failure = "DegenerateAuthoritativeBoundaryLoop";
+      return result;
+    }
+    const auto minimum = std::min_element(loop.begin(), loop.end());
+    std::rotate(loop.begin(), minimum, loop.end());
+    result.mesh.boundaryLoops.push_back(std::move(loop));
+  }
+  std::sort(result.mesh.boundaryLoops.begin(),
+            result.mesh.boundaryLoops.end());
+  for (const auto &loop : result.mesh.boundaryLoops) {
+    result.mesh.boundaryVertices.insert(result.mesh.boundaryVertices.end(),
+                                        loop.begin(), loop.end());
+  }
+  result.boundaryLoopCount =
+      static_cast<int>(result.mesh.boundaryLoops.size());
+  result.eulerCharacteristic =
+      static_cast<int>(quotientClasses.size()) -
+      static_cast<int>(meshEdges.size()) +
+      static_cast<int>(pendingQuads.size());
+
+  std::vector<std::set<int>> incidentQuadsByVertex(quotientClasses.size());
+  std::vector<std::map<int, std::set<int>>> fanAdjacency(
+      quotientClasses.size());
+  std::vector<int> boundaryEdgesByVertex(quotientClasses.size(), 0);
+  for (const auto &[edgeKey, incidence] : meshEdges) {
+    for (const MeshSideRef &side : incidence) {
+      incidentQuadsByVertex[static_cast<std::size_t>(edgeKey.first)].insert(
+          side.quad);
+      incidentQuadsByVertex[static_cast<std::size_t>(edgeKey.second)].insert(
+          side.quad);
+    }
+    if (incidence.size() == 1U) {
+      ++boundaryEdgesByVertex[static_cast<std::size_t>(edgeKey.first)];
+      ++boundaryEdgesByVertex[static_cast<std::size_t>(edgeKey.second)];
+    } else {
+      for (const int vertex : {edgeKey.first, edgeKey.second}) {
+        fanAdjacency[static_cast<std::size_t>(vertex)][incidence[0].quad]
+            .insert(incidence[1].quad);
+        fanAdjacency[static_cast<std::size_t>(vertex)][incidence[1].quad]
+            .insert(incidence[0].quad);
+      }
+    }
+  }
+  for (int vertex = 0; vertex < static_cast<int>(quotientClasses.size());
+       ++vertex) {
+    const auto &incident =
+        incidentQuadsByVertex[static_cast<std::size_t>(vertex)];
+    if (incident.empty()) {
+      result.failure = "UnreferencedAuthoritativeVertex";
+      return result;
+    }
+    std::set<int> unvisited = incident;
+    std::vector<int> stack{*unvisited.begin()};
+    while (!stack.empty()) {
+      const int quad = stack.back();
+      stack.pop_back();
+      if (unvisited.erase(quad) == 0U) continue;
+      const auto neighbors =
+          fanAdjacency[static_cast<std::size_t>(vertex)].find(quad);
+      if (neighbors ==
+          fanAdjacency[static_cast<std::size_t>(vertex)].end()) continue;
+      for (const int adjacent : neighbors->second) {
+        if (unvisited.count(adjacent) != 0U) stack.push_back(adjacent);
+      }
+    }
+    if (!unvisited.empty()) {
+      result.failure = "DisconnectedAuthoritativeVertexFan";
+      return result;
+    }
+    int degreeOne = 0;
+    bool invalidDegree = false;
+    for (const int quad : incident) {
+      const auto found =
+          fanAdjacency[static_cast<std::size_t>(vertex)].find(quad);
+      const std::size_t degree =
+          found == fanAdjacency[static_cast<std::size_t>(vertex)].end()
+              ? 0U
+              : found->second.size();
+      degreeOne += degree == 1U ? 1 : 0;
+      if (degree > 2U) invalidDegree = true;
+    }
+    const int boundaryDegree =
+        boundaryEdgesByVertex[static_cast<std::size_t>(vertex)];
+    const bool validInterior =
+        boundaryDegree == 0 && !invalidDegree &&
+        std::all_of(incident.begin(), incident.end(), [&](const int quad) {
+          return fanAdjacency[static_cast<std::size_t>(vertex)][quad].size() ==
+                 2U;
+        });
+    const bool validBoundary =
+        boundaryDegree == 2 && !invalidDegree &&
+        ((incident.size() == 1U && degreeOne == 0) || degreeOne == 2);
+    if (!validInterior && !validBoundary) {
+      result.failure = "NonManifoldAuthoritativeVertexFan";
+      return result;
+    }
+  }
+
+  const auto sourceEdgeIndices =
+      geometry::surface_cell_tracing_detail::edge_matching_indices(
+          exactSourceIncidence);
+  std::map<int, std::uint64_t> topologyBySourceEdge;
+  for (const auto &[topology, sourceEdge] : sourceEdgeIndices) {
+    topologyBySourceEdge[sourceEdge] = topology;
+  }
+  std::set<std::uint64_t> consumedTransitionTopology;
+  for (const auto &cell : phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (const auto &segment : path) {
+        for (const int sourceEdge : segment.transitionSourceEdges) {
+          const auto topology = topologyBySourceEdge.find(sourceEdge);
+          if (topology == topologyBySourceEdge.end()) {
+            result.failure = "InvalidAuthoritativeTransitionSourceEdge";
+            return result;
+          }
+          consumedTransitionTopology.insert(topology->second);
+        }
+      }
+    }
+  }
+  std::size_t requiredIsolationSeams = 0U;
+  for (const auto &region : phaseFront.topologyRegions) {
+    requiredIsolationSeams += region.internalIsolationSeamTopology.size();
+    for (const std::uint64_t seam : region.internalIsolationSeamTopology) {
+      if (consumedTransitionTopology.count(seam) == 0U) {
+        result.failure = "UnconsumedAuthoritativeIsolationSeam";
+        return result;
+      }
+    }
+  }
+
+  result.consumedTopologyRegions = consumedTopologyRegions.size();
+  result.consumedInternalIsolationSeams = requiredIsolationSeams;
+  result.consumedPeriodicHolonomies = static_cast<std::size_t>(std::count(
+      consumedPeriodicRelations.begin(), consumedPeriodicRelations.end(), 1));
   result.invalidCell = -1;
   result.invalidEdge = -1;
   result.success = true;
@@ -5041,9 +5738,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             authoritativePhaseFrontMesh.invalidCell;
         result.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
             authoritativePhaseFrontMesh.invalidEdge;
+        if (retainIntermediateGeometry) {
+          result.surfaceCellContext.traceNetwork = std::move(traceNetwork);
+          result.surfaceCellContext.hasTraceNetwork = true;
+        }
         return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                   "tracing");
       }
+      result.diagnostics.surfaceCellConsumedTopologyRegionCount =
+          authoritativePhaseFrontMesh.consumedTopologyRegions;
+      result.diagnostics.surfaceCellConsumedInternalIsolationSeamCount =
+          authoritativePhaseFrontMesh.consumedInternalIsolationSeams;
+      result.diagnostics.surfaceCellConsumedPeriodicHolonomyCount =
+          authoritativePhaseFrontMesh.consumedPeriodicHolonomies;
+      result.diagnostics.surfaceCellMaterializedConnectedComponentCount =
+          authoritativePhaseFrontMesh.connectedComponents;
+      result.diagnostics.surfaceCellMaterializedBoundaryLoopCount =
+          authoritativePhaseFrontMesh.boundaryLoopCount;
+      result.diagnostics.surfaceCellMaterializedEulerCharacteristic =
+          authoritativePhaseFrontMesh.eulerCharacteristic;
     }
     std::size_t traceSegmentCount = 0U;
     for (const geometry::SurfaceTraceResult &trace : traceNetwork.traces) {
@@ -5589,10 +6302,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       completionResult.completedPatches = {authoritativePhaseFrontMesh.mesh};
       completionResult.assembly.success = true;
       completionResult.assembly.mesh = authoritativePhaseFrontMesh.mesh;
-      completionResult.assembly.connectedComponents = 1;
+      completionResult.assembly.connectedComponents =
+          authoritativePhaseFrontMesh.connectedComponents;
       completionResult.assembly.boundaryLoopCount =
-          static_cast<int>(authoritativePhaseFrontMesh.mesh.boundaryLoops.size());
-      completionResult.assembly.eulerCharacteristic = 1;
+          authoritativePhaseFrontMesh.boundaryLoopCount;
+      completionResult.assembly.eulerCharacteristic =
+          authoritativePhaseFrontMesh.eulerCharacteristic;
     } else {
       completionResult = geometry::complete_surface_cell_complex(
           std::move(completionComplex), meshWhole.V, meshWhole.F,
@@ -7831,6 +8546,18 @@ void accumulate_component_diagnostics(
   target.surfaceCellTopologyRegionCount += source.surfaceCellTopologyRegionCount;
   target.surfaceCellInternalIsolationSeamCount +=
       source.surfaceCellInternalIsolationSeamCount;
+  target.surfaceCellConsumedTopologyRegionCount +=
+      source.surfaceCellConsumedTopologyRegionCount;
+  target.surfaceCellConsumedInternalIsolationSeamCount +=
+      source.surfaceCellConsumedInternalIsolationSeamCount;
+  target.surfaceCellConsumedPeriodicHolonomyCount +=
+      source.surfaceCellConsumedPeriodicHolonomyCount;
+  target.surfaceCellMaterializedConnectedComponentCount +=
+      source.surfaceCellMaterializedConnectedComponentCount;
+  target.surfaceCellMaterializedBoundaryLoopCount +=
+      source.surfaceCellMaterializedBoundaryLoopCount;
+  target.surfaceCellMaterializedEulerCharacteristic +=
+      source.surfaceCellMaterializedEulerCharacteristic;
   target.surfaceCellTopologyRegionHashes.insert(
       target.surfaceCellTopologyRegionHashes.end(),
       source.surfaceCellTopologyRegionHashes.begin(),
@@ -8322,6 +9049,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
   int patchOffset = 0;
   int railOffset = 0;
   int curveOffset = 0;
+  int topologyRegionOffset = 0;
+  int frontEdgeOffset = 0;
+  int periodicRelationOffset = 0;
   bool allHaveSourceLabels = true;
   bool allHaveAuthoritativeRails = true;
   merged.surfaceCellContext.sourceSurfaceLabels.componentByFace.assign(
@@ -8535,6 +9265,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
                          vertexOffset);
 
     int localMaximumSheet = -1;
+    int localMaximumTopologyRegion = -1;
+    int localMaximumFrontEdge = -1;
+    int localMaximumPeriodicRelation = -1;
     if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
       for (const int sheet :
            componentResult.surfaceCellContext.sourceSurfaceLabels
@@ -8552,6 +9285,145 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
       merged.outputVertexProvenance.push_back(std::move(provenance));
     }
 
+    const auto remap_quotient_lineage_authority =
+        [&](geometry::PureQuadVertexLineage &lineage) {
+          lineage.sourceComponent = static_cast<int>(index);
+          lineage.sourceSheet = lineage.sourcePoint.sheet;
+          for (int &region : lineage.sourceTopologyRegions) {
+            if (region >= 0) {
+              localMaximumTopologyRegion =
+                  std::max(localMaximumTopologyRegion, region);
+              region += topologyRegionOffset;
+            }
+          }
+          for (int &sheet : lineage.sourceIsolationSheets) {
+            if (sheet >= 0) sheet += sheetOffset;
+          }
+          for (geometry::SurfaceCellSourceChart &chart :
+               lineage.sourceCharts) {
+            chart.sourceComponent = static_cast<int>(index);
+            if (chart.sourceFace >= 0 &&
+                chart.sourceFace <
+                    static_cast<int>(component.originalFaces.size())) {
+              chart.sourceFace = component.originalFaces[
+                  static_cast<std::size_t>(chart.sourceFace)];
+            } else {
+              chart.sourceFace = -1;
+            }
+            if (chart.localSheet >= 0) chart.localSheet += sheetOffset;
+          }
+          auto &identity = lineage.sourceSupportIdentity;
+          if (identity.valid && identity.values.size() >= 3U) {
+            identity.values[0] = static_cast<std::int64_t>(index);
+            const auto remap_vertex = [&](const std::size_t position) {
+              if (position >= identity.values.size() ||
+                  identity.values[position] < 0 ||
+                  identity.values[position] >=
+                      static_cast<std::int64_t>(
+                          component.originalVertices.size())) {
+                identity.valid = false;
+                return;
+              }
+              identity.values[position] = component.originalVertices[
+                  static_cast<std::size_t>(identity.values[position])];
+            };
+            if (identity.values[1] == 0 && identity.values.size() == 3U) {
+              remap_vertex(2U);
+            } else if (identity.values[1] == 1 &&
+                       identity.values.size() == 5U) {
+              remap_vertex(2U);
+              remap_vertex(3U);
+            } else if (identity.values[1] == 2 &&
+                       identity.values.size() == 8U) {
+              remap_vertex(2U);
+              remap_vertex(4U);
+              remap_vertex(6U);
+            }
+            if (identity.valid && identity.values[1] == 1 &&
+                identity.values[2] > identity.values[3]) {
+              std::swap(identity.values[2], identity.values[3]);
+              identity.values[4] = 1000000000000LL - identity.values[4];
+            } else if (identity.valid && identity.values[1] == 2) {
+              std::array<std::pair<std::int64_t, std::int64_t>, 3>
+                  weightedVertices{{
+                      {identity.values[2], identity.values[3]},
+                      {identity.values[4], identity.values[5]},
+                      {identity.values[6], identity.values[7]}}};
+              std::sort(weightedVertices.begin(), weightedVertices.end());
+              for (std::size_t entry = 0; entry < weightedVertices.size();
+                   ++entry) {
+                identity.values[2U + entry * 2U] =
+                    weightedVertices[entry].first;
+                identity.values[3U + entry * 2U] =
+                    weightedVertices[entry].second;
+              }
+            }
+          }
+          for (geometry::PureQuadEquivalenceProvenance &equivalence :
+               lineage.equivalences) {
+            if (equivalence.firstFrontEdge >= 0) {
+              localMaximumFrontEdge = std::max(
+                  localMaximumFrontEdge, equivalence.firstFrontEdge);
+              equivalence.firstFrontEdge += frontEdgeOffset;
+            }
+            if (equivalence.secondFrontEdge >= 0) {
+              localMaximumFrontEdge = std::max(
+                  localMaximumFrontEdge, equivalence.secondFrontEdge);
+              equivalence.secondFrontEdge += frontEdgeOffset;
+            }
+            if (equivalence.periodicRelation >= 0) {
+              localMaximumPeriodicRelation = std::max(
+                  localMaximumPeriodicRelation,
+                  equivalence.periodicRelation);
+              equivalence.periodicRelation += periodicRelationOffset;
+            }
+            if (equivalence.railId >= 0) equivalence.railId += railOffset;
+            for (std::uint64_t &topology :
+                 equivalence.sourceRouteTopology) {
+              const int localFirst =
+                  static_cast<int>(topology >> 32U);
+              const int localSecond = static_cast<int>(
+                  topology & static_cast<std::uint64_t>(0xffffffffU));
+              if (localFirst < 0 || localSecond < 0 ||
+                  localFirst >=
+                      static_cast<int>(component.originalVertices.size()) ||
+                  localSecond >=
+                      static_cast<int>(component.originalVertices.size())) {
+                topology = 0U;
+              } else {
+                topology = surface_cell_source_edge_key(
+                    component.originalVertices[
+                        static_cast<std::size_t>(localFirst)],
+                    component.originalVertices[
+                        static_cast<std::size_t>(localSecond)]);
+              }
+            }
+          }
+          std::sort(lineage.sourceTopologyRegions.begin(),
+                    lineage.sourceTopologyRegions.end());
+          lineage.sourceTopologyRegions.erase(
+              std::unique(lineage.sourceTopologyRegions.begin(),
+                          lineage.sourceTopologyRegions.end()),
+              lineage.sourceTopologyRegions.end());
+          std::sort(lineage.sourceIsolationSheets.begin(),
+                    lineage.sourceIsolationSheets.end());
+          lineage.sourceIsolationSheets.erase(
+              std::unique(lineage.sourceIsolationSheets.begin(),
+                          lineage.sourceIsolationSheets.end()),
+              lineage.sourceIsolationSheets.end());
+          std::sort(lineage.sourceCharts.begin(), lineage.sourceCharts.end());
+          lineage.sourceCharts.erase(
+              std::unique(lineage.sourceCharts.begin(),
+                          lineage.sourceCharts.end()),
+              lineage.sourceCharts.end());
+          std::sort(lineage.equivalences.begin(),
+                    lineage.equivalences.end());
+          lineage.equivalences.erase(
+              std::unique(lineage.equivalences.begin(),
+                          lineage.equivalences.end()),
+              lineage.equivalences.end());
+        };
+
     for (geometry::PureQuadVertexLineage lineage :
          componentResult.outputVertexLineage) {
       lineage.outputVertex += vertexOffset;
@@ -8567,6 +9439,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
       if (lineage.featureInterval.curveId >= 0) {
         lineage.featureInterval.curveId += curveOffset;
       }
+      remap_quotient_lineage_authority(lineage);
       merged.outputVertexLineage.push_back(std::move(lineage));
     }
 
@@ -8605,6 +9478,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         if (lineage.featureInterval.curveId >= 0) {
           lineage.featureInterval.curveId += curveOffset;
         }
+        remap_quotient_lineage_authority(lineage);
       }
       for (geometry::PureQuadFaceLineage &lineage : patch.quadLineage) {
         if (lineage.sourcePatch >= 0) {
@@ -8713,6 +9587,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     patchOffset += localMaximumPatch + 1;
     railOffset += localMaximumRail + 1;
     curveOffset += localMaximumCurve + 1;
+    topologyRegionOffset += localMaximumTopologyRegion + 1;
+    frontEdgeOffset += localMaximumFrontEdge + 1;
+    periodicRelationOffset += localMaximumPeriodicRelation + 1;
   }
 
   merged.surfaceCellContext.hasSourceSurfaceLabels =

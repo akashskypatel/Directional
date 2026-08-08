@@ -2,6 +2,8 @@
 #include "TestFixturePaths.h"
 #include "BenchmarkQuality.h"
 
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <filesystem>
 #include <iomanip>
@@ -9,6 +11,8 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <gtest/gtest.h>
 
@@ -44,7 +48,111 @@ directional::pipeline::RemeshResult square_quad_result() {
   result.faces.resize(1, 4);
   result.faces << 0, 1, 2, 3;
   result.degrees = Eigen::VectorXi::Constant(1, 4);
+  const std::array<Eigen::Vector3d, 4> barycentric{
+      Eigen::Vector3d(1.0, 0.0, 0.0),
+      Eigen::Vector3d(0.0, 1.0, 0.0),
+      Eigen::Vector3d(0.0, 0.0, 1.0),
+      Eigen::Vector3d(0.0, 0.0, 1.0)};
+  const std::array<int, 4> sourceFaces{0, 0, 0, 1};
+  for (int vertex = 0; vertex < 4; ++vertex) {
+    directional::geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = vertex;
+    lineage.sourcePoint.face = sourceFaces[static_cast<std::size_t>(vertex)];
+    lineage.sourcePoint.component = 0;
+    lineage.sourcePoint.sheet = 0;
+    lineage.sourcePoint.barycentric =
+        barycentric[static_cast<std::size_t>(vertex)];
+    lineage.sourcePoint.position = result.vertices.row(vertex).transpose();
+    lineage.sourcePoint.squaredDistance = 0.0;
+    lineage.sourceComponent = 0;
+    lineage.sourceSheet = 0;
+    lineage.sourceTopologyRegions = {0};
+    lineage.sourceIsolationSheets = {0};
+    lineage.sourceCharts = {{0, sourceFaces[static_cast<std::size_t>(vertex)],
+                             0}};
+    lineage.sourceSupportIdentity.valid = true;
+    lineage.sourceSupportIdentity.values = {0, 0, vertex};
+    result.outputVertexLineage.push_back(std::move(lineage));
+  }
+  directional::geometry::PureQuadFaceLineage faceLineage;
+  faceLineage.outputQuad = 0;
+  faceLineage.sourcePatch = 0;
+  faceLineage.operationLocalQuad = 0;
+  result.outputQuadLineage.push_back(faceLineage);
   return result;
+}
+
+directional::pipeline::RemeshResult two_component_quad_result() {
+  directional::pipeline::RemeshResult result;
+  result.success = true;
+  result.vertices.resize(8, 3);
+  result.vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0, 3.0, 0.0, 0.0, 4.0, 0.0, 0.0, 4.0, 1.0, 0.0,
+      3.0, 1.0, 0.0;
+  result.faces.resize(2, 4);
+  result.faces << 0, 1, 2, 3, 4, 5, 6, 7;
+  result.degrees = Eigen::VectorXi::Constant(2, 4);
+  for (int vertex = 0; vertex < 8; ++vertex) {
+    const int component = vertex / 4;
+    directional::geometry::PureQuadVertexLineage lineage;
+    lineage.outputVertex = vertex;
+    lineage.sourcePoint.face = component;
+    lineage.sourcePoint.component = component;
+    lineage.sourcePoint.sheet = component;
+    lineage.sourcePoint.barycentric = Eigen::Vector3d(1.0, 0.0, 0.0);
+    lineage.sourcePoint.position = result.vertices.row(vertex).transpose();
+    lineage.sourcePoint.squaredDistance = 0.0;
+    lineage.sourceComponent = component;
+    lineage.sourceSheet = component;
+    lineage.sourceTopologyRegions = {component};
+    lineage.sourceIsolationSheets = {component};
+    lineage.sourceCharts = {{component, component, component}};
+    lineage.sourceSupportIdentity.valid = true;
+    lineage.sourceSupportIdentity.values = {component, 0, vertex % 4};
+    result.outputVertexLineage.push_back(std::move(lineage));
+  }
+  for (int face = 0; face < 2; ++face) {
+    directional::geometry::PureQuadFaceLineage lineage;
+    lineage.outputQuad = face;
+    lineage.sourcePatch = face;
+    lineage.operationLocalQuad = face;
+    result.outputQuadLineage.push_back(lineage);
+  }
+  return result;
+}
+
+directional::pipeline::RemeshResult permute_output_rows(
+    const directional::pipeline::RemeshResult &source) {
+  directional::pipeline::RemeshResult permuted = source;
+  const std::array<int, 8> newToOld{7, 6, 5, 4, 3, 2, 1, 0};
+  std::array<int, 8> oldToNew{};
+  for (int vertex = 0; vertex < 8; ++vertex) {
+    oldToNew[static_cast<std::size_t>(newToOld[static_cast<std::size_t>(vertex)])] =
+        vertex;
+    permuted.vertices.row(vertex) =
+        source.vertices.row(newToOld[static_cast<std::size_t>(vertex)]);
+  }
+  for (int face = 0; face < 2; ++face) {
+    const int sourceFace = 1 - face;
+    for (int corner = 0; corner < 4; ++corner) {
+      permuted.faces(face, corner) = oldToNew[static_cast<std::size_t>(
+          source.faces(sourceFace, corner))];
+    }
+  }
+  permuted.outputVertexLineage.clear();
+  for (int vertex = 0; vertex < 8; ++vertex) {
+    auto lineage = source.outputVertexLineage[static_cast<std::size_t>(
+        newToOld[static_cast<std::size_t>(vertex)])];
+    lineage.outputVertex = vertex;
+    permuted.outputVertexLineage.push_back(std::move(lineage));
+  }
+  permuted.outputQuadLineage.clear();
+  for (int face = 0; face < 2; ++face) {
+    auto lineage = source.outputQuadLineage[static_cast<std::size_t>(1 - face)];
+    lineage.outputQuad = face;
+    permuted.outputQuadLineage.push_back(std::move(lineage));
+  }
+  return permuted;
 }
 
 std::filesystem::path artifact_directory(const std::string &testName) {
@@ -138,6 +246,8 @@ TEST(MilestoneGP27, QualitySchemaContainsEveryRequiredProductionMetric) {
   EXPECT_EQ(quality.irregularVertexCount, 0);
   EXPECT_EQ(quality.peakWorkingSetBytes, 123456U);
   EXPECT_FALSE(quality.outputStructuralHash.empty());
+  EXPECT_FALSE(quality.outputSemanticHash.empty());
+  EXPECT_NE(quality.outputSemanticHashValue, 0U);
   EXPECT_TRUE(std::filesystem::is_regular_file(quality.outputMeshPath));
   EXPECT_TRUE(std::filesystem::is_regular_file(quality.reviewImagePath));
 
@@ -149,7 +259,8 @@ TEST(MilestoneGP27, QualitySchemaContainsEveryRequiredProductionMetric) {
         "boundaryPreserved", "featureRecall", "featureAlignmentP95Degrees",
         "fieldAlignmentP95Degrees", "relativeSizeErrorP95",
         "surfaceApproximationP95", "irregularVertexCount",
-        "peakWorkingSetBytes", "outputStructuralHash", "outputMeshPath",
+        "peakWorkingSetBytes", "outputStructuralHash", "outputSemanticHash",
+        "outputMeshPath",
         "reviewImagePath", "valenceHistogram"}) {
     EXPECT_NE(json.str().find("\"" + property + "\""), std::string::npos)
         << property;
@@ -194,6 +305,40 @@ TEST(MilestoneGP27, StructuralHashCoversGeometryDegreesAndConnectivity) {
   connectivity.faces(0, 3) = 1;
   EXPECT_NE(baselineHash,
             directional::bench::benchmark_output_structural_hash(connectivity));
+}
+
+TEST(MilestoneGP27,
+     SemanticHashIsInvariantToComponentVertexAndFaceRowPermutation) {
+  const auto baseline = two_component_quad_result();
+  const auto permuted = permute_output_rows(baseline);
+  const std::uint64_t baselineSemantic =
+      directional::bench::benchmark_output_semantic_hash(baseline);
+  ASSERT_NE(baselineSemantic, 0U);
+  EXPECT_EQ(baselineSemantic,
+            directional::bench::benchmark_output_semantic_hash(permuted));
+  EXPECT_NE(directional::bench::benchmark_output_structural_hash(baseline),
+            directional::bench::benchmark_output_structural_hash(permuted));
+}
+
+TEST(MilestoneGP27, SemanticHashDetectsConnectivityAndLineageMutation) {
+  const auto baseline = two_component_quad_result();
+  const std::uint64_t baselineSemantic =
+      directional::bench::benchmark_output_semantic_hash(baseline);
+  ASSERT_NE(baselineSemantic, 0U);
+
+  auto connectivityMutation = baseline;
+  std::swap(connectivityMutation.faces(0, 3),
+            connectivityMutation.faces(1, 3));
+  EXPECT_NE(baselineSemantic,
+            directional::bench::benchmark_output_semantic_hash(
+                connectivityMutation));
+
+  auto lineageMutation = baseline;
+  lineageMutation.outputVertexLineage.front()
+      .sourceSupportIdentity.values.back() += 1;
+  EXPECT_NE(baselineSemantic,
+            directional::bench::benchmark_output_semantic_hash(
+                lineageMutation));
 }
 
 TEST(MilestoneGP27, QualityCountsSelfIntersectingPolygon) {

@@ -183,6 +183,16 @@ enum class SurfaceFrontEventKind : int {
   PhaseMismatch = 3,
   PeriodicHolonomyConflict = 4,
   PeriodicFrontMerge = 5,
+  HardRailMerge = 6,
+};
+
+/** Source-authoritative ownership of one constructive-front side. */
+enum class SurfaceFrontBoundaryKind : int {
+  OrdinaryInterior = 0,
+  GenuineSourceBoundary = 1,
+  HardRail = 2,
+  EmbeddedReliefCut = 3,
+  PeriodicCut = 4,
 };
 
 /** Exact source-adjacent producer region, independent of proximity-isolation sheets. */
@@ -212,6 +222,8 @@ struct SurfaceFrontEdge {
   LocalLatticeState fromLattice;
   LocalLatticeState toLattice;
   int filledCell = -1;
+  /// Counter-clockwise side of filledCell represented by this edge.
+  int filledSide = -1;
   int oppositeEdge = -1;
   int unfilledSide = 1;
   bool exterior = false;
@@ -219,6 +231,14 @@ struct SurfaceFrontEdge {
   int sourceTopologyRegion = -1;
   int sourceSheet = -1;
   std::vector<int> sourceIsolationSheets;
+  SurfaceFrontBoundaryKind boundaryKind =
+      SurfaceFrontBoundaryKind::OrdinaryInterior;
+  /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.
+  int periodicRelation = -1;
+  /// Optional exact rail owner; sourceRouteTopology remains authoritative.
+  int railId = -1;
+  std::vector<int> sourceRouteEdges;
+  std::vector<std::uint64_t> sourceRouteTopology;
 };
 
 struct SurfaceFrontEvent {
@@ -364,6 +384,9 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidBoundedDiskBoundaryIndex = 43,
   InvalidTopologyRegion = 44,
   InvalidTopologyRegionTransport = 45,
+  InvalidFrontBoundaryAuthority = 46,
+  UnsupportedEmbeddedReliefCut = 47,
+  InvalidHardRailPairing = 48,
 };
 
 struct SurfacePhaseFrontFailure {

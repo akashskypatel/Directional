@@ -222,6 +222,12 @@ struct RemeshDiagnostics {
   std::string surfaceCellAuthoritativeProducerDisposition;
   std::size_t surfaceCellTopologyRegionCount = 0U;
   std::size_t surfaceCellInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedTopologyRegionCount = 0U;
+  std::size_t surfaceCellConsumedInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedPeriodicHolonomyCount = 0U;
+  int surfaceCellMaterializedConnectedComponentCount = 0;
+  int surfaceCellMaterializedBoundaryLoopCount = 0;
+  int surfaceCellMaterializedEulerCharacteristic = 0;
   std::vector<std::uint64_t> surfaceCellTopologyRegionHashes;
   std::vector<int> surfaceCellTopologyRegionEulerCharacteristics;
   std::vector<int> surfaceCellTopologyRegionBoundaryLoopCounts;

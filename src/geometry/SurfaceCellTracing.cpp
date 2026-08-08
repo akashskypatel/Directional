@@ -2,6 +2,8 @@
 
 #include <Eigen/SparseCholesky>
 
+#include <optional>
+
 namespace directional::geometry::surface_cell_tracing_detail {
 
 std::uint64_t edge_key(const int a, const int b) {
@@ -1497,7 +1499,8 @@ VertexContinuationResult resolve_vertex_continuation(
         continue;
       }
       if (options.hardFeatureEdges.count(step.edgeKey) != 0 ||
-          options.reliefBarrierEdges.count(step.edgeKey) != 0) {
+          (options.reliefBarriersEmbedded &&
+           options.reliefBarrierEdges.count(step.edgeKey) != 0)) {
         featureBlocked = true;
         continue;
       }
@@ -2338,9 +2341,10 @@ SourceTopologyRegions build_source_topology_regions(
     }
     if (!source_faces_share_component(options, first, second)) continue;
     const bool hardBarrier = options.hardFeatureEdges.count(key) != 0U;
-    const bool reliefBarrier = options.reliefBarriersEmbedded &&
-                               options.reliefBarrierEdges.count(key) != 0U;
-    if (hardBarrier || reliefBarrier) continue;
+    // Embedded relief is an internal cut authority, not a parent producer
+    // region splitter. The selected producer must either represent the cut
+    // explicitly or reject the entire applicable region.
+    if (hardBarrier) continue;
     adjacency[static_cast<std::size_t>(first)].push_back({second, key});
     adjacency[static_cast<std::size_t>(second)].push_back({first, key});
   }
@@ -5228,6 +5232,82 @@ bool phase_front_cell_source_scope(
   return component >= 0 && !isolationSheets.empty();
 }
 
+SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
+    const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options,
+    const std::vector<SurfaceTraceSegment> &path, SurfaceFrontEdge &edge) {
+  if (faces.cols() != 3 || path.empty()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  const auto incident = edge_faces(faces);
+  const auto sourceEdgeIndices = edge_matching_indices(incident);
+  std::optional<SurfaceFrontBoundaryKind> kind;
+  int railId = -1;
+  constexpr double tolerance = 1.0e-9;
+  for (const SurfaceTraceSegment &segment : path) {
+    if (segment.face < 0 || segment.face >= faces.rows() ||
+        !segment.startBarycentric.allFinite() ||
+        !segment.endBarycentric.allFinite()) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    int supportedCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(segment.startBarycentric[corner]) <= tolerance &&
+          std::abs(segment.endBarycentric[corner]) <= tolerance) {
+        if (supportedCorner >= 0) {
+          return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+        }
+        supportedCorner = corner;
+      }
+    }
+    if (supportedCorner < 0) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    const int a = faces(segment.face, (supportedCorner + 1) % 3);
+    const int b = faces(segment.face, (supportedCorner + 2) % 3);
+    const std::uint64_t topology = edge_key(a, b);
+    const auto foundIncident = incident.find(topology);
+    const auto foundIndex = sourceEdgeIndices.find(topology);
+    if (foundIncident == incident.end() || foundIndex == sourceEdgeIndices.end()) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    SurfaceFrontBoundaryKind segmentKind;
+    if (foundIncident->second[1] < 0) {
+      segmentKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
+    } else if (options.hardFeatureEdges.count(topology) != 0U) {
+      segmentKind = SurfaceFrontBoundaryKind::HardRail;
+    } else if (options.reliefBarriersEmbedded &&
+               options.reliefBarrierEdges.count(topology) != 0U) {
+      segmentKind = SurfaceFrontBoundaryKind::EmbeddedReliefCut;
+    } else {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    if (kind.has_value() && *kind != segmentKind) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    kind = segmentKind;
+    if (edge.sourceRouteTopology.empty() ||
+        edge.sourceRouteTopology.back() != topology) {
+      edge.sourceRouteTopology.push_back(topology);
+      edge.sourceRouteEdges.push_back(foundIndex->second);
+    }
+    if (segment.railId >= 0) {
+      if (railId >= 0 && railId != segment.railId) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      railId = segment.railId;
+    }
+  }
+  if (!kind.has_value() || edge.sourceRouteTopology.empty()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  edge.boundaryKind = *kind;
+  edge.railId = railId;
+  if (*kind == SurfaceFrontBoundaryKind::EmbeddedReliefCut) {
+    return SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut;
+  }
+  return SurfacePhaseFrontFailureReason::None;
+}
+
 bool orient_and_validate_phase_front_cell(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const UniformPhaseFrame &frame, const double target,
@@ -5465,6 +5545,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
         edge.toLattice =
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
         edge.filledCell = cellId;
+        edge.filledSide = side;
         edge.sourceComponent = cell.sourceComponent;
         edge.sourceSheet = cell.sourceSheet;
         edge.sourceIsolationSheets = cell.sourceIsolationSheets;
@@ -5514,6 +5595,25 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     (void)key;
     SurfaceFrontEdge &edge =
         result.edges[static_cast<std::size_t>(owner.edge)];
+    if (edge.filledCell < 0 ||
+        edge.filledCell >= static_cast<int>(result.cells.size()) ||
+        edge.filledSide < 0 || edge.filledSide >= 4) {
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+          edge.filledCell, edge.filledSide);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        faces, options,
+        result.cells[static_cast<std::size_t>(edge.filledCell)]
+            .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
+        edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
+                              edge.filledSide);
+      return result;
+    }
     edge.exterior = true;
     edge.unfilledSide = 0;
     SurfaceFrontEvent event;
@@ -6931,6 +7031,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         edge.family = delta.x() != 0 ? 0 : 1;
         edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
         edge.filledCell = cell.id;
+        edge.filledSide = side;
         edge.sourceComponent = cell.sourceComponent;
         edge.sourceSheet = cell.sourceSheet;
         edge.sourceIsolationSheets = cell.sourceIsolationSheets;
@@ -6962,6 +7063,16 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                   second.toLattice.latticeCoordinate.x() ||
               first.toLattice.latticeCoordinate.x() !=
                   second.fromLattice.latticeCoordinate.x();
+          if (periodic) {
+            first.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+            second.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+            first.periodicRelation = 0;
+            second.periodicRelation = 0;
+            first.sourceRouteEdges = periodicHolonomy.cutSourceEdges;
+            second.sourceRouteEdges = periodicHolonomy.cutSourceEdges;
+            first.sourceRouteTopology = periodicHolonomy.cutSourceTopology;
+            second.sourceRouteTopology = periodicHolonomy.cutSourceTopology;
+          }
           SurfaceFrontEvent event;
           event.kind = periodic ? SurfaceFrontEventKind::PeriodicFrontMerge
                                 : SurfaceFrontEventKind::CompatibleFrontMerge;
@@ -6983,6 +7094,25 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       set_phase_front_failure(result.failure,
                               SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
                               edge.filledCell, owner.edge);
+      return result;
+    }
+    if (edge.filledCell < 0 ||
+        edge.filledCell >= static_cast<int>(result.cells.size()) ||
+        edge.filledSide < 0 || edge.filledSide >= 4) {
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+          edge.filledCell, edge.filledSide);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        faces, options,
+        result.cells[static_cast<std::size_t>(edge.filledCell)]
+            .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
+        edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
+                              edge.filledSide);
       return result;
     }
     edge.exterior = true;
@@ -8225,6 +8355,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           return result;
         }
         edge.filledCell = cell.id;
+        edge.filledSide = side;
         edge.sourceComponent = cell.sourceComponent;
         edge.sourceSheet = cell.sourceSheet;
         edge.sourceIsolationSheets = cell.sourceIsolationSheets;
@@ -8326,6 +8457,14 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
           edge.filledCell, owner.edge);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        faces, options, cell.boundaryPaths[static_cast<std::size_t>(side)],
+        edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
+                              side);
       return result;
     }
     edge.exterior = true;
@@ -8612,6 +8751,36 @@ SurfacePhaseFrontResult build_uniform_phase_front(
             -1, -1, region.sourceFaces.empty() ? -1 : region.sourceFaces.front());
         return result;
       }
+      if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut) {
+        if (edge.periodicRelation < 0 ||
+            edge.periodicRelation >=
+                static_cast<int>(local.periodicHolonomies.size())) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+              edge.filledCell, edge.filledSide);
+          return result;
+        }
+        const auto key = periodic_relation_key(
+            local.periodicHolonomies[static_cast<std::size_t>(
+                edge.periodicRelation)]);
+        const auto owner = std::find_if(
+            result.periodicHolonomies.begin(),
+            result.periodicHolonomies.end(), [&](const auto &candidate) {
+              return periodic_relation_key(candidate) == key;
+            });
+        if (owner == result.periodicHolonomies.end()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+              edge.filledCell, edge.filledSide);
+          return result;
+        }
+        edge.periodicRelation = static_cast<int>(
+            std::distance(result.periodicHolonomies.begin(), owner));
+      }
       edge.filledCell += cellOffset;
       if (edge.oppositeEdge >= 0) edge.oppositeEdge += edgeOffset;
       result.edges.push_back(std::move(edge));
@@ -8631,6 +8800,143 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage);
     return result;
   }
+
+  // A hard feature separates producer charts, but it does not create an
+  // output boundary. Pair the two chart copies by exact source-simplex
+  // support and ordered rail topology; geometry is never a merge predicate.
+  struct HardRailPairKey {
+    int component = -1;
+    std::vector<std::int64_t> firstEndpoint;
+    std::vector<std::int64_t> secondEndpoint;
+    std::vector<std::uint64_t> route;
+    bool operator<(const HardRailPairKey &other) const {
+      return std::tie(component, firstEndpoint, secondEndpoint, route) <
+             std::tie(other.component, other.firstEndpoint,
+                      other.secondEndpoint, other.route);
+    }
+  };
+  const auto support_key = [&](const SurfaceTracePoint &point) {
+    std::vector<std::int64_t> key;
+    if (!trace_point_is_valid(point, faces)) return key;
+    constexpr double tolerance = 1.0e-9;
+    constexpr double scale = 1.0e12;
+    int vertexCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(point.barycentric[corner] - 1.0) <= tolerance) {
+        vertexCorner = corner;
+      }
+    }
+    if (vertexCorner >= 0) {
+      return std::vector<std::int64_t>{
+          0, faces(point.face, vertexCorner)};
+    }
+    int zeroCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(point.barycentric[corner]) <= tolerance) {
+        if (zeroCorner >= 0) return std::vector<std::int64_t>{};
+        zeroCorner = corner;
+      }
+    }
+    if (zeroCorner >= 0) {
+      const int firstCorner = (zeroCorner + 1) % 3;
+      const int secondCorner = (zeroCorner + 2) % 3;
+      const int firstVertex = faces(point.face, firstCorner);
+      const int secondVertex = faces(point.face, secondCorner);
+      const int low = std::min(firstVertex, secondVertex);
+      const int high = std::max(firstVertex, secondVertex);
+      const double highWeight = firstVertex == high
+                                    ? point.barycentric[firstCorner]
+                                    : point.barycentric[secondCorner];
+      return std::vector<std::int64_t>{
+          1, low, high, static_cast<std::int64_t>(std::llround(
+                            std::clamp(highWeight, 0.0, 1.0) * scale))};
+    }
+    std::array<std::pair<int, double>, 3> weightedVertices;
+    for (int corner = 0; corner < 3; ++corner) {
+      weightedVertices[static_cast<std::size_t>(corner)] =
+          {faces(point.face, corner), point.barycentric[corner]};
+    }
+    std::sort(weightedVertices.begin(), weightedVertices.end());
+    key.push_back(2);
+    for (const auto &[vertex, weight] : weightedVertices) {
+      key.push_back(vertex);
+      key.push_back(static_cast<std::int64_t>(
+          std::llround(std::clamp(weight, 0.0, 1.0) * scale)));
+    }
+    return key;
+  };
+
+  std::map<HardRailPairKey, std::vector<int>> hardRailGroups;
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size());
+       ++edgeIndex) {
+    const SurfaceFrontEdge &edge =
+        result.edges[static_cast<std::size_t>(edgeIndex)];
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail) continue;
+    std::vector<std::int64_t> from = support_key(edge.from);
+    std::vector<std::int64_t> to = support_key(edge.to);
+    if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
+        edge.sourceRouteTopology.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          edge.filledCell, edge.filledSide);
+      return result;
+    }
+    if (to < from) std::swap(from, to);
+    std::vector<std::uint64_t> route = edge.sourceRouteTopology;
+    std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
+    if (reversed < route) route = std::move(reversed);
+    hardRailGroups[{edge.sourceComponent, std::move(from), std::move(to),
+                    std::move(route)}]
+        .push_back(edgeIndex);
+  }
+  std::set<int> pairedHardEdges;
+  for (const auto &[key, pair] : hardRailGroups) {
+    (void)key;
+    if (pair.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          pair.empty() ? -1
+                       : result.edges[static_cast<std::size_t>(pair.front())]
+                             .filledCell,
+          pair.empty() ? -1
+                       : result.edges[static_cast<std::size_t>(pair.front())]
+                             .filledSide);
+      return result;
+    }
+    SurfaceFrontEdge &first =
+        result.edges[static_cast<std::size_t>(pair[0])];
+    SurfaceFrontEdge &second =
+        result.edges[static_cast<std::size_t>(pair[1])];
+    if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
+        support_key(first.from) != support_key(second.to) ||
+        support_key(first.to) != support_key(second.from) ||
+        first.family != second.family ||
+        first.advanceSign == second.advanceSign) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          first.filledCell, first.filledSide);
+      return result;
+    }
+    first.oppositeEdge = pair[1];
+    second.oppositeEdge = pair[0];
+    first.exterior = false;
+    second.exterior = false;
+    pairedHardEdges.insert(pair.begin(), pair.end());
+    result.events.push_back(
+        {SurfaceFrontEventKind::HardRailMerge, pair[0], pair[1]});
+  }
+  result.events.erase(
+      std::remove_if(result.events.begin(), result.events.end(),
+                     [&](const SurfaceFrontEvent &event) {
+                       return event.kind ==
+                                  SurfaceFrontEventKind::BoundaryTermination &&
+                              pairedHardEdges.count(event.firstEdge) != 0U;
+                     }),
+      result.events.end());
+
   result.succeeded = !result.cells.empty();
   if (result.succeeded) result.disposition = SurfaceCellProducerDisposition::Produced;
   return result;
@@ -8699,6 +9005,9 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex: return "InvalidBoundedDiskBoundaryIndex";
   case SurfacePhaseFrontFailureReason::InvalidTopologyRegion: return "InvalidTopologyRegion";
   case SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport: return "InvalidTopologyRegionTransport";
+  case SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority: return "InvalidFrontBoundaryAuthority";
+  case SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut: return "UnsupportedEmbeddedReliefCut";
+  case SurfacePhaseFrontFailureReason::InvalidHardRailPairing: return "InvalidHardRailPairing";
   }
   return "Unknown";
 }
