@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
-          fetch-depth: 1
+          fetch-depth: 12
           submodules: false
 
       - name: Initialize unconditional activity log
@@ -27,141 +27,48 @@ jobs:
           set -euo pipefail
           mkdir -p agent-build-logs
           {
-            echo "turn=G4 holonomy basis Code+Build"
+            echo "turn=G4 holonomy basis Code+Build compile-fix iteration"
             echo "event_sha=$GITHUB_SHA"
             echo "checkout_sha=$(git rev-parse HEAD)"
+            echo "primary_implementation_commit=aa0f115c19fc8a5afd8487ebb561e2de2b8551ba"
+            echo "prior_compile_failure=missing std::vector<uint64_t> hash overload"
             echo "runtimeExecution=false"
             echo "reviewPolicy=never"
-            echo "allowed=source transform, configure, compile/link approved targets, package"
+            echo "allowed=compile-fix transform, configure, compile/link approved targets, package"
             echo "prohibited=tests, benchmarks, generated Directional executables, ctest, CLI, GUI"
           } | tee agent-build-logs/activity.log
 
-      - name: Verify authority and commit source changes
+      - name: Apply surgical compile fix and commit source
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee -a agent-build-logs/activity.log) 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          payload=.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py
+          payload=.agents/Directional/turn-payloads/g4-holonomy-basis-compile-fix.py
           test -f "$payload"
-          ORIGINAL_PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
-          echo "original_payload_sha256=$ORIGINAL_PAYLOAD_SHA256"
-
-          declare -A before=(
-            [include/directional/geometry/SurfaceCellTracing.h]=c1b816a584d67a3f74c2d7389962bd92d52244c9
-            [src/geometry/SurfaceCellTracing.cpp]=63e5ee427f675077f710db51ffb56d91838d3519
-            [include/directional/diagnostics/RemeshDiagnostics.h]=a51215982318e77581efa4fa7887d0406a9d4bf0
-            [src/pipeline/RemeshPipeline.cpp]=7674ed3fe40c5f43c668c931c01b59f6c7829df8
-            [src/bench/DirectionalBenchmark.cpp]=18955ca8ef72812c9c70ed522bb578409e6a176f
-            [tests/SurfaceCellsPhase10Tests.cpp]=80a0b58339102279ab863d9112e243a557cd270d
-          )
-          for path in "${!before[@]}"; do
-            actual=$(git hash-object "$path")
-            echo "before $path $actual"
-            test "$actual" = "${before[$path]}"
-          done
-
-          # Repair only bounded transform defects found by the two setup-only
-          # attempts. No production source was committed by either failed run.
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path('.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py')
-          text = p.read_text()
-
-          old_guard = '    if ".periodicHolonomy" in text:\n'
-          new_guard = '    if re.search(r"\\.periodicHolonomy(?!ies)", text):\n'
-          if text.count(old_guard) != 1:
-              raise SystemExit('unexpected scalar guard shape')
-          text = text.replace(old_guard, new_guard, 1)
-
-          # Eigen fixed-size vector inequality is not used as a scalar boolean.
-          old_shape = '         relation.latticeTranslation != Eigen::Vector2i::Zero() &&\n'
-          new_shape = '         relation.latticeTranslation.squaredNorm() > 0 &&\n'
-          if text.count(old_shape) != 1:
-              raise SystemExit('unexpected periodic relation shape guard')
-          text = text.replace(old_shape, new_shape, 1)
-
-          compile_anchor = '# Compile guard: no consumer may still treat the result as one scalar relation.\n'
-          if text.count(compile_anchor) != 1:
-              raise SystemExit('unexpected compile guard anchor')
-          scalar_fixups = r'''
-          # Complete the enumeration-order regression migration. These four
-          # scalar action references are intentionally converted after the
-          # route/cut replacements above so the old authority cannot survive.
-          p = Path("tests/SurfaceCellsPhase10Tests.cpp")
-          test_text = p.read_text()
-          for old, new in [
-              ("forward.phaseFront.periodicHolonomy.quarterTurnRotation",
-               "forward.phaseFront.periodicHolonomies.front().quarterTurnRotation"),
-              ("reverse.phaseFront.periodicHolonomy.quarterTurnRotation",
-               "reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation"),
-              ("forward.phaseFront.periodicHolonomy.latticeTranslation",
-               "forward.phaseFront.periodicHolonomies.front().latticeTranslation"),
-              ("reverse.phaseFront.periodicHolonomy.latticeTranslation",
-               "reverse.phaseFront.periodicHolonomies.front().latticeTranslation"),
-          ]:
-              if test_text.count(old) != 1:
-                  raise RuntimeError(f"unexpected scalar test authority occurrence: {old}")
-              test_text = test_text.replace(old, new, 1)
-          eigen_expect = "  EXPECT_EQ(Eigen::Vector2i(8, 0), relations.front().latticeTranslation);\n"
-          if test_text.count(eigen_expect) != 1:
-              raise RuntimeError("unexpected Eigen periodic-relation assertion")
-          test_text = test_text.replace(
-              eigen_expect,
-              "  EXPECT_EQ(8, relations.front().latticeTranslation.x());\n"
-              "  EXPECT_EQ(0, relations.front().latticeTranslation.y());\n",
-              1)
-          p.write_text(test_text)
-
-          '''
-          text = text.replace(compile_anchor, scalar_fixups + compile_anchor, 1)
-          p.write_text(text)
-          PY
-          EFFECTIVE_PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
-          echo "effective_payload_sha256=$EFFECTIVE_PAYLOAD_SHA256"
-          echo "ORIGINAL_PAYLOAD_SHA256=$ORIGINAL_PAYLOAD_SHA256" >> "$GITHUB_ENV"
-          echo "EFFECTIVE_PAYLOAD_SHA256=$EFFECTIVE_PAYLOAD_SHA256" >> "$GITHUB_ENV"
+          test "$(git hash-object src/pipeline/RemeshPipeline.cpp)" = \
+            "54c95f63ca68f1448e322d964c5617af2c1d7aa3"
+          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          echo "payload_sha256=$PAYLOAD_SHA256"
+          echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
 
           python3 "$payload"
           git diff --check
-
-          mapfile -t changed < <(git diff --name-only | grep -v '^.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py$' | sort)
-          expected=(
-            include/directional/diagnostics/RemeshDiagnostics.h
-            include/directional/geometry/SurfaceCellTracing.h
-            src/bench/DirectionalBenchmark.cpp
-            src/geometry/SurfaceCellTracing.cpp
-            src/pipeline/RemeshPipeline.cpp
-            tests/SurfaceCellsPhase10Tests.cpp
-          )
-          test "${#changed[@]}" -eq "${#expected[@]}"
-          for i in "${!expected[@]}"; do
-            echo "changed ${changed[$i]}"
-            test "${changed[$i]}" = "${expected[$i]}"
-          done
-
-          ! grep -RP --line-number '\.periodicHolonomy(?!ies)' \
-              include/directional/geometry/SurfaceCellTracing.h \
-              src/geometry/SurfaceCellTracing.cpp \
-              src/pipeline/RemeshPipeline.cpp \
-              tests/SurfaceCellsPhase10Tests.cpp
+          mapfile -t changed < <(git diff --name-only | grep -v '^.agents/Directional/turn-payloads/g4-holonomy-basis-compile-fix.py$' | sort)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "src/pipeline/RemeshPipeline.cpp"
 
           git config user.name 'directional-agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add -- "${expected[@]}"
-          git commit -m 'feat(surface-cells): retain periodic holonomy relations'
+          git add src/pipeline/RemeshPipeline.cpp
+          git commit -m 'fix(surface-cells): hash periodic topology signatures'
           SOURCE_COMMIT=$(git rev-parse HEAD)
           echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
           echo "source_commit=$SOURCE_COMMIT"
-          for path in "${expected[@]}"; do
-            echo "after $path $(git hash-object "$path")"
-          done
+          echo "pipeline_blob=$(git hash-object src/pipeline/RemeshPipeline.cpp)"
 
-          # Remove the repository payload (including the local transform fixes)
-          # without making it part of production source authority.
-          git checkout -- "$payload"
           git rm "$payload"
-          git commit -m 'chore(agent): remove G4 holonomy transform payload'
+          git commit -m 'chore(agent): remove G4 compile-fix payload'
           CLEANUP_COMMIT=$(git rev-parse HEAD)
           echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
           echo "cleanup_commit=$CLEANUP_COMMIT"
@@ -188,6 +95,7 @@ jobs:
           set -euo pipefail
           exec > >(tee -a agent-build-logs/activity.log) 2>&1
           {
+            echo "primary_implementation_commit=aa0f115c19fc8a5afd8487ebb561e2de2b8551ba"
             echo "source_commit=$SOURCE_COMMIT"
             echo "cleanup_commit=$CLEANUP_COMMIT"
             cmake --version
@@ -249,18 +157,27 @@ jobs:
           cp agent-build-logs/activity.log agent-build-logs/configure.log \
              agent-build-logs/build.log agent-build-logs/toolchain.txt "$root/logs/"
           cp agent-build/compile_commands.json "$root/source/"
-          git show "$SOURCE_COMMIT" --format=fuller --stat --patch > \
-            "$root/source/g4-holonomy-basis.patch"
+
+          git show aa0f115c19fc8a5afd8487ebb561e2de2b8551ba --format=fuller --stat --patch -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            src/bench/DirectionalBenchmark.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp > "$root/source/g4-holonomy-basis.patch"
+          git show "$SOURCE_COMMIT" --format=fuller --stat --patch -- \
+            src/pipeline/RemeshPipeline.cpp >> "$root/source/g4-holonomy-basis.patch"
           tar --exclude=.git --exclude=external --exclude=agent-build \
               --exclude=g4-holonomy-basis-artifact \
               -cJf "$root/source/directional-g4-holonomy-basis-source-no-deps.tar.xz" .
+
           cat > "$root/metadata/source-authority.json" <<EOF
           {
             "eventCommit": "$GITHUB_SHA",
+            "primaryImplementationCommit": "aa0f115c19fc8a5afd8487ebb561e2de2b8551ba",
             "sourceCommit": "$SOURCE_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
-            "originalTransformSha256": "$ORIGINAL_PAYLOAD_SHA256",
-            "effectiveTransformSha256": "$EFFECTIVE_PAYLOAD_SHA256",
+            "compileFixTransformSha256": "$PAYLOAD_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
           }
@@ -270,7 +187,7 @@ jobs:
           EOF
           cat > "$root/metadata/command-boundary.txt" <<'EOF'
           G4 Code + Build only.
-          Executed: source transform, configure, compile/link seven approved targets, package/checksum.
+          Executed: surgical compile fix, configure, compile/link seven approved targets, package/checksum.
           Not executed: generated Directional binaries, tests, benchmarks, ctest/discovery, CLI, GUI, help/list commands.
           EOF
           git ls-tree -r "$SOURCE_COMMIT" -- \
