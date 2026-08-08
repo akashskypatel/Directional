@@ -95,6 +95,7 @@ This preserves semantic field authority while removing dependence on target subd
 - seven approved targets;
 - five executables, two project libraries, 27 fixture/input files;
 - Release / Ninja;
+- project tests/benchmarks were enabled with `DIRECTIONAL_BUILD_TESTS=ON` and `DIRECTIONAL_BUILD_BENCHMARKS=ON`; no generated test discovery command was run during build;
 - packaged `runtimeExecution=false`;
 - generated Directional binary/test/benchmark/CLI/GUI/help/list/discovery execution: **none**.
 
@@ -204,7 +205,7 @@ Exact artifact authority:
 - Real bunny/vase fixtures remain mandatory later observations and may not be simplified/bypassed.
 - Direct gates outrank aggregate totals.
 - Scheduler timing ratios are performance evidence, not functional correctness.
-- `PRE_TEST`/compile-only-safe discovery must preserve the Code + Build boundary; use the repository's actual `DIRECTIONAL_BUILD_TESTS` and `DIRECTIONAL_BUILD_BENCHMARKS` options.
+- Compile-only builds must use the repository's actual `DIRECTIONAL_BUILD_TESTS` / `DIRECTIONAL_BUILD_BENCHMARKS` options and must not execute generated test discovery or project binaries.
 - Exact-source packaging that requires the parent commit must fetch enough history for that parent.
 - Timeout is failure only.
 
