@@ -4,7 +4,7 @@ Status: **authoritative next turn**
 Turn type: **Code + Build only**
 Validated source: `7f486632b154a303789df6c4dd44f602c8c71281`
 Review decision: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
-Planning commit: `<PLANNING_COMMIT>`
+Planning commit: `a54f5d00ef5ae3ac59de0f5a7d7e0b42e74ca045`
 
 ## Turn objective
 

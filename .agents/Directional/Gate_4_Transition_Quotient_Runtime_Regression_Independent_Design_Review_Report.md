@@ -5,7 +5,7 @@
 - Validated artifact: `9024549134`
 - Reviewed proposed plan: `proposed_pending_review` scope in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`
 - Reviewer independence confirmed: yes; fresh review context, no authorship of the validated implementation or runtime report
-- Planning commit: `<PLANNING_COMMIT>`
+- Planning commit: `a54f5d00ef5ae3ac59de0f5a7d7e0b42e74ca045`
 
 ## Decision
 

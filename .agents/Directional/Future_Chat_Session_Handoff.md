@@ -18,7 +18,7 @@
 - Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
 - Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
 - Review entry branch head: `cd9543f83a525f0d6cb668b22dfca2f0199358d2`
-- Review planning commit: `<PLANNING_COMMIT>`
+- Review planning commit: `a54f5d00ef5ae3ac59de0f5a7d7e0b42e74ca045`
 - Prior handoff content commit: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`
 
 Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the current review report, the authoritative Code + Build plan, the latest runtime/compile reports, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/GitHub-workflow references.
