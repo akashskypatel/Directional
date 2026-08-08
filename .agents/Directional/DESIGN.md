@@ -50,23 +50,26 @@ Hard-feature barriers remain authoritative constraints. Relief separatrices are 
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** passed.
 3. **G2 — Cross-chart and close-sheet propagation:** passed.
-4. **G3 — Periodic closure and holonomy:** production runtime closure contract **satisfied**; formal gate status remains active until corrected field-correspondence witness is artifact-validated with the full retained set.
-5. **G4 — Topology-distinct completion and singularities:** blocked until formal G3 closure.
+4. **G3 — Periodic closure and holonomy:** **passed** by exact artifact `9013161456` with 17/17 retained contracts and direct deterministic strict-valid cylinder output.
+5. **G4 — Topology-distinct completion and singularities:** **active**. First slice: closed-genus-one/multi-periodic authority on exact torus; prescribed singular sphere follows after the earlier torus contract.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Passed G0-G2 runtime authority
+## Passed G0-G3 runtime authority
 
-Current executed G3 artifact `9010838200` preserves:
+Exact artifact `9013161456` preserves:
 
 | Fixture | Producer | Direct output | Determinism |
 |---|---|---|---|
 | plane | `Produced` | 81 V / 64 strict-valid quads, hash `730caeae49ec872c` | 3/3 |
 | seam | `Produced` | 81 V / 64 strict-valid quads, hash `5bdf34d7802e9fb0` | 3/3 |
 | close sheets | `Produced` | 242 V / 200 strict-valid quads / 2 isolated components, hash `89b052762f52a5af` | 3/3 |
+| cylinder | `Produced` | 320 V / 288 strict-valid quads, hash `32135be51d7a0a26` | 3/3 |
 
-No passing case uses fallback or source-grid recovery.
+Cylinder periodic authority is `r=0`, `t=(32,0)`, route 32, cut 4; field P95 is `8.537736463e-7°`; validation failures are zero; exactly two genuine annulus exterior loops remain and the artificial cut is not exterior. No passing case uses fallback or source-grid recovery.
+
+Focused/retained G0-G3 contracts are **17/17** after the subdivision-independent field-correspondence witness correction in evidence commit `117620ec2da2083ce11b205835e58fa404f163ef`. Production tracing blobs remain those of runtime-proven source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
 
 ## G2 source-sheet invariant
 
@@ -112,18 +115,6 @@ The production implementation at `0279946920dfca6e9ac44b7ea31b38e929d1f5fc` sati
 
 Coverage tolerance may determine source-triangle ownership, but emitted geometry must be exact canonical source-simplex geometry. Exact simplex crossings define emitted breakpoints; barycentrics near exact boundaries are canonicalized/renormalized; source vertices use exact one-hot barycentrics; tolerance-only collapsed segments are omitted; genuine overlap remains rejected by the unchanged strict validator.
 
-Artifact `9010838200` proves this correction restores the valid periodic cylinder and satisfies the production G3 closure contract:
-
-- cylinder `Produced / CompletedSurfaceCells`;
-- holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
-- 288 pure output quads / 320 output vertices;
-- zero completed/strict validation failures;
-- field P95 approximately `8.54e-7°`;
-- exactly two true annulus exterior boundary loops;
-- artificial cut not exterior;
-- no fallback/recovery;
-- deterministic output hash `32135be51d7a0a26` 3/3.
-
 ## Test-witness invariant for field correspondence
 
 A semantic field-authority regression test must not depend on one particular target subdivision. The cylinder source inter-ring spacing is 0.5 while the active test target is 0.25; therefore each source inter-ring connection is legitimately subdivided into multiple V-family phase-front edges.
@@ -132,21 +123,45 @@ Required test contract:
 
 > Observe nonzero source-attached V-family phase-front boundary-path segments, reconstruct their source geometry from authoritative `(face, barycentric)` provenance, verify finite normalized source-simplex endpoints, discard only genuine zero-length segments, and require each observed segment to align with the local authoritative V field family. The witness must remain nonempty and subdivision-independent.
 
-Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` implements only this test correction. Production blobs remain byte-identical to the runtime-proven G3 source.
+Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` implements only this test correction; artifact `9013161456` proves it passes together with the other 16 retained contracts and unchanged direct cylinder output.
 
-Compile-only authority:
+## G4 closed-topology periodic authority
 
-- artifact `9013161456`, SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
-- run/job `31228899303 / 93028533210`;
-- 44/44 recursive checksums;
-- 111/111 compile/link actions;
-- `runtimeExecution=false`.
+The exact torus is connected, closed, and genus one: 72 vertices, 144 triangles, 216 edges, zero boundary edges, Euler characteristic 0. Artifact `9013161456` rejects it at `tracing/phase-front` with typed `InvalidPeriodicTopology`, before traces or output. Partial diagnostics already contain one valid-looking periodic relation `r=0`, `t=(24,0)`, route 24, cut 2.
+
+Current first-class representation is structurally singular:
+
+- `SurfacePhaseFrontResult` owns one scalar `SurfacePeriodicHolonomy periodicHolonomy`;
+- sheet aggregation rejects a second enabled local periodic relation solely because the result already owns one;
+- structural hashing serializes one relation;
+- diagnostics expose one relation;
+- phase-front materialization looks up one relation and supports one periodic-U quotient per matching sheet.
+
+This is the earliest active G4 design contract.
+
+### Required multi-relation invariant
+
+> A topology/component may expose multiple compatible periodic relations. Every retained relation must derive from exact source topology and reciprocal 4-RoSy transport, have canonical route/cut/lattice identity, be deterministic independent of face-row or producer discovery order, and be consumed by structural hashing, diagnostics, provenance, and exact lattice quotient materialization. Equivalent/reversed descriptions canonicalize; conflicting or genuinely ambiguous/dependent relation authority fails closed with a typed reason.
+
+Important constraints:
+
+- a second relation is not accepted merely because it exists;
+- relation ownership/basis selection may not use source numeric ID alone, discovery order, count/frequency, arbitrary subset search, or Euclidean proximity;
+- multiple local-sheet relations do not weaken G2 sheet isolation;
+- current hard-feature/source-sheet barriers are not removed merely to avoid multi-relation topology;
+- exact quotient remains source/phase/lattice-based, never Euclidean seam welding;
+- a stored relation that is not consumed by materialization/hashing is not first-class progress;
+- the single-annulus G3 behavior must remain semantically unchanged.
+
+The first G4 slice may stop at a deeper truthful torus invariant after this multi-relation authority is demonstrably live and consumed; that is material architectural progress. G4 itself is not passed until required topology and prescribed-singularity fixtures complete directly.
+
+## G4 prescribed-singularity observation
+
+The prescribed sphere currently reaches completion: producer `NotApplicable`, 766 traces, 30 arrangement/simplified cells, zero completed output, terminal `NotProductionReady:completion`. The first detailed completion failure is `repeated-boundary-node` followed by parity-alternative budget exhaustion (68/68). This is downstream of the torus tracing/phase-front blocker and therefore deferred until the torus topology slice is closed.
 
 ## Next authority
 
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9013161456`.
-
-Formal G3 closure requires **17/17 focused/retained contracts**, retained direct strict-valid cylinder production closure, and G0-G2 green. If satisfied, mark G3 passed and activate G4 topology-distinct completion and singularities.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` as Code + Build only. No generated project binary may execute. The following artifact-only turn must retain all G0-G3 authority and prove that the new multi-relation periodic contract is live/consumed on exact torus without ID/order/count/frequency/proximity selection.
 
 ## Non-negotiable prohibitions
 
