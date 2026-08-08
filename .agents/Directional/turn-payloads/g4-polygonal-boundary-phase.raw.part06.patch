@@ -1,0 +1,183 @@
++  ASSERT_EQ(forwardNetwork.phaseFront.disposition,
++            reversedNetwork.phaseFront.disposition);
++  ASSERT_EQ(forwardNetwork.phaseFront.failure.reason,
++            reversedNetwork.phaseFront.failure.reason);
++  ASSERT_EQ(1U, forwardNetwork.phaseFront.boundedDiskBoundaryPhases.size());
++  ASSERT_EQ(1U, reversedNetwork.phaseFront.boundedDiskBoundaryPhases.size());
++  const auto &forwardPhase =
++      forwardNetwork.phaseFront.boundedDiskBoundaryPhases.front();
++  const auto &reversedPhase =
++      reversedNetwork.phaseFront.boundedDiskBoundaryPhases.front();
++  EXPECT_EQ(forwardPhase.structuralHash, reversedPhase.structuralHash);
++  EXPECT_EQ(forwardPhase.signedQuarterTurnSum,
++            reversedPhase.signedQuarterTurnSum);
++  EXPECT_EQ(forwardPhase.rectangular, reversedPhase.rectangular);
++  EXPECT_EQ(forwardPhase.polygonClosed, reversedPhase.polygonClosed);
++  EXPECT_EQ(forwardPhase.chartConstructed, reversedPhase.chartConstructed);
++  ASSERT_EQ(forwardPhase.runs.size(), reversedPhase.runs.size());
++  for (std::size_t run = 0; run < forwardPhase.runs.size(); ++run) {
++    EXPECT_EQ(forwardPhase.runs[run].branch, reversedPhase.runs[run].branch);
++    EXPECT_EQ(forwardPhase.runs[run].signedQuarterTurnToNext,
++              reversedPhase.runs[run].signedQuarterTurnToNext);
++    EXPECT_NEAR(forwardPhase.runs[run].intrinsicLength,
++                reversedPhase.runs[run].intrinsicLength, 1.0e-12);
++    EXPECT_LE((forwardPhase.runs[run].chartStart -
++               reversedPhase.runs[run].chartStart).norm(),
++              1.0e-12);
++    EXPECT_LE((forwardPhase.runs[run].chartEnd -
++               reversedPhase.runs[run].chartEnd).norm(),
++              1.0e-12);
++  }
++}
++
+ TEST(SurfaceCellsPhase10,
+      CurvedBoundedDiskAcceptsNonHardAuthoritativeSourceSheetBoundary) {
+   const CurvedDiskFixture fixture =
+@@ -1615,6 +1821,15 @@ TEST(SurfaceCellsPhase10,
+             network.phaseFront.disposition)
+       << directional::geometry::surface_phase_front_failure_reason_name(
+              network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
++  bool sawSourceSheetBoundaryAuthority = false;
++  for (const auto &run :
++       network.phaseFront.boundedDiskBoundaryPhases.front().runs) {
++    for (const auto &authority : run.edgeAuthority) {
++      sawSourceSheetBoundaryAuthority |= authority.sourceSheet;
++    }
++  }
++  EXPECT_TRUE(sawSourceSheetBoundaryAuthority);
+ 
+   std::map<std::pair<int, int>, int> cellsBySheet;
+   for (const auto &cell : network.phaseFront.cells) {
+@@ -1746,6 +1961,15 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPreservesAuthoritativeHardBoundary) {
+             network.phaseFront.disposition)
+       << directional::geometry::surface_phase_front_failure_reason_name(
+              network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
++  bool sawHardFeatureAuthority = false;
++  for (const auto &run :
++       network.phaseFront.boundedDiskBoundaryPhases.front().runs) {
++    for (const auto &authority : run.edgeAuthority) {
++      sawHardFeatureAuthority |= authority.hardFeature;
++    }
++  }
++  EXPECT_TRUE(sawHardFeatureAuthority);
+ 
+   std::size_t exteriorCount = 0;
+   for (const auto &edge : network.phaseFront.edges) {
+@@ -1904,6 +2128,92 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
+   EXPECT_EQ(1, network.phaseFront.periodicHolonomies.front().sourceSheet);
+ }
+ 
++TEST(SurfaceCellsPhase10,
++     PolygonalCurvedDiskRetainsPeriodicAuthorityWithoutPartialSheetCells) {
++  directional::TriMesh plane;
++  directional::TriMesh cylinder;
++  ASSERT_TRUE(directional::readOBJ(
++      directional::tests::benchmark_fixture_path("milestone-g/plane.obj").string(),
++      plane));
++  ASSERT_TRUE(directional::readOBJ(
++      directional::tests::benchmark_fixture_path("milestone-g/cylinder.obj").string(),
++      cylinder));
++  const Eigen::MatrixXd planeRaw = read_rawfield_fixture(
++      directional::tests::benchmark_fixture_path("milestone-g/plane.rawfield"),
++      plane.F.rows());
++  const Eigen::MatrixXd cylinderRaw = read_rawfield_fixture(
++      directional::tests::benchmark_fixture_path("milestone-g/cylinder.rawfield"),
++      cylinder.F.rows());
++  const CurvedDiskFixture disk = make_polygonal_curved_disk_fixture();
++  const Eigen::MatrixXd diskRaw = curved_disk_raw_field(disk);
++
++  const int planeVertices = plane.V.rows();
++  const int cylinderVertices = cylinder.V.rows();
++  const int planeFaces = plane.F.rows();
++  const int cylinderFaces = cylinder.F.rows();
++  Eigen::MatrixXd vertices(
++      planeVertices + cylinderVertices + disk.vertices.rows(), 3);
++  vertices.topRows(planeVertices) = plane.V;
++  vertices.middleRows(planeVertices, cylinderVertices) = cylinder.V;
++  vertices.middleRows(planeVertices, cylinderVertices).col(0).array() += 10.0;
++  vertices.bottomRows(disk.vertices.rows()) = disk.vertices;
++  vertices.bottomRows(disk.vertices.rows()).col(0).array() += 20.0;
++
++  Eigen::MatrixXi faces(planeFaces + cylinderFaces + disk.faces.rows(), 3);
++  faces.topRows(planeFaces) = plane.F;
++  faces.middleRows(planeFaces, cylinderFaces) =
++      (cylinder.F.array() + planeVertices).matrix();
++  faces.bottomRows(disk.faces.rows()) =
++      (disk.faces.array() + planeVertices + cylinderVertices).matrix();
++  Eigen::MatrixXd rawField(planeRaw.rows() + cylinderRaw.rows() + diskRaw.rows(),
++                           planeRaw.cols());
++  rawField.topRows(planeRaw.rows()) = planeRaw;
++  rawField.middleRows(planeRaw.rows(), cylinderRaw.rows()) = cylinderRaw;
++  rawField.bottomRows(diskRaw.rows()) = diskRaw;
++
++  directional::TriMesh mesh;
++  mesh.set_mesh(vertices, faces);
++  const auto crossField =
++      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, rawField);
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents.resize(static_cast<std::size_t>(faces.rows()));
++  options.sourceFaceSheets.resize(static_cast<std::size_t>(faces.rows()));
++  for (int face = 0; face < faces.rows(); ++face) {
++    const int sheet = face < planeFaces
++                          ? 0
++                          : (face < planeFaces + cylinderFaces ? 1 : 2);
++    options.sourceFaceComponents[static_cast<std::size_t>(face)] = sheet;
++    options.sourceFaceSheets[static_cast<std::size_t>(face)] = sheet;
++  }
++  const int diskOffset = planeVertices + cylinderVertices;
++  for (const auto edge : std::array<std::array<int, 2>, 6>{{
++           {{0, 1}}, {{1, 2}}, {{2, 3}},
++           {{3, 4}}, {{4, 5}}, {{5, 0}}}}) {
++    options.hardFeatureEdges.insert(
++        directional::pipeline::surface_cell_source_edge_key(
++            diskOffset + edge[0], diskOffset + edge[1]));
++  }
++  const Eigen::VectorXd targetSize =
++      Eigen::VectorXd::Constant(vertices.rows(), 0.25);
++  const auto network = directional::geometry::build_surface_cell_network(
++      vertices, faces, crossField, targetSize, options);
++
++  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
++            network.phaseFront.disposition);
++  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskFrontPairing,
++            network.phaseFront.failure.reason)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
++  EXPECT_EQ(1, network.phaseFront.periodicHolonomies.front().sourceSheet);
++  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
++  EXPECT_FALSE(network.phaseFront.boundedDiskBoundaryPhases.front().rectangular);
++  EXPECT_TRUE(network.phaseFront.boundedDiskBoundaryPhases.front().chartConstructed);
++  EXPECT_TRUE(network.phaseFront.cells.empty())
++      << "aggregate rejection must not leak partial source-sheet cells";
++}
++
+ TEST(SurfaceCellsPhase10,
+      PhaseFrontComposesBoundedAndPeriodicAuthoritativeSheets) {
+   directional::TriMesh plane;
+@@ -2213,6 +2523,22 @@ TEST(SurfaceCellsPhase10,
+                 InvalidBoundedDiskTopology,
+             phaseFront.failure.reason)
+       << "non-hard cross-sheet boundaries are authoritative source-sheet rails";
++  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskBoundaryPhase,
++            phaseFront.failure.reason)
++      << "valid field-authoritative disk boundaries must use the generalized "
++         "ordered boundary phase rather than the four-run rectangle gate";
++  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskBoundaryTurn,
++            phaseFront.failure.reason);
++  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskBoundaryIndex,
++            phaseFront.failure.reason);
++  EXPECT_GT(result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount, 0U);
++  EXPECT_GT(result.diagnostics.surfaceCellBoundedDiskBoundaryRunCount, 0U);
++  EXPECT_GT(result.diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount,
++            0U);
++  EXPECT_FALSE(result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.empty());
+   if (phaseFront.disposition ==
+       directional::geometry::SurfaceCellProducerDisposition::Rejected) {
+     EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::None,
