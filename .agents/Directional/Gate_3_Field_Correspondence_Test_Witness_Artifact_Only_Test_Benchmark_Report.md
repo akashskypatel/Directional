@@ -8,6 +8,8 @@ The exact compile-only artifact `9013161456` passes the corrected subdivision-in
 
 No implementation, test, fixture, manifest, validator, benchmark, or build logic was edited or rebuilt during this turn.
 
+Local evidence archive: `directional-g3-field-correspondence-witness-tb-evidence.tar.gz`, SHA-256 `cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8`.
+
 ## Exact artifact authority
 
 - artifact ID `9013161456`, `g3-field-correspondence-test-witness-code-build`;
