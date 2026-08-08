@@ -16,7 +16,7 @@ Independent review report: `.agents/Directional/Gate_4_Topology_Region_Independe
 Review planning commit: `d1805cac76535f326720bb86b845117e92e59e21`
 Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
 Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
-Handoff content commit: **pending documentation publication**
+Handoff content commit: `722bc874473a6d63a126c78e45118155da61f7df`
 
 Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the independent review report, the latest compile report, the authoritative artifact-only plan, the entering runtime report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references.
 

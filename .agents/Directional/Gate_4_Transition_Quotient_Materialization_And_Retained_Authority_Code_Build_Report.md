@@ -78,3 +78,5 @@ Prescribed sphere, G5/G6, historical completion/simplification failures, validat
 ## Repository hygiene
 
 The four verified raw patch payloads were removed by cleanup/build commit `718b978dcd0fab66da67810e00661468fc11038f`. After immutable artifact/source/checksum/log authority was verified, the bounded workflow was removed in `160771335e037f89f4aa5ca07c5da61af668741c`, then its trigger in `09b333123e75ea04c3b375c08c29c6495eff1188`. End-of-turn inspection confirms the bounded workflow, trigger, and all four payload parts are absent; `.github/workflows` retains only `agent-source-snapshot.yml`.
+
+Documentation/handoff content authority: `722bc874473a6d63a126c78e45118155da61f7df`.
