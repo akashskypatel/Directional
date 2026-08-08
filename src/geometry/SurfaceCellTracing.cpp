@@ -134,6 +134,33 @@ edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFac
   return indices;
 }
 
+std::uint64_t isolation_seam_transport_certificate_hash(
+    const SurfaceIsolationSeamTransportCertificate &certificate) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  const auto consume = [&](const std::uint64_t value) {
+    hash ^= value;
+    hash *= 1099511628211ULL;
+  };
+  const auto consume_int = [&](const int value) {
+    consume(static_cast<std::uint64_t>(static_cast<std::int64_t>(value)));
+  };
+  consume_int(certificate.sourceComponent);
+  consume_int(certificate.sourceTopologyRegion);
+  consume(certificate.sourceEdgeTopology);
+  consume_int(certificate.sourceEdgeIndex);
+  for (const int vertex : certificate.firstSourceFaceTopology) {
+    consume_int(vertex);
+  }
+  for (const int vertex : certificate.secondSourceFaceTopology) {
+    consume_int(vertex);
+  }
+  consume_int(certificate.firstIsolationSheet);
+  consume_int(certificate.secondIsolationSheet);
+  consume_int(certificate.forwardQuarterTurn);
+  consume_int(certificate.reverseQuarterTurn);
+  return hash;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -5235,12 +5262,14 @@ bool phase_front_cell_source_scope(
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options,
     const std::vector<SurfaceTraceSegment> &path, SurfaceFrontEdge &edge) {
-  if (faces.cols() != 3 || path.empty()) {
+  if (faces.cols() != 3 || path.empty() ||
+      !edge.sourceRouteEdges.empty() || !edge.sourceRouteTopology.empty()) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
   const auto incident = edge_faces(faces);
   const auto sourceEdgeIndices = edge_matching_indices(incident);
   std::optional<SurfaceFrontBoundaryKind> kind;
+  std::set<std::uint64_t> seenTopology;
   int railId = -1;
   constexpr double tolerance = 1.0e-9;
   for (const SurfaceTraceSegment &segment : path) {
@@ -5267,16 +5296,27 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const std::uint64_t topology = edge_key(a, b);
     const auto foundIncident = incident.find(topology);
     const auto foundIndex = sourceEdgeIndices.find(topology);
-    if (foundIncident == incident.end() || foundIndex == sourceEdgeIndices.end()) {
+    if (foundIncident == incident.end() || foundIncident->second[0] < 0 ||
+        (foundIncident->second[0] != segment.face &&
+         foundIncident->second[1] != segment.face)) {
       return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
     }
     SurfaceFrontBoundaryKind segmentKind;
     if (foundIncident->second[1] < 0) {
+      if (foundIndex != sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
       segmentKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
     } else if (options.hardFeatureEdges.count(topology) != 0U) {
+      if (foundIndex == sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
       segmentKind = SurfaceFrontBoundaryKind::HardRail;
     } else if (options.reliefBarriersEmbedded &&
                options.reliefBarrierEdges.count(topology) != 0U) {
+      if (foundIndex == sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
       segmentKind = SurfaceFrontBoundaryKind::EmbeddedReliefCut;
     } else {
       return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
@@ -5287,8 +5327,13 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     kind = segmentKind;
     if (edge.sourceRouteTopology.empty() ||
         edge.sourceRouteTopology.back() != topology) {
+      if (!seenTopology.insert(topology).second) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
       edge.sourceRouteTopology.push_back(topology);
-      edge.sourceRouteEdges.push_back(foundIndex->second);
+      if (segmentKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
+        edge.sourceRouteEdges.push_back(foundIndex->second);
+      }
     }
     if (segment.railId >= 0) {
       if (railId >= 0 && railId != segment.railId) {
@@ -5298,6 +5343,14 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     }
   }
   if (!kind.has_value() || edge.sourceRouteTopology.empty()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  if ((*kind == SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
+       !edge.sourceRouteEdges.empty()) ||
+      (*kind != SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
+       (edge.sourceRouteEdges.size() != edge.sourceRouteTopology.size() ||
+        std::any_of(edge.sourceRouteEdges.begin(), edge.sourceRouteEdges.end(),
+                    [](const int sourceEdge) { return sourceEdge < 0; })))) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
   edge.boundaryKind = *kind;
@@ -8502,6 +8555,170 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
   return result;
 }
 
+bool build_isolation_seam_transport_certificates(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SurfaceCellTracingOptions &options,
+    const std::vector<int> &topologyRegionByFace,
+    const std::vector<SurfaceTopologyRegion> &topologyRegions,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    std::vector<SurfaceIsolationSeamTransportCertificate> &certificates) {
+  certificates.clear();
+  if (faces.cols() != 3 || vertices.cols() != 3 ||
+      faceAxisX.rows() != faces.rows() || faceAxisX.cols() != 3 ||
+      faceAxisY.rows() != faces.rows() || faceAxisY.cols() != 3 ||
+      topologyRegionByFace.size() != static_cast<std::size_t>(faces.rows()) ||
+      !source_label_arrays_valid(options, faces.rows())) {
+    return false;
+  }
+
+  const auto incident = edge_faces(faces);
+  const auto matchingIndices = edge_matching_indices(incident);
+  const bool hasTransitions =
+      edgeTransitions != nullptr && !edgeTransitions->empty();
+  const bool hasMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
+  const auto *effectiveTransitions = hasTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveMatching = hasMatching ? edgeMatching : nullptr;
+  const auto *effectiveEffort = hasEffort ? edgeEffort : nullptr;
+  const EdgeTransitionLookup transitionLookup =
+      effectiveTransitions != nullptr
+          ? edge_transition_lookup(*effectiveTransitions)
+          : EdgeTransitionLookup{};
+  if (transitionLookup.duplicate) return false;
+
+  std::set<std::pair<int, std::uint64_t>> seen;
+  for (const SurfaceTopologyRegion &region : topologyRegions) {
+    for (const std::uint64_t seam : region.internalIsolationSeamTopology) {
+      const auto foundIncident = incident.find(seam);
+      const auto foundIndex = matchingIndices.find(seam);
+      if (region.id < 0 || region.sourceComponent < 0 ||
+          !seen.insert({region.id, seam}).second ||
+          foundIncident == incident.end() || foundIncident->second[0] < 0 ||
+          foundIncident->second[1] < 0 ||
+          foundIndex == matchingIndices.end() || foundIndex->second < 0) {
+        return false;
+      }
+
+      int firstFace = foundIncident->second[0];
+      int secondFace = foundIncident->second[1];
+      if (firstFace == secondFace || firstFace >= faces.rows() ||
+          secondFace >= faces.rows() ||
+          topologyRegionByFace[static_cast<std::size_t>(firstFace)] !=
+              region.id ||
+          topologyRegionByFace[static_cast<std::size_t>(secondFace)] !=
+              region.id ||
+          face_label_or_default(options.sourceFaceComponents, firstFace, 0) !=
+              region.sourceComponent ||
+          face_label_or_default(options.sourceFaceComponents, secondFace, 0) !=
+              region.sourceComponent) {
+        return false;
+      }
+
+      std::array<int, 3> firstTopology =
+          canonical_face_vertices(faces, firstFace);
+      std::array<int, 3> secondTopology =
+          canonical_face_vertices(faces, secondFace);
+      if (firstTopology == secondTopology) return false;
+      if (secondTopology < firstTopology) {
+        std::swap(firstFace, secondFace);
+        std::swap(firstTopology, secondTopology);
+      }
+      const int firstSheet = face_label_or_default(
+          options.sourceFaceSheets, firstFace, region.sourceComponent);
+      const int secondSheet = face_label_or_default(
+          options.sourceFaceSheets, secondFace, region.sourceComponent);
+      if (firstSheet < 0 || secondSheet < 0 || firstSheet == secondSheet ||
+          !std::binary_search(region.isolationSheets.begin(),
+                              region.isolationSheets.end(), firstSheet) ||
+          !std::binary_search(region.isolationSheets.begin(),
+                              region.isolationSheets.end(), secondSheet)) {
+        return false;
+      }
+      if (effectiveTransitions != nullptr) {
+        const auto transition = transitionLookup.byEdge.find(seam);
+        if (transition == transitionLookup.byEdge.end() ||
+            transition->second.sourceEdge < 0) {
+          return false;
+        }
+      }
+
+      std::optional<int> forwardQuarterTurn;
+      std::optional<int> reverseQuarterTurn;
+      for (int sourceBranch = 0; sourceBranch < 4; ++sourceBranch) {
+        int sourceFamily = 0;
+        int sourceSign = 1;
+        family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+        const Eigen::RowVector3d sourceDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, firstFace, sourceFamily,
+                            sourceSign),
+            face_normal(vertices, faces, firstFace));
+        const BranchTransitionResult forward = resolve_branch_transition(
+            vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+            transitionLookup, seam, firstFace, secondFace, sourceFamily,
+            sourceSign, sourceDirection, effectiveMatching, effectiveEffort,
+            effectiveTransitions);
+        if (!forward.valid) return false;
+        const int targetBranch =
+            branch_from_family_sign(forward.family, forward.sign);
+        const Eigen::RowVector3d targetDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, secondFace, forward.family,
+                            forward.sign),
+            face_normal(vertices, faces, secondFace));
+        const BranchTransitionResult reverse = resolve_branch_transition(
+            vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+            transitionLookup, seam, secondFace, firstFace, forward.family,
+            forward.sign, targetDirection, effectiveMatching, effectiveEffort,
+            effectiveTransitions);
+        const int candidateForward = normalized_branch(forward.matching);
+        const int candidateReverse = normalized_branch(reverse.matching);
+        if (!reverse.valid || targetBranch !=
+                                  normalized_branch(sourceBranch +
+                                                    candidateForward) ||
+            branch_from_family_sign(reverse.family, reverse.sign) !=
+                sourceBranch ||
+            normalized_branch(candidateForward + candidateReverse) != 0 ||
+            (forwardQuarterTurn.has_value() &&
+             *forwardQuarterTurn != candidateForward) ||
+            (reverseQuarterTurn.has_value() &&
+             *reverseQuarterTurn != candidateReverse)) {
+          return false;
+        }
+        forwardQuarterTurn = candidateForward;
+        reverseQuarterTurn = candidateReverse;
+      }
+      if (!forwardQuarterTurn.has_value() ||
+          !reverseQuarterTurn.has_value()) {
+        return false;
+      }
+
+      SurfaceIsolationSeamTransportCertificate certificate;
+      certificate.sourceComponent = region.sourceComponent;
+      certificate.sourceTopologyRegion = region.id;
+      certificate.sourceEdgeTopology = seam;
+      certificate.sourceEdgeIndex = foundIndex->second;
+      certificate.firstSourceFaceTopology = firstTopology;
+      certificate.secondSourceFaceTopology = secondTopology;
+      certificate.firstIsolationSheet = firstSheet;
+      certificate.secondIsolationSheet = secondSheet;
+      certificate.forwardQuarterTurn = *forwardQuarterTurn;
+      certificate.reverseQuarterTurn = *reverseQuarterTurn;
+      certificate.structuralHash =
+          isolation_seam_transport_certificate_hash(certificate);
+      certificates.push_back(std::move(certificate));
+    }
+  }
+  std::sort(certificates.begin(), certificates.end());
+  return std::adjacent_find(certificates.begin(), certificates.end(),
+                            [](const auto &first, const auto &second) {
+                              return first.sourceTopologyRegion ==
+                                         second.sourceTopologyRegion &&
+                                     first.sourceEdgeTopology ==
+                                         second.sourceEdgeTopology;
+                            }) == certificates.end();
+}
+
 
 SurfacePhaseFrontResult build_uniform_phase_front(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
@@ -8570,7 +8787,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 
   const auto normalize_scope = [&](SurfacePhaseFrontResult &local,
                                    const SurfaceTopologyRegion &region) {
-    const int representativeSheet =
+    const int singleIsolationSheet =
         region.isolationSheets.size() == 1U ? region.isolationSheets.front() : -1;
     const auto normalize_sheets = [&](std::vector<int> &sheets) {
       std::sort(sheets.begin(), sheets.end());
@@ -8587,14 +8804,14 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     for (auto &relation : local.periodicHolonomies) {
       relation.sourceComponent = region.sourceComponent;
       relation.sourceTopologyRegion = region.id;
-      relation.sourceSheet = representativeSheet;
+      relation.sourceSheet = singleIsolationSheet;
       relation.sourceIsolationSheets = region.isolationSheets;
       relation = canonicalize_periodic_holonomy(std::move(relation));
     }
     for (auto &phase : local.boundedDiskBoundaryPhases) {
       phase.sourceComponent = region.sourceComponent;
       phase.sourceTopologyRegion = region.id;
-      phase.sourceSheet = representativeSheet;
+      phase.sourceSheet = singleIsolationSheet;
       phase.sourceIsolationSheets = region.isolationSheets;
     }
     for (auto &cell : local.cells) {
@@ -8613,7 +8830,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       if (!normalize_sheets(edge.sourceIsolationSheets)) return false;
       edge.sourceSheet = edge.sourceIsolationSheets.size() == 1U
                              ? edge.sourceIsolationSheets.front()
-                             : representativeSheet;
+                             : singleIsolationSheet;
     }
     return true;
   };
@@ -8937,6 +9154,24 @@ SurfacePhaseFrontResult build_uniform_phase_front(
                      }),
       result.events.end());
 
+  if (!build_isolation_seam_transport_certificates(
+          vertices, faces, faceAxisX, faceAxisY, options,
+          result.sourceTopologyRegionByFace, result.topologyRegions,
+          edgeMatching, edgeEffort, edgeTransitions,
+          result.isolationSeamTransportCertificates)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    result.succeeded = false;
+    result.cells.clear();
+    result.edges.clear();
+    result.events.clear();
+    result.periodicHolonomies.clear();
+    result.isolationSeamTransportCertificates.clear();
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidIsolationSeamTransportCertificate);
+    return result;
+  }
+
   result.succeeded = !result.cells.empty();
   if (result.succeeded) result.disposition = SurfaceCellProducerDisposition::Produced;
   return result;
@@ -9008,6 +9243,7 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority: return "InvalidFrontBoundaryAuthority";
   case SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut: return "UnsupportedEmbeddedReliefCut";
   case SurfacePhaseFrontFailureReason::InvalidHardRailPairing: return "InvalidHardRailPairing";
+  case SurfacePhaseFrontFailureReason::InvalidIsolationSeamTransportCertificate: return "InvalidIsolationSeamTransportCertificate";
   }
   return "Unknown";
 }

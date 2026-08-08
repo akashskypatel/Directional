@@ -190,6 +190,9 @@ std::uint64_t trace_network_owned_bytes(
   std::uint64_t bytes = vector_owned_bytes(network.phaseFront.edges) +
                         vector_owned_bytes(network.phaseFront.events) +
                         vector_owned_bytes(network.phaseFront.cells) +
+                        vector_owned_bytes(
+                            network.phaseFront
+                                .isolationSeamTransportCertificates) +
                         vector_owned_bytes(network.seeds) +
                         vector_owned_bytes(network.traces) +
                         vector_owned_bytes(network.singularSeparatrices) +
@@ -244,6 +247,9 @@ std::uint64_t trace_network_logical_bytes(
   std::uint64_t bytes = vector_logical_bytes(network.phaseFront.edges) +
                         vector_logical_bytes(network.phaseFront.events) +
                         vector_logical_bytes(network.phaseFront.cells) +
+                        vector_logical_bytes(
+                            network.phaseFront
+                                .isolationSeamTransportCertificates) +
                         vector_logical_bytes(network.seeds) +
                         vector_logical_bytes(network.traces) +
                         vector_logical_bytes(network.singularSeparatrices) +
@@ -970,6 +976,26 @@ std::uint64_t hash_trace_network(
   hash_combine_i64(seed, network.phaseFront.failure.secondarySourceEdge);
   hash_combine_i64(seed, network.phaseFront.gridU);
   hash_combine_i64(seed, network.phaseFront.gridV);
+  hash_combine_u64(
+      seed, network.phaseFront.isolationSeamTransportCertificates.size());
+  for (const auto &certificate :
+       network.phaseFront.isolationSeamTransportCertificates) {
+    hash_combine_i64(seed, certificate.sourceComponent);
+    hash_combine_i64(seed, certificate.sourceTopologyRegion);
+    hash_combine_u64(seed, certificate.sourceEdgeTopology);
+    hash_combine_i64(seed, certificate.sourceEdgeIndex);
+    for (const int vertex : certificate.firstSourceFaceTopology) {
+      hash_combine_i64(seed, vertex);
+    }
+    for (const int vertex : certificate.secondSourceFaceTopology) {
+      hash_combine_i64(seed, vertex);
+    }
+    hash_combine_i64(seed, certificate.firstIsolationSheet);
+    hash_combine_i64(seed, certificate.secondIsolationSheet);
+    hash_combine_i64(seed, certificate.forwardQuarterTurn);
+    hash_combine_i64(seed, certificate.reverseQuarterTurn);
+    hash_combine_u64(seed, certificate.structuralHash);
+  }
   hash_combine_u64(seed, network.phaseFront.periodicHolonomies.size());
   for (const auto &relation : network.phaseFront.periodicHolonomies) {
     hash_combine_i64(seed, relation.sourceComponent);
@@ -1968,6 +1994,185 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return result;
   }
 
+  const auto exactSourceIncidence =
+      geometry::surface_cell_tracing_detail::edge_faces(sourceFaces);
+  const auto sourceEdgeIndices =
+      geometry::surface_cell_tracing_detail::edge_matching_indices(
+          exactSourceIncidence);
+  std::map<int, std::uint64_t> topologyBySourceEdge;
+  for (const auto &[topology, sourceEdge] : sourceEdgeIndices) {
+    if (!topologyBySourceEdge.emplace(sourceEdge, topology).second) {
+      result.failure = "InvalidAuthoritativeSourceEdgeIndex";
+      return result;
+    }
+  }
+  const auto canonical_source_face = [&](const int face) {
+    std::array<int, 3> topology{
+        sourceFaces(face, 0), sourceFaces(face, 1), sourceFaces(face, 2)};
+    std::sort(topology.begin(), topology.end());
+    return topology;
+  };
+  const auto normalized_quarter_turn = [](const int rotation) {
+    const int remainder = rotation % 4;
+    return remainder < 0 ? remainder + 4 : remainder;
+  };
+
+  using IsolationSeamKey = std::pair<int, std::uint64_t>;
+  std::map<IsolationSeamKey,
+           const geometry::SurfaceIsolationSeamTransportCertificate *>
+      isolationCertificateBySeam;
+  std::map<int, std::map<int, std::set<int>>> isolationSheetGraphByRegion;
+  std::size_t requiredIsolationSeams = 0U;
+  for (const auto &[regionId, region] : topologyRegionById) {
+    if (region->isolationSheets.empty() ||
+        !std::is_sorted(region->isolationSheets.begin(),
+                        region->isolationSheets.end()) ||
+        std::adjacent_find(region->isolationSheets.begin(),
+                           region->isolationSheets.end()) !=
+            region->isolationSheets.end() ||
+        !std::is_sorted(region->internalIsolationSeamTopology.begin(),
+                        region->internalIsolationSeamTopology.end()) ||
+        std::adjacent_find(region->internalIsolationSeamTopology.begin(),
+                           region->internalIsolationSeamTopology.end()) !=
+            region->internalIsolationSeamTopology.end()) {
+      result.failure = "InvalidAuthoritativeTopologyRegionIsolationAuthority";
+      return result;
+    }
+    auto &graph = isolationSheetGraphByRegion[regionId];
+    for (const int sheet : region->isolationSheets) {
+      if (sheet < 0) {
+        result.failure = "InvalidAuthoritativeTopologyRegionIsolationAuthority";
+        return result;
+      }
+      graph[sheet];
+    }
+    requiredIsolationSeams += region->internalIsolationSeamTopology.size();
+  }
+
+  for (const auto &certificate :
+       phaseFront.isolationSeamTransportCertificates) {
+    const auto region =
+        topologyRegionById.find(certificate.sourceTopologyRegion);
+    const IsolationSeamKey key{certificate.sourceTopologyRegion,
+                               certificate.sourceEdgeTopology};
+    const auto incidence =
+        exactSourceIncidence.find(certificate.sourceEdgeTopology);
+    const auto sourceEdge =
+        sourceEdgeIndices.find(certificate.sourceEdgeTopology);
+    if (region == topologyRegionById.end() ||
+        certificate.sourceComponent != region->second->sourceComponent ||
+        !std::binary_search(
+            region->second->internalIsolationSeamTopology.begin(),
+            region->second->internalIsolationSeamTopology.end(),
+            certificate.sourceEdgeTopology) ||
+        !isolationCertificateBySeam.emplace(key, &certificate).second ||
+        incidence == exactSourceIncidence.end() || incidence->second[0] < 0 ||
+        incidence->second[1] < 0 ||
+        incidence->second[0] == incidence->second[1] ||
+        sourceEdge == sourceEdgeIndices.end() ||
+        certificate.sourceEdgeIndex != sourceEdge->second ||
+        certificate.firstIsolationSheet < 0 ||
+        certificate.secondIsolationSheet < 0 ||
+        certificate.firstIsolationSheet == certificate.secondIsolationSheet ||
+        normalized_quarter_turn(certificate.forwardQuarterTurn) !=
+            certificate.forwardQuarterTurn ||
+        normalized_quarter_turn(certificate.reverseQuarterTurn) !=
+            certificate.reverseQuarterTurn ||
+        normalized_quarter_turn(certificate.forwardQuarterTurn +
+                                certificate.reverseQuarterTurn) != 0 ||
+        certificate.structuralHash !=
+            geometry::surface_cell_tracing_detail::
+                isolation_seam_transport_certificate_hash(certificate)) {
+      result.failure = "InvalidAuthoritativeIsolationSeamCertificate";
+      return result;
+    }
+
+    int firstFace = incidence->second[0];
+    int secondFace = incidence->second[1];
+    std::array<int, 3> firstTopology = canonical_source_face(firstFace);
+    std::array<int, 3> secondTopology = canonical_source_face(secondFace);
+    if (secondTopology < firstTopology) {
+      std::swap(firstFace, secondFace);
+      std::swap(firstTopology, secondTopology);
+    }
+    if (firstTopology != certificate.firstSourceFaceTopology ||
+        secondTopology != certificate.secondSourceFaceTopology ||
+        topologyRegionByFace[static_cast<std::size_t>(firstFace)] !=
+            certificate.sourceTopologyRegion ||
+        topologyRegionByFace[static_cast<std::size_t>(secondFace)] !=
+            certificate.sourceTopologyRegion ||
+        sourceFaceComponents[static_cast<std::size_t>(firstFace)] !=
+            certificate.sourceComponent ||
+        sourceFaceComponents[static_cast<std::size_t>(secondFace)] !=
+            certificate.sourceComponent ||
+        sourceFaceSheets[static_cast<std::size_t>(firstFace)] !=
+            certificate.firstIsolationSheet ||
+        sourceFaceSheets[static_cast<std::size_t>(secondFace)] !=
+            certificate.secondIsolationSheet ||
+        !std::binary_search(region->second->isolationSheets.begin(),
+                            region->second->isolationSheets.end(),
+                            certificate.firstIsolationSheet) ||
+        !std::binary_search(region->second->isolationSheets.begin(),
+                            region->second->isolationSheets.end(),
+                            certificate.secondIsolationSheet)) {
+      result.failure = "IsolationSeamCertificateSourceAuthorityMismatch";
+      return result;
+    }
+    auto &graph =
+        isolationSheetGraphByRegion[certificate.sourceTopologyRegion];
+    graph[certificate.firstIsolationSheet].insert(
+        certificate.secondIsolationSheet);
+    graph[certificate.secondIsolationSheet].insert(
+        certificate.firstIsolationSheet);
+  }
+  if (isolationCertificateBySeam.size() != requiredIsolationSeams) {
+    result.failure = "IsolationSeamCertificateBijectionMismatch";
+    return result;
+  }
+  for (const auto &[regionId, region] : topologyRegionById) {
+    for (const std::uint64_t seam :
+         region->internalIsolationSeamTopology) {
+      if (isolationCertificateBySeam.count({regionId, seam}) != 1U) {
+        result.failure = "IsolationSeamCertificateBijectionMismatch";
+        return result;
+      }
+    }
+  }
+
+  const auto isolation_sheets_connected =
+      [&](const int regionId, const std::vector<int> &sheets) {
+        const auto graph = isolationSheetGraphByRegion.find(regionId);
+        if (graph == isolationSheetGraphByRegion.end() || sheets.empty() ||
+            !std::is_sorted(sheets.begin(), sheets.end()) ||
+            std::adjacent_find(sheets.begin(), sheets.end()) != sheets.end()) {
+          return false;
+        }
+        for (const int sheet : sheets) {
+          if (graph->second.count(sheet) == 0U) return false;
+        }
+        std::set<int> reached;
+        std::vector<int> stack{sheets.front()};
+        while (!stack.empty()) {
+          const int sheet = stack.back();
+          stack.pop_back();
+          if (!reached.insert(sheet).second) continue;
+          const auto neighbors = graph->second.find(sheet);
+          if (neighbors == graph->second.end()) continue;
+          for (const int neighbor : neighbors->second) {
+            if (reached.count(neighbor) == 0U) stack.push_back(neighbor);
+          }
+        }
+        return std::all_of(sheets.begin(), sheets.end(), [&](const int sheet) {
+          return reached.count(sheet) != 0U;
+        });
+      };
+  for (const auto &[regionId, region] : topologyRegionById) {
+    if (!isolation_sheets_connected(regionId, region->isolationSheets)) {
+      result.failure = "DisconnectedAuthoritativeIsolationSheetGraph";
+      return result;
+    }
+  }
+
   struct OccurrenceData {
     geometry::SurfacePoint point;
     geometry::SurfaceCellCanonicalIdentity support;
@@ -2023,7 +2228,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         region->second->sourceComponent != cell.sourceComponent ||
         cell.sourceIsolationSheets.empty() ||
         !std::is_sorted(cell.sourceIsolationSheets.begin(),
-                        cell.sourceIsolationSheets.end())) {
+                        cell.sourceIsolationSheets.end()) ||
+        !isolation_sheets_connected(cell.sourceTopologyRegion,
+                                    cell.sourceIsolationSheets)) {
       result.failure = "InvalidAuthoritativePhaseFrontCell";
       return result;
     }
@@ -2070,8 +2277,33 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
 
   std::vector<int> edgeByCellSide(
       static_cast<std::size_t>(occurrenceCount), -1);
-  const auto exactSourceIncidence =
-      geometry::surface_cell_tracing_detail::edge_faces(sourceFaces);
+  std::vector<std::vector<std::uint64_t>> isolationSeamsByFrontEdge(
+      phaseFront.edges.size());
+  const auto exact_interior_route_valid =
+      [&](const std::vector<int> &routeEdges,
+          const std::vector<std::uint64_t> &routeTopology) {
+    if (routeTopology.empty() || routeEdges.size() != routeTopology.size()) {
+      return false;
+    }
+    std::set<std::uint64_t> uniqueTopology;
+    for (std::size_t index = 0; index < routeTopology.size(); ++index) {
+      const std::uint64_t topology = routeTopology[index];
+      const auto incidence = exactSourceIncidence.find(topology);
+      const auto sourceEdge = sourceEdgeIndices.find(topology);
+      if (!uniqueTopology.insert(topology).second ||
+          incidence == exactSourceIncidence.end() ||
+          incidence->second[0] < 0 || incidence->second[1] < 0 ||
+          sourceEdge == sourceEdgeIndices.end() ||
+          sourceEdge->second != routeEdges[index]) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const auto interior_source_route_valid = [&](const auto &edge) {
+    return exact_interior_route_valid(edge.sourceRouteEdges,
+                                      edge.sourceRouteTopology);
+  };
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {
     result.invalidEdge = edgeIndex;
@@ -2097,11 +2329,47 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                            edge.filledSide)]) ||
         !lattice_equal(edge.toLattice,
                        owner.lattice[static_cast<std::size_t>(
-                           (edge.filledSide + 1) % 4)])) {
+                           (edge.filledSide + 1) % 4)]) ||
+        edge.sourceIsolationSheets.empty() ||
+        !std::is_sorted(edge.sourceIsolationSheets.begin(),
+                        edge.sourceIsolationSheets.end()) ||
+        !isolation_sheets_connected(edge.sourceTopologyRegion,
+                                    edge.sourceIsolationSheets)) {
       result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
       return result;
     }
     edgeByCellSide[static_cast<std::size_t>(slot)] = edgeIndex;
+    auto &crossedIsolationSeams =
+        isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
+    for (const auto &segment :
+         owner.boundaryPaths[static_cast<std::size_t>(edge.filledSide)]) {
+      for (const int transitionSourceEdge : segment.transitionSourceEdges) {
+        const auto topology = topologyBySourceEdge.find(transitionSourceEdge);
+        if (topology == topologyBySourceEdge.end()) {
+          result.failure = "InvalidAuthoritativeTransitionSourceEdge";
+          return result;
+        }
+        if (isolationCertificateBySeam.count(
+                {edge.sourceTopologyRegion, topology->second}) != 0U) {
+          crossedIsolationSeams.push_back(topology->second);
+          continue;
+        }
+        const bool belongsToOtherRegion = std::any_of(
+            isolationCertificateBySeam.begin(),
+            isolationCertificateBySeam.end(), [&](const auto &entry) {
+              return entry.first.second == topology->second;
+            });
+        if (belongsToOtherRegion) {
+          result.failure = "IsolationSeamTransitionOwnerMismatch";
+          return result;
+        }
+      }
+    }
+    std::sort(crossedIsolationSeams.begin(), crossedIsolationSeams.end());
+    crossedIsolationSeams.erase(
+        std::unique(crossedIsolationSeams.begin(),
+                    crossedIsolationSeams.end()),
+        crossedIsolationSeams.end());
     const bool hasOpposite = edge.oppositeEdge >= 0;
     if (hasOpposite == edge.exterior ||
         (hasOpposite &&
@@ -2113,28 +2381,36 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
     switch (edge.boundaryKind) {
     case geometry::SurfaceFrontBoundaryKind::OrdinaryInterior:
-      if (!hasOpposite || edge.periodicRelation >= 0 || edge.exterior) {
+      if (!hasOpposite || edge.periodicRelation >= 0 || edge.exterior ||
+          !edge.sourceRouteEdges.empty() ||
+          !edge.sourceRouteTopology.empty()) {
         result.failure = "InvalidOrdinaryFrontRelation";
         return result;
       }
       break;
     case geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary:
       if (hasOpposite || !edge.exterior || edge.periodicRelation >= 0 ||
-          edge.sourceRouteTopology.empty()) {
+          edge.sourceRouteTopology.empty() ||
+          !edge.sourceRouteEdges.empty()) {
         result.failure = "InvalidSourceBoundaryAuthority";
         return result;
       }
-      for (const std::uint64_t topology : edge.sourceRouteTopology) {
-        const auto sourceEdge = exactSourceIncidence.find(topology);
-        if (sourceEdge == exactSourceIncidence.end() ||
-            sourceEdge->second[1] >= 0) {
-          result.failure = "FalseAuthoritativeSourceBoundary";
-          return result;
+      {
+        std::set<std::uint64_t> uniqueTopology;
+        for (const std::uint64_t topology : edge.sourceRouteTopology) {
+          const auto sourceEdge = exactSourceIncidence.find(topology);
+          if (!uniqueTopology.insert(topology).second ||
+              sourceEdge == exactSourceIncidence.end() ||
+              sourceEdge->second[1] >= 0) {
+            result.failure = "FalseAuthoritativeSourceBoundary";
+            return result;
+          }
         }
       }
       break;
     case geometry::SurfaceFrontBoundaryKind::HardRail:
-      if (!hasOpposite || edge.exterior || edge.sourceRouteTopology.empty()) {
+      if (!hasOpposite || edge.exterior ||
+          !interior_source_route_valid(edge)) {
         result.failure = "InvalidHardRailAuthority";
         return result;
       }
@@ -2144,7 +2420,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       return result;
     case geometry::SurfaceFrontBoundaryKind::PeriodicCut:
       if (!hasOpposite || edge.exterior || edge.periodicRelation < 0 ||
-          edge.sourceRouteTopology.empty()) {
+          !interior_source_route_valid(edge)) {
         result.failure = "InvalidPeriodicCutAuthority";
         return result;
       }
@@ -2155,6 +2431,25 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                   [](const int edge) { return edge < 0; })) {
     result.failure = "IncompleteAuthoritativePhaseFrontSides";
     return result;
+  }
+
+  for (const auto &relation : phaseFront.periodicHolonomies) {
+    const auto region =
+        topologyRegionById.find(relation.sourceTopologyRegion);
+    if (region == topologyRegionById.end() ||
+        relation.sourceComponent != region->second->sourceComponent ||
+        relation.sourceIsolationSheets.empty() ||
+        !std::is_sorted(relation.sourceIsolationSheets.begin(),
+                        relation.sourceIsolationSheets.end()) ||
+        !isolation_sheets_connected(relation.sourceTopologyRegion,
+                                    relation.sourceIsolationSheets) ||
+        (relation.sourceIsolationSheets.size() == 1U &&
+         relation.sourceSheet != relation.sourceIsolationSheets.front()) ||
+        (relation.sourceIsolationSheets.size() > 1U &&
+         relation.sourceSheet >= 0)) {
+      result.failure = "InvalidPeriodicRelationIsolationAuthority";
+      return result;
+    }
   }
 
   std::vector<char> consumedPeriodicRelations(
@@ -2213,11 +2508,42 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     if (first.boundaryKind ==
         geometry::SurfaceFrontBoundaryKind::OrdinaryInterior) {
       if (!lattice_equal(first.fromLattice, second.toLattice) ||
-          !lattice_equal(first.toLattice, second.fromLattice)) {
+          !lattice_equal(first.toLattice, second.fromLattice) ||
+          first.sourceComponent != second.sourceComponent ||
+          first.sourceTopologyRegion != second.sourceTopologyRegion) {
         result.failure = "InvalidOrdinaryFrontTransport";
         return result;
       }
       equivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
+      equivalence.sourceRouteTopology =
+          isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
+      const auto &secondSeams =
+          isolationSeamsByFrontEdge[static_cast<std::size_t>(secondIndex)];
+      equivalence.sourceRouteTopology.insert(
+          equivalence.sourceRouteTopology.end(), secondSeams.begin(),
+          secondSeams.end());
+      std::sort(equivalence.sourceRouteTopology.begin(),
+                equivalence.sourceRouteTopology.end());
+      equivalence.sourceRouteTopology.erase(
+          std::unique(equivalence.sourceRouteTopology.begin(),
+                      equivalence.sourceRouteTopology.end()),
+          equivalence.sourceRouteTopology.end());
+      const bool crossesSheets =
+          occurrences[static_cast<std::size_t>(firstFrom)].point.sheet !=
+              occurrences[static_cast<std::size_t>(secondTo)].point.sheet ||
+          occurrences[static_cast<std::size_t>(firstTo)].point.sheet !=
+              occurrences[static_cast<std::size_t>(secondFrom)].point.sheet;
+      if (crossesSheets && equivalence.sourceRouteTopology.empty()) {
+        result.failure = "MissingIsolationSeamEquivalenceAuthority";
+        return result;
+      }
+      for (const std::uint64_t seam : equivalence.sourceRouteTopology) {
+        if (isolationCertificateBySeam.count(
+                {first.sourceTopologyRegion, seam}) != 1U) {
+          result.failure = "InvalidIsolationSeamEquivalenceAuthority";
+          return result;
+        }
+      }
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::HardRail) {
       if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
@@ -2246,11 +2572,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       if (relation.sourceComponent != first.sourceComponent ||
           relation.sourceTopologyRegion != first.sourceTopologyRegion ||
           relation.latticeTranslation.squaredNorm() == 0 ||
-          relation.sourceRouteEdges.empty() ||
-          relation.cutSourceEdges.empty() ||
-          relation.sourceRouteEdges.size() !=
-              relation.sourceRouteTopology.size() ||
-          relation.cutSourceEdges.size() != relation.cutSourceTopology.size() ||
+          !exact_interior_route_valid(relation.sourceRouteEdges,
+                                      relation.sourceRouteTopology) ||
+          !exact_interior_route_valid(relation.cutSourceEdges,
+                                      relation.cutSourceTopology) ||
           canonical_route(first.sourceRouteTopology) !=
               canonical_route(relation.cutSourceTopology) ||
           canonical_route(second.sourceRouteTopology) !=
@@ -2318,6 +2643,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const auto &support =
         occurrences[static_cast<std::size_t>(members.front())].support;
     std::vector<std::array<std::int64_t, 7>> domainStates;
+    std::map<int, std::set<int>> sheetsByTopologyRegion;
     for (const int member : members) {
       const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
       if (occurrence.support != support) {
@@ -2330,6 +2656,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
            occurrence.lattice.latticeCoordinate.y(),
            occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
            occurrence.lattice.sourceChart});
+      sheetsByTopologyRegion[occurrence.topologyRegion].insert(
+          occurrence.point.sheet);
+    }
+    for (const auto &[regionId, sheetSet] : sheetsByTopologyRegion) {
+      const std::vector<int> sheets(sheetSet.begin(), sheetSet.end());
+      if (!isolation_sheets_connected(regionId, sheets)) {
+        result.failure = "DisconnectedQuotientIsolationAuthority";
+        return result;
+      }
     }
     std::sort(domainStates.begin(), domainStates.end());
     domainStates.erase(std::unique(domainStates.begin(), domainStates.end()),
@@ -2745,41 +3080,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
   }
 
-  const auto sourceEdgeIndices =
-      geometry::surface_cell_tracing_detail::edge_matching_indices(
-          exactSourceIncidence);
-  std::map<int, std::uint64_t> topologyBySourceEdge;
-  for (const auto &[topology, sourceEdge] : sourceEdgeIndices) {
-    topologyBySourceEdge[sourceEdge] = topology;
-  }
-  std::set<std::uint64_t> consumedTransitionTopology;
-  for (const auto &cell : phaseFront.cells) {
-    for (const auto &path : cell.boundaryPaths) {
-      for (const auto &segment : path) {
-        for (const int sourceEdge : segment.transitionSourceEdges) {
-          const auto topology = topologyBySourceEdge.find(sourceEdge);
-          if (topology == topologyBySourceEdge.end()) {
-            result.failure = "InvalidAuthoritativeTransitionSourceEdge";
-            return result;
-          }
-          consumedTransitionTopology.insert(topology->second);
-        }
-      }
-    }
-  }
-  std::size_t requiredIsolationSeams = 0U;
-  for (const auto &region : phaseFront.topologyRegions) {
-    requiredIsolationSeams += region.internalIsolationSeamTopology.size();
-    for (const std::uint64_t seam : region.internalIsolationSeamTopology) {
-      if (consumedTransitionTopology.count(seam) == 0U) {
-        result.failure = "UnconsumedAuthoritativeIsolationSeam";
-        return result;
-      }
-    }
-  }
-
   result.consumedTopologyRegions = consumedTopologyRegions.size();
-  result.consumedInternalIsolationSeams = requiredIsolationSeams;
+  result.consumedInternalIsolationSeams =
+      isolationCertificateBySeam.size();
   result.consumedPeriodicHolonomies = static_cast<std::size_t>(std::count(
       consumedPeriodicRelations.begin(), consumedPeriodicRelations.end(), 1));
   result.invalidCell = -1;
@@ -5809,10 +6112,20 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     completedSurfaceCellStages.push_back("tracing");
     if (retainedTraceNetwork.phaseFront.disposition ==
         geometry::SurfaceCellProducerDisposition::Rejected) {
+      if (!retainIntermediateGeometry) {
+        result.surfaceCellContext.traceNetwork =
+            geometry::SurfaceCellNetwork{};
+        result.surfaceCellContext.hasTraceNetwork = false;
+      }
       return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
                                 "tracing");
     }
     if (options.surfaceCells.injectFailureAfterStage == 3) {
+      if (!retainIntermediateGeometry) {
+        result.surfaceCellContext.traceNetwork =
+            geometry::SurfaceCellNetwork{};
+        result.surfaceCellContext.hasTraceNetwork = false;
+      }
       return fail_surface_cells(SurfaceCellFailureCode::InjectedStageFailure,
                                 "tracing");
     }

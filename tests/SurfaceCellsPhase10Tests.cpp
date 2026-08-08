@@ -834,6 +834,7 @@ TEST(SurfaceCellsPhase10,
                 directional::geometry::SurfaceFrontBoundaryKind::
                     GenuineSourceBoundary);
       EXPECT_FALSE(edge.sourceRouteTopology.empty());
+      EXPECT_TRUE(edge.sourceRouteEdges.empty());
     }
   }
   const auto materialized =
@@ -2075,6 +2076,7 @@ TEST(SurfaceCellsPhase10,
     ASSERT_GE(edge.oppositeEdge, 0);
     EXPECT_FALSE(edge.exterior);
     EXPECT_FALSE(edge.sourceRouteTopology.empty());
+    EXPECT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
     const auto &opposite = network.phaseFront.edges[static_cast<std::size_t>(
         edge.oppositeEdge)];
     EXPECT_EQ(opposite.oppositeEdge,
@@ -2150,12 +2152,42 @@ TEST(SurfaceCellsPhase10,
              network.phaseFront.failure.reason);
   ASSERT_EQ(1U, network.topologyRegions.size());
   EXPECT_FALSE(network.topologyRegions.front().internalIsolationSeamTopology.empty());
+  ASSERT_EQ(1U,
+            network.phaseFront.isolationSeamTransportCertificates.size());
+  const auto &certificate =
+      network.phaseFront.isolationSeamTransportCertificates.front();
+  EXPECT_EQ(network.topologyRegions.front().id,
+            certificate.sourceTopologyRegion);
+  EXPECT_EQ(network.topologyRegions.front().sourceComponent,
+            certificate.sourceComponent);
+  EXPECT_EQ(network.topologyRegions.front().internalIsolationSeamTopology.front(),
+            certificate.sourceEdgeTopology);
+  EXPECT_GE(certificate.sourceEdgeIndex, 0);
+  EXPECT_NE(certificate.firstIsolationSheet,
+            certificate.secondIsolationSheet);
+  EXPECT_EQ(0, (certificate.forwardQuarterTurn +
+                certificate.reverseQuarterTurn) % 4);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                isolation_seam_transport_certificate_hash(certificate),
+            certificate.structuralHash);
   bool sawCrossSheetScope = false;
   for (const auto &cell : network.phaseFront.cells) {
     sawCrossSheetScope |= cell.sourceIsolationSheets.size() > 1U;
     EXPECT_EQ(0, cell.sourceTopologyRegion);
   }
   EXPECT_TRUE(sawCrossSheetScope);
+  const auto materialized =
+      directional::pipeline::build_authoritative_phase_front_mesh(
+          vertices, faces, network.phaseFront, options.sourceFaceComponents,
+          options.sourceFaceSheets);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  EXPECT_EQ(network.phaseFront.isolationSeamTransportCertificates.size(),
+            materialized.consumedInternalIsolationSeams);
+  EXPECT_EQ(network.phaseFront.topologyRegions.size(),
+            materialized.consumedTopologyRegions);
+  EXPECT_EQ(1, materialized.connectedComponents);
+  EXPECT_EQ(1, materialized.boundaryLoopCount);
+  EXPECT_EQ(1, materialized.eulerCharacteristic);
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2818,25 +2850,36 @@ TEST(SurfaceCellsPhase10,
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.V, mesh.F, rawField, options);
+
+  EXPECT_GT(result.diagnostics.surfaceCellTopologyRegionCount, 0U);
+  EXPECT_GT(result.diagnostics.surfaceCellInternalIsolationSeamCount, 0U);
+  EXPECT_EQ(result.diagnostics.surfaceCellTopologyRegionCount,
+            result.diagnostics.surfaceCellConsumedTopologyRegionCount);
+  EXPECT_EQ(result.diagnostics.surfaceCellInternalIsolationSeamCount,
+            result.diagnostics.surfaceCellConsumedInternalIsolationSeamCount);
+  EXPECT_EQ(result.diagnostics.surfaceCellPeriodicHolonomies.size(),
+            result.diagnostics.surfaceCellConsumedPeriodicHolonomyCount);
+  EXPECT_EQ(1,
+            result.diagnostics.surfaceCellMaterializedConnectedComponentCount);
+  EXPECT_EQ(0, result.diagnostics.surfaceCellMaterializedBoundaryLoopCount);
+  EXPECT_EQ(0, result.diagnostics.surfaceCellMaterializedEulerCharacteristic);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ":"
+      << result.diagnostics.terminalFailureStage << " producer="
+      << result.diagnostics.surfaceCellFirstInvalidProducerStage << "/"
+      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+            result.diagnostics.surfaceCellOutputOrigin);
   ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
   const auto &network = result.surfaceCellContext.traceNetwork;
   const auto &phaseFront = network.phaseFront;
-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
-            phaseFront.failure.reason);
-  EXPECT_NE(directional::geometry::SurfaceCellProducerDisposition::NotApplicable,
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             phaseFront.disposition)
-      << "authoritative topology-region coverage must not leak partial NotApplicable";
-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
-                InvalidTopologyRegion,
-            phaseFront.failure.reason);
-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
-                InvalidTopologyRegionTransport,
-            phaseFront.failure.reason);
-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
-                InvalidBoundedDiskBoundaryTurn,
-            phaseFront.failure.reason)
-      << "a non-hard exact-adjacent isolation seam is internal producer topology, "
-         "not a bounded-disk exterior corner";
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             phaseFront.failure.reason);
+  EXPECT_TRUE(phaseFront.succeeded);
   ASSERT_FALSE(network.topologyRegions.empty());
   EXPECT_EQ(network.topologyRegions.size(),
             result.diagnostics.surfaceCellTopologyRegionCount);
@@ -2851,19 +2894,25 @@ TEST(SurfaceCellsPhase10,
     }
   }
   EXPECT_TRUE(sawMultiSheetRegionWithInternalSeam);
-  EXPECT_GT(result.diagnostics.surfaceCellInternalIsolationSeamCount, 0U);
+  EXPECT_EQ(result.diagnostics.surfaceCellInternalIsolationSeamCount,
+            phaseFront.isolationSeamTransportCertificates.size());
   EXPECT_EQ(result.diagnostics.surfaceCellTopologyRegionCount,
             result.diagnostics.surfaceCellTopologyRegionHashes.size());
   EXPECT_FALSE(phaseFront.periodicHolonomies.empty());
-  if (phaseFront.disposition ==
-      directional::geometry::SurfaceCellProducerDisposition::Rejected) {
-    EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::None,
-              phaseFront.failure.reason);
-  }
-  if (phaseFront.disposition ==
-      directional::geometry::SurfaceCellProducerDisposition::Produced) {
-    EXPECT_EQ(phaseFront.periodicHolonomies.size(),
-              result.diagnostics.surfaceCellPeriodicHolonomies.size());
+  EXPECT_EQ(phaseFront.periodicHolonomies.size(),
+            result.diagnostics.surfaceCellPeriodicHolonomies.size());
+  ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
+            result.outputVertexLineage.size());
+  ASSERT_EQ(static_cast<std::size_t>(result.faces.rows()),
+            result.outputQuadLineage.size());
+  EXPECT_GT(result.faces.rows(), 0);
+  EXPECT_EQ(4, result.faces.cols());
+  for (const auto &lineage : result.outputVertexLineage) {
+    EXPECT_TRUE(lineage.sourcePoint.valid());
+    EXPECT_FALSE(lineage.sourceTopologyRegions.empty());
+    EXPECT_FALSE(lineage.sourceIsolationSheets.empty());
+    EXPECT_FALSE(lineage.sourceCharts.empty());
+    EXPECT_TRUE(lineage.sourceSupportIdentity.valid);
   }
 }
 
@@ -2930,31 +2979,33 @@ TEST(SurfaceCellsPhase10,
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       mesh.V, mesh.F, rawField, options);
+  EXPECT_GT(result.diagnostics.surfaceCellTopologyRegionCount, 0U);
+  EXPECT_EQ(result.diagnostics.surfaceCellTopologyRegionCount,
+            result.diagnostics.surfaceCellConsumedTopologyRegionCount);
+  EXPECT_EQ(result.diagnostics.surfaceCellPeriodicHolonomies.size(),
+            result.diagnostics.surfaceCellConsumedPeriodicHolonomyCount);
+  EXPECT_EQ(1,
+            result.diagnostics.surfaceCellMaterializedConnectedComponentCount);
+  EXPECT_EQ(2, result.diagnostics.surfaceCellMaterializedBoundaryLoopCount);
+  EXPECT_EQ(0, result.diagnostics.surfaceCellMaterializedEulerCharacteristic);
+  EXPECT_FALSE(result.diagnostics.surfaceCellFallbackAttempted);
+  EXPECT_FALSE(result.diagnostics.surfaceCellSourceGridRecoveryUsed);
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ":"
+      << result.diagnostics.terminalFailureStage << " producer="
+      << result.diagnostics.surfaceCellFirstInvalidProducerStage << "/"
+      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
+  EXPECT_EQ(directional::SurfaceCellOutputOrigin::CompletedSurfaceCells,
+            result.diagnostics.surfaceCellOutputOrigin);
   ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
   const auto &network = result.surfaceCellContext.traceNetwork;
-  EXPECT_NE(directional::geometry::SurfaceCellProducerDisposition::NotApplicable,
-            network.phaseFront.disposition);
-  if (network.phaseFront.disposition ==
-      directional::geometry::SurfaceCellProducerDisposition::Produced) {
-    EXPECT_TRUE(!network.phaseFront.periodicHolonomies.empty());
-    EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
-  } else {
-    EXPECT_TRUE(network.phaseFront.failure.reason ==
-                    directional::geometry::SurfacePhaseFrontFailureReason::
-                        PeriodicHolonomyMismatch ||
-                network.phaseFront.failure.reason ==
-                    directional::geometry::SurfacePhaseFrontFailureReason::
-                        InvalidPeriodicChart ||
-                network.phaseFront.failure.reason ==
-                    directional::geometry::SurfacePhaseFrontFailureReason::
-                        InvalidPeriodicFrontPairing ||
-                network.phaseFront.failure.reason ==
-                    directional::geometry::SurfacePhaseFrontFailureReason::
-                        InvalidPeriodicRingCorrespondence ||
-                network.phaseFront.failure.reason ==
-                    directional::geometry::SurfacePhaseFrontFailureReason::
-                        AmbiguousPeriodicRingCorrespondence);
-  }
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  EXPECT_TRUE(network.phaseFront.succeeded);
+  EXPECT_FALSE(network.phaseFront.periodicHolonomies.empty());
+  EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
 }

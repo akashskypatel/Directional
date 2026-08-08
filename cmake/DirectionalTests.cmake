@@ -68,12 +68,14 @@ directional_configure_test_target(directional_compiled_api_tests)
 add_executable(
   directional_surface_cell_producer_tests
   src/bench/BenchmarkCases.cpp
+  src/bench/BenchmarkQuality.cpp
   tests/AdaptiveFeatureMapPhase11Tests.cpp
   tests/AdaptiveTargetSizePhase12Tests.cpp
   tests/BoundedMeshPreconditionerTests.cpp
   tests/CrossFieldTransferTests.cpp
   tests/RegularizedCurvaturePhase1Tests.cpp
   tests/SurfaceCellDesignAcceptanceTests.cpp
+  tests/SurfaceCellTransitionQuotientTests.cpp
   tests/SurfaceCellsPhase10Tests.cpp)
 directional_configure_test_target(directional_surface_cell_producer_tests)
 directional_copy_manifest_fixture(directional_surface_cell_producer_tests)

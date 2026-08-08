@@ -208,6 +208,60 @@ struct SurfaceTopologyRegion {
   std::vector<std::uint64_t> internalIsolationSeamTopology;
 };
 
+/**
+ * Reciprocal source-field transport across one retained local-isolation seam.
+ *
+ * Face identities are canonical sorted source-vertex triples so certificate
+ * identity does not depend on face-row or discovery order.  The two sheet and
+ * transport entries are aligned with those canonical face identities.
+ */
+struct SurfaceIsolationSeamTransportCertificate {
+  int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
+  std::uint64_t sourceEdgeTopology = 0;
+  int sourceEdgeIndex = -1;
+  std::array<int, 3> firstSourceFaceTopology{{-1, -1, -1}};
+  std::array<int, 3> secondSourceFaceTopology{{-1, -1, -1}};
+  int firstIsolationSheet = -1;
+  int secondIsolationSheet = -1;
+  int forwardQuarterTurn = 0;
+  int reverseQuarterTurn = 0;
+  std::uint64_t structuralHash = 0;
+
+  friend bool operator<(
+      const SurfaceIsolationSeamTransportCertificate &lhs,
+      const SurfaceIsolationSeamTransportCertificate &rhs) {
+    return std::tie(
+               lhs.sourceComponent, lhs.sourceTopologyRegion,
+               lhs.sourceEdgeTopology, lhs.sourceEdgeIndex,
+               lhs.firstSourceFaceTopology, lhs.secondSourceFaceTopology,
+               lhs.firstIsolationSheet, lhs.secondIsolationSheet,
+               lhs.forwardQuarterTurn, lhs.reverseQuarterTurn) <
+           std::tie(
+               rhs.sourceComponent, rhs.sourceTopologyRegion,
+               rhs.sourceEdgeTopology, rhs.sourceEdgeIndex,
+               rhs.firstSourceFaceTopology, rhs.secondSourceFaceTopology,
+               rhs.firstIsolationSheet, rhs.secondIsolationSheet,
+               rhs.forwardQuarterTurn, rhs.reverseQuarterTurn);
+  }
+
+  friend bool operator==(
+      const SurfaceIsolationSeamTransportCertificate &lhs,
+      const SurfaceIsolationSeamTransportCertificate &rhs) {
+    return lhs.sourceComponent == rhs.sourceComponent &&
+           lhs.sourceTopologyRegion == rhs.sourceTopologyRegion &&
+           lhs.sourceEdgeTopology == rhs.sourceEdgeTopology &&
+           lhs.sourceEdgeIndex == rhs.sourceEdgeIndex &&
+           lhs.firstSourceFaceTopology == rhs.firstSourceFaceTopology &&
+           lhs.secondSourceFaceTopology == rhs.secondSourceFaceTopology &&
+           lhs.firstIsolationSheet == rhs.firstIsolationSheet &&
+           lhs.secondIsolationSheet == rhs.secondIsolationSheet &&
+           lhs.forwardQuarterTurn == rhs.forwardQuarterTurn &&
+           lhs.reverseQuarterTurn == rhs.reverseQuarterTurn &&
+           lhs.structuralHash == rhs.structuralHash;
+  }
+};
+
 struct SourceTopologyRegions {
   bool valid = true;
   std::vector<int> regionByFace;
@@ -387,6 +441,7 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidFrontBoundaryAuthority = 46,
   UnsupportedEmbeddedReliefCut = 47,
   InvalidHardRailPairing = 48,
+  InvalidIsolationSeamTransportCertificate = 49,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -421,6 +476,8 @@ struct SurfacePhaseFrontResult {
   int gridV = 0;
   std::vector<int> sourceTopologyRegionByFace;
   std::vector<SurfaceTopologyRegion> topologyRegions;
+  std::vector<SurfaceIsolationSeamTransportCertificate>
+      isolationSeamTransportCertificates;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
   SurfacePhaseFrontFailure failure;
@@ -617,6 +674,9 @@ edge_faces(const Eigen::MatrixXi &faces);
 
 std::map<std::uint64_t, int>
 edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces);
+
+std::uint64_t isolation_seam_transport_certificate_hash(
+    const SurfaceIsolationSeamTransportCertificate &certificate);
 
 struct EdgeTransitionLookup {
   std::map<std::uint64_t, fields::CrossFieldEdgeTransition> byEdge;
