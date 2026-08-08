@@ -70,7 +70,7 @@ Failure injection currently forces `retainIntermediateGeometry` true internally 
 
 These are not included in the next narrow implementation slice.
 
-## Mandatory next turn
+## Historical canonical implementation turn (completed)
 
 **Code + Build only** under:
 
@@ -86,7 +86,7 @@ Allowed production/test files:
 
 CMake, fixtures, manifests, validators, benchmarks, completion/simplification, cross-field extraction, and unrelated tests remain unchanged. Compile/package only; no generated runtime command.
 
-## Next artifact acceptance
+## Historical canonical artifact acceptance plan (completed)
 
 The following immutable artifact-only turn must prove:
 
@@ -110,3 +110,15 @@ Exactly seven approved targets compiled in workflow run `31279574458` (`113/113`
 This does not complete G4 or establish runtime correctness. The mandatory next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Plan.md`. It must consume artifact `9028103772` unchanged, prove the focused canonical-index and retention contracts, preserve prior-green authority, and classify plane, multi-face seam, close sheets, cylinder, and torus in that order. Torus precedes sphere.
 
 Nonzero periodic `Z4` rotation, shared hard-rail scheduling, and multi-isolation lineage remain separate blockers unless the immutable artifact proves otherwise. PR #8 remains open, draft, and unmerged.
+
+## 2026-08-08 Canonical transition-index artifact-only result
+
+Artifact `9028103772`, implementation `edc14d38f862b94941b249f564050e2e1f8f5287`, is now the latest runtime authority. Exact preflight and post-runtime checks pass: outer SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a`, recursive manifest **48/48**, five executables, two libraries, 27 fixtures, exact source/dependency/workflow closure, and no rebuild or artifact substitution.
+
+Direct plane, multi-face seam, close sheets, and cylinder complete directly **3/3** each with strict-valid pure quads and no fallback/recovery. Seam retains semantic `99c8be7159d05c2f`. Torus advances past numeric route rejection, consumes all `4/8/4` region/seam/relation authority, and materializes one component / zero boundaries / Euler zero, then fails final validation **0/3** at `completion/output-validation / LocalSheetMismatch` with 74 issues.
+
+Focused/retained results are transition quotient **26/36**, topology/isolation/hard rail **10/10**, polygonal/curved/mixed **12/12**, periodic/torus/cylinder **5/7**, remaining Phase10 **37/39**, and direct G0-G3 **4/4**. Bounded suites are producer **150/164**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **372/396**.
+
+Three new canonical-domain tests use an off-route synthetic witness and never reach materialization. The face-row periodic test interprets compact route values as `mesh.EV` rows, and malformed holonomy uses a compact route value to select a full-`EF` CrossField transition. These are test-authority failures, not permission to weaken contracts.
+
+The mandatory next turn is Code + Build under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Plan.md`, limited to `tests/SurfaceCellTransitionQuotientTests.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. Torus local-chart validation, nonzero rotation, hard-rail scheduling, and multi-isolation lineage remain deferred production blockers. G4 stays active; sphere remains deferred; PR #8 stays open, draft, and unmerged.
