@@ -19,7 +19,6 @@ The candidate introduced first-class source-topology regions separate from local
 Subsequent exact artifact-only validation is now authoritative for runtime behavior. See:
 `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
 
-That validation proves topology-region/isolation-seam semantics **9/9** and advances exact torus beyond `InvalidBoundedDiskBoundaryTurn` to `InvalidAuthoritativePhaseFrontCell`, but also finds retained embedded-relief and close-sheets deterministic-identity regressions. Therefore the candidate did not establish accepted material-progress closure, the no-progress count is 2, and mandatory independent Design Review is required before another ordinary Code + Build.
+That validation proves topology-region/isolation-seam semantics **9/9** and advances exact torus beyond `InvalidBoundedDiskBoundaryTurn` to `InvalidAuthoritativePhaseFrontCell`. It also finds the retained embedded-relief regression and a close-sheets raw component-order difference. The candidate did not establish accepted material-progress closure and triggered mandatory independent review.
 
-Next authoritative plan:
-`.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`.
+Post-review transition: mandatory review completed **Approved with amendments**. Close-sheets raw order is not cross-version semantic authority; failure-path retention and synthetic direct topology are additional product defects. The next authoritative plan is `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`; see `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.

@@ -5,83 +5,85 @@ Last updated: 2026-08-08 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- G0 truthful authority: **passed but currently regressed in candidate artifact**.
+- G0 truthful authority: **passed baseline; embedded-relief behavior is regressed in current candidate artifact**.
 - G1 uniform authoritative phase-front plane: **passed**.
-- G2 cross-chart / close-sheet isolation: **passed but exact deterministic close-sheets identity regressed in candidate artifact**.
+- G2 cross-chart / close-sheet isolation: **passed**; raw component serialization order is not cross-version semantic authority.
 - G3 periodic closure / holonomy: **passed**.
 - G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **Test + Benchmark — source-topology-region / isolation-sheet decoupling artifact-only validation**.
-- Next turn: **mandatory independent Design Review** under the two-no-progress process guard.
-- Authoritative review plan: `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`.
-- Pending proposal for review only: `.agents/Directional/Gate_4_Topology_Region_Materialization_And_Regressions_Code_Build_Proposal.md` (`proposed_pending_review`, not authoritative).
+- Completed turn: **mandatory independent Review — Approved with amendments**.
+- Next turn: **Code + Build only**.
+- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`.
+- Review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, unmerged.
 
-## Current runtime-proven candidate — artifact 9022061741
+## Current runtime evidence — artifact 9022061741
 
-Exact artifact **`9022061741`** (`g4-topology-region-code-build`) is artifact-only runtime validated:
+Exact artifact **`9022061741`** remains the current immutable runtime observation:
 
 - implementation `3ca89ab55efff461b050fb12033174be70e7464f`;
 - cleanup `b188dd37f01181ece2173879fc7e0accf23d1bad`;
 - workflow run/job `31258107220 / 93104542559`;
 - ZIP SHA-256 `df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306`;
-- internal manifest SHA-256 `d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703`;
 - recursive checksums **48/48**;
-- no production/test/fixture/validator/benchmark/build edit or configure/compile/relink occurred during validation.
+- topology-region/isolation-seam **9/9**;
+- retained G0-G3 **16/17**;
+- producer **124/127**, completion/simplification **154/164**, validation **60/60**, API **8/8**.
 
-Runtime structural authority:
+No implementation or runtime claim was made during Review. The artifact remains evidence of the current state, not accepted G4 closure.
 
-- topology-region / isolation-seam semantics **9/9**;
-- polygonal boundary phase **5/5**;
-- non-torus curved-disk semantics **5/5**;
-- non-torus sheet coverage **2/2**;
-- G4 periodic relations **5/5**;
-- retained G0-G3 **16/17** because embedded-relief fail-closed behavior regressed.
+## Independent review disposition
 
-Direct deterministic results:
+Decision: **Approved with amendments**.
 
-- plane: 64 quads / 81 V, hash `730caeae49ec872c`, exact pass;
-- seam: 64 quads / 81 V, hash `5bdf34d7802e9fb0`, exact pass;
-- close sheets: 200 quads / 242 V / two components, strict-valid but hash **`aaec5574aa2e52f9`** instead of accepted `89b052762f52a5af` because component emission order reversed;
-- cylinder: 288 pure quads / 320 V, hash `32135be51d7a0a26`, one relation `r=0`, `t=(32,0)`, route 32, cut 4, exactly two genuine 32-edge exterior loops;
-- no passing direct case uses fallback or source-grid recovery.
+Retain:
 
-Bounded suites:
+- exact-source-adjacent `SurfaceTopologyRegion` as parent producer authority;
+- local isolation labels as proximity/capture safety authority;
+- exact reciprocal transport across internal isolation seams;
+- one accepted authoritative cell to one output quad;
+- full Z4/Z2 periodic relation authority.
 
-- producer **124/127**: historical sub-millisecond validator timing threshold, embedded-relief production regression, and torus test's over-coupled `hasTraceNetwork` assertion;
-- completion/simplification **154/164**, same historical ten failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **346/359**.
+Correct next:
 
-Detailed runtime report: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
+1. Treat embedded relief as internal cut/transport authority under a parent topology region; gate every relief traversal check by embedded state and preserve terminal `Rejected` behavior.
+2. Add explicit owning side, boundary/rail kind, source route, and periodic-relation ownership to phase-front connectivity.
+3. Replace global `(component,sheet,lattice)` vertex merging with an equivalence quotient over cell-corner occurrences induced only by reciprocal ordinary, hard-rail, and periodic pairs.
+4. Preserve scalar `SurfacePoint`; add complete topology-region/local-isolation/source-chart equivalence lineage.
+5. Compute connected components, boundary loops, manifoldness, and Euler characteristic from assembled quad incidence; remove direct-path constants.
+6. Retain trace-network context before materialization can fail when `retainIntermediateGeometry=true`.
+7. Add a component-order-independent exact semantic digest for cross-version output acceptance; keep raw hashes for same-artifact determinism.
 
-## Exact torus — architecture advances, materialization now blocks
+## Exact torus — current and required next state
 
-Three independent direct runs deterministically reach:
+Current deterministic observation:
 
-- phase-front producer disposition `Produced`;
-- first invalid stage `tracing/phase-front-materialization`;
-- first invalid reason **`InvalidAuthoritativePhaseFrontCell`**;
-- topology-region count **4**;
-- internal isolation-seam count **8**;
-- per-region Euler `[0,0,0,0]` and boundary loops `[2,2,2,2]`;
-- local-isolation cardinalities `[1,1,2,1]`, proving one annular topology region spans two local isolation sheets;
-- periodic relation count **4**;
+- phase-front `Produced`;
+- first invalid stage/reason `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`;
+- four annular topology regions;
+- eight internal isolation seams;
+- local-isolation cardinalities `[1,1,2,1]`;
+- four periodic relations;
 - no fallback/recovery or partial output.
 
-This proves the previous artificial bounded-disk isolation-seam defect is removed. The deeper materializer still requires one `sourceSheet` per cell: multi-isolation cells normalize to `sourceSheet=-1` and fail before trace-network context retention.
+Required following Test + Benchmark result after the authorized Code + Build:
 
-## Retained-authority regressions blocking accepted progress
+- direct success in at least three independent processes;
+- strict-valid pure quads, complete lineage, all four regions/relations consumed;
+- one connected component, zero boundary loops, Euler characteristic zero;
+- no predicted/golden torus vertex or quad count;
+- no fallback or source-grid recovery.
 
-1. **Embedded relief:** topology-region splitting can leave all local producers `NotApplicable`; global aggregation then permits generic tracing instead of the established fail-closed `Rejected` behavior when embedded relief barriers block authoritative transport.
-2. **Close sheets:** output geometry and face-geometry multisets remain identical, but region work is sorted by structural hash before canonical source geometry, reversing component order and violating the accepted exact deterministic hash.
-3. **Torus contract test:** its first `ASSERT_TRUE(hasTraceNetwork)` is over-coupled to intermediate-retention timing; public diagnostics already prove its intended topology/seam contract. Any correction requires independent review and must preserve or strengthen the actual contract.
+Prescribed sphere remains deferred until this torus slice closes.
 
-## Process guard
+## Close-sheets acceptance correction
 
-Accepted material progress required the new architecture **and** exact retained authority. Because the candidate regresses prior accepted behavior, the no-progress Code + Build count becomes **2**.
+The raw hashes `89b052762f52a5af` and `aaec5574aa2e52f9` differ only by connected-component emission order. Both are deterministic on their own artifacts; geometry, connectivity, and source separation are equivalent. Neither is a cross-version semantic golden.
 
-**Do not start another ordinary Code + Build.** The next turn is the mandatory independent Design Review defined by `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`. The reviewer must independently decide whether to retain/amend the topology-region architecture, replace it, or require bounded instrumentation/evidence before implementation.
+The authorized Code + Build adds a canonical component-order-independent connectivity/provenance digest. The following artifact-only turn must compare that digest across accepted/candidate artifacts and separately require 3/3 repeatability of each candidate raw hash.
 
-Prescribed sphere remains deferred until exact torus reaches direct strict-valid production. G5/G6, historical completion/simplification repair, validator-threshold changes, fallback/recovery, and unrelated optimization remain deferred.
+## Turn boundary
+
+The next Code + Build may edit only the bounded producer/materializer/lineage/diagnostic/hash/tests scope, configure, compile, link the seven approved targets, and package exact evidence with `runtimeExecution=false`. It may not execute generated Directional binaries, tests, benchmarks, `ctest`/discovery, CLI/GUI, help/list, or custom-input commands.
+
+Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes. PR #8 remains open, draft, unmerged.

@@ -1,6 +1,6 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v25",
-  "updatedUtc": "2026-08-08T13:17:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v26",
+  "updatedUtc": "2026-08-08T14:44:03Z",
   "directionControl": {
     "passedGatesBaseline": [
       "G0 truthful authority",
@@ -9,14 +9,17 @@
       "G3 periodic closure/holonomy"
     ],
     "activeGate": "G4 topology-distinct completion and singularities",
-    "gateState": "topology-region architecture runtime-live and torus advanced to phase-front materialization, but retained relief and close-sheets deterministic authority regressed",
-    "nextTurn": "Mandatory independent Design Review",
-    "nextPlan": ".agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md",
-    "pendingProposal": ".agents/Directional/Gate_4_Topology_Region_Materialization_And_Regressions_Code_Build_Proposal.md",
-    "pendingProposalStatus": "proposed_pending_review",
+    "gateState": "mandatory review approved topology regions with amendments; transition-quotient materialization, retained relief, computed topology, and failure-path retention are next",
+    "nextTurn": "Code + Build",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md",
+    "reviewReport": ".agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md",
+    "reviewDecision": "Approved with amendments",
+    "reviewPlanningCommit": "PLANNING_COMMIT_RECORDED_BY_REVIEW_TRANSITION",
+    "supersededProposalStatus": "superseded_and_removed_by_mandatory_review",
     "noProgressCodeBuildCountSinceLastAcceptedMaterialProgress": 2,
-    "mandatoryReviewRequired": true,
-    "ordinaryCodeBuildAuthorized": false,
+    "mandatoryReviewRequired": false,
+    "mandatoryReviewCompleted": true,
+    "ordinaryCodeBuildAuthorized": true,
     "configuredOptionalReviewPolicy": "never"
   },
   "runtimeAuthority": {
@@ -76,8 +79,9 @@
       "connectedComponents": 2,
       "acceptedBaselineHash": "89b052762f52a5af",
       "candidateHash": "aaec5574aa2e52f9",
-      "hashAccepted": false,
+      "rawHashIsCrossVersionSemanticGate": false,
       "observedDifference": "component emission order reversed; vertex and face-geometry multisets unchanged",
+      "reviewDisposition": "semantic behavior accepted; canonical component-order-independent connectivity/provenance digest required before cross-version hash acceptance",
       "deterministic": "3/3",
       "fallback": false,
       "internalWallSeconds": [2.956799, 2.990175, 3.014684],
@@ -145,7 +149,7 @@
       },
       "architectureProgress": true,
       "acceptedMaterialProgress": false,
-      "materializationDiagnosis": "multi-isolation topology-region cells normalize to sourceSheet=-1 while authoritative materialization still requires one sourceSheet and keys lattice/periodic identity by component+sheet"
+      "materializationDiagnosis": "multi-isolation cells normalize to sourceSheet=-1, but the deeper contract defect is that output equivalence is keyed by component+sheet+lattice and position instead of explicit reciprocal ordinary/rail/periodic cell-corner connectivity"
     },
     "spherePrescribed": {
       "observedOnCurrentArtifact": false,
@@ -158,12 +162,20 @@
       "behavior": "topology-region splitting leaves unsupported subregions NotApplicable and permits generic tracing instead of terminal Rejected"
     },
     "closeSheetsDeterminism": {
-      "classification": "accepted exact-output identity regression pending mandatory review",
-      "behavior": "region worklist structural-hash-first ordering reverses two output components"
+      "classification": "invalid cross-version raw-hash baseline assumption",
+      "behavior": "region worklist ordering reverses two output components while semantic geometry/topology/source separation remain equal; raw hashes remain same-artifact repeatability diagnostics"
     },
     "torusContractTest": {
-      "classification": "incorrect/over-coupled expectation pending mandatory review",
-      "behavior": "ASSERT_TRUE(hasTraceNetwork) aborts before public topology-region diagnostics because materialization fails before trace-network context retention"
+      "classification": "valid retention expectation with weak fatal-assertion ordering",
+      "behavior": "public retention documentation requires trace context, but the pipeline returns before retention and the first fatal assertion masks topology-region diagnostics"
+    },
+    "phaseFrontMaterialization": {
+      "classification": "blocking producer-consumer contract mismatch",
+      "behavior": "single-sheet rectangular lattice/position key cannot consume multi-isolation, overlapping-chart, full Z4/Z2, exact hard-rail, or multi-relation authority"
+    },
+    "directCompletionTopology": {
+      "classification": "synthetic topology metadata defect",
+      "behavior": "direct phase-front completion hard-codes connectedComponents=1 and eulerCharacteristic=1 instead of deriving incidence"
     }
   },
   "defaultSuites": {
@@ -178,7 +190,11 @@
     "topologyRegionArchitectureRuntimeValidated": true,
     "acceptedMaterialProgress": false,
     "mandatoryDesignReviewActivated": true,
-    "ordinaryCodeBuildBlocked": true,
-    "nextTurn": "Mandatory independent Design Review"
+    "mandatoryDesignReviewCompleted": true,
+    "reviewDecision": "Approved with amendments",
+    "ordinaryCodeBuildBlocked": false,
+    "nextTurn": "Code + Build",
+    "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md",
+    "followingTurn": "Artifact-only Test + Benchmark"
   }
 }

@@ -26,27 +26,19 @@ G3 is formally closed.
 
 ## Immediate G4 objective
 
-Exact torus is the earliest structural G4 failure:
+Artifact `9022061741`, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, advances exact torus to four annular topology regions, eight internal isolation seams, four periodic relations, and phase-front `Produced`. The current first invalid stage is `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell` because one region spans two local isolation sheets.
 
-- connected closed genus-one source, Euler characteristic 0;
-- producer `Rejected` at `tracing/phase-front`;
-- typed reason `InvalidPeriodicTopology`;
-- zero traces/output;
-- no fallback/recovery;
-- one periodic relation is already retained in partial diagnostics.
-
-Source inspection shows `SurfacePhaseFrontResult` owns one scalar `SurfacePeriodicHolonomy`; aggregation rejects any second enabled local periodic relation and hashing/diagnostics/materialization likewise consume only one relation.
-
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md`.
+Mandatory independent review is complete **Approved with amendments**. Execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`.
 
 Priority:
 
-1. replace singular result-level periodic authority with a canonical collection of source-topology/reciprocal-transport periodic relations;
-2. canonicalize equivalent/reversed descriptions and reject conflicting/ambiguous/dependent authority without discovery-order selection;
-3. make every retained relation live in hashing, diagnostics, provenance, and exact lattice quotient materialization;
-4. preserve G2 source-sheet isolation and all G3 annulus behavior;
-5. compile/package the seven approved targets without executing generated project binaries;
-6. next artifact-only turn must retain **17/17** G3 contracts and prove exact torus no longer rejects merely because a second compatible relation exists.
+1. retain parent source-topology regions while moving embedded relief to internal cut/transport authority and restoring terminal/guidance semantics;
+2. expose owning side, rail/boundary kind, exact source route, and explicit periodic relation on phase-front pairs;
+3. replace sheet/lattice/position merging with an explicit equivalence quotient over cell-corner occurrences induced by reciprocal ordinary, rail, and periodic connectivity;
+4. preserve complete chart/local-isolation/topology-region lineage while keeping scalar `SurfacePoint`;
+5. compute manifold/components/boundary/Euler facts from incidence and honor failure-path intermediate retention;
+6. add a component-order-independent semantic digest while retaining raw same-artifact determinism;
+7. compile/package the seven approved targets without project runtime; the following artifact-only turn must restore **17/17** retained contracts and produce a connected, closed, Euler-zero, strict-valid direct torus.
 
 ## Later G4 singularity objective
 

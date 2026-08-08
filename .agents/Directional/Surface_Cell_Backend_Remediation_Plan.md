@@ -4,9 +4,9 @@
 
 G0-G3 are closed. **G4 topology-distinct completion and singularities is active.**
 
-Current tested authority: artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
+Current tested authority: artifact `9022061741`, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, topology-region/isolation-seam semantics **9/9**. Exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations and then fails at `InvalidAuthoritativePhaseFrontCell`.
 
-G3 closure is complete: focused/retained contracts 17/17; plane/seam/close sheets/cylinder direct strict-valid deterministic; cylinder periodic `r=0`, `t=(32,0)`, route 32, cut 4, 288 quads / 320 vertices, validation failures 0, no fallback/recovery.
+G3 closure remains complete. The current candidate is **16/17** only because embedded-relief terminal behavior regressed. Plane/seam/close sheets/cylinder remain direct strict-valid deterministic; close-sheets raw component order differs but semantic geometry/topology/source separation is unchanged.
 
 ## Proven producer foundation
 
@@ -25,34 +25,30 @@ Retain without redesign:
 - direct one-cell-to-one-quad materialization;
 - strict source-authoritative validation.
 
-## G4-A — closed genus-one / multiple periodic relations
+## G4-A — closed genus-one / transition-quotient extraction
 
-Exact torus runtime on artifact `9013161456`:
+Exact torus runtime on artifact `9022061741`:
 
-- source topology: connected, closed, genus one, 72 V / 144 triangles / Euler characteristic 0;
-- producer `Rejected`;
-- first invalid `tracing/phase-front / InvalidPeriodicTopology`;
-- zero traces/arrangement/completion/output;
+- source topology: connected, closed, genus one, Euler characteristic 0;
+- producer phase-front `Produced`;
+- four annular topology regions, eight internal isolation seams, one region spanning two local isolation sheets, four periodic relations;
+- first invalid `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`;
+- zero completion/output;
 - no fallback/recovery;
-- partial diagnostics already retain one periodic relation `r=0`, `t=(24,0)`, route 24, cut 2.
+- compatibility diagnostics retain `r=0`, `t=(24,0)`, route 24, cut 2.
 
-Source diagnosis:
-
-- `SurfacePhaseFrontResult` has one scalar `SurfacePeriodicHolonomy periodicHolonomy`;
-- authoritative sheet aggregation rejects a second enabled local periodic relation solely because one relation is already present;
-- structural hashing, diagnostics, and phase-front materialization are also singular-relation consumers.
-
-This is a first-class representation defect, not a reason to bypass topology validation.
+Review diagnosis: multi-relation representation is now live, but direct extraction still assumes one local sheet, a rectangular positive-U periodic grid, and global lattice-coordinate identity. Equal lattice coordinates do not establish output vertex identity when charts overlap. Front edges also lack exact owning-side/rail/relation state, and direct completion hard-codes topology metadata.
 
 Required remediation:
 
-1. replace the singular result-level relation with deterministic multi-relation periodic authority;
-2. retain source component/sheet, reciprocal route/cut, Z4 rotation, and integral Z2 translation per relation;
-3. canonicalize equivalent/reversed descriptions from source topology/transport;
-4. reject conflicting or genuinely ambiguous/dependent relation authority with typed reasons;
-5. never choose by source numeric ID alone, discovery order, count/frequency, arbitrary subset, or Euclidean proximity;
-6. consume every retained relation in structural hashing, diagnostics, provenance, front pairing, and exact lattice quotient materialization;
-7. preserve G2 sheet isolation and the exact G3 single-annulus result.
+1. retain topology regions and internal isolation seams;
+2. model embedded relief internally and audit all embedded-flag checks;
+3. expose explicit cell-side/rail/source-route/periodic relation ownership;
+4. build the output as an equivalence quotient over explicit cell-corner occurrences using reciprocal ordinary, rail, and full Z4/Z2 periodic connectivity;
+5. retain all exact charts/local sheets/topology region in lineage;
+6. derive output topology from incidence and preserve trace context on requested failure paths;
+7. consume every retained relation and preserve G2 isolation/G3 annulus behavior;
+8. use a canonical semantic digest, not raw component order, for cross-version close-sheets equivalence.
 
 The first G4 slice counts as material progress when this missing contract is live and consumed and the exact torus no longer rejects merely because a second compatible relation exists. Direct strict-valid torus output is preferred; a deeper truthful invariant may become the next G4 slice.
 
@@ -74,14 +70,14 @@ Do not repair the ten historical completion/simplification failures merely becau
 
 ## Required verification sequence
 
-Next Code + Build: execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` and compile/package seven approved targets without project runtime execution.
+Next Code + Build: execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md` and compile/package seven approved targets without project runtime execution.
 
 Following artifact-only validation:
 
 1. verify exact artifact/source/checksum/build boundary;
-2. rerun all 17 G0-G3 focused/retained contracts;
+2. restore and rerun all 17 G0-G3 focused/retained contracts;
 3. rerun plane/seam/close sheets/cylinder direct determinism/quality as required;
-4. run exact torus and verify new periodic-relation authority is deterministic and consumed;
+4. run exact torus in three independent processes and require direct strict-valid one-component/zero-boundary/Euler-zero output with every region/relation consumed;
 5. reject any ID/order/count/frequency/proximity shortcut;
 6. preserve no-fallback/no-recovery semantics.
 

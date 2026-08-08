@@ -15,7 +15,7 @@ Topology/singularity fixtures such as torus and the prescribed sphere are additi
 
 Both use generated smooth fields through production extraction. Replacing, simplifying, bypassing, or special-casing either fixture is prohibited.
 
-## Current runtime authority and mandatory review state
+## Current runtime authority and review disposition
 
 Exact artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is artifact-only runtime validated.
 
@@ -43,7 +43,7 @@ Bounded suites: producer **124/127**, completion/simplification **154/164**, val
 Detailed runtime authority:
 `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
 
-Because accepted retained authority regressed, the two-no-progress process guard is active. **No ordinary Code + Build is authorized before mandatory independent Design Review.** Review plan: `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`.
+Mandatory independent review is complete with decision **Approved with amendments**. The next turn is Code + Build only under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`; the mandatory following turn is artifact-only Test + Benchmark.
 
 ## Producer-authority contracts
 
@@ -68,7 +68,9 @@ Mandatory behavior:
 
 ### Producer topology region
 
-A topology region is connected only through exact source adjacency and is split by genuine source boundaries, hard features, or other review-approved explicit topological/barrier authority. Euler characteristic, genuine boundary-loop classification, disk/annulus applicability, region ownership, and exact-once coverage are evaluated on this region.
+A topology region is connected only through exact source adjacency and is split by genuine source boundaries, hard features, different source components, or equivalent explicit parent-chart authority. Euler characteristic, genuine boundary-loop classification, disk/annulus applicability, region ownership, and exact-once coverage are evaluated on this region.
+
+Embedded relief is internal cut/transport authority beneath the parent topology region. It may create explicit child producer domains, but it may not change parent Euler/boundary facts or turn all unsupported children into parent `NotApplicable`. Once an applicable producer consumes the embedded barrier, unsupported coverage is terminal `Rejected`. Non-embedded relief remains guidance on shared-edge and source-vertex-fan paths.
 
 ### Local isolation sheet
 
@@ -85,32 +87,41 @@ Required regressions include:
 - hard-feature boundaries remain topology boundaries;
 - spatially close but source-disconnected sheets/components remain isolated;
 - exact-once aggregation across regions while preserving local-isolation provenance.
+- embedded relief preserves parent topology facts and remains terminal once consumed;
+- non-embedded relief does not block an ordered source-vertex fan;
+- non-source-boundary hard rails stitch exact counterpart output sides while cells do not cross the rail.
 
 Do not union local labels by counts, IDs, frequency, discovery order, topology score, boundary length, proximity, or arbitrary subset search.
 
-## Multi-isolation materialization contract — pending mandatory review
+## Transition-quotient materialization contract — review approved
 
-Runtime evidence proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but current materialization still requires one representative `sourceSheet` and keys lattice/periodic identity by `(component, sheet, lattice)`.
+Runtime evidence proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but current materialization still requires one representative `sourceSheet` and keys identity by `(component, sheet, lattice)` plus a position check.
 
-The mandatory reviewer must decide the complete public contract before implementation. Any approved solution must:
+Equal integer coordinates are not output vertex identity because charts may overlap. Approved tests must require:
 
-- use source-topology-region authority for phase/lattice/periodic ownership when one region spans multiple isolation labels;
-- retain actual local-isolation provenance on exact source corners/lineage rather than erasing or arbitrarily selecting one sheet;
-- prohibit world-space welding or proximity-based cross-sheet identity;
-- keep true hard/source boundaries nontraversable;
+- four explicit occurrences per cell and equivalence only through reciprocal ordinary front pairs, exact hard-rail pairs, or an explicitly owned periodic `R^r p + t` relation;
+- owning cell side, rail/boundary kind, exact route, and periodic relation are first-class—never inferred from order/count/position;
+- equal `(region,u,v)` occurrences without reciprocal connectivity remain distinct;
+- actual local-isolation/source-chart provenance is retained on lineage rather than erased or selected;
+- scalar `SurfacePoint` remains one exact chart after intrinsic source-support compatibility is proven;
+- cells cannot cross hard rails, exact rail counterparts stitch, and genuine source boundaries alone remain exterior;
+- every retained periodic relation is explicitly consumed;
+- connected components, boundary loops, manifoldness, and Euler characteristic are computed from output incidence;
 - preserve one authoritative cell to one output quad and strict validation;
 - retain cylinder periodic quotient semantics exactly.
 
-## Deterministic output identity — pending mandatory review
+Counterfactual coverage must reject a representative-sheet substitution, unconditional topology-region lattice merge, Euclidean seam weld, first-relation selection, missing/ambiguous rail counterpart, unconsumed relation, repeated cell corner, and synthetic output topology.
 
-Accepted direct hashes are currently:
+## Deterministic output identity — review approved
+
+Accepted same-artifact raw-hash observations are:
 
 - plane `730caeae49ec872c`;
 - seam `5bdf34d7802e9fb0`;
-- close sheets `89b052762f52a5af`;
+- close sheets accepted artifact `89b052762f52a5af`, candidate artifact `aaec5574aa2e52f9`;
 - cylinder `32135be51d7a0a26`.
 
-Artifact `9022061741` changes only close-sheets component emission order and therefore the raw output hash. **Do not update the baseline merely because the candidate differs.** The mandatory reviewer must decide whether exact component ordering is part of the deterministic product contract or whether the acceptance identity should instead be canonicalized independently of component order. Either decision requires independent contract justification and corresponding future tests.
+Artifact `9022061741` changes only close-sheets component emission order. Review determines that neither raw value is a cross-version semantic golden. Keep raw hashing for 3/3 same-artifact repeatability and add a canonical component-order-independent digest over exact connectivity plus source-authoritative lineage. Swapping output row/component order must preserve the semantic digest; changing connectivity, source support, winding, or component separation must change it. Do not restore a raw hash by source-ID ordering and do not accept a new raw golden merely because it differs.
 
 ## G4 polygonal boundary-phase contract
 
@@ -126,11 +137,18 @@ Retain the validated behavior:
 
 A changed error name is not progress by itself; real gate progress requires first-class state to be constructed and consumed.
 
-## Exact torus contract test scope — pending mandatory review
+## Exact torus and failure-path retention contracts — review approved
 
-`ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` currently aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior.
+`ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` currently aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior, and the public `retainIntermediateGeometry` documentation makes the retention expectation valid.
 
-The mandatory reviewer must determine whether `retainIntermediateGeometry` guarantees trace-network retention on this failure path. If not, future correction should assert the intended public topology/seam contract and separately test intermediate-retention semantics if needed. Assertions may not be weakened simply to obtain a pass.
+Fix production retention before a materialization failure, then separate the assertions:
+
+- the torus topology test checks public region/seam diagnostics before any fatal context dereference and, after the quotient change, requires direct strict-valid success;
+- a focused deterministic materialization-failure test checks trace context is retained iff requested;
+- no permissive torus `Rejected` branch remains once the quotient implementation is compiled;
+- following artifact-only acceptance requires one component, zero boundary loops, Euler zero, full region/relation consumption, and no predicted output count.
+
+Assertions may not be weakened merely to obtain a pass.
 
 ## G3 periodic invariant
 
@@ -167,7 +185,7 @@ Current artifact `9022061741` bounded totals:
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is mandatory Review, not Code + Build.
+The current next turn is the review-approved Code + Build; its following turn is immutable artifact-only Test + Benchmark.
 
 ## Validity and prohibitions
 

@@ -163,10 +163,10 @@ The architecture moved the torus to a genuinely deeper invariant, but the contro
 
 Prescribed sphere remains deferred because torus does not reach direct strict-valid production. G5/G6, historical completion/simplification repair, validator threshold changes, fallback/recovery, and unrelated optimization remain deferred.
 
-## Next turn
+## Post-review transition
 
-Next turn is **mandatory independent Design Review**, not ordinary Code + Build.
+Mandatory independent review completed **Approved with amendments**. The runtime observations in this report remain unchanged. Review retains the topology-region architecture, classifies close-sheets raw component order as a non-semantic serialization difference, confirms failure-path trace retention is a public contract, and replaces lattice-key materialization with an explicit transition-aware cell-corner quotient.
 
-Use `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`.
+Review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
 
-A proposed implementation plan is recorded separately as `Gate_4_Topology_Region_Materialization_And_Regressions_Code_Build_Proposal.md` with status `proposed_pending_review`. The reviewer must independently inspect the exact artifact evidence, source diff, relief-barrier regression, close-sheets ordering regression, torus materializer failure, and torus test expectation before approving, amending, or replacing that proposal.
+Next authoritative turn: **Code + Build only** under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`.
