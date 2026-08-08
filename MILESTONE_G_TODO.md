@@ -6,7 +6,7 @@ Last updated: 2026-08-08 UTC
 
 G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 cylinder / periodic holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## G3 closure evidence
+## G3 runtime closure authority
 
 Artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
 
@@ -23,38 +23,59 @@ Artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f
 
 Bounded producer is **100/101**, with only the known scheduler/environment-sensitive validator-overhead performance test failing. Completion/simplification remains **154/164**, validation **60/60**, compiled API **8/8**. Direct gate authority outranks those aggregates.
 
-Local evidence archive: `directional-g3-field-correspondence-witness-tb-evidence.tar.gz`, SHA-256 `cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8`.
+G3 is formally closed. This remains the latest runtime-proven authority until the new G4 artifact is executed.
 
-G3 is formally closed. The no-progress stop rule is not triggered.
+## G4 Code + Build completed — compile authority only
 
-## G4 first structural blocker — torus
+Exact compile artifact **`9014730437`** (`g4-holonomy-basis-code-build`) was produced by workflow run `31233594490`, job `93042009574`.
 
-The exact torus fixture is connected, closed, genus one: 72 vertices, 144 triangles, 216 edges, no boundary, Euler characteristic 0.
+Source authority:
 
-Artifact `9013161456` reports:
+- primary implementation `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`;
+- final compile-source commit `6e754bdd64482582d39e71184805fbb053c99f86`;
+- build payload cleanup `8304ba30b0f85bc69deebbf55922f05846d2d5b2`.
 
+Build evidence:
+
+- seven approved Release/static/Ninja targets compiled/linked **111/111**;
+- workflow artifact digest `sha256:14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
+- internal `SHA256SUMS` digest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
+- packaged checksum verification **46/46**;
+- 47 package files, including five executables, two static libraries, and 27 fixtures;
+- log artifact `9014730651`;
+- artifact metadata and workflow boundary record `runtimeExecution=false`.
+
+The implementation replaces the result-level singular `periodicHolonomy` authority with a canonical collection of periodic relations and makes the collection live in structural hashing, diagnostics, benchmark JSON, and component/sheet-aware periodic materialization. Canonical source-topology route/cut signatures support equivalent/reversed relation normalization. Conflicting authority and unresolved same-sheet basis authority fail closed with typed reasons instead of choosing by order/ID/count/frequency/proximity.
+
+The successful build required one surgical compile correction: add the missing `std::vector<std::uint64_t>` structural-hash overload. No runtime semantics were changed by that compile fix.
+
+Detailed record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Report.md`.
+
+## Active G4 runtime blocker — exact torus
+
+The old G3 artifact's exact torus observation remains the baseline:
+
+- connected closed genus one, 72 V / 144 triangles / 216 edges / Euler characteristic 0 / no boundary;
 - producer `Rejected`;
 - first invalid `tracing/phase-front / InvalidPeriodicTopology`;
-- terminal `NotProductionReady:tracing`;
 - zero traces/arrangement/completion/output;
 - no fallback/recovery;
-- one already-retained periodic relation in partial diagnostics: `r=0`, `t=(24,0)`, route 24, cut 2.
+- one partial relation `r=0`, `t=(24,0)`, route 24, cut 2 before the scalar representation rejected another local relation.
 
-Exact source inspection identifies the immediate representation defect: `SurfacePhaseFrontResult` stores only one `SurfacePeriodicHolonomy periodicHolonomy`. During authoritative sheet aggregation, a second enabled local relation is rejected solely because the result already contains one relation. Structural hashing, diagnostics, and phase-front materialization likewise consume only that singular relation.
+Artifact `9014730437` must now be tested artifact-only. Material progress requires:
 
-Required next contract:
+1. canonical relation semantic regressions pass;
+2. all 17 G0-G3 focused contracts remain passing;
+3. direct plane/seam/close-sheets/cylinder remain strict-valid and deterministic with their G3 hashes;
+4. torus no longer rejects solely because a second compatible relation exists;
+5. every retained relation is demonstrably live in diagnostics/structural/materialization authority;
+6. no fallback/recovery and no prohibited ownership heuristic is used.
 
-1. represent multiple compatible periodic relations as first-class authority;
-2. canonicalize/equate them from source topology and reciprocal field transport, not discovery order/ID/count/frequency/proximity;
-3. fail closed on conflicting, dependent-ambiguous, or nonreciprocal relation authority;
-4. make every retained relation live in structural hashing, diagnostics, provenance, and exact lattice quotient materialization;
-5. preserve the single-relation annulus behavior and all G0-G3 regressions.
-
-The exact torus must at minimum stop rejecting merely because a second compatible periodic relation exists. Direct strict-valid torus production is the preferred topology-closure result; a deeper truthful failure after the new authority is live/consumed remains material progress for the first G4 slice.
+Preferred outcome is direct strict-valid torus production. A deeper truthful failure is acceptable only if the multi-relation authority is retained and consumed and the new earliest failing producer contract is precisely identified.
 
 ## Later G4 singularity observation
 
-The prescribed sphere currently reaches completion rather than tracing:
+The prescribed sphere remains deferred until the torus topology slice is classified. Previous runtime authority:
 
 - producer `NotApplicable`;
 - 766 traces;
@@ -63,10 +84,10 @@ The prescribed sphere currently reaches completion rather than tracing:
 - `BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68`;
 - no fallback/recovery.
 
-Do not preempt the earlier torus topology contract with historical completion repairs. Return to this singularity case after the torus slice is structurally closed.
+Do not preempt the earlier torus topology contract with historical completion repairs.
 
 ## Next turn
 
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` as **Code + Build only**. Compile/package the seven approved targets and execute no generated Directional binary.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact `9014730437`. No source/test/fixture/validator/benchmark/build edit, configure, compile, or relink is permitted.
 
 Review policy remains `never`. Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
