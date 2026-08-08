@@ -185,6 +185,25 @@ enum class SurfaceFrontEventKind : int {
   PeriodicFrontMerge = 5,
 };
 
+/** Exact source-adjacent producer region, independent of proximity-isolation sheets. */
+struct SurfaceTopologyRegion {
+  int id = -1;
+  int sourceComponent = -1;
+  int eulerCharacteristic = 0;
+  int boundaryLoopCount = 0;
+  std::uint64_t structuralHash = 0;
+  std::vector<int> sourceFaces;
+  std::vector<int> isolationSheets;
+  std::vector<std::uint64_t> boundaryEdgeTopology;
+  std::vector<std::uint64_t> internalIsolationSeamTopology;
+};
+
+struct SourceTopologyRegions {
+  bool valid = true;
+  std::vector<int> regionByFace;
+  std::vector<SurfaceTopologyRegion> regions;
+};
+
 struct SurfaceFrontEdge {
   SurfaceTracePoint from;
   SurfaceTracePoint to;
@@ -197,7 +216,9 @@ struct SurfaceFrontEdge {
   int unfilledSide = 1;
   bool exterior = false;
   int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
   int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
 };
 
 struct SurfaceFrontEvent {
@@ -209,7 +230,9 @@ struct SurfaceFrontEvent {
 /** Exact quotient relation between the two copies of an intrinsic annulus cut. */
 struct SurfacePeriodicHolonomy {
   int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
   int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
   int quarterTurnRotation = 0;
   Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
   /// Ordered interior source-edge route for one complete periodic transport.
@@ -269,7 +292,9 @@ struct SurfaceBoundedDiskBoundaryRun {
  */
 struct SurfaceBoundedDiskBoundaryPhase {
   int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
   int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
   int chartUBranch = 0;
   int signedQuarterTurnSum = 0;
   double totalIntrinsicLength = 0.0;
@@ -283,7 +308,9 @@ struct SurfaceBoundedDiskBoundaryPhase {
 struct SurfacePhaseFrontCell {
   int id = -1;
   int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
   int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
   bool orientationValidated = false;
   std::array<SurfaceTracePoint, 4> corners;
   std::array<LocalLatticeState, 4> lattice;
@@ -335,6 +362,8 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidBoundedDiskFrontPairing = 41,
   InvalidBoundedDiskBoundaryTurn = 42,
   InvalidBoundedDiskBoundaryIndex = 43,
+  InvalidTopologyRegion = 44,
+  InvalidTopologyRegionTransport = 45,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -367,6 +396,8 @@ struct SurfacePhaseFrontResult {
   bool succeeded = false;
   int gridU = 0;
   int gridV = 0;
+  std::vector<int> sourceTopologyRegionByFace;
+  std::vector<SurfaceTopologyRegion> topologyRegions;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
   SurfacePhaseFrontFailure failure;
@@ -514,6 +545,8 @@ struct SurfaceCellNetwork {
   std::vector<SurfaceCellRail> authoritativeRails;
   std::vector<int> sourceFaceComponents;
   std::vector<int> sourceFaceSheets;
+  std::vector<int> sourceFaceTopologyRegions;
+  std::vector<SurfaceTopologyRegion> topologyRegions;
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
   std::set<std::uint64_t> reliefBarrierEdges;
@@ -919,6 +952,15 @@ SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::set<std::uint64_t> &barrierEdges = {},
     const SourceSurfaceClassifierOptions &options = {});
+
+SourceTopologyRegions build_source_topology_regions(
+    const Eigen::MatrixXi &faces,
+    const SurfaceCellTracingOptions &options);
+
+bool source_edge_is_internal_isolation_seam(
+    const SurfaceCellTracingOptions &options, const int faceCount,
+    const std::vector<int> &regionByFace, const int firstFace,
+    const int secondFace, const std::uint64_t edgeKey);
 
 bool source_surface_classifier_options_valid(
     const SourceSurfaceClassifierOptions &options);

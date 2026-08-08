@@ -77,7 +77,9 @@ struct SurfaceCellMemoryOwnershipEvent {
 
 struct SurfaceCellPeriodicHolonomyDiagnostics {
   int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
   int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
   int quarterTurnRotation = 0;
   int translationU = 0;
   int translationV = 0;
@@ -218,6 +220,12 @@ struct RemeshDiagnostics {
   std::vector<int> surfaceCellCompletionParityAvailableSheets;
   std::string surfaceCellCompletionParityMutationPhase;
   std::string surfaceCellAuthoritativeProducerDisposition;
+  std::size_t surfaceCellTopologyRegionCount = 0U;
+  std::size_t surfaceCellInternalIsolationSeamCount = 0U;
+  std::vector<std::uint64_t> surfaceCellTopologyRegionHashes;
+  std::vector<int> surfaceCellTopologyRegionEulerCharacteristics;
+  std::vector<int> surfaceCellTopologyRegionBoundaryLoopCounts;
+  std::vector<std::size_t> surfaceCellTopologyRegionIsolationSheetCounts;
   std::size_t surfaceCellBoundedDiskBoundaryPhaseCount = 0U;
   std::size_t surfaceCellBoundedDiskBoundaryRunCount = 0U;
   std::size_t surfaceCellPolygonalBoundedDiskBoundaryPhaseCount = 0U;

@@ -2822,6 +2822,39 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\"surfaceCellAuthoritativeProducerDisposition\":\""
       << escape_json(diagnostics.surfaceCellAuthoritativeProducerDisposition)
       << "\","
+      << "\"surfaceCellTopologyRegionCount\":"
+      << diagnostics.surfaceCellTopologyRegionCount << ","
+      << "\"surfaceCellInternalIsolationSeamCount\":"
+      << diagnostics.surfaceCellInternalIsolationSeamCount << ","
+      << "\"surfaceCellTopologyRegionHashes\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionHashes.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionHashes[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionEulerCharacteristics\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionEulerCharacteristics.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionEulerCharacteristics[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionBoundaryLoopCounts\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts[regionIndex];
+  }
+  out << "],\"surfaceCellTopologyRegionIsolationSheetCounts\":[";
+  for (std::size_t regionIndex = 0;
+       regionIndex < diagnostics.surfaceCellTopologyRegionIsolationSheetCounts.size();
+       ++regionIndex) {
+    if (regionIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellTopologyRegionIsolationSheetCounts[regionIndex];
+  }
+  out << "],"
       << "\"surfaceCellBoundedDiskBoundaryPhaseCount\":"
       << diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount << ","
       << "\"surfaceCellBoundedDiskBoundaryRunCount\":"

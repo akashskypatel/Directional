@@ -197,6 +197,8 @@ std::uint64_t trace_network_owned_bytes(
                         vector_owned_bytes(network.authoritativeRails) +
                         vector_owned_bytes(network.sourceFaceComponents) +
                         vector_owned_bytes(network.sourceFaceSheets) +
+                        vector_owned_bytes(network.sourceFaceTopologyRegions) +
+                        vector_owned_bytes(network.topologyRegions) +
                         vector_owned_bytes(network.reliefRootVertices) +
                         static_cast<std::uint64_t>(
                             network.reliefRegionLabels.size()) * sizeof(int) +
@@ -223,6 +225,12 @@ std::uint64_t trace_network_owned_bytes(
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     bytes += surface_cell_rail_owned_bytes(rail);
   }
+  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
+    bytes += vector_owned_bytes(region.sourceFaces) +
+             vector_owned_bytes(region.isolationSheets) +
+             vector_owned_bytes(region.boundaryEdgeTopology) +
+             vector_owned_bytes(region.internalIsolationSeamTopology);
+  }
   return bytes;
 }
 
@@ -238,6 +246,8 @@ std::uint64_t trace_network_logical_bytes(
                         vector_logical_bytes(network.authoritativeRails) +
                         vector_logical_bytes(network.sourceFaceComponents) +
                         vector_logical_bytes(network.sourceFaceSheets) +
+                        vector_logical_bytes(network.sourceFaceTopologyRegions) +
+                        vector_logical_bytes(network.topologyRegions) +
                         vector_logical_bytes(network.reliefRootVertices) +
                         eigen_logical_bytes(network.reliefRegionLabels) +
                         set_payload_logical_bytes(network.reliefBarrierEdges);
@@ -264,6 +274,12 @@ std::uint64_t trace_network_logical_bytes(
   }
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     bytes += vector_logical_bytes(rail.samples);
+  }
+  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
+    bytes += vector_logical_bytes(region.sourceFaces) +
+             vector_logical_bytes(region.isolationSheets) +
+             vector_logical_bytes(region.boundaryEdgeTopology) +
+             vector_logical_bytes(region.internalIsolationSeamTopology);
   }
   return bytes;
 }
@@ -899,6 +915,18 @@ std::uint64_t hash_trace_network(
   }
   hash_vector(seed, network.sourceFaceComponents);
   hash_vector(seed, network.sourceFaceSheets);
+  hash_vector(seed, network.sourceFaceTopologyRegions);
+  hash_combine_u64(seed, network.topologyRegions.size());
+  for (const auto &region : network.topologyRegions) {
+    hash_combine_i64(seed, region.id);
+    hash_combine_i64(seed, region.sourceComponent);
+    hash_combine_i64(seed, region.eulerCharacteristic);
+    hash_combine_i64(seed, region.boundaryLoopCount);
+    hash_combine_u64(seed, region.structuralHash);
+    hash_vector(seed, region.isolationSheets);
+    hash_vector(seed, region.boundaryEdgeTopology);
+    hash_vector(seed, region.internalIsolationSeamTopology);
+  }
   hash_combine_u64(seed, network.authoritativeRails.size());
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     hash_combine_i64(seed, rail.id);
@@ -935,7 +963,9 @@ std::uint64_t hash_trace_network(
   hash_combine_u64(seed, network.phaseFront.periodicHolonomies.size());
   for (const auto &relation : network.phaseFront.periodicHolonomies) {
     hash_combine_i64(seed, relation.sourceComponent);
+    hash_combine_i64(seed, relation.sourceTopologyRegion);
     hash_combine_i64(seed, relation.sourceSheet);
+    hash_vector(seed, relation.sourceIsolationSheets);
     hash_combine_i64(seed, relation.quarterTurnRotation);
     hash_combine_i64(seed, relation.latticeTranslation.x());
     hash_combine_i64(seed, relation.latticeTranslation.y());
@@ -947,7 +977,9 @@ std::uint64_t hash_trace_network(
   }
   for (const auto &phase : network.phaseFront.boundedDiskBoundaryPhases) {
     hash_combine_i64(seed, phase.sourceComponent);
+    hash_combine_i64(seed, phase.sourceTopologyRegion);
     hash_combine_i64(seed, phase.sourceSheet);
+    hash_vector(seed, phase.sourceIsolationSheets);
     hash_combine_i64(seed, phase.chartUBranch);
     hash_combine_i64(seed, phase.signedQuarterTurnSum);
     hash_combine_double(seed, phase.totalIntrinsicLength);
@@ -999,7 +1031,9 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, edge.unfilledSide);
     hash_combine_i64(seed, edge.exterior ? 1 : 0);
     hash_combine_i64(seed, edge.sourceComponent);
+    hash_combine_i64(seed, edge.sourceTopologyRegion);
     hash_combine_i64(seed, edge.sourceSheet);
+    hash_vector(seed, edge.sourceIsolationSheets);
   }
   hash_combine_u64(seed, network.phaseFront.events.size());
   for (const geometry::SurfaceFrontEvent &event : network.phaseFront.events) {
@@ -1011,7 +1045,9 @@ std::uint64_t hash_trace_network(
   for (const geometry::SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
     hash_combine_i64(seed, cell.id);
     hash_combine_i64(seed, cell.sourceComponent);
+    hash_combine_i64(seed, cell.sourceTopologyRegion);
     hash_combine_i64(seed, cell.sourceSheet);
+    hash_vector(seed, cell.sourceIsolationSheets);
     hash_combine_i64(seed, cell.orientationValidated ? 1 : 0);
     for (const geometry::SurfaceTracePoint &corner : cell.corners) {
       hash_trace_point(seed, corner);
@@ -2935,6 +2971,16 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionParityMutationPhase;
   target.surfaceCellAuthoritativeProducerDisposition =
       source.surfaceCellAuthoritativeProducerDisposition;
+  target.surfaceCellTopologyRegionCount = source.surfaceCellTopologyRegionCount;
+  target.surfaceCellInternalIsolationSeamCount =
+      source.surfaceCellInternalIsolationSeamCount;
+  target.surfaceCellTopologyRegionHashes = source.surfaceCellTopologyRegionHashes;
+  target.surfaceCellTopologyRegionEulerCharacteristics =
+      source.surfaceCellTopologyRegionEulerCharacteristics;
+  target.surfaceCellTopologyRegionBoundaryLoopCounts =
+      source.surfaceCellTopologyRegionBoundaryLoopCounts;
+  target.surfaceCellTopologyRegionIsolationSheetCounts =
+      source.surfaceCellTopologyRegionIsolationSheetCounts;
   target.surfaceCellBoundedDiskBoundaryPhaseCount =
       source.surfaceCellBoundedDiskBoundaryPhaseCount;
   target.surfaceCellBoundedDiskBoundaryRunCount =
@@ -4886,6 +4932,25 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellAuthoritativeProducerDisposition =
         geometry::surface_cell_producer_disposition_name(
             traceNetwork.phaseFront.disposition);
+    result.diagnostics.surfaceCellTopologyRegionCount =
+        traceNetwork.topologyRegions.size();
+    result.diagnostics.surfaceCellInternalIsolationSeamCount = 0U;
+    result.diagnostics.surfaceCellTopologyRegionHashes.clear();
+    result.diagnostics.surfaceCellTopologyRegionEulerCharacteristics.clear();
+    result.diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.clear();
+    result.diagnostics.surfaceCellTopologyRegionIsolationSheetCounts.clear();
+    for (const auto &region : traceNetwork.topologyRegions) {
+      result.diagnostics.surfaceCellInternalIsolationSeamCount +=
+          region.internalIsolationSeamTopology.size();
+      result.diagnostics.surfaceCellTopologyRegionHashes.push_back(
+          region.structuralHash);
+      result.diagnostics.surfaceCellTopologyRegionEulerCharacteristics.push_back(
+          region.eulerCharacteristic);
+      result.diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.push_back(
+          region.boundaryLoopCount);
+      result.diagnostics.surfaceCellTopologyRegionIsolationSheetCounts.push_back(
+          region.isolationSheets.size());
+    }
     result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount =
         traceNetwork.phaseFront.boundedDiskBoundaryPhases.size();
     result.diagnostics.surfaceCellBoundedDiskBoundaryRunCount = 0U;
@@ -4908,7 +4973,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     for (const auto &relation : traceNetwork.phaseFront.periodicHolonomies) {
       SurfaceCellPeriodicHolonomyDiagnostics diagnostic;
       diagnostic.sourceComponent = relation.sourceComponent;
+      diagnostic.sourceTopologyRegion = relation.sourceTopologyRegion;
       diagnostic.sourceSheet = relation.sourceSheet;
+      diagnostic.sourceIsolationSheets = relation.sourceIsolationSheets;
       diagnostic.quarterTurnRotation = relation.quarterTurnRotation;
       diagnostic.translationU = relation.latticeTranslation.x();
       diagnostic.translationV = relation.latticeTranslation.y();
@@ -7761,6 +7828,25 @@ void accumulate_component_diagnostics(
     target.surfaceCellAuthoritativeProducerDisposition =
         source.surfaceCellAuthoritativeProducerDisposition;
   }
+  target.surfaceCellTopologyRegionCount += source.surfaceCellTopologyRegionCount;
+  target.surfaceCellInternalIsolationSeamCount +=
+      source.surfaceCellInternalIsolationSeamCount;
+  target.surfaceCellTopologyRegionHashes.insert(
+      target.surfaceCellTopologyRegionHashes.end(),
+      source.surfaceCellTopologyRegionHashes.begin(),
+      source.surfaceCellTopologyRegionHashes.end());
+  target.surfaceCellTopologyRegionEulerCharacteristics.insert(
+      target.surfaceCellTopologyRegionEulerCharacteristics.end(),
+      source.surfaceCellTopologyRegionEulerCharacteristics.begin(),
+      source.surfaceCellTopologyRegionEulerCharacteristics.end());
+  target.surfaceCellTopologyRegionBoundaryLoopCounts.insert(
+      target.surfaceCellTopologyRegionBoundaryLoopCounts.end(),
+      source.surfaceCellTopologyRegionBoundaryLoopCounts.begin(),
+      source.surfaceCellTopologyRegionBoundaryLoopCounts.end());
+  target.surfaceCellTopologyRegionIsolationSheetCounts.insert(
+      target.surfaceCellTopologyRegionIsolationSheetCounts.end(),
+      source.surfaceCellTopologyRegionIsolationSheetCounts.begin(),
+      source.surfaceCellTopologyRegionIsolationSheetCounts.end());
   target.surfaceCellBoundedDiskBoundaryPhaseCount +=
       source.surfaceCellBoundedDiskBoundaryPhaseCount;
   target.surfaceCellBoundedDiskBoundaryRunCount +=
