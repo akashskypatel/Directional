@@ -118,10 +118,12 @@ struct SurfaceTraceSegment {
   int sourceChart = -1;
   /// Last source edge crossed to enter this segment, or -1 for the first interval.
   int transitionSourceEdge = -1;
-  /// Ordered canonical source-edge route crossed to enter this segment.
-  /// Ordinary crossings contain one entry; exact source-vertex fan crossings
-  /// retain every authoritative edge in traversal order.
+  /// Ordered source-wide compact interior-transition indices crossed to enter
+  /// this segment. Ordinary crossings contain one entry; exact source-vertex
+  /// fan crossings retain every authoritative edge in traversal order.
   std::vector<int> transitionSourceEdges;
+  /// Canonical source-edge endpoint keys parallel to transitionSourceEdges.
+  std::vector<std::uint64_t> transitionSourceTopology;
   int railId = -1;
   int curveId = -1;
   int railIntervalIndex = -1;
@@ -219,6 +221,7 @@ struct SurfaceIsolationSeamTransportCertificate {
   int sourceComponent = -1;
   int sourceTopologyRegion = -1;
   std::uint64_t sourceEdgeTopology = 0;
+  /// Source-wide compact interior-transition index for sourceEdgeTopology.
   int sourceEdgeIndex = -1;
   std::array<int, 3> firstSourceFaceTopology{{-1, -1, -1}};
   std::array<int, 3> secondSourceFaceTopology{{-1, -1, -1}};
@@ -291,6 +294,7 @@ struct SurfaceFrontEdge {
   int periodicRelation = -1;
   /// Optional exact rail owner; sourceRouteTopology remains authoritative.
   int railId = -1;
+  /// Source-wide compact interior-transition indices parallel to topology.
   std::vector<int> sourceRouteEdges;
   std::vector<std::uint64_t> sourceRouteTopology;
 };
@@ -309,11 +313,11 @@ struct SurfacePeriodicHolonomy {
   std::vector<int> sourceIsolationSheets;
   int quarterTurnRotation = 0;
   Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
-  /// Ordered interior source-edge route for one complete periodic transport.
+  /// Source-wide compact interior-transition route for one periodic transport.
   std::vector<int> sourceRouteEdges;
   /// Canonical source-edge endpoint keys parallel to sourceRouteEdges.
   std::vector<std::uint64_t> sourceRouteTopology;
-  /// Ordered source edges forming the deterministic boundary-to-boundary cut.
+  /// Source-wide compact indices forming the boundary-to-boundary cut.
   std::vector<int> cutSourceEdges;
   /// Canonical source-edge endpoint keys parallel to cutSourceEdges.
   std::vector<std::uint64_t> cutSourceTopology;
