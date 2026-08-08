@@ -1,0 +1,200 @@
+     target.surfaceCellAuthoritativeProducerDisposition =
+         source.surfaceCellAuthoritativeProducerDisposition;
+   }
++  target.surfaceCellBoundedDiskBoundaryPhaseCount +=
++      source.surfaceCellBoundedDiskBoundaryPhaseCount;
++  target.surfaceCellBoundedDiskBoundaryRunCount +=
++      source.surfaceCellBoundedDiskBoundaryRunCount;
++  target.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount +=
++      source.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount;
++  target.surfaceCellBoundedDiskConstructedChartCount +=
++      source.surfaceCellBoundedDiskConstructedChartCount;
++  target.surfaceCellBoundedDiskBoundaryPhaseHashes.insert(
++      target.surfaceCellBoundedDiskBoundaryPhaseHashes.end(),
++      source.surfaceCellBoundedDiskBoundaryPhaseHashes.begin(),
++      source.surfaceCellBoundedDiskBoundaryPhaseHashes.end());
+   if (source.surfaceCellPeriodicHolonomyAvailable) {
+     target.surfaceCellPeriodicHolonomies.insert(
+         target.surfaceCellPeriodicHolonomies.end(),
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 31322ac..981b0f6 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -1582,6 +1582,212 @@ CurvedDiskFixture make_curved_disk_with_adjacent_source_sheet(
+   return fixture;
+ }
+ 
++CurvedDiskFixture make_polygonal_curved_disk_fixture(
++    const bool reverseFaceRows = false) {
++  CurvedDiskFixture fixture;
++  fixture.vertices.resize(6, 3);
++  fixture.vertices << 0.0, 0.0, 0.00,
++                      1.0, 0.0, 0.02,
++                      1.0, 0.5, 0.03,
++                      0.5, 0.5, 0.02,
++                      0.5, 1.0, 0.01,
++                      0.0, 1.0, 0.02;
++  fixture.faces.resize(4, 3);
++  fixture.faces << 0, 1, 3,
++                   1, 2, 3,
++                   0, 3, 5,
++                   3, 4, 5;
++  if (reverseFaceRows) {
++    fixture.faces = fixture.faces.colwise().reverse().eval();
++  }
++
++  fixture.faceAxisX.resize(fixture.faces.rows(), 3);
++  fixture.faceAxisY.resize(fixture.faces.rows(), 3);
++  for (int face = 0; face < fixture.faces.rows(); ++face) {
++    const Eigen::RowVector3d a = fixture.vertices.row(fixture.faces(face, 0));
++    const Eigen::RowVector3d b = fixture.vertices.row(fixture.faces(face, 1));
++    const Eigen::RowVector3d c = fixture.vertices.row(fixture.faces(face, 2));
++    Eigen::RowVector3d normal = (b - a).cross(c - a);
++    normal.normalize();
++    Eigen::RowVector3d axisX(1.0, 0.0, 0.0);
++    axisX -= axisX.dot(normal) * normal;
++    axisX.normalize();
++    Eigen::RowVector3d axisY = normal.cross(axisX);
++    axisY.normalize();
++    fixture.faceAxisX.row(face) = axisX;
++    fixture.faceAxisY.row(face) = axisY;
++  }
++  fixture.targetSize = Eigen::VectorXd::Constant(fixture.vertices.rows(), 0.25);
++  fixture.options.sourceFaceComponents.assign(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  fixture.options.sourceFaceSheets.assign(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  for (const auto edge : std::array<std::array<int, 2>, 6>{{
++           {{0, 1}}, {{1, 2}}, {{2, 3}},
++           {{3, 4}}, {{4, 5}}, {{5, 0}}}}) {
++    fixture.options.hardFeatureEdges.insert(
++        directional::pipeline::surface_cell_source_edge_key(edge[0], edge[1]));
++  }
++  return fixture;
++}
++
++CurvedDiskFixture make_invalid_boundary_turn_disk_fixture() {
++  CurvedDiskFixture fixture;
++  fixture.vertices.resize(4, 3);
++  fixture.vertices << 0.0, 0.0, 0.00,
++                      1.0, 0.0, 0.02,
++                      0.1, 0.2, 0.03,
++                      0.0, 1.0, 0.01;
++  fixture.faces.resize(2, 3);
++  fixture.faces << 0, 1, 2,
++                   0, 2, 3;
++  fixture.faceAxisX.resize(fixture.faces.rows(), 3);
++  fixture.faceAxisY.resize(fixture.faces.rows(), 3);
++  for (int face = 0; face < fixture.faces.rows(); ++face) {
++    const Eigen::RowVector3d a = fixture.vertices.row(fixture.faces(face, 0));
++    const Eigen::RowVector3d b = fixture.vertices.row(fixture.faces(face, 1));
++    const Eigen::RowVector3d c = fixture.vertices.row(fixture.faces(face, 2));
++    Eigen::RowVector3d normal = (b - a).cross(c - a);
++    normal.normalize();
++    Eigen::RowVector3d axisX(1.0, 0.0, 0.0);
++    axisX -= axisX.dot(normal) * normal;
++    axisX.normalize();
++    Eigen::RowVector3d axisY = normal.cross(axisX);
++    axisY.normalize();
++    fixture.faceAxisX.row(face) = axisX;
++    fixture.faceAxisY.row(face) = axisY;
++  }
++  fixture.targetSize = Eigen::VectorXd::Constant(fixture.vertices.rows(), 0.25);
++  fixture.options.sourceFaceComponents.assign(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  fixture.options.sourceFaceSheets.assign(
++      static_cast<std::size_t>(fixture.faces.rows()), 0);
++  for (const auto edge : std::array<std::array<int, 2>, 4>{{
++           {{0, 1}}, {{1, 2}}, {{2, 3}}, {{3, 0}}}}) {
++    fixture.options.hardFeatureEdges.insert(
++        directional::pipeline::surface_cell_source_edge_key(edge[0], edge[1]));
++  }
++  return fixture;
++}
++
++TEST(SurfaceCellsPhase10,
++     ExistingRectangularCurvedDiskRetainsExactBoundaryPhaseFastPath) {
++  const CurvedDiskFixture fixture = make_curved_disk_fixture();
++  const auto network = directional::geometry::build_surface_cell_network(
++      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
++      fixture.targetSize, fixture.options);
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
++            network.phaseFront.disposition)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
++  const auto &phase = network.phaseFront.boundedDiskBoundaryPhases.front();
++  EXPECT_TRUE(phase.rectangular);
++  EXPECT_TRUE(phase.polygonClosed);
++  EXPECT_TRUE(phase.chartConstructed);
++  EXPECT_EQ(4, phase.signedQuarterTurnSum);
++  ASSERT_EQ(4U, phase.runs.size());
++  EXPECT_NE(0U, phase.structuralHash);
++  for (const auto &run : phase.runs) {
++    EXPECT_EQ(1, run.signedQuarterTurnToNext);
++    EXPECT_GT(run.intrinsicLength, 0.0);
++    EXPECT_FALSE(run.sourceEdgeTopology.empty());
++  }
++}
++
++TEST(SurfaceCellsPhase10,
++     PolygonalCurvedDiskBuildsFieldAuthoritativeSixRunPhaseAndChart) {
++  const CurvedDiskFixture fixture = make_polygonal_curved_disk_fixture();
++  const auto network = directional::geometry::build_surface_cell_network(
++      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
++      fixture.targetSize, fixture.options);
++
++  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
++            network.phaseFront.disposition);
++  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskFrontPairing,
++            network.phaseFront.failure.reason)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
++  const auto &phase = network.phaseFront.boundedDiskBoundaryPhases.front();
++  EXPECT_FALSE(phase.rectangular);
++  EXPECT_TRUE(phase.polygonClosed);
++  EXPECT_TRUE(phase.chartConstructed);
++  EXPECT_EQ(4, phase.signedQuarterTurnSum);
++  ASSERT_EQ(6U, phase.runs.size());
++  EXPECT_NE(0U, phase.structuralHash);
++  int reflexCorners = 0;
++  for (const auto &run : phase.runs) {
++    if (run.signedQuarterTurnToNext < 0) ++reflexCorners;
++    EXPECT_GT(run.intrinsicLength, 0.0);
++    EXPECT_FALSE(run.sourceVertices.empty());
++    EXPECT_EQ(run.sourceFaces.size(), run.sourceEdgeTopology.size());
++    EXPECT_EQ(run.sourceFaces.size(), run.edgeAuthority.size());
++  }
++  EXPECT_EQ(1, reflexCorners);
++}
++
++TEST(SurfaceCellsPhase10,
++     PolygonalCurvedDiskInvalidCyclicFieldTurnFailsClosed) {
++  const CurvedDiskFixture fixture = make_invalid_boundary_turn_disk_fixture();
++  const auto network = directional::geometry::build_surface_cell_network(
++      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
++      fixture.targetSize, fixture.options);
++
++  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
++            network.phaseFront.disposition);
++  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskBoundaryTurn,
++            network.phaseFront.failure.reason)
++      << directional::geometry::surface_phase_front_failure_reason_name(
++             network.phaseFront.failure.reason);
++  EXPECT_TRUE(network.phaseFront.cells.empty());
++}
++
++TEST(SurfaceCellsPhase10,
++     PolygonalCurvedDiskBoundaryPhaseIsInvariantToFaceRowEnumeration) {
++  const CurvedDiskFixture forward = make_polygonal_curved_disk_fixture(false);
++  const CurvedDiskFixture reversed = make_polygonal_curved_disk_fixture(true);
++  const auto forwardNetwork = directional::geometry::build_surface_cell_network(
++      forward.vertices, forward.faces, forward.faceAxisX, forward.faceAxisY,
++      forward.targetSize, forward.options);
++  const auto reversedNetwork = directional::geometry::build_surface_cell_network(
++      reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
++      reversed.targetSize, reversed.options);
++
