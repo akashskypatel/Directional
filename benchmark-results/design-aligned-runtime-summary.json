@@ -1,111 +1,30 @@
 {
-  "schema": "directional.design-aligned-runtime-summary.v12",
-  "updatedUtc": "2026-08-07T23:10:00Z",
+  "schema": "directional.design-aligned-runtime-summary.v13",
+  "updatedUtc": "2026-08-08T00:10:00Z",
   "directionControl": {
-    "passedGates": [
-      "G0 truthful authority",
-      "G1 uniform phase-front plane",
-      "G2 cross-chart/close-sheet isolation"
-    ],
+    "passedGates": ["G0 truthful authority", "G1 uniform phase-front plane", "G2 cross-chart/close-sheet isolation"],
     "activeGate": "G3 periodic closure/holonomy",
-    "gateState": "production runtime closure contract satisfied; formal closure pending correction of one invalid field-correspondence test witness",
-    "earliestFailingExecutedFixture": null,
-    "earliestFailingContract": "SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence",
-    "failureClassification": "incorrect expectation / invalid witness precondition",
-    "retainedRegressions": [
-      "plane__surface_cells",
-      "multi_face_seam__surface_cells",
-      "close_sheets__surface_cells"
-    ],
-    "nextPlan": ".agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md",
+    "gateState": "production runtime closure contract satisfied; formal closure pending corrected field-correspondence witness artifact validation",
+    "nextPlan": ".agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md",
     "noProgressCodeBuildCountSinceLastMaterialProgress": 0,
-    "reviewRequiredNextTurn": false
+    "reviewRequired": false
   },
   "testedAuthority": {
     "sourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
-    "baseProductionSourceCommit": "c5d2c90fc97ca2ae71bf2e8b50c8e7766c0bdb9a",
     "artifactId": 9010838200,
-    "artifactName": "g3-periodic-chart-endpoint-canonicalization-code-build",
     "artifactSha256": "b90a2bc3c0d35287048f8ddd2d3eccfdce8058031192ad3092213526907be9db",
-    "patchSha256": "f6cd294846a6a8fc3c04a356c4044e5be9e3f9ddc9f35d9b451e27b3849df9b8",
-    "buildRunId": 31221873296,
-    "buildJobId": 93007996817,
-    "buildLogArtifactId": 9010837410,
-    "buildLogSha256": "2b994f158e8a28ecdc52fd3c532b48edf936aeaaf8284053a728b56a58979973",
-    "internalChecksums": "44/44",
-    "compileActions": "111/111",
-    "artifactExecutables": 5,
-    "artifactLibraries": 2,
-    "artifactFixtures": 27,
-    "artifactPreTestRuntimeExecution": false,
-    "artifactOnlyTestBenchmark": true,
-    "rebuildDuringTestBenchmark": false,
-    "changedFileBlobs": {
-      "include/directional/geometry/SurfaceCellTracing.h": "c1b816a584d67a3f74c2d7389962bd92d52244c9",
-      "src/geometry/SurfaceCellTracing.cpp": "63e5ee427f675077f710db51ffb56d91838d3519",
-      "tests/SurfaceCellsPhase10Tests.cpp": "bef95b04c95c9a213c634e604d004b3d7d22646e"
-    }
-  },
-  "focusedProducer": {
-    "passed": 16,
-    "total": 17,
-    "endpointCanonicalizationContracts": "2/2",
-    "typedAmbiguityContractPassed": true,
-    "sixPreviouslyRegressedPeriodicContractsRestored": true,
-    "retainedG1G2Contracts": "7/7",
-    "failed": [
-      {
-        "name": "SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence",
-        "productionDispositionReached": "Produced",
-        "assertion": "exactInterRingEdges > 0",
-        "actual": 0,
-        "classification": "incorrect expectation / invalid witness precondition",
-        "reason": "source ring spacing 0.5 with target size 0.25 subdivides each authoritative source inter-ring connection into two V-family phase-front edges, so no single V edge can have both endpoints at distinct exact source-ring vertices",
-        "requiredCorrection": "observe nonzero source-attached V-family boundary-path segments reconstructed from face+barycentric provenance and compare their source-space direction against the local authoritative V cross-field family; require nonempty observations"
-      }
-    ]
+    "focusedRetainedContracts": "16/17",
+    "soleFocusedFailureClassification": "incorrect expectation / subdivision-dependent field-correspondence witness",
+    "productionRuntimeClosureSatisfied": true
   },
   "directAcceptance": {
-    "plane": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "runs": 3,
-      "traceSegments": 352,
-      "completedQuads": 64,
-      "outputVertices": 81,
-      "validationFailures": 0,
-      "outputOrigin": "CompletedSurfaceCells",
-      "outputStructuralHash": "730caeae49ec872c"
-    },
-    "multi_face_seam": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "runs": 3,
-      "traceSegments": 256,
-      "completedQuads": 64,
-      "outputVertices": 81,
-      "validationFailures": 0,
-      "outputOrigin": "CompletedSurfaceCells",
-      "outputStructuralHash": "5bdf34d7802e9fb0"
-    },
-    "close_sheets": {
-      "success": true,
-      "producerDisposition": "Produced",
-      "runs": 3,
-      "traceSegments": 1104,
-      "completedQuads": 200,
-      "outputVertices": 242,
-      "connectedComponents": 2,
-      "boundaryEdges": 80,
-      "validationFailures": 0,
-      "outputOrigin": "CompletedSurfaceCells",
-      "outputStructuralHash": "89b052762f52a5af"
-    },
+    "plane": {"success": true, "producerDisposition": "Produced", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "outputHash": "730caeae49ec872c", "deterministic": "3/3"},
+    "multiFaceSeam": {"success": true, "producerDisposition": "Produced", "outputVertices": 81, "completedQuads": 64, "validationFailures": 0, "outputHash": "5bdf34d7802e9fb0", "deterministic": "3/3"},
+    "closeSheets": {"success": true, "producerDisposition": "Produced", "outputVertices": 242, "completedQuads": 200, "connectedComponents": 2, "validationFailures": 0, "outputHash": "89b052762f52a5af", "deterministic": "3/3"},
     "cylinder": {
       "success": true,
-      "productionG3ClosureContractSatisfied": true,
       "producerDisposition": "Produced",
-      "runs": 3,
+      "outputOrigin": "CompletedSurfaceCells",
       "periodicHolonomyAvailable": true,
       "periodicHolonomyQuarterTurnRotation": 0,
       "periodicHolonomyTranslation": [32, 0],
@@ -115,91 +34,53 @@
       "arrangementCells": 290,
       "simplifiedCells": 290,
       "completedQuads": 288,
-      "provenanceVertices": 320,
-      "validationFailures": 0,
-      "outputOrigin": "CompletedSurfaceCells",
       "outputVertices": 320,
-      "outputFaces": 288,
-      "quadCount": 288,
-      "nonQuadCount": 0,
-      "connectedComponents": 1,
-      "boundaryEdges": 64,
-      "pureQuadRate": 1.0,
+      "validationFailures": 0,
       "fieldP95Degrees": 8.537736463e-7,
-      "surfaceApproximationP95": 2.832791574e-16,
-      "nonManifoldEdges": 0,
-      "tJunctions": 0,
-      "duplicateFaces": 0,
-      "selfIntersections": 0,
-      "topologyPreserved": true,
-      "boundaryPreserved": true,
-      "fallbackAttempted": false,
-      "legacyFallbackUsed": false,
+      "trueExteriorBoundaryLoops": 2,
+      "artificialCutExterior": false,
+      "fallbackUsed": false,
       "sourceGridRecoveryUsed": false,
-      "outputStructuralHash": "32135be51d7a0a26",
-      "deterministic": "3/3",
-      "boundaryTopologyCrossCheck": {
-        "boundaryComponents": 2,
-        "boundaryComponentEdgeCounts": [32, 32],
-        "allBoundaryVerticesDegree2": true,
-        "zRanges": [[-1.0, -1.0], [1.0, 1.0]],
-        "artificialPeriodicCutExterior": false
-      },
-      "normalAndWarpageAuthority": "raw values are not serialized; surfaceCellValidationFailures=0 authoritatively proves all production strict gates, including normalP95<=15 and warpageP95<=30, passed",
-      "serializedGeometryCrossCheck": {
-        "warpageP95Degrees": 0.0,
-        "warpageMaxDegrees": 0.0,
-        "nearestSourceTriangleNormalP95Degrees": 8.537736462515939e-7
-      }
-    },
-    "bunny": {
-      "success": false,
-      "laterGateObservation": true,
-      "producerDisposition": "NotApplicable",
-      "traceSegments": 80862,
-      "completedQuads": 0,
-      "wallSeconds": 22.421979,
-      "peakWorkingSetBytes": 247750656,
-      "fallbackAttempted": false,
-      "sourceGridRecoveryUsed": false
-    },
-    "vase": {
-      "success": false,
-      "laterGateObservation": true,
-      "completedRecord": false,
-      "boundedTimeoutSeconds": 45,
-      "timeoutIsCorrectnessEvidence": false
+      "outputHash": "32135be51d7a0a26",
+      "deterministic": "3/3"
     }
   },
-  "materialProgress": {
-    "established": true,
-    "previousArtifactId": 9008118764,
-    "previousCylinderState": "Rejected/InvalidPeriodicChart at cell 29 before traces",
-    "currentCylinderState": "Produced direct strict-valid CompletedSurfaceCells",
-    "earlierFieldP95DegreesArtifact9004509871": 37.9670987281,
-    "currentFieldP95Degrees": 8.537736463e-7,
-    "currentValidationFailures": 0,
-    "noProgressCounterReset": true
+  "latestCodeBuild": {
+    "sourceCommit": "117620ec2da2083ce11b205835e58fa404f163ef",
+    "runtimeProvenProductionSourceCommit": "0279946920dfca6e9ac44b7ea31b38e929d1f5fc",
+    "productionSourceChanged": false,
+    "testOnlyPatchSha256": "f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb",
+    "workflowRunId": 31228899303,
+    "workflowJobId": 93028533210,
+    "artifactId": 9013161456,
+    "artifactName": "g3-field-correspondence-test-witness-code-build",
+    "artifactSha256": "fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62",
+    "logArtifactId": 9013161584,
+    "logArtifactSha256": "baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f",
+    "internalChecksums": "44/44",
+    "compileActions": "111/111",
+    "approvedTargets": "7/7",
+    "executables": 5,
+    "libraries": 2,
+    "fixtures": 27,
+    "runtimeExecution": false,
+    "changedFileBlobs": {
+      "tests/SurfaceCellsPhase10Tests.cpp": "80a0b58339102279ab863d9112e243a557cd270d",
+      "src/geometry/SurfaceCellTracing.cpp": "63e5ee427f675077f710db51ffb56d91838d3519",
+      "include/directional/geometry/SurfaceCellTracing.h": "c1b816a584d67a3f74c2d7389962bd92d52244c9"
+    },
+    "correctedTestContract": "nonzero source-attached V-family boundary-path segments reconstructed from face+barycentric provenance must align with local authoritative V field family independent of target subdivision"
   },
-  "suiteEvidence": {
-    "boundedProducer": "99/101",
-    "boundedProducerFailures": [
-      "SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent",
-      "SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence"
-    ],
-    "timingFailureClassification": "scheduler/environment-sensitive performance gate; does not override direct functional G3 authority",
-    "completionSimplification": "154/164",
-    "validation": "60/60",
-    "compiledApi": "8/8",
-    "boundedAggregate": "321/333"
+  "nextArtifactValidation": {
+    "artifactId": 9013161456,
+    "requiredFocusedRetained": "17/17",
+    "requiredDirectResult": "retain exact cylinder deterministic strict-valid periodic CompletedSurfaceCells production closure and G0-G2",
+    "successConsequence": "formally close G3 and activate G4 topology-distinct completion and singularities"
   },
   "gateDecision": {
-    "g3ProductionRuntimeContractSatisfied": true,
+    "g3ProductionRuntimeClosureSatisfied": true,
     "g3FormallyClosed": false,
-    "classification": "material progress; formal closure pending test correction only",
-    "optionalReviewRequested": false,
-    "reason": "Exact cylinder now satisfies the full direct deterministic strict-valid periodic production contract. The only focused failure is an impossible un-subdivided-edge witness in the field-correspondence unit test.",
-    "nextTurn": "Code + Build — test-only G3 field-correspondence witness correction",
-    "afterNextArtifactIfPasses": "mark G3 passed and activate G4"
+    "latestCodeBuildRuntimeVerified": false,
+    "nextTurn": "Artifact-only Test + Benchmark — G3 corrected field-correspondence witness"
   }
 }
