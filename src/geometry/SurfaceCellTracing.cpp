@@ -6659,8 +6659,14 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     return a.key < b.key;
   });
 
-  int cellOffset = 0;
-  int edgeOffset = 0;
+  struct SheetBuild {
+    const SheetWork *work = nullptr;
+    SurfacePhaseFrontResult result;
+  };
+  std::vector<SheetBuild> sheetBuilds;
+  sheetBuilds.reserve(sheets.size());
+  bool anyProduced = false;
+  int firstUnsupportedSheet = -1;
   for (const SheetWork &sheet : sheets) {
     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces, options,
@@ -6673,48 +6679,97 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       result.failure = local.failure;
-      if (result.failure.cell >= 0) {
-        result.failure.cell += cellOffset;
-      }
       return result;
     }
     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
-      return result;
+      if (firstUnsupportedSheet < 0) {
+        firstUnsupportedSheet = static_cast<int>(sheetBuilds.size());
+      }
+    } else {
+      if (!local.succeeded || local.cells.empty()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        result.failure = local.failure;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      anyProduced = true;
+      result.gridU = std::max(result.gridU, local.gridU);
+      result.gridV = std::max(result.gridV, local.gridV);
+      for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
+        const auto insertion =
+            surface_cell_tracing_detail::insert_periodic_holonomy(
+                result.periodicHolonomies, std::move(relation));
+        if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis);
+          return result;
+        }
+        if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation);
+          return result;
+        }
+      }
     }
-    if (!local.succeeded || local.cells.empty()) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      result.failure = local.failure;
-      set_phase_front_failure(result.failure,
-                              SurfacePhaseFrontFailureReason::InvalidFinalCellState);
-      return result;
-    }
+    sheetBuilds.push_back(SheetBuild{&sheet, std::move(local)});
+  }
 
-    result.gridU = std::max(result.gridU, local.gridU);
-    result.gridV = std::max(result.gridV, local.gridV);
-    for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
-      const auto insertion =
-          surface_cell_tracing_detail::insert_periodic_holonomy(
-              result.periodicHolonomies, std::move(relation));
-      if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
-        result.disposition = SurfaceCellProducerDisposition::Rejected;
-        set_phase_front_failure(
-            result.failure,
-            SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis);
-        return result;
-      }
-      if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
-        result.disposition = SurfaceCellProducerDisposition::Rejected;
-        set_phase_front_failure(
-            result.failure,
-            SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation);
-        return result;
-      }
+  if (firstUnsupportedSheet >= 0) {
+    if (!anyProduced) {
+      return result;
     }
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    const SheetWork &unsupported =
+        *sheetBuilds[static_cast<std::size_t>(firstUnsupportedSheet)].work;
+    const int canonicalFace =
+        unsupported.faces.empty() ? -1 : unsupported.faces.front();
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::UnsupportedSourceSheetTopology,
+        -1, -1, canonicalFace);
+    return result;
+  }
+
+  int cellOffset = 0;
+  int edgeOffset = 0;
+  std::set<SheetKey> coveredSheets;
+  for (SheetBuild &build : sheetBuilds) {
+    const SheetWork &sheet = *build.work;
+    SurfacePhaseFrontResult &local = build.result;
+    bool localCoverage = false;
     for (SurfacePhaseFrontCell &cell : local.cells) {
+      if (cell.sourceComponent != sheet.key.first ||
+          cell.sourceSheet != sheet.key.second) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+            cell.id, -1, cell.corners.front().face);
+        return result;
+      }
+      localCoverage = true;
       cell.id += cellOffset;
       result.cells.push_back(std::move(cell));
     }
+    if (!localCoverage || !coveredSheets.insert(sheet.key).second) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+          -1, -1, sheet.faces.empty() ? -1 : sheet.faces.front());
+      return result;
+    }
     for (SurfaceFrontEdge &edge : local.edges) {
+      if (edge.sourceComponent != sheet.key.first ||
+          edge.sourceSheet != sheet.key.second) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+            -1, -1, sheet.faces.empty() ? -1 : sheet.faces.front());
+        return result;
+      }
       edge.filledCell += cellOffset;
       if (edge.oppositeEdge >= 0) {
         edge.oppositeEdge += edgeOffset;
@@ -6734,6 +6789,12 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     edgeOffset = static_cast<int>(result.edges.size());
   }
 
+  if (coveredSheets.size() != sheets.size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage);
+    return result;
+  }
   result.succeeded = !result.cells.empty();
   if (result.succeeded) {
     result.disposition = SurfaceCellProducerDisposition::Produced;
@@ -6793,6 +6854,8 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence: return "AmbiguousPeriodicRingCorrespondence";
   case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis: return "AmbiguousPeriodicRelationBasis";
   case SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation: return "IncompatiblePeriodicRelation";
+  case SurfacePhaseFrontFailureReason::UnsupportedSourceSheetTopology: return "UnsupportedSourceSheetTopology";
+  case SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage: return "IncompleteSourceSheetCoverage";
   }
   return "Unknown";
 }

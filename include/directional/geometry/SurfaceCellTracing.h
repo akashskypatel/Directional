@@ -275,6 +275,8 @@ enum class SurfacePhaseFrontFailureReason : int {
   AmbiguousPeriodicRingCorrespondence = 32,
   AmbiguousPeriodicRelationBasis = 33,
   IncompatiblePeriodicRelation = 34,
+  UnsupportedSourceSheetTopology = 35,
+  IncompleteSourceSheetCoverage = 36,
 };
 
 struct SurfacePhaseFrontFailure {

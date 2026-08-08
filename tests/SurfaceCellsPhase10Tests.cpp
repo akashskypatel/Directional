@@ -1414,6 +1414,157 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
+     PhaseFrontComposesBoundedAndPeriodicAuthoritativeSheets) {
+  directional::TriMesh plane;
+  directional::TriMesh cylinder;
+  ASSERT_TRUE(directional::readOBJ(
+      directional::tests::benchmark_fixture_path("milestone-g/plane.obj").string(),
+      plane));
+  ASSERT_TRUE(directional::readOBJ(
+      directional::tests::benchmark_fixture_path("milestone-g/cylinder.obj").string(),
+      cylinder));
+  const Eigen::MatrixXd planeRaw = read_rawfield_fixture(
+      directional::tests::benchmark_fixture_path("milestone-g/plane.rawfield"),
+      plane.F.rows());
+  const Eigen::MatrixXd cylinderRaw = read_rawfield_fixture(
+      directional::tests::benchmark_fixture_path("milestone-g/cylinder.rawfield"),
+      cylinder.F.rows());
+
+  Eigen::MatrixXd vertices(plane.V.rows() + cylinder.V.rows(), 3);
+  vertices.topRows(plane.V.rows()) = plane.V;
+  vertices.bottomRows(cylinder.V.rows()) = cylinder.V;
+  vertices.bottomRows(cylinder.V.rows()).col(0).array() += 10.0;
+  Eigen::MatrixXi faces(plane.F.rows() + cylinder.F.rows(), 3);
+  faces.topRows(plane.F.rows()) = plane.F;
+  faces.bottomRows(cylinder.F.rows()) =
+      (cylinder.F.array() + plane.V.rows()).matrix();
+  Eigen::MatrixXd rawField(planeRaw.rows() + cylinderRaw.rows(), planeRaw.cols());
+  rawField.topRows(planeRaw.rows()) = planeRaw;
+  rawField.bottomRows(cylinderRaw.rows()) = cylinderRaw;
+
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, rawField);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.resize(static_cast<std::size_t>(mesh.F.rows()));
+  options.sourceFaceSheets.resize(static_cast<std::size_t>(mesh.F.rows()));
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const bool onPlane = face < plane.F.rows();
+    options.sourceFaceComponents[static_cast<std::size_t>(face)] = onPlane ? 0 : 1;
+    options.sourceFaceSheets[static_cast<std::size_t>(face)] = onPlane ? 0 : 1;
+  }
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_TRUE(network.phaseFront.succeeded);
+  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
+  EXPECT_EQ(1, network.phaseFront.periodicHolonomies.front().sourceComponent);
+  EXPECT_EQ(1, network.phaseFront.periodicHolonomies.front().sourceSheet);
+
+  std::map<std::pair<int, int>, int> cellsBySheet;
+  for (const auto &cell : network.phaseFront.cells) {
+    ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
+  }
+  ASSERT_EQ(2U, cellsBySheet.size());
+  EXPECT_GT(cellsBySheet[std::pair<int, int>{0, 0}], 0);
+  EXPECT_GT(cellsBySheet[std::pair<int, int>{1, 1}], 0);
+}
+
+TEST(SurfaceCellsPhase10,
+     PhaseFrontProducedThenUnsupportedSheetFailsClosedWithoutPartialAuthority) {
+  const auto build = [](const bool reverseFaces) {
+    Eigen::MatrixXd vertices(8, 3);
+    vertices << 0.0, 0.0, 0.0,
+                1.0, 0.0, 0.0,
+                1.0, 1.0, 0.0,
+                0.0, 1.0, 0.0,
+                0.0, 0.0, 3.0,
+                1.0, 0.0, 3.0,
+                0.5, 0.9, 3.0,
+                0.5, 0.3, 3.8;
+    Eigen::MatrixXi faces(6, 3);
+    faces << 0, 1, 2,
+             0, 2, 3,
+             4, 6, 5,
+             4, 5, 7,
+             5, 6, 7,
+             6, 4, 7;
+    if (reverseFaces) {
+      faces = faces.colwise().reverse().eval();
+    }
+
+    Eigen::MatrixXd faceAxisX(faces.rows(), 3);
+    Eigen::MatrixXd faceAxisY(faces.rows(), 3);
+    for (int face = 0; face < faces.rows(); ++face) {
+      const Eigen::RowVector3d a = vertices.row(faces(face, 0));
+      const Eigen::RowVector3d b = vertices.row(faces(face, 1));
+      const Eigen::RowVector3d c = vertices.row(faces(face, 2));
+      Eigen::RowVector3d normal = (b - a).cross(c - a);
+      normal.normalize();
+      Eigen::RowVector3d reference =
+          std::abs(normal.z()) < 0.9 ? Eigen::RowVector3d(0.0, 0.0, 1.0)
+                                     : Eigen::RowVector3d(1.0, 0.0, 0.0);
+      Eigen::RowVector3d axisX = reference - reference.dot(normal) * normal;
+      axisX.normalize();
+      Eigen::RowVector3d axisY = normal.cross(axisX);
+      axisY.normalize();
+      faceAxisX.row(face) = axisX;
+      faceAxisY.row(face) = axisY;
+    }
+
+    directional::geometry::SurfaceCellTracingOptions options;
+    options.sourceFaceComponents.resize(static_cast<std::size_t>(faces.rows()));
+    options.sourceFaceSheets.resize(static_cast<std::size_t>(faces.rows()));
+    for (int face = 0; face < faces.rows(); ++face) {
+      const bool planeFace = faces(face, 0) < 4 && faces(face, 1) < 4 &&
+                             faces(face, 2) < 4;
+      options.sourceFaceComponents[static_cast<std::size_t>(face)] =
+          planeFace ? 0 : 1;
+      options.sourceFaceSheets[static_cast<std::size_t>(face)] =
+          planeFace ? 0 : 1;
+    }
+    const Eigen::VectorXd targetSize =
+        Eigen::VectorXd::Constant(vertices.rows(), 0.25);
+    return std::make_pair(
+        directional::geometry::build_surface_cell_network(
+            vertices, faces, faceAxisX, faceAxisY, targetSize, options),
+        std::move(options));
+  };
+
+  const auto forward = build(false);
+  const auto reverse = build(true);
+  for (const auto *built : {&forward, &reverse}) {
+    const auto &network = built->first;
+    const auto &options = built->second;
+    EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+              network.phaseFront.disposition);
+    EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                  UnsupportedSourceSheetTopology,
+              network.phaseFront.failure.reason)
+        << directional::geometry::surface_phase_front_failure_reason_name(
+               network.phaseFront.failure.reason);
+    EXPECT_FALSE(network.phaseFront.succeeded);
+    EXPECT_TRUE(network.phaseFront.cells.empty());
+    EXPECT_TRUE(network.phaseFront.edges.empty());
+    EXPECT_TRUE(network.phaseFront.events.empty());
+    ASSERT_GE(network.phaseFront.failure.face, 0);
+    ASSERT_LT(network.phaseFront.failure.face,
+              static_cast<int>(options.sourceFaceSheets.size()));
+    EXPECT_EQ(1, options.sourceFaceComponents[
+                     static_cast<std::size_t>(network.phaseFront.failure.face)]);
+    EXPECT_EQ(1, options.sourceFaceSheets[
+                     static_cast<std::size_t>(network.phaseFront.failure.face)]);
+  }
+}
+
+TEST(SurfaceCellsPhase10,
      PeriodicHolonomyReverseDescriptionCanonicalizesWithoutDuplicateGenerator) {
   using directional::geometry::SurfacePeriodicHolonomy;
   using directional::geometry::SurfacePeriodicHolonomyInsertStatus;
@@ -1559,9 +1710,20 @@ TEST(SurfaceCellsPhase10,
   const auto &phaseFront = result.surfaceCellContext.traceNetwork.phaseFront;
   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
             phaseFront.failure.reason);
+  EXPECT_NE(directional::geometry::SurfaceCellProducerDisposition::NotApplicable,
+            phaseFront.disposition)
+      << "authoritative sheet coverage must not leak partial NotApplicable";
+  EXPECT_GT(phaseFront.periodicHolonomies.size(), 1U);
+  if (phaseFront.disposition ==
+      directional::geometry::SurfaceCellProducerDisposition::Rejected) {
+    EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                  UnsupportedSourceSheetTopology,
+              phaseFront.failure.reason)
+        << directional::geometry::surface_phase_front_failure_reason_name(
+               phaseFront.failure.reason);
+  }
   if (phaseFront.disposition ==
       directional::geometry::SurfaceCellProducerDisposition::Produced) {
-    EXPECT_GT(phaseFront.periodicHolonomies.size(), 1U);
     EXPECT_EQ(phaseFront.periodicHolonomies.size(),
               result.diagnostics.surfaceCellPeriodicHolonomies.size());
   }
