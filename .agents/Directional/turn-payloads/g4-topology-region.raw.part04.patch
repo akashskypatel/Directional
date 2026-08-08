@@ -1,0 +1,278 @@
++                             ? cell.sourceIsolationSheets.front()
++                             : -1;
++    }
++    for (auto &edge : local.edges) {
++      edge.sourceTopologyRegion = region.id;
++      edge.sourceComponent = region.sourceComponent;
++      if (!normalize_sheets(edge.sourceIsolationSheets)) return false;
++      edge.sourceSheet = edge.sourceIsolationSheets.size() == 1U
++                             ? edge.sourceIsolationSheets.front()
++                             : representativeSheet;
++    }
++    return true;
++  };
++
+   const auto retain_bounded_disk_boundary_phases =
+       [&](SurfacePhaseFrontResult &local) {
+         for (auto &phase : local.boundedDiskBoundaryPhases) {
+@@ -8187,20 +8486,28 @@ SurfacePhaseFrontResult build_uniform_phase_front(
+         }
+         local.boundedDiskBoundaryPhases.clear();
+       };
+-  for (const SheetWork &sheet : sheets) {
++
++  for (const RegionWork &work : regions) {
++    const SurfaceTopologyRegion &region = *work.region;
+     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
+-        vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces, options,
+-        edgeMatching, edgeEffort, edgeTransitions);
++        vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
++        options, edgeMatching, edgeEffort, edgeTransitions);
+     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+       local = build_periodic_annulus_phase_front_for_faces(
+-          vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces,
++          vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
+           options, edgeMatching, edgeEffort, edgeTransitions);
+     }
+     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+       local = build_curved_bounded_disk_phase_front_for_faces(
+-          vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces,
++          vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
+           options, edgeMatching, edgeEffort, edgeTransitions);
+     }
++    if (!normalize_scope(local, region)) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(result.failure,
++                              SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
++      return result;
++    }
+     retain_bounded_disk_boundary_phases(local);
+     if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+@@ -8208,8 +8515,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
+       return result;
+     }
+     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+-      if (firstUnsupportedSheet < 0) {
+-        firstUnsupportedSheet = static_cast<int>(sheetBuilds.size());
++      if (firstUnsupportedRegion < 0) {
++        firstUnsupportedRegion = static_cast<int>(regionBuilds.size());
+       }
+     } else {
+       if (!local.succeeded || local.cells.empty()) {
+@@ -8223,9 +8530,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
+       result.gridU = std::max(result.gridU, local.gridU);
+       result.gridV = std::max(result.gridV, local.gridV);
+       for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
+-        const auto insertion =
+-            surface_cell_tracing_detail::insert_periodic_holonomy(
+-                result.periodicHolonomies, std::move(relation));
++        const auto insertion = insert_periodic_holonomy(
++            result.periodicHolonomies, std::move(relation));
+         if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
+           result.disposition = SurfaceCellProducerDisposition::Rejected;
+           set_phase_front_failure(
+@@ -8242,18 +8548,20 @@ SurfacePhaseFrontResult build_uniform_phase_front(
+         }
+       }
+     }
+-    sheetBuilds.push_back(SheetBuild{&sheet, std::move(local)});
++    regionBuilds.push_back(RegionBuild{&work, std::move(local)});
+   }
+ 
+-  if (firstUnsupportedSheet >= 0) {
+-    if (!anyProduced) {
+-      return result;
+-    }
++  if (firstUnsupportedRegion >= 0) {
++    if (!anyProduced) return result;
+     result.disposition = SurfaceCellProducerDisposition::Rejected;
+-    const SheetWork &unsupported =
+-        *sheetBuilds[static_cast<std::size_t>(firstUnsupportedSheet)].work;
+-    const int canonicalFace =
+-        unsupported.faces.empty() ? -1 : unsupported.faces.front();
++    const SurfaceTopologyRegion &unsupported =
++        *regionBuilds[static_cast<std::size_t>(firstUnsupportedRegion)]
++             .work->region;
++    const int canonicalFace = unsupported.sourceFaces.empty()
++                                  ? -1
++                                  : unsupported.sourceFaces.front();
++    // Keep the established public reason while producer ownership is migrated
++    // from local isolation sheets to exact source-topological regions.
+     set_phase_front_failure(
+         result.failure, SurfacePhaseFrontFailureReason::UnsupportedSourceSheetTopology,
+         -1, -1, canonicalFace);
+@@ -8262,69 +8570,69 @@ SurfacePhaseFrontResult build_uniform_phase_front(
+ 
+   int cellOffset = 0;
+   int edgeOffset = 0;
+-  std::set<SheetKey> coveredSheets;
+-  for (SheetBuild &build : sheetBuilds) {
+-    const SheetWork &sheet = *build.work;
++  std::set<int> coveredRegions;
++  for (RegionBuild &build : regionBuilds) {
++    const SurfaceTopologyRegion &region = *build.work->region;
+     SurfacePhaseFrontResult &local = build.result;
+     bool localCoverage = false;
++    std::set<int> coveredIsolationSheets;
+     for (SurfacePhaseFrontCell &cell : local.cells) {
+-      if (cell.sourceComponent != sheet.key.first ||
+-          cell.sourceSheet != sheet.key.second) {
++      if (cell.sourceComponent != region.sourceComponent ||
++          cell.sourceTopologyRegion != region.id ||
++          cell.sourceIsolationSheets.empty()) {
+         result.disposition = SurfaceCellProducerDisposition::Rejected;
+         set_phase_front_failure(
+             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+             cell.id, -1, cell.corners.front().face);
+         return result;
+       }
++      for (const int sheet : cell.sourceIsolationSheets) {
++        coveredIsolationSheets.insert(sheet);
++      }
+       localCoverage = true;
+       cell.id += cellOffset;
+       result.cells.push_back(std::move(cell));
+     }
+-    if (!localCoverage || !coveredSheets.insert(sheet.key).second) {
++    const std::set<int> requiredIsolationSheets(region.isolationSheets.begin(),
++                                                 region.isolationSheets.end());
++    if (!localCoverage || coveredIsolationSheets != requiredIsolationSheets ||
++        !coveredRegions.insert(region.id).second) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+       set_phase_front_failure(
+           result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+-          -1, -1, sheet.faces.empty() ? -1 : sheet.faces.front());
++          -1, -1, region.sourceFaces.empty() ? -1 : region.sourceFaces.front());
+       return result;
+     }
+     for (SurfaceFrontEdge &edge : local.edges) {
+-      if (edge.sourceComponent != sheet.key.first ||
+-          edge.sourceSheet != sheet.key.second) {
++      if (edge.sourceComponent != region.sourceComponent ||
++          edge.sourceTopologyRegion != region.id) {
+         result.disposition = SurfaceCellProducerDisposition::Rejected;
+         set_phase_front_failure(
+             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+-            -1, -1, sheet.faces.empty() ? -1 : sheet.faces.front());
++            -1, -1, region.sourceFaces.empty() ? -1 : region.sourceFaces.front());
+         return result;
+       }
+       edge.filledCell += cellOffset;
+-      if (edge.oppositeEdge >= 0) {
+-        edge.oppositeEdge += edgeOffset;
+-      }
++      if (edge.oppositeEdge >= 0) edge.oppositeEdge += edgeOffset;
+       result.edges.push_back(std::move(edge));
+     }
+     for (SurfaceFrontEvent &event : local.events) {
+-      if (event.firstEdge >= 0) {
+-        event.firstEdge += edgeOffset;
+-      }
+-      if (event.secondEdge >= 0) {
+-        event.secondEdge += edgeOffset;
+-      }
++      if (event.firstEdge >= 0) event.firstEdge += edgeOffset;
++      if (event.secondEdge >= 0) event.secondEdge += edgeOffset;
+       result.events.push_back(std::move(event));
+     }
+     cellOffset = static_cast<int>(result.cells.size());
+     edgeOffset = static_cast<int>(result.edges.size());
+   }
+ 
+-  if (coveredSheets.size() != sheets.size()) {
++  if (coveredRegions.size() != result.topologyRegions.size()) {
+     result.disposition = SurfaceCellProducerDisposition::Rejected;
+     set_phase_front_failure(
+         result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage);
+     return result;
+   }
+   result.succeeded = !result.cells.empty();
+-  if (result.succeeded) {
+-    result.disposition = SurfaceCellProducerDisposition::Produced;
+-  }
++  if (result.succeeded) result.disposition = SurfaceCellProducerDisposition::Produced;
+   return result;
+ }
+ 
+@@ -8389,6 +8697,8 @@ const char *surface_phase_front_failure_reason_name(
+   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing: return "InvalidBoundedDiskFrontPairing";
+   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryTurn: return "InvalidBoundedDiskBoundaryTurn";
+   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex: return "InvalidBoundedDiskBoundaryIndex";
++  case SurfacePhaseFrontFailureReason::InvalidTopologyRegion: return "InvalidTopologyRegion";
++  case SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport: return "InvalidTopologyRegionTransport";
+   }
+   return "Unknown";
+ }
+@@ -8412,6 +8722,9 @@ SurfaceCellNetwork build_surface_cell_network(
+       surface_cell_tracing_detail::build_uniform_phase_front(
+           vertices, faces, faceAxisX, faceAxisY, targetSize, options,
+           edgeMatching, edgeEffort, edgeTransitions);
++  network.sourceFaceTopologyRegions =
++      network.phaseFront.sourceTopologyRegionByFace;
++  network.topologyRegions = network.phaseFront.topologyRegions;
+   if (network.phaseFront.disposition ==
+       SurfaceCellProducerDisposition::Produced) {
+     network.proposals.reserve(network.phaseFront.cells.size());
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 945bbc5..97a20e4 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -197,6 +197,8 @@ std::uint64_t trace_network_owned_bytes(
+                         vector_owned_bytes(network.authoritativeRails) +
+                         vector_owned_bytes(network.sourceFaceComponents) +
+                         vector_owned_bytes(network.sourceFaceSheets) +
++                        vector_owned_bytes(network.sourceFaceTopologyRegions) +
++                        vector_owned_bytes(network.topologyRegions) +
+                         vector_owned_bytes(network.reliefRootVertices) +
+                         static_cast<std::uint64_t>(
+                             network.reliefRegionLabels.size()) * sizeof(int) +
+@@ -223,6 +225,12 @@ std::uint64_t trace_network_owned_bytes(
+   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
+     bytes += surface_cell_rail_owned_bytes(rail);
+   }
++  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
++    bytes += vector_owned_bytes(region.sourceFaces) +
++             vector_owned_bytes(region.isolationSheets) +
++             vector_owned_bytes(region.boundaryEdgeTopology) +
++             vector_owned_bytes(region.internalIsolationSeamTopology);
++  }
+   return bytes;
+ }
+ 
+@@ -238,6 +246,8 @@ std::uint64_t trace_network_logical_bytes(
+                         vector_logical_bytes(network.authoritativeRails) +
+                         vector_logical_bytes(network.sourceFaceComponents) +
+                         vector_logical_bytes(network.sourceFaceSheets) +
++                        vector_logical_bytes(network.sourceFaceTopologyRegions) +
++                        vector_logical_bytes(network.topologyRegions) +
+                         vector_logical_bytes(network.reliefRootVertices) +
+                         eigen_logical_bytes(network.reliefRegionLabels) +
+                         set_payload_logical_bytes(network.reliefBarrierEdges);
+@@ -265,6 +275,12 @@ std::uint64_t trace_network_logical_bytes(
+   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
+     bytes += vector_logical_bytes(rail.samples);
+   }
++  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
++    bytes += vector_logical_bytes(region.sourceFaces) +
++             vector_logical_bytes(region.isolationSheets) +
++             vector_logical_bytes(region.boundaryEdgeTopology) +
++             vector_logical_bytes(region.internalIsolationSeamTopology);
++  }
+   return bytes;
+ }
+ 
+@@ -899,6 +915,18 @@ std::uint64_t hash_trace_network(
+   }
+   hash_vector(seed, network.sourceFaceComponents);
+   hash_vector(seed, network.sourceFaceSheets);
++  hash_vector(seed, network.sourceFaceTopologyRegions);
++  hash_combine_u64(seed, network.topologyRegions.size());
++  for (const auto &region : network.topologyRegions) {
++    hash_combine_i64(seed, region.id);
++    hash_combine_i64(seed, region.sourceComponent);
++    hash_combine_i64(seed, region.eulerCharacteristic);
++    hash_combine_i64(seed, region.boundaryLoopCount);
++    hash_combine_u64(seed, region.structuralHash);
++    hash_vector(seed, region.isolationSheets);
++    hash_vector(seed, region.boundaryEdgeTopology);
