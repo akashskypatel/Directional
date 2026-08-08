@@ -70,9 +70,9 @@ Do not repair the ten historical completion/simplification failures merely becau
 
 ## Required verification sequence
 
-Next Code + Build: execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md` and compile/package seven approved targets without project runtime execution.
+The transition-quotient Code + Build is complete: exact artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, Release/static/Ninja **111/111**, `runtimeExecution=false`.
 
-Following artifact-only validation:
+Next artifact-only validation under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`:
 
 1. verify exact artifact/source/checksum/build boundary;
 2. restore and rerun all 17 G0-G3 focused/retained contracts;

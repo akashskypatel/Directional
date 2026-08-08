@@ -86,6 +86,8 @@ The implementation must preserve both identities. Never overwrite a local isolat
 
 Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is the current artifact-only runtime observation for the topology-region architecture. It proves the new region/seam model is live, but it is **not an accepted retained-authority closure** because two prior contracts regress.
 
+New compile-valid candidate artifact **`9024549134`**, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, implements the review-approved transition quotient and retained-authority correction. Its Release/static/Ninja build completed **111/111** with `runtimeExecution=false`; therefore it changes no runtime conclusion until the mandatory artifact-only turn executes it.
+
 | Fixture | Candidate result | Candidate hash | Accepted hash | Decision |
 |---|---|---|---|---|
 | plane | 81 V / 64 strict-valid quads | `730caeae49ec872c` | same | exact pass |
@@ -211,16 +213,16 @@ Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, exact artifact **
 
 Exact torus now has four annular topology regions, eight internal isolation seams, local-isolation cardinalities `[1,1,2,1]`, and four periodic relations. Phase-front authority reaches `Produced` and the former `InvalidBoundedDiskBoundaryTurn` no longer occurs. The next failure is **`tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`**.
 
-The materializer has not yet adopted the same authority model: multi-isolation region cells normalize to `sourceSheet=-1`, while `build_authoritative_phase_front_mesh()` still rejects negative `sourceSheet` and keys lattice/periodic materialization by `(component, sheet, lattice)`. Independent review rejects a simple replacement with `(component, topologyRegion, lattice)` because charts can overlap. The approved model is the explicit transition quotient above.
+In runtime artifact `9022061741`, the materializer had not adopted the same authority model: multi-isolation region cells normalized to `sourceSheet=-1`, while `build_authoritative_phase_front_mesh()` rejected negative `sourceSheet` and keyed lattice/periodic materialization by `(component, sheet, lattice)`. Independent review rejected a simple replacement with `(component, topologyRegion, lattice)` because charts can overlap. Candidate artifact `9024549134` compiles the explicit transition quotient above; its runtime consumption remains to be proven.
 
-Runtime acceptance remains blocked by:
+Entering runtime acceptance under artifact `9022061741` remains blocked by:
 
 1. embedded relief barrier semantics currently regress fail-closed authority, and one vertex-fan path can treat non-embedded relief as blocking;
 2. direct materialization lacks multi-isolation, exact rail, full periodic-transform, and chart-overlap-safe quotient authority;
 3. `retainIntermediateGeometry` loses the trace network on a materialization failure despite its public contract;
 4. direct completion hard-codes component/Euler metadata rather than computing it.
 
-The exact torus fixture and retention expectation are valid. Its fatal `hasTraceNetwork` assertion is ordered poorly because it masks already available topology diagnostics. The approved correction separates public topology/seam assertions from a focused failure-path retention test and fixes the production retention order.
+The exact torus fixture and retention expectation are valid. Its fatal `hasTraceNetwork` assertion is ordered poorly because it masks already available topology diagnostics. Candidate artifact `9024549134` separates public topology/seam assertions from a focused failure-path retention test and fixes the production retention order; runtime verification is pending.
 
 Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
@@ -232,9 +234,9 @@ The prescribed sphere remains deferred until exact torus reaches direct strict-v
 
 ## Current next authority
 
-Mandatory independent review is complete with decision **Approved with amendments**. `SurfaceTopologyRegion` is retained; embedded relief moves beneath it as internal barrier/cut authority; close-sheets raw component order is not cross-version semantic authority; failure-path retention is a documented product contract; and materialization must use explicit reciprocal transition connectivity rather than a lattice/position key.
+Mandatory independent review is complete with decision **Approved with amendments**. The authorized Code + Build has now produced exact artifact **`9024549134`** from implementation `7f486632b154a303789df6c4dd44f602c8c71281`; its source/checksum/build evidence is recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
 
-The only authorized next turn is **Code + Build** under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`. It may implement the bounded producer/materializer/lineage/test migration and compile/package the seven approved targets, but it may not execute generated project runtime. The mandatory following turn is artifact-only Test + Benchmark.
+The only authorized next turn is **artifact-only Test + Benchmark** under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`. It must verify immutable authority first, then execute focused quotient/relief/retention/digest cases, retained suites, deterministic direct G0-G3 fixtures, and exact torus in at least three independent processes. It may not edit source or configure/compile/relink/regenerate a replacement.
 
 ## Non-negotiable prohibitions
 

@@ -43,7 +43,7 @@ Bounded suites: producer **124/127**, completion/simplification **154/164**, val
 Detailed runtime authority:
 `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
 
-Mandatory independent review is complete with decision **Approved with amendments**. The next turn is Code + Build only under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`; the mandatory following turn is artifact-only Test + Benchmark.
+Mandatory independent review is complete with decision **Approved with amendments**. Its authorized implementation compiled as exact artifact **`9024549134`**, commit `7f486632b154a303789df6c4dd44f602c8c71281`, Release/static/Ninja **111/111**, with `runtimeExecution=false`. The next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Producer-authority contracts
 
@@ -95,7 +95,7 @@ Do not union local labels by counts, IDs, frequency, discovery order, topology s
 
 ## Transition-quotient materialization contract — review approved
 
-Runtime evidence proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but current materialization still requires one representative `sourceSheet` and keys identity by `(component, sheet, lattice)` plus a position check.
+Runtime artifact `9022061741` proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but its materializer still requires one representative `sourceSheet` and keys identity by `(component, sheet, lattice)` plus a position check. Candidate artifact `9024549134` compiles the explicit transition quotient below; this contract is not accepted until artifact-only execution proves it is consumed.
 
 Equal integer coordinates are not output vertex identity because charts may overlap. Approved tests must require:
 
@@ -139,7 +139,7 @@ A changed error name is not progress by itself; real gate progress requires firs
 
 ## Exact torus and failure-path retention contracts — review approved
 
-`ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` currently aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior, and the public `retainIntermediateGeometry` documentation makes the retention expectation valid.
+Under runtime artifact `9022061741`, `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior, and the public `retainIntermediateGeometry` documentation makes the retention expectation valid. Candidate artifact `9024549134` compiles the retention-order correction and separated assertions; runtime proof is pending.
 
 Fix production retention before a materialization failure, then separate the assertions:
 
@@ -185,7 +185,7 @@ Current artifact `9022061741` bounded totals:
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is the review-approved Code + Build; its following turn is immutable artifact-only Test + Benchmark.
+The current next turn is immutable artifact-only Test + Benchmark using only exact artifact `9024549134` after checksum/source verification. No rebuild or source/test/fixture/validator edit is permitted.
 
 ## Validity and prohibitions
 

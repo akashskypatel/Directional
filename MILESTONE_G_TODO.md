@@ -4,7 +4,7 @@ Last updated: 2026-08-08 UTC
 
 ## Current gate
 
-G0 truthful authority [passed baseline; candidate relief regression] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 periodic closure / holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
+G0 truthful authority [passed baseline; relief correction compiled and awaiting runtime] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 periodic closure / holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
 ## Mandatory review complete
 
@@ -23,12 +23,20 @@ Independent decision: **Approved with amendments**.
 Review report:
 `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`
 
-## Authoritative next turn
+## Completed Code + Build
 
-**Code + Build only** under:
-`.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`
+Implementation `7f486632b154a303789df6c4dd44f602c8c71281` is packaged in exact artifact **`9024549134`**:
 
-Required implementation slices:
+- cleanup/build authority `718b978dcd0fab66da67810e00661468fc11038f`;
+- run/job `31267020112 / 93126709005`;
+- outer ZIP SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
+- internal manifest `d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5`;
+- recursive checksums **48/48**;
+- Release/static/Ninja **111/111**, `runtimeExecution=false`;
+- no generated project binary/test/benchmark runtime executed;
+- bounded workflow, trigger, and all payloads removed after evidence verification.
+
+Compiled implementation slices:
 
 1. relief authority and complete embedded-flag audit;
 2. explicit front side/boundary/rail/periodic ownership;
@@ -51,20 +59,28 @@ Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e74
 - exact torus: four annular regions, eight internal seams, one multi-isolation region, four periodic relations, then `InvalidAuthoritativePhaseFrontCell`;
 - no fallback/recovery.
 
-## Following artifact-only acceptance
+Compile report:
+`.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`
+
+## Authoritative next turn
+
+**Artifact-only Test + Benchmark** under:
+`.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`
+
+## Next artifact-only acceptance
 
 - retained G0-G3 restored to **17/17**;
 - all existing focused topology/polygonal/periodic/validation/API authority retained;
 - plane/seam/cylinder accepted raw hashes retained and deterministic 3/3;
-- close sheets remains strict-valid with exactly two source-disconnected components, candidate raw hash deterministic 3/3, and canonical semantic digest equal to accepted artifact authority;
+- close sheets remains strict-valid with exactly two source-disconnected components, candidate raw hash deterministic 3/3, semantic digest permutation/mutation behavior proven, and all exact accepted/candidate authority compared without inventing a field absent from the older artifact;
 - exact torus succeeds directly in three independent processes with one component, no boundary loops, Euler zero, strict-valid pure quads, complete provenance, all region/relation authority consumed, and no fallback/recovery;
 - focused failure path retains trace context iff requested;
 - sphere remains deferred until torus passes.
 
 Do not predict torus output counts, change validators/tolerances, select authority by ID/order/count/frequency, weld by position, use fallback/recovery, or repair topology synthetically.
 
-## Build boundary
+## Artifact-only boundary
 
-Release/static/Ninja, GoogleTest discovery `PRE_TEST`; compile/link only the established seven core/pipeline/benchmark/test targets. Execute no generated project runtime. Package/checksum exact evidence and clean bounded workflow/trigger/payload state after authority verification.
+Use only immutable artifact `9024549134` after verifying its outer digest, **48/48** recursive manifest, source blobs, dependencies, fixtures, and `runtimeExecution=false` metadata. Do not edit packaged/source authority, configure, compile, link, regenerate discovery, or substitute a replacement artifact. Runtime begins with focused quotient/relief/retention/digest semantics, then retained groups, direct deterministic fixtures, and exact torus in at least three independent processes.
 
 Every completed turn ends with a new top-level PR #8 conversation comment as the final repository write. PR #8 remains open, draft, unmerged.

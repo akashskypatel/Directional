@@ -28,7 +28,7 @@ G3 is formally closed.
 
 Artifact `9022061741`, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, advances exact torus to four annular topology regions, eight internal isolation seams, four periodic relations, and phase-front `Produced`. The current first invalid stage is `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell` because one region spans two local isolation sheets.
 
-Mandatory independent review is complete **Approved with amendments**. Execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`.
+Mandatory independent review is complete **Approved with amendments**. Its authorized correction compiled as exact artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, with Release/static/Ninja **111/111** and `runtimeExecution=false`. Execute `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md` next.
 
 Priority:
 
@@ -38,7 +38,7 @@ Priority:
 4. preserve complete chart/local-isolation/topology-region lineage while keeping scalar `SurfacePoint`;
 5. compute manifold/components/boundary/Euler facts from incidence and honor failure-path intermediate retention;
 6. add a component-order-independent semantic digest while retaining raw same-artifact determinism;
-7. compile/package the seven approved targets without project runtime; the following artifact-only turn must restore **17/17** retained contracts and produce a connected, closed, Euler-zero, strict-valid direct torus.
+7. verify and execute only immutable artifact `9024549134`; restore **17/17** retained contracts and require a connected, closed, Euler-zero, strict-valid direct torus.
 
 ## Later G4 singularity objective
 

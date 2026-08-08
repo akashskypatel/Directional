@@ -5,14 +5,15 @@ Last updated: 2026-08-08 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- G0 truthful authority: **passed baseline; embedded-relief behavior is regressed in current candidate artifact**.
+- G0 truthful authority: **passed baseline; embedded-relief correction compiled in the new candidate and awaits runtime validation**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - G2 cross-chart / close-sheet isolation: **passed**; raw component serialization order is not cross-version semantic authority.
 - G3 periodic closure / holonomy: **passed**.
 - G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **mandatory independent Review — Approved with amendments**.
-- Next turn: **Code + Build only**.
-- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`.
+- Completed turn: **Code + Build — transition-quotient materialization and retained authority**.
+- Next turn: **artifact-only Test + Benchmark**.
+- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
+- Compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
 - Review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, unmerged.
@@ -30,7 +31,22 @@ Exact artifact **`9022061741`** remains the current immutable runtime observatio
 - retained G0-G3 **16/17**;
 - producer **124/127**, completion/simplification **154/164**, validation **60/60**, API **8/8**.
 
-No implementation or runtime claim was made during Review. The artifact remains evidence of the current state, not accepted G4 closure.
+No new runtime claim is made by the completed Code + Build. Artifact `9022061741` remains the entering runtime observation, not accepted G4 closure.
+
+## New compile-valid candidate — artifact 9024549134
+
+The review-approved migration is compiled and packaged without runtime execution:
+
+- implementation `7f486632b154a303789df6c4dd44f602c8c71281`;
+- cleanup/build authority `718b978dcd0fab66da67810e00661468fc11038f`;
+- workflow run/job `31267020112 / 93126709005`;
+- outer ZIP SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
+- internal manifest `d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5`;
+- recursive checksums **48/48**;
+- Release/static/Ninja build **111/111**, metadata `runtimeExecution=false`;
+- temporary workflow, trigger, and payloads removed after evidence verification.
+
+The candidate adds explicit side/boundary/relation ownership, exact hard-rail pairing, a transition-aware cell-corner quotient, complete equivalence lineage, incidence-derived topology, failure-path intermediate retention, corrected relief ownership, and a component-order-independent semantic output digest. Compilation is not runtime acceptance.
 
 ## Independent review disposition
 
@@ -66,7 +82,7 @@ Current deterministic observation:
 - four periodic relations;
 - no fallback/recovery or partial output.
 
-Required following Test + Benchmark result after the authorized Code + Build:
+Required next artifact-only Test + Benchmark result:
 
 - direct success in at least three independent processes;
 - strict-valid pure quads, complete lineage, all four regions/relations consumed;
@@ -80,10 +96,10 @@ Prescribed sphere remains deferred until this torus slice closes.
 
 The raw hashes `89b052762f52a5af` and `aaec5574aa2e52f9` differ only by connected-component emission order. Both are deterministic on their own artifacts; geometry, connectivity, and source separation are equivalent. Neither is a cross-version semantic golden.
 
-The authorized Code + Build adds a canonical component-order-independent connectivity/provenance digest. The following artifact-only turn must compare that digest across accepted/candidate artifacts and separately require 3/3 repeatability of each candidate raw hash.
+The new candidate adds a canonical component-order-independent connectivity/provenance digest. The artifact-only turn must require its focused permutation/mutation proofs, compare all exact accepted/candidate authority available from immutable artifacts, and separately require 3/3 repeatability of each candidate raw hash. It may not fabricate a field absent from the older artifact.
 
 ## Turn boundary
 
-The next Code + Build may edit only the bounded producer/materializer/lineage/diagnostic/hash/tests scope, configure, compile, link the seven approved targets, and package exact evidence with `runtimeExecution=false`. It may not execute generated Directional binaries, tests, benchmarks, `ctest`/discovery, CLI/GUI, help/list, or custom-input commands.
+The next Test + Benchmark may execute only artifact `9024549134` and immutable packaged inputs after exact checksum/source verification. It may not edit production/test/fixture/validator/benchmark/build source, configure, compile, relink, regenerate discovery, or create a replacement artifact.
 
 Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes. PR #8 remains open, draft, unmerged.

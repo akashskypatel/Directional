@@ -8,15 +8,19 @@ Draft PR: #8 — keep **open, draft, unmerged**
 Configured optional review policy: `never`
 Mandatory review override: **completed — Approved with amendments**
 Active gate: **G4 topology-distinct completion and singularities**
-Next turn: **Code + Build only**
-Authoritative next plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`
+Completed turn: **Code + Build — transition-quotient materialization and retained authority**
+Next turn: **artifact-only Test + Benchmark**
+Authoritative next plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Plan.md`
+Latest compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`
 Independent review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`
 Review planning commit: `d1805cac76535f326720bb86b845117e92e59e21`
-Handoff content commit: `d1805cac76535f326720bb86b845117e92e59e21`
+Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
+Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
+Handoff content commit: **pending documentation publication**
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the independent review report, the authoritative Code + Build plan, the latest runtime report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references. Load the integrated unit-testing module before editing the focused tests.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the independent review report, the latest compile report, the authoritative artifact-only plan, the entering runtime report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references.
 
-The Code + Build turn may implement only the bounded producer/materializer/lineage/diagnostic/hash/test changes in the authoritative plan, configure, compile/link the seven approved targets, and package exact evidence. It must not execute generated project binaries, tests, benchmarks, `ctest`/discovery, CLI/GUI, help/list, or custom-input commands.
+The Test + Benchmark turn may use only exact artifact `9024549134` and its immutable packaged inputs after authority verification. It must not edit production/test/fixture/validator/benchmark/build source, configure, compile, relink, regenerate discovery, or substitute a replacement artifact.
 
 ## Review decision now controlling
 
@@ -72,6 +76,29 @@ Focused/runtime authority on this artifact:
 
 Detailed runtime record: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
 
+## New compile authority — runtime not yet executed
+
+Exact candidate artifact: **`9024549134`** (`g4-transition-quotient-code-build`)
+Workflow run/job: **`31267020112 / 93126709005`**
+Workflow event: **`fbf95650919865832ca93c60caaee9d001c95ffd`**
+Implementation: **`7f486632b154a303789df6c4dd44f602c8c71281`**
+Payload cleanup/build: **`718b978dcd0fab66da67810e00661468fc11038f`**
+
+Artifact authority:
+
+- outer ZIP SHA-256 `4d58454694668aecd30c394168dcceee9f01d5cb2999f111eefd1a720d2d80dd`;
+- internal manifest SHA-256 `d882776c1f92543ff9d2ca8b6acd5d4662419e2f2f4316afc505579db6e29ef5`;
+- recursive checksums **48/48**;
+- log artifact `9024549261`, outer SHA-256 `7e17330cb10e2c0fff9e55a7511998f4ec1d6666c3dccbb981eb7b105776ebc1`;
+- **49 files / 27 fixtures / five executables / two project static libraries**;
+- Release/static/Ninja build **111/111**, GoogleTest discovery `PRE_TEST`;
+- metadata `runtimeExecution=false`, review policy `never`;
+- decoded source patch SHA-256 `bf297294431183f9eda53d80b8ce174c33471fd96f2a9ccb446beba407915172`;
+- packaged source archive SHA-256 `a1f0f3b9cb19e01742138a3ccc9b58f91e6e885e5bcaaf4c61856cce01bb54cb`;
+- bounded workflow cleanup `160771335e037f89f4aa5ca07c5da61af668741c`, trigger cleanup `09b333123e75ea04c3b375c08c29c6495eff1188`.
+
+No packaged or generated Directional binary, test, benchmark, `ctest`, discovery, CLI/GUI, help/list, or custom-input command ran during Code + Build. Compilation is not a runtime claim.
+
 ## Exact torus — topology architecture live, extraction contract blocks
 
 Three independent direct processes deterministically report:
@@ -98,9 +125,9 @@ This is real advancement from `InvalidBoundedDiskBoundaryTurn`. The first visibl
 
 Do not patch only `sourceSheet=-1` or replace `sheet` with `topologyRegion` in the key.
 
-## Authoritative Code + Build objective
+## Compiled candidate contract
 
-Execute the successor plan as one bounded contract migration:
+Implementation `7f486632...` compiles the review-approved bounded contract migration:
 
 1. retain parent topology regions and model embedded relief internally;
 2. audit relief flag usage and restore terminal ownership;
@@ -111,9 +138,9 @@ Execute the successor plan as one bounded contract migration:
 7. derive exterior loops, manifoldness, components, and Euler from output incidence;
 8. retain trace context before materialization can fail when requested;
 9. add a component-order-independent semantic digest and focused counterfactual tests;
-10. compile/package only—no runtime.
+10. package immutable runtime authority without executing it.
 
-Approved targets:
+Compiled targets:
 
 - `directional_core`;
 - `directional_pipeline`;
@@ -123,9 +150,9 @@ Approved targets:
 - `directional_surface_cell_completion_tests`;
 - `directional_surface_cell_validation_tests`.
 
-Release/static/Ninja and GoogleTest discovery `PRE_TEST` remain mandatory.
+Release/static/Ninja and GoogleTest discovery `PRE_TEST` were verified.
 
-## Following Test + Benchmark acceptance
+## Authoritative next Test + Benchmark acceptance
 
 The next runtime turn must use only the immutable artifact from the Code + Build and require:
 
@@ -133,7 +160,7 @@ The next runtime turn must use only the immutable artifact from the Code + Build
 - retained G0-G3 restored to **17/17**;
 - validation **60/60** and API **8/8** retained;
 - plane/seam/cylinder accepted raw hashes preserved and deterministic 3/3;
-- close sheets remains 200 quads / 242 vertices / exactly two source-disconnected components, candidate raw hash deterministic 3/3, canonical semantic digest equal to the accepted artifact's digest;
+- close sheets remains 200 quads / 242 vertices / exactly two source-disconnected components, candidate raw hash deterministic 3/3, focused semantic-digest invariance/sensitivity passes, and every exact accepted/candidate field available from immutable artifacts agrees without inventing an older missing field;
 - exact torus direct success in at least three independent processes, strict-valid pure quads, complete lineage, all four regions/eight seams/four relations consumed, one component, zero boundary loops, Euler zero, no fallback/recovery;
 - focused failure-path trace retention iff requested;
 - no predicted/golden torus vertex or quad count.
@@ -188,10 +215,10 @@ Never combine turn types.
 
 - Code + Build may edit/configure/compile/link approved targets, but may not execute generated project binaries/tests/benchmarks/`ctest`/CLI/GUI/help/list/discovery.
 - Test + Benchmark executes the exact built artifact and may not edit production/test/fixture/validator/benchmark/build source or configure/compile/relink/regenerate a replacement.
-- Review remains optional with configured policy `never` unless a process guard activates it. The current mandatory review intervention is complete; the one review-approved Code + Build is authorized.
+- Review remains optional with configured policy `never` unless a process guard activates it. The mandatory review intervention and its one review-approved Code + Build are complete; the artifact-only result now controls the next transition.
 - Build and runtime claims require exact pushed/evidence commit and artifact authority.
 - Direct mandatory fixture/gate evidence outranks aggregate totals.
-- Two consecutive Code + Build turns without accepted material progress require mandatory design review or bounded producer-replacement proof. The prior count reached **2** and this review satisfied that intervention; do not bypass the review-approved plan.
+- Two consecutive Code + Build turns without accepted material progress require mandatory design review or bounded producer-replacement proof. The prior count reached **2**, review satisfied that intervention, and its approved candidate is now compiled. Decide the next process state only from artifact `9024549134` runtime evidence; do not count compile success as runtime material progress.
 
 ## Workflow/temp cleanup — mandatory
 
@@ -203,7 +230,7 @@ Never combine turn types.
 6. Do not remove a durable dependency required by normal repository operation.
 7. Retain payload/source-transfer data until its authority is verified, then remove it.
 
-Expected review-close state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again before starting the next Code + Build.
+Verified Code + Build close state: `.github/workflows` contains only `agent-source-snapshot.yml`; the bounded workflow, connector trigger, and all four turn payloads are absent. Verify again before and after the artifact-only turn.
 
 ## Documentation cleanup — mandatory
 
