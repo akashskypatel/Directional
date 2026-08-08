@@ -1,0 +1,190 @@
+-    for (std::size_t index = 0; index < verticesOnSide.size(); ++index) {
+-      if (index > 0) {
+-        cumulative +=
+-            (row3(vertices, verticesOnSide[index]) -
+-             row3(vertices, verticesOnSide[index - 1U]))
+-                .norm();
++  double width = 0.0;
++  double height = 0.0;
++  double chartAreaScale = 1.0;
++  if (phaseRecord.rectangular) {
++    // Preserve the established four-run rectangle semantics exactly: opposite
++    // intrinsic side lengths are averaged before boundary parameterization.
++    width = 0.5 * (phaseRecord.runs[0].intrinsicLength +
++                   phaseRecord.runs[2].intrinsicLength);
++    height = 0.5 * (phaseRecord.runs[1].intrinsicLength +
++                    phaseRecord.runs[3].intrinsicLength);
++    if (!(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
++        !std::isfinite(height)) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
++      return result;
++    }
++    const std::array<Eigen::Vector2d, 4> sideStart{
++        Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(width, 0.0),
++        Eigen::Vector2d(width, height), Eigen::Vector2d(0.0, height)};
++    const std::array<Eigen::Vector2d, 4> sideEnd{
++        Eigen::Vector2d(width, 0.0), Eigen::Vector2d(width, height),
++        Eigen::Vector2d(0.0, height), Eigen::Vector2d(0.0, 0.0)};
++    for (int side = 0; side < 4; ++side) {
++      auto &run = phaseRecord.runs[static_cast<std::size_t>(side)];
++      run.chartStart = sideStart[static_cast<std::size_t>(side)];
++      run.chartEnd = sideEnd[static_cast<std::size_t>(side)];
++      double cumulative = 0.0;
++      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
++        if (index > 0) {
++          cumulative +=
++              (row3(vertices, run.sourceVertices[index]) -
++               row3(vertices, run.sourceVertices[index - 1U]))
++                  .norm();
++        }
++        const double alpha = std::clamp(cumulative / run.intrinsicLength,
++                                        0.0, 1.0);
++        const Eigen::Vector2d uv = run.chartStart +
++                                   alpha * (run.chartEnd - run.chartStart);
++        const int vertex = run.sourceVertices[index];
++        const auto existing = vertexUv.find(vertex);
++        if (existing != vertexUv.end() &&
++            (existing->second - uv).norm() >
++                1.0e-10 * std::max({1.0, width, height})) {
++          result.disposition = SurfaceCellProducerDisposition::Rejected;
++          set_phase_front_failure(
++              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
++              -1, -1, -1, -1, vertex);
++          return result;
++        }
++        vertexUv[vertex] = uv;
+       }
+-      const double alpha = std::clamp(
+-          cumulative / sideLength[static_cast<std::size_t>(side)], 0.0, 1.0);
+-      const Eigen::Vector2d uv =
+-          sideStart[static_cast<std::size_t>(side)] +
+-          alpha * (sideEnd[static_cast<std::size_t>(side)] -
+-                   sideStart[static_cast<std::size_t>(side)]);
+-      const int vertex = verticesOnSide[index];
+-      const auto existing = vertexUv.find(vertex);
+-      if (existing != vertexUv.end() &&
+-          (existing->second - uv).norm() >
+-              1.0e-10 * std::max({1.0, width, height})) {
+-        result.disposition = SurfaceCellProducerDisposition::Rejected;
+-        set_phase_front_failure(
+-            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+-            -1, -1, -1, -1, vertex);
+-        return result;
++    }
++    phaseRecord.polygonClosed = true;
++    chartAreaScale = std::max(1.0, width * height);
++  } else {
++    // Develop the source-attached run sequence into its intrinsic orthogonal
++    // polygon.  No run is inserted, deleted, split, merged, or length-corrected.
++    std::vector<Eigen::Vector2d> polygonCorners(
++        phaseRecord.runs.size() + 1U, Eigen::Vector2d::Zero());
++    const auto chart_direction = [&](const int branch) {
++      switch (normalized_branch(branch - chartUBranch)) {
++      case 0: return Eigen::Vector2d(1.0, 0.0);
++      case 1: return Eigen::Vector2d(0.0, 1.0);
++      case 2: return Eigen::Vector2d(-1.0, 0.0);
++      default: return Eigen::Vector2d(0.0, -1.0);
++      }
++    };
++    for (std::size_t runIndex = 0; runIndex < phaseRecord.runs.size(); ++runIndex) {
++      auto &run = phaseRecord.runs[runIndex];
++      run.chartStart = polygonCorners[runIndex];
++      run.chartEnd = run.chartStart +
++                     run.intrinsicLength * chart_direction(run.branch);
++      polygonCorners[runIndex + 1U] = run.chartEnd;
++    }
++    const double polygonTolerance =
++        1.0e-10 * std::max(1.0, phaseRecord.totalIntrinsicLength);
++    if ((polygonCorners.back() - polygonCorners.front()).norm() >
++        polygonTolerance) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
++      return result;
++    }
++    polygonCorners.back() = polygonCorners.front();
++    phaseRecord.runs.back().chartEnd = polygonCorners.front();
++    phaseRecord.polygonClosed = true;
++
++    const auto cross2 = [](const Eigen::Vector2d &a,
++                           const Eigen::Vector2d &b) {
++      return a.x() * b.y() - a.y() * b.x();
++    };
++    double signedDoubleArea = 0.0;
++    Eigen::Vector2d minimum = polygonCorners.front();
++    Eigen::Vector2d maximum = polygonCorners.front();
++    for (std::size_t index = 0; index < phaseRecord.runs.size(); ++index) {
++      signedDoubleArea +=
++          cross2(polygonCorners[index], polygonCorners[index + 1U]);
++      minimum = minimum.cwiseMin(polygonCorners[index]);
++      maximum = maximum.cwiseMax(polygonCorners[index]);
++    }
++    width = maximum.x() - minimum.x();
++    height = maximum.y() - minimum.y();
++    chartAreaScale = std::max(1.0, width * height);
++    if (!(signedDoubleArea > 1.0e-14 * chartAreaScale) ||
++        !(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
++        !std::isfinite(height)) {
++      result.disposition = SurfaceCellProducerDisposition::Rejected;
++      set_phase_front_failure(
++          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
++      return result;
++    }
++
++    const auto point_on_segment = [&](const Eigen::Vector2d &point,
++                                      const Eigen::Vector2d &a,
++                                      const Eigen::Vector2d &b) {
++      const Eigen::Vector2d ab = b - a;
++      const Eigen::Vector2d ap = point - a;
++      if (std::abs(cross2(ab, ap)) > polygonTolerance) return false;
++      return point.x() >= std::min(a.x(), b.x()) - polygonTolerance &&
++             point.x() <= std::max(a.x(), b.x()) + polygonTolerance &&
++             point.y() >= std::min(a.y(), b.y()) - polygonTolerance &&
++             point.y() <= std::max(a.y(), b.y()) + polygonTolerance;
++    };
++    const auto segments_intersect = [&](const Eigen::Vector2d &a,
++                                        const Eigen::Vector2d &b,
++                                        const Eigen::Vector2d &c,
++                                        const Eigen::Vector2d &d) {
++      const double abC = cross2(b - a, c - a);
++      const double abD = cross2(b - a, d - a);
++      const double cdA = cross2(d - c, a - c);
++      const double cdB = cross2(d - c, b - c);
++      if (((abC > polygonTolerance && abD < -polygonTolerance) ||
++           (abC < -polygonTolerance && abD > polygonTolerance)) &&
++          ((cdA > polygonTolerance && cdB < -polygonTolerance) ||
++           (cdA < -polygonTolerance && cdB > polygonTolerance))) {
++        return true;
++      }
++      return (std::abs(abC) <= polygonTolerance && point_on_segment(c, a, b)) ||
++             (std::abs(abD) <= polygonTolerance && point_on_segment(d, a, b)) ||
++             (std::abs(cdA) <= polygonTolerance && point_on_segment(a, c, d)) ||
++             (std::abs(cdB) <= polygonTolerance && point_on_segment(b, c, d));
++    };
++    for (std::size_t first = 0; first < phaseRecord.runs.size(); ++first) {
++      for (std::size_t second = first + 1U;
++           second < phaseRecord.runs.size(); ++second) {
++        const bool adjacent = second == first + 1U ||
++            (first == 0U && second + 1U == phaseRecord.runs.size());
++        if (adjacent) continue;
++        if (segments_intersect(polygonCorners[first], polygonCorners[first + 1U],
++                               polygonCorners[second],
++                               polygonCorners[second + 1U])) {
++          result.disposition = SurfaceCellProducerDisposition::Rejected;
++          set_phase_front_failure(
++              result.failure,
++              SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
++          return result;
++        }
++      }
++    }
++
++    const double uvTolerance =
++        1.0e-10 * std::max({1.0, width, height});
++    for (auto &run : phaseRecord.runs) {
++      double cumulative = 0.0;
++      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
++        if (index > 0) {
++          cumulative +=
