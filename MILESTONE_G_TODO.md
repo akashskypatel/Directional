@@ -6,70 +6,61 @@ Last updated: 2026-08-08 UTC
 
 G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 cylinder / periodic holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## Runtime authority — artifact 9016834575
+## Current runtime authority — artifact 9016834575
 
-The curved-disk candidate is now runtime-proven artifact-only:
+The current runtime-proven curved-disk authority remains:
 
-- artifact `9016834575`, workflow run/job `31240168780 / 93059691196`;
-- implementation `90046be649a0fd051e6c44eceec07198dc542c29`;
-- cleanup `508211936b790dfb40cdbece7900bb0522368b76`;
-- ZIP SHA-256 `6bf7f897926ffeb4634edba67390f60070f8d1413f97bc41fac4435f6ae28e67`;
-- internal manifest SHA-256 `e0ec3737e23fbb5c21b6c0be6acb3aa8b3f538b954c566867b6c309a6f5f4736`;
-- recursive checksums **48/48**;
 - curved-disk semantics **6/6**;
 - sheet coverage **3/3**;
 - G4 relation semantics **5/5**;
-- retained G0-G3 **17/17**.
-
-Direct three-process authority remains unchanged:
-
-- plane hash `730caeae49ec872c`, 64 quads / 81 V;
-- seam hash `5bdf34d7802e9fb0`, 64 quads / 81 V;
-- close sheets hash `89b052762f52a5af`, 200 quads / 242 V / two components;
-- cylinder hash `32135be51d7a0a26`, 288 pure quads / 320 V, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, zero validation failures, two genuine exterior annulus loops;
-- no fallback/recovery.
+- retained G0-G3 **17/17**;
+- exact direct hashes unchanged for plane/seam/close-sheets/cylinder;
+- no passing direct fallback/recovery;
+- exact torus `Rejected / InvalidBoundedDiskTopology` at `tracing/phase-front` on the first non-hard internal edge that is nevertheless an authoritative cross-sheet boundary.
 
 Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Artifact_Only_Test_Benchmark_Report.md`.
 
-## G4 curved-disk decision
+## Source-sheet-boundary Code + Build complete
 
-The curved bounded disk producer is runtime-live. Exact torus advances beyond `UnsupportedSourceSheetTopology` and now fails directly at the authoritative producer boundary:
+Exact artifact **`9019024467`** (`g4-source-sheet-boundary-code-build`) is compile-valid and awaiting artifact-only validation.
 
-- disposition `Rejected`;
-- stage `tracing/phase-front`;
-- reason `InvalidBoundedDiskTopology`;
-- first invalid source face 52;
-- two periodic relations reached before rejection;
-- trace/arrangement/completion counts remain zero after rejection;
-- terminal `NotProductionReady:tracing`;
-- no fallback/recovery.
+- implementation `b425898fa7367406fa0c07e8f4441a37efc01315`;
+- cleanup `3fcfd2cf2996919eed5c951a9148d83deb5aa6f8`;
+- workflow run/job `31247546780 / 93078496378`;
+- ZIP SHA-256 `a26f8acc7301d50cb232e192aa7ffecfda5e84c403d4224a8f1f99f315bd990f`;
+- internal manifest SHA-256 `7bffb8dbf76c1532af0a2c1701db4dcb25df581e233cf18312e62d2c1bca7975`;
+- recursive checksums **48/48**;
+- 49 files / 27 fixtures / five executables / two project static libraries;
+- seven approved targets **111/111**;
+- `runtimeExecution=false`.
 
-Face 52 and relation count 2 are diagnostic evidence only, never implementation or acceptance keys.
+The correction preserves the authoritative distinction:
 
-## Active G4 blocker — non-hard authoritative source-sheet boundaries
+1. genuine source boundary → valid;
+2. hard-feature internal boundary → valid;
+3. non-hard internal edge whose opposite face has a different authoritative component/sheet → valid source-sheet boundary;
+4. non-hard same-component/same-sheet internal edge → invalid hidden cut.
 
-Immutable source inspection identifies the exact contract mismatch.
+No classifier/hard-feature mutation, validator change, fallback/recovery, periodic-authority change or generic completion repair was introduced.
 
-The curved-disk producer currently treats an internal local boundary edge as valid only when it is listed in `hardFeatureEdges`. But authoritative local sheets are created by `classify_source_surface_labels()`, which can also stop traversal across a non-hard internal source edge because of normal incompatibility or close/opposing-sheet separation.
+Compile-only regressions add a real non-hard cross-sheet witness, its same-sheet negative control, row-order invariance and strengthened torus advancement. They have not executed yet.
 
-Required next contract:
+Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Report.md`.
 
-1. genuine source boundary remains valid;
-2. hard-feature internal boundary remains valid;
-3. a non-hard internal local boundary is valid when the opposite source face has a different authoritative component/sheet label;
-4. a non-hard internal edge whose two source incident faces have the same component/sheet remains an invalid hidden cut;
-5. use existing source-label helpers/authority rather than raw IDs/order/counts/proximity;
-6. preserve exact source edge/face/component/sheet provenance and do not mutate hard-feature labels to force acceptance;
-7. advance the exact torus beyond this boundary-authority failure or expose the next truthful typed invariant.
+## Next turn
 
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against artifact `9019024467`.
 
-## Bounded suites
+Required order:
 
-- producer **112/113**; only `SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent` fails and remains classified as the existing sub-millisecond performance threshold;
-- completion/simplification **154/164**, unchanged historical ten failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **334/345**.
+1. exact artifact/source/blob/checksum authority;
+2. three new source-sheet-boundary semantic cases;
+3. retain prior curved-disk 6/6, sheet coverage 3/3, G4 relations 5/5 and G0-G3 17/17;
+4. retain exact deterministic direct plane/seam/close-sheets/cylinder baselines;
+5. classify exact torus in at least three independent processes.
 
-Prescribed sphere remains deferred until torus reaches authoritative materialization/direct strict-valid production. Review policy remains `never`. Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
+The prior non-hard-boundary `InvalidBoundedDiskTopology` terminal result is no longer sufficient. Preferred result is complete authoritative torus materialization/direct strict-valid pure-quad output. A deeper deterministic bounded-disk or materialization invariant is acceptable material progress only when source-sheet boundary authority is runtime-proven live and no generic/fallback path substitutes for producer authority.
+
+Entering bounded-suite baseline remains producer **112/113**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **334/345**. Prescribed sphere remains deferred unless torus reaches direct strict-valid production.
+
+Review policy remains `never`. Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
