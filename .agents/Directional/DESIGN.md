@@ -37,11 +37,11 @@ Applicability derives from general source topology, field state, and first-class
 
 ## Authoritative phase/front representation
 
-The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component, topology-region identity, local isolation-sheet identity, transition edge, ordered route, feature, ownership, and periodic state. Fronts advance only through exact source topology and reciprocal field transport.
+The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component, topology-region identity, local isolation-sheet provenance, transition edge, ordered route, feature, ownership, periodic state, and any bounded-disk phase state. Fronts advance only through exact source topology and reciprocal field transport.
 
 A source-vertex crossing is an ordered incident-face fan, never a positional jump. Every crossed canonical source edge is recorded and transported through strict reciprocal transition logic. Ambiguous, disconnected, repeated, non-manifold, nonreciprocal, missing-provenance, or branch-mismatched routes fail closed.
 
-An authoritative cell has four ordered source-attached corners/sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, exact topology-region/local-sheet provenance, complete route provenance, and any required periodic quotient identity. One accepted authoritative cell maps directly to one output quad.
+An authoritative cell has four ordered source-attached corners/sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, exact topology-region/local-isolation provenance, complete route provenance, and any required periodic quotient identity. One accepted authoritative cell maps directly to one output quad.
 
 Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`.
 
@@ -51,23 +51,23 @@ This distinction is mandatory.
 
 ### Source-topological producer region
 
-A producer region is connected by **exact source-mesh adjacency** and is split only by authority whose semantics require a topological/chart boundary: genuine source boundaries, hard features, embedded hard barriers, or equivalent explicit source constraints.
+A producer region is connected through **exact source-mesh adjacency** and is split only by authority whose semantics require a physical/topological chart boundary: a genuine source boundary, hard feature, embedded relief barrier, different source component, or equivalent explicit source constraint.
 
-Producer applicability, Euler characteristic, boundary-loop classification, annulus/disk topology, exact-once region ownership, and whole-region coverage are determined from this source-topological authority.
+Producer applicability, Euler characteristic, genuine boundary-loop classification, annulus/disk topology, exact-once region ownership, and whole-region coverage are determined from this source-topological authority.
 
 A non-hard shared source edge does **not** become an exterior producer boundary merely because its incident faces have different local isolation-sheet labels.
 
 ### Local isolation sheet
 
-Local sheet labels are a geometric safety partition. They protect proximity/capture/projection/collision/candidate association from jumping between nearby unrelated pieces of surface. The close/opposing-sheet classifier may therefore split one source-topological producer region into several local isolation labels.
+Local isolation labels are a geometric safety partition. They protect proximity/capture/projection/collision/candidate association from jumping between nearby unrelated surface pieces. The close/opposing-sheet classifier may therefore split one source-topological producer region into several local isolation labels.
 
-Different local labels may communicate only through an **exact shared source edge or source-vertex fan** and valid reciprocal field transport. This does not authorize world-space joining, nearest-point welding, or proximity-based ownership.
+Different local labels may communicate only through an **exact shared source edge or ordered source-vertex fan** and valid reciprocal field transport. This does not authorize world-space joining, nearest-point welding, or proximity-based ownership.
 
-A valid non-hard exact-adjacent cross-sheet edge inside one topology region is an **internal isolation seam**, not an exterior chart rail. Crossing it must retain exact transition provenance and both pre/post local-sheet authority.
+A valid non-hard exact-adjacent cross-sheet edge inside one topology region is an **internal isolation seam**, not an exterior chart rail. Crossing it must retain exact transition provenance and both pre/post local-isolation authority.
 
 Hard features and genuine source boundaries remain true topology boundaries. Spatially close but source-disconnected sheets/components remain separate topology regions.
 
-The implementation must preserve both identities. Never overwrite a local sheet label with a topology-region ID or infer a topology-region union from counts, IDs, frequency, discovery order, boundary length, or arbitrary subset search.
+The implementation must preserve both identities. Never overwrite a local isolation label with a topology-region ID or infer a topology-region union from counts, IDs, frequency, discovery order, boundary length, topology score, proximity, or arbitrary subset search.
 
 ## Ordered gates
 
@@ -80,9 +80,9 @@ The implementation must preserve both identities. Never overwrite a local sheet 
 7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Passed G0-G3 runtime authority
+## Current runtime-proven G0-G3 authority
 
-Current artifact `9021175280` preserves the accepted direct authority:
+Exact runtime artifact **`9021175280`** preserves:
 
 | Fixture | Producer | Direct output | Hash | Determinism |
 |---|---|---|---|---|
@@ -97,9 +97,9 @@ Retained G0-G3 focused contracts are **17/17**.
 
 ## G2 isolation invariant
 
-World-space distance, overlap, or nearest projection may not join unrelated sheets. Local sheet identity remains authoritative wherever an operation could otherwise capture or project onto nearby unrelated geometry.
+World-space distance, overlap, or nearest projection may not join unrelated sheets. Local isolation identity remains authoritative wherever an operation could otherwise capture or project onto nearby unrelated geometry.
 
-The new topology-region distinction does **not** weaken this rule. Crossing a local-sheet boundary requires exact source adjacency plus reciprocal source-field transport; proximity alone can never establish continuity.
+Topology-region continuity does **not** weaken this rule. Crossing a local-isolation boundary requires exact source adjacency plus reciprocal source-field transport; proximity alone can never establish continuity.
 
 ## G3 periodic invariant
 
@@ -110,6 +110,8 @@ periodic relation =
   quarter-turn rotation r in Z4
   + integer lattice translation t in Z2
   + ordered canonical source route/cut identity
+  + source-topology-region ownership
+  + retained local-isolation provenance
 ```
 
 Required invariants:
@@ -128,7 +130,7 @@ Required invariants:
 
 Multiple relations may belong to distinct source-topological regions. Relation ownership/basis selection may not use source numeric IDs, discovery order, count/frequency, arbitrary subset search, or proximity.
 
-## Field-authoritative correspondence
+## Field-authoritative correspondence and source geometry
 
 Where source topology admits multiple valid correspondences, source vertex numbering, lexicographic order, candidate count, discovery order/frequency, or proximity are not authority. Enumerate topology-compatible possibilities, propagate reciprocal 4-RoSy family/sign authority, and consume a unique field-authoritative optimum; zero valid candidates or genuine field-equivalent ambiguity fails closed.
 
@@ -146,7 +148,7 @@ The curved producer recognizes a source-topological disk with Euler characterist
 
 The planar bounded and periodic producers remain separate first-class paths. Whole-surface aggregation is exact-once.
 
-### Field-authoritative polygonal boundary phase — runtime-valid on structural witnesses
+### Field-authoritative polygonal boundary phase — runtime-valid
 
 Artifact **`9021175280`** validates the generalized boundary-phase representation **5/5**.
 
@@ -165,27 +167,43 @@ Required behavior:
 
 A natural six-run reflex-corner witness constructs the generalized phase/chart and reaches the deliberately deferred `InvalidBoundedDiskFrontPairing` invariant. This proves the representation itself is real.
 
-### Current G4 blocker — producer region / isolation-sheet decoupling
+### Runtime diagnosis that motivated topology-region decoupling
 
 Exact torus under artifact `9021175280` deterministically rejects at `InvalidBoundedDiskBoundaryTurn` with **zero retained phase/run/polygon/chart state**. This does not satisfy the planned material-progress condition.
 
-Read-only exact-source reconstruction proves the apparent disk is created by local isolation classification: two classifier-local disk labels reconnect through non-hard exact source adjacency into one annular hard-feature region. Their shared non-hard classifier seam is internal to source topology, not a physical exterior boundary. Treating it as a bounded-disk rail creates the invalid field turn where that artificial seam meets a true hard-feature rail.
+Read-only exact-source reconstruction shows the apparent disk is created by local isolation classification: classifier-local disk labels reconnect through non-hard exact source adjacency into an annular hard-feature region. Their shared non-hard classifier seam is internal to source topology, not a physical exterior boundary. Treating it as a bounded-disk rail creates an invalid field turn where that artificial seam meets a true hard-feature rail.
 
-Therefore the next implementation must introduce and consume source-topological producer regions independently of local isolation-sheet labels. Boundary turn/index/alignment validation must **not** be relaxed to hide this partition error.
+Boundary turn/index/alignment validation must **not** be relaxed to hide this partition error.
 
-Diagnostic torus vertex IDs, local sheet counts, hard-edge counts, relation counts, analytical fixture parameters and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
+### Topology-region / isolation-sheet candidate — compile-valid, runtime pending
+
+Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, packaged as exact artifact **`9022061741`**, introduces first-class `SurfaceTopologyRegion` authority:
+
+- regions are built from exact source adjacency;
+- different source components, hard features, and embedded relief barriers stop region continuity;
+- local-isolation disagreement alone does not;
+- region state retains exact source faces, Euler characteristic, genuine boundary-loop count, exact boundary topology, internal isolation-seam topology, local isolation labels, and a structural hash;
+- non-hard exact-adjacent cross-sheet seams are internal when they lie in one region;
+- reciprocal transport across such seams is required and malformed transport fails typed `InvalidTopologyRegionTransport`;
+- producer applicability and exact-once aggregation operate by topology region while local-isolation provenance remains attached to cells/fronts/relations/phases;
+- periodic relation identity carries topology-region scope;
+- trace-network hashing and runtime diagnostics consume region/seam authority.
+
+This candidate compiled all **111/111** approved Release/static/Ninja actions with `runtimeExecution=false`. It is **not** runtime authority until artifact-only validation executes.
+
+Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
 G4 is not passed until required topology and singularity fixtures complete directly with strict-valid pure-quad output and complete provenance.
 
 ## G4 prescribed singularity
 
-The prescribed sphere remains deferred until the exact torus topology slice reaches direct strict-valid production. A downstream sphere completion observation must never preempt the earlier torus producer/topology invariant.
+The prescribed sphere remains deferred until exact torus reaches direct strict-valid production. A downstream sphere completion observation must never preempt the earlier torus producer/topology invariant.
 
 ## Current next authority
 
-Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md` as **Code + Build only**.
+Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact **`9022061741`**.
 
-Current no-progress Code + Build count is **1**. If the next Code + Build's following artifact-only validation also fails to demonstrate material progress, mandatory design review or bounded producer-replacement proof is required before another ordinary implementation turn.
+The preceding artifact-only turn established one Code + Build without material runtime progress. Compile success does not reset the counter. If validation of artifact `9022061741` also fails to establish material progress, no further ordinary Code + Build is authorized until mandatory design review or bounded producer-replacement proof is completed.
 
 ## Non-negotiable prohibitions
 
