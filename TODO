@@ -17,29 +17,17 @@ Last updated: 2026-08-08 UTC
 
 ## Current runtime authority
 
-Runtime-proven authority remains exact artifact **`9014730437`** until the new compile artifact executes artifact-only.
+Runtime-proven authority remains exact artifact **`9014730437`** until the new compile artifact executes artifact-only. It retains G4 periodic relation semantics **5/5**, G0-G3 focused contracts **17/17**, and direct deterministic plane/seam/close-sheets/cylinder hashes `730caeae49ec872c`, `5bdf34d7802e9fb0`, `89b052762f52a5af`, `32135be51d7a0a26` with no fallback/recovery.
 
-- G4 periodic relation semantics **5/5**;
-- retained G0-G3 focused contracts **17/17**;
-- plane hash `730caeae49ec872c`, seam `5bdf34d7802e9fb0`, close sheets `89b052762f52a5af`, cylinder `32135be51d7a0a26`, all direct deterministic 3/3;
-- cylinder remains 288 pure quads / 320 V, zero validation failures, one periodic relation `r=0`, `t=(32,0)`, route 32, cut 4;
-- no passing case uses fallback or source-grid recovery;
-- bounded suites remain producer **105/106**, completion/simplification **154/164**, validation **60/60**, compiled API **8/8**.
-
-Exact torus under that runtime artifact retains two periodic relations but still reports partial phase-front `NotApplicable`, then 670 generic traces / 113 embedded arcs / zero arrangement cells and `SideSubdivisionRepair:InvalidInputIncidence`. That is the runtime baseline for the next artifact-only turn.
+Exact torus under that runtime artifact retains two periodic relations but still reports partial phase-front `NotApplicable`, then 670 generic traces / 113 embedded arcs / zero arrangement cells and `SideSubdivisionRepair:InvalidInputIncidence`.
 
 ## New compile-valid G4 sheet-coverage candidate
 
 Exact compile artifact **`9015931928`** (`g4-sheet-coverage-code-build`) was produced by workflow run/job `31237248211 / 93051938159`.
 
-Source authority:
-
 - implementation `856554ce648e5df09ac50f5c94e3e8f098181524`;
 - final compile source `a647215b4993338b054f04d4c8e54e7ef5370001`;
-- cleanup `e46a6d99a45f22f31672c8e5a3367735427d827e`.
-
-Build/package authority:
-
+- cleanup `e46a6d99a45f22f31672c8e5a3367735427d827e`;
 - seven approved Release/static/Ninja targets compile/link **111/111**;
 - ZIP SHA-256 `108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4`;
 - internal manifest SHA-256 `c801b0bb157ba2e1b4537c636306d300ab289db2b89e915718efc73394c03635`;
@@ -48,20 +36,12 @@ Build/package authority:
 - log artifact `9015932044`;
 - `runtimeExecution=false`.
 
-Implementation behavior:
-
-- evaluates every canonical authoritative source sheet before exposing whole-surface authority;
-- supported bounded and periodic sheets can compose under one aggregate;
-- when at least one sheet is produced but a later sheet remains unsupported, rejects with typed `UnsupportedSourceSheetTopology` instead of returning partial `NotApplicable`;
-- validates exact-once aggregate sheet ownership and uses typed `IncompleteSourceSheetCoverage` on mismatch/incomplete composition;
-- preserves the existing canonical multi-relation authority and all hard-feature/source-sheet barriers.
-
-No runtime result is claimed from this compile-only turn.
+The candidate evaluates every canonical authoritative source sheet before exposing whole-surface authority. Supported bounded and periodic sheets may compose; if at least one sheet produces but a later sheet is unsupported, it rejects with typed `UnsupportedSourceSheetTopology` instead of returning partial `NotApplicable`. Aggregate ownership/coverage failures are typed `IncompleteSourceSheetCoverage`. Existing periodic-relation and hard-feature/source-sheet authority is preserved.
 
 ## Next runtime decision
 
-Execute exact artifact `9015931928` artifact-only. The new tests must pass, all five prior G4 relation tests and all 17 G0-G3 focused contracts must remain green, and plane/seam/close-sheets/cylinder must preserve their exact direct hashes.
+Execute exact artifact `9015931928` artifact-only. New sheet-coverage tests, all five prior G4 relation tests, all 17 G0-G3 focused contracts, and exact direct plane/seam/close-sheets/cylinder hashes must remain green.
 
-The exact torus must no longer follow the old partial `NotApplicable -> zero arrangement -> SideSubdivisionRepair` path. Preferred result is complete authoritative materialization and strict-valid direct torus output. A deterministic typed unsupported-sheet/materialization rejection is acceptable material progress if relation authority remains live and no downstream generic/fallback/recovery path substitutes for the producer decision.
+The torus must no longer follow the old partial `NotApplicable -> zero arrangement -> SideSubdivisionRepair` path. Preferred result is complete authoritative materialization and strict-valid direct torus output. A deterministic typed unsupported-sheet/materialization rejection is acceptable material progress if relation authority remains live and no downstream generic/fallback/recovery path substitutes for the producer decision.
 
 Prescribed-sphere singularity completion remains deferred until this earlier torus producer contract is closed.
