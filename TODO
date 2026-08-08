@@ -10,38 +10,75 @@ Last updated: 2026-08-08 UTC
 - G2 cross-chart / close-sheet isolation: **passed**.
 - G3 periodic closure / holonomy: **passed**.
 - G4 topology-distinct completion and singularities: **active**.
-- Completed turn: **G4 Torus Complete Phase-Front Sheet Coverage Code + Build**.
-- Next turn: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Plan.md`.
+- Completed turn: **G4 Sheet-Coverage Artifact-Only Test + Benchmark**.
+- Next turn: `.agents/Directional/Gate_4_Closed_Genus_One_Curved_Disk_Sheet_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
-- Draft PR #8 remains open and unmerged; review policy `never`.
+- Draft PR #8 remains open, draft, unmerged; review policy `never`.
 
-## Current runtime authority
+## Current runtime authority — artifact 9015931928
 
-Runtime-proven authority remains exact artifact **`9014730437`** until the new compile artifact executes artifact-only. It retains G4 periodic relation semantics **5/5**, G0-G3 focused contracts **17/17**, and direct deterministic plane/seam/close-sheets/cylinder hashes `730caeae49ec872c`, `5bdf34d7802e9fb0`, `89b052762f52a5af`, `32135be51d7a0a26` with no fallback/recovery.
+Exact artifact **`9015931928`** (`g4-sheet-coverage-code-build`) is now runtime-validated artifact-only.
 
-Exact torus under that runtime artifact retains two periodic relations but still reports partial phase-front `NotApplicable`, then 670 generic traces / 113 embedded arcs / zero arrangement cells and `SideSubdivisionRepair:InvalidInputIncidence`.
+Authority:
 
-## New compile-valid G4 sheet-coverage candidate
-
-Exact compile artifact **`9015931928`** (`g4-sheet-coverage-code-build`) was produced by workflow run/job `31237248211 / 93051938159`.
-
+- workflow run/job `31237248211 / 93051938159`;
 - implementation `856554ce648e5df09ac50f5c94e3e8f098181524`;
 - final compile source `a647215b4993338b054f04d4c8e54e7ef5370001`;
-- cleanup `e46a6d99a45f22f31672c8e5a3367735427d827e`;
-- seven approved Release/static/Ninja targets compile/link **111/111**;
-- ZIP SHA-256 `108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4`;
+- artifact SHA-256 `108580a2a20bdd7d50169ed076e7b0583466d5ab11c1a2170814eb4fbe8f3cc4`;
 - internal manifest SHA-256 `c801b0bb157ba2e1b4537c636306d300ab289db2b89e915718efc73394c03635`;
 - recursive checksums **47/47**;
-- 48 package files / 27 fixtures / five executables / two static libraries;
-- log artifact `9015932044`;
-- `runtimeExecution=false`.
+- sheet-coverage semantics **3/3**;
+- G4 periodic-relation semantics **5/5**;
+- retained G0-G3 focused contracts **17/17**;
+- no rebuild/reconfigure/relink/source/test/fixture/validator/benchmark/build edit during validation.
 
-The candidate evaluates every canonical authoritative source sheet before exposing whole-surface authority. Supported bounded and periodic sheets may compose; if at least one sheet produces but a later sheet is unsupported, it rejects with typed `UnsupportedSourceSheetTopology` instead of returning partial `NotApplicable`. Aggregate ownership/coverage failures are typed `IncompleteSourceSheetCoverage`. Existing periodic-relation and hard-feature/source-sheet authority is preserved.
+Direct deterministic authority remains exact 3/3:
 
-## Next runtime decision
+- plane: 64 quads / 81 V, hash `730caeae49ec872c`;
+- seam: 64 quads / 81 V, hash `5bdf34d7802e9fb0`;
+- close sheets: 200 quads / 242 V / 2 components, hash `89b052762f52a5af`;
+- cylinder: 288 pure quads / 320 V, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, zero validation failures, exactly two genuine 32-edge exterior loops, hash `32135be51d7a0a26`;
+- no fallback/recovery.
 
-Execute exact artifact `9015931928` artifact-only. New sheet-coverage tests, all five prior G4 relation tests, all 17 G0-G3 focused contracts, and exact direct plane/seam/close-sheets/cylinder hashes must remain green.
+Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Sheet_Coverage_Artifact_Only_Test_Benchmark_Report.md`.
 
-The torus must no longer follow the old partial `NotApplicable -> zero arrangement -> SideSubdivisionRepair` path. Preferred result is complete authoritative materialization and strict-valid direct torus output. A deterministic typed unsupported-sheet/materialization rejection is acceptable material progress if relation authority remains live and no downstream generic/fallback/recovery path substitutes for the producer decision.
+## G4 material progress — partial authority path closed
 
-Prescribed-sphere singularity completion remains deferred until this earlier torus producer contract is closed.
+Exact torus no longer follows the previous partial `NotApplicable -> 670 generic traces -> 113 embedded arcs -> 0 arrangement cells -> SideSubdivisionRepair:InvalidInputIncidence` path.
+
+Three independent direct runs now deterministically report:
+
+- `Rejected / UnsupportedSourceSheetTopology` at `tracing/phase-front`;
+- first invalid source face 48;
+- periodic relation count **3**;
+- zero generic trace/arrangement/completion work after rejection;
+- terminal `NotProductionReady:tracing`;
+- no output, fallback, legacy substitution, returned input, or source-grid recovery.
+
+This satisfies the sheet-coverage slice's material-progress contract: unsupported whole-surface producer topology is explicit and the downstream zero-cell generic path is eliminated.
+
+## Active G4 blocker — curved bounded disk source sheets
+
+Immutable packaged-source/topology analysis reproduces the current 48 hard feature edges / four closed feature curves and the authoritative five-sheet partition:
+
+- three χ=0, two-boundary sheets are valid periodic annuli and account naturally for the three retained relations;
+- two sheets are non-planar χ=1 topological disks with one genuine boundary loop (22 and 18 boundary edges respectively).
+
+The first unsupported disk contains source face 48. It is outside both current producer contracts:
+
+- bounded uniform producer requires a planar/rectangular chart;
+- periodic producer requires χ=0 with two compatible boundary cycles.
+
+The next Code + Build must add a generalized intrinsic/transport-consistent **curved bounded disk-sheet phase-front producer**. It must preserve source-sheet/hard-feature boundary authority, compose with existing planar and periodic producers, and fail typed at the next genuine structural invariant. Do not special-case face/sheet IDs, demote the 48 hard edges, reinterpret disks as annuli, weld seams geometrically, or repair generic completion first.
+
+## Bounded suite evidence
+
+- producer **107/108**; sole failure remains the existing sub-millisecond `StrictValidatorOverheadStaysBelowFivePercent` performance check;
+- completion/simplification **154/164**, exact same ten historical failures;
+- validation **60/60**;
+- compiled API **8/8**;
+- bounded aggregate **329/340**.
+
+The producer count increased only because two new sheet-coverage tests were added and pass; the prior failure set is unchanged.
+
+Prescribed-sphere singularity completion remains deferred until torus source-sheet coverage/materialization closes.
