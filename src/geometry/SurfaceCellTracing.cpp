@@ -7249,17 +7249,22 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     boundaryBranches[index] = bestGlobalBranch;
   }
 
-  std::vector<int> runStarts;
-  for (int index = 0; index < static_cast<int>(boundaryBranches.size()); ++index) {
-    const int previous =
-        (index + static_cast<int>(boundaryBranches.size()) - 1) %
-        static_cast<int>(boundaryBranches.size());
-    if (boundaryBranches[static_cast<std::size_t>(index)] !=
-        boundaryBranches[static_cast<std::size_t>(previous)]) {
-      runStarts.push_back(index);
+  const auto rebuild_run_starts = [&](const std::vector<int> &branches) {
+    std::vector<int> starts;
+    for (int index = 0; index < static_cast<int>(branches.size()); ++index) {
+      const int previous =
+          (index + static_cast<int>(branches.size()) - 1) %
+          static_cast<int>(branches.size());
+      if (branches[static_cast<std::size_t>(index)] !=
+          branches[static_cast<std::size_t>(previous)]) {
+        starts.push_back(index);
+      }
     }
-  }
-  if (runStarts.size() != 4U) {
+    return starts;
+  };
+
+  std::vector<int> runStarts = rebuild_run_starts(boundaryBranches);
+  if (runStarts.empty()) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(
         result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
@@ -7292,116 +7297,371 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
               boundaryCycle.begin() + canonicalRun, boundaryCycle.end());
   std::rotate(boundaryBranches.begin(),
               boundaryBranches.begin() + canonicalRun, boundaryBranches.end());
-  runStarts.clear();
-  for (int index = 0; index < static_cast<int>(boundaryBranches.size()); ++index) {
-    const int previous =
-        (index + static_cast<int>(boundaryBranches.size()) - 1) %
-        static_cast<int>(boundaryBranches.size());
-    if (boundaryBranches[static_cast<std::size_t>(index)] !=
-        boundaryBranches[static_cast<std::size_t>(previous)]) {
-      runStarts.push_back(index);
-    }
-  }
-  if (runStarts.size() != 4U || runStarts.front() != 0) {
+  runStarts = rebuild_run_starts(boundaryBranches);
+  if (runStarts.empty() || runStarts.front() != 0) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(
         result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
     return result;
   }
-  const int chartUBranch = boundaryBranches.front();
-  for (int side = 0; side < 4; ++side) {
-    const int expected = normalized_branch(chartUBranch + side);
-    if (boundaryBranches[static_cast<std::size_t>(runStarts[side])] != expected) {
-      result.disposition = SurfaceCellProducerDisposition::Rejected;
-      set_phase_front_failure(
-          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
-      return result;
-    }
-  }
 
-  std::array<double, 4> sideLength{{0.0, 0.0, 0.0, 0.0}};
-  std::array<std::vector<int>, 4> sideVertices;
-  for (int side = 0; side < 4; ++side) {
-    const int begin = runStarts[side];
-    const int end = side == 3 ? static_cast<int>(boundaryCycle.size())
-                              : runStarts[side + 1];
+  const int component = face_label_or_default(options.sourceFaceComponents,
+                                               activeFaces.front(), 0);
+  const int sheet = face_label_or_default(options.sourceFaceSheets,
+                                           activeFaces.front(), component);
+  SurfaceBoundedDiskBoundaryPhase boundaryPhase;
+  boundaryPhase.sourceComponent = component;
+  boundaryPhase.sourceSheet = sheet;
+  boundaryPhase.chartUBranch = boundaryBranches.front();
+  boundaryPhase.runs.reserve(runStarts.size());
+
+  double cumulativeBoundaryLength = 0.0;
+  for (int runIndex = 0; runIndex < static_cast<int>(runStarts.size());
+       ++runIndex) {
+    const int begin = runStarts[static_cast<std::size_t>(runIndex)];
+    const int end = runIndex + 1 < static_cast<int>(runStarts.size())
+                        ? runStarts[static_cast<std::size_t>(runIndex + 1)]
+                        : static_cast<int>(boundaryCycle.size());
     if (end <= begin) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
       return result;
     }
+
+    SurfaceBoundedDiskBoundaryRun run;
+    run.branch = boundaryBranches[static_cast<std::size_t>(begin)];
+    family_sign_from_branch(run.branch, run.family, run.sign);
+    run.startVertex = boundaryCycle[static_cast<std::size_t>(begin)];
+    run.cumulativeIntrinsicLength = cumulativeBoundaryLength;
     for (int index = begin; index <= end; ++index) {
       const int wrapped = index % static_cast<int>(boundaryCycle.size());
-      if (sideVertices[static_cast<std::size_t>(side)].empty() ||
-          sideVertices[static_cast<std::size_t>(side)].back() !=
-              boundaryCycle[static_cast<std::size_t>(wrapped)]) {
-        sideVertices[static_cast<std::size_t>(side)].push_back(
-            boundaryCycle[static_cast<std::size_t>(wrapped)]);
+      const int vertex = boundaryCycle[static_cast<std::size_t>(wrapped)];
+      if (run.sourceVertices.empty() || run.sourceVertices.back() != vertex) {
+        run.sourceVertices.push_back(vertex);
       }
-      if (index < end) {
-        const int a = boundaryCycle[static_cast<std::size_t>(wrapped)];
-        const int b = boundaryCycle[static_cast<std::size_t>(
-            (wrapped + 1) % static_cast<int>(boundaryCycle.size()))];
-        sideLength[static_cast<std::size_t>(side)] +=
-            (row3(vertices, b) - row3(vertices, a)).norm();
+      if (index == end) continue;
+      const int nextWrapped =
+          (wrapped + 1) % static_cast<int>(boundaryCycle.size());
+      const int a = boundaryCycle[static_cast<std::size_t>(wrapped)];
+      const int b = boundaryCycle[static_cast<std::size_t>(nextWrapped)];
+      const std::uint64_t edgeTopology = edge_key(a, b);
+      const auto foundFace = boundaryFace.find(edgeTopology);
+      const auto foundFull = fullIncident.find(edgeTopology);
+      if (foundFace == boundaryFace.end() || foundFull == fullIncident.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
       }
+      run.sourceFaces.push_back(foundFace->second);
+      run.sourceEdgeTopology.push_back(edgeTopology);
+
+      const auto &fullPair = foundFull->second;
+      int fullCount = 0;
+      for (const int incidentFace : fullPair) {
+        if (incidentFace >= 0) ++fullCount;
+      }
+      SurfaceBoundedDiskBoundaryEdgeAuthority authority;
+      authority.sourceBoundary = fullCount == 1;
+      authority.hardFeature =
+          options.hardFeatureEdges.count(edgeTopology) != 0U;
+      authority.sourceSheet =
+          fullCount == 2 && !authority.hardFeature;
+      run.edgeAuthority.push_back(authority);
+
+      const double edgeLength = (row3(vertices, b) - row3(vertices, a)).norm();
+      if (!(edgeLength > 0.0) || !std::isfinite(edgeLength)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+            -1, -1, foundFace->second);
+        return result;
+      }
+      run.intrinsicLength += edgeLength;
     }
-    if (sideVertices[static_cast<std::size_t>(side)].size() < 2U ||
-        !(sideLength[static_cast<std::size_t>(side)] > 0.0) ||
-        !std::isfinite(sideLength[static_cast<std::size_t>(side)])) {
+    if (run.sourceVertices.size() < 2U || run.sourceFaces.empty() ||
+        run.sourceEdgeTopology.size() != run.sourceFaces.size() ||
+        run.edgeAuthority.size() != run.sourceFaces.size() ||
+        !(run.intrinsicLength > 0.0) || !std::isfinite(run.intrinsicLength)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
       return result;
     }
+    run.endVertex = run.sourceVertices.back();
+    cumulativeBoundaryLength += run.intrinsicLength;
+    boundaryPhase.runs.push_back(std::move(run));
   }
+  boundaryPhase.totalIntrinsicLength = cumulativeBoundaryLength;
 
-  const double width = 0.5 * (sideLength[0] + sideLength[2]);
-  const double height = 0.5 * (sideLength[1] + sideLength[3]);
-  if (!(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
-      !std::isfinite(height)) {
+  for (std::size_t runIndex = 0; runIndex < boundaryPhase.runs.size(); ++runIndex) {
+    auto &run = boundaryPhase.runs[runIndex];
+    const auto &next =
+        boundaryPhase.runs[(runIndex + 1U) % boundaryPhase.runs.size()];
+    const int delta = normalized_branch(next.branch - run.branch);
+    if (delta == 1) {
+      run.signedQuarterTurnToNext = 1;
+    } else if (delta == 3) {
+      run.signedQuarterTurnToNext = -1;
+    } else {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryTurn,
+          -1, -1, -1, -1, run.endVertex);
+      return result;
+    }
+    boundaryPhase.signedQuarterTurnSum += run.signedQuarterTurnToNext;
+  }
+  if (boundaryPhase.signedQuarterTurnSum != 4) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(
-        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex);
     return result;
   }
+  boundaryPhase.rectangular = boundaryPhase.runs.size() == 4U &&
+      std::all_of(boundaryPhase.runs.begin(), boundaryPhase.runs.end(),
+                  [](const SurfaceBoundedDiskBoundaryRun &run) {
+                    return run.signedQuarterTurnToNext == 1;
+                  });
+
+  // Canonical boundary identity is independent of source face-row enumeration.
+  // Raw source IDs remain provenance only; geometry and exact source-edge
+  // topology determine the stable run sequence already fixed above.
+  std::uint64_t boundaryHash = 1469598103934665603ULL;
+  const auto consume_boundary_hash = [&](const std::uint64_t value) {
+    boundaryHash ^= value;
+    boundaryHash *= 1099511628211ULL;
+  };
+  const auto consume_boundary_i64 = [&](const std::int64_t value) {
+    consume_boundary_hash(static_cast<std::uint64_t>(value));
+  };
+  consume_boundary_i64(boundaryPhase.sourceComponent);
+  consume_boundary_i64(boundaryPhase.sourceSheet);
+  consume_boundary_i64(boundaryPhase.chartUBranch);
+  consume_boundary_i64(boundaryPhase.signedQuarterTurnSum);
+  consume_boundary_hash(boundaryPhase.runs.size());
+  for (const auto &run : boundaryPhase.runs) {
+    consume_boundary_i64(run.branch);
+    consume_boundary_i64(run.signedQuarterTurnToNext);
+    consume_boundary_i64(static_cast<std::int64_t>(
+        std::llround(run.intrinsicLength * 1.0e12)));
+    for (const int vertex : {run.startVertex, run.endVertex}) {
+      const auto key = vertex_geometry_key(vertex);
+      for (const double coordinate : key) {
+        consume_boundary_i64(static_cast<std::int64_t>(
+            std::llround(coordinate * 1.0e12)));
+      }
+    }
+    consume_boundary_hash(run.sourceEdgeTopology.size());
+    for (const std::uint64_t edgeTopology : run.sourceEdgeTopology) {
+      consume_boundary_hash(edgeTopology);
+    }
+    for (const auto &authority : run.edgeAuthority) {
+      consume_boundary_i64(authority.sourceBoundary ? 1 : 0);
+      consume_boundary_i64(authority.hardFeature ? 1 : 0);
+      consume_boundary_i64(authority.sourceSheet ? 1 : 0);
+    }
+  }
+  boundaryPhase.structuralHash = boundaryHash;
+  result.boundedDiskBoundaryPhases.push_back(std::move(boundaryPhase));
+  SurfaceBoundedDiskBoundaryPhase &phaseRecord =
+      result.boundedDiskBoundaryPhases.back();
+  const int chartUBranch = phaseRecord.chartUBranch;
 
   std::map<int, Eigen::Vector2d> vertexUv;
-  const std::array<Eigen::Vector2d, 4> sideStart{
-      Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(width, 0.0),
-      Eigen::Vector2d(width, height), Eigen::Vector2d(0.0, height)};
-  const std::array<Eigen::Vector2d, 4> sideEnd{
-      Eigen::Vector2d(width, 0.0), Eigen::Vector2d(width, height),
-      Eigen::Vector2d(0.0, height), Eigen::Vector2d(0.0, 0.0)};
-  for (int side = 0; side < 4; ++side) {
-    const auto &verticesOnSide = sideVertices[static_cast<std::size_t>(side)];
-    double cumulative = 0.0;
-    for (std::size_t index = 0; index < verticesOnSide.size(); ++index) {
-      if (index > 0) {
-        cumulative +=
-            (row3(vertices, verticesOnSide[index]) -
-             row3(vertices, verticesOnSide[index - 1U]))
-                .norm();
+  double width = 0.0;
+  double height = 0.0;
+  double chartAreaScale = 1.0;
+  if (phaseRecord.rectangular) {
+    // Preserve the established four-run rectangle semantics exactly: opposite
+    // intrinsic side lengths are averaged before boundary parameterization.
+    width = 0.5 * (phaseRecord.runs[0].intrinsicLength +
+                   phaseRecord.runs[2].intrinsicLength);
+    height = 0.5 * (phaseRecord.runs[1].intrinsicLength +
+                    phaseRecord.runs[3].intrinsicLength);
+    if (!(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
+        !std::isfinite(height)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    const std::array<Eigen::Vector2d, 4> sideStart{
+        Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(width, 0.0),
+        Eigen::Vector2d(width, height), Eigen::Vector2d(0.0, height)};
+    const std::array<Eigen::Vector2d, 4> sideEnd{
+        Eigen::Vector2d(width, 0.0), Eigen::Vector2d(width, height),
+        Eigen::Vector2d(0.0, height), Eigen::Vector2d(0.0, 0.0)};
+    for (int side = 0; side < 4; ++side) {
+      auto &run = phaseRecord.runs[static_cast<std::size_t>(side)];
+      run.chartStart = sideStart[static_cast<std::size_t>(side)];
+      run.chartEnd = sideEnd[static_cast<std::size_t>(side)];
+      double cumulative = 0.0;
+      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
+        if (index > 0) {
+          cumulative +=
+              (row3(vertices, run.sourceVertices[index]) -
+               row3(vertices, run.sourceVertices[index - 1U]))
+                  .norm();
+        }
+        const double alpha = std::clamp(cumulative / run.intrinsicLength,
+                                        0.0, 1.0);
+        const Eigen::Vector2d uv = run.chartStart +
+                                   alpha * (run.chartEnd - run.chartStart);
+        const int vertex = run.sourceVertices[index];
+        const auto existing = vertexUv.find(vertex);
+        if (existing != vertexUv.end() &&
+            (existing->second - uv).norm() >
+                1.0e-10 * std::max({1.0, width, height})) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+              -1, -1, -1, -1, vertex);
+          return result;
+        }
+        vertexUv[vertex] = uv;
       }
-      const double alpha = std::clamp(
-          cumulative / sideLength[static_cast<std::size_t>(side)], 0.0, 1.0);
-      const Eigen::Vector2d uv =
-          sideStart[static_cast<std::size_t>(side)] +
-          alpha * (sideEnd[static_cast<std::size_t>(side)] -
-                   sideStart[static_cast<std::size_t>(side)]);
-      const int vertex = verticesOnSide[index];
-      const auto existing = vertexUv.find(vertex);
-      if (existing != vertexUv.end() &&
-          (existing->second - uv).norm() >
-              1.0e-10 * std::max({1.0, width, height})) {
-        result.disposition = SurfaceCellProducerDisposition::Rejected;
-        set_phase_front_failure(
-            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-            -1, -1, -1, -1, vertex);
-        return result;
+    }
+    phaseRecord.polygonClosed = true;
+    chartAreaScale = std::max(1.0, width * height);
+  } else {
+    // Develop the source-attached run sequence into its intrinsic orthogonal
+    // polygon.  No run is inserted, deleted, split, merged, or length-corrected.
+    std::vector<Eigen::Vector2d> polygonCorners(
+        phaseRecord.runs.size() + 1U, Eigen::Vector2d::Zero());
+    const auto chart_direction = [&](const int branch) {
+      switch (normalized_branch(branch - chartUBranch)) {
+      case 0: return Eigen::Vector2d(1.0, 0.0);
+      case 1: return Eigen::Vector2d(0.0, 1.0);
+      case 2: return Eigen::Vector2d(-1.0, 0.0);
+      default: return Eigen::Vector2d(0.0, -1.0);
       }
-      vertexUv[vertex] = uv;
+    };
+    for (std::size_t runIndex = 0; runIndex < phaseRecord.runs.size(); ++runIndex) {
+      auto &run = phaseRecord.runs[runIndex];
+      run.chartStart = polygonCorners[runIndex];
+      run.chartEnd = run.chartStart +
+                     run.intrinsicLength * chart_direction(run.branch);
+      polygonCorners[runIndex + 1U] = run.chartEnd;
+    }
+    const double polygonTolerance =
+        1.0e-10 * std::max(1.0, phaseRecord.totalIntrinsicLength);
+    if ((polygonCorners.back() - polygonCorners.front()).norm() >
+        polygonTolerance) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    polygonCorners.back() = polygonCorners.front();
+    phaseRecord.runs.back().chartEnd = polygonCorners.front();
+    phaseRecord.polygonClosed = true;
+
+    const auto cross2 = [](const Eigen::Vector2d &a,
+                           const Eigen::Vector2d &b) {
+      return a.x() * b.y() - a.y() * b.x();
+    };
+    double signedDoubleArea = 0.0;
+    Eigen::Vector2d minimum = polygonCorners.front();
+    Eigen::Vector2d maximum = polygonCorners.front();
+    for (std::size_t index = 0; index < phaseRecord.runs.size(); ++index) {
+      signedDoubleArea +=
+          cross2(polygonCorners[index], polygonCorners[index + 1U]);
+      minimum = minimum.cwiseMin(polygonCorners[index]);
+      maximum = maximum.cwiseMax(polygonCorners[index]);
+    }
+    width = maximum.x() - minimum.x();
+    height = maximum.y() - minimum.y();
+    chartAreaScale = std::max(1.0, width * height);
+    if (!(signedDoubleArea > 1.0e-14 * chartAreaScale) ||
+        !(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
+        !std::isfinite(height)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+
+    const auto point_on_segment = [&](const Eigen::Vector2d &point,
+                                      const Eigen::Vector2d &a,
+                                      const Eigen::Vector2d &b) {
+      const Eigen::Vector2d ab = b - a;
+      const Eigen::Vector2d ap = point - a;
+      if (std::abs(cross2(ab, ap)) > polygonTolerance) return false;
+      return point.x() >= std::min(a.x(), b.x()) - polygonTolerance &&
+             point.x() <= std::max(a.x(), b.x()) + polygonTolerance &&
+             point.y() >= std::min(a.y(), b.y()) - polygonTolerance &&
+             point.y() <= std::max(a.y(), b.y()) + polygonTolerance;
+    };
+    const auto segments_intersect = [&](const Eigen::Vector2d &a,
+                                        const Eigen::Vector2d &b,
+                                        const Eigen::Vector2d &c,
+                                        const Eigen::Vector2d &d) {
+      const double abC = cross2(b - a, c - a);
+      const double abD = cross2(b - a, d - a);
+      const double cdA = cross2(d - c, a - c);
+      const double cdB = cross2(d - c, b - c);
+      if (((abC > polygonTolerance && abD < -polygonTolerance) ||
+           (abC < -polygonTolerance && abD > polygonTolerance)) &&
+          ((cdA > polygonTolerance && cdB < -polygonTolerance) ||
+           (cdA < -polygonTolerance && cdB > polygonTolerance))) {
+        return true;
+      }
+      return (std::abs(abC) <= polygonTolerance && point_on_segment(c, a, b)) ||
+             (std::abs(abD) <= polygonTolerance && point_on_segment(d, a, b)) ||
+             (std::abs(cdA) <= polygonTolerance && point_on_segment(a, c, d)) ||
+             (std::abs(cdB) <= polygonTolerance && point_on_segment(b, c, d));
+    };
+    for (std::size_t first = 0; first < phaseRecord.runs.size(); ++first) {
+      for (std::size_t second = first + 1U;
+           second < phaseRecord.runs.size(); ++second) {
+        const bool adjacent = second == first + 1U ||
+            (first == 0U && second + 1U == phaseRecord.runs.size());
+        if (adjacent) continue;
+        if (segments_intersect(polygonCorners[first], polygonCorners[first + 1U],
+                               polygonCorners[second],
+                               polygonCorners[second + 1U])) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+          return result;
+        }
+      }
+    }
+
+    const double uvTolerance =
+        1.0e-10 * std::max({1.0, width, height});
+    for (auto &run : phaseRecord.runs) {
+      double cumulative = 0.0;
+      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
+        if (index > 0) {
+          cumulative +=
+              (row3(vertices, run.sourceVertices[index]) -
+               row3(vertices, run.sourceVertices[index - 1U]))
+                  .norm();
+        }
+        const double alpha = std::clamp(cumulative / run.intrinsicLength,
+                                        0.0, 1.0);
+        const Eigen::Vector2d uv = run.chartStart +
+                                   alpha * (run.chartEnd - run.chartStart);
+        const int vertex = run.sourceVertices[index];
+        const auto existing = vertexUv.find(vertex);
+        if (existing != vertexUv.end() &&
+            (existing->second - uv).norm() > uvTolerance) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+              -1, -1, -1, -1, vertex);
+          return result;
+        }
+        vertexUv[vertex] = uv;
+      }
     }
   }
 
@@ -7490,8 +7750,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
 
   std::vector<PeriodicChartTriangle> chartTriangles;
   chartTriangles.reserve(activeFaces.size());
-  const double chartAreaTolerance =
-      1.0e-14 * std::max(1.0, width * height);
+  const double chartAreaTolerance = 1.0e-14 * chartAreaScale;
   for (const int face : activeFaces) {
     PeriodicChartTriangle triangle;
     triangle.face = face;
@@ -7524,6 +7783,19 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
             [](const PeriodicChartTriangle &a, const PeriodicChartTriangle &b) {
               return a.vertices < b.vertices;
             });
+  phaseRecord.chartConstructed = true;
+
+  // Polygonal phase/chart authority is now explicit and validated.  Lattice
+  // clipping/pairing for a non-rectangular domain remains a distinct deeper
+  // front-construction contract; fail there rather than coercing the polygon
+  // back to a rectangle or emitting partial cells.
+  if (!phaseRecord.rectangular) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing);
+    return result;
+  }
 
   double target = options.defaultTargetSize;
   if (targetSize.size() > 0 && targetSize.allFinite() &&
@@ -7567,10 +7839,6 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     }
   }
 
-  const int component = face_label_or_default(options.sourceFaceComponents,
-                                               activeFaces.front(), 0);
-  const int sheet = face_label_or_default(options.sourceFaceSheets,
-                                           activeFaces.front(), component);
   struct EdgeOwner {
     int edge = -1;
   };
@@ -7912,6 +8180,13 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   sheetBuilds.reserve(sheets.size());
   bool anyProduced = false;
   int firstUnsupportedSheet = -1;
+  const auto retain_bounded_disk_boundary_phases =
+      [&](SurfacePhaseFrontResult &local) {
+        for (auto &phase : local.boundedDiskBoundaryPhases) {
+          result.boundedDiskBoundaryPhases.push_back(std::move(phase));
+        }
+        local.boundedDiskBoundaryPhases.clear();
+      };
   for (const SheetWork &sheet : sheets) {
     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces, options,
@@ -7926,6 +8201,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
           vertices, faces, faceAxisX, faceAxisY, targetSize, sheet.faces,
           options, edgeMatching, edgeEffort, edgeTransitions);
     }
+    retain_bounded_disk_boundary_phases(local);
     if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       result.failure = local.failure;
@@ -8111,6 +8387,8 @@ const char *surface_phase_front_failure_reason_name(
   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase: return "InvalidBoundedDiskBoundaryPhase";
   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart: return "InvalidBoundedDiskChart";
   case SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing: return "InvalidBoundedDiskFrontPairing";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryTurn: return "InvalidBoundedDiskBoundaryTurn";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex: return "InvalidBoundedDiskBoundaryIndex";
   }
   return "Unknown";
 }

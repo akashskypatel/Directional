@@ -942,6 +942,40 @@ std::uint64_t hash_trace_network(
     hash_vector(seed, relation.sourceRouteTopology);
     hash_vector(seed, relation.cutSourceTopology);
   }
+  if (!network.phaseFront.boundedDiskBoundaryPhases.empty()) {
+    hash_combine_u64(seed, network.phaseFront.boundedDiskBoundaryPhases.size());
+  }
+  for (const auto &phase : network.phaseFront.boundedDiskBoundaryPhases) {
+    hash_combine_i64(seed, phase.sourceComponent);
+    hash_combine_i64(seed, phase.sourceSheet);
+    hash_combine_i64(seed, phase.chartUBranch);
+    hash_combine_i64(seed, phase.signedQuarterTurnSum);
+    hash_combine_double(seed, phase.totalIntrinsicLength);
+    hash_combine_i64(seed, phase.rectangular ? 1 : 0);
+    hash_combine_i64(seed, phase.polygonClosed ? 1 : 0);
+    hash_combine_i64(seed, phase.chartConstructed ? 1 : 0);
+    hash_combine_u64(seed, phase.structuralHash);
+    hash_combine_u64(seed, phase.runs.size());
+    for (const auto &run : phase.runs) {
+      hash_combine_i64(seed, run.branch);
+      hash_combine_i64(seed, run.family);
+      hash_combine_i64(seed, run.sign);
+      hash_combine_i64(seed, run.signedQuarterTurnToNext);
+      hash_combine_double(seed, run.cumulativeIntrinsicLength);
+      hash_combine_double(seed, run.intrinsicLength);
+      hash_combine_double(seed, run.chartStart.x());
+      hash_combine_double(seed, run.chartStart.y());
+      hash_combine_double(seed, run.chartEnd.x());
+      hash_combine_double(seed, run.chartEnd.y());
+      hash_vector(seed, run.sourceEdgeTopology);
+      hash_combine_u64(seed, run.edgeAuthority.size());
+      for (const auto &authority : run.edgeAuthority) {
+        hash_combine_i64(seed, authority.sourceBoundary ? 1 : 0);
+        hash_combine_i64(seed, authority.hardFeature ? 1 : 0);
+        hash_combine_i64(seed, authority.sourceSheet ? 1 : 0);
+      }
+    }
+  }
   const auto hash_lattice_state = [&](
       const geometry::LocalLatticeState &state) {
     hash_combine_double(seed, state.phase.x());
@@ -2901,6 +2935,16 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellCompletionParityMutationPhase;
   target.surfaceCellAuthoritativeProducerDisposition =
       source.surfaceCellAuthoritativeProducerDisposition;
+  target.surfaceCellBoundedDiskBoundaryPhaseCount =
+      source.surfaceCellBoundedDiskBoundaryPhaseCount;
+  target.surfaceCellBoundedDiskBoundaryRunCount =
+      source.surfaceCellBoundedDiskBoundaryRunCount;
+  target.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount =
+      source.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount;
+  target.surfaceCellBoundedDiskConstructedChartCount =
+      source.surfaceCellBoundedDiskConstructedChartCount;
+  target.surfaceCellBoundedDiskBoundaryPhaseHashes =
+      source.surfaceCellBoundedDiskBoundaryPhaseHashes;
   target.surfaceCellPeriodicHolonomies = source.surfaceCellPeriodicHolonomies;
   target.surfaceCellPeriodicHolonomyAvailable =
       source.surfaceCellPeriodicHolonomyAvailable;
@@ -4842,6 +4886,24 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellAuthoritativeProducerDisposition =
         geometry::surface_cell_producer_disposition_name(
             traceNetwork.phaseFront.disposition);
+    result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount =
+        traceNetwork.phaseFront.boundedDiskBoundaryPhases.size();
+    result.diagnostics.surfaceCellBoundedDiskBoundaryRunCount = 0U;
+    result.diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount = 0U;
+    result.diagnostics.surfaceCellBoundedDiskConstructedChartCount = 0U;
+    result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.clear();
+    for (const auto &phase : traceNetwork.phaseFront.boundedDiskBoundaryPhases) {
+      result.diagnostics.surfaceCellBoundedDiskBoundaryRunCount +=
+          phase.runs.size();
+      if (!phase.rectangular) {
+        ++result.diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount;
+      }
+      if (phase.chartConstructed) {
+        ++result.diagnostics.surfaceCellBoundedDiskConstructedChartCount;
+      }
+      result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.push_back(
+          phase.structuralHash);
+    }
     result.diagnostics.surfaceCellPeriodicHolonomies.clear();
     for (const auto &relation : traceNetwork.phaseFront.periodicHolonomies) {
       SurfaceCellPeriodicHolonomyDiagnostics diagnostic;
@@ -7699,6 +7761,18 @@ void accumulate_component_diagnostics(
     target.surfaceCellAuthoritativeProducerDisposition =
         source.surfaceCellAuthoritativeProducerDisposition;
   }
+  target.surfaceCellBoundedDiskBoundaryPhaseCount +=
+      source.surfaceCellBoundedDiskBoundaryPhaseCount;
+  target.surfaceCellBoundedDiskBoundaryRunCount +=
+      source.surfaceCellBoundedDiskBoundaryRunCount;
+  target.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount +=
+      source.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount;
+  target.surfaceCellBoundedDiskConstructedChartCount +=
+      source.surfaceCellBoundedDiskConstructedChartCount;
+  target.surfaceCellBoundedDiskBoundaryPhaseHashes.insert(
+      target.surfaceCellBoundedDiskBoundaryPhaseHashes.end(),
+      source.surfaceCellBoundedDiskBoundaryPhaseHashes.begin(),
+      source.surfaceCellBoundedDiskBoundaryPhaseHashes.end());
   if (source.surfaceCellPeriodicHolonomyAvailable) {
     target.surfaceCellPeriodicHolonomies.insert(
         target.surfaceCellPeriodicHolonomies.end(),

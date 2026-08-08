@@ -2822,6 +2822,22 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\"surfaceCellAuthoritativeProducerDisposition\":\""
       << escape_json(diagnostics.surfaceCellAuthoritativeProducerDisposition)
       << "\","
+      << "\"surfaceCellBoundedDiskBoundaryPhaseCount\":"
+      << diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount << ","
+      << "\"surfaceCellBoundedDiskBoundaryRunCount\":"
+      << diagnostics.surfaceCellBoundedDiskBoundaryRunCount << ","
+      << "\"surfaceCellPolygonalBoundedDiskBoundaryPhaseCount\":"
+      << diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount << ","
+      << "\"surfaceCellBoundedDiskConstructedChartCount\":"
+      << diagnostics.surfaceCellBoundedDiskConstructedChartCount << ","
+      << "\"surfaceCellBoundedDiskBoundaryPhaseHashes\":[";
+  for (std::size_t phaseIndex = 0;
+       phaseIndex < diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.size();
+       ++phaseIndex) {
+    if (phaseIndex > 0U) out << ",";
+    out << diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes[phaseIndex];
+  }
+  out << "],"
       << "\"surfaceCellPeriodicHolonomyRelationCount\":"
       << diagnostics.surfaceCellPeriodicHolonomies.size() << ","
       << "\"surfaceCellPeriodicHolonomyAvailable\":"

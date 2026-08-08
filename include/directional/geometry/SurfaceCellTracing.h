@@ -229,6 +229,57 @@ enum class SurfacePeriodicHolonomyInsertStatus : int {
   Incompatible = 3,
 };
 
+/** Provenance flags for one source edge on a bounded-disk chart boundary. */
+struct SurfaceBoundedDiskBoundaryEdgeAuthority {
+  bool sourceBoundary = false;
+  bool hardFeature = false;
+  bool sourceSheet = false;
+};
+
+/**
+ * One maximal transported 4-RoSy run on an authoritative bounded-disk boundary.
+ *
+ * Source vertex/face IDs are retained only as provenance. Semantic ordering is
+ * the source-attached cyclic boundary order canonicalized from source geometry.
+ */
+struct SurfaceBoundedDiskBoundaryRun {
+  int branch = -1;
+  int family = 0;
+  int sign = 1;
+  int startVertex = -1;
+  int endVertex = -1;
+  int signedQuarterTurnToNext = 0;
+  double cumulativeIntrinsicLength = 0.0;
+  double intrinsicLength = 0.0;
+  Eigen::Vector2d chartStart = Eigen::Vector2d::Zero();
+  Eigen::Vector2d chartEnd = Eigen::Vector2d::Zero();
+  std::vector<int> sourceVertices;
+  std::vector<int> sourceFaces;
+  std::vector<std::uint64_t> sourceEdgeTopology;
+  std::vector<SurfaceBoundedDiskBoundaryEdgeAuthority> edgeAuthority;
+};
+
+/**
+ * First-class transported boundary phase for one source-authoritative disk.
+ *
+ * The phase is valid only after every run is field-authoritative and the
+ * oriented cyclic quarter-turn index closes. `rectangular` identifies the
+ * legacy four-left-turn special case; non-rectangular phases keep their exact
+ * run/corner authority for polygonal chart construction.
+ */
+struct SurfaceBoundedDiskBoundaryPhase {
+  int sourceComponent = -1;
+  int sourceSheet = -1;
+  int chartUBranch = 0;
+  int signedQuarterTurnSum = 0;
+  double totalIntrinsicLength = 0.0;
+  bool rectangular = false;
+  bool polygonClosed = false;
+  bool chartConstructed = false;
+  std::uint64_t structuralHash = 0;
+  std::vector<SurfaceBoundedDiskBoundaryRun> runs;
+};
+
 struct SurfacePhaseFrontCell {
   int id = -1;
   int sourceComponent = -1;
@@ -282,6 +333,8 @@ enum class SurfacePhaseFrontFailureReason : int {
   InvalidBoundedDiskBoundaryPhase = 39,
   InvalidBoundedDiskChart = 40,
   InvalidBoundedDiskFrontPairing = 41,
+  InvalidBoundedDiskBoundaryTurn = 42,
+  InvalidBoundedDiskBoundaryIndex = 43,
 };
 
 struct SurfacePhaseFrontFailure {
@@ -315,6 +368,7 @@ struct SurfacePhaseFrontResult {
   int gridU = 0;
   int gridV = 0;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
+  std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
   SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;

@@ -218,6 +218,11 @@ struct RemeshDiagnostics {
   std::vector<int> surfaceCellCompletionParityAvailableSheets;
   std::string surfaceCellCompletionParityMutationPhase;
   std::string surfaceCellAuthoritativeProducerDisposition;
+  std::size_t surfaceCellBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskBoundaryRunCount = 0U;
+  std::size_t surfaceCellPolygonalBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskConstructedChartCount = 0U;
+  std::vector<std::uint64_t> surfaceCellBoundedDiskBoundaryPhaseHashes;
   std::vector<SurfaceCellPeriodicHolonomyDiagnostics>
       surfaceCellPeriodicHolonomies;
   bool surfaceCellPeriodicHolonomyAvailable = false;
