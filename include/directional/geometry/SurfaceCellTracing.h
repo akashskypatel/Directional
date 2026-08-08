@@ -277,6 +277,11 @@ enum class SurfacePhaseFrontFailureReason : int {
   IncompatiblePeriodicRelation = 34,
   UnsupportedSourceSheetTopology = 35,
   IncompleteSourceSheetCoverage = 36,
+  InvalidBoundedDiskTopology = 37,
+  InvalidBoundedDiskTransport = 38,
+  InvalidBoundedDiskBoundaryPhase = 39,
+  InvalidBoundedDiskChart = 40,
+  InvalidBoundedDiskFrontPairing = 41,
 };
 
 struct SurfacePhaseFrontFailure {
