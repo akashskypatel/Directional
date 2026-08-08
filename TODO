@@ -8,67 +8,37 @@ Last updated: 2026-08-08 UTC
 - G0 truthful authority: **passed**.
 - G1 uniform authoritative phase-front plane: **passed**.
 - G2 cross-chart / close-sheet isolation: **passed**.
-- G3 periodic closure / holonomy: **production runtime closure contract satisfied; formal closure pending artifact validation of corrected field-correspondence test witness**.
-- Completed turn: **G3 Field-Correspondence Test Witness Code + Build**.
-- Next turn: `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md`.
+- G3 periodic closure / holonomy: **passed**.
+- G4 topology-distinct completion and singularities: **active**.
+- Completed turn: **G3 Field-Correspondence Test Witness Artifact-Only Test + Benchmark**.
+- Next turn: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 remains open and unmerged; review policy `never`.
 
-## Current executed G3 runtime authority
+## G3 formal closure authority
 
-Artifact `9010838200`, production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, already satisfies the production G3 runtime closure contract:
+Exact artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
 
-- exact cylinder `Produced / CompletedSurfaceCells`;
-- periodic holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
-- 288 pure output quads / 320 output vertices;
-- zero validation failures;
-- field P95 approximately `8.54e-7°`;
-- exactly two genuine annulus exterior loops and no artificial-cut exterior seam;
-- deterministic output hash `32135be51d7a0a26` across 3/3 processes;
-- no fallback or source-grid recovery;
-- plane, seam and close sheets remain direct strict-valid deterministic passed gates.
-
-The preceding artifact-only focused result was **16/17**. The sole failure, `PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`, was classified as an incorrect expectation: target 0.25 subdivides each 0.5 source inter-ring connection, so requiring one V front edge with two exact source-ring-vertex endpoints is not a valid witness.
-
-## Corrected test-only Code + Build
-
-Evidence commit:
-
-- `117620ec2da2083ce11b205835e58fa404f163ef`.
-
-Only `tests/SurfaceCellsPhase10Tests.cpp` changed:
-
-- test blob `80a0b58339102279ab863d9112e243a557cd270d`;
-- test-only patch SHA-256 `f5699ea435ec650384ed2d3791ec032e2cddbf09ae9d9fd4e0f86928d5e078fb`.
-
-Production remains byte-identical:
-
-- `SurfaceCellTracing.cpp` `63e5ee427f675077f710db51ffb56d91838d3519`;
-- `SurfaceCellTracing.h` `c1b816a584d67a3f74c2d7389962bd92d52244c9`.
-
-The corrected witness iterates nonzero source-attached `family == 1` boundary-path segments, reconstructs their source geometry from authoritative face+barycentric provenance, validates barycentric source-simplex state, checks each segment against the local V field family, and requires nonempty observations. It is independent of how the target size subdivides a source inter-ring connection.
-
-## Compile-only artifact authority
-
-- workflow run/job `31228899303 / 93028533210`;
-- artifact `9013161456` (`g3-field-correspondence-test-witness-code-build`);
 - artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
-- log artifact `9013161584`, SHA-256 `baef2956f2c455a963f96ffe935c1d6173ba0854c847a690919e21c61423630f`;
 - recursive checksums **44/44**;
-- compile/link **111/111**, seven approved targets;
-- five executables, two project libraries, 27 fixture/input files;
-- Release / Ninja;
-- `runtimeExecution=false` — no generated Directional binary executed.
+- corrected subdivision-independent field-correspondence witness passes;
+- focused/retained G0-G3 contracts **17/17**;
+- plane: direct `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
+- seam: direct `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets: direct `Produced / CompletedSurfaceCells`, 200 quads / 242 V / two isolated components, hash `89b052762f52a5af`, deterministic 3/3;
+- cylinder: direct `Produced / CompletedSurfaceCells`, holonomy `r=0`, `t=(32,0)`, route 32, cut 4, 288 pure quads / 320 V, zero validation failures, field P95 `8.537736463e-7°`, exactly two genuine annulus boundary loops, hash `32135be51d7a0a26`, deterministic 3/3;
+- no passing case uses fallback or source-grid recovery.
 
-## Required next turn
+Default-suite evidence: bounded producer **100/101** (sole failure is the known timing-only validator-overhead check), completion/simplification **154/164**, validation **60/60**, compiled API **8/8**, bounded aggregate **322/333**.
 
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against exact artifact `9013161456` with no rebuild or source/test/fixture/validator/build edits.
+Later mandatory observations do not affect G3: bunny remains `NotApplicable` with 80,862 traces and no output; current vase observation exceeded 45 seconds and produced no complete record, so timeout carries no correctness inference.
 
-Formal G3 closure requires:
+## Active G4 blocker
 
-1. **17/17** focused/retained contracts, including the corrected subdivision-invariant field witness;
-2. exact cylinder retains direct deterministic strict-valid periodic `CompletedSurfaceCells` with zero validation failures and existing quality limits;
-3. plane, seam and close sheets remain green;
-4. no fallback/recovery.
+The exact torus is a connected closed genus-one source (72 V / 144 triangles / Euler characteristic 0 / no boundary). Artifact `9013161456` rejects it at `tracing/phase-front` with typed `InvalidPeriodicTopology`, zero traces/output, and no fallback/recovery. Partial diagnostics already contain one periodic relation `r=0`, `t=(24,0)`, route 24, cut 2.
 
-On that evidence, mark G3 passed and activate G4 topology-distinct completion and singularities.
+Source inspection shows the earliest structural limit: `SurfacePhaseFrontResult` owns one scalar `SurfacePeriodicHolonomy`; aggregation rejects whenever a second enabled local periodic relation appears, and hashing/diagnostics/materialization likewise consume only one relation.
+
+The next Code + Build turn must introduce deterministic first-class multi-relation periodic authority and make every retained relation live in hashing/diagnostics/exact quotient materialization. It may not choose relations by source ID, discovery order, count/frequency, arbitrary subset, or Euclidean proximity. G0-G3 behavior is mandatory regression authority.
+
+Prescribed-sphere singularity completion remains the next G4 slice after the torus topology contract; its current failure is later at completion (`repeated-boundary-node` plus parity-alternative budget exhaustion).
