@@ -91,6 +91,8 @@ Verified artifact closure:
 - two project static libraries;
 - 27 fixture/input files;
 - Release / Ninja;
+- repository targets enabled with `DIRECTIONAL_BUILD_TESTS=ON` and `DIRECTIONAL_BUILD_BENCHMARKS=ON`;
+- no generated test-discovery command was run during the build;
 - source archive, exact one-file patch, compile database and configure/build/toolchain logs;
 - `runtimeExecution=false` command-boundary metadata.
 
