@@ -1,0 +1,283 @@
+@@ -1863,32 +1889,189 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskRejectsHiddenSameSheetBoundaryCut) {
+ }
+ 
+ TEST(SurfaceCellsPhase10,
+-     CurvedBoundedDiskCrossSheetBoundaryIsInvariantToFaceRowEnumeration) {
++     TopologyRegionIsolationSeamIsInvariantToFaceRowEnumeration) {
+   const CurvedDiskFixture forward =
+       make_curved_disk_with_adjacent_source_sheet(false, true);
+   const CurvedDiskFixture reversed =
+       make_curved_disk_with_adjacent_source_sheet(true, true);
+-  const auto forwardNetwork = directional::geometry::build_surface_cell_network(
+-      forward.vertices, forward.faces, forward.faceAxisX, forward.faceAxisY,
+-      forward.targetSize, forward.options);
+-  const auto reversedNetwork = directional::geometry::build_surface_cell_network(
+-      reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
+-      reversed.targetSize, reversed.options);
++  const auto forwardTopology =
++      directional::geometry::surface_cell_tracing_detail::
++          build_source_topology_regions(forward.faces, forward.options);
++  const auto reversedTopology =
++      directional::geometry::surface_cell_tracing_detail::
++          build_source_topology_regions(reversed.faces, reversed.options);
++  ASSERT_TRUE(forwardTopology.valid);
++  ASSERT_TRUE(reversedTopology.valid);
++  ASSERT_EQ(1U, forwardTopology.regions.size());
++  ASSERT_EQ(1U, reversedTopology.regions.size());
++  const auto &a = forwardTopology.regions.front();
++  const auto &b = reversedTopology.regions.front();
++  EXPECT_EQ(a.eulerCharacteristic, b.eulerCharacteristic);
++  EXPECT_EQ(a.boundaryLoopCount, b.boundaryLoopCount);
++  EXPECT_EQ(a.isolationSheets, b.isolationSheets);
++  EXPECT_EQ(a.boundaryEdgeTopology, b.boundaryEdgeTopology);
++  EXPECT_EQ(a.internalIsolationSeamTopology, b.internalIsolationSeamTopology);
++  EXPECT_EQ(a.structuralHash, b.structuralHash);
++}
++
++TEST(SurfaceCellsPhase10,
++     ClassifierSplitAnnulusRemainsOneSourceTopologyRegion) {
++  const TopologyRegionFixture fixture = make_split_isolation_annulus_fixture();
++  const auto topology =
++      directional::geometry::surface_cell_tracing_detail::
++          build_source_topology_regions(fixture.faces, fixture.options);
++  ASSERT_TRUE(topology.valid);
++  ASSERT_EQ(1U, topology.regions.size());
++  const auto &region = topology.regions.front();
++  EXPECT_EQ(0, region.eulerCharacteristic);
++  EXPECT_EQ(2, region.boundaryLoopCount);
++  ASSERT_EQ(2U, region.isolationSheets.size());
++  EXPECT_FALSE(region.internalIsolationSeamTopology.empty());
++  EXPECT_NE(0U, region.structuralHash);
++}
++
++TEST(SurfaceCellsPhase10,
++     ClassifierSplitAnnulusTopologyRegionIsRowOrderInvariant) {
++  const TopologyRegionFixture forward = make_split_isolation_annulus_fixture(false);
++  const TopologyRegionFixture reversed = make_split_isolation_annulus_fixture(true);
++  const auto a = directional::geometry::surface_cell_tracing_detail::
++      build_source_topology_regions(forward.faces, forward.options);
++  const auto b = directional::geometry::surface_cell_tracing_detail::
++      build_source_topology_regions(reversed.faces, reversed.options);
++  ASSERT_TRUE(a.valid);
++  ASSERT_TRUE(b.valid);
++  ASSERT_EQ(1U, a.regions.size());
++  ASSERT_EQ(1U, b.regions.size());
++  EXPECT_EQ(a.regions.front().eulerCharacteristic,
++            b.regions.front().eulerCharacteristic);
++  EXPECT_EQ(a.regions.front().boundaryLoopCount,
++            b.regions.front().boundaryLoopCount);
++  EXPECT_EQ(a.regions.front().boundaryEdgeTopology,
++            b.regions.front().boundaryEdgeTopology);
++  EXPECT_EQ(a.regions.front().internalIsolationSeamTopology,
++            b.regions.front().internalIsolationSeamTopology);
++  EXPECT_EQ(a.regions.front().structuralHash, b.regions.front().structuralHash);
++}
+ 
++TEST(SurfaceCellsPhase10,
++     HardFeatureCannotBeReinterpretedAsInternalIsolationSeam) {
++  Eigen::MatrixXi faces(2, 3);
++  faces << 0, 1, 2,
++           0, 2, 3;
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents = {0, 0};
++  options.sourceFaceSheets = {0, 1};
++  const std::uint64_t sharedEdge =
++      directional::pipeline::surface_cell_source_edge_key(0, 2);
++  options.hardFeatureEdges.insert(sharedEdge);
++  const auto topology = directional::geometry::surface_cell_tracing_detail::
++      build_source_topology_regions(faces, options);
++  ASSERT_TRUE(topology.valid);
++  ASSERT_EQ(2U, topology.regions.size());
++  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
++                   source_edge_is_internal_isolation_seam(
++                       options, faces.rows(), topology.regionByFace, 0, 1,
++                       sharedEdge));
++}
++
++TEST(SurfaceCellsPhase10,
++     SourceDisconnectedCloseSheetsRemainSeparateTopologyRegions) {
++  Eigen::MatrixXi faces(2, 3);
++  faces << 0, 1, 2,
++           3, 4, 5;
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents = {0, 1};
++  options.sourceFaceSheets = {0, 1};
++  const auto topology = directional::geometry::surface_cell_tracing_detail::
++      build_source_topology_regions(faces, options);
++  ASSERT_TRUE(topology.valid);
++  ASSERT_EQ(2U, topology.regions.size());
++  EXPECT_NE(topology.regionByFace[0], topology.regionByFace[1]);
++}
++
++TEST(SurfaceCellsPhase10,
++     ExactReciprocalTransportCrossesSourceAdjacentIsolationSeam) {
++  Eigen::MatrixXd vertices(4, 3);
++  vertices << 0.0, 0.0, 0.0,
++              1.0, 0.0, 0.0,
++              1.0, 1.0, 0.0,
++              0.0, 1.0, 0.0;
++  Eigen::MatrixXi faces(2, 3);
++  faces << 0, 1, 2,
++           0, 2, 3;
++  Eigen::MatrixXd raw(2, 12);
++  for (int face = 0; face < 2; ++face) {
++    raw.row(face) << 1.0, 0.0, 0.0,
++                     0.0, 1.0, 0.0,
++                    -1.0, 0.0, 0.0,
++                     0.0,-1.0, 0.0;
++  }
++  directional::TriMesh mesh;
++  mesh.set_mesh(vertices, faces);
++  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
++      mesh, raw);
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents = {0, 0};
++  options.sourceFaceSheets = {0, 1};
++  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
++  const auto network = directional::geometry::build_surface_cell_network(
++      vertices, faces, crossField, targetSize, options);
+   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+-            forwardNetwork.phaseFront.disposition)
++            network.phaseFront.disposition)
+       << directional::geometry::surface_phase_front_failure_reason_name(
+-             forwardNetwork.phaseFront.failure.reason);
+-  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+-            reversedNetwork.phaseFront.disposition)
++             network.phaseFront.failure.reason);
++  ASSERT_EQ(1U, network.topologyRegions.size());
++  EXPECT_FALSE(network.topologyRegions.front().internalIsolationSeamTopology.empty());
++  bool sawCrossSheetScope = false;
++  for (const auto &cell : network.phaseFront.cells) {
++    sawCrossSheetScope |= cell.sourceIsolationSheets.size() > 1U;
++    EXPECT_EQ(0, cell.sourceTopologyRegion);
++  }
++  EXPECT_TRUE(sawCrossSheetScope);
++}
++
++TEST(SurfaceCellsPhase10,
++     NonReciprocalSourceAdjacentIsolationSeamFailsClosed) {
++  Eigen::MatrixXd vertices(4, 3);
++  vertices << 0.0, 0.0, 0.0,
++              1.0, 0.0, 0.0,
++              1.0, 1.0, 0.0,
++              0.0, 1.0, 0.0;
++  Eigen::MatrixXi faces(2, 3);
++  faces << 0, 1, 2,
++           0, 2, 3;
++  Eigen::MatrixXd raw(2, 12);
++  for (int face = 0; face < 2; ++face) {
++    raw.row(face) << 1.0, 0.0, 0.0,
++                     0.0, 1.0, 0.0,
++                    -1.0, 0.0, 0.0,
++                     0.0,-1.0, 0.0;
++  }
++  directional::TriMesh mesh;
++  mesh.set_mesh(vertices, faces);
++  auto crossField = directional::pipeline::finalize_surface_cell_raw_cross_field(
++      mesh, raw);
++  auto transition = std::find_if(
++      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
++      [](const auto &candidate) {
++        return candidate.firstFace >= 0 && candidate.secondFace >= 0;
++      });
++  ASSERT_NE(crossField.edgeTransitions.end(), transition);
++  transition->matching += 1;
++  directional::geometry::SurfaceCellTracingOptions options;
++  options.sourceFaceComponents = {0, 0};
++  options.sourceFaceSheets = {0, 1};
++  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
++  const auto network = directional::geometry::build_surface_cell_network(
++      vertices, faces, crossField, targetSize, options);
++  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
++            network.phaseFront.disposition);
++  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidTopologyRegionTransport,
++            network.phaseFront.failure.reason)
+       << directional::geometry::surface_phase_front_failure_reason_name(
+-             reversedNetwork.phaseFront.failure.reason);
+-  EXPECT_EQ(forwardNetwork.phaseFront.cells.size(),
+-            reversedNetwork.phaseFront.cells.size());
+-  EXPECT_EQ(phase_front_geometry_hash(forward.vertices, forward.faces,
+-                                      forwardNetwork),
+-            phase_front_geometry_hash(reversed.vertices, reversed.faces,
+-                                      reversedNetwork));
++             network.phaseFront.failure.reason);
++  EXPECT_TRUE(network.phaseFront.cells.empty());
+ }
+ 
+ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
+@@ -2484,7 +2667,7 @@ TEST(SurfaceCellsPhase10,
+ }
+ 
+ TEST(SurfaceCellsPhase10,
+-     ExactCommittedTorusDoesNotRejectOnlyBecauseAnotherPeriodicSheetExists) {
++     ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary) {
+   const auto meshPath = directional::tests::benchmark_fixture_path(
+       "milestone-g/torus.obj");
+   const auto fieldPath = directional::tests::benchmark_fixture_path(
+@@ -2508,37 +2691,42 @@ TEST(SurfaceCellsPhase10,
+   const auto result = directional::pipeline::remesh_from_raw_cross_field(
+       mesh.V, mesh.F, rawField, options);
+   ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
+-  const auto &phaseFront = result.surfaceCellContext.traceNetwork.phaseFront;
++  const auto &network = result.surfaceCellContext.traceNetwork;
++  const auto &phaseFront = network.phaseFront;
+   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
+             phaseFront.failure.reason);
+   EXPECT_NE(directional::geometry::SurfaceCellProducerDisposition::NotApplicable,
+             phaseFront.disposition)
+-      << "authoritative sheet coverage must not leak partial NotApplicable";
+-  EXPECT_GT(phaseFront.periodicHolonomies.size(), 1U);
+-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+-                UnsupportedSourceSheetTopology,
+-            phaseFront.failure.reason)
+-      << "curved topological disks now have a structural producer";
+-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+-                InvalidBoundedDiskTopology,
+-            phaseFront.failure.reason)
+-      << "non-hard cross-sheet boundaries are authoritative source-sheet rails";
++      << "authoritative topology-region coverage must not leak partial NotApplicable";
+   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+-                InvalidBoundedDiskBoundaryPhase,
+-            phaseFront.failure.reason)
+-      << "valid field-authoritative disk boundaries must use the generalized "
+-         "ordered boundary phase rather than the four-run rectangle gate";
+-  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+-                InvalidBoundedDiskBoundaryTurn,
++                InvalidTopologyRegion,
+             phaseFront.failure.reason);
+   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+-                InvalidBoundedDiskBoundaryIndex,
++                InvalidTopologyRegionTransport,
+             phaseFront.failure.reason);
+-  EXPECT_GT(result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseCount, 0U);
+-  EXPECT_GT(result.diagnostics.surfaceCellBoundedDiskBoundaryRunCount, 0U);
+-  EXPECT_GT(result.diagnostics.surfaceCellPolygonalBoundedDiskBoundaryPhaseCount,
+-            0U);
+-  EXPECT_FALSE(result.diagnostics.surfaceCellBoundedDiskBoundaryPhaseHashes.empty());
++  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
++                InvalidBoundedDiskBoundaryTurn,
++            phaseFront.failure.reason)
++      << "a non-hard exact-adjacent isolation seam is internal producer topology, "
++         "not a bounded-disk exterior corner";
++  ASSERT_FALSE(network.topologyRegions.empty());
++  EXPECT_EQ(network.topologyRegions.size(),
++            result.diagnostics.surfaceCellTopologyRegionCount);
++  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
++            network.sourceFaceTopologyRegions.size());
++  for (const int region : network.sourceFaceTopologyRegions) EXPECT_GE(region, 0);
++  bool sawMultiSheetRegionWithInternalSeam = false;
++  for (const auto &region : network.topologyRegions) {
++    if (region.isolationSheets.size() > 1U &&
++        !region.internalIsolationSeamTopology.empty()) {
++      sawMultiSheetRegionWithInternalSeam = true;
++    }
++  }
++  EXPECT_TRUE(sawMultiSheetRegionWithInternalSeam);
++  EXPECT_GT(result.diagnostics.surfaceCellInternalIsolationSeamCount, 0U);
++  EXPECT_EQ(result.diagnostics.surfaceCellTopologyRegionCount,
++            result.diagnostics.surfaceCellTopologyRegionHashes.size());
++  EXPECT_FALSE(phaseFront.periodicHolonomies.empty());
+   if (phaseFront.disposition ==
+       directional::geometry::SurfaceCellProducerDisposition::Rejected) {
+     EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::None,
