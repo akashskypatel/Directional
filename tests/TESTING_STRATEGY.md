@@ -2,11 +2,11 @@
 
 ## Mandatory direct matrix
 
-Run in order: plane, multi-face seam, close sheets, cylinder, randomized `bunny_1k_random`, vase. Run all six even after failure when the active turn budget permits a bounded execution; later fixtures cannot pass an earlier gate. A bounded timeout is failure only and does not synthesize a result.
+Run in order: plane, multi-face seam, close sheets, cylinder, randomized `bunny_1k_random`, vase. Run all six even after failure when the active turn budget permits bounded execution; later fixtures cannot pass an earlier gate. A bounded timeout is failure only and does not synthesize a result.
 
 Every direct success requires requested/executed `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete source provenance, strict validation, and deterministic output.
 
-Topology/singularity gate fixtures such as torus and prescribed sphere are run additionally when their gate is active. They do not replace the production matrix above.
+Topology/singularity fixtures such as torus and the prescribed sphere are additional active-gate fixtures and do not replace the production matrix.
 
 ## Fixture integrity
 
@@ -15,41 +15,39 @@ Topology/singularity gate fixtures such as torus and prescribed sphere are run a
 
 Both use generated smooth fields through production extraction. Replacing, simplifying, bypassing, or special-casing either fixture is prohibited.
 
-## Current runtime authority
+## Current runtime authority and mandatory review state
 
-Exact artifact **`9021175280`**, implementation `085db9ec23ffaa509b1f5a29e72968229efa103d`.
+Exact artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, is artifact-only runtime validated.
 
-G0-G3 remain passed:
+Validated focused authority:
 
-- retained G0-G3 focused contracts **17/17**;
-- plane `Produced / CompletedSurfaceCells`, 64 pure quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
-- seam `Produced / CompletedSurfaceCells`, 64 pure quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
-- close sheets `Produced / CompletedSurfaceCells`, 200 pure quads / 242 V / two components, hash `89b052762f52a5af`, deterministic 3/3;
-- cylinder `Produced / CompletedSurfaceCells`, periodic `r=0`, `t=(32,0)`, route 32, cut 4, 288 pure quads / 320 V, zero validation failures, exactly two genuine exterior 32-edge loops, hash `32135be51d7a0a26`, deterministic 3/3;
+- topology-region / isolation-seam semantics **9/9**;
+- generalized polygonal boundary phase **5/5**;
+- retained non-torus curved-disk semantics **5/5**;
+- non-torus sheet coverage **2/2**;
+- G4 periodic-relation semantics **5/5**;
+- retained G0-G3 **16/17** because `UniformPhaseFrontReliefGuidanceOnlyBlocksWhenEmbedded` regressed.
+
+Direct candidate results:
+
+- plane `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `730caeae49ec872c`, deterministic 3/3;
+- seam `Produced / CompletedSurfaceCells`, 64 quads / 81 V, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets `Produced / CompletedSurfaceCells`, 200 quads / 242 V / two components, strict-valid but candidate hash `aaec5574aa2e52f9` versus accepted baseline `89b052762f52a5af`; geometry is identical and component emission order is reversed;
+- cylinder `Produced / CompletedSurfaceCells`, periodic `r=0`, `t=(32,0)`, route 32, cut 4, 288 quads / 320 V, zero validation failures, exactly two genuine exterior 32-edge loops, hash `32135be51d7a0a26`, deterministic 3/3;
 - no passing direct case uses fallback or source-grid recovery.
 
-G4 focused authority:
+Exact torus now proves topology-region authority and reaches `tracing/phase-front-materialization / InvalidAuthoritativePhaseFrontCell`: four annular topology regions, eight internal isolation seams, one region spanning two local isolation labels, four periodic relations, no fallback/recovery. The former `InvalidBoundedDiskBoundaryTurn` partition defect is gone.
 
-- generalized polygonal boundary-phase semantics **5/5**;
-- source-sheet/isolation semantics **3/3**;
-- retained non-torus curved-disk semantics **5/5**;
-- sheet coverage **3/3**;
-- G4 periodic-relation semantics **5/5**;
-- strengthened exact-torus advancement currently fails because torus reaches `InvalidBoundedDiskBoundaryTurn` before any first-class phase record is retained.
+Bounded suites: producer **124/127**, completion/simplification **154/164**, validation **60/60**, compiled API **8/8**.
 
-Bounded suites: producer **119/121**, completion/simplification **154/164**, validation **60/60**, compiled API **8/8**.
+Detailed runtime authority:
+`.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`.
 
-Detailed runtime authority: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`.
+Because accepted retained authority regressed, the two-no-progress process guard is active. **No ordinary Code + Build is authorized before mandatory independent Design Review.** Review plan: `.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`.
 
 ## Producer-authority contracts
 
-The source distinguishes:
-
-```text
-NotApplicable
-Produced
-Rejected
-```
+The source distinguishes `NotApplicable`, `Produced`, and `Rejected`.
 
 Mandatory behavior:
 
@@ -58,23 +56,19 @@ Mandatory behavior:
 - `Rejected` generates no generic substitute work and remains terminal for the requested backend;
 - typed rejection remains first-invalid authority;
 - non-embedded relief guidance does not veto transport;
-- embedded relief barriers block according to the existing relief contract;
+- **embedded relief barriers must remain fail-closed and cannot be bypassed because topology-region decomposition returns every local subproducer `NotApplicable`**;
 - ordinary shared-edge and ordered source-vertex fan transport remain covered;
 - reversed face ordering preserves structural results;
 - malformed/duplicate/nonreciprocal transition data fails closed;
-- source component, topology-region, and local isolation-sheet identity prevent unrelated capture;
+- source component, topology-region, and local isolation identity prevent unrelated capture;
 - one accepted authoritative cell maps to exactly one quad;
-- periodic source identity, field-authoritative correspondence, canonical source-simplex endpoints, exact quotient and artificial-cut non-exterior behavior remain regressions.
-
-Producer disposition and typed rejection identity must be present in deterministic diagnostic/structural evidence.
+- periodic source identity, field-authoritative correspondence, canonical source-simplex endpoints, exact quotient, and artificial-cut non-exterior behavior remain regressions.
 
 ## Topology-region versus local isolation-sheet contract
 
-Tests must distinguish two kinds of authority:
-
 ### Producer topology region
 
-A topology region is connected only through exact source adjacency and is split by genuine source boundaries, hard features, embedded hard barriers, or equivalent explicit source-topological constraints. Euler characteristic, boundary-loop classification, disk/annulus applicability, region ownership and exact-once producer coverage are evaluated on this region.
+A topology region is connected only through exact source adjacency and is split by genuine source boundaries, hard features, or other review-approved explicit topological/barrier authority. Euler characteristic, genuine boundary-loop classification, disk/annulus applicability, region ownership, and exact-once coverage are evaluated on this region.
 
 ### Local isolation sheet
 
@@ -84,21 +78,43 @@ A non-hard edge whose exact source-adjacent incident faces have different local 
 
 Required regressions include:
 
-- a natural annulus split into multiple local isolation labels but preserved as one source-topological producer region;
+- classifier-split annulus remains one topology region;
 - face-row invariance of region/seam identity;
 - exact reciprocal transport across a valid internal isolation seam;
-- typed failure for malformed/nonreciprocal internal seam transport;
+- typed failure for malformed/nonreciprocal seam transport;
 - hard-feature boundaries remain topology boundaries;
 - spatially close but source-disconnected sheets/components remain isolated;
-- exact-once aggregation across regions while preserving local-sheet provenance.
+- exact-once aggregation across regions while preserving local-isolation provenance.
 
 Do not union local labels by counts, IDs, frequency, discovery order, topology score, boundary length, proximity, or arbitrary subset search.
 
+## Multi-isolation materialization contract — pending mandatory review
+
+Runtime evidence proves tracing can produce authoritative cells in a topology region spanning multiple local isolation labels, but current materialization still requires one representative `sourceSheet` and keys lattice/periodic identity by `(component, sheet, lattice)`.
+
+The mandatory reviewer must decide the complete public contract before implementation. Any approved solution must:
+
+- use source-topology-region authority for phase/lattice/periodic ownership when one region spans multiple isolation labels;
+- retain actual local-isolation provenance on exact source corners/lineage rather than erasing or arbitrarily selecting one sheet;
+- prohibit world-space welding or proximity-based cross-sheet identity;
+- keep true hard/source boundaries nontraversable;
+- preserve one authoritative cell to one output quad and strict validation;
+- retain cylinder periodic quotient semantics exactly.
+
+## Deterministic output identity — pending mandatory review
+
+Accepted direct hashes are currently:
+
+- plane `730caeae49ec872c`;
+- seam `5bdf34d7802e9fb0`;
+- close sheets `89b052762f52a5af`;
+- cylinder `32135be51d7a0a26`.
+
+Artifact `9022061741` changes only close-sheets component emission order and therefore the raw output hash. **Do not update the baseline merely because the candidate differs.** The mandatory reviewer must decide whether exact component ordering is part of the deterministic product contract or whether the acceptance identity should instead be canonicalized independently of component order. Either decision requires independent contract justification and corresponding future tests.
+
 ## G4 polygonal boundary-phase contract
 
-The generalized boundary representation is runtime-valid on structural witnesses.
-
-Required tests retain:
+Retain the validated behavior:
 
 - established rectangular curved disk follows the exact fast path;
 - a natural non-rectangular orthogonal/reflex-corner disk constructs ordered source-attached transported runs and a deterministic polygonal chart without run coercion;
@@ -108,46 +124,50 @@ Required tests retain:
 - source boundary and hard-feature provenance remain exact;
 - mixed periodic/polygonal composition retains periodic authority without partial aggregate cells.
 
-Do not infer correctness from a changed error name. Material progress on a real gate fixture requires diagnostics/hashes showing the intended first-class state was actually constructed and consumed.
+A changed error name is not progress by itself; real gate progress requires first-class state to be constructed and consumed.
 
-Exact torus under artifact `9021175280` currently reports `InvalidBoundedDiskBoundaryTurn` with phase/run/polygon/chart counts all zero. Read-only structural diagnosis shows this is caused by treating a local isolation seam as an exterior disk rail. Boundary-turn/index thresholds must not be relaxed to hide that upstream partition error.
+## Exact torus contract test scope — pending mandatory review
 
-The next Code + Build test additions are governed by `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md`.
+`ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary` currently aborts on `ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork)` because materialization fails before the trace network is moved into retained context. Public diagnostics nevertheless prove its intended topology-region/seam behavior.
+
+The mandatory reviewer must determine whether `retainIntermediateGeometry` guarantees trace-network retention on this failure path. If not, future correction should assert the intended public topology/seam contract and separately test intermediate-retention semantics if needed. Assertions may not be weakened simply to obtain a pass.
 
 ## G3 periodic invariant
 
-Periodic relation authority is first-class:
+Periodic relation authority remains first-class:
 
-- source-topology/reciprocal-transport identity;
+- source topology and reciprocal transport identity;
 - canonical equivalent/reversed representation;
 - field-authoritative correspondence rather than ID/order/proximity choice;
 - typed fail-closed conflict/ambiguity;
 - every retained relation consumed by hashing, diagnostics, provenance and exact quotient materialization;
 - single-annulus cylinder behavior retained exactly.
 
-The artificial periodic cut is never an exterior output seam. No Euclidean seam welding is permitted.
+Artificial periodic cuts are never exterior output seams. No Euclidean seam welding is permitted.
 
 ## Contract tests versus production authority
 
-Narrow synthetic/reconstructed fixtures isolate invariants but are not acceptance authority for the real pipeline. Exact committed fixture tests must enter the production preprocessing/remesh path and must not inject convenient topology-region unions, labels, transitions, target counts, or output cardinalities.
+Narrow synthetic/reconstructed fixtures isolate invariants but are not acceptance authority for the real pipeline. Exact committed fixture tests must enter production preprocessing/remesh and must not inject convenient topology-region unions, labels, transitions, target counts, or output cardinalities.
 
-Tests must verify semantic source/topology/transport identities instead of raw DCEL/source numeric IDs or historical discovery order. Diagnostic torus vertex IDs, local-sheet counts, feature counts, relation counts, analytical fixture parameters and observed boundary lengths may not become test or production success keys.
+Tests verify semantic source/topology/transport identities instead of raw DCEL/source IDs or discovery order. Diagnostic torus vertex IDs, local-sheet counts, feature counts, relation counts, analytical parameters, and observed boundary lengths may not become production/test success keys.
 
 ## Default suites
 
-Report direct acceptance separately. Explicitly executed focused/direct tests must be excluded from remaining aggregate totals so counts are non-overlapping. Run completion, validation, and compiled API suites after the direct gate decision. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only and cannot override semantic gate authority.
+Report direct acceptance separately. Explicitly executed focused/direct tests should be excluded from remaining aggregate totals where practical. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only and cannot override semantic gate authority.
 
-Current bounded baseline from artifact `9021175280`:
+Current artifact `9022061741` bounded totals:
 
-- producer **119/121**; failures are the existing sub-millisecond `StrictValidatorOverheadStaysBelowFivePercent` threshold and the strengthened exact-torus advancement contract;
-- completion/simplification **154/164**, unchanged historical ten failures;
+- producer **124/127**;
+- completion/simplification **154/164**;
 - validation **60/60**;
 - compiled API **8/8**;
-- aggregate **341/353**.
+- aggregate **346/359**.
 
 ## Turn boundaries
 
-Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. GitHub workflow compilation is permitted under the workflow policy. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests.
+Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
+
+The current next turn is mandatory Review, not Code + Build.
 
 ## Validity and prohibitions
 
