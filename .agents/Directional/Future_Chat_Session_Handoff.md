@@ -7,119 +7,144 @@ Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 Draft PR: #8 — keep **open, draft, unmerged**  
 Review policy: `never`  
 Active gate: **G4 topology-distinct completion and singularities**  
-Next turn: **Code + Build — source-topology-region / isolation-sheet decoupling**  
-Authoritative next plan: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md`
+Next turn: **Test + Benchmark — source-topology-region / isolation-sheet decoupling artifact-only validation**  
+Authoritative next plan: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest runtime report `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Report.md`, the authoritative next plan above, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references. Load the integrated unit-testing module before changing test source.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the current runtime report `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`, the authoritative artifact-only plan above, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references. Load the integrated unit-testing module for diagnosis if a unit-test fixture/expectation fails; do not edit test source in the Test + Benchmark turn.
 
 ## Current tested authority
 
 G0, G1, G2, and **G3 are passed**. G4 remains **active**.
 
-Exact runtime artifact: **`9021175280`** (`g4-polygonal-boundary-phase-code-build`)  
+Current runtime-proven artifact: **`9021175280`** (`g4-polygonal-boundary-phase-code-build`)  
 Workflow run/job: **`31254896323 / 93096734152`**  
 Implementation: **`085db9ec23ffaa509b1f5a29e72968229efa103d`**  
 Payload cleanup: **`c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc`**
 
-Artifact authority:
+Runtime authority:
 
-- ZIP SHA-256 `16191e84bcfcebb2cfc1401b4aae7d5d8de2a02444f189a54d68164c1327a646`;
-- internal `SHA256SUMS` SHA-256 `a8161eb579e1c06e63b5c7bc6203f610693f3e6259f56d8ce2c6ba78e424d3b5`;
+- outer ZIP SHA-256 `16191e84bcfcebb2cfc1401b4aae7d5d8de2a02444f189a54d68164c1327a646`;
+- internal manifest SHA-256 `a8161eb579e1c06e63b5c7bc6203f610693f3e6259f56d8ce2c6ba78e424d3b5`;
 - recursive checksums **48/48**;
-- 49 files / 27 fixtures / five executables / two project static libraries;
-- build metadata `runtimeExecution=false`;
-- runtime-only fixture symlink: `/home/runner/work/Directional/Directional/benchmarks/fixtures -> /mnt/data/g4_polygonal_runtime_9021175280/test-data/benchmarks/fixtures`.
-
-Focused/runtime authority:
-
 - generalized polygonal boundary phase **5/5**;
-- source-sheet/isolation semantics **3/3**;
+- preceding local-isolation/source-sheet semantics **3/3**;
 - retained non-torus curved-disk semantics **5/5**;
-- strengthened exact-torus advancement contract **0/1**, so retained combined source-sheet/curved group **8/9**;
 - sheet coverage **3/3**;
 - G4 periodic relations **5/5**;
 - retained G0-G3 **17/17**;
-- direct plane hash `730caeae49ec872c`, 64 quads / 81 V, deterministic 3/3;
+- plane hash `730caeae49ec872c`, 64 quads / 81 V, deterministic 3/3;
 - seam hash `5bdf34d7802e9fb0`, 64 quads / 81 V, deterministic 3/3;
 - close sheets hash `89b052762f52a5af`, 200 quads / 242 V / two components, deterministic 3/3;
 - cylinder hash `32135be51d7a0a26`, 288 pure quads / 320 V, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, zero validation failures, exactly two genuine 32-edge exterior loops, deterministic 3/3;
-- no passing direct case uses fallback or source-grid recovery.
+- no passing direct case uses fallback or source-grid recovery;
+- bounded suites producer **119/121**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **341/353**.
 
-Bounded suites:
-
-- producer **119/121**: existing sub-millisecond validator-overhead threshold plus strengthened exact-torus advancement failure;
-- completion/simplification **154/164**, exact same ten historical failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **341/353**.
-
-Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`.
-
-Local evidence archive: `directional-g4-polygonal-boundary-phase-artifact-only-evidence.tar.gz`, SHA-256 `3da110e6b8f4a0ef4759cacbcb5da109b65b85cb62607dcde4955e8203346f9b`.
-
-## G4 decision — planned torus progress was not achieved
-
-The new polygonal representation is runtime-live on its natural structural witnesses. The six-run reflex-corner fixture constructs the generalized phase/chart, invalid turns fail typed, row-order invariance holds, and the rectangular fast path is retained.
-
-Exact torus nevertheless fails deterministically 3/3 before any first-class boundary phase is retained:
+Exact torus under current runtime authority is deterministic 3/3:
 
 - producer `Rejected`;
 - stage `tracing/phase-front`;
 - reason **`InvalidBoundedDiskBoundaryTurn`**;
-- first invalid face `-1`;
-- diagnostic source vertex `32`;
-- bounded-disk phase count 0;
-- run count 0;
-- polygonal phase count 0;
-- constructed-chart count 0;
+- bounded-disk phase/run/polygon/chart counts all zero;
 - phase hashes empty;
-- periodic authority remains live before rejection;
-- no downstream cells/output and no fallback/recovery.
+- periodic authority remains live;
+- zero downstream cells/output;
+- no fallback/recovery.
 
-A changed typed reason without retained phase/chart authority is not material progress under the controlling plan. The no-progress Code + Build count is now **1**.
+Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Report.md`.
 
-**Diagnostic vertex 32, local sheet counts, edge counts, relation counts, analytical fixture parameters and boundary lengths are evidence only. Never use them for fixture recognition, ownership, ordering, branching, union selection, or success criteria.**
+Runtime-only fixture symlink used by that prior turn:
+`/home/runner/work/Directional/Directional/benchmarks/fixtures -> /mnt/data/g4_polygonal_runtime_9021175280/test-data/benchmarks/fixtures`.
 
-## Exact structural diagnosis — producer topology region is not local isolation sheet
+## New exact compile candidate — artifact 9022061741
 
-Read-only reconstruction of the immutable torus fixture and the exact classifier/feature-map policy shows the upstream partition defect:
+Exact candidate artifact: **`9022061741`** (`g4-topology-region-code-build`)  
+Workflow run/job: **`31258107220 / 93104542559`**  
+Workflow event commit: `806a557c39170d12b172ef6930794711e00e63bc`  
+Implementation commit: **`3ca89ab55efff461b050fb12033174be70e7464f`**  
+Payload cleanup: **`b188dd37f01181ece2173879fc7e0accf23d1bad`**
 
-- the close/opposing-sheet classifier produces local geometric isolation labels;
-- the source has 48 hard edges in four closed feature curves, matching runtime feature diagnostics;
-- two classifier-local labels each appear as a disk when considered separately;
-- restoring their non-hard exact shared-source adjacency produces one annular region with two genuine hard-feature boundary loops;
-- their separating edges are classifier isolation cuts, not hard features or true source boundaries;
-- the runtime turn failure occurs where one artificial classifier cut meets a true hard rail, so treating the cut as a bounded-disk exterior polygon side creates an invalid transported corner.
+Artifact authority:
 
-The turn validator is not the defect. **Do not relax `InvalidBoundedDiskBoundaryTurn`, index closure, or field alignment to make torus pass.**
+- outer ZIP SHA-256 **`df23a89f26d0769fa3433bf8996d2d090eaa82770ddc52a52018e51286087306`**;
+- internal `SHA256SUMS` SHA-256 **`d80559fab82a359f7ce5ccfe109069765d18f5d440824106d84d70c5b8822703`**;
+- recursive checksums **48/48**;
+- 49 files / 27 fixtures / five executables / two project static libraries;
+- successful Release/static/Ninja build **111/111**;
+- log artifact `9022061947`, SHA-256 **`8a7c5271791a1e8182d4ff2b0d5d32ebfe6e47f6e36661ba5b431f00f898256d`**;
+- decoded raw patch SHA-256 **`1c3488b672e25c698451df46081fa951d8c4d883136ff30f88cece0dcadd194b`**;
+- `runtimeExecution=false`, review policy `never`.
 
-Required architecture:
+Final packaged source blobs:
 
-1. source-topological producer regions derive from exact source adjacency and split at true hard/barrier/source-boundary authority;
-2. local isolation-sheet labels remain separate and continue protecting proximity/capture/projection operations;
-3. a non-hard cross-sheet edge may be an internal isolation seam only through its exact shared source edge and valid reciprocal field transport;
-4. unrelated/disconnected close sheets remain disconnected; no Euclidean/proximity merging;
-5. both topology-region and local-sheet provenance remain first-class;
-6. producer applicability/topology/coverage groups by topology region, not by local isolation label alone.
+- diagnostics header `ba33d8396bd26f8190f8d552aafd9c950e9a3842`;
+- tracing header `e966a9ab9dc33f23de9cecb3fd9b61ddd75fde7f`;
+- benchmark source `ba3eb47bfe9f3f78ce1dcbab32bfb3a773658cfc`;
+- tracing source `b3f0ea3b82cf64f3a2ba312f9622172c64bc3e83`;
+- pipeline source `97a20e41338b616d6bb5cafaa5f3d3851c52c583`;
+- Phase 10 tests `441ba7fe2066355ce2a2239380f45029ea139346`.
 
-## Exact next-turn design declaration
+Submodules: Eigen `769c72fd8019e389810d1de1e7c243521a43b594`, googletest `3940de91897160fea4815998e08d0fa3c2fb077e`, polyscope `59da72df6517cab8379865899bdffdbc96171301`.
 
-Before source edits emit:
+Detailed compile record: `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`.
+
+## Candidate implementation contract
+
+The candidate decouples producer topology from local geometric isolation.
+
+`SurfaceTopologyRegion` records exact source faces, source component, Euler characteristic, genuine boundary-loop count, exact boundary topology, internal isolation-seam topology, local isolation labels, and a structural hash.
+
+Topology regions:
+
+- traverse only exact source-face adjacency;
+- do not cross different source components, hard features, or embedded relief barriers;
+- do cross a non-hard exact shared edge even when local isolation labels differ;
+- never derive connectivity from Euclidean proximity, nearest projection, counts, IDs, frequency, topology score, boundary length, or arbitrary subset search.
+
+A non-hard exact-adjacent cross-sheet edge inside one region is an **internal isolation seam**. It is not an exterior bounded-disk rail. Phase transport across it still requires exact source routing and reciprocal transition authority; malformed/nonreciprocal transport fails typed `InvalidTopologyRegionTransport`.
+
+Producer applicability/topology, Euler/boundary classification, periodic/disk selection, and exact-once aggregation now operate by topology region. Local isolation labels remain first-class provenance and still protect proximity/capture/projection operations. Source-disconnected close sheets remain separate regions.
+
+Periodic relation identity, cells/fronts/phases, trace-network hashing, memory accounting, and diagnostics carry topology-region plus local-isolation provenance. Runtime diagnostics expose region count, internal seam count, region hashes, Euler characteristics, genuine boundary-loop counts, and isolation-label cardinalities.
+
+Compile-only corrected/added regressions include:
+
+1. `ExactAdjacentCrossSheetEdgeIsInternalTopologyRegionIsolationSeam`;
+2. `SameSheetInternalEdgeIsNeitherBoundaryNorIsolationSeam`;
+3. `TopologyRegionIsolationSeamIsInvariantToFaceRowEnumeration`;
+4. `ClassifierSplitAnnulusRemainsOneSourceTopologyRegion`;
+5. `ClassifierSplitAnnulusTopologyRegionIsRowOrderInvariant`;
+6. `HardFeatureCannotBeReinterpretedAsInternalIsolationSeam`;
+7. `SourceDisconnectedCloseSheetsRemainSeparateTopologyRegions`;
+8. `ExactReciprocalTransportCrossesSourceAdjacentIsolationSeam`;
+9. `NonReciprocalSourceAdjacentIsolationSeamFailsClosed`;
+10. `ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary`.
+
+**None has executed yet.** The prior cross-sheet fixture expectation was corrected because the exact shared non-hard edge is an internal isolation seam, not a physical exterior rail; this is not assertion weakening.
+
+## Exact next-turn execution declaration
+
+Before any packaged Directional binary executes state:
 
 ```text
-Active design gate: G4 topology-distinct completion and singularities
-Earliest failing fixture/contract: exact torus under artifact 9021175280 deterministically rejects at tracing/phase-front as InvalidBoundedDiskBoundaryTurn before any bounded-disk phase record is retained; read-only structural reconstruction shows the failing local disk is created by close-sheet isolation labels splitting one exact source-adjacent annular hard-feature region
-Missing design contract: sourceFaceSheets currently serves both proximity-isolation and producer-topology partitioning, but a geometric close-sheet isolation seam is not automatically a physical/topological chart boundary
-Smallest general implementation change: introduce first-class source-topological producer regions derived from exact source adjacency and true barrier authority, retain local isolation-sheet labels separately for proximity/capture/projection safety, and allow exact reciprocal transport across non-hard source-adjacent isolation seams inside one topology region
-Observable material-progress condition: compile/package structural topology-region regressions; the following exact artifact-only torus run no longer fails because an artificial isolation seam is treated as a bounded-disk exterior boundary and advances to the next truthful periodic/coverage/materialization invariant while every retained G0-G3 and isolation-safety contract remains exact
-Explicitly deferred: relaxing boundary turn/index checks, generalized polygon front pairing unless runtime reaches it after correct topology partition, prescribed sphere until torus topology closes, G5/G6, historical completion/simplification failures, validator/performance threshold changes, fallback/recovery and unrelated optimization
+Turn type: Test + Benchmark only
+Exact artifact: 9022061741 (g4-topology-region-code-build), workflow run/job 31258107220 / 93104542559
+Runtime candidate source authority: implementation 3ca89ab55efff461b050fb12033174be70e7464f, cleanup b188dd37f01181ece2173879fc7e0accf23d1bad
+No-build boundary: do not edit production/tests/fixtures/validators/benchmarks/build files and do not configure, compile, link, regenerate discovery, or rebuild
+First correctness check: verify artifact/source/blobs/checksums, then run topology-region / isolation-seam structural semantics first
+Regression gate: retain polygonal boundary phase, valid curved-disk/isolation, sheet coverage, G4 periodic relations, retained G0-G3 and exact direct plane/seam/close-sheets/cylinder hashes with no fallback/recovery
+Primary G4 observation: exact torus must prove topology-region authority is constructed and consumed and must no longer fail merely because a non-hard classifier isolation seam is treated as a bounded-disk exterior turn
+Material-progress rule: compile success is not runtime progress; if this exact artifact also fails to establish material progress, no further ordinary Code + Build is authorized before mandatory design review or bounded producer-replacement proof
+Deferred: prescribed sphere unless torus direct strict-valid production closes; G5/G6; historical completion/simplification repair; validator/performance threshold changes; fallback/recovery and unrelated optimization
 ```
 
-Execute `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Plan.md` as **Code + Build only**.
+Follow `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
-The following artifact-only Test + Benchmark turn must prove topology-region authority is constructed and consumed, retain polygonal/isolation/periodic/G0-G3 contracts and exact direct hashes, then classify exact torus. If that validation also shows no material progress, mandatory design review or bounded producer-replacement proof is required before another ordinary Code + Build iteration.
+## No-progress process state
 
-Prescribed sphere remains deferred until torus reaches direct strict-valid production.
+The preceding artifact-only turn established **one** Code + Build without material runtime progress. This compile-only turn does not itself increment or reset runtime progress authority; the exact following validation decides the process transition.
+
+- If artifact `9022061741` establishes material progress, review remains skipped (`never`) and the Test + Benchmark report's proposed next Code + Build plan becomes authoritative.
+- If it does **not**, do not authorize another ordinary Code + Build. Mandatory design review or bounded producer-replacement proof is required before another ordinary implementation iteration.
 
 ## Lessons that must not be repeated
 
@@ -140,7 +165,7 @@ Prescribed sphere remains deferred until torus reaches direct strict-valid produ
 - Observed face IDs, vertex IDs, sheet counts, relation counts, run counts and boundary lengths are diagnostics, not implementation keys.
 - A four-run rectangular chart is a special case, not permission to coerce arbitrary valid field boundaries into four sides.
 - A changed failure reason is not material progress unless first-class state proving the intended architecture was constructed and consumed is present.
-- Do not fix `InvalidBoundedDiskBoundaryTurn` by accepting 180-degree turns when the apparent corner is created by an artificial isolation cut.
+- Do not fix `InvalidBoundedDiskBoundaryTurn` by accepting invalid turns when the apparent corner is created by an artificial isolation cut.
 - A valid polygonal chart does not authorize partial output; non-rectangular front pairing remains fail-closed until implemented structurally.
 - Harmonic chart compilation and focused applicability are not proof of production chart success; follow the first runtime invariant.
 - A downstream completion failure is not automatically the next target; follow the first truthful producer/materialization failure.
@@ -159,7 +184,7 @@ Never combine turn types.
 - Review is optional. Review policy is currently `never`; after Test + Benchmark its next Code + Build plan is authoritative.
 - Build and runtime claims require exact pushed/evidence commit and artifact authority.
 - Direct mandatory fixture/gate evidence outranks aggregate totals.
-- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. Current no-progress Code + Build count is **1**; if the next Code + Build's following runtime validation also lacks material progress, trigger that rule.
+- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. Current runtime-proven no-progress count is **1**; artifact `9022061741` validation decides whether that rule activates.
 
 ## Workflow/temp cleanup — mandatory
 
@@ -171,7 +196,7 @@ Never combine turn types.
 6. do not remove a durable dependency required by normal repository operation;
 7. retain payload/source-transfer data until its authority is verified, then remove it.
 
-Expected final state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again before the final turn comment.
+The successful topology-region Code + Build removed its six raw payload files in cleanup commit `b188dd37f01181ece2173879fc7e0accf23d1bad`, then removed the bounded workflow before its trigger after artifact verification. Expected final state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again at the beginning and end of the Test + Benchmark turn.
 
 ## Documentation cleanup — mandatory
 
