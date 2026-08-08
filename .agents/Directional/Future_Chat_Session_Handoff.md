@@ -7,105 +7,123 @@ Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 Draft PR: #8 — keep **open, draft, unmerged**  
 Review policy: `never`  
 Active gate: **G4 topology-distinct completion and singularities**  
-Next turn: **Test + Benchmark — artifact-only G4 closed-genus-one holonomy-basis validation**  
-Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Plan.md`
+Next turn: **Code + Build — G4 torus complete phase-front sheet coverage**  
+Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest G3 runtime report, the G4 Code + Build report, the authoritative G4 artifact-only Test + Benchmark plan, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest G4 artifact-only runtime report, the G4 Code + Build report, the authoritative next Code + Build plan, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references.
 
 ## Current tested authority
 
-G0, G1, G2, and **G3 are passed**. G4 is **not runtime passed**.
+G0, G1, G2, and **G3 are passed**. G4 is **active**. The first G4 multi-relation periodic-authority slice is runtime-proven material progress but does not close the gate.
 
-G3 formal runtime closure remains artifact `9013161456` (`g3-field-correspondence-test-witness-code-build`), source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`.
+Exact current runtime artifact: **`9014730437`** (`g4-holonomy-basis-code-build`)  
+Workflow run/job: `31233594490 / 93042009574`  
+Primary implementation: `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`  
+Final compile-source commit: `6e754bdd64482582d39e71184805fbb053c99f86`  
+Payload cleanup: `8304ba30b0f85bc69deebbf55922f05846d2d5b2`
 
-- corrected field-correspondence witness passes;
-- focused/retained G0-G3 contracts **17/17**;
+Artifact authority:
+
+- exact downloaded/GitHub ZIP SHA-256 `14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
+- internal `SHA256SUMS` digest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
+- recursive checksums **46/46**;
+- 47 files / 27 fixtures / five executables / two static libraries;
+- final source blobs independently verified from packaged source;
+- validation turn performed no configure/compile/link/rebuild and no source/test/fixture/validator/benchmark/build edit.
+
+Focused/runtime authority:
+
+- five G4 periodic-relation semantics **5/5**;
+- G0-G3 retained focused contracts **17/17**;
 - plane direct hash `730caeae49ec872c`, 3/3;
 - seam direct hash `5bdf34d7802e9fb0`, 3/3;
 - close sheets direct hash `89b052762f52a5af`, 3/3;
-- cylinder direct `Produced / CompletedSurfaceCells`, `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 vertices, zero validation failures, field P95 `8.537736463e-7°`, exactly two genuine annulus exterior loops, output hash `32135be51d7a0a26`, deterministic 3/3, no fallback/recovery;
-- bounded producer 100/101 (only known timing-only validator-overhead test), completion 154/164 historical failures, validation 60/60, API 8/8.
+- cylinder direct `Produced / CompletedSurfaceCells`, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 vertices, zero validation failures, field P95 `8.537736463e-7°`, exactly two genuine annulus exterior loops, output hash `32135be51d7a0a26`, deterministic 3/3, no fallback/recovery;
+- bounded producer **105/106** with only the known timing-only validator-overhead failure;
+- completion/simplification **154/164** with the same ten historical failures;
+- validation **60/60**;
+- API **8/8**;
+- bounded aggregate **327/338**.
 
-Latest detailed runtime record: `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Report.md`.
+Latest detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Report.md`.
 
-## Completed G4 Code + Build authority
+Local evidence archive: `directional-g4-holonomy-basis-artifact-only-evidence.tar.gz`, SHA-256 `6c8f20252d7a616924b388e5643dba994dd5b26cf610794c21e602029c352cb2`.
 
-Exact compile artifact: **`9014730437`** (`g4-holonomy-basis-code-build`)  
-Workflow run/job: `31233594490` / `93042009574`  
-Primary implementation: `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`  
-Final compile-source commit: `6e754bdd64482582d39e71184805fbb053c99f86`  
-Build payload cleanup: `8304ba30b0f85bc69deebbf55922f05846d2d5b2`  
-Detailed log artifact: `9014730651`
+## Active G4 torus evidence
 
-Artifact evidence:
+The previous scalar representation blocker is removed. Exact torus no longer terminates at `InvalidPeriodicTopology` when another relation appears.
 
-- workflow ZIP digest `sha256:14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
-- internal `SHA256SUMS` digest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
-- packaged checksum validation **46/46**;
-- 47 package files / 27 fixtures / five executables / two static libraries;
-- seven approved targets built Release/static/Ninja **111/111**;
-- artifact metadata `runtimeExecution=false`;
-- no generated Directional binary/test/benchmark/ctest/CLI/GUI/help/list/discovery command executed.
+Three independent direct runs are deterministic:
 
-Implementation summary:
+- `surfaceCellAuthoritativeProducerDisposition = NotApplicable`;
+- periodic relation count **2**;
+- compatibility projection of the first relation `r=0`, `t=(24,0)`, route 24, cut 2;
+- 670 trace segments;
+- 113 retained strands;
+- 113 embedded arrangement arcs;
+- zero arrangement cells;
+- terminal `NotProductionReady:completion`;
+- completion failure `SideSubdivisionRepair:InvalidInputIncidence`;
+- no output/fallback/legacy substitution/input return/source-grid recovery.
 
-- result-level scalar `periodicHolonomy` authority replaced by canonical `periodicHolonomies` collection;
-- relation authority includes component/sheet, Z4 rotation, integral translation, source route/cut and stable source-topology signatures;
-- equivalent/reversed descriptions canonicalize;
-- conflicts reject as `IncompatiblePeriodicRelation`;
-- unresolved distinct same-sheet basis authority rejects as `AmbiguousPeriodicRelationBasis` rather than selecting by order/ID/count/frequency/proximity;
-- collection is live in structural hashing, diagnostics, benchmark relation cardinality, diagnostics copy/merge and component/sheet-aware periodic materialization;
-- G3 single-annulus tests and new G4 semantic tests are compiled but **not yet executed**.
+Stage hashes are stable 3/3: tracing `0539b306563dbe25`, strands `618d7ed18d1f3daa`, embedded network `33d00772feecc2f7`, arrangement `1ee6b9f9fd044d71`, completion `b4efe5193b9e5c27`.
 
-Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Report.md`.
+The benchmark JSON exposes relation cardinality plus a compatibility projection of the first relation, but not the complete per-relation vector. Do not synthesize unexposed component/sheet/topology-signature details.
 
-Three bounded pre-success attempts are preserved transparently: two setup-only transform failures (log artifacts `9014513436`, `9014530231`) and one compile failure caused by the missing `std::vector<std::uint64_t>` hash overload (log artifact `9014631674`). None executed project runtime binaries.
+Torus feature authority reports 48 hard edges in four closed feature curves. They are real current producer barriers and must not be removed/demoted or Euclidean-welded to force a torus result.
 
-## Active G4 runtime evidence and decision
+## Exact source diagnosis
 
-Old G3 torus baseline:
+The earliest remaining contract is **complete aggregate phase-front coverage across authoritative source sheets**, not completion repair.
 
-- source topology: connected closed genus one, 72 V / 144 triangles / Euler characteristic 0 / no boundary;
-- producer `Rejected` at `tracing/phase-front`;
-- reason `InvalidPeriodicTopology`;
-- zero traces/arrangement/completion/output;
-- no fallback/recovery;
-- partial diagnostics already retain one relation `r=0`, `t=(24,0)`, route 24, cut 2 before a second local relation hits the scalar-authority limit.
+Packaged `build_uniform_phase_front()` behavior:
 
-The next turn must execute exact artifact `9014730437` without rebuild and determine whether the new relation collection removes that representation barrier truthfully.
+1. partition faces by `(source component, source sheet)`;
+2. process sheet work in deterministic canonical order;
+3. try bounded uniform phase-front for each sheet;
+4. if local `NotApplicable`, try periodic-annulus phase-front;
+5. append successful local cells/edges/events and canonical periodic relations;
+6. if any later local sheet remains `NotApplicable`, return the partially accumulated aggregate immediately;
+7. set aggregate `succeeded=true / Produced` only after every sheet finishes successfully.
 
-Material progress requires:
+Therefore torus can retain two valid periodic relations while the aggregate remains `NotApplicable`. The pipeline correctly refuses authoritative phase-front materialization. Generic tracing/FlowRep then advances, but its 113 embedded arcs produce zero arrangement cells; `SideSubdivisionRepair:InvalidInputIncidence` is a downstream symptom.
 
-1. the five new G4 periodic-relation semantic tests pass;
-2. all 17 focused/retained G0-G3 contracts remain passing;
-3. plane/seam/close-sheets/cylinder retain exact direct deterministic strict-valid output and G3 hashes;
-4. torus no longer rejects merely because a second compatible relation exists;
-5. retained relations are demonstrably live in diagnostics/structural/materialization authority;
-6. no fallback/recovery or prohibited ownership heuristic is used.
+Do **not** fix this by marking partial coverage `Produced`.
 
-Direct strict-valid torus production is preferred. A deeper truthful torus failure is acceptable as first-slice material progress only when the collection is retained and consumed and the new earliest failing contract is precisely identified.
+## Exact next-turn design declaration
 
-Do **not** hardcode or expect a torus relation count or `t=(24,0)` from the old partial diagnostic. Observe the new artifact.
-
-The prescribed sphere remains later G4 evidence. It previously reached 766 traces / 30 arrangement cells and failed completion at `repeated-boundary-node` plus parity-alternative budget exhaustion. Do not preempt the earlier torus classification.
-
-## Exact next-turn execution declaration
-
-Before runtime execution state:
+Before any source edit emit:
 
 ```text
-Turn type: Test + Benchmark only
-Exact artifact: 9014730437 (g4-holonomy-basis-code-build), workflow run 31233594490
-Runtime source authority: primary implementation aa0f115c19fc8a5afd8487ebb561e2de2b8551ba plus final compile source 6e754bdd64482582d39e71184805fbb053c99f86
-No-build boundary: do not edit source/tests/fixtures/validators/benchmarks/build files and do not configure, compile, link, or rebuild
-First correctness check: run the five new G4 periodic relation tests, then retain all 17 G0-G3 focused contracts
-Direct regression gate: plane, seam, close sheets, cylinder must retain direct strict-valid deterministic G3 authority with no fallback/recovery
-Primary G4 observation: exact torus must no longer reject solely because a second compatible periodic relation exists; record the canonical relation collection and the earliest truthful terminal behavior
-Acceptable material progress: direct strict-valid torus output, or a deeper truthful failure only after the relation collection is demonstrably retained and consumed
-Deferred: prescribed sphere unless torus closes; G5 adaptivity/features; G6 bunny/vase production; historical completion/simplification repair unrelated to the new earliest failure
+Active design gate: G4 topology-distinct completion and singularities
+Earliest failing fixture/contract: torus__surface_cells now retains two periodic relations and advances to 670 traces, but aggregate authoritative phase-front disposition remains NotApplicable; generic arrangement then yields zero cells and completion fails SideSubdivisionRepair:InvalidInputIncidence
+Missing design contract: build_uniform_phase_front is all-or-nothing across authoritative source sheets; when any later local sheet is NotApplicable it returns a partially accumulated aggregate without Produced status, so already-valid periodic sheet cells/relations cannot participate in complete authoritative materialization and the pipeline falls into a downstream zero-cell generic arrangement path
+Smallest general implementation change: make phase-front construction cover every authoritative source sheet deterministically by composing supported bounded and periodic sheet charts under one complete aggregate contract; a sheet that truly cannot be represented must produce a typed first-invalid producer reason rather than silently downgrading the whole partially authoritative aggregate to NotApplicable
+Observable material-progress condition: exact torus phase-front becomes fully Produced with complete source-sheet coverage and successful exact materialization, or fails earlier at the exact unsupported sheet with a typed structural reason; it must not return partial NotApplicable followed by zero arrangement cells, while all five G4 relation semantics, all 17 G0-G3 focused contracts, and direct plane/seam/close-sheets/cylinder behavior remain unchanged
+Explicitly deferred work: prescribed-sphere singularity completion until torus producer coverage is closed, G5 adaptive scale/hard-feature expansion, G6 bunny/vase production, scheduler timing, historical completion/simplification failures unrelated to the active torus producer contract, validator changes, and unrelated optimization
 ```
 
-Follow `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Plan.md` exactly.
+## Next-turn execution
+
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` as **Code + Build only**.
+
+Required properties:
+
+- complete source-sheet coverage is explicit authority; every produced aggregate covers every authoritative sheet exactly once;
+- after any prior sheet has produced authoritative content, a later unsupported sheet must fail with a typed first-invalid phase-front reason rather than partial `NotApplicable`;
+- compose existing bounded and periodic sheet producers where structurally valid; add only the smallest topology-derived producer if the missing torus sheet is a different class;
+- do not assume every torus sheet is periodic and do not hardcode relation count, `(24,0)`, face IDs, sheet IDs, feature IDs, or process order;
+- preserve the current first-class canonical periodic relation collection and all 5/5 G4 relation semantics;
+- preserve G2 sheet isolation and all current hard-feature barriers;
+- exact authoritative materialization must consume the complete aggregate without Euclidean seam welding, positional sheet merging, or artificial exterior cuts;
+- do not modify SideSubdivisionRepair/generic completion/arrangement first; they are downstream under current evidence;
+- add compile-only semantic regressions for mixed bounded+periodic aggregates, later unsupported-sheet typed rejection, enumeration invariance, exact-once sheet coverage, exact torus producer boundary, and all prior relation/G0-G3 contracts.
+
+Compile/package the same seven approved Release/static/Ninja targets. **Execute no generated Directional binary/test/benchmark/ctest/CLI/GUI/help/list/discovery command.**
+
+The following artifact-only Test + Benchmark turn must first retain the new sheet-coverage tests, all 5 G4 relation tests, all 17 G0-G3 focused contracts, and direct plane/seam/close-sheets/cylinder hashes. Then exact torus must no longer take the current partial `NotApplicable -> zero arrangement -> SideSubdivisionRepair` path.
+
+Preferred next result is direct strict-valid closed torus production. A typed exact unsupported-sheet or phase-front-materialization failure is acceptable material progress if it replaces the opaque downstream failure without weakening prior authority.
 
 ## Lessons that must not be repeated
 
@@ -116,8 +134,10 @@ Follow `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only
 - GitHub build workflows must use this repository's `DIRECTIONAL_BUILD_TESTS` / `DIRECTIONAL_BUILD_BENCHMARKS` options and enough fetch depth to verify/package the exact source parent.
 - Packaged tests may retain Actions absolute fixture paths. Artifact-only validation may expose immutable packaged fixtures through a recorded runtime-only symlink; never rebuild or patch packaged source to solve that path issue.
 - Timeout is failure only; do not infer a disposition from an incomplete run.
-- The successful G4 build needed a `std::vector<std::uint64_t>` hash overload because canonical topology signatures are 64-bit; do not regress structural hashing back to transient source-edge IDs.
-- Multiple current periodic relations may belong to distinct authoritative source sheets. Do not infer a generic same-sheet torus homology basis unless runtime topology actually requires one; unresolved same-sheet basis remains fail-closed until derived structurally.
+- Canonical periodic topology signatures are 64-bit and structural hashing must retain the `std::vector<std::uint64_t>` path introduced by the G4 compile fix.
+- Multiple current periodic relations may belong to distinct authoritative source sheets. Do not infer a generic same-sheet torus homology basis unless source topology proves it; unresolved same-sheet basis remains fail-closed.
+- A partially accumulated phase-front result with real cells/relations is not whole-surface authority. Never repair that by flipping the aggregate disposition to `Produced`; first prove complete sheet coverage.
+- A downstream completion failure is not automatically the next implementation target. Current torus evidence proves the earlier producer coverage failure causes the generic zero-cell arrangement path.
 
 ## Turn boundary
 
@@ -129,10 +149,10 @@ Never combine turn types.
 
 - Code + Build may edit/configure/compile/link approved targets, but may not execute generated project binaries/tests/benchmarks/ctest/CLI/GUI/help/list/discovery.
 - Test + Benchmark executes the exact built artifact and may not edit production/test/fixture/validator/benchmark/build source or configure/compile/relink a replacement.
-- Review is optional. Review policy is currently `never`, so the Test + Benchmark plan becomes authoritative.
+- Review is optional. Review policy is currently `never`, so the next Code + Build plan is authoritative.
 - Build and runtime claims require exact pushed/evidence commit and artifact authority.
 - Direct mandatory fixture/gate evidence outranks aggregate totals.
-- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. One G4 Code + Build turn has occurred since G3 closure; runtime validation is next, so the two-turn stop threshold is not reached.
+- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. The preceding G4 Code + Build plus artifact-only validation established material progress by removing the scalar periodic barrier, so the counter resets to 0.
 
 ## Workflow/temp cleanup — mandatory
 
@@ -144,7 +164,7 @@ Never combine turn types.
 6. do not remove a durable dependency required by normal repository operation;
 7. retain payload/source-transfer data until its authority is verified, then remove it.
 
-Current end-of-turn hygiene is clean: `.github/workflows` contains only `agent-source-snapshot.yml`; bounded G4 workflow/trigger/payloads are absent.
+Current hygiene entering the next turn is clean: `.github/workflows` contains only `agent-source-snapshot.yml`; bounded G4 workflow/trigger/payloads are absent.
 
 ## Documentation cleanup — mandatory
 
