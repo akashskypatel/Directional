@@ -7,34 +7,24 @@ Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 Draft PR: #8 — keep **open, draft, unmerged**  
 Review policy: `never`  
 Active gate: **G4 topology-distinct completion and singularities**  
-Next turn: **Code + Build — G4 field-authoritative polygonal disk boundary phase**  
-Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Plan.md`
+Next turn: **Test + Benchmark — artifact-only field-authoritative polygonal bounded-disk boundary-phase validation**  
+Authoritative next plan: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Plan.md`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest runtime report `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Report.md`, the authoritative polygonal-boundary-phase Code + Build plan above, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references. Load the integrated unit-testing module before changing test source.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the current runtime report `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Report.md`, the authoritative artifact-only plan above, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the relevant turn-based-coding-agent Test+Benchmark/testing-integrity/recovery/handoff/GitHub-workflow references.
 
 ## Current tested authority
 
 G0, G1, G2, and **G3 are passed**. G4 remains **active**.
 
-Exact runtime artifact: **`9019024467`** (`g4-source-sheet-boundary-code-build`)  
-Workflow run/job: **`31247546780 / 93078496378`**  
-Implementation: **`b425898fa7367406fa0c07e8f4441a37efc01315`**  
-Payload cleanup: **`3fcfd2cf2996919eed5c951a9148d83deb5aa6f8`**
+Current runtime-proven artifact: **`9019024467`** (`g4-source-sheet-boundary-code-build`)  
+Workflow run/job: `31247546780 / 93078496378`  
+Implementation: `b425898fa7367406fa0c07e8f4441a37efc01315`  
+Cleanup: `3fcfd2cf2996919eed5c951a9148d83deb5aa6f8`
 
-Artifact authority:
-
-- ZIP SHA-256 `a26f8acc7301d50cb232e192aa7ffecfda5e84c403d4224a8f1f99f315bd990f`;
-- internal `SHA256SUMS` SHA-256 `7bffb8dbf76c1532af0a2c1701db4dcb25df581e233cf18312e62d2c1bca7975`;
-- recursive checksums **48/48**;
-- 49 files / 27 fixtures / five executables / two project static libraries;
-- source blobs: tracing header `ddb8e211f073d15fcfcc6782f964f88c4dedfc5e`, tracing source `14cf7f3a3301e9e3f10ec48a480d3f6e5efee7ed`, pipeline `b42681b61e2564fa55a2b67e7c7ae4890aa23d81`, Phase 10 tests `31322acea5227a8e3692887fad1ec4a9e6d8c101`;
-- artifact-only validation made no configure/compile/link/rebuild/discovery or production/test/fixture/validator/benchmark/build-system edit;
-- runtime-only fixture symlink: `/home/runner/work/Directional/Directional/benchmarks/fixtures -> /mnt/data/g4_boundary_runtime_9019024467/test-data/benchmarks/fixtures`.
-
-Focused/runtime authority:
+Runtime authority:
 
 - source-sheet-boundary semantics **3/3**;
-- source-sheet-boundary + curved-disk semantics **9/9**;
+- combined source-sheet-boundary + curved-disk semantics **9/9**;
 - sheet-coverage semantics **3/3**;
 - G4 periodic-relation semantics **5/5**;
 - retained G0-G3 focused contracts **17/17**;
@@ -42,96 +32,106 @@ Focused/runtime authority:
 - seam hash `5bdf34d7802e9fb0`, 64 quads / 81 V, deterministic 3/3;
 - close-sheets hash `89b052762f52a5af`, 200 quads / 242 V / two components, deterministic 3/3;
 - cylinder hash `32135be51d7a0a26`, 288 pure quads / 320 V, one relation `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, zero validation failures, exactly two genuine 32-edge exterior loops, deterministic 3/3;
-- no passing direct case uses fallback or source-grid recovery.
-
-Bounded suites:
-
-- producer **115/116**, only the existing sub-millisecond `StrictValidatorOverheadStaysBelowFivePercent` performance threshold fails;
-- completion/simplification **154/164**, exact same ten historical failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **337/348**.
+- no passing direct case uses fallback or source-grid recovery;
+- bounded suites: producer **115/116**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **337/348**.
 
 Detailed runtime record: `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-Latest compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Source_Sheet_Boundary_Authority_Code_Build_Report.md`.
+Exact torus under current runtime authority is deterministic 3/3:
 
-Local evidence archive: `directional-g4-source-sheet-boundary-artifact-only-evidence.tar.gz`, SHA-256 `27b4d62c6bde5f21475ddd31a42a10c02ffbad379931fd1b728c0506a6287030`.
+- producer `Rejected` at `tracing/phase-front`;
+- reason `InvalidBoundedDiskBoundaryPhase`;
+- first invalid face `-1`;
+- periodic authority remains live;
+- zero downstream trace/arrangement/simplification/completion cells after rejection;
+- no fallback, legacy substitution, returned-input fallback, or source-grid recovery.
 
-## G4 material progress proven this turn
+Existing artifact diagnostics do not expose which global four-run/canonical-order subcheck fired. Never infer an unobserved torus run count or branch sequence from the old failure.
 
-The source-sheet boundary correction is runtime-live. The same physical non-hard internal source edge is accepted only when authoritative component/sheet labels prove it separates sheets and rejected when the labels prove a hidden same-sheet cut. Face-row re-enumeration preserves the result. Genuine source boundaries and hard-feature internal boundaries remain valid.
+## Completed polygonal boundary-phase Code + Build candidate
 
-Exact torus consequently advances beyond the prior `InvalidBoundedDiskTopology` blocker.
+Exact compile artifact: **`9021175280`** (`g4-polygonal-boundary-phase-code-build`)  
+Workflow run/job: **`31254896323 / 93096734152`**  
+Event commit: `c24af6c83ab25397df1c2bfc4692b91689502f85`  
+Implementation commit: **`085db9ec23ffaa509b1f5a29e72968229efa103d`**  
+Payload cleanup: **`c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc`**
 
-Three independent exact torus processes now deterministically report:
+Artifact authority:
 
-- `surfaceCellAuthoritativeProducerDisposition = Rejected`;
-- first invalid stage `tracing/phase-front`;
-- reason **`InvalidBoundedDiskBoundaryPhase`**;
-- first invalid source face `-1`;
-- periodic relation count reached before rejection **2**;
-- compatibility projection rotation `0`, translation `(24,0)`, route 24, cut 2;
-- trace/arrangement/simplification/completion output counts 0 after authoritative rejection;
-- output origin `None`;
-- terminal `NotProductionReady:tracing`;
-- no fallback attempt/use, legacy substitution, returned-input fallback, or source-grid recovery.
+- outer ZIP SHA-256 **`16191e84bcfcebb2cfc1401b4aae7d5d8de2a02444f189a54d68164c1327a646`**;
+- internal `SHA256SUMS` SHA-256 **`a8161eb579e1c06e63b5c7bc6203f610693f3e6259f56d8ce2c6ba78e424d3b5`**;
+- recursive checksums **48/48**;
+- 49 files / 27 fixtures / five executables / two project static libraries;
+- approved Release/static/Ninja build **111/111**;
+- log artifact `9021175444`, SHA-256 `170c8d869af4ec737250a1a5ce7dfb532ca76fbef972a696cea85a53c61b0f67`;
+- `runtimeExecution=false`, review policy `never`.
 
-Stable stage identities: feature `f15e4f3be07d3c7f`, metric `34cb872327c9b0c6`, relief `8ccb10d25b69edb9`, source labels `e48c84177faf6e2c`, tracing `e9b7fe2146bd7895`.
+Final packaged source blobs:
 
-**First-invalid face `-1`, relation count 2, source IDs, sheet counts and boundary lengths are diagnostic evidence only. Never use them for fixture recognition, ownership, ordering, branching, or success criteria.**
+- diagnostics header `9597c49693a1146e5dac2ac90270348b55a0c91d`;
+- tracing header `0c1daa94300121df40c923716314ae6b242c7e8c`;
+- benchmark source `fd74cd39fff73bee7b4db578eb08382bd6ef50cf`;
+- tracing source `c834e8c81db04c39af9ecf1f45044ea107de3291`;
+- pipeline source `945bbc58bc56cb9838532889c616520cb234aaa3`;
+- Phase 10 tests `981b0f6e6fc935c1bfe3d1f6871736035d6bdfcb`.
 
-The benchmark JSON exposes relation cardinality plus one compatibility projection; it does not serialize every retained relation. Do not invent per-relation runtime values not exposed by existing diagnostics.
+Detailed compile record: `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Report.md`.
 
-## Exact source diagnosis — rectangular boundary phase is now first-blocking
+## Candidate implementation contract
 
-Read-only inspection of the immutable packaged tracing source shows the curved-disk boundary stage:
+The candidate introduces first-class `SurfaceBoundedDiskBoundaryPhase` / run records with:
 
-1. classifies each ordered authoritative boundary edge against the transported 4-RoSy branch gauge;
-2. retains the best field branch/family/sign only when unambiguous under the existing alignment contract;
-3. begins a run whenever the selected branch changes;
-4. globally requires exactly four runs;
-5. canonicalizes the first run from source geometry;
-6. requires the cyclic branch sequence to match the rectangular `U+`, `V+`, `U-`, `V-` progression;
-7. maps the four runs to a rectangle for harmonic chart construction.
+- source-attached cyclic run ordering;
+- transported global branch, family and sign;
+- exact run start/end corner provenance;
+- signed quarter-turn to the next run;
+- cumulative and run intrinsic lengths;
+- source face/edge provenance;
+- source-boundary, hard-feature and non-hard source-sheet edge authority;
+- source component/sheet ownership;
+- cyclic signed quarter-turn index;
+- polygon/chart state and deterministic structural hash.
 
-Per-edge alignment rejection records a source face. The torus failure records `firstInvalidFace=-1`, so the evidence narrows the blocker to a **global boundary-phase invariant**. Existing diagnostics do not reveal which global four-run/canonical-order check fired. Do not claim an unobserved torus run count or sequence.
+Boundary semantics:
 
-The missing design contract is not “relax the threshold” or “accept any run count.” A valid source-authoritative disk may require a more general ordered field-labeled orthogonal/polygonal boundary and singularity-compatible corner phase.
+- per-edge field-alignment threshold remains unchanged;
+- adjacent runs must differ by reciprocal ±quarter-turn or fail typed `InvalidBoundedDiskBoundaryTurn`;
+- oriented cyclic disk boundary index must close or fail typed `InvalidBoundedDiskBoundaryIndex`;
+- no run is inserted, deleted, merged, split or length-corrected to manufacture a desired side count;
+- canonical run rotation remains geometry/source-topology based, not raw ID/order/count/frequency/proximity based.
 
-## Exact next-turn design declaration
+Chart semantics:
 
-Before any source edit emit:
+- the established four-run all-positive-turn rectangle is preserved as the exact fast path, including opposite-side length averaging and existing grid/front construction;
+- a valid non-rectangular phase is developed from transported branch directions and exact intrinsic run lengths into an orthogonal polygon;
+- no synthetic closing edge or Euler correction is added;
+- polygon closure, area/extents and nonadjacent self-intersection are checked;
+- boundary source vertices map monotonically to exact polygon side intervals;
+- interior UV uses the existing deterministic positive-weight solve;
+- all source triangles must remain finite, nondegenerate and orientation-consistent;
+- a successfully constructed non-rectangular chart sets `chartConstructed=true` and then intentionally rejects at the deeper typed `InvalidBoundedDiskFrontPairing` invariant because generalized polygon lattice clipping/front pairing is not implemented in this slice.
+
+This deeper rejection is observable rather than relabeled: aggregation retains the boundary-phase record, trace-network hashing consumes its first-class state, and diagnostics expose phase count, run count, polygonal phase count, constructed-chart count, and phase hashes. Aggregate rejection does not leak partial cells.
+
+Compile-only tests add a natural L-shaped six-run/reflex-corner witness, invalid transported turn, face-row invariance, rectangular fast-path retention, periodic composition without partial cells, source-sheet/hard-feature provenance retention, and strengthened exact torus advancement. **None has executed yet.**
+
+## Exact next-turn execution declaration
+
+Before runtime execution state:
 
 ```text
-Active design gate: G4 topology-distinct completion and singularities
-Earliest failing fixture/contract: exact torus now accepts non-hard authoritative cross-sheet local boundaries and deterministically rejects at tracing/phase-front as Rejected / InvalidBoundedDiskBoundaryPhase with no source face attached to the failure
-Missing design contract: the curved-disk producer currently models every field-compatible disk boundary as exactly four global runs in rectangular U+, V+, U-, V- order; a source-authoritative disk boundary may instead require a more general ordered field-labeled orthogonal/polygonal boundary and singularity-compatible corner phase
-Smallest general implementation change: make ordered transported boundary runs/corners first-class, validate their cyclic 4-RoSy turning/closure intrinsically, preserve the existing four-run rectangular path exactly, and construct a deterministic source-authoritative polygonal disk phase chart for valid non-rectangular boundaries without arbitrary run coercion
-Observable material-progress condition: generalized boundary-phase regressions compile and package; the following exact artifact-only torus run advances beyond InvalidBoundedDiskBoundaryPhase to Produced/materialization or the next genuinely deeper typed chart/front-pairing invariant while source-sheet-boundary 3/3, combined curved-disk 9/9, sheet coverage 3/3, G4 relation 5/5, retained G0-G3 17/17 and exact direct hashes remain unchanged
-Explicitly deferred: repair of any later chart/front-pairing/materialization invariant until runtime reaches it, prescribed sphere until torus materialization closes, G5 adaptivity/features, G6 bunny/vase production, historical completion/simplification failures, validator/performance-threshold changes, fallback/recovery and unrelated optimization
+Turn type: Test + Benchmark only
+Exact artifact: 9021175280 (g4-polygonal-boundary-phase-code-build), workflow run/job 31254896323 / 93096734152
+Runtime candidate source authority: implementation 085db9ec23ffaa509b1f5a29e72968229efa103d, cleanup c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc
+No-build boundary: do not edit production/tests/fixtures/validators/benchmarks/build files and do not configure, compile, link, regenerate discovery, or rebuild
+First correctness check: verify artifact/source/blobs/checksums, then run the new generalized polygonal boundary-phase semantic tests
+Regression gate: retain source-sheet-boundary 3/3, prior curved-disk authority, sheet coverage 3/3, G4 relations 5/5, retained G0-G3 17/17 and exact direct plane/seam/close-sheets/cylinder hashes with no fallback/recovery
+Primary G4 observation: exact torus must prove the first-class boundary phase is constructed and consumed and advance beyond the old rectangle-only InvalidBoundedDiskBoundaryPhase, preferably to production or truthfully to the deeper polygonal chart/front-pairing invariant
+Expected bounded material progress: if torus has a valid non-rectangular phase and chart, diagnostics show phase/run/polygon/chart/hash evidence and producer stops deterministically at InvalidBoundedDiskFrontPairing; do not infer or repair beyond the artifact
+Deferred: prescribed sphere unless torus direct strict-valid production closes; G5 adaptivity/features; G6 bunny/vase; historical completion/simplification repair
 ```
 
-## Next-turn execution
-
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Code_Build_Plan.md` as **Code + Build only**.
-
-Required properties:
-
-- introduce first-class ordered source-attached boundary runs/corners carrying transported branch family/sign, signed quarter-turn corner changes, intrinsic length, component/sheet and rail provenance, cyclic closure/index evidence, and canonical structural identity;
-- preserve the existing valid four-run rectangle exactly as a fast path;
-- support a legitimate non-rectangular field-compatible orthogonal/polygonal disk boundary using a deterministic intrinsic polygonal/singularity-compatible chart;
-- preserve exact source boundary, hard-feature and non-hard source-sheet boundary authority;
-- preserve existing planar bounded and periodic-annulus producer behavior;
-- preserve complete exact-once source-sheet aggregation and every canonical periodic relation;
-- fail typed at a genuine boundary-phase/chart/front-pairing/materialization invariant if safe completion is impossible;
-- add compile-only behavioral regressions described by the authoritative plan, including a natural non-rectangular disk witness, invalid cyclic field turn, row-order invariance, source-sheet/hard-feature retention, mixed producer composition and exact torus advancement;
-- compile/package the same seven approved Release/static/Ninja targets;
-- **execute no generated Directional binary/test/benchmark/ctest/CLI/GUI/help/list/discovery command**.
-
-The following Test + Benchmark turn must run the new generalized boundary-phase semantics first, retain all current focused/direct authority, then exact torus decides progress. A deeper `InvalidBoundedDiskChart`, `InvalidBoundedDiskFrontPairing`, or later typed invariant is acceptable material progress only when runtime evidence proves the generalized boundary phase was genuinely constructed and consumed. Merely relabeling the same failure is not progress.
-
-Prescribed sphere remains deferred until torus reaches direct strict-valid production.
+Follow `.agents/Directional/Gate_4_Closed_Genus_One_Field_Authoritative_Polygonal_Disk_Boundary_Phase_Artifact_Only_Test_Benchmark_Plan.md` exactly.
 
 ## Lessons that must not be repeated
 
@@ -150,8 +150,10 @@ Prescribed sphere remains deferred until torus reaches direct strict-valid produ
 - Source-sheet boundaries are not synonymous with hard-feature edges. The classifier can create authoritative sheet separation through normal compatibility and close/opposing-sheet logic.
 - Observed face IDs, sheet counts, relation counts, run counts and boundary lengths are diagnostics, not implementation or acceptance keys.
 - A focused hard-boundary test does not prove broader source-sheet boundary coverage; retain the naturally non-hard cross-sheet witness.
-- Do not infer an exact boundary run count from `InvalidBoundedDiskBoundaryPhase`; current runtime diagnostics do not expose the failed global run-count/canonical-order subcheck.
+- Do not infer an exact boundary run count from the old `InvalidBoundedDiskBoundaryPhase`; artifact `9019024467` does not expose the failed global run-count/canonical-order subcheck.
 - A four-run rectangular chart is a special case, not permission to arbitrarily merge/split a valid field boundary until four sides remain.
+- A changed failure reason is not material progress unless first-class boundary-phase/chart diagnostics prove the generalized representation was constructed and consumed.
+- A valid polygonal chart does not authorize partial output; non-rectangular front pairing remains fail-closed until implemented structurally.
 - Harmonic chart compilation and focused applicability are not proof of production chart success; follow the first runtime invariant.
 - A downstream completion failure is not automatically the next target; follow the first truthful producer/materialization failure.
 - Timeout is failure only; never infer correctness/disposition from incomplete execution.
@@ -169,7 +171,7 @@ Never combine turn types.
 - Review is optional. Review policy is currently `never`; after Test + Benchmark its next Code + Build plan is authoritative.
 - Build and runtime claims require exact pushed/evidence commit and artifact authority.
 - Direct mandatory fixture/gate evidence outranks aggregate totals.
-- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. This artifact-only turn established material progress, so the no-progress counter resets to 0.
+- Two consecutive Code + Build turns without material progress require mandatory design review or bounded producer-replacement proof. The preceding artifact-only turn established material progress; this is the first Code + Build since then, so the no-progress Code + Build count is 1 pending runtime decision.
 
 ## Workflow/temp cleanup — mandatory
 
@@ -181,7 +183,7 @@ Never combine turn types.
 6. do not remove a durable dependency required by normal repository operation;
 7. retain payload/source-transfer data until its authority is verified, then remove it.
 
-Expected final state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again before the final turn comment.
+The successful polygonal Code + Build removed its six raw payload files in cleanup commit `c3b5dcbcd0c35ee421d5b44273c142aa9f874dcc`, then removed the bounded workflow before its trigger after artifact verification. Expected final state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again at the beginning and end of the Test + Benchmark turn.
 
 ## Documentation cleanup — mandatory
 
@@ -190,8 +192,6 @@ Expected final state: `.github/workflows` contains only `agent-source-snapshot.y
 3. retained documentation may reference only files that exist;
 4. Git history and PR conversation are the archive for superseded turn detail;
 5. never delete the latest evidence or next-turn instructions before replacements exist.
-
-The completed source-sheet-boundary artifact-only plan path is retained only as a short non-executable compatibility pointer because the preceding Code + Build report references it.
 
 ## Instruction preservation — mandatory
 
