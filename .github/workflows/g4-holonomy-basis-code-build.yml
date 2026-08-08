@@ -1,0 +1,253 @@
+name: g4-holonomy-basis-code-build
+
+on:
+  push:
+    paths:
+      - '.github/agent-triggers/g4-holonomy-basis-code-build'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  code-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+          submodules: false
+
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p agent-build-logs
+          {
+            echo "turn=G4 holonomy basis Code+Build"
+            echo "event_sha=$GITHUB_SHA"
+            echo "checkout_sha=$(git rev-parse HEAD)"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=source transform, configure, compile/link approved targets, package"
+            echo "prohibited=tests, benchmarks, generated Directional executables, ctest, CLI, GUI"
+          } | tee agent-build-logs/activity.log
+
+      - name: Verify authority and commit source changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          payload=.agents/Directional/turn-payloads/g4-holonomy-basis-transform.py
+          test -f "$payload"
+          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          echo "payload_sha256=$PAYLOAD_SHA256"
+          echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
+
+          declare -A before=(
+            [include/directional/geometry/SurfaceCellTracing.h]=c1b816a584d67a3f74c2d7389962bd92d52244c9
+            [src/geometry/SurfaceCellTracing.cpp]=63e5ee427f675077f710db51ffb56d91838d3519
+            [include/directional/diagnostics/RemeshDiagnostics.h]=a51215982318e77581efa4fa7887d0406a9d4bf0
+            [src/pipeline/RemeshPipeline.cpp]=7674ed3fe40c5f43c668c931c01b59f6c7829df8
+            [src/bench/DirectionalBenchmark.cpp]=18955ca8ef72812c9c70ed522bb578409e6a176f
+            [tests/SurfaceCellsPhase10Tests.cpp]=80a0b58339102279ab863d9112e243a557cd270d
+          )
+          for path in "${!before[@]}"; do
+            actual=$(git hash-object "$path")
+            echo "before $path $actual"
+            test "$actual" = "${before[$path]}"
+          done
+
+          python3 "$payload"
+          git diff --check
+
+          mapfile -t changed < <(git diff --name-only | sort)
+          expected=(
+            include/directional/diagnostics/RemeshDiagnostics.h
+            include/directional/geometry/SurfaceCellTracing.h
+            src/bench/DirectionalBenchmark.cpp
+            src/geometry/SurfaceCellTracing.cpp
+            src/pipeline/RemeshPipeline.cpp
+            tests/SurfaceCellsPhase10Tests.cpp
+          )
+          test "${#changed[@]}" -eq "${#expected[@]}"
+          for i in "${!expected[@]}"; do
+            echo "changed ${changed[$i]}"
+            test "${changed[$i]}" = "${expected[$i]}"
+          done
+
+          # The authority migration is intentionally complete: no result-level
+          # scalar member access may survive in source or tests.
+          ! grep -R --line-number --fixed-string '.periodicHolonomy' \
+              include/directional/geometry/SurfaceCellTracing.h \
+              src/geometry/SurfaceCellTracing.cpp \
+              src/pipeline/RemeshPipeline.cpp \
+              tests/SurfaceCellsPhase10Tests.cpp
+
+          git config user.name 'directional-agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -- "${expected[@]}"
+          git commit -m 'feat(surface-cells): retain periodic holonomy relations'
+          SOURCE_COMMIT=$(git rev-parse HEAD)
+          echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
+          echo "source_commit=$SOURCE_COMMIT"
+
+          for path in "${expected[@]}"; do
+            echo "after $path $(git hash-object "$path")"
+          done
+
+          git rm "$payload"
+          git commit -m 'chore(agent): remove G4 holonomy transform payload'
+          CLEANUP_COMMIT=$(git rev-parse HEAD)
+          echo "CLEANUP_COMMIT=$CLEANUP_COMMIT" >> "$GITHUB_ENV"
+          echo "cleanup_commit=$CLEANUP_COMMIT"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          git submodule update --init --depth 1
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          {
+            echo "source_commit=$SOURCE_COMMIT"
+            echo "cleanup_commit=$CLEANUP_COMMIT"
+            cmake --version
+            c++ --version
+            ninja --version
+          } | tee agent-build-logs/toolchain.txt
+
+          cmake -S . -B agent-build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee agent-build-logs/configure.log
+
+      - name: Compile seven approved targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          cmake --build agent-build --parallel 2 --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            2>&1 | tee agent-build-logs/build.log
+          echo "compile_only_gate=passed" | tee -a agent-build-logs/activity.log
+
+      - name: Package immutable compile artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a agent-build-logs/activity.log) 2>&1
+          root="$GITHUB_WORKSPACE/g4-holonomy-basis-artifact"
+          rm -rf "$root"
+          mkdir -p "$root"/{bin,lib,test-data/benchmarks,logs,metadata,source}
+
+          cp agent-build/directional_benchmarks "$root/bin/"
+          cp agent-build/directional_compiled_api_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_producer_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_completion_tests "$root/bin/"
+          cp agent-build/directional_surface_cell_validation_tests "$root/bin/"
+          cp agent-build/libdirectional_core.a "$root/lib/"
+          cp agent-build/libdirectional_pipeline.a "$root/lib/"
+          cp -a benchmarks/fixtures "$root/test-data/benchmarks/"
+          cp agent-build-logs/activity.log agent-build-logs/configure.log \
+             agent-build-logs/build.log agent-build-logs/toolchain.txt "$root/logs/"
+          cp agent-build/compile_commands.json "$root/source/"
+          git show "$SOURCE_COMMIT" --format=fuller --stat --patch > \
+            "$root/source/g4-holonomy-basis.patch"
+          tar --exclude=.git --exclude=external --exclude=agent-build \
+              --exclude=g4-holonomy-basis-artifact \
+              -cJf "$root/source/directional-g4-holonomy-basis-source-no-deps.tar.xz" .
+
+          cat > "$root/metadata/source-authority.json" <<EOF
+          {
+            "eventCommit": "$GITHUB_SHA",
+            "sourceCommit": "$SOURCE_COMMIT",
+            "cleanupCommit": "$CLEANUP_COMMIT",
+            "transformSha256": "$PAYLOAD_SHA256",
+            "runtimeExecution": false,
+            "reviewPolicy": "never"
+          }
+          EOF
+          cat > "$root/metadata/build-authority.json" <<'EOF'
+          {
+            "configuration": "Release",
+            "generator": "Ninja",
+            "buildSharedLibs": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "approvedTargets": 7,
+            "runtimeExecution": false
+          }
+          EOF
+          cat > "$root/metadata/command-boundary.txt" <<'EOF'
+          G4 Code + Build only.
+          Executed: source transform, configure, compile/link seven approved targets, package/checksum.
+          Not executed: generated Directional binaries, tests, benchmarks, ctest/discovery, CLI, GUI, help/list commands.
+          EOF
+          git ls-tree -r "$SOURCE_COMMIT" -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/pipeline/RemeshPipeline.cpp \
+            src/bench/DirectionalBenchmark.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp > \
+            "$root/metadata/final-blobs.txt"
+          find benchmarks/fixtures -type f | sort > "$root/metadata/fixture-files.txt"
+          (cd "$root" && find . -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > SHA256SUMS)
+          sha256sum "$root/SHA256SUMS" | tee agent-build-logs/artifact-checksum.txt
+
+      - name: Upload immutable compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-holonomy-basis-code-build
+          path: g4-holonomy-basis-artifact
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-holonomy-basis-code-build-logs
+          path: agent-build-logs
+          if-no-files-found: warn
+          retention-days: 14
