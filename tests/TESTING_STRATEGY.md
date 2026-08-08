@@ -202,3 +202,23 @@ The current next turn is Code + Build under `.agents/Directional/Gate_4_Canonica
 ## Validity and prohibitions
 
 Tests must encode real production contracts and valid scenarios. Never weaken assertions to fit behavior. No validator weakening, fixture special cases, fallback/recovery substitution, generic-producer substitution after authoritative rejection, positional sheet merging, count/order/frequency ownership selection, arbitrary subset search, synthetic topology correction, Euclidean periodic seam welding, post-hoc cell merging, or timeout-as-correctness.
+
+## Canonical transition-index artifact acceptance
+
+Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` compiled successfully into immutable artifact `9028103772` (outer SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a`; verified 48-entry recursive manifest). The build used Release/static/Ninja with `PRE_TEST` and `runtimeExecution=false`; it is not runtime evidence.
+
+The next Test + Benchmark turn must perform artifact preflight before discovery or execution and must not configure, rebuild, relink, regenerate discovery, edit source/tests/fixtures/validators, or mix artifacts.
+
+Focused acceptance requires these exact tests:
+
+- `SourceWideCompactTransitionIndexIsIndependentOfRegionPartition`;
+- `FullEfTransitionRowCannotReplaceSourceWideCompactIndex`;
+- `RegionLocalCompactTransitionIndexCannotReplaceSourceWideIndex`;
+- `ComponentBoundaryAndEulerFactsAreComputedFromIncidence`;
+- `DeterministicTracingFailureRetainsAuthorityIfAndOnlyIfRequested`.
+
+The valid witness must prove source-wide compact/topology agreement independent of region partition; full-`EF` and region-local substitutions must each be rejected; genuine boundaries remain topology-only; and retain true/false must reach identical `InjectedStageFailure / tracing` with intermediate authority present iff requested.
+
+Previously green certificate, boundary, digest, topology/isolation, polygonal/curved/mixed, validation, compiled-API, and completion/simplification cases are regression authority. Direct fixtures run plane, multi-face seam, close sheets, cylinder, and torus in order, with three fresh processes each; torus precedes sphere. Plane/close sheets must move past `InvalidAuthoritativeTransitionSourceEdge`, cylinder/torus past numeric route-index `InvalidPeriodicCutAuthority`, and direct multi-face seam must preserve same-artifact semantic digest `99c8be7159d05c2f`.
+
+Historical suite totals are comparison evidence, not predicted success counts. Timing remains diagnostic unless an existing authoritative threshold applies. No fallback/recovery, generic substitution, fixture special case, validator relaxation, arbitrary subset search, predicted count, or timeout-as-correctness is allowed.
