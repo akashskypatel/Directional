@@ -15,7 +15,7 @@ Topology/singularity fixtures such as torus and the prescribed sphere are additi
 
 Both use generated smooth fields through production extraction. Replacing, simplifying, bypassing, or special-casing either fixture is prohibited.
 
-## Current runtime authority and process disposition
+## Previous runtime authority and process disposition
 
 Exact artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`, is the latest immutable artifact-only runtime authority. Exact checksum/source/dependency/fixture/log verification passed; all **33/33** transition-quotient tests were discovered.
 
@@ -197,17 +197,17 @@ The historical timing assertion remains non-authoritative for semantic acceptanc
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is Code + Build under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Plan.md`. It is limited to the listed tracing header/implementation, pipeline retention logic, and focused producer/integration tests. CMake, fixtures, manifests, validators, benchmarks, cross-field extraction, completion/simplification, and unrelated tests remain unchanged. Compile/package only; no generated project runtime.
+The previously designated Code + Build turn under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Plan.md` is complete. Its immutable artifact-only outcome is recorded in the current acceptance section appended below.
 
 ## Validity and prohibitions
 
 Tests must encode real production contracts and valid scenarios. Never weaken assertions to fit behavior. No validator weakening, fixture special cases, fallback/recovery substitution, generic-producer substitution after authoritative rejection, positional sheet merging, count/order/frequency ownership selection, arbitrary subset search, synthetic topology correction, Euclidean periodic seam welding, post-hoc cell merging, or timeout-as-correctness.
 
-## Canonical transition-index artifact acceptance
+## Canonical transition-index artifact acceptance plan (completed)
 
 Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` compiled successfully into immutable artifact `9028103772` (outer SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a`; verified 48-entry recursive manifest). The build used Release/static/Ninja with `PRE_TEST` and `runtimeExecution=false`; it is not runtime evidence.
 
-The next Test + Benchmark turn must perform artifact preflight before discovery or execution and must not configure, rebuild, relink, regenerate discovery, edit source/tests/fixtures/validators, or mix artifacts.
+The completed Test + Benchmark turn performed artifact preflight before discovery or execution and did not configure, rebuild, relink, regenerate discovery, edit source/tests/fixtures/validators, or mix artifacts.
 
 Focused acceptance requires these exact tests:
 
@@ -222,3 +222,15 @@ The valid witness must prove source-wide compact/topology agreement independent 
 Previously green certificate, boundary, digest, topology/isolation, polygonal/curved/mixed, validation, compiled-API, and completion/simplification cases are regression authority. Direct fixtures run plane, multi-face seam, close sheets, cylinder, and torus in order, with three fresh processes each; torus precedes sphere. Plane/close sheets must move past `InvalidAuthoritativeTransitionSourceEdge`, cylinder/torus past numeric route-index `InvalidPeriodicCutAuthority`, and direct multi-face seam must preserve same-artifact semantic digest `99c8be7159d05c2f`.
 
 Historical suite totals are comparison evidence, not predicted success counts. Timing remains diagnostic unless an existing authoritative threshold applies. No fallback/recovery, generic substitution, fixture special case, validator relaxation, arbitrary subset search, predicted count, or timeout-as-correctness is allowed.
+
+## Current artifact acceptance — canonical transition index
+
+Artifact `9028103772` is the latest runtime authority. Exact preflight/postflight passes and no rebuild or source/test/fixture/validator edit occurred.
+
+Direct plane, multi-face seam, close sheets, and cylinder are **3/3** direct strict-valid pure-quad successes with no fallback/recovery. Torus is **0/3** at downstream `completion/output-validation / LocalSheetMismatch` after complete `4/8/4` authority consumption and materialized `1/0/0` topology. Sphere and the broader manifest remain deferred.
+
+The three canonical-domain counterfactuals currently fail before their intended assertions because their chosen pairwise-distinct topology is not present in any serialized cell route. `PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration` incorrectly treats compact route values as `mesh.EV` rows. `PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason` incorrectly uses a compact route value to select `CrossFieldEdgeTransition.sourceEdge` in the full-`EF` domain.
+
+The next Code + Build turn is test-authority-only. It must select an actually serialized three-domain witness, validate each numeric/topology pair through the source-wide compact map, and select malformed CrossField authority by canonical topology plus reciprocal faces. Assertions and typed failure expectations remain unchanged. Production source, fixtures, validators, CMake, benchmarks, and unrelated tests are out of scope.
+
+Current bounded totals are producer **150/164**, completion **154/164**, validation **60/60**, compiled API **8/8**, aggregate **372/396**. The direct seam semantic digest remains `99c8be7159d05c2f` for same-artifact determinism.
