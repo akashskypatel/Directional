@@ -10,7 +10,7 @@ Always advance the earliest incomplete or regressed high-level gate. Every imple
 
 ```text
 Active design gate:
-Earliest failing fixture:
+Earliest failing fixture/contract:
 Missing design contract:
 Smallest general implementation change:
 Observable material-progress condition:
@@ -50,22 +50,21 @@ Hard-feature barriers remain authoritative constraints. Relief separatrices are 
 1. **G0 — Truthful authority:** passed and continuously enforced.
 2. **G1 — Uniform phase-front plane:** passed.
 3. **G2 — Cross-chart and close-sheet propagation:** passed.
-4. **G3 — Periodic closure and holonomy:** **production runtime closure contract satisfied; formal closure pending one field-correspondence test-witness correction.**
+4. **G3 — Periodic closure and holonomy:** production runtime closure contract **satisfied**; formal gate status remains active until corrected field-correspondence witness is artifact-validated with the full retained set.
 5. **G4 — Topology-distinct completion and singularities:** blocked until formal G3 closure.
 6. **G5 — Adaptive scale and hard features:** blocked.
 7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
 8. **G7 — Operational hardening:** blocked.
 
-## Passed-gate runtime authority
+## Passed G0-G2 runtime authority
 
-Artifact `9010838200`, source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`, preserves G0-G2 and satisfies the production G3 cylinder contract:
+Current executed G3 artifact `9010838200` preserves:
 
-| Fixture | Producer | Direct output | Validation | Determinism |
-|---|---|---|---:|---|
-| plane | `Produced` | 81 V / 64 Q, hash `730caeae49ec872c` | 0 | 3/3 |
-| seam | `Produced` | 81 V / 64 Q, hash `5bdf34d7802e9fb0` | 0 | 3/3 |
-| close sheets | `Produced` | 242 V / 200 Q / 2 isolated components, hash `89b052762f52a5af` | 0 | 3/3 |
-| cylinder | `Produced` | 320 V / 288 Q, hash `32135be51d7a0a26` | 0 | 3/3 |
+| Fixture | Producer | Direct output | Determinism |
+|---|---|---|---|
+| plane | `Produced` | 81 V / 64 strict-valid quads, hash `730caeae49ec872c` | 3/3 |
+| seam | `Produced` | 81 V / 64 strict-valid quads, hash `5bdf34d7802e9fb0` | 3/3 |
+| close sheets | `Produced` | 242 V / 200 strict-valid quads / 2 isolated components, hash `89b052762f52a5af` | 3/3 |
 
 No passing case uses fallback or source-grid recovery.
 
@@ -103,68 +102,51 @@ Required invariants:
 
 A triangulated annulus strip may admit multiple source-topologically valid bijections between adjacent canonical rings. Source vertex numbering, lexicographic order, candidate count, discovery order/frequency, or proximity are not authority.
 
-Required production contract:
+Required contract:
 
 > Enumerate topology-compatible correspondences, propagate reciprocal 4-RoSy family/sign authority across the complete source strip, and consume exactly one field-authoritative optimum. Zero valid field candidates or genuinely field-equivalent best candidates fail closed with typed periodic authority.
 
-Current production preserves typed `InvalidPeriodicRingCorrespondence` and `AmbiguousPeriodicRingCorrespondence`. The obsolete diagonal candidate must not be restored: its inter-ring direction is `37.9670987281°` from the cylinder's axial family and produced the earlier field-P95 failure.
+The production implementation at `0279946920dfca6e9ac44b7ea31b38e929d1f5fc` satisfies this contract at runtime. The obsolete diagonal candidate is approximately `37.9671°` from the axial field and must not be restored.
 
 ## Canonical periodic chart geometry
 
-Coverage tolerance and emitted geometry are separate authorities:
+Coverage tolerance may determine source-triangle ownership, but emitted geometry must be exact canonical source-simplex geometry. Exact simplex crossings define emitted breakpoints; barycentrics near exact boundaries are canonicalized/renormalized; source vertices use exact one-hot barycentrics; tolerance-only collapsed segments are omitted; genuine overlap remains rejected by the unchanged strict validator.
 
-> Coverage tolerance may determine which source chart triangle owns an interval, but emitted periodic-chart geometry must be canonical source-simplex geometry. Breakpoints come from exact simplex crossings; barycentrics near exact simplex boundaries are canonicalized/renormalized; consecutive sides preserve exact shared source breakpoints; tolerance-only zero-length segments are not emitted. Real overlap remains rejected by the unchanged strict validator.
+Artifact `9010838200` proves this correction restores the valid periodic cylinder and satisfies the production G3 closure contract:
 
-Source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc` implements this contract. Artifact `9010838200` runtime-proves both endpoint-canonicalization tests, restores the six nominal G3 periodic contracts that had regressed at `InvalidPeriodicChart`, and advances the exact cylinder to direct strict-valid periodic output.
+- cylinder `Produced / CompletedSurfaceCells`;
+- holonomy `r=0`, `t=(32,0)`, route 32, cut 4;
+- 288 pure output quads / 320 output vertices;
+- zero completed/strict validation failures;
+- field P95 approximately `8.54e-7°`;
+- exactly two true annulus exterior boundary loops;
+- artificial cut not exterior;
+- no fallback/recovery;
+- deterministic output hash `32135be51d7a0a26` 3/3.
 
-## Exact G3 production runtime closure evidence
+## Test-witness invariant for field correspondence
 
-Artifact `9010838200` exact cylinder:
+A semantic field-authority regression test must not depend on one particular target subdivision. The cylinder source inter-ring spacing is 0.5 while the active test target is 0.25; therefore each source inter-ring connection is legitimately subdivided into multiple V-family phase-front edges.
 
-- producer disposition `Produced`;
-- direct output origin `CompletedSurfaceCells`;
-- periodic holonomy `r=0`, `t=(32,0)`, ordered route 32 edges, cut 4 edges;
-- 1,728 trace segments;
-- 290 arrangement / 290 simplified cells;
-- 288 completed/output quads;
-- 320 provenance/output vertices;
-- zero non-quads;
-- validation failures `0`;
-- field P95 `8.537736463e-07°`;
-- surface approximation P95 `2.832791574e-16`;
-- zero nonmanifold edges, T-junctions, duplicate faces, self-intersections and degenerate output faces;
-- topology and boundary preserved;
-- output structural hash `32135be51d7a0a26`, deterministic 3/3;
-- no fallback/recovery.
+Required test contract:
 
-The benchmark JSON does not serialize raw normal/warpage P95 values, but `surfaceCellValidationFailures=0` is authoritative because production validation failure counting includes normal P95 <=15°, field P95 <=15°, warpage P95 <=30°, and the other strict thresholds. Independent serialized-geometry checks report zero warpage and approximately `8.54e-7°` nearest-source normal error.
+> Observe nonzero source-attached V-family phase-front boundary-path segments, reconstruct their source geometry from authoritative `(face, barycentric)` provenance, verify finite normalized source-simplex endpoints, discard only genuine zero-length segments, and require each observed segment to align with the local authoritative V field family. The witness must remain nonempty and subdivision-independent.
 
-Output topology has exactly 64 boundary edges in two 32-edge degree-2 loops, one at z=-1 and one at z=+1. Therefore only the two genuine annulus boundaries are exterior; the artificial periodic cut is not.
+Evidence commit `117620ec2da2083ce11b205835e58fa404f163ef` implements only this test correction. Production blobs remain byte-identical to the runtime-proven G3 source.
 
-This is material runtime progress from artifact `9008118764`, which rejected at `InvalidPeriodicChart` cell 29 before traces. The G3 no-progress counter resets to zero.
+Compile-only authority:
 
-## Formal G3 closure blocker — test witness, not production
-
-Focused/retained raw result is **16/17**. The sole failure is:
-
-`SurfaceCellsPhase10.PeriodicPhaseFrontUsesFieldAuthoritativeAdjacentRingCorrespondence`
-
-Production reaches `Produced`; only `exactInterRingEdges > 0` fails. That witness is structurally invalid for the test's own setup:
-
-- source inter-ring spacing is 0.5;
-- target size is 0.25;
-- the authoritative V lattice therefore subdivides every source inter-ring edge into two front edges;
-- no single V front edge can span two distinct exact source-ring vertices.
-
-The fixture remains valid and must not be replaced merely to make the test pass. Formal closure requires a subdivision-invariant test of the same field-authority contract: inspect nonzero source-attached V-family boundary-path segments, reconstruct their source-space direction from face+barycentric provenance, compare against the local authoritative V family, and require a nonempty observation set. This strengthens the intended behavior rather than weakening it.
+- artifact `9013161456`, SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
+- run/job `31228899303 / 93028533210`;
+- 44/44 recursive checksums;
+- 111/111 compile/link actions;
+- `runtimeExecution=false`.
 
 ## Next authority
 
-Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Code_Build_Plan.md` as Code + Build only.
+Execute `.agents/Directional/Gate_3_Field_Correspondence_Test_Witness_Artifact_Only_Test_Benchmark_Plan.md` against artifact `9013161456`.
 
-Expected production source change: none. Correct only the invalid test witness; preserve endpoint canonicalization, typed ambiguity rejection, annulus/cut/holonomy/quotient/source-strip authority, G0-G2, validators, and no fallback/recovery. Compile/package the seven approved targets without executing generated project binaries.
-
-The following artifact-only turn must produce 17/17 focused/retained contracts and retain the exact cylinder direct strict-valid periodic output. On that result, formally mark G3 passed and activate G4.
+Formal G3 closure requires **17/17 focused/retained contracts**, retained direct strict-valid cylinder production closure, and G0-G2 green. If satisfied, mark G3 passed and activate G4 topology-distinct completion and singularities.
 
 ## Non-negotiable prohibitions
 
