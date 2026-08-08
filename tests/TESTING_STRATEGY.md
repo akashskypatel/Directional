@@ -44,7 +44,9 @@ Artifact `9022061741` remains the last candidate that produced the accepted dire
 Detailed current runtime authority:
 `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-Retained direct regression, zero quotient consumption, and incomplete executable counterfactual coverage activate the mandatory process guard. The next turn is Review only under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.
+Retained direct regression, zero quotient consumption, and incomplete executable counterfactual coverage activated the mandatory process guard. Independent Review is now complete with decision **Approved with amendments** under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`.
+
+The next turn is Code + Build only under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`; a following immutable artifact-only Test + Benchmark is mandatory.
 
 ## Producer-authority contracts
 
@@ -113,11 +115,13 @@ Equal integer coordinates are not output vertex identity because charts may over
 
 Counterfactual coverage must reject a representative-sheet substitution, unconditional topology-region lattice merge, Euclidean seam weld, first-relation selection, missing/ambiguous rail counterpart, unconsumed relation, repeated cell corner, and synthetic output topology.
 
-Every active counterfactual must be independently discoverable in a default packaged artifact. `MilestoneGP27` semantic-digest tests currently live only in the disabled historical target and do not satisfy this requirement. Product checks without a broken-counterfactual test are not executable validation authority.
+Every active counterfactual must be independently discoverable in a default packaged artifact. The reviewed CB plan adds `tests/SurfaceCellTransitionQuotientTests.cpp` and the existing benchmark-quality implementation to `directional_surface_cell_producer_tests`; `DIRECTIONAL_BUILD_HISTORICAL_TESTS` stays off. Product checks without a broken-counterfactual test are not executable validation authority.
 
 Genuine source-boundary routes retain canonical source-edge topology even when no two-face interior matching index exists. An interior transition/matching index remains mandatory wherever transport semantics require it; absence cannot be accepted generically.
 
-Internal-isolation-seam consumption requires a reviewed exact witness. Current cell-boundary `transitionSourceEdges` coverage is insufficient on torus; unconditional marking, representative-sheet selection, and count/order/ID/proximity/position/lattice inference are prohibited.
+Internal-isolation-seam consumption uses one canonical reciprocal seam-transport certificate per retained seam. Each certificate owns exact source topology, two-face interior index, incident face/sheet authority, source component/topology region, and forward/reverse transport. Materialization validates the certificate bijection and consumes the certificates as the region's local-sheet connectivity graph for cells, fronts, relations, quotient classes, lineage, hashing, and diagnostics.
+
+Current cell-boundary `transitionSourceEdges` remains exact evidence for an actual crossing but is not required to intersect every source seam. Metadata-only/unconditional marking, representative-sheet selection, and count/order/ID/proximity/position/lattice inference remain prohibited.
 
 ## Deterministic output identity — review approved
 
@@ -194,7 +198,7 @@ Artifact `9022061741` entering totals were producer **124/127**, completion/simp
 
 Code + Build may edit active-gate implementation and valid producer-level regression tests and compile approved targets, but executes no generated project binary. Test + Benchmark uses one exact immutable artifact and performs no rebuild or source/test/fixture/validator edit. Review turns do not edit production source/tests, compile, or run tests/benchmarks.
 
-The current next turn is mandatory independent Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`. Review may inspect exact evidence/source/tests/build wiring read-only; it may not edit production/tests/build files, configure, compile, or run project binaries.
+The current next turn is Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`. It may edit only the reviewed file allowlist and compile/package the existing seven targets. It may not run generated project binaries, tests, benchmarks, discovery/list commands, CLI/GUI commands, or custom inputs.
 
 ## Validity and prohibitions
 

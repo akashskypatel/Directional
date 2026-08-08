@@ -28,17 +28,17 @@ G3 is formally closed.
 
 Artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`, has now been executed under immutable artifact-only authority. It regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. Exact torus reaches phase-front `Produced` with four annular topology regions, eight internal isolation seams, and four periodic relations, then fails at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
-The mandatory process guard is active again. Execute `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md` next. No ordinary Code + Build is authorized before Review.
+Mandatory Review is complete with decision **Approved with amendments**. Execute `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md` next.
 
-Review priority:
+Reviewed implementation priority:
 
-1. separate genuine source-edge topology identity from the optional two-face transition/matching index;
-2. define an exact, complete internal-isolation-seam consumption witness;
-3. audit the explicit quotient, lineage, computed topology, and retention contracts against broken counterfactuals;
-4. move every active semantic test into an approved default packaged target—the semantic digest tests are currently historical-only and unexecutable;
-5. approve, amend, or replace the runtime report's `proposed_pending_review` implementation scope;
-6. retain parent topology regions/local isolation safety and all prior no-weld/no-fallback/no-synthetic-topology constraints;
-7. require a future immutable artifact to restore direct G0-G3 and close exact torus with one component, no boundary, Euler zero, and all 4/8/4 authority consumed.
+1. represent genuine one-face boundaries by canonical topology with no invented interior matching index;
+2. retain strict indices for actual two-face ordinary/cut/rail/periodic transport;
+3. emit one canonical reciprocal seam-transport certificate for every retained internal isolation seam;
+4. consume certificates as the topology region's exact local-sheet connectivity authority across cells, fronts, relations, quotient classes, lineage, hashes, and diagnostics;
+5. package every active broken counterfactual in the existing default producer executable while keeping the historical suite disabled;
+6. preserve the explicit occurrence quotient, parent topology regions/local isolation safety, and all no-weld/no-fallback/no-synthetic-topology constraints;
+7. require the following immutable artifact to restore direct G0-G3 and close exact torus with one component, no boundary, Euler zero, and all 4/8/4 authority consumed.
 
 ## Later G4 singularity objective
 

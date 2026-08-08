@@ -6,22 +6,34 @@
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 - Draft PR: #8 — keep **open, draft, unmerged**
 - Configured optional review policy: `never`
-- Mandatory review override: **activated by artifact-only regression/zero quotient consumption**
+- Mandatory review override: **completed - Approved with amendments**
 - Active gate: **G4 topology-distinct completion and singularities**
-- Completed turn: **artifact-only Test + Benchmark — transition quotient and retained authority**
-- Next turn: **mandatory independent Review only**
-- Authoritative next plan: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`
+- Completed turn: **mandatory independent Review - transition-quotient runtime regression**
+- Next turn: **Code + Build only**
+- Authoritative next plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`
+- Current review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
 - Latest runtime report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`
 - Latest compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`
 - Prior independent review: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`
 - Implementation commit: `7f486632b154a303789df6c4dd44f602c8c71281`
 - Build/cleanup commit: `718b978dcd0fab66da67810e00661468fc11038f`
-- Entering branch head: `3568f59d3cd9fe77f6afa731f885d991fdbcbdeb`
-- Handoff content commit: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`
+- Review entry branch head: `cd9543f83a525f0d6cb668b22dfca2f0199358d2`
+- Review planning commit: `<PLANNING_COMMIT>`
+- Prior handoff content commit: `a2d2b0ae60e7684decdcca526f9f94365befd8c3`
 
-Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the latest runtime report, the mandatory Review plan, the prior review report, the latest compile report, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Review/testing-integrity/recovery/handoff/GitHub-workflow references.
+Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the current review report, the authoritative Code + Build plan, the latest runtime/compile reports, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/GitHub-workflow references.
 
-The next Review may inspect source, tests, CMake/test wiring, reports, and immutable evidence read-only. It must not edit production/tests/fixtures/validators/benchmarks/build files, configure, compile, relink, execute tests/benchmarks, regenerate discovery, or substitute artifacts.
+The next Code + Build may edit only its exact production/test/CMake allowlist and compile/package the existing seven targets. It must not execute generated project binaries, tests, benchmarks, `ctest`, discovery/list/help/version commands, CLI/GUI commands, or custom inputs.
+
+## Review decision and exact correction
+
+Decision: **Approved with amendments**.
+
+1. Do not expand `edge_matching_indices()`. A genuine one-face source boundary carries canonical `sourceRouteTopology` and no interior matching index. Actual two-face ordinary/cut/rail/periodic transport remains index-strict.
+2. Add one canonical reciprocal seam-transport certificate per retained internal isolation seam. It owns exact topology, interior edge identity, incident faces/sheets, source component/topology region, and forward/reverse transport.
+3. Materialization validates the certificate bijection and uses certificates as the topology region's local-sheet connectivity graph across cells, fronts, relations, quotient classes, lineage, hash, and diagnostics.
+4. A cell-side `transitionSourceEdges` entry remains an exact crossing witness but is not required for every seam. Metadata-only or unconditional seam consumption is forbidden.
+5. Compile all active counterfactuals into the existing default producer-test executable; keep the historical suite off.
 
 ## Exact artifact-only authority
 
@@ -109,13 +121,13 @@ Sphere was correctly skipped because torus did not reach direct strict-valid out
 
 Therefore every legitimate source-boundary route is rejected by construction. This explains the common plane/seam/close-sheets/cylinder and focused producer regression. It is a product implementation defect, not fixture/tolerance/infrastructure failure.
 
-Review must specify how canonical `sourceRouteTopology` represents a genuine boundary while an interior transition index remains mandatory only where transport semantics require it.
+The completed Review specifies canonical `sourceRouteTopology` as genuine-boundary identity while keeping an interior transition index mandatory only where two-face transport semantics require it.
 
 ## Source-bounded failure 2 — seam-consumption witness unresolved
 
 The materializer creates `consumedTransitionTopology` only from `SurfaceTraceSegment.transitionSourceEdges` on cell boundary paths, then requires every `SurfaceTopologyRegion.internalIsolationSeamTopology` edge to appear. Torus reports all eight required seams unconsumed.
 
-Review must decide a complete exact witness: cell-side route, occurrence-equivalence provenance, retained chart/local-isolation lineage, region coverage plus reciprocal transport, or a stricter combination. It must reject unconditional marking, representative-sheet selection, count/order/ID/proximity authority, and coordinate/position welding.
+The completed Review selects a canonical reciprocal seam-transport certificate plus materializer-validated local-sheet connectivity as the exact witness. It rejects unconditional marking, representative-sheet selection, count/order/ID/proximity authority, and coordinate/position welding.
 
 ## Executable coverage blocker
 
@@ -130,17 +142,20 @@ No independent packaged test was found for every required multi-isolation/chart-
 
 The prior compile report's focused-coverage statement therefore exceeds the executable artifact closure. Review must map every required contract to a default packaged test target.
 
-## Mandatory Review questions
+## Authoritative next Code + Build
 
-The authoritative Review plan requires explicit decisions on:
+Execute only `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
 
-1. source-boundary topology versus optional interior transition index;
-2. exact internal-isolation-seam consumption ownership;
-3. completeness and validity of every quotient/topology/retention/digest counterfactual;
-4. minimal default test target/package closure;
-5. approval, amendment, or replacement of the runtime report's `proposed_pending_review` Code + Build scope.
+Exact source/test/build allowlist:
 
-Do not implement the proposal before Review.
+- `include/directional/geometry/SurfaceCellTracing.h`
+- `src/geometry/SurfaceCellTracing.cpp`
+- `src/pipeline/RemeshPipeline.cpp`
+- `tests/SurfaceCellsPhase10Tests.cpp`
+- `tests/SurfaceCellTransitionQuotientTests.cpp` (new)
+- `cmake/DirectionalTests.cmake`
+
+Any required production/test/build edit outside this list stops the turn for review. The CB must publish a checksum-verified Release/static/Ninja artifact with `runtimeExecution=false`, then clean temporary workflow/trigger/payload state.
 
 ## Future acceptance after reviewed implementation
 
@@ -160,8 +175,8 @@ Prescribed sphere, G5/G6, bunny/vase runtime, historical completion repair, vali
 
 Never combine turn types.
 
-- Review edits documentation/PR metadata only; it does not edit production/tests/build files, build, or run project binaries.
-- Code + Build may occur only after Review authorizes an exact plan and may not execute generated project runtime.
+- The completed Review changed documentation/PR metadata only; it did not edit production/tests/build files, build, or run project binaries.
+- Code + Build is now authorized only under the exact successor plan and may not execute generated project runtime.
 - Test + Benchmark executes one exact immutable artifact and may not rebuild or edit source/test/build authority.
 - Material progress requires direct product/contract state, not failure movement, counters, aggregate gains, or compile success.
 - PR #8 remains open, draft, and unmerged.

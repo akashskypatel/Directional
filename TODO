@@ -7,9 +7,11 @@ Last updated: 2026-08-08 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - G0-G3: **accepted baselines remain authoritative; current candidate regresses their direct boundary authority**.
 - G4 topology-distinct completion and singularities: **active, regressed and blocked**.
-- Completed turn: **artifact-only Test + Benchmark — transition quotient and retained authority**.
-- Next turn: **mandatory independent Review**.
-- Authoritative plan: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`.
+- Completed turn: **mandatory independent Review — transition-quotient runtime regression**.
+- Review decision: **Approved with amendments**.
+- Next turn: **Code + Build only**.
+- Authoritative plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
+- Review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`.
 - Runtime report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 - Compile report: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Report.md`.
 - Prior review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`.
@@ -67,18 +69,24 @@ Sphere remains deferred because torus does not close.
 ## Source-bounded blockers
 
 1. `assign_open_front_boundary_authority()` requires an entry from `edge_matching_indices()` before classifying a boundary edge. That index intentionally contains only two-face interior edges, so a genuine one-face source boundary is rejected by construction.
-2. Materialization counts an internal isolation seam as consumed only when it appears in cell-boundary `transitionSourceEdges`, then requires every retained region seam. Review must decide a complete exact consumption witness; unconditional marking or count/order/ID/proximity inference is forbidden.
+2. Materialization counts an internal isolation seam as consumed only when it appears in cell-boundary `transitionSourceEdges`, then requires every retained region seam. The completed Review replaces that impossible witness with an exact reciprocal seam-transport certificate and validated local-sheet connectivity; unconditional marking or count/order/ID/proximity inference remains forbidden.
 3. The two semantic-digest counterfactual tests live only in `tests/MilestoneGP27Tests.cpp`, which belongs to the disabled historical target. They are absent from the immutable package.
 4. Several mandated quotient and retention counterfactuals have no independently discoverable default packaged test; retention has positive `true` evidence but no `false` counterpart.
 
+## Reviewed remediation contract
+
+- A genuine one-face source boundary is owned by non-empty canonical `sourceRouteTopology`; it has no interior matching index and therefore an empty `sourceRouteEdges` route.
+- Do not expand `edge_matching_indices()`. Two-face ordinary, hard-rail, embedded-relief, and periodic transport retain strict interior index/provenance requirements.
+- Every retained internal isolation seam receives one canonical reciprocal transport certificate. Materialization validates the certificate bijection and uses the certificates as each topology region's local-sheet connectivity graph.
+- A seam is consumed only after its certificate participates in source-incidence, region/sheet, reciprocal-transport, cell/front/relation/quotient, lineage, hash, and diagnostics validation. Metadata-only or unconditional consumption remains forbidden.
+- Every active counterfactual is compiled into the existing default producer-test executable; the broad historical target remains disabled.
+
 ## Process decision
 
-The optional review policy remains `never`, but the mandatory process guard overrides it. Retained direct authority regressed and the quotient consumed no region/seam/relation authority after the review-approved Code + Build. **No ordinary Code + Build is authorized until Review approves, amends, or replaces the proposed remediation architecture.**
-
-The proposed implementation scope in the runtime report is `proposed_pending_review`. It may not be executed directly.
+The mandatory Review is complete with decision **Approved with amendments**. The runtime report's `proposed_pending_review` scope and the completed Review plan are superseded. The only authorized implementation authority is `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
 
 ## Turn boundary
 
-The next Review may inspect source, tests, build wiring, reports, and immutable evidence read-only. It may not edit production/tests/build files, configure, compile, run tests/benchmarks, or regenerate discovery.
+The next Code + Build may edit only its exact file allowlist and compile/package the existing seven approved targets. It may not execute generated project binaries, tests, benchmarks, list/discovery commands, CLI/GUI commands, or custom inputs. The following turn is immutable artifact-only Test + Benchmark.
 
 Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes. PR #8 remains open, draft, unmerged.

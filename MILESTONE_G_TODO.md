@@ -61,13 +61,13 @@ Bounded suites:
 
 `edge_matching_indices()` deliberately maps only two-face interior source edges. `assign_open_front_boundary_authority()` requires that index before it can classify a one-face edge as `GenuineSourceBoundary`. The representation therefore rejects valid source boundaries by construction.
 
-Review must separate canonical source-edge topology identity from the optional interior transition/matching index without weakening interior transport provenance.
+Reviewed resolution: canonical source-edge topology owns the genuine boundary; its interior-index route is empty. Two-face transport remains index-strict and `edge_matching_indices()` remains unchanged.
 
 ### Internal isolation-seam consumption
 
 Exact torus retains four topology regions, eight internal isolation seams, and four periodic relations, but materialization records `0/0/0` consumed. Current code requires every retained seam topology to appear in cell-boundary `transitionSourceEdges`.
 
-Review must define the exact first-class consumption witness and reject unconditional marking, representative-sheet selection, position/lattice welding, and count/order/ID/proximity inference.
+Reviewed resolution: one canonical reciprocal seam-transport certificate is required per retained seam and is consumed as the topology region's local-sheet connectivity authority. Unconditional marking, representative-sheet selection, position/lattice welding, and count/order/ID/proximity inference remain rejected.
 
 ### Executable counterfactual coverage
 
@@ -75,21 +75,22 @@ The semantic-digest invariance and mutation tests exist only in `tests/Milestone
 
 Compile success and source inspection cannot substitute for executing them from an immutable artifact.
 
+## Completed mandatory Review
+
+Decision: **Approved with amendments**.
+
+- review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`;
+- authoritative next plan: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`;
+- validated source remains `7f486632b154a303789df6c4dd44f602c8c71281`;
+- no source/test/build edit, configure/build, or project runtime occurred in Review.
+
+The approved representation keeps genuine one-face boundary topology separate from two-face transition indices and adds an explicit reciprocal transport certificate for every internal isolation seam. Materialization consumes those certificates as the topology region's exact local-sheet connectivity authority; it does not require every seam to cross a cell side and does not accept metadata-only consumption.
+
 ## Mandatory next turn
 
-**Independent Review only** under:
+**Code + Build only** under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`.
 
-`.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`
-
-The configured optional policy remains `never`; retained regression and zero quotient consumption activate the mandatory process-guard override.
-
-Review must:
-
-1. approve a general boundary topology/index representation;
-2. approve an exact seam-consumption witness;
-3. audit every quotient/topology/retention/digest counterfactual;
-4. choose default packaged test targets that expose every active-gate case;
-5. approve, amend, or replace the `proposed_pending_review` Code + Build scope in the runtime report.
+The CB turn is bounded to the reviewed production/test/CMake file allowlist, compiles the existing seven targets, packages the default producer counterfactuals, and executes no generated binary. A following immutable artifact-only Test + Benchmark is mandatory.
 
 ## Acceptance after a future reviewed Code + Build
 

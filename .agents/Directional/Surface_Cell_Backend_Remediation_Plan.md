@@ -40,14 +40,14 @@ Exact torus runtime on artifact `9024549134`:
 
 The prior review-approved quotient representation is source-live, but runtime exposes two new blocking contracts. Genuine source boundaries are rejected because their canonical topology is incorrectly required to have a two-face interior matching index. Torus seam consumption is defined only through cell-boundary transition records, which witness none of the eight required internal seams.
 
-Proposed remediation pending mandatory Review:
+Review-approved remediation:
 
 1. represent a genuine one-face source boundary by canonical source-edge topology without inventing an interior transition index;
 2. keep interior ordinary/isolation/periodic/hard-rail transport provenance strict;
-3. define seam consumption through reviewed exact quotient/transition/lineage ownership rather than unconditional metadata presence;
+3. emit one canonical reciprocal transport certificate per retained internal isolation seam and consume the certificates as the topology region's local-sheet connectivity authority;
 4. preserve the explicit occurrence quotient, complete chart/local-isolation/topology-region lineage, computed output incidence, and requested failure retention;
 5. package independent positive/broken counterfactuals for every active contract in default executables;
-6. move semantic-digest invariance/mutation tests out of the disabled historical-only closure or explicitly approve/package a focused target;
+6. compile the active quotient and semantic-digest counterfactuals into the existing default producer executable while keeping the historical target disabled;
 7. preserve G2 isolation/G3 annulus behavior and consume every owned region/seam/relation;
 8. use the canonical semantic digest only after its executable invariance/sensitivity tests pass.
 
@@ -73,13 +73,15 @@ Do not repair the ten historical completion/simplification failures merely becau
 
 Artifact-only validation of `9024549134` is complete and recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 
-Next mandatory Review under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`:
+Mandatory Review is complete under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md` with decision **Approved with amendments**.
 
-1. approve the boundary topology/index representation;
-2. approve the seam-consumption witness;
-3. map every quotient/topology/retention/digest counterfactual to an executable packaged test;
-4. approve, amend, or replace the proposed next Code + Build scope;
-5. preserve turn separation and no-fallback/no-recovery semantics.
+Next Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`:
+
+1. restore topology-only genuine boundaries without changing interior index identity;
+2. add and consume reciprocal seam-transport certificates;
+3. package every quotient/topology/retention/digest counterfactual in the default producer executable;
+4. compile/package only, with no generated runtime;
+5. hand one immutable artifact to the following Test + Benchmark turn.
 
 ## Deferred work
 

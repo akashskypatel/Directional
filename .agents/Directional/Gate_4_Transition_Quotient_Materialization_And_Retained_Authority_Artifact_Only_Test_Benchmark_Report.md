@@ -11,7 +11,7 @@
 - Exact log artifact: **`9024549261`**
 - Environment: Linux x86_64, kernel 6.18.35, glibc 2.39; packaged GCC 13.3.0 Release/static/Ninja build
 - Configured optional review policy: `never`
-- Mandatory process guard: **activated — independent Review required before another ordinary Code + Build**
+- Mandatory process guard: **activated by this result; subsequently satisfied by the independent Review recorded below**
 
 ## Decision
 
@@ -24,7 +24,7 @@ The transition quotient does not establish accepted material progress:
 3. the review-mandated semantic-digest tests are present only in the disabled historical-test target and therefore are absent from the five packaged executables;
 4. several other required counterfactual contracts have no independently discoverable packaged test, including the retain-true/retain-false pair.
 
-The planned quotient/retained-authority slice is not accepted. Sphere remains skipped. Because retained authority regressed and the quotient consumed no topology-region, seam, or periodic authority, the controlling process guard forbids another ordinary implementation loop. The next turn is mandatory independent **Review**.
+The planned quotient/retained-authority slice is not accepted. Sphere remains skipped. Because retained authority regressed and the quotient consumed no topology-region, seam, or periodic authority, the controlling process guard forbade another ordinary implementation loop. The required independent **Review** is now complete with decision **Approved with amendments**; its successor Code + Build plan is the sole current implementation authority.
 
 No production, test, fixture, validator, benchmark, build-system, or workflow source was edited. No configure, compile, link, rebuild, or discovery regeneration occurred.
 
@@ -217,7 +217,7 @@ G0-G3 direct output authority is not retained; transition-quotient consumption i
 
 ## Proposed next Code + Build plan
 
-Status: **`proposed_pending_review`**
+Status: **superseded by mandatory Review**
 
 1. Restore exact boundary authority without conflating topology identity and transition index.
    - Required change: represent a genuine one-face source boundary by canonical source-edge topology even though it has no interior matching index; keep interior transition provenance mandatory where semantically required.
@@ -235,13 +235,13 @@ Status: **`proposed_pending_review`**
    - Required change: no runtime in Code + Build; package Release/static/Ninja evidence with `runtimeExecution=false` and clean temporary workflows/payloads.
    - Future validation: a following artifact-only Test + Benchmark must rerun the exact focused, direct, torus, and bounded matrix without rebuilding.
 
-This proposal is not authorized for implementation until mandatory Review validates or replaces its seam-consumption model, counterfactual sufficiency, and minimal scope.
+Mandatory Review approved the direction with amendments and replaced this proposal with `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`. This historical proposal must not be executed directly.
 
 ## Optional review decision
 
-- Review: **request — mandatory process-guard override**
+- Review: **completed — Approved with amendments**
 - Reason: retained direct authority regressed, the quotient consumed no topology-region/seam/relation authority, and required executable coverage is incomplete after the review-approved Code + Build.
-- Review authority: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_And_Executable_Coverage_Mandatory_Design_Review_Plan.md`
+- Review report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
 
 PR #8 must remain open, draft, and unmerged.
 

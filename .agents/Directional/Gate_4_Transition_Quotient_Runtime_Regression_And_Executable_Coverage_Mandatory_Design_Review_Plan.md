@@ -1,7 +1,7 @@
 # Gate 4 Transition-Quotient Runtime Regression and Executable Coverage — Mandatory Design Review Plan
 
-Status: **authoritative next turn**
-Turn type: **Review only**
+Status: **completed; superseded by review report and successor Code + Build plan**
+Turn type: **Review only - completed**
 Active design gate: **G4 topology-distinct completion and singularities**
 Configured optional review policy: `never`
 Review authority: **mandatory process-guard override**
@@ -168,3 +168,13 @@ After the review decision:
 3. verify `.github/workflows` contains only `agent-source-snapshot.yml` and temporary trigger/payload directories are absent;
 4. update PR #8 metadata while keeping it open, draft, and unmerged;
 5. make a new top-level PR #8 conversation comment as the **final repository write**, then perform no further GitHub write.
+
+## Review completion
+
+Decision: **Approved with amendments**.
+
+- Report: `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md`
+- Authoritative successor: `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`
+- Validated source: `7f486632b154a303789df6c4dd44f602c8c71281`
+
+This plan is historical evidence and must not be executed again.
