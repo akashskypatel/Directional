@@ -4,7 +4,7 @@
 - Validated source commit: `3ca89ab55efff461b050fb12033174be70e7464f`
 - Reviewed proposed plan: topology-region materialization and regression-corrections proposal at planning head `14627b6d9f5038f085a3a128e9c870f8c999f54a`
 - Reviewer independence confirmed: yes; this review did not author the implementation or its artifact-only runtime report and independently inspected exact source, immutable artifacts, tests, public option contracts, and supplied research/reference material
-- Planning commit, when applicable: `PLANNING_COMMIT_RECORDED_BY_REVIEW_TRANSITION`
+- Planning commit, when applicable: `d1805cac76535f326720bb86b845117e92e59e21`
 
 ## Evidence Reviewed
 
@@ -100,7 +100,7 @@ Static source inspection, checksum verification, PDF extraction/rendering, and a
 
 - Path: `.agents/Directional/Future_Chat_Session_Handoff.md`
 - Evidence commit: `3ca89ab55efff461b050fb12033174be70e7464f`
-- Handoff commit: `HANDOFF_COMMIT_RECORDED_BY_REVIEW_TRANSITION`
+- Handoff commit: `d1805cac76535f326720bb86b845117e92e59e21`
 - Updated or verified unchanged: `TODO`, `MILESTONE_G_TODO.md`, `DESIGN.md`, runtime summary, workflow hygiene, PR #8 draft/open/unmerged state
 - Review-approved plan reference: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`
 - Agent entry-point links verified: yes

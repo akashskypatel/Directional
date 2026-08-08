@@ -11,8 +11,8 @@ Active gate: **G4 topology-distinct completion and singularities**
 Next turn: **Code + Build only**
 Authoritative next plan: `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md`
 Independent review report: `.agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md`
-Review planning commit: `PLANNING_COMMIT_RECORDED_BY_REVIEW_TRANSITION`
-Handoff transition commit: `HANDOFF_COMMIT_RECORDED_BY_REVIEW_TRANSITION`
+Review planning commit: `d1805cac76535f326720bb86b845117e92e59e21`
+Handoff content commit: `d1805cac76535f326720bb86b845117e92e59e21`
 
 Read this handoff first, then `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/DESIGN.md`, the independent review report, the authoritative Code + Build plan, the latest runtime report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`, the latest compile report `.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`, `tests/TESTING_STRATEGY.md`, `.agents/Directional/GitHub_Workflow_Policy.md`, and the turn-based-coding-agent Code+Build/testing-integrity/recovery/handoff/GitHub-workflow references. Load the integrated unit-testing module before editing the focused tests.
 

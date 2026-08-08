@@ -14,7 +14,7 @@
     "nextPlan": ".agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Code_Build_Plan.md",
     "reviewReport": ".agents/Directional/Gate_4_Topology_Region_Independent_Design_Review_Report.md",
     "reviewDecision": "Approved with amendments",
-    "reviewPlanningCommit": "PLANNING_COMMIT_RECORDED_BY_REVIEW_TRANSITION",
+    "reviewPlanningCommit": "d1805cac76535f326720bb86b845117e92e59e21",
     "supersededProposalStatus": "superseded_and_removed_by_mandatory_review",
     "noProgressCodeBuildCountSinceLastAcceptedMaterialProgress": 2,
     "mandatoryReviewRequired": false,
