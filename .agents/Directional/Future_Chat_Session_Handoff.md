@@ -196,7 +196,7 @@ Never combine turn types.
 6. do not remove a durable dependency required by normal repository operation;
 7. retain payload/source-transfer data until its authority is verified, then remove it.
 
-The successful topology-region Code + Build removed its six raw payload files in cleanup commit `b188dd37f01181ece2173879fc7e0accf23d1bad`, then removed the bounded workflow before its trigger after artifact verification. Expected final state: `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again at the beginning and end of the Test + Benchmark turn.
+The successful topology-region Code + Build removed its six raw payload files in cleanup commit `b188dd37f01181ece2173879fc7e0accf23d1bad`, then removed the bounded workflow before its trigger after artifact verification. Final verification after all documentation cleanup showed `.github/workflows` contains only `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent. Verify again at the beginning and end of the Test + Benchmark turn.
 
 ## Documentation cleanup — mandatory
 
@@ -205,6 +205,8 @@ The successful topology-region Code + Build removed its six raw payload files in
 3. retained documentation may reference only files that exist;
 4. Git history and PR conversation are the archive for superseded turn detail;
 5. never delete the latest evidence or next-turn instructions before replacements exist.
+
+The executed topology-region Code + Build plan is retained only as a short compatibility pointer because the preceding runtime report references its path. The superseded polygonal Code + Build report was removed after its replacement compile record existed.
 
 ## Instruction preservation — mandatory
 
