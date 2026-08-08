@@ -207,7 +207,7 @@ After artifact, source, checksum and log authority were independently verified:
 - trigger removal commit **`a763d784ae67a0db39cd0e7b7ec9dc1a552b5ed3`**;
 - six raw payload files were already removed by cleanup commit `b188dd37f01181ece2173879fc7e0accf23d1bad`.
 
-Final hygiene must be rechecked after documentation cleanup and before the mandatory PR closeout comment.
+Final verification after documentation cleanup confirms `.github/workflows` contains only durable `agent-source-snapshot.yml`; `.agents/connector-triggers`, `.github/agent-triggers`, and `.agents/Directional/turn-payloads` are absent.
 
 ## Runtime authority remains unchanged until validation
 
