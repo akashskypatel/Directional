@@ -292,6 +292,82 @@ int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,
   return -1;
 }
 
+struct TransitionIndexDomainWitness {
+  std::uint64_t topology = 0;
+  int sourceWideCompact = -1;
+  int regionLocalCompact = -1;
+  int fullEfRow = -1;
+};
+
+TransitionIndexDomainWitness transition_index_domain_witness() {
+  const auto &fixture = overlap_fixture();
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceWide = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, constant_xy_field(fixture.mesh.F.rows()));
+
+  for (const auto &region : fixture.network.phaseFront.topologyRegions) {
+    if (region.sourceFaces.empty()) continue;
+    Eigen::MatrixXi regionalFaces(
+        static_cast<Eigen::Index>(region.sourceFaces.size()), 3);
+    for (std::size_t row = 0; row < region.sourceFaces.size(); ++row) {
+      regionalFaces.row(static_cast<Eigen::Index>(row)) =
+          fixture.mesh.F.row(region.sourceFaces[row]);
+    }
+    const auto regionalIncidence = directional::geometry::
+        surface_cell_tracing_detail::edge_faces(regionalFaces);
+    const auto regionLocal = directional::geometry::
+        surface_cell_tracing_detail::edge_matching_indices(regionalIncidence);
+    for (const auto &[topology, localIndex] : regionLocal) {
+      const auto globalIndex = sourceWide.find(topology);
+      const auto transition = std::find_if(
+          crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
+          [&](const auto &candidate) {
+            return directional::pipeline::surface_cell_source_edge_key(
+                       candidate.sourceVertex0, candidate.sourceVertex1) ==
+                   topology;
+          });
+      if (globalIndex == sourceWide.end() ||
+          transition == crossField.edgeTransitions.end() ||
+          globalIndex->second == localIndex ||
+          transition->sourceEdge == globalIndex->second ||
+          transition->sourceEdge == localIndex) {
+        continue;
+      }
+      return {topology, globalIndex->second, localIndex,
+              transition->sourceEdge};
+    }
+  }
+  throw std::runtime_error(
+      "Missing topology with distinct source-wide, region-local, and EF "
+      "transition indices");
+}
+
+bool replace_transition_index(SurfacePhaseFrontResult &phaseFront,
+                              const std::uint64_t topology,
+                              const int replacement) {
+  for (auto &cell : phaseFront.cells) {
+    for (auto &path : cell.boundaryPaths) {
+      for (auto &segment : path) {
+        for (std::size_t route = 0;
+             route < segment.transitionSourceTopology.size(); ++route) {
+          if (segment.transitionSourceTopology[route] != topology) continue;
+          if (route >= segment.transitionSourceEdges.size()) return false;
+          segment.transitionSourceEdges[route] = replacement;
+          if (route + 1U == segment.transitionSourceEdges.size()) {
+            segment.transitionSourceEdge = replacement;
+          }
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 directional::pipeline::RemeshResult semantic_two_component_result() {
   directional::pipeline::RemeshResult result;
   result.success = true;
@@ -363,6 +439,87 @@ directional::pipeline::RemeshResult permute_semantic_output_rows(
     permuted.outputQuadLineage.push_back(std::move(lineage));
   }
   return permuted;
+}
+
+TEST(SurfaceCellTransitionQuotient,
+     SourceWideCompactTransitionIndexIsIndependentOfRegionPartition) {
+  const auto &fixture = overlap_fixture();
+  const auto witness = transition_index_domain_witness();
+  ASSERT_GE(witness.sourceWideCompact, 0);
+  ASSERT_GE(witness.regionLocalCompact, 0);
+  ASSERT_GE(witness.fullEfRow, 0);
+  EXPECT_NE(witness.sourceWideCompact, witness.regionLocalCompact);
+  EXPECT_NE(witness.sourceWideCompact, witness.fullEfRow);
+  EXPECT_NE(witness.regionLocalCompact, witness.fullEfRow);
+
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceWide = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  bool observedWitness = false;
+  for (const auto &cell : fixture.network.phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (const auto &segment : path) {
+        ASSERT_EQ(segment.transitionSourceEdges.size(),
+                  segment.transitionSourceTopology.size());
+        EXPECT_EQ(segment.transitionSourceEdges.empty()
+                      ? -1
+                      : segment.transitionSourceEdges.back(),
+                  segment.transitionSourceEdge);
+        for (std::size_t route = 0;
+             route < segment.transitionSourceEdges.size(); ++route) {
+          const auto expected =
+              sourceWide.find(segment.transitionSourceTopology[route]);
+          ASSERT_NE(expected, sourceWide.end());
+          EXPECT_EQ(expected->second, segment.transitionSourceEdges[route]);
+          if (segment.transitionSourceTopology[route] == witness.topology) {
+            observedWitness = true;
+            EXPECT_EQ(witness.sourceWideCompact,
+                      segment.transitionSourceEdges[route]);
+          }
+        }
+      }
+    }
+  }
+  EXPECT_TRUE(observedWitness);
+
+  bool observedGenuineBoundary = false;
+  for (const auto &edge : fixture.network.phaseFront.edges) {
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
+      continue;
+    }
+    observedGenuineBoundary = true;
+    EXPECT_FALSE(edge.sourceRouteTopology.empty());
+    EXPECT_TRUE(edge.sourceRouteEdges.empty());
+  }
+  EXPECT_TRUE(observedGenuineBoundary);
+
+  const auto result = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(result.success) << result.failure;
+}
+
+TEST(SurfaceCellTransitionQuotient,
+     FullEfTransitionRowCannotReplaceSourceWideCompactIndex) {
+  const auto &fixture = overlap_fixture();
+  const auto witness = transition_index_domain_witness();
+  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
+  ASSERT_TRUE(replace_transition_index(tampered, witness.topology,
+                                       witness.fullEfRow));
+  const auto result = materialize(fixture, tampered);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidAuthoritativeTransitionSourceEdge", result.failure);
+}
+
+TEST(SurfaceCellTransitionQuotient,
+     RegionLocalCompactTransitionIndexCannotReplaceSourceWideIndex) {
+  const auto &fixture = overlap_fixture();
+  const auto witness = transition_index_domain_witness();
+  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
+  ASSERT_TRUE(replace_transition_index(tampered, witness.topology,
+                                       witness.regionLocalCompact));
+  const auto result = materialize(fixture, tampered);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidAuthoritativeTransitionSourceEdge", result.failure);
 }
 
 TEST(SurfaceCellTransitionQuotient,
