@@ -2,9 +2,11 @@
 
 ## Mandatory direct matrix
 
-Run in order: plane, multi-face seam, close sheets, cylinder, randomized `bunny_1k_random`, vase. Run all six even after failure, but later fixtures cannot pass an earlier gate.
+Run in order: plane, multi-face seam, close sheets, cylinder, randomized `bunny_1k_random`, vase. Run all six even after failure when the active turn budget permits a bounded execution; later fixtures cannot pass an earlier gate. A bounded timeout is failure only and does not synthesize a result.
 
 Every direct success requires requested/executed `SurfaceCells`, fallback `Fail`, no fallback attempt, recovery disabled, non-empty pure quads, `CompletedSurfaceCells`, complete source provenance, strict validation, and deterministic output.
+
+Topology/singularity gate fixtures such as torus and prescribed sphere are run additionally when their gate is active. They do not replace the production matrix above.
 
 ## Fixture integrity
 
@@ -15,19 +17,23 @@ Both use generated smooth fields through production extraction. Replacing, simpl
 
 ## Latest executed runtime authority
 
-The current Code + Build artifact has not yet been executed. Latest runtime remains:
+Exact artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`.
 
-- plane: failure, 106 traces, 9 arrangement cells, 12 completion candidates, 15 validation failures, no output;
-- seam: success, 256 traces, 65 arrangement cells, 64 pure output quads, hash `a8972efd7c4900a4`;
-- close sheets/cylinder/bunny/vase: deterministic direct failures before output;
-- narrow source-vertex/topology contracts: 4/4;
-- non-overlapping total: 305/321.
+G0-G3 are passed.
 
-Plane remains the earliest active regression.
+- focused/retained G0-G3 contracts: **17/17**;
+- plane: `Produced / CompletedSurfaceCells`, 64 pure quads, hash `730caeae49ec872c`, deterministic 3/3;
+- seam: `Produced / CompletedSurfaceCells`, 64 pure quads, hash `5bdf34d7802e9fb0`, deterministic 3/3;
+- close sheets: `Produced / CompletedSurfaceCells`, 200 pure quads / two components, hash `89b052762f52a5af`, deterministic 3/3;
+- cylinder: `Produced / CompletedSurfaceCells`, periodic `r=0`, `t=(32,0)`, route 32, cut 4, 288 pure quads / 320 vertices, zero validation failures, field P95 `8.537736463e-7°`, output hash `32135be51d7a0a26`, deterministic 3/3;
+- bunny: `NotApplicable`, 80,862 traces, no output, terminal `NotProductionReady:completion`, no fallback/recovery;
+- vase: current bounded 45-second observation produced no complete result; timeout carries no correctness inference.
+
+Bounded suites: producer **100/101** (only `StrictValidatorOverheadStaysBelowFivePercent` timing check), completion/simplification **154/164**, validation **60/60**, compiled API **8/8**.
 
 ## Current producer-authority contracts
 
-The source now distinguishes:
+The source distinguishes:
 
 ```text
 NotApplicable
@@ -37,10 +43,9 @@ Rejected
 
 Mandatory behavior:
 
-- applicable valid plane/seam may reach `Produced`;
+- applicable valid plane/seam/cylinder may reach `Produced`;
 - applicable invalid metadata reaches `Rejected`, not `NotApplicable`;
-- `Rejected` generates no generic seeds/traces/proposals;
-- `Rejected` terminates at the tracing producer boundary before FlowRep/arrangement/completion substitution;
+- `Rejected` generates no generic substitute work and remains terminal for the requested backend;
 - typed rejection remains first-invalid authority;
 - non-embedded relief guidance does not veto transport;
 - embedded relief barriers block according to the existing relief contract;
@@ -48,35 +53,38 @@ Mandatory behavior:
 - reversed face ordering preserves structural results;
 - malformed/duplicate/nonreciprocal transition data fails closed;
 - source component/sheet identity prevents unrelated capture;
-- one accepted authoritative cell maps to exactly one quad.
+- one accepted authoritative cell maps to exactly one quad;
+- periodic source identity, field-authoritative ring correspondence, canonical source-simplex endpoints, exact cut quotient, and artificial-cut non-exterior behavior remain G3 regressions.
 
 Producer disposition and typed rejection identity must be present in deterministic diagnostic/structural evidence.
 
+## Active G4 topology contract
+
+The exact torus is connected, closed, genus one (Euler characteristic 0, no boundary). Artifact `9013161456` rejects at `tracing/phase-front` with typed `InvalidPeriodicTopology` after partial diagnostics already retain one periodic relation.
+
+Source authority currently stores only one scalar `SurfacePeriodicHolonomy` at result level and rejects a second enabled local relation. The active G4 test strategy therefore requires:
+
+- first-class deterministic multi-relation periodic authority;
+- canonical source-topology/reciprocal-transport relation identity;
+- no ID/order/count/frequency/proximity ownership choice;
+- equivalent/reversed relation canonicalization;
+- typed fail-closed conflict/ambiguity;
+- every retained relation consumed by hashing, diagnostics, provenance and exact quotient materialization;
+- single-annulus G3 behavior retained exactly.
+
+The next Code + Build turn adds compile-only semantic regressions; the following artifact-only turn must prove the exact torus advances beyond the singular-relation rejection while all 17 G3 focused contracts remain green.
+
+The prescribed sphere is a later G4 singularity/completion case. Its current direct failure is at completion (`repeated-boundary-node` plus parity-alternative budget exhaustion), so it does not preempt the earlier torus tracing contract.
+
 ## Contract tests versus production authority
 
-Narrow synthetic/reconstructed fixtures remain useful for isolating one invariant, but they are not acceptance authority for the real pipeline.
+Narrow synthetic/reconstructed fixtures isolate invariants but are not acceptance authority for the real pipeline. Exact committed fixture tests must enter the production preprocessing/remesh path and must not inject convenient labels, transitions, target counts, or output cardinalities.
 
-The source now also contains `SurfaceCellsPhase10.ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary`, which loads the exact committed `plane.obj` and `plane.rawfield` and enters the real `remesh_from_raw_cross_field` production path rather than injecting a convenient target, labels, or transitions.
-
-The test compiled in the latest Code + Build turn but has **not** yet run. Its runtime result is part of the next artifact-only gate.
-
-## Next artifact-only acceptance
-
-Use artifact SHA-256 `4dc3ec7d797fae2cebe7040a60712a92bfe63cdfe1052ba74796ef0a6602a031` under `.agents/Directional/Gate_1_Authoritative_Producer_Boundary_Artifact_Only_Test_Benchmark_Plan.md`.
-
-Run explicit producer-contract tests first, then all six direct cases.
-
-For every direct case additionally record `surfaceCellAuthoritativeProducerDisposition`, typed phase-front failure/context, generic trace count, arrangement/completion counts, terminal stage, stage/structural hashes, output hash, fallback/recovery state, and strict validation.
-
-Gate 1 acceptance hierarchy:
-
-1. `Produced` plane with direct deterministic valid pure-quads and retained seam direct success closes G1.
-2. Immutable `Rejected` plane terminating at tracing with zero generic traces/arrangement/completion and disappearance of the old 106/9/12 signature is material architecture proof but not G1 closure.
-3. `NotApplicable`/generic substitution, overwritten rejection, seam regression, or weakened acceptance is no progress.
+Tests must verify semantic source/topology/transport identities instead of raw DCEL/source numeric IDs or historical discovery order.
 
 ## Default suites
 
-Report direct acceptance separately. Explicitly executed contract/direct tests must be excluded from the remaining producer aggregate so totals are non-overlapping. Then run completion, validation, and compiled API suites. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only.
+Report direct acceptance separately. Explicitly executed focused/direct tests must be excluded from remaining aggregate totals so counts are non-overlapping. Run completion, validation, and compiled API suites after the direct gate decision. Scheduler-sensitive wall-clock ratios are benchmark/closeout evidence only and cannot override semantic gate authority.
 
 ## Turn boundaries
 
@@ -84,4 +92,4 @@ Code + Build may edit active-gate implementation and valid producer-level regres
 
 ## Validity and prohibitions
 
-Tests must encode real production contracts and valid scenarios. Never weaken assertions to fit behavior. No validator weakening, fixture special cases, fallback/recovery substitution, generic-producer substitution after authoritative rejection, positional sheet merging, count/order/frequency ownership selection, arbitrary subset search, synthetic topology correction, post-hoc cell merging, or timeout-as-correctness.
+Tests must encode real production contracts and valid scenarios. Never weaken assertions to fit behavior. No validator weakening, fixture special cases, fallback/recovery substitution, generic-producer substitution after authoritative rejection, positional sheet merging, count/order/frequency ownership selection, arbitrary subset search, synthetic topology correction, Euclidean periodic seam welding, post-hoc cell merging, or timeout-as-correctness.
