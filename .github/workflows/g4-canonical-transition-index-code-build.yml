@@ -1,0 +1,234 @@
+name: g4-canonical-transition-index-code-build
+
+on:
+  push:
+    paths:
+      - '.agents/connector-triggers/g4-canonical-transition-index-code-build'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: g4-canonical-transition-index-code-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      LOG_DIR: /tmp/g4-canonical-transition-index-code-build-logs
+      IMPLEMENTATION_COMMIT: edc14d38f862b94941b249f564050e2e1f8f5287
+      ENTERING_BRANCH_HEAD: 6210522950a7167bd24c4e8ae11eb68f4f32ecca
+      ENTERING_RUNTIME_ARTIFACT: '9026181778'
+    steps:
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo "turn=G4 canonical transition index and failure retention Code+Build"
+            echo "event_sha=$GITHUB_SHA"
+            echo "event_ref=$GITHUB_REF"
+            echo "implementation_commit=$IMPLEMENTATION_COMMIT"
+            echo "entering_branch_head=$ENTERING_BRANCH_HEAD"
+            echo "entering_runtime_artifact=$ENTERING_RUNTIME_ARTIFACT"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=verify exact source, configure, compile/link seven approved targets, package/checksum"
+            echo "prohibited=tests, benchmarks, generated Directional binaries, ctest/discovery, CLI, GUI, help/list/version/custom-input execution"
+          } | tee "$LOG_DIR/activity.log"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 50
+          submodules: false
+
+      - name: Verify exact implementation and allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$IMPLEMENTATION_COMMIT" "$GITHUB_SHA"
+          git status --short
+
+          mapfile -t changed < <(git diff --name-only "$ENTERING_BRANCH_HEAD" "$IMPLEMENTATION_COMMIT" | sort)
+          expected_changed=(
+            include/directional/geometry/SurfaceCellTracing.h
+            src/geometry/SurfaceCellTracing.cpp
+            src/pipeline/RemeshPipeline.cpp
+            tests/SurfaceCellTransitionQuotientTests.cpp
+          )
+          printf 'changed=%s\n' "${changed[*]}"
+          test "${#changed[@]}" -eq "${#expected_changed[@]}"
+          for i in "${!expected_changed[@]}"; do
+            test "${changed[$i]}" = "${expected_changed[$i]}"
+          done
+
+          check_blob() {
+            local path="$1" expected="$2"
+            local actual
+            actual=$(git hash-object "$path")
+            echo "source_blob $path=$actual"
+            test "$actual" = "$expected"
+          }
+          check_blob include/directional/geometry/SurfaceCellTracing.h b87e37676a980162e7ef3ac1fa9d954ce2199ad2
+          check_blob src/geometry/SurfaceCellTracing.cpp 4809e66bb6e797001ffc22b3f2da6d3613cfdef0
+          check_blob src/pipeline/RemeshPipeline.cpp 0a55429fc83d429ae2176ce3bbaac573682c48eb
+          check_blob tests/SurfaceCellTransitionQuotientTests.cpp 7644327ffbe30c2a6e5bda3ec977f12a3a47c922
+          check_blob tests/SurfaceCellsPhase10Tests.cpp d34b5f097cf39ac72f060616a37d360e382af168
+          check_blob cmake/DirectionalTests.cmake e82e3088e11f215f030b58be7fb6531a5dbaa99a
+          git diff --exit-code "$IMPLEMENTATION_COMMIT" -- "${expected_changed[@]}"
+          echo "build_commit=$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          git submodule update --init --depth 1
+          git submodule status | tee "$LOG_DIR/submodules.txt"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          {
+            echo "implementation_commit=$IMPLEMENTATION_COMMIT"
+            echo "build_commit=$build_commit"
+            echo "compile_head=$(git rev-parse HEAD)"
+            cmake --version
+            c++ --version
+            ninja --version
+          } | tee "$LOG_DIR/toolchain.txt"
+          test "$(git rev-parse HEAD)" = "$build_commit"
+          cmake -S . -B agent-build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST -DBUILD_SHARED_LIBS=OFF -DBUILD_TUTORIALS=OFF -DBUILD_PYTHON=OFF -DDIRECTIONAL_BUILD_CLI=OFF -DDIRECTIONAL_BUILD_GUI=OFF -DDIRECTIONAL_BUILD_BENCHMARKS=ON -DDIRECTIONAL_BUILD_TESTS=ON -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF -DDIRECTIONAL_ENABLE_GMP=ON -DDIRECTIONAL_ENABLE_PARDISO=OFF -DDIRECTIONAL_ENABLE_CUDSS=OFF -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF 2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile seven approved targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$build_commit"
+          cmake --build agent-build --parallel 2 --target directional_core directional_pipeline directional_compiled_api_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_benchmarks 2>&1 | tee "$LOG_DIR/build.log"
+          echo "compile_only_gate=passed" | tee -a "$LOG_DIR/activity.log"
+          echo "approved_target_count=7" | tee -a "$LOG_DIR/activity.log"
+          echo "runtimeExecution=false" | tee -a "$LOG_DIR/activity.log"
+          echo "final_source_status_begin" | tee -a "$LOG_DIR/activity.log"
+          git status --short | tee -a "$LOG_DIR/activity.log"
+          echo "final_source_status_end" | tee -a "$LOG_DIR/activity.log"
+
+      - name: Package immutable compile artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          artifact_root="$GITHUB_WORKSPACE/g4-canonical-transition-index-code-build-artifact"
+          rm -rf "$artifact_root"
+          mkdir -p "$artifact_root"/{bin,lib,test-data/benchmarks,logs,metadata,source}
+          cp agent-build/directional_benchmarks "$artifact_root/bin/"
+          cp agent-build/directional_compiled_api_tests "$artifact_root/bin/"
+          cp agent-build/directional_surface_cell_producer_tests "$artifact_root/bin/"
+          cp agent-build/directional_surface_cell_completion_tests "$artifact_root/bin/"
+          cp agent-build/directional_surface_cell_validation_tests "$artifact_root/bin/"
+          cp agent-build/libdirectional_core.a "$artifact_root/lib/"
+          cp agent-build/libdirectional_pipeline.a "$artifact_root/lib/"
+          test "$(find "$artifact_root/bin" -maxdepth 1 -type f | wc -l)" -eq 5
+          test "$(find "$artifact_root/lib" -maxdepth 1 -type f | wc -l)" -eq 2
+
+          test "$(find benchmarks/fixtures -type f | wc -l)" -eq 27
+          cp -a benchmarks/fixtures "$artifact_root/test-data/benchmarks/"
+          cp "$LOG_DIR/activity.log" "$LOG_DIR/configure.log" "$LOG_DIR/build.log" "$LOG_DIR/toolchain.txt" "$LOG_DIR/submodules.txt" "$artifact_root/logs/"
+          cp agent-build/compile_commands.json "$artifact_root/source/"
+
+          changed_paths=(
+            include/directional/geometry/SurfaceCellTracing.h
+            src/geometry/SurfaceCellTracing.cpp
+            src/pipeline/RemeshPipeline.cpp
+            tests/SurfaceCellTransitionQuotientTests.cpp
+          )
+          git diff --full-index --binary "$ENTERING_BRANCH_HEAD" "$IMPLEMENTATION_COMMIT" -- "${changed_paths[@]}" > "$artifact_root/source/g4-canonical-transition-index.patch"
+          git archive --format=tar "$IMPLEMENTATION_COMMIT" | xz -T0 > "$artifact_root/source/directional-g4-canonical-transition-index-source-no-deps.tar.xz"
+
+          cat > "$artifact_root/metadata/source-authority.json" <<EOF
+          {
+            "eventCommit": "$GITHUB_SHA",
+            "implementationCommit": "$IMPLEMENTATION_COMMIT",
+            "buildCommit": "$build_commit",
+            "enteringRuntimeArtifact": $ENTERING_RUNTIME_ARTIFACT,
+            "enteringBranchHead": "$ENTERING_BRANCH_HEAD",
+            "runtimeExecution": false,
+            "reviewPolicy": "never"
+          }
+          EOF
+          cat > "$artifact_root/metadata/build-authority.json" <<'EOF'
+          {
+            "configuration": "Release",
+            "generator": "Ninja",
+            "buildSharedLibs": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "approvedTargets": [
+              "directional_core",
+              "directional_pipeline",
+              "directional_compiled_api_tests",
+              "directional_surface_cell_producer_tests",
+              "directional_surface_cell_completion_tests",
+              "directional_surface_cell_validation_tests",
+              "directional_benchmarks"
+            ],
+            "runtimeExecution": false
+          }
+          EOF
+          cat > "$artifact_root/metadata/command-boundary.txt" <<'EOF'
+          G4 canonical transition index and failure retention Code + Build only.
+          Executed: exact source verification, Release/static/Ninja PRE_TEST configuration, compile/link seven approved targets, package/checksum.
+          Not executed: generated Directional binaries, tests, benchmarks, ctest/discovery, CLI, GUI, help/list/version/custom-input commands.
+          EOF
+          git ls-tree -r "$IMPLEMENTATION_COMMIT" -- "${changed_paths[@]}" tests/SurfaceCellsPhase10Tests.cpp cmake/DirectionalTests.cmake > "$artifact_root/metadata/final-blobs.txt"
+          git submodule status > "$artifact_root/metadata/submodules.txt"
+          find benchmarks/fixtures -type f | sort > "$artifact_root/metadata/fixture-files.txt"
+          test "$(wc -l < "$artifact_root/metadata/fixture-files.txt")" -eq 27
+          (cd "$artifact_root" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          sha256sum "$artifact_root/SHA256SUMS" | tee "$LOG_DIR/artifact-checksum.txt"
+
+      - name: Upload immutable compile artifact
+        id: compile_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-canonical-transition-index-code-build
+          path: g4-canonical-transition-index-code-build-artifact
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record compile artifact identity
+        shell: bash
+        run: |
+          {
+            echo "artifact_id=${{ steps.compile_upload.outputs.artifact-id }}"
+            echo "artifact_url=${{ steps.compile_upload.outputs.artifact-url }}"
+            echo "artifact_digest=${{ steps.compile_upload.outputs.artifact-digest }}"
+            echo "runtimeExecution=false"
+          } | tee -a "$LOG_DIR/activity.log"
+
+      - name: Upload detailed activity log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g4-canonical-transition-index-code-build-logs
+          path: /tmp/g4-canonical-transition-index-code-build-logs
+          if-no-files-found: error
+          retention-days: 14
