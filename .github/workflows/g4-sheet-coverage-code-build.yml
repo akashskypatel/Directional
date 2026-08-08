@@ -55,21 +55,25 @@ jobs:
 
           payload=.agents/Directional/turn-payloads/g4-sheet-coverage.patch
           test -f "$payload"
-          test "$(sha256sum "$payload" | awk '{print $1}')" = \
-            "05b9e3906b8db7be8c2c2518565659081ace12d8b89540c228c3448cea3e4a92"
-          test "$(git hash-object include/directional/geometry/SurfaceCellTracing.h)" = \
-            "00d849c21a5af9b871b4ad56bf31c4c74bd705b5"
-          test "$(git hash-object src/geometry/SurfaceCellTracing.cpp)" = \
-            "cf1d17d5966b3d6904c823046c7dbded017e35ad"
-          test "$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)" = \
-            "99976a4481bfa9daaf197e15a3b53b70336e8218"
+          PAYLOAD_BLOB=$(git hash-object "$payload")
+          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
+          HEADER_BLOB=$(git hash-object include/directional/geometry/SurfaceCellTracing.h)
+          SOURCE_BLOB=$(git hash-object src/geometry/SurfaceCellTracing.cpp)
+          TEST_BLOB=$(git hash-object tests/SurfaceCellsPhase10Tests.cpp)
+          echo "payload_blob=$PAYLOAD_BLOB"
+          echo "payload_sha256=$PAYLOAD_SHA256"
+          echo "input_tracing_header_blob=$HEADER_BLOB"
+          echo "input_tracing_source_blob=$SOURCE_BLOB"
+          echo "input_phase10_tests_blob=$TEST_BLOB"
+          test "$PAYLOAD_BLOB" = "5980a71a0d38068fb2bb2dc86d16b4448e95b561"
+          test "$HEADER_BLOB" = "00d849c21a5af9b871b4ad56bf31c4c74bd705b5"
+          test "$SOURCE_BLOB" = "cf1d17d5966b3d6904c823046c7dbded017e35ad"
+          test "$TEST_BLOB" = "99976a4481bfa9daaf197e15a3b53b70336e8218"
           if grep -q '^+++ b/.github/workflows/' "$payload"; then
             echo "payload attempts to modify workflow files" >&2
             exit 1
           fi
-          PAYLOAD_SHA256=$(sha256sum "$payload" | awk '{print $1}')
           echo "PAYLOAD_SHA256=$PAYLOAD_SHA256" >> "$GITHUB_ENV"
-          echo "payload_sha256=$PAYLOAD_SHA256"
 
           git apply --check "$payload"
           git apply "$payload"
@@ -204,6 +208,7 @@ jobs:
             "eventCommit": "$GITHUB_SHA",
             "sourceCommit": "$SOURCE_COMMIT",
             "cleanupCommit": "$CLEANUP_COMMIT",
+            "patchBlob": "5980a71a0d38068fb2bb2dc86d16b4448e95b561",
             "patchSha256": "$PAYLOAD_SHA256",
             "runtimeExecution": false,
             "reviewPolicy": "never"
