@@ -1,15 +1,15 @@
 # Gate 4 Source Topology Region / Isolation Sheet Decoupling — Code + Build Plan
 
-Status: **executed / superseded**  
-Turn type: **Code + Build only**  
-Active design gate: **G4 topology-distinct completion and singularities**
+Status: **executed / superseded**
 
-This plan was executed by implementation `3ca89ab55efff461b050fb12033174be70e7464f`, packaged as exact artifact **`9022061741`** (`g4-topology-region-code-build`).
+The implementation from this plan is commit `3ca89ab55efff461b050fb12033174be70e7464f`, packaged as artifact `9022061741` and runtime-validated.
 
-Authoritative compile record:
-`.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Code_Build_Report.md`
+Latest runtime report:
+`.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Report.md`
 
-Authoritative next executable plan:
-`.agents/Directional/Gate_4_Source_Topology_Region_Isolation_Sheet_Decoupling_Artifact_Only_Test_Benchmark_Plan.md`
+The topology-region architecture is runtime-live, but accepted retained authority regressed. The two-no-progress process guard is active.
 
-This compatibility pointer is retained because the preceding runtime report references this path. It is **not executable authority** for another Code + Build turn.
+Next authoritative turn:
+`.agents/Directional/Gate_4_Topology_Region_Mandatory_Design_Review_Plan.md`
+
+Do not execute another ordinary Code + Build before mandatory review completes.
