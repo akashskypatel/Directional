@@ -1473,8 +1473,8 @@ TEST(SurfaceCellsPhase10,
     ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
   }
   ASSERT_EQ(2U, cellsBySheet.size());
-  EXPECT_GT(cellsBySheet[std::pair<int, int>{0, 0}], 0);
-  EXPECT_GT(cellsBySheet[std::pair<int, int>{1, 1}], 0);
+  EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
+  EXPECT_GT((cellsBySheet[std::pair<int, int>{1, 1}]), 0);
 }
 
 TEST(SurfaceCellsPhase10,
