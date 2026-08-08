@@ -100,3 +100,13 @@ The following immutable artifact-only turn must prove:
 G4 remains active until exact torus directly produces strict-valid pure quads with complete lineage, one component, zero boundary loops, Euler zero, and all `4/8/4` authority consumed. PR #8 remains open, draft, and unmerged.
 
 Every completed turn ends with a new top-level PR #8 conversation comment as the final repository write.
+
+## 2026-08-08 Gate 4 canonical transition-index checkpoint
+
+Code + Build is complete at implementation `edc14d38f862b94941b249f564050e2e1f8f5287`. The producer now serializes materializer-facing two-face routes in one source-wide compact transition-index domain while preserving canonical topology and fail-closed CrossField validation. The pipeline now exposes retained intermediate geometry iff the caller requested it, independent of temporary internal ownership used for execution or failure injection.
+
+Exactly seven approved targets compiled in workflow run `31279574458` (`113/113`, Release/static/Ninja, `runtimeExecution=false`). Immutable compile artifact `9028103772` has outer SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a` and a verified 48-entry recursive manifest.
+
+This does not complete G4 or establish runtime correctness. The mandatory next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Plan.md`. It must consume artifact `9028103772` unchanged, prove the focused canonical-index and retention contracts, preserve prior-green authority, and classify plane, multi-face seam, close sheets, cylinder, and torus in that order. Torus precedes sphere.
+
+Nonzero periodic `Z4` rotation, shared hard-rail scheduling, and multi-isolation lineage remain separate blockers unless the immutable artifact proves otherwise. PR #8 remains open, draft, and unmerged.
