@@ -431,6 +431,58 @@ bool source_faces_compatible(const SurfaceCellTracingOptions &options,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
+bool source_edge_is_authoritative_local_boundary(
+    const SurfaceCellTracingOptions &options, const int faceCount,
+    const int localFace, const std::array<int, 2> &fullIncident,
+    const std::uint64_t edgeKey) {
+  if (faceCount <= 0 || localFace < 0 || localFace >= faceCount) {
+    return false;
+  }
+
+  int localIncidentCount = 0;
+  int incidentCount = 0;
+  int oppositeFace = -1;
+  for (const int incidentFace : fullIncident) {
+    if (incidentFace < 0) {
+      continue;
+    }
+    if (incidentFace >= faceCount) {
+      return false;
+    }
+    ++incidentCount;
+    if (incidentFace == localFace) {
+      ++localIncidentCount;
+      continue;
+    }
+    if (oppositeFace >= 0) {
+      return false;
+    }
+    oppositeFace = incidentFace;
+  }
+
+  if (localIncidentCount != 1) {
+    return false;
+  }
+  if (incidentCount == 1) {
+    return true;
+  }
+  if (incidentCount != 2 || oppositeFace < 0) {
+    return false;
+  }
+  if (options.hardFeatureEdges.count(edgeKey) != 0U) {
+    return true;
+  }
+  if (!source_label_arrays_enabled(options) ||
+      !source_label_arrays_valid(options, faceCount)) {
+    return false;
+  }
+  return !source_faces_compatible(options, localFace, oppositeFace);
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
 bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b) {
   if (!source_label_arrays_enabled(options)) {
@@ -6830,7 +6882,8 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           -1, -1, face);
       return result;
     }
-    if (full->second[1] >= 0 && options.hardFeatureEdges.count(key) == 0U) {
+    if (!source_edge_is_authoritative_local_boundary(
+            options, faces.rows(), face, full->second, key)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,

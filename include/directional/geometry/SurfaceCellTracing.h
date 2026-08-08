@@ -564,6 +564,11 @@ bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
                                     const int a, const int b);
 
+bool source_edge_is_authoritative_local_boundary(
+    const SurfaceCellTracingOptions &options, const int faceCount,
+    const int localFace, const std::array<int, 2> &fullIncident,
+    const std::uint64_t edgeKey);
+
 bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b);
 

@@ -1499,8 +1499,8 @@ Eigen::MatrixXd curved_disk_raw_field(const CurvedDiskFixture &fixture) {
   return raw;
 }
 
-std::uint64_t curved_disk_phase_front_geometry_hash(
-    const CurvedDiskFixture &fixture,
+std::uint64_t phase_front_geometry_hash(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const directional::geometry::SurfaceCellNetwork &network) {
   std::uint64_t hash = 1469598103934665603ULL;
   const auto consume = [&](const long long value, std::uint64_t &state) {
@@ -1508,12 +1508,14 @@ std::uint64_t curved_disk_phase_front_geometry_hash(
     state *= 1099511628211ULL;
   };
   for (const auto &cell : network.phaseFront.cells) {
+    consume(cell.sourceComponent, hash);
+    consume(cell.sourceSheet, hash);
     consume(cell.lattice[0].latticeCoordinate.x(), hash);
     consume(cell.lattice[0].latticeCoordinate.y(), hash);
     for (const auto &corner : cell.corners) {
       const Eigen::RowVector3d position =
           directional::geometry::surface_cell_tracing_detail::point_position(
-              fixture.vertices, fixture.faces, corner);
+              vertices, faces, corner);
       for (int coordinate = 0; coordinate < 3; ++coordinate) {
         consume(static_cast<long long>(
                     std::llround(position[coordinate] * 1.0e12)),
@@ -1522,6 +1524,156 @@ std::uint64_t curved_disk_phase_front_geometry_hash(
     }
   }
   return hash;
+}
+
+std::uint64_t curved_disk_phase_front_geometry_hash(
+    const CurvedDiskFixture &fixture,
+    const directional::geometry::SurfaceCellNetwork &network) {
+  return phase_front_geometry_hash(fixture.vertices, fixture.faces, network);
+}
+
+CurvedDiskFixture make_curved_disk_with_adjacent_source_sheet(
+    const bool reverseDiskFaceRows = false,
+    const bool distinctSourceSheets = true) {
+  CurvedDiskFixture fixture = make_curved_disk_fixture(reverseDiskFaceRows);
+  const int diskFaceCount = fixture.faces.rows();
+  const std::uint64_t sharedEdge =
+      directional::pipeline::surface_cell_source_edge_key(0, 1);
+  fixture.options.hardFeatureEdges.erase(sharedEdge);
+
+  fixture.vertices.conservativeResize(11, 3);
+  fixture.vertices.row(9) << 0.0, -0.5, 0.0;
+  fixture.vertices.row(10) << 0.5, -0.5, 0.0;
+  fixture.faces.conservativeResize(diskFaceCount + 2, 3);
+  fixture.faces.row(diskFaceCount) << 9, 10, 1;
+  fixture.faces.row(diskFaceCount + 1) << 9, 1, 0;
+
+  fixture.faceAxisX.conservativeResize(fixture.faces.rows(), 3);
+  fixture.faceAxisY.conservativeResize(fixture.faces.rows(), 3);
+  for (int face = diskFaceCount; face < fixture.faces.rows(); ++face) {
+    const Eigen::RowVector3d a =
+        fixture.vertices.row(fixture.faces(face, 0));
+    const Eigen::RowVector3d b =
+        fixture.vertices.row(fixture.faces(face, 1));
+    const Eigen::RowVector3d c =
+        fixture.vertices.row(fixture.faces(face, 2));
+    Eigen::RowVector3d normal = (b - a).cross(c - a);
+    normal.normalize();
+    Eigen::RowVector3d axisX(1.0, 0.0, 0.0);
+    axisX -= axisX.dot(normal) * normal;
+    axisX.normalize();
+    Eigen::RowVector3d axisY = normal.cross(axisX);
+    axisY.normalize();
+    fixture.faceAxisX.row(face) = axisX;
+    fixture.faceAxisY.row(face) = axisY;
+  }
+
+  fixture.targetSize = Eigen::VectorXd::Constant(fixture.vertices.rows(), 0.25);
+  fixture.options.sourceFaceComponents.resize(
+      static_cast<std::size_t>(fixture.faces.rows()), 0);
+  fixture.options.sourceFaceSheets.resize(
+      static_cast<std::size_t>(fixture.faces.rows()), 0);
+  const int adjacentSheet = distinctSourceSheets ? 1 : 0;
+  for (int face = diskFaceCount; face < fixture.faces.rows(); ++face) {
+    fixture.options.sourceFaceComponents[static_cast<std::size_t>(face)] = 0;
+    fixture.options.sourceFaceSheets[static_cast<std::size_t>(face)] =
+        adjacentSheet;
+  }
+  return fixture;
+}
+
+TEST(SurfaceCellsPhase10,
+     CurvedBoundedDiskAcceptsNonHardAuthoritativeSourceSheetBoundary) {
+  const CurvedDiskFixture fixture =
+      make_curved_disk_with_adjacent_source_sheet(false, true);
+  const std::uint64_t sharedEdge =
+      directional::pipeline::surface_cell_source_edge_key(0, 1);
+  ASSERT_EQ(0U, fixture.options.hardFeatureEdges.count(sharedEdge));
+
+  const auto fullIncident =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(fixture.faces);
+  const auto found = fullIncident.find(sharedEdge);
+  ASSERT_NE(fullIncident.end(), found);
+  int diskFace = -1;
+  for (const int face : found->second) {
+    if (face >= 0 &&
+        fixture.options.sourceFaceSheets[static_cast<std::size_t>(face)] == 0) {
+      diskFace = face;
+    }
+  }
+  ASSERT_GE(diskFace, 0);
+  EXPECT_TRUE(
+      directional::geometry::surface_cell_tracing_detail::
+          source_edge_is_authoritative_local_boundary(
+              fixture.options, fixture.faces.rows(), diskFace, found->second,
+              sharedEdge));
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
+      fixture.targetSize, fixture.options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+
+  std::map<std::pair<int, int>, int> cellsBySheet;
+  for (const auto &cell : network.phaseFront.cells) {
+    ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
+  }
+  EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
+  EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 1}]), 0);
+}
+
+TEST(SurfaceCellsPhase10, CurvedBoundedDiskRejectsHiddenSameSheetBoundaryCut) {
+  const CurvedDiskFixture fixture =
+      make_curved_disk_with_adjacent_source_sheet(false, false);
+  const std::uint64_t sharedEdge =
+      directional::pipeline::surface_cell_source_edge_key(0, 1);
+  ASSERT_EQ(0U, fixture.options.hardFeatureEdges.count(sharedEdge));
+
+  const auto fullIncident =
+      directional::geometry::surface_cell_tracing_detail::edge_faces(fixture.faces);
+  const auto found = fullIncident.find(sharedEdge);
+  ASSERT_NE(fullIncident.end(), found);
+  ASSERT_GE(found->second[0], 0);
+  ASSERT_GE(found->second[1], 0);
+  ASSERT_TRUE(directional::geometry::surface_cell_tracing_detail::
+                  source_faces_compatible(fixture.options, found->second[0],
+                                          found->second[1]));
+  EXPECT_FALSE(
+      directional::geometry::surface_cell_tracing_detail::
+          source_edge_is_authoritative_local_boundary(
+              fixture.options, fixture.faces.rows(), found->second[0],
+              found->second, sharedEdge));
+}
+
+TEST(SurfaceCellsPhase10,
+     CurvedBoundedDiskCrossSheetBoundaryIsInvariantToFaceRowEnumeration) {
+  const CurvedDiskFixture forward =
+      make_curved_disk_with_adjacent_source_sheet(false, true);
+  const CurvedDiskFixture reversed =
+      make_curved_disk_with_adjacent_source_sheet(true, true);
+  const auto forwardNetwork = directional::geometry::build_surface_cell_network(
+      forward.vertices, forward.faces, forward.faceAxisX, forward.faceAxisY,
+      forward.targetSize, forward.options);
+  const auto reversedNetwork = directional::geometry::build_surface_cell_network(
+      reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
+      reversed.targetSize, reversed.options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forwardNetwork.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             forwardNetwork.phaseFront.failure.reason);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reversedNetwork.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             reversedNetwork.phaseFront.failure.reason);
+  EXPECT_EQ(forwardNetwork.phaseFront.cells.size(),
+            reversedNetwork.phaseFront.cells.size());
+  EXPECT_EQ(phase_front_geometry_hash(forward.vertices, forward.faces,
+                                      forwardNetwork),
+            phase_front_geometry_hash(reversed.vertices, reversed.faces,
+                                      reversedNetwork));
 }
 
 TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
@@ -2057,6 +2209,10 @@ TEST(SurfaceCellsPhase10,
                 UnsupportedSourceSheetTopology,
             phaseFront.failure.reason)
       << "curved topological disks now have a structural producer";
+  EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidBoundedDiskTopology,
+            phaseFront.failure.reason)
+      << "non-hard cross-sheet boundaries are authoritative source-sheet rails";
   if (phaseFront.disposition ==
       directional::geometry::SurfaceCellProducerDisposition::Rejected) {
     EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::None,
