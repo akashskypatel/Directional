@@ -23,6 +23,8 @@ Artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f
 
 Bounded producer is **100/101**, with only the known scheduler/environment-sensitive validator-overhead performance test failing. Completion/simplification remains **154/164**, validation **60/60**, compiled API **8/8**. Direct gate authority outranks those aggregates.
 
+Local evidence archive: `directional-g3-field-correspondence-witness-tb-evidence.tar.gz`, SHA-256 `cf32b8d49626e41922b0214d437e3c0a8a96cdbf90848aae3bb0428644c0baf8`.
+
 G3 is formally closed. The no-progress stop rule is not triggered.
 
 ## G4 first structural blocker — torus
