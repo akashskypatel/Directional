@@ -6,88 +6,77 @@ Last updated: 2026-08-08 UTC
 
 G0 truthful authority [passed] → G1 uniform phase-front plane [passed] → G2 cross-chart / close-sheet isolation [passed] → G3 cylinder / periodic holonomy [passed] → **G4 topology-distinct completion and singularities [active]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
-## G3 runtime closure authority
+## Current runtime authority — artifact 9014730437
 
-Artifact `9013161456`, source/test evidence `117620ec2da2083ce11b205835e58fa404f163ef`, runtime-proven production source `0279946920dfca6e9ac44b7ea31b38e929d1f5fc`:
+The G4 holonomy-basis artifact is now validated artifact-only:
 
-- exact artifact SHA-256 `fbbdac0d85f8e9bd90dd44267c3f71d0932627e25014910077ad1fe659782c62`;
-- corrected field-correspondence witness passes under target subdivision;
-- focused/retained contracts **17/17**;
-- plane/seam/close sheets/cylinder direct strict-valid outputs pass;
-- cylinder periodic authority `r=0`, `t=(32,0)`, route 32, cut 4;
-- cylinder 1,728 traces, 290 arrangement/simplified cells, 288 pure output quads, 320 vertices/provenance;
-- cylinder validation failures **0**, field P95 `8.537736463e-7°`;
-- two genuine 32-edge exterior annulus loops and no artificial-cut exterior seam;
-- cylinder output hash `32135be51d7a0a26`, deterministic 3/3;
+- artifact `9014730437`, workflow `31233594490 / 93042009574`;
+- primary implementation `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`;
+- final compile source `6e754bdd64482582d39e71184805fbb053c99f86`;
+- exact ZIP SHA-256 `14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
+- recursive checksums **46/46**;
+- G4 relation semantics **5/5**;
+- G0-G3 focused retention **17/17**.
+
+Direct three-process regression authority is unchanged:
+
+- plane: 64 quads / 81 V, hash `730caeae49ec872c`;
+- seam: 64 quads / 81 V, hash `5bdf34d7802e9fb0`;
+- close sheets: 200 quads / 242 V / two components, hash `89b052762f52a5af`;
+- cylinder: `Produced / CompletedSurfaceCells`, periodic `r=0`, `t=(32,0)`, route 32, cut 4, 1,728 traces, 290 arrangement/simplified cells, 288 pure quads / 320 V, zero validation failures, two genuine 32-edge exterior loops, hash `32135be51d7a0a26`;
 - no fallback/recovery.
 
-Bounded producer is **100/101**, with only the known scheduler/environment-sensitive validator-overhead performance test failing. Completion/simplification remains **154/164**, validation **60/60**, compiled API **8/8**. Direct gate authority outranks those aggregates.
+Bounded suites are producer **105/106**, completion/simplification **154/164**, validation **60/60**, API **8/8**, aggregate **327/338**. The producer's sole failure is still the scheduler/environment-sensitive validator-overhead timing test; the same ten historical completion/simplification failures remain.
 
-G3 is formally closed. This remains the latest runtime-proven authority until the new G4 artifact is executed.
+## G4 material progress — scalar holonomy barrier removed
 
-## G4 Code + Build completed — compile authority only
+The exact connected closed genus-one torus no longer rejects after the second periodic relation.
 
-Exact compile artifact **`9014730437`** (`g4-holonomy-basis-code-build`) was produced by workflow run `31233594490`, job `93042009574`.
+Three deterministic runs naturally retain **two** periodic relations and advance to:
 
-Source authority:
+- 670 trace segments;
+- 113 retained strands;
+- 113 embedded arrangement arcs;
+- zero arrangement cells;
+- `NotProductionReady:completion`;
+- `SideSubdivisionRepair:InvalidInputIncidence`;
+- no output/fallback/recovery.
 
-- primary implementation `aa0f115c19fc8a5afd8487ebb561e2de2b8551ba`;
-- final compile-source commit `6e754bdd64482582d39e71184805fbb053c99f86`;
-- build payload cleanup `8304ba30b0f85bc69deebbf55922f05846d2d5b2`.
+The first relation compatibility projection remains `r=0`, `t=(24,0)`, route 24, cut 2, but the benchmark JSON does not serialize the full per-relation vector; do not synthesize unexposed relation metadata.
 
-Build evidence:
+This is material progress over the old `InvalidPeriodicTopology` / zero-trace failure. The multi-relation representation, canonicalization, diagnostics cardinality, and structural hashing are live.
 
-- seven approved Release/static/Ninja targets compiled/linked **111/111**;
-- workflow artifact digest `sha256:14ad61d02fc67d68267745f5efae4943d53420e34c4373366ff04a9a29fe1aec`;
-- internal `SHA256SUMS` digest `41064fa85fe4c68d43a44230b0aae9a8f456c961fb774c92dac5aab26a469b8f`;
-- packaged checksum verification **46/46**;
-- 47 package files, including five executables, two static libraries, and 27 fixtures;
-- log artifact `9014730651`;
-- artifact metadata and workflow boundary record `runtimeExecution=false`.
+## Active G4 blocker — authoritative phase-front sheet coverage
 
-The implementation replaces the result-level singular `periodicHolonomy` authority with a canonical collection of periodic relations and makes the collection live in structural hashing, diagnostics, benchmark JSON, and component/sheet-aware periodic materialization. Canonical source-topology route/cut signatures support equivalent/reversed relation normalization. Conflicting authority and unresolved same-sheet basis authority fail closed with typed reasons instead of choosing by order/ID/count/frequency/proximity.
+Runtime reports `surfaceCellAuthoritativeProducerDisposition = NotApplicable` even though two periodic relations and prior sheet-local work are already retained.
 
-The successful build required one surgical compile correction: add the missing `std::vector<std::uint64_t>` structural-hash overload. No runtime semantics were changed by that compile fix.
+Packaged source explains the exact boundary:
 
-Detailed record: `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Report.md`.
+1. `build_uniform_phase_front()` processes deterministic `(component, sheet)` work items;
+2. each local sheet tries bounded uniform construction, then periodic-annulus construction;
+3. produced local sheets append cells and canonical relations;
+4. a later `NotApplicable` local sheet causes immediate return of the partially accumulated aggregate;
+5. aggregate `Produced` is set only after every sheet succeeds.
 
-## Active G4 runtime blocker — exact torus
+The pipeline therefore correctly declines authoritative materialization and falls into the generic tracing/FlowRep path. Its zero-cell arrangement and later `SideSubdivisionRepair` error are downstream symptoms.
 
-The old G3 artifact's exact torus observation remains the baseline:
+Required next contract:
 
-- connected closed genus one, 72 V / 144 triangles / 216 edges / Euler characteristic 0 / no boundary;
-- producer `Rejected`;
-- first invalid `tracing/phase-front / InvalidPeriodicTopology`;
-- zero traces/arrangement/completion/output;
-- no fallback/recovery;
-- one partial relation `r=0`, `t=(24,0)`, route 24, cut 2 before the scalar representation rejected another local relation.
+1. every authoritative source sheet must be covered exactly once by a valid bounded/periodic sheet producer before aggregate `Produced`;
+2. a later unsupported sheet after earlier produced work must yield a typed phase-front rejection/incomplete-coverage reason, not partial `NotApplicable`;
+3. preserve the current canonical periodic-relation collection and all five G4 relation semantics;
+4. preserve G2 source-sheet isolation and the torus's current 48 hard feature edges / four closed feature curves;
+5. authoritative materialization must consume the complete mixed-sheet aggregate without Euclidean seam welding or artificial exterior cuts;
+6. do not repair generic arrangement or completion until a fully produced/materialized phase-front proves they are first-blocking.
 
-Artifact `9014730437` must now be tested artifact-only. Material progress requires:
-
-1. canonical relation semantic regressions pass;
-2. all 17 G0-G3 focused contracts remain passing;
-3. direct plane/seam/close-sheets/cylinder remain strict-valid and deterministic with their G3 hashes;
-4. torus no longer rejects solely because a second compatible relation exists;
-5. every retained relation is demonstrably live in diagnostics/structural/materialization authority;
-6. no fallback/recovery and no prohibited ownership heuristic is used.
-
-Preferred outcome is direct strict-valid torus production. A deeper truthful failure is acceptable only if the multi-relation authority is retained and consumed and the new earliest failing producer contract is precisely identified.
+Preferred next-slice result is direct strict-valid torus production. A typed exact unsupported-sheet/materialization failure is acceptable material progress; partial `NotApplicable -> zero arrangement -> SideSubdivisionRepair` is not.
 
 ## Later G4 singularity observation
 
-The prescribed sphere remains deferred until the torus topology slice is classified. Previous runtime authority:
-
-- producer `NotApplicable`;
-- 766 traces;
-- 30 arrangement/simplified cells;
-- zero completion;
-- `BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=68;budget=68`;
-- no fallback/recovery.
-
-Do not preempt the earlier torus topology contract with historical completion repairs.
+The prescribed sphere remains deferred. Previous runtime authority was 766 traces / 30 arrangement cells followed by repeated-boundary-node / parity-alternative exhaustion at completion. Do not preempt the earlier torus producer-coverage contract with this or the ten historical completion/simplification failures.
 
 ## Next turn
 
-Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Artifact_Only_Test_Benchmark_Plan.md` as **Test + Benchmark only** against exact artifact `9014730437`. No source/test/fixture/validator/benchmark/build edit, configure, compile, or relink is permitted.
+Execute `.agents/Directional/Gate_4_Closed_Genus_One_Holonomy_Basis_Code_Build_Plan.md` as **Code + Build only**. No generated Directional project binary may execute in that turn.
 
 Review policy remains `never`. Every completed turn ends with a new top-level PR #8 comment after all other repository writes.
