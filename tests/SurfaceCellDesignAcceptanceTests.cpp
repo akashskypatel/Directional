@@ -12,6 +12,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "BenchmarkCases.h"
+#include "support/SurfaceCellProductOracle.h"
 #include "TestFixturePaths.h"
 
 namespace {
@@ -205,6 +206,11 @@ TEST_P(SurfaceCellDesignAcceptance,
   ASSERT_EQ(4, result.faces.cols());
   ASSERT_EQ(result.faces.rows(), result.degrees.size());
   EXPECT_TRUE((result.degrees.array() == 4).all());
+
+  const auto independentOracle =
+      directional::tests::surface_cell_oracle::inspect_surface_cell_product(
+          mesh.vertices, mesh.faces, result);
+  EXPECT_TRUE(independentOracle.ok()) << independentOracle.describe();
 }
 
 INSTANTIATE_TEST_SUITE_P(

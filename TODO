@@ -22,8 +22,14 @@ Last updated: 2026-08-09 UTC
   `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
 - Review policy: `never` for optional future Review turns. The required
   independent architecture and test-suite reviews are already complete.
-- **Next turn:** T1 independent test-oracle foundation — **Code + Build only**.
-- Authoritative next plan:
+- **Current turn:** T1 independent test-oracle foundation — **Code + Build only**.
+- T1 implementation and local compile/link are complete; the authoritative
+  Release/static/Ninja compile/package remains pending.
+- Starting planning head: `ccda7a0c55e38dc0ca7c5c9fa6b5e86bc82bbae8`.
+- T1 changes are confined to the independent oracle support/tests, direct
+  acceptance augmentation, default CMake target/labels, and recovery records.
+- **Following turn after an accepted build:** immutable T1 Test + Benchmark.
+- Authoritative T1 plan:
   `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
 - M1 production authority-kernel migration remains blocked until T1 passes its
   immutable Test + Benchmark acceptance.

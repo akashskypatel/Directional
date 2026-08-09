@@ -74,6 +74,7 @@ add_executable(
   tests/BoundedMeshPreconditionerTests.cpp
   tests/CrossFieldTransferTests.cpp
   tests/RegularizedCurvaturePhase1Tests.cpp
+  tests/support/SurfaceCellProductOracle.cpp
   tests/SurfaceCellDesignAcceptanceTests.cpp
   tests/SurfaceCellTransitionQuotientTests.cpp
   tests/SurfaceCellsPhase10Tests.cpp)
@@ -88,6 +89,14 @@ target_include_directories(
 if(WIN32)
   target_link_libraries(directional_surface_cell_producer_tests PRIVATE Psapi)
 endif()
+
+# Independent public input/output authority. This target is intentionally
+# separate from production validators and benchmark-quality decisions.
+add_executable(
+  directional_surface_cell_oracle_tests
+  tests/support/SurfaceCellProductOracle.cpp
+  tests/SurfaceCellProductOracleTests.cpp)
+directional_configure_test_target(directional_surface_cell_oracle_tests)
 
 # Default gate 2: downstream topology contracts that remain relevant only after
 # the producer supplies a coherent embedded complex.
@@ -182,6 +191,10 @@ gtest_discover_tests(
   directional_surface_cell_producer_tests
   TEST_PREFIX "Producer."
   PROPERTIES LABELS "surface-cell;producer")
+gtest_discover_tests(
+  directional_surface_cell_oracle_tests
+  TEST_PREFIX "Oracle."
+  PROPERTIES LABELS "contract-required;oracle-mutation")
 gtest_discover_tests(
   directional_surface_cell_completion_tests
   TEST_PREFIX "Completion."
