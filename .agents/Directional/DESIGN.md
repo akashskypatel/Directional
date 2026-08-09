@@ -235,7 +235,7 @@ Artifact `9026181778` proves the reviewed boundary/certificate representation fa
 5. the split-isolation positive fixture does not yet prove a quotient class spanning multiple local sheets;
 6. injected failure temporarily forces retention and incorrectly exposes context when the caller requested release.
 
-The sole next implementation slice normalizes the two-face route index and separates operational lifetime from public retention. The other blockers stay explicit and may not be hidden by assertion changes, fabricated lineage, proximity pairing, or fallback.
+The ensuing implementation slice normalized the two-face route index and separated operational lifetime from public retention; artifact `9028103772` then moved production to the current downstream torus failure. The other blockers stay explicit and may not be hidden by assertion changes, fabricated lineage, proximity pairing, or fallback.
 
 Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
 
@@ -286,7 +286,7 @@ Pipeline retention has two distinct meanings:
 
 Every success or failure return exposes public intermediate geometry iff `retainRequested` is true. Clearing unrequested public context must not alter the terminal code or stage.
 
-Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` has compile-only authority in artifact `9028103772`; runtime acceptance remains pending under the canonical transition-index artifact-only plan. The source-wide contract does not authorize fallback, route repair, topology-only acceptance for a required two-face index, fixture-specific behavior, predicted counts, or validator relaxation.
+Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` has runtime authority in artifact `9028103772`: direct plane, seam, close sheets, and cylinder pass, while torus advances to downstream `LocalSheetMismatch`. The source-wide contract does not authorize fallback, route repair, topology-only acceptance for a required two-face index, fixture-specific behavior, predicted counts, or validator relaxation.
 
 ## Current runtime authority — canonical transition artifact
 
@@ -294,6 +294,10 @@ Artifact `9028103772` at implementation `edc14d38f862b94941b249f564050e2e1f8f528
 
 The source-wide compact route and retain/release patch materially advances production behavior: plane, multi-face seam, close sheets, and cylinder complete directly **3/3** each; direct torus consumes all four topology regions, eight isolation seams, and four periodic relations and materializes one component with zero boundary loops and Euler zero. Torus still fails strict completion validation at `LocalSheetMismatch` with 74 issues, so G4 remains active and sphere remains deferred.
 
-Canonical counterfactual acceptance is not yet complete because the new synthetic witness is not present in a serialized route. Two Phase10 tests also retain the obsolete assumption that compact route indices are full source-edge rows. The next authoritative Code + Build turn repairs only this test authority under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Plan.md`.
+Canonical counterfactual runtime acceptance is still pending. The test-authority repair is compile-complete at implementation `de5261c7185aef71807b0b4140c8f023a44874fd`, artifact `9029584083`, with production blobs unchanged.
+
+The valid three-domain test precondition is now an actual serialized route position in a deterministic disconnected planar unit-square plus 2-by-1-rectangle topology. The witness records exact cell/side/segment/route ownership, resolves the owning topology region's compact map, and requires unique canonical/reciprocal full-`EF` authority before either tamper. Periodic face-row invariance is expressed through ordered topology plus per-mesh source-wide compact maps. A malformed CrossField transition is selected through canonical topology and reciprocal faces, never numeric-domain coincidence.
+
+The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`. Only artifact `9029584083` may establish whether those corrected tests reach their intended semantic assertions. A missing route witness remains a test-fixture defect and cannot authorize production accommodation.
 
 This does not authorize a validator relaxation. The downstream torus correction must preserve exact quotient identity, full lineage, hard-rail/periodic equivalence provenance, and strict local-chart compatibility. Nonzero `Z4` rotation, shared hard-rail scheduling, and positive multi-isolation lineage remain separate blockers.

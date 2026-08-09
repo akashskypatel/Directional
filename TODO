@@ -1,93 +1,74 @@
 # Directional Surface-Cell Production Readiness
 
-Last updated: 2026-08-08 UTC
+Last updated: 2026-08-09 UTC
 
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **artifact-only Test + Benchmark — canonical transition index and failure retention**.
-- Result: **blocked with material progress**.
-- Review policy: `never`; mandatory no-progress guard **not active**.
-- Next turn: **Code + Build only — canonical transition test-authority remediation**.
-- Authoritative plan: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Plan.md`.
-- Runtime report: `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Report.md`.
+- Completed turn: **Code + Build — canonical transition test-authority remediation**.
+- Result: **compile success; runtime acceptance pending**.
+- Review policy: `never`.
+- Next turn: **artifact-only Test + Benchmark**.
+- Authoritative plan: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
+- Compile report: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 
-## Exact runtime authority
+## Exact compile authority
 
-- implementation `edc14d38f862b94941b249f564050e2e1f8f5287`;
-- build/event `b0f8f039856aa1d0c7ff6be017cd5d3121a8efe0`;
-- workflow run/job `31279574458 / 93158612245`;
-- compile/log artifacts `9028103772 / 9028103932`;
-- compile/log SHA-256 `05ddd9628d39a8a56dac7d12502003f1d26e01758b9ff4303206e91c6a6e931a` / `1ff42b2176db5c4f9194957d744dc5f31ff3096b06526f723db0c659636544c6`;
-- recursive manifest `06123ea4c2507ed673e1a4885c4e463a6c05ed43b7a27146b3dc2722a7631a1f`, **48/48**;
-- 49 files, five executables, two static libraries, 27 fixtures;
-- Release/static/Ninja `113/113`, GoogleTest `PRE_TEST`, `runtimeExecution=false`;
-- exact source/dependency/fixture/workflow closure verified before runtime and unchanged afterward;
-- runtime log checksum manifest: 120 files, SHA-256 `ecbccb599114e1f40d5bd0efea48cb17270e7170fb134671684648cf640cd137`.
+- implementation `de5261c7185aef71807b0b4140c8f023a44874fd`;
+- build/event `5bf9b0efc665e0a940aa4e74b168171651685f7d`;
+- workflow run/job `31284957305 / 93172020467`;
+- compile/log artifacts `9029584083 / 9029584200`;
+- compile/log SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad` / `b2c147a691caaafc6591106ebb59f50f2956c17722f88bff1857c94d33f3da9b`;
+- recursive manifest `ee65be615bcf59516f5c0e05f98e56b7d9095d48d41cb1675cb5e3938ad7ce26`, **49/49**;
+- 50 files, five executables, two static libraries, 27 fixtures;
+- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`, `runtimeExecution=false`;
+- artifact retention through `2026-08-23 UTC`;
+- bounded workflow/trigger removed at `6857b0635b5ac984d467aec81ea340ce194919d5` / `d6267089ccafe76c7111064d5a22a74fdd4cef05`.
 
-No source/test/build/fixture/validator edit, configure, compile, relink, generated discovery file, or artifact substitution occurred in Test + Benchmark.
+No generated Directional binary, test, benchmark, discovery/list command, `ctest`, CLI/GUI command, help/version command, or custom input ran in Code + Build.
 
-## Runtime verdict
+## Test-authority correction
 
-Discovery: producer 166, completion 164, validation 60, compiled API 8; all **36/36** transition-quotient tests independently present.
+Exactly two tests sources changed:
 
-Focused and retained groups:
+- `tests/SurfaceCellTransitionQuotientTests.cpp` → `42111d1de51baa6cca85171aeab339813cae3b50`;
+- `tests/SurfaceCellsPhase10Tests.cpp` → `552a3d98ec8f9280b960fb9bbff9a1c7596a0778`.
 
-- required individual acceptance: **2/5**; incidence and retain/release pass;
+The canonical witness now comes from an actual serialized cell-route position in a deterministic two-region planar fixture. It requires pairwise-distinct source-wide compact, region-local compact, and full-`EF` meanings and records the exact tamper slot. Periodic face-row invariance compares ordered topology plus per-mesh compact maps. Malformed holonomy selects unique CrossField authority by canonical topology and reciprocal faces. Assertions and typed failures remain unchanged.
+
+Production source, CMake, fixtures, manifests, validators, benchmarks, and unrelated tests are unchanged.
+
+## Entering runtime authority
+
+Artifact `9028103772`, implementation `edc14d38f862b94941b249f564050e2e1f8f5287`, remains runtime authority until artifact `9029584083` is executed.
+
+- focused required acceptance: **2/5** before remediation;
 - transition quotient **26/36**;
 - topology/isolation/hard rail **10/10**;
 - polygonal/curved/mixed **12/12**;
 - periodic/torus/cylinder **5/7**;
-- remaining non-overlap Phase10 **37/39**;
-- direct G0-G3 GoogleTests **4/4**.
+- remaining Phase10 **37/39**;
+- direct G0-G3 **4/4**;
+- bounded suites: producer **150/164**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **372/396**.
 
-Bounded suites:
-
-- producer **150/164**;
-- completion/simplification **154/164**, exact same historical ten failures;
-- validation **60/60**;
-- compiled API **8/8**;
-- aggregate **372/396**.
-
-## Direct deterministic matrix
-
-Three fresh processes per fixture:
-
-| Fixture | Result | Authority |
-|---|---:|---|
-| plane | **3/3** | 81 vertices / 64 pure quads; semantic `922456fe29a63ba1` |
-| multi-face seam | **3/3** | 81 / 64; required semantic `99c8be7159d05c2f` |
-| close sheets | **3/3** | 242 / 200; two components, two boundaries, Euler 2 |
-| cylinder | **3/3** | 320 / 288; one component, two boundaries, Euler 0; periodic relation consumed |
-| torus | **0/3** | `LocalSheetMismatch` after `4/8/4` consumed and materialized `1/0/0` |
-
-Every direct success is `CompletedSurfaceCells`, strict-valid pure quad, complete-lineage, deterministic, and fallback/recovery-free. Plane/close sheets move past `InvalidAuthoritativeTransitionSourceEdge`; cylinder/torus move past numeric `InvalidPeriodicCutAuthority`.
-
-Torus deterministically reaches `NotProductionReady / completion`, first invalid `completion/output-validation / LocalSheetMismatch`, output face 0, with 74 validation issues and 192 completed quads before rollback. Sphere and the broader manifest remain deferred.
+Direct plane, multi-face seam, close sheets, and cylinder are strict-valid **3/3** each. Torus reaches complete `4/8/4` consumption and materialized `1/0/0` topology, then fails at `LocalSheetMismatch` with 74 issues.
 
 ## Earliest next action
 
-Repair test authority only:
-
-1. select the three-domain canonical witness from an actually serialized route;
-2. compare periodic route/cut topology through the parallel topology sequences and per-mesh source-wide maps;
-3. select the malformed CrossField transition by canonical topology/full-`EF` reciprocal authority.
-
-Allowed files are only:
-
-- `tests/SurfaceCellTransitionQuotientTests.cpp`;
-- `tests/SurfaceCellsPhase10Tests.cpp`.
-
-Compile/package only in the next turn. Execute no generated binary.
+1. Preflight artifact `9029584083` exactly; do not rebuild.
+2. Run the seven focused test contracts individually.
+3. Preserve all prior-green focused and bounded suites.
+4. Repeat plane, seam, close sheets, cylinder, and torus in order with three fresh processes; torus gates sphere.
+5. If test authority passes, plan the smallest production correction for torus `LocalSheetMismatch`. If a test still fails before its intended assertion, keep remediation test-only.
 
 ## Explicit downstream blockers
 
 1. torus local-chart compatibility after complete quotient consumption;
 2. nonzero periodic `Z4` rotation;
-3. target-size-dependent shared hard-rail breakpoint scheduling;
+3. shared hard-rail breakpoint scheduling;
 4. valid positive multi-isolation quotient lineage;
 5. historical completion/simplification ten and validator timing;
 6. sphere, G5/G6, bunny/vase, fallback/recovery, and optimization.

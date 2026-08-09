@@ -231,6 +231,22 @@ Direct plane, multi-face seam, close sheets, and cylinder are **3/3** direct str
 
 The three canonical-domain counterfactuals currently fail before their intended assertions because their chosen pairwise-distinct topology is not present in any serialized cell route. `PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration` incorrectly treats compact route values as `mesh.EV` rows. `PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason` incorrectly uses a compact route value to select `CrossFieldEdgeTransition.sourceEdge` in the full-`EF` domain.
 
-The next Code + Build turn is test-authority-only. It must select an actually serialized three-domain witness, validate each numeric/topology pair through the source-wide compact map, and select malformed CrossField authority by canonical topology plus reciprocal faces. Assertions and typed failure expectations remain unchanged. Production source, fixtures, validators, CMake, benchmarks, and unrelated tests are out of scope.
+The test-authority-only Code + Build turn is complete at implementation `de5261c7185aef71807b0b4140c8f023a44874fd`. It selects an exact serialized three-domain route position, validates every numeric/topology pair through the source-wide compact map, compares periodic authority through ordered topology, and selects malformed CrossField authority by canonical topology plus reciprocal faces. Assertions and typed failure expectations remain unchanged. Production source, fixtures, validators, CMake, benchmarks, and unrelated tests remain unchanged.
 
 Current bounded totals are producer **150/164**, completion **154/164**, validation **60/60**, compiled API **8/8**, aggregate **372/396**. The direct seam semantic digest remains `99c8be7159d05c2f` for same-artifact determinism.
+
+## Canonical test-authority artifact acceptance plan
+
+Artifact `9029584083` is the sole next runtime candidate. It has outer SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad` and verified **49/49** recursive entries. Release/static/Ninja compiled all seven approved targets at `113/113` with `PRE_TEST` and `runtimeExecution=false`.
+
+Following exact preflight, run individually:
+
+- the three canonical-domain counterfactuals;
+- `PeriodicPhaseFrontCutAndHolonomyIgnoreFaceRowEnumeration`;
+- `PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`;
+- `ComponentBoundaryAndEulerFactsAreComputedFromIncidence`;
+- `DeterministicTracingFailureRetainsAuthorityIfAndOnlyIfRequested`.
+
+The positive witness must be an actual serialized later-region route position with pairwise-distinct source-wide compact, region-local compact, and full-`EF` values. Both substitutions must reach `InvalidAuthoritativeTransitionSourceEdge`. Face-row reversal must preserve ordered topology and per-mesh compact mappings. Malformed holonomy must remain exact `Rejected / PeriodicHolonomyMismatch / no proposals`.
+
+Then preserve all prior-green groups and bounded suites and repeat plane, multi-face seam, close sheets, cylinder, and torus in order, three fresh processes each. Torus precedes and gates sphere. If focused authority passes and direct behavior is retained, torus `LocalSheetMismatch` becomes the earliest production invariant. No rebuild, artifact substitution, assertion weakening, fallback/recovery, validator relaxation, predicted count, or timeout-as-correctness is permitted.

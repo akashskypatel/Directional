@@ -1,9 +1,13 @@
 # Gate 4 Canonical Transition Test Authority Remediation — Code + Build Plan
 
-Status: **authoritative next turn**  
+Status: **completed by compile artifact `9029584083`**
 Turn type: **Code + Build only**  
 Active design gate: **G4 topology-distinct completion and singularities**  
 Review policy: `never`
+
+## Completion authority
+
+Implementation `de5261c7185aef71807b0b4140c8f023a44874fd` compiled all seven approved targets in [workflow run 31284957305](https://github.com/akashskypatel/Directional/actions/runs/31284957305). Artifact `9029584083` has GitHub SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad`; all 49 recursive manifest entries verify. `runtimeExecution=false`; runtime acceptance is deferred to the artifact-only plan named in the Code + Build report.
 
 ## Purpose
 

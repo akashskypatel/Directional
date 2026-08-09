@@ -1,9 +1,13 @@
 # Gate 4 Canonical Transition Index and Failure Retention — Artifact-Only Test + Benchmark Plan
 
-Status: **authoritative next turn**  
+Status: **completed by artifact-only report**
 Turn type: **Test + Benchmark only**  
 Active design gate: **G4 topology-distinct completion and singularities**  
 Review policy: `never`
+
+## Completion authority
+
+Artifact `9028103772` was consumed exactly. Its outcome is recorded in `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Artifact_Only_Test_Benchmark_Report.md`: four direct fixtures pass, torus advances to downstream `LocalSheetMismatch`, and five test-authority errors require the completed remediation turn. This historical plan is no longer next-turn authority.
 
 ## Immutable entering authority
 

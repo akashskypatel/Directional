@@ -1,6 +1,6 @@
 # Milestone G Production Readiness TODO
 
-Last updated: 2026-08-08 UTC
+Last updated: 2026-08-09 UTC
 
 ## Current gate
 
@@ -122,3 +122,15 @@ Focused/retained results are transition quotient **26/36**, topology/isolation/h
 Three new canonical-domain tests use an off-route synthetic witness and never reach materialization. The face-row periodic test interprets compact route values as `mesh.EV` rows, and malformed holonomy uses a compact route value to select a full-`EF` CrossField transition. These are test-authority failures, not permission to weaken contracts.
 
 The mandatory next turn is Code + Build under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Plan.md`, limited to `tests/SurfaceCellTransitionQuotientTests.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. Torus local-chart validation, nonzero rotation, hard-rail scheduling, and multi-isolation lineage remain deferred production blockers. G4 stays active; sphere remains deferred; PR #8 stays open, draft, and unmerged.
+
+## 2026-08-09 Canonical test-authority Code + Build checkpoint
+
+The bounded test-only implementation is complete at `de5261c7185aef71807b0b4140c8f023a44874fd`. Exactly two test files changed; production, CMake, fixtures, manifests, validators, and benchmarks remain byte-identical.
+
+The correction replaces the off-route three-domain witness with an exact serialized cell-route position from a deterministic unit-square plus 2-by-1-rectangle topology. Both tampers target that recorded position. Periodic face-row authority is compared through ordered topology plus per-mesh source-wide compact maps, and malformed holonomy selects one full-`EF` transition by canonical topology and reciprocal faces. No semantic or typed-failure assertion was weakened.
+
+Workflow run `31284957305`, job `93172020467`, compiled all seven approved targets at **113/113** using Release/static/Ninja and `PRE_TEST`. Artifact `9029584083` has outer SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad`; all **49/49** recursive entries verify. Log artifact `9029584200` has SHA-256 `b2c147a691caaafc6591106ebb59f50f2956c17722f88bff1857c94d33f3da9b`. `runtimeExecution=false`.
+
+The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`. It must consume artifact `9029584083` unchanged, execute the seven focused contracts individually, preserve the previous `372/396` bounded comparison and direct 3/3 baselines, then repeat plane → seam → close sheets → cylinder → torus. Torus precedes and gates sphere.
+
+If test authority is accepted, torus `completion/output-validation / LocalSheetMismatch` becomes the earliest production correction. Nonzero rotation, hard-rail scheduling, multi-isolation lineage, historical completion/timing, sphere, G5/G6, fallback/recovery, and optimization remain deferred. PR #8 stays open, draft, and unmerged.
