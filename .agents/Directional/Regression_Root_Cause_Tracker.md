@@ -6,7 +6,7 @@ point-in-time event evidence remains in
 `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; turn reports retain
 artifact/runtime detail.
 
-Last updated: **2026-08-09 UTC** after T1 immutable artifact `9040549377`.
+Last updated: **2026-08-09 UTC** after T1 direct-oracle Code + Build artifact `9041289209`.
 
 ## Rules
 
@@ -16,7 +16,7 @@ Last updated: **2026-08-09 UTC** after T1 immutable artifact `9040549377`.
   existing event; it is not a new recurrence.
 - A recurrence requires restoration followed by a later loss.
 - Record the earliest evidenced cause, not only the terminal symptom.
-- Compile success never resolves a runtime regression.
+- Compile success never resolves a runtime regression or a pending test-authority acceptance.
 - Known-red/deferred product cases stay explicit and are not relabeled green or
   expected failure merely to close a test-architecture phase.
 - Before every turn review `RP-01` through `RP-09` and record exact touched
@@ -48,10 +48,19 @@ Historical totals remain:
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-Neither artifact `9031804178` nor T1 artifact `9040549377` creates a new event
-or recurrence. `G4-R007` remains active. T1 is new, not-yet-accepted test
-architecture, so its direct-oracle execution-order defect is incomplete
-`RP-02 / TA-05` work rather than loss of previously accepted test authority.
+Artifacts `9031804178`, `9040549377`, and compile-only artifact `9041289209`
+create no new event or recurrence. `G4-R007` remains active. T1 is new,
+not-yet-accepted test architecture, so its direct-oracle execution-order defect
+is incomplete `RP-02 / TA-05` work rather than loss of previously accepted test
+authority. The statement-order correction now compiles/packages and is
+**`fix_pending_runtime`** at the test-authority boundary; immutable runtime
+acceptance is still required.
+
+The first Code + Build workflow attempt `31324642747` failed only in a static
+workflow verifier before configure/compile/runtime. The implementation source
+was unchanged; this infrastructure false positive is not a product/test
+regression or recurrence. Authoritative compile/package evidence is successful
+run `31324710550` and result artifact `9041289209`.
 
 ### Category rollup
 
@@ -113,7 +122,8 @@ validate each field only in its declared domain
 
 Guard: named types, producer/consumer scope, serialization meaning, and
 row/order counterfactuals. T1 test-side `DomainIndex<...>` mutation contracts
-now pass from artifact `9040549377`.
+passed under artifact `9040549377`; the direct-order Code + Build leaves their
+source blobs unchanged.
 
 ### RP-02 — proxy/incomplete test authority
 
@@ -142,18 +152,28 @@ Guard: production `result.success`, production validator, counts, raw IDs/order,
 hashes, retention lifetime, compilation, and no-crash are not independent
 product proof.
 
-Current T1 evidence from artifact `9040549377`:
+Entering T1 runtime evidence from artifact `9040549377`:
 
 - default oracle package/discovery is exact **29/29**;
 - all **29/29** positive/mutation/metamorphic contracts pass individually;
 - four required-green direct cases pass and reach the oracle;
-- BunnyRandom returns a known-red result but `ASSERT_TRUE(result.success)`
-  executes before the oracle and fatally short-circuits independent evidence;
+- BunnyRandom returns a known-red result but the old
+  `ASSERT_TRUE(result.success)` executes before the oracle and fatally
+  short-circuits independent evidence;
 - Vase does not return inside the bounded validation guard.
 
-Therefore the **oracle core is accepted but T1 direct integration remains
-incomplete**. The authoritative next Code + Build is statement-order-only under
-`.agents/Directional/Test_Architecture_T1_Direct_Oracle_Execution_Order_Code_Build_Plan.md`.
+Code + Build implementation `7c169ddf8167093c16755f2160e224994e50307c`
+now relocates the existing nonfatal independent-oracle observation immediately
+after a returned `RemeshResult` and before the unchanged fatal success
+assertion. Artifact `9041289209` proves only compile/package authority:
+Release/static/Ninja **117/117**, exact 29-name manifest retained,
+`runtimeExecution=false`.
+
+Therefore the **oracle core is accepted and the direct-integration correction is
+`fix_pending_runtime`**. The authoritative next turn is immutable Test +
+Benchmark against artifacts `9041289209 / 9041289317`. It must demonstrate that
+every returned failed direct product emits independent oracle evidence before
+the unchanged product-success failure.
 
 ### RP-03 — one state carries two meanings
 
@@ -172,7 +192,8 @@ real_stage_outcome != test_policy_outcome
 ```
 
 T1 disposition corruption tests for backend/fallback/recovery/origin/terminal
-state all pass and remain test-only observations.
+state all pass and remain test-only observations. The statement-order correction
+does not alter their implementation.
 
 ### RP-04 — local bounds around multiplicative work
 
@@ -194,9 +215,10 @@ shared WorkController {
 }
 ```
 
-Current bounded producer authority under T1 artifact completes selected
+Current bounded producer authority under T1 runtime artifact completes selected
 163-test filter in **36.993 s**, result **154/163**. This does not alter the
-historical `R020` uncertainty or prove Bunny/Vase work bounds.
+historical `R020` uncertainty or prove Bunny/Vase work bounds. Code + Build adds
+no work/search/runtime behavior.
 
 ### RP-05 — representation-dependent identity
 
@@ -214,7 +236,8 @@ canonical semantic record = quotient by row/order/orientation/allocation role
 sort semantic topology first; hash only derived evidence
 ```
 
-T1 canonical product-record row/cycle/reversal metamorphic test passes.
+T1 canonical product-record row/cycle/reversal metamorphic test passes; its
+implementation is byte-identical in artifact `9041289209`.
 
 ### RP-06 — duplicated shared authority membership
 
@@ -232,7 +255,7 @@ consumer.key = key
 consumer.local_witness = bounded local data
 ```
 
-No production storage changes occurred in T1.
+No production storage changes occurred in T1 or the statement-order correction.
 
 ### RP-07 — cyclic topology linearization
 
@@ -252,7 +275,7 @@ compare sector positions and support wrap explicitly
 ```
 
 T1 cyclic/reversed duplicate-face, broken-boundary, and canonical reversal
-contracts pass.
+contracts pass; the correction does not change this logic.
 
 ### RP-08 — producer-disposition conflation
 
@@ -271,7 +294,8 @@ switch disposition:
   NotApplicable -> substitute only if domain unclaimed
 ```
 
-No producer/fallback behavior changed in T1.
+No producer/fallback behavior changed in T1 or this correction. Existing direct
+backend/fallback/recovery/origin assertions remain unchanged.
 
 ### RP-09 — global authority consumed locally
 
@@ -355,7 +379,7 @@ These are structural debts, not additional runtime regression events.
 | `AR-09` | High | `RP-01`, `RP-05`, `RP-06` | One sanitized exact source-support kernel; tolerance cannot be topology identity. |
 | `AR-10` | Moderate | all | Incremental responsibility modules; new behavior only through stage APIs. |
 | `AR-11` | High | `RP-02`, `RP-03` | Normative architecture remains separate from status/evidence. |
-| `AR-12` | High | `RP-02` | Independent product oracle + mutation adequacy + package authority + representative evidence. T1 oracle core now passes; direct integration remains incomplete. |
+| `AR-12` | High | `RP-02` | Independent product oracle + mutation adequacy + package authority + representative evidence. T1 oracle core passes; direct integration correction compiles/packages and is pending immutable runtime acceptance. |
 
 ## Test architecture enforcement register — independent audit 2026-08-09
 
@@ -363,13 +387,13 @@ These are structural test debts and do not alter 34/14/20 historical counts.
 
 | ID | Severity | Pattern | Current evidence / close condition |
 |---|---|---|---|
-| `TA-01` | Critical | `RP-02` | T1 now provides independent topology/lineage/disposition oracle core; direct integration ordering still blocks T1 closure. Full product intent remains T5. |
+| `TA-01` | Critical | `RP-02` | T1 provides independent topology/lineage/disposition oracle core. Direct integration ordering correction is compiled/package-verified at `7c169ddf` and pending immutable runtime acceptance. Full product intent remains T5. |
 | `TA-02` | Critical | `RP-02`, `RP-07`, `RP-09` | T2 must package/discover all ten direct cases with explicit green/known-red state. |
 | `TA-03` | Critical | `RP-01`, `RP-02` | Independent metric decisions + approved baselines/thresholds still required. |
 | `TA-04` | High | `RP-01`, `RP-04`, `RP-06`, `RP-07`, `RP-09` | T3 generator/shrinker + T4 sanitizer fuzz/replay still required. |
-| `TA-05` | High | `RP-02` | **Open T1 defect:** direct returned failures can be stopped by fatal production assertion before independent oracle. Next Code + Build corrects execution order without weakening product assertions. |
-| `TA-06` | High | `RP-01`, `RP-02` | T1 domain-independent mutation tests pass; retain through corrected immutable artifact. |
-| `TA-07` | High | `RP-02` | T1 package/discovery/labels exact 29/29; retain through corrected immutable artifact and T6. |
+| `TA-05` | High | `RP-02` | **`fix_pending_runtime`:** statement-order correction compiles/packages in artifact `9041289209`; following immutable runtime must prove every returned direct result reaches the independent oracle before the unchanged fatal success assertion. |
+| `TA-06` | High | `RP-01`, `RP-02` | T1 domain-independent mutation tests pass; source is unchanged in corrected artifact and must remain 29/29 at runtime. |
+| `TA-07` | High | `RP-02` | Corrected package retains exact 29-name static manifest; following immutable discovery must match it exactly. |
 | `TA-08` | High | `RP-02`, `RP-05`, `RP-07` | T1 canonical row/cycle/reversal metamorphism passes; broader semantic proxies remain monitored. |
 | `TA-09` | High | `RP-03`, `RP-04`, `RP-06` | Coherent reset/work/time/RSS gate still required; T1 60 s Vase guard is safety evidence only, not a budget contract. |
 | `TA-10` | High | `RP-02`, `RP-07`, `RP-09` | T2 versioned semantic fixture manifest still required. |
