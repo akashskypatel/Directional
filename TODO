@@ -6,71 +6,62 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **Code + Build — canonical transition test-authority remediation**.
-- Result: **compile success; runtime acceptance pending**.
+- Completed turn: **artifact-only Test + Benchmark — canonical transition test-authority remediation**.
+- Result: **canonical authority accepted; G4 blocked with material progress at torus face-chart validation**.
 - Review policy: `never`.
-- Next turn: **artifact-only Test + Benchmark**.
-- Authoritative plan: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
-- Compile report: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Code_Build_Report.md`.
+- Next turn: **Code + Build only**.
+- Authoritative plan: `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`.
+- Runtime report: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 
-## Exact compile authority
+## Exact artifact authority
 
 - implementation `de5261c7185aef71807b0b4140c8f023a44874fd`;
 - build/event `5bf9b0efc665e0a940aa4e74b168171651685f7d`;
 - workflow run/job `31284957305 / 93172020467`;
-- compile/log artifacts `9029584083 / 9029584200`;
-- compile/log SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad` / `b2c147a691caaafc6591106ebb59f50f2956c17722f88bff1857c94d33f3da9b`;
-- recursive manifest `ee65be615bcf59516f5c0e05f98e56b7d9095d48d41cb1675cb5e3938ad7ce26`, **49/49**;
-- 50 files, five executables, two static libraries, 27 fixtures;
-- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`, `runtimeExecution=false`;
-- artifact retention through `2026-08-23 UTC`;
-- bounded workflow/trigger removed at `6857b0635b5ac984d467aec81ea340ce194919d5` / `d6267089ccafe76c7111064d5a22a74fdd4cef05`.
+- runtime/log artifacts `9029584083 / 9029584200`;
+- outer SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad` / `b2c147a691caaafc6591106ebb59f50f2956c17722f88bff1857c94d33f3da9b`;
+- recursive package manifest **49/49**, digest `ee65be615bcf59516f5c0e05f98e56b7d9095d48d41cb1675cb5e3938ad7ce26`;
+- runtime evidence ledger **294/294**, manifest-file SHA-256 `22f9fc15ce0f4fdff147ba9fefe3354de344b4bc138b7272135e9415e3894cc0`;
+- Release/static/Ninja `113/113`, artifact retention through `2026-08-23 UTC`.
 
-No generated Directional binary, test, benchmark, discovery/list command, `ctest`, CLI/GUI command, help/version command, or custom input ran in Code + Build.
+Preflight/postflight pass. No source, test, fixture, validator, manifest, CMake, workflow, or benchmark-acceptance edit; no configure, rebuild, relink, or artifact substitution.
 
-## Test-authority correction
+## Accepted focused authority
 
-Exactly two tests sources changed:
+All **7/7** focused tests pass individually:
 
-- `tests/SurfaceCellTransitionQuotientTests.cpp` → `42111d1de51baa6cca85171aeab339813cae3b50`;
-- `tests/SurfaceCellsPhase10Tests.cpp` → `552a3d98ec8f9280b960fb9bbff9a1c7596a0778`.
+- three canonical numeric-domain contracts;
+- periodic face-row invariance;
+- malformed-holonomy typed failure;
+- incidence-derived component/boundary/Euler facts;
+- deterministic failure retention iff requested.
 
-The canonical witness now comes from an actual serialized cell-route position in a deterministic two-region planar fixture. It requires pairwise-distinct source-wide compact, region-local compact, and full-`EF` meanings and records the exact tamper slot. Periodic face-row invariance compares ordered topology plus per-mesh compact maps. Malformed holonomy selects unique CrossField authority by canonical topology and reciprocal faces. Assertions and typed failures remain unchanged.
+Retained groups are transition quotient **29/36**, topology/isolation/hard rail **10/10**, polygonal/curved/mixed **12/12**, periodic/torus/cylinder **6/7**, remaining Phase10 **38/39**, and direct G0-G3 **4/4**.
 
-Production source, CMake, fixtures, manifests, validators, benchmarks, and unrelated tests are unchanged.
+The plan's literal producer filter selects 163 of 166 discovered tests. Bounded totals are producer **154/163**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **376/395**. Prior totals used a different denominator; historical completion ten and timing remain explicit.
 
-## Entering runtime authority
+## Direct runtime authority
 
-Artifact `9028103772`, implementation `edc14d38f862b94941b249f564050e2e1f8f5287`, remains runtime authority until artifact `9029584083` is executed.
-
-- focused required acceptance: **2/5** before remediation;
-- transition quotient **26/36**;
-- topology/isolation/hard rail **10/10**;
-- polygonal/curved/mixed **12/12**;
-- periodic/torus/cylinder **5/7**;
-- remaining Phase10 **37/39**;
-- direct G0-G3 **4/4**;
-- bounded suites: producer **150/164**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **372/396**.
-
-Direct plane, multi-face seam, close sheets, and cylinder are strict-valid **3/3** each. Torus reaches complete `4/8/4` consumption and materialized `1/0/0` topology, then fails at `LocalSheetMismatch` with 74 issues.
+- plane, multi-face seam, close sheets, and cylinder: direct strict-valid pure quads **3/3** each, no fallback/recovery;
+- seam semantic digest: `99c8be7159d05c2f`;
+- torus: **0/3**, 192 materialized quads, complete `4/8/4` authority consumption, computed `1/0/0` topology, then 74 `LocalSheetMismatch` issues at `completion/output-validation`;
+- sphere: correctly deferred behind torus.
 
 ## Earliest next action
 
-1. Preflight artifact `9029584083` exactly; do not rebuild.
-2. Run the seven focused test contracts individually.
-3. Preserve all prior-green focused and bounded suites.
-4. Repeat plane, seam, close sheets, cylinder, and torus in order with three fresh processes; torus gates sphere.
-5. If test authority passes, plan the smallest production correction for torus `LocalSheetMismatch`. If a test still fails before its intended assertion, keep remediation test-only.
+Thread existing quotient-retained source charts and exact `HardRail` equivalence lineage into optimizer/final-validator chart compatibility. Each output quad must resolve one unique exact chart side. Alternate chart use requires exact source support, retained chart membership, and matching reciprocal hard-rail equivalence. Preserve every scalar provenance check and fail closed on missing, tampered, unsupported, ambiguous, or nonreciprocal authority.
+
+The next turn is compile-only. Add focused authority tests, retain the exact torus success assertion unchanged, compile/package the seven approved targets, run no generated project runtime, and write the following artifact-only plan.
 
 ## Explicit downstream blockers
 
-1. torus local-chart compatibility after complete quotient consumption;
-2. nonzero periodic `Z4` rotation;
-3. shared hard-rail breakpoint scheduling;
-4. valid positive multi-isolation quotient lineage;
+1. nonzero periodic `Z4` rotation;
+2. shared hard-rail breakpoint scheduling;
+3. positive multi-isolation quotient lineage;
+4. multiple periodic-relation owner counterfactuals;
 5. historical completion/simplification ten and validator timing;
-6. sphere, G5/G6, bunny/vase, fallback/recovery, and optimization.
+6. prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization.
 
-Every completed turn ends with a new top-level PR #8 conversation comment after all other repository writes.
+Every completed turn ends with one new top-level PR #8 conversation comment after all other repository writes.

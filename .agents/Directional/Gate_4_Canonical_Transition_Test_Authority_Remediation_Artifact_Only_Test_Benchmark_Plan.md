@@ -1,6 +1,6 @@
 # Gate 4 Canonical Transition Test Authority Remediation — Artifact-Only Test + Benchmark Plan
 
-Status: **authoritative next turn**
+Status: **completed by artifact-only validation; see `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`**
 Turn type: **Test + Benchmark only**
 Active design gate: **G4 topology-distinct completion and singularities**
 Review policy: `never`
@@ -184,3 +184,9 @@ Do not infer completion from aggregate improvement. G4 remains active until exac
 Write an artifact-only Test + Benchmark report containing immutable preflight/postflight, exact discovery, every command and exit status, raw-log checksum authority, focused results, bounded-suite comparison, direct matrix, earliest failures, semantic evidence, and remaining blockers.
 
 Review policy is `never`, so a materially progressing validation turn's next-action plan becomes authoritative without an optional Review turn. Keep PR #8 open, draft, and unmerged. After all branch-file and PR-body writes, the final repository write is one new top-level PR #8 conversation comment.
+
+## Completion record
+
+Artifact `9029584083` was consumed exactly with no rebuild or repository-source edit. All seven focused contracts passed individually; prior-green direct plane, multi-face seam, close sheets, and cylinder behavior remained strict-valid **3/3**; and exact torus remained deterministic **0/3** at downstream `completion/output-validation / LocalSheetMismatch` after complete `4/8/4` authority consumption and materialized `1/0/0` topology.
+
+The exact preflight, discovery, focused/group/bounded results, three-process direct matrix, postflight, and earliest production diagnosis are recorded in `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`. This historical plan is no longer next-turn authority. The authoritative next turn is Code + Build under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`.

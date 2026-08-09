@@ -134,3 +134,15 @@ Workflow run `31284957305`, job `93172020467`, compiled all seven approved targe
 The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`. It must consume artifact `9029584083` unchanged, execute the seven focused contracts individually, preserve the previous `372/396` bounded comparison and direct 3/3 baselines, then repeat plane → seam → close sheets → cylinder → torus. Torus precedes and gates sphere.
 
 If test authority is accepted, torus `completion/output-validation / LocalSheetMismatch` becomes the earliest production correction. Nonzero rotation, hard-rail scheduling, multi-isolation lineage, historical completion/timing, sphere, G5/G6, fallback/recovery, and optimization remain deferred. PR #8 stays open, draft, and unmerged.
+
+## 2026-08-09 Canonical test-authority artifact acceptance checkpoint
+
+Artifact `9029584083` passed exact preflight and postflight. All seven focused contracts pass individually. Retained groups are transition quotient **29/36**, topology/isolation/hard rail **10/10**, polygonal/curved/mixed **12/12**, periodic/torus/cylinder **6/7**, remaining Phase10 **38/39**, and direct G0-G3 **4/4**.
+
+The plan's literal producer filter excludes three discovered tests, so exact bounded totals are producer **154/163**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **376/395**. The previous `372/396` statement used a different denominator and is not a like-for-like comparison. Historical completion ten and strict-validator timing remain explicit.
+
+Plane, multi-face seam, close sheets, and cylinder are direct strict-valid **3/3** each with no fallback/recovery. Torus is deterministic **0/3** after 192 materialized quads, complete `4/8/4` authority consumption, and computed `1/0/0` topology; final validation reports 74 `LocalSheetMismatch` issues. Sphere was correctly not run.
+
+The quotient already retains complete per-vertex chart and hard-rail equivalence lineage. The downstream optimizer/validator receives scalar provenance only, so a rail vertex's one deterministic chart hides the exact opposite-side authority required by an adjacent output quad. The next production slice must project existing lineage into one unique fail-closed per-face chart choice; it may not relax the validator or globally join hard-feature charts.
+
+The authoritative next turn is Code + Build under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`, limited to the optimizer/validator authority projection, focused positive/negative tests, and compile/package only. G4 stays active; PR #8 stays open, draft, and unmerged.

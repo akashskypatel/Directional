@@ -301,3 +301,22 @@ The valid three-domain test precondition is now an actual serialized route posit
 The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`. Only artifact `9029584083` may establish whether those corrected tests reach their intended semantic assertions. A missing route witness remains a test-fixture defect and cannot authorize production accommodation.
 
 This does not authorize a validator relaxation. The downstream torus correction must preserve exact quotient identity, full lineage, hard-rail/periodic equivalence provenance, and strict local-chart compatibility. Nonzero `Z4` rotation, shared hard-rail scheduling, and positive multi-isolation lineage remain separate blockers.
+
+## Current runtime authority — canonical test authority accepted
+
+Artifact `9029584083` at implementation `de5261c7185aef71807b0b4140c8f023a44874fd` is now runtime authority. Exact preflight/postflight passes; all 49 original package members and the six recorded source/CMake blobs remain unchanged. All seven corrected canonical/periodic/retention contracts pass individually.
+
+Direct plane, multi-face seam, close sheets, and cylinder remain strict-valid **3/3** without fallback/recovery. Direct torus remains deterministic **0/3**, but it produces 192 quads, consumes all four topology regions, eight internal isolation seams, and four periodic relations, and computes one component, zero boundary loops, and Euler zero before final validation reports 74 `LocalSheetMismatch` issues. Sphere remains gated.
+
+The failure is an authority-projection defect. Quotient materialization already retains complete `PureQuadVertexLineage.sourceCharts`, topology/isolation membership, and exact `HardRail` equivalence provenance while selecting one deterministic scalar `SurfacePoint` for position. The optimizer/validator path currently sees only that scalar chart. Because hard features correctly split source chart components, a stitched rail vertex may authorize both producer sides while its scalar representative names one; a valid quad on the other side is then rejected.
+
+The next invariant is exact and fail-closed:
+
+- project retained per-vertex chart and hard-rail equivalence lineage into optimizer/final-validator authority;
+- resolve one unique compatible chart side per output quad;
+- admit a chart other than the scalar representative only when exact source support, retained chart membership, and matching reciprocal `HardRail` equivalence all agree;
+- retain scalar barycentric, position, component, sheet, and source-entity checks;
+- reject missing, tampered, unsupported, ambiguous, or nonreciprocal authority;
+- never globally union hard-feature chart components or infer compatibility from proximity, count, row order, IDs, or topology-region membership alone.
+
+The authoritative next turn is compile-only Code + Build under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`. Nonzero periodic rotation, shared hard-rail scheduling, positive multi-isolation lineage, historical completion/timing failures, and prescribed sphere remain separate blockers.

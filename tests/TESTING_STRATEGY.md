@@ -250,3 +250,25 @@ Following exact preflight, run individually:
 The positive witness must be an actual serialized later-region route position with pairwise-distinct source-wide compact, region-local compact, and full-`EF` values. Both substitutions must reach `InvalidAuthoritativeTransitionSourceEdge`. Face-row reversal must preserve ordered topology and per-mesh compact mappings. Malformed holonomy must remain exact `Rejected / PeriodicHolonomyMismatch / no proposals`.
 
 Then preserve all prior-green groups and bounded suites and repeat plane, multi-face seam, close sheets, cylinder, and torus in order, three fresh processes each. Torus precedes and gates sphere. If focused authority passes and direct behavior is retained, torus `LocalSheetMismatch` becomes the earliest production invariant. No rebuild, artifact substitution, assertion weakening, fallback/recovery, validator relaxation, predicted count, or timeout-as-correctness is permitted.
+
+## Canonical test-authority artifact acceptance — completed
+
+Exact artifact `9029584083` was consumed without configure, rebuild, relink, source/test/fixture/validator edit, or artifact mixing. Discovery found producer 166, completion 164, validation 60, and compiled API 8 tests. One external wrapper attempt failed before binary invocation because `/usr/bin/time` was absent; corrected discovery then ran each GoogleTest executable exactly once.
+
+The seven required focused contracts are **7/7**. In particular, the actual serialized three-domain witness passes, full-`EF` and region-local substitutions each reach `InvalidAuthoritativeTransitionSourceEdge`, periodic route/cut authority is face-row-invariant, malformed holonomy remains exact typed, incidence facts remain computed, and injected-failure context remains retained iff requested.
+
+The plan's literal filter `-*BunnyRandom*:*Vase*` excludes three of 166 discovered producer tests. Report exact totals as producer **154/163**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **376/395**. Do not compare this denominator directly with the prior stated **372/396**. An extra 164-test diagnostic ended without a GoogleTest summary and has no authoritative success total. Scheduler-sensitive timing remains diagnostic.
+
+Direct three-process authority is plane, multi-face seam, close sheets, and cylinder strict-valid **3/3** each; torus **0/3** at `completion/output-validation / LocalSheetMismatch` after complete `4/8/4` consumption and materialized `1/0/0` topology. Sphere remains gated.
+
+### Next face-chart validation contract
+
+The next compile-only slice must add focused tests proving:
+
+- exact retained charts plus reciprocal `HardRail` equivalence allow two quads on opposite rail sides even when shared scalar representatives name one side;
+- missing, wrong-rail, wrong-route, unsupported, nonreciprocal, or ambiguous alternate authority fails closed;
+- disconnected close sheets remain incompatible;
+- face-row re-enumeration preserves the semantic chart side;
+- full authority never masks scalar barycentric, position, component, or sheet failures.
+
+Following compilation, artifact-only acceptance must run those tests individually, preserve the seven accepted focused contracts and prior-green groups, run the exact committed torus GoogleTest, and repeat plane → seam → close sheets → cylinder → torus in three fresh processes. Torus must reach direct strict-valid **3/3**, complete lineage, no fallback/recovery, `4/8/4` consumption, and final `1/0/0` topology before sphere may run.
