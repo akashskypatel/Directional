@@ -47,7 +47,7 @@ M0 preserve immutable evidence [complete]
    M1a authority kernel [accepted]
    M1b first source/provenance consumer [accepted]
    M1c field-transition consumer [accepted]
-   M1d phase-front route identity consumer [next]
+   M1d phase-front route identity consumer [Code + Build complete; immutable runtime pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
 -> M4 certificate-carrying chart and quotient relations
@@ -64,160 +64,110 @@ T0 independent audit and authority separation [complete]
 -> T6 CI, resource, and oracle-adequacy hardening
 ```
 
-The current implementation remains behavioral comparison authority and migration input only. Accepted M1 slices prove only their bounded ownership seams; they do not approve feature expansion or close G4.
+The current implementation is behavioral comparison authority and migration input only. It is not an approved foundation for feature expansion without the ordered architecture/test gates.
 
-## 3. Current immutable checkpoint
+## 3. Current M1d checkpoint
 
-M1c is immutable accepted under:
+The authoritative next turn is:
 
-`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
-| Evidence | Authority |
-|---|---|
-| M1c implementation | `e139fca885538e310dc47ed7ba531517603d92cf` |
-| Compile artifact | `9043971772` |
-| Compile artifact SHA-256 | `dde120c94be222dc93aeebb08f7a674882c5f8011ede62ec420209b0e0f4fd85` |
-| Log artifact | `9043971968` |
-| Log artifact SHA-256 | `7747b3b25882fc86e54890a1efb69d753f9b2e08bff7db8fd2be4f4a8a82fedb` |
-| Recursive manifest | **54/54**, `d9a4bdfe5b160095a6cf4949c57e54d726d36f745ff0a6580e9080d5319d495d` |
-| M1c focused | exact six, **6/6** |
-| M1b / validation | **6/6**, **77/77** |
-| M1a / T1 | **14/14**, **29/29** |
-| producer required-green | **157/157** plus four direct-green cases |
+M1d implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` migrates only:
 
-Exact producer discovery remains 172 with nine historical/deferred known-red members, Bunny known-red, and Vase bounded safety-only explicitly accounted for. G4-R007 remains active and separate.
+`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`
 
-The authoritative next mutating slice is:
+The consumer now establishes existing route identity through checked `SourceVertexId`, canonical `SourceEdgeTopologyKey`, and checked `InteriorTransitionId` while preserving the public packed route representation. It deliberately does not manufacture `TransitionStep`/`CanonicalRoute` because it does not own per-step transport.
 
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Plan.md`.
+Immutable build authority:
 
-M1d migrates only route identity validation at `build_authoritative_phase_front_mesh -> exact_interior_route_valid`; it does not change public route storage or introduce transport semantics the consumer does not own.
+- result artifact `9046308272`, SHA-256 `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c`;
+- log artifact `9046308461`, SHA-256 `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c`;
+- recursive manifest **59/59**, SHA-256 `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0`;
+- Release/static/Ninja compile **120/120**;
+- generated runtime execution **false**.
+
+M1d remains unaccepted until the exact artifact proves focused route semantics, existing counterexamples, producer discovery/accounting, M1c/M1b/M1a/T1 preservation, direct required-green products, explicit known-red dispositions, and postflight package immutability.
 
 ## 4. Required target-stage corrections
 
-The migration must reverse the current consumer-reconstruction flow. Each stage writes one immutable semantic product; later stages consume or verify it without repairing, overwriting, or rediscovering its meaning.
+The migration must reverse consumer reconstruction: each stage writes one immutable semantic product; later stages consume or verify it without repairing, overwriting, or rediscovering its meaning.
 
-| Target stage | Legacy defect to remove | Required correction | Migration |
-|---|---|---|---|
-| A0 source authority | duplicated region/sheet state and tolerance-derived support identity | one immutable `SourceAuthoritySnapshot` and one tagged exact `SourceSupport` kernel | M1, M2, M5 |
-| A1 field transport | bare/parallel transition indices, duplicate chart types, zero-rotation special handling | one `FieldChartId`, typed `GridAutomorphism`, `TransitionStep`, and `CanonicalRoute` | M1 |
-| A2 topology plan | topology reconstructed or normalized downstream | one `GlobalTopologyPlan` owning regions, cuts, rails, seam certificates, singularity ports, and holonomy | M2, M4 |
-| A3 conformity plan | independent rail discretization followed by post-hoc pairing | one verified `GlobalConformityPlan` before any region commits cells | M3 |
-| A4 local construction | aggregation overwrites producer scope | immutable `RegionAuthorityView`; fully scoped `RegionCellComplex`; aggregation validates only | M2, M3 |
-| A5 occurrence complex | equality inferred from lattice/position/front rows | four explicit corner occurrences per cell and typed directed-side relations | M4, M5 |
-| A6 quotient/materialization | validator/consumer reconstructs compatible merges | verified relation registry, `QuotientCertificate`, exact-once consumption, one cell to one quad | M4, M5 |
-| A7 embedding | multiple support classifiers and quantized keys | source geometry bound through the shared exact support kernel | M5 |
-| A8 verification | validator acts as a second topology producer | independent certificate verification plus elementary source/output incidence recomputation only | M4, M5 |
-| A9 diagnostics/export | state flags and retained debug data influence semantic behavior | derived, non-authoritative diagnostics separated from execution lifetime and public retention | M2, M6 |
-
-This ordering follows the scientific constraints already adopted by `DESIGN.md`: explicit transport algebra from Directional/MIQ; a sanitized numeric-to-exact extraction boundary and explicit occurrences from QEx; global shared-side conformity before local patch work from QuadWild; and local Instant-Meshes/FlowRep scores restricted to proposal or quality roles rather than topology authority.
+| Target stage | Required correction | Migration |
+|---|---|---|
+| A0 source authority | one immutable source snapshot and tagged exact source support | M1, M2, M5 |
+| A1 field transport | typed chart, grid automorphism, transition, and route authority | M1 |
+| A2 topology plan | one global topology plan; no downstream semantic reconstruction | M2, M4 |
+| A3 conformity plan | one verified shared hard-rail schedule before regional commits | M3 |
+| A4 local construction | immutable region authority; aggregation validates/remaps only | M2, M3 |
+| A5 occurrence complex | explicit corner occurrences and directed-side relations | M4, M5 |
+| A6 quotient/materialization | verified relation registry and exact-once quotient consumption | M4, M5 |
+| A7 embedding | source geometry bound through shared exact support kernel | M5 |
+| A8 verification | independent certificate/incidence verification, never topology repair | M4, M5 |
+| A9 diagnostics/export | derived non-authoritative diagnostics with explicit retention | M2, M6 |
 
 ## 5. Migration execution rules
 
-1. Execute M1 through M6 in order. A milestone may require several small turn pairs; never combine milestones to manufacture a broad refactor.
-2. Every mutating slice is one **Code + Build** turn followed by one immutable **Test + Benchmark** turn. Code + Build may compile/package but may not run generated binaries. Test + Benchmark may run the exact artifact but may not edit implementation, tests, fixtures, validators, benchmarks, or build configuration.
-3. Record exact source commit, artifact identity, ownership boundary, intended behavior delta, and rollback boundary for every slice.
-4. Compatibility adapters are temporary one-way boundaries. New code consumes target types; it may not add new reads of raw legacy integers, parallel arrays, booleans, or copied authority tables.
-5. A stage either returns its complete immutable product or a typed failure. Partial/debug state is not consumable authority.
-6. Aggregation may remap representation handles only. It may not rewrite component, topology-region, sheet, route, relation, or ownership semantics.
-7. A validator may independently recompute elementary incidence and materialized mesh topology. It may not infer a missing producer certificate.
-8. Every recursive, retrying, or combinatorial path touched by a slice uses one shared `WorkLedger` and a monotone progress measure. Nested local limits are insufficient.
-9. Each slice preserves the last accepted immutable artifact as comparison authority. A regression blocks the next slice and is diagnosed within the current ownership boundary.
-10. No validator weakening, expected-output synthesis, fixture-specific branch, proximity weld, recovery output, generic substitution after `Rejected`, or predicted topology count can satisfy acceptance.
-11. Do not force an authority type into a consumer that lacks the semantic data required to construct it correctly. M1d therefore adopts route identity types but defers `TransitionStep`/`CanonicalRoute` until a consumer owns real per-step transport.
+1. Execute M1 through M6 in order using bounded Code + Build / immutable Test + Benchmark pairs.
+2. Code + Build may edit/configure/compile/package but may not execute generated Directional binaries. Test + Benchmark consumes exact artifacts and may not edit source/tests/build/fixtures.
+3. Record exact source commit, artifact identity, changed ownership boundary, intended behavior delta, and rollback boundary for every slice.
+4. Compatibility adapters are one-way boundaries; new semantic decisions cannot depend on raw legacy integers, hashes, row positions, or copied authority tables.
+5. Do not invent semantic facts merely to adopt a target type. `TransitionStep`/`CanonicalRoute` belong only at consumers that own per-step transport.
+6. A stage either returns its complete semantic product or a typed failure; partial/debug state is not authority.
+7. Aggregation may remap representation handles only, never semantic component/region/sheet/route/ownership facts.
+8. Validators independently recompute elementary incidence/materialized topology but do not synthesize missing producer certificates.
+9. Recursive/retrying/combinatorial paths touched by a slice require one shared work ledger and monotone progress measure.
+10. Any regression blocks the next migration slice; diagnose within the current ownership boundary rather than bypassing with fallback or feature work.
+11. No validator weakening, expected-output synthesis, fixture-specific branch, proximity weld, recovery substitution, or predicted topology count may satisfy acceptance.
 
-### 5.1 Interlocked test redesign
+## 6. Test interlock
 
-| Test milestone | Required before | Minimum evidence |
-|---|---|---|
-| `T1` independent oracle/package foundation | M1 | **accepted**: topology/lineage/disposition oracle, mutation suite, exact package/discovery authority |
-| `T2` complete direct corpus/semantic manifest | M2 behavior migration | all ten committed triangle-mesh cases packaged and explicitly green/known-red |
-| `T3` generated/metamorphic framework | M3/M4 acceptance | seed replay, shrinking, cycle/order/transform/field-label properties |
-| `T4` sanitizer fuzz/replay | M5 closure | bounded fast-stage ASan/UBSan targets and committed minimized reproducers |
-| `T5` calibrated quality/corpus gates | G6/G7 readiness | field/feature/approximation/element-quality baselines and stratified corpus |
-| `T6` CI/resource/oracle adequacy | M6/G7 closure | no hidden mandatory tests, resource trends, mutation sensitivity |
+T1 independent oracle/package authority is accepted and is a preservation prerequisite for M1. Later testing work remains:
+
+- T2 complete direct corpus/semantic manifest;
+- T3 property/metamorphic generation and shrinking;
+- T4 sanitizer fuzzing/minimized replay;
+- T5 calibrated quality/corpus gates;
+- T6 CI/resource/oracle-adequacy hardening.
 
 Known-red direct intent remains visible and cannot be counted as accepted regression-preservation evidence.
 
-## 6. Ordered migration milestones
+## 7. Remaining migration milestones
 
-### M1 — authority kernel and compatibility boundary
+### M1 — authority kernel and compatibility boundaries
 
-**Status:** active; M1a/M1b/M1c accepted, M1d next.  
-**Findings addressed:** `AR-02`, `AR-03`, `AR-04`, `AR-05`, `AR-09`.
-
-Target authority:
-
-- strong, non-interconvertible IDs for every source, transport, region, chart, rail, cell, occurrence, and quotient domain;
-- named checked conversions returning typed errors;
-- one `FieldChartId` representation;
-- tagged `SourceSupport` for source vertex, source edge, and face interior;
-- `QuarterTurn`, `LatticeTranslation`, and `GridAutomorphism` with composition, inverse, and cycle-closure algebra;
-- `TransitionStep` and `CanonicalRoute`, with topology and optional interior transition in one object and explicit orientation;
-- domain-specific canonical keys; generic integer-vector identity is not accepted in new stage APIs.
-
-Accepted staged adoption:
-
-1. **M1a** — authority kernel and adapters: immutable accepted.
-2. **M1b** — `provenance_supports_interval_sheet`: checked source-face/source-vertex consumer accepted.
-3. **M1c** — `resolve_branch_transition`: checked source IDs, canonical source-edge key, exact quarter-turn/inverse consumer accepted.
-4. **M1d next** — `build_authoritative_phase_front_mesh -> exact_interior_route_valid`: checked `InteriorTransitionId`, checked source vertices, and canonical source-edge route identity while public route vectors remain compatibility storage.
-
-Later bounded M1 slices must finish real `FieldChartId`, `TransitionStep`, `CanonicalRoute`, and remaining strong-ID consumers only where the required semantics exist. Do not combine them into one broad schema rewrite.
-
-**Do not include in M1:** producer-disposition changes, shared-rail scheduling, validator behavior changes, feature work, or file-only refactoring.
-
-**M1 exit evidence:** T1 authority remains green; all configured targets compile; implicit cross-domain conversion is impossible; adapter round trips are exact or typed failures; boundary/interior route, inverse/composition, route reversal, and face-row permutation contracts pass; direct accepted baselines remain semantically unchanged.
+Continue with bounded consumers only. Each adoption must type authority actually owned by that consumer and preserve legacy public representation until immutable evidence supports retirement.
 
 ### M2 — closed producer outcomes and single-writer scope
 
-**Depends on:** M1.  
-**Findings addressed:** `AR-01`, `AR-04`, `AR-08`.
-
-- replace `disposition + attempted + succeeded` with exhaustive `ProducerOutcome<T> = NotApplicable | Produced<T> | Rejected<E>`;
-- make `Produced<T>` nonempty and internally valid by construction;
-- make `Rejected` terminal for an owned producer domain;
-- introduce immutable `SourceAuthoritySnapshot`, `GlobalTopologyPlan`, and typed `RegionAuthorityView` references;
-- remove duplicated mutable region/sheet/chart authority from consumer aggregates;
-- replace scope-normalization writes with validation and typed rejection;
-- separate temporary execution retention, public result retention, test policy, and diagnostics availability.
-
-**Exit evidence:** inconsistent outcomes cannot be constructed; exhaustive dispatch covers every alternative and parent/child reduction; generic substitution never follows `Rejected`; aggregation cannot mutate semantic scope; plane, seam, close sheets, and cylinder remain direct strict-valid, with torus classified against the accepted baseline.
+Replace overlapping attempted/succeeded/disposition state with exhaustive outcomes; introduce immutable source/topology/region authority products; remove consumer-side scope rewriting; separate temporary/public/diagnostic retention.
 
 ### M3 — global conformity before regional production
 
-**Depends on:** M1 and M2.  
-**Findings addressed:** `AR-07`, with `AR-09` and `AR-12` enforcement.
-
-- collect all incident requirements for each canonical `HardRailId` before local construction;
-- solve one exact ordered breakpoint sequence, side count, parity, fixed endpoint, and incident-region assignment;
-- publish a verified `HardRailScheduleCertificate` inside one `GlobalConformityPlan`;
-- make region producers consume immutable breakpoint IDs exactly;
-- remove post-production support-key grouping and post-hoc side pairing;
-- report deterministic solver/work bounds through the global work ledger.
-
-**Exit evidence:** both sides consume the identical sequence; independent insert/remove/reorder/quantize attempts fail typed; region-order and target-size metamorphisms preserve conformity; exact-torus `InvalidHardRailPairing` blocker is resolved structurally rather than patched locally.
+Compute one exact hard-rail breakpoint schedule and certificate before local regions commit cells. Both sides consume the identical ordered schedule; remove post-hoc local pairing as authority.
 
 ### M4 — certificate-carrying chart and quotient relations
 
-**Depends on:** M2/M3.
-
-Produce and consume explicit topology/holonomy/relation certificates once. Local stages may verify them but may not reconstruct global meaning. This milestone owns `AR-06`, `RP-09`, nonzero periodic Z4 production capability, and positive multi-isolation quotient evidence.
+Publish explicit directed occurrence/transport/quotient relations with verifiable certificates. Validators verify rather than reconstruct them. This owns remaining global-local relation debt behind periodic/G4 capability.
 
 ### M5 — occurrence, embedding, and independent verification split
 
-**Depends on:** M4.
-
-Adopt explicit corner occurrences, exact tagged support, one cell-to-one-quad quotient materialization, source embedding through the shared support kernel, and independent verifier ownership. This milestone completes the exact numeric-to-semantic boundary and removes consumer repair/reconstruction.
+Use explicit occurrences, exact source support, certificate-driven quotient materialization, and independently recomputed elementary source/output incidence.
 
 ### M6 — retire legacy representations and decompose ownership modules
 
-**Depends on:** M5.
+After consumers have typed replacements and immutable evidence, retire obsolete parallel raw authority, split oversized ownership modules, and harden diagnostics/resource/CI behavior.
 
-Remove temporary compatibility storage/read paths after all real consumers have migrated; decompose ownership modules around the final stage products; harden CI/resource/oracle adequacy under T6. No compatibility representation may be retired before its last accepted consumer migration.
+## 8. Product blockers remain separate
 
-## 7. Standing stop conditions
+Architecture migration does not reinterpret:
 
-Stop the current slice and revise its plan if implementation requires a later milestone's ownership, changes public semantics outside the bounded seam, weakens an accepted test/oracle, hides a known-red case, or cannot construct the target semantic type from facts actually owned by the selected consumer.
+- `PR8-R034 / G4-R007` active direct-torus `LocalSheetMismatch`;
+- `G4-B002` shared hard-rail scheduling / historical `InvalidHardRailPairing`;
+- `G4-B003` nonzero periodic Z4 product capability;
+- `G4-B004` positive multi-isolation quotient witness.
 
-The exact next action always comes from `TODO`, `MILESTONE_G_TODO.md`, and `.agents/Directional/Future_Chat_Session_Handoff.md`.
+Bunny production completion, Vase bounded runtime, prescribed sphere, G5/G6, fallback/recovery, and optimization remain deferred behind their prerequisite gates.
+
+## 9. Resume rule
+
+Always read `.agents/Directional/Future_Chat_Session_Handoff.md` first. It owns the exact current turn, commit, artifact, plan, and procedure. If this roadmap conflicts with a newer committed authoritative plan/report, the newer plan/report governs current execution and this roadmap must be corrected before architecture expansion.
