@@ -36,6 +36,7 @@ jobs:
           sha256sum -c SHA256SUMS
           test "$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')" = "dcec7671b4ee961367e552a3e93e5b052890cf27fa14e792c4fc669ff25e71e1"
           test "$(python3 -c 'import json; print(json.load(open("metadata/build-authority.json"))["implementationCommit"])')" = "0340addf21473854856266ff00cb68915ce24ef0"
+          chmod +x bin/directional_surface_cell_producer_tests
           ln -s ../test-data bin/test-data
 
       - name: Run BunnyRandom known-red in immutable producer binary
@@ -88,6 +89,7 @@ jobs:
           sha256sum -c SHA256SUMS
           test "$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')" = "dcec7671b4ee961367e552a3e93e5b052890cf27fa14e792c4fc669ff25e71e1"
           test "$(python3 -c 'import json; print(json.load(open("metadata/build-authority.json"))["implementationCommit"])')" = "0340addf21473854856266ff00cb68915ce24ef0"
+          chmod +x bin/directional_surface_cell_producer_tests
           ln -s ../test-data bin/test-data
 
       - name: Run Vase with bounded 60-second safety guard
