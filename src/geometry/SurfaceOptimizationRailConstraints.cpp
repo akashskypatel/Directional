@@ -129,6 +129,8 @@ bool provenance_supports_interval_sheet(
   return true;
 }
 
+} // namespace directional::geometry::surface_optimization_rail_detail
+
 namespace directional::geometry {
 
 void fill_surface_optimization_rail_constraints(
