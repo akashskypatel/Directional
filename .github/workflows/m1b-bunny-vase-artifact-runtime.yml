@@ -1,0 +1,118 @@
+name: m1b-bunny-vase-artifact-runtime
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1b-bunny-vase-artifact-runtime
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  bunny:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Download exact immutable M1b artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m1b-first-production-consumer-code-build
+          path: pkg
+          repository: akashskypatel/Directional
+          run-id: 31330737703
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify immutable package authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cd pkg
+          sha256sum SHA256SUMS
+          test "$(sha256sum SHA256SUMS | awk '{print $1}')" = "319cb95e6d283f6b786565c0c9863755777ff0518ff5375364521c61583e39f1"
+          sha256sum -c SHA256SUMS
+          test "$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')" = "dcec7671b4ee961367e552a3e93e5b052890cf27fa14e792c4fc669ff25e71e1"
+          test "$(python3 -c 'import json; print(json.load(open("metadata/build-authority.json"))["implementationCommit"])')" = "0340addf21473854856266ff00cb68915ce24ef0"
+          ln -s ../test-data bin/test-data
+
+      - name: Run BunnyRandom known-red in immutable producer binary
+        shell: bash
+        run: |
+          set -u
+          mkdir -p runtime-logs
+          filter='UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom'
+          printf 'artifact=9042940168\nimplementation=0340addf21473854856266ff00cb68915ce24ef0\nfilter=%s\n' "$filter" > runtime-logs/bunny-meta.txt
+          start=$(date +%s)
+          set +e
+          timeout --signal=TERM --kill-after=10s 90s ./pkg/bin/directional_surface_cell_producer_tests --gtest_filter="$filter" --gtest_color=no > runtime-logs/bunny.log 2>&1
+          rc=$?
+          set -e
+          end=$(date +%s)
+          printf 'return_code=%s\nelapsed_seconds=%s\n' "$rc" "$((end-start))" >> runtime-logs/bunny-meta.txt
+          cat runtime-logs/bunny-meta.txt
+          tail -80 runtime-logs/bunny.log || true
+          exit 0
+
+      - name: Upload Bunny evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1b-bunny-runtime-evidence
+          path: runtime-logs
+          if-no-files-found: error
+          retention-days: 14
+
+  vase:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Download exact immutable M1b artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: m1b-first-production-consumer-code-build
+          path: pkg
+          repository: akashskypatel/Directional
+          run-id: 31330737703
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify immutable package authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          cd pkg
+          sha256sum SHA256SUMS
+          test "$(sha256sum SHA256SUMS | awk '{print $1}')" = "319cb95e6d283f6b786565c0c9863755777ff0518ff5375364521c61583e39f1"
+          sha256sum -c SHA256SUMS
+          test "$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')" = "dcec7671b4ee961367e552a3e93e5b052890cf27fa14e792c4fc669ff25e71e1"
+          test "$(python3 -c 'import json; print(json.load(open("metadata/build-authority.json"))["implementationCommit"])')" = "0340addf21473854856266ff00cb68915ce24ef0"
+          ln -s ../test-data bin/test-data
+
+      - name: Run Vase with bounded 60-second safety guard
+        shell: bash
+        run: |
+          set -u
+          mkdir -p runtime-logs
+          filter='UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase'
+          printf 'artifact=9042940168\nimplementation=0340addf21473854856266ff00cb68915ce24ef0\nfilter=%s\n' "$filter" > runtime-logs/vase-meta.txt
+          start=$(date +%s)
+          set +e
+          timeout --signal=TERM --kill-after=10s 60s ./pkg/bin/directional_surface_cell_producer_tests --gtest_filter="$filter" --gtest_color=no > runtime-logs/vase.log 2>&1
+          rc=$?
+          set -e
+          end=$(date +%s)
+          printf 'return_code=%s\nelapsed_seconds=%s\n' "$rc" "$((end-start))" >> runtime-logs/vase-meta.txt
+          cat runtime-logs/vase-meta.txt
+          tail -80 runtime-logs/vase.log || true
+          exit 0
+
+      - name: Upload Vase evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1b-vase-runtime-evidence
+          path: runtime-logs
+          if-no-files-found: error
+          retention-days: 14
