@@ -1,28 +1,19 @@
 # Surface-Cell Regression Root-Cause Tracker
 
-This is the permanent stable-ID regression, repeated-pattern, architecture, and
-test-authority index for the production surface-cell implementation. Detailed
-point-in-time event evidence remains in
-`.agents/Directional/PR_8_Regression_Audit_Inventory.md`; turn reports retain
-artifact/runtime detail.
+Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed point-in-time event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; dated turn reports retain runtime/artifact detail.
 
-Last updated: **2026-08-09 UTC** after T1 direct-oracle Code + Build artifact `9041289209`.
+Last updated: **2026-08-09 UTC** after accepted T1 direct-oracle artifact `9041289209`.
 
 ## Rules
 
-- Assign a stable ID only when accepted behavior/test/package/public authority
-  is lost relative to an exact accepted baseline.
-- Persistence or worsening while the same gate is still red updates the
-  existing event; it is not a new recurrence.
-- A recurrence requires restoration followed by a later loss.
+- Assign a stable regression ID only when previously accepted behavior/test/package/public authority is lost.
+- Persistence or worsening while a gate remains red updates the existing event; it is not a recurrence.
+- A recurrence requires restoration followed by later loss.
 - Record the earliest evidenced cause, not only the terminal symptom.
-- Compile success never resolves a runtime regression or a pending test-authority acceptance.
-- Known-red/deferred product cases stay explicit and are not relabeled green or
-  expected failure merely to close a test-architecture phase.
-- Before every turn review `RP-01` through `RP-09` and record exact touched
-  boundaries, corrective invariants, and representative/counterfactual
-  evidence.
+- Compile success never resolves a runtime regression.
+- Known-red/deferred product cases remain explicit and are never relabeled green or expected failure to close architecture/test work.
 - A focused/helper pass cannot close representative product intent.
+- Before every turn review `RP-01` through `RP-09`; every touched pattern needs an exact invariant and counterfactual/representative gate.
 
 ## Status vocabulary
 
@@ -31,15 +22,10 @@ Last updated: **2026-08-09 UTC** after T1 direct-oracle Code + Build artifact `9
 | `active` | Reproduces in current runtime authority. |
 | `fix_in_progress` | Authorized Code + Build is implementing correction. |
 | `fix_pending_runtime` | Correction compiles; immutable runtime pending. |
-| `resolved` | Later immutable artifact passes affected gate. |
-| `test_authority_resolved` | Test/oracle defect corrected and accepted by immutable evidence. |
+| `resolved` | Later immutable artifact restores affected product authority. |
+| `test_authority_resolved` | Test/oracle defect is corrected and accepted by immutable evidence. |
 
 ## PR-wide audit authority
-
-Historical evidence range:
-`d8b4dba98747d3adf0ca24002642bcad9e9847db..027e5194a9013cc1fe9ea18c1b79741301e40f74`
-(**1,789 commits**). Repeated-pattern expansion was published from
-`8ef353034641c3a068095334ceea5e6ddb0c39c1`.
 
 Historical totals remain:
 
@@ -48,19 +34,7 @@ Historical totals remain:
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-Artifacts `9031804178`, `9040549377`, and compile-only artifact `9041289209`
-create no new event or recurrence. `G4-R007` remains active. T1 is new,
-not-yet-accepted test architecture, so its direct-oracle execution-order defect
-is incomplete `RP-02 / TA-05` work rather than loss of previously accepted test
-authority. The statement-order correction now compiles/packages and is
-**`fix_pending_runtime`** at the test-authority boundary; immutable runtime
-acceptance is still required.
-
-The first Code + Build workflow attempt `31324642747` failed only in a static
-workflow verifier before configure/compile/runtime. The implementation source
-was unchanged; this infrastructure false positive is not a product/test
-regression or recurrence. Authoritative compile/package evidence is successful
-run `31324710550` and result artifact `9041289209`.
+T1 artifacts `9040549377` and `9041289209` are test-architecture work and create no production regression event or recurrence. `G4-R007` remains active.
 
 ### Category rollup
 
@@ -78,350 +52,207 @@ run `31324710550` and result artifact `9041289209`.
 | five singleton categories | — | 5 | 0 |
 | **Total** |  | **34** | **20** |
 
-The singleton categories are `INTRINSIC_SUPPORT_OVERCONSTRAINT`,
-`INCOMPLETE_TRANSACTIONAL_ROLLBACK`, `SHARED_EDGE_ORIENTATION_INVERSION`,
-`INCOMPLETE_ORBIT_PUBLICATION`, and `EXACT_SIMPLEX_CANONICALIZATION_LOSS`.
+Singletons: `INTRINSIC_SUPPORT_OVERCONSTRAINT`, `INCOMPLETE_TRANSACTIONAL_ROLLBACK`, `SHARED_EDGE_ORIENTATION_INVERSION`, `INCOMPLETE_ORBIT_PUBLICATION`, `EXACT_SIMPLEX_CANONICALIZATION_LOSS`.
 
 ## Repeated coding-pattern catalog
 
-| Pattern | Repeated code shape | Events | Recurrences |
-|---|---|---:|---:|
-| `RP-01` | Distinct authority domains guessed/intersected through one scalar/equality predicate. | 6 | 5 |
-| `RP-02` | Proxy/incomplete test or package authority is promoted to semantic proof. | 6 | 5 |
-| `RP-03` | One flag/result carries independent policy/stage meanings. | 4 | 3 |
-| `RP-04` | Local bounds wrap recursive/nested/process-cumulative work without one global ledger. | 3 | 2 |
-| `RP-05` | Identity/order/hash depends on traversal/allocation/orientation/emission role. | 2 | 1 |
-| `RP-06` | Shared authority membership copied into every consumer. | 2 | 1 |
-| `RP-07` | Cyclic topology validated as a linear sequence/value relation. | 2 | 1 |
-| `RP-08` | Typed producer disposition reduced to boolean/lossy aggregate. | 2 | 1 |
-| `RP-09` | Complete global authority required to be consumed on every local face/path. | 2 | 1 |
-
 ### RP-01 — authority-domain conflation
 
-Anti-pattern:
-
 ```text
-authority_id: int
-if cross_field_transition_exists:
-    authority_id = full_ef_row
-else:
-    authority_id = compact_transition_index
-consume_without_named_domain(authority_id)
+bad:
+  id: int
+  if transition: id = full_ef_row
+  else: id = compact_transition_index
+  consume_without_domain(id)
+
+good:
+  distinct strong domains
+  named checked conversion -> expected<T, DomainError>
+  semantic topology + optional transition represented together
 ```
 
-Required shape:
-
-```text
-RouteAuthority {
-  CanonicalEdgeKey topology;
-  Optional<SourceWideTransitionIndex> compact;
-  Optional<FullEfRow> cross_field;
-}
-validate each field only in its declared domain
-```
-
-Guard: named types, producer/consumer scope, serialization meaning, and
-row/order counterfactuals. T1 test-side `DomainIndex<...>` mutation contracts
-passed under artifact `9040549377`; the direct-order Code + Build leaves their
-source blobs unchanged.
+Guard: numeric coincidence is never conversion. M1a is the first architectural correction targeting this pattern directly.
 
 ### RP-02 — proxy/incomplete test authority
 
-Anti-pattern:
-
 ```text
-helper = call_convenient_helper()
-assert counts_or_raw_ids(helper)
-# claimed public/stage path may not be entered
-# precondition or independent oracle may be absent
-# package/discovery authority may be absent
+bad:
+  helper = convenient_helper()
+  assert counts/raw IDs/success
+  claim product proof
+
+good:
+  prove precondition
+  invoke public entry or exact stage
+  independently recompute observable contract
+  mutate semantic fact and require rejection
+  record executable/test/fixture/artifact identity
 ```
 
-Required shape:
+T1 status: **direct-integration test authority resolved** by artifact `9041289209`.
 
-```text
-prove fixture precondition
-invoke public entry or exact declared stage
-observe typed result
-independently recompute observable contract
-mutate one semantic fact and require independent rejection
-record executable/test/fixture/seed/artifact identity
-```
+Accepted T1 evidence:
 
-Guard: production `result.success`, production validator, counts, raw IDs/order,
-hashes, retention lifetime, compilation, and no-crash are not independent
-product proof.
-
-Entering T1 runtime evidence from artifact `9040549377`:
-
-- default oracle package/discovery is exact **29/29**;
-- all **29/29** positive/mutation/metamorphic contracts pass individually;
+- oracle discovery **29/29** exact names;
+- mutation/metamorphic suite **29/29**;
 - four required-green direct cases pass and reach the oracle;
-- BunnyRandom returns a known-red result but the old
-  `ASSERT_TRUE(result.success)` executes before the oracle and fatally
-  short-circuits independent evidence;
-- Vase does not return inside the bounded validation guard.
+- BunnyRandom returns known-red `NotProductionReady:completion` and now reaches the independent oracle **before** the unchanged fatal product-success assertion;
+- Vase remains a bounded nonreturning known-red case; no synthetic oracle result is created.
 
-Code + Build implementation `7c169ddf8167093c16755f2160e224994e50307c`
-now relocates the existing nonfatal independent-oracle observation immediately
-after a returned `RemeshResult` and before the unchanged fatal success
-assertion. Artifact `9041289209` proves only compile/package authority:
-Release/static/Ninja **117/117**, exact 29-name manifest retained,
-`runtimeExecution=false`.
+The accepted T1 report is `.agents/Directional/T1_Direct_Oracle_Execution_Order_Artifact_Only_Test_Benchmark_Report.md`.
 
-Therefore the **oracle core is accepted and the direct-integration correction is
-`fix_pending_runtime`**. The authoritative next turn is immutable Test +
-Benchmark against artifacts `9041289209 / 9041289317`. It must demonstrate that
-every returned failed direct product emits independent oracle evidence before
-the unchanged product-success failure.
-
-### RP-03 — one state carries two meanings
-
-Anti-pattern:
+### RP-03 — policy/stage state conflation
 
 ```text
-retain = caller_requested || execution_needs_state
-real_failure overwrites requested policy result
+bad: one flag/result means execution need + caller retention + stage result
+good: execution lifetime, caller retention, policy, and typed stage outcome are separate
 ```
 
-Required shape:
+No T1 production state changed. M2 owns the architecture migration.
+
+### RP-04 — nonterminating cumulative work
 
 ```text
-retain_for_execution != retain_for_caller
-real_stage_outcome != test_policy_outcome
+bad:
+  recurse(local_depth):
+    for candidate in local_limit: recurse(local_depth-1)
+
+good:
+  shared WorkLedger { remaining_global_work, visited_state, attempted_actions }
 ```
 
-T1 disposition corruption tests for backend/fallback/recovery/origin/terminal
-state all pass and remain test-only observations. The statement-order correction
-does not alter their implementation.
-
-### RP-04 — local bounds around multiplicative work
-
-Anti-pattern:
-
-```text
-solve(state, local_depth):
-  for candidate in local_limit:
-    solve(copy(state), local_depth - 1)
-```
-
-Required shape:
-
-```text
-shared WorkController {
-  remaining_global_work;
-  visited_canonical_states;
-  attempted_actions;
-}
-```
-
-Current bounded producer authority under T1 runtime artifact completes selected
-163-test filter in **36.993 s**, result **154/163**. This does not alter the
-historical `R020` uncertainty or prove Bunny/Vase work bounds. Code + Build adds
-no work/search/runtime behavior.
+T1 bounded producer completed 163 selected tests in 37.81 s. Vase's 60 s guard is safety evidence only and does not prove a work bound. M3/M5/T6 own formal work/resource closure.
 
 ### RP-05 — representation-dependent identity
 
-Anti-pattern:
-
 ```text
-identity = hash(traversal_or_exterior_role, record)
-sort primarily by derived hash
+bad: identity/order depends on row, traversal, allocation, orientation, hash
+good: semantic value is canonical; representation handles are separate; orientation explicit
 ```
 
-Required shape:
+T1 row/cycle/reversal oracle metamorphism passes. M1a introduces canonical semantic authority types.
+
+### RP-06 — state-cardinality growth
 
 ```text
-canonical semantic record = quotient by row/order/orientation/allocation role
-sort semantic topology first; hash only derived evidence
+bad: copy global authority membership into every consumer
+good: shared registry + consumer semantic key + bounded local witness
 ```
 
-T1 canonical product-record row/cycle/reversal metamorphic test passes; its
-implementation is byte-identical in artifact `9041289209`.
-
-### RP-06 — duplicated shared authority membership
-
-Anti-pattern:
-
-```text
-for consumer: consumer.members = copy(global_members)
-```
-
-Required shape:
-
-```text
-registry[key] = shared membership once
-consumer.key = key
-consumer.local_witness = bounded local data
-```
-
-No production storage changes occurred in T1 or the statement-order correction.
+No T1 production storage change. M2/M4 own migration.
 
 ### RP-07 — cyclic topology linearization
 
-Anti-pattern:
-
 ```text
-previous/next duplicate value => contradiction
-position <= 0 => reject wrap
+bad: cyclic relation validated as linear sequence/order
+
+good:
+  prev=(i-1+n)%n
+  next=(i+1)%n
+  explicit cyclic algebra and orientation
 ```
 
-Required shape:
-
-```text
-previous = (i - 1 + n) mod n
-next = (i + 1) mod n
-compare sector positions and support wrap explicitly
-```
-
-T1 cyclic/reversed duplicate-face, broken-boundary, and canonical reversal
-contracts pass; the correction does not change this logic.
+T1 cyclic/reversal oracle contracts pass. M1a introduces exact `Z4`/route reversal algebra.
 
 ### RP-08 — producer-disposition conflation
 
-Anti-pattern:
-
 ```text
-if !producer.succeeded: run_generic_substitute()
+bad: if !succeeded -> generic substitute
+good: NotApplicable | Produced<T> | Rejected<E>, with Rejected terminal for owned domain
 ```
 
-Required shape:
+No T1 production behavior changed. M2 owns migration.
+
+### RP-09 — local consumption of global authority
 
 ```text
-switch disposition:
-  Produced -> consume
-  Rejected -> fail closed
-  NotApplicable -> substitute only if domain unclaimed
+bad:
+  for face: require every global relation to be consumed locally
+
+good:
+  validate global registry once
+  for face: consume only unique locally witnessed certificate path
 ```
 
-No producer/fallback behavior changed in T1 or this correction. Existing direct
-backend/fallback/recovery/origin assertions remain unchanged.
-
-### RP-09 — global authority consumed locally
-
-Anti-pattern:
-
-```text
-for face:
-  require every global relation to occur/consume on this face
-```
-
-Required shape:
-
-```text
-validate complete authority globally once
-for face:
-  select unique locally witnessed path from exact global graph
-```
-
-Implementation `6af23d9` passes **11/11** chart-reachability/face-chart focused
-cases but direct torus remains **0/3** with 241 `LocalSheetMismatch` issues.
-`G4-R007` stays active. T1 does not change this production path.
+Current production implementation passes focused chart/reachability contracts but direct torus remains red. M4 owns certificate migration.
 
 ## Mandatory per-turn pattern record
 
-| Pattern | Touched? | Exact affected producer/consumer | Evidence anti-pattern absent / corrective invariant | Counterfactual and representative gate |
+| Pattern | Touched? | Exact producer/consumer boundary | Corrective invariant | Counterfactual / representative gate |
 |---|---|---|---|---|
-| `RP-01` … `RP-09` | yes/no | exact symbol/target/artifact boundary | concrete invariant | named negative + representative evidence |
+| `RP-01` … `RP-09` | yes/no | symbol/target/artifact | concrete invariant | named negative + representative evidence |
 
 A touched row that cannot be completed is a stop condition.
 
 ## Current G4 stable-ID mapping
 
-| PR-wide event | Stable G4 entry | Category | Pattern |
-|---|---|---|---|
-| `PR8-R028` | `G4-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
-| `PR8-R029` | `G4-R002` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` |
-| `PR8-R030` | `G4-R003` | `TEST_AUTHORITY_COVERAGE_GAP` | `RP-02` |
-| `PR8-R031` | `G4-R004` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
-| `PR8-R032` | `G4-R005` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` |
-| `PR8-R033` | `G4-R006` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
-| `PR8-R034` | `G4-R007` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` |
+| PR event | G4 ID | Category | Pattern | Status |
+|---|---|---|---|---|
+| `PR8-R028` | `G4-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
+| `PR8-R029` | `G4-R002` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` | resolved |
+| `PR8-R030` | `G4-R003` | `TEST_AUTHORITY_COVERAGE_GAP` | `RP-02` | resolved |
+| `PR8-R031` | `G4-R004` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
+| `PR8-R032` | `G4-R005` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | resolved |
+| `PR8-R033` | `G4-R006` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | test-authority resolved |
+| `PR8-R034` | `G4-R007` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` | **active** |
 
-## Regression entries
+`G4-R007`: hard-rail face-chart authority over-rejects direct torus; the initial remediation consumed complete relation authority locally. Artifact `9031804178` passes focused 18/18 yet direct torus remains 0/3 with 241 `LocalSheetMismatch` issues after 192 quads, complete lineage, `4/8/4`, `1/0/0`. Do not infer a new root cause from mismatch count alone.
 
-| ID | Classification / cause | Current status |
+## Persistent blockers
+
+| ID | Blocker | Required gate |
 |---|---|---|
-| `G4-R001` | Genuine source boundaries rejected by compact-index conflation. | `resolved` by artifact `9026181778`. |
-| `G4-R002` | Internal isolation seams required as local cell-boundary crossings. | `resolved`; later torus consumes `4/8/4`. |
-| `G4-R003` | Required quotient contracts absent from immutable default artifact. | `resolved` by artifact `9026181778`. |
-| `G4-R004` | Full-`EF` and compact transition domains serialized as one `int`. | `resolved` by artifact `9028103772`. |
-| `G4-R005` | Execution retention leaked into caller-visible retention policy. | `resolved` by artifact `9028103772`. |
-| `G4-R006` | Canonical transition tests repeated obsolete numeric-domain authority. | `test_authority_resolved` by artifact `9029584083`. |
-| `G4-R007` | Hard-rail face-chart authority over-rejects direct torus; initial resolver consumed complete relation authority locally. | **`active`**. Artifact `9031804178` passes focused 18/18 but torus remains 0/3 with 241 mismatches after 192 quads, complete lineage, `4/8/4`, `1/0/0`. |
+| `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
+| `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared source-authoritative rail schedule; M3 |
+| `G4-B003` | Nonzero periodic `Z4` rotation. | deferred G4 capability; M1/M4 foundation |
+| `G4-B004` | Positive multi-isolation quotient witness. | focused + representative certificate evidence |
 
-Detailed evidence for each remains in the dated reports and PR #8 audit
-inventory. Do not infer a new G4-R007 root cause from mismatch count alone.
+## Architecture enforcement register
 
-## Persistent blockers that are not new current-patch regressions
+These are structural debts, not runtime regression events.
 
-| ID | Blocker | Current gate |
+| ID | Severity | Patterns | Close condition / current state |
+|---|---|---|---|
+| `AR-01` | Critical | `RP-03`, `RP-08` | closed `ProducerOutcome<T>`; M2 |
+| `AR-02` | Critical | `RP-01`, `RP-03`, `RP-06`, `RP-07` | strong IDs + one canonical typed route; **M1a begins this** |
+| `AR-03` | High | `RP-01`, `RP-03`, `RP-05` | domain-specific semantic keys; **M1a begins this** |
+| `AR-04` | High | `RP-06`, `RP-09` | one chart type + immutable single-writer snapshots; chart domain begins M1a, snapshots M2 |
+| `AR-05` | High | `RP-05`, `RP-07` | semantic identity separated from representation; **M1a begins this** |
+| `AR-06` | Critical | `RP-01`, `RP-05`, `RP-09` | producer-owned relation registry + certificate paths; M4 |
+| `AR-07` | Critical | `RP-06`, `RP-09` | global conformity before local construction; M3 |
+| `AR-08` | High | `RP-03`, `RP-06`, `RP-09` | producer-scoped immutable output; M2/M3 |
+| `AR-09` | High | `RP-01`, `RP-05`, `RP-06` | one tagged exact source-support kernel; **representation begins M1a, production rebinding M5** |
+| `AR-10` | Moderate | all | incremental responsibility modules |
+| `AR-11` | High | `RP-02`, `RP-03` | normative architecture separate from status/evidence |
+| `AR-12` | High | `RP-02` | independent oracle/package foundation accepted in T1; representative/quality expansion continues T2–T6 |
+
+## Test architecture enforcement register
+
+| ID | Severity | Current state / close condition |
 |---|---|---|
-| `G4-B001` | Direct torus final `LocalSheetMismatch`. | Same representative gate as active `G4-R007`; strict-valid torus `3/3` required. |
-| `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | Shared source-authoritative hard-rail breakpoint scheduling; gates sphere. |
-| `G4-B003` | Nonzero periodic `Z4` rotation. | Deferred G4 capability. |
-| `G4-B004` | Positive multi-isolation quotient witness. | Deferred focused fixture/implementation evidence. |
+| `TA-01` | Critical | T1 topology/lineage/disposition oracle accepted; geometry/field/feature/quality remains T5 |
+| `TA-02` | Critical | T2: all ten direct cases semantically classified and packaged |
+| `TA-03` | Critical | independent metric decisions + approved baselines/thresholds |
+| `TA-04` | High | T3 generator/shrinker + T4 sanitizer fuzz/replay |
+| `TA-05` | High | **test-authority resolved by artifact `9041289209`**: every returned direct result reaches independent oracle before fatal success assertion |
+| `TA-06` | High | T1 domain-independent mutation tests 29/29; retain through M migrations |
+| `TA-07` | High | T1 package/discovery exact 29/29; retain through T6 |
+| `TA-08` | High | T1 canonical row/cycle/reversal metamorphism accepted |
+| `TA-09` | High | coherent reset/work/time/RSS gate remains required |
+| `TA-10` | High | T2 semantic fixture manifest |
+| `TA-11` | High | T1 topology/lineage/disposition mutation adequate; T5 completes geometry/field/quality |
+| `TA-12` | Moderate | `tests/TESTING_STRATEGY.md` remains normative-only |
 
-## Architecture enforcement register — independent review 2026-08-09
+## Next architecture slice
 
-These are structural debts, not additional runtime regression events.
+Authoritative next turn:
+`.agents/Directional/Architecture_M1a_Authority_Kernel_Core_Code_Build_Plan.md`.
 
-| ID | Severity | Pattern | Required close condition |
-|---|---|---|---|
-| `AR-01` | Critical | `RP-03`, `RP-08` | Closed `ProducerOutcome<T>` with exhaustive dispatch. |
-| `AR-02` | Critical | `RP-01`, `RP-03`, `RP-06`, `RP-07` | Strong ID domains and one canonical typed route. |
-| `AR-03` | High | `RP-01`, `RP-03`, `RP-05` | Domain-specific semantic keys; no ordinal/row/backend identity leakage. |
-| `AR-04` | High | `RP-06`, `RP-09` | One chart type and immutable single-writer authority snapshots. |
-| `AR-05` | High | `RP-05`, `RP-07` | Semantic identity separated from representation; semantic order before hash. |
-| `AR-06` | Critical | `RP-01`, `RP-05`, `RP-09` | Producer-owned relation registry + exact `ChartSelectionCertificate` paths. |
-| `AR-07` | Critical | `RP-06`, `RP-09` | Global conformity/hard-rail schedule before local construction. |
-| `AR-08` | High | `RP-03`, `RP-06`, `RP-09` | Producers emit fully scoped immutable output; aggregation verifies only. |
-| `AR-09` | High | `RP-01`, `RP-05`, `RP-06` | One sanitized exact source-support kernel; tolerance cannot be topology identity. |
-| `AR-10` | Moderate | all | Incremental responsibility modules; new behavior only through stage APIs. |
-| `AR-11` | High | `RP-02`, `RP-03` | Normative architecture remains separate from status/evidence. |
-| `AR-12` | High | `RP-02` | Independent product oracle + mutation adequacy + package authority + representative evidence. T1 oracle core passes; direct integration correction compiles/packages and is pending immutable runtime acceptance. |
+M1a touched-pattern focus:
 
-## Test architecture enforcement register — independent audit 2026-08-09
+- `RP-01`: strong non-interconvertible domains and named checked conversions;
+- `RP-05`: semantic identity independent of representation handles;
+- `RP-07`: exact quarter-turn/route reversal/cycle algebra;
+- `RP-02`: preserve accepted T1 oracle/package authority; do not substitute compile success for semantic proof.
 
-These are structural test debts and do not alter 34/14/20 historical counts.
-
-| ID | Severity | Pattern | Current evidence / close condition |
-|---|---|---|---|
-| `TA-01` | Critical | `RP-02` | T1 provides independent topology/lineage/disposition oracle core. Direct integration ordering correction is compiled/package-verified at `7c169ddf` and pending immutable runtime acceptance. Full product intent remains T5. |
-| `TA-02` | Critical | `RP-02`, `RP-07`, `RP-09` | T2 must package/discover all ten direct cases with explicit green/known-red state. |
-| `TA-03` | Critical | `RP-01`, `RP-02` | Independent metric decisions + approved baselines/thresholds still required. |
-| `TA-04` | High | `RP-01`, `RP-04`, `RP-06`, `RP-07`, `RP-09` | T3 generator/shrinker + T4 sanitizer fuzz/replay still required. |
-| `TA-05` | High | `RP-02` | **`fix_pending_runtime`:** statement-order correction compiles/packages in artifact `9041289209`; following immutable runtime must prove every returned direct result reaches the independent oracle before the unchanged fatal success assertion. |
-| `TA-06` | High | `RP-01`, `RP-02` | T1 domain-independent mutation tests pass; source is unchanged in corrected artifact and must remain 29/29 at runtime. |
-| `TA-07` | High | `RP-02` | Corrected package retains exact 29-name static manifest; following immutable discovery must match it exactly. |
-| `TA-08` | High | `RP-02`, `RP-05`, `RP-07` | T1 canonical row/cycle/reversal metamorphism passes; broader semantic proxies remain monitored. |
-| `TA-09` | High | `RP-03`, `RP-04`, `RP-06` | Coherent reset/work/time/RSS gate still required; T1 60 s Vase guard is safety evidence only, not a budget contract. |
-| `TA-10` | High | `RP-02`, `RP-07`, `RP-09` | T2 versioned semantic fixture manifest still required. |
-| `TA-11` | High | `RP-02` | T1 topology/lineage/disposition mutation families pass 29/29; T5 must complete geometry/field/quality mutation adequacy. |
-| `TA-12` | Moderate | `RP-02`, `RP-03` | `tests/TESTING_STRATEGY.md` remains normative-only. |
-
-Full test audit:
-`.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
-
-## Architectural review triggers
-
-Request/reuse the accepted independent design proof when:
-
-1. a cause family reaches two regressions;
-2. a resolved regression reappears;
-3. a fix moves a failure without restoring entering accepted authority;
-4. focused tests pass while representative product intent remains red for an
-   unrepresented state shape;
-5. a new bare numeric field carries topology/index/ownership/semantic authority;
-6. planned work touches an `RP-nn` path without a complete pattern row;
-7. a mandatory direct test lacks proved precondition, independent oracle,
-   rejected counterexample, or package identity;
-8. focused/helper/property evidence is used to hide or close a known-red
-   representative product case;
-9. generated/fuzz failures cannot be replayed/minimized within declared bounds.
-
-The independent architecture review and test-suite audit are complete. The
-accepted staged response remains: finish T1 independent test authority, then
-M1 production authority-kernel migration. Review policy is `never` for an
-optional additional Review turn unless a future plan violates the accepted
-design proof.
+M1a is Code + Build only and has no intended production behavior delta. Its following immutable Test + Benchmark must accept the new authority kernel before any M1b production consumer migration.
