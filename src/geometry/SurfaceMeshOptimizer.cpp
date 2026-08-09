@@ -1075,6 +1075,38 @@ double angle_degrees(const Eigen::RowVector3d &a,
 
 namespace directional::geometry::surface_optimizer_detail {
 
+FaceChartAuthorityView quad_chart_authority(
+    const Eigen::MatrixXi &quads, const int face,
+    const SurfaceOptimizationConstraints &constraints,
+    const std::size_t provenanceCount) {
+  FaceChartAuthorityView result;
+  if (constraints.vertexChartAuthority.empty()) {
+    return result;
+  }
+  if (constraints.vertexChartAuthority.size() != provenanceCount ||
+      face < 0 || face >= quads.rows()) {
+    result.valid = false;
+    return result;
+  }
+  result.vertices.reserve(static_cast<std::size_t>(quads.cols()));
+  for (int corner = 0; corner < quads.cols(); ++corner) {
+    const int vertex = quads(face, corner);
+    if (vertex < 0 ||
+        vertex >= static_cast<int>(constraints.vertexChartAuthority.size())) {
+      result.valid = false;
+      result.vertices.clear();
+      return result;
+    }
+    result.vertices.push_back(
+        &constraints.vertexChartAuthority[static_cast<std::size_t>(vertex)]);
+  }
+  return result;
+}
+
+} // namespace directional::geometry::surface_optimizer_detail
+
+namespace directional::geometry::surface_optimizer_detail {
+
 std::pair<int, int> consistent_component_sheet(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
@@ -1083,7 +1115,8 @@ std::pair<int, int> consistent_component_sheet(
     const validation::source_authoritative_detail::SourcePointLabelSupport
         labelSupport(&constraints->sourceFaces,
                      &constraints->sourceFaceComponent,
-                     &constraints->sourceFaceSheet);
+                     &constraints->sourceFaceSheet,
+                     &constraints->sourceHardFeatureEdges);
     if (labelSupport.available()) {
       std::vector<const SurfacePoint *> points;
       points.reserve(4);
@@ -1105,8 +1138,16 @@ std::pair<int, int> consistent_component_sheet(
         }
         points.push_back(&point);
       }
-      const std::set<std::pair<int, int>> labels = labelSupport.chart_labels(
-          labelSupport.compatible_chart_faces(points));
+      const FaceChartAuthorityView authority = quad_chart_authority(
+          quads, face, *constraints, provenance.size());
+      if (!authority.valid) {
+        return {std::numeric_limits<int>::max(),
+                std::numeric_limits<int>::max()};
+      }
+      const auto resolution = labelSupport.resolve_compatible_chart(
+          points, authority.vertices);
+      const std::set<std::pair<int, int>> labels =
+          labelSupport.chart_labels(resolution.chartFaces);
       if (labels.size() == 1U) {
         return *labels.begin();
       }
@@ -1120,6 +1161,8 @@ std::pair<int, int> consistent_component_sheet(
           return {component, -1};
         }
       }
+      return {std::numeric_limits<int>::max(),
+              std::numeric_limits<int>::max()};
     }
   }
 
@@ -1173,7 +1216,8 @@ SurfacePoint quad_reference_surface_point(
   const validation::source_authoritative_detail::SourcePointLabelSupport
       labelSupport(&constraints.sourceFaces,
                    &constraints.sourceFaceComponent,
-                   &constraints.sourceFaceSheet);
+                   &constraints.sourceFaceSheet,
+                   &constraints.sourceHardFeatureEdges);
   std::vector<const SurfacePoint *> points;
   points.reserve(4);
   for (int corner = 0; corner < 4; ++corner) {
@@ -1184,8 +1228,13 @@ SurfacePoint quad_reference_surface_point(
     }
     points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
   }
-  const std::vector<int> chartFaces =
-      labelSupport.compatible_chart_faces(points);
+  const FaceChartAuthorityView authority = quad_chart_authority(
+      quads, face, constraints, provenance.size());
+  const auto resolution =
+      authority.valid
+          ? labelSupport.resolve_compatible_chart(points, authority.vertices)
+          : validation::source_authoritative_detail::SourceChartCompatibility{};
+  const std::vector<int> &chartFaces = resolution.chartFaces;
   SourceProjectionCache localCache(constraints);
   SourceProjectionCache *cache =
       projectionCache != nullptr ? projectionCache : &localCache;
@@ -1195,7 +1244,11 @@ SurfacePoint quad_reference_surface_point(
     const int authoritativeFace =
         constraints.outputQuadSourceFaces[static_cast<std::size_t>(face)];
     if (authoritativeFace >= 0 &&
-        authoritativeFace < constraints.sourceFaces.rows()) {
+        authoritativeFace < constraints.sourceFaces.rows() &&
+        (!labelSupport.available() ||
+         (resolution.valid() &&
+          std::binary_search(chartFaces.begin(), chartFaces.end(),
+                             authoritativeFace)))) {
       point = cache->project(centroid, std::vector<int>{authoritativeFace});
       if (point.valid()) {
         return point;
@@ -1204,6 +1257,9 @@ SurfacePoint quad_reference_surface_point(
   }
   if (!chartFaces.empty()) {
     point = cache->project(centroid, chartFaces);
+  } else if (!authority.valid ||
+             constraints.requireSourceAuthoritativeValidation) {
+    return {};
   } else {
     const auto [component, sheet] =
         consistent_component_sheet(quads, face, provenance, &constraints);
@@ -1845,6 +1901,10 @@ make_source_authoritative_validator_options(
   validatorOptions.sourceFaceComponents = &constraints.sourceFaceComponent;
   validatorOptions.sourceFaceSheets = &constraints.sourceFaceSheet;
   validatorOptions.vertexProvenance = &provenance;
+  validatorOptions.vertexChartAuthority =
+      constraints.vertexChartAuthority.empty()
+          ? nullptr
+          : &constraints.vertexChartAuthority;
   validatorOptions.outputQuadSourceFaces =
       &constraints.outputQuadSourceFaces;
   validatorOptions.sourceHardFeatureEdges =
@@ -2483,7 +2543,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   const validation::source_authoritative_detail::SourcePointLabelSupport
       sourceLabelSupport(&constraints.sourceFaces,
                          &constraints.sourceFaceComponent,
-                         &constraints.sourceFaceSheet);
+                         &constraints.sourceFaceSheet,
+                         &constraints.sourceHardFeatureEdges);
 
   // Sample the complete output faces, not only their vertices. Bilinear 3x3
   // sampling observes bowed edges and warped interiors while remaining
@@ -2502,8 +2563,13 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
       }
       facePoints.push_back(&provenance[static_cast<std::size_t>(vertex)]);
     }
+    const FaceChartAuthorityView authority = quad_chart_authority(
+        quads, face, constraints, provenance.size());
     const std::vector<int> chartFaces =
-        sourceLabelSupport.compatible_chart_faces(facePoints);
+        authority.valid
+            ? sourceLabelSupport.compatible_chart_faces(facePoints,
+                                                        authority.vertices)
+            : std::vector<int>{};
     const auto [component, sheet] =
         consistent_component_sheet(quads, face, provenance, &constraints);
     for (const double u : quadSamples) {

@@ -617,6 +617,302 @@ std::vector<int> canonical_loop(const std::vector<int> &input) {
 
 namespace directional::validation::source_authoritative_detail {
 
+SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
+    const std::vector<const geometry::SurfacePoint *> &points,
+    const std::vector<const SourceVertexChartAuthority *> &authorities) const {
+  SourceChartCompatibility result;
+  if (!available() || points.empty() ||
+      (!authorities.empty() && authorities.size() != points.size())) {
+    return result;
+  }
+
+  struct PointCandidate {
+    bool scalar = false;
+    std::set<int> exactFaces;
+    std::set<SourceHardRailChartEquivalence> equivalences;
+  };
+  std::vector<std::map<int, PointCandidate>> candidates(points.size());
+
+  const auto route_is_well_formed = [](
+                                        const std::vector<std::uint64_t>
+                                            &route) {
+    return !route.empty() &&
+           std::set<std::uint64_t>(route.begin(), route.end()).size() ==
+               route.size();
+  };
+  const auto point_touches_edge = [](
+                                      const geometry::SurfacePointSourceSupport
+                                          &support,
+                                      const std::uint64_t topology) {
+    const int first = static_cast<int>(topology >> 32U);
+    const int second = static_cast<int>(
+        topology & static_cast<std::uint64_t>(0xffffffffU));
+    if (support.kind ==
+        geometry::SurfacePointSourceEntityKind::SourceEdge) {
+      return support.sourceEdge ==
+             std::make_pair(std::min(first, second),
+                            std::max(first, second));
+    }
+    return support.kind ==
+               geometry::SurfacePointSourceEntityKind::SourceVertex &&
+           (support.sourceVertex == first || support.sourceVertex == second);
+  };
+  const auto valid_equivalence = [&](
+                                     const SourceHardRailChartEquivalence
+                                         &equivalence,
+                                     const geometry::SurfacePointSourceSupport
+                                         &support) {
+    if (equivalence.firstFrontEdge < 0 ||
+        equivalence.firstFrontEdge >= equivalence.secondFrontEdge ||
+        equivalence.railId < 0 ||
+        !route_is_well_formed(equivalence.sourceRouteTopology)) {
+      return false;
+    }
+    bool touchesPoint = false;
+    for (const std::uint64_t topology :
+         equivalence.sourceRouteTopology) {
+      const auto incidence = sourceEdgeFaces.find(topology);
+      if (hardFeatureEdges == nullptr ||
+          hardFeatureEdges->count(topology) == 0U ||
+          incidence == sourceEdgeFaces.end() ||
+          incidence->second.size() != 2U) {
+        return false;
+      }
+      touchesPoint = touchesPoint || point_touches_edge(support, topology);
+    }
+    return touchesPoint;
+  };
+  const auto equivalence_connects = [&](
+                                        const SourceHardRailChartEquivalence
+                                            &equivalence,
+                                        const geometry::SurfacePointSourceSupport
+                                            &support,
+                                        const int scalarComponent,
+                                        const int targetComponent) {
+    if (scalarComponent < 0 || targetComponent < 0 ||
+        scalarComponent == targetComponent) {
+      return false;
+    }
+    for (const std::uint64_t topology :
+         equivalence.sourceRouteTopology) {
+      if (!point_touches_edge(support, topology)) {
+        continue;
+      }
+      const auto incidence = sourceEdgeFaces.find(topology);
+      if (incidence == sourceEdgeFaces.end() ||
+          incidence->second.size() != 2U) {
+        continue;
+      }
+      const int firstComponent =
+          transitionGraph.chart_component(incidence->second[0]);
+      const int secondComponent =
+          transitionGraph.chart_component(incidence->second[1]);
+      if ((firstComponent == scalarComponent &&
+           secondComponent == targetComponent) ||
+          (firstComponent == targetComponent &&
+           secondComponent == scalarComponent)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
+    const geometry::SurfacePoint *point = points[pointIndex];
+    if (point == nullptr || point->face < 0 ||
+        point->face >= sourceFaces->rows()) {
+      return {};
+    }
+    const geometry::SourceChartId declared =
+        transitionGraph.chart(point->face);
+    if (!declared.valid() ||
+        (point->component >= 0 && point->component != declared.component) ||
+        (point->sheet >= 0 && point->sheet != declared.localSheet)) {
+      return {};
+    }
+    const geometry::SurfacePointSourceSupport support =
+        sourceSupport.resolve(*point);
+    if (!support.valid()) {
+      return {};
+    }
+
+    std::set<int> scalarComponents;
+    for (const int face : support.supportedFaces) {
+      geometry::SurfacePoint rebound;
+      if (!transitionGraph.rebind(*point, face, rebound)) {
+        continue;
+      }
+      const int component = transitionGraph.chart_component(face);
+      if (component >= 0) {
+        scalarComponents.insert(component);
+        PointCandidate &candidate =
+            candidates[pointIndex][component];
+        candidate.scalar = true;
+        candidate.exactFaces.insert(face);
+      }
+    }
+    if (scalarComponents.empty()) {
+      return {};
+    }
+
+    const SourceVertexChartAuthority *authority =
+        authorities.empty() ? nullptr : authorities[pointIndex];
+    if (authority == nullptr) {
+      continue;
+    }
+    if (!authority->retained || authority->sourceCharts.empty() ||
+        !std::is_sorted(authority->sourceCharts.begin(),
+                        authority->sourceCharts.end()) ||
+        std::adjacent_find(authority->sourceCharts.begin(),
+                           authority->sourceCharts.end()) !=
+            authority->sourceCharts.end() ||
+        !std::is_sorted(authority->hardRailEquivalences.begin(),
+                        authority->hardRailEquivalences.end()) ||
+        std::adjacent_find(authority->hardRailEquivalences.begin(),
+                           authority->hardRailEquivalences.end()) !=
+            authority->hardRailEquivalences.end()) {
+      return {};
+    }
+    const geometry::SurfaceCellSourceChart declaredChart{
+        declared.component, declared.sourceFace, declared.localSheet};
+    if (!std::binary_search(authority->sourceCharts.begin(),
+                            authority->sourceCharts.end(), declaredChart)) {
+      return {};
+    }
+
+    std::vector<unsigned char> usedEquivalences(
+        authority->hardRailEquivalences.size(), 0U);
+    for (const SourceHardRailChartEquivalence &equivalence :
+         authority->hardRailEquivalences) {
+      if (!valid_equivalence(equivalence, support)) {
+        return {};
+      }
+    }
+    for (const geometry::SurfaceCellSourceChart &chart :
+         authority->sourceCharts) {
+      if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
+          !std::binary_search(support.supportedFaces.begin(),
+                              support.supportedFaces.end(),
+                              chart.sourceFace)) {
+        return {};
+      }
+      const geometry::SourceChartId actual =
+          transitionGraph.chart(chart.sourceFace);
+      if (!actual.valid() || actual.component != chart.sourceComponent ||
+          actual.localSheet != chart.localSheet ||
+          actual.component != declared.component) {
+        return {};
+      }
+      const int targetComponent =
+          transitionGraph.chart_component(actual);
+      if (targetComponent < 0) {
+        return {};
+      }
+      PointCandidate &candidate =
+          candidates[pointIndex][targetComponent];
+      candidate.exactFaces.insert(chart.sourceFace);
+      if (scalarComponents.count(targetComponent) != 0U) {
+        continue;
+      }
+      bool authorized = false;
+      for (std::size_t equivalenceIndex = 0;
+           equivalenceIndex < authority->hardRailEquivalences.size();
+           ++equivalenceIndex) {
+        const SourceHardRailChartEquivalence &equivalence =
+            authority->hardRailEquivalences[equivalenceIndex];
+        const bool connects = std::any_of(
+            scalarComponents.begin(), scalarComponents.end(),
+            [&](const int scalarComponent) {
+              return equivalence_connects(equivalence, support,
+                                          scalarComponent,
+                                          targetComponent);
+            });
+        if (!connects) {
+          continue;
+        }
+        authorized = true;
+        usedEquivalences[equivalenceIndex] = 1U;
+        candidate.equivalences.insert(equivalence);
+        for (const int scalarComponent : scalarComponents) {
+          candidates[pointIndex][scalarComponent].equivalences.insert(
+              equivalence);
+        }
+      }
+      if (!authorized) {
+        return {};
+      }
+    }
+    if (std::any_of(usedEquivalences.begin(), usedEquivalences.end(),
+                    [](const unsigned char used) { return used == 0U; })) {
+      return {};
+    }
+  }
+
+  std::set<int> commonComponents;
+  for (const auto &[component, candidate] : candidates.front()) {
+    (void)candidate;
+    commonComponents.insert(component);
+  }
+  for (std::size_t pointIndex = 1; pointIndex < candidates.size();
+       ++pointIndex) {
+    std::set<int> intersection;
+    for (const int component : commonComponents) {
+      if (candidates[pointIndex].count(component) != 0U) {
+        intersection.insert(component);
+      }
+    }
+    commonComponents = std::move(intersection);
+  }
+  if (commonComponents.size() != 1U) {
+    return {};
+  }
+  const int selectedComponent = *commonComponents.begin();
+  for (std::size_t pointIndex = 0; pointIndex < candidates.size();
+       ++pointIndex) {
+    const PointCandidate &candidate =
+        candidates[pointIndex].at(selectedComponent);
+    if (candidate.scalar) {
+      continue;
+    }
+    const bool hasReciprocalPeer = std::any_of(
+        candidate.equivalences.begin(), candidate.equivalences.end(),
+        [&](const SourceHardRailChartEquivalence &equivalence) {
+          for (std::size_t peer = 0; peer < candidates.size(); ++peer) {
+            if (peer == pointIndex) {
+              continue;
+            }
+            const auto peerCandidate = candidates[peer].find(selectedComponent);
+            if (peerCandidate != candidates[peer].end() &&
+                peerCandidate->second.equivalences.count(equivalence) != 0U) {
+              return true;
+            }
+          }
+          return false;
+        });
+    if (!hasReciprocalPeer) {
+      return {};
+    }
+  }
+
+  result.chartComponent = selectedComponent;
+  result.semanticSide =
+      transitionGraph.chart_component_identity(selectedComponent);
+  result.chartFaces =
+      transitionGraph.chart_component_faces(selectedComponent);
+  result.pointFaces.reserve(candidates.size());
+  for (const auto &pointCandidates : candidates) {
+    const PointCandidate &candidate =
+        pointCandidates.at(selectedComponent);
+    result.pointFaces.emplace_back(candidate.exactFaces.begin(),
+                                   candidate.exactFaces.end());
+  }
+  return result.valid() ? result : SourceChartCompatibility{};
+}
+
+} // namespace directional::validation::source_authoritative_detail
+
+namespace directional::validation::source_authoritative_detail {
+
 Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,
                                       const std::vector<int> &polygon) {
   Eigen::Vector3d normal = Eigen::Vector3d::Zero();
@@ -770,6 +1066,10 @@ validate_source_authoritative_surface_mesh(
   if (!result.provenanceCoverageComplete) {
     result.fail({MeshValidationFailureCode::MissingProvenance});
   }
+  const bool chartAuthorityCardinalityValid =
+      options.vertexChartAuthority == nullptr ||
+      options.vertexChartAuthority->size() ==
+          static_cast<std::size_t>(vertices.rows());
 
   for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
     if (static_cast<std::size_t>(vertex) >= provenance.size()) {
@@ -828,32 +1128,45 @@ validate_source_authoritative_surface_mesh(
   result.localSheetCompatibilityPassed = true;
   if (options.requireLocalSheetCompatibility &&
       (options.sourceFaceComponents == nullptr ||
-       options.sourceFaceSheets == nullptr)) {
+       options.sourceFaceSheets == nullptr ||
+       !chartAuthorityCardinalityValid)) {
     result.localSheetCompatibilityPassed = false;
-    result.fail({MeshValidationFailureCode::MissingSourceAuthority});
+    if (!chartAuthorityCardinalityValid) {
+      result.fail({MeshValidationFailureCode::LocalSheetMismatch});
+    } else {
+      result.fail({MeshValidationFailureCode::MissingSourceAuthority});
+    }
   }
   for (int face = 0; face < faces.rows(); ++face) {
     const std::vector<int> polygon = face_vertices(faces, face);
-    if (options.requireLocalSheetCompatibility) {
-      std::vector<const geometry::SurfacePoint *> facePoints;
-      facePoints.reserve(polygon.size());
-      int invalidVertex = -1;
-      bool faceProvenanceValid = true;
-      for (const int vertex : polygon) {
-        if (vertex < 0 || static_cast<std::size_t>(vertex) >= provenance.size()) {
-          invalidVertex = vertex;
-          faceProvenanceValid = false;
-          break;
-        }
-        facePoints.push_back(
-            &provenance[static_cast<std::size_t>(vertex)]);
+    std::vector<const geometry::SurfacePoint *> facePoints;
+    std::vector<const SourceVertexChartAuthority *> faceAuthorities;
+    facePoints.reserve(polygon.size());
+    faceAuthorities.reserve(polygon.size());
+    int invalidVertex = -1;
+    bool faceProvenanceValid = chartAuthorityCardinalityValid;
+    for (const int vertex : polygon) {
+      if (vertex < 0 || static_cast<std::size_t>(vertex) >= provenance.size()) {
+        invalidVertex = vertex;
+        faceProvenanceValid = false;
+        break;
       }
-      if (!faceProvenanceValid ||
-          !labelSupport.have_compatible_chart(facePoints)) {
-        result.localSheetCompatibilityPassed = false;
-        result.fail({MeshValidationFailureCode::LocalSheetMismatch,
-                     invalidVertex, -1, -1, face});
+      facePoints.push_back(&provenance[static_cast<std::size_t>(vertex)]);
+      if (options.vertexChartAuthority != nullptr &&
+          chartAuthorityCardinalityValid) {
+        faceAuthorities.push_back(&(*options.vertexChartAuthority)[
+            static_cast<std::size_t>(vertex)]);
       }
+    }
+    const SourceChartCompatibility faceChart =
+        faceProvenanceValid
+            ? labelSupport.resolve_compatible_chart(facePoints,
+                                                    faceAuthorities)
+            : SourceChartCompatibility{};
+    if (options.requireLocalSheetCompatibility && !faceChart.valid()) {
+      result.localSheetCompatibilityPassed = false;
+      result.fail({MeshValidationFailureCode::LocalSheetMismatch,
+                   invalidVertex, -1, -1, face});
     }
 
     const Eigen::Vector3d outputNormal = polygon_normal(vertices, polygon);
@@ -863,6 +1176,15 @@ validate_source_authoritative_surface_mesh(
         face < static_cast<int>(options.outputQuadSourceFaces->size())) {
       authoritativeSourceFace =
           (*options.outputQuadSourceFaces)[static_cast<std::size_t>(face)];
+      if (authoritativeSourceFace >= 0 && faceChart.valid() &&
+          !std::binary_search(faceChart.chartFaces.begin(),
+                              faceChart.chartFaces.end(),
+                              authoritativeSourceFace)) {
+        result.localSheetCompatibilityPassed = false;
+        result.fail({MeshValidationFailureCode::LocalSheetMismatch,
+                     -1, -1, -1, face});
+        authoritativeSourceFace = -1;
+      }
     }
     const auto accumulate_source_normal = [&](const int sourceFace) {
       if (sourceFace < 0 || sourceFace >= options.sourceFaces->rows()) {
@@ -878,6 +1200,14 @@ validate_source_authoritative_surface_mesh(
     };
     if (authoritativeSourceFace >= 0) {
       accumulate_source_normal(authoritativeSourceFace);
+    } else if (faceChart.valid()) {
+      std::set<int> exactFaceAuthority;
+      for (const std::vector<int> &pointFaces : faceChart.pointFaces) {
+        exactFaceAuthority.insert(pointFaces.begin(), pointFaces.end());
+      }
+      for (const int sourceFace : exactFaceAuthority) {
+        accumulate_source_normal(sourceFace);
+      }
     } else {
       for (const int vertex : polygon) {
         if (vertex < 0 ||
@@ -981,7 +1311,18 @@ validate_source_authoritative_surface_mesh(
           &provenance[static_cast<std::size_t>(vertex)],
           &provenance[static_cast<std::size_t>(edge.first)],
           &provenance[static_cast<std::size_t>(edge.second)]};
-      if (!labelSupport.have_compatible_chart(edgePoints)) {
+      std::vector<const SourceVertexChartAuthority *> edgeAuthorities;
+      if (options.vertexChartAuthority != nullptr &&
+          chartAuthorityCardinalityValid) {
+        edgeAuthorities = {
+            &(*options.vertexChartAuthority)[static_cast<std::size_t>(vertex)],
+            &(*options.vertexChartAuthority)[
+                static_cast<std::size_t>(edge.first)],
+            &(*options.vertexChartAuthority)[
+                static_cast<std::size_t>(edge.second)]};
+      }
+      if (!labelSupport.have_compatible_chart(edgePoints,
+                                              edgeAuthorities)) {
         return;
       }
       const Eigen::Vector3d point = vertices.row(vertex).transpose();

@@ -133,6 +133,7 @@ struct SurfaceOptimizationConstraints {
   Eigen::VectorXd featureParameters;
   std::vector<int> orderedFeatureVertices;
   std::vector<SurfacePoint> vertexProvenance;
+  std::vector<validation::SourceVertexChartAuthority> vertexChartAuthority;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<int> authoritativeBoundaryLoop;
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
@@ -569,6 +570,15 @@ double percentile(std::vector<double> values, const double p);
 double angle_degrees(const Eigen::RowVector3d &a,
                             const Eigen::RowVector3d &b);
 
+struct FaceChartAuthorityView {
+  bool valid = true;
+  std::vector<const validation::SourceVertexChartAuthority *> vertices;
+};
+
+FaceChartAuthorityView quad_chart_authority(
+    const Eigen::MatrixXi &quads, const int face,
+    const SurfaceOptimizationConstraints &constraints,
+    const std::size_t provenanceCount);
 
 std::pair<int, int> consistent_component_sheet(
     const Eigen::MatrixXi &quads, const int face,
@@ -608,7 +618,9 @@ struct OutputProjectionCache {
         labelSupport(
             constraints != nullptr ? &constraints->sourceFaces : nullptr,
             constraints != nullptr ? &constraints->sourceFaceComponent : nullptr,
-            constraints != nullptr ? &constraints->sourceFaceSheet : nullptr);
+            constraints != nullptr ? &constraints->sourceFaceSheet : nullptr,
+            constraints != nullptr ? &constraints->sourceHardFeatureEdges
+                                   : nullptr);
     for (int face = 0; face < quads.rows(); ++face) {
       triangles.row(2 * face) << quads(face, 0), quads(face, 1), quads(face, 2);
       triangles.row(2 * face + 1) << quads(face, 0), quads(face, 2), quads(face, 3);
@@ -626,8 +638,14 @@ struct OutputProjectionCache {
           }
           points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
         }
-        labels = labelSupport.chart_labels(
-            labelSupport.compatible_chart_faces(points));
+        const FaceChartAuthorityView authority =
+            quad_chart_authority(quads, face, *constraints,
+                                 provenance.size());
+        if (authority.valid) {
+          labels = labelSupport.chart_labels(
+              labelSupport.compatible_chart_faces(points,
+                                                  authority.vertices));
+        }
       }
       if (labels.empty() && component >= 0 && sheet >= 0) {
         labels.insert({component, sheet});

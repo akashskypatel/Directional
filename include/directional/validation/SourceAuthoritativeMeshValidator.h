@@ -20,6 +20,7 @@
 #include <map>
 #include <numeric>
 #include <set>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -43,6 +44,39 @@ struct MeshTopologySummary {
   bool boundaryCyclesClosed = true;
 };
 
+/** Exact quotient authority permitting one output vertex to use the source
+ * chart on the opposite side of one retained hard-rail pairing. */
+struct SourceHardRailChartEquivalence {
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  int railId = -1;
+  std::vector<std::uint64_t> sourceRouteTopology;
+
+  friend bool operator<(const SourceHardRailChartEquivalence &lhs,
+                        const SourceHardRailChartEquivalence &rhs) {
+    return std::tie(lhs.railId, lhs.sourceRouteTopology,
+                    lhs.firstFrontEdge, lhs.secondFrontEdge) <
+           std::tie(rhs.railId, rhs.sourceRouteTopology,
+                    rhs.firstFrontEdge, rhs.secondFrontEdge);
+  }
+
+  friend bool operator==(const SourceHardRailChartEquivalence &lhs,
+                         const SourceHardRailChartEquivalence &rhs) {
+    return lhs.firstFrontEdge == rhs.firstFrontEdge &&
+           lhs.secondFrontEdge == rhs.secondFrontEdge &&
+           lhs.railId == rhs.railId &&
+           lhs.sourceRouteTopology == rhs.sourceRouteTopology;
+  }
+};
+
+/** Validation-only projection of the complete quotient lineage retained for
+ * one output vertex. Scalar SurfacePoint authority remains separate. */
+struct SourceVertexChartAuthority {
+  bool retained = false;
+  std::vector<geometry::SurfaceCellSourceChart> sourceCharts;
+  std::vector<SourceHardRailChartEquivalence> hardRailEquivalences;
+};
+
 struct SourceAuthoritativeMeshValidatorOptions {
   double geometricTolerance = 1.0e-9;
   const Eigen::MatrixXd *sourceVertices = nullptr;
@@ -50,6 +84,8 @@ struct SourceAuthoritativeMeshValidatorOptions {
   const std::vector<int> *sourceFaceComponents = nullptr;
   const std::vector<int> *sourceFaceSheets = nullptr;
   const std::vector<geometry::SurfacePoint> *vertexProvenance = nullptr;
+  const std::vector<SourceVertexChartAuthority> *vertexChartAuthority =
+      nullptr;
   const std::vector<int> *outputQuadSourceFaces = nullptr;
   std::set<std::uint64_t> sourceHardFeatureEdges;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
@@ -266,6 +302,18 @@ std::vector<std::vector<int>> extract_boundary_loops(
 
 std::vector<int> canonical_loop(const std::vector<int> &input);
 
+struct SourceChartCompatibility {
+  int chartComponent = -1;
+  geometry::SurfaceCellCanonicalIdentity semanticSide;
+  std::vector<int> chartFaces;
+  std::vector<std::vector<int>> pointFaces;
+
+  [[nodiscard]] bool valid() const {
+    return chartComponent >= 0 && semanticSide.valid && !chartFaces.empty() &&
+           !pointFaces.empty();
+  }
+};
+
 struct SourcePointLabelSupport {
   const Eigen::MatrixXi *sourceFaces = nullptr;
   const std::vector<int> *components = nullptr;
@@ -281,7 +329,33 @@ struct SourcePointLabelSupport {
       : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets),
         sourceSupport(faces),
         transitionGraph(faces, sourceComponents, sourceSheets,
-                        hardFeatureEdges) {}
+                        hardFeatureEdges),
+        hardFeatureEdges(hardFeatureEdges) {
+    if (faces == nullptr || faces->cols() != 3) {
+      return;
+    }
+    for (int face = 0; face < faces->rows(); ++face) {
+      for (int corner = 0; corner < 3; ++corner) {
+        const int first = (*faces)(face, corner);
+        const int second = (*faces)(face, (corner + 1) % 3);
+        if (first < 0 || second < 0 || first == second) {
+          continue;
+        }
+        const auto low = static_cast<std::uint32_t>(std::min(first, second));
+        const auto high = static_cast<std::uint32_t>(std::max(first, second));
+        sourceEdgeFaces[(static_cast<std::uint64_t>(low) << 32U) |
+                        static_cast<std::uint64_t>(high)]
+            .push_back(face);
+      }
+    }
+    for (auto &[edge, incidentFaces] : sourceEdgeFaces) {
+      (void)edge;
+      std::sort(incidentFaces.begin(), incidentFaces.end());
+      incidentFaces.erase(
+          std::unique(incidentFaces.begin(), incidentFaces.end()),
+          incidentFaces.end());
+    }
+  }
 
   [[nodiscard]] bool available() const {
     return sourceSupport.available() && transitionGraph.available() &&
@@ -331,35 +405,19 @@ struct SourcePointLabelSupport {
     return sharedVertices == 2;
   }
 
-  // A completed output face may live on one source triangle or cross exactly
-  // one genuine source edge between two adjacent projection charts.  This is
-  // intentionally stricter than component-only compatibility: non-adjacent
-  // close/opposing sheets can never satisfy the contract.
+  // A completed output face may live on one source chart component or use one
+  // exact quotient-retained hard-rail pairing. Proximity, row order, and a
+  // global hard-feature union never establish compatibility.
+  [[nodiscard]] SourceChartCompatibility resolve_compatible_chart(
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
+      const;
+
   [[nodiscard]] std::vector<int> compatible_chart_faces(
-      const std::vector<const geometry::SurfacePoint *> &points) const {
-    if (!available() || points.empty()) {
-      return {};
-    }
-    // First preserve the strict per-point declared-chart contract. A point may
-    // be rebound only through an exact source-edge/source-vertex transition;
-    // proximity and triangle-row coincidence are never accepted as identity.
-    for (const geometry::SurfacePoint *point : points) {
-      if (point == nullptr || point->face < 0 ||
-          point->face >= sourceFaces->rows()) {
-        return {};
-      }
-      const geometry::SourceChartId declared = transitionGraph.chart(point->face);
-      if (!declared.valid() ||
-          (point->component >= 0 && point->component != declared.component) ||
-          (point->sheet >= 0 && point->sheet != declared.localSheet)) {
-        return {};
-      }
-    }
-    const int component = transitionGraph.compatible_chart_component(points);
-    if (component < 0) {
-      return {};
-    }
-    return transitionGraph.chart_component_faces(component);
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
+      const {
+    return resolve_compatible_chart(points, authorities).chartFaces;
   }
 
   [[nodiscard]] std::set<std::pair<int, int>> chart_labels(
@@ -378,8 +436,10 @@ struct SourcePointLabelSupport {
   }
 
   [[nodiscard]] bool have_compatible_chart(
-      const std::vector<const geometry::SurfacePoint *> &points) const {
-    return !compatible_chart_faces(points).empty();
+      const std::vector<const geometry::SurfacePoint *> &points,
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
+      const {
+    return resolve_compatible_chart(points, authorities).valid();
   }
 
   [[nodiscard]] bool have_common_label(
@@ -413,6 +473,9 @@ struct SourcePointLabelSupport {
     }
     return !common.empty();
   }
+
+  const std::set<std::uint64_t> *hardFeatureEdges = nullptr;
+  std::map<std::uint64_t, std::vector<int>> sourceEdgeFaces;
 };
 
 Eigen::Vector3d polygon_normal(const Eigen::MatrixXd &vertices,

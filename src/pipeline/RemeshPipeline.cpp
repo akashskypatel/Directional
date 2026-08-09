@@ -7537,6 +7537,70 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         }
       }
       constraints.vertexProvenance = completedProvenance;
+      if (useAuthoritativePhaseFront) {
+        constraints.vertexChartAuthority.resize(
+            static_cast<std::size_t>(completedVertices.rows()));
+        bool chartAuthorityProjectionValid =
+            completedVertexLineage.size() ==
+            constraints.vertexChartAuthority.size();
+        for (const geometry::PureQuadVertexLineage &lineage :
+             completedVertexLineage) {
+          if (!chartAuthorityProjectionValid || lineage.outputVertex < 0 ||
+              lineage.outputVertex >= completedVertices.rows()) {
+            chartAuthorityProjectionValid = false;
+            break;
+          }
+          validation::SourceVertexChartAuthority &authority =
+              constraints.vertexChartAuthority[static_cast<std::size_t>(
+                  lineage.outputVertex)];
+          if (authority.retained) {
+            chartAuthorityProjectionValid = false;
+            break;
+          }
+          authority.retained = true;
+          authority.sourceCharts = lineage.sourceCharts;
+          std::sort(authority.sourceCharts.begin(),
+                    authority.sourceCharts.end());
+          authority.sourceCharts.erase(
+              std::unique(authority.sourceCharts.begin(),
+                          authority.sourceCharts.end()),
+              authority.sourceCharts.end());
+          for (const geometry::PureQuadEquivalenceProvenance &equivalence :
+               lineage.equivalences) {
+            if (equivalence.kind !=
+                geometry::PureQuadEquivalenceKind::HardRail) {
+              continue;
+            }
+            validation::SourceHardRailChartEquivalence projected;
+            projected.firstFrontEdge = equivalence.firstFrontEdge;
+            projected.secondFrontEdge = equivalence.secondFrontEdge;
+            projected.railId = equivalence.railId;
+            projected.sourceRouteTopology =
+                equivalence.sourceRouteTopology;
+            authority.hardRailEquivalences.push_back(
+                std::move(projected));
+          }
+          std::sort(authority.hardRailEquivalences.begin(),
+                    authority.hardRailEquivalences.end());
+          authority.hardRailEquivalences.erase(
+              std::unique(authority.hardRailEquivalences.begin(),
+                          authority.hardRailEquivalences.end()),
+              authority.hardRailEquivalences.end());
+          chartAuthorityProjectionValid =
+              !authority.sourceCharts.empty();
+        }
+        if (!chartAuthorityProjectionValid ||
+            std::any_of(constraints.vertexChartAuthority.begin(),
+                        constraints.vertexChartAuthority.end(),
+                        [](const auto &authority) {
+                          return !authority.retained ||
+                                 authority.sourceCharts.empty();
+                        })) {
+          for (auto &authority : constraints.vertexChartAuthority) {
+            authority.retained = false;
+          }
+        }
+      }
       fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
                                          completedProvenance, constraints);
       if ((result.surfaceCellContext.sourceGridRecoveryUsed ||
