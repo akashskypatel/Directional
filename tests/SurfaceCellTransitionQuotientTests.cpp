@@ -1202,4 +1202,151 @@ TEST(SurfaceCellTransitionQuotient,
             directional::bench::benchmark_output_semantic_hash(mutation));
 }
 
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     ValidHardRailRouteUsesTypedIdentity) {
+  const auto &fixture = hard_rail_fixture();
+  const int hardRail = first_edge_of_kind(fixture.network.phaseFront,
+                                          SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  const auto &edge =
+      fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(edge.sourceRouteTopology.empty());
+  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceTransitions = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  for (std::size_t index = 0; index < edge.sourceRouteTopology.size(); ++index) {
+    const auto expected = sourceTransitions.find(edge.sourceRouteTopology[index]);
+    ASSERT_NE(sourceTransitions.end(), expected);
+    EXPECT_EQ(expected->second, edge.sourceRouteEdges[index]);
+  }
+
+  const auto result = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(1, result.connectedComponents);
+}
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     ValidPeriodicCutRouteUsesTypedIdentity) {
+  const auto &fixture = cylinder_fixture();
+  const int periodic = first_edge_of_kind(fixture.network.phaseFront,
+                                          SurfaceFrontBoundaryKind::PeriodicCut);
+  ASSERT_GE(periodic, 0);
+  const auto &edge =
+      fixture.network.phaseFront.edges[static_cast<std::size_t>(periodic)];
+  ASSERT_FALSE(edge.sourceRouteTopology.empty());
+  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+  ASSERT_GE(edge.periodicRelation, 0);
+  ASSERT_LT(static_cast<std::size_t>(edge.periodicRelation),
+            fixture.network.phaseFront.periodicHolonomies.size());
+
+  const auto result = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(result.success) << result.failure;
+  EXPECT_EQ(fixture.network.phaseFront.periodicHolonomies.size(),
+            result.consumedPeriodicHolonomies);
+}
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     InvalidInteriorTransitionIdFailsClosed) {
+  const auto &fixture = hard_rail_fixture();
+  const int hardRail = first_edge_of_kind(fixture.network.phaseFront,
+                                          SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceTransitions = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  ASSERT_FALSE(sourceTransitions.empty());
+
+  SurfacePhaseFrontResult negative = fixture.network.phaseFront;
+  auto &negativeEdge = negative.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(negativeEdge.sourceRouteEdges.empty());
+  negativeEdge.sourceRouteEdges.front() = -1;
+  const auto negativeResult = materialize(fixture, negative);
+  EXPECT_FALSE(negativeResult.success);
+  EXPECT_EQ("InvalidHardRailAuthority", negativeResult.failure);
+
+  SurfacePhaseFrontResult outOfRange = fixture.network.phaseFront;
+  auto &outOfRangeEdge = outOfRange.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(outOfRangeEdge.sourceRouteEdges.empty());
+  ASSERT_LE(sourceTransitions.size(),
+            static_cast<std::size_t>(std::numeric_limits<int>::max()));
+  outOfRangeEdge.sourceRouteEdges.front() =
+      static_cast<int>(sourceTransitions.size());
+  const auto outOfRangeResult = materialize(fixture, outOfRange);
+  EXPECT_FALSE(outOfRangeResult.success);
+  EXPECT_EQ("InvalidHardRailAuthority", outOfRangeResult.failure);
+}
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     OutOfDomainPackedSourceVertexFailsClosed) {
+  const auto &fixture = hard_rail_fixture();
+  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
+  const int hardRail =
+      first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(edge.sourceRouteTopology.empty());
+  edge.sourceRouteTopology.front() =
+      directional::pipeline::surface_cell_source_edge_key(
+          0, static_cast<int>(fixture.mesh.V.rows()));
+
+  const auto result = materialize(fixture, tampered);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidHardRailAuthority", result.failure);
+}
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     RouteTopologyTransitionMismatchFailsClosed) {
+  const auto &fixture = hard_rail_fixture();
+  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
+  const int hardRail =
+      first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(edge.sourceRouteEdges.empty());
+
+  const auto sourceIncidence = directional::geometry::
+      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
+  const auto sourceTransitions = directional::geometry::
+      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
+  const int current = edge.sourceRouteEdges.front();
+  int alternate = -1;
+  for (const auto &[topology, compact] : sourceTransitions) {
+    (void)topology;
+    if (compact != current) {
+      alternate = compact;
+      break;
+    }
+  }
+  ASSERT_GE(alternate, 0)
+      << "hard-rail fixture must expose two valid compact transitions";
+  edge.sourceRouteEdges.front() = alternate;
+
+  const auto result = materialize(fixture, tampered);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidHardRailAuthority", result.failure);
+}
+
+TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+     DuplicateSemanticRouteTopologyFailsClosed) {
+  const auto &fixture = hard_rail_fixture();
+  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
+  const int hardRail =
+      first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
+  ASSERT_GE(hardRail, 0);
+  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_FALSE(edge.sourceRouteTopology.empty());
+  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+  edge.sourceRouteTopology.push_back(edge.sourceRouteTopology.front());
+  edge.sourceRouteEdges.push_back(edge.sourceRouteEdges.front());
+
+  const auto result = materialize(fixture, tampered);
+  EXPECT_FALSE(result.success);
+  EXPECT_EQ("InvalidHardRailAuthority", result.failure);
+}
+
 } // namespace

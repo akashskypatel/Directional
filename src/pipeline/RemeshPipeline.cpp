@@ -1,4 +1,5 @@
 #include <directional/pipeline/RemeshPipeline.h>
+#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/geometry/GeneralGraphMatching.h>
 
 namespace directional::pipeline {
@@ -2281,16 +2282,60 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     if (routeTopology.empty() || routeEdges.size() != routeTopology.size()) {
       return false;
     }
-    std::set<std::uint64_t> uniqueTopology;
+    const std::size_t transitionExtent = sourceEdgeIndices.size();
+    std::set<authority::SourceEdgeTopologyKey> uniqueTopology;
     for (std::size_t index = 0; index < routeTopology.size(); ++index) {
-      const std::uint64_t topology = routeTopology[index];
-      const auto incidence = exactSourceIncidence.find(topology);
-      const auto sourceEdge = sourceEdgeIndices.find(topology);
-      if (!uniqueTopology.insert(topology).second ||
-          incidence == exactSourceIncidence.end() ||
-          incidence->second[0] < 0 || incidence->second[1] < 0 ||
-          sourceEdge == sourceEdgeIndices.end() ||
-          sourceEdge->second != routeEdges[index]) {
+      const std::uint64_t rawTopology = routeTopology[index];
+      const std::uint64_t firstLegacyVertex = rawTopology >> 32U;
+      const std::uint64_t secondLegacyVertex = rawTopology & 0xffffffffULL;
+      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+          static_cast<std::int64_t>(firstLegacyVertex),
+          static_cast<std::size_t>(sourceVertices.rows()));
+      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+          static_cast<std::int64_t>(secondLegacyVertex),
+          static_cast<std::size_t>(sourceVertices.rows()));
+      if (!firstVertex || !secondVertex) {
+        return false;
+      }
+      const auto topology = authority::SourceEdgeTopologyKey::make(
+          firstVertex.value(), secondVertex.value());
+      if (!topology || !uniqueTopology.insert(topology.value()).second) {
+        return false;
+      }
+
+      const std::size_t firstLegacyIndex =
+          authority::LegacyAuthorityAdapters::to_legacy_index(
+              topology.value().first());
+      const std::size_t secondLegacyIndex =
+          authority::LegacyAuthorityAdapters::to_legacy_index(
+              topology.value().second());
+      if (firstLegacyIndex >
+              static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
+          secondLegacyIndex >
+              static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+        return false;
+      }
+      const std::uint64_t compatibilityTopology = surface_cell_source_edge_key(
+          static_cast<int>(firstLegacyIndex),
+          static_cast<int>(secondLegacyIndex));
+      if (compatibilityTopology != rawTopology) {
+        return false;
+      }
+
+      const auto incidence = exactSourceIncidence.find(compatibilityTopology);
+      const auto sourceEdge = sourceEdgeIndices.find(compatibilityTopology);
+      if (incidence == exactSourceIncidence.end() || incidence->second[0] < 0 ||
+          incidence->second[1] < 0 || sourceEdge == sourceEdgeIndices.end()) {
+        return false;
+      }
+      const auto suppliedTransition =
+          authority::LegacyAuthorityAdapters::interior_transition(
+              static_cast<std::int64_t>(routeEdges[index]), transitionExtent);
+      const auto expectedTransition =
+          authority::LegacyAuthorityAdapters::interior_transition(
+              static_cast<std::int64_t>(sourceEdge->second), transitionExtent);
+      if (!suppliedTransition || !expectedTransition ||
+          suppliedTransition.value() != expectedTransition.value()) {
         return false;
       }
     }
