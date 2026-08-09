@@ -1,6 +1,27 @@
 # Surface Cell Backend Remediation Plan
 
-## Current blocker
+**Status:** historical G4 remediation record; superseded for current action and
+test authority  
+**Current operational authority:** `TODO`, `MILESTONE_G_TODO.md`,
+`.agents/Directional/Future_Chat_Session_Handoff.md`, and
+`.agents/Directional/REORIENTATION_PLAN.md`  
+**Current test redesign:**
+`.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`
+
+The artifact IDs, “current blocker,” and “next” instructions below preserve
+the earlier G4 boundary/isolation checkpoint. They must not override the live
+multi-rail artifact-only plan.
+
+The 2026-08-09 independent test audit also supersedes the earlier assumption
+that focused counterfactual packaging plus direct face-degree checks are
+sufficient test authority. All committed production inputs are triangle-only,
+but the complete direct semantic oracle, rich field/topology matrix,
+property/metamorphic generation, fuzz replay, quality gates, and immutable
+discovery controls remain open as `TA-01` through `TA-12`. After the current
+artifact-only closeout, T1 independent test-oracle foundation precedes M1
+production migration.
+
+## Historical blocker at this checkpoint
 
 G0-G3 are closed. **G4 topology-distinct completion and singularities is active.**
 
@@ -71,7 +92,7 @@ Current observation:
 
 Do not repair the ten historical completion/simplification failures merely because they exist. Only elevate one when exact prescribed-sphere evidence proves it is the active direct cause.
 
-## Required verification sequence
+## Historical verification sequence
 
 Artifact-only validation of `9024549134` is complete and recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
 

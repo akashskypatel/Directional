@@ -23,6 +23,8 @@ It does not redefine architecture or runtime evidence:
 |---|---|
 | Normative product, domains, stages, and invariants | `.agents/Directional/DESIGN.md` |
 | Findings and scientific comparison | `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md` |
+| Normative testing policy | `tests/TESTING_STRATEGY.md` |
+| Test-audit findings and T0–T6 redesign | `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` |
 | Current turn and exact next action | `TODO`, `MILESTONE_G_TODO.md`, and `.agents/Directional/Future_Chat_Session_Handoff.md` |
 | Regression history and repeated code shapes | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
 | Immutable build/runtime evidence | the applicable dated plan and report |
@@ -56,6 +58,15 @@ M0 preserve immutable evidence [next]
 -> M4 certificate-carrying chart and quotient relations
 -> M5 occurrence, embedding, and independent verification split
 -> M6 retire legacy representations and decompose ownership modules
+
+Testing:
+T0 independent audit and authority separation [complete]
+-> T1 independent oracle/package foundation
+-> T2 complete direct corpus and semantic manifest
+-> T3 property/metamorphic generation and shrinking
+-> T4 sanitizer fuzzing and minimized replay
+-> T5 calibrated representative quality/corpus gates
+-> T6 CI, resource, and oracle-adequacy hardening
 ```
 
 The current implementation is behavioral comparison authority and migration
@@ -89,7 +100,8 @@ Classify the result without changing migration order:
 - persistence updates `G4-R007`; it does not create a duplicate event;
 - a new regression requires direct evidence and the tracker classification
   rules;
-- pass or fail, M1 is the first subsequent mutating turn;
+- pass or fail, T1 independent test-oracle foundation is the first subsequent
+  mutating turn; M1 follows only after T1 immutable acceptance;
 - the separate target-size-dependent `InvalidHardRailPairing` blocker still
   prevents prescribed-sphere work until M3 supplies one shared rail schedule.
 
@@ -150,6 +162,30 @@ than topology authority.
     proximity weld, recovery output, generic substitution after `Rejected`, or
     predicted topology count can satisfy acceptance.
 
+### 5.1 Interlocked test redesign
+
+The test-suite audit found that `TEST_AUTHORITY_COVERAGE_GAP` has recurred five
+times and that the direct oracle does not yet verify the whole product intent.
+The architecture migration therefore consumes test authority incrementally:
+
+| Test milestone | Required before | Minimum evidence |
+|---|---|---|
+| `T1` independent oracle/package foundation | M1 | test-only topology/lineage/geometry checks, oracle mutations, default discovery labels |
+| `T2` complete direct corpus/semantic manifest | M2 behavior migration | all ten committed triangle-mesh cases packaged and explicitly green/known-red |
+| `T3` generated/metamorphic framework | M3/M4 acceptance | seed replay, shrinking, cycle/order/transform/field-label properties |
+| `T4` sanitizer fuzz/replay | M5 closure | bounded fast-stage ASan/UBSan targets and committed minimized reproducers |
+| `T5` calibrated quality/corpus gates | G6/G7 readiness | field/feature/approximation/element-quality baselines and stratified corpus |
+| `T6` CI/resource/oracle adequacy | M6/G7 closure | no hidden mandatory tests, resource trends, mutation sensitivity |
+
+Each T milestone is its own Code + Build / immutable Test + Benchmark pair.
+Known-red direct intent remains visible and cannot be counted as accepted
+regression-preservation evidence. The full architecture migration does not
+pause for a monolithic test rewrite; each M milestone waits only for its named
+test prerequisite.
+
+The queued first mutating plan is
+`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
+
 ## 6. Ordered migration milestones
 
 ### M1 — authority kernel and compatibility boundary
@@ -173,8 +209,9 @@ Implement behind adapters, with no intended runtime behavior change:
 **Do not include:** producer-disposition changes, shared-rail scheduling,
 validator behavior changes, feature work, or file-only refactoring.
 
-**Exit evidence:** all configured targets compile; implicit cross-domain
-conversion is impossible; adapter round trips are exact or fail typed;
+**Exit evidence:** T1 independent oracle/package authority remains green; all
+configured targets compile; implicit cross-domain conversion is impossible;
+adapter round trips are exact or fail typed;
 boundary/interior route, inverse/composition, route reversal, and face-row
 permutation contracts pass in the following artifact turn; direct accepted
 baselines remain semantically unchanged.
@@ -320,6 +357,11 @@ counterevidence passes.
 | `AR-11` | normative design separated from status/evidence | corrected at `dfa77fa6`; continuously enforced |
 | `AR-12` | positive, tamper, metamorphic, and representative evidence for every contract | enforced per slice; closes with M6 matrix |
 
+Test-architecture findings `TA-01` through `TA-12` are tracked separately in
+the regression tracker. They are not runtime regression events. Close each
+only at the T milestone named by the test-suite audit; a green focused test or
+aggregate count cannot close them.
+
 ## 8. Mandatory repeated-pattern controls
 
 Every slice must copy the tracker’s per-turn review table and fill all nine
@@ -347,11 +389,12 @@ and exact simplex identity survives canonicalization.
 | Work | Minimum architecture evidence before authorization |
 |---|---|
 | Existing multi-rail torus artifact | M0 only; evidence preservation, no edits |
-| Target-size hard-rail behavior and adaptive 2:1 transitions | accepted M3 schedule plus M5 certificate verification for the touched path |
-| Nonzero periodic `Z4` holonomy | M1 algebra, M4 relation certificates, and M5 independent cycle/quotient verification |
-| Prescribed singularity sphere | hard-rail blocker closed; occurrence/singularity-port relations and global work ledger accepted through M5 |
-| G6 bunny/vase production closure | M5 representative verifier accepted and no touched legacy authority path remains; M6 closure is required before declaring architecture complete |
-| G7 default-on/production hardening | M6 complete, then full-suite, supported-platform, failure-path, determinism, memory, and performance evidence |
+| M1 authority kernel | accepted T1 independent oracle/package foundation |
+| Target-size hard-rail behavior and adaptive 2:1 transitions | accepted T3 properties, M3 schedule, and M5 certificate verification for the touched path |
+| Nonzero periodic `Z4` holonomy | T3 cycle/branch-label properties, M1 algebra, M4 relation certificates, and M5 independent cycle/quotient verification |
+| Prescribed singularity sphere | T2 direct visibility, T3 generated index/cycle evidence, hard-rail blocker closed, and occurrence/singularity-port/work-ledger authority through M5 |
+| G6 bunny/vase production closure | T5 representative verifier/quality gates accepted and no touched legacy authority path remains; M6 closure is required before declaring architecture complete |
+| G7 default-on/production hardening | T6 and M6 complete, then full-suite, supported-platform, failure-path, determinism, memory, performance, corpus, and fuzz evidence |
 
 Passing M0 cannot authorize these feature slices on the legacy model.
 
@@ -372,6 +415,10 @@ change:
   backend choice as topology identity;
 - treats compile success, aggregate totals, reduced failure counts, timeout,
   or a focused proxy as representative acceptance;
+- uses production success/validation as the independent product oracle, or
+  omits the fixture precondition/counterexample/package identity;
+- hides a mandatory intent/property/fuzz-replay test behind a default-off
+  target, disables a known-red product case, or loses its deterministic seed;
 - weakens a fixture, validator, typed failure, lineage requirement, or
   fallback prohibition;
 - lacks a finite aggregate work bound or permits partial state to escape as a
@@ -387,13 +434,17 @@ Architecture reorientation is complete only when:
 
 1. M0 is closed with immutable evidence;
 2. M1 through M6 each have separate compile and runtime acceptance records;
-3. all `AR-01` through `AR-12` closure conditions are evidenced;
-4. no `RP-01` through `RP-09` forbidden code shape remains on the direct
+3. T1 through T6 each have separate compile and runtime acceptance records at
+   the dependency named above;
+4. all `AR-01` through `AR-12` and `TA-01` through `TA-12` closure conditions
+   are evidenced;
+5. no `RP-01` through `RP-09` forbidden code shape remains on the direct
    production path;
-5. the A0–A9 pipeline has one immutable owner per semantic output;
-6. representative direct fixtures prove certificate lineage, exact topology,
+6. the A0–A9 pipeline has one immutable owner per semantic output;
+7. representative direct fixtures prove certificate lineage, exact topology,
+   field/feature alignment, source approximation, element quality,
    determinism, bounded work, and no fallback/recovery;
-7. `TODO`, milestone, handoff, tracker, and PR state agree on the next product
+8. `TODO`, milestone, handoff, tracker, and PR state agree on the next product
    gate.
 
 Completion of this roadmap removes the architectural block. It does not by

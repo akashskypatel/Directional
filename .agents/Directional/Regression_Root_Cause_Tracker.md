@@ -173,20 +173,35 @@ test semantic_contract:
 Required shape:
 
 ```text
+intent = name_user_or_stage_contract()
 precondition = prove_fixture_creates_required_semantic_state()
 assert precondition
 
 result = invoke_production_entry_point()
 assert result.typed_ledger.entered(target_stage)
 assert result.typed_outcome == expected_contract
-assert canonical_semantic_identity(result)
+oracle = independently_recompute_input_output_contract()
+assert oracle.accepts(result)
 
-artifact_preflight.assert_independently_discovered(test_name)
+counterexample = mutate_one_semantic_fact(result)
+assert oracle.rejects(counterexample)
+
+evidence = {
+    fixture_or_corpus_checksum,
+    deterministic_seed,
+    executable,
+    exact_discovered_test_name,
+    artifact,
+    work_and_resource_budget
+}
+artifact_preflight.assert_complete(evidence)
 ```
 
 Review guard: name the production entry point, positive precondition, earliest
-typed assertion, canonical oracle, and packaged executable for every mandatory
-test. Counts, helper coverage, compilation, or a passing proxy are not proof.
+typed assertion, independent canonical oracle, rejected counterexample, and
+packaged executable/fixture/seed/artifact identity for every mandatory test.
+Production `result.success`, counts, helper coverage, raw IDs/order, hashes,
+retention lifetime, compilation, no-crash, or a passing proxy are not proof.
 
 ### RP-03 — one state carries two meanings
 
@@ -643,6 +658,41 @@ Normative replacement architecture and the staged M0–M6 migration are in
 comparison are in
 `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
 
+
+## Test architecture enforcement register — independent audit 2026-08-09
+
+This register tracks structural test debt found by the documentation-only
+test-suite audit. These items are not new runtime regression events and do not
+change the PR-wide totals of 34 events, 14 categories, or 20 recurrences.
+Close an item only with the T0–T6 evidence named in the audit plan.
+
+The current suite has meaningful local contracts and six direct production
+cases. All ten committed SurfaceCells production inputs are triangle-only, so
+pre-quad fixtures are not the defect. The missing authority is the complete
+intent oracle, direct rich-case gating, generated/fuzz coverage, and
+independent package evidence. `TEST_AUTHORITY_COVERAGE_GAP` already records six
+events and five recurrences.
+
+| ID | Severity | Pattern mapping | Structural evidence at `6af23d9` | Required close condition |
+|---|---|---|---|---|
+| `TA-01` | Critical | `RP-02` | Direct acceptance checks backend/no-recovery/nonempty/degree four but not independent topology, lineage, field/feature, approximation, quality, determinism, or work. | T1 independent product oracle and mutation adequacy; full intent gate by T5. |
+| `TA-02` | Critical | `RP-02`, `RP-07`, `RP-09` | Six-case direct matrix omits torus, thin bent tube, prescribed sphere, and mechanical feature. | T2 packages/discovers all ten cases with explicit green/known-red status. |
+| `TA-03` | Critical | `RP-01`, `RP-02` | `BenchmarkQuality` metrics are observational and reuse production validator/support concepts. | Independent test decision procedures plus approved metric definitions/baselines/thresholds. |
+| `TA-04` | High | `RP-01`, `RP-04`, `RP-06`, `RP-07`, `RP-09` | No property library/generator, shrinker, `LLVMFuzzerTestOneInput`, or fuzz target exists. | T3 seed replay/shrinking and T4 sanitizer fuzz/replay accepted. |
+| `TA-05` | High | `RP-02` | Focused helper/internal-state evidence can be promoted to product proof. | Every mandatory test declares intent, precondition, production entry, independent oracle, counterexample, and evidence identity. |
+| `TA-06` | High | `RP-01`, `RP-02` | Historical tests copied weak numeric domains or constructed impossible witnesses. | Oracle mutation tests and domain-independent fixtures fail for the intended corruption. |
+| `TA-07` | High | `RP-02` | Mandatory sources/tests have previously been absent from packaged default executables. | T1/T6 immutable manifest verifies exact executable, discovery name, label, fixture/corpus/seed, and artifact. |
+| `TA-08` | High | `RP-02`, `RP-05`, `RP-07` | Raw IDs/order, exact cardinality, hash, and retention lifetime appear as semantic proxies. | Canonical/metamorphic oracles replace proxies unless the value is itself the declared contract. |
+| `TA-09` | High | `RP-03`, `RP-04`, `RP-06` | Sequence/reset/cumulative work and resource behavior lack a coherent gate. | Repeated-process and in-process sequence properties gate monotone work, time, RSS, and state reset. |
+| `TA-10` | High | `RP-02`, `RP-07`, `RP-09` | Fixture manifest lacks semantic field/topology/feature coverage descriptors. | T2 versioned semantic manifest proves topology, field matching/holonomy/singularities, features, validity class, expected disposition, and budgets. |
+| `TA-11` | High | `RP-02` | The suite does not prove that its product oracle detects topology/lineage/geometry/field/quality corruption. | T1/T5 deliberate mutation families are rejected independently. |
+| `TA-12` | Moderate | `RP-02`, `RP-03` | `tests/TESTING_STRATEGY.md` mixed normative contracts with artifact history and next-turn state. | Corrected in this review; continuously enforce normative/status separation. |
+
+Normative testing policy is `tests/TESTING_STRATEGY.md`. The complete evidence,
+domain-research mapping, and staged redesign are in
+`.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
+
+
 ## Architectural review triggers
 
 An architectural review should be requested when any of these occurs:
@@ -657,6 +707,12 @@ An architectural review should be requested when any of these occurs:
    ownership, or semantic identity authority without a typed domain.
 6. Planned work touches an `RP-nn` data flow but the mandatory pattern-review
    record does not prove the corrective shape and representative coverage.
+7. A mandatory direct test lacks an independently proved fixture precondition,
+   semantic oracle, rejected counterexample, or package/seed identity.
+8. A focused/helper/property pass is used to close a representative product
+   gate, or a known-red direct case is hidden/disabled.
+9. A fuzz/property failure cannot be replayed and minimized within its declared
+   precondition and resource budget.
 
 The PR-wide rollup shows nine repeated patterns covering 29 events and all 20
 recurrences, plus five single-event categories. `AUTHORITY_DOMAIN_CONFLATION`
@@ -666,3 +722,8 @@ independent architectural review is now complete and records `AR-01` through
 `AR-12`; any touched open item remains a design stop even if the immediate
 torus correction passes. Only `PR8-R034` / `G4-R007` is active
 at the audited source head.
+
+The independent test-suite audit records `TA-01` through `TA-12`. These do not
+alter historical regression counts. T1 independent test-oracle foundation is
+the first mutating turn after the immutable multi-rail artifact closeout; M1
+waits for T1 acceptance.

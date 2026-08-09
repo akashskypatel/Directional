@@ -18,11 +18,40 @@ The user-requested documentation-only review is complete with decision
 - Immediate next evidence remains the immutable multi-rail artifact-only run;
   no source, test, fixture, validator, build, or workflow edit is authorized in
   that checkpoint.
-- After artifact closeout, the first mutating slice is M1 authority kernel and
-  adapters, compile-only and behavior-preserving.
+- After artifact closeout, the first mutating slice is T1 independent
+  test-oracle foundation, compile-only and production-behavior-preserving. M1
+  follows after T1 immutable acceptance.
 - G4/G5 expansion on the legacy weakly typed, duplicated, consumer-reconstructed
   authority model is prohibited.
 
+## Independent test-suite audit checkpoint
+
+The user-requested documentation-only test audit is complete with decision
+**redesign required**.
+
+- The audit confirms all ten committed SurfaceCells production inputs are
+  triangle-only. The defect is not pre-quad fixtures.
+- Default direct acceptance covers six cases and omits torus, thin bent tube,
+  prescribed sphere, and mechanical feature.
+- Direct success currently observes backend/no-recovery/nonempty/pure-quad
+  disposition, but not an independent semantic, topology, lineage, alignment,
+  approximation, element-quality, determinism, or work oracle.
+- Existing benchmark quality metrics do not gate acceptance and partly reuse
+  production validation concepts.
+- No deterministic property generator/shrinker or coverage-guided fuzz target
+  is present.
+- `TEST_AUTHORITY_COVERAGE_GAP` contributes six PR events and five
+  recurrences. The suite is therefore part of the recurring-regression system,
+  though production authority defects remain the primary source.
+- `TA-01` through `TA-12` and `T0` through `T6` are authoritative in
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
+- The queued first mutating plan is
+  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
+- `tests/TESTING_STRATEGY.md` is normative-only; artifact history remains in
+  dated reports and status records.
+
+The mandatory next turn remains the exact multi-rail artifact-only Test +
+Benchmark. No compiled input or acceptance condition changes.
 
 ## Completed artifact-only Test + Benchmark
 
@@ -274,3 +303,33 @@ The authoritative next turn remains artifact-only Test + Benchmark and must
 consume artifact `9031804178` and log artifact `9031804382` unchanged. It must
 review `RP-09` and `RP-02` before interpreting the results. No configure,
 compile, link, runtime, or workflow command was run by this audit.
+
+## 2026-08-09 surface-cell test-suite intent audit
+
+This independent Review inspected the live branch's test/CMake/fixture/
+benchmark sources, the complete PR regression inventory, the turn-based
+testing-integrity rules, and domain research from Directional Fields, MIQ,
+QEx, QuadWild, Instant Meshes, FlowRep, libQEx, CGAL, Geometry Central,
+Thingi10K, RapidCheck, and LLVM libFuzzer. It changed documentation/planning
+only and ran no project executable.
+
+The default artifact exposes 405 discovered tests across API, producer,
+completion, and validation executables. The suite has meaningful contract
+coverage, but direct production acceptance only checks six of ten committed
+triangle-mesh cases and stops at backend disposition plus pure-quad face
+degree. Richer prescribed topology/field fixtures are outside that direct
+matrix, geometry/field/element-quality metrics are non-gating, important
+integration tests sit in a default-off historical target, and no generated
+property/shrinker/fuzz architecture exists.
+
+Decision: **redesign required**. The suite is a contributing regression cause
+because proxy or incomplete test authority has recurred five times. The
+correction is not wholesale historical-test enablement or assertion weakening.
+It is an independent product oracle, semantic fixture manifest, complete
+direct matrix, property/metamorphic generation with shrinking, sanitizer fuzz
+and replay, calibrated corpus/quality gates, and immutable package discovery.
+
+The authoritative next turn remains the exact artifact-only multi-rail run.
+After its closeout, the first mutating turn is T1 independent test-oracle
+foundation — Code + Build. M1 authority-kernel migration waits for T1
+immutable acceptance.

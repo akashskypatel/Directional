@@ -4,17 +4,24 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **Independent Review — surface-cell architecture**.
-- Result: **architecture changes required before feature expansion; the
-  immutable multi-rail compile artifact remains accepted and runtime pending**.
+- Completed turn: **Independent Review — surface-cell testing intent and
+  architecture**.
+- Result: **test-suite redesign required; test authority is a contributing
+  recurring-regression factor, while the immutable multi-rail compile artifact
+  remains accepted and runtime pending**.
 - Normative architecture: `.agents/Directional/DESIGN.md`.
+- Normative testing policy: `tests/TESTING_STRATEGY.md`.
+- Test audit/redesign:
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
 - Review report:
   `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
-- First mutating turn after artifact closeout: **M1 authority kernel and
-  adapters — Code + Build**.
+- First mutating turn after artifact closeout: **T1 independent test-oracle
+  foundation — Code + Build**. M1 follows only after T1 immutable acceptance.
+- Queued T1 plan:
+  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
 - Regression: `G4-R007` is `fix_pending_runtime`, not resolved.
 - Review policy: `never` for optional future reviews; this user-requested
-  independent architecture review is complete.
+  independent architecture and test-suite review is complete.
 - Next turn: **artifact-only Test + Benchmark — multi-rail chart
   reachability**.
 - Authoritative plan:
@@ -92,11 +99,33 @@ Decision: **changes required before architecture expansion**.
   authority, not the approved architecture for new feature work.
 - The mandatory artifact-only multi-rail run remains next and may resolve
   `G4-R007` only at the behavioral/runtime level.
-- After that immutable closeout, M1 introduces strong authority types, a single
-  chart/support model, canonical routes, and compatibility adapters without
-  changing runtime behavior.
+- After that immutable closeout, T1 first establishes an independent test-only
+  product oracle, mutation adequacy, and packaged discovery without changing
+  production behavior. M1 then introduces strong authority types, a single
+  chart/support model, canonical routes, and compatibility adapters.
 - Nonzero holonomy, adaptivity, and prescribed-singularity expansion may not be
   added to the legacy authority representation.
+
+## Test-suite audit decision
+
+Decision: **redesign required**.
+
+- All ten committed production fixtures are triangle-only, so pre-quad input
+  is not the current-suite defect.
+- The default direct gate covers six cases and omits torus, thin bent tube,
+  prescribed sphere, and mechanical feature—the richest prescribed
+  topology/field/feature cases.
+- The current direct oracle proves backend/no-recovery/pure-quad mechanics but
+  does not independently gate field/feature alignment, source approximation,
+  exact output topology/lineage, element quality, determinism, or global work.
+- Benchmark quality metrics are observational and partly coupled to production
+  validation; no property generator, shrinker, or coverage-guided fuzz target
+  exists.
+- `TEST_AUTHORITY_COVERAGE_GAP` is six PR events with five recurrences.
+- `TA-01` through `TA-12` and `T0` through `T6` now govern correction. Known-red
+  direct intent remains discovered and explicit; it cannot be disabled or
+  counted as green.
+
 ## Deferred blockers
 
 1. target-size-dependent shared hard-rail breakpoint scheduling;

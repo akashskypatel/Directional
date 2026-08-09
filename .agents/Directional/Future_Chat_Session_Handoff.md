@@ -34,11 +34,39 @@ A user-requested documentation-only review has completed with decision
   `.agents/Directional/Regression_Root_Cause_Tracker.md`.
 - The mandatory artifact-only turn above is unchanged. It may resolve
   `G4-R007` behaviorally but cannot close the structural register.
-- After artifact closeout, the first mutating turn is M1 authority kernel and
-  adapters under Code + Build: strong IDs, one chart/support model, canonical
-  routes, and compatibility adapters, with no runtime behavior change.
+- After artifact closeout, the first mutating turn is T1 independent
+  test-oracle foundation under Code + Build. M1 authority kernel and adapters
+  follows only after T1 immutable acceptance.
 - Do not add nonzero holonomy, adaptivity, prescribed-singularity completion,
   or other feature growth to the legacy authority representation.
+
+## Completed independent test-suite audit
+
+A user-requested documentation-only test audit has completed with decision
+**redesign required**.
+
+- Audit/redesign authority:
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
+- Normative testing policy: `tests/TESTING_STRATEGY.md`.
+- Structural test register: `TA-01` through `TA-12` in the regression tracker;
+  these are not added runtime regression events.
+- All ten committed production inputs are triangle-only. The default direct
+  matrix covers six and omits torus, thin bent tube, prescribed sphere, and
+  mechanical feature.
+- Current direct acceptance observes strict backend/no-recovery/pure-quad
+  mechanics but lacks an independent complete product oracle. Existing quality
+  metrics are non-gating, and no property generator/shrinker or
+  coverage-guided fuzz target exists.
+- `TEST_AUTHORITY_COVERAGE_GAP` is six events with five recurrences, so test
+  architecture is a contributing regression factor.
+- The already compiled multi-rail artifact and mandatory next Test + Benchmark
+  are unchanged.
+- After that closeout, T1 adds test-only independent topology/lineage/geometry
+  verification, deliberate oracle mutations, and package labels/discovery.
+  It must not change production behavior or run generated binaries in Code +
+  Build.
+- Queued T1 Code + Build plan:
+  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
 
 ## Mandatory regression-pattern review — every future turn
 
@@ -53,7 +81,10 @@ future turn must:
    `.agents/Directional/PR_8_Regression_Audit_Inventory.md`;
 2. map the planned producer, representation, consumer, validator, test, and
    build-authority data flow against `RP-01` through `RP-09`;
-3. record the following table in the turn plan or closeout:
+3. for every touched mandatory test, record intent, proved precondition,
+   production entry/stage, independent oracle, counterexample, and
+   executable/fixture/seed/artifact identity;
+4. record the following table in the turn plan or closeout:
 
 | Pattern | Touched? | Exact affected producer/consumer | Evidence the anti-pattern is absent, or corrective invariant | Counterfactual and representative gate |
 |---|---|---|---|---|
@@ -70,6 +101,10 @@ Test + Benchmark turns must map failures to an existing pattern and stable
 event ID when applicable, distinguish persistence from a new recurrence, and
 update the tracker counts only from direct evidence. Every turn closeout must
 keep the tracker, audit inventory, handoff, and milestone status consistent.
+
+A focused/helper pass, production `result.success`, raw ID/order, exact count,
+hash, retention lifetime, or no-crash result cannot close representative
+intent. Known-red direct intent remains discovered and explicit.
 
 For the mandatory next artifact-only turn, review `RP-09` (global authority
 consumed as local face authority) and `RP-02` (proxy or incomplete test
@@ -192,7 +227,8 @@ regression.
 
 Nonzero periodic rotation, shared hard-rail breakpoint scheduling, positive
 multi-isolation lineage, historical completion/timing, sphere, G5/G6,
-fallback/recovery, and optimization remain deferred.
+fallback/recovery, and optimization remain deferred. Test redesign milestones
+T2–T6 are interlocked with M2–M6 and G6/G7 as specified in the audit plan.
 
 After branch records and PR body are updated, the final repository write must
 be one new top-level PR #8 conversation comment.

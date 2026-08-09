@@ -16,6 +16,8 @@ This file defines architecture and invariants only. It intentionally contains no
 | Runtime, build, and benchmark evidence | dated plan/report documents |
 | Regression history and repeated patterns | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
 | Point-in-time PR-wide audit evidence | `.agents/Directional/PR_8_Regression_Audit_Inventory.md` |
+| Normative testing policy | `tests/TESTING_STRATEGY.md` |
+| Test-suite audit findings and redesign order | `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` |
 
 If a status record conflicts with this file, status does not redefine an architectural invariant. If two status records conflict, the newest evidence report governs and the status records must be reconciled before implementation resumes.
 
@@ -33,7 +35,10 @@ Acceptance requires all of the following:
 6. output incidence, connected components, boundary loops, orientability, manifoldness, and Euler characteristic are computed from the materialized mesh rather than predicted;
 7. fallback, recovery, and generic-producer substitution are absent from strict direct acceptance;
 8. deterministic identity is invariant under source-face row enumeration, output emission order, container order, and thread scheduling;
-9. work is bounded by a global, auditable budget with a monotone progress measure.
+9. work is bounded by a global, auditable budget with a monotone progress measure;
+10. field alignment, feature preservation, source-surface approximation, and
+    element quality satisfy independently verified, explicitly calibrated
+    acceptance criteria.
 
 The backend replaces global mixed-integer coordinate integration. It does **not** claim to eliminate global discrete topology decisions. Shared rail subdivision, parity, holonomy, and quotient consistency are global combinatorial constraints and must be solved explicitly.
 
@@ -370,27 +375,74 @@ File size is not itself an invariant, but a module that combines producer select
 
 ## 12. Verification matrix
 
-Every stage requires positive, negative, metamorphic, and representative evidence.
+Every stage requires positive, negative/tamper, metamorphic, independent
+semantic, and representative evidence. Every mandatory test names its intent,
+proves its semantic precondition, enters the public production API or named
+stage, uses an independently written input/output oracle, rejects a deliberate
+counterexample, and records its executable/fixture/seed/artifact identity.
 
-| Contract | Positive | Negative/tamper | Metamorphic | Representative |
+| Contract | Positive | Negative/tamper | Metamorphic/property | Independent/representative |
 |---|---|---|---|---|
-| typed transition route | boundary and interior routes | domain substitution, missing paired topology | face-row and route-orientation permutation | seam and cylinder |
-| producer outcome | each of three alternatives | inconsistent payload cannot be constructed | dispatch order does not change rejection | plane plus an unsupported input |
-| rail schedule | two regions consume one schedule | independent breakpoint insertion | region order permutation | exact torus blocker fixture |
-| chart certificate | chained multi-rail path | missing/duplicate/conflicting relation | source-face row permutation | torus completion |
-| periodic relation | zero and nonzero rotation algebra | wrong inverse/owner/unconsumed relation | canonical route reversal | cylinder, then torus |
-| quotient | explicit occurrence relations | proximity-only or equal-coordinate merge | emission order permutation | close sheets and torus |
-| work ledger | bounded completion | multiplicative budget exhaustion | queue-order permutation | prescribed sphere |
+| typed transition route | boundary and interior routes | domain substitution, missing paired topology | face-row, branch-label, and route-orientation permutation | seam and cylinder through the production entry |
+| producer outcome | each of three alternatives | inconsistent payload cannot be constructed | dispatch and call-sequence order do not change rejection | plane plus typed unsupported/invalid inputs |
+| rail schedule | two regions consume one schedule | independent breakpoint insertion | region order, uniform scale, and target-size perturbation | torus, thin tube, mechanical feature |
+| chart certificate | chained multi-rail path | missing/duplicate/conflicting relation | source-face/cyclic-start permutation | torus completion with unused and off-face relations |
+| periodic/singularity transport | zero/nonzero rotation algebra and declared indices | wrong inverse/index/owner/unconsumed relation | canonical reversal and quarter-turn branch relabeling | cylinder, torus, prescribed sphere |
+| quotient/materialization | explicit occurrence relations | proximity-only/equal-coordinate merge | emission/component/thread-order permutation | close sheets and torus |
+| product mesh | strict direct output | corrupted incidence, lineage, field, feature, and geometry | row, rigid-transform, scale, and triangulation-equivalence families | all ten committed triangle-mesh fixtures |
+| work/resource ledger | bounded completion | cumulative/retry exhaustion | queue order and repeated success/failure sequences | sphere plus structured adversarial corpus |
 
-Focused fixtures isolate contracts. Direct gate acceptance enters production preprocessing and remesh APIs with committed fixtures. A focused proxy cannot close a representative gate.
+Focused fixtures isolate contracts. Direct gate acceptance enters production
+preprocessing and `remesh_from_raw_cross_field` with committed fixtures. A
+focused proxy cannot close a representative gate.
 
-## 13. Migration plan
+## 13. Test architecture
+
+Testing is a first-class architectural boundary. The normative policy is
+`tests/TESTING_STRATEGY.md`; `TA-01` through `TA-12` and staged redesign
+`T0` through `T6` are tracked in the independent test-suite audit.
+
+Required evidence layers are:
+
+1. type/schema and stage-contract tests;
+2. deterministic generated properties with seed replay and shrinking;
+3. metamorphic tests over representation, topology cycles, transforms,
+   equivalent field branch labels, scheduling, and repeated-call sequences;
+4. a test-only independent semantic verifier for topology, source support,
+   certificates, direct disposition, geometry, and quality;
+5. the complete committed ten-fixture direct production matrix;
+6. structured invalid/robustness corpora and sanitizer fuzzing with minimized
+   reproducers;
+7. calibrated field, feature, approximation, element-quality, work, memory,
+   and time gates.
+
+The independent test oracle may share primitive math and typed schemas but may
+not call the producer's acceptance decision or reuse its decision procedure.
+`result.success`, a production-validator pass, an exact count, a raw ID/order,
+an intermediate-retention state, or a hash is not sufficient product evidence.
+Oracle-mutation tests must prove sensitivity to corrupted topology, lineage,
+field/feature correspondence, geometry, quality, and backend disposition.
+
+All portable mandatory tests and minimized replay cases are compiled and
+discovered in the default immutable artifact. Toolchain-specific sanitizer
+fuzz targets are mandatory in their declared Clang sanitizer artifact.
+Labels may separate accepted required-green contracts from explicit known-red
+product intent, nightly corpus/fuzz, and quality tiers; build options may not
+hide mandatory authority. A known-red intent test is reported, not disabled or
+counted as green.
+
+## 14. Migration plan
 
 This is a strangler migration. Each slice is independently reviewable and preserves the last immutable runtime artifact as comparison authority. No big-bang rewrite is approved.
 
 ### M0 — preserve evidence
 
 Run the already compiled multi-rail artifact exactly as its artifact-only plan requires. This records whether the current patch fixes `G4-R007`; it does not certify the legacy architecture. No source or test edit is mixed into this checkpoint.
+
+After M0, complete `T1` independent test-oracle foundation in its own
+Code + Build / immutable Test + Benchmark pair before M1 production migration.
+The queued implementation boundary is
+`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
 
 ### M1 — authority kernel and adapters
 
@@ -399,6 +451,7 @@ Introduce strong IDs, one chart type, `SourceSupport`, `TransitionStep`, `Canoni
 Acceptance:
 
 - compile-only Code + Build;
+- `T1` test-oracle/package authority is already accepted;
 - no public integer-domain conversion without a named checked function;
 - adapter round-trip properties and compile-time non-convertibility tests;
 - old runtime artifact remains the behavioral comparison baseline.
@@ -458,7 +511,7 @@ Acceptance:
 - no semantic equality includes execution handles or backend choice;
 - no architecture-debt item in the regression tracker remains open.
 
-## 14. Stop conditions
+## 15. Stop conditions
 
 Implementation stops for architectural review if any proposed change:
 
@@ -470,9 +523,13 @@ Implementation stops for architectural review if any proposed change:
 - weakens validation or fixture assertions to accommodate behavior;
 - bounds an inner operation while leaving aggregate work multiplicative;
 - encodes a representative-only or zero-rotation special case as the general model;
-- passes a focused proxy while the representative production path remains unexecuted.
+- passes a focused proxy while the representative production path remains unexecuted;
+- uses the producer's success decision or validator decision procedure as the
+  independent test oracle;
+- hides a mandatory direct/property/fuzz replay behind a default-off build
+  option or loses its seed/corpus/package identity.
 
-## 15. References
+## 16. References
 
 1. Amir Vaxman et al. “Directional Field Synthesis, Design, and Processing.” *Computer Graphics Forum* 35(2), 2016. See the [Directional project](https://avaxman.github.io/Directional/) and course materials.
 2. David Bommes, Henrik Zimmer, and Leif Kobbelt. “Mixed-Integer Quadrangulation.” *ACM TOG* 28(3), 2009. [Project page](https://www.graphics.rwth-aachen.de/publication/0344/).
@@ -480,4 +537,6 @@ Implementation stops for architectural review if any proposed change:
 4. Nico Pietroni et al. “Reliable Feature-Line Driven Quad-Remeshing.” *ACM TOG* 40(4), 2021. [Project and paper](https://www.quadmesh.cloud/) and [QuadWild implementation](https://github.com/nicopietroni/quadwild).
 5. Wenzel Jakob et al. “Instant Field-Aligned Meshes.” *ACM TOG* 34(6), 2015. [Project page](https://rgl.epfl.ch/publications/Jakob2015Instant).
 6. Giorgio Gori et al. “FlowRep: Descriptive Curve Networks for Free-Form Design Shapes.” *ACM TOG* 36(4), 2017. [Project page](https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/).
-
+7. Qingnan Zhou and Alec Jacobson. “Thingi10K: A Dataset of 10,000 3D-Printing Models.” 2016. [Paper](https://arxiv.org/abs/1605.04797) and [dataset](https://github.com/Thingi10K/Thingi10K).
+8. LLVM Project. [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html).
+9. [RapidCheck](https://github.com/emil-e/rapidcheck), [libQEx reference tests](https://github.com/hcebke/libQEx/blob/517dcaa0cc87646baa89e52cfc8e23766776f6d5/tests/reference_meshes.cc), [Geometry Central intrinsic properties](https://github.com/nmwsharp/geometry-central/blob/019669ddabda05e0f71fa3587cfb3c1dadf19cb8/test/src/intrinsic_triangulation_test.cpp), and [CGAL remeshing tests](https://github.com/CGAL/cgal/blob/548fc90ea5d38402df679426283475ec78db0537/PMP_Remeshing/test/PMP_Remeshing/remeshing_test.cpp).
