@@ -1,0 +1,559 @@
+name: m1c-field-transition-consumer-code-build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1c-field-transition-consumer-code-build'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: m1c-field-transition-consumer-code-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  LOG_DIR: /tmp/m1c-field-transition-consumer-code-build-logs
+  ACTIVITY_LOG: /tmp/m1c-field-transition-consumer-code-build-logs/activity.log
+  M1C_BASE: 512d9523f13158a9f71b406b6db7137a1db3c504
+  ACCEPTED_M1B_IMPLEMENTATION: 0340addf21473854856266ff00cb68915ce24ef0
+  ACCEPTED_M1B_ARTIFACT: '9042940168'
+  ACCEPTED_M1A_ARTIFACT: '9041930767'
+  ACCEPTED_T1_ARTIFACT: '9041289209'
+  EXPECTED_TRACING_BLOB: 4809e66bb6e797001ffc22b3f2da6d3613cfdef0
+  EXPECTED_TEST_BLOB: 552a3d98ec8f9280b960fb9bbff9a1c7596a0778
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo "turn=M1c Field-Transition Consumer Code+Build"
+            echo "workflow_revision=v1"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "event_ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "m1c_base=$M1C_BASE"
+            echo "accepted_m1b_implementation=$ACCEPTED_M1B_IMPLEMENTATION"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=two-path M1c implementation/test edit; static inspection; configure; compile/link approved targets; immutable packaging"
+            echo "prohibited=generated Directional binary execution; gtest discovery/tests; benchmarks; ctest; CLI/GUI/help/version; fuzzers; custom input"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$ACTIVITY_LOG"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 180
+          submodules: false
+
+      - name: Apply bounded M1c source and test changes and push
+        id: implementation
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            echo "step=m1c-source-edit exit_code=$rc finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            exit "$rc"
+          }
+          trap finish EXIT
+
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$M1C_BASE" "$GITHUB_SHA"
+          git merge-base --is-ancestor "$ACCEPTED_M1B_IMPLEMENTATION" "$GITHUB_SHA"
+          test -z "$(git status --porcelain=v1)"
+          test "$(git rev-parse HEAD:src/geometry/SurfaceCellTracing.cpp)" = "$EXPECTED_TRACING_BLOB"
+          test "$(git rev-parse HEAD:tests/SurfaceCellsPhase10Tests.cpp)" = "$EXPECTED_TEST_BLOB"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source = Path('src/geometry/SurfaceCellTracing.cpp')
+          text = source.read_text()
+
+          include_old = '''#include <directional/geometry/SurfaceCellTracing.h>\n\n#include <Eigen/SparseCholesky>\n'''
+          include_new = '''#include <directional/geometry/SurfaceCellTracing.h>\n\n#include <directional/authority/GridAutomorphism.h>\n#include <directional/authority/LegacyAuthorityAdapters.h>\n\n#include <Eigen/SparseCholesky>\n'''
+          if text.count(include_old) != 1:
+              raise SystemExit(f'tracing include anchor mismatch: {text.count(include_old)}')
+          text = text.replace(include_old, include_new, 1)
+
+          old_authoritative = '''  const int sourceBranch = branch_from_family_sign(sourceFamily, sourceSign);\n  bool authoritativeMatching = false;\n  if (edgeTransitions != nullptr) {\n    const auto found = transitionLookup.byEdge.find(edgeKey);\n    if (found == transitionLookup.byEdge.end() ||\n        !transition_faces_match(found->second, sourceFace, targetFace) ||\n        edge_key(found->second.sourceVertex0,\n                 found->second.sourceVertex1) != edgeKey) {\n      return result;\n    }\n    result.matching = found->second.matching;\n    if (found->second.secondFace == sourceFace) {\n      result.matching = -result.matching;\n    }\n    result.effort = found->second.effort;\n    authoritativeMatching = true;\n  } else {\n'''
+          new_authoritative = '''  const int sourceBranch = branch_from_family_sign(sourceFamily, sourceSign);\n  bool authoritativeMatching = false;\n  std::optional<authority::QuarterTurn> authoritativeTransitionTransport;\n  if (edgeTransitions != nullptr) {\n    const auto found = transitionLookup.byEdge.find(edgeKey);\n    if (found == transitionLookup.byEdge.end()) {\n      return result;\n    }\n\n    const std::size_t sourceFaceExtent =\n        static_cast<std::size_t>(faces.rows());\n    const std::size_t sourceVertexExtent =\n        static_cast<std::size_t>(vertices.rows());\n    const auto sourceFaceResult = authority::LegacyAuthorityAdapters::source_face(\n        sourceFace, sourceFaceExtent);\n    const auto targetFaceResult = authority::LegacyAuthorityAdapters::source_face(\n        targetFace, sourceFaceExtent);\n    const auto firstFaceResult = authority::LegacyAuthorityAdapters::source_face(\n        found->second.firstFace, sourceFaceExtent);\n    const auto secondFaceResult = authority::LegacyAuthorityAdapters::source_face(\n        found->second.secondFace, sourceFaceExtent);\n    if (!sourceFaceResult || !targetFaceResult || !firstFaceResult ||\n        !secondFaceResult) {\n      return result;\n    }\n\n    const authority::SourceFaceId typedSourceFace = sourceFaceResult.value();\n    const authority::SourceFaceId typedTargetFace = targetFaceResult.value();\n    const authority::SourceFaceId typedFirstFace = firstFaceResult.value();\n    const authority::SourceFaceId typedSecondFace = secondFaceResult.value();\n    const bool forwardTraversal = typedFirstFace == typedSourceFace &&\n                                  typedSecondFace == typedTargetFace;\n    const bool reverseTraversal = typedFirstFace == typedTargetFace &&\n                                  typedSecondFace == typedSourceFace;\n    if (!forwardTraversal && !reverseTraversal) {\n      return result;\n    }\n\n    const auto firstVertexResult =\n        authority::LegacyAuthorityAdapters::source_vertex(\n            found->second.sourceVertex0, sourceVertexExtent);\n    const auto secondVertexResult =\n        authority::LegacyAuthorityAdapters::source_vertex(\n            found->second.sourceVertex1, sourceVertexExtent);\n    if (!firstVertexResult || !secondVertexResult) {\n      return result;\n    }\n    const auto sourceEdgeResult = authority::SourceEdgeTopologyKey::make(\n        firstVertexResult.value(), secondVertexResult.value());\n    if (!sourceEdgeResult) {\n      return result;\n    }\n    const authority::SourceEdgeTopologyKey sourceEdge = sourceEdgeResult.value();\n    const std::uint64_t transitionEdgeKey = edge_key(\n        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(\n            sourceEdge.first())),\n        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(\n            sourceEdge.second())));\n    if (transitionEdgeKey != edgeKey) {\n      return result;\n    }\n\n    authority::QuarterTurn transport =\n        authority::QuarterTurn::from_integer(found->second.matching);\n    if (reverseTraversal) {\n      transport = transport.inverse();\n    }\n    authoritativeTransitionTransport = transport;\n\n    result.matching = found->second.matching;\n    if (reverseTraversal) {\n      result.matching = -result.matching;\n    }\n    result.effort = found->second.effort;\n    authoritativeMatching = true;\n  } else {\n'''
+          if text.count(old_authoritative) != 1:
+              raise SystemExit(f'authoritative transition anchor mismatch: {text.count(old_authoritative)}')
+          text = text.replace(old_authoritative, new_authoritative, 1)
+
+          old_target = '''  int targetBranch = sourceBranch;\n  if (authoritativeMatching) {\n    targetBranch = normalized_branch(sourceBranch + result.matching);\n  } else {\n'''
+          new_target = '''  int targetBranch = sourceBranch;\n  if (authoritativeTransitionTransport.has_value()) {\n    targetBranch = normalized_branch(\n        sourceBranch +\n        static_cast<int>(authoritativeTransitionTransport->value()));\n  } else if (authoritativeMatching) {\n    targetBranch = normalized_branch(sourceBranch + result.matching);\n  } else {\n'''
+          if text.count(old_target) != 1:
+              raise SystemExit(f'target-branch anchor mismatch: {text.count(old_target)}')
+          text = text.replace(old_target, new_target, 1)
+          source.write_text(text)
+
+          tests = Path('tests/SurfaceCellsPhase10Tests.cpp')
+          test_text = tests.read_text()
+          test_include_old = '''#include <directional/meshing/PatchQuadrangulator.h>\n#include <directional/pipeline/RemeshPipeline.h>\n'''
+          test_include_new = '''#include <directional/meshing/PatchQuadrangulator.h>\n#include <directional/geometry/SurfaceCellTracing.h>\n#include <directional/pipeline/RemeshPipeline.h>\n'''
+          if test_text.count(test_include_old) != 1:
+              raise SystemExit(f'test include anchor mismatch: {test_text.count(test_include_old)}')
+          test_text = test_text.replace(test_include_old, test_include_new, 1)
+
+          marker = '\nTEST(SurfaceCellsPhase10, MeshValidatorDetectsMissingVertex) {'
+          if test_text.count(marker) != 1:
+              raise SystemExit(f'test insertion marker mismatch: {test_text.count(marker)}')
+          block = r'''
+
+struct FieldTransitionFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  Eigen::MatrixXd faceAxisX;
+  Eigen::MatrixXd faceAxisY;
+  std::map<std::uint64_t, std::array<int, 2>> edgeFaces;
+  std::map<std::uint64_t, int> edgeMatchingIndices;
+  directional::geometry::surface_cell_tracing_detail::EdgeTransitionLookup
+      transitionLookup;
+  std::uint64_t edgeKey = 0;
+  std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+};
+
+FieldTransitionFixture make_field_transition_fixture(const int matching = 1) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  FieldTransitionFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      1.0, 1.0, 0.0,
+                      0.0, 1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3;
+  fixture.faceAxisX.resize(2, 3);
+  fixture.faceAxisX << 1.0, 0.0, 0.0,
+                       1.0, 0.0, 0.0;
+  fixture.faceAxisY.resize(2, 3);
+  fixture.faceAxisY << 0.0, 1.0, 0.0,
+                       0.0, 1.0, 0.0;
+  fixture.edgeFaces = detail::edge_faces(fixture.faces);
+  fixture.edgeMatchingIndices = detail::edge_matching_indices(fixture.edgeFaces);
+  fixture.edgeKey = detail::edge_key(0, 2);
+
+  directional::fields::CrossFieldEdgeTransition transition;
+  transition.sourceEdge = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  transition.sourceVertex0 = 0;
+  transition.sourceVertex1 = 2;
+  transition.firstFace = 0;
+  transition.secondFace = 1;
+  transition.matching = matching;
+  transition.effort = 0.25;
+  fixture.transitions.push_back(transition);
+  fixture.transitionLookup = detail::edge_transition_lookup(fixture.transitions);
+  return fixture;
+}
+
+directional::geometry::surface_cell_tracing_detail::BranchTransitionResult
+resolve_field_transition(
+    const FieldTransitionFixture &fixture, const int sourceFace,
+    const int targetFace, const int sourceFamily, const int sourceSign,
+    const Eigen::RowVector3d &sourceDirection,
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const bool useAuthoritativeTransitions = true) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  return detail::resolve_branch_transition(
+      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
+      fixture.edgeFaces, fixture.edgeMatchingIndices, fixture.transitionLookup,
+      fixture.edgeKey, sourceFace, targetFace, sourceFamily, sourceSign,
+      sourceDirection, edgeMatching, edgeEffort,
+      useAuthoritativeTransitions ? &fixture.transitions : nullptr);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ForwardQuarterTurnUsesTypedModuloTransport) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(1, result.matching);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(0.0, 1.0, 0.0),
+                                        1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ReverseTraversalUsesExactQuarterTurnInverse) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+
+  const auto result = resolve_field_transition(
+      fixture, 1, 0, 1, 1, Eigen::RowVector3d(0.0, 1.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(-1, result.matching);
+  EXPECT_EQ(0, result.family);
+  EXPECT_EQ(1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(1.0, 0.0, 0.0),
+                                        1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     EquivalentQuarterTurnsNormalizeSemantically) {
+  const FieldTransitionFixture plusOne = make_field_transition_fixture(1);
+  const FieldTransitionFixture plusFive = make_field_transition_fixture(5);
+
+  const auto one = resolve_field_transition(
+      plusOne, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+  const auto five = resolve_field_transition(
+      plusFive, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(one.valid);
+  ASSERT_TRUE(five.valid);
+  EXPECT_EQ(1, one.matching);
+  EXPECT_EQ(5, five.matching);
+  EXPECT_EQ(one.family, five.family);
+  EXPECT_EQ(one.sign, five.sign);
+  EXPECT_TRUE(one.direction.isApprox(five.direction, 1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ReversedSourceEdgeEndpointsPreserveSemanticIdentity) {
+  FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  fixture.transitions.front().sourceVertex0 = 2;
+  fixture.transitions.front().sourceVertex1 = 0;
+  fixture.transitionLookup =
+      directional::geometry::surface_cell_tracing_detail::edge_transition_lookup(
+          fixture.transitions);
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(1, result.matching);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(1, result.sign);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     MalformedAuthoritativeFaceOrEdgeFailsClosed) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  const int matchingIndex = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  Eigen::VectorXi fallbackMatching =
+      Eigen::VectorXi::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  Eigen::VectorXd fallbackEffort =
+      Eigen::VectorXd::Constant(static_cast<int>(fixture.edgeMatchingIndices.size()),
+                                0.75);
+  fallbackMatching[matchingIndex] = 3;
+
+  auto malformedFace = fixture.transitions.front();
+  malformedFace.firstFace = fixture.faces.rows();
+  fixture.transitions = {malformedFace};
+  fixture.transitionLookup.byEdge.clear();
+  fixture.transitionLookup.byEdge.emplace(fixture.edgeKey, malformedFace);
+  const auto faceResult = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, true);
+  EXPECT_FALSE(faceResult.valid);
+
+  auto malformedEdge = malformedFace;
+  malformedEdge.firstFace = 0;
+  malformedEdge.sourceVertex1 = fixture.vertices.rows();
+  fixture.transitions = {malformedEdge};
+  fixture.transitionLookup.byEdge.clear();
+  fixture.transitionLookup.byEdge.emplace(fixture.edgeKey, malformedEdge);
+  const auto edgeResult = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, true);
+  EXPECT_FALSE(edgeResult.valid);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     LegacyMatchingFallbackRemainsUnchangedWhenTransitionMetadataAbsent) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  const int matchingIndex = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  Eigen::VectorXi fallbackMatching =
+      Eigen::VectorXi::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  Eigen::VectorXd fallbackEffort =
+      Eigen::VectorXd::Constant(static_cast<int>(fixture.edgeMatchingIndices.size()),
+                                0.75);
+  fallbackMatching[matchingIndex] = 3;
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, false);
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(3, result.matching);
+  EXPECT_DOUBLE_EQ(0.75, result.effort);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(-1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(0.0, -1.0, 0.0),
+                                        1.0e-12));
+}
+'''
+          test_text = test_text.replace(marker, block + marker, 1)
+          tests.write_text(test_text)
+          PY
+
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          expected=(src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp)
+          printf 'm1c_changed=%s\n' "${changed[*]}"
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = "${expected[0]}"
+          test "${changed[1]}" = "${expected[1]}"
+
+          grep -q '#include <directional/authority/GridAutomorphism.h>' src/geometry/SurfaceCellTracing.cpp
+          grep -q '#include <directional/authority/LegacyAuthorityAdapters.h>' src/geometry/SurfaceCellTracing.cpp
+          test "$(grep -c 'LegacyAuthorityAdapters::source_face' src/geometry/SurfaceCellTracing.cpp)" -ge 4
+          test "$(grep -c 'LegacyAuthorityAdapters::source_vertex' src/geometry/SurfaceCellTracing.cpp)" -ge 2
+          grep -q 'SourceEdgeTopologyKey::make' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'QuarterTurn::from_integer' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'transport = transport.inverse()' src/geometry/SurfaceCellTracing.cpp
+          test "$(grep -c '^TEST(SurfaceCellFieldTransitionAuthorityMigration,' tests/SurfaceCellsPhase10Tests.cpp)" -eq 6
+          grep -q 'NonReciprocalSourceAdjacentIsolationSeamFailsClosed' tests/SurfaceCellsPhase10Tests.cpp
+          grep -q 'CurvedBoundedDiskInvalidReciprocalTransportFailsClosed' tests/SurfaceCellsPhase10Tests.cpp
+
+          git diff --check
+          git config user.name 'directional-m1c-agent'
+          git config user.email 'actions@users.noreply.github.com'
+          git add src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m 'refactor: type field transition authority consumer'
+          implementation_commit="$(git rev-parse HEAD)"
+          echo "implementation_commit=$implementation_commit" | tee -a "$ACTIVITY_LOG"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "implementation_commit=$implementation_commit" >> "$GITHUB_OUTPUT"
+          test -z "$(git status --porcelain=v1)"
+
+          mapfile -t product_changed < <(git diff --name-only "$M1C_BASE" "$implementation_commit" -- \
+            src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp include/directional/geometry/SurfaceCellTracing.h CMakeLists.txt cmake/DirectionalTests.cmake | LC_ALL=C sort)
+          test "${#product_changed[@]}" -eq 2
+          test "${product_changed[0]}" = "src/geometry/SurfaceCellTracing.cpp"
+          test "${product_changed[1]}" = "tests/SurfaceCellsPhase10Tests.cpp"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils time
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --recursive --depth 1 --recommend-shallow
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          /usr/bin/time -v -o "$LOG_DIR/build-resources.txt" \
+            cmake --build build --parallel 2 --target \
+              directional_core \
+              directional_pipeline \
+              directional_compiled_api_tests \
+              directional_surface_cell_producer_tests \
+              directional_surface_cell_oracle_tests \
+              directional_surface_cell_authority_kernel_tests \
+              directional_surface_cell_completion_tests \
+              directional_surface_cell_validation_tests \
+              directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+
+      - name: Package immutable compile artifact
+        shell: bash
+        env:
+          IMPLEMENTATION_COMMIT: ${{ steps.implementation.outputs.implementation_commit }}
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_COMMIT"
+          test -z "$(git status --porcelain=v1)"
+
+          pkg="$RUNNER_TEMP/m1c-field-transition-consumer-code-build"
+          rm -rf "$pkg"
+          mkdir -p "$pkg/bin" "$pkg/lib" "$pkg/logs" "$pkg/metadata" "$pkg/source" "$pkg/test-data/benchmarks"
+
+          for exe in \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks; do
+            test -x "build/$exe"
+            cp "build/$exe" "$pkg/bin/$exe"
+          done
+          cp build/libdirectional_core.a "$pkg/lib/"
+          cp build/libdirectional_pipeline.a "$pkg/lib/"
+          cp -a benchmarks/fixtures "$pkg/test-data/benchmarks/fixtures"
+          cp "$LOG_DIR"/* "$pkg/logs/"
+          cp build/compile_commands.json "$pkg/source/compile_commands.json"
+
+          git diff --binary "$M1C_BASE" "$IMPLEMENTATION_COMMIT" -- \
+            src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp \
+            > "$pkg/source/m1c-field-transition-consumer.patch"
+          git archive --format=tar "$IMPLEMENTATION_COMMIT" | xz -T0 -6 > "$pkg/source/directional-m1c-field-transition-source-no-deps.tar.xz"
+
+          python3 - <<'PY' > "$pkg/metadata/m1c-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceCellFieldTransitionAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1c focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/m1b-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceMeshOptimizerPhase22Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceOptimizationRailAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1b focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/authority-kernel-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellAuthorityKernelTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 14 or len(set(names)) != 14:
+              raise SystemExit(f'authority manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/oracle-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellProductOracleTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 29 or len(set(names)) != 29:
+              raise SystemExit(f'oracle manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+
+          cat > "$pkg/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1c Field-Transition Consumer Code+Build",
+            "baseCommit": "$M1C_BASE",
+            "implementationCommit": "$IMPLEMENTATION_COMMIT",
+            "buildEventCommit": "$GITHUB_SHA",
+            "workflowRun": "$GITHUB_RUN_ID",
+            "workflowAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release/static/Ninja",
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "m1cFocusedStaticTestCount": 6,
+            "m1bFocusedStaticTestCount": 6,
+            "authorityKernelStaticTestCount": 14,
+            "oracleStaticTestCount": 29,
+            "acceptedM1bArtifact": "$ACCEPTED_M1B_ARTIFACT",
+            "acceptedM1aArtifact": "$ACCEPTED_M1A_ARTIFACT",
+            "acceptedT1Artifact": "$ACCEPTED_T1_ARTIFACT"
+          }
+          EOF
+          cat > "$pkg/metadata/command-boundary.txt" <<EOF
+          runtimeExecution=false
+          configured=true
+          compiled=true
+          generatedDirectionalBinaryExecuted=false
+          gtestDiscoveryExecuted=false
+          testExecuted=false
+          benchmarkExecuted=false
+          ctestExecuted=false
+          cliGuiHelpVersionExecuted=false
+          fuzzerExecuted=false
+          customInputExecuted=false
+          EOF
+          {
+            echo "base_commit=$M1C_BASE"
+            echo "implementation_commit=$IMPLEMENTATION_COMMIT"
+            echo "build_event_commit=$GITHUB_SHA"
+            echo "tracing_cpp_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:src/geometry/SurfaceCellTracing.cpp")"
+            echo "phase10_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellsPhase10Tests.cpp")"
+            echo "tracing_header_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/geometry/SurfaceCellTracing.h")"
+            echo "authority_ids_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/AuthorityIds.h")"
+            echo "authority_adapters_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/LegacyAuthorityAdapters.h")"
+            echo "grid_automorphism_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/GridAutomorphism.h")"
+            echo "m1b_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceMeshOptimizerPhase22Tests.cpp")"
+            echo "authority_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellAuthorityKernelTests.cpp")"
+            echo "oracle_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellProductOracleTests.cpp")"
+            echo "direct_acceptance_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellDesignAcceptanceTests.cpp")"
+          } > "$pkg/metadata/source-blobs.txt"
+          git submodule status --recursive > "$pkg/metadata/submodules.txt"
+          {
+            cmake --version | head -1
+            ninja --version
+            c++ --version | head -1
+            uname -a
+          } > "$pkg/metadata/toolchain.txt"
+          find benchmarks/fixtures -type f -printf '%P\n' | LC_ALL=C sort > "$pkg/metadata/fixture-files.txt"
+
+          find "$pkg" -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | \
+            while IFS= read -r -d '' f; do
+              rel="${f#"$pkg"/}"
+              sum=$(sha256sum "$f" | awk '{print $1}')
+              printf '%s  %s\n' "$sum" "$rel"
+            done > "$pkg/SHA256SUMS"
+          echo "manifest_entries=$(wc -l < "$pkg/SHA256SUMS")" | tee -a "$ACTIVITY_LOG"
+          sha256sum "$pkg/SHA256SUMS" | tee "$LOG_DIR/manifest.sha256"
+          find "$pkg" -type f -printf '%P\n' | LC_ALL=C sort | tee "$LOG_DIR/package-files.txt"
+          echo "PACKAGE_DIR=$pkg" >> "$GITHUB_ENV"
+
+      - name: Upload immutable compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1c-field-transition-consumer-code-build
+          path: ${{ env.PACKAGE_DIR }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1c-field-transition-consumer-code-build-logs
+          path: /tmp/m1c-field-transition-consumer-code-build-logs
+          if-no-files-found: error
+          retention-days: 14
