@@ -4,11 +4,17 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **Code + Build — multi-rail chart reachability**.
-- Result: **implementation and immutable compile artifact accepted; runtime
-  acceptance pending**.
+- Completed turn: **Independent Review — surface-cell architecture**.
+- Result: **architecture changes required before feature expansion; the
+  immutable multi-rail compile artifact remains accepted and runtime pending**.
+- Normative architecture: `.agents/Directional/DESIGN.md`.
+- Review report:
+  `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
+- First mutating turn after artifact closeout: **M1 authority kernel and
+  adapters — Code + Build**.
 - Regression: `G4-R007` is `fix_pending_runtime`, not resolved.
-- Review policy: `never`.
+- Review policy: `never` for optional future reviews; this user-requested
+  independent architecture review is complete.
 - Next turn: **artifact-only Test + Benchmark — multi-rail chart
   reachability**.
 - Authoritative plan:
@@ -76,17 +82,21 @@ Artifact `9030700527` remains runtime authority until the next turn:
 8. Update `G4-R007` rather than duplicating it; mark it resolved only if the
    immutable artifact passes the affected gate.
 
-## Architectural review queue
+## Architecture review decision
 
-- `AUTHORITY_DOMAIN_CONFLATION`: regressions `G4-R001`, `G4-R004`,
-  `G4-R006`; repeated three times.
-- `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY`: regressions `G4-R002`,
-  `G4-R007`; repeated twice.
+Decision: **changes required before architecture expansion**.
 
-Both families already meet the mandatory review trigger. Exact reasons,
-guards, evidence, statuses, and non-regression blockers live in the separate
-regression tracker.
-
+- Twelve structural findings (`AR-01` through `AR-12`) are open in the
+  regression tracker's architecture enforcement register.
+- The existing implementation remains behavioral and migration-source
+  authority, not the approved architecture for new feature work.
+- The mandatory artifact-only multi-rail run remains next and may resolve
+  `G4-R007` only at the behavioral/runtime level.
+- After that immutable closeout, M1 introduces strong authority types, a single
+  chart/support model, canonical routes, and compatibility adapters without
+  changing runtime behavior.
+- Nonzero holonomy, adaptivity, and prescribed-singularity expansion may not be
+  added to the legacy authority representation.
 ## Deferred blockers
 
 1. target-size-dependent shared hard-rail breakpoint scheduling;

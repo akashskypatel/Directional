@@ -614,6 +614,35 @@ configured optional review policy does not waive this user-mandated check.
 | `G4-B003` | Nonzero periodic `Z4` rotation | The producer rejects nonzero accumulated branch matching and hard-codes rotation zero. This is missing capability, not caused by the chart resolver. | Deferred G4 slice. |
 | `G4-B004` | Positive multi-isolation quotient witness | The current fixture accepts certificates but does not create a quotient class spanning multiple local sheets. This is missing test authority unless a valid fixture proves production lineage loss. | Deferred focused fixture/implementation slice. |
 
+## Architecture enforcement register — independent review 2026-08-09
+
+This register tracks structural debt found by the documentation-only surface-cell
+architecture review. These are not new runtime regression events and do not
+change the PR-wide totals of 34 events, 14 categories, or 20 recurrences.
+Close an item only when its forbidden representation is removed and the named
+focused, metamorphic, and representative evidence passes. A passing torus
+artifact may resolve `G4-R007` behaviorally; it does not close this register.
+
+| ID | Severity | Pattern mapping | Structural evidence at `6af23d9` | Required close condition |
+|---|---|---|---|---|
+| `AR-01` | Critical | `RP-03`, `RP-08` | `SurfacePhaseFrontResult` exposes independently mutable disposition/attempted/succeeded state; pipeline consumers use different fields. | One closed `ProducerOutcome<T>` with exhaustive dispatch; inconsistent states are unrepresentable. |
+| `AR-02` | Critical | `RP-01`, `RP-03`, `RP-06`, `RP-07` | Bare integer edge domains and parallel topology/index route vectors remain public. | Strong ID domains and one `CanonicalRoute<TransitionStep>`; checked named conversions only. |
+| `AR-03` | High | `RP-01`, `RP-03`, `RP-05` | Generic `SurfaceCellCanonicalIdentity.values` carries unrelated schemas; ownership uses a class ordinal. | Domain-specific semantic keys; no ordinal, row, or backend handle in ownership identity. |
+| `AR-04` | High | `RP-06`, `RP-09` | Duplicate chart types and copied region/sheet/topology tables create multiple readable authorities. | One chart type and immutable single-writer authority snapshots referenced by typed IDs. |
+| `AR-05` | High | `RP-05`, `RP-07` | Semantic equality/order includes front-edge, patch, local-quad, backend, variant, or primary hash ordering. | Semantic identity separated from representation handles; canonical semantic ordering precedes hashing. |
+| `AR-06` | Critical | `RP-01`, `RP-05`, `RP-09` | Validator reconstructs relation endpoints/reachability and returns booleans/sets without the selected proof path. | Producer-owned canonical relation registry and exact `ChartSelectionCertificate` paths independently verified. |
+| `AR-07` | Critical | `RP-06`, `RP-09` | Region producers choose hard-rail breakpoints independently and pair them after production. | One global conformity schedule is verified before local construction; exact torus scheduling evidence passes. |
+| `AR-08` | High | `RP-03`, `RP-06`, `RP-09` | Aggregate `normalize_scope` overwrites producer component/region/sheet/relation semantics. | Producers construct fully scoped immutable output; aggregation verifies rather than mutates semantics. |
+| `AR-09` | High | `RP-01`, `RP-05`, `RP-06` | Source support is reimplemented with tolerance/quantization-derived identity in multiple consumers. | One sanitized exact source-support kernel; tolerance values cannot be topology keys. |
+| `AR-10` | Moderate | all | Tracing, arrangement, pipeline, and validation monoliths collapse stage ownership. | Responsibility modules reached incrementally; new behavior enters only through stage APIs. |
+| `AR-11` | High | `RP-02`, `RP-03` | The former design mixed normative invariants with several historical “current” authorities. | `DESIGN.md` remains normative-only; status/evidence/handoff records remain separate. |
+| `AR-12` | High | `RP-02` | Focused relation fixtures can pass before production emits and consumes the same certificate. | Positive, tamper, metamorphic, packaged-discovery, and representative production evidence all pass. |
+
+Normative replacement architecture and the staged M0–M6 migration are in
+`.agents/Directional/DESIGN.md`. Full evidence and the scientific/framework
+comparison are in
+`.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
+
 ## Architectural review triggers
 
 An architectural review should be requested when any of these occurs:
@@ -633,6 +662,7 @@ The PR-wide rollup shows nine repeated patterns covering 29 events and all 20
 recurrences, plus five single-event categories. `AUTHORITY_DOMAIN_CONFLATION`
 and `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` already satisfy trigger 1 in the
 current G4 slice. Every future turn must review `RP-01` through `RP-09`; the
-next independent architectural review must examine any touched pattern even if
-the immediate torus correction passes. Only `PR8-R034` / `G4-R007` is active
+independent architectural review is now complete and records `AR-01` through
+`AR-12`; any touched open item remains a design stop even if the immediate
+torus correction passes. Only `PR8-R034` / `G4-R007` is active
 at the audited source head.

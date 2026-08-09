@@ -21,6 +21,25 @@ Repository:
 - Code + Build cleanup head before documentation closeout:
   `01b80ac65968906a9d871cee81f154653f452270`.
 
+## Completed independent architecture review
+
+A user-requested documentation-only review has completed with decision
+**changes required before architecture expansion**.
+
+- Normative architecture:
+  `.agents/Directional/DESIGN.md`.
+- Review evidence:
+  `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
+- Structural register: `AR-01` through `AR-12` in
+  `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+- The mandatory artifact-only turn above is unchanged. It may resolve
+  `G4-R007` behaviorally but cannot close the structural register.
+- After artifact closeout, the first mutating turn is M1 authority kernel and
+  adapters under Code + Build: strong IDs, one chart/support model, canonical
+  routes, and compatibility adapters, with no runtime behavior change.
+- Do not add nonzero holonomy, adaptivity, prescribed-singularity completion,
+  or other feature growth to the legacy authority representation.
+
 ## Mandatory regression-pattern review — every future turn
 
 The review policy `never` controls the optional independent-review default; it

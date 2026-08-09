@@ -1,439 +1,483 @@
-# Direct Surface-Cell Quadrangulation Design
+# Direct Surface-Cell Quadrangulation Architecture
 
-## Product contract
+**Status:** normative architecture  
+**Scope:** the direct, source-authoritative, pure-quad surface-cell backend  
+**Decision:** existing behavior may be verified, but new G4/G5 behavior must not extend the legacy authority model. All new work follows the staged migration in this document.
 
-Given an arbitrary triangle mesh and a supplied or generated cross field, produce a deterministic, source-authoritative, cross-field-aligned pure-quad surface mesh. Production success must come directly from `SurfaceCells`; fallback, source-grid recovery, synthetic topology repair, fixture-specific behavior, or validator relaxation cannot satisfy acceptance.
+## 1. Document authority
 
-## Design-first rule
+This file defines architecture and invariants only. It intentionally contains no artifact IDs, run counts, current failure totals, or “next turn” instructions.
 
-Always advance the earliest incomplete or regressed high-level gate. Every implementation turn declares:
+| Concern | Authoritative record |
+|---|---|
+| Normative product and architecture | this `DESIGN.md` |
+| Current gate and next accepted action | `TODO` and `MILESTONE_G_TODO.md` |
+| Exact next-session instructions | `.agents/Directional/Future_Chat_Session_Handoff.md` |
+| Runtime, build, and benchmark evidence | dated plan/report documents |
+| Regression history and repeated patterns | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
+| Point-in-time PR-wide audit evidence | `.agents/Directional/PR_8_Regression_Audit_Inventory.md` |
 
-```text
-Active design gate:
-Earliest failing fixture/contract:
-Missing design contract:
-Smallest general implementation change:
-Observable material-progress condition:
-Explicitly deferred work:
+If a status record conflicts with this file, status does not redefine an architectural invariant. If two status records conflict, the newest evidence report governs and the status records must be reconciled before implementation resumes.
+
+## 2. Product contract
+
+Given a source triangle mesh, a degree-four directional field, exact source-feature constraints, and a target-size field, the backend produces a deterministic, source-attached, manifold pure-quad mesh.
+
+Acceptance requires all of the following:
+
+1. every output face is a quadrilateral;
+2. output topology is derived from explicit source-topology and field-transport authority;
+3. source components, boundaries, hard features, local isolation sheets, cuts, singularities, and periodic relations remain distinguishable;
+4. every output vertex has auditable source support;
+5. all owned topology regions, rail relations, isolation-seam certificates, and periodic relations are consumed exactly once or rejected with a typed failure;
+6. output incidence, connected components, boundary loops, orientability, manifoldness, and Euler characteristic are computed from the materialized mesh rather than predicted;
+7. fallback, recovery, and generic-producer substitution are absent from strict direct acceptance;
+8. deterministic identity is invariant under source-face row enumeration, output emission order, container order, and thread scheduling;
+9. work is bounded by a global, auditable budget with a monotone progress measure.
+
+The backend replaces global mixed-integer coordinate integration. It does **not** claim to eliminate global discrete topology decisions. Shared rail subdivision, parity, holonomy, and quotient consistency are global combinatorial constraints and must be solved explicitly.
+
+## 3. Architectural diagnosis
+
+The recurring failures are not independent local bugs. They arise from one repeated architectural cycle:
+
+1. a producer emits several partially overlapping representations of authority;
+2. weakly typed integers, parallel vectors, booleans, hashes, and container positions carry semantic meaning;
+3. a downstream consumer reconstructs missing topology or chooses among the representations;
+4. a focused test validates the reconstructed proxy rather than the production certificate;
+5. a more representative fixture changes enumeration, chart overlap, or the number of relations;
+6. the previous proxy ceases to be equivalent to the source semantics;
+7. a new field or consumer-side exception is added, increasing the next ambiguity.
+
+The correction is a certificate-carrying, single-writer pipeline. Each stage owns one immutable output type, establishes explicit postconditions, and passes sufficient semantic evidence to the next stage. Downstream stages validate or consume authority; they never recreate it.
+
+## 4. Scientific grounding
+
+The architecture adopts the following established ideas without copying a reference pipeline wholesale.
+
+### 4.1 Directional-field topology is explicit data
+
+Vaxman et al., *Directional Field Synthesis, Design, and Processing* (2016), distinguish discretization from representation and show that principal matching alone can alias field topology. Period jumps, matchings, connections, singularity indices, and holonomy are discrete degrees of freedom. Therefore:
+
+- field transport is a first-class algebraic object;
+- a face chart, a local isolation sheet, and a source-topology region are separate domains;
+- non-principal transport cannot be inferred from local geometry or a selected representative;
+- cycle sums and non-contractible-cycle holonomy are verified explicitly.
+
+### 4.2 MIQ supplies the transport algebra, not the backend architecture
+
+Bommes, Zimmer, and Kobbelt, *Mixed-Integer Quadrangulation* (2009), cut the surface and construct a seamless parametrization whose cross-chart transitions are grid automorphisms. The surface-cell backend retains that precise algebra:
+
+\[
+T(p) = R_{90}^{r}p + t,\qquad r\in\mathbb Z_4,\quad t\in\mathbb Z^2.
+\]
+
+Rotation and translation are different typed values. Composition, inverse, canonicalization, and cycle closure are defined once. The backend does not replace them with an untyped route, a face choice, or a zero-rotation special case.
+
+### 4.3 QEx supplies the exactness boundary
+
+Ebke et al., *QEx: Robust Quad Mesh Extraction* (2013), separate input preprocessing, geometry extraction, and connectivity extraction. QEx sanitizes the numerical parametrization and transition functions before making deterministic local decisions with exact predicates; it also distinguishes triangle corners, extracted vertices, ports, connections, and halfedges.
+
+For surface cells this implies:
+
+- sanitize numeric source positions and barycentric coordinates once at the boundary;
+- use exact source-simplex and combinatorial identities thereafter;
+- keep corner occurrences separate from quotient vertices;
+- extract connectivity from explicit relations, not world-space coincidence;
+- give the validator certificates rather than asking it to repeat extraction.
+
+### 4.4 QuadWild supplies the global-before-local conformity rule
+
+Pietroni et al., *Reliable Feature-Line Driven Quad-Remeshing* (2021), construct a patch layout, solve a global integer program for shared patch-side tessellation and parity, and only then quadrangulate patches independently. The key reusable rule is ordering, not the particular ILP:
+
+> all shared boundary subdivisions are decided once, globally, before any local producer commits cells.
+
+The surface-cell backend therefore owns a `GlobalConformityPlan`. Independent region producers may not select hard-rail breakpoints and ask an aggregator to pair them afterward.
+
+### 4.5 Instant Meshes and FlowRep delimit local heuristics
+
+Jakob et al., *Instant Field-Aligned Meshes* (2015), demonstrate scalable local orientation and position fields. Those fields are valuable geometric proposals, but their proximity-based extraction and quad-dominant contract are not semantic topology authority for this backend.
+
+Gori et al., *FlowRep* (2017), show that robust curve selection depends on global strand and cycle context, not only local edge alignment. This supports using global rail/cycle structure to plan cells, while keeping perceptual or curvature scores as quality objectives rather than validity criteria.
+
+### 4.6 Existing implementations
+
+- `libQEx` is the reference for explicit extraction entities and an exact-predicate boundary.
+- `QuadWild` is the reference for phase separation and global side-count consistency before local tessellation.
+- `Directional` is the reference for field matching, singularities, and transport metadata.
+- the supplied AutoRemesher implementation is a useful comparison for field/parameterization/extraction staging, but its hole repair, largest-island selection, and triangle/n-gon emission are incompatible with strict direct pure-quad authority.
+
+## 5. Normative pipeline
+
+Each stage is a pure transformation over immutable inputs. A stage may create diagnostics, but diagnostics never influence semantic identity or acceptance.
+
+| Stage | Input | Owned immutable output | Required postcondition |
+|---|---|---|---|
+| A0. Source authority | source mesh and feature metadata | `SourceAuthoritySnapshot` | exact support, incidence, components, sheets, barriers, and stable typed IDs are complete |
+| A1. Field transport atlas | A0 and cross field | `FieldTransportAtlas` | every traversable adjacency has a typed transport; cycle and singularity facts are explicit |
+| A2. Topology plan | A0–A1 | `GlobalTopologyPlan` | regions, cuts, rails, singularity ports, seam certificates, and holonomy ownership are complete |
+| A3. Conformity plan | A0–A2 and target size | `GlobalConformityPlan` | every shared rail has one breakpoint sequence; side counts and parity are globally feasible |
+| A4. Local construction | A0–A3 | `RegionCellComplex` per region | cells conform exactly to the supplied plan; no shared decision is recomputed |
+| A5. Occurrence complex | all A4 outputs | `SurfaceOccurrenceComplex` | every cell corner and directed side is explicit; relations refer to occurrence IDs |
+| A6. Quotient plan and materialization | A0–A5 | `QuotientCertificate` and quad mesh | only certified equivalences merge occurrences; one accepted cell maps to one output quad |
+| A7. Geometry embedding | A0 and A6 | source-attached vertex geometry | every vertex has exact source support and remains on the intended source sheet |
+| A8. Independent verification | A0–A7 | `VerificationReport` | all certificates, mesh invariants, lineage, and expected topology are independently checked |
+| A9. Diagnostics/export | verified records | logs and public result | diagnostics are derived, stable, and cannot mutate authority |
+
+No stage may write into an earlier stage's object. Aggregation is a new stage output, not normalization by mutation.
+
+## 6. Canonical domain model
+
+### 6.1 Strong IDs
+
+Every semantic domain has a distinct type. Bare `int`, `uint64_t`, or `vector<int64_t>` is prohibited at public stage boundaries.
+
+Minimum required domains:
+
+```cpp
+struct SourceVertexId;
+struct SourceFaceId;
+struct SourceEdgeTopologyKey;
+struct InteriorTransitionId;
+struct SourceComponentId;
+struct IsolationSheetId;
+struct TopologyRegionId;
+struct FieldChartId;
+struct HardRailId;
+struct PeriodicRelationId;
+struct CellId;
+struct OccurrenceId;
+struct QuotientClassId;
 ```
 
-Material progress means an active direct fixture passes, a missing first-class contract becomes live and consumed, or a general structural ambiguity is removed. Diagnostics/counters/hashes, equivalent failure movement, aggregate gains, performance changes, fallback/recovery, or fixture-specific behavior are not material progress alone.
+Conversion between domains requires a named function returning `expected<T, DomainError>`. Numeric coincidence is never a conversion.
 
-## Producer authority model
+### 6.2 Semantic identity versus representation handles
 
-An authoritative producer returns one of:
+Semantic identity contains only source-invariant facts. Representation handles—vector offsets, emitted face rows, front-edge indices, local patch ordinals, completion backend IDs, hashes, and cache indices—are stored separately.
 
-```text
-NotApplicable
-Produced
-Rejected
+Rules:
+
+1. equality and ordering of semantic objects never use representation handles;
+2. hashes may accelerate lookup after equality is defined, but a hash is never the primary canonical order or identity;
+3. reverse orientation is canonicalized with an explicit orientation bit, not rejected because its vector is lexicographically larger;
+4. container order and object address never establish ownership;
+5. cached “last” or “selected” values are derived from the canonical object and not stored as independent authority.
+
+### 6.3 Exact source support
+
+One shared source-support kernel classifies a point as a tagged value:
+
+```cpp
+using SourceSupport = std::variant<
+    SourceVertexSupport,
+    SourceEdgeSupport,
+    SourceFaceInteriorSupport>;
 ```
 
-- `NotApplicable`: this producer does not represent the source topology yet; another explicitly selected producer may run.
-- `Produced`: authoritative cells/fronts are complete and materialize directly one cell to one quad.
-- `Rejected`: the producer was applicable but a fail-closed invariant failed; retain the typed reason and stop the backend request. Do not silently launch generic seeds/traces/proposals.
+It owns canonicalization, rebinding, equality, hashing, and incidence queries. Materialization, hard-rail pairing, chart resolution, ownership, and validation must use this kernel. Consumer-specific `1e-9` tests or `1e12` quantized keys cannot define identity.
 
-Applicability derives from general source topology, field state, and first-class region authority, never fixture identity or failure recovery.
+Numerical tolerances may decide whether input is sanitizable. Once sanitized, topology keys are exact. A tolerance-derived value may be logged as geometry evidence but cannot be an ownership key.
 
-## Authoritative phase/front representation
+### 6.4 Charts and transport
 
-The producer carries first-class phase, integer lattice coordinate, branch rotation, family/sign, source face/chart/component, topology-region identity, local isolation-sheet provenance, transition edge, ordered route, feature, ownership, periodic state, and any bounded-disk phase state. Fronts advance only through exact source topology and reciprocal field transport.
+There is one `FieldChartId` type. Duplicate chart structs with reordered fields are prohibited.
 
-A source-vertex crossing is an ordered incident-face fan, never a positional jump. Every crossed canonical source edge is recorded and transported through strict reciprocal transition logic. Ambiguous, disconnected, repeated, non-manifold, nonreciprocal, missing-provenance, or branch-mismatched routes fail closed.
+```cpp
+struct GridAutomorphism {
+  QuarterTurn rotation;      // Z4
+  LatticeTranslation shift;  // Z2
+};
 
-An authoritative cell has four ordered source-attached corners/sides, coherent transported state, nonzero intrinsic area, source-normal-consistent winding, exact topology-region/local-isolation provenance, complete route provenance, and any required periodic quotient identity. One accepted authoritative cell maps directly to one output quad.
+struct TransitionStep {
+  SourceEdgeTopologyKey topology;
+  std::optional<InteriorTransitionId> interior;
+  GridAutomorphism transport;
+  Orientation orientation;
+};
 
-Hard-feature barriers remain authoritative constraints. Relief separatrices are guidance until embedded; `reliefBarrierEdges` may stop authoritative transport only when `reliefBarriersEmbedded == true`.
-
-## Source-topology region versus local isolation sheet
-
-This distinction is mandatory.
-
-### Source-topological producer region
-
-A producer region is connected through **exact source-mesh adjacency** and is split only by authority whose semantics require a parent chart boundary: a genuine source boundary, hard feature, different source component, or equivalent explicit source constraint.
-
-Producer applicability, Euler characteristic, genuine boundary-loop classification, annulus/disk topology, exact-once region ownership, and whole-region coverage are determined from this source-topological authority.
-
-A non-hard shared source edge does **not** become an exterior producer boundary merely because its incident faces have different local isolation-sheet labels.
-
-### Local isolation sheet
-
-Local isolation labels are a geometric safety partition. They protect proximity/capture/projection/collision/candidate association from jumping between nearby unrelated surface pieces. The close/opposing-sheet classifier may therefore split one source-topological producer region into several local isolation labels.
-
-Different local labels may communicate only through an **exact shared source edge or ordered source-vertex fan** and valid reciprocal field transport. This does not authorize world-space joining, nearest-point welding, or proximity-based ownership.
-
-A valid non-hard exact-adjacent cross-sheet edge inside one topology region is an **internal isolation seam**, not an exterior chart rail. Crossing it must retain exact transition provenance and both pre/post local-isolation authority.
-
-Embedded relief is first-class **internal cut/transport authority beneath the parent topology region**. It may split explicitly named producer domains when a local producer needs cut domains, but it does not change the parent's source Euler characteristic or genuine boundary-loop count. Once an embedded barrier is consumed by an applicable producer, unsupported domain coverage is `Rejected`; an all-`NotApplicable` child result may not fall through to generic tracing. Non-embedded relief remains guidance in every traversal path, including ordered source-vertex fans.
-
-Hard features remain true producer-domain boundaries and cells may not cross them. Unless a hard rail coincides with a genuine source boundary, the two exact source-adjacent rail sides must be paired through reciprocal source/field/phase authority so the final mesh is conforming across the rail. Genuine source boundaries alone remain exterior. Spatially close but source-disconnected sheets/components remain separate topology regions.
-
-The implementation must preserve both identities. Never overwrite a local isolation label with a topology-region ID or infer a topology-region union from counts, IDs, frequency, discovery order, boundary length, topology score, proximity, or arbitrary subset search.
-
-## Ordered gates
-
-1. **G0 — Truthful authority:** passed and continuously enforced.
-2. **G1 — Uniform phase-front plane:** passed.
-3. **G2 — Cross-chart and close-sheet propagation:** passed; local isolation safety remains mandatory.
-4. **G3 — Periodic closure and holonomy:** passed.
-5. **G4 — Topology-distinct completion and singularities:** **active**. Exact torus is the earliest topology fixture; prescribed singular sphere follows only after the torus topology slice closes.
-6. **G5 — Adaptive scale and hard features:** blocked.
-7. **G6 — Full production geometry:** blocked as success gate; randomized bunny and vase remain mandatory observations.
-8. **G7 — Operational hardening:** blocked.
-
-## Previous runtime authority and retained baseline
-
-Artifact **`9022061741`**, implementation `3ca89ab55efff461b050fb12033174be70e7464f`, remains the last candidate that directly produced all accepted plane/seam/close-sheets/cylinder baselines.
-
-Artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`, is the latest exact artifact-only runtime authority. Its static/source/checksum/dependency/fixture/log authority passes, all 33 transition-quotient counterfactuals are independently discoverable, and validation/API remain 60/60 and 8/8. G4 is still blocked, but this artifact makes material progress:
-
-| Fixture | Result, three processes | First invalid authority | Output |
-|---|---:|---|---|
-| plane | 0/3 | `InvalidAuthoritativeTransitionSourceEdge` | none |
-| multi-face seam | **3/3** | none | 81 vertices / 64 pure quads; semantic `99c8be7159d05c2f` |
-| close sheets | 0/3 | `InvalidAuthoritativeTransitionSourceEdge` | none |
-| cylinder | 0/3 | `InvalidPeriodicCutAuthority` | none |
-| torus | 0/3 after phase-front `Produced` | `InvalidPeriodicCutAuthority` | none |
-
-The multi-face result is direct `CompletedSurfaceCells`, complete-lineage, strict-valid, deterministic, and fallback/recovery-free. Torus retains four topology regions, eight internal isolation seams, and four periodic relations but consumes `0/0/0` before output. Sphere remains deferred.
-
-Focused results are transition quotient **24/33**, topology/isolation/hard rail **10/10**, polygonal/curved/mixed **12/12**, periodic/torus/cylinder **5/7**, remaining non-overlap Phase10 **35/39**, and direct G0-G3 GoogleTests **1/4**. Bounded totals are producer **143/161**, completion/simplification **154/164** with the same historical ten, validation **60/60**, and API **8/8**.
-
-The prior genuine-boundary representation is now proven: a one-face source boundary has non-empty canonical `sourceRouteTopology`, no invented interior index, and `edge_matching_indices()` remains interior-only. The reciprocal isolation-certificate positive and broken cases and all semantic-digest counterfactuals also execute and pass.
-
-### Canonical interior transition identity
-
-The latest runtime exposes a second representation defect. `CrossFieldEdgeTransition.sourceEdge` is a full `mesh.EF` row, including boundary edges. `edge_matching_indices(edge_faces(full source faces))` defines the materializer's source-wide compact index over two-face interior edges. `source_edge_provenance()` returns the full `EF` domain when CrossField transitions exist; local producers can also rebuild a different compact numbering from active-region faces. Phase-front segment/front/periodic routes currently store these alternate meanings in the same integer fields, while materialization always interprets them in the source-wide compact domain.
-
-Materializer-facing two-face routes must carry exactly the source-wide compact interior index paired positionally with canonical topology. Region-local renumbering is not authority. Supplied CrossField transition data remains mandatory validation authority for topology, reciprocal incident faces, matching, and effort, but its full-`EF` row may not leak into the compact route. Genuine boundaries remain topology-only. Numeric equality between domains is never authority.
-
-The public retention contract is also exact: temporary ownership needed to reach a deterministic injection point must not promote `retainIntermediateGeometry=false` into returned context. Public context is retained iff requested.
-
-Nonzero periodic `Z4` rotation, shared hard-rail breakpoint scheduling, and a valid positive multi-isolation quotient witness remain explicit later G4 slices.
-
-## G2 isolation invariant
-
-World-space distance, overlap, or nearest projection may not join unrelated sheets. Local isolation identity remains authoritative wherever an operation could otherwise capture or project onto nearby unrelated geometry.
-
-Topology-region continuity does **not** weaken this rule. Crossing a local-isolation boundary requires exact source adjacency plus reciprocal source-field transport; proximity alone can never establish continuity.
-
-## G3 periodic invariant
-
-A periodic source region carries first-class quotient authority:
-
-```text
-periodic relation =
-  quarter-turn rotation r in Z4
-  + integer lattice translation t in Z2
-  + ordered canonical source route/cut identity
-  + source-topology-region ownership
-  + retained local-isolation provenance
+struct CanonicalRoute {
+  std::vector<TransitionStep> steps;
+  Orientation canonicalOrientation;
+};
 ```
 
-Required invariants:
+Topology and the optional compact transition ID are one value object, never parallel vectors. A genuine one-face source boundary has topology and no interior transition. A two-face transport requires both. Route construction validates positional correspondence once.
 
-- applicability derives from source topology, never fixture identity;
-- cut/chart construction does not require global world-space planarity;
-- chart duplicates retain authoritative underlying source identity;
-- periodic transport is reciprocal, integral, branch-compatible and source-routed;
-- invalid periodic state is typed `Rejected` and cannot fall through to generic tracing;
-- artificial-cut counterparts pair through exact source/phase/lattice authority, never Euclidean welding;
-- the artificial cut is not an exterior output boundary;
-- genuine source boundaries remain exterior;
-- direct materialization quotients periodic duplicates exactly;
-- every retained periodic relation is consumed by hashing, diagnostics, provenance, and materialization;
-- one accepted phase-front cell maps directly to one output quad.
+### 6.5 Closed producer outcomes
 
-Multiple relations may belong to distinct source-topological regions. Relation ownership/basis selection may not use source numeric IDs, discovery order, count/frequency, arbitrary subset search, or proximity.
+A producer exposes exactly one state:
 
-## Transition-quotient materialization invariant
+```cpp
+template<class T>
+using ProducerOutcome = std::variant<
+    NotApplicable,
+    Produced<T>,
+    Rejected<ProducerFailure>>;
+```
 
-Integer lattice coordinates validate field/phase transport; they are **not output vertex identity**. Parameter charts can overlap, so equal `(topologyRegion,u,v)` values do not prove that two occurrences are one mesh vertex.
+There are no public `attempted` or `succeeded` aliases. Construction uses named factories; consumers use exhaustive visitation. `Produced<T>` guarantees a nonempty, internally valid payload. `Rejected` guarantees a typed failure and no consumable partial product. Debug snapshots are a separate, explicitly non-semantic channel.
 
-Direct extraction operates on four explicit corner occurrences per authoritative cell. An output vertex is an equivalence class generated only by:
+The dispatch rule is fixed:
 
-- reciprocal ordinary front-edge ownership;
-- exact reciprocal hard-rail ownership across producer domains;
-- an explicitly owned periodic relation applied as the full grid automorphism `R^r p + t`, with `r in Z4` and `t in Z2`.
+- `NotApplicable`: the dispatcher may try the next declared producer;
+- `Produced`: commit exactly this result;
+- `Rejected`: stop; generic substitution is forbidden.
 
-World-space distance, coordinate equality without connectivity, relation order/count, or representative local sheet may not create equivalence. Every pair carries its owning cell side and relation/rail authority so materialization never infers ownership from container order. Genuine source-boundary sides alone remain unpaired exterior sides.
+### 6.6 Certificates
 
-Source-supported side topology and interior transition indices are distinct domains. A genuine one-face boundary carries canonical topology but no interior matching index. Interior routes and actual cross-face transitions must retain their valid matching indices; no sentinel or expanded boundary-inclusive index table is permitted.
+Every non-local semantic decision is represented by a certificate with a verifier.
 
-Internal local-isolation seams are not required to coincide with or cross every output cell side. Their exact reciprocal transport is retained in first-class canonical seam certificates. The materializer validates a bijection between retained seams and certificates, builds per-region local-sheet connectivity from them, and accepts multi-sheet state only when connected by this authority. Missing, duplicate, malformed, wrong-owner, wrong-sheet, or nonreciprocal certificates fail closed; unconditional consumption remains forbidden.
+Required certificates include:
 
-`SurfacePoint` remains one exact source-face projection chart. When an equivalence class contains several valid charts/local isolation sheets, one deterministic exact point may represent its position only after intrinsic source-support validation; lineage retains the full sorted chart set, local-isolation set, parent topology region, and rail/periodic equivalence provenance.
+- `FieldTransportCycleCertificate`;
+- `IsolationSeamTransportCertificate`;
+- `PeriodicHolonomyCertificate`;
+- `HardRailScheduleCertificate`;
+- `RegionConformityCertificate`;
+- `ChartSelectionCertificate`;
+- `QuotientRelationCertificate`;
+- `SourceSupportCertificate`;
+- `MaterializationCertificate`.
 
-Output connected components, boundary loops, manifold incidence, and Euler characteristic are computed from the assembled quad complex. They may never be hard-coded or corrected synthetically.
+A `ChartSelectionCertificate` records the selected component and the ordered canonical relation path for every participating occurrence. A boolean `witnessed` flag or reachable-set membership is not sufficient evidence.
 
-## Field-authoritative correspondence and source geometry
+## 7. Global topology and conformity
 
-Where source topology admits multiple valid correspondences, source vertex numbering, lexicographic order, candidate count, discovery order/frequency, or proximity are not authority. Enumerate topology-compatible possibilities, propagate reciprocal 4-RoSy family/sign authority, and consume a unique field-authoritative optimum; zero valid candidates or genuine field-equivalent ambiguity fails closed.
+### 7.1 Separate region, sheet, and chart authority
 
-Coverage tolerance may determine source-triangle ownership, but emitted geometry is canonical source-simplex geometry. Exact simplex crossings define emitted breakpoints; source vertices use exact one-hot barycentrics; tolerance-only collapsed segments are omitted; genuine overlap remains rejected by strict validation.
+- a **source-topology region** is a producer domain bounded by source boundaries, hard rails, or explicit cuts;
+- an **isolation sheet** prevents unintended geometric cross-sheet interactions;
+- a **field chart** is a local frame/transport domain;
+- a **quotient class** is an output equivalence class of occurrences.
 
-## G4 progression
+These concepts may correlate, but none is a numeric alias or representative for another.
 
-### Multi-relation periodic authority
+### 7.2 Single-writer authority
 
-Multiple compatible periodic relations are first-class and runtime-live. Equivalent/reversed descriptions canonicalize; conflicting or genuinely ambiguous/dependent relation authority fails closed. Every retained relation is consumed, not merely counted.
+`SourceAuthoritySnapshot` and `GlobalTopologyPlan` are referenced, not copied into multiple mutable aggregates. A consumer receives a `const` view or stable typed ID. Network, phase-front, materializer, and validator objects cannot each own divergent copies of face-region or sheet arrays.
 
-### Curved bounded-disk producer
+Local producers construct fully scoped objects. An aggregator may verify scope and remap representation handles, but it may not overwrite source component, topology region, sheet membership, route, or relation semantics after production.
 
-The curved producer recognizes a source-topological disk with Euler characteristic 1 and one manifold boundary, propagates reciprocal 4-RoSy branch gauge, and constructs source-attached boundary/chart/front authority. Topology, transport, boundary phase, chart, and front-pairing failures are typed.
+### 7.3 Hard-rail scheduling
 
-The planar bounded and periodic producers remain separate first-class paths. Whole-surface aggregation is exact-once.
+All regions incident to a hard rail contribute requirements to one scheduling problem. The scheduler computes:
 
-### Field-authoritative polygonal boundary phase — runtime-valid
+- a canonical ordered breakpoint sequence in exact source-rail coordinates;
+- incident region/side ownership;
+- target-size objective and permitted deviation;
+- shared edge count;
+- parity and 2:1 adaptivity constraints where enabled;
+- singularity/feature endpoints that are fixed;
+- a proof that both sides consume the identical sequence.
 
-Artifact **`9021175280`** validates the generalized boundary-phase representation **5/5**.
+Only after the schedule verifies may region producers run. They consume breakpoint IDs and may not insert, remove, quantize, or reorder shared breakpoints. This is the architectural correction for target-size-dependent `InvalidHardRailPairing`.
 
-`SurfaceBoundedDiskBoundaryPhase` retains ordered source-attached runs with transported branch/family/sign, exact source provenance, intrinsic lengths, signed reciprocal quarter-turns, cyclic index, boundary authority, polygon/chart state, and deterministic structural hash.
+The scheduler may use an ILP, dynamic program, or deterministic constrained graph algorithm. Solver choice is replaceable; the certificate and invariants are not.
 
-Required behavior:
+### 7.4 Holonomy
 
-- per-edge field-alignment threshold remains meaningful and unchanged without independent evidence;
-- adjacent field runs require valid reciprocal quarter-turn transitions;
-- cyclic field index must close consistently;
-- runs are never inserted/deleted/merged/split merely to manufacture a desired side count;
-- the established valid four-run rectangle remains an exact fast path;
-- legitimate non-rectangular orthogonal/polygonal disks may construct an intrinsic source-authoritative chart;
-- polygon/chart closure may not use a synthetic closing edge, Euler correction, Euclidean welding, or post-hoc cell merging;
-- partial local cells never become whole-surface authority after a typed rejection.
+Periodic transport is a complete grid automorphism. Zero rotation is an ordinary value, not a different representation. Composition around every owned cycle must match the declared holonomy. Nonzero `Z4` rotation remains unsupported until the canonical algebra, producers, quotient, and counterfactuals consume it end to end.
 
-A natural six-run reflex-corner witness constructs the generalized phase/chart and reaches the deliberately deferred `InvalidBoundedDiskFrontPairing` invariant. This proves the representation itself is real.
+## 8. Occurrence and quotient architecture
 
-### Runtime diagnosis that motivated topology-region decoupling
+Equal lattice coordinates or equal 3D positions do not imply equal output vertices. Each produced cell owns four distinct corner occurrences. Occurrences merge only through one of these certified relations:
 
-Exact torus under artifact `9021175280` deterministically rejects at `InvalidBoundedDiskBoundaryTurn` with **zero retained phase/run/polygon/chart state**. This does not satisfy the planned material-progress condition.
+1. reciprocal ordinary-front relation;
+2. exact hard-rail relation using the shared schedule;
+3. explicit periodic relation with grid automorphism;
+4. singularity-port relation owned by the topology plan.
 
-Read-only exact-source reconstruction shows the apparent disk is created by local isolation classification: classifier-local disk labels reconnect through non-hard exact source adjacency into an annular hard-feature region. Their shared non-hard classifier seam is internal to source topology, not a physical exterior boundary. Treating it as a bounded-disk rail creates an invalid field turn where that artificial seam meets a true hard-feature rail.
+Every relation contains canonical endpoint occurrence IDs, source support, chart transport, orientation, and owner certificate ID. Front-edge positions and emission indices are optional provenance, not equality.
 
-Boundary turn/index/alignment validation must **not** be relaxed to hide this partition error.
+The quotient builder:
 
-### Topology-region / isolation-sheet architecture — runtime-live, quotient consumption blocked
+1. verifies every relation independently;
+2. rejects duplicate, conflicting, unowned, or nonreciprocal relations;
+3. computes equivalence classes with deterministic union order over canonical IDs;
+4. proves every owned relation was consumed exactly once;
+5. emits one vertex per verified class and one quad per accepted cell;
+6. records a materialization certificate linking every output incidence to its source occurrences.
 
-Implementation **`3ca89ab55efff461b050fb12033174be70e7464f`**, exact artifact **`9022061741`**, validates first-class `SurfaceTopologyRegion` authority **9/9**:
+No world-space weld, post-hoc cell merge, representative-sheet selection, count/frequency ownership rule, or arbitrary subset search is allowed.
 
-- regions are built from exact source adjacency;
-- different source components and hard features stop region continuity;
-- local-isolation disagreement alone does not;
-- region state retains exact source faces, Euler characteristic, genuine boundary-loop count, exact boundary topology, internal isolation-seam topology, local isolation labels, and a structural hash;
-- non-hard exact-adjacent cross-sheet seams are internal when they lie in one region;
-- reciprocal transport across such seams is required and malformed transport fails typed `InvalidTopologyRegionTransport`;
-- producer applicability and exact-once aggregation operate by topology region while local-isolation provenance remains attached to cells/fronts/relations/phases;
-- periodic relation identity carries topology-region scope;
-- trace-network hashing and runtime diagnostics consume region/seam authority.
+## 9. Validation architecture
 
-Artifact `9026181778` proves the reviewed boundary/certificate representation far enough to restore direct multi-face seam and execute all focused counterfactuals. It does not close the quotient:
+Validation is an independent certificate verifier, not a second producer.
 
-1. plane and close sheets serialize full-`EF` transition rows into compact-index routes and fail at `InvalidAuthoritativeTransitionSourceEdge`;
-2. cylinder and direct torus fail the same domain mismatch as `InvalidPeriodicCutAuthority`;
-3. the winding-cylinder producer rejects nonzero accumulated branch matching before hard-coding periodic rotation zero;
-4. exact torus at the Phase10 target size fails exact hard-rail pairing before relation-owner tests can execute;
-5. the split-isolation positive fixture does not yet prove a quotient class spanning multiple local sheets;
-6. injected failure temporarily forces retention and incorrectly exposes context when the caller requested release.
+It may recompute elementary source incidence and output mesh topology from immutable inputs. It may not infer missing hard-rail endpoints from front-edge indices, reconstruct producer routes from whichever face is selected, or silently canonicalize malformed producer state.
 
-The ensuing implementation slice normalized the two-face route index and separated operational lifetime from public retention; artifact `9028103772` then moved production to the current downstream torus failure. The other blockers stay explicit and may not be hidden by assertion changes, fabricated lineage, proximity pairing, or fallback.
+Validation layers:
 
-Diagnostic region counts, hashes, local-sheet counts, torus IDs, relation counts, analytical fixture parameters, and observed boundary lengths are evidence only and are prohibited as production/test ownership keys.
+1. **schema:** typed IDs, closed outcomes, sorted/unique canonical sets, no dangling references;
+2. **certificate:** transition, seam, rail, holonomy, chart-path, quotient, and materialization proofs;
+3. **source attachment:** exact support and sheet/component constraints;
+4. **mesh topology:** twins, orientation, manifoldness, connected components, boundary loops, Euler characteristic;
+5. **product:** pure quads, one cell to one quad, complete lineage, no recovery/fallback;
+6. **geometry:** inversion, self-intersection, size, alignment, and quality thresholds.
 
-G4 is not passed until required topology and singularity fixtures complete directly with strict-valid pure-quad output and complete provenance.
+The verifier uses independently written checks at stage boundaries. Shared primitive types are allowed; reusing the producer's decision procedure as the validator is not independent evidence.
 
-## G4 prescribed singularity
+## 10. Determinism and complexity
 
-The prescribed sphere remains deferred until exact torus reaches direct strict-valid production. A downstream sphere completion observation must never preempt the earlier torus producer/topology invariant.
+### 10.1 Determinism
 
-## Previous next authority before artifact 9028103772
+Canonical ordering uses semantic tuples of typed source identities. Hashes, object addresses, thread completion order, source-face row order, and output row order do not participate.
 
-Latest runtime evidence is recorded in `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Report.md`.
+Metamorphic invariants are mandatory:
 
-Because artifact `9026181778` restores an active direct fixture and activates missing first-class certificate/counterfactual authority, it is a material-progress turn and the mandatory no-progress Review guard does not activate. Optional review policy remains `never`.
+- source-face row permutation preserves semantic output digest;
+- region and producer scheduling permutation preserves it;
+- route reversal plus orientation inversion preserves relation identity;
+- output vertex/face row permutation preserves it;
+- changing source support, transport, connectivity, winding, or sheet separation changes it.
 
-The only authorized next turn is **Code + Build** under `.agents/Directional/Gate_4_Canonical_Transition_Index_And_Failure_Retention_Code_Build_Plan.md`. It is compile-only and bounded to canonical interior transition indices plus the public retain/release contract. It executes no generated project runtime.
+Raw hashes remain same-artifact diagnostics only.
 
-## Non-negotiable prohibitions
+### 10.2 Work ledger
 
-- no validator weakening;
-- no count/order/frequency ownership selection;
-- no arbitrary subset search;
-- no fallback/recovery substitution;
-- no synthetic counters or Euler correction;
-- no positional merging across unrelated sheets;
-- no Euclidean periodic seam welding;
-- no fixture/ID special cases;
-- no post-hoc cycle decomposition or cell merging;
-- no timeout-as-correctness.
+Every recursive, retrying, or combinatorial stage owns a global `WorkLedger`:
 
-## G4 canonical materializer transition-index contract
+```cpp
+struct WorkLedger {
+  std::size_t proposedStates;
+  std::size_t committedStates;
+  std::size_t rejectedStates;
+  std::size_t remainingBudget;
+  MonotoneMeasure measure;
+};
+```
 
-Materializer-facing interior transition indices have exactly one numeric domain: the source-wide compact table returned by `edge_matching_indices(edge_faces(full source faces))`.
+Local limits nested inside outer loops do not bound total work. A stage must prove that each accepted edit decreases a lexicographic monotone measure or consumes a finite global budget. Exhaustion is a typed result with the last valid certificate set; timeout is never correctness evidence.
 
-- Regional incidence and region-local compact tables are traversal authority only and must never define serialized route numbers.
-- A two-face transition route carries equal-length numeric and canonical-topology sequences. Every topology entry must resolve to the numeric entry at the same position in the source-wide compact table.
-- A full `mesh.EF` row is CrossField validation identity, not a materializer-facing compact index.
-- Supplied CrossField authority remains fail-closed for missing, duplicate, wrong-edge, wrong-face, or nonreciprocal transitions.
-- Genuine one-face boundaries remain topology-only; no synthetic interior index is invented.
-- Materialization rejects a full-`EF` or region-local numeric substitution as `InvalidAuthoritativeTransitionSourceEdge`, even if topology is otherwise present.
+## 11. Module boundaries
 
-`SurfaceTraceSegment.transitionSourceTopology` is parallel authority for `transitionSourceEdges`; reversal and concatenation preserve positional pairing. Front, periodic, cut, boundary, and certificate producers use the same source-wide compact contract.
+The target source layout is responsibility-based:
 
-Pipeline retention has two distinct meanings:
+```text
+surface_cells/
+  authority/       SourceAuthoritySnapshot, strong IDs, source support
+  transport/       chart atlas, grid automorphisms, routes, cycle proofs
+  planning/        topology plan, rail schedule, parity/conformity
+  construction/    bounded region producers
+  occurrence/      cells, corners, directed sides, relation registry
+  quotient/        quotient plan and materialization
+  verification/    independent certificate and mesh verifiers
+  diagnostics/     derived reports and serialization
+```
 
-- `retainRequested` controls observable returned trace/flow/arrangement authority;
-- `retainForExecution` may keep internal state alive long enough for later stages or deterministic failure injection.
+File size is not itself an invariant, but a module that combines producer selection, topology planning, canonicalization, materialization, validation, diagnostics, and fallback violates single ownership. New behavior is not added to the existing tracing, arrangement, or pipeline monolith unless it is an adapter that moves responsibility toward this layout.
 
-Every success or failure return exposes public intermediate geometry iff `retainRequested` is true. Clearing unrequested public context must not alter the terminal code or stage.
+## 12. Verification matrix
 
-Implementation `edc14d38f862b94941b249f564050e2e1f8f5287` has runtime authority in artifact `9028103772`: direct plane, seam, close sheets, and cylinder pass, while torus advances to downstream `LocalSheetMismatch`. The source-wide contract does not authorize fallback, route repair, topology-only acceptance for a required two-face index, fixture-specific behavior, predicted counts, or validator relaxation.
+Every stage requires positive, negative, metamorphic, and representative evidence.
 
-## Current runtime authority — canonical transition artifact
+| Contract | Positive | Negative/tamper | Metamorphic | Representative |
+|---|---|---|---|---|
+| typed transition route | boundary and interior routes | domain substitution, missing paired topology | face-row and route-orientation permutation | seam and cylinder |
+| producer outcome | each of three alternatives | inconsistent payload cannot be constructed | dispatch order does not change rejection | plane plus an unsupported input |
+| rail schedule | two regions consume one schedule | independent breakpoint insertion | region order permutation | exact torus blocker fixture |
+| chart certificate | chained multi-rail path | missing/duplicate/conflicting relation | source-face row permutation | torus completion |
+| periodic relation | zero and nonzero rotation algebra | wrong inverse/owner/unconsumed relation | canonical route reversal | cylinder, then torus |
+| quotient | explicit occurrence relations | proximity-only or equal-coordinate merge | emission order permutation | close sheets and torus |
+| work ledger | bounded completion | multiplicative budget exhaustion | queue-order permutation | prescribed sphere |
 
-Artifact `9028103772` at implementation `edc14d38f862b94941b249f564050e2e1f8f5287` supersedes earlier runtime-authority statements for current planning.
+Focused fixtures isolate contracts. Direct gate acceptance enters production preprocessing and remesh APIs with committed fixtures. A focused proxy cannot close a representative gate.
 
-The source-wide compact route and retain/release patch materially advances production behavior: plane, multi-face seam, close sheets, and cylinder complete directly **3/3** each; direct torus consumes all four topology regions, eight isolation seams, and four periodic relations and materializes one component with zero boundary loops and Euler zero. Torus still fails strict completion validation at `LocalSheetMismatch` with 74 issues, so G4 remains active and sphere remains deferred.
+## 13. Migration plan
 
-Canonical counterfactual runtime acceptance is still pending. The test-authority repair is compile-complete at implementation `de5261c7185aef71807b0b4140c8f023a44874fd`, artifact `9029584083`, with production blobs unchanged.
+This is a strangler migration. Each slice is independently reviewable and preserves the last immutable runtime artifact as comparison authority. No big-bang rewrite is approved.
 
-The valid three-domain test precondition is now an actual serialized route position in a deterministic disconnected planar unit-square plus 2-by-1-rectangle topology. The witness records exact cell/side/segment/route ownership, resolves the owning topology region's compact map, and requires unique canonical/reciprocal full-`EF` authority before either tamper. Periodic face-row invariance is expressed through ordered topology plus per-mesh source-wide compact maps. A malformed CrossField transition is selected through canonical topology and reciprocal faces, never numeric-domain coincidence.
+### M0 — preserve evidence
 
-The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`. Only artifact `9029584083` may establish whether those corrected tests reach their intended semantic assertions. A missing route witness remains a test-fixture defect and cannot authorize production accommodation.
+Run the already compiled multi-rail artifact exactly as its artifact-only plan requires. This records whether the current patch fixes `G4-R007`; it does not certify the legacy architecture. No source or test edit is mixed into this checkpoint.
 
-This does not authorize a validator relaxation. The downstream torus correction must preserve exact quotient identity, full lineage, hard-rail/periodic equivalence provenance, and strict local-chart compatibility. Nonzero `Z4` rotation, shared hard-rail scheduling, and positive multi-isolation lineage remain separate blockers.
+### M1 — authority kernel and adapters
 
-## Current runtime authority — canonical test authority accepted
+Introduce strong IDs, one chart type, `SourceSupport`, `TransitionStep`, `CanonicalRoute`, and grid-automorphism algebra behind compatibility adapters. Behavior is unchanged.
 
-Artifact `9029584083` at implementation `de5261c7185aef71807b0b4140c8f023a44874fd` is now runtime authority. Exact preflight/postflight passes; all 49 original package members and the six recorded source/CMake blobs remain unchanged. All seven corrected canonical/periodic/retention contracts pass individually.
+Acceptance:
 
-Direct plane, multi-face seam, close sheets, and cylinder remain strict-valid **3/3** without fallback/recovery. Direct torus remains deterministic **0/3**, but it produces 192 quads, consumes all four topology regions, eight internal isolation seams, and four periodic relations, and computes one component, zero boundary loops, and Euler zero before final validation reports 74 `LocalSheetMismatch` issues. Sphere remains gated.
+- compile-only Code + Build;
+- no public integer-domain conversion without a named checked function;
+- adapter round-trip properties and compile-time non-convertibility tests;
+- old runtime artifact remains the behavioral comparison baseline.
 
-The failure is an authority-projection defect. Quotient materialization already retains complete `PureQuadVertexLineage.sourceCharts`, topology/isolation membership, and exact `HardRail` equivalence provenance while selecting one deterministic scalar `SurfacePoint` for position. The optimizer/validator path currently sees only that scalar chart. Because hard features correctly split source chart components, a stitched rail vertex may authorize both producer sides while its scalar representative names one; a valid quad on the other side is then rejected.
+### M2 — seal producer state and single-writer snapshots
 
-The next invariant is exact and fail-closed:
+Replace `disposition + attempted + succeeded` with `ProducerOutcome<T>`. Replace duplicated region/sheet arrays with immutable authority snapshots and typed references. Aggregators validate rather than overwrite producer scope.
 
-- project retained per-vertex chart and hard-rail equivalence lineage into optimizer/final-validator authority;
-- resolve one unique compatible chart side per output quad;
-- admit a chart other than the scalar representative only when exact source support, retained chart membership, and matching reciprocal `HardRail` equivalence all agree;
-- retain scalar barycentric, position, component, sheet, and source-entity checks;
-- reject missing, tampered, unsupported, ambiguous, or nonreciprocal authority;
-- never globally union hard-feature chart components or infer compatibility from proximity, count, row order, IDs, or topology-region membership alone.
+Acceptance:
 
-The authoritative next turn is compile-only Code + Build under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`. Nonzero periodic rotation, shared hard-rail scheduling, positive multi-isolation lineage, historical completion/timing failures, and prescribed sphere remain separate blockers.
+- inconsistent producer states are unrepresentable;
+- exhaustive dispatch tests cover all alternatives;
+- no generic producer runs after `Rejected`;
+- plane, seam, close sheets, and cylinder remain strict-valid.
 
-## Current compile authority — hard-rail face-chart projection
+### M3 — global conformity plan
 
-Implementation `8f37612148f34bac63cf294000c17c7de2e03b41` now carries the quotient's exact retained source charts and explicit `HardRail` equivalence records into optimizer and final-validator authority. The scalar `SurfacePoint` remains positional and source-entity authority; no chart barrier is globally removed.
+Move hard-rail breakpoint and side-count selection before regional production. Producers consume one verified schedule.
 
-The shared face resolver admits an alternate chart only when retained membership, exact hard-rail source support, matching rail/route/front ownership, and an unambiguous peer relation agree. One unique semantic transition-graph component is required per face. Missing, malformed, unsupported, disconnected, nonreciprocal, cardinality-misaligned, or genuinely ambiguous authority fails closed.
+Acceptance:
 
-Optimizer labels, reference/centroid projection, projection-cache labels, final sampling, and source-authoritative validation consume the same decision. Selection by source face row, numeric ID, topology-region count, frequency, hash, or proximity remains prohibited.
+- exact shared-rail schedule positive/tamper tests;
+- target-size variation cannot create different side breakpoints;
+- the historical exact-torus `InvalidHardRailPairing` blocker is removed without post-hoc pairing;
+- work and solver bounds are reported.
 
-Artifact `9030700527` compiles the seven approved targets at **113/113** with `runtimeExecution=false`; its outer SHA-256 is `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf` and all **49/49** recursive entries verify. This is compile authority only.
+### M4 — certificate-carrying chart and quotient relations
 
-The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`. Exact torus must become direct strict-valid **3/3** before prescribed sphere runs. All previously deferred rotation, scheduling, multi-isolation, historical completion/timing, and later-gate work stays separate.
+Replace validator-side reachability reconstruction, boolean witness compression, front-edge equality, and parallel relation vectors with canonical relation IDs and explicit path certificates.
 
-## Current runtime authority — face-chart projection rejected
+Acceptance:
 
-Artifact `9030700527` proves that the seven single-relation face-chart
-contracts compile and pass, but the production projection regresses direct
-torus from 74 to 165 `LocalSheetMismatch` issues. Plane, seam, close sheets,
-and cylinder remain strict-valid **3/3**. Torus still reaches complete
-`4/8/4` consumption, 192 completed quads with complete lineage, and
-`1/0/0` topology before validation; sphere remains gated.
+- exact selected relation paths are retained and independently verified;
+- unused valid relations do not alter the selected certificate;
+- missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations fail typed;
+- torus lineage and quotient acceptance are direct production evidence.
 
-A quotient vertex owns the union of charts and equivalences from every member
-of its union-find class. Complete authority is therefore a graph, not
-necessarily a direct star around the chosen scalar `SurfacePoint`. Valid
-relations may form a chain or cycle and may be irrelevant to one incident
-face.
+### M5 — independent verification and occurrence split
 
-### Multi-rail chart-reachability contract
+Separate occurrence creation, quotient construction, geometry embedding, and validation. Centralize exact source support and remove consumer-specific quantized identity.
 
-- Validate every retained chart and relation structurally against exact source
-  support before face selection.
-- Treat retained chart components as vertex-local nodes and exact reciprocal
-  `HardRail` relations as edges.
-- Derive the components reachable from scalar-compatible roots through
-  deterministic graph traversal.
-- Resolve one face chart from the unique intersection of its corners'
-  reachable components.
-- Require an exact selected witness path for alternate use, but do not require
-  every other valid retained relation to be consumed by that face.
-- Validate reciprocity against complete projected output authority rather than
-  requiring every peer relation to occur on the selected face.
-- Preserve scalar barycentric, position, source-component, source-sheet, and
-  source-entity checks.
-- Reject malformed, missing, disconnected, unsupported, one-sided, or
-  genuinely ambiguous authority.
-- Never globally union hard-feature chart components or choose by proximity,
-  count, row, numeric ID, frequency, hash, or fixture identity.
+Acceptance:
 
-The authoritative next turn is compile-only Code + Build under
-`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.
-The exact committed torus test's upstream `InvalidHardRailPairing` remains a
-separate target-size-dependent scheduling gate and continues to block sphere.
+- validator consumes certificates and independently recomputes elementary incidence only;
+- equal coordinates without a relation remain distinct;
+- all owned relations are consumed exactly once;
+- source-row, output-row, and scheduler permutation invariance passes.
 
-## Current compile authority — multi-rail chart reachability
+### M6 — decompose monoliths and retire adapters
 
-Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
-supersedes the single-relation resolver at compile authority. The exact
-projected output-vertex chart collection is now a vertex-local relation
-graph:
+Move responsibilities to the target module layout, remove legacy duplicate types and caches, and make forbidden APIs unavailable.
 
-- retained chart components are exact, sorted/unique nodes;
-- validated direction-canonical `HardRail` relations are edges;
-- scalar-compatible components are traversal roots;
-- complete output authority, not one incident face, carries relation
-  reciprocity;
-- one face is accepted only through the unique intersection of its corners'
-  reachable components;
-- a selected non-scalar component requires an exact witness, while another
-  valid retained relation may remain unused by that face.
+Acceptance:
 
-Every retained relation is still validated against exact hard-feature
-topology, two-face incidence, component separation, source support,
-rail/route/front identity, and exactly two distinct owner vertices. Missing
-links, unsupported charts, disconnected sheets, malformed/one-sided
-relations, and genuinely ambiguous intersections fail closed.
+- no semantic identity is a generic integer vector;
+- no public parallel topology/index route arrays remain;
+- no semantic equality includes execution handles or backend choice;
+- no architecture-debt item in the regression tracker remains open.
 
-Scalar barycentric, position, source-entity, component, and sheet authority
-remains independent and mandatory. Optimizer labels, centroid/reference
-projection, projection cache, final sampling, validator face selection, and
-edge authority use the same complete collections. This is not a global chart
-union and adds no selection by face row, numeric domain, count, order,
-frequency, hash, proximity, or fixture identity.
+## 14. Stop conditions
 
-Four focused contracts compile a chained multi-rail witness, an unused valid
-relation, an off-face reciprocal peer, a missing link, and source-face-row
-invariance. The existing seven face-chart and seven canonical contracts
-remain unchanged in acceptance.
+Implementation stops for architectural review if any proposed change:
 
-Artifact `9031804178` compiles the seven approved targets at **113/113** in
-Release/static/Ninja with GoogleTest `PRE_TEST` and
-`runtimeExecution=false`. Its outer SHA-256 is
-`27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e`;
-all **49/49** recursive entries verify with manifest digest
-`2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`.
-Compile success is not runtime correctness.
+- adds another numeric ID domain without a strong type and checked conversion;
+- adds a second copy of region, sheet, chart, route, or ownership authority;
+- makes a consumer reconstruct producer semantics;
+- uses a hash, container position, output row, or front-edge index as semantic identity;
+- schedules a shared rail independently on two sides;
+- weakens validation or fixture assertions to accommodate behavior;
+- bounds an inner operation while leaving aggregate work multiplicative;
+- encodes a representative-only or zero-rotation special case as the general model;
+- passes a focused proxy while the representative production path remains unexecuted.
 
-### Regression architecture authority
+## 15. References
 
-`.agents/Directional/Regression_Root_Cause_Tracker.md` is the permanent
-stable-ID regression record. It separates regressions from persistent
-blockers, records the earliest evidenced reason, and forbids resolution
-before an immutable artifact passes the affected gate.
+1. Amir Vaxman et al. “Directional Field Synthesis, Design, and Processing.” *Computer Graphics Forum* 35(2), 2016. See the [Directional project](https://avaxman.github.io/Directional/) and course materials.
+2. David Bommes, Henrik Zimmer, and Leif Kobbelt. “Mixed-Integer Quadrangulation.” *ACM TOG* 28(3), 2009. [Project page](https://www.graphics.rwth-aachen.de/publication/0344/).
+3. Hans-Christian Ebke et al. “QEx: Robust Quad Mesh Extraction.” *ACM TOG* 32(6), 2013. [Paper](https://graphics.rwth-aachen.de/media/papers/ebck2013_1.pdf) and [libQEx](https://github.com/hcebke/libQEx).
+4. Nico Pietroni et al. “Reliable Feature-Line Driven Quad-Remeshing.” *ACM TOG* 40(4), 2021. [Project and paper](https://www.quadmesh.cloud/) and [QuadWild implementation](https://github.com/nicopietroni/quadwild).
+5. Wenzel Jakob et al. “Instant Field-Aligned Meshes.” *ACM TOG* 34(6), 2015. [Project page](https://rgl.epfl.ch/publications/Jakob2015Instant).
+6. Giorgio Gori et al. “FlowRep: Descriptive Curve Networks for Free-Form Design Shapes.” *ACM TOG* 36(4), 2017. [Project page](https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/).
 
-`G4-R007` is `fix_pending_runtime`. The cause families
-`AUTHORITY_DOMAIN_CONFLATION` and
-`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` have recurred three and two times,
-respectively, so both require independent architectural review even if the
-immediate torus correction passes.
-
-The authoritative next turn is artifact-only Test + Benchmark under
-`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.
-It must consume artifact `9031804178` exactly, establish the 18 focused
-contracts and retained suites, then repeat plane → seam → close sheets →
-cylinder → torus three times. Direct torus must be strict-valid **3/3**;
-reduced issue count is not acceptance. Prescribed sphere remains gated by the
-separate historical exact-torus `InvalidHardRailPairing` scheduling defect.

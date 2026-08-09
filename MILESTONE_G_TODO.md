@@ -6,6 +6,24 @@ Last updated: 2026-08-09 UTC
 
 G0 truthful authority [accepted baseline] → G1 uniform phase-front plane [accepted baseline] → G2 cross-chart / close-sheet isolation [accepted baseline] → G3 periodic closure / holonomy [accepted baseline] → **G4 topology-distinct completion and singularities [active; blocked with material progress]** → G5 adaptivity/features → G6 bunny/vase production success → G7 hardening.
 
+## Independent architecture review checkpoint
+
+The user-requested documentation-only review is complete with decision
+**changes required before architecture expansion**.
+
+- `.agents/Directional/DESIGN.md` is now normative-only and defines the
+  certificate-carrying A0–A9 pipeline plus M0–M6 staged migration.
+- The review records twelve open structural findings, `AR-01` through
+  `AR-12`, without changing historical regression counts.
+- Immediate next evidence remains the immutable multi-rail artifact-only run;
+  no source, test, fixture, validator, build, or workflow edit is authorized in
+  that checkpoint.
+- After artifact closeout, the first mutating slice is M1 authority kernel and
+  adapters, compile-only and behavior-preserving.
+- G4/G5 expansion on the legacy weakly typed, duplicated, consumer-reconstructed
+  authority model is prohibited.
+
+
 ## Completed artifact-only Test + Benchmark
 
 Exact artifact **`9026181778`**, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`:
