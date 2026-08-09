@@ -103,7 +103,6 @@ directional_configure_test_target(directional_surface_cell_oracle_tests)
 # legacy conversion without migrating existing production consumers.
 add_executable(
   directional_surface_cell_authority_kernel_tests
-  src/authority/AuthorityKernel.cpp
   tests/SurfaceCellAuthorityKernelTests.cpp)
 directional_configure_test_target(directional_surface_cell_authority_kernel_tests)
 

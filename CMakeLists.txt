@@ -127,6 +127,7 @@ endif()
 
 add_library(
   directional_core
+  src/authority/AuthorityKernel.cpp
   src/core/Library.cpp
   src/diagnostics/RemeshDiagnostics.cpp
   src/fields/CompareCrossFields.cpp

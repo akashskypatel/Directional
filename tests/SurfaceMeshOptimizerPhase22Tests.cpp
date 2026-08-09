@@ -1,3 +1,4 @@
+#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
@@ -6,6 +7,7 @@
 #include <cmath>
 #include <cstdint>
 #include <set>
+#include <type_traits>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -1256,3 +1258,153 @@ TEST(SurfaceMeshOptimizerPhase22,
   sheet.provenance[2].sheet = 0;
   expect_code(sheet, MeshValidationFailureCode::SourceSheetMismatch);
 }
+
+namespace {
+
+using RailContainsVertexFn = bool (*)(
+    const Eigen::MatrixXi &, directional::authority::SourceFaceId,
+    directional::authority::SourceVertexId);
+
+static_assert(std::is_same_v<
+              decltype(&directional::geometry::surface_optimization_rail_detail::
+                           source_face_contains_vertex),
+              RailContainsVertexFn>);
+static_assert(!std::is_invocable_r_v<
+              bool, RailContainsVertexFn, const Eigen::MatrixXi &,
+              directional::authority::SourceVertexId,
+              directional::authority::SourceFaceId>);
+
+directional::geometry::SurfaceOptimizationConstraints
+make_m1b_sheet_constraints() {
+  directional::geometry::SurfaceOptimizationConstraints constraints;
+  constraints.sourceFaces.resize(3, 3);
+  constraints.sourceFaces << 0, 1, 2,
+      0, 2, 3,
+      4, 5, 6;
+  constraints.sourceFaceComponent = {7, 7, 7};
+  constraints.sourceFaceSheet = {0, 1, 1};
+  return constraints;
+}
+
+directional::geometry::SurfacePoint m1b_provenance(
+    const Eigen::Vector3d &barycentric) {
+  directional::geometry::SurfacePoint point;
+  point.face = 0;
+  point.component = 7;
+  point.sheet = 0;
+  point.barycentric = barycentric;
+  point.squaredDistance = 0.0;
+  return point;
+}
+
+directional::geometry::SurfaceFeatureCurveInterval m1b_interval(
+    const int sourceFace) {
+  directional::geometry::SurfaceFeatureCurveInterval interval;
+  interval.sourceFace = sourceFace;
+  interval.component = 7;
+  interval.sheet = 1;
+  return interval;
+}
+
+} // namespace
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     SameSheetRailAssignmentRemainsAccepted) {
+  auto constraints = make_m1b_sheet_constraints();
+  constraints.sourceFaceSheet = {0, 0, 1};
+
+  directional::geometry::SurfaceCellRail rail;
+  rail.id = 5;
+  rail.curveId = 9;
+  rail.component = 7;
+  rail.samples.resize(2);
+  rail.samples[0].sourceFace = 0;
+  rail.samples[0].railParameter = 0.0;
+  rail.samples[0].position << 0.0, 0.0, 0.0;
+  rail.samples[1].sourceFace = 0;
+  rail.samples[1].railParameter = 1.0;
+  rail.samples[1].position << 1.0, 0.0, 0.0;
+
+  Eigen::MatrixXd output(1, 3);
+  output << 0.5, 0.0, 0.0;
+  auto provenance = m1b_provenance(Eigen::Vector3d(0.5, 0.5, 0.0));
+  provenance.sheet = 0;
+
+  directional::geometry::fill_surface_optimization_rail_constraints(
+      {rail}, output, {provenance}, constraints);
+
+  ASSERT_EQ(constraints.featureVertices, std::vector<int>({0}));
+  ASSERT_EQ(constraints.featureCurveIds.size(), 1);
+  EXPECT_EQ(constraints.featureCurveIds(0), 9);
+  EXPECT_EQ(constraints.featureRailIds(0), 5);
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     CrossSheetExactVertexAndEdgeIncidenceRemainAccepted) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto interval = m1b_interval(1);
+
+  EXPECT_TRUE(directional::geometry::surface_optimization_rail_detail::
+                  provenance_supports_interval_sheet(
+                      m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0)),
+                      interval, constraints));
+  EXPECT_TRUE(directional::geometry::surface_optimization_rail_detail::
+                  provenance_supports_interval_sheet(
+                      m1b_provenance(Eigen::Vector3d(0.5, 0.0, 0.5)),
+                      interval, constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     CrossSheetInteriorProvenanceRemainsRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       m1b_provenance(Eigen::Vector3d(0.2, 0.3, 0.5)),
+                       m1b_interval(1), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     InvalidLegacySourceFacesRemainRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(point, m1b_interval(-1),
+                                                       constraints));
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(point, m1b_interval(3),
+                                                       constraints));
+  auto invalidPoint = point;
+  invalidPoint.face = 3;
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       invalidPoint, m1b_interval(1), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     WrongSourceFaceWithoutTypedSupportRemainsRejected) {
+  const auto constraints = make_m1b_sheet_constraints();
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       m1b_provenance(Eigen::Vector3d(0.5, 0.0, 0.5)),
+                       m1b_interval(2), constraints));
+}
+
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     SourceFaceComponentAndSheetAuthorityMismatchRemainRejected) {
+  const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+  const auto interval = m1b_interval(1);
+
+  auto componentMismatch = make_m1b_sheet_constraints();
+  componentMismatch.sourceFaceComponent[1] = 8;
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(
+                       point, interval, componentMismatch));
+
+  auto sheetMismatch = make_m1b_sheet_constraints();
+  sheetMismatch.sourceFaceSheet[1] = 2;
+  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
+                   provenance_supports_interval_sheet(point, interval,
+                                                       sheetMismatch));
+}
+
