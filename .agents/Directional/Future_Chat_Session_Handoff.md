@@ -2,235 +2,209 @@
 
 ## Mandatory next turn
 
-Run **artifact-only Test + Benchmark** under:
+Run **T1 Independent Test-Oracle Foundation — Code + Build only** under:
 
-`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`
-
-Consume compile artifact `9031804178` and log artifact `9031804382`
-exactly. Do not configure, rebuild, relink, edit implementation/tests/
-fixtures/validators/manifests/CMake/workflows, or substitute another
-artifact.
+`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`
 
 Repository:
 
 - `akashskypatel/Directional`;
 - branch `agent/surface_cell_quad/p5-recover-bridge-healing`;
 - draft PR #8 remains open, draft, and unmerged;
-- active gate **G4 topology-distinct completion and singularities**;
-- review policy `never`;
-- Code + Build cleanup head before documentation closeout:
-  `01b80ac65968906a9d871cee81f154653f452270`.
+- active gate: **G4 topology-distinct completion and singularities**;
+- review policy: `never`;
+- production runtime remains known-red on direct torus; T1 must not change
+  production behavior.
 
-## Completed independent architecture review
+T1 is test/build-only. It may add the independent oracle support/tests,
+augment direct acceptance to invoke that oracle, and make only the packaging/
+CMake changes named by the plan. It must compile/package only. Do **not** run
+any generated project binary during Code + Build.
 
-A user-requested documentation-only review has completed with decision
-**changes required before architecture expansion**.
+If T1 requires a production/API/fixture/validator change, stop. Do not expand
+scope.
 
-- Normative architecture:
-  `.agents/Directional/DESIGN.md`.
-- Review evidence:
-  `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
-- Structural register: `AR-01` through `AR-12` in
-  `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-- The mandatory artifact-only turn above is unchanged. It may resolve
-  `G4-R007` behaviorally but cannot close the structural register.
-- After artifact closeout, the first mutating turn is T1 independent
-  test-oracle foundation under Code + Build. M1 authority kernel and adapters
-  follows only after T1 immutable acceptance.
-- Do not add nonzero holonomy, adaptivity, prescribed-singularity completion,
-  or other feature growth to the legacy authority representation.
+## Completed artifact-only Test + Benchmark
 
-## Completed independent test-suite audit
+Runtime report:
 
-A user-requested documentation-only test audit has completed with decision
-**redesign required**.
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Report.md`
 
-- Audit/redesign authority:
-  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
-- Normative testing policy: `tests/TESTING_STRATEGY.md`.
-- Structural test register: `TA-01` through `TA-12` in the regression tracker;
-  these are not added runtime regression events.
-- All ten committed production inputs are triangle-only. The default direct
-  matrix covers six and omits torus, thin bent tube, prescribed sphere, and
-  mechanical feature.
-- Current direct acceptance observes strict backend/no-recovery/pure-quad
-  mechanics but lacks an independent complete product oracle. Existing quality
-  metrics are non-gating, and no property generator/shrinker or
-  coverage-guided fuzz target exists.
-- `TEST_AUTHORITY_COVERAGE_GAP` is six events with five recurrences, so test
-  architecture is a contributing regression factor.
-- The already compiled multi-rail artifact and mandatory next Test + Benchmark
-  are unchanged.
-- After that closeout, T1 adds test-only independent topology/lineage/geometry
-  verification, deliberate oracle mutations, and package labels/discovery.
-  It must not change production behavior or run generated binaries in Code +
-  Build.
-- Queued T1 Code + Build plan:
-  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
-
-## Mandatory regression-pattern review — every future turn
-
-The review policy `never` controls the optional independent-review default; it
-does **not** waive this mandatory regression-pattern review. Before changing
-code, running a project executable, or interpreting runtime evidence, every
-future turn must:
-
-1. read the repeated coding-pattern catalog in
-   `.agents/Directional/Regression_Root_Cause_Tracker.md` and the supporting
-   point-in-time evidence in
-   `.agents/Directional/PR_8_Regression_Audit_Inventory.md`;
-2. map the planned producer, representation, consumer, validator, test, and
-   build-authority data flow against `RP-01` through `RP-09`;
-3. for every touched mandatory test, record intent, proved precondition,
-   production entry/stage, independent oracle, counterexample, and
-   executable/fixture/seed/artifact identity;
-4. record the following table in the turn plan or closeout:
-
-| Pattern | Touched? | Exact affected producer/consumer | Evidence the anti-pattern is absent, or corrective invariant | Counterfactual and representative gate |
-|---|---|---|---|---|
-| `RP-01` … `RP-09` | yes/no | exact symbol, target, or artifact boundary | concrete invariant and inspection evidence | named focused negative and representative positive evidence |
-
-Any touched row that cannot be completed is a stop condition: revise the
-design before Code + Build or runtime. If a proposed change resembles a
-cataloged anti-pattern, or changes the same data flow as a cataloged event,
-use an already accepted design proof or schedule an independent architectural
-Review turn before Code + Build. Do not repeat the earlier implementation or
-test shape under a new name.
-
-Test + Benchmark turns must map failures to an existing pattern and stable
-event ID when applicable, distinguish persistence from a new recurrence, and
-update the tracker counts only from direct evidence. Every turn closeout must
-keep the tracker, audit inventory, handoff, and milestone status consistent.
-
-A focused/helper pass, production `result.success`, raw ID/order, exact count,
-hash, retention lifetime, or no-crash result cannot close representative
-intent. Known-red direct intent remains discovered and explicit.
-
-For the mandatory next artifact-only turn, review `RP-09` (global authority
-consumed as local face authority) and `RP-02` (proxy or incomplete test
-authority) before interpreting the face-chart and torus results. This review
-does not authorize any artifact substitution, rebuild, or source/test edit.
-
-## Completed Code + Build authority
-
-Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
-changes exactly five allowlisted paths. The conditionally allowlisted
-`src/pipeline/RemeshPipeline.cpp` remains byte-identical.
-
-The shared optimizer/validator resolver now:
-
-1. validates every retained source chart and hard-rail relation independently
-   of face choice;
-2. builds exact per-output-vertex chart-component graphs;
-3. derives scalar-rooted reachable components deterministically;
-4. validates relation reciprocity against complete output authority;
-5. selects the unique face-wide reachable-component intersection;
-6. requires a witness only for the selected non-scalar chart;
-7. preserves scalar barycentric, position, component, sheet, and source-entity
-   checks.
-
-Four focused contracts cover a chained multi-rail witness, an unused valid
-relation, an off-face reciprocal peer, a missing graph link, and face-row
-invariance. Existing one-relation, tamper, ambiguity, disconnected-sheet, and
-scalar typed-failure contracts remain.
-
-## Immutable compile evidence
+Exact artifact authority:
 
 | Evidence | Value |
 |---|---|
-| Workflow run/job | `31292116792 / 93190952157` |
+| Implementation | `6af23d9aeca29e63aa13c4ae49f50d1748939c49` |
+| Build/event commit | `32e97ea89cdc4bca629abde38f31eb943f3f11ad` |
 | Result artifact | `9031804178` |
-| Result outer SHA-256 | `27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e` |
+| Result SHA-256 | `27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e` |
 | Log artifact | `9031804382` |
-| Log outer SHA-256 | `5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905` |
+| Log SHA-256 | `5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905` |
 | Recursive manifest | **49/49**, `2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2` |
-| Patch | `b7490fabd6d7490e1f8f24d47126b26d07866939fc8142e8c4ef8edd4b89d300` |
-| Source archive | `df6e14e60679ccb25fa832d762fe7d31fdf40de746a5659e20998b72e7232900` |
-| Compile database | `60fd05acc3e68a369aacacfa3c24b5582687f7ee6d6b959b9267639dd37fc508` |
-| Compile | Release/static/Ninja, **113/113**, `PRE_TEST`, `runtimeExecution=false` |
-| Retention | through 2026-08-23 UTC |
+| Compile closure | Release/static/Ninja **113/113**, `PRE_TEST`, `runtimeExecution=false` |
 
-Both ZIPs pass integrity and path-safety checks. The package contains exactly
-50 files, five ELF executables, two static libraries, and 27 exact fixtures.
-The source archive reproduces all seven recorded source/CMake blobs, the patch
-names exactly five implementation/test paths and reverses cleanly, and the
-compile log has zero failure markers. No generated project runtime was
-executed.
+Preflight/postflight verified both immutable ZIPs, every manifest member, all
+50 original package files, five ELF executables, two static libraries, 27
+fixtures, all seven source/CMake blobs, the five-path patch, source archive,
+compile database, toolchain/submodules, and workflow closure. No packaged
+regular member changed during runtime.
 
-The temporary workflow was deleted before its trigger. Final cleanup at
-`01b80ac65968906a9d871cee81f154653f452270` has no tree difference from
-the implementation and retains only
-`.github/workflows/agent-source-snapshot.yml`.
+## Runtime result
 
-## Entering runtime baseline
+Discovery exactly once per executable:
 
-The runtime baseline remains artifact `9030700527`, implementation
-`8f37612148f34bac63cf294000c17c7de2e03b41`:
+- producer 166;
+- completion 164;
+- validation 71;
+- API 8.
 
-- four prior cases direct strict-valid **3/3**;
-- torus **0/3**, 192 completed quads, complete lineage, complete `4/8/4`
-  consumption, `1/0/0` topology, then 165 `LocalSheetMismatch` issues;
-- pre-regression artifact `9029584083` reported 74 issues;
-- focused face-chart **7/7**, canonical **7/7**;
-- bounded producer **154/163**, completion **154/164**, validation **67/67**,
-  API **8/8**;
-- historical exact-torus GoogleTest fails upstream at
-  `InvalidHardRailPairing`;
-- prescribed sphere was not run.
+Required focused tests:
 
-## Required artifact-only acceptance
+- four new multi-rail **4/4** individually;
+- seven retained face-chart **7/7** individually;
+- seven retained canonical **7/7** individually;
+- total **18/18**.
 
-1. Verify both artifact ZIPs, all 49 manifest entries, package/source
-   closure, toolchain/submodules, and `runtimeExecution=false`.
-2. Discover each GoogleTest executable exactly once.
-3. Run the four new multi-rail tests, seven existing face-chart tests, and
-   seven canonical tests individually.
-4. Record the historical exact-torus result separately.
-5. Preserve the six focused groups and bounded producer/completion/
-   validation/API suites.
-6. Repeat plane → seam → close sheets → cylinder → torus in three fresh
-   recovery-disabled processes.
-7. Require direct torus strict-valid **3/3**, complete lineage, no
-   fallback/recovery, complete `4/8/4` consumption, pure quads, and final
-   `1/0/0` topology. Reduced mismatch count is not acceptance.
-8. Do not run prescribed sphere; the independent exact-torus scheduling
-   blocker remains unresolved.
+Retained groups:
 
-## Regression and architecture tracking
+- transition quotient **29/36**;
+- topology/isolation/hard rail **10/10**;
+- polygonal/curved/mixed **12/12**;
+- periodic/torus/cylinder **6/7**;
+- remaining non-overlap Phase10 **38/39**;
+- direct G0-G3 **4/4**.
 
-`.agents/Directional/Regression_Root_Cause_Tracker.md` is the permanent
-stable-ID regression record. `G4-R007` is `fix_pending_runtime`; compile
-success does not resolve it.
+Bounded suites:
 
-An independent documentation-only PR #8 audit through
-`027e5194a9013cc1fe9ea18c1b79741301e40f74` identifies **34 distinct
-regression events** in **14 architectural categories**, including **20
-recurrences**. The evidence inventory is
-`.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
-`PR8-R034` / `G4-R007` remains active, as `fix_pending_runtime`; the audit does
-not change the mandatory artifact-only next turn or its immutable inputs.
+- producer literal `-*BunnyRandom*:*Vase*`: **154/163**;
+- completion/simplification **154/164**;
+- validation **71/71**;
+- API **8/8**;
+- aggregate **387/406**.
 
-The expanded point-in-time source/test/build audit catalogs **nine repeated
-coding patterns** (`RP-01` through `RP-09`) spanning **29 events** and all
-**20 recurrences**. The five remaining events are singletons and are not
-misclassified as repeated patterns. The tracker contains pseudocode for each
-observed anti-pattern, its required implementation shape, and its review
-guard. The mandatory per-turn review above applies even when no production
-file is expected to change.
+The exact producer filter completed with a full 163-test summary in 30.63 s.
+Do not classify earlier container-wrapper return behavior as product
+nontermination.
 
-The cause families `AUTHORITY_DOMAIN_CONFLATION` and
-`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` have repeated three and two times,
-respectively. Both already require independent architectural review. The
-artifact-only closeout must update the existing entry on recurrence rather
-than create a duplicate, or add one stable ID only for a genuinely new
-regression.
+## Direct production authority
 
-Nonzero periodic rotation, shared hard-rail breakpoint scheduling, positive
-multi-isolation lineage, historical completion/timing, sphere, G5/G6,
-fallback/recovery, and optimization remain deferred. Test redesign milestones
-T2–T6 are interlocked with M2–M6 and G6/G7 as specified in the audit plan.
+Every direct run requested and executed `SurfaceCells`, used fallback policy
+`Fail`, disabled source-grid recovery, and used no fallback, legacy execution,
+or input-mesh substitution.
 
-After branch records and PR body are updated, the final repository write must
-be one new top-level PR #8 conversation comment.
+| Fixture | Result | Stable authority |
+|---|---:|---|
+| Plane | **3/3** | 81 V / 64 Q; `1/1/1`; structural `b243fb3f5f3a3bc4`; semantic `922456fe29a63ba1` |
+| Multi-face seam | **3/3** | 81 V / 64 Q; `1/1/1`; structural `48661113839528d4`; semantic `99c8be7159d05c2f` |
+| Close sheets | **3/3** | 242 V / 200 Q; `2/2/2`; structural `f01bcf687285ee72`; semantic `f40e1aa5f2eb3f92` |
+| Cylinder | **3/3** | 320 V / 288 Q; `1/2/0`; structural `81b3763254afc476`; semantic `98da73e60a564998` |
+| Torus | **0/3** | 192 completed Q; complete lineage; `4/8/4`; `1/0/0`; **241** `LocalSheetMismatch` issues |
+
+Torus still fails at `completion/output-validation`. Entering artifact
+`9030700527` had 165 mismatches; pre-regression artifact `9029584083` had 74.
+The multi-rail correction therefore **failed representative acceptance and
+worsened the unresolved symptom**. Prescribed sphere was correctly not run.
+
+The historical exact-torus GoogleTest remains independently red upstream at
+`InvalidHardRailPairing`; this is still the target-size-dependent scheduling
+blocker `G4-B002`.
+
+## Regression status
+
+Permanent tracker:
+
+`.agents/Directional/Regression_Root_Cause_Tracker.md`
+
+- `PR8-R034 / G4-R007` is **active**.
+- Do not create `G4-R008` for this artifact. The affected direct gate was never
+  restored, so 165 → 241 is persistence/worsening of the open event, not a new
+  recurrence.
+- Historical PR-wide totals remain **34 events / 14 categories / 20
+  recurrences**.
+- `RP-09` local graph semantics pass the focused fixtures but do not close the
+  representative product failure.
+- This artifact supplies direct evidence for `RP-02 / TA-05 / AR-12`: focused
+  stage-local tests can pass while representative product intent remains red.
+
+Do not infer a new product root cause only from the increased mismatch count.
+The next production migration is M1, but M1 is blocked until T1 immutable
+acceptance establishes an independent test oracle.
+
+## Mandatory regression-pattern review before T1
+
+Read:
+
+- `.agents/Directional/Regression_Root_Cause_Tracker.md`;
+- `.agents/Directional/PR_8_Regression_Audit_Inventory.md`;
+- `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`;
+- `tests/TESTING_STRATEGY.md`.
+
+Every turn must map `RP-01` through `RP-09`. T1 primarily touches `RP-02`, and
+also test-side `RP-01`, `RP-05`, and `RP-07`. Fill the exact mandatory pattern
+review table from the T1 plan before implementing.
+
+For every new mandatory test family record:
+
+1. intent;
+2. proved precondition;
+3. public production entry or exact stage boundary;
+4. **independent** oracle;
+5. rejected minimal counterexample or permitted metamorphic transformation;
+6. exact executable/test/fixture/artifact identity.
+
+Production `result.success`, `SourceAuthoritativeMeshValidator`, benchmark
+quality decisions, raw IDs/order, counts, hashes, retention lifetime,
+compilation, or no-crash are not independent product oracles.
+
+## T1 success boundary
+
+T1 must create a default-built independent product-oracle executable/support
+that checks, without calling production decision procedures:
+
+- nonempty pure-quad schema and valid indices;
+- duplicate/repeated-corner/zero-area faces;
+- independently reconstructed directed/undirected incidence;
+- manifoldness and winding;
+- components, boundary loops, and Euler characteristic;
+- public vertex/face lineage shape and source-domain validity;
+- backend/fallback/recovery/output-origin disposition;
+- row/order-independent canonical topology/lineage facts.
+
+Every check needs positive and deliberate corruption coverage. Existing direct
+acceptance assertions are preserved and augmented, never weakened.
+
+Code + Build acceptance is compile/package only. It must leave production and
+fixtures byte-identical and emit one immutable artifact plus log artifact for
+the following Test + Benchmark turn.
+
+## Architecture and test-review authority
+
+The independent architecture review and test-suite audit are complete:
+
+- normative architecture: `.agents/Directional/DESIGN.md`;
+- architecture report:
+  `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`;
+- test audit/redesign:
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`;
+- normative testing policy: `tests/TESTING_STRATEGY.md`.
+
+`AR-01` through `AR-12` and `TA-01` through `TA-12` remain open until their
+named evidence passes. Do not add nonzero holonomy, adaptivity, prescribed
+singularity handling, or other feature growth to the legacy weak authority
+model.
+
+## Deferred blockers
+
+- active representative torus `G4-R007`;
+- shared hard-rail breakpoint scheduling `G4-B002`;
+- nonzero periodic `Z4` rotation `G4-B003`;
+- positive multi-isolation quotient witness `G4-B004`;
+- historical seven transition-quotient cases;
+- historical ten completion/simplification cases;
+- strict-validator timing assertion;
+- prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization.
+
+After all branch-record and PR-body updates for a completed turn, the final
+repository write must be exactly one new top-level PR #8 conversation comment.
 
 Last updated: 2026-08-09 UTC
