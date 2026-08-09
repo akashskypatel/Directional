@@ -6,24 +6,13 @@ Run **M1d Phase-Front Route Identity Consumer — immutable Test + Benchmark onl
 
 `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository:
-
-- `akashskypatel/Directional`;
-- branch `agent/surface_cell_quad/p5-recover-bridge-healing`;
-- draft PR #8 stays open, draft, and unmerged;
-- active product gate: **G4 topology-distinct completion and singularities**;
-- architecture migration: **M1 authority kernel and staged production adoption**;
-- M1a/M1b/M1c: **immutable accepted**;
-- M1d route-identity consumer: **Code + Build compile/package complete; immutable runtime pending**;
-- review policy: `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c are immutable accepted; M1d is Code + Build complete with immutable runtime pending. Review policy is `never`.
 
 The next turn is non-mutating with respect to source, tests, fixtures, build logic, and packaged regular content. Do not configure, rebuild, relink, regenerate, substitute, edit, or repair anything in the immutable artifact.
 
 ## Exact M1d build authority
 
-Selected seam:
-
-`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`
+Selected seam: `pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`.
 
 | Evidence | Value |
 |---|---|
@@ -31,10 +20,8 @@ Selected seam:
 | Implementation | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
 | Build/event | `98a21f3d843533dcc44cb296711268e0ebb26fb6` |
 | Build run/job | `31342400614 / 93318225812` |
-| Result artifact | `9046308272` |
-| Result SHA-256 | `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
-| Log artifact | `9046308461` |
-| Log SHA-256 | `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
+| Result artifact / SHA-256 | `9046308272` / `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
+| Log artifact / SHA-256 | `9046308461` / `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
 | Recursive manifest | **59/59**, `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0` |
 | Package | 60 regular files including manifest; seven ELF; two static libs; 27 fixtures |
 | Compile | Release/static/Ninja **120/120** |
@@ -42,39 +29,27 @@ Selected seam:
 | Runtime in Code + Build | **false** |
 | Retention | through **2026-08-23 UTC** |
 
-Read-only verification already matched both outer GitHub artifact digests, rejected unsafe archive paths, and verified all **59/59** package checksums.
-
-Authoritative report:
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Report.md`.
+Read-only verification matched both outer GitHub digests, rejected unsafe archive paths, and verified all **59/59** package checksums. Report: `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Report.md`.
 
 ## M1d semantic boundary to prove
 
-Only `exact_interior_route_valid` was migrated:
+Only `exact_interior_route_valid` changed semantically at consumption:
 
-1. existing nonempty/equal-size/interior-incidence checks remain behavior authority;
-2. packed route endpoints cross checked `LegacyAuthorityAdapters::source_vertex(..., sourceVertices.rows())`;
-3. semantic route edge identity/uniqueness uses canonical `SourceEdgeTopologyKey`;
-4. typed endpoints serialize back only at the existing packed-key compatibility lookup boundary and must reproduce the supplied key exactly;
-5. supplied and authoritative compact route values cross checked `LegacyAuthorityAdapters::interior_transition(..., sourceEdgeIndices.size())`;
-6. semantic compact identity is `InteriorTransitionId` equality;
-7. malformed identity remains fail-closed through the existing `InvalidHardRailAuthority` / `InvalidPeriodicCutAuthority` caller failures;
-8. public `sourceRouteEdges/sourceRouteTopology`, route producers/order, per-step transport, relation policy, diagnostics, and known-red dispositions remain unchanged.
+- existing nonempty/equal-size/interior-incidence checks remain authority;
+- packed route endpoints cross checked `SourceVertexId` adapters;
+- canonical `SourceEdgeTopologyKey` owns semantic route-edge identity/uniqueness;
+- typed endpoints serialize back only at the existing packed-key compatibility lookup boundary and must reproduce the supplied key;
+- supplied and authoritative compact route values cross checked `InteriorTransitionId` adapters and compare as typed IDs;
+- malformed identity remains fail-closed through existing `InvalidHardRailAuthority` / `InvalidPeriodicCutAuthority` failures;
+- public `sourceRouteEdges/sourceRouteTopology`, route producers/order, per-step transport, relation policy, diagnostics, and known-red dispositions remain unchanged.
 
 Do not introduce `TransitionStep`/`CanonicalRoute` here; this consumer owns no per-step transport.
 
-Final product/test diff is exactly:
-
-- `src/pipeline/RemeshPipeline.cpp`;
-- `tests/SurfaceCellTransitionQuotientTests.cpp`.
-
-Implementation blobs:
-
-- pipeline source `481f58169fe73844b12d9e70660d49fa3e13f845`;
-- transition-quotient tests `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
+Final product/test diff is exactly `src/pipeline/RemeshPipeline.cpp` and `tests/SurfaceCellTransitionQuotientTests.cpp`. Current blobs are `481f58169fe73844b12d9e70660d49fa3e13f845` and `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
 
 ## Exact M1d focused authority
 
-The packaged producer target statically contains exactly six new contracts:
+The package statically contains exactly six new contracts:
 
 1. `SurfaceCellPhaseFrontRouteAuthorityMigration.ValidHardRailRouteUsesTypedIdentity`;
 2. `SurfaceCellPhaseFrontRouteAuthorityMigration.ValidPeriodicCutRouteUsesTypedIdentity`;
@@ -83,14 +58,9 @@ The packaged producer target statically contains exactly six new contracts:
 5. `SurfaceCellPhaseFrontRouteAuthorityMigration.RouteTopologyTransitionMismatchFailsClosed`;
 6. `SurfaceCellPhaseFrontRouteAuthorityMigration.DuplicateSemanticRouteTopologyFailsClosed`.
 
-Static manifest SHA-256:
-`e6d1932a71ee365249d78869c541eb05a55718b4a675f53d5f2afd0a58abee7a`.
+Static manifest SHA-256: `e6d1932a71ee365249d78869c541eb05a55718b4a675f53d5f2afd0a58abee7a`. Require exact six-member discovery and **6/6** fresh-process success; zero selection is invalid.
 
-The immutable turn must require exact six-member discovery and **6/6** fresh-process semantic success. Zero selection is invalid.
-
-## Existing route counterexamples
-
-Run individually and require green:
+Existing route counterexamples that must remain green:
 
 - `SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions`;
 - `SurfaceCellTransitionQuotient.ArtificialInteriorBoundaryIsRejected`;
@@ -98,39 +68,17 @@ Run individually and require green:
 
 ## Required preservation matrix
 
-The immutable turn must additionally prove:
+The immutable turn must prove producer discovery exactly **178**, required-green producer segment **163/163**, all nine historical/deferred producer reds explicitly classified, M1c exact six **6/6** plus its three transition counterexamples, M1b **6/6** + validation discovery 77 and **77/77**, M1a exact 14 and **14/14**, T1 exact 29 and **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
 
-1. native producer discovery exactly **178**;
-2. required-green producer segment exactly **163/163**;
-3. all nine historical/deferred producer reds remain explicit and individually classified;
-4. M1c exact six **6/6** plus its three transition counterexamples green;
-5. M1b focused **6/6**, validation discovery exactly 77 and **77/77**;
-6. M1a discovery exactly 14 and **14/14**;
-7. T1 discovery exactly 29 and **29/29**;
-8. Plane/MultiFaceSeam/CloseSheets/Cylinder remain green and independent-oracle clean;
-9. postflight preserves both original ZIP hashes and all **59/59** packaged checksums.
+Exact producer accounting target is 163 required-green + 4 separately run direct-green + 9 historical/deferred red + BunnyRandom + Vase = **178**.
 
-Exact producer accounting target:
-
-- 163 required-green aggregate members;
-- four separately run direct-green cases;
-- nine historical/deferred known-red producer tests;
-- BunnyRandom;
-- Vase;
-- total **178**.
-
-M1d focused tests cannot substitute for independent preservation authority.
+Postflight must preserve both original ZIP hashes and all **59/59** packaged checksums. M1d focused tests cannot substitute for independent preservation authority.
 
 ## Bunny/Vase standing procedure
 
-The user has authorized artifact-only GitHub Actions runtime for Bunny/Vase when local execution limits make them impractical. For M1d, if used, the temporary workflow must download exact artifact `9046308272` from run `31342400614`, verify outer digest, all 59 checksums, implementation metadata, and producer executable hash before runtime, perform no rebuild/content mutation, use explicit process guards, retain raw evidence, and be removed before closeout.
+Artifact-only GitHub Actions runtime remains authorized when local execution limits make Bunny/Vase impractical. For M1d, any temporary workflow must download exact artifact `9046308272` from run `31342400614`, verify outer digest/all 59 checksums/implementation metadata/producer hash before runtime, perform no rebuild/content mutation, use explicit guards, retain raw evidence, and be removed before closeout.
 
-Accepted M1c comparison remains:
-
-- Bunny: independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`, rc=1 at about 63 s;
-- Vase: one real test reaches `[ RUN ]`, bounded rc=124 at 60 s; safety-only.
-
-Do not promote either to green merely to close M1d.
+Accepted M1c comparison remains: Bunny independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`, rc=1 at about 63 s; Vase reaches `[ RUN ]` and is bounded rc=124 at 60 s. Do not promote either to green merely to close M1d.
 
 ## Regression/architecture disposition
 
@@ -139,9 +87,7 @@ Do not promote either to green merely to close M1d.
 - `RP-07`: accepted M1c quarter-turn transport is untouched and must remain green.
 - `RP-02 / TA-05`: independent preservation is pending the immutable turn.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
-- `PR8-R034 / G4-R007` remains **active** and separate.
-
-Production G4 authority is unchanged: direct torus remains 0/3 after 192 quads with 241 `LocalSheetMismatch` issues; historical exact torus remains `InvalidHardRailPairing`.
+- `PR8-R034 / G4-R007` remains active and separate; direct torus remains 0/3 after 192 quads with 241 `LocalSheetMismatch` issues and historical exact torus remains `InvalidHardRailPairing`.
 
 ## Core references
 
@@ -155,9 +101,7 @@ Production G4 authority is unchanged: direct torus remains 0/3 after 192 quads w
 - `TODO`;
 - `MILESTONE_G_TODO.md`.
 
-At the start of the next turn, fetch fresh PR/head state and verify the branch still contains implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25`. Do not assume this documentation head if external commits move the branch.
-
-If any required-green immutable gate regresses, remain at M1d and return to corrective Code + Build. Do not advance to another consumer.
+At the start of the next turn, fetch fresh PR/head state and verify the branch still contains implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25`. If any required-green gate regresses, remain at M1d and return to corrective Code + Build; do not advance.
 
 After all branch-file and PR-body writes for a completed turn, the final repository write is exactly one new top-level PR #8 conversation comment.
 
