@@ -3,108 +3,80 @@ Last updated: 2026-08-09 UTC
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
-- Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **T1 Direct-Oracle Execution Order — Code + Build only**.
-- Result: **accepted for compile/package authority only; immutable runtime acceptance pending**.
-- Production behavior delta: none.
-- Authoritative next turn: **T1 Direct-Oracle Execution Order — immutable Test + Benchmark** consuming result/log artifacts `9041289209 / 9041289317` exactly.
-- M1 remains blocked until that immutable acceptance passes.
+- Product gate: **G4 topology-distinct completion and singularities active**.
+- Test architecture: **T1 independent oracle/package foundation accepted**.
+- Architecture migration: **M1 authority kernel and compatibility boundary may begin**.
+- Authoritative next turn: **M1a Authority Kernel Core — Code + Build only** under `.agents/Directional/Architecture_M1a_Authority_Kernel_Core_Code_Build_Plan.md`.
+- Production behavior delta authorized for M1a: **none**.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
 
-## T1 direct-oracle Code + Build authority
+## Accepted T1 direct-oracle authority
 
-Implementation `7c169ddf8167093c16755f2160e224994e50307c`, successful build/event commit `92231989472e31a81fe1394ddb3918a957f4bc57`:
+Implementation `7c169ddf8167093c16755f2160e224994e50307c`, build/event commit `92231989472e31a81fe1394ddb3918a957f4bc57`:
 
 - workflow run/job `31324710550 / 93273122696`;
-- result artifact `9041289209`, SHA-256 `c40dd0207d842dd4b7f52ccc6a7358f049d8d359bc476b0ef9090dff061e85ad`;
-- log artifact `9041289317`, SHA-256 `899b952308fc378a919794191df5374113fb1f29343bb22759c4408b0a82dd13`;
-- recursive manifest **51/51**, manifest digest `0221c7e2dfce157461170e9da2add52a6ccfbdf800d1490926d00206bb9f207d`;
-- package: 52 regular files including manifest, six ELF executables, two static libraries, 27 fixtures, exact source/CMake blobs, one-file patch, source archive, compile database, toolchain/submodules;
-- exact 29-name oracle manifest retained with `contract-required;oracle-mutation` labels;
-- Release/static/Ninja **117/117**, eight approved targets, GoogleTest `PRE_TEST`;
-- build wall time **8:26.53**, peak RSS **1,834,136 KiB**;
-- `runtimeExecution=false`;
-- retention through **2026-08-23 UTC**.
+- result/log artifacts `9041289209 / 9041289317`;
+- outer SHA-256 `c40dd0207d842dd4b7f52ccc6a7358f049d8d359bc476b0ef9090dff061e85ad` / `899b952308fc378a919794191df5374113fb1f29343bb22759c4408b0a82dd13`;
+- recursive manifest **51/51**, digest `0221c7e2dfce157461170e9da2add52a6ccfbdf800d1490926d00206bb9f207d`;
+- Release/static/Ninja **117/117**, eight targets, `PRE_TEST`, `runtimeExecution=false`;
+- package: 52 regular files including manifest, six ELF executables, two static libraries, 27 fixtures, exact one-file patch/source archive/compile database/source blobs, unchanged 29-name oracle manifest;
+- final postflight preserved both ZIP digests and all 51 packaged regular-file hashes.
 
-Temporary build workflow and trigger were removed after artifact verification. Only the permanent workflow remains in the archived implementation tree.
+Runtime acceptance:
 
-The first workflow attempt `31324642747` failed only in a static verifier that incorrectly treated blank-line relocation as a non-order change. It stopped before install/configure/compile and executed no generated Directional binary. The source implementation did not change; the verifier was corrected and the successful authority is run `31324710550` only.
-
-## Exact implementation correction
-
-`tests/SurfaceCellDesignAcceptanceTests.cpp` is the only implementation path changed.
-
-The existing independent oracle block was moved from after the fatal product assertions to immediately after the returned `RemeshResult`:
-
-```text
-result = production_call(...)
-independentOracle = inspect_surface_cell_product(input, result)
-EXPECT_TRUE(independentOracle.ok())
-ASSERT_TRUE(result.success)
-... every existing product assertion unchanged ...
-```
-
-No production source/API, fixture, oracle-support/mutation logic, CMake, validator, benchmark, tracing, arrangement, completion, optimizer, quotient, or pipeline behavior changed. Every pre-existing direct product assertion keeps the same predicate and expected value.
-
-Code + Build report:
-`.agents/Directional/Test_Architecture_T1_Direct_Oracle_Execution_Order_Code_Build_Report.md`.
-
-## Entering immutable T1 runtime evidence
-
-Previous artifact `9040549377`, implementation `6d1922dd57db76dcc4c19056fdd3573a713dde61` established:
-
-- oracle discovery **29/29** exact names;
-- oracle contracts **29/29** individually;
-- retained focused contracts **18/18**;
+- oracle discovery **29/29**, exact immutable names/order;
+- oracle positive/mutation/metamorphic contracts **29/29** individually;
+- retained multi-rail/face-chart/canonical contracts **18/18**;
 - bounded producer/completion/validation/API **154/163**, **154/164**, **71/71**, **8/8**;
-- Plane, MultiFaceSeam, CloseSheets, Cylinder pass and reach the independent oracle;
-- BunnyRandom returns known-red `NotProductionReady:completion` after 57.225 s, but the old fatal success assertion prevented oracle execution;
-- Vase did not return inside the bounded 60 s guard; that is runtime-safety evidence only.
+- bounded aggregate **387/406**, unchanged.
 
-The corrected artifact must now prove every **returned** direct result reaches the independent oracle before the unchanged fatal product-success assertion.
+Direct cases:
 
-## Mandatory next-turn acceptance
+- Plane pass, 1.025 s, oracle reached;
+- MultiFaceSeam pass, 1.563 s, oracle reached;
+- CloseSheets pass, 12.759 s, oracle reached;
+- Cylinder pass, 6.711 s, oracle reached;
+- BunnyRandom remains known-red `NotProductionReady:completion` at 54.580 s, but the independent oracle now runs first and reports empty/nonquad/topology/origin/terminal issues before the unchanged fatal product-success assertion;
+- Vase did not return inside the bounded 60.00 s guard; timeout is runtime-safety evidence only.
 
-Consume artifacts `9041289209 / 9041289317` exactly. Do not rebuild, relink, edit, substitute, or regenerate.
-
-The Test + Benchmark turn must:
-
-1. verify both ZIP digests, **51/51** manifest entries, exact patch/source/dependency authority, six executables, two libraries, 27 fixtures, the 29-name oracle manifest, and `runtimeExecution=false`;
-2. discover `directional_surface_cell_oracle_tests` exactly once and match all 29 names;
-3. run all 29 oracle contracts individually and require **29/29**;
-4. retain the 18 focused contracts and bounded producer/completion/validation/API evidence;
-5. run all six existing direct cases in fresh processes;
-6. require Plane, MultiFaceSeam, CloseSheets, Cylinder to remain green with no oracle issue;
-7. require any returned failed direct result to emit independent oracle evidence before the unchanged fatal `result.success` failure;
-8. keep Bunny/Vase known-red and explicit; do not disable, convert to expected failure, or count them green;
-9. classify a bounded nonreturning process only as runtime-safety evidence;
-10. accept T1 only if every returned direct result reaches the oracle with no oracle false positive/negative, package/discovery gap, or assertion weakening.
+Report: `.agents/Directional/T1_Direct_Oracle_Execution_Order_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Regression status
 
-- `PR8-R034 / G4-R007` remains **active** on production artifact `9031804178`: direct torus **0/3**, 241 `LocalSheetMismatch` issues after 192 quads, complete lineage, `4/8/4`, `1/0/0`.
-- This T1 correction is test-only and creates no product regression or recurrence.
-- The execution-order defect remains incomplete `RP-02 / TA-05` work pending immutable acceptance; it is not a new stable historical event.
-- PR-wide totals remain **34 events / 14 categories / 20 recurrences**.
+- `RP-02 / TA-05` direct-integration defect is **test-authority resolved** by artifact `9041289209`.
+- T1 is test-only and creates/resolves no production regression event.
+- Historical totals remain **34 events / 14 categories / 20 recurrences**.
+- `PR8-R034 / G4-R007` remains **active** on production artifact `9031804178`: direct torus 0/3 with 241 `LocalSheetMismatch` issues after 192 quads, complete lineage, `4/8/4`, `1/0/0`.
 
-## Testing/architecture authority
+## M1a next-turn contract
 
-- Normative architecture: `.agents/Directional/DESIGN.md`.
-- Normative testing policy: `tests/TESTING_STRATEGY.md`.
-- Test audit/redesign: `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
-- Regression tracker: `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+Implement only the authority-kernel core and bounded compatibility boundary:
+
+- strong non-interconvertible IDs;
+- named checked conversions with typed domain errors;
+- tagged `SourceSupport`;
+- one `FieldChartId`;
+- exact `QuarterTurn`/integer translation/`GridAutomorphism` algebra;
+- `TransitionStep` and `CanonicalRoute` with explicit orientation;
+- one-way checked legacy adapters;
+- default-built semantic/counterexample tests.
+
+Do not migrate current producers/validators/tracing/arrangement/completion/optimizer consumers in M1a. Do not change fixtures, benchmark acceptance, T1 oracle behavior, or production SurfaceCells decisions.
+
+Code + Build compiles/packages only; run no generated Directional binary. The next turn after M1a must be immutable Test + Benchmark.
 
 ## Deferred blockers
 
 1. active direct-torus `G4-R007`;
 2. shared hard-rail scheduling `G4-B002`;
-3. nonzero periodic `Z4` rotation `G4-B003`;
+3. nonzero periodic `Z4` production capability `G4-B003`;
 4. positive multi-isolation witness `G4-B004`;
 5. seven historical transition-quotient failures;
 6. ten historical completion/simplification failures;
 7. strict-validator timing;
-8. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization.
+8. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization;
+9. M1b–M6 and T2–T6 remain staged.
 
 Every completed turn ends with one new top-level PR #8 conversation comment after all other branch and PR-body writes.
