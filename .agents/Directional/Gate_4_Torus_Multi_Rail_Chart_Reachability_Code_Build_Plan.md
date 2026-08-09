@@ -1,6 +1,6 @@
 # Gate 4 Torus Multi-Rail Chart Reachability — Code + Build Plan
 
-Status: **authoritative next turn**  
+Status: **completed**  
 Turn type: **Code + Build only**  
 Active design gate: **G4 topology-distinct completion and singularities**  
 Review policy: `never`
@@ -188,3 +188,33 @@ historical exact-torus hard-rail scheduling contract is still unresolved.
 - TODO, design/testing records, and handoff identify one next authority;
 - PR #8 remains open, draft, and unmerged;
 - the final repository write is one new top-level PR #8 conversation comment.
+
+## Completion record
+
+Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
+changes exactly five allowlisted optimizer/validator/focused-test paths and
+leaves the conditionally allowlisted pipeline path unchanged. It implements
+exact scalar-rooted vertex-local chart reachability, complete global
+relation reciprocity, one unique face-wide reachable intersection, and
+selected-witness-only consumption. Four multi-relation counterfactuals were
+added while all scalar typed checks and the existing face-chart contracts
+remain present.
+
+Workflow run/job `31292116792 / 93190952157` compiled all seven approved
+targets at **113/113** using Release/static/Ninja and GoogleTest `PRE_TEST`.
+Artifact `9031804178` has outer SHA-256
+`27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e`;
+all **49/49** recursive entries verify with manifest digest
+`2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`.
+Log artifact `9031804382` has SHA-256
+`5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905`.
+`runtimeExecution=false`.
+
+The temporary workflow was removed before its trigger; final cleanup at
+`01b80ac65968906a9d871cee81f154653f452270` reproduces the implementation
+tree exactly. `G4-R007` is `fix_pending_runtime`, not resolved.
+
+This historical plan is no longer next-turn authority. See
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Report.md`.
+The authoritative next turn is artifact-only Test + Benchmark under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.

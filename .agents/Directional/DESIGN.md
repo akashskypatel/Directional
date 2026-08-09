@@ -373,3 +373,67 @@ The authoritative next turn is compile-only Code + Build under
 `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.
 The exact committed torus test's upstream `InvalidHardRailPairing` remains a
 separate target-size-dependent scheduling gate and continues to block sphere.
+
+## Current compile authority — multi-rail chart reachability
+
+Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
+supersedes the single-relation resolver at compile authority. The exact
+projected output-vertex chart collection is now a vertex-local relation
+graph:
+
+- retained chart components are exact, sorted/unique nodes;
+- validated direction-canonical `HardRail` relations are edges;
+- scalar-compatible components are traversal roots;
+- complete output authority, not one incident face, carries relation
+  reciprocity;
+- one face is accepted only through the unique intersection of its corners'
+  reachable components;
+- a selected non-scalar component requires an exact witness, while another
+  valid retained relation may remain unused by that face.
+
+Every retained relation is still validated against exact hard-feature
+topology, two-face incidence, component separation, source support,
+rail/route/front identity, and exactly two distinct owner vertices. Missing
+links, unsupported charts, disconnected sheets, malformed/one-sided
+relations, and genuinely ambiguous intersections fail closed.
+
+Scalar barycentric, position, source-entity, component, and sheet authority
+remains independent and mandatory. Optimizer labels, centroid/reference
+projection, projection cache, final sampling, validator face selection, and
+edge authority use the same complete collections. This is not a global chart
+union and adds no selection by face row, numeric domain, count, order,
+frequency, hash, proximity, or fixture identity.
+
+Four focused contracts compile a chained multi-rail witness, an unused valid
+relation, an off-face reciprocal peer, a missing link, and source-face-row
+invariance. The existing seven face-chart and seven canonical contracts
+remain unchanged in acceptance.
+
+Artifact `9031804178` compiles the seven approved targets at **113/113** in
+Release/static/Ninja with GoogleTest `PRE_TEST` and
+`runtimeExecution=false`. Its outer SHA-256 is
+`27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e`;
+all **49/49** recursive entries verify with manifest digest
+`2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`.
+Compile success is not runtime correctness.
+
+### Regression architecture authority
+
+`.agents/Directional/Regression_Root_Cause_Tracker.md` is the permanent
+stable-ID regression record. It separates regressions from persistent
+blockers, records the earliest evidenced reason, and forbids resolution
+before an immutable artifact passes the affected gate.
+
+`G4-R007` is `fix_pending_runtime`. The cause families
+`AUTHORITY_DOMAIN_CONFLATION` and
+`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` have recurred three and two times,
+respectively, so both require independent architectural review even if the
+immediate torus correction passes.
+
+The authoritative next turn is artifact-only Test + Benchmark under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.
+It must consume artifact `9031804178` exactly, establish the 18 focused
+contracts and retained suites, then repeat plane → seam → close sheets →
+cylinder → torus three times. Direct torus must be strict-valid **3/3**;
+reduced issue count is not acceptance. Prescribed sphere remains gated by the
+separate historical exact-torus `InvalidHardRailPairing` scheduling defect.

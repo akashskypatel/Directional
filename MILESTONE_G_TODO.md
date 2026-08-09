@@ -184,3 +184,48 @@ multi-relation coverage, then compile/package only. The historical exact
 torus `InvalidHardRailPairing` scheduling failure, rotation, multi-isolation,
 completion/timing, sphere, and later gates remain separate blockers. G4 stays
 active; PR #8 stays open, draft, and unmerged.
+
+## 2026-08-09 Torus multi-rail chart-reachability Code + Build checkpoint
+
+The five-path implementation is complete at
+`6af23d9aeca29e63aa13c4ae49f50d1748939c49`. It validates complete
+per-vertex retained chart/relation graphs and global relation reciprocity,
+derives deterministic scalar-rooted chart reachability, selects the unique
+face-wide reachable intersection, and requires witnesses only for selected
+non-scalar charts. Scalar provenance and hard-feature/isolation barriers
+remain exact. The conditionally allowlisted pipeline path is unchanged.
+
+Four focused tests model a four-sector quotient vertex with a multi-edge
+relation chain, an unused valid relation, reciprocal peers outside the
+selected face, a missing-link counterfactual, and source-face-row invariance.
+Existing one-relation positive/negative, tamper, ambiguity, close-sheet, and
+scalar typed-failure contracts remain.
+
+Workflow run/job `31292116792 / 93190952157` compiled all seven approved
+targets at **113/113** using Release/static/Ninja and GoogleTest `PRE_TEST`.
+Artifact `9031804178` has outer SHA-256
+`27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e`;
+all **49/49** recursive entries verify with manifest digest
+`2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`.
+Log artifact `9031804382` has SHA-256
+`5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905`.
+`runtimeExecution=false`.
+
+The bounded workflow was removed before its trigger. Cleanup head
+`01b80ac65968906a9d871cee81f154653f452270` reproduces the implementation
+tree exactly and retains only `agent-source-snapshot.yml`.
+
+`G4-R007` is `fix_pending_runtime` in the permanent regression tracker.
+The repeated `AUTHORITY_DOMAIN_CONFLATION` and
+`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` cause families remain mandatory
+architectural-review inputs.
+
+The authoritative next turn is artifact-only Test + Benchmark under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.
+It must consume artifact `9031804178` unchanged, run four new multi-rail,
+seven existing face-chart, and seven canonical contracts individually,
+preserve bounded/group authority, and repeat plane → seam → close sheets →
+cylinder → torus three times. Direct torus must be strict-valid **3/3**;
+reduced failure count is not acceptance. The separate exact-torus
+`InvalidHardRailPairing` scheduling blocker continues to gate prescribed
+sphere. G4 remains active; PR #8 stays open, draft, and unmerged.

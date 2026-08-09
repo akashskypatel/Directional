@@ -320,3 +320,49 @@ be strict-valid **3/3**; reduced mismatch count is not acceptance. The
 historical exact-torus `InvalidHardRailPairing` result remains explicit and
 continues to gate prescribed sphere until a separate scheduling slice fixes
 it.
+
+## Multi-rail chart-reachability artifact acceptance plan
+
+Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
+is compile-valid in exact artifact `9031804178`. The artifact's outer
+SHA-256 is
+`27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e`;
+all **49/49** recursive entries verify with digest
+`2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`.
+Release/static/Ninja compiled the seven approved targets at **113/113** with
+GoogleTest `PRE_TEST` and `runtimeExecution=false`. This is compile
+authority only.
+
+After immutable preflight, discover each GoogleTest executable exactly once.
+Run these four new `SurfaceMeshOptimizerPhase22` contracts individually:
+
+- `MultiRailChainReachesSelectedChartWithoutConsumingUnusedRelation`;
+- `MultiRailReciprocityMayBeCarriedOutsideTheSelectedFace`;
+- `MissingMultiRailGraphLinkLeavesSelectedChartUnreachable`;
+- `MultiRailChartReachabilityIsInvariantToSourceFaceRows`.
+
+Then run the seven retained face-chart and seven canonical contracts
+individually. The 18 focused checks must prove chained reachability, unused
+valid relation tolerance, complete-authority off-face reciprocity, missing
+link rejection, tamper/ambiguity/isolation rejection, row invariance, and
+exact scalar typed failures.
+
+Record the historical exact-torus GoogleTest separately; its entering
+`InvalidHardRailPairing` result is a scheduling blocker outside this patch.
+Preserve the six established focused groups and bounded
+producer/completion/validation/API suites with discovered denominators.
+
+Finally repeat plane, multi-face seam, close sheets, cylinder, and torus in
+three fresh recovery-disabled processes. Torus acceptance is direct
+strict-valid **3/3**, no fallback/recovery, complete `4/8/4` consumption,
+final `1/0/0` topology, pure quads, and complete lineage. Reduced
+`LocalSheetMismatch` count is not acceptance. Do not run prescribed sphere;
+the independent scheduling blocker remains unresolved.
+
+Every regression must update
+`.agents/Directional/Regression_Root_Cause_Tracker.md` by stable ID and
+earliest reason. Do not duplicate a recurring cause. `G4-R007` remains
+`fix_pending_runtime` until this immutable artifact passes its direct-torus
+gate. The repeated `AUTHORITY_DOMAIN_CONFLATION` and
+`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` families remain mandatory
+architectural-review inputs.

@@ -127,8 +127,9 @@ stable entry per regression so repeated architectural causes remain visible.
 | Root cause | The resolver treats a quotient vertex's complete relation graph as a direct star around one scalar representative, requires every retained relation to be consumed by each incident face, and requires a reciprocal peer on that face. The focused two-quad fixture carried only one relation per shared vertex and missed chained and unused production authority. |
 | Cause family | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY`; recurrence of `G4-R002` |
 | Corrective guard | Validate complete relation structure and reciprocity globally, derive exact vertex-local graph reachability, and require only the selected face's witness path. Add chained, unused, off-face-peer, missing-link, tamper, ambiguity, isolation, and row-order counterfactuals. |
-| Status | `fix_in_progress` under `Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`. |
-| Evidence | `Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Report.md` |
+| Correction | Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49` validates the complete relation graph and global reciprocity, derives scalar-rooted vertex-local reachability, intersects reachable face charts uniquely, and consumes only selected witnesses. Four multi-relation counterfactuals compile in artifact `9031804178`. |
+| Status | `fix_pending_runtime`; compile artifact `9031804178` is verified, but direct torus and retained runtime acceptance have not run. |
+| Evidence | `Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Report.md`; `Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Report.md`; next acceptance `Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md` |
 
 ## Persistent blockers that are not current-patch regressions
 

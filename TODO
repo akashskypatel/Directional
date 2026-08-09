@@ -1,70 +1,87 @@
-# Directional Surface-Cell Production Readiness
-
 Last updated: 2026-08-09 UTC
 
 ## Active direction
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **artifact-only Test + Benchmark — hard-rail face-chart authority**.
-- Result: **focused authority accepted; direct torus regressed and the projection is rejected**.
+- Completed turn: **Code + Build — multi-rail chart reachability**.
+- Result: **implementation and immutable compile artifact accepted; runtime
+  acceptance pending**.
+- Regression: `G4-R007` is `fix_pending_runtime`, not resolved.
 - Review policy: `never`.
-- Next turn: **Code + Build — multi-rail chart reachability**.
-- Authoritative plan: `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.
-- Runtime report: `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Report.md`.
+- Next turn: **artifact-only Test + Benchmark — multi-rail chart
+  reachability**.
+- Authoritative plan:
+  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.
+- Code + Build report:
+  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Report.md`.
+- Regression tracker:
+  `.agents/Directional/Regression_Root_Cause_Tracker.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 
-## Runtime authority
+## Compile authority
 
-- implementation `8f37612148f34bac63cf294000c17c7de2e03b41`;
-- artifact/log artifacts `9030700527 / 9030700699`;
-- outer SHA-256 `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf` /
-  `a3d327bd6d98091e4f4394970aab1823a53324f0106c380cde37a31e99d61263`;
-- recursive package manifest **49/49**;
-- exact preflight/postflight and 268-file runtime evidence ledger passed;
-- no rebuild or source/test/fixture/validator/workflow edit.
+- implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`;
+- workflow run/job `31292116792 / 93190952157`;
+- artifact/log artifacts `9031804178 / 9031804382`;
+- outer SHA-256:
+  `27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e` /
+  `5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905`;
+- recursive package manifest **49/49**, digest
+  `2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`;
+- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`;
+- exactly five allowlisted implementation/test paths changed;
+- 50 package files, five ELF executables, two static libraries, 27 exact
+  fixtures, and all seven source/CMake blobs verified;
+- `runtimeExecution=false`; no tests, discovery, benchmarks, CTest,
+  project CLI/help, or generated binary ran;
+- cleanup head `01b80ac65968906a9d871cee81f154653f452270`
+  reproduces the implementation tree exactly.
 
-Discovery found producer 166, completion 164, validation 67, and API 8.
-All seven new face-chart and seven retained canonical contracts pass.
-Bounded suites are producer **154/163**, completion **154/164**, validation
-**67/67**, API **8/8**, aggregate **383/402**. All six retained focused groups
-match the entering artifact.
+## Runtime baseline
 
-## Direct disposition
+Artifact `9030700527` remains runtime authority until the next turn:
 
-- plane, multi-face seam, close sheets, and cylinder: direct strict-valid
-  **3/3**, deterministic pure quads, no fallback/recovery;
-- seam semantic digest: `99c8be7159d05c2f`;
-- torus: deterministic **0/3** after 192 completed quads, complete lineage,
-  complete `4/8/4` authority consumption, and `1/0/0` topology;
-- torus final failure:
-  `completion/output-validation / LocalSheetMismatch`, **165** issues;
-- entering artifact `9029584083` reported 74 issues, so the new projection
-  rejects 91 additional faces;
+- focused face-chart **7/7**, canonical **7/7**;
+- bounded producer **154/163**, completion **154/164**, validation **67/67**,
+  API **8/8**;
+- plane, seam, close sheets, cylinder direct strict-valid **3/3**;
+- torus deterministic **0/3** with 165 `LocalSheetMismatch` issues after
+  192 completed quads, complete lineage, `4/8/4` consumption, and
+  `1/0/0` topology;
+- pre-regression artifact `9029584083` reported 74 issues;
+- historical exact-torus GoogleTest remains
+  `InvalidHardRailPairing`;
 - prescribed sphere was not run.
 
-The exact committed torus GoogleTest retains its historical upstream
-`InvalidHardRailPairing` failure and remains a separate scheduling blocker.
+## Next acceptance
 
-## Next invariant
+1. Consume artifacts `9031804178 / 9031804382` exactly and verify immutable
+   closure.
+2. Discover each GoogleTest executable once.
+3. Run four new multi-rail, seven retained face-chart, and seven canonical
+   contracts individually.
+4. Preserve the historical exact-torus result, six focused groups, and four
+   bounded suites.
+5. Repeat plane → seam → close sheets → cylinder → torus three times without
+   recovery.
+6. Require direct torus strict-valid **3/3**; reduced mismatch count is not
+   acceptance.
+7. Keep sphere gated by the separate hard-rail scheduling blocker.
+8. Update `G4-R007` rather than duplicating it; mark it resolved only if the
+   immutable artifact passes the affected gate.
 
-The quotient retains a complete multi-relation authority set per output
-vertex. A face must select one exact chart reachable through the vertex-local
-hard-rail equivalence graph; it must not consume every valid relation retained
-by that vertex.
+## Architectural review queue
 
-The next turn must:
+- `AUTHORITY_DOMAIN_CONFLATION`: regressions `G4-R001`, `G4-R004`,
+  `G4-R006`; repeated three times.
+- `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY`: regressions `G4-R002`,
+  `G4-R007`; repeated twice.
 
-1. validate the complete projected relation set independently of face choice;
-2. derive deterministic scalar-rooted graph reachability;
-3. validate reciprocity against complete output authority, not only same-face
-   peers;
-4. intersect reachable components across a face and require exactly one;
-5. preserve scalar provenance and close-sheet isolation;
-6. add multi-relation, unused-relation, missing-link, tamper, ambiguity, and
-   row-invariance coverage;
-7. compile/package only; run no project binary.
+Both families already meet the mandatory review trigger. Exact reasons,
+guards, evidence, statuses, and non-regression blockers live in the separate
+regression tracker.
 
 ## Deferred blockers
 
