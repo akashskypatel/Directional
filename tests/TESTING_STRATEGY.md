@@ -282,3 +282,41 @@ After immutable preflight, discover each GoogleTest executable exactly once and 
 Run the seven accepted canonical transition/periodic/retention contracts individually and the exact committed torus GoogleTest individually. Then execute the established bounded producer/completion/validation/API suites and prior-green focused groups. Report discovered denominators rather than predicting the validation increase.
 
 Finally repeat plane, multi-face seam, close sheets, cylinder, and torus in three fresh recovery-disabled processes. Torus must be direct strict-valid **3/3**, with no fallback/recovery, complete `4/8/4` consumption, final `1/0/0` topology, pure quads, and complete lineage before prescribed sphere may run. No rebuild, artifact mixing, assertion weakening, global hard-feature chart union, validator relaxation, predicted count, or timeout-as-correctness is permitted.
+
+## Hard-rail face-chart artifact acceptance — rejected
+
+Artifact `9030700527` passed immutable preflight/postflight and discovered
+166 producer, 164 completion, 67 validation, and 8 API tests. The seven new
+face-chart tests and seven retained canonical tests are all green. Retained
+groups remain **29/36**, **10/10**, **12/12**, **6/7**, **38/39**, and
+**4/4**. Bounded suites are producer **154/163**, completion **154/164**,
+validation **67/67**, API **8/8**, aggregate **383/402**.
+
+Direct plane, seam, close sheets, and cylinder remain deterministic
+strict-valid **3/3**. Direct torus remains **0/3** after complete `4/8/4`
+consumption, 192 completed quads with complete lineage, and `1/0/0`
+topology. It now reports 165 `LocalSheetMismatch` issues instead of 74.
+Sphere was not run. The face-chart implementation is not accepted.
+
+### Next focused authority
+
+The next Code + Build turn must add compile-valid tests for:
+
+- a scalar representative reaching a selected chart through two or more exact
+  hard-rail relations;
+- a face remaining valid when its vertices retain another valid unused
+  relation;
+- a reciprocal peer carried elsewhere in complete output authority rather
+  than on the selected face;
+- missing graph links, wrong rail/route/front identity, one-sided relations,
+  unsupported charts, disconnected close sheets, and ambiguous intersections
+  failing `LocalSheetMismatch`;
+- source face-row invariance and preservation of all scalar typed failures.
+
+The subsequent artifact-only turn must run those tests individually, retain
+the existing 14 focused contracts and all bounded/group authority, then repeat
+plane → seam → close sheets → cylinder → torus three times. Direct torus must
+be strict-valid **3/3**; reduced mismatch count is not acceptance. The
+historical exact-torus `InvalidHardRailPairing` result remains explicit and
+continues to gate prescribed sphere until a separate scheduling slice fixes
+it.

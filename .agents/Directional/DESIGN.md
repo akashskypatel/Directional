@@ -332,3 +332,44 @@ Optimizer labels, reference/centroid projection, projection-cache labels, final 
 Artifact `9030700527` compiles the seven approved targets at **113/113** with `runtimeExecution=false`; its outer SHA-256 is `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf` and all **49/49** recursive entries verify. This is compile authority only.
 
 The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`. Exact torus must become direct strict-valid **3/3** before prescribed sphere runs. All previously deferred rotation, scheduling, multi-isolation, historical completion/timing, and later-gate work stays separate.
+
+## Current runtime authority — face-chart projection rejected
+
+Artifact `9030700527` proves that the seven single-relation face-chart
+contracts compile and pass, but the production projection regresses direct
+torus from 74 to 165 `LocalSheetMismatch` issues. Plane, seam, close sheets,
+and cylinder remain strict-valid **3/3**. Torus still reaches complete
+`4/8/4` consumption, 192 completed quads with complete lineage, and
+`1/0/0` topology before validation; sphere remains gated.
+
+A quotient vertex owns the union of charts and equivalences from every member
+of its union-find class. Complete authority is therefore a graph, not
+necessarily a direct star around the chosen scalar `SurfacePoint`. Valid
+relations may form a chain or cycle and may be irrelevant to one incident
+face.
+
+### Multi-rail chart-reachability contract
+
+- Validate every retained chart and relation structurally against exact source
+  support before face selection.
+- Treat retained chart components as vertex-local nodes and exact reciprocal
+  `HardRail` relations as edges.
+- Derive the components reachable from scalar-compatible roots through
+  deterministic graph traversal.
+- Resolve one face chart from the unique intersection of its corners'
+  reachable components.
+- Require an exact selected witness path for alternate use, but do not require
+  every other valid retained relation to be consumed by that face.
+- Validate reciprocity against complete projected output authority rather than
+  requiring every peer relation to occur on the selected face.
+- Preserve scalar barycentric, position, source-component, source-sheet, and
+  source-entity checks.
+- Reject malformed, missing, disconnected, unsupported, one-sided, or
+  genuinely ambiguous authority.
+- Never globally union hard-feature chart components or choose by proximity,
+  count, row, numeric ID, frequency, hash, or fixture identity.
+
+The authoritative next turn is compile-only Code + Build under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.
+The exact committed torus test's upstream `InvalidHardRailPairing` remains a
+separate target-size-dependent scheduling gate and continues to block sphere.

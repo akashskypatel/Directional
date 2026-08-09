@@ -1,6 +1,6 @@
 # Gate 4 Torus Hard-Rail Face-Chart Authority — Artifact-Only Test + Benchmark Plan
 
-Status: **authoritative next turn**
+Status: **completed; face-chart projection rejected with a direct-torus regression**
 Turn type: **Test + Benchmark only**
 Active design gate: **G4 topology-distinct completion and singularities**
 Review policy: `never`
@@ -182,3 +182,30 @@ G4 is not complete until the required topology/singularity fixtures produce dire
 Write an artifact-only report with immutable preflight/postflight, exact discovery, every command/exit status, raw-log checksum authority, focused results, bounded comparison, direct matrix, earliest failures, semantic evidence, and remaining blockers.
 
 Review policy is `never`. Keep PR #8 open, draft, and unmerged. After all branch-file and PR-body writes, the final repository write is one new top-level PR #8 conversation comment.
+
+## Completion record
+
+Artifact `9030700527` was consumed exactly without configure, rebuild,
+relink, source/test/fixture/validator/workflow edit, or artifact mixing.
+Preflight and postflight passed both outer digests, all **49/49** manifest
+entries, 50 original package files, seven source/CMake blobs, five
+executables, two libraries, and 27 fixtures.
+
+Discovery found producer 166, completion 164, validation 67, and API 8. The
+seven new face-chart tests and seven retained canonical tests all pass
+individually. The exact committed torus GoogleTest retains its historical
+`InvalidHardRailPairing` failure. Bounded suites are producer **154/163**,
+completion **154/164**, validation **67/67**, and API **8/8**. All retained
+focused groups match the entering artifact.
+
+Plane, multi-face seam, close sheets, and cylinder remain direct strict-valid
+**3/3** without fallback/recovery. Direct torus remains deterministic **0/3**
+after complete `4/8/4` consumption, 192 completed quads with complete
+lineage, and `1/0/0` topology. Final validation reports 165
+`LocalSheetMismatch` issues, versus 74 under artifact `9029584083`.
+Prescribed sphere was correctly not run.
+
+This historical plan is no longer next-turn authority. See
+`.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Report.md`.
+The authoritative next turn is Code + Build under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.

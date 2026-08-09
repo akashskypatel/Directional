@@ -154,3 +154,33 @@ The six-file implementation is complete at `8f37612148f34bac63cf294000c17c7de2e0
 Workflow run/job `31288505364 / 93181547076` compiled all seven approved targets at **113/113** using Release/static/Ninja and `PRE_TEST`. Artifact `9030700527` has outer SHA-256 `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf`; all **49/49** recursive entries verify with manifest digest `698ee033667624819a369a4e64bd958eecfb2598e2c4cdd5caf7763fe6acad97`. Log artifact `9030700699` has SHA-256 `a3d327bd6d98091e4f4394970aab1823a53324f0106c380cde37a31e99d61263`. `runtimeExecution=false`.
 
 The bounded workflow was removed before its trigger and only `agent-source-snapshot.yml` remains. The mandatory next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`. It must run the seven new tests, retain the seven accepted canonical contracts and prior-green suites, run exact torus, then repeat plane → seam → close sheets → cylinder → torus three times. Torus gates sphere. G4 remains active; PR #8 stays open, draft, and unmerged.
+
+## 2026-08-09 Torus hard-rail face-chart artifact regression
+
+Artifact `9030700527`, implementation
+`8f37612148f34bac63cf294000c17c7de2e03b41`, passed exact preflight and
+postflight. Discovery found producer 166, completion 164, validation 67, and
+API 8. All seven new face-chart and seven retained canonical contracts pass.
+Bounded suites are **154/163**, **154/164**, **67/67**, and **8/8**.
+
+Plane, multi-face seam, close sheets, and cylinder remain direct strict-valid
+**3/3** without fallback/recovery. Torus remains **0/3** after 192 completed
+quads, complete lineage, complete `4/8/4` authority consumption, and
+`1/0/0` topology. Final validation reports 165 `LocalSheetMismatch`
+issues, versus 74 under entering artifact `9029584083`; prescribed sphere
+was not run.
+
+The projection is rejected. Quotient vertices retain complete multi-relation
+authority, while the current resolver assumes every chart is directly
+connected to the scalar representative, consumes every retained relation for
+each face, and requires its peer on that same face. The passing two-quad
+fixture has only one relation per shared vertex and does not model chained or
+unused retained relations.
+
+The mandatory next turn is Code + Build under
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Plan.md`.
+It must implement exact vertex-local relation-graph reachability and focused
+multi-relation coverage, then compile/package only. The historical exact
+torus `InvalidHardRailPairing` scheduling failure, rotation, multi-isolation,
+completion/timing, sphere, and later gates remain separate blockers. G4 stays
+active; PR #8 stays open, draft, and unmerged.
