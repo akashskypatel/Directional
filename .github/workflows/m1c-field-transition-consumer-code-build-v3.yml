@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - '.agents/connector-triggers/m1c-field-transition-consumer-code-build-v3'
+      - '.agents/connector-triggers/m1c-field-transition-consumer-code-build-v2'
 
 permissions:
   contents: write
