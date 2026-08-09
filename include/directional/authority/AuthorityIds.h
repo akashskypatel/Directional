@@ -21,6 +21,7 @@ namespace directional::authority {
 enum class AuthorityDomain : std::uint8_t {
   SourceVertex,
   SourceFace,
+  SourceEdgeTopology,
   InteriorTransition,
   SourceComponent,
   IsolationSheet,
