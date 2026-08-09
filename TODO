@@ -5,85 +5,70 @@ Last updated: 2026-08-09 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a kernel accepted; M1b first production consumer immutable accepted; M1c field-transition consumer Code + Build compile/package complete, immutable runtime pending**.
-- Authoritative next turn: **M1c Field-Transition Consumer — immutable Test + Benchmark only** under `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Architecture migration: **M1a kernel, M1b source/provenance consumer, and M1c field-transition consumer immutable accepted**.
+- Authoritative next turn: **M1d Phase-Front Route Identity Consumer — Code + Build only** under `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
 
-## M1c Code + Build authority
+## M1c immutable acceptance
 
-Selected seam:
+Accepted seam:
 `build_surface_cell_network / trace_surface_field -> surface_cell_tracing_detail::resolve_branch_transition`, authoritative `CrossFieldEdgeTransition` consumption only.
 
 | Evidence | Value |
 |---|---|
-| Migration base | `512d9523f13158a9f71b406b6db7137a1db3c504` |
 | Implementation | `e139fca885538e310dc47ed7ba531517603d92cf` |
 | Build/event | `ebda31859a18005844f81274393211991361cbbb` |
-| Run/job | `31334345368 / 93297618568` |
+| Build run/job | `31334345368 / 93297618568` |
 | Result artifact / SHA-256 | `9043971772` / `dde120c94be222dc93aeebb08f7a674882c5f8011ede62ec420209b0e0f4fd85` |
 | Log artifact / SHA-256 | `9043971968` / `7747b3b25882fc86e54890a1efb69d753f9b2e08bff7db8fd2be4f4a8a82fedb` |
 | Recursive manifest | **54/54**, `d9a4bdfe5b160095a6cf4949c57e54d726d36f745ff0a6580e9080d5319d495d` |
-| Code + Build | Release/static/Ninja **120/120**, `PRE_TEST`, `runtimeExecution=false` |
+| M1c focused | **6/6** individually |
+| transition counterexamples | **3/3** |
+| M1b preservation | **6/6**, validation **77/77** |
+| M1a / T1 | **14/14**, **29/29** |
+| producer required-green segment | **157/157** |
 
-Read-only preflight matched both GitHub artifact digests, found no unsafe archive paths, and verified all 54 packaged checksums. Package contents are 55 regular files including manifest, seven ELF executables, two static libraries, and 27 fixtures.
+Producer discovery is exactly **172** and fully accounted for: 157 required-green + four separately run direct-green cases + nine historical/deferred known-red tests + BunnyRandom + Vase.
 
-M1c implementation now:
+Direct required-green results from the immutable M1c producer executable:
 
-- converts authoritative source/target and transition faces through checked `SourceFaceId` adapters before semantic reciprocity;
-- converts transition source-edge endpoints through checked `SourceVertexId`, canonicalizes them with `SourceEdgeTopologyKey`, and returns to raw `edge_key` only at the legacy representation boundary;
-- uses `QuarterTurn::from_integer` and exact `.inverse()` for semantic branch transport;
-- preserves raw signed `BranchTransitionResult.matching`, effort, public `CrossFieldResult`, and the separate `edgeTransitions == nullptr` legacy fallback;
-- fails closed for missing/malformed authoritative metadata without legacy/geometric fallthrough;
-- adds exactly six behavior-focused `SurfaceCellFieldTransitionAuthorityMigration` contracts to the existing producer target.
+- Plane: pass, 1.44 s, independent-oracle clean;
+- MultiFaceSeam: pass, 2.19 s, oracle-clean;
+- CloseSheets: pass, 17.24 s, oracle-clean;
+- Cylinder: pass, 9.70 s, oracle-clean.
 
-Final product/test diff is only:
+Bunny/Vase comparison used artifact-only GitHub Actions run `31341209985` after exact package/executable verification:
 
-- `src/geometry/SurfaceCellTracing.cpp`;
-- `tests/SurfaceCellsPhase10Tests.cpp`.
+- Bunny job `93315178447`: exactly one test, rc=1 after 63.09 s; independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`. Known-red preserved. Evidence artifact `9045884237`, SHA-256 `7b7ea790d386ed82667d4827bf8cb39910a08d9a8d9c075c24ac7ffa61dd7633`.
+- Vase job `93315178308`: exactly one test reached `[ RUN ]`, bounded rc=124 at 60.00 s. Safety-only known-red preserved. Evidence artifact `9045884496`, SHA-256 `9f231de99277d19e1ab8a3c7ec7c937ba86df14d675bc77f384c7eb1c3c6c04c`.
 
-No generated Directional binary was executed. **Compile success does not accept M1c semantics.** Report:
-`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Report.md`.
+Postflight preserved both original ZIP hashes, all **54/54** packaged checksums, and executable content hashes. Temporary runtime workflow/trigger files were removed.
 
-## M1c next immutable gate
+Report:
+`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-Consume exactly artifacts `9043971772 / 9043971968`; rebuild, relink, edit, regenerate, substitute, or repair nothing.
+## M1d next boundary
 
-Required evidence includes:
+Selected seam:
+`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`, used by authoritative HardRail and PeriodicCut front relations.
 
-- exact package/source/executable preflight and postflight;
-- exact six-member M1c discovery and **6/6** fresh-process focused contracts;
-- existing nonreciprocal seam, invalid reciprocal transport, and periodic-holonomy tamper counterexamples green;
-- complete relevant producer preservation;
-- M1b focused **6/6** and validation **77/77**;
-- M1a exact 14 and **14/14**;
-- T1 exact 29 and **29/29**;
-- Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean;
-- Bunny explicit known-red comparison and Vase bounded safety-only comparison;
-- both original artifact ZIP hashes and all **54/54** package checksums unchanged after runtime.
+M1d may migrate only semantic identity validation of existing `sourceRouteEdges/sourceRouteTopology` pairs:
 
-## Accepted M1b authority retained
+- checked `SourceVertexId` for packed source-edge endpoints;
+- canonical `SourceEdgeTopologyKey` for semantic topology identity/uniqueness;
+- checked `InteriorTransitionId` for compact transition identity;
+- explicit conversion back to the existing raw packed key/index only at compatibility lookup boundaries.
 
-M1b remains immutable accepted at:
-`RemeshPipeline -> fill_surface_optimization_rail_constraints -> provenance_supports_interval_sheet`.
-
-- implementation `0340addf21473854856266ff00cb68915ce24ef0`;
-- result artifact `9042940168`;
-- focused **6/6**;
-- validation **77/77**;
-- M1a **14/14**;
-- T1 **29/29**;
-- Plane, MultiFaceSeam, CloseSheets, Cylinder green/oracle-clean.
-
-Bunny/Vase long-running comparison may use the already authorized artifact-only GitHub Actions procedure: exact artifact/package/executable authority first, no rebuild/content mutation, explicit process guards, retained stdout/stderr/rc/time/evidence digest, temporary workflow/trigger cleanup before closeout.
+Public route storage, route production, per-step transport, `TransitionStep`/`CanonicalRoute`, topology/periodic policy, quotient behavior, fixtures, validators, fallback/recovery, and all known-red dispositions remain unchanged. Code + Build may configure/compile/package only and must execute no generated Directional binary.
 
 ## Regression status
 
-- `RP-01`: M1b accepted; M1c field-transition adoption **compile-complete, immutable runtime pending**.
-- `RP-05`: M1b accepted; M1c canonical source-edge representation boundary **compile-complete, runtime pending**.
-- `RP-07`: M1c exact modulo-four/inverse transport **compile-complete, runtime pending**.
-- `RP-02 / TA-05`: following immutable turn must independently preserve M1b/M1a/T1/direct authority.
+- `RP-01`: M1b and M1c production adoption **accepted**; M1d next touches compact transition/source-vertex domain checks.
+- `RP-05`: M1b and M1c representation boundaries **accepted**; M1d next migrates packed route topology/index identity at one consumer.
+- `RP-07`: M1c exact modulo-four/inverse field transport **accepted** and must remain untouched by M1d.
+- `RP-02 / TA-05`: independently preserved through M1c.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active on production artifact `9031804178`; direct torus remains 0/3 with 241 `LocalSheetMismatch` issues after 192 quads.
 
