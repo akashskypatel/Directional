@@ -1,10 +1,16 @@
 # T1 Direct-Oracle Execution Order — Code + Build Plan
 
-**Status:** authoritative next turn  
+**Status:** Code + Build completed; following immutable Test + Benchmark required  
 **Turn type:** Code + Build only  
 **Production behavior delta:** none  
 **Review policy:** `never`  
 **Repository:** `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8
+
+Completed Code + Build authority is recorded in:
+
+`.agents/Directional/Test_Architecture_T1_Direct_Oracle_Execution_Order_Code_Build_Report.md`
+
+Implementation `7c169ddf8167093c16755f2160e224994e50307c` compiled/package-verified under workflow run/job `31324710550 / 93273122696`. The following turn must consume immutable result/log artifacts `9041289209 / 9041289317` exactly. This plan remains the design/scope authority for the correction; it is no longer the active Code + Build instruction.
 
 ## 1. Objective
 
@@ -99,7 +105,7 @@ stop and return to Review rather than expanding scope.
 
 ## 5. Required code shape
 
-Current shape:
+Current shape at the entering implementation:
 
 ```text
 result = production_call(...)
@@ -109,7 +115,7 @@ independentOracle = inspect(input, result)
 EXPECT_TRUE(independentOracle.ok())
 ```
 
-Required shape:
+Required and now compiled shape:
 
 ```text
 result = production_call(...)
@@ -128,7 +134,7 @@ bounded product/runtime evidence, not a reason to synthesize an oracle result.
 
 ## 6. Code + Build acceptance
 
-The turn succeeds only when:
+The completed Code + Build satisfied the compile/package portion of these requirements:
 
 1. the implementation diff is confined to
    `tests/SurfaceCellDesignAcceptanceTests.cpp` plus truthful status records;
@@ -139,17 +145,17 @@ The turn succeeds only when:
 4. `inspect_surface_cell_product(...)` is evaluated immediately after the
    returned `RemeshResult` and before `ASSERT_TRUE(result.success)`;
 5. all eight previously approved Release/static/Ninja targets compile/link;
-6. package/discovery metadata still contains the same oracle executable,
-   labels, and exact 29-name manifest;
-7. `runtimeExecution=false`; no generated project executable is run;
-8. one new immutable result artifact and one separate log artifact are handed
-   to the following Test + Benchmark turn.
+6. package metadata still contains the same oracle executable, labels, and
+   exact 29-name manifest;
+7. `runtimeExecution=false`; no generated project executable was run;
+8. immutable result artifact `9041289209` and log artifact `9041289317` were
+   produced for the following Test + Benchmark turn.
 
 Compilation is not runtime acceptance.
 
 ## 7. Required following immutable Test + Benchmark
 
-Consume the new artifact exactly without rebuild or source edit.
+Consume result artifact `9041289209` and log artifact `9041289317` exactly without rebuild or source edit.
 
 1. verify package/source/dependency closure and `runtimeExecution=false`;
 2. discover `directional_surface_cell_oracle_tests` exactly once and require the
