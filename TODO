@@ -5,65 +5,75 @@ Last updated: 2026-08-09 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a kernel accepted; M1b first production consumer compile/package complete, runtime pending**.
-- Authoritative next turn: **M1b First Production Consumer — immutable Test + Benchmark** under `.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Architecture migration: **M1a kernel accepted; M1b first production consumer immutable accepted; M1c field-transition consumer next**.
+- Authoritative next turn: **M1c Field-Transition Consumer — Code + Build only** under `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
 
-## M1b Code + Build authority
+## M1b immutable acceptance
 
-Selected consumer:
+Selected accepted production seam:
 `RemeshPipeline -> fill_surface_optimization_rail_constraints -> provenance_supports_interval_sheet`.
 
 | Evidence | Value |
 |---|---|
-| M1b base | `9a4131f9655567ffc60c2c513db1c73826165bb2` |
-| Corrected implementation | `0340addf21473854856266ff00cb68915ce24ef0` |
-| Build/event commit | `17c61b8d2eb835bd734010e160e6cd6b7dc9f5cf` |
-| Workflow run/job | `31330737703 / 93288453677` |
+| Implementation | `0340addf21473854856266ff00cb68915ce24ef0` |
+| Build/event | `17c61b8d2eb835bd734010e160e6cd6b7dc9f5cf` |
 | Result artifact / SHA-256 | `9042940168` / `9a24672179dc6fbc57fedcd4d5826fb4a7c4cf4cb1962c06013e1e84758bb46b` |
 | Log artifact / SHA-256 | `9042940336` / `c39995e4ce496b6cb64608807a23b999330fa8b5333de61ebf939c3b5e391614` |
 | Recursive manifest | **53/53**, `319cb95e6d283f6b786565c0c9863755777ff0518ff5375364521c61583e39f1` |
-| Compile closure | Release/static/Ninja **120/120**, `PRE_TEST`, `runtimeExecution=false` |
-| Build wall / peak RSS | **8:07.42 / 1,836,308 KiB** |
-| Retention | through **2026-08-23 UTC** |
+| M1b focused | **6/6** individually |
+| full validation | **77/77** |
+| M1a preservation | exact 14, **14/14** |
+| T1 preservation | exact 29, **29/29** |
 
-Package inventory: 54 regular files including manifest, seven ELF executables, two static libraries, 27 fixtures, source patch/archive/compile DB/source blobs, focused six-name manifest, unchanged M1a 14-name manifest, unchanged T1 29-name manifest.
+Direct product preservation from the immutable producer executable:
 
-M1b changes exactly five implementation/test/build paths after connector cleanup. `AuthorityKernel.cpp` is now owned once by `directional_core`; the migrated helper consumes `SourceFaceId`/`SourceVertexId` behind named checked adapters and converts to legacy indices only at representation access. Existing sentinels, component/sheet logic, `1e-8` support classification, rail assignment, projection, optimizer policy, public structures, and product disposition are intentionally unchanged.
+- Plane: pass, **1.000 s**, independent-oracle clean;
+- MultiFaceSeam: pass, **1.559 s**, oracle-clean;
+- CloseSheets: pass, **12.169 s**, oracle-clean;
+- Cylinder: pass, **6.525 s**, oracle-clean.
 
-Report: `.agents/Directional/Architecture_M1b_First_Production_Consumer_Code_Build_Report.md`.
+Bunny/Vase long-running evidence was executed through an artifact-only GitHub Actions runner per explicit user authorization:
 
-## Next immutable acceptance
+- authoritative workflow run `31332383845`;
+- Bunny job `93292577409`: one real test, rc=1 after ~64 s; independent oracle rejects first, then unchanged fatal `NotProductionReady:completion`, `traceSegments=170831 arrangementCells=0 completedQuads=0`; evidence artifact `9043307980`, SHA-256 `c2e7776a9b68ffeeecc7471a3718a2c1bc90fae4556c7d7c05084b5ae8d8fb2d`;
+- Vase job `93292577420`: one real test started, bounded rc=124 at **60 s**; safety evidence only; artifact `9043307204`, SHA-256 `1726deb422a3eea238ab3895108a423f6fb6e932cabcc6b215916cc969e87105`.
 
-Consume artifacts `9042940168 / 9042940336` exactly. Do not edit, configure, rebuild, relink, or substitute.
+The runner verified artifact/package/implementation/executable hashes before runtime and performed no configure/build/relink/content edit. `actions/download-artifact` stripped executable mode, so `+x` was restored only after content-hash verification. Temporary workflow/trigger files were removed before closeout.
 
-Required:
+Postflight preserved both original ZIP hashes and all **53/53** package checksums. Report:
+`.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-1. exact ZIP/source/dependency/package verification and **53/53** checksums;
-2. validation discovery exactly **77** tests and exactly six `SurfaceOptimizationRailAuthorityMigration` members;
-3. focused M1b contracts **6/6** individually;
-4. full validation target **77/77**;
-5. M1a authority discovery exact 14 and **14/14**;
-6. T1 oracle discovery exact 29 and **29/29**;
-7. Plane, MultiFaceSeam, CloseSheets, Cylinder remain green/oracle-clean;
-8. BunnyRandom remains explicit known-red with oracle-before-fatal evidence if it returns;
-9. Vase remains explicit bounded safety-only known-red;
-10. postflight package hashes unchanged.
+## M1c next boundary
 
-Only after immutable M1b acceptance may a second production consumer be planned.
+Selected seam:
+`build_surface_cell_network / trace_surface_field -> surface_cell_tracing_detail::resolve_branch_transition`, authoritative `CrossFieldEdgeTransition` consumption only.
+
+M1c Code + Build will:
+
+- convert authoritative transition source/target faces through checked `SourceFaceId` adapters;
+- convert transition source-edge endpoints through checked `SourceVertexId` adapters and canonical `SourceEdgeTopologyKey`;
+- use `QuarterTurn` plus exact inverse for semantic branch transport;
+- retain existing raw `BranchTransitionResult.matching` compatibility representation and the separate `edgeMatching` fallback path unchanged;
+- add focused semantic/counterexample tests in `SurfaceCellsPhase10Tests.cpp`;
+- compile/package only, with `runtimeExecution=false`.
+
+Do not migrate public `CrossFieldResult`, `FieldChartId`, `TransitionStep`, `CanonicalRoute`, transition IDs, topology/certificates, rails, completion, validators, fixtures, or product policy in M1c.
 
 ## Regression status
 
-- `RP-01` / `RP-05`: first production adoption **compile-complete, runtime pending**.
-- `RP-02 / TA-05`: accepted preservation boundary remains staged for re-execution.
-- No previously accepted runtime authority has been shown lost; historical totals remain **34 events / 14 categories / 20 recurrences**.
+- `RP-01`: first production source-face/source-vertex adoption **accepted** at M1b seam.
+- `RP-05`: semantic-ID versus representation-row boundary **accepted** at M1b seam.
+- `RP-02 / TA-05`: independently preserved by M1b runtime acceptance.
+- M1c will touch `RP-01`, `RP-05`, `RP-07`; `RP-02` remains the preservation boundary.
+- Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active on production artifact `9031804178`; direct torus remains 0/3 with 241 `LocalSheetMismatch` issues after 192 quads.
 
-## Code + Build lesson
+## Standing long-running runtime procedure
 
-The first implementation compile exposed one missing namespace close and was not accepted. Corrective commit `0340addf...` changed only that ownership boundary and the next compile passed 120/120. Connector-side source transformations must statically verify namespace opening/closing ownership before triggering the expensive build.
+For future immutable Test + Benchmark turns, Bunny and Vase may use a temporary artifact-only GitHub Actions runner to avoid local execution-tool timeout limits. It must verify exact artifact/package/executable authority first, never rebuild or modify packaged content, retain exact runtime evidence, and remove temporary workflow/trigger files before closeout.
 
 ## Deferred blockers
 
@@ -73,7 +83,7 @@ The first implementation compile exposed one missing namespace close and was not
 4. positive multi-isolation witness `G4-B004`;
 5. historical transition-quotient/completion failures;
 6. strict-validator timing;
-7. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization;
+7. prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery, optimization;
 8. later M1 consumers, M2–M6 and T2–T6.
 
 Every completed turn ends with one new top-level PR #8 conversation comment after all other branch and PR-body writes.
