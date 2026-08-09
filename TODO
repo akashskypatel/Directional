@@ -5,67 +5,65 @@ Last updated: 2026-08-09 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a authority-kernel core accepted; M1b first production-consumer migration next**.
-- Authoritative next turn: **M1b First Production Consumer — Code + Build only** under `.agents/Directional/Architecture_M1b_First_Production_Consumer_Code_Build_Plan.md`.
-- Production behavior delta authorized for M1b: **none**.
+- Architecture migration: **M1a kernel accepted; M1b first production consumer compile/package complete, runtime pending**.
+- Authoritative next turn: **M1b First Production Consumer — immutable Test + Benchmark** under `.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
 
-## Accepted M1a immutable authority
+## M1b Code + Build authority
 
-Implementation `8cd2e73fabf9ecbb9b771fb29db91973e1dca3a7`, build/event commit `a29c1f673ea93e1614751f42a0c1fef94d23e1fe`:
-
-- workflow run/job `31327073928 / 93279043100`;
-- result/log artifacts `9041930767 / 9041930871`;
-- ZIP SHA-256 `1c1325c038ffe26b80e00dbb69fb15de8b0d0a42673d9720f28bcd9de8549ec5` / `e99e053ea4503b720dbe9b6c9ed4762a4eedcbf67c15261e8ea4317824c427cb`;
-- recursive package manifest **53/53**, digest `fa9068fabd9922496635c82c164431c99590cac2fb9e4973f513623f2ba9bdf6`;
-- package 54 regular files, seven ELF executables, two static libraries, 27 fixtures;
-- Code + Build Release/static/Ninja **120/120**, `PRE_TEST`, `runtimeExecution=false`;
-- authority-kernel discovery exact **14/14**, individual semantics **14/14**;
-- accepted T1 oracle discovery exact **29/29**, individual contracts **29/29**;
-- all eight pre-existing T1 binaries/libraries remained byte-identical.
-
-Direct comparison:
-
-- Plane pass, 1.00 s, oracle-clean;
-- MultiFaceSeam pass, 1.53 s, oracle-clean;
-- CloseSheets pass, 12.16 s, oracle-clean;
-- Cylinder pass, 6.82 s, oracle-clean;
-- BunnyRandom remains known-red `NotProductionReady:completion`, 56.93 s; independent oracle still reports the invalid returned product before the unchanged fatal success assertion;
-- Vase remains bounded/nonreturning at 60.00 s; timeout is safety evidence only.
-
-Postflight preserved both ZIP hashes and all 53 package checksums. The only runtime addition was the non-regular locator `bin/test-data -> ../test-data`.
-
-Report: `.agents/Directional/Architecture_M1a_Authority_Kernel_Core_Artifact_Only_Test_Benchmark_Report.md`.
-
-## M1a architecture disposition
-
-- `RP-01`: accepted kernel proof for strong domains and named checked conversion; production adoption remains staged.
-- `RP-05`: accepted kernel proof for semantic identity independent of representation handles and explicit orientation.
-- `RP-07`: accepted kernel proof for exact Z4/automorphism/reversal algebra.
-- `RP-02 / TA-05`: accepted T1 boundary preserved exactly.
-- M1a creates/resolves no production regression event.
-- Historical totals remain **34 events / 14 categories / 20 recurrences**.
-- `PR8-R034 / G4-R007` remains **active** on production artifact `9031804178`.
-
-## M1b next-turn contract
-
-M1b migrates exactly one real production consumer:
-
+Selected consumer:
 `RemeshPipeline -> fill_surface_optimization_rail_constraints -> provenance_supports_interval_sheet`.
 
-Scope is only the validated source-face/source-vertex identity seam inside `SurfaceOptimizationRailConstraints`:
+| Evidence | Value |
+|---|---|
+| M1b base | `9a4131f9655567ffc60c2c513db1c73826165bb2` |
+| Corrected implementation | `0340addf21473854856266ff00cb68915ce24ef0` |
+| Build/event commit | `17c61b8d2eb835bd734010e160e6cd6b7dc9f5cf` |
+| Workflow run/job | `31330737703 / 93288453677` |
+| Result artifact / SHA-256 | `9042940168` / `9a24672179dc6fbc57fedcd4d5826fb4a7c4cf4cb1962c06013e1e84758bb46b` |
+| Log artifact / SHA-256 | `9042940336` / `c39995e4ce496b6cb64608807a23b999330fa8b5333de61ebf939c3b5e391614` |
+| Recursive manifest | **53/53**, `319cb95e6d283f6b786565c0c9863755777ff0518ff5375364521c61583e39f1` |
+| Compile closure | Release/static/Ninja **120/120**, `PRE_TEST`, `runtimeExecution=false` |
+| Build wall / peak RSS | **8:07.42 / 1,836,308 KiB** |
+| Retention | through **2026-08-23 UTC** |
 
-- attach `AuthorityKernel.cpp` once to `directional_core`;
-- convert validated legacy source-face/source-vertex values through named adapters;
-- consume `SourceFaceId` / `SourceVertexId` inside the local helper boundary;
-- convert back to legacy row indices only at matrix/vector access;
-- preserve all legacy sentinels, support classification, tolerances, rail assignment, optimizer policy, public structs, and product behavior.
+Package inventory: 54 regular files including manifest, seven ELF executables, two static libraries, 27 fixtures, source patch/archive/compile DB/source blobs, focused six-name manifest, unchanged M1a 14-name manifest, unchanged T1 29-name manifest.
 
-Do not migrate component/sheet/chart/transition/rail domains, producers, tracing, arrangement, completion, quotient, validators, fixtures, or benchmark policy in M1b.
+M1b changes exactly five implementation/test/build paths after connector cleanup. `AuthorityKernel.cpp` is now owned once by `directional_core`; the migrated helper consumes `SourceFaceId`/`SourceVertexId` behind named checked adapters and converts to legacy indices only at representation access. Existing sentinels, component/sheet logic, `1e-8` support classification, rail assignment, projection, optimizer policy, public structures, and product disposition are intentionally unchanged.
 
-Code + Build compiles/packages only and executes no generated project binary. The following turn must be immutable Test + Benchmark.
+Report: `.agents/Directional/Architecture_M1b_First_Production_Consumer_Code_Build_Report.md`.
+
+## Next immutable acceptance
+
+Consume artifacts `9042940168 / 9042940336` exactly. Do not edit, configure, rebuild, relink, or substitute.
+
+Required:
+
+1. exact ZIP/source/dependency/package verification and **53/53** checksums;
+2. validation discovery exactly **77** tests and exactly six `SurfaceOptimizationRailAuthorityMigration` members;
+3. focused M1b contracts **6/6** individually;
+4. full validation target **77/77**;
+5. M1a authority discovery exact 14 and **14/14**;
+6. T1 oracle discovery exact 29 and **29/29**;
+7. Plane, MultiFaceSeam, CloseSheets, Cylinder remain green/oracle-clean;
+8. BunnyRandom remains explicit known-red with oracle-before-fatal evidence if it returns;
+9. Vase remains explicit bounded safety-only known-red;
+10. postflight package hashes unchanged.
+
+Only after immutable M1b acceptance may a second production consumer be planned.
+
+## Regression status
+
+- `RP-01` / `RP-05`: first production adoption **compile-complete, runtime pending**.
+- `RP-02 / TA-05`: accepted preservation boundary remains staged for re-execution.
+- No previously accepted runtime authority has been shown lost; historical totals remain **34 events / 14 categories / 20 recurrences**.
+- `PR8-R034 / G4-R007` remains active on production artifact `9031804178`; direct torus remains 0/3 with 241 `LocalSheetMismatch` issues after 192 quads.
+
+## Code + Build lesson
+
+The first implementation compile exposed one missing namespace close and was not accepted. Corrective commit `0340addf...` changed only that ownership boundary and the next compile passed 120/120. Connector-side source transformations must statically verify namespace opening/closing ownership before triggering the expensive build.
 
 ## Deferred blockers
 
@@ -73,10 +71,9 @@ Code + Build compiles/packages only and executes no generated project binary. Th
 2. shared hard-rail scheduling `G4-B002`;
 3. nonzero periodic Z4 production capability `G4-B003`;
 4. positive multi-isolation witness `G4-B004`;
-5. seven historical transition-quotient failures;
-6. ten historical completion/simplification failures;
-7. strict-validator timing;
-8. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization;
-9. later M1 consumers, M2–M6 and T2–T6 remain staged.
+5. historical transition-quotient/completion failures;
+6. strict-validator timing;
+7. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization;
+8. later M1 consumers, M2–M6 and T2–T6.
 
 Every completed turn ends with one new top-level PR #8 conversation comment after all other branch and PR-body writes.
