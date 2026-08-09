@@ -21,6 +21,42 @@ Repository:
 - Code + Build cleanup head before documentation closeout:
   `01b80ac65968906a9d871cee81f154653f452270`.
 
+## Mandatory regression-pattern review — every future turn
+
+The review policy `never` controls the optional independent-review default; it
+does **not** waive this mandatory regression-pattern review. Before changing
+code, running a project executable, or interpreting runtime evidence, every
+future turn must:
+
+1. read the repeated coding-pattern catalog in
+   `.agents/Directional/Regression_Root_Cause_Tracker.md` and the supporting
+   point-in-time evidence in
+   `.agents/Directional/PR_8_Regression_Audit_Inventory.md`;
+2. map the planned producer, representation, consumer, validator, test, and
+   build-authority data flow against `RP-01` through `RP-09`;
+3. record the following table in the turn plan or closeout:
+
+| Pattern | Touched? | Exact affected producer/consumer | Evidence the anti-pattern is absent, or corrective invariant | Counterfactual and representative gate |
+|---|---|---|---|---|
+| `RP-01` … `RP-09` | yes/no | exact symbol, target, or artifact boundary | concrete invariant and inspection evidence | named focused negative and representative positive evidence |
+
+Any touched row that cannot be completed is a stop condition: revise the
+design before Code + Build or runtime. If a proposed change resembles a
+cataloged anti-pattern, or changes the same data flow as a cataloged event,
+use an already accepted design proof or schedule an independent architectural
+Review turn before Code + Build. Do not repeat the earlier implementation or
+test shape under a new name.
+
+Test + Benchmark turns must map failures to an existing pattern and stable
+event ID when applicable, distinguish persistence from a new recurrence, and
+update the tracker counts only from direct evidence. Every turn closeout must
+keep the tracker, audit inventory, handoff, and milestone status consistent.
+
+For the mandatory next artifact-only turn, review `RP-09` (global authority
+consumed as local face authority) and `RP-02` (proxy or incomplete test
+authority) before interpreting the face-chart and torus results. This review
+does not authorize any artifact substitution, rebuild, or source/test edit.
+
 ## Completed Code + Build authority
 
 Implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`
@@ -119,6 +155,14 @@ recurrences**. The evidence inventory is
 `.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
 `PR8-R034` / `G4-R007` remains active, as `fix_pending_runtime`; the audit does
 not change the mandatory artifact-only next turn or its immutable inputs.
+
+The expanded point-in-time source/test/build audit catalogs **nine repeated
+coding patterns** (`RP-01` through `RP-09`) spanning **29 events** and all
+**20 recurrences**. The five remaining events are singletons and are not
+misclassified as repeated patterns. The tracker contains pseudocode for each
+observed anti-pattern, its required implementation shape, and its review
+guard. The mandatory per-turn review above applies even when no production
+file is expected to change.
 
 The cause families `AUTHORITY_DOMAIN_CONFLATION` and
 `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` have repeated three and two times,

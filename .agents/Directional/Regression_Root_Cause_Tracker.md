@@ -17,6 +17,14 @@ stable entry per regression so repeated architectural causes remain visible.
   affected acceptance gate. Compile success alone is `fix_pending_runtime`.
 - Keep persistent blockers that are not regressions in the separate table so
   they are not accidentally reported as changes caused by the latest patch.
+- Before every turn, review the repeated coding-pattern catalog below and map
+  the planned work to every applicable `RP-nn` entry. This is mandatory even
+  when the optional Review-turn policy is `never`.
+- A Code + Build plan may not instantiate an anti-pattern below. It must record
+  the corrective invariant and the counterfactual/representative validation
+  that will prove the same mistake was not repeated.
+- Test + Benchmark closeout must update the existing pattern/event recurrence
+  when the same code shape reappears; persistence is not a new event.
 
 ## Status vocabulary
 
@@ -30,12 +38,15 @@ stable entry per regression so repeated architectural causes remain visible.
 
 ## PR-wide audit authority
 
-The independent documentation-only audit of PR #8 covers
+The historical result/code evidence range is
 `d8b4dba98747d3adf0ca24002642bcad9e9847db..027e5194a9013cc1fe9ea18c1b79741301e40f74`
-(**1,789 commits**). It identifies **34 distinct regression events** in
-**14 architectural categories**, including **20 recurrences** after an earlier
-event in the same category. The primary result-document corpus contains
-**114 regression-bearing commits**: 55 report introductions, 34 machine-result
+(**1,789 commits**). The repeated-pattern expansion was performed from PR head
+`8ef353034641c3a068095334ceea5e6ddb0c39c1` (**1,790 commits**); that last
+commit is documentation-only and introduces no new runtime event or source
+pattern. The audit identifies **34 distinct regression events** in **14
+architectural categories**, including **20 recurrences** after an earlier
+event in the same category. The primary result-document corpus contains **114
+regression-bearing commits**: 55 report introductions, 34 machine-result
 updates, and 25 report-lifecycle changes.
 
 The complete event evidence, recurrence links, dispositions, counting rules,
@@ -46,44 +57,459 @@ and exclusions are in
 
 ### PR-wide category rollup
 
-| Cause category | Events | Recurrences |
-|---|---:|---:|
-| `AUTHORITY_DOMAIN_CONFLATION` | 6 | 5 |
-| `TEST_AUTHORITY_COVERAGE_GAP` | 6 | 5 |
-| `POLICY_STAGE_STATE_CONFLATION` | 4 | 3 |
-| `NONTERMINATING_CUMULATIVE_WORK` | 3 | 2 |
-| `REPRESENTATION_DEPENDENT_IDENTITY` | 2 | 1 |
-| `STATE_CARDINALITY_GROWTH` | 2 | 1 |
-| `CYCLIC_TOPOLOGY_LINEARIZATION` | 2 | 1 |
-| `PRODUCER_DISPOSITION_CONFLATION` | 2 | 1 |
-| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | 2 | 1 |
-| `INTRINSIC_SUPPORT_OVERCONSTRAINT` | 1 | 0 |
-| `INCOMPLETE_TRANSACTIONAL_ROLLBACK` | 1 | 0 |
-| `SHARED_EDGE_ORIENTATION_INVERSION` | 1 | 0 |
-| `INCOMPLETE_ORBIT_PUBLICATION` | 1 | 0 |
-| `EXACT_SIMPLEX_CANONICALIZATION_LOSS` | 1 | 0 |
-| **Total** | **34** | **20** |
+| Cause category | Pattern | Events | Recurrences |
+|---|---|---:|---:|
+| `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | 6 | 5 |
+| `TEST_AUTHORITY_COVERAGE_GAP` | `RP-02` | 6 | 5 |
+| `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | 4 | 3 |
+| `NONTERMINATING_CUMULATIVE_WORK` | `RP-04` | 3 | 2 |
+| `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | 2 | 1 |
+| `STATE_CARDINALITY_GROWTH` | `RP-06` | 2 | 1 |
+| `CYCLIC_TOPOLOGY_LINEARIZATION` | `RP-07` | 2 | 1 |
+| `PRODUCER_DISPOSITION_CONFLATION` | `RP-08` | 2 | 1 |
+| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` | 2 | 1 |
+| `INTRINSIC_SUPPORT_OVERCONSTRAINT` | — | 1 | 0 |
+| `INCOMPLETE_TRANSACTIONAL_ROLLBACK` | — | 1 | 0 |
+| `SHARED_EDGE_ORIENTATION_INVERSION` | — | 1 | 0 |
+| `INCOMPLETE_ORBIT_PUBLICATION` | — | 1 | 0 |
+| `EXACT_SIMPLEX_CANONICALIZATION_LOSS` | — | 1 | 0 |
+| **Total** |  | **34** | **20** |
+
+## Repeated coding-pattern catalog
+
+These IDs describe code shapes, not failure strings. The event mappings are
+based on the exact compiled/source snapshots named by the contemporaneous
+reports. A later symptom belongs to an existing pattern only when source or
+test code demonstrates the same shape.
+
+| Pattern | Repeated code shape | Events | Recurrences | Evidence confidence |
+|---|---|---:|---:|---|
+| `RP-01` | Consumer guesses or intersects distinct authority domains as one scalar/equality predicate. | 6 | 5 | High |
+| `RP-02` | Test/build proxy is treated as proof although the semantic path, invariant, or packaged executable is absent. | 6 | 5 | High |
+| `RP-03` | One flag/result/disposition carries two independent policy or stage meanings. | 4 | 3 | High |
+| `RP-04` | Local bounds surround recursive, nested, or process-cumulative work with no shared global ledger. | 3 | 2 | High for `PR8-R003/R010`; bounded inference for `PR8-R020` |
+| `RP-05` | Identity/order/hash includes traversal, allocation, orientation, or emission role. | 2 | 1 | High |
+| `RP-06` | Shared authority membership is copied into every consumer object. | 2 | 1 | High |
+| `RP-07` | Cyclic adjacency is validated as a linear sequence or by neighbor value rather than sector position. | 2 | 1 | High |
+| `RP-08` | Typed producer dispositions are reduced to a boolean or lossy aggregate, permitting invalid substitution. | 2 | 1 | High |
+| `RP-09` | Complete global authority is required to be directly consumed by every local face/path. | 2 | 1 | High |
+
+### RP-01 — consumer-domain guessing and compound authority equality
+
+Events: `PR8-R007`, `PR8-R014`, `PR8-R019`, `PR8-R028`, `PR8-R031`,
+`PR8-R033`.
+
+Historical code evidence includes the strict `(component, localSheet)`
+intersection in `680d81c:src/geometry/SurfaceArrangement.cpp`, the local-sheet
+gate on chart-component lookup in
+`f4cce52:include/directional/geometry/SourceChartTransitions.h`, the genuine
+boundary's mandatory compact-index lookup in
+`7f48663:src/geometry/SurfaceCellTracing.cpp`, and the same `int` output from
+full-`EF` and source-wide compact lookup paths in `82151bf`.
+
+Repeated anti-pattern:
+
+```text
+authority_id: int
+
+if cross_field_transition_exists:
+    authority_id = full_ef_row
+else:
+    authority_id = source_wide_compact_index
+
+scope = intersection((component, local_sheet) for every local claim)
+require exactly_one(scope)
+consume_as_compact_index(authority_id)
+```
+
+Required shape:
+
+```text
+RouteAuthority:
+    topology: CanonicalEdgeKey
+    source_wide_transition: Optional<SourceWideTransitionIndex>
+    cross_field_transition: Optional<FullEfRow>
+
+OwnershipAuthority:
+    source_component: SourceComponentId
+    intrinsic_chart_component: IntrinsicChartComponentId
+    local_sheet_label: LocalIsolationLabel
+
+validate each field only in its declared domain
+derive local witnesses from canonical topology
+never recover intrinsic ownership by intersecting local labels
+```
+
+Review guard: every new identity field must have a named domain type, producer,
+consumer, serialization meaning, and row/order counterfactual. A bare numeric
+authority or a conjunction of independent labels fails review.
+
+### RP-02 — proxy tests and incomplete executable authority
+
+Events: `PR8-R004`, `PR8-R013`, `PR8-R022`, `PR8-R024`, `PR8-R027`,
+`PR8-R030`.
+
+Historical evidence includes structural-repair tests that never called the
+whole-complex repair path, omitted validator sources in
+`e31e5ab:CMakeLists.txt`, raw `sourceRouteEdges` equality in
+`56f8232:tests/SurfaceCellsPhase10Tests.cpp`, an impossible unsplit-edge
+witness in `0279946`, retention-timing authority in `3ca89ab`, and mandatory
+quotient counterfactuals absent from the default targets at `7f48663`.
+
+Repeated anti-pattern:
+
+```text
+test semantic_contract:
+    fixture = convenient_fixture()
+    helper_result = call_lower_level_helper(fixture)
+    assert raw_row_ids_equal(helper_result)
+    assert intermediate_object_is_retained(helper_result)
+
+# target public path was not entered
+# fixture did not prove the semantic precondition
+# test may not exist in a packaged executable
+```
+
+Required shape:
+
+```text
+precondition = prove_fixture_creates_required_semantic_state()
+assert precondition
+
+result = invoke_production_entry_point()
+assert result.typed_ledger.entered(target_stage)
+assert result.typed_outcome == expected_contract
+assert canonical_semantic_identity(result)
+
+artifact_preflight.assert_independently_discovered(test_name)
+```
+
+Review guard: name the production entry point, positive precondition, earliest
+typed assertion, canonical oracle, and packaged executable for every mandatory
+test. Counts, helper coverage, compilation, or a passing proxy are not proof.
+
+### RP-03 — one state carries two meanings
+
+Events: `PR8-R006`, `PR8-R009`, `PR8-R011`, `PR8-R032`.
+
+Historical evidence includes fixed-point refresh gated by the production-only
+`topologyHealingOnly` mode at `074ec5d`, completion failure returned before the
+requested injected-stage result at `9bff7d3`, measurement availability derived
+from process RSS rather than a nonempty ownership sample at `aa2917e`, and
+`retainIntermediateGeometry = requested || injectionNeeded` at `82151bf`.
+
+Repeated anti-pattern:
+
+```text
+retain = caller_requested_retention OR execution_needs_temporary_state
+if retain:
+    publish_intermediate_state_to_caller()
+
+if real_completion_failed:
+    return NotProductionReady
+if requested_injected_stage == completion:
+    return InjectedStageFailure   # unreachable
+
+measurement_available = working_set_sample_succeeded
+```
+
+Required shape:
+
+```text
+retain_for_execution = execution_needs_temporary_state
+retain_for_caller = caller_requested_retention
+
+temporary_state = keep_while_needed(retain_for_execution)
+publish_to_caller only_if retain_for_caller
+
+real_stage_outcome = run_real_stage()
+requested_test_outcome = apply_explicit_test_policy(real_stage_outcome)
+publish both without overwriting either meaning
+
+measurement_available = sample_exists AND categorized_bytes > 0
+```
+
+Review guard: if a boolean or enum appears in two API sentences, split it.
+Counterfactuals must vary each meaning independently and reach the same real
+stage before public-policy differences are asserted.
+
+### RP-04 — local bounds around multiplicative work
+
+Events: `PR8-R003`, `PR8-R010`, `PR8-R020`.
+
+At `1f4c3c2:src/geometry/PatchDescriptor.cpp`, every locally bounded boundary
+candidate copied a complex and recursively called full completion with a
+child-local decremented budget. Later completion alternatives at `247061b`
+nested conflict, patch, variant, completion, and restitch work. `PR8-R020`
+proved cumulative single-process state because isolated P27 completed, but its
+exact retaining producer was not established; that uncertainty remains part
+of the record.
+
+Repeated anti-pattern:
+
+```text
+solve(complex, local_depth):
+    for candidate in candidates[0:local_limit]:
+        trial = deep_copy(complex)
+        result = solve(trial, local_depth - 1)
+        if result.accepted:
+            return result
+
+for conflict:
+    for patch:
+        for variant:
+            complete_patch()
+            restitch_whole_complex()
+```
+
+Required shape:
+
+```text
+WorkController:
+    remaining_global_work
+    visited_canonical_states
+    attempted_actions
+
+solve(state, controller by reference):
+    key = canonical_state(state)
+    if key already visited: reject DuplicateState
+    if controller.remaining_global_work == 0: reject BudgetExhausted
+    consume one globally classified action
+    evaluate bounded incremental delta
+
+reset all per-run state at the public process/test boundary
+```
+
+Review guard: derive a worst-case global work bound across every nested loop,
+recursive call, copy, recomputation, and suite/process cache. A depth counter
+or per-loop limit alone is insufficient. Do not claim the exact `PR8-R020`
+producer without new evidence.
+
+### RP-05 — representation-dependent identity
+
+Events: `PR8-R016`, `PR8-R026`.
+
+At `f5305ad:src/geometry/SurfaceArrangement.cpp`, exterior boundary halfedges
+and ordinary twins entered different directed-incidence record branches, so
+orientation reversal changed serialization role. At
+`3ca89ab:src/geometry/SurfaceCellTracing.cpp`, region emission sorted first by
+`structuralHash` and only then by canonical source vertices, reversing stable
+component order relative to the accepted aggregator.
+
+Repeated anti-pattern:
+
+```text
+if record_is_exterior_in_this_traversal:
+    identity = hash("EXTERIOR", directed_record)
+else:
+    identity = hash("WEDGE", directed_record)
+
+sort(components, key = (structural_hash, canonical_source_vertices))
+```
+
+Required shape:
+
+```text
+canonical_record = quotient_by(
+    traversal_start,
+    orientation,
+    face_row_order,
+    allocation_order,
+    exterior_or_twin_role)
+
+identity = hash(canonical_record)
+sort(components, key = canonical_source_topology)
+use hash only as derived evidence, never as primary semantic order
+```
+
+Review guard: every identity/hash/order change needs face-row, traversal-start,
+whole-orientation, and disconnected-component permutation counterfactuals.
+
+### RP-06 — duplicated shared authority membership
+
+Events: `PR8-R001`, `PR8-R008`.
+
+The `d4c1bce` source tree retained expanded ownership identity with completion
+objects and increased bunny RSS by 126%. At `94bf834`, each
+`SurfaceArrangementCell` stored `sourceCharts` plus the values of its full
+`sourceOwnershipClass`; memory accounting explicitly summed both vectors for
+every cell, producing roughly cell-count by component-face-count growth.
+
+Repeated anti-pattern:
+
+```text
+for cell in cells:
+    cell.ownership_members = copy(all_members_of_component(cell.component))
+    cell.chart_map = copy(all_charts_of_owner(cell.owner))
+```
+
+Required shape:
+
+```text
+registry[class_key] = canonical_membership_once
+
+for cell in cells:
+    cell.class_key = class_key
+    cell.local_witness = fixed_size_local_authority
+
+validate registry[class_key] when full membership is needed
+```
+
+Review guard: state and benchmark the asymptotic storage model. Shared
+membership must be `O(classes + members + consumers)`, not
+`O(consumers * members)`.
+
+### RP-07 — cyclic topology treated as a linear list
+
+Events: `PR8-R017`, `PR8-R018`.
+
+At `ec44ab7:src/geometry/SurfaceArrangement.cpp`, both predecessor and
+successor positions match the same opposite ray for a degree-two rotation;
+the second match was treated as a contradiction. At `2444c38`, an intrinsic
+sector required `sourcePosition > 0` and `targetPosition == sourcePosition - 1`,
+rejecting the valid first-to-last cyclic wrap.
+
+Repeated anti-pattern:
+
+```text
+if rays[previous(i)] == exterior_outgoing:
+    step = -1
+if rays[next(i)] == exterior_outgoing:
+    if step already set: reject Contradiction
+
+if source_position <= 0:
+    reject Wrap
+require target_position == source_position - 1
+```
+
+Required shape:
+
+```text
+previous_position = (i - 1 + count) mod count
+next_position = (i + 1) mod count
+
+compare sector positions, not only neighbor ray values
+allow previous_ray == next_ray when count == 2
+adjacent(a, b) = ((a - b + count) mod count) in {1, count - 1}
+classify exterior and interior sectors explicitly
+```
+
+Review guard: include cardinalities 1/2/3+, both wrap directions, reversal,
+and hard-rail-separated fan counterfactuals for every cyclic algorithm.
+
+### RP-08 — lossy producer-disposition reduction
+
+Events: `PR8-R021`, `PR8-R025`.
+
+At `21f081b:src/pipeline/RemeshPipeline.cpp`, authoritative use was selected by
+`phaseFront.succeeded`; any false value entered the generic arrangement path
+without first making `Rejected` terminal. At
+`3ca89ab:src/geometry/SurfaceCellTracing.cpp`, all child regions returning
+`NotApplicable` left the parent at its default `NotApplicable`, even when
+embedded barriers made the parent domain authoritatively rejected.
+
+Repeated anti-pattern:
+
+```text
+use_authoritative = producer.succeeded
+if not use_authoritative:
+    run_generic_substitute()
+
+if unsupported_child and not any_child_produced:
+    return default_NotApplicable
+```
+
+Required shape:
+
+```text
+switch producer.disposition:
+    Produced: consume_authoritative_output()
+    Rejected: fail_closed_with_original_reason()
+    NotApplicable: allow_substitute_only_if_parent_domain_is_unclaimed()
+
+parent_disposition = exhaustive_reduce(
+    parent_authority,
+    all_child_dispositions)
+Rejected dominates when parent authority was attempted and invalid
+downstream stages may not overwrite the first typed producer reason
+```
+
+Review guard: every aggregation and fallback boundary needs a truth table for
+`Produced`, `Rejected`, and `NotApplicable`, including all-children-empty and
+mixed-child cases.
+
+### RP-09 — global authority consumed by each local face
+
+Events: `PR8-R029`, `PR8-R034`.
+
+The transition quotient first required every reciprocal isolation seam to
+appear on selected cell-side routes. At
+`8f37612:src/validation/SourceAuthoritativeMeshValidator.cpp`, every retained
+hard-rail equivalence had to connect directly from a scalar component, every
+equivalence had to be marked used, and a reciprocal peer had to occur among
+the vertices of the same face. Both confuse complete retained authority with
+the witness selected by one consumer.
+
+Repeated anti-pattern:
+
+```text
+for face in output_faces:
+    for relation in complete_vertex_authority:
+        require relation directly connects scalar_chart to face_chart
+        require relation appears on this face
+    require every relation was used
+```
+
+Required shape:
+
+```text
+global_graph = validate_complete_authority_once()
+require global_graph.structure_and_reciprocity_are_exact
+
+for face in output_faces:
+    reachable = graph_reachability(from each scalar-supported root)
+    selected = unique_intersection(reachable components for face vertices)
+    require only a valid witness path to selected
+    do not require unrelated valid relations on this face
+```
+
+Review guard: write down the owner, validation scope, and consumption scope of
+every authority collection. Focused fixtures must include chained, unused,
+off-face-peer, missing-link, ambiguity, and disconnected-sheet cases.
+
+### Mandatory per-turn pattern review record
+
+Every plan, turn report, and handoff must contain or link this table:
+
+| Pattern | Touched? | Evidence anti-pattern is absent | Corrective invariant | Counterfactual and representative gate |
+|---|---|---|---|---|
+| `RP-01` … `RP-09` | yes/no | exact code/data-flow reference | named invariant | exact test/artifact evidence |
+
+If a touched row cannot be completed before implementation, stop and revise
+the design. If the proposed code resembles an anti-pattern, an independent
+architectural Review is required before the related Code + Build turn. The
+configured optional review policy does not waive this user-mandated check.
 
 ### Current G4 stable-ID mapping
 
-| PR-wide event | Stable G4 entry | PR-wide category |
-|---|---|---|
-| `PR8-R028` | `G4-R001` | `AUTHORITY_DOMAIN_CONFLATION` |
-| `PR8-R029` | `G4-R002` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` |
-| `PR8-R030` | `G4-R003` | `TEST_AUTHORITY_COVERAGE_GAP` |
-| `PR8-R031` | `G4-R004` | `AUTHORITY_DOMAIN_CONFLATION` |
-| `PR8-R032` | `G4-R005` | `POLICY_STAGE_STATE_CONFLATION` |
-| `PR8-R033` | `G4-R006` | `AUTHORITY_DOMAIN_CONFLATION` |
-| `PR8-R034` | `G4-R007` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` |
+| PR-wide event | Stable G4 entry | PR-wide category | Pattern |
+|---|---|---|---|
+| `PR8-R028` | `G4-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
+| `PR8-R029` | `G4-R002` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` |
+| `PR8-R030` | `G4-R003` | `TEST_AUTHORITY_COVERAGE_GAP` | `RP-02` |
+| `PR8-R031` | `G4-R004` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
+| `PR8-R032` | `G4-R005` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` |
+| `PR8-R033` | `G4-R006` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` |
+| `PR8-R034` | `G4-R007` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` |
 
 ## Current G4 architectural cause families
 
-| Cause family | Definition | Regression IDs | Recurrence signal |
-|---|---|---|---|
-| `AUTHORITY_DOMAIN_CONFLATION` | Distinct topology, validation, or serialization identities share an untyped numeric representation and are consumed interchangeably. | `G4-R001`, `G4-R004`, `G4-R006` | **Repeated three times across production and tests.** Architectural review required before another numeric authority is added. |
-| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | Complete retained authority is incorrectly required to appear in, or be consumed by, one local face/path rather than validated globally and witnessed only where selected. | `G4-R002`, `G4-R007` | **Repeated twice.** Review ownership and consumption boundaries together. |
-| `EXECUTABLE_COVERAGE_GAP` | Required counterfactual contracts compile outside the default immutable artifact or are not independently discoverable. | `G4-R003` | Single occurrence; retain artifact-closure checks. |
-| `POLICY_STATE_CONFLATION` | Internal execution state and caller-visible policy use one mutable flag. | `G4-R005` | Single occurrence; keep internal lifetime and public retention separate. |
+| Cause family | Pattern | Definition | Regression IDs | Recurrence signal |
+|---|---|---|---|---|
+| `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | Distinct topology, validation, or serialization identities share an untyped numeric representation and are consumed interchangeably. | `G4-R001`, `G4-R004`, `G4-R006` | **Repeated three times across production and tests.** Architectural review required before another numeric authority is added. |
+| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` | Complete retained authority is incorrectly required to appear in, or be consumed by, one local face/path rather than validated globally and witnessed only where selected. | `G4-R002`, `G4-R007` | **Repeated twice.** Review ownership and consumption boundaries together. |
+| `EXECUTABLE_COVERAGE_GAP` | `RP-02` | Required counterfactual contracts compile outside the default immutable artifact or are not independently discoverable. | `G4-R003` | Single G4 occurrence; retain artifact-closure checks. |
+| `POLICY_STATE_CONFLATION` | `RP-03` | Internal execution state and caller-visible policy use one mutable flag. | `G4-R005` | Single G4 occurrence; keep internal lifetime and public retention separate. |
 
 ## Regression entries
 
@@ -200,10 +626,13 @@ An architectural review should be requested when any of these occurs:
    state shape absent from those tests.
 5. A new bare numeric field carries topology, source-row, compact-index,
    ownership, or semantic identity authority without a typed domain.
+6. Planned work touches an `RP-nn` data flow but the mandatory pattern-review
+   record does not prove the corrective shape and representative coverage.
 
-The PR-wide rollup shows nine categories with recurrence and five
-single-event categories. `AUTHORITY_DOMAIN_CONFLATION` and
-`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` already satisfy trigger 1 in the
-current G4 slice. The next independent architectural review must examine these
-families even if the immediate torus correction passes. Only `PR8-R034` /
-`G4-R007` is active at the audited head.
+The PR-wide rollup shows nine repeated patterns covering 29 events and all 20
+recurrences, plus five single-event categories. `AUTHORITY_DOMAIN_CONFLATION`
+and `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` already satisfy trigger 1 in the
+current G4 slice. Every future turn must review `RP-01` through `RP-09`; the
+next independent architectural review must examine any touched pattern even if
+the immediate torus correction passes. Only `PR8-R034` / `G4-R007` is active
+at the audited source head.

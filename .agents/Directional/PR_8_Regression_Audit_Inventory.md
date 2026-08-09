@@ -1,13 +1,21 @@
 # PR #8 Regression Audit Inventory
 
-Status: **complete through `027e5194a9013cc1fe9ea18c1b79741301e40f74`**
+Status: **repeated-pattern expansion complete from PR head
+`8ef353034641c3a068095334ceea5e6ddb0c39c1`**
 
-Audited range: `d8b4dba98747d3adf0ca24002642bcad9e9847db..027e5194a9013cc1fe9ea18c1b79741301e40f74`
+Audited PR range:
+`d8b4dba98747d3adf0ca24002642bcad9e9847db..8ef353034641c3a068095334ceea5e6ddb0c39c1`
 
-Range size: **1,789 commits**
+Range size: **1,790 commits**
 
-Audit type: independent documentation-only review; no project binary, test,
-benchmark, configure, build, or fixture command was executed.
+Evidence-bearing result/source range:
+`d8b4dba98747d3adf0ca24002642bcad9e9847db..027e5194a9013cc1fe9ea18c1b79741301e40f74`
+(**1,789 commits**). Commit `8ef35303` is the documentation-only publication
+of the original audit and creates no new runtime event or code pattern.
+
+Audit type: independent documentation-only review plus point-in-time source,
+test, and build-pattern analysis; no project binary, test, benchmark,
+configure, build, or fixture command was executed.
 
 ## Scope and counting rules
 
@@ -34,6 +42,13 @@ recurrence and receives a new `PR8-Rnnn` ID. Root-cause statements below are
 limited to what the report and source at that historical commit proved. A
 source-supported inference is labelled as such.
 
+The pattern expansion inspected the exact compiled/source commit named by each
+report and the relevant implementation, test, or CMake state at that time. A
+pattern ID is assigned only when at least two events demonstrate the same code
+shape. Similar failure text alone is insufficient. The complete pseudocode
+anti-patterns and required replacement shapes are maintained in
+`.agents/Directional/Regression_Root_Cause_Tracker.md`.
+
 One recurring sub-millisecond validator timing observation was excluded from
 the event totals because reports repeatedly established scheduler sensitivity
 and did not establish a functional regression.
@@ -43,23 +58,59 @@ and did not establish a functional regression.
 `Recurrences` counts later events in the same category; the first event in a
 category is not a recurrence.
 
-| Category | Events | Recurrences | Architectural signal |
-|---|---:|---:|---|
-| `AUTHORITY_DOMAIN_CONFLATION` | 6 | 5 | Typed topology/chart/index domains repeatedly collapsed into one consumer identity. |
-| `TEST_AUTHORITY_COVERAGE_GAP` | 6 | 5 | Tests or packaged executables did not observe the claimed semantic contract. |
-| `POLICY_STAGE_STATE_CONFLATION` | 4 | 3 | One flag/result boundary represented distinct execution, policy, or stage states. |
-| `NONTERMINATING_CUMULATIVE_WORK` | 3 | 2 | Locally bounded work became recursively or cumulatively unbounded. |
-| `REPRESENTATION_DEPENDENT_IDENTITY` | 2 | 1 | Semantically equivalent topology changed identity under ordering/orientation. |
-| `STATE_CARDINALITY_GROWTH` | 2 | 1 | Per-object retention multiplied global state cardinality. |
-| `CYCLIC_TOPOLOGY_LINEARIZATION` | 2 | 1 | A cyclic fan/sector was interpreted as a linear unique-neighbor sequence. |
-| `PRODUCER_DISPOSITION_CONFLATION` | 2 | 1 | `NotApplicable`, `Rejected`, and downstream substitution were not kept distinct. |
-| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | 2 | 1 | Complete global authority was required on one local face/path. |
-| `INTRINSIC_SUPPORT_OVERCONSTRAINT` | 1 | 0 | One stored chart representative was treated as complete intrinsic support. |
-| `INCOMPLETE_TRANSACTIONAL_ROLLBACK` | 1 | 0 | A rejected mutation exposed partially modified state. |
-| `SHARED_EDGE_ORIENTATION_INVERSION` | 1 | 0 | Valid opposite traversal and invalid equal traversal were reversed. |
-| `INCOMPLETE_ORBIT_PUBLICATION` | 1 | 0 | Valid audited topology was omitted before ownership publication. |
-| `EXACT_SIMPLEX_CANONICALIZATION_LOSS` | 1 | 0 | Tolerance-expanded construction leaked into exact source-simplex output. |
-| **Total** | **34** | **20** | |
+| Category | Pattern | Events | Recurrences | Architectural signal |
+|---|---|---:|---:|---|
+| `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | 6 | 5 | Typed topology/chart/index domains repeatedly collapsed into one consumer identity. |
+| `TEST_AUTHORITY_COVERAGE_GAP` | `RP-02` | 6 | 5 | Tests or packaged executables did not observe the claimed semantic contract. |
+| `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | 4 | 3 | One flag/result boundary represented distinct execution, policy, or stage states. |
+| `NONTERMINATING_CUMULATIVE_WORK` | `RP-04` | 3 | 2 | Locally bounded work became recursively or cumulatively unbounded. |
+| `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | 2 | 1 | Semantically equivalent topology changed identity under ordering/orientation. |
+| `STATE_CARDINALITY_GROWTH` | `RP-06` | 2 | 1 | Per-object retention multiplied global state cardinality. |
+| `CYCLIC_TOPOLOGY_LINEARIZATION` | `RP-07` | 2 | 1 | A cyclic fan/sector was interpreted as a linear unique-neighbor sequence. |
+| `PRODUCER_DISPOSITION_CONFLATION` | `RP-08` | 2 | 1 | `NotApplicable`, `Rejected`, and downstream substitution were not kept distinct. |
+| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | `RP-09` | 2 | 1 | Complete global authority was required on one local face/path. |
+| `INTRINSIC_SUPPORT_OVERCONSTRAINT` | — | 1 | 0 | One stored chart representative was treated as complete intrinsic support. |
+| `INCOMPLETE_TRANSACTIONAL_ROLLBACK` | — | 1 | 0 | A rejected mutation exposed partially modified state. |
+| `SHARED_EDGE_ORIENTATION_INVERSION` | — | 1 | 0 | Valid opposite traversal and invalid equal traversal were reversed. |
+| `INCOMPLETE_ORBIT_PUBLICATION` | — | 1 | 0 | Valid audited topology was omitted before ownership publication. |
+| `EXACT_SIMPLEX_CANONICALIZATION_LOSS` | — | 1 | 0 | Tolerance-expanded construction leaked into exact source-simplex output. |
+| **Total** |  | **34** | **20** | |
+
+## Repeated coding-pattern analysis
+
+The nine repeated patterns cover **29 events** and all **20 recurrences**. The
+remaining five categories have one event each and remain monitored without a
+premature repeated-pattern classification.
+
+| Pattern | Event mapping | Point-in-time code evidence | Repeated finding |
+|---|---|---|---|
+| `RP-01` | `R007`, `R014`, `R019`, `R028`, `R031`, `R033` | `680d81c` `SurfaceArrangement.cpp`; `f4cce52` `SourceChartTransitions.h`; `7f48663` and `82151bf` `SurfaceCellTracing.cpp`; `edc14d3` transition tests | Consumers guessed numeric/index domains or intersected local labels as if they were intrinsic ownership. |
+| `RP-02` | `R004`, `R013`, `R022`, `R024`, `R027`, `R030` | `e31e5ab` `CMakeLists.txt`; `7f48663` `cmake/DirectionalTests.cmake`; `56f8232`, `0279946`, `3ca89ab` Phase10 tests | A proxy, raw ID, lifecycle observation, impossible witness, or nonpackaged test stood in for production semantic authority. |
+| `RP-03` | `R006`, `R009`, `R011`, `R032` | `074ec5d` simplification; `9bff7d3` and `82151bf` pipeline; `aa2917e` benchmark | One mode/flag/result encoded independent execution, public policy, availability, or stage meanings. |
+| `RP-04` | `R003`, `R010`, `R020` | `1f4c3c2` and `247061b` `PatchDescriptor.cpp`; P5-TB39 process-isolation evidence | Per-loop/depth limits did not bound recursive, nested, or process-cumulative work globally. `R020`'s exact retaining producer remains unproven. |
+| `RP-05` | `R016`, `R026` | `f5305ad` `SurfaceArrangement.cpp`; `3ca89ab` `SurfaceCellTracing.cpp` | Identity and emission order depended on exterior/twin role, traversal orientation, structural hash, or component emission order. |
+| `RP-06` | `R001`, `R008` | `d4c1bce` ownership snapshot; `94bf834` arrangement/ownership sources | Complete shared ownership membership was duplicated per completion/cell consumer. |
+| `RP-07` | `R017`, `R018` | `ec44ab7` and `2444c38` `SurfaceArrangement.cpp` | Degree-two duplicate neighbor values and first-to-last wrap were rejected because cyclic sectors were treated as a linear list. |
+| `RP-08` | `R021`, `R025` | `21f081b` pipeline; `3ca89ab` tracing aggregator | Typed producer disposition was reduced to `succeeded` or a default aggregate, enabling generic substitution after authoritative rejection. |
+| `RP-09` | `R029`, `R034` | `7f48663` quotient/materialization flow; `8f37612` validator | Complete seam/relation authority was required to occur on every selected local path/face rather than globally validated and locally witnessed. |
+
+### Cross-pattern architectural concentration
+
+Five higher-level practices account for the nine patterns:
+
+1. **Producer contracts lose type or scope at consumer boundaries** —
+   `RP-01`, `RP-08`, and `RP-09`.
+2. **Validation universally quantifies at the wrong ownership level** —
+   `RP-01` and `RP-09`.
+3. **State is compressed into a boolean/row/hash before semantics are fixed** —
+   `RP-03`, `RP-05`, and `RP-08`.
+4. **Local safety arguments are mistaken for global bounds** — `RP-04` and
+   `RP-06`.
+5. **Tests mirror representation rather than the intended invariant** —
+   `RP-02`, with `RP-01` recurring directly inside test helpers.
+
+These are architecture-review inputs, not additional event categories. Their
+counts are not added to the 34-event or 20-recurrence totals.
 
 ## Event inventory
 

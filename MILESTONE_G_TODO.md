@@ -229,3 +229,30 @@ cylinder → torus three times. Direct torus must be strict-valid **3/3**;
 reduced failure count is not acceptance. The separate exact-torus
 `InvalidHardRailPairing` scheduling blocker continues to gate prescribed
 sphere. G4 remains active; PR #8 stays open, draft, and unmerged.
+
+## 2026-08-09 PR #8 repeated coding-pattern audit
+
+The independent documentation-only Review turn expanded the regression audit
+from branch head `8ef353034641c3a068095334ceea5e6ddb0c39c1`. It inspected exact
+historical source, test, and CMake snapshots for the 34 stable regression
+events; it did not change or execute production, test, fixture, build, or
+workflow code.
+
+Nine repeated coding patterns (`RP-01` through `RP-09`) account for **29
+events** and all **20 recurrences**. The other five event categories remain
+singletons and are monitored without being mislabeled as repeated patterns.
+The permanent tracker now records each anti-pattern and required corrective
+shape as pseudocode, with point-in-time code evidence and a concrete review
+guard.
+
+Every future turn must review all nine patterns, map the planned data flow,
+and record whether each pattern is touched plus the exact invariant and
+counterfactual/representative evidence. An incomplete touched row is a stop
+condition. Work that resembles a recorded anti-pattern must be revised or
+receive the required independent architectural Review before Code + Build;
+the same mistake must not be repeated under a different symbol or test.
+
+The authoritative next turn remains artifact-only Test + Benchmark and must
+consume artifact `9031804178` and log artifact `9031804382` unchanged. It must
+review `RP-09` and `RP-02` before interpreting the results. No configure,
+compile, link, runtime, or workflow command was run by this audit.
