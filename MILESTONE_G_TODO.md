@@ -14,6 +14,30 @@ The latest multi-rail chart-reachability correction is **not accepted as a G4
 product fix**. Its local contracts pass, but representative direct torus
 remains invalid and worsened at the same final-validation boundary.
 
+T1 independent test-oracle foundation **Code + Build is accepted for
+compile/package only** with no production behavior delta. Its following
+immutable Test + Benchmark acceptance remains mandatory before M1.
+
+## T1 immutable compile authority
+
+Implementation `6d1922dd57db76dcc4c19056fdd3573a713dde61`, workflow run/job
+`31322039791 / 93266424347`:
+
+- result/log artifacts `9040549377 / 9040549498`;
+- result/log SHA-256
+  `06530ff55e63204a7685077862d935cfe24588237391765596a790759eea2097` /
+  `6b756784b98dc8532d905ef3869067ddf178e18501afd2fc29139c53a82c9a86`;
+- recursive manifest **51/51**, digest
+  `9d3660f8764e57b59c890f0c8afb07e4dcf740e970328e1359acd1c48f61b260`;
+- Release/static/Ninja **117/117**, eight approved targets, GoogleTest
+  `PRE_TEST`, exact 29-name oracle manifest, `runtimeExecution=false`;
+- verified package inventory: 52 regular files including the manifest, six ELF
+  executables, two static libraries, 27 fixtures, exact source/CMake blobs,
+  seven-path patch, source archive, compile database, and toolchain/submodules;
+- temporary workflow/trigger removed at
+  `8d153ab4720b129a512cf755f3d77e5ab7738e13`;
+- retention through **2026-08-23 UTC**.
+
 ## Current immutable runtime authority
 
 Artifact `9031804178`, implementation
@@ -133,31 +157,37 @@ legacy weak authority representation.
 
 ## Authoritative next turn
 
-**T1 Independent Test-Oracle Foundation — Code + Build only** under:
+**T1 Independent Test-Oracle Foundation — immutable Test + Benchmark** using:
 
-`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`
+- result artifact `9040549377` exactly;
+- log artifact `9040549498` exactly;
+- implementation `6d1922dd57db76dcc4c19056fdd3573a713dde61`;
+- the Code + Build report
+  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Report.md`.
 
-T1 must:
+The following turn must:
 
-- change test/support/CMake/package authority only within the plan allowlist;
-- create an independently implemented public input/output product oracle;
-- add deliberate topology/lineage/disposition corruption tests and canonical
-  row/cycle/reversal metamorphic checks;
-- augment, not weaken, existing direct acceptance;
-- default-build and package/discover the new oracle tests;
-- leave production sources, public API, fixtures, production validator,
-  tracing/arrangement/completion/optimizer/pipeline behavior byte-identical;
-- compile/package only; execute no generated project binary.
+- verify both immutable ZIP digests, **51/51** manifest entries, source/package
+  authority, and `runtimeExecution=false` before executing anything;
+- perform GoogleTest discovery exactly once for
+  `directional_surface_cell_oracle_tests` and match the exact 29-name manifest;
+- run each of the 29 positive/mutation/metamorphic contracts individually and
+  require its named diagnostic or preserved semantic record;
+- run the six existing direct acceptance cases with all prior assertions plus
+  the independent oracle invocation intact;
+- make no rebuild, relink, source/test/fixture/CMake/workflow edit, production
+  substitution, or benchmark-acceptance change.
 
-If T1 requires production/API changes, stop and return to Review. M1 production
-authority-kernel migration begins only after T1 passes immutable Test +
-Benchmark acceptance.
+Compilation and packaging are not mutation-adequacy acceptance. If the
+immutable tests expose a failure, report it without repairing source in that
+turn. M1 production authority-kernel migration begins only after T1 passes this
+immutable Test + Benchmark acceptance.
 
-Before T1 code changes, review all `RP-01` through `RP-09` and `TA-01` through
-`TA-12`. T1 primarily touches `RP-02` and test-side `RP-01`, `RP-05`, and
-`RP-07`; every mandatory test family needs intent, proved precondition,
-production entry/stage, independent oracle, rejected counterexample, and exact
-executable/fixture/artifact identity.
+Preserve the completed `RP-01` through `RP-09` and `TA-01` through `TA-12`
+mapping. T1 primarily touches `RP-02` and test-side `RP-01`, `RP-05`, and
+`RP-07`; every runtime result must retain the recorded intent, proved
+precondition, production entry/stage, independent oracle, rejected
+counterexample, and exact executable/test/artifact identity.
 
 ## Deferred blockers
 

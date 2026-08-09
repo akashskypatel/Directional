@@ -2,9 +2,10 @@
 
 ## Mandatory next turn
 
-Run **T1 Independent Test-Oracle Foundation — Code + Build only** under:
+Run **T1 Independent Test-Oracle Foundation — immutable Test + Benchmark**
+from the completed Code + Build report:
 
-`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`
+`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Report.md`
 
 Repository:
 
@@ -13,16 +14,33 @@ Repository:
 - draft PR #8 remains open, draft, and unmerged;
 - active gate: **G4 topology-distinct completion and singularities**;
 - review policy: `never`;
-- production runtime remains known-red on direct torus; T1 must not change
-  production behavior.
+- production runtime remains known-red on direct torus;
+- M1 remains blocked until this immutable T1 acceptance passes.
 
-T1 is test/build-only. It may add the independent oracle support/tests,
-augment direct acceptance to invoke that oracle, and make only the packaging/
-CMake changes named by the plan. It must compile/package only. Do **not** run
-any generated project binary during Code + Build.
+Exact T1 compile authority:
 
-If T1 requires a production/API/fixture/validator change, stop. Do not expand
-scope.
+| Evidence | Value |
+|---|---|
+| Implementation | `6d1922dd57db76dcc4c19056fdd3573a713dde61` |
+| Workflow run/job | `31322039791 / 93266424347` |
+| Result artifact | `9040549377` |
+| Result SHA-256 | `06530ff55e63204a7685077862d935cfe24588237391765596a790759eea2097` |
+| Log artifact | `9040549498` |
+| Log SHA-256 | `6b756784b98dc8532d905ef3869067ddf178e18501afd2fc29139c53a82c9a86` |
+| Recursive manifest | **51/51**, `9d3660f8764e57b59c890f0c8afb07e4dcf740e970328e1359acd1c48f61b260` |
+| Compile closure | Release/static/Ninja **117/117**, eight targets, `PRE_TEST`, `runtimeExecution=false` |
+| Retention | through **2026-08-23 UTC** |
+
+Preflight must verify both immutable ZIPs, all manifest entries, exact source
+and package authority, the six-executable/two-library inventory, 27 fixtures,
+the 29-name oracle manifest, and `runtimeExecution=false`. Do not rebuild,
+relink, edit, substitute, or regenerate anything.
+
+Discover `directional_surface_cell_oracle_tests` exactly once. Run every one of
+the 29 named positive/mutation/metamorphic contracts individually, then run the
+six existing direct acceptance cases with all prior assertions and the new
+independent oracle invocation intact. If anything fails, report it without
+repairing source in that turn.
 
 ## Completed artifact-only Test + Benchmark
 
@@ -130,7 +148,7 @@ Do not infer a new product root cause only from the increased mismatch count.
 The next production migration is M1, but M1 is blocked until T1 immutable
 acceptance establishes an independent test oracle.
 
-## Mandatory regression-pattern review before T1
+## Mandatory regression-pattern authority for T1 acceptance
 
 Read:
 
@@ -139,11 +157,12 @@ Read:
 - `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`;
 - `tests/TESTING_STRATEGY.md`.
 
-Every turn must map `RP-01` through `RP-09`. T1 primarily touches `RP-02`, and
-also test-side `RP-01`, `RP-05`, and `RP-07`. Fill the exact mandatory pattern
-review table from the T1 plan before implementing.
+Preserve the completed `RP-01` through `RP-09` mapping. T1 primarily touches
+`RP-02`, and also test-side `RP-01`, `RP-05`, and `RP-07`. The following turn
+must validate the recorded counterfactuals from the immutable package and must
+not modify their implementation.
 
-For every new mandatory test family record:
+For every mandatory test result retain:
 
 1. intent;
 2. proved precondition;
@@ -156,10 +175,10 @@ Production `result.success`, `SourceAuthoritativeMeshValidator`, benchmark
 quality decisions, raw IDs/order, counts, hashes, retention lifetime,
 compilation, or no-crash are not independent product oracles.
 
-## T1 success boundary
+## T1 immutable success boundary
 
-T1 must create a default-built independent product-oracle executable/support
-that checks, without calling production decision procedures:
+Code + Build created a default-built independent product-oracle executable and
+support that compile to check, without calling production decision procedures:
 
 - nonempty pure-quad schema and valid indices;
 - duplicate/repeated-corner/zero-area faces;
@@ -170,12 +189,13 @@ that checks, without calling production decision procedures:
 - backend/fallback/recovery/output-origin disposition;
 - row/order-independent canonical topology/lineage facts.
 
-Every check needs positive and deliberate corruption coverage. Existing direct
-acceptance assertions are preserved and augmented, never weakened.
+The immutable Test + Benchmark turn must now prove every positive and deliberate
+corruption contract at runtime. Existing direct acceptance assertions remain
+preserved and augmented, never weakened.
 
-Code + Build acceptance is compile/package only. It must leave production and
-fixtures byte-identical and emit one immutable artifact plus log artifact for
-the following Test + Benchmark turn.
+Code + Build acceptance is compile/package only and is complete. Production and
+fixtures remained byte-identical; consume result artifact `9040549377` and log
+artifact `9040549498` exactly for the following acceptance.
 
 ## Architecture and test-review authority
 

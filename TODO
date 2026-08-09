@@ -4,11 +4,14 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **artifact-only Test + Benchmark — multi-rail chart reachability**.
-- Result: **rejected as a representative G4 product fix**. All 18 required
-  focused contracts pass, but direct torus remains **0/3** and worsens from
-  165 to **241** `LocalSheetMismatch` issues at
-  `completion/output-validation`.
+- Completed turn: **T1 independent test-oracle foundation — Code + Build only**.
+- Result: **accepted for compile/package only**. The test-only oracle, 29 named
+  mutation/metamorphic contracts, six direct-acceptance augmentations, and all
+  eight approved targets compile/link in Release/static/Ninja **117/117**.
+  No generated project binary, test, discovery, or benchmark executed.
+- The current production runtime remains known-red: direct torus is **0/3** and
+  worsened from 165 to **241** `LocalSheetMismatch` issues at
+  `completion/output-validation` in the entering runtime authority.
 - Regression: `PR8-R034 / G4-R007` is **active**. The artifact is persistence
   and worsening of the unresolved event, not a new recurrence; PR-wide totals
   remain **34 events / 14 categories / 20 recurrences**.
@@ -22,19 +25,43 @@ Last updated: 2026-08-09 UTC
   `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
 - Review policy: `never` for optional future Review turns. The required
   independent architecture and test-suite reviews are already complete.
-- **Current turn:** T1 independent test-oracle foundation — **Code + Build only**.
-- T1 implementation and local compile/link are complete; the authoritative
-  Release/static/Ninja compile/package remains pending.
+- **Authoritative next turn:** T1 independent test-oracle foundation —
+  **immutable Test + Benchmark** using result artifact `9040549377` and log
+  artifact `9040549498` exactly, with no rebuild or source substitution.
+- T1 Code + Build is complete at implementation
+  `6d1922dd57db76dcc4c19056fdd3573a713dde61`; authoritative run/job
+  `31322039791 / 93266424347` passed.
 - Starting planning head: `ccda7a0c55e38dc0ca7c5c9fa6b5e86bc82bbae8`.
 - T1 changes are confined to the independent oracle support/tests, direct
   acceptance augmentation, default CMake target/labels, and recovery records.
-- **Following turn after an accepted build:** immutable T1 Test + Benchmark.
+- The following turn must verify artifact authority, discover the oracle target
+  exactly once, run all 29 named oracle contracts individually, and run the six
+  existing direct acceptance cases with all prior assertions preserved.
 - Authoritative T1 plan:
   `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
 - M1 production authority-kernel migration remains blocked until T1 passes its
   immutable Test + Benchmark acceptance.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
+
+## T1 immutable compile authority
+
+Implementation `6d1922dd57db76dcc4c19056fdd3573a713dde61`, run/job
+`31322039791 / 93266424347`:
+
+- result/log artifacts `9040549377 / 9040549498`;
+- outer SHA-256
+  `06530ff55e63204a7685077862d935cfe24588237391765596a790759eea2097` /
+  `6b756784b98dc8532d905ef3869067ddf178e18501afd2fc29139c53a82c9a86`;
+- recursive package manifest **51/51**, digest
+  `9d3660f8764e57b59c890f0c8afb07e4dcf740e970328e1359acd1c48f61b260`;
+- 52 regular package files including the manifest, six ELF executables, two
+  static libraries, 27 fixtures, exact five source/CMake blobs, seven-path
+  patch, source archive, compile database, toolchain/submodules, exact 29-name
+  oracle manifest, and `runtimeExecution=false` all verified;
+- temporary workflow and trigger removed atomically at
+  `8d153ab4720b129a512cf755f3d77e5ab7738e13`;
+- retention through **2026-08-23 UTC**.
 
 ## Current immutable runtime authority
 
@@ -120,18 +147,20 @@ multi-rail and face-chart contracts can pass while the representative product
 case remains invalid. These tests remain valid stage-local contracts; they are
 not promoted to a complete product oracle.
 
-T1 is therefore the next mutating slice exactly as already approved by the
-independent test-suite audit. It must add a test-only independent product oracle
-with mutation adequacy and default package/discovery authority. It must not
-change production behavior.
+T1 Code + Build has now added the approved test-only independent product oracle
+with mutation coverage and default package authority without changing production
+behavior. Compilation does not prove that the oracle detects every deliberate
+corruption or that the six direct integrations pass; the immutable following
+turn must establish that runtime acceptance from artifact `9040549377`.
 
 ## Mandatory next-turn regression-pattern review
 
-Before T1 implementation, review `RP-01` through `RP-09` and `TA-01` through
-`TA-12`. T1 directly touches `RP-02` and the test-only aspects of `RP-01`,
-`RP-05`, and `RP-07`; its plan must record intent, proved precondition,
-production entry, independent oracle, rejected counterexample, and exact
-executable/fixture/artifact identity for every new mandatory test family.
+The immutable T1 Test + Benchmark turn must preserve the completed mapping of
+`RP-01` through `RP-09` and `TA-01` through `TA-12`. T1 directly touches
+`RP-02` and the test-only aspects of `RP-01`, `RP-05`, and `RP-07`; every named
+runtime result must retain its recorded intent, proved precondition, production
+entry, independent oracle, rejected counterexample, and exact executable/test/
+artifact identity.
 
 Do not use production `result.success`, production validator output, raw IDs,
 ordering, counts, hashes, retention lifetime, compilation, or no-crash as an
