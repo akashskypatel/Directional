@@ -2,9 +2,9 @@
 
 ## Mandatory next turn
 
-Run **M1c Field-Transition Consumer — Code + Build only** under:
+Run **M1c Field-Transition Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
 Repository:
 
@@ -15,149 +15,159 @@ Repository:
 - architecture migration: **M1 authority kernel and staged production adoption**;
 - M1a authority kernel: **immutable accepted**;
 - M1b first production consumer: **immutable accepted**;
+- M1c field-transition consumer: **Code + Build compile/package complete; immutable runtime pending**;
 - review policy: `never`.
 
-The next turn is mutating **Code + Build only**. It may implement the bounded M1c seam and compile/package, but must execute no generated Directional binary, GoogleTest discovery/test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+The next turn is non-mutating with respect to product/test/build/fixture content. Consume the exact packaged M1c artifact only. Do not configure, rebuild, relink, regenerate, substitute, edit, or repair source/tests/fixtures.
 
-## Accepted M1b immutable authority
+## Exact M1c immutable build authority
 
-Authoritative runtime report:
-`.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Selected seam:
 
-Accepted seam:
-`RemeshPipeline -> fill_surface_optimization_rail_constraints -> surface_optimization_rail_detail::provenance_supports_interval_sheet`.
-
-Exact authority:
+`build_surface_cell_network / trace_surface_field -> surface_cell_tracing_detail::resolve_branch_transition`, authoritative `fields::CrossFieldEdgeTransition` consumption only.
 
 | Evidence | Value |
 |---|---|
-| M1b base | `9a4131f9655567ffc60c2c513db1c73826165bb2` |
-| implementation | `0340addf21473854856266ff00cb68915ce24ef0` |
-| build/event | `17c61b8d2eb835bd734010e160e6cd6b7dc9f5cf` |
-| build run/job | `31330737703 / 93288453677` |
-| result artifact | `9042940168` |
-| result SHA-256 | `9a24672179dc6fbc57fedcd4d5826fb4a7c4cf4cb1962c06013e1e84758bb46b` |
-| log artifact | `9042940336` |
-| log SHA-256 | `c39995e4ce496b6cb64608807a23b999330fa8b5333de61ebf939c3b5e391614` |
-| recursive manifest | **53/53**, `319cb95e6d283f6b786565c0c9863755777ff0518ff5375364521c61583e39f1` |
-| package | 54 regular files including manifest; seven ELF; two static libs; 27 fixtures |
+| Migration base | `512d9523f13158a9f71b406b6db7137a1db3c504` |
+| Implementation | `e139fca885538e310dc47ed7ba531517603d92cf` |
+| Build/event | `ebda31859a18005844f81274393211991361cbbb` |
+| Build run/job | `31334345368 / 93297618568` |
+| Result artifact | `9043971772` |
+| Result SHA-256 | `dde120c94be222dc93aeebb08f7a674882c5f8011ede62ec420209b0e0f4fd85` |
+| Log artifact | `9043971968` |
+| Log SHA-256 | `7747b3b25882fc86e54890a1efb69d753f9b2e08bff7db8fd2be4f4a8a82fedb` |
+| Recursive package manifest | **54/54**, `d9a4bdfe5b160095a6cf4949c57e54d726d36f745ff0a6580e9080d5319d495d` |
+| Package | 55 regular files including manifest; seven ELF; two static libs; 27 fixtures |
 | Code + Build | Release/static/Ninja **120/120**, `PRE_TEST`, `runtimeExecution=false` |
+| Build wall / peak RSS | **8:31.95 / 1,836,460 KiB** |
+| Retention | through **2026-08-23 UTC** |
 
-Immutable Test + Benchmark acceptance:
+Read-only post-build inspection already verified both outer GitHub artifact digests, zero unsafe archive paths, and every **54/54** packaged checksum. No generated Directional binary was executed in M1c Code + Build.
 
-- validation native discovery exactly **77**;
-- exactly six `SurfaceOptimizationRailAuthorityMigration` members;
-- M1b focused contracts **6/6** individually in fresh processes;
-- full validation **77/77**;
-- M1a authority discovery exact 14 and **14/14** individually;
-- T1 oracle discovery exact 29 and **29/29** individually;
-- postflight preserved both build ZIP hashes and every **53/53** packaged checksum.
+Report:
+`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Report.md`.
 
-Direct required-green comparison:
+## M1c implementation truth table to prove
+
+Only the authoritative transition-consumer path changed:
+
+1. source/target and transition first/second faces cross checked `LegacyAuthorityAdapters::source_face(..., faces.rows())` before semantic reciprocity;
+2. transition source-edge endpoints cross checked `source_vertex(..., vertices.rows())`;
+3. typed endpoints become canonical `SourceEdgeTopologyKey`; raw `uint64_t edge_key` is used only at the legacy lookup representation boundary;
+4. semantic matching uses `QuarterTurn::from_integer` and `.inverse()` for reverse traversal;
+5. raw signed `BranchTransitionResult.matching` remains legacy-compatible (`matching` forward, `-matching` reverse);
+6. effort and the separate `edgeTransitions == nullptr` `edgeMatching`/`edgeEffort` fallback remain unchanged;
+7. missing/malformed authoritative transition metadata fails closed and must never fall through to the legacy fallback or geometric inference;
+8. public `CrossFieldResult` / `CrossFieldEdgeTransition` layout is unchanged.
+
+Final M1c product/test diff is exactly:
+
+- `src/geometry/SurfaceCellTracing.cpp`;
+- `tests/SurfaceCellsPhase10Tests.cpp`.
+
+No header/CMake/schema/fixture/validator/product-policy change was required.
+
+## Exact M1c focused contracts
+
+The packaged producer target statically contains exactly six new contracts:
+
+1. `SurfaceCellFieldTransitionAuthorityMigration.ForwardQuarterTurnUsesTypedModuloTransport`;
+2. `SurfaceCellFieldTransitionAuthorityMigration.ReverseTraversalUsesExactQuarterTurnInverse`;
+3. `SurfaceCellFieldTransitionAuthorityMigration.EquivalentQuarterTurnsNormalizeSemantically`;
+4. `SurfaceCellFieldTransitionAuthorityMigration.ReversedSourceEdgeEndpointsPreserveSemanticIdentity`;
+5. `SurfaceCellFieldTransitionAuthorityMigration.MalformedAuthoritativeFaceOrEdgeFailsClosed`;
+6. `SurfaceCellFieldTransitionAuthorityMigration.LegacyMatchingFallbackRemainsUnchangedWhenTransitionMetadataAbsent`.
+
+Static manifest SHA-256:
+`4cb94bd2afc6bc9430a138f794d4395a2847af2e8631e177b86e784c01cf1055`.
+
+The immutable turn must require exact six-member discovery and **6/6** fresh-process semantic success. Zero-selection success is invalid.
+
+## Existing transition counterexamples that must remain visible
+
+Run and require green:
+
+- `SurfaceCellsPhase10.NonReciprocalSourceAdjacentIsolationSeamFailsClosed`;
+- `SurfaceCellsPhase10.CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`;
+- `SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason`.
+
+The periodic tamper must retain `PeriodicHolonomyMismatch`.
+
+## Required preservation matrix
+
+The immutable turn must additionally prove:
+
+1. complete relevant producer preservation with exact nonzero selection accounting;
+2. M1b six `SurfaceOptimizationRailAuthorityMigration` contracts **6/6** individually;
+3. full validation discovery exactly **77** and **77/77**;
+4. M1a authority discovery exactly **14** and **14/14**;
+5. T1 independent oracle discovery exactly **29** and **29/29**;
+6. Plane, MultiFaceSeam, CloseSheets, Cylinder remain green and independent-oracle clean;
+7. package postflight preserves both original ZIP hashes and all **54/54** packaged checksums.
+
+M1c focused tests cannot substitute for independent oracle or direct product evidence.
+
+## Accepted M1b comparison authority
+
+M1b remains immutable accepted under:
+`.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+Accepted M1b direct comparison:
 
 | Case | Result |
 |---|---|
 | Plane | pass, **1.000 s**, independent oracle clean |
-| MultiFaceSeam | pass, **1.559 s**, independent oracle clean |
-| CloseSheets | pass, **12.169 s**, independent oracle clean |
-| Cylinder | pass, **6.525 s**, independent oracle clean |
-
-Four preliminary direct invocations mistakenly targeted the standalone benchmark CLI with GoogleTest filters and exited immediately with `Unknown benchmark option`; no test was selected. They are non-authoritative orchestration attempts only.
+| MultiFaceSeam | pass, **1.559 s**, oracle-clean |
+| CloseSheets | pass, **12.169 s**, oracle-clean |
+| Cylinder | pass, **6.525 s**, oracle-clean |
 
 ## Bunny/Vase standing GitHub Actions procedure
 
-The user explicitly authorizes **GitHub Actions workflows for Bunny and Vase going forward** to avoid local container/execution-tool timeout issues.
+The user explicitly authorizes **GitHub Actions artifact-only runtime workflows for Bunny and Vase going forward** to avoid local container/execution-tool timeout issues.
 
-M1b authoritative long-running runtime run: `31332383845`.
+For M1c the temporary runtime workflow, if used, must:
 
-- Bunny job `93292577409`: exact one-test selection; wrapper rc=1 after about 64 s / GoogleTest 63.865 s. Independent oracle rejects first with empty/non-quad/component/Euler/origin/terminal issues; afterward the unchanged fatal success assertion reports `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`. Known-red preserved. Evidence artifact `9043307980`, SHA-256 `c2e7776a9b68ffeeecc7471a3718a2c1bc90fae4556c7d7c05084b5ae8d8fb2d`.
-- Vase job `93292577420`: exact one-test selection reached `[ RUN ]`, bounded rc=124 at 60 s, no returned result. Safety evidence only. Artifact `9043307204`, SHA-256 `1726deb422a3eea238ab3895108a423f6fb6e932cabcc6b215916cc969e87105`.
+1. download exact artifact `9043971772` from run `31334345368`;
+2. verify GitHub artifact digest, `SHA256SUMS`, every 54 package checksums, implementation metadata, and selected producer executable content hash before runtime;
+3. never configure, compile, relink, regenerate, substitute, or edit packaged product/test/fixture content;
+4. restore executable permission only after content-hash verification if `actions/download-artifact` strips it;
+5. run the exact existing Bunny/Vase tests with explicit process guards and retain filter, selected count, stdout/stderr, return code, elapsed time, and evidence-artifact digest;
+6. classify the underlying GoogleTest result from logs; workflow success is orchestration success only;
+7. remove temporary workflow/trigger/helper files before closeout.
 
-Required future procedure:
+Accepted M1b comparison:
 
-1. use a temporary artifact-only workflow in the **Test + Benchmark** turn only;
-2. download the exact immutable build artifact by run/artifact identity;
-3. verify GitHub artifact digest, `SHA256SUMS`, every package checksum, implementation metadata, and selected executable content hash before runtime;
-4. never configure, compile, relink, regenerate, substitute, or edit product/test/fixture content;
-5. `actions/download-artifact` may strip executable mode; restore `+x` only **after** content-hash verification;
-6. a non-regular runtime fixture locator may be created if required;
-7. run the exact existing Bunny/Vase tests with explicit process guards and retain filter, stdout/stderr, return code, elapsed time, and evidence-artifact digest;
-8. workflow job success means orchestration success only—classify the underlying GoogleTest result from logs;
-9. delete temporary workflow/trigger files before closeout so the net implementation/test/build diff is zero.
+- Bunny: one real test, known-red after ~64 s; independent oracle rejects first, then unchanged fatal `NotProductionReady:completion`, `traceSegments=170831 arrangementCells=0 completedQuads=0`;
+- Vase: one real test reached `[ RUN ]`, bounded rc=124 at 60 s; safety evidence only.
 
-A preliminary M1b workflow run `31332304742` verified package authority but returned rc=126 before generated-binary execution because executable mode had been stripped. It is non-authoritative orchestration evidence, not a regression.
+Do not relabel Bunny/Vase green to close M1c. A changed failure mode, lost independent-oracle ordering, crash, or unbounded execution is material evidence.
 
-## M1b regression/architecture disposition
+## Regression/architecture disposition
 
-- `RP-01`: first production strong-ID source-face/source-vertex seam **accepted**.
-- `RP-05`: first semantic-ID versus row-representation boundary **accepted**.
-- `RP-02 / TA-05`: accepted independent authority preserved through M1b.
-- M1b creates no production regression event or recurrence.
+- `RP-01`: M1c checked source-face/source-vertex adoption **compile-complete; immutable runtime pending**.
+- `RP-05`: M1c canonical source-edge semantic identity **compile-complete; runtime pending**.
+- `RP-07`: M1c exact modulo-four/inverse transport **compile-complete; runtime pending**.
+- `RP-02 / TA-05`: following immutable turn must preserve M1b/M1a/T1/direct authority.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** and separate.
 
-Production G4 authority remains artifact `9031804178`:
+Production G4 authority remains unchanged under artifact `9031804178`:
 
 - Plane/seam/close-sheets/cylinder strict-valid **3/3**;
 - direct torus **0/3** after 192 completed quads, complete lineage, `4/8/4`, topology `1/0/0`, then 241 `LocalSheetMismatch` issues;
 - historical exact torus remains `InvalidHardRailPairing`.
 
-## M1c exact consumer boundary
-
-Selected call path:
-
-`build_surface_cell_network / trace_surface_field -> surface_cell_tracing_detail::resolve_branch_transition`.
-
-M1c migrates only the **authoritative `fields::CrossFieldEdgeTransition` consumption path**.
-
-Default allowed implementation/test paths:
-
-- `src/geometry/SurfaceCellTracing.cpp`;
-- `tests/SurfaceCellsPhase10Tests.cpp`;
-- `include/directional/geometry/SurfaceCellTracing.h` only if a narrowly typed detail-helper signature is genuinely required.
-
-No CMake change is expected.
-
-Mandatory implementation rules:
-
-1. preserve existing adjacency/topology checks;
-2. convert source/target and transition face integers through checked `LegacyAuthorityAdapters::source_face(..., faces.rows())` before semantic face reciprocity;
-3. convert transition `sourceVertex0/1` through checked `source_vertex(..., vertices.rows())`;
-4. canonicalize those typed endpoints through `SourceEdgeTopologyKey::make` and compare to the existing `uint64_t edgeKey` only at an explicit legacy representation boundary;
-5. authoritative matching semantics use `QuarterTurn::from_integer`; reverse traversal uses `.inverse()`;
-6. preserve the existing raw signed `BranchTransitionResult.matching` compatibility value so downstream behavior does not change in M1c;
-7. preserve the separate `edgeTransitions == nullptr` `edgeMatching`/`edgeEffort` fallback path unchanged;
-8. malformed authoritative transition metadata remains fail-closed and must never fall through to legacy matching/geometric inference.
-
-Explicit non-goals:
-
-- no `CrossFieldResult`/`CrossFieldEdgeTransition` public schema change;
-- no `InteriorTransitionId`, `FieldChartId`, `TransitionStep`, or `CanonicalRoute` production migration yet;
-- no topology-region/isolation/periodic certificate changes;
-- no rail, arrangement, completion, quotient, optimizer, validator, fixture, benchmark-policy, fallback, or recovery changes;
-- no G4-R007/Bunny/Vase behavior change.
-
-## M1c mandatory pattern checks
-
-- `RP-01` touched: source face and vertex domains must be checked and non-interchangeable.
-- `RP-05` touched: semantic source-edge identity must not depend on endpoint order or raw hash representation.
-- `RP-07` touched: quarter-turn matching must be exact modulo four and reverse traversal must use algebraic inverse.
-- `RP-02 / TA-05` preservation: focused transition tests cannot replace M1b/M1a/T1/direct evidence.
-
-Required focused counterexamples are defined in the M1c plan, including forward +1, reverse inverse, `+5 == +1` semantically, reversed source-edge endpoints, malformed authoritative face/edge fail-closed, and unchanged legacy matching fallback.
-
-The following immutable turn must also retain explicit visibility for existing `NonReciprocalSourceAdjacentIsolationSeamFailsClosed`, `CurvedBoundedDiskInvalidReciprocalTransportFailsClosed`, and periodic-holonomy tamper rejection.
-
 ## Core references
 
-- `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
+- `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Report.md`;
 - `.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1b_First_Production_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1a_Authority_Kernel_Core_Artifact_Only_Test_Benchmark_Report.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
-- `tests/TESTING_STRATEGY.md`.
+- `tests/TESTING_STRATEGY.md`;
+- `TODO`;
+- `MILESTONE_G_TODO.md`.
 
 ## Deferred blockers
 
@@ -170,7 +180,9 @@ The following immutable turn must also retain explicit visibility for existing `
 - prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery, optimization;
 - later M1 consumers, M2–M6 and T2–T6.
 
-At the start of the next turn, fetch fresh PR/head state and verify it is a descendant of the accepted M1b implementation. Do not assume the branch head from this handoff if external commits have moved it.
+At the start of the next turn, fetch fresh PR/head state and verify the branch still contains implementation `e139fca...`. Do not assume this handoff's final documentation head if external commits move the branch.
+
+If any required-green immutable gate regresses, remain at M1c and return to a corrective Code + Build turn. Do not advance to another consumer.
 
 After all branch-file and PR-body writes for a completed turn, the final repository write is exactly one new top-level PR #8 conversation comment.
 
