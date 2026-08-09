@@ -133,15 +133,30 @@ jobs:
           test "$oracle_line" -lt "$success_line"
 
           python3 - <<'PY'
+          import os
           import subprocess
           path = 'tests/SurfaceCellDesignAcceptanceTests.cpp'
-          before = subprocess.check_output(['git', 'show', f'{__import__("os").environ["ENTERING_BRANCH_HEAD"]}:{path}'], text=True)
-          after = open(path, encoding='utf-8').read()
-          block = '''  const auto independentOracle =\n      directional::tests::surface_cell_oracle::inspect_surface_cell_product(\n          mesh.vertices, mesh.faces, result);\n  EXPECT_TRUE(independentOracle.ok()) << independentOracle.describe();\n'''
-          if before.count(block) != 1 or after.count(block) != 1:
-              raise SystemExit('oracle block count mismatch')
-          if before.replace(block, '') != after.replace(block, ''):
-              raise SystemExit('non-order source change detected')
+          diff = subprocess.check_output(
+              ['git', 'diff', '--unified=0', os.environ['ENTERING_BRANCH_HEAD'], os.environ['IMPLEMENTATION_COMMIT'], '--', path],
+              text=True,
+          )
+          removed = []
+          added = []
+          for line in diff.splitlines():
+              if line.startswith(('---', '+++', '@@', 'diff ', 'index ')):
+                  continue
+              if line.startswith('-') and line[1:].strip():
+                  removed.append(line[1:])
+              elif line.startswith('+') and line[1:].strip():
+                  added.append(line[1:])
+          expected = [
+              '  const auto independentOracle =',
+              '      directional::tests::surface_cell_oracle::inspect_surface_cell_product(',
+              '          mesh.vertices, mesh.faces, result);',
+              '  EXPECT_TRUE(independentOracle.ok()) << independentOracle.describe();',
+          ]
+          if removed != expected or added != expected:
+              raise SystemExit(f'unexpected nonempty diff lines: removed={removed!r} added={added!r}')
           print('statement_order_only=true')
           PY
 
