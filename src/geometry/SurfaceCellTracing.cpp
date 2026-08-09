@@ -1,5 +1,8 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 
+#include <directional/authority/GridAutomorphism.h>
+#include <directional/authority/LegacyAuthorityAdapters.h>
+
 #include <Eigen/SparseCholesky>
 
 #include <optional>
@@ -1281,16 +1284,75 @@ BranchTransitionResult resolve_branch_transition(
 
   const int sourceBranch = branch_from_family_sign(sourceFamily, sourceSign);
   bool authoritativeMatching = false;
+  std::optional<authority::QuarterTurn> authoritativeTransitionTransport;
   if (edgeTransitions != nullptr) {
     const auto found = transitionLookup.byEdge.find(edgeKey);
-    if (found == transitionLookup.byEdge.end() ||
-        !transition_faces_match(found->second, sourceFace, targetFace) ||
-        edge_key(found->second.sourceVertex0,
-                 found->second.sourceVertex1) != edgeKey) {
+    if (found == transitionLookup.byEdge.end()) {
       return result;
     }
+
+    const std::size_t sourceFaceExtent =
+        static_cast<std::size_t>(faces.rows());
+    const std::size_t sourceVertexExtent =
+        static_cast<std::size_t>(vertices.rows());
+    const auto sourceFaceResult = authority::LegacyAuthorityAdapters::source_face(
+        sourceFace, sourceFaceExtent);
+    const auto targetFaceResult = authority::LegacyAuthorityAdapters::source_face(
+        targetFace, sourceFaceExtent);
+    const auto firstFaceResult = authority::LegacyAuthorityAdapters::source_face(
+        found->second.firstFace, sourceFaceExtent);
+    const auto secondFaceResult = authority::LegacyAuthorityAdapters::source_face(
+        found->second.secondFace, sourceFaceExtent);
+    if (!sourceFaceResult || !targetFaceResult || !firstFaceResult ||
+        !secondFaceResult) {
+      return result;
+    }
+
+    const authority::SourceFaceId typedSourceFace = sourceFaceResult.value();
+    const authority::SourceFaceId typedTargetFace = targetFaceResult.value();
+    const authority::SourceFaceId typedFirstFace = firstFaceResult.value();
+    const authority::SourceFaceId typedSecondFace = secondFaceResult.value();
+    const bool forwardTraversal = typedFirstFace == typedSourceFace &&
+                                  typedSecondFace == typedTargetFace;
+    const bool reverseTraversal = typedFirstFace == typedTargetFace &&
+                                  typedSecondFace == typedSourceFace;
+    if (!forwardTraversal && !reverseTraversal) {
+      return result;
+    }
+
+    const auto firstVertexResult =
+        authority::LegacyAuthorityAdapters::source_vertex(
+            found->second.sourceVertex0, sourceVertexExtent);
+    const auto secondVertexResult =
+        authority::LegacyAuthorityAdapters::source_vertex(
+            found->second.sourceVertex1, sourceVertexExtent);
+    if (!firstVertexResult || !secondVertexResult) {
+      return result;
+    }
+    const auto sourceEdgeResult = authority::SourceEdgeTopologyKey::make(
+        firstVertexResult.value(), secondVertexResult.value());
+    if (!sourceEdgeResult) {
+      return result;
+    }
+    const authority::SourceEdgeTopologyKey sourceEdge = sourceEdgeResult.value();
+    const std::uint64_t transitionEdgeKey = edge_key(
+        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+            sourceEdge.first())),
+        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+            sourceEdge.second())));
+    if (transitionEdgeKey != edgeKey) {
+      return result;
+    }
+
+    authority::QuarterTurn transport =
+        authority::QuarterTurn::from_integer(found->second.matching);
+    if (reverseTraversal) {
+      transport = transport.inverse();
+    }
+    authoritativeTransitionTransport = transport;
+
     result.matching = found->second.matching;
-    if (found->second.secondFace == sourceFace) {
+    if (reverseTraversal) {
       result.matching = -result.matching;
     }
     result.effort = found->second.effort;
@@ -1320,7 +1382,11 @@ BranchTransitionResult resolve_branch_transition(
   }
 
   int targetBranch = sourceBranch;
-  if (authoritativeMatching) {
+  if (authoritativeTransitionTransport.has_value()) {
+    targetBranch = normalized_branch(
+        sourceBranch +
+        static_cast<int>(authoritativeTransitionTransport->value()));
+  } else if (authoritativeMatching) {
     targetBranch = normalized_branch(sourceBranch + result.matching);
   } else {
     double bestTurn = std::numeric_limits<double>::infinity();

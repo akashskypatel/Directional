@@ -1,6 +1,7 @@
 #include <directional/fields/PointSampledCrossField.h>
 #include <directional/io/ReadOBJ.h>
 #include <directional/meshing/PatchQuadrangulator.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "TestFixturePaths.h"
@@ -95,6 +96,195 @@ directional::pipeline::RemeshResult run_phase10_tiny_remesh() {
   options.integralSeamless = false;
   options.roundSeams = false;
   return directional::pipeline::remesh_from_mesh(vertices, faces, options);
+}
+
+
+struct FieldTransitionFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  Eigen::MatrixXd faceAxisX;
+  Eigen::MatrixXd faceAxisY;
+  std::map<std::uint64_t, std::array<int, 2>> edgeFaces;
+  std::map<std::uint64_t, int> edgeMatchingIndices;
+  directional::geometry::surface_cell_tracing_detail::EdgeTransitionLookup
+      transitionLookup;
+  std::uint64_t edgeKey = 0;
+  std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+};
+
+FieldTransitionFixture make_field_transition_fixture(const int matching = 1) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  FieldTransitionFixture fixture;
+  fixture.vertices.resize(4, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      1.0, 1.0, 0.0,
+                      0.0, 1.0, 0.0;
+  fixture.faces.resize(2, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3;
+  fixture.faceAxisX.resize(2, 3);
+  fixture.faceAxisX << 1.0, 0.0, 0.0,
+                       1.0, 0.0, 0.0;
+  fixture.faceAxisY.resize(2, 3);
+  fixture.faceAxisY << 0.0, 1.0, 0.0,
+                       0.0, 1.0, 0.0;
+  fixture.edgeFaces = detail::edge_faces(fixture.faces);
+  fixture.edgeMatchingIndices = detail::edge_matching_indices(fixture.edgeFaces);
+  fixture.edgeKey = detail::edge_key(0, 2);
+
+  directional::fields::CrossFieldEdgeTransition transition;
+  transition.sourceEdge = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  transition.sourceVertex0 = 0;
+  transition.sourceVertex1 = 2;
+  transition.firstFace = 0;
+  transition.secondFace = 1;
+  transition.matching = matching;
+  transition.effort = 0.25;
+  fixture.transitions.push_back(transition);
+  fixture.transitionLookup = detail::edge_transition_lookup(fixture.transitions);
+  return fixture;
+}
+
+directional::geometry::surface_cell_tracing_detail::BranchTransitionResult
+resolve_field_transition(
+    const FieldTransitionFixture &fixture, const int sourceFace,
+    const int targetFace, const int sourceFamily, const int sourceSign,
+    const Eigen::RowVector3d &sourceDirection,
+    const Eigen::VectorXi *edgeMatching = nullptr,
+    const Eigen::VectorXd *edgeEffort = nullptr,
+    const bool useAuthoritativeTransitions = true) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  return detail::resolve_branch_transition(
+      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
+      fixture.edgeFaces, fixture.edgeMatchingIndices, fixture.transitionLookup,
+      fixture.edgeKey, sourceFace, targetFace, sourceFamily, sourceSign,
+      sourceDirection, edgeMatching, edgeEffort,
+      useAuthoritativeTransitions ? &fixture.transitions : nullptr);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ForwardQuarterTurnUsesTypedModuloTransport) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(1, result.matching);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(0.0, 1.0, 0.0),
+                                        1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ReverseTraversalUsesExactQuarterTurnInverse) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+
+  const auto result = resolve_field_transition(
+      fixture, 1, 0, 1, 1, Eigen::RowVector3d(0.0, 1.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(-1, result.matching);
+  EXPECT_EQ(0, result.family);
+  EXPECT_EQ(1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(1.0, 0.0, 0.0),
+                                        1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     EquivalentQuarterTurnsNormalizeSemantically) {
+  const FieldTransitionFixture plusOne = make_field_transition_fixture(1);
+  const FieldTransitionFixture plusFive = make_field_transition_fixture(5);
+
+  const auto one = resolve_field_transition(
+      plusOne, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+  const auto five = resolve_field_transition(
+      plusFive, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(one.valid);
+  ASSERT_TRUE(five.valid);
+  EXPECT_EQ(1, one.matching);
+  EXPECT_EQ(5, five.matching);
+  EXPECT_EQ(one.family, five.family);
+  EXPECT_EQ(one.sign, five.sign);
+  EXPECT_TRUE(one.direction.isApprox(five.direction, 1.0e-12));
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     ReversedSourceEdgeEndpointsPreserveSemanticIdentity) {
+  FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  fixture.transitions.front().sourceVertex0 = 2;
+  fixture.transitions.front().sourceVertex1 = 0;
+  fixture.transitionLookup =
+      directional::geometry::surface_cell_tracing_detail::edge_transition_lookup(
+          fixture.transitions);
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0));
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(1, result.matching);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(1, result.sign);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     MalformedAuthoritativeFaceOrEdgeFailsClosed) {
+  FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  const int matchingIndex = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  Eigen::VectorXi fallbackMatching =
+      Eigen::VectorXi::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  Eigen::VectorXd fallbackEffort =
+      Eigen::VectorXd::Constant(static_cast<int>(fixture.edgeMatchingIndices.size()),
+                                0.75);
+  fallbackMatching[matchingIndex] = 3;
+
+  auto malformedFace = fixture.transitions.front();
+  malformedFace.firstFace = fixture.faces.rows();
+  fixture.transitions = {malformedFace};
+  fixture.transitionLookup.byEdge.clear();
+  fixture.transitionLookup.byEdge.emplace(fixture.edgeKey, malformedFace);
+  const auto faceResult = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, true);
+  EXPECT_FALSE(faceResult.valid);
+
+  auto malformedEdge = malformedFace;
+  malformedEdge.firstFace = 0;
+  malformedEdge.sourceVertex1 = fixture.vertices.rows();
+  fixture.transitions = {malformedEdge};
+  fixture.transitionLookup.byEdge.clear();
+  fixture.transitionLookup.byEdge.emplace(fixture.edgeKey, malformedEdge);
+  const auto edgeResult = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, true);
+  EXPECT_FALSE(edgeResult.valid);
+}
+
+TEST(SurfaceCellFieldTransitionAuthorityMigration,
+     LegacyMatchingFallbackRemainsUnchangedWhenTransitionMetadataAbsent) {
+  const FieldTransitionFixture fixture = make_field_transition_fixture(1);
+  const int matchingIndex = fixture.edgeMatchingIndices.at(fixture.edgeKey);
+  Eigen::VectorXi fallbackMatching =
+      Eigen::VectorXi::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  Eigen::VectorXd fallbackEffort =
+      Eigen::VectorXd::Constant(static_cast<int>(fixture.edgeMatchingIndices.size()),
+                                0.75);
+  fallbackMatching[matchingIndex] = 3;
+
+  const auto result = resolve_field_transition(
+      fixture, 0, 1, 0, 1, Eigen::RowVector3d(1.0, 0.0, 0.0),
+      &fallbackMatching, &fallbackEffort, false);
+
+  ASSERT_TRUE(result.valid);
+  EXPECT_EQ(3, result.matching);
+  EXPECT_DOUBLE_EQ(0.75, result.effort);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(-1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(Eigen::RowVector3d(0.0, -1.0, 0.0),
+                                        1.0e-12));
 }
 
 TEST(SurfaceCellsPhase10, MeshValidatorDetectsMissingVertex) {
