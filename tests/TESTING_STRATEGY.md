@@ -272,3 +272,13 @@ The next compile-only slice must add focused tests proving:
 - full authority never masks scalar barycentric, position, component, or sheet failures.
 
 Following compilation, artifact-only acceptance must run those tests individually, preserve the seven accepted focused contracts and prior-green groups, run the exact committed torus GoogleTest, and repeat plane → seam → close sheets → cylinder → torus in three fresh processes. Torus must reach direct strict-valid **3/3**, complete lineage, no fallback/recovery, `4/8/4` consumption, and final `1/0/0` topology before sphere may run.
+
+## Hard-rail face-chart artifact acceptance plan
+
+Implementation `8f37612148f34bac63cf294000c17c7de2e03b41` is compile-valid in exact artifact `9030700527` (outer SHA-256 `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf`; recursive manifest **49/49**, digest `698ee033667624819a369a4e64bd958eecfb2598e2c4cdd5caf7763fe6acad97`). Release/static/Ninja compiled the seven approved targets at `113/113` with `PRE_TEST` and `runtimeExecution=false`. This is not runtime evidence.
+
+After immutable preflight, discover each GoogleTest executable exactly once and run the seven new `SurfaceMeshOptimizerPhase22` contracts individually. Positive authority must resolve distinct hard-rail sides and agree in optimizer/final validation. Missing/misaligned, wrong-rail, wrong-route, nonreciprocal, unsupported, ambiguous, and disconnected authority must fail closed; face-row invariance and scalar typed failures must remain exact.
+
+Run the seven accepted canonical transition/periodic/retention contracts individually and the exact committed torus GoogleTest individually. Then execute the established bounded producer/completion/validation/API suites and prior-green focused groups. Report discovered denominators rather than predicting the validation increase.
+
+Finally repeat plane, multi-face seam, close sheets, cylinder, and torus in three fresh recovery-disabled processes. Torus must be direct strict-valid **3/3**, with no fallback/recovery, complete `4/8/4` consumption, final `1/0/0` topology, pure quads, and complete lineage before prescribed sphere may run. No rebuild, artifact mixing, assertion weakening, global hard-feature chart union, validator relaxation, predicted count, or timeout-as-correctness is permitted.

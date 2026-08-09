@@ -320,3 +320,15 @@ The next invariant is exact and fail-closed:
 - never globally union hard-feature chart components or infer compatibility from proximity, count, row order, IDs, or topology-region membership alone.
 
 The authoritative next turn is compile-only Code + Build under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`. Nonzero periodic rotation, shared hard-rail scheduling, positive multi-isolation lineage, historical completion/timing failures, and prescribed sphere remain separate blockers.
+
+## Current compile authority — hard-rail face-chart projection
+
+Implementation `8f37612148f34bac63cf294000c17c7de2e03b41` now carries the quotient's exact retained source charts and explicit `HardRail` equivalence records into optimizer and final-validator authority. The scalar `SurfacePoint` remains positional and source-entity authority; no chart barrier is globally removed.
+
+The shared face resolver admits an alternate chart only when retained membership, exact hard-rail source support, matching rail/route/front ownership, and an unambiguous peer relation agree. One unique semantic transition-graph component is required per face. Missing, malformed, unsupported, disconnected, nonreciprocal, cardinality-misaligned, or genuinely ambiguous authority fails closed.
+
+Optimizer labels, reference/centroid projection, projection-cache labels, final sampling, and source-authoritative validation consume the same decision. Selection by source face row, numeric ID, topology-region count, frequency, hash, or proximity remains prohibited.
+
+Artifact `9030700527` compiles the seven approved targets at **113/113** with `runtimeExecution=false`; its outer SHA-256 is `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf` and all **49/49** recursive entries verify. This is compile authority only.
+
+The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`. Exact torus must become direct strict-valid **3/3** before prescribed sphere runs. All previously deferred rotation, scheduling, multi-isolation, historical completion/timing, and later-gate work stays separate.

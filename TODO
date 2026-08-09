@@ -6,54 +6,64 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **artifact-only Test + Benchmark — canonical transition test-authority remediation**.
-- Result: **canonical authority accepted; G4 blocked with material progress at torus face-chart validation**.
+- Completed turn: **Code + Build — torus hard-rail face-chart authority**.
+- Result: **compile-valid immutable artifact; runtime acceptance pending**.
 - Review policy: `never`.
-- Next turn: **Code + Build only**.
-- Authoritative plan: `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Plan.md`.
-- Runtime report: `.agents/Directional/Gate_4_Canonical_Transition_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+- Next turn: **artifact-only Test + Benchmark**.
+- Authoritative plan: `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
+- Code + Build report: `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Report.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 
-## Exact artifact authority
+## Exact compile artifact authority
 
-- implementation `de5261c7185aef71807b0b4140c8f023a44874fd`;
-- build/event `5bf9b0efc665e0a940aa4e74b168171651685f7d`;
-- workflow run/job `31284957305 / 93172020467`;
-- runtime/log artifacts `9029584083 / 9029584200`;
-- outer SHA-256 `b9c2926ac71d5c765ec6ed89da7dc4a3fecbf55d00f4b24deeb1d26336a05dad` / `b2c147a691caaafc6591106ebb59f50f2956c17722f88bff1857c94d33f3da9b`;
-- recursive package manifest **49/49**, digest `ee65be615bcf59516f5c0e05f98e56b7d9095d48d41cb1675cb5e3938ad7ce26`;
-- runtime evidence ledger **294/294**, manifest-file SHA-256 `22f9fc15ce0f4fdff147ba9fefe3354de344b4bc138b7272135e9415e3894cc0`;
-- Release/static/Ninja `113/113`, artifact retention through `2026-08-23 UTC`.
+- entering branch head `62fc5e6fd2fb0a28817b8a67974389ac3cc466e7`;
+- implementation `8f37612148f34bac63cf294000c17c7de2e03b41`;
+- build/event `872ae0eebb90ad31738169687f7b8c1895708076`;
+- workflow run/job `31288505364 / 93181547076`;
+- result/log artifacts `9030700527 / 9030700699`;
+- outer SHA-256 `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf` / `a3d327bd6d98091e4f4394970aab1823a53324f0106c380cde37a31e99d61263`;
+- recursive package manifest **49/49**, digest `698ee033667624819a369a4e64bd958eecfb2598e2c4cdd5caf7763fe6acad97`;
+- Release/static/Ninja `113/113`, GoogleTest `PRE_TEST`, `runtimeExecution=false`;
+- retention through 2026-08-23 UTC.
 
-Preflight/postflight pass. No source, test, fixture, validator, manifest, CMake, workflow, or benchmark-acceptance edit; no configure, rebuild, relink, or artifact substitution.
+Independent download verification passed both ZIPs, every recursive entry, five ELF executables, two static libraries, 27 fixtures, exact source/CMake blobs, source archive, patch, compile database, toolchain, submodules, and command boundary.
 
-## Accepted focused authority
+## Implemented invariant
 
-All **7/7** focused tests pass individually:
+The authoritative phase-front path now projects exact per-output-vertex retained source charts and `HardRail` equivalence lineage into optimizer/final-validator authority.
 
-- three canonical numeric-domain contracts;
-- periodic face-row invariance;
-- malformed-holonomy typed failure;
-- incidence-derived component/boundary/Euler facts;
-- deterministic failure retention iff requested.
+Each output quad must resolve one unique exact chart side. Alternate chart use requires:
 
-Retained groups are transition quotient **29/36**, topology/isolation/hard rail **10/10**, polygonal/curved/mixed **12/12**, periodic/torus/cylinder **6/7**, remaining Phase10 **38/39**, and direct G0-G3 **4/4**.
+- exact retained chart membership;
+- exact scalar source-entity support on the hard-rail route;
+- matching explicit rail, route, and reciprocal front ownership;
+- one unambiguous face-wide transition-graph component.
 
-The plan's literal producer filter selects 163 of 166 discovered tests. Bounded totals are producer **154/163**, completion **154/164**, validation **60/60**, API **8/8**, aggregate **376/395**. Prior totals used a different denominator; historical completion ten and timing remain explicit.
+Scalar barycentric, position, component, sheet, and source-entity checks remain mandatory. Missing, misaligned, wrong-rail, wrong-route, nonreciprocal, unsupported, ambiguous, or disconnected authority fails closed. No global hard-feature union, proximity rule, source face-row order, numeric ID, count, frequency, or hash selects authority.
 
-## Direct runtime authority
+## Mandatory artifact-only next turn
 
-- plane, multi-face seam, close sheets, and cylinder: direct strict-valid pure quads **3/3** each, no fallback/recovery;
-- seam semantic digest: `99c8be7159d05c2f`;
-- torus: **0/3**, 192 materialized quads, complete `4/8/4` authority consumption, computed `1/0/0` topology, then 74 `LocalSheetMismatch` issues at `completion/output-validation`;
-- sphere: correctly deferred behind torus.
+Consume only artifact `9030700527`; do not configure, rebuild, relink, edit source/tests/fixtures/validators/manifests/CMake/workflows, or mix artifacts.
 
-## Earliest next action
+After exact preflight and one discovery per GoogleTest executable:
 
-Thread existing quotient-retained source charts and exact `HardRail` equivalence lineage into optimizer/final-validator chart compatibility. Each output quad must resolve one unique exact chart side. Alternate chart use requires exact source support, retained chart membership, and matching reciprocal hard-rail equivalence. Preserve every scalar provenance check and fail closed on missing, tampered, unsupported, ambiguous, or nonreciprocal authority.
+1. run the seven new `SurfaceMeshOptimizerPhase22` face-chart tests individually;
+2. run the seven accepted canonical transition/periodic/retention tests individually;
+3. run the exact committed torus GoogleTest individually;
+4. preserve prior-green focused groups and bounded producer/completion/validation/API suites;
+5. repeat plane → multi-face seam → close sheets → cylinder → torus in three fresh processes with recovery disabled;
+6. run prescribed sphere only if torus is direct strict-valid **3/3** with complete `4/8/4` consumption, final `1/0/0` topology, pure quads, and complete lineage.
 
-The next turn is compile-only. Add focused authority tests, retain the exact torus success assertion unchanged, compile/package the seven approved targets, run no generated project runtime, and write the following artifact-only plan.
+## Entering runtime baseline
+
+Artifact `9029584083` remains the latest runtime evidence until the new artifact is executed:
+
+- all seven canonical focused contracts pass;
+- producer **154/163**, completion **154/164**, validation **60/60**, API **8/8** under that artifact's discovered denominators;
+- plane, seam, close sheets, and cylinder are direct strict-valid **3/3**;
+- torus is **0/3** at 74 `LocalSheetMismatch` issues after 192 materialized quads, complete `4/8/4` authority consumption, and `1/0/0` topology;
+- sphere remains gated.
 
 ## Explicit downstream blockers
 
@@ -61,7 +71,7 @@ The next turn is compile-only. Add focused authority tests, retain the exact tor
 2. shared hard-rail breakpoint scheduling;
 3. positive multi-isolation quotient lineage;
 4. multiple periodic-relation owner counterfactuals;
-5. historical completion/simplification ten and validator timing;
-6. prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization.
+5. historical completion/simplification ten and strict-validator timing;
+6. prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization quality.
 
-Every completed turn ends with one new top-level PR #8 conversation comment after all other repository writes.
+The temporary workflow was removed before its marker. Only `.github/workflows/agent-source-snapshot.yml` remains. Every completed turn ends with one new top-level PR #8 conversation comment after all other repository writes.

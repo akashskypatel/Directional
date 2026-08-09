@@ -1,6 +1,6 @@
 # Gate 4 Torus Hard-Rail Face-Chart Authority — Code + Build Plan
 
-Status: **authoritative next turn**  
+Status: **completed; see `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Code_Build_Report.md`**
 Turn type: **Code + Build only**  
 Active design gate: **G4 topology-distinct completion and singularities**  
 Review policy: `never`
@@ -180,3 +180,11 @@ Do not address in this Code + Build turn:
 - prescribed sphere runtime, bunny, vase, G5/G6, fallback/recovery, or optimization quality work.
 
 PR #8 remains open, draft, and unmerged. After all branch files and PR-body updates, the final repository write must be one new top-level PR #8 conversation comment.
+
+## Completion record
+
+Implementation `8f37612148f34bac63cf294000c17c7de2e03b41` compiled all seven approved targets in workflow run/job `31288505364 / 93181547076` at **113/113**. Immutable artifact `9030700527` has outer SHA-256 `6eb42943aa8b27c88fa2afa45e22c5fbc9aa16da2d5cc52748de6e3e45474adf`; its **49/49** recursive entries verify with manifest digest `698ee033667624819a369a4e64bd958eecfb2598e2c4cdd5caf7763fe6acad97`. Log artifact `9030700699` has SHA-256 `a3d327bd6d98091e4f4394970aab1823a53324f0106c380cde37a31e99d61263`.
+
+`runtimeExecution=false`. The bounded workflow was removed at `5f26d42e596b1258106cf3e2f149e7542fbdc645` before trigger cleanup at `15cbac9224b0e424e02a37f769ee2712ad450976`; only `.github/workflows/agent-source-snapshot.yml` remains.
+
+The authoritative next turn is artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Torus_Hard_Rail_Face_Chart_Authority_Artifact_Only_Test_Benchmark_Plan.md`.
