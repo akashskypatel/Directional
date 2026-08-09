@@ -28,7 +28,55 @@ stable entry per regression so repeated architectural causes remain visible.
 | `resolved` | A later immutable artifact passes the affected gate. |
 | `test_authority_resolved` | The regression was in a test/oracle and corrected runtime evidence accepts the intended contract. |
 
-## Architectural cause families
+## PR-wide audit authority
+
+The independent documentation-only audit of PR #8 covers
+`d8b4dba98747d3adf0ca24002642bcad9e9847db..027e5194a9013cc1fe9ea18c1b79741301e40f74`
+(**1,789 commits**). It identifies **34 distinct regression events** in
+**14 architectural categories**, including **20 recurrences** after an earlier
+event in the same category. The primary result-document corpus contains
+**114 regression-bearing commits**: 55 report introductions, 34 machine-result
+updates, and 25 report-lifecycle changes.
+
+The complete event evidence, recurrence links, dispositions, counting rules,
+and exclusions are in
+`.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
+`PR8-R034` / `G4-R007` remains active at the audited head, with status
+`fix_pending_runtime`.
+
+### PR-wide category rollup
+
+| Cause category | Events | Recurrences |
+|---|---:|---:|
+| `AUTHORITY_DOMAIN_CONFLATION` | 6 | 5 |
+| `TEST_AUTHORITY_COVERAGE_GAP` | 6 | 5 |
+| `POLICY_STAGE_STATE_CONFLATION` | 4 | 3 |
+| `NONTERMINATING_CUMULATIVE_WORK` | 3 | 2 |
+| `REPRESENTATION_DEPENDENT_IDENTITY` | 2 | 1 |
+| `STATE_CARDINALITY_GROWTH` | 2 | 1 |
+| `CYCLIC_TOPOLOGY_LINEARIZATION` | 2 | 1 |
+| `PRODUCER_DISPOSITION_CONFLATION` | 2 | 1 |
+| `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` | 2 | 1 |
+| `INTRINSIC_SUPPORT_OVERCONSTRAINT` | 1 | 0 |
+| `INCOMPLETE_TRANSACTIONAL_ROLLBACK` | 1 | 0 |
+| `SHARED_EDGE_ORIENTATION_INVERSION` | 1 | 0 |
+| `INCOMPLETE_ORBIT_PUBLICATION` | 1 | 0 |
+| `EXACT_SIMPLEX_CANONICALIZATION_LOSS` | 1 | 0 |
+| **Total** | **34** | **20** |
+
+### Current G4 stable-ID mapping
+
+| PR-wide event | Stable G4 entry | PR-wide category |
+|---|---|---|
+| `PR8-R028` | `G4-R001` | `AUTHORITY_DOMAIN_CONFLATION` |
+| `PR8-R029` | `G4-R002` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` |
+| `PR8-R030` | `G4-R003` | `TEST_AUTHORITY_COVERAGE_GAP` |
+| `PR8-R031` | `G4-R004` | `AUTHORITY_DOMAIN_CONFLATION` |
+| `PR8-R032` | `G4-R005` | `POLICY_STAGE_STATE_CONFLATION` |
+| `PR8-R033` | `G4-R006` | `AUTHORITY_DOMAIN_CONFLATION` |
+| `PR8-R034` | `G4-R007` | `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` |
+
+## Current G4 architectural cause families
 
 | Cause family | Definition | Regression IDs | Recurrence signal |
 |---|---|---|---|
@@ -153,6 +201,9 @@ An architectural review should be requested when any of these occurs:
 5. A new bare numeric field carries topology, source-row, compact-index,
    ownership, or semantic identity authority without a typed domain.
 
-`AUTHORITY_DOMAIN_CONFLATION` and `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY`
-already satisfy trigger 1. The next independent architectural review must
-examine these families even if the immediate torus correction passes.
+The PR-wide rollup shows nine categories with recurrence and five
+single-event categories. `AUTHORITY_DOMAIN_CONFLATION` and
+`LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` already satisfy trigger 1 in the
+current G4 slice. The next independent architectural review must examine these
+families even if the immediate torus correction passes. Only `PR8-R034` /
+`G4-R007` is active at the audited head.

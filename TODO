@@ -17,6 +17,10 @@ Last updated: 2026-08-09 UTC
   `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Report.md`.
 - Regression tracker:
   `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+- PR #8 audit: **34 distinct regression events**, **14 architectural
+  categories**, and **20 recurrences** through `027e5194`; full evidence:
+  `.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
+  `PR8-R034` / `G4-R007` remains active (`fix_pending_runtime`).
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 

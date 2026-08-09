@@ -112,6 +112,14 @@ The runtime baseline remains artifact `9030700527`, implementation
 stable-ID regression record. `G4-R007` is `fix_pending_runtime`; compile
 success does not resolve it.
 
+An independent documentation-only PR #8 audit through
+`027e5194a9013cc1fe9ea18c1b79741301e40f74` identifies **34 distinct
+regression events** in **14 architectural categories**, including **20
+recurrences**. The evidence inventory is
+`.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
+`PR8-R034` / `G4-R007` remains active, as `fix_pending_runtime`; the audit does
+not change the mandatory artifact-only next turn or its immutable inputs.
+
 The cause families `AUTHORITY_DOMAIN_CONFLATION` and
 `LOCAL_CONSUMPTION_OF_GLOBAL_AUTHORITY` have repeated three and two times,
 respectively. Both already require independent architectural review. The
