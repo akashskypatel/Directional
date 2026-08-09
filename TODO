@@ -4,137 +4,144 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **Independent Review — surface-cell testing intent and
-  architecture**.
-- Result: **test-suite redesign required; test authority is a contributing
-  recurring-regression factor, while the immutable multi-rail compile artifact
-  remains accepted and runtime pending**.
+- Completed turn: **artifact-only Test + Benchmark — multi-rail chart reachability**.
+- Result: **rejected as a representative G4 product fix**. All 18 required
+  focused contracts pass, but direct torus remains **0/3** and worsens from
+  165 to **241** `LocalSheetMismatch` issues at
+  `completion/output-validation`.
+- Regression: `PR8-R034 / G4-R007` is **active**. The artifact is persistence
+  and worsening of the unresolved event, not a new recurrence; PR-wide totals
+  remain **34 events / 14 categories / 20 recurrences**.
 - Normative architecture: `.agents/Directional/DESIGN.md`.
 - Normative testing policy: `tests/TESTING_STRATEGY.md`.
-- Test audit/redesign:
-  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
-- Review report:
-  `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`.
-- First mutating turn after artifact closeout: **T1 independent test-oracle
-  foundation — Code + Build**. M1 follows only after T1 immutable acceptance.
-- Queued T1 plan:
-  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
-- Regression: `G4-R007` is `fix_pending_runtime`, not resolved.
-- Review policy: `never` for optional future reviews; this user-requested
-  independent architecture and test-suite review is complete.
-- Next turn: **artifact-only Test + Benchmark — multi-rail chart
-  reachability**.
-- Authoritative plan:
-  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`.
-- Code + Build report:
-  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Code_Build_Report.md`.
+- Runtime report:
+  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Report.md`.
 - Regression tracker:
   `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-- PR #8 audit: **34 distinct regression events**, **14 architectural
-  categories**, and **20 recurrences** through `027e5194`; full evidence:
-  `.agents/Directional/PR_8_Regression_Audit_Inventory.md`. Only
-  `PR8-R034` / `G4-R007` remains active (`fix_pending_runtime`).
+- Test audit/redesign:
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
+- Review policy: `never` for optional future Review turns. The required
+  independent architecture and test-suite reviews are already complete.
+- **Next turn:** T1 independent test-oracle foundation — **Code + Build only**.
+- Authoritative next plan:
+  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
+- M1 production authority-kernel migration remains blocked until T1 passes its
+  immutable Test + Benchmark acceptance.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 
-## Compile authority
+## Current immutable runtime authority
 
-- implementation `6af23d9aeca29e63aa13c4ae49f50d1748939c49`;
-- workflow run/job `31292116792 / 93190952157`;
-- artifact/log artifacts `9031804178 / 9031804382`;
-- outer SHA-256:
+Artifact `9031804178`, implementation
+`6af23d9aeca29e63aa13c4ae49f50d1748939c49`:
+
+- result/log artifacts `9031804178 / 9031804382`;
+- outer SHA-256
   `27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e` /
   `5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905`;
 - recursive package manifest **49/49**, digest
   `2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`;
-- Release/static/Ninja **113/113**, GoogleTest `PRE_TEST`;
-- exactly five allowlisted implementation/test paths changed;
-- 50 package files, five ELF executables, two static libraries, 27 exact
-  fixtures, and all seven source/CMake blobs verified;
-- `runtimeExecution=false`; no tests, discovery, benchmarks, CTest,
-  project CLI/help, or generated binary ran;
-- cleanup head `01b80ac65968906a9d871cee81f154653f452270`
-  reproduces the implementation tree exactly.
+- 50 original package files, five ELF executables, two static libraries, 27
+  fixtures, seven source/CMake blobs, exact five-path patch, source archive,
+  compile database, toolchain/submodules, workflow closure, and
+  `runtimeExecution=false` all verified before runtime;
+- postflight reverified both outer ZIPs, **49/49** manifest entries, and all
+  **50/50** original regular members byte-for-byte;
+- no configure, compile, rebuild, relink, artifact substitution, or
+  source/test/build edit occurred in the artifact-only turn.
 
-## Runtime baseline
+## Focused and bounded runtime
 
-Artifact `9030700527` remains runtime authority until the next turn:
+Discovery, exactly once per executable:
 
-- focused face-chart **7/7**, canonical **7/7**;
-- bounded producer **154/163**, completion **154/164**, validation **67/67**,
-  API **8/8**;
-- plane, seam, close sheets, cylinder direct strict-valid **3/3**;
-- torus deterministic **0/3** with 165 `LocalSheetMismatch` issues after
-  192 completed quads, complete lineage, `4/8/4` consumption, and
-  `1/0/0` topology;
-- pre-regression artifact `9029584083` reported 74 issues;
-- historical exact-torus GoogleTest remains
-  `InvalidHardRailPairing`;
-- prescribed sphere was not run.
+- producer **166** tests;
+- completion **164**;
+- validation **71**;
+- API **8**.
 
-## Next acceptance
+Focused contracts:
 
-1. Consume artifacts `9031804178 / 9031804382` exactly and verify immutable
-   closure.
-2. Discover each GoogleTest executable once.
-3. Run four new multi-rail, seven retained face-chart, and seven canonical
-   contracts individually.
-4. Preserve the historical exact-torus result, six focused groups, and four
-   bounded suites.
-5. Repeat plane → seam → close sheets → cylinder → torus three times without
-   recovery.
-6. Require direct torus strict-valid **3/3**; reduced mismatch count is not
-   acceptance.
-7. Keep sphere gated by the separate hard-rail scheduling blocker.
-8. Update `G4-R007` rather than duplicating it; mark it resolved only if the
-   immutable artifact passes the affected gate.
+- new multi-rail **4/4** individually;
+- retained face-chart **7/7** individually;
+- retained canonical **7/7** individually;
+- total required focused **18/18**.
 
-## Architecture review decision
+Retained groups:
 
-Decision: **changes required before architecture expansion**.
+- transition quotient **29/36**;
+- topology/isolation/hard rail **10/10**;
+- polygonal/curved/mixed **12/12**;
+- periodic/torus/cylinder **6/7**;
+- remaining non-overlap Phase10 **38/39**;
+- direct G0-G3 GoogleTests **4/4**.
 
-- Twelve structural findings (`AR-01` through `AR-12`) are open in the
-  regression tracker's architecture enforcement register.
-- The existing implementation remains behavioral and migration-source
-  authority, not the approved architecture for new feature work.
-- The mandatory artifact-only multi-rail run remains next and may resolve
-  `G4-R007` only at the behavioral/runtime level.
-- After that immutable closeout, T1 first establishes an independent test-only
-  product oracle, mutation adequacy, and packaged discovery without changing
-  production behavior. M1 then introduces strong authority types, a single
-  chart/support model, canonical routes, and compatibility adapters.
-- Nonzero holonomy, adaptivity, and prescribed-singularity expansion may not be
-  added to the legacy authority representation.
+Bounded suites:
 
-## Test-suite audit decision
+- producer literal `-*BunnyRandom*:*Vase*`: **154/163**;
+- completion/simplification: **154/164**;
+- validation: **71/71**;
+- API: **8/8**;
+- aggregate: **387/406**.
 
-Decision: **redesign required**.
+The historical exact-torus GoogleTest still fails upstream at
+`InvalidHardRailPairing`. The strict-validator timing assertion and historical
+completion/simplification ten remain explicit. No failure was hidden or
+reclassified as green.
 
-- All ten committed production fixtures are triangle-only, so pre-quad input
-  is not the current-suite defect.
-- The default direct gate covers six cases and omits torus, thin bent tube,
-  prescribed sphere, and mechanical feature—the richest prescribed
-  topology/field/feature cases.
-- The current direct oracle proves backend/no-recovery/pure-quad mechanics but
-  does not independently gate field/feature alignment, source approximation,
-  exact output topology/lineage, element quality, determinism, or global work.
-- Benchmark quality metrics are observational and partly coupled to production
-  validation; no property generator, shrinker, or coverage-guided fuzz target
-  exists.
-- `TEST_AUTHORITY_COVERAGE_GAP` is six PR events with five recurrences.
-- `TA-01` through `TA-12` and `T0` through `T6` now govern correction. Known-red
-  direct intent remains discovered and explicit; it cannot be disabled or
-  counted as green.
+## Direct production matrix
+
+All cases used requested/executed backend `SurfaceCells`, fallback policy
+`Fail`, source-grid recovery disabled, no legacy fallback, and no input-mesh
+substitution.
+
+| Fixture | Three-process result | Stable output / failure |
+|---|---:|---|
+| Plane | **3/3** | 81 V / 64 Q; `1/1/1`; structural `b243fb3f5f3a3bc4`; semantic `922456fe29a63ba1` |
+| Multi-face seam | **3/3** | 81 V / 64 Q; `1/1/1`; structural `48661113839528d4`; semantic `99c8be7159d05c2f` |
+| Close sheets | **3/3** | 242 V / 200 Q; `2/2/2`; structural `f01bcf687285ee72`; semantic `f40e1aa5f2eb3f92` |
+| Cylinder | **3/3** | 320 V / 288 Q; `1/2/0`; structural `81b3763254afc476`; semantic `98da73e60a564998` |
+| Torus | **0/3** | 192 completed Q, complete lineage, complete `4/8/4`, `1/0/0`, then **241** `LocalSheetMismatch` issues |
+
+Torus had 165 issues in entering runtime artifact `9030700527` and 74 in
+pre-regression artifact `9029584083`. Reduced issue count was not acceptance;
+241 is a clear failed remediation. Prescribed sphere was correctly not run
+because the independent exact-torus hard-rail scheduling blocker remains.
+
+## Test-authority consequence
+
+The artifact provides direct evidence for `RP-02 / TA-05 / AR-12`: all local
+multi-rail and face-chart contracts can pass while the representative product
+case remains invalid. These tests remain valid stage-local contracts; they are
+not promoted to a complete product oracle.
+
+T1 is therefore the next mutating slice exactly as already approved by the
+independent test-suite audit. It must add a test-only independent product oracle
+with mutation adequacy and default package/discovery authority. It must not
+change production behavior.
+
+## Mandatory next-turn regression-pattern review
+
+Before T1 implementation, review `RP-01` through `RP-09` and `TA-01` through
+`TA-12`. T1 directly touches `RP-02` and the test-only aspects of `RP-01`,
+`RP-05`, and `RP-07`; its plan must record intent, proved precondition,
+production entry, independent oracle, rejected counterexample, and exact
+executable/fixture/artifact identity for every new mandatory test family.
+
+Do not use production `result.success`, production validator output, raw IDs,
+ordering, counts, hashes, retention lifetime, compilation, or no-crash as an
+independent semantic oracle.
 
 ## Deferred blockers
 
-1. target-size-dependent shared hard-rail breakpoint scheduling;
-2. nonzero periodic `Z4` rotation;
-3. positive multi-isolation quotient lineage;
-4. multiple periodic-relation owner counterfactuals;
+1. `G4-R007` representative torus local-sheet authority remains active;
+2. target-size-dependent shared hard-rail breakpoint scheduling (`G4-B002`);
+3. nonzero periodic `Z4` rotation (`G4-B003`);
+4. positive multi-isolation quotient lineage (`G4-B004`);
 5. historical completion/simplification ten and strict-validator timing;
 6. prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization
-   quality.
+   quality;
+7. architecture findings `AR-01` through `AR-12` and test findings `TA-01`
+   through `TA-12` remain open until their named migration evidence passes.
 
 Only `.github/workflows/agent-source-snapshot.yml` remains. Every completed
 turn ends with one new top-level PR #8 comment after all other repository
