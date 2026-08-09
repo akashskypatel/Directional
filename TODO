@@ -4,180 +4,114 @@ Last updated: 2026-08-09 UTC
 
 - Phase: P5 — producer-correct direct surface paving.
 - Active gate: **G4 topology-distinct completion and singularities**.
-- Completed turn: **T1 independent test-oracle foundation — Code + Build only**.
-- Result: **accepted for compile/package only**. The test-only oracle, 29 named
-  mutation/metamorphic contracts, six direct-acceptance augmentations, and all
-  eight approved targets compile/link in Release/static/Ninja **117/117**.
-  No generated project binary, test, discovery, or benchmark executed.
-- The current production runtime remains known-red: direct torus is **0/3** and
-  worsened from 165 to **241** `LocalSheetMismatch` issues at
-  `completion/output-validation` in the entering runtime authority.
-- Regression: `PR8-R034 / G4-R007` is **active**. The artifact is persistence
-  and worsening of the unresolved event, not a new recurrence; PR-wide totals
-  remain **34 events / 14 categories / 20 recurrences**.
-- Normative architecture: `.agents/Directional/DESIGN.md`.
-- Normative testing policy: `tests/TESTING_STRATEGY.md`.
-- Runtime report:
-  `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Report.md`.
-- Regression tracker:
-  `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-- Test audit/redesign:
-  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
-- Review policy: `never` for optional future Review turns. The required
-  independent architecture and test-suite reviews are already complete.
-- **Authoritative next turn:** T1 independent test-oracle foundation —
-  **immutable Test + Benchmark** using result artifact `9040549377` and log
-  artifact `9040549498` exactly, with no rebuild or source substitution.
-- T1 Code + Build is complete at implementation
-  `6d1922dd57db76dcc4c19056fdd3573a713dde61`; authoritative run/job
-  `31322039791 / 93266424347` passed.
-- Starting planning head: `ccda7a0c55e38dc0ca7c5c9fa6b5e86bc82bbae8`.
-- T1 changes are confined to the independent oracle support/tests, direct
-  acceptance augmentation, default CMake target/labels, and recovery records.
-- The following turn must verify artifact authority, discover the oracle target
-  exactly once, run all 29 named oracle contracts individually, and run the six
-  existing direct acceptance cases with all prior assertions preserved.
-- Authoritative T1 plan:
-  `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
-- M1 production authority-kernel migration remains blocked until T1 passes its
-  immutable Test + Benchmark acceptance.
+- Completed turn: **T1 independent test-oracle foundation — immutable Test +
+  Benchmark**.
+- Result: **oracle core accepted; T1 direct integration incomplete**.
+- Authoritative next turn: **T1 Direct-Oracle Execution Order — Code + Build
+  only** under
+  `.agents/Directional/Test_Architecture_T1_Direct_Oracle_Execution_Order_Code_Build_Plan.md`.
+- M1 remains blocked until the corrected T1 artifact passes immutable runtime
+  acceptance.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
+- Review policy: `never`.
 
-## T1 immutable compile authority
+## T1 immutable result
 
-Implementation `6d1922dd57db76dcc4c19056fdd3573a713dde61`, run/job
-`31322039791 / 93266424347`:
+Artifact `9040549377`, implementation
+`6d1922dd57db76dcc4c19056fdd3573a713dde61`:
 
 - result/log artifacts `9040549377 / 9040549498`;
 - outer SHA-256
   `06530ff55e63204a7685077862d935cfe24588237391765596a790759eea2097` /
   `6b756784b98dc8532d905ef3869067ddf178e18501afd2fc29139c53a82c9a86`;
-- recursive package manifest **51/51**, digest
+- recursive manifest **51/51**, digest
   `9d3660f8764e57b59c890f0c8afb07e4dcf740e970328e1359acd1c48f61b260`;
-- 52 regular package files including the manifest, six ELF executables, two
-  static libraries, 27 fixtures, exact five source/CMake blobs, seven-path
-  patch, source archive, compile database, toolchain/submodules, exact 29-name
-  oracle manifest, and `runtimeExecution=false` all verified;
-- temporary workflow and trigger removed atomically at
-  `8d153ab4720b129a512cf755f3d77e5ab7738e13`;
-- retention through **2026-08-23 UTC**.
+- Release/static/Ninja **117/117**, eight targets, `PRE_TEST`,
+  `runtimeExecution=false`;
+- package: 52 regular files including manifest, six ELF executables, two
+  libraries, 27 fixtures, exact source/CMake/patch/archive/compile-db authority;
+- postflight preserves every original regular member byte-for-byte.
 
-## Current immutable runtime authority
+Runtime:
 
-Artifact `9031804178`, implementation
-`6af23d9aeca29e63aa13c4ae49f50d1748939c49`:
+- oracle discovery: **29/29** exact names;
+- oracle individual contracts: **29/29**;
+- retained focused: **18/18**;
+- bounded producer/completion/validation/API:
+  **154/163**, **154/164**, **71/71**, **8/8**;
+- bounded aggregate **387/406**, unchanged.
 
-- result/log artifacts `9031804178 / 9031804382`;
-- outer SHA-256
-  `27d16f485c357a236ffd43ce09c335bd246cb3f276cd9cc85b572ca543d87e9e` /
-  `5d0b8d0defa3fc371d71160e1db266d3df8037e14c87cf64181b51637cb8a905`;
-- recursive package manifest **49/49**, digest
-  `2fec5670eb81972233c52c9db1afe82e7eb92da812f1ab537a018bb0d31fb7e2`;
-- 50 original package files, five ELF executables, two static libraries, 27
-  fixtures, seven source/CMake blobs, exact five-path patch, source archive,
-  compile database, toolchain/submodules, workflow closure, and
-  `runtimeExecution=false` all verified before runtime;
-- postflight reverified both outer ZIPs, **49/49** manifest entries, and all
-  **50/50** original regular members byte-for-byte;
-- no configure, compile, rebuild, relink, artifact substitution, or
-  source/test/build edit occurred in the artifact-only turn.
+Direct cases:
 
-## Focused and bounded runtime
+- Plane pass, independent oracle reached;
+- MultiFaceSeam pass, independent oracle reached;
+- CloseSheets pass, independent oracle reached;
+- Cylinder pass, independent oracle reached;
+- BunnyRandom known-red at `NotProductionReady:completion` after 57.225 s;
+  fatal `result.success` assertion prevents oracle execution;
+- Vase did not return within the bounded 60 s safety guard; no oracle/product
+  result is claimed.
 
-Discovery, exactly once per executable:
+Runtime report:
+`.agents/Directional/T1_Independent_Test_Oracle_Foundation_Artifact_Only_Test_Benchmark_Report.md`.
 
-- producer **166** tests;
-- completion **164**;
-- validation **71**;
-- API **8**.
+## T1 blocker and next correction
 
-Focused contracts:
+At implementation `6d1922dd...`,
+`tests/SurfaceCellDesignAcceptanceTests.cpp` performs
+`ASSERT_TRUE(result.success)` before `inspect_surface_cell_product(...)`.
+Returned known-red results therefore skip the independent oracle.
 
-- new multi-rail **4/4** individually;
-- retained face-chart **7/7** individually;
-- retained canonical **7/7** individually;
-- total required focused **18/18**.
+Next Code + Build is test-only and may change only that direct-acceptance file
+plus truthful status records. Required shape:
 
-Retained groups:
+1. call production exactly as today;
+2. immediately inspect every returned `RemeshResult` with the independent
+   oracle using a nonfatal assertion;
+3. keep the existing fatal `ASSERT_TRUE(result.success)` and every later
+   product assertion unchanged;
+4. compile/package only; execute no generated project binary.
 
-- transition quotient **29/36**;
-- topology/isolation/hard rail **10/10**;
-- polygonal/curved/mixed **12/12**;
-- periodic/torus/cylinder **6/7**;
-- remaining non-overlap Phase10 **38/39**;
-- direct G0-G3 GoogleTests **4/4**.
+No production/API/fixture/oracle-support/CMake/validator/benchmark behavior
+change is authorized.
 
-Bounded suites:
+## Regression status
 
-- producer literal `-*BunnyRandom*:*Vase*`: **154/163**;
-- completion/simplification: **154/164**;
-- validation: **71/71**;
-- API: **8/8**;
-- aggregate: **387/406**.
+- `PR8-R034 / G4-R007` remains **active** on production artifact `9031804178`:
+  direct torus **0/3**, 241 `LocalSheetMismatch` issues after 192 quads,
+  complete lineage, `4/8/4`, `1/0/0`.
+- T1 creates no new production regression or recurrence.
+- The direct-oracle ordering defect is incomplete new test architecture under
+  `RP-02 / TA-05`, not a new stable historical event because T1 had not been
+  accepted previously.
+- PR-wide totals stay **34 events / 14 categories / 20 recurrences**.
 
-The historical exact-torus GoogleTest still fails upstream at
-`InvalidHardRailPairing`. The strict-validator timing assertion and historical
-completion/simplification ten remain explicit. No failure was hidden or
-reclassified as green.
+## Testing/architecture authority
 
-## Direct production matrix
+- Normative architecture: `.agents/Directional/DESIGN.md`.
+- Normative testing policy: `tests/TESTING_STRATEGY.md`.
+- Test audit/redesign:
+  `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`.
+- Regression tracker:
+  `.agents/Directional/Regression_Root_Cause_Tracker.md`.
 
-All cases used requested/executed backend `SurfaceCells`, fallback policy
-`Fail`, source-grid recovery disabled, no legacy fallback, and no input-mesh
-substitution.
-
-| Fixture | Three-process result | Stable output / failure |
-|---|---:|---|
-| Plane | **3/3** | 81 V / 64 Q; `1/1/1`; structural `b243fb3f5f3a3bc4`; semantic `922456fe29a63ba1` |
-| Multi-face seam | **3/3** | 81 V / 64 Q; `1/1/1`; structural `48661113839528d4`; semantic `99c8be7159d05c2f` |
-| Close sheets | **3/3** | 242 V / 200 Q; `2/2/2`; structural `f01bcf687285ee72`; semantic `f40e1aa5f2eb3f92` |
-| Cylinder | **3/3** | 320 V / 288 Q; `1/2/0`; structural `81b3763254afc476`; semantic `98da73e60a564998` |
-| Torus | **0/3** | 192 completed Q, complete lineage, complete `4/8/4`, `1/0/0`, then **241** `LocalSheetMismatch` issues |
-
-Torus had 165 issues in entering runtime artifact `9030700527` and 74 in
-pre-regression artifact `9029584083`. Reduced issue count was not acceptance;
-241 is a clear failed remediation. Prescribed sphere was correctly not run
-because the independent exact-torus hard-rail scheduling blocker remains.
-
-## Test-authority consequence
-
-The artifact provides direct evidence for `RP-02 / TA-05 / AR-12`: all local
-multi-rail and face-chart contracts can pass while the representative product
-case remains invalid. These tests remain valid stage-local contracts; they are
-not promoted to a complete product oracle.
-
-T1 Code + Build has now added the approved test-only independent product oracle
-with mutation coverage and default package authority without changing production
-behavior. Compilation does not prove that the oracle detects every deliberate
-corruption or that the six direct integrations pass; the immutable following
-turn must establish that runtime acceptance from artifact `9040549377`.
-
-## Mandatory next-turn regression-pattern review
-
-The immutable T1 Test + Benchmark turn must preserve the completed mapping of
-`RP-01` through `RP-09` and `TA-01` through `TA-12`. T1 directly touches
-`RP-02` and the test-only aspects of `RP-01`, `RP-05`, and `RP-07`; every named
-runtime result must retain its recorded intent, proved precondition, production
-entry, independent oracle, rejected counterexample, and exact executable/test/
-artifact identity.
-
-Do not use production `result.success`, production validator output, raw IDs,
-ordering, counts, hashes, retention lifetime, compilation, or no-crash as an
-independent semantic oracle.
+T1 now proves independent mutation handling, package/discovery authority, typed
+test domains, and canonical row/cycle/reversal invariance. It does not close the
+full product oracle, field/feature/geometry quality, ten-case matrix,
+resource-budget, fuzz/property, or production architecture work assigned to
+T2–T6/M1–M6.
 
 ## Deferred blockers
 
-1. `G4-R007` representative torus local-sheet authority remains active;
-2. target-size-dependent shared hard-rail breakpoint scheduling (`G4-B002`);
-3. nonzero periodic `Z4` rotation (`G4-B003`);
-4. positive multi-isolation quotient lineage (`G4-B004`);
-5. historical completion/simplification ten and strict-validator timing;
-6. prescribed sphere, G5/G6, bunny/vase, fallback/recovery, and optimization
-   quality;
-7. architecture findings `AR-01` through `AR-12` and test findings `TA-01`
-   through `TA-12` remain open until their named migration evidence passes.
+1. active direct-torus `G4-R007`;
+2. shared hard-rail scheduling `G4-B002`;
+3. nonzero periodic `Z4` rotation `G4-B003`;
+4. positive multi-isolation witness `G4-B004`;
+5. seven historical transition-quotient failures;
+6. ten historical completion/simplification failures;
+7. strict-validator timing;
+8. prescribed sphere, G5/G6, Bunny/Vase, fallback/recovery, optimization.
 
-Only `.github/workflows/agent-source-snapshot.yml` remains. Every completed
-turn ends with one new top-level PR #8 comment after all other repository
-writes.
+Every completed turn ends with one new top-level PR #8 conversation comment
+after all other branch and PR-body writes.
