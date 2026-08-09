@@ -18,8 +18,8 @@ DomainResult<SourceEdgeTopologyKey>
 SourceEdgeTopologyKey::make(SourceVertexId a, SourceVertexId b) {
   if (a == b) {
     return DomainResult<SourceEdgeTopologyKey>(DomainError{
-        DomainErrorCode::DegenerateSourceEdge, AuthorityDomain::SourceVertex,
-        AuthorityDomain::SourceVertex,
+        DomainErrorCode::DegenerateSourceEdge,
+        AuthorityDomain::SourceEdgeTopology, std::nullopt,
         static_cast<std::int64_t>(a.value()), 0});
   }
   if (b < a) {
