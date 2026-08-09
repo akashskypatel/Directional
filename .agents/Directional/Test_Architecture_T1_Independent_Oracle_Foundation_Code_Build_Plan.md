@@ -1,9 +1,9 @@
 # T1 Independent Test-Oracle Foundation — Code + Build Plan
 
-**Status:** queued; do not execute before the current multi-rail artifact-only closeout  
+**Status:** authoritative next turn; multi-rail artifact-only closeout completed  
 **Turn type:** Code + Build only  
 **Production behavior delta:** none  
-**Depends on:** M0 artifact-only closeout and the accepted test-suite audit  
+**Depends on:** completed M0 artifact-only closeout and the accepted test-suite audit  
 **Repository:** `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8
 
 ## 1. Objective
@@ -20,18 +20,67 @@ validator as its own oracle.
 
 ## 2. Preconditions
 
-Before this plan starts:
+The prerequisite artifact-only turn is complete against artifacts
+`9031804178 / 9031804382` without rebuild or source/test/build edits.
 
-1. complete
-   `.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Plan.md`
-   against artifacts `9031804178 / 9031804382` unchanged;
-2. update `G4-R007` from that runtime evidence;
-3. preserve the resulting immutable runtime baseline;
-4. review `RP-01` through `RP-09` and `TA-01` through `TA-12`;
-5. record the mandatory repeated-pattern table and the six-part intent record
-   for every new test family.
+Runtime closeout:
 
-## 3. Allowed scope
+- four new multi-rail, seven retained face-chart, and seven retained canonical
+  contracts passed individually: **18/18**;
+- bounded producer/completion/validation/API are **154/163**, **154/164**,
+  **71/71**, and **8/8**;
+- plane, seam, close sheets, and cylinder remain direct strict-valid **3/3**;
+- direct torus remains **0/3** after 192 completed quads, complete lineage,
+  complete `4/8/4` authority consumption, and `1/0/0` topology;
+- torus final validation now reports **241** `LocalSheetMismatch` issues,
+  versus 165 under entering artifact `9030700527` and 74 under pre-regression
+  artifact `9029584083`;
+- `G4-R007` is therefore **active**, not resolved. This is persistence and
+  worsening of the unresolved event, not a new recurrence;
+- prescribed sphere remains gated by the independent historical exact-torus
+  `InvalidHardRailPairing` scheduling blocker.
+
+The runtime report is:
+
+`.agents/Directional/Gate_4_Torus_Multi_Rail_Chart_Reachability_Artifact_Only_Test_Benchmark_Report.md`
+
+The closeout supplies direct evidence for `RP-02 / TA-05 / AR-12`: focused
+stage-local tests can pass while representative production remains red. T1 is
+therefore mandatory before M1; it is not permission to weaken the existing
+focused contracts.
+
+Before implementation:
+
+1. review `RP-01` through `RP-09` and `TA-01` through `TA-12`;
+2. preserve `G4-R007` as the entering known-red product baseline;
+3. record the mandatory repeated-pattern table below for the actual diff;
+4. record the six-part intent record for every new mandatory test family;
+5. verify the branch still contains no user/runtime changes after the artifact
+   closeout other than documentation/status records.
+
+## 3. Mandatory repeated-pattern review for T1
+
+T1 is test-only, but it directly changes test authority. The implementation
+record must fill exact source/test symbols and final immutable evidence for
+every touched row.
+
+| Pattern | Expected T1 touch | Required invariant before code is accepted | Required following evidence |
+|---|---|---|---|
+| `RP-01` authority-domain conflation | yes, test-side representations | Oracle types must distinguish topology, source indices, lineage, and semantic identity; no bare numeric field may stand for multiple domains. | deliberate domain-corruption mutations rejected independently |
+| `RP-02` proxy/incomplete test authority | **primary** | Oracle uses independently written observable input/output decisions and is default-built/discovered; production validator/result success is not its oracle. | every positive/mutation test individually discovered/run in immutable artifact |
+| `RP-03` policy/state conflation | possible | Oracle result and production disposition remain separate values; no shared flag changes runtime policy. | backend/fallback/origin mutation cases plus byte-identical production sources |
+| `RP-04` cumulative work | no algorithmic growth | Oracle is linear/bounded over provided input/output incidence; no recursive search. | static inspection and bounded test runtime |
+| `RP-05` representation-dependent identity | yes | Canonical topology/lineage facts are invariant to vertex/face row order and cyclic/reversed quad representation. | row/cycle/reversal metamorphic tests |
+| `RP-06` duplicated shared authority | no production storage | Test oracle does not copy unbounded global membership per consumer. | static inspection; no production change |
+| `RP-07` cyclic topology linearization | yes | Boundary loops and quad faces are canonicalized cyclically; wraparound is first-class. | cyclic/reversed face and boundary mutation coverage |
+| `RP-08` producer disposition conflation | no production change | Oracle records production disposition as an observed contract without reducing typed states. | fallback/recovery/backend/output-origin mutations |
+| `RP-09` global authority consumed locally | no new product resolver | T1 must not reconstruct or bless chart-relation authority as product truth; lineage checks stay at public observable shape/domain level. | no calls to production chart resolver/validator; current torus remains known-red |
+
+If the actual implementation needs production/API changes or cannot satisfy a
+touched row without reusing production decision procedures, stop and return to
+Review. Do not expand this slice.
+
+## 4. Allowed scope
 
 Allowed implementation/test/build paths:
 
@@ -62,7 +111,7 @@ Prohibited:
 If compilation exposes a required production/API change, stop and return to
 Review. Do not expand this slice.
 
-## 4. Test-only oracle boundary
+## 5. Test-only oracle boundary
 
 The test oracle consumes immutable source input, public remesh result, and
 declared fixture expectations. It may use Eigen and independently written
@@ -91,7 +140,7 @@ T1 implements these exact checks:
 T1 must distinguish hard exact invariants from tolerance-derived geometry
 diagnostics. A tolerance result cannot become topology identity.
 
-## 5. Oracle-mutation tests
+## 6. Oracle-mutation tests
 
 Every oracle check needs a positive control and at least one deliberate
 single-fact corruption. Minimum mutations:
@@ -124,7 +173,7 @@ The positive output must not be synthesized by first accepting production
 output. Use minimal hand-authored source/result records whose intended
 topology and lineage are independently obvious.
 
-## 6. Integration with direct acceptance
+## 7. Integration with direct acceptance
 
 Refactor the six existing direct acceptance cases to invoke the independent T1
 oracle after the public production call. Preserve every current backend,
@@ -136,9 +185,11 @@ sole semantic authority. A failing independent oracle remains a test failure
 even when production validation says success.
 
 T2—not T1—adds torus, thin bent tube, prescribed sphere, and mechanical
-feature to the direct matrix and adds the semantic fixture manifest.
+feature to the direct matrix and adds the semantic fixture manifest. The
+current torus failure remains explicit in the runtime tracker; T1 must not
+silently add or remove it from acceptance to make the suite green.
 
-## 7. Packaging
+## 8. Packaging
 
 Prefer one new default-built executable
 `directional_surface_cell_oracle_tests` with labels
@@ -156,7 +207,7 @@ mandatory oracle test may depend on
 `DIRECTIONAL_BUILD_HISTORICAL_TESTS`, optional guidance, or legacy integration
 options.
 
-## 8. Code + Build acceptance
+## 9. Code + Build acceptance
 
 The turn succeeds only when:
 
@@ -177,7 +228,7 @@ The turn succeeds only when:
 
 Compilation is not test acceptance.
 
-## 9. Required following Test + Benchmark
+## 10. Required following Test + Benchmark
 
 The following immutable turn must:
 
@@ -197,10 +248,9 @@ Any oracle false negative, false positive, production-validator coupling,
 missing discovery entry, assertion weakening, or artifact substitution rejects
 T1 and blocks M1.
 
-## 10. Handoff after T1
+## 11. Handoff after T1
 
 If T1 immutable acceptance passes, M1 authority-kernel Code + Build may begin
 and must use the accepted intent/precondition/oracle/counterexample/evidence
 format. T2 complete direct corpus/semantic manifest remains required before M2
 behavior migration.
-
