@@ -1145,7 +1145,8 @@ std::pair<int, int> consistent_component_sheet(
                 std::numeric_limits<int>::max()};
       }
       const auto resolution = labelSupport.resolve_compatible_chart(
-          points, authority.vertices);
+          points, authority.vertices, &provenance,
+          &constraints->vertexChartAuthority);
       const std::set<std::pair<int, int>> labels =
           labelSupport.chart_labels(resolution.chartFaces);
       if (labels.size() == 1U) {
@@ -1232,7 +1233,9 @@ SurfacePoint quad_reference_surface_point(
       quads, face, constraints, provenance.size());
   const auto resolution =
       authority.valid
-          ? labelSupport.resolve_compatible_chart(points, authority.vertices)
+          ? labelSupport.resolve_compatible_chart(
+                points, authority.vertices, &provenance,
+                &constraints.vertexChartAuthority)
           : validation::source_authoritative_detail::SourceChartCompatibility{};
   const std::vector<int> &chartFaces = resolution.chartFaces;
   SourceProjectionCache localCache(constraints);
@@ -2568,7 +2571,9 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
     const std::vector<int> chartFaces =
         authority.valid
             ? sourceLabelSupport.compatible_chart_faces(facePoints,
-                                                        authority.vertices)
+                                                        authority.vertices,
+                                                        &provenance,
+                                                        &constraints.vertexChartAuthority)
             : std::vector<int>{};
     const auto [component, sheet] =
         consistent_component_sheet(quads, face, provenance, &constraints);

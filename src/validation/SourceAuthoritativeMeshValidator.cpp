@@ -619,7 +619,9 @@ namespace directional::validation::source_authoritative_detail {
 
 SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     const std::vector<const geometry::SurfacePoint *> &points,
-    const std::vector<const SourceVertexChartAuthority *> &authorities) const {
+    const std::vector<const SourceVertexChartAuthority *> &authorities,
+    const std::vector<geometry::SurfacePoint> *completePoints,
+    const std::vector<SourceVertexChartAuthority> *completeAuthorities) const {
   SourceChartCompatibility result;
   if (!available() || points.empty() ||
       (!authorities.empty() && authorities.size() != points.size())) {
@@ -628,17 +630,27 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
 
   struct PointCandidate {
     bool scalar = false;
+    bool witnessed = false;
     std::set<int> exactFaces;
-    std::set<SourceHardRailChartEquivalence> equivalences;
   };
-  std::vector<std::map<int, PointCandidate>> candidates(points.size());
+  struct AuthorityGraph {
+    std::set<int> scalarRoots;
+    std::map<int, std::set<int>> exactFaces;
+    std::map<int, std::set<int>> adjacency;
+    std::set<int> reachable;
+    std::set<int> witnessed;
+  };
 
   const auto route_is_well_formed = [](
                                         const std::vector<std::uint64_t>
                                             &route) {
-    return !route.empty() &&
-           std::set<std::uint64_t>(route.begin(), route.end()).size() ==
-               route.size();
+    if (route.empty() ||
+        std::set<std::uint64_t>(route.begin(), route.end()).size() !=
+            route.size()) {
+      return false;
+    }
+    const std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
+    return !(reversed < route);
   };
   const auto point_touches_edge = [](
                                       const geometry::SurfacePointSourceSupport
@@ -657,11 +669,12 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
                geometry::SurfacePointSourceEntityKind::SourceVertex &&
            (support.sourceVertex == first || support.sourceVertex == second);
   };
-  const auto valid_equivalence = [&](
-                                     const SourceHardRailChartEquivalence
-                                         &equivalence,
-                                     const geometry::SurfacePointSourceSupport
-                                         &support) {
+  const auto relation_components = [&](
+                                        const SourceHardRailChartEquivalence
+                                            &equivalence,
+                                        const geometry::SurfacePointSourceSupport
+                                            &support,
+                                        std::pair<int, int> &components) {
     if (equivalence.firstFrontEdge < 0 ||
         equivalence.firstFrontEdge >= equivalence.secondFrontEdge ||
         equivalence.railId < 0 ||
@@ -669,6 +682,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
       return false;
     }
     bool touchesPoint = false;
+    std::pair<int, int> separated{-1, -1};
     for (const std::uint64_t topology :
          equivalence.sourceRouteTopology) {
       const auto incidence = sourceEdgeFaces.find(topology);
@@ -678,173 +692,224 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
           incidence->second.size() != 2U) {
         return false;
       }
-      touchesPoint = touchesPoint || point_touches_edge(support, topology);
-    }
-    return touchesPoint;
-  };
-  const auto equivalence_connects = [&](
-                                        const SourceHardRailChartEquivalence
-                                            &equivalence,
-                                        const geometry::SurfacePointSourceSupport
-                                            &support,
-                                        const int scalarComponent,
-                                        const int targetComponent) {
-    if (scalarComponent < 0 || targetComponent < 0 ||
-        scalarComponent == targetComponent) {
-      return false;
-    }
-    for (const std::uint64_t topology :
-         equivalence.sourceRouteTopology) {
-      if (!point_touches_edge(support, topology)) {
-        continue;
-      }
-      const auto incidence = sourceEdgeFaces.find(topology);
-      if (incidence == sourceEdgeFaces.end() ||
-          incidence->second.size() != 2U) {
-        continue;
-      }
       const int firstComponent =
           transitionGraph.chart_component(incidence->second[0]);
       const int secondComponent =
           transitionGraph.chart_component(incidence->second[1]);
-      if ((firstComponent == scalarComponent &&
-           secondComponent == targetComponent) ||
-          (firstComponent == targetComponent &&
-           secondComponent == scalarComponent)) {
-        return true;
+      if (firstComponent < 0 || secondComponent < 0 ||
+          firstComponent == secondComponent) {
+        return false;
       }
+      const std::pair<int, int> edgeComponents{
+          std::min(firstComponent, secondComponent),
+          std::max(firstComponent, secondComponent)};
+      if (separated.first < 0) {
+        separated = edgeComponents;
+      } else if (separated != edgeComponents) {
+        return false;
+      }
+      touchesPoint = touchesPoint || point_touches_edge(support, topology);
     }
-    return false;
+    if (!touchesPoint || separated.first < 0) {
+      return false;
+    }
+    components = separated;
+    return true;
   };
-
-  for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
-    const geometry::SurfacePoint *point = points[pointIndex];
-    if (point == nullptr || point->face < 0 ||
-        point->face >= sourceFaces->rows()) {
-      return {};
+  const auto initialize_scalar_state = [&]
+      (const geometry::SurfacePoint &point,
+       geometry::SurfacePointSourceSupport &support,
+       geometry::SourceChartId &declared, std::set<int> &scalarComponents,
+       std::map<int, std::set<int>> &exactFaces) {
+    if (point.face < 0 || point.face >= sourceFaces->rows()) {
+      return false;
     }
-    const geometry::SourceChartId declared =
-        transitionGraph.chart(point->face);
+    declared = transitionGraph.chart(point.face);
     if (!declared.valid() ||
-        (point->component >= 0 && point->component != declared.component) ||
-        (point->sheet >= 0 && point->sheet != declared.localSheet)) {
-      return {};
+        (point.component >= 0 && point.component != declared.component) ||
+        (point.sheet >= 0 && point.sheet != declared.localSheet)) {
+      return false;
     }
-    const geometry::SurfacePointSourceSupport support =
-        sourceSupport.resolve(*point);
+    support = sourceSupport.resolve(point);
     if (!support.valid()) {
-      return {};
+      return false;
     }
-
-    std::set<int> scalarComponents;
     for (const int face : support.supportedFaces) {
       geometry::SurfacePoint rebound;
-      if (!transitionGraph.rebind(*point, face, rebound)) {
+      if (!transitionGraph.rebind(point, face, rebound)) {
         continue;
       }
       const int component = transitionGraph.chart_component(face);
       if (component >= 0) {
         scalarComponents.insert(component);
-        PointCandidate &candidate =
-            candidates[pointIndex][component];
+        exactFaces[component].insert(face);
+      }
+    }
+    return !scalarComponents.empty();
+  };
+
+  std::vector<std::map<int, PointCandidate>> candidates(points.size());
+  if (authorities.empty()) {
+    for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
+      const geometry::SurfacePoint *point = points[pointIndex];
+      geometry::SurfacePointSourceSupport support;
+      geometry::SourceChartId declared;
+      std::set<int> scalarComponents;
+      std::map<int, std::set<int>> exactFaces;
+      if (point == nullptr ||
+          !initialize_scalar_state(*point, support, declared,
+                                   scalarComponents, exactFaces)) {
+        return {};
+      }
+      for (const int component : scalarComponents) {
+        PointCandidate &candidate = candidates[pointIndex][component];
         candidate.scalar = true;
-        candidate.exactFaces.insert(face);
+        candidate.witnessed = true;
+        candidate.exactFaces = exactFaces[component];
       }
     }
-    if (scalarComponents.empty()) {
+  } else {
+    if (completePoints == nullptr || completeAuthorities == nullptr ||
+        completePoints->size() != completeAuthorities->size() ||
+        completePoints->empty()) {
       return {};
     }
 
-    const SourceVertexChartAuthority *authority =
-        authorities.empty() ? nullptr : authorities[pointIndex];
-    if (authority == nullptr) {
-      continue;
-    }
-    if (!authority->retained || authority->sourceCharts.empty() ||
-        !std::is_sorted(authority->sourceCharts.begin(),
-                        authority->sourceCharts.end()) ||
-        std::adjacent_find(authority->sourceCharts.begin(),
-                           authority->sourceCharts.end()) !=
-            authority->sourceCharts.end() ||
-        !std::is_sorted(authority->hardRailEquivalences.begin(),
-                        authority->hardRailEquivalences.end()) ||
-        std::adjacent_find(authority->hardRailEquivalences.begin(),
-                           authority->hardRailEquivalences.end()) !=
-            authority->hardRailEquivalences.end()) {
-      return {};
-    }
-    const geometry::SurfaceCellSourceChart declaredChart{
-        declared.component, declared.sourceFace, declared.localSheet};
-    if (!std::binary_search(authority->sourceCharts.begin(),
-                            authority->sourceCharts.end(), declaredChart)) {
-      return {};
-    }
+    std::map<const SourceVertexChartAuthority *, std::size_t>
+        authorityIndices;
+    std::vector<AuthorityGraph> graphs(completeAuthorities->size());
+    std::map<SourceHardRailChartEquivalence, std::set<std::size_t>>
+        relationOwners;
+    for (std::size_t vertex = 0; vertex < completeAuthorities->size();
+         ++vertex) {
+      const SourceVertexChartAuthority &authority =
+          (*completeAuthorities)[vertex];
+      authorityIndices.emplace(&authority, vertex);
+      if (!authority.retained || authority.sourceCharts.empty() ||
+          !std::is_sorted(authority.sourceCharts.begin(),
+                          authority.sourceCharts.end()) ||
+          std::adjacent_find(authority.sourceCharts.begin(),
+                             authority.sourceCharts.end()) !=
+              authority.sourceCharts.end() ||
+          !std::is_sorted(authority.hardRailEquivalences.begin(),
+                          authority.hardRailEquivalences.end()) ||
+          std::adjacent_find(authority.hardRailEquivalences.begin(),
+                             authority.hardRailEquivalences.end()) !=
+              authority.hardRailEquivalences.end()) {
+        return {};
+      }
 
-    std::vector<unsigned char> usedEquivalences(
-        authority->hardRailEquivalences.size(), 0U);
-    for (const SourceHardRailChartEquivalence &equivalence :
-         authority->hardRailEquivalences) {
-      if (!valid_equivalence(equivalence, support)) {
+      geometry::SurfacePointSourceSupport support;
+      geometry::SourceChartId declared;
+      std::set<int> scalarComponents;
+      std::map<int, std::set<int>> scalarFaces;
+      if (!initialize_scalar_state((*completePoints)[vertex], support,
+                                   declared, scalarComponents, scalarFaces)) {
         return {};
       }
-    }
-    for (const geometry::SurfaceCellSourceChart &chart :
-         authority->sourceCharts) {
-      if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
-          !std::binary_search(support.supportedFaces.begin(),
-                              support.supportedFaces.end(),
-                              chart.sourceFace)) {
+      const geometry::SurfaceCellSourceChart declaredChart{
+          declared.component, declared.sourceFace, declared.localSheet};
+      if (!std::binary_search(authority.sourceCharts.begin(),
+                              authority.sourceCharts.end(), declaredChart)) {
         return {};
       }
-      const geometry::SourceChartId actual =
-          transitionGraph.chart(chart.sourceFace);
-      if (!actual.valid() || actual.component != chart.sourceComponent ||
-          actual.localSheet != chart.localSheet ||
-          actual.component != declared.component) {
+
+      AuthorityGraph &graph = graphs[vertex];
+      for (const geometry::SurfaceCellSourceChart &chart :
+           authority.sourceCharts) {
+        if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
+            !std::binary_search(support.supportedFaces.begin(),
+                                support.supportedFaces.end(),
+                                chart.sourceFace)) {
+          return {};
+        }
+        const geometry::SourceChartId actual =
+            transitionGraph.chart(chart.sourceFace);
+        if (!actual.valid() || actual.component != chart.sourceComponent ||
+            actual.localSheet != chart.localSheet ||
+            actual.component != declared.component) {
+          return {};
+        }
+        const int component = transitionGraph.chart_component(actual);
+        if (component < 0) {
+          return {};
+        }
+        graph.exactFaces[component].insert(chart.sourceFace);
+      }
+      for (const int component : scalarComponents) {
+        if (graph.exactFaces.count(component) != 0U) {
+          graph.scalarRoots.insert(component);
+          graph.exactFaces[component].insert(
+              scalarFaces[component].begin(), scalarFaces[component].end());
+        }
+      }
+      if (graph.scalarRoots.empty()) {
         return {};
       }
-      const int targetComponent =
-          transitionGraph.chart_component(actual);
-      if (targetComponent < 0) {
-        return {};
+
+      for (const SourceHardRailChartEquivalence &equivalence :
+           authority.hardRailEquivalences) {
+        std::pair<int, int> endpoints;
+        if (!relation_components(equivalence, support, endpoints) ||
+            graph.exactFaces.count(endpoints.first) == 0U ||
+            graph.exactFaces.count(endpoints.second) == 0U) {
+          return {};
+        }
+        graph.adjacency[endpoints.first].insert(endpoints.second);
+        graph.adjacency[endpoints.second].insert(endpoints.first);
+        relationOwners[equivalence].insert(vertex);
       }
-      PointCandidate &candidate =
-          candidates[pointIndex][targetComponent];
-      candidate.exactFaces.insert(chart.sourceFace);
-      if (scalarComponents.count(targetComponent) != 0U) {
-        continue;
-      }
-      bool authorized = false;
-      for (std::size_t equivalenceIndex = 0;
-           equivalenceIndex < authority->hardRailEquivalences.size();
-           ++equivalenceIndex) {
-        const SourceHardRailChartEquivalence &equivalence =
-            authority->hardRailEquivalences[equivalenceIndex];
-        const bool connects = std::any_of(
-            scalarComponents.begin(), scalarComponents.end(),
-            [&](const int scalarComponent) {
-              return equivalence_connects(equivalence, support,
-                                          scalarComponent,
-                                          targetComponent);
-            });
-        if (!connects) {
+
+      std::vector<int> stack(graph.scalarRoots.begin(),
+                             graph.scalarRoots.end());
+      graph.reachable.insert(graph.scalarRoots.begin(),
+                             graph.scalarRoots.end());
+      while (!stack.empty()) {
+        const int component = stack.back();
+        stack.pop_back();
+        const auto adjacent = graph.adjacency.find(component);
+        if (adjacent == graph.adjacency.end()) {
           continue;
         }
-        authorized = true;
-        usedEquivalences[equivalenceIndex] = 1U;
-        candidate.equivalences.insert(equivalence);
-        for (const int scalarComponent : scalarComponents) {
-          candidates[pointIndex][scalarComponent].equivalences.insert(
-              equivalence);
+        for (const int next : adjacent->second) {
+          if (graph.reachable.insert(next).second) {
+            graph.witnessed.insert(next);
+            stack.push_back(next);
+          }
         }
       }
-      if (!authorized) {
+      for (const auto &[component, faces] : graph.exactFaces) {
+        if (faces.empty() || graph.reachable.count(component) == 0U) {
+          return {};
+        }
+      }
+    }
+
+    for (const auto &[equivalence, owners] : relationOwners) {
+      (void)equivalence;
+      if (owners.size() != 2U) {
         return {};
       }
     }
-    if (std::any_of(usedEquivalences.begin(), usedEquivalences.end(),
-                    [](const unsigned char used) { return used == 0U; })) {
-      return {};
+
+    for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
+      const SourceVertexChartAuthority *authority = authorities[pointIndex];
+      const auto found = authorityIndices.find(authority);
+      if (authority == nullptr || found == authorityIndices.end() ||
+          points[pointIndex] != &(*completePoints)[found->second]) {
+        return {};
+      }
+      const AuthorityGraph &graph = graphs[found->second];
+      for (const auto &[component, faces] : graph.exactFaces) {
+        if (graph.reachable.count(component) == 0U) {
+          continue;
+        }
+        PointCandidate &candidate = candidates[pointIndex][component];
+        candidate.scalar = graph.scalarRoots.count(component) != 0U;
+        candidate.witnessed = candidate.scalar ||
+                              graph.witnessed.count(component) != 0U;
+        candidate.exactFaces = faces;
+      }
     }
   }
 
@@ -871,25 +936,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
        ++pointIndex) {
     const PointCandidate &candidate =
         candidates[pointIndex].at(selectedComponent);
-    if (candidate.scalar) {
-      continue;
-    }
-    const bool hasReciprocalPeer = std::any_of(
-        candidate.equivalences.begin(), candidate.equivalences.end(),
-        [&](const SourceHardRailChartEquivalence &equivalence) {
-          for (std::size_t peer = 0; peer < candidates.size(); ++peer) {
-            if (peer == pointIndex) {
-              continue;
-            }
-            const auto peerCandidate = candidates[peer].find(selectedComponent);
-            if (peerCandidate != candidates[peer].end() &&
-                peerCandidate->second.equivalences.count(equivalence) != 0U) {
-              return true;
-            }
-          }
-          return false;
-        });
-    if (!hasReciprocalPeer) {
+    if (!candidate.scalar && !candidate.witnessed) {
       return {};
     }
   }
@@ -1161,7 +1208,9 @@ validate_source_authoritative_surface_mesh(
     const SourceChartCompatibility faceChart =
         faceProvenanceValid
             ? labelSupport.resolve_compatible_chart(facePoints,
-                                                    faceAuthorities)
+                                                    faceAuthorities,
+                                                    &provenance,
+                                                    options.vertexChartAuthority)
             : SourceChartCompatibility{};
     if (options.requireLocalSheetCompatibility && !faceChart.valid()) {
       result.localSheetCompatibilityPassed = false;
@@ -1322,7 +1371,8 @@ validate_source_authoritative_surface_mesh(
                 static_cast<std::size_t>(edge.second)]};
       }
       if (!labelSupport.have_compatible_chart(edgePoints,
-                                              edgeAuthorities)) {
+                                              edgeAuthorities, &provenance,
+                                              options.vertexChartAuthority)) {
         return;
       }
       const Eigen::Vector3d point = vertices.row(vertex).transpose();

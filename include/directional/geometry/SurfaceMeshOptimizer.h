@@ -644,7 +644,9 @@ struct OutputProjectionCache {
         if (authority.valid) {
           labels = labelSupport.chart_labels(
               labelSupport.compatible_chart_faces(points,
-                                                  authority.vertices));
+                                                  authority.vertices,
+                                                  &provenance,
+                                                  &constraints->vertexChartAuthority));
         }
       }
       if (labels.empty() && component >= 0 && sheet >= 0) {

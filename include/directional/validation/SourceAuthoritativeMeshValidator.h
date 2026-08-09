@@ -44,8 +44,8 @@ struct MeshTopologySummary {
   bool boundaryCyclesClosed = true;
 };
 
-/** Exact quotient authority permitting one output vertex to use the source
- * chart on the opposite side of one retained hard-rail pairing. */
+/** One exact hard-rail edge in an output vertex's retained source-chart
+ * reachability graph. */
 struct SourceHardRailChartEquivalence {
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
@@ -405,19 +405,26 @@ struct SourcePointLabelSupport {
     return sharedVertices == 2;
   }
 
-  // A completed output face may live on one source chart component or use one
-  // exact quotient-retained hard-rail pairing. Proximity, row order, and a
-  // global hard-feature union never establish compatibility.
+  // A completed output face may live on one source chart component or reach
+  // one through exact quotient-retained hard-rail relations. Complete output
+  // authority establishes reciprocity; proximity, row order, and a global
+  // hard-feature union never establish compatibility.
   [[nodiscard]] SourceChartCompatibility resolve_compatible_chart(
       const std::vector<const geometry::SurfacePoint *> &points,
-      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
-      const;
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const;
 
   [[nodiscard]] std::vector<int> compatible_chart_faces(
       const std::vector<const geometry::SurfacePoint *> &points,
-      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
-      const {
-    return resolve_compatible_chart(points, authorities).chartFaces;
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const {
+    return resolve_compatible_chart(points, authorities, completePoints,
+                                    completeAuthorities)
+        .chartFaces;
   }
 
   [[nodiscard]] std::set<std::pair<int, int>> chart_labels(
@@ -437,9 +444,13 @@ struct SourcePointLabelSupport {
 
   [[nodiscard]] bool have_compatible_chart(
       const std::vector<const geometry::SurfacePoint *> &points,
-      const std::vector<const SourceVertexChartAuthority *> &authorities = {})
-      const {
-    return resolve_compatible_chart(points, authorities).valid();
+      const std::vector<const SourceVertexChartAuthority *> &authorities = {},
+      const std::vector<geometry::SurfacePoint> *completePoints = nullptr,
+      const std::vector<SourceVertexChartAuthority> *completeAuthorities =
+          nullptr) const {
+    return resolve_compatible_chart(points, authorities, completePoints,
+                                    completeAuthorities)
+        .valid();
   }
 
   [[nodiscard]] bool have_common_label(

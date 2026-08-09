@@ -3,6 +3,7 @@
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <algorithm>
+#include <cmath>
 #include <cstdint>
 #include <set>
 #include <vector>
@@ -241,11 +242,103 @@ HardRailValidationFixture make_hard_rail_validation_fixture() {
   return fixture;
 }
 
+HardRailValidationFixture make_multi_rail_validation_fixture() {
+  HardRailValidationFixture fixture;
+  constexpr int outerVertexCount = 16;
+  constexpr double pi = 3.14159265358979323846;
+  fixture.vertices.resize(outerVertexCount + 1, 3);
+  fixture.vertices.row(0).setZero();
+  for (int outer = 0; outer < outerVertexCount; ++outer) {
+    const double angle = 2.0 * pi * static_cast<double>(outer) /
+                         static_cast<double>(outerVertexCount);
+    fixture.vertices.row(outer + 1) << std::cos(angle), std::sin(angle), 0.0;
+  }
+  fixture.sourceFaces.resize(outerVertexCount, 3);
+  for (int face = 0; face < outerVertexCount; ++face) {
+    fixture.sourceFaces.row(face) << 0, face + 1,
+        face + 1 == outerVertexCount ? 1 : face + 2;
+  }
+  fixture.quads.resize(1, 4);
+  fixture.quads << 0, 2, 3, 4;
+  fixture.components.assign(outerVertexCount, 0);
+  fixture.sheets = {2, 2, 2, 2, 1, 1, 1, 1,
+                    0, 0, 0, 0, 3, 3, 3, 3};
+  fixture.provenance.reserve(static_cast<std::size_t>(outerVertexCount + 1));
+  fixture.provenance.push_back(source_vertex_point(
+      fixture.vertices, fixture.sourceFaces, fixture.components,
+      fixture.sheets, 0, 8));
+  for (int vertex = 1; vertex <= outerVertexCount; ++vertex) {
+    fixture.provenance.push_back(source_vertex_point(
+        fixture.vertices, fixture.sourceFaces, fixture.components,
+        fixture.sheets, vertex, vertex - 1));
+  }
+
+  fixture.authority.resize(fixture.provenance.size());
+  for (std::size_t vertex = 0; vertex < fixture.authority.size(); ++vertex) {
+    SourceVertexChartAuthority &authority = fixture.authority[vertex];
+    authority.retained = true;
+    authority.sourceCharts.push_back(source_chart(
+        fixture.provenance[vertex].face, fixture.components,
+        fixture.sheets));
+  }
+
+  const SourceHardRailChartEquivalence aToB =
+      hard_rail_equivalence(20, 40, 41, source_edge_key(0, 9));
+  const SourceHardRailChartEquivalence bToC =
+      hard_rail_equivalence(21, 42, 43, source_edge_key(0, 5));
+  const SourceHardRailChartEquivalence unusedAToD =
+      hard_rail_equivalence(22, 44, 45, source_edge_key(0, 13));
+
+  SourceVertexChartAuthority &center = fixture.authority[0];
+  center.sourceCharts.push_back(
+      source_chart(4, fixture.components, fixture.sheets));
+  center.sourceCharts.push_back(
+      source_chart(0, fixture.components, fixture.sheets));
+  center.sourceCharts.push_back(
+      source_chart(12, fixture.components, fixture.sheets));
+  center.hardRailEquivalences = {aToB, bToC, unusedAToD};
+
+  SourceVertexChartAuthority &bToCPeer = fixture.authority[5];
+  bToCPeer.sourceCharts.push_back(
+      source_chart(3, fixture.components, fixture.sheets));
+  bToCPeer.hardRailEquivalences.push_back(bToC);
+
+  SourceVertexChartAuthority &aToBPeer = fixture.authority[9];
+  aToBPeer.sourceCharts.push_back(
+      source_chart(7, fixture.components, fixture.sheets));
+  aToBPeer.hardRailEquivalences.push_back(aToB);
+
+  SourceVertexChartAuthority &aToDPeer = fixture.authority[13];
+  aToDPeer.sourceCharts.push_back(
+      source_chart(11, fixture.components, fixture.sheets));
+  aToDPeer.hardRailEquivalences.push_back(unusedAToD);
+
+  for (SourceVertexChartAuthority &authority : fixture.authority) {
+    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
+    std::sort(authority.hardRailEquivalences.begin(),
+              authority.hardRailEquivalences.end());
+  }
+  for (const int railVertex : {1, 5, 9, 13}) {
+    fixture.hardEdges.insert(source_edge_key(0, railVertex));
+  }
+  return fixture;
+}
+
 SourceAuthoritativeMeshValidatorOptions hard_rail_options(
     const HardRailValidationFixture &fixture) {
   auto options = make_options(
       fixture.vertices, fixture.sourceFaces, fixture.components,
       fixture.sheets, fixture.provenance, {{0, 1, 2, 5, 4, 3}});
+  options.vertexChartAuthority = &fixture.authority;
+  options.sourceHardFeatureEdges = fixture.hardEdges;
+  return options;
+}
+
+SourceAuthoritativeMeshValidatorOptions multi_rail_options(
+    const HardRailValidationFixture &fixture) {
+  auto options = make_options(fixture.vertices, fixture.sourceFaces,
+                              fixture.components, fixture.sheets,
+                              fixture.provenance, {{0, 2, 3, 4}});
   options.vertexChartAuthority = &fixture.authority;
   options.sourceHardFeatureEdges = fixture.hardEdges;
   return options;
@@ -304,7 +397,9 @@ resolve_quad_chart(const HardRailValidationFixture &fixture, const int face) {
     points.push_back(&fixture.provenance[static_cast<std::size_t>(vertex)]);
     authority.push_back(&fixture.authority[static_cast<std::size_t>(vertex)]);
   }
-  return support.resolve_compatible_chart(points, authority);
+  return support.resolve_compatible_chart(points, authority,
+                                          &fixture.provenance,
+                                          &fixture.authority);
 }
 
 } // namespace
@@ -793,6 +888,79 @@ TEST(SurfaceMeshOptimizerPhase22,
 }
 
 TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailChainReachesSelectedChartWithoutConsumingUnusedRelation) {
+  const HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  const auto selected = resolve_quad_chart(fixture, 0);
+  ASSERT_TRUE(selected.valid());
+  EXPECT_TRUE(std::binary_search(selected.chartFaces.begin(),
+                                 selected.chartFaces.end(), 0));
+  EXPECT_TRUE(std::binary_search(selected.chartFaces.begin(),
+                                 selected.chartFaces.end(), 3));
+
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_TRUE(validation.accepted);
+  EXPECT_TRUE(validation.localSheetCompatibilityPassed);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailReciprocityMayBeCarriedOutsideTheSelectedFace) {
+  HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  for (int corner = 0; corner < fixture.quads.cols(); ++corner) {
+    EXPECT_NE(fixture.quads(0, corner), 5);
+    EXPECT_NE(fixture.quads(0, corner), 9);
+    EXPECT_NE(fixture.quads(0, corner), 13);
+  }
+  ASSERT_TRUE(resolve_quad_chart(fixture, 0).valid());
+
+  auto &offFacePeer = fixture.authority[5].hardRailEquivalences;
+  offFacePeer.erase(
+      std::remove_if(offFacePeer.begin(), offFacePeer.end(),
+                     [](const SourceHardRailChartEquivalence &equivalence) {
+                       return equivalence.railId == 21;
+                     }),
+      offFacePeer.end());
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_FALSE(validation.accepted);
+  EXPECT_TRUE(
+      has_code(validation, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MissingMultiRailGraphLinkLeavesSelectedChartUnreachable) {
+  HardRailValidationFixture fixture =
+      make_multi_rail_validation_fixture();
+  for (const int vertex : {0, 5}) {
+    auto &relations =
+        fixture.authority[static_cast<std::size_t>(vertex)]
+            .hardRailEquivalences;
+    relations.erase(
+        std::remove_if(relations.begin(), relations.end(),
+                       [](const SourceHardRailChartEquivalence &equivalence) {
+                         return equivalence.railId == 21;
+                       }),
+        relations.end());
+  }
+  auto &peerCharts = fixture.authority[5].sourceCharts;
+  peerCharts.erase(
+      std::remove_if(peerCharts.begin(), peerCharts.end(),
+                     [](const auto &chart) { return chart.sourceFace == 3; }),
+      peerCharts.end());
+
+  const auto validation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          fixture.vertices, fixture.quads, multi_rail_options(fixture));
+  EXPECT_FALSE(validation.accepted);
+  EXPECT_TRUE(
+      has_code(validation, MeshValidationFailureCode::LocalSheetMismatch));
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
      MissingOrMisalignedHardRailChartAuthorityFailsClosed) {
   HardRailValidationFixture missing = make_hard_rail_validation_fixture();
   missing.authority[1].hardRailEquivalences.clear();
@@ -837,7 +1005,7 @@ TEST(SurfaceMeshOptimizerPhase22,
 
   HardRailValidationFixture nonreciprocal =
       make_hard_rail_validation_fixture();
-  nonreciprocal.authority[1].hardRailEquivalences[0].secondFrontEdge = 10;
+  nonreciprocal.authority[1].hardRailEquivalences[0].secondFrontEdge = 12;
   expect_local_sheet_mismatch(nonreciprocal);
 
   HardRailValidationFixture unsupported = make_hard_rail_validation_fixture();
@@ -1020,6 +1188,44 @@ TEST(SurfaceMeshOptimizerPhase22,
   ASSERT_TRUE(reversedRight.valid());
   EXPECT_EQ(originalLeft.semanticSide, reversedLeft.semanticSide);
   EXPECT_EQ(originalRight.semanticSide, reversedRight.semanticSide);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     MultiRailChartReachabilityIsInvariantToSourceFaceRows) {
+  const HardRailValidationFixture original =
+      make_multi_rail_validation_fixture();
+  const auto originalChart = resolve_quad_chart(original, 0);
+  ASSERT_TRUE(originalChart.valid());
+
+  HardRailValidationFixture reversed = original;
+  std::vector<int> remap(
+      static_cast<std::size_t>(original.sourceFaces.rows()), -1);
+  for (int oldFace = 0; oldFace < original.sourceFaces.rows(); ++oldFace) {
+    const int newFace = original.sourceFaces.rows() - 1 - oldFace;
+    reversed.sourceFaces.row(newFace) = original.sourceFaces.row(oldFace);
+    reversed.components[static_cast<std::size_t>(newFace)] =
+        original.components[static_cast<std::size_t>(oldFace)];
+    reversed.sheets[static_cast<std::size_t>(newFace)] =
+        original.sheets[static_cast<std::size_t>(oldFace)];
+    remap[static_cast<std::size_t>(oldFace)] = newFace;
+  }
+  for (SurfacePoint &point : reversed.provenance) {
+    point.face = remap[static_cast<std::size_t>(point.face)];
+  }
+  for (SourceVertexChartAuthority &authority : reversed.authority) {
+    for (auto &chart : authority.sourceCharts) {
+      chart.sourceFace = remap[static_cast<std::size_t>(chart.sourceFace)];
+    }
+    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
+  }
+
+  const auto reversedChart = resolve_quad_chart(reversed, 0);
+  ASSERT_TRUE(reversedChart.valid());
+  EXPECT_EQ(originalChart.semanticSide, reversedChart.semanticSide);
+  const auto reversedValidation =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          reversed.vertices, reversed.quads, multi_rail_options(reversed));
+  EXPECT_TRUE(reversedValidation.accepted);
 }
 
 TEST(SurfaceMeshOptimizerPhase22,
