@@ -1,0 +1,325 @@
+name: m1b-first-production-consumer-code-build-v2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1b-first-production-consumer-code-build-v2'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: m1b-first-production-consumer-code-build-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  LOG_DIR: /tmp/m1b-first-production-consumer-code-build-v2-logs
+  ACTIVITY_LOG: /tmp/m1b-first-production-consumer-code-build-v2-logs/activity.log
+  M1B_BASE: 9a4131f9655567ffc60c2c513db1c73826165bb2
+  APPLY_SCRIPT: .agents/connector-scripts/m1b-first-production-consumer-apply.py
+  ACCEPTED_M1A_ARTIFACT: '9041930767'
+  ACCEPTED_T1_ARTIFACT: '9041289209'
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo "turn=M1b First Production Consumer Code+Build"
+            echo "workflow_revision=v2"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "event_ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "m1b_base=$M1B_BASE"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=deterministic bounded source edit; static verification; configure; compile/link approved targets; static manifests; immutable packaging"
+            echo "prohibited=generated Directional binary execution; gtest discovery/tests; benchmarks; ctest; CLI/GUI/help/version; fuzzers; custom input"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$ACTIVITY_LOG"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 120
+          submodules: false
+
+      - name: Apply bounded M1b source edit and push implementation
+        id: implementation
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            echo "step=apply-source exit_code=$rc finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            exit "$rc"
+          }
+          trap finish EXIT
+
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$M1B_BASE" "$GITHUB_SHA"
+          test -f "$APPLY_SCRIPT"
+          test -z "$(git status --porcelain=v1)"
+
+          python3 "$APPLY_SCRIPT"
+
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          expected=(
+            CMakeLists.txt
+            cmake/DirectionalTests.cmake
+            include/directional/geometry/SurfaceOptimizationRailConstraints.h
+            src/geometry/SurfaceOptimizationRailConstraints.cpp
+            tests/SurfaceMeshOptimizerPhase22Tests.cpp
+          )
+          printf 'source_changes=%s\n' "${changed[*]}"
+          test "${#changed[@]}" -eq "${#expected[@]}"
+          for i in "${!expected[@]}"; do
+            test "${changed[$i]}" = "${expected[$i]}"
+          done
+
+          test "$(grep -c 'src/authority/AuthorityKernel.cpp' CMakeLists.txt)" -eq 1
+          test "$(grep -c 'src/authority/AuthorityKernel.cpp' cmake/DirectionalTests.cmake)" -eq 0
+          grep -q 'authority::SourceFaceId face' include/directional/geometry/SurfaceOptimizationRailConstraints.h
+          grep -q 'authority::SourceVertexId vertex' include/directional/geometry/SurfaceOptimizationRailConstraints.h
+          grep -q 'LegacyAuthorityAdapters::source_face' src/geometry/SurfaceOptimizationRailConstraints.cpp
+          grep -q 'LegacyAuthorityAdapters::source_vertex' src/geometry/SurfaceOptimizationRailConstraints.cpp
+          grep -q 'provenance.barycentric(corner) > 1.0e-8' src/geometry/SurfaceOptimizationRailConstraints.cpp
+          test "$(grep -c '^TEST(SurfaceOptimizationRailAuthorityMigration,' tests/SurfaceMeshOptimizerPhase22Tests.cpp)" -eq 6
+          test "$(grep -c '^TEST(SurfaceCellAuthorityKernel,' tests/SurfaceCellAuthorityKernelTests.cpp)" -eq 14
+          test "$(grep -c '^TEST(' tests/SurfaceCellProductOracleTests.cpp)" -eq 29
+
+          git config user.name 'directional-m1b-agent'
+          git config user.email 'actions@users.noreply.github.com'
+          git add CMakeLists.txt cmake/DirectionalTests.cmake \
+            include/directional/geometry/SurfaceOptimizationRailConstraints.h \
+            src/geometry/SurfaceOptimizationRailConstraints.cpp \
+            tests/SurfaceMeshOptimizerPhase22Tests.cpp
+          git commit -m 'feat: migrate first rail authority consumer'
+          implementation_commit="$(git rev-parse HEAD)"
+          echo "implementation_commit=$implementation_commit" | tee -a "$ACTIVITY_LOG"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "implementation_commit=$implementation_commit" >> "$GITHUB_OUTPUT"
+          test -z "$(git status --porcelain=v1)"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils time
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --recursive --depth 1 --recommend-shallow
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          /usr/bin/time -v -o "$LOG_DIR/build-resources.txt" \
+            cmake --build build --parallel 2 --target \
+              directional_core \
+              directional_pipeline \
+              directional_compiled_api_tests \
+              directional_surface_cell_producer_tests \
+              directional_surface_cell_oracle_tests \
+              directional_surface_cell_authority_kernel_tests \
+              directional_surface_cell_completion_tests \
+              directional_surface_cell_validation_tests \
+              directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+
+      - name: Package immutable compile artifact
+        shell: bash
+        env:
+          IMPLEMENTATION_COMMIT: ${{ steps.implementation.outputs.implementation_commit }}
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_COMMIT"
+          test -z "$(git status --porcelain=v1)"
+
+          pkg="$RUNNER_TEMP/m1b-first-production-consumer-code-build"
+          rm -rf "$pkg"
+          mkdir -p "$pkg/bin" "$pkg/lib" "$pkg/logs" "$pkg/metadata" "$pkg/source" "$pkg/test-data/benchmarks"
+
+          for exe in \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks; do
+            test -x "build/$exe"
+            cp "build/$exe" "$pkg/bin/$exe"
+          done
+          cp build/libdirectional_core.a "$pkg/lib/"
+          cp build/libdirectional_pipeline.a "$pkg/lib/"
+          cp -a benchmarks/fixtures "$pkg/test-data/benchmarks/fixtures"
+          cp "$LOG_DIR"/* "$pkg/logs/"
+          cp build/compile_commands.json "$pkg/source/compile_commands.json"
+
+          git diff --binary "$M1B_BASE" "$IMPLEMENTATION_COMMIT" -- \
+            CMakeLists.txt cmake/DirectionalTests.cmake \
+            include/directional/geometry/SurfaceOptimizationRailConstraints.h \
+            src/geometry/SurfaceOptimizationRailConstraints.cpp \
+            tests/SurfaceMeshOptimizerPhase22Tests.cpp \
+            > "$pkg/source/m1b-first-production-consumer.patch"
+          git archive --format=tar "$IMPLEMENTATION_COMMIT" | xz -T0 -6 > "$pkg/source/directional-m1b-first-consumer-source-no-deps.tar.xz"
+
+          python3 - <<'PY' > "$pkg/metadata/m1b-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceMeshOptimizerPhase22Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceOptimizationRailAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1b focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+
+          python3 - <<'PY' > "$pkg/metadata/authority-kernel-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellAuthorityKernelTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 14 or len(set(names)) != 14:
+              raise SystemExit(f'authority manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+
+          python3 - <<'PY' > "$pkg/metadata/oracle-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellProductOracleTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 29 or len(set(names)) != 29:
+              raise SystemExit(f'oracle manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+
+          cat > "$pkg/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1b First Production Consumer Code+Build",
+            "baseCommit": "$M1B_BASE",
+            "implementationCommit": "$IMPLEMENTATION_COMMIT",
+            "buildEventCommit": "$GITHUB_SHA",
+            "workflowRun": "$GITHUB_RUN_ID",
+            "workflowAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release/static/Ninja",
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "m1bFocusedStaticTestCount": 6,
+            "authorityKernelStaticTestCount": 14,
+            "oracleStaticTestCount": 29,
+            "acceptedM1aArtifact": "$ACCEPTED_M1A_ARTIFACT",
+            "acceptedT1Artifact": "$ACCEPTED_T1_ARTIFACT"
+          }
+          EOF
+
+          cat > "$pkg/metadata/command-boundary.txt" <<EOF
+          runtimeExecution=false
+          configured=true
+          compiled=true
+          generatedDirectionalBinaryExecuted=false
+          gtestDiscoveryExecuted=false
+          testExecuted=false
+          benchmarkExecuted=false
+          ctestExecuted=false
+          cliGuiHelpVersionExecuted=false
+          fuzzerExecuted=false
+          customInputExecuted=false
+          EOF
+
+          {
+            echo "base_commit=$M1B_BASE"
+            echo "implementation_commit=$IMPLEMENTATION_COMMIT"
+            echo "build_event_commit=$GITHUB_SHA"
+            echo "cmake_root_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:CMakeLists.txt")"
+            echo "cmake_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:cmake/DirectionalTests.cmake")"
+            echo "rail_header_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/geometry/SurfaceOptimizationRailConstraints.h")"
+            echo "rail_cpp_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:src/geometry/SurfaceOptimizationRailConstraints.cpp")"
+            echo "rail_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceMeshOptimizerPhase22Tests.cpp")"
+            echo "authority_cpp_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:src/authority/AuthorityKernel.cpp")"
+            echo "authority_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellAuthorityKernelTests.cpp")"
+            echo "oracle_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellProductOracleTests.cpp")"
+            echo "direct_acceptance_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellDesignAcceptanceTests.cpp")"
+          } > "$pkg/metadata/source-blobs.txt"
+
+          git submodule status --recursive > "$pkg/metadata/submodules.txt"
+          {
+            cmake --version | head -1
+            ninja --version
+            c++ --version | head -1
+            uname -a
+          } > "$pkg/metadata/toolchain.txt"
+          find benchmarks/fixtures -type f -printf '%P\n' | LC_ALL=C sort > "$pkg/metadata/fixture-files.txt"
+
+          find "$pkg" -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | \
+            while IFS= read -r -d '' f; do
+              rel="${f#"$pkg"/}"
+              sum=$(sha256sum "$f" | awk '{print $1}')
+              printf '%s  %s\n' "$sum" "$rel"
+            done > "$pkg/SHA256SUMS"
+
+          echo "manifest_entries=$(wc -l < "$pkg/SHA256SUMS")" | tee -a "$ACTIVITY_LOG"
+          sha256sum "$pkg/SHA256SUMS" | tee "$LOG_DIR/manifest.sha256"
+          find "$pkg" -type f -printf '%P\n' | LC_ALL=C sort | tee "$LOG_DIR/package-files.txt"
+          echo "PACKAGE_DIR=$pkg" >> "$GITHUB_ENV"
+
+      - name: Upload immutable compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1b-first-production-consumer-code-build
+          path: ${{ env.PACKAGE_DIR }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1b-first-production-consumer-code-build-v2-logs
+          path: /tmp/m1b-first-production-consumer-code-build-v2-logs
+          if-no-files-found: error
+          retention-days: 14
