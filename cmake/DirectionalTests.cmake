@@ -98,6 +98,15 @@ add_executable(
   tests/SurfaceCellProductOracleTests.cpp)
 directional_configure_test_target(directional_surface_cell_oracle_tests)
 
+# M1 authority-domain kernel contracts. This target validates semantic IDs,
+# exact Z4/lattice transport algebra, route canonicalization, and checked
+# legacy conversion without migrating existing production consumers.
+add_executable(
+  directional_surface_cell_authority_kernel_tests
+  src/authority/AuthorityKernel.cpp
+  tests/SurfaceCellAuthorityKernelTests.cpp)
+directional_configure_test_target(directional_surface_cell_authority_kernel_tests)
+
 # Default gate 2: downstream topology contracts that remain relevant only after
 # the producer supplies a coherent embedded complex.
 add_executable(
@@ -195,6 +204,10 @@ gtest_discover_tests(
   directional_surface_cell_oracle_tests
   TEST_PREFIX "Oracle."
   PROPERTIES LABELS "contract-required;oracle-mutation")
+gtest_discover_tests(
+  directional_surface_cell_authority_kernel_tests
+  TEST_PREFIX "AuthorityKernel."
+  PROPERTIES LABELS "contract-required;authority-kernel")
 gtest_discover_tests(
   directional_surface_cell_completion_tests
   TEST_PREFIX "Completion."
