@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; dated turn reports retain artifact/runtime detail.
 
-Last updated: **2026-08-09 UTC** after immutable accepted M1b artifact `9042940168`.
+Last updated: **2026-08-09 UTC** after M1c compile/package artifact `9043971772` (**runtime pending; not semantic acceptance**).
 
 ## Rules
 
@@ -21,7 +21,7 @@ Last updated: **2026-08-09 UTC** after immutable accepted M1b artifact `90429401
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, and accepted M1b artifact `9042940168` create no production regression event or recurrence. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, and accepted M1b artifact `9042940168` create no production regression event or recurrence. M1c compile/package artifact `9043971772` has not executed runtime and therefore neither resolves nor creates an accepted runtime event. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -50,18 +50,18 @@ good: distinct semantic type + named checked adapter + typed failure.
 
 **M1a kernel:** immutable accepted, 14/14.
 
-**M1b first production adoption:** **immutable accepted** at `provenance_supports_interval_sheet`.
+**M1b first production adoption:** immutable accepted at `provenance_supports_interval_sheet`.
 
-Accepted invariant:
+**M1c field-transition adoption:** **compile-complete; immutable runtime pending** at authoritative `CrossFieldEdgeTransition` consumption in `resolve_branch_transition`.
 
-- legacy source-face validation occurs before named `source_face` conversion;
-- source vertices reject negative legacy values before `source_vertex` conversion;
-- `source_face_contains_vertex` consumes `(SourceFaceId, SourceVertexId)` and compile-time assertions reject a domain swap;
-- typed IDs return to legacy integers only at explicit matrix/vector representation access.
+M1c invariant now implemented:
 
-Accepted counterexamples: invalid faces, wrong source-face incidence, component/sheet mismatch, compile-time face/vertex interchange rejection. Evidence: focused **6/6**, full validation **77/77**, M1a **14/14**, T1 **29/29**, required direct products preserved.
+- pre-existing source-edge topology/adjacency checks remain first;
+- source/target and transition first/second faces cross checked `LegacyAuthorityAdapters::source_face(..., faces.rows())` before semantic reciprocity;
+- transition source-edge endpoints cross checked `source_vertex(..., vertices.rows())` before semantic edge identity;
+- invalid typed conversion fails closed and cannot fall through to legacy matching/geometric inference.
 
-**M1c next boundary:** authoritative `CrossFieldEdgeTransition` consumption in `resolve_branch_transition`. Source/target faces and transition source-edge vertices must cross checked adapters before semantic comparison.
+Compiled counterexamples include out-of-range authoritative face and source-edge metadata with valid fallback inputs present. Runtime proof is the next immutable turn.
 
 ### RP-02 — proxy/incomplete test authority
 
@@ -70,25 +70,25 @@ bad: compile/helper/status/count claimed as product proof.
 good: named semantic contract + independent oracle + direct representative evidence.
 ```
 
-`RP-02 / TA-05` remains **test-authority resolved** by T1 artifact `9041289209` and was independently preserved by M1b:
+`RP-02 / TA-05` remains **test-authority resolved** by T1 artifact `9041289209` and independently preserved by accepted M1b:
 
 - validation discovery exactly 77 and full **77/77**;
 - M1b focused **6/6** individually;
 - M1a exact 14 discovery and **14/14**;
 - T1 exact 29 discovery and **29/29**;
-- Plane/MultiFaceSeam/CloseSheets/Cylinder remain green and independent-oracle clean;
-- Bunny remains known-red with independent oracle before fatal product-success assertion;
-- Vase remains bounded 60-second safety-only evidence.
+- Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean;
+- Bunny known-red with independent oracle before fatal product-success assertion;
+- Vase bounded 60-second safety-only evidence.
 
-M1c focused transition tests may not replace this authority. Its following immutable turn must repeat the named preservation gates.
+M1c only compiled its six focused tests. **No M1c runtime acceptance is inferred from compile success.** Its following immutable artifact-only turn must repeat focused + aggregate + independent product authority.
 
 ### RP-03 — policy/stage state conflation
 
-Untouched by M1a/M1b and not part of M1c. M2 owns closed producer-outcome migration.
+Untouched by M1a/M1b/M1c. M2 owns closed producer-outcome migration.
 
 ### RP-04 — nonterminating cumulative work
 
-Untouched by M1a/M1b. Vase remains a known 60-second bounded nonreturn; this is safety evidence only. M1c introduces no search/retry/work loop.
+Untouched by M1a/M1b/M1c. Vase remains a known 60-second bounded nonreturn; this is safety evidence only. M1c introduces no search/retry/work loop.
 
 ### RP-05 — representation-dependent identity
 
@@ -99,9 +99,19 @@ good: semantic strong ID/key is authoritative; row/hash is an explicit compatibi
 
 **M1a kernel:** accepted.
 
-**M1b first production adoption:** **immutable accepted**. Source-face/source-vertex rows become semantic IDs before incidence logic; legacy row indexing occurs only after semantic identity has been established.
+**M1b first production adoption:** immutable accepted. Source-face/source-vertex rows become semantic IDs before incidence logic; legacy row indexing occurs only after semantic identity has been established.
 
-**M1c next boundary:** authoritative field-transition source-edge identity. `SourceEdgeTopologyKey` must canonicalize typed endpoints before comparison to the existing `uint64_t` lookup key. Endpoint reversal must preserve semantic identity; do not add another hash/key authority.
+**M1c field-transition adoption:** **compile-complete; immutable runtime pending**.
+
+M1c invariant now implemented:
+
+- transition endpoints become `SourceVertexId` first;
+- `SourceEdgeTopologyKey::make(v0,v1)` canonicalizes semantic edge identity;
+- endpoint order cannot change semantic identity;
+- typed endpoints return to legacy row indices only at the existing raw `edge_key` lookup-representation boundary;
+- no second hash/key authority was added.
+
+Compiled counterexample: reversed transition endpoints must resolve identically. Runtime proof remains pending.
 
 ### RP-06 — state-cardinality growth
 
@@ -116,7 +126,17 @@ good: exact modulo-4 semantic algebra + explicit inverse; legacy integer is comp
 
 **M1a kernel:** exact `QuarterTurn`/automorphism/reversal algebra accepted.
 
-**M1c next boundary:** authoritative `CrossFieldEdgeTransition.matching` consumption in `resolve_branch_transition`. Semantic target-branch transport must use `QuarterTurn::from_integer` and `.inverse()` for reverse traversal. The existing signed `BranchTransitionResult.matching` field stays legacy-compatible in this slice. Required counterexamples include `+5 == +1` semantically and forward/reverse composition to identity modulo four.
+**M1c field-transition adoption:** **compile-complete; immutable runtime pending**.
+
+M1c invariant now implemented:
+
+- authoritative `CrossFieldEdgeTransition.matching` becomes `QuarterTurn::from_integer(...)` for semantic transport;
+- reverse traversal uses `.inverse()`;
+- target branch uses the typed modulo-four transport;
+- raw signed `BranchTransitionResult.matching` remains compatibility representation only (`matching` forward, `-matching` reverse);
+- the separate legacy fallback remains unchanged.
+
+Compiled counterexamples cover forward +1, reverse inverse, and `+5 == +1` semantically while preserving raw compatibility output. Runtime proof remains pending.
 
 ### RP-08 — producer-disposition conflation
 
@@ -125,6 +145,26 @@ Untouched. M2 owns migration.
 ### RP-09 — local consumption of global authority
 
 Untouched by M1a/M1b/M1c. `G4-R007` remains active; M4 owns certificate/global-local relation migration.
+
+## M1c compile-only pattern record
+
+| Pattern | State | Compile/package evidence | Immutable runtime requirement |
+|---|---|---|---|
+| `RP-01` | **compile-complete** | checked face/vertex adapters; malformed authority test compiled | exact M1c focused pass + producer/direct preservation |
+| `RP-05` | **compile-complete** | canonical `SourceEdgeTopologyKey`; endpoint reversal test compiled | endpoint-order semantic equality at runtime |
+| `RP-07` | **compile-complete** | `QuarterTurn` modulo/inverse; +5/reverse tests compiled | exact six focused contracts + periodic tamper preservation |
+| `RP-02 / TA-05` | **preservation pending** | M1b/M1a/T1 source/static manifests packaged unchanged | M1b 6/6 + validation 77/77 + M1a 14/14 + T1 29/29 + direct oracle cases |
+
+M1c authoritative compile/package evidence:
+
+- implementation `e139fca885538e310dc47ed7ba531517603d92cf`;
+- build run/job `31334345368 / 93297618568`;
+- result artifact `9043971772`, SHA-256 `dde120c94be222dc93aeebb08f7a674882c5f8011ede62ec420209b0e0f4fd85`;
+- log artifact `9043971968`, SHA-256 `7747b3b25882fc86e54890a1efb69d753f9b2e08bff7db8fd2be4f4a8a82fedb`;
+- manifest **54/54**, SHA-256 `d9a4bdfe5b160095a6cf4949c57e54d726d36f745ff0a6580e9080d5319d495d`;
+- Release/static/Ninja **120/120**, `runtimeExecution=false`.
+
+Temporary connector workflow/helper files were removed after artifact capture and are not part of the final product/test diff.
 
 ## M1b immutable pattern record
 
@@ -137,19 +177,9 @@ Untouched by M1a/M1b/M1c. `G4-R007` remains active; M4 owns certificate/global-l
 
 M1b report: `.agents/Directional/Architecture_M1b_First_Production_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-## M1b runtime/orchestration notes
+## Standing Bunny/Vase runtime procedure
 
-Authoritative immutable artifact: `9042940168`, SHA-256 `9a24672179dc6fbc57fedcd4d5826fb4a7c4cf4cb1962c06013e1e84758bb46b`.
-
-Long-running Bunny/Vase used an artifact-only GitHub Actions runner under explicit user authorization:
-
-- run `31332383845`;
-- Bunny job `93292577409`, evidence `9043307980`, SHA-256 `c2e7776a9b68ffeeecc7471a3718a2c1bc90fae4556c7d7c05084b5ae8d8fb2d`;
-- Vase job `93292577420`, evidence `9043307204`, SHA-256 `1726deb422a3eea238ab3895108a423f6fb6e932cabcc6b215916cc969e87105`.
-
-The runner verified immutable package/executable content before execution. `actions/download-artifact` stripped executable mode; restoring `+x` after hash verification changed no content. A previous run that returned `126 Permission denied` before generated-binary execution is non-authoritative orchestration evidence, not a regression. Temporary workflow/trigger files were removed before closeout.
-
-Standing procedure: future Bunny/Vase immutable runs may use the same ephemeral artifact-only pattern to avoid local execution-tool timeout limits; no rebuild/content mutation is permitted and the underlying test result, not workflow success, determines disposition.
+Long-running Bunny/Vase may use an artifact-only GitHub Actions runner under explicit user authorization. The runner must verify immutable artifact/package/executable content before execution, restore executable mode only after content-hash verification if needed, perform no configure/build/relink/content mutation, retain exact runtime evidence, and remove temporary workflow/trigger/helper files before closeout.
 
 ## Current G4 stable-ID mapping
 
@@ -179,10 +209,10 @@ Standing procedure: future Bunny/Vase immutable runs may use the same ephemeral 
 | ID | State |
 |---|---|
 | `AR-01` | M2: closed producer outcomes |
-| `AR-02` | M1a strong-ID/route kernel accepted; **M1b first production consumer accepted; M1c field-transition consumer next** |
-| `AR-03` | M1a domain-key core accepted; M1b source identity adopted; M1c source-edge key adoption next |
+| `AR-02` | M1a strong-ID/route kernel accepted; M1b first production consumer accepted; **M1c field-transition adoption compile-complete/runtime pending** |
+| `AR-03` | M1a domain-key core accepted; M1b source identity adopted; **M1c source-edge key compile-complete/runtime pending** |
 | `AR-04` | `FieldChartId` exists; production chart/snapshot migration remains after bounded M1 consumers |
-| `AR-05` | M1a identity/orientation core accepted; M1b first representation boundary accepted; M1c source-edge representation boundary next |
+| `AR-05` | M1a identity/orientation core accepted; M1b first representation boundary accepted; **M1c source-edge/quarter-turn boundary compile-complete/runtime pending** |
 | `AR-06` | M4 relation registry/certificates |
 | `AR-07` | M3 global conformity |
 | `AR-08` | M2/M3 producer-scoped immutable output |
@@ -199,10 +229,10 @@ Standing procedure: future Bunny/Vase immutable runs may use the same ephemeral 
 | `TA-02` | T2 ten-case direct matrix pending |
 | `TA-03` | metric definitions/baselines pending |
 | `TA-04` | T3/T4 generation/shrinking/fuzz pending |
-| `TA-05` | **test-authority resolved by T1 and preserved through M1b** |
-| `TA-06` | T1 mutation suite 29/29 accepted and preserved |
-| `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | T1 metamorphism + M1a typed-route metamorphism accepted; M1c adds field-transition algebra counterexamples |
+| `TA-05` | **test-authority resolved by T1 and preserved through M1b; M1c preservation pending immutable runtime** |
+| `TA-06` | T1 mutation suite 29/29 accepted; M1c preservation pending |
+| `TA-07` | exact package/discovery authority accepted; M1c package preflight complete, runtime discovery pending |
+| `TA-08` | T1 metamorphism + M1a typed-route metamorphism accepted; **M1c six field-transition algebra/identity counterexamples compiled, runtime pending** |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | topology/lineage/disposition adequate; quality expansion later |
@@ -210,6 +240,6 @@ Standing procedure: future Bunny/Vase immutable runs may use the same ephemeral 
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
-M1c is **Code + Build only**. It migrates only authoritative `CrossFieldEdgeTransition` consumption inside `resolve_branch_transition` to checked source IDs, canonical `SourceEdgeTopologyKey`, and typed `QuarterTurn` transport while preserving raw compatibility result/fallback storage and all producer/product policy. Its following immutable turn must prove focused transition semantics plus M1b/M1a/T1/direct preservation before another consumer may migrate.
+The next turn is **immutable Test + Benchmark only**. It consumes exactly artifacts `9043971772 / 9043971968`, rebuilds/edits nothing, proves the six M1c semantic contracts and explicit transition counterexamples, and independently preserves M1b/M1a/T1/direct product authority. If any required-green gate regresses, remain at M1c and return to a corrective Code + Build turn rather than advancing.
