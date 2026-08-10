@@ -120,6 +120,12 @@ This section is durable handoff policy and must remain in every future rewrite o
 - Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory handoff instruction merely to reduce file count. Durable-document changes must be additive or narrowly corrective unless the user explicitly authorizes broader replacement.
 - After cleanup, audit retained documents for references to deleted stale files and repair those references before turn closeout.
 
+### Cleanup workflow-order lesson
+
+During this M1d Test + Benchmark closeout, the temporary trigger marker was deleted before the temporary workflow. That marker deletion retriggered one redundant Actions run, `31343858635`. It is **not** acceptance authority and produced no product/regression state change. The temporary workflow was then removed and no triggerable M1d runtime workflow remains.
+
+For every future temporary path-filtered workflow cleanup, follow the durable `GitHub_Workflow_Policy.md` ordering exactly: **remove or disable the workflow first, then delete its trigger marker/payload**. This prevents cleanup itself from scheduling another run.
+
 ## Core references
 
 - `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
