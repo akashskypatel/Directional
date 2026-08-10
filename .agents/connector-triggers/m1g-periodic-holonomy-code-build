@@ -1,4 +1,6 @@
 turn=M1g Periodic Holonomy Route Transport Consumer Code+Build
 implementation=ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2
-workflow_commit=3a5c9e0ae5302f887b880400680d5a85c5875b3b
+workflow_commit=832856710512d5880e7006bb4ba3b68a703f9f4e
+trigger_sequence=2
+reason=replace connector-invisible push run with self-reported authority
 runtimeExecution=false
