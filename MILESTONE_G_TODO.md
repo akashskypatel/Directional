@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1j architecture slices are immutable accepted. M1k phase-front edge topology-region consumer is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1j architecture slices are immutable accepted. M1k phase-front edge topology-region consumer is compile/package complete at implementation `b9181364926cea840e9cb50da21fe721f33fd874`; immutable artifact-only runtime is next. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -100,6 +100,14 @@ Next architecture slice: **M1k Phase-Front Edge Topology-Region Consumer — Cod
 
 Authoritative plan: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Plan.md`.
 Current immutable report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+## M1k phase-front edge topology-region authority — compile/package complete; runtime pending
+
+Implementation `b9181364926cea840e9cb50da21fe721f33fd874` migrates only persistent `SurfaceFrontEdge::sourceTopologyRegion` from raw `int` to checked optional `TopologyRegionId`. Region discovery/partition/numbering, cell-owned raw topology-region identity, periodic/bounded-disk/certificate schemas, and accepted source component/sheet authority are unchanged. Still-raw pipeline consumers cross the typed boundary through named compatibility conversion.
+
+Authoritative Code + Build run/job `31430898273 / 93593780187` compiled the approved Release/static/Ninja/PRE_TEST targets successfully. Result/log artifacts are `9079318682 / 9079319269` with ZIP SHA-256 `90b8deea85c12460ae45b66d0c7aa67fa3771074b60841fd1a0e586b0088869d / 1a9a06fe42e2329cff1ff9d5b4eba0b7986af47d855229119e6d76bc2f07e381`. Recursive package authority is **68/68**, digest `0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c`, with 69 regular files, seven executables, two static libraries, and 27 fixtures. Every runtime flag is false; six M1k focused production-path contracts compile but remain unexecuted.
+
+The next mandatory turn is immutable artifact-only Test + Benchmark. Expected producer discovery **220**, M1k **6/6**, required-green **205/205**, and full entering preservation. No stable product regression was established by Code + Build orchestration retries; historical totals remain **34 / 14 / 20** and `PR8-R034 / G4-R007` remains active.
 
 ## M1f vertex-continuation transport — immutable accepted
 

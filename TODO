@@ -5,17 +5,15 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1j immutable accepted; M1k edge topology-region consumer selected for Code + Build**.
-- M1j implementation `d5f681173600dc32dc7617de6105d9e584e593be` accepted from exact artifacts `9076217893 / 9076218338`: producer **214**, focused **6/6**, required-green **199/199**, validation **77/77**, M1a **14/14**, T1 **29/29**, and four direct products independent-oracle clean without fixture symlink.
-- Remote validation run/job `31425748772 / 93576908519`; evidence/log artifacts `9077128237 / 9077129029`.
-- Heavy run `31425364955`: Bunny unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase bounded safety-only at 60 seconds; exact **67/67** package authority preserved.
-- Strict-validator timing remains deferred after fresh **0/10** characterization; no threshold/retry workaround is authorized.
-- M1k seam: `SurfaceTopologyRegion::id / normalize_scope -> SurfaceFrontEdge::sourceTopologyRegion -> still-raw pipeline compatibility consumers`; migrate only edge-owned `TopologyRegionId` authority.
-- Authoritative next turn: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Plan.md`.
-- Expected following runtime authority after M1k build: producer discovery **220**, M1k focused **6/6**, required-green **205/205**, plus full entering preservation and exact postflight.
-- Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active.
+- Architecture migration: **M1a through M1j immutable accepted; M1k Code + Build compile/package complete, immutable runtime pending**.
+- M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` migrates only `SurfaceFrontEdge::sourceTopologyRegion` to checked `TopologyRegionId`; topology-region construction/numbering and neighboring raw compatibility schemas remain unchanged.
+- Authoritative Code + Build run/job `31430898273 / 93593780187`; result/log artifacts `9079318682 / 9079319269`; recursive package manifest **68/68**, digest `0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c`; package has 69 regular files, 7 executables, 2 static libraries, and 27 fixtures.
+- Code + Build executed **no** generated Directional binary, test discovery/list, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+- Authoritative next turn: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Expected runtime authority: producer discovery **220**, M1k focused **6/6**, required-green **205/205**, plus complete entering preservation and exact immutable postflight.
+- Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active. Compile/package orchestration retries did not establish a stable product regression.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current immutable report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+- Current Code + Build report: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Report.md`.
 
 ## M1d immutable acceptance
 

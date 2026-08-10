@@ -2,17 +2,39 @@
 
 ## Mandatory next turn
 
-Run **M1k Phase-Front Edge Topology-Region Consumer — Code + Build only** under:
+Run **M1k Phase-Front Edge Topology-Region Consumer — immutable Artifact-Only Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1j are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1j are immutable accepted; M1k is compile/package complete but **not** semantically accepted until the artifact-only runtime turn passes. Review policy is `never`.
 
-M1k is bounded to:
+M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` changes only the edge-owned topology-region authority seam:
 
 `SurfaceTopologyRegion::id / normalize_scope -> SurfaceFrontEdge::sourceTopologyRegion -> still-raw pipeline compatibility consumers`.
 
-Migrate only edge-owned topology-region identity to checked `TopologyRegionId`. Keep `SurfacePhaseFrontCell::sourceTopologyRegion`, `SurfaceTopologyRegion::id`, region-by-face maps, periodic/bounded-disk/certificate topology-region schemas, topology-region construction/numbering, M2-M6, and G4 behavior out of scope. The next turn is **Code + Build only**: execute no generated Directional binary, discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+`SurfaceFrontEdge::sourceTopologyRegion` is now checked optional `TopologyRegionId`. Existing topology-region discovery, partitioning, numbering, `SurfacePhaseFrontCell::sourceTopologyRegion`, raw region-by-face maps, periodic/bounded-disk/certificate topology-region schemas, component/sheet authority, M2-M6, and G4 product behavior remain out of scope.
+
+Authoritative Code + Build evidence:
+
+- run/job `31430898273 / 93593780187`;
+- result artifact `9079318682`, ZIP SHA-256 `90b8deea85c12460ae45b66d0c7aa67fa3771074b60841fd1a0e586b0088869d`;
+- log artifact `9079319269`, ZIP SHA-256 `1a9a06fe42e2329cff1ff9d5b4eba0b7986af47d855229119e6d76bc2f07e381`;
+- recursive package manifest **68/68**, SHA-256 `0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c`;
+- package cardinality **69** regular files including `SHA256SUMS`, seven executables, two static libraries, and 27 fixtures;
+- Release/static/Ninja/PRE_TEST approved targets compiled successfully; wall `8:19.09`, peak RSS `1860456 KiB`;
+- every runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input flag is false.
+
+The six compiled M1k production-path contracts remain **unexecuted** until the next turn. Expected runtime discovery is producer **220**; require M1k **6/6** individually and required-green producer **205/205**, plus M1j-M1b preservation, M1d/M1c counterexamples, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products, historical/deferred-red classification, strict timing characterization, bounded Bunny/Vase comparison when gates permit, and exact postflight.
+
+The Code + Build orchestration had pre-semantic failures while establishing the immutable package (patch recount, post-build untracked build-dir cleanliness, and incomplete fixture-copy cardinality). These were control-plane/package issues; the exact M1k implementation compiled successfully and no generated Directional runtime executed. Do **not** create a stable product-regression event from those retries.
+
+Durable-document safety remains mandatory: design, architecture, policy, handoff, tracker, and planning documents must not be destructively rewritten or have durable information removed except in an explicitly user-authorized review turn or with explicit user authorization. Routine status updates must be surgical and preserve prior durable information.
+
+Current report:
+`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Report.md`.
+
+Authoritative next plan:
+`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## M1j immutable acceptance authority
 
