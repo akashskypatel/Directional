@@ -17,7 +17,7 @@ concurrency:
 env:
   BASE_SOURCE_SHA: d5a97953416196a8fc74c8d9790a1ae7b646ca2d
   PATCH_FILE: .agents/Directional/turn-payloads/m1l-cell-topology-region.patch
-  EXPECTED_PATCH_SHA256: af9fb6a2f7c242aed12f2005bc97698a1e1cf02a7374fc98d7b1e1a264bb28e2
+  EXPECTED_PATCH_SHA256: c1ab99dbb5541bb010a0769f331fe6fa54fe23087354c14c9da0d3e026200138
 
 jobs:
   apply:
