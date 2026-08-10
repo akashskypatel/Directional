@@ -1,0 +1,54 @@
+name: m1f-doc-closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1f-doc-closeout'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1f-doc-closeout
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+
+      - name: Apply live documentation updates
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 .agents/connector-tasks/m1f_doc_closeout.py
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          printf 'changed=%s\n' "${changed[*]}"
+          test "${#changed[@]}" -eq 5
+          test "${changed[0]}" = '.agents/Directional/Future_Chat_Session_Handoff.md'
+          test "${changed[1]}" = '.agents/Directional/REORIENTATION_PLAN.md'
+          test "${changed[2]}" = '.agents/Directional/Regression_Root_Cause_Tracker.md'
+          test "${changed[3]}" = 'MILESTONE_G_TODO.md'
+          test "${changed[4]}" = 'TODO'
+          git diff --check
+
+      - name: Commit and push live status
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name directional-agent
+          git config user.email directional-agent@users.noreply.github.com
+          git add TODO MILESTONE_G_TODO.md
+          git add -f .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md
+          git diff --cached --check
+          git commit -m 'docs: route M1f to immutable validation'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
