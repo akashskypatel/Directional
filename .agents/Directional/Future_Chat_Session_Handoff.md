@@ -89,11 +89,22 @@ Accepted M1c comparison remains: Bunny independent oracle rejects first, then un
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and separate; direct torus remains 0/3 after 192 quads with 241 `LocalSheetMismatch` issues and historical exact torus remains `InvalidHardRailPairing`.
 
+## Durable `.agents/Directional` cleanup policy — mandatory
+
+This section is durable handoff policy and must remain in every future rewrite of this handoff unless the user explicitly changes it.
+
+- Keep durable project authority: `DESIGN.md`, `REORIENTATION_PLAN.md`, `Surface_Cell_Backend_Remediation_Plan.md`, `Surface_Cell_Architecture_Independent_Design_Review_Report.md`, `Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`, `GitHub_Workflow_Policy.md`, `Regression_Root_Cause_Tracker.md`, `PR_8_Regression_Audit_Inventory.md`, and this handoff. `TODO`, `MILESTONE_G_TODO.md`, and `tests/TESTING_STRATEGY.md` are also durable even though they are outside this directory.
+- In addition to the durable set, retain only the **current authoritative evidence/report** and the **single next-turn plan** needed to resume work. Do not accumulate superseded per-turn Code+Build plans/reports, Test+Benchmark plans/reports, review plans/reports, evidence indexes, machine summaries, or temporary workflow payloads once their authoritative facts have been folded into durable/live records.
+- **Every Test + Benchmark turn must begin with stale-evidence cleanup**: remove prior Test+Benchmark evidence and other superseded turn documents from `.agents/Directional` after verifying their accepted facts, stable regression IDs, artifact identities, and unresolved blockers are already represented in the durable trackers/current authority.
+- **Every Test + Benchmark turn must end by replacing stale evidence with current evidence**: retain the newly authoritative Test+Benchmark report plus exactly one next Code+Build plan; remove the consumed Test+Benchmark plan, the superseded preceding Code+Build report/plan, and any older turn evidence. Never delete the current immutable source/package authority until its facts are captured in the new report/live handoff.
+- Raw machine-readable evidence that is still the sole authority for a claim is not stale. Fold its necessary facts into the current authoritative report/live tracker before deleting any repository-side summary. External GitHub Actions artifacts may remain by retention policy; repository cleanup concerns stale checked-in documents/evidence, not immutable artifact history.
+- Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory handoff instruction merely to reduce file count. Durable-document changes must be additive or narrowly corrective unless the user explicitly authorizes broader replacement.
+- After cleanup, audit retained documents for references to deleted stale files and repair those references before turn closeout.
+
 ## Core references
 
 - `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1c_Field_Transition_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
