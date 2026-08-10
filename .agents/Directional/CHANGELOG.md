@@ -25,6 +25,7 @@ No completed changes are currently recorded here. The active M1l Code + Build in
 
 - Migrated persistent `SurfaceFrontEdge::sourceTopologyRegion` from raw `int` to checked optional `TopologyRegionId` at the seam `SurfaceTopologyRegion::id / normalize_scope -> SurfaceFrontEdge::sourceTopologyRegion -> still-raw pipeline compatibility consumers`.
 - Preserved topology-region discovery, partition, numbering, raw cell/region-by-face identity, periodic/bounded-disk/certificate topology-region schemas, accepted source component/sheet authority, M2-M6, fallback/recovery, optimization, and G4 product behavior.
+- Final product/test delta was limited to `include/directional/geometry/SurfaceCellTracing.h`, `src/geometry/SurfaceCellTracing.cpp`, `src/pipeline/RemeshPipeline.cpp`, and `tests/SurfaceCellsPhase10Tests.cpp`; source parent `38d6fc4c4042c5a0d200abf4e5594dcf325b8383`.
 
 ### Validation
 
@@ -51,30 +52,35 @@ No completed changes are currently recorded here. The active M1l Code + Build in
 
 ### Operational notes
 
+- Pre-authority Code + Build attempts exposed packaging/orchestration lessons without generated runtime execution: generated diffs may require `git apply --recount`; package cleanliness checks must exclude intentionally generated build/log directories; the fixture closure is 21 milestone-G files plus six root fixture files; checksum manifests must be generated after all package writes; and Bunny/Vase metadata must use the existing parameterized test names.
 - A local Python `zipfile.extractall` attempt did not preserve packaged executable mode bits. Immutable runtime extraction must use the archive naturally, such as CLI `unzip`; `chmod` or package repair is not evidence-preserving.
 - One local Cylinder harness stall did not reproduce in immediate bounded local execution or either controlled remote run; no product workaround was added.
 - The first remote semantic run was green but its evidence upload used the wrong temporary-root path. Future workflows must use `${{ runner.temp }}` / `$RUNNER_TEMP` consistently.
 - No stable product regression event or recurrence was created. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 
-Authoritative report: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Authoritative report retained as current immutable authority: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## [M1j] Phase-Front Edge Source-Scope Consumer — Immutable accepted
 
 ### Changed
 
 - Preserved checked edge-owned source-component and isolation-sheet authority through the production path while keeping edge topology-region identity outside M1j.
+- Final product/test delta was limited to `include/directional/geometry/SurfaceCellTracing.h`, `src/geometry/SurfaceCellTracing.cpp`, `src/pipeline/RemeshPipeline.cpp`, and `tests/SurfaceCellsPhase10Tests.cpp`; source parent `391271e253557b5c6b267befb3f2f33330c090c9`.
 
 ### Validation
 
 - Implementation: `d5f681173600dc32dc7617de6105d9e584e593be`.
-- Code + Build artifacts: `9076217893 / 9076218338`.
+- Code + Build run/job: `31422691741 / 93566993166`, **120/120**, Release/static/Ninja/PRE_TEST.
+- Result artifact `9076217893`, ZIP SHA-256 `a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c`.
+- Build-log artifact `9076218338`, ZIP SHA-256 `76684f4ac412f4da7fd1ccf3cbee5fddfbb7dd14efd43940c6a7568b3d22d1f9`.
+- Recursive manifest **67/67**, SHA-256 `2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59`; 68 regular files, seven executables, two static libraries, 27 fixtures; producer SHA-256 `04d5d4d59c3e7e9d15cc3e57b0887086939735867aeb1a122a4b3b82be826e40`.
 - Producer discovery **214**; M1j focused **6/6**; required-green **199/199**; M1i-M1b focused preservation green; M1d route witnesses **3/3**; M1c transition counterexamples **3/3**; validation **77/77**; M1a **14/14**; T1 **29/29**.
 - Plane, MultiFaceSeam, CloseSheets, and Cylinder remained independent-oracle clean without a fixture symlink.
 - Remote validation run/job: `31425748772 / 93576908519`; evidence/log artifacts `9077128237 / 9077129029`.
 - Heavy artifact-only run: `31425364955`.
 - Bunny evidence/log artifacts: `9076993439 / 9076993713`.
 - Vase evidence/log artifacts: `9076989920 / 9076990491`.
-- Exact preflight/postflight preserved result ZIP SHA-256 `a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c`, recursive manifest **67/67** digest `2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59`, 68 regular files, seven executables, two libraries, 27 fixtures, producer SHA-256 `04d5d4d59c3e7e9d15cc3e57b0887086939735867aeb1a122a4b3b82be826e40`, and `fixtureSymlink=false`.
+- Exact preflight/postflight preserved the immutable package and `fixtureSymlink=false`.
 
 ### Known limitations
 
@@ -86,9 +92,10 @@ Authoritative report: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Top
 
 ### Operational notes
 
+- Initial implementation `274b7ab88b581aa63e2e99c3abca2bc89eb742e2` exposed one incomplete raw/typed periodic-relation component comparison during compile. The final implementation corrected only that named compatibility boundary; no previously accepted runtime authority was lost.
+- Earlier successful compile artifact `9075863759` was superseded because its manifest was generated before a final package log copy. The authoritative package computes and verifies the manifest only after all package writes are complete.
 - No stable product regression event or recurrence was created; totals remained **34 / 14 / 20**.
-
-Authoritative report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+- The superseded M1j Code + Build plan/report and artifact-only plan/report were removed under `CLEAN_UP_POLICY.md` after the durable implementation, validation, failure-class, and failed-attempt facts were consolidated here and in the regression tracker/GitHub artifact history.
 
 ## [M1i] Phase-Front Cell Source-Scope Consumer — Immutable accepted
 
@@ -99,13 +106,17 @@ Authoritative report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Sou
 ### Validation
 
 - Implementation: `b037157921094604f1b0c17f9c8b7076c7604b3b`.
-- Code + Build artifacts: `9072101943 / 9072102331`.
+- Source parent: `48614f383111c96fce1e69871b66199d94033d11`.
+- Code + Build run/job: `31411770135 / 93531293415`.
+- Result artifact `9072101943`, ZIP SHA-256 `e30860e5ec411dc4dc446d0a4dc65ce6f15c5784a6f5daca138ab44d7196bf25`.
+- Build-log artifact `9072102331`, ZIP SHA-256 `38353b8c101a298d9a537a82da17e075180619343246a6ba4a8e2f430bd14d44`.
+- Recursive manifest **72/72**, SHA-256 `f5614100e1638990d46c7c8fa3d7c720c837dfae1ae515387977d4c0b9e9cac3`; 73 regular files, seven executables, two static libraries, 27 fixtures; producer SHA-256 `51f8af77c71b7607889a2379910892027464517b557c713c34411469ee7c5a5d`.
 - Producer discovery **208**; M1i focused **6/6**; required-green **193/193**; M1h-M1b focused preservation green; M1d route witnesses **3/3**; M1c transition counterexamples **3/3**; validation **77/77**; M1a **14/14**; T1 **29/29**.
 - Plane, MultiFaceSeam, CloseSheets, and Cylinder remained independent-oracle clean without a fixture symlink.
 - Heavy artifact-only run: `31416928654`.
 - Bunny evidence/log artifacts: `9073803244 / 9073803836`.
 - Vase evidence/log artifacts: `9073801150 / 9073801757`.
-- Local and remote postflight preserved the exact result ZIP, **72/72** content manifest, 73 regular files, seven executables, two libraries, 27 fixtures, producer hash, and `fixtureSymlink=false`.
+- Local and remote postflight preserved the exact immutable package and `fixtureSymlink=false`.
 
 ### Known limitations
 
@@ -120,8 +131,7 @@ Authoritative report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Sou
 - M1b focused names belong to the validation executable; a zero-selected filter is an orchestration error and never a semantic pass.
 - Temporary Actions YAML must not use an unindented shell heredoc inside a block scalar; two pre-job heavy runs failed syntax validation before the corrected run. A committed helper payload or indentation-safe script is preferred.
 - Historical regression totals remained **34 events / 14 categories / 20 recurrences**.
-
-Authoritative report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+- The superseded M1i Code + Build plan and artifact-only report were removed under `CLEAN_UP_POLICY.md` after their durable implementation/test facts were consolidated here and in the regression tracker/GitHub artifact history.
 
 ## [M1h] Phase-Front Field-Chart Consumer — Immutable accepted after test-authority remediation
 
@@ -134,13 +144,16 @@ Authoritative report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Sou
 
 - Remediation implementation: `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0`.
 - Unchanged production implementation: `de4e2ba7c19d2e49931655dc22d758f50656d054`.
-- Exact artifacts: `9069186973 / 9069187317`.
+- Build run/job: `31404102605 / 93506073062`.
+- Result artifact `9069186973`, ZIP SHA-256 `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8`.
+- Build-log artifact `9069187317`, ZIP SHA-256 `56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a`.
+- Recursive manifest **72/72**, SHA-256 `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8`; 73 regular files, seven executables, two static libraries, 27 fixtures; producer SHA-256 `937adceea641f372ee42eeb9a3b91c3bba2088847755cc234eaf0b3754f208ac`.
 - Producer discovery **202**; M1h focused **6/6**; required-green **187/187**; M1g-M1b preservation green; validation **77/77**; M1a **14/14**; T1 **29/29**.
 - Plane, MultiFaceSeam, CloseSheets, and Cylinder remained independent-oracle clean without a fixture symlink.
 - Heavy artifact-only run: `31407263138`.
 - Bunny evidence/log artifacts: `9070146263 / 9070146878`.
 - Vase evidence/log artifacts: `9070135665 / 9070135953`.
-- Local and remote postflight preserved the exact result ZIP, **72/72** content manifest, 73 regular files, seven executables, two libraries, 27 fixtures, and producer hash with `fixtureSymlink=false`.
+- Local and remote postflight preserved the exact immutable package with `fixtureSymlink=false`.
 
 ### Known limitations
 
@@ -152,9 +165,9 @@ Authoritative report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Sou
 
 ### Operational notes
 
+- The preceding immutable runtime from artifact `9066967620` was blocked at M1h **5/6** and required-green **186/187** because the focused witness conflated producer chart-domain coverage `{0,1,2}` with sampled lattice-occurrence coverage `{0,2}`. It was classified as a test-authority defect, not a product regression; the accepted remediation was test-only and preserved the production implementation.
 - Historical regression totals remained **34 events / 14 categories / 20 recurrences**.
-
-Authoritative report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+- The superseded M1h artifact-only report was removed under `CLEAN_UP_POLICY.md` after its durable implementation/test-authority facts were consolidated here and in the regression tracker/GitHub artifact history.
 
 ## [M1g] Periodic Holonomy Route Transport Consumer — Immutable accepted
 
