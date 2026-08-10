@@ -7,7 +7,7 @@ source = subprocess.check_output(
     ["git", "show", f"{BASE_PAYLOAD_COMMIT}:{PAYLOAD_PATH}"], text=True
 )
 
-# Harden the helper insertion against the existing formatting of each overload.
+# Harden helper insertion against line wrapping around the return type/name.
 func_start = source.index("def insert_after_regex(")
 func_end = source.index("\n\n# 1. Type the selected SurfaceFrontEdge", func_start)
 helper = r'''def insert_after_regex(text: str, pattern: str, addition: str, label: str) -> str:
@@ -17,11 +17,11 @@ helper = r'''def insert_after_regex(text: str, pattern: str, addition: str, labe
         return text[:match.end()] + addition + text[match.end():]
     anchors = {
         "tracing edge compatibility helpers":
-            "std::vector<int> legacy_phase_front_isolation_sheets(\n    const SurfacePhaseFrontCell &cell) {",
+            "legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {",
         "pipeline edge compatibility helpers":
-            "std::vector<int> legacy_phase_front_isolation_sheets(\n    const geometry::SurfacePhaseFrontCell &cell) {",
+            "legacy_phase_front_isolation_sheets(\n    const geometry::SurfacePhaseFrontCell &cell) {",
         "test edge compatibility helpers":
-            "std::vector<int> legacy_phase_front_sheets(\n    const directional::geometry::SurfacePhaseFrontCell &cell) {",
+            "legacy_phase_front_sheets(\n    const directional::geometry::SurfacePhaseFrontCell &cell) {",
     }
     anchor = anchors.get(label)
     if anchor is None or text.count(anchor) != 1:
