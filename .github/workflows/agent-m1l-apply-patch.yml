@@ -15,9 +15,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BASE_SOURCE_SHA: d5a97953416196a8fc74c8d9790a1ae7b646ca2d
+  BASE_SOURCE_SHA: 5e7313b469da64f3a7a87862c65d4ca1a8a972fb
   PATCH_FILE: .agents/Directional/turn-payloads/m1l-cell-topology-region.patch
-  EXPECTED_PATCH_SHA256: c1ab99dbb5541bb010a0769f331fe6fa54fe23087354c14c9da0d3e026200138
+  EXPECTED_PATCH_SHA256: 1314c912cbd441cf421a2a1ed489777b5209ccf6194f0fb54ecc8a7da2f73258
 
 jobs:
   apply:
@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Verify and apply M1l patch
+      - name: Verify and apply M1l compile correction
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -60,24 +60,14 @@ jobs:
             exit 2
           fi
 
-          git diff --quiet "$BASE_SOURCE_SHA" -- \
-            include/directional/geometry/SurfaceCellTracing.h \
-            src/geometry/SurfaceCellTracing.cpp \
-            src/pipeline/RemeshPipeline.cpp \
-            tests/SurfaceCellsPhase10Tests.cpp \
-            tests/SurfaceCellTransitionQuotientTests.cpp
+          git diff --quiet "$BASE_SOURCE_SHA" -- tests/SurfaceCellsPhase10Tests.cpp
 
           git apply --recount --check "$PATCH_FILE"
           git apply --recount --index "$PATCH_FILE"
           git diff --check --cached
 
           actual_paths=$(git diff --cached --name-only | LC_ALL=C sort)
-          expected_paths=$(printf '%s\n' \
-            include/directional/geometry/SurfaceCellTracing.h \
-            src/geometry/SurfaceCellTracing.cpp \
-            src/pipeline/RemeshPipeline.cpp \
-            tests/SurfaceCellTransitionQuotientTests.cpp \
-            tests/SurfaceCellsPhase10Tests.cpp | LC_ALL=C sort)
+          expected_paths='tests/SurfaceCellsPhase10Tests.cpp'
           test "$actual_paths" = "$expected_paths"
 
           printf '%s\n' '--- staged diff stat ---'
@@ -87,7 +77,7 @@ jobs:
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'refactor(surface-cell): type cell topology-region authority'
+          git commit -m 'test(surface-cell): adapt cell region compatibility assertion'
           implementation_sha=$(git rev-parse HEAD)
           git push origin "HEAD:$GITHUB_REF_NAME"
           printf 'implementation_sha=%s\n' "$implementation_sha"
