@@ -1,5 +1,61 @@
 # Future Chat Session Handoff
 
+## Purpose
+
+This handoff is the concise resume document for future agents starting from a clean slate. Its purpose is to bring a new agent up to speed quickly on the **current ongoing work of the cross-field-aligned surface-cell paving pipeline implementation**, including the exact next turn, current authoritative state, live blockers, and the references required to continue correctly.
+
+It is not a changelog, evidence archive, transcript, or substitute for the project's design, architecture, policy, test, or per-turn authority documents.
+
+## DURABLE handoff policy — mandatory
+
+This section is durable and must remain in every future rewrite of this handoff unless the user explicitly changes it.
+
+### Maintenance policy
+
+Update this handoff at the end of **every turn**. The update must keep current:
+
+1. **Next steps for the next turn** under the `turn-based-coding-agent` skill, including the exact turn type and the authoritative next plan/report needed to resume from a clean slate.
+2. **Quick references to important policies, skills, design, and architecture documents** required for the next agent to work correctly without duplicating their contents.
+
+Mandatory policy references:
+
+- `.agents/Directional/CLEAN_UP_POLICY.md` — stale-evidence cleanup lifecycle and cleanup verification.
+- `.agents/Directional/RETENTION_POLICY.md` — durable-document retention, handoff/changelog ownership, evidence retention, and destructive-mutation authorization.
+- `.agents/Directional/GitHub_Workflow_Policy.md` — GitHub Actions execution boundaries, artifact authority, workflow/trigger/payload lifecycle, failure handling, and workflow-specific hygiene.
+
+Mandatory skill/reference categories to keep discoverable from the handoff when relevant to the active work:
+
+- `turn-based-coding-agent` skill: `https://github.com/akashskypatel/turn-based-coding-agent-skill`.
+- Current authoritative next-turn plan and current immutable report.
+- `.agents/Directional/DESIGN.md` and `.agents/Directional/REORIENTATION_PLAN.md`.
+- `.agents/Directional/Regression_Root_Cause_Tracker.md`.
+- `tests/TESTING_STRATEGY.md`.
+- `.agents/Directional/CHANGELOG.md` for completed historical changes and immutable acceptance checkpoints.
+
+### Anti-bloat policy
+
+Keep this handoff narrowly focused on what a new agent needs to resume the **current** work. Do **not** add information irrelevant to bringing the next agent up to speed.
+
+Specifically, do not add:
+
+- diffs or long code/document excerpts;
+- duplicated information already documented in referenced policies, plans, reports, design/architecture documents, trackers, or the changelog;
+- verbose test or benchmark result details when a concise current authority statement and report reference are sufficient;
+- generic procedural information already defined by the `turn-based-coding-agent` skill or dedicated policy documents;
+- transcripts, chronological play-by-play, tool-call history, or exhaustive descriptions of actions taken;
+- superseded milestone narratives, old artifact tables, historical acceptance logs, or other changelog material;
+- any other excessively verbose information that does not materially help a clean-slate agent execute the next turn correctly.
+
+Prefer concise current-state statements plus direct references to authoritative documents. Move completed historical change information to `CHANGELOG.md`, retain detailed evidence in the authoritative report/tracker where it belongs, and keep only unresolved or immediately resume-critical facts in this handoff.
+
+## Mandatory Start-of-turn Checklist
+
+1. Review turn-based-coding-agent skill if not already reviewed: https://github.com/akashskypatel/turn-based-coding-agent-skill
+2. Fully review this handoff document
+3. Review and strictly follow RETENTION_POLICY for the whole turn
+4. Review and follow GITHUB_WORKFLOW_POLICY for the whole turn
+5. Review all TODOs and any other design and Architectural documents needed for proceeding to next steps
+
 ## Mandatory next turn
 
 Run **M1l Phase-Front Cell Topology-Region Consumer — Code + Build only** under:
@@ -44,6 +100,13 @@ No stable product regression event or recurrence was created. Historical totals 
 
 Historical milestone and acceptance details are maintained in `.agents/Directional/CHANGELOG.md`, not in this handoff.
 
+## Mandatory End-of-turn Checklist
+
+1. Review and apply CLEAN_UP_POLICY
+2. Update CHANGELOG.md
+3. Update this handoff document with next steps while following anti-bloat policy
+4. Add final summarized closing comment to active Pull Request
+
 ## Standing product and regression state
 
 - Product gate **G4 topology-distinct completion and singularities** remains active and separate from architecture migration.
@@ -59,54 +122,6 @@ Historical milestone and acceptance details are maintained in `.agents/Direction
 - A single local Cylinder harness stall did not reproduce in immediate bounded local execution or controlled remote runs. Do not add product workarounds for it without new product evidence.
 
 Workflow-specific execution rules and lessons previously carried here are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
-
-## DURABLE handoff policy — mandatory
-
-This section is durable and must remain in every future rewrite of this handoff unless the user explicitly changes it.
-
-### Purpose
-
-This handoff is the concise resume document for future agents starting from a clean slate. Its purpose is to bring a new agent up to speed quickly on the **current ongoing work of the cross-field-aligned surface-cell paving pipeline implementation**, including the exact next turn, current authoritative state, live blockers, and the references required to continue correctly.
-
-It is not a changelog, evidence archive, transcript, or substitute for the project's design, architecture, policy, test, or per-turn authority documents.
-
-### Maintenance policy
-
-Update this handoff at the end of **every turn**. The update must keep current:
-
-1. **Next steps for the next turn** under the `turn-based-coding-agent` skill, including the exact turn type and the authoritative next plan/report needed to resume from a clean slate.
-2. **Quick references to important policies, skills, design, and architecture documents** required for the next agent to work correctly without duplicating their contents.
-
-Mandatory policy references:
-
-- `.agents/Directional/CLEAN_UP_POLICY.md` — stale-evidence cleanup lifecycle and cleanup verification.
-- `.agents/Directional/RETENTION_POLICY.md` — durable-document retention, handoff/changelog ownership, evidence retention, and destructive-mutation authorization.
-- `.agents/Directional/GitHub_Workflow_Policy.md` — GitHub Actions execution boundaries, artifact authority, workflow/trigger/payload lifecycle, failure handling, and workflow-specific hygiene.
-
-Mandatory skill/reference categories to keep discoverable from the handoff when relevant to the active work:
-
-- `turn-based-coding-agent` skill: `https://github.com/akashskypatel/turn-based-coding-agent-skill`.
-- Current authoritative next-turn plan and current immutable report.
-- `.agents/Directional/DESIGN.md` and `.agents/Directional/REORIENTATION_PLAN.md`.
-- `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-- `tests/TESTING_STRATEGY.md`.
-- `.agents/Directional/CHANGELOG.md` for completed historical changes and immutable acceptance checkpoints.
-
-### Anti-bloat policy
-
-Keep this handoff narrowly focused on what a new agent needs to resume the **current** work. Do **not** add information irrelevant to bringing the next agent up to speed.
-
-Specifically, do not add:
-
-- diffs or long code/document excerpts;
-- duplicated information already documented in referenced policies, plans, reports, design/architecture documents, trackers, or the changelog;
-- verbose test or benchmark result details when a concise current authority statement and report reference are sufficient;
-- generic procedural information already defined by the `turn-based-coding-agent` skill or dedicated policy documents;
-- transcripts, chronological play-by-play, tool-call history, or exhaustive descriptions of actions taken;
-- superseded milestone narratives, old artifact tables, historical acceptance logs, or other changelog material;
-- any other excessively verbose information that does not materially help a clean-slate agent execute the next turn correctly.
-
-Prefer concise current-state statements plus direct references to authoritative documents. Move completed historical change information to `CHANGELOG.md`, retain detailed evidence in the authoritative report/tracker where it belongs, and keep only unresolved or immediately resume-critical facts in this handoff.
 
 ## Core references
 
