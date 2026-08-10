@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: m1k-edge-topology-region-code-build
+  group: m1k-edge-topology-region-code-build-authoritative
   cancel-in-progress: false
 
 jobs:
@@ -375,8 +375,8 @@ jobs:
 
           cat > "$PKG/metadata/deferred-characterization-test-names.txt" <<'EOF'
           SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent
-          SurfaceCellDesignAcceptance.BunnyRandom
-          SurfaceCellDesignAcceptance.Vase
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase
           EOF
 
           printf '%s\n' \
