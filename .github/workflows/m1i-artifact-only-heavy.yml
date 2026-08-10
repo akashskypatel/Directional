@@ -66,11 +66,7 @@ jobs:
           trap 'rc=$?; echo "final_rc=$rc"; echo "final_timestamp=$(date -u +%FT%TZ)"; df -h . || true; exit $rc' EXIT
 
           ZIP="$ROOT/result.zip"
-          PKG="$ROOT/package-$(python3 - <<'PY'
-import secrets
-print(secrets.token_hex(6))
-PY
-)"
+          PKG="$ROOT/package-$RANDOM-$RANDOM"
           RUN_CWD="$ROOT/runtime-cwd"
           mkdir -p "$PKG" "$RUN_CWD"
 
@@ -86,15 +82,7 @@ PY
           test "$actual_zip" = "$RESULT_SHA256"
 
           echo '=== reject unsafe archive members ==='
-          python3 - "$ZIP" <<'PY'
-import pathlib, sys, zipfile
-with zipfile.ZipFile(sys.argv[1]) as z:
-    for info in z.infolist():
-        p = pathlib.PurePosixPath(info.filename)
-        if p.is_absolute() or '..' in p.parts:
-            raise SystemExit(f'unsafe archive member: {info.filename}')
-print('archive_paths_safe=true')
-PY
+          python3 -c 'import pathlib,sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); bad=[i.filename for i in z.infolist() if pathlib.PurePosixPath(i.filename).is_absolute() or ".." in pathlib.PurePosixPath(i.filename).parts]; assert not bad, bad; print("archive_paths_safe=true")' "$ZIP"
 
           unzip -q "$ZIP" -d "$PKG"
           cd "$PKG"
@@ -125,20 +113,8 @@ PY
           jq -e \
             --arg impl "$IMPLEMENTATION" \
             --arg parent "$SOURCE_PARENT" \
-            '.implementationCommit == $impl and
-             .sourceParent == $parent and
-             .runId == "31411770135" and
-             .configuration == "Release" and
-             .generator == "Ninja" and
-             .sharedLibraries == false and
-             .gtestDiscoveryMode == "PRE_TEST" and
-             .runtimeExecution == false and
-             .testExecution == false and
-             .benchmarkExecution == false and
-             .ctestExecution == false and
-             .cliExecution == false and
-             .fuzzerExecution == false and
-             .customInputExecution == false' metadata/build-authority.json >/dev/null
+            '.implementationCommit == $impl and .sourceParent == $parent and .runId == "31411770135" and .configuration == "Release" and .generator == "Ninja" and .sharedLibraries == false and .gtestDiscoveryMode == "PRE_TEST" and .runtimeExecution == false and .testExecution == false and .benchmarkExecution == false and .ctestExecution == false and .cliExecution == false and .fuzzerExecution == false and .customInputExecution == false' \
+            metadata/build-authority.json >/dev/null
 
           test "$(cat metadata/tracing-header-blob.txt)" = '4036b16a3dc7e20369a9cd65a4422c61be58afb4'
           test "$(cat metadata/tracing-blob.txt)" = '33a41e70e240f198eaa49184c3a87773986b84cb'
@@ -160,8 +136,7 @@ PY
             LIMIT=60
           fi
           set +e
-          (cd "$RUN_CWD" && /usr/bin/time -f 'WALL=%e RSS_KB=%M RC=%x' -o "$EVIDENCE/runtime.time" \
-            timeout "${LIMIT}s" "$PROD" --gtest_filter="$TEST" > "$EVIDENCE/runtime.out" 2>&1)
+          (cd "$RUN_CWD" && /usr/bin/time -f 'WALL=%e RSS_KB=%M RC=%x' -o "$EVIDENCE/runtime.time" timeout "${LIMIT}s" "$PROD" --gtest_filter="$TEST" > "$EVIDENCE/runtime.out" 2>&1)
           runtime_rc=$?
           set -e
           echo "runtime_rc=$runtime_rc" | tee "$EVIDENCE/runtime-summary.txt"
@@ -188,8 +163,7 @@ PY
           actual_zip_after=$(sha256sum "$ZIP" | awk '{print $1}')
           manifest_sha_after=$(sha256sum SHA256SUMS | awk '{print $1}')
           producer_sha_after=$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')
-          printf 'result_zip_sha256=%s\nmanifest_sha256=%s\nproducer_sha256=%s\n' \
-            "$actual_zip_after" "$manifest_sha_after" "$producer_sha_after" | tee "$EVIDENCE/postflight.txt"
+          printf 'result_zip_sha256=%s\nmanifest_sha256=%s\nproducer_sha256=%s\n' "$actual_zip_after" "$manifest_sha_after" "$producer_sha_after" | tee "$EVIDENCE/postflight.txt"
           test "$actual_zip_after" = "$RESULT_SHA256"
           test "$manifest_sha_after" = "$MANIFEST_SHA256"
           sha256sum -c SHA256SUMS | tee "$EVIDENCE/postflight-manifest.txt"
