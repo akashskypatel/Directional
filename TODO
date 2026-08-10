@@ -5,10 +5,10 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a/M1b/M1c/M1d/M1e immutable accepted; M1f Vertex Continuation Route Transport Consumer Code + Build next**.
+- Architecture migration: **M1a/M1b/M1c/M1d/M1e immutable accepted; M1f Vertex Continuation Route Transport Consumer compile/package complete, immutable runtime next**.
 - M1e immutable acceptance: implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`, build run/job `31351113129 / 93341993183`, artifacts `9049125645 / 9049125905`; focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
 - Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
-- Authoritative next turn: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
+- Authoritative next turn: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
@@ -65,12 +65,23 @@ The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and
 Current immutable report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
+## M1f compile/package checkpoint
+
+Selected seam:
+`surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
+
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` compiled **120/120** under run/job `31356131866 / 93356062724` without generated Directional runtime. Immutable artifacts are `9050850344 / 9050850513`; the package manifest is **59/59** with SHA-256 `3607c79873f45d035e6b1339288ed26582007a9068768da167abc603c376059e`. Six focused M1f contracts are compiled and runtime-pending. Expected immutable discovery/required-green counts are **190 / 175**.
+
+The first compile-only implementation `17afbfd8baf0d369d9136534c0a11784ca0dca10` exposed a namespace-ownership ambiguity in `source_edge_provenance`; the correction was source-local and compiled successfully. No new stable regression event or recurrence was created.
+
+Current Code + Build report: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`.
+
 ## Regression status
 
-- `RP-01`: checked M1e step domains **accepted**.
-- `RP-05`: M1e semantic step identity and observed/canonical route-order boundary **accepted**.
-- `RP-07`: M1e typed cumulative route composition **accepted**.
-- `RP-02 / TA-05`: independent authority preserved through exact M1e artifact-only validation.
+- `RP-01`: M1e accepted; M1f checked continuation-step domains **compile-complete; runtime pending**.
+- `RP-05`: M1e accepted; M1f continuation route identity/orientation **compile-complete; runtime pending**.
+- `RP-07`: M1e accepted; M1f typed cumulative continuation-route composition **compile-complete; runtime pending**.
+- `RP-02 / TA-05`: independent authority preserved through M1e; M1f preservation pending exact artifact-only validation.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
 - Strict-validator timing remains deferred: the exact M1e artifact produced **6/10 pass, 4/10 fail** across fresh repetitions, classifying the sub-millisecond 5% timing gate as nondeterministic rather than stable product evidence.

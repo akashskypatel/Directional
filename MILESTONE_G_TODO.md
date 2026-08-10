@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e architecture slices are immutable accepted. M1f Vertex Continuation Route Transport Consumer is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e architecture slices are immutable accepted. M1f Vertex Continuation Route Transport Consumer is compile/package complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -69,11 +69,20 @@ Run **M1f Vertex Continuation Route Transport Consumer — Code + Build only** u
 
 M1f is intentionally limited to the real `resolve_vertex_continuation` ordered source-vertex route transport owner. It must preserve continuation path discovery/ranking and defer periodic whole-cycle holonomy, `FieldChartId`, M2–M6, and G4 remediation.
 
+## M1f vertex-continuation transport — compile/package complete
+
+Selected boundary:
+`surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
+
+Final implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` compiled **120/120** in run/job `31356131866 / 93356062724` with `runtimeExecution=false`. Result/log artifacts `9050850344 / 9050850513` have ZIP SHA-256 `a2ac9f21cae7f3496a9ffd7cade8b550b5c8e1de57c91d693dde5ece4fcd499f / 3f5595a14d7c2b8c8931772fbdb770c9bc1944b211710ccc4939f2fc1dd54c99`; recursive manifest is **59/59**, `3607c79873f45d035e6b1339288ed26582007a9068768da167abc603c376059e`. Six M1f contracts are compiled but unexecuted.
+
+Run immutable Test + Benchmark only under `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected producer discovery is **190** and required-green segment **175/175**. Long/resource-heavy Bunny/Vase or other bounded runtime cases may use temporary artifact-only GitHub workflows under the durable policy.
+
 ## Regression disposition
 
-- `RP-01`: M1e checked step domains **accepted**.
-- `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**.
-- `RP-07`: M1e cumulative ordered-route transport **accepted**.
+- `RP-01`: M1e checked step domains **accepted**; M1f continuation-step domains **compile-complete/runtime-pending**.
+- `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**; M1f continuation route identity/orientation **compile-complete/runtime-pending**.
+- `RP-07`: M1e cumulative ordered-route transport **accepted**; M1f continuation transport **compile-complete/runtime-pending**.
 - `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.

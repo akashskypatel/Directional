@@ -49,7 +49,7 @@ M0 preserve immutable evidence [complete]
    M1c field-transition consumer [accepted]
    M1d phase-front route identity consumer [accepted]
    M1e segment route transport consumer [accepted]
-   M1f vertex continuation route transport consumer [next Code + Build]
+   M1f vertex continuation route transport consumer [compile/package complete; runtime pending]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -139,6 +139,16 @@ M1e implementation `a0330d0...` adopts:
 
 The accepted implementation preserves existing public/raw provenance and matching storage and excludes the separate periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair. Immutable semantic acceptance passed.
 
+### M1f compile/package checkpoint
+
+M1f selects the next real cumulative transport owner:
+
+`surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
+
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Compile/package run `31356131866 / 93356062724` completed **120/120** with immutable artifact `9050850344`, manifest **59/59** `3607c79873f45d035e6b1339288ed26582007a9068768da167abc603c376059e`, and no generated runtime. M1f remains unaccepted until exact artifact-only semantic validation.
+
+The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring.
+
 ## 5. Required target-stage corrections
 
 The migration must reverse consumer reconstruction: each stage writes one immutable semantic product; later stages consume or verify it without repairing, overwriting, or rediscovering meaning.
@@ -181,7 +191,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. Post-M1e source inspection identified `resolve_vertex_continuation` as the next narrow real owner of cumulative ordered route transport; M1f migrates that consumer without changing path discovery/ranking. The separate periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
+Continue bounded consumers only. `resolve_vertex_continuation` is now M1f compile/package complete at the cumulative ordered route transport owner without changing path discovery/ranking; immutable runtime validation is the next gate. The separate periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
 
 ### M2 — closed producer outcomes and single-writer scope
 

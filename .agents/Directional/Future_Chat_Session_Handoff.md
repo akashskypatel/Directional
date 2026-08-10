@@ -2,13 +2,36 @@
 
 ## Mandatory next turn
 
-Run **M1f Vertex Continuation Route Transport Consumer — Code + Build only** under:
+Run **M1f Vertex Continuation Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d/M1e are immutable accepted. Review policy is `never`.
+Consume only immutable result/log artifacts `9050850344 / 9050850513` produced from implementation `baed0f24831c476f45a1b742c12314e3fb03e10e`. Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d/M1e remain immutable accepted; M1f is compile/package complete and runtime-pending. Review policy is `never`.
 
-The next turn may edit and compile/package but may execute no generated Directional binary, discovery, test, benchmark, ctest, CLI/GUI/help/version command, fuzzer, or custom input. Before source expansion, synchronize any remaining `REORIENTATION_PLAN.md` / regression-tracker runtime-pending text with the accepted M1e authority.
+This next turn may execute packaged binaries but may not edit source/tests/fixtures/build logic, configure, compile, relink, regenerate discovery, repair packaged content, or substitute an artifact. Long/resource-heavy cases may use narrowly scoped GitHub Actions under the durable workflow policy below, but remote execution does not relax artifact-only authority.
+
+## M1f compile/package authority — immutable runtime pending
+
+Selected seam:
+`surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
+
+| Evidence | Value |
+|---|---|
+| implementation | `baed0f24831c476f45a1b742c12314e3fb03e10e` |
+| build run/job | `31356131866 / 93356062724` |
+| result artifact / SHA-256 | `9050850344` / `a2ac9f21cae7f3496a9ffd7cade8b550b5c8e1de57c91d693dde5ece4fcd499f` |
+| log artifact / SHA-256 | `9050850513` / `3f5595a14d7c2b8c8931772fbdb770c9bc1944b211710ccc4939f2fc1dd54c99` |
+| recursive manifest | **59/59**, `3607c79873f45d035e6b1339288ed26582007a9068768da167abc603c376059e` |
+| package | **60** regular files including `SHA256SUMS`; 7 executables; 2 static libraries; 27 fixtures |
+| build | **120/120**, Release/static/Ninja/PRE_TEST, **8:50.14**, peak RSS **1,848,704 KiB** |
+| runtime | **false** |
+
+M1f replaces `PathState::matching` raw signed accumulation with checked source-step identity, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition in observed route order. It preserves fan/path discovery, branch resolution, ranking, failure semantics, public compatibility representation, the separate periodic whole-cycle holonomy accumulator, `FieldChartId`, M2–M6, and G4 behavior.
+
+Exactly six `SurfaceCellVertexContinuationRouteTransportAuthorityMigration` contracts are compiled but unexecuted. The expected next-turn producer discovery is **190** and required-green producer segment is **175/175**. The first compile attempt `17afbfd8baf0d369d9136534c0a11784ca0dca10` failed because a forward declaration crossed the existing anonymous-namespace helper ownership boundary; the surgical correction introduced a local continuation provenance helper and compiled successfully without changing accepted M1e authority.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## M1e immutable acceptance authority
 
