@@ -74,7 +74,6 @@ Authoritative plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Sourc
 Current immutable report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1f vertex-continuation transport — immutable accepted
-## M1f vertex-continuation transport — immutable accepted
 
 Selected boundary:
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
