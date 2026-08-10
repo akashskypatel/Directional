@@ -1,4 +1,0 @@
-M1l Phase-Front Cell Topology-Region Consumer Code + Build
-triggered: 2026-08-10T22:58:00Z
-implementation: 5e7313b469da64f3a7a87862c65d4ca1a8a972fb
-runtime policy: compile/package only; no generated Directional execution
