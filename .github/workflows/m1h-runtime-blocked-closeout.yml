@@ -1,0 +1,59 @@
+name: m1h-runtime-blocked-closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1h-runtime-blocked-closeout'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: m1h-runtime-blocked-closeout
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 500
+          submodules: false
+
+      - name: Apply durable documentation closeout
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 .agents/Directional/turn-payloads/m1h-runtime-blocked-closeout.py
+          git diff --check
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          printf '%s\n' "${changed[@]}"
+          allowed='^(MILESTONE_G_TODO\.md|TODO|\.agents/Directional/(Future_Chat_Session_Handoff\.md|REORIENTATION_PLAN\.md|Regression_Root_Cause_Tracker\.md|Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report\.md|Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan\.md|Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report\.md|Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan\.md))$'
+          for path in "${changed[@]}"; do
+            [[ "$path" =~ $allowed ]] || { echo "unexpected closeout path: $path" >&2; exit 1; }
+          done
+          test "${#changed[@]}" -ge 5
+          test -z "$(git diff --name-only -- src include tests cmake CMakeLists.txt benchmarks)"
+          test -f .agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md
+          test -f .agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md
+          ! grep -R -F 'Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md' -- TODO MILESTONE_G_TODO.md .agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/Regression_Root_Cause_Tracker.md
+          ! grep -R -F 'Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md' -- TODO MILESTONE_G_TODO.md .agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/Regression_Root_Cause_Tracker.md
+
+      - name: Commit and push documentation closeout
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'OpenAI Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -u -- TODO MILESTONE_G_TODO.md .agents/Directional
+          git diff --cached --check
+          git commit -m 'docs: hand off M1h test-authority remediation'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
