@@ -1,0 +1,429 @@
+name: m1e-segment-route-transport-code-build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1e-segment-route-transport-code-build'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: m1e-segment-route-transport-code-build
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      LOG_DIR: /tmp/m1e-segment-route-transport-code-build-logs
+      ACTIVITY_LOG: /tmp/m1e-segment-route-transport-code-build-logs/activity.log
+      M1E_BASE: '5df33fc11deaac697cb886d8defcaba622ec436f'
+      ACCEPTED_M1D_IMPLEMENTATION: '9446fc82d98d336d3bd59c190dd2bbbe94bd2e25'
+      ACCEPTED_M1D_ARTIFACT: '9046308272'
+      ACCEPTED_M1C_ARTIFACT: '9043971772'
+      ACCEPTED_M1B_ARTIFACT: '9042940168'
+      ACCEPTED_M1A_ARTIFACT: '9041930767'
+      ACCEPTED_T1_ARTIFACT: '9041289209'
+      EXPECTED_TRACING_BLOB: '053759bec2e07a2827f54411d85e73ef4b4ef71a'
+      EXPECTED_PHASE10_TEST_BLOB: '2a1aa2ae17a9be1f2660eef6da396f9b3793566a'
+      EXPECTED_M1D_PIPELINE_BLOB: '481f58169fe73844b12d9e70660d49fa3e13f845'
+      EXPECTED_M1D_TEST_BLOB: 'dc82faf06898d8516ddd55b2ae56c2b240c761fb'
+
+    steps:
+      - name: Initialize unconditional activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          {
+            echo "turn=M1e Segment Route Transport Consumer Code+Build"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "event=$GITHUB_EVENT_NAME"
+            echo "event_sha=$GITHUB_SHA"
+            echo "event_ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "m1e_base=$M1E_BASE"
+            echo "accepted_m1d_implementation=$ACCEPTED_M1D_IMPLEMENTATION"
+            echo "runtimeExecution=false"
+            echo "reviewPolicy=never"
+            echo "allowed=bounded two-path M1e edit; static inspection; configure; compile/link; immutable packaging"
+            echo "prohibited=generated Directional binary execution; gtest discovery/tests; benchmarks; ctest; CLI/GUI/help/version; fuzzers; custom input"
+            echo "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee "$ACTIVITY_LOG"
+
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 260
+          submodules: false
+
+      - name: Apply bounded M1e source and test changes and push
+        id: apply
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          finish() {
+            rc=$?
+            trap - EXIT
+            echo "step=m1e-source-edit exit_code=$rc finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            exit "$rc"
+          }
+          trap finish EXIT
+
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$M1E_BASE" "$GITHUB_SHA"
+          git merge-base --is-ancestor "$ACCEPTED_M1D_IMPLEMENTATION" "$GITHUB_SHA"
+          test -z "$(git status --porcelain=v1)"
+          test "$(git rev-parse HEAD:src/geometry/SurfaceCellTracing.cpp)" = "$EXPECTED_TRACING_BLOB"
+          test "$(git rev-parse HEAD:tests/SurfaceCellsPhase10Tests.cpp)" = "$EXPECTED_PHASE10_TEST_BLOB"
+          test "$(git rev-parse HEAD:src/pipeline/RemeshPipeline.cpp)" = "$EXPECTED_M1D_PIPELINE_BLOB"
+          test "$(git rev-parse HEAD:tests/SurfaceCellTransitionQuotientTests.cpp)" = "$EXPECTED_M1D_TEST_BLOB"
+
+          python3 -m py_compile .agents/connector-scripts/m1e-segment-route-transport-apply.py
+          python3 .agents/connector-scripts/m1e-segment-route-transport-apply.py
+
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = "src/geometry/SurfaceCellTracing.cpp"
+          test "${changed[1]}" = "tests/SurfaceCellsPhase10Tests.cpp"
+
+          grep -q '#include <directional/authority/CanonicalRoute.h>' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'std::vector<authority::TransitionStep> observedSteps' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'LegacyAuthorityAdapters::source_vertex' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'LegacyAuthorityAdapters::interior_transition' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'SourceEdgeTopologyKey::make' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'TransitionStep::interior' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'CanonicalRoute::from_observed_steps' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'typedRoute.oriented_steps()' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'authority::compose(step.transport(), routeTransport)' src/geometry/SurfaceCellTracing.cpp
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('src/geometry/SurfaceCellTracing.cpp').read_text()
+          begin = text.index('    int transitFace = previous.face;')
+          end = text.index('  return true;\n}', begin)
+          seam = text[begin:end]
+          assert 'totalMatching += transition.matching;' not in seam
+          assert 'current.matching = normalized_branch(totalMatching);' not in seam
+          assert 'current.matching = static_cast<int>(routeTransport.rotation.value());' in seam
+          PY
+          test "$(grep -c '^TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,' tests/SurfaceCellsPhase10Tests.cpp)" -eq 6
+          grep -q 'UniformPhaseFrontTraversesOrderedAuthoritativeSourceVertexFans' tests/SurfaceCellsPhase10Tests.cpp
+          grep -q 'UniformPhaseFrontVertexFanIsInvariantToFaceRowOrdering' tests/SurfaceCellsPhase10Tests.cpp
+          grep -q 'NonReciprocalSourceAdjacentIsolationSeamFailsClosed' tests/SurfaceCellsPhase10Tests.cpp
+          grep -q 'CurvedBoundedDiskInvalidReciprocalTransportFailsClosed' tests/SurfaceCellsPhase10Tests.cpp
+          grep -q 'PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason' tests/SurfaceCellsPhase10Tests.cpp
+          git diff --check
+
+          git config user.name 'directional-m1e-agent'
+          git config user.email 'actions@users.noreply.github.com'
+          git add src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m 'refactor: type segment route transport consumer'
+          implementation_commit="$(git rev-parse HEAD)"
+          echo "implementation_commit=$implementation_commit" | tee -a "$ACTIVITY_LOG"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "implementation_commit=$implementation_commit" >> "$GITHUB_OUTPUT"
+          test -z "$(git status --porcelain=v1)"
+
+          mapfile -t product_changed < <(git diff --name-only "$M1E_BASE" "$implementation_commit" -- \
+            src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/pipeline/RemeshPipeline.cpp tests/SurfaceCellTransitionQuotientTests.cpp \
+            CMakeLists.txt cmake/DirectionalTests.cmake | LC_ALL=C sort)
+          test "${#product_changed[@]}" -eq 2
+          test "${product_changed[0]}" = "src/geometry/SurfaceCellTracing.cpp"
+          test "${product_changed[1]}" = "tests/SurfaceCellsPhase10Tests.cpp"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils time
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --recursive --depth 1 --recommend-shallow
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          /usr/bin/time -v -o "$LOG_DIR/build-resources.txt" \
+            cmake --build build --parallel 2 --target \
+              directional_core \
+              directional_pipeline \
+              directional_compiled_api_tests \
+              directional_surface_cell_producer_tests \
+              directional_surface_cell_oracle_tests \
+              directional_surface_cell_authority_kernel_tests \
+              directional_surface_cell_completion_tests \
+              directional_surface_cell_validation_tests \
+              directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+
+      - name: Package immutable compile artifact
+        env:
+          IMPLEMENTATION_COMMIT: ${{ steps.apply.outputs.implementation_commit }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_COMMIT"
+          test -z "$(git status --porcelain=v1)"
+
+          pkg="$RUNNER_TEMP/m1e-segment-route-transport-code-build"
+          rm -rf "$pkg"
+          mkdir -p "$pkg/bin" "$pkg/lib" "$pkg/logs" "$pkg/metadata" "$pkg/source" "$pkg/test-data/benchmarks"
+          for exe in \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks; do
+            test -x "build/$exe"
+            cp "build/$exe" "$pkg/bin/$exe"
+          done
+          test -f build/libdirectional_core.a
+          test -f build/libdirectional_pipeline.a
+          cp build/libdirectional_core.a "$pkg/lib/"
+          cp build/libdirectional_pipeline.a "$pkg/lib/"
+          cp -a benchmarks/fixtures "$pkg/test-data/benchmarks/fixtures"
+          cp "$LOG_DIR"/* "$pkg/logs/"
+          cp build/compile_commands.json "$pkg/source/compile_commands.json"
+
+          git diff --binary "$M1E_BASE" "$IMPLEMENTATION_COMMIT" -- \
+            src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp \
+            > "$pkg/source/m1e-segment-route-transport-consumer.patch"
+          git archive --format=tar "$IMPLEMENTATION_COMMIT" | xz -T0 -6 > "$pkg/source/directional-m1e-segment-route-source-no-deps.tar.xz"
+
+          python3 - <<'PY' > "$pkg/metadata/m1e-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceCellSegmentRouteTransportAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1e focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/m1d-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellTransitionQuotientTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceCellPhaseFrontRouteAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1d focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/m1c-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceCellFieldTransitionAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1c focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/m1b-focused-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceMeshOptimizerPhase22Tests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*(SurfaceOptimizationRailAuthorityMigration)\s*,\s*([^)]+)\)', text)]
+          if len(names) != 6 or len(set(names)) != 6:
+              raise SystemExit(f'M1b focused manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/authority-kernel-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellAuthorityKernelTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 14 or len(set(names)) != 14:
+              raise SystemExit(f'authority manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+          python3 - <<'PY' > "$pkg/metadata/oracle-test-names.txt"
+          import pathlib, re
+          text = pathlib.Path('tests/SurfaceCellProductOracleTests.cpp').read_text()
+          names = [f'{a.strip()}.{b.strip()}' for a,b in re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', text)]
+          if len(names) != 29 or len(set(names)) != 29:
+              raise SystemExit(f'oracle manifest count mismatch: {len(names)}')
+          print('\n'.join(names))
+          PY
+
+          cat > "$pkg/metadata/known-red-producer-tests.txt" <<'EOF'
+          SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets
+          SurfaceCellTransitionQuotient.FullPeriodicRotationAndTranslationMaterialize
+          SurfaceCellTransitionQuotient.TamperedFullPeriodicTransformIsRejected
+          SurfaceCellTransitionQuotient.MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner
+          SurfaceCellTransitionQuotient.SwappedPeriodicRelationOwnersAreRejected
+          SurfaceCellTransitionQuotient.MissingPeriodicRelationOwnerIsRejected
+          SurfaceCellTransitionQuotient.QuotientLineageRetainsScalarPointAndCompleteSortedAuthority
+          SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent
+          SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/known-red-producer-tests.txt"
+          cat > "$pkg/metadata/m1d-existing-route-counterexamples.txt" <<'EOF'
+          SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions
+          SurfaceCellTransitionQuotient.ArtificialInteriorBoundaryIsRejected
+          SurfaceCellTransitionQuotient.ComponentBoundaryAndEulerFactsAreComputedFromIncidence
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/m1d-existing-route-counterexamples.txt"
+          cat > "$pkg/metadata/m1c-transition-counterexamples.txt" <<'EOF'
+          SurfaceCellsPhase10.NonReciprocalSourceAdjacentIsolationSeamFailsClosed
+          SurfaceCellsPhase10.CurvedBoundedDiskInvalidReciprocalTransportFailsClosed
+          SurfaceCellsPhase10.PeriodicPhaseFrontMalformedHolonomyFailsClosedWithTypedReason
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/m1c-transition-counterexamples.txt"
+          cat > "$pkg/metadata/m1e-existing-vertex-fan-witnesses.txt" <<'EOF'
+          SurfaceCellsPhase10.UniformPhaseFrontTraversesOrderedAuthoritativeSourceVertexFans
+          SurfaceCellsPhase10.UniformPhaseFrontVertexFanIsInvariantToFaceRowOrdering
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/m1e-existing-vertex-fan-witnesses.txt"
+
+          cat > "$pkg/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1e Segment Route Transport Consumer Code+Build",
+            "baseCommit": "$M1E_BASE",
+            "implementationCommit": "$IMPLEMENTATION_COMMIT",
+            "buildEventCommit": "$GITHUB_SHA",
+            "workflowRun": "$GITHUB_RUN_ID",
+            "workflowAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release/static/Ninja",
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "m1eFocusedStaticTestCount": 6,
+            "m1dFocusedStaticTestCount": 6,
+            "m1cFocusedStaticTestCount": 6,
+            "m1bFocusedStaticTestCount": 6,
+            "authorityKernelStaticTestCount": 14,
+            "oracleStaticTestCount": 29,
+            "previousProducerDiscoveryCount": 178,
+            "expectedProducerDiscoveryCount": 184,
+            "previousRequiredGreenSegmentCount": 163,
+            "expectedRequiredGreenSegmentCount": 169,
+            "knownRedProducerCount": 9,
+            "acceptedM1dArtifact": "$ACCEPTED_M1D_ARTIFACT",
+            "acceptedM1cArtifact": "$ACCEPTED_M1C_ARTIFACT",
+            "acceptedM1bArtifact": "$ACCEPTED_M1B_ARTIFACT",
+            "acceptedM1aArtifact": "$ACCEPTED_M1A_ARTIFACT",
+            "acceptedT1Artifact": "$ACCEPTED_T1_ARTIFACT"
+          }
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/build-authority.json"
+          cat > "$pkg/metadata/command-boundary.txt" <<EOF
+          runtimeExecution=false
+          configured=true
+          compiled=true
+          generatedDirectionalBinaryExecuted=false
+          gtestDiscoveryExecuted=false
+          testExecuted=false
+          benchmarkExecuted=false
+          ctestExecuted=false
+          cliGuiHelpVersionExecuted=false
+          fuzzerExecuted=false
+          customInputExecuted=false
+          EOF
+          sed -i 's/^          //' "$pkg/metadata/command-boundary.txt"
+
+          {
+            echo "base_commit=$M1E_BASE"
+            echo "implementation_commit=$IMPLEMENTATION_COMMIT"
+            echo "build_event_commit=$GITHUB_SHA"
+            echo "tracing_cpp_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:src/geometry/SurfaceCellTracing.cpp")"
+            echo "phase10_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellsPhase10Tests.cpp")"
+            echo "m1d_pipeline_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:src/pipeline/RemeshPipeline.cpp")"
+            echo "m1d_transition_quotient_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellTransitionQuotientTests.cpp")"
+            echo "tracing_header_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/geometry/SurfaceCellTracing.h")"
+            echo "canonical_route_header_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/CanonicalRoute.h")"
+            echo "authority_ids_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/AuthorityIds.h")"
+            echo "authority_adapters_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/LegacyAuthorityAdapters.h")"
+            echo "grid_automorphism_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:include/directional/authority/GridAutomorphism.h")"
+            echo "m1b_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceMeshOptimizerPhase22Tests.cpp")"
+            echo "authority_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellAuthorityKernelTests.cpp")"
+            echo "oracle_tests_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellProductOracleTests.cpp")"
+            echo "direct_acceptance_blob=$(git rev-parse "$IMPLEMENTATION_COMMIT:tests/SurfaceCellDesignAcceptanceTests.cpp")"
+          } > "$pkg/metadata/source-blobs.txt"
+          git submodule status --recursive > "$pkg/metadata/submodules.txt"
+          {
+            cmake --version | head -1
+            ninja --version
+            c++ --version | head -1
+            uname -a
+          } > "$pkg/metadata/toolchain.txt"
+          find benchmarks/fixtures -type f -printf '%P\n' | LC_ALL=C sort > "$pkg/metadata/fixture-files.txt"
+
+          {
+            echo "patch_sha256=$(sha256sum "$pkg/source/m1e-segment-route-transport-consumer.patch" | awk '{print $1}')"
+            echo "source_archive_sha256=$(sha256sum "$pkg/source/directional-m1e-segment-route-source-no-deps.tar.xz" | awk '{print $1}')"
+            echo "compile_commands_sha256=$(sha256sum "$pkg/source/compile_commands.json" | awk '{print $1}')"
+            echo "m1e_focused_manifest_sha256=$(sha256sum "$pkg/metadata/m1e-focused-test-names.txt" | awk '{print $1}')"
+            echo "m1d_focused_manifest_sha256=$(sha256sum "$pkg/metadata/m1d-focused-test-names.txt" | awk '{print $1}')"
+            echo "m1c_focused_manifest_sha256=$(sha256sum "$pkg/metadata/m1c-focused-test-names.txt" | awk '{print $1}')"
+            echo "m1b_focused_manifest_sha256=$(sha256sum "$pkg/metadata/m1b-focused-test-names.txt" | awk '{print $1}')"
+            echo "authority_manifest_sha256=$(sha256sum "$pkg/metadata/authority-kernel-test-names.txt" | awk '{print $1}')"
+            echo "oracle_manifest_sha256=$(sha256sum "$pkg/metadata/oracle-test-names.txt" | awk '{print $1}')"
+          } > "$pkg/metadata/package-content-hashes.txt"
+
+          (
+            cd "$pkg"
+            find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS
+          )
+          manifest_entries="$(wc -l < "$pkg/SHA256SUMS")"
+          manifest_sha="$(sha256sum "$pkg/SHA256SUMS" | awk '{print $1}')"
+          echo "manifest_entries=$manifest_entries" | tee -a "$ACTIVITY_LOG"
+          echo "manifest_sha256=$manifest_sha" | tee -a "$ACTIVITY_LOG"
+          echo "PACKAGE_DIR=$pkg" >> "$GITHUB_ENV"
+          echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$ACTIVITY_LOG"
+
+      - name: Upload immutable compile artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1e-segment-route-transport-code-build
+          path: ${{ env.PACKAGE_DIR }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Upload detailed activity logs always
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1e-segment-route-transport-code-build-logs
+          path: ${{ env.LOG_DIR }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
