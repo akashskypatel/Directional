@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1i architecture slices are immutable accepted. M1j phase-front edge source-scope Code + Build is complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1j architecture slices are immutable accepted. M1k phase-front edge topology-region consumer is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -87,6 +87,19 @@ An initial compile-only missed compatibility conversion and an earlier incomplet
 Run **M1j immutable Artifact-Only Test + Benchmark only** under `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected producer discovery **214**, M1j **6/6**, required-green **199/199**, plus full entering preservation and exact postflight.
 
 Current report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Report.md`.
+
+## M1j phase-front edge source-scope authority — immutable accepted
+
+Implementation `d5f681173600dc32dc7617de6105d9e584e593be` migrates only `SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}` to checked `SourceComponentId` / `IsolationSheetId`, preserving raw `sourceTopologyRegion` for the next bounded slice.
+
+Exact artifacts `9076217893 / 9076218338` are immutable accepted. Runtime authority: producer discovery **214**, M1j **6/6**, required-green **199/199**, M1i-M1b focused preservation, M1d/M1c counterexamples **3/3 + 3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean without fixture symlink. All eight historical/deferred red classes remain unchanged. Strict-validator timing remains deferred after fresh **0/10** characterization.
+
+Heavy run `31425364955` preserved Bunny's known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure and bounded Vase at 60 seconds as safety-only evidence. Exact pre/postflight preserved **67/67** package checksums. No stable product regression event or recurrence was created; historical totals remain **34 / 14 / 20** and `PR8-R034 / G4-R007` remains active.
+
+Next architecture slice: **M1k Phase-Front Edge Topology-Region Consumer — Code + Build only** at `SurfaceTopologyRegion::id / normalize_scope -> SurfaceFrontEdge::sourceTopologyRegion -> still-raw pipeline compatibility consumers`.
+
+Authoritative plan: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Plan.md`.
+Current immutable report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1f vertex-continuation transport — immutable accepted
 

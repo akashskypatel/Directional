@@ -53,7 +53,8 @@ M0 preserve immutable evidence [complete]
    M1g periodic holonomy route transport consumer [accepted]
    M1h phase-front field-chart consumer [accepted]
    M1i phase-front cell source-scope consumer [accepted]
-   M1j phase-front edge source-scope consumer [compile/package complete; immutable runtime next]
+   M1j phase-front edge source-scope consumer [accepted]
+   M1k phase-front edge topology-region consumer [selected; Code + Build next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
