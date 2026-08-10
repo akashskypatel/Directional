@@ -7,7 +7,7 @@ Last updated: 2026-08-10 UTC
 - Test architecture: **T1 independent oracle/package foundation accepted**.
 - Architecture migration: **M1a/M1b/M1c/M1d/M1e immutable accepted; M1f Vertex Continuation Route Transport Consumer Code + Build next**.
 - M1e immutable acceptance: implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`, build run/job `31351113129 / 93341993183`, artifacts `9049125645 / 9049125905`; focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
-- Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract now proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
+- Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
 - Authoritative next turn: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
@@ -42,15 +42,14 @@ Nine historical/deferred producer reds remain explicit and unchanged in class. B
 
 Both local and remote postflight preserved the exact result artifact, manifest, producer, and all **59/59** packaged checksums. Temporary runtime workflow/trigger files were removed.
 
-Current retained report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable M1e report.
 
-## M1e compile-complete boundary
+## M1e immutable acceptance
 
 Selected seam:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-The consumer owns an ordered `VertexPathStep` sequence. M1e now replaces raw signed `transition.matching` accumulation at this real transport owner with:
+The consumer owns an ordered `VertexPathStep` sequence. M1e replaces raw signed `transition.matching` accumulation at this real transport owner with:
 
 - checked source-vertex/interior-transition step identity;
 - canonical `SourceEdgeTopologyKey`;
@@ -61,9 +60,9 @@ The consumer owns an ordered `VertexPathStep` sequence. M1e now replaces raw sig
 
 M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema changes, topology/conformity/quotient work, validators, fallback/recovery expansion, optimization, and G4 repair.
 
-The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. M1e remains runtime-pending.
+The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. Immutable runtime passed M1e focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
-Current Code + Build report:
+Current immutable report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Regression status
@@ -71,7 +70,7 @@ Current Code + Build report:
 - `RP-01`: checked M1e step domains **accepted**.
 - `RP-05`: M1e semantic step identity and observed/canonical route-order boundary **accepted**.
 - `RP-07`: M1e typed cumulative route composition **accepted**.
-- `RP-02 / TA-05`: independent authority preserved through M1d and preserved through exact M1e artifact-only validation.
+- `RP-02 / TA-05`: independent authority preserved through exact M1e artifact-only validation.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
 - Strict-validator timing remains deferred: the exact M1e artifact produced **6/10 pass, 4/10 fail** across fresh repetitions, classifying the sub-millisecond 5% timing gate as nondeterministic rather than stable product evidence.
