@@ -22,19 +22,22 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/PR_8_Regression_Audit_Inventory.md`
 - `.agents/Directional/CHANGELOG.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
-- `TODO`
-- `MILESTONE_G_TODO.md`
+- `TODO.md`
 - `tests/TESTING_STRATEGY.md`
+
+`TODO.md` is the single durable task index. The former root `TODO` and `MILESTONE_G_TODO.md` were explicitly authorized for consolidation into it; their actionable tasks and the pending tasks from `REORIENTATION_PLAN.md` must remain represented in `TODO.md` or their owning authoritative plan until completed.
 
 In addition to the durable set, retain only the current authoritative evidence/report and the single next-turn plan needed to resume work. Superseded per-turn Code + Build plans/reports, Test + Benchmark plans/reports, review plans/reports, evidence indexes, machine summaries, and temporary workflow payloads may be removed only after their necessary durable facts have been preserved according to this policy and `CLEAN_UP_POLICY.md`.
 
-## Handoff and changelog ownership
+## Handoff, TODO, and changelog ownership
 
-`.agents/Directional/CHANGELOG.md` is the durable historical record for completed changes and immutable acceptance checkpoints. Maintain it separately from the handoff.
+`.agents/Directional/CHANGELOG.md` is the durable historical record for completed changes and immutable acceptance checkpoints. `TODO.md` is the durable task index. Maintain both separately from the handoff.
 
 - `Future_Chat_Session_Handoff.md` contains only the mandatory next action, current immutable authority, live blockers, resume-critical lessons, and references needed by a new agent to continue correctly.
-- Do not accumulate completed milestone narratives, old artifact tables, superseded turn summaries, historical acceptance logs, or durable policy bodies in the handoff.
+- `TODO.md` contains active, pending, blocked, deferred, and completed task status needed to track the product, architecture, and testing roadmaps without duplicating detailed evidence.
+- Do not accumulate completed milestone narratives, old artifact tables, superseded turn summaries, historical acceptance logs, task backlogs, or durable policy bodies in the handoff.
 - When a completed turn creates a durable implementation or acceptance change, add or update the corresponding newest-first entry in `CHANGELOG.md` using its documented style before removing historical detail from the handoff.
+- Update `TODO.md` as tasks are completed, selected, blocked, unblocked, or newly deferred; preserve references to the authoritative plan when detailed requirements live elsewhere.
 - Preserve exact implementation commits, artifact/run identities, stable regression IDs, failure classifications, and material operational lessons in the changelog when they cease to be resume-critical.
 - Keep unresolved or immediately actionable information in the handoff until it is no longer needed to resume the next turn correctly.
 - A changelog entry supplements authoritative per-turn reports; it does not replace the exact evidence report while that report is the current immutable authority.
