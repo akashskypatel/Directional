@@ -1,6 +1,0 @@
-M1k Code + Build durable closeout
-attempt: 3
-triggered: 2026-08-10T21:07:00Z
-source implementation: b9181364926cea840e9cb50da21fe721f33fd874
-workflow: force-add tracked .agents handoff only; no design/policy rewrite
-next turn: immutable Artifact-Only Test + Benchmark
