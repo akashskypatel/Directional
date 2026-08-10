@@ -87,6 +87,8 @@ M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accep
 
 Strict-validator timing remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
 
+Repository-side per-turn retention is clean: `.agents/Directional` retains only the current M1k immutable report and the single M1l next-turn plan in addition to durable documents. Superseded M1h–M1j evidence and consumed M1k plans/reports were consolidated into `CHANGELOG.md` before removal under `CLEAN_UP_POLICY.md`.
+
 ## Mandatory end-of-turn checklist
 
 This is a DURABLE mandatory end-of-turn checklist that must be followed at the end of every turn. Do not delete this checklist.
