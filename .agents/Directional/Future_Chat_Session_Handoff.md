@@ -2,42 +2,36 @@
 
 ## Mandatory next turn
 
-Run **M1h Phase-Front Field-Chart Test-Authority Remediation — immutable Artifact-Only Test + Benchmark only** under:
+Run **M1i Phase-Front Cell Source-Scope Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. M1h production code remains runtime-pending. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1h are immutable accepted. Review policy is `never`.
 
-Consume only remediation result/log artifacts `9069186973 / 9069187317` produced from implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0`. This commit changes only `tests/SurfaceCellsPhase10Tests.cpp`; production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. Rebuild, relink, configure, regeneration, source/test/build/fixture edits, repair, substitution, and runtime fixture symlinks are prohibited.
+M1i is bounded to:
 
-Expected runtime authority: producer discovery **202**, M1h focused **6/6** individually, required-green producer **187/187**, M1g–M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean without fixture symlink, eight historical/deferred red classes unchanged, strict-validator timing characterized without retry-based greening, Bunny/Vase bounded comparison if no earlier blocker remains, and exact immutable postflight.
+`phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
 
-## M1h test-authority remediation compile/package authority — runtime pending
+It migrates cell-owned source-component/isolation-sheet authority to checked `SourceComponentId` / `IsolationSheetId` while preserving current source-scope semantics and using explicit compatibility conversions only for still-raw neighboring consumers. Do not expand into `SurfaceFrontEdge` scope migration, `TopologyRegionId`, hard-rail/periodic owner IDs, M2–M6, or G4 behavior repair.
 
-The prior immutable M1h runtime from artifacts `9066967620 / 9066968049` remains retained evidence: package authority passed, producer discovery was **202**, M1h focused was **5/6**, required-green was **186/187**, all entering preservation/direct-product authority stayed green, and the sole blocker was the invalid witness in `MultipleOrientationChartsPreserveEstablishedNumbering`. That witness incorrectly equated producer chart-domain coverage with lattice-corner occurrence coverage; it was classified as a test-authority defect, not a product regression.
+This next turn is **Code + Build only**. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input.
 
-The remediation preserves the exact producer chart domain `{0,1,2}` through hard-authored source-face compatibility assertions while separately checking every actual typed lattice occurrence against the expected producer chart for its source face. It does not encode `{0,2}` as a domain expectation.
+## M1h immutable acceptance authority
 
-| Evidence | Value |
-|---|---|
-| remediation implementation | `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` |
-| base M1h production implementation | `de4e2ba7c19d2e49931655dc22d758f50656d054` |
-| build run/job | `31404102605 / 93506073062` |
-| result artifact / SHA-256 | `9069186973` / `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8` |
-| log artifact / SHA-256 | `9069187317` / `56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a` |
-| recursive manifest | **72/72**, `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8` |
-| package | **73** regular files; 7 executables; 2 static libraries; 27 fixtures |
-| build | **120/120**, Release/static/Ninja/PRE_TEST, **8:20.53**, peak RSS **1,850,456 KiB** |
-| production source delta | **none** |
-| runtime | **false** |
+M1h is accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` over unchanged production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` and exact artifacts `9069186973 / 9069187317`.
 
-Exactly six `SurfaceCellPhaseFrontFieldChartAuthorityMigration` contracts remain compiled. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input ran in this Code + Build turn. Compile/package success is not M1h semantic acceptance.
+Runtime authority: producer discovery **202**, M1h focused **6/6**, required-green **187/187**, M1g–M1b preservation green, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean without a fixture symlink. All eight historical/deferred red classes remain unchanged. Strict-validator timing remains deferred after fresh **0/10** characterization. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds.
 
-Current Code + Build report:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
+Heavy artifact-only run `31407263138` retained Bunny evidence/log artifacts `9070146263 / 9070146878` and Vase evidence/log artifacts `9070135665 / 9070135953`. Local and remote postflight preserved the exact result ZIP, **72/72** content manifest, 73 regular files, seven executables, two libraries, 27 fixtures, and producer hash with `fixtureSymlink=false`.
+
+Historical regression totals remain **34 events / 14 categories / 20 recurrences**. `PR8-R034 / G4-R007` remains active.
+
+Current immutable report:
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+
 ## M1g immutable acceptance authority
 
 Selected seam:
@@ -62,10 +56,10 @@ Remote heavy evidence is run `31394985769`: Bunny job `93475574330`, evidence/lo
 M1g also exposed a non-product artifact-portability defect: `test_data_root()` searches `bin/test-data` while the immutable package stores sibling `../test-data`. Runtime-only fixture symlinks were used outside packaged content. M1h Code + Build owns the minimal executable-relative lookup correction.
 
 Current immutable report:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## M1f compile/package authority — historical accepted build
 
@@ -88,7 +82,7 @@ M1f replaces `PathState::matching` raw signed accumulation with checked source-s
 Exactly six `SurfaceCellVertexContinuationRouteTransportAuthorityMigration` contracts are compiled but unexecuted. The expected next-turn producer discovery is **190** and required-green producer segment is **175/175**. The first compile attempt `17afbfd8baf0d369d9136534c0a11784ca0dca10` failed because a forward declaration crossed the existing anonymous-namespace helper ownership boundary; the surgical correction introduced a local continuation provenance helper and compiled successfully without changing accepted M1e authority.
 
 The superseded M1f per-turn report has been folded into this handoff, the regression tracker, and the current M1g Code + Build report:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1f immutable acceptance authority
 
@@ -254,8 +248,8 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

@@ -51,7 +51,8 @@ M0 preserve immutable evidence [complete]
    M1e segment route transport consumer [accepted]
    M1f vertex continuation route transport consumer [accepted]
    M1g periodic holonomy route transport consumer [accepted]
-   M1h phase-front field-chart consumer [test-authority remediation compile/package complete; immutable runtime next]
+   M1h phase-front field-chart consumer [accepted]
+   M1i phase-front cell source-scope consumer [selected; Code + Build next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -110,10 +111,12 @@ Immutable M1e authority:
 
 M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
 
-Authoritative next immutable Test + Benchmark plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
+M1h is immutable accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` and artifacts `9069186973 / 9069187317`: producer discovery **202**, focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, unchanged historical-red classes, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. No new stable product regression or recurrence was created.
 
-M1h remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only the focused test witness; production remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. Build `31404102605 / 93506073062` is **120/120** with artifacts `9069186973 / 9069187317`, manifest **72/72**, and no runtime execution. Semantic acceptance remains pending.
+Fresh accepted-source inspection selects M1i at `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`. The cell still persists source-component/isolation-sheet identity as raw integers although the authority kernel already defines `SourceComponentId` and `IsolationSheetId`.
+
+Authoritative next Code + Build plan:
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
@@ -159,9 +162,9 @@ Exact M1h runtime from artifact `9066967620` discovered **202** producer tests. 
 
 The failure is test-authority, not production behavior: `MultipleOrientationChartsPreserveEstablishedNumbering` assumes all producer charts must appear among accepted lattice-corner occurrences. The fixture independently retains chart domain `{0,1,2}` but samples lattice corners only on `{0,2}`. M1h `RP-01 / RP-05` therefore remains runtime pending until the witness is corrected and a fresh immutable package passes all six contracts.
 
-Current evidence: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current evidence: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
-Next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+Next plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 Do not advance to another M1 consumer, M2, or G4 repair before corrected M1h immutable acceptance.
 

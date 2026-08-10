@@ -5,16 +5,16 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1g immutable accepted; M1h test-authority remediation compile/package complete and immutable runtime pending**.
-- M1h production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`; remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only `tests/SurfaceCellsPhase10Tests.cpp`.
-- Remediation build run/job `31404102605 / 93506073062`: **120/120**, artifacts `9069186973 / 9069187317`, result/log SHA-256 `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8 / 56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a`, manifest **72/72**, 73 regular files, 7 executables, 2 libraries, 27 fixtures.
-- Code + Build runtime boundary: **false**; no generated binary, discovery, tests, benchmarks, `ctest`, CLI, fuzzer, or custom input executed.
-- Prior blocked M1h runtime remains evidence: focused **5/6**, required-green **186/187**; the sole failure was an invalid test witness, with all entering preservation/direct-product authority unchanged.
-- Corrected witness preserves producer domain `{0,1,2}` and checks actual typed lattice occurrences per hard-authored source-face chart rather than requiring occurrence coverage to equal the producer domain.
-- Authoritative next turn: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
-- Expected next runtime: producer **202**, M1h **6/6**, required-green **187/187**, full preservation/direct/historical/heavy-case/postflight authority.
+- Architecture migration: **M1a through M1h immutable accepted; M1i phase-front cell source-scope consumer selected for Code + Build**.
+- Accepted M1h remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0`; production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`.
+- M1h artifacts `9069186973 / 9069187317`: producer **202**, focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products green without fixture symlink, all eight historical/deferred red classes unchanged.
+- Heavy run `31407263138`: Bunny unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase bounded safety-only at 60 seconds; both preserved exact **72/72** package authority.
+- Strict-validator timing remains deferred after fresh **0/10** characterization; no threshold/retry workaround is authorized.
+- M1i seam: `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`; migrate only cell-owned source scope to checked `SourceComponentId` / `IsolationSheetId`.
+- Authoritative next turn: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current Code + Build report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
+- Current immutable report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+## M1d immutable acceptance
 ## M1d immutable acceptance
 
 Selected accepted seam:
@@ -75,7 +75,7 @@ Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted 
 
 The first compile-only implementation `17afbfd8baf0d369d9136534c0a11784ca0dca10` exposed a namespace-ownership ambiguity in `source_edge_provenance`; the correction was source-local and compiled successfully. No new stable regression event or recurrence was created.
 
-M1f accepted facts remain retained in the durable handoff and regression tracker. Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`. The M1g package corrects the stale MultiFaceSeam/CloseSheets names in `metadata/direct-product-test-names.txt` to the existing parameterized product names without product-behavior changes.
+M1f accepted facts remain retained in the durable handoff and regression tracker. Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`. The M1g package corrects the stale MultiFaceSeam/CloseSheets names in `metadata/direct-product-test-names.txt` to the existing parameterized product names without product-behavior changes.
 
 ## M1g immutable acceptance checkpoint
 
@@ -90,9 +90,9 @@ M1g preserves nonzero `PeriodicHolonomyMismatch`; `G4-B003` remains unresolved. 
 
 Artifact runtime also confirmed a portability defect in `tests/TestFixturePaths.h`: the helper searches `bin/test-data`, while the package stores sibling `../test-data`. M1h must correct only that lookup fallback and then adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` without changing product behavior.
 
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
-Next Code + Build: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+Next Code + Build: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## M1h compile/package checkpoint — immutable runtime pending
 
@@ -103,7 +103,7 @@ Implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` is compile/package com
 
 M1h changes exactly five production/test paths. Six focused field-chart contracts compile and remain unexecuted. The same slice corrects packaged fixture discovery to recognize sibling `../test-data`; immutable runtime must prove this without an external symlink.
 
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`. Next immutable runtime: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`. Next immutable runtime: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## Regression status
 

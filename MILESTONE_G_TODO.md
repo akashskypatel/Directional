@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h test-authority remediation is compile/package complete and immutable runtime is next; production source remains unchanged. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1h architecture slices are immutable accepted. M1i phase-front cell source-scope authority is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -60,21 +60,20 @@ M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public
 
 M1e accepted facts remain retained in the durable handoff and regression tracker.
 
-## M1h remediation compile/package and authoritative next turn
+## M1h phase-front field-chart authority — immutable accepted
 
-The prior exact M1h runtime from artifacts `9066967620 / 9066968049` remains retained evidence: package authority and all entering preservation/direct-product gates passed, while M1h focused was **5/6** and required-green **186/187** because `MultipleOrientationChartsPreserveEstablishedNumbering` conflated producer chart-domain coverage with lattice-occurrence coverage.
+M1h is immutable accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` over unchanged production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`. Exact result/log artifacts are `9069186973 / 9069187317`, recursive manifest **72/72**.
 
-Remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only `tests/SurfaceCellsPhase10Tests.cpp`. Production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. The repaired witness keeps producer chart-domain authority exactly `{0,1,2}`, hard-authors face `3 -> 1` and face `10 -> 2`, and separately validates every actual typed lattice occurrence against its source-face chart without encoding `{0,2}` as a domain expectation.
+Runtime acceptance: producer discovery **202**, M1h **6/6**, required-green **187/187**, all M1g–M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean without a fixture symlink. All eight historical/deferred red classes are unchanged. Strict-validator timing remains deferred after **0/10** fresh passes.
 
-Build run/job `31404102605 / 93506073062` compiled **120/120** Release/static/Ninja/PRE_TEST. Result/log artifacts are `9069186973 / 9069187317` with SHA-256 `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8 / 56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a`; recursive manifest is **72/72** with digest `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8`. Package cardinality is 73 regular files, seven executables, two static libraries, and 27 fixtures. No generated Directional binary or runtime validation executed.
+Heavy run `31407263138` preserved Bunny's known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure and bounded Vase at 60 seconds as safety-only evidence. Local and remote postflight preserved the exact package, producer hash, and **72/72** content checksums. No stable product regression event or recurrence was created. `PR8-R034 / G4-R007` remains active.
 
-Run **M1h Phase-Front Field-Chart Test-Authority Remediation — immutable Artifact-Only Test + Benchmark only** under:
+Next architecture slice: **M1i Phase-Front Cell Source-Scope Consumer — Code + Build only** at `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`
+Authoritative plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+Current immutable report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
-Expected runtime authority remains producer discovery **202**, M1h focused **6/6**, required-green **187/187**, full M1g–M1b/validation/M1a/T1/direct-product preservation, unchanged historical reds, strict-validator characterization, Bunny/Vase bounded comparison if no earlier blocker remains, and exact immutable postflight.
-
-Current Code + Build report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
+## M1f vertex-continuation transport — immutable accepted
 ## M1f vertex-continuation transport — immutable accepted
 
 Selected boundary:
@@ -102,7 +101,7 @@ Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted 
 
 All eight historical/deferred producer reds retained their entering classes. Bunny remains the known completion red and Vase bounded safety-only. Nonzero periodic rotation remains `PeriodicHolonomyMismatch`, so `G4-B003` is still unresolved. Heavy comparison run `31394985769` and exact local/remote postflight preserved immutable package authority. No new stable regression event or recurrence was created.
 
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1h phase-front field-chart authority — production compiled; witness remediation compiled
 
@@ -155,9 +154,9 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
