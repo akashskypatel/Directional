@@ -1,9 +1,9 @@
 name: m1g-periodic-holonomy-code-build
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/surface_cell_quad/p5-recover-bridge-healing
+      - surface_cell_quad
     paths:
       - '.agents/connector-triggers/m1g-periodic-holonomy-code-build'
 
@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: m1g-periodic-holonomy-code-build
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   LOG_DIR: /tmp/m1g-periodic-holonomy-code-build-logs
