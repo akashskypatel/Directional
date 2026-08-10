@@ -1,6 +1,6 @@
 M1k Phase-Front Edge Topology-Region Consumer Code + Build
-attempt: 4
-triggered: 2026-08-10T20:39:00Z
+attempt: 5 authoritative
+triggered: 2026-08-10T20:43:00Z
 implementation: b9181364926cea840e9cb50da21fe721f33fd874
-workflow fix: package complete benchmarks/fixtures source tree (27 files; 21 under milestone-g)
+package: complete M1k authority metadata, 27 source-authoritative fixtures, final recursive manifest
 runtime policy: compile/package only; no generated Directional execution
