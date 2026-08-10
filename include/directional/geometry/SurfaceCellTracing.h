@@ -387,10 +387,13 @@ struct SurfaceBoundedDiskBoundaryPhase {
 
 struct SurfacePhaseFrontCell {
   int id = -1;
-  int sourceComponent = -1;
+  /// Authoritative connected source component owning this cell.
+  std::optional<authority::SourceComponentId> sourceComponent;
   int sourceTopologyRegion = -1;
-  int sourceSheet = -1;
-  std::vector<int> sourceIsolationSheets;
+  /// Single-sheet compatibility authority; empty for legitimate multi-sheet cells.
+  std::optional<authority::IsolationSheetId> sourceSheet;
+  /// Complete sorted isolation-sheet authority observed by this cell.
+  std::vector<authority::IsolationSheetId> sourceIsolationSheets;
   bool orientationValidated = false;
   std::array<SurfaceTracePoint, 4> corners;
   std::array<LocalLatticeState, 4> lattice;

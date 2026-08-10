@@ -5501,13 +5501,34 @@ void reverse_phase_front_cell_cycle(SurfacePhaseFrontCell &cell) {
   }
 }
 
+std::size_t source_label_authority_extent(const std::vector<int> &labels) {
+  if (labels.empty()) {
+    return 1U;
+  }
+  int maximum = -1;
+  for (const int label : labels) {
+    if (label < 0) return 0U;
+    maximum = std::max(maximum, label);
+  }
+  return maximum >= 0 ? static_cast<std::size_t>(maximum) + 1U : 0U;
+}
+
 bool phase_front_cell_source_scope(
     const SurfacePhaseFrontCell &cell,
-    const SurfaceCellTracingOptions &options, int &component, int &sheet,
-    std::vector<int> &isolationSheets) {
-  component = -1;
-  sheet = -1;
-  std::set<int> sheets;
+    const SurfaceCellTracingOptions &options,
+    std::optional<authority::SourceComponentId> &component,
+    std::optional<authority::IsolationSheetId> &sheet,
+    std::vector<authority::IsolationSheetId> &isolationSheets) {
+  component.reset();
+  sheet.reset();
+  isolationSheets.clear();
+  const std::size_t componentExtent =
+      source_label_authority_extent(options.sourceFaceComponents);
+  const std::size_t sheetExtent =
+      source_label_authority_extent(options.sourceFaceSheets);
+  if (componentExtent == 0U || sheetExtent == 0U) return false;
+
+  std::set<authority::IsolationSheetId> sheets;
   const auto consume_face = [&](const int face) {
     if (face < 0) return false;
     const int candidateComponent =
@@ -5515,9 +5536,15 @@ bool phase_front_cell_source_scope(
     const int candidateSheet =
         face_label_or_default(options.sourceFaceSheets, face, candidateComponent);
     if (candidateComponent < 0 || candidateSheet < 0) return false;
-    if (component < 0) component = candidateComponent;
-    if (component != candidateComponent) return false;
-    sheets.insert(candidateSheet);
+
+    const auto typedComponent = authority::LegacyAuthorityAdapters::source_component(
+        candidateComponent, componentExtent);
+    const auto typedSheet = authority::LegacyAuthorityAdapters::isolation_sheet(
+        candidateSheet, sheetExtent);
+    if (!typedComponent || !typedSheet) return false;
+    if (!component.has_value()) component = typedComponent.value();
+    if (component.value() != typedComponent.value()) return false;
+    sheets.insert(typedSheet.value());
     return true;
   };
   for (const SurfaceTracePoint &corner : cell.corners) {
@@ -5531,7 +5558,32 @@ bool phase_front_cell_source_scope(
   }
   isolationSheets.assign(sheets.begin(), sheets.end());
   if (isolationSheets.size() == 1U) sheet = isolationSheets.front();
-  return component >= 0 && !isolationSheets.empty();
+  return component.has_value() && !isolationSheets.empty();
+}
+
+int legacy_phase_front_source_component(const SurfacePhaseFrontCell &cell) {
+  return cell.sourceComponent.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   cell.sourceComponent.value()))
+             : -1;
+}
+
+int legacy_phase_front_source_sheet(const SurfacePhaseFrontCell &cell) {
+  return cell.sourceSheet.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   cell.sourceSheet.value()))
+             : -1;
+}
+
+std::vector<int>
+legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {
+  std::vector<int> legacy;
+  legacy.reserve(cell.sourceIsolationSheets.size());
+  for (const authority::IsolationSheetId sheet : cell.sourceIsolationSheets) {
+    legacy.push_back(static_cast<int>(
+        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+  }
+  return legacy;
 }
 
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
@@ -5884,9 +5936,9 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
         edge.filledCell = cellId;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
+        edge.sourceComponent = legacy_phase_front_source_component(cell);
+        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
+        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const Eigen::Vector2i from = edge.fromLattice.latticeCoordinate;
@@ -5960,7 +6012,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     result.events.push_back(event);
   }
   for (const SurfacePhaseFrontCell &cell : result.cells) {
-    if (!cell.orientationValidated || cell.sourceComponent < 0 ||
+    if (!cell.orientationValidated || !cell.sourceComponent.has_value() ||
         cell.sourceIsolationSheets.empty()) {
       set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, cell.id);
       return result;
@@ -7354,8 +7406,6 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
           Eigen::Vector2d(u0, stepV * (v + 1))};
       SurfacePhaseFrontCell cell;
       cell.id = static_cast<int>(result.cells.size());
-      cell.sourceComponent = component;
-      cell.sourceSheet = sheet;
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
@@ -7434,9 +7484,9 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
+        edge.sourceComponent = legacy_phase_front_source_component(cell);
+        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
+        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = canonical_node(edge.fromLattice.latticeCoordinate);
@@ -8653,8 +8703,6 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           Eigen::Vector2d(stepU * u, stepV * (v + 1))};
       SurfacePhaseFrontCell cell;
       cell.id = static_cast<int>(result.cells.size());
-      cell.sourceComponent = component;
-      cell.sourceSheet = sheet;
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
@@ -8763,9 +8811,9 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
         }
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
+        edge.sourceComponent = legacy_phase_front_source_component(cell);
+        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
+        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = node_index(edge.fromLattice.latticeCoordinate.x(),
@@ -9178,13 +9226,17 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     }
     for (auto &cell : local.cells) {
       cell.sourceTopologyRegion = region.id;
-      if (cell.sourceComponent != region.sourceComponent ||
-          !normalize_sheets(cell.sourceIsolationSheets)) {
+      const int cellComponent = legacy_phase_front_source_component(cell);
+      const int cellSheet = legacy_phase_front_source_sheet(cell);
+      const std::vector<int> cellSheets =
+          legacy_phase_front_isolation_sheets(cell);
+      std::vector<int> normalizedSheets = cellSheets;
+      if (cellComponent != region.sourceComponent ||
+          !normalize_sheets(normalizedSheets) ||
+          normalizedSheets != cellSheets ||
+          cellSheet != (cellSheets.size() == 1U ? cellSheets.front() : -1)) {
         return false;
       }
-      cell.sourceSheet = cell.sourceIsolationSheets.size() == 1U
-                             ? cell.sourceIsolationSheets.front()
-                             : -1;
     }
     for (auto &edge : local.edges) {
       edge.sourceTopologyRegion = region.id;
@@ -9299,16 +9351,18 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     bool localCoverage = false;
     std::set<int> coveredIsolationSheets;
     for (SurfacePhaseFrontCell &cell : local.cells) {
-      if (cell.sourceComponent != region.sourceComponent ||
-          cell.sourceTopologyRegion != region.id ||
-          cell.sourceIsolationSheets.empty()) {
+      const int cellComponent = legacy_phase_front_source_component(cell);
+      const std::vector<int> cellSheets =
+          legacy_phase_front_isolation_sheets(cell);
+      if (cellComponent != region.sourceComponent ||
+          cell.sourceTopologyRegion != region.id || cellSheets.empty()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
             cell.id, -1, cell.corners.front().face);
         return result;
       }
-      for (const int sheet : cell.sourceIsolationSheets) {
+      for (const int sheet : cellSheets) {
         coveredIsolationSheets.insert(sheet);
       }
       localCoverage = true;

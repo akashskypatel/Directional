@@ -17,12 +17,41 @@
 #include <fstream>
 #include <stdexcept>
 #include <tuple>
+#include <type_traits>
 
 #include <gtest/gtest.h>
 
 namespace {
 
 using directional::validation::MeshValidationFailureCode;
+
+int legacy_phase_front_component(
+    const directional::geometry::SurfacePhaseFrontCell &cell) {
+  return cell.sourceComponent.has_value()
+             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
+                                    to_legacy_index(cell.sourceComponent.value()))
+             : -1;
+}
+
+int legacy_phase_front_sheet(
+    const directional::geometry::SurfacePhaseFrontCell &cell) {
+  return cell.sourceSheet.has_value()
+             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
+                                    to_legacy_index(cell.sourceSheet.value()))
+             : -1;
+}
+
+std::vector<int> legacy_phase_front_sheets(
+    const directional::geometry::SurfacePhaseFrontCell &cell) {
+  std::vector<int> legacy;
+  legacy.reserve(cell.sourceIsolationSheets.size());
+  for (const directional::authority::IsolationSheetId sheet :
+       cell.sourceIsolationSheets) {
+    legacy.push_back(static_cast<int>(
+        directional::authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+  }
+  return legacy;
+}
 
 directional::TriMesh make_two_sheet_mesh() {
   Eigen::MatrixXd vertices(8, 3);
@@ -1528,7 +1557,8 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(128U, network.phaseFront.cells.size());
   std::set<std::pair<int, int>> sheetKeys;
   for (const auto &cell : network.phaseFront.cells) {
-    sheetKeys.emplace(cell.sourceComponent, cell.sourceSheet);
+    sheetKeys.emplace(legacy_phase_front_component(cell),
+                     legacy_phase_front_sheet(cell));
   }
   EXPECT_EQ((std::set<std::pair<int, int>>{{0, 0}, {1, 1}}), sheetKeys);
   for (const auto &edge : network.phaseFront.edges) {
@@ -2187,8 +2217,8 @@ std::uint64_t phase_front_geometry_hash(
     state *= 1099511628211ULL;
   };
   for (const auto &cell : network.phaseFront.cells) {
-    consume(cell.sourceComponent, hash);
-    consume(cell.sourceSheet, hash);
+    consume(legacy_phase_front_component(cell), hash);
+    consume(legacy_phase_front_sheet(cell), hash);
     consume(cell.lattice[0].latticeCoordinate.x(), hash);
     consume(cell.lattice[0].latticeCoordinate.y(), hash);
     for (const auto &corner : cell.corners) {
@@ -3085,7 +3115,8 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
 
   std::map<std::pair<int, int>, int> cellsBySheet;
   for (const auto &cell : network.phaseFront.cells) {
-    ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
+    ++cellsBySheet[{legacy_phase_front_component(cell),
+                    legacy_phase_front_sheet(cell)}];
   }
   ASSERT_EQ(3U, cellsBySheet.size());
   EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
@@ -3238,7 +3269,8 @@ TEST(SurfaceCellsPhase10,
 
   std::map<std::pair<int, int>, int> cellsBySheet;
   for (const auto &cell : network.phaseFront.cells) {
-    ++cellsBySheet[{cell.sourceComponent, cell.sourceSheet}];
+    ++cellsBySheet[{legacy_phase_front_component(cell),
+                    legacy_phase_front_sheet(cell)}];
   }
   ASSERT_EQ(2U, cellsBySheet.size());
   EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
@@ -4657,6 +4689,246 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
                 directional::authority::LegacyAuthorityAdapters::to_legacy_index(
                     state.sourceChart.value()));
     }
+  }
+}
+
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     PlanarCellPublishesCheckedDefaultComponentAndSheet) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_FALSE(network.phaseFront.cells.empty());
+  for (const auto &cell : network.phaseFront.cells) {
+    ASSERT_TRUE(cell.sourceComponent.has_value());
+    ASSERT_TRUE(cell.sourceSheet.has_value());
+    ASSERT_EQ(1U, cell.sourceIsolationSheets.size());
+    EXPECT_EQ(0, legacy_phase_front_component(cell));
+    EXPECT_EQ(0, legacy_phase_front_sheet(cell));
+    EXPECT_EQ((std::vector<int>{0}), legacy_phase_front_sheets(cell));
+  }
+}
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     ExplicitSourceLabelsRemainDistinctTypedDomains) {
+  static_assert(!std::is_same_v<directional::authority::SourceComponentId,
+                                directional::authority::IsolationSheetId>);
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 2);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 2);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_FALSE(network.phaseFront.cells.empty());
+  for (const auto &cell : network.phaseFront.cells) {
+    ASSERT_TRUE(cell.sourceComponent.has_value());
+    ASSERT_TRUE(cell.sourceSheet.has_value());
+    EXPECT_EQ(2, legacy_phase_front_component(cell));
+    EXPECT_EQ(2, legacy_phase_front_sheet(cell));
+  }
+  const auto wrongDomain = directional::authority::LegacyAuthorityAdapters::
+      checked<directional::authority::IsolationSheetId>(
+          directional::authority::AuthorityDomain::SourceComponent, 2, 3);
+  ASSERT_FALSE(wrongDomain);
+  EXPECT_EQ(directional::authority::DomainErrorCode::DomainMismatch,
+            wrongDomain.error().code);
+}
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     MultipleObservedSheetsDoNotInventRepresentativeSheet) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              1.0, 1.0, 0.0,
+              0.0, 1.0, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2,
+           0, 2, 3;
+  directional::TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(faces.rows()));
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(4, 0.5);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents = {0, 0};
+  options.sourceFaceSheets = {0, 1};
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      vertices, faces, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  bool sawMultipleSheets = false;
+  for (const auto &cell : network.phaseFront.cells) {
+    if (cell.sourceIsolationSheets.size() <= 1U) continue;
+    sawMultipleSheets = true;
+    ASSERT_TRUE(cell.sourceComponent.has_value());
+    EXPECT_EQ(0, legacy_phase_front_component(cell));
+    EXPECT_FALSE(cell.sourceSheet.has_value());
+    EXPECT_EQ((std::vector<int>{0, 1}), legacy_phase_front_sheets(cell));
+  }
+  EXPECT_TRUE(sawMultipleSheets)
+      << "the production fixture must retain both source-adjacent isolation sheets";
+}
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     MalformedSourceScopeFailsClosed) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+
+  directional::geometry::SurfaceCellTracingOptions negative;
+  negative.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  negative.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  negative.sourceFaceSheets.front() = -1;
+  const auto rejectedNegative = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, negative);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejectedNegative.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::InvalidInput,
+            rejectedNegative.phaseFront.failure.reason);
+  EXPECT_TRUE(rejectedNegative.phaseFront.cells.empty());
+
+  directional::geometry::SurfaceCellTracingOptions missing;
+  missing.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  missing.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows() - 1), 0);
+  const auto rejectedMissing = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, missing);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejectedMissing.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::InvalidInput,
+            rejectedMissing.phaseFront.failure.reason);
+  EXPECT_TRUE(rejectedMissing.phaseFront.cells.empty());
+}
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     FaceRowPermutationPreservesTypedCellSourceScope) {
+  Eigen::MatrixXd vertices(8, 3);
+  vertices << 0.0, 0.0, 0.0,
+              1.0, 0.0, 0.0,
+              1.0, 1.0, 0.0,
+              0.0, 1.0, 0.0,
+              0.0, 0.0, 2.0,
+              1.0, 0.0, 2.0,
+              1.0, 1.0, 2.0,
+              0.0, 1.0, 2.0;
+  Eigen::MatrixXi forwardFaces(4, 3);
+  forwardFaces << 0, 1, 2,
+                  0, 2, 3,
+                  4, 5, 6,
+                  4, 6, 7;
+  Eigen::MatrixXi reverseFaces = forwardFaces.colwise().reverse().eval();
+  directional::TriMesh forwardMesh;
+  directional::TriMesh reverseMesh;
+  forwardMesh.set_mesh(vertices, forwardFaces);
+  reverseMesh.set_mesh(vertices, reverseFaces);
+  const auto forwardField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          forwardMesh, constant_xy_raw_field(forwardFaces.rows()));
+  const auto reverseField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reverseMesh, constant_xy_raw_field(reverseFaces.rows()));
+  const Eigen::VectorXd targetSize = Eigen::VectorXd::Constant(8, 0.5);
+
+  directional::geometry::SurfaceCellTracingOptions forwardOptions;
+  forwardOptions.sourceFaceComponents = {3, 3, 7, 7};
+  forwardOptions.sourceFaceSheets = {5, 5, 11, 11};
+  directional::geometry::SurfaceCellTracingOptions reverseOptions;
+  reverseOptions.sourceFaceComponents = {7, 7, 3, 3};
+  reverseOptions.sourceFaceSheets = {11, 11, 5, 5};
+
+  const auto forward = directional::geometry::build_surface_cell_network(
+      vertices, forwardFaces, forwardField, targetSize, forwardOptions);
+  const auto reverse = directional::geometry::build_surface_cell_network(
+      vertices, reverseFaces, reverseField, targetSize, reverseOptions);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forward.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             forward.phaseFront.failure.reason);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reverse.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             reverse.phaseFront.failure.reason);
+
+  const auto semanticCounts = [](const auto &network) {
+    std::map<std::pair<int, int>, int> counts;
+    for (const auto &cell : network.phaseFront.cells) {
+      ++counts[{legacy_phase_front_component(cell),
+                legacy_phase_front_sheet(cell)}];
+    }
+    return counts;
+  };
+  const auto forwardCounts = semanticCounts(forward);
+  const auto reverseCounts = semanticCounts(reverse);
+  EXPECT_EQ(forwardCounts, reverseCounts);
+  const auto firstScope = forwardCounts.find({3, 5});
+  const auto secondScope = forwardCounts.find({7, 11});
+  ASSERT_NE(firstScope, forwardCounts.end());
+  ASSERT_NE(secondScope, forwardCounts.end());
+  EXPECT_GT(firstScope->second, 0);
+  EXPECT_GT(secondScope->second, 0);
+  EXPECT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
+}
+
+TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
+     CellToLegacyEdgeBoundaryPreservesTypedScope) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 2);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 5);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  std::map<int, const directional::geometry::SurfacePhaseFrontCell *> cellsById;
+  for (const auto &cell : network.phaseFront.cells) {
+    ASSERT_TRUE(cellsById.emplace(cell.id, &cell).second);
+  }
+  ASSERT_FALSE(network.phaseFront.edges.empty());
+  for (const auto &edge : network.phaseFront.edges) {
+    const auto owner = cellsById.find(edge.filledCell);
+    ASSERT_NE(cellsById.end(), owner);
+    EXPECT_EQ(legacy_phase_front_component(*owner->second), edge.sourceComponent);
+    EXPECT_EQ(legacy_phase_front_sheet(*owner->second), edge.sourceSheet);
+    EXPECT_EQ(legacy_phase_front_sheets(*owner->second),
+              edge.sourceIsolationSheets);
   }
 }
 

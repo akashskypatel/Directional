@@ -921,6 +921,33 @@ void hash_trace_point(std::uint64_t &seed,
 
 namespace directional::pipeline {
 
+int legacy_phase_front_source_component(
+    const geometry::SurfacePhaseFrontCell &cell) {
+  return cell.sourceComponent.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   cell.sourceComponent.value()))
+             : -1;
+}
+
+int legacy_phase_front_source_sheet(
+    const geometry::SurfacePhaseFrontCell &cell) {
+  return cell.sourceSheet.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   cell.sourceSheet.value()))
+             : -1;
+}
+
+std::vector<int> legacy_phase_front_isolation_sheets(
+    const geometry::SurfacePhaseFrontCell &cell) {
+  std::vector<int> legacy;
+  legacy.reserve(cell.sourceIsolationSheets.size());
+  for (const authority::IsolationSheetId sheet : cell.sourceIsolationSheets) {
+    legacy.push_back(static_cast<int>(
+        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+  }
+  return legacy;
+}
+
 std::uint64_t hash_trace_network(
     const geometry::SurfaceCellNetwork &network) {
   std::uint64_t seed = structural_hash_seed("tracing");
@@ -1098,10 +1125,10 @@ std::uint64_t hash_trace_network(
   hash_combine_u64(seed, network.phaseFront.cells.size());
   for (const geometry::SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
     hash_combine_i64(seed, cell.id);
-    hash_combine_i64(seed, cell.sourceComponent);
+    hash_combine_i64(seed, legacy_phase_front_source_component(cell));
     hash_combine_i64(seed, cell.sourceTopologyRegion);
-    hash_combine_i64(seed, cell.sourceSheet);
-    hash_vector(seed, cell.sourceIsolationSheets);
+    hash_combine_i64(seed, legacy_phase_front_source_sheet(cell));
+    hash_vector(seed, legacy_phase_front_isolation_sheets(cell));
     hash_combine_i64(seed, cell.orientationValidated ? 1 : 0);
     for (const geometry::SurfaceTracePoint &corner : cell.corners) {
       hash_trace_point(seed, corner);
@@ -2227,16 +2254,23 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
        cellIndex < static_cast<int>(phaseFront.cells.size()); ++cellIndex) {
     const auto &cell = phaseFront.cells[static_cast<std::size_t>(cellIndex)];
     result.invalidCell = cell.id;
+    const int cellComponent = legacy_phase_front_source_component(cell);
+    const int cellSheet = legacy_phase_front_source_sheet(cell);
+    const std::vector<int> cellIsolationSheets =
+        legacy_phase_front_isolation_sheets(cell);
     const auto region = topologyRegionById.find(cell.sourceTopologyRegion);
     if (cell.id < 0 || !cellIndexById.emplace(cell.id, cellIndex).second ||
-        !cell.orientationValidated || cell.sourceComponent < 0 ||
+        !cell.orientationValidated || cellComponent < 0 ||
         region == topologyRegionById.end() ||
-        region->second->sourceComponent != cell.sourceComponent ||
-        cell.sourceIsolationSheets.empty() ||
-        !std::is_sorted(cell.sourceIsolationSheets.begin(),
-                        cell.sourceIsolationSheets.end()) ||
+        region->second->sourceComponent != cellComponent ||
+        cellIsolationSheets.empty() ||
+        !std::is_sorted(cellIsolationSheets.begin(),
+                        cellIsolationSheets.end()) ||
+        cellSheet != (cellIsolationSheets.size() == 1U
+                          ? cellIsolationSheets.front()
+                          : -1) ||
         !isolation_sheets_connected(cell.sourceTopologyRegion,
-                                    cell.sourceIsolationSheets)) {
+                                    cellIsolationSheets)) {
       result.failure = "InvalidAuthoritativePhaseFrontCell";
       return result;
     }
@@ -2251,12 +2285,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           trace.face >= 0 && trace.face < sourceFaces.rows()
               ? sourceFaceSheets[static_cast<std::size_t>(trace.face)]
               : -1;
-      if (component != cell.sourceComponent || sheet < 0 ||
+      if (component != cellComponent || sheet < 0 ||
           trace.face < 0 || trace.face >= sourceFaces.rows() ||
           topologyRegionByFace[static_cast<std::size_t>(trace.face)] !=
               cell.sourceTopologyRegion ||
-          !std::binary_search(cell.sourceIsolationSheets.begin(),
-                              cell.sourceIsolationSheets.end(), sheet)) {
+          !std::binary_search(cellIsolationSheets.begin(),
+                              cellIsolationSheets.end(), sheet)) {
         result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
         return result;
       }
@@ -2368,7 +2402,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         phaseFront.cells[static_cast<std::size_t>(cell->second)];
     const int slot = cell->second * 4 + edge.filledSide;
     if (edgeByCellSide[static_cast<std::size_t>(slot)] >= 0 ||
-        edge.sourceComponent != owner.sourceComponent ||
+        edge.sourceComponent != legacy_phase_front_source_component(owner) ||
         edge.sourceTopologyRegion != owner.sourceTopologyRegion ||
         !trace_equal(edge.from,
                      owner.corners[static_cast<std::size_t>(edge.filledSide)]) ||
