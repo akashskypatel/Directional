@@ -20,7 +20,7 @@ It owns migration order, dependencies, stop conditions, and acceptance gates. It
 | Findings and scientific comparison | `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md` |
 | Normative testing policy | `tests/TESTING_STRATEGY.md` |
 | Test audit and T0–T6 redesign | `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` |
-| Current turn / exact next action | `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/Future_Chat_Session_Handoff.md` |
+| Current turn / exact next action | `TODO.md`, `.agents/Directional/Future_Chat_Session_Handoff.md` |
 | Regression history / repeated code shapes | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
 | Current immutable evidence | current retained per-turn report |
 
@@ -95,7 +95,7 @@ Accepted M1d authority:
 - Bunny known-red preserved, Vase bounded safety-only;
 - exact package postflight preserved.
 
-Accepted M1d evidence remains folded into the durable handoff and regression tracker.
+Accepted M1d evidence remains folded into `.agents/Directional/CHANGELOG.md` and the regression tracker.
 
 M1e is immutable accepted at:
 
@@ -112,16 +112,13 @@ Immutable M1e authority:
 - final product/test scope exactly two paths;
 - Code + Build executed no generated Directional binary, discovery, test, or benchmark; immutable runtime subsequently passed M1e **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
-M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
+M1e is accepted. Its facts remain folded into `.agents/Directional/CHANGELOG.md` and the regression tracker.
 
 M1h is immutable accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` and artifacts `9069186973 / 9069187317`: producer discovery **202**, focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, unchanged historical-red classes, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. No new stable product regression or recurrence was created.
 
 M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is immutable accepted at `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}` from exact artifacts `9072101943 / 9072102331`: producer discovery **208**, focused **6/6**, required-green **193/193**, full M1h-M1b/validation/M1a/T1/direct-product preservation, unchanged historical-red classes, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. No new stable product regression or recurrence was created.
 
-Accepted-source inspection selects M1j at `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`. Edge publication currently downgrades typed cell authority back to raw integers and region aggregation later overwrites/normalizes those raw edge fields. M1j migrates only edge-owned component/sheet authority, keeps raw `sourceTopologyRegion` out of scope, and requires aggregators to verify rather than recreate semantic source scope.
-
-Historical M1j Code + Build plan:
-`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
+Accepted-source inspection selected M1j at `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`. M1j migrated only edge-owned component/sheet authority, kept raw `sourceTopologyRegion` out of scope, and required aggregators to verify rather than recreate semantic source scope. Its consumed per-turn plans/reports were retired under `CLEAN_UP_POLICY.md`; durable implementation, acceptance, and failed-attempt facts are retained in `.agents/Directional/CHANGELOG.md` and the regression tracker.
 
 M1j is immutable accepted. M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is likewise immutable accepted from artifact `9079318682` and runtime evidence `9080245848`: producer **220**, focused **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, historical-red classes unchanged, and exact **68/68** postflight.
 
@@ -162,23 +159,17 @@ M1f selects the next real cumulative transport owner:
 
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
 
-Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Exact artifact-only validation accepted M1f: producer **190**, focused **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products oracle-clean, Bunny known-red preserved, Vase bounded safety-only, and exact postflight clean. Accepted evidence remains in the durable handoff and regression tracker.
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Exact artifact-only validation accepted M1f: producer **190**, focused **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products oracle-clean, Bunny known-red preserved, Vase bounded safety-only, and exact postflight clean. Accepted evidence remains in `.agents/Directional/CHANGELOG.md` and the regression tracker.
 
-The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selects the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g is representation-only and must preserve current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
+The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selected the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g was representation-only and preserved current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remained unresolved.
 
-### M1g immutable acceptance and M1h runtime block
+### Historical M1g-to-M1h test-authority checkpoint
 
 M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` remains immutable accepted. M1h production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` compiled/package successfully at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`, including the sibling `../test-data` package lookup correction.
 
-Exact M1h runtime from artifact `9066967620` discovered **202** producer tests. Five of six M1h focused contracts passed; all M1g–M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products, package portability, and eight historical/deferred red classes were preserved. Required-green was **186/187** with the same sole M1h failure.
+The first M1h runtime from artifact `9066967620` discovered **202** producer tests. Five of six M1h focused contracts passed; all M1g–M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products, package portability, and eight historical/deferred red classes were preserved. Required-green was **186/187** with the same sole M1h failure.
 
-The failure is test-authority, not production behavior: `MultipleOrientationChartsPreserveEstablishedNumbering` assumes all producer charts must appear among accepted lattice-corner occurrences. The fixture independently retains chart domain `{0,1,2}` but samples lattice corners only on `{0,2}`. M1h `RP-01 / RP-05` therefore remains runtime pending until the witness is corrected and a fresh immutable package passes all six contracts.
-
-Current evidence: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
-
-Next plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
-
-Do not advance to another M1 consumer, M2, or G4 repair before corrected M1h immutable acceptance.
+The failure was test-authority, not production behavior: `MultipleOrientationChartsPreserveEstablishedNumbering` assumed all producer charts must appear among accepted lattice-corner occurrences. The fixture independently retained chart domain `{0,1,2}` but sampled lattice corners only on `{0,2}`. M1h was subsequently remediated and immutable accepted without changing the production implementation. The stale per-turn M1h report and following M1i plan were retired under `CLEAN_UP_POLICY.md`; their durable facts are retained in `.agents/Directional/CHANGELOG.md` and the regression tracker. Current execution is M1l under the handoff and `TODO.md`.
 
 ## 5. Required target-stage corrections
 
@@ -210,7 +201,7 @@ The migration must reverse consumer reconstruction: each stage writes one immuta
 9. Recursive/retrying/combinatorial paths touched by a slice require one shared work ledger and monotone progress measure.
 10. Any regression blocks the next migration slice; diagnose within the current ownership boundary rather than bypassing with fallback or feature work.
 11. No validator weakening, expected-output synthesis, fixture-specific branch, proximity weld, recovery substitution, or predicted topology count may satisfy acceptance.
-12. Stale per-turn evidence is cleaned under the mandatory handoff policy after its accepted facts are folded into durable/live authority. Durable design/audit/regression documents remain.
+12. Stale per-turn evidence is cleaned under `.agents/Directional/CLEAN_UP_POLICY.md` after its necessary facts are folded into the changelog, trackers, current authority, or other retained durable records. Durable design/audit/regression documents remain.
 
 ## 7. Test interlock
 
@@ -222,7 +213,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. M1g periodic-holonomy route transport is immutable accepted without changing cycle discovery, output, or rejection behavior. Fresh accepted-source inspection selects M1h production `FieldChartId` adoption at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. M1h remains representation-only; later M1 consumers remain unselected until immutable M1h acceptance.
+Continue bounded consumers only. M1a through M1k are immutable accepted. The current selected consumer is M1l production `TopologyRegionId` adoption at `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`. M1l remains representation/authority migration only; later M1 consumers remain unselected until immutable M1l acceptance.
 
 ### M2 — closed producer outcomes and single-writer scope
 
@@ -257,4 +248,4 @@ Bunny production completion, Vase bounded runtime, prescribed sphere, G5/G6, fal
 
 ## 10. Resume rule
 
-Always read `.agents/Directional/Future_Chat_Session_Handoff.md` first. It owns the exact current turn, artifact, current retained report, cleanup policy, and next plan. If this roadmap conflicts with a newer committed authoritative plan/report, the newer plan/report governs current execution and this roadmap must be corrected before architecture expansion.
+Always read `.agents/Directional/Future_Chat_Session_Handoff.md` first. It owns the exact current turn, current retained report, and next plan. Repository-side cleanup and evidence retirement are governed by `.agents/Directional/CLEAN_UP_POLICY.md` and `.agents/Directional/RETENTION_POLICY.md`. If this roadmap conflicts with a newer committed authoritative plan/report, the newer plan/report governs current execution and this roadmap must be corrected before architecture expansion.
