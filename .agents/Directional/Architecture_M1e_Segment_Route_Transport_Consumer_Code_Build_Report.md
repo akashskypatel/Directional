@@ -8,8 +8,7 @@
 
 ## 1. Bounded objective
 
-M1e migrates exactly one real transport-owning production seam:
-`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
+M1e migrates exactly one real transport-owning production seam: `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
 The legacy consumer accumulated unrestricted signed integers with `totalMatching += transition.matching`. M1e replaces semantic accumulation with checked source/transition identity, typed per-step quarter-turn automorphisms, `TransitionStep`, `CanonicalRoute`, and ordered algebraic composition while preserving existing raw public/provenance representation.
 
@@ -17,14 +16,12 @@ The final product/test delta is exactly `src/geometry/SurfaceCellTracing.cpp` an
 
 ## 2. Source authority
 
-| Authority | Value |
-|---|---|
-| Entering M1e base | `5df33fc11deaac697cb886d8defcaba622ec436f` |
-| Accepted M1d ancestor | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
-| First M1e implementation attempt | `9edbef1fe34d60d2a507160aa4a27883cea36903` |
-| Final corrected M1e implementation | `bb9cb63a36b64fe2f7c462ad864492c8352b65e8` |
-| Successful build/event | `106e408065e5bda1eb680bc54aef007a1a2d68d6` |
-| Successful run/job | `31345475101 / 93326482946` |
+- entering base `5df33fc11deaac697cb886d8defcaba622ec436f`;
+- accepted M1d ancestor `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25`;
+- first M1e implementation attempt `9edbef1fe34d60d2a507160aa4a27883cea36903`;
+- final implementation `bb9cb63a36b64fe2f7c462ad864492c8352b65e8`;
+- successful build/event `106e408065e5bda1eb680bc54aef007a1a2d68d6`;
+- successful run/job `31345475101 / 93326482946`.
 
 Final blobs: tracing `34372a48412213d3b4db6d0bc3e653e7d3225ef0`; Phase10 tests `eba2febae6d5a226ea2dd90035e8e5ac28bf0de4`. Preserved M1d pipeline/test blobs remain `481f58169fe73844b12d9e70660d49fa3e13f845` / `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
 
@@ -36,14 +33,7 @@ The explicit `edgeTransitions`-absent legacy transition path remains but crosses
 
 ## 4. Focused contracts
 
-Exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` tests are statically packaged:
-
-1. `MultiStepVertexFanComposesTypedRouteTransport`;
-2. `ReverseObservedRouteUsesExactTransportInverse`;
-3. `EquivalentSignedQuarterTurnsComposeSemantically`;
-4. `RouteTopologyAndCompactTransitionProvenanceRemainUnchanged`;
-5. `MalformedAuthoritativeStepMetadataFailsClosedWithoutFallback`;
-6. `LegacyMatchingFallbackUsesSameTypedRouteComposition`.
+Exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` tests are statically packaged: multi-step composition, reverse exact inverse, modulo-equivalent signed quarter-turns, provenance preservation, malformed-authoritative fail-closed, and legacy matching typed composition.
 
 Static M1e manifest SHA-256: `b6a1c9035b2cd15a13844f812e7261ee0e199e72d0150d9a093a59d1ce713556`. M1d/M1c/M1b/M1a/T1 static manifests are preserved. None of these tests was discovered or executed in Code + Build.
 
@@ -59,15 +49,11 @@ Successful run/job `31345475101 / 93326482946` used Ubuntu 24.04 / GCC 13.3.0, R
 
 Command-boundary metadata records `runtimeExecution=false` and false for generated binary execution, discovery/tests, benchmarks, `ctest`, CLI/GUI/help/version, fuzzers, and custom input.
 
-| Evidence | Value |
-|---|---|
-| Result artifact | `9047295489` |
-| Result ZIP SHA-256 | `74e5a1abe37d14c5cdf8a13b753b3f70b80b6a61d83ec051d3b8e4d44b8b8e9f` |
-| Log artifact | `9047295703` |
-| Log ZIP SHA-256 | `9df806949994145dba689b58afcc49106cedd1aadafbff409d70705188400f52` |
-| Retention | through `2026-08-24 00:58 UTC` |
-| Manifest | **61/61**, `ae82db8c02575926fe28ede2cbd6a4738cf7ed4e7ae1576ce8778970c532bc8e` |
-| Package | **62** regular files including manifest; 27 fixtures; 7 executables; 2 static libs |
+- result artifact `9047295489`, SHA-256 `74e5a1abe37d14c5cdf8a13b753b3f70b80b6a61d83ec051d3b8e4d44b8b8e9f`;
+- log artifact `9047295703`, SHA-256 `9df806949994145dba689b58afcc49106cedd1aadafbff409d70705188400f52`;
+- retention through `2026-08-24 00:58 UTC`;
+- manifest **61/61**, SHA-256 `ae82db8c02575926fe28ede2cbd6a4738cf7ed4e7ae1576ce8778970c532bc8e`;
+- package **62** regular files including manifest, 27 fixtures, 7 executables, 2 static libs.
 
 Read-only artifact verification matched GitHub outer digests, rejected unsafe paths, and verified all 61 checksums. Source patch SHA-256 `301f236eddc3ea31374868b4f9da982965b4098d212784b65d18b0e157f31cc0`; source archive `cb408cef116008446b7c68f1f421e062826c8eb2550cead2a88df0f6bf614e55`; compile database `aa91af44338f8776d982b43ae9ef0a8ba65a58ec879c8a7266d8bf0c1bd11ce9`.
 
@@ -81,7 +67,7 @@ Entering producer discovery was 178 and exactly six M1e tests were added, so the
 
 No new stable regression event or recurrence is created: the first issue was compile-time and corrected before runtime; v2 failures created no jobs; final product scope remains exactly two files; no accepted runtime authority was executed/reclassified. Historical totals remain **34 events / 14 categories / 20 recurrences**. `PR8-R034 / G4-R007` remains active.
 
-`RP-01`, `RP-05`, and primary `RP-07` are **compile-complete/runtime pending** at M1e; `RP-02 / TA-05` preservation is pending immutable validation.
+`RP-01`, `RP-05`, and primary `RP-07` are compile-complete/runtime pending at M1e; `RP-02 / TA-05` preservation is pending immutable validation.
 
 ## 9. Temporary workflow cleanup
 
