@@ -27,21 +27,7 @@ Initial implementation `9edbef1...` was compile-red due to incorrect `LatticeTra
 
 ## Next immutable gate
 
-Consume exact artifacts `9047295489 / 9047295703`, mutate/rebuild nothing, and require:
-
-- producer discovery **184**;
-- M1e **6/6**;
-- ordered vertex-fan **2/2**;
-- M1d **6/6 + 3/3**;
-- M1c **6/6 + 3/3**;
-- required-green producer **169/169**;
-- nine historical/deferred reds explicitly classified;
-- M1b **6/6 + validation 77/77**;
-- M1a **14/14**;
-- T1 **29/29**;
-- four direct product cases oracle-clean;
-- Bunny known-red / Vase bounded safety-only comparison;
-- exact **61/61** postflight.
+Consume exact artifacts `9047295489 / 9047295703`, mutate/rebuild nothing, and require producer discovery **184**; M1e **6/6**; ordered vertex-fan **2/2**; M1d **6/6 + 3/3**; M1c **6/6 + 3/3**; required-green producer **169/169**; nine historical/deferred reds explicitly classified; M1b **6/6 + validation 77/77**; M1a **14/14**; T1 **29/29**; four direct product cases oracle-clean; Bunny known-red/Vase bounded safety-only comparison; exact **61/61** postflight.
 
 ## Regression status
 
