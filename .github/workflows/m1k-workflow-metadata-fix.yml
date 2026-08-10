@@ -1,0 +1,63 @@
+name: M1k Workflow Metadata Fix
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/Directional/connector-triggers/m1k-workflow-metadata-fix.txt
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 2
+      - name: Correct optional deferred names and isolate final concurrency
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p m1k-workflow-metadata-fix-logs
+          exec > >(tee -a m1k-workflow-metadata-fix-logs/activity.log) 2>&1
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('.github/workflows/m1k-edge-topology-region-code-build.yml')
+          s = p.read_text()
+          replacements = {
+              'group: m1k-edge-topology-region-code-build\n':
+                  'group: m1k-edge-topology-region-code-build-authoritative\n',
+              'SurfaceCellDesignAcceptance.BunnyRandom\n':
+                  'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom\n',
+              'SurfaceCellDesignAcceptance.Vase\n':
+                  'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase\n',
+          }
+          for old, new in replacements.items():
+              if s.count(old) != 1:
+                  raise SystemExit(f'expected exactly one occurrence: {old!r}, got {s.count(old)}')
+              s = s.replace(old, new)
+          p.write_text(s)
+          PY
+          git diff --check
+          git diff -- .github/workflows/m1k-edge-topology-region-code-build.yml
+          if [[ "$(git diff --name-only)" != ".github/workflows/m1k-edge-topology-region-code-build.yml" ]]; then
+            echo "unexpected changed path"
+            exit 41
+          fi
+          git config user.name "OpenAI Agent"
+          git config user.email "noreply@openai.com"
+          git add .github/workflows/m1k-edge-topology-region-code-build.yml
+          git commit -m "chore: correct M1k package test-name metadata"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+      - name: Upload detailed metadata-fix logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1k-workflow-metadata-fix-logs
+          path: m1k-workflow-metadata-fix-logs
+          if-no-files-found: warn
+          retention-days: 14
