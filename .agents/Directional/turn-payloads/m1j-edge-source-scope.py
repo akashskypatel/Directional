@@ -6,6 +6,34 @@ PAYLOAD_PATH = ".agents/Directional/turn-payloads/m1j-edge-source-scope.py"
 source = subprocess.check_output(
     ["git", "show", f"{BASE_PAYLOAD_COMMIT}:{PAYLOAD_PATH}"], text=True
 )
+
+# Harden the helper insertion against the existing formatting of each overload.
+func_start = source.index("def insert_after_regex(")
+func_end = source.index("\n\n# 1. Type the selected SurfaceFrontEdge", func_start)
+helper = r'''def insert_after_regex(text: str, pattern: str, addition: str, label: str) -> str:
+    matches = list(re.finditer(pattern, text, flags=re.S))
+    if len(matches) == 1:
+        match = matches[0]
+        return text[:match.end()] + addition + text[match.end():]
+    anchors = {
+        "tracing edge compatibility helpers":
+            "std::vector<int> legacy_phase_front_isolation_sheets(\n    const SurfacePhaseFrontCell &cell) {",
+        "pipeline edge compatibility helpers":
+            "std::vector<int> legacy_phase_front_isolation_sheets(\n    const geometry::SurfacePhaseFrontCell &cell) {",
+        "test edge compatibility helpers":
+            "std::vector<int> legacy_phase_front_sheets(\n    const directional::geometry::SurfacePhaseFrontCell &cell) {",
+    }
+    anchor = anchors.get(label)
+    if anchor is None or text.count(anchor) != 1:
+        raise SystemExit(f"{label}: expected one insertion anchor; regex matches={len(matches)}")
+    begin = text.index(anchor)
+    end = text.index("\n}\n", begin) + len("\n}\n")
+    return text[:end] + addition + text[end:]
+'''
+source = source[:func_start] + helper + source[func_end:]
+
+# Scope the raw-field replacement to SurfaceFrontEdge; the same raw tuple exists
+# in other legacy structures intentionally outside M1j.
 start = source.index('header_path = Path("include/directional/geometry/SurfaceCellTracing.h")')
 end = source.index("header_path.write_text(header)", start)
 replacement = r'''header_path = Path("include/directional/geometry/SurfaceCellTracing.h")
