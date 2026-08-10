@@ -2,28 +2,42 @@
 
 ## Mandatory next turn
 
-Run **M1h Phase-Front Field-Chart Test-Authority Remediation — Code + Build only** under:
+Run **M1h Phase-Front Field-Chart Test-Authority Remediation — immutable Artifact-Only Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. M1h production code is compile/package complete but **runtime acceptance is blocked by one invalid focused-test witness**. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. M1h production code remains runtime-pending. Review policy is `never`.
 
-The blocked immutable runtime turn consumed exact M1h artifacts `9066967620 / 9066968049` for implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`. Package authority passed exactly: result/log ZIPs `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03 / d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816`, recursive manifest **69/69** `63c7000e00cf8608861d1651d84c02ddf419581dd7763ba25a9b3837162b92c9`, producer discovery **202**, validation **77/77**, M1a **14/14**, T1 **29/29**. M1g/M1f/M1e/M1d/M1c/M1b focused preservation all remained green. Direct Plane/MultiFaceSeam/CloseSheets/Cylinder passed from arbitrary extraction with **no fixture symlink**, proving the sibling `../test-data` package lookup correction.
+Consume only remediation result/log artifacts `9069186973 / 9069187317` produced from implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0`. This commit changes only `tests/SurfaceCellsPhase10Tests.cpp`; production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. Rebuild, relink, configure, regeneration, source/test/build/fixture edits, repair, substitution, and runtime fixture symlinks are prohibited.
 
-M1h focused result is **5/6**. The only failure is `SurfaceCellPhaseFrontFieldChartAuthorityMigration.MultipleOrientationChartsPreserveEstablishedNumbering`: it expected producer charts `{0,1,2}` to all occur among `LocalLatticeState` cell-corner samples, but the existing fixture produces lattice-corner charts `{0,2}` while independently retaining producer/segment chart `1` on face `3` and chart `2` on face `10`. The fixture therefore conflates **producer chart-domain coverage** with **lattice occurrence coverage**. Do not weaken the test to accept `{0,2}`; repair the witness so producer numbering and actual occurrence identity are proved separately.
+Expected runtime authority: producer discovery **202**, M1h focused **6/6** individually, required-green producer **187/187**, M1g–M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean without fixture symlink, eight historical/deferred red classes unchanged, strict-validator timing characterized without retry-based greening, Bunny/Vase bounded comparison if no earlier blocker remains, and exact immutable postflight.
 
-Required-green producer accounting was exactly **187 = 186 pass + the same one M1h test failure**. All eight historical/deferred red classes were unchanged. Strict-validator timing characterized **0/10 pass, 10/10 fail** and remains the existing deferred sub-millisecond ratio defect. Bunny/Vase were not relaunched after the blocking focused failure; entering accepted M1g dispositions remain authoritative until the corrected M1h package reaches immutable runtime.
+## M1h test-authority remediation compile/package authority — runtime pending
 
-No new stable product regression event or recurrence is assigned. Historical totals remain **34 events / 14 categories / 20 recurrences**; `PR8-R034 / G4-R007` remains active. M1h `RP-01 / RP-05` acceptance remains pending.
+The prior immutable M1h runtime from artifacts `9066967620 / 9066968049` remains retained evidence: package authority passed, producer discovery was **202**, M1h focused was **5/6**, required-green was **186/187**, all entering preservation/direct-product authority stayed green, and the sole blocker was the invalid witness in `MultipleOrientationChartsPreserveEstablishedNumbering`. That witness incorrectly equated producer chart-domain coverage with lattice-corner occurrence coverage; it was classified as a test-authority defect, not a product regression.
 
-Current retained runtime report:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+The remediation preserves the exact producer chart domain `{0,1,2}` through hard-authored source-face compatibility assertions while separately checking every actual typed lattice occurrence against the expected producer chart for its source face. It does not encode `{0,2}` as a domain expectation.
+
+| Evidence | Value |
+|---|---|
+| remediation implementation | `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` |
+| base M1h production implementation | `de4e2ba7c19d2e49931655dc22d758f50656d054` |
+| build run/job | `31404102605 / 93506073062` |
+| result artifact / SHA-256 | `9069186973` / `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8` |
+| log artifact / SHA-256 | `9069187317` / `56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a` |
+| recursive manifest | **72/72**, `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8` |
+| package | **73** regular files; 7 executables; 2 static libraries; 27 fixtures |
+| build | **120/120**, Release/static/Ninja/PRE_TEST, **8:20.53**, peak RSS **1,850,456 KiB** |
+| production source delta | **none** |
+| runtime | **false** |
+
+Exactly six `SurfaceCellPhaseFrontFieldChartAuthorityMigration` contracts remain compiled. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input ran in this Code + Build turn. Compile/package success is not M1h semantic acceptance.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
-
-Procedural lesson: aggregate GoogleTest filters use exactly one positive/negative separator: `positive-negative1:negative2:...`; the first malformed repeated-dash filter was discarded as harness evidence and did not mutate the package.
-
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
 ## M1g immutable acceptance authority
 
 Selected seam:

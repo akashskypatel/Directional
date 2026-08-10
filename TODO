@@ -5,15 +5,16 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1g immutable accepted; M1h field-chart production compiled but runtime blocked by a focused test-authority defect**.
-- M1h immutable package: implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`, artifacts `9066967620 / 9066968049`, manifest **69/69**, producer discovery **202**.
-- M1h runtime: **5/6 focused**, required-green **186/187** with the same sole focused-test failure; M1g–M1b focused preservation green; validation **77/77**, M1a **14/14**, T1 **29/29**.
-- Direct Plane/MultiFaceSeam/CloseSheets/Cylinder remain green without a fixture symlink; eight historical/deferred red classes unchanged.
-- Blocking defect: `MultipleOrientationChartsPreserveEstablishedNumbering` incorrectly requires every producer chart to appear among lattice-corner occurrences. Producer chart `1` is still independently observed on face `3`; do not weaken expected chart-domain semantics to `{0,2}`.
-- Authoritative next turn: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+- Architecture migration: **M1a through M1g immutable accepted; M1h test-authority remediation compile/package complete and immutable runtime pending**.
+- M1h production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`; remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only `tests/SurfaceCellsPhase10Tests.cpp`.
+- Remediation build run/job `31404102605 / 93506073062`: **120/120**, artifacts `9069186973 / 9069187317`, result/log SHA-256 `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8 / 56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a`, manifest **72/72**, 73 regular files, 7 executables, 2 libraries, 27 fixtures.
+- Code + Build runtime boundary: **false**; no generated binary, discovery, tests, benchmarks, `ctest`, CLI, fuzzer, or custom input executed.
+- Prior blocked M1h runtime remains evidence: focused **5/6**, required-green **186/187**; the sole failure was an invalid test witness, with all entering preservation/direct-product authority unchanged.
+- Corrected witness preserves producer domain `{0,1,2}` and checks actual typed lattice occurrences per hard-authored source-face chart rather than requiring occurrence coverage to equal the producer domain.
+- Authoritative next turn: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
+- Expected next runtime: producer **202**, M1h **6/6**, required-green **187/187**, full preservation/direct/historical/heavy-case/postflight authority.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current runtime report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
-
+- Current Code + Build report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
 ## M1d immutable acceptance
 
 Selected accepted seam:

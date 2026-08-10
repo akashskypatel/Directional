@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after blocked M1h immutable runtime from artifact `9066967620`; test-authority remediation is next.
+Last updated: **2026-08-10 UTC** after M1h test-authority remediation Code + Build from artifact `9069186973`; immutable runtime is next.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Last updated: **2026-08-10 UTC** after blocked M1h immutable runtime from artifa
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` creates no stable product regression event: immutable runtime is blocked by one newly introduced focused test-authority witness, while all entering product/preservation authority remained unchanged. Semantic acceptance remains pending. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` created no stable product regression event: immutable runtime was blocked by one newly introduced focused test-authority witness while all entering product/preservation authority remained unchanged. Remediation artifact `9069186973` changes only that test witness and creates no stable product regression event from compile-only evidence. Semantic acceptance remains pending. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -85,7 +85,9 @@ good: named semantic contract + independent oracle + direct representative evide
 - Bunny known-red with independent oracle before fatal product-success assertion;
 - Vase bounded 60-second safety-only evidence.
 
-Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`. M1h exact artifact runtime preserved entering `RP-02 / TA-05` authority but the new M1h suite is **5/6** because `MultipleOrientationChartsPreserveEstablishedNumbering` conflates producer chart-domain coverage with lattice-corner occurrence coverage. Required-green is **186/187** with that same sole failure. No stable product regression event or recurrence is added; M1h acceptance remains blocked until the test witness is corrected and re-run from a fresh immutable package.
+Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`. M1h exact artifact runtime preserved entering `RP-02 / TA-05` authority but the new M1h suite was **5/6** because `MultipleOrientationChartsPreserveEstablishedNumbering` conflated producer chart-domain coverage with lattice-corner occurrence coverage. Required-green was **186/187** with that same sole failure. Remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` corrects only the witness: producer chart domain remains exact `{0,1,2}` while actual typed occurrences are validated per hard-authored source face. Build artifact `9069186973` is compile/package complete with no runtime execution. No stable product regression event or recurrence is added; M1h acceptance remains pending immutable runtime.
+
+Authoritative next immutable runtime plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ### RP-03 — policy/stage state conflation
 

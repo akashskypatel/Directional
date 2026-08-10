@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h Phase-Front Field-Chart Consumer is compile/package complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h test-authority remediation is compile/package complete and immutable runtime is next; production source remains unchanged. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -60,20 +60,21 @@ M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public
 
 M1e accepted facts remain retained in the durable handoff and regression tracker.
 
-## M1h runtime block and authoritative next turn
+## M1h remediation compile/package and authoritative next turn
 
-Exact M1h artifacts `9066967620 / 9066968049` passed immutable package authority, producer discovery **202**, all entering focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products without fixture symlink, and unchanged historical-red classes. M1h focused is **5/6** and required-green is **186/187**, both blocked only by `MultipleOrientationChartsPreserveEstablishedNumbering`.
+The prior exact M1h runtime from artifacts `9066967620 / 9066968049` remains retained evidence: package authority and all entering preservation/direct-product gates passed, while M1h focused was **5/6** and required-green **186/187** because `MultipleOrientationChartsPreserveEstablishedNumbering` conflated producer chart-domain coverage with lattice-occurrence coverage.
 
-Diagnosis: the existing multi-orientation fixture retains producer chart numbering `{0,1,2}`, including compatibility chart `1` on face `3` and chart `2` on face `10`, but its accepted lattice corners sample only charts `{0,2}`. The test incorrectly treats producer-domain coverage as lattice-occurrence coverage. This is a test-authority defect, not a product regression. Do not change the chart-domain expectation to `{0,2}`; repair the witness.
+Remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only `tests/SurfaceCellsPhase10Tests.cpp`. Production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. The repaired witness keeps producer chart-domain authority exactly `{0,1,2}`, hard-authors face `3 -> 1` and face `10 -> 2`, and separately validates every actual typed lattice occurrence against its source-face chart without encoding `{0,2}` as a domain expectation.
 
-Run **M1h Phase-Front Field-Chart Test-Authority Remediation — Code + Build only** under:
+Build run/job `31404102605 / 93506073062` compiled **120/120** Release/static/Ninja/PRE_TEST. Result/log artifacts are `9069186973 / 9069187317` with SHA-256 `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8 / 56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a`; recursive manifest is **72/72** with digest `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8`. Package cardinality is 73 regular files, seven executables, two static libraries, and 27 fixtures. No generated Directional binary or runtime validation executed.
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`
+Run **M1h Phase-Front Field-Chart Test-Authority Remediation — immutable Artifact-Only Test + Benchmark only** under:
 
-The remediation is expected to be test-only. Production M1h source and the runtime-proven sibling `../test-data` fixture lookup remain unchanged unless source inspection proves a real semantic contradiction. Compile/package only; execute no generated Directional binary.
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`
 
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Expected runtime authority remains producer discovery **202**, M1h focused **6/6**, required-green **187/187**, full M1g–M1b/validation/M1a/T1/direct-product preservation, unchanged historical reds, strict-validator characterization, Bunny/Vase bounded comparison if no earlier blocker remains, and exact immutable postflight.
 
+Current Code + Build report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Report.md`.
 ## M1f vertex-continuation transport — immutable accepted
 
 Selected boundary:
@@ -103,25 +104,29 @@ All eight historical/deferred producer reds retained their entering classes. Bun
 
 Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-## M1h phase-front field-chart authority — compile/package complete
+## M1h phase-front field-chart authority — production compiled; witness remediation compiled
 
 Selected boundary:
 `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
 
-Implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` retains deterministic chart partition/numbering, crosses checked `FieldChartId`, carries typed optional lattice chart authority, and uses explicit compatibility conversions downstream. The package-layout correction resolves executable-relative sibling `../test-data` before historical fallbacks.
+Production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` retains deterministic chart partition/numbering, crosses checked `FieldChartId`, carries typed optional lattice chart authority, and uses explicit compatibility conversions downstream. The package-layout correction resolves executable-relative sibling `../test-data` before historical fallbacks.
+
+The first immutable runtime from artifacts `9066967620 / 9066968049` proved package portability and all entering preservation gates but blocked M1h at **5/6** focused / **186/187** required-green because one new focused witness confused producer-domain coverage with lattice-occurrence coverage. This did not create a stable product regression.
+
+Remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` is test-only. It preserves exact producer domain `{0,1,2}` while checking actual `FieldChartId` occurrences per independently hard-authored source-face expectation.
 
 | Evidence | Value |
 |---|---|
-| Build run/job | `31398571348 / 93487537918`, **120/120** |
-| Result artifact / SHA-256 | `9066967620` / `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03` |
-| Log artifact / SHA-256 | `9066968049` / `d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816` |
-| Recursive manifest | **69/69**, `63c7000e00cf8608861d1651d84c02ddf419581dd7763ba25a9b3837162b92c9` |
-| Package | **70** regular files; 7 executables; 2 static libraries; 27 fixtures |
-| M1h focused | exactly **6 compiled, unexecuted** |
-| Build boundary | Release/static/Ninja/PRE_TEST; runtime **false** |
+| Production implementation | `de4e2ba7c19d2e49931655dc22d758f50656d054` |
+| Remediation implementation | `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` |
+| Build run/job | `31404102605 / 93506073062`, **120/120** |
+| Result artifact / SHA-256 | `9069186973` / `d2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8` |
+| Log artifact / SHA-256 | `9069187317` / `56c0d0fb012b5d3b5fa4bb7284a496d700a4ebf408806b53c27f21f00311679a` |
+| Recursive manifest | **72/72**, `4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8` |
+| Package | **73** regular files; 7 executables; 2 static libraries; 27 fixtures |
+| Build boundary | Release/static/Ninja/PRE_TEST; production delta none; runtime **false** |
 
-No stable regression event or recurrence is assigned from compile-only evidence. Runtime preservation and semantic acceptance remain pending.
-
+No stable regression event or recurrence is assigned from compile-only remediation evidence. Immutable runtime is mandatory before M1h acceptance.
 ## Regression disposition
 
 - `RP-01`: M1e checked step domains **accepted**; M1f continuation-step domains **accepted**.

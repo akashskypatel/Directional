@@ -51,7 +51,7 @@ M0 preserve immutable evidence [complete]
    M1e segment route transport consumer [accepted]
    M1f vertex continuation route transport consumer [accepted]
    M1g periodic holonomy route transport consumer [accepted]
-   M1h phase-front field-chart consumer [compile/package complete; runtime next]
+   M1h phase-front field-chart consumer [test-authority remediation compile/package complete; immutable runtime next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -110,8 +110,10 @@ Immutable M1e authority:
 
 M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
 
-Authoritative next Code + Build plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+Authoritative next immutable Test + Benchmark plan:
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Plan.md`.
+
+M1h remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` changes only the focused test witness; production remains `de4e2ba7c19d2e49931655dc22d758f50656d054`. Build `31404102605 / 93506073062` is **120/120** with artifacts `9069186973 / 9069187317`, manifest **72/72**, and no runtime execution. Semantic acceptance remains pending.
 
 ## 4. M1e accepted boundary and M1f selection
 
