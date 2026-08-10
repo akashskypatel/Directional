@@ -1,0 +1,194 @@
+name: m1g-artifact-runtime-heavy
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1g-artifact-runtime-heavy'
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: m1g-artifact-runtime-heavy
+  cancel-in-progress: false
+
+jobs:
+  artifact-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [bunny, vase]
+    env:
+      ARTIFACT_ID: '9053047653'
+      ARTIFACT_SHA256: '296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c'
+      MANIFEST_SHA256: '89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae'
+      IMPLEMENTATION: 'ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2'
+      PRODUCER_SHA256: 'ecb53fc658be166d52bc66fb66bb835ff6c8510e1a27b545aeb7378dfaffa5fd'
+      EVIDENCE_DIR: /tmp/m1g-artifact-runtime-evidence
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          log="$EVIDENCE_DIR/activity-${{ matrix.case }}.log"
+          printf '%s\n' \
+            'turn=M1g immutable Test+Benchmark' \
+            'executionPlane=GitHubActions-artifact-only' \
+            'case=${{ matrix.case }}' \
+            "run_id=$GITHUB_RUN_ID" \
+            "run_attempt=$GITHUB_RUN_ATTEMPT" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "artifact_id=$ARTIFACT_ID" \
+            "implementation=$IMPLEMENTATION" \
+            'configure=false' 'build=false' 'relink=false' 'regenerate=false' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$log"
+
+      - name: Preflight exact immutable artifact
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$EVIDENCE_DIR/activity-${{ matrix.case }}.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'rc=$?; echo "step=preflight exit_code=$rc"; exit $rc' EXIT
+          echo "gh_version=$(gh --version | head -n1)"
+          echo "sha256sum=$(sha256sum --version | head -n1)"
+          metadata="$EVIDENCE_DIR/artifact-metadata-${{ matrix.case }}.json"
+          gh api "repos/akashskypatel/Directional/actions/artifacts/$ARTIFACT_ID" > "$metadata"
+          test "$(jq -r .expired "$metadata")" = 'false'
+          test "$(jq -r .digest "$metadata")" = "sha256:$ARTIFACT_SHA256"
+          zip="$RUNNER_TEMP/m1g-result-${{ matrix.case }}.zip"
+          gh api "repos/akashskypatel/Directional/actions/artifacts/$ARTIFACT_ID/zip" > "$zip"
+          echo "$ARTIFACT_SHA256  $zip" | sha256sum -c -
+          pkg="$RUNNER_TEMP/m1g-package-${{ matrix.case }}"
+          rm -rf "$pkg"
+          mkdir -p "$pkg"
+          python3 - "$zip" <<'PY'
+          import pathlib, sys, zipfile
+          zpath = sys.argv[1]
+          with zipfile.ZipFile(zpath) as z:
+              bad=[]
+              for info in z.infolist():
+                  p=pathlib.PurePosixPath(info.filename)
+                  if p.is_absolute() or '..' in p.parts:
+                      bad.append(info.filename)
+              if bad:
+                  raise SystemExit(f'unsafe archive members: {bad}')
+          print('archive_paths=safe')
+          PY
+          unzip -q "$zip" -d "$pkg"
+          echo "$MANIFEST_SHA256  $pkg/SHA256SUMS" | sha256sum -c -
+          test "$(wc -l < "$pkg/SHA256SUMS")" -eq 64
+          (cd "$pkg" && sha256sum -c SHA256SUMS)
+          test "$(find "$pkg" -type f | wc -l)" -eq 65
+          test "$(find "$pkg/bin" -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find "$pkg/lib" -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find "$pkg/test-data/benchmarks/fixtures" -type f | wc -l)" -eq 27
+          authority="$pkg/metadata/build-authority.json"
+          test "$(jq -r .implementationCommit "$authority")" = "$IMPLEMENTATION"
+          test "$(jq -r .runId "$authority")" = '31362470744'
+          test "$(jq -r .configuration "$authority")" = 'Release'
+          test "$(jq -r .generator "$authority")" = 'Ninja'
+          test "$(jq -r .sharedLibraries "$authority")" = 'false'
+          test "$(jq -r .gtestDiscoveryMode "$authority")" = 'PRE_TEST'
+          for field in runtimeExecution testExecution benchmarkExecution ctestExecution cliExecution fuzzerExecution customInputExecution; do
+            test "$(jq -r ".$field" "$authority")" = 'false'
+          done
+          echo "$PRODUCER_SHA256  $pkg/bin/directional_surface_cell_producer_tests" | sha256sum -c -
+          printf '%s\n' "package=$pkg" "zip=$zip" > "$EVIDENCE_DIR/paths-${{ matrix.case }}.txt"
+          echo 'preflight=pass'
+
+      - name: Execute bounded packaged case
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$EVIDENCE_DIR/activity-${{ matrix.case }}.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'rc=$?; echo "step=runtime exit_code=$rc"; exit $rc' EXIT
+          pkg=$(sed -n 's/^package=//p' "$EVIDENCE_DIR/paths-${{ matrix.case }}.txt")
+          chmod +x "$pkg/bin/directional_surface_cell_producer_tests"
+          rm -rf "$GITHUB_WORKSPACE/benchmarks"
+          mkdir -p "$GITHUB_WORKSPACE/benchmarks"
+          ln -s "$pkg/test-data/benchmarks/fixtures" "$GITHUB_WORKSPACE/benchmarks/fixtures"
+          if [ '${{ matrix.case }}' = bunny ]; then
+            test_name='UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom'
+            bound=150
+          else
+            test_name='UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase'
+            bound=60
+          fi
+          runtime_log="$EVIDENCE_DIR/runtime-${{ matrix.case }}.log"
+          set +e
+          /usr/bin/time -v -o "$EVIDENCE_DIR/resources-${{ matrix.case }}.txt" \
+            timeout --signal=TERM --kill-after=5s "${bound}s" \
+            "$pkg/bin/directional_surface_cell_producer_tests" --gtest_filter="$test_name" \
+            2>&1 | tee "$runtime_log" | tee -a "$log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "test=$test_name" "bound_seconds=$bound" "runtime_rc=$rc" \
+            > "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"
+          if grep -Fq '[ RUN      ]' "$runtime_log"; then echo 'selected_test_started=true' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; else echo 'selected_test_started=false' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; fi
+          if grep -Fq 'NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0' "$runtime_log"; then echo 'known_bunny_terminal=true' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; else echo 'known_bunny_terminal=false' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; fi
+          if grep -Fq '[  PASSED  ] 1 test.' "$runtime_log"; then echo 'test_passed=true' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; else echo 'test_passed=false' | tee -a "$EVIDENCE_DIR/result-${{ matrix.case }}.txt"; fi
+          echo "runtime_rc=$rc"
+
+      - name: Immutable postflight
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$EVIDENCE_DIR/activity-${{ matrix.case }}.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'rc=$?; echo "step=postflight exit_code=$rc"; rm -f "$GITHUB_WORKSPACE/benchmarks/fixtures" || true; exit $rc' EXIT
+          if [ ! -f "$EVIDENCE_DIR/paths-${{ matrix.case }}.txt" ]; then
+            echo 'postflight=missing-preflight-paths'
+            exit 1
+          fi
+          pkg=$(sed -n 's/^package=//p' "$EVIDENCE_DIR/paths-${{ matrix.case }}.txt")
+          zip=$(sed -n 's/^zip=//p' "$EVIDENCE_DIR/paths-${{ matrix.case }}.txt")
+          echo "$ARTIFACT_SHA256  $zip" | sha256sum -c -
+          echo "$MANIFEST_SHA256  $pkg/SHA256SUMS" | sha256sum -c -
+          test "$(wc -l < "$pkg/SHA256SUMS")" -eq 64
+          (cd "$pkg" && sha256sum -c SHA256SUMS)
+          echo "$PRODUCER_SHA256  $pkg/bin/directional_surface_cell_producer_tests" | sha256sum -c -
+          test "$(find "$pkg" -type f | wc -l)" -eq 65
+          test "$(find "$pkg/bin" -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find "$pkg/lib" -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find "$pkg/test-data/benchmarks/fixtures" -type f | wc -l)" -eq 27
+          rm -f "$GITHUB_WORKSPACE/benchmarks/fixtures"
+          rmdir "$GITHUB_WORKSPACE/benchmarks" 2>/dev/null || true
+          echo 'postflight=pass'
+          echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1g-artifact-runtime-${{ matrix.case }}-logs
+          path: /tmp/m1g-artifact-runtime-evidence/activity-${{ matrix.case }}.log
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Upload runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1g-artifact-runtime-${{ matrix.case }}-evidence
+          path: |
+            /tmp/m1g-artifact-runtime-evidence/artifact-metadata-${{ matrix.case }}.json
+            /tmp/m1g-artifact-runtime-evidence/paths-${{ matrix.case }}.txt
+            /tmp/m1g-artifact-runtime-evidence/runtime-${{ matrix.case }}.log
+            /tmp/m1g-artifact-runtime-evidence/resources-${{ matrix.case }}.txt
+            /tmp/m1g-artifact-runtime-evidence/result-${{ matrix.case }}.txt
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
