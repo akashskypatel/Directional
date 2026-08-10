@@ -6,6 +6,8 @@ Last updated: 2026-08-10 UTC
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
 - Architecture migration: **M1a/M1b/M1c/M1d immutable accepted; M1e Segment Route Transport Consumer Code + Build next**.
+- M1e implementation: `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` is pushed; local compile-only syntax checks passed for the changed production and test translation units; authoritative Release/static/Ninja build and packaging remain pending.
+- Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract now proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
 - Authoritative next turn: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
