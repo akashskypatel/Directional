@@ -50,6 +50,8 @@ Prefer concise current-state statements plus direct references to authoritative 
 
 ## Mandatory Start-of-turn Checklist
 
+This is a DURABLE mandatory start-of-turn checklist that must be followed at the start of every turn. Do not delete this checklist.
+
 1. Review turn-based-coding-agent skill if not already reviewed: https://github.com/akashskypatel/turn-based-coding-agent-skill
 2. Fully review this handoff document
 3. Review and strictly follow RETENTION_POLICY for the whole turn
@@ -101,6 +103,8 @@ No stable product regression event or recurrence was created. Historical totals 
 Historical milestone and acceptance details are maintained in `.agents/Directional/CHANGELOG.md`, not in this handoff.
 
 ## Mandatory End-of-turn Checklist
+
+This is a DURABLE mandatory end-of-turn checklist that must be followed at the end of every turn. Do not delete this checklist.
 
 1. Review and apply CLEAN_UP_POLICY
 2. Update CHANGELOG.md
