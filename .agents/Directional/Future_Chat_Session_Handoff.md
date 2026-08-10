@@ -2,19 +2,34 @@
 
 ## Mandatory next turn
 
-Run **M1j Phase-Front Edge Source-Scope Consumer — Code + Build only** under:
+Run **M1j Phase-Front Edge Source-Scope Consumer — immutable Artifact-Only Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1i are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1i are immutable accepted. M1j is compile/package complete and semantic runtime is pending. Review policy is `never`.
 
-M1j is bounded to:
+Consume only result/log artifacts `9076217893 / 9076218338` from implementation `d5f681173600dc32dc7617de6105d9e584e593be`. Result/log ZIP SHA-256 are `a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c / 76684f4ac412f4da7fd1ccf3cbee5fddfbb7dd14efd43940c6a7568b3d22d1f9`; recursive package manifest is **67/67**, digest `2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59`.
 
+Rebuild, relink, configure, regeneration, source/test/build/fixture edits, package repair/substitution, and runtime fixture symlinks are prohibited. Expected native producer discovery is **214**, M1j focused **6/6** individually, and required-green producer **199/199**. Preserve M1i-M1b focused suites, M1d route witnesses **3/3**, M1c transition counterexamples **3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct Plane/MultiFaceSeam/CloseSheets/Cylinder oracle authority, all eight historical/deferred red classes, strict-validator 10-process characterization, Bunny/Vase bounded comparison, and exact postflight.
+
+## M1j Code + Build authority — runtime pending
+
+Selected seam:
 `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
 
-Migrate only edge-owned source-component/isolation-sheet authority to checked `SourceComponentId` / `IsolationSheetId`. Keep `SurfaceFrontEdge::sourceTopologyRegion` raw for a later `TopologyRegionId` slice. Region aggregation must validate established typed edge scope rather than overwrite it; still-raw downstream consumers use explicit named compatibility conversion. Do not expand into periodic/bounded-disk source-scope schemas, hard-rail/periodic owner IDs, M2-M6, or G4 behavior repair.
+Final implementation `d5f681173600dc32dc7617de6105d9e584e593be` changes exactly the tracing header, tracing implementation, pipeline compatibility consumers, and phase-10 tests relative to source parent `391271e253557b5c6b267befb3f2f33330c090c9`. Edge-owned component/sheet state now uses checked `SourceComponentId` / `IsolationSheetId`; `sourceTopologyRegion` remains raw for a later slice. Edge publication copies typed cell authority directly and region aggregation validates it rather than rewriting it. Six M1j contracts compile and were **not executed**.
 
-This next turn is **Code + Build only**. Execute no generated Directional binary, discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+Authoritative build/package run/job `31422691741 / 93566993166` compiled **120/120** Release/static/Ninja/PRE_TEST in **8:17.83**, peak RSS **1,860,968 KiB**. Package has 68 regular files including `SHA256SUMS`, seven executables, two libraries, 27 fixtures, and **67/67** verified checksums. Every runtime/test/benchmark/ctest/CLI/fuzzer/custom-input flag is false.
+
+The first implementation `274b7ab88b581aa63e2e99c3abca2bc89eb742e2` exposed one compile-only missed compatibility conversion at a raw periodic-relation component comparison. The corrected implementation converts the typed edge component through the named legacy adapter. An earlier successful 120/120 package `9075863759` was also rejected as runtime authority because its manifest preceded one final log copy; the final authoritative retry closes the manifest after all package writes. Neither event is a stable product regression.
+
+Historical regression totals remain **34 events / 14 categories / 20 recurrences**; `PR8-R034 / G4-R007` remains active.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Report.md`.
+
+Authoritative next plan:
+`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## M1i immutable acceptance authority
 

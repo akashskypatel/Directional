@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable M1i cell source-scope acceptance from artifact `9072101943`; M1j edge source-scope authority is next.
+Last updated: **2026-08-10 UTC** after M1j edge source-scope Code + Build from artifact `9076217893`; immutable runtime is next.
 
 ## Rules
 
@@ -55,7 +55,7 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
 - M1e ordered segment-route step identity is accepted. M1f continuation-route steps cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and immutable runtime acceptance is complete.
 - M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.
-- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j next migrates the immediately adjacent `SurfaceFrontEdge` component/sheet consumer.
+- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j now carries the immediately adjacent `SurfaceFrontEdge` component/sheet consumer through checked typed authority; compile/package is complete and immutable runtime acceptance is pending.
 
 M1d accepted invariants:
 
@@ -89,7 +89,7 @@ Focused migration tests do not replace this authority. M1h remediation artifact 
 
 M1i source-scope migration is immutable accepted: producer discovery **208**, M1i **6/6**, required-green **193/193**, M1h-M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. The initial wrong-working-directory package checksum issue and a later zero-selected M1b executable-mapping mistake are orchestration defects only; neither changes semantic evidence.
 
-M1j must preserve `RP-02 / TA-05` while adding six production-path contracts for typed edge source scope and then re-prove complete immutable runtime authority. Authoritative next Code + Build plan: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`. Historical totals remain **34 / 14 / 20**.
+M1j adds six compiled production-path contracts for typed edge source scope. Authoritative build artifact `9076217893` is compile/package complete with no generated runtime execution; semantic acceptance therefore remains pending. The initial compile mismatch and superseded incomplete-manifest artifact are Code + Build/orchestration defects, not stable product regressions. Authoritative next runtime plan: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Historical totals remain **34 / 14 / 20**.
 
 ### RP-03 — policy/stage state conflation
 

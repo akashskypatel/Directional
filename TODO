@@ -5,15 +5,17 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1i immutable accepted; M1j phase-front edge source-scope consumer selected for Code + Build**.
-- M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is accepted from exact artifacts `9072101943 / 9072102331`: producer **208**, focused **6/6**, required-green **193/193**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products green without fixture symlink, and all eight historical/deferred reds unchanged.
-- Heavy run `31416928654`: Bunny unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase bounded safety-only at 60 seconds; exact **72/72** package authority preserved.
-- Strict-validator timing remains deferred after fresh **0/10** characterization; no threshold/retry workaround is authorized.
-- M1j seam: `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`; migrate only edge-owned `SourceComponentId` / `IsolationSheetId` authority and keep raw `sourceTopologyRegion` out of scope.
-- Authoritative next turn: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
-- Expected following runtime authority after M1j build: producer discovery **214**, M1j focused **6/6**, required-green **199/199**, plus full entering preservation and exact postflight.
+- Architecture migration: **M1a through M1i immutable accepted; M1j edge source-scope Code + Build complete and immutable runtime pending**.
+- M1j implementation `d5f681173600dc32dc7617de6105d9e584e593be`; source parent `391271e253557b5c6b267befb3f2f33330c090c9`; seam `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
+- Edge-owned source component/sheet authority now uses checked `SourceComponentId` / `IsolationSheetId`; raw `sourceTopologyRegion` remains out of scope and downstream raw consumers use named compatibility conversion.
+- Authoritative build run/job `31422691741 / 93566993166`: **120/120**, Release/static/Ninja/PRE_TEST, artifacts `9076217893 / 9076218338`, ZIP SHA-256 `a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c / 76684f4ac412f4da7fd1ccf3cbee5fddfbb7dd14efd43940c6a7568b3d22d1f9`.
+- Package manifest **67/67**, digest `2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59`; 68 regular files, 7 executables, 2 libraries, 27 fixtures; producer SHA-256 `04d5d4d59c3e7e9d15cc3e57b0887086939735867aeb1a122a4b3b82be826e40`.
+- Code + Build runtime boundary: **false**; six M1j contracts compiled and were not executed.
+- Initial compile mismatch and earlier incomplete-manifest package are Code + Build/orchestration provenance only; no stable product regression or recurrence is assigned.
+- Authoritative next turn: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Expected runtime authority: producer discovery **214**, M1j focused **6/6**, required-green **199/199**, full M1i-M1b/validation/M1a/T1/direct/historical/heavy/postflight preservation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current immutable report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+- Current Code + Build report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Report.md`.
 
 ## M1d immutable acceptance
 

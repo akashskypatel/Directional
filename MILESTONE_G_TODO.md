@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1i architecture slices are immutable accepted. M1j phase-front edge source-scope authority is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1i architecture slices are immutable accepted. M1j phase-front edge source-scope Code + Build is complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -76,10 +76,17 @@ Exact result/log artifacts `9072101943 / 9072102331` are immutable accepted. Run
 
 Heavy run `31416928654` preserved Bunny's known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure and bounded Vase at 60 seconds as safety-only evidence. Local and remote postflight preserved the exact package, producer hash, and **72/72** checksums. No stable product regression event or recurrence was created; `PR8-R034 / G4-R007` remains active.
 
-Next architecture slice: **M1j Phase-Front Edge Source-Scope Consumer — Code + Build only** at `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`. Keep raw `sourceTopologyRegion` out of scope and require region aggregation to validate rather than overwrite edge semantic source scope.
+## M1j phase-front edge source-scope authority — compile/package complete; runtime pending
 
-Authoritative plan: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
-Current immutable report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Implementation `d5f681173600dc32dc7617de6105d9e584e593be` migrates only `SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}` to checked `SourceComponentId` / `IsolationSheetId` while retaining raw `sourceTopologyRegion` as a later migration boundary. Edge publication copies typed cell scope directly; region aggregation validates it rather than overwriting it.
+
+Authoritative build run/job `31422691741 / 93566993166` compiled **120/120** Release/static/Ninja/PRE_TEST. Result/log artifacts are `9076217893 / 9076218338`, outer SHA-256 `a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c / 76684f4ac412f4da7fd1ccf3cbee5fddfbb7dd14efd43940c6a7568b3d22d1f9`; recursive manifest is **67/67**, digest `2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59`. Every runtime flag is false.
+
+An initial compile-only missed compatibility conversion and an earlier incomplete-manifest package were corrected before authoritative packaging. They are orchestration/Code + Build provenance, not stable product regressions. Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active.
+
+Run **M1j immutable Artifact-Only Test + Benchmark only** under `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected producer discovery **214**, M1j **6/6**, required-green **199/199**, plus full entering preservation and exact postflight.
+
+Current report: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Report.md`.
 
 ## M1f vertex-continuation transport — immutable accepted
 
