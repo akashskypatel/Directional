@@ -68,7 +68,7 @@ jobs:
           exec > >(tee -a "$ACTIVITY_LOG") 2>&1
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git add TODO MILESTONE_G_TODO.md \
+          git add -f TODO MILESTONE_G_TODO.md \
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/REORIENTATION_PLAN.md \
             .agents/Directional/Regression_Root_Cause_Tracker.md
