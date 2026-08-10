@@ -2,92 +2,111 @@
 
 ## Mandatory next turn
 
-Run **M1d Phase-Front Route Identity Consumer — immutable Test + Benchmark only** under:
+Run **M1e Segment Route Transport Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c are immutable accepted; M1d is Code + Build complete with immutable runtime pending. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d are immutable accepted. Review policy is `never`.
 
-The next turn is non-mutating with respect to source, tests, fixtures, build logic, and packaged regular content. Do not configure, rebuild, relink, regenerate, substitute, edit, or repair anything in the immutable artifact.
+The next turn is mutating **Code + Build only**. It may implement the bounded M1e consumer and compile/package, but must execute no generated Directional binary, GoogleTest discovery/test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
 
-## Exact M1d build authority
+## Accepted M1d immutable authority
 
-Selected seam: `pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`.
+Accepted seam:
+`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`, authoritative HardRail/PeriodicCut interior-route identity consumption only.
 
 | Evidence | Value |
 |---|---|
-| Entering base | `29f2e20a376c907581f119801768d393c19b9d1b` |
-| Implementation | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
-| Build/event | `98a21f3d843533dcc44cb296711268e0ebb26fb6` |
-| Build run/job | `31342400614 / 93318225812` |
-| Result artifact / SHA-256 | `9046308272` / `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
-| Log artifact / SHA-256 | `9046308461` / `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
-| Recursive manifest | **59/59**, `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0` |
-| Package | 60 regular files including manifest; seven ELF; two static libs; 27 fixtures |
-| Compile | Release/static/Ninja **120/120** |
-| Build wall / peak RSS | **6:53.49 / 1,848,616 KiB** |
-| Runtime in Code + Build | **false** |
-| Retention | through **2026-08-23 UTC** |
+| M1d implementation | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
+| build/event | `98a21f3d843533dcc44cb296711268e0ebb26fb6` |
+| build run/job | `31342400614 / 93318225812` |
+| result artifact / SHA-256 | `9046308272` / `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
+| log artifact / SHA-256 | `9046308461` / `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
+| recursive manifest | **59/59**, `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0` |
+| producer discovery | exactly **178** |
+| M1d focused | exact six, **6/6** individually |
+| route counterexamples | **3/3** |
+| M1c / transition counterexamples | **6/6**, **3/3** |
+| required-green producer | **163/163** |
+| M1b / validation | **6/6**, **77/77** |
+| M1a / T1 | **14/14**, **29/29** |
 
-Read-only verification matched both outer GitHub digests, rejected unsafe archive paths, and verified all **59/59** package checksums. Report: `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Report.md`.
+Direct required-green products from the exact M1d producer executable remain independent-oracle clean:
 
-## M1d semantic boundary to prove
+- Plane: pass, **1.325 s**;
+- MultiFaceSeam: pass, **2.079 s**;
+- CloseSheets: pass, **16.648 s**;
+- Cylinder: pass, **9.267 s**.
 
-Only `exact_interior_route_valid` changed semantically at consumption:
+All nine historical/deferred producer reds remain explicit with their prior failure classes; no new regression or recurrence was created.
 
-- existing nonempty/equal-size/interior-incidence checks remain authority;
+Authoritative report:
+`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+## M1d accepted semantic boundary
+
+At `exact_interior_route_valid`:
+
 - packed route endpoints cross checked `SourceVertexId` adapters;
 - canonical `SourceEdgeTopologyKey` owns semantic route-edge identity/uniqueness;
-- typed endpoints serialize back only at the existing packed-key compatibility lookup boundary and must reproduce the supplied key;
+- packed keys are reconstructed only at existing compatibility lookup boundaries;
 - supplied and authoritative compact route values cross checked `InteriorTransitionId` adapters and compare as typed IDs;
-- malformed identity remains fail-closed through existing `InvalidHardRailAuthority` / `InvalidPeriodicCutAuthority` failures;
-- public `sourceRouteEdges/sourceRouteTopology`, route producers/order, per-step transport, relation policy, diagnostics, and known-red dispositions remain unchanged.
+- malformed identity remains fail-closed through existing HardRail/PeriodicCut failure paths;
+- public `sourceRouteEdges/sourceRouteTopology`, route production/order, per-step transport, relation policy, diagnostics, and known-red dispositions remain unchanged.
 
-Do not introduce `TransitionStep`/`CanonicalRoute` here; this consumer owns no per-step transport.
+`RP-01` and `RP-05` are accepted at this consumer. M1c `RP-07` transport remains preserved.
 
-Final product/test diff is exactly `src/pipeline/RemeshPipeline.cpp` and `tests/SurfaceCellTransitionQuotientTests.cpp`. Current blobs are `481f58169fe73844b12d9e70660d49fa3e13f845` and `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
+## Bunny/Vase standing immutable evidence
 
-## Exact M1d focused authority
+M1d artifact-only Actions comparison run: `31343763822`.
 
-The package statically contains exactly six new contracts:
+- Bunny job `93321764271`: exact one-test selection, rc=1 after **71.705 s**. Independent oracle rejects first, followed by unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`. Evidence artifact `9046629209`, SHA-256 `6502efcdef8ed94051e571b81f8f9c7ae6c2e1d10d8e0b9804991a42a5cf65a3`.
+- Vase job `93321764263`: exact one-test selection reached `[ RUN ]`, bounded rc=124 at **60.023 s**. Safety-only evidence. Evidence artifact `9046626009`, SHA-256 `2a5ae0ae047f82ac909cf049aac03785863ee93d1506b10decb0c9507f5c4855`.
 
-1. `SurfaceCellPhaseFrontRouteAuthorityMigration.ValidHardRailRouteUsesTypedIdentity`;
-2. `SurfaceCellPhaseFrontRouteAuthorityMigration.ValidPeriodicCutRouteUsesTypedIdentity`;
-3. `SurfaceCellPhaseFrontRouteAuthorityMigration.InvalidInteriorTransitionIdFailsClosed`;
-4. `SurfaceCellPhaseFrontRouteAuthorityMigration.OutOfDomainPackedSourceVertexFailsClosed`;
-5. `SurfaceCellPhaseFrontRouteAuthorityMigration.RouteTopologyTransitionMismatchFailsClosed`;
-6. `SurfaceCellPhaseFrontRouteAuthorityMigration.DuplicateSemanticRouteTopologyFailsClosed`.
+Both jobs downloaded exact artifact `9046308272`, verified the GitHub digest, build authority, all 59 checksums and producer hash before runtime, and reverified artifact/manifest/producer/60-regular-file authority postflight. The temporary workflow and trigger were removed.
 
-Static manifest SHA-256: `e6d1932a71ee365249d78869c541eb05a55718b4a675f53d5f2afd0a58abee7a`. Require exact six-member discovery and **6/6** fresh-process success; zero selection is invalid.
+## M1e exact consumer boundary
 
-Existing route counterexamples that must remain green:
+Selected seam:
 
-- `SurfaceCellTransitionQuotient.ExactHardRailCounterpartsStitchAcrossTopologyRegions`;
-- `SurfaceCellTransitionQuotient.ArtificialInteriorBoundaryIsRejected`;
-- `SurfaceCellTransitionQuotient.ComponentBoundaryAndEulerFactsAreComputedFromIncidence`.
+`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`
 
-## Required preservation matrix
+This is a real transport-owning consumer. The legacy code currently accumulates raw signed `transition.matching` across an ordered `std::vector<VertexPathStep>` and normalizes only at the end.
 
-The immutable turn must prove producer discovery exactly **178**, required-green producer segment **163/163**, all nine historical/deferred producer reds explicitly classified, M1c exact six **6/6** plus its three transition counterexamples, M1b **6/6** + validation discovery 77 and **77/77**, M1a exact 14 and **14/14**, T1 exact 29 and **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
+Default allowed implementation/test paths:
 
-Exact producer accounting target is 163 required-green + 4 separately run direct-green + 9 historical/deferred red + BunnyRandom + Vase = **178**.
+- `src/geometry/SurfaceCellTracing.cpp`;
+- `tests/SurfaceCellsPhase10Tests.cpp`.
 
-Postflight must preserve both original ZIP hashes and all **59/59** packaged checksums. M1d focused tests cannot substitute for independent preservation authority.
+No header or CMake change is expected.
 
-## Bunny/Vase standing procedure
+Mandatory M1e rules:
 
-Artifact-only GitHub Actions runtime remains authorized when local execution limits make Bunny/Vase impractical. For M1d, any temporary workflow must download exact artifact `9046308272` from run `31342400614`, verify outer digest/all 59 checksums/implementation metadata/producer hash before runtime, perform no rebuild/content mutation, use explicit guards, retain raw evidence, and be removed before closeout.
+1. preserve route discovery, ordered vertex-fan choice, hard-feature/relief/topology checks, and `resolve_branch_transition` behavior;
+2. decode each step edge only at a compatibility boundary and establish checked `SourceVertexId` + canonical `SourceEdgeTopologyKey`;
+3. establish checked `InteriorTransitionId` from existing `source_edge_provenance` compact authority;
+4. convert each directed step matching to `QuarterTurn` / zero-shift `GridAutomorphism`;
+5. construct observed interior `TransitionStep`s and one `CanonicalRoute` only after all steps validate;
+6. consume `CanonicalRoute::oriented_steps()` so canonical storage cannot reverse behaviorally observed route direction;
+7. compose typed transports in observed order and derive public/raw `current.matching` only at the compatibility output boundary;
+8. preserve matching effort and exact ordered raw provenance vectors;
+9. preserve explicit `edgeTransitions`-absent legacy matching behavior through the same typed composition boundary;
+10. malformed authoritative metadata fails closed without geometric/legacy fallback.
 
-Accepted M1c comparison remains: Bunny independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`, rc=1 at about 63 s; Vase reaches `[ RUN ]` and is bounded rc=124 at 60 s. Do not promote either to green merely to close M1d.
+M1e deliberately excludes periodic-holonomy loop accumulation, `FieldChartId`, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery, optimization, and G4 repair.
 
-## Regression/architecture disposition
+Add exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` production-path contracts specified in the plan. Do not reimplement route composition in test-only helpers as proof.
 
-- `RP-01`: M1d checked `SourceVertexId` / `InteriorTransitionId` adoption **compile-complete; immutable runtime pending**.
-- `RP-05`: M1d canonical route topology identity **compile-complete; runtime pending**.
-- `RP-07`: accepted M1c quarter-turn transport is untouched and must remain green.
-- `RP-02 / TA-05`: independent preservation is pending the immutable turn.
-- Historical totals remain **34 events / 14 categories / 20 recurrences**.
-- `PR8-R034 / G4-R007` remains active and separate; direct torus remains 0/3 after 192 quads with 241 `LocalSheetMismatch` issues and historical exact torus remains `InvalidHardRailPairing`.
+## Regression standing state
+
+Historical totals remain **34 events / 14 categories / 20 recurrences**.
+
+`PR8-R034 / G4-R007` remains active under production artifact `9031804178`:
+
+- direct torus remains 0/3 after 192 completed quads with 241 `LocalSheetMismatch` issues;
+- historical exact torus remains `InvalidHardRailPairing`.
+
+Persistent blockers remain `G4-B001` through `G4-B004`; M1e does not repair them.
 
 ## Durable `.agents/Directional` cleanup policy — mandatory
 
@@ -103,8 +122,8 @@ This section is durable handoff policy and must remain in every future rewrite o
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
-- `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
@@ -112,8 +131,10 @@ This section is durable handoff policy and must remain in every future rewrite o
 - `TODO`;
 - `MILESTONE_G_TODO.md`.
 
-At the start of the next turn, fetch fresh PR/head state and verify the branch still contains implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25`. If any required-green gate regresses, remain at M1d and return to corrective Code + Build; do not advance.
+At the start of M1e, fetch fresh PR/head state and verify implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` remains an ancestor. Do not assume this handoff's documentation head if external commits move the branch.
+
+If the following immutable M1e turn finds a required-green regression, remain at M1e and return to corrective Code + Build; do not advance.
 
 After all branch-file and PR-body writes for a completed turn, the final repository write is exactly one new top-level PR #8 conversation comment.
 
-Last updated: 2026-08-09 UTC
+Last updated: 2026-08-10 UTC
