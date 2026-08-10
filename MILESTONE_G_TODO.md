@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d architecture slices are immutable accepted. M1e compile/package is complete and immutable runtime is pending. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e architecture slices are immutable accepted. M1f Vertex Continuation Route Transport Consumer is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -35,13 +35,13 @@ Direct Plane/MultiFaceSeam/CloseSheets/Cylinder remain green and independent-ora
 M1d Bunny/Vase artifact-only comparison run `31343763822` preserved accepted known-red/safety dispositions and exact package authority. Bunny remained `NotProductionReady:completion` with independent-oracle-before-fatal ordering; Vase reached `[ RUN ]` and was bounded at 60 seconds. Temporary runtime workflow/trigger files were removed.
 
 Current retained report:
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-## M1e compile/package checkpoint and authoritative next turn
+## M1e immutable acceptance and authoritative next turn
 
 Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
 
 Selected boundary:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
@@ -50,19 +50,20 @@ M1e is intentionally narrow. Implementation `a0330d0107f7d7340e9f8644d26dd6c8b75
 
 M1e must not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
 
-Compile-only run/job `31351113129 / 93341993183` completed **120/120**. Result/log artifacts `9049125645 / 9049125905` have ZIP SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7 / fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`; the recursive manifest is **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`. Code + Build executed no generated Directional binary. M1e is not accepted until immutable runtime passes.
+Compile-only run/job `31351113129 / 93341993183` completed **120/120**. Result/log artifacts `9049125645 / 9049125905` have ZIP SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7 / fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`; the recursive manifest is **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`. Code + Build executed no generated Directional binary. M1e immutable runtime passed all required-green gates and is accepted.
 
 Current Code + Build report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Regression disposition
 
-- `RP-01`: M1e checked step domains **compile-complete; runtime pending**.
-- `RP-05`: M1e semantic step identity and observed/canonical route order **compile-complete; runtime pending**.
-- `RP-07`: M1e cumulative ordered-route transport **compile-complete; runtime pending**.
-- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d and pending M1e immutable validation.
+- `RP-01`: M1e checked step domains **accepted**.
+- `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**.
+- `RP-07`: M1e cumulative ordered-route transport **accepted**.
+- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d and preserved through M1e immutable validation.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
+- Strict-validator timing is nondeterministic under the exact M1e artifact (**6/10 pass, 4/10 fail**) and remains a deferred performance-test defect; no threshold/retry workaround is authorized.
 
 Current G4 authority remains unchanged:
 
@@ -80,10 +81,10 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`;
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

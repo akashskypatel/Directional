@@ -5,10 +5,10 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a/M1b/M1c/M1d immutable accepted; M1e Segment Route Transport Consumer compile/package complete, immutable runtime next**.
-- M1e implementation: `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`; authoritative Release/static/Ninja run/job `31351113129 / 93341993183` completed **120/120** and produced immutable artifacts `9049125645 / 9049125905`. No generated Directional binary ran.
+- Architecture migration: **M1a/M1b/M1c/M1d/M1e immutable accepted; M1f Vertex Continuation Route Transport Consumer Code + Build next**.
+- M1e immutable acceptance: implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`, build run/job `31351113129 / 93341993183`, artifacts `9049125645 / 9049125905`; focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
 - Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract now proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
-- Authoritative next turn: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Authoritative next turn: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
@@ -43,7 +43,7 @@ Nine historical/deferred producer reds remain explicit and unchanged in class. B
 Both local and remote postflight preserved the exact result artifact, manifest, producer, and all **59/59** packaged checksums. Temporary runtime workflow/trigger files were removed.
 
 Current retained report:
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1e compile-complete boundary
 
@@ -64,16 +64,17 @@ M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema cha
 The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. M1e remains runtime-pending.
 
 Current Code + Build report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Regression status
 
-- `RP-01`: checked M1e step domains **compile-complete; runtime pending**.
-- `RP-05`: M1e semantic step identity and observed/canonical route-order boundary **compile-complete; runtime pending**.
-- `RP-07`: M1e typed cumulative route composition **compile-complete; runtime pending**.
-- `RP-02 / TA-05`: independent authority preserved through M1d and pending exact M1e artifact-only validation.
+- `RP-01`: checked M1e step domains **accepted**.
+- `RP-05`: M1e semantic step identity and observed/canonical route-order boundary **accepted**.
+- `RP-07`: M1e typed cumulative route composition **accepted**.
+- `RP-02 / TA-05`: independent authority preserved through M1d and preserved through exact M1e artifact-only validation.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
+- Strict-validator timing remains deferred: the exact M1e artifact produced **6/10 pass, 4/10 fail** across fresh repetitions, classifying the sub-millisecond 5% timing gate as nondeterministic rather than stable product evidence.
 
 ## Deferred blockers
 
