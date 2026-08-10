@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 2
           submodules: false
 
-      - name: Apply surgical M1k durable status updates
+      - name: Correct retained handoff expression
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -32,27 +32,11 @@ jobs:
           exec > >(tee -a m1k-runtime-closeout-logs/activity.log) 2>&1
           python .agents/Directional/turn-payloads/m1k-runtime-closeout.py
           git diff --check
-          printf '[m1k-closeout] changed paths:\n'
-          git diff --name-only
-          expected=$(printf '%s\n' \
-            TODO \
-            MILESTONE_G_TODO.md \
-            .agents/Directional/Future_Chat_Session_Handoff.md \
-            .agents/Directional/Regression_Root_Cause_Tracker.md \
-            .agents/Directional/REORIENTATION_PLAN.md | sort)
-          actual=$(git diff --name-only | sort)
-          if [[ "$actual" != "$expected" ]]; then
-            echo 'unexpected durable-document scope'
-            exit 41
-          fi
+          test "$(git diff --name-only)" = '.agents/Directional/Future_Chat_Session_Handoff.md'
           git config user.name 'OpenAI Agent'
           git config user.email 'noreply@openai.com'
-          git add TODO MILESTONE_G_TODO.md
-          git add -f \
-            .agents/Directional/Future_Chat_Session_Handoff.md \
-            .agents/Directional/Regression_Root_Cause_Tracker.md \
-            .agents/Directional/REORIENTATION_PLAN.md
-          git commit -m 'docs: hand off M1l cell topology-region migration'
+          git add -f .agents/Directional/Future_Chat_Session_Handoff.md
+          git commit -m 'docs: correct M1k handoff runner-temp syntax'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
 
       - name: Upload closeout logs
