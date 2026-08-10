@@ -32,8 +32,7 @@ No periodic-holonomy loop, `FieldChartId`, public route/segment schema, topology
 
 Exactly six M1e semantic/counterexample contracts are statically packaged. No generated binary was executed.
 
-Report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+Report: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ### Compile correction
 
@@ -43,29 +42,11 @@ Two v2 temporary workflow events (`31345414148`, `31345419666`) were invalid YAM
 
 ## Authoritative next turn
 
-Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under:
-
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 Consume only artifacts `9047295489 / 9047295703`; no rebuild, relink, regeneration, source/test/fixture edit, substitution, or repair is permitted.
 
-Acceptance requires:
-
-- exact artifact/source/executable preflight/postflight with **61/61** checksums;
-- producer discovery exactly **184**;
-- exact M1e six-member discovery and **6/6** focused contracts;
-- existing ordered vertex-fan witnesses **2/2**;
-- M1d **6/6** plus three route counterexamples;
-- M1c **6/6** plus three transition counterexamples;
-- required-green producer segment **169/169**;
-- nine historical/deferred producer reds explicitly retained/classified;
-- M1b **6/6** + validation **77/77**;
-- M1a **14/14**;
-- T1 **29/29**;
-- Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean;
-- Bunny/Vase evidence-based known-red/safety comparison.
-
-Only after this immutable turn may M1e be accepted or another M1 consumer be planned.
+Acceptance requires exact artifact/source/executable preflight/postflight with **61/61** checksums; producer discovery **184**; M1e **6/6**; ordered vertex-fan witnesses **2/2**; M1d **6/6 + 3/3**; M1c **6/6 + 3/3**; required-green producer **169/169**; nine historical/deferred reds explicitly classified; M1b **6/6 + validation 77/77**; M1a **14/14**; T1 **29/29**; four direct product cases oracle-clean; Bunny/Vase evidence-based known-red/safety comparison; exact postflight.
 
 ## Regression disposition
 
@@ -73,27 +54,16 @@ Only after this immutable turn may M1e be accepted or another M1 consumer be pla
 - `RP-05`: M1e canonical step identity and observed/canonical route orientation **compile-complete; runtime pending**.
 - `RP-07`: M1e typed cumulative ordered-route transport **compile-complete; runtime pending**.
 - `RP-02 / TA-05`: immutable M1e turn must independently preserve prior authority.
-- Historical totals remain **34 events / 14 categories / 20 recurrences**; compile and workflow-infrastructure failures do not create stable runtime events.
+- Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 
 Current G4 authority is unchanged: direct torus remains **0/3** after 192 quads with 241 `LocalSheetMismatch` issues; historical exact torus remains `InvalidHardRailPairing`.
 
-## Standing Bunny/Vase execution rule
+## Standing Bunny/Vase and cleanup rules
 
-For immutable Test + Benchmark turns, Bunny and Vase may use an ephemeral artifact-only GitHub Actions runner. Verify exact build artifact/package/executable content first; never rebuild or edit packaged regular content; retain selected count/filter/stdout/stderr/rc/time/evidence digests; clean temporary workflow/trigger/helper files before closeout. Always remove/disable the workflow before deleting its trigger marker.
+Bunny/Vase may use an ephemeral artifact-only Actions runner for immutable Test + Benchmark. Verify exact artifact/package/executable content first, mutate no regular content, retain raw evidence, and remove/disable temporary workflows **before** deleting trigger markers.
 
-## Cleanup rule
-
-The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Session_Handoff.md`. Every Test + Benchmark turn begins by cleaning stale previous evidence after its facts are folded into durable authority and ends with the new current report plus exactly one next Code + Build plan in addition to durable `.agents/Directional` documents.
-
-## Core references
-
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
-- `.agents/Directional/DESIGN.md`;
-- `.agents/Directional/REORIENTATION_PLAN.md`;
-- `.agents/Directional/Regression_Root_Cause_Tracker.md`;
-- `tests/TESTING_STRATEGY.md`.
+The mandatory durable `.agents/Directional` cleanup policy remains in `Future_Chat_Session_Handoff.md`: every TB turn begins with stale-evidence cleanup and ends with the new current TB report plus exactly one next Code + Build plan alongside durable documents.
 
 ## Deferred blockers
 
