@@ -1,0 +1,267 @@
+name: m1f-vertex-continuation-code-build-fix
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1f-vertex-continuation-code-build-fix'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: m1f-vertex-continuation-code-build-fix
+  cancel-in-progress: false
+
+env:
+  LOG_DIR: /tmp/m1f-vertex-continuation-code-build-fix-logs
+  ACTIVITY_LOG: /tmp/m1f-vertex-continuation-code-build-fix-logs/activity.log
+  FAILED_IMPLEMENTATION: 17afbfd8baf0d369d9136534c0a11784ca0dca10
+  ACCEPTED_M1E_IMPLEMENTATION: a0330d0107f7d7340e9f8644d26dd6c8b753ff10
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Initialize activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          printf '%s\n' \
+            'turn=M1f corrective Code+Build' \
+            "run_id=$GITHUB_RUN_ID" "run_attempt=$GITHUB_RUN_ATTEMPT" \
+            "event_sha=$GITHUB_SHA" "ref=$GITHUB_REF" \
+            "failed_implementation=$FAILED_IMPLEMENTATION" \
+            "accepted_m1e_implementation=$ACCEPTED_M1E_IMPLEMENTATION" \
+            'runtimeExecution=false' \
+            'prohibited=generated Directional binary execution; discovery; tests; benchmarks; ctest; CLI/GUI/help/version; fuzzers; custom input' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$ACTIVITY_LOG"
+
+      - name: Checkout exact trigger source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 450
+          submodules: false
+
+      - name: Verify failed compile authority and apply surgical correction
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=correct exit_code=$rc"; git status --short --branch || true; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$ACCEPTED_M1E_IMPLEMENTATION" HEAD
+          git merge-base --is-ancestor "$FAILED_IMPLEMENTATION" HEAD
+          test -z "$(git status --porcelain=v1)"
+          grep -q '^bool source_edge_provenance(' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'std::vector<authority::TransitionStep> routeSteps' src/geometry/SurfaceCellTracing.cpp
+          python3 .agents/connector-tasks/m1f_code_build_fix.py
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = 'src/geometry/SurfaceCellTracing.cpp'
+          ! grep -q '^bool source_edge_provenance(' <(sed -n '1520,1570p' src/geometry/SurfaceCellTracing.cpp)
+          grep -q '^bool continuation_source_edge_provenance(' src/geometry/SurfaceCellTracing.cpp
+          grep -q 'if (!continuation_source_edge_provenance(' src/geometry/SurfaceCellTracing.cpp
+          git diff --check
+
+      - name: Commit and push corrected implementation
+        id: implementation
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=commit exit_code=$rc"; git status --short --branch || true; exit $rc' EXIT
+          git config user.name directional-agent
+          git config user.email directional-agent@users.noreply.github.com
+          git add src/geometry/SurfaceCellTracing.cpp
+          git diff --cached --check
+          git commit -m 'fix: scope M1f continuation provenance helper'
+          implementation_commit=$(git rev-parse HEAD)
+          test "$(git rev-parse HEAD^)" = "$GITHUB_SHA"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')" = "$GITHUB_SHA"
+          git push origin "HEAD:$BRANCH"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')" = "$implementation_commit"
+          echo "implementation_commit=$implementation_commit" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "implementation_commit=$implementation_commit" | tee "$LOG_DIR/implementation.txt"
+          test -z "$(git status --porcelain=v1)"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils time
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --recursive --depth 1 --recommend-shallow
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          /usr/bin/time -v -o "$LOG_DIR/build-resources.txt" \
+            cmake --build build --parallel 2 --target \
+              directional_core \
+              directional_pipeline \
+              directional_compiled_api_tests \
+              directional_surface_cell_producer_tests \
+              directional_surface_cell_oracle_tests \
+              directional_surface_cell_authority_kernel_tests \
+              directional_surface_cell_completion_tests \
+              directional_surface_cell_validation_tests \
+              directional_benchmarks 2>&1 | tee "$LOG_DIR/build.log"
+
+      - name: Package immutable compile artifact
+        id: package
+        shell: bash
+        env:
+          IMPLEMENTATION_COMMIT: ${{ steps.implementation.outputs.implementation_commit }}
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_COMMIT"
+          test "$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')" = "$IMPLEMENTATION_COMMIT"
+          test -z "$(git status --porcelain=v1)"
+          pkg="$RUNNER_TEMP/m1f-vertex-continuation-code-build-result"
+          mkdir -p "$pkg/bin" "$pkg/lib" "$pkg/logs" "$pkg/metadata" "$pkg/source" "$pkg/test-data/benchmarks"
+          for exe in directional_compiled_api_tests directional_surface_cell_producer_tests directional_surface_cell_oracle_tests directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_benchmarks; do
+            test -x "build/$exe"
+            cp "build/$exe" "$pkg/bin/$exe"
+          done
+          cp build/libdirectional_core.a build/libdirectional_pipeline.a "$pkg/lib/"
+          cp -a benchmarks/fixtures "$pkg/test-data/benchmarks/fixtures"
+          cp "$LOG_DIR"/* "$pkg/logs/"
+          cp build/compile_commands.json "$pkg/source/compile_commands.json"
+          git diff --binary "$ACCEPTED_M1E_IMPLEMENTATION" "$IMPLEMENTATION_COMMIT" -- \
+            src/geometry/SurfaceCellTracing.cpp tests/SurfaceCellsPhase10Tests.cpp \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/GitHub_Workflow_Policy.md \
+            > "$pkg/source/m1f-vertex-continuation.patch"
+          git archive --format=tar "$IMPLEMENTATION_COMMIT" | xz -T0 -6 > "$pkg/source/directional-m1f-source-no-deps.tar.xz"
+          python3 - <<'PY' > "$pkg/metadata/focused-test-counts.txt"
+          from pathlib import Path
+          import re
+          p10 = Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          quotient = Path('tests/SurfaceCellTransitionQuotientTests.cpp').read_text()
+          optimizer = Path('tests/SurfaceMeshOptimizerPhase22Tests.cpp').read_text()
+          authority = Path('tests/SurfaceCellAuthorityKernelTests.cpp').read_text()
+          oracle = Path('tests/SurfaceCellProductOracleTests.cpp').read_text()
+          suites = {
+              'M1f': (p10, 'SurfaceCellVertexContinuationRouteTransportAuthorityMigration', 6),
+              'M1e': (p10, 'SurfaceCellSegmentRouteTransportAuthorityMigration', 6),
+              'M1c': (p10, 'SurfaceCellFieldTransitionAuthorityMigration', 6),
+              'M1d': (quotient, 'SurfaceCellPhaseFrontRouteAuthorityMigration', 6),
+              'M1b': (optimizer, 'SurfaceOptimizationRailAuthorityMigration', 6),
+          }
+          for label, (text, suite, expected) in suites.items():
+              names = re.findall(r'TEST\(\s*' + re.escape(suite) + r'\s*,\s*([^)]+)\)', text)
+              assert len(names) == expected and len(set(names)) == expected, (label, names)
+              print(f'{label}={len(names)}')
+              Path(f'/tmp/{label}-tests.txt').write_text('\n'.join(f'{suite}.{n.strip()}' for n in names) + '\n')
+          all_authority = re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', authority)
+          all_oracle = re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', oracle)
+          assert len(all_authority) == 14 and len(set(all_authority)) == 14
+          assert len(all_oracle) == 29 and len(set(all_oracle)) == 29
+          print('M1a=14')
+          print('T1=29')
+          Path('/tmp/M1a-tests.txt').write_text('\n'.join(f'{a.strip()}.{b.strip()}' for a,b in all_authority) + '\n')
+          Path('/tmp/T1-tests.txt').write_text('\n'.join(f'{a.strip()}.{b.strip()}' for a,b in all_oracle) + '\n')
+          PY
+          cp /tmp/M1f-tests.txt "$pkg/metadata/m1f-focused-test-names.txt"
+          cp /tmp/M1e-tests.txt "$pkg/metadata/m1e-focused-test-names.txt"
+          cp /tmp/M1d-tests.txt "$pkg/metadata/m1d-focused-test-names.txt"
+          cp /tmp/M1c-tests.txt "$pkg/metadata/m1c-focused-test-names.txt"
+          cp /tmp/M1b-tests.txt "$pkg/metadata/m1b-focused-test-names.txt"
+          cp /tmp/M1a-tests.txt "$pkg/metadata/m1a-test-names.txt"
+          cp /tmp/T1-tests.txt "$pkg/metadata/t1-oracle-test-names.txt"
+          printf '%s\n' \
+            SurfaceCellsPhase10.ExactCommittedPlaneUsesAuthoritativeProductionProducerBoundary \
+            SurfaceCellsPhase10.ExactCommittedMultiFaceSeamUsesAuthoritativeProductionProducerBoundary \
+            SurfaceCellsPhase10.ExactCommittedCloseSheetsUseAuthoritativeProductionProducerBoundary \
+            SurfaceCellsPhase10.ExactCommittedCylinderReachesAuthoritativePeriodicProducerBoundary \
+            > "$pkg/metadata/direct-product-test-names.txt"
+          cat > "$pkg/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1f Vertex Continuation Route Transport Consumer Code+Build",
+            "implementationCommit": "$IMPLEMENTATION_COMMIT",
+            "failedCompileCommit": "$FAILED_IMPLEMENTATION",
+            "acceptedM1eImplementation": "$ACCEPTED_M1E_IMPLEMENTATION",
+            "runId": "$GITHUB_RUN_ID",
+            "runAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release",
+            "generator": "Ninja",
+            "sharedLibraries": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "testExecution": false,
+            "benchmarkExecution": false,
+            "ctestExecution": false,
+            "cliExecution": false,
+            "fuzzerExecution": false,
+            "customInputExecution": false
+          }
+          EOF
+          for item in \
+            'src/geometry/SurfaceCellTracing.cpp:tracing-blob.txt' \
+            'tests/SurfaceCellsPhase10Tests.cpp:phase10-test-blob.txt' \
+            '.agents/Directional/Future_Chat_Session_Handoff.md:handoff-blob.txt' \
+            '.agents/Directional/GitHub_Workflow_Policy.md:workflow-policy-blob.txt'; do
+            src=${item%%:*}; out=${item##*:}; git rev-parse "$IMPLEMENTATION_COMMIT:$src" > "$pkg/metadata/$out"
+          done
+          (cd "$pkg" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS)
+          sha256sum "$pkg/SHA256SUMS" | tee "$LOG_DIR/manifest-sha256.txt"
+          find "$pkg" -type f | LC_ALL=C sort > "$LOG_DIR/package-files.txt"
+          printf '%s\n' "implementation_commit=$IMPLEMENTATION_COMMIT" "package_dir=$pkg" 'runtimeExecution=false' > "$LOG_DIR/result.txt"
+          echo "package_dir=$pkg" >> "$GITHUB_OUTPUT"
+
+      - name: Upload immutable build result
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1f-vertex-continuation-code-build-result
+          path: ${{ steps.package.outputs.package_dir }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1f-vertex-continuation-code-build-fix-logs
+          path: /tmp/m1f-vertex-continuation-code-build-fix-logs
+          if-no-files-found: error
+          retention-days: 14
