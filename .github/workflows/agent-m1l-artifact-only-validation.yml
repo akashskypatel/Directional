@@ -1,0 +1,68 @@
+name: Agent M1l Artifact-Only Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1l-artifact-only-validation.txt
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: agent-m1l-artifact-only-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/m1l-artifact-logs"
+          {
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            echo "runner_temp=$RUNNER_TEMP"
+            date -u +"started_utc=%Y-%m-%dT%H:%M:%SZ"
+          } | tee "$RUNNER_TEMP/m1l-artifact-logs/activity.log"
+
+      - name: Checkout orchestration payload only
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Execute exact immutable M1l artifact validation
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+          bash .agents/Directional/turn-payloads/m1l-artifact-only-validation.sh
+
+      - name: Upload authoritative M1l runtime evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-cell-topology-region-artifact-only-evidence
+          path: ${{ runner.temp }}/m1l-artifact-evidence
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
+
+      - name: Upload M1l diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-cell-topology-region-artifact-only-logs
+          path: ${{ runner.temp }}/m1l-artifact-logs
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
