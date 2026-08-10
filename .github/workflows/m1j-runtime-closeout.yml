@@ -50,6 +50,7 @@ jobs:
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/REORIENTATION_PLAN.md \
             .agents/Directional/Regression_Root_Cause_Tracker.md \
+            .agents/Directional/turn-payloads/m1j-runtime-closeout.py \
             MILESTONE_G_TODO.md \
             TODO | LC_ALL=C sort)
           test "$changed" = "$expected"
