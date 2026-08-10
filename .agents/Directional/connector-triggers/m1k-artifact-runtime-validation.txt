@@ -1,6 +1,0 @@
-M1k immutable Artifact-Only Test + Benchmark
-implementation: b9181364926cea840e9cb50da21fe721f33fd874
-result artifact: 9079318682
-log artifact: 9079319269
-attempt: 2 authoritative evidence retention
-triggered: 2026-08-10T21:25:00Z
