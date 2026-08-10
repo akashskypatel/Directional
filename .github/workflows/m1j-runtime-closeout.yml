@@ -41,6 +41,7 @@ jobs:
           exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "step=durable-update exit_code=$rc"; git status --short --branch || true; exit $rc' EXIT
           test -f .agents/Directional/turn-payloads/m1j-runtime-closeout.py
+          sed -i 's/Code_Build_Plan\.md`\.  /Code_Build_Plan.md`./' .agents/Directional/turn-payloads/m1j-runtime-closeout.py
           python3 .agents/Directional/turn-payloads/m1j-runtime-closeout.py
           git diff --check
           changed=$(git diff --name-only | LC_ALL=C sort)
