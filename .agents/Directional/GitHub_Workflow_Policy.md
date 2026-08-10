@@ -4,6 +4,8 @@
 
 Use GitHub Actions only as the bounded remote execution plane when the connected GitHub control plane cannot perform the required computation. The turn-based workflow remains authoritative: Actions never relax Code + Build, Test + Benchmark, or Review boundaries.
 
+Repository-side stale-evidence cleanup is governed by `CLEAN_UP_POLICY.md`. Durable record retention and destructive-mutation rules are governed by `RETENTION_POLICY.md`.
+
 ## Durable workflow state
 
 The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge-healing` is:
@@ -28,7 +30,9 @@ Every workflow created or modified for agent work must:
 8. never modify `.github/workflows/**` from inside a workflow;
 9. use narrow triggers and `concurrency` so unrelated commits cannot retrigger bounded work;
 10. use least-privilege permissions;
-11. preserve exact source authority and fail closed on unexpected input hashes.
+11. preserve exact source authority and fail closed on unexpected input hashes;
+12. use `${{ runner.temp }}` in workflow expressions and `$RUNNER_TEMP` in shell payloads consistently for temporary-root evidence paths so evidence generation and upload resolve to the same location;
+13. avoid unindented shell heredocs inside YAML block scalars; use an indentation-safe script, committed helper payload, or equivalent construction that cannot invalidate workflow YAML before job execution.
 
 ## Code + Build execution boundary
 
@@ -40,9 +44,13 @@ They may **not** execute any generated project binary, including tests, benchmar
 
 Artifact-only Test + Benchmark turns download the exact declared build artifact, verify outer digest/recursive checksums/source/blobs/dependency/fixture closure/command-boundary metadata before runtime execution, extract into a fresh arbitrary directory, may create runtime-only symlinks only for immutable packaged fixture paths, and execute validation only from packaged binaries/inputs.
 
+Artifact extraction must preserve the archive's natural executable attributes. If an extraction method does not preserve packaged executable mode bits, use an extraction method that does; never `chmod`, mutate, or otherwise repair the immutable package to make execution possible.
+
 They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic. An invalid artifact is an infrastructure failure; do not create a replacement build inside Test + Benchmark.
 
-Long-running or resource-heavy tests and benchmarks are explicitly permitted on temporary, narrowly scoped GitHub Actions workflows. They remain subject to the same Test + Benchmark artifact-only boundary, exact preflight/postflight authority, logging requirements, bounded time/resource controls, and temporary-workflow cleanup lifecycle; remote execution is an execution-plane choice, not permission to combine build and runtime validation.
+Long-running or resource-heavy tests and benchmarks are explicitly permitted on temporary, narrowly scoped GitHub Actions workflows when local or connector execution is impractical or would exceed interactive resource limits. They remain subject to the same Test + Benchmark artifact-only boundary, exact preflight/postflight authority, logging requirements, bounded time/resource controls, and temporary-workflow cleanup lifecycle; remote execution is an execution-plane choice, not permission to combine build and runtime validation.
+
+A zero-selected test filter is an orchestration failure, never a semantic pass. Verify that focused test names belong to the intended packaged executable before treating a filtered run as evidence.
 
 ## Trigger/payload lifecycle
 
@@ -56,6 +64,8 @@ When dispatch is unavailable and a temporary exact-path push trigger is required
 6. remove marker/payload after the workflow is no longer triggerable;
 7. verify final workflow and temporary directories afterward.
 
+The workflow-first cleanup order is mandatory. During M1d cleanup, deleting the trigger marker first retriggered redundant run `31343858635`; that run is not acceptance authority and produced no product/regression state change.
+
 Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 
 ## Artifact evidence requirements
@@ -63,6 +73,8 @@ Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 A Code + Build artifact should contain, when applicable, exact source commit/blob IDs, source patches/archive, dependency/submodule authority, five required test/benchmark executables and project libraries, production fixture closure, configure/build/toolchain logs, compile database where useful, command-boundary metadata and recursive checksum manifest.
 
 Record workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digests and retention metadata when available.
+
+External immutable GitHub Actions artifacts remain governed by their retention settings and are not deleted merely because checked-in summaries become stale. Repository-side evidence cleanup is governed separately by `CLEAN_UP_POLICY.md` and `RETENTION_POLICY.md`.
 
 ## Failure handling
 
@@ -73,16 +85,19 @@ Record workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digest
 - Never force-push merely to bypass a moving branch or stale content SHA.
 - Compare exact blobs/hashes before deciding a patch is absent or already applied.
 - A compile-only failure may be corrected in the same Code + Build turn when the correction is bounded to the diagnosed compile/source issue and no generated project runtime is executed.
+- A workflow whose semantic execution is green but whose evidence-upload step fails is an orchestration/evidence-retention failure, not semantic acceptance authority until the evidence path/lifecycle defect is corrected and authoritative evidence is retained.
 
-## Durable `.agents/Directional` evidence cleanup interlock
+## Cleanup and retention interlock
 
-The detailed cleanup policy lives in `Future_Chat_Session_Handoff.md` and must remain there. In addition to the workflow lifecycle above:
+The detailed repository cleanup and retention policies no longer live in the handoff. Follow `CLEAN_UP_POLICY.md` and `RETENTION_POLICY.md` in addition to the workflow lifecycle above.
 
-- every Test + Benchmark turn begins by cleaning stale prior checked-in evidence after its accepted facts, stable regression IDs, artifact identities, and unresolved blockers have been folded into durable/live authority;
-- every Test + Benchmark turn ends with the new authoritative Test + Benchmark report plus exactly one next Code + Build plan in addition to durable `.agents/Directional` documents;
-- consumed Test + Benchmark plans, superseded preceding Code + Build plans/reports, old per-turn evidence indexes/machine summaries, and temporary workflow payloads are removed;
-- external immutable GitHub Actions artifacts remain governed by retention settings and are not deleted merely because checked-in summaries become stale;
-- retained durable/live documents are audited for references to deleted stale current-head files and corrected before closeout; historical filenames tied to cited commits may remain as provenance when explicitly described as historical.
+For workflow-related state specifically:
+
+- inspect `.github/workflows`, temporary connector triggers, and payload/patch directories at both the start and end of every turn;
+- remove stale turn-specific workflow state while preserving `.github/workflows/agent-source-snapshot.yml`;
+- remove or disable a temporary path-filtered workflow before deleting its trigger marker or payload;
+- verify final workflow and temporary directories after cleanup;
+- preserve external immutable Actions artifacts according to retention settings even when repository-side summaries are retired.
 
 ## End-of-turn hygiene
 
