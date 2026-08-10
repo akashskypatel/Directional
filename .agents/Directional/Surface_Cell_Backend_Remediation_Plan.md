@@ -9,27 +9,29 @@ test authority
 `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`
 
 The artifact IDs, “current blocker,” and “next” instructions below preserve
-the earlier G4 boundary/isolation checkpoint. They must not override the live
-multi-rail artifact-only plan.
+the earlier G4 boundary/isolation checkpoint. They are historical snapshots and
+must not override the current handoff/current retained turn report/current next-turn plan.
+Superseded per-turn evidence documents named by the original checkpoint were
+cleaned after their facts were folded into the PR audit inventory, regression
+tracker, live status documents, and immutable artifact history.
 
-The 2026-08-09 independent test audit also supersedes the earlier assumption
+The 2026-08-09 independent test audit also superseded the earlier assumption
 that focused counterfactual packaging plus direct face-degree checks are
 sufficient test authority. All committed production inputs are triangle-only,
 but the complete direct semantic oracle, rich field/topology matrix,
 property/metamorphic generation, fuzz replay, quality gates, and immutable
-discovery controls remain open as `TA-01` through `TA-12`. After the current
-artifact-only closeout, T1 independent test-oracle foundation precedes M1
-production migration.
+discovery controls remain open as `TA-01` through `TA-12`. The historical
+sequence below led into T1 and M1; current progress is owned by the live handoff.
 
 ## Historical blocker at this checkpoint
 
 G0-G3 are closed. **G4 topology-distinct completion and singularities is active.**
 
-Current tested authority: artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`. Static authority passes, but topology-region/isolation focused semantics fall to **8/9** and exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations before failing at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
+Current tested authority at that historical checkpoint: artifact `9024549134`, implementation `7f486632b154a303789df6c4dd44f602c8c71281`. Static authority passes, but topology-region/isolation focused semantics fall to **8/9** and exact torus reaches phase-front `Produced` with four annular regions/eight internal isolation seams/four relations before failing at `UnconsumedAuthoritativeIsolationSeam` with consumed authority `0/0/0`.
 
 G3 closure remains historical baseline authority, but tested artifact `9024549134` regresses plane/seam/close-sheets/cylinder 3/3 at `InvalidFrontBoundaryAuthority`. No case in that artifact produces output/hash or uses fallback/recovery.
 
-Current compile-valid authority is artifact `9026181778`, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`. It implements the reviewed topology-only genuine boundary and reciprocal isolation-certificate contract, compiles all 33 default counterfactuals, and passes Release/static/Ninja **113/113** with `runtimeExecution=false`. It remains runtime-unproven.
+Historical compile-valid authority at that checkpoint is artifact `9026181778`, implementation `82151bf51bce9af9859282b2a03e295a0ee5a309`. It implements the reviewed topology-only genuine boundary and reciprocal isolation-certificate contract, compiles all 33 default counterfactuals, and passes Release/static/Ninja **113/113** with `runtimeExecution=false`. It was runtime-unproven at this point in the record.
 
 ## Proven producer foundation
 
@@ -50,7 +52,7 @@ Retain without redesign:
 
 ## G4-A — closed genus-one / transition-quotient extraction
 
-Exact torus runtime on artifact `9024549134`:
+Exact torus runtime on historical artifact `9024549134`:
 
 - source topology: connected, closed, genus one, Euler characteristic 0;
 - producer phase-front `Produced`;
@@ -61,7 +63,7 @@ Exact torus runtime on artifact `9024549134`:
 - no fallback/recovery;
 - compatibility diagnostics retain `r=0`, `t=(24,0)`, route 24, cut 2.
 
-The prior review-approved quotient representation is source-live, but runtime exposes two new blocking contracts. Genuine source boundaries are rejected because their canonical topology is incorrectly required to have a two-face interior matching index. Torus seam consumption is defined only through cell-boundary transition records, which witness none of the eight required internal seams.
+The prior review-approved quotient representation is source-live, but runtime exposed two blocking contracts. Genuine source boundaries were rejected because their canonical topology was incorrectly required to have a two-face interior matching index. Torus seam consumption was defined only through cell-boundary transition records, which witnessed none of the eight required internal seams.
 
 Review-approved remediation:
 
@@ -80,7 +82,7 @@ The first G4 slice counts as material progress when this missing contract is liv
 
 After the torus topology slice, return to `sphere_prescribed__surface_cells`.
 
-Current observation:
+Historical observation:
 
 - producer `NotApplicable`;
 - 766 traces;
@@ -94,11 +96,17 @@ Do not repair the ten historical completion/simplification failures merely becau
 
 ## Historical verification sequence
 
-Artifact-only validation of `9024549134` is complete and recorded in `.agents/Directional/Gate_4_Transition_Quotient_Materialization_And_Retained_Authority_Artifact_Only_Test_Benchmark_Report.md`.
+At this checkpoint, artifact-only validation, mandatory review, a boundary/isolation transport-certificate Code + Build, and its following immutable Test + Benchmark were executed as separate turns. The original per-turn plan/report files were temporary evidence and have since been removed under the durable `.agents/Directional` cleanup policy.
 
-Mandatory Review is complete under `.agents/Directional/Gate_4_Transition_Quotient_Runtime_Regression_Independent_Design_Review_Report.md` with decision **Approved with amendments**.
+Their durable facts are retained in:
 
-Completed Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Code_Build_Plan.md`:
+- `.agents/Directional/PR_8_Regression_Audit_Inventory.md` for historical event evidence;
+- `.agents/Directional/Regression_Root_Cause_Tracker.md` for stable IDs and recurrence patterns;
+- this historical remediation record for the intended G4 correction;
+- current `TODO`, `MILESTONE_G_TODO.md`, handoff, reorientation plan, and current retained turn report for present authority;
+- GitHub commit/workflow/artifact history for immutable machine evidence.
+
+The historical correction sequence was:
 
 1. restore topology-only genuine boundaries without changing interior index identity;
 2. add and consume reciprocal seam-transport certificates;
@@ -106,7 +114,7 @@ Completed Code + Build under `.agents/Directional/Gate_4_Boundary_And_Isolation_
 4. compile/package only, with no generated runtime;
 5. hand one immutable artifact to the following Test + Benchmark turn.
 
-Next artifact-only Test + Benchmark under `.agents/Directional/Gate_4_Boundary_And_Isolation_Transport_Certificate_Artifact_Only_Test_Benchmark_Plan.md` must execute exactly artifact `9026181778`, prove all focused counterfactuals, restore direct G0-G3, and require exact torus strict-valid closure with all `4/8/4` authority consumed. No edit, configure, rebuild, relink, or artifact substitution is allowed.
+Do not use this historical sequence as the current next action. The live handoff owns current execution.
 
 ## Deferred work
 
