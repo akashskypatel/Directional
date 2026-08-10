@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: m1k-artifact-runtime-validation-evidence
-          path: /tmp/m1k-artifact-runtime/evidence
+          path: ${{ runner.temp }}/m1k-artifact-runtime/evidence
           if-no-files-found: error
           retention-days: 14
 
