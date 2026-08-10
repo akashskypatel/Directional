@@ -24,13 +24,17 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Apply bounded closeout documentation patch
+      - name: Apply bounded closeout documentation updates
         shell: bash
         run: |
           set -Eeuo pipefail
-          patch_file=.agents/Directional/turn-payloads/m1l-closeout-docs.patch
-          git apply --recount --check "$patch_file"
-          git apply --recount --index "$patch_file"
+          python3 .agents/Directional/turn-payloads/m1l-closeout-docs.py
+          git add \
+            TODO.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md
           git diff --check --cached
 
           actual_paths=$(git diff --cached --name-only | LC_ALL=C sort)
