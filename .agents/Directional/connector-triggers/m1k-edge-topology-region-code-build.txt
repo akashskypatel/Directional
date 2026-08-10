@@ -1,0 +1,4 @@
+M1k Phase-Front Edge Topology-Region Consumer Code + Build
+triggered: 2026-08-10T20:10:00Z
+expected entering head: 20254b8c5ac8cfe7a268049d1d5a17bfec025f54
+runtime policy: compile/package only; no generated Directional execution
