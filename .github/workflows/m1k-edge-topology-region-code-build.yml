@@ -48,8 +48,8 @@ jobs:
           git config user.email "noreply@openai.com"
 
           echo "[m1k] patch preflight"
-          git apply --check "$PATCH_FILE"
-          git apply "$PATCH_FILE"
+          git apply --check --recount "$PATCH_FILE"
+          git apply --recount "$PATCH_FILE"
           git diff --check
 
           mapfile -t changed < <(git diff --name-only | sort)
