@@ -1,6 +1,5 @@
 #include <directional/geometry/SurfaceCellTracing.h>
 
-#include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/GridAutomorphism.h>
 #include <directional/authority/LegacyAuthorityAdapters.h>
 
@@ -5196,13 +5195,12 @@ bool segment_on_source(
         axis_for_family(faceAxisX, faceAxisY, transitFace, transitFamily,
                         transitSign),
         face_normal(vertices, faces, transitFace));
+    int totalMatching = 0;
     double totalEffort = 0.0;
     std::vector<int> sourceEdges;
     std::vector<std::uint64_t> sourceTopology;
-    std::vector<authority::TransitionStep> observedSteps;
     sourceEdges.reserve(route.size());
     sourceTopology.reserve(route.size());
-    observedSteps.reserve(route.size());
     for (const VertexPathStep &step : route) {
       const bool crossesIsolationSheet =
           !source_faces_compatible(options, transitFace, step.face);
@@ -5246,57 +5244,9 @@ bool segment_on_source(
             cellId, sideId, transitFace, step.face, sourceVertex);
         return false;
       }
-      const auto rejectStepAuthority = [&]() {
-        set_phase_front_failure(
-            failure,
-            crossesIsolationSheet
-                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
-                : SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
-            cellId, sideId, transitFace, step.face, sourceVertex);
-        return false;
-      };
-      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
-          static_cast<std::int64_t>(step.edgeKey >> 32U),
-          static_cast<std::size_t>(vertices.rows()));
-      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
-          static_cast<std::int64_t>(step.edgeKey & 0xffffffffULL),
-          static_cast<std::size_t>(vertices.rows()));
-      if (!firstVertex || !secondVertex) {
-        return rejectStepAuthority();
-      }
-      const auto topology = authority::SourceEdgeTopologyKey::make(
-          firstVertex.value(), secondVertex.value());
-      if (!topology) {
-        return rejectStepAuthority();
-      }
-      const auto compatibilityTopology = edge_key(
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().first())),
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().second())));
-      if (compatibilityTopology != step.edgeKey) {
-        return rejectStepAuthority();
-      }
-      const auto interiorTransition =
-          authority::LegacyAuthorityAdapters::interior_transition(
-              sourceEdge, sourceMatchingIndices.size());
-      if (!interiorTransition) {
-        return rejectStepAuthority();
-      }
-      const auto typedStep = authority::TransitionStep::interior(
-          topology.value(),
-          std::optional<authority::InteriorTransitionId>{
-              interiorTransition.value()},
-          authority::GridAutomorphism{
-              authority::QuarterTurn::from_integer(transition.matching),
-              authority::LatticeTranslation{0, 0}},
-          authority::Orientation::Forward);
-      if (!typedStep) {
-        return rejectStepAuthority();
-      }
       sourceEdges.push_back(sourceEdge);
       sourceTopology.push_back(step.edgeKey);
-      observedSteps.push_back(typedStep.value());
+      totalMatching += transition.matching;
       totalEffort += std::abs(transition.effort);
       transitFace = step.face;
       transitFamily = transition.family;
@@ -5315,16 +5265,9 @@ bool segment_on_source(
           sourceEdges.empty() ? -1 : sourceEdges.back());
       return false;
     }
-    const authority::CanonicalRoute typedRoute =
-        authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
-    authority::GridAutomorphism routeTransport =
-        authority::GridAutomorphism::identity();
-    for (const authority::TransitionStep &step : typedRoute.oriented_steps()) {
-      routeTransport = compose(step.transport(), routeTransport);
-    }
     previous.exitEdge = previousEdge;
     current.entryEdge = currentEdge;
-    current.matching = static_cast<int>(routeTransport.rotation.value());
+    current.matching = normalized_branch(totalMatching);
     current.matchingEffort = totalEffort;
     current.transitionSourceEdges = std::move(sourceEdges);
     current.transitionSourceTopology = std::move(sourceTopology);

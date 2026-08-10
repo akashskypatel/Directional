@@ -2,35 +2,97 @@
 
 Last updated: 2026-08-10 UTC
 
-G0–G3 remain accepted historical baselines. **G4 topology-distinct completion and singularities is active.** T1 and M1a/M1b/M1c/M1d are immutable accepted. **M1e segment route transport is Code + Build complete and awaits immutable runtime.**
+## Current gate
 
-## M1e authority
+G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Selected seam: `segment_on_source` ordered transition-route transport.
+Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d architecture slices are immutable accepted. Architecture migration remains separate from G4 product acceptance.
 
-- implementation `bb9cb63a36b64fe2f7c462ad864492c8352b65e8`;
-- event/run/job `106e408065e5bda1eb680bc54aef007a1a2d68d6 / 31345475101 / 93326482946`;
-- result `9047295489`, SHA-256 `74e5a1abe37d14c5cdf8a13b753b3f70b80b6a61d83ec051d3b8e4d44b8b8e9f`;
-- logs `9047295703`, SHA-256 `9df806949994145dba689b58afcc49106cedd1aadafbff409d70705188400f52`;
-- manifest **61/61**, SHA-256 `ae82db8c02575926fe28ede2cbd6a4738cf7ed4e7ae1576ce8778970c532bc8e`;
-- package 62 regular files / 7 executables / 2 static libs / 27 fixtures;
-- build **120/120**, 8:08.51, 1,848,636 KiB;
-- `runtimeExecution=false`.
+## M1d phase-front route identity — immutable accepted
 
-M1e compiles checked route-step identity, canonical topology, typed quarter-turn/grid automorphism transport, `TransitionStep`, `CanonicalRoute`, observed-direction recovery and typed cumulative composition. Six focused contracts are statically packaged. No generated runtime executed.
+Selected consumer:
+`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`.
 
-The first implementation `9edbef1...` failed compilation due to incorrect `LatticeTranslation`/hidden-friend `compose` API use and was corrected before runtime. Two v2 workflow events were syntax-invalid and created no jobs. None creates a stable runtime regression event.
+| Evidence | Value |
+|---|---|
+| Implementation | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
+| Build/event | `98a21f3d843533dcc44cb296711268e0ebb26fb6` |
+| Build run/job | `31342400614 / 93318225812` |
+| Result artifact / SHA-256 | `9046308272` / `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
+| Log artifact / SHA-256 | `9046308461` / `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
+| Recursive manifest | **59/59**, `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0` |
+| Producer discovery | **178** |
+| M1d focused / route witnesses | **6/6**, **3/3** |
+| M1c / transition counterexamples | **6/6**, **3/3** |
+| required-green producer | **163/163** |
+| M1b / validation | **6/6**, **77/77** |
+| M1a / T1 | **14/14**, **29/29** |
 
-## Next turn
+The migration accepts checked `SourceVertexId`, canonical `SourceEdgeTopologyKey`, and checked `InteriorTransitionId` at the authoritative HardRail/PeriodicCut route-identity consumer while preserving public packed route representation, route order/production, per-step transport, relation policy, diagnostics, and existing failure reasons.
 
-Run immutable M1e Test + Benchmark under `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`, consuming only artifacts `9047295489 / 9047295703`.
+Direct Plane/MultiFaceSeam/CloseSheets/Cylinder remain green and independent-oracle clean. Nine historical/deferred producer reds remain explicit and unchanged in class.
 
-Require exact package pre/postflight, producer discovery **184**, M1e **6/6**, vertex-fan **2/2**, M1d **6/6 + 3/3**, M1c **6/6 + 3/3**, required-green **169/169**, nine known-red classifications, M1b **6/6 + validation 77/77**, M1a **14/14**, T1 **29/29**, four direct oracle-clean cases, Bunny known-red/Vase bounded safety evidence.
+M1d Bunny/Vase artifact-only comparison run `31343763822` preserved accepted known-red/safety dispositions and exact package authority. Bunny remained `NotProductionReady:completion` with independent-oracle-before-fatal ordering; Vase reached `[ RUN ]` and was bounded at 60 seconds. Temporary runtime workflow/trigger files were removed.
 
-## Regression/product state
+Current retained report:
+`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-Historical totals remain **34 events / 14 categories / 20 recurrences**. M1e `RP-01`, `RP-05`, `RP-07` are compile-complete/runtime pending; independent preservation remains pending. `PR8-R034 / G4-R007` is active and unchanged: direct torus 0/3 after 192 quads with 241 `LocalSheetMismatch`; historical exact torus `InvalidHardRailPairing`.
+## Authoritative next turn
 
-Deferred product blockers remain shared hard-rail scheduling, nonzero periodic Z4 capability, positive multi-isolation witness, prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery and optimization.
+Run **M1e Segment Route Transport Consumer — Code + Build only** under:
 
-The durable handoff cleanup policy governs every TB turn. PR #8 remains open, draft and unmerged. Final repository write of every completed turn is one new top-level PR #8 comment.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+
+Selected boundary:
+`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
+
+M1e is intentionally narrow. It may replace only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
+
+M1e must not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
+
+Code + Build executes no generated Directional binary.
+
+## Regression disposition
+
+- `RP-01`: M1d checked source-vertex/transition adoption **accepted**; M1e reuses the checked step domains.
+- `RP-05`: M1d canonical route identity **accepted**; M1e must separate semantic canonical storage from observed behavior order.
+- `RP-07`: M1c exact edge transport **accepted**; M1e next migrates cumulative ordered-route transport.
+- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d.
+- No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
+- `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
+
+Current G4 authority remains unchanged:
+
+- Plane/seam/close-sheets/cylinder strict-valid **3/3**;
+- direct torus **0/3** after 192 completed quads, complete lineage, `4/8/4`, `1/0/0`, then 241 `LocalSheetMismatch` issues;
+- historical exact torus remains `InvalidHardRailPairing`.
+
+## Standing Bunny/Vase execution rule
+
+For immutable Test + Benchmark turns, Bunny and Vase may use an ephemeral artifact-only GitHub Actions runner. Exact build artifact/package/executable authority must be verified before execution; no configure/build/relink/content mutation is allowed; exact runtime evidence must be retained; temporary workflow/trigger/helper files must be removed before closeout.
+
+## Cleanup rule
+
+The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Session_Handoff.md`. Every Test + Benchmark turn begins by cleaning stale previous evidence after its facts are folded into durable authority and ends with only the new current report plus exactly one next Code + Build plan in addition to durable `.agents/Directional` documents.
+
+## Core references
+
+- `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/DESIGN.md`;
+- `.agents/Directional/REORIENTATION_PLAN.md`;
+- `.agents/Directional/Regression_Root_Cause_Tracker.md`;
+- `tests/TESTING_STRATEGY.md`.
+
+## Deferred blockers
+
+1. active direct-torus `G4-R007`;
+2. shared hard-rail schedule / exact-torus `InvalidHardRailPairing` (`G4-B002`);
+3. nonzero periodic Z4 production capability (`G4-B003`);
+4. positive multi-isolation quotient witness (`G4-B004`);
+5. historical transition-quotient/completion failures;
+6. strict-validator timing;
+7. prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery, optimization;
+8. later M1 consumers, M2–M6 and T2–T6.
+
+PR #8 remains open, draft, and unmerged. Every completed turn ends with one new top-level PR #8 conversation comment after all branch and PR-body writes.

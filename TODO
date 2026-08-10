@@ -2,22 +2,85 @@ Last updated: 2026-08-10 UTC
 
 ## Active direction
 
-- P5; **G4 topology-distinct completion and singularities active**.
-- T1 and M1a/M1b/M1c/M1d accepted.
-- **M1e segment route transport Code + Build complete; immutable runtime next.**
-- Next plan: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
-- PR #8 remains open/draft/unmerged; review policy `never`.
+- Phase: P5 — producer-correct direct surface paving.
+- Product gate: **G4 topology-distinct completion and singularities active**.
+- Test architecture: **T1 independent oracle/package foundation accepted**.
+- Architecture migration: **M1a/M1b/M1c/M1d immutable accepted; M1e Segment Route Transport Consumer Code + Build next**.
+- Authoritative next turn: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+- Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
+- Draft PR #8 stays open, draft, and unmerged.
+- Review policy: `never`.
 
-## M1e build authority
+## M1d immutable acceptance
 
-Implementation `bb9cb63a36b64fe2f7c462ad864492c8352b65e8`; event/run/job `106e408065e5bda1eb680bc54aef007a1a2d68d6 / 31345475101 / 93326482946`; result `9047295489` SHA-256 `74e5a1abe37d14c5cdf8a13b753b3f70b80b6a61d83ec051d3b8e4d44b8b8e9f`; logs `9047295703` SHA-256 `9df806949994145dba689b58afcc49106cedd1aadafbff409d70705188400f52`; manifest **61/61** `ae82db8c02575926fe28ede2cbd6a4738cf7ed4e7ae1576ce8778970c532bc8e`; package 62 regular files / 7 executables / 2 static libs / 27 fixtures; build **120/120**, 8:08.51, 1,848,636 KiB; runtime false.
+Selected accepted seam:
+`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`.
 
-M1e compiles typed route-step identity and cumulative transport (`QuarterTurn`, zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, observed-direction recovery). Six focused contracts are packaged. Initial compile-red `9edbef1...` was corrected before runtime; two v2 workflow attempts had no jobs.
+| Evidence | Value |
+|---|---|
+| Implementation | `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` |
+| Build/event | `98a21f3d843533dcc44cb296711268e0ebb26fb6` |
+| Build run/job | `31342400614 / 93318225812` |
+| Result artifact / SHA-256 | `9046308272` / `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c` |
+| Log artifact / SHA-256 | `9046308461` / `4813676a45370644fce64854d430822b86a0e406e9446a7ea3159c8fb23d315c` |
+| Recursive manifest | **59/59**, `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0` |
+| Producer discovery | exactly **178** |
+| M1d focused / route witnesses | **6/6**, **3/3** |
+| M1c / transition counterexamples | **6/6**, **3/3** |
+| required-green producer | **163/163** |
+| M1b / validation | **6/6**, **77/77** |
+| M1a / T1 | **14/14**, **29/29** |
 
-## Immutable gate
+Direct products remain green and independent-oracle clean: Plane 1.325 s, MultiFaceSeam 2.079 s, CloseSheets 16.648 s, Cylinder 9.267 s.
 
-Consume exact artifacts `9047295489 / 9047295703`; mutate/rebuild nothing. Require producer **184**, M1e **6/6**, vertex-fan **2/2**, M1d **6/6+3/3**, M1c **6/6+3/3**, required-green **169/169**, nine known-red classifications, M1b **6/6+77/77**, M1a **14/14**, T1 **29/29**, four direct oracle-clean cases, Bunny/Vase exact-artifact evidence, exact postflight.
+Nine historical/deferred producer reds remain explicit and unchanged in class. Bunny/Vase comparison run `31343763822` preserved the accepted dispositions:
 
-Regression totals remain **34 / 14 / 20**. `PR8-R034 / G4-R007` remains active; direct torus 0/3 with 241 `LocalSheetMismatch`, historical exact torus `InvalidHardRailPairing`.
+- Bunny job `93321764271`: one test, rc=1, 71.705 s; independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; evidence `9046629209`, SHA-256 `6502efcdef8ed94051e571b81f8f9c7ae6c2e1d10d8e0b9804991a42a5cf65a3`.
+- Vase job `93321764263`: one test reached `[ RUN ]`, bounded rc=124 at 60.023 s; safety-only; evidence `9046626009`, SHA-256 `2a5ae0ae047f82ac909cf049aac03785863ee93d1506b10decb0c9507f5c4855`.
 
-Mandatory TB stale-evidence cleanup policy remains in the handoff. Final repository write of each completed turn is one new top-level PR #8 comment.
+Both local and remote postflight preserved the exact result artifact, manifest, producer, and all **59/59** packaged checksums. Temporary runtime workflow/trigger files were removed.
+
+Current retained report:
+`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+## M1e next boundary
+
+Selected seam:
+`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
+
+The current consumer owns an ordered `VertexPathStep` sequence and still accumulates raw signed `transition.matching` across the route. M1e may therefore introduce the already-accepted authority kernel types at this real transport owner:
+
+- checked source-vertex/interior-transition step identity;
+- canonical `SourceEdgeTopologyKey`;
+- typed `QuarterTurn` / zero-shift `GridAutomorphism` per observed step;
+- `TransitionStep` and one `CanonicalRoute`;
+- algebraic composition using `CanonicalRoute::oriented_steps()` so canonical storage cannot change observed route direction;
+- raw `current.matching` and ordered provenance only at existing compatibility output boundaries.
+
+M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema changes, topology/conformity/quotient work, validators, fallback/recovery expansion, optimization, and G4 repair.
+
+Code + Build may edit only `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp` by default, compile/package, and must execute no generated Directional binary.
+
+## Regression status
+
+- `RP-01`: strong-domain adoption through M1d **accepted**; M1e reuses checked step domains.
+- `RP-05`: route identity representation boundary through M1d **accepted**; M1e must keep observed route order separate from canonical storage.
+- `RP-07`: individual edge transport through M1c **accepted**; M1e next removes raw cumulative matching at the ordered segment-route consumer.
+- `RP-02 / TA-05`: independent authority preserved through M1d and must be re-proven after M1e.
+- Historical totals remain **34 events / 14 categories / 20 recurrences**.
+- `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
+
+## Deferred blockers
+
+1. active direct-torus `G4-R007`;
+2. shared hard-rail scheduling `G4-B002`;
+3. nonzero periodic Z4 production capability `G4-B003`;
+4. positive multi-isolation witness `G4-B004`;
+5. historical transition-quotient/completion failures;
+6. strict-validator timing;
+7. prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery, optimization;
+8. later M1 consumers, M2–M6 and T2–T6.
+
+Stale per-turn `.agents/Directional` evidence is governed by the mandatory cleanup policy in `Future_Chat_Session_Handoff.md`. Every Test + Benchmark turn begins with stale-evidence cleanup and ends with the current report plus exactly one next Code + Build plan.
+
+Every completed turn ends with one new top-level PR #8 conversation comment after all other branch and PR-body writes.
