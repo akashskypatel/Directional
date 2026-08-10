@@ -85,6 +85,8 @@ Strict-validator timing remains the existing nondeterministic sub-millisecond ra
 
 M1l Code + Build is complete but **not semantically accepted**. Its current immutable package authority is run/job `31441661026 / 93627457924`, artifacts `9083262395 / 9083262833`, manifest **56/56**, and producer SHA-256 `fe7da9a182c785ae14ba24264682470cce7ceec119ce34251a4bee80c7113856`.
 
+Repository-side cleanup is complete: the only retained per-turn files are the M1l Code + Build report and the M1l artifact-only next-turn plan; temporary M1l workflows, triggers, and payloads are removed, and only `.github/workflows/agent-source-snapshot.yml` remains durable.
+
 ## Mandatory end-of-turn checklist
 
 This is a DURABLE mandatory end-of-turn checklist that must be followed at the end of every turn. Do not delete this checklist.
