@@ -8,7 +8,7 @@ on:
       - .agents/Directional/connector-triggers/m1k-edge-topology-region-code-build.txt
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: m1k-edge-topology-region-code-build
@@ -19,20 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 240
     env:
-      BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
-      PATCH_FILE: .agents/Directional/turn-payloads/m1k-edge-topology-region.patch
+      IMPLEMENTATION_SHA: b9181364926cea840e9cb50da21fe721f33fd874
+      ENTERING_ACCEPTED_M1J: d5f681173600dc32dc7617de6105d9e584e593be
       BUILD_DIR: build-m1k
       RESULT_DIR: m1k-edge-topology-region-code-build-result
       LOG_DIR: m1k-edge-topology-region-code-build-logs
     steps:
-      - name: Checkout shallow source and submodules
+      - name: Checkout exact M1k implementation and shallow submodules
         uses: actions/checkout@v4
         with:
-          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          ref: b9181364926cea840e9cb50da21fe721f33fd874
           fetch-depth: 2
           submodules: recursive
 
-      - name: Apply M1k delta, push exact source commit, compile and package
+      - name: Compile and package exact M1k implementation
         id: code_build
         shell: bash
         run: |
@@ -41,48 +41,20 @@ jobs:
           exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
           trap 'rc=$?; echo "[m1k] exit_code=$rc"; git status --short || true; exit $rc' EXIT
 
+          CHECKOUT_SHA=$(git rev-parse HEAD)
+          SOURCE_PARENT=$(git rev-parse HEAD^)
           echo "[m1k] event_sha=$GITHUB_SHA"
-          echo "[m1k] checkout_sha=$(git rev-parse HEAD)"
-          echo "[m1k] branch=$BRANCH"
-          git config user.name "OpenAI Agent"
-          git config user.email "noreply@openai.com"
-
-          echo "[m1k] patch preflight"
-          git apply --check --recount "$PATCH_FILE"
-          git apply --recount "$PATCH_FILE"
-          git diff --check
-
-          mapfile -t changed < <(git diff --name-only | sort)
-          expected=(
-            include/directional/geometry/SurfaceCellTracing.h
-            src/geometry/SurfaceCellTracing.cpp
-            src/pipeline/RemeshPipeline.cpp
-            tests/SurfaceCellsPhase10Tests.cpp
-          )
-          mapfile -t expected_sorted < <(printf '%s\n' "${expected[@]}" | sort)
-          printf '[m1k] changed=%s\n' "${changed[*]}"
-          if [[ "${changed[*]}" != "${expected_sorted[*]}" ]]; then
-            echo "[m1k] unexpected source/test scope"
+          echo "[m1k] implementation_sha=$IMPLEMENTATION_SHA"
+          echo "[m1k] checkout_sha=$CHECKOUT_SHA"
+          echo "[m1k] source_parent=$SOURCE_PARENT"
+          if [[ "$CHECKOUT_SHA" != "$IMPLEMENTATION_SHA" ]]; then
+            echo "[m1k] exact implementation checkout mismatch"
             exit 41
           fi
-
-          git add -- "${expected[@]}"
-          git commit -m "refactor(surface-cell): type edge topology-region authority"
-          IMPLEMENTATION_SHA=$(git rev-parse HEAD)
-          SOURCE_PARENT=$(git rev-parse HEAD^)
-          echo "[m1k] implementation_sha=$IMPLEMENTATION_SHA"
-          echo "[m1k] source_parent=$SOURCE_PARENT"
-          git push origin "HEAD:$BRANCH"
-          REMOTE_SHA=$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')
-          echo "[m1k] remote_sha=$REMOTE_SHA"
-          if [[ "$REMOTE_SHA" != "$IMPLEMENTATION_SHA" ]]; then
-            echo "[m1k] pushed source authority mismatch"
-            exit 42
-          fi
-          if [[ -n "$(git status --porcelain)" ]]; then
-            echo "[m1k] source tree not clean before configure"
+          if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+            echo "[m1k] tracked tree not clean before configure"
             git status --short
-            exit 43
+            exit 42
           fi
 
           echo "[m1k] toolchain"
@@ -120,14 +92,14 @@ jobs:
             directional_benchmarks \
             2>&1 | tee "$LOG_DIR/build.log"
 
-          if [[ -n "$(git status --porcelain)" ]]; then
-            echo "[m1k] source tree changed during configure/build"
+          if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+            echo "[m1k] tracked source changed during configure/build"
             git status --short
-            exit 44
+            exit 43
           fi
           if [[ "$(git rev-parse HEAD)" != "$IMPLEMENTATION_SHA" ]]; then
             echo "[m1k] checkout moved during build"
-            exit 45
+            exit 44
           fi
 
           echo "[m1k] package immutable compile outputs without execution"
@@ -162,7 +134,7 @@ jobs:
           echo "[m1k] fixture_count=$FIXTURE_COUNT"
           if [[ "$FIXTURE_COUNT" != "27" ]]; then
             echo "[m1k] unexpected fixture count"
-            exit 46
+            exit 45
           fi
 
           tar -czf "$PKG/source/m1k-source.tar.gz" \
@@ -176,9 +148,8 @@ jobs:
           turn=M1k Phase-Front Edge Topology-Region Consumer Code+Build
           implementation_sha=$IMPLEMENTATION_SHA
           source_parent=$SOURCE_PARENT
-          entering_accepted_m1j=d5f681173600dc32dc7617de6105d9e584e593be
+          entering_accepted_m1j=$ENTERING_ACCEPTED_M1J
           event_sha=$GITHUB_SHA
-          remote_sha=$REMOTE_SHA
           configuration=Release
           linkage=static
           generator=Ninja
