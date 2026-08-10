@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1h architecture slices are immutable accepted. M1i phase-front cell source-scope Code + Build is complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1i architecture slices are immutable accepted. M1j phase-front edge source-scope authority is the next Code + Build slice. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -68,17 +68,18 @@ Runtime acceptance: producer discovery **202**, M1h **6/6**, required-green **18
 
 Heavy run `31407263138` preserved Bunny's known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure and bounded Vase at 60 seconds as safety-only evidence. Local and remote postflight preserved the exact package, producer hash, and **72/72** content checksums. No stable product regression event or recurrence was created. `PR8-R034 / G4-R007` remains active.
 
-## M1i phase-front cell source-scope authority — compile/package complete; runtime pending
+## M1i phase-front cell source-scope authority — immutable accepted
 
-Implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` migrates only `SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}` to checked `SourceComponentId` / `IsolationSheetId`. Raw `SurfaceFrontEdge` and current pipeline source-scope fields remain explicit compatibility boundaries. Exactly six focused M1i contracts compile and were not executed.
+Implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` migrates only `SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}` to checked `SourceComponentId` / `IsolationSheetId` while retaining neighboring raw representations as explicit compatibility boundaries.
 
-Successful build run/job `31411770135 / 93531293415` compiled **120/120** Release/static/Ninja/PRE_TEST. Result/log artifacts are `9072101943 / 9072102331`, outer SHA-256 `e30860e5ec411dc4dc446d0a4dc65ce6f15c5784a6f5daca138ab44d7196bf25 / 38353b8c101a298d9a537a82da17e075180619343246a6ba4a8e2f430bd14d44`; recursive manifest is **72/72**, digest `f5614100e1638990d46c7c8fa3d7c720c837dfae1ae515387977d4c0b9e9cac3`. Every runtime flag is false.
+Exact result/log artifacts `9072101943 / 9072102331` are immutable accepted. Runtime authority: producer discovery **208**, M1i **6/6**, required-green **193/193**, M1h-M1b focused preservation, M1d route witnesses **3/3**, M1c transition counterexamples **3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean without fixture symlink. All eight historical/deferred red classes are unchanged. Strict-validator timing remains deferred after fresh **0/10** characterization.
 
-The first attempt `31410750675` also compiled **120/120** but package checksum verification ran from the wrong working directory. The retry changed no source; the defect is retained as orchestration provenance, not product evidence.
+Heavy run `31416928654` preserved Bunny's known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure and bounded Vase at 60 seconds as safety-only evidence. Local and remote postflight preserved the exact package, producer hash, and **72/72** checksums. No stable product regression event or recurrence was created; `PR8-R034 / G4-R007` remains active.
 
-Run **M1i immutable Artifact-Only Test + Benchmark only** under `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected native producer discovery is **208**, M1i focused **6/6**, required-green **193/193**, with full entering preservation and exact postflight. M1i semantic acceptance remains pending.
+Next architecture slice: **M1j Phase-Front Edge Source-Scope Consumer — Code + Build only** at `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`. Keep raw `sourceTopologyRegion` out of scope and require region aggregation to validate rather than overwrite edge semantic source scope.
 
-Current report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Report.md`.
+Authoritative plan: `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
+Current immutable report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1f vertex-continuation transport — immutable accepted
 

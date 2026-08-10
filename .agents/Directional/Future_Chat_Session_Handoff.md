@@ -2,34 +2,40 @@
 
 ## Mandatory next turn
 
-Run **M1i Phase-Front Cell Source-Scope Consumer — immutable Artifact-Only Test + Benchmark only** under:
+Run **M1j Phase-Front Edge Source-Scope Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1h are immutable accepted. M1i is compile/package complete and runtime pending. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1i are immutable accepted. Review policy is `never`.
 
-Consume only result/log artifacts `9072101943 / 9072102331` from implementation `b037157921094604f1b0c17f9c8b7076c7604b3b`. Result/log ZIP SHA-256 are `e30860e5ec411dc4dc446d0a4dc65ce6f15c5784a6f5daca138ab44d7196bf25 / 38353b8c101a298d9a537a82da17e075180619343246a6ba4a8e2f430bd14d44`; recursive package manifest is **72/72**, digest `f5614100e1638990d46c7c8fa3d7c720c837dfae1ae515387977d4c0b9e9cac3`.
+M1j is bounded to:
 
-Rebuild, relink, configure, regeneration, source/test/build/fixture edits, repair, substitution, and runtime fixture symlinks are prohibited. Expected native producer discovery is **208**, M1i focused **6/6** individually, and required-green producer **193/193**. Preserve M1h–M1b focused suites, validation **77/77**, M1a **14/14**, T1 **29/29**, direct Plane/MultiFaceSeam/CloseSheets/Cylinder oracle authority, all eight historical/deferred red classes, strict-validator 10-process characterization, Bunny/Vase bounded comparison, and exact postflight.
+`SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
 
-## M1i Code + Build authority — runtime pending
+Migrate only edge-owned source-component/isolation-sheet authority to checked `SourceComponentId` / `IsolationSheetId`. Keep `SurfaceFrontEdge::sourceTopologyRegion` raw for a later `TopologyRegionId` slice. Region aggregation must validate established typed edge scope rather than overwrite it; still-raw downstream consumers use explicit named compatibility conversion. Do not expand into periodic/bounded-disk source-scope schemas, hard-rail/periodic owner IDs, M2-M6, or G4 behavior repair.
 
-Selected seam:
-`phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
+This next turn is **Code + Build only**. Execute no generated Directional binary, discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
 
-Implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` changes exactly four paths: the tracing header, tracing implementation, pipeline compatibility consumers, and phase-10 tests. `SurfacePhaseFrontCell` now owns optional checked `SourceComponentId`, optional checked `IsolationSheetId`, and a typed sorted isolation-sheet collection. Raw edge/pipeline representations remain explicit compatibility boundaries only. Exactly six `SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration` contracts compile and were **not executed**.
+## M1i immutable acceptance authority
 
-Authoritative build/package run/job `31411770135 / 93531293415` compiled **120/120** Release/static/Ninja/PRE_TEST in **7:39.61**, peak RSS **1,857,412 KiB**. Package is 73 regular files, seven executables, two libraries, 27 fixtures, with **72/72** verified checksums. Every runtime-execution flag is false.
+M1i is accepted from implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` and exact Code + Build artifacts `9072101943 / 9072102331`.
 
-First attempt `31410750675` also compiled **120/120** but failed only in package checksum verification because the manifest was checked from the repository cwd rather than package cwd. The retry made no source delta and records that provenance in the final package. First-attempt log artifact is `9071739970`.
+Runtime authority: producer discovery **208**, M1i focused **6/6**, required-green **193/193**, M1h-M1b focused preservation green, M1d route witnesses **3/3**, M1c transition counterexamples **3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean without a fixture symlink. All eight historical/deferred red classes remain unchanged. Strict-validator timing remains deferred after fresh **0/10** characterization. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds.
 
-M1i is not semantically accepted until immutable runtime passes. Historical regression totals remain **34 events / 14 categories / 20 recurrences**; `PR8-R034 / G4-R007` remains active.
+Heavy artifact-only run `31416928654` retained Bunny evidence/log artifacts `9073803244 / 9073803836` and Vase evidence/log artifacts `9073801150 / 9073801757`. Local and remote postflight preserved the exact result ZIP, **72/72** content manifest, 73 regular files, seven executables, two libraries, 27 fixtures, producer hash, and `fixtureSymlink=false`.
 
-Current Code + Build report:
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Report.md`.
+Historical regression totals remain **34 events / 14 categories / 20 recurrences**. `PR8-R034 / G4-R007` remains active.
+
+Lessons that affect the next turn:
+
+- M1b focused names belong to the validation executable; zero-selected filters are orchestration errors and never semantic passes.
+- Temporary Actions YAML must not use an unindented shell heredoc inside a block scalar; two pre-job heavy runs failed syntax validation before the corrected run. Prefer a committed helper payload or indentation-safe one-line script when a temporary workflow needs Python.
+
+Current immutable report:
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## M1h immutable acceptance authority
 
