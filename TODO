@@ -29,14 +29,13 @@ Selected seam:
 | Build wall / peak RSS | **8:08.51 / 1,848,636 KiB** |
 | Runtime | **false** |
 
-M1e now compiles checked source-vertex/interior-transition step identity, canonical source-edge identity, per-step `QuarterTurn`/zero-shift `GridAutomorphism`, `TransitionStep`, one `CanonicalRoute`, `oriented_steps()` recovery of observed direction, and typed route composition. Existing raw matching/provenance is retained only at compatibility boundaries. Periodic-holonomy accumulation, `FieldChartId`, public schema, topology/conformity/quotient, validator, fallback/recovery, optimization, fixture, and G4 behavior are excluded.
+M1e compiles checked source-vertex/interior-transition step identity, canonical source-edge identity, per-step `QuarterTurn`/zero-shift `GridAutomorphism`, `TransitionStep`, one `CanonicalRoute`, `oriented_steps()` recovery of observed direction, and typed route composition. Existing raw matching/provenance is retained only at compatibility boundaries. Periodic-holonomy accumulation, `FieldChartId`, public schema, topology/conformity/quotient, validator, fallback/recovery, optimization, fixture, and G4 behavior are excluded.
 
 Exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` contracts are statically packaged. Static manifest SHA-256: `b6a1c9035b2cd15a13844f812e7261ee0e199e72d0150d9a093a59d1ce713556`.
 
 No generated Directional binary, discovery, test, benchmark, `ctest`, CLI/help/version command, fuzzer, or custom input executed.
 
-Report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+Report: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## Compile correction record
 
