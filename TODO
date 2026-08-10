@@ -16,6 +16,7 @@ Last updated: 2026-08-10 UTC
 - Expected runtime authority: producer discovery **208**, M1i focused **6/6**, required-green **193/193**, full M1h–M1b/validation/M1a/T1/direct/historical/heavy/postflight preservation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
 - Current Code + Build report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Report.md`.
+
 ## M1d immutable acceptance
 
 Selected accepted seam:
