@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable M1k edge topology-region acceptance from artifacts `9079318682 / 9080245848`; M1l cell topology-region authority is next.
+Last updated: **2026-08-10 UTC** after M1l cell topology-region Code + Build completion from artifacts `9083262395 / 9083262833`; M1l immutable semantic runtime is next. M1a-M1k remain accepted.
 
 ## Rules
 
@@ -55,7 +55,7 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
 - M1e ordered segment-route step identity is accepted. M1f continuation-route steps cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and immutable runtime acceptance is complete.
 - M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.
-- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j immediately adjacent `SurfaceFrontEdge` component/sheet authority is **immutable accepted**. M1k edge-owned topology-region identity is **immutable accepted** as checked `TopologyRegionId` without changing topology-region construction. M1l next migrates the remaining raw cell-owned topology-region identity to checked `TopologyRegionId`.
+- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j immediately adjacent `SurfaceFrontEdge` component/sheet authority is **immutable accepted**. M1k edge-owned topology-region identity is **immutable accepted**. M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` removes the remaining raw cell-owned topology-region mirror and compiles/package successfully, but remains runtime pending until artifact-only semantic acceptance.
 
 M1d accepted invariants:
 
@@ -89,7 +89,7 @@ Focused migration tests do not replace this authority. M1h remediation artifact 
 
 M1i source-scope migration is immutable accepted: producer discovery **208**, M1i **6/6**, required-green **193/193**, M1h-M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. The initial wrong-working-directory package checksum issue and a later zero-selected M1b executable-mapping mistake are orchestration defects only; neither changes semantic evidence.
 
-M1j edge source-scope migration is immutable accepted: producer discovery **214**, M1j **6/6**, required-green **199/199**, M1i-M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, strict timing **0/10**, Bunny known-red, Vase bounded safety-only, and exact **67/67** postflight. The initial compile mismatch and superseded incomplete-manifest artifact remain Code + Build/orchestration defects only. M1k preserves `RP-02 / TA-05`: producer **220**, M1k **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, known-red classes unchanged, and exact postflight. M1l must preserve the same authority while adding six production-path contracts for checked cell topology-region authority. Authoritative next Code + Build plan: `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`. Historical totals remain **34 / 14 / 20**.
+M1j edge source-scope migration is immutable accepted: producer discovery **214**, M1j **6/6**, required-green **199/199**, M1i-M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, strict timing **0/10**, Bunny known-red, Vase bounded safety-only, and exact **67/67** postflight. The initial compile mismatch and superseded incomplete-manifest artifact remain Code + Build/orchestration defects only. M1k preserves `RP-02 / TA-05`: producer **220**, M1k **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, known-red classes unchanged, and exact postflight. M1l Code + Build compiled/package successfully for six new production-path contracts, but no generated runtime executed; `RP-01 / RP-05 / RP-09` and `RP-02 / TA-05` remain runtime pending at M1l. No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
 ### RP-03 — policy/stage state conflation
 
@@ -309,10 +309,10 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | State |
 |---|---|
 | `AR-01` | M2: closed producer outcomes |
-| `AR-02` | M1a through M1k **accepted**; M1l phase-front cell topology-region consumer next |
-| `AR-03` | strong identity adoption through M1k **accepted**; M1l checked cell topology-region identity next |
+| `AR-02` | M1a through M1k **accepted**; M1l Code + Build complete, immutable runtime pending |
+| `AR-03` | strong identity adoption through M1k **accepted**; M1l checked cell topology-region implementation compiled but is not yet semantically accepted |
 | `AR-04` | `FieldChartId` production phase-front chart migration accepted; current M1l concerns `TopologyRegionId` cell authority |
-| `AR-05` | representation boundaries through M1k **accepted**; M1l cell topology-region representation boundary next |
+| `AR-05` | representation boundaries through M1k **accepted**; M1l cell topology-region representation boundary compiled/runtime pending |
 | `AR-06` | M4 relation registry/certificates |
 | `AR-07` | M3 global conformity |
 | `AR-08` | M2/M3 producer-scoped immutable output |
@@ -332,7 +332,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-05` | **test authority resolved and preserved through M1k** |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region authority accepted; M1l cell topology-region contracts next |
+| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region authority accepted; six M1l cell topology-region contracts compiled and await artifact-only runtime |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | topology/lineage/disposition adequate; quality expansion later |
@@ -340,6 +340,6 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The next turn is **Code + Build only**. Migrate only `SurfacePhaseFrontCell::sourceTopologyRegion` at the established phase-front cell topology-region consumer to checked `TopologyRegionId`, keep still-raw downstream materializer/occurrence representations behind explicit compatibility conversions, preserve M1a-M1k and G4 behavior, compile/package the required six focused contracts, and execute no generated Directional binary.
+The next turn is **immutable Artifact-Only Test + Benchmark only** over exact artifacts `9083262395 / 9083262833`. Expected producer discovery is **226**, M1l focused **6/6**, and required-green **211/211**, with full entering preservation/product/known-red/postflight authority. M1l remains runtime pending until that evidence passes.

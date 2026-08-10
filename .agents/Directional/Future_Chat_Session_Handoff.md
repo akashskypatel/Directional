@@ -61,33 +61,29 @@ This is a DURABLE mandatory start-of-turn checklist that must be followed at the
 
 ## Mandatory next turn
 
-Run **M1l Phase-Front Cell Topology-Region Consumer — Code + Build only** under:
+Run **M1l Phase-Front Cell Topology-Region Consumer — immutable Artifact-Only Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
 Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1k are immutable accepted. Review policy is `never`.
 
-M1l is bounded to:
+Consume only M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` from exact Code + Build artifacts `9083262395 / 9083262833`. Their outer ZIP SHA-256 values are `3d79b86dbda5e87134aef79330d02c227e0c1ba1f291f24bff6a3946c1aa895c / a638cf52e9761ddead175aa32aa6824703c98c4553f97c0627e81baa82b3f1b8`.
 
-`SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`.
+This turn is artifact-only: do not edit source/tests/build/fixtures, rebuild, relink, configure, regenerate, substitute/repair package contents, alter executable permissions, or create fixture symlinks. Use the exact plan for preflight, discovery, M1l **6/6**, entering preservation, required-green **211/211**, independent product gates, known-red classification, timing characterization, bounded Bunny/Vase comparison, and exact postflight.
 
-Migrate only cell-owned topology-region identity to checked `TopologyRegionId`. Preserve `SurfaceTopologyRegion::id`, raw region-by-face maps, certificate/periodic/bounded-disk/occurrence/lineage region schemas, topology-region discovery/partition/numbering, accepted component/sheet and edge-region authority, M2-M6, fallback/recovery, optimization, and G4 behavior.
-
-This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Exactly six M1l production-path contracts compile only. Expected following runtime authority is producer **226**, M1l **6/6**, required-green **211/211**, plus all entering preservation gates.
-
-Current immutable report:
-`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current Code + Build report:
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Current immutable authority
 
-M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accepted from Code + Build artifacts `9079318682 / 9079319269` and artifact-only runtime `31433794426 / 93603203081`. Producer authority is **220** discovered, M1k **6/6**, required-green **205/205**; the full preservation matrix, product cases, historical/deferred reds, and exact postflight are recorded in the current immutable report.
+M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` remains the current immutable semantic authority: producer **220**, M1k **6/6**, required-green **205/205**, full entering preservation, and required representative products accepted. Exact historical acceptance detail is retained in `CHANGELOG.md` and the regression tracker.
 
 Strict-validator timing remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
 
-Repository-side per-turn retention is clean: `.agents/Directional` retains only the current M1k immutable report and the single M1l next-turn plan in addition to durable documents. Superseded M1h–M1j evidence and consumed M1k plans/reports were consolidated into `CHANGELOG.md` before removal under `CLEAN_UP_POLICY.md`.
+M1l Code + Build is complete but **not semantically accepted**. Its current immutable package authority is run/job `31441661026 / 93627457924`, artifacts `9083262395 / 9083262833`, manifest **56/56**, and producer SHA-256 `fe7da9a182c785ae14ba24264682470cce7ceec119ce34251a4bee80c7113856`.
 
 ## Mandatory end-of-turn checklist
 
@@ -108,7 +104,8 @@ This is a DURABLE mandatory end-of-turn checklist that must be followed at the e
 
 ## Resume-critical execution lessons
 
-- Use the exact accepted M1k source/package authority above; later documentation/control-plane commits are not runtime-evidence commits.
+- Use exact M1l artifact `9083262395` as the only next-turn runtime package; later documentation/control-plane commits are not runtime-evidence commits.
+- The first M1l compile exposed one stale raw test assertion; the corrected code subsequently compiled **121/121**. A later packaging attempt failed only because shallow history omitted the semantic diff base; the authoritative package explicitly fetched that base before manifest creation.
 - A single local Cylinder harness stall did not reproduce in immediate bounded local execution or controlled remote runs. Do not add product workarounds for it without new product evidence.
 
 Workflow-specific execution rules and lessons are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
@@ -116,8 +113,8 @@ Workflow-specific execution rules and lessons are maintained in `.agents/Directi
 ## Core references
 
 - `TODO.md`;
-- `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/CHANGELOG.md`;
 - `.agents/Directional/CLEAN_UP_POLICY.md`;
 - `.agents/Directional/RETENTION_POLICY.md`;

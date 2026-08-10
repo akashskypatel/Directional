@@ -10,11 +10,13 @@ Keep this file task-oriented. Exact current-turn instructions belong in `.agents
 
 ## Current focus
 
-- [ ] **M1l — Phase-Front Cell Topology-Region Consumer: Code + Build only.**
-  - Authoritative plan: `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+- [ ] **M1l — Phase-Front Cell Topology-Region Consumer: immutable Artifact-Only Test + Benchmark next.**
+  - Code + Build is complete for implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; semantic acceptance remains pending.
+  - Authoritative validation plan: `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
   - Bounded seam: `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`.
   - Migrate only cell-owned topology-region identity to checked `TopologyRegionId`; preserve global topology-region construction/schema, accepted source-scope and edge-region authority, M2-M6, fallback/recovery, optimization, and G4 behavior.
-- [ ] After a successful M1l Code + Build artifact is produced, run the separate immutable **Artifact-Only Test + Benchmark** turn before selecting another architecture consumer.
+- [x] Produce the immutable M1l Code + Build package without generated runtime execution.
+- [ ] Validate exact artifacts `9083262395 / 9083262833` in the separate immutable **Artifact-Only Test + Benchmark** turn before selecting another architecture consumer.
 - [ ] Continue later bounded M1 consumers only after M1l immutable acceptance.
 
 Current baseline: T1 and M1a-M1k are immutable accepted. Product gate G4 remains active and independent of architecture-migration acceptance. Draft PR #8 remains open and unmerged.
@@ -50,7 +52,7 @@ Current baseline: T1 and M1a-M1k are immutable accepted. Product gate G4 remains
   - [x] M1i phase-front cell source-scope consumer.
   - [x] M1j phase-front edge source-scope consumer.
   - [x] M1k phase-front edge topology-region consumer.
-  - [ ] M1l phase-front cell topology-region consumer.
+  - [ ] M1l phase-front cell topology-region consumer — Code + Build complete; immutable runtime pending.
   - [ ] Select and migrate later bounded M1 consumers one semantic owner at a time until raw compatibility authority no longer drives semantic decisions.
 - [ ] **M2 — closed producer outcomes and single-writer scope.** Replace overlapping attempted/succeeded/disposition state with exhaustive outcomes; introduce immutable source/topology/region authority products; remove consumer-side scope rewriting; separate temporary/public/diagnostic retention.
 - [ ] **M3 — global conformity before regional production.** Compute one exact hard-rail breakpoint schedule and certificate before local regions commit cells; both sides consume the identical ordered schedule; remove post-hoc local pairing as authority.

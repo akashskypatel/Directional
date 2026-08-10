@@ -55,7 +55,7 @@ M0 preserve immutable evidence [complete]
    M1i phase-front cell source-scope consumer [accepted]
    M1j phase-front edge source-scope consumer [accepted]
    M1k phase-front edge topology-region consumer [accepted]
-   M1l phase-front cell topology-region consumer [selected; Code + Build next]
+   M1l phase-front cell topology-region consumer [Code + Build complete; immutable runtime pending]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -122,10 +122,12 @@ Accepted-source inspection selected M1j at `SurfacePhaseFrontCell typed source s
 
 M1j is immutable accepted. M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is likewise immutable accepted from artifact `9079318682` and runtime evidence `9080245848`: producer **220**, focused **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, historical-red classes unchanged, and exact **68/68** postflight.
 
-Accepted-source inspection selects M1l at `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`. M1l migrates only cell-owned `TopologyRegionId` authority and leaves global region construction/schema migration for later bounded consumers/M2-M4.
+Accepted-source inspection selected M1l at `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`. Implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` now carries cell-owned topology-region authority as checked `TopologyRegionId`, preserves global region construction/schema, and compiled/package successfully without generated runtime execution.
 
-Authoritative next Code + Build plan:
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+Code + Build authority is run/job `31441661026 / 93627457924`, result/log artifacts `9083262395 / 9083262833`, manifest **56/56**, and producer SHA-256 `fe7da9a182c785ae14ba24264682470cce7ceec119ce34251a4bee80c7113856`. This does not semantically accept M1l; M1a-M1k remain the accepted architecture boundary.
+
+Authoritative next immutable validation plan:
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
