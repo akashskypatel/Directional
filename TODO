@@ -5,10 +5,10 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a/M1b/M1c/M1d immutable accepted; M1e Segment Route Transport Consumer Code + Build next**.
-- M1e implementation: `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` is pushed; local compile-only syntax checks passed for the changed production and test translation units; authoritative Release/static/Ninja build and packaging remain pending.
+- Architecture migration: **M1a/M1b/M1c/M1d immutable accepted; M1e Segment Route Transport Consumer compile/package complete, immutable runtime next**.
+- M1e implementation: `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`; authoritative Release/static/Ninja run/job `31351113129 / 93341993183` completed **120/120** and produced immutable artifacts `9049125645 / 9049125905`. No generated Directional binary ran.
 - Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract now proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
-- Authoritative next turn: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+- Authoritative next turn: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
@@ -45,12 +45,12 @@ Both local and remote postflight preserved the exact result artifact, manifest, 
 Current retained report:
 `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-## M1e next boundary
+## M1e compile-complete boundary
 
 Selected seam:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-The current consumer owns an ordered `VertexPathStep` sequence and still accumulates raw signed `transition.matching` across the route. M1e may therefore introduce the already-accepted authority kernel types at this real transport owner:
+The consumer owns an ordered `VertexPathStep` sequence. M1e now replaces raw signed `transition.matching` accumulation at this real transport owner with:
 
 - checked source-vertex/interior-transition step identity;
 - canonical `SourceEdgeTopologyKey`;
@@ -61,14 +61,17 @@ The current consumer owns an ordered `VertexPathStep` sequence and still accumul
 
 M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema changes, topology/conformity/quotient work, validators, fallback/recovery expansion, optimization, and G4 repair.
 
-Code + Build may edit only `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp` by default, compile/package, and must execute no generated Directional binary.
+The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. M1e remains runtime-pending.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## Regression status
 
-- `RP-01`: strong-domain adoption through M1d **accepted**; M1e reuses checked step domains.
-- `RP-05`: route identity representation boundary through M1d **accepted**; M1e must keep observed route order separate from canonical storage.
-- `RP-07`: individual edge transport through M1c **accepted**; M1e next removes raw cumulative matching at the ordered segment-route consumer.
-- `RP-02 / TA-05`: independent authority preserved through M1d and must be re-proven after M1e.
+- `RP-01`: checked M1e step domains **compile-complete; runtime pending**.
+- `RP-05`: M1e semantic step identity and observed/canonical route-order boundary **compile-complete; runtime pending**.
+- `RP-07`: M1e typed cumulative route composition **compile-complete; runtime pending**.
+- `RP-02 / TA-05`: independent authority preserved through M1d and pending exact M1e artifact-only validation.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
 

@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d architecture slices are immutable accepted. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d architecture slices are immutable accepted. M1e compile/package is complete and immutable runtime is pending. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -37,27 +37,30 @@ M1d Bunny/Vase artifact-only comparison run `31343763822` preserved accepted kno
 Current retained report:
 `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-## Authoritative next turn
+## M1e compile/package checkpoint and authoritative next turn
 
-Run **M1e Segment Route Transport Consumer — Code + Build only** under:
+Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 Selected boundary:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-M1e is intentionally narrow. It may replace only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
+M1e is intentionally narrow. Implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` replaces only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
 
 M1e must not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
 
-Code + Build executes no generated Directional binary.
+Compile-only run/job `31351113129 / 93341993183` completed **120/120**. Result/log artifacts `9049125645 / 9049125905` have ZIP SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7 / fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`; the recursive manifest is **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`. Code + Build executed no generated Directional binary. M1e is not accepted until immutable runtime passes.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## Regression disposition
 
-- `RP-01`: M1d checked source-vertex/transition adoption **accepted**; M1e reuses the checked step domains.
-- `RP-05`: M1d canonical route identity **accepted**; M1e must separate semantic canonical storage from observed behavior order.
-- `RP-07`: M1c exact edge transport **accepted**; M1e next migrates cumulative ordered-route transport.
-- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d.
+- `RP-01`: M1e checked step domains **compile-complete; runtime pending**.
+- `RP-05`: M1e semantic step identity and observed/canonical route order **compile-complete; runtime pending**.
+- `RP-07`: M1e cumulative ordered-route transport **compile-complete; runtime pending**.
+- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d and pending M1e immutable validation.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 
@@ -79,6 +82,8 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 - `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
 - `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

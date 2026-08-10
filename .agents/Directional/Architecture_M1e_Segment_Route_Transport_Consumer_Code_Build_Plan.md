@@ -1,10 +1,12 @@
 # M1e Segment Route Transport Consumer — Code + Build Plan
 
-**Status:** authoritative next turn  
+**Status:** consumed — compile/package complete; immutable runtime pending
 **Turn type:** Code + Build only  
 **Architecture milestone:** M1 — authority kernel and staged production adoption  
 **Review policy:** `never`  
 **Runtime during this turn:** prohibited
+
+Completion authority: `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`. The authoritative next turn is the artifact-only Test + Benchmark plan.
 
 ## 1. Objective
 

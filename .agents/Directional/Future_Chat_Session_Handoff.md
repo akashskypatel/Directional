@@ -2,13 +2,37 @@
 
 ## Mandatory next turn
 
-Run **M1e Segment Route Transport Consumer — Code + Build only** under:
+Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
 Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d are immutable accepted. Review policy is `never`.
 
-The next turn is mutating **Code + Build only**. It may implement the bounded M1e consumer and compile/package, but must execute no generated Directional binary, GoogleTest discovery/test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+The next turn is nonmutating **immutable Test + Benchmark only**. It must consume exact artifacts `9049125645 / 9049125905`, rebuild/relink/regenerate/edit nothing, and execute only the bounded discovery/tests/benchmarks authorized by the plan. Any required-green failure remains at M1e and returns to corrective Code + Build.
+
+## M1e compile/package authority — immutable runtime pending
+
+Selected seam:
+`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
+
+| Evidence | Value |
+|---|---|
+| implementation | `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` |
+| build/event | `34036600128262e909c377006a056a2b9976f986` |
+| build run/job | `31351113129 / 93341993183`, **120/120** |
+| result artifact / SHA-256 | `9049125645` / `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7` |
+| log artifact / SHA-256 | `9049125905` / `fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be` |
+| recursive manifest | **61/61**, `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5` |
+| package | **62** regular files; 7 executables; 2 static libraries; 27 fixtures |
+| product/test blobs | `34372a48412213d3b4db6d0bc3e653e7d3225ef0 / f55d016db2c89710b79c711a0d5e780dcfb2bdfc` |
+| Code + Build runtime | **false** |
+
+The production blob is byte-identical to the final reviewed production hunk at `bb9cb63`; the tests were rewritten from scratch before `a0330d0`. Their deterministic route is `2 -> 3 -> 10` through vertex `7`, with nonzero turns `3` and `2`, independent forward/reverse endpoint-label expectations `1/3`, independently enumerated compact IDs `2/9`, and sorted semantic route-keyed comparisons rather than positional pairing.
+
+The malformed contract was narrowly corrected after Review: typed construction is unreachable as a distinct failure once derived topology/compact provenance validates, so the test targets the real predecessor `source_edge_provenance` boundary and requires `MissingTransitionProvenance` without fallback. `CrossFieldEdgeTransition::sourceEdge` remains validation metadata, not semantic `InteriorTransitionId`.
+
+Code + Build report:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## Accepted M1d immutable authority
 
@@ -65,22 +89,22 @@ M1d artifact-only Actions comparison run: `31343763822`.
 
 Both jobs downloaded exact artifact `9046308272`, verified the GitHub digest, build authority, all 59 checksums and producer hash before runtime, and reverified artifact/manifest/producer/60-regular-file authority postflight. The temporary workflow and trigger were removed.
 
-## M1e exact consumer boundary
+## M1e compile-complete consumer boundary
 
 Selected seam:
 
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`
 
-This is a real transport-owning consumer. The legacy code currently accumulates raw signed `transition.matching` across an ordered `std::vector<VertexPathStep>` and normalizes only at the end.
+This is a real transport-owning consumer. The compile-complete implementation replaces legacy raw signed `transition.matching` accumulation across the ordered `std::vector<VertexPathStep>` and normalizes only at the existing output compatibility boundary.
 
-Default allowed implementation/test paths:
+Final implementation/test paths:
 
 - `src/geometry/SurfaceCellTracing.cpp`;
 - `tests/SurfaceCellsPhase10Tests.cpp`.
 
 No header or CMake change is expected.
 
-Mandatory M1e rules:
+The packaged M1e implementation records these rules:
 
 1. preserve route discovery, ordered vertex-fan choice, hard-feature/relief/topology checks, and `resolve_branch_transition` behavior;
 2. decode each step edge only at a compatibility boundary and establish checked `SourceVertexId` + canonical `SourceEdgeTopologyKey`;
@@ -91,11 +115,11 @@ Mandatory M1e rules:
 7. compose typed transports in observed order and derive public/raw `current.matching` only at the compatibility output boundary;
 8. preserve matching effort and exact ordered raw provenance vectors;
 9. preserve explicit `edgeTransitions`-absent legacy matching behavior through the same typed composition boundary;
-10. malformed authoritative metadata fails closed without geometric/legacy fallback.
+10. malformed authoritative provenance fails closed at the reachable predecessor boundary without geometric/legacy fallback; no unreachable typed-constructor failure is claimed.
 
 M1e deliberately excludes periodic-holonomy loop accumulation, `FieldChartId`, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery, optimization, and G4 repair.
 
-Add exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` production-path contracts specified in the plan. Do not reimplement route composition in test-only helpers as proof.
+Exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` production-path contracts are compiled. The immutable turn must execute all six in fresh processes and interpret them under the artifact-only plan's independent expected-value, semantic-key, and malformed-boundary rules. Do not reimplement route composition in test-only helpers as proof.
 
 ## Regression standing state
 
@@ -141,6 +165,8 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 
 - `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
 - `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
@@ -148,7 +174,7 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 - `TODO`;
 - `MILESTONE_G_TODO.md`.
 
-At the start of M1e, fetch fresh PR/head state and verify implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25` remains an ancestor. Do not assume this handoff's documentation head if external commits move the branch.
+At the start of immutable M1e Test + Benchmark, fetch fresh PR/head and artifact state; verify implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` remains an ancestor and artifacts `9049125645 / 9049125905` remain unexpired with exact digests. Do not assume this handoff's documentation head if external commits move the branch.
 
 If the following immutable M1e turn finds a required-green regression, remain at M1e and return to corrective Code + Build; do not advance.
 

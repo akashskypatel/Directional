@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable accepted M1d artifact `9046308272`.
+Last updated: **2026-08-10 UTC** after M1e compile artifact `9049125645`; immutable runtime remains pending.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Last updated: **2026-08-10 UTC** after immutable accepted M1d artifact `90463082
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, and accepted M1d artifact `9046308272` create no new production regression event or recurrence. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, and compile-only M1e artifact `9049125645` create no new production regression event or recurrence. M1e runtime authority is pending. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -53,7 +53,7 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1b source-face/source-vertex production consumer: **accepted**.
 - M1c field-transition source-face/source-vertex consumer: **accepted**.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
-- M1e next: ordered segment-route step identity must cross the same checked source-vertex/interior-transition boundaries before `TransitionStep` construction.
+- M1e ordered segment-route step identity crosses the same checked source-vertex/interior-transition boundaries before `TransitionStep` construction; compilation/package is complete and runtime acceptance is pending.
 
 M1d accepted invariants:
 
@@ -69,7 +69,7 @@ bad: compile/helper/status/count claimed as product proof.
 good: named semantic contract + independent oracle + direct representative evidence.
 ```
 
-`RP-02 / TA-05` remains **test-authority resolved and preserved through M1d**:
+`RP-02 / TA-05` remains **test-authority resolved and preserved through M1d**; M1e preservation is pending immutable artifact execution:
 
 - producer discovery exactly **178**;
 - required-green producer segment **163/163**;
@@ -114,7 +114,7 @@ good: semantic strong ID/key is authoritative; row/hash is an explicit compatibi
 - M1b semantic source identity versus row representation: **accepted**.
 - M1c canonical `SourceEdgeTopologyKey` versus raw packed source-edge key: **accepted**.
 - M1d route identity versus packed route key/index: **accepted**.
-- M1e next: each route step must use canonical `SourceEdgeTopologyKey` + `InteriorTransitionId`; observed route orientation is preserved through `CanonicalRoute::oriented_steps()` rather than canonical storage order becoming behavioral order.
+- M1e compiles each route step through canonical `SourceEdgeTopologyKey` + `InteriorTransitionId`; observed route orientation is preserved through `CanonicalRoute::oriented_steps()` rather than canonical storage order becoming behavioral order. Runtime acceptance is pending.
 
 ### RP-06 — state-cardinality growth
 
@@ -136,7 +136,7 @@ M1c is accepted at individual edge transport: `QuarterTurn::from_integer`, algeb
 
 M1d preserved this unchanged.
 
-**M1e is the next direct RP-07 migration:** `segment_on_source` currently performs raw `totalMatching += transition.matching` across an ordered source route. The approved correction is typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the final compatibility write.
+**M1e is the current direct RP-07 migration:** `segment_on_source` now compiles typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the final compatibility write. Immutable runtime acceptance is pending.
 
 The separate periodic-holonomy accumulation remains outside M1e.
 
@@ -171,6 +171,28 @@ Bunny/Vase M1d comparison run `31343763822` preserved accepted known-red/safety 
 
 Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted facts were folded into this tracker, the PR audit inventory, current live status, and immutable artifact history. Artifact IDs above remain historical authority; deleted stale report paths are not resume dependencies.
 
+## M1e compile-complete pattern record — runtime pending
+
+| Pattern | Compile result | Pending immutable proof |
+|---|---|---|
+| `RP-01` | checked source vertices + compact interior transitions at each observed step | exact six focused tests + complete producer preservation |
+| `RP-05` | canonical topology key and semantic route-keyed observations; `oriented_steps()` preserves behavior order | forward/reverse and signed-equivalence contracts |
+| `RP-07` | zero-shift `GridAutomorphism` route composition replaces raw cumulative signed addition | nonzero multi-step/inverse and legacy-path contracts |
+| `RP-02 / TA-05` | deterministic hard-authored expected values, independent compact IDs, semantic snapshot keys | producer 184, required-green 169/169, M1d/M1c/M1b/M1a/T1/direct evidence |
+| `RP-03/04/06/08/09` | untouched | unchanged dispositions/accounting |
+
+M1e compile authority:
+
+- implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`;
+- build run/job `31351113129 / 93341993183`, **120/120**;
+- result artifact `9049125645`, SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7`;
+- log artifact `9049125905`, SHA-256 `fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`;
+- manifest **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`;
+- no generated Directional binary, discovery, test, or benchmark executed;
+- report `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+
+The review-authorized malformed contract targets the reachable predecessor `source_edge_provenance` authority boundary. It does not claim an unreachable typed-constructor failure and does not reinterpret `CrossFieldEdgeTransition::sourceEdge` as semantic transition identity.
+
 ## Current G4 stable-ID mapping
 
 | PR event | G4 ID | Category | Pattern | Status |
@@ -199,10 +221,10 @@ Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted fa
 | ID | State |
 |---|---|
 | `AR-01` | M2: closed producer outcomes |
-| `AR-02` | M1a/M1b/M1c/M1d **accepted**; M1e ordered transport-step adoption next |
-| `AR-03` | strong identity adoption through M1d **accepted**; M1e reuses typed step identity |
+| `AR-02` | M1a/M1b/M1c/M1d **accepted**; M1e ordered transport-step adoption compile-complete, runtime pending |
+| `AR-03` | strong identity adoption through M1d **accepted**; M1e typed step identity compile-complete, runtime pending |
 | `AR-04` | `FieldChartId` exists; production chart migration remains later M1 |
-| `AR-05` | representation boundaries through M1d **accepted**; M1e must preserve observed route orientation independent of canonical storage |
+| `AR-05` | representation boundaries through M1d **accepted**; M1e observed/canonical orientation boundary compile-complete, runtime pending |
 | `AR-06` | M4 relation registry/certificates |
 | `AR-07` | M3 global conformity |
 | `AR-08` | M2/M3 producer-scoped immutable output |
@@ -219,10 +241,10 @@ Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted fa
 | `TA-02` | T2 ten-case direct matrix pending |
 | `TA-03` | metric definitions/baselines pending |
 | `TA-04` | T3/T4 generation/shrinking/fuzz pending |
-| `TA-05` | **test authority resolved and preserved through M1d** |
+| `TA-05` | **test authority resolved and preserved through M1d**; M1e preservation pending immutable artifact execution |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity accepted; M1e adds production route-composition contracts |
+| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity accepted; M1e production route-composition contracts compiled, runtime pending |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | topology/lineage/disposition adequate; quality expansion later |
@@ -230,6 +252,6 @@ Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted fa
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
-The next turn is **Code + Build only**. It migrates only the real ordered segment-route transport accumulation in `segment_on_source` to typed `TransitionStep` / `CanonicalRoute` / `GridAutomorphism` composition, compiles/packages, and executes no generated Directional binary.
+The next turn is **immutable Test + Benchmark only**. It consumes exact artifact `9049125645`, rebuilds/edits nothing, validates the six focused route-transport contracts with their independent oracles and reachable malformed provenance boundary, and re-proves complete M1d/M1c/M1b/M1a/T1/direct authority.

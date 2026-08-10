@@ -48,7 +48,7 @@ M0 preserve immutable evidence [complete]
    M1b first source/provenance consumer [accepted]
    M1c field-transition consumer [accepted]
    M1d phase-front route identity consumer [accepted]
-   M1e segment route transport consumer [next]
+   M1e segment route transport consumer [compile/package complete; runtime pending]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -88,13 +88,31 @@ Accepted M1d authority:
 - Bunny known-red preserved, Vase bounded safety-only;
 - exact package postflight preserved.
 
-Current retained evidence:
+Accepted M1d evidence:
 `.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-The authoritative next turn is M1e under:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
+M1e Code + Build is complete at:
 
-## 4. M1e rationale and boundary
+`surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
+
+Compile/package authority:
+
+- implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`;
+- build/event `34036600128262e909c377006a056a2b9976f986`;
+- build run/job `31351113129 / 93341993183`, **120/120**;
+- result artifact `9049125645`, SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7`;
+- log artifact `9049125905`, SHA-256 `fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`;
+- manifest **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`;
+- final product/test scope exactly two paths;
+- no generated Directional binary, discovery, test, or benchmark executed.
+
+M1e remains unaccepted until immutable runtime. The authoritative next turn is:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+
+Current M1e Code + Build report:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+
+## 4. M1e rationale and compile-complete boundary
 
 M1d intentionally did not introduce `TransitionStep` / `CanonicalRoute` because its consumer validated route identity but did not own per-step transport.
 
@@ -109,7 +127,7 @@ totalMatching += transition.matching
 current.matching = normalized_branch(totalMatching)
 ```
 
-M1e may therefore adopt:
+M1e implementation `a0330d0...` adopts:
 
 - checked `SourceVertexId` / `InteriorTransitionId` step identity;
 - canonical `SourceEdgeTopologyKey`;
@@ -118,7 +136,7 @@ M1e may therefore adopt:
 - `CanonicalRoute` for canonical storage while consuming `oriented_steps()` to preserve behaviorally observed order;
 - algebraic composition/inverse instead of unrestricted signed matching accumulation.
 
-M1e must preserve existing public/raw provenance and matching storage and excludes the separate periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair.
+The compile-complete implementation preserves existing public/raw provenance and matching storage and excludes the separate periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair. Immutable semantic acceptance is pending.
 
 ## 5. Required target-stage corrections
 
@@ -154,7 +172,7 @@ The migration must reverse consumer reconstruction: each stage writes one immuta
 
 ## 7. Test interlock
 
-T1 independent oracle/package authority is accepted and is a preservation prerequisite for M1. M1d preserved it exactly. M1e focused transport contracts may supplement but never replace producer accounting, M1d/M1c/M1b/M1a/T1 preservation, direct product oracles, known-red classification, and immutable package postflight.
+T1 independent oracle/package authority is accepted and is a preservation prerequisite for M1. M1d preserved it exactly. M1e focused transport contracts are compiled and must supplement, never replace, producer accounting, M1d/M1c/M1b/M1a/T1 preservation, direct product oracles, known-red classification, and immutable package postflight. Their runtime authority remains pending.
 
 Later testing work remains T2–T6: direct semantic corpus, property/metamorphic generation, fuzz replay, calibrated quality/corpus gates, and CI/resource/oracle hardening.
 
@@ -162,7 +180,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. After M1e, inspect the remaining real owners before selecting another slice. The periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
+Continue bounded consumers only. After immutable M1e acceptance, inspect the remaining real owners before selecting another slice. The periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
 
 ### M2 — closed producer outcomes and single-writer scope
 
