@@ -1,6 +1,0 @@
-M1k Phase-Front Edge Topology-Region Consumer Code + Build
-attempt: 6 final authoritative
-triggered: 2026-08-10T20:49:00Z
-implementation: b9181364926cea840e9cb50da21fe721f33fd874
-package: exact retained manifests and parameterized Bunny/Vase names; complete 27-fixture layout; final recursive manifest
-runtime policy: compile/package only; no generated Directional execution
