@@ -120,6 +120,17 @@ This section is durable handoff policy and must remain in every future rewrite o
 - Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory handoff instruction merely to reduce file count. Durable-document changes must be additive or narrowly corrective unless the user explicitly authorizes broader replacement.
 - After cleanup, audit retained documents for references to deleted stale files and repair those references before turn closeout.
 
+### Durable-information mutation prohibition — user authorization required
+
+This policy is durable and must remain in every future rewrite of this handoff unless the user explicitly changes it.
+
+- Destructive edits to durable information are prohibited unless they are within the approved documentation scope of a Review turn explicitly authorized by the user, or the user explicitly authorizes the destructive edit and its scope. No other turn type—and no general instruction to update, clean, condense, reconcile, keep concise/current, or remove stale evidence—grants that authority.
+- A destructive edit includes deleting a durable document; removing findings, rationale, decisions, invariants, design or architecture detail, policies, acceptance criteria, historical evidence or provenance, stable IDs, artifact identities, failed-attempt lessons, unresolved blockers, or resume guidance; replacing detailed authority with a summary; weakening or obscuring prior meaning; or moving information without a durable, traceable replacement.
+- Protected information includes design, architecture, policy, remediation and roadmaps, plans, audit/review findings, regression/root-cause history, testing strategy, workflow/process rules, TODO/handoff recovery state, and any other record whose purpose is durable project memory.
+- Routine stale per-turn evidence cleanup applies only to records expressly classified as temporary after all necessary facts have been preserved. It never authorizes destructive edits to protected durable information.
+- Without the required authorization, edits must be additive or narrowly corrective and must preserve all prior durable meaning. If classification or authority is uncertain, stop and ask the user before editing.
+- Before an authorized destructive edit, inventory the information at risk, define the exact authorized scope, and verify the resulting diff against that scope.
+
 ### Cleanup workflow-order lesson
 
 During this M1d Test + Benchmark closeout, the temporary trigger marker was deleted before the temporary workflow. That marker deletion retriggered one redundant Actions run, `31343858635`. It is **not** acceptance authority and produced no product/regression state change. The temporary workflow was then removed and no triggerable M1d runtime workflow remains.
