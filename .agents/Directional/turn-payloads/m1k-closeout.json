@@ -1,0 +1,14 @@
+{
+  "implementation": "b9181364926cea840e9cb50da21fe721f33fd874",
+  "run_id": "31430898273",
+  "job_id": "93593780187",
+  "result_artifact": "9079318682",
+  "log_artifact": "9079319269",
+  "result_zip_sha": "90b8deea85c12460ae45b66d0c7aa67fa3771074b60841fd1a0e586b0088869d",
+  "log_zip_sha": "1a9a06fe42e2329cff1ff9d5b4eba0b7986af47d855229119e6d76bc2f07e381",
+  "manifest_count": 68,
+  "manifest_sha": "0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c",
+  "package_count": 69,
+  "build_wall": "8:19.09",
+  "build_rss_kib": 1860456
+}
