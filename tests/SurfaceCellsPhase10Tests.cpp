@@ -3449,6 +3449,478 @@ TEST(SurfaceCellsPhase10,
             insert_periodic_holonomy(relations, conflicting));
 }
 
+struct PeriodicHolonomyRouteStep {
+  int sourceFace = -1;
+  int targetFace = -1;
+  std::uint64_t topology = 0;
+  std::uint64_t semanticTopology = 0;
+};
+
+struct PeriodicHolonomyRouteFixture {
+  directional::TriMesh mesh;
+  Eigen::MatrixXd rawField;
+  directional::fields::CrossFieldResult authoritativeField;
+  std::vector<PeriodicHolonomyRouteStep> expectedRoute;
+};
+
+std::vector<std::vector<int>> periodic_cylinder_vertex_rings() {
+  return {
+      {0, 1, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30},
+      {3, 2, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31},
+      {33, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
+      {49, 48, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63},
+      {65, 64, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79}};
+}
+
+PeriodicHolonomyRouteStep periodic_route_step(
+    const int sourceFace, const int targetFace, const int firstVertex,
+    const int secondVertex, const int semanticFirstVertex,
+    const int semanticSecondVertex) {
+  return {
+      sourceFace,
+      targetFace,
+      directional::pipeline::surface_cell_source_edge_key(firstVertex,
+                                                           secondVertex),
+      directional::pipeline::surface_cell_source_edge_key(
+          semanticFirstVertex, semanticSecondVertex)};
+}
+
+std::vector<PeriodicHolonomyRouteStep> expected_forward_periodic_route() {
+  const auto rings = periodic_cylinder_vertex_rings();
+  const auto &bottom = rings[0];
+  const auto &top = rings[1];
+  std::vector<PeriodicHolonomyRouteStep> route;
+  route.reserve(32);
+  const auto append = [&](const int sourceFace, const int targetFace,
+                          const int firstVertex, const int secondVertex) {
+    route.push_back(periodic_route_step(
+        sourceFace, targetFace, firstVertex, secondVertex, firstVertex,
+        secondVertex));
+  };
+
+  append(0, 1, bottom[0], top[1]);
+  append(1, 30, bottom[0], top[0]);
+  for (int strip = 15; strip >= 1; --strip) {
+    append(2 * strip, 2 * strip + 1, bottom[strip],
+           top[(strip + 1) % 16]);
+    append(2 * strip + 1, 2 * (strip - 1), bottom[strip], top[strip]);
+  }
+  return route;
+}
+
+PeriodicHolonomyRouteFixture make_periodic_holonomy_route_fixture() {
+  PeriodicHolonomyRouteFixture fixture;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
+    throw std::runtime_error("Could not load the committed cylinder fixture.");
+  }
+  fixture.rawField =
+      read_rawfield_fixture(fieldPath, fixture.mesh.F.rows());
+  fixture.authoritativeField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, fixture.rawField);
+  fixture.expectedRoute = expected_forward_periodic_route();
+  return fixture;
+}
+
+PeriodicHolonomyRouteFixture reflect_periodic_holonomy_route_fixture(
+    const PeriodicHolonomyRouteFixture &source) {
+  const auto rings = periodic_cylinder_vertex_rings();
+  std::vector<int> oldToNew(static_cast<std::size_t>(source.mesh.V.rows()), -1);
+  Eigen::MatrixXd vertices = source.mesh.V;
+  for (const auto &ring : rings) {
+    for (int position = 0; position < 16; ++position) {
+      const int oldVertex = ring[static_cast<std::size_t>(position)];
+      const int newVertex =
+          ring[static_cast<std::size_t>((16 - position) % 16)];
+      oldToNew[static_cast<std::size_t>(oldVertex)] = newVertex;
+      vertices.row(newVertex) = source.mesh.V.row(oldVertex);
+    }
+  }
+  if (std::find(oldToNew.begin(), oldToNew.end(), -1) != oldToNew.end()) {
+    throw std::runtime_error("Incomplete reflected cylinder vertex authority.");
+  }
+
+  Eigen::MatrixXi faces = source.mesh.F;
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      faces(face, corner) =
+          oldToNew[static_cast<std::size_t>(source.mesh.F(face, corner))];
+    }
+  }
+
+  PeriodicHolonomyRouteFixture reflected;
+  reflected.mesh.set_mesh(vertices, faces);
+  reflected.rawField = source.rawField;
+  reflected.authoritativeField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reflected.mesh, reflected.rawField);
+
+  const auto &bottom = rings[0];
+  const auto &top = rings[1];
+  const auto append = [&](const int sourceFace, const int targetFace,
+                          const int oldFirstVertex,
+                          const int oldSecondVertex) {
+    reflected.expectedRoute.push_back(periodic_route_step(
+        sourceFace, targetFace,
+        oldToNew[static_cast<std::size_t>(oldFirstVertex)],
+        oldToNew[static_cast<std::size_t>(oldSecondVertex)], oldFirstVertex,
+        oldSecondVertex));
+  };
+  reflected.expectedRoute.reserve(32);
+  append(30, 1, bottom[0], top[0]);
+  for (int strip = 0; strip <= 14; ++strip) {
+    append(2 * strip + 1, 2 * strip, bottom[strip],
+           top[(strip + 1) % 16]);
+    append(2 * strip, 2 * (strip + 1) + 1, bottom[strip + 1],
+           top[strip + 1]);
+  }
+  append(31, 30, bottom[15], top[0]);
+  return reflected;
+}
+
+PeriodicHolonomyRouteFixture reorder_periodic_holonomy_faces(
+    const PeriodicHolonomyRouteFixture &source) {
+  PeriodicHolonomyRouteFixture reordered;
+  const int faceCount = source.mesh.F.rows();
+  Eigen::MatrixXi faces(faceCount, 3);
+  reordered.rawField.resize(source.rawField.rows(), source.rawField.cols());
+  std::vector<int> oldToNewFace(static_cast<std::size_t>(faceCount), -1);
+  for (int oldFace = 0; oldFace < faceCount; ++oldFace) {
+    const int newFace = faceCount - 1 - oldFace;
+    oldToNewFace[static_cast<std::size_t>(oldFace)] = newFace;
+    faces.row(newFace) = source.mesh.F.row(oldFace);
+    reordered.rawField.row(newFace) = source.rawField.row(oldFace);
+  }
+  reordered.mesh.set_mesh(source.mesh.V, faces);
+  reordered.authoritativeField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reordered.mesh, reordered.rawField);
+  reordered.expectedRoute = source.expectedRoute;
+  for (auto &step : reordered.expectedRoute) {
+    step.sourceFace =
+        oldToNewFace[static_cast<std::size_t>(step.sourceFace)];
+    step.targetFace =
+        oldToNewFace[static_cast<std::size_t>(step.targetFace)];
+  }
+  return reordered;
+}
+
+bool assign_directed_matching(
+    directional::fields::CrossFieldResult &field,
+    const PeriodicHolonomyRouteStep &step, const int matching) {
+  auto *transition = transition_for_edge(field, step.topology);
+  if (transition == nullptr) return false;
+  if (transition->firstFace == step.sourceFace &&
+      transition->secondFace == step.targetFace) {
+    transition->matching = matching;
+    return true;
+  }
+  if (transition->firstFace == step.targetFace &&
+      transition->secondFace == step.sourceFace) {
+    transition->matching = -matching;
+    return true;
+  }
+  return false;
+}
+
+directional::fields::CrossFieldResult balanced_periodic_route_field(
+    const PeriodicHolonomyRouteFixture &fixture) {
+  if (fixture.expectedRoute.size() != 32U) {
+    throw std::runtime_error("Unexpected periodic route cardinality.");
+  }
+  auto field = fixture.authoritativeField;
+  if (!assign_directed_matching(field, fixture.expectedRoute[0], 1) ||
+      !assign_directed_matching(field, fixture.expectedRoute[1], -1)) {
+    throw std::runtime_error("Could not author nonzero periodic transport.");
+  }
+  return field;
+}
+
+directional::geometry::SurfaceCellNetwork build_periodic_route_network(
+    const PeriodicHolonomyRouteFixture &fixture,
+    const directional::fields::CrossFieldResult &field) {
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  return directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, field, targetSize, options);
+}
+
+std::vector<std::uint64_t> periodic_route_topology(
+    const PeriodicHolonomyRouteFixture &fixture) {
+  std::vector<std::uint64_t> topology;
+  topology.reserve(fixture.expectedRoute.size());
+  for (const auto &step : fixture.expectedRoute) {
+    topology.push_back(step.topology);
+  }
+  return topology;
+}
+
+std::vector<int> independent_periodic_route_compact_ids(
+    const PeriodicHolonomyRouteFixture &fixture) {
+  std::map<std::uint64_t, int> compactByTopology;
+  int compact = 0;
+  for (const std::uint64_t topology : interior_source_edges(fixture.mesh)) {
+    compactByTopology.emplace(topology, compact++);
+  }
+  std::vector<int> route;
+  route.reserve(fixture.expectedRoute.size());
+  for (const auto &step : fixture.expectedRoute) {
+    const auto found = compactByTopology.find(step.topology);
+    route.push_back(found == compactByTopology.end() ? -1 : found->second);
+  }
+  return route;
+}
+
+using PeriodicHolonomySnapshot =
+    std::tuple<int, int, int, std::vector<int>, std::vector<std::uint64_t>,
+               std::vector<int>, std::vector<std::uint64_t>>;
+
+PeriodicHolonomySnapshot periodic_holonomy_snapshot(
+    const directional::geometry::SurfacePeriodicHolonomy &holonomy) {
+  return {holonomy.quarterTurnRotation,
+          holonomy.latticeTranslation.x(),
+          holonomy.latticeTranslation.y(),
+          holonomy.sourceRouteEdges,
+          holonomy.sourceRouteTopology,
+          holonomy.cutSourceEdges,
+          holonomy.cutSourceTopology};
+}
+
+directional::fields::CrossFieldResult make_legacy_periodic_route_field(
+    const PeriodicHolonomyRouteFixture &fixture,
+    const directional::fields::CrossFieldResult &authoritative) {
+  std::map<std::uint64_t, std::array<int, 2>> incidence;
+  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const std::uint64_t topology =
+          directional::pipeline::surface_cell_source_edge_key(
+              fixture.mesh.F(face, corner),
+              fixture.mesh.F(face, (corner + 1) % 3));
+      auto [found, inserted] = incidence.try_emplace(
+          topology, std::array<int, 2>{face, -1});
+      if (!inserted && found->second[0] != face && found->second[1] < 0) {
+        found->second[1] = face;
+      }
+    }
+  }
+
+  auto legacy = authoritative;
+  const std::size_t interiorCount = static_cast<std::size_t>(std::count_if(
+      incidence.begin(), incidence.end(), [](const auto &entry) {
+        return entry.second[0] >= 0 && entry.second[1] >= 0;
+      }));
+  legacy.matching.resize(static_cast<Eigen::Index>(interiorCount));
+  legacy.effort.resize(static_cast<Eigen::Index>(interiorCount));
+  int compact = 0;
+  for (const auto &[topology, faces] : incidence) {
+    if (faces[0] < 0 || faces[1] < 0) continue;
+    const auto *transition = transition_for_edge(authoritative, topology);
+    if (transition == nullptr) {
+      throw std::runtime_error("Missing periodic legacy transition authority.");
+    }
+    legacy.matching[compact] =
+        directed_matching(*transition, faces[0], faces[1]);
+    legacy.effort[compact] = transition->effort;
+    ++compact;
+  }
+  legacy.edgeTransitions.clear();
+  return legacy;
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     NonzeroStepsComposeToZeroWholeCycle) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto field = balanced_periodic_route_field(fixture);
+  const auto *first = transition_for_edge(field, fixture.expectedRoute[0].topology);
+  const auto *second = transition_for_edge(field, fixture.expectedRoute[1].topology);
+  ASSERT_NE(nullptr, first);
+  ASSERT_NE(nullptr, second);
+  EXPECT_EQ(1, directed_matching(*first, fixture.expectedRoute[0].sourceFace,
+                                 fixture.expectedRoute[0].targetFace));
+  EXPECT_EQ(-1, directed_matching(*second, fixture.expectedRoute[1].sourceFace,
+                                  fixture.expectedRoute[1].targetFace));
+
+  const auto network = build_periodic_route_network(fixture, field);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
+  const auto &holonomy = network.phaseFront.periodicHolonomies.front();
+  EXPECT_EQ(0, holonomy.quarterTurnRotation);
+  EXPECT_EQ(periodic_route_topology(fixture), holonomy.sourceRouteTopology);
+  EXPECT_EQ(independent_periodic_route_compact_ids(fixture),
+            holonomy.sourceRouteEdges);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     ReverseObservedCycleUsesExactTransportInverse) {
+  const auto forwardFixture = make_periodic_holonomy_route_fixture();
+  const auto reverseFixture =
+      reflect_periodic_holonomy_route_fixture(forwardFixture);
+  const auto forwardField = balanced_periodic_route_field(forwardFixture);
+  const auto reverseField = balanced_periodic_route_field(reverseFixture);
+
+  for (const auto &forwardStep : forwardFixture.expectedRoute) {
+    const auto reverseStep = std::find_if(
+        reverseFixture.expectedRoute.begin(), reverseFixture.expectedRoute.end(),
+        [&](const auto &candidate) {
+          return candidate.semanticTopology == forwardStep.semanticTopology &&
+                 candidate.sourceFace == forwardStep.targetFace &&
+                 candidate.targetFace == forwardStep.sourceFace;
+        });
+    ASSERT_NE(reverseFixture.expectedRoute.end(), reverseStep);
+    const auto *forwardTransition =
+        transition_for_edge(forwardField, forwardStep.topology);
+    const auto *reverseTransition =
+        transition_for_edge(reverseField, reverseStep->topology);
+    ASSERT_NE(nullptr, forwardTransition);
+    ASSERT_NE(nullptr, reverseTransition);
+    const int forwardMatching = directed_matching(
+        *forwardTransition, forwardStep.sourceFace, forwardStep.targetFace);
+    const int reverseMatching = directed_matching(
+        *reverseTransition, reverseStep->sourceFace, reverseStep->targetFace);
+    EXPECT_EQ(0, fixture_quarter_turn(forwardMatching + reverseMatching));
+  }
+
+  const auto forward =
+      build_periodic_route_network(forwardFixture, forwardField);
+  const auto reverse =
+      build_periodic_route_network(reverseFixture, reverseField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forward.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reverse.phaseFront.disposition);
+  ASSERT_EQ(1U, forward.phaseFront.periodicHolonomies.size());
+  ASSERT_EQ(1U, reverse.phaseFront.periodicHolonomies.size());
+  EXPECT_EQ(0, forward.phaseFront.periodicHolonomies.front().quarterTurnRotation);
+  EXPECT_EQ(0, reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation);
+  EXPECT_EQ(periodic_route_topology(forwardFixture),
+            forward.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+  EXPECT_EQ(periodic_route_topology(reverseFixture),
+            reverse.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     EquivalentSignedRepresentationsNormalizeSemantically) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto baselineField = balanced_periodic_route_field(fixture);
+  auto equivalentField = baselineField;
+  auto *first = transition_for_edge(
+      equivalentField, fixture.expectedRoute[0].topology);
+  auto *second = transition_for_edge(
+      equivalentField, fixture.expectedRoute[1].topology);
+  ASSERT_NE(nullptr, first);
+  ASSERT_NE(nullptr, second);
+  first->matching += 4;
+  second->matching -= 4;
+
+  const auto baseline = build_periodic_route_network(fixture, baselineField);
+  const auto equivalent =
+      build_periodic_route_network(fixture, equivalentField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            baseline.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            equivalent.phaseFront.disposition);
+  ASSERT_EQ(1U, baseline.phaseFront.periodicHolonomies.size());
+  ASSERT_EQ(1U, equivalent.phaseFront.periodicHolonomies.size());
+  EXPECT_EQ(periodic_holonomy_snapshot(
+                baseline.phaseFront.periodicHolonomies.front()),
+            periodic_holonomy_snapshot(
+                equivalent.phaseFront.periodicHolonomies.front()));
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     RouteTopologyAndCompactIdentityIgnoreFaceRowOrder) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto reordered = reorder_periodic_holonomy_faces(fixture);
+  const auto field = balanced_periodic_route_field(fixture);
+  const auto reorderedField = balanced_periodic_route_field(reordered);
+
+  const auto baseline = build_periodic_route_network(fixture, field);
+  const auto permuted =
+      build_periodic_route_network(reordered, reorderedField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            baseline.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            permuted.phaseFront.disposition);
+  ASSERT_EQ(1U, baseline.phaseFront.periodicHolonomies.size());
+  ASSERT_EQ(1U, permuted.phaseFront.periodicHolonomies.size());
+  const auto expectedTopology = periodic_route_topology(fixture);
+  const auto expectedCompact = independent_periodic_route_compact_ids(fixture);
+  ASSERT_EQ(expectedTopology, periodic_route_topology(reordered));
+  ASSERT_EQ(expectedCompact, independent_periodic_route_compact_ids(reordered));
+  EXPECT_EQ(expectedTopology,
+            baseline.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+  EXPECT_EQ(expectedTopology,
+            permuted.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+  EXPECT_EQ(expectedCompact,
+            baseline.phaseFront.periodicHolonomies.front().sourceRouteEdges);
+  EXPECT_EQ(expectedCompact,
+            permuted.phaseFront.periodicHolonomies.front().sourceRouteEdges);
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     MalformedAuthoritativeCrossingProvenanceFailsClosed) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  auto malformed = balanced_periodic_route_field(fixture);
+  auto *transition = transition_for_edge(
+      malformed, fixture.expectedRoute.front().topology);
+  ASSERT_NE(nullptr, transition);
+  ASSERT_GE(transition->sourceEdge, 0);
+  transition->sourceEdge = -1;
+
+  const auto rejected = build_periodic_route_network(fixture, malformed);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                PeriodicHolonomyMismatch,
+            rejected.phaseFront.failure.reason);
+  EXPECT_EQ(fixture.expectedRoute.front().sourceFace,
+            rejected.phaseFront.failure.face);
+  EXPECT_EQ(fixture.expectedRoute.front().targetFace,
+            rejected.phaseFront.failure.targetFace);
+  EXPECT_FALSE(rejected.phaseFront.succeeded);
+  EXPECT_TRUE(rejected.phaseFront.cells.empty());
+  EXPECT_TRUE(rejected.seeds.empty());
+  EXPECT_TRUE(rejected.traces.empty());
+  EXPECT_TRUE(rejected.proposals.empty());
+}
+
+TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
+     LegacyMatchingPathUsesSameTypedAlgebra) {
+  const auto fixture = make_periodic_holonomy_route_fixture();
+  const auto authoritativeField = balanced_periodic_route_field(fixture);
+  const auto legacyField =
+      make_legacy_periodic_route_field(fixture, authoritativeField);
+  ASSERT_TRUE(legacyField.edgeTransitions.empty());
+
+  const auto authoritative =
+      build_periodic_route_network(fixture, authoritativeField);
+  const auto legacy = build_periodic_route_network(fixture, legacyField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            authoritative.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            legacy.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             legacy.phaseFront.failure.reason);
+  ASSERT_EQ(1U, authoritative.phaseFront.periodicHolonomies.size());
+  ASSERT_EQ(1U, legacy.phaseFront.periodicHolonomies.size());
+  EXPECT_EQ(periodic_holonomy_snapshot(
+                authoritative.phaseFront.periodicHolonomies.front()),
+            periodic_holonomy_snapshot(
+                legacy.phaseFront.periodicHolonomies.front()));
+}
+
 TEST(SurfaceCellsPhase10,
      ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary) {
   const auto meshPath = directional::tests::benchmark_fixture_path(

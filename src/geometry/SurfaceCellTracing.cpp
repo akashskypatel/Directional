@@ -7114,9 +7114,10 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                             SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
     return result;
   }
-  int totalMatching = 0;
   std::vector<int> holonomyRoute;
   std::vector<std::uint64_t> holonomyRouteTopology;
+  std::vector<authority::TransitionStep> observedSteps;
+  observedSteps.reserve(faceCycle.size());
   for (std::size_t index = 0; index < faceCycle.size(); ++index) {
     const int sourceFace = faceCycle[index];
     const int targetFace = faceCycle[(index + 1U) % faceCycle.size()];
@@ -7145,6 +7146,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     }
     holonomyRoute.push_back(sourceEdge);
     holonomyRouteTopology.push_back(sharedKey);
+    int matching = 0;
     if (hasTransitions) {
       const auto found = transitionLookup.byEdge.find(sharedKey);
       if (found == transitionLookup.byEdge.end() ||
@@ -7155,9 +7157,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                                 -1, -1, sourceFace, targetFace, -1, sourceEdge);
         return result;
       }
-      int matching = found->second.matching;
+      matching = found->second.matching;
       if (found->second.secondFace == sourceFace) matching = -matching;
-      totalMatching += matching;
     } else if (edgeMatching != nullptr && edgeMatching->size() > 0) {
       const auto matchingIndex = matchingIndices.find(sharedKey);
       if (matchingIndex == matchingIndices.end() ||
@@ -7168,13 +7169,73 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
                                 -1, -1, sourceFace, targetFace, -1, sourceEdge);
         return result;
       }
-      int matching = (*edgeMatching)[matchingIndex->second];
+      matching = (*edgeMatching)[matchingIndex->second];
       const auto topology = incident.find(sharedKey);
       if (topology != incident.end() && topology->second[1] == sourceFace) matching = -matching;
-      totalMatching += matching;
     }
+
+    const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+        static_cast<std::int64_t>(sharedKey >> 32U),
+        static_cast<std::size_t>(vertices.rows()));
+    const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+        static_cast<std::int64_t>(sharedKey & 0xffffffffULL),
+        static_cast<std::size_t>(vertices.rows()));
+    if (!firstVertex || !secondVertex) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    const auto topology = authority::SourceEdgeTopologyKey::make(
+        firstVertex.value(), secondVertex.value());
+    if (!topology) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    const std::uint64_t compatibilityTopology = edge_key(
+        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+            topology.value().first())),
+        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+            topology.value().second())));
+    const auto interiorTransition =
+        authority::LegacyAuthorityAdapters::interior_transition(
+            sourceEdge, sourceMatchingIndices.size());
+    if (compatibilityTopology != sharedKey || !interiorTransition) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    const auto typedStep = authority::TransitionStep::interior(
+        topology.value(),
+        std::optional<authority::InteriorTransitionId>{
+            interiorTransition.value()},
+        authority::GridAutomorphism{
+            authority::QuarterTurn::from_integer(matching),
+            authority::LatticeTranslation{0, 0}},
+        authority::Orientation::Forward);
+    if (!typedStep) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    observedSteps.push_back(typedStep.value());
   }
-  if (normalized_branch(totalMatching) != 0) {
+  const authority::CanonicalRoute typedRoute =
+      authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
+  authority::GridAutomorphism routeTransport =
+      authority::GridAutomorphism::identity();
+  for (const authority::TransitionStep &step : typedRoute.oriented_steps()) {
+    routeTransport = compose(step.transport(), routeTransport);
+  }
+  if (routeTransport.rotation.value() != 0U) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);

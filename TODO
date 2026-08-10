@@ -5,7 +5,7 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a/M1b/M1c/M1d/M1e/M1f immutable accepted; M1g Periodic Holonomy Route Transport Consumer Code + Build next**.
+- Architecture migration: **M1a/M1b/M1c/M1d/M1e/M1f immutable accepted; M1g Periodic Holonomy Route Transport Consumer Code + Build active**.
 - M1e immutable acceptance: implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`, build run/job `31351113129 / 93341993183`, artifacts `9049125645 / 9049125905`; focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
 - Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
 - Authoritative next turn: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`.
@@ -75,6 +75,12 @@ Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted 
 The first compile-only implementation `17afbfd8baf0d369d9136534c0a11784ca0dca10` exposed a namespace-ownership ambiguity in `source_edge_provenance`; the correction was source-local and compiled successfully. No new stable regression event or recurrence was created.
 
 Current immutable report: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`. Next Code + Build: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`. The next build must also correct the stale MultiFaceSeam/CloseSheets names in packaged `metadata/direct-product-test-names.txt` without product-behavior changes.
+
+## M1g Code + Build active checkpoint
+
+Starting branch authority is `c4bbc5c347611a024531966ddd22494863da15ef`. The selected periodic canonical-face-cycle owner now stages checked source-vertex/topology/compact-transition adapters, one `TransitionStep` per observed crossing, one `CanonicalRoute`, and ordered `GridAutomorphism` composition while retaining the existing zero-rotation `PeriodicHolonomyMismatch` decision. Six `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration` production-path contracts are compiled but must remain unexecuted until the immutable Test + Benchmark turn.
+
+The staged product/test scope is limited to `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. Local `g++ -fsyntax-only` checks pass for both translation units. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input has run. Authoritative pushed-commit compile/package evidence is still pending.
 
 ## Regression status
 
