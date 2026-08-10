@@ -110,7 +110,11 @@ No stable product regression event or recurrence is assigned from this compile/p
 
 M1l is **runtime pending**. M1a through M1k remain the current immutable semantic architecture authority.
 
-## 8. Mandatory next turn
+## 8. Repository closeout state
+
+Per `CLEAN_UP_POLICY.md`, superseded M1k per-turn evidence and the consumed M1l Code + Build plan were retired after durable facts were consolidated into `CHANGELOG.md`, the regression tracker, and this report. All temporary M1l workflows, triggers, and payloads were removed in workflow-first order. Only `.github/workflows/agent-source-snapshot.yml` remains durable.
+
+## 9. Mandatory next turn
 
 Run **M1l Phase-Front Cell Topology-Region Consumer — immutable Artifact-Only Test + Benchmark only** under:
 
