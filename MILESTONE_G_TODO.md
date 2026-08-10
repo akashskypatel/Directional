@@ -34,33 +34,47 @@ Direct Plane/MultiFaceSeam/CloseSheets/Cylinder remain green and independent-ora
 
 M1d Bunny/Vase artifact-only comparison run `31343763822` preserved accepted known-red/safety dispositions and exact package authority. Bunny remained `NotProductionReady:completion` with independent-oracle-before-fatal ordering; Vase reached `[ RUN ]` and was bounded at 60 seconds. Temporary runtime workflow/trigger files were removed.
 
-Current retained report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable M1e report.
 
-## M1e immutable acceptance and authoritative next turn
-
-Run **M1e Segment Route Transport Consumer — immutable Test + Benchmark only** under:
-
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
+## M1e segment route transport — immutable accepted
 
 Selected boundary:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-M1e is intentionally narrow. Implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` replaces only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
+Implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` replaces only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
 
-M1e must not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
+M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
 
-Compile-only run/job `31351113129 / 93341993183` completed **120/120**. Result/log artifacts `9049125645 / 9049125905` have ZIP SHA-256 `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7 / fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be`; the recursive manifest is **61/61**, SHA-256 `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`. Code + Build executed no generated Directional binary. M1e immutable runtime passed all required-green gates and is accepted.
+| Evidence | Value |
+|---|---|
+| Build run/job | `31351113129 / 93341993183`, **120/120** |
+| Result artifact / SHA-256 | `9049125645` / `d16222c62f6f7491eaa830fe22ac4f768b6f426646639f155ccfd8feb9d378f7` |
+| Log artifact / SHA-256 | `9049125905` / `fd1d816fd4265f803f6be278941eb7647d056eb6336d05fe98e865621fd5e7be` |
+| Recursive manifest | **61/61**, `36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5` |
+| Producer discovery | exactly **184** |
+| M1e focused | **6/6** |
+| required-green producer | **169/169** |
+| M1d / M1c / M1b | **6/6 + 3/3**, **6/6 + 3/3**, **6/6** |
+| validation / M1a / T1 | **77/77**, **14/14**, **29/29** |
+| direct products | Plane / MultiFaceSeam / CloseSheets / Cylinder green and independent-oracle clean |
 
-Current Code + Build report:
+Current immutable report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+## Authoritative next turn
+
+Run **M1f Vertex Continuation Route Transport Consumer — Code + Build only** under:
+
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
+
+M1f is intentionally limited to the real `resolve_vertex_continuation` ordered source-vertex route transport owner. It must preserve continuation path discovery/ranking and defer periodic whole-cycle holonomy, `FieldChartId`, M2–M6, and G4 remediation.
 
 ## Regression disposition
 
 - `RP-01`: M1e checked step domains **accepted**.
 - `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**.
 - `RP-07`: M1e cumulative ordered-route transport **accepted**.
-- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through M1d and preserved through M1e immutable validation.
+- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 - Strict-validator timing is nondeterministic under the exact M1e artifact (**6/10 pass, 4/10 fail**) and remains a deferred performance-test defect; no threshold/retry workaround is authorized.
@@ -81,8 +95,6 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
 - `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
