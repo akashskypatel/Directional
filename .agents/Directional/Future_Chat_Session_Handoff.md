@@ -32,7 +32,6 @@ Authoritative next plan:
 `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## M1h immutable acceptance authority
-## M1h immutable acceptance authority
 
 M1h is accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` over unchanged production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` and exact artifacts `9069186973 / 9069187317`.
 
@@ -45,7 +44,7 @@ Historical regression totals remain **34 events / 14 categories / 20 recurrences
 Current immutable report:
 `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
 
-Authoritative next plan:
+Historical following plan:
 `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ## M1g immutable acceptance authority
