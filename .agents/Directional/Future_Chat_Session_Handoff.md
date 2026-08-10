@@ -48,12 +48,7 @@ Final M1e implementation at `segment_on_source`:
 - preserves `transitionSourceEdges`, `transitionSourceTopology`, singular last-edge compatibility storage, effort, and the explicit `edgeTransitions`-absent legacy path;
 - does not migrate periodic-holonomy accumulation, `FieldChartId`, public schemas, topology/conformity/quotient work, validators, fallback/recovery, optimization, or G4 behavior.
 
-Final product/test blobs:
-
-- `src/geometry/SurfaceCellTracing.cpp` `34372a48412213d3b4db6d0bc3e653e7d3225ef0`;
-- `tests/SurfaceCellsPhase10Tests.cpp` `eba2febae6d5a226ea2dd90035e8e5ac28bf0de4`.
-
-M1d pipeline/test blobs remain unchanged: `481f58169fe73844b12d9e70660d49fa3e13f845` / `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
+Final product/test blobs: `src/geometry/SurfaceCellTracing.cpp` `34372a48412213d3b4db6d0bc3e653e7d3225ef0`; `tests/SurfaceCellsPhase10Tests.cpp` `eba2febae6d5a226ea2dd90035e8e5ac28bf0de4`. M1d pipeline/test blobs remain unchanged: `481f58169fe73844b12d9e70660d49fa3e13f845` / `dc82faf06898d8516ddd55b2ae56c2b240c761fb`.
 
 ## Compile correction lesson
 
@@ -63,46 +58,23 @@ Two v2 workflow events `31345414148 / 31345419666` were invalid temporary YAML a
 
 ## Exact M1e focused authority
 
-The package statically contains exactly six contracts:
-
-1. `SurfaceCellSegmentRouteTransportAuthorityMigration.MultiStepVertexFanComposesTypedRouteTransport`;
-2. `.ReverseObservedRouteUsesExactTransportInverse`;
-3. `.EquivalentSignedQuarterTurnsComposeSemantically`;
-4. `.RouteTopologyAndCompactTransitionProvenanceRemainUnchanged`;
-5. `.MalformedAuthoritativeStepMetadataFailsClosedWithoutFallback`;
-6. `.LegacyMatchingFallbackUsesSameTypedRouteComposition`.
-
-Static manifest SHA-256: `b6a1c9035b2cd15a13844f812e7261ee0e199e72d0150d9a093a59d1ce713556`.
+The package statically contains exactly six `SurfaceCellSegmentRouteTransportAuthorityMigration` contracts: multi-step composition, reverse exact inverse, modulo-equivalent signed quarter turns, provenance preservation, malformed authoritative fail-closed behavior, and legacy matching compatibility. Static manifest SHA-256: `b6a1c9035b2cd15a13844f812e7261ee0e199e72d0150d9a093a59d1ce713556`.
 
 Require exact six-member discovery and **6/6** fresh-process success. Zero selection is invalid. If a fixture does not actually establish its semantic precondition—especially reciprocal reverse-route existence or malformed-authority fail-closed behavior—do not weaken it in the immutable turn; return to corrective Code + Build.
 
 ## Required preservation matrix
 
-The immutable turn must prove:
+The immutable turn must prove producer discovery **184**; M1e **6/6**; ordered vertex-fan witnesses **2/2**; M1d **6/6 + 3/3**; M1c **6/6 + 3/3**; required-green producer **169/169**; nine historical/deferred reds explicitly classified; M1b **6/6 + validation 77/77**; M1a **14/14**; T1 **29/29**; Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean; Bunny/Vase exact-artifact comparison; and immutable postflight.
 
-- producer discovery exactly **184**;
-- M1e focused exact six **6/6**;
-- existing ordered vertex-fan witnesses **2/2**;
-- M1d exact six **6/6** plus three route counterexamples;
-- M1c exact six **6/6** plus three transition counterexamples;
-- required-green producer segment exactly **169/169**;
-- all nine historical/deferred producer reds explicitly classified;
-- M1b **6/6** + validation discovery 77 and **77/77**;
-- M1a exact 14 and **14/14**;
-- T1 exact 29 and **29/29**;
-- Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean;
-- Bunny/Vase known-red/safety comparison from exact M1e artifact;
-- exact immutable postflight.
+Producer accounting target is `169 + 4 direct + 9 known-red + BunnyRandom + Vase = 184`.
 
-Producer accounting target is `169 required-green + 4 direct + 9 historical/deferred red + BunnyRandom + Vase = 184`.
-
-Expected executable hashes include producer `0a8e67953e7221daf0fe607794c3b69f2e3fb8331b91ab08a02c10d52152943e`, oracle `6cc9e1f7a6e767e42bec0ab3fe54eee0c29d9381b4ea63fb716be3eb9f7dea90`, authority `bb2bac416a809c7b286d574da800f1bdf471b7093f2e5d81dbbe434f1a799c71`, and validation `ccbda0c7d5525c7a9d8a20d0696da40884ca95800e7ac7cb6dbb4befcced00e6`.
+Expected hashes include producer `0a8e67953e7221daf0fe607794c3b69f2e3fb8331b91ab08a02c10d52152943e`, oracle `6cc9e1f7a6e767e42bec0ab3fe54eee0c29d9381b4ea63fb716be3eb9f7dea90`, authority `bb2bac416a809c7b286d574da800f1bdf471b7093f2e5d81dbbe434f1a799c71`, validation `ccbda0c7d5525c7a9d8a20d0696da40884ca95800e7ac7cb6dbb4befcced00e6`.
 
 ## Bunny/Vase standing procedure
 
 Artifact-only GitHub Actions runtime remains authorized when local limits make Bunny/Vase impractical. For M1e, any temporary workflow must download exact artifact `9047295489` from run `31345475101`, verify outer digest/all 61 checksums/build metadata/producer hash before runtime, perform no rebuild/content mutation, preserve raw evidence, and clean workflow/trigger/helper files before closeout.
 
-Accepted entering M1d comparison remains: Bunny independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase reaches `[ RUN ]` and is bounded at 60 seconds. Do not promote either to green merely to close M1e.
+Accepted entering comparison remains: Bunny independent oracle rejects first, then unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase reaches `[ RUN ]` and is bounded at 60 seconds. Do not promote either to green merely to close M1e.
 
 ## Regression/architecture disposition
 
@@ -110,24 +82,24 @@ Accepted entering M1d comparison remains: Bunny independent oracle rejects first
 - `RP-05`: M1e semantic step identity and observed/canonical route orientation **compile-complete; runtime pending**.
 - `RP-07`: M1e typed cumulative route transport **compile-complete; runtime pending**; this is the primary slice.
 - `RP-02 / TA-05`: independent preservation pending the immutable turn.
-- Historical totals remain **34 events / 14 categories / 20 recurrences**. Compile/infrastructure failures in this turn are not stable runtime regression events.
+- Historical totals remain **34 events / 14 categories / 20 recurrences**. Compile/infrastructure failures are not stable runtime regression events.
 - `PR8-R034 / G4-R007` remains active and separate; direct torus remains 0/3 after 192 quads with 241 `LocalSheetMismatch`, historical exact torus remains `InvalidHardRailPairing`.
 
 ## Durable `.agents/Directional` cleanup policy — mandatory
 
-This section is durable handoff policy and must remain in every future rewrite unless the user explicitly changes it.
+This section must remain in every future rewrite unless the user explicitly changes it.
 
-- Keep durable project authority: `DESIGN.md`, `REORIENTATION_PLAN.md`, `Surface_Cell_Backend_Remediation_Plan.md`, `Surface_Cell_Architecture_Independent_Design_Review_Report.md`, `Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`, `GitHub_Workflow_Policy.md`, `Regression_Root_Cause_Tracker.md`, `PR_8_Regression_Audit_Inventory.md`, and this handoff. `TODO`, `MILESTONE_G_TODO.md`, and `tests/TESTING_STRATEGY.md` are also durable even though outside this directory.
-- In addition to the durable set, retain only the **current authoritative evidence/report** and the **single next-turn plan** needed to resume work. Do not accumulate superseded Code+Build/Test+Benchmark plans/reports, review evidence, machine summaries, or temporary workflow payloads after their facts are folded into durable/live authority.
-- **Every Test + Benchmark turn begins with stale-evidence cleanup**: remove previous TB evidence and other superseded turn documents after verifying accepted facts, stable regression IDs, artifact identities, and unresolved blockers are represented in durable trackers/current authority.
-- **Every Test + Benchmark turn ends by replacing stale evidence with current evidence**: retain the new authoritative TB report plus exactly one next Code+Build plan; remove the consumed TB plan, superseded preceding Code+Build report/plan, and older turn evidence. Never delete the current immutable package authority before its necessary facts are captured.
-- Raw machine-readable evidence that remains the sole authority for a claim is not stale. External Actions artifacts remain governed by retention policy; repository cleanup concerns stale checked-in summaries.
-- Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory handoff instruction merely to reduce file count.
-- After cleanup, audit retained documents for references to deleted current-head files and repair them before closeout.
+- Keep durable project authority: `DESIGN.md`, `REORIENTATION_PLAN.md`, `Surface_Cell_Backend_Remediation_Plan.md`, `Surface_Cell_Architecture_Independent_Design_Review_Report.md`, `Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`, `GitHub_Workflow_Policy.md`, `Regression_Root_Cause_Tracker.md`, `PR_8_Regression_Audit_Inventory.md`, and this handoff. `TODO`, `MILESTONE_G_TODO.md`, and `tests/TESTING_STRATEGY.md` are also durable.
+- In addition retain only the **current authoritative evidence/report** and **single next-turn plan**. Do not accumulate superseded turn evidence after its necessary facts are folded into durable/live authority.
+- **Every Test + Benchmark turn begins with stale-evidence cleanup** after accepted facts/stable IDs/artifact identities/open blockers are represented durably.
+- **Every Test + Benchmark turn ends by replacing stale evidence with current evidence**: retain the new TB report plus exactly one next Code + Build plan; remove consumed/superseded turn evidence only after necessary facts are captured.
+- Raw machine-readable evidence that remains sole authority is not stale. External Actions artifacts remain governed by retention policy.
+- Never remove/weaken/consolidate/reinterpret a durable document merely to reduce file count.
+- Audit retained live references after cleanup.
 
 ### Temporary workflow cleanup order — mandatory lesson
 
-Always remove/disable a temporary path-filtered workflow **before** deleting its trigger marker/payload. The M1d closeout once reversed that order and created redundant non-authoritative run `31343858635`. M1e cleanup followed the corrected order: all three temporary workflows were deleted first, then triggers, then the apply script.
+Always remove/disable a temporary path-filtered workflow **before** deleting its trigger marker/payload. M1d once reversed this and created redundant run `31343858635`. M1e cleanup followed the corrected order: all three temporary workflows were deleted first, then triggers, then the apply script.
 
 ## Core references
 
