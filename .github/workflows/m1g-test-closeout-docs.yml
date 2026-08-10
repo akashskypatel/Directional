@@ -1,0 +1,399 @@
+name: m1g-test-closeout-docs
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1g-test-closeout-docs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1g-test-closeout-docs
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      LOG_DIR: /tmp/m1g-doc-closeout
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          printf '%s\n' \
+            'turn=M1g Test+Benchmark documentation closeout' \
+            "run_id=$GITHUB_RUN_ID" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'source_edit=false' 'test_edit=false' 'build_edit=false' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            | tee "$LOG_DIR/activity.log"
+
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+
+      - name: Update durable current authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$LOG_DIR/activity.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'rc=$?; echo "step=update-docs exit_code=$rc"; exit $rc' EXIT
+          python3 <<'PY'
+          from pathlib import Path
+
+          def read(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          def write(path, text):
+              Path(path).write_text(text, encoding='utf-8')
+
+          def replace_required(text, old, new, label):
+              if old not in text:
+                  raise SystemExit(f'missing required replacement: {label}')
+              return text.replace(old, new)
+
+          def replace_section(text, start_heading, next_heading, replacement, label):
+              start = text.find(start_heading)
+              if start < 0:
+                  raise SystemExit(f'missing section start: {label}')
+              end = text.find(next_heading, start + len(start_heading))
+              if end < 0:
+                  raise SystemExit(f'missing section end: {label}')
+              return text[:start] + replacement.rstrip() + '\n\n' + text[end:]
+
+          report = '.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md'
+          next_plan = '.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md'
+          old_report_name = 'Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md'
+          old_plan_name = 'Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md'
+          new_report_name = Path(report).name
+          new_plan_name = Path(next_plan).name
+          for required in (report, next_plan):
+              if not Path(required).is_file():
+                  raise SystemExit(f'missing new authority file: {required}')
+
+          # Handoff: replace only current M1g/M1h authority sections; retain historical sections.
+          path = '.agents/Directional/Future_Chat_Session_Handoff.md'
+          text = read(path)
+          text = replace_section(
+              text,
+              '## Mandatory next turn',
+              '## M1g compile/package authority — runtime pending',
+              '''## Mandatory next turn
+
+Run **M1h Phase-Front Field-Chart Consumer — Code + Build only** under:
+
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`
+
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. Review policy is `never`.
+
+M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from exact artifact `9053047653`. The next bounded owner is `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. M1h must adopt checked `FieldChartId` at that real producer/consumer boundary while preserving chart partitioning/numbering, phase/front topology, compatibility output, periodic rejection behavior, and all G4 outcomes. The same Code + Build turn must make packaged fixture lookup recognize the executable-relative sibling `../test-data` layout discovered during M1g runtime. No generated Directional binary may execute in Code + Build.''',
+              'handoff mandatory next')
+          text = replace_section(
+              text,
+              '## M1g compile/package authority — runtime pending',
+              '## M1f compile/package authority — historical accepted build',
+              '''## M1g immutable acceptance authority
+
+Selected seam:
+`periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
+
+| Evidence | Value |
+|---|---|
+| implementation | `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` |
+| build run/job | `31362470744 / 93373936472` |
+| result artifact / SHA-256 | `9053047653` / `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c` |
+| log artifact / SHA-256 | `9053048092` / `c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9` |
+| recursive manifest | **64/64**, `89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae` |
+| producer discovery / required-green | **196 / 181/181** |
+| M1g focused | **6/6** individually |
+| validation / M1a / T1 | **77/77 / 14/14 / 29/29** |
+| direct products | Plane / MultiFaceSeam / CloseSheets / Cylinder green and independent-oracle clean |
+
+M1g preserves the existing nonzero whole-cycle `PeriodicHolonomyMismatch`; `G4-B003` remains unresolved. All eight historical/deferred red classifications are unchanged. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. Strict-validator timing remains a deferred nondeterministic microbenchmark defect (M1g characterization **1/10 pass, 9/10 fail**).
+
+Remote heavy evidence is run `31394985769`: Bunny job `93475574330`, evidence/log artifacts `9065273769 / 9065273267`; Vase job `93475574119`, evidence/log artifacts `9065263527 / 9065262959`. Exact local and remote postflight preserved immutable package authority. The temporary runtime workflow was removed before its trigger; only `agent-source-snapshot.yml` remains durable.
+
+M1g also exposed a non-product artifact-portability defect: `test_data_root()` searches `bin/test-data` while the immutable package stores sibling `../test-data`. Runtime-only fixture symlinks were used outside packaged content. M1h Code + Build owns the minimal executable-relative lookup correction.
+
+Current immutable report:
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+Authoritative next plan:
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.''',
+              'handoff M1g accepted')
+          write(path, text)
+
+          # TODO: update active direction and replace the current M1g checkpoint only.
+          path = 'TODO'
+          text = read(path)
+          text = replace_required(
+              text,
+              '- Architecture migration: **M1a/M1b/M1c/M1d/M1e/M1f immutable accepted; M1g Periodic Holonomy Route Transport Consumer compile/package complete, immutable runtime pending**.',
+              '- Architecture migration: **M1a through M1g immutable accepted; M1h Phase-Front Field-Chart Consumer Code + Build next**.',
+              'TODO architecture status')
+          text = replace_section(
+              text,
+              '## M1g compile/package checkpoint — immutable runtime pending',
+              '## Regression status',
+              '''## M1g immutable acceptance checkpoint
+
+Selected boundary:
+`periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
+
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from result/log artifacts `9053047653 / 9053048092`. Exact runtime authority: producer discovery **196**, M1g focused **6/6**, required-green producer **181/181**, M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle products all green. Eight historical/deferred reds retained their entering classes. Bunny preserved `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remained bounded safety-only at 60 seconds.
+
+Remote heavy run `31394985769` produced dedicated Bunny evidence/log artifacts `9065273769 / 9065273267` and Vase evidence/log artifacts `9065263527 / 9065262959`. Exact local/remote postflight preserved the result ZIP, build-log ZIP, **64/64** content manifest, 65 regular files, seven executables, two libraries, and 27 fixtures. No new stable regression or recurrence was created.
+
+M1g preserves nonzero `PeriodicHolonomyMismatch`; `G4-B003` remains unresolved. Strict-validator timing remains deferred after M1g **1/10 pass, 9/10 fail** fresh characterization.
+
+Artifact runtime also confirmed a portability defect in `tests/TestFixturePaths.h`: the helper searches `bin/test-data`, while the package stores sibling `../test-data`. M1h must correct only that lookup fallback and then adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` without changing product behavior.
+
+Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+Next Code + Build: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.''',
+              'TODO M1g section')
+          text = text.replace(
+              '- M1g `RP-01 / RP-05 / RP-07` periodic-route migration is compile/package complete and runtime pending; preservation is not accepted until immutable artifact execution.',
+              '- M1g `RP-01 / RP-05 / RP-07` periodic-route migration is **immutable accepted**; `RP-02 / TA-05` preservation is re-proven from exact artifact execution.')
+          write(path, text)
+
+          # Milestone G live tracker.
+          path = 'MILESTONE_G_TODO.md'
+          text = read(path)
+          text = replace_required(
+              text,
+              'Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e/M1f architecture slices are immutable accepted. M1g Periodic Holonomy Route Transport Consumer is compile/package complete and immutable runtime validation is next. Architecture migration remains separate from G4 product acceptance.',
+              'Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h Phase-Front Field-Chart Consumer Code + Build is next. Architecture migration remains separate from G4 product acceptance.',
+              'milestone current gate')
+          text = replace_section(
+              text,
+              '## Authoritative next turn',
+              '## M1f vertex-continuation transport — immutable accepted',
+              '''## Authoritative next turn
+
+Run **M1h Phase-Front Field-Chart Consumer — Code + Build only** under:
+
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`
+
+The selected owner is `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. Adopt checked `FieldChartId` without changing chart discovery/numbering, front topology, public compatibility values, periodic behavior, or G4 outcomes. Also correct packaged fixture lookup to recognize executable-relative sibling `../test-data`. Compile/package only; execute no generated Directional binary.''',
+              'milestone next turn')
+          text = replace_section(
+              text,
+              '## M1g periodic-holonomy route transport — compile/package complete',
+              '## Regression disposition',
+              '''## M1g periodic-holonomy route transport — immutable accepted
+
+Selected boundary:
+`periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
+
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from exact artifacts `9053047653 / 9053048092`.
+
+| Evidence | Value |
+|---|---|
+| Build run/job | `31362470744 / 93373936472`, **120/120** |
+| Result artifact / SHA-256 | `9053047653` / `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c` |
+| Log artifact / SHA-256 | `9053048092` / `c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9` |
+| Recursive manifest | **64/64**, `89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae` |
+| Producer discovery / required-green | **196 / 181/181** |
+| M1g focused | **6/6** individually |
+| validation / M1a / T1 | **77/77 / 14/14 / 29/29** |
+| direct products | Plane / MultiFaceSeam / CloseSheets / Cylinder green and independent-oracle clean |
+
+All eight historical/deferred producer reds retained their entering classes. Bunny remains the known completion red and Vase bounded safety-only. Nonzero periodic rotation remains `PeriodicHolonomyMismatch`, so `G4-B003` is still unresolved. Heavy comparison run `31394985769` and exact local/remote postflight preserved immutable package authority. No new stable regression event or recurrence was created.
+
+Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.''',
+              'milestone M1g accepted')
+          text = text.replace(
+              '- M1g `RP-01 / RP-05 / RP-07` is compile/package complete and runtime pending; no M1g preservation claim is accepted before exact artifact execution.',
+              '- M1g `RP-01 / RP-05 / RP-07` is **immutable accepted**; exact M1g artifact execution re-proved `RP-02 / TA-05` preservation.')
+          write(path, text)
+
+          # Reorientation plan: update only live M1 status and current M1g/M1h section.
+          path = '.agents/Directional/REORIENTATION_PLAN.md'
+          text = read(path)
+          text = replace_required(
+              text,
+              '   M1g periodic holonomy route transport consumer [compile/package complete; runtime next]\n   later bounded M1 consumers [pending]',
+              '   M1g periodic holonomy route transport consumer [accepted]\n   M1h phase-front field-chart consumer [next]\n   later bounded M1 consumers [pending]',
+              'reorientation diagram')
+          text = text.replace('Authoritative next immutable Test + Benchmark plan:', 'Authoritative next Code + Build plan:')
+          text = replace_section(
+              text,
+              '### M1g compile/package checkpoint',
+              '## 5. Required target-stage corrections',
+              '''### M1g immutable acceptance and M1h selection
+
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted at the periodic canonical-face-cycle whole-route transport owner. Exact artifact-only runtime passed M1g **6/6**, producer discovery **196**, required-green **181/181**, M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct independent-oracle products. Eight historical/deferred reds retained their classes, Bunny remained the known completion red, Vase remained bounded safety-only, and exact package postflight passed. Nonzero rotation remains `PeriodicHolonomyMismatch`; `G4-B003` is not closed.
+
+Current evidence: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+M1g runtime also exposed a package-layout portability defect: `test_data_root()` checks `bin/test-data` while the accepted package stores `../test-data`. The next Code + Build must correct that executable-relative lookup without changing test semantics.
+
+Fresh accepted-source inspection selects the next real M1 semantic owner:
+
+`build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
+
+This producer creates connected equal-orientation field charts and currently stores/carries their identity as bare integers. `authority::FieldChartId` already exists. M1h adopts that type at the producer/constructive-front boundary while preserving chart partitioning/numbering, phase and lattice values, front topology, public compatibility output, periodic behavior, and G4 outcomes. `SurfaceTraceSegment::sourceChart`, chart-relation certificates, public schema retirement, M2–M6, and G4 repair remain out of scope unless the M1h plan names a narrow compile compatibility touchpoint.
+
+Next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.''',
+              'reorientation M1g section')
+          text = replace_required(
+              text,
+              'Continue bounded consumers only. `resolve_vertex_continuation` is immutable accepted at M1f. The separate periodic-holonomy route transport is M1g compile/package complete without changing cycle discovery, output, or rejection behavior; immutable M1g runtime validation is the next gate. Production `FieldChartId` adoption and any later M1 consumer remain unselected until M1g acceptance and fresh source inspection.',
+              'Continue bounded consumers only. M1g periodic-holonomy route transport is immutable accepted without changing cycle discovery, output, or rejection behavior. Fresh accepted-source inspection selects M1h production `FieldChartId` adoption at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. M1h remains representation-only; later M1 consumers remain unselected until immutable M1h acceptance.',
+              'reorientation remaining M1')
+          write(path, text)
+
+          # Regression tracker: current acceptance, M1g record, registers, next step.
+          path = '.agents/Directional/Regression_Root_Cause_Tracker.md'
+          text = read(path)
+          text = replace_required(
+              text,
+              'Last updated: **2026-08-10 UTC** after M1g compile/package completion from artifact `9053047653`; immutable M1g runtime is next.',
+              'Last updated: **2026-08-10 UTC** after immutable M1g acceptance from artifact `9053047653`; M1h phase-front field-chart consumer is next.',
+              'regression last updated')
+          text = replace_required(
+              text,
+              'M1g compile artifact `9053047653` likewise creates no stable product regression event, but M1g semantic acceptance remains pending.',
+              'Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete.',
+              'regression historical authority')
+          text = text.replace(
+              '- M1g periodic crossings now cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction; compile/package is complete and runtime acceptance is pending.',
+              '- M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.')
+          text = text.replace('`RP-02 / TA-05` remains **test-authority resolved and preserved through M1f** under immutable artifact execution:', '`RP-02 / TA-05` remains **test-authority resolved and preserved through M1g** under immutable artifact execution:')
+          text = text.replace('- producer discovery exactly **190**;', '- producer discovery exactly **196**;', 1)
+          text = text.replace('- required-green producer segment **175/175**;', '- required-green producer segment **181/181**;', 1)
+          text = text.replace('Focused M1e/M1f tests do not replace this authority. M1f preservation passed exact artifact execution. M1g preservation remains pending against exact artifact `9053047653`.', 'Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`.')
+          text = text.replace('M1e/M1f added no search/retry loop; M1g compile/package likewise adds no search/retry work.', 'M1e/M1f/M1g added no search/retry loop.')
+          text = text.replace('- M1g applies the boundary to the ordered periodic face-cycle route; compile/package is complete and runtime pending.', '- M1g applies the boundary to the ordered periodic face-cycle route and is **immutable accepted**.')
+          text = text.replace('M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces the separate periodic whole-cycle `totalMatching` accumulator with typed `CanonicalRoute` / `GridAutomorphism` composition; compile/package is complete and runtime pending.', 'M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces the separate periodic whole-cycle `totalMatching` accumulator with typed `CanonicalRoute` / `GridAutomorphism` composition and is **immutable accepted**.')
+          text = replace_section(
+              text,
+              '### M1g compile/package pattern record — runtime pending',
+              '## Current G4 stable-ID mapping',
+              '''### M1g immutable accepted pattern record
+
+M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` migrates the periodic canonical-face-cycle whole-route accumulator to checked source vertices, canonical topology keys, checked compact transitions, `TransitionStep`, `CanonicalRoute`, and typed transport composition. It preserves current `PeriodicHolonomyMismatch` rejection for nonzero cycle rotation. `G4-B003` remains unresolved.
+
+Immutable authority:
+
+- build run/job `31362470744 / 93373936472`, **120/120**;
+- result artifact `9053047653`, ZIP SHA-256 `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c`;
+- log artifact `9053048092`, ZIP SHA-256 `c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9`;
+- manifest **64/64**, SHA-256 `89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae`;
+- M1g **6/6**, required-green producer **181/181**, complete M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**;
+- Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean;
+- all eight historical/deferred red classes unchanged;
+- Bunny known-red and Vase bounded safety-only under run `31394985769`;
+- strict-validator characterization **1/10 pass, 9/10 fail**, retaining the existing nondeterministic performance-test defect;
+- exact local and remote postflight passed;
+- report `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
+
+### M1h next RP-01 / RP-05 boundary
+
+Fresh accepted-source inspection selects `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` as the next real field-chart owner. The current producer creates connected equal-orientation charts and carries their identity as bare integers. M1h must adopt checked `FieldChartId` there while preserving chart partitioning/numbering and all behavior. The M1g runtime-discovered executable-relative fixture lookup defect is a required test-infrastructure correction in the same Code + Build turn. `SurfaceTraceSegment::sourceChart`, M2–M6, G4 repair, and nonzero periodic Z4 support remain out of scope.''',
+              'regression M1g record')
+          text = text.replace('| `AR-02` | M1a/M1b/M1c/M1d/M1e/M1f **accepted**; M1g periodic-route transport compile/package complete, runtime pending |', '| `AR-02` | M1a through M1g **accepted**; M1h phase-front field-chart consumer next |')
+          text = text.replace('| `AR-03` | strong identity adoption through M1f **accepted**; M1g checked periodic-crossing identity compile-complete, runtime pending |', '| `AR-03` | strong identity adoption through M1g **accepted**; M1h checked field-chart identity next |')
+          text = text.replace('| `AR-04` | `FieldChartId` exists; production chart migration remains later M1 |', '| `AR-04` | `FieldChartId` exists; production phase-front chart migration selected for M1h |')
+          text = text.replace('| `AR-05` | representation boundaries through M1f **accepted**; M1g observed/canonical periodic-route orientation compile-complete, runtime pending |', '| `AR-05` | representation boundaries through M1g **accepted**; M1h field-chart representation boundary next |')
+          text = text.replace('| `TA-05` | **test authority resolved and preserved through M1f**; M1g preservation pending immutable artifact execution |', '| `TA-05` | **test authority resolved and preserved through M1g** |')
+          text = text.replace('| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route composition accepted; M1g periodic-route contracts compiled, runtime pending |', '| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route composition accepted; M1h chart contracts next |')
+          text = replace_section(
+              text,
+              '## Authoritative next step',
+              '\n",\n[L3]',
+              '## Authoritative next step',
+              'placeholder') if False else text
+          marker = '## Authoritative next step\n'
+          pos = text.find(marker)
+          if pos < 0:
+              raise SystemExit('missing regression authoritative next step')
+          text = text[:pos] + '''## Authoritative next step
+
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
+
+The next turn is **Code + Build only**. Adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`, correct packaged fixture lookup to recognize sibling `../test-data`, compile/package the required artifact, and execute no generated Directional binary. M1h remains runtime pending until a following immutable Test + Benchmark turn.
+'''
+          write(path, text)
+
+          # Replace stale current-head per-turn references in retained Markdown/TODO.
+          retained = [Path('TODO'), Path('MILESTONE_G_TODO.md')]
+          retained += [p for p in Path('.agents/Directional').glob('*.md')
+                       if p.name not in {old_report_name, old_plan_name}]
+          for p in retained:
+              t = p.read_text(encoding='utf-8')
+              t = t.replace(old_report_name, new_report_name)
+              t = t.replace(old_plan_name, new_plan_name)
+              p.write_text(t, encoding='utf-8')
+
+          # Consumed/superseded per-turn evidence is removed only after facts are folded above.
+          for stale in (
+              Path('.agents/Directional') / old_report_name,
+              Path('.agents/Directional') / old_plan_name,
+          ):
+              if not stale.is_file():
+                  raise SystemExit(f'missing stale file expected for cleanup: {stale}')
+              stale.unlink()
+
+          # Durable current-head references to deleted files are prohibited.
+          stale_refs = []
+          for p in [Path('TODO'), Path('MILESTONE_G_TODO.md')] + list(Path('.agents/Directional').glob('*.md')):
+              t = p.read_text(encoding='utf-8')
+              if old_report_name in t or old_plan_name in t:
+                  stale_refs.append(str(p))
+          if stale_refs:
+              raise SystemExit(f'stale references remain: {stale_refs}')
+          print('durable_doc_update=pass')
+          PY
+          git diff --check
+          git status --short
+          git diff -- TODO MILESTONE_G_TODO.md .agents/Directional > "$LOG_DIR/docs.patch"
+          echo "changed_files=$(git status --short | wc -l)"
+
+      - name: Commit and push documentation closeout
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$LOG_DIR/activity.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'rc=$?; echo "step=commit exit_code=$rc"; exit $rc' EXIT
+          test -z "$(git status --short -- src include tests cmake CMakeLists.txt 2>/dev/null || true)"
+          git config user.name 'OpenAI Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add TODO MILESTONE_G_TODO.md .agents/Directional
+          git diff --cached --check
+          git commit -m 'docs: close M1g immutable runtime turn'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "committed=$(git rev-parse HEAD)"
+          echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1g-test-closeout-docs-logs
+          path: /tmp/m1g-doc-closeout/activity.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload documentation patch evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1g-test-closeout-docs-evidence
+          path: /tmp/m1g-doc-closeout/docs.patch
+          if-no-files-found: error
+          retention-days: 14
