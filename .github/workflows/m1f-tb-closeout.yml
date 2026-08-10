@@ -1,0 +1,61 @@
+name: m1f-tb-closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1f-tb-closeout'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1f-tb-closeout
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+
+      - name: Apply narrow durable status updates and stale evidence cleanup
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 .agents/connector-tasks/m1f_tb_closeout.py
+          git diff --check
+          echo 'changed paths:'
+          git status --short
+          # Durable/live edits plus exactly three superseded per-turn deletions only.
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          printf '%s\n' "${changed[@]}"
+          test "${#changed[@]}" -eq 8
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Future_Chat_Session_Handoff.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/REORIENTATION_PLAN.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Regression_Root_Cause_Tracker.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx 'TODO'
+          printf '%s\n' "${changed[@]}" | grep -Fx 'MILESTONE_G_TODO.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md'
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md'
+
+      - name: Commit and push closeout state
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name directional-agent
+          git config user.email directional-agent@users.noreply.github.com
+          git add TODO MILESTONE_G_TODO.md
+          git add -f .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md
+          git add -u .agents/Directional
+          git diff --cached --check
+          git commit -m 'docs: accept immutable M1f and route to M1g'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
